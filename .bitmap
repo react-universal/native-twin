@@ -9,6 +9,12 @@
  */
 
 {
+    "extensions/react-native-web": {
+        "scope": "",
+        "version": "",
+        "mainFile": "index.ts",
+        "rootDir": "src/extensions/react-native-web"
+    },
     "tailwind": {
         "scope": "",
         "version": "",
