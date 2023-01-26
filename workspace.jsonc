@@ -1,0 +1,90 @@
+/**
+ * this is the main configuration file of your bit workspace.
+ * for full documentation, please see: https://bit.dev/docs/workspace/workspace-configuration
+ **/ {
+  "$schema": "https://static.bit.dev/teambit/schemas/schema.json",
+  /**
+   * main configuration of the Bit workspace.
+   **/
+  "teambit.workspace/workspace": {
+    /**
+     * the name of the component workspace. used for development purposes.
+     **/
+    "name": "react-universal",
+    /**
+     * set the icon to be shown on the Bit server.
+     **/
+    "icon": "https://static.bit.dev/bit-logo.svg",
+    /**
+     * default directory to place a component during `bit import` and `bit create`.
+     * the following placeholders are available:
+     * name - component name includes namespace, e.g. 'ui/button'.
+     * scopeId - full scope-id includes the owner, e.g. 'teambit.compilation'.
+     * scope - scope name only, e.g. 'compilation'.
+     * owner - owner name in bit.dev, e.g. 'teambit'.
+     **/
+    "defaultDirectory": "src/{name}",
+    /**
+     * default scope for all components in workspace.
+     **/
+    "defaultScope": "nativewind.universal"
+  },
+  /**
+   * main configuration for component dependency resolution.
+   **/
+  "teambit.dependencies/dependency-resolver": {
+    /**
+     * choose the package manager for Bit to use. you can choose between 'yarn', 'pnpm'
+     */
+    "packageManager": "teambit.dependencies/pnpm",
+    "policy": {
+      "dependencies": {},
+      "peerDependencies": {
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-native-web": "*",
+        "nativewind": "2.0.11",
+        "tailwindcss": "3.2.4",
+        "autoprefixer": "10.4.13",
+        "critters": "^0.0.16",
+        "postcss": "8.4.19",
+        "typescript": "^4.8.4"
+      }
+    }
+  },
+  /**
+   * workspace variants allow to set different subsets of configuration for components in your
+   * workspace. this is extremely useful for upgrading, aligning and building components with a new
+   * set of dependencies. a rule can be a directory or a component-id/namespace, in which case,
+   * wrap the rule with curly brackets (e.g. `"{ui/*}": {}`)
+   * see https://bit.dev/docs/workspace/variants for more info.
+   **/
+  "teambit.workspace/variants": {
+    "*": {
+      "teambit.pkg/pkg": {
+        "packageManagerPublishArgs": ["--access public"],
+        "packageJson": {
+          "private": false,
+          "name": "@react-universal/nativewind.{name}"
+        }
+        // "packageJsonProps": {
+        //   "files": ["dist"]
+        // }
+      },
+      "teambit.react/react-native": {},
+      "teambit.dependencies/dependency-resolver": {
+        "policy": {
+          "peerDependencies": {
+            "react": "18.2.0",
+            "react-dom": "18.2.0"
+          },
+          "devDependencies": {
+            "@types/react": "18.0.23",
+            "@types/react-dom": "18.0.9",
+            "@types/react-native": "0.69.5"
+          }
+        }
+      }
+    }
+  }
+}

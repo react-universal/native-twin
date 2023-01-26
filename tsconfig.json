@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "allowJs": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "allowUnreachableCode": false,
+    "importsNotUsedAsValues": "error",
+    "ignoreDeprecations": "5.0",
+    "noEmit": true,
+    "noImplicitAny": false,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "moduleResolution": "Node",
+    "noUnusedLocals": true,
+    "jsx": "react-jsx",
+    "target": "ESNext",
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true,
+    "checkJs": false
+  },
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "**/dist/**",
+    "**/.expo/**/*",
+    "dist",
+    "**/.next/**/*"
+  ]
+}
