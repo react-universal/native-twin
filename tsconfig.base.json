@@ -10,11 +10,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {
-      "@react-universal/nativewind.view": [
-        "packages/primitives/nativewind.view/src/index.ts"
-      ]
-    }
+    "paths": {}
   },
   "exclude": [
     "node_modules",
