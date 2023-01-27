@@ -30,18 +30,18 @@ describe('expo-module e2e', () => {
     await runNxCommandAsync(
       `generate @react-universal/expo-module:expo-module ${project}`
     );
-    const result = await runNxCommandAsync(`build ${project}`);
-    expect(result.stdout).toContain('Executor ran');
+    const result = await runNxCommandAsync(`build primitives-${project}`);
+    expect(result.stdout).toContain('Successfully ran');
   }, 120000);
 
-  describe('--directory', () => {
+  describe('--scope', () => {
     it('should create src in the specified directory', async () => {
       const project = uniq('expo-module');
       await runNxCommandAsync(
-        `generate @react-universal/expo-module:expo-module ${project} --directory subdir`
+        `generate @react-universal/expo-module:expo-module ${project} --scope primitives`
       );
       expect(() =>
-        checkFilesExist(`libs/subdir/${project}/src/index.ts`)
+        checkFilesExist(`libs/primitives/${project}/src/index.ts`)
       ).not.toThrow();
     }, 120000);
   });
@@ -53,8 +53,8 @@ describe('expo-module e2e', () => {
       await runNxCommandAsync(
         `generate @react-universal/expo-module:expo-module ${projectName} --tags e2etag,e2ePackage`
       );
-      const project = readJson(`libs/${projectName}/project.json`);
-      expect(project.tags).toEqual(['e2etag', 'e2ePackage']);
+      const project = readJson(`libs/primitives/${projectName}/project.json`);
+      expect(project.tags).toEqual(['e2etag', 'e2ePackage', 'primitives']);
     }, 120000);
   });
   

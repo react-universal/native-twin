@@ -19,8 +19,8 @@ interface NormalizedSchema extends ExpoModuleGeneratorSchema {
 
 function normalizeOptions(tree: Tree, options: ExpoModuleGeneratorSchema): NormalizedSchema {
   const name = names(options.name).fileName;
-  const projectDirectory = options.directory
-    ? `${names(options.directory).fileName}/${name}`
+  const projectDirectory = options.scope
+    ? `${names(options.scope).fileName}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectRoot = `${getWorkspaceLayout(tree).libsDir}/${projectDirectory}`;
@@ -61,7 +61,7 @@ export default async function (tree: Tree, options: ExpoModuleGeneratorSchema) {
           executor: "@react-universal/expo-module:build",
         },
       },
-      tags: normalizedOptions.parsedTags,
+      tags: [...normalizedOptions.parsedTags, options.scope],
     }
   );
   addFiles(tree, normalizedOptions);

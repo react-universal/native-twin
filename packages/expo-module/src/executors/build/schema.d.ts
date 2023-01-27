@@ -1,1 +1,3 @@
-export interface BuildExecutorSchema {} // eslint-disable-line
+export interface BuildExecutorSchema {
+  [key: string]: unknown;
+} // eslint-disable-line

@@ -28,5 +28,6 @@
         "packages/primitives/nativewind.view/src/index.ts"
       ]
     }
-  }
+  },
+  "exclude": ["tmp"]
 }

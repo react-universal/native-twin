@@ -19,10 +19,12 @@
       "description": "Add tags to the project (used for linting)",
       "alias": "t"
     }, 
-    "directory": {
+    "scope": {
       "type": "string",
+      "enum": ["primitives", "core"],
+      "default": "primitives",
       "description": "A directory where the project is placed"
     }
   },
-  "required": ["name"]
+  "required": ["name", "scope"]
 }
