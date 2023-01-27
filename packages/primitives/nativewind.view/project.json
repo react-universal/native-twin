@@ -1,0 +1,62 @@
+{
+  "name": "primitives-nativewind.view",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/primitives/nativewind.view/src",
+  "projectType": "library",
+  "tags": [
+    "primitives"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:rollup",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/packages/primitives/nativewind.view",
+        "tsConfig": "packages/primitives/nativewind.view/tsconfig.lib.json",
+        "project": "packages/primitives/nativewind.view/package.json",
+        "entryFile": "packages/primitives/nativewind.view/src/index.ts",
+        "external": [
+          "react/jsx-runtime",
+          "react-native"
+        ],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "assets": [
+          {
+            "glob": "packages/primitives/nativewind.view/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/primitives/nativewind.view/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "packages/primitives/nativewind.view/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  }
+}
