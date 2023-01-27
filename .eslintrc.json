@@ -6,6 +6,7 @@
   "plugins": [
     "@nrwl/nx"
   ],
+  "extends": ["plugin:prettier/recommended"],
   "overrides": [
     {
       "files": [

@@ -1,5 +1,5 @@
 export interface ExpoModuleGeneratorSchema {
-    name: string;
-    tags?: string;
-    scope: 'primitives' | 'core';
+  name: string;
+  tags?: string;
+  scope: 'primitives' | 'core';
 }

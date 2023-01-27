@@ -1,11 +1,29 @@
 {
-  "tailwindCSS.classAttributes": [
-    "className",
-    "tw",
-    "variants"
-  ],
+  "tailwindCSS.classAttributes": ["className", "tw", "variants"],
+  "eslint.validate": ["json"],
   "terminal.integrated.defaultLocation": "view",
-  "eslint.validate": [
-    "json"
-  ]
+  "cSpell.ignorePaths": [
+    "package-lock.json",
+    "**/yarn.lock",
+    "node_modules",
+    "vscode-extension",
+    ".git/objects",
+    ".vscode",
+    ".vscode-insiders",
+    "**/app.json"
+  ],
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/.hg/store/**": true,
+    "**/dist/**": true
+  },
+  "workbench.colorCustomizations": {
+    "[Default Dark+ Experimental]": {
+      "sideBar.background": "#070606",
+      "editor.background": "#070606",
+      "tab.inactiveBackground": "#161414"
+    }
+  }
 }

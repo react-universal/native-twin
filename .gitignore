@@ -12,10 +12,6 @@
 !.yarn/sdks
 !.yarn/versions
 
-# Bit
-public/
-.bit/
-
 # Turborepo
 .turbo
 
@@ -39,3 +35,5 @@ cache/
 
 # NX
 tmp
+
+.vscode/workspaces.*

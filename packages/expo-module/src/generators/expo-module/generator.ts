@@ -19,14 +19,10 @@ interface NormalizedSchema extends ExpoModuleGeneratorSchema {
 
 function normalizeOptions(tree: Tree, options: ExpoModuleGeneratorSchema): NormalizedSchema {
   const name = names(options.name).fileName;
-  const projectDirectory = options.scope
-    ? `${names(options.scope).fileName}/${name}`
-    : name;
+  const projectDirectory = options.scope ? `${names(options.scope).fileName}/${name}` : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectRoot = `${getWorkspaceLayout(tree).libsDir}/${projectDirectory}`;
-  const parsedTags = options.tags
-    ? options.tags.split(',').map((s) => s.trim())
-    : [];
+  const parsedTags = options.tags ? options.tags.split(',').map((s) => s.trim()) : [];
 
   return {
     ...options,
@@ -38,32 +34,28 @@ function normalizeOptions(tree: Tree, options: ExpoModuleGeneratorSchema): Norma
 }
 
 function addFiles(tree: Tree, options: NormalizedSchema) {
-    const templateOptions = {
-      ...options,
-      ...names(options.name),
-      offsetFromRoot: offsetFromRoot(options.projectRoot),
-      template: ''
-    };
-    generateFiles(tree, path.join(__dirname, 'files'), options.projectRoot, templateOptions);
+  const templateOptions = {
+    ...options,
+    ...names(options.name),
+    offsetFromRoot: offsetFromRoot(options.projectRoot),
+    template: '',
+  };
+  generateFiles(tree, path.join(__dirname, 'files'), options.projectRoot, templateOptions);
 }
 
 export default async function (tree: Tree, options: ExpoModuleGeneratorSchema) {
   const normalizedOptions = normalizeOptions(tree, options);
-  addProjectConfiguration(
-    tree,
-    normalizedOptions.projectName,
-    {
-      root: normalizedOptions.projectRoot,
-      projectType: 'library',
-      sourceRoot: `${normalizedOptions.projectRoot}/src`,
-      targets: {
-        build: {
-          executor: "@react-universal/expo-module:build",
-        },
+  addProjectConfiguration(tree, normalizedOptions.projectName, {
+    root: normalizedOptions.projectRoot,
+    projectType: 'library',
+    sourceRoot: `${normalizedOptions.projectRoot}/src`,
+    targets: {
+      build: {
+        executor: '@react-universal/expo-module:build',
       },
-      tags: [...normalizedOptions.parsedTags, options.scope],
-    }
-  );
+    },
+    tags: [...normalizedOptions.parsedTags, options.scope],
+  });
   addFiles(tree, normalizedOptions);
   await formatFiles(tree);
 }

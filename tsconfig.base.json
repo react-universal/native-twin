@@ -2,11 +2,16 @@
   "compileOnSave": false,
   "compilerOptions": {
     "sourceMap": true,
+    "declaration": false,
     "moduleResolution": "Node",
-    "target": "ESNext",
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
     "strict": true,
     "strictNullChecks": true,
-    "module": "ESNext",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
@@ -29,5 +34,5 @@
       ]
     }
   },
-  "exclude": ["tmp"]
+  "exclude": ["tmp", "node_modules"]
 }
