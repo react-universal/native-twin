@@ -1,0 +1,73 @@
+{
+  "name": "expo-module",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/expo-module/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/packages/expo-module",
+        "main": "packages/expo-module/src/index.ts",
+        "tsConfig": "packages/expo-module/tsconfig.lib.json",
+        "assets": [
+          "packages/expo-module/*.md",
+          {
+            "input": "./packages/expo-module/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/expo-module/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/expo-module",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./packages/expo-module",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/expo-module/**/*.ts",
+          "packages/expo-module/generators.json",
+          "packages/expo-module/executors.json",
+          "packages/expo-module/package.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "packages/expo-module/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

@@ -12,6 +12,9 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
+      "@react-universal/expo-module": [
+        "packages/expo-module/src/index.ts"
+      ],
       "@react-universal/nativewind.core": [
         "packages/core/nativewind.core/src/index.ts"
       ],

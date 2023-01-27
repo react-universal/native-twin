@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "expo-module",
+  "version": "0.0.1",
+  "generators": {
+    "expo-module": {
+      "factory": "./src/generators/expo-module/generator",
+      "schema": "./src/generators/expo-module/schema.json",
+      "description": "expo-module generator"
+    }
+  }
+}
