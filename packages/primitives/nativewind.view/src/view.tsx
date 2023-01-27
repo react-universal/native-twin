@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { View as ReactNativeView, ViewProps } from 'react-native';
-import { styled } from '@react-universal/nativewind.tailwind';
+import { styled } from '@react-universal/nativewind.core';
 
 const StyledView = styled(ReactNativeView);
 
