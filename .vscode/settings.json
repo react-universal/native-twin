@@ -1,11 +1,11 @@
 {
     "tailwindCSS.classAttributes": ["className", "tw", "variants"],
     "terminal.integrated.defaultLocation": "view",
-    "workbench.colorCustomizations": {
-      "[Default Dark+ Experimental]": {
-        "sideBar.background": "#070606",
-        "editor.background": "#070606",
-        "tab.inactiveBackground": "#161414",
-      }
-    }
+    // "workbench.colorCustomizations": {
+    //   "[Default Dark+ Experimental]": {
+    //     "sideBar.background": "#070606",
+    //     "editor.background": "#070606",
+    //     "tab.inactiveBackground": "#161414",
+    //   }
+    // }
 }
