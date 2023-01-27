@@ -2843,6 +2843,19 @@
     tar "6.1.11"
     yargs-parser ">=21.0.1"
 
+"@nrwl/nx-plugin@^15.6.2":
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/nx-plugin/-/nx-plugin-15.6.2.tgz#0f01af2c448210b2611ff17296bb7d4cb5679c46"
+  integrity sha512-b6L8polaQrAGFVGhDAKPKeRhQt95vM/rkEknaLa6xTY1apI+SHQlBlGziPyB9MzzwI4XVoF/iVq4VJabHvE6Vw==
+  dependencies:
+    "@nrwl/devkit" "15.6.2"
+    "@nrwl/jest" "15.6.2"
+    "@nrwl/js" "15.6.2"
+    "@nrwl/linter" "15.6.2"
+    dotenv "~10.0.0"
+    fs-extra "^11.1.0"
+    tslib "^2.3.0"
+
 "@nrwl/react@15.6.2":
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/@nrwl/react/-/react-15.6.2.tgz#141ab396924091478ebed25f86eaf81dd8fbb861"
