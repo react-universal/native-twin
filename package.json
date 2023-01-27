@@ -1,10 +1,14 @@
 {
-  "name": "react-universal",
+  "name": "root",
   "version": "0.0.0-development",
   "private": true,
+  "homepage": "https://github.com/react-universal/nativewind-ui#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/nativewind-ui/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-universal/nativewind.git"
+    "url": "https://github.com/react-universal-ui/nativewind.git"
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
@@ -54,6 +58,7 @@
     "@nrwl/workspace": "15.6.2",
     "@rollup/plugin-url": "^7.0.0",
     "@svgr/rollup": "^6.1.2",
+    "@swc-node/register": "^1.4.2",
     "@swc/cli": "~0.1.55",
     "@swc/core": "^1.2.173",
     "@swc/helpers": "~0.4.11",
@@ -63,7 +68,7 @@
     "@testing-library/react": "13.4.0",
     "@testing-library/react-native": "11.5.0",
     "@types/jest": "28.1.1",
-    "@types/node": "latest",
+    "@types/node": "16.11.7",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
     "@types/react-native": "0.70.7",
@@ -86,6 +91,7 @@
     "jest": "28.1.1",
     "jest-circus": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
+    "jsonc-eslint-parser": "^2.1.0",
     "metro-resolver": "0.73.3",
     "nativewind": "^2.0.11",
     "nx": "15.6.2",

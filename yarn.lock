@@ -3749,6 +3749,31 @@
     "@svgr/plugin-jsx" "^6.5.1"
     "@svgr/plugin-svgo" "^6.5.1"
 
+"@swc-node/core@^1.9.2":
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/@swc-node/core/-/core-1.9.2.tgz#9c126ace9c71acd8ad301b3823bde7925d8a58ab"
+  integrity sha512-tInCla6NO1HEQwhIc/K7PCOu4X3ppqw5xYNEMD7i41SyRuH7yp3u8x7x2cqeAD+6IAhJ5jKDPv2QRLPz7Xt3EA==
+
+"@swc-node/register@^1.4.2":
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/@swc-node/register/-/register-1.5.5.tgz#0c9c6b8ea969b7ee2280e176debd1fde89986c06"
+  integrity sha512-SNpbRG8EOXShk3YAnC4suAVovYQ7oFOFdCVBA3J8hkO5qy0WHPVnlnMojTYI+8UT1CrfQ1QSUySaAARRvEdwjg==
+  dependencies:
+    "@swc-node/core" "^1.9.2"
+    "@swc-node/sourcemap-support" "^0.2.3"
+    colorette "^2.0.19"
+    debug "^4.3.4"
+    pirates "^4.0.5"
+    tslib "^2.4.1"
+
+"@swc-node/sourcemap-support@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@swc-node/sourcemap-support/-/sourcemap-support-0.2.3.tgz#fbd049a409bb10d198dea4e5fff5795a33ddd9dd"
+  integrity sha512-LOC/z9HDUmTqSAF08YIRLThGGNZLdRrjcEdoQu/EANxPSVRedYgh4AiZlOX8sY8Rp1p7S/StOmZogJLuvR4mcA==
+  dependencies:
+    source-map-support "^0.5.21"
+    tslib "^2.4.1"
+
 "@swc/cli@~0.1.55":
   version "0.1.59"
   resolved "https://registry.yarnpkg.com/@swc/cli/-/cli-0.1.59.tgz#cb0be624f98ca9e41caa2de454d151faec83cd19"
@@ -4203,10 +4228,15 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
-"@types/node@*", "@types/node@latest":
+"@types/node@*":
   version "18.11.18"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.18.tgz#8dfb97f0da23c2293e554c5a50d61ef134d7697f"
   integrity sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==
+
+"@types/node@16.11.7":
+  version "16.11.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.7.tgz#36820945061326978c42a01e56b61cd223dfdc42"
+  integrity sha512-QB5D2sqfSjCmTuWcBWyJ+/44bcjO7VbjSbOE0ucoVbAsSNQc4Lt6QkgkVXkTDwkL4z/beecZNDvVX15D4P8Jbw==
 
 "@types/node@^14.14.31":
   version "14.18.36"
@@ -7014,7 +7044,7 @@ colorette@^1.0.7, colorette@^1.1.0:
   resolved "https://registry.yarnpkg.com/colorette/-/colorette-1.4.0.tgz#5190fbb87276259a86ad700bff2c6d6faa3fca40"
   integrity sha512-Y2oEozpomLn7Q3HFP7dpww7AtMJplbM9lGZP6RDfHqmbeRjiwRg4n6VM6j4KLmRke85uWEI7JqF17f3pqdRA0g==
 
-colorette@^2.0.10, colorette@^2.0.16:
+colorette@^2.0.10, colorette@^2.0.16, colorette@^2.0.19:
   version "2.0.19"
   resolved "https://registry.yarnpkg.com/colorette/-/colorette-2.0.19.tgz#cdf044f47ad41a0f4b56b3a0d5b4e6e1a2d5a798"
   integrity sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==
@@ -9317,7 +9347,7 @@ eslint-visitor-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-2.1.0.tgz#f65328259305927392c938ed44eb0a5c9b2bd303"
   integrity sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==
 
-eslint-visitor-keys@^3.3.0:
+eslint-visitor-keys@^3.0.0, eslint-visitor-keys@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.3.0.tgz#f6480fa6b1f30efe2d1968aa8ac745b862469826"
   integrity sha512-mQ+suqKJVyeuwGYHAdjMFqjCyfl8+Ldnxuyp3ldiMBFKkvytrXUZWaiPCEav8qDHKty44bD+qV1IP4T+w+xXRA==
@@ -9363,7 +9393,7 @@ eslint@~8.15.0:
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
 
-espree@^9.3.2, espree@^9.4.0:
+espree@^9.0.0, espree@^9.3.2, espree@^9.4.0:
   version "9.4.1"
   resolved "https://registry.yarnpkg.com/espree/-/espree-9.4.1.tgz#51d6092615567a2c2cff7833445e37c28c0065bd"
   integrity sha512-XwctdmTO6SIvCzd9810yyNzIrOrqNYV9Koizx4C/mRhf9uq0o4yHoCEU/670pOxOL/MSraektvSAji79kX90Vg==
@@ -13536,6 +13566,16 @@ json5@^1.0.1:
   integrity sha512-g1MWMLBiz8FKi1e4w0UyVL3w+iJceWAFBAaBnnGKOpNa5f8TLktkbre1+s6oICydWAm+HRUGTmI+//xv2hvXYA==
   dependencies:
     minimist "^1.2.0"
+
+jsonc-eslint-parser@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/jsonc-eslint-parser/-/jsonc-eslint-parser-2.1.0.tgz#4c126b530aa583d85308d0b3041ff81ce402bbb2"
+  integrity sha512-qCRJWlbP2v6HbmKW7R3lFbeiVWHo+oMJ0j+MizwvauqnCV/EvtAeEeuCgoc/ErtsuoKgYB8U4Ih8AxJbXoE6/g==
+  dependencies:
+    acorn "^8.5.0"
+    eslint-visitor-keys "^3.0.0"
+    espree "^9.0.0"
+    semver "^7.3.5"
 
 jsonc-parser@3.2.0:
   version "3.2.0"
@@ -19212,7 +19252,7 @@ source-map-support@0.5.19:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
 
-source-map-support@^0.5.16, source-map-support@~0.5.12, source-map-support@~0.5.20:
+source-map-support@^0.5.16, source-map-support@^0.5.21, source-map-support@~0.5.12, source-map-support@~0.5.20:
   version "0.5.21"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.21.tgz#04fe7c7f9e1ed2d662233c28cb2b35b9f63f6e4f"
   integrity sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==

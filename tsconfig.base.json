@@ -22,6 +22,9 @@
       ],
       "@react-universal/nativewind.view": [
         "packages/primitives/nativewind.view/src/index.ts"
+      ],
+      "@react-universal/nx-expo-library": [
+        "packages/nx/expo-library/src/index.ts"
       ]
     }
   }
