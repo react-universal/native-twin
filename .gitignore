@@ -35,5 +35,5 @@ cache/
 
 # NX
 tmp
-
+**build**
 .vscode/workspaces.*
