@@ -37,3 +37,4 @@ cache/
 tmp
 **build**
 .vscode/workspaces.*
+.env

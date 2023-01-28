@@ -3,7 +3,7 @@
     "dist/packages/*",
     "dist/packages/**/*"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "granularPathspec": false,
   "command": {
     "publish": {
