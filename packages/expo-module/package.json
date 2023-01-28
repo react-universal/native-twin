@@ -2,9 +2,6 @@
   "name": "@react-universal/expo-module",
   "version": "0.0.1",
   "main": "src/index.js",
-  "devDependencies": {
-    "expo-module-scripts": "^3.0.4"
-  },
   "executors": "./executors.json",
   "generators": "./generators.json"
 }

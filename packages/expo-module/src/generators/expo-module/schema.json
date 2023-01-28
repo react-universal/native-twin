@@ -7,7 +7,7 @@
   "properties": {
     "name": {
       "type": "string",
-      "description": "",
+      "description": "Name of the project",
       "$default": {
         "$source": "argv",
         "index": 0
@@ -18,7 +18,7 @@
       "type": "string",
       "description": "Add tags to the project (used for linting)",
       "alias": "t"
-    }, 
+    },
     "scope": {
       "type": "string",
       "enum": ["primitives", "core"],

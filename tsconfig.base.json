@@ -17,21 +17,12 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "@react-universal/expo-module": [
-        "packages/expo-module/src/index.ts"
-      ],
-      "@react-universal/nativewind.core": [
-        "packages/core/nativewind.core/src/index.ts"
-      ],
+      "@react-universal/expo-module": ["packages/expo-module/src/index.ts"],
+      "@react-universal/nativewind.core": ["packages/core/nativewind.core/src/index.ts"],
       "@react-universal/nativewind.pressable": [
         "packages/primitives/nativewind.pressable/src/index.ts"
       ],
-      "@react-universal/nativewind.text": [
-        "packages/primitives/nativewind.text/src/index.ts"
-      ],
-      "@react-universal/nativewind.view": [
-        "packages/primitives/nativewind.view/src/index.ts"
-      ]
+      "@react-universal/nativewind.view": ["packages/primitives/nativewind.view/src/index.ts"]
     }
   },
   "exclude": ["tmp", "node_modules"]
