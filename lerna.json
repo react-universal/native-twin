@@ -1,0 +1,13 @@
+{
+  "packages": [
+    "dist/packages/*",
+    "dist/packages/**/*"
+  ],
+  "version": "0.0.0",
+  "granularPathspec": false,
+  "command": {
+    "publish": {
+      "graphType": "all"
+    }
+  }
+}
