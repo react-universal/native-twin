@@ -1,3 +1,2 @@
-export function primitivesNativewindPressable(): string {
-  return 'primitives-nativewind.pressable';
-}
+export { View } from './view';
+export type { ViewProps } from './view';
