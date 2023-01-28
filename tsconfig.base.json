@@ -1,12 +1,22 @@
 {
+  "extends": "expo-module-scripts/tsconfig.base",
   "compileOnSave": false,
   "compilerOptions": {
+    "target": "esnext",
+    "lib": ["dom", "esnext"],
+    "jsx": "react",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "Node",
-    "target": "es2015",
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "strictPropertyInitialization": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "types": ["jest", "jest-require"],
     "module": "esnext",
-    "lib": ["es2017", "dom"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -18,7 +28,8 @@
     "rootDir": ".",
     "paths": {
       "@react-universal/expo-module": ["packages/expo-module/src/index.ts"],
-      "@react-universal/nativewind.core": ["packages/core/nativewind.core/src/index.ts"]
+      "@react-universal/nativewind.core": ["packages/core/nativewind.core/src/index.ts"],
+      "@react-universal/nativewind.view": ["packages/primitives/nativewind.view/src/index.ts"]
     }
   },
   "exclude": ["tmp", "node_modules"]

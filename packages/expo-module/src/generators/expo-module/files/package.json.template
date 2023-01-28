@@ -1,5 +1,5 @@
 {
-  "name": "<%= name %>",
+  "name": "@react-universal/<%= name %>",
   "version": "0.0.1",
   "homepage": "https://github.com/react-universal/nativewind-ui#readme",
   "bugs": {
@@ -8,7 +8,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/react-universal/nativewind-ui.git",
-    "directory": "packages/primitives/nativewind.pressable"
+    "directory": "packages/primitives/<%= name %>"
   },
   "license": "MIT",
   "sideEffects": false,

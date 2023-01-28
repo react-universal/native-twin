@@ -4615,15 +4615,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@react-universal/nativewind.pressable@workspace:packages/primitives/nativewind.pressable":
-  version: 0.0.0-use.local
-  resolution: "@react-universal/nativewind.pressable@workspace:packages/primitives/nativewind.pressable"
-  languageName: unknown
-  linkType: soft
-
 "@react-universal/nativewind.view@workspace:packages/primitives/nativewind.view":
   version: 0.0.0-use.local
   resolution: "@react-universal/nativewind.view@workspace:packages/primitives/nativewind.view"
+  dependencies:
+    expo-module-scripts: ^3.0.4
   languageName: unknown
   linkType: soft
 

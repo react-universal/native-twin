@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "generators": {
     "expo-module": {
-      "factory": "./src/generators/expo-module/generator",
+      "factory": "./src/generators/expo-module/generator2",
       "schema": "./src/generators/expo-module/schema.json",
       "description": "expo-module generator"
     }

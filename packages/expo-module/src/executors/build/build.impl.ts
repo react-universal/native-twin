@@ -17,9 +17,10 @@ export default async function* buildExecutor(
     !!context.projectsConfigurations?.projects && context.projectName
       ? context.projectsConfigurations?.projects[context.projectName].root
       : '';
-
+  console.log('PROJECT_ROOT: ', projectRoot);
   try {
-    await runCliBuild(context.root, projectRoot);
+    const result = await runCliBuild(context.root, projectRoot);
+    console.log('RESULT: ', result);
     yield { success: true };
   } finally {
     if (childProcess) {
@@ -30,11 +31,9 @@ export default async function* buildExecutor(
 
 function runCliBuild(workspaceRoot: string, projectRoot: string) {
   return new Promise((resolve, reject) => {
-    childProcess = fork(
-      join(workspaceRoot, './node_modules/.bin/expo-module'),
-      ['yarn', 'build'],
-      { cwd: join(workspaceRoot, projectRoot) },
-    );
+    childProcess = fork(join(workspaceRoot, './node_modules/.bin/expo-module'), ['build'], {
+      cwd: join(workspaceRoot, projectRoot),
+    });
 
     // Ensure the child process is killed when the parent exits
     process.on('exit', () => childProcess.kill());
