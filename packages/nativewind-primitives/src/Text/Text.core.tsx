@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef } from 'react';
+import { ComponentProps, ComponentType, forwardRef } from 'react';
 import { Platform, Text as NativeText, TextProps } from 'react-native';
 import { createStyledComponent, mergeTWClasses } from '@react-universal/nativewind-utils';
 // @ts-expect-error
@@ -26,34 +26,35 @@ const StyledH2 = createStyledComponent(BaseH2);
 const StyledH3 = createStyledComponent(BaseH3);
 const StyledH4 = createStyledComponent(BaseH4);
 
-const Span = forwardRef(({ className, ...props }: CommonTextProps, ref) => {
-  return <StyledSpan {...props} ref={ref} className={mergeTWClasses(className)} />;
-});
+type TextCoreProps = TTypographyProps & { Component: ComponentType<any> };
 
+const Span = forwardRef(({ className, ...props }: CommonTextProps, ref) => {
+  return <StyledSpan ref={ref} {...props} className={mergeTWClasses(className)} />;
+});
 Span.displayName = 'Span';
 
 const H1 = forwardRef(({ className, ...props }: CommonTextProps, ref) => {
   return <StyledH1 ref={ref} className={mergeTWClasses(className)} {...props} />;
 });
-
 H1.displayName = 'H1';
 
 const H2 = forwardRef(({ className, ...props }: CommonTextProps, ref) => {
-  return <StyledH2 {...props} ref={ref} className={mergeTWClasses(className)} />;
+  return <StyledH2 ref={ref} className={mergeTWClasses(className)} {...props} />;
 });
-
 H2.displayName = 'H2';
 
 const H3 = forwardRef(({ className, ...props }: CommonTextProps, ref) => {
-  return <StyledH3 {...props} ref={ref} className={mergeTWClasses(className)} />;
+  return <StyledH3 ref={ref} className={mergeTWClasses(className)} {...props} />;
 });
-
 H3.displayName = 'H3';
 
-const H4 = forwardRef(({ className, ...props }: CommonTextProps, ref) => {
-  return <StyledH4 {...props} ref={ref} className={mergeTWClasses(className)} />;
-});
+function TextCore({ Component, ...props }: TextCoreProps) {
+  return <Component {...props} />;
+}
 
+const H4 = forwardRef(({ className, ...props }: CommonTextProps, ref) => {
+  return <StyledH4 ref={ref} className={mergeTWClasses(className)} {...props} />;
+});
 H4.displayName = 'H4';
 
-export { Span, H1, H2, H3, H4 };
+export { Span, H1, H2, H3, H4, TextCore };

@@ -1,5 +1,5 @@
 import type { TextProps, ViewProps } from 'react-native';
-import type { typographyVariants } from './typography-variants';
+import type { typographyVariants } from './variants';
 
 export type TTypographyProps = {
   htmlFor?: string;

@@ -1,4 +1,5 @@
 const { DefinePlugin } = require('webpack');
+const withPlugins = require('next-compose-plugins');
 
 /** @type {import('next').NextConfig} **/
 const nextConfig = {
@@ -17,14 +18,7 @@ const nextConfig = {
     gzipSize: true,
     appDir: false,
   },
-  transpilePackages: [
-    '@react-universal/nativewind-primitives',
-    '@react-universal/nativewind-utils',
-    'react-native',
-    'react-native-svg',
-    'react-native-web',
-    'nativewind',
-  ],
+  transpilePackages: ['react-native', 'react-native-svg', 'react-native-web', 'nativewind'],
   outputFileTracing: false,
   swcMinify: true,
   compress: true,
@@ -76,4 +70,19 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+const transformer = withPlugins(
+  [
+    // withTM,
+    // withPWA,
+    // [withExpo, { projectRoot: __dirname + '/../..' }],
+  ].filter(Boolean),
+  nextConfig,
+);
+
+module.exports = function (name, { defaultConfig }) {
+  const config = transformer(name, {
+    ...defaultConfig,
+    ...nextConfig,
+  });
+  return config;
+};

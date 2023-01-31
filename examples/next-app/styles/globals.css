@@ -56,10 +56,6 @@ body {
   font-family: Roboto, sans-serif;
 }
 
-:root {
-  --rem: 18px;
-}
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

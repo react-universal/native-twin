@@ -13,10 +13,12 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
   "scripts": {
-    "build": "expo-module build",
+    "build": "yarn build:esm",
+    "build:cjs": "expo-module build --module CommonJS",
+    "build:esm": "expo-module build",
     "clean": "expo-module clean",
     "dev": "expo-module build --watch",
     "expo-module": "expo-module",
@@ -29,12 +31,16 @@
       "path": "cz-conventional-changelog"
     }
   },
+  "dependencies": {
+    "@react-universal/nativewind-utils": "*",
+    "class-variance-authority": "0.4.0"
+  },
   "devDependencies": {
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
     "@types/react-native": "0.70.7",
     "expo-module-scripts": "^3.0.4",
-    "nativewind": "^2.0.11",
+    "nativewind": "next",
     "postcss": "^8.4.21",
     "react": "18.1.0",
     "react-dom": "18.1.0",

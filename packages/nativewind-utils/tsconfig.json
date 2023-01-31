@@ -1,8 +1,10 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "outDir": "./build",
+    "outDir": "./build/cjs",
     "jsx": "react-jsx",
+    "declarationDir": "./build/types",
+    "module": "CommonJS",
     "importHelpers": true
   },
   "include": ["./src/**/*"],
