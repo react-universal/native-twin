@@ -1,0 +1,19 @@
+{
+  "name": "next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@next/font": "13.0.6",
+    "@react-universal/nativewind-primitives": "*",
+    "@react-universal/nativewind-utils": "*",
+    "autoprefixer": "10.4.13",
+    "critters": "^0.0.16",
+    "next": "13.1.4"
+  }
+}

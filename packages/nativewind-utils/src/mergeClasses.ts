@@ -1,7 +1,6 @@
 import clsx from 'clsx';
-import { TW } from './types';
 
-const mergeTWClasses = (tw?: TW) => {
+const mergeTWClasses = (tw?: string) => {
   return clsx(tw);
 };
 

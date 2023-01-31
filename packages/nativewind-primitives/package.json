@@ -18,6 +18,7 @@
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean",
+    "dev": "expo-module build --watch",
     "expo-module": "expo-module",
     "prepare": "expo-module prepare",
     "prepublishOnly": "expo-module prepublishOnly",
@@ -38,11 +39,11 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-reanimated": "~2.12.0",
     "react-native-svg": "13.4.0",
     "react-native-svg-transformer": "1.0.0",
     "react-native-web": "~0.18.10",
     "tailwindcss": "^3.2.4",
-    "tslib": "^2.3.0",
-    "typescript": "^4.9.4"
+    "tslib": "^2.3.0"
   }
 }

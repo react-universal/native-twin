@@ -1,3 +1,5 @@
 export { createStyledComponent } from './createStyledComponent';
-export { TW } from './types';
 export { mergeTWClasses } from './mergeClasses';
+export { createSizeTokens } from './tokens';
+
+export type { SizesDesignTokens } from './tokens';
