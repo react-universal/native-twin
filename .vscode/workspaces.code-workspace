@@ -1,0 +1,54 @@
+{
+  "folders": [
+    {
+      "name": "✨ root",
+      "path": ".."
+    },
+    {
+      "name": "📦 @react-universal/nativewind.core",
+      "path": "../packages/core/nativewind.core"
+    },
+    {
+      "name": "📦 @react-universal/expo-module",
+      "path": "../packages/expo-module"
+    },
+    {
+      "name": "📦 @react-universal/nativewind.pressable",
+      "path": "../packages/primitives/nativewind.pressable"
+    },
+    {
+      "name": "📦 @react-universal/nativewind.view",
+      "path": "../packages/primitives/nativewind.view"
+    }
+  ],
+  "settings": {
+    "tailwindCSS.classAttributes": ["className", "tw", "variants"],
+    "eslint.validate": ["json"],
+    "terminal.integrated.defaultLocation": "view",
+    "cSpell.ignorePaths": [
+      "package-lock.json",
+      "**/yarn.lock",
+      "node_modules",
+      "vscode-extension",
+      ".git/objects",
+      ".vscode",
+      ".vscode-insiders",
+      "**/app.json",
+      "../apps/nextjs/public"
+    ],
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/node_modules/*/**": true,
+      "**/.hg/store/**": true,
+      "**/dist/**": true
+    },
+    "workbench.colorCustomizations": {
+      "[Default Dark+ Experimental]": {
+        "sideBar.background": "#070606",
+        "editor.background": "#070606",
+        "tab.inactiveBackground": "#161414",
+      }
+    }
+  }
+}
