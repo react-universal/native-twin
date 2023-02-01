@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
+  "changelog": "@changesets/cli/changelog-github",
+  "commit": false,
+  "fixed": [["@react-universal/nativewind-primitives"], ["@react-universal/nativewind-utils"]],
+  "linked": [],
+  "access": "restricted",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["next-app", "expo-app"]
+}
