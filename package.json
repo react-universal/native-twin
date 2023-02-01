@@ -14,8 +14,9 @@
   ],
   "scripts": {
     "commit": "cz",
-    "dev": "turbo run dev --parallel",
-    "semantic-release": "semantic-release"
+    "dev": "turbo run dev --filter=\"@react-universal/**\" --parallel",
+    "semantic-release": "semantic-release",
+    "web": "turbo run dev --filter next-app"
   },
   "config": {
     "commitizen": {
@@ -29,6 +30,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native-web": "0.18.10"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.26.0"
   },
   "devDependencies": {
     "@swc/plugin-styled-components": "^1.5.40",
@@ -55,8 +59,5 @@
     "typescript": "^4.9.4",
     "vite": "^4.0.4"
   },
-  "packageManager": "yarn@3.3.1",
-  "dependencies": {
-    "@changesets/cli": "^2.26.0"
-  }
+  "packageManager": "yarn@3.3.1"
 }

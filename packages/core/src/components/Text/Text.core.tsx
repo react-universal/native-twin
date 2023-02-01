@@ -1,8 +1,9 @@
 import { ComponentProps, ComponentType, forwardRef } from 'react';
 import { Platform, Text as NativeText, TextProps } from 'react-native';
-import { createStyledComponent, mergeTWClasses } from '@react-universal/nativewind-utils';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
+import { createStyledComponent } from '../../utils/createStyledComponent';
+import { mergeTWClasses } from '../../utils/mergeClasses';
 import type { TTypographyProps } from './types';
 
 type StyledTextProps = ComponentProps<typeof BaseText>;

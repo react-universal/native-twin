@@ -6,15 +6,32 @@ export default defineConfig({
   plugins: [
     react({
       plugins: [['@swc/plugin-styled-components', {}]],
+      jsxImportSource: 'react-jsx',
     }),
   ],
+  optimizeDeps: {
+    esbuildOptions: {
+      mainFields: ['module', 'main'],
+      resolveExtensions: ['.web.js', '.web.jsx', '.web.ts', '.web.tsx', '.ts', '.js'],
+    },
+  },
+  resolve: {
+    extensions: ['.web.tsx', '.web.jsx', '.web.js', '.tsx', '.ts', '.js'],
+    alias: {
+      'react-native': 'react-native-web',
+    },
+  },
   build: {
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@react-universal/nativewind-primitives',
+      name: '@react-universal/core',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
+      makeAbsoluteExternalsRelative: 'ifRelativeSource',
       external: [
         'react',
         'react-dom',
@@ -22,22 +39,24 @@ export default defineConfig({
         'react-native-web',
         'postcss',
         'class-variance-authority',
-        'clsx',
         'react-native-svg',
-        '@react-universal/nativewind-utils',
+        'tailwindcss',
         'nativewind',
         'react/jsx-runtime',
+        /next/,
       ],
       output: {
         dir: 'build',
         format: 'esm',
+        externalImportAssertions: true,
         globals: {
           react: 'React',
           'react-dom': 'ReactDom',
+          next: 'Next',
         },
       },
     },
     emptyOutDir: true,
-    sourcemap: false,
+    sourcemap: true,
   },
 });

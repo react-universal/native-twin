@@ -1,4 +1,4 @@
-import { H1, View } from '@react-universal/nativewind-primitives';
+import { H1, View } from '@react-universal/core';
 
 const IndexPage = () => {
   return (

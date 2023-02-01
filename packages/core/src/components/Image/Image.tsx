@@ -1,5 +1,5 @@
-import { createStyledComponent } from '@react-universal/nativewind-utils';
 import NativeImage from 'next/legacy/image';
+import { createStyledComponent } from '../../utils/createStyledComponent';
 import { IImageProps, sizes, variants } from './types';
 
 export const ImageWrapper = ({

@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { Image as NativeImage } from 'react-native';
-import { createStyledComponent } from '@react-universal/nativewind-utils';
+import { createStyledComponent } from '../../utils/createStyledComponent';
 import type { IImageProps } from './types';
 
 const StyledImage = createStyledComponent(NativeImage);

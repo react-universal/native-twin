@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@next/font": "13.0.6",
-    "@react-universal/nativewind-primitives": "*",
-    "@react-universal/nativewind-utils": "*",
+    "@react-universal/core": "*",
     "autoprefixer": "10.4.13",
     "critters": "^0.0.16",
     "nativewind": "next",

@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import { View as ReactNativeView, ViewProps as NativeViewProps } from 'react-native';
-import { createStyledComponent, mergeTWClasses } from '@react-universal/nativewind-utils';
+import { createStyledComponent } from '../../utils/createStyledComponent';
+import { mergeTWClasses } from '../../utils/mergeClasses';
 
 type ViewProps = Omit<NativeViewProps, 'className'> & {
   className?: string;

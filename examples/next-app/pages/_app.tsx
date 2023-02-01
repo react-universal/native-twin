@@ -13,8 +13,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Medi-co</title>
-        <meta name='description' content='Medi-Co Web App' />
+        <title>Show case</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
       <div className={`${roboto.variable} font-roboto flex flex-1`}>

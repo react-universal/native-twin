@@ -5,8 +5,8 @@
       "path": ".."
     },
     {
-      "name": "📦 @react-universal/nativewind.core",
-      "path": "../packages/core/nativewind.core"
+      "name": "📦 @react-universal/core",
+      "path": "../packages/core"
     },
     {
       "name": "📦 @react-universal/expo-module",

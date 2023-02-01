@@ -1,3 +1,4 @@
+import React from 'react';
 import { NativeWindStyleSheet } from 'nativewind';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 

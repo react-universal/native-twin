@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import { Pressable as NativePressable, PressableProps, View } from 'react-native';
-import { createStyledComponent, mergeTWClasses } from '@react-universal/nativewind-utils';
+import { createStyledComponent } from '../../utils/createStyledComponent';
+import { mergeTWClasses } from '../../utils/mergeClasses';
 
 const StyledPressable = createStyledComponent(NativePressable);
 type StylesPressableProps = PressableProps & { className?: string };
