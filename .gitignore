@@ -25,3 +25,5 @@ lint-results/
 **build/
 
 **.next/
+
+**/.swc

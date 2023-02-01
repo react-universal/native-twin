@@ -18,7 +18,7 @@
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean",
-    "dev": "expo-module build --watch",
+    "dev:lib": "expo-module build --watch",
     "expo-module": "expo-module",
     "prepare": "expo-module prepare",
     "prepublishOnly": "expo-module prepublishOnly",
