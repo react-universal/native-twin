@@ -2,15 +2,28 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "outputs": ["build/**"],
-      "dependsOn": ["^build"],
+      "outputs": [
+        "build/**"
+      ],
+      "dependsOn": [
+        "^build"
+      ],
       "cache": true
     },
     "dev": {
-      "outputs": ["build/**"],
-      "dependsOn": ["^dev"],
+      "outputs": [
+        "build/**"
+      ],
+      "dependsOn": [
+        "^dev"
+      ],
       "cache": false
     },
-    "lint": {}
+    "lint": {
+      "outputs": [
+        "dist/**",
+        "build/**"
+      ]
+    }
   }
 }
