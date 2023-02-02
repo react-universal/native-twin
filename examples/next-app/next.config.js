@@ -19,7 +19,6 @@ const nextConfig = {
     appDir: false,
   },
   transpilePackages: [
-    'nativewind',
     'react-native',
     'react-native-svg',
     'react-native-web',

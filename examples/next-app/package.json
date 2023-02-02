@@ -11,9 +11,9 @@
   "dependencies": {
     "@next/font": "13.0.6",
     "@react-universal/core": "*",
+    "@react-universal/primitives": "*",
     "autoprefixer": "10.4.13",
     "critters": "^0.0.16",
-    "nativewind": "next",
     "next": "13.1.4",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4"

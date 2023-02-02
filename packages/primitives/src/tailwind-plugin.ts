@@ -9,4 +9,4 @@ const tailwindPlugin = plugin(function ({ addVariant }) {
   }
 });
 
-export { tailwindPlugin };
+export default tailwindPlugin;

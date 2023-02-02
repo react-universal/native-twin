@@ -1,4 +1,4 @@
-const nativewind = require('nativewind/tailwind');
+const { tailwindPlugin } = require('@react-universal/core');
 
 /**
  * @type {import('tailwindcss').Config}
@@ -6,5 +6,5 @@ const nativewind = require('nativewind/tailwind');
 module.exports = {
   theme: {},
   content: ['./pages/**/*.{js,jsx,ts,tsx}', '../../packages/**/*.{js,jsx,ts,tsx}'],
-  presets: [nativewind],
+  plugins: [tailwindPlugin],
 };

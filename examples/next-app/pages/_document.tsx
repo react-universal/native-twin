@@ -1,12 +1,11 @@
 import React from 'react';
-import { NativeWindStyleSheet } from 'nativewind';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 export default class MyDocument extends Document {
   render() {
     const currentLocale = this.props.__NEXT_DATA__.locale || 'en';
     return (
-      <Html lang={currentLocale} style={NativeWindStyleSheet.getSSRStyles()}>
+      <Html lang={currentLocale}>
         <Head>
           <meta charSet='UTF-8' />
           <meta httpEquiv='X-UA-Compatible' content='IE=edge' />

@@ -1,5 +1,4 @@
 import NativeImage from 'next/legacy/image';
-import { createStyledComponent } from '../../utils/createStyledComponent';
 import { IImageProps, sizes, variants } from './types';
 
 export const ImageWrapper = ({
@@ -17,4 +16,4 @@ export const ImageWrapper = ({
   );
 };
 
-export const Image = createStyledComponent(ImageWrapper);
+export const Image = ImageWrapper;

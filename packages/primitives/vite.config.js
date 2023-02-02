@@ -40,9 +40,8 @@ export default defineConfig({
         'postcss',
         'class-variance-authority',
         'react-native-svg',
-        'tailwindcss',
-        'nativewind',
         'react/jsx-runtime',
+        /tailwindcss/,
         /next/,
       ],
       output: {

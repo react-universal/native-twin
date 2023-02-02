@@ -15,6 +15,9 @@
   "scripts": {
     "commit": "cz",
     "dev": "turbo run dev --filter=\"@react-universal/**\" --parallel",
+    "expo:android": "turbo run android --filter expo-app",
+    "expo:ios": "turbo run ios --filter expo-app",
+    "expo:start": "turbo run expo:start --filter expo-app",
     "semantic-release": "semantic-release",
     "web": "turbo run dev --filter next-app"
   },

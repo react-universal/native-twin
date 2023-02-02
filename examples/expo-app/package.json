@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "android": "expo start --android",
-    "ios": "expo start --ios",
-    "start": "expo start",
+    "expo:start": "expo start",
+    "ios": "expo start --ios -c",
     "web": "expo start --web"
   },
   "dependencies": {
     "@react-universal/core": "*",
+    "@react-universal/primitives": "*",
     "expo": "~47.0.12",
+    "expo-constants": "~14.0.2",
     "expo-status-bar": "~1.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -25,7 +27,6 @@
     "@types/react-dom": "18.0.9",
     "@types/react-native": "0.70.7",
     "expo-module-scripts": "^3.0.4",
-    "nativewind": "next",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4"
   }
