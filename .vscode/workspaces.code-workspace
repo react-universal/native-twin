@@ -13,8 +13,12 @@
       "path": "../examples/expo-app"
     },
     {
-      "name": "📦 @react-universal/packages",
-      "path": "../packages"
+      "name": "📦 @package/core",
+      "path": "../packages/core"
+    },
+    {
+      "name": "📦 @package/primitives",
+      "path": "../packages/primitives"
     },
   ],
   "settings": {

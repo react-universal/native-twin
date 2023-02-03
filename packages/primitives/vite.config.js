@@ -38,7 +38,9 @@ export default defineConfig({
         'react-native',
         'react-native-web',
         'postcss',
+        'postcss-js',
         'class-variance-authority',
+        '@react-universal/core',
         'react-native-svg',
         'react/jsx-runtime',
         /tailwindcss/,
@@ -55,7 +57,6 @@ export default defineConfig({
         },
       },
     },
-    emptyOutDir: true,
     sourcemap: true,
   },
 });

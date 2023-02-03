@@ -1,5 +1,4 @@
 {
-  "extends": "expo-module-scripts/tsconfig.base",
   "compileOnSave": false,
   "compilerOptions": {
     "target": "esnext",

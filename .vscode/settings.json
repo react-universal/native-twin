@@ -1,5 +1,6 @@
 {
     "tailwindCSS.classAttributes": ["className", "tw", "variants"],
+    "twind.debug": true,
     "terminal.integrated.defaultLocation": "view",
     // "workbench.colorCustomizations": {
     //   "[Default Dark+ Experimental]": {

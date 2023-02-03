@@ -9,6 +9,14 @@
     "module": "CommonJS",
     "types": ["node"],
     "importHelpers": true
+    // "plugins": [
+    //   {
+    //     "name": "@twind/typescript-plugin",
+    //     "tags": ["tw", "cx"],
+    //     "styles": ["styled", "tw$", "stitched"],
+    //     "debug": true
+    //   }
+    // ]
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]

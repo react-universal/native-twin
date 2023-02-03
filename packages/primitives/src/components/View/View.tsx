@@ -1,13 +1,13 @@
 import { forwardRef } from 'react';
 import { View as ReactNativeView, ViewProps as NativeViewProps } from 'react-native';
-import { createStyledComponent } from '../../utils/createStyledComponent';
+import { styled } from '../../styled';
 import { mergeTWClasses } from '../../utils/mergeClasses';
 
 type ViewProps = Omit<NativeViewProps, 'className'> & {
   className?: string;
 };
 
-const StyledView = createStyledComponent(ReactNativeView);
+const StyledView = styled(ReactNativeView);
 
 const View = forwardRef<ReactNativeView, ViewProps>(function View(
   { className, ...props },
@@ -15,8 +15,6 @@ const View = forwardRef<ReactNativeView, ViewProps>(function View(
 ) {
   return <StyledView {...props} className={mergeTWClasses(className)} ref={ref} />;
 });
-
-StyledView.displayName = 'View';
 
 export type { ViewProps };
 

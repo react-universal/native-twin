@@ -16,7 +16,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports'],
   rules: {
-    'no-console': 'error',
+    'no-console': 'off',
     'no-undef': 'off',
     'no-unused-vars': 'off',
     'react/no-unescaped-entities': 'off',

@@ -10,3 +10,5 @@ const tailwindPlugin = plugin(function ({ addVariant }) {
 });
 
 export { tailwindPlugin };
+export { parseClassNames } from './runtime';
+export { useStore } from './store';
