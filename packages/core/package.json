@@ -14,8 +14,8 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./src/index.ts",
+  "main": "./source/index.ts",
+  "types": "./source/index.ts",
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",

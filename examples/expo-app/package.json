@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "android": "expo start --android",
-    "expo:start": "expo start",
     "ios": "expo start --ios -c",
+    "start": "expo start",
     "web": "expo start --web"
   },
   "dependencies": {

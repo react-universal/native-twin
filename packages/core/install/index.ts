@@ -1,1 +1,1 @@
-export { tw, tx } from '../src/install';
+export { default as setup } from '../source/install';
