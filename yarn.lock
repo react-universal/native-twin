@@ -3421,9 +3421,11 @@ __metadata:
     "@twind/preset-autoprefix": ^1.0.7
     "@twind/preset-tailwind": ^1.1.4
     "@twind/typescript-plugin": ^0.3.5
+    "@types/css-tree": ^2.0.1
     "@types/postcss-js": ^4.0.0
     "@vitest/ui": ^0.28.3
     css-to-react-native-transform: ^2.0.0
+    css-tree: ^2.3.1
     immer: ^9.0.19
     postcss: ^8.4.21
     postcss-js: ^4.0.0
@@ -4030,6 +4032,13 @@ __metadata:
   version: 4.3.4
   resolution: "@types/chai@npm:4.3.4"
   checksum: 571184967beb03bf64c4392a13a7d44e72da9af5a1e83077ff81c39cf59c0fda2a5c78d2005084601cf8f3d11726608574d8b5b4a0e3e9736792807afd926cd0
+  languageName: node
+  linkType: hard
+
+"@types/css-tree@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@types/css-tree@npm:2.0.1"
+  checksum: 46c49fb214d75bca411fb6f67e157814a462fd3b173910ba3a46276be00c31d7a2b0f53bbaca110a67521391cc98e9f6551f90aee6247258fa5989ac4c69df53
   languageName: node
   linkType: hard
 
@@ -6543,6 +6552,16 @@ __metadata:
     mdn-data: 2.0.14
     source-map: ^0.6.1
   checksum: 79f9b81803991b6977b7fcb1588799270438274d89066ce08f117f5cdb5e20019b446d766c61506dd772c839df84caa16042d6076f20c97187f5abe3b50e7d1f
+  languageName: node
+  linkType: hard
+
+"css-tree@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "css-tree@npm:2.3.1"
+  dependencies:
+    mdn-data: 2.0.30
+    source-map-js: ^1.0.1
+  checksum: 493cc24b5c22b05ee5314b8a0d72d8a5869491c1458017ae5ed75aeb6c3596637dbe1b11dac2548974624adec9f7a1f3a6cf40593dc1f9185eb0e8279543fbc0
   languageName: node
   linkType: hard
 
@@ -10969,6 +10988,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mdn-data@npm:2.0.30":
+  version: 2.0.30
+  resolution: "mdn-data@npm:2.0.30"
+  checksum: d6ac5ac7439a1607df44b22738ecf83f48e66a0874e4482d6424a61c52da5cde5750f1d1229b6f5fa1b80a492be89465390da685b11f97d62b8adcc6e88189aa
+  languageName: node
+  linkType: hard
+
 "media-typer@npm:0.3.0":
   version: 0.3.0
   resolution: "media-typer@npm:0.3.0"
@@ -14875,7 +14901,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-js@npm:^1.0.2":
+"source-map-js@npm:^1.0.1, source-map-js@npm:^1.0.2":
   version: 1.0.2
   resolution: "source-map-js@npm:1.0.2"
   checksum: c049a7fc4deb9a7e9b481ae3d424cc793cb4845daa690bc5a05d428bf41bf231ced49b4cf0c9e77f9d42fdb3d20d6187619fc586605f5eabe995a316da8d377c

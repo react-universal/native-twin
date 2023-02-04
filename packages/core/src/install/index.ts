@@ -6,11 +6,16 @@ import {
   keyframes as keyframes$,
 } from '@twind/core';
 import presetTailwind from '@twind/preset-tailwind';
+import presetReactNativeFlex from '../preset/native/flex.preset';
 import presetRemToPx from '../preset/remToPx.preset';
 
 export const tw = /* #__PURE__ */ twind(
   {
-    presets: [presetTailwind({ disablePreflight: true }), presetRemToPx({ baseRem: 16 })],
+    presets: [
+      presetTailwind({ disablePreflight: true }),
+      presetRemToPx({ baseRem: 16 }),
+      presetReactNativeFlex(),
+    ],
   },
   virtual(true),
 );

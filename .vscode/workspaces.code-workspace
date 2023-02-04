@@ -19,7 +19,7 @@
     {
       "name": "📦 @package/primitives",
       "path": "../packages/primitives"
-    },
+    }
   ],
   "settings": {
     "tailwindCSS.classAttributes": ["className", "tw", "variants"],

@@ -1,24 +1,52 @@
-import postcss from 'postcss';
-import postCssJS from 'postcss-js';
+import transform from 'css-to-react-native-transform';
 import { tx, tw } from '../install';
-import { parseInputs } from '../internalStore/parse-inputs';
+import { parseInputs } from '../utils/classNamesParser';
 
-export function parseClassNames(...classes: string[]) {
-  // tw$.clear();
+const transformSingleRule = (rule: string) => {
+  try {
+    const transformed = transform(rule, { parseMediaQueries: true });
+    let styles = {};
+    Object.values(transformed).forEach((item) => {
+      styles = {
+        ...styles,
+        // @ts-expect-error
+        ...item,
+      };
+    });
+    return styles;
+  } catch (error) {
+    console.log('ERROR_transformSingleRule: ', error);
+    return {};
+  }
+};
+
+const processTarget = (target: string[] = []) => {
   let styles = {};
-  console.log('PARSED: ', parseInputs(classes));
-  tx(...classes);
-  const root = postcss.parse(tw.target);
-  const styleObject = postCssJS.objectify(root);
-  Object.values(styleObject).forEach((item) => {
+  target.forEach((item) => {
     styles = {
       ...styles,
-      ...item,
+      ...transformSingleRule(item),
     };
   });
-
+  return styles;
+};
+export function parseClassNames(...classes: string[]) {
+  // tw$.clear();
+  tx(...classes);
+  console.log('TARGET: ', tw.target);
+  console.log('PARSED: ', parseInputs(classes));
+  const styles = processTarget(tw.target);
   return {
-    styleObject,
     styles,
   };
+
+  // const root = postcss.parse(tw.target);
+  // const styleObject = postCssJS.objectify(root);
+  // Object.values(styleObject).forEach((item) => {
+  //   styles = {
+  //     ...styles,
+  //     ...item,
+  //   };
+  // });
+  // console.log('STYLES: ', styleObject);
 }
