@@ -1,14 +1,8 @@
-import resolveTwConfig from 'tailwindcss/resolveConfig';
 import { Config } from 'tailwindcss/types/config';
+import { useStore } from '../store';
 
-let initialized = false;
 const setup = (twConfig: Config) => {
-  let config: Config = { content: ['__'] };
-  if (!initialized) {
-    config = resolveTwConfig(twConfig);
-    initialized = true;
-  }
-  return config;
+  useStore.getState().tailwind.setup(twConfig);
 };
 
 export default setup;

@@ -1,19 +1,16 @@
-function createStore<T>(initialState: T) {
-  let currentState = initialState;
-  const listeners = new Set();
-  const subscribe = (listener: any) => {
-    listeners.add(listener);
-    return () => listeners.delete(listener);
-  };
-  return {
-    getState: () => currentState,
-    setState: (newState: T) => (currentState = newState),
-    subscribe,
-  };
-}
+import { withLenses } from '@dhmk/zustand-lens';
+import { create } from 'zustand';
+import { componentsStoreSlice } from './components';
+import type { ITailwindStore } from './store.types';
+import { stylesStoreSlice } from './styles';
+import tailwindStoreSlice from './tailwind/tailwind.store';
 
-const store = createStore({});
+const useStore = create<ITailwindStore>()(
+  withLenses({
+    styles: stylesStoreSlice,
+    tailwind: tailwindStoreSlice,
+    components: componentsStoreSlice,
+  }),
+);
 
-export default store;
-
-export type IStore = ReturnType<typeof store.getState>;
+export { useStore };

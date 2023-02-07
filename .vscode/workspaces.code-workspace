@@ -50,13 +50,6 @@
       "**/.hg/store/**": true,
       "**/dist/**": true
     },
-    // "workbench.colorCustomizations": {
-    //   "[Default Dark+ Experimental]": {
-    //     "sideBar.background": "#070606",
-    //     "editor.background": "#070606",
-    //     "tab.inactiveBackground": "#161414",
-    //   }
-    // },
     "typescript.tsdk": "✨ root/node_modules/typescript/lib"
   }
 }

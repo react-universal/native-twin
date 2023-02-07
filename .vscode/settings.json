@@ -2,12 +2,5 @@
     "tailwindCSS.classAttributes": ["className", "tw", "variants"],
     "twind.debug": true,
     "terminal.integrated.defaultLocation": "view",
-    // "workbench.colorCustomizations": {
-    //   "[Default Dark+ Experimental]": {
-    //     "sideBar.background": "#070606",
-    //     "editor.background": "#070606",
-    //     "tab.inactiveBackground": "#161414",
-    //   }
-    // },
     "typescript.tsdk": "node_modules/typescript/lib"
 }
