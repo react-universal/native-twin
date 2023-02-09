@@ -1,5 +1,5 @@
 # dependencies
-/node_modules
+**node_modules
 /.pnp
 .pnp.js
 
@@ -22,17 +22,8 @@ public/
 # ESLint
 lint-results/
 
-# Expo
-node_modules/
-.expo/
-.yarn/
-dist/
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
-cache/
+**build/
+
+**.next/
+
+**/.swc

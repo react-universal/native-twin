@@ -1,0 +1,48 @@
+{
+  "name": "@react-universal/styled",
+  "version": "0.0.3",
+  "description": "Styled components",
+  "homepage": "https://github.com/react-universal/nativewind-ui#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/nativewind-ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/react-universal/nativewind-ui.git",
+    "directory": "packages/styled"
+  },
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "sideEffects": false,
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "@react-universal/core": "*"
+  },
+  "devDependencies": {
+    "@types/react": "18.0.24",
+    "@vitest/ui": "^0.28.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native-web": "0.18.10",
+    "tslib": "^2.3.0",
+    "vite": "^4.1.1",
+    "vitest": "^0.28.3"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">= 3.0.0"
+  },
+  "react-native": "./src/index.tsx"
+}
