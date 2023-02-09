@@ -1,17 +1,17 @@
-export type TActionTypes = 'hover' | 'active' | 'focus';
+export type TPseudoSelectorTypes = 'hover' | 'active' | 'focus' | 'dark';
 
 export type IInteractionPayload = {
   classNames: string;
   styles: Record<string, any>;
 };
-export type IComponentInteractions = Map<TActionTypes, IInteractionPayload>;
+export type IComponentInteractions = Map<TPseudoSelectorTypes, IInteractionPayload>;
 
 export type IRegisteredComponent = {
   id: string;
   className?: string;
   styles: Record<string, any>;
   interactionStyles: IComponentInteractions;
-  componentState: Record<TActionTypes, boolean>;
+  componentState: Record<TPseudoSelectorTypes, boolean>;
 };
 
 export type IRegisterComponentArgs = Pick<IRegisteredComponent, 'className' | 'id'> & {
@@ -24,6 +24,6 @@ export type IComponentsStore = {
   unregisterComponent: (id: string) => void;
   setComponentInteractions: (
     id: string,
-    payload: { kind: TActionTypes; active: boolean },
+    payload: { kind: TPseudoSelectorTypes; active: boolean },
   ) => void;
 };

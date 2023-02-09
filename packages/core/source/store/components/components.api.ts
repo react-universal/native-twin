@@ -1,7 +1,12 @@
-import type { TActionTypes } from './types';
+import type { TPseudoSelectorTypes } from './types';
 
-function isValidPseudoSelector(selector: string): selector is TActionTypes {
-  return selector === 'hover' || selector === 'active' || selector === 'focus';
+function isValidPseudoSelector(selector: string): selector is TPseudoSelectorTypes {
+  return (
+    selector === 'hover' ||
+    selector === 'active' ||
+    selector === 'focus' ||
+    selector === 'dark'
+  );
 }
 
 function splitClasses(classNames = '') {
@@ -24,7 +29,7 @@ export function parseClassNames(classNames = '') {
 }
 
 export function parsePseudoElements(classNames: string[][]) {
-  const interactions: [TActionTypes, string][] = [];
+  const interactions: [TPseudoSelectorTypes, string][] = [];
   for (const current of classNames) {
     if (!isValidPseudoSelector(current[0])) continue;
     const pseudoSelector = current[0];

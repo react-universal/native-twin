@@ -7,7 +7,6 @@ function styled<T extends ComponentType>(Component: T) {
     const componentID = useId();
     const { style } = useComponentRegistration(componentID, className);
     const interaction = useInteraction(componentID, restProps);
-    console.log('STYLE: ', style);
     return (
       <Component key={componentID} {...restProps} {...interaction} ref={ref} style={style}>
         {children}

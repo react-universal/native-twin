@@ -2,7 +2,7 @@ import transform from 'css-to-react-native-transform';
 import postcss from 'postcss';
 import postcssVariables from 'postcss-css-variables';
 import postcssJs from 'postcss-js';
-import { tx, tw } from '../twind';
+import { tx, tw } from '../../twind';
 
 const transformCssOutput = (css: string) => {
   const styles = transform(css);

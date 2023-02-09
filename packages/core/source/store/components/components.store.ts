@@ -1,3 +1,4 @@
+import { Appearance } from 'react-native';
 import { lens } from '@dhmk/zustand-lens';
 import { produce } from 'immer';
 import type { ITailwindStore } from '../store.types';
@@ -46,6 +47,7 @@ export const componentsStoreSlice = lens<IComponentsStore, ITailwindStore>(
               active: false,
               focus: false,
               hover: false,
+              dark: Appearance.getColorScheme() === 'dark',
             },
           });
         }),
