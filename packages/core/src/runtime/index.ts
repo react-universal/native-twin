@@ -1,1 +1,0 @@
-export { parseClassNames } from './parser';
