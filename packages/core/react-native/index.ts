@@ -1,1 +1,1 @@
-export { useColorScheme } from '../source/react-native';
+export * from '../src/install';
