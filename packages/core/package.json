@@ -14,8 +14,8 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./source/index.ts",
-  "types": "./source/index.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
@@ -62,5 +62,5 @@
   "peerDependencies": {
     "tailwindcss": ">= 3.0.0"
   },
-  "react-native": "./source/index.ts"
+  "react-native": "./src/index.ts"
 }

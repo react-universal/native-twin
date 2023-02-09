@@ -7,11 +7,9 @@ import {
   useId,
   forwardRef,
 } from 'react';
-import { useStore } from '@react-universal/core';
 import { isFragment } from 'react-is';
+import { useInteraction, useComponentRegistration } from './hooks';
 import type { StyledComponentType } from './styled.types';
-import { useInteraction } from './use-interaction';
-import { useComponentRegistration } from './useComponentRegistration';
 
 const initialComponentState = {
   hover: false,
@@ -38,10 +36,7 @@ export default function useStyled(
   ref: unknown,
 ) {
   const componentID = useId();
-  const { styledProps } = useComponentRegistration(componentID, propClassName ?? tw);
-  const component = useStore(
-    (state) => state.components.registeredComponents.get(componentID)!,
-  );
+  const { style } = useComponentRegistration(componentID, propClassName ?? tw);
   const interaction = useInteraction(componentID, componentProps);
   /**
    * Resolve the child styles
@@ -74,16 +69,16 @@ export default function useStyled(
     });
   }
 
-  const style = useMemo(() => {
-    const hasStyles = styledProps && Object.keys(styledProps).length > 0;
+  const finalStyles = useMemo(() => {
+    const hasStyles = style && Object.keys(style).length > 0;
     if (hasStyles && inlineStyles) {
-      return [styledProps, inlineStyles];
+      return [style, inlineStyles];
     } else if (hasStyles) {
-      return styledProps;
+      return style;
     } else if (inlineStyles) {
       return inlineStyles;
     }
-  }, [styledProps, inlineStyles]);
+  }, [style, inlineStyles]);
 
   /**
    * Pass the styles to the element
@@ -91,14 +86,7 @@ export default function useStyled(
   const props = {
     ...componentProps,
     ...interaction,
-    ...styledProps,
-    style: [
-      styledProps?.styles,
-      style,
-      component.interactionStyles.hover.active && component.interactionStyles.hover.styles,
-      component.interactionStyles.active.active && component.interactionStyles.active.styles,
-      component.interactionStyles.focus.active && component.interactionStyles.focus.styles,
-    ],
+    style: finalStyles,
     ref,
   };
 

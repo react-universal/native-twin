@@ -1,4 +1,4 @@
-import { Config } from 'tailwindcss/types/config';
+import type { Config } from 'tailwindcss/types/config';
 import { useStore } from '../store';
 import '../twind';
 
