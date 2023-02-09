@@ -26,19 +26,19 @@ export function useInteraction(componentID: string, componentProps: Record<strin
     (state) => state.components.setComponentInteractions,
   );
 
-  const active = component?.interactionStyles?.active.classNames.length > 0;
-  const focus = component?.interactionStyles?.focus.classNames.length > 0;
-  const hover = component?.interactionStyles?.hover.classNames.length > 0;
+  const active = component?.componentState.active;
+  const focus = component?.componentState.focus;
+  const hover = component?.componentState.hover;
 
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder(event) {
-        event.persist();
+        // event.persist();
         // console.log('onStartShouldSetPanResponder: ', { event, state });
         return true;
       },
       onPanResponderGrant(event) {
-        event.persist();
+        // event.persist();
         setComponentInteractions(componentID, { kind: 'hover', active: true });
         // console.log('onPanResponderGrant: ', { event, state });
       },

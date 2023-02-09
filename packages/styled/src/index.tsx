@@ -5,11 +5,11 @@ import type { IExtraProperties } from './styled.types';
 function styled<T extends ComponentType>(Component: T) {
   const Styled = forwardRef<T>(({ className = '', children, ...restProps }: any, ref) => {
     const componentID = useId();
-    const { style } = useComponentRegistration(componentID, className, restProps?.style);
+    const { style } = useComponentRegistration(componentID, className);
     const interaction = useInteraction(componentID, restProps);
     console.log('STYLE: ', style);
     return (
-      <Component style={style} key={componentID} {...restProps} {...interaction} ref={ref}>
+      <Component key={componentID} {...restProps} {...interaction} ref={ref} style={style}>
         {children}
       </Component>
     );

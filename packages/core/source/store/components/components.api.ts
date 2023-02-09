@@ -1,13 +1,4 @@
-export type TActionTypes = 'hover' | 'active' | 'focus';
-
-export type IComponentInteractions = Record<
-  TActionTypes,
-  {
-    active: boolean;
-    styles: Record<string, any>;
-    classNames: string[];
-  }
->;
+import type { TActionTypes } from './types';
 
 function isValidPseudoSelector(selector: string): selector is TActionTypes {
   return selector === 'hover' || selector === 'active' || selector === 'focus';
@@ -33,30 +24,12 @@ export function parseClassNames(classNames = '') {
 }
 
 export function parsePseudoElements(classNames: string[][]) {
-  let interactions: IComponentInteractions = {
-    hover: {
-      active: false,
-      styles: {},
-      classNames: [],
-    },
-    active: {
-      active: false,
-      styles: {},
-      classNames: [],
-    },
-    focus: {
-      active: false,
-      styles: {},
-      classNames: [],
-    },
-  };
+  const interactions: [TActionTypes, string][] = [];
   for (const current of classNames) {
-    if (current[0] in interactions) {
-      if (!isValidPseudoSelector(current[0])) continue;
-      const pseudoSelector = current[0];
-      const className = current[1];
-      interactions[pseudoSelector].classNames.push(className);
-    }
+    if (!isValidPseudoSelector(current[0])) continue;
+    const pseudoSelector = current[0];
+    const className = current[1];
+    interactions.push([pseudoSelector, className]);
   }
   return interactions;
 }
