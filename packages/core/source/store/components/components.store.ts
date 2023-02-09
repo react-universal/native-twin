@@ -9,9 +9,8 @@ export const componentsStoreSlice = lens<IComponentsStore, ITailwindStore>(
     registerComponent: (component) => {
       const cachedComponent = get().registeredComponents.get(component.id);
       if (cachedComponent && cachedComponent.className === component.className) {
-        return cachedComponent;
+        return;
       }
-      const classNamesCompiler = api.getState().tailwind.getStyles.style;
       set(
         produce((state: IComponentsStore) => {
           const classes = parseClassNames(component.className);
@@ -21,22 +20,19 @@ export const componentsStoreSlice = lens<IComponentsStore, ITailwindStore>(
             Object.assign(styles, compiled);
           }
 
-          console.log('STYLES: ', styles);
-
-          const currentStyles = classNamesCompiler(classes.normalClassNames);
+          // const currentStyles = classNamesCompiler(classes.normalClassNames);
           const interactions = parsePseudoElements(classes.interactionClassNames);
-          interactions.active.styles = classNamesCompiler(interactions.active.classNames);
-          interactions.focus.styles = classNamesCompiler(interactions.focus.classNames);
-          interactions.hover.styles = classNamesCompiler(interactions.hover.classNames);
+          // interactions.active.styles = classNamesCompiler(interactions.active.classNames);
+          // interactions.focus.styles = classNamesCompiler(interactions.focus.classNames);
+          // interactions.hover.styles = classNamesCompiler(interactions.hover.classNames);
           state.registeredComponents.set(component.id, {
             id: component.id,
             className: component.className,
-            styles: currentStyles,
+            styles,
             interactionStyles: interactions,
           });
         }),
       );
-      return get().registeredComponents.get(component.id)!;
     },
     registeredComponents: new Map(),
     setComponentInteractions: (id, data) => {

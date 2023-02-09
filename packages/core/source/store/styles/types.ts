@@ -3,7 +3,7 @@ export type TStyleObject = {
 };
 
 export type IStylesStore = {
-  cache: Map<string, TStyleObject['styles']>;
+  cache: [string, TStyleObject['styles']][];
   setCache: (className: string, styles: TStyleObject['styles']) => void;
   compileClassName: (className: string) => TStyleObject['styles'];
 };

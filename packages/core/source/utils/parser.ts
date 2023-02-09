@@ -4,6 +4,14 @@ import postcssVariables from 'postcss-css-variables';
 import postcssJs from 'postcss-js';
 import { tx, tw } from '../twind';
 
+const transformCssOutput = (css: string) => {
+  const styles = transform(css);
+  const values = Object.values(styles).reduce<Record<string, any>>((prev, curr) => {
+    return Object.assign(prev, curr);
+  }, {});
+  return values;
+};
+
 const toJSSObject = (cssText: string) => {
   // let root = postcss.parse(cssText);
   const { root, css } = postcss([postcssVariables()]).process(cssText);
@@ -24,13 +32,12 @@ export function parseSingleClassName(className: string) {
   }
 }
 
-export function parseClassNames(...classes: string[]) {
+export function transformClassNames(...classes: string[]) {
   try {
     tx(...classes);
     const output = toJSSObject(tw.target.join(' '));
-    console.log('OUTPUT: ', output);
     tw.clear();
-    return transform(output.css);
+    return transformCssOutput(output.css);
   } catch (error) {
     console.log('ERROR TRANSFORMING CSS TO JS: ', error);
     return {};

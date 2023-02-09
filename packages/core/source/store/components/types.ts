@@ -13,7 +13,7 @@ export type IRegisterComponentArgs = Pick<IRegisteredComponent, 'className' | 'i
 
 export type IComponentsStore = {
   registeredComponents: Map<string, IRegisteredComponent>;
-  registerComponent: (component: IRegisterComponentArgs) => IRegisteredComponent;
+  registerComponent: (component: IRegisterComponentArgs) => void;
   unregisterComponent: (id: string) => void;
   setComponentInteractions: (
     id: string,
