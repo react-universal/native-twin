@@ -1,4 +1,4 @@
-**build**
-**node_modules**
-**.yarn**
-**.vscode**
+**/build**
+**/node_modules**
+**/.yarn**
+**/.vscode**

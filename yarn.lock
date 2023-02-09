@@ -1929,6 +1929,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@egjs/hammerjs@npm:^2.0.17":
+  version: 2.0.17
+  resolution: "@egjs/hammerjs@npm:2.0.17"
+  dependencies:
+    "@types/hammerjs": ^2.0.36
+  checksum: 8945137cec5837edd70af3f2e0ea621543eb0aa3b667e6269ec6485350f4d120c2434b37c7c30b1cf42a65275dd61c1f24626749c616696d3956ac0c008c4766
+  languageName: node
+  linkType: hard
+
 "@esbuild/android-arm64@npm:0.16.17":
   version: 0.16.17
   resolution: "@esbuild/android-arm64@npm:0.16.17"
@@ -2332,7 +2341,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-config@npm:~0.5.0, @expo/metro-config@npm:~0.5.1":
+"@expo/metro-config@npm:^0.5.2, @expo/metro-config@npm:~0.5.0, @expo/metro-config@npm:~0.5.1":
   version: 0.5.2
   resolution: "@expo/metro-config@npm:0.5.2"
   dependencies:
@@ -3442,6 +3451,7 @@ __metadata:
     "@twind/typescript-plugin": ^0.3.5
     "@types/css-to-react-native": ^3.0.0
     "@types/css-tree": ^2.0.1
+    "@types/postcss-css-variables": ^0.18.0
     "@types/postcss-js": ^4.0.0
     "@vitest/ui": ^0.28.3
     css-to-react-native: ^3.1.0
@@ -3449,10 +3459,14 @@ __metadata:
     css-tree: ^2.3.1
     immer: ^9.0.19
     postcss: ^8.4.21
+    postcss-calc: ^8.2.4
+    postcss-color-functional-notation: ^5.0.2
+    postcss-css-variables: ^0.18.0
     postcss-js: ^4.0.0
+    postcss-nested: ^6.0.0
+    stylis: ^4.1.3
     tailwindcss: ^3.2.4
     tslib: ^2.3.0
-    twrnc: ^3.6.0
     vite: ^4.1.1
     vitest: ^0.28.3
     zustand: ^4.3.2
@@ -3466,8 +3480,10 @@ __metadata:
   resolution: "@react-universal/primitives@workspace:packages/primitives"
   dependencies:
     "@react-universal/core": "*"
+    "@react-universal/styled": "*"
     "@types/react": 18.0.26
     "@types/react-dom": 18.0.9
+    "@types/react-is": ^17.0.3
     "@types/react-native": 0.70.7
     class-variance-authority: 0.4.0
     clsx: ^1.2.1
@@ -3475,6 +3491,7 @@ __metadata:
     postcss: ^8.4.21
     react: 18.1.0
     react-dom: 18.1.0
+    react-is: 18.2.0
     react-native: 0.70.5
     react-native-reanimated: ~2.12.0
     react-native-svg: 13.4.0
@@ -3485,6 +3502,24 @@ __metadata:
     vite: ^4.1.1
   peerDependencies:
     next: ">= 13.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@react-universal/styled@*, @react-universal/styled@workspace:packages/styled":
+  version: 0.0.0-use.local
+  resolution: "@react-universal/styled@workspace:packages/styled"
+  dependencies:
+    "@react-universal/core": "*"
+    "@types/react": 18.0.24
+    "@vitest/ui": ^0.28.3
+    react: 18.2.0
+    react-dom: 18.2.0
+    react-native-web: 0.18.10
+    tslib: ^2.3.0
+    vite: ^4.1.1
+    vitest: ^0.28.3
+  peerDependencies:
+    tailwindcss: ">= 3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -4072,6 +4107,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/hammerjs@npm:^2.0.36":
+  version: 2.0.41
+  resolution: "@types/hammerjs@npm:2.0.41"
+  checksum: d16fbd688fc9b18cc270abe8dea8d4c50ef7bd8375e593d92c233d299387933a6b003c8db69819344833052458bc5f9ef1b472001277a49f095928d184356006
+  languageName: node
+  linkType: hard
+
 "@types/invariant@npm:^2.2.35":
   version: 2.2.35
   resolution: "@types/invariant@npm:2.2.35"
@@ -4169,6 +4211,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/postcss-css-variables@npm:^0.18.0":
+  version: 0.18.0
+  resolution: "@types/postcss-css-variables@npm:0.18.0"
+  dependencies:
+    postcss: ^8.2.6
+  checksum: e7b356e4c3ef25b40131d09ab4e4dad9d0398949eee733718a6765f180b27bc703cefb9c0f140d368b757f4d7b9ddb6e8cdace200bf6ff17581f521820965614
+  languageName: node
+  linkType: hard
+
 "@types/postcss-js@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/postcss-js@npm:4.0.0"
@@ -4191,6 +4242,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: e744e3feba25fc43733289d4df4d9c0e59fcca7f34e8c89d75f81a339accb2bd70236d69382d47d2c0ad06a1529b2e56aa6171fe175854d60e07156ddceedfcb
+  languageName: node
+  linkType: hard
+
+"@types/react-is@npm:^17.0.3":
+  version: 17.0.3
+  resolution: "@types/react-is@npm:17.0.3"
+  dependencies:
+    "@types/react": "*"
+  checksum: 6abb7c47d54f012272650df8a962a28bd82f219291e5ef8b4dfa7fe0bb98ae243b060bf9fbe8ceff6213141794855a006db194b490b00ffd15842ae19d0ce1f0
   languageName: node
   linkType: hard
 
@@ -7468,7 +7528,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escape-string-regexp@npm:^1.0.5":
+"escape-string-regexp@npm:^1.0.3, escape-string-regexp@npm:^1.0.5":
   version: 1.0.5
   resolution: "escape-string-regexp@npm:1.0.5"
   checksum: 6092fda75c63b110c706b6a9bfde8a612ad595b628f0bd2147eea1d3406723020810e591effc7db1da91d80a71a737a313567c5abb3813e8d9c71f4aa595b410
@@ -7865,18 +7925,21 @@ __metadata:
   resolution: "expo-app@workspace:examples/expo-app"
   dependencies:
     "@babel/core": ^7.12.9
+    "@expo/metro-config": ^0.5.2
     "@react-universal/core": "*"
     "@react-universal/primitives": "*"
+    "@react-universal/styled": "*"
     "@types/react": 18.0.26
     "@types/react-dom": 18.0.9
     "@types/react-native": 0.70.7
-    expo: ~47.0.12
+    expo: ~47.0.13
     expo-constants: ~14.0.2
     expo-status-bar: ~1.4.2
     postcss: ^8.4.21
     react: 18.2.0
     react-dom: 18.2.0
     react-native: 0.70.5
+    react-native-gesture-handler: ~2.8.0
     react-native-reanimated: ~2.12.0
     react-native-web: ~0.18.10
     tailwindcss: ^3.2.4
@@ -7991,7 +8054,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo@npm:~47.0.12":
+"expo@npm:~47.0.13":
   version: 47.0.13
   resolution: "expo@npm:47.0.13"
   dependencies:
@@ -8043,6 +8106,13 @@ __metadata:
     assign-symbols: ^1.0.0
     is-extendable: ^1.0.1
   checksum: a920b0cd5838a9995ace31dfd11ab5e79bf6e295aa566910ce53dff19f4b1c0fda2ef21f26b28586c7a2450ca2b42d97bd8c0f5cec9351a819222bf861e02461
+  languageName: node
+  linkType: hard
+
+"extend@npm:^3.0.1":
+  version: 3.0.2
+  resolution: "extend@npm:3.0.2"
+  checksum: a50a8309ca65ea5d426382ff09f33586527882cf532931cb08ca786ea3146c0553310bda688710ff61d7668eba9f96b923fe1420cdf56a2c3eaf30fcab87b515
   languageName: node
   linkType: hard
 
@@ -9067,6 +9137,15 @@ __metadata:
   dependencies:
     source-map: ^0.7.3
   checksum: b5f874eaa65b70d88df7a4ce3b20d73312bb0bc73410f1b63d708f02e1c532ae16975da84e23b977eab8592ac95d7e6fc0c4094c78604fd0a092ed886c62aa7a
+  languageName: node
+  linkType: hard
+
+"hoist-non-react-statics@npm:^3.3.0":
+  version: 3.3.2
+  resolution: "hoist-non-react-statics@npm:3.3.2"
+  dependencies:
+    react-is: ^16.7.0
+  checksum: b1538270429b13901ee586aa44f4cc3ecd8831c061d06cb8322e50ea17b3f5ce4d0e2e66394761e6c8e152cd8c34fb3b4b690116c6ce2bd45b18c746516cb9e8
   languageName: node
   linkType: hard
 
@@ -13159,6 +13238,42 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss-calc@npm:^8.2.4":
+  version: 8.2.4
+  resolution: "postcss-calc@npm:8.2.4"
+  dependencies:
+    postcss-selector-parser: ^6.0.9
+    postcss-value-parser: ^4.2.0
+  peerDependencies:
+    postcss: ^8.2.2
+  checksum: 314b4cebb0c4ed0cf8356b4bce71eca78f5a7842e6a3942a3bba49db168d5296b2bd93c3f735ae1c616f2651d94719ade33becc03c73d2d79c7394fb7f73eabb
+  languageName: node
+  linkType: hard
+
+"postcss-color-functional-notation@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "postcss-color-functional-notation@npm:5.0.2"
+  dependencies:
+    postcss-value-parser: ^4.2.0
+  peerDependencies:
+    postcss: ^8.4
+  checksum: a9e29f1513d8f8f97b485fa73e66efb1b2fb6ba50a44f583d238cc25320b3c7f83a336954a5a3f909b53a48db0cadd8214cd15244bc0dfa83a42902f08f45dfe
+  languageName: node
+  linkType: hard
+
+"postcss-css-variables@npm:^0.18.0":
+  version: 0.18.0
+  resolution: "postcss-css-variables@npm:0.18.0"
+  dependencies:
+    balanced-match: ^1.0.0
+    escape-string-regexp: ^1.0.3
+    extend: ^3.0.1
+  peerDependencies:
+    postcss: ^8.2.6
+  checksum: 7caed162700c6ac5d5ee8b53c7f9926b0f19196ee8e221bcd452d2235bafc2f376efa54862b7ef721a0807cab2e60cebb7e2e4cef69daa2c969d391da7aa01c6
+  languageName: node
+  linkType: hard
+
 "postcss-import@npm:^14.1.0":
   version: 14.1.0
   resolution: "postcss-import@npm:14.1.0"
@@ -13201,7 +13316,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-nested@npm:6.0.0":
+"postcss-nested@npm:6.0.0, postcss-nested@npm:^6.0.0":
   version: 6.0.0
   resolution: "postcss-nested@npm:6.0.0"
   dependencies:
@@ -13212,7 +13327,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-selector-parser@npm:^6.0.10":
+"postcss-selector-parser@npm:^6.0.10, postcss-selector-parser@npm:^6.0.9":
   version: 6.0.11
   resolution: "postcss-selector-parser@npm:6.0.11"
   dependencies:
@@ -13240,7 +13355,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.3.3, postcss@npm:^8.3.7, postcss@npm:^8.4.18, postcss@npm:^8.4.21":
+"postcss@npm:^8.2.6, postcss@npm:^8.3.3, postcss@npm:^8.3.7, postcss@npm:^8.4.18, postcss@npm:^8.4.21":
   version: 8.4.21
   resolution: "postcss@npm:8.4.21"
   dependencies:
@@ -13459,7 +13574,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
+"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -13596,13 +13711,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-devtools-core@npm:4.24.0":
-  version: 4.24.0
-  resolution: "react-devtools-core@npm:4.24.0"
+"react-devtools-core@npm:~4.25.0":
+  version: 4.25.0
+  resolution: "react-devtools-core@npm:4.25.0"
   dependencies:
     shell-quote: ^1.6.1
     ws: ^7
-  checksum: c9e21ff2621447a6de51d4a350f3859e8077634f8be327f006d8da73dba349e78432ef910e432f066c615938fed697231ed3daee8f9eae049004c14ebac85625
+  checksum: 68dae4507c46b875936904f2aba0fe1dda1d7b6fb616ac72e438aec29d7c49aeadaaff264cc148d40795075fdb9c736d1dcf5c50dbe40eaae64c7aa24f313e68
   languageName: node
   linkType: hard
 
@@ -13618,14 +13733,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0":
+"react-is@npm:18.2.0, react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0":
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
   checksum: e72d0ba81b5922759e4aff17e0252bd29988f9642ed817f56b25a3e217e13eea8a7f2322af99a06edb779da12d5d636e9fda473d620df9a3da0df2a74141d53e
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.13.1":
+"react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
@@ -13648,6 +13763,22 @@ __metadata:
     jscodeshift: ^0.13.1
     nullthrows: ^1.1.1
   checksum: 2a50ad71e09bc8cbb3694057cf47d6e9665c16f3968d1dc2b71e83c8c4e7be3b07b74bea08750ec9c8f6c60e6c746a5f695963c8694e5a76edcbce35a53a6a06
+  languageName: node
+  linkType: hard
+
+"react-native-gesture-handler@npm:~2.8.0":
+  version: 2.8.0
+  resolution: "react-native-gesture-handler@npm:2.8.0"
+  dependencies:
+    "@egjs/hammerjs": ^2.0.17
+    hoist-non-react-statics: ^3.3.0
+    invariant: ^2.2.4
+    lodash: ^4.17.21
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 3dc4ab5cf160e471b07cd644e24f6384bdc4fc777f259fb12dfb42a5c9a15f84f60043ce3a1cd737f8dc563892a52566c8ab33bed0b1635f2898ac8ba75c8668
   languageName: node
   linkType: hard
 
@@ -15407,6 +15538,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"stylis@npm:^4.1.3":
+  version: 4.1.3
+  resolution: "stylis@npm:4.1.3"
+  checksum: d04dbffcb9bf2c5ca8d8dc09534203c75df3bf711d33973ea22038a99cc475412a350b661ebd99cbc01daa50d7eedcf0d130d121800eb7318759a197023442a6
+  languageName: node
+  linkType: hard
+
 "sucrase@npm:^3.17.1, sucrase@npm:^3.20.0":
   version: 3.29.0
   resolution: "sucrase@npm:3.29.0"
@@ -15513,7 +15651,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:>=2.0.0, tailwindcss@npm:^3.2.4":
+"tailwindcss@npm:^3.2.4":
   version: 3.2.4
   resolution: "tailwindcss@npm:3.2.4"
   dependencies:
@@ -16031,17 +16169,6 @@ __metadata:
     typescript:
       optional: true
   checksum: f61c9f30931e47b0b4eb1946c99a0ebca81b9fabf450cf965213b9923e2801d490b48bab53e436fc589a8828c793ed93b7d72df796f8a9e1a4cd096caa5ecf80
-  languageName: node
-  linkType: hard
-
-"twrnc@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "twrnc@npm:3.6.0"
-  dependencies:
-    tailwindcss: ">=2.0.0"
-  peerDependencies:
-    react-native: ">=0.63.0"
-  checksum: cd2847b81be2d9db8b59d596b3f64d5be7b6c37e17ffc3e746f9415e929c7622e6fe1b948de68a781eaefdcd951c82e8aace7807ef31165d965ef22dc269cfca
   languageName: node
   linkType: hard
 

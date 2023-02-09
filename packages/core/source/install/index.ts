@@ -1,8 +1,11 @@
 import { Config } from 'tailwindcss/types/config';
 import { useStore } from '../store';
+import '../twind';
 
 const setup = (twConfig: Config) => {
-  useStore.getState().tailwind.setup(twConfig);
+  if (!useStore.getState().tailwind.config.theme) {
+    useStore.getState().tailwind.setup(twConfig);
+  }
 };
 
 export default setup;

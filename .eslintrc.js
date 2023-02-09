@@ -13,6 +13,9 @@ module.exports = {
     route: 'readonly',
     __DEV__: 'readonly',
   },
+  settings: {
+    'import/ignore': ['react-native'],
+  },
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports'],
   rules: {

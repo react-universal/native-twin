@@ -31,6 +31,7 @@
     "@expo/prebuild-config": "~5.0.0",
     "@types/react": "18.0.24",
     "react": "18.2.0",
+    "react-devtools-core": "~4.25.0",
     "react-dom": "18.2.0",
     "react-native-web": "0.18.10"
   },
