@@ -4,7 +4,7 @@ import { mergeTWClasses } from './utils/mergeClasses';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 
-export function useStyle(classValue?: string, style?: CSSProperties) {
+export default function useStyled(classValue?: string, style?: CSSProperties) {
   return useMemo(() => {
     const mergedClassName = classValue ? mergeTWClasses(classValue) : undefined;
 

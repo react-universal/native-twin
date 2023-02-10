@@ -27,7 +27,7 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@react-universal/core',
+      name: '@react-universal/primitives',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
@@ -37,10 +37,9 @@ export default defineConfig({
         'react-dom',
         'react-native',
         'react-native-web',
-        'postcss',
-        'postcss-js',
         'class-variance-authority',
         '@react-universal/core',
+        '@react-universal/styled',
         'react-native-svg',
         'react/jsx-runtime',
         /tailwindcss/,

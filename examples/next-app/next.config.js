@@ -18,12 +18,7 @@ const nextConfig = {
     gzipSize: true,
     appDir: false,
   },
-  transpilePackages: [
-    'react-native',
-    'react-native-svg',
-    'react-native-web',
-    '@react-universal/core',
-  ],
+  transpilePackages: ['react-native', 'react-native-svg', 'react-native-web'],
   outputFileTracing: false,
   swcMinify: true,
   compress: true,

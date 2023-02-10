@@ -14,11 +14,12 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./src/index.tsx",
-  "types": "./src/index.tsx",
+  "main": "./build/index.umd.js",
+  "module": "./build/index.es.js",
+  "types": "./src/index.ts",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc -w",
+    "build": "yarn vite build",
+    "dev": "yarn vite build -w --force",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui"
@@ -44,5 +45,5 @@
   "peerDependencies": {
     "tailwindcss": ">= 3.0.0"
   },
-  "react-native": "./src/index.tsx"
+  "react-native": "./src/index.ts"
 }

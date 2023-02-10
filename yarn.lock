@@ -3463,15 +3463,13 @@ __metadata:
     postcss-color-functional-notation: ^5.0.2
     postcss-css-variables: ^0.18.0
     postcss-js: ^4.0.0
-    postcss-nested: ^6.0.0
-    stylis: ^4.1.3
     tailwindcss: ^3.2.4
     tslib: ^2.3.0
-    use-sync-external-store: ^1.2.0
     vite: ^4.1.1
     vitest: ^0.28.3
     zustand: ^4.3.2
   peerDependencies:
+    postcss: ">= 8.0.0"
     tailwindcss: ">= 3.0.0"
   languageName: unknown
   linkType: soft
@@ -3489,15 +3487,13 @@ __metadata:
     class-variance-authority: 0.4.0
     clsx: ^1.2.1
     next: 13.1.4
-    postcss: ^8.4.21
-    react: 18.1.0
-    react-dom: 18.1.0
+    react: 18.2.0
+    react-dom: 18.2.0
     react-is: 18.2.0
     react-native: 0.70.5
     react-native-reanimated: ~2.12.0
     react-native-svg: 13.4.0
     react-native-svg-transformer: 1.0.0
-    react-native-web-lite: ^1.2.2
     tailwindcss: ^3.2.4
     tslib: ^2.3.0
     vite: ^4.1.1
@@ -3919,38 +3915,6 @@ __metadata:
   version: 1.5.40
   resolution: "@swc/plugin-styled-components@npm:1.5.40"
   checksum: 4922746894c5c643a53851df0cde5e1cde331ef7a7be96ff43806cb54bd1234d37f9a23583f2cbb84e675c705dd17b1f9ee8944b224a8a1dd02a00bfe26c2c2a
-  languageName: node
-  linkType: hard
-
-"@tamagui/normalize-css-color@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@tamagui/normalize-css-color@npm:1.2.2"
-  checksum: 5a82311c6c318ce2b40e62b2c7d21f32cdbf9d3dccc46179e31643e14de0ff073c01199333707dce048ecc3e688f75072d03289dc29fc5d98f78908e92c3f851
-  languageName: node
-  linkType: hard
-
-"@tamagui/react-native-use-pressable@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@tamagui/react-native-use-pressable@npm:1.2.2"
-  dependencies:
-    react: ^18.2.0
-  checksum: c39dd0d0af83eb79cfee741d481e83ebd4c56723530c14978e22e38ff392bd279adeed0747b91c48561f9519339857bbbbc565beae1f55162748f3fc1dc931d7
-  languageName: node
-  linkType: hard
-
-"@tamagui/react-native-use-responder-events@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@tamagui/react-native-use-responder-events@npm:1.2.2"
-  dependencies:
-    react: ^18.2.0
-  checksum: 4904d1e64e9286e088ff4961d1b9c77575d58325e8fcf18dcd0ae7ff740b4f210d6de79f10f057a63944db9bb9b627e2dba8b0aae5e20cee48fb71a950184d32
-  languageName: node
-  linkType: hard
-
-"@tamagui/simple-hash@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@tamagui/simple-hash@npm:1.2.2"
-  checksum: e6a2c1197af1b7c3274b7fa1dfe725fa3ac543b46f042c12a917bbf0aadf1b2fc116e0bd0a8ecb3c476ede3c114c22785ea62d5aa782fd49d1330ae43a35029a
   languageName: node
   linkType: hard
 
@@ -11940,8 +11904,8 @@ __metadata:
   resolution: "next-app@workspace:examples/next-app"
   dependencies:
     "@next/font": 13.0.6
-    "@react-universal/core": "*"
     "@react-universal/primitives": "*"
+    "@react-universal/styled": "*"
     autoprefixer: 10.4.13
     critters: ^0.0.16
     next: 13.1.4
@@ -13317,7 +13281,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-nested@npm:6.0.0, postcss-nested@npm:^6.0.0":
+"postcss-nested@npm:6.0.0":
   version: 6.0.0
   resolution: "postcss-nested@npm:6.0.0"
   dependencies:
@@ -13833,37 +13797,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: e630c057d6a0947c4d729538f643585a1fd9380975c1cf9adffad7647822b35219a9e1e60407f422b2b70592ed7f7e8766fab15df74f9cfce0b1c8a1c3544676
-  languageName: node
-  linkType: hard
-
-"react-native-web-internals@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "react-native-web-internals@npm:1.2.2"
-  dependencies:
-    "@tamagui/normalize-css-color": ^1.2.2
-    "@tamagui/react-native-use-pressable": ^1.2.2
-    "@tamagui/react-native-use-responder-events": ^1.2.2
-    "@tamagui/simple-hash": ^1.2.2
-    styleq: ^0.1.2
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
-  checksum: c8756330ebe75b9452b83c2d16d8350a4cf70cf7fb5f0bd1f45cd318bd327364cdf609c2271130180731d8c7f4c4971cd94e498ea53850038263899caa38e59a
-  languageName: node
-  linkType: hard
-
-"react-native-web-lite@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "react-native-web-lite@npm:1.2.2"
-  dependencies:
-    "@tamagui/normalize-css-color": ^1.2.2
-    invariant: ^2.2.4
-    react-native-web-internals: ^1.2.2
-    styleq: ^0.1.2
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
-  checksum: 7228c8b55eae29e7de4c869c57fc139918c354b5d45cb1acf83b19f5eea5a2709f0000572568d12e4acc2141caf2240e7c970cf417ebbe4787203f588d9c1554
   languageName: node
   linkType: hard
 
@@ -15539,13 +15472,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stylis@npm:^4.1.3":
-  version: 4.1.3
-  resolution: "stylis@npm:4.1.3"
-  checksum: d04dbffcb9bf2c5ca8d8dc09534203c75df3bf711d33973ea22038a99cc475412a350b661ebd99cbc01daa50d7eedcf0d130d121800eb7318759a197023442a6
-  languageName: node
-  linkType: hard
-
 "sucrase@npm:^3.17.1, sucrase@npm:^3.20.0":
   version: 3.29.0
   resolution: "sucrase@npm:3.29.0"
@@ -16577,7 +16503,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.0.0, use-sync-external-store@npm:^1.2.0":
+"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.0.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:

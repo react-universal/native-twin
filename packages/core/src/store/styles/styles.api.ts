@@ -5,6 +5,7 @@ import postcssJs from 'postcss-js';
 import { tx, tw } from '../../twind';
 
 const transformCssOutput = (css: string) => {
+  // console.log('CSS: ', css);
   const styles = transform(css);
   const values = Object.values(styles).reduce<Record<string, any>>((prev, curr) => {
     return Object.assign(prev, curr);
