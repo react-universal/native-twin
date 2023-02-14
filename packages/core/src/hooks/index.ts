@@ -1,3 +1,3 @@
 export { useTailwind } from './useTailwind';
-export { useComponentState } from './useComponentState';
+export { useComponentState, IComponentState } from './useComponentState';
 export { useInteraction } from './useInteractions';

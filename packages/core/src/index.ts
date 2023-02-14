@@ -3,5 +3,6 @@ export type {
   IComponentInteractions,
   IRegisterComponentArgs,
 } from './types/store.types';
+export type { IComponentState } from './hooks';
 export { useTailwind, useComponentState, useInteraction } from './hooks';
 export { tailwindStore } from './store';

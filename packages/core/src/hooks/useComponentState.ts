@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useCallback, useMemo, useReducer } from 'react';
 import type { TPseudoSelectorTypes } from '../types/store.types';
 
 export type IComponentState = Record<TPseudoSelectorTypes, boolean>;
@@ -25,14 +25,29 @@ const componentStateReducer = (state: IComponentState, action: IActionType) => {
   }
 };
 
-export function useComponentState() {
+export function useComponentState(componentProps: any) {
   const [state, dispatch] = useReducer(componentStateReducer, initialState);
-  const onHover = () => {
+  const onHover = useCallback(() => {
     dispatch({ type: 'SetInteraction', payload: { kind: 'hover', active: true } });
-  };
-  const onBlur = () => {
+  }, []);
+  const onBlur = useCallback(() => {
     dispatch({ type: 'SetInteraction', payload: { kind: 'hover', active: false } });
-  };
+  }, []);
+
+  const parentProps = useMemo(() => {
+    const nthChild = Number(componentProps?.nthChild ?? 0);
+    const isParentHover = Boolean(componentProps?.parentHover);
+    if (nthChild > 0) {
+      console.log('IM_NTH: ', componentProps?.nthChild);
+      if (isParentHover && !state.hover) {
+        onHover();
+      }
+      if (!isParentHover && state.hover) {
+        onBlur();
+      }
+    }
+  }, [componentProps?.nthChild, onBlur, onHover, componentProps?.parentHover, state.hover]);
+  console.log('PARENT_PROPS: ', parentProps);
 
   return {
     state,

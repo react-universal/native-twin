@@ -6,7 +6,7 @@ import {
   type IRegisterComponentArgs,
 } from '@react-universal/core';
 
-function useStyled(data: Omit<IRegisterComponentArgs, 'id'>) {
+function useStyled(data: Omit<IRegisterComponentArgs, 'id'>, componentProps: any) {
   const {
     id,
     styles: classNameStyles,
@@ -16,7 +16,7 @@ function useStyled(data: Omit<IRegisterComponentArgs, 'id'>) {
     inlineStyles: data.inlineStyles,
     className: data.className,
   });
-  const { state: componentState, onBlur, onHover } = useComponentState();
+  const { state: componentState, onBlur, onHover } = useComponentState(componentProps);
   const styles = useMemo(() => {
     if (!hasInteractions) return [classNameStyles];
     if (componentState.hover) {
@@ -52,32 +52,8 @@ function useStyled(data: Omit<IRegisterComponentArgs, 'id'>) {
     id,
     panHandlers: panResponder.panHandlers,
     hasInteractions,
+    componentState,
   };
 }
 
 export { useStyled };
-
-// function isStyledComponent(node: unknown) {
-//   return (node as any).displayName?.startsWith('StyledTW');
-// }
-
-// function flattenChildren(
-//   children: ReactNode | ReactNode[],
-//   keys: Array<string | number> = [],
-// ): ReactNode[] {
-//   return Children.toArray(children).flatMap((node, index) => {
-//     if (isFragment(node)) {
-//       return flattenChildren(node.props.children, [...keys, node.key || index]);
-//     } else if (typeof node === 'string' || typeof node === 'number') {
-//       return [node];
-//     } else if (isValidElement(node)) {
-//       return [
-//         cloneElement(node, {
-//           key: `${keys.join('.')}.${node.key?.toString()}`,
-//         }),
-//       ];
-//     } else {
-//       return [];
-//     }
-//   });
-// }
