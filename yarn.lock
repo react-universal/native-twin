@@ -1911,24 +1911,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dhmk/utils@npm:^2.4.2":
-  version: 2.4.2
-  resolution: "@dhmk/utils@npm:2.4.2"
-  checksum: bfdc85d1eddce33fe7982100404ed07e20dc1850d06e8db81b9c1fc76d12b9100ce524a56f8540fb4ce3df72f5e22df788fc34deff91069d5ab3d1276a4f167e
-  languageName: node
-  linkType: hard
-
-"@dhmk/zustand-lens@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "@dhmk/zustand-lens@npm:2.0.5"
-  dependencies:
-    "@dhmk/utils": ^2.4.2
-  peerDependencies:
-    zustand: ^4.0.0
-  checksum: 269a36ba3299a7a9c0c37444047aa747ccb4e4b87f41efae8d267b117052ac33bad33b461a4f934f7eefee65e5bea63a220dcf0dd7e7bed2517f4b14de864577
-  languageName: node
-  linkType: hard
-
 "@egjs/hammerjs@npm:^2.0.17":
   version: 2.0.17
   resolution: "@egjs/hammerjs@npm:2.0.17"
@@ -3444,7 +3426,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@react-universal/core@workspace:packages/core"
   dependencies:
-    "@dhmk/zustand-lens": ^2.0.5
     "@twind/core": ^1.1.3
     "@twind/preset-tailwind": ^1.1.4
     "@twind/typescript-plugin": ^0.3.5
@@ -3469,7 +3450,6 @@ __metadata:
     tslib: ^2.3.0
     vite: ^4.1.1
     vitest: ^0.28.3
-    zustand: ^4.3.2
   peerDependencies:
     postcss: ">= 8.0.0"
     tailwindcss: ">= 3.0.0"
@@ -3518,6 +3498,7 @@ __metadata:
     vite: ^4.1.1
     vitest: ^0.28.3
   peerDependencies:
+    react-native-gesture-handler: ">= 2.8.0"
     tailwindcss: ">= 3.0.0"
   languageName: unknown
   linkType: soft
@@ -16450,7 +16431,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.0.0":
+"use-sync-external-store@npm:^1.0.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:
@@ -17103,22 +17084,5 @@ __metadata:
   version: 1.0.0
   resolution: "yocto-queue@npm:1.0.0"
   checksum: 2cac84540f65c64ccc1683c267edce396b26b1e931aa429660aefac8fbe0188167b7aee815a3c22fa59a28a58d898d1a2b1825048f834d8d629f4c2a5d443801
-  languageName: node
-  linkType: hard
-
-"zustand@npm:^4.3.2":
-  version: 4.3.2
-  resolution: "zustand@npm:4.3.2"
-  dependencies:
-    use-sync-external-store: 1.2.0
-  peerDependencies:
-    immer: ">=9.0"
-    react: ">=16.8"
-  peerDependenciesMeta:
-    immer:
-      optional: true
-    react:
-      optional: true
-  checksum: fc443abf5bc9deac0d4e375847e7914e44c7ffc9f7f09b60e466cb9bbbcf5a46706bf2f9c8b9e6e6c9a1c5aea0bd6123cbf9fbcd39788ae27d8494d505969ae8
   languageName: node
   linkType: hard
