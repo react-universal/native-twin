@@ -6,7 +6,7 @@ import {
   MouseEvent,
   PanResponder,
 } from 'react-native';
-import { useStore } from '@react-universal/core';
+import { IComponentInteractions, tailwindStore } from '@react-universal/core';
 import type { InteractionProps } from '../styled.types';
 
 // declare module 'react-native' {
@@ -16,15 +16,9 @@ import type { InteractionProps } from '../styled.types';
 //   }
 // }
 
-export function useInteraction(componentID: string, componentProps: Record<string, any>) {
+export function useInteraction(component: IRe) {
   const ref = useRef<InteractionProps>(componentProps);
   ref.current = componentProps;
-  const component = useStore(
-    (state) => state.components.registeredComponents.get(componentID)!,
-  );
-  const setComponentInteractions = useStore(
-    (state) => state.components.setComponentInteractions,
-  );
 
   const active = component?.componentState.active;
   const focus = component?.componentState.focus;

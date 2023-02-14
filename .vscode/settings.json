@@ -1,6 +1,0 @@
-{
-    "tailwindCSS.classAttributes": ["className", "tw", "variants"],
-    "twind.debug": true,
-    "terminal.integrated.defaultLocation": "view",
-    "typescript.tsdk": "node_modules/typescript/lib"
-}

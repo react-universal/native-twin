@@ -11,7 +11,7 @@ const createTextElement = (element: string, props: TextProps) => {
 
 const Span = styled((props: TTypographyProps) => createTextElement('span', props));
 
-const H1 = styled(NativeText);
+const H1 = styled((props: TTypographyProps) => createTextElement('h1', props));
 // styled((props: TTypographyProps) => createTextElement('h1', props));
 
 const H2 = styled((props: TTypographyProps) => createTextElement('h2', props));
