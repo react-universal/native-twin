@@ -1,6 +1,6 @@
 import { ComponentType, forwardRef } from 'react';
 import clsx from 'clsx';
-import useStyled from './useStyled';
+import { useStyled } from './hooks/useStyled';
 
 const styled = (Component: ComponentType) => {
   const classProps: string[] = [];
@@ -35,10 +35,10 @@ const styled = (Component: ComponentType) => {
 
     console.log('PROCESSED_PROPS_END: ', processedProps);
 
-    const style = useStyled(
-      clsx([transformClassValue.join(' '), tw ?? className]),
-      props.style,
-    );
+    const style = useStyled({
+      inlineStyles: props.style,
+      className: clsx([transformClassValue.join(' '), tw ?? className]),
+    });
     console.log('STYLE: ', style);
     console.groupEnd();
 

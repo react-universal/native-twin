@@ -1,6 +1,6 @@
 import type { ComponentType, ComponentProps } from 'react';
+import { useStyled } from './hooks/useStyled';
 import type { IExtraProperties } from './styled.types';
-import useStyled from './useStyled';
 
 function styled<T extends ComponentType>(Component: T) {
   const Styled = ({ className = '', style = {}, ...restProps }: any) => {

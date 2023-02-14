@@ -6,7 +6,7 @@ import {
   type IRegisterComponentArgs,
 } from '@react-universal/core';
 
-export default function useStyled(data: Omit<IRegisterComponentArgs, 'id'>) {
+function useStyled(data: Omit<IRegisterComponentArgs, 'id'>) {
   const {
     id,
     styles: classNameStyles,
@@ -54,6 +54,8 @@ export default function useStyled(data: Omit<IRegisterComponentArgs, 'id'>) {
     hasInteractions,
   };
 }
+
+export { useStyled };
 
 // function isStyledComponent(node: unknown) {
 //   return (node as any).displayName?.startsWith('StyledTW');

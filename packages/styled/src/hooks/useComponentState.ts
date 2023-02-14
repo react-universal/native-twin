@@ -1,3 +1,0 @@
-function useComponentState() {
-  const [] = useSta
-}
