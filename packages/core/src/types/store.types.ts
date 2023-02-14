@@ -32,4 +32,6 @@ export type IRegisterComponentArgs = {
 export type IComponentsStore = {
   components: IRegisteredComponent[];
   styles: IStyleTuple[];
+  registerComponent: (data: IRegisterComponentArgs) => IRegisteredComponent;
+  unregisterComponent: (id: string) => void;
 };

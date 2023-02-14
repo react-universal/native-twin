@@ -3,6 +3,7 @@ import type {
   IComponentInteractions,
   IComponentsStore,
   IRegisterComponentArgs,
+  IRegisteredComponent,
 } from '../types/store.types';
 import { parseClassNames, parsePseudoElements } from '../utils/components.utils';
 import { transformClassNames } from '../utils/styles.utils';
@@ -22,10 +23,15 @@ const createStore = (initialState: IComponentsStore) => {
     storeListeners.forEach((listener) => listener());
   };
 
-  return { getState, setState, subscribe, registerComponent, unregisterComponent };
+  return { getState, setState, subscribe };
 };
 
-export const tailwindStore = createStore({ components: [], styles: [] });
+export const tailwindStore = createStore({
+  components: [],
+  styles: [],
+  registerComponent,
+  unregisterComponent,
+});
 
 function getComponentByID(componentID: string) {
   return tailwindStore.getState().components.find(([id]) => id === componentID);
@@ -45,11 +51,11 @@ function compileClassName(className: string) {
   return processedClassName;
 }
 
-function registerComponent(component: IRegisterComponentArgs) {
+function registerComponent(component: IRegisterComponentArgs): IRegisteredComponent {
   const cachedComponent = getComponentByID(component.id);
   if (cachedComponent) {
     const [, componentData] = cachedComponent;
-    if (componentData.className === component.className) return;
+    if (componentData.className === component.className) return cachedComponent;
   }
   const classes = parseClassNames(component.className);
   let styles = {};
@@ -84,6 +90,15 @@ function registerComponent(component: IRegisterComponentArgs) {
       ]);
     });
   });
+  return [
+    component.id,
+    {
+      interactionStyles: interactionStyles,
+      styles,
+      id: component.id,
+      className: component.className,
+    },
+  ];
 }
 
 function unregisterComponent(componentID: string) {

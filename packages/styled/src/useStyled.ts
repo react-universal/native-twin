@@ -1,14 +1,21 @@
 import { useMemo } from 'react';
 import { PanResponder } from 'react-native';
-import { useTailwind, useComponentState } from '@react-universal/core';
+import {
+  useTailwind,
+  useComponentState,
+  type IRegisterComponentArgs,
+} from '@react-universal/core';
 
-export default function useStyled(className: string) {
+export default function useStyled(data: Omit<IRegisterComponentArgs, 'id'>) {
   const {
     id,
     styles: classNameStyles,
     hasInteractions,
     interactionStyles,
-  } = useTailwind(className);
+  } = useTailwind({
+    inlineStyles: data.inlineStyles,
+    className: data.className,
+  });
   const { state: componentState, onBlur, onHover } = useComponentState();
   const styles = useMemo(() => {
     if (!hasInteractions) return [classNameStyles];

@@ -3,8 +3,8 @@ import type { IExtraProperties } from './styled.types';
 import useStyled from './useStyled';
 
 function styled<T extends ComponentType>(Component: T) {
-  const Styled = ({ className = '', ...restProps }: any) => {
-    const { styles, panHandlers } = useStyled(className);
+  const Styled = ({ className = '', style = {}, ...restProps }: any) => {
+    const { styles, panHandlers } = useStyled({ inlineStyles: style, className });
     // if (hasInteractions) {
     //   return (
     //     <LongPressGestureHandler onHandlerStateChange={onHandlerStateChange}>

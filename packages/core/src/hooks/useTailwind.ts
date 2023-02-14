@@ -1,61 +1,20 @@
-import { useEffect, useId, useMemo } from 'react';
-import { tailwindStore } from '../store';
-import type { IRegisteredComponent } from '../types/store.types';
-import { useStore } from './useStore';
+import { useId } from 'react';
+import type { IRegisterComponentArgs } from '../types/store.types';
+import { useComponentRegistration } from './useComponentRegistration';
 
-function useTailwind(className: string) {
+function useTailwind(data: Omit<IRegisterComponentArgs, 'id'>) {
   const id = useId();
-  const storedComponent = useStore(
-    (state) => state.components.find(([componentID]) => id === componentID)!,
-  );
-  const [, component] = useMemo(() => {
-    if (storedComponent) return storedComponent;
-    return [
-      id,
-      {
-        className,
-        styles: {},
-        id: id,
-        interactionStyles: [],
-      },
-    ];
-  }, [id, storedComponent, className]);
-  const componentPayload: IRegisteredComponent['1'] = useMemo(() => {
-    return {
-      id,
-      interactionStyles: component?.interactionStyles ?? [],
-      styles: component?.styles ?? {},
-      className: component?.className,
-    };
-  }, [id, component?.className, component?.styles, component?.interactionStyles]);
-
-  // const interactionProps = useInteraction(componentPayload);
-
-  const styles = useMemo(() => {
-    const baseStyles = componentPayload.styles;
-    return baseStyles;
-  }, [componentPayload.styles]);
-
-  useEffect(() => {
-    if (!storedComponent) {
-      tailwindStore.registerComponent({
-        id,
-        className,
-        inlineStyles: {},
-      });
-    }
-    return () => {
-      if (storedComponent) {
-        tailwindStore.unregisterComponent(id);
-      }
-    };
-  }, [id, className, storedComponent]);
+  const { component, hasInteractions, interactionStyles } = useComponentRegistration({
+    id,
+    inlineStyles: data.inlineStyles,
+    className: data.className,
+  });
 
   return {
     id,
-    styles,
-    hasInteractions: componentPayload.interactionStyles.length > 0,
-    interactionStyles: componentPayload.interactionStyles,
+    styles: component.styles,
+    hasInteractions,
+    interactionStyles,
   };
 }
 
