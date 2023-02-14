@@ -1,14 +1,11 @@
+import produce from 'immer';
 import type {
   IComponentInteractions,
   IComponentsStore,
   IRegisterComponentArgs,
 } from '../types/store.types';
-import type { IStyleTuple } from '../types/styles.types';
 import { parseClassNames, parsePseudoElements } from '../utils/components.utils';
 import { transformClassNames } from '../utils/styles.utils';
-
-export const stylesCache: IStyleTuple[] = [];
-export const storeListeners = new Set<(state: IComponentsStore) => void>();
 
 const createStore = (initialState: IComponentsStore) => {
   let currentState = initialState;
@@ -24,7 +21,8 @@ const createStore = (initialState: IComponentsStore) => {
     currentState = fn(currentState);
     storeListeners.forEach((listener) => listener());
   };
-  return { getState, setState, subscribe };
+
+  return { getState, setState, subscribe, registerComponent, unregisterComponent };
 };
 
 export const tailwindStore = createStore({ components: [], styles: [] });
@@ -34,16 +32,20 @@ function getComponentByID(componentID: string) {
 }
 
 function compileClassName(className: string) {
-  const cacheValue = stylesCache.find(([name]) => name === className);
+  const cacheValue = tailwindStore.getState().styles.find(([name]) => name === className);
   if (cacheValue) {
     return cacheValue[1];
   }
   const processedClassName = transformClassNames(className);
-  stylesCache.push([className, processedClassName]);
+  tailwindStore.setState((prevState) => {
+    return produce(prevState, (draft) => {
+      draft.styles.push([className, processedClassName]);
+    });
+  });
   return processedClassName;
 }
 
-export function registerComponent(component: IRegisterComponentArgs) {
+function registerComponent(component: IRegisterComponentArgs) {
   const cachedComponent = getComponentByID(component.id);
   if (cachedComponent) {
     const [, componentData] = cachedComponent;
@@ -69,11 +71,9 @@ export function registerComponent(component: IRegisterComponentArgs) {
       },
     ]);
   }
-  tailwindStore.setState((prevState) => ({
-    ...prevState,
-    components: [
-      ...prevState.components,
-      [
+  tailwindStore.setState((prevState) => {
+    return produce(prevState, (draft) => {
+      draft.components.push([
         component.id,
         {
           id: component.id,
@@ -81,7 +81,15 @@ export function registerComponent(component: IRegisterComponentArgs) {
           styles,
           interactionStyles,
         },
-      ],
-    ],
-  }));
+      ]);
+    });
+  });
+}
+
+function unregisterComponent(componentID: string) {
+  tailwindStore.setState((prevState) => {
+    return produce(prevState, (draft) => {
+      draft.components.filter(([id]) => componentID === id);
+    });
+  });
 }

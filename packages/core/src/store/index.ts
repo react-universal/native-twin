@@ -1,1 +1,1 @@
-export { tailwindStore, registerComponent } from './store';
+export { tailwindStore } from './store';

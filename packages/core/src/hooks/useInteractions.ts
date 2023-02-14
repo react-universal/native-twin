@@ -1,34 +1,34 @@
-import { Gesture } from 'react-native-gesture-handler';
-import { useMemo, useRef } from 'react';
-import { PanResponder } from 'react-native';
+import { useAnimatedGestureHandler, runOnJS } from 'react-native-reanimated';
 import { useComponentState } from './useComponentState';
 
-export function useInteraction(hasInteractions: boolean) {
+export function useInteraction() {
   const { onHover, onBlur, state } = useComponentState();
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder() {
-        return true;
-      },
-      onPanResponderGrant() {
-        onHover();
-      },
-      onPanResponderRelease() {
-        onBlur();
-      },
-    }),
-  ).current;
-  const gestures = useMemo(() => {
-    return {
-      singleTap: Gesture.Tap().onStart((event) => {
-        console.log('SINGLE_TAP', event);
-      }),
-    };
-  }, []);
-  if (!hasInteractions) return { panHandlers: {}, componentState: state, gestures };
+  const onGesture = useAnimatedGestureHandler({
+    onActive: (event, context) => {
+      console.log('ON_ACTIVE: ', { event, context });
+      runOnJS(() => console.log('sadasd'));
+    },
+    onCancel: (event, context) => {
+      console.log('ON_CANCEL: ', { event, context });
+    },
+    onStart: (event, context) => {
+      console.log('ON_START: ', { event, context });
+    },
+    onEnd: (event, context) => {
+      console.log('ON_END: ', { event, context });
+    },
+    onFail: (event, context) => {
+      console.log('ON_FAIl: ', { event, context });
+    },
+    onFinish: (event, context) => {
+      console.log('ON_FINISH: ', { event, context });
+    },
+  });
   return {
-    ...panResponder,
+    // panHandlers: hasInteractions ? panResponder.panHandlers : {},
     componentState: state,
-    gestures,
+    onGesture,
+    onBlur,
+    onHover,
   };
 }

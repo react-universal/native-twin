@@ -1,6 +1,5 @@
 import { useEffect, useId, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
-import { registerComponent } from '../store';
+import { tailwindStore } from '../store';
 import type { IRegisteredComponent } from '../types/store.types';
 import { useStore } from './useStore';
 
@@ -34,16 +33,23 @@ function useTailwind(className: string) {
 
   const styles = useMemo(() => {
     const baseStyles = componentPayload.styles;
-    return StyleSheet.create(Object.assign(baseStyles));
+    return baseStyles;
   }, [componentPayload.styles]);
 
   useEffect(() => {
-    registerComponent({
-      id,
-      className,
-      inlineStyles: {},
-    });
-  }, [id, className]);
+    if (!storedComponent) {
+      tailwindStore.registerComponent({
+        id,
+        className,
+        inlineStyles: {},
+      });
+    }
+    return () => {
+      if (storedComponent) {
+        tailwindStore.unregisterComponent(id);
+      }
+    };
+  }, [id, className, storedComponent]);
 
   return {
     id,

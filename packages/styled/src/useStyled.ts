@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { useTailwind, useInteraction } from '@react-universal/core';
+import { PanResponder } from 'react-native';
+import { useTailwind, useComponentState } from '@react-universal/core';
 
 export default function useStyled(className: string) {
   const {
@@ -8,7 +9,7 @@ export default function useStyled(className: string) {
     hasInteractions,
     interactionStyles,
   } = useTailwind(className);
-  const { componentState, gestures } = useInteraction(hasInteractions);
+  const { state: componentState, onBlur, onHover } = useComponentState();
   const styles = useMemo(() => {
     if (!hasInteractions) return [classNameStyles];
     if (componentState.hover) {
@@ -20,11 +21,29 @@ export default function useStyled(className: string) {
     return [classNameStyles];
   }, [classNameStyles, hasInteractions, interactionStyles, componentState.hover]);
 
+  const panResponder = useMemo(() => {
+    if (!hasInteractions) {
+      return PanResponder.create({});
+    }
+    return PanResponder.create({
+      onStartShouldSetPanResponder(event, gestureState) {
+        return hasInteractions && gestureState.numberActiveTouches === 1;
+      },
+      onPanResponderGrant(event, gestureState) {
+        if (gestureState.numberActiveTouches === 1) {
+          onHover();
+        }
+      },
+      onPanResponderEnd() {
+        onBlur();
+      },
+    });
+  }, [hasInteractions, onBlur, onHover]);
+
   return {
     styles,
     id,
-    panHandlers: {},
-    gestures,
+    panHandlers: panResponder.panHandlers,
     hasInteractions,
   };
 }
