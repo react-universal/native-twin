@@ -1,24 +1,23 @@
-import type { ComponentType, ComponentProps } from 'react';
-import { useChildren } from './hooks/useChildren';
+import { ComponentType, ComponentProps, forwardRef } from 'react';
 import { useStyled } from './hooks/useStyled';
 import type { IExtraProperties } from './styled.types';
 
 function styled<T extends ComponentType>(Component: T) {
-  const Styled = ({ className = '', style = {}, children, ...restProps }: any) => {
-    const { styles, panHandlers, componentState } = useStyled(
-      {
-        inlineStyles: style,
-        className,
-      },
-      restProps,
-    );
-    const childs = useChildren(children, componentState);
-    return (
-      <Component {...restProps} {...panHandlers} style={styles}>
-        {childs}
-      </Component>
-    );
-  };
+  const Styled = forwardRef<T, IExtraProperties>(
+    ({ className, tw, style, ...restProps }, ref) => {
+      const { styles, panHandlers } = useStyled(
+        {
+          inlineStyles: style,
+          className: className ?? tw,
+        },
+        restProps,
+      );
+      return (
+        // @ts-expect-error
+        <Component {...restProps} {...panHandlers} ref={ref} style={styles} />
+      );
+    },
+  );
   if (typeof Component !== 'string') {
     Styled.displayName = `StyledTW.${Component.displayName || 'NoName'}`;
   }

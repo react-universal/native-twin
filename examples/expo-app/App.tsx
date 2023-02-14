@@ -1,14 +1,10 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Index } from './src';
-
-// import { enableMapSet } from 'immer';
-
-// enableMapSet();
+import { HomeScreen } from './src/screens/Home.screen';
 
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Index />
+      <HomeScreen />
     </GestureHandlerRootView>
   );
 }

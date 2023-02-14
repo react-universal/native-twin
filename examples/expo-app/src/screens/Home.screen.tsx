@@ -1,6 +1,6 @@
-import { View, H1 } from '@react-universal/primitives';
+import { H1, View } from '@react-universal/primitives';
 
-const Index = () => {
+function HomeScreen() {
   return (
     <View className='flex-1'>
       <View className='flex-1 items-center justify-center bg-slate-900 hover:bg-slate-300'>
@@ -11,6 +11,6 @@ const Index = () => {
       </View>
     </View>
   );
-};
+}
 
-export { Index };
+export { HomeScreen };
