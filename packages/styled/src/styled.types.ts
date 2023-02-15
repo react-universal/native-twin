@@ -5,7 +5,7 @@ export type IExtraProperties = {
   className?: string;
   tw?: string;
   style?: StyleProp<any>;
-  children?: ReactNode | (() => ReactNode);
+  children?: ReactNode;
 };
 
 export type StyledComponentType = {

@@ -1,28 +1,27 @@
-import { Children, cloneElement, isValidElement, useMemo } from 'react';
+import { Children, cloneElement, isValidElement } from 'react';
 import type { StyleProp } from 'react-native';
 import type { IComponentState } from '@react-universal/core';
 
 function useChildren(children: React.ReactNode, componentState: IComponentState) {
-  return useMemo(() => {
-    return Children.toArray(children)
-      .filter(Boolean)
-      .map((child, index) => {
-        if (!isValidElement<{ style?: StyleProp<unknown> }>(child)) {
-          return child;
-        }
+  return Children.toArray(children)
+    .filter(Boolean)
+    .map((child, index) => {
+      if (!isValidElement<{ style?: StyleProp<unknown> }>(child)) {
+        return child;
+      }
 
-        const childProps = {
-          nthChild: index + 1,
-          parentHover: componentState.hover,
-          parentFocus: componentState.focus,
-          parentActive: componentState.active,
-        };
+      const childProps = {
+        nthChild: index + 1,
+        parentHover: componentState.hover,
+        parentFocus: componentState.focus,
+        parentActive: componentState.active,
+        ...child.props,
+      };
 
-        return child.props.style
-          ? cloneElement(child, Object.assign({ style: [child.props.style] }, childProps))
-          : cloneElement(child, Object.assign({ style: {} }, childProps));
-      });
-  }, [children, componentState]);
+      return child.props.style
+        ? cloneElement(child, Object.assign({ style: [child.props.style] }, childProps))
+        : cloneElement(child, Object.assign({ style: {} }, childProps));
+    });
 }
 
 export { useChildren };

@@ -12,7 +12,7 @@ export type ISetComponentInteractionArgs = {
   active: boolean;
 };
 
-type IComponent = {
+export type IComponent = {
   id: string;
   className?: string;
   styles: IStyleType;

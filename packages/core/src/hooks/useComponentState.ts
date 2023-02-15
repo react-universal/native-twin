@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useReducer } from 'react';
+/* eslint-disable unused-imports/no-unused-vars */
+import { useCallback, useReducer } from 'react';
 import type { TPseudoSelectorTypes } from '../types/store.types';
 
 export type IComponentState = Record<TPseudoSelectorTypes, boolean>;
@@ -34,20 +35,20 @@ export function useComponentState(componentProps: any) {
     dispatch({ type: 'SetInteraction', payload: { kind: 'hover', active: false } });
   }, []);
 
-  const parentProps = useMemo(() => {
-    const nthChild = Number(componentProps?.nthChild ?? 0);
-    const isParentHover = Boolean(componentProps?.parentHover);
-    if (nthChild > 0) {
-      console.log('IM_NTH: ', componentProps?.nthChild);
-      if (isParentHover && !state.hover) {
-        onHover();
-      }
-      if (!isParentHover && state.hover) {
-        onBlur();
-      }
-    }
-  }, [componentProps?.nthChild, onBlur, onHover, componentProps?.parentHover, state.hover]);
-  console.log('PARENT_PROPS: ', parentProps);
+  // const parentProps = useMemo(() => {
+  //   const nthChild = Number(componentProps?.nthChild ?? 0);
+  //   const isParentHover = Boolean(componentProps?.parentHover);
+  //   if (nthChild > 0) {
+  //     console.log('IM_NTH: ', componentProps?.nthChild);
+  //     if (isParentHover && !state.hover) {
+  //       onHover();
+  //     }
+  //     if (!isParentHover && state.hover) {
+  //       onBlur();
+  //     }
+  //   }
+  // }, [componentProps?.nthChild, onBlur, onHover, componentProps?.parentHover, state.hover]);
+  // console.log('PARENT_PROPS: ', parentProps);
 
   return {
     state,
