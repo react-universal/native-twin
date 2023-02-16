@@ -5,7 +5,7 @@ import { mergeTWClasses } from '../utils/mergeClasses';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 
-function useStyled(data: Omit<IRegisterComponentArgs, 'id'>) {
+function useStyledComponent(data: Omit<IRegisterComponentArgs, 'id'>) {
   return useMemo(() => {
     const mergedClassName = data.className ? mergeTWClasses(data.className) : undefined;
 
@@ -20,4 +20,4 @@ function useStyled(data: Omit<IRegisterComponentArgs, 'id'>) {
   }, [data]);
 }
 
-export { useStyled };
+export { useStyledComponent };

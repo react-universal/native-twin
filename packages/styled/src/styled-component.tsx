@@ -1,31 +1,30 @@
-import { ComponentType, ComponentProps, forwardRef, useRef } from 'react';
-import { findNodeHandle } from 'react-native';
-import { useStyled } from './hooks/useStyled';
+import { ComponentType, ComponentProps, forwardRef } from 'react';
+import { InteractionsContextProvider } from './context/InteractionsContext';
+import { useStyledComponent } from './hooks/useStyled';
 import type { IExtraProperties } from './styled.types';
 
 function styled<T extends ComponentType>(Component: T) {
-  const Styled = forwardRef<T, IExtraProperties>(
+  const Styled = forwardRef<T, ComponentProps<T> & IExtraProperties>(
     ({ className, tw, style, ...restProps }, ref) => {
-      const innerRef = useRef(ref);
-      const { styles, panHandlers } = useStyled(
+      const { styles, panHandlers, componentState } = useStyledComponent(
         {
           inlineStyles: style,
           className: className ?? tw,
         },
         restProps,
       );
-      console.log('INNER: ', innerRef);
       return (
-        // @ts-expect-error
-        <Component {...restProps} {...panHandlers} ref={innerRef} style={styles} />
+        <InteractionsContextProvider isHover={componentState.hover}>
+          {/* @ts-expect-error */}
+          <Component {...restProps} {...panHandlers} ref={ref} style={styles} />
+        </InteractionsContextProvider>
       );
     },
   );
   if (typeof Component !== 'string') {
     Styled.displayName = `StyledTW.${Component.displayName || 'NoName'}`;
   }
-  console.log('STYLED_OUT: ', Styled);
-  return Styled as ComponentType<ComponentProps<typeof Component> & IExtraProperties>;
+  return Styled;
 }
 
 export { styled };

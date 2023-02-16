@@ -1,24 +1,15 @@
 import type { IRegisterComponentArgs } from '../types/store.types';
-import { useComponentRegistration } from './useComponentRegistration';
+import { useClassNamesTransform } from './useClassNamesTransform';
 
 // import { useComponentStore } from './useComponentStore';
 
 function useTailwind(data: Omit<IRegisterComponentArgs, 'id'>) {
-  const { component, hasInteractions, interactionStyles } = useComponentRegistration({
-    inlineStyles: data.inlineStyles,
-    className: data.className,
-  });
-  // useComponentStore({
-  //   id: component.id,
-  //   inlineStyles: data.inlineStyles,
-  //   className: data.className,
-  // });
+  const { styles } = useClassNamesTransform(data.className ?? '');
 
   return {
-    id: component.id,
-    styles: component.styles,
-    hasInteractions,
-    interactionStyles,
+    styles: styles.normalStyles,
+    hasInteractions: styles.interactionStyles.length > 0,
+    interactionStyles: styles.interactionStyles,
   };
 }
 

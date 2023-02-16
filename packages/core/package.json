@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@mhsdesign/jit-browser-tailwindcss": "^0.2.2",
+    "@simbathesailor/use-what-changed": "^2.0.0",
     "@types/css-to-react-native": "^3.0.0",
     "@types/css-tree": "^2.0.1",
     "@types/postcss-css-variables": "^0.18.0",

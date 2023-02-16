@@ -3531,6 +3531,7 @@ __metadata:
   resolution: "@react-universal/core@workspace:packages/core"
   dependencies:
     "@mhsdesign/jit-browser-tailwindcss": ^0.2.2
+    "@simbathesailor/use-what-changed": ^2.0.0
     "@twind/core": ^1.1.3
     "@twind/preset-tailwind": ^1.1.4
     "@twind/typescript-plugin": ^0.3.5
@@ -3553,6 +3554,7 @@ __metadata:
     react-native: 0.70.5
     tailwindcss: ^3.2.4
     tslib: ^2.3.0
+    valtio: ^1.10.2
     vite: ^4.1.1
     vitest: ^0.28.3
   peerDependencies:
@@ -3731,6 +3733,15 @@ __metadata:
   version: 2.0.0
   resolution: "@sideway/pinpoint@npm:2.0.0"
   checksum: 0f4491e5897fcf5bf02c46f5c359c56a314e90ba243f42f0c100437935daa2488f20482f0f77186bd6bf43345095a95d8143ecf8b1f4d876a7bc0806aba9c3d2
+  languageName: node
+  linkType: hard
+
+"@simbathesailor/use-what-changed@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@simbathesailor/use-what-changed@npm:2.0.0"
+  peerDependencies:
+    react: ">=16"
+  checksum: a90e5b7388584749d19b138e0ab50fc69d9af69bee7beaa7616fa287122577f027877e0bd622ec1149057adb2f5bd3f27691dae5723c6a7c93d044bfb96e77ec
   languageName: node
   linkType: hard
 
@@ -13612,6 +13623,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-compare@npm:2.5.0":
+  version: 2.5.0
+  resolution: "proxy-compare@npm:2.5.0"
+  checksum: 81ef2a3990a999b9c3d27f5e10b18603b9236e37d7772c5dadb5726c9ec2a30df46fe3067a216ee1d14f53783703767db9c19ff26ab2a9ffb2ea31f09c87b14f
+  languageName: node
+  linkType: hard
+
 "pseudomap@npm:^1.0.2":
   version: 1.0.2
   resolution: "pseudomap@npm:1.0.2"
@@ -16659,7 +16677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:^1.0.0":
+"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.0.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:
@@ -16762,6 +16780,21 @@ __metadata:
   dependencies:
     builtins: ^5.0.0
   checksum: a32fd537bad17fcb59cfd58ae95a414d443866020d448ec3b22e8d40550cb585026582a57efbe1f132b882eea4da8ac38ee35f7be0dd72988a3cb55d305a20c1
+  languageName: node
+  linkType: hard
+
+"valtio@npm:^1.10.2":
+  version: 1.10.2
+  resolution: "valtio@npm:1.10.2"
+  dependencies:
+    proxy-compare: 2.5.0
+    use-sync-external-store: 1.2.0
+  peerDependencies:
+    react: ">=16.8"
+  peerDependenciesMeta:
+    react:
+      optional: true
+  checksum: 3fe6b6d5b7a9338ce92eac9954d7aa98fd98ab07cb2be7fa38aa750e8bccaff700e7a6684c0af09932bf3c1b3ebc69684aaa0aa5b101079ecd2f1b2730c0a4eb
   languageName: node
   linkType: hard
 

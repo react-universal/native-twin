@@ -1,59 +1,30 @@
-import { useMemo } from 'react';
-import { PanResponder } from 'react-native';
-import {
-  useTailwind,
-  useComponentState,
-  type IRegisterComponentArgs,
-} from '@react-universal/core';
+import { useClassNamesTransform, type IRegisterComponentArgs } from '@react-universal/core';
+import { useComponentInteractions } from './useComponentInteractions';
+import { useFinalStyles } from './useFinalStyles';
 
-function useStyled(data: Omit<IRegisterComponentArgs, 'id'>, componentProps: any) {
-  const {
-    id,
-    styles: classNameStyles,
-    hasInteractions,
+const useStyledComponent = (data: Omit<IRegisterComponentArgs, 'id'>, componentProps: any) => {
+  const { interactionStyles, normalStyles } = useClassNamesTransform(data.className ?? '');
+  const { componentState, hasInteractions, panHandlers } = useComponentInteractions(
+    { interactionStyles },
+    componentProps,
+  );
+  const styles = useFinalStyles({
+    componentState,
     interactionStyles,
-  } = useTailwind({
-    inlineStyles: data.inlineStyles,
-    className: data.className,
+    normalStyles,
   });
-  const { state: componentState, onBlur, onHover } = useComponentState(componentProps);
-  const styles = useMemo(() => {
-    if (!hasInteractions) return [classNameStyles];
-    if (componentState.hover) {
-      return [
-        classNameStyles,
-        interactionStyles.find(([name]) => name === 'hover')?.[1].styles,
-      ];
-    }
-    return [classNameStyles];
-  }, [classNameStyles, hasInteractions, interactionStyles, componentState.hover]);
 
-  const panResponder = useMemo(() => {
-    if (!hasInteractions) {
-      return PanResponder.create({});
-    }
-    return PanResponder.create({
-      onStartShouldSetPanResponder(event, gestureState) {
-        return hasInteractions && gestureState.numberActiveTouches === 1;
-      },
-      onPanResponderGrant(event, gestureState) {
-        if (gestureState.numberActiveTouches === 1) {
-          onHover();
-        }
-      },
-      onPanResponderEnd() {
-        onBlur();
-      },
-    });
-  }, [hasInteractions, onBlur, onHover]);
+  console.group('COMPONENT_RENDER');
+  console.log('HAS_INTERACTIONS: ', hasInteractions);
+  console.log('CLASSNAMES: ', data.className);
+  console.groupEnd();
 
   return {
     styles,
-    id,
-    panHandlers: panResponder.panHandlers,
+    panHandlers,
     hasInteractions,
     componentState,
   };
-}
+};
 
-export { useStyled };
+export { useStyledComponent };
