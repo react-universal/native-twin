@@ -1,19 +1,14 @@
-import { ComponentType, forwardRef } from 'react';
-import clsx from 'clsx';
-import { useStyled } from './hooks/useStyled';
+import { ComponentType, forwardRef, useMemo } from 'react';
+import type { IStyleType } from '@react-universal/core';
+import { mergeTWClasses } from './styled-component';
 
 const styled = (Component: ComponentType) => {
   const classProps: string[] = [];
   const extraTransform: Record<string, string> = {};
 
   const Styled = forwardRef<unknown, any>(function ({ tw, className, ...props }, ref) {
-    console.group('STYLED_COMPONENTS');
-    console.log('CLASS_NAMES: ', className);
-    console.log('TW_CLASS_NAMES: ', tw);
-    console.log('PROPS: ', props);
     let processedProps = props;
-    console.log('PROCESSED_PROPS_INIT: ', processedProps);
-    const transformClassValue: string[] = [];
+    const transformClassValue: string[] = useMemo(() => [], []);
 
     if (classProps.length > 0) {
       processedProps = {};
@@ -31,18 +26,24 @@ const styled = (Component: ComponentType) => {
       }
     }
 
-    console.log('TRANSFORM_CLASS_VALUES: ', transformClassValue);
+    const style: IStyleType = useMemo(() => {
+      const mergedClassName = mergeTWClasses(
+        [transformClassValue.join(' '), className ?? tw].join(' '),
+      );
 
-    console.log('PROCESSED_PROPS_END: ', processedProps);
+      if (mergedClassName && props.style) {
+        return [
+          { $$css: true, [mergedClassName]: mergedClassName },
+          props.style,
+        ] as IStyleType;
+      } else if (mergedClassName) {
+        return { $$css: true, [mergedClassName]: mergedClassName } as IStyleType;
+      } else if (style) {
+        return style as IStyleType;
+      }
+    }, [props.style, className, tw, transformClassValue]);
 
-    const style = useStyled({
-      inlineStyles: props.style,
-      className: clsx([transformClassValue.join(' '), tw ?? className]),
-    });
-    console.log('STYLE: ', style);
-    console.groupEnd();
-
-    return <Component ref={ref} {...processedProps} className={className} />;
+    return <Component ref={ref} style={style} {...processedProps} />;
   });
 
   if (typeof Component !== 'string') {

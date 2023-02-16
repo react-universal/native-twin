@@ -4,12 +4,12 @@ import { useClassNamesTransform } from './useClassNamesTransform';
 // import { useComponentStore } from './useComponentStore';
 
 function useTailwind(data: Omit<IRegisterComponentArgs, 'id'>) {
-  const { styles } = useClassNamesTransform(data.className ?? '');
+  const { interactionStyles, normalStyles } = useClassNamesTransform(data.className ?? '');
 
   return {
-    styles: styles.normalStyles,
-    hasInteractions: styles.interactionStyles.length > 0,
-    interactionStyles: styles.interactionStyles,
+    styles: normalStyles,
+    hasInteractions: interactionStyles.length > 0,
+    interactionStyles: interactionStyles,
   };
 }
 

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import type {
   IComponentState,
   IStyleType,
@@ -23,9 +24,12 @@ const useFinalStyles = ({
       interactionsHover = true;
     }
     if (componentState.hover || interactionsHover) {
-      return [normalStyles, interactionStyles.find(([name]) => name === 'hover')?.[1].styles];
+      return StyleSheet.flatten([
+        normalStyles,
+        interactionStyles.find(([name]) => name === 'hover')?.[1].styles,
+      ]);
     }
-    return [normalStyles];
+    return StyleSheet.flatten([normalStyles]);
   }, [interactionsContext, componentState.hover, normalStyles, interactionStyles]);
   return styles;
 };

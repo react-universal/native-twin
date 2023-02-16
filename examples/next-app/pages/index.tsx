@@ -1,8 +1,10 @@
-import { TestView } from '@react-universal/primitives';
+import { H1, View } from '@react-universal/primitives';
 
 const IndexPage = () => {
   return (
-    <TestView className='flex-1 items-center justify-center bg-gray-800 dark:bg-black ' />
+    <View className='flex-1 items-center justify-center bg-gray-800'>
+      <H1 className='text-gray-200 hover:text-green-500'>sad</H1>
+    </View>
   );
 };
 
