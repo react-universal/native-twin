@@ -3,6 +3,7 @@ import postcss from 'postcss';
 import postcssVariables from 'postcss-css-variables';
 import postcssJs from 'postcss-js';
 import { tx, tw } from '../twind';
+import type { IStyleType } from '../types/styles.types';
 
 const transformCssOutput = (css: string) => {
   // console.log('CSS: ', css);
@@ -33,7 +34,7 @@ export function parseSingleClassName(className: string) {
   }
 }
 
-export function transformClassNames(...classes: string[]) {
+export function transformClassNames(...classes: string[]): IStyleType {
   try {
     tx(...classes);
     const output = toJSSObject(tw.target.join(' '));

@@ -1,4 +1,2 @@
-import type { StyleProp } from 'react-native';
-
-export type IStyleType<T = unknown> = StyleProp<T>;
+export type IStyleType = Record<string, any>;
 export type IStyleTuple = [string, IStyleType];
