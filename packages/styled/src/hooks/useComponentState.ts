@@ -1,25 +1,32 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { useCallback, useReducer } from 'react';
-import type { TPseudoSelectorTypes } from '../types/store.types';
+import type { TPseudoSelectorTypes } from '@react-universal/core';
+import type { IComponentState } from '../styled.types';
 
-export type IComponentState = Record<TPseudoSelectorTypes, boolean>;
 const initialState: IComponentState = {
   active: false,
   dark: false,
   focus: false,
   hover: false,
+  'group-hover': false,
 };
+
 type IActionType = {
   type: 'SetInteraction';
   payload: { kind: TPseudoSelectorTypes; active: boolean };
 };
 
-const componentStateReducer = (state: IComponentState, action: IActionType) => {
+const componentStateReducer = (
+  state: IComponentState,
+  action: IActionType,
+): IComponentState => {
   switch (action.type) {
     case 'SetInteraction':
       return {
         ...state,
         [action.payload.kind]: action.payload.active,
+        'group-hover':
+          action.payload.kind === 'hover' ? action.payload.active : state['group-hover'],
       };
     default:
       return state;
@@ -34,21 +41,6 @@ export function useComponentState(componentProps: any) {
   const onBlur = useCallback(() => {
     dispatch({ type: 'SetInteraction', payload: { kind: 'hover', active: false } });
   }, []);
-
-  // const parentProps = useMemo(() => {
-  //   const nthChild = Number(componentProps?.nthChild ?? 0);
-  //   const isParentHover = Boolean(componentProps?.parentHover);
-  //   if (nthChild > 0) {
-  //     console.log('IM_NTH: ', componentProps?.nthChild);
-  //     if (isParentHover && !state.hover) {
-  //       onHover();
-  //     }
-  //     if (!isParentHover && state.hover) {
-  //       onBlur();
-  //     }
-  //   }
-  // }, [componentProps?.nthChild, onBlur, onHover, componentProps?.parentHover, state.hover]);
-  // console.log('PARENT_PROPS: ', parentProps);
 
   return {
     state,

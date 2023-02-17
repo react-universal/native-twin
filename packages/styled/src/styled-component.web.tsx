@@ -41,6 +41,7 @@ const styled = (Component: ComponentType) => {
       } else if (style) {
         return style as IStyleType;
       }
+      return {};
     }, [props.style, className, tw, transformClassValue]);
 
     return <Component ref={ref} style={style} {...processedProps} />;

@@ -1,23 +1,31 @@
 import { ComponentType, ComponentProps, forwardRef } from 'react';
-import { InteractionsContextProvider } from './context/InteractionsContext';
-import { useStyledComponent } from './hooks/useStyled';
+import { GroupContextProvider } from './context/GroupContext';
+import { useStyledComponent } from './hooks';
 import type { IExtraProperties } from './styled.types';
 
 function styled<T extends ComponentType>(Component: T) {
   const Styled = forwardRef<T, ComponentProps<T> & IExtraProperties>(
     ({ className, tw, style, ...restProps }, ref) => {
-      const { styles, panHandlers, componentState } = useStyledComponent(
-        {
-          inlineStyles: style,
-          className: className ?? tw,
-        },
-        restProps,
-      );
+      const { styles, panHandlers, componentState, groupContext, isGroupParent } =
+        useStyledComponent(
+          {
+            inlineStyles: style,
+            className: className ?? tw,
+          },
+          restProps,
+        );
+      console.log('INTERACTIONS_CONTEXT: ', groupContext);
+      if (isGroupParent) {
+        return (
+          <GroupContextProvider isHover={componentState['group-hover']}>
+            {/* @ts-expect-error */}
+            <Component {...restProps} {...panHandlers} ref={ref} style={styles} />
+          </GroupContextProvider>
+        );
+      }
       return (
-        <InteractionsContextProvider isHover={componentState.hover}>
-          {/* @ts-expect-error */}
-          <Component {...restProps} {...panHandlers} ref={ref} style={styles} />
-        </InteractionsContextProvider>
+        //@ts-expect-error
+        <Component {...restProps} {...panHandlers} ref={ref} style={styles} />
       );
     },
   );
