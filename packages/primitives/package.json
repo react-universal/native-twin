@@ -41,6 +41,7 @@
     "react-is": "18.2.0"
   },
   "devDependencies": {
+    "@expo/html-elements": "^0.3.1",
     "@react-universal/core": "*",
     "@react-universal/styled": "*",
     "@types/react": "18.0.26",

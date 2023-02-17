@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import produce from 'immer';
-import { tailwindStore } from '../store';
+import { stylesStore as tailwindStore } from '../store';
 import type { IComponentInteractions } from '../types/store.types';
 import type { IStyleType } from '../types/styles.types';
 import { parseClassNames, parsePseudoElements } from '../utils/components.utils';
@@ -9,14 +9,14 @@ import { transformClassNames } from '../utils/styles.utils';
 function useClassNamesTransform(classNames: string) {
   const parsed = useMemo(() => parseClassNames(classNames), [classNames]);
   const compileClassName = useCallback((className: string) => {
-    const cacheValue = tailwindStore.getState().styles.find(([name]) => name === className);
+    const cacheValue = tailwindStore.getState().stylesCollection.get(className);
     if (cacheValue) {
-      return cacheValue[1];
+      return cacheValue;
     }
     const processedClassName = transformClassNames(className);
     tailwindStore.setState((prevState) => {
       return produce(prevState, (draft) => {
-        draft.styles.push([className, processedClassName]);
+        draft.stylesCollection.set(className, processedClassName);
       });
     });
     return processedClassName;

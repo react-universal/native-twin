@@ -1,16 +1,29 @@
-import type { IRegisterComponentArgs } from '../types/store.types';
-import { useClassNamesTransform } from './useClassNamesTransform';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
+import { styleSheet, stylesStore } from '../modules';
+import { parseClassNames } from '../utils/components.utils';
 
 // import { useComponentStore } from './useComponentStore';
 
-function useTailwind(data: Omit<IRegisterComponentArgs, 'id'>) {
-  const { interactionStyles, normalStyles } = useClassNamesTransform(data.className ?? '');
+function useTailwind(classNames: string) {
+  const parsed = useMemo(() => parseClassNames(classNames), [classNames]);
+  const selector = useMemo(() => {
+    const selector = styleSheet.prepareComponentStore(classNames);
+    return selector;
+  }, [classNames]);
 
-  return {
-    styles: normalStyles,
-    hasInteractions: interactionStyles.length > 0,
-    interactionStyles: interactionStyles,
-  };
+  const getSnapshot = useCallback(() => {
+    return stylesStore.getState().classNamesCollection.get(selector);
+  }, [selector]);
+  const styles = useSyncExternalStore(stylesStore.subscribe, getSnapshot, getSnapshot);
+  return useMemo(
+    () => ({
+      parsed,
+      normalStyles: styles?.normalStyles ?? {},
+      hasInteractions: styles?.interactionStyles && styles?.interactionStyles?.length > 0,
+      interactionStyles: styles?.interactionStyles ?? [],
+    }),
+    [styles, parsed],
+  );
 }
 
 export { useTailwind };

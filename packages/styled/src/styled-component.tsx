@@ -1,4 +1,5 @@
 import { ComponentType, ComponentProps, forwardRef } from 'react';
+import { View } from 'react-native';
 import { GroupContextProvider } from './context/GroupContext';
 import { useStyledComponent } from './hooks';
 import type { IExtraProperties } from './styled.types';
@@ -6,15 +7,14 @@ import type { IExtraProperties } from './styled.types';
 function styled<T extends ComponentType>(Component: T) {
   const Styled = forwardRef<T, ComponentProps<T> & IExtraProperties>(
     ({ className, tw, style, ...restProps }, ref) => {
-      const { styles, panHandlers, componentState, groupContext, isGroupParent } =
-        useStyledComponent(
-          {
-            inlineStyles: style,
-            className: className ?? tw,
-          },
-          restProps,
-        );
-      console.log('INTERACTIONS_CONTEXT: ', groupContext);
+      const { styles, panHandlers, componentState, isGroupParent } = useStyledComponent(
+        {
+          inlineStyles: style,
+          className: className ?? tw,
+        },
+        restProps,
+        Component,
+      );
       if (isGroupParent) {
         return (
           <GroupContextProvider isHover={componentState['group-hover']}>

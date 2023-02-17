@@ -30,10 +30,7 @@ export type IRegisterComponentArgs = {
 };
 
 export type IComponentsStore = {
-  components: IRegisteredComponent[];
   styles: IStyleTuple[];
-  registerComponent: (data: IRegisterComponentArgs) => IRegisteredComponent;
-  unregisterComponent: (id: string) => void;
 };
 
 export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, unknown>

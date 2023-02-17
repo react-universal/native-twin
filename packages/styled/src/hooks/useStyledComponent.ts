@@ -4,7 +4,11 @@ import { useGroupContext } from '../context/GroupContext';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useFinalStyles } from './useFinalStyles';
 
-const useStyledComponent = (data: Omit<IRegisterComponentArgs, 'id'>, componentProps: any) => {
+const useStyledComponent = (
+  data: Omit<IRegisterComponentArgs, 'id'>,
+  componentProps: any,
+  Component: any,
+) => {
   const groupContext = useGroupContext();
   const { interactionStyles, normalStyles, parsed } = useClassNamesTransform(
     data.className ?? '',
@@ -24,8 +28,6 @@ const useStyledComponent = (data: Omit<IRegisterComponentArgs, 'id'>, componentP
     groupContext,
     isGroupParent,
   });
-
-  console.log('__STYLES__: ', { normalStyles, data, isGroupParent });
 
   return {
     styles,

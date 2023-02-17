@@ -1,10 +1,4 @@
-import type { TextProps, ViewProps } from 'react-native';
-import type { typographyVariants } from './variants';
+import type { TextProps } from 'react-native';
+import type { IExtraProperties } from '@react-universal/styled';
 
-export type TTypographyProps = {
-  htmlFor?: string;
-  pointerEvents?: ViewProps['pointerEvents'];
-  variant?: keyof typeof typographyVariants;
-  bold?: boolean;
-  className?: string;
-} & TextProps;
+export type TTextProps = TextProps & IExtraProperties;

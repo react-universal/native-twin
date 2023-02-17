@@ -5,9 +5,13 @@ import { createHash } from '../utils/createHash';
 import { transformClassNames } from '../utils/styles.utils';
 import { createStore } from './generator';
 
+type IStyleCache = {
+  normalStyles: IStyleType;
+  interactionStyles: IComponentInteractions[];
+};
 const initialState = {
   stylesCollection: new Map<string, IStyleType>(),
-  classNamesCollection: new Map<number, IStyleType>(),
+  classNamesCollection: new Map<number, IStyleCache>(),
 };
 
 const stylesStore = createStore(initialState);
@@ -66,7 +70,7 @@ function getClassNameCollectionRegister(classNamesHash: number) {
   return null;
 }
 
-function registerClassName(classNamesHash: number, styles: IStyleType) {
+function registerClassName(classNamesHash: number, styles: IStyleCache) {
   const classNamesCache = stylesStore
     .getState()
     .classNamesCollection.set(classNamesHash, styles);
@@ -77,6 +81,8 @@ function registerClassName(classNamesHash: number, styles: IStyleType) {
   return null;
 }
 
-const useStore = stylesStore.useStore;
+const useStylesStore = stylesStore.useStore;
 
-export { getStylesForClassNames, stylesStore, useStore, registerClassName };
+export { getStylesForClassNames, stylesStore, useStylesStore, registerClassName };
+
+export type ITailwindStore = ReturnType<(typeof stylesStore)['getState']>;
