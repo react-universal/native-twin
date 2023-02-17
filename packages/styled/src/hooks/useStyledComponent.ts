@@ -1,29 +1,39 @@
+import { useMemo } from 'react';
 import { useClassNamesTransform, type IRegisterComponentArgs } from '@react-universal/core';
+import { useGroupContext } from '../context/GroupContext';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useFinalStyles } from './useFinalStyles';
 
 const useStyledComponent = (data: Omit<IRegisterComponentArgs, 'id'>, componentProps: any) => {
-  const { interactionStyles, normalStyles } = useClassNamesTransform(data.className ?? '');
+  const groupContext = useGroupContext();
+  const { interactionStyles, normalStyles, parsed } = useClassNamesTransform(
+    data.className ?? '',
+  );
+  const isGroupParent = useMemo(
+    () => parsed.normalClassNames.some((item) => item === 'group'),
+    [parsed.normalClassNames],
+  );
   const { componentState, hasInteractions, panHandlers } = useComponentInteractions(
-    { interactionStyles },
+    { interactionStyles, isGroupParent, groupContext },
     componentProps,
   );
   const styles = useFinalStyles({
     componentState,
     interactionStyles,
     normalStyles,
+    groupContext,
+    isGroupParent,
   });
 
-  console.group('COMPONENT_RENDER');
-  console.log('HAS_INTERACTIONS: ', hasInteractions);
-  console.log('CLASSNAMES: ', data.className);
-  console.groupEnd();
+  console.log('__STYLES__: ', { normalStyles, data, isGroupParent });
 
   return {
     styles,
     panHandlers,
+    isGroupParent,
     hasInteractions,
     componentState,
+    groupContext,
   };
 };
 

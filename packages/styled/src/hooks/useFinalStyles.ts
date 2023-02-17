@@ -1,36 +1,43 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import type {
-  IComponentState,
-  IStyleType,
-  IComponentInteractions,
-} from '@react-universal/core';
-import { useInteractionsContext } from '../context/InteractionsContext';
+import type { IStyleType, IComponentInteractions } from '@react-universal/core';
+import type { IGroupContext } from '../context/GroupContext';
+import type { IComponentState } from '../styled.types';
 
 interface IFinalStylesArgs {
   componentState: IComponentState;
   normalStyles: IStyleType;
   interactionStyles: IComponentInteractions[];
+  groupContext: IGroupContext;
+  isGroupParent: boolean;
 }
 const useFinalStyles = ({
   componentState,
   normalStyles,
   interactionStyles,
+  groupContext,
+  isGroupParent,
 }: IFinalStylesArgs) => {
-  const interactionsContext = useInteractionsContext();
   const styles = useMemo(() => {
-    let interactionsHover = false;
-    if (interactionsContext && interactionsContext.isHover) {
-      interactionsHover = true;
+    if (
+      !isGroupParent &&
+      groupContext &&
+      groupContext.isHover &&
+      componentState['group-hover']
+    ) {
+      return StyleSheet.flatten([
+        normalStyles,
+        interactionStyles.find(([name]) => name === 'group-hover')?.[1].styles,
+      ]);
     }
-    if (componentState.hover || interactionsHover) {
+    if (componentState.hover) {
       return StyleSheet.flatten([
         normalStyles,
         interactionStyles.find(([name]) => name === 'hover')?.[1].styles,
       ]);
     }
     return StyleSheet.flatten([normalStyles]);
-  }, [interactionsContext, componentState.hover, normalStyles, interactionStyles]);
+  }, [groupContext, componentState, normalStyles, interactionStyles, isGroupParent]);
   return styles;
 };
 

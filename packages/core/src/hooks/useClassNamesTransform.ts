@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import produce from 'immer';
 import { tailwindStore } from '../store';
 import type { IComponentInteractions } from '../types/store.types';
+import type { IStyleType } from '../types/styles.types';
 import { parseClassNames, parsePseudoElements } from '../utils/components.utils';
 import { transformClassNames } from '../utils/styles.utils';
 
@@ -21,7 +22,7 @@ function useClassNamesTransform(classNames: string) {
     return processedClassName;
   }, []);
 
-  const normalStyles = useMemo(() => {
+  const normalStyles: IStyleType = useMemo(() => {
     let styles = {};
     for (const node of parsed.normalClassNames) {
       const compiled = compileClassName(node);

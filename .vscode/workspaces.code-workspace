@@ -54,6 +54,13 @@
       "**/.hg/store/**": true,
       "**/dist/**": true
     },
-    "typescript.tsdk": "✨ root/node_modules/typescript/lib"
+    "typescript.tsdk": "✨ root/node_modules/typescript/lib",
+    "workbench.colorCustomizations": {
+      "[Default Dark+ Experimental]": {
+        "sideBar.background": "#070606",
+        "editor.background": "#070606",
+        "tab.inactiveBackground": "#161414",
+      }
+    }
   }
 }

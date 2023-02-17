@@ -1,6 +1,6 @@
 import { Children, cloneElement, isValidElement } from 'react';
 import type { StyleProp } from 'react-native';
-import type { IComponentState } from '@react-universal/core';
+import type { IComponentState } from '../styled.types';
 
 function useChildren(children: React.ReactNode, componentState: IComponentState) {
   return Children.toArray(children)

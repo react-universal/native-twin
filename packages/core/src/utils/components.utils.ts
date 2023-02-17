@@ -5,7 +5,8 @@ function isValidPseudoSelector(selector: string): selector is TPseudoSelectorTyp
     selector === 'hover' ||
     selector === 'active' ||
     selector === 'focus' ||
-    selector === 'dark'
+    selector === 'dark' ||
+    selector === 'group-hover'
   );
 }
 

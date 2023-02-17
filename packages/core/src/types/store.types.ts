@@ -1,6 +1,6 @@
 import type { IStyleType, IStyleTuple } from './styles.types';
 
-export type TPseudoSelectorTypes = 'hover' | 'active' | 'focus' | 'dark';
+export type TPseudoSelectorTypes = 'hover' | 'active' | 'focus' | 'dark' | 'group-hover';
 
 export type IInteractionPayload = {
   classNames: string;
