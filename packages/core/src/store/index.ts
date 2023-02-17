@@ -1,1 +1,1 @@
-export { useStore } from './store';
+export { tailwindStore } from './store';

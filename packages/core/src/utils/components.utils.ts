@@ -1,4 +1,4 @@
-import type { TPseudoSelectorTypes } from './types';
+import type { TPseudoSelectorTypes } from '../types/store.types';
 
 function isValidPseudoSelector(selector: string): selector is TPseudoSelectorTypes {
   return (

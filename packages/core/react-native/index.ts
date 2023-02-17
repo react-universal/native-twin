@@ -1,1 +1,1 @@
-export * from '../src/install';
+export { default } from '../src/install';

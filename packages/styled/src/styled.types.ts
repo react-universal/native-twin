@@ -1,9 +1,11 @@
-import type { ElementType, ReactElement } from 'react';
-import type { PressableProps } from 'react-native';
+import type { ElementType, ReactElement, ReactNode } from 'react';
+import type { PressableProps, StyleProp } from 'react-native';
 
 export type IExtraProperties = {
   className?: string;
   tw?: string;
+  style?: StyleProp<any>;
+  children?: ReactNode;
 };
 
 export type StyledComponentType = {

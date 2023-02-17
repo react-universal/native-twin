@@ -1,22 +1,30 @@
-import { ComponentType, forwardRef, useId, ComponentProps } from 'react';
-import { useComponentRegistration, useInteraction } from './hooks';
+import { ComponentType, ComponentProps, forwardRef } from 'react';
+import { InteractionsContextProvider } from './context/InteractionsContext';
+import { useStyledComponent } from './hooks/useStyled';
 import type { IExtraProperties } from './styled.types';
 
 function styled<T extends ComponentType>(Component: T) {
-  const Styled = forwardRef<T>(({ className = '', children, ...restProps }: any, ref) => {
-    const componentID = useId();
-    const { style } = useComponentRegistration(componentID, className);
-    const interaction = useInteraction(componentID, restProps);
-    return (
-      <Component key={componentID} {...restProps} {...interaction} ref={ref} style={style}>
-        {children}
-      </Component>
-    );
-  });
+  const Styled = forwardRef<T, ComponentProps<T> & IExtraProperties>(
+    ({ className, tw, style, ...restProps }, ref) => {
+      const { styles, panHandlers, componentState } = useStyledComponent(
+        {
+          inlineStyles: style,
+          className: className ?? tw,
+        },
+        restProps,
+      );
+      return (
+        <InteractionsContextProvider isHover={componentState.hover}>
+          {/* @ts-expect-error */}
+          <Component {...restProps} {...panHandlers} ref={ref} style={styles} />
+        </InteractionsContextProvider>
+      );
+    },
+  );
   if (typeof Component !== 'string') {
-    Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
+    Styled.displayName = `StyledTW.${Component.displayName || 'NoName'}`;
   }
-  return Styled as ComponentType<ComponentProps<typeof Component> & IExtraProperties>;
+  return Styled;
 }
 
 export { styled };

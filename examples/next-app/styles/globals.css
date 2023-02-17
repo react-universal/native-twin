@@ -4,6 +4,7 @@
  * We are using CSS resets here to support React Native for Web and Tailwind CSS.
  */
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

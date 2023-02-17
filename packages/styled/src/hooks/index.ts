@@ -1,2 +1,1 @@
-export { useComponentRegistration } from './useComponentRegistration';
-export { useInteraction } from './useInteraction';
+export { useStyled } from './useStyled';
