@@ -1,5 +1,4 @@
 import { ComponentType, ComponentProps, forwardRef } from 'react';
-import { View } from 'react-native';
 import { GroupContextProvider } from './context/GroupContext';
 import { useStyledComponent } from './hooks';
 import type { IExtraProperties } from './styled.types';
@@ -15,6 +14,7 @@ function styled<T extends ComponentType>(Component: T) {
         restProps,
         Component,
       );
+      console.log('RENDER: ');
       if (isGroupParent) {
         return (
           <GroupContextProvider isHover={componentState['group-hover']}>

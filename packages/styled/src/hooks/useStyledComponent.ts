@@ -1,11 +1,14 @@
-import { useMemo } from 'react';
+/* eslint-disable unused-imports/no-unused-vars */
+import { ReactNode, useMemo } from 'react';
 import { useClassNamesTransform, type IRegisterComponentArgs } from '@react-universal/core';
 import { useGroupContext } from '../context/GroupContext';
+import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useFinalStyles } from './useFinalStyles';
 
 const useStyledComponent = (
   data: Omit<IRegisterComponentArgs, 'id'>,
+  // originalChildren: ReactNode,
   componentProps: any,
   Component: any,
 ) => {
@@ -28,6 +31,7 @@ const useStyledComponent = (
     groupContext,
     isGroupParent,
   });
+  // const children = useChildren(originalChildren, componentState);
 
   return {
     styles,
@@ -36,6 +40,7 @@ const useStyledComponent = (
     hasInteractions,
     componentState,
     groupContext,
+    // children,
   };
 };
 
