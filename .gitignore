@@ -23,6 +23,7 @@ public/
 lint-results/
 
 **build/
+**dist/
 
 **.next/
 

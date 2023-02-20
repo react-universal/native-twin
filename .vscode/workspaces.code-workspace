@@ -13,6 +13,10 @@
       "path": "../examples/expo-app"
     },
     {
+      "name": "📦 @package/native-tw-to-css",
+      "path": "../packages/native-tw-to-css"
+    },
+    {
       "name": "📦 @package/core",
       "path": "../packages/core"
     },
