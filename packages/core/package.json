@@ -30,9 +30,6 @@
   },
   "dependencies": {
     "@react-universal/native-tw-to-css": "*",
-    "@twind/core": "^1.1.3",
-    "@twind/preset-tailwind": "^1.1.4",
-    "@twind/typescript-plugin": "^0.3.5",
     "css-to-react-native": "^3.1.0",
     "css-to-react-native-transform": "^2.0.0",
     "immer": "^9.0.19",

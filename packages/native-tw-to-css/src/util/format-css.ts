@@ -10,15 +10,15 @@ export const formatCSS = (css: string) => ({
     }
 
     return Object.entries(props).reduce(
-      (acc, [prop, value]) => acc + `${nested ? "\t" : ""}${prop}: ${value}; \n\r`,
-      ""
+      (acc, [prop, value]) => acc + `${nested ? '\t' : ''}${prop}: ${value}; \n\r`,
+      '',
     );
   },
   merge() {
     const blockContentRegex =
       /(?<=\.)[\w\d\\[\]-]+\s*\{(?<content>[^{}]*(?:(?<=;)\s*\n\r?[^{}]*)*)\s*\}/gm;
     let matchBlock: RegExpExecArray | null;
-    let blockContent = "";
+    let blockContent = '';
 
     while ((matchBlock = blockContentRegex.exec(css)) !== null) {
       const { content } = matchBlock.groups!;
@@ -27,7 +27,7 @@ export const formatCSS = (css: string) => ({
 
     let mergedCSS = this.extractCSS(blockContent);
 
-    const mediaRegex = /(?<media>@media\s*\([^\)]*\))\s*\{(?<content>[^\}]*)\}/gm;
+    const mediaRegex = /(?<media>@media\s*\([^)]*\))\s*\{(?<content>[^}]*)\}/gm;
     let matchMedia: RegExpExecArray | null;
     while ((matchMedia = mediaRegex.exec(css)) !== null) {
       const { media, content } = matchMedia.groups!;
@@ -42,19 +42,19 @@ export const formatCSS = (css: string) => ({
     css = css
 
       // Remove comments
-      .replace(/\/\*[\s\S]*?\*\//gm, "")
+      .replace(/\/\*[\s\S]*?\*\//gm, '')
 
       // Remove extra spaces after semicolons and colons
-      .replace(/;\s+/gm, ";")
-      .replace(/:\s+/gm, ":")
+      .replace(/;\s+/gm, ';')
+      .replace(/:\s+/gm, ':')
 
       // Remove extra spaces before and after brackets
-      .replace(/\)\s*{/gm, "){") // Remove spaces before opening curly brace after closing parenthesis
-      .replace(/\s+\(/gm, "(") // Remove spaces before opening parenthesis
-      .replace(/{\s+/gm, "{") // Remove spaces after opening curly brace
-      .replace(/}\s+/gm, "}") // Remove spaces before closing curly brace
-      .replace(/\s*{/gm, "{") // Remove spaces after opening curly brace
-      .replace(/;?\s*}/gm, "}"); // Remove extra spaces and semicolons before closing curly braces
+      .replace(/\)\s*{/gm, '){') // Remove spaces before opening curly brace after closing parenthesis
+      .replace(/\s+\(/gm, '(') // Remove spaces before opening parenthesis
+      .replace(/{\s+/gm, '{') // Remove spaces after opening curly brace
+      .replace(/}\s+/gm, '}') // Remove spaces before closing curly brace
+      .replace(/\s*{/gm, '{') // Remove spaces after opening curly brace
+      .replace(/;?\s*}/gm, '}'); // Remove extra spaces and semicolons before closing curly braces
 
     return this;
   },
@@ -68,7 +68,7 @@ export const formatCSS = (css: string) => ({
       let { red, green, blue, alpha = 1 } = match.groups!;
       css = css.replace(
         matchString,
-        `rgb(${red},${green},${blue}${alpha === "1" ? "" : `,${alpha}`})`
+        `rgba(${red},${green},${blue}${alpha === '1' ? ',1' : `,${alpha}`})`,
       );
     }
 
