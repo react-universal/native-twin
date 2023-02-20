@@ -15,21 +15,23 @@
     "url": "git+https://github.com/react-universal/tailwind.git",
     "directory": "packages/tailwind"
   },
+  "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs.js",
-      "require": "./dist/index.js",
-      "browser": "./dist/cdn.min.js",
-      "types": "./index.d.ts"
+      "import": "./build/index.es.js",
+      "require": "./build/index.cjs.js",
+      "browser": "./build/index.umd.js",
+      "types": "./src/index.ts"
     }
   },
-  "main": "dist/index.js",
-  "unpkg": "dist/cdn.min.js",
-  "module": "dist/index.mjs.js",
-  "types": "./index.d.ts",
+  "main": "./build/index.cjs.js",
+  "unpkg": "./build/index.iife.js",
+  "module": "./build/index.cjs.js",
+  "types": "./src/index.ts",
   "scripts": {
     "build": "tsx src/build.ts",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "vite:build": "yarn vite build"
   },
   "config": {
     "commitizen": {
@@ -39,7 +41,6 @@
   "dependencies": {
     "postcss": "8.4.21",
     "postcss-css-variables": "0.18.0",
-    "postcss-rem-to-pixel": "^4.1.2",
     "tailwindcss": "3.2.4"
   },
   "devDependencies": {
@@ -47,9 +48,6 @@
     "@types/postcss-css-variables": "0.18.0",
     "@types/react": "^18.0.27",
     "@types/tailwindcss": "3.1.0",
-    "esbuild": "0.15.18",
-    "tsx": "3.12.2",
-    "typescript": "4.9.4",
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
   },
@@ -58,6 +56,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "react-native": "./src/index.ts"
+  }
 }

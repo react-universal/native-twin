@@ -1,1 +1,1 @@
-export { twi, twj, tailwindToCSS, twToCSS } from "..";
+export { setup } from '..';

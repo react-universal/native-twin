@@ -15,6 +15,9 @@ module.exports = {
   },
   settings: {
     'import/ignore': ['react-native'],
+    react: {
+      version: 'detect',
+    },
   },
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports'],
