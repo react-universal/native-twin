@@ -1,21 +1,20 @@
 {
-  "name": "@react-universal/native-tw-to-css",
+  "name": "@react-universal/tailwind",
   "version": "0.0.9",
   "description": "Tailwindcss Inline CSS",
   "keywords": [
     "tailwind",
     "tailwindcss"
   ],
-  "homepage": "https://github.com/vinicoder/tw-to-css#readme",
+  "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
-    "url": "https://github.com/vinicoder/tw-to-css/issues"
+    "url": "https://github.com/react-universal/tailwind/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vinicoder/tw-to-css.git"
+    "url": "git+https://github.com/react-universal/tailwind.git",
+    "directory": "packages/tailwind"
   },
-  "license": "MIT",
-  "author": "Vinicius de Moraes (vinicoder@gmail.com)",
   "exports": {
     ".": {
       "import": "./dist/index.mjs.js",
@@ -29,7 +28,8 @@
   "module": "dist/index.mjs.js",
   "types": "./index.d.ts",
   "scripts": {
-    "build": "tsx src/build.ts"
+    "build": "tsx src/build.ts",
+    "test:ui": "vitest --ui"
   },
   "config": {
     "commitizen": {
@@ -49,12 +49,15 @@
     "@types/tailwindcss": "3.1.0",
     "esbuild": "0.15.18",
     "tsx": "3.12.2",
-    "typescript": "4.9.4"
+    "typescript": "4.9.4",
+    "vite": "^4.1.1",
+    "vitest": "^0.28.3"
   },
   "engines": {
     "node": ">=16.0.0"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "react-native": "./src/index.ts"
 }

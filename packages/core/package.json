@@ -2,13 +2,13 @@
   "name": "@react-universal/core",
   "version": "0.0.3",
   "description": "Core package that contains common utils, primitives and SWC compatibility layer",
-  "homepage": "https://github.com/react-universal/nativewind-ui#readme",
+  "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
-    "url": "https://github.com/react-universal/nativewind-ui/issues"
+    "url": "https://github.com/react-universal/tailwind/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/react-universal/nativewind-ui.git",
+    "url": "git+https://github.com/react-universal/tailwind.git",
     "directory": "packages/core"
   },
   "license": "MIT",
@@ -29,7 +29,7 @@
     }
   },
   "dependencies": {
-    "@react-universal/native-tw-to-css": "*",
+    "@react-universal/tailwind": "*",
     "css-to-react-native": "^3.1.0",
     "css-to-react-native-transform": "^2.0.0",
     "immer": "^9.0.19",
@@ -37,7 +37,6 @@
     "postcss-rem-to-pixel": "^4.1.2"
   },
   "devDependencies": {
-    "@mhsdesign/jit-browser-tailwindcss": "^0.2.2",
     "@simbathesailor/use-what-changed": "^2.0.0",
     "@types/css-to-react-native": "^3.0.0",
     "@types/css-tree": "^2.0.1",

@@ -1,7 +1,8 @@
 import postcss from 'postcss';
 import postcssVariables from 'postcss-css-variables';
-import { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
-import { createTailwindcssPlugin, defaultTailwindCSS } from '.';
+import type { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
+import { createTailwindcssPlugin } from './create-tailwind-css-plugin';
+import { defaultTailwindCSS } from './default-tailwind-css';
 
 export const processTailwindCSS = (props: { config?: TailwindConfig; content: string }) => {
   const tailwindcssPlugin = createTailwindcssPlugin({
