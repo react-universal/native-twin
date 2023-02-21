@@ -1,12 +1,17 @@
-import { useCallback, useSyncExternalStore } from 'react';
-import { tailwindStore } from '../store';
-import type { IComponentsStore } from '../types/store.types';
+import { useMemo, useSyncExternalStore } from 'react';
+import { classNameParser } from '../modules';
 
-function useStore<T>(selector: (state: IComponentsStore) => T) {
-  return useSyncExternalStore(
-    tailwindStore.subscribe,
-    useCallback(() => selector(tailwindStore.getState()), [selector]),
-  );
+function useStore(classNames: string) {
+  const getData = useMemo(() => classNameParser.prepare(classNames), [classNames]);
+  const subscribe = useMemo(() => {
+    return (notify: () => void) => {
+      classNameParser.subscribe(notify);
+      return () => {
+        classNameParser.unsubscribe(notify);
+      };
+    };
+  }, []);
+  return useSyncExternalStore(subscribe, () => getData);
 }
 
 export { useStore };

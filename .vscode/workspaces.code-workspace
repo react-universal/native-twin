@@ -13,6 +13,10 @@
       "path": "../examples/expo-app"
     },
     {
+      "name": "📦 @package/tailwind",
+      "path": "../packages/tailwind"
+    },
+    {
       "name": "📦 @package/core",
       "path": "../packages/core"
     },
@@ -55,12 +59,12 @@
       "**/dist/**": true
     },
     "typescript.tsdk": "✨ root/node_modules/typescript/lib",
-    "workbench.colorCustomizations": {
-      "[Default Dark+ Experimental]": {
-        "sideBar.background": "#070606",
-        "editor.background": "#070606",
-        "tab.inactiveBackground": "#161414",
-      }
-    }
+    // "workbench.colorCustomizations": {
+    //   "[Default Dark+ Experimental]": {
+    //     "sideBar.background": "#070606",
+    //     "editor.background": "#070606",
+    //     "tab.inactiveBackground": "#161414",
+    //   }
+    // }
   }
 }

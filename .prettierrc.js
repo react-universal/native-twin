@@ -13,7 +13,7 @@ module.exports = {
     'jsx',
   ],
   importOrder: [
-    'intl-pluralrules',
+    'expo/build/Expo.fx',
     'react-native-gesture-handler',
     '^(react|react-native)$',
     '<THIRD_PARTY_MODULES>',

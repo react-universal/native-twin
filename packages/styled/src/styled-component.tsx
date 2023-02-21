@@ -1,26 +1,26 @@
 import { ComponentType, ComponentProps, forwardRef } from 'react';
-import { GroupContextProvider } from './context/GroupContext';
+import { TailwindContextProvider } from './context/TailwindContext';
 import { useStyledComponent } from './hooks';
 import type { IExtraProperties } from './styled.types';
 
 function styled<T extends ComponentType>(Component: T) {
   const Styled = forwardRef<T, ComponentProps<T> & IExtraProperties>(
+    // @ts-expect-error
     ({ className, tw, style, ...restProps }, ref) => {
-      const { styles, panHandlers, componentState, groupContext, isGroupParent } =
-        useStyledComponent(
-          {
-            inlineStyles: style,
-            className: className ?? tw,
-          },
-          restProps,
-        );
-      console.log('INTERACTIONS_CONTEXT: ', groupContext);
+      const { styles, panHandlers, componentState, isGroupParent } = useStyledComponent(
+        {
+          inlineStyles: style,
+          className: className ?? tw,
+        },
+        restProps,
+        Component,
+      );
       if (isGroupParent) {
         return (
-          <GroupContextProvider isHover={componentState['group-hover']}>
+          <TailwindContextProvider parentState={componentState}>
             {/* @ts-expect-error */}
             <Component {...restProps} {...panHandlers} ref={ref} style={styles} />
-          </GroupContextProvider>
+          </TailwindContextProvider>
         );
       }
       return (

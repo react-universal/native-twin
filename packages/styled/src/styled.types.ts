@@ -1,5 +1,5 @@
 import type { ElementType, ReactElement, ReactNode } from 'react';
-import type { PressableProps, StyleProp } from 'react-native';
+import type { PressableProps } from 'react-native';
 import type { TPseudoSelectorTypes } from '@react-universal/core';
 
 export type IComponentState = Record<TPseudoSelectorTypes, boolean>;
@@ -7,7 +7,6 @@ export type IComponentState = Record<TPseudoSelectorTypes, boolean>;
 export type IExtraProperties = {
   className?: string;
   tw?: string;
-  style?: StyleProp<any>;
   children?: ReactNode;
 };
 

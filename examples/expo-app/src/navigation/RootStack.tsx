@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { HomeScreen } from '../screens/Home.screen';
+import { PrimitivesStack } from './PrimitivesStack';
 
-const Stack = createNativeStackNavigator();
+const Stack = createDrawerNavigator();
 
 function RootStack() {
   return (
@@ -10,9 +11,16 @@ function RootStack() {
       <Stack.Screen
         name='Home'
         options={{
-          title: 'Example app',
+          title: 'Dashboard',
         }}
         component={HomeScreen}
+      />
+      <Stack.Screen
+        name='Primitives'
+        options={{
+          title: 'Primitives',
+        }}
+        component={PrimitivesStack}
       />
     </Stack.Navigator>
   );

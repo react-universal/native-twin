@@ -1,11 +1,12 @@
-import { Children, cloneElement, isValidElement } from 'react';
+import { Children, cloneElement, isValidElement, ReactNode } from 'react';
 import type { StyleProp } from 'react-native';
+import { isFragment } from 'react-is';
 import type { IComponentState } from '../styled.types';
 
 function useChildren(children: React.ReactNode, componentState: IComponentState) {
-  return Children.toArray(children)
+  return flattenChildren(children)
     .filter(Boolean)
-    .map((child, index) => {
+    .flatMap((child, index) => {
       if (!isValidElement<{ style?: StyleProp<unknown> }>(child)) {
         return child;
       }
@@ -18,35 +19,35 @@ function useChildren(children: React.ReactNode, componentState: IComponentState)
         ...child.props,
       };
 
-      return child.props.style
+      return isStyledComponent(child)
         ? cloneElement(child, Object.assign({ style: [child.props.style] }, childProps))
-        : cloneElement(child, Object.assign({ style: {} }, childProps));
+        : cloneElement(child);
     });
 }
 
 export { useChildren };
 
-// function isStyledComponent(node: unknown) {
-//   return (node as any).displayName?.startsWith('StyledTW');
-// }
+function isStyledComponent(node: unknown) {
+  return (node as any).displayName?.startsWith('StyledTW');
+}
 
-// function flattenChildren(
-//   children: ReactNode | ReactNode[],
-//   keys: Array<string | number> = [],
-// ): ReactNode[] {
-//   return Children.toArray(children).flatMap((node, index) => {
-//     if (isFragment(node)) {
-//       return flattenChildren(node.props.children, [...keys, node.key || index]);
-//     } else if (typeof node === 'string' || typeof node === 'number') {
-//       return [node];
-//     } else if (isValidElement(node)) {
-//       return [
-//         cloneElement(node, {
-//           key: `${keys.join('.')}.${node.key?.toString()}`,
-//         }),
-//       ];
-//     } else {
-//       return [];
-//     }
-//   });
-// }
+function flattenChildren(
+  children: ReactNode | ReactNode[],
+  keys: Array<string | number> = [],
+): ReactNode[] {
+  return Children.toArray(children).flatMap((node, index) => {
+    if (isFragment(node)) {
+      return flattenChildren(node.props.children, [...keys, node.key || index]);
+    } else if (typeof node === 'string' || typeof node === 'number') {
+      return [node];
+    } else if (isValidElement(node)) {
+      return [
+        cloneElement(node, {
+          key: `${keys.join('.')}.${node.key?.toString()}`,
+        }),
+      ];
+    } else {
+      return [];
+    }
+  });
+}

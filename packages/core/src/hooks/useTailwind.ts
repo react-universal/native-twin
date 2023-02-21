@@ -1,16 +1,9 @@
-import type { IRegisterComponentArgs } from '../types/store.types';
-import { useClassNamesTransform } from './useClassNamesTransform';
+import { useMemo } from 'react';
+import { useStore } from './useStore';
 
-// import { useComponentStore } from './useComponentStore';
-
-function useTailwind(data: Omit<IRegisterComponentArgs, 'id'>) {
-  const { interactionStyles, normalStyles } = useClassNamesTransform(data.className ?? '');
-
-  return {
-    styles: normalStyles,
-    hasInteractions: interactionStyles.length > 0,
-    interactionStyles: interactionStyles,
-  };
+function useTailwind(classNames: string) {
+  const data = useStore(classNames);
+  return useMemo(() => data, [data]);
 }
 
 export { useTailwind };

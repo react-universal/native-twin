@@ -92,4 +92,4 @@ export default [
   'width',
   'writingDirection',
   'zIndex',
-];
+] as const;

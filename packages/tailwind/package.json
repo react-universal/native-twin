@@ -1,0 +1,60 @@
+{
+  "name": "@react-universal/tailwind",
+  "version": "0.0.9",
+  "description": "Tailwindcss Inline CSS",
+  "keywords": [
+    "tailwind",
+    "tailwindcss"
+  ],
+  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/react-universal/tailwind.git",
+    "directory": "packages/tailwind"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./build/index.es.js",
+      "require": "./build/index.cjs.js",
+      "browser": "./build/index.umd.js",
+      "types": "./src/index.ts"
+    }
+  },
+  "main": "./build/index.cjs.js",
+  "unpkg": "./build/index.iife.js",
+  "module": "./build/index.cjs.js",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "yarn vite build",
+    "test:ui": "vitest --ui"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "postcss": "8.4.21",
+    "postcss-color-rgb": "^2.0.0",
+    "postcss-css-variables": "0.18.0",
+    "tailwindcss": "3.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.18",
+    "@types/postcss-css-variables": "0.18.0",
+    "@types/react": "^18.0.27",
+    "@types/tailwindcss": "3.1.0",
+    "vite": "^4.1.1",
+    "vitest": "^0.28.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

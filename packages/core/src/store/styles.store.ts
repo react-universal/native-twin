@@ -5,12 +5,38 @@ import { createHash } from '../utils/createHash';
 import { transformClassNames } from '../utils/styles.utils';
 import { createStore } from './generator';
 
+type IStyleCache = {
+  normalStyles: IStyleType;
+  interactionStyles: IComponentInteractions[];
+};
 const initialState = {
   stylesCollection: new Map<string, IStyleType>(),
-  classNamesCollection: new Map<number, IStyleType>(),
+  classNamesCollection: new Map<number, IStyleCache>(),
 };
 
 const stylesStore = createStore(initialState);
+
+function prepareStylesStore(classNames: string) {
+  const classNamesHash = createHash(classNames);
+  const cache = getClassNameCollectionRegister(classNamesHash);
+  if (cache) {
+    return {
+      subscribe: stylesStore.subscribe,
+      getSnapshot: () => Object.freeze(cache),
+    };
+  }
+  const { interactionClassNames, normalClassNames } = parseClassNames(classNames);
+  const normalStyles: IStyleType = getStylesForClasses(normalClassNames);
+  const interactionStyles = getStylesForInteractionClasses(interactionClassNames);
+  return {
+    subscribe: stylesStore.subscribe,
+    getSnapshot: () =>
+      Object.freeze({
+        normalStyles,
+        interactionStyles,
+      }),
+  };
+}
 
 function getStylesForClassNames(classNames: string) {
   const classNamesHash = createHash(classNames);
@@ -66,17 +92,24 @@ function getClassNameCollectionRegister(classNamesHash: number) {
   return null;
 }
 
-function registerClassName(classNamesHash: number, styles: IStyleType) {
+function registerClassName(classNamesHash: number, styles: IStyleCache) {
   const classNamesCache = stylesStore
     .getState()
     .classNamesCollection.set(classNamesHash, styles);
-  stylesStore.emitChanges();
   if (classNamesCache) {
     return classNamesCache;
   }
   return null;
 }
 
-const useStore = stylesStore.useStore;
+const useStylesStore = stylesStore.useStore;
 
-export { getStylesForClassNames, stylesStore, useStore, registerClassName };
+export {
+  getStylesForClassNames,
+  stylesStore,
+  useStylesStore,
+  registerClassName,
+  prepareStylesStore,
+};
+
+export type ITailwindStore = ReturnType<(typeof stylesStore)['getState']>;

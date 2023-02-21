@@ -1,11 +1,17 @@
+/* eslint-disable unused-imports/no-unused-vars */
 import { useMemo } from 'react';
 import { useClassNamesTransform, type IRegisterComponentArgs } from '@react-universal/core';
-import { useGroupContext } from '../context/GroupContext';
+import { useTailwindContext } from '../context/TailwindContext';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useFinalStyles } from './useFinalStyles';
 
-const useStyledComponent = (data: Omit<IRegisterComponentArgs, 'id'>, componentProps: any) => {
-  const groupContext = useGroupContext();
+const useStyledComponent = (
+  data: Omit<IRegisterComponentArgs, 'id'>,
+  // originalChildren: ReactNode,
+  componentProps: any,
+  Component: any,
+) => {
+  const tailwindContext = useTailwindContext();
   const { interactionStyles, normalStyles, parsed } = useClassNamesTransform(
     data.className ?? '',
   );
@@ -13,19 +19,17 @@ const useStyledComponent = (data: Omit<IRegisterComponentArgs, 'id'>, componentP
     () => parsed.normalClassNames.some((item) => item === 'group'),
     [parsed.normalClassNames],
   );
-  const { componentState, hasInteractions, panHandlers } = useComponentInteractions(
-    { interactionStyles, isGroupParent, groupContext },
-    componentProps,
-  );
+  const { componentState, hasInteractions, panHandlers } = useComponentInteractions({
+    interactionStyles,
+  });
   const styles = useFinalStyles({
     componentState,
     interactionStyles,
     normalStyles,
-    groupContext,
+    tailwindContext,
     isGroupParent,
   });
-
-  console.log('__STYLES__: ', { normalStyles, data, isGroupParent });
+  // const children = useChildren(originalChildren, componentState);
 
   return {
     styles,
@@ -33,7 +37,8 @@ const useStyledComponent = (data: Omit<IRegisterComponentArgs, 'id'>, componentP
     isGroupParent,
     hasInteractions,
     componentState,
-    groupContext,
+    tailwindContext,
+    // children,
   };
 };
 

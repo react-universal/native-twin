@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
+  "browser": {
+    "fs": "react-native-level-fs"
+  },
   "scripts": {
     "android": "expo start --android",
     "ios": "npx expo start --ios -c",
@@ -10,18 +13,23 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/drawer": "^6.6.0",
     "@react-navigation/native": "^6.1.4",
     "@react-navigation/native-stack": "^6.9.10",
     "@react-universal/core": "*",
     "@react-universal/primitives": "*",
     "@react-universal/styled": "*",
+    "@react-universal/tailwind": "*",
+    "asyncstorage-down": "^4.2.0",
     "expo": "~47.0.13",
     "expo-constants": "~14.0.2",
     "expo-status-bar": "~1.4.2",
+    "node-libs-react-native": "^1.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.70.5",
     "react-native-gesture-handler": "~2.8.0",
+    "react-native-level-fs": "^3.0.0",
     "react-native-reanimated": "~2.12.0",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
@@ -33,6 +41,7 @@
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
     "@types/react-native": "0.70.7",
+    "babel-plugin-module-resolver": "^5.0.0",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4"
   }

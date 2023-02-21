@@ -15,11 +15,15 @@ module.exports = {
   },
   settings: {
     'import/ignore': ['react-native'],
+    react: {
+      version: 'detect',
+    },
   },
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports'],
   rules: {
     'no-console': 'off',
+    'no-redeclare': 'off',
     'no-undef': 'off',
     'no-unused-vars': 'off',
     'react/no-unescaped-entities': 'off',
