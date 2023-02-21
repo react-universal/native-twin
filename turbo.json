@@ -2,47 +2,32 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "outputs": [
-        "build/**"
-      ],
-      "dependsOn": [
-        "^build"
-      ],
+      "outputs": ["build/**"],
+      "dependsOn": ["^build"],
       "cache": true
     },
     "dev": {
-      "outputs": [
-        "build/**"
-      ],
+      "outputs": ["build/**"],
       "persistent": true,
       "cache": false
     },
     "expo:start": {
-      "outputs": [
-        ".expo/**"
-      ],
+      "outputs": [".expo/**"],
       "persistent": true,
       "cache": false
     },
     "ios": {
-      "outputs": [
-        ".expo/**"
-      ],
+      "outputs": [".expo/**"],
       "persistent": true,
       "cache": false
     },
     "android": {
-      "outputs": [
-        ".expo/**"
-      ],
+      "outputs": [".expo/**"],
       "persistent": true,
       "cache": false
     },
     "lint": {
-      "outputs": [
-        "dist/**",
-        "build/**"
-      ]
+      "outputs": ["dist/**", "build/**"]
     }
   }
 }
