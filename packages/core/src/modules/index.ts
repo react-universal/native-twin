@@ -1,5 +1,4 @@
-import { TailwindStyleSheet, stylesStore } from './TailwindStyleSheet';
+import { classNameParser } from './ClassParser';
 
-const styleSheet = new TailwindStyleSheet();
-
-export { styleSheet, stylesStore };
+export { classNameParser };
+export type { TComponentsSnapshot } from './ClassParser';

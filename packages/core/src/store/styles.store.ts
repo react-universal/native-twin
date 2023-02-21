@@ -16,6 +16,28 @@ const initialState = {
 
 const stylesStore = createStore(initialState);
 
+function prepareStylesStore(classNames: string) {
+  const classNamesHash = createHash(classNames);
+  const cache = getClassNameCollectionRegister(classNamesHash);
+  if (cache) {
+    return {
+      subscribe: stylesStore.subscribe,
+      getSnapshot: () => Object.freeze(cache),
+    };
+  }
+  const { interactionClassNames, normalClassNames } = parseClassNames(classNames);
+  const normalStyles: IStyleType = getStylesForClasses(normalClassNames);
+  const interactionStyles = getStylesForInteractionClasses(interactionClassNames);
+  return {
+    subscribe: stylesStore.subscribe,
+    getSnapshot: () =>
+      Object.freeze({
+        normalStyles,
+        interactionStyles,
+      }),
+  };
+}
+
 function getStylesForClassNames(classNames: string) {
   const classNamesHash = createHash(classNames);
   const cache = getClassNameCollectionRegister(classNamesHash);
@@ -74,7 +96,6 @@ function registerClassName(classNamesHash: number, styles: IStyleCache) {
   const classNamesCache = stylesStore
     .getState()
     .classNamesCollection.set(classNamesHash, styles);
-  stylesStore.emitChanges();
   if (classNamesCache) {
     return classNamesCache;
   }
@@ -83,6 +104,12 @@ function registerClassName(classNamesHash: number, styles: IStyleCache) {
 
 const useStylesStore = stylesStore.useStore;
 
-export { getStylesForClassNames, stylesStore, useStylesStore, registerClassName };
+export {
+  getStylesForClassNames,
+  stylesStore,
+  useStylesStore,
+  registerClassName,
+  prepareStylesStore,
+};
 
 export type ITailwindStore = ReturnType<(typeof stylesStore)['getState']>;

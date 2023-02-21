@@ -36,7 +36,13 @@ export default defineConfig({
       formats: ['cjs', 'es', 'umd', 'iife'],
     },
     rollupOptions: {
-      external: ['postcss', 'postcss-css-variables', 'css-to-react-native', 'postcss-js'],
+      external: [
+        'postcss',
+        'postcss-css-variables',
+        'css-to-react-native',
+        'postcss-js',
+        'postcss-color-rgb',
+      ],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
       output: {
