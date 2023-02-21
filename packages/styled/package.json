@@ -52,5 +52,5 @@
     "registry": "https://npm.pkg.github.com"
   },
   "react-native": "./src/index.ts",
-  "gitHead": "cc053dcbd9ed43e2dd6a5ccc37fad4ec497fe617"
+  "gitHead": "d19e705e062a26a057983c83f554489018825fde"
 }
