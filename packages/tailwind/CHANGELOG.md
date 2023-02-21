@@ -1,5 +1,11 @@
 # @react-universal/tailwind
 
+## 1.0.0
+
+### Major Changes
+
+- [`4177a14`](https://github.com/react-universal/tailwind/commit/4177a147e01bc6eaceae683d83d3c17fdd9e1522) Thanks [@chrisarts](https://github.com/chrisarts)! - fix registry
+
 ## 0.1.0
 
 ### Minor Changes
