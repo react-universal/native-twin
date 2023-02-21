@@ -70,9 +70,5 @@
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com"
-  },
   "packageManager": "yarn@3.3.1"
 }
