@@ -42,6 +42,7 @@
     "@changesets/cli": "^2.26.0"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.0",
     "@swc/plugin-styled-components": "^1.5.40",
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
