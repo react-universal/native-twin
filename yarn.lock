@@ -3827,11 +3827,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-universal/core@*, @react-universal/core@^0.0.5, @react-universal/core@workspace:packages/core":
+"@react-universal/core@*, @react-universal/core@^0.0.10, @react-universal/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@react-universal/core@workspace:packages/core"
   dependencies:
-    "@react-universal/tailwind": ^0.0.5
+    "@react-universal/tailwind": ^0.0.10
     "@simbathesailor/use-what-changed": ^2.0.0
     "@types/css-to-react-native": ^3.0.0
     "@types/css-tree": ^2.0.1
@@ -3868,8 +3868,8 @@ __metadata:
   resolution: "@react-universal/primitives@workspace:packages/primitives"
   dependencies:
     "@expo/html-elements": ^0.3.1
-    "@react-universal/core": ^0.0.5
-    "@react-universal/styled": ^0.0.5
+    "@react-universal/core": ^0.0.10
+    "@react-universal/styled": ^0.0.10
     "@types/react": 18.0.26
     "@types/react-dom": 18.0.9
     "@types/react-is": ^17.0.3
@@ -3892,11 +3892,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@react-universal/styled@*, @react-universal/styled@^0.0.5, @react-universal/styled@workspace:packages/styled":
+"@react-universal/styled@*, @react-universal/styled@^0.0.10, @react-universal/styled@workspace:packages/styled":
   version: 0.0.0-use.local
   resolution: "@react-universal/styled@workspace:packages/styled"
   dependencies:
-    "@react-universal/core": ^0.0.5
+    "@react-universal/core": ^0.0.10
     "@types/react": 18.0.24
     "@vitest/ui": ^0.28.3
     react: 18.2.0
@@ -3911,7 +3911,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@react-universal/tailwind@*, @react-universal/tailwind@^0.0.5, @react-universal/tailwind@workspace:packages/tailwind":
+"@react-universal/tailwind@*, @react-universal/tailwind@^0.0.10, @react-universal/tailwind@workspace:packages/tailwind":
   version: 0.0.0-use.local
   resolution: "@react-universal/tailwind@workspace:packages/tailwind"
   dependencies:

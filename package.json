@@ -18,7 +18,7 @@
     "expo:android": "yarn workspace expo-app android",
     "expo:ios": "yarn workspace expo-app ios",
     "expo:start": "yarn workspace expo-app start",
-    "release": "turbo run build --filter=\"@react-universal/**\" && auto shipit",
+    "release": "turbo run build --filter=\"@react-universal/**\" && changeset publish",
     "semantic-release": "semantic-release",
     "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
     "web": "turbo run dev --filter next-app"
@@ -31,7 +31,6 @@
   "resolutions": {
     "@expo/config-plugins": "~5.0.0",
     "@expo/prebuild-config": "~5.0.0",
-    "@mhsdesign/jit-browser-tailwindcss@^0.2.2": "patch:@mhsdesign/jit-browser-tailwindcss@npm%3A0.2.2#./.yarn/patches/@mhsdesign-jit-browser-tailwindcss-npm-0.2.2-aa94066e89.patch",
     "@types/react": "18.0.24",
     "react": "18.2.0",
     "react-devtools-core": "~4.25.0",
