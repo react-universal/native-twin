@@ -1,5 +1,11 @@
 {
   "packages": ["packages/*"],
   "version": "0.0.11",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "command": {
+    "version": {
+      "allowBranch": "main",
+      "conventionalCommits": true
+    }
+  }
 }
