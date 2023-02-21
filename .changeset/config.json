@@ -10,14 +10,6 @@
       "@react-universal/primitives"
     ]
   ],
-  "linked": [
-    [
-      "@react-universal/core",
-      "@react-universal/styled",
-      "@react-universal/tailwind",
-      "@react-universal/primitives"
-    ]
-  ],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
