@@ -1,11 +1,11 @@
-# @react-universal/nativewind-ui
+# @react-universal/primitives
 
 Put a description of your Unimodule here
 
 # API documentation
 
-- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/@react-universal/nativewind-ui.md)
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/@react-universal/nativewind-ui/)
+- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/@react-universal/primitives.md)
+- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/@react-universal/primitives/)
 
 # Installation in managed Expo projects
 
@@ -18,7 +18,7 @@ For bare React Native projects, you must ensure that you have [installed and con
 ### Add the package to your npm dependencies
 
 ```
-npm install @react-universal/nativewind-ui
+npm install @react-universal/primitives
 ```
 
 

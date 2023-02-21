@@ -1,4 +1,4 @@
-# @react-universal/nativewind-ui
+# @react-universal/core
 
 Put a description of your Unimodule here
 

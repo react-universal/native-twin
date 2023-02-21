@@ -1,3 +1,22 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 0.0.3 (2023-02-21)
+
+### Features
+
+- **config:** publish config ([#7](https://github.com/react-universal/tailwind/issues/7)) ([756a053](https://github.com/react-universal/tailwind/commit/756a0537c26bb5599d11546c078fe470a16c996d))
+- **tailwind:** Compiler ([#6](https://github.com/react-universal/tailwind/issues/6)) ([635448f](https://github.com/react-universal/tailwind/commit/635448ff6eed8a9110e5fdd7bcebebf301f029fa))
+
+## 0.0.1 (2023-02-21)
+
+### Features
+
+- **config:** publish config ([#7](https://github.com/react-universal/tailwind/issues/7)) ([756a053](https://github.com/react-universal/tailwind/commit/756a0537c26bb5599d11546c078fe470a16c996d))
+- **tailwind:** Compiler ([#6](https://github.com/react-universal/tailwind/issues/6)) ([635448f](https://github.com/react-universal/tailwind/commit/635448ff6eed8a9110e5fdd7bcebebf301f029fa))
+
 # @react-universal/tailwind
 
 ## 1.0.0

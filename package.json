@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-universal/nativewind.git"
+    "url": "https://github.com/react-universal/tailwind.git"
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
@@ -31,7 +31,6 @@
   "resolutions": {
     "@expo/config-plugins": "~5.0.0",
     "@expo/prebuild-config": "~5.0.0",
-    "@mhsdesign/jit-browser-tailwindcss@^0.2.2": "patch:@mhsdesign/jit-browser-tailwindcss@npm%3A0.2.2#./.yarn/patches/@mhsdesign-jit-browser-tailwindcss-npm-0.2.2-aa94066e89.patch",
     "@types/react": "18.0.24",
     "react": "18.2.0",
     "react-devtools-core": "~4.25.0",
@@ -60,6 +59,7 @@
     "eslint-plugin-react": "7.31.11",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-unused-imports": "1.1.5",
+    "lerna": "^6.5.1",
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "semantic-release": "^19.0.5",

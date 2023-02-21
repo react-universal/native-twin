@@ -1,6 +1,6 @@
 {
   "name": "@react-universal/tailwind",
-  "version": "1.0.0",
+  "version": "0.0.10",
   "description": "Tailwindcss Inline CSS",
   "keywords": [
     "tailwind",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/react-universal/tailwind.git",
+    "url": "https://github.com/react-universal/tailwind",
     "directory": "packages/tailwind"
   },
   "type": "module",
@@ -58,5 +58,6 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://npm.pkg.github.com"
-  }
+  },
+  "gitHead": "f8e9ced1704e8896f73b27e2843b54b7488b294e"
 }
