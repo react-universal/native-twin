@@ -1,5 +1,8 @@
 ---
 '@react-universal/core': patch
+'@react-universal/styled': patch
+'@react-universal/tailwind': patch
+'@react-universal/primitives': patch
 ---
 
 ## Workspace init
