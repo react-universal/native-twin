@@ -19,6 +19,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
+    "prepare": "yarn build",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui"

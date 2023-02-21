@@ -20,6 +20,7 @@
   "scripts": {
     "build": "yarn vite build",
     "dev": "yarn vite build -w --force",
+    "prepare": "yarn build",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui"

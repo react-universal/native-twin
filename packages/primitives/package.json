@@ -28,6 +28,7 @@
   "scripts": {
     "build": "yarn vite build",
     "dev": "yarn vite build -w --force",
+    "prepare": "yarn build",
     "test": "expo-module test"
   },
   "config": {
