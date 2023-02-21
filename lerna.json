@@ -2,8 +2,9 @@
   "packages": ["packages/*"],
   "version": "0.0.3",
   "command": {
-    "version": {
-      "conventionalCommits": true
+    "publish": {
+      "access": "public",
+      "registry": "https://npm.pkg.github.com"
     }
   }
 }
