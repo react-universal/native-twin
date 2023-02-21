@@ -42,6 +42,7 @@
     "@changesets/cli": "^2.26.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.0",
     "@swc/plugin-styled-components": "^1.5.40",
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@types/node": "16.11.7",
