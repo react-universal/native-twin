@@ -6,11 +6,7 @@
   "bugs": {
     "url": "https://github.com/react-universal/tailwind/issues"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/react-universal/tailwind",
-    "directory": "packages/core"
-  },
+  "repository": "https://github.com/react-universal/tailwind/tree/main/packages/core",
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
