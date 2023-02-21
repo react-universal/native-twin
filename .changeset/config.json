@@ -2,7 +2,14 @@
   "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
   "changelog": ["@changesets/changelog-github", { "repo": "react-universal/tailwind" }],
   "commit": false,
-  "fixed": [],
+  "fixed": [
+    [
+      "@react-universal/core",
+      "@react-universal/styled",
+      "@react-universal/tailwind",
+      "@react-universal/primitives"
+    ]
+  ],
   "linked": [
     [
       "@react-universal/core",
