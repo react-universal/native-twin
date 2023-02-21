@@ -1,6 +1,6 @@
 {
   "name": "@react-universal/tailwind",
-  "version": "0.0.6",
+  "version": "0.0.7-alpha.0",
   "description": "Tailwindcss Inline CSS",
   "keywords": [
     "tailwind",

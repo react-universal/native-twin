@@ -1,6 +1,6 @@
 {
   "name": "@react-universal/styled",
-  "version": "0.0.6",
+  "version": "0.0.7-alpha.0",
   "description": "Styled components",
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
@@ -31,7 +31,7 @@
     }
   },
   "dependencies": {
-    "@react-universal/core": "^0.0.6"
+    "@react-universal/core": "^0.0.7-alpha.0"
   },
   "devDependencies": {
     "@types/react": "18.0.24",
