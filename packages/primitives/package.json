@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/react-universal/tailwind.git",
+    "url": "https://github.com/react-universal/tailwind",
     "directory": "packages/primitives"
   },
   "license": "MIT",
@@ -67,6 +67,6 @@
     "access": "public",
     "registry": "https://npm.pkg.github.com"
   },
-  "react-native": "./src/index.ts",
-  "gitHead": "c7d986e5d1e2227ca14092a750eddc156e2cb240"
+  "gitHead": "c00ff6d343a4607c0a3f38331144499b21c84d08",
+  "react-native": "./src/index.ts"
 }
