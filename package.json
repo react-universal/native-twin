@@ -18,7 +18,7 @@
     "expo:android": "yarn workspace expo-app android",
     "expo:ios": "yarn workspace expo-app ios",
     "expo:start": "yarn workspace expo-app start",
-    "release": "turbo run build --filter=\"@react-universal/**\" && yarn changeset publish",
+    "release": "yarn workspaces foreach --no-private npm publish",
     "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
     "web": "turbo run dev --filter next-app"
   },
