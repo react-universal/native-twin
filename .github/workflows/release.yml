@@ -25,7 +25,7 @@ jobs:
       - name: Creating .npmrc
         run: |
           cat << EOF > "$HOME/.npmrc"
-            //registry.npmjs.org/:_authToken=dummy
+            //registry.npmjs.org/:_authToken=$NPM_TOKEN
             //npm.pkg.github.com/:_authToken=$NPM_TOKEN
             @react-universal:registry=https://npm.pkg.github.com/
           EOF

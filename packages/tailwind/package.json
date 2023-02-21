@@ -55,9 +55,5 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com"
-  },
   "gitHead": "f8e9ced1704e8896f73b27e2843b54b7488b294e"
 }
