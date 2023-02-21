@@ -31,7 +31,7 @@
     }
   },
   "dependencies": {
-    "@react-universal/core": "*"
+    "@react-universal/core": "^0.0.1"
   },
   "devDependencies": {
     "@types/react": "18.0.24",

@@ -43,8 +43,8 @@
   },
   "devDependencies": {
     "@expo/html-elements": "^0.3.1",
-    "@react-universal/core": "*",
-    "@react-universal/styled": "*",
+    "@react-universal/core": "^0.0.1",
+    "@react-universal/styled": "^0.0.1",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
     "@types/react-is": "^17.0.3",
