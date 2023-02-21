@@ -1,0 +1,6 @@
+77 error Error: Command failed with exit code 128: git tag v0.0.1 -m v0.0.1
+77 error fatal: tag 'v0.0.1' already exists
+77 error     at makeError (/Users/chripio/work/react-universal/node_modules/@lerna/child-process/node_modules/execa/lib/error.js:60:11)
+77 error     at handlePromise (/Users/chripio/work/react-universal/node_modules/@lerna/child-process/node_modules/execa/index.js:118:26)
+77 error     at processTicksAndRejections (node:internal/process/task_queues:96:5)
+77 error     at async Promise.all (index 0)
