@@ -6,7 +6,6 @@ import type { IStyleType } from '../types/styles.types';
 const twj = setup({ content: ['__'] });
 
 const toRNStyles = (JSS: CssInJs) => {
-  const styles = {};
   const cssStyles = Object.entries(JSS)
     .map(([, cssValue]): CSSProperties => {
       return cssValue;
