@@ -28,3 +28,4 @@ lint-results/
 **.next/
 
 **/.swc
+.env

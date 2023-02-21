@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-universal/nativewind.git"
+    "url": "https://github.com/react-universal/tailwind.git"
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
@@ -18,7 +18,7 @@
     "expo:android": "yarn workspace expo-app android",
     "expo:ios": "yarn workspace expo-app ios",
     "expo:start": "yarn workspace expo-app start",
-    "release": "turbo run build --filter=\"@react-universal/**\" && changeset publish",
+    "release": "turbo run build --filter=\"@react-universal/**\" && auto shipit",
     "semantic-release": "semantic-release",
     "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
     "web": "turbo run dev --filter next-app"
@@ -60,6 +60,7 @@
     "eslint-plugin-react": "7.31.11",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-unused-imports": "1.1.5",
+    "lerna": "^6.5.1",
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "semantic-release": "^19.0.5",
