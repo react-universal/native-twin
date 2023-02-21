@@ -63,6 +63,6 @@
   "peerDependencies": {
     "next": ">= 13.0.0"
   },
-  "gitHead": "24513aa31374f193d3f4a345ca5b4a711a14c34d",
+  "gitHead": "a5c05d5ee9bc016aa01fc3a7cc03bddd46d1e634",
   "react-native": "./src/index.ts"
 }
