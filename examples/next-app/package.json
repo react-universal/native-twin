@@ -1,6 +1,6 @@
 {
   "name": "next-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@next/font": "13.0.6",
-    "@react-universal/primitives": "^1.0.1",
-    "@react-universal/styled": "^1.0.1",
+    "@react-universal/primitives": "^1.0.2",
+    "@react-universal/styled": "^1.0.2",
     "autoprefixer": "10.4.13",
     "critters": "^0.0.16",
     "next": "13.1.4",

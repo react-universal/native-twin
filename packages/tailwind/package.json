@@ -1,6 +1,6 @@
 {
   "name": "@react-universal/tailwind",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tailwindcss Inline CSS",
   "keywords": [
     "tailwind",
@@ -55,5 +55,5 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "gitHead": "490d2e99e84d28b581546039f574ae3faf5a089b"
+  "gitHead": "24513aa31374f193d3f4a345ca5b4a711a14c34d"
 }

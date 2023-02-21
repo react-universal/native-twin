@@ -1,6 +1,6 @@
 {
   "name": "@react-universal/primitives",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
@@ -37,8 +37,8 @@
     }
   },
   "dependencies": {
-    "@react-universal/core": "^1.0.1",
-    "@react-universal/styled": "^1.0.1",
+    "@react-universal/core": "^1.0.2",
+    "@react-universal/styled": "^1.0.2",
     "class-variance-authority": "0.4.0",
     "clsx": "^1.2.1",
     "react-is": "18.2.0"
@@ -63,6 +63,6 @@
   "peerDependencies": {
     "next": ">= 13.0.0"
   },
-  "gitHead": "490d2e99e84d28b581546039f574ae3faf5a089b",
+  "gitHead": "24513aa31374f193d3f4a345ca5b4a711a14c34d",
   "react-native": "./src/index.ts"
 }

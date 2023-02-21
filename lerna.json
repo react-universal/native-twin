@@ -1,11 +1,14 @@
 {
   "packages": ["packages/*"],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "useWorkspaces": true,
   "command": {
     "version": {
       "allowBranch": "main",
       "conventionalCommits": true
+    },
+    "publish": {
+      "graphType": "all"
     }
   }
 }
