@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/react-universal/tailwind.git",
+    "url": "https://github.com/react-universal/tailwind.git",
     "directory": "packages/styled"
   },
   "license": "MIT",
@@ -51,6 +51,6 @@
     "access": "public",
     "registry": "https://npm.pkg.github.com"
   },
-  "react-native": "./src/index.ts",
-  "gitHead": "546d2e04a8da54979ed2a63662ef1264d814408c"
+  "gitHead": "4351cc7a60998a74f45e6393ab2d2360df92679b",
+  "react-native": "./src/index.ts"
 }
