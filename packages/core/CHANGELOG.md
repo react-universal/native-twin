@@ -1,18 +1,11 @@
 # Change Log
 
-## 0.1.0
-
-### Minor Changes
-
-- [#10](https://github.com/react-universal/tailwind/pull/10) [`3389aef`](https://github.com/react-universal/tailwind/commit/3389aefd28f00d0cb017d2924350c86dbee168cb) Thanks [@chrisarts](https://github.com/chrisarts)! - publish with changesets
-
-### Patch Changes
-
-- Updated dependencies [[`3389aef`](https://github.com/react-universal/tailwind/commit/3389aefd28f00d0cb017d2924350c86dbee168cb)]:
-  - @react-universal/tailwind@0.1.0
-
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [1.0.1](https://github.com/react-universal/tailwind/compare/v0.0.11...v1.0.1) (2023-02-21)
+
+**Note:** Version bump only for package @react-universal/core
 
 ## 0.0.3 (2023-02-21)
 

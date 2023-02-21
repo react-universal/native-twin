@@ -1,6 +1,6 @@
 {
   "name": "expo-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "main": "index.js",
   "browser": {
@@ -16,10 +16,10 @@
     "@react-navigation/drawer": "^6.6.0",
     "@react-navigation/native": "^6.1.4",
     "@react-navigation/native-stack": "^6.9.10",
-    "@react-universal/core": "*",
-    "@react-universal/primitives": "*",
-    "@react-universal/styled": "*",
-    "@react-universal/tailwind": "*",
+    "@react-universal/core": "^1.0.1",
+    "@react-universal/primitives": "^1.0.1",
+    "@react-universal/styled": "^1.0.1",
+    "@react-universal/tailwind": "^1.0.1",
     "asyncstorage-down": "^4.2.0",
     "expo": "~47.0.13",
     "expo-constants": "~14.0.2",
