@@ -10,6 +10,6 @@
     "types": ["node"],
     "importHelpers": true
   },
-  "include": ["./src/**/*.ts"],
+  "include": ["./src/**/*.ts", "env.d.ts"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }

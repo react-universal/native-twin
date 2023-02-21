@@ -1,4 +1,4 @@
-import transform, { getStylesForProperty } from 'css-to-react-native';
+import { getStylesForProperty } from 'css-to-react-native';
 import type { CssInJs } from 'postcss-js';
 import type { IStyleType } from '../../types/styles.types';
 

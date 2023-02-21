@@ -2,13 +2,13 @@
   "name": "@react-universal/styled",
   "version": "0.0.3",
   "description": "Styled components",
-  "homepage": "https://github.com/react-universal/nativewind-ui#readme",
+  "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
-    "url": "https://github.com/react-universal/nativewind-ui/issues"
+    "url": "https://github.com/react-universal/tailwind/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/react-universal/nativewind-ui.git",
+    "url": "git+https://github.com/react-universal/tailwind.git",
     "directory": "packages/styled"
   },
   "license": "MIT",
@@ -20,6 +20,7 @@
   "scripts": {
     "build": "yarn vite build",
     "dev": "yarn vite build -w --force",
+    "prepare": "yarn build",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui"

@@ -1,4 +1,4 @@
-import { AcceptedPlugin } from 'postcss';
+import type { AcceptedPlugin } from 'postcss';
 
 const postcssPluginRemToPx = (opts = { baseValue: 16 }): AcceptedPlugin => {
   return {

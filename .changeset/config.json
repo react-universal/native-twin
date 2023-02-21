@@ -3,9 +3,19 @@
   "changelog": "@changesets/cli/changelog-github",
   "commit": false,
   "fixed": [],
-  "linked": [],
-  "access": "restricted",
+  "linked": [
+    [
+      "@react-universal/core",
+      "@react-universal/styled",
+      "@react-universal/tailwind",
+      "@react-universal/primitives"
+    ]
+  ],
+  "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-app", "expo-app"]
+  "ignore": ["next-app", "expo-app"],
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  }
 }

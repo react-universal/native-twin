@@ -1,4 +1,4 @@
-import { AcceptedPlugin } from 'postcss';
+import type { AcceptedPlugin } from 'postcss';
 
 const colorRule = new RegExp(
   /rgb\(\s*(?<red>\d+)\s*(?<green>\d+)\s*(?<blue>\d+)(?:\s*\/\s*(?<alpha>[\d%.]+))?\s*\)/gm,
