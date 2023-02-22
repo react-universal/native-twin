@@ -21,10 +21,6 @@
       "path": "../packages/core"
     },
     {
-      "name": "📦 @package/styled",
-      "path": "../packages/styled"
-    },
-    {
       "name": "📦 @package/primitives",
       "path": "../packages/primitives"
     }
