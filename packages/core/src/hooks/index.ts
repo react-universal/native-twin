@@ -1,1 +1,1 @@
-export { useClassNamesTransform } from './useClassNamesTransform';
+export { useStyledComponent } from './useStyledComponent';

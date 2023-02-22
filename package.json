@@ -10,7 +10,8 @@
   "author": "Cristhian Gutierrez",
   "workspaces": [
     "packages/*",
-    "examples/*"
+    "examples/*",
+    "apps/*"
   ],
   "scripts": {
     "commit": "cz",

@@ -1,4 +1,5 @@
-import { useMemo, useSyncExternalStore } from 'react';
+import { useMemo } from 'react';
+import { useSyncExternalStore } from 'use-sync-external-store';
 import { classNameParser } from '../modules';
 
 function useStore(classNames: string) {

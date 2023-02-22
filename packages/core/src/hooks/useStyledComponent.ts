@@ -1,8 +1,8 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { useMemo } from 'react';
-import { useTailwindContext } from '../../context/TailwindContext';
-import { useClassNamesTransform } from '../../hooks';
-import type { IRegisterComponentArgs } from '../../types/store.types';
+import { useTailwindContext } from '../context/TailwindContext';
+import type { IRegisterComponentArgs } from '../types/store.types';
+import { useClassNamesTransform } from './useClassNamesTransform';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useFinalStyles } from './useFinalStyles';
 

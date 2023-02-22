@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useReducer } from 'react';
 import { PanResponder } from 'react-native';
-import type { IComponentInteractions, TPseudoSelectorTypes } from '../../types/store.types';
-import type { IComponentState } from '../../types/styles.types';
+import type { IComponentInteractions, TPseudoSelectorTypes } from '../types/store.types';
+import type { IComponentState } from '../types/styles.types';
 
 const initialState: IComponentState = {
   active: false,

@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import type { ITailwindContext } from '../../context/TailwindContext';
-import type { IComponentInteractions } from '../../types/store.types';
-import type { IComponentState, IStyleType } from '../../types/styles.types';
+import type { ITailwindContext } from '../context/TailwindContext';
+import type { IComponentInteractions } from '../types/store.types';
+import type { IComponentState, IStyleType } from '../types/styles.types';
 
 interface IFinalStylesArgs {
   componentState: IComponentState;

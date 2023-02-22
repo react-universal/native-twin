@@ -7969,6 +7969,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"docs-page@workspace:apps/docs":
+  version: 0.0.0-use.local
+  resolution: "docs-page@workspace:apps/docs"
+  dependencies:
+    "@next/font": 13.0.6
+    "@react-universal/primitives": ^1.0.3
+    autoprefixer: 10.4.13
+    critters: ^0.0.16
+    next: 13.1.4
+    next-compose-plugins: ^2.2.1
+    postcss: ^8.4.21
+    tailwindcss: ^3.2.4
+  languageName: unknown
+  linkType: soft
+
 "doctrine@npm:^2.1.0":
   version: 2.1.0
   resolution: "doctrine@npm:2.1.0"

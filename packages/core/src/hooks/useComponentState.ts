@@ -1,7 +1,7 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { useCallback, useReducer } from 'react';
-import type { TPseudoSelectorTypes } from '../../types/store.types';
-import type { IComponentState } from '../../types/styles.types';
+import type { TPseudoSelectorTypes } from '../types/store.types';
+import type { IComponentState } from '../types/styles.types';
 
 const initialState: IComponentState = {
   active: false,

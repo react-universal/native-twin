@@ -1,7 +1,7 @@
 import { ComponentType, ComponentProps, forwardRef } from 'react';
 import { TailwindContextProvider } from '../context/TailwindContext';
+import { useStyledComponent } from '../hooks';
 import type { IExtraProperties } from '../types/styles.types';
-import { useStyledComponent } from './hooks';
 
 function styled<T extends ComponentType>(Component: T) {
   const Styled = forwardRef<T, ComponentProps<T> & IExtraProperties>(

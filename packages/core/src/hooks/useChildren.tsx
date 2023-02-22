@@ -1,7 +1,7 @@
 import { Children, cloneElement, isValidElement, ReactNode } from 'react';
 import type { StyleProp } from 'react-native';
 import { isFragment } from 'react-is';
-import type { IComponentState } from '../../types/styles.types';
+import type { IComponentState } from '../types/styles.types';
 
 function useChildren(children: React.ReactNode, componentState: IComponentState) {
   return flattenChildren(children)
