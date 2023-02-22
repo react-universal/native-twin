@@ -1,4 +1,4 @@
-import { classNameParser } from './ClassParser';
+import { tailwindManager } from './TailwindManager';
 
-export { classNameParser };
-export type { TComponentsSnapshot } from './ClassParser';
+export { tailwindManager };
+export type { TComponentsSnapshot } from './TailwindManager';

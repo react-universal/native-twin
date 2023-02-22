@@ -19,7 +19,7 @@ const useFinalStyles = ({
   isGroupParent,
 }: IFinalStylesArgs) => {
   const styles = useMemo(() => {
-    if (!isGroupParent && tailwindContext.parentState.hover && componentState['group-hover']) {
+    if (!isGroupParent && tailwindContext.parentState.hover) {
       return StyleSheet.flatten([
         normalStyles,
         interactionStyles.find(([name]) => name === 'group-hover')?.[1].styles,

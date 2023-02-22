@@ -1,12 +1,22 @@
-import { ComponentType, ComponentProps, forwardRef } from 'react';
+import { ComponentType, ComponentProps, forwardRef, useRef, memo } from 'react';
 import { TailwindContextProvider } from '../context/TailwindContext';
 import { useStyledComponent } from '../hooks';
 import type { IExtraProperties } from '../types/styles.types';
 
 function styled<T extends ComponentType>(Component: T) {
   const Styled = forwardRef<T, ComponentProps<T> & IExtraProperties>(
-    // @ts-expect-error
-    ({ className, tw, style, ...restProps }, ref) => {
+    (
+      {
+        className,
+        tw,
+        // @ts-expect-error
+        style,
+        ...restProps
+      },
+      ref,
+    ) => {
+      let render = useRef(0);
+      console.log('STYLED', ++render.current);
       const { styles, panHandlers, componentState, isGroupParent } = useStyledComponent(
         {
           inlineStyles: style,
@@ -32,7 +42,7 @@ function styled<T extends ComponentType>(Component: T) {
   if (typeof Component !== 'string') {
     Styled.displayName = `StyledTW.${Component.displayName || 'NoName'}`;
   }
-  return Styled;
+  return memo(Styled);
 }
 
 export { styled };

@@ -13,7 +13,7 @@
       "path": "../examples/expo-app"
     },
     {
-      "name": "📦 @package/native-tailwind",
+      "name": "📦 @package/tailwind",
       "path": "../packages/native-tailwind"
     },
     {
@@ -23,6 +23,10 @@
     {
       "name": "📦 @package/primitives",
       "path": "../packages/primitives"
+    },
+    {
+      "name": "📦 @package/ui",
+      "path": "../packages/tailwind-ui"
     }
   ],
   "settings": {
