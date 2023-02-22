@@ -13,8 +13,8 @@
       "path": "../examples/expo-app"
     },
     {
-      "name": "📦 @package/tailwind",
-      "path": "../packages/tailwind"
+      "name": "📦 @package/native-tailwind",
+      "path": "../packages/native-tailwind"
     },
     {
       "name": "📦 @package/core",

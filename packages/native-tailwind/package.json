@@ -1,10 +1,12 @@
 {
-  "name": "@react-universal/tailwind",
+  "name": "@react-universal/native-tailwind",
   "version": "1.0.3",
-  "description": "Tailwindcss Inline CSS",
+  "description": "Tailwindcss Inline StyleSheet generator for react native",
   "keywords": [
     "tailwind",
-    "tailwindcss"
+    "tailwindcss",
+    "react-native",
+    "react"
   ],
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
@@ -13,7 +15,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/react-universal/tailwind",
-    "directory": "packages/tailwind"
+    "directory": "packages/native-tailwind"
   },
   "type": "module",
   "exports": {
@@ -41,14 +43,14 @@
   "dependencies": {
     "postcss": "8.4.21",
     "postcss-color-rgb": "^2.0.0",
-    "postcss-css-variables": "0.18.0",
-    "tailwindcss": "3.2.4"
+    "postcss-css-variables": "0.18.0"
   },
   "devDependencies": {
     "@types/node": "18.11.18",
     "@types/postcss-css-variables": "0.18.0",
     "@types/react": "^18.0.27",
     "@types/tailwindcss": "3.1.0",
+    "tailwindcss": "3.2.4",
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
   },

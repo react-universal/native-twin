@@ -23,7 +23,6 @@ export default defineConfig({
       'nullish-coalescing': false,
       'optional-chain': false,
     },
-    platform: 'browser',
   },
   logLevel: 'info',
   build: {
@@ -31,7 +30,7 @@ export default defineConfig({
     ssr: false,
     lib: {
       entry: path.resolve(__dirname, 'src/builds/module.ts'),
-      name: '@react-universal/tailwind',
+      name: '@react-universal/native-tailwind',
       fileName: (format) => `index.${format}.js`,
       formats: ['cjs', 'es', 'umd', 'iife'],
     },
