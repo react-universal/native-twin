@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "./build",
     "rootDir": "./src",
+    "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
@@ -10,6 +11,6 @@
     "types": ["node"],
     "importHelpers": true
   },
-  "include": ["./src/**/*.ts", "env.d.ts"],
+  "include": ["./src", "env.d.ts"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }

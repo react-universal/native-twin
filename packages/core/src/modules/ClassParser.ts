@@ -1,4 +1,4 @@
-import { setup } from '@react-universal/tailwind';
+import { setup } from '@react-universal/native-tailwind';
 import type { IClassNamesStyle } from '../store/store';
 import type { IComponentInteractions } from '../types/store.types';
 import type { IStyleTuple, IStyleType } from '../types/styles.types';

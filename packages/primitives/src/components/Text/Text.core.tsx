@@ -10,7 +10,7 @@ import {
   Strong as NStrong,
   P as NP,
 } from '@expo/html-elements';
-import { styled } from '@react-universal/styled';
+import { styled } from '@react-universal/core';
 import type { TTextProps } from './types';
 
 NH1.displayName = 'H1';

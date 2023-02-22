@@ -37,7 +37,7 @@
     }
   },
   "dependencies": {
-    "@react-universal/styled": "^1.0.3",
+    "@react-universal/core": "^1.0.3",
     "class-variance-authority": "0.4.0",
     "clsx": "^1.2.1",
     "react-is": "18.2.0"
