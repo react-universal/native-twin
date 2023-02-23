@@ -1,5 +1,7 @@
 import { observable } from '@legendapp/state';
 import type { Config } from 'tailwindcss';
+import type { TComponentsSnapshot } from '../modules';
+import type { IStyleType } from '../types/styles.types';
 
 interface ITailwindState {
   userConfig: Config;
@@ -10,4 +12,12 @@ const tailwindConfig = observable<ITailwindState>({
   resolvedConfig: { content: ['__'] },
 });
 
-export { tailwindConfig };
+const componentsStore = observable<{
+  componentsState: TComponentsSnapshot;
+  stylesCollection: Map<string, { generated: IStyleType }>;
+}>({
+  componentsState: {},
+  stylesCollection: new Map(),
+});
+
+export { tailwindConfig, componentsStore };
