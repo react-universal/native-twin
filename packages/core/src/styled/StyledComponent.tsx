@@ -1,4 +1,4 @@
-import { ComponentType, ComponentProps, useRef } from 'react';
+import type { ComponentType, ComponentProps } from 'react';
 import { StyleSheet } from 'react-native';
 import { TailwindContextProvider } from '../context/TailwindContext';
 import { useStyledComponent } from '../hooks';
@@ -13,8 +13,6 @@ function styled<T extends ComponentType>(Component: T) {
     children,
     ...restProps
   }: ComponentProps<T> & IExtraProperties) => {
-    const renderNo = ++useRef(0).current;
-    console.log('RENDER_NO: ', renderNo);
     const { styles, panHandlers, componentState, isGroupParent, componentChilds } =
       useStyledComponent(className ?? tw ?? '', children);
     if (isGroupParent) {
