@@ -22,14 +22,14 @@ class TailwindManager {
   }
 
   private getJSS(classNames: string[]) {
-    console.groupCollapsed('getJSS');
+    // console.groupCollapsed('getJSS');
     const styleTuple = classNames.reduce((previous, current) => {
       const cache = this.stylesCollection.get(current);
       if (cache) {
-        console.log('getJSS_CACHE_HIT: ', current);
+        // console.log('getJSS_CACHE_HIT: ', current);
         previous.push([current, cache.generated]);
       } else {
-        console.log('getJSS_CACHE_MISS: ', current);
+        // console.log('getJSS_CACHE_MISS: ', current);
         const styles = this.tw(current);
         const rnStyles = cssPropertiesResolver(styles.JSS);
         previous.push([current, rnStyles]);
@@ -39,8 +39,8 @@ class TailwindManager {
       }
       return previous;
     }, [] as IStyleTuple[]);
-    console.table(styleTuple);
-    console.groupEnd();
+    // console.table(styleTuple);
+    // console.groupEnd();
 
     return styleTuple;
   }
@@ -56,7 +56,7 @@ class TailwindManager {
         interactionType,
         {
           classNames: interactionClassNames,
-          styles: compiled,
+          styles: compiled.reduce((obj, d) => Object.assign(obj, d[1]), {}),
         },
       ]);
     }
@@ -80,8 +80,9 @@ class TailwindManager {
     );
     this.componentsState[hash] = {
       interactionStyles,
-      normalStyles,
+      normalStyles: normalStyles.reduce((obj, d) => Object.assign(obj, d[1]), {}),
     };
+    this.listeners.forEach((l) => l());
     return Object.freeze(this.componentsState[hash]);
   }
 

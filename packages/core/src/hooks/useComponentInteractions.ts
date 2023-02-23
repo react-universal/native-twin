@@ -1,48 +1,20 @@
-import { useCallback, useMemo, useReducer } from 'react';
+import { useCallback, useMemo } from 'react';
 import { PanResponder } from 'react-native';
-import type { IComponentInteractions, TPseudoSelectorTypes } from '../types/store.types';
-import type { IComponentState } from '../types/styles.types';
-
-const initialState: IComponentState = {
-  active: false,
-  dark: false,
-  focus: false,
-  hover: false,
-  'group-hover': false,
-};
-
-const componentStateReducer = (
-  state: IComponentState,
-  action: IActionType,
-): IComponentState => {
-  switch (action.type) {
-    case 'SetInteraction':
-      return {
-        ...state,
-        [action.payload.kind]: action.payload.active,
-      };
-    default:
-      return state;
-  }
-};
-
-type IActionType = {
-  type: 'SetInteraction';
-  payload: { kind: TPseudoSelectorTypes; active: boolean };
-};
+import { useSharedValue } from 'react-native-reanimated';
+import type { IComponentInteractions } from '../types/store.types';
 
 interface IComponentInteractionsData {
   interactionStyles: IComponentInteractions[];
 }
 const useComponentInteractions = ({ interactionStyles }: IComponentInteractionsData) => {
-  const [componentState, dispatch] = useReducer(componentStateReducer, initialState);
+  const isHover = useSharedValue(false);
   const onHover = useCallback(() => {
-    let interactionKind: TPseudoSelectorTypes = 'hover';
-    dispatch({ type: 'SetInteraction', payload: { kind: interactionKind, active: true } });
-  }, []);
+    console.log('ON_HOVER');
+    isHover.value = true;
+  }, [isHover]);
   const onBlur = useCallback(() => {
-    dispatch({ type: 'SetInteraction', payload: { kind: 'hover', active: false } });
-  }, []);
+    isHover.value = false;
+  }, [isHover]);
 
   const hasInteractions = useMemo(() => interactionStyles.length > 0, [interactionStyles]);
 
@@ -66,7 +38,11 @@ const useComponentInteractions = ({ interactionStyles }: IComponentInteractionsD
   }, [hasInteractions, onBlur, onHover]);
   return {
     componentState: {
-      ...componentState,
+      hover: isHover.value,
+      active: false,
+      focus: false,
+      'group-hover': false,
+      dark: false,
     },
     hasInteractions,
     panHandlers: panResponder.panHandlers,

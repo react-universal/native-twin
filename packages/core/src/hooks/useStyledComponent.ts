@@ -1,38 +1,48 @@
-import { ReactNode, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTailwindContext } from '../context/TailwindContext';
+import type { IExtraProperties } from '../types/styles.types';
+import { parseClassNames } from '../utils/components.utils';
 import { useChildren } from './useChildren';
-import { useClassNamesTransform } from './useClassNamesTransform';
-import { useComponentInteractions } from './useComponentInteractions';
 import { useFinalStyles } from './useFinalStyles';
+import { useStore } from './useStore';
 
-const useStyledComponent = (className = '', children: ReactNode) => {
+const useStyledComponent = <Props extends Object>({
+  className,
+  children,
+  tw,
+  ...restProps
+}: Props & IExtraProperties) => {
   const tailwindContext = useTailwindContext();
-  const { interactionStyles, normalStyles, parsed } = useClassNamesTransform(className);
+  const { interactionStyles, normalStyles } = useStore(className ?? tw ?? '');
+  const parsedClassNames = useMemo(() => parseClassNames(className), [className]);
   const isGroupParent = useMemo(
-    () => parsed.normalClassNames.some((item) => item === 'group'),
-    [parsed.normalClassNames],
+    () => parsedClassNames.normalClassNames.some((item) => item === 'group'),
+    [parsedClassNames.normalClassNames],
   );
-  const { componentState, hasInteractions, panHandlers } = useComponentInteractions({
-    interactionStyles,
-  });
-  const styles = useFinalStyles({
+  const {
+    styles,
+    hasInteractions,
     componentState,
+    interactionsHandler,
+    hasGroupInteractions,
+  } = useFinalStyles({
     interactionStyles,
     normalStyles,
-    tailwindContext,
     isGroupParent,
+    componentProps: restProps,
   });
   const componentChilds = useChildren(children);
 
   return {
     styles,
-    panHandlers,
     isGroupParent,
     componentChilds,
     hasInteractions,
     componentState,
     tailwindContext,
-    // children,
+    normalStyles,
+    hasGroupInteractions,
+    interactionsHandler,
   };
 };
 
