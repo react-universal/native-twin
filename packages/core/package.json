@@ -14,11 +14,19 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./build/index.es.js",
+      "require": "./build/index.umd.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/index.umd.js",
+  "module": "./build/index.es.js",
   "types": "./src/index.ts",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc -w",
+    "build": "yarn vite build",
     "prepare": "yarn build",
     "test": "vitest",
     "test:run": "vitest run",

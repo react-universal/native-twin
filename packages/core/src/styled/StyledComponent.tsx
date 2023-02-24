@@ -11,8 +11,14 @@ function styled<Props extends object, Ref>(ComponentWithOutTailwind: ComponentTy
   );
   const createAnimatedComponent = () => {
     const Styled = forwardRef<Ref, Props & IExtraProperties>(function StyledTW(props, ref) {
-      const { styles, componentState, isGroupParent, componentChilds, gesture } =
-        useStyledComponent(props);
+      const {
+        styles,
+        componentState,
+        isGroupParent,
+        componentChilds,
+        gesture,
+        hasInteractions,
+      } = useStyledComponent(props);
       if (isGroupParent) {
         return (
           <TailwindContextProvider parentState={componentState}>
@@ -28,6 +34,14 @@ function styled<Props extends object, Ref>(ComponentWithOutTailwind: ComponentTy
               </Component>
             </GestureDetector>
           </TailwindContextProvider>
+        );
+      }
+      if (!hasInteractions) {
+        return (
+          // @ts-expect-error
+          <Component {...componentState} {...props} ref={ref} style={[styles, props.style]}>
+            {componentChilds}
+          </Component>
         );
       }
       return (

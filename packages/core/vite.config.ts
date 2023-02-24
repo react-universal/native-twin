@@ -27,7 +27,7 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@react-universal/styled',
+      name: '@react-universal/core',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {

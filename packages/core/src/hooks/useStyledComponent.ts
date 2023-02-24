@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-// import { findNodeHandle } from 'react-native';
 import { useTailwindContext } from '../context/TailwindContext';
 import type { IExtraProperties } from '../types/styles.types';
 import { parseClassNames } from '../utils/components.utils';

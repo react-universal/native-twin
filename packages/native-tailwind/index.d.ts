@@ -1,3 +1,5 @@
+import type { Root } from 'postcss';
+import type { CssInJs } from 'postcss-js';
 import { Config } from 'tailwindcss';
 
 export interface TailwindConfig {
@@ -17,3 +19,9 @@ export interface TailwindConfig {
 type Content = string | Record<string, boolean> | TemplateStringsArray | Content[];
 
 type Options = { merge?: boolean; minify?: boolean };
+
+export function setup(config: Config): (twClasses: string) => {
+  css: string;
+  JSS: CssInJs;
+  postcssRoot: Root;
+};

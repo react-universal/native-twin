@@ -14,6 +14,7 @@
     "apps/*"
   ],
   "scripts": {
+    "build:libs": "turbo run build --filter=\"@react-universal/**\"",
     "commit": "cz",
     "dev": "turbo run dev --filter=\"@react-universal/**\" --parallel",
     "expo:android": "yarn workspace expo-app android",
@@ -29,8 +30,6 @@
     }
   },
   "resolutions": {
-    "@expo/config-plugins": "~5.0.0",
-    "@expo/prebuild-config": "~5.0.0",
     "@types/react": "18.0.24",
     "react": "18.2.0",
     "react-devtools-core": "~4.25.0",

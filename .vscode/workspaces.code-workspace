@@ -12,10 +12,10 @@
       "name": "🧑‍🏭 expo-app",
       "path": "../examples/expo-app"
     },
-    // {
-    //   "name": "📦 @package/tailwind",
-    //   "path": "../packages/native-tailwind"
-    // },
+    {
+      "name": "📦 @package/tailwind",
+      "path": "../packages/native-tailwind"
+    },
     {
       "name": "📦 @package/core",
       "path": "../packages/core"

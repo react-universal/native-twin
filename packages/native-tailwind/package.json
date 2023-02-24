@@ -23,13 +23,13 @@
       "import": "./build/index.es.js",
       "require": "./build/index.cjs.js",
       "browser": "./build/index.umd.js",
-      "types": "./src/index.ts"
+      "types": "./index.d.ts"
     }
   },
   "main": "./build/index.cjs.js",
   "unpkg": "./build/index.iife.js",
   "module": "./build/index.cjs.js",
-  "types": "./src/index.ts",
+  "types": "./index.d.ts",
   "scripts": {
     "build": "yarn vite build",
     "prepare": "yarn build",
