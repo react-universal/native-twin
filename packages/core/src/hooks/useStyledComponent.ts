@@ -4,6 +4,7 @@ import type { IExtraProperties } from '../types/styles.types';
 import { parseClassNames } from '../utils/components.utils';
 import { useChildren } from './useChildren';
 import { useFinalStyles } from './useFinalStyles';
+import { useRenderCounter } from './useRenderCounter';
 import { useStore } from './useStore';
 
 const useStyledComponent = <Props extends Object>({
@@ -12,6 +13,7 @@ const useStyledComponent = <Props extends Object>({
   tw,
   ...restProps
 }: Props & IExtraProperties) => {
+  useRenderCounter();
   const tailwindContext = useTailwindContext();
   const { interactionStyles, normalStyles } = useStore(className ?? tw ?? '');
   const parsedClassNames = useMemo(() => parseClassNames(className), [className]);

@@ -1,12 +1,12 @@
-import { useCallback, useMemo } from 'react';
-import { useSharedValue } from 'react-native-reanimated';
+import { useMemo, useState } from 'react';
+import { runOnJS } from 'react-native-reanimated';
 import type { IComponentInteractions, TPseudoSelectorTypes } from '../../types/store.types';
 
 const useComponentInteraction = (
   interactionStyles: IComponentInteractions[],
   interactionName: TPseudoSelectorTypes,
 ) => {
-  const state = useSharedValue(false);
+  const [state, dispatch] = useState(false);
 
   const interactionStyle = useMemo(() => {
     const interaction = interactionStyles.find(([name]) => name === interactionName);
@@ -16,12 +16,9 @@ const useComponentInteraction = (
     return {};
   }, [interactionStyles, interactionName]);
 
-  const setInteractionState = useCallback(
-    (value: boolean) => {
-      state.value = value;
-    },
-    [state],
-  );
+  const setInteractionState = (value: boolean) => {
+    runOnJS(dispatch)(value);
+  };
 
   return {
     interactionStyle,

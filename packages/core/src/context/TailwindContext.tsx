@@ -9,11 +9,11 @@ export type ITailwindContext = {
 const TailwindContext = createContext<ITailwindContext>({
   groupID: null,
   parentState: {
-    'group-hover': { value: false },
-    active: { value: false },
-    dark: { value: false },
-    focus: { value: false },
-    hover: { value: false },
+    'group-hover': false,
+    active: false,
+    dark: false,
+    focus: false,
+    hover: false,
   },
 });
 

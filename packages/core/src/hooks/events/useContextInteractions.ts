@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTailwindContext } from '../../context/TailwindContext';
 import type { IComponentInteractions, TPseudoSelectorTypes } from '../../types/store.types';
 
@@ -17,17 +17,9 @@ const useContextComponentInteraction = (
     return {};
   }, [interactionStyles, interactionName]);
 
-  const setInteractionState = useCallback(
-    (value: boolean) => {
-      state.value = value;
-    },
-    [state],
-  );
-
   return {
     interactionStyle,
     state,
-    setInteractionState,
   };
 };
 
