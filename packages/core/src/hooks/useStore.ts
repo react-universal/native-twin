@@ -1,13 +1,14 @@
-import { useMemo, useSyncExternalStore } from 'react';
-import { classNameParser } from '../modules';
+import { useMemo } from 'react';
+import { useSyncExternalStore } from 'use-sync-external-store/shim';
+import { tailwindManager } from '../modules';
 
 function useStore(classNames: string) {
-  const getData = useMemo(() => classNameParser.prepare(classNames), [classNames]);
+  const getData = useMemo(() => tailwindManager.prepare(classNames), [classNames]);
   const subscribe = useMemo(() => {
     return (notify: () => void) => {
-      classNameParser.subscribe(notify);
+      tailwindManager.subscribe(notify);
       return () => {
-        classNameParser.unsubscribe(notify);
+        tailwindManager.unsubscribe(notify);
       };
     };
   }, []);

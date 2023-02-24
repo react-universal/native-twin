@@ -30,3 +30,4 @@ lint-results/
 **/.swc
 .env
 .npmrc
+test.js

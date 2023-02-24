@@ -10,7 +10,7 @@ import {
   Strong as NStrong,
   P as NP,
 } from '@expo/html-elements';
-import { styled } from '@react-universal/styled';
+import { styled } from '@react-universal/core';
 import type { TTextProps } from './types';
 
 NH1.displayName = 'H1';
@@ -22,16 +22,17 @@ NH6.displayName = 'H6';
 NativeCode.displayName = 'Code';
 NSpan.displayName = 'Span';
 NStrong.displayName = 'Strong';
-const Span = styled(NSpan);
-const H1 = styled(NH1);
-const H2 = styled(NH2);
-const H3 = styled(NH3);
-const H4 = styled(NH4);
-const H5 = styled(NH5);
-const H6 = styled(NH6);
-const Strong = styled(NStrong);
-const Code = styled(NativeCode);
-const P = styled(NP);
+
+const Span = styled(NSpan)();
+const H1 = styled(NH1)();
+const H2 = styled(NH2)();
+const H3 = styled(NH3)();
+const H4 = styled(NH4)();
+const H5 = styled(NH5)();
+const H6 = styled(NH6)();
+const Strong = styled(NStrong)();
+const Code = styled(NativeCode)();
+const P = styled(NP)();
 
 export { Span, H1, H2, H3, H4, H5, H6, Strong, Code, P };
 export type { TTextProps };

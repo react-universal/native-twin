@@ -1,1 +1,0 @@
-export { useStyledComponent } from './useStyledComponent';

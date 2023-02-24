@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { setup } from '@react-universal/tailwind';
+import { setup } from '@react-universal/native-tailwind';
 import type { CssInJs } from 'postcss-js';
 import type { IStyleType } from '../types/styles.types';
 

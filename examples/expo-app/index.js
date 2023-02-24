@@ -11,8 +11,7 @@ if (process.env.NODE_ENV === 'production') {
   AppRegistry.registerComponent('main', () => App);
 } else {
   const { withDevTools } = require('expo/build/launch/withDevTools');
-  AppRegistry.registerComponent('main', (data) => {
-    console.log('DATA: ', data);
+  AppRegistry.registerComponent('main', () => {
     return withDevTools(App);
   });
 }

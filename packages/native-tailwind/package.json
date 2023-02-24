@@ -1,0 +1,61 @@
+{
+  "name": "@react-universal/native-tailwind",
+  "version": "1.0.3",
+  "description": "Tailwindcss Inline StyleSheet generator for react native",
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "react-native",
+    "react"
+  ],
+  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/tailwind",
+    "directory": "packages/native-tailwind"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./build/index.es.js",
+      "require": "./build/index.cjs.js",
+      "browser": "./build/index.umd.js",
+      "types": "./src/index.ts"
+    }
+  },
+  "main": "./build/index.cjs.js",
+  "unpkg": "./build/index.iife.js",
+  "module": "./build/index.cjs.js",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "yarn vite build",
+    "prepare": "yarn build",
+    "test:ui": "vitest --ui"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "postcss": "8.4.21",
+    "postcss-color-rgb": "^2.0.0",
+    "postcss-css-variables": "0.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.18",
+    "@types/postcss-css-variables": "0.18.0",
+    "@types/react": "^18.0.27",
+    "@types/tailwindcss": "3.1.0",
+    "tailwindcss": "3.2.4",
+    "vite": "^4.1.1",
+    "vitest": "^0.28.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "gitHead": "a5c05d5ee9bc016aa01fc3a7cc03bddd46d1e634"
+}

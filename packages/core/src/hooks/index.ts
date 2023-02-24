@@ -1,1 +1,2 @@
-export { useClassNamesTransform } from './useClassNamesTransform';
+export { useStyledComponent } from './useStyledComponent';
+export { useIsDarkMode } from './useIsDarkMode';
