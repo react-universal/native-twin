@@ -1,7 +1,6 @@
 import { Gesture } from 'react-native-gesture-handler';
 import { useMemo } from 'react';
 import { Appearance } from 'react-native';
-import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import type { IComponentInteractions } from '../types/store.types';
 import type { IStyleType } from '../types/styles.types';
 import { useComponentInteraction, useContextComponentInteraction } from './events';
@@ -28,53 +27,56 @@ const useFinalStyles = ({
   const activeInteraction = useComponentInteraction(interactionStyles, 'active');
   const focusInteraction = useComponentInteraction(interactionStyles, 'focus');
   const groupHoverInteraction = useComponentInteraction(interactionStyles, 'group-hover');
-  const isDark = useSharedValue(Appearance.getColorScheme() === 'dark');
+  const isDark = Appearance.getColorScheme() === 'dark';
   const parentGroupHoverInteraction = useContextComponentInteraction(
     interactionStyles,
     'group-hover',
   );
 
-  const gesture = useMemo(() => {
-    if (!hasInteractions) {
-      return Gesture.Manual().enabled(false);
-    }
-    return Gesture.Manual()
-      .onTouchesDown(() => {
-        if (hasInteractions) {
-          hoverInteraction.setInteractionState(true);
-        }
-        if (isGroupParent) {
-          groupHoverInteraction.setInteractionState(true);
-        }
-      })
-      .onTouchesUp(() => {
-        if (hasInteractions) {
-          hoverInteraction.setInteractionState(false);
-        }
-        if (isGroupParent) {
-          groupHoverInteraction.setInteractionState(false);
-        }
-      })
-      .enabled(hasInteractions)
-      .manualActivation(true)
-      .shouldCancelWhenOutside(false);
-  }, [hasInteractions, isGroupParent, hoverInteraction, groupHoverInteraction]);
+  const gesture = Gesture.Manual()
+    .onTouchesDown(() => {
+      if (hasInteractions && !hoverInteraction.state) {
+        hoverInteraction.setInteractionState(true);
+      }
+      if (isGroupParent && !groupHoverInteraction.state) {
+        groupHoverInteraction.setInteractionState(true);
+      }
+    })
+    .onTouchesUp(() => {
+      if (hasInteractions && hoverInteraction.state) {
+        hoverInteraction.setInteractionState(false);
+      }
+      if (isGroupParent && groupHoverInteraction.state) {
+        groupHoverInteraction.setInteractionState(false);
+      }
+    })
+    .enabled(hasInteractions || hasGroupInteractions)
+    .manualActivation(true)
+    .shouldCancelWhenOutside(false)
+    .runOnJS(true);
 
-  const styles = useAnimatedStyle(() => {
-    if (!isGroupParent && groupHoverInteraction && parentGroupHoverInteraction.state.value) {
+  const styles = useMemo(() => {
+    if (!isGroupParent && hasGroupInteractions && parentGroupHoverInteraction.state) {
       return {
         ...normalStyles,
         ...groupHoverInteraction.interactionStyle,
       };
     }
-    if (hoverInteraction.state.value && hoverInteraction) {
+    if (hoverInteraction.state) {
       return {
         ...normalStyles,
         ...hoverInteraction.interactionStyle,
       };
     }
     return normalStyles;
-  }, [hoverInteraction, parentGroupHoverInteraction, groupHoverInteraction, isGroupParent]);
+  }, [
+    hoverInteraction,
+    parentGroupHoverInteraction,
+    hasGroupInteractions,
+    groupHoverInteraction,
+    isGroupParent,
+    normalStyles,
+  ]);
   return {
     styles,
     hasInteractions,

@@ -3,6 +3,7 @@
     "name": "expo-app",
     "slug": "expo-app",
     "version": "1.0.0",
+    "jsEngine": "jsc",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
