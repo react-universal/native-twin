@@ -46,7 +46,7 @@ const useFinalStyles = ({
       if (hasInteractions && hoverInteraction.state) {
         hoverInteraction.setInteractionState(false);
       }
-      if (isGroupParent && !groupHoverInteraction.state) {
+      if (isGroupParent && groupHoverInteraction.state) {
         groupHoverInteraction.setInteractionState(false);
       }
     })
