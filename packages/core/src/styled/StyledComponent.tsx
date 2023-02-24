@@ -1,4 +1,4 @@
-import { LongPressGestureHandler } from 'react-native-gesture-handler';
+import { GestureDetector } from 'react-native-gesture-handler';
 import { ComponentType, forwardRef, FunctionComponent } from 'react';
 import Animated from 'react-native-reanimated';
 import { TailwindContextProvider } from '../context/TailwindContext';
@@ -11,33 +11,41 @@ function styled<Props extends object, Ref>(ComponentWithOutTailwind: ComponentTy
   );
   const createAnimatedComponent = () => {
     const Styled = forwardRef<Ref, Props & IExtraProperties>(function StyledTW(props, ref) {
-      const { styles, componentState, isGroupParent, componentChilds, interactionsHandler } =
+      const { styles, componentState, isGroupParent, componentChilds, gesture } =
         useStyledComponent(props);
-
       if (isGroupParent) {
         return (
           <TailwindContextProvider parentState={componentState}>
-            <LongPressGestureHandler onGestureEvent={interactionsHandler} minDurationMs={5000}>
+            <GestureDetector gesture={gesture}>
               {/* @ts-expect-error */}
               <Component
                 {...props}
                 {...componentState}
                 style={[styles, props.style]}
                 ref={ref}
+                onStartShouldSetPanResponder={() => false}
+                focusable={false}
               >
                 {componentChilds}
               </Component>
-            </LongPressGestureHandler>
+            </GestureDetector>
           </TailwindContextProvider>
         );
       }
       return (
-        <LongPressGestureHandler onGestureEvent={interactionsHandler} minDurationMs={5000}>
+        <GestureDetector gesture={gesture}>
           {/* @ts-expect-error */}
-          <Component {...componentState} {...props} ref={ref} style={[styles, props.style]}>
+          <Component
+            {...componentState}
+            {...props}
+            ref={ref}
+            style={[styles, props.style]}
+            onStartShouldSetPanResponder={() => false}
+            focusable={false}
+          >
             {componentChilds}
           </Component>
-        </LongPressGestureHandler>
+        </GestureDetector>
       );
     });
     Styled.displayName = `StyledTW.${
