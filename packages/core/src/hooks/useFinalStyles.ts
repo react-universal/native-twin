@@ -1,11 +1,7 @@
-import { LongPressGestureHandlerGestureEvent, Gesture } from 'react-native-gesture-handler';
+import { Gesture } from 'react-native-gesture-handler';
 import { useMemo } from 'react';
 import { Appearance } from 'react-native';
-import {
-  useAnimatedGestureHandler,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { useTailwindContext } from '../context/TailwindContext';
 import type { IComponentInteractions } from '../types/store.types';
 import type { IStyleType } from '../types/styles.types';
@@ -53,37 +49,6 @@ const useFinalStyles = ({
     .enabled(hasInteractions)
     .manualActivation(true)
     .shouldCancelWhenOutside(false);
-
-  const interactionsHandler = useAnimatedGestureHandler<LongPressGestureHandlerGestureEvent>(
-    {
-      onStart: () => {
-        if (hasInteractions) {
-          isHover.value = true;
-        }
-        if (isGroupParent) {
-          isGroupHover.value = true;
-        }
-      },
-      onFinish: () => {
-        if (hasInteractions) {
-          isHover.value = false;
-        }
-        if (isGroupParent) {
-          isGroupHover.value = false;
-        }
-      },
-      onCancel: () => {
-        if (hasInteractions) {
-          isHover.value = false;
-        }
-        if (isGroupParent) {
-          isParentGroupHover.value = false;
-          isGroupHover.value = false;
-        }
-      },
-    },
-    [isGroupParent, isGroupHover, tailwindContext],
-  );
   const hoverInteraction = interactionStyles.find(([name]) => name === 'hover');
   const groupHoverInteraction = interactionStyles.find(([name]) => name === 'group-hover');
   const styles = useAnimatedStyle(() => {
@@ -111,7 +76,6 @@ const useFinalStyles = ({
       'group-hover': isGroupHover,
       dark: isDark,
     },
-    interactionsHandler,
     gesture,
     hasGroupInteractions,
   };

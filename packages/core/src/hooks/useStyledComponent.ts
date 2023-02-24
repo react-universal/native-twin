@@ -20,19 +20,13 @@ const useStyledComponent = <Props extends Object>({
     () => parsedClassNames.normalClassNames.some((item) => item === 'group'),
     [parsedClassNames.normalClassNames],
   );
-  const {
-    styles,
-    hasInteractions,
-    componentState,
-    interactionsHandler,
-    hasGroupInteractions,
-    gesture,
-  } = useFinalStyles({
-    interactionStyles,
-    normalStyles,
-    isGroupParent,
-    componentProps: restProps,
-  });
+  const { styles, hasInteractions, componentState, hasGroupInteractions, gesture } =
+    useFinalStyles({
+      interactionStyles,
+      normalStyles,
+      isGroupParent,
+      componentProps: restProps,
+    });
   const componentChilds = useChildren(children);
 
   return {
@@ -44,7 +38,6 @@ const useStyledComponent = <Props extends Object>({
     tailwindContext,
     normalStyles,
     hasGroupInteractions,
-    interactionsHandler,
     gesture,
   };
 };
