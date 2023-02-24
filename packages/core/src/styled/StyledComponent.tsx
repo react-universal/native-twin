@@ -23,8 +23,6 @@ function styled<Props extends object, Ref>(ComponentWithOutTailwind: ComponentTy
                 {...componentState}
                 style={[styles, props.style]}
                 ref={ref}
-                onStartShouldSetPanResponder={() => false}
-                focusable={false}
               >
                 {componentChilds}
               </Component>
@@ -35,14 +33,7 @@ function styled<Props extends object, Ref>(ComponentWithOutTailwind: ComponentTy
       return (
         <GestureDetector gesture={gesture}>
           {/* @ts-expect-error */}
-          <Component
-            {...componentState}
-            {...props}
-            ref={ref}
-            style={[styles, props.style]}
-            onStartShouldSetPanResponder={() => false}
-            focusable={false}
-          >
+          <Component {...componentState} {...props} ref={ref} style={[styles, props.style]}>
             {componentChilds}
           </Component>
         </GestureDetector>
