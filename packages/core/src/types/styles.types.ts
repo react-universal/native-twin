@@ -8,7 +8,7 @@ export type IStyleTuple = [string, IStyleType];
 
 export type IComponentState = Record<TPseudoSelectorTypes, boolean>;
 
-export type IExtraProperties = {
+export type IExtraProperties<T> = T & {
   style?: ImageStyle | TextStyle | ViewStyle;
   className?: string;
   tw?: string;

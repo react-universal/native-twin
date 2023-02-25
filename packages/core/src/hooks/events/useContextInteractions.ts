@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useTailwindContext } from '../../context/TailwindContext';
 import type { IComponentInteractions, TPseudoSelectorTypes } from '../../types/store.types';
 
-const useContextComponentInteraction = (
+const useContextComponentInteractionState = (
   interactionStyles: IComponentInteractions[],
   interactionName: TPseudoSelectorTypes,
 ) => {
@@ -23,4 +23,4 @@ const useContextComponentInteraction = (
   };
 };
 
-export { useContextComponentInteraction };
+export { useContextComponentInteractionState };

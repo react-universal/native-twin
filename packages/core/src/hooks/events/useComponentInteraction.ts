@@ -1,8 +1,14 @@
 import { useMemo, useState } from 'react';
-import { runOnJS } from 'react-native-reanimated';
 import type { IComponentInteractions, TPseudoSelectorTypes } from '../../types/store.types';
+import type { IStyleType } from '../../types/styles.types';
 
-const useComponentInteraction = (
+export interface UseComponentInteractionStateResponse {
+  interactionStyle: IStyleType;
+  state: boolean;
+  setInteractionState: (value: boolean) => void;
+}
+
+const useComponentInteractionState = (
   interactionStyles: IComponentInteractions[],
   interactionName: TPseudoSelectorTypes,
 ) => {
@@ -13,11 +19,11 @@ const useComponentInteraction = (
     if (interaction) {
       return interaction[1].styles;
     }
-    return {};
+    return null;
   }, [interactionStyles, interactionName]);
 
   const setInteractionState = (value: boolean) => {
-    runOnJS(dispatch)(value);
+    dispatch(value);
   };
 
   return {
@@ -27,4 +33,4 @@ const useComponentInteraction = (
   };
 };
 
-export { useComponentInteraction };
+export { useComponentInteractionState };

@@ -8,7 +8,6 @@ function useChildren(children: React.ReactNode) {
       if (!isValidElement<{ style?: StyleProp<unknown> }>(child)) {
         return child;
       }
-
       const childProps = {
         nthChild: index + 1,
         isFirstChild: index === 0,
