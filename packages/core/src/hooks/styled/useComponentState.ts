@@ -12,6 +12,7 @@ const useComponentState = ({ interactionStyles }: UseComponentStateArgs) => {
   const activeInteraction = useComponentInteractionState(interactionStyles, 'active');
   const focusInteraction = useComponentInteractionState(interactionStyles, 'focus');
   const groupHoverInteraction = useComponentInteractionState(interactionStyles, 'group-hover');
+  const colorScheme = useComponentInteractionState(interactionStyles, 'dark');
   const parentGroupHoverInteraction = useContextComponentInteractionState(
     interactionStyles,
     'group-hover',
@@ -22,6 +23,7 @@ const useComponentState = ({ interactionStyles }: UseComponentStateArgs) => {
     focusInteraction,
     groupHoverInteraction,
     parentGroupHoverInteraction,
+    colorScheme,
   };
 };
 
