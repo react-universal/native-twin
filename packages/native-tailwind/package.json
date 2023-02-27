@@ -31,8 +31,8 @@
   "module": "./build/index.cjs.js",
   "types": "./index.d.ts",
   "scripts": {
-    "build": "pnpm vite build",
-    "prepare": "pnpm build",
+    "build": "yarn vite build",
+    "prepare": "yarn build",
     "test:ui": "vitest --ui"
   },
   "config": {

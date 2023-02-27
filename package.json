@@ -17,11 +17,11 @@
     "build:libs": "turbo run build --filter=\"@react-universal/**\"",
     "commit": "cz",
     "dev": "turbo run dev --filter=\"@react-universal/**\" --parallel",
-    "expo:android": "pnpm workspace expo-app android",
-    "expo:ios": "pnpm workspace expo-app ios",
-    "expo:start": "pnpm workspace expo-app start",
+    "expo:android": "yarn workspace expo-app android",
+    "expo:ios": "yarn workspace expo-app ios",
+    "expo:start": "yarn workspace expo-app start",
     "release": "turbo run build --filter=\"@react-universal/**\" && changeset publish",
-    "version-packages": "changeset version && pnpm --mode=\"update-lockfile\"",
+    "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
     "web": "turbo run dev --filter next-app"
   },
   "config": {
@@ -70,5 +70,6 @@
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
   },
-  "npmClient": "pnpm"
+  "npmClient": "pnpm",
+  "packageManager": "yarn@3.4.1"
 }

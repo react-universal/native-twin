@@ -26,8 +26,8 @@
   "module": "./build/index.es.js",
   "types": "./src/index.ts",
   "scripts": {
-    "build": "pnpm vite build",
-    "prepare": "pnpm build",
+    "build": "yarn vite build",
+    "prepare": "yarn build",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui"
