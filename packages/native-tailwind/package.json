@@ -32,6 +32,7 @@
   "types": "./index.d.ts",
   "scripts": {
     "build": "yarn vite build",
+    "dev": "yarn vite build -w",
     "prepare": "yarn build",
     "test:ui": "vitest --ui"
   },

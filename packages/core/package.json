@@ -27,6 +27,7 @@
   "types": "./src/index.ts",
   "scripts": {
     "build": "yarn vite build",
+    "dev": "yarn vite build -w",
     "prepare": "yarn build",
     "test": "vitest",
     "test:run": "vitest run",
