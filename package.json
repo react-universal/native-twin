@@ -8,20 +8,15 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "workspaces": [
-    "packages/*",
-    "examples/*",
-    "apps/*"
-  ],
   "scripts": {
     "build:libs": "turbo run build --filter=\"@react-universal/**\"",
     "commit": "cz",
     "dev": "turbo run dev --filter=\"@react-universal/**\" --parallel",
-    "expo:android": "yarn workspace expo-app android",
-    "expo:ios": "yarn workspace expo-app ios",
-    "expo:start": "yarn workspace expo-app start",
+    "expo:android": "pnpm workspace expo-app android",
+    "expo:ios": "pnpm workspace expo-app ios",
+    "expo:start": "pnpm workspace expo-app start",
     "release": "turbo run build --filter=\"@react-universal/**\" && changeset publish",
-    "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
+    "version-packages": "changeset version && pnpm --mode=\"update-lockfile\"",
     "web": "turbo run dev --filter next-app"
   },
   "config": {
@@ -49,6 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "@vitejs/plugin-react-swc": "^3.1.0-beta.2",
+    "@vue/compiler-sfc": "^3.2.47",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "~8.15.0",
@@ -68,6 +64,5 @@
     "typescript": "^4.9.4",
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
-  },
-  "packageManager": "yarn@3.3.1"
+  }
 }
