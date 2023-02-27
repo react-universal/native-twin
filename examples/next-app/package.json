@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@next/font": "13.0.6",
-    "@react-universal/core": "^1.0.3",
-    "@react-universal/primitives": "^1.0.3",
+    "@react-universal/core": "workspace:*",
+    "@react-universal/primitives": "workspace:*",
     "autoprefixer": "10.4.13",
     "critters": "^0.0.16",
     "next": "13.1.4",

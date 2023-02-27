@@ -37,7 +37,7 @@
     }
   },
   "dependencies": {
-    "@react-universal/core": "^1.0.3",
+    "@react-universal/core": "workspace:*",
     "class-variance-authority": "0.4.0"
   },
   "devDependencies": {

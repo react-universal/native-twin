@@ -74,7 +74,7 @@ importers:
   apps/docs:
     specifiers:
       '@next/font': 13.0.6
-      '@react-universal/primitives': ^1.0.3
+      '@react-universal/primitives': workspace:*
       autoprefixer: 10.4.13
       critters: ^0.0.16
       next: 13.1.4
@@ -103,7 +103,7 @@ importers:
       '@react-navigation/drawer': ^6.6.0
       '@react-navigation/native': ^6.1.4
       '@react-navigation/native-stack': ^6.9.10
-      '@react-universal/primitives': ^1.0.3
+      '@react-universal/primitives': workspace:*
       '@types/react': 18.0.27
       '@types/react-dom': ~18.0.10
       '@types/react-native': 0.70.7
@@ -148,8 +148,8 @@ importers:
   examples/next-app:
     specifiers:
       '@next/font': 13.0.6
-      '@react-universal/core': ^1.0.3
-      '@react-universal/primitives': ^1.0.3
+      '@react-universal/core': workspace:*
+      '@react-universal/primitives': workspace:*
       autoprefixer: 10.4.13
       critters: ^0.0.16
       next: 13.1.4
@@ -176,7 +176,7 @@ importers:
 
   packages/core:
     specifiers:
-      '@react-universal/native-tailwind': ^1.0.3
+      '@react-universal/native-tailwind': workspace:*
       '@simbathesailor/use-what-changed': ^2.0.0
       '@types/css-to-react-native': ^3.0.0
       '@types/react': 18.0.27
@@ -247,7 +247,7 @@ importers:
   packages/primitives:
     specifiers:
       '@expo/html-elements': ^0.3.1
-      '@react-universal/core': ^1.0.3
+      '@react-universal/core': workspace:*
       '@types/react': 18.0.27
       '@types/react-dom': ~18.0.10
       '@types/react-native': 0.70.7
@@ -271,7 +271,7 @@ importers:
 
   packages/tailwind-ui:
     specifiers:
-      '@react-universal/core': ^1.0.3
+      '@react-universal/core': workspace:*
       '@types/react': 18.0.27
       '@types/react-dom': ~18.0.10
       '@types/react-native': 0.70.7

@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@expo/html-elements": "^0.3.1",
-    "@react-universal/core": "^1.0.3"
+    "@react-universal/core": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "~18.0.27",
