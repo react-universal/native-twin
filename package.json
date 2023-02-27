@@ -8,6 +8,11 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
+  "workspaces": [
+    "packages/*",
+    "examples/*",
+    "apps/*"
+  ],
   "scripts": {
     "build:libs": "turbo run build --filter=\"@react-universal/**\"",
     "commit": "cz",
