@@ -26,9 +26,9 @@
   "module": "./build/index.es.js",
   "types": "./src/index.ts",
   "scripts": {
-    "build": "pnpm vite build",
-    "dev": "pnpm vite build -w --force",
-    "prepare": "pnpm build",
+    "build": "yarn vite build",
+    "dev": "yarn vite build -w --force",
+    "prepare": "yarn build",
     "test": "expo-module test"
   },
   "config": {
