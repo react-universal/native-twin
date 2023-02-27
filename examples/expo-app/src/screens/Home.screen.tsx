@@ -3,11 +3,10 @@ import { H1, View } from '@react-universal/primitives';
 function HomeScreen() {
   return (
     <View className='flex-1'>
-      <View className='flex-1 items-center justify-center bg-slate-900/50 align-top hover:bg-slate-300'>
+      <View className='aspect-square flex-1 items-center justify-center bg-slate-900/50 align-top hover:bg-slate-300'>
         <H1 className='text-gray-200 hover:text-gray-700'>H1 - 1</H1>
       </View>
       <View className='group flex-[2] items-center justify-center border-t-8 border-t-indigo-50 bg-slate-800 last:bg-green-100 hover:bg-slate-500'>
-        {/* <AView ref={ref => ref.} className='text-gray-200'>asd</AView> */}
         <H1 className='text-gray-200 group-hover:text-gray-900'>Nested Hover</H1>
         <View className='rounded-lg bg-slate-300 hover:bg-slate-800'>
           <H1 suppressHighlighting className='text-gray-800 hover:text-gray-300'>

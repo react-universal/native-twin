@@ -3,7 +3,7 @@ import { Image as NativeImage } from 'react-native';
 import { styled } from '@react-universal/core';
 import type { IImageProps } from './types';
 
-const StyledImage = styled(NativeImage)();
+const StyledImage = styled(NativeImage);
 
 export const Image = forwardRef<unknown, IImageProps>(function ImageWrapper(
   { className, src, ...props },

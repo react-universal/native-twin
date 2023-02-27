@@ -1,2 +1,2 @@
-export { useComponentInteraction } from './useComponentInteraction';
-export { useContextComponentInteraction } from './useContextInteractions';
+export { useComponentInteractionState } from './useComponentInteraction';
+export { useContextComponentInteractionState } from './useContextInteractions';

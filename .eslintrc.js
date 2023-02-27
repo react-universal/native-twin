@@ -22,6 +22,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports'],
   rules: {
+    'react/no-children-prop': 'off',
     'no-console': 'off',
     'no-redeclare': 'off',
     'no-undef': 'off',
