@@ -5,12 +5,13 @@
     "allowSyntheticDefaultImports": true,
     "declarationDir": "./build/types",
     "lib": ["ES5", "ES2015", "ES2016", "DOM", "ESNext"],
+    "types": ["cypress", "node"],
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "jsx": "react-jsx",
     "module": "ES6",
     "importHelpers": true
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "env.d.ts"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "env.d.ts", "cypress"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }
