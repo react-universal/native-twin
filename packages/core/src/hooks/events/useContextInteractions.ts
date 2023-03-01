@@ -20,6 +20,7 @@ const useContextComponentInteractionState = (
   return {
     interactionStyle,
     state,
+    interactionName,
   };
 };
 

@@ -1,53 +1,64 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import type { IComponentInteractions } from '../types/store.types';
-import type { IStyleType } from '../types/styles.types';
+import type ComponentStyleSheet from '../store/ComponentStyleSheet';
 import type { IUseComponentState } from './styled/useComponentState';
 import { useIsDarkMode } from './useIsDarkMode';
 
 interface IFinalStylesArgs {
-  normalStyles: IStyleType;
-  interactionStyles: IComponentInteractions[];
+  styleSheet: ComponentStyleSheet;
   isGroupParent: boolean;
   componentProps: any;
   componentState: IUseComponentState;
 }
 const useFinalStyles = ({
-  normalStyles,
-  interactionStyles,
+  styleSheet,
   isGroupParent,
   componentState,
+  componentProps,
 }: IFinalStylesArgs) => {
   const isDark = useIsDarkMode();
   // DETERMINE IF THE COMPONENT HAS INTERACTIONS AND LEVEL OF INTERACTIONS
-  const hasInteractions = useMemo(() => interactionStyles.length > 0, [interactionStyles]);
+  const hasInteractions = useMemo(
+    () => styleSheet.interactionStyles.length > 0,
+    [styleSheet.interactionStyles],
+  );
   const hasGroupInteractions = useMemo(
-    () => interactionStyles.some((item) => item[0] === 'group-hover'),
-    [interactionStyles],
+    () => styleSheet.interactionStyles.some((item) => item[0] === 'group-hover'),
+    [styleSheet.interactionStyles],
   );
   // useComponentInteraction -> create interaction handler using reanimated
 
   const styles = useMemo(() => {
-    const styleSheet = [normalStyles];
+    const sheet = [styleSheet.baseStyles];
     if (
       !isGroupParent &&
       hasGroupInteractions &&
       componentState.parentGroupHoverInteraction.state &&
-      componentState.groupHoverInteraction.interactionStyle
+      !!componentState.groupHoverInteraction.interactionStyle
     ) {
-      styleSheet.push(componentState.groupHoverInteraction.interactionStyle);
+      sheet.push(componentState.groupHoverInteraction.interactionStyle);
+    }
+    if (componentProps?.isLastChild && componentState.lastChildInteraction.interactionStyle) {
+      sheet.push(componentState.lastChildInteraction.interactionStyle);
     }
     if (
       componentState.hoverInteraction.state &&
       componentState.hoverInteraction.interactionStyle
     ) {
-      styleSheet.push(componentState.hoverInteraction.interactionStyle);
+      sheet.push(componentState.hoverInteraction.interactionStyle);
     }
     if (isDark && componentState.colorScheme.interactionStyle) {
-      styleSheet.push(componentState.colorScheme.interactionStyle);
+      sheet.push(componentState.colorScheme.interactionStyle);
     }
-    return StyleSheet.flatten(styleSheet);
-  }, [hasGroupInteractions, isGroupParent, normalStyles, componentState, isDark]);
+    return StyleSheet.flatten(sheet);
+  }, [
+    hasGroupInteractions,
+    isGroupParent,
+    componentState,
+    isDark,
+    componentProps,
+    styleSheet.baseStyles,
+  ]);
   return {
     styles,
     hasInteractions,

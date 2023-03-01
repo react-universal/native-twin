@@ -4028,13 +4028,16 @@ __metadata:
     "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
+    "@types/react-is": ^17.0.3
     "@types/react-native": 0.70.7
     "@types/use-sync-external-store": ^0.0.3
     "@vitest/ui": ^0.28.3
     clsx: ^1.2.1
     css-to-react-native: ^3.1.0
     css-to-react-native-transform: ^2.0.0
+    immer: ^9.0.19
     react: 18.2.0
+    react-is: ^18.2.0
     tslib: ^2.3.0
     use-sync-external-store: ^1.2.0
     vite: ^4.1.1
@@ -4636,6 +4639,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 579691e4d5ec09688087568037c35edf8cfb1ab3e07f6c60029280733ee7b5c06d66df6fcc90786702c93ac8cb13bc7ff16c79ddfc75d082938fbaa36e1cdbf4
+  languageName: node
+  linkType: hard
+
+"@types/react-is@npm:^17.0.3":
+  version: 17.0.3
+  resolution: "@types/react-is@npm:17.0.3"
+  dependencies:
+    "@types/react": "*"
+  checksum: 6abb7c47d54f012272650df8a962a28bd82f219291e5ef8b4dfa7fe0bb98ae243b060bf9fbe8ceff6213141794855a006db194b490b00ffd15842ae19d0ce1f0
   languageName: node
   linkType: hard
 
@@ -10777,6 +10789,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^9.0.19":
+  version: 9.0.19
+  resolution: "immer@npm:9.0.19"
+  checksum: f02ee53989989c287cd548a3d817fccf0bfe56db919755ee94a72ea3ae78a00363fba93ee6c010fe54a664380c29c53d44ed4091c6a86cae60957ad2cfabc010
+  languageName: node
+  linkType: hard
+
 "import-fresh@npm:^2.0.0":
   version: 2.0.0
   resolution: "import-fresh@npm:2.0.0"
@@ -16115,7 +16134,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.0.0":
+"react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.0.0, react-is@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
   checksum: e72d0ba81b5922759e4aff17e0252bd29988f9642ed817f56b25a3e217e13eea8a7f2322af99a06edb779da12d5d636e9fda473d620df9a3da0df2a74141d53e

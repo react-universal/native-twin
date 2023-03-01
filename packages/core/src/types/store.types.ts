@@ -1,6 +1,14 @@
 import type { IStyleType, IStyleTuple } from './styles.types';
 
-export type TPseudoSelectorTypes = 'hover' | 'active' | 'focus' | 'dark' | 'group-hover';
+export type TPseudoSelectorTypes =
+  | 'hover'
+  | 'active'
+  | 'group'
+  | 'focus'
+  | 'dark'
+  | 'group-hover'
+  | 'last'
+  | 'first';
 
 export type IInteractionPayload = {
   classNames: string;
@@ -36,6 +44,7 @@ export type IComponentsStore = {
 export type IClassNamesStyle = {
   normalStyles: IStyleType;
   interactionStyles: IComponentInteractions[];
+  mask: number;
 };
 
 export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, unknown>

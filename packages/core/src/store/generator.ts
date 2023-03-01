@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
 function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;

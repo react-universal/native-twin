@@ -14,6 +14,9 @@ const TailwindContext = createContext<ITailwindContext>({
     dark: false,
     focus: false,
     hover: false,
+    first: false,
+    group: false,
+    last: false,
   },
 });
 

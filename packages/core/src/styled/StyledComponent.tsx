@@ -7,7 +7,6 @@ import {
   PropsWithoutRef,
   RefAttributes,
 } from 'react';
-import { TailwindContextProvider } from '../context/TailwindContext';
 import { useStyledComponent } from '../hooks';
 import type { IExtraProperties } from '../types/styles.types';
 
@@ -16,13 +15,8 @@ type InferRef<T> = T extends RefAttributes<infer R> | ClassAttributes<infer R> ?
 
 function styled<T>(Component: ComponentType<T>) {
   function Styled(props: IExtraProperties<T>, ref: ForwardedRef<unknown>) {
-    const {
-      styles,
-      componentState,
-      isGroupParent,
-      componentChilds,
-      componentInteractionHandlers,
-    } = useStyledComponent(props);
+    const { styles, componentState, componentChilds, componentInteractionHandlers } =
+      useStyledComponent(props);
     const styledElement = (
       <Component
         {...props}
@@ -34,21 +28,6 @@ function styled<T>(Component: ComponentType<T>) {
         {componentChilds}
       </Component>
     );
-    if (isGroupParent) {
-      return (
-        <TailwindContextProvider
-          parentState={{
-            'group-hover': componentState.groupHoverInteraction.state,
-            active: componentState.activeInteraction.state,
-            dark: false,
-            focus: componentState.focusInteraction.state,
-            hover: componentState.hoverInteraction.state,
-          }}
-        >
-          {styledElement}
-        </TailwindContextProvider>
-      );
-    }
     return styledElement;
   }
 

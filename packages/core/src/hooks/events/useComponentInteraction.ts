@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react';
-import type { IComponentInteractions, TPseudoSelectorTypes } from '../../types/store.types';
+import { useMemo } from 'react';
+import type ComponentNode from '../../store/ComponentNode';
+import { storeManager } from '../../store/StoreManager';
+import type { TPseudoSelectorTypes } from '../../types/store.types';
 import type { IStyleType } from '../../types/styles.types';
 
 export interface UseComponentInteractionStateResponse {
@@ -9,27 +11,28 @@ export interface UseComponentInteractionStateResponse {
 }
 
 const useComponentInteractionState = (
-  interactionStyles: IComponentInteractions[],
+  component: ComponentNode,
   interactionName: TPseudoSelectorTypes,
 ) => {
-  const [state, dispatch] = useState(false);
-
   const interactionStyle = useMemo(() => {
-    const interaction = interactionStyles.find(([name]) => name === interactionName);
+    const interaction = component.styleSheet.interactionStyles.find(
+      ([name]) => name === interactionName,
+    );
     if (interaction) {
       return interaction[1].styles;
     }
     return null;
-  }, [interactionStyles, interactionName]);
+  }, [component, interactionName]);
 
   const setInteractionState = (value: boolean) => {
-    dispatch(value);
+    storeManager.getState().setInteractionState(component, interactionName, value);
   };
 
   return {
     interactionStyle,
-    state,
+    state: component.interactionsState[interactionName],
     setInteractionState,
+    interactionName,
   };
 };
 

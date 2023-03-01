@@ -15,7 +15,7 @@ const useStyledComponent = <Props extends Object>({
   ...componentProps
 }: Props & IExtraProperties<Props>) => {
   const tailwindContext = useTailwindContext();
-  const { interactionStyles, normalStyles } = useStore(className ?? tw ?? '');
+  const component = useStore(className ?? tw ?? '');
   const parsedClassNames = useMemo(() => parseClassNames(className), [className]);
   const isGroupParent = useMemo(
     () => parsedClassNames.normalClassNames.some((item) => item === 'group'),
@@ -23,9 +23,8 @@ const useStyledComponent = <Props extends Object>({
   );
 
   const componentState = useComponentState({
-    interactionStyles,
+    component,
     componentProps,
-    normalClassNames: parsedClassNames.normalClassNames,
   });
   const { componentInteractionHandlers } = useComponentInteractions({
     props: { ...componentProps, children } as Touchable,
@@ -33,8 +32,7 @@ const useStyledComponent = <Props extends Object>({
     isGroupParent,
   });
   const { styles, hasInteractions, hasGroupInteractions } = useFinalStyles({
-    interactionStyles,
-    normalStyles,
+    styleSheet: component.styleSheet,
     isGroupParent,
     componentProps,
     componentState,
@@ -48,7 +46,7 @@ const useStyledComponent = <Props extends Object>({
     hasInteractions,
     componentState,
     tailwindContext,
-    normalStyles,
+    component,
     hasGroupInteractions,
     componentInteractionHandlers,
   };

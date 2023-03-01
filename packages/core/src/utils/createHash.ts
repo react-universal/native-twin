@@ -11,4 +11,21 @@ function createHash(str: string) {
   return (crc ^ -1) >>> 0;
 }
 
-export { createHash };
+function getBitMask(input: string | number) {
+  let mask = 0;
+  if (typeof input === 'string') {
+    mask = createHash(input);
+  } else {
+    mask = input;
+  }
+  return mask.toString(2);
+}
+
+const GROUP_BIT_MASK = createHash('group');
+
+function getHashMask(string: string) {
+  return createHash(string).toString(2);
+}
+
+export { createHash, getHashMask, getBitMask };
+export { GROUP_BIT_MASK };

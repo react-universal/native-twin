@@ -1,15 +1,19 @@
 import { setup } from '@react-universal/native-tailwind';
+import {
+  GROUP_PARENT_MASK,
+  HOVER_INTERACTION_MASK,
+  INITIAL_MASK,
+  INTERACTIONS_MASK,
+} from '../constants';
 import type { IComponentInteractions, IClassNamesStyle } from '../types/store.types';
 import type { IStyleTuple, IStyleType } from '../types/styles.types';
 import { parseClassNames, parsePseudoElements } from '../utils/components.utils';
 import { createHash } from '../utils/createHash';
 import { cssPropertiesResolver } from './resolve';
 
-export type TComponentsSnapshot = Record<number, IClassNamesStyle>;
-
 class TailwindManager {
-  componentsState: TComponentsSnapshot = { 0: { interactionStyles: [], normalStyles: {} } };
-  stylesCollection: Map<string, { generated: IStyleType }> = new Map();
+  componentsState: Map<number, IClassNamesStyle> = new Map();
+  stylesCollection: Map<string, IStyleType> = new Map();
   private listeners = new Set<() => void>();
   private tw = setup({ content: ['__'] });
 
@@ -17,7 +21,7 @@ class TailwindManager {
     return createHash(input);
   }
   private getCachedComponent(hash: number) {
-    return this.componentsState[hash];
+    return this.componentsState.get(hash);
   }
 
   private getJSS(classNames: string[]) {
@@ -26,15 +30,13 @@ class TailwindManager {
       const cache = this.stylesCollection.get(current);
       if (cache) {
         // console.log('getJSS_CACHE_HIT: ', current);
-        previous.push([current, cache.generated]);
+        previous.push([current, cache]);
       } else {
         // console.log('getJSS_CACHE_MISS: ', current);
         const styles = this.tw(current);
         const rnStyles = cssPropertiesResolver(styles.JSS);
         previous.push([current, rnStyles]);
-        this.stylesCollection.set(current, {
-          generated: rnStyles,
-        });
+        this.stylesCollection.set(current, rnStyles);
       }
       return previous;
     }, [] as IStyleTuple[]);
@@ -69,7 +71,7 @@ class TailwindManager {
     // If we already have a hash with this collection of classes
     // Then return it
     if (cache) {
-      return this.componentsState[hash];
+      return cache;
     }
 
     const parsed = parseClassNames(classNames);
@@ -77,12 +79,33 @@ class TailwindManager {
     const interactionStyles = this.getStylesForInteractionClasses(
       parsed.interactionClassNames,
     );
-    this.componentsState[hash] = {
+    const isParent = normalStyles.some(([name]) => name === 'group');
+    let componentMask = INITIAL_MASK;
+    if (isParent) {
+      componentMask |= GROUP_PARENT_MASK;
+    }
+    if (interactionStyles.length > 0) {
+      componentMask |= INTERACTIONS_MASK;
+    }
+    if (interactionStyles.some(([name]) => name === 'hover')) {
+      componentMask |= HOVER_INTERACTION_MASK;
+    }
+    // componentMask = (componentMask ^ -1) >>> 0;
+    console.log('GROUP_MASK: ', {
+      componentMask,
+      // isParent: componentMask & GROUP_PARENT_MASK,
+      // hasInteractions: Boolean(componentMask & INTERACTIONS_MASK),
+      // hasHover: Boolean(componentMask & HOVER_INTERACTION_MASK),
+      classNames,
+      hash,
+    });
+    this.componentsState.set(hash, {
       interactionStyles,
       normalStyles: normalStyles.reduce((obj, d) => Object.assign(obj, d[1]), {}),
-    };
-    this.listeners.forEach((l) => l());
-    return Object.freeze(this.componentsState[hash]);
+      mask: componentMask,
+    });
+    // this.listeners.forEach((l) => l());
+    return Object.freeze(this.componentsState.get(hash)!);
   }
 
   subscribe(listener: () => void) {
