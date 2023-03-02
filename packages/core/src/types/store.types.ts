@@ -1,24 +1,14 @@
 import type { IStyleType, IStyleTuple } from './styles.types';
 
-export type TPseudoSelectorTypes =
-  | 'hover'
-  | 'active'
-  | 'group'
-  | 'focus'
-  | 'dark'
-  | 'group-hover'
-  | 'last'
-  | 'first';
+export type TInteractionPseudoSelectors = 'hover' | 'active' | 'focus' | 'group-hover';
+
+export type TAppearancePseudoSelectors = 'dark' | 'last' | 'first';
 
 export type IInteractionPayload = {
   classNames: string;
   styles: IStyleType;
 };
-export type IComponentInteractions = [TPseudoSelectorTypes, IInteractionPayload];
-export type ISetComponentInteractionArgs = {
-  kind: TPseudoSelectorTypes;
-  active: boolean;
-};
+export type IComponentInteractions = [TInteractionPseudoSelectors, IInteractionPayload];
 
 export type IComponent = {
   id: string;

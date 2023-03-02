@@ -2,6 +2,7 @@ import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
 function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;
+
   const listeners = new Set<(state: StoreShape) => void>();
   const subscribe = (listener: (state: StoreShape) => void) => {
     listeners.add(listener);
@@ -13,7 +14,7 @@ function createStore<StoreShape>(initialState: StoreShape) {
       listeners.forEach((listener) => listener(currentState));
     },
     getState: () => {
-      return Object.freeze(currentState);
+      return currentState;
     },
     emitChanges: () => {
       listeners.forEach((listener) => listener(currentState));

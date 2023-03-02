@@ -5,13 +5,15 @@ import {
   INITIAL_MASK,
   INTERACTIONS_MASK,
 } from '../constants';
-import { cssPropertiesResolver } from '../modules/resolve';
-import type { IComponentInteractions } from '../types/store.types';
+import type {
+  IComponentInteractions,
+  TInteractionPseudoSelectors,
+} from '../types/store.types';
 import type { IStyleTuple, IStyleType } from '../types/styles.types';
-import { parseClassNames, parsePseudoElements } from '../utils/components.utils';
+import { selectorIsInteraction } from '../utils/components.utils';
+import { cssPropertiesResolver } from '../utils/styles.utils';
 
 class GlobalStyleSheet {
-  // private resolvedUtilities: Set<string> = new Set();
   private stylesCollection: Map<string, IStyleType> = new Map();
   private tw: ReturnType<typeof setup>;
 
@@ -36,9 +38,27 @@ class GlobalStyleSheet {
     return styleTuple;
   }
 
-  private getStylesForInteractionClasses(classNames: string[][]) {
+  private _splitClasses(classNames = '') {
+    const rawClassNames = classNames?.replace(/\s+/g, ' ').trim().split(' ');
+    return rawClassNames;
+  }
+
+  private _parseClassNames(classNames = '') {
+    const rawClassNames = this._splitClasses(classNames);
+    const normalClassNames = rawClassNames.filter((item) => !item.includes(':'));
+    const interactionClassNames = rawClassNames
+      .filter((item) => item.includes(':'))
+      .map((item) => item.split(':'));
+
+    return {
+      interactionClassNames,
+      normalClassNames,
+    };
+  }
+
+  private _getStylesForInteractionClasses(classNames: string[][]) {
     let interactionStyles: IComponentInteractions[] = [];
-    const interactionsClasses = parsePseudoElements(classNames);
+    const interactionsClasses = this._getInteractionClasses(classNames);
     for (const node of interactionsClasses) {
       const interactionType = node[0];
       const interactionClassNames = node[1];
@@ -54,10 +74,21 @@ class GlobalStyleSheet {
     return interactionStyles;
   }
 
+  private _getInteractionClasses(classNames: string[][]) {
+    const interactions: [TInteractionPseudoSelectors, string][] = [];
+    for (const current of classNames) {
+      if (!selectorIsInteraction(current[0])) continue;
+      const pseudoSelector = current[0];
+      const className = current[1];
+      interactions.push([pseudoSelector, className]);
+    }
+    return interactions;
+  }
+
   registerClassNames(classNames: string) {
-    const parsed = parseClassNames(classNames);
+    const parsed = this._parseClassNames(classNames);
     const normalStyles = this._getJSS(parsed.normalClassNames);
-    const interactionStyles = this.getStylesForInteractionClasses(
+    const interactionStyles = this._getStylesForInteractionClasses(
       parsed.interactionClassNames,
     );
     const isParent = normalStyles.some(([name]) => name === 'group');

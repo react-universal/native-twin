@@ -1,33 +1,52 @@
 import { immerable } from 'immer';
 import type { IRegisterComponentArgs } from '../types/store.types';
-import type { TPseudoSelectorTypes } from '../types/store.types';
+import type { TInteractionPseudoSelectors } from '../types/store.types';
 import type { IStyleType } from '../types/styles.types';
 import ComponentStyleSheet from './ComponentStyleSheet';
 
 export default class ComponentNode {
   id: string;
   [immerable] = true;
-  classNames?: string;
   inlineStyles: IStyleType;
   styleSheet: ComponentStyleSheet;
-  interactionsState: Record<TPseudoSelectorTypes, boolean> = {
+  interactionsState: Record<TInteractionPseudoSelectors, boolean> = {
     hover: false,
     focus: false,
     active: false,
     'group-hover': false,
-    dark: false,
-    first: false,
-    group: false,
-    last: false,
   };
   constructor(component: IRegisterComponentArgs) {
     this.id = component.id;
-    this.classNames = component.className;
     this.inlineStyles = component.inlineStyles;
-    this.styleSheet = new ComponentStyleSheet(this.classNames);
+    this.styleSheet = new ComponentStyleSheet(component.className);
   }
 
-  setInteractionState(interaction: TPseudoSelectorTypes, value: boolean) {
+  setInteractionState(interaction: TInteractionPseudoSelectors, value: boolean) {
     this.interactionsState[interaction] = value;
+  }
+
+  getInteractionStyle(interaction: TInteractionPseudoSelectors) {
+    return this.styleSheet.interactionStyles.find(([name]) => name === interaction);
+  }
+
+  get styles() {
+    const styles = [this.styleSheet.baseStyles];
+    const hoverInteraction = this.getInteractionStyle('hover');
+    if (this.interactionsState.hover && hoverInteraction) {
+      styles.push(hoverInteraction[1].styles);
+    }
+    return styles;
+  }
+
+  get hasPointerInteractions() {
+    return this.styleSheet.interactionStyles.length > 0;
+  }
+
+  get isGroupParent() {
+    return this.styleSheet.classNameSet.has('group');
+  }
+
+  get hasGroupInteractions() {
+    return this.styleSheet.interactionStyles.some(([name]) => name.startsWith('group-'));
   }
 }

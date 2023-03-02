@@ -1,4 +1,4 @@
-import { useCallback, useId, useMemo } from 'react';
+import { useCallback, useEffect, useId, useMemo } from 'react';
 import { storeManager } from '../store/StoreManager';
 
 function useStore(classNames: string) {
@@ -10,13 +10,19 @@ function useStore(classNames: string) {
       className: classNames,
     });
   }, [classNames, id]);
+
   const selector = useMemo(() => {
     const selector = registerComponent();
     return selector;
   }, [registerComponent]);
 
-  const component = storeManager.useStore((state) => state.components[selector]);
-  return component;
+  useEffect(() => {
+    return () => {
+      storeManager.getState().unregisterComponent(selector);
+    };
+  }, [selector]);
+
+  return storeManager.useStore((state) => state.components[selector]);
 }
 
 export { useStore };

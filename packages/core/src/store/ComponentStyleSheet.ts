@@ -19,8 +19,4 @@ export default class ComponentStyleSheet {
     if (!this.className) return [];
     return this.className.replace(/\s+/g, ' ').trim().split(' ');
   }
-
-  get isGroupParent() {
-    return this.classNamesArray.some((className) => className === 'group');
-  }
 }

@@ -1,13 +1,15 @@
 import { produce } from 'immer';
-import type { Config } from 'tailwindcss';
-import resolveConfig from 'tailwindcss/resolveConfig';
-import type { IRegisterComponentArgs, TPseudoSelectorTypes } from '../types/store.types';
+import type {
+  IRegisterComponentArgs,
+  TInteractionPseudoSelectors,
+} from '../types/store.types';
+import { reduxDevToolsConnection } from '../utils/devHelpers';
 import ComponentNode from './ComponentNode';
 import { createStore } from './generator';
 
 export const storeManager = createStore({
   components: {} as Record<string, ComponentNode>,
-  tailwindConfig: resolveConfig({ content: ['__'] }) as Config,
+  // tailwindConfig: resolveConfig({ content: ['__'] }),
   registerComponent(input: IRegisterComponentArgs) {
     let component: ComponentNode;
     const cache = storeManager.getState().components[input.id];
@@ -20,20 +22,44 @@ export const storeManager = createStore({
           draft.components[component.id] = component;
         });
       });
+      reduxDevToolsConnection?.send(
+        {
+          type: 'COMPONENT_REGISTERED: ',
+          ...storeManager.getState(),
+        },
+        storeManager.getState(),
+      );
     }
     return input.id;
   },
+  unregisterComponent(id: string) {
+    storeManager.setState((prevState) => {
+      return produce(prevState, (draft) => {
+        if (draft.components[id]) {
+          delete draft.components[id];
+        }
+      });
+    });
+  },
   setInteractionState(
     target: ComponentNode,
-    interaction: TPseudoSelectorTypes,
+    interaction: TInteractionPseudoSelectors,
     value: boolean,
   ) {
     storeManager.setState((prevState) => {
-      // prevState.components[target.id].setInteractionState(interaction, value);
       const producer = produce(prevState, (draft) => {
         draft.components[target.id].setInteractionState(interaction, value);
       });
       return producer;
     });
+    reduxDevToolsConnection?.send(
+      {
+        type: 'INTERACTION_STATE_CHANGE: ',
+        ...storeManager.getState(),
+      },
+      storeManager.getState(),
+    );
   },
 });
+
+reduxDevToolsConnection?.init(storeManager.getState());

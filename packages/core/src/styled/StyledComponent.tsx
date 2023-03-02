@@ -1,4 +1,4 @@
-import {
+import React, {
   ClassAttributes,
   ComponentType,
   ForwardedRef,
@@ -15,14 +15,21 @@ type InferRef<T> = T extends RefAttributes<infer R> | ClassAttributes<infer R> ?
 
 function styled<T>(Component: ComponentType<T>) {
   function Styled(props: IExtraProperties<T>, ref: ForwardedRef<unknown>) {
-    const { styles, componentState, componentChilds, componentInteractionHandlers } =
-      useStyledComponent(props);
+    const {
+      styles,
+      componentState,
+      componentChilds,
+      componentInteractionHandlers,
+      component,
+    } = useStyledComponent(props);
+
     const styledElement = (
       <Component
         {...props}
         {...componentState}
         {...componentInteractionHandlers}
         style={[styles, props.style]}
+        key={component.id}
         ref={ref}
       >
         {componentChilds}

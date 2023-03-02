@@ -1,31 +1,24 @@
-import type { CSSProperties } from 'react';
-import { setup } from '@react-universal/native-tailwind';
+import { getStylesForProperty } from 'css-to-react-native';
 import type { CssInJs } from 'postcss-js';
 import type { IStyleType } from '../types/styles.types';
 
-const twj = setup({ content: ['__'] });
-
-const toRNStyles = (JSS: CssInJs) => {
-  const cssStyles = Object.entries(JSS)
-    .map(([, cssValue]): CSSProperties => {
-      return cssValue;
-    })
-    .map((cssProperties) => {
-      console.log('CSS_PROP: ', cssProperties);
-      return cssProperties;
-    });
-  console.log('CSS_STYLES: ', cssStyles);
-  return {};
-};
-
-export function transformClassNames(...classes: string[]): IStyleType {
+export function cssPropertiesResolver(input: CssInJs) {
   try {
-    console.log('CLASSES: ', classes);
-    const styles = twj(classes.join(' '));
-    console.log('STYLES: ', styles);
-    return toRNStyles(styles.JSS);
+    const keys = Object.keys(input);
+    const styles: IStyleType = {};
+    keys.forEach((className) => {
+      const style = input[className];
+      const transformed = Object.entries(style).reduce((previous, [name, value]) => {
+        previous = Object.assign(previous, getStylesForProperty(name, String(value)));
+        return previous;
+      }, {} as IStyleType);
+      Object.assign(styles, transformed);
+    });
+    return styles;
+    // return normalizeStyles(transform(input.trim()));
+    // return transform(input);
   } catch (error) {
-    console.log('ERROR TRANSFORMING CSS TO JS: ', error);
+    console.log('cssPropertiesResolver_ERROR: ', error);
     return {};
   }
 }

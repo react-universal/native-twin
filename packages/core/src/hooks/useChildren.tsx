@@ -1,4 +1,4 @@
-import { Children, isValidElement, useMemo } from 'react';
+import { Children, cloneElement, isValidElement, useMemo } from 'react';
 import type { StyleProp } from 'react-native';
 
 function useChildren(children: React.ReactNode) {
@@ -15,11 +15,9 @@ function useChildren(children: React.ReactNode) {
         ...child.props,
       };
 
-      return isStyledComponent(child) ? (
-        <child.type {...childProps} />
-      ) : (
-        <child.type {...childProps} />
-      );
+      return isStyledComponent(child)
+        ? cloneElement(child, { ...childProps })
+        : cloneElement(child, { ...childProps });
     });
   }, [children]);
 }

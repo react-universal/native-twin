@@ -42,4 +42,4 @@ const createObservable = <DataType>(data: DataType): Observable<DataType> => {
   ) as Observable<DataType>;
 };
 
-export { createObservable };
+export { createObservable, createSubscribable };

@@ -1610,7 +1610,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.3.1":
+"@babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.3.1":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
   dependencies:
@@ -4024,6 +4024,7 @@ __metadata:
   resolution: "@react-universal/core@workspace:packages/core"
   dependencies:
     "@react-universal/native-tailwind": ^1.0.3
+    "@redux-devtools/extension": ^3.2.5
     "@simbathesailor/use-what-changed": ^2.0.0
     "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
@@ -4038,6 +4039,7 @@ __metadata:
     immer: ^9.0.19
     react: 18.2.0
     react-is: ^18.2.0
+    tailwindest: ^1.0.4
     tslib: ^2.3.0
     use-sync-external-store: ^1.2.0
     vite: ^4.1.1
@@ -4119,6 +4121,18 @@ __metadata:
     react-native-svg: ">= 12"
   languageName: unknown
   linkType: soft
+
+"@redux-devtools/extension@npm:^3.2.5":
+  version: 3.2.5
+  resolution: "@redux-devtools/extension@npm:3.2.5"
+  dependencies:
+    "@babel/runtime": ^7.20.7
+    immutable: ^4.2.2
+  peerDependencies:
+    redux: ^3.1.0 || ^4.0.0
+  checksum: c89680e1af8bd47a0250478b491a79a55bc0d71206f5ab95a83fd05c7d815bdaef5703defb7b571f07fc8bd2c6d4e8da6fc0cfd09e7fe03e994f9070c15fd08d
+  languageName: node
+  linkType: hard
 
 "@segment/loosely-validate-event@npm:^2.0.0":
   version: 2.0.0
@@ -10793,6 +10807,13 @@ __metadata:
   version: 9.0.19
   resolution: "immer@npm:9.0.19"
   checksum: f02ee53989989c287cd548a3d817fccf0bfe56db919755ee94a72ea3ae78a00363fba93ee6c010fe54a664380c29c53d44ed4091c6a86cae60957ad2cfabc010
+  languageName: node
+  linkType: hard
+
+"immutable@npm:^4.2.2":
+  version: 4.2.4
+  resolution: "immutable@npm:4.2.4"
+  checksum: 3be84eded37b05e65cad57bfba630bc1bf170c498b7472144bc02d2650cc9baef79daf03574a9c2e41d195ebb55a1c12c9b312f41ee324b653927b24ad8bcaa7
   languageName: node
   linkType: hard
 
@@ -18288,6 +18309,13 @@ __metadata:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
   checksum: ec187d180c722ec4f57537f2216c7b21269b525f12aaf353cea464d939c3e6286a1221eb3e1206e45d1f015f296171309ad4d9952899b0245cd07d9500a9401f
+  languageName: node
+  linkType: hard
+
+"tailwindest@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "tailwindest@npm:1.0.4"
+  checksum: 7c597aed7b0e118c73464d1183f741b7f0888d8893a169f077afeacb178062147b51cee46a2062dfe8dc6e41f743271e17fb8ad2a82baf81c349611036f37140
   languageName: node
   linkType: hard
 
