@@ -6,6 +6,7 @@
       "dependsOn": ["^build"],
       "cache": true
     },
+    "e2e": { "cache": true },
     "dev": {
       "outputs": ["build/**"],
       "persistent": true,

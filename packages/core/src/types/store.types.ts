@@ -1,16 +1,14 @@
 import type { IStyleType, IStyleTuple } from './styles.types';
 
-export type TPseudoSelectorTypes = 'hover' | 'active' | 'focus' | 'dark' | 'group-hover';
+export type TInteractionPseudoSelectors = 'hover' | 'active' | 'focus' | 'group-hover';
+
+export type TAppearancePseudoSelectors = 'dark' | 'last' | 'first';
 
 export type IInteractionPayload = {
   classNames: string;
   styles: IStyleType;
 };
-export type IComponentInteractions = [TPseudoSelectorTypes, IInteractionPayload];
-export type ISetComponentInteractionArgs = {
-  kind: TPseudoSelectorTypes;
-  active: boolean;
-};
+export type IComponentInteractions = [TInteractionPseudoSelectors, IInteractionPayload];
 
 export type IComponent = {
   id: string;
@@ -24,7 +22,6 @@ type IComponentID = string;
 export type IRegisteredComponent = [IComponentID, IComponent];
 
 export type IRegisterComponentArgs = {
-  id: IComponentID;
   className?: string;
   inlineStyles: IStyleType;
 };
@@ -36,6 +33,7 @@ export type IComponentsStore = {
 export type IClassNamesStyle = {
   normalStyles: IStyleType;
   interactionStyles: IComponentInteractions[];
+  mask: number;
 };
 
 export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, unknown>

@@ -1,11 +1,8 @@
-import { useMemo } from 'react';
+import { useDebugValue } from 'react';
 import type { Touchable } from 'react-native';
-import { useTailwindContext } from '../context/TailwindContext';
 import type { IExtraProperties } from '../types/styles.types';
-import { parseClassNames } from '../utils/components.utils';
 import { useComponentInteractions, useComponentState } from './styled';
 import { useChildren } from './useChildren';
-import { useFinalStyles } from './useFinalStyles';
 import { useStore } from './useStore';
 
 const useStyledComponent = <Props extends Object>({
@@ -14,42 +11,25 @@ const useStyledComponent = <Props extends Object>({
   tw,
   ...componentProps
 }: Props & IExtraProperties<Props>) => {
-  const tailwindContext = useTailwindContext();
-  const { interactionStyles, normalStyles } = useStore(className ?? tw ?? '');
-  const parsedClassNames = useMemo(() => parseClassNames(className), [className]);
-  const isGroupParent = useMemo(
-    () => parsedClassNames.normalClassNames.some((item) => item === 'group'),
-    [parsedClassNames.normalClassNames],
-  );
+  const component = useStore(className ?? tw ?? '');
+  useDebugValue(component);
 
   const componentState = useComponentState({
-    interactionStyles,
+    component,
     componentProps,
-    normalClassNames: parsedClassNames.normalClassNames,
   });
   const { componentInteractionHandlers } = useComponentInteractions({
-    props: { ...componentProps, children } as Touchable,
+    props: componentProps as Touchable,
     componentState,
-    isGroupParent,
+    isGroupParent: false,
   });
-  const { styles, hasInteractions, hasGroupInteractions } = useFinalStyles({
-    interactionStyles,
-    normalStyles,
-    isGroupParent,
-    componentProps,
-    componentState,
-  });
-  const componentChilds = useChildren(children);
+  const componentChilds = useChildren(children, component);
 
   return {
-    styles,
-    isGroupParent,
+    styles: component.styles,
     componentChilds,
-    hasInteractions,
     componentState,
-    tailwindContext,
-    normalStyles,
-    hasGroupInteractions,
+    component,
     componentInteractionHandlers,
   };
 };

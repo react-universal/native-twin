@@ -1,7 +1,6 @@
-import { useSyncExternalStore } from 'react';
-
 function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;
+
   const listeners = new Set<(state: StoreShape) => void>();
   const subscribe = (listener: (state: StoreShape) => void) => {
     listeners.add(listener);
@@ -13,21 +12,12 @@ function createStore<StoreShape>(initialState: StoreShape) {
       listeners.forEach((listener) => listener(currentState));
     },
     getState: () => {
-      return Object.freeze(currentState);
+      return currentState;
     },
     emitChanges: () => {
       listeners.forEach((listener) => listener(currentState));
     },
     subscribe,
-    useStore: <SelectorOutput>(
-      selector: (state: StoreShape) => SelectorOutput,
-    ): SelectorOutput => {
-      return useSyncExternalStore(
-        subscribe,
-        () => selector(currentState),
-        () => selector(currentState),
-      );
-    },
   };
 }
 

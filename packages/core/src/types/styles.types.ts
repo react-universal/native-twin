@@ -3,7 +3,7 @@ import type { PressableProps } from 'react-native';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { TPseudoSelectorTypes } from './store.types';
 
-export type IStyleType = Record<string, any>;
+export type IStyleType = Record<string, ImageStyle | TextStyle | ViewStyle>;
 export type IStyleTuple = [string, IStyleType];
 
 export type IComponentState = Record<TPseudoSelectorTypes, boolean>;

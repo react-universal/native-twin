@@ -6,8 +6,8 @@ import {
   ForwardRefExoticComponent,
   PropsWithoutRef,
   RefAttributes,
+  useRef,
 } from 'react';
-import { TailwindContextProvider } from '../context/TailwindContext';
 import { useStyledComponent } from '../hooks';
 import type { IExtraProperties } from '../types/styles.types';
 
@@ -19,36 +19,25 @@ function styled<T>(Component: ComponentType<T>) {
     const {
       styles,
       componentState,
-      isGroupParent,
       componentChilds,
       componentInteractionHandlers,
+      component,
     } = useStyledComponent(props);
+    const innerRef = useRef(ref);
+
     const styledElement = (
       <Component
         {...props}
         {...componentState}
         {...componentInteractionHandlers}
         style={[styles, props.style]}
-        ref={ref}
+        key={component.id}
+        forwardedRef={innerRef}
+        ref={innerRef}
       >
         {componentChilds}
       </Component>
     );
-    if (isGroupParent) {
-      return (
-        <TailwindContextProvider
-          parentState={{
-            'group-hover': componentState.groupHoverInteraction.state,
-            active: componentState.activeInteraction.state,
-            dark: false,
-            focus: componentState.focusInteraction.state,
-            hover: componentState.hoverInteraction.state,
-          }}
-        >
-          {styledElement}
-        </TailwindContextProvider>
-      );
-    }
     return styledElement;
   }
 

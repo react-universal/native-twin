@@ -9,8 +9,8 @@ interface UseComponentInteractionsArgs {
 }
 const useComponentInteractions = ({
   props,
-  componentState,
   isGroupParent,
+  componentState,
 }: UseComponentInteractionsArgs) => {
   const ref = useRef<Touchable>(props);
   const componentInteractionHandlers = useMemo(() => {

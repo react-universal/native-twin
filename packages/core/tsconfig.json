@@ -6,7 +6,7 @@
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "module": "CommonJS",
     "types": ["node"],
     "importHelpers": true

@@ -1,20 +1,20 @@
-import type { IComponentInteractions } from '../../types/store.types';
+import type ComponentNode from '../../store/ComponentNode';
 import { useComponentInteractionState, useContextComponentInteractionState } from '../events';
 
 interface UseComponentStateArgs {
-  interactionStyles: IComponentInteractions[];
   componentProps: any;
-  normalClassNames: string[];
+  component: ComponentNode;
 }
 
-const useComponentState = ({ interactionStyles }: UseComponentStateArgs) => {
-  const hoverInteraction = useComponentInteractionState(interactionStyles, 'hover');
-  const activeInteraction = useComponentInteractionState(interactionStyles, 'active');
-  const focusInteraction = useComponentInteractionState(interactionStyles, 'focus');
-  const groupHoverInteraction = useComponentInteractionState(interactionStyles, 'group-hover');
-  const colorScheme = useComponentInteractionState(interactionStyles, 'dark');
+const useComponentState = ({ component }: UseComponentStateArgs) => {
+  const hoverInteraction = useComponentInteractionState(component, 'hover');
+  const activeInteraction = useComponentInteractionState(component, 'active');
+  const focusInteraction = useComponentInteractionState(component, 'focus');
+  const lastChildInteraction = useComponentInteractionState(component, 'last');
+  const groupHoverInteraction = useComponentInteractionState(component, 'group-hover');
+  const colorScheme = useComponentInteractionState(component, 'dark');
   const parentGroupHoverInteraction = useContextComponentInteractionState(
-    interactionStyles,
+    component.styleSheet.interactionStyles,
     'group-hover',
   );
   return {
@@ -24,6 +24,7 @@ const useComponentState = ({ interactionStyles }: UseComponentStateArgs) => {
     groupHoverInteraction,
     parentGroupHoverInteraction,
     colorScheme,
+    lastChildInteraction,
   };
 };
 
