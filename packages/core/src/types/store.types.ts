@@ -22,7 +22,6 @@ type IComponentID = string;
 export type IRegisteredComponent = [IComponentID, IComponent];
 
 export type IRegisterComponentArgs = {
-  id: IComponentID;
   className?: string;
   inlineStyles: IStyleType;
 };

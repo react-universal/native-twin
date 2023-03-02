@@ -3034,6 +3034,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/hashes@npm:^1.1.5":
+  version: 1.2.0
+  resolution: "@noble/hashes@npm:1.2.0"
+  checksum: 8ca080ce557b8f40fb2f78d3aedffd95825a415ac8e13d7ffe3643f8626a8c2d99a3e5975b555027ac24316d8b3c02a35b8358567c0c23af681e6573602aa434
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -3649,6 +3656,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@paralleldrive/cuid2@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@paralleldrive/cuid2@npm:2.2.0"
+  dependencies:
+    "@noble/hashes": ^1.1.5
+  checksum: 5d708a097d3965b17fa17cf31ae2f1351fafee686c107d290cb018620814f46654e4fdbe374984a731265b19ff2c57968f05a6c7137680e8b1ac426a7f2f8227
+  languageName: node
+  linkType: hard
+
 "@parcel/watcher@npm:2.0.4":
   version: 2.0.4
   resolution: "@parcel/watcher@npm:2.0.4"
@@ -4023,6 +4039,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@react-universal/core@workspace:packages/core"
   dependencies:
+    "@paralleldrive/cuid2": ^2.2.0
     "@react-universal/native-tailwind": ^1.0.3
     "@redux-devtools/extension": ^3.2.5
     "@simbathesailor/use-what-changed": ^2.0.0

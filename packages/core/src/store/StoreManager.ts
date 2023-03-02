@@ -1,4 +1,4 @@
-import { produce } from 'immer';
+import { produce, enableMapSet } from 'immer';
 import type {
   IRegisterComponentArgs,
   TInteractionPseudoSelectors,
@@ -6,29 +6,24 @@ import type {
 import ComponentNode from './ComponentNode';
 import { createStore } from './generator';
 
+enableMapSet();
+
 const storeManager = createStore({
-  components: {} as Record<string, ComponentNode>,
+  components: new Map<string, ComponentNode>(),
   registerComponent(input: IRegisterComponentArgs) {
     let component: ComponentNode;
-    const cache = storeManager.getState().components[input.id];
-    if (cache) {
-      component = cache;
-    } else {
-      component = new ComponentNode(input);
-      storeManager.setState((prevState) => {
-        return produce(prevState, (draft) => {
-          draft.components[component.id] = component;
-        });
+    component = new ComponentNode(input);
+    storeManager.setState((prevState) => {
+      return produce(prevState, (draft) => {
+        draft.components.set(component.id, component);
       });
-    }
-    return input.id;
+    });
+    return component.id;
   },
   unregisterComponent(id: string) {
     storeManager.setState((prevState) => {
       return produce(prevState, (draft) => {
-        if (draft.components[id]) {
-          delete draft.components[id];
-        }
+        draft.components.delete(id);
       });
     });
   },
@@ -39,7 +34,7 @@ const storeManager = createStore({
   ) {
     storeManager.setState((prevState) => {
       const producer = produce(prevState, (draft) => {
-        draft.components[target.id].setInteractionState(interaction, value);
+        draft.components.get(target.id)?.setInteractionState(interaction, value);
       });
       return producer;
     });

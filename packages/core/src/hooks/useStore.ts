@@ -1,26 +1,24 @@
-import { useEffect, useId, useMemo } from 'react';
+import { useDebugValue, useEffect, useMemo } from 'react';
 import { useSyncExternalStore } from 'use-sync-external-store/shim';
 import storeManager from '../store/StoreManager';
 
 function useStore(classNames: string) {
-  const id = useId();
-
-  const component = useMemo(() => {
+  const componentID = useMemo(() => {
     return storeManager.getState().registerComponent({
-      id,
       inlineStyles: {},
       className: classNames,
     });
-  }, [id, classNames]);
+  }, [classNames]);
 
   useEffect(() => {
-    return () => storeManager.getState().unregisterComponent(id);
-  }, [id]);
+    return () => storeManager.getState().unregisterComponent(componentID);
+  }, [componentID]);
+  useDebugValue(`Store size: ${storeManager.getState().components.size}`);
 
   return useSyncExternalStore(
     storeManager.subscribe,
-    () => storeManager.getState().components[component],
-    () => storeManager.getState().components[component],
+    () => storeManager.getState().components.get(componentID)!,
+    () => storeManager.getState().components.get(componentID)!,
   );
 }
 
