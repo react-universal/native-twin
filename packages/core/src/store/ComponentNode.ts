@@ -1,3 +1,4 @@
+import { StyleSheet } from 'react-native';
 import { immerable } from 'immer';
 import type { IRegisterComponentArgs } from '../types/store.types';
 import type { TInteractionPseudoSelectors } from '../types/store.types';
@@ -35,7 +36,7 @@ export default class ComponentNode {
     if (this.interactionsState.hover && hoverInteraction) {
       styles.push(hoverInteraction[1].styles);
     }
-    return styles;
+    return StyleSheet.flatten(styles);
   }
 
   get hasPointerInteractions() {

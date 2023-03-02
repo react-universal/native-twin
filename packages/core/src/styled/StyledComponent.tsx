@@ -1,4 +1,5 @@
-import React, {
+/* @refresh reset */
+import {
   ClassAttributes,
   ComponentType,
   ForwardedRef,
@@ -6,6 +7,7 @@ import React, {
   ForwardRefExoticComponent,
   PropsWithoutRef,
   RefAttributes,
+  useRef,
 } from 'react';
 import { useStyledComponent } from '../hooks';
 import type { IExtraProperties } from '../types/styles.types';
@@ -22,6 +24,7 @@ function styled<T>(Component: ComponentType<T>) {
       componentInteractionHandlers,
       component,
     } = useStyledComponent(props);
+    const innerRef = useRef(ref);
 
     const styledElement = (
       <Component
@@ -30,7 +33,8 @@ function styled<T>(Component: ComponentType<T>) {
         {...componentInteractionHandlers}
         style={[styles, props.style]}
         key={component.id}
-        ref={ref}
+        forwardedRef={innerRef}
+        ref={innerRef}
       >
         {componentChilds}
       </Component>

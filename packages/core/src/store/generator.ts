@@ -1,5 +1,3 @@
-import { useSyncExternalStore } from 'use-sync-external-store/shim';
-
 function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;
 
@@ -20,15 +18,6 @@ function createStore<StoreShape>(initialState: StoreShape) {
       listeners.forEach((listener) => listener(currentState));
     },
     subscribe,
-    useStore: <SelectorOutput>(
-      selector: (state: StoreShape) => SelectorOutput,
-    ): SelectorOutput => {
-      return useSyncExternalStore(
-        subscribe,
-        () => selector(currentState),
-        () => selector(currentState),
-      );
-    },
   };
 }
 

@@ -1,5 +1,5 @@
 import { useDebugValue } from 'react';
-import { StyleSheet, Touchable } from 'react-native';
+import type { Touchable } from 'react-native';
 import type { IExtraProperties } from '../types/styles.types';
 import { useComponentInteractions, useComponentState } from './styled';
 import { useChildren } from './useChildren';
@@ -23,10 +23,10 @@ const useStyledComponent = <Props extends Object>({
     componentState,
     isGroupParent: false,
   });
-  const componentChilds = useChildren(children);
+  const componentChilds = useChildren(children, component);
 
   return {
-    styles: StyleSheet.flatten(component.styles),
+    styles: component.styles,
     componentChilds,
     componentState,
     component,

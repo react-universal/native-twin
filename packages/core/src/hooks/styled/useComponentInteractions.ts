@@ -17,6 +17,7 @@ const useComponentInteractions = ({
     const handlers: Touchable = {};
     if (componentState.hoverInteraction.interactionStyle) {
       handlers.onTouchStart = function (event) {
+        console.log('TOUCH_EVENT: ', event.nativeEvent);
         if (ref.current.onTouchStart) {
           ref.current.onTouchStart(event);
         }

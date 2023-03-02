@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type ComponentNode from '../../store/ComponentNode';
-import { storeManager } from '../../store/StoreManager';
-import type { TPseudoSelectorTypes } from '../../types/store.types';
+import storeManager from '../../store/StoreManager';
+import type { TInteractionPseudoSelectors } from '../../types/store.types';
 import type { IStyleType } from '../../types/styles.types';
 
 export interface UseComponentInteractionStateResponse {
@@ -12,7 +12,7 @@ export interface UseComponentInteractionStateResponse {
 
 const useComponentInteractionState = (
   component: ComponentNode,
-  interactionName: TPseudoSelectorTypes,
+  interactionName: TInteractionPseudoSelectors,
 ) => {
   const interactionStyle = useMemo(() => {
     const interaction = component.styleSheet.interactionStyles.find(
