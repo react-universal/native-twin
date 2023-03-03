@@ -6,51 +6,7 @@
     "version": {
       "allowBranch": ["main", "next"],
       "conventionalCommits": true,
-      "changelog": true,
-      "changelogPreset": {
-        "commitUrlFormat": "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
-        "compareUrlFormat": "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
-        "header": "# Changelog\n\n",
-        "issuePrefixes": ["#"],
-        "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
-        "preMajor": false,
-        "releaseCommitMessageFormat": "chore(release): {{currentTag}}",
-        "userUrlFormat": "{{host}}/{{user}}",
-        "types": [
-          {
-            "type": "feat",
-            "section": "Features"
-          },
-          {
-            "type": "fix",
-            "section": "Bug Fixes"
-          },
-          {
-            "type": "chore",
-            "hidden": true
-          },
-          {
-            "type": "docs",
-            "hidden": true
-          },
-          {
-            "type": "style",
-            "hidden": true
-          },
-          {
-            "type": "refactor",
-            "hidden": true
-          },
-          {
-            "type": "perf",
-            "hidden": true
-          },
-          {
-            "type": "test",
-            "hidden": true
-          }
-        ]
-      }
+      "changelog": true
     },
     "publish": {
       "npmClient": "yarn",
