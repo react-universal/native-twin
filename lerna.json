@@ -3,7 +3,7 @@
   "useWorkspaces": true,
   "command": {
     "version": {
-      "allowBranch": "main",
+      "allowBranch": ["main", "next"],
       "conventionalCommits": true
     },
     "publish": {
