@@ -1,13 +1,62 @@
 {
+  "$schema": "./node_modules/lerna/schemas/lerna-schema.json",
   "version": "1.0.3",
   "useWorkspaces": true,
   "command": {
     "version": {
       "allowBranch": ["main", "next"],
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "changelog": true,
+      "changelogPreset": {
+        "commitUrlFormat": "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
+        "compareUrlFormat": "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
+        "header": "# Changelog\n\n",
+        "issuePrefixes": ["#"],
+        "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
+        "preMajor": false,
+        "releaseCommitMessageFormat": "chore(release): {{currentTag}}",
+        "userUrlFormat": "{{host}}/{{user}}",
+        "types": [
+          {
+            "type": "feat",
+            "section": "Features"
+          },
+          {
+            "type": "fix",
+            "section": "Bug Fixes"
+          },
+          {
+            "type": "chore",
+            "hidden": true
+          },
+          {
+            "type": "docs",
+            "hidden": true
+          },
+          {
+            "type": "style",
+            "hidden": true
+          },
+          {
+            "type": "refactor",
+            "hidden": true
+          },
+          {
+            "type": "perf",
+            "hidden": true
+          },
+          {
+            "type": "test",
+            "hidden": true
+          }
+        ]
+      }
     },
     "publish": {
-      "graphType": "all"
+      "npmClient": "yarn",
+      "scope": "@react-universal",
+      "loglevel": "verbose",
+      "registry": "https://npm.pkg.github.com"
     }
   }
 }
