@@ -1,6 +1,6 @@
 {
   "name": "@react-universal/core",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Core package that contains common utils, primitives and SWC compatibility layer",
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.0",
-    "@react-universal/native-tailwind": "^1.0.3",
+    "@react-universal/native-tailwind": "^1.1.0",
     "clsx": "^1.2.1",
     "css-to-react-native": "^3.1.0",
     "css-to-react-native-transform": "^2.0.0",
