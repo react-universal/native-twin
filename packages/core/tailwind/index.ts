@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 import type { DarkModeConfig } from 'tailwindcss/types/config';
+import { elevation } from './elevation';
 import { translate } from './translate';
 
 export interface NativePluginOptions {
@@ -40,7 +41,7 @@ export const nativePlugin = plugin.withOptions<NativePluginOptions>(
       // fontSize(helpers);
       // lineHeight(helpers, notSupported);
       // pseudoClasses(helpers, notSupported);
-      // elevation(helpers, notSupported);
+      elevation(helpers, notSupported);
       // scale(helpers, notSupported);
       // rotate(helpers, notSupported);
       // skew(helpers, notSupported);

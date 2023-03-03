@@ -35,7 +35,6 @@ class GlobalStyleSheet {
         previous.push([current, cache]);
       } else {
         const styles = this.tw(current);
-        console.log('STYLES: ', styles);
         const rnStyles = cssPropertiesResolver(styles.JSS);
         previous.push([current, rnStyles]);
         this.stylesCollection.set(current, rnStyles);
