@@ -32,7 +32,6 @@ const storeManager = createStore({
     interaction: TInteractionPseudoSelectors,
     value: boolean,
   ) {
-    console.log('INTERACTION: ');
     storeManager.setState((prevState) => {
       const producer = produce(prevState, (draft) => {
         const component = draft.components.get(target.id);

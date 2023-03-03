@@ -1,13 +1,6 @@
-import { useEffect, useRef } from 'react';
 import { H1, View } from '@react-universal/primitives';
 
 function HomeScreen() {
-  const ref = useRef();
-  useEffect(() => {
-    if (ref) {
-      console.log('HOME_REF: ', ref);
-    }
-  }, []);
   return (
     <View className='flex-1'>
       <View className='flex-1 items-center justify-center bg-slate-900/50 align-top hover:bg-slate-300'>

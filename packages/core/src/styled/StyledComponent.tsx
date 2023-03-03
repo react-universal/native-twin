@@ -36,19 +36,13 @@ function styled<T>(Component: ComponentType<T>) {
     ref: ForwardedRef<unknown>,
   ) {
     const innerRef = useRef(ref);
-    const {
-      styles,
-      componentState,
-      componentChilds,
-      componentInteractionHandlers,
-      component,
-    } = useStyledComponent(props);
+    const { styles, componentChilds, componentInteractionHandlers, component } =
+      useStyledComponent(props);
 
     return (
       // @ts-expect-error
       <WithTailwind
         {...props}
-        {...componentState}
         {...componentInteractionHandlers}
         style={[styles, props.style]}
         key={component.id}

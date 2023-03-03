@@ -10,12 +10,18 @@ const useStyledComponent = ({
   tw,
   parentID,
   style,
+  isFirstChild,
+  isLastChild,
+  nthChild,
   ...componentProps
 }: IExtraProperties<TInternalStyledComponentProps>) => {
   const component = useStore({
     className: className ?? tw ?? '',
     parentID,
     inlineStyles: style,
+    isFirstChild,
+    isLastChild,
+    nthChild,
   });
 
   const componentState = useComponentState({

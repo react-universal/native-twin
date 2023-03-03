@@ -3,14 +3,24 @@ import { useSyncExternalStore } from 'use-sync-external-store/shim';
 import storeManager from '../store/StoreManager';
 import type { IRegisterComponentArgs } from '../types/store.types';
 
-function useStore({ className, parentID, inlineStyles }: IRegisterComponentArgs) {
+function useStore({
+  inlineStyles,
+  isFirstChild,
+  isLastChild,
+  nthChild,
+  parentID,
+  className,
+}: IRegisterComponentArgs) {
   const componentID = useMemo(() => {
     return storeManager.getState().registerComponent({
       inlineStyles,
-      className,
+      isFirstChild,
+      isLastChild,
+      nthChild,
       parentID,
+      className,
     });
-  }, [className, parentID, inlineStyles]);
+  }, [inlineStyles, isFirstChild, isLastChild, nthChild, parentID, className]);
 
   useEffect(() => {
     return () => storeManager.getState().unregisterComponent(componentID);
