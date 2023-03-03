@@ -1,1 +1,1 @@
-export { default } from '../src/install';
+export { setTailwindConfig } from '../src/install';

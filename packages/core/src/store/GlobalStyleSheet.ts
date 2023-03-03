@@ -1,4 +1,5 @@
 import { setup } from '@react-universal/native-tailwind';
+import type { Config } from 'tailwindcss';
 import {
   GROUP_PARENT_MASK,
   HOVER_INTERACTION_MASK,
@@ -23,6 +24,10 @@ class GlobalStyleSheet {
     this.tw = setup({ content: ['__'] });
   }
 
+  setConfig(config: Config) {
+    this.tw = setup(config);
+  }
+
   private _getJSS(classNames: string[]) {
     const styleTuple = classNames.reduce((previous, current) => {
       const cache = this.stylesCollection.get(current);
@@ -30,6 +35,7 @@ class GlobalStyleSheet {
         previous.push([current, cache]);
       } else {
         const styles = this.tw(current);
+        console.log('STYLES: ', styles);
         const rnStyles = cssPropertiesResolver(styles.JSS);
         previous.push([current, rnStyles]);
         this.stylesCollection.set(current, rnStyles);
@@ -145,5 +151,9 @@ class GlobalStyleSheet {
 }
 
 const globalStyleSheet = new GlobalStyleSheet();
+
+export function setTailwindConfig(config: Config) {
+  globalStyleSheet.setConfig(config);
+}
 
 export default globalStyleSheet;

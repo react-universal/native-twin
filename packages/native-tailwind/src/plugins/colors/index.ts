@@ -6,7 +6,7 @@ const colorRule = new RegExp(
 
 const postcssPluginReactNativeColors = (): AcceptedPlugin => {
   return {
-    postcssPlugin: 'postcss-rem-to-px',
+    postcssPlugin: 'postcss-rgb-to-rgba',
     Declaration(decl) {
       decl.value = decl.value.replace(colorRule, (match, red, green, blue, alpha = 1) => {
         return `rgba(${red},${green},${blue}${alpha === 1 ? ',1' : `,${alpha}`})`;

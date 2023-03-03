@@ -20,5 +20,6 @@ export const processTailwindCSS = (props: { config?: TailwindConfig; content: st
     postcssPluginReactNativeAspectRatio(),
   ]);
   const result = processor.process(defaultTailwindCSS, { from: undefined });
+  console.log('REsULT: ', result);
   return result.css;
 };

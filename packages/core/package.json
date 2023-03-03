@@ -14,11 +14,15 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "type": "module",
   "exports": {
     ".": {
       "import": "./build/index.es.js",
       "require": "./build/index.umd.js"
+    },
+    "./tailwind": {
+      "import": "./build/tailwind/index.cjs.js",
+      "require": "./build/tailwind/index.cjs.js",
+      "types": "./tailwind/index.ts"
     },
     "./package.json": "./package.json"
   },
@@ -26,7 +30,7 @@
   "module": "./build/index.es.js",
   "types": "./src/index.ts",
   "scripts": {
-    "build": "yarn vite build",
+    "build": "yarn vite build && yarn vite build -c tailwind.vite.config.ts",
     "dev": "yarn vite build -w",
     "prepare": "yarn build",
     "test": "vitest",
