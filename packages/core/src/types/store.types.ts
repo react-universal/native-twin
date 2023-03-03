@@ -1,4 +1,4 @@
-import type { IStyleType, IStyleTuple } from './styles.types';
+import type { IStyleType, IStyleTuple, IExtraProperties } from './styles.types';
 
 export type TInteractionPseudoSelectors = 'hover' | 'active' | 'focus' | 'group-hover';
 
@@ -23,7 +23,8 @@ export type IRegisteredComponent = [IComponentID, IComponent];
 
 export type IRegisterComponentArgs = {
   className?: string;
-  inlineStyles: IStyleType;
+  inlineStyles: IExtraProperties<{}>['style'];
+  parentID: string;
 };
 
 export type IComponentsStore = {
