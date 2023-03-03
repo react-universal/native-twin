@@ -1,42 +1,49 @@
 import { useMemo, useRef } from 'react';
 import type { Touchable } from 'react-native';
-import type { IUseComponentState } from './useComponentState';
+import type ComponentNode from '../../store/ComponentNode';
+import storeManager from '../../store/StoreManager';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;
-  componentState: IUseComponentState;
-  isGroupParent: boolean;
+  component: ComponentNode;
 }
-const useComponentInteractions = ({
-  props,
-  isGroupParent,
-  componentState,
-}: UseComponentInteractionsArgs) => {
+const useComponentInteractions = ({ props, component }: UseComponentInteractionsArgs) => {
   const ref = useRef<Touchable>(props);
   const componentInteractionHandlers = useMemo(() => {
     const handlers: Touchable = {};
-    if (componentState.hoverInteraction.interactionStyle) {
+    const setInteractionState = storeManager.getState().setInteractionState;
+    if (
+      component &&
+      setInteractionState &&
+      (component.hasPointerInteractions ||
+        component.isGroupParent ||
+        component.hasGroupInteractions)
+    ) {
       handlers.onTouchStart = function (event) {
         if (ref.current.onTouchStart) {
           ref.current.onTouchStart(event);
         }
-        if (isGroupParent) {
-          componentState.groupHoverInteraction.setInteractionState(true);
+        if (component.isGroupParent) {
+          setInteractionState(component, 'group-hover', true);
         }
-        componentState.hoverInteraction.setInteractionState(true);
+        if (component.hasPointerInteractions) {
+          setInteractionState(component, 'hover', true);
+        }
       };
       handlers.onTouchEnd = function (event) {
         if (ref.current.onTouchEnd) {
           ref.current.onTouchEnd(event);
         }
-        if (isGroupParent) {
-          componentState.groupHoverInteraction.setInteractionState(false);
+        if (component.isGroupParent) {
+          setInteractionState(component, 'group-hover', false);
         }
-        componentState.hoverInteraction.setInteractionState(false);
+        if (component.hasPointerInteractions) {
+          setInteractionState(component, 'hover', false);
+        }
       };
     }
     return handlers;
-  }, [componentState, isGroupParent]);
+  }, [component]);
   return {
     componentInteractionHandlers,
   };

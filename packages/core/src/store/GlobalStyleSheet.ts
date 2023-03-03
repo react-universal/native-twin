@@ -1,4 +1,5 @@
 import { setup } from '@react-universal/native-tailwind';
+import type { Config } from 'tailwindcss';
 import {
   GROUP_PARENT_MASK,
   HOVER_INTERACTION_MASK,
@@ -8,9 +9,11 @@ import {
 import type {
   IComponentInteractions,
   TInteractionPseudoSelectors,
+  TAppearancePseudoSelectors,
+  IComponentAppearance,
 } from '../types/store.types';
 import type { IStyleTuple, IStyleType } from '../types/styles.types';
-import { selectorIsInteraction } from '../utils/components.utils';
+import { selectorIsInteraction, selectorIsAppearance } from '../utils/components.utils';
 import { cssPropertiesResolver } from '../utils/styles.utils';
 
 class GlobalStyleSheet {
@@ -19,6 +22,10 @@ class GlobalStyleSheet {
 
   constructor() {
     this.tw = setup({ content: ['__'] });
+  }
+
+  setConfig(config: Config) {
+    this.tw = setup(config);
   }
 
   private _getJSS(classNames: string[]) {
@@ -74,6 +81,35 @@ class GlobalStyleSheet {
     return interactionStyles;
   }
 
+  private _getStylesForAppearanceClasses(classNames: string[][]) {
+    let interactionStyles: IComponentAppearance[] = [];
+    const appearanceClasses = this._getAppearanceClasses(classNames);
+    for (const node of appearanceClasses) {
+      const appearanceType = node[0];
+      const appearanceClassNames = node[1];
+      const compiled = this._getJSS([appearanceClassNames]);
+      interactionStyles.push([
+        appearanceType,
+        {
+          classNames: appearanceClassNames,
+          styles: compiled.reduce((obj, d) => Object.assign(obj, d[1]), {}),
+        },
+      ]);
+    }
+    return interactionStyles;
+  }
+
+  private _getAppearanceClasses(classNames: string[][]) {
+    const interactions: [TAppearancePseudoSelectors, string][] = [];
+    for (const current of classNames) {
+      if (!selectorIsAppearance(current[0])) continue;
+      const pseudoSelector = current[0];
+      const className = current[1];
+      interactions.push([pseudoSelector, className]);
+    }
+    return interactions;
+  }
+
   private _getInteractionClasses(classNames: string[][]) {
     const interactions: [TInteractionPseudoSelectors, string][] = [];
     for (const current of classNames) {
@@ -91,6 +127,7 @@ class GlobalStyleSheet {
     const interactionStyles = this._getStylesForInteractionClasses(
       parsed.interactionClassNames,
     );
+    const appearanceStyles = this._getStylesForAppearanceClasses(parsed.interactionClassNames);
     const isParent = normalStyles.some(([name]) => name === 'group');
     let componentMask = INITIAL_MASK;
     if (isParent) {
@@ -107,10 +144,15 @@ class GlobalStyleSheet {
       interactionStyles,
       normalStyles,
       parsed,
+      appearanceStyles,
     };
   }
 }
 
 const globalStyleSheet = new GlobalStyleSheet();
+
+export function setTailwindConfig(config: Config) {
+  globalStyleSheet.setConfig(config);
+}
 
 export default globalStyleSheet;

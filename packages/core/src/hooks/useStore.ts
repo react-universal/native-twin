@@ -1,14 +1,26 @@
 import { useDebugValue, useEffect, useMemo } from 'react';
 import { useSyncExternalStore } from 'use-sync-external-store/shim';
 import storeManager from '../store/StoreManager';
+import type { IRegisterComponentArgs } from '../types/store.types';
 
-function useStore(classNames: string) {
+function useStore({
+  inlineStyles,
+  isFirstChild,
+  isLastChild,
+  nthChild,
+  parentID,
+  className,
+}: IRegisterComponentArgs) {
   const componentID = useMemo(() => {
     return storeManager.getState().registerComponent({
-      inlineStyles: {},
-      className: classNames,
+      inlineStyles,
+      isFirstChild,
+      isLastChild,
+      nthChild,
+      parentID,
+      className,
     });
-  }, [classNames]);
+  }, [inlineStyles, isFirstChild, isLastChild, nthChild, parentID, className]);
 
   useEffect(() => {
     return () => storeManager.getState().unregisterComponent(componentID);

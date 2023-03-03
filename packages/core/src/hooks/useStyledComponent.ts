@@ -1,18 +1,28 @@
-import { useDebugValue } from 'react';
 import type { Touchable } from 'react-native';
-import type { IExtraProperties } from '../types/styles.types';
+import type { IExtraProperties, TInternalStyledComponentProps } from '../types/styles.types';
 import { useComponentInteractions, useComponentState } from './styled';
 import { useChildren } from './useChildren';
 import { useStore } from './useStore';
 
-const useStyledComponent = <Props extends Object>({
+const useStyledComponent = ({
   className,
   children,
   tw,
+  parentID,
+  style,
+  isFirstChild,
+  isLastChild,
+  nthChild,
   ...componentProps
-}: Props & IExtraProperties<Props>) => {
-  const component = useStore(className ?? tw ?? '');
-  useDebugValue(component);
+}: IExtraProperties<TInternalStyledComponentProps>) => {
+  const component = useStore({
+    className: className ?? tw ?? '',
+    parentID,
+    inlineStyles: style,
+    isFirstChild,
+    isLastChild,
+    nthChild,
+  });
 
   const componentState = useComponentState({
     component,
@@ -20,8 +30,7 @@ const useStyledComponent = <Props extends Object>({
   });
   const { componentInteractionHandlers } = useComponentInteractions({
     props: componentProps as Touchable,
-    componentState,
-    isGroupParent: false,
+    component,
   });
   const componentChilds = useChildren(children, component);
 

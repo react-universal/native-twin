@@ -7,38 +7,51 @@ import {
   PropsWithoutRef,
   RefAttributes,
   useRef,
+  Component as ReactComponent,
+  ReactNode,
+  LegacyRef,
 } from 'react';
 import { useStyledComponent } from '../hooks';
-import type { IExtraProperties } from '../types/styles.types';
+import type { IExtraProperties, TInternalStyledComponentProps } from '../types/styles.types';
 
 type ForwardRef<T, P> = ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<T>>;
 type InferRef<T> = T extends RefAttributes<infer R> | ClassAttributes<infer R> ? R : unknown;
 
 function styled<T>(Component: ComponentType<T>) {
-  function Styled(props: IExtraProperties<T>, ref: ForwardedRef<unknown>) {
-    const {
-      styles,
-      componentState,
-      componentChilds,
-      componentInteractionHandlers,
-      component,
-    } = useStyledComponent(props);
+  class WithTailwind extends ReactComponent<
+    IExtraProperties<T & TInternalStyledComponentProps> & {
+      forwardedRef: ForwardedRef<unknown>;
+    }
+  > {
+    render(): ReactNode {
+      return (
+        <Component {...this.props} ref={this.props.forwardedRef}>
+          {this.props.children}
+        </Component>
+      );
+    }
+  }
+  function Styled(
+    props: IExtraProperties<T & TInternalStyledComponentProps>,
+    ref: ForwardedRef<unknown>,
+  ) {
     const innerRef = useRef(ref);
+    const { styles, componentChilds, componentInteractionHandlers, component } =
+      useStyledComponent(props);
 
-    const styledElement = (
-      <Component
+    return (
+      // @ts-expect-error
+      <WithTailwind
         {...props}
-        {...componentState}
         {...componentInteractionHandlers}
         style={[styles, props.style]}
         key={component.id}
-        forwardedRef={innerRef}
-        ref={innerRef}
+        forwardedRef={ref as LegacyRef<WithTailwind> | undefined}
+        ref={innerRef as LegacyRef<WithTailwind> | undefined}
       >
         {componentChilds}
-      </Component>
+      </WithTailwind>
     );
-    return styledElement;
   }
 
   Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
