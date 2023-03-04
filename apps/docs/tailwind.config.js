@@ -12,7 +12,8 @@ module.exports = {
       },
     },
   },
-  darkMode: 'class',
+  darkMode: 'media',
+  important: 'html',
   content: [
     './pages/**/*.{js,jsx,ts,tsx}',
     './lib/**/*.{js,jsx,ts,tsx}',

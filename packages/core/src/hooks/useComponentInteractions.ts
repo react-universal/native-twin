@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react';
 import type { Touchable } from 'react-native';
-import type ComponentNode from '../../store/ComponentNode';
-import storeManager from '../../store/StoreManager';
+import type ComponentNode from '../store/ComponentNode';
+import storeManager from '../store/StoreManager';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;

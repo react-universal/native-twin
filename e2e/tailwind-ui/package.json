@@ -1,0 +1,30 @@
+{
+  "name": "e2e-tailwind-ui",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "e2e": "cypress open",
+    "lint": "next lint",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@next/font": "13.0.6",
+    "@react-universal/primitives": "workspace:*",
+    "@react-universal/tailwind-ui": "workspace:*",
+    "autoprefixer": "10.4.13",
+    "critters": "^0.0.16",
+    "next": "13.1.4",
+    "postcss": "^8.4.21",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-syntax-highlighter": "15.5.0",
+    "tailwindcss": "^3.2.4"
+  },
+  "devDependencies": {
+    "@types/react-syntax-highlighter": "^15.5.6",
+    "cypress": "^12.7.0",
+    "next-compose-plugins": "^2.2.1"
+  }
+}

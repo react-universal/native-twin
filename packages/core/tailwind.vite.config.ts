@@ -1,6 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 
+console.log('ENV: ', process.env.NODE_ENV);
 export default defineConfig({
   build: {
     commonjsOptions: {

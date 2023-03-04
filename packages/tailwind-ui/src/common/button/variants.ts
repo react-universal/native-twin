@@ -14,7 +14,6 @@ export const buttonStyles = cva(clsx('rounded-md overflow-hidden hover:opacity-7
       bigger: clsx(
         'pt-3 pb-5 my-3 mx-2',
         'shadow-md rounded-3xl',
-        'dark:bg-primary-200',
         'desktop:w-44 desktop:h-44',
         'w-40 h-36',
       ),
@@ -29,7 +28,6 @@ export const buttonStyles = cva(clsx('rounded-md overflow-hidden hover:opacity-7
     },
   },
   defaultVariants: {
-    variant: 'primary',
     layout: 'default',
     size: 'default',
   },
