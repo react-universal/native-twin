@@ -9,6 +9,7 @@
   "scope": "@react-universal",
   "registry": "https://npm.pkg.github.com",
   "createRelease": "github",
+  "loglevel": "verbose",
   "conventionalCommits": true,
   "verbose": true,
   "signGitCommit": true,
