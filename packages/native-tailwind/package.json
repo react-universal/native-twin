@@ -1,6 +1,6 @@
 {
   "name": "@react-universal/native-tailwind",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Tailwindcss Inline StyleSheet generator for react native",
   "keywords": [
     "tailwind",

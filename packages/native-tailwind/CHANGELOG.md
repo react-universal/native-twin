@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2023-03-04)
+
+### Features
+
+- **ci:** publish config ([b1ad574](https://github.com/react-universal/tailwind/commit/b1ad57437554aaef9759edcae659b8fbe5a57027))
+
 # 1.2.0 (2023-03-04)
 
 ### Features
