@@ -43,7 +43,7 @@ jobs:
 
       - name: Publish package
         run: |
-            yarn workspaces foreach --no-private npm publish
+            yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
