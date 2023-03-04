@@ -43,7 +43,8 @@ jobs:
 
       - name: Publish package
         run: |
-            yarn lerna publish --yes
+            yarn lerna version --yes
+            yarn workspaces foreach --no-private npm publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
