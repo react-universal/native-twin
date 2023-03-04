@@ -1,6 +1,6 @@
 {
   "name": "next-app",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@next/font": "13.0.6",
-    "@react-universal/core": "^1.1.0",
-    "@react-universal/primitives": "^1.1.0",
+    "@react-universal/core": "^1.2.0",
+    "@react-universal/primitives": "^1.2.0",
     "@react-universal/tailwind-ui": "workspace:*",
     "autoprefixer": "10.4.13",
     "critters": "^0.0.16",
