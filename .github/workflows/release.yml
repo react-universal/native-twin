@@ -16,7 +16,6 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-
       - name: Setup Node.js 16.x
         uses: actions/setup-node@v3
         with:
@@ -29,16 +28,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install Dependencies
-        run: yarn --immutable  
-
-      - name: Creating .npmrc
-        run: |
-          cat << EOF > "$HOME/.npmrc"
-            @react-universal:registry=https://npm.pkg.github.com/
-            //npm.pkg.github.com/:_authToken=$NPM_TOKEN
-          EOF
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: yarn --immutable
 
       - name: Create Release Pull Request or Publish to npm
         run: |
