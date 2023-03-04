@@ -4300,7 +4300,6 @@ __metadata:
     clsx: ^1.2.1
     css-to-react-native: ^3.1.0
     css-to-react-native-transform: ^2.0.0
-    daisyui: 2.51.3
     immer: ^9.0.19
     react: 18.2.0
     react-is: ^18.2.0
@@ -7190,7 +7189,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color@npm:^4.2, color@npm:^4.2.3":
+"color@npm:^4.2.3":
   version: 4.2.3
   resolution: "color@npm:4.2.3"
   dependencies:
@@ -7826,16 +7825,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-selector-tokenizer@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "css-selector-tokenizer@npm:0.8.0"
-  dependencies:
-    cssesc: ^3.0.0
-    fastparse: ^1.1.2
-  checksum: 1eb7ca7d2c21ede700a0fab7df4547198431c30ba62663d81a566a8abe6ab7524f627ce6c0bde63f34917e199b73be4081e449bd8faf107d155766204082aa0a
-  languageName: node
-  linkType: hard
-
 "css-to-react-native-transform@npm:^2.0.0":
   version: 2.0.0
   resolution: "css-to-react-native-transform@npm:2.0.0"
@@ -8009,21 +7998,6 @@ __metadata:
   version: 1.0.2
   resolution: "dag-map@npm:1.0.2"
   checksum: a46bee1adda1459abe778b0c3616ef8c4ec14c314d38c3daa6f6a695ceae7c4b76ea3efa78385c1f25bb4d600566b3e1edd40e9ec3e862bd8927edca828025ed
-  languageName: node
-  linkType: hard
-
-"daisyui@npm:2.51.3":
-  version: 2.51.3
-  resolution: "daisyui@npm:2.51.3"
-  dependencies:
-    color: ^4.2
-    css-selector-tokenizer: ^0.8.0
-    postcss-js: ^4.0.0
-    tailwindcss: ^3
-  peerDependencies:
-    autoprefixer: ^10.0.2
-    postcss: ^8.1.6
-  checksum: 489cfbd0363af5637c5ab86246cf4d127aa2f4444b1b900e20c6c850b734de78dfeaf46b52b15adbb89bcad9fb4622664278250044e7ab363956da3ae1343d3f
   languageName: node
   linkType: hard
 
@@ -9404,6 +9378,7 @@ __metadata:
     "@react-navigation/drawer": ^6.6.0
     "@react-navigation/native": ^6.1.4
     "@react-navigation/native-stack": ^6.9.10
+    "@react-universal/core": ^1.1.0
     "@react-universal/primitives": ^1.1.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
@@ -9722,13 +9697,6 @@ __metadata:
   version: 1.0.16
   resolution: "fastest-levenshtein@npm:1.0.16"
   checksum: a78d44285c9e2ae2c25f3ef0f8a73f332c1247b7ea7fb4a191e6bb51aa6ee1ef0dfb3ed113616dcdc7023e18e35a8db41f61c8d88988e877cf510df8edafbc71
-  languageName: node
-  linkType: hard
-
-"fastparse@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "fastparse@npm:1.1.2"
-  checksum: c4d199809dc4e8acafeb786be49481cc9144de296e2d54df4540ccfd868d0df73afc649aba70a748925eb32bbc4208b723d6288adf92382275031a8c7e10c0aa
   languageName: node
   linkType: hard
 
@@ -18643,7 +18611,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:*, tailwindcss@npm:^3":
+"tailwindcss@npm:*":
   version: 3.2.7
   resolution: "tailwindcss@npm:3.2.7"
   dependencies:
