@@ -1,5 +1,5 @@
 import { H1 } from '@react-universal/primitives';
-import { Drawer } from '@react-universal/tailwind-ui';
+import { Drawer } from './Drawer';
 
 describe('<Drawer />', () => {
   it('renders', () => {

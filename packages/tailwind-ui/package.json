@@ -28,7 +28,7 @@
   "scripts": {
     "build": "yarn vite build",
     "dev": "yarn vite build -w --force",
-    "e2e": "cypress run --config video=false --component",
+    "e2e": "cypress open",
     "prepare": "yarn build",
     "test": "expo-module test"
   },
@@ -38,8 +38,11 @@
     }
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^4.4.5",
     "@headlessui/react": "1.7.12",
     "@heroicons/react": "^2.0.16",
+    "@radix-ui/react-dialog": "^1.0.2",
+    "@react-native-picker/picker": "^2.4.8",
     "@react-universal/core": "workspace:*",
     "@react-universal/primitives": "workspace:*",
     "class-variance-authority": "0.4.0",

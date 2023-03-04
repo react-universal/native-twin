@@ -1,7 +1,7 @@
 import type { Touchable } from 'react-native';
 import type { IExtraProperties, TInternalStyledComponentProps } from '../types/styles.types';
-import { useComponentInteractions, useComponentState } from './styled';
 import { useChildren } from './useChildren';
+import { useComponentInteractions } from './useComponentInteractions';
 import { useStore } from './useStore';
 
 const useStyledComponent = ({
@@ -24,10 +24,6 @@ const useStyledComponent = ({
     nthChild,
   });
 
-  const componentState = useComponentState({
-    component,
-    componentProps,
-  });
   const { componentInteractionHandlers } = useComponentInteractions({
     props: componentProps as Touchable,
     component,
@@ -37,7 +33,6 @@ const useStyledComponent = ({
   return {
     styles: component.styles,
     componentChilds,
-    componentState,
     component,
     componentInteractionHandlers,
   };

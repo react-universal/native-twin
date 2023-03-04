@@ -9,14 +9,6 @@
       "path": "../apps/docs"
     },
     {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
-    },
-    {
-      "name": "next-app",
-      "path": "../examples/next-app"
-    },
-    {
       "name": "📦 @react-universal/core",
       "path": "../packages/core"
     },

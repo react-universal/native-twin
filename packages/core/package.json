@@ -31,7 +31,7 @@
   "types": "./src/index.ts",
   "scripts": {
     "build": "yarn vite build && yarn vite build -c tailwind.vite.config.ts",
-    "dev": "yarn vite build -w",
+    "dev": "yarn vite build -c tailwind.vite.config.ts && yarn vite build -w",
     "prepare": "yarn build",
     "test": "vitest",
     "test:run": "vitest run",

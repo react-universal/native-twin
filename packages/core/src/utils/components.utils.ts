@@ -10,7 +10,7 @@ export function selectorIsInteraction(
     selector === 'hover' ||
     selector === 'active' ||
     selector === 'focus' ||
-    selector === 'group-hover'
+    selector.startsWith('group-')
   );
 }
 
