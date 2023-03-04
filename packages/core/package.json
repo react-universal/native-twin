@@ -47,14 +47,11 @@
     "@react-universal/native-tailwind": "^1.1.0",
     "clsx": "^1.2.1",
     "css-to-react-native": "^3.1.0",
-    "css-to-react-native-transform": "^2.0.0",
     "immer": "^9.0.19",
     "react-is": "^18.2.0",
     "use-sync-external-store": "^1.2.0"
   },
   "devDependencies": {
-    "@redux-devtools/extension": "^3.2.5",
-    "@simbathesailor/use-what-changed": "^2.0.0",
     "@types/css-to-react-native": "^3.0.0",
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",

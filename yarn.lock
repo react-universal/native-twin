@@ -1610,7 +1610,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.3.1":
+"@babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.3.1":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
   dependencies:
@@ -4288,8 +4288,6 @@ __metadata:
   dependencies:
     "@paralleldrive/cuid2": ^2.2.0
     "@react-universal/native-tailwind": ^1.1.0
-    "@redux-devtools/extension": ^3.2.5
-    "@simbathesailor/use-what-changed": ^2.0.0
     "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
@@ -4299,7 +4297,6 @@ __metadata:
     "@vitest/ui": ^0.28.3
     clsx: ^1.2.1
     css-to-react-native: ^3.1.0
-    css-to-react-native-transform: ^2.0.0
     immer: ^9.0.19
     react: 18.2.0
     react-is: ^18.2.0
@@ -4388,18 +4385,6 @@ __metadata:
     react-native-svg: ">= 12"
   languageName: unknown
   linkType: soft
-
-"@redux-devtools/extension@npm:^3.2.5":
-  version: 3.2.5
-  resolution: "@redux-devtools/extension@npm:3.2.5"
-  dependencies:
-    "@babel/runtime": ^7.20.7
-    immutable: ^4.2.2
-  peerDependencies:
-    redux: ^3.1.0 || ^4.0.0
-  checksum: c89680e1af8bd47a0250478b491a79a55bc0d71206f5ab95a83fd05c7d815bdaef5703defb7b571f07fc8bd2c6d4e8da6fc0cfd09e7fe03e994f9070c15fd08d
-  languageName: node
-  linkType: hard
 
 "@segment/loosely-validate-event@npm:^2.0.0":
   version: 2.0.0
@@ -4540,15 +4525,6 @@ __metadata:
   version: 2.0.0
   resolution: "@sideway/pinpoint@npm:2.0.0"
   checksum: 0f4491e5897fcf5bf02c46f5c359c56a314e90ba243f42f0c100437935daa2488f20482f0f77186bd6bf43345095a95d8143ecf8b1f4d876a7bc0806aba9c3d2
-  languageName: node
-  linkType: hard
-
-"@simbathesailor/use-what-changed@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@simbathesailor/use-what-changed@npm:2.0.0"
-  peerDependencies:
-    react: ">=16"
-  checksum: a90e5b7388584749d19b138e0ab50fc69d9af69bee7beaa7616fa287122577f027877e0bd622ec1149057adb2f5bd3f27691dae5723c6a7c93d044bfb96e77ec
   languageName: node
   linkType: hard
 
@@ -7850,13 +7826,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-mediaquery@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "css-mediaquery@npm:0.1.2"
-  checksum: 8e26ae52d8aaaa71893f82fc485363ff0fab494b7d3b3464572aaed50714b8b538d33dbdaa69f0c02cf7f80d1f4d9a77519306c0492223ce91b3987475031a69
-  languageName: node
-  linkType: hard
-
 "css-select@npm:^4.2.0":
   version: 4.3.0
   resolution: "css-select@npm:4.3.0"
@@ -7883,18 +7852,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-to-react-native-transform@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "css-to-react-native-transform@npm:2.0.0"
-  dependencies:
-    css: ^3.0.0
-    css-mediaquery: ^0.1.2
-    css-to-react-native: ^3.0.0
-  checksum: fa664538cced2186835cb9a363a7caab92ce5f9eef155b91315f038beea7769489836c3d56bae2f46f07605b9b5ffe6dfaa305f3b26db8a2cf2679ac66b13450
-  languageName: node
-  linkType: hard
-
-"css-to-react-native@npm:^3.0.0, css-to-react-native@npm:^3.1.0":
+"css-to-react-native@npm:^3.1.0":
   version: 3.1.0
   resolution: "css-to-react-native@npm:3.1.0"
   dependencies:
@@ -7919,17 +7877,6 @@ __metadata:
   version: 6.1.0
   resolution: "css-what@npm:6.1.0"
   checksum: b975e547e1e90b79625918f84e67db5d33d896e6de846c9b584094e529f0c63e2ab85ee33b9daffd05bff3a146a1916bec664e18bb76dd5f66cbff9fc13b2bbe
-  languageName: node
-  linkType: hard
-
-"css@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "css@npm:3.0.0"
-  dependencies:
-    inherits: ^2.0.4
-    source-map: ^0.6.1
-    source-map-resolve: ^0.6.0
-  checksum: 4273ac816ddf99b99acb9c1d1a27d86d266a533cc01118369d941d8e8a78277a83cad3315e267a398c509d930fbb86504e193ea1ebc620a4a4212e06fe76e8be
   languageName: node
   linkType: hard
 
@@ -11253,13 +11200,6 @@ __metadata:
   version: 9.0.19
   resolution: "immer@npm:9.0.19"
   checksum: f02ee53989989c287cd548a3d817fccf0bfe56db919755ee94a72ea3ae78a00363fba93ee6c010fe54a664380c29c53d44ed4091c6a86cae60957ad2cfabc010
-  languageName: node
-  linkType: hard
-
-"immutable@npm:^4.2.2":
-  version: 4.2.4
-  resolution: "immutable@npm:4.2.4"
-  checksum: 3be84eded37b05e65cad57bfba630bc1bf170c498b7472144bc02d2650cc9baef79daf03574a9c2e41d195ebb55a1c12c9b312f41ee324b653927b24ad8bcaa7
   languageName: node
   linkType: hard
 
@@ -18211,16 +18151,6 @@ __metadata:
     source-map-url: ^0.4.0
     urix: ^0.1.0
   checksum: c73fa44ac00783f025f6ad9e038ab1a2e007cd6a6b86f47fe717c3d0765b4a08d264f6966f3bd7cd9dbcd69e4832783d5472e43247775b2a550d6f2155d24bae
-  languageName: node
-  linkType: hard
-
-"source-map-resolve@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "source-map-resolve@npm:0.6.0"
-  dependencies:
-    atob: ^2.1.2
-    decode-uri-component: ^0.2.0
-  checksum: fe503b9e5dac1c54be835282fcfec10879434e7b3ee08a9774f230299c724a8d403484d9531276d1670c87390e0e4d1d3f92b14cca6e4a2445ea3016b786ecd4
   languageName: node
   linkType: hard
 

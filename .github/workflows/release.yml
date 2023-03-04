@@ -31,7 +31,7 @@ jobs:
       - name: Install Dependencies
         run: yarn --immutable
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Publish package
         run: |
             yarn lerna publish
         env:
