@@ -27,6 +27,7 @@ jobs:
           node-version: 16.x
           cache: yarn
           always-auth: true
+          registry-url: https://npm.pkg.github.com
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
