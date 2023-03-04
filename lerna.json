@@ -11,7 +11,5 @@
   "createRelease": "github",
   "loglevel": "verbose",
   "conventionalCommits": true,
-  "verbose": true,
-  "signGitCommit": true,
-  "signGitTag": true
+  "verbose": true
 }
