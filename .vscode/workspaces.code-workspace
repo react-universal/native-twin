@@ -5,12 +5,16 @@
       "path": ".."
     },
     {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
+      "name": "🚀 docs-page",
+      "path": "../apps/docs"
     },
     {
       "name": "📦 @react-universal/core",
       "path": "../packages/core"
+    },
+    {
+      "name": "📦 @react-universal/native-tailwind",
+      "path": "../packages/native-tailwind"
     },
     {
       "name": "📦 @react-universal/primitives",

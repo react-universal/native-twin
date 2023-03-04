@@ -2,17 +2,15 @@
   "$schema": "./node_modules/lerna/schemas/lerna-schema.json",
   "version": "1.1.0",
   "useWorkspaces": true,
-  "command": {
-    "version": {
-      "allowBranch": ["main", "next"],
-      "conventionalCommits": true,
-      "changelog": true
-    },
-    "publish": {
-      "npmClient": "yarn",
-      "scope": "@react-universal",
-      "loglevel": "verbose",
-      "registry": "https://npm.pkg.github.com"
-    }
-  }
+  "access": "public",
+  "changelog": true,
+  "allowBranch": ["main", "next"],
+  "npmClient": "yarn",
+  "scope": "@react-universal",
+  "registry": "https://npm.pkg.github.com",
+  "createRelease": "github",
+  "conventionalCommits": true,
+  "verbose": true,
+  "signGitCommit": true,
+  "signGitTag": true
 }

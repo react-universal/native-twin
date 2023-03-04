@@ -6,6 +6,10 @@ const styled = (Component: ComponentType) => {
     const style = useStyledComponent({
       className: className ?? tw,
       inlineStyles: props.style,
+      isFirstChild: false,
+      isLastChild: false,
+      nthChild: 0,
+      parentID: '',
     });
 
     return <Component {...props} ref={ref} style={style} />;

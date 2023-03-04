@@ -88,9 +88,9 @@ export const nativePlugin = plugin.withOptions<NativePluginOptions>(
         // These libraries are replaced with custom logic
         boxShadow: false,
         boxShadowColor: false,
-        divideColor: false,
-        divideStyle: false,
-        divideWidth: false,
+        // divideColor: false,
+        // divideStyle: false,
+        // divideWidth: false,
         lineHeight: false,
         fontSize: false,
         gap: false,

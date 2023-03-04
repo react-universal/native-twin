@@ -34,6 +34,7 @@ export default defineConfig({
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       external: [
         'react',
+        '@expo/html-elements',
         'react-dom',
         'react-native',
         'react-native-web',
