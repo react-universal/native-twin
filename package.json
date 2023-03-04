@@ -24,6 +24,7 @@
     "expo:start": "yarn workspace expo-app start",
     "release": "turbo run build --filter=\"@react-universal/**\" && yarn lerna publish --yes --force-publish",
     "test:e2e": "turbo run e2e",
+    "version": "yarn install && git stage yarn.lock",
     "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
     "web": "turbo run dev --filter next-app"
   },
