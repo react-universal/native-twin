@@ -1,6 +1,4 @@
-51 error TypeError: Cannot read properties of undefined (reading '0')
-51 error     at npa (/Users/chripio/work/react-universal/node_modules/lerna/node_modules/npm-package-arg/npa.js:35:25)
-51 error     at getChangelogConfig (/Users/chripio/work/react-universal/node_modules/lerna/dist/cli.js:1777:56)
-51 error     at /Users/chripio/work/react-universal/node_modules/lerna/dist/cli.js:1861:28
-51 error     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-51 error     at async Promise.all (index 0)
+9 error Error: A GH_TOKEN environment variable is required.
+9 error     at createGitHubClient (/Users/chripio/work/react-universal/node_modules/lerna/dist/cli.js:4145:11)
+9 error     at createReleaseClient (/Users/chripio/work/react-universal/node_modules/lerna/dist/cli.js:6763:18)
+9 error     at VersionCommand.configureProperties (/Users/chripio/work/react-universal/node_modules/lerna/dist/cli.js:6898:81)
