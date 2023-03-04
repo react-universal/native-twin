@@ -9,7 +9,6 @@ runs:
         node-version: 16.x
         cache: yarn
         always-auth: true
-        token: ${{ secrets.NPM_TOKEN }}
 
     - name: Install Dependencies
       run: yarn --immutable
