@@ -4,3 +4,4 @@ export * from './Text';
 export * from './Image';
 export * from './Pressable';
 export * from './TextInput';
+export * from './Table';
