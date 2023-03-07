@@ -1,4 +1,4 @@
-import { H1, P, View, Span, H2 } from '@react-universal/primitives';
+import { H1, P, View, Span, H2 } from '@universal-labs/primitives';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 

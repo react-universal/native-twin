@@ -1,0 +1,24 @@
+{
+  "name": "@universal-labs/tailwind-adapter",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./build/index.es.js",
+      "require": "./build/index.cjs.js",
+      "browser": "./build/index.umd.js",
+      "types": "./index.d.ts"
+    }
+  },
+  "main": "./build/index.cjs.js",
+  "unpkg": "./build/index.iife.js",
+  "module": "./build/index.cjs.js",
+  "types": "./index.d.ts",
+  "files": [
+    "src",
+    "build",
+    "index.d.ts",
+    "types.d.ts",
+    "!build/package.json"
+  ]
+}

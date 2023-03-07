@@ -21,7 +21,11 @@
     "strict": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@universal-labs/tailwind-adapter": ["packages/tailwind-adapter/src/index.ts"]
+    }
   },
   "include": ["types.d.ts"],
   "exclude": ["tmp", "node_modules"]

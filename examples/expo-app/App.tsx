@@ -1,6 +1,6 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
-import { setTailwindConfig } from '@react-universal/core/react-native';
+import { setTailwindConfig } from '@universal-labs/core/react-native';
 import { HomeScreen } from './src/screens/Home.screen';
 import tailwindConfig from './tailwind.config';
 

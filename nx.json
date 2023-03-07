@@ -14,8 +14,19 @@
       "outputs": ["{projectRoot}/build"]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint"],
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]
+    },
+    "test": {
+      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
     }
   },
-  "defaultBase": "main"
+  "defaultBase": "main",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    }
+  }
 }
