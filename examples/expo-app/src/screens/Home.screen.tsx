@@ -1,4 +1,4 @@
-import { H1, View } from '@react-universal/primitives';
+import { H1, View } from '@universal-labs/primitives';
 
 function HomeScreen() {
   return (

@@ -32,3 +32,4 @@ lint-results/
 .npmrc
 test.js
 *.tgz
+*.log
