@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@next/font": "13.0.6",
-    "@universal-labs/primitives": "workspace:*",
-    "@universal-labs/tailwind-ui": "workspace:*",
+    "@universal-labs/primitives": "*",
+    "@universal-labs/tailwind-ui": "*",
     "autoprefixer": "10.4.13",
     "critters": "^0.0.16",
     "next": "13.1.4",

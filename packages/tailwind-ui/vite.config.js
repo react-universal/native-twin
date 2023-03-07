@@ -6,7 +6,6 @@ export default defineConfig({
   plugins: [
     react({
       plugins: [['@swc/plugin-styled-components', {}]],
-      jsxImportSource: 'react-jsx',
     }),
   ],
   optimizeDeps: {
@@ -44,7 +43,6 @@ export default defineConfig({
         '@universal-labs/core',
         '@universal-labs/primitives',
         'react-native-svg',
-        'react/jsx-runtime',
         /tailwindcss/,
         /next/,
       ],
