@@ -25,6 +25,10 @@
       "path": "../packages/primitives"
     },
     {
+      "name": "📦 @universal-labs/react-tailwindcss",
+      "path": "../packages/react-tailwindcss"
+    },
+    {
       "name": "📦 @react-universal/tailwind-ui",
       "path": "../packages/tailwind-ui"
     }

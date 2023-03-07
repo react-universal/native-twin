@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base",
+  "compilerOptions": {
+    "outDir": "./build",
+    "rootDir": "./src",
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": false,
+    "declarationMap": false,
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "module": "CommonJS",
+    "types": ["node"],
+    "importHelpers": true
+  },
+  "include": ["./src", "env.d.ts"],
+  "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
+}

@@ -17,30 +17,29 @@
     "url": "https://github.com/react-universal/tailwind",
     "directory": "packages/react-tailwindcss"
   },
-  "type": "module",
   "exports": {
     ".": {
-      "import": "./build/index.es.js",
-      "require": "./build/index.cjs.js",
-      "browser": "./build/index.umd.js",
-      "types": "./index.d.ts"
+      "import": "./build/index.js",
+      "require": "./build/index.js",
+      "browser": "./build/index.js",
+      "types": "./build/index.d.ts"
+    },
+    "./primitives": {
+      "import": "./build/primitives.js",
+      "require": "./build/primitives.js",
+      "browser": "./build/primitives.js",
+      "types": "./build/primitives.d.ts"
     }
   },
-  "main": "./build/index.cjs.js",
-  "unpkg": "./build/index.iife.js",
-  "module": "./build/index.cjs.js",
-  "types": "./index.d.ts",
+  "main": "./build/index.js",
   "files": [
     "src",
-    "build",
-    "index.d.ts",
-    "types.d.ts"
+    "build"
   ],
   "scripts": {
-    "build": "yarn vite build",
-    "dev": "yarn vite build -w",
-    "prepare": "yarn build",
-    "test:ui": "vitest --ui"
+    "build": "tsc",
+    "dev": "tsc -w",
+    "prepare": "yarn build"
   },
   "config": {
     "commitizen": {
@@ -56,8 +55,7 @@
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
     "@types/tailwindcss": "3.1.0",
-    "tailwindcss": "3.2.4",
-    "vite": "^4.1.1"
+    "tailwindcss": "3.2.4"
   },
   "peerDependencies": {
     "postcss": ">= 8.0.0",

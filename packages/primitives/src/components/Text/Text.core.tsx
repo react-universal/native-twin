@@ -11,7 +11,6 @@ import {
   P as NP,
 } from '@expo/html-elements';
 import { styled } from '@react-universal/core';
-import type { TTextProps } from './types';
 
 NH1.displayName = 'H1';
 NH2.displayName = 'H2';
@@ -35,4 +34,3 @@ const Code = styled(NativeCode);
 const P = styled(NP);
 
 export { Span, H1, H2, H3, H4, H5, H6, Strong, Code, P };
-export type { TTextProps };

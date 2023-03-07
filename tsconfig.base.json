@@ -10,7 +10,6 @@
     "declaration": true,
     "importsNotUsedAsValues": "error",
     "declarationMap": true,
-    "inlineSources": true,
     "strictPropertyInitialization": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
