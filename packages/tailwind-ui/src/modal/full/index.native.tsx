@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import { Modal, SafeAreaView } from 'react-native';
 import { Portal } from '@gorhom/portal';
-import { Pressable, View } from '@react-universal/primitives';
+import { Pressable, View } from '@universal-labs/primitives';
 import { AppIcons } from '../../common';
 
 interface IFullWideModalProps extends PropsWithChildren {

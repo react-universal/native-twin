@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { ActivityIndicator } from 'react-native';
-import { Pressable } from '@react-universal/primitives';
-import { Span } from '@react-universal/primitives';
+import { Pressable } from '@universal-labs/primitives';
+import { Span } from '@universal-labs/primitives';
 import { IButtonVariantsProps, buttonStyles, buttonTextStyles } from './variants';
 
 type IButtonProps = {

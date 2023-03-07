@@ -1,4 +1,4 @@
-import { View } from '@react-universal/primitives';
+import { View } from '@universal-labs/primitives';
 import type { TPickerProps } from './Picker.types';
 
 const Picker = ({ value, onChangeValue, options, label, className }: TPickerProps) => {

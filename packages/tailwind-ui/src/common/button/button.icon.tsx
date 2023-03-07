@@ -1,5 +1,5 @@
 import type { ComponentProps, ComponentType } from 'react';
-import { Pressable } from '@react-universal/primitives';
+import { Pressable } from '@universal-labs/primitives';
 import type { SvgProps } from 'react-native-svg';
 
 interface IIConProps extends SvgProps {

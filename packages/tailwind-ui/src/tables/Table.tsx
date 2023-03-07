@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Table as RTable, THead, TBody, TFoot, TR, TH, TD } from '@react-universal/primitives';
+import { Table as RTable, THead, TBody, TFoot, TR, TH, TD } from '@universal-labs/primitives';
 import {
   Cell,
   createColumnHelper,

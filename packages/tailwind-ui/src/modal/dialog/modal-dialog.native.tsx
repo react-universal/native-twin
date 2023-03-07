@@ -1,5 +1,5 @@
 import { Modal } from 'react-native';
-import { H4, View } from '@react-universal/primitives';
+import { H4, View } from '@universal-labs/primitives';
 import { Button } from '../../common';
 
 interface IDialogModalProps {

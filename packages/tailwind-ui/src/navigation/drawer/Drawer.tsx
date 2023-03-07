@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Pressable, Span, View } from '@react-universal/primitives';
+import { Pressable, Span, View } from '@universal-labs/primitives';
 import clsx from 'clsx';
 
 interface TAppDrawerProps {

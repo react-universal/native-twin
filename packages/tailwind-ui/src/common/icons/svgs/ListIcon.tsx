@@ -1,4 +1,4 @@
-import { styled } from '@react-universal/core';
+import { styled } from '@universal-labs/core';
 import Svg, { SvgProps, Line, Path, Circle } from 'react-native-svg';
 
 /* SVGR has dropped some elements not supported by react-native-svg: title */

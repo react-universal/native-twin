@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Pressable } from '@react-universal/primitives';
-import { View, TextInput } from '@react-universal/primitives';
+import { Pressable } from '@universal-labs/primitives';
+import { View, TextInput } from '@universal-labs/primitives';
 import { Modal } from '../modal';
 import { CalendarView } from './calendar';
 import type { ICalendarPickerProps } from './types';

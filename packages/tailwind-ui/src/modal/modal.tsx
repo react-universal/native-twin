@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { View, Pressable } from '@react-universal/primitives';
+import { View, Pressable } from '@universal-labs/primitives';
 import { AppIcons } from '../common';
 import type { IModalProps } from './types';
 

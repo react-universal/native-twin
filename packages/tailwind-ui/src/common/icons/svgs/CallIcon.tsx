@@ -1,4 +1,4 @@
-import { styled } from '@react-universal/core';
+import { styled } from '@universal-labs/core';
 import Svg, { SvgProps, Path } from 'react-native-svg';
 
 const CallIcon = (props: SvgProps) => (

@@ -3,7 +3,7 @@ import { useCalendarSet } from '@medico/universal/hooks/useCalendarSet';
 import dayjs from '@medico/universal/i18n/dayjs';
 import { Picker } from '@medico/universal/picker';
 import { colors } from '@medico/universal/tailwind';
-import { View, Span } from '@react-universal/primitives';
+import { View, Span } from '@universal-labs/primitives';
 import { AppIcons, Button } from '../common';
 
 interface ICalendarViewProps {

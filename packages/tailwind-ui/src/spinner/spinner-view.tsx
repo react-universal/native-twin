@@ -1,6 +1,6 @@
 import { colors } from '@medico/universal/tailwind';
 import { SizesDesignTokens, createSizeTokens } from '@medico/universal/tailwind/tokens';
-import { useIsDarkMode } from '@react-universal/core';
+import { useIsDarkMode } from '@universal-labs/core';
 import Svg, { Circle } from 'react-native-svg';
 
 const spinnerSizeMap = createSizeTokens([16, 24, 32, 48, 64]);

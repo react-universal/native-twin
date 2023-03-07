@@ -1,4 +1,4 @@
-import { H1 } from '@react-universal/primitives';
+import { H1 } from '@universal-labs/primitives';
 import { Drawer } from './Drawer';
 
 describe('<Drawer />', () => {

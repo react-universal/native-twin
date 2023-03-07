@@ -1,4 +1,4 @@
-import { styled } from '@react-universal/core';
+import { styled } from '@universal-labs/core';
 import Svg, { SvgProps, Path, Circle } from 'react-native-svg';
 
 const EyeIcon = (props: SvgProps) => (

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { FieldSet } from '@medico/universal/fieldset';
 import { ModalSheet } from '@medico/universal/modal-sheet';
-import { Pressable, Span, View } from '@react-universal/primitives';
+import { Pressable, Span, View } from '@universal-labs/primitives';
 import type { TPickerProps } from './Picker.types';
 
 const Picker = ({ value, onChangeValue, options, label, placeholder, icon }: TPickerProps) => {
