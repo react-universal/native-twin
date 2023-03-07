@@ -30,17 +30,12 @@
   "module": "./build/index.es.js",
   "types": "./src/index.ts",
   "scripts": {
-    "build": "yarn vite build && yarn vite build -c tailwind.vite.config.ts",
+    "build": "vite build && vite build -c tailwind.vite.config.ts",
     "dev": "yarn vite build -c tailwind.vite.config.ts && yarn vite build -w",
     "prepare": "yarn build",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.0",
@@ -53,15 +48,17 @@
   },
   "devDependencies": {
     "@types/css-to-react-native": "^3.0.0",
+    "@types/node": "16.11.7",
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
     "@types/react-is": "^17.0.3",
     "@types/react-native": "0.70.7",
     "@types/use-sync-external-store": "^0.0.3",
+    "@vitejs/plugin-react-swc": "^3.2.0",
     "@vitest/ui": "^0.28.3",
     "react": "18.2.0",
-    "tailwindest": "^1.0.4",
     "tslib": "^2.3.0",
+    "typescript": "^4.9.4",
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
   },

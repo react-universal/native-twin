@@ -32,11 +32,6 @@
     "prepare": "yarn build",
     "test": "expo-module test"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.4.5",
     "@headlessui/react": "1.7.12",

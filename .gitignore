@@ -31,3 +31,4 @@ lint-results/
 .env
 .npmrc
 test.js
+*.tgz

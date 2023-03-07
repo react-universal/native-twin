@@ -4289,19 +4289,21 @@ __metadata:
     "@paralleldrive/cuid2": ^2.2.0
     "@react-universal/native-tailwind": ^1.3.0
     "@types/css-to-react-native": ^3.0.0
+    "@types/node": 16.11.7
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-is": ^17.0.3
     "@types/react-native": 0.70.7
     "@types/use-sync-external-store": ^0.0.3
+    "@vitejs/plugin-react-swc": ^3.2.0
     "@vitest/ui": ^0.28.3
     clsx: ^1.2.1
     css-to-react-native: ^3.1.0
     immer: ^9.0.19
     react: 18.2.0
     react-is: ^18.2.0
-    tailwindest: ^1.0.4
     tslib: ^2.3.0
+    typescript: ^4.9.4
     use-sync-external-store: ^1.2.0
     vite: ^4.1.1
     vitest: ^0.28.3
@@ -4318,7 +4320,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@react-universal/native-tailwind@workspace:packages/native-tailwind"
   dependencies:
-    "@types/node": 18.11.18
+    "@types/node": 16.11.7
     "@types/postcss-css-variables": 0.18.0
     "@types/postcss-js": ^4.0.0
     "@types/react": ~18.0.27
@@ -4558,9 +4560,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-darwin-arm64@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-darwin-arm64@npm:1.3.38"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@swc/core-darwin-x64@npm:1.3.31":
   version: 1.3.31
   resolution: "@swc/core-darwin-x64@npm:1.3.31"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-darwin-x64@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-darwin-x64@npm:1.3.38"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -4572,9 +4588,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-linux-arm-gnueabihf@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.3.38"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
 "@swc/core-linux-arm64-gnu@npm:1.3.31":
   version: 1.3.31
   resolution: "@swc/core-linux-arm64-gnu@npm:1.3.31"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-gnu@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.3.38"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
@@ -4586,9 +4616,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-linux-arm64-musl@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-linux-arm64-musl@npm:1.3.38"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
 "@swc/core-linux-x64-gnu@npm:1.3.31":
   version: 1.3.31
   resolution: "@swc/core-linux-x64-gnu@npm:1.3.31"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-gnu@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-linux-x64-gnu@npm:1.3.38"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
@@ -4600,9 +4644,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-linux-x64-musl@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-linux-x64-musl@npm:1.3.38"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
 "@swc/core-win32-arm64-msvc@npm:1.3.31":
   version: 1.3.31
   resolution: "@swc/core-win32-arm64-msvc@npm:1.3.31"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-arm64-msvc@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.3.38"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
@@ -4614,9 +4672,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-win32-ia32-msvc@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.3.38"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
 "@swc/core-win32-x64-msvc@npm:1.3.31":
   version: 1.3.31
   resolution: "@swc/core-win32-x64-msvc@npm:1.3.31"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-x64-msvc@npm:1.3.38":
+  version: 1.3.38
+  resolution: "@swc/core-win32-x64-msvc@npm:1.3.38"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4657,6 +4729,45 @@ __metadata:
     "@swc/core-win32-x64-msvc":
       optional: true
   checksum: 3846440fdfa68dfc260657584b460dd21bb65efec6b54881e8b4257e7d71655f44a37170e3edf14c3ddacb7120a9740f3a9e3a7f55ec4799402028e1fcfc21a2
+  languageName: node
+  linkType: hard
+
+"@swc/core@npm:^1.3.35":
+  version: 1.3.38
+  resolution: "@swc/core@npm:1.3.38"
+  dependencies:
+    "@swc/core-darwin-arm64": 1.3.38
+    "@swc/core-darwin-x64": 1.3.38
+    "@swc/core-linux-arm-gnueabihf": 1.3.38
+    "@swc/core-linux-arm64-gnu": 1.3.38
+    "@swc/core-linux-arm64-musl": 1.3.38
+    "@swc/core-linux-x64-gnu": 1.3.38
+    "@swc/core-linux-x64-musl": 1.3.38
+    "@swc/core-win32-arm64-msvc": 1.3.38
+    "@swc/core-win32-ia32-msvc": 1.3.38
+    "@swc/core-win32-x64-msvc": 1.3.38
+  dependenciesMeta:
+    "@swc/core-darwin-arm64":
+      optional: true
+    "@swc/core-darwin-x64":
+      optional: true
+    "@swc/core-linux-arm-gnueabihf":
+      optional: true
+    "@swc/core-linux-arm64-gnu":
+      optional: true
+    "@swc/core-linux-arm64-musl":
+      optional: true
+    "@swc/core-linux-x64-gnu":
+      optional: true
+    "@swc/core-linux-x64-musl":
+      optional: true
+    "@swc/core-win32-arm64-msvc":
+      optional: true
+    "@swc/core-win32-ia32-msvc":
+      optional: true
+    "@swc/core-win32-x64-msvc":
+      optional: true
+  checksum: c55d30e57638bcd21f788add8490c3f3e71bfe027aa5a8b153e1b1b9686ecddd6deeaaa6a6b17717c7eab4c1e2a232b465b6755b6c891506fc0d03139badfbf7
   languageName: node
   linkType: hard
 
@@ -4856,7 +4967,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:18.11.18":
+"@types/node@npm:*":
   version: 18.11.18
   resolution: "@types/node@npm:18.11.18"
   checksum: 03f17f9480f8d775c8a72da5ea7e9383db5f6d85aa5fefde90dd953a1449bd5e4ffde376f139da4f3744b4c83942166d2a7603969a6f8ea826edfb16e6e3b49d
@@ -5205,6 +5316,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@universal-labs/react-tailwind@workspace:packages/react-native-tailwindcss":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/react-tailwind@workspace:packages/react-native-tailwindcss"
+  dependencies:
+    "@react-universal/core": ^1.3.0
+    "@react-universal/primitives": ^1.3.0
+    "@types/node": 16.11.7
+    "@types/react": ~18.0.27
+    "@types/react-dom": ~18.0.10
+    "@types/tailwindcss": 3.1.0
+    tailwindcss: 3.2.4
+    vite: ^4.1.1
+  peerDependencies:
+    postcss: ">= 8.0.0"
+    tailwindcss: ">= 3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@urql/core@npm:2.3.6":
   version: 2.3.6
   resolution: "@urql/core@npm:2.3.6"
@@ -5248,6 +5377,17 @@ __metadata:
   peerDependencies:
     vite: ^4
   checksum: 531ef92a4ec15f01d43658874ef6dcae27ad29bfea8e281b6ef7678f684f473b2c301660d9103a55fbf0700c521f8ee13614b6cfe5d2d4747a1c07383dd1330e
+  languageName: node
+  linkType: hard
+
+"@vitejs/plugin-react-swc@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@vitejs/plugin-react-swc@npm:3.2.0"
+  dependencies:
+    "@swc/core": ^1.3.35
+  peerDependencies:
+    vite: ^4
+  checksum: 9df519fee5e6a9d8e7e15d037954d0acd1ee5d408fe7eef9d88f03172eb840b7300fc84b26fd93213b309c376a8712e88d6348179ad91c815d55cb6324f9d4ab
   languageName: node
   linkType: hard
 
@@ -18883,13 +19023,6 @@ __metadata:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
   checksum: ec187d180c722ec4f57537f2216c7b21269b525f12aaf353cea464d939c3e6286a1221eb3e1206e45d1f015f296171309ad4d9952899b0245cd07d9500a9401f
-  languageName: node
-  linkType: hard
-
-"tailwindest@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "tailwindest@npm:1.0.4"
-  checksum: 7c597aed7b0e118c73464d1183f741b7f0888d8893a169f077afeacb178062147b51cee46a2062dfe8dc6e41f743271e17fb8ad2a82baf81c349611036f37140
   languageName: node
   linkType: hard
 

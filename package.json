@@ -1,5 +1,5 @@
 {
-  "name": "react-universal",
+  "name": "universal-labs",
   "version": "0.0.0-development",
   "private": true,
   "repository": {
@@ -15,7 +15,7 @@
     "e2e/*"
   ],
   "scripts": {
-    "build:libs": "turbo run build --filter=\"@react-universal/**\"",
+    "build:libs": "lerna run build --scope=\"@react-universal/**\"",
     "commit": "cz",
     "dev": "turbo run dev --filter=\"@react-universal/**\" --parallel",
     "docs:dev": "yarn workspace docs-page dev",

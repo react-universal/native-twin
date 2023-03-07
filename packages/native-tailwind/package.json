@@ -30,6 +30,12 @@
   "unpkg": "./build/index.iife.js",
   "module": "./build/index.cjs.js",
   "types": "./index.d.ts",
+  "files": [
+    "src",
+    "build",
+    "index.d.ts",
+    "types.d.ts"
+  ],
   "scripts": {
     "build": "yarn vite build",
     "dev": "yarn vite build -w",
@@ -49,7 +55,7 @@
     "postcss-rem-to-pixel": "^4.1.2"
   },
   "devDependencies": {
-    "@types/node": "18.11.18",
+    "@types/node": "16.11.7",
     "@types/postcss-css-variables": "0.18.0",
     "@types/postcss-js": "^4.0.0",
     "@types/react": "~18.0.27",
