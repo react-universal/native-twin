@@ -1,11 +1,7 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "outDir": "./build",
-    "rootDir": "./src",
     "allowSyntheticDefaultImports": true,
-    "sourceMap": false,
-    "declarationMap": false,
     "noImplicitAny": true,
     "noUnusedLocals": false,
     "module": "CommonJS",
