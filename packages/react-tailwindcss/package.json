@@ -59,5 +59,8 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "gitHead": "a5c05d5ee9bc016aa01fc3a7cc03bddd46d1e634"
 }
