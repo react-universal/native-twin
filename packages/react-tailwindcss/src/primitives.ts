@@ -1,1 +1,1 @@
-export * from '@react-universal/primitives';
+export * from '@universal-labs/primitives';

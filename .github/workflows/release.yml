@@ -27,12 +27,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          registry-url: https://npm.pkg.github.com
 
       - name: Creating .npmrc
         run: |
           cat << EOF > "$HOME/.npmrc"
-            @react-universal:registry=https://npm.pkg.github.com/
             //npm.pkg.github.com/:_authToken=$NPM_TOKEN
           EOF
         env:

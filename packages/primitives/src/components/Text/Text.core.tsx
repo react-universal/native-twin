@@ -10,7 +10,7 @@ import {
   Strong as NStrong,
   P as NP,
 } from '@expo/html-elements';
-import { styled } from '@react-universal/core';
+import { styled } from '@universal-labs/core';
 
 NH1.displayName = 'H1';
 NH2.displayName = 'H2';

@@ -30,7 +30,7 @@ export default defineConfig({
     ssr: false,
     lib: {
       entry: path.resolve(__dirname, 'src/builds/module.ts'),
-      name: '@react-universal/native-tailwind',
+      name: '@universal-labs/native-tailwind',
       fileName: (format) => `index.${format}.js`,
       formats: ['cjs', 'es', 'umd', 'iife'],
     },

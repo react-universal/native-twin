@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import { Nav as ExpoNav } from '@expo/html-elements';
-import { styled } from '@react-universal/core';
+import { styled } from '@universal-labs/core';
 
 const Nav = styled(ExpoNav);
 

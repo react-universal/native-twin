@@ -27,7 +27,7 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@react-universal/primitives',
+      name: '@universal-labs/tailwind-ui',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
@@ -41,8 +41,8 @@ export default defineConfig({
         '@heroicons/react',
         'class-variance-authority',
         'clsx',
-        '@react-universal/core',
-        '@react-universal/primitives',
+        '@universal-labs/core',
+        '@universal-labs/primitives',
         'react-native-svg',
         'react/jsx-runtime',
         /tailwindcss/,

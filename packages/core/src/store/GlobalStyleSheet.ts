@@ -1,4 +1,4 @@
-import { setup } from '@react-universal/native-tailwind';
+import { setup } from '@universal-labs/native-tailwind';
 import type { Config } from 'tailwindcss';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import {

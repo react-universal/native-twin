@@ -1,3 +1,3 @@
-import { styled, useIsDarkMode, useStyledComponent } from '@react-universal/core';
+import { styled, useIsDarkMode, useStyledComponent } from '@universal-labs/core';
 
 export { styled, useIsDarkMode, useStyledComponent };

@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import { View as ReactNativeView } from 'react-native';
-import { styled } from '@react-universal/core';
+import { styled } from '@universal-labs/core';
 
 const View = styled(ReactNativeView);
 

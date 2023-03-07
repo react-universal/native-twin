@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { Image as NativeImage } from 'react-native';
-import { styled } from '@react-universal/core';
+import { styled } from '@universal-labs/core';
 import type { IImageProps } from './types';
 
 const StyledImage = styled(NativeImage);
