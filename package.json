@@ -15,18 +15,18 @@
     "e2e/*"
   ],
   "scripts": {
-    "build:libs": "lerna run build --scope=\"@universal-labs/**\"",
+    "build:libs": "nx run-many --target build --projects=\"@universal-labs/**\"",
     "commit": "cz",
-    "dev": "turbo run dev --filter=\"@universal-labs/**\" --parallel",
+    "dev": "nx run-many --target dev --projects=\"@universal-labs/**\" --parallel",
     "docs:dev": "yarn workspace docs-page dev",
     "expo:android": "yarn workspace expo-app android",
     "expo:ios": "yarn workspace expo-app ios",
     "expo:start": "yarn workspace expo-app start",
-    "release": "turbo run build --filter=\"@universal-labs/**\" && yarn lerna publish --yes --force-publish",
-    "test:e2e": "turbo run e2e",
+    "release": "nx run-many --target build --projects=\"@universal-labs/**\" && yarn lerna publish --yes --force-publish",
+    "test:e2e": "nx run-many --target e2e --projects=\"@universal-labs/**\"",
     "version": "yarn install && git stage yarn.lock",
     "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
-    "web": "turbo run dev --filter next-app"
+    "web": "nx run --target dev --project next-app"
   },
   "config": {
     "commitizen": {
@@ -67,13 +67,11 @@
     "eslint-plugin-react": "7.31.11",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-unused-imports": "1.1.5",
-    "lerna": "^6.5.1",
     "nx": "15.8.5",
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "semantic-release": "^19.0.5",
     "tslib": "^2.3.0",
-    "turbo": "^1.7.2",
     "typescript": "^4.9.4",
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
