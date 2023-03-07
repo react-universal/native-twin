@@ -15,14 +15,14 @@
     "e2e/*"
   ],
   "scripts": {
-    "build:libs": "lerna run build --scope=\"@react-universal/**\"",
+    "build:libs": "lerna run build --scope=\"@universal-labs/**\"",
     "commit": "cz",
-    "dev": "turbo run dev --filter=\"@react-universal/**\" --parallel",
+    "dev": "turbo run dev --filter=\"@universal-labs/**\" --parallel",
     "docs:dev": "yarn workspace docs-page dev",
     "expo:android": "yarn workspace expo-app android",
     "expo:ios": "yarn workspace expo-app ios",
     "expo:start": "yarn workspace expo-app start",
-    "release": "turbo run build --filter=\"@react-universal/**\" && yarn lerna publish --yes --force-publish",
+    "release": "turbo run build --filter=\"@universal-labs/**\" && yarn lerna publish --yes --force-publish",
     "test:e2e": "turbo run e2e",
     "version": "yarn install && git stage yarn.lock",
     "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
