@@ -41,11 +41,6 @@
     "dev": "tsc -w",
     "prepare": "yarn build"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "dependencies": {
     "@react-universal/core": "^1.3.0",
     "@react-universal/primitives": "^1.3.0"
