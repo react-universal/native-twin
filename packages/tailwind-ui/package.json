@@ -27,7 +27,7 @@
   "types": "./src/index.ts",
   "scripts": {
     "build": "yarn vite build",
-    "dev": "yarn vite build -w --force",
+    "dev": "yarn vite build -w",
     "e2e": "cypress open",
     "prepare": "yarn build",
     "test": "expo-module test"
@@ -45,6 +45,7 @@
     "@react-native-picker/picker": "^2.4.8",
     "@react-universal/core": "workspace:*",
     "@react-universal/primitives": "workspace:*",
+    "@tanstack/react-table": "^8.7.9",
     "class-variance-authority": "0.4.0",
     "clsx": "^1.2.1"
   },

@@ -93,7 +93,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.20.0":
+"@babel/core@npm:^7.20.0, @babel/core@npm:^7.20.12":
   version: 7.21.0
   resolution: "@babel/core@npm:7.21.0"
   dependencies:
@@ -1293,7 +1293,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-source@npm:^7.0.0":
+"@babel/plugin-transform-react-jsx-self@npm:^7.18.6":
+  version: 7.21.0
+  resolution: "@babel/plugin-transform-react-jsx-self@npm:7.21.0"
+  dependencies:
+    "@babel/helper-plugin-utils": ^7.20.2
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 696f74c04a265409ccd46e333ff762e6011d394e6972128b5d97db4c1647289141bc7ebd45ab2bab99b60932f9793e8f89ee9432d3bde19962de2100456f6147
+  languageName: node
+  linkType: hard
+
+"@babel/plugin-transform-react-jsx-source@npm:^7.0.0, @babel/plugin-transform-react-jsx-source@npm:^7.19.6":
   version: 7.19.6
   resolution: "@babel/plugin-transform-react-jsx-source@npm:7.19.6"
   dependencies:
@@ -2871,7 +2882,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/sourcemap-codec@npm:1.4.14, @jridgewell/sourcemap-codec@npm:^1.4.10":
+"@jridgewell/sourcemap-codec@npm:1.4.14, @jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.13":
   version: 1.4.14
   resolution: "@jridgewell/sourcemap-codec@npm:1.4.14"
   checksum: 61100637b6d173d3ba786a5dff019e1a74b1f394f323c1fee337ff390239f053b87266c7a948777f4b1ee68c01a8ad0ab61e5ff4abb5a012a0b091bec391ab97
@@ -4282,12 +4293,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-universal/core@^1.2.0, @react-universal/core@workspace:*, @react-universal/core@workspace:packages/core":
+"@react-universal/core@^1.3.0, @react-universal/core@workspace:*, @react-universal/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@react-universal/core@workspace:packages/core"
   dependencies:
     "@paralleldrive/cuid2": ^2.2.0
-    "@react-universal/native-tailwind": ^1.2.0
+    "@react-universal/native-tailwind": ^1.3.0
     "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
@@ -4314,7 +4325,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@react-universal/native-tailwind@^1.2.0, @react-universal/native-tailwind@workspace:packages/native-tailwind":
+"@react-universal/native-tailwind@^1.3.0, @react-universal/native-tailwind@workspace:packages/native-tailwind":
   version: 0.0.0-use.local
   resolution: "@react-universal/native-tailwind@workspace:packages/native-tailwind"
   dependencies:
@@ -4338,12 +4349,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@react-universal/primitives@^1.2.0, @react-universal/primitives@workspace:*, @react-universal/primitives@workspace:packages/primitives":
+"@react-universal/primitives@^1.3.0, @react-universal/primitives@workspace:*, @react-universal/primitives@workspace:packages/primitives":
   version: 0.0.0-use.local
   resolution: "@react-universal/primitives@workspace:packages/primitives"
   dependencies:
     "@expo/html-elements": ^0.3.1
-    "@react-universal/core": ^1.2.0
+    "@react-universal/core": ^1.3.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
@@ -4368,6 +4379,7 @@ __metadata:
     "@react-native-picker/picker": ^2.4.8
     "@react-universal/core": "workspace:*"
     "@react-universal/primitives": "workspace:*"
+    "@tanstack/react-table": ^8.7.9
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
@@ -4675,6 +4687,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-table@npm:^8.7.9":
+  version: 8.7.9
+  resolution: "@tanstack/react-table@npm:8.7.9"
+  dependencies:
+    "@tanstack/table-core": 8.7.9
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 3c704ac903405972641c9857e1466025bcdac04ee4890d64b018386cad5a778aca3a8d3f78542ae7a0ed609841d32ef3a7e563b079e87fa93b9ae8570a310499
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:8.7.9":
+  version: 8.7.9
+  resolution: "@tanstack/table-core@npm:8.7.9"
+  checksum: 78d2314928c29559088e4bada0248cc7f94e93756e1a2c1f37a651db30276e9ae960d647bd3a61b67b3f0f9f7e4dec5dd58eb49b8adb80ee5952ef417b6e581f
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:2":
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
@@ -4903,7 +4934,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:~18.0.10":
+"@types/react-dom@npm:^18.0.10, @types/react-dom@npm:~18.0.10":
   version: 18.0.11
   resolution: "@types/react-dom@npm:18.0.11"
   dependencies:
@@ -5228,6 +5259,21 @@ __metadata:
   peerDependencies:
     vite: ^4
   checksum: 531ef92a4ec15f01d43658874ef6dcae27ad29bfea8e281b6ef7678f684f473b2c301660d9103a55fbf0700c521f8ee13614b6cfe5d2d4747a1c07383dd1330e
+  languageName: node
+  linkType: hard
+
+"@vitejs/plugin-react@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@vitejs/plugin-react@npm:3.1.0"
+  dependencies:
+    "@babel/core": ^7.20.12
+    "@babel/plugin-transform-react-jsx-self": ^7.18.6
+    "@babel/plugin-transform-react-jsx-source": ^7.19.6
+    magic-string: ^0.27.0
+    react-refresh: ^0.14.0
+  peerDependencies:
+    vite: ^4.1.0-beta.0
+  checksum: 450fac79e67cba9e1581c860f78e687b44108ab4117663ef20db279316e03cd8e87f94fef376e27cc5e200bd52813dcc09b70ea570c7c7cc291fcd47eb260fbc
   languageName: node
   linkType: hard
 
@@ -8454,6 +8500,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"documentation@workspace:apps/documentation":
+  version: 0.0.0-use.local
+  resolution: "documentation@workspace:apps/documentation"
+  dependencies:
+    "@types/react": ^18.0.27
+    "@types/react-dom": ^18.0.10
+    "@vitejs/plugin-react": ^3.1.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ^4.9.3
+    vite: ^4.1.0
+  languageName: unknown
+  linkType: soft
+
 "dom-serializer@npm:^1.0.1":
   version: 1.4.1
   resolution: "dom-serializer@npm:1.4.1"
@@ -9423,8 +9483,8 @@ __metadata:
     "@react-navigation/drawer": ^6.6.0
     "@react-navigation/native": ^6.1.4
     "@react-navigation/native-stack": ^6.9.10
-    "@react-universal/core": ^1.2.0
-    "@react-universal/primitives": ^1.2.0
+    "@react-universal/core": ^1.3.0
+    "@react-universal/primitives": ^1.3.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
@@ -13237,6 +13297,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"magic-string@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "magic-string@npm:0.27.0"
+  dependencies:
+    "@jridgewell/sourcemap-codec": ^1.4.13
+  checksum: 273faaa50baadb7a2df6e442eac34ad611304fc08fe16e24fe2e472fd944bfcb73ffb50d2dc972dc04e92784222002af46868cb9698b1be181c81830fd95a13e
+  languageName: node
+  linkType: hard
+
 "make-dir@npm:3.1.0":
   version: 3.1.0
   resolution: "make-dir@npm:3.1.0"
@@ -14390,8 +14459,8 @@ __metadata:
   resolution: "next-app@workspace:examples/next-app"
   dependencies:
     "@next/font": 13.0.6
-    "@react-universal/core": ^1.2.0
-    "@react-universal/primitives": ^1.2.0
+    "@react-universal/core": ^1.3.0
+    "@react-universal/primitives": ^1.3.0
     "@react-universal/tailwind-ui": "workspace:*"
     autoprefixer: 10.4.13
     critters: ^0.0.16
@@ -16782,6 +16851,13 @@ __metadata:
   bin:
     react-native: cli.js
   checksum: 1f6cee37352db4981eadee3e07b04f19d4ad3eeebf2ede7e8d98d42c87ea6041ec3e5703038349c650148fadb1bfab3db0c52121620fd946d9cf4a47b130b715
+  languageName: node
+  linkType: hard
+
+"react-refresh@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "react-refresh@npm:0.14.0"
+  checksum: dc69fa8c993df512f42dd0f1b604978ae89bd747c0ed5ec595c0cc50d535fb2696619ccd98ae28775cc01d0a7c146a532f0f7fb81dc22e1977c242a4912312f4
   languageName: node
   linkType: hard
 
@@ -19564,7 +19640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^3 || ^4":
+"typescript@npm:^3 || ^4, typescript@npm:^4.9.3":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -19584,7 +19660,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^3 || ^4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^3 || ^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
   bin:
@@ -20076,6 +20152,44 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: aad14b660b69068f6596ab7e760dd71642862996328e404a4d265e090ae0d06c7064cf8415ffb135cd8b79d5157dc1dcb48b56386caaa96a474fb53bdd8cac3d
+  languageName: node
+  linkType: hard
+
+"vite@npm:^4.1.0":
+  version: 4.1.4
+  resolution: "vite@npm:4.1.4"
+  dependencies:
+    esbuild: ^0.16.14
+    fsevents: ~2.3.2
+    postcss: ^8.4.21
+    resolve: ^1.22.1
+    rollup: ^3.10.0
+  peerDependencies:
+    "@types/node": ">= 14"
+    less: "*"
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 50a9a1f2e29e0ee8fefdec60314d38fb9b746df0bb6ae5a8114014b5bfd95e0fc9b29c0d5e73939361ba53af7eb66c7d20c5656bbe53a783e96540bd3b907c47
   languageName: node
   linkType: hard
 

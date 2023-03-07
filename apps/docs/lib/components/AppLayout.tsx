@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { H3, Pressable, Span, View } from '@react-universal/primitives';
 import { Drawer } from '@react-universal/tailwind-ui';
+import { useRouter } from 'next/router';
 
 interface IAppLayoutProps {
   children: ReactNode;
@@ -32,10 +33,15 @@ const routes = [
     title: 'Overview',
     routes: [{ label: 'Overview', route: '/' }],
   },
+  {
+    title: 'Layout',
+    routes: [{ label: 'Aspect Ratio', route: '/layout/aspect-ratio' }],
+  },
 ];
 
 const AppLayout = ({ children }: IAppLayoutProps) => {
   const [isOpen, setIsOpen] = useState(true);
+  const Router = useRouter();
   return (
     <View className='flex-1 flex-row'>
       <Drawer
@@ -52,6 +58,7 @@ const AppLayout = ({ children }: IAppLayoutProps) => {
             renderItem={(route) => {
               return (
                 <Pressable
+                  onPress={() => Router.push(route.route)}
                   key={`${route.label}-${route.route}`}
                   className='rounded-lg py-3 px-2 hover:bg-gray-900'
                 >
@@ -62,7 +69,7 @@ const AppLayout = ({ children }: IAppLayoutProps) => {
           />
         ))}
       </Drawer>
-      <View className='flex-1 bg-gray-700'>{children}</View>
+      <View className='flex-1 bg-gray-800 px-5'>{children}</View>
     </View>
   );
 };
