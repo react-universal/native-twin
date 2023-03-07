@@ -1,4 +1,4 @@
-import { setup } from '@universal-labs/native-tailwind';
+import { setup } from '@universal-labs/tailwind-adapter';
 import type { Config } from 'tailwindcss';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import {

@@ -3,7 +3,6 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/tailwind-adapter/src",
   "projectType": "library",
-  "implicitDependencies": ["tailwind-adapter"],
   "targets": {
     "build": {
       "executor": "@nrwl/vite:build",
@@ -13,7 +12,6 @@
       }
     },
     "publish": {
-      "executor": "@nrwl/workspace:run-commands",
       "command": "yarn npm publish",
       "dependsOn": ["^build"]
     },

@@ -1,18 +1,8 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
-import { join } from 'path';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/tailwind-adapter',
-
-  plugins: [
-    dts({
-      entryRoot: 'src',
-      tsConfigFilePath: join(__dirname, 'tsconfig.lib.json'),
-      skipDiagnostics: true,
-    }),
-  ],
 
   optimizeDeps: {
     esbuildOptions: {
@@ -37,7 +27,7 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts',
       name: 'tailwind-adapter',
-      fileName: 'index',
+      fileName: (format) => `index.${format}.js`,
       formats: ['cjs', 'es', 'umd', 'iife'],
     },
     rollupOptions: {
