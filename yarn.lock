@@ -4282,110 +4282,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-universal/core@^1.3.0, @react-universal/core@workspace:*, @react-universal/core@workspace:packages/core":
-  version: 0.0.0-use.local
-  resolution: "@react-universal/core@workspace:packages/core"
-  dependencies:
-    "@paralleldrive/cuid2": ^2.2.0
-    "@react-universal/native-tailwind": ^1.3.0
-    "@types/css-to-react-native": ^3.0.0
-    "@types/node": 16.11.7
-    "@types/react": ~18.0.27
-    "@types/react-dom": ~18.0.10
-    "@types/react-is": ^17.0.3
-    "@types/react-native": 0.70.7
-    "@types/use-sync-external-store": ^0.0.3
-    "@vitejs/plugin-react-swc": ^3.2.0
-    "@vitest/ui": ^0.28.3
-    clsx: ^1.2.1
-    css-to-react-native: ^3.1.0
-    immer: ^9.0.19
-    react: 18.2.0
-    react-is: ^18.2.0
-    tslib: ^2.3.0
-    typescript: ^4.9.4
-    use-sync-external-store: ^1.2.0
-    vite: ^4.1.1
-    vitest: ^0.28.3
-  peerDependencies:
-    postcss: ">= 8.0.0"
-    react-native-gesture-handler: ">= 2.9.0"
-    react-native-reanimated: ">=2.12.0"
-    react-native-web: ">= 0.18.10"
-    tailwindcss: ">= 3.0.0"
-  languageName: unknown
-  linkType: soft
-
-"@react-universal/native-tailwind@^1.3.0, @react-universal/native-tailwind@workspace:packages/native-tailwind":
-  version: 0.0.0-use.local
-  resolution: "@react-universal/native-tailwind@workspace:packages/native-tailwind"
-  dependencies:
-    "@types/node": 16.11.7
-    "@types/postcss-css-variables": 0.18.0
-    "@types/postcss-js": ^4.0.0
-    "@types/react": ~18.0.27
-    "@types/react-dom": ~18.0.10
-    "@types/tailwindcss": 3.1.0
-    postcss: 8.4.21
-    postcss-color-rgb: ^2.0.0
-    postcss-css-variables: ^0.18.0
-    postcss-js: ^4.0.0
-    postcss-rem-to-pixel: ^4.1.2
-    tailwindcss: 3.2.4
-    vite: ^4.1.1
-    vitest: ^0.28.3
-  peerDependencies:
-    postcss: ">= 8.0.0"
-    tailwindcss: ">= 3.0.0"
-  languageName: unknown
-  linkType: soft
-
-"@react-universal/primitives@^1.3.0, @react-universal/primitives@workspace:*, @react-universal/primitives@workspace:packages/primitives":
-  version: 0.0.0-use.local
-  resolution: "@react-universal/primitives@workspace:packages/primitives"
-  dependencies:
-    "@expo/html-elements": ^0.3.1
-    "@react-universal/core": ^1.3.0
-    "@types/react": ~18.0.27
-    "@types/react-dom": ~18.0.10
-    "@types/react-native": 0.70.7
-    tslib: ^2.3.0
-    vite: ^4.1.1
-  peerDependencies:
-    next: ">= 13.0.0"
-    postcss: ">= 8.4"
-    react-native: ">= 0.69.0"
-    tailwindcss: ^3.2.4
-  languageName: unknown
-  linkType: soft
-
-"@react-universal/tailwind-ui@workspace:*, @react-universal/tailwind-ui@workspace:packages/tailwind-ui":
-  version: 0.0.0-use.local
-  resolution: "@react-universal/tailwind-ui@workspace:packages/tailwind-ui"
-  dependencies:
-    "@gorhom/bottom-sheet": ^4.4.5
-    "@headlessui/react": 1.7.12
-    "@heroicons/react": ^2.0.16
-    "@radix-ui/react-dialog": ^1.0.2
-    "@react-native-picker/picker": ^2.4.8
-    "@react-universal/core": "workspace:*"
-    "@react-universal/primitives": "workspace:*"
-    "@tanstack/react-table": ^8.7.9
-    "@types/react": ~18.0.27
-    "@types/react-dom": ~18.0.10
-    "@types/react-native": 0.70.7
-    class-variance-authority: 0.4.0
-    clsx: ^1.2.1
-    cypress: ^12.7.0
-    react-native-svg: ">= 12"
-    tslib: ^2.3.0
-    vite: ^4.1.1
-  peerDependencies:
-    next: ">= 13.0.0"
-    react-native-svg: ">= 12"
-  languageName: unknown
-  linkType: soft
-
 "@segment/loosely-validate-event@npm:^2.0.0":
   version: 2.0.0
   resolution: "@segment/loosely-validate-event@npm:2.0.0"
@@ -5316,22 +5212,126 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@universal-labs/core@workspace:*, @universal-labs/core@workspace:packages/core":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/core@workspace:packages/core"
+  dependencies:
+    "@paralleldrive/cuid2": ^2.2.0
+    "@types/css-to-react-native": ^3.0.0
+    "@types/node": 16.11.7
+    "@types/react": ~18.0.27
+    "@types/react-dom": ~18.0.10
+    "@types/react-is": ^17.0.3
+    "@types/react-native": 0.70.7
+    "@types/use-sync-external-store": ^0.0.3
+    "@universal-labs/native-tailwind": ^1.3.0
+    "@vitejs/plugin-react-swc": ^3.2.0
+    "@vitest/ui": ^0.28.3
+    clsx: ^1.2.1
+    css-to-react-native: ^3.1.0
+    immer: ^9.0.19
+    react: 18.2.0
+    react-is: ^18.2.0
+    tslib: ^2.3.0
+    typescript: ^4.9.4
+    use-sync-external-store: ^1.2.0
+    vite: ^4.1.1
+    vitest: ^0.28.3
+  peerDependencies:
+    postcss: ">= 8.0.0"
+    react-native-gesture-handler: ">= 2.9.0"
+    react-native-reanimated: ">=2.12.0"
+    react-native-web: ">= 0.18.10"
+    tailwindcss: ">= 3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@universal-labs/native-tailwind@^1.3.0, @universal-labs/native-tailwind@workspace:packages/native-tailwind":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/native-tailwind@workspace:packages/native-tailwind"
+  dependencies:
+    "@types/node": 16.11.7
+    "@types/postcss-css-variables": 0.18.0
+    "@types/postcss-js": ^4.0.0
+    "@types/react": ~18.0.27
+    "@types/react-dom": ~18.0.10
+    "@types/tailwindcss": 3.1.0
+    postcss: 8.4.21
+    postcss-color-rgb: ^2.0.0
+    postcss-css-variables: ^0.18.0
+    postcss-js: ^4.0.0
+    postcss-rem-to-pixel: ^4.1.2
+    tailwindcss: 3.2.4
+    vite: ^4.1.1
+    vitest: ^0.28.3
+  peerDependencies:
+    postcss: ">= 8.0.0"
+    tailwindcss: ">= 3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@universal-labs/primitives@workspace:*, @universal-labs/primitives@workspace:packages/primitives":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/primitives@workspace:packages/primitives"
+  dependencies:
+    "@expo/html-elements": ^0.3.1
+    "@types/react": ~18.0.27
+    "@types/react-dom": ~18.0.10
+    "@types/react-native": 0.70.7
+    "@universal-labs/core": "workspace:*"
+    tslib: ^2.3.0
+    vite: ^4.1.1
+  peerDependencies:
+    next: ">= 13.0.0"
+    postcss: ">= 8.4"
+    react-native: ">= 0.69.0"
+    tailwindcss: ^3.2.4
+  languageName: unknown
+  linkType: soft
+
 "@universal-labs/react-tailwindcss@workspace:packages/react-tailwindcss":
   version: 0.0.0-use.local
   resolution: "@universal-labs/react-tailwindcss@workspace:packages/react-tailwindcss"
   dependencies:
-    "@react-universal/core": "workspace:*"
-    "@react-universal/primitives": "workspace:*"
     "@types/node": 16.11.7
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/tailwindcss": 3.1.0
+    "@universal-labs/core": "workspace:*"
+    "@universal-labs/primitives": "workspace:*"
     tailwindcss: 3.2.4
     tslib: ^2.3.0
     vite: ^4.1.1
   peerDependencies:
     postcss: ">= 8.0.0"
     tailwindcss: ">= 3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@universal-labs/tailwind-ui@workspace:*, @universal-labs/tailwind-ui@workspace:packages/tailwind-ui":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/tailwind-ui@workspace:packages/tailwind-ui"
+  dependencies:
+    "@gorhom/bottom-sheet": ^4.4.5
+    "@headlessui/react": 1.7.12
+    "@heroicons/react": ^2.0.16
+    "@radix-ui/react-dialog": ^1.0.2
+    "@react-native-picker/picker": ^2.4.8
+    "@tanstack/react-table": ^8.7.9
+    "@types/react": ~18.0.27
+    "@types/react-dom": ~18.0.10
+    "@types/react-native": 0.70.7
+    "@universal-labs/core": "workspace:*"
+    "@universal-labs/primitives": "workspace:*"
+    class-variance-authority: 0.4.0
+    clsx: ^1.2.1
+    cypress: ^12.7.0
+    react-native-svg: ">= 12"
+    tslib: ^2.3.0
+    vite: ^4.1.1
+  peerDependencies:
+    next: ">= 13.0.0"
+    react-native-svg: ">= 12"
   languageName: unknown
   linkType: soft
 
@@ -8582,9 +8582,9 @@ __metadata:
   resolution: "docs-page@workspace:apps/docs"
   dependencies:
     "@next/font": 13.0.6
-    "@react-universal/primitives": "workspace:*"
-    "@react-universal/tailwind-ui": "workspace:*"
     "@types/react-syntax-highlighter": ^15.5.6
+    "@universal-labs/primitives": "workspace:*"
+    "@universal-labs/tailwind-ui": "workspace:*"
     autoprefixer: 10.4.13
     critters: ^0.0.16
     next: 13.1.4
@@ -8737,9 +8737,9 @@ __metadata:
   resolution: "e2e-tailwind-ui@workspace:e2e/tailwind-ui"
   dependencies:
     "@next/font": 13.0.6
-    "@react-universal/primitives": "workspace:*"
-    "@react-universal/tailwind-ui": "workspace:*"
     "@types/react-syntax-highlighter": ^15.5.6
+    "@universal-labs/primitives": "workspace:*"
+    "@universal-labs/tailwind-ui": "workspace:*"
     autoprefixer: 10.4.13
     critters: ^0.0.16
     cypress: ^12.7.0
@@ -9584,11 +9584,11 @@ __metadata:
     "@react-navigation/drawer": ^6.6.0
     "@react-navigation/native": ^6.1.4
     "@react-navigation/native-stack": ^6.9.10
-    "@react-universal/core": ^1.3.0
-    "@react-universal/primitives": ^1.3.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
+    "@universal-labs/core": "workspace:*"
+    "@universal-labs/primitives": "workspace:*"
     babel-plugin-module-resolver: ^5.0.0
     expo: ^48.0.0
     expo-status-bar: ~1.4.4
@@ -14551,9 +14551,9 @@ __metadata:
   resolution: "next-app@workspace:examples/next-app"
   dependencies:
     "@next/font": 13.0.6
-    "@react-universal/core": ^1.3.0
-    "@react-universal/primitives": ^1.3.0
-    "@react-universal/tailwind-ui": "workspace:*"
+    "@universal-labs/core": "workspace:*"
+    "@universal-labs/primitives": "workspace:*"
+    "@universal-labs/tailwind-ui": "workspace:*"
     autoprefixer: 10.4.13
     critters: ^0.0.16
     next: 13.1.4

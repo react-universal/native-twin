@@ -25,9 +25,12 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
+      entry: [
+        path.resolve(__dirname, 'src/index.ts'),
+        path.resolve(__dirname, 'src/primitives.ts'),
+      ],
       name: 'react-universal',
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format, entryName) => `${entryName}.${format}.js`,
     },
     rollupOptions: {
       // makeAbsoluteExternalsRelative: 'ifRelativeSource',

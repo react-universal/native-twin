@@ -1,7 +1,7 @@
 {
   "folders": [
     {
-      "name": "✨ react-universal",
+      "name": "✨ universal-labs",
       "path": ".."
     },
     {
@@ -9,19 +9,27 @@
       "path": "../apps/docs"
     },
     {
+      "name": "e2e-tailwind-ui",
+      "path": "../e2e/tailwind-ui"
+    },
+    {
       "name": "expo-app",
       "path": "../examples/expo-app"
     },
     {
-      "name": "📦 @react-universal/core",
+      "name": "next-app",
+      "path": "../examples/next-app"
+    },
+    {
+      "name": "📦 @universal-labs/core",
       "path": "../packages/core"
     },
     {
-      "name": "📦 @react-universal/native-tailwind",
+      "name": "📦 @universal-labs/native-tailwind",
       "path": "../packages/native-tailwind"
     },
     {
-      "name": "📦 @react-universal/primitives",
+      "name": "📦 @universal-labs/primitives",
       "path": "../packages/primitives"
     },
     {

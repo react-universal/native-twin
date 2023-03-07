@@ -43,8 +43,8 @@
     "prepare": "yarn build"
   },
   "dependencies": {
-    "@react-universal/core": "workspace:*",
-    "@react-universal/primitives": "workspace:*"
+    "@universal-labs/core": "workspace:*",
+    "@universal-labs/primitives": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "16.11.7",
