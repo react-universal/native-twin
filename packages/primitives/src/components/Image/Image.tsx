@@ -1,3 +1,6 @@
-import NativeImage from 'next/legacy/image';
+import { Image as NativeImage } from 'react-native';
+import { styled } from '@universal-labs/core';
 
-export const Image = NativeImage;
+const Image = styled(NativeImage);
+
+export { Image };

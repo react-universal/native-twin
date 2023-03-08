@@ -17,7 +17,7 @@
 // require('./commands')
 import { mount } from 'cypress/react18';
 //Ensure global styles are loaded
-// import '../styles/globals.css';
+import '../styles/globals.css';
 import './commands';
 
 // Augment the Cypress namespace to include type definitions for
