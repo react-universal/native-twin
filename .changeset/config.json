@@ -4,16 +4,16 @@
   "commit": false,
   "fixed": [
     [
-      "@react-universal/core",
-      "@react-universal/styled",
-      "@react-universal/tailwind",
-      "@react-universal/primitives"
+      "@universal-labs/core",
+      "@universal-labs/native-tailwind",
+      "@universal-labs/primitives",
+      "@universal-labs/tailwind-ui"
     ]
   ],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-app", "expo-app"],
+  "ignore": ["next-app", "expo-app", "docs-page", "e2e-tailwind-ui"],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }
