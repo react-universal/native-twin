@@ -12,7 +12,7 @@ import {
   LegacyRef,
 } from 'react';
 import { useStyledComponent } from '../hooks';
-import type { IExtraProperties, TInternalStyledComponentProps } from '../types/styles.types';
+import type { IExtraProperties, TInternalStyledComponentProps } from '../types/store.types';
 
 type ForwardRef<T, P> = ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<T>>;
 type InferRef<T> = T extends RefAttributes<infer R> | ClassAttributes<infer R> ? R : unknown;

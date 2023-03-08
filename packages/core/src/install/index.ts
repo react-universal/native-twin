@@ -1,1 +1,1 @@
-export { setTailwindConfig } from '../store/GlobalStyleSheet';
+export { setTailwindConfig } from '@universal-labs/stylesheets';

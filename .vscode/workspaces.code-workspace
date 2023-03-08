@@ -5,32 +5,12 @@
       "path": ".."
     },
     {
-      "name": "🚀 docs-page",
-      "path": "../apps/docs"
-    },
-    {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
-    },
-    {
-      "name": "next-app",
-      "path": "../examples/next-app"
-    },
-    {
       "name": "📦 @universal-labs/core",
       "path": "../packages/core"
     },
     {
-      "name": "📦 @universal-labs/native-tailwind",
-      "path": "../packages/native-tailwind"
-    },
-    {
       "name": "📦 @universal-labs/primitives",
       "path": "../packages/primitives"
-    },
-    {
-      "name": "📦 @universal-labs/tailwind-ui",
-      "path": "../packages/tailwind-ui"
     }
   ],
   "settings": {
@@ -74,7 +54,7 @@
       "**/.hg/store/**": true,
       "**/dist/**": true
     },
-    "typescript.tsdk": "✨ react-universal/node_modules/typescript/lib",
+    "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib",
     // "workbench.colorCustomizations": {
     //   "[Default Dark+ Experimental]": {
     //     "sideBar.background": "#070606",

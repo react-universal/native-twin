@@ -1,9 +1,6 @@
-import type {
-  IStyleType,
-  IStyleTuple,
-  IExtraProperties,
-  TInternalStyledComponentProps,
-} from './styles.types';
+import type { ReactNode } from 'react';
+import type { ImageStyle, PressableProps, TextStyle, ViewStyle } from 'react-native';
+import type { IStyleTuple, IStyleType } from '@universal-labs/stylesheets';
 
 export type TInteractionPseudoSelectors = 'hover' | 'active' | 'focus' | 'group-hover';
 
@@ -46,3 +43,21 @@ export type IClassNamesStyle = {
 export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, unknown>
   ? K
   : never;
+
+export type IExtraProperties<T> = T & {
+  style?: ImageStyle | TextStyle | ViewStyle;
+  className?: string;
+  tw?: string;
+  children?: ReactNode;
+};
+
+export type TInternalStyledComponentProps = {
+  nthChild: number;
+  isFirstChild: boolean;
+  isLastChild: boolean;
+  parentID: string;
+};
+export interface InteractionProps extends PressableProps {
+  onMouseDown?: PressableProps['onPressIn'];
+  onMouseUp?: PressableProps['onPressOut'];
+}

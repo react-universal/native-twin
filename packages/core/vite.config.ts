@@ -22,7 +22,7 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@react-universal/core',
+      name: '@universal-labs/core',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
@@ -31,12 +31,10 @@ export default defineConfig({
         'react',
         'react-dom',
         'react-native',
+        '@paralleldrive/cuid2',
         'react-native-web',
-        'postcss',
-        'postcss-js',
         'react/jsx-runtime',
-        /tailwindcss/,
-        /next/,
+        '@universal-labs/stylesheets',
       ],
       output: {
         dir: 'build',

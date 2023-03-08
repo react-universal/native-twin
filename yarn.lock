@@ -4882,7 +4882,7 @@ __metadata:
     "@types/react-is": ^17.0.3
     "@types/react-native": 0.70.7
     "@types/use-sync-external-store": ^0.0.3
-    "@universal-labs/native-tailwind": "workspace:*"
+    "@universal-labs/stylesheets": "workspace:*"
     "@vitejs/plugin-react-swc": ^3.2.0
     "@vitest/ui": ^0.28.3
     clsx: ^1.2.1
@@ -4937,7 +4937,6 @@ __metadata:
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
     "@universal-labs/core": "workspace:*"
-    "@universal-labs/primitives": "workspace:*"
     tslib: ^2.3.0
     vite: ^4.1.1
   peerDependencies:
@@ -4945,6 +4944,19 @@ __metadata:
     postcss: ">= 8.4"
     react-native: ">= 0.69.0"
     tailwindcss: ^3.2.4
+  languageName: unknown
+  linkType: soft
+
+"@universal-labs/stylesheets@workspace:*, @universal-labs/stylesheets@workspace:packages/sheets":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
+  dependencies:
+    "@types/react": ~18.0.27
+    "@types/react-dom": ~18.0.10
+    "@types/react-native": 0.70.7
+    "@universal-labs/native-tailwind": "workspace:*"
+    vite: ^4.1.1
+    vitest: ^0.28.3
   languageName: unknown
   linkType: soft
 

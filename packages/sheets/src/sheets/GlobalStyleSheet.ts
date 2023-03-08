@@ -1,6 +1,5 @@
 import { setup } from '@universal-labs/native-tailwind';
 import type { Config } from 'tailwindcss';
-import resolveConfig from 'tailwindcss/resolveConfig';
 import {
   GROUP_PARENT_MASK,
   HOVER_INTERACTION_MASK,
@@ -8,25 +7,29 @@ import {
   INTERACTIONS_MASK,
 } from '../constants';
 import type {
+  IStyleTuple,
+  IStyleType,
   IComponentInteractions,
   TInteractionPseudoSelectors,
   TAppearancePseudoSelectors,
   IComponentAppearance,
-} from '../types/store.types';
-import type { IStyleTuple, IStyleType } from '../types/styles.types';
-import { selectorIsInteraction, selectorIsAppearance } from '../utils/components.utils';
-import { cssPropertiesResolver } from '../utils/styles.utils';
+} from '../types';
+import {
+  selectorIsInteraction,
+  selectorIsAppearance,
+  cssPropertiesResolver,
+} from '../utils/helpers';
 
 class GlobalStyleSheet {
   private stylesCollection: Map<string, IStyleType> = new Map();
-  private tw: ReturnType<typeof setup>;
+  private style: ReturnType<typeof setup>;
 
   constructor() {
-    this.tw = setup({ content: ['__'] });
+    this.style = setup({ content: ['__'] });
   }
 
   setConfig(config: Config) {
-    this.tw = setup(config);
+    this.style = setup(config);
   }
 
   private _getJSS(classNames: string[]) {
@@ -35,7 +38,7 @@ class GlobalStyleSheet {
       if (cache) {
         previous.push([current, cache]);
       } else {
-        const styles = this.tw(current);
+        const styles = this.style(current);
         const rnStyles = cssPropertiesResolver(styles.JSS);
         previous.push([current, rnStyles]);
         this.stylesCollection.set(current, rnStyles);
@@ -152,46 +155,8 @@ class GlobalStyleSheet {
 
 const globalStyleSheet = new GlobalStyleSheet();
 
-function callPluginFunction(pluginFn: any) {
-  let added = {};
-  pluginFn({
-    addUtilities: (utilities: any) => {
-      added = utilities;
-    },
-    ...core,
-  });
-  return added;
-}
-
 export function setTailwindConfig(config: Config) {
-  const tailwind = resolveConfig(config);
-  console.log('CONFIG: ', tailwind);
-  const plugins = tailwind.plugins;
-  const added =
-    plugins?.reduce((utils, plugin) => {
-      console.log('UTILS_PLUGIN: ', { utils, plugin });
-      return { ...utils, ...callPluginFunction(plugin) };
-    }, {}) ?? {};
-  console.log('ADDED: ', added);
   globalStyleSheet.setConfig(config);
 }
 
 export default globalStyleSheet;
-
-function notImplemented(fn: string): never {
-  throw new Error(`tailwindcss plugin function argument object prop "${fn}" not implemented`);
-}
-
-const core = {
-  addComponents: notImplemented,
-  addBase: notImplemented,
-  addVariant: notImplemented,
-  e: notImplemented,
-  prefix: notImplemented,
-  theme: notImplemented,
-  variants: notImplemented,
-  config: notImplemented,
-  corePlugins: notImplemented,
-  matchUtilities: notImplemented,
-  postcss: null,
-};

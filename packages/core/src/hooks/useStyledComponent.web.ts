@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import { mergeTWClasses } from '@universal-labs/stylesheets';
 import type { IRegisterComponentArgs } from '../types/store.types';
-import { mergeTWClasses } from '../utils/mergeClasses';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 

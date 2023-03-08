@@ -1,10 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { init } from '@paralleldrive/cuid2';
+import { ComponentStyleSheet } from '@universal-labs/stylesheets';
 import { immerable } from 'immer';
-import type { IRegisterComponentArgs } from '../types/store.types';
-import type { TInteractionPseudoSelectors } from '../types/store.types';
-import type { IExtraProperties, TInternalStyledComponentProps } from '../types/styles.types';
-import ComponentStyleSheet from './ComponentStyleSheet';
+import type {
+  IExtraProperties,
+  TInteractionPseudoSelectors,
+  TInternalStyledComponentProps,
+  IRegisterComponentArgs,
+} from '../types/store.types';
 
 const createID = init({ fingerprint: 'tailwind-native', length: 10 });
 

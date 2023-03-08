@@ -1,5 +1,4 @@
-import type { IComponentInteractions, IComponentAppearance } from '../types/store.types';
-import type { IStyleType } from '../types/styles.types';
+import type { IStyleType, IComponentInteractions, IComponentAppearance } from '../types';
 import globalStyleSheet from './GlobalStyleSheet';
 
 export default class ComponentStyleSheet {

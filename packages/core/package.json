@@ -40,8 +40,10 @@
     "rn-types.d.ts"
   ],
   "scripts": {
-    "build": "vite build && vite build -c tailwind.vite.config.ts",
-    "dev": "yarn vite build -c tailwind.vite.config.ts && yarn vite build -w",
+    "build": "vite build && yarn build:browser && yarn build:native",
+    "build:browser": "vite build -c tailwind.vite.config.ts",
+    "build:native": "vite build -c vite.native.config.ts",
+    "dev": "yarn build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepare": "yarn build",
     "test": "vitest",
@@ -50,7 +52,7 @@
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.0",
-    "@universal-labs/native-tailwind": "workspace:*",
+    "@universal-labs/stylesheets": "workspace:*",
     "clsx": "^1.2.1",
     "css-to-react-native": "^3.1.0",
     "immer": "^9.0.19",

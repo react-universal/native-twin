@@ -7,7 +7,7 @@
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noUnusedLocals": false,
-    "module": "CommonJS",
+    "module": "ESNext",
     "types": ["node"],
     "importHelpers": true
   },
