@@ -29,6 +29,7 @@
     "build": "yarn vite build",
     "dev": "yarn vite build -w",
     "e2e": "cypress open",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepare": "yarn build",
     "test": "expo-module test"
   },
@@ -36,13 +37,15 @@
     "@gorhom/bottom-sheet": "^4.4.5",
     "@headlessui/react": "1.7.12",
     "@heroicons/react": "^2.0.16",
+    "@radix-ui/react-alert-dialog": "^1.0.2",
     "@radix-ui/react-dialog": "^1.0.2",
     "@react-native-picker/picker": "^2.4.8",
     "@tanstack/react-table": "^8.7.9",
     "@universal-labs/core": "workspace:*",
     "@universal-labs/primitives": "workspace:*",
     "class-variance-authority": "0.4.0",
-    "clsx": "^1.2.1"
+    "clsx": "^1.2.1",
+    "dayjs": "^1.11.7"
   },
   "devDependencies": {
     "@types/react": "~18.0.27",

@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-function
 export function log(): void {}
 
 export function dim(input: string): string {

@@ -39,6 +39,7 @@
   "scripts": {
     "build": "yarn vite build",
     "dev": "yarn vite build -w",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepare": "yarn build",
     "test:ui": "vitest --ui"
   },

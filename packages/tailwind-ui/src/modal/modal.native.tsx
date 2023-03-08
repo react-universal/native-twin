@@ -1,6 +1,6 @@
 import { Modal as NativeModal } from 'react-native';
-import { AppIcons } from '@medico/universal/icons';
 import { View, Span, Pressable } from '@universal-labs/primitives';
+import { AppIcons } from '../common';
 import type { IModalProps } from './types';
 
 const Modal = ({

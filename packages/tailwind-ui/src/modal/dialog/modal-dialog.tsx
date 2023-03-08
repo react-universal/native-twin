@@ -1,7 +1,6 @@
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
-import { Button } from '@medico/universal/button';
-import { Typography } from '@medico/universal/typography';
-import { View } from '@medico/universal/view';
+import { Span, H3, View } from '@universal-labs/primitives';
+import { Button } from '@universal-labs/tailwind-ui';
 
 interface IDialogModalProps {
   showDialog: boolean;
@@ -38,13 +37,12 @@ export const DialogModal = ({
         <AlertDialog.Content
           className={`
             animate-modalContentShow
+            -translate-[50%]
             fixed
             top-[40%]
             left-[50%]
             w-[90vw]
             max-w-[500px]
-            -translate-x-[50%]
-            -translate-y-[50%]
             rounded-md
             bg-white
             py-5
@@ -53,11 +51,9 @@ export const DialogModal = ({
             transition-all
         `}
         >
-          <Typography variant='h3' className='text-primary-50 text-lg font-bold'>
-            {title}
-          </Typography>
+          <H3 className='text-primary-50 text-lg font-bold'>{title}</H3>
           <View className='mt-2 mb-5'>
-            <Typography className='text-sm'>{content}</Typography>
+            <Span className='text-sm'>{content}</Span>
           </View>
           <View className='flex-row justify-end gap-8'>
             <Button variant='primary' className='w-fit' onPress={onConfirm}>

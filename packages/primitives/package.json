@@ -28,6 +28,7 @@
   "scripts": {
     "build": "yarn vite build",
     "dev": "yarn vite build -w --force",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepare": "yarn build",
     "test": "yarn vite test"
   },

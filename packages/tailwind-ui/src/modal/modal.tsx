@@ -32,13 +32,12 @@ const Modal = ({
         <Dialog.Content
           className={`
             animate-modalContentShow
+            -translate-[50%]
             fixed
             top-[40%]
             left-[50%]
             w-[90vw]
             max-w-[500px]
-            -translate-x-[50%]
-            -translate-y-[50%]
             rounded-md
             bg-white
             py-5

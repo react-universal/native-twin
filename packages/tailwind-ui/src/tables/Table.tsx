@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { Table as RTable, THead, TBody, TFoot, TR, TH, TD } from '@universal-labs/primitives';
 import {
   Cell,
   createColumnHelper,
@@ -7,6 +6,7 @@ import {
   Header,
   useReactTable,
 } from '@tanstack/react-table';
+import { Table as RTable, THead, TBody, TFoot, TR, TH, TD } from '@universal-labs/primitives';
 
 interface ITableProps<T extends object> {
   data: T[];

@@ -45,9 +45,7 @@ export const divide: CustomPluginFunction = ({ matchUtilities, theme, addUtiliti
       },
     },
     {
-      values: (({ DEFAULT: _, ...colors }) => colors)(
-        flattenColorPalette(theme('divideColor')),
-      ),
+      values: (({ ...colors }) => colors)(flattenColorPalette(theme('divideColor'))),
       type: 'color',
     },
   );

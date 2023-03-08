@@ -17,16 +17,17 @@
   "scripts": {
     "build:libs": "lerna run build --scope=\"@universal-labs/**\"",
     "commit": "cz",
-    "dev": "turbo run dev --filter=\"@universal-labs/**\" --parallel",
-    "docs:dev": "yarn workspace docs-page dev",
-    "expo:android": "yarn workspace expo-app android",
-    "expo:ios": "yarn workspace expo-app ios",
-    "expo:start": "yarn workspace expo-app start",
-    "release": "turbo run build --filter=\"@universal-labs/**\" && yarn lerna publish --yes --force-publish",
-    "test:e2e": "turbo run e2e",
+    "dev": "lerna run dev --scope=\"@universal-labs/**\" --parallel",
+    "docs:dev": "lerna run dev --scope docs-page",
+    "expo:android": "lerna run android --scope expo-app",
+    "expo:ios": "lerna run ios --scope expo-app",
+    "expo:start": "lerna run start --scope expo-app",
+    "lint": "lerna run lint --scope=\"@universal-labs/**\"",
+    "release": "lerna run build --scope=\"@universal-labs/**\" && yarn lerna publish --yes --force-publish",
+    "test:e2e": "lerna run e2e",
     "version": "yarn install && git stage yarn.lock",
     "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
-    "web": "turbo run dev --filter next-app"
+    "web": "lerna run dev --scope next-app"
   },
   "config": {
     "commitizen": {
@@ -40,9 +41,6 @@
     "react-dom": "18.2.0",
     "react-native-web": "0.18.10",
     "uuid": "^3.4.0"
-  },
-  "dependencies": {
-    "@changesets/cli": "^2.26.0"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
