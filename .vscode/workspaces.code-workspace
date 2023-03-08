@@ -9,10 +9,6 @@
       "path": "../apps/docs"
     },
     {
-      "name": "e2e-tailwind-ui",
-      "path": "../e2e/tailwind-ui"
-    },
-    {
       "name": "expo-app",
       "path": "../examples/expo-app"
     },
