@@ -1,4 +1,4 @@
-import { H1, H2, P, View } from '@react-universal/primitives';
+import { H1, H2, P, View } from '@universal-labs/primitives';
 import { CompatibilityTable } from '../../lib/components/CompatibilityTable';
 
 const defaultData = [

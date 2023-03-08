@@ -1,6 +1,6 @@
-import { H3, Span } from '@react-universal/primitives';
-import { Table } from '@react-universal/tailwind-ui';
 import { flexRender } from '@tanstack/react-table';
+import { H3, Span } from '@universal-labs/primitives';
+import { Table } from '@universal-labs/tailwind-ui';
 
 type ICompatibilityTableData = {
   class: string;

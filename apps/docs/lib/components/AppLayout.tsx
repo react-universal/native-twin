@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
-import { H3, Pressable, Span, View } from '@react-universal/primitives';
-import { Drawer } from '@react-universal/tailwind-ui';
+import { H3, Pressable, Span, View } from '@universal-labs/primitives';
+import { Drawer } from '@universal-labs/tailwind-ui';
 import { useRouter } from 'next/router';
 
 interface IAppLayoutProps {
