@@ -3,11 +3,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [
-    react({
-      plugins: [['@swc/plugin-styled-components', {}]],
-    }),
-  ],
+  plugins: [react()],
   optimizeDeps: {
     esbuildOptions: {
       mainFields: ['module', 'main'],

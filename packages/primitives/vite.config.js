@@ -3,12 +3,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [
-    react({
-      plugins: [['@swc/plugin-styled-components', {}]],
-      jsxImportSource: 'react-jsx',
-    }),
-  ],
+  plugins: [react()],
   optimizeDeps: {
     esbuildOptions: {
       mainFields: ['module', 'main'],
@@ -27,7 +22,7 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/primitives',
+      name: 'primitives',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
