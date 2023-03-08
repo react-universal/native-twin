@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.3.1 (2023-03-08)
+
+**Note:** Version bump only for package universal-labs
+
 # 1.3.0 (2023-03-04)
 
 ### Features
