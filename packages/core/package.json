@@ -29,6 +29,16 @@
   "main": "./build/index.umd.js",
   "module": "./build/index.es.js",
   "types": "./src/index.ts",
+  "files": [
+    "src",
+    "build",
+    "tailwind",
+    "react-native",
+    "LICENSE",
+    "CHANGELOG.md",
+    "README.md",
+    "rn-types.d.ts"
+  ],
   "scripts": {
     "build": "vite build && vite build -c tailwind.vite.config.ts",
     "dev": "yarn vite build -c tailwind.vite.config.ts && yarn vite build -w",

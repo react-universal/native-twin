@@ -34,7 +34,10 @@
     "src",
     "build",
     "index.d.ts",
-    "types.d.ts"
+    "types.d.ts",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "yarn vite build",

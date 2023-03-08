@@ -1,4 +1,5 @@
 import 'react-native';
+import type { VirtualizedListProps } from 'react-native';
 
 declare module '*.css';
 

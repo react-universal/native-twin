@@ -25,6 +25,14 @@
   "main": "./build/index.umd.js",
   "module": "./build/index.es.js",
   "types": "./src/index.ts",
+  "files": [
+    "src",
+    "build",
+    "env.d.ts",
+    "LICENSE",
+    "CHANGELOG.md",
+    "README.md"
+  ],
   "scripts": {
     "build": "yarn vite build",
     "dev": "yarn vite build -w --force",
