@@ -27,6 +27,7 @@ export default defineConfig({
         'postcss-css-variables',
         'css-to-react-native',
         'postcss-js',
+        'react-native',
         'postcss-color-rgb',
         '@universal-labs/core',
       ],

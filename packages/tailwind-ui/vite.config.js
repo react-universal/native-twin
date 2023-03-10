@@ -41,6 +41,7 @@ export default defineConfig({
         '@heroicons/react',
         'class-variance-authority',
         'clsx',
+        '@tanstack/react-table',
         '@universal-labs/core',
         '@universal-labs/primitives',
         'react-native-svg',

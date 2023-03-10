@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { styled } from '@universal-labs/core';
+import { styled } from '@universal-labs/styled';
 import AddUserIcon from './svgs/AddUserIcon';
 import BookIcon from './svgs/BookIcon';
 import CalendarIcon from './svgs/CalendarIcon';

@@ -1,4 +1,4 @@
-import { setup } from '@universal-labs/native-tailwind';
+import { setup } from '@universal-labs/core';
 import type { Config } from 'tailwindcss';
 import {
   GROUP_PARENT_MASK,
@@ -14,11 +14,7 @@ import type {
   TAppearancePseudoSelectors,
   IComponentAppearance,
 } from '../types';
-import {
-  selectorIsInteraction,
-  selectorIsAppearance,
-  cssPropertiesResolver,
-} from '../utils/helpers';
+import { selectorIsInteraction, selectorIsAppearance, cssPropertiesResolver } from '../utils';
 
 class GlobalStyleSheet {
   private stylesCollection: Map<string, IStyleType> = new Map();

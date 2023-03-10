@@ -13721,7 +13721,6 @@ __metadata:
   resolution: "next-app@workspace:examples/next-app"
   dependencies:
     "@next/font": 13.0.6
-    "@universal-labs/core": "workspace:*"
     "@universal-labs/primitives": "workspace:*"
     "@universal-labs/tailwind-ui": "workspace:*"
     autoprefixer: 10.4.13

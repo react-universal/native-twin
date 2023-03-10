@@ -1,4 +1,4 @@
-import { styled } from '@universal-labs/core';
+import { styled } from '@universal-labs/styled';
 import Svg, { SvgProps, Path, Line } from 'react-native-svg';
 
 const TrashIcon = (props: SvgProps) => (
