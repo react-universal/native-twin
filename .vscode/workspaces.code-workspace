@@ -21,10 +21,6 @@
       "path": "../packages/core"
     },
     {
-      "name": "📦 @universal-labs/native-tailwind",
-      "path": "../packages/native-tailwind"
-    },
-    {
       "name": "📦 @universal-labs/primitives",
       "path": "../packages/primitives"
     },
