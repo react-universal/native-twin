@@ -1,0 +1,80 @@
+{
+  "name": "@universal-labs/styled",
+  "version": "1.3.1",
+  "description": "Styled components for css in react native",
+  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/tailwind",
+    "directory": "packages/styled"
+  },
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./build/index.es.js",
+      "require": "./build/index.umd.js"
+    },
+    "./tailwind": {
+      "import": "./build/tailwind/index.cjs.js",
+      "require": "./build/tailwind/index.cjs.js",
+      "types": "./tailwind/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/index.umd.js",
+  "module": "./build/index.es.js",
+  "types": "./src/index.ts",
+  "files": [
+    "src",
+    "build"
+  ],
+  "scripts": {
+    "build": "vite build && yarn build:native",
+    "build:native": "vite build -c vite.native.config.ts",
+    "dev": "yarn build",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "prepare": "yarn build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@universal-labs/stylesheets": "workspace:*",
+    "clsx": "^1.2.1",
+    "css-to-react-native": "^3.1.0",
+    "immer": "^9.0.19",
+    "react-is": "^18.2.0",
+    "react-native-uuid": "^2.0.1",
+    "use-sync-external-store": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/css-to-react-native": "^3.0.0",
+    "@types/node": "16.11.7",
+    "@types/react": "~18.0.27",
+    "@types/react-dom": "~18.0.10",
+    "@types/react-is": "^17.0.3",
+    "@types/react-native": "0.70.7",
+    "@types/use-sync-external-store": "^0.0.3",
+    "@vitejs/plugin-react-swc": "^3.2.0",
+    "@vitest/ui": "^0.28.3",
+    "react": "18.2.0",
+    "tslib": "^2.3.0",
+    "typescript": "^4.9.4",
+    "vite": "^4.1.1",
+    "vitest": "^0.28.3"
+  },
+  "peerDependencies": {
+    "postcss": ">= 8.0.0",
+    "react-native-gesture-handler": ">= 2.9.0",
+    "react-native-reanimated": ">=2.12.0",
+    "react-native-web": ">= 0.18.10",
+    "tailwindcss": ">= 3.0.0"
+  },
+  "gitHead": "a5c05d5ee9bc016aa01fc3a7cc03bddd46d1e634",
+  "react-native": "./build/index.es.native.js"
+}

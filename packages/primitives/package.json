@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@expo/html-elements": "^0.3.1",
-    "@universal-labs/core": "workspace:*"
+    "@universal-labs/styled": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "~18.0.27",

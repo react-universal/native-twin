@@ -1,52 +1,54 @@
-import react from '@vitejs/plugin-react-swc';
+/// <reference types="vitest" />
+// Configure Vitest (https://vitest.dev/config/)
 import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [react()],
+  test: {},
+  plugins: [],
   optimizeDeps: {
     esbuildOptions: {
+      minify: true,
       mainFields: ['module', 'main'],
-      resolveExtensions: ['.web.js', '.web.jsx', '.web.ts', '.web.tsx', '.ts', '.js'],
     },
   },
-  resolve: {
-    extensions: ['.web.tsx', '.web.jsx', '.web.js', '.tsx', '.ts', '.js'],
-    alias: {
-      'react-native': 'react-native-web',
+  esbuild: {
+    logLevel: 'info',
+    define: {
+      'process.env.DEBUG': 'undefined',
+      'process.env.JEST_WORKER_ID': '1',
+      __dirname: '"/"',
+    },
+    supported: {
+      'nullish-coalescing': false,
+      'optional-chain': false,
     },
   },
+  logLevel: 'info',
   build: {
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
+    reportCompressedSize: true,
+    ssr: false,
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/core',
+      entry: path.resolve(__dirname, 'src/builds/module.ts'),
+      name: '@universal-labs/native-tailwind',
       fileName: (format) => `index.${format}.js`,
+      formats: ['cjs', 'es', 'umd', 'iife'],
     },
     rollupOptions: {
-      makeAbsoluteExternalsRelative: 'ifRelativeSource',
       external: [
-        'react',
-        'react-dom',
-        'react-native',
-        '@paralleldrive/cuid2',
-        'react-native-web',
-        'react/jsx-runtime',
-        '@universal-labs/stylesheets',
+        'postcss',
+        'postcss-css-variables',
+        'css-to-react-native',
+        'postcss-js',
+        'postcss-color-rgb',
       ],
+      makeAbsoluteExternalsRelative: 'ifRelativeSource',
+      treeshake: true,
       output: {
         dir: 'build',
-        format: 'esm',
+        extend: true,
         externalImportAssertions: true,
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDom',
-          next: 'Next',
-        },
       },
     },
-    sourcemap: true,
   },
 });

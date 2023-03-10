@@ -3061,13 +3061,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/hashes@npm:^1.1.5":
-  version: 1.2.0
-  resolution: "@noble/hashes@npm:1.2.0"
-  checksum: 8ca080ce557b8f40fb2f78d3aedffd95825a415ac8e13d7ffe3643f8626a8c2d99a3e5975b555027ac24316d8b3c02a35b8358567c0c23af681e6573602aa434
-  languageName: node
-  linkType: hard
-
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -3555,15 +3548,6 @@ __metadata:
   dependencies:
     "@octokit/openapi-types": ^16.0.0
   checksum: 5c7f5cca8f00f7c4daa0d00f4fe991c1598ec47cd6ced50b1c5fbe9721bb9dee0adc2acdee265a3a715bb984e53ef3dc7f1cfb7326f712c6d809d59fc5c6648d
-  languageName: node
-  linkType: hard
-
-"@paralleldrive/cuid2@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@paralleldrive/cuid2@npm:2.2.0"
-  dependencies:
-    "@noble/hashes": ^1.1.5
-  checksum: 5d708a097d3965b17fa17cf31ae2f1351fafee686c107d290cb018620814f46654e4fdbe374984a731265b19ff2c57968f05a6c7137680e8b1ac426a7f2f8227
   languageName: node
   linkType: hard
 
@@ -4874,7 +4858,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/core@workspace:packages/core"
   dependencies:
-    "@paralleldrive/cuid2": ^2.2.0
     "@types/css-to-react-native": ^3.0.0
     "@types/node": 16.11.7
     "@types/react": ~18.0.27
@@ -4890,6 +4873,7 @@ __metadata:
     immer: ^9.0.19
     react: 18.2.0
     react-is: ^18.2.0
+    react-native-uuid: ^2.0.1
     tslib: ^2.3.0
     typescript: ^4.9.4
     use-sync-external-store: ^1.2.0
@@ -4936,7 +4920,7 @@ __metadata:
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
-    "@universal-labs/core": "workspace:*"
+    "@universal-labs/styled": "workspace:*"
     tslib: ^2.3.0
     vite: ^4.1.1
   peerDependencies:
@@ -4944,6 +4928,40 @@ __metadata:
     postcss: ">= 8.4"
     react-native: ">= 0.69.0"
     tailwindcss: ^3.2.4
+  languageName: unknown
+  linkType: soft
+
+"@universal-labs/styled@workspace:*, @universal-labs/styled@workspace:packages/styled":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/styled@workspace:packages/styled"
+  dependencies:
+    "@types/css-to-react-native": ^3.0.0
+    "@types/node": 16.11.7
+    "@types/react": ~18.0.27
+    "@types/react-dom": ~18.0.10
+    "@types/react-is": ^17.0.3
+    "@types/react-native": 0.70.7
+    "@types/use-sync-external-store": ^0.0.3
+    "@universal-labs/stylesheets": "workspace:*"
+    "@vitejs/plugin-react-swc": ^3.2.0
+    "@vitest/ui": ^0.28.3
+    clsx: ^1.2.1
+    css-to-react-native: ^3.1.0
+    immer: ^9.0.19
+    react: 18.2.0
+    react-is: ^18.2.0
+    react-native-uuid: ^2.0.1
+    tslib: ^2.3.0
+    typescript: ^4.9.4
+    use-sync-external-store: ^1.2.0
+    vite: ^4.1.1
+    vitest: ^0.28.3
+  peerDependencies:
+    postcss: ">= 8.0.0"
+    react-native-gesture-handler: ">= 2.9.0"
+    react-native-reanimated: ">=2.12.0"
+    react-native-web: ">= 0.18.10"
+    tailwindcss: ">= 3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -15887,6 +15905,13 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: dfcad65978bb2e06a81b6f6262fad0699fa48e720ac2e521e983da4f6fb7747435f6a15df08b9d57559299272d0ffa674b4f0a55482f8b37905ee1e96f51b46a
+  languageName: node
+  linkType: hard
+
+"react-native-uuid@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "react-native-uuid@npm:2.0.1"
+  checksum: 2fae6e2ee6cef108a31ae9d5be661a1947a86f4c6a812c7386b57d970861b364dc887bc4fe3225227aeea7925ccdc24d4478ff30193305abc283eb4a30ee2138
   languageName: node
   linkType: hard
 

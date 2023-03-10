@@ -28,6 +28,7 @@ export default defineConfig({
         'css-to-react-native',
         'postcss-js',
         'postcss-color-rgb',
+        '@universal-labs/core',
       ],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,

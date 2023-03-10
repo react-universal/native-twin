@@ -7,7 +7,7 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
     lib: {
-      entry: path.resolve(__dirname, 'tailwind/index.ts'),
+      entry: path.resolve(__dirname, 'src/tailwind/index.ts'),
       name: '@react-universal/core/tailwind',
       formats: ['cjs'],
       fileName: (format) => `index.${format}.js`,

@@ -22,21 +22,18 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'primitives',
+      name: '@universal-labs/core',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       external: [
         'react',
-        '@expo/html-elements',
         'react-dom',
         'react-native',
         'react-native-web',
-        'class-variance-authority',
-        '@universal-labs/styled',
-        'react-native-svg',
         'react/jsx-runtime',
+        '@universal-labs/stylesheets',
         /tailwindcss/,
         /next/,
       ],
@@ -51,6 +48,6 @@ export default defineConfig({
         },
       },
     },
-    sourcemap: true,
+    sourcemap: false,
   },
 });

@@ -60,7 +60,6 @@ class GlobalStyleSheet {
     const interactionClassNames = rawClassNames
       .filter((item) => item.includes(':'))
       .map((item) => item.split(':'));
-
     return {
       interactionClassNames,
       normalClassNames,
@@ -128,6 +127,7 @@ class GlobalStyleSheet {
   registerClassNames(classNames: string) {
     const parsed = this._parseClassNames(classNames);
     const normalStyles = this._getJSS(parsed.normalClassNames);
+    console.log('NORMAL: ', normalStyles);
     const interactionStyles = this._getStylesForInteractionClasses(
       parsed.interactionClassNames,
     );

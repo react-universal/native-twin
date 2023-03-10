@@ -7,23 +7,13 @@ export default defineConfig({
   optimizeDeps: {
     esbuildOptions: {
       mainFields: ['module', 'main'],
-      resolveExtensions: ['.web.js', '.web.jsx', '.web.ts', '.web.tsx', '.ts', '.js'],
-    },
-  },
-  resolve: {
-    extensions: ['.web.tsx', '.web.jsx', '.web.js', '.tsx', '.ts', '.js'],
-    alias: {
-      'react-native': 'react-native-web',
     },
   },
   build: {
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'primitives',
-      fileName: (format) => `index.${format}.js`,
+      name: '@universal-labs/core',
+      fileName: (format) => `index.${format}.native.js`,
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
@@ -34,11 +24,10 @@ export default defineConfig({
         'react-native',
         'react-native-web',
         'class-variance-authority',
-        '@universal-labs/styled',
+        '@universal-labs/core',
         'react-native-svg',
         'react/jsx-runtime',
         /tailwindcss/,
-        /next/,
       ],
       output: {
         dir: 'build',
@@ -47,10 +36,8 @@ export default defineConfig({
         globals: {
           react: 'React',
           'react-dom': 'ReactDom',
-          next: 'Next',
         },
       },
     },
-    sourcemap: true,
   },
 });

@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-table';
 import { Table as RTable, THead, TBody, TFoot, TR, TH, TD } from '@universal-labs/primitives';
 
-interface ITableProps<T extends object> {
+type ITableProps<T extends object> = {
   data: T[];
   columns: {
     id: string;
@@ -23,7 +23,7 @@ interface ITableProps<T extends object> {
   className?: string;
   headCellClassName?: string;
   bodyCellClassName?: string;
-}
+};
 
 function Table<T extends object>({
   data,

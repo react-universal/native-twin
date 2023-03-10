@@ -5,12 +5,40 @@
       "path": ".."
     },
     {
+      "name": "🚀 docs-page",
+      "path": "../apps/docs"
+    },
+    {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
+    },
+    {
       "name": "📦 @universal-labs/core",
       "path": "../packages/core"
     },
     {
+      "name": "📦 @universal-labs/native-tailwind",
+      "path": "../packages/native-tailwind"
+    },
+    {
       "name": "📦 @universal-labs/primitives",
       "path": "../packages/primitives"
+    },
+    {
+      "name": "📦 @universal-labs/stylesheets",
+      "path": "../packages/sheets"
+    },
+    {
+      "name": "📦 @universal-labs/styled",
+      "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @universal-labs/tailwind-ui",
+      "path": "../packages/tailwind-ui"
     }
   ],
   "settings": {
@@ -55,12 +83,12 @@
       "**/dist/**": true
     },
     "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib",
-    // "workbench.colorCustomizations": {
-    //   "[Default Dark+ Experimental]": {
-    //     "sideBar.background": "#070606",
-    //     "editor.background": "#070606",
-    //     "tab.inactiveBackground": "#161414",
-    //   }
-    // }
+    "workbench.colorCustomizations": {
+      "[Default Dark+ Experimental]": {
+        "sideBar.background": "#070606",
+        "editor.background": "#070606",
+        "tab.inactiveBackground": "#161414",
+      }
+    }
   }
 }

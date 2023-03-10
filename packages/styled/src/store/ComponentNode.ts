@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { init } from '@paralleldrive/cuid2';
 import { ComponentStyleSheet } from '@universal-labs/stylesheets';
 import { immerable } from 'immer';
+import uuid from 'react-native-uuid';
 import type {
   IExtraProperties,
   TInteractionPseudoSelectors,
@@ -9,7 +9,7 @@ import type {
   IRegisterComponentArgs,
 } from '../types/store.types';
 
-const createID = init({ fingerprint: 'tailwind-native', length: 10 });
+const createID = () => uuid.v4();
 
 export default class ComponentNode {
   id: string;
@@ -26,7 +26,7 @@ export default class ComponentNode {
   appearanceState: Omit<TInternalStyledComponentProps, 'parentID'>;
   constructor(component: IRegisterComponentArgs) {
     this.parentComponentID = component.parentID;
-    this.id = createID();
+    this.id = createID() as string;
     this.inlineStyles = component.inlineStyles;
     this.styleSheet = new ComponentStyleSheet(component.className);
     this.appearanceState = {
