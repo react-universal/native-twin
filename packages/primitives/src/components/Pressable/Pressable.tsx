@@ -1,5 +1,5 @@
 import { Pressable as NativePressable } from 'react-native';
-import { styled } from '@universal-labs/core';
+import { styled } from '@universal-labs/styled';
 
 const Pressable = styled(NativePressable);
 

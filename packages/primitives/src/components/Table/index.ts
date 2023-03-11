@@ -7,7 +7,7 @@ import {
   TBody as ExpoTBody,
   TR as ExpoTR,
 } from '@expo/html-elements';
-import { styled } from '@universal-labs/core';
+import { styled } from '@universal-labs/styled';
 
 const Table = styled(ExpoTable);
 const THead = styled(ExpoTHead);

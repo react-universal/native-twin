@@ -1,4 +1,4 @@
-const { nativePlugin } = require('@universal-labs/core/tailwind');
+const { nativePlugin } = require('@universal-labs/core/tailwind-plugin');
 
 /**
  * @type {import('tailwindcss').Config}

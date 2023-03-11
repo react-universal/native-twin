@@ -13,7 +13,7 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-app", "expo-app", "docs-page", "e2e-tailwind-ui"],
+  "ignore": ["next-app", "expo-app", "docs-page"],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }

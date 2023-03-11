@@ -1,5 +1,5 @@
-import { H1, View } from '@react-universal/primitives';
-import { Button } from '@react-universal/tailwind-ui';
+import { H1, View } from '@universal-labs/primitives';
+import { Button } from '@universal-labs/tailwind-ui';
 
 const IndexPage = () => {
   return (

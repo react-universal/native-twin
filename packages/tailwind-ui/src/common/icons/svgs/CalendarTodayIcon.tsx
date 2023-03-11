@@ -1,4 +1,4 @@
-import { styled } from '@universal-labs/core';
+import { styled } from '@universal-labs/styled';
 import Svg, { SvgProps, Rect, Line } from 'react-native-svg';
 
 const CalendarTodayIcon = (props: SvgProps) => (

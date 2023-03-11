@@ -1,0 +1,54 @@
+{
+  "name": "@universal-labs/stylesheets",
+  "version": "1.3.1",
+  "description": "Stylesheets manager",
+  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/tailwind",
+    "directory": "packages/stylesheets"
+  },
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./build/index.es.js",
+      "require": "./build/index.umd.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/index.umd.js",
+  "module": "./build/index.es.js",
+  "types": "./src/index.ts",
+  "files": [
+    "src",
+    "build",
+    "LICENSE",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "yarn vite build -w",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "prepare": "yarn build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@universal-labs/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "~18.0.27",
+    "@types/react-dom": "~18.0.10",
+    "@types/react-native": "0.70.7",
+    "vite": "^4.1.1",
+    "vitest": "^0.28.3"
+  }
+}

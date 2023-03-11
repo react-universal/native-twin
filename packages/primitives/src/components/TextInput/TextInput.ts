@@ -1,5 +1,5 @@
 import { TextInput as NativeInput } from 'react-native';
-import { styled } from '@universal-labs/core';
+import { styled } from '@universal-labs/styled';
 
 const TextInput = styled(NativeInput);
 

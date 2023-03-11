@@ -1,4 +1,4 @@
-import type { ImageProps } from 'next/legacy/image';
+import type { ImageProps } from 'react-native';
 
 export interface IImageProps extends ImageProps {
   className?: string;

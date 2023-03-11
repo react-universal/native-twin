@@ -9,10 +9,6 @@
       "path": "../apps/docs"
     },
     {
-      "name": "e2e-tailwind-ui",
-      "path": "../e2e/tailwind-ui"
-    },
-    {
       "name": "expo-app",
       "path": "../examples/expo-app"
     },
@@ -25,12 +21,16 @@
       "path": "../packages/core"
     },
     {
-      "name": "📦 @universal-labs/native-tailwind",
-      "path": "../packages/native-tailwind"
-    },
-    {
       "name": "📦 @universal-labs/primitives",
       "path": "../packages/primitives"
+    },
+    {
+      "name": "📦 @universal-labs/stylesheets",
+      "path": "../packages/sheets"
+    },
+    {
+      "name": "📦 @universal-labs/styled",
+      "path": "../packages/styled"
     },
     {
       "name": "📦 @universal-labs/tailwind-ui",
@@ -78,13 +78,13 @@
       "**/.hg/store/**": true,
       "**/dist/**": true
     },
-    "typescript.tsdk": "✨ react-universal/node_modules/typescript/lib",
-    // "workbench.colorCustomizations": {
-    //   "[Default Dark+ Experimental]": {
-    //     "sideBar.background": "#070606",
-    //     "editor.background": "#070606",
-    //     "tab.inactiveBackground": "#161414",
-    //   }
-    // }
+    "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib",
+    "workbench.colorCustomizations": {
+      "[Default Dark+ Experimental]": {
+        "sideBar.background": "#070606",
+        "editor.background": "#070606",
+        "tab.inactiveBackground": "#161414",
+      }
+    }
   }
 }
