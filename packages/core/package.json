@@ -28,7 +28,7 @@
   },
   "main": "./build/index.cjs.js",
   "unpkg": "./build/index.iife.js",
-  "module": "./build/index.cjs.js",
+  "module": "./build/index.es.js",
   "types": "./index.d.ts",
   "files": [
     "src",
