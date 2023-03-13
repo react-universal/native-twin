@@ -20,16 +20,15 @@ import { selectorIsInteraction, selectorIsAppearance, cssPropertiesResolver } fr
 class GlobalStyleSheet {
   private stylesCollection: Map<string, IStyleType> = new Map();
   private style: ReturnType<typeof setup>;
-  private config: Config;
+  private config: Config = { content: ['__'], plugins: [tailwindPlugin.nativePlugin] };
 
   constructor() {
-    this.style = setup({ content: ['__'], plugins: [tailwindPlugin.nativePlugin] });
-    this.config = { content: ['__'] };
+    this.style = setup(this.config);
   }
 
   setConfig(config: Config) {
-    this.style = setup(config);
     this.config = config;
+    this.style = setup(this.config);
   }
 
   private _getJSS(classNames: string[]) {

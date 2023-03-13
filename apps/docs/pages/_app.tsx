@@ -14,7 +14,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Show case</title>
+        <title>Universal Labs - React Tailwindcss</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
       <div className={`${roboto.variable} font-roboto flex flex-1`}>

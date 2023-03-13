@@ -5,3 +5,4 @@ export * from './Image';
 export * from './Pressable';
 export * from './TextInput';
 export * from './Table';
+export * from './List';

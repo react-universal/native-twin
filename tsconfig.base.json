@@ -1,13 +1,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES2015",
     "lib": ["dom", "esnext"],
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
+    "downlevelIteration": true,
     "importsNotUsedAsValues": "error",
     "declarationMap": true,
     "strictPropertyInitialization": true,
