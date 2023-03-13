@@ -42,12 +42,18 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/core": "workspace:*"
+    "@universal-labs/core": "workspace:*",
+    "css-to-react-native": "^3.1.0",
+    "immer": "^9.0.19",
+    "react-native-uuid": "^2.0.1",
+    "use-sync-external-store": "^1.2.0"
   },
   "devDependencies": {
+    "@types/css-to-react-native": "^3.0.0",
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
     "@types/react-native": "0.70.7",
+    "@types/use-sync-external-store": "^0.0.3",
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
   }

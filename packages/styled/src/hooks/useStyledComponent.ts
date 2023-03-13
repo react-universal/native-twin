@@ -1,5 +1,8 @@
 import type { Touchable } from 'react-native';
-import type { IExtraProperties, TInternalStyledComponentProps } from '../types/store.types';
+import type {
+  IExtraProperties,
+  TInternalStyledComponentProps,
+} from '@universal-labs/stylesheets';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useStore } from './useStore';

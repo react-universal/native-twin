@@ -1,6 +1,6 @@
 import { Children, cloneElement, isValidElement, useMemo } from 'react';
 import type { StyleProp } from 'react-native';
-import type ComponentNode from '../store/ComponentNode';
+import type { ComponentNode } from '@universal-labs/stylesheets';
 
 function useChildren(children: React.ReactNode, component: ComponentNode) {
   return useMemo(() => {

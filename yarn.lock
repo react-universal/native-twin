@@ -4901,25 +4901,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/styled@workspace:packages/styled"
   dependencies:
-    "@types/css-to-react-native": ^3.0.0
     "@types/node": 16.11.7
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-is": ^17.0.3
     "@types/react-native": 0.70.7
-    "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/stylesheets": "workspace:*"
     "@vitejs/plugin-react-swc": ^3.2.0
     "@vitest/ui": ^0.28.3
-    clsx: ^1.2.1
-    css-to-react-native: ^3.1.0
-    immer: ^9.0.19
     react: 18.2.0
     react-is: ^18.2.0
-    react-native-uuid: ^2.0.1
     tslib: ^2.3.0
     typescript: ^4.9.4
-    use-sync-external-store: ^1.2.0
     vite: ^4.1.1
     vitest: ^0.28.3
   peerDependencies:
@@ -4935,10 +4928,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
   dependencies:
+    "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
+    "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/core": "workspace:*"
+    css-to-react-native: ^3.1.0
+    immer: ^9.0.19
+    react-native-uuid: ^2.0.1
+    use-sync-external-store: ^1.2.0
     vite: ^4.1.1
     vitest: ^0.28.3
   languageName: unknown

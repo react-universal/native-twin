@@ -1,7 +1,7 @@
 import { useDebugValue, useEffect, useMemo } from 'react';
+import { storeManager } from '@universal-labs/stylesheets';
+import type { IRegisterComponentArgs } from '@universal-labs/stylesheets';
 import { useSyncExternalStore } from 'use-sync-external-store/shim';
-import storeManager from '../store/StoreManager';
-import type { IRegisterComponentArgs } from '../types/store.types';
 
 function useStore({
   inlineStyles,
