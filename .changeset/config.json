@@ -5,7 +5,8 @@
   "fixed": [
     [
       "@universal-labs/core",
-      "@universal-labs/native-tailwind",
+      "@universal-labs/styled",
+      "@universal-labs/stylesheets",
       "@universal-labs/primitives",
       "@universal-labs/tailwind-ui"
     ]
