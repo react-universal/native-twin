@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { ComponentStyleSheet } from '@universal-labs/stylesheets';
 import { immerable } from 'immer';
 import uuid from 'react-native-uuid';
+import ComponentStyleSheet from '../sheets/ComponentStyleSheet';
 import type {
   IExtraProperties,
   TInteractionPseudoSelectors,

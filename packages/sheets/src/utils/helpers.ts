@@ -44,6 +44,7 @@ export function cssPropertiesResolver(input: CssInJs) {
     // return normalizeStyles(transform(input.trim()));
     // return transform(input);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log('cssPropertiesResolver_ERROR: ', error);
     return {};
   }

@@ -11,8 +11,11 @@ import {
   ReactNode,
   LegacyRef,
 } from 'react';
+import type {
+  IExtraProperties,
+  TInternalStyledComponentProps,
+} from '@universal-labs/stylesheets';
 import { useStyledComponent } from '../hooks';
-import type { IExtraProperties, TInternalStyledComponentProps } from '../types/store.types';
 
 type ForwardRef<T, P> = ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<T>>;
 type InferRef<T> = T extends RefAttributes<infer R> | ClassAttributes<infer R> ? R : unknown;

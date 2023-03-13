@@ -10,7 +10,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/tailwind/index.ts'),
       name: '@react-universal/core/tailwind',
       formats: ['cjs'],
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format) => `index.${format}`,
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
@@ -22,6 +22,6 @@ export default defineConfig({
         externalImportAssertions: true,
       },
     },
-    sourcemap: true,
+    sourcemap: false,
   },
 });

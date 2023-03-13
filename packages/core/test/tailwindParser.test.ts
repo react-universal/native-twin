@@ -1,6 +1,6 @@
-import { nativePlugin } from '@universal-labs/core/tailwind';
 import { describe, expect, it } from 'vitest';
 import { setup } from '../src';
+import { nativePlugin } from '../src/tailwind';
 
 const tw = setup({ content: ['__'], plugins: [nativePlugin] });
 

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
-import type { IRegisterComponentArgs } from '../types/store.types';
+import type { IRegisterComponentArgs } from '@universal-labs/stylesheets';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 

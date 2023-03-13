@@ -1,8 +1,8 @@
-import { useRef } from 'react';
+import { useDebugValue, useRef } from 'react';
 
-const useRenderCounter = (id?: string) => {
+const useRenderCounter = () => {
   const renderCount = ++useRef(0).current;
-  console.log('RENDER_COUNT: ', renderCount, id);
+  useDebugValue(renderCount);
   return renderCount;
 };
 

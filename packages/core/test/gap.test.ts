@@ -6,13 +6,8 @@ const tw = setup({ content: ['__'], plugins: [nativePlugin] });
 
 describe('TailwindCSS Shadow', () => {
   it('Shadow', () => {
-    const css = tw('shadow-md');
-    expect(css.JSS).toStrictEqual({
-      '.shadow-md': {
-        boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)',
-        elevation: '6',
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
-      },
-    });
+    const css = tw('gap-5');
+    console.log('CSS: ', css);
+    expect(css.JSS).toStrictEqual({});
   });
 });

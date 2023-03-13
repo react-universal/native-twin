@@ -24,6 +24,11 @@
       "require": "./build/index.cjs.js",
       "browser": "./build/index.umd.js",
       "types": "./index.d.ts"
+    },
+    "./tailwind-plugin": {
+      "import": "./build/tailwind/index.cjs",
+      "require": "./build/tailwind/index.cjs",
+      "types": "./src/tailwind.ts"
     }
   },
   "main": "./build/index.cjs.js",

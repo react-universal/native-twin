@@ -34,8 +34,8 @@ export default defineConfig({
         'react-native-web',
         'react/jsx-runtime',
         '@universal-labs/stylesheets',
+        'use-sync-external-store/shim',
         /tailwindcss/,
-        /next/,
       ],
       output: {
         dir: 'build',

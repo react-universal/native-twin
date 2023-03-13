@@ -15,32 +15,15 @@ export const boxShadow: CustomPluginFunction = (
   const themeValues = Object.entries(theme('boxShadow'));
   const elevation = theme('elevation');
 
-  const androidShadowComponents = themeValues.map(([size, value]) => ({
-    '@media android': {
-      [key(size)]: {
-        elevation: elevation[size],
-        shadowColor: getStylesForProperty('boxShadow', value as string).shadowColor,
-      },
+  const shadowComponent = themeValues.map(([size, value]) => ({
+    [key(size)]: {
+      elevation: elevation[size],
+      shadowColor: getStylesForProperty('boxShadow', value as string).shadowColor,
+      boxShadow: value,
     },
   }));
 
-  const iosShadowComponents = themeValues.map(([size, value]) => ({
-    '@media ios': {
-      [key(size)]: {
-        boxShadow: value,
-      },
-    },
-  }));
-
-  const webShadowComponents = themeValues.map(([size, value]) => ({
-    '@media web': {
-      [key(size)]: {
-        boxShadow: value,
-      },
-    },
-  }));
-
-  addComponents([androidShadowComponents, iosShadowComponents, webShadowComponents]);
+  addComponents([shadowComponent]);
 };
 
 const key = (size: string) => {

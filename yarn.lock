@@ -2970,6 +2970,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/mdx@npm:13.2.4":
+  version: 13.2.4
+  resolution: "@next/mdx@npm:13.2.4"
+  dependencies:
+    source-map: ^0.7.0
+  peerDependencies:
+    "@mdx-js/loader": ">=0.15.0"
+    "@mdx-js/react": ">=0.15.0"
+  peerDependenciesMeta:
+    "@mdx-js/loader":
+      optional: true
+    "@mdx-js/react":
+      optional: true
+  checksum: a6da0da5fd2c9346ac328484bdcc8662527b32af95cb883fc2a85e4f37485af19cf9c024c301fad48ac539965fc792d4f0815d4ee2c93fc0e220e0111726be94
+  languageName: node
+  linkType: hard
+
 "@next/swc-android-arm-eabi@npm:13.1.4":
   version: 13.1.4
   resolution: "@next/swc-android-arm-eabi@npm:13.1.4"
@@ -4901,25 +4918,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/styled@workspace:packages/styled"
   dependencies:
-    "@types/css-to-react-native": ^3.0.0
     "@types/node": 16.11.7
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-is": ^17.0.3
     "@types/react-native": 0.70.7
-    "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/stylesheets": "workspace:*"
     "@vitejs/plugin-react-swc": ^3.2.0
     "@vitest/ui": ^0.28.3
-    clsx: ^1.2.1
-    css-to-react-native: ^3.1.0
-    immer: ^9.0.19
     react: 18.2.0
     react-is: ^18.2.0
-    react-native-uuid: ^2.0.1
     tslib: ^2.3.0
     typescript: ^4.9.4
-    use-sync-external-store: ^1.2.0
     vite: ^4.1.1
     vitest: ^0.28.3
   peerDependencies:
@@ -4935,10 +4945,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
   dependencies:
+    "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
+    "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/core": "workspace:*"
+    css-to-react-native: ^3.1.0
+    immer: ^9.0.19
+    react-native-uuid: ^2.0.1
+    use-sync-external-store: ^1.2.0
     vite: ^4.1.1
     vitest: ^0.28.3
   languageName: unknown
@@ -8111,6 +8127,7 @@ __metadata:
   resolution: "docs-page@workspace:apps/docs"
   dependencies:
     "@next/font": 13.0.6
+    "@next/mdx": 13.2.4
     "@types/react-syntax-highlighter": ^15.5.6
     "@universal-labs/primitives": "workspace:*"
     "@universal-labs/tailwind-ui": "workspace:*"
@@ -9088,6 +9105,7 @@ __metadata:
     react-native-reanimated: ~2.12.0
     react-native-safe-area-context: 4.5.0
     react-native-screens: ~3.20.0
+    react-native-uuid: ^2.0.1
     react-native-web: ~0.18.10
     tailwindcss: ^3.2.4
   languageName: unknown
@@ -17214,7 +17232,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map@npm:^0.7.3":
+"source-map@npm:^0.7.0, source-map@npm:^0.7.3":
   version: 0.7.4
   resolution: "source-map@npm:0.7.4"
   checksum: 01cc5a74b1f0e1d626a58d36ad6898ea820567e87f18dfc9d24a9843a351aaa2ec09b87422589906d6ff1deed29693e176194dc88bcae7c9a852dc74b311dbf5
@@ -18663,6 +18681,7 @@ __metadata:
     commitizen: ^4.3.0
     cz-conventional-changelog: ^3.3.0
     cz-lerna-changelog: ^2.0.3
+    dayjs: ^1.11.7
     eslint: ~8.15.0
     eslint-config-prettier: 8.1.0
     eslint-plugin-import: 2.26.0
