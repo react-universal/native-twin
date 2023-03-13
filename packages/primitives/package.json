@@ -34,7 +34,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "yarn vite build && yarn build:native",
+    "build": "yarn vite build",
     "build:native": "yarn vite build -c vite.native.config.ts",
     "dev": "yarn vite build -w --force",
     "lint": "eslint \"./**/*.{ts,tsx}\"",

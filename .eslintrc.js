@@ -23,7 +23,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports'],
   rules: {
     'react/no-children-prop': 'off',
-    'no-console': 'error',
+    'no-console': 'warn',
     'no-redeclare': 'off',
     'no-undef': 'off',
     'no-unused-vars': 'off',

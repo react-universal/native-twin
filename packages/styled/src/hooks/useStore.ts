@@ -1,5 +1,9 @@
-import { useDebugValue, useEffect, useMemo } from 'react';
-import { storeManager } from '@universal-labs/stylesheets';
+import { useEffect, useMemo } from 'react';
+import {
+  storeManager,
+  registerComponent,
+  unregisterComponent,
+} from '@universal-labs/stylesheets';
 import type { IRegisterComponentArgs } from '@universal-labs/stylesheets';
 import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
@@ -12,7 +16,7 @@ function useStore({
   className,
 }: IRegisterComponentArgs) {
   const componentID = useMemo(() => {
-    return storeManager.getState().registerComponent({
+    return registerComponent({
       inlineStyles,
       isFirstChild,
       isLastChild,
@@ -21,11 +25,9 @@ function useStore({
       className,
     });
   }, [inlineStyles, isFirstChild, isLastChild, nthChild, parentID, className]);
-
   useEffect(() => {
-    return () => storeManager.getState().unregisterComponent(componentID);
+    return () => unregisterComponent(componentID);
   }, [componentID]);
-  useDebugValue(`Store size: ${storeManager.getState().components.size}`);
 
   return useSyncExternalStore(
     storeManager.subscribe,
