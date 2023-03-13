@@ -1,4 +1,4 @@
-# @react-universal/core
+# @universal-labs/core
 
 Put a description of your Unimodule here
 
@@ -18,7 +18,7 @@ For bare React Native projects, you must ensure that you have [installed and con
 ### Add the package to your npm dependencies
 
 ```
-npm install @react-universal/core
+npm install @universal-labs/core
 ```
 
 # Supported Utilities

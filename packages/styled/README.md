@@ -1,1 +1,1 @@
-# @react-universal/styled
+# @universal-labs/styled
