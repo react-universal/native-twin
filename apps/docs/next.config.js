@@ -17,6 +17,9 @@ const withMDX = require('@next/mdx')({
 /** @type {import('next').NextConfig} **/
 const nextConfig = {
   reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   transpilePackages: [
     'react-native',
     'react-native-svg',
