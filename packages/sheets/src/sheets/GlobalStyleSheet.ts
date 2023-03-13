@@ -1,4 +1,5 @@
 import { setup } from '@universal-labs/core';
+import tailwindPlugin from '@universal-labs/core/tailwind-plugin';
 import type { Config } from 'tailwindcss';
 import {
   GROUP_PARENT_MASK,
@@ -19,13 +20,16 @@ import { selectorIsInteraction, selectorIsAppearance, cssPropertiesResolver } fr
 class GlobalStyleSheet {
   private stylesCollection: Map<string, IStyleType> = new Map();
   private style: ReturnType<typeof setup>;
+  private config: Config;
 
   constructor() {
-    this.style = setup({ content: ['__'] });
+    this.style = setup({ content: ['__'], plugins: [tailwindPlugin.nativePlugin] });
+    this.config = { content: ['__'] };
   }
 
   setConfig(config: Config) {
     this.style = setup(config);
+    this.config = config;
   }
 
   private _getJSS(classNames: string[]) {
@@ -123,7 +127,6 @@ class GlobalStyleSheet {
   registerClassNames(classNames: string) {
     const parsed = this._parseClassNames(classNames);
     const normalStyles = this._getJSS(parsed.normalClassNames);
-    console.log('NORMAL: ', normalStyles);
     const interactionStyles = this._getStylesForInteractionClasses(
       parsed.interactionClassNames,
     );

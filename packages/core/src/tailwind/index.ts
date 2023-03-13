@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 import type { DarkModeConfig } from 'tailwindcss/types/config';
+import { boxShadow } from './box-shadow';
 import { elevation } from './elevation';
 import { translate } from './translate';
 
@@ -45,7 +46,7 @@ export const nativePlugin = plugin.withOptions<NativePluginOptions>(
       // scale(helpers, notSupported);
       // rotate(helpers, notSupported);
       // skew(helpers, notSupported);
-      // boxShadow(helpers, notSupported);
+      boxShadow(helpers, notSupported);
       // boxShadowColor(helpers, notSupported);
       // groupIsolate(helpers, notSupported);
       // parent(helpers, notSupported);
