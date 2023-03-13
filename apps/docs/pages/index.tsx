@@ -1,39 +1,38 @@
-import { H1, P, View, Span, H2 } from '@universal-labs/primitives';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { H1, P, View, UL, LI, H2, H3, Strong } from '@universal-labs/primitives';
 
 const IndexPage = () => {
   return (
     <View className='flex-1'>
-      <H1>What is react universal?</H1>
-      <H2>What is react universal?</H2>
-      <P>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
+      <H1 className='text-gray-200'>React Native Tailwindcss</H1>
+      <H2 className='text-gray-300'>What is it?</H2>
+      <P className='text-gray-300'>
+        React Universal simplifies the integration of Tailwind CSS framework in React Native
+        hybrid apps. Our main goal is to bridge the gap for React web developers in need to
+        write universal components for native and web. This package allows developers to write
+        Tailwind CSS classes with all states <Strong>(:active, :hover, :focus)</Strong> that
+        just works and looks as expected in native.
       </P>
-      <Span>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
-      </Span>
-      <SyntaxHighlighter
-        language='react'
-        style={darcula}
-        showLineNumbers
-        wrapLines
-        useInlineStyles
-      >
-        {`<View className='flex-1'>
-  <H1>sad</H1>
-</View>`}
-      </SyntaxHighlighter>
+      <P className='text-gray-300'>Forget looking , and focus on creating wonderful apps.</P>
+      <H3 className='text-gray-300'>Features:</H3>
+      <UL>
+        <LI className='font-bold text-gray-400'>- 🍃 Uses Tailwind CSS framework</LI>
+        <LI className='font-bold text-gray-400'>
+          - 🌎 Universal Design: Write Tailwind ClassNames and they just work in web and native
+        </LI>
+        <LI className='font-bold text-gray-400'>- ⚡ Vite: Enjoy speed building</LI>
+        <LI className='font-bold text-gray-400'>- 🔥 No Babel dependencies</LI>
+        <LI className='font-bold text-gray-400'>- 🔏 Typescript by default</LI>
+        <LI className='font-bold text-gray-400'>- 🎨 CSS in TS: Typed CSS</LI>
+        <LI className='font-bold text-gray-400'>
+          - 💅 Parent State: _hover / active / focus_ fully compatible between web and native
+        </LI>
+        <LI className='font-bold text-gray-400'>
+          - 👪 Family styles: Parent component styles affecting children as expected.
+        </LI>
+        <LI className='font-bold text-gray-400'>
+          - 🤏 Lightweight: We parse only the classnames used in your project. No junk.
+        </LI>
+      </UL>
     </View>
   );
 };

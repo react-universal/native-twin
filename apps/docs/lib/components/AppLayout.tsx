@@ -31,7 +31,18 @@ function DrawerItems<T>({ items, renderItem, title }: IDrawerItemsProps<T>) {
 const routes = [
   {
     title: 'Overview',
-    routes: [{ label: 'Overview', route: '/' }],
+    routes: [
+      { label: 'Overview', route: '/' },
+      { label: 'Installation', route: '/setup' },
+    ],
+  },
+  {
+    title: 'Quick Starts',
+    routes: [
+      { label: 'Expo / RN CLI', route: '/setup/native' },
+      { label: 'Next.js', route: '/setup/nextjs' },
+      { label: 'Vite', route: '/setup/vite' },
+    ],
   },
   {
     title: 'Layout',
