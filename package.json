@@ -17,6 +17,7 @@
     "build:libs": "lerna run build --scope=\"@universal-labs/**\"",
     "commit": "cz",
     "dev": "lerna run dev --scope=\"@universal-labs/**\" --parallel",
+    "docs:build": "lerna run build --scope docs-page",
     "docs:dev": "lerna run dev --scope docs-page",
     "expo:android": "lerna run android --scope expo-app",
     "expo:ios": "lerna run ios --scope expo-app",
