@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.3](https://github.com/react-universal/tailwind/compare/v1.4.2...v1.4.3) (2023-03-14)
+
+### Bug Fixes
+
+- **core:** include plugin folder ([94942b6](https://github.com/react-universal/tailwind/commit/94942b6e44e8f58b9d579db5d87bb2e5fbae0074))
+
 ## [1.4.2](https://github.com/react-universal/tailwind/compare/v1.4.1...v1.4.2) (2023-03-14)
 
 ### Bug Fixes
