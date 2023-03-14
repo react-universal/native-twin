@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.4](https://github.com/react-universal/tailwind/compare/v1.4.3...v1.4.4) (2023-03-14)
+
+**Note:** Version bump only for package @universal-labs/core
+
 ## [1.4.3](https://github.com/react-universal/tailwind/compare/v1.4.2...v1.4.3) (2023-03-14)
 
 ### Bug Fixes
