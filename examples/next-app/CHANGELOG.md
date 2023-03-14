@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/react-universal/tailwind/compare/v1.3.1...v1.4.0) (2023-03-14)
+
+### Features
+
+- **chore:** integrations ([#22](https://github.com/react-universal/tailwind/issues/22)) ([315d82a](https://github.com/react-universal/tailwind/commit/315d82ad4efb309a64771a6a64252f9005a0a375))
+
 ## 1.3.1 (2023-03-08)
 
 **Note:** Version bump only for package next-app

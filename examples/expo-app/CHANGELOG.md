@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/react-universal/tailwind/compare/v1.3.1...v1.4.0) (2023-03-14)
+
+### Features
+
+- **chore:** css parser ([#23](https://github.com/react-universal/tailwind/issues/23)) ([45d0cf1](https://github.com/react-universal/tailwind/commit/45d0cf186666a3ca71cc94d2db4b95cfbed2a8d9))
+- **chore:** integrations ([#22](https://github.com/react-universal/tailwind/issues/22)) ([315d82a](https://github.com/react-universal/tailwind/commit/315d82ad4efb309a64771a6a64252f9005a0a375))
+- **chore:** packages optimized ([#27](https://github.com/react-universal/tailwind/issues/27)) ([2504216](https://github.com/react-universal/tailwind/commit/2504216722cabe8de83eeb0d66e39085d51592f5))
+
 ## 1.3.1 (2023-03-08)
 
 **Note:** Version bump only for package expo-app

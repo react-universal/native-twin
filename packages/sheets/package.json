@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/stylesheets",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Stylesheets manager",
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
