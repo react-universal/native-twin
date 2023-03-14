@@ -9,6 +9,10 @@
       "path": "../apps/docs"
     },
     {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
       "name": "📦 @universal-labs/core",
       "path": "../packages/core"
     },

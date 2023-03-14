@@ -7,19 +7,25 @@ import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useStore } from './useStore';
 
-const useStyledComponent = ({
-  className,
-  children,
-  tw,
-  parentID,
-  style,
-  isFirstChild,
-  isLastChild,
-  nthChild,
-  ...componentProps
-}: IExtraProperties<TInternalStyledComponentProps>) => {
+const useStyledComponent = (
+  {
+    className,
+    children,
+    tw,
+    parentID,
+    style,
+    isFirstChild,
+    isLastChild,
+    nthChild,
+    ...componentProps
+  }: IExtraProperties<TInternalStyledComponentProps>,
+  baseClassNameOrOptions: string = '',
+) => {
   const component = useStore({
-    className: className ?? tw ?? '',
+    className:
+      `${className} ${baseClassNameOrOptions}` ??
+      `${tw} ${baseClassNameOrOptions}` ??
+      baseClassNameOrOptions,
     parentID,
     inlineStyles: style,
     isFirstChild,

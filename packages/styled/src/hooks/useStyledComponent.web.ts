@@ -4,9 +4,11 @@ import type { IRegisterComponentArgs } from '@universal-labs/stylesheets';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 
-function useStyledComponent(data: Omit<IRegisterComponentArgs, 'id'>) {
+function useStyledComponent(data: Omit<IRegisterComponentArgs, 'id'>, baseClassName?: string) {
   return useMemo(() => {
-    const mergedClassName = data.className ? data.className : undefined;
+    const mergedClassName = data.className
+      ? `${baseClassName} ${data.className}`
+      : baseClassName;
 
     if (mergedClassName && data.inlineStyles) {
       return [{ $$css: true, [mergedClassName]: mergedClassName } as Style, data.inlineStyles];
@@ -16,7 +18,7 @@ function useStyledComponent(data: Omit<IRegisterComponentArgs, 'id'>) {
       return data.inlineStyles;
     }
     return {};
-  }, [data]);
+  }, [data, baseClassName]);
 }
 
 export { useStyledComponent };
