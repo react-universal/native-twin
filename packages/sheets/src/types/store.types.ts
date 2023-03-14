@@ -1,5 +1,11 @@
 import type { ReactNode } from 'react';
-import type { ImageStyle, PressableProps, TextStyle, ViewStyle } from 'react-native';
+import type {
+  ImageStyle,
+  PressableProps,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import type { IStyleTuple, IStyleType } from '@universal-labs/stylesheets';
 
 export type TInteractionPseudoSelectors = 'hover' | 'active' | 'focus' | 'group-hover';
@@ -45,7 +51,7 @@ export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, u
   : never;
 
 export type IExtraProperties<T> = T & {
-  style?: ImageStyle | TextStyle | ViewStyle;
+  style?: StyleProp<ImageStyle | TextStyle | ViewStyle>;
   className?: string;
   tw?: string;
   children?: ReactNode;

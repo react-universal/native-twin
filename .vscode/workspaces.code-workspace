@@ -55,7 +55,8 @@
     ],
     "tailwindCSS.experimental.configFile": {
       "../examples/expo-app/tailwind.config.js": ["../examples/**/*", "../packages/**/*"],
-      "../apps/docs/tailwind.config.js": ["../apps/**/*", "../packages/**/*"]
+      "../apps/docs/tailwind.config.js": ["../apps/**/*", "../packages/**/*"],
+      "../examples/next-app/tailwind.config.js": ["../apps/**/*", "../packages/**/*"]
     },
     "files.exclude": {
       "**/.git": true,
