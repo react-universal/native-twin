@@ -6,7 +6,7 @@ const tw = setup({ content: ['__'], plugins: [nativePlugin] });
 
 describe('TailwindCSS Shadow', () => {
   it('Shadow', () => {
-    const css = tw('shadow-md');
+    const css = tw.style('shadow-md');
     expect(css.JSS).toStrictEqual({
       '.shadow-md': {
         boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)',

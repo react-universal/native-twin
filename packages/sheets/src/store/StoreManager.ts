@@ -10,48 +10,7 @@ enableMapSet();
 
 const storeManager = createStore({
   components: new Map<string, ComponentNode>(),
-  registerComponent(input: IRegisterComponentArgs) {
-    let component: ComponentNode;
-    component = new ComponentNode(input);
-    storeManager.setState((prevState) => {
-      return produce(prevState, (draft) => {
-        draft.components.set(component.id, component);
-      });
-    });
-    return component.id;
-  },
-  unregisterComponent(id: string) {
-    storeManager.setState((prevState) => {
-      return produce(prevState, (draft) => {
-        draft.components.delete(id);
-      });
-    });
-  },
-  setInteractionState(
-    target: ComponentNode,
-    interaction: TInteractionPseudoSelectors,
-    value: boolean,
-  ) {
-    storeManager.setState((prevState) => {
-      const producer = produce(prevState, (draft) => {
-        const component = draft.components.get(target.id);
-        component?.setInteractionState(interaction, value);
-        if (component?.isGroupParent) {
-          const childs = findComponentChildIDs(target.id);
-          childs.forEach((childID) => {
-            const child = draft.components.get(childID);
-            if (child?.hasGroupInteractions) {
-              child?.setInteractionState('group-hover', value);
-            }
-          });
-        }
-      });
-      return producer;
-    });
-  },
 });
-
-export default storeManager;
 
 function findComponentChildIDs(parentID: string) {
   const childs = storeManager.getState().components.values();
@@ -65,3 +24,48 @@ function findComponentChildIDs(parentID: string) {
   }
   return childsFound;
 }
+
+function registerComponent(input: IRegisterComponentArgs) {
+  let component: ComponentNode;
+  component = new ComponentNode(input);
+  storeManager.setState((prevState) => {
+    return produce(prevState, (draft) => {
+      draft.components.set(component.id, component);
+    });
+  });
+  return component.id;
+}
+
+function unregisterComponent(id: string) {
+  storeManager.setState((prevState) => {
+    return produce(prevState, (draft) => {
+      draft.components.delete(id);
+    });
+  });
+}
+
+function setComponentInteractionState(
+  target: ComponentNode,
+  interaction: TInteractionPseudoSelectors,
+  value: boolean,
+) {
+  storeManager.setState((prevState) => {
+    const producer = produce(prevState, (draft) => {
+      const component = draft.components.get(target.id);
+      component?.setInteractionState(interaction, value);
+      if (component?.isGroupParent) {
+        const childs = findComponentChildIDs(target.id);
+        childs.forEach((childID) => {
+          const child = draft.components.get(childID);
+          if (child?.hasGroupInteractions) {
+            child?.setInteractionState('group-hover', value);
+          }
+        });
+      }
+    });
+    return producer;
+  });
+}
+
+export default storeManager;
+export { registerComponent, unregisterComponent, setComponentInteractionState };

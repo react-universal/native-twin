@@ -44,6 +44,9 @@ module.exports = {
         'roboto-medium': ['var(--font-roboto)'],
         sans: ['var(--font-roboto)'],
       },
+      fontSize: {
+        DEFAULT: 80,
+      },
     },
   },
   darkMode: 'media',

@@ -1,7 +1,7 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
 import { setTailwindConfig } from '@universal-labs/stylesheets/react-native';
-import { ShadowsScreen } from './src/screens/Shadows.screen';
+import { HomeScreen } from './src/screens/Home.screen';
 import tailwindConfig from './tailwind.config';
 
 setTailwindConfig(tailwindConfig);
@@ -9,7 +9,7 @@ setTailwindConfig(tailwindConfig);
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
-      <ShadowsScreen />
+      <HomeScreen />
     </GestureHandlerRootView>
   );
 }

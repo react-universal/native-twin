@@ -1,16 +1,19 @@
 import type { AcceptedPlugin } from 'postcss';
 import processTailwindFeatures from 'tailwindcss/src/processTailwindFeatures.js';
-import resolveConfig from 'tailwindcss/src/public/resolve-config.js';
-import type { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
+import type { createTailwindConfig } from '../config/tailwind-config';
 
-export const createTailwindcssPlugin = (props: {
-  config?: TailwindConfig;
+interface CreateTailwindcssPluginArgs {
   content: string;
-}): AcceptedPlugin => {
-  const config = props.config ?? {};
-  const tailwindConfig = resolveConfig(config);
+  resolvedTailwindConfig: ReturnType<typeof createTailwindConfig>;
+}
+export const createTailwindcssPlugin = ({
+  content,
+  resolvedTailwindConfig,
+}: CreateTailwindcssPluginArgs): AcceptedPlugin => {
   const tailwindcssPlugin = processTailwindFeatures((processOptions) => () => {
-    return processOptions.createContext(tailwindConfig, [{ content: props.content }]);
+    return processOptions.createContext(resolvedTailwindConfig.getConfig(), [
+      { content: content },
+    ]);
   });
   return tailwindcssPlugin;
 };

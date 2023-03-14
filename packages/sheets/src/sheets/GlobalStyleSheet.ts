@@ -19,16 +19,20 @@ import { selectorIsInteraction, selectorIsAppearance, cssPropertiesResolver } fr
 
 class GlobalStyleSheet {
   private stylesCollection: Map<string, IStyleType> = new Map();
-  private style: ReturnType<typeof setup>;
-  private config: Config = { content: ['__'], plugins: [tailwindPlugin.nativePlugin] };
+  private processor: ReturnType<typeof setup>;
+  private config: Config = {
+    content: ['__'],
+    plugins: [tailwindPlugin.nativePlugin],
+    corePlugins: { preflight: false },
+  };
 
   constructor() {
-    this.style = setup(this.config);
+    this.processor = setup(this.config);
   }
 
   setConfig(config: Config) {
     this.config = config;
-    this.style = setup(this.config);
+    this.processor = setup(this.config);
   }
 
   private _getJSS(classNames: string[]) {
@@ -37,7 +41,7 @@ class GlobalStyleSheet {
       if (cache) {
         previous.push([current, cache]);
       } else {
-        const styles = this.style(current);
+        const styles = this.processor.style(current);
         const rnStyles = cssPropertiesResolver(styles.JSS);
         previous.push([current, rnStyles]);
         this.stylesCollection.set(current, rnStyles);

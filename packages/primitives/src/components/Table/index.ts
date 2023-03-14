@@ -1,3 +1,4 @@
+import { styled } from '@universal-labs/styled';
 import {
   Table as ExpoTable,
   THead as ExpoTHead,
@@ -6,8 +7,7 @@ import {
   TD as ExpoTD,
   TBody as ExpoTBody,
   TR as ExpoTR,
-} from '@expo/html-elements';
-import { styled } from '@universal-labs/styled';
+} from './Table';
 
 const Table = styled(ExpoTable);
 const THead = styled(ExpoTHead);

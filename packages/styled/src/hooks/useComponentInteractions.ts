@@ -1,7 +1,6 @@
 import { useMemo, useRef } from 'react';
 import type { Touchable } from 'react-native';
-import type { ComponentNode } from '@universal-labs/stylesheets';
-import { storeManager } from '@universal-labs/stylesheets';
+import { ComponentNode, setComponentInteractionState } from '@universal-labs/stylesheets';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;
@@ -11,10 +10,8 @@ const useComponentInteractions = ({ props, component }: UseComponentInteractions
   const ref = useRef<Touchable>(props);
   const componentInteractionHandlers = useMemo(() => {
     const handlers: Touchable = {};
-    const setInteractionState = storeManager.getState().setInteractionState;
     if (
       component &&
-      setInteractionState &&
       (component.hasPointerInteractions ||
         component.isGroupParent ||
         component.hasGroupInteractions)
@@ -24,10 +21,10 @@ const useComponentInteractions = ({ props, component }: UseComponentInteractions
           ref.current.onTouchStart(event);
         }
         if (component.isGroupParent) {
-          setInteractionState(component, 'group-hover', true);
+          setComponentInteractionState(component, 'group-hover', true);
         }
         if (component.hasPointerInteractions) {
-          setInteractionState(component, 'hover', true);
+          setComponentInteractionState(component, 'hover', true);
         }
       };
       handlers.onTouchEnd = function (event) {
@@ -35,10 +32,10 @@ const useComponentInteractions = ({ props, component }: UseComponentInteractions
           ref.current.onTouchEnd(event);
         }
         if (component.isGroupParent) {
-          setInteractionState(component, 'group-hover', false);
+          setComponentInteractionState(component, 'group-hover', false);
         }
         if (component.hasPointerInteractions) {
-          setInteractionState(component, 'hover', false);
+          setComponentInteractionState(component, 'hover', false);
         }
       };
     }

@@ -34,7 +34,7 @@
     "build"
   ],
   "scripts": {
-    "build": "vite build && yarn build:native",
+    "build": "vite build",
     "build:native": "vite build -c vite.native.config.ts",
     "dev": "yarn build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
@@ -69,5 +69,5 @@
     "tailwindcss": ">= 3.0.0"
   },
   "gitHead": "a5c05d5ee9bc016aa01fc3a7cc03bddd46d1e634",
-  "react-native": "./build/index.es.native.js"
+  "react-native": "./src/index.ts"
 }

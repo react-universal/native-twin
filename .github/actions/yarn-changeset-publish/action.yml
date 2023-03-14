@@ -1,0 +1,9 @@
+# .github/actions/yarn-changeset-publish/action.yml 
+name: "Yarn Changeset Publish"
+description: "Creates release tags from changesets"
+outputs:
+  published:
+    description: "The published state"
+runs:
+  using: "node16"
+  main: "index.js"

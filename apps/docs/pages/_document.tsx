@@ -9,6 +9,7 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet='UTF-8' />
           <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
+          <script src='http://localhost:8097'></script>
         </Head>
         <body className='min-h-screen min-w-full'>
           <Main />

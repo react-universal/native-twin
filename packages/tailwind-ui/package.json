@@ -52,7 +52,9 @@
     "@universal-labs/primitives": "workspace:*",
     "class-variance-authority": "0.4.0",
     "clsx": "^1.2.1",
-    "dayjs": "^1.11.7"
+    "dayjs": "^1.11.7",
+    "moti": "0.24.2",
+    "react-hook-form": "7.43.5"
   },
   "devDependencies": {
     "@types/react": "~18.0.27",

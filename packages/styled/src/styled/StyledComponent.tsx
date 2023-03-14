@@ -20,7 +20,7 @@ import { useStyledComponent } from '../hooks';
 type ForwardRef<T, P> = ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<T>>;
 type InferRef<T> = T extends RefAttributes<infer R> | ClassAttributes<infer R> ? R : unknown;
 
-function styled<T>(Component: ComponentType<T>) {
+function styled<T>(Component: ComponentType<T>, baseClassNameOrOptions?: string) {
   class WithTailwind extends ReactComponent<
     IExtraProperties<T & TInternalStyledComponentProps> & {
       forwardedRef: ForwardedRef<unknown>;
@@ -40,7 +40,7 @@ function styled<T>(Component: ComponentType<T>) {
   ) {
     const innerRef = useRef(ref);
     const { styles, componentChilds, componentInteractionHandlers, component } =
-      useStyledComponent(props);
+      useStyledComponent(props, baseClassNameOrOptions);
 
     return (
       // @ts-expect-error

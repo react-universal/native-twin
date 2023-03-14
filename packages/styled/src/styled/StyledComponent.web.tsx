@@ -1,16 +1,19 @@
 import { ComponentType, forwardRef } from 'react';
 import { useStyledComponent } from '../hooks/useStyledComponent.web';
 
-const styled = (Component: ComponentType) => {
+const styled = (Component: ComponentType, baseClassName?: string) => {
   const Styled = forwardRef<unknown, any>(function StyledTW({ tw, className, ...props }, ref) {
-    const style = useStyledComponent({
-      className: className ?? tw,
-      inlineStyles: props.style,
-      isFirstChild: false,
-      isLastChild: false,
-      nthChild: 0,
-      parentID: '',
-    });
+    const style = useStyledComponent(
+      {
+        className: className ?? tw,
+        inlineStyles: props.style,
+        isFirstChild: false,
+        isLastChild: false,
+        nthChild: 0,
+        parentID: '',
+      },
+      baseClassName,
+    );
 
     return <Component {...props} ref={ref} style={style} />;
   });

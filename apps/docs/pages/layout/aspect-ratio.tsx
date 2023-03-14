@@ -22,8 +22,8 @@ const defaultData = [
 const AspectRatioPage = () => {
   return (
     <View className='flex-1 bg-transparent'>
-      <H1 className='text-gray-300'>Aspect Ratio</H1>
-      <P className='text-lg text-gray-300'>
+      <H1 className='text-3xl font-bold text-gray-300'>Aspect Ratio</H1>
+      <P className='my-3 text-lg text-gray-300'>
         Please refer to the{' '}
         <a
           href='https://tailwindcss.com/docs/aspect-ratio'
@@ -33,7 +33,7 @@ const AspectRatioPage = () => {
           documentation on the Tailwind CSS website
         </a>
       </P>
-      <H2 className='text-gray-300'>Compatibility</H2>
+      <H2 className='my-2 text-2xl font-bold text-gray-300'>Compatibility</H2>
       <CompatibilityTable data={defaultData} />
     </View>
   );

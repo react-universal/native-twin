@@ -6,8 +6,11 @@ const tw = setup({ content: ['__'], plugins: [nativePlugin] });
 
 describe('TailwindCSS Shadow', () => {
   it('Shadow', () => {
-    const css = tw('gap-5');
-    console.log('CSS: ', css);
-    expect(css.JSS).toStrictEqual({});
+    const css = tw.style('gap-5');
+    expect(css.JSS).toStrictEqual({
+      '.gap-5': {
+        gap: '20px',
+      },
+    });
   });
 });
