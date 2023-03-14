@@ -1,17 +1,17 @@
-import type { Config } from 'tailwindcss';
 import resolveConfig from 'tailwindcss/src/public/resolve-config.js';
+import type { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
 
-const createTailwindConfig = (initialConfig: Config) => {
-  let tailwindConfig: Config = {
+const createTailwindConfig = (initialConfig: TailwindConfig) => {
+  let tailwindConfig: TailwindConfig = resolveConfig({
     ...initialConfig,
-  };
+  });
   return {
-    getConfig: () => {
-      return resolveConfig(tailwindConfig);
+    getConfig: (): TailwindConfig => {
+      return tailwindConfig;
     },
-    setConfig: (userConfig: Config) => {
-      tailwindConfig = userConfig;
-      return resolveConfig(tailwindConfig);
+    setConfig: (userConfig: TailwindConfig): TailwindConfig => {
+      tailwindConfig = resolveConfig(userConfig);
+      return tailwindConfig;
     },
   };
 };

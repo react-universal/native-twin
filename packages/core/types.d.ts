@@ -1,5 +1,5 @@
 declare module 'tailwindcss/tailwindconfig.faketype' {
-  import { Config } from 'tailwindcss';
+  import type { Config } from 'tailwindcss';
 
   export interface TailwindConfig {
     important?: Config['important'];
@@ -25,8 +25,8 @@ declare module 'tailwindcss/src/lib/generateRules.js' {
 }
 
 declare module 'tailwindcss/src/lib/setupContextUtils.js' {
-  import { Container } from 'postcss';
-  import { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
+  import type { Container } from 'postcss';
+  import type { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
 
   interface ChangedContent {
     content: string;
@@ -60,9 +60,9 @@ declare module 'tailwindcss/src/lib/setupContextUtils.js' {
 }
 
 declare module 'tailwindcss/src/processTailwindFeatures.js' {
-  import { AtRule, Plugin, Result, Root } from 'postcss';
-  import { ChangedContent, JitContext } from 'tailwindcss/src/lib/setupContextUtils.js';
-  import { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
+  import type { AtRule, Plugin, Result, Root } from 'postcss';
+  import type { ChangedContent, JitContext } from 'tailwindcss/src/lib/setupContextUtils.js';
+  import type { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
 
   type SetupContext = (root: Root, result: Result) => JitContext;
 
@@ -79,7 +79,7 @@ declare module 'tailwindcss/src/processTailwindFeatures.js' {
 }
 
 declare module 'tailwindcss/src/public/resolve-config.js' {
-  import { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
+  import type { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
 
   export default function resolveConfig(tailwindConfig: TailwindConfig): TailwindConfig;
 }
