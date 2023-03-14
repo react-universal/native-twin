@@ -42,7 +42,6 @@
     "test": "yarn vite test"
   },
   "dependencies": {
-    "@expo/html-elements": "^0.3.1",
     "@universal-labs/styled": "workspace:*"
   },
   "devDependencies": {

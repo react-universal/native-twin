@@ -2457,13 +2457,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/html-elements@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "@expo/html-elements@npm:0.3.1"
-  checksum: 8f25599bd7d3ab9c2cbc2d968faa77aed475b7d1456360f943d675e70ac70db662f437f01cd94438919e7c3ca3d5d1cb7a97f4a68ff0a517175d9d2cb8bba783
-  languageName: node
-  linkType: hard
-
 "@expo/image-utils@npm:0.3.22":
   version: 0.3.22
   resolution: "@expo/image-utils@npm:0.3.22"
@@ -4882,7 +4875,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/primitives@workspace:packages/primitives"
   dependencies:
-    "@expo/html-elements": ^0.3.1
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
