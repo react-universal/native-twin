@@ -6,6 +6,7 @@
   "yes": true,
   "changelog": true,
   "allowBranch": ["main", "next"],
+  "forcePublish": true,
   "npmClient": "yarn",
   "scope": "@universal-labs/*",
   "createRelease": "github",

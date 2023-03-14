@@ -23,7 +23,7 @@
     "expo:ios": "lerna run ios --scope expo-app",
     "expo:start": "lerna run start --scope expo-app",
     "lint": "lerna run lint --scope=\"@universal-labs/**\"",
-    "release": "lerna run build --scope=\"@universal-labs/**\" && git stage . && yarn lerna version && yarn lerna publish && yarn changeset publish",
+    "release": "lerna run build --scope=\"@universal-labs/**\" && yarn lerna publish patch && yarn changeset publish",
     "test:e2e": "lerna run e2e",
     "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
     "version:stage": "yarn install && git stage yarn.lock",
