@@ -34,8 +34,8 @@ jobs:
 
       - name: Setup .yarnrc.yml
         run: |
-          yarn config set npmAuthToken $NPM_TOKEN
-          yarn config set npmAlwaysAuth true
+          yarn config set npmAuthToken $NPM_TOKEN -H
+          yarn config set npmAlwaysAuth true -H
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
