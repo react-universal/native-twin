@@ -3,6 +3,7 @@
   "version": "1.3.2",
   "useWorkspaces": true,
   "access": "public",
+  "yes": true,
   "changelog": true,
   "allowBranch": ["main", "next"],
   "npmClient": "yarn",
