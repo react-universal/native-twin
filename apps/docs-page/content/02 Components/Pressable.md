@@ -1,22 +1,21 @@
-# Image
+# Pressable
 
 ## Usage
 
 ```typescript
-import { Image } from '@universal-labs/primitives' 
+import { Pressable } from '@universal-labs/primitives' 
 
 // inside your component
 // ...
-<Image className='object-cover h-48 w-96 ...' src='/my-source.png' ref='1' />
+<Pressable className='rounded-full' ...props/>
 ```
 
-## Api
+TODO: DUDAS: ESTE DEBE TENER UN BUTTON ADENTRO?
+## Props
 
 | prop      | values | description         |
 | --------- | ------ | ------------------- |
 | className | string | TailwindCSS class   |
-| src       | string | Source of the image |
-| ref       | string | React ref                    |
 
 ## Example
 
@@ -26,7 +25,7 @@ import { Image } from '@universal-labs/primitives'
 const MyComponent = () => {
 	return (
 		<div className='bg-indigo-300'>
-			<Image className='object-cover h-48 w-96' src='/my-source.png' ref='1' />
+			<Nav className='w-100 dark ...' />
 		</div>
 	)
 }

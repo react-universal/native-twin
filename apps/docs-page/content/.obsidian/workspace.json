@@ -1,0 +1,245 @@
+{
+  "main": {
+    "id": "e7fb5080493622a9",
+    "type": "split",
+    "children": [
+      {
+        "id": "dfd3f2b230cfc74f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a7df3d5d6cb412bf",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "02 Components/Image.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "85685417d091b13d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "02 Components/Nav.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "f1a70007dd7eaa9d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Index.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "35771f58cab57875",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "02 Components/Text.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "7cbfd78d71383377",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "02 Components/TextInput.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "af89a58476d3388d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03 Tailwind/Layout/Aspect Ratio.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "ef7909630d01cc6d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "03 Tailwind/Layout/Aspect Ratio.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 6
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "adb62ddd615e2207",
+    "type": "split",
+    "children": [
+      {
+        "id": "0f7a78c39fecf01e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4634d5d40b9f1db7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "f9461e6cc4aaa432",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "92c5f30972b3c0d2",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "bcf21838456d8f68",
+    "type": "split",
+    "children": [
+      {
+        "id": "feff92ff5a4dcb0a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2bce5aa2d9d1efc1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "03 Tailwind/Layout/Aspect Ratio.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "4a0fdaf4341694da",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "03 Tailwind/Layout/Aspect Ratio.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "eb7fd5bec40a9ece",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "18326ea14e0d56e8",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "03 Tailwind/Layout/Aspect Ratio.md"
+              }
+            }
+          },
+          {
+            "id": "eae00bb4cfd6bed3",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "ef7909630d01cc6d",
+  "lastOpenFiles": [
+    "03 Tailwind/Layout/Container.md",
+    "03 Tailwind/Layout/Aspect Ratio.md",
+    "02 Components/View.md",
+    "02 Components/TextInput.md",
+    "02 Components/Text.md",
+    "Index.md",
+    "02 Components/Pressable.md",
+    "02 Components/Nav.md",
+    "02 Components/Image.md",
+    "01 Setup/02 Setup.md",
+    "01 Setup/01 Installation.md"
+  ]
+}
