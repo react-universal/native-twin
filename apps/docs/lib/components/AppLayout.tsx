@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
 import { H3, Pressable, Span, View } from '@universal-labs/primitives';
 import { Drawer } from '@universal-labs/tailwind-ui';
 import { useRouter } from 'next/router';
@@ -15,9 +15,9 @@ interface IDrawerItemsProps<T> {
 
 function DrawerItems<T>({ items, renderItem, title }: IDrawerItemsProps<T>) {
   return (
-    <View>
+    <View className='pt-4'>
       <View className='pl-4'>
-        <H3 className='text-gray-200'>{title}</H3>
+        <H3 className='text-xl font-bold text-gray-200'>{title}</H3>
       </View>
       <View className='pl-8'>
         {items.map((route, index) => {
@@ -51,15 +51,12 @@ const routes = [
 ];
 
 const AppLayout = ({ children }: IAppLayoutProps) => {
-  const [isOpen, setIsOpen] = useState(true);
   const Router = useRouter();
   return (
     <View className='flex-1 flex-row'>
       <Drawer
         drawerWidth={250}
         className='flex-1 border-r-[0.5px] border-gray-400 bg-gray-800'
-        isOpen={isOpen}
-        onToggle={() => setIsOpen((prev) => !prev)}
       >
         {routes.map((item) => (
           <DrawerItems
@@ -80,7 +77,7 @@ const AppLayout = ({ children }: IAppLayoutProps) => {
           />
         ))}
       </Drawer>
-      <View className='flex-1 bg-gray-800 px-5'>{children}</View>
+      <View className='flex-1 bg-gray-800 px-5 pt-5'>{children}</View>
     </View>
   );
 };

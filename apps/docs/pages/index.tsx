@@ -3,8 +3,8 @@ import { H1, P, View, UL, LI, H2, H3, Strong } from '@universal-labs/primitives'
 const IndexPage = () => {
   return (
     <View className='flex-1'>
-      <H1 className='text-gray-200'>React Native Tailwindcss</H1>
-      <H2 className='text-gray-300'>What is it?</H2>
+      <H1 className='my-3 text-3xl font-bold text-gray-200'>React Native Tailwindcss</H1>
+      <H2 className='my-2 text-2xl font-bold text-gray-300'>What is it?</H2>
       <P className='text-gray-300'>
         React Universal simplifies the integration of Tailwind CSS framework in React Native
         hybrid apps. Our main goal is to bridge the gap for React web developers in need to
@@ -13,7 +13,7 @@ const IndexPage = () => {
         just works and looks as expected in native.
       </P>
       <P className='text-gray-300'>Forget looking , and focus on creating wonderful apps.</P>
-      <H3 className='text-gray-300'>Features:</H3>
+      <H3 className='my-2 text-xl font-bold text-gray-300'>Features:</H3>
       <UL>
         <LI className='font-bold text-gray-400'>- 🍃 Uses Tailwind CSS framework</LI>
         <LI className='font-bold text-gray-400'>
