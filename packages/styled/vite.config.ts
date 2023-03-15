@@ -30,7 +30,6 @@ export default defineConfig({
       external: [
         'react',
         'react-dom',
-        'react-native',
         'react-native-web',
         'react/jsx-runtime',
         '@universal-labs/stylesheets',

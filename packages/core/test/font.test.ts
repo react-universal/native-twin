@@ -4,13 +4,13 @@ import nativePreset from '../src/tailwind/preset/tailwind-preset';
 
 const tw = setup({ content: ['__'], presets: [nativePreset()] });
 
-describe('TailwindCSS Shadow', () => {
-  it('Shadow', () => {
-    const css = tw.style('shadow-md');
+describe('TailwindCSS Font', () => {
+  it('font-size', () => {
+    const css = tw.style('text-2xl');
     expect(css.JSS).toStrictEqual({
-      '.shadow-md': {
-        boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)',
-        elevation: '6',
+      '.text-2xl': {
+        fontSize: '24px',
+        lineHeight: '32px',
       },
     });
   });

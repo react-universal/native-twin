@@ -4,13 +4,12 @@ import nativePreset from '../src/tailwind/preset/tailwind-preset';
 
 const tw = setup({ content: ['__'], presets: [nativePreset()] });
 
-describe('TailwindCSS Shadow', () => {
+describe('TailwindCSS rounded', () => {
   it('Shadow', () => {
-    const css = tw.style('shadow-md');
+    const css = tw.style('rounded-xl');
     expect(css.JSS).toStrictEqual({
-      '.shadow-md': {
-        boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)',
-        elevation: '6',
+      '.rounded-xl': {
+        borderRadius: '12px',
       },
     });
   });

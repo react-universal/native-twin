@@ -6,42 +6,34 @@ export const gap: CustomPluginFunction = ({ matchUtilities, theme }) => {
       gap: (value: string) => {
         value = value === '0' ? '0px' : value;
         value = value === 'px' ? '1px' : value;
+        if (value?.endsWith('rem')) {
+          value = `${parseFloat(value) * 16}px`;
+        }
 
         return {
-          '&': {
-            marginLeft: `-${value}`,
-            marginTop: `-${value}`,
-            '@selector (> *)': {
-              marginLeft: value,
-              marginTop: value,
-            },
-          },
+          gap: value,
         };
       },
       'gap-x': (value: string) => {
         value = value === '0' ? '0px' : value;
         value = value === 'px' ? '1px' : value;
+        if (value?.endsWith('rem')) {
+          value = `${parseFloat(value) * 16}px`;
+        }
 
         return {
-          '&': {
-            'margin-left': `-${value}`,
-            '@selector (> *)': {
-              'margin-left': value,
-            },
-          },
+          columnGap: value,
         };
       },
       'gap-y': (value: string) => {
         value = value === '0' ? '0px' : value;
         value = value === 'px' ? '1px' : value;
+        if (value?.endsWith('rem')) {
+          value = `${parseFloat(value) * 16}px`;
+        }
 
         return {
-          '&': {
-            'margin-top': `-${value}`,
-            '@selector (> *)': {
-              'margin-top': value,
-            },
-          },
+          rowGap: value,
         };
       },
     },

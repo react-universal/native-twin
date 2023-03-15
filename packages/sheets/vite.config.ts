@@ -34,7 +34,7 @@ export default defineConfig({
         'immer',
         'postcss-color-rgb',
         '@universal-labs/core',
-        '@universal-labs/core/tailwind-plugin',
+        '@universal-labs/core/tailwind/preset',
       ],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,

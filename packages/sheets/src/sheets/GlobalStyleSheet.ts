@@ -1,5 +1,5 @@
 import { setup } from '@universal-labs/core';
-import tailwindPlugin from '@universal-labs/core/tailwind-plugin';
+import tailwindPreset from '@universal-labs/core/tailwind/preset';
 import type { Config } from 'tailwindcss';
 import {
   GROUP_PARENT_MASK,
@@ -22,8 +22,8 @@ class GlobalStyleSheet {
   private processor: ReturnType<typeof setup>;
   private config: Config = {
     content: ['__'],
-    plugins: [tailwindPlugin.nativePlugin],
     corePlugins: { preflight: false },
+    presets: [tailwindPreset()],
   };
 
   constructor() {
@@ -42,6 +42,7 @@ class GlobalStyleSheet {
         previous.push([current, cache]);
       } else {
         const styles = this.processor.style(current);
+        // console.log('STYLES: ', styles);
         const rnStyles = cssPropertiesResolver(styles.JSS);
         previous.push([current, rnStyles]);
         this.stylesCollection.set(current, rnStyles);

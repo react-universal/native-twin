@@ -8,7 +8,10 @@ export const lineHeight: CustomPluginFunction = ({ matchUtilities, theme }, notS
           return notSupported(`leading-${value}`)();
         }
         if (value.endsWith('px')) {
-          return { lineHeight: value };
+          return { lineHeight: parseFloat(value) };
+        }
+        if (value.endsWith('rem')) {
+          return { lineHeight: parseFloat(value) * 16 };
         }
 
         return notSupported(`leading-${value}`)();

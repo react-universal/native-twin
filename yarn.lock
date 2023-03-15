@@ -4658,13 +4658,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/invariant@npm:^2.2.35":
-  version: 2.2.35
-  resolution: "@types/invariant@npm:2.2.35"
-  checksum: af1b624057c89789ed0917838fea3d42bb0c101cc22b829a24d8777c678be3bc79d6ae05992a13bdf607b94731262467a2e62a809602ea1f7eea5e8c2242660d
-  languageName: node
-  linkType: hard
-
 "@types/is-ci@npm:^3.0.0":
   version: 3.0.0
   resolution: "@types/is-ci@npm:3.0.0"
@@ -9299,8 +9292,8 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-native: 0.71.3
-    react-native-gesture-handler: ~2.8.0
-    react-native-reanimated: ~2.12.0
+    react-native-gesture-handler: ~2.9.0
+    react-native-reanimated: ~2.14.4
     react-native-safe-area-context: 4.5.0
     react-native-screens: ~3.20.0
     react-native-uuid: ^2.0.1
@@ -16080,9 +16073,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:~2.8.0":
-  version: 2.8.0
-  resolution: "react-native-gesture-handler@npm:2.8.0"
+"react-native-gesture-handler@npm:~2.9.0":
+  version: 2.9.0
+  resolution: "react-native-gesture-handler@npm:2.9.0"
   dependencies:
     "@egjs/hammerjs": ^2.0.17
     hoist-non-react-statics: ^3.3.0
@@ -16092,7 +16085,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 3dc4ab5cf160e471b07cd644e24f6384bdc4fc777f259fb12dfb42a5c9a15f84f60043ce3a1cd737f8dc563892a52566c8ab33bed0b1635f2898ac8ba75c8668
+  checksum: 6bfdd9d23486193424dcfb0073dd821a216c2783dde746d73a3441e920602343f09efa10261c6f09fcbcb645d029a95305c86f61997053c01ad89751c8c6d236
   languageName: node
   linkType: hard
 
@@ -16103,13 +16096,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:~2.12.0":
-  version: 2.12.0
-  resolution: "react-native-reanimated@npm:2.12.0"
+"react-native-reanimated@npm:~2.14.4":
+  version: 2.14.4
+  resolution: "react-native-reanimated@npm:2.14.4"
   dependencies:
     "@babel/plugin-transform-object-assign": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
-    "@types/invariant": ^2.2.35
+    convert-source-map: ^1.7.0
     invariant: ^2.2.4
     lodash.isequal: ^4.5.0
     setimmediate: ^1.0.5
@@ -16118,7 +16111,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: ef94d7888ad77859a9cf13156a88d6b7f2d96622bf8f7a19415fd3b7f2a588a1a78214711ce77259bfc45ceb5112c43cad8b96b034dc3ab749a1e0a835a923d0
+  checksum: ec24225a145a8636065b464660256bed99ba5f50c7f6c74899838f5563e59a342ea217c285a06be8bdd5549e2faaf1ebdac6986011a767ba814a4cf469ed9bdb
   languageName: node
   linkType: hard
 

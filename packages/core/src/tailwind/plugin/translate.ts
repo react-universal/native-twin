@@ -5,17 +5,17 @@ export const translate: CustomPluginFunction = ({ matchUtilities, theme }) => {
     {
       translate(value: string) {
         return {
-          transform: `translate(${value}, ${value})`,
+          transform: `translate(${parseFloat(value) * 16}px, ${parseFloat(value) * 16}px)`,
         };
       },
       'translate-x'(value: string) {
         return {
-          transform: `translate(${value})`,
+          transform: `translate(${parseFloat(value) * 16}px)`,
         };
       },
       'translate-y'(value: string) {
         return {
-          transform: `translate(0, ${value})`,
+          transform: `translate(0, ${parseFloat(value) * 16}px)`,
         };
       },
     },
