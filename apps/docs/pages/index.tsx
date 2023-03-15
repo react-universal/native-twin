@@ -1,9 +1,11 @@
+import { Text } from 'react-native';
 import { H1, P, View, UL, LI, H2, H3, Strong } from '@universal-labs/primitives';
 
 const IndexPage = () => {
   return (
     <View className='flex-1'>
       <H1 className='my-3 text-3xl font-bold text-gray-200'>React Native Tailwindcss</H1>
+      <Text style={{ fontSize: 25, color: 'white' }}>sadsadasd</Text>
       <H2 className='my-2 text-2xl font-bold text-gray-300'>What is it?</H2>
       <P className='text-gray-300'>
         React Universal simplifies the integration of Tailwind CSS framework in React Native
