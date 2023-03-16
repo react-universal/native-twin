@@ -42,7 +42,7 @@
     "test": "yarn vite test"
   },
   "dependencies": {
-    "@universal-labs/styled": "^1.4.10"
+    "@universal-labs/styled": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "~18.0.27",
