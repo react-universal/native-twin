@@ -48,8 +48,8 @@
     "@radix-ui/react-dialog": "^1.0.2",
     "@react-native-picker/picker": "^2.4.8",
     "@tanstack/react-table": "^8.7.9",
-    "@universal-labs/core": "workspace:*",
-    "@universal-labs/primitives": "workspace:*",
+    "@universal-labs/core": "1.4.8",
+    "@universal-labs/primitives": "1.4.8",
     "class-variance-authority": "0.4.0",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",
@@ -69,6 +69,6 @@
     "next": ">= 13.0.0",
     "react-native-svg": ">= 12"
   },
-  "gitHead": "a5c05d5ee9bc016aa01fc3a7cc03bddd46d1e634",
+  "gitHead": "f6a5d43eb0bdd5e38613cb3a368d7754fbdcf57f",
   "react-native": "./src/index.ts"
 }

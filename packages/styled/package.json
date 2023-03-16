@@ -44,7 +44,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/stylesheets": "workspace:*",
+    "@universal-labs/stylesheets": "1.4.8",
     "react-is": "^18.2.0"
   },
   "devDependencies": {
@@ -68,6 +68,6 @@
     "react-native-web": ">= 0.18.10",
     "tailwindcss": ">= 3.0.0"
   },
-  "gitHead": "a5c05d5ee9bc016aa01fc3a7cc03bddd46d1e634",
+  "gitHead": "f6a5d43eb0bdd5e38613cb3a368d7754fbdcf57f",
   "react-native": "./src/index.ts"
 }

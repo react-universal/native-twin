@@ -42,7 +42,7 @@
     "test": "yarn vite test"
   },
   "dependencies": {
-    "@universal-labs/styled": "workspace:*"
+    "@universal-labs/styled": "1.4.8"
   },
   "devDependencies": {
     "@types/react": "~18.0.27",
@@ -57,6 +57,6 @@
     "react-native": ">= 0.69.0",
     "tailwindcss": "^3.2.4"
   },
-  "gitHead": "a5c05d5ee9bc016aa01fc3a7cc03bddd46d1e634",
+  "gitHead": "f6a5d43eb0bdd5e38613cb3a368d7754fbdcf57f",
   "react-native": "./src/index.ts"
 }
