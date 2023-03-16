@@ -1,29 +1,31 @@
 name: Release
 
 on:
+  workflow_run:
+    workflows: ["Health Check"]
+    types:
+      - completed
   push:
     branches:
-      - main
+      - "main"
 
-permissions: {}
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   release:
-    permissions:
-      contents: write # to create release 
-      issues: write # to post issue comments
-      pull-requests: write # to create pull request 
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     name: Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
         
       - uses: fregante/setup-git-user@v1
-      - name: Setup Node.js 16.x
 
+      - name: Setup Node.js 16.x
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
@@ -43,9 +45,11 @@ jobs:
       - name: Install Dependencies
         run: yarn --immutable
 
-      - name: Create Release and Publish to npm
-        run: |
-          yarn release
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

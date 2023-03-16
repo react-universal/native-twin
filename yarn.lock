@@ -5046,7 +5046,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@universal-labs/core@^1.4.9, @universal-labs/core@workspace:*, @universal-labs/core@workspace:packages/core":
+"@universal-labs/core@workspace:*, @universal-labs/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@universal-labs/core@workspace:packages/core"
   dependencies:
@@ -5092,14 +5092,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/primitives@^1.4.9, @universal-labs/primitives@workspace:*, @universal-labs/primitives@workspace:packages/primitives":
+"@universal-labs/primitives@workspace:*, @universal-labs/primitives@workspace:packages/primitives":
   version: 0.0.0-use.local
   resolution: "@universal-labs/primitives@workspace:packages/primitives"
   dependencies:
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
-    "@universal-labs/styled": ^1.4.9
+    "@universal-labs/styled": "workspace:*"
     tslib: ^2.3.0
     vite: ^4.1.1
   peerDependencies:
@@ -5110,7 +5110,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/styled@^1.4.9, @universal-labs/styled@workspace:packages/styled":
+"@universal-labs/styled@workspace:*, @universal-labs/styled@workspace:packages/styled":
   version: 0.0.0-use.local
   resolution: "@universal-labs/styled@workspace:packages/styled"
   dependencies:
@@ -5119,7 +5119,7 @@ __metadata:
     "@types/react-dom": ~18.0.10
     "@types/react-is": ^17.0.3
     "@types/react-native": 0.70.7
-    "@universal-labs/stylesheets": ^1.4.9
+    "@universal-labs/stylesheets": "workspace:*"
     "@vitejs/plugin-react-swc": ^3.2.0
     "@vitest/ui": ^0.28.3
     react: 18.2.0
@@ -5137,7 +5137,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/stylesheets@^1.4.9, @universal-labs/stylesheets@workspace:packages/sheets":
+"@universal-labs/stylesheets@workspace:*, @universal-labs/stylesheets@workspace:packages/sheets":
   version: 0.0.0-use.local
   resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
   dependencies:
@@ -5146,7 +5146,7 @@ __metadata:
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
     "@types/use-sync-external-store": ^0.0.3
-    "@universal-labs/core": ^1.4.9
+    "@universal-labs/core": "workspace:*"
     css-to-react-native: ^3.1.0
     immer: ^9.0.19
     react-native-uuid: ^2.0.1
@@ -5170,8 +5170,8 @@ __metadata:
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": 0.70.7
-    "@universal-labs/core": ^1.4.9
-    "@universal-labs/primitives": ^1.4.9
+    "@universal-labs/core": "workspace:*"
+    "@universal-labs/primitives": "workspace:*"
     class-variance-authority: 0.4.0
     clsx: ^1.2.1
     cypress: ^12.7.0

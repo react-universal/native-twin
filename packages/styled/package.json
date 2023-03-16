@@ -44,7 +44,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/stylesheets": "^1.4.10",
+    "@universal-labs/stylesheets": "workspace:*",
     "react-is": "^18.2.0"
   },
   "devDependencies": {
