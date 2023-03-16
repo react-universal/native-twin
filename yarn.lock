@@ -5255,7 +5255,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/hooks@workspace:packages/hooks":
+"@universal-labs/hooks@workspace:*, @universal-labs/hooks@workspace:packages/hooks":
   version: 0.0.0-use.local
   resolution: "@universal-labs/hooks@workspace:packages/hooks"
   dependencies:
@@ -8435,6 +8435,7 @@ __metadata:
   dependencies:
     "@next/font": 13.0.6
     "@types/react-syntax-highlighter": ^15.5.6
+    "@universal-labs/hooks": "workspace:*"
     "@universal-labs/primitives": "workspace:*"
     "@universal-labs/tailwind-ui": "workspace:*"
     autoprefixer: 10.4.13

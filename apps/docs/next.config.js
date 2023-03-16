@@ -7,12 +7,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  transpilePackages: [
-    'react-native',
-    'react-native-svg',
-    'react-native-web',
-    '@expo/html-elements',
-  ],
+  transpilePackages: ['react-native', 'react-native-svg', 'react-native-web'],
   /**
    * Transformation to apply for both preview and dev server
    * @param config {import('webpack').Configuration}
