@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/tailwind-ui",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "description": "",
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
@@ -48,8 +48,8 @@
     "@radix-ui/react-dialog": "^1.0.2",
     "@react-native-picker/picker": "^2.4.8",
     "@tanstack/react-table": "^8.7.9",
-    "@universal-labs/core": "^1.4.9",
-    "@universal-labs/primitives": "^1.4.9",
+    "@universal-labs/core": "^1.4.10",
+    "@universal-labs/primitives": "^1.4.10",
     "class-variance-authority": "0.4.0",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",

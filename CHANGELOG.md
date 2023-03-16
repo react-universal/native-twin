@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.10](https://github.com/react-universal/tailwind/compare/v1.4.9...v1.4.10) (2023-03-16)
+
+### Features
+
+- **hooks:** adding hooks package ([890ec7c](https://github.com/react-universal/tailwind/commit/890ec7c20c3dfff180c15d1fb542bf559f5e7ad7))
+- **hooks:** adding hooks package ([63d2151](https://github.com/react-universal/tailwind/commit/63d2151abdf89ffc6ed2f5be34326716d0b4b128))
+- **hooks:** adding hooks package ([aa53f07](https://github.com/react-universal/tailwind/commit/aa53f074c4f982f09537f5522e112e6f77404c0d))
+- **hooks:** adding hooks package ([da2436a](https://github.com/react-universal/tailwind/commit/da2436a95f0c5074595e891248f352e0c54dd713))
+
 ## [1.4.9](https://github.com/react-universal/tailwind/compare/v1.4.8...v1.4.9) (2023-03-16)
 
 ### Features

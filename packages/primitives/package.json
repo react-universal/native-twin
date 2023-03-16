@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/primitives",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "description": "",
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
@@ -42,7 +42,7 @@
     "test": "yarn vite test"
   },
   "dependencies": {
-    "@universal-labs/styled": "^1.4.9"
+    "@universal-labs/styled": "^1.4.10"
   },
   "devDependencies": {
     "@types/react": "~18.0.27",
