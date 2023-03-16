@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.9](https://github.com/react-universal/tailwind/compare/v1.4.8...v1.4.9) (2023-03-16)
+
+### Features
+
+- **hooks:** adding hooks package ([1bc4c16](https://github.com/react-universal/tailwind/commit/1bc4c167402479215f7957cf1ababa39d1bdcbf7))
+
 ## [1.4.8](https://github.com/react-universal/tailwind/compare/v1.4.7...v1.4.8) (2023-03-16)
 
 **Note:** Version bump only for package @universal-labs/hooks

@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/stylesheets",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "Stylesheets manager",
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
@@ -42,7 +42,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/core": "1.4.8",
+    "@universal-labs/core": "^1.4.9",
     "css-to-react-native": "^3.1.0",
     "immer": "^9.0.19",
     "react-native-uuid": "^2.0.1",
