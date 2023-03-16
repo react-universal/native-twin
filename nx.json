@@ -1,4 +1,7 @@
 {
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "npmScope": "universal-labs",
+  "workspaceLayout": { "appsDir": "apps", "libsDir": "packages" },
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",
@@ -12,5 +15,10 @@
       "dependsOn": ["^build"],
       "outputs": ["{projectRoot}/build"]
     }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [],
+    "production": ["default"]
   }
 }
