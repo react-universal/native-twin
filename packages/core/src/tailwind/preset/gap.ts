@@ -1,13 +1,15 @@
 import plugin from 'tailwindcss/plugin';
 
 export const gap = plugin(function ({ matchUtilities, theme }) {
+  // @ts-expect-error
+  const baseRem = theme('variables')['--rem'];
   matchUtilities(
     {
       gap: (value: string) => {
         value = value === '0' ? '0px' : value;
         value = value === 'px' ? '1px' : value;
         if (value?.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
 
         return {
@@ -18,7 +20,7 @@ export const gap = plugin(function ({ matchUtilities, theme }) {
         value = value === '0' ? '0px' : value;
         value = value === 'px' ? '1px' : value;
         if (value?.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
 
         return {
@@ -29,7 +31,7 @@ export const gap = plugin(function ({ matchUtilities, theme }) {
         value = value === '0' ? '0px' : value;
         value = value === 'px' ? '1px' : value;
         if (value?.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
 
         return {

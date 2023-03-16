@@ -1,12 +1,14 @@
 import plugin from 'tailwindcss/plugin';
 
 export const rounded = plugin(({ matchUtilities, theme }) => {
+  // @ts-expect-error
+  const baseRem = theme('variables')['--rem'];
   matchUtilities(
     {
       rounded: (value: unknown) => {
         let [radius] = Array.isArray(value) ? value : [value];
         if (radius.endsWith('rem')) {
-          radius = parseFloat(radius) * 16;
+          radius = parseFloat(radius) * baseRem;
         }
 
         const result = {

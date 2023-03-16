@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { setup } from '../src';
 import nativePreset from '../src/tailwind/preset/tailwind-preset';
 
-const tw = setup({ content: ['__'], presets: [nativePreset()] });
+const tw = setup({
+  content: ['__'],
+  presets: [nativePreset({ baseRem: 16 })],
+});
 
 describe('TailwindCSS Font', () => {
   it('font-size', () => {

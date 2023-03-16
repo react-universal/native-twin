@@ -1,6 +1,8 @@
 import plugin from 'tailwindcss/plugin';
 
 export const padding = plugin(({ matchUtilities, theme }) => {
+  // @ts-expect-error
+  const baseRem = theme('variables')['--rem'];
   matchUtilities(
     {
       padding: (value: string) => {
@@ -10,7 +12,7 @@ export const padding = plugin(({ matchUtilities, theme }) => {
       },
       pt: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'padding-top': value,
@@ -18,7 +20,7 @@ export const padding = plugin(({ matchUtilities, theme }) => {
       },
       px: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'padding-left': value,
@@ -27,7 +29,7 @@ export const padding = plugin(({ matchUtilities, theme }) => {
       },
       py: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'padding-top': value,
@@ -36,7 +38,7 @@ export const padding = plugin(({ matchUtilities, theme }) => {
       },
       pb: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'padding-bottom': value,
@@ -44,7 +46,7 @@ export const padding = plugin(({ matchUtilities, theme }) => {
       },
       pl: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'padding-left': value,
@@ -52,7 +54,7 @@ export const padding = plugin(({ matchUtilities, theme }) => {
       },
       pr: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'padding-right': value,
@@ -60,7 +62,7 @@ export const padding = plugin(({ matchUtilities, theme }) => {
       },
       p: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           padding: value,

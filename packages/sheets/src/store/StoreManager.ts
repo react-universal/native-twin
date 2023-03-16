@@ -1,4 +1,5 @@
 import { produce, enableMapSet } from 'immer';
+import type { IStyleType } from '../types';
 import type {
   IRegisterComponentArgs,
   TInteractionPseudoSelectors,
@@ -27,10 +28,18 @@ function findComponentChildIDs(parentID: string) {
 
 function registerComponent(input: IRegisterComponentArgs) {
   let component: ComponentNode;
-  component = new ComponentNode(input);
+  const parentComponent = storeManager.getState().components.get(input.parentID);
+  let childStyles: IStyleType = {};
+  if (parentComponent) {
+    childStyles = parentComponent.getChildStyles(input);
+  }
+  component = new ComponentNode({
+    ...input,
+    inlineStyles: [input.inlineStyles, childStyles],
+  });
   storeManager.setState((prevState) => {
     return produce(prevState, (draft) => {
-      draft.components.set(component.id, component);
+      draft.components.set(component.id, Object.assign(component));
     });
   });
   return component.id;

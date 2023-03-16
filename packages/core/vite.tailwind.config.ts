@@ -10,10 +10,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: [
-        path.resolve(__dirname, 'src/tailwind/preset/tailwind-preset.ts'),
-        path.resolve(__dirname, 'src/tailwind/plugin/tailwind-plugin.ts'),
-      ],
+      entry: path.resolve(__dirname, 'src/tailwind/preset/tailwind-preset.ts'),
       name: '@react-universal/core/tailwind',
       formats: ['cjs'],
       fileName: (format, name) => `${name}.${format}`,

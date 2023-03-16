@@ -13,19 +13,21 @@ export const fontSize = plugin(function ({ matchUtilities, theme }) {
   matchUtilities(
     {
       text: (value: unknown) => {
+        // @ts-expect-error
+        const baseRem = theme('variables')['--rem'];
         let [fontSize, options] = Array.isArray(value) ? value : [value];
         if (fontSize.endsWith('rem')) {
-          fontSize = parseFloat(fontSize) * 16;
+          fontSize = parseFloat(fontSize) * baseRem;
         }
         let { lineHeight, letterSpacing } = isPlainObject(options)
           ? options
           : { lineHeight: options, letterSpacing: undefined };
 
         if (lineHeight && lineHeight.endsWith('rem')) {
-          lineHeight = parseFloat(lineHeight) * 16;
+          lineHeight = parseFloat(lineHeight) * baseRem;
         }
         if (letterSpacing && letterSpacing.endsWith('rem')) {
-          letterSpacing = parseFloat(letterSpacing) * 16;
+          letterSpacing = parseFloat(letterSpacing) * baseRem;
         }
 
         const result = {

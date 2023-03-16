@@ -1,3 +1,3 @@
-const tailwindPreset = require('../build/tailwind-preset.cjs');
+const { reactNativeTailwindPreset } = require('../build/tailwind-preset.cjs');
 
-module.exports = tailwindPreset;
+module.exports = { reactNativeTailwindPreset };

@@ -15,11 +15,17 @@ import { space } from './space';
 import { translate } from './translate';
 import { variables } from './variables';
 
-export default function reactNativeTailwindPreset() {
+interface IPresetArgs {
+  baseRem?: number;
+}
+export function reactNativeTailwindPreset(input?: IPresetArgs) {
+  const baseRem = input?.baseRem ?? 16;
   const preset: Config = {
     content: [],
     theme: {
-      nativewind: true,
+      variables: {
+        '--rem': baseRem,
+      },
       extend: {
         aspectRatio: {
           auto: '0',

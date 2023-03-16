@@ -1,6 +1,8 @@
 import plugin from 'tailwindcss/plugin';
 
 export const margin = plugin(function ({ matchUtilities, theme }) {
+  // @ts-expect-error
+  const baseRem = theme('variables')['--rem'];
   matchUtilities(
     {
       margin: (value: string) => {
@@ -10,7 +12,7 @@ export const margin = plugin(function ({ matchUtilities, theme }) {
       },
       mt: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'margin-top': value,
@@ -18,7 +20,7 @@ export const margin = plugin(function ({ matchUtilities, theme }) {
       },
       mx: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'margin-left': value,
@@ -27,7 +29,7 @@ export const margin = plugin(function ({ matchUtilities, theme }) {
       },
       my: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'margin-top': value,
@@ -36,7 +38,7 @@ export const margin = plugin(function ({ matchUtilities, theme }) {
       },
       mb: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'margin-bottom': value,
@@ -44,7 +46,7 @@ export const margin = plugin(function ({ matchUtilities, theme }) {
       },
       ml: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'margin-left': value,
@@ -52,7 +54,7 @@ export const margin = plugin(function ({ matchUtilities, theme }) {
       },
       mr: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           'margin-right': value,
@@ -60,7 +62,7 @@ export const margin = plugin(function ({ matchUtilities, theme }) {
       },
       m: (value: string) => {
         if (value.endsWith('rem')) {
-          value = `${parseFloat(value) * 16}px`;
+          value = `${parseFloat(value) * baseRem}px`;
         }
         return {
           margin: value,

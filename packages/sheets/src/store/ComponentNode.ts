@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { immerable } from 'immer';
 import uuid from 'react-native-uuid';
 import ComponentStyleSheet from '../sheets/ComponentStyleSheet';
+import type { IStyleType } from '../types';
 import type {
   IExtraProperties,
   TInteractionPseudoSelectors,
@@ -14,7 +15,7 @@ const createID = () => uuid.v4();
 export default class ComponentNode {
   id: string;
   [immerable] = true;
-  inlineStyles: IExtraProperties<{}>['style'];
+  inlineStyles: IExtraProperties<{ inlineStyles: IStyleType }>['style'];
   styleSheet: ComponentStyleSheet;
   parentComponentID?: string;
   interactionsState: Record<TInteractionPseudoSelectors, boolean> = {
@@ -67,5 +68,34 @@ export default class ComponentNode {
 
   get hasGroupInteractions() {
     return this.styleSheet.interactionStyles.some(([name]) => name.startsWith('group-'));
+  }
+
+  getChildStyles(props: TInternalStyledComponentProps) {
+    const styles: IStyleType[] = [];
+    const firstChildStyles = this.styleSheet.appearanceStyles.find(
+      ([selector]) => selector === 'first',
+    );
+    const evenChildStyles = this.styleSheet.appearanceStyles.find(
+      ([selector]) => selector === 'even',
+    );
+    const oddChildStyles = this.styleSheet.appearanceStyles.find(
+      ([selector]) => selector === 'odd',
+    );
+    const lastChildStyles = this.styleSheet.appearanceStyles.find(
+      ([selector]) => selector === 'last',
+    );
+    if (props.isFirstChild && firstChildStyles) {
+      styles.push(firstChildStyles[1].styles);
+    }
+    if (props.isLastChild && lastChildStyles) {
+      styles.push(lastChildStyles[1].styles);
+    }
+    if (props.nthChild % 2 === 0 && evenChildStyles) {
+      styles.push(evenChildStyles[1].styles);
+    }
+    if (props.nthChild % 2 !== 0 && oddChildStyles) {
+      styles.push(oddChildStyles[1].styles);
+    }
+    return StyleSheet.flatten(styles) as IStyleType;
   }
 }

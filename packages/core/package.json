@@ -18,7 +18,6 @@
     "url": "https://github.com/react-universal/tailwind",
     "directory": "packages/native-tailwind"
   },
-  "type": "module",
   "exports": {
     ".": {
       "import": "./build/index.es.js",
@@ -33,8 +32,7 @@
     },
     "./tailwind/preset": {
       "import": "./tailwind/preset.js",
-      "require": "./tailwind/preset.js",
-      "types": "./src/tailwind/preset/tailwind-preset.ts"
+      "require": "./tailwind/preset.js"
     }
   },
   "main": "./build/index.cjs.js",

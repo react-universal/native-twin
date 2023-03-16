@@ -1,5 +1,5 @@
 import { setup } from '@universal-labs/core';
-import tailwindPreset from '@universal-labs/core/tailwind/preset';
+import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
 import type { Config } from 'tailwindcss';
 import {
   GROUP_PARENT_MASK,
@@ -23,7 +23,7 @@ class GlobalStyleSheet {
   private config: Config = {
     content: ['__'],
     corePlugins: { preflight: false },
-    presets: [tailwindPreset()],
+    presets: [reactNativeTailwindPreset({ baseRem: 16 })],
   };
 
   constructor() {
@@ -42,7 +42,6 @@ class GlobalStyleSheet {
         previous.push([current, cache]);
       } else {
         const styles = this.processor.style(current);
-        // console.log('STYLES: ', styles);
         const rnStyles = cssPropertiesResolver(styles.JSS);
         previous.push([current, rnStyles]);
         this.stylesCollection.set(current, rnStyles);
