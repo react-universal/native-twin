@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.5](https://github.com/react-universal/tailwind/compare/v1.4.4...v1.4.5) (2023-03-16)
+
+### Features
+
+- **tailwind:** adding tailwind plugins and preset for native ([#28](https://github.com/react-universal/tailwind/issues/28)) ([6ac804e](https://github.com/react-universal/tailwind/commit/6ac804e6d1437639c71a639f5e97f5a6d0d1d8d1))
+
 ## [1.4.4](https://github.com/react-universal/tailwind/compare/v1.4.3...v1.4.4) (2023-03-14)
 
 **Note:** Version bump only for package docs-page
