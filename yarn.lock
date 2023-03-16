@@ -5077,23 +5077,18 @@ __metadata:
     "@types/node": 16.11.7
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
-    "@types/react-is": ^17.0.3
     "@types/react-native": 0.70.7
-    "@universal-labs/stylesheets": "workspace:*"
     "@vitejs/plugin-react-swc": ^3.2.0
     "@vitest/ui": ^0.28.3
+    dayjs: ^1.11.7
+    dayjs-plugin-calendar-sets: ^1.1.1
     react: 18.2.0
-    react-is: ^18.2.0
     tslib: ^2.3.0
     typescript: ^4.9.4
     vite: ^4.1.1
     vitest: ^0.28.3
   peerDependencies:
-    postcss: ">= 8.0.0"
-    react-native-gesture-handler: ">= 2.9.0"
-    react-native-reanimated: ">=2.12.0"
     react-native-web: ">= 0.18.10"
-    tailwindcss: ">= 3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7894,6 +7889,18 @@ __metadata:
   version: 3.0.3
   resolution: "dateformat@npm:3.0.3"
   checksum: ca4911148abb09887bd9bdcd632c399b06f3ecad709a18eb594d289a1031982f441e08e281db77ffebcb2cbcbfa1ac578a7cbfbf8743f41009aa5adc1846ed34
+  languageName: node
+  linkType: hard
+
+"dayjs-plugin-calendar-sets@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "dayjs-plugin-calendar-sets@npm:1.1.1"
+  dependencies:
+    lodash.chunk: ^4.2.0
+    tslib: ^1.9.3
+  peerDependencies:
+    dayjs: "*"
+  checksum: 6306db7c1ba3c00630aa2517dc321c167471ef17422f67a638a831a1f2af9039df78b634bdd2c73014ae374df2a79cdde9bec64a2636c3ff8bb45dccd6160d65
   languageName: node
   linkType: hard
 
@@ -12465,6 +12472,13 @@ __metadata:
   dependencies:
     p-locate: ^5.0.0
   checksum: 72eb661788a0368c099a184c59d2fee760b3831c9c1c33955e8a19ae4a21b4116e53fa736dc086cdeb9fce9f7cc508f2f92d2d3aae516f133e16a2bb59a39f5a
+  languageName: node
+  linkType: hard
+
+"lodash.chunk@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "lodash.chunk@npm:4.2.0"
+  checksum: 6286c6d06814fbeda502164015c42ef53a9194e6ebaac52ec2b41e83344aefe7bc3d94fdfec525adcd2c66cefdf05dc333b6a1128e4de739797342315c17cbc7
   languageName: node
   linkType: hard
 
@@ -18327,7 +18341,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.8.1":
+"tslib@npm:^1.8.1, tslib@npm:^1.9.3":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd

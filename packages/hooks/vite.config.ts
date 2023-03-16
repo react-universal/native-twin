@@ -22,20 +22,12 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/core',
+      name: '@universal-labs/hooks',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
-      external: [
-        'react',
-        'react-dom',
-        'react-native-web',
-        'react/jsx-runtime',
-        '@universal-labs/stylesheets',
-        'use-sync-external-store/shim',
-        /tailwindcss/,
-      ],
+      external: ['react', 'react-dom', 'react-native-web', 'react/jsx-runtime', /dayjs/],
       output: {
         dir: 'build',
         format: 'esm',
@@ -43,7 +35,6 @@ export default defineConfig({
         globals: {
           react: 'React',
           'react-dom': 'ReactDom',
-          next: 'Next',
         },
       },
     },
