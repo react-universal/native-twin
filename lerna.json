@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/lerna/schemas/lerna-schema.json",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "useWorkspaces": true,
   "access": "public",
   "yes": true,
@@ -10,7 +10,7 @@
   "npmClient": "yarn",
   "scope": "@universal-labs/*",
   "createRelease": "github",
-  "loglevel": "verbose",
+  "loglevel": "debug",
   "conventionalCommits": true,
   "verbose": true
 }
