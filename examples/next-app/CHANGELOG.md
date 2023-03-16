@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.7](https://github.com/react-universal/tailwind/compare/v1.4.6...v1.4.7) (2023-03-16)
+
+**Note:** Version bump only for package next-app
+
 ## [1.4.6](https://github.com/react-universal/tailwind/compare/v1.4.5...v1.4.6) (2023-03-16)
 
 **Note:** Version bump only for package next-app

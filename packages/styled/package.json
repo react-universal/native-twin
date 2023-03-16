@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/styled",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Styled components for css in react native",
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
