@@ -3,6 +3,13 @@ import plugin from 'tailwindcss/plugin';
 import type { DarkModeConfig } from 'tailwindcss/types/config';
 import { boxShadow } from './box-shadow';
 import { elevation } from './elevation';
+import { fontSize } from './font-size';
+import { gap } from './gap';
+import { lineHeight } from './line-height';
+import { margin } from './margin';
+import { padding } from './padding';
+import { rounded } from './rounded';
+import { space } from './space';
 // import { gap } from './gap';
 import { translate } from './translate';
 
@@ -12,11 +19,13 @@ export interface NativePluginOptions {
 }
 
 export const nativePlugin = plugin.withOptions<NativePluginOptions>(
-  function ({
-    onError = () => {
-      return;
-    },
-  } = {}) {
+  function (
+    {
+      onError = () => {
+        return;
+      },
+    } = { rem: 16 },
+  ) {
     function notSupported(property: string) {
       return () => {
         onError({ error: `${property} is not available on native` });
@@ -37,11 +46,14 @@ export const nativePlugin = plugin.withOptions<NativePluginOptions>(
 
       // color(helpers, notSupported);
       // dark(helpers, notSupported);
-      // space(helpers, notSupported);
+      space(helpers, notSupported);
+      margin(helpers, notSupported);
+      padding(helpers, notSupported);
       // divide(helpers, notSupported);
-      // gap(helpers, notSupported);
-      // fontSize(helpers);
-      // lineHeight(helpers, notSupported);
+      gap(helpers, notSupported);
+      rounded(helpers);
+      fontSize(helpers);
+      lineHeight(helpers, notSupported);
       // pseudoClasses(helpers, notSupported);
       elevation(helpers, notSupported);
       // scale(helpers, notSupported);
@@ -90,12 +102,15 @@ export const nativePlugin = plugin.withOptions<NativePluginOptions>(
         // These libraries are replaced with custom logic
         boxShadow: false,
         boxShadowColor: false,
-        // divideColor: false,
-        // divideStyle: false,
-        // divideWidth: false,
+        borderRadius: false,
         lineHeight: true,
-        fontSize: true,
-        gap: true,
+        margin: false,
+        padding: false,
+        divideStyle: false,
+        divideWidth: false,
+        divideColor: false,
+        fontSize: false,
+        gap: false,
         rotate: false,
         scale: false,
         skew: false,

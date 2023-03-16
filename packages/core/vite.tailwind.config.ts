@@ -2,26 +2,29 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  build: {
-    commonjsOptions: {
-      transformMixedEsModules: true,
+  optimizeDeps: {
+    esbuildOptions: {
+      minify: true,
+      mainFields: ['module', 'main'],
     },
+  },
+  build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/tailwind/index.ts'),
+      entry: path.resolve(__dirname, 'src/tailwind/preset/tailwind-preset.ts'),
       name: '@react-universal/core/tailwind',
       formats: ['cjs'],
-      fileName: (format) => `index.${format}`,
+      fileName: (format, name) => `${name}.${format}`,
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
-      external: ['postcss', 'postcss-js', /tailwindcss/, /next/],
+      external: ['postcss', 'postcss-js'],
       output: {
-        dir: 'build/tailwind',
-        format: 'cjs',
-        esModule: false,
+        dir: 'build',
+        extend: true,
         externalImportAssertions: true,
       },
     },
+    emptyOutDir: false,
     sourcemap: false,
   },
 });

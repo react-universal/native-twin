@@ -18,7 +18,6 @@
     "url": "https://github.com/react-universal/tailwind",
     "directory": "packages/native-tailwind"
   },
-  "type": "module",
   "exports": {
     ".": {
       "import": "./build/index.es.js",
@@ -26,10 +25,14 @@
       "browser": "./build/index.umd.js",
       "types": "./index.d.ts"
     },
-    "./tailwind-plugin": {
-      "import": "./build/tailwind/index.cjs",
-      "require": "./build/tailwind/index.cjs",
-      "types": "./src/tailwind.ts"
+    "./tailwind/plugin": {
+      "import": "./build/tailwind-plugin.cjs",
+      "require": "./build/tailwind-plugin.cjs",
+      "types": "./src/tailwind/plugin/tailwind-plugin.ts"
+    },
+    "./tailwind/preset": {
+      "import": "./tailwind/preset.js",
+      "require": "./tailwind/preset.js"
     }
   },
   "main": "./build/index.cjs.js",
@@ -40,7 +43,7 @@
     "src",
     "build",
     "index.d.ts",
-    "tailwind-plugin",
+    "tailwind",
     "types.d.ts",
     "LICENSE",
     "README.md",

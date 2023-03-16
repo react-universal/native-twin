@@ -1,5 +1,5 @@
 import { setup } from '@universal-labs/core';
-import tailwindPlugin from '@universal-labs/core/tailwind-plugin';
+import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
 import type { Config } from 'tailwindcss';
 import {
   GROUP_PARENT_MASK,
@@ -22,8 +22,8 @@ class GlobalStyleSheet {
   private processor: ReturnType<typeof setup>;
   private config: Config = {
     content: ['__'],
-    plugins: [tailwindPlugin.nativePlugin],
     corePlugins: { preflight: false },
+    presets: [reactNativeTailwindPreset({ baseRem: 16 })],
   };
 
   constructor() {

@@ -25,7 +25,7 @@ export interface InteractionProps extends PressableProps {
 
 export type TInteractionPseudoSelectors = 'hover' | 'active' | 'focus' | 'group-hover';
 
-export type TAppearancePseudoSelectors = 'dark' | 'last' | 'first';
+export type TAppearancePseudoSelectors = 'dark' | 'last' | 'first' | 'even' | 'odd';
 
 export type IInteractionPayload = {
   classNames: string;

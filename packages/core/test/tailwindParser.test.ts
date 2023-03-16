@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { setup } from '../src';
-import { nativePlugin } from '../src/tailwind';
+import nativePreset from '../src/tailwind/preset/tailwind-preset';
 
-const tw = setup({ content: ['__'], plugins: [nativePlugin] });
+const tw = setup({ content: ['__'], presets: [nativePreset()] });
 
 describe('TailwindCSS compiler', () => {
   it('Normal color', () => {

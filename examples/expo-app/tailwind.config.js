@@ -1,11 +1,12 @@
-const { nativePlugin } = require('@universal-labs/core/tailwind-plugin');
+const { reactNativeTailwindPreset } = require('@universal-labs/core/tailwind/preset');
 
 /**
  * @type {import('tailwindcss').Config}
  */
 module.exports = {
   content: ['App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
-  plugins: [nativePlugin],
+  presets: [reactNativeTailwindPreset({ baseRem: 16 })],
+
   theme: {
     extend: {
       colors: {

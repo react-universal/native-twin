@@ -13,22 +13,31 @@ export const fontSize = ({ matchUtilities, theme }: PluginAPI) => {
   matchUtilities(
     {
       text: (value: unknown) => {
-        const [fontSize, options] = Array.isArray(value) ? value : [value];
-        const { lineHeight, letterSpacing } = isPlainObject(options)
+        let [fontSize, options] = Array.isArray(value) ? value : [value];
+        if (fontSize.endsWith('rem')) {
+          fontSize = parseFloat(fontSize) * 16;
+        }
+        let { lineHeight, letterSpacing } = isPlainObject(options)
           ? options
           : { lineHeight: options, letterSpacing: undefined };
 
-        return {
+        if (lineHeight && lineHeight.endsWith('rem')) {
+          lineHeight = parseFloat(lineHeight) * 16;
+        }
+        if (letterSpacing && letterSpacing.endsWith('rem')) {
+          letterSpacing = parseFloat(letterSpacing) * 16;
+        }
+
+        const result = {
           'font-size': fontSize,
           ...(lineHeight === undefined
             ? {}
             : {
-                'line-height': lineHeight.endsWith('px')
-                  ? lineHeight
-                  : `${Number.parseFloat(fontSize) * lineHeight}px`,
+                'line-height': `${lineHeight}px`,
               }),
           ...(letterSpacing === undefined ? {} : { 'letter-spacing': letterSpacing }),
         };
+        return result;
       },
     },
     {

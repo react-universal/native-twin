@@ -3,7 +3,7 @@ import postcssVariables from 'postcss-css-variables';
 import type { createTailwindConfig } from '../config/tailwind-config';
 import { postcssPluginReactNativeAspectRatio } from '../plugins/aspect-ratio';
 import { postcssPluginReactNativeColors } from '../plugins/colors';
-import { postcssPluginRemToPx } from '../plugins/rem-to-px';
+// import { postcssPluginRemToPx } from '../plugins/rem-to-px';
 import { createTailwindcssPlugin } from './create-tailwind-css-plugin';
 import { defaultTailwindCSS } from './default-tailwind-css';
 
@@ -23,7 +23,7 @@ export const processTailwindCSS = ({
   const processor = postcss([
     tailwindcssPlugin,
     postcssVariables(),
-    postcssPluginRemToPx({ baseValue: 16 }),
+    // postcssPluginRemToPx({ baseValue: 16 }),
     postcssPluginReactNativeColors(),
     postcssPluginReactNativeAspectRatio(),
   ]);

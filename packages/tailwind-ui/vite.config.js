@@ -35,7 +35,6 @@ export default defineConfig({
       external: [
         'react',
         'react-dom',
-        'react-native',
         'react-native-web',
         '@headlessui/react',
         '@heroicons/react',

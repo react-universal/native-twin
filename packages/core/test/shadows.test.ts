@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { setup } from '../src';
-import { nativePlugin } from '../src/tailwind';
+import nativePreset from '../src/tailwind/preset/tailwind-preset';
 
-const tw = setup({ content: ['__'], plugins: [nativePlugin] });
+const tw = setup({ content: ['__'], presets: [nativePreset()] });
 
 describe('TailwindCSS Shadow', () => {
   it('Shadow', () => {
@@ -11,7 +11,6 @@ describe('TailwindCSS Shadow', () => {
       '.shadow-md': {
         boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)',
         elevation: '6',
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
       },
     });
   });

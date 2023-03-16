@@ -17,7 +17,13 @@ export function selectorIsInteraction(
 export function selectorIsAppearance(
   selector: string,
 ): selector is TAppearancePseudoSelectors {
-  return selector === 'dark' || selector === 'last' || selector === 'first';
+  return (
+    selector === 'dark' ||
+    selector === 'last' ||
+    selector === 'first' ||
+    selector === 'even' ||
+    selector === 'odd'
+  );
 }
 
 export function cssPropertiesResolver(input: CssInJs) {
