@@ -36,7 +36,6 @@
     "build": "vite build",
     "dev": "yarn vite build -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "prepare": "yarn build",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui"

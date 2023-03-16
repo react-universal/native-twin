@@ -37,7 +37,6 @@
     "dev": "yarn vite build -w",
     "e2e": "cypress open",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "prepare": "yarn build",
     "test": "expo-module test"
   },
   "dependencies": {
