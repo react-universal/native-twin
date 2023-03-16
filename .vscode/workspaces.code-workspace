@@ -9,18 +9,6 @@
       "path": "../apps/docs"
     },
     {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
-    },
-    {
-      "name": "📦 @universal-labs/core",
-      "path": "../packages/core"
-    },
-    {
-      "name": "📦 @universal-labs/hooks",
-      "path": "../packages/hooks"
-    },
-    {
       "name": "📦 @universal-labs/primitives",
       "path": "../packages/primitives"
     },

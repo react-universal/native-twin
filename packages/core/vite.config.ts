@@ -24,17 +24,18 @@ export default defineConfig({
       'optional-chain': false,
     },
   },
-  logLevel: 'info',
   build: {
     reportCompressedSize: true,
+    chunkSizeWarningLimit: 300,
     ssr: false,
     lib: {
       entry: path.resolve(__dirname, 'src/builds/module.ts'),
-      name: '@universal-labs/native-tailwind',
+      name: '@universal-labs/core',
       fileName: (format) => `index.${format}.js`,
-      formats: ['cjs', 'es', 'umd', 'iife'],
+      formats: ['cjs', 'es'],
     },
     rollupOptions: {
+      shimMissingExports: true,
       external: [
         'postcss',
         'postcss-css-variables',

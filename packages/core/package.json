@@ -22,13 +22,8 @@
     ".": {
       "import": "./build/index.es.js",
       "require": "./build/index.cjs.js",
-      "browser": "./build/index.umd.js",
+      "browser": "./build/index.cjs.js",
       "types": "./index.d.ts"
-    },
-    "./tailwind/plugin": {
-      "import": "./build/tailwind-plugin.cjs",
-      "require": "./build/tailwind-plugin.cjs",
-      "types": "./src/tailwind/plugin/tailwind-plugin.ts"
     },
     "./tailwind/preset": {
       "import": "./tailwind/preset.js",
@@ -36,7 +31,6 @@
     }
   },
   "main": "./build/index.cjs.js",
-  "unpkg": "./build/index.iife.js",
   "module": "./build/index.es.js",
   "types": "./index.d.ts",
   "files": [
@@ -76,6 +70,7 @@
     "@types/react-dom": "~18.0.10",
     "@types/tailwindcss": "3.1.0",
     "tailwindcss": "3.2.4",
+    "tsx": "^3.12.5",
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
   },

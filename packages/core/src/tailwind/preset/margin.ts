@@ -5,11 +5,6 @@ export const margin = plugin(function ({ matchUtilities, theme }) {
   const baseRem = theme('variables')['--rem'];
   matchUtilities(
     {
-      margin: (value: string) => {
-        return {
-          margin: value,
-        };
-      },
       mt: (value: string) => {
         if (value.endsWith('rem')) {
           value = `${parseFloat(value) * baseRem}px`;
