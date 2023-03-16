@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.4.11
+
+### Patch Changes
+
+- [#29](https://github.com/react-universal/tailwind/pull/29) [`66b9c99`](https://github.com/react-universal/tailwind/commit/66b9c99ccfd288f22b86fc6d109205c7e2e395fe) Thanks [@chrisarts](https://github.com/chrisarts)! - hooks package added
+  core package now handle its own plugins through a preset which has the proper plugins for react native for tailwind
+  core package dont depends anymore on many postcss plugins to replace values for react native
+- Updated dependencies [[`66b9c99`](https://github.com/react-universal/tailwind/commit/66b9c99ccfd288f22b86fc6d109205c7e2e395fe)]:
+  - @universal-labs/primitives@1.4.11
+  - @universal-labs/core@1.4.11
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
