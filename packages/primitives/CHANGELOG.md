@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.4.12
+
+### Patch Changes
+
+- [`bdff6f2`](https://github.com/react-universal/tailwind/commit/bdff6f2703206f067823742db708fd0d3fb93198) Thanks [@chrisarts](https://github.com/chrisarts)! - changesets config
+
+- Updated dependencies [[`bdff6f2`](https://github.com/react-universal/tailwind/commit/bdff6f2703206f067823742db708fd0d3fb93198)]:
+  - @universal-labs/styled@1.4.12
+
 ## 1.4.11
 
 ### Patch Changes
