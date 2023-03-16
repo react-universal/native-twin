@@ -6,6 +6,7 @@
     [
       "@universal-labs/core",
       "@universal-labs/styled",
+      "@universal-labs/hooks",
       "@universal-labs/stylesheets",
       "@universal-labs/primitives",
       "@universal-labs/tailwind-ui"

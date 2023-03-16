@@ -26,7 +26,10 @@
   "types": "./src/index.ts",
   "files": [
     "src",
-    "build"
+    "build",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "vite build",
@@ -58,6 +61,5 @@
   "peerDependencies": {
     "react-native-web": ">= 0.18.10"
   },
-  "gitHead": "a5c05d5ee9bc016aa01fc3a7cc03bddd46d1e634",
   "react-native": "./src/index.ts"
 }
