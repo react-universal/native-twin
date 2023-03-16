@@ -33,3 +33,4 @@ lint-results/
 test.js
 *.tgz
 *.log
+**/_release

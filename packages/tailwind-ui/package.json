@@ -69,6 +69,10 @@
     "next": ">= 13.0.0",
     "react-native-svg": ">= 12"
   },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
+  },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
   "react-native": "./src/index.ts"
 }

@@ -61,6 +61,10 @@
   "peerDependencies": {
     "react-native-web": ">= 0.18.10"
   },
-  "react-native": "./src/index.ts",
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
+  },
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "react-native": "./src/index.ts"
 }

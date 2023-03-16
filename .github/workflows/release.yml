@@ -50,6 +50,9 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: yarn release
+          commit: version-packages
+          title: Version Packages
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
