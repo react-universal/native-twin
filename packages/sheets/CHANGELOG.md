@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.4.14
+
+### Patch Changes
+
+- [`950eb0d`](https://github.com/react-universal/tailwind/commit/950eb0d6fd8e85680b6947fd87d56b9dbfaa498f) Thanks [@chrisarts](https://github.com/chrisarts)! - changeset config
+
+- Updated dependencies [[`950eb0d`](https://github.com/react-universal/tailwind/commit/950eb0d6fd8e85680b6947fd87d56b9dbfaa498f)]:
+  - @universal-labs/core@1.4.14
+
 ## 1.4.13
 
 ### Patch Changes
