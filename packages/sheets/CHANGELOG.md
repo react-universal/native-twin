@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.4.15
+
+### Patch Changes
+
+- [`e0804de`](https://github.com/react-universal/tailwind/commit/e0804ded26ff9364a019163841479ed2e99fef71) Thanks [@chrisarts](https://github.com/chrisarts)! - fix esmodules for nextjs
+
+- Updated dependencies [[`e0804de`](https://github.com/react-universal/tailwind/commit/e0804ded26ff9364a019163841479ed2e99fef71)]:
+  - @universal-labs/core@1.4.15
+
 ## 1.4.14
 
 ### Patch Changes
