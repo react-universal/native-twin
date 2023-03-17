@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/hooks",
-  "version": "1.4.13",
+  "version": "1.4.14",
   "description": "helper hooks for common utility functions",
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
