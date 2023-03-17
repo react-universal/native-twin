@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.4.13
+
+### Patch Changes
+
+- [#33](https://github.com/react-universal/tailwind/pull/33) [`b6e0feb`](https://github.com/react-universal/tailwind/commit/b6e0feb6405201fc772f743454b447d86701cc0b) Thanks [@chrisarts](https://github.com/chrisarts)! - publish files fix
+
+- Updated dependencies [[`b6e0feb`](https://github.com/react-universal/tailwind/commit/b6e0feb6405201fc772f743454b447d86701cc0b)]:
+  - @universal-labs/core@1.4.13
+  - @universal-labs/primitives@1.4.13
+
 ## 1.4.12
 
 ### Patch Changes
