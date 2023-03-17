@@ -1,1 +1,1 @@
-/// <reference types="@react-universal/core/types" />
+/// <reference types="@universal-labs/core" />

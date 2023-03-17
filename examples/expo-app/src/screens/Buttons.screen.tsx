@@ -1,5 +1,5 @@
-import { View } from '@react-universal/primitives';
-import { Button } from '@react-universal/tailwind-ui';
+import { View } from '@universal-labs/primitives';
+import { Button } from '@universal-labs/tailwind-ui';
 
 const ButtonsScreen = () => {
   return (

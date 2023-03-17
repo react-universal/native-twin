@@ -3,6 +3,7 @@ import type {
   IExtraProperties,
   TInternalStyledComponentProps,
 } from '@universal-labs/stylesheets';
+import type { StyledProps } from '../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useStore } from './useStore';
@@ -19,7 +20,7 @@ const useStyledComponent = (
     nthChild,
     ...componentProps
   }: IExtraProperties<TInternalStyledComponentProps>,
-  baseClassNameOrOptions: string = '',
+  baseClassNameOrOptions: string | StyledProps<any>,
 ) => {
   const component = useStore({
     className:
