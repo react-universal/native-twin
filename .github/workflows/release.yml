@@ -48,6 +48,7 @@ jobs:
       - name: Create Release and Publish to npm
         run: |
           yarn changeset version
+          yarn build:libs
           yarn workspaces foreach --no-private --verbose --from '@universal-labs/*' npm publish --access public
           yarn changeset tag
         # with:
