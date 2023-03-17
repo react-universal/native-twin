@@ -45,17 +45,14 @@ jobs:
       - name: Install Dependencies
         run: yarn --immutable
 
-      - name: Create Release and Publish to npm
-        run: |
-          yarn changeset version
-          yarn build:libs
-          yarn workspaces foreach --no-private --verbose --from '@universal-labs/*' npm publish --access public
-          yarn changeset tag
-        # with:
-        #   publish: yarn release
-        #   commit: version-packages
-        #   title: Version Packages
-        #   createGithubReleases: true
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: yarn release
+          commit: version-packages
+          title: Version Packages
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

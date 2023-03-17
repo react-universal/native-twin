@@ -54,6 +54,7 @@
     "build:tailwind": "vite build -c vite.tailwind.config.ts",
     "dev": "yarn vite build -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "prepare": "yarn build",
     "test:ui": "vitest --ui"
   },
   "config": {

@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "build:libs": "lerna run build --scope=\"@universal-labs/**\"",
-    "build:release": "yarn build:libs && yarn libs:foreach exec rm -rf _release && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
+    "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "commit": "cz",
     "dev": "lerna run dev --scope=\"@universal-labs/**\" --parallel",
     "docs:build": "lerna run build --scope docs-page",
