@@ -3,7 +3,7 @@ import { styled } from '@universal-labs/styled';
 
 interface TFlatListProps<T extends unknown> extends FlatListProps<T> {}
 
-const StyledFlatList = styled(NativeFlatList);
+const StyledFlatList = styled(NativeFlatList, { classProps: ['contentContainerStyle'] });
 
 function FlatList<ItemsT>(
   props: TFlatListProps<ItemsT> & { className?: string; tw?: string },

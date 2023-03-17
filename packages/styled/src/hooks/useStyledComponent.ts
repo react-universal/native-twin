@@ -3,12 +3,12 @@ import type {
   IExtraProperties,
   TInternalStyledComponentProps,
 } from '@universal-labs/stylesheets';
-import type { StyledProps } from '../types/styled.types';
+import type { StyledOptions } from '../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useStore } from './useStore';
 
-const useStyledComponent = (
+const useStyledComponent = <T, P extends keyof T, C extends keyof T>(
   {
     className,
     children,
@@ -20,13 +20,15 @@ const useStyledComponent = (
     nthChild,
     ...componentProps
   }: IExtraProperties<TInternalStyledComponentProps>,
-  baseClassNameOrOptions: string | StyledProps<any>,
+  baseClassNameOrOptions?: string | StyledOptions<T, P, C>,
 ) => {
+  if (typeof baseClassNameOrOptions === 'string') {
+  } else {
+  }
+  const baseClassName =
+    typeof baseClassNameOrOptions === 'string' ? baseClassNameOrOptions : '';
   const component = useStore({
-    className:
-      `${className} ${baseClassNameOrOptions}` ??
-      `${tw} ${baseClassNameOrOptions}` ??
-      baseClassNameOrOptions,
+    className: `${className} ${baseClassName}` ?? `${tw} ${baseClassName}` ?? baseClassName,
     parentID,
     inlineStyles: style,
     isFirstChild,
