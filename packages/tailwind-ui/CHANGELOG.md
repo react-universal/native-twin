@@ -1,5 +1,19 @@
 # Change Log
 
+## 1.4.16
+
+### Patch Changes
+
+- [#37](https://github.com/react-universal/tailwind/pull/37) [`c16dca2`](https://github.com/react-universal/tailwind/commit/c16dca263abeab7371910adbe23b2a5f6bd819b6) Thanks [@chrisarts](https://github.com/chrisarts)! - \* Alpha release for base packages
+  - Support for common tw utils.
+  - Web support all native tailwind features, as it works just modifying how the css is injected in the tag.
+  - React Native support for all supported css features in Stylesheet.
+  - React Native: We support :hover :active :focus :blur in any React Native Component (just for react 0.70 fue this is achieved using pointer event props).
+  - Documentation in progress...
+- Updated dependencies [[`c16dca2`](https://github.com/react-universal/tailwind/commit/c16dca263abeab7371910adbe23b2a5f6bd819b6)]:
+  - @universal-labs/primitives@1.4.16
+  - @universal-labs/core@1.4.16
+
 ## 1.4.15
 
 ### Patch Changes
