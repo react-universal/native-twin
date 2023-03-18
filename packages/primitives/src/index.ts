@@ -10,6 +10,3 @@ export type { TextInputProps } from './components/TextInput';
 export { TBody, TD, TFoot, TH, THead, TR, Table } from './components/Table';
 export { LI, UL } from './components/List';
 export { FlatList } from './components/FlatList';
-export { FlatList2 } from './components/FlatList/FlatList';
-
-// export { Rect, Svg } from './components/svg';

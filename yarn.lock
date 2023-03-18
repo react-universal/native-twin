@@ -5357,6 +5357,7 @@ __metadata:
     "@types/react-native": 0.70.7
     "@universal-labs/core": "workspace:*"
     "@universal-labs/primitives": "workspace:*"
+    "@universal-labs/stylesheets": "workspace:*"
     class-variance-authority: 0.4.0
     clsx: ^1.2.1
     cypress: ^12.7.0
