@@ -12,7 +12,7 @@ const FlatListScreen = () => {
     <View className='flex-1 bg-white'>
       <FlatList
         data={data}
-        className='flex-1 items-center justify-center'
+        contentContainerStyle='flex-1 items-center justify-center'
         renderItem={({ item }) => {
           return (
             <View>
