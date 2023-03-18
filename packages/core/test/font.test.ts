@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { setup } from '../src';
-import nativePreset from '../src/tailwind/preset/tailwind-preset';
+import { reactNativeTailwindPreset } from '../src/tailwind/preset/tailwind-preset';
 
 const tw = setup({
   content: ['__'],
-  presets: [nativePreset({ baseRem: 16 })],
+  presets: [reactNativeTailwindPreset({ baseRem: 16 })],
 });
 
 describe('TailwindCSS Font', () => {

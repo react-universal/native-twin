@@ -9,8 +9,11 @@
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
+    "checkJs": false,
     "stripInternal": true,
     "target": "esnext"
   },
-  "include": ["src", "types.d.ts", "index.d.ts"]
+  "include": ["src", "types.d.ts", "index.d.ts"],
+  "files": [],
+  "references": []
 }

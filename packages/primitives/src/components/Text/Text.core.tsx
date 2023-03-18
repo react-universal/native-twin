@@ -10,12 +10,12 @@ import {
 import { PrimitiveP, PrimitiveSpan, PrimitiveCode, PrimitiveStrong } from './TextComponents';
 
 const Span = styled(PrimitiveSpan, 'text-base');
-const H1 = styled(PrimitiveH1, 'text-4xl font-bold');
-const H2 = styled(PrimitiveH2, 'text-3xl font-bold');
-const H3 = styled(PrimitiveH3, 'text-2xl font-bold');
-const H4 = styled(PrimitiveH4, 'text-xl font-bold');
-const H5 = styled(PrimitiveH5, 'text-lg font-bold');
-const H6 = styled(PrimitiveH6, 'text-base font-bold');
+const H1 = styled(PrimitiveH1, 'flex text-4xl font-bold');
+const H2 = styled(PrimitiveH2, 'flex text-3xl font-bold');
+const H3 = styled(PrimitiveH3, 'flex text-2xl font-bold');
+const H4 = styled(PrimitiveH4, 'flex text-xl font-bold');
+const H5 = styled(PrimitiveH5, 'flex text-lg font-bold');
+const H6 = styled(PrimitiveH6, 'flex text-base font-bold');
 const Strong = styled(PrimitiveStrong, 'font-bold');
 const Code = styled(PrimitiveCode);
 const P = styled(PrimitiveP, 'my-2 p-1');

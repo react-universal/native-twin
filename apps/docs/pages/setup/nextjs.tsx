@@ -7,12 +7,15 @@ const NextSetupPage = () => {
       <P className='text-gray-200'>
         This lib can be used in a Next.js project that is already configured to use Expo or
         vanilla React Native Web, the configuration will be the same as being using react
-        native web for nextjs.
+        native web for nextjs or just nextjs without react native.
       </P>
-      <H3 className='my-2 text-xl font-bold text-gray-200'>1. Setup tailwind CSS</H3>
+      <P className='text-gray-200'>
+        We dont use any babel plugin or swc special config so there is nothing more to do.
+      </P>
+      <H3 className='my-2 text-xl font-bold text-gray-200'>Setup tailwind CSS</H3>
 
       <P className='text-gray-200'>
-        Simply configure Next.js as per{' '}
+        Simply configure Next.js as tailwindcss docs shows{' '}
         <a
           className='text-blue-400'
           href='https://tailwindcss.com/docs/guides/nextjs'

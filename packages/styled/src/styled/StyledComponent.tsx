@@ -1,11 +1,7 @@
 import {
-  ClassAttributes,
   ComponentType,
   ForwardedRef,
   forwardRef,
-  ForwardRefExoticComponent,
-  PropsWithoutRef,
-  RefAttributes,
   useRef,
   Component as ReactComponent,
   ReactNode,
@@ -16,11 +12,12 @@ import type {
   TInternalStyledComponentProps,
 } from '@universal-labs/stylesheets';
 import { useStyledComponent } from '../hooks';
+import type { ForwardRef, InferRef, StyledOptions } from '../types/styled.types';
 
-type ForwardRef<T, P> = ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<T>>;
-type InferRef<T> = T extends RefAttributes<infer R> | ClassAttributes<infer R> ? R : unknown;
-
-function styled<T>(Component: ComponentType<T>, baseClassNameOrOptions?: string) {
+export function styled<T, C extends keyof T>(
+  Component: ComponentType<T>,
+  baseClassNameOrOptions?: StyledOptions<T, C>,
+) {
   class WithTailwind extends ReactComponent<
     IExtraProperties<T & TInternalStyledComponentProps> & {
       forwardedRef: ForwardedRef<unknown>;
@@ -60,5 +57,3 @@ function styled<T>(Component: ComponentType<T>, baseClassNameOrOptions?: string)
   Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
   return forwardRef(Styled) as ForwardRef<InferRef<T>, IExtraProperties<T>>;
 }
-
-export { styled };

@@ -1,27 +1,27 @@
 import type { Touchable } from 'react-native';
-import type {
-  IExtraProperties,
-  TInternalStyledComponentProps,
-} from '@universal-labs/stylesheets';
-import type { StyledOptions } from '../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useStore } from './useStore';
 
-const useStyledComponent = <T, C extends keyof T>(
+const useStyledComponent = (
   {
     className,
     children,
     tw,
+    Component,
     parentID,
     style,
     isFirstChild,
     isLastChild,
     nthChild,
+    baseClassNameOrOptions,
     ...componentProps
-  }: IExtraProperties<TInternalStyledComponentProps>,
-  baseClassNameOrOptions?: StyledOptions<T, C>,
+  }: any,
+  ref: any,
 ) => {
+  if (typeof baseClassNameOrOptions === 'string') {
+  } else {
+  }
   const baseClassName =
     typeof baseClassNameOrOptions === 'string' ? baseClassNameOrOptions : '';
   const component = useStore({
@@ -39,12 +39,20 @@ const useStyledComponent = <T, C extends keyof T>(
   });
   const componentChilds = useChildren(children, component);
 
-  return {
-    styles: component.styles,
-    componentChilds,
-    component,
-    componentInteractionHandlers,
-  };
+  const element = (
+    <Component
+      {...componentProps}
+      {...componentInteractionHandlers}
+      style={[component.styles, style]}
+      key={component.id}
+      forwardedRef={ref}
+      ref={ref}
+    >
+      {componentChilds}
+    </Component>
+  );
+
+  return element;
 };
 
 export { useStyledComponent };

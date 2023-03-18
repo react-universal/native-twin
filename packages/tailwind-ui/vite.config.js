@@ -43,6 +43,7 @@ export default defineConfig({
         '@tanstack/react-table',
         '@universal-labs/core',
         '@universal-labs/primitives',
+        '@universal-labs/stylesheets',
         'react-native-svg',
         'react/jsx-runtime',
         /tailwindcss/,

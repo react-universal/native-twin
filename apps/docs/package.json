@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/font": "13.0.6",
+    "@universal-labs/hooks": "workspace:*",
     "@universal-labs/primitives": "workspace:*",
     "@universal-labs/tailwind-ui": "workspace:*",
     "autoprefixer": "10.4.13",

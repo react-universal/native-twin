@@ -22,7 +22,7 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/core',
+      name: '@universal-labs/styled',
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {

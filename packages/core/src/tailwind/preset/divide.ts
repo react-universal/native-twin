@@ -1,3 +1,4 @@
+/* eslint-disable unused-imports/no-unused-vars */
 import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette';
 import toColorValue from 'tailwindcss/lib/util/toColorValue';
 import plugin from 'tailwindcss/plugin';
