@@ -13,6 +13,10 @@
       "path": "../examples/expo-app"
     },
     {
+      "name": "📦 @universal-labs/core",
+      "path": "../packages/core"
+    },
+    {
       "name": "📦 @universal-labs/primitives",
       "path": "../packages/primitives"
     },

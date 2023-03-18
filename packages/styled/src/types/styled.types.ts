@@ -17,8 +17,7 @@ export type IBaseClassNameOrOptions = string | {};
 
 export type Style = ViewStyle | TextStyle | ImageStyle;
 
-export interface StyledOptions<T, P extends keyof T = never, C extends keyof T = never> {
-  props?: Partial<Record<P, keyof Style | true>>;
+export interface StyledOptions<T, C extends keyof T = never> {
   classProps?: C[];
   baseClassName?: string;
 }

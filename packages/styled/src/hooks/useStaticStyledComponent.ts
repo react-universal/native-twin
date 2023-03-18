@@ -1,36 +1,23 @@
 import type { Touchable } from 'react-native';
-import type {
-  IExtraProperties,
-  TInternalStyledComponentProps,
-} from '@universal-labs/stylesheets';
+import type { IExtraProperties } from '@universal-labs/stylesheets';
 import type { StyledOptions } from '../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useStore } from './useStore';
 
-const useStyledComponent = <T, C extends keyof T>(
-  {
-    className,
-    children,
-    tw,
-    parentID,
-    style,
-    isFirstChild,
-    isLastChild,
-    nthChild,
-    ...componentProps
-  }: IExtraProperties<TInternalStyledComponentProps>,
+const useStaticStyledComponent = <T, C extends keyof T>(
+  { className, children, tw, style, ...componentProps }: IExtraProperties<T>,
   baseClassNameOrOptions?: StyledOptions<T, C>,
 ) => {
   const baseClassName =
     typeof baseClassNameOrOptions === 'string' ? baseClassNameOrOptions : '';
   const component = useStore({
     className: `${className} ${baseClassName}` ?? `${tw} ${baseClassName}` ?? baseClassName,
-    parentID,
+    parentID: 'osidahflsajflasjflsadjfk',
     inlineStyles: style,
-    isFirstChild,
-    isLastChild,
-    nthChild,
+    isFirstChild: false,
+    isLastChild: false,
+    nthChild: 0,
   });
 
   const { componentInteractionHandlers } = useComponentInteractions({
@@ -47,4 +34,4 @@ const useStyledComponent = <T, C extends keyof T>(
   };
 };
 
-export { useStyledComponent };
+export { useStaticStyledComponent };
