@@ -5364,6 +5364,8 @@ __metadata:
     dayjs: ^1.11.7
     moti: 0.24.2
     react-hook-form: 7.43.5
+    react-hot-toast: ^2.4.0
+    react-native-modal-datetime-picker: ^14.0.1
     react-native-svg: ">= 12"
     tslib: ^2.3.0
     vite: ^4.1.1
@@ -10752,6 +10754,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"goober@npm:^2.1.10":
+  version: 2.1.12
+  resolution: "goober@npm:2.1.12"
+  peerDependencies:
+    csstype: ^3.0.10
+  checksum: 5945cbe92413031b8859d9087d125a744149e237c8bcf6c15db1998ee3d1b6d680ee4a47dd420f95684b76f72eebc34e98155e8a1cb06748d00cbdc05ede186d
+  languageName: node
+  linkType: hard
+
 "gopd@npm:^1.0.1":
   version: 1.0.1
   resolution: "gopd@npm:1.0.1"
@@ -16133,6 +16144,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hot-toast@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "react-hot-toast@npm:2.4.0"
+  dependencies:
+    goober: ^2.1.10
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 910214496d6821af8e643c5f7087eff6c76f1395756f3d6cf1fc07a599c582c443cbb5a4cadfc58205acf0845b77a2a10a4ca49b385e772b72edc57dfd38d016
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.0.0, react-is@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
@@ -16186,6 +16209,18 @@ __metadata:
   version: 0.71.15
   resolution: "react-native-gradle-plugin@npm:0.71.15"
   checksum: e1c1714568324405fbca4ca841a0ab62cd8b90c65b3320183825161358f2bdb5226c8b22153b3007c2455dc7535d839d07d43148e6cba7952ae948636154f2b6
+  languageName: node
+  linkType: hard
+
+"react-native-modal-datetime-picker@npm:^14.0.1":
+  version: 14.0.1
+  resolution: "react-native-modal-datetime-picker@npm:14.0.1"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    "@react-native-community/datetimepicker": ">=3.0.0"
+    react-native: ">=0.65.0"
+  checksum: 15df05f76bea0303a0130fee435ec6e42def6e7cb5d113f45b16edba92ddf482264dc3d34b23b31ec37a64ff7a5330e58cd553987cb1fdf25b6163e281d1e3da
   languageName: node
   linkType: hard
 
