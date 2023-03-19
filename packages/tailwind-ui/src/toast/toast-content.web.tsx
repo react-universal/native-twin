@@ -1,15 +1,13 @@
+import { Span, View, Pressable } from '@universal-labs/primitives';
 import cx from 'clsx';
 import type { Toast as IToast } from 'react-hot-toast/headless';
-import { useI18n } from '@medico/universal/i18n/hooks';
-import { Pressable } from '@medico/universal/pressable';
-import { Typography } from '@medico/universal/typography';
-import { View } from '@medico/universal/view';
 import { IToastPayload, animationVariables, ToastPositionType } from './toast';
 
 interface IToastContentProps {
   toast: IToast;
   payload: IToastPayload;
   onDismiss: (id: string) => void;
+  dismissLabel: string;
   position?: ToastPositionType;
   action?: {
     label: string;
@@ -21,10 +19,10 @@ const ToastContent = ({
   toast,
   payload,
   onDismiss,
+  dismissLabel,
   position = 'bottomRight',
   action,
 }: IToastContentProps) => {
-  const { t } = useI18n();
   return (
     <View
       className={cx(
@@ -35,10 +33,8 @@ const ToastContent = ({
       )}
     >
       <View className='grow-[90] py-4 pl-5'>
-        <Typography className='font-roboto-medium text-xl text-gray-100'>
-          {payload.title}
-        </Typography>
-        <Typography className='mt-2 text-gray-400'>{payload.description}</Typography>
+        <Span className='font-roboto-medium text-xl text-gray-100'>{payload.title}</Span>
+        <Span className='mt-2 text-gray-400'>{payload.description}</Span>
       </View>
       <View className='grow-[10] justify-around px-3'>
         {action ? (
@@ -46,16 +42,14 @@ const ToastContent = ({
             className='h-8 items-center justify-center rounded-xl px-2 hover:bg-gray-900'
             onPress={action.onPress}
           >
-            <Typography className='font-roboto-medium text-green-600'>
-              {action.label}
-            </Typography>
+            <Span className='font-roboto-medium text-green-600'>{action.label}</Span>
           </Pressable>
         ) : null}
         <Pressable
           className='h-8 items-center justify-center rounded-xl px-2 hover:bg-gray-900'
           onPress={() => onDismiss(toast.id)}
         >
-          <Typography className='font-roboto-medium text-gray-300'>{t('dismiss')}</Typography>
+          <Span className='font-roboto-medium text-gray-300'>{dismissLabel}</Span>
         </Pressable>
       </View>
     </View>

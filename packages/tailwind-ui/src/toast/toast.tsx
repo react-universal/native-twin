@@ -1,5 +1,5 @@
+import { Span } from '@universal-labs/primitives';
 import type { Toast as IToast } from 'react-hot-toast/headless';
-import { Typography } from '@medico/universal/typography';
 
 export interface IToastPayload {
   title: string;
@@ -40,9 +40,5 @@ export interface IToastProps {
 }
 
 export const Toast = ({ content, toast }: IToastProps) => {
-  return typeof content === 'function' ? (
-    <>{content(toast)}</>
-  ) : (
-    <Typography>{content}</Typography>
-  );
+  return typeof content === 'function' ? <>{content(toast)}</> : <Span>{content}</Span>;
 };

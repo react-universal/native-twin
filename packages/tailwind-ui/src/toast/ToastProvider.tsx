@@ -1,8 +1,8 @@
 import { ReactNode, createContext, memo, useContext } from 'react';
+import { View } from '@universal-labs/primitives';
 import toast, { useToaster } from 'react-hot-toast/headless';
-import { Toast, IToastPayload, positionClasses } from '@medico/universal/toast/toast';
-import { ToastContent } from '@medico/universal/toast/toast-content';
-import { View } from '@medico/universal/view';
+import { Toast, IToastPayload, positionClasses } from './toast';
+import { ToastContent } from './toast-content';
 
 interface IToastProviderProps {
   children: ReactNode;
@@ -21,6 +21,7 @@ const useToastProvider = () => {
     toast.custom(
       (t) => (
         <ToastContent
+          dismissLabel='Dismiss'
           onDismiss={toast.dismiss}
           payload={payload}
           toast={t}

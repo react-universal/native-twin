@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'react';
 import { Animated } from 'react-native';
-import { useI18n } from '@medico/universal/i18n/hooks';
 import { Span, View, Pressable } from '@universal-labs/primitives';
 import cx from 'clsx';
 import type { Toast as IToast } from 'react-hot-toast/headless';
@@ -12,6 +11,7 @@ interface IToastContentProps {
   onDismiss: (id: string) => void;
   updateHeight: (height: number) => void;
   offset: number;
+  dismissLabel: string;
   position?: ToastPositionType;
   action?: {
     label: string;
@@ -26,9 +26,9 @@ const ToastContent = ({
   position = 'bottomRight',
   action,
   offset,
+  dismissLabel,
   updateHeight,
 }: IToastContentProps) => {
-  const { t } = useI18n();
   const fadeAnim = useRef(new Animated.Value(0.5)).current;
   const posAnim = useRef(new Animated.Value(-80)).current;
   useEffect(() => {
@@ -84,7 +84,7 @@ const ToastContent = ({
             className='h-8 items-center justify-center rounded-xl px-2 hover:bg-gray-900'
             onPress={() => onDismiss(toast.id)}
           >
-            <Span className='font-roboto-medium text-gray-300'>{t('dismiss')}</Span>
+            <Span className='font-roboto-medium text-gray-300'>{dismissLabel}</Span>
           </Pressable>
         </View>
       </View>
