@@ -2,7 +2,7 @@ name: Health Check
 on:
   push:
     branches:
-      - "**"
+      - main
 
 jobs:
   build:
@@ -14,7 +14,6 @@ jobs:
           node-version: 16.x
           cache: yarn
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     
       - name: Setup .yarnrc.yml
@@ -22,7 +21,6 @@ jobs:
           yarn config set npmAuthToken $NPM_TOKEN -H
           yarn config set npmAlwaysAuth true -H
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: yarn --immutable
