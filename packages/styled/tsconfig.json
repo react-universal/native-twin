@@ -1,16 +1,14 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "outDir": "./build",
-    "rootDir": "./src",
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noUnusedLocals": false,
     "module": "ESNext",
-    "types": ["node"],
+    "types": ["node", "vitest/globals"],
     "importHelpers": true
   },
-  "include": ["./src"],
+  "include": ["./src", "test"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }

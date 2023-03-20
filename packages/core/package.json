@@ -6,6 +6,8 @@
     "tailwind",
     "tailwindcss",
     "tailwind-plugin",
+    "react-native-web",
+    "universal-labs",
     "react-native",
     "react"
   ],
@@ -47,12 +49,8 @@
     "build:tailwind": "vite build -c vite.tailwind.config.ts",
     "dev": "yarn vite build -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "vitest run",
     "test:ui": "vitest --ui"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   },
   "dependencies": {
     "postcss": "8.4.21",

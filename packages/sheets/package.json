@@ -2,6 +2,14 @@
   "name": "@universal-labs/stylesheets",
   "version": "1.4.16",
   "description": "Stylesheets manager",
+  "keywords": [
+    "react-native",
+    "tailwindcss",
+    "postcss",
+    "tailwind-ui",
+    "react-native-web",
+    "universal-apps"
+  ],
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
     "url": "https://github.com/react-universal/tailwind/issues"
@@ -36,8 +44,7 @@
     "build:native": "vite build -c vite.native.config.ts",
     "dev": "yarn vite build -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest",
-    "test:run": "vitest run",
+    "test": "vitest run",
     "test:ui": "vitest --ui"
   },
   "dependencies": {

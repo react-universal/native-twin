@@ -1,17 +1,15 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "outDir": "./build/esm",
     "allowSyntheticDefaultImports": true,
-    "declarationDir": "./build/types",
     "lib": ["ES5", "ES2015", "ES2016", "DOM", "ESNext"],
-    "types": ["cypress", "node"],
+    "types": ["cypress", "node", "vitest/globals"],
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "jsx": "react-jsx",
     "module": "ES6",
     "importHelpers": true
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "env.d.ts", "cypress"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "env.d.ts", "cypress", "test"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }

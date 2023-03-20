@@ -2,6 +2,16 @@
   "name": "@universal-labs/primitives",
   "version": "1.4.16",
   "description": "",
+  "keywords": [
+    "react-native",
+    "tailwindcss",
+    "postcss",
+    "tailwind-ui",
+    "react-native-web",
+    "react-native-tailwindcss",
+    "react-native-tailwind-components",
+    "universal-apps"
+  ],
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
     "url": "https://github.com/react-universal/tailwind/issues"
@@ -36,7 +46,8 @@
     "build:native": "yarn vite build -c vite.native.config.ts",
     "dev": "yarn vite build -w --force",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "yarn vite test"
+    "test": "vitest run",
+    "test:ui": "yarn vitest --ui"
   },
   "dependencies": {
     "@universal-labs/styled": "workspace:*"
@@ -45,11 +56,13 @@
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
     "@types/react-native": "0.70.7",
+    "@types/react-test-renderer": "^18.0.0",
+    "happy-dom": "latest",
+    "jsdom": "latest",
+    "react-test-renderer": "^18.2.0",
     "tslib": "^2.3.0",
-    "vite": "^4.1.1"
-  },
-  "peerDependencies": {
-    "react-native": ">= 0.69.0"
+    "vite": "^4.1.1",
+    "vitest": "^0.28.3"
   },
   "publishConfig": {
     "access": "public",
