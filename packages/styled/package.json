@@ -38,8 +38,10 @@
   "module": "./build/index.es.js",
   "types": "./src/index.ts",
   "files": [
-    "src",
-    "build"
+    "build",
+    "LICENSE",
+    "CHANGELOG.md",
+    "README.md"
   ],
   "scripts": {
     "build": "vite build && yarn build:native",

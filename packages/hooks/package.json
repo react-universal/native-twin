@@ -33,14 +33,13 @@
   "module": "./build/index.es.js",
   "types": "./src/index.ts",
   "files": [
-    "src",
     "build",
     "CHANGELOG.md",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && yarn build:native",
     "build:native": "vite build -c vite.native.config.ts",
     "dev": "yarn build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
@@ -69,5 +68,5 @@
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./src/index.ts"
+  "react-native": "./build/index.native.es.js"
 }
