@@ -32,7 +32,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && yarn build:native",
+    "build:native": "vite build -c vite.native.config.ts",
     "dev": "yarn vite build -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest",
@@ -60,5 +61,5 @@
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./src/index.ts"
+  "react-native": "./build/index.native.es.js"
 }
