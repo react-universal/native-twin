@@ -58,6 +58,7 @@
       "../apps/docs/tailwind.config.js": ["../apps/**/*", "../packages/**/*"],
       "../examples/next-app/tailwind.config.js": ["../apps/**/*", "../packages/**/*"]
     },
+    "tailwindCSS.lint.cssConflict": "ignore",
     "files.exclude": {
       "**/.git": true,
       "**/.svn": true,
