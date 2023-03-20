@@ -1,8 +1,7 @@
 import type { PropsWithChildren } from 'react';
-import { Modal, SafeAreaView, ScrollView } from 'react-native';
-import { AppIcons } from '@medico/universal/icons';
-import { Pressable } from '@medico/universal/pressable';
-import { View } from '@medico/universal/view';
+import { Modal, SafeAreaView } from 'react-native';
+import { View, Pressable, ScrollView } from '@universal-labs/primitives';
+import { AppIcons } from '../../common/icons';
 
 interface IFullWideModalProps extends PropsWithChildren {
   visible: boolean;
