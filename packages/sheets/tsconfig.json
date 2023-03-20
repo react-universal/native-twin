@@ -3,6 +3,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "importsNotUsedAsValues": "error",
+    "declarationDir": "./build",
     "noImplicitAny": false,
     "jsx": "react-native",
     "module": "esnext",
@@ -12,5 +13,5 @@
     "stripInternal": true,
     "target": "esnext"
   },
-  "include": ["src"]
+  "include": ["src", "env.d.ts"]
 }

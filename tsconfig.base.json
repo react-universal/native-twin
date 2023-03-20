@@ -28,6 +28,5 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true
   },
-  "include": ["types.d.ts"],
   "exclude": ["tmp", "node_modules", "**/build**"]
 }

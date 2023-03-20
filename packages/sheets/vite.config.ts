@@ -1,11 +1,23 @@
 /// <reference types="vitest" />
-// Configure Vitest (https://vitest.dev/config/)
 import path from 'path';
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   test: {},
-  plugins: [],
+  plugins: [
+    dts({
+      // insertTypesEntry: true,
+      // entryRoot: path.resolve(__dirname, './src/index.ts'),
+      compilerOptions: {
+        declarationDir: './build',
+        rootDir: './src',
+        outDir: './build',
+        emitDeclarationOnly: true,
+        noEmit: false,
+      },
+    }),
+  ],
   optimizeDeps: {
     esbuildOptions: {
       minify: true,

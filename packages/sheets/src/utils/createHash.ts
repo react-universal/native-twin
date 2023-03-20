@@ -6,7 +6,7 @@ const hashTable = hashSource.split(' ').map(function (s) {
 function createHash(str: string) {
   let crc = -1;
   for (let i = 0, iTop = str.length; i < iTop; i++) {
-    crc = (crc >>> 8) ^ hashTable[(crc ^ str.charCodeAt(i)) & 0xff];
+    crc = (crc >>> 8) ^ hashTable[(crc ^ str.charCodeAt(i)) & 0xff]!;
   }
   return (crc ^ -1) >>> 0;
 }
