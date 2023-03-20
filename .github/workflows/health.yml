@@ -26,8 +26,8 @@ jobs:
       - name: Install deps with yarn
         run: yarn --immutable
 
-      - name: Run tests
-        run: yarn test
-
       - name: Run build
         run: yarn build:libs
+
+      - name: Run tests
+        run: yarn test
