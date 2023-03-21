@@ -49,13 +49,11 @@
     "test": "vitest run",
     "test:ui": "yarn vitest --ui"
   },
-  "dependencies": {
-    "@universal-labs/styled": "workspace:*"
-  },
   "devDependencies": {
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
-    "@types/react-native": "0.70.7"
+    "@types/react-native": "0.70.7",
+    "@universal-labs/styled": "workspace:*"
   },
   "peerDependencies": {
     "react-native-web": ">= 0.18.10"

@@ -34,8 +34,6 @@ export default defineConfig({
       external: [
         'react',
         'react-native-web',
-        '@universal-labs/styled',
-        'react-native-svg',
         'react/jsx-runtime',
       ],
       output: {

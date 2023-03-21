@@ -4,6 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "importsNotUsedAsValues": "error",
     "declarationMap": false,
+    "sourceMap": false,
     "noImplicitAny": false,
     "emitDeclarationOnly": true,
     "outDir": "./build",
