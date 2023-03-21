@@ -59,18 +59,7 @@
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
     "@types/react-is": "^17.0.3",
-    "@types/react-native": "0.70.7",
-    "@types/react-test-renderer": "^18.0.0",
-    "@vitejs/plugin-react-swc": "^3.2.0",
-    "@vitest/ui": "^0.28.3",
-    "happy-dom": "latest",
-    "jsdom": "latest",
-    "react": "18.2.0",
-    "react-test-renderer": "^18.2.0",
-    "tslib": "^2.3.0",
-    "typescript": "^4.9.4",
-    "vite": "^4.1.1",
-    "vitest": "^0.28.3"
+    "@types/react-native": "0.70.7"
   },
   "peerDependencies": {
     "react-native-web": ">= 0.18.10"

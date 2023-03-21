@@ -22,16 +22,10 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        'postcss',
-        'postcss-css-variables',
         'css-to-react-native',
-        'postcss-js',
-        'react',
-        'react/jsx-runtime',
         'react-native',
         'react-native-web',
         'immer',
-        'postcss-color-rgb',
         '@universal-labs/core',
         '@universal-labs/core/tailwind/preset',
       ],

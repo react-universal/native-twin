@@ -35,10 +35,6 @@
     {
       "name": "📦 @universal-labs/tailwind-ui",
       "path": "../packages/tailwind-ui"
-    },
-    {
-      "name": "🚀 docs-page",
-      "path": "../apps/docs"
     }
   ],
   "settings": {

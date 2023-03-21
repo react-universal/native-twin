@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { defineConfig } from 'vite';
@@ -35,8 +34,6 @@ export default defineConfig({
       external: [
         'react',
         'react-native-web',
-        '@universal-labs/styled',
-        'react-native-svg',
         'react/jsx-runtime',
       ],
       output: {

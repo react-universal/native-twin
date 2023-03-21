@@ -1,7 +1,7 @@
 {
   "name": "@universal-labs/primitives",
   "version": "1.4.17",
-  "description": "",
+  "description": "React Native primitives in styled version",
   "keywords": [
     "react-native",
     "tailwindcss",
@@ -42,27 +42,21 @@
     "README.md"
   ],
   "scripts": {
-    "build": "yarn vite build && yarn build:native && npx tsc -p tsconfig.build.json",
-    "build:native": "yarn vite build -c vite.native.config.ts",
+    "build": "npx vite build && yarn build:native && npx tsc -p tsconfig.build.json",
+    "build:native": "npx vite build -c vite.native.config.ts",
     "dev": "yarn vite build -w --force",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",
     "test:ui": "yarn vitest --ui"
   },
-  "dependencies": {
-    "@universal-labs/styled": "workspace:*"
-  },
   "devDependencies": {
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
     "@types/react-native": "0.70.7",
-    "@types/react-test-renderer": "^18.0.0",
-    "happy-dom": "latest",
-    "jsdom": "latest",
-    "react-test-renderer": "^18.2.0",
-    "tslib": "^2.3.0",
-    "vite": "^4.1.1",
-    "vitest": "^0.28.3"
+    "@universal-labs/styled": "workspace:*"
+  },
+  "peerDependencies": {
+    "react-native-web": ">= 0.18.10"
   },
   "publishConfig": {
     "access": "public",
