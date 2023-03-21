@@ -7,12 +7,11 @@
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "outDir": "./build",
-    "emitDeclarationOnly": true,
-    "noEmit": false,
+    "noEmit": true,
     "jsx": "react-jsx",
     "module": "ES6",
     "importHelpers": true
   },
-  "include": ["src","env.d.ts"],
+  "include": ["src", "env.d.ts", "build"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }

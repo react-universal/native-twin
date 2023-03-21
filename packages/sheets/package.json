@@ -48,8 +48,10 @@
     "build:native": "vite build -c vite.native.config.ts",
     "build:vite": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
     "clean": "expo-module clean",
-    "dev": "yarn vite build -w",
+    "dev": "yarn vite build -w --force",
+    "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "prepublishOnly": "expo-module prepublishOnly",
     "test": "vitest run",
     "test:ui": "vitest --ui"
   },
