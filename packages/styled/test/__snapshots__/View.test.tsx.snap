@@ -2,7 +2,7 @@
 
 exports[`@universal-labs/styled > View render 1`] = `
 <div
-  className="css-view-175oi2r undefined flex-1"
+  className="css-view-175oi2r  flex-1"
   dir={null}
 >
   <div
