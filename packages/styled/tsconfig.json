@@ -7,11 +7,12 @@
     "noUnusedLocals": false,
     "module": "ESNext",
     "noEmit": false,
+    "declarationMap": false,
     "emitDeclarationOnly": true,
     "outDir": "./build",
     "types": ["node", "vitest/globals"],
     "importHelpers": true
   },
-  "include": ["./src", "test"],
+  "include": ["src"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }

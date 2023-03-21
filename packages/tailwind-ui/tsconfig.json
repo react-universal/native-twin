@@ -6,6 +6,9 @@
     "types": ["cypress", "node", "vitest/globals"],
     "noImplicitAny": false,
     "noUnusedLocals": true,
+    "outDir": "./build",
+    "emitDeclarationOnly": true,
+    "noEmit": false,
     "jsx": "react-jsx",
     "module": "ES6",
     "importHelpers": true
