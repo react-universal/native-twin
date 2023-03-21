@@ -52,6 +52,10 @@
     "test": "vitest run",
     "test:ui": "vitest --ui"
   },
+  "dependencies": {
+    "@types/postcss-css-variables": "0.18.0",
+    "postcss-css-variables": "^0.18.0"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
