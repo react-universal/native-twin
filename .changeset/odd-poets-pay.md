@@ -8,3 +8,4 @@
 ---
 
 build for native
+support es modules in build
