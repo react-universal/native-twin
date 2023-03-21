@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.1
+
+### Patch Changes
+
+- [`ad9577b`](https://github.com/react-universal/tailwind/commit/ad9577b47da71ddaf004ef7f2cf8b1f583d096c3) Thanks [@chrisarts](https://github.com/chrisarts)! - core dependencies fix
+
 ## 1.5.0
 
 ### Minor Changes
