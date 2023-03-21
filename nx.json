@@ -10,7 +10,7 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build","^build:native"]
     }
   }
 }

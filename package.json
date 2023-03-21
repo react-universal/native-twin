@@ -30,14 +30,33 @@
     "test:e2e": "npx nx run-many --target=e2e --projects=\"@universal-labs/**\"",
     "web": "npx nx dev start --project=next-app"
   },
+  "dependencies": {
+    "@types/node": "16.11.7",
+    "@types/postcss-css-variables": "0.18.0",
+    "@types/postcss-js": "^4.0.0",
+    "@types/react-test-renderer": "^18.0.0",
+    "@types/tailwindcss": "3.1.0",
+    "happy-dom": "latest",
+    "jsdom": "latest",
+    "postcss": "8.4.21",
+    "postcss-color-rgb": "^2.0.0",
+    "postcss-css-variables": "^0.18.0",
+    "postcss-js": "^4.0.0",
+    "react": "18.2.0",
+    "react-test-renderer": "^18.2.0",
+    "tailwindcss": "3.2.4"
+  },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.0",
+    "@nrwl/devkit": "^15.8.7",
+    "@nrwl/eslint-plugin-nx": "^15.8.7",
     "@nrwl/nx-cloud": "latest",
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
-    "dayjs": "^1.11.7",
+    "@vitejs/plugin-react-swc": "^3.2.0",
+    "@vitest/ui": "^0.28.3",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-import": "2.26.0",
@@ -50,7 +69,9 @@
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "tslib": "^2.3.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "vite": "^4.1.1",
+    "vitest": "^0.28.3"
   },
   "packageManager": "yarn@3.4.1"
 }

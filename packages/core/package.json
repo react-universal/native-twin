@@ -45,33 +45,12 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "vite build && yarn build:tailwind",
-    "build:tailwind": "vite build -c vite.tailwind.config.ts",
-    "dev": "yarn vite build -w",
+    "build": "npx vite build && yarn build:tailwind",
+    "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
+    "dev": "npx vite build -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",
     "test:ui": "vitest --ui"
-  },
-  "dependencies": {
-    "postcss": "8.4.21",
-    "postcss-color-rgb": "^2.0.0",
-    "postcss-css-variables": "^0.18.0",
-    "postcss-js": "^4.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "16.11.7",
-    "@types/postcss-css-variables": "0.18.0",
-    "@types/postcss-js": "^4.0.0",
-    "@types/react": "~18.0.27",
-    "@types/react-dom": "~18.0.10",
-    "@types/tailwindcss": "3.1.0",
-    "tailwindcss": "3.2.4",
-    "tsx": "^3.12.5",
-    "vite": "^4.1.1",
-    "vitest": "^0.28.3"
-  },
-  "engines": {
-    "node": ">=16.0.0"
   },
   "publishConfig": {
     "access": "public",

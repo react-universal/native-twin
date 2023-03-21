@@ -3,7 +3,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "lib": ["ES5", "ES2015", "ES2016", "DOM", "ESNext"],
-    "types": ["cypress", "node", "vitest/globals"],
+    "types": ["node", "vitest/globals"],
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "outDir": "./build",
