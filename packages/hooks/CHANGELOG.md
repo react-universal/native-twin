@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.0
+
+### Minor Changes
+
+- [#44](https://github.com/react-universal/tailwind/pull/44) [`3a6987b`](https://github.com/react-universal/tailwind/commit/3a6987bba1da01284bb581b78d00f40990c016fe) Thanks [@chrisarts](https://github.com/chrisarts)! - expo module scripts and publish entry points unified
+
 ## 1.4.19
 
 ### Patch Changes
