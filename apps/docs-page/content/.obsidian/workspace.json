@@ -1,0 +1,197 @@
+{
+  "main": {
+    "id": "e7fb5080493622a9",
+    "type": "split",
+    "children": [
+      {
+        "id": "6cfd1a3106efda5f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "75f08d727ae79ebe",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Typography/_Font Family.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "adb62ddd615e2207",
+    "type": "split",
+    "children": [
+      {
+        "id": "0f7a78c39fecf01e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4634d5d40b9f1db7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "f9461e6cc4aaa432",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#Nomenclature",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "92c5f30972b3c0d2",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "bcf21838456d8f68",
+    "type": "split",
+    "children": [
+      {
+        "id": "feff92ff5a4dcb0a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2bce5aa2d9d1efc1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Typography/_Font Family.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "4a0fdaf4341694da",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Typography/_Font Family.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "eb7fd5bec40a9ece",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "18326ea14e0d56e8",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Typography/_Font Family.md"
+              }
+            }
+          },
+          {
+            "id": "eae00bb4cfd6bed3",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "75f08d727ae79ebe",
+  "lastOpenFiles": [
+    "01 Overview/Installation.md",
+    "01 Overview/Index.md",
+    "_OLD/_DELETE 01 Setup/01 Installation.md",
+    "_OLD/_DELETE - 02 Components/TextInput.md",
+    "_OLD/_DELETE - 02 Components/View.md",
+    "_OLD/_DELETE 01 Setup/02 Setup.md",
+    "_OLD/_DELETE 01 Setup/03 Build.md",
+    "_OLD/_DELETE - 02 Components/Text.md",
+    "_OLD/_DELETE - 02 Components/Pressable.md",
+    "_OLD/_DELETE - 02 Components/Nav.md",
+    "_OLD/_DELETE - 02 Components/Image.md",
+    "Background/Background Color.md",
+    "02 Quick Start/Vite.md",
+    "02 Quick Start/NextJS.md",
+    "02 Quick Start/Expo or RN CLI.md",
+    "Typography/_Font Family.md",
+    "Flexbox/Gap.md",
+    "Flexbox/Flex Grow.md",
+    "Flexbox/Flex Direction.md",
+    "Flexbox/Flex Basis.md",
+    "Flexbox/Align Self.md",
+    "Flexbox/Align Items.md",
+    "Flexbox/Align Content.md",
+    "Borders/Border Style.md",
+    "Borders/Border Radius.md",
+    "Borders/Border Color.md",
+    "Borders",
+    "Background",
+    "Typography",
+    "_OLD",
+    "Sizing",
+    "Spacing",
+    "Flexbox",
+    "02 Quickstart",
+    "01 Overview",
+    "02 Quick Start"
+  ]
+}
