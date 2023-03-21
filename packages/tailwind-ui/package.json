@@ -31,7 +31,7 @@
   },
   "main": "./build/index.umd.js",
   "module": "./build/index.es.js",
-  "types": "./build/index.d.ts",
+  "types": "./src/index.ts",
   "files": [
     "build",
     "LICENSE",
@@ -40,9 +40,13 @@
   ],
   "scripts": {
     "build": "npx vite build",
+    "build:ts": "expo-module build -p tsconfig.build.json",
+    "clean": "expo-module clean",
     "dev": "yarn vite build -w",
     "e2e": "cypress open",
+    "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "prepublishOnly": "expo-module prepublishOnly",
     "test": "vitest run",
     "test:ui": "yarn vitest --ui"
   },

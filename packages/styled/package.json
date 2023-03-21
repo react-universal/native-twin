@@ -22,19 +22,8 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "import": "./build/index.es.js",
-      "require": "./build/index.umd.js"
-    },
-    "./tailwind": {
-      "import": "./build/tailwind/index.cjs.js",
-      "require": "./build/tailwind/index.cjs.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "main": "./build/index.umd.js",
-  "module": "./build/index.es.js",
+  "main": "./build/index.js",
+  "browser": "./build/index.web.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -43,10 +32,14 @@
     "README.md"
   ],
   "scripts": {
-    "build": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
+    "build": "expo-module build -p tsconfig.build.json",
     "build:native": "vite build -c vite.native.config.ts",
+    "build:vite": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
+    "clean": "expo-module clean",
     "dev": "yarn build",
+    "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "prepublishOnly": "expo-module prepublishOnly",
     "test": "vitest run",
     "test:ui": "vitest --ui"
   },
@@ -68,6 +61,5 @@
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./build/index.native.es.js"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
 }

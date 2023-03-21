@@ -18,21 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-universal/tailwind",
+    "url": "git+https://github.com/react-universal/tailwind",
     "directory": "packages/primitives"
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "import": "./build/index.es.js",
-      "require": "./build/index.cjs.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "main": "./build/index.cjs.js",
-  "module": "./build/index.es.js",
+  "main": "./build/index.js",
+  "module": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -42,10 +35,12 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npx vite build && yarn build:native && npx tsc -p tsconfig.build.json",
-    "build:native": "npx vite build -c vite.native.config.ts",
+    "build": "expo-module build -p tsconfig.build.json",
+    "clean": "expo-module clean",
     "dev": "yarn vite build -w --force",
+    "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "prepublishOnly": "expo-module prepublishOnly",
     "test": "vitest run",
     "test:ui": "yarn vitest --ui"
   },
@@ -62,6 +57,5 @@
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./build/index.native.cjs.js"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
 }

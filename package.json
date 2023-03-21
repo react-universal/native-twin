@@ -65,6 +65,7 @@
     "eslint-plugin-react": "7.31.11",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-unused-imports": "2.0.0",
+    "expo-module-scripts": "^3.0.7",
     "nx": "^15.8.7",
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",

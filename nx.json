@@ -8,9 +8,12 @@
       }
     }
   },
+  "cli": {
+    "packageManager": "yarn"
+  },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build","^build:native"]
+      "dependsOn": ["clean", "^build"]
     }
   }
 }

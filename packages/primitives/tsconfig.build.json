@@ -1,18 +1,10 @@
 {
-  "extends": "../../tsconfig.base",
+  "extends": "expo-module-scripts/tsconfig.base",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declarationMap": false,
-    "emitDeclarationOnly": true,
-    "declarationDir": "./build",
-    "noImplicitAny": true,
-    "types": ["vitest/globals"],
     "outDir": "./build",
-    "noEmit": false,
-    "noUnusedLocals": true,
-    "jsx": "react-jsx",
-    "importHelpers": true
+    "strict": true,
+    "jsx": "react-jsx"
   },
-  "include": ["src", "env.d.ts"],
-  "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
+  "include": ["./src", "env.d.ts"],
+  "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*"]
 }
