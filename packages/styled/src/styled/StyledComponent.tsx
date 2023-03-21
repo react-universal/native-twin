@@ -16,7 +16,7 @@ import type { ForwardRef, InferRef, StyledOptions } from '../types/styled.types'
 
 export function styled<T, C extends keyof T>(
   Component: ComponentType<T>,
-  baseClassNameOrOptions?: StyledOptions<T, C>,
+  styledOptions?: StyledOptions<T, C>,
 ) {
   class WithTailwind extends ReactComponent<
     IExtraProperties<T & TInternalStyledComponentProps> & {
@@ -37,7 +37,7 @@ export function styled<T, C extends keyof T>(
   ) {
     const innerRef = useRef(ref);
     const { styles, componentChilds, componentInteractionHandlers, component } =
-      useStyledComponent(props, baseClassNameOrOptions);
+      useStyledComponent(props, styledOptions);
 
     return (
       // @ts-expect-error
