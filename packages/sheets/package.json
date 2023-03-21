@@ -27,6 +27,11 @@
       "import": "./build/index.es.js",
       "require": "./build/index.umd.js"
     },
+    "./react-native": {
+      "import": "./react-native/index.js",
+      "require": "./react-native/index.js",
+      "types": "./react-native/index.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "main": "./build/index.umd.js",

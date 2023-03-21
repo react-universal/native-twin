@@ -29,8 +29,7 @@
     },
     "./tailwind": {
       "import": "./build/tailwind/index.cjs.js",
-      "require": "./build/tailwind/index.cjs.js",
-      "types": "./tailwind/index.ts"
+      "require": "./build/tailwind/index.cjs.js"
     },
     "./package.json": "./package.json"
   },

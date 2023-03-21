@@ -6,7 +6,7 @@
     },
     {
       "name": "🚀 docs-page",
-      "path": "../apps/docs"
+      "path": "../apps/docs-page"
     },
     {
       "name": "expo-app",
@@ -35,6 +35,10 @@
     {
       "name": "📦 @universal-labs/tailwind-ui",
       "path": "../packages/tailwind-ui"
+    },
+    {
+      "name": "🚀 docs-page",
+      "path": "../apps/docs"
     }
   ],
   "settings": {
