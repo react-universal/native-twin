@@ -31,10 +31,6 @@
     {
       "name": "📦 @universal-labs/styled",
       "path": "../packages/styled"
-    },
-    {
-      "name": "📦 @universal-labs/tailwind-ui",
-      "path": "../packages/tailwind-ui"
     }
   ],
   "settings": {
