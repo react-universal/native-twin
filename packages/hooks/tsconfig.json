@@ -13,6 +13,6 @@
     "types": ["node"],
     "importHelpers": true
   },
-  "include": ["./src"],
+  "include": ["./src", "test"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }

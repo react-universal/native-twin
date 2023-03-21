@@ -13,6 +13,6 @@
     "types": ["node", "vitest/globals"],
     "importHelpers": true
   },
-  "include": ["src"],
+  "include": ["src", "src"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }

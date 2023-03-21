@@ -5,9 +5,7 @@ exports[`@universal-labs/primitives > View render 1`] = `
   className="css-view-175oi2r undefined flex-1"
   dir={null}
 >
-  <span
-    className="text-base"
-  >
+  <span>
     Test View
   </span>
 </div>

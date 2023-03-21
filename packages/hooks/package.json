@@ -39,7 +39,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "vite build && yarn build:native && npx tsc -p tsconfig.json",
+    "build": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
     "build:native": "vite build -c vite.native.config.ts",
     "dev": "yarn build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
