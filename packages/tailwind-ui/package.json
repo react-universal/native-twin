@@ -39,7 +39,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "yarn vite build && npx tsc -p tsconfig.json",
+    "build": "yarn vite build",
     "dev": "yarn vite build -w",
     "e2e": "cypress open",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
