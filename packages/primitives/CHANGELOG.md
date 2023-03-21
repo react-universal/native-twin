@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.5.2
+
+### Patch Changes
+
+- [`2c8b4fe`](https://github.com/react-universal/tailwind/commit/2c8b4fe158df84bdb9131883b2b21e7115d8ae0f) Thanks [@chrisarts](https://github.com/chrisarts)! - removed hooks package
+
 ## 1.5.1
 
 ### Patch Changes
