@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.4.17
+
+### Patch Changes
+
+- [#39](https://github.com/react-universal/tailwind/pull/39) [`dc7cf70`](https://github.com/react-universal/tailwind/commit/dc7cf70a11f43c7c9d2288aa1aa7a4de9f61dbf4) Thanks [@chrisarts](https://github.com/chrisarts)! - add tailwind ui components
+
+- [#39](https://github.com/react-universal/tailwind/pull/39) [`dc7cf70`](https://github.com/react-universal/tailwind/commit/dc7cf70a11f43c7c9d2288aa1aa7a4de9f61dbf4) Thanks [@chrisarts](https://github.com/chrisarts)! - build for native
+  support es modules in build
+- Updated dependencies [[`dc7cf70`](https://github.com/react-universal/tailwind/commit/dc7cf70a11f43c7c9d2288aa1aa7a4de9f61dbf4), [`dc7cf70`](https://github.com/react-universal/tailwind/commit/dc7cf70a11f43c7c9d2288aa1aa7a4de9f61dbf4)]:
+  - @universal-labs/core@1.4.17
+  - @universal-labs/primitives@1.4.17
+
 ## 1.4.16
 
 ### Patch Changes
