@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4.18
+
+### Patch Changes
+
+- [`e51e07b`](https://github.com/react-universal/tailwind/commit/e51e07b72ac6bfafc15c7c559972069eb4d4eea2) Thanks [@chrisarts](https://github.com/chrisarts)! - build primitives
+
 ## 1.4.17
 
 ### Patch Changes
