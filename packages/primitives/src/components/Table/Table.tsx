@@ -30,7 +30,6 @@ export const TH = forwardRef((props: TableTextProps, ref: any) => {
 TH.displayName = 'TH';
 
 export const TR = forwardRef((props: ViewProps, ref) => {
-  // @ts-expect-error
   return <View {...props} style={[styles.tr, props.style]} ref={ref} />;
 }) as ComponentType<ViewProps>;
 

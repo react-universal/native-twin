@@ -4,7 +4,7 @@ import type { IRegisterComponentArgs } from '@universal-labs/stylesheets';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 
-function useStyledComponent(data: Omit<IRegisterComponentArgs, 'id'>, baseClassName?: string) {
+function useStyledComponent(data: Omit<IRegisterComponentArgs, 'id'>, baseClassName: string) {
   return useMemo(() => {
     const mergedClassName = data.className
       ? `${baseClassName} ${data.className}`

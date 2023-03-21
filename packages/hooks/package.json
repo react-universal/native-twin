@@ -2,6 +2,14 @@
   "name": "@universal-labs/hooks",
   "version": "1.4.16",
   "description": "helper hooks for common utility functions",
+  "keywords": [
+    "react-native",
+    "tailwindcss",
+    "postcss",
+    "tailwind-ui",
+    "react-native-web",
+    "universal-apps"
+  ],
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
     "url": "https://github.com/react-universal/tailwind/issues"
@@ -23,21 +31,19 @@
   },
   "main": "./build/index.umd.js",
   "module": "./build/index.es.js",
-  "types": "./src/index.ts",
+  "types": "./build/index.d.ts",
   "files": [
-    "src",
     "build",
     "CHANGELOG.md",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
     "build:native": "vite build -c vite.native.config.ts",
     "dev": "yarn build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest",
-    "test:run": "vitest run",
+    "test": "vitest run",
     "test:ui": "vitest --ui"
   },
   "dependencies": {
@@ -57,13 +63,10 @@
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
   },
-  "peerDependencies": {
-    "react-native-web": ">= 0.18.10"
-  },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./src/index.ts"
+  "react-native": "./build/index.native.es.js"
 }

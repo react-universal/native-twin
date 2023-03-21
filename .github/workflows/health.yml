@@ -1,6 +1,6 @@
 name: Health Check
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -23,5 +23,11 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - run: yarn --immutable
-      - run: yarn build:libs
+      - name: Install deps with yarn
+        run: yarn --immutable
+
+      - name: Run build
+        run: yarn build:libs
+
+      - name: Run tests
+        run: yarn test

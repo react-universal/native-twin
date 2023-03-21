@@ -3,14 +3,17 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "importsNotUsedAsValues": "error",
+    "declarationMap": false,
     "noImplicitAny": false,
-    "jsx": "react-native",
+    "emitDeclarationOnly": true,
+    "outDir": "./build",
+    "jsx": "react-jsx",
     "module": "esnext",
     "moduleResolution": "node",
-    "noEmit": true,
+    "noEmit": false,
     "strict": true,
-    "stripInternal": true,
     "target": "esnext"
   },
-  "include": ["src"]
+  "include": ["src", "env.d.ts", "test"],
+  "exclude": ["build"]
 }

@@ -1,5 +1,4 @@
 /// <reference types="vitest" />
-// Configure Vitest (https://vitest.dev/config/)
 import path from 'path';
 import { defineConfig } from 'vite';
 

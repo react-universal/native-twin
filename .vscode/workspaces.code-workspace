@@ -6,7 +6,7 @@
     },
     {
       "name": "🚀 docs-page",
-      "path": "../apps/docs"
+      "path": "../apps/docs-page"
     },
     {
       "name": "expo-app",
@@ -15,6 +15,10 @@
     {
       "name": "📦 @universal-labs/core",
       "path": "../packages/core"
+    },
+    {
+      "name": "📦 @universal-labs/hooks",
+      "path": "../packages/hooks"
     },
     {
       "name": "📦 @universal-labs/primitives",
@@ -31,6 +35,10 @@
     {
       "name": "📦 @universal-labs/tailwind-ui",
       "path": "../packages/tailwind-ui"
+    },
+    {
+      "name": "🚀 docs-page",
+      "path": "../apps/docs"
     }
   ],
   "settings": {
@@ -58,6 +66,7 @@
       "../apps/docs/tailwind.config.js": ["../apps/**/*", "../packages/**/*"],
       "../examples/next-app/tailwind.config.js": ["../apps/**/*", "../packages/**/*"]
     },
+    "tailwindCSS.lint.cssConflict": "ignore",
     "files.exclude": {
       "**/.git": true,
       "**/.svn": true,

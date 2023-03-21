@@ -6,7 +6,7 @@ import type {
   TextStyle,
   ViewStyle,
 } from 'react-native';
-import type { IStyleTuple, IStyleType } from '@universal-labs/stylesheets';
+import type { IStyleTuple, IStyleType } from '../types';
 
 export type TInteractionPseudoSelectors = 'hover' | 'active' | 'focus' | 'group-hover';
 

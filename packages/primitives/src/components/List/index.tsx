@@ -53,7 +53,11 @@ const PrimitiveLI = forwardRef((props: PropsWithChildren<LIProps>, ref: any) => 
 
 PrimitiveLI.displayName = 'LI';
 
-const UL = styled(PrimitiveUL, 'flex flex-col');
-const LI = styled(PrimitiveLI, 'flex');
+const UL = styled(PrimitiveUL, {
+  baseClassName: 'flex flex-col',
+});
+const LI = styled(PrimitiveLI, {
+  baseClassName: 'flex',
+});
 
 export { UL, LI };

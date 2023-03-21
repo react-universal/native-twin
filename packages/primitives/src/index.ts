@@ -1,4 +1,5 @@
 export { View } from './components/View';
+export { ScrollView } from './components/ScrollView';
 export type { ViewProps } from './components/View';
 export { Nav } from './components/Nav';
 export { Code, H1, H2, H3, H4, H5, H6, P, Span, Strong } from './components/Text';

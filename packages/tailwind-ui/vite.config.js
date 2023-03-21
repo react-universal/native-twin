@@ -1,14 +1,18 @@
+/// <reference types="vitest" />
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
-import { defineConfig, searchForWorkspaceRoot } from 'vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    fs: {
-      allow: [searchForWorkspaceRoot(process.cwd()), '..'],
+  test: {
+    globals: true,
+    environment: 'happy-dom',
+    deps: {
+      external: ['react-native'],
+      inline: ['react-native'],
     },
   },
+  plugins: [react()],
   optimizeDeps: {
     esbuildOptions: {
       mainFields: ['module', 'main'],
@@ -35,6 +39,7 @@ export default defineConfig({
       external: [
         'react',
         'react-dom',
+        'react-native',
         'react-native-web',
         '@headlessui/react',
         '@heroicons/react',
@@ -44,10 +49,8 @@ export default defineConfig({
         '@universal-labs/core',
         '@universal-labs/primitives',
         '@universal-labs/stylesheets',
-        'react-native-svg',
+        /react-native-svg/,
         'react/jsx-runtime',
-        /tailwindcss/,
-        /next/,
       ],
       output: {
         dir: 'build',
@@ -56,10 +59,8 @@ export default defineConfig({
         globals: {
           react: 'React',
           'react-dom': 'ReactDom',
-          next: 'Next',
         },
       },
     },
-    sourcemap: true,
   },
 });

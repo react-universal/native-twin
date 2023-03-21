@@ -2,6 +2,14 @@
   "name": "@universal-labs/stylesheets",
   "version": "1.4.16",
   "description": "Stylesheets manager",
+  "keywords": [
+    "react-native",
+    "tailwindcss",
+    "postcss",
+    "tailwind-ui",
+    "react-native-web",
+    "universal-apps"
+  ],
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
     "url": "https://github.com/react-universal/tailwind/issues"
@@ -19,24 +27,29 @@
       "import": "./build/index.es.js",
       "require": "./build/index.umd.js"
     },
+    "./react-native": {
+      "import": "./react-native/index.js",
+      "require": "./react-native/index.js",
+      "types": "./react-native/index.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "main": "./build/index.umd.js",
   "module": "./build/index.es.js",
-  "types": "./src/index.ts",
+  "types": "./build/index.d.ts",
   "files": [
-    "src",
     "build",
+    "react-native",
     "LICENSE",
     "CHANGELOG.md",
     "README.md"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
+    "build:native": "vite build -c vite.native.config.ts",
     "dev": "yarn vite build -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest",
-    "test:run": "vitest run",
+    "test": "vitest run",
     "test:ui": "vitest --ui"
   },
   "dependencies": {
@@ -60,5 +73,5 @@
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./src/index.ts"
+  "react-native": "./build/index.native.es.js"
 }

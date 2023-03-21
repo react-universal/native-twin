@@ -2,6 +2,14 @@
   "name": "@universal-labs/styled",
   "version": "1.4.16",
   "description": "Styled components for css in react native",
+  "keywords": [
+    "react-native",
+    "tailwindcss",
+    "postcss",
+    "tailwind-ui",
+    "react-native-web",
+    "universal-apps"
+  ],
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
     "url": "https://github.com/react-universal/tailwind/issues"
@@ -21,25 +29,25 @@
     },
     "./tailwind": {
       "import": "./build/tailwind/index.cjs.js",
-      "require": "./build/tailwind/index.cjs.js",
-      "types": "./tailwind/index.ts"
+      "require": "./build/tailwind/index.cjs.js"
     },
     "./package.json": "./package.json"
   },
   "main": "./build/index.umd.js",
   "module": "./build/index.es.js",
-  "types": "./src/index.ts",
+  "types": "./build/index.d.ts",
   "files": [
-    "src",
-    "build"
+    "build",
+    "LICENSE",
+    "CHANGELOG.md",
+    "README.md"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
     "build:native": "vite build -c vite.native.config.ts",
     "dev": "yarn build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest",
-    "test:run": "vitest run",
+    "test": "vitest run",
     "test:ui": "vitest --ui"
   },
   "dependencies": {
@@ -52,25 +60,25 @@
     "@types/react-dom": "~18.0.10",
     "@types/react-is": "^17.0.3",
     "@types/react-native": "0.70.7",
+    "@types/react-test-renderer": "^18.0.0",
     "@vitejs/plugin-react-swc": "^3.2.0",
     "@vitest/ui": "^0.28.3",
+    "happy-dom": "latest",
+    "jsdom": "latest",
     "react": "18.2.0",
+    "react-test-renderer": "^18.2.0",
     "tslib": "^2.3.0",
     "typescript": "^4.9.4",
     "vite": "^4.1.1",
     "vitest": "^0.28.3"
   },
   "peerDependencies": {
-    "postcss": ">= 8.0.0",
-    "react-native-gesture-handler": ">= 2.9.0",
-    "react-native-reanimated": ">=2.12.0",
-    "react-native-web": ">= 0.18.10",
-    "tailwindcss": ">= 3.0.0"
+    "react-native-web": ">= 0.18.10"
   },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./src/index.ts"
+  "react-native": "./build/index.native.es.js"
 }

@@ -108,7 +108,7 @@ class GlobalStyleSheet {
   private _getAppearanceClasses(classNames: string[][]) {
     const interactions: [TAppearancePseudoSelectors, string][] = [];
     for (const current of classNames) {
-      if (!selectorIsAppearance(current[0])) continue;
+      if (!current[0] || !current[1] || !selectorIsAppearance(current[0])) continue;
       const pseudoSelector = current[0];
       const className = current[1];
       interactions.push([pseudoSelector, className]);
@@ -119,7 +119,7 @@ class GlobalStyleSheet {
   private _getInteractionClasses(classNames: string[][]) {
     const interactions: [TInteractionPseudoSelectors, string][] = [];
     for (const current of classNames) {
-      if (!selectorIsInteraction(current[0])) continue;
+      if (!current[0] || !current[1] || !selectorIsInteraction(current[0])) continue;
       const pseudoSelector = current[0];
       const className = current[1];
       interactions.push([pseudoSelector, className]);

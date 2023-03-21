@@ -13,21 +13,20 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: '@universal-labs/core',
-      fileName: (format) => `index.${format}.native.js`,
+      fileName: (format) => `index.native.${format}.js`,
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       external: [
         'react',
-        '@expo/html-elements',
         'react-dom',
         'react-native',
         'react-native-web',
         'class-variance-authority',
         '@universal-labs/core',
+        '@universal-labs/styled',
         'react-native-svg',
         'react/jsx-runtime',
-        /tailwindcss/,
       ],
       output: {
         dir: 'build',

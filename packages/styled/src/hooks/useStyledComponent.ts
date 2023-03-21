@@ -20,12 +20,13 @@ const useStyledComponent = <T, C extends keyof T>(
     nthChild,
     ...componentProps
   }: IExtraProperties<TInternalStyledComponentProps>,
-  baseClassNameOrOptions?: StyledOptions<T, C>,
+  styledOptions?: StyledOptions<T, C>,
 ) => {
-  const baseClassName =
-    typeof baseClassNameOrOptions === 'string' ? baseClassNameOrOptions : '';
   const component = useStore({
-    className: `${className} ${baseClassName}` ?? `${tw} ${baseClassName}` ?? baseClassName,
+    className:
+      `${className} ${styledOptions?.baseClassName}` ??
+      `${tw} ${styledOptions?.baseClassName}` ??
+      styledOptions?.baseClassName,
     parentID,
     inlineStyles: style,
     isFirstChild,

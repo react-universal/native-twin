@@ -2,6 +2,16 @@
   "name": "@universal-labs/primitives",
   "version": "1.4.16",
   "description": "",
+  "keywords": [
+    "react-native",
+    "tailwindcss",
+    "postcss",
+    "tailwind-ui",
+    "react-native-web",
+    "react-native-tailwindcss",
+    "react-native-tailwind-components",
+    "universal-apps"
+  ],
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
     "url": "https://github.com/react-universal/tailwind/issues"
@@ -23,9 +33,8 @@
   },
   "main": "./build/index.umd.js",
   "module": "./build/index.es.js",
-  "types": "./src/index.ts",
+  "types": "./build/index.d.ts",
   "files": [
-    "src",
     "build",
     "env.d.ts",
     "LICENSE",
@@ -33,11 +42,12 @@
     "README.md"
   ],
   "scripts": {
-    "build": "yarn vite build",
+    "build": "yarn vite build && yarn build:native && npx tsc -p tsconfig.build.json",
     "build:native": "yarn vite build -c vite.native.config.ts",
     "dev": "yarn vite build -w --force",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "yarn vite test"
+    "test": "vitest run",
+    "test:ui": "yarn vitest --ui"
   },
   "dependencies": {
     "@universal-labs/styled": "workspace:*"
@@ -46,19 +56,18 @@
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
     "@types/react-native": "0.70.7",
+    "@types/react-test-renderer": "^18.0.0",
+    "happy-dom": "latest",
+    "jsdom": "latest",
+    "react-test-renderer": "^18.2.0",
     "tslib": "^2.3.0",
-    "vite": "^4.1.1"
-  },
-  "peerDependencies": {
-    "next": ">= 13.0.0",
-    "postcss": ">= 8.4",
-    "react-native": ">= 0.69.0",
-    "tailwindcss": "^3.2.4"
+    "vite": "^4.1.1",
+    "vitest": "^0.28.3"
   },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./src/index.ts"
+  "react-native": "./build/index.native.es.js"
 }

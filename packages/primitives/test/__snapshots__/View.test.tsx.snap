@@ -1,0 +1,14 @@
+// Vitest Snapshot v1
+
+exports[`@universal-labs/primitives > View render 1`] = `
+<div
+  className="css-view-175oi2r  flex-1"
+  dir={null}
+>
+  <span
+    className="text-base"
+  >
+    Test View
+  </span>
+</div>
+`;

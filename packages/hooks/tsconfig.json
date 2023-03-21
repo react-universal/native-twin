@@ -3,6 +3,8 @@
   "compilerOptions": {
     "outDir": "./build",
     "rootDir": "./src",
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
@@ -11,6 +13,6 @@
     "types": ["node"],
     "importHelpers": true
   },
-  "include": ["./src"],
+  "include": ["./src", "test"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }
