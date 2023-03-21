@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base",
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "importsNotUsedAsValues": "error",
+    "declarationMap": false,
+    "noImplicitAny": false,
+    "emitDeclarationOnly": true,
+    "outDir": "./build",
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "strict": true,
+    "target": "esnext"
+  },
+  "include": ["src", "env.d.ts"],
+  "exclude": ["build"]
+}
