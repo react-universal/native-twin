@@ -14,24 +14,21 @@
     "apps/*"
   ],
   "scripts": {
-    "build:libs": "lerna run build --scope=\"@universal-labs/**\"",
+    "build:libs": "npx nx run-many --target=build --projects=\"@universal-labs/**\"",
     "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
-    "commit": "cz",
-    "dev": "lerna run dev --scope=\"@universal-labs/**\" --parallel",
-    "docs:build": "lerna run build --scope docs-page",
-    "docs:dev": "lerna run dev --scope docs-page",
-    "expo:android": "lerna run android --scope expo-app",
-    "expo:ios": "lerna run ios --scope expo-app",
-    "expo:start": "lerna run start --scope expo-app",
+    "dev": "npx nx run-many --target=dev --projects=\"@universal-labs/**\"",
+    "docs:build": "npx nx run build --project=docs-page",
+    "docs:dev": "npx nx run dev --project=docs-page",
+    "expo:android": "npx nx run android --project=expo-app",
+    "expo:ios": "npx nx run ios --project=expo-app",
+    "expo:start": "npx nx run start --project=expo-app",
     "format": "prettier --write packages apps examples \"**/*.{js,ts,tsx,md}\"",
     "libs:foreach": "yarn workspaces foreach --no-private --verbose",
-    "lint": "lerna run lint --scope=\"@universal-labs/**\"",
+    "lint": "npx nx run-many --target=lint --projects=\"@universal-labs/**\"",
     "release": "yarn build:release && changeset publish",
-    "test": "yarn lerna run test",
-    "test:e2e": "lerna run e2e",
-    "version-packages": "changeset version && yarn --mode=\"update-lockfile\"",
-    "version:stage": "yarn install && git stage yarn.lock",
-    "web": "lerna run dev --scope next-app"
+    "test": "npx nx run-many --target=test --projects=\"@universal-labs/**\"",
+    "test:e2e": "npx nx run-many --target=e2e --projects=\"@universal-labs/**\"",
+    "web": "npx nx dev start --project=next-app"
   },
   "config": {
     "commitizen": {
@@ -61,6 +58,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-unused-imports": "2.0.0",
     "lerna": "^6.5.1",
+    "nx": "^15.8.7",
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "tslib": "^2.3.0",

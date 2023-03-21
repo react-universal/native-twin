@@ -3597,6 +3597,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/cli@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/cli@npm:15.8.7"
+  dependencies:
+    nx: 15.8.7
+  checksum: 2c5b091cf0e55d181b0c6e6fc010d94672114a133ef57aab09ab4620f4c1d0599694304db5d89863c6b5ae5004b90c8d8bc4cb61a84f66449f3c420bb445baf3
+  languageName: node
+  linkType: hard
+
 "@nrwl/devkit@npm:>=15.5.2 < 16":
   version: 15.7.2
   resolution: "@nrwl/devkit@npm:15.7.2"
@@ -3619,9 +3628,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/nx-darwin-arm64@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/nx-darwin-arm64@npm:15.8.7"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@nrwl/nx-darwin-x64@npm:15.7.2":
   version: 15.7.2
   resolution: "@nrwl/nx-darwin-x64@npm:15.7.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@nrwl/nx-darwin-x64@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/nx-darwin-x64@npm:15.8.7"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -3633,9 +3656,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/nx-linux-arm-gnueabihf@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/nx-linux-arm-gnueabihf@npm:15.8.7"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
 "@nrwl/nx-linux-arm64-gnu@npm:15.7.2":
   version: 15.7.2
   resolution: "@nrwl/nx-linux-arm64-gnu@npm:15.7.2"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@nrwl/nx-linux-arm64-gnu@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/nx-linux-arm64-gnu@npm:15.8.7"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
@@ -3647,9 +3684,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/nx-linux-arm64-musl@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/nx-linux-arm64-musl@npm:15.8.7"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
 "@nrwl/nx-linux-x64-gnu@npm:15.7.2":
   version: 15.7.2
   resolution: "@nrwl/nx-linux-x64-gnu@npm:15.7.2"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@nrwl/nx-linux-x64-gnu@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/nx-linux-x64-gnu@npm:15.8.7"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
@@ -3661,6 +3712,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/nx-linux-x64-musl@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/nx-linux-x64-musl@npm:15.8.7"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
 "@nrwl/nx-win32-arm64-msvc@npm:15.7.2":
   version: 15.7.2
   resolution: "@nrwl/nx-win32-arm64-msvc@npm:15.7.2"
@@ -3668,9 +3726,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/nx-win32-arm64-msvc@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/nx-win32-arm64-msvc@npm:15.8.7"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@nrwl/nx-win32-x64-msvc@npm:15.7.2":
   version: 15.7.2
   resolution: "@nrwl/nx-win32-x64-msvc@npm:15.7.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@nrwl/nx-win32-x64-msvc@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/nx-win32-x64-msvc@npm:15.8.7"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3683,6 +3755,17 @@ __metadata:
   bin:
     tao: index.js
   checksum: cbf76f385bffb1bf1bde52d4ad950a8abd1ba9865f47afb67a58bb5dc5d7be0d21c5021a3332d2ab665d99b36ec1f08ee260c1289bb7e69783e69712145d2709
+  languageName: node
+  linkType: hard
+
+"@nrwl/tao@npm:15.8.7":
+  version: 15.8.7
+  resolution: "@nrwl/tao@npm:15.8.7"
+  dependencies:
+    nx: 15.8.7
+  bin:
+    tao: index.js
+  checksum: 0045c017713226e4dc8d9eb36f0cd0882a534317519404993acc6d7d6fe2e1bcd4edf6b711b50ce311712b882968d386bc28d846cf61996b60389442d9c32f21
   languageName: node
   linkType: hard
 
@@ -14793,6 +14876,87 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nx@npm:15.8.7, nx@npm:^15.8.7":
+  version: 15.8.7
+  resolution: "nx@npm:15.8.7"
+  dependencies:
+    "@nrwl/cli": 15.8.7
+    "@nrwl/nx-darwin-arm64": 15.8.7
+    "@nrwl/nx-darwin-x64": 15.8.7
+    "@nrwl/nx-linux-arm-gnueabihf": 15.8.7
+    "@nrwl/nx-linux-arm64-gnu": 15.8.7
+    "@nrwl/nx-linux-arm64-musl": 15.8.7
+    "@nrwl/nx-linux-x64-gnu": 15.8.7
+    "@nrwl/nx-linux-x64-musl": 15.8.7
+    "@nrwl/nx-win32-arm64-msvc": 15.8.7
+    "@nrwl/nx-win32-x64-msvc": 15.8.7
+    "@nrwl/tao": 15.8.7
+    "@parcel/watcher": 2.0.4
+    "@yarnpkg/lockfile": ^1.1.0
+    "@yarnpkg/parsers": ^3.0.0-rc.18
+    "@zkochan/js-yaml": 0.0.6
+    axios: ^1.0.0
+    chalk: ^4.1.0
+    cli-cursor: 3.1.0
+    cli-spinners: 2.6.1
+    cliui: ^7.0.2
+    dotenv: ~10.0.0
+    enquirer: ~2.3.6
+    fast-glob: 3.2.7
+    figures: 3.2.0
+    flat: ^5.0.2
+    fs-extra: ^11.1.0
+    glob: 7.1.4
+    ignore: ^5.0.4
+    js-yaml: 4.1.0
+    jsonc-parser: 3.2.0
+    lines-and-columns: ~2.0.3
+    minimatch: 3.0.5
+    npm-run-path: ^4.0.1
+    open: ^8.4.0
+    semver: 7.3.4
+    string-width: ^4.2.3
+    strong-log-transformer: ^2.1.0
+    tar-stream: ~2.2.0
+    tmp: ~0.2.1
+    tsconfig-paths: ^4.1.2
+    tslib: ^2.3.0
+    v8-compile-cache: 2.3.0
+    yargs: ^17.6.2
+    yargs-parser: 21.1.1
+  peerDependencies:
+    "@swc-node/register": ^1.4.2
+    "@swc/core": ^1.2.173
+  dependenciesMeta:
+    "@nrwl/nx-darwin-arm64":
+      optional: true
+    "@nrwl/nx-darwin-x64":
+      optional: true
+    "@nrwl/nx-linux-arm-gnueabihf":
+      optional: true
+    "@nrwl/nx-linux-arm64-gnu":
+      optional: true
+    "@nrwl/nx-linux-arm64-musl":
+      optional: true
+    "@nrwl/nx-linux-x64-gnu":
+      optional: true
+    "@nrwl/nx-linux-x64-musl":
+      optional: true
+    "@nrwl/nx-win32-arm64-msvc":
+      optional: true
+    "@nrwl/nx-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@swc-node/register":
+      optional: true
+    "@swc/core":
+      optional: true
+  bin:
+    nx: bin/nx.js
+  checksum: b85e1df9cf028dc97d91fdb17897edc890ca0910268c98079e180b07d4da33c083d85dade5bede00ff7c1e3778fca86b08339d19f176b870026c836ea360a457
+  languageName: node
+  linkType: hard
+
 "ob1@npm:0.73.7":
   version: 0.73.7
   resolution: "ob1@npm:0.73.7"
@@ -19239,6 +19403,7 @@ __metadata:
     eslint-plugin-react-hooks: 4.6.0
     eslint-plugin-unused-imports: 2.0.0
     lerna: ^6.5.1
+    nx: ^15.8.7
     prettier: ^2.8.3
     prettier-plugin-tailwindcss: ^0.2.2
     tslib: ^2.3.0
