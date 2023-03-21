@@ -6,6 +6,9 @@
     "noImplicitAny": true,
     "noUnusedLocals": false,
     "module": "ESNext",
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "outDir": "./build",
     "types": ["node", "vitest/globals"],
     "importHelpers": true
   },

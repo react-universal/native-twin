@@ -14,6 +14,6 @@
     "module": "ES6",
     "importHelpers": true
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "env.d.ts", "test"],
+  "include": ["src", "env.d.ts"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }

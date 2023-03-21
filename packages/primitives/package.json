@@ -33,7 +33,7 @@
   },
   "main": "./build/index.umd.js",
   "module": "./build/index.es.js",
-  "types": "./src/index.ts",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "env.d.ts",
