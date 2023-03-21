@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/hooks",
-  "version": "1.4.18",
+  "version": "1.4.19",
   "description": "helper hooks for common utility functions",
   "keywords": [
     "react-native",
