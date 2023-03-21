@@ -8461,9 +8461,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docs-page@workspace:apps/docs":
+"docs-page@workspace:apps/docs-page":
   version: 0.0.0-use.local
-  resolution: "docs-page@workspace:apps/docs"
+  resolution: "docs-page@workspace:apps/docs-page"
   dependencies:
     "@next/font": 13.0.6
     "@types/react-syntax-highlighter": ^15.5.6
