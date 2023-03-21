@@ -14,7 +14,7 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^clean","^build"]
+      "dependsOn": ["^clean", "^build"]
     }
   }
 }
