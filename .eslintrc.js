@@ -6,12 +6,7 @@ module.exports = {
     commonjs: true,
     node: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:prettier/recommended',
-    '@nrwl/nx',
-  ],
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -25,12 +20,9 @@ module.exports = {
     },
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports'],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports', '@nrwl/nx'],
   rules: {
-    '@nrwl/nx/enforce-module-boundaries': [
-      'error',
-      {},
-    ],
+    '@nrwl/nx/enforce-module-boundaries': ['error', {}],
     'react/no-children-prop': 'off',
     'no-console': 'warn',
     'no-redeclare': 'off',

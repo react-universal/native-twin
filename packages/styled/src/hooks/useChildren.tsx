@@ -1,10 +1,8 @@
 import { Children, cloneElement, isValidElement, useMemo } from 'react';
 import type { StyleProp } from 'react-native';
 import type { ComponentNode } from '@universal-labs/stylesheets';
-import { useRenderCounter } from './useRenderCounter';
 
 function useChildren(children: React.ReactNode, component: ComponentNode) {
-  useRenderCounter();
   return useMemo(() => {
     const totalChilds = Children.count(children);
     return Children.map(children, (child, index) => {
