@@ -24,17 +24,17 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./build/index.es.js",
-      "require": "./build/index.umd.js"
+      "import": "./build/index.js",
+      "require": "./build/index.js"
     },
     "./tailwind": {
-      "import": "./build/tailwind/index.cjs.js",
-      "require": "./build/tailwind/index.cjs.js"
+      "import": "./build/tailwind/index.js",
+      "require": "./build/tailwind/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/index.umd.js",
-  "module": "./build/index.es.js",
+  "main": "./build/index.js",
+  "module": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -43,8 +43,9 @@
     "README.md"
   ],
   "scripts": {
-    "build": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
+    "build": "expo-module build -p tsconfig.build.json",
     "build:native": "vite build -c vite.native.config.ts",
+    "build:vite": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
     "dev": "yarn build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",

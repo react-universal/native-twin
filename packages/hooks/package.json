@@ -24,13 +24,13 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./build/index.es.js",
-      "require": "./build/index.umd.js"
+      "import": "./build/index.js",
+      "require": "./build/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/index.umd.js",
-  "module": "./build/index.es.js",
+  "main": "./build/index.js",
+  "module": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",

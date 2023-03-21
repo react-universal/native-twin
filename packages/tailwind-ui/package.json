@@ -40,6 +40,7 @@
   ],
   "scripts": {
     "build": "npx vite build",
+    "build:ts": "expo-module build -p tsconfig.build.json",
     "dev": "yarn vite build -w",
     "e2e": "cypress open",
     "lint": "eslint \"./**/*.{ts,tsx}\"",

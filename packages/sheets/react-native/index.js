@@ -1,1 +1,1 @@
-export { setTailwindConfig } from '../build/index.native.es';
+export { setTailwindConfig } from '../build/index';

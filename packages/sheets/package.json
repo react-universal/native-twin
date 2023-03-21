@@ -24,8 +24,7 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./build/index.es.js",
-      "require": "./build/index.umd.js"
+      "default": "./build/index.js"
     },
     "./react-native": {
       "import": "./react-native/index.js",
@@ -34,19 +33,21 @@
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/index.umd.js",
-  "module": "./build/index.es.js",
+  "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
+    "env.d.ts",
     "react-native",
     "LICENSE",
     "CHANGELOG.md",
     "README.md"
   ],
   "scripts": {
-    "build": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
+    "build": "expo-module build -p tsconfig.build.json",
     "build:native": "vite build -c vite.native.config.ts",
+    "build:vite": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
+    "clean": "expo-module clean",
     "dev": "yarn vite build -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",

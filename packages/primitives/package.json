@@ -26,13 +26,13 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./build/index.es.js",
-      "require": "./build/index.cjs.js"
+      "import": "./build/index.js",
+      "require": "./build/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/index.cjs.js",
-  "module": "./build/index.es.js",
+  "main": "./build/index.js",
+  "module": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -42,8 +42,9 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npx vite build && yarn build:native && npx tsc -p tsconfig.build.json",
+    "build": "expo-module build -p tsconfig.build.json",
     "build:native": "npx vite build -c vite.native.config.ts",
+    "build:vite": "npx vite build && yarn build:native && npx tsc -p tsconfig.build.json",
     "dev": "yarn vite build -w --force",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",
