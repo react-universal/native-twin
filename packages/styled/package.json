@@ -23,7 +23,7 @@
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
   "main": "./build/index.js",
-  "module": "./build/index.js",
+  "browser": "./build/index.web.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",

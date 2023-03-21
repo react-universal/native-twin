@@ -31,7 +31,7 @@
   },
   "main": "./build/index.umd.js",
   "module": "./build/index.es.js",
-  "types": "./build/index.d.ts",
+  "types": "./src/index.ts",
   "files": [
     "build",
     "LICENSE",
