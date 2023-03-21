@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4.19
+
+### Patch Changes
+
+- [`18cbf0e`](https://github.com/react-universal/tailwind/commit/18cbf0e96b101853bf2f923bf0b282678d18a203) Thanks [@chrisarts](https://github.com/chrisarts)! - cjs for primitives
+
 ## 1.4.18
 
 ### Patch Changes
