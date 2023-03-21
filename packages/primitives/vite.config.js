@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { defineConfig } from 'vite';
@@ -28,14 +29,11 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'primitives',
       fileName: (format) => `index.${format}.js`,
+      formats: ['cjs', 'es'],
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
-      external: [
-        'react',
-        'react-native-web',
-        'react/jsx-runtime',
-      ],
+      external: ['react', 'react-native-web', 'react/jsx-runtime'],
       output: {
         dir: 'build',
         format: 'esm',

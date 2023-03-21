@@ -27,11 +27,11 @@
   "exports": {
     ".": {
       "import": "./build/index.es.js",
-      "require": "./build/index.umd.js"
+      "require": "./build/index.cjs.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/index.umd.js",
+  "main": "./build/index.cjs.js",
   "module": "./build/index.es.js",
   "types": "./build/index.d.ts",
   "files": [
@@ -63,5 +63,5 @@
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./build/index.native.es.js"
+  "react-native": "./build/index.native.cjs.js"
 }

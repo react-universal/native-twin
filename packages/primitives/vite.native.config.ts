@@ -14,6 +14,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: '@universal-labs/core',
       fileName: (format) => `index.native.${format}.js`,
+      formats: ['cjs', 'es'],
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
@@ -27,7 +28,7 @@ export default defineConfig({
       ],
       output: {
         dir: 'build',
-        format: 'esm',
+        format: 'commonjs',
         externalImportAssertions: true,
         globals: {
           react: 'React',
