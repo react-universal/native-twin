@@ -39,8 +39,9 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "npx vite build && yarn build:native && npx tsc -p tsconfig.build.json",
+    "build": "expo-module build -p tsconfig.build.json",
     "build:native": "npx vite build -c vite.native.config.ts",
+    "clean": "expo-module clean",
     "dev": "yarn build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",

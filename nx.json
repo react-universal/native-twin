@@ -8,13 +8,12 @@
       }
     }
   },
-  "npmScope": "universal-labs",
   "cli": {
     "packageManager": "yarn"
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^clean", "^build"]
+      "dependsOn": ["^build", "^clean"]
     }
   }
 }
