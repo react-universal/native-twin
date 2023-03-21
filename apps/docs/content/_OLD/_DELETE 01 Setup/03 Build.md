@@ -1,0 +1,3 @@
+En proceso... 
+
+Aqui como sería para hacer el procesado de mis custom component
