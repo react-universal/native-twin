@@ -24,7 +24,8 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "default": "./build/index.js"
+      "default": "./build/index.js",
+      "types": "./build/index.d.ts"
     },
     "./react-native": {
       "import": "./react-native/index.js",
