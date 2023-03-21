@@ -1,11 +1,11 @@
 # Installation
 
-You have two options to use tailwindcss in you React Native project.
+You have two options to install Universal Labs to use tailwindcss in your React Native project.
 
 ## Install Universal Labs in your project
 
 ### Option 1 (Recommended): Using primitives
-This option already gives you all React Native primitives pre-configured to use classNames or tw prop.
+This option already gives you all React Native primitives pre-configured to use classNames or TWCSS prop.
 
 ```
 yarn add @universal-labs/primitives 

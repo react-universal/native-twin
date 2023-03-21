@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "dfd3f2b230cfc74f",
+        "id": "6cfd1a3106efda5f",
         "type": "tabs",
         "children": [
           {
-            "id": "f986f1e0ae661a8b",
+            "id": "75f08d727ae79ebe",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -18,237 +18,8 @@
                 "source": false
               }
             }
-          },
-          {
-            "id": "e199c40bf6b2500c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Font Size.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "6d38648d9bf08a02",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Font Style.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "3a57fc380d844239",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Font Weight.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "0d4b6be033d330ed",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Letter Spacing.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "4b352c180a31ccf2",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Line Height.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "98c83776949c6237",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Text Transform.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "2d09034b38a01ede",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Text Color.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "42301ab896902c29",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Text Decoration.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "5ab4f8840fe6cd65",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Text Decoration Color.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "5523c2a5c9749e3b",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Text Decoration Style.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "019412b35c67594c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Typography/Text Align.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "739bb9ea6c00bb70",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Background/Background Color.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "0a643cf07e7b6a05",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Borders/Border Radius.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "1314f66c3529fe72",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Borders/Border Radius.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "d8adf82a3191da29",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Borders/Border Color.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "b46408b01f2886cd",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Borders/Border Style.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "3241e3e06bebc265",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Borders/Divide Width.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "a7a5654df456b66e",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Borders/Divide Color.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "dc278f45b904a43c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Borders/Divide Width.md",
-                "mode": "source",
-                "source": false
-              }
-            }
           }
-        ],
-        "currentTab": 19
+        ]
       }
     ],
     "direction": "vertical"
@@ -314,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Borders/Divide Width.md",
+                "file": "Typography/_Font Family.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -331,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Borders/Divide Width.md",
+                "file": "Typography/_Font Family.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -354,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Borders/Divide Width.md"
+                "file": "Typography/_Font Family.md"
               }
             }
           },
@@ -384,38 +155,38 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "dc278f45b904a43c",
+  "active": "75f08d727ae79ebe",
   "lastOpenFiles": [
-    "Borders/Divide Style.md",
-    "Borders/Border Style.md",
-    "Borders/Divide Color.md",
-    "Borders/Divide Width.md",
-    "Borders/Border Width.md",
-    "Borders/Border Color.md",
-    "Borders/Border Radius.md",
-    "Spacing/Margin.md",
-    "Sizing/Min-Height.md",
-    "Sizing/Max-Height.md",
+    "01 Overview/Installation.md",
+    "01 Overview/Index.md",
+    "_OLD/_DELETE 01 Setup/01 Installation.md",
+    "_OLD/_DELETE - 02 Components/TextInput.md",
+    "_OLD/_DELETE - 02 Components/View.md",
+    "_OLD/_DELETE 01 Setup/02 Setup.md",
+    "_OLD/_DELETE 01 Setup/03 Build.md",
+    "_OLD/_DELETE - 02 Components/Text.md",
+    "_OLD/_DELETE - 02 Components/Pressable.md",
+    "_OLD/_DELETE - 02 Components/Nav.md",
+    "_OLD/_DELETE - 02 Components/Image.md",
     "Background/Background Color.md",
-    "Borders",
-    "Typography/Text Decoration Color.md",
-    "Typography/Text Decoration Style.md",
-    "Typography/Text Transform.md",
-    "Typography/Text Align.md",
-    "Background",
-    "Typography/Text Decoration.md",
-    "Typography/Text Color.md",
-    "Typography/Line Height.md",
-    "Typography/Letter Spacing.md",
+    "02 Quick Start/Vite.md",
+    "02 Quick Start/NextJS.md",
+    "02 Quick Start/Expo or RN CLI.md",
     "Typography/_Font Family.md",
-    "Typography/Font Weight.md",
-    "Typography/Font Style.md",
-    "Typography/Font Size.md",
-    "Sizing/Height.md",
-    "Flexbox/_ Gap.md",
+    "Flexbox/Gap.md",
+    "Flexbox/Flex Grow.md",
+    "Flexbox/Flex Direction.md",
+    "Flexbox/Flex Basis.md",
+    "Flexbox/Align Self.md",
+    "Flexbox/Align Items.md",
+    "Flexbox/Align Content.md",
+    "Borders/Border Style.md",
+    "Borders/Border Radius.md",
+    "Borders/Border Color.md",
+    "Borders",
+    "Background",
     "Typography",
     "_OLD",
-    "Flexbox/Align Content.md",
     "Sizing",
     "Spacing",
     "Flexbox",
