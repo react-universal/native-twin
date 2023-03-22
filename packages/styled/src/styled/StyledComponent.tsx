@@ -1,59 +1,37 @@
-import {
-  ComponentType,
-  ForwardedRef,
-  forwardRef,
-  useRef,
-  Component as ReactComponent,
-  ReactNode,
-  LegacyRef,
-} from 'react';
+import { ComponentType, ForwardedRef, forwardRef } from 'react';
 import type {
   IExtraProperties,
   TInternalStyledComponentProps,
 } from '@universal-labs/stylesheets';
 import { useStyledComponent } from '../hooks';
-import type { ForwardRef, InferRef, StyledOptions } from '../types/styled.types';
+import type { ForwardRef, InferRef, StyledOptions, StyledProps } from '../types/styled.types';
 
-export function styled<T, C extends keyof T>(
+export function styled<T, P extends keyof T>(
   Component: ComponentType<T>,
-  styledOptions?: StyledOptions<T, C>,
+  styledOptions: StyledOptions<T, P> = {},
 ) {
-  class WithTailwind extends ReactComponent<
-    IExtraProperties<T & TInternalStyledComponentProps> & {
-      forwardedRef: ForwardedRef<unknown>;
-    }
-  > {
-    render(): ReactNode {
-      return (
-        <Component {...this.props} ref={this.props.forwardedRef}>
-          {this.props.children}
-        </Component>
-      );
-    }
-  }
   function Styled(
-    props: IExtraProperties<T & TInternalStyledComponentProps>,
-    ref: ForwardedRef<unknown>,
+    props: StyledProps<IExtraProperties<T & TInternalStyledComponentProps>>,
+    ref: ForwardedRef<any>,
   ) {
-    const innerRef = useRef(ref);
     const { styles, componentChilds, componentInteractionHandlers, component } =
       useStyledComponent(props, styledOptions);
-
     return (
-      // @ts-expect-error
-      <WithTailwind
+      <Component
         {...props}
         {...componentInteractionHandlers}
         style={[styles, props.style]}
         key={component.id}
-        forwardedRef={ref as LegacyRef<WithTailwind> | undefined}
-        ref={innerRef as LegacyRef<WithTailwind> | undefined}
+        ref={ref}
       >
         {componentChilds}
-      </WithTailwind>
+      </Component>
     );
   }
 
   Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
-  return forwardRef(Styled) as ForwardRef<InferRef<T>, IExtraProperties<T>>;
+  return forwardRef(Styled) as ForwardRef<
+    InferRef<T>,
+    StyledProps<{ [key in keyof T]: key extends P ? T[key] | string : T[key] }>
+  >;
 }

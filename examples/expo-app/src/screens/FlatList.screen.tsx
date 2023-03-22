@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
-import { FlatList, SafeAreaView } from 'react-native';
-import { H2, Pressable, Span, View } from '@universal-labs/primitives';
-import { useStaticStyledComponent } from '@universal-labs/styled';
+import { ListRenderItem, SafeAreaView } from 'react-native';
+import { H2, Pressable, Span, View, FlatList } from '@universal-labs/primitives';
 
 const data = [
   {
@@ -22,9 +21,13 @@ const FlatListScreen = () => {
       },
     ]);
   }, []);
-  const { componentInteractionHandlers, styles } = useStaticStyledComponent({
-    className: 'bg-gray-600 hover:bg-white',
-  });
+  const renderItem: ListRenderItem<(typeof items)[number]> = ({ item }) => {
+    return (
+      <View>
+        <Span>{item.label}</Span>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View className='flex-1'>
@@ -32,16 +35,10 @@ const FlatListScreen = () => {
           <H2>Add item</H2>
         </Pressable>
         <FlatList
-          {...componentInteractionHandlers}
           data={items}
-          contentContainerStyle={styles}
-          renderItem={({ item }) => {
-            return (
-              <View>
-                <Span>{item.label}</Span>
-              </View>
-            );
-          }}
+          contentContainerStyle='bg-gray-600 hover:bg-white'
+          // @ts-expect-error
+          renderItem={renderItem}
         />
       </View>
     </SafeAreaView>

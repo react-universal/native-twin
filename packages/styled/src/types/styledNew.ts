@@ -115,3 +115,24 @@ export type StyledComponentType = {
 export type StyledProps<P> = P & ClassProp;
 
 export type AnyStyledOptions = StyledOptions<any, any, any, any>;
+
+// type TMapClassNames<T, K extends readonly (keyof T)[]> = {
+//   [P in keyof T]: P extends keyof T[K[number]] ? string : T[P];
+// };
+
+// type TClass = TMapClassNames<ViewProps, ['hitSlop']>;
+
+// WANED
+// type TMapClassNames<T, K extends keyof T> = {
+//   [P in keyof T]: P extends K ? string : T[P];
+// };
+
+// type MyProps = {
+//   user: { name: string };
+//   style: { color: number[] };
+//   age: number;
+// };
+
+// const arrayOfKey = ['style'] as const;
+
+// type KeyOfMys = (typeof arrayOfKey)[number];

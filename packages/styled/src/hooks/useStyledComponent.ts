@@ -3,12 +3,12 @@ import type {
   IExtraProperties,
   TInternalStyledComponentProps,
 } from '@universal-labs/stylesheets';
-import type { StyledOptions } from '../types/styled.types';
+import type { StyledOptions, StyledProps } from '../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useStore } from './useStore';
 
-const useStyledComponent = <T, C extends keyof T>(
+const useStyledComponent = <T, P extends keyof T>(
   {
     className,
     children,
@@ -19,8 +19,8 @@ const useStyledComponent = <T, C extends keyof T>(
     isLastChild,
     nthChild,
     ...componentProps
-  }: IExtraProperties<TInternalStyledComponentProps>,
-  styledOptions?: StyledOptions<T, C>,
+  }: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
+  styledOptions?: StyledOptions<T, P>,
 ) => {
   const component = useStore({
     className:

@@ -17,14 +17,14 @@ export type IBaseClassNameOrOptions = string | {};
 
 export type Style = ViewStyle | TextStyle | ImageStyle;
 
-export interface StyledOptions<T, C extends keyof T = never> {
-  classProps?: C[];
+export interface StyledOptions<T, P extends keyof T = never> {
+  props?: Partial<Record<P, true>>;
   baseClassName?: string;
 }
 
-export type StyledProps<P> = P & {
+export type StyledProps<P> = {
   className?: string;
   tw?: string;
   baseClassName?: string;
   baseTw?: string;
-};
+} & P;
