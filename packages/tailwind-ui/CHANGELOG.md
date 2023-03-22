@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.5.3
+
+### Patch Changes
+
+- [`3260efc`](https://github.com/react-universal/tailwind/commit/3260efce3a96effd4c9379f11c3597fb3da21f9d) Thanks [@chrisarts](https://github.com/chrisarts)! - feat(styledprops): support any prop as className prop
+
+- Updated dependencies [[`3260efc`](https://github.com/react-universal/tailwind/commit/3260efce3a96effd4c9379f11c3597fb3da21f9d)]:
+  - @universal-labs/core@1.5.3
+  - @universal-labs/primitives@1.5.3
+
 ## 1.5.2
 
 ### Patch Changes
