@@ -23,7 +23,6 @@
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
   "main": "./build/index.js",
-  "browser": "./build/index.web.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -33,10 +32,8 @@
   ],
   "scripts": {
     "build": "expo-module build -p tsconfig.build.json",
-    "build:native": "vite build -c vite.native.config.ts",
-    "build:vite": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
     "clean": "expo-module clean",
-    "dev": "yarn build",
+    "dev": "expo-module build -p tsconfig.build.json -w",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",
@@ -61,5 +58,6 @@
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "react-native": "./src/index.ts"
 }

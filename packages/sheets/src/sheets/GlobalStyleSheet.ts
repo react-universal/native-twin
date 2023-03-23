@@ -1,12 +1,10 @@
-import { setup } from '@universal-labs/core';
-import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
-import type { Config } from 'tailwindcss';
 import {
   GROUP_PARENT_MASK,
   HOVER_INTERACTION_MASK,
   INITIAL_MASK,
   INTERACTIONS_MASK,
 } from '../constants';
+import { css } from '../css';
 import type {
   IStyleTuple,
   IStyleType,
@@ -19,21 +17,6 @@ import { selectorIsInteraction, selectorIsAppearance, cssPropertiesResolver } fr
 
 class GlobalStyleSheet {
   private stylesCollection: Map<string, IStyleType> = new Map();
-  private processor: ReturnType<typeof setup>;
-  private config: Config = {
-    content: ['__'],
-    corePlugins: { preflight: false },
-    presets: [reactNativeTailwindPreset({ baseRem: 16 })],
-  };
-
-  constructor() {
-    this.processor = setup(this.config);
-  }
-
-  setConfig(config: Config) {
-    this.config = config;
-    this.processor = setup(this.config);
-  }
 
   private _getJSS(classNames: string[]) {
     const styleTuple = classNames.reduce((previous, current) => {
@@ -41,7 +24,7 @@ class GlobalStyleSheet {
       if (cache) {
         previous.push([current, cache]);
       } else {
-        const styles = this.processor.style(current);
+        const styles = css(current);
         const rnStyles = cssPropertiesResolver(styles.JSS);
         previous.push([current, rnStyles]);
         this.stylesCollection.set(current, rnStyles);
@@ -156,9 +139,5 @@ class GlobalStyleSheet {
 }
 
 const globalStyleSheet = new GlobalStyleSheet();
-
-export function setTailwindConfig(config: Config) {
-  globalStyleSheet.setConfig(config);
-}
 
 export default globalStyleSheet;

@@ -11,6 +11,7 @@ function useStore({
   inlineStyles,
   isFirstChild,
   isLastChild,
+  classProps,
   nthChild,
   parentID,
   className,
@@ -23,8 +24,10 @@ function useStore({
       nthChild,
       parentID,
       className,
+      classProps,
     });
-  }, [inlineStyles, isFirstChild, isLastChild, nthChild, parentID, className]);
+  }, [inlineStyles, isFirstChild, isLastChild, nthChild, parentID, className, classProps]);
+
   useEffect(() => {
     return () => unregisterComponent(componentID);
   }, [componentID]);

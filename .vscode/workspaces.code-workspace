@@ -5,24 +5,8 @@
       "path": ".."
     },
     {
-      "name": "🚀 docs-page",
-      "path": "../apps/docs-page"
-    },
-    {
       "name": "expo-app",
       "path": "../examples/expo-app"
-    },
-    {
-      "name": "next-app",
-      "path": "../examples/next-app"
-    },
-    {
-      "name": "📦 @universal-labs/core",
-      "path": "../packages/core"
-    },
-    {
-      "name": "📦 @universal-labs/primitives",
-      "path": "../packages/primitives"
     },
     {
       "name": "📦 @universal-labs/stylesheets",
@@ -37,6 +21,13 @@
     "tailwindCSS.classAttributes": ["className", "tw", "variants"],
     "eslint.validate": ["json"],
     "search.useIgnoreFiles": false,
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/bower_components": true,
+      "**/*.code-search": true,
+      "**/.yarn/**": true,
+      "**/build/**": true
+    },
     "terminal.integrated.defaultLocation": "view",
     "cSpell.ignorePaths": [
       "package-lock.json",
@@ -74,7 +65,8 @@
       "**/.git/subtree-cache/**": true,
       "**/node_modules/*/**": true,
       "**/.hg/store/**": true,
-      "**/dist/**": true
+      "**/dist/**": true,
+      "**/build/**": true
     },
     "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib",
     // "workbench.colorCustomizations": {

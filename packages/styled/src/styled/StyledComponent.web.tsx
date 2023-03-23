@@ -12,8 +12,9 @@ const styled = (Component: ComponentType, styleOptions?: StyledOptions<any>) => 
         isLastChild: false,
         nthChild: 0,
         parentID: '',
+        classProps: {},
       },
-      styleOptions?.baseClassName ?? '',
+      styleOptions,
     );
 
     return <Component {...props} ref={ref} style={style} />;

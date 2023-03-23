@@ -37,7 +37,7 @@
   "scripts": {
     "build": "expo-module build -p tsconfig.build.json",
     "clean": "expo-module clean",
-    "dev": "yarn vite build -w --force",
+    "dev": "expo-module build -p tsconfig.build.json -w",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",
@@ -57,5 +57,6 @@
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "react-native": "./src/index.ts"
 }

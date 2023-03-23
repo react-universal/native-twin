@@ -4,41 +4,35 @@ import type {
   TInternalStyledComponentProps,
 } from '@universal-labs/stylesheets';
 import type { StyledOptions, StyledProps } from '../types/styled.types';
+import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useStore } from './useStore';
 
 const useStyledComponent = <T, P extends keyof T>(
-  {
-    className,
-    children,
-    tw,
-    parentID,
-    style,
-    isFirstChild,
-    isLastChild,
-    nthChild,
-    ...componentProps
-  }: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
+  props: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
   styledOptions?: StyledOptions<T, P>,
 ) => {
+  const classProps = useBuildStyleProps(props, styledOptions);
   const component = useStore({
     className:
-      `${className} ${styledOptions?.baseClassName}` ??
-      `${tw} ${styledOptions?.baseClassName}` ??
+      `${props.className} ${styledOptions?.baseClassName}` ??
+      `${props.tw} ${styledOptions?.baseClassName}` ??
       styledOptions?.baseClassName,
-    parentID,
-    inlineStyles: style,
-    isFirstChild,
-    isLastChild,
-    nthChild,
+    parentID: props.parentID,
+    inlineStyles: props.style,
+    isFirstChild: props.isFirstChild,
+    isLastChild: props.isLastChild,
+    nthChild: props.nthChild,
+    classProps,
   });
+  console.log('COMPONENT: ', component);
 
   const { componentInteractionHandlers } = useComponentInteractions({
-    props: componentProps as Touchable,
+    props: props as Touchable,
     component,
   });
-  const componentChilds = useChildren(children, component);
+  const componentChilds = useChildren(props.children, component);
 
   return {
     styles: component.styles,

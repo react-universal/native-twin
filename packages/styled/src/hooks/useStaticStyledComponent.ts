@@ -18,6 +18,7 @@ const useStaticStyledComponent = <T, C extends keyof T>(
     isFirstChild: false,
     isLastChild: false,
     nthChild: 0,
+    classProps: {},
   });
 
   const { componentInteractionHandlers } = useComponentInteractions({

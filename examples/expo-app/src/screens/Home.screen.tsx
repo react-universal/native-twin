@@ -3,7 +3,7 @@ import { H1, H2, View } from '@universal-labs/primitives';
 function HomeScreen() {
   return (
     <View className='flex-1 divide-x-2 px-2'>
-      <View className='flex-1 items-center justify-center bg-slate-900/50 align-top hover:bg-slate-300'>
+      <View className='flex-1 items-center justify-center bg-slate-900 align-top hover:bg-slate-300'>
         <H1 className='text-gray-200 hover:text-gray-700'>H1 - 1</H1>
       </View>
       <View className='bg-slate-80 group flex-[2] items-center justify-center border-t-8 border-t-indigo-50'>

@@ -16,7 +16,7 @@
   "scripts": {
     "build:libs": "npx nx run-many --target=build --projects=\"@universal-labs/**\"",
     "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
-    "dev": "npx nx run-many --target=dev --projects=\"@universal-labs/**\"",
+    "dev": "npx nx run-many --target=dev --projects=\"@universal-labs/**\" --parallel",
     "docs:build": "npx nx run build --project=docs-page",
     "docs:dev": "npx nx run dev --project=docs-page",
     "expo:android": "npx nx run android --project=expo-app",
@@ -56,6 +56,7 @@
     "@typescript-eslint/parser": "^5.36.1",
     "@vitejs/plugin-react-swc": "^3.2.0",
     "@vitest/ui": "^0.28.3",
+    "concurrently": "^7.6.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-import": "2.26.0",

@@ -1,16 +1,22 @@
 import { default as ComponentStyleSheet } from './sheets/ComponentStyleSheet';
-import globalStyleSheet, { setTailwindConfig } from './sheets/GlobalStyleSheet';
+import globalStyleSheet from './sheets/GlobalStyleSheet';
 import ComponentNode from './store/ComponentNode';
-import storeManager, {
-  registerComponent,
-  setComponentInteractionState,
-  unregisterComponent,
-} from './store/StoreManager';
+import storeManager, { registerComponent, unregisterComponent } from './store/StoreManager';
 
-export { setTailwindConfig, globalStyleSheet, ComponentStyleSheet };
+export { createStore } from './store/generator';
+export { setComponentInteractionState } from './store/global.store';
+export { useComponentStyleSheets } from './hooks/useStyleSheets';
+export { setTailwindConfig } from './css';
+export { globalStyleSheet, ComponentStyleSheet };
 export { ComponentNode };
-export { storeManager, registerComponent, setComponentInteractionState, unregisterComponent };
-export type { IStyleType, IStyleTuple } from './types';
+export { storeManager, registerComponent, unregisterComponent };
+export type {
+  IStyleType,
+  IStyleTuple,
+  TAppearancePseudoSelectors,
+  TInteractionPseudoSelectors,
+  TInternalStyledComponentProps,
+} from './types';
 export type {
   IClassNamesStyle,
   IComponent,
@@ -23,7 +29,4 @@ export type {
   IRegisteredComponent,
   InteractionProps,
   KeyOfMap,
-  TAppearancePseudoSelectors,
-  TInteractionPseudoSelectors,
-  TInternalStyledComponentProps,
 } from './types/store.types';
