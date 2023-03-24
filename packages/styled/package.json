@@ -42,7 +42,8 @@
   },
   "dependencies": {
     "@universal-labs/stylesheets": "workspace:*",
-    "react-is": "^18.2.0"
+    "react-is": "^18.2.0",
+    "tailwind-merge": "^1.10.0"
   },
   "devDependencies": {
     "@types/node": "16.11.7",

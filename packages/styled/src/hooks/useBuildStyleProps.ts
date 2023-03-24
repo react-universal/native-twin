@@ -3,6 +3,7 @@ import type {
   IExtraProperties,
   TInternalStyledComponentProps,
 } from '@universal-labs/stylesheets';
+import { twMerge } from 'tailwind-merge';
 import type { StyledOptions, StyledProps } from '../types/styled.types';
 
 const useBuildStyleProps = <T, P extends keyof T>(
@@ -23,13 +24,13 @@ const useBuildStyleProps = <T, P extends keyof T>(
     if (props) {
       for (const item of Object.entries<boolean>(props)) {
         if (item[1]) {
-          classProps[item[0]] = originalClassProps.current[item[0]];
+          classProps[item[0]] = twMerge(originalClassProps.current[item[0]]);
         }
       }
     }
     return Object.freeze({
       ...(className || tw || styledOptions?.baseClassName
-        ? { style: `${className ?? tw ?? ''} ${styledOptions?.baseClassName ?? ''}` }
+        ? { style: twMerge(styledOptions?.baseClassName, className ?? tw) }
         : {}),
       ...classProps,
     });

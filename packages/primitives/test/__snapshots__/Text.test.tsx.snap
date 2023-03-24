@@ -1,0 +1,12 @@
+// Vitest Snapshot v1
+
+exports[`@universal-labs/primitives > H1 render 1`] = `
+<h1
+  aria-level={1}
+  className="css-text-1rynq56 flex text-4xl font-bold text-sm"
+  dir="auto"
+  role="heading"
+>
+  Test H1
+</h1>
+`;

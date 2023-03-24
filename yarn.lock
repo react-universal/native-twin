@@ -5115,6 +5115,7 @@ __metadata:
     "@types/react-native": 0.70.7
     "@universal-labs/stylesheets": "workspace:*"
     react-is: ^18.2.0
+    tailwind-merge: ^1.10.0
   peerDependencies:
     react-native-web: ">= 0.18.10"
   languageName: unknown
@@ -16435,6 +16436,13 @@ __metadata:
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
   checksum: 6e8fc7e1486b8b54bea91199d9535bb72f10842e40c79e882fc94fb7b14b89866adf2fd79efa5ebb5b658bc07fb459ccce5ac0e99ef3d72f474e74aaf284029d
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^1.10.0":
+  version: 1.10.0
+  resolution: "tailwind-merge@npm:1.10.0"
+  checksum: 80eb30d0300ca912b4b910460497a1d5fb4e697c3aedb01513e633973328684fa7ddf9bfb8550dca28176971c93bcb7ecb7eec3097c01d9c55c191563c693aab
   languageName: node
   linkType: hard
 
