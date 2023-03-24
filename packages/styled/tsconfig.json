@@ -12,6 +12,6 @@
     "types": ["node", "vitest/globals"],
     "importHelpers": true
   },
-  "include": ["src", "src"],
+  "include": ["src", "test"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
 }
