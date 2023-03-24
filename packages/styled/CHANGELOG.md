@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.5.4
+
+### Patch Changes
+
+- [`1502ba4`](https://github.com/react-universal/tailwind/commit/1502ba492ae3ab3be7a8be3dbf9db380801a60dd) Thanks [@chrisarts](https://github.com/chrisarts)! - \* Support for styled props (experimental).
+
+  ## Known bugs
+
+  - The hot reload is not working for now, the new features introduce this behavior.
+
+- Updated dependencies [[`1502ba4`](https://github.com/react-universal/tailwind/commit/1502ba492ae3ab3be7a8be3dbf9db380801a60dd)]:
+  - @universal-labs/stylesheets@1.5.4
+
 ## 1.5.3
 
 ### Patch Changes
