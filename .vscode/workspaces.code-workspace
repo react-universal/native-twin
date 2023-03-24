@@ -9,12 +9,24 @@
       "path": "../examples/expo-app"
     },
     {
+      "name": "📦 @universal-labs/core",
+      "path": "../packages/core"
+    },
+    {
+      "name": "📦 @universal-labs/primitives",
+      "path": "../packages/primitives"
+    },
+    {
       "name": "📦 @universal-labs/stylesheets",
       "path": "../packages/sheets"
     },
     {
       "name": "📦 @universal-labs/styled",
       "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @universal-labs/tailwind-ui",
+      "path": "../packages/tailwind-ui"
     }
   ],
   "settings": {

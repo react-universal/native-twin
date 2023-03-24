@@ -6,6 +6,7 @@ import type {
   TInternalStyledComponentProps,
 } from '../types';
 import type { IRegisterComponentArgs } from '../types/store.types';
+import { createComponentID } from '../utils/createComponentID';
 import { createStore } from './generator';
 
 export interface IUseStyleSheetsInput extends TInternalStyledComponentProps {
@@ -19,6 +20,7 @@ interface IComponentStyleSheets {
 }
 export interface IComponent {
   id: string;
+  parentID: string;
   interactionsState: Record<TInteractionPseudoSelectors, boolean>;
   appearanceState: Omit<TInternalStyledComponentProps, 'parentID'>;
   styleSheets: { [k: string]: IComponentStyleSheets };
@@ -34,7 +36,7 @@ const globalStore = createStore<Store>({
   globalStyleSheet: {},
 });
 
-const registerComponent = (component: IRegisterComponentArgs & { id: string }) => {
+const registerComponent = (component: IRegisterComponentArgs) => {
   const styleSheets = Object.entries(component.classProps).reduce((prev, current) => {
     const [classProp, propClassName] = current;
     prev[classProp] = {
@@ -43,11 +45,13 @@ const registerComponent = (component: IRegisterComponentArgs & { id: string }) =
     };
     return prev;
   }, {} as { [k: string]: IComponentStyleSheets });
+  const componentID = createComponentID() as string;
   globalStore.setState(
     produce((draft) => {
-      draft.components[component.id] = {
-        id: component.id,
+      draft.components[componentID] = {
+        id: componentID,
         styleSheets,
+        parentID: component.parentID,
         appearanceState: {
           isFirstChild: component.isFirstChild,
           isLastChild: component.isLastChild,
@@ -62,6 +66,7 @@ const registerComponent = (component: IRegisterComponentArgs & { id: string }) =
       };
     }),
   );
+  return componentID;
 };
 
 const unregisterComponent = (id: string) => {
@@ -74,6 +79,42 @@ const unregisterComponent = (id: string) => {
   );
 };
 
+function findComponentChildIDs(parentID: string) {
+  const childs = Object.values(globalStore.getState().components);
+  const childsFound: string[] = [];
+  for (const current of childs) {
+    const currentMeta = getStyleSheetInteractions(current.styleSheets);
+    if (current.parentID === parentID && currentMeta.hasGroupInteractions) {
+      childsFound.push(current.id);
+      const recursiveChilds = findComponentChildIDs(current.id);
+      childsFound.push(...recursiveChilds);
+    }
+  }
+  return childsFound;
+}
+
+function getStyleSheetInteractions(stylesheets: IComponent['styleSheets']) {
+  let hasGroupInteractions = false;
+  let hasPointerInteractions = false;
+  let isGroupParent = false;
+  for (const currentStyle of Object.values(stylesheets)) {
+    if (currentStyle.styles.interactionStyles.length > 0) {
+      hasPointerInteractions = true;
+    }
+    if (currentStyle.styles.classNameSet.has('group')) {
+      isGroupParent = true;
+    }
+    if (currentStyle.styles.interactionStyles.some(([name]) => name.includes('group-'))) {
+      hasGroupInteractions = true;
+    }
+  }
+  return {
+    hasGroupInteractions,
+    hasPointerInteractions,
+    isGroupParent,
+  };
+}
+
 function setComponentInteractionState(
   componentID: string,
   interaction: TInteractionPseudoSelectors,
@@ -81,22 +122,24 @@ function setComponentInteractionState(
 ) {
   globalStore.setState(
     produce((draft) => {
-      if (componentID in draft.components) {
-        draft.components[componentID]!.interactionsState[interaction] = value;
+      const component = draft.components[componentID];
+      if (component) {
+        component.interactionsState[interaction] = value;
+        if (
+          getStyleSheetInteractions(component.styleSheets as IComponent['styleSheets'])
+            .isGroupParent
+        ) {
+          const childs = findComponentChildIDs(component.id);
+          childs.forEach((currentChildID) => {
+            const currentChild = draft.components[currentChildID];
+            if (currentChild) {
+              currentChild.interactionsState['group-hover'] = value;
+            }
+          });
+        }
       }
     }),
   );
 }
-
-// interface IRegisterComponentClassNamesArgs {
-//   classNames: string;
-//   componentID: string;
-// }
-// const registerComponentClassNames = (input: IRegisterComponentClassNamesArgs) => {
-//   const currentSheets = globalStore.getState().globalStyleSheet;
-//   if (!(input.componentID in currentSheets)) {
-//     currentSheets[input.componentID] = css(input.classNames).JSS;
-//   }
-// };
 
 export { globalStore, registerComponent, unregisterComponent, setComponentInteractionState };

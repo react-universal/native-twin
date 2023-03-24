@@ -6,6 +6,7 @@ import {
 } from '@universal-labs/stylesheets';
 import type { StyledOptions, StyledProps } from '../types/styled.types';
 import { useBuildStyleProps } from './useBuildStyleProps';
+import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 
 function useBuildStyledComponent<T, P extends keyof T>(
@@ -15,15 +16,14 @@ function useBuildStyledComponent<T, P extends keyof T>(
   styledOptions?: StyledOptions<T, P>,
 ) {
   const classProps = useBuildStyleProps(props, styledOptions);
-  const { styleProps, getInteractionStyles, componentID, interactionsMeta } =
-    useComponentStyleSheets({
-      classProps,
-      inlineStyles: props.style,
-      isFirstChild: props.isFirstChild,
-      isLastChild: props.isLastChild,
-      nthChild: props.nthChild,
-      parentID: props.parentID,
-    });
+  const { styleProps, component, componentID, interactionsMeta } = useComponentStyleSheets({
+    classProps,
+    inlineStyles: props.style,
+    isFirstChild: props.isFirstChild,
+    isLastChild: props.isLastChild,
+    nthChild: props.nthChild,
+    parentID: props.parentID,
+  });
   const { componentInteractionHandlers } = useComponentInteractions({
     props: props as Touchable,
     component: {
@@ -33,18 +33,10 @@ function useBuildStyledComponent<T, P extends keyof T>(
       id: componentID,
     },
   });
-  console.log('STYLE_ ', componentInteractionHandlers);
+  const componentChilds = useChildren(props.children, component?.id);
   const element = (
-    <Component
-      {...props}
-      {...styleProps}
-      {...componentInteractionHandlers}
-      // style={[component.styles, style]}
-      // key={component.id}
-      // forwardedRef={ref}
-      ref={ref}
-    >
-      {props.children}
+    <Component {...props} {...styleProps} {...componentInteractionHandlers} ref={ref}>
+      {componentChilds}
     </Component>
   );
 

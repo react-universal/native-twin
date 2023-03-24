@@ -1,8 +1,7 @@
 import { Children, cloneElement, isValidElement, useMemo } from 'react';
 import type { StyleProp } from 'react-native';
-import type { ComponentNode } from '@universal-labs/stylesheets';
 
-function useChildren(children: React.ReactNode, component: ComponentNode) {
+function useChildren(children: React.ReactNode, componentID: string) {
   return useMemo(() => {
     const totalChilds = Children.count(children);
     return Children.map(children, (child, index) => {
@@ -13,7 +12,7 @@ function useChildren(children: React.ReactNode, component: ComponentNode) {
         nthChild: index + 1,
         isFirstChild: index === 0,
         isLastChild: index + 1 === totalChilds,
-        parentID: component.id,
+        parentID: componentID,
         ...child.props,
       };
 
@@ -27,7 +26,7 @@ function useChildren(children: React.ReactNode, component: ComponentNode) {
             // style: [childProps?.style, component.getChildStyles(childProps)],
           });
     });
-  }, [children, component.id]);
+  }, [children, componentID]);
 }
 
 export { useChildren };

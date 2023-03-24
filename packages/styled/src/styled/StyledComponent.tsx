@@ -15,19 +15,6 @@ export function styled<T, P extends keyof T>(
     ref: ForwardedRef<any>,
   ) {
     return useBuildStyledComponent(props, Component, ref, styledOptions);
-    // const { styles, componentChilds, componentInteractionHandlers, component } =
-    //   useStyledComponent(props, styledOptions);
-    // return (
-    //   <Component
-    //     {...props}
-    //     {...componentInteractionHandlers}
-    //     style={[styles, props.style]}
-    //     key={component.id}
-    //     ref={ref}
-    //   >
-    //     {componentChilds}
-    //   </Component>
-    // );
   }
 
   Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;

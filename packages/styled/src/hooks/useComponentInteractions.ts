@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
 import type { Touchable } from 'react-native';
-import { ComponentNode, setComponentInteractionState } from '@universal-labs/stylesheets';
+import { setComponentInteractionState } from '@universal-labs/stylesheets';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;
