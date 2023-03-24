@@ -11,8 +11,8 @@ function useStyledComponent<T, P extends keyof T>(
 ) {
   return useMemo(() => {
     const mergedClassName = data.className
-      ? `${styledOptions?.baseClassName} ${data.className}`
-      : styledOptions?.baseClassName;
+      ? `${styledOptions?.baseClassName ?? ''} ${data.className}`
+      : styledOptions?.baseClassName ?? '';
 
     if (mergedClassName && data.inlineStyles) {
       return [{ $$css: true, [mergedClassName]: mergedClassName } as Style, data.inlineStyles];

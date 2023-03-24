@@ -36,7 +36,14 @@ class GlobalStyleSheet {
   }
 
   private _splitClasses(classNames = '') {
-    const rawClassNames = classNames?.replace(/\s+/g, ' ').trim().split(' ');
+    const rawClassNames = classNames
+      ?.replace(/\s+/g, ' ')
+      .trim()
+      .split(' ')
+      .filter(
+        (className) =>
+          className !== '' && className !== 'undefined' && typeof className !== 'undefined',
+      );
     return rawClassNames;
   }
 
