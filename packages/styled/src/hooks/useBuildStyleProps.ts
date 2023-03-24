@@ -25,7 +25,7 @@ const useBuildStyleProps = <T, P extends keyof T>(
     }
     return {
       ...(className || tw || styledOptions?.baseClassName
-        ? { style: `${className ?? tw} ${styledOptions?.baseClassName}` }
+        ? { style: `${className ?? tw ?? ''} ${styledOptions?.baseClassName ?? ''}` }
         : {}),
       ...classProps,
     };
