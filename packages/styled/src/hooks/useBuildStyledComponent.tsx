@@ -8,7 +8,6 @@ import type { StyledOptions, StyledProps } from '../types/styled.types';
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
-import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
@@ -16,7 +15,6 @@ function useBuildStyledComponent<T, P extends keyof T>(
   ref: any,
   styledOptions?: StyledOptions<T, P>,
 ) {
-  useRenderCounter();
   const classProps = useBuildStyleProps(props, styledOptions);
   const { component } = useComponentStyleSheets({
     classProps,
