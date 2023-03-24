@@ -4,6 +4,7 @@ import { darkMode } from './dark-mode';
 import { elevation } from './elevation';
 import { fontSize } from './font-size';
 import { gap } from './gap';
+import { height } from './height';
 import { margin } from './margin';
 import { padding } from './padding';
 import { platforms } from './platforms';
@@ -14,6 +15,7 @@ import { skew } from './skew';
 import { space } from './space';
 import { translate } from './translate';
 import { variables } from './variables';
+import { width } from './width';
 
 interface IPresetArgs {
   baseRem?: number;
@@ -76,6 +78,8 @@ export function reactNativeTailwindPreset(input?: IPresetArgs) {
       margin,
       variables,
       rounded,
+      width,
+      height,
     ],
     corePlugins: {
       backgroundOpacity: false,
