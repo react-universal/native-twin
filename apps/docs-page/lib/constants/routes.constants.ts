@@ -4,6 +4,7 @@ const routes = [
     routes: [
       { label: 'Overview', route: '/' },
       { label: 'Installation', route: '/setup' },
+      { label: 'Autocomplete', route: '/autocomplete' },
     ],
   },
   {
