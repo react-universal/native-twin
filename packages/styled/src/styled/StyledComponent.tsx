@@ -3,7 +3,7 @@ import type {
   IExtraProperties,
   TInternalStyledComponentProps,
 } from '@universal-labs/stylesheets';
-import { useStyledComponent } from '../hooks';
+import { useBuildStyledComponent } from '../hooks/useBuildStyledComponent';
 import type { ForwardRef, InferRef, StyledOptions, StyledProps } from '../types/styled.types';
 
 export function styled<T, P extends keyof T>(
@@ -14,19 +14,7 @@ export function styled<T, P extends keyof T>(
     props: StyledProps<IExtraProperties<T & TInternalStyledComponentProps>>,
     ref: ForwardedRef<any>,
   ) {
-    const { styles, componentChilds, componentInteractionHandlers, component } =
-      useStyledComponent(props, styledOptions);
-    return (
-      <Component
-        {...props}
-        {...componentInteractionHandlers}
-        style={[styles, props.style]}
-        key={component.id}
-        ref={ref}
-      >
-        {componentChilds}
-      </Component>
-    );
+    return useBuildStyledComponent(props, Component, ref, styledOptions);
   }
 
   Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;

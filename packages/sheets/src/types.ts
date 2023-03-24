@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
-import type { PressableProps } from 'react-native';
+import type { PressableProps, StyleProp } from 'react-native';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 
+export type IStyleProp = StyleProp<ImageStyle | TextStyle | ViewStyle>;
 export type IStyleType = Record<string, ImageStyle | TextStyle | ViewStyle>;
 export type IStyleTuple = [string, IStyleType];
 

@@ -47,10 +47,8 @@
   ],
   "scripts": {
     "build": "expo-module build -p tsconfig.build.json",
-    "build:native": "vite build -c vite.native.config.ts",
-    "build:vite": "vite build && yarn build:native && npx tsc -p tsconfig.build.json",
     "clean": "expo-module clean",
-    "dev": "yarn vite build -w --force",
+    "dev": "expo-module build -p tsconfig.build.json -w",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",
@@ -69,7 +67,8 @@
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
     "@types/react-native": "0.70.7",
-    "@types/use-sync-external-store": "^0.0.3"
+    "@types/use-sync-external-store": "^0.0.3",
+    "vitest": "^0.28.3"
   },
   "publishConfig": {
     "access": "public",

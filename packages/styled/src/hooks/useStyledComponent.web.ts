@@ -1,14 +1,18 @@
 import { useMemo } from 'react';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { IRegisterComponentArgs } from '@universal-labs/stylesheets';
+import type { StyledOptions } from '../types/styled.types';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 
-function useStyledComponent(data: Omit<IRegisterComponentArgs, 'id'>, baseClassName: string) {
+function useStyledComponent<T, P extends keyof T>(
+  data: Omit<IRegisterComponentArgs, 'id'>,
+  styledOptions?: StyledOptions<T, P>,
+) {
   return useMemo(() => {
     const mergedClassName = data.className
-      ? `${baseClassName} ${data.className}`
-      : baseClassName;
+      ? `${styledOptions?.baseClassName ?? ''} ${data.className}`
+      : styledOptions?.baseClassName ?? '';
 
     if (mergedClassName && data.inlineStyles) {
       return [{ $$css: true, [mergedClassName]: mergedClassName } as Style, data.inlineStyles];
@@ -18,7 +22,7 @@ function useStyledComponent(data: Omit<IRegisterComponentArgs, 'id'>, baseClassN
       return data.inlineStyles;
     }
     return {};
-  }, [data, baseClassName]);
+  }, [data, styledOptions?.baseClassName]);
 }
 
 export { useStyledComponent };

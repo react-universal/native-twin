@@ -2,21 +2,26 @@ import { StyleSheet } from 'react-native';
 import { immerable } from 'immer';
 import uuid from 'react-native-uuid';
 import ComponentStyleSheet from '../sheets/ComponentStyleSheet';
-import type { IStyleType } from '../types';
 import type {
-  IExtraProperties,
+  IStyleType,
   TInteractionPseudoSelectors,
   TInternalStyledComponentProps,
-  IRegisterComponentArgs,
-} from '../types/store.types';
+} from '../types';
+import type { IExtraProperties, IRegisterComponentArgs } from '../types/store.types';
 
 const createID = () => uuid.v4();
+
+// interface IComponentStyleSheets {
+//   className: string;
+//   styles: ComponentStyleSheet;
+// }
 
 export default class ComponentNode {
   id: string;
   [immerable] = true;
   inlineStyles: IExtraProperties<{ inlineStyles: IStyleType }>['style'];
   styleSheet: ComponentStyleSheet;
+  // styleSheets: Record<string, IComponentStyleSheets>;
   parentComponentID?: string;
   interactionsState: Record<TInteractionPseudoSelectors, boolean> = {
     hover: false,
@@ -30,6 +35,14 @@ export default class ComponentNode {
     this.id = createID() as string;
     this.inlineStyles = component.inlineStyles;
     this.styleSheet = new ComponentStyleSheet(component.className);
+    // this.styleSheets = Object.entries(component.classProps).reduce((prev, current) => {
+    //   const [classProp, propClassName] = current;
+    //   prev[classProp] = {
+    //     className: propClassName,
+    //     styles: new ComponentStyleSheet(classProp),
+    //   };
+    //   return prev;
+    // }, {} as typeof this.styleSheets);
     this.appearanceState = {
       isFirstChild: component.isFirstChild,
       isLastChild: component.isFirstChild,

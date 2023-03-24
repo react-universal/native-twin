@@ -1,58 +1,46 @@
 import type { Touchable } from 'react-native';
+import {
+  IExtraProperties,
+  TInternalStyledComponentProps,
+  useComponentStyleSheets,
+} from '@universal-labs/stylesheets';
+import type { StyledOptions, StyledProps } from '../types/styled.types';
+import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
-import { useStore } from './useStore';
 
-const useStyledComponent = (
-  {
-    className,
-    children,
-    tw,
-    Component,
-    parentID,
-    style,
-    isFirstChild,
-    isLastChild,
-    nthChild,
-    baseClassNameOrOptions,
-    ...componentProps
-  }: any,
+function useBuildStyledComponent<T, P extends keyof T>(
+  props: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
+  Component: any,
   ref: any,
-) => {
-  if (typeof baseClassNameOrOptions === 'string') {
-  } else {
-  }
-  const baseClassName =
-    typeof baseClassNameOrOptions === 'string' ? baseClassNameOrOptions : '';
-  const component = useStore({
-    className: `${className} ${baseClassName}` ?? `${tw} ${baseClassName}` ?? baseClassName,
-    parentID,
-    inlineStyles: style,
-    isFirstChild,
-    isLastChild,
-    nthChild,
+  styledOptions?: StyledOptions<T, P>,
+) {
+  const classProps = useBuildStyleProps(props, styledOptions);
+  const { styleProps, component, componentID, interactionsMeta } = useComponentStyleSheets({
+    classProps,
+    inlineStyles: props.style,
+    isFirstChild: props.isFirstChild,
+    isLastChild: props.isLastChild,
+    nthChild: props.nthChild,
+    parentID: props.parentID,
   });
-
   const { componentInteractionHandlers } = useComponentInteractions({
-    props: componentProps as Touchable,
-    component,
+    props: props as Touchable,
+    component: {
+      hasGroupInteractions: interactionsMeta.hasGroupInteractions,
+      hasPointerInteractions: interactionsMeta.hasPointerInteractions,
+      isGroupParent: interactionsMeta.isGroupParent,
+      id: componentID,
+    },
   });
-  const componentChilds = useChildren(children, component);
-
+  const componentChilds = useChildren(props.children, component?.id);
   const element = (
-    <Component
-      {...componentProps}
-      {...componentInteractionHandlers}
-      style={[component.styles, style]}
-      key={component.id}
-      forwardedRef={ref}
-      ref={ref}
-    >
+    <Component {...props} {...styleProps} {...componentInteractionHandlers} ref={ref}>
       {componentChilds}
     </Component>
   );
 
   return element;
-};
+}
 
-export { useStyledComponent };
+export { useBuildStyledComponent };

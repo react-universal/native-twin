@@ -1,9 +1,6 @@
 import { produce, enableMapSet } from 'immer';
-import type { IStyleType } from '../types';
-import type {
-  IRegisterComponentArgs,
-  TInteractionPseudoSelectors,
-} from '../types/store.types';
+import type { IStyleType, TInteractionPseudoSelectors } from '../types';
+import type { IRegisterComponentArgs } from '../types/store.types';
 import ComponentNode from './ComponentNode';
 import { createStore } from './generator';
 

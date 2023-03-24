@@ -43,7 +43,6 @@
     "build": "npx vite build",
     "build:ts": "expo-module build -p tsconfig.build.json",
     "clean": "expo-module clean",
-    "dev": "yarn vite build -w",
     "e2e": "cypress open",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",

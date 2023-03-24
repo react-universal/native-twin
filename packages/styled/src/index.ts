@@ -1,3 +1,2 @@
-export { useIsDarkMode, useStyledComponent } from './hooks';
+export { useIsDarkMode } from './hooks/useIsDarkMode';
 export { styled } from './styled';
-export { useStaticStyledComponent } from './hooks/useStaticStyledComponent';
