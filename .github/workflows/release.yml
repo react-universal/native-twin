@@ -40,8 +40,8 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: yarn release
-          commit: version-packages
-          title: Version Packages
+          commit: "chore(publish): Publish packages"
+          title: "chore(publish): Publish packages"
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
