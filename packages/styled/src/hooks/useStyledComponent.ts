@@ -14,7 +14,7 @@ const useStyledComponent = <T, P extends keyof T>(
   styledOptions?: StyledOptions<T, P>,
 ) => {
   const classProps = useBuildStyleProps(props, styledOptions);
-  const { styleProps, component, componentID, interactionsMeta } = useComponentStyleSheets({
+  const { component } = useComponentStyleSheets({
     classProps,
     inlineStyles: props.style,
     isFirstChild: props.isFirstChild,
@@ -24,18 +24,16 @@ const useStyledComponent = <T, P extends keyof T>(
   });
   const { componentInteractionHandlers } = useComponentInteractions({
     props: props as Touchable,
-    component: {
-      hasGroupInteractions: interactionsMeta.hasGroupInteractions,
-      hasPointerInteractions: interactionsMeta.hasPointerInteractions,
-      isGroupParent: interactionsMeta.isGroupParent,
-      id: componentID,
-    },
+    componentID: component.id,
+    hasGroupInteractions: component.hasPointerInteractions,
+    hasPointerInteractions: component.hasPointerInteractions,
+    isGroupParent: component.isGroupParent,
   });
   const componentChilds = useChildren(props.children, component?.id);
   return {
     componentChilds,
     componentInteractionHandlers,
-    styleProps,
+    styleProps: component.getStyleProps,
   };
 };
 

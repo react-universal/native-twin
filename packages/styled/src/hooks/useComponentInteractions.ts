@@ -4,16 +4,17 @@ import { setComponentInteractionState } from '@universal-labs/stylesheets';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;
-  component: {
-    id: string;
-    hasPointerInteractions: boolean;
-    isGroupParent: boolean;
-    hasGroupInteractions: boolean;
-  };
+  componentID: string;
+  hasPointerInteractions: boolean;
+  isGroupParent: boolean;
+  hasGroupInteractions: boolean;
 }
 const useComponentInteractions = ({
   props,
-  component: { hasGroupInteractions, hasPointerInteractions, isGroupParent, id },
+  hasPointerInteractions,
+  isGroupParent,
+  componentID,
+  hasGroupInteractions,
 }: UseComponentInteractionsArgs) => {
   const ref = useRef<Touchable>(props);
   const componentInteractionHandlers = useMemo(() => {
@@ -24,10 +25,10 @@ const useComponentInteractions = ({
           ref.current.onTouchStart(event);
         }
         if (isGroupParent) {
-          setComponentInteractionState(id, 'group-hover', true);
+          setComponentInteractionState(componentID, 'group-hover', true);
         }
         if (hasPointerInteractions) {
-          setComponentInteractionState(id, 'hover', true);
+          setComponentInteractionState(componentID, 'hover', true);
         }
       };
       handlers.onTouchEnd = function (event) {
@@ -35,15 +36,15 @@ const useComponentInteractions = ({
           ref.current.onTouchEnd(event);
         }
         if (isGroupParent) {
-          setComponentInteractionState(id, 'group-hover', false);
+          setComponentInteractionState(componentID, 'group-hover', false);
         }
         if (hasPointerInteractions) {
-          setComponentInteractionState(id, 'hover', false);
+          setComponentInteractionState(componentID, 'hover', false);
         }
       };
     }
     return handlers;
-  }, [hasGroupInteractions, isGroupParent, hasPointerInteractions, id]);
+  }, [componentID, hasPointerInteractions, isGroupParent, hasGroupInteractions]);
   return {
     componentInteractionHandlers,
   };

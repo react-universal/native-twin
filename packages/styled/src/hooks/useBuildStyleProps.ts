@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type {
   IExtraProperties,
   TInternalStyledComponentProps,
@@ -12,23 +12,28 @@ const useBuildStyleProps = <T, P extends keyof T>(
     ...componentProps
   }: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
   styledOptions?: StyledOptions<T, P>,
-) =>
-  useMemo(() => {
+) => {
+  const originalClassProps = useRef(componentProps);
+  useEffect(() => {
+    originalClassProps.current = componentProps;
+  }, [componentProps]);
+  return useMemo(() => {
     const props: any = styledOptions?.props;
     const classProps: Record<string, string> = {};
     if (props) {
       for (const item of Object.entries<boolean>(props)) {
         if (item[1]) {
-          classProps[item[0]] = componentProps[item[0]];
+          classProps[item[0]] = originalClassProps.current[item[0]];
         }
       }
     }
-    return {
+    return Object.freeze({
       ...(className || tw || styledOptions?.baseClassName
         ? { style: `${className ?? tw ?? ''} ${styledOptions?.baseClassName ?? ''}` }
         : {}),
       ...classProps,
-    };
-  }, [styledOptions, className, tw, componentProps]);
+    });
+  }, [styledOptions, className, tw]);
+};
 
 export { useBuildStyleProps };

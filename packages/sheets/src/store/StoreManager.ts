@@ -27,9 +27,9 @@ function registerComponent(input: IRegisterComponentArgs) {
   let component: ComponentNode;
   const parentComponent = storeManager.getState().components.get(input.parentID);
   let childStyles: IStyleType = {};
-  if (parentComponent) {
-    childStyles = parentComponent.getChildStyles(input);
-  }
+  // if (parentComponent) {
+  //   childStyles = parentComponent.getChildStyles(input);
+  // }
   component = new ComponentNode({
     ...input,
     inlineStyles: [input.inlineStyles, childStyles],

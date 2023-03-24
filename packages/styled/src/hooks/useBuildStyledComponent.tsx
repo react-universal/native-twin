@@ -8,6 +8,7 @@ import type { StyledOptions, StyledProps } from '../types/styled.types';
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
+import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
@@ -15,8 +16,9 @@ function useBuildStyledComponent<T, P extends keyof T>(
   ref: any,
   styledOptions?: StyledOptions<T, P>,
 ) {
+  useRenderCounter();
   const classProps = useBuildStyleProps(props, styledOptions);
-  const { styleProps, component, componentID, interactionsMeta } = useComponentStyleSheets({
+  const { component } = useComponentStyleSheets({
     classProps,
     inlineStyles: props.style,
     isFirstChild: props.isFirstChild,
@@ -26,16 +28,19 @@ function useBuildStyledComponent<T, P extends keyof T>(
   });
   const { componentInteractionHandlers } = useComponentInteractions({
     props: props as Touchable,
-    component: {
-      hasGroupInteractions: interactionsMeta.hasGroupInteractions,
-      hasPointerInteractions: interactionsMeta.hasPointerInteractions,
-      isGroupParent: interactionsMeta.isGroupParent,
-      id: componentID,
-    },
+    componentID: component.id,
+    hasGroupInteractions: component.hasPointerInteractions,
+    hasPointerInteractions: component.hasPointerInteractions,
+    isGroupParent: component.isGroupParent,
   });
   const componentChilds = useChildren(props.children, component?.id);
   const element = (
-    <Component {...props} {...styleProps} {...componentInteractionHandlers} ref={ref}>
+    <Component
+      {...props}
+      {...component.getStyleProps}
+      {...componentInteractionHandlers}
+      ref={ref}
+    >
       {componentChilds}
     </Component>
   );
