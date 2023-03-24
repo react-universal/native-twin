@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.6.0
+
+### Minor Changes
+
+- [`bd22bbc`](https://github.com/react-universal/tailwind/commit/bd22bbc751898f61781a78decef8b58b6d74c92c) Thanks [@chrisarts](https://github.com/chrisarts)! - tailwind merge to avoid conflicts in classes
+
+### Patch Changes
+
+- [`0bf09cc`](https://github.com/react-universal/tailwind/commit/0bf09cc9ef16410dba7f175ee23d69256e7f9f5d) Thanks [@chrisarts](https://github.com/chrisarts)! - version packages config
+
+- Updated dependencies [[`bd22bbc`](https://github.com/react-universal/tailwind/commit/bd22bbc751898f61781a78decef8b58b6d74c92c), [`0bf09cc`](https://github.com/react-universal/tailwind/commit/0bf09cc9ef16410dba7f175ee23d69256e7f9f5d)]:
+  - @universal-labs/core@1.6.0
+
 ## 1.5.6
 
 ### Patch Changes
