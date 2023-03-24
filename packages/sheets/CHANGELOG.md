@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.5.5
+
+### Patch Changes
+
+- [`1eae54d`](https://github.com/react-universal/tailwind/commit/1eae54d7945832ef2adadfa36279026944deda17) Thanks [@chrisarts](https://github.com/chrisarts)! - feat(styled): fix hot reload and renderloop on events
+
+- Updated dependencies [[`1eae54d`](https://github.com/react-universal/tailwind/commit/1eae54d7945832ef2adadfa36279026944deda17)]:
+  - @universal-labs/core@1.5.5
+
 ## 1.5.4
 
 ### Patch Changes
