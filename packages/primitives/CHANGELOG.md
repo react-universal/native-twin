@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.5.6
+
+### Patch Changes
+
+- [`1edc83d`](https://github.com/react-universal/tailwind/commit/1edc83d63dd06890ce71e6ea33f405a656f7ebe8) Thanks [@chrisarts](https://github.com/chrisarts)! - layout rem to px
+
+- [`ac184bb`](https://github.com/react-universal/tailwind/commit/ac184bb69587e5508c71c34d09bb29ead8aaf91d) Thanks [@chrisarts](https://github.com/chrisarts)! - remove debug code
+
 ## 1.5.5
 
 ### Patch Changes
