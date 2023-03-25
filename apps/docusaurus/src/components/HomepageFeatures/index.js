@@ -4,32 +4,27 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Uses Tailwind',
+    Svg: require('@site/static/img/tailwind-css-logo.svg').default,
+    description: <>Use Tailwind classes to style an React Native applications.</>,
+  },
+  {
+    title: 'Blazingly Fast',
+    Svg: require('@site/static/img/high-voltage.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and used to get your
-        website up and running quickly.
+        Enjoy fast compilation times by using Vite. Save time and increase productivity in your
+        development.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Lightweight',
+    Svg: require('@site/static/img/pinching-hand.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go ahead and move
-        your docs into the <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can be extended
-        while reusing the same header and footer.
+        We parse only the classnames used in your project, with no unnecessary elements that
+        slow down your application.
       </>
     ),
   },
@@ -54,8 +49,8 @@ export default function HomepageFeatures() {
     <section className={styles.features}>
       <div className='container'>
         <div className='row'>
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
+          {FeatureList.map((props) => (
+            <Feature key={props.title} {...props} />
           ))}
         </div>
       </div>
