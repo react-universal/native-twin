@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "🚀 docusaurus",
+      "path": "../apps/docusaurus"
+    },
+    {
       "name": "expo-app",
       "path": "../examples/expo-app"
     },
@@ -80,7 +84,7 @@
       "**/dist/**": true,
       "**/build/**": true
     },
-    "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib",
+    "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib"
     // "workbench.colorCustomizations": {
     //   "[Default Dark+ Experimental]": {
     //     "sideBar.background": "#070606",
