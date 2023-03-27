@@ -2,8 +2,11 @@
   "extends": "expo-module-scripts/tsconfig.base",
   "compilerOptions": {
     "outDir": "./build",
-    "jsx": "react-jsx"
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "jsx": "react-jsx",
+    "types": ["node"]
   },
-  "include": ["./src", "env.d.ts"],
+  "include": ["./src"],
   "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*"]
 }

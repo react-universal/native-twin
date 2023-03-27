@@ -1,25 +1,22 @@
 import { ComponentType, ForwardedRef, forwardRef } from 'react';
-import type {
-  IExtraProperties,
-  TInternalStyledComponentProps,
-} from '@universal-labs/stylesheets';
 import { useBuildStyledComponent } from '../hooks/useBuildStyledComponent';
-import type { ForwardRef, InferRef, StyledOptions, StyledProps } from '../types/styled.types';
+import type { ForwardRef, InferRef } from '../types/styled.types';
 
 export function styled<T, P extends keyof T>(
   Component: ComponentType<T>,
-  styledOptions: StyledOptions<T, P> = {},
+  styleClassProps?: P[],
 ) {
-  function Styled(
-    props: StyledProps<IExtraProperties<T & TInternalStyledComponentProps>>,
-    ref: ForwardedRef<any>,
-  ) {
-    return useBuildStyledComponent(props, Component, ref, styledOptions);
+  function Styled(props: any, ref: ForwardedRef<any>) {
+    return useBuildStyledComponent(props, Component, ref, styleClassProps);
   }
 
   Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
+
   return forwardRef(Styled) as ForwardRef<
     InferRef<T>,
-    StyledProps<{ [key in keyof T]: key extends P ? T[key] | string : T[key] }>
+    { [key in keyof T]: key extends P ? T[key] | string : T[key] } & {
+      className?: string;
+      tw?: string;
+    }
   >;
 }

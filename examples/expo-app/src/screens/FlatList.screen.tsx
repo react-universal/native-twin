@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { ListRenderItem, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { H2, Pressable, Span, View, FlatList } from '@universal-labs/primitives';
 
 const data = [
@@ -21,13 +21,6 @@ const FlatListScreen = () => {
       },
     ]);
   }, []);
-  const renderItem: ListRenderItem<(typeof items)[number]> = ({ item }) => {
-    return (
-      <View>
-        <Span>{item.label}</Span>
-      </View>
-    );
-  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View className='flex-1'>
@@ -37,8 +30,13 @@ const FlatListScreen = () => {
         <FlatList
           data={items}
           contentContainerStyle='bg-gray-600 hover:bg-white'
-          // @ts-expect-error
-          renderItem={renderItem}
+          renderItem={({ item }) => {
+            return (
+              <View>
+                <Span>{item.label}</Span>
+              </View>
+            );
+          }}
         />
       </View>
     </SafeAreaView>

@@ -1,21 +1,18 @@
+import { ComponentType, createElement, ForwardedRef, ReactNode } from 'react';
 import type { Touchable } from 'react-native';
-import {
-  IExtraProperties,
-  TInternalStyledComponentProps,
-  useComponentStyleSheets,
-} from '@universal-labs/stylesheets';
-import type { StyledOptions, StyledProps } from '../types/styled.types';
+import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 
 function useBuildStyledComponent<T, P extends keyof T>(
-  props: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
-  Component: any,
-  ref: any,
-  styledOptions?: StyledOptions<T, P>,
+  props: StyledProps<T>,
+  Component: ComponentType<T>,
+  ref: ForwardedRef<unknown>,
+  styleClassProps?: P[],
 ) {
-  const classProps = useBuildStyleProps(props, styledOptions);
+  const classProps = useBuildStyleProps(props, styleClassProps);
+
   const { component } = useComponentStyleSheets({
     classProps,
     inlineStyles: props.style,
@@ -24,6 +21,7 @@ function useBuildStyledComponent<T, P extends keyof T>(
     nthChild: props.nthChild,
     parentID: props.parentID,
   });
+
   const { componentInteractionHandlers } = useComponentInteractions({
     props: props as Touchable,
     componentID: component.id,
@@ -31,19 +29,20 @@ function useBuildStyledComponent<T, P extends keyof T>(
     hasPointerInteractions: component.hasPointerInteractions,
     isGroupParent: component.isGroupParent,
   });
-  const componentChilds = useChildren(props.children, component?.id);
-  const element = (
-    <Component
-      {...props}
-      {...component.getStyleProps}
-      {...componentInteractionHandlers}
-      ref={ref}
-    >
-      {componentChilds}
-    </Component>
-  );
 
-  return element;
+  const componentChilds = useChildren(props.children, component?.id);
+
+  // @ts-expect-error
+  const transformedComponent = createElement(Component, {
+    ...props,
+    ...componentInteractionHandlers,
+    ...component.getStyleProps,
+    children: componentChilds,
+    ref,
+  } as unknown as T);
+  const returnValue: ReactNode = transformedComponent;
+
+  return returnValue;
 }
 
 export { useBuildStyledComponent };

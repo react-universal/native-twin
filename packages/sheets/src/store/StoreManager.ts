@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { produce, enableMapSet } from 'immer';
 import type { IStyleType, TInteractionPseudoSelectors } from '../types';
 import type { IRegisterComponentArgs } from '../types/store.types';
@@ -25,7 +26,7 @@ function findComponentChildIDs(parentID: string) {
 
 function registerComponent(input: IRegisterComponentArgs) {
   let component: ComponentNode;
-  const parentComponent = storeManager.getState().components.get(input.parentID);
+  // const parentComponent = storeManager.getState().components.get(input.parentID);
   let childStyles: IStyleType = {};
   // if (parentComponent) {
   //   childStyles = parentComponent.getChildStyles(input);

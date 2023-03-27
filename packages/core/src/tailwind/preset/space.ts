@@ -5,14 +5,14 @@ export const space = plugin(function ({ matchUtilities, theme }) {
     {
       'space-x': (value: string) => {
         return {
-          '&:children:not-first-child': {
+          'children:not-first-child': {
             'margin-left': value,
           },
         };
       },
       'space-y': (value: string) => {
         return {
-          '&:children:not-first-child': {
+          'children:not-first-child': {
             'margin-top': value,
           },
         };

@@ -1,19 +1,16 @@
 import produce, { enableMapSet } from 'immer';
-import type {
-  IStyleProp,
-  TInteractionPseudoSelectors,
-  TInternalStyledComponentProps,
-} from '../types';
+import type { IStyleProp, StyledProps, TInteractionPseudoSelectors } from '../types';
 import type { IRegisterComponentArgs } from '../types/store.types';
 import ComponentNode from './ComponentNode';
 import { createStore } from './generator';
 
 enableMapSet();
 
-export interface IUseStyleSheetsInput extends TInternalStyledComponentProps {
-  classProps: Record<string, string>;
-  inlineStyles?: IStyleProp;
-}
+export interface IUseStyleSheetsInput
+  extends StyledProps<{
+    classProps: Record<string, string>;
+    inlineStyles?: IStyleProp;
+  }> {}
 
 interface Store {
   components: { [k: string]: ComponentNode };

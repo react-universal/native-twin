@@ -1,15 +1,36 @@
 // Vitest Snapshot v1
 
 exports[`@universal-labs/styled > View render 1`] = `
-<div
-  className="css-view-175oi2r  flex-1"
-  dir={null}
+<View
+  className="flex-1"
+  style={
+    [
+      {
+        "flexBasis": "0%",
+        "flexGrow": 1,
+        "flexShrink": 1,
+      },
+      undefined,
+    ]
+  }
 >
-  <div
-    className="css-text-1rynq56"
-    dir="auto"
+  <Text
+    className="text-sm"
+    isFirstChild={true}
+    isLastChild={true}
+    nthChild={1}
+    parentID="test-parent"
+    style={
+      [
+        {
+          "fontSize": 14,
+          "lineHeight": 20,
+        },
+        undefined,
+      ]
+    }
   >
     Test View
-  </div>
-</div>
+  </Text>
+</View>
 `;

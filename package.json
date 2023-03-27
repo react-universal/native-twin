@@ -14,11 +14,11 @@
     "apps/*"
   ],
   "scripts": {
-    "build:libs": "npx nx run-many --target=build --projects=\"@universal-labs/**\"",
+    "build:libs": "npx nx run-many --target=build:libs --projects=\"@universal-labs/**\"",
     "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "dev": "npx nx run-many --target=dev --projects=\"@universal-labs/**\" --parallel",
-    "docs:build": "npx nx run build --project=docs-page",
-    "docs:dev": "npx nx run dev --project=docs-page",
+    "docs:build": "npx nx run build --project=docusaurus",
+    "docs:dev": "npx nx run dev --project=docusaurus",
     "expo:android": "npx nx run android --project=expo-app",
     "expo:ios": "npx nx run ios --project=expo-app",
     "expo:start": "npx nx run start --project=expo-app",

@@ -46,7 +46,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "expo-module build -p tsconfig.build.json",
+    "build:libs": "expo-module build -p tsconfig.build.json",
     "clean": "expo-module clean",
     "dev": "expo-module build -p tsconfig.build.json -w",
     "expo-module": "expo-module",
@@ -66,7 +66,7 @@
     "@types/css-to-react-native": "^3.0.0",
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
-    "@types/react-native": "0.70.7",
+    "@types/react-native": "^0.71.5",
     "@types/use-sync-external-store": "^0.0.3",
     "vitest": "^0.28.3"
   },

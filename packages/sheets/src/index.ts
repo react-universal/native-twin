@@ -13,7 +13,7 @@ export type {
   IStyleTuple,
   TAppearancePseudoSelectors,
   TInteractionPseudoSelectors,
-  TInternalStyledComponentProps,
+  StyledProps,
 } from './types';
 export type {
   IClassNamesStyle,
@@ -21,7 +21,6 @@ export type {
   IComponentAppearance,
   IComponentInteractions,
   IComponentsStore,
-  IExtraProperties,
   IInteractionPayload,
   IRegisterComponentArgs,
   IRegisteredComponent,

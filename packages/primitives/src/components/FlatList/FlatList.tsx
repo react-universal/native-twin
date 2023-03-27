@@ -1,8 +1,19 @@
-import { FlatList as NativeFlatList } from 'react-native';
+import { FlatList as NativeFlatList, FlatListProps, StyleProp, ViewStyle } from 'react-native';
 import { styled } from '@universal-labs/styled';
 
-const FlatList = styled(NativeFlatList, {
-  props: { contentContainerStyle: true },
-});
+const StyledFlatList = styled(NativeFlatList, ['contentContainerStyle']);
+
+function FlatList<TItems>({
+  className,
+  tw,
+  ...props
+}: Omit<FlatListProps<TItems>, 'contentContainerStyle'> & {
+  className?: string;
+  tw?: string;
+  contentContainerStyle?: string | StyleProp<ViewStyle>;
+}) {
+  // @ts-expect-error
+  return <StyledFlatList {...props} className={className} tw={tw} />;
+}
 
 export { FlatList };

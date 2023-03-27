@@ -1,8 +1,18 @@
 {
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "packages"
+  },
+  "npmScope": "react-universal",
+  "affected": {
+    "defaultBase": "main"
+  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
+        "useDaemonProcess": false,
         "cacheableOperations": ["build", "test"],
         "accessToken": "ZDQ5MzNlNjAtODM2Ny00NGE5LWIzZDEtM2VlYmZmMGE3ZjQ4fHJlYWQtd3JpdGU="
       }
@@ -13,7 +23,15 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build:libs"]
+    },
+    "build:libs": {
+      "dependsOn": ["^build:libs"]
     }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [],
+    "production": ["default"]
   }
 }
