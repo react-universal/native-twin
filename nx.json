@@ -23,9 +23,6 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
-    },
-    "dev": {
       "dependsOn": ["^build:libs"]
     },
     "build:libs": {
