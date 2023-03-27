@@ -62,7 +62,7 @@
       ".vscode",
       ".vscode-insiders",
       "**/app.json",
-      "../apps/nextjs/public"
+      "**/apps/docusaurus"
     ],
     "tailwindCSS.experimental.classRegex": [
       ["styled\\([^,)]+,([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
