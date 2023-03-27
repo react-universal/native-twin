@@ -9,6 +9,10 @@
       "path": "../apps/docs-page"
     },
     {
+      "name": "🚀 docusaurus",
+      "path": "../apps/docusaurus"
+    },
+    {
       "name": "expo-app",
       "path": "../examples/expo-app"
     },
