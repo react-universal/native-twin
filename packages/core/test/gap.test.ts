@@ -6,7 +6,7 @@ const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
 
 describe('TailwindCSS GAP', () => {
   it('gap', () => {
-    const css = tw.style('gap-5');
+    const css = tw.css('gap-5');
     expect(css.JSS).toStrictEqual({
       '.gap-5': {
         gap: '20px',
@@ -14,7 +14,7 @@ describe('TailwindCSS GAP', () => {
     });
   });
   it('gap-x', () => {
-    const css = tw.style('gap-x-5');
+    const css = tw.css('gap-x-5');
     expect(css.JSS).toStrictEqual({
       '.gap-x-5': {
         columnGap: '20px',
@@ -22,7 +22,7 @@ describe('TailwindCSS GAP', () => {
     });
   });
   it('gap-y', () => {
-    const css = tw.style('gap-y-5');
+    const css = tw.css('gap-y-5');
     expect(css.JSS).toStrictEqual({
       '.gap-y-5': {
         rowGap: '20px',

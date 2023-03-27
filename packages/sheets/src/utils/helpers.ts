@@ -33,13 +33,7 @@ export function cssPropertiesResolver(input: CssInJs) {
     keys.forEach((className) => {
       const style = input[className];
       const transformed = Object.entries(style).reduce((previous, [name, value]) => {
-        if (
-          name === 'colorScheme' ||
-          name === 'from' ||
-          name === 'to' ||
-          name === 'fontFamily' ||
-          name === ':root'
-        )
+        if (name === 'colorScheme' || name === 'from' || name === 'to' || name === ':root')
           return previous;
         previous = Object.assign(previous, getStylesForProperty(name, String(value)));
         return previous;

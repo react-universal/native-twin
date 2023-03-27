@@ -1,13 +1,13 @@
 import postcss from 'postcss';
 import postcssVariables from 'postcss-css-variables';
-import type { createTailwindConfig } from '../config/tailwind-config';
+import type { TailwindConfig } from 'tailwindcss/tailwindconfig.faketype';
 import { postcssPluginReactNativeColors } from '../plugins/colors';
 import { createTailwindcssPlugin } from './create-tailwind-css-plugin';
 import { defaultTailwindCSS } from './default-tailwind-css';
 
 interface ProcessTailwindCSSArgs {
   content: string;
-  resolvedTailwindConfig: ReturnType<typeof createTailwindConfig>;
+  resolvedTailwindConfig: TailwindConfig;
 }
 
 export const processTailwindCSS = ({

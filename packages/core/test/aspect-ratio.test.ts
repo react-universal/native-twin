@@ -9,7 +9,7 @@ const tw = setup({
 
 describe('TailwindCSS Aspect Ratio', () => {
   it('aspect-square', () => {
-    const css = tw.style('aspect-square');
+    const css = tw.css('aspect-square');
     expect(css.JSS).toStrictEqual({
       '.aspect-square': {
         aspectRatio: '1',
@@ -17,7 +17,7 @@ describe('TailwindCSS Aspect Ratio', () => {
     });
   });
   it('aspect-video', () => {
-    const css = tw.style('aspect-video');
+    const css = tw.css('aspect-video');
     expect(css.JSS).toStrictEqual({
       '.aspect-video': {
         aspectRatio: '1.777777778',
@@ -25,7 +25,7 @@ describe('TailwindCSS Aspect Ratio', () => {
     });
   });
   it('aspect-auto', () => {
-    const css = tw.style('aspect-auto');
+    const css = tw.css('aspect-auto');
     expect(css.JSS).toStrictEqual({
       '.aspect-auto': {
         aspectRatio: '0',

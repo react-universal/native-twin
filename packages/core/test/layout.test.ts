@@ -6,7 +6,7 @@ const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
 
 describe('TailwindCSS layout', () => {
   it('Width', () => {
-    const css = tw.style('w-4');
+    const css = tw.css('w-4');
     expect(css.JSS).toStrictEqual({
       '.w-4': {
         width: '16px',
@@ -14,7 +14,7 @@ describe('TailwindCSS layout', () => {
     });
   });
   it('Height', () => {
-    const css = tw.style('h-4');
+    const css = tw.css('h-4');
     expect(css.JSS).toStrictEqual({
       '.h-4': {
         height: '16px',

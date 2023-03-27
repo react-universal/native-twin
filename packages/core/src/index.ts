@@ -1,11 +1,11 @@
 import postcss from 'postcss';
 import postcssJs from 'postcss-js';
 import type { Config } from 'tailwindcss';
-import { createTailwindConfig } from './config/tailwind-config';
+import resolveConfig from 'tailwindcss/src/public/resolve-config.js';
 import { processTailwindCSS } from './util/process-tailwind-css';
 
 const setup = (config: Config) => {
-  const resolvedTailwindConfig = createTailwindConfig({
+  const resolvedTailwindConfig = resolveConfig({
     ...config,
     content: config.content ?? ['__'],
     corePlugins: {
@@ -28,7 +28,7 @@ const setup = (config: Config) => {
     darkMode: 'media',
   });
   return {
-    style: (twClasses: string) => {
+    css: (twClasses: string) => {
       const css = processTailwindCSS({
         content: twClasses,
         resolvedTailwindConfig,

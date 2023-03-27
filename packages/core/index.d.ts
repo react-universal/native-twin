@@ -22,7 +22,7 @@ type Content = string | Record<string, boolean> | TemplateStringsArray | Content
 type Options = { merge?: boolean; minify?: boolean };
 
 export function setup(config: Config): {
-  style: (twClasses: string) => {
+  css: (twClasses: string) => {
     css: string;
     JSS: CssInJs;
     postcssRoot: Root;

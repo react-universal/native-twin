@@ -6,7 +6,7 @@ const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
 
 describe('TailwindCSS compiler', () => {
   it('Normal color', () => {
-    const css = tw.style('bg-black');
+    const css = tw.css('bg-black');
     expect(css.JSS).toStrictEqual({
       '.bg-black': {
         backgroundColor: '#000',
@@ -15,7 +15,7 @@ describe('TailwindCSS compiler', () => {
   });
 
   it('Color with opacity', () => {
-    const css = tw.style('bg-black/50');
+    const css = tw.css('bg-black/50');
     expect(css.JSS).toStrictEqual({
       '.bg-black\\/50': {
         backgroundColor: 'rgba(0,0,0,0.5)',
@@ -24,7 +24,7 @@ describe('TailwindCSS compiler', () => {
   });
 
   it('Translations', () => {
-    const css = tw.style('translate-x-8');
+    const css = tw.css('translate-x-8');
     expect(css.JSS).toStrictEqual({
       '.translate-x-8': {
         transform: 'translate(32px)',

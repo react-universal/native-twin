@@ -11559,6 +11559,7 @@ __metadata:
     "@universal-labs/primitives": "workspace:*"
     babel-plugin-module-resolver: ^5.0.0
     expo: ^48.0.0
+    expo-font: 11.1.1
     expo-status-bar: ~1.4.4
     postcss: ^8.4.21
     react: 18.2.0
@@ -11621,7 +11622,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-font@npm:~11.1.1":
+"expo-font@npm:11.1.1, expo-font@npm:~11.1.1":
   version: 11.1.1
   resolution: "expo-font@npm:11.1.1"
   dependencies:

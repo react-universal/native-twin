@@ -26,7 +26,7 @@ class CssParser {
   }
 
   public static get classNameStyle() {
-    return this.processor.style;
+    return this.processor.css;
   }
 }
 

@@ -6,7 +6,7 @@ const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
 
 describe('TailwindCSS Shadow', () => {
   it('Shadow', () => {
-    const css = tw.style('shadow-md');
+    const css = tw.css('shadow-md');
     expect(css.JSS).toStrictEqual({
       '.shadow-md': {
         boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)',
