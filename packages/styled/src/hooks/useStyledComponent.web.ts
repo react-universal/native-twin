@@ -1,18 +1,16 @@
+/* eslint-disable unused-imports/no-unused-vars */
 import { useMemo } from 'react';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { IRegisterComponentArgs } from '@universal-labs/stylesheets';
-import type { StyledOptions } from '../types/styled.types';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 
 function useStyledComponent<T, P extends keyof T>(
   data: Omit<IRegisterComponentArgs, 'id'>,
-  styledOptions?: StyledOptions<T, P>,
+  styledOptions?: P[],
 ) {
   return useMemo(() => {
-    const mergedClassName = data.className
-      ? `${styledOptions?.baseClassName ?? ''} ${data.className}`
-      : styledOptions?.baseClassName ?? '';
+    const mergedClassName = data.className ? `${data.className}` : '';
 
     if (mergedClassName && data.inlineStyles) {
       return [{ $$css: true, [mergedClassName]: mergedClassName } as Style, data.inlineStyles];
@@ -22,7 +20,7 @@ function useStyledComponent<T, P extends keyof T>(
       return data.inlineStyles;
     }
     return {};
-  }, [data, styledOptions?.baseClassName]);
+  }, [data]);
 }
 
 export { useStyledComponent };

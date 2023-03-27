@@ -2,7 +2,11 @@ import { ComponentType, forwardRef } from 'react';
 import { useStyledComponent } from '../hooks/useStyledComponent.web';
 import type { StyledOptions } from '../types/styled.types';
 
-const styled = (Component: ComponentType, styleOptions?: StyledOptions<any, any>) => {
+const styled = (
+  Component: ComponentType,
+  baseClassName?: string,
+  styleOptions?: StyledOptions<any, any>,
+) => {
   const Styled = forwardRef<unknown, any>(function StyledTW({ tw, className, ...props }, ref) {
     const style = useStyledComponent(
       {
@@ -14,6 +18,8 @@ const styled = (Component: ComponentType, styleOptions?: StyledOptions<any, any>
         parentID: '',
         classProps: {},
       },
+      baseClassName!,
+      // @ts-expect-error
       styleOptions,
     );
 

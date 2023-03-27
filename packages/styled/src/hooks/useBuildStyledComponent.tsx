@@ -1,7 +1,6 @@
 import { ComponentType, createElement, ReactNode } from 'react';
 import type { Touchable } from 'react-native';
 import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
-import type { StyledOptions } from '../types/styled.types';
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
@@ -10,9 +9,9 @@ function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
   Component: ComponentType<T>,
   ref: any,
-  styledOptions?: StyledOptions<T, P>,
+  styleClassProps?: P[],
 ) {
-  const classProps = useBuildStyleProps(props, styledOptions);
+  const classProps = useBuildStyleProps(props, styleClassProps);
 
   const { component } = useComponentStyleSheets({
     classProps,
