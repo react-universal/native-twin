@@ -37,7 +37,6 @@ const FlatListScreen = () => {
         <FlatList
           data={items}
           contentContainerStyle='bg-gray-600 hover:bg-white'
-          // @ts-expect-error
           renderItem={renderItem}
         />
       </View>

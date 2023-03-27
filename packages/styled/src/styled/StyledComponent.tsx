@@ -16,7 +16,10 @@ export function styled<T, P extends keyof T>(
 
   return forwardRef(Styled) as ForwardRef<
     InferRef<T>,
-    { [key in keyof T]: key extends P ? T[key] | string : T[key] }
+    { [key in keyof T]: key extends P ? T[key] | string : T[key] } & {
+      className?: string;
+      tw?: string;
+    }
     // {
     //   [key in keyof T]: key extends KeyIsInOptions<
     //     TStyledOptions extends StyledOptions<T, P> ? TStyledOptions : never,

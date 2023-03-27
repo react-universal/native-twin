@@ -3,6 +3,8 @@
   "compilerOptions": {
     "outDir": "./build",
     "strict": true,
+    "declaration": true,
+    "declarationMap": false,
     "jsx": "react-native"
   },
   "include": ["./src", "env.d.ts"],
