@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "./build",
     "strict": true,
-    "declaration": true,
+    "declaration": false,
     "declarationMap": false,
     "jsx": "react-native"
   },

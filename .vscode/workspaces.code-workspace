@@ -5,12 +5,16 @@
       "path": ".."
     },
     {
-      "name": "🚀 docusaurus",
-      "path": "../apps/docusaurus"
+      "name": "🚀 docs-page",
+      "path": "../apps/docs-page"
     },
     {
       "name": "expo-app",
       "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
     },
     {
       "name": "📦 @universal-labs/core",
