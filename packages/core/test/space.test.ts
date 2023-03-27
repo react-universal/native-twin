@@ -23,18 +23,10 @@ describe('TailwindCSS Space', () => {
   });
   it('Space X', () => {
     const css = tw.style('space-y-2');
-    expect(css.JSS).toStrictEqual({
-      '.space-y-2': {
-        marginTop: '8px',
-      },
-    });
+    expect(css.JSS).toStrictEqual({});
   });
   it('Divide X', () => {
-    const css = tw.style('divide-y-2');
-    expect(css.JSS).toStrictEqual({
-      '.divide-x-2': {
-        marginTop: '8px',
-      },
-    });
+    const css = tw.style('divide-x-2');
+    expect(css.JSS).toStrictEqual({});
   });
 });

@@ -12,7 +12,6 @@ import { rotate } from './rotate';
 import { rounded } from './rounded';
 import { scale } from './scale';
 import { skew } from './skew';
-import { space } from './space';
 import { translate } from './translate';
 import { variables } from './variables';
 import { width } from './width';
@@ -73,7 +72,6 @@ export function reactNativeTailwindPreset(input?: IPresetArgs) {
       scale,
       skew,
       padding,
-      space,
       translate,
       margin,
       variables,
