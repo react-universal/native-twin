@@ -1,35 +1,15 @@
 import { ComponentType, forwardRef } from 'react';
-import { useStyledComponent } from '../hooks/useStyledComponent.web';
-import type { StyledOptions } from '../types/styled.types';
+import { useBuildStyledComponent } from '../hooks/useBuildStyledComponent';
 
-const styled = (
-  Component: ComponentType,
-  baseClassName?: string,
-  styleOptions?: StyledOptions<any, any>,
-) => {
-  const Styled = forwardRef<unknown, any>(function StyledTW({ tw, className, ...props }, ref) {
-    const style = useStyledComponent(
-      {
-        className: className ?? tw,
-        inlineStyles: props.style,
-        isFirstChild: false,
-        isLastChild: false,
-        nthChild: 0,
-        parentID: '',
-        classProps: {},
-      },
-      baseClassName!,
-      // @ts-expect-error
-      styleOptions,
-    );
-
-    return <Component {...props} ref={ref} style={style} />;
+function styled<T, P extends keyof T>(Component: ComponentType<T>, styleClassProps?: P[]) {
+  const Styled = forwardRef<unknown, any>(function StyledTW(props, ref) {
+    return useBuildStyledComponent(props, Component, ref, styleClassProps);
   });
 
   if (typeof Component !== 'string') {
     Styled.displayName = `Tailwind.${Component.displayName || Component.name || 'NoName'}`;
   }
   return Styled;
-};
+}
 
 export { styled };
