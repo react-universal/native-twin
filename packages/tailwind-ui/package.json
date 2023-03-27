@@ -69,7 +69,7 @@
   "devDependencies": {
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
-    "@types/react-native": "0.70.7",
+    "@types/react-native": "^0.71.5",
     "@types/react-test-renderer": "^18.0.0",
     "@universal-labs/stylesheets": "workspace:*",
     "react-hot-toast": "^2.4.0",

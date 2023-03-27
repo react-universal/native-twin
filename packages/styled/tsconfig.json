@@ -1,11 +1,11 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "react-native",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "module": "ESNext",
+    "module": "CommonJS",
     "noEmit": true,
     "outDir": "./build",
     "types": ["node", "vitest/globals"],

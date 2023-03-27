@@ -6145,12 +6145,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:0.70.7":
-  version: 0.70.7
-  resolution: "@types/react-native@npm:0.70.7"
+"@types/react-native@npm:^0.71.5":
+  version: 0.71.5
+  resolution: "@types/react-native@npm:0.71.5"
   dependencies:
     "@types/react": "*"
-  checksum: 1a316a780e2095f17660689b6c3bb8a2b47e260bab0d2f485dd4db8c149cab808d22b21d211b0eb26651d5be4cc9f63c11e5f0532befc119f2a5e59309558f37
+  checksum: a9d88591154aeb94ee42ed88f194fed77148592e35d2bb807d9ad7aa04216ec068f5bc541e6c320c8cbac775a4f0c863bc1bd5c1c884a8f1d599494783f61d63
   languageName: node
   linkType: hard
 
@@ -6204,7 +6204,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:>=16.9.0, @types/react@npm:~18.0.27":
+"@types/react@npm:*, @types/react@npm:18.0.28, @types/react@npm:>=16.9.0, @types/react@npm:~18.0.27":
   version: 18.0.28
   resolution: "@types/react@npm:18.0.28"
   dependencies:
@@ -6625,7 +6625,7 @@ __metadata:
   dependencies:
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
-    "@types/react-native": 0.70.7
+    "@types/react-native": ^0.71.5
     "@universal-labs/styled": "workspace:*"
     react-native: 0.71.4
   peerDependencies:
@@ -6638,12 +6638,14 @@ __metadata:
   resolution: "@universal-labs/styled@workspace:packages/styled"
   dependencies:
     "@types/node": 16.11.7
-    "@types/react": ~18.0.27
+    "@types/react": 18.0.28
     "@types/react-dom": ~18.0.10
     "@types/react-is": ^17.0.3
-    "@types/react-native": 0.70.7
+    "@types/react-native": ^0.71.5
     "@universal-labs/stylesheets": "workspace:*"
+    react: 18.2.0
     react-is: ^18.2.0
+    react-native: 0.71.4
     tailwind-merge: ^1.10.0
     vitest-react-native: 0.0.5
   peerDependencies:
@@ -6658,7 +6660,7 @@ __metadata:
     "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
-    "@types/react-native": 0.70.7
+    "@types/react-native": ^0.71.5
     "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/core": "workspace:*"
     css-to-react-native: ^3.1.0
@@ -6682,7 +6684,7 @@ __metadata:
     "@tanstack/react-table": ^8.7.9
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
-    "@types/react-native": 0.70.7
+    "@types/react-native": ^0.71.5
     "@types/react-test-renderer": ^18.0.0
     "@universal-labs/core": "workspace:*"
     "@universal-labs/primitives": "workspace:*"
@@ -11544,6 +11546,7 @@ __metadata:
     "@react-navigation/native-stack": ^6.9.10
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
+    "@types/react-native": ^0.71.5
     "@universal-labs/core": "workspace:*"
     "@universal-labs/primitives": "workspace:*"
     babel-plugin-module-resolver: ^5.0.0

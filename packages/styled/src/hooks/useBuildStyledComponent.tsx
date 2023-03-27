@@ -1,4 +1,4 @@
-import { ComponentType, createElement, ReactNode } from 'react';
+import { ComponentType, createElement, ForwardedRef, ReactNode } from 'react';
 import type { Touchable } from 'react-native';
 import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
 import { useBuildStyleProps } from './useBuildStyleProps';
@@ -8,7 +8,7 @@ import { useComponentInteractions } from './useComponentInteractions';
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
   Component: ComponentType<T>,
-  ref: any,
+  ref: ForwardedRef<unknown>,
   styleClassProps?: P[],
 ) {
   const classProps = useBuildStyleProps(props, styleClassProps);
@@ -40,7 +40,7 @@ function useBuildStyledComponent<T, P extends keyof T>(
     children: componentChilds,
     ref,
   } as unknown as T);
-  let returnValue: ReactNode = transformedComponent;
+  const returnValue: ReactNode = transformedComponent;
 
   return returnValue;
 }
