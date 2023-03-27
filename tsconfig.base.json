@@ -23,6 +23,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "noEmit": true,
     "strict": true,
     "strictNullChecks": true,
     "skipLibCheck": true,

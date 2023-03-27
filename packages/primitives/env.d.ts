@@ -10,7 +10,7 @@ declare namespace JSX {
 }
 
 declare module 'react-native' {
-  interface FlatListProps<ItemT> extends VirtualizedListProps<ItemT> {
+  interface FlatListProps<ItemT> extends VirtualizedListProperties<ItemT> {
     className?: string;
     tw?: string;
   }

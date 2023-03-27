@@ -45,7 +45,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "npx vite build && yarn build:tailwind",
+    "build:libs": "npx vite build && yarn build:tailwind",
     "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
     "dev": "concurrently \"npx vite build -w\" \"npx vite build -c vite.tailwind.config.ts -w\"",
     "lint": "eslint \"./**/*.{ts,tsx}\"",

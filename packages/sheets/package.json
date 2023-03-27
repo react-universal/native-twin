@@ -46,7 +46,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "expo-module build -p tsconfig.build.json",
+    "build:libs": "expo-module build -p tsconfig.build.json",
     "clean": "expo-module clean",
     "dev": "expo-module build -p tsconfig.build.json -w",
     "expo-module": "expo-module",

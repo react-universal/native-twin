@@ -1,14 +1,15 @@
 import { immerable } from 'immer';
 import uuid from 'react-native-uuid';
 import ComponentStyleSheet from '../sheets/ComponentStyleSheet';
-import type {
-  IStyleProp,
-  TInteractionPseudoSelectors,
-  TInternalStyledComponentProps,
-} from '../types';
+import type { IStyleProp, StyledProps, TInteractionPseudoSelectors } from '../types';
 import type { IRegisterComponentArgs } from '../types/store.types';
 
-const createID = () => uuid.v4();
+const createID = () => {
+  if (process && process.env['NODE_ENV'] === 'test') {
+    return 'test-parent';
+  }
+  return uuid.v4();
+};
 
 interface IComponentStyleSheets<T> {
   classProp: keyof T;
@@ -16,7 +17,7 @@ interface IComponentStyleSheets<T> {
   styles: ComponentStyleSheet;
 }
 
-export default class ComponentNode {
+export default class ComponentNode<T = Object> {
   id: string;
   [immerable] = true;
   inlineStyles: IStyleProp;
@@ -28,7 +29,7 @@ export default class ComponentNode {
     active: false,
     'group-hover': false,
   };
-  appearanceState: Omit<TInternalStyledComponentProps, 'parentID'>;
+  appearanceState: Pick<StyledProps<keyof T>, 'isFirstChild' | 'isLastChild' | 'nthChild'>;
   constructor(component: IRegisterComponentArgs) {
     this.parentComponentID = component.parentID;
     this.id = createID() as string;
@@ -62,7 +63,10 @@ export default class ComponentNode {
     return sheets.reduce((prev, current) => {
       if (typeof current.classProp === 'string') {
         if (!prev[current.classProp]) {
-          prev[current.classProp] = [current.styles.baseStyles, this.inlineStyles];
+          prev[current.classProp] = [
+            current.styles.baseStyles,
+            this.inlineStyles && this.inlineStyles,
+          ];
         }
         const hoverInteraction = current.styles.interactionStyles.find(
           ([name]) => name === 'hover',

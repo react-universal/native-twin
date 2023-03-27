@@ -2,7 +2,7 @@ import { ComponentType, forwardRef } from 'react';
 import { useStyledComponent } from '../hooks/useStyledComponent.web';
 import type { StyledOptions } from '../types/styled.types';
 
-const styled = (Component: ComponentType, styleOptions?: StyledOptions<any>) => {
+const styled = (Component: ComponentType, styleOptions?: StyledOptions<any, any>) => {
   const Styled = forwardRef<unknown, any>(function StyledTW({ tw, className, ...props }, ref) {
     const style = useStyledComponent(
       {

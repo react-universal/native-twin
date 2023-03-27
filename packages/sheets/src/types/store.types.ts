@@ -1,12 +1,11 @@
-import type { ReactNode } from 'react';
 import type { PressableProps } from 'react-native';
 import type {
   IStyleProp,
   IStyleTuple,
   IStyleType,
+  StyledProps,
   TAppearancePseudoSelectors,
   TInteractionPseudoSelectors,
-  TInternalStyledComponentProps,
 } from '../types';
 
 export type IInteractionPayload = {
@@ -27,12 +26,10 @@ type IComponentID = string;
 
 export type IRegisteredComponent = [IComponentID, IComponent];
 
-export type IRegisterComponentArgs = TInternalStyledComponentProps & {
-  className?: string;
-  inlineStyles: IExtraProperties<{}>['style'];
-  parentID: string;
+export type IRegisterComponentArgs = StyledProps<{
+  inlineStyles: IStyleProp;
   classProps: Record<string, string>;
-};
+}>;
 
 export type IComponentsStore = {
   styles: IStyleTuple[];
@@ -47,13 +44,6 @@ export type IClassNamesStyle = {
 export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, unknown>
   ? K
   : never;
-
-export type IExtraProperties<T> = T & {
-  style?: IStyleProp;
-  className?: string;
-  tw?: string;
-  children?: ReactNode;
-};
 
 export interface InteractionProps extends PressableProps {
   onMouseDown?: PressableProps['onPressIn'];

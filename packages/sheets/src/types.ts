@@ -6,19 +6,17 @@ export type IStyleProp = StyleProp<ImageStyle | TextStyle | ViewStyle>;
 export type IStyleType = Record<string, ImageStyle | TextStyle | ViewStyle>;
 export type IStyleTuple = [string, IStyleType];
 
-export type IExtraProperties<T> = T & {
-  style?: ImageStyle | TextStyle | ViewStyle;
+export type StyledProps<P> = {
   className?: string;
   tw?: string;
-  children?: ReactNode;
-};
-
-export type TInternalStyledComponentProps = {
   nthChild: number;
   isFirstChild: boolean;
   isLastChild: boolean;
-  parentID: string;
-};
+  parentID?: string;
+  children?: ReactNode;
+  style?: IStyleProp;
+} & P;
+
 export interface InteractionProps extends PressableProps {
   onMouseDown?: PressableProps['onPressIn'];
   onMouseUp?: PressableProps['onPressOut'];

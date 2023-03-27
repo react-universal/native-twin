@@ -14,7 +14,7 @@
     "apps/*"
   ],
   "scripts": {
-    "build:libs": "npx nx run-many --target=build --projects=\"@universal-labs/**\"",
+    "build:libs": "npx nx run-many --target=build:libs --projects=\"@universal-labs/**\"",
     "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "dev": "npx nx run-many --target=dev --projects=\"@universal-labs/**\" --parallel",
     "docs:build": "npx nx run build --project=docs-page",

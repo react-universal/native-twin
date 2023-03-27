@@ -1,20 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react';
-import type {
-  IExtraProperties,
-  TInternalStyledComponentProps,
-} from '@universal-labs/stylesheets';
+import type { StyledProps } from '@universal-labs/stylesheets';
 import { twMerge } from 'tailwind-merge';
-import type { StyledOptions, StyledProps } from '../types/styled.types';
+import type { StyledOptions } from '../types/styled.types';
 
 const useBuildStyleProps = <T, P extends keyof T>(
-  {
-    className,
-    tw,
-    ...componentProps
-  }: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
+  { className, tw, ...componentProps }: StyledProps<T>,
   styledOptions?: StyledOptions<T, P>,
 ) => {
-  const originalClassProps = useRef(componentProps);
+  const originalClassProps: any = useRef(componentProps);
   useEffect(() => {
     originalClassProps.current = componentProps;
   }, [componentProps]);

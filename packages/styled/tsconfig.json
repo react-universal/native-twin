@@ -3,11 +3,10 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": false,
-    "noUnusedLocals": false,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
     "module": "ESNext",
     "noEmit": true,
-    "declarationMap": false,
     "outDir": "./build",
     "types": ["node", "vitest/globals"],
     "importHelpers": true

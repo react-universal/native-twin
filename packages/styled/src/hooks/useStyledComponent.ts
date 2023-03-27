@@ -1,16 +1,12 @@
 import type { Touchable } from 'react-native';
-import {
-  IExtraProperties,
-  TInternalStyledComponentProps,
-  useComponentStyleSheets,
-} from '@universal-labs/stylesheets';
-import type { StyledOptions, StyledProps } from '../types/styled.types';
+import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
+import type { StyledOptions } from '../types/styled.types';
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 
 const useStyledComponent = <T, P extends keyof T>(
-  props: StyledProps<IExtraProperties<TInternalStyledComponentProps>>,
+  props: StyledProps<T>,
   styledOptions?: StyledOptions<T, P>,
 ) => {
   const classProps = useBuildStyleProps(props, styledOptions);

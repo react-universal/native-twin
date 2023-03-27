@@ -40,8 +40,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npx vite build",
     "build:ts": "expo-module build -p tsconfig.build.json",
+    "build:ui": "npx vite build",
     "clean": "expo-module clean",
     "e2e": "cypress open",
     "expo-module": "expo-module",
