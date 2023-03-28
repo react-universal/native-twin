@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.6.2
+
+### Patch Changes
+
+- [`b1986db`](https://github.com/react-universal/tailwind/commit/b1986db4dabfcb0b94d9595fc234b032d8b2e894) Thanks [@chrisarts](https://github.com/chrisarts)! - leading utility fix
+
 ## 1.6.1
 
 ### Patch Changes
