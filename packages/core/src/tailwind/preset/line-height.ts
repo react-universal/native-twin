@@ -6,9 +6,6 @@ export const lineHeight = plugin(function ({ matchUtilities, theme }) {
   matchUtilities(
     {
       leading(value: string) {
-        // if (typeof value !== 'string') {
-        //   return notSupported(`leading-${value}`)();
-        // }
         if (value.endsWith('rem')) {
           value = `${parseFloat(value) * baseRem}px`;
         }

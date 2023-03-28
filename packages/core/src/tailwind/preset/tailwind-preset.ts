@@ -9,6 +9,7 @@ import { lineHeight } from './line-height';
 import { margin } from './margin';
 import { padding } from './padding';
 import { platforms } from './platforms';
+import { position } from './position';
 import { rotate } from './rotate';
 import { rounded } from './rounded';
 import { scale } from './scale';
@@ -79,11 +80,14 @@ export function reactNativeTailwindPreset(input?: IPresetArgs) {
       variables,
       rounded,
       width,
+      position,
       height,
     ],
     corePlugins: {
       backgroundOpacity: false,
       borderOpacity: false,
+      inset: false,
+      position: false,
       boxShadow: false,
       borderRadius: false,
       boxShadowColor: false,
