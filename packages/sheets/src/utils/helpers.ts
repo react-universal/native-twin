@@ -1,6 +1,10 @@
 import { getStylesForProperty } from 'css-to-react-native';
 import type { CssInJs } from 'postcss-js';
-import type { TInteractionPseudoSelectors, TAppearancePseudoSelectors } from '../types';
+import type {
+  TInteractionPseudoSelectors,
+  TAppearancePseudoSelectors,
+  TPlatformPseudoSelectors,
+} from '../types';
 import type { IStyleType } from '../types';
 
 export function selectorIsInteraction(
@@ -23,6 +27,12 @@ export function selectorIsAppearance(
     selector === 'first' ||
     selector === 'even' ||
     selector === 'odd'
+  );
+}
+
+export function selectorIsPlatform(selector: string): selector is TPlatformPseudoSelectors {
+  return (
+    selector === 'native' || selector === 'ios' || selector === 'android' || selector === 'web'
   );
 }
 

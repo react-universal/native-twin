@@ -1,7 +1,12 @@
+import { Appearance } from 'react-native';
 import { immerable } from 'immer';
 import uuid from 'react-native-uuid';
 import ComponentStyleSheet from '../sheets/ComponentStyleSheet';
-import type { IStyleProp, StyledProps, TInteractionPseudoSelectors } from '../types';
+import type {
+  IStyleProp,
+  TAppearancePseudoSelectors,
+  TInteractionPseudoSelectors,
+} from '../types';
 import type { IRegisterComponentArgs } from '../types/store.types';
 
 const createID = () => {
@@ -17,7 +22,7 @@ interface IComponentStyleSheets<T> {
   styles: ComponentStyleSheet;
 }
 
-export default class ComponentNode<T = Object> {
+export default class ComponentNode {
   id: string;
   [immerable] = true;
   inlineStyles: IStyleProp;
@@ -29,7 +34,7 @@ export default class ComponentNode<T = Object> {
     active: false,
     'group-hover': false,
   };
-  appearanceState: Pick<StyledProps<keyof T>, 'isFirstChild' | 'isLastChild' | 'nthChild'>;
+  appearanceState: Record<TAppearancePseudoSelectors, boolean>;
   constructor(component: IRegisterComponentArgs) {
     this.parentComponentID = component.parentID;
     this.id = createID() as string;
@@ -44,19 +49,21 @@ export default class ComponentNode<T = Object> {
       return prev;
     }, {} as typeof this.styleSheets);
     this.appearanceState = {
-      isFirstChild: component.isFirstChild,
-      isLastChild: component.isFirstChild,
-      nthChild: component.nthChild,
+      // first: component.isFirstChild,
+      // last: component.isLastChild,
+      // even: component.nthChild % 2 === 0,
+      // odd: component.nthChild % 2 !== 0,
+      dark: Appearance.getColorScheme() === 'dark',
+      // android: Platform.OS === 'android',
+      // ios: Platform.OS === 'ios',
+      // web: Platform.OS === 'web',
+      // native: Platform.OS !== 'web',
     };
   }
 
   setInteractionState(interaction: TInteractionPseudoSelectors, value: boolean) {
     this.interactionsState[interaction] = value;
   }
-
-  // getInteractionStyles(interaction: TInteractionPseudoSelectors) {
-  //   return this.styleSheet.interactionStyles.find(([name]) => name === interaction);
-  // }
 
   get getStyleProps() {
     const sheets = Object.values(this.styleSheets);
@@ -84,19 +91,6 @@ export default class ComponentNode<T = Object> {
       return prev;
     }, {} as Record<string, IStyleProp[]>);
   }
-
-  // get styles() {
-  //   const styles = [this.styleSheets.baseStyles, this.inlineStyles];
-  //   const hoverInteraction = this.getInteractionStyles('hover');
-  //   const groupHoverInteraction = this.getInteractionStyles('group-hover');
-  //   if (this.interactionsState['group-hover'] && groupHoverInteraction) {
-  //     styles.push(groupHoverInteraction[1].styles);
-  //   }
-  //   if (this.interactionsState.hover && hoverInteraction) {
-  //     styles.push(hoverInteraction[1].styles);
-  //   }
-  //   return StyleSheet.flatten(styles);
-  // }
 
   get getStyleSheetInteractions() {
     let hasGroupInteractions = false;
@@ -133,33 +127,4 @@ export default class ComponentNode<T = Object> {
   get hasGroupInteractions() {
     return this.getStyleSheetInteractions.hasGroupInteractions;
   }
-
-  // getChildStyles(props: TInternalStyledComponentProps) {
-  //   const styles: IStyleType[] = [];
-  //   const firstChildStyles = this.styleSheet.appearanceStyles.find(
-  //     ([selector]) => selector === 'first',
-  //   );
-  //   const evenChildStyles = this.styleSheet.appearanceStyles.find(
-  //     ([selector]) => selector === 'even',
-  //   );
-  //   const oddChildStyles = this.styleSheet.appearanceStyles.find(
-  //     ([selector]) => selector === 'odd',
-  //   );
-  //   const lastChildStyles = this.styleSheet.appearanceStyles.find(
-  //     ([selector]) => selector === 'last',
-  //   );
-  //   if (props.isFirstChild && firstChildStyles) {
-  //     styles.push(firstChildStyles[1].styles);
-  //   }
-  //   if (props.isLastChild && lastChildStyles) {
-  //     styles.push(lastChildStyles[1].styles);
-  //   }
-  //   if (props.nthChild % 2 === 0 && evenChildStyles) {
-  //     styles.push(evenChildStyles[1].styles);
-  //   }
-  //   if (props.nthChild % 2 !== 0 && oddChildStyles) {
-  //     styles.push(oddChildStyles[1].styles);
-  //   }
-  //   return StyleSheet.flatten(styles) as IStyleType;
-  // }
 }

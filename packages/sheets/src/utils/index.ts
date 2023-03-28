@@ -1,3 +1,7 @@
-export { cssPropertiesResolver, selectorIsAppearance, selectorIsInteraction } from './helpers';
-export { createHash, getBitMask, getHashMask } from './createHash';
+export {
+  cssPropertiesResolver,
+  selectorIsAppearance,
+  selectorIsInteraction,
+  selectorIsPlatform,
+} from './helpers';
 export { isValidReactNativeStyle } from './validateStyle';

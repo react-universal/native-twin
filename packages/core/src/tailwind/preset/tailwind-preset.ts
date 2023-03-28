@@ -73,6 +73,7 @@ export function reactNativeTailwindPreset(input?: IPresetArgs) {
       platforms,
       rotate,
       scale,
+      platforms,
       skew,
       padding,
       translate,

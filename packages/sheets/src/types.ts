@@ -24,14 +24,20 @@ export interface InteractionProps extends PressableProps {
 
 export type TInteractionPseudoSelectors = 'hover' | 'active' | 'focus' | 'group-hover';
 
-export type TAppearancePseudoSelectors = 'dark' | 'last' | 'first' | 'even' | 'odd';
+export type TAppearancePseudoSelectors = 'dark';
+
+export type TChildPseudoSelectors = 'last' | 'first' | 'even' | 'odd';
+
+export type TPlatformPseudoSelectors = 'native' | 'ios' | 'android' | 'web';
 
 export type IInteractionPayload = {
   classNames: string;
   styles: IStyleType;
 };
-export type IComponentInteractions = [TInteractionPseudoSelectors, IInteractionPayload];
+type IComponentInteractions = [TInteractionPseudoSelectors, IInteractionPayload];
 export type IComponentAppearance = [TAppearancePseudoSelectors, IInteractionPayload];
+export type IComponentPlatform = [TPlatformPseudoSelectors, IInteractionPayload];
+export type IComponentChildStyles = [TChildPseudoSelectors, IInteractionPayload];
 
 export type IClassNamesStyle = {
   normalStyles: IStyleType;

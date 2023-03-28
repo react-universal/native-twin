@@ -1,19 +1,12 @@
 import {
-  GROUP_PARENT_MASK,
-  HOVER_INTERACTION_MASK,
-  INITIAL_MASK,
-  INTERACTIONS_MASK,
+  InteractionPseudoSelectors,
+  AppearancePseudoSelectors,
+  PlatformPseudoSelectors,
+  ChildPseudoSelectors,
 } from '../constants';
 import { css } from '../css';
-import type {
-  IStyleTuple,
-  IStyleType,
-  IComponentInteractions,
-  TInteractionPseudoSelectors,
-  TAppearancePseudoSelectors,
-  IComponentAppearance,
-} from '../types';
-import { selectorIsInteraction, selectorIsAppearance, cssPropertiesResolver } from '../utils';
+import type { IStyleTuple, IStyleType, IInteractionPayload } from '../types';
+import { cssPropertiesResolver } from '../utils';
 
 class GlobalStyleSheet {
   private stylesCollection: Map<string, IStyleType> = new Map();
@@ -59,88 +52,68 @@ class GlobalStyleSheet {
     };
   }
 
-  private _getStylesForInteractionClasses(classNames: string[][]) {
-    let interactionStyles: IComponentInteractions[] = [];
-    const interactionsClasses = this._getInteractionClasses(classNames);
-    for (const node of interactionsClasses) {
-      const interactionType = node[0];
-      const interactionClassNames = node[1];
-      const compiled = this._getJSS([interactionClassNames]);
-      interactionStyles.push([
-        interactionType,
+  private _getClassesForSelectors<T>(classNames: string[][], selectors: readonly T[]) {
+    const classes: [T, string][] = [];
+    for (const current of classNames) {
+      if (!current[0] || !current[1]) continue;
+      const pseudoSelector = current[0];
+      const className = current[1];
+      if (selectors.includes(pseudoSelector as T)) {
+        classes.push([pseudoSelector as T, className]);
+      }
+    }
+    return classes;
+  }
+
+  private _getStylesForPseudoClasses<T extends string>(
+    classNames: string[][],
+    pseudoSelectors: readonly T[],
+  ) {
+    let pseudoSelectorStyles: [T, IInteractionPayload][] = [];
+    const pseudoSelectorClasses = this._getClassesForSelectors(classNames, pseudoSelectors);
+    for (const node of pseudoSelectorClasses) {
+      const selectorType = node[0];
+      const selectorClassNames = node[1];
+      const compiled = this._getJSS([selectorClassNames]);
+      pseudoSelectorStyles.push([
+        selectorType,
         {
-          classNames: interactionClassNames,
+          classNames: selectorClassNames,
           styles: compiled.reduce((obj, d) => Object.assign(obj, d[1]), {}),
         },
       ]);
     }
-    return interactionStyles;
-  }
-
-  private _getStylesForAppearanceClasses(classNames: string[][]) {
-    let interactionStyles: IComponentAppearance[] = [];
-    const appearanceClasses = this._getAppearanceClasses(classNames);
-    for (const node of appearanceClasses) {
-      const appearanceType = node[0];
-      const appearanceClassNames = node[1];
-      const compiled = this._getJSS([appearanceClassNames]);
-      interactionStyles.push([
-        appearanceType,
-        {
-          classNames: appearanceClassNames,
-          styles: compiled.reduce((obj, d) => Object.assign(obj, d[1]), {}),
-        },
-      ]);
-    }
-    return interactionStyles;
-  }
-
-  private _getAppearanceClasses(classNames: string[][]) {
-    const interactions: [TAppearancePseudoSelectors, string][] = [];
-    for (const current of classNames) {
-      if (!current[0] || !current[1] || !selectorIsAppearance(current[0])) continue;
-      const pseudoSelector = current[0];
-      const className = current[1];
-      interactions.push([pseudoSelector, className]);
-    }
-    return interactions;
-  }
-
-  private _getInteractionClasses(classNames: string[][]) {
-    const interactions: [TInteractionPseudoSelectors, string][] = [];
-    for (const current of classNames) {
-      if (!current[0] || !current[1] || !selectorIsInteraction(current[0])) continue;
-      const pseudoSelector = current[0];
-      const className = current[1];
-      interactions.push([pseudoSelector, className]);
-    }
-    return interactions;
+    return pseudoSelectorStyles;
   }
 
   registerClassNames(classNames: string) {
     const parsed = this._parseClassNames(classNames);
     const normalStyles = this._getJSS(parsed.normalClassNames);
-    const interactionStyles = this._getStylesForInteractionClasses(
+    const interactionStyles = this._getStylesForPseudoClasses(
       parsed.interactionClassNames,
+      InteractionPseudoSelectors,
     );
-    const appearanceStyles = this._getStylesForAppearanceClasses(parsed.interactionClassNames);
+    const appearanceStyles = this._getStylesForPseudoClasses(
+      parsed.interactionClassNames,
+      AppearancePseudoSelectors,
+    );
+    const platformStyles = this._getStylesForPseudoClasses(
+      parsed.interactionClassNames,
+      PlatformPseudoSelectors,
+    );
+    const childStyles = this._getStylesForPseudoClasses(
+      parsed.interactionClassNames,
+      ChildPseudoSelectors,
+    );
     const isParent = normalStyles.some(([name]) => name === 'group');
-    let componentMask = INITIAL_MASK;
-    if (isParent) {
-      componentMask |= GROUP_PARENT_MASK;
-    }
-    if (interactionStyles.length > 0) {
-      componentMask |= INTERACTIONS_MASK;
-    }
-    if (interactionStyles.some(([name]) => name === 'hover')) {
-      componentMask |= HOVER_INTERACTION_MASK;
-    }
     return {
-      componentMask,
+      isParent,
       interactionStyles,
       normalStyles,
       parsed,
+      childStyles,
       appearanceStyles,
+      platformStyles,
     };
   }
 }
