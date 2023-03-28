@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.6.3
+
+### Patch Changes
+
+- [`b894ea6`](https://github.com/react-universal/tailwind/commit/b894ea6ce4eb9042134ffddd4483e1557fa43ed0) Thanks [@chrisarts](https://github.com/chrisarts)! - adding support for position and negative values
+
+- Updated dependencies [[`b894ea6`](https://github.com/react-universal/tailwind/commit/b894ea6ce4eb9042134ffddd4483e1557fa43ed0)]:
+  - @universal-labs/core@1.6.3
+
 ## 1.6.2
 
 ### Patch Changes
