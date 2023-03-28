@@ -27,11 +27,21 @@ describe('TailwindCSS Font', () => {
       },
     });
   });
+
   it('font-family', () => {
     const css = tw.css('font-inter');
     expect(css.JSS).toStrictEqual({
       '.font-inter': {
         fontFamily: 'Inter-Regular',
+      },
+    });
+  });
+
+  it('leading', () => {
+    const css = tw.css('leading-5');
+    expect(css.JSS).toStrictEqual({
+      '.leading-5': {
+        lineHeight: '20px',
       },
     });
   });

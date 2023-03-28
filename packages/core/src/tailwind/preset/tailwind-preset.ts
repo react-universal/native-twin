@@ -5,6 +5,7 @@ import { elevation } from './elevation';
 import { fontSize } from './font-size';
 import { gap } from './gap';
 import { height } from './height';
+import { lineHeight } from './line-height';
 import { margin } from './margin';
 import { padding } from './padding';
 import { platforms } from './platforms';
@@ -66,6 +67,7 @@ export function reactNativeTailwindPreset(input?: IPresetArgs) {
       darkMode,
       elevation,
       fontSize,
+      lineHeight,
       gap,
       platforms,
       rotate,
@@ -85,6 +87,7 @@ export function reactNativeTailwindPreset(input?: IPresetArgs) {
       boxShadow: false,
       borderRadius: false,
       boxShadowColor: false,
+      lineHeight: false,
       divideColor: false,
       divideOpacity: false,
       gap: false,
