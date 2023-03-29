@@ -1,12 +1,13 @@
 import { Appearance } from 'react-native';
 import { immerable } from 'immer';
 import uuid from 'react-native-uuid';
-import ComponentStyleSheet from '../sheets/ComponentStyleSheet';
 import type {
-  IStyleProp,
-  TAppearancePseudoSelectors,
-  TInteractionPseudoSelectors,
-} from '../types';
+  AppearancePseudoSelectors,
+  ChildPseudoSelectors,
+  InteractionPseudoSelectors,
+} from '../constants';
+import ComponentStyleSheet from '../sheets/ComponentStyleSheet';
+import type { IInteractionPayload, IStyleProp } from '../types';
 import type { IRegisterComponentArgs } from '../types/store.types';
 
 const createID = () => {
@@ -28,24 +29,27 @@ export default class ComponentNode {
   inlineStyles: IStyleProp;
   styleSheets: Record<string, IComponentStyleSheets<any>>;
   parentComponentID?: string;
-  interactionsState: Record<TInteractionPseudoSelectors, boolean> = {
+  interactionsState: Record<(typeof InteractionPseudoSelectors)[number], boolean> = {
     hover: false,
     focus: false,
     active: false,
     'group-hover': false,
   };
-  appearanceState: Record<TAppearancePseudoSelectors, boolean>;
+  appearanceState: Record<(typeof AppearancePseudoSelectors)[number], boolean>;
+  childStyles: [(typeof ChildPseudoSelectors)[number], IInteractionPayload][] = [];
   constructor(component: IRegisterComponentArgs) {
     this.parentComponentID = component.parentID;
     this.id = createID() as string;
     this.inlineStyles = component.inlineStyles;
     this.styleSheets = Object.entries(component.classProps).reduce((prev, current) => {
       const [classProp, propClassName] = current;
+      const createdStyles = new ComponentStyleSheet(propClassName);
       prev[classProp] = {
         classProp: classProp,
         className: propClassName,
-        styles: new ComponentStyleSheet(propClassName),
+        styles: createdStyles,
       };
+      this.childStyles = this.childStyles.concat(createdStyles.childStyles);
       return prev;
     }, {} as typeof this.styleSheets);
     this.appearanceState = {
@@ -61,7 +65,14 @@ export default class ComponentNode {
     };
   }
 
-  setInteractionState(interaction: TInteractionPseudoSelectors, value: boolean) {
+  getChildStyles(style: (typeof ChildPseudoSelectors)[number]) {
+    return this.childStyles.find((d) => d[0] === style)?.[1];
+  }
+
+  setInteractionState(
+    interaction: (typeof InteractionPseudoSelectors)[number],
+    value: boolean,
+  ) {
     this.interactionsState[interaction] = value;
   }
 

@@ -69,6 +69,6 @@ export const padding = plugin(({ matchUtilities, theme }) => {
         };
       },
     },
-    { values: { ...theme('padding'), reverse: 'reverse' } },
+    { values: { ...theme('padding'), reverse: 'reverse' }, supportsNegativeValues: true },
   );
 });

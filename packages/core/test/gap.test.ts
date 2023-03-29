@@ -13,6 +13,7 @@ describe('TailwindCSS GAP', () => {
       },
     });
   });
+
   it('gap-x', () => {
     const css = tw.css('gap-x-5');
     expect(css.JSS).toStrictEqual({
@@ -21,6 +22,7 @@ describe('TailwindCSS GAP', () => {
       },
     });
   });
+
   it('gap-y', () => {
     const css = tw.css('gap-y-5');
     expect(css.JSS).toStrictEqual({

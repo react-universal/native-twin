@@ -14,6 +14,6 @@ export const width = plugin(function ({ matchUtilities, theme }) {
         };
       },
     },
-    { values: { ...theme('width') } },
+    { values: { ...theme('width') }, supportsNegativeValues: true },
   );
 });

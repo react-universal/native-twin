@@ -30,7 +30,11 @@ function useBuildStyledComponent<T, P extends keyof T>(
     isGroupParent: component.isGroupParent,
   });
 
-  const componentChilds = useChildren(props.children, component?.id);
+  const componentChilds = useChildren(
+    props.children,
+    component?.id,
+    component?.getChildStyles,
+  );
 
   // @ts-expect-error
   const transformedComponent = createElement(Component, {

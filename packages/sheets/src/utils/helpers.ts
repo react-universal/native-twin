@@ -1,40 +1,6 @@
 import { getStylesForProperty } from 'css-to-react-native';
 import type { CssInJs } from 'postcss-js';
-import type {
-  TInteractionPseudoSelectors,
-  TAppearancePseudoSelectors,
-  TPlatformPseudoSelectors,
-} from '../types';
 import type { IStyleType } from '../types';
-
-export function selectorIsInteraction(
-  selector: string,
-): selector is TInteractionPseudoSelectors {
-  return (
-    selector === 'hover' ||
-    selector === 'active' ||
-    selector === 'focus' ||
-    selector.startsWith('group-')
-  );
-}
-
-export function selectorIsAppearance(
-  selector: string,
-): selector is TAppearancePseudoSelectors {
-  return (
-    selector === 'dark' ||
-    selector === 'last' ||
-    selector === 'first' ||
-    selector === 'even' ||
-    selector === 'odd'
-  );
-}
-
-export function selectorIsPlatform(selector: string): selector is TPlatformPseudoSelectors {
-  return (
-    selector === 'native' || selector === 'ios' || selector === 'android' || selector === 'web'
-  );
-}
 
 export function cssPropertiesResolver(input: CssInJs) {
   try {

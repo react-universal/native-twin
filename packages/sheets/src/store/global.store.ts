@@ -1,5 +1,5 @@
 import produce, { enableMapSet } from 'immer';
-import type { IStyleProp, StyledProps, TInteractionPseudoSelectors } from '../types';
+import type { IStyleProp, StyledProps } from '../types';
 import type { IRegisterComponentArgs } from '../types/store.types';
 import ComponentNode from './ComponentNode';
 import { createStore } from './generator';
@@ -65,7 +65,7 @@ function findComponentChildIDs(parentID: string) {
 
 function setComponentInteractionState(
   componentID: string,
-  interaction: TInteractionPseudoSelectors,
+  interaction: 'hover' | 'focus' | 'active' | 'group-hover',
   value: boolean,
 ) {
   globalStore.setState(

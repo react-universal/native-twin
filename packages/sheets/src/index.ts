@@ -8,22 +8,11 @@ export { useComponentStyleSheets } from './hooks/useStyleSheets';
 export { setTailwindConfig } from './css';
 export { globalStyleSheet, ComponentStyleSheet };
 export { ComponentNode };
+export type { IStyleType, IStyleTuple, StyledProps } from './types';
 export type {
-  IStyleType,
-  IStyleTuple,
-  TAppearancePseudoSelectors,
-  TInteractionPseudoSelectors,
-  StyledProps,
-} from './types';
-export type {
-  IClassNamesStyle,
-  IComponent,
-  IComponentAppearance,
-  IComponentInteractions,
   IComponentsStore,
   IInteractionPayload,
   IRegisterComponentArgs,
-  IRegisteredComponent,
   InteractionProps,
   KeyOfMap,
 } from './types/store.types';

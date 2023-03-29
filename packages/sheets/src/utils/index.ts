@@ -1,7 +1,2 @@
-export {
-  cssPropertiesResolver,
-  selectorIsAppearance,
-  selectorIsInteraction,
-  selectorIsPlatform,
-} from './helpers';
+export { cssPropertiesResolver } from './helpers';
 export { isValidReactNativeStyle } from './validateStyle';

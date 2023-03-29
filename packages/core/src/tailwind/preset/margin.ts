@@ -64,6 +64,6 @@ export const margin = plugin(function ({ matchUtilities, theme }) {
         };
       },
     },
-    { values: { ...theme('margin'), reverse: 'reverse' } },
+    { values: { ...theme('margin'), reverse: 'reverse' }, supportsNegativeValues: true },
   );
 });

@@ -14,6 +14,6 @@ export const height = plugin(function ({ matchUtilities, theme }) {
         };
       },
     },
-    { values: { ...theme('height') } },
+    { values: { ...theme('height') }, supportsNegativeValues: true },
   );
 });
