@@ -6,7 +6,6 @@ const { reactNativeTailwindPreset } = require('@universal-labs/core/tailwind/pre
 module.exports = {
   content: ['App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
   presets: [reactNativeTailwindPreset({ baseRem: 16 })],
-
   theme: {
     extend: {
       colors: {
