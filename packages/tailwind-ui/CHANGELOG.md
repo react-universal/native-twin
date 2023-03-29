@@ -1,5 +1,21 @@
 # Change Log
 
+## 1.7.0
+
+### Minor Changes
+
+- [`7fc90da`](https://github.com/react-universal/tailwind/commit/7fc90da7fb40952ba2a91585c53e371a6e2cb898) Thanks [@chrisarts](https://github.com/chrisarts)! - \* clean types
+  - Adding platform variants as css utilities (web, ios, android, native).
+  - Re-added support for basic child selectors (first, last, odd, even).
+  - Re-added support for dark mode (using: `darkMode: 'media'`).
+  - Added tailwind preset for react native with partial support.
+
+### Patch Changes
+
+- Updated dependencies [[`7fc90da`](https://github.com/react-universal/tailwind/commit/7fc90da7fb40952ba2a91585c53e371a6e2cb898)]:
+  - @universal-labs/core@1.7.0
+  - @universal-labs/primitives@1.7.0
+
 ## 1.6.3
 
 ### Patch Changes
