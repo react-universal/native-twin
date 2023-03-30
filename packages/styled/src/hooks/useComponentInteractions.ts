@@ -1,5 +1,5 @@
 import { useMemo, useRef } from 'react';
-import type { Touchable } from 'react-native';
+import type { NativeSyntheticEvent, Touchable, TextInputFocusEventData } from 'react-native';
 import { setComponentInteractionState } from '@universal-labs/stylesheets';
 
 interface UseComponentInteractionsArgs {
@@ -9,6 +9,12 @@ interface UseComponentInteractionsArgs {
   isGroupParent: boolean;
   hasGroupInteractions: boolean;
 }
+
+interface InternalTouchable extends Touchable {
+  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+}
+
 const useComponentInteractions = ({
   props,
   hasPointerInteractions,
@@ -16,7 +22,13 @@ const useComponentInteractions = ({
   componentID,
   hasGroupInteractions,
 }: UseComponentInteractionsArgs) => {
-  const ref = useRef<Touchable>(props);
+  const ref = useRef<
+    Touchable & {
+      onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+      onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+    }
+  >(props);
+
   const componentInteractionHandlers = useMemo(() => {
     const handlers: Touchable = {};
     if (hasPointerInteractions || isGroupParent || hasGroupInteractions) {
@@ -45,8 +57,29 @@ const useComponentInteractions = ({
     }
     return handlers;
   }, [componentID, hasPointerInteractions, isGroupParent, hasGroupInteractions]);
+
+  const focusHandlers = useMemo(() => {
+    const handlers: InternalTouchable = {};
+    if (hasPointerInteractions) {
+      handlers.onFocus = function (event) {
+        if (ref.current.onFocus) {
+          ref.current.onFocus(event);
+        }
+        setComponentInteractionState(componentID, 'focus', true);
+      };
+      handlers.onBlur = function (event) {
+        if (ref.current.onBlur) {
+          ref.current.onBlur(event);
+        }
+        setComponentInteractionState(componentID, 'focus', false);
+      };
+    }
+    return handlers;
+  }, [hasPointerInteractions, componentID]);
+
   return {
     componentInteractionHandlers,
+    focusHandlers,
   };
 };
 

@@ -12,3 +12,8 @@ export {
   PlatformPseudoSelectors,
   ChildPseudoSelectors,
 };
+
+export type TValidInteractionPseudoSelectors = (typeof InteractionPseudoSelectors)[number];
+export type TValidAppearancePseudoSelectors = (typeof AppearancePseudoSelectors)[number];
+export type TValidChildPseudoSelectors = (typeof ChildPseudoSelectors)[number];
+export type TValidPlatformPseudoSelectors = (typeof PlatformPseudoSelectors)[number];

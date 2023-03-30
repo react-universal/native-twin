@@ -16,3 +16,9 @@ export type StyledProps<P> = {
   className?: string;
   tw?: string;
 } & P;
+
+export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
+  ? Props
+  : TComponent extends React.Component<infer Props>
+  ? Props
+  : never;

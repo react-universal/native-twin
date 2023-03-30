@@ -24,7 +24,7 @@ const FlatListScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View className='flex-1'>
-        <Pressable onPress={addItem} className='bg-gray-400 '>
+        <Pressable onPress={addItem} className='bg-gray-400'>
           <H2>Add item</H2>
         </Pressable>
         <FlatList

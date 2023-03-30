@@ -65,7 +65,6 @@
       "**/apps/docusaurus"
     ],
     "tailwindCSS.experimental.classRegex": [
-      ["styled\\([^,)]+,([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
       ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
     ],
     "tailwindCSS.experimental.configFile": {
@@ -93,12 +92,5 @@
       "**/build/**": true
     },
     "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib"
-    // "workbench.colorCustomizations": {
-    //   "[Default Dark+ Experimental]": {
-    //     "sideBar.background": "#070606",
-    //     "editor.background": "#070606",
-    //     "tab.inactiveBackground": "#161414",
-    //   }
-    // }
   }
 }

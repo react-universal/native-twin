@@ -8,7 +8,7 @@ export type IInteractionPayload = {
 
 export type IRegisterComponentArgs = StyledProps<{
   inlineStyles: IStyleProp;
-  classProps: Record<string, string>;
+  classPropsTuple?: [string, string][];
 }>;
 
 export type IComponentsStore = {

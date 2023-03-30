@@ -8,9 +8,10 @@ const useStaticStyledComponent = <T, C extends keyof T>(
   componentProps: StyledProps<T>,
   styledOptions?: C[],
 ) => {
-  const classProps = useBuildStyleProps(componentProps, styledOptions);
+  const { className, classPropsTuple } = useBuildStyleProps(componentProps, styledOptions);
   const { component } = useComponentStyleSheets({
-    classProps,
+    className,
+    classPropsTuple,
     inlineStyles: componentProps.style,
     isFirstChild: componentProps.isFirstChild,
     isLastChild: componentProps.isLastChild,

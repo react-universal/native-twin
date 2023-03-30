@@ -1,5 +1,6 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
+import { H1, View } from '@universal-labs/primitives';
 import { setTailwindConfig } from '@universal-labs/stylesheets/react-native';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 // import { FlatListScreen } from './src/screens/FlatList.screen';
@@ -18,7 +19,13 @@ export default function App() {
       });
     }
   }, [bootFonts, isReady]);
-  if (!isReady) return null;
+  if (!isReady) {
+    return (
+      <View className='flex-1 items-center justify-center bg-gray-700'>
+        <H1>Loading app...</H1>
+      </View>
+    );
+  }
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
       {/* <FlatListScreen /> */}

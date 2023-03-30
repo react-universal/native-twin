@@ -65,13 +65,23 @@ class GlobalStyleSheet {
     return classes;
   }
 
-  private _getStylesForPseudoClasses<T extends string>(
+  private _getStylesForPseudoClasses<T>(
     classNames: string[][],
     pseudoSelectors: readonly T[],
   ) {
     let pseudoSelectorStyles: [T, IInteractionPayload][] = [];
     const pseudoSelectorClasses = this._getClassesForSelectors(classNames, pseudoSelectors);
-    for (const node of pseudoSelectorClasses) {
+    const tupleUnion = pseudoSelectorClasses.reduce((prev, current) => {
+      const [selectorType, selectorClassNames] = current;
+      const index = prev.findIndex((d) => d[0] === selectorType);
+      if (index !== -1 && index in prev) {
+        prev[index] = [selectorType, `${prev[index]?.[1]} ${selectorClassNames}`];
+      } else {
+        prev.push([selectorType, selectorClassNames]);
+      }
+      return prev;
+    }, [] as [T, string][]);
+    for (const node of tupleUnion) {
       const selectorType = node[0];
       const selectorClassNames = node[1];
       const compiled = this._getJSS([selectorClassNames]);

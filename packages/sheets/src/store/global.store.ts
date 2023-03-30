@@ -8,8 +8,8 @@ enableMapSet();
 
 export interface IUseStyleSheetsInput
   extends StyledProps<{
-    classProps: Record<string, string>;
     inlineStyles?: IStyleProp;
+    classPropsTuple?: [string, string][];
   }> {}
 
 interface Store {
@@ -24,7 +24,7 @@ const globalStore = createStore<Store>({
 
 const registerComponent = (input: IRegisterComponentArgs) => {
   const component = new ComponentNode({
-    classProps: input.classProps,
+    classPropsTuple: input.classPropsTuple,
     inlineStyles: input.inlineStyles,
     isFirstChild: input.isFirstChild,
     isLastChild: input.isLastChild,
@@ -72,7 +72,7 @@ function setComponentInteractionState(
     produce((draft) => {
       const component = draft.components[componentID];
       if (component) {
-        component.interactionsState[interaction] = value;
+        component.setInteractionState(interaction, value);
         if (component.isGroupParent) {
           const childs = findComponentChildIDs(componentID);
           childs.forEach((childID) => {

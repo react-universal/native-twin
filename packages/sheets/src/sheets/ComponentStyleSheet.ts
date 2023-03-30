@@ -1,9 +1,9 @@
 import { Platform } from 'react-native';
 import type {
-  AppearancePseudoSelectors,
-  ChildPseudoSelectors,
-  InteractionPseudoSelectors,
-  PlatformPseudoSelectors,
+  TValidAppearancePseudoSelectors,
+  TValidChildPseudoSelectors,
+  TValidInteractionPseudoSelectors,
+  TValidPlatformPseudoSelectors,
 } from '../constants';
 import type { IStyleType, IInteractionPayload } from '../types';
 import globalStyleSheet from './GlobalStyleSheet';
@@ -12,10 +12,11 @@ export default class ComponentStyleSheet {
   className: string | undefined;
   classNameSet: Set<string>;
   baseStyles: IStyleType;
-  interactionStyles: [(typeof InteractionPseudoSelectors)[number], IInteractionPayload][];
-  appearanceStyles: [(typeof AppearancePseudoSelectors)[number], IInteractionPayload][];
-  platformStyles: [(typeof PlatformPseudoSelectors)[number], IInteractionPayload][];
-  childStyles: [(typeof ChildPseudoSelectors)[number], IInteractionPayload][];
+  interactionStyles: [TValidInteractionPseudoSelectors, IInteractionPayload][];
+  appearanceStyles: [TValidAppearancePseudoSelectors, IInteractionPayload][];
+  platformStyles: [TValidPlatformPseudoSelectors, IInteractionPayload][];
+  childStyles: [TValidChildPseudoSelectors, IInteractionPayload][];
+
   constructor(className: string | undefined) {
     this.className = className;
     this.classNameSet = new Set(this.classNamesArray);

@@ -1,29 +1,39 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import type { StyledProps } from '@universal-labs/stylesheets';
 import { twMerge } from 'tailwind-merge';
 
 const useBuildStyleProps = <T, P extends keyof T>(
-  { className, tw, ...componentProps }: StyledProps<T>,
+  componentProps: StyledProps<T>,
   styleClassProps?: P[],
 ) => {
-  const originalClassProps: any = useRef(componentProps);
-  useEffect(() => {
-    originalClassProps.current = componentProps;
-  }, [componentProps]);
-  return useMemo(() => {
-    const props = styleClassProps;
-    // @ts-expect-error
-    const classProps: Record<P, string> = {};
-    if (props) {
-      for (const item of props) {
-        classProps[item] = twMerge(originalClassProps.current[item]);
-      }
-    }
-    return Object.freeze({
-      ...(className || tw ? { style: twMerge(className ?? tw) } : {}),
-      ...classProps,
-    });
-  }, [className, tw, styleClassProps]);
+  const classPropsTuple = useMemo(() => {
+    if (!styleClassProps) return [];
+    const props = styleClassProps.reduce((prev, current) => {
+      const propValue = twMerge(componentProps[current] as string);
+      prev.push([current as string, propValue]);
+      return prev;
+    }, [] as [string, string][]);
+    return props;
+  }, [componentProps, styleClassProps]);
+
+  return {
+    className: twMerge(componentProps.className ?? componentProps.tw),
+    classPropsTuple,
+  };
+
+  // return useMemo(() => {
+  //   const props = styleClassProps;
+  //   const classProps: [P, T[P]][] = [];
+  //   if (props) {
+  //     for (const item of props) {
+  //       classProps[item] = twMerge(originalClassProps.current[item]);
+  //     }
+  //   }
+  //   return Object.freeze({
+  //     ...(className || tw ? { style: twMerge(className ?? tw) } : {}),
+  //     ...classProps,
+  //   });
+  // }, [classPropsTuple]);
 };
 
 export { useBuildStyleProps };

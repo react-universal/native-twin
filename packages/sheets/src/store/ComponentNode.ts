@@ -1,10 +1,10 @@
-import { Appearance } from 'react-native';
+import { Appearance, StyleSheet } from 'react-native';
 import { immerable } from 'immer';
 import uuid from 'react-native-uuid';
 import type {
-  AppearancePseudoSelectors,
-  ChildPseudoSelectors,
-  InteractionPseudoSelectors,
+  TValidAppearancePseudoSelectors,
+  TValidChildPseudoSelectors,
+  TValidInteractionPseudoSelectors,
 } from '../constants';
 import ComponentStyleSheet from '../sheets/ComponentStyleSheet';
 import type { IInteractionPayload, IStyleProp } from '../types';
@@ -24,60 +24,82 @@ interface IComponentStyleSheets<T> {
 }
 
 export default class ComponentNode {
-  id: string;
   [immerable] = true;
+
+  id: string;
   inlineStyles: IStyleProp;
-  styleSheets: Record<string, IComponentStyleSheets<any>>;
+  styledProps: Record<string, IComponentStyleSheets<any>>;
+  style: ComponentStyleSheet;
   parentComponentID?: string;
-  interactionsState: Record<(typeof InteractionPseudoSelectors)[number], boolean> = {
+  interactionsState: Record<TValidInteractionPseudoSelectors, boolean> = {
     hover: false,
     focus: false,
     active: false,
     'group-hover': false,
   };
-  appearanceState: Record<(typeof AppearancePseudoSelectors)[number], boolean>;
-  childStyles: [(typeof ChildPseudoSelectors)[number], IInteractionPayload][] = [];
+  appearanceState: Record<TValidAppearancePseudoSelectors, boolean>;
+  childStyles: [TValidChildPseudoSelectors, IInteractionPayload][] = [];
+
   constructor(component: IRegisterComponentArgs) {
     this.parentComponentID = component.parentID;
     this.id = createID() as string;
     this.inlineStyles = component.inlineStyles;
-    this.styleSheets = Object.entries(component.classProps).reduce((prev, current) => {
-      const [classProp, propClassName] = current;
-      const createdStyles = new ComponentStyleSheet(propClassName);
-      prev[classProp] = {
-        classProp: classProp,
-        className: propClassName,
-        styles: createdStyles,
-      };
-      this.childStyles = this.childStyles.concat(createdStyles.childStyles);
-      return prev;
-    }, {} as typeof this.styleSheets);
+    this.style = new ComponentStyleSheet(component.className);
     this.appearanceState = {
-      // first: component.isFirstChild,
-      // last: component.isLastChild,
-      // even: component.nthChild % 2 === 0,
-      // odd: component.nthChild % 2 !== 0,
       dark: Appearance.getColorScheme() === 'dark',
-      // android: Platform.OS === 'android',
-      // ios: Platform.OS === 'ios',
-      // web: Platform.OS === 'web',
-      // native: Platform.OS !== 'web',
     };
+    this.styledProps =
+      component.classPropsTuple?.reduce((prev, current) => {
+        const [classProp, propClassName] = current;
+        const createdStyles = new ComponentStyleSheet(propClassName);
+        prev[classProp] = {
+          classProp: classProp,
+          className: propClassName,
+          styles: createdStyles,
+        };
+        this.childStyles = this.childStyles.concat(createdStyles.childStyles);
+        return prev;
+      }, {} as typeof this.styledProps) || {};
   }
 
-  getChildStyles(style: (typeof ChildPseudoSelectors)[number]) {
+  getChildStyles(style: TValidChildPseudoSelectors) {
     return this.childStyles.find((d) => d[0] === style)?.[1];
   }
 
-  setInteractionState(
-    interaction: (typeof InteractionPseudoSelectors)[number],
-    value: boolean,
-  ) {
+  setInteractionState(interaction: TValidInteractionPseudoSelectors, value: boolean) {
+    if (interaction === 'hover' || interaction === 'active') {
+      this.interactionsState['hover'] = value;
+      this.interactionsState['active'] = value;
+      return;
+    }
     this.interactionsState[interaction] = value;
   }
 
+  get stylesheet() {
+    const payload: IStyleProp[] = [this.style.baseStyles, this.inlineStyles];
+    const hoverInteraction = this.style.interactionStyles.find(([name]) => name === 'hover');
+    const activeInteraction = this.style.interactionStyles.find(([name]) => name === 'active');
+    const focusInteraction = this.style.interactionStyles.find(([name]) => name === 'focus');
+    const groupHoverInteraction = this.style.interactionStyles.find(
+      ([name]) => name === 'group-hover',
+    );
+    if (this.interactionsState['group-hover'] && groupHoverInteraction) {
+      payload.push(groupHoverInteraction[1].styles);
+    }
+    if (this.interactionsState['hover'] && hoverInteraction) {
+      payload.push(hoverInteraction[1].styles);
+    }
+    if (this.interactionsState['active'] && activeInteraction) {
+      payload.push(activeInteraction[1].styles);
+    }
+    if (this.interactionsState['focus'] && focusInteraction) {
+      payload.push(focusInteraction[1].styles);
+    }
+    return StyleSheet.flatten(payload);
+  }
+
   get getStyleProps() {
-    const sheets = Object.values(this.styleSheets);
+    const sheets = Object.values(this.styledProps);
     return sheets.reduce((prev, current) => {
       if (typeof current.classProp === 'string') {
         if (!prev[current.classProp]) {
@@ -104,11 +126,17 @@ export default class ComponentNode {
   }
 
   get getStyleSheetInteractions() {
-    let hasGroupInteractions = false;
-    let hasPointerInteractions = false;
-    let isGroupParent = false;
+    let hasGroupInteractions = this.style.interactionStyles.some(([name]) =>
+      name.includes('group-'),
+    );
+    let hasPointerInteractions = this.style.interactionStyles.length > 0;
+    let isGroupParent = this.style.classNameSet.has('group');
 
-    for (const currentStyle of Object.values(this.styleSheets)) {
+    if (hasGroupInteractions && hasPointerInteractions && isGroupParent) {
+      return { hasGroupInteractions, hasPointerInteractions, isGroupParent };
+    }
+
+    for (const currentStyle of Object.values(this.styledProps)) {
       if (currentStyle.styles.interactionStyles)
         if (currentStyle.styles.interactionStyles.length > 0) {
           hasPointerInteractions = true;

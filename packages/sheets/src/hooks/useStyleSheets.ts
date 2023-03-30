@@ -8,7 +8,8 @@ import {
 } from '../store/global.store';
 
 function useComponentStyleSheets({
-  classProps,
+  className,
+  classPropsTuple,
   inlineStyles,
   isFirstChild,
   isLastChild,
@@ -17,14 +18,23 @@ function useComponentStyleSheets({
 }: IUseStyleSheetsInput) {
   const componentID = useMemo(() => {
     return registerComponent({
-      classProps,
+      className,
+      classPropsTuple,
       inlineStyles,
       isFirstChild,
       isLastChild,
       nthChild,
       parentID,
     });
-  }, [inlineStyles, isFirstChild, isLastChild, nthChild, parentID, classProps]);
+  }, [
+    inlineStyles,
+    isFirstChild,
+    isLastChild,
+    nthChild,
+    parentID,
+    classPropsTuple,
+    className,
+  ]);
 
   const component = useSyncExternalStore(
     globalStore.subscribe,

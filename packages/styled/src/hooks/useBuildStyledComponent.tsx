@@ -5,16 +5,20 @@ import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 
+// import { useRenderCounter } from './useRenderCounter';
+
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
   Component: ComponentType<T>,
   ref: ForwardedRef<unknown>,
   styleClassProps?: P[],
 ) {
-  const classProps = useBuildStyleProps(props, styleClassProps);
+  // useRenderCounter();
+  const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
 
   const { component } = useComponentStyleSheets({
-    classProps,
+    className,
+    classPropsTuple,
     inlineStyles: props.style,
     isFirstChild: props.isFirstChild,
     isLastChild: props.isLastChild,
@@ -22,7 +26,7 @@ function useBuildStyledComponent<T, P extends keyof T>(
     parentID: props.parentID,
   });
 
-  const { componentInteractionHandlers } = useComponentInteractions({
+  const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({
     props: props as Touchable,
     componentID: component.id,
     hasGroupInteractions: component.hasPointerInteractions,
@@ -40,7 +44,9 @@ function useBuildStyledComponent<T, P extends keyof T>(
   const transformedComponent = createElement(Component, {
     ...props,
     ...componentInteractionHandlers,
+    ...focusHandlers,
     ...component.getStyleProps,
+    style: component.stylesheet,
     children: componentChilds,
     ref,
   } as unknown as T);
