@@ -52,7 +52,6 @@
     "@types/react-dom": "~18.0.10",
     "@types/react-is": "^17.0.3",
     "@types/react-native": "^0.71.5",
-    "@welldone-software/why-did-you-render": "7.0.1",
     "react": "18.2.0",
     "react-native": "0.71.4",
     "vitest-react-native": "0.0.5"

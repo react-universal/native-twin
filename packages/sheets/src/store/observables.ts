@@ -1,3 +1,5 @@
+import type { IStyleType } from '../types';
+
 function createSubscribable<MessageType>() {
   const subscribers: Set<(message: MessageType) => void> = new Set();
   return {
@@ -42,4 +44,13 @@ function createObservable<T>(data: T): Observable<T> {
   ) as Observable<T>;
 }
 
-export { createObservable };
+type IStylesheets = [string, IStyleType];
+interface IStoreObserver {
+  stylesheets: IStylesheets[];
+}
+
+const styleSheetObserver = createObservable<IStoreObserver>({
+  stylesheets: [],
+});
+
+export { createObservable, styleSheetObserver };

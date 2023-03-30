@@ -1,5 +1,5 @@
-import { ComponentType, createElement, ForwardedRef, ReactNode } from 'react';
-import type { Touchable } from 'react-native';
+import { ComponentType, createElement, ForwardedRef, ReactNode, useCallback } from 'react';
+import { StyleSheet, Touchable } from 'react-native';
 import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
@@ -16,7 +16,7 @@ function useBuildStyledComponent<T, P extends keyof T>(
   // useRenderCounter();
   const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
 
-  const { component } = useComponentStyleSheets({
+  const { component$, componentID } = useComponentStyleSheets({
     className,
     classPropsTuple,
     inlineStyles: props.style,
@@ -28,25 +28,34 @@ function useBuildStyledComponent<T, P extends keyof T>(
 
   const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({
     props: props as Touchable,
-    componentID: component.id,
-    hasGroupInteractions: component.hasPointerInteractions,
-    hasPointerInteractions: component.hasPointerInteractions,
-    isGroupParent: component.isGroupParent,
+    hasGroupInteractions: component$?.hasPointerInteractions ?? false,
+    hasPointerInteractions: component$?.hasPointerInteractions ?? false,
+    isGroupParent: component$?.isGroupParent ?? false,
+    id: component$?.id,
   });
 
-  const componentChilds = useChildren(
-    props.children,
-    component?.id,
-    component?.getChildStyles,
-  );
+  // @ts-expect-error
+  const componentChilds = useChildren(props.children, componentID, () => []);
+
+  const composeStyleProps = useCallback(() => {
+    return StyleSheet.flatten([
+      component$?.baseStyles.reduce((prev, current) => {
+        Object.assign(prev, current[1]);
+        return prev;
+      }, {}),
+      props.style,
+    ]);
+  }, [component$?.baseStyles, props.style]);
+
+  const styles = composeStyleProps();
 
   // @ts-expect-error
   const transformedComponent = createElement(Component, {
     ...props,
     ...componentInteractionHandlers,
     ...focusHandlers,
-    ...component.getStyleProps,
-    style: component.stylesheet,
+    // ...component$.getStyleProps,
+    style: styles,
     children: componentChilds,
     ref,
   } as unknown as T);

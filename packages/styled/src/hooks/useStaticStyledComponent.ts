@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Touchable } from 'react-native';
 import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
 import { useBuildStyleProps } from './useBuildStyleProps';

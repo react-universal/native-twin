@@ -4,6 +4,7 @@ import ComponentNode from './store/ComponentNode';
 
 export { createStore } from './store/generator';
 export { setComponentInteractionState } from './store/global.store';
+export { setInteractionState } from './store/styles.store';
 export { useComponentStyleSheets } from './hooks/useStyleSheets';
 export { setTailwindConfig } from './css';
 export { globalStyleSheet, ComponentStyleSheet };

@@ -1,54 +1,19 @@
-import { useEffect, useMemo } from 'react';
-import { useSyncExternalStore } from 'use-sync-external-store/shim';
-import {
-  globalStore,
-  IUseStyleSheetsInput,
-  registerComponent,
-  unregisterComponent,
-} from '../store/global.store';
+import type { IUseStyleSheetsInput } from '../store/global.store';
+import { useComponentRegistration } from './useComponentRegistration';
 
 function useComponentStyleSheets({
   className,
   classPropsTuple,
-  inlineStyles,
-  isFirstChild,
-  isLastChild,
-  nthChild,
   parentID,
 }: IUseStyleSheetsInput) {
-  const componentID = useMemo(() => {
-    return registerComponent({
-      className,
-      classPropsTuple,
-      inlineStyles,
-      isFirstChild,
-      isLastChild,
-      nthChild,
-      parentID,
-    });
-  }, [
-    inlineStyles,
-    isFirstChild,
-    isLastChild,
-    nthChild,
-    parentID,
+  const { component$, componentID } = useComponentRegistration({
     classPropsTuple,
     className,
-  ]);
-
-  const component = useSyncExternalStore(
-    globalStore.subscribe,
-    () => globalStore.getState().components[componentID],
-    () => globalStore.getState().components[componentID],
-  );
-
-  useEffect(() => {
-    return () => unregisterComponent(componentID);
-  }, [componentID]);
-
+    parentID,
+  });
   return {
+    component$,
     componentID,
-    component,
   };
 }
 
