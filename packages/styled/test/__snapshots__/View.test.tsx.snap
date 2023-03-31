@@ -4,14 +4,11 @@ exports[`@universal-labs/styled > View render 1`] = `
 <View
   className="flex-1"
   style={
-    [
-      {
-        "flexBasis": "0%",
-        "flexGrow": 1,
-        "flexShrink": 1,
-      },
-      undefined,
-    ]
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
   }
 >
   <Text
@@ -19,15 +16,12 @@ exports[`@universal-labs/styled > View render 1`] = `
     isFirstChild={true}
     isLastChild={true}
     nthChild={1}
-    parentID="test-parent"
+    parentID="67282790-56df-4f32-bb88-d3505106f5bc"
     style={
-      [
-        {
-          "fontSize": 14,
-          "lineHeight": 20,
-        },
-        undefined,
-      ]
+      {
+        "fontSize": 14,
+        "lineHeight": 20,
+      }
     }
   >
     Test View
