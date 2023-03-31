@@ -20,8 +20,12 @@ const StyledText = styled(Text);
 describe('@universal-labs/styled', () => {
   it('View render', () => {
     const component = renderer.create(
-      <StyledView className='flex-1'>
-        <StyledText className='text-sm'>Test View</StyledText>
+      // @ts-ignore
+      <StyledView className='flex-1' parentID='test'>
+        {/* @ts-ignore */}
+        <StyledText className='text-sm' parentID='test'>
+          Test View
+        </StyledText>
       </StyledView>,
     );
     let tree = toJson(component);

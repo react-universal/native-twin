@@ -3,6 +3,7 @@
 exports[`@universal-labs/styled > View render 1`] = `
 <View
   className="flex-1"
+  parentID="test"
   style={
     {
       "flexBasis": "0%",
@@ -16,7 +17,7 @@ exports[`@universal-labs/styled > View render 1`] = `
     isFirstChild={true}
     isLastChild={true}
     nthChild={1}
-    parentID="86e50ced-f63d-49eb-b45c-343073ee00e2"
+    parentID="test"
     style={
       {
         "fontSize": 14,
