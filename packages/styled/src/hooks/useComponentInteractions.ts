@@ -1,7 +1,9 @@
 import { useMemo, useRef } from 'react';
 import type { NativeSyntheticEvent, Touchable, TextInputFocusEventData } from 'react-native';
-import { setInteractionState } from '@universal-labs/stylesheets';
-import type { TValidInteractionPseudoSelectors } from '@universal-labs/stylesheets/build/constants';
+import {
+  setInteractionState,
+  TValidInteractionPseudoSelectors,
+} from '@universal-labs/stylesheets';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;

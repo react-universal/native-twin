@@ -14,6 +14,8 @@ function useComponentStyleSheets({
   classPropsTuple,
   parentID,
 }: IUseStyleSheetsInput) {
+  // first we need to create a unique ID for this component to look up in the store
+  // we use useMemo to ensure that the ID is only created once
   const componentID = useMemo(() => createComponentID() as string, []);
 
   const {
@@ -40,7 +42,6 @@ function useComponentStyleSheets({
   return {
     componentStyles,
     componentID,
-    parentID,
     component,
     hasGroupInteractions,
     hasPointerInteractions,
