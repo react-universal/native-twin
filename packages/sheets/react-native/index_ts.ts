@@ -1,1 +1,1 @@
-export { setTailwindConfig } from '../src/css';
+export { setTailwindConfig } from '../src/store/stylesheet.store';

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useSyncExternalStore } from 'use-sync-external-store/shim';
 import { componentsStore } from '../store/components.store';
-import type { IUseStyleSheetsInput } from '../store/global.store';
+import type { IUseStyleSheetsInput } from '../types';
 import { createComponentID } from '../utils/createComponentID';
 import { useClassNamesToCss } from './useClassNamesToCss';
 
@@ -10,11 +10,6 @@ function useComponentStyleSheets({
   classPropsTuple,
   parentID,
 }: IUseStyleSheetsInput) {
-  // const { component$, componentID, classNameSet } = useComponentRegistration({
-  //   classPropsTuple,
-  //   className,
-  //   parentID,
-  // });
   const componentID = useMemo(() => createComponentID() as string, []);
 
   const {
@@ -29,17 +24,6 @@ function useComponentStyleSheets({
     () => componentsStore[componentID],
     () => componentsStore[componentID],
   );
-
-  // useInsertionEffect(() => {
-  //   componentsStore[componentID] = {
-  //     interactionsState: {
-  //       'group-hover': false,
-  //       active: false,
-  //       focus: false,
-  //       hover: false,
-  //     },
-  //   };
-  // }, []);
 
   return {
     componentStyles,

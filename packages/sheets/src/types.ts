@@ -22,6 +22,12 @@ export interface InteractionProps extends PressableProps {
   onMouseUp?: PressableProps['onPressOut'];
 }
 
+export interface IUseStyleSheetsInput
+  extends StyledProps<{
+    inlineStyles?: IStyleProp;
+    classPropsTuple?: [string, string][];
+  }> {}
+
 export type IInteractionPayload = {
   classNames: string;
   styles: IStyleType;
