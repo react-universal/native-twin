@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
-import { useSyncExternalStore } from 'use-sync-external-store/shim';
-import { componentsStore } from '../store/components.store';
+import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
+import {
+  componentsStore,
+  composeComponentStyledProps,
+  registerComponentInStore,
+} from '../store/components.store';
 import type { IUseStyleSheetsInput } from '../types';
 import { createComponentID } from '../utils/createComponentID';
 import { useClassNamesToCss } from './useClassNamesToCss';
@@ -19,10 +23,18 @@ function useComponentStyleSheets({
     isGroupParent,
     interactionStyles,
   } = useClassNamesToCss(className ?? '', classPropsTuple ?? []);
-  const component = useSyncExternalStore(
+  const component = useSyncExternalStoreWithSelector(
     componentsStore.subscribe,
     () => componentsStore[componentID],
     () => componentsStore[componentID],
+    () => {
+      return registerComponentInStore(componentID, parentID);
+    },
+  );
+
+  const composedStyles = useMemo(
+    () => composeComponentStyledProps(interactionStyles, component, componentStyles),
+    [interactionStyles, component, componentStyles],
   );
 
   return {
@@ -34,6 +46,7 @@ function useComponentStyleSheets({
     hasPointerInteractions,
     isGroupParent,
     interactionStyles,
+    composedStyles,
   };
 }
 

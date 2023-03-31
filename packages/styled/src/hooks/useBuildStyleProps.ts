@@ -14,27 +14,10 @@ const useBuildStyleProps = <T, P extends keyof T>(
     }, [] as [string, string][]);
   }, [componentProps, styleClassProps]);
 
-  return useMemo(
-    () => ({
-      className: twMerge(componentProps.className ?? componentProps.tw),
-      classPropsTuple,
-    }),
-    [componentProps.className, componentProps.tw, classPropsTuple],
-  );
-
-  // return useMemo(() => {
-  //   const props = styleClassProps;
-  //   const classProps: [P, T[P]][] = [];
-  //   if (props) {
-  //     for (const item of props) {
-  //       classProps[item] = twMerge(originalClassProps.current[item]);
-  //     }
-  //   }
-  //   return Object.freeze({
-  //     ...(className || tw ? { style: twMerge(className ?? tw) } : {}),
-  //     ...classProps,
-  //   });
-  // }, [classPropsTuple]);
+  return {
+    className: twMerge(componentProps.className ?? componentProps.tw),
+    classPropsTuple,
+  };
 };
 
 export { useBuildStyleProps };

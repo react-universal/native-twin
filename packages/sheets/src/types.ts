@@ -28,11 +28,6 @@ export interface IUseStyleSheetsInput
     classPropsTuple?: [string, string][];
   }> {}
 
-export type IInteractionPayload = {
-  classNames: string;
-  styles: IStyleType;
-};
-
 export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, unknown>
   ? K
   : never;

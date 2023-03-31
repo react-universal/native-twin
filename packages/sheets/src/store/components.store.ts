@@ -1,10 +1,12 @@
+import { StyleSheet } from 'react-native';
 import type { TValidInteractionPseudoSelectors } from '../constants';
-import { createHash } from '../utils/createHash';
+import type { IStyleType } from '../types';
 
 type SubscriptionsCallBack<T> = (currentState: T) => void;
 
 interface IRegisterComponentStore {
   [k: string]: {
+    parentID?: string;
     interactionsState: Record<TValidInteractionPseudoSelectors, boolean>;
   };
 }
@@ -18,42 +20,28 @@ function createInternalStore<StoreShape extends object>(initialState: StoreShape
     };
   };
 
-  const createEmptyComponent = function () {
-    return {
-      interactionsState: {
-        'group-hover': false,
-        active: false,
-        focus: false,
-        hover: false,
-      },
-    };
-  };
-
   return new Proxy(
     {
       ...initialState,
       subscribe,
     },
     {
-      get(target: StoreShape, key: string) {
-        if (!Reflect.has(target, key)) {
-          // console.log('DOES_NOT_HAVE_THIS_KEY');
-          Reflect.set(target, key, createEmptyComponent());
-        }
-        return Reflect.get(target, key);
+      get(target: StoreShape, key: string, receiver) {
+        return Reflect.get(target, key, receiver);
       },
-      set(target, key, value) {
-        const prevValue = Reflect.get(target, key);
-        const shallowEqual =
-          createHash(JSON.stringify(prevValue)) === createHash(JSON.stringify(value));
-        // console.log('MUTATE: ', value);
-        if (shallowEqual) {
-          // console.log('This update will be prevented: ', key, shallowEqual);
-          return false;
-        }
-        Reflect.set(target, key, value);
+      set(target, key, value, receiver) {
+        Reflect.set(target, key, value, receiver);
         listeners.forEach((l) => l(target));
         return true;
+      },
+      getOwnPropertyDescriptor(target, key) {
+        return Reflect.getOwnPropertyDescriptor(target, key);
+      },
+      has(target, key) {
+        return Reflect.has(target, key);
+      },
+      ownKeys(target) {
+        return Reflect.ownKeys(target);
       },
     },
   ) as StoreShape & {
@@ -78,4 +66,41 @@ export function setInteractionState(
   return true;
 }
 
-export { createInternalStore };
+const registerComponentInStore = function (componentID: string, parentID?: string) {
+  if (!Reflect.has(componentsStore, componentID)) {
+    Reflect.set(componentsStore, componentID, {
+      parentID,
+      interactionsState: {
+        'group-hover': false,
+        active: false,
+        focus: false,
+        hover: false,
+      },
+    });
+  }
+  return Reflect.get(componentsStore, componentID);
+};
+
+function composeComponentStyledProps(
+  interactionStyles: [TValidInteractionPseudoSelectors, IStyleType][],
+  component: IRegisterComponentStore[string],
+  componentStyles: IStyleType[],
+) {
+  const hoverStyles = interactionStyles.find(([selector]) => selector === 'hover');
+  const groupHoverStyles = interactionStyles.find(([selector]) => selector === 'group-hover');
+  const payload: IStyleType[] = [];
+  if (component.interactionsState && component.interactionsState?.hover && hoverStyles) {
+    // console.log('SHOULD_RETURN_HOVER');
+    payload.push(hoverStyles[1]);
+  }
+  if (
+    component.interactionsState &&
+    component.interactionsState?.['group-hover'] &&
+    groupHoverStyles
+  ) {
+    payload.push(groupHoverStyles[1]);
+  }
+  return StyleSheet.flatten([...componentStyles, ...payload]);
+}
+
+export { createInternalStore, registerComponentInStore, composeComponentStyledProps };

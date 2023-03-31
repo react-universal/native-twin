@@ -1,4 +1,4 @@
-import { ComponentType, createElement, ForwardedRef, ReactNode, useMemo } from 'react';
+import { ComponentType, createElement, ForwardedRef, ReactNode } from 'react';
 import type { Touchable } from 'react-native';
 import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
 import { useBuildStyleProps } from './useBuildStyleProps';
@@ -17,12 +17,10 @@ function useBuildStyledComponent<T, P extends keyof T>(
 
   const {
     componentID,
-    componentStyles,
+    composedStyles,
     hasGroupInteractions,
     hasPointerInteractions,
     isGroupParent,
-    interactionStyles,
-    component,
   } = useComponentStyleSheets({
     className,
     classPropsTuple,
@@ -43,34 +41,13 @@ function useBuildStyledComponent<T, P extends keyof T>(
 
   const componentChilds = useChildren(props.children, componentID);
 
-  // const composeStyleProps = useCallback(() => {
-  //   return StyleSheet.flatten([
-  //     component$?.baseStyles.reduce((prev, current) => {
-  //       Object.assign(prev, current[1]);
-  //       return prev;
-  //     }, {}),
-  //     props.style,
-  //   ]);
-  // }, [component$?.baseStyles, props.style]);
-
-  // const styles = composeStyleProps();
-
-  const additionalStyles = useMemo(() => {
-    const hoverStyles = interactionStyles.find(([selector]) => selector === 'hover');
-    if (component.interactionsState.hover && hoverStyles) {
-      // console.log('SHOULD_RETURN_HOVER');
-      return hoverStyles[1].styles;
-    }
-    return {};
-  }, [interactionStyles, component.interactionsState]);
-
   // @ts-expect-error
   const transformedComponent = createElement(Component, {
     ...props,
     ...componentInteractionHandlers,
     ...focusHandlers,
     // ...component$.getStyleProps,
-    style: [...componentStyles.values(), additionalStyles],
+    style: composedStyles,
     children: componentChilds,
     ref,
   } as unknown as T);

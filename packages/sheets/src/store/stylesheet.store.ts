@@ -1,6 +1,8 @@
 import { setup } from '@universal-labs/core';
 import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
 import type { Config } from 'tailwindcss';
+import type { IStyleType } from '../types';
+import { cssPropertiesResolver } from '../utils';
 
 type CssResult = ReturnType<ReturnType<typeof setup>['css']>;
 
@@ -97,4 +99,32 @@ export const stylesStore = createInternalStore<Record<string, CssResult>>({});
 const setTailwindConfig = (config: Config) =>
   Reflect.get(stylesStore, 'setTailwindConfig')(config);
 
-export { createInternalStore, setTailwindConfig };
+function getStylesForPseudoClasses<T>(classNames: string[][], pseudoSelectors: readonly T[]) {
+  let pseudoSelectorStyles: [T, IStyleType][] = [];
+  const pseudoSelectorClasses = getClassesForSelectors(classNames, pseudoSelectors);
+  for (const node of pseudoSelectorClasses) {
+    const selectorType = node[0];
+    const selectorClassNames = node[1];
+    const compiled = stylesStore[selectorClassNames];
+    pseudoSelectorStyles.push([selectorType, cssPropertiesResolver(compiled?.JSS ?? {})]);
+  }
+  return pseudoSelectorStyles;
+}
+
+function getComponentClassNameSet(className: string, classPropsTuple: [string, string][]) {
+  const baseClasses = splitClassNames(className);
+  if (!classPropsTuple) return baseClasses;
+
+  const fullSet = classPropsTuple.reduce((prev, current) => {
+    const classes = splitClassNames(current[1]);
+    return prev.concat(classes);
+  }, baseClasses);
+  return fullSet;
+}
+
+export {
+  createInternalStore,
+  setTailwindConfig,
+  getStylesForPseudoClasses,
+  getComponentClassNameSet,
+};

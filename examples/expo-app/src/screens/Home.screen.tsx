@@ -2,11 +2,11 @@ import { H1, H2, TextInput, View } from '@universal-labs/primitives';
 
 function HomeScreen() {
   return (
-    <View className='flex-1 divide-x-2'>
+    <View className='flex-1'>
       <View className='native:bg-slate-900 flex-1 items-center justify-center bg-pink-800 align-top hover:bg-slate-300'>
         <H1 className='font-inter-bold text-2xl text-gray-200 hover:text-gray-700'>H1 - 1</H1>
       </View>
-      <View className='bg-slate-80 group flex-[2] items-center justify-center border-t-8 border-t-indigo-50 hover:bg-gray-600'>
+      {/* <View className='bg-slate-80 group flex-[2] items-center justify-center border-t-8 border-t-indigo-50 hover:bg-gray-600'>
         <H1 className='text-primary font-inter-bold text-2xl focus:text-gray-900'>
           Nested Hover
         </H1>
@@ -19,7 +19,7 @@ function HomeScreen() {
             Deeply nested hover
           </H2>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 }
