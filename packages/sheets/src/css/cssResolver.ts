@@ -14,6 +14,7 @@ class CssParser {
 
   public static getInstance(): CssParser {
     if (!CssParser.instance) {
+      this.processor = setup(this.config);
       CssParser.instance = new CssParser();
     }
 
@@ -26,6 +27,9 @@ class CssParser {
   }
 
   public static get classNameStyle() {
+    if (!this.processor?.css) {
+      return setup(this.config).css;
+    }
     return this.processor.css;
   }
 }

@@ -39,6 +39,7 @@ const setup = (config: Config) => {
         css,
         JSS: output,
         postcssRoot,
+        twClasses,
       };
     },
     tailwindConfigHandler: resolvedTailwindConfig,

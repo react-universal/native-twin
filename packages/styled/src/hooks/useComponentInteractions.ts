@@ -27,10 +27,6 @@ const useComponentInteractions = ({
   hasGroupInteractions,
   id,
 }: UseComponentInteractionsArgs) => {
-  // const [snap, setSnap] = useState(0);
-  // const forceUpdate = useCallback(() => {
-  //   setSnap(snap + 1);
-  // }, [snap]);
   const ref = useRef<
     Touchable & {
       onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
@@ -51,9 +47,6 @@ const useComponentInteractions = ({
         if (hasPointerInteractions) {
           setInteractionState(id, 'hover', true);
         }
-        // if (isGroupParent || hasPointerInteractions) {
-        //   forceUpdate();
-        // }
       };
       handlers.onTouchEnd = function (event) {
         if (ref.current.onTouchEnd) {
@@ -65,9 +58,6 @@ const useComponentInteractions = ({
         if (hasPointerInteractions) {
           setInteractionState(id, 'hover', false);
         }
-        // if (isGroupParent || hasPointerInteractions) {
-        //   forceUpdate();
-        // }
       };
     }
     return handlers;

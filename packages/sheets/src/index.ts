@@ -4,9 +4,10 @@ import ComponentNode from './store/ComponentNode';
 
 export { createStore } from './store/generator';
 export { setComponentInteractionState } from './store/global.store';
-export { setInteractionState } from './store/styles.store';
+export { setInteractionState } from './store/components.store';
 export { useComponentStyleSheets } from './hooks/useStyleSheets';
-export { setTailwindConfig } from './css';
+// export { setTailwindConfig } from './css';
+export { setTailwindConfig } from './store/stylesheet.store';
 export { globalStyleSheet, ComponentStyleSheet };
 export { ComponentNode };
 export type { IStyleType, IStyleTuple, StyledProps } from './types';

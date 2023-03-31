@@ -1,8 +1,8 @@
 import produce, { enableMapSet } from 'immer';
 import type { TValidInteractionPseudoSelectors } from '../constants';
-import { css } from '../css';
 import type { IInteractionPayload, IStyleTuple, IStyleType } from '../types';
 import { cssPropertiesResolver } from '../utils';
+import { stylesStore } from './stylesheet.store';
 
 enableMapSet();
 
@@ -98,7 +98,8 @@ export const styleSheetApiHelpers = {
   _getJSS(classNames: string[]) {
     const nonProcessedClassNames = classNames.filter((name) => !StylesCache.has(name));
     for (const currentClassName of nonProcessedClassNames) {
-      const styles = css(currentClassName);
+      const styles = stylesStore[currentClassName];
+      // @ts-ignore
       const rnStyles = cssPropertiesResolver(styles.JSS);
       StylesCache.set(currentClassName, rnStyles);
     }
@@ -116,7 +117,7 @@ export const styleSheetApiHelpers = {
   },
 };
 
-export function setInteractionState(
+function setInteractionState(
   id: string,
   interaction: TValidInteractionPseudoSelectors,
   value: boolean,
@@ -135,7 +136,6 @@ export function registerComponentInStore(
   id: string,
   parentID?: string,
 ) {
-  console.log('REGISTER_COMPONENT: ', { id, classNameSet, parentID });
   const parsedClassNames = styleSheetApiHelpers.parseClassNames(classNameSet.join(' '));
   const baseStyles = styleSheetApiHelpers._getJSS(parsedClassNames.normalClassNames);
   const hasGroupInteractions = parsedClassNames.interactionClassNames.some(([selector]) =>

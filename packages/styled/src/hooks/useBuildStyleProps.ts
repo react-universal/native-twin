@@ -4,22 +4,23 @@ import { twMerge } from 'tailwind-merge';
 
 const useBuildStyleProps = <T, P extends keyof T>(
   componentProps: StyledProps<T>,
-  styleClassProps?: P[],
+  styleClassProps: P[] = [],
 ) => {
   const classPropsTuple = useMemo(() => {
-    if (!styleClassProps) return [];
-    const props = styleClassProps.reduce((prev, current) => {
+    return styleClassProps.reduce((prev, current) => {
       const propValue = twMerge(componentProps[current] as string);
       prev.push([current as string, propValue]);
       return prev;
     }, [] as [string, string][]);
-    return props;
   }, [componentProps, styleClassProps]);
 
-  return {
-    className: twMerge(componentProps.className ?? componentProps.tw),
-    classPropsTuple,
-  };
+  return useMemo(
+    () => ({
+      className: twMerge(componentProps.className ?? componentProps.tw),
+      classPropsTuple,
+    }),
+    [componentProps.className, componentProps.tw, classPropsTuple],
+  );
 
   // return useMemo(() => {
   //   const props = styleClassProps;

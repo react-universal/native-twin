@@ -1,11 +1,10 @@
-import { ComponentType, createElement, ForwardedRef, ReactNode, useCallback } from 'react';
-import { StyleSheet, Touchable } from 'react-native';
+import { ComponentType, createElement, ForwardedRef, ReactNode, useMemo } from 'react';
+import type { Touchable } from 'react-native';
 import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
-
-// import { useRenderCounter } from './useRenderCounter';
+import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
@@ -13,10 +12,18 @@ function useBuildStyledComponent<T, P extends keyof T>(
   ref: ForwardedRef<unknown>,
   styleClassProps?: P[],
 ) {
-  // useRenderCounter();
+  useRenderCounter();
   const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
 
-  const { component$, componentID } = useComponentStyleSheets({
+  const {
+    componentID,
+    componentStyles,
+    hasGroupInteractions,
+    hasPointerInteractions,
+    isGroupParent,
+    interactionStyles,
+    component,
+  } = useComponentStyleSheets({
     className,
     classPropsTuple,
     inlineStyles: props.style,
@@ -28,26 +35,34 @@ function useBuildStyledComponent<T, P extends keyof T>(
 
   const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({
     props: props as Touchable,
-    hasGroupInteractions: component$?.hasPointerInteractions ?? false,
-    hasPointerInteractions: component$?.hasPointerInteractions ?? false,
-    isGroupParent: component$?.isGroupParent ?? false,
-    id: component$?.id,
+    hasGroupInteractions,
+    hasPointerInteractions,
+    isGroupParent,
+    id: componentID,
   });
 
-  // @ts-expect-error
-  const componentChilds = useChildren(props.children, componentID, () => []);
+  const componentChilds = useChildren(props.children, componentID);
 
-  const composeStyleProps = useCallback(() => {
-    return StyleSheet.flatten([
-      component$?.baseStyles.reduce((prev, current) => {
-        Object.assign(prev, current[1]);
-        return prev;
-      }, {}),
-      props.style,
-    ]);
-  }, [component$?.baseStyles, props.style]);
+  // const composeStyleProps = useCallback(() => {
+  //   return StyleSheet.flatten([
+  //     component$?.baseStyles.reduce((prev, current) => {
+  //       Object.assign(prev, current[1]);
+  //       return prev;
+  //     }, {}),
+  //     props.style,
+  //   ]);
+  // }, [component$?.baseStyles, props.style]);
 
-  const styles = composeStyleProps();
+  // const styles = composeStyleProps();
+
+  const additionalStyles = useMemo(() => {
+    const hoverStyles = interactionStyles.find(([selector]) => selector === 'hover');
+    if (component.interactionsState.hover && hoverStyles) {
+      // console.log('SHOULD_RETURN_HOVER');
+      return hoverStyles[1].styles;
+    }
+    return {};
+  }, [interactionStyles, component.interactionsState]);
 
   // @ts-expect-error
   const transformedComponent = createElement(Component, {
@@ -55,7 +70,7 @@ function useBuildStyledComponent<T, P extends keyof T>(
     ...componentInteractionHandlers,
     ...focusHandlers,
     // ...component$.getStyleProps,
-    style: styles,
+    style: [...componentStyles.values(), additionalStyles],
     children: componentChilds,
     ref,
   } as unknown as T);
