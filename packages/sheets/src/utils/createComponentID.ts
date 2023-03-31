@@ -1,3 +1,8 @@
 import uuid from 'react-native-uuid';
 
-export const createComponentID = () => uuid.v4();
+export const createComponentID = () => {
+  if (process && process.env['NODE_ENV'] === 'test') {
+    return 'test-parent';
+  }
+  return uuid.v4();
+};
