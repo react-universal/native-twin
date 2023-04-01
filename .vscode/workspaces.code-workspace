@@ -5,10 +5,6 @@
       "path": ".."
     },
     {
-      "name": "🚀 docs-page",
-      "path": "../apps/docs-page"
-    },
-    {
       "name": "🚀 docusaurus",
       "path": "../apps/docusaurus"
     },
@@ -21,14 +17,6 @@
       "path": "../examples/next-app"
     },
     {
-      "name": "📦 @universal-labs/core",
-      "path": "../packages/core"
-    },
-    {
-      "name": "📦 @universal-labs/primitives",
-      "path": "../packages/primitives"
-    },
-    {
       "name": "📦 @universal-labs/stylesheets",
       "path": "../packages/sheets"
     },
@@ -37,8 +25,12 @@
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @universal-labs/tailwind-ui",
-      "path": "../packages/tailwind-ui"
+      "name": "📦 @universal-labs/core",
+      "path": "../packages/core"
+    },
+    {
+      "name": "📦 @universal-labs/primitives",
+      "path": "../packages/primitives"
     }
   ],
   "settings": {
@@ -65,7 +57,6 @@
       "**/apps/docusaurus"
     ],
     "tailwindCSS.experimental.classRegex": [
-      ["styled\\([^,)]+,([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
       ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
     ],
     "tailwindCSS.experimental.configFile": {
@@ -93,12 +84,5 @@
       "**/build/**": true
     },
     "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib"
-    // "workbench.colorCustomizations": {
-    //   "[Default Dark+ Experimental]": {
-    //     "sideBar.background": "#070606",
-    //     "editor.background": "#070606",
-    //     "tab.inactiveBackground": "#161414",
-    //   }
-    // }
   }
 }

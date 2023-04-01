@@ -1,22 +1,41 @@
 import { useMemo, useRef } from 'react';
-import type { Touchable } from 'react-native';
-import { setComponentInteractionState } from '@universal-labs/stylesheets';
+import type { NativeSyntheticEvent, Touchable, TextInputFocusEventData } from 'react-native';
+import {
+  setInteractionState,
+  TValidInteractionPseudoSelectors,
+} from '@universal-labs/stylesheets';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;
-  componentID: string;
   hasPointerInteractions: boolean;
   isGroupParent: boolean;
   hasGroupInteractions: boolean;
+  id: string;
+  setComponentInteractionState?(
+    interaction: TValidInteractionPseudoSelectors,
+    value: boolean,
+  ): boolean;
 }
+
+interface InternalTouchable extends Touchable {
+  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+}
+
 const useComponentInteractions = ({
   props,
   hasPointerInteractions,
   isGroupParent,
-  componentID,
   hasGroupInteractions,
+  id,
 }: UseComponentInteractionsArgs) => {
-  const ref = useRef<Touchable>(props);
+  const ref = useRef<
+    Touchable & {
+      onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+      onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+    }
+  >(props);
+
   const componentInteractionHandlers = useMemo(() => {
     const handlers: Touchable = {};
     if (hasPointerInteractions || isGroupParent || hasGroupInteractions) {
@@ -25,10 +44,10 @@ const useComponentInteractions = ({
           ref.current.onTouchStart(event);
         }
         if (isGroupParent) {
-          setComponentInteractionState(componentID, 'group-hover', true);
+          setInteractionState(id, 'group-hover', true);
         }
         if (hasPointerInteractions) {
-          setComponentInteractionState(componentID, 'hover', true);
+          setInteractionState(id, 'hover', true);
         }
       };
       handlers.onTouchEnd = function (event) {
@@ -36,17 +55,38 @@ const useComponentInteractions = ({
           ref.current.onTouchEnd(event);
         }
         if (isGroupParent) {
-          setComponentInteractionState(componentID, 'group-hover', false);
+          setInteractionState(id, 'group-hover', false);
         }
         if (hasPointerInteractions) {
-          setComponentInteractionState(componentID, 'hover', false);
+          setInteractionState(id, 'hover', false);
         }
       };
     }
     return handlers;
-  }, [componentID, hasPointerInteractions, isGroupParent, hasGroupInteractions]);
+  }, [id, isGroupParent, hasGroupInteractions, hasPointerInteractions]);
+
+  const focusHandlers = useMemo(() => {
+    const handlers: InternalTouchable = {};
+    if (hasPointerInteractions) {
+      handlers.onFocus = function (event) {
+        if (ref.current.onFocus) {
+          ref.current.onFocus(event);
+        }
+        setInteractionState(id, 'focus', true);
+      };
+      handlers.onBlur = function (event) {
+        if (ref.current.onBlur) {
+          ref.current.onBlur(event);
+        }
+        setInteractionState(id, 'focus', false);
+      };
+    }
+    return handlers;
+  }, [hasPointerInteractions, id]);
+
   return {
     componentInteractionHandlers,
+    focusHandlers,
   };
 };
 

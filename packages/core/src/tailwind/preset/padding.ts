@@ -6,8 +6,11 @@ export const padding = plugin(({ matchUtilities, theme }) => {
   matchUtilities(
     {
       padding: (value: string) => {
+        if (value.endsWith('rem')) {
+          value = `${parseFloat(value) * baseRem}px`;
+        }
         return {
-          margin: value,
+          padding: value,
         };
       },
       pt: (value: string) => {

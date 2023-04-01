@@ -1,44 +1,79 @@
-import { useEffect, useMemo } from 'react';
-import { useSyncExternalStore } from 'use-sync-external-store/shim';
+import { useCallback, useMemo } from 'react';
+import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
 import {
-  globalStore,
-  IUseStyleSheetsInput,
-  registerComponent,
-  unregisterComponent,
-} from '../store/global.store';
+  componentsStore,
+  composeComponentStyledProps,
+  composeStylesForPseudoClasses,
+  registerComponentInStore,
+} from '../store/components.store';
+import type { IStyleType, IUseStyleSheetsInput } from '../types';
+import { createComponentID } from '../utils/createComponentID';
+import { useClassNamesToCss } from './useClassNamesToCss';
 
 function useComponentStyleSheets({
-  classProps,
-  inlineStyles,
+  className,
+  classPropsTuple,
+  parentID,
   isFirstChild,
   isLastChild,
   nthChild,
-  parentID,
 }: IUseStyleSheetsInput) {
-  const componentID = useMemo(() => {
-    return registerComponent({
-      classProps,
-      inlineStyles,
-      isFirstChild,
-      isLastChild,
-      nthChild,
-      parentID,
-    });
-  }, [inlineStyles, isFirstChild, isLastChild, nthChild, parentID, classProps]);
+  // first we need to create a unique ID for this component to look up in the store
+  // we use useMemo to ensure that the ID is only created once
+  const componentID = useMemo(() => createComponentID() as string, []);
 
-  const component = useSyncExternalStore(
-    globalStore.subscribe,
-    () => globalStore.getState().components[componentID],
-    () => globalStore.getState().components[componentID],
+  const {
+    styledProps,
+    style,
+    hasGroupInteractions,
+    hasPointerInteractions,
+    isGroupParent,
+    interactionStyles,
+    platformStyles,
+    childStyles,
+    appearanceStyles,
+  } = useClassNamesToCss(className ?? '', classPropsTuple ?? []);
+  const component = useSyncExternalStoreWithSelector(
+    componentsStore.subscribe,
+    () => componentsStore[componentID],
+    () => componentsStore[componentID],
+    () => {
+      return registerComponentInStore(componentID, {
+        parentID,
+        isFirstChild,
+        isLastChild,
+        nthChild,
+      });
+    },
   );
 
-  useEffect(() => {
-    return () => unregisterComponent(componentID);
-  }, [componentID]);
+  const getChildStyles = useCallback(
+    (meta: { isFirstChild: boolean; isLastChild: boolean; nthChild: number }) => {
+      const result: IStyleType[] = [];
+      if (meta.isFirstChild) {
+        result.push(...composeStylesForPseudoClasses(childStyles, 'first'));
+      }
+      return result;
+    },
+    [childStyles],
+  );
 
   return {
+    styledProps,
     componentID,
     component,
+    hasGroupInteractions,
+    hasPointerInteractions,
+    isGroupParent,
+    interactionStyles,
+    getChildStyles,
+    composedStyles: composeComponentStyledProps(
+      interactionStyles,
+      platformStyles,
+      appearanceStyles,
+      component,
+      style,
+    ),
   };
 }
 

@@ -3,7 +3,11 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  test: {},
+  test: {
+    env: {
+      APP_ENV: 'test',
+    },
+  },
   plugins: [],
   optimizeDeps: {
     esbuildOptions: {

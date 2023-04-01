@@ -5,16 +5,28 @@ import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 
+// import { useRenderCounter } from './useRenderCounter';
+
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
   Component: ComponentType<T>,
   ref: ForwardedRef<unknown>,
   styleClassProps?: P[],
 ) {
-  const classProps = useBuildStyleProps(props, styleClassProps);
+  // useRenderCounter();
+  const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
 
-  const { component } = useComponentStyleSheets({
-    classProps,
+  const {
+    componentID,
+    styledProps,
+    composedStyles,
+    hasGroupInteractions,
+    hasPointerInteractions,
+    isGroupParent,
+    getChildStyles,
+  } = useComponentStyleSheets({
+    className,
+    classPropsTuple,
     inlineStyles: props.style,
     isFirstChild: props.isFirstChild,
     isLastChild: props.isLastChild,
@@ -22,25 +34,23 @@ function useBuildStyledComponent<T, P extends keyof T>(
     parentID: props.parentID,
   });
 
-  const { componentInteractionHandlers } = useComponentInteractions({
+  const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({
     props: props as Touchable,
-    componentID: component.id,
-    hasGroupInteractions: component.hasPointerInteractions,
-    hasPointerInteractions: component.hasPointerInteractions,
-    isGroupParent: component.isGroupParent,
+    hasGroupInteractions,
+    hasPointerInteractions,
+    isGroupParent,
+    id: componentID,
   });
 
-  const componentChilds = useChildren(
-    props.children,
-    component?.id,
-    component?.getChildStyles,
-  );
+  const componentChilds = useChildren(props.children, componentID, getChildStyles);
 
   // @ts-expect-error
   const transformedComponent = createElement(Component, {
     ...props,
     ...componentInteractionHandlers,
-    ...component.getStyleProps,
+    ...focusHandlers,
+    ...styledProps,
+    style: [composedStyles, props.style ?? {}],
     children: componentChilds,
     ref,
   } as unknown as T);

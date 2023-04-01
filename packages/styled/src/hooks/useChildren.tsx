@@ -1,11 +1,15 @@
 import { Children, cloneElement, isValidElement, useMemo } from 'react';
-import type { StyleProp } from 'react-native';
-import type { IInteractionPayload } from '@universal-labs/stylesheets';
+import { StyleProp, StyleSheet } from 'react-native';
+import type { IStyleType } from '@universal-labs/stylesheets';
 
 function useChildren(
   children: React.ReactNode,
   componentID: string,
-  getChildStyles?: (props: any) => IInteractionPayload | undefined,
+  getChildStyles: (meta: {
+    isFirstChild: boolean;
+    isLastChild: boolean;
+    nthChild: number;
+  }) => IStyleType[],
 ) {
   return useMemo(() => {
     const totalChilds = Children.count(children);
@@ -20,15 +24,16 @@ function useChildren(
         parentID: componentID,
         ...child.props,
       };
+      const childStyles = getChildStyles?.(childProps);
 
       return isStyledComponent(child)
         ? cloneElement(child, {
             ...childProps,
-            style: [childProps?.style, getChildStyles?.(childProps)],
+            // style: [childProps?.style, ...childStyles],
           })
         : cloneElement(child, {
             ...childProps,
-            // style: [childProps?.style, component.getChildStyles(childProps)],
+            style: StyleSheet.flatten([childProps?.style, ...childStyles]),
           });
     });
   }, [children, componentID, getChildStyles]);

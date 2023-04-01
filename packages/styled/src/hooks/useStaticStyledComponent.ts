@@ -8,9 +8,16 @@ const useStaticStyledComponent = <T, C extends keyof T>(
   componentProps: StyledProps<T>,
   styledOptions?: C[],
 ) => {
-  const classProps = useBuildStyleProps(componentProps, styledOptions);
-  const { component } = useComponentStyleSheets({
-    classProps,
+  const { className, classPropsTuple } = useBuildStyleProps(componentProps, styledOptions);
+  const {
+    componentID,
+    hasGroupInteractions,
+    hasPointerInteractions,
+    isGroupParent,
+    getChildStyles,
+  } = useComponentStyleSheets({
+    className,
+    classPropsTuple,
     inlineStyles: componentProps.style,
     isFirstChild: componentProps.isFirstChild,
     isLastChild: componentProps.isLastChild,
@@ -19,16 +26,16 @@ const useStaticStyledComponent = <T, C extends keyof T>(
   });
   const { componentInteractionHandlers } = useComponentInteractions({
     props: componentProps as Touchable,
-    componentID: component.id,
-    hasGroupInteractions: component.hasPointerInteractions,
-    hasPointerInteractions: component.hasPointerInteractions,
-    isGroupParent: component.isGroupParent,
+    id: componentID,
+    hasGroupInteractions,
+    hasPointerInteractions,
+    isGroupParent,
   });
-  const componentChilds = useChildren(componentProps.children, component?.id);
+  const componentChilds = useChildren(componentProps.children, componentID, getChildStyles);
   return {
     componentChilds,
     componentInteractionHandlers,
-    styleProps: component.getStyleProps,
+    styleProps: {},
   };
 };
 
