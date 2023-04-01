@@ -4,7 +4,8 @@ import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheet
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
-import { useRenderCounter } from './useRenderCounter';
+
+// import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
@@ -12,15 +13,17 @@ function useBuildStyledComponent<T, P extends keyof T>(
   ref: ForwardedRef<unknown>,
   styleClassProps?: P[],
 ) {
-  useRenderCounter();
+  // useRenderCounter();
   const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
 
   const {
     componentID,
+    styledProps,
     composedStyles,
     hasGroupInteractions,
     hasPointerInteractions,
     isGroupParent,
+    getChildStyles,
   } = useComponentStyleSheets({
     className,
     classPropsTuple,
@@ -39,15 +42,15 @@ function useBuildStyledComponent<T, P extends keyof T>(
     id: componentID,
   });
 
-  const componentChilds = useChildren(props.children, componentID);
+  const componentChilds = useChildren(props.children, componentID, getChildStyles);
 
   // @ts-expect-error
   const transformedComponent = createElement(Component, {
     ...props,
     ...componentInteractionHandlers,
     ...focusHandlers,
-    // ...component$.getStyleProps,
-    style: composedStyles,
+    ...styledProps,
+    style: [composedStyles, props.style ?? {}],
     children: componentChilds,
     ref,
   } as unknown as T);

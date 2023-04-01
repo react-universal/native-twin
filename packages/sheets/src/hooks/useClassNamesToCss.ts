@@ -1,5 +1,10 @@
 import { useMemo } from 'react';
-import { InteractionPseudoSelectors } from '../constants';
+import {
+  AppearancePseudoSelectors,
+  ChildPseudoSelectors,
+  InteractionPseudoSelectors,
+  PlatformPseudoSelectors,
+} from '../constants';
 import {
   getStylesForPseudoClasses,
   parseClassNames,
@@ -9,36 +14,57 @@ import {
 import type { IStyleType } from '../types';
 import { cssPropertiesResolver } from '../utils';
 
+function getStyledProps(classPropsTuple: [string, string][], className: string) {
+  const classNameSet = getComponentClassNameSet(className, classPropsTuple);
+  const parsedClassNames = parseClassNames(classNameSet.join(' '));
+  const baseStyles = parsedClassNames.normalClassNames.map((item): IStyleType => {
+    const styles = stylesStore[item];
+    const rnStyles = cssPropertiesResolver(styles?.JSS || {});
+    return rnStyles;
+  });
+  const styledProps = classPropsTuple.reduce((acc, [key, value]) => {
+    const styles = stylesStore[value];
+    const rnStyles = cssPropertiesResolver(styles?.JSS || {});
+    return {
+      ...acc,
+      [key]: rnStyles,
+    };
+  }, {});
+  return Object.assign(
+    {},
+    { styledProps },
+    { style: baseStyles, parsedClassNames },
+    {
+      hasGroupInteractions: classNameSet.some((item) => item.includes('group-')),
+      hasPointerInteractions: parsedClassNames.interactionClassNames.length > 0,
+      isGroupParent: classNameSet.some((item) => item === 'group'),
+      interactionStyles: getStylesForPseudoClasses(
+        parsedClassNames.interactionClassNames,
+        InteractionPseudoSelectors,
+      ),
+      platformStyles: getStylesForPseudoClasses(
+        parsedClassNames.interactionClassNames,
+        PlatformPseudoSelectors,
+      ),
+      appearanceStyles: getStylesForPseudoClasses(
+        parsedClassNames.interactionClassNames,
+        AppearancePseudoSelectors,
+      ),
+      childStyles: getStylesForPseudoClasses(
+        parsedClassNames.interactionClassNames,
+        ChildPseudoSelectors,
+      ),
+    },
+  );
+}
+
 function useClassNamesToCss(className: string, classPropsTuple: [string, string][]) {
-  const classNameSet = useMemo(
-    () => getComponentClassNameSet(className, classPropsTuple),
+  const componentStyles = useMemo(
+    () => getStyledProps(classPropsTuple, className),
     [className, classPropsTuple],
   );
 
-  const componentStyles = useMemo(() => {
-    const parsedClassNames = parseClassNames(classNameSet.join(' '));
-    const baseStyles = parsedClassNames.normalClassNames.map((item): IStyleType => {
-      const styles = stylesStore[item];
-      const rnStyles = cssPropertiesResolver(styles?.JSS || {});
-      return rnStyles;
-    });
-    return {
-      baseStyles,
-      parsedClassNames,
-    };
-  }, [classNameSet]);
-
-  return {
-    componentStyles: componentStyles.baseStyles,
-    classPropsTuple,
-    hasGroupInteractions: classNameSet.some((item) => item.includes('group-')),
-    hasPointerInteractions: componentStyles.parsedClassNames.interactionClassNames.length > 0,
-    isGroupParent: classNameSet.some((item) => item === 'group'),
-    interactionStyles: getStylesForPseudoClasses(
-      componentStyles.parsedClassNames.interactionClassNames,
-      InteractionPseudoSelectors,
-    ),
-  };
+  return componentStyles;
 }
 
 export { useClassNamesToCss };
