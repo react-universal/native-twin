@@ -1,5 +1,11 @@
 # docusaurus
 
+## 0.1.1
+
+### Patch Changes
+
+- [#62](https://github.com/react-universal/tailwind/pull/62) [`b704ebd`](https://github.com/react-universal/tailwind/commit/b704ebdabd4c0c4a1502dfab8e8aca461a3ded68) Thanks [@chrisarts](https://github.com/chrisarts)! - Proxy state as a global store and relocate styles builder outsede of react render
+
 ## 0.1.0
 
 ### Minor Changes
