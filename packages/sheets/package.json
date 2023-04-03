@@ -24,8 +24,8 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./build/index.js",
-      "require": "./build/index.js",
+      "import": "./build/index.es.js",
+      "require": "./build/index.umd.js",
       "types": "./build/index.d.ts"
     },
     "./react-native": {
@@ -35,7 +35,7 @@
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/index.js",
+  "main": "./build/index.es.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -46,9 +46,9 @@
     "README.md"
   ],
   "scripts": {
-    "build:libs": "expo-module build -p tsconfig.build.json",
+    "build:libs": "vite build",
     "clean": "expo-module clean",
-    "dev": "expo-module build -p tsconfig.build.json -w",
+    "dev": "yarn build:libs -w",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",
@@ -58,7 +58,6 @@
   "dependencies": {
     "@universal-labs/core": "workspace:*",
     "css-to-react-native": "^3.1.0",
-    "immer": "^9.0.19",
     "react-native-uuid": "^2.0.1",
     "use-sync-external-store": "^1.2.0"
   },

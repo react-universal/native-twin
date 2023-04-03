@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import path from 'path';
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   test: {
@@ -8,7 +9,11 @@ export default defineConfig({
       APP_ENV: 'test',
     },
   },
-  plugins: [],
+  plugins: [
+    dts({
+      entryRoot: path.resolve(__dirname, 'src'),
+    }),
+  ],
   optimizeDeps: {
     esbuildOptions: {
       minify: true,
@@ -24,13 +29,18 @@ export default defineConfig({
       fileName: (format) => `index.${format}.js`,
       formats: ['cjs', 'es', 'umd', 'iife'],
     },
+    outDir: 'build',
     rollupOptions: {
       external: [
         'css-to-react-native',
         'react-native',
         'react-native-web',
-        'immer',
+        'react',
         '@universal-labs/core',
+        'use-sync-external-store/shim',
+        'use-sync-external-store',
+        'use-sync-external-store/shim/with-selector',
+        'react-native-uuid',
         '@universal-labs/core/tailwind/preset',
       ],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
@@ -39,6 +49,18 @@ export default defineConfig({
         dir: 'build',
         extend: true,
         externalImportAssertions: true,
+        globals: {
+          'css-to-react-native': 'cssToReactNative',
+          'react-native': 'ReactNative',
+          'react-native-web': 'ReactNativeWeb',
+          react: 'React',
+          'react-native-uuid': 'ReactNativeUuid',
+          '@universal-labs/core': 'UniversalLabsCore',
+          'use-sync-external-store/shim': 'useSyncExternalStoreShim',
+          'use-sync-external-store': 'useSyncExternalStore',
+          'use-sync-external-store/shim/with-selector': 'useSyncExternalStoreShimWithSelector',
+          '@universal-labs/core/tailwind/preset': 'UniversalLabsCoreTailwindPreset',
+        },
       },
     },
   },
