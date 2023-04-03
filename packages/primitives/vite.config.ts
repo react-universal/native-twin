@@ -27,13 +27,13 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'primitives',
-      fileName: (format) => `index.${format}.js`,
+      name: 'UniversalLabsPrimitives',
+      fileName: (format) => `index.${format}.web.js`,
       formats: ['cjs', 'es'],
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
-      external: ['react', 'react-native-web', 'react/jsx-runtime'],
+      external: ['react', 'react-native-web', 'react/jsx-runtime', '@universal-labs/styled'],
       output: {
         dir: 'build',
         format: 'esm',

@@ -12,8 +12,13 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/core',
-      fileName: (format) => `index.native.${format}.js`,
+      name: 'UniversalLabsPrimitives',
+      fileName: (format) => {
+        if (format === 'cjs') {
+          return 'index.js';
+        }
+        return `index.${format}.js`;
+      },
       formats: ['cjs', 'es'],
     },
     rollupOptions: {
@@ -25,6 +30,7 @@ export default defineConfig({
         'react-native-web',
         'class-variance-authority',
         'react/jsx-runtime',
+        '@universal-labs/styled',
       ],
       output: {
         dir: 'build',
