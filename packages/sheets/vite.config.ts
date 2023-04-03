@@ -25,8 +25,13 @@ export default defineConfig({
     ssr: false,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'stylesheets',
-      fileName: (format) => `index.${format}.js`,
+      name: 'UniversalLabsStylesheets',
+      fileName: (format) => {
+        if (format === 'cjs') {
+          return 'index.js';
+        }
+        return `index.${format}.js`;
+      },
       formats: ['cjs', 'es', 'umd', 'iife'],
     },
     outDir: 'build',
@@ -40,7 +45,6 @@ export default defineConfig({
         'use-sync-external-store/shim',
         'use-sync-external-store',
         'use-sync-external-store/shim/with-selector',
-        'react-native-uuid',
         '@universal-labs/core/tailwind/preset',
       ],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
@@ -54,7 +58,6 @@ export default defineConfig({
           'react-native': 'ReactNative',
           'react-native-web': 'ReactNativeWeb',
           react: 'React',
-          'react-native-uuid': 'ReactNativeUuid',
           '@universal-labs/core': 'UniversalLabsCore',
           'use-sync-external-store/shim': 'useSyncExternalStoreShim',
           'use-sync-external-store': 'useSyncExternalStore',

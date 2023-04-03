@@ -1,1 +1,1 @@
-export { setTailwindConfig } from '../build/index.es';
+export { setTailwindConfig } from '../build';

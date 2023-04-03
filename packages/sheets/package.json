@@ -25,7 +25,7 @@
   "exports": {
     ".": {
       "import": "./build/index.es.js",
-      "require": "./build/index.umd.js",
+      "require": "./build/index.js",
       "types": "./build/index.d.ts"
     },
     "./react-native": {
@@ -35,8 +35,8 @@
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/index.es.js",
-  "types": "./build/index.d.ts",
+  "main": "./build/index.js",
+  "typings": "./build/index.d.ts",
   "files": [
     "build",
     "env.d.ts",

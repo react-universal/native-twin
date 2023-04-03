@@ -23,7 +23,7 @@
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
   "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "typings": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -31,9 +31,9 @@
     "README.md"
   ],
   "scripts": {
-    "build:libs": "expo-module build -p tsconfig.build.json",
+    "build:libs": "vite build && vite build -c vite.config.web.ts",
     "clean": "expo-module clean",
-    "dev": "expo-module build -p tsconfig.build.json -w",
+    "dev": "yarn build:libs -w",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",
