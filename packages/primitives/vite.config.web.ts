@@ -28,7 +28,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsPrimitives',
-      fileName: (format) => `${format}/index.web.js`,
+      fileName: (format) => `${format}/index.js`,
       formats: ['es', 'umd'],
     },
     rollupOptions: {

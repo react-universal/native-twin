@@ -14,6 +14,7 @@ export type StyledProps<P> = {
   parentID?: string;
   children?: ReactNode;
   style?: IStyleProp;
+  groupID?: string;
 } & P;
 
 export interface IUseStyleSheetsInput
