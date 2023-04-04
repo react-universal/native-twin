@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/core",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "Tailwindcss Inline StyleSheet generator for react native",
   "keywords": [
     "tailwind",

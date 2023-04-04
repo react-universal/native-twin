@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.8.0
+
+### Minor Changes
+
+- [#64](https://github.com/react-universal/tailwind/pull/64) [`6c96091`](https://github.com/react-universal/tailwind/commit/6c960916351d38e6f5ba01d1158a7a8faf49da4a) Thanks [@chrisarts](https://github.com/chrisarts)! - build configuration for optimized envs
+
+### Patch Changes
+
+- Updated dependencies [[`6c96091`](https://github.com/react-universal/tailwind/commit/6c960916351d38e6f5ba01d1158a7a8faf49da4a)]:
+  - @universal-labs/stylesheets@1.8.0
+
 ## 1.7.1
 
 ### Patch Changes

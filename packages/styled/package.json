@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/styled",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "Styled components for css in react native",
   "keywords": [
     "react-native",

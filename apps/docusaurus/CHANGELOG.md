@@ -1,5 +1,11 @@
 # docusaurus
 
+## 0.2.0
+
+### Minor Changes
+
+- [#64](https://github.com/react-universal/tailwind/pull/64) [`6c96091`](https://github.com/react-universal/tailwind/commit/6c960916351d38e6f5ba01d1158a7a8faf49da4a) Thanks [@chrisarts](https://github.com/chrisarts)! - build configuration for optimized envs
+
 ## 0.1.1
 
 ### Patch Changes
