@@ -5,6 +5,7 @@
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
+    "declarationMap": false,
     "module": "CommonJS",
     "noEmit": true,
     "outDir": "./build",

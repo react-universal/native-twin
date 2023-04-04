@@ -24,7 +24,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'UniversalLabsStyled',
+      name: 'UniversalLabsPrimitives',
       fileName: (format) => `${format}/index.js`,
       formats: ['es', 'umd'],
     },
@@ -32,49 +32,23 @@ export default defineConfig({
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       external: [
         'react',
+        'react-dom',
         'react-native',
         'react-native-web',
         'react/jsx-runtime',
-        '@universal-labs/stylesheets',
-        'tailwind-merge',
+        '@universal-labs/styled',
       ],
-      treeshake: true,
       output: {
-        extend: true,
-        externalImportAssertions: true,
         dir: 'build',
+        externalImportAssertions: true,
         globals: {
           react: 'React',
-          'react/jsx-runtime': 'ReactJSXRuntime',
           'react-native': 'ReactNative',
           'react-native-web': 'ReactNativeWeb',
-          '@universal-labs/stylesheets': 'UniversalLabsStylesheets',
-          'tailwind-merge': 'tailwindMerge',
+          'react/jsx-runtime': 'ReactJsxRuntime',
+          '@universal-labs/styled': 'UniversalLabsStyled',
         },
       },
     },
-    emptyOutDir: false,
   },
 });
-
-// const nativeConfig = getConfigForNative({
-//   dirname: __dirname,
-//   usesReactPlugin: true,
-//   externals: [
-//     'react',
-//     'react-native',
-//     'react-native-web',
-//     'react/jsx-runtime',
-//     '@universal-labs/stylesheets',
-//     'tailwind-merge',
-//   ],
-//   globals: {
-//     react: 'React',
-//     'react/jsx-runtime': 'ReactJSXRuntime',
-//     'react-native': 'ReactNative',
-//     'react-native-web': 'ReactNativeWeb',
-//     '@universal-labs/stylesheets': 'UniversalLabsStylesheets',
-//     'tailwind-merge': 'tailwindMerge',
-//   },
-//   libName: 'UniversalLabsStyled',
-// });

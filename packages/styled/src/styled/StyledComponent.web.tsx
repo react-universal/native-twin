@@ -7,7 +7,7 @@ function styled<T, P extends keyof T>(Component: ComponentType<T>, styleClassPro
   });
 
   if (typeof Component !== 'string') {
-    Styled.displayName = `Tailwind.${Component.displayName || Component.name || 'NoName'}`;
+    Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
   }
   return Styled;
 }

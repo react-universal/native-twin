@@ -27,22 +27,32 @@ export default defineConfig({
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'primitives',
-      fileName: (format) => `index.${format}.js`,
-      formats: ['cjs', 'es'],
+      name: 'UniversalLabsPrimitives',
+      fileName: (format) => `${format}/index.web.js`,
+      formats: ['es', 'umd'],
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
-      external: ['react', 'react-native-web', 'react/jsx-runtime'],
+      external: [
+        'react',
+        'react-native',
+        'react-native-web',
+        'react/jsx-runtime',
+        '@universal-labs/styled',
+      ],
       output: {
         dir: 'build',
         format: 'esm',
         externalImportAssertions: true,
         globals: {
           react: 'React',
-          'react-dom': 'ReactDom',
+          'react-native': 'ReactNative',
+          'react-native-web': 'ReactNativeWeb',
+          'react/jsx-runtime': 'ReactJsxRuntime',
+          '@universal-labs/styled': 'UniversalLabsStyled',
         },
       },
     },
+    emptyOutDir: false,
   },
 });
