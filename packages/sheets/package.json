@@ -24,19 +24,16 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./build/index.es.js",
-      "require": "./build/index.js",
-      "types": "./build/index.d.ts"
+      "import": "./build/es/index.js",
+      "require": "./build/umd/index.js"
     },
     "./react-native": {
-      "import": "./react-native/index.js",
-      "require": "./react-native/index.js",
-      "types": "./react-native/index.d.ts"
-    },
-    "./package.json": "./package.json"
+      "default": "./react-native/index.js"
+    }
   },
-  "main": "./build/index.js",
-  "typings": "./build/index.d.ts",
+  "main": "./build/umd/index.web.js",
+  "module": "./build/es/index.web.js",
+  "types": "./build/typings/index.d.ts",
   "files": [
     "build",
     "env.d.ts",
@@ -73,5 +70,6 @@
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "react-native": "./build/es/index.js"
 }

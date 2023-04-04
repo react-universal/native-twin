@@ -22,19 +22,14 @@ export default defineConfig({
     },
   },
   build: {
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
+    // commonjsOptions: {
+    //   transformMixedEsModules: true,
+    // },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsStyled',
-      fileName: (format) => {
-        if (format === 'cjs') {
-          return 'index.web.js';
-        }
-        return `index.${format}.web.js`;
-      },
-      formats: ['cjs', 'es', 'umd', 'iife'],
+      fileName: (format) => `${format}/index.web.js`,
+      formats: ['es', 'umd'],
     },
     outDir: 'build',
     rollupOptions: {
@@ -42,11 +37,11 @@ export default defineConfig({
       external: ['react'],
       treeshake: true,
       output: {
+        extend: true,
         globals: {
           react: 'React',
         },
         dir: 'build',
-        format: 'esm',
         externalImportAssertions: true,
       },
     },

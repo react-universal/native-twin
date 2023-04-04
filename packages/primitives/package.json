@@ -24,9 +24,9 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index.js",
-  "module": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "./build/umd/index.web.js",
+  "module": "./build/es/index.web.js",
+  "typings": "./build/typings/index.d.ts",
   "files": [
     "build",
     "env.d.ts",
@@ -35,11 +35,11 @@
     "README.md"
   ],
   "scripts": {
-    "build:libs": "vite build && vite build -c vite.config.native.ts",
+    "build:libs": "vite build",
     "clean": "expo-module clean",
-    "dev": "yarn build:libs",
+    "dev": "yarn build:libs -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest run",
+    "test": "vitest run -c vite.config.web.ts",
     "test:ui": "yarn vitest --ui"
   },
   "devDependencies": {
@@ -56,5 +56,6 @@
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "react-native": "./build/es/index.js"
 }

@@ -6792,6 +6792,7 @@ __metadata:
     react-is: ^18.2.0
     react-native: 0.71.4
     tailwind-merge: ^1.10.0
+    vite-plugin-multiple: 0.2.0
     vitest-react-native: 0.0.5
   peerDependencies:
     react-native-web: ">= 0.18.10"
@@ -23388,6 +23389,13 @@ __metadata:
   peerDependencies:
     vite: ">=2.9.0"
   checksum: 28de6c500c31c6274ea70dcfcc78ac1b8a4ed68e793817b26a65caf6626ef3bd50a64501c77d363965658b5d0efa3474ad1eb49499ad5ee0b99baeb572908448
+  languageName: node
+  linkType: hard
+
+"vite-plugin-multiple@npm:0.2.0":
+  version: 0.2.0
+  resolution: "vite-plugin-multiple@npm:0.2.0"
+  checksum: a86e43d9837eed0b2a43110d576210b90ba9dffa90184071dd62665d2dea3d0e73132e8c001588afc4f17f1107d84e4a4bf281ab6d6fe34c36fdc6f9425dd165
   languageName: node
   linkType: hard
 

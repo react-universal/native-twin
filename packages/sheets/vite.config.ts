@@ -10,31 +10,19 @@ export default defineConfig({
     },
   },
   plugins: [
+    // Plugin for .d.ts files
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
+      outputDir: 'build/typings',
     }),
   ],
-  optimizeDeps: {
-    esbuildOptions: {
-      minify: true,
-      mainFields: ['module', 'main'],
-    },
-  },
   build: {
-    reportCompressedSize: true,
-    ssr: false,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsStylesheets',
-      fileName: (format) => {
-        if (format === 'cjs') {
-          return 'index.js';
-        }
-        return `index.${format}.js`;
-      },
-      formats: ['cjs', 'es', 'umd', 'iife'],
+      fileName: (format) => `${format}/index.js`,
+      formats: ['es', 'umd'],
     },
-    outDir: 'build',
     rollupOptions: {
       external: [
         'css-to-react-native',

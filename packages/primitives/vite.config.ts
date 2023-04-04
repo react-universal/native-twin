@@ -1,46 +1,52 @@
-/// <reference types="vitest" />
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
+import multiple from 'vite-plugin-multiple';
 
 export default defineConfig({
-  test: {
-    globals: true,
-    environment: 'happy-dom',
-  },
-  plugins: [react()],
-  optimizeDeps: {
-    esbuildOptions: {
-      mainFields: ['module', 'main'],
-      resolveExtensions: ['.web.js', '.web.jsx', '.web.ts', '.web.tsx', '.ts', '.js'],
-    },
-  },
-  resolve: {
-    extensions: ['.web.tsx', '.web.jsx', '.web.js', '.tsx', '.ts', '.js'],
-    alias: {
-      'react-native': 'react-native-web',
-    },
-  },
+  plugins: [
+    multiple([
+      {
+        name: 'web',
+        config: 'vite.config.web.ts',
+        command: 'build',
+      },
+    ]),
+    // Plugin for react related libs
+    react(),
+    // Plugin for .d.ts files
+    dts({
+      entryRoot: path.resolve(__dirname, 'src'),
+      outputDir: 'build/typings',
+    }),
+  ],
   build: {
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsPrimitives',
-      fileName: (format) => `index.${format}.web.js`,
-      formats: ['cjs', 'es'],
+      fileName: (format) => `${format}/index.js`,
+      formats: ['es', 'umd'],
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
-      external: ['react', 'react-native-web', 'react/jsx-runtime', '@universal-labs/styled'],
+      external: [
+        'react',
+        'react-dom',
+        'react-native',
+        'react-native-web',
+        'react/jsx-runtime',
+        '@universal-labs/styled',
+      ],
       output: {
         dir: 'build',
-        format: 'esm',
         externalImportAssertions: true,
         globals: {
           react: 'React',
-          'react-dom': 'ReactDom',
+          'react-native': 'ReactNative',
+          'react-native-web': 'ReactNativeWeb',
+          'react/jsx-runtime': 'ReactJsxRuntime',
+          '@universal-labs/styled': 'UniversalLabsStyled',
         },
       },
     },

@@ -105,6 +105,7 @@ function setInteractionState(
       [interaction]: value,
     },
   };
+  // Object.keys(componentsStore).
   return true;
 }
 
