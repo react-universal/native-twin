@@ -1,17 +1,14 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "jsx": "react-native",
+    "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "declarationMap": false,
-    "module": "CommonJS",
     "noEmit": true,
-    "outDir": "./build",
     "types": ["node", "vitest/globals"],
     "importHelpers": true
   },
-  "include": ["src", "test"],
-  "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
+  "include": ["src", "test"]
 }

@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
+import { componentGroupsStore, registerGroupInStore } from '../store/componentGroups.store';
 import {
   componentsStore,
   composeComponentStyledProps,
@@ -14,6 +15,7 @@ function useComponentStyleSheets({
   className,
   classPropsTuple,
   parentID,
+  groupID,
   isFirstChild,
   isLastChild,
   nthChild,
@@ -33,17 +35,27 @@ function useComponentStyleSheets({
     childStyles,
     appearanceStyles,
   } = useClassNamesToCss(className ?? '', classPropsTuple ?? []);
+  const currentGroupID = isGroupParent ? componentID : groupID ?? 'non-group';
   const component = useSyncExternalStoreWithSelector(
     componentsStore.subscribe,
     () => componentsStore[componentID],
     () => componentsStore[componentID],
     () => {
       return registerComponentInStore(componentID, {
+        groupID: currentGroupID,
         parentID,
         isFirstChild,
         isLastChild,
         nthChild,
       });
+    },
+  );
+  const componentGroup = useSyncExternalStoreWithSelector(
+    componentGroupsStore.subscribe,
+    () => (groupID ? componentGroupsStore[currentGroupID] : {}),
+    () => (groupID ? componentGroupsStore[currentGroupID] : {}),
+    () => {
+      return registerGroupInStore(currentGroupID, { groupID: currentGroupID });
     },
   );
 
@@ -53,9 +65,29 @@ function useComponentStyleSheets({
       if (meta.isFirstChild) {
         result.push(...composeStylesForPseudoClasses(childStyles, 'first'));
       }
+      if (meta.isLastChild) {
+        result.push(...composeStylesForPseudoClasses(childStyles, 'last'));
+      }
+      if (meta.nthChild % 2 === 0) {
+        result.push(...composeStylesForPseudoClasses(childStyles, 'even'));
+      }
+      if (meta.nthChild % 2 !== 0) {
+        result.push(...composeStylesForPseudoClasses(childStyles, 'odd'));
+      }
+      if (componentGroup && componentGroup.interactionsState && hasGroupInteractions) {
+        if (componentGroup.interactionsState.hover) {
+          result.push(...composeStylesForPseudoClasses(interactionStyles, 'group-hover'));
+        }
+        if (componentGroup.interactionsState.focus) {
+          result.push(...composeStylesForPseudoClasses(interactionStyles, 'focus'));
+        }
+        if (componentGroup.interactionsState.active) {
+          result.push(...composeStylesForPseudoClasses(interactionStyles, 'active'));
+        }
+      }
       return result;
     },
-    [childStyles],
+    [childStyles, interactionStyles, hasGroupInteractions, componentGroup],
   );
 
   return {
@@ -67,6 +99,7 @@ function useComponentStyleSheets({
     isGroupParent,
     interactionStyles,
     getChildStyles,
+    currentComponentGroupID: isGroupParent ? componentID : groupID,
     composedStyles: composeComponentStyledProps(
       interactionStyles,
       platformStyles,

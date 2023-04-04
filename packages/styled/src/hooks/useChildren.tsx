@@ -10,6 +10,7 @@ function useChildren(
     isLastChild: boolean;
     nthChild: number;
   }) => IStyleType[],
+  groupID: string,
 ) {
   return useMemo(() => {
     const totalChilds = Children.count(children);
@@ -22,6 +23,7 @@ function useChildren(
         isFirstChild: index === 0,
         isLastChild: index + 1 === totalChilds,
         parentID: componentID,
+        groupID: groupID,
         ...child.props,
       };
       const childStyles = getChildStyles?.(childProps);
@@ -36,7 +38,7 @@ function useChildren(
             style: StyleSheet.flatten([childProps?.style, ...childStyles]),
           });
     });
-  }, [children, componentID, getChildStyles]);
+  }, [children, componentID, getChildStyles, groupID]);
 }
 
 export { useChildren };

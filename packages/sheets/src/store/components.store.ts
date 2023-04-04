@@ -5,12 +5,14 @@ import type {
   TValidPlatformPseudoSelectors,
 } from '../constants';
 import type { IStyleType } from '../types';
+import { componentGroupsStore } from './componentGroups.store';
 
 type SubscriptionsCallBack<T> = (currentState: T) => void;
 
 interface IRegisterComponentStore {
   [k: string]: {
     parentID?: string;
+    groupID: string;
     meta: {
       isFirstChild: boolean;
       isLastChild: boolean;
@@ -64,6 +66,7 @@ const registerComponentInStore = function (
   componentID: string,
   meta: {
     parentID?: string;
+    groupID?: string;
     isFirstChild: boolean;
     isLastChild: boolean;
     nthChild: number;
@@ -72,6 +75,7 @@ const registerComponentInStore = function (
   if (!Reflect.has(componentsStore, componentID)) {
     Reflect.set(componentsStore, componentID, {
       parentID: meta.parentID,
+      groupID: meta.groupID,
       meta,
       interactionsState: {
         'group-hover': false,
@@ -98,6 +102,18 @@ function setInteractionState(
   interaction: TValidInteractionPseudoSelectors,
   value: boolean,
 ) {
+  const component = componentsStore[id];
+  if (typeof component?.groupID === 'string') {
+    componentGroupsStore[component.groupID] = {
+      ...componentGroupsStore[component.groupID]!,
+      interactionsState: {
+        ...componentGroupsStore[component.groupID]!.interactionsState,
+        [interaction]: value,
+        'group-hover': true,
+      },
+    };
+  }
+
   componentsStore[id] = {
     ...componentsStore[id]!,
     interactionsState: {

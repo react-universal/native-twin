@@ -22,30 +22,25 @@ export default defineConfig({
     },
   },
   build: {
-    // commonjsOptions: {
-    //   transformMixedEsModules: true,
-    // },
+    outDir: 'build',
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsStyled',
-      fileName: (format) => `${format}/index.web.js`,
+      fileName: (format) => `index.${format}.web.js`,
       formats: ['es', 'umd'],
     },
-    outDir: 'build',
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
-      external: ['react'],
+      external: ['react', '@universal-labs/stylesheets'],
       treeshake: true,
       output: {
         extend: true,
         globals: {
           react: 'React',
         },
-        dir: 'build',
         externalImportAssertions: true,
       },
     },
-    sourcemap: false,
     emptyOutDir: false,
   },
 });

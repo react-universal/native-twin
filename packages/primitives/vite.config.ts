@@ -25,7 +25,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsPrimitives',
-      fileName: (format) => `${format}/index.js`,
+      fileName: (format) => `${format}/index.native.js`,
       formats: ['es', 'umd'],
     },
     rollupOptions: {
@@ -38,9 +38,11 @@ export default defineConfig({
         'react/jsx-runtime',
         '@universal-labs/styled',
       ],
+      treeshake: true,
       output: {
         dir: 'build',
         externalImportAssertions: true,
+        extend: true,
         globals: {
           react: 'React',
           'react-native': 'ReactNative',

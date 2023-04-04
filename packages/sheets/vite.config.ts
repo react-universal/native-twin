@@ -13,14 +13,16 @@ export default defineConfig({
     // Plugin for .d.ts files
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
-      outputDir: 'build/typings',
+      outputDir: 'build',
+      insertTypesEntry: true,
     }),
   ],
   build: {
+    outDir: 'build',
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsStylesheets',
-      fileName: (format) => `${format}/index.js`,
+      fileName: (format) => `index.${format}.js`,
       formats: ['es', 'umd'],
     },
     rollupOptions: {
@@ -38,7 +40,6 @@ export default defineConfig({
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
       output: {
-        dir: 'build',
         extend: true,
         externalImportAssertions: true,
         globals: {

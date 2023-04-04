@@ -22,9 +22,9 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/umd/index.web.js",
-  "module": "./build/es/index.web.js",
-  "typings": "./build/typings/index.d.ts",
+  "main": "./build/index.umd",
+  "module": "./build/index.es",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -34,7 +34,7 @@
   "scripts": {
     "build:libs": "vite build",
     "clean": "expo-module clean",
-    "dev": "yarn build:libs -w",
+    "dev": "vite build -w",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",
@@ -66,5 +66,5 @@
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./build/es/index.js"
+  "react-native": "./build/es/index.native.js"
 }
