@@ -10,7 +10,7 @@ function useChildren(
     isLastChild: boolean;
     nthChild: number;
   }) => IStyleType[],
-  groupID: string,
+  groupID?: string,
 ) {
   return useMemo(() => {
     const totalChilds = Children.count(children);

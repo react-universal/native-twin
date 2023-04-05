@@ -48,7 +48,9 @@ function useBuildStyledComponent<T, P extends keyof T>(
     props.children,
     componentID,
     getChildStyles,
-    currentComponentGroupID ?? 'non-group',
+    currentComponentGroupID === 'non-group'
+      ? props.groupID ?? props.parentID ?? ''
+      : currentComponentGroupID,
   );
 
   // @ts-expect-error
@@ -57,7 +59,7 @@ function useBuildStyledComponent<T, P extends keyof T>(
     ...componentInteractionHandlers,
     ...focusHandlers,
     ...styledProps,
-    style: [composedStyles, props.style ?? {}],
+    style: [props.style ?? {}, composedStyles],
     children: componentChilds,
     ref,
   } as unknown as T);

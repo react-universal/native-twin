@@ -2,7 +2,7 @@ import type { TValidInteractionPseudoSelectors } from '../constants';
 
 type SubscriptionsCallBack<T> = (currentState: T) => void;
 
-interface IRegisterGroupStore {
+export interface IRegisterGroupStore {
   [k: string]: {
     parentID?: string;
     interactionsState: Record<TValidInteractionPseudoSelectors, boolean>;

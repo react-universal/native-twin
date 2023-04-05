@@ -54,7 +54,7 @@
     "@types/react-is": "^17.0.3",
     "@types/react-native": "^0.71.5",
     "react": "18.2.0",
-    "react-native": "0.71.4",
+    "react-native": "^0.71.6",
     "vite-plugin-multiple": "0.2.0",
     "vitest-react-native": "0.0.5"
   },
@@ -66,5 +66,5 @@
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./build/es/index.native.js"
+  "react-native": "./build/index.es.js"
 }

@@ -6,28 +6,29 @@ exports[`@universal-labs/styled > View render 1`] = `
   parentID="test"
   style={
     [
+      {},
       {
         "flexBasis": "0%",
         "flexGrow": 1,
         "flexShrink": 1,
       },
-      {},
     ]
   }
 >
   <Text
     className="text-sm"
+    groupID="test"
     isFirstChild={true}
     isLastChild={true}
     nthChild={1}
     parentID="test"
     style={
       [
+        {},
         {
           "fontSize": 14,
           "lineHeight": 20,
         },
-        {},
       ]
     }
   >

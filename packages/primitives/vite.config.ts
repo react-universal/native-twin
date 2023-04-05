@@ -21,6 +21,9 @@ export default defineConfig({
       outputDir: 'build/typings',
     }),
   ],
+  esbuild: {
+    keepNames: true,
+  },
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),

@@ -17,6 +17,9 @@ export default defineConfig({
       insertTypesEntry: true,
     }),
   ],
+  esbuild: {
+    keepNames: true,
+  },
   build: {
     outDir: 'build',
     lib: {
@@ -55,5 +58,6 @@ export default defineConfig({
         },
       },
     },
+    emptyOutDir: false,
   },
 });

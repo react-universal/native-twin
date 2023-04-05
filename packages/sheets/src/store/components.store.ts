@@ -5,7 +5,7 @@ import type {
   TValidPlatformPseudoSelectors,
 } from '../constants';
 import type { IStyleType } from '../types';
-import { componentGroupsStore } from './componentGroups.store';
+import { componentGroupsStore, IRegisterGroupStore } from './componentGroups.store';
 
 type SubscriptionsCallBack<T> = (currentState: T) => void;
 
@@ -109,7 +109,6 @@ function setInteractionState(
       interactionsState: {
         ...componentGroupsStore[component.groupID]!.interactionsState,
         [interaction]: value,
-        'group-hover': true,
       },
     };
   }
@@ -130,6 +129,7 @@ function composeComponentStyledProps(
   platformStyles: [TValidPlatformPseudoSelectors, IStyleType][],
   appearanceStyles: [TValidAppearancePseudoSelectors, IStyleType][],
   component: IRegisterComponentStore[string],
+  componentGroup: IRegisterGroupStore[string],
   componentStyles: IStyleType[],
 ) {
   const hoverStyles = composeStylesForPseudoClasses(interactionStyles, 'hover');
@@ -158,20 +158,24 @@ function composeComponentStyledProps(
   // 2. Interaction styles
   if (
     component.interactionsState &&
-    (component.interactionsState?.active || component.interactionsState?.hover) &&
-    activeStyles
+    (component.interactionsState?.focus ||
+      component.interactionsState?.hover ||
+      component.interactionsState?.active)
   ) {
-    payload.push(...activeStyles);
+    if (hoverStyles) {
+      payload.push(...hoverStyles);
+    }
+    if (focusStyles) {
+      payload.push(...focusStyles);
+    }
+    if (activeStyles) {
+      payload.push(...activeStyles);
+    }
   }
-  if (component.interactionsState && component.interactionsState?.focus && focusStyles) {
-    payload.push(...focusStyles);
-  }
-  if (component.interactionsState && component.interactionsState?.hover && hoverStyles) {
-    payload.push(...hoverStyles);
-  }
+  // 3. Group interaction styles
   if (
-    component.interactionsState &&
-    component.interactionsState?.['group-hover'] &&
+    componentGroup?.interactionsState &&
+    componentGroup?.interactionsState?.['group-hover'] &&
     groupHoverStyles
   ) {
     payload.push(...groupHoverStyles);
