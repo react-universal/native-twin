@@ -2,13 +2,19 @@
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { defineConfig } from 'vite';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    viteTsConfigPaths({
+      root: '../../',
+    }),
+  ],
   optimizeDeps: {
     esbuildOptions: {
       mainFields: ['module', 'main'],
@@ -22,13 +28,14 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: 'build',
     commonjsOptions: {
       transformMixedEsModules: true,
     },
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsPrimitives',
-      fileName: (format) => `${format}/index.js`,
+      fileName: (format) => `index.${format}.web.js`,
       formats: ['es', 'umd'],
     },
     rollupOptions: {
@@ -41,7 +48,6 @@ export default defineConfig({
         '@universal-labs/styled',
       ],
       output: {
-        dir: 'build',
         format: 'esm',
         externalImportAssertions: true,
         globals: {

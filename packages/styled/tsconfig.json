@@ -5,10 +5,17 @@
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "declarationMap": false,
-    "noEmit": true,
     "types": ["node", "vitest/globals"],
     "importHelpers": true
   },
-  "include": ["src", "test"]
+  "include": [],
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

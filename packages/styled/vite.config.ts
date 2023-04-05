@@ -1,15 +1,16 @@
 import react from '@vitejs/plugin-react-swc';
-import path from 'path';
+import path, { join } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import multiple from 'vite-plugin-multiple';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
     multiple([
       {
         name: 'web',
-        config: 'vite.config.web.ts',
+        config: join(__dirname, 'vite.config.web.ts'),
         command: 'build',
       },
     ]),
@@ -17,9 +18,14 @@ export default defineConfig({
     react(),
     // Plugin for .d.ts files
     dts({
-      entryRoot: path.resolve(__dirname, 'src'),
+      entryRoot: 'src',
+      tsConfigFilePath: join(__dirname, 'tsconfig.lib.json'),
       outputDir: 'build',
-      insertTypesEntry: true,
+      skipDiagnostics: true,
+    }),
+
+    viteTsConfigPaths({
+      root: '../../',
     }),
   ],
   build: {
@@ -54,7 +60,7 @@ export default defineConfig({
         },
       },
     },
-    sourcemap: true,
+    emptyOutDir: false,
   },
 });
 

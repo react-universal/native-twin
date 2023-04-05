@@ -6,9 +6,9 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "disableSourceOfProjectReferenceRedirect": true,
     "sourceMap": true,
     "declaration": true,
-    "downlevelIteration": true,
     "importsNotUsedAsValues": "error",
     "declarationMap": true,
     "strictPropertyInitialization": true,
@@ -27,7 +27,15 @@
     "strict": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "baseUrl": "./",
+    "rootDir": ".",
+    "paths": {
+      "@universal-labs/stylesheets": ["packages/sheets/src/index.ts"],
+      "@universal-labs/core": ["packages/core/src/index.ts"],
+      "@universal-labs/styled": ["packages/styled/src/index.ts"],
+      "@universal-labs/primitives": ["packages/primitives/src/index.ts"]
+    }
   },
   "exclude": ["tmp", "node_modules", "**/build**"]
 }

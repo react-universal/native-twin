@@ -1,18 +1,22 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "importsNotUsedAsValues": "error",
-    "declarationMap": false,
-    "noImplicitAny": false,
-    "emitDeclarationOnly": true,
-    "jsx": "react-jsx",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noEmit": false,
+    "module": "commonjs",
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "target": "esnext"
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": ["vitest"]
   },
-  "include": ["src", "env.d.ts", "test"],
-  "exclude": ["build"]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

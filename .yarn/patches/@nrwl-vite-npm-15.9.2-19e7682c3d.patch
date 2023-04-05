@@ -1,0 +1,26 @@
+diff --git a/src/executors/build/build.impl.js b/src/executors/build/build.impl.js
+index 93609abaa81c404348b75d9e6e538ad43d3d0d85..53b6272cfdee3465f490cba587f83546cf172130 100644
+--- a/src/executors/build/build.impl.js
++++ b/src/executors/build/build.impl.js
+@@ -26,21 +26,6 @@ async function* viteBuildExecutor(options, context) {
+         build: (0, _optionsUtils.getViteBuildOptions)(normalizedOptions, context)
+     });
+     const watcherOrOutput = await runInstance(buildConfig);
+-    const libraryPackageJson = (0, _path.resolve)(projectRoot, 'package.json');
+-    const rootPackageJson = (0, _path.resolve)(context.root, 'package.json');
+-    // For buildable libs, copy package.json if it exists.
+-    if ((0, _fs.existsSync)(libraryPackageJson) && rootPackageJson !== libraryPackageJson) {
+-        await (0, _js.copyAssets)({
+-            outputPath: normalizedOptions.outputPath,
+-            assets: [
+-                {
+-                    input: projectRoot,
+-                    output: '.',
+-                    glob: 'package.json'
+-                }
+-            ]
+-        }, context);
+-    }
+     if ('on' in watcherOrOutput) {
+         const iterable = (0, _asyncIterable.createAsyncIterable)(({ next  })=>{
+             let success = true;

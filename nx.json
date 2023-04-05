@@ -4,7 +4,7 @@
     "appsDir": "apps",
     "libsDir": "packages"
   },
-  "npmScope": "react-universal",
+  "npmScope": "universal-labs",
   "affected": {
     "defaultBase": "main"
   },
@@ -13,7 +13,7 @@
       "runner": "@nrwl/nx-cloud",
       "options": {
         "useDaemonProcess": false,
-        "cacheableOperations": ["build", "test"],
+        "cacheableOperations": ["build", "test", "build:libs"],
         "accessToken": "ZDQ5MzNlNjAtODM2Ny00NGE5LWIzZDEtM2VlYmZmMGE3ZjQ4fHJlYWQtd3JpdGU="
       }
     }
@@ -22,16 +22,21 @@
     "packageManager": "yarn"
   },
   "targetDefaults": {
-    "build": {
-      "dependsOn": ["^build:libs"]
+    "test": {
+      "inputs": ["default", "^production"]
     },
     "build:libs": {
-      "dependsOn": ["^build:libs"]
+      "dependsOn": ["build:libs"],
+      "inputs": ["default", "^production"]
     }
   },
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": [],
-    "production": ["default"]
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json"
+    ]
   }
 }

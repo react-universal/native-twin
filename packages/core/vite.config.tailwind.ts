@@ -5,13 +5,13 @@ export default defineConfig({
   optimizeDeps: {
     esbuildOptions: {
       minify: true,
-      mainFields: ['module', 'main'],
     },
   },
   build: {
+    outDir: 'build',
     lib: {
       entry: path.resolve(__dirname, 'src/tailwind/preset/tailwind-preset.ts'),
-      name: '@react-universal/core/tailwind/preset',
+      name: 'tailwind-preset',
       formats: ['cjs'],
       fileName: (format, name) => `${name}.${format}.js`,
     },
@@ -19,7 +19,6 @@ export default defineConfig({
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       external: ['postcss', 'postcss-js'],
       output: {
-        dir: 'build',
         esModule: true,
         extend: true,
         externalImportAssertions: true,

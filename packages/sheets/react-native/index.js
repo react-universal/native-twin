@@ -1,1 +1,2 @@
-export { setTailwindConfig } from '../build/es';
+// @ts-nocheck
+export { setTailwindConfig } from '../build/index.umd';

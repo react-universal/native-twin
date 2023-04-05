@@ -17,6 +17,14 @@
       "path": "../examples/next-app"
     },
     {
+      "name": "📦 @universal-labs/core",
+      "path": "../packages/core"
+    },
+    {
+      "name": "📦 @universal-labs/primitives",
+      "path": "../packages/primitives"
+    },
+    {
       "name": "📦 @universal-labs/stylesheets",
       "path": "../packages/sheets"
     },
@@ -25,12 +33,8 @@
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @universal-labs/core",
-      "path": "../packages/core"
-    },
-    {
-      "name": "📦 @universal-labs/primitives",
-      "path": "../packages/primitives"
+      "name": "📦 @universal-labs/tailwind-ui",
+      "path": "../packages/tailwind-ui"
     }
   ],
   "settings": {

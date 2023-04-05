@@ -1,11 +1,25 @@
 /// <reference types="vitest" />
 // Configure Vitest (https://vitest.dev/config/)
-import path from 'path';
+import path, { join } from 'path';
 import { defineConfig } from 'vite';
+import multiple from 'vite-plugin-multiple';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   test: {},
-  plugins: [],
+  plugins: [
+    multiple([
+      {
+        name: 'tailwind',
+        config: join(__dirname, 'vite.config.tailwind.ts'),
+        command: 'build',
+      },
+    ]),
+    // Plugin for .d.ts files
+    viteTsConfigPaths({
+      root: '../../',
+    }),
+  ],
   optimizeDeps: {
     esbuildOptions: {
       minify: true,
@@ -25,6 +39,7 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: 'build',
     reportCompressedSize: true,
     chunkSizeWarningLimit: 300,
     ssr: false,
@@ -46,10 +61,10 @@ export default defineConfig({
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
       output: {
-        dir: 'build',
         extend: true,
         externalImportAssertions: true,
       },
     },
+    emptyOutDir: false,
   },
 });

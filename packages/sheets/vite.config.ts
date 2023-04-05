@@ -1,7 +1,8 @@
 /// <reference types="vitest" />
-import path from 'path';
+import path, { join } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   test: {
@@ -12,9 +13,14 @@ export default defineConfig({
   plugins: [
     // Plugin for .d.ts files
     dts({
-      entryRoot: path.resolve(__dirname, 'src'),
+      entryRoot: 'src',
+      tsConfigFilePath: join(__dirname, 'tsconfig.lib.json'),
       outputDir: 'build',
-      insertTypesEntry: true,
+      skipDiagnostics: true,
+    }),
+
+    viteTsConfigPaths({
+      root: '../../',
     }),
   ],
   build: {
