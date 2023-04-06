@@ -4,8 +4,7 @@ import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheet
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
-
-// import { useRenderCounter } from './useRenderCounter';
+import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
@@ -13,12 +12,11 @@ function useBuildStyledComponent<T, P extends keyof T>(
   ref: ForwardedRef<unknown>,
   styleClassProps?: P[],
 ) {
-  // useRenderCounter();
+  useRenderCounter();
   const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
 
   const {
     componentID,
-    styledProps,
     composedStyles,
     hasGroupInteractions,
     hasPointerInteractions,
@@ -52,14 +50,14 @@ function useBuildStyledComponent<T, P extends keyof T>(
       ? props.groupID ?? props.parentID ?? ''
       : currentComponentGroupID,
   );
+  console.log('PROPS: ', props);
 
   // @ts-expect-error
   const transformedComponent: ReactNode = createElement(Component, {
     ...props,
     ...componentInteractionHandlers,
     ...focusHandlers,
-    ...styledProps,
-    style: [props.style ?? {}, composedStyles],
+    style: [props.style, composedStyles],
     children: componentChilds,
     ref,
   } as unknown as T);

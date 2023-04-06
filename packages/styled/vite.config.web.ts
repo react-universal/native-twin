@@ -31,12 +31,22 @@ export default defineConfig({
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
-      external: ['react', '@universal-labs/stylesheets'],
+      external: [
+        'react',
+        'react/jsx-runtime',
+        'react-native',
+        'react-native-web',
+        '@universal-labs/stylesheets',
+        'use-sync-external-store/shim',
+        'use-sync-external-store',
+      ],
       treeshake: true,
       output: {
         extend: true,
         globals: {
           react: 'React',
+          'use-sync-external-store/shim': 'UseSyncExternalStoreShim',
+          'use-sync-external-store': 'UseSyncExternalStoreLegacy',
         },
         externalImportAssertions: true,
       },

@@ -55,7 +55,8 @@ const registerGroupInStore = function (
     groupID: string;
   },
 ) {
-  if (!Reflect.has(componentGroupsStore, groupID)) {
+  if (!Reflect.has(componentGroupsStore, groupID) && groupID !== '') {
+    console.log('groupID: ', groupID);
     Reflect.set(componentGroupsStore, groupID, {
       groupID: meta.groupID,
       interactionsState: {

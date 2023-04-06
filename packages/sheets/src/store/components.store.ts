@@ -104,13 +104,18 @@ function setInteractionState(
 ) {
   const component = componentsStore[id];
   if (typeof component?.groupID === 'string') {
-    componentGroupsStore[component.groupID] = {
-      ...componentGroupsStore[component.groupID]!,
-      interactionsState: {
-        ...componentGroupsStore[component.groupID]!.interactionsState,
-        [interaction]: value,
-      },
-    };
+    if (
+      Reflect.has(componentGroupsStore, component.groupID) &&
+      component.groupID !== 'non-group'
+    ) {
+      componentGroupsStore[component.groupID] = {
+        ...componentGroupsStore[component.groupID]!,
+        interactionsState: {
+          ...componentGroupsStore[component.groupID]!.interactionsState,
+          [interaction]: value,
+        },
+      };
+    }
   }
 
   componentsStore[id] = {
@@ -180,7 +185,7 @@ function composeComponentStyledProps(
   ) {
     payload.push(...groupHoverStyles);
   }
-  return StyleSheet.flatten([...componentStyles, ...payload]);
+  return StyleSheet.compose(componentStyles, payload);
 }
 
 export {

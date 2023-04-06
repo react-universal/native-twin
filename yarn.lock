@@ -2037,7 +2037,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-react@npm:^7.18.6":
+"@babel/preset-react@npm:7.18.6, @babel/preset-react@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/preset-react@npm:7.18.6"
   dependencies:
@@ -7087,6 +7087,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@welldone-software/why-did-you-render@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@welldone-software/why-did-you-render@npm:7.0.1"
+  dependencies:
+    lodash: ^4
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+  checksum: 0bfc59f1f8613e7dc5fbf189305e88b01c50ee278df2c9b69082ed6abcf8d71758eb468d027235916c6126934a755d6547e9704883007236544763fffad6f48c
+  languageName: node
+  linkType: hard
+
 "@xmldom/xmldom@npm:~0.7.7":
   version: 0.7.9
   resolution: "@xmldom/xmldom@npm:0.7.9"
@@ -11694,6 +11705,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.12.9
     "@babel/preset-env": ^7.1.6
+    "@babel/preset-react": 7.18.6
     "@react-navigation/drawer": ^6.6.0
     "@react-navigation/native": ^6.1.4
     "@react-navigation/native-stack": ^6.9.10
@@ -15536,7 +15548,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.17.21, lodash@npm:^4.17.13, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:~4.17.15":
+"lodash@npm:4.17.21, lodash@npm:^4, lodash@npm:^4.17.13, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:~4.17.15":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -22818,6 +22830,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.36.1
     "@vitejs/plugin-react-swc": ^3.2.0
     "@vitest/ui": ^0.28.3
+    "@welldone-software/why-did-you-render": ^7.0.1
     concurrently: ^7.6.0
     eslint: ~8.15.0
     eslint-config-prettier: 8.1.0

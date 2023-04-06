@@ -42,6 +42,8 @@ export default defineConfig({
         'react/jsx-runtime',
         '@universal-labs/stylesheets',
         'tailwind-merge',
+        'use-sync-external-store/shim',
+        'use-sync-external-store',
       ],
       treeshake: true,
       output: {
@@ -54,6 +56,8 @@ export default defineConfig({
           'react-native-web': 'ReactNativeWeb',
           '@universal-labs/stylesheets': 'UniversalLabsStylesheets',
           'tailwind-merge': 'tailwindMerge',
+          'use-sync-external-store/shim': 'UseSyncExternalStoreShim',
+          'use-sync-external-store': 'UseSyncExternalStoreLegacy',
         },
       },
     },

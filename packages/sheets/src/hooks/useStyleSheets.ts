@@ -83,6 +83,17 @@ function useComponentStyleSheets({
     [childStyles],
   );
 
+  const composedStyles = useMemo(() => {
+    return composeComponentStyledProps(
+      interactionStyles,
+      platformStyles,
+      appearanceStyles,
+      component,
+      componentGroup,
+      style,
+    );
+  }, [appearanceStyles, component, componentGroup, interactionStyles, platformStyles, style]);
+
   return {
     styledProps,
     componentID,
@@ -93,14 +104,7 @@ function useComponentStyleSheets({
     interactionStyles,
     getChildStyles,
     currentComponentGroupID: currentGroupID,
-    composedStyles: composeComponentStyledProps(
-      interactionStyles,
-      platformStyles,
-      appearanceStyles,
-      component,
-      componentGroup,
-      style,
-    ),
+    composedStyles,
   };
 }
 
