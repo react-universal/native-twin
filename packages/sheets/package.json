@@ -22,7 +22,6 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "type": "module",
   "exports": {
     ".": {
       "import": "./build/index.es.js",
