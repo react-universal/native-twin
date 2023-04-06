@@ -6,12 +6,17 @@ exports[`@universal-labs/styled > View render 1`] = `
   parentID="test"
   style={
     [
-      {},
-      {
-        "flexBasis": "0%",
-        "flexGrow": 1,
-        "flexShrink": 1,
-      },
+      undefined,
+      [
+        [
+          {
+            "flexBasis": "0%",
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+        ],
+        [],
+      ],
     ]
   }
 >
@@ -24,11 +29,18 @@ exports[`@universal-labs/styled > View render 1`] = `
     parentID="test"
     style={
       [
-        {},
-        {
-          "fontSize": 14,
-          "lineHeight": 20,
-        },
+        [
+          undefined,
+        ],
+        [
+          [
+            {
+              "fontSize": 14,
+              "lineHeight": 20,
+            },
+          ],
+          [],
+        ],
       ]
     }
   >
