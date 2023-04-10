@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.8.1
+
+### Patch Changes
+
+- [#67](https://github.com/react-universal/tailwind/pull/67) [`6c8db50`](https://github.com/react-universal/tailwind/commit/6c8db50148037d10927f9ec823f870be2c7d409d) Thanks [@chrisarts](https://github.com/chrisarts)! - child styles and boost groups behaviour
+
+- Updated dependencies [[`6c8db50`](https://github.com/react-universal/tailwind/commit/6c8db50148037d10927f9ec823f870be2c7d409d)]:
+  - @universal-labs/stylesheets@1.8.1
+
 ## 1.8.0
 
 ### Minor Changes
