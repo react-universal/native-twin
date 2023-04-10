@@ -13,7 +13,7 @@
       "runner": "@nrwl/nx-cloud",
       "options": {
         "useDaemonProcess": false,
-        "cacheableOperations": ["build", "test", "build:libs"],
+        "cacheableOperations": ["build"],
         "accessToken": "ZDQ5MzNlNjAtODM2Ny00NGE5LWIzZDEtM2VlYmZmMGE3ZjQ4fHJlYWQtd3JpdGU="
       }
     }
@@ -23,10 +23,7 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build:libs"]
-    },
-    "build:libs": {
-      "dependsOn": ["^build:libs"]
+      "dependsOn": []
     }
   },
   "namedInputs": {
