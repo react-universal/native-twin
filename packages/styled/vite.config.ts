@@ -18,14 +18,19 @@ export default defineConfig({
     // Plugin for .d.ts files
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
-      outputDir: 'build/typings',
+      outputDir: 'build',
+      insertTypesEntry: true,
     }),
   ],
+  esbuild: {
+    keepNames: true,
+  },
   build: {
+    outDir: 'build',
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsStyled',
-      fileName: (format) => `${format}/index.js`,
+      fileName: (format) => `index.${format}.js`,
       formats: ['es', 'umd'],
     },
     rollupOptions: {
@@ -37,12 +42,13 @@ export default defineConfig({
         'react/jsx-runtime',
         '@universal-labs/stylesheets',
         'tailwind-merge',
+        'use-sync-external-store/shim',
+        'use-sync-external-store',
       ],
       treeshake: true,
       output: {
         extend: true,
         externalImportAssertions: true,
-        dir: 'build',
         globals: {
           react: 'React',
           'react/jsx-runtime': 'ReactJSXRuntime',
@@ -50,9 +56,12 @@ export default defineConfig({
           'react-native-web': 'ReactNativeWeb',
           '@universal-labs/stylesheets': 'UniversalLabsStylesheets',
           'tailwind-merge': 'tailwindMerge',
+          'use-sync-external-store/shim': 'UseSyncExternalStoreShim',
+          'use-sync-external-store': 'UseSyncExternalStoreLegacy',
         },
       },
     },
+    sourcemap: true,
     emptyOutDir: false,
   },
 });

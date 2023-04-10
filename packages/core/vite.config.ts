@@ -51,5 +51,6 @@ export default defineConfig({
         externalImportAssertions: true,
       },
     },
+    emptyOutDir: false,
   },
 });

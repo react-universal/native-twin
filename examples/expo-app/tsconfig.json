@@ -1,9 +1,22 @@
 {
-  "extends": "expo/tsconfig.base",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "strict": true,
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ESNext"],
     "allowJs": true,
-    "checkJs": false,
-    "esModuleInterop": true
-  }
+    "resolveJsonModule": true,
+    "noEmit": true
+  },
+  "references": [],
+  "exclude": [
+    "node_modules",
+    ".expo",
+    "android",
+    "ios",
+    ".turbo",
+    "babel.config.js",
+    "app.config.js",
+    "metro.config.js"
+  ],
+  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json"]
 }

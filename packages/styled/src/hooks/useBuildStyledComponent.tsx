@@ -18,13 +18,14 @@ function useBuildStyledComponent<T, P extends keyof T>(
 
   const {
     componentID,
-    styledProps,
     composedStyles,
     hasGroupInteractions,
     hasPointerInteractions,
     isGroupParent,
+    currentComponentGroupID,
     getChildStyles,
   } = useComponentStyleSheets({
+    groupID: props.groupID,
     className,
     classPropsTuple,
     inlineStyles: props.style,
@@ -42,21 +43,26 @@ function useBuildStyledComponent<T, P extends keyof T>(
     id: componentID,
   });
 
-  const componentChilds = useChildren(props.children, componentID, getChildStyles);
+  const componentChilds = useChildren(
+    props.children,
+    componentID,
+    getChildStyles,
+    currentComponentGroupID === 'non-group'
+      ? props.groupID ?? props.parentID ?? ''
+      : currentComponentGroupID,
+  );
 
   // @ts-expect-error
-  const transformedComponent = createElement(Component, {
+  const transformedComponent: ReactNode = createElement(Component, {
     ...props,
     ...componentInteractionHandlers,
     ...focusHandlers,
-    ...styledProps,
-    style: [composedStyles, props.style ?? {}],
+    style: [props.style, composedStyles],
     children: componentChilds,
     ref,
   } as unknown as T);
-  const returnValue: ReactNode = transformedComponent;
 
-  return returnValue;
+  return transformedComponent;
 }
 
 export { useBuildStyledComponent };

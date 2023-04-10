@@ -5,12 +5,14 @@ import type {
   TValidPlatformPseudoSelectors,
 } from '../constants';
 import type { IStyleType } from '../types';
+import { componentGroupsStore, IRegisterGroupStore } from './componentGroups.store';
 
 type SubscriptionsCallBack<T> = (currentState: T) => void;
 
 interface IRegisterComponentStore {
   [k: string]: {
     parentID?: string;
+    groupID: string;
     meta: {
       isFirstChild: boolean;
       isLastChild: boolean;
@@ -64,6 +66,7 @@ const registerComponentInStore = function (
   componentID: string,
   meta: {
     parentID?: string;
+    groupID?: string;
     isFirstChild: boolean;
     isLastChild: boolean;
     nthChild: number;
@@ -72,6 +75,7 @@ const registerComponentInStore = function (
   if (!Reflect.has(componentsStore, componentID)) {
     Reflect.set(componentsStore, componentID, {
       parentID: meta.parentID,
+      groupID: meta.groupID,
       meta,
       interactionsState: {
         'group-hover': false,
@@ -98,6 +102,22 @@ function setInteractionState(
   interaction: TValidInteractionPseudoSelectors,
   value: boolean,
 ) {
+  const component = componentsStore[id];
+  if (typeof component?.groupID === 'string') {
+    if (
+      Reflect.has(componentGroupsStore, component.groupID) &&
+      component.groupID !== 'non-group'
+    ) {
+      componentGroupsStore[component.groupID] = {
+        ...componentGroupsStore[component.groupID]!,
+        interactionsState: {
+          ...componentGroupsStore[component.groupID]!.interactionsState,
+          [interaction]: value,
+        },
+      };
+    }
+  }
+
   componentsStore[id] = {
     ...componentsStore[id]!,
     interactionsState: {
@@ -114,6 +134,7 @@ function composeComponentStyledProps(
   platformStyles: [TValidPlatformPseudoSelectors, IStyleType][],
   appearanceStyles: [TValidAppearancePseudoSelectors, IStyleType][],
   component: IRegisterComponentStore[string],
+  componentGroup: IRegisterGroupStore[string],
   componentStyles: IStyleType[],
 ) {
   const hoverStyles = composeStylesForPseudoClasses(interactionStyles, 'hover');
@@ -142,25 +163,29 @@ function composeComponentStyledProps(
   // 2. Interaction styles
   if (
     component.interactionsState &&
-    (component.interactionsState?.active || component.interactionsState?.hover) &&
-    activeStyles
+    (component.interactionsState?.focus ||
+      component.interactionsState?.hover ||
+      component.interactionsState?.active)
   ) {
-    payload.push(...activeStyles);
+    if (hoverStyles) {
+      payload.push(...hoverStyles);
+    }
+    if (focusStyles) {
+      payload.push(...focusStyles);
+    }
+    if (activeStyles) {
+      payload.push(...activeStyles);
+    }
   }
-  if (component.interactionsState && component.interactionsState?.focus && focusStyles) {
-    payload.push(...focusStyles);
-  }
-  if (component.interactionsState && component.interactionsState?.hover && hoverStyles) {
-    payload.push(...hoverStyles);
-  }
+  // 3. Group interaction styles
   if (
-    component.interactionsState &&
-    component.interactionsState?.['group-hover'] &&
+    componentGroup?.interactionsState &&
+    componentGroup?.interactionsState?.['group-hover'] &&
     groupHoverStyles
   ) {
     payload.push(...groupHoverStyles);
   }
-  return StyleSheet.flatten([...componentStyles, ...payload]);
+  return StyleSheet.compose(componentStyles, payload);
 }
 
 export {

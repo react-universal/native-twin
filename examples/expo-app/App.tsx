@@ -1,7 +1,7 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { H1, View } from '@universal-labs/primitives';
-import { setTailwindConfig } from '@universal-labs/stylesheets/react-native';
+import { setTailwindConfig } from '@universal-labs/stylesheets';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 // import { FlatListScreen } from './src/screens/FlatList.screen';
 import { HomeScreen } from './src/screens/Home.screen';

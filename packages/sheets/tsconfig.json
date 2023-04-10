@@ -6,7 +6,6 @@
     "declarationMap": false,
     "noImplicitAny": false,
     "emitDeclarationOnly": true,
-    "outDir": "./build",
     "jsx": "react-jsx",
     "module": "esnext",
     "moduleResolution": "node",
