@@ -5,31 +5,25 @@ import {
   InteractionPseudoSelectors,
   PlatformPseudoSelectors,
 } from '../constants';
-import {
-  getStylesForPseudoClasses,
-  parseClassNames,
-  getComponentClassNameSet,
-  stylesStore,
-} from '../store/stylesheet.store';
+import { getStylesForPseudoClasses, createStylesheetForClass } from '../store/styles.handlers';
 import type { IStyleType } from '../types';
-import { cssPropertiesResolver } from '../utils';
+import { getComponentClassNameSet, parseClassNames } from '../utils';
 
 function getStyledProps(classPropsTuple: [string, string][], className: string) {
   const classNameSet = getComponentClassNameSet(className, classPropsTuple);
   const parsedClassNames = parseClassNames(classNameSet.join(' '));
   const baseStyles = parsedClassNames.normalClassNames.map((item): IStyleType => {
-    const styles = stylesStore[item];
-    const rnStyles = cssPropertiesResolver(styles?.JSS || {});
-    return rnStyles;
+    return createStylesheetForClass(item);
   });
+
   const styledProps = classPropsTuple.reduce((acc, [key, value]) => {
-    const styles = stylesStore[value];
-    const rnStyles = cssPropertiesResolver(styles?.JSS || {});
+    const styles = createStylesheetForClass(value);
     return {
       ...acc,
-      [key]: rnStyles,
+      [key]: styles,
     };
   }, {});
+
   return Object.assign(
     {},
     { styledProps },

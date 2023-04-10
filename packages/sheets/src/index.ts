@@ -1,6 +1,6 @@
-export { setInteractionState } from './store/components.store';
+export { setInteractionState } from './store/components.handlers';
 export { useComponentStyleSheets } from './hooks/useStyleSheets';
-export { setTailwindConfig } from './store/stylesheet.store';
+export { setTailwindConfig } from './store/styles.handlers';
 export type { IStyleType, StyledProps } from './types';
 export type {
   TValidAppearancePseudoSelectors,

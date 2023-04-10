@@ -17,7 +17,7 @@ interface UseComponentInteractionsArgs {
   ): boolean;
 }
 
-interface InternalTouchable extends Touchable {
+export interface InternalTouchable extends Touchable {
   onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }

@@ -1,19 +1,16 @@
-import { ComponentType, createElement, ForwardedRef, ReactNode } from 'react';
 import type { Touchable } from 'react-native';
 import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
-
-// import { useRenderCounter } from './useRenderCounter';
+import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
-  Component: ComponentType<T>,
-  ref: ForwardedRef<unknown>,
   styleClassProps?: P[],
 ) {
-  // useRenderCounter();
+  useRenderCounter();
+  console.time('useBuildStyledComponent');
   const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
 
   const {
@@ -51,18 +48,13 @@ function useBuildStyledComponent<T, P extends keyof T>(
       ? props.groupID ?? props.parentID ?? ''
       : currentComponentGroupID,
   );
-
-  // @ts-expect-error
-  const transformedComponent: ReactNode = createElement(Component, {
-    ...props,
-    ...componentInteractionHandlers,
-    ...focusHandlers,
-    style: [props.style, composedStyles],
-    children: componentChilds,
-    ref,
-  } as unknown as T);
-
-  return transformedComponent;
+  console.timeEnd('useBuildStyledComponent');
+  return {
+    componentChilds,
+    componentInteractionHandlers,
+    focusHandlers,
+    composedStyles,
+  };
 }
 
 export { useBuildStyledComponent };

@@ -1,12 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
-import { componentGroupsStore, registerGroupInStore } from '../store/componentGroups.store';
 import {
-  componentsStore,
+  registerComponentInStore,
   composeComponentStyledProps,
   composeStylesForPseudoClasses,
-  registerComponentInStore,
-} from '../store/components.store';
+} from '../store/components.handlers';
+import { globalStore } from '../store/global.store';
 import type { IStyleType, IUseStyleSheetsInput } from '../types';
 import { createComponentID } from '../utils/createComponentID';
 import { useClassNamesToCss } from './useClassNamesToCss';
@@ -41,9 +40,9 @@ function useComponentStyleSheets({
   }, [isGroupParent, componentID, groupID]);
 
   const component = useSyncExternalStoreWithSelector(
-    componentsStore.subscribe,
-    () => componentsStore[componentID],
-    () => componentsStore[componentID],
+    globalStore.subscribe,
+    () => globalStore.getState().componentsRegistry.get(componentID),
+    () => globalStore.getState().componentsRegistry.get(componentID),
     () => {
       return registerComponentInStore(componentID, {
         groupID: currentGroupID,
@@ -54,14 +53,14 @@ function useComponentStyleSheets({
       });
     },
   );
-  const componentGroup = useSyncExternalStoreWithSelector(
-    componentGroupsStore.subscribe,
-    () => (groupID ? componentGroupsStore[currentGroupID] : {}),
-    () => (groupID ? componentGroupsStore[currentGroupID] : {}),
-    () => {
-      return registerGroupInStore(currentGroupID, { groupID: currentGroupID });
-    },
-  );
+  // const componentGroup = useSyncExternalStoreWithSelector(
+  //   componentGroupsStore.subscribe,
+  //   () => (groupID ? componentGroupsStore[currentGroupID] : {}),
+  //   () => (groupID ? componentGroupsStore[currentGroupID] : {}),
+  //   () => {
+  //     return registerGroupInStore(currentGroupID, { groupID: currentGroupID });
+  //   },
+  // );
 
   const getChildStyles = useCallback(
     (meta: { isFirstChild: boolean; isLastChild: boolean; nthChild: number }) => {
@@ -89,10 +88,9 @@ function useComponentStyleSheets({
       platformStyles,
       appearanceStyles,
       component,
-      componentGroup,
       style,
     );
-  }, [appearanceStyles, component, componentGroup, interactionStyles, platformStyles, style]);
+  }, [appearanceStyles, component, interactionStyles, platformStyles, style]);
 
   return {
     styledProps,
