@@ -29,13 +29,23 @@ export function cssPropertiesResolver(input: CssInJs) {
 export function parseClassNames(classNames = '') {
   const rawClassNames = splitClassNames(classNames);
   const normalClassNames = rawClassNames.filter((item) => !item.includes(':'));
+  return normalClassNames;
+}
+
+export function parseInteractionClassNames(classNames = '') {
+  const rawClassNames = splitClassNames(classNames);
   const interactionClassNames = rawClassNames
     .filter((item) => item.includes(':'))
-    .map((item) => item.split(':'));
-  return {
-    interactionClassNames,
-    normalClassNames,
-  };
+    .map((item): [string, string] => [item.split(':')[0]!, item.split(':')[1]!])
+    .reduce((prev, [selector, className]) => {
+      if (selector in prev) {
+        prev[selector] = `${prev[selector]} ${className}`;
+      } else {
+        prev[selector] = className;
+      }
+      return prev;
+    }, {} as { [key: string]: string });
+  return interactionClassNames;
 }
 
 export function splitClassNames(classNames = '') {

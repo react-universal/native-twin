@@ -20,7 +20,7 @@ export function styled<T, P extends keyof T>(
         {...props}
         {...componentInteractionHandlers}
         {...focusHandlers}
-        style={[props.style, composedStyles]}
+        style={[props?.style, composedStyles]}
         ref={ref}
       >
         {componentChilds}

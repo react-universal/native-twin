@@ -1,9 +1,16 @@
 import { setup } from '@universal-labs/core';
 import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
 import type { Config } from 'tailwindcss';
+import {
+  AppearancePseudoSelectors,
+  ChildPseudoSelectors,
+  InteractionPseudoSelectors,
+  PlatformPseudoSelectors,
+} from '../constants';
 import type { IStyleType } from '../types';
-import { cssPropertiesResolver, getClassesForSelectors, parseClassNames, splitClassNames } from '../utils';
+import { cssPropertiesResolver, getClassesForSelectors, parseClassNames } from '../utils';
 import { createHash } from '../utils/createHash';
+import { getComponentClassNameSet, parseInteractionClassNames } from '../utils/helpers';
 import { globalStore } from './global.store';
 
 let currentTailwindConfig: Config = {
@@ -21,64 +28,103 @@ let cssProcessor = function (className: string) {
   return setup(this.tailwindConfig).css(className);
 };
 
-function getStylesByHash(hash: number) {
-  return globalStore.getState().componentStylesRegistry.get(hash);
+function getStoredClassName(className: string) {
+  return globalStore.getState().stylesRegistry.get(className)!;
 }
 
-function processClassnames(classNames: string) {
-  const splittedClasses = parseClassNames(classNames);
-  const baseClasses = splittedClasses.normalClassNames;
-  const baseClassesHash = createHash(baseClasses.join(''));
-  const cache = getStylesByHash(baseClassesHash);
-  if (cache) {
-    return cache;
-  }
-  
+function getStyledProps(classPropsTuple: [string, string][], className: string) {
+  const baseStyles = getStylesForClassProp(className);
+  const classNameSet = getComponentClassNameSet(className, classPropsTuple);
+  const parsedClassNames = parseClassNames(classNameSet.join(' '));
+  // const baseStyles = parsedClassNames.normalClassNames.map((item): IStyleType => {
+  //   return createStylesheetForClass(item);
+  // });
+
+  const styledProps = classPropsTuple.reduce((acc, [key, value]) => {
+    const styles = getStylesForClassProp(value);
+    return {
+      ...acc,
+      [key]: styles,
+    };
+  }, {});
+
+  return Object.assign({}, { styledProps }, { style: baseStyles, parsedClassNames });
 }
 
-function createStylesheetForClass(className: string) {
-  const cache = globalStore.getState().stylesRegistry.get(className);
-  if (cache) {
-    console.log('CACHE_HIT');
-    return cache;
+function getStylesForClassProp(classNames: string) {
+  const splittedBasicClasses = parseClassNames(classNames);
+  const splittedInteractionClasses = parseInteractionClassNames(classNames);
+  const result: IStyleType[] = [];
+  let unprocessed: string[] = [];
+  const hash = createHash(classNames);
+  const classNamesCollectionCache = globalStore.getState().componentStylesRegistry.get(hash);
+  if (classNamesCollectionCache) {
+    return classNamesCollectionCache;
   }
-  const compiled = cssProcessor.call({ tailwindConfig: currentTailwindConfig }, className);
-  const styles = cssPropertiesResolver(compiled.JSS);
+  for (const currentClassName of splittedBasicClasses) {
+    const storedStyle = getStoredClassName(currentClassName);
+    if (storedStyle) {
+      result.push(storedStyle);
+      continue;
+    }
+    unprocessed.push(currentClassName);
+  }
+  if (unprocessed.length > 0) {
+    const compiled = cssProcessor.call(
+      { tailwindConfig: currentTailwindConfig },
+      unprocessed.join(' '),
+    );
+    Object.keys(compiled.JSS).forEach((key) => {
+      let cssProp = key.replace('.', '');
+      cssProp = cssProp.replace(/\\/g, '');
+      const styles = cssPropertiesResolver({
+        [cssProp]: compiled.JSS[key],
+      });
+      result.push(styles);
+      globalStore.setState((prevState) => {
+        prevState.stylesRegistry.set(cssProp, styles);
+        return prevState;
+      }, false);
+    });
+  }
   globalStore.setState((prevState) => {
-    prevState.stylesRegistry.set(className, styles);
+    prevState.componentStylesRegistry.set(hash, {
+      styles: result,
+      classNames,
+      hasGroupInteractions: classNames.includes('group-'),
+      hasPointerInteractions: Object.keys(splittedInteractionClasses).length > 0,
+      isGroupParent: splittedBasicClasses.includes('group'),
+      interactionStyles: getStylesForPseudoClasses(
+        Object.entries(splittedInteractionClasses),
+        InteractionPseudoSelectors,
+      ),
+      platformStyles: getStylesForPseudoClasses(
+        Object.entries(splittedInteractionClasses),
+        PlatformPseudoSelectors,
+      ),
+      appearanceStyles: getStylesForPseudoClasses(
+        Object.entries(splittedInteractionClasses),
+        AppearancePseudoSelectors,
+      ),
+      childStyles: getStylesForPseudoClasses(
+        Object.entries(splittedInteractionClasses),
+        ChildPseudoSelectors,
+      ),
+    });
     return prevState;
   });
-  // stylesStore[className] = StyleSheet.create({
-  //   [className]: styles,
-  // });
-  return globalStore.getState().stylesRegistry.get(className)!;
+  return globalStore.getState().componentStylesRegistry.get(hash)!;
 }
 
 function getStylesForPseudoClasses<T>(classNames: string[][], pseudoSelectors: readonly T[]) {
   let pseudoSelectorStyles: [T, IStyleType][] = [];
   const pseudoSelectorClasses = getClassesForSelectors(classNames, pseudoSelectors);
-  for (const node of pseudoSelectorClasses) {
-    const selectorType = node[0];
-    const selectorClassNames = node[1];
-    if (globalStore.getState().stylesRegistry.has(selectorClassNames)) {
-      pseudoSelectorStyles.push([
-        selectorType,
-        globalStore.getState().stylesRegistry.get(selectorClassNames)!,
-      ]);
-    } else {
-      const compiled = cssProcessor.call(
-        { tailwindConfig: currentTailwindConfig },
-        selectorClassNames,
-      );
-      globalStore.setState((prevState) => {
-        prevState.stylesRegistry.set(selectorClassNames, cssPropertiesResolver(compiled.JSS));
-        return prevState;
-      });
-      pseudoSelectorStyles.push([
-        selectorType,
-        globalStore.getState().stylesRegistry.get(selectorClassNames)!,
-      ]);
-    }
+  for (const [selectorType, selectorClassNames] of pseudoSelectorClasses) {
+    getStylesForClassProp(selectorClassNames);
+    pseudoSelectorStyles.push([
+      selectorType,
+      globalStore.getState().stylesRegistry.get(selectorClassNames)!,
+    ]);
   }
   return pseudoSelectorStyles;
 }
@@ -86,6 +132,7 @@ function getStylesForPseudoClasses<T>(classNames: string[][], pseudoSelectors: r
 export {
   getClassesForSelectors,
   getStylesForPseudoClasses,
-  createStylesheetForClass,
   setTailwindConfig,
+  getStylesForClassProp,
+  getStyledProps,
 };

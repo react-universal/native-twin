@@ -6,10 +6,12 @@ import type {
 } from '../constants';
 import type { IStyleType } from '../types';
 import { globalStore, IRegisterComponentStore } from './global.store';
+import { getStylesForClassProp } from './styles.handlers';
 
 const registerComponentInStore = function (
   componentID: string,
   meta: {
+    classNames: string;
     parentID?: string;
     groupID?: string;
     isFirstChild: boolean;
@@ -20,20 +22,30 @@ const registerComponentInStore = function (
   if (globalStore.getState().componentsRegistry.has(componentID)) {
     return globalStore.getState().componentsRegistry.get(componentID)!;
   }
+  const componentStyles = getStylesForClassProp(meta.classNames);
   globalStore.setState((prevState) => {
     prevState.componentsRegistry.set(componentID, {
+      id: componentID,
+      styleSheet: componentStyles,
       groupID: meta.groupID,
       interactionsState: {
         'group-hover': false,
+        'group-active': false,
+        'group-focus': false,
         active: false,
         focus: false,
         hover: false,
       },
-      meta,
+      meta: {
+        ...meta,
+        hasGroupInteractions: componentStyles.hasGroupInteractions,
+        isGroupParent: componentStyles.isGroupParent,
+        hasPointerInteractions: componentStyles.hasPointerInteractions,
+      },
       parentID: meta.parentID,
     });
     return prevState;
-  });
+  }, false);
   return globalStore.getState().componentsRegistry.get(componentID)!;
 };
 
@@ -41,7 +53,6 @@ function composeStylesForPseudoClasses<T extends string>(
   styleTuples: [T, IStyleType][],
   pseudoSelector: T,
 ) {
-  // console.log('stylesTuple', styleTuples);
   return styleTuples
     .filter(([selectorName]) => selectorName === pseudoSelector)
     .map(([, selectorStyles]) => selectorStyles);
@@ -60,31 +71,31 @@ function setInteractionState(
         [interaction]: value,
       },
     });
+    const currentComponent = prevState.componentsRegistry.get(id);
+    if (
+      currentComponent &&
+      interaction === 'group-hover' &&
+      currentComponent.meta.isGroupParent
+    ) {
+      [...prevState.componentsRegistry.values()]
+        .filter(
+          (item) =>
+            item.groupID !== '' &&
+            item.groupID === currentComponent.groupID &&
+            item.meta.hasGroupInteractions,
+        )
+        .forEach((item) => {
+          prevState.componentsRegistry.set(item.id, {
+            ...item,
+            interactionsState: {
+              ...prevState.componentsRegistry.get(item.id)!.interactionsState,
+              [interaction]: value,
+            },
+          });
+        });
+    }
     return prevState;
   });
-  // if (typeof component?.groupID === 'string') {
-  //   if (
-  //     Reflect.has(componentGroupsStore, component.groupID) &&
-  //     component.groupID !== 'non-group'
-  //   ) {
-  //     componentGroupsStore[component.groupID] = {
-  //       ...componentGroupsStore[component.groupID]!,
-  //       interactionsState: {
-  //         ...componentGroupsStore[component.groupID]!.interactionsState,
-  //         [interaction]: value,
-  //       },
-  //     };
-  //   }
-  // }
-
-  // componentsStore[id] = {
-  //   ...componentsStore[id]!,
-  //   interactionsState: {
-  //     ...componentsStore[id]!.interactionsState,
-  //     [interaction]: value,
-  //   },
-  // };
-  // Object.keys(componentsStore).
   return true;
 }
 
@@ -95,10 +106,6 @@ function composeComponentStyledProps(
   component: IRegisterComponentStore,
   componentStyles: IStyleType[],
 ) {
-  const hoverStyles = composeStylesForPseudoClasses(interactionStyles, 'hover');
-  const groupHoverStyles = composeStylesForPseudoClasses(interactionStyles, 'group-hover');
-  const activeStyles = composeStylesForPseudoClasses(interactionStyles, 'active');
-  const focusStyles = composeStylesForPseudoClasses(interactionStyles, 'focus');
   const payload: IStyleType[] = [];
   // Important: order matters
   // 1. Platform styles
@@ -125,24 +132,24 @@ function composeComponentStyledProps(
       component.interactionsState?.hover ||
       component.interactionsState?.active)
   ) {
-    if (hoverStyles) {
-      payload.push(...hoverStyles);
-    }
-    if (focusStyles) {
-      payload.push(...focusStyles);
-    }
-    if (activeStyles) {
-      payload.push(...activeStyles);
-    }
+    payload.push(
+      ...composeStylesForPseudoClasses(interactionStyles, 'hover'),
+      ...composeStylesForPseudoClasses(interactionStyles, 'focus'),
+      ...composeStylesForPseudoClasses(interactionStyles, 'active'),
+    );
   }
   // 3. Group interaction styles
-  // if (
-  //   componentGroup?.interactionsState &&
-  //   componentGroup?.interactionsState?.['group-hover'] &&
-  //   groupHoverStyles
-  // ) {
-  //   payload.push(...groupHoverStyles);
-  // }
+  if (
+    component.interactionsState['group-hover'] ||
+    component.interactionsState['group-focus'] ||
+    component.interactionsState['group-active']
+  ) {
+    payload.push(
+      ...composeStylesForPseudoClasses(interactionStyles, 'group-hover'),
+      ...composeStylesForPseudoClasses(interactionStyles, 'group-focus'),
+      ...composeStylesForPseudoClasses(interactionStyles, 'group-active'),
+    );
+  }
   return StyleSheet.compose(componentStyles, payload);
 }
 

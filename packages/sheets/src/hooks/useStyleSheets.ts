@@ -23,21 +23,11 @@ function useComponentStyleSheets({
   // we use useMemo to ensure that the ID is only created once
   const componentID = useMemo(() => createComponentID() as string, []);
 
-  const {
-    styledProps,
-    style,
-    hasGroupInteractions,
-    hasPointerInteractions,
-    isGroupParent,
-    interactionStyles,
-    platformStyles,
-    childStyles,
-    appearanceStyles,
-  } = useClassNamesToCss(className ?? '', classPropsTuple ?? []);
+  const { styledProps } = useClassNamesToCss(className ?? '', classPropsTuple ?? []);
 
   const currentGroupID = useMemo(() => {
-    return isGroupParent ? componentID : groupID ?? 'non-group';
-  }, [isGroupParent, componentID, groupID]);
+    return groupID ? groupID : parentID ?? 'non-group';
+  }, [parentID, groupID]);
 
   const component = useSyncExternalStoreWithSelector(
     globalStore.subscribe,
@@ -50,6 +40,7 @@ function useComponentStyleSheets({
         isFirstChild,
         isLastChild,
         nthChild,
+        classNames: className ?? '',
       });
     },
   );
@@ -66,40 +57,46 @@ function useComponentStyleSheets({
     (meta: { isFirstChild: boolean; isLastChild: boolean; nthChild: number }) => {
       const result: IStyleType[] = [];
       if (meta.isFirstChild) {
-        result.push(...composeStylesForPseudoClasses(childStyles, 'first'));
+        result.push(
+          ...composeStylesForPseudoClasses(component.styleSheet.childStyles, 'first'),
+        );
       }
       if (meta.isLastChild) {
-        result.push(...composeStylesForPseudoClasses(childStyles, 'last'));
+        result.push(
+          ...composeStylesForPseudoClasses(component.styleSheet.childStyles, 'last'),
+        );
       }
       if (meta.nthChild % 2 === 0) {
-        result.push(...composeStylesForPseudoClasses(childStyles, 'even'));
+        result.push(
+          ...composeStylesForPseudoClasses(component.styleSheet.childStyles, 'even'),
+        );
       }
       if (meta.nthChild % 2 !== 0) {
-        result.push(...composeStylesForPseudoClasses(childStyles, 'odd'));
+        result.push(...composeStylesForPseudoClasses(component.styleSheet.childStyles, 'odd'));
       }
       return result;
     },
-    [childStyles],
+    [component.styleSheet.childStyles],
   );
 
   const composedStyles = useMemo(() => {
     return composeComponentStyledProps(
-      interactionStyles,
-      platformStyles,
-      appearanceStyles,
+      component.styleSheet.interactionStyles,
+      component.styleSheet.platformStyles,
+      component.styleSheet.appearanceStyles,
       component,
-      style,
+      component.styleSheet.styles,
     );
-  }, [appearanceStyles, component, interactionStyles, platformStyles, style]);
+  }, [component]);
 
   return {
     styledProps,
     componentID,
     component,
-    hasGroupInteractions,
-    hasPointerInteractions,
-    isGroupParent,
-    interactionStyles,
+    hasGroupInteractions: component.meta.hasGroupInteractions,
+    hasPointerInteractions: component.meta.hasPointerInteractions,
+    isGroupParent: component.meta.isGroupParent,
+    interactionStyles: component.styleSheet.interactionStyles,
     getChildStyles,
     currentComponentGroupID: currentGroupID,
     composedStyles,
