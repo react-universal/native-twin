@@ -13,10 +13,21 @@ export function styled<T, P extends keyof T>(
   }
 > {
   function Styled(props: any, ref: ForwardedRef<any>) {
-    return useBuildStyledComponent(props, Component, ref, styleClassProps);
+    const { componentChilds, componentInteractionHandlers, focusHandlers, composedStyles } =
+      useBuildStyledComponent(props, styleClassProps);
+    return (
+      <Component
+        {...props}
+        {...componentInteractionHandlers}
+        {...focusHandlers}
+        style={[props?.style, composedStyles]}
+        ref={ref}
+      >
+        {componentChilds}
+      </Component>
+    );
   }
-
-  Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
+  Styled.displayName = `StyledTW.(${Component.displayName || Component.name || 'NoName'})`;
 
   return forwardRef(Styled) as any;
 }

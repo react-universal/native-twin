@@ -1,13 +1,11 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
-import { componentGroupsStore, registerGroupInStore } from '../store/componentGroups.store';
 import {
-  componentsStore,
-  composeComponentStyledProps,
-  composeStylesForPseudoClasses,
   registerComponentInStore,
-} from '../store/components.store';
-import type { IStyleType, IUseStyleSheetsInput } from '../types';
+  composeComponentStyledProps,
+} from '../store/components.handlers';
+import { globalStore } from '../store/global.store';
+import type { IUseStyleSheetsInput } from '../types';
 import { createComponentID } from '../utils/createComponentID';
 import { useClassNamesToCss } from './useClassNamesToCss';
 
@@ -24,26 +22,16 @@ function useComponentStyleSheets({
   // we use useMemo to ensure that the ID is only created once
   const componentID = useMemo(() => createComponentID() as string, []);
 
-  const {
-    styledProps,
-    style,
-    hasGroupInteractions,
-    hasPointerInteractions,
-    isGroupParent,
-    interactionStyles,
-    platformStyles,
-    childStyles,
-    appearanceStyles,
-  } = useClassNamesToCss(className ?? '', classPropsTuple ?? []);
+  const { styledProps } = useClassNamesToCss(className ?? '', classPropsTuple ?? []);
 
   const currentGroupID = useMemo(() => {
-    return isGroupParent ? componentID : groupID ?? 'non-group';
-  }, [isGroupParent, componentID, groupID]);
+    return groupID ? groupID : parentID ?? 'non-group';
+  }, [parentID, groupID]);
 
   const component = useSyncExternalStoreWithSelector(
-    componentsStore.subscribe,
-    () => componentsStore[componentID],
-    () => componentsStore[componentID],
+    globalStore.subscribe,
+    () => globalStore.getState().componentsRegistry.get(componentID),
+    () => globalStore.getState().componentsRegistry.get(componentID),
     () => {
       return registerComponentInStore(componentID, {
         groupID: currentGroupID,
@@ -51,58 +39,31 @@ function useComponentStyleSheets({
         isFirstChild,
         isLastChild,
         nthChild,
+        classNames: className ?? '',
       });
     },
   );
-  const componentGroup = useSyncExternalStoreWithSelector(
-    componentGroupsStore.subscribe,
-    () => (groupID ? componentGroupsStore[currentGroupID] : {}),
-    () => (groupID ? componentGroupsStore[currentGroupID] : {}),
-    () => {
-      return registerGroupInStore(currentGroupID, { groupID: currentGroupID });
-    },
-  );
-
-  const getChildStyles = useCallback(
-    (meta: { isFirstChild: boolean; isLastChild: boolean; nthChild: number }) => {
-      const result: IStyleType[] = [];
-      if (meta.isFirstChild) {
-        result.push(...composeStylesForPseudoClasses(childStyles, 'first'));
-      }
-      if (meta.isLastChild) {
-        result.push(...composeStylesForPseudoClasses(childStyles, 'last'));
-      }
-      if (meta.nthChild % 2 === 0) {
-        result.push(...composeStylesForPseudoClasses(childStyles, 'even'));
-      }
-      if (meta.nthChild % 2 !== 0) {
-        result.push(...composeStylesForPseudoClasses(childStyles, 'odd'));
-      }
-      return result;
-    },
-    [childStyles],
-  );
+  // const componentGroup = useSyncExternalStoreWithSelector(
+  //   componentGroupsStore.subscribe,
+  //   () => (groupID ? componentGroupsStore[currentGroupID] : {}),
+  //   () => (groupID ? componentGroupsStore[currentGroupID] : {}),
+  //   () => {
+  //     return registerGroupInStore(currentGroupID, { groupID: currentGroupID });
+  //   },
+  // );
 
   const composedStyles = useMemo(() => {
-    return composeComponentStyledProps(
-      interactionStyles,
-      platformStyles,
-      appearanceStyles,
-      component,
-      componentGroup,
-      style,
-    );
-  }, [appearanceStyles, component, componentGroup, interactionStyles, platformStyles, style]);
+    return composeComponentStyledProps(component);
+  }, [component]);
 
   return {
     styledProps,
     componentID,
     component,
-    hasGroupInteractions,
-    hasPointerInteractions,
-    isGroupParent,
-    interactionStyles,
-    getChildStyles,
+    hasGroupInteractions: component.meta.hasGroupInteractions,
+    hasPointerInteractions: component.meta.hasPointerInteractions,
+    isGroupParent: component.meta.isGroupParent,
+    interactionStyles: component.styleSheet.interactionStyles,
     currentComponentGroupID: currentGroupID,
     composedStyles,
   };

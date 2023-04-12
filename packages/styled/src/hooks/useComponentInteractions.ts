@@ -17,7 +17,7 @@ interface UseComponentInteractionsArgs {
   ): boolean;
 }
 
-interface InternalTouchable extends Touchable {
+export interface InternalTouchable extends Touchable {
   onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
@@ -43,11 +43,11 @@ const useComponentInteractions = ({
         if (ref.current.onTouchStart) {
           ref.current.onTouchStart(event);
         }
-        if (isGroupParent) {
-          setInteractionState(id, 'group-hover', true);
-        }
         if (hasPointerInteractions) {
           setInteractionState(id, 'hover', true);
+        }
+        if (isGroupParent) {
+          setInteractionState(id, 'group-hover', true);
         }
       };
       handlers.onTouchEnd = function (event) {

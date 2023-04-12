@@ -1,4 +1,11 @@
-const InteractionPseudoSelectors = ['hover', 'active', 'focus', 'group-hover'] as const;
+const InteractionPseudoSelectors = [
+  'hover',
+  'active',
+  'focus',
+  'group-hover',
+  'group-focus',
+  'group-active',
+] as const;
 
 const AppearancePseudoSelectors = ['dark'] as const;
 

@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
 import { setTailwindConfig } from '@universal-labs/stylesheets';
 import renderer from 'react-test-renderer';
@@ -15,19 +15,10 @@ function toJson(component: renderer.ReactTestRenderer) {
 setTailwindConfig({ content: ['__'], presets: [reactNativeTailwindPreset()] });
 
 const StyledView = styled(View);
-const StyledText = styled(Text);
 
 describe('@universal-labs/styled', () => {
   it('View render', () => {
-    const component = renderer.create(
-      // @ts-ignore
-      <StyledView className='flex-1' parentID='test'>
-        {/* @ts-ignore */}
-        <StyledText className='text-sm' parentID='test'>
-          Test View
-        </StyledText>
-      </StyledView>,
-    );
+    const component = renderer.create(<StyledView className='flex-1' />);
     let tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });

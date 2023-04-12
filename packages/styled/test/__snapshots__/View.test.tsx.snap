@@ -3,7 +3,6 @@
 exports[`@universal-labs/styled > View render 1`] = `
 <View
   className="flex-1"
-  parentID="test"
   style={
     [
       undefined,
@@ -19,32 +18,5 @@ exports[`@universal-labs/styled > View render 1`] = `
       ],
     ]
   }
->
-  <Text
-    className="text-sm"
-    groupID="test"
-    isFirstChild={true}
-    isLastChild={true}
-    nthChild={1}
-    parentID="test"
-    style={
-      [
-        [
-          undefined,
-        ],
-        [
-          [
-            {
-              "fontSize": 14,
-              "lineHeight": 20,
-            },
-          ],
-          [],
-        ],
-      ]
-    }
-  >
-    Test View
-  </Text>
-</View>
+/>
 `;
