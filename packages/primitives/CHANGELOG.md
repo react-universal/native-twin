@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.9.0
+
+### Minor Changes
+
+- [`82f9338`](https://github.com/react-universal/tailwind/commit/82f9338e74c64e839757432fad335f989328df7f) Thanks [@chrisarts](https://github.com/chrisarts)! - fix global state behaviour
+
 ## 1.8.1
 
 ### Patch Changes
