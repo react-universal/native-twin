@@ -74,17 +74,14 @@ function getStylesForClassProp(classNames?: string) {
   if (classNamesCollectionCache) {
     return classNamesCollectionCache;
   }
-  console.group('Processor', classNames);
   for (const currentClassName of splittedBasicClasses) {
     const storedStyle = getStoredClassName(currentClassName);
     if (storedStyle) {
-      console.log('PROCESSED: ', currentClassName);
       result.push(storedStyle);
       continue;
     }
     unprocessed.push(currentClassName);
   }
-  console.log('UNPROCESSED: ', unprocessed.join(' '));
 
   if (unprocessed.length > 0) {
     const compiled = cssProcessor.call(
@@ -104,7 +101,6 @@ function getStylesForClassProp(classNames?: string) {
       }, false);
     });
   }
-  console.groupEnd();
   const childStyles = getStylesForPseudoClasses(
     Object.entries(splittedInteractionClasses),
     ChildPseudoSelectors,
