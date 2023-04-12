@@ -37,7 +37,6 @@ export interface IRegisterComponentStore {
   parentID?: string;
   groupID?: string;
   id: string;
-  styleSheet: IComponentsStyleSheets;
   meta: {
     isFirstChild: boolean;
     isLastChild: boolean;
@@ -46,6 +45,7 @@ export interface IRegisterComponentStore {
     isGroupParent: boolean;
     hasPointerInteractions: boolean;
   };
+  styleSheet: IComponentsStyleSheets;
   interactionsState: Record<TValidInteractionPseudoSelectors, boolean>;
 }
 type TComponentsRegistry = Map<string, IRegisterComponentStore>;
@@ -54,15 +54,18 @@ export type IComponentsStyleSheets = {
   styledProps?: {
     [key: string]: IStyleType;
   };
-  classNames: string;
+  classNames?: string;
   styles: IStyleType[];
-  hasGroupInteractions: boolean;
-  hasPointerInteractions: boolean;
-  isGroupParent: boolean;
+  classNamesSet: string[];
   interactionStyles: [TValidInteractionPseudoSelectors, IStyleType][];
   platformStyles: [TValidPlatformPseudoSelectors, IStyleType][];
   appearanceStyles: [TValidAppearancePseudoSelectors, IStyleType][];
   childStyles: [TValidChildPseudoSelectors, IStyleType][];
+  getChildStyles(input: {
+    isFirstChild: boolean;
+    isLastChild: boolean;
+    nthChild: number;
+  }): IStyleType[];
   // focus: IStyleType;
   // hover: IStyleType;
   // active: IStyleType;

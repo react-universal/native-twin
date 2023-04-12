@@ -2,7 +2,7 @@ import { H1, H2, TextInput, View } from '@universal-labs/primitives';
 
 function HomeScreen() {
   return (
-    <View className=' flex-1'>
+    <View className='flex-1'>
       <View className='web:padding-2 flex-1 items-center justify-center bg-pink-700 bg-gray-700 align-top hover:bg-green-300'>
         <H1 className='font-inter-bold text-2xl text-gray-200 hover:text-gray-700'>H1 - 1</H1>
       </View>

@@ -3,12 +3,14 @@ import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheet
 import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
+import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
   styleClassProps?: P[],
 ) {
-  // console.time(`useBuildStyledComponent: ${props.className}`);
+  useRenderCounter();
+  console.time(`useBuildStyledComponent: ${props.className}`);
   const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
 
   const {
@@ -17,8 +19,8 @@ function useBuildStyledComponent<T, P extends keyof T>(
     hasGroupInteractions,
     hasPointerInteractions,
     isGroupParent,
+    component,
     currentComponentGroupID,
-    getChildStyles,
   } = useComponentStyleSheets({
     groupID: props.groupID,
     className,
@@ -41,12 +43,12 @@ function useBuildStyledComponent<T, P extends keyof T>(
   const componentChilds = useChildren(
     props.children,
     componentID,
-    getChildStyles,
+    component.styleSheet.getChildStyles,
     currentComponentGroupID === 'non-group'
       ? props.groupID ?? props.parentID ?? ''
       : currentComponentGroupID,
   );
-  // console.timeEnd(`useBuildStyledComponent: ${props.className}`);
+  console.timeEnd(`useBuildStyledComponent: ${props.className}`);
   return {
     componentChilds,
     componentInteractionHandlers,

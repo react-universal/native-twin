@@ -1,9 +1,5 @@
 import { Appearance, Platform, StyleSheet } from 'react-native';
-import type {
-  TValidAppearancePseudoSelectors,
-  TValidInteractionPseudoSelectors,
-  TValidPlatformPseudoSelectors,
-} from '../constants';
+import type { TValidInteractionPseudoSelectors } from '../constants';
 import type { IStyleType } from '../types';
 import { globalStore, IRegisterComponentStore } from './global.store';
 import { getStylesForClassProp } from './styles.handlers';
@@ -11,7 +7,7 @@ import { getStylesForClassProp } from './styles.handlers';
 const registerComponentInStore = function (
   componentID: string,
   meta: {
-    classNames: string;
+    classNames?: string;
     parentID?: string;
     groupID?: string;
     isFirstChild: boolean;
@@ -26,6 +22,14 @@ const registerComponentInStore = function (
   globalStore.setState((prevState) => {
     prevState.componentsRegistry.set(componentID, {
       id: componentID,
+      meta: {
+        ...meta,
+        hasGroupInteractions: componentStyles.classNamesSet.some((item) =>
+          item.startsWith('group-'),
+        ),
+        isGroupParent: componentStyles.classNamesSet.includes('group'),
+        hasPointerInteractions: componentStyles.interactionStyles.length > 0,
+      },
       styleSheet: componentStyles,
       groupID: meta.groupID,
       interactionsState: {
@@ -35,12 +39,6 @@ const registerComponentInStore = function (
         active: false,
         focus: false,
         hover: false,
-      },
-      meta: {
-        ...meta,
-        hasGroupInteractions: componentStyles.hasGroupInteractions,
-        isGroupParent: componentStyles.isGroupParent,
-        hasPointerInteractions: componentStyles.hasPointerInteractions,
       },
       parentID: meta.parentID,
     });
@@ -99,31 +97,31 @@ function setInteractionState(
   return true;
 }
 
-function composeComponentStyledProps(
-  interactionStyles: [TValidInteractionPseudoSelectors, IStyleType][],
-  platformStyles: [TValidPlatformPseudoSelectors, IStyleType][],
-  appearanceStyles: [TValidAppearancePseudoSelectors, IStyleType][],
-  component: IRegisterComponentStore,
-  componentStyles: IStyleType[],
-) {
+function composeComponentStyledProps(component: IRegisterComponentStore) {
   const payload: IStyleType[] = [];
   // Important: order matters
   // 1. Platform styles
   if (Platform.OS !== 'web') {
-    payload.push(...composeStylesForPseudoClasses(platformStyles, 'native'));
+    payload.push(
+      ...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'native'),
+    );
   }
   if (Platform.OS === 'ios') {
-    payload.push(...composeStylesForPseudoClasses(platformStyles, 'ios'));
+    payload.push(...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'ios'));
   }
   if (Platform.OS === 'android') {
-    payload.push(...composeStylesForPseudoClasses(platformStyles, 'android'));
+    payload.push(
+      ...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'android'),
+    );
   }
   if (Platform.OS === 'web') {
-    payload.push(...composeStylesForPseudoClasses(platformStyles, 'web'));
+    payload.push(...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'web'));
   }
   // 2. Appearance styles
   if (Appearance.getColorScheme() === 'dark') {
-    payload.push(...composeStylesForPseudoClasses(appearanceStyles, 'dark'));
+    payload.push(
+      ...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'dark'),
+    );
   }
   // 2. Interaction styles
   if (
@@ -133,9 +131,12 @@ function composeComponentStyledProps(
       component.interactionsState?.active)
   ) {
     payload.push(
-      ...composeStylesForPseudoClasses(interactionStyles, 'hover'),
-      ...composeStylesForPseudoClasses(interactionStyles, 'focus'),
-      ...composeStylesForPseudoClasses(interactionStyles, 'active'),
+      ...component.styleSheet.interactionStyles.reduce((prev, current) => {
+        if (current[0] === 'focus' || current[0] === 'hover' || current[0] === 'active') {
+          prev.push(current[1]);
+        }
+        return prev;
+      }, [] as IStyleType[]),
     );
   }
   // 3. Group interaction styles
@@ -145,12 +146,19 @@ function composeComponentStyledProps(
     component.interactionsState['group-active']
   ) {
     payload.push(
-      ...composeStylesForPseudoClasses(interactionStyles, 'group-hover'),
-      ...composeStylesForPseudoClasses(interactionStyles, 'group-focus'),
-      ...composeStylesForPseudoClasses(interactionStyles, 'group-active'),
+      ...component.styleSheet.interactionStyles.reduce((prev, current) => {
+        if (
+          current[0] === 'group-focus' ||
+          current[0] === 'group-hover' ||
+          current[0] === 'group-active'
+        ) {
+          prev.push(current[1]);
+        }
+        return prev;
+      }, [] as IStyleType[]),
     );
   }
-  return StyleSheet.compose(componentStyles, payload);
+  return StyleSheet.compose(component.styleSheet.styles, payload);
 }
 
 export {

@@ -10,7 +10,11 @@ import {
 import type { IStyleType } from '../types';
 import { cssPropertiesResolver, getClassesForSelectors, parseClassNames } from '../utils';
 import { createHash } from '../utils/createHash';
-import { getComponentClassNameSet, parseInteractionClassNames } from '../utils/helpers';
+import {
+  getComponentClassNameSet,
+  parseInteractionClassNames,
+  splitClassNames,
+} from '../utils/helpers';
 import { globalStore } from './global.store';
 
 let currentTailwindConfig: Config = {
@@ -51,24 +55,37 @@ function getStyledProps(classPropsTuple: [string, string][], className: string) 
   return Object.assign({}, { styledProps }, { style: baseStyles, parsedClassNames });
 }
 
-function getStylesForClassProp(classNames: string) {
+function composeStylesForPseudoClasses<T extends string>(
+  styleTuples: [T, IStyleType][],
+  pseudoSelector: T,
+) {
+  return styleTuples
+    .filter(([selectorName]) => selectorName === pseudoSelector)
+    .map(([, selectorStyles]) => selectorStyles);
+}
+
+function getStylesForClassProp(classNames?: string) {
   const splittedBasicClasses = parseClassNames(classNames);
   const splittedInteractionClasses = parseInteractionClassNames(classNames);
   const result: IStyleType[] = [];
   let unprocessed: string[] = [];
-  const hash = createHash(classNames);
+  const hash = createHash(classNames ?? 'non-classes');
   const classNamesCollectionCache = globalStore.getState().componentStylesRegistry.get(hash);
   if (classNamesCollectionCache) {
     return classNamesCollectionCache;
   }
+  console.group('Processor', classNames);
   for (const currentClassName of splittedBasicClasses) {
     const storedStyle = getStoredClassName(currentClassName);
     if (storedStyle) {
+      console.log('PROCESSED: ', currentClassName);
       result.push(storedStyle);
       continue;
     }
     unprocessed.push(currentClassName);
   }
+  console.log('UNPROCESSED: ', unprocessed.join(' '));
+
   if (unprocessed.length > 0) {
     const compiled = cssProcessor.call(
       { tailwindConfig: currentTailwindConfig },
@@ -87,17 +104,19 @@ function getStylesForClassProp(classNames: string) {
       }, false);
     });
   }
+  console.groupEnd();
+  const childStyles = getStylesForPseudoClasses(
+    Object.entries(splittedInteractionClasses),
+    ChildPseudoSelectors,
+  );
   globalStore.setState((prevState) => {
     prevState.componentStylesRegistry.set(hash, {
       styles: result,
-      classNames,
-      hasGroupInteractions: classNames.includes('group-'),
-      hasPointerInteractions: Object.keys(splittedInteractionClasses).length > 0,
-      isGroupParent: splittedBasicClasses.includes('group'),
       interactionStyles: getStylesForPseudoClasses(
         Object.entries(splittedInteractionClasses),
         InteractionPseudoSelectors,
       ),
+      classNamesSet: splitClassNames(classNames),
       platformStyles: getStylesForPseudoClasses(
         Object.entries(splittedInteractionClasses),
         PlatformPseudoSelectors,
@@ -106,10 +125,23 @@ function getStylesForClassProp(classNames: string) {
         Object.entries(splittedInteractionClasses),
         AppearancePseudoSelectors,
       ),
-      childStyles: getStylesForPseudoClasses(
-        Object.entries(splittedInteractionClasses),
-        ChildPseudoSelectors,
-      ),
+      childStyles,
+      getChildStyles: (meta) => {
+        const result: IStyleType[] = [];
+        if (meta.isFirstChild) {
+          result.push(...composeStylesForPseudoClasses(childStyles, 'first'));
+        }
+        if (meta.isLastChild) {
+          result.push(...composeStylesForPseudoClasses(childStyles, 'last'));
+        }
+        if (meta.nthChild % 2 === 0) {
+          result.push(...composeStylesForPseudoClasses(childStyles, 'even'));
+        }
+        if (meta.nthChild % 2 !== 0) {
+          result.push(...composeStylesForPseudoClasses(childStyles, 'odd'));
+        }
+        return result;
+      },
     });
     return prevState;
   });
