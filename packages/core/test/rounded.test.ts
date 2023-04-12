@@ -6,8 +6,8 @@ const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
 
 describe('TailwindCSS rounded', () => {
   it('Shadow', () => {
-    const css = tw.css('rounded-xl');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('rounded-xl');
+    expect(css).toStrictEqual({
       '.rounded-xl': {
         borderRadius: '12px',
       },

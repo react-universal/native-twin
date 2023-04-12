@@ -10,12 +10,8 @@ import {
 import type { IStyleType } from '../types';
 import { cssPropertiesResolver, getClassesForSelectors, parseClassNames } from '../utils';
 import { createHash } from '../utils/createHash';
-import {
-  getComponentClassNameSet,
-  parseInteractionClassNames,
-  splitClassNames,
-} from '../utils/helpers';
-import { globalStore } from './global.store';
+import { parseInteractionClassNames, splitClassNames } from '../utils/helpers';
+import { globalStore, IComponentsStyleSheets } from './global.store';
 
 let currentTailwindConfig: Config = {
   content: ['__'],
@@ -23,36 +19,27 @@ let currentTailwindConfig: Config = {
   presets: [reactNativeTailwindPreset({ baseRem: 16 })],
 };
 
+let cssProcessor = setup(currentTailwindConfig);
+
 function setTailwindConfig(config: Config) {
   currentTailwindConfig = config;
+  cssProcessor = setup(config);
 }
-
-let cssProcessor = function (className: string) {
-  // @ts-expect-error
-  return setup(this.tailwindConfig).css(className);
-};
 
 function getStoredClassName(className: string) {
   return globalStore.getState().stylesRegistry.get(className)!;
 }
 
-function getStyledProps(classPropsTuple: [string, string][], className: string) {
-  const baseStyles = getStylesForClassProp(className);
-  const classNameSet = getComponentClassNameSet(className, classPropsTuple);
-  const parsedClassNames = parseClassNames(classNameSet.join(' '));
-  // const baseStyles = parsedClassNames.normalClassNames.map((item): IStyleType => {
-  //   return createStylesheetForClass(item);
-  // });
-
+function getStyledProps(classPropsTuple: [string, string][]) {
   const styledProps = classPropsTuple.reduce((acc, [key, value]) => {
     const styles = getStylesForClassProp(value);
     return {
       ...acc,
       [key]: styles,
     };
-  }, {});
+  }, {} as { [key: string]: IComponentsStyleSheets });
 
-  return Object.assign({}, { styledProps }, { style: baseStyles, parsedClassNames });
+  return styledProps;
 }
 
 function composeStylesForPseudoClasses<T extends string>(
@@ -84,15 +71,12 @@ function getStylesForClassProp(classNames?: string) {
   }
 
   if (unprocessed.length > 0) {
-    const compiled = cssProcessor.call(
-      { tailwindConfig: currentTailwindConfig },
-      unprocessed.join(' '),
-    );
-    Object.keys(compiled.JSS).forEach((key) => {
+    const compiled = cssProcessor(unprocessed.join(' '));
+    Object.keys(compiled).forEach((key) => {
       let cssProp = key.replace('.', '');
       cssProp = cssProp.replace(/\\/g, '');
       const styles = cssPropertiesResolver({
-        [cssProp]: compiled.JSS[key],
+        [cssProp]: compiled[key],
       });
       result.push(styles);
       globalStore.setState((prevState) => {

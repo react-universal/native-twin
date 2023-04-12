@@ -6,8 +6,8 @@ const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
 
 describe('TailwindCSS platform variants (web)', () => {
   it('Shadow', () => {
-    const css = tw.css('web:rounded-xl ios:rounded-sm');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('web:rounded-xl ios:rounded-sm');
+    expect(css).toStrictEqual({
       '@media ios': {
         '.ios\\:rounded-sm': {
           borderRadius: '2px',

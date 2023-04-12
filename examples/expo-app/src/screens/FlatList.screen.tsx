@@ -32,7 +32,7 @@ const FlatListScreen = () => {
           contentContainerStyle='bg-gray-600 hover:bg-white'
           renderItem={({ item }) => {
             return (
-              <View>
+              <View className='hover:bg-pink-500'>
                 <Span>{item.label}</Span>
               </View>
             );

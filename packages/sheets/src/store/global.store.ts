@@ -37,6 +37,9 @@ export interface IRegisterComponentStore {
   parentID?: string;
   groupID?: string;
   id: string;
+  styledProps?: {
+    [key: string]: IComponentsStyleSheets;
+  };
   meta: {
     isFirstChild: boolean;
     isLastChild: boolean;
@@ -51,9 +54,6 @@ export interface IRegisterComponentStore {
 type TComponentsRegistry = Map<string, IRegisterComponentStore>;
 
 export type IComponentsStyleSheets = {
-  styledProps?: {
-    [key: string]: IStyleType;
-  };
   classNames?: string;
   styles: IStyleType[];
   classNamesSet: string[];

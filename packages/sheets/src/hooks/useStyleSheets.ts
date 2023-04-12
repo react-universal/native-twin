@@ -22,7 +22,7 @@ function useComponentStyleSheets({
   // we use useMemo to ensure that the ID is only created once
   const componentID = useMemo(() => createComponentID() as string, []);
 
-  const { styledProps } = useClassNamesToCss(className ?? '', classPropsTuple ?? []);
+  const styledProps = useClassNamesToCss(classPropsTuple ?? []);
 
   const currentGroupID = useMemo(() => {
     return groupID ? groupID : parentID ?? 'non-group';
@@ -33,7 +33,7 @@ function useComponentStyleSheets({
     () => globalStore.getState().componentsRegistry.get(componentID),
     () => globalStore.getState().componentsRegistry.get(componentID),
     () => {
-      return registerComponentInStore(componentID, {
+      return registerComponentInStore(componentID, styledProps, {
         groupID: currentGroupID,
         parentID,
         isFirstChild,
@@ -53,11 +53,30 @@ function useComponentStyleSheets({
   // );
 
   const composedStyles = useMemo(() => {
-    return composeComponentStyledProps(component);
+    return composeComponentStyledProps({
+      interactionsState: component.interactionsState,
+      interactionStyles: component.styleSheet.interactionStyles,
+      platformStyles: component.styleSheet.platformStyles,
+      appearanceStyles: component.styleSheet.appearanceStyles,
+      baseStyles: component.styleSheet.styles,
+    });
+  }, [component]);
+
+  const composedStyledProps = useMemo(() => {
+    return Object.keys(component.styledProps ?? {}).reduce((prev, current) => {
+      const currentNode = component.styledProps![current]!;
+      prev[current] = composeComponentStyledProps({
+        appearanceStyles: currentNode.appearanceStyles,
+        interactionStyles: currentNode.interactionStyles,
+        platformStyles: currentNode.platformStyles,
+        interactionsState: component.interactionsState,
+        baseStyles: currentNode.styles,
+      });
+      return prev;
+    }, {} as { [key: string]: ReturnType<typeof composeComponentStyledProps> });
   }, [component]);
 
   return {
-    styledProps,
     componentID,
     component,
     hasGroupInteractions: component.meta.hasGroupInteractions,
@@ -65,6 +84,7 @@ function useComponentStyleSheets({
     isGroupParent: component.meta.isGroupParent,
     interactionStyles: component.styleSheet.interactionStyles,
     currentComponentGroupID: currentGroupID,
+    composedStyledProps,
     composedStyles,
   };
 }

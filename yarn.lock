@@ -6777,6 +6777,7 @@ __metadata:
     react: 18.2.0
     react-is: ^18.2.0
     react-native: ^0.71.6
+    stable-hash: 0.0.3
     tailwind-merge: ^1.10.0
     vite-plugin-multiple: 0.2.0
     vitest-react-native: 0.0.5
@@ -21216,6 +21217,13 @@ __metadata:
   dependencies:
     minipass: ^3.1.1
   checksum: fb58f5e46b6923ae67b87ad5ef1c5ab6d427a17db0bead84570c2df3cd50b4ceb880ebdba2d60726588272890bae842a744e1ecce5bd2a2a582fccd5068309eb
+  languageName: node
+  linkType: hard
+
+"stable-hash@npm:0.0.3":
+  version: 0.0.3
+  resolution: "stable-hash@npm:0.0.3"
+  checksum: b75958329f90cc5c74f6d9492930682e5bae623eb31bf05d0f98cd9594964d1445e0becc31f4129c61ebf5195a361e46bf232883d04325bb734619dede099fdd
   languageName: node
   linkType: hard
 

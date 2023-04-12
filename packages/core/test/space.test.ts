@@ -6,27 +6,27 @@ const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
 
 describe('TailwindCSS Space', () => {
   it('Margin', () => {
-    const css = tw.css('m-2');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('m-2');
+    expect(css).toStrictEqual({
       '.m-2': {
         margin: '8px',
       },
     });
   });
   it('Margin Top', () => {
-    const css = tw.css('mt-2');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('mt-2');
+    expect(css).toStrictEqual({
       '.mt-2': {
         marginTop: '8px',
       },
     });
   });
   it('Space X', () => {
-    const css = tw.css('space-y-2');
-    expect(css.JSS).toStrictEqual({});
+    const css = tw('space-y-2');
+    expect(css).toStrictEqual({});
   });
   it('Divide X', () => {
-    const css = tw.css('divide-x-2');
-    expect(css.JSS).toStrictEqual({});
+    const css = tw('divide-x-2');
+    expect(css).toStrictEqual({});
   });
 });

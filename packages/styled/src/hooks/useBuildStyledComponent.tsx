@@ -4,10 +4,14 @@ import { useBuildStyleProps } from './useBuildStyleProps';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 
+// import { useRenderCounter } from './useRenderCounter';
+
 function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
   styleClassProps?: P[],
 ) {
+  // useRenderCounter();
+  // console.time('useBuildStyledComponent');
   const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
 
   const {
@@ -15,6 +19,7 @@ function useBuildStyledComponent<T, P extends keyof T>(
     composedStyles,
     hasGroupInteractions,
     hasPointerInteractions,
+    composedStyledProps,
     isGroupParent,
     component,
     currentComponentGroupID,
@@ -45,11 +50,13 @@ function useBuildStyledComponent<T, P extends keyof T>(
       ? props.groupID ?? props.parentID ?? ''
       : currentComponentGroupID,
   );
+  // console.timeEnd('useBuildStyledComponent');
   return {
     componentChilds,
     componentInteractionHandlers,
     focusHandlers,
     composedStyles,
+    composedStyledProps,
   };
 }
 

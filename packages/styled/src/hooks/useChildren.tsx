@@ -1,5 +1,5 @@
-import { Children, cloneElement, isValidElement, useMemo } from 'react';
-import type { StyleProp } from 'react-native';
+import { Children, cloneElement, isValidElement, useMemo, useRef } from 'react';
+import { StyleProp, StyleSheet } from 'react-native';
 import type { IStyleType } from '@universal-labs/stylesheets';
 
 function useChildren(
@@ -12,6 +12,7 @@ function useChildren(
   }) => IStyleType[],
   groupID?: string,
 ) {
+  const getChildStylesRef = useRef(getChildStyles);
   return useMemo(() => {
     const totalChilds = Children.count(children);
     return Children.map(children, (child, index) => {
@@ -33,10 +34,13 @@ function useChildren(
           })
         : cloneElement(child, {
             ...childProps,
-            style: [childProps?.style, ...getChildStyles(childProps)],
+            style: StyleSheet.flatten([
+              ...getChildStylesRef.current(childProps),
+              childProps?.style,
+            ]),
           });
     });
-  }, [children, componentID, groupID, getChildStyles]);
+  }, [children, componentID, groupID]);
 }
 
 export { useChildren };

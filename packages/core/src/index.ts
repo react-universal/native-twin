@@ -12,37 +12,40 @@ const setup = (config: Config) => {
       ...config.corePlugins,
       // @ts-expect-error
       preflight: false,
-      gridAutoColumns: false,
-      gridAutoFlow: false,
-      gridAutoRows: false,
-      gridColumn: false,
-      gridColumnEnd: false,
-      gridColumnStart: false,
-      gridRow: false,
-      gridRowEnd: false,
-      gridRowStart: false,
-      gridTemplateColumns: false,
-      gridTemplateRows: false,
-      willChange: false,
+      backgroundOpacity: false,
+      borderOpacity: false,
+      inset: false,
+      position: false,
+      boxShadow: false,
+      borderRadius: false,
+      boxShadowColor: false,
+      lineHeight: false,
+      divideColor: false,
+      divideOpacity: false,
+      gap: false,
+      divideStyle: false,
+      divideWidth: false,
+      fontSize: false,
+      placeholderOpacity: false,
+      ringOpacity: false,
+      rotate: false,
+      padding: false,
+      margin: false,
+      scale: false,
+      skew: false,
+      space: false,
+      textOpacity: false,
+      translate: false,
     },
     darkMode: 'media',
   });
-  return {
-    css: (twClasses: string) => {
-      const css = processTailwindCSS({
-        content: twClasses,
-        resolvedTailwindConfig,
-      });
-      const postcssRoot = postcss.parse(css);
-      const output = postcssJs.objectify(postcssRoot);
-      return {
-        css,
-        JSS: output,
-        postcssRoot,
-        twClasses,
-      };
-    },
-    tailwindConfigHandler: resolvedTailwindConfig,
+  return (twClasses: string) => {
+    const css = processTailwindCSS({
+      content: twClasses,
+      resolvedTailwindConfig,
+    });
+    const postcssRoot = postcss.parse(css);
+    return postcssJs.objectify(postcssRoot);
   };
 };
 

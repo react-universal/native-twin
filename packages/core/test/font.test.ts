@@ -19,8 +19,8 @@ const tw = setup({
 
 describe('TailwindCSS Font', () => {
   it('font-size', () => {
-    const css = tw.css('text-2xl');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('text-2xl');
+    expect(css).toStrictEqual({
       '.text-2xl': {
         fontSize: '24px',
         lineHeight: '32px',
@@ -29,8 +29,8 @@ describe('TailwindCSS Font', () => {
   });
 
   it('font-family', () => {
-    const css = tw.css('font-inter');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('font-inter');
+    expect(css).toStrictEqual({
       '.font-inter': {
         fontFamily: 'Inter-Regular',
       },
@@ -38,8 +38,8 @@ describe('TailwindCSS Font', () => {
   });
 
   it('leading', () => {
-    const css = tw.css('leading-5');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('leading-5');
+    expect(css).toStrictEqual({
       '.leading-5': {
         lineHeight: '20px',
       },

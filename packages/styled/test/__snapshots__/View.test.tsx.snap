@@ -2,21 +2,12 @@
 
 exports[`@universal-labs/styled > View render 1`] = `
 <View
-  className="flex-1"
   style={
-    [
-      undefined,
-      [
-        [
-          {
-            "flexBasis": "0%",
-            "flexGrow": 1,
-            "flexShrink": 1,
-          },
-        ],
-        [],
-      ],
-    ]
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
   }
 />
 `;

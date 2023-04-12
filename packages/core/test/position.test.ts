@@ -9,8 +9,8 @@ const tw = setup({
 
 describe('TailwindCSS Position', () => {
   it('Right', () => {
-    const css = tw.css('right-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('right-3');
+    expect(css).toStrictEqual({
       '.right-3': {
         right: '12px',
       },
@@ -18,8 +18,8 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Left', () => {
-    const css = tw.css('left-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('left-3');
+    expect(css).toStrictEqual({
       '.left-3': {
         left: '12px',
       },
@@ -27,8 +27,8 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Top', () => {
-    const css = tw.css('top-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('top-3');
+    expect(css).toStrictEqual({
       '.top-3': {
         top: '12px',
       },
@@ -36,8 +36,8 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Bottom', () => {
-    const css = tw.css('bottom-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('bottom-3');
+    expect(css).toStrictEqual({
       '.bottom-3': {
         bottom: '12px',
       },
@@ -45,8 +45,8 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Inset', () => {
-    const css = tw.css('inset-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('inset-3');
+    expect(css).toStrictEqual({
       '.inset-3': {
         bottom: '12px',
         top: '12px',
@@ -57,8 +57,8 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Negative Inset', () => {
-    const css = tw.css('-inset-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('-inset-3');
+    expect(css).toStrictEqual({
       '.-inset-3': {
         bottom: '-12px',
         top: '-12px',
@@ -69,8 +69,8 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Inset Y', () => {
-    const css = tw.css('inset-y-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('inset-y-3');
+    expect(css).toStrictEqual({
       '.inset-y-3': {
         bottom: '12px',
         top: '12px',
@@ -79,8 +79,8 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Negative Inset Y', () => {
-    const css = tw.css('-inset-y-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('-inset-y-3');
+    expect(css).toStrictEqual({
       '.-inset-y-3': {
         bottom: '-12px',
         top: '-12px',
@@ -89,8 +89,8 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Negative Inset X', () => {
-    const css = tw.css('-inset-x-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('-inset-x-3');
+    expect(css).toStrictEqual({
       '.-inset-x-3': {
         right: '-12px',
         left: '-12px',
@@ -99,8 +99,8 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Inset X', () => {
-    const css = tw.css('inset-x-3');
-    expect(css.JSS).toStrictEqual({
+    const css = tw('inset-x-3');
+    expect(css).toStrictEqual({
       '.inset-x-3': {
         right: '12px',
         left: '12px',

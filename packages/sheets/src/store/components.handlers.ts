@@ -1,11 +1,12 @@
 import { Appearance, Platform, StyleSheet } from 'react-native';
 import type { TValidInteractionPseudoSelectors } from '../constants';
 import type { IStyleType } from '../types';
-import { globalStore, IRegisterComponentStore } from './global.store';
+import { globalStore, IComponentsStyleSheets, IRegisterComponentStore } from './global.store';
 import { getStylesForClassProp } from './styles.handlers';
 
 const registerComponentInStore = function (
   componentID: string,
+  styledProps: { [key: string]: IComponentsStyleSheets },
   meta: {
     classNames?: string;
     parentID?: string;
@@ -19,16 +20,27 @@ const registerComponentInStore = function (
     return globalStore.getState().componentsRegistry.get(componentID)!;
   }
   const componentStyles = getStylesForClassProp(meta.classNames);
+  let hasGroupInteractions = componentStyles.classNamesSet.some((item) =>
+    item.startsWith('group-'),
+  );
+  let hasPointerInteractions = componentStyles.interactionStyles.length > 0;
+  let isGroupParent = componentStyles.classNamesSet.includes('group');
+  for (const currentPropStylesheet of Object.values(styledProps)) {
+    hasGroupInteractions = currentPropStylesheet.classNamesSet.some((item) =>
+      item.startsWith('group-'),
+    );
+    hasPointerInteractions = currentPropStylesheet.interactionStyles.length > 0;
+    isGroupParent = currentPropStylesheet.classNamesSet.includes('group');
+  }
   globalStore.setState((prevState) => {
     prevState.componentsRegistry.set(componentID, {
       id: componentID,
+      styledProps,
       meta: {
         ...meta,
-        hasGroupInteractions: componentStyles.classNamesSet.some((item) =>
-          item.startsWith('group-'),
-        ),
-        isGroupParent: componentStyles.classNamesSet.includes('group'),
-        hasPointerInteractions: componentStyles.interactionStyles.length > 0,
+        hasGroupInteractions,
+        isGroupParent,
+        hasPointerInteractions,
       },
       styleSheet: componentStyles,
       groupID: meta.groupID,
@@ -97,31 +109,31 @@ function setInteractionState(
   return true;
 }
 
-function composeComponentStyledProps(component: IRegisterComponentStore) {
+function composeComponentStyledProps(component: {
+  platformStyles: IComponentsStyleSheets['platformStyles'];
+  interactionStyles: IComponentsStyleSheets['interactionStyles'];
+  appearanceStyles: IComponentsStyleSheets['appearanceStyles'];
+  interactionsState: IRegisterComponentStore['interactionsState'];
+  baseStyles: IComponentsStyleSheets['styles'];
+}) {
   const payload: IStyleType[] = [];
   // Important: order matters
   // 1. Platform styles
   if (Platform.OS !== 'web') {
-    payload.push(
-      ...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'native'),
-    );
+    payload.push(...composeStylesForPseudoClasses(component.platformStyles, 'native'));
   }
   if (Platform.OS === 'ios') {
-    payload.push(...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'ios'));
+    payload.push(...composeStylesForPseudoClasses(component.platformStyles, 'ios'));
   }
   if (Platform.OS === 'android') {
-    payload.push(
-      ...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'android'),
-    );
+    payload.push(...composeStylesForPseudoClasses(component.platformStyles, 'android'));
   }
   if (Platform.OS === 'web') {
-    payload.push(...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'web'));
+    payload.push(...composeStylesForPseudoClasses(component.platformStyles, 'web'));
   }
   // 2. Appearance styles
   if (Appearance.getColorScheme() === 'dark') {
-    payload.push(
-      ...composeStylesForPseudoClasses(component.styleSheet.platformStyles, 'dark'),
-    );
+    payload.push(...composeStylesForPseudoClasses(component.appearanceStyles, 'dark'));
   }
   // 2. Interaction styles
   if (
@@ -131,7 +143,7 @@ function composeComponentStyledProps(component: IRegisterComponentStore) {
       component.interactionsState?.active)
   ) {
     payload.push(
-      ...component.styleSheet.interactionStyles.reduce((prev, current) => {
+      ...component.interactionStyles.reduce((prev, current) => {
         if (current[0] === 'focus' || current[0] === 'hover' || current[0] === 'active') {
           prev.push(current[1]);
         }
@@ -146,7 +158,7 @@ function composeComponentStyledProps(component: IRegisterComponentStore) {
     component.interactionsState['group-active']
   ) {
     payload.push(
-      ...component.styleSheet.interactionStyles.reduce((prev, current) => {
+      ...component.interactionStyles.reduce((prev, current) => {
         if (
           current[0] === 'group-focus' ||
           current[0] === 'group-hover' ||
@@ -158,7 +170,7 @@ function composeComponentStyledProps(component: IRegisterComponentStore) {
       }, [] as IStyleType[]),
     );
   }
-  return StyleSheet.compose(component.styleSheet.styles, payload);
+  return StyleSheet.flatten([component.baseStyles, payload]);
 }
 
 export {
