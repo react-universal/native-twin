@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.9.1
+
+### Patch Changes
+
+- [`36440a3`](https://github.com/react-universal/tailwind/commit/36440a3c7e37f1c775793f90dc6b958d180c4302) Thanks [@chrisarts](https://github.com/chrisarts)! - support for styled props
+
+- Updated dependencies [[`36440a3`](https://github.com/react-universal/tailwind/commit/36440a3c7e37f1c775793f90dc6b958d180c4302)]:
+  - @universal-labs/core@1.9.1
+  - @universal-labs/primitives@1.9.1
+
 ## 1.9.0
 
 ### Minor Changes
