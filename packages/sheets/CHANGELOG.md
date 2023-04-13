@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.9.3
+
+### Patch Changes
+
+- [`b296968`](https://github.com/react-universal/tailwind/commit/b29696804355126cef1bf198c5db284f1d6d393a) Thanks [@chrisarts](https://github.com/chrisarts)! - fix zombie child
+
+- Updated dependencies [[`b296968`](https://github.com/react-universal/tailwind/commit/b29696804355126cef1bf198c5db284f1d6d393a)]:
+  - @universal-labs/core@1.9.3
+
 ## 1.9.2
 
 ### Patch Changes
