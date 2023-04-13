@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.9.2
+
+### Patch Changes
+
+- [`6f66c44`](https://github.com/react-universal/tailwind/commit/6f66c44c1f65851d317dc6a51ab816a5e681cc4b) Thanks [@chrisarts](https://github.com/chrisarts)! - fix component classnames update
+
 ## 1.9.1
 
 ### Patch Changes
