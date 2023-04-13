@@ -5,6 +5,7 @@ import type { IStyleType } from '@universal-labs/stylesheets';
 function useChildren(
   children: React.ReactNode,
   componentID: string,
+  childStyles: [string, IStyleType][],
   getChildStyles: (meta: {
     isFirstChild: boolean;
     isLastChild: boolean;
@@ -14,7 +15,27 @@ function useChildren(
 ) {
   const getChildStylesRef = useRef(getChildStyles);
   return useMemo(() => {
+    // if (childStyles.length === 0) {
+    //   return children;
+    // }
     const totalChilds = Children.count(children);
+    if (totalChilds === 1 || childStyles.length === 0) {
+      if (!isValidElement<{ style?: StyleProp<unknown> }>(children)) {
+        return children;
+      }
+      return (
+        <children.type
+          {...{
+            nthChild: 1,
+            isFirstChild: true,
+            isLastChild: true,
+            parentID: componentID,
+            groupID: groupID,
+            ...children.props,
+          }}
+        />
+      );
+    }
     return Children.map(children, (child, index) => {
       if (!isValidElement<{ style?: StyleProp<unknown> }>(child)) {
         return child;
@@ -40,7 +61,7 @@ function useChildren(
             ]),
           });
     });
-  }, [children, componentID, groupID]);
+  }, [children, componentID, groupID, childStyles]);
 }
 
 export { useChildren };

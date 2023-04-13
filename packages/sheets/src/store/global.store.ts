@@ -5,6 +5,7 @@ import type {
   TValidPlatformPseudoSelectors,
 } from '../constants';
 import type { IStyleType } from '../types';
+import type ComponentNode from './ComponentNode';
 
 function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;
@@ -41,20 +42,22 @@ export interface IRegisterComponentStore {
     [key: string]: IComponentsStyleSheets;
   };
   meta: {
+    classNames: string;
     isFirstChild: boolean;
     isLastChild: boolean;
     nthChild: number;
     hasGroupInteractions: boolean;
     isGroupParent: boolean;
     hasPointerInteractions: boolean;
+    parentID?: string;
+    groupID?: string;
   };
   styleSheet: IComponentsStyleSheets;
   interactionsState: Record<TValidInteractionPseudoSelectors, boolean>;
 }
-type TComponentsRegistry = Map<string, IRegisterComponentStore>;
+type TComponentsRegistry = Map<string, ComponentNode>;
 
 export type IComponentsStyleSheets = {
-  classNames?: string;
   styles: IStyleType[];
   classNamesSet: string[];
   interactionStyles: [TValidInteractionPseudoSelectors, IStyleType][];
@@ -66,12 +69,6 @@ export type IComponentsStyleSheets = {
     isLastChild: boolean;
     nthChild: number;
   }): IStyleType[];
-  // focus: IStyleType;
-  // hover: IStyleType;
-  // active: IStyleType;
-  // 'group-hover': IStyleType;
-  // 'group-focus': IStyleType;
-  // 'group-active': IStyleType;
 };
 
 const globalStore = createStore({

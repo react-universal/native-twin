@@ -1,14 +1,16 @@
 import { Appearance, Platform, StyleSheet } from 'react-native';
 import type { TValidInteractionPseudoSelectors } from '../constants';
 import type { IStyleType } from '../types';
+import ComponentNode from './ComponentNode';
 import { globalStore, IComponentsStyleSheets, IRegisterComponentStore } from './global.store';
-import { getStylesForClassProp } from './styles.handlers';
+
+// import { getStylesForClassProp } from './styles.handlers';
 
 const registerComponentInStore = function (
   componentID: string,
   styledProps: { [key: string]: IComponentsStyleSheets },
   meta: {
-    classNames?: string;
+    classNames: string;
     parentID?: string;
     groupID?: string;
     isFirstChild: boolean;
@@ -17,43 +19,78 @@ const registerComponentInStore = function (
   },
 ) {
   if (globalStore.getState().componentsRegistry.has(componentID)) {
+    // const cachedComponent = globalStore.getState().componentsRegistry.get(componentID)!;
+    // if (cachedComponent.meta.classNames !== meta.classNames) {
+    //   const componentStyles = getStylesForClassProp(meta.classNames);
+    //   let hasGroupInteractions = componentStyles.classNamesSet.some((item) =>
+    //     item.startsWith('group-'),
+    //   );
+    //   let hasPointerInteractions = componentStyles.interactionStyles.length > 0;
+    //   let isGroupParent = componentStyles.classNamesSet.includes('group');
+    //   for (const currentPropStylesheet of Object.values(styledProps)) {
+    //     hasGroupInteractions = currentPropStylesheet.classNamesSet.some((item) =>
+    //       item.startsWith('group-'),
+    //     );
+    //     hasPointerInteractions = currentPropStylesheet.interactionStyles.length > 0;
+    //     isGroupParent = currentPropStylesheet.classNamesSet.includes('group');
+    //   }
+    //   globalStore.setState((prevState) => {
+    //     prevState.componentsRegistry.set(componentID, {
+    //       ...cachedComponent,
+    //       styleSheet: componentStyles,
+    //       meta: {
+    //         ...cachedComponent.meta,
+    //         classNames: meta.classNames,
+    //         hasGroupInteractions,
+    //         isGroupParent,
+    //         hasPointerInteractions,
+    //       },
+    //     });
+    //     return prevState;
+    //   }, false);
+    //   return globalStore.getState().componentsRegistry.get(componentID)!;
+    // }
     return globalStore.getState().componentsRegistry.get(componentID)!;
   }
-  const componentStyles = getStylesForClassProp(meta.classNames);
-  let hasGroupInteractions = componentStyles.classNamesSet.some((item) =>
-    item.startsWith('group-'),
-  );
-  let hasPointerInteractions = componentStyles.interactionStyles.length > 0;
-  let isGroupParent = componentStyles.classNamesSet.includes('group');
-  for (const currentPropStylesheet of Object.values(styledProps)) {
-    hasGroupInteractions = currentPropStylesheet.classNamesSet.some((item) =>
-      item.startsWith('group-'),
-    );
-    hasPointerInteractions = currentPropStylesheet.interactionStyles.length > 0;
-    isGroupParent = currentPropStylesheet.classNamesSet.includes('group');
-  }
+  // const componentStyles = getStylesForClassProp(meta.classNames);
+  // let hasGroupInteractions = componentStyles.classNamesSet.some((item) =>
+  //   item.startsWith('group-'),
+  // );
+  // let hasPointerInteractions = componentStyles.interactionStyles.length > 0;
+  // let isGroupParent = componentStyles.classNamesSet.includes('group');
+  // for (const currentPropStylesheet of Object.values(styledProps)) {
+  //   hasGroupInteractions = currentPropStylesheet.classNamesSet.some((item) =>
+  //     item.startsWith('group-'),
+  //   );
+  //   hasPointerInteractions = currentPropStylesheet.interactionStyles.length > 0;
+  //   isGroupParent = currentPropStylesheet.classNamesSet.includes('group');
+  // }
   globalStore.setState((prevState) => {
-    prevState.componentsRegistry.set(componentID, {
-      id: componentID,
-      styledProps,
-      meta: {
-        ...meta,
-        hasGroupInteractions,
-        isGroupParent,
-        hasPointerInteractions,
-      },
-      styleSheet: componentStyles,
-      groupID: meta.groupID,
-      interactionsState: {
-        'group-hover': false,
-        'group-active': false,
-        'group-focus': false,
-        active: false,
-        focus: false,
-        hover: false,
-      },
-      parentID: meta.parentID,
-    });
+    prevState.componentsRegistry.set(
+      componentID,
+      new ComponentNode({ componentID, meta, styledProps }),
+    );
+    // prevState.componentsRegistry.set(componentID, {
+    //   id: componentID,
+    //   styledProps,
+    //   meta: {
+    //     ...meta,
+    //     hasGroupInteractions,
+    //     isGroupParent,
+    //     hasPointerInteractions,
+    //   },
+    //   styleSheet: componentStyles,
+    //   groupID: meta.groupID,
+    //   interactionsState: {
+    //     'group-hover': false,
+    //     'group-active': false,
+    //     'group-focus': false,
+    //     active: false,
+    //     focus: false,
+    //     hover: false,
+    //   },
+    //   parentID: meta.parentID,
+    // });
     return prevState;
   }, false);
   return globalStore.getState().componentsRegistry.get(componentID)!;
@@ -90,8 +127,8 @@ function setInteractionState(
       [...prevState.componentsRegistry.values()]
         .filter(
           (item) =>
-            item.groupID !== '' &&
-            item.groupID === currentComponent.groupID &&
+            item.meta.groupID !== '' &&
+            item.meta.groupID === currentComponent.meta.groupID &&
             item.meta.hasGroupInteractions,
         )
         .forEach((item) => {

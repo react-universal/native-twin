@@ -11,8 +11,9 @@ function useBuildStyledComponent<T, P extends keyof T>(
   styleClassProps?: P[],
 ) {
   // useRenderCounter();
-  // console.time('useBuildStyledComponent');
   const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
+  // console.log('CLASSNAME: ', className);
+  // console.log('CLASSNAME_PROP: ', props.className);
 
   const {
     componentID,
@@ -45,6 +46,7 @@ function useBuildStyledComponent<T, P extends keyof T>(
   const componentChilds = useChildren(
     props.children,
     componentID,
+    component.styleSheet.childStyles,
     component.styleSheet.getChildStyles,
     currentComponentGroupID === 'non-group'
       ? props.groupID ?? props.parentID ?? ''

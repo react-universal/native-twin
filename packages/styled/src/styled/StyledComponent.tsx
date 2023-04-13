@@ -78,7 +78,7 @@ export function styled<T, P extends keyof T>(
       </Component>
     );
   }
-  Styled.displayName = `StyledTW.(${Component.displayName || Component.name || 'NoName'})`;
+  Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
 
   return forwardRef(Styled) as any;
 }
