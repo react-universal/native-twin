@@ -5,8 +5,6 @@ import type { IStyleType } from '../types';
 import ComponentNode from './ComponentNode';
 import { globalStore, IComponentsStyleSheets, IRegisterComponentStore } from './global.store';
 
-// import { getStylesForClassProp } from './styles.handlers';
-
 enableMapSet();
 
 const registerComponentInStore = function (
@@ -59,11 +57,6 @@ const registerComponentInStore = function (
         globalStore.setState(
           produce((prevState) => {
             prevState.componentsRegistry.get(componentID)!.classNames = meta.classNames;
-            // prevState.componentsRegistry.set(componentID, {
-            //   ...globalStore.getState().componentsRegistry.get(componentID)!,
-            //   getStylesheet: prevState.componentsRegistry.get(componentID)!.getStylesheet,
-            //   styleSheet: getStylesForClassProp(meta.classNames),
-            // });
           }),
           false,
         );
@@ -79,7 +72,6 @@ const registerComponentInStore = function (
       );
       return prevState;
     }),
-    false,
   );
   return globalStore.getState().componentsRegistry.get(componentID)!;
 };
@@ -95,37 +87,50 @@ function composeStylesForPseudoClasses<T extends string>(
 
 function setInteractionState(
   id: string,
-  interaction: TValidInteractionPseudoSelectors,
+  interactions: TValidInteractionPseudoSelectors[],
   value: boolean,
 ) {
   globalStore.setState(
     produce((prevState) => {
-      prevState.componentsRegistry.get(id)!.interactionsState[interaction] = value;
-      // prevState.componentsRegistry.set(id, {
-      //   ...prevState.componentsRegistry.get(id)!,
-      //   interactionsState: {
-      //     ...prevState.componentsRegistry.get(id)!.interactionsState,
-      //     [interaction]: value,
-      //   },
-      // });
-      const currentComponent = prevState.componentsRegistry.get(id);
-      if (
-        currentComponent &&
-        interaction === 'group-hover' &&
-        currentComponent.meta.isGroupParent
-      ) {
-        for (const currentComponent of prevState.componentsRegistry.values()) {
-          if (
-            currentComponent.meta.groupID !== '' &&
-            currentComponent.meta.groupID === currentComponent.meta.groupID &&
-            currentComponent.meta.hasGroupInteractions
-          ) {
-            prevState.componentsRegistry.get(currentComponent.id)!.interactionsState[
-              interaction
-            ] = value;
+      const storedComponent = globalStore.getState().componentsRegistry.has(id);
+      if (storedComponent) {
+        for (const interaction of interactions) {
+          prevState.componentsRegistry.get(id)!.interactionsState[interaction] = value;
+          if (storedComponent && prevState.componentsRegistry.get(id)!.meta.isGroupParent) {
+            for (const lookupComponent of prevState.componentsRegistry.values()) {
+              if (
+                lookupComponent.meta.groupID !== '' &&
+                lookupComponent.meta.groupID === lookupComponent.meta.groupID &&
+                lookupComponent.meta.hasGroupInteractions
+              ) {
+                prevState.componentsRegistry.get(lookupComponent.id)!.interactionsState[
+                  interaction
+                ] = value;
+              }
+            }
           }
         }
       }
+      // prevState.componentsRegistry.get(id)!.interactionsState[interaction] = value;
+
+      // const currentComponent = prevState.componentsRegistry.get(id);
+      // if (
+      //   currentComponent &&
+      //   interaction === 'group-hover' &&
+      //   currentComponent.meta.isGroupParent
+      // ) {
+      //   for (const currentComponent of prevState.componentsRegistry.values()) {
+      //     if (
+      //       currentComponent.meta.groupID !== '' &&
+      //       currentComponent.meta.groupID === currentComponent.meta.groupID &&
+      //       currentComponent.meta.hasGroupInteractions
+      //     ) {
+      //       prevState.componentsRegistry.get(currentComponent.id)!.interactionsState[
+      //         interaction
+      //       ] = value;
+      //     }
+      //   }
+      // }
     }),
   );
   return true;
@@ -195,9 +200,30 @@ function composeComponentStyledProps(component: {
   return StyleSheet.flatten([component.baseStyles, payload]);
 }
 
+function getChildStylesFromStore(input: {
+  componentID: string;
+  nthChild: number;
+  isLastChild: boolean;
+  isFirstChild: boolean;
+}) {
+  const component = globalStore.getState().componentsRegistry.get(input.componentID);
+  const styles: IStyleType[] = [];
+  if (component) {
+    styles.push(
+      ...component.styleSheet.getChildStyles({
+        isFirstChild: input.isFirstChild,
+        isLastChild: input.isLastChild,
+        nthChild: input.nthChild,
+      }),
+    );
+  }
+  return styles;
+}
+
 export {
   registerComponentInStore,
   composeComponentStyledProps,
   composeStylesForPseudoClasses,
   setInteractionState,
+  getChildStylesFromStore,
 };

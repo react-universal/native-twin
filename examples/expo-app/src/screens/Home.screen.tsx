@@ -21,13 +21,13 @@ function HomeScreen() {
       <View className='bg-slate-80 group flex-[2] items-center justify-center border-t-8 border-t-indigo-50 hover:bg-pink-600'>
         <H1
           className={`
-          font-inter-bold text-2xl focus:text-gray-900
+          font-inter-bold text-2xl
           ${active ? 'text-primary' : 'text-blue-400'}
           `}
         >
           Nested Hover
         </H1>
-        <Pressable onPress={() => setActive(!active)}>
+        <Pressable onPress={() => setActive((prevState) => !prevState)}>
           <H1 className='text-gray-200'>Activate</H1>
         </Pressable>
         <TextField />

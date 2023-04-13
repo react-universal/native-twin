@@ -1,4 +1,4 @@
-export { setInteractionState } from './store/components.handlers';
+export { setInteractionState, getChildStylesFromStore } from './store/components.handlers';
 export { useComponentStyleSheets } from './hooks/useStyleSheets';
 export { setTailwindConfig } from './store/styles.handlers';
 export type { IStyleType, StyledProps } from './types';

@@ -39,27 +39,36 @@ const useComponentInteractions = ({
   const componentInteractionHandlers = useMemo(() => {
     const handlers: Touchable = {};
     if (hasPointerInteractions || isGroupParent || hasGroupInteractions) {
+      const interactions: TValidInteractionPseudoSelectors[] = [];
+      if (hasPointerInteractions) {
+        interactions.push('hover');
+      }
+      if (isGroupParent) {
+        interactions.push('group-hover');
+      }
       handlers.onTouchStart = function (event) {
         if (ref.current.onTouchStart) {
           ref.current.onTouchStart(event);
         }
-        if (hasPointerInteractions) {
-          setInteractionState(id, 'hover', true);
-        }
-        if (isGroupParent) {
-          setInteractionState(id, 'group-hover', true);
-        }
+        // if (hasPointerInteractions) {
+        //   setInteractionState(id, 'hover', true);
+        // }
+        // if (isGroupParent) {
+        //   setInteractionState(id, 'group-hover', true);
+        // }
+        setInteractionState(id, interactions, true);
       };
       handlers.onTouchEnd = function (event) {
         if (ref.current.onTouchEnd) {
           ref.current.onTouchEnd(event);
         }
-        if (isGroupParent) {
-          setInteractionState(id, 'group-hover', false);
-        }
-        if (hasPointerInteractions) {
-          setInteractionState(id, 'hover', false);
-        }
+        // if (isGroupParent) {
+        //   setInteractionState(id, 'group-hover', false);
+        // }
+        // if (hasPointerInteractions) {
+        //   setInteractionState(id, 'hover', false);
+        // }
+        setInteractionState(id, interactions, false);
       };
     }
     return handlers;
@@ -72,13 +81,13 @@ const useComponentInteractions = ({
         if (ref.current.onFocus) {
           ref.current.onFocus(event);
         }
-        setInteractionState(id, 'focus', true);
+        setInteractionState(id, ['focus'], true);
       };
       handlers.onBlur = function (event) {
         if (ref.current.onBlur) {
           ref.current.onBlur(event);
         }
-        setInteractionState(id, 'focus', false);
+        setInteractionState(id, ['focus'], false);
       };
     }
     return handlers;

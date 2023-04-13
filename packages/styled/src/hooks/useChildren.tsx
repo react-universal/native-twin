@@ -1,71 +1,46 @@
-import { Children, cloneElement, isValidElement, useMemo, useRef } from 'react';
+import { Children, cloneElement, isValidElement } from 'react';
 import { StyleProp, StyleSheet } from 'react-native';
-import type { IStyleType } from '@universal-labs/stylesheets';
+import { getChildStylesFromStore } from '@universal-labs/stylesheets';
+import { isFragment } from 'react-is';
 
 function useChildren(
-  children: React.ReactNode,
+  componentChildren: React.ReactNode,
   componentID: string,
-  childStyles: [string, IStyleType][],
-  getChildStyles: (meta: {
-    isFirstChild: boolean;
-    isLastChild: boolean;
-    nthChild: number;
-  }) => IStyleType[],
   groupID?: string,
 ) {
-  const getChildStylesRef = useRef(getChildStyles);
-  return useMemo(() => {
-    // if (childStyles.length === 0) {
-    //   return children;
-    // }
-    const totalChilds = Children.count(children);
-    // if (totalChilds === 1 || childStyles.length === 0) {
-    //   if (!isValidElement<{ style?: StyleProp<unknown> }>(children)) {
-    //     return children;
-    //   }
-    //   return (
-    //     <children.type
-    //       {...{
-    //         nthChild: 1,
-    //         isFirstChild: true,
-    //         isLastChild: true,
-    //         parentID: componentID,
-    //         groupID: groupID,
-    //         ...children.props,
-    //       }}
-    //     />
-    //   );
-    // }
-    return Children.map(children, (child, index) => {
+  const children = isFragment(componentChildren)
+    ? componentChildren.props.children
+    : componentChildren;
+  const totalChilds = Children.count(children);
+  return Children.toArray(children)
+    .filter(Boolean)
+    .map((child, index) => {
       if (!isValidElement<{ style?: StyleProp<unknown> }>(child)) {
         return child;
       }
-      const childProps = {
+
+      const style = getChildStylesFromStore({
+        componentID,
         nthChild: index + 1,
         isFirstChild: index === 0,
         isLastChild: index + 1 === totalChilds,
-        parentID: componentID,
-        groupID: groupID,
-        ...child.props,
-      };
+      });
 
-      return isStyledComponent(child)
+      if (!style || style.length === 0) {
+        return child;
+      }
+
+      return child.props.style
         ? cloneElement(child, {
-            ...childProps,
+            style: StyleSheet.flatten([child.props.style]),
+            // @ts-expect-error
+            childStyles: style,
+            parentID: componentID,
+            groupID: groupID,
           })
-        : cloneElement(child, {
-            ...childProps,
-            style: StyleSheet.flatten([
-              ...getChildStylesRef.current(childProps),
-              childProps?.style,
-            ]),
-          });
+        : // @ts-expect-error
+          cloneElement(child, { style, parentID: componentID, groupID: groupID });
     });
-  }, [children, componentID, groupID]);
 }
 
 export { useChildren };
-
-function isStyledComponent(node: unknown) {
-  return (node as any).displayName?.startsWith('StyledTW');
-}

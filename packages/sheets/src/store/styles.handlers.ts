@@ -129,6 +129,7 @@ function getStylesForClassProp(classNames?: string) {
       });
       return prevState;
     }),
+    false,
   );
   return globalStore.getState().componentStylesRegistry.get(hash)!;
 }
