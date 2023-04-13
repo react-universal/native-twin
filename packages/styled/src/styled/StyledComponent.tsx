@@ -67,7 +67,7 @@ export function styled<T, P extends keyof T>(
     );
     return (
       <Component
-        style={StyleSheet.flatten([style, composedStyles])}
+        style={StyleSheet.flatten([composedStyles])}
         ref={ref}
         {...componentInteractionHandlers}
         {...focusHandlers}

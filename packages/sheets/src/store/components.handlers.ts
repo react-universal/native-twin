@@ -1,10 +1,13 @@
 import { Appearance, Platform, StyleSheet } from 'react-native';
+import { produce, enableMapSet } from 'immer';
 import type { TValidInteractionPseudoSelectors } from '../constants';
 import type { IStyleType } from '../types';
 import ComponentNode from './ComponentNode';
 import { globalStore, IComponentsStyleSheets, IRegisterComponentStore } from './global.store';
 
 // import { getStylesForClassProp } from './styles.handlers';
+
+enableMapSet();
 
 const registerComponentInStore = function (
   componentID: string,
@@ -19,6 +22,7 @@ const registerComponentInStore = function (
   },
 ) {
   if (globalStore.getState().componentsRegistry.has(componentID)) {
+    const cachedComponent = globalStore.getState().componentsRegistry.get(componentID)!;
     // const cachedComponent = globalStore.getState().componentsRegistry.get(componentID)!;
     // if (cachedComponent.meta.classNames !== meta.classNames) {
     //   const componentStyles = getStylesForClassProp(meta.classNames);
@@ -50,49 +54,33 @@ const registerComponentInStore = function (
     //   }, false);
     //   return globalStore.getState().componentsRegistry.get(componentID)!;
     // }
-    return globalStore.getState().componentsRegistry.get(componentID)!;
+    if (cachedComponent) {
+      if (cachedComponent.classNames !== meta.classNames) {
+        globalStore.setState(
+          produce((prevState) => {
+            prevState.componentsRegistry.get(componentID)!.classNames = meta.classNames;
+            // prevState.componentsRegistry.set(componentID, {
+            //   ...globalStore.getState().componentsRegistry.get(componentID)!,
+            //   getStylesheet: prevState.componentsRegistry.get(componentID)!.getStylesheet,
+            //   styleSheet: getStylesForClassProp(meta.classNames),
+            // });
+          }),
+          false,
+        );
+      }
+      return globalStore.getState().componentsRegistry.get(componentID)!;
+    }
   }
-  // const componentStyles = getStylesForClassProp(meta.classNames);
-  // let hasGroupInteractions = componentStyles.classNamesSet.some((item) =>
-  //   item.startsWith('group-'),
-  // );
-  // let hasPointerInteractions = componentStyles.interactionStyles.length > 0;
-  // let isGroupParent = componentStyles.classNamesSet.includes('group');
-  // for (const currentPropStylesheet of Object.values(styledProps)) {
-  //   hasGroupInteractions = currentPropStylesheet.classNamesSet.some((item) =>
-  //     item.startsWith('group-'),
-  //   );
-  //   hasPointerInteractions = currentPropStylesheet.interactionStyles.length > 0;
-  //   isGroupParent = currentPropStylesheet.classNamesSet.includes('group');
-  // }
-  globalStore.setState((prevState) => {
-    prevState.componentsRegistry.set(
-      componentID,
-      new ComponentNode({ componentID, meta, styledProps }),
-    );
-    // prevState.componentsRegistry.set(componentID, {
-    //   id: componentID,
-    //   styledProps,
-    //   meta: {
-    //     ...meta,
-    //     hasGroupInteractions,
-    //     isGroupParent,
-    //     hasPointerInteractions,
-    //   },
-    //   styleSheet: componentStyles,
-    //   groupID: meta.groupID,
-    //   interactionsState: {
-    //     'group-hover': false,
-    //     'group-active': false,
-    //     'group-focus': false,
-    //     active: false,
-    //     focus: false,
-    //     hover: false,
-    //   },
-    //   parentID: meta.parentID,
-    // });
-    return prevState;
-  }, false);
+  globalStore.setState(
+    produce((prevState) => {
+      prevState.componentsRegistry.set(
+        componentID,
+        new ComponentNode({ componentID, meta, styledProps }),
+      );
+      return prevState;
+    }),
+    false,
+  );
   return globalStore.getState().componentsRegistry.get(componentID)!;
 };
 
@@ -110,39 +98,36 @@ function setInteractionState(
   interaction: TValidInteractionPseudoSelectors,
   value: boolean,
 ) {
-  globalStore.setState((prevState) => {
-    prevState.componentsRegistry.set(id, {
-      ...prevState.componentsRegistry.get(id)!,
-      interactionsState: {
-        ...prevState.componentsRegistry.get(id)!.interactionsState,
-        [interaction]: value,
-      },
-    });
-    const currentComponent = prevState.componentsRegistry.get(id);
-    if (
-      currentComponent &&
-      interaction === 'group-hover' &&
-      currentComponent.meta.isGroupParent
-    ) {
-      [...prevState.componentsRegistry.values()]
-        .filter(
-          (item) =>
-            item.meta.groupID !== '' &&
-            item.meta.groupID === currentComponent.meta.groupID &&
-            item.meta.hasGroupInteractions,
-        )
-        .forEach((item) => {
-          prevState.componentsRegistry.set(item.id, {
-            ...item,
-            interactionsState: {
-              ...prevState.componentsRegistry.get(item.id)!.interactionsState,
-              [interaction]: value,
-            },
-          });
-        });
-    }
-    return prevState;
-  });
+  globalStore.setState(
+    produce((prevState) => {
+      prevState.componentsRegistry.get(id)!.interactionsState[interaction] = value;
+      // prevState.componentsRegistry.set(id, {
+      //   ...prevState.componentsRegistry.get(id)!,
+      //   interactionsState: {
+      //     ...prevState.componentsRegistry.get(id)!.interactionsState,
+      //     [interaction]: value,
+      //   },
+      // });
+      const currentComponent = prevState.componentsRegistry.get(id);
+      if (
+        currentComponent &&
+        interaction === 'group-hover' &&
+        currentComponent.meta.isGroupParent
+      ) {
+        for (const currentComponent of prevState.componentsRegistry.values()) {
+          if (
+            currentComponent.meta.groupID !== '' &&
+            currentComponent.meta.groupID === currentComponent.meta.groupID &&
+            currentComponent.meta.hasGroupInteractions
+          ) {
+            prevState.componentsRegistry.get(currentComponent.id)!.interactionsState[
+              interaction
+            ] = value;
+          }
+        }
+      }
+    }),
+  );
   return true;
 }
 

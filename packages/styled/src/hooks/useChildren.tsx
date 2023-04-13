@@ -19,23 +19,23 @@ function useChildren(
     //   return children;
     // }
     const totalChilds = Children.count(children);
-    if (totalChilds === 1 || childStyles.length === 0) {
-      if (!isValidElement<{ style?: StyleProp<unknown> }>(children)) {
-        return children;
-      }
-      return (
-        <children.type
-          {...{
-            nthChild: 1,
-            isFirstChild: true,
-            isLastChild: true,
-            parentID: componentID,
-            groupID: groupID,
-            ...children.props,
-          }}
-        />
-      );
-    }
+    // if (totalChilds === 1 || childStyles.length === 0) {
+    //   if (!isValidElement<{ style?: StyleProp<unknown> }>(children)) {
+    //     return children;
+    //   }
+    //   return (
+    //     <children.type
+    //       {...{
+    //         nthChild: 1,
+    //         isFirstChild: true,
+    //         isLastChild: true,
+    //         parentID: componentID,
+    //         groupID: groupID,
+    //         ...children.props,
+    //       }}
+    //     />
+    //   );
+    // }
     return Children.map(children, (child, index) => {
       if (!isValidElement<{ style?: StyleProp<unknown> }>(child)) {
         return child;
@@ -61,7 +61,7 @@ function useChildren(
             ]),
           });
     });
-  }, [children, componentID, groupID, childStyles]);
+  }, [children, componentID, groupID]);
 }
 
 export { useChildren };

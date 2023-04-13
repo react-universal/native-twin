@@ -1,5 +1,6 @@
 import { setup } from '@universal-labs/core';
 import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
+import { produce } from 'immer';
 import type { Config } from 'tailwindcss';
 import {
   AppearancePseudoSelectors,
@@ -79,52 +80,56 @@ function getStylesForClassProp(classNames?: string) {
         [cssProp]: compiled[key],
       });
       result.push(styles);
-      globalStore.setState((prevState) => {
-        prevState.stylesRegistry.set(cssProp, styles);
-        return prevState;
-      }, false);
+      globalStore.setState(
+        produce((prevState) => {
+          prevState.stylesRegistry.set(cssProp, styles);
+        }),
+        false,
+      );
     });
   }
   const childStyles = getStylesForPseudoClasses(
     Object.entries(splittedInteractionClasses),
     ChildPseudoSelectors,
   );
-  globalStore.setState((prevState) => {
-    prevState.componentStylesRegistry.set(hash, {
-      styles: result,
-      interactionStyles: getStylesForPseudoClasses(
-        Object.entries(splittedInteractionClasses),
-        InteractionPseudoSelectors,
-      ),
-      classNamesSet: splitClassNames(classNames),
-      platformStyles: getStylesForPseudoClasses(
-        Object.entries(splittedInteractionClasses),
-        PlatformPseudoSelectors,
-      ),
-      appearanceStyles: getStylesForPseudoClasses(
-        Object.entries(splittedInteractionClasses),
-        AppearancePseudoSelectors,
-      ),
-      childStyles,
-      getChildStyles: (meta) => {
-        const result: IStyleType[] = [];
-        if (meta.isFirstChild) {
-          result.push(...composeStylesForPseudoClasses(childStyles, 'first'));
-        }
-        if (meta.isLastChild) {
-          result.push(...composeStylesForPseudoClasses(childStyles, 'last'));
-        }
-        if (meta.nthChild % 2 === 0) {
-          result.push(...composeStylesForPseudoClasses(childStyles, 'even'));
-        }
-        if (meta.nthChild % 2 !== 0) {
-          result.push(...composeStylesForPseudoClasses(childStyles, 'odd'));
-        }
-        return result;
-      },
-    });
-    return prevState;
-  });
+  globalStore.setState(
+    produce((prevState) => {
+      prevState.componentStylesRegistry.set(hash, {
+        styles: result,
+        interactionStyles: getStylesForPseudoClasses(
+          Object.entries(splittedInteractionClasses),
+          InteractionPseudoSelectors,
+        ),
+        classNamesSet: splitClassNames(classNames),
+        platformStyles: getStylesForPseudoClasses(
+          Object.entries(splittedInteractionClasses),
+          PlatformPseudoSelectors,
+        ),
+        appearanceStyles: getStylesForPseudoClasses(
+          Object.entries(splittedInteractionClasses),
+          AppearancePseudoSelectors,
+        ),
+        childStyles,
+        getChildStyles: (meta) => {
+          const result: IStyleType[] = [];
+          if (meta.isFirstChild) {
+            result.push(...composeStylesForPseudoClasses(childStyles, 'first'));
+          }
+          if (meta.isLastChild) {
+            result.push(...composeStylesForPseudoClasses(childStyles, 'last'));
+          }
+          if (meta.nthChild % 2 === 0) {
+            result.push(...composeStylesForPseudoClasses(childStyles, 'even'));
+          }
+          if (meta.nthChild % 2 !== 0) {
+            result.push(...composeStylesForPseudoClasses(childStyles, 'odd'));
+          }
+          return result;
+        },
+      });
+      return prevState;
+    }),
+  );
   return globalStore.getState().componentStylesRegistry.get(hash)!;
 }
 

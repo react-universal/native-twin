@@ -34,6 +34,7 @@ export default defineConfig({
         'react-native',
         'react-native-web',
         'react',
+        'immer',
         '@universal-labs/core',
         'use-sync-external-store/shim',
         'use-sync-external-store',
@@ -46,6 +47,7 @@ export default defineConfig({
         extend: true,
         externalImportAssertions: true,
         globals: {
+          immer: 'Immer',
           'css-to-react-native': 'cssToReactNative',
           'react-native': 'ReactNative',
           'react-native-web': 'ReactNativeWeb',

@@ -27,20 +27,32 @@ function useComponentStyleSheets({
   const currentGroupID = useMemo(() => {
     return groupID ? groupID : parentID ?? 'non-group';
   }, [parentID, groupID]);
+  const registeredComponent = useMemo(() => {
+    return registerComponentInStore(componentID, styledProps, {
+      groupID: currentGroupID,
+      parentID,
+      isFirstChild,
+      isLastChild,
+      nthChild,
+      classNames: className ?? '',
+    });
+  }, [
+    componentID,
+    styledProps,
+    currentGroupID,
+    parentID,
+    isFirstChild,
+    isLastChild,
+    nthChild,
+    className,
+  ]);
 
   const component = useSyncExternalStoreWithSelector(
     globalStore.subscribe,
-    () => globalStore.getState().componentsRegistry.get(componentID),
-    () => globalStore.getState().componentsRegistry.get(componentID),
-    () => {
-      return registerComponentInStore(componentID, styledProps, {
-        groupID: currentGroupID,
-        parentID,
-        isFirstChild,
-        isLastChild,
-        nthChild,
-        classNames: className ?? '',
-      });
+    () => globalStore.getState(),
+    () => globalStore.getState(),
+    (store) => {
+      return store.componentsRegistry.get(registeredComponent.id)!;
     },
   );
   // const componentGroup = useSyncExternalStoreWithSelector(

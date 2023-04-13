@@ -1,3 +1,4 @@
+import { immerable } from 'immer';
 import type { TValidInteractionPseudoSelectors } from '../constants';
 import type { IComponentsStyleSheets, IRegisterComponentStore } from './global.store';
 import { getStylesForClassProp } from './styles.handlers';
@@ -15,6 +16,7 @@ interface ComponentNodeInput {
   };
 }
 export default class ComponentNode {
+  [immerable] = true;
   meta: IRegisterComponentStore['meta'];
   id: string;
   interactionsState: Record<TValidInteractionPseudoSelectors, boolean> = {
@@ -28,11 +30,12 @@ export default class ComponentNode {
   styledProps?: {
     [key: string]: IComponentsStyleSheets;
   };
-  styleSheet: IComponentsStyleSheets;
+  classNames: string;
   constructor(input: ComponentNodeInput) {
     this.id = input.componentID;
     this.styledProps = input.styledProps;
-    this.styleSheet = getStylesForClassProp(input.meta.classNames);
+    this.classNames = input.meta.classNames;
+    // this.styleSheet = getStylesForClassProp(input.meta.classNames);
     let hasGroupInteractions = this.styleSheet.classNamesSet.some((item) =>
       item.startsWith('group-'),
     );
@@ -51,5 +54,9 @@ export default class ComponentNode {
       hasPointerInteractions,
       isGroupParent,
     };
+  }
+
+  get styleSheet() {
+    return getStylesForClassProp(this.classNames);
   }
 }

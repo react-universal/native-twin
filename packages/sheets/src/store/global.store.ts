@@ -41,8 +41,9 @@ export interface IRegisterComponentStore {
   styledProps?: {
     [key: string]: IComponentsStyleSheets;
   };
+  // rebuildStyleSheet: void;
+  classNames: string;
   meta: {
-    classNames: string;
     isFirstChild: boolean;
     isLastChild: boolean;
     nthChild: number;
