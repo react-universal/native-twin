@@ -1,10 +1,11 @@
 export { setInteractionState } from './store/components.handlers';
 export { useComponentStyleSheets } from './hooks/useStyleSheets';
-export { setTailwindConfig } from './store/styles.handlers';
-export type { IStyleType, StyledProps } from './types';
+export { createComponentID } from './utils/createComponentID';
+export { setTailwindConfig } from './stylesheet/Stylesheet';
+export type { StyledObject, StyledProps } from './types';
 export type {
-  TValidAppearancePseudoSelectors,
-  TValidChildPseudoSelectors,
-  TValidInteractionPseudoSelectors,
-  TValidPlatformPseudoSelectors,
+  ValidAppearancePseudoSelector as TValidAppearancePseudoSelectors,
+  ValidChildPseudoSelector as TValidChildPseudoSelectors,
+  ValidInteractionPseudoSelector as TValidInteractionPseudoSelectors,
+  ValidPlatformPseudoSelector as TValidPlatformPseudoSelectors,
 } from './constants';

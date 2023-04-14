@@ -1,11 +1,11 @@
 import { getStylesForProperty } from 'css-to-react-native';
 import type { CssInJs } from 'postcss-js';
-import type { IStyleType } from '../types';
+import type { StyledObject } from '../types';
 
 export function cssPropertiesResolver(input: CssInJs) {
   try {
     const keys = Object.keys(input);
-    const styles: IStyleType = {};
+    const styles: StyledObject = {};
     keys.forEach((className) => {
       const style = input[className];
       const transformed = Object.entries(style).reduce((previous, [name, value]) => {
@@ -13,7 +13,7 @@ export function cssPropertiesResolver(input: CssInJs) {
           return previous;
         previous = Object.assign(previous, getStylesForProperty(name, String(value)));
         return previous;
-      }, {} as IStyleType);
+      }, {} as StyledObject);
       Object.assign(styles, transformed);
     });
     return styles;

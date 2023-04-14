@@ -1,16 +1,16 @@
 import { Children, cloneElement, isValidElement, useMemo, useRef } from 'react';
 import { StyleProp, StyleSheet } from 'react-native';
-import type { IStyleType } from '@universal-labs/stylesheets';
+import type { StyledObject } from '@universal-labs/stylesheets';
 
 function useChildren(
   children: React.ReactNode,
   componentID: string,
-  childStyles: [string, IStyleType][],
+  childStyles: [string, StyledObject][],
   getChildStyles: (meta: {
     isFirstChild: boolean;
     isLastChild: boolean;
     nthChild: number;
-  }) => IStyleType[],
+  }) => StyledObject[],
   groupID?: string,
 ) {
   const getChildStylesRef = useRef(getChildStyles);

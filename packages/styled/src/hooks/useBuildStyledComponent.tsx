@@ -1,64 +1,71 @@
+import { useMemo } from 'react';
 import type { Touchable } from 'react-native';
-import { useComponentStyleSheets, StyledProps } from '@universal-labs/stylesheets';
-import { useBuildStyleProps } from './useBuildStyleProps';
+import {
+  useComponentStyleSheets,
+  StyledProps,
+  createComponentID,
+} from '@universal-labs/stylesheets';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
+import { useRenderCounter } from './useRenderCounter';
 
-// import { useRenderCounter } from './useRenderCounter';
-
-function useBuildStyledComponent<T, P extends keyof T>(
-  props: StyledProps<T>,
-  styleClassProps?: P[],
-) {
-  // useRenderCounter();
-  const { className, classPropsTuple } = useBuildStyleProps(props, styleClassProps);
-  // console.log('CLASSNAME: ', className);
-  // console.log('CLASSNAME_PROP: ', props.className);
-
-  const {
+function useBuildStyledComponent<T>({
+  className,
+  isFirstChild,
+  isLastChild,
+  nthChild,
+  children,
+  groupID,
+  parentID,
+  style,
+  tw,
+  ...restProps
+}: StyledProps<T>) {
+  useRenderCounter();
+  console.time('useBuildStyledComponent');
+  const componentID = useMemo(() => createComponentID() as string, []);
+  const currentGroupID = useMemo(() => {
+    return groupID ? groupID : parentID ?? 'non-group';
+  }, [parentID, groupID]);
+  const { composedStyles, stylesheet } = useComponentStyleSheets({
+    groupID,
+    className: className ?? tw,
+    inlineStyles: style,
+    isFirstChild,
+    isLastChild,
+    nthChild,
+    parentID,
+    currentGroupID,
     componentID,
-    composedStyles,
-    hasGroupInteractions,
-    hasPointerInteractions,
-    composedStyledProps,
-    isGroupParent,
-    component,
-    currentComponentGroupID,
-  } = useComponentStyleSheets({
-    groupID: props.groupID,
-    className,
-    classPropsTuple,
-    inlineStyles: props.style,
-    isFirstChild: props.isFirstChild,
-    isLastChild: props.isLastChild,
-    nthChild: props.nthChild,
-    parentID: props.parentID,
   });
 
   const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({
-    props: props as Touchable,
-    hasGroupInteractions,
-    hasPointerInteractions,
-    isGroupParent,
+    props: restProps as Touchable,
+    hasGroupInteractions: stylesheet.metadata.hasGroupEvents,
+    hasPointerInteractions: stylesheet.metadata.hasPointerEvents,
+    isGroupParent: stylesheet.metadata.isGroupParent,
     id: componentID,
   });
 
   const componentChilds = useChildren(
-    props.children,
+    children,
     componentID,
-    component.styleSheet.childStyles,
-    component.styleSheet.getChildStyles,
-    currentComponentGroupID === 'non-group'
-      ? props.groupID ?? props.parentID ?? ''
-      : currentComponentGroupID,
+    [],
+    () => [],
+    currentGroupID === 'non-group' ? groupID ?? parentID ?? '' : currentGroupID,
   );
-  // console.timeEnd('useBuildStyledComponent');
+
+  const componentStyles = useMemo(() => {
+    const styles = stylesheet.create();
+    return styles;
+  }, [stylesheet]);
+  console.timeEnd('useBuildStyledComponent');
   return {
     componentChilds,
     componentInteractionHandlers,
     focusHandlers,
     composedStyles,
-    composedStyledProps,
+    componentStyles,
   };
 }
 
