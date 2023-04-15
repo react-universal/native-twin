@@ -1,7 +1,7 @@
 import { FlatList as NativeFlatList, FlatListProps, StyleProp, ViewStyle } from 'react-native';
 import { styled } from '@universal-labs/styled';
 
-const StyledFlatList = styled(NativeFlatList, ['contentContainerStyle']);
+const StyledFlatList = styled(NativeFlatList);
 
 function FlatList<TItems>({
   className,

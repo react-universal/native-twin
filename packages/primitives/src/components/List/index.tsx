@@ -1,6 +1,6 @@
 import { ComponentType, forwardRef, PropsWithChildren } from 'react';
 import { Platform, TextProps, View, ViewProps } from 'react-native';
-import { styled } from '@universal-labs/styled';
+import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
 import Text from '../Text/Text.primitive';
@@ -53,7 +53,7 @@ const PrimitiveLI = forwardRef((props: PropsWithChildren<LIProps>, ref: any) => 
 
 PrimitiveLI.displayName = 'LI';
 
-const UL = styled(PrimitiveUL);
-const LI = styled(PrimitiveLI);
+const UL = styled(PrimitiveUL) as ForwardedStyledComponent<View>;
+const LI = styled(PrimitiveLI) as ForwardedStyledComponent<View>;
 
 export { UL, LI };

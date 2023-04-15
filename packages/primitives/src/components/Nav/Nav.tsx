@@ -1,9 +1,9 @@
 import { ComponentProps, ComponentType, forwardRef, ReactHTML } from 'react';
-import { Platform } from 'react-native';
-import { styled } from '@universal-labs/styled';
+import { Platform, View } from 'react-native';
+import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
-import { View, ViewProps } from '../View';
+import type { ViewProps } from '../View';
 
 function createView(tag: keyof ReactHTML): ComponentType<ViewProps> {
   const Element = forwardRef((props: ViewProps, ref) => {
@@ -17,7 +17,7 @@ function createView(tag: keyof ReactHTML): ComponentType<ViewProps> {
   return Element;
 }
 
-const Nav = styled(createView('nav'));
+const Nav = styled(createView('nav')) as ForwardedStyledComponent<View>;
 
 type NavProps = ComponentProps<typeof Nav>;
 

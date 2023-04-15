@@ -24,6 +24,9 @@
   "targetDefaults": {
     "build": {
       "dependsOn": []
+    },
+    "build:libs": {
+      "dependsOn": ["^build:libs"]
     }
   },
   "namedInputs": {

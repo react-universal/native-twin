@@ -2,16 +2,13 @@
   "extends": "../../tsconfig.base",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "declarationMap": false,
     "noImplicitAny": true,
-    "types": ["vitest/globals"],
-    "outDir": "./build",
-    "noEmit": true,
     "noUnusedLocals": true,
-    "jsx": "react-jsx",
-    "module": "ES6",
+    "declarationMap": false,
+    "sourceMap": false,
+    "noEmit": true,
+    "types": ["node", "vitest/globals"],
     "importHelpers": true
   },
-  "include": ["src", "env.d.ts", "test"],
-  "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*", "**/build/*"]
+  "include": ["src", "test"]
 }

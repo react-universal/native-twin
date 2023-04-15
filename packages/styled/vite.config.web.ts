@@ -26,7 +26,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsStyled',
-      fileName: (format) => `index.${format}.web.js`,
+      fileName: (format) => `index.${format}.js`,
       formats: ['es', 'umd'],
     },
     rollupOptions: {

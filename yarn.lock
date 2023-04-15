@@ -6941,11 +6941,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/primitives@workspace:packages/primitives"
   dependencies:
-    "@types/react": ~18.0.27
+    "@types/node": 16.11.7
+    "@types/react": 18.0.28
     "@types/react-dom": ~18.0.10
+    "@types/react-is": ^17.0.3
     "@types/react-native": ^0.71.5
     "@universal-labs/styled": "workspace:*"
-    react-native: ^0.71.6
+    react: 18.2.0
   peerDependencies:
     react-native-web: ">= 0.18.10"
   languageName: unknown

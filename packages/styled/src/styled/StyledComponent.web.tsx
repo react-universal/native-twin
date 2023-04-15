@@ -1,7 +1,7 @@
 import { ComponentType, forwardRef } from 'react';
-import { useBuildStyledComponent } from '../hooks/useBuildStyledComponent';
+import { useBuildStyledComponent } from '../hooks/useBuildStyledComponent.web';
 
-function styled<T, P extends keyof T>(Component: ComponentType<T>) {
+function styled<T>(Component: ComponentType<T>) {
   const Styled = forwardRef<unknown, any>(function StyledTW(props, ref) {
     return useBuildStyledComponent(props, Component, ref);
   });

@@ -1,6 +1,6 @@
 import { Image as NativeImage } from 'react-native';
-import { styled } from '@universal-labs/styled';
+import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
 
-const Image = styled(NativeImage);
+const Image = styled(NativeImage) as ForwardedStyledComponent<NativeImage>;
 
 export { Image };

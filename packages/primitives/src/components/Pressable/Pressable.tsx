@@ -1,6 +1,6 @@
 import { Pressable as NativePressable } from 'react-native';
-import { styled } from '@universal-labs/styled';
+import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
 
-const Pressable = styled(NativePressable);
+const Pressable = styled(NativePressable) as ForwardedStyledComponent<typeof NativePressable>;
 
 export default Pressable;
