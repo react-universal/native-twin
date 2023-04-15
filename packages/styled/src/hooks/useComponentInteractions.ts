@@ -1,5 +1,10 @@
 import { useMemo, useRef } from 'react';
-import type { NativeSyntheticEvent, Touchable, TextInputFocusEventData } from 'react-native';
+import type {
+  NativeSyntheticEvent,
+  Touchable,
+  TextInputFocusEventData,
+  PressableProps,
+} from 'react-native';
 import {
   setInteractionState,
   TValidInteractionPseudoSelectors,
@@ -30,37 +35,65 @@ const useComponentInteractions = ({
   id,
 }: UseComponentInteractionsArgs) => {
   const ref = useRef<
-    Touchable & {
-      onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-      onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-    }
+    Touchable &
+      PressableProps & {
+        onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+        onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+      }
   >(props);
 
   const componentInteractionHandlers = useMemo(() => {
-    const handlers: Touchable = {};
+    const handlers: Touchable & PressableProps = {};
     if (hasPointerInteractions || isGroupParent || hasGroupInteractions) {
-      handlers.onTouchStart = function (event) {
-        if (ref.current.onTouchStart) {
-          ref.current.onTouchStart(event);
-        }
-        if (hasPointerInteractions) {
-          setInteractionState(id, 'hover', true);
-        }
-        if (isGroupParent) {
-          setInteractionState(id, 'group-hover', true);
-        }
-      };
-      handlers.onTouchEnd = function (event) {
-        if (ref.current.onTouchEnd) {
-          ref.current.onTouchEnd(event);
-        }
-        if (isGroupParent) {
-          setInteractionState(id, 'group-hover', false);
-        }
-        if (hasPointerInteractions) {
-          setInteractionState(id, 'hover', false);
-        }
-      };
+      if (ref.current.onPress) {
+        handlers.onPress = function (event) {
+          if (ref.current.onPress) {
+            ref.current.onPress(event);
+          }
+          if (hasPointerInteractions) {
+            setInteractionState(id, 'hover', true);
+          }
+          if (isGroupParent) {
+            setInteractionState(id, 'group-hover', true);
+          }
+        };
+
+        handlers.onPressOut = function (event) {
+          if (ref.current.onPressOut) {
+            ref.current.onPressOut(event);
+          }
+          if (isGroupParent) {
+            setInteractionState(id, 'group-hover', false);
+          }
+          if (hasPointerInteractions) {
+            setInteractionState(id, 'hover', false);
+          }
+        };
+      } else {
+        handlers.onTouchStart = function (event) {
+          if (ref.current.onTouchStart) {
+            ref.current.onTouchStart(event);
+          }
+          if (hasPointerInteractions) {
+            setInteractionState(id, 'hover', true);
+          }
+          if (isGroupParent) {
+            setInteractionState(id, 'group-hover', true);
+          }
+        };
+
+        handlers.onTouchEnd = function (event) {
+          if (ref.current.onTouchEnd) {
+            ref.current.onTouchEnd(event);
+          }
+          if (isGroupParent) {
+            setInteractionState(id, 'group-hover', false);
+          }
+          if (hasPointerInteractions) {
+            setInteractionState(id, 'hover', false);
+          }
+        };
+      }
     }
     return handlers;
   }, [id, isGroupParent, hasGroupInteractions, hasPointerInteractions]);

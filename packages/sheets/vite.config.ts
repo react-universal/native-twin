@@ -37,7 +37,9 @@ export default defineConfig({
         'immer',
         '@universal-labs/core',
         'use-sync-external-store/shim',
+        'react-native-uuid',
         'use-sync-external-store',
+        'tailwindest',
         'use-sync-external-store/shim/with-selector',
         '@universal-labs/core/tailwind/preset',
       ],
@@ -47,6 +49,7 @@ export default defineConfig({
         extend: true,
         externalImportAssertions: true,
         globals: {
+          tailwindest: 'tailwindest',
           immer: 'Immer',
           'css-to-react-native': 'cssToReactNative',
           'react-native': 'ReactNative',

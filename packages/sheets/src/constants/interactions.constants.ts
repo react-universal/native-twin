@@ -1,7 +1,6 @@
-const InteractionPseudoSelectors = [
-  'hover',
-  'active',
-  'focus',
+const InteractionPseudoSelectors = ['hover', 'active', 'focus'] as const;
+
+const GroupInteractionPseudoSelectors = [
   'group-hover',
   'group-focus',
   'group-active',
@@ -18,9 +17,11 @@ export {
   AppearancePseudoSelectors,
   PlatformPseudoSelectors,
   ChildPseudoSelectors,
+  GroupInteractionPseudoSelectors,
 };
 
-export type TValidInteractionPseudoSelectors = (typeof InteractionPseudoSelectors)[number];
-export type TValidAppearancePseudoSelectors = (typeof AppearancePseudoSelectors)[number];
-export type TValidChildPseudoSelectors = (typeof ChildPseudoSelectors)[number];
-export type TValidPlatformPseudoSelectors = (typeof PlatformPseudoSelectors)[number];
+export type ValidInteractionPseudoSelector = (typeof InteractionPseudoSelectors)[number];
+export type ValidAppearancePseudoSelector = (typeof AppearancePseudoSelectors)[number];
+export type ValidChildPseudoSelector = (typeof ChildPseudoSelectors)[number];
+export type ValidPlatformPseudoSelector = (typeof PlatformPseudoSelectors)[number];
+export type ValidGroupPseudoSelector = (typeof GroupInteractionPseudoSelectors)[number];

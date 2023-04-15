@@ -1,10 +1,3 @@
-import type {
-  TValidAppearancePseudoSelectors,
-  TValidChildPseudoSelectors,
-  TValidInteractionPseudoSelectors,
-  TValidPlatformPseudoSelectors,
-} from '../constants';
-import type { IStyleType } from '../types';
 import type ComponentNode from './ComponentNode';
 
 function createStore<StoreShape>(initialState: StoreShape) {
@@ -32,51 +25,12 @@ function createStore<StoreShape>(initialState: StoreShape) {
   };
 }
 
-type TStylesRegistry = Map<string, IStyleType>;
-
-export interface IRegisterComponentStore {
-  parentID?: string;
-  groupID?: string;
-  id: string;
-  styledProps?: {
-    [key: string]: IComponentsStyleSheets;
-  };
-  // rebuildStyleSheet: void;
-  classNames: string;
-  meta: {
-    isFirstChild: boolean;
-    isLastChild: boolean;
-    nthChild: number;
-    hasGroupInteractions: boolean;
-    isGroupParent: boolean;
-    hasPointerInteractions: boolean;
-    parentID?: string;
-    groupID?: string;
-  };
-  styleSheet: IComponentsStyleSheets;
-  interactionsState: Record<TValidInteractionPseudoSelectors, boolean>;
+interface IStoreRegistryRecord<T> {
+  [k: string]: T;
 }
-type TComponentsRegistry = Map<string, ComponentNode>;
-
-export type IComponentsStyleSheets = {
-  styles: IStyleType[];
-  classNamesSet: string[];
-  interactionStyles: [TValidInteractionPseudoSelectors, IStyleType][];
-  platformStyles: [TValidPlatformPseudoSelectors, IStyleType][];
-  appearanceStyles: [TValidAppearancePseudoSelectors, IStyleType][];
-  childStyles: [TValidChildPseudoSelectors, IStyleType][];
-  getChildStyles(input: {
-    isFirstChild: boolean;
-    isLastChild: boolean;
-    nthChild: number;
-  }): IStyleType[];
-};
 
 const globalStore = createStore({
-  componentsRegistry: new Map() as TComponentsRegistry,
-  stylesRegistry: new Map() as TStylesRegistry,
-  componentStylesRegistry: new Map<number, IComponentsStyleSheets>(),
-  processedClasses: new Set<string>(),
+  componentsRegistry: {} as IStoreRegistryRecord<ComponentNode>,
 });
 
 export { globalStore };

@@ -39,6 +39,7 @@ export default defineConfig({
         'react',
         'react-native',
         'react-native-web',
+        'react-is',
         'react/jsx-runtime',
         '@universal-labs/stylesheets',
         'tailwind-merge',

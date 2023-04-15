@@ -32,7 +32,7 @@
       "require": "./tailwind/preset.js"
     }
   },
-  "main": "./build/index.cjs.js",
+  "main": "./build/index.es.js",
   "module": "./build/index.es.js",
   "types": "./index.d.ts",
   "files": [
@@ -45,6 +45,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
+    "build:esbuild": "tsx build.ts",
     "build:libs": "npx vite build && yarn build:tailwind",
     "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
     "dev": "concurrently \"npx vite build -w\" \"npx vite build -c vite.tailwind.config.ts -w\"",
@@ -53,8 +54,13 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "postcss-css-variables": "^0.18.0",
+    "tailwindcss": "^3.2.4"
+  },
+  "devDependencies": {
     "@types/postcss-css-variables": "0.18.0",
-    "postcss-css-variables": "^0.18.0"
+    "@types/tailwindcss": "3.1.0",
+    "tsx": "3.12.6"
   },
   "publishConfig": {
     "access": "public",

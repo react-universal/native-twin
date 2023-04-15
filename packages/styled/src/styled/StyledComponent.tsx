@@ -1,19 +1,16 @@
-import { ComponentType, ForwardedRef, forwardRef, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import {
+  ComponentType,
+  ForwardedRef,
+  forwardRef,
+  ForwardRefExoticComponent,
+  RefAttributes,
+} from 'react';
 import type { StyledProps } from '@universal-labs/stylesheets';
 import { useBuildStyledComponent } from '../hooks/useBuildStyledComponent';
-import type { ForwardRef, InferRef } from '../types/styled.types';
 
-export function styled<T, P extends keyof T>(
+export function styled<T>(
   Component: ComponentType<T>,
-  styleClassProps?: P[],
-): ForwardRef<
-  InferRef<T>,
-  { [key in keyof T]: key extends P ? T[key] | string : T[key] } & {
-    className?: string;
-    tw?: string;
-  }
-> {
+): ForwardRefExoticComponent<RefAttributes<T>> {
   function Styled(
     {
       isFirstChild,
@@ -29,28 +26,8 @@ export function styled<T, P extends keyof T>(
     }: StyledProps<any>,
     ref: ForwardedRef<any>,
   ) {
-    const styledProps = useMemo(() => {
-      if (styleClassProps && styleClassProps?.length > 0) {
-        return styleClassProps.reduce((prev, current) => {
-          if (current in restProps) {
-            const originalProp = restProps[current];
-            if (typeof originalProp === 'string') {
-              prev[current] = originalProp;
-            }
-          }
-          return prev;
-        }, {} as Record<P, string>);
-      }
-      return {};
-    }, [restProps]);
-    const {
-      componentChilds,
-      componentInteractionHandlers,
-      focusHandlers,
-      composedStyles,
-      composedStyledProps,
-    } = useBuildStyledComponent(
-      {
+    const { componentChilds, componentInteractionHandlers, focusHandlers, componentStyles } =
+      useBuildStyledComponent({
         isFirstChild,
         isLastChild,
         nthChild,
@@ -60,19 +37,15 @@ export function styled<T, P extends keyof T>(
         parentID,
         style,
         tw,
-        ...styledProps,
-      },
-      // @ts-expect-error
-      styleClassProps,
-    );
+        ...restProps,
+      });
     return (
       <Component
-        style={StyleSheet.flatten([composedStyles])}
+        style={componentStyles}
         ref={ref}
-        {...componentInteractionHandlers}
         {...focusHandlers}
         {...restProps}
-        {...composedStyledProps}
+        {...componentInteractionHandlers}
       >
         {componentChilds}
       </Component>

@@ -1,19 +1,12 @@
 {
-  "extends": "../../tsconfig.base",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "importsNotUsedAsValues": "error",
-    "noImplicitAny": false,
     "lib": ["dom", "esnext", "dom.iterable"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
-    "checkJs": false,
     "stripInternal": true,
     "target": "esnext"
-  },
-  "include": ["src", "types.d.ts", "index.d.ts"],
-  "files": [],
-  "references": []
+  }
 }

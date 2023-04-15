@@ -3,10 +3,9 @@
     "name": "expo-app",
     "slug": "expo-app",
     "version": "1.0.0",
-    "jsEngine": "hermes",
+    "jsEngine": "jsc",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -19,10 +18,10 @@
       "**/*"
     ],
     "ios": {
-      "jsEngine": "jsc",
       "supportsTablet": true
     },
     "android": {
+      "jsEngine": "hermes",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

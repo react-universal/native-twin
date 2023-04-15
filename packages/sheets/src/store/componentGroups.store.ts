@@ -1,11 +1,11 @@
-import type { TValidInteractionPseudoSelectors } from '../constants';
+import type { ValidInteractionPseudoSelector } from '../constants';
 
 type SubscriptionsCallBack<T> = (currentState: T) => void;
 
 export interface IRegisterGroupStore {
   [k: string]: {
     parentID?: string;
-    interactionsState: Record<TValidInteractionPseudoSelectors, boolean>;
+    interactionsState: Record<ValidInteractionPseudoSelector, boolean>;
   };
 }
 
