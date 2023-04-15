@@ -21,10 +21,12 @@ export type StyledProps<P> = {
 
 export type ComponentStylesheet = {
   base: AnyStyle;
-  hover: AnyStyle;
-  focus: AnyStyle;
-  active: AnyStyle;
-  children: AnyStyle;
+  pointerStyles: AnyStyle;
+  first: AnyStyle;
+  last: AnyStyle;
+  odd: AnyStyle;
+  even: AnyStyle;
+  group: AnyStyle;
 };
 export type GeneratedAtomsStyle = {
   [k: string]: StyledObject;

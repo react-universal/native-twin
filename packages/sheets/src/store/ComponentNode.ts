@@ -4,6 +4,7 @@ import type { ValidGroupPseudoSelector, ValidInteractionPseudoSelector } from '.
 export interface ComponentNodeInput {
   componentID: string;
   stylesheetID: string;
+  groupID: string;
 }
 export default class ComponentNode {
   [immerable] = true;
@@ -19,8 +20,12 @@ export default class ComponentNode {
     focus: false,
     hover: false,
   };
+  groupID: string;
+  stylesheetID: string;
   constructor(input: ComponentNodeInput) {
     this.id = input.componentID;
+    this.groupID = input.groupID;
+    this.stylesheetID = input.stylesheetID;
     this.interactionsState = {
       'group-active': false,
       'group-focus': false,

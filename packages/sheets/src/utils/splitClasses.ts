@@ -55,7 +55,17 @@ export function extractClassesGroups(originalClasses: readonly string[]) {
   const pointerEventsClasses: string[] = [];
   const baseClasses: string[] = [];
   const platformClasses: string[] = [];
-  const childClasses: string[] = [];
+  const childClasses: {
+    first: string[];
+    last: string[];
+    even: string[];
+    odd: string[];
+  } = {
+    first: [],
+    last: [],
+    even: [],
+    odd: [],
+  };
   const appearanceClasses: string[] = [];
   const groupEventsClasses: string[] = [];
   for (const currentClass of originalClasses) {
@@ -70,7 +80,18 @@ export function extractClassesGroups(originalClasses: readonly string[]) {
         continue;
       }
       if (ChildPseudoSelectors.some((item) => item === data.pseudoSelector)) {
-        childClasses.push(currentClass);
+        if (data.pseudoSelector === 'first') {
+          childClasses.first.push(currentClass);
+        }
+        if (data.pseudoSelector === 'last') {
+          childClasses.last.push(currentClass);
+        }
+        if (data.pseudoSelector === 'even') {
+          childClasses.even.push(currentClass);
+        }
+        if (data.pseudoSelector === 'odd') {
+          childClasses.odd.push(currentClass);
+        }
         continue;
       }
       if (AppearancePseudoSelectors.some((item) => item === data.pseudoSelector)) {
@@ -90,7 +111,6 @@ export function extractClassesGroups(originalClasses: readonly string[]) {
     childClasses,
     appearanceClasses,
     groupEventsClasses,
-    originalClasses,
     pointerEventsClasses,
   };
 }

@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
-import type { Touchable } from 'react-native';
+import { StyleSheet, Touchable } from 'react-native';
 import {
   useComponentStyleSheets,
   StyledProps,
   createComponentID,
+  AnyStyle,
 } from '@universal-labs/stylesheets';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
-import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T>({
   className,
@@ -21,13 +21,11 @@ function useBuildStyledComponent<T>({
   tw,
   ...restProps
 }: StyledProps<T>) {
-  useRenderCounter();
-  console.time('useBuildStyledComponent');
   const componentID = useMemo(() => createComponentID() as string, []);
   const currentGroupID = useMemo(() => {
     return groupID ? groupID : parentID ?? 'non-group';
   }, [parentID, groupID]);
-  const { composedStyles, stylesheet } = useComponentStyleSheets({
+  const { stylesheet, component } = useComponentStyleSheets({
     groupID,
     className: className ?? tw,
     inlineStyles: style,
@@ -50,22 +48,35 @@ function useBuildStyledComponent<T>({
   const componentChilds = useChildren(
     children,
     componentID,
-    [],
-    () => [],
-    currentGroupID === 'non-group' ? groupID ?? parentID ?? '' : currentGroupID,
+    stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
+    stylesheet.getChildStyles,
   );
 
   const componentStyles = useMemo(() => {
-    const styles = stylesheet.create();
+    const sheet = stylesheet.create();
+    const styles: AnyStyle[] = [sheet.base];
+    if (
+      component.interactionsState.active ||
+      component.interactionsState.focus ||
+      component.interactionsState.hover
+    ) {
+      styles.push(sheet.pointerStyles);
+    }
+    if (
+      component.interactionsState['group-active'] ||
+      component.interactionsState['group-focus'] ||
+      component.interactionsState['group-hover']
+    ) {
+      styles.push(sheet.group);
+    }
     return styles;
-  }, [stylesheet]);
-  console.timeEnd('useBuildStyledComponent');
+  }, [stylesheet, component]);
+
   return {
     componentChilds,
     componentInteractionHandlers,
     focusHandlers,
-    composedStyles,
-    componentStyles,
+    componentStyles: StyleSheet.flatten([style, componentStyles]),
   };
 }
 

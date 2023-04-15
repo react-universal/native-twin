@@ -1,12 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { setup } from '@universal-labs/core';
 import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
-import type { CssInJs } from 'postcss-js';
 import type { Config } from 'tailwindcss';
 import type {
   AnyStyle,
   AtomStyle,
-  ComponentStylesheet,
   GeneratedAtomsStyle,
   GeneratedComponentsStyleSheet,
 } from '../types';
@@ -32,13 +30,18 @@ const atomsStyles: GeneratedAtomsStyle = {};
 
 export default class InlineStyleSheet {
   id: string;
+  originalClasses: readonly string[];
   classes: {
-    originalClasses: readonly string[];
     baseClasses: string[];
     pointerEventsClasses: string[];
     groupEventsClasses: string[];
     platformClasses: string[];
-    childClasses: string[];
+    childClasses: {
+      first: string[];
+      last: string[];
+      even: string[];
+      odd: string[];
+    };
     appearanceClasses: string[];
   };
 
@@ -54,42 +57,51 @@ export default class InlineStyleSheet {
   };
 
   constructor(public classNames?: string) {
-    const originalClassNamesArray = classNamesToArray(this.classNames);
+    this.originalClasses = classNamesToArray(this.classNames);
     this.id = generateComponentHashID(this.classNames ?? 'unstyled');
-    this.classes = extractClassesGroups(originalClassNamesArray);
+    this.classes = extractClassesGroups(this.originalClasses);
     if (this.classes.pointerEventsClasses.length > 0) {
       this.metadata.hasPointerEvents = true;
     }
     if (this.classes.groupEventsClasses.length > 0) {
       this.metadata.hasGroupEvents = true;
     }
-    if (originalClassNamesArray.includes('group')) {
+    if (this.originalClasses.includes('group')) {
       this.metadata.isGroupParent = true;
     }
+    this.getChildStyles = this.getChildStyles.bind(this);
   }
 
   create() {
     if (this.id in generatedComponentStylesheets) {
-      return generatedComponentStylesheets[this.id];
+      return generatedComponentStylesheets[this.id]!;
     }
-    const baseStyles = this.getStylesObject(css(this.classes.baseClasses.join(' ')));
+    generatedComponentStylesheets[this.id] = StyleSheet.create({
+      base: this.getStylesObject(this.classes.baseClasses),
+      pointerStyles: this.getStylesObject(this.classes.pointerEventsClasses),
+      first: this.getStylesObject(this.classes.childClasses.first),
+      last: this.getStylesObject(this.classes.childClasses.last),
+      even: this.getStylesObject(this.classes.childClasses.even),
+      odd: this.getStylesObject(this.classes.childClasses.odd),
+      group: this.getStylesObject(this.classes.groupEventsClasses),
+    });
 
-    return baseStyles;
+    return generatedComponentStylesheets[this.id]!;
   }
 
-  getStylesObject(CssInJS: CssInJs): AnyStyle {
+  getStylesObject(classes: string[]): AnyStyle {
     const result: AtomStyle = {};
-    for (const currentClass of Object.keys(CssInJS)) {
-      let cssProp = currentClass.replace('.', '');
-      cssProp = cssProp.replace(/\\/g, '');
-      if (cssProp in atomsStyles) {
-        Object.assign(result, atomsStyles[cssProp]);
+    for (const currentClass of classes) {
+      if (currentClass in atomsStyles) {
+        Object.assign(result, atomsStyles[currentClass]);
         continue;
       }
-      const styles = cssPropertiesResolver({
-        [cssProp]: CssInJS[currentClass],
-      });
-      Object.defineProperty(atomsStyles, cssProp, {
+      const compiledClass = css(currentClass);
+      if (Object.keys(compiledClass).length === 0) {
+        continue;
+      }
+      const styles = cssPropertiesResolver(compiledClass);
+      Object.defineProperty(atomsStyles, currentClass, {
         enumerable: true,
         configurable: true,
         writable: false,
@@ -100,13 +112,28 @@ export default class InlineStyleSheet {
     return result;
   }
 
-  generateStyleSheet() {
-    return StyleSheet.create<ComponentStylesheet>({
-      active: {},
-      base: {},
-      focus: {},
-      hover: {},
-      children: {},
-    });
+  public getChildStyles(input: {
+    isFirstChild: boolean;
+    isLastChild: boolean;
+    isEven: boolean;
+    isOdd: boolean;
+  }) {
+    const result: AnyStyle = {};
+    const styleSheet = generatedComponentStylesheets[this.id];
+    if (styleSheet) {
+      if (input.isFirstChild) {
+        Object.assign(result, styleSheet.first);
+      }
+      if (input.isLastChild) {
+        Object.assign(result, styleSheet.last);
+      }
+      if (input.isEven) {
+        Object.assign(result, styleSheet.even);
+      }
+      if (input.isOdd) {
+        Object.assign(result, styleSheet.odd);
+      }
+    }
+    return Object.freeze(result);
   }
 }

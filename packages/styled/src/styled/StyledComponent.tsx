@@ -5,7 +5,6 @@ import {
   ForwardRefExoticComponent,
   RefAttributes,
 } from 'react';
-import { StyleSheet } from 'react-native';
 import type { StyledProps } from '@universal-labs/stylesheets';
 import { useBuildStyledComponent } from '../hooks/useBuildStyledComponent';
 
@@ -42,7 +41,7 @@ export function styled<T>(
       });
     return (
       <Component
-        style={StyleSheet.flatten([componentStyles])}
+        style={componentStyles}
         ref={ref}
         {...focusHandlers}
         {...restProps}

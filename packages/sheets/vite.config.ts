@@ -37,6 +37,7 @@ export default defineConfig({
         'immer',
         '@universal-labs/core',
         'use-sync-external-store/shim',
+        'react-native-uuid',
         'use-sync-external-store',
         'tailwindest',
         'use-sync-external-store/shim/with-selector',

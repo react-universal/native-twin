@@ -32,7 +32,7 @@
       "require": "./tailwind/preset.js"
     }
   },
-  "main": "./build/index.cjs.js",
+  "main": "./build/index.es.js",
   "module": "./build/index.es.js",
   "types": "./index.d.ts",
   "files": [

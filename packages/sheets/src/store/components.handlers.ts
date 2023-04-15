@@ -1,5 +1,6 @@
 import { produce, enableMapSet } from 'immer';
 import type { ValidGroupPseudoSelector, ValidInteractionPseudoSelector } from '../constants';
+import { generatedComponentStylesheets } from '../stylesheet/Stylesheet';
 import type { StyledObject } from '../types';
 import ComponentNode, { ComponentNodeInput } from './ComponentNode';
 import { globalStore } from './global.store';
@@ -38,23 +39,21 @@ function setInteractionState(
   globalStore.setState(
     produce((prevState) => {
       prevState.componentsRegistry[id]!.interactionsState[interaction] = value;
-      // const currentComponent = prevState.componentsRegistry[id];
-      // if (
-      //   currentComponent &&
-      //   interaction === 'group-hover' &&
-      //   currentComponent.meta.isGroupParent
-      // ) {
-      //   for (const currentComponent of Object.values(prevState.componentsRegistry)) {
-      //     if (
-      //       currentComponent.meta.groupID !== '' &&
-      //       currentComponent.meta.groupID === currentComponent.meta.groupID &&
-      //       currentComponent.meta.hasGroupInteractions
-      //     ) {
-      //       prevState.componentsRegistry[currentComponent.id]!.interactionsState[interaction] =
-      //         value;
-      //     }
-      //   }
-      // }
+      const currentComponent = prevState.componentsRegistry[id];
+      if (currentComponent && interaction === 'group-hover') {
+        for (const lookupComponent of Object.values(prevState.componentsRegistry)) {
+          const sheet = generatedComponentStylesheets[lookupComponent.stylesheetID];
+          if (
+            sheet &&
+            lookupComponent.groupID !== '' &&
+            currentComponent.groupID === lookupComponent.groupID &&
+            Object.keys(sheet.group).length > 0
+          ) {
+            prevState.componentsRegistry[lookupComponent.id]!.interactionsState[interaction] =
+              value;
+          }
+        }
+      }
     }),
   );
   return true;

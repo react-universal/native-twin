@@ -4,10 +4,9 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "android": "expo start --android",
+    "android": "expo start --android -c",
     "ios": "expo start --ios -c",
-    "start": "expo start",
-    "web": "expo start --web"
+    "start": "expo start -c"
   },
   "dependencies": {
     "@react-navigation/drawer": "^6.6.0",

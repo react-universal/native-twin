@@ -57,5 +57,5 @@
     "directory": "_release/package"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./build/es/index.native.js"
+  "react-native": "./src/index.ts"
 }

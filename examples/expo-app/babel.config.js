@@ -2,7 +2,7 @@ module.exports = function (api) {
   api.cache(true);
   return {
     presets: [
-      ['babel-preset-expo', { jsxRuntime: 'automatic' }],
+      ['babel-preset-expo'],
       // [
       //   '@babel/preset-react',
       //   {
@@ -13,6 +13,6 @@ module.exports = function (api) {
       // ],
     ],
 
-    plugins: [['react-native-reanimated/plugin']],
+    plugins: ['@babel/plugin-proposal-numeric-separator', 'react-native-reanimated/plugin'],
   };
 };

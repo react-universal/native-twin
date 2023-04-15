@@ -14,7 +14,6 @@ const TextField = () => {
 };
 function HomeScreen() {
   const [active, setActive] = useState(false);
-  console.log('IS_ACTIVE: ', active);
   const nestedClass = useMemo(() => {
     return clsx(['font-inter-bold text-2xl'], [active ? 'text-red-800' : 'text-primary']);
   }, [active]);
