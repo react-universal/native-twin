@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.10.0
+
+### Minor Changes
+
+- [#74](https://github.com/react-universal/tailwind/pull/74) [`e03dc04`](https://github.com/react-universal/tailwind/commit/e03dc04b9ebb37a861fa0876f6bb8e21d105fdaf) Thanks [@chrisarts](https://github.com/chrisarts)! - selective render with fine-grained reactivity
+
 ## 1.9.3
 
 ### Patch Changes
