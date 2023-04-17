@@ -7,6 +7,7 @@ const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
 describe('TailwindCSS GAP', () => {
   it('gap', () => {
     const css = tw('gap-5');
+
     expect(css).toStrictEqual({
       '.gap-5': {
         gap: '20px',

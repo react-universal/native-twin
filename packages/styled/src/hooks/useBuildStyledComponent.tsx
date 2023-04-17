@@ -21,6 +21,7 @@ function useBuildStyledComponent<T>({
   tw,
   ...restProps
 }: StyledProps<T>) {
+  console.time('useBuildStyledComponent');
   const componentID = useMemo(() => createComponentID() as string, []);
   const currentGroupID = useMemo(() => {
     return groupID ? groupID : parentID ?? 'non-group';
@@ -71,6 +72,8 @@ function useBuildStyledComponent<T>({
     }
     return styles;
   }, [stylesheet, component]);
+
+  console.timeEnd('useBuildStyledComponent');
 
   return {
     componentChilds,

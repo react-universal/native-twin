@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { setup } from '@universal-labs/core';
+import { tailwindToCSS } from '@universal-labs/core';
 import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
 import type { Config } from 'tailwindcss';
 import type {
@@ -18,11 +18,25 @@ let currentTailwindConfig: Config = {
   presets: [reactNativeTailwindPreset({ baseRem: 16 })],
 };
 
-let css = setup(currentTailwindConfig);
+let css = tailwindToCSS({
+  config: currentTailwindConfig,
+  options: {
+    ignoreMediaQueries: false,
+    merge: false,
+    minify: false,
+  },
+});
 
 export function setTailwindConfig(config: Config) {
   currentTailwindConfig = config;
-  css = setup(config);
+  css = tailwindToCSS({
+    config,
+    options: {
+      ignoreMediaQueries: false,
+      merge: false,
+      minify: false,
+    },
+  });
 }
 
 export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
@@ -96,7 +110,7 @@ export default class InlineStyleSheet {
         Object.assign(result, atomsStyles[currentClass]);
         continue;
       }
-      const compiledClass = css(currentClass);
+      const compiledClass = css.twj(currentClass);
       if (Object.keys(compiledClass).length === 0) {
         continue;
       }
