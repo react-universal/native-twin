@@ -49,6 +49,6 @@ export default defineConfig({
         esModule: true,
       },
     },
-    emptyOutDir: true,
+    emptyOutDir: false,
   },
 });
