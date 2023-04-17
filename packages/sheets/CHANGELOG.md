@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.10.1
+
+### Patch Changes
+
+- [`ace1cb8`](https://github.com/react-universal/tailwind/commit/ace1cb8e3b6b5ed96d1da2f0ee62ffe6fd046c2c) Thanks [@chrisarts](https://github.com/chrisarts)! - fix types
+
+- Updated dependencies [[`ace1cb8`](https://github.com/react-universal/tailwind/commit/ace1cb8e3b6b5ed96d1da2f0ee62ffe6fd046c2c)]:
+  - @universal-labs/core@1.10.1
+
 ## 1.10.0
 
 ### Minor Changes
