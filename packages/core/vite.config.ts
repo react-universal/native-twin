@@ -1,29 +1,12 @@
 /// <reference types="vitest" />
 // Configure Vitest (https://vitest.dev/config/)
+import terser from '@rollup/plugin-terser';
 import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   test: {},
   plugins: [],
-  optimizeDeps: {
-    esbuildOptions: {
-      minify: true,
-      mainFields: ['module', 'main'],
-    },
-  },
-  esbuild: {
-    logLevel: 'info',
-    define: {
-      'process.env.DEBUG': 'undefined',
-      'process.env.JEST_WORKER_ID': '1',
-      __dirname: '"/"',
-    },
-    supported: {
-      'nullish-coalescing': false,
-      'optional-chain': false,
-    },
-  },
   build: {
     reportCompressedSize: true,
     chunkSizeWarningLimit: 300,
@@ -34,7 +17,21 @@ export default defineConfig({
       fileName: (format) => `index.${format}.js`,
       formats: ['cjs', 'es'],
     },
+    minify: 'terser',
+    terserOptions: {
+      ie8: true,
+      mangle: {
+        properties: {
+          debug: true,
+          keep_quoted: true,
+          regex: '1.5',
+        },
+      },
+      compress: true,
+      ecma: 2015,
+    },
     rollupOptions: {
+      plugins: [terser()],
       shimMissingExports: true,
       external: [
         'postcss',
@@ -49,8 +46,9 @@ export default defineConfig({
         dir: 'build',
         extend: true,
         externalImportAssertions: true,
+        esModule: true,
       },
     },
-    emptyOutDir: false,
+    emptyOutDir: true,
   },
 });

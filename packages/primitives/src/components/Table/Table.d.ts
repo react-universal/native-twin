@@ -1,0 +1,12 @@
+import { ComponentType } from 'react';
+import { ViewProps } from 'react-native';
+import { TextProps } from '../Text/Text.primitive';
+import { TableTextProps } from './Table.primitive';
+export declare const Table: ComponentType<ViewProps>;
+export declare const THead: ComponentType<ViewProps>;
+export declare const TBody: ComponentType<ViewProps>;
+export declare const TFoot: ComponentType<ViewProps>;
+export declare const TH: ComponentType<TableTextProps>;
+export declare const TR: ComponentType<ViewProps>;
+export declare const TD: ComponentType<TableTextProps>;
+export declare const Caption: ComponentType<TextProps>;

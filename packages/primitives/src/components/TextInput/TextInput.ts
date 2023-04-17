@@ -1,11 +1,6 @@
-import type { ComponentProps } from 'react';
 import { TextInput as NativeInput } from 'react-native';
 import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
 
-const TextInput = styled(NativeInput) as ForwardedStyledComponent<NativeInput>;
-
-type TextInputProps = ComponentProps<typeof NativeInput>;
-
-export type { TextInputProps };
+const TextInput = styled(NativeInput) as ForwardedStyledComponent<typeof NativeInput>;
 
 export default TextInput;

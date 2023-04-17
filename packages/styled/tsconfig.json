@@ -5,8 +5,9 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "declarationMap": false,
+    "outDir": "./build",
     "sourceMap": false,
-    "noEmit": true,
+    "noEmit": false,
     "types": ["node", "vitest/globals"],
     "importHelpers": true
   },

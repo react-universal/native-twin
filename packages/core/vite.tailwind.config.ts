@@ -12,9 +12,13 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/tailwind/preset/tailwind-preset.ts'),
       name: '@react-universal/core/tailwind/preset',
-      formats: ['cjs'],
+      formats: ['cjs', 'es'],
       fileName: (format, name) => `${name}.${format}.js`,
     },
+    terserOptions: {
+      mangle: false,
+    },
+    minify: 'terser',
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       external: ['postcss', 'postcss-js'],

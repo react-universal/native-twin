@@ -6,6 +6,7 @@
     "noUnusedLocals": true,
     "declarationMap": false,
     "sourceMap": false,
+    "noEmit": false,
     "types": ["node", "vitest/globals"],
     "importHelpers": true
   },

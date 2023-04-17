@@ -1,25 +1,29 @@
 import { ComponentType, forwardRef } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ViewProps } from 'react-native';
 import Text, { TextProps } from '../Text/Text.primitive';
-import { ViewProps, View } from '../View';
+import { View } from '../View';
 import { TableText, TableTextProps } from './Table.primitive';
 
 export const Table = forwardRef((props: ViewProps, ref) => {
+  // @ts-expect-error
   return <View {...props} ref={ref} />;
 }) as ComponentType<ViewProps>;
 Table.displayName = 'Table';
 
 export const THead = forwardRef((props: ViewProps, ref) => {
+  // @ts-expect-error
   return <View {...props} ref={ref} />;
 }) as ComponentType<ViewProps>;
 THead.displayName = 'THead';
 
 export const TBody = forwardRef((props: ViewProps, ref) => {
+  // @ts-expect-error
   return <View {...props} ref={ref} />;
 }) as ComponentType<ViewProps>;
 TBody.displayName = 'TBody';
 
 export const TFoot = forwardRef((props: ViewProps, ref) => {
+  // @ts-expect-error
   return <View {...props} ref={ref} />;
 }) as ComponentType<ViewProps>;
 TFoot.displayName = 'TFoot';
@@ -30,6 +34,7 @@ export const TH = forwardRef((props: TableTextProps, ref: any) => {
 TH.displayName = 'TH';
 
 export const TR = forwardRef((props: ViewProps, ref: any) => {
+  // @ts-expect-error
   return <View {...props} style={[styles.tr, props.style]} ref={ref} />;
 }) as ComponentType<ViewProps>;
 

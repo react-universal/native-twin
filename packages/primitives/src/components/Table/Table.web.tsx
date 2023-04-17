@@ -1,7 +1,7 @@
 import { ComponentType, forwardRef, ReactHTML } from 'react';
+import type { ViewProps } from 'react-native';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
-import type { ViewProps } from '../View';
 
 function createView(tag: keyof ReactHTML): ComponentType<ViewProps> {
   const Element = forwardRef((props: ViewProps, ref) => {

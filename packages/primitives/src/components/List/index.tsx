@@ -53,7 +53,7 @@ const PrimitiveLI = forwardRef((props: PropsWithChildren<LIProps>, ref: any) => 
 
 PrimitiveLI.displayName = 'LI';
 
-const UL = styled(PrimitiveUL) as ForwardedStyledComponent<View>;
-const LI = styled(PrimitiveLI) as ForwardedStyledComponent<View>;
+const UL = styled(PrimitiveUL) as ForwardedStyledComponent<typeof View>;
+const LI = styled(PrimitiveLI) as ForwardedStyledComponent<typeof View>;
 
 export { UL, LI };

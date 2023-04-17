@@ -4,6 +4,8 @@ import type { StyledProps } from '../types/styled.types';
 
 type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
   ? Props
+  : TComponent extends React.Component<infer Props>
+  ? Props
   : TComponent extends React.ComponentType<infer Props>
   ? Props
   : never;
@@ -14,7 +16,7 @@ export type ForwardedStyledComponent<Component> = ForwardRefExoticComponent<
 
 export function styled<T>(
   Component: ComponentType<T>,
-): ForwardedStyledComponent<typeof Component> {
+): ForwardRefExoticComponent<PropsFrom<typeof Component> & StyledProps<{}>> {
   function Styled(
     {
       isFirstChild,

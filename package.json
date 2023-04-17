@@ -51,6 +51,7 @@
     "@nrwl/eslint-plugin-nx": "15.8.7",
     "@nrwl/linter": "15.8.7",
     "@nrwl/nx-cloud": "latest",
+    "@rollup/plugin-terser": "^0.4.1",
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
