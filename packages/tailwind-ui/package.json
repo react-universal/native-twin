@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/tailwind-ui",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "private": true,
   "description": "Tailwind UI replica for react native",
   "keywords": [

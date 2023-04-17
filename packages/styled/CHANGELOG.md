@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.10.2
+
+### Patch Changes
+
+- [`ebb0763`](https://github.com/react-universal/tailwind/commit/ebb076358f374a2b7aefad4d6ca70ff31d0bf2e1) Thanks [@chrisarts](https://github.com/chrisarts)! - add build steps
+
+- Updated dependencies [[`ebb0763`](https://github.com/react-universal/tailwind/commit/ebb076358f374a2b7aefad4d6ca70ff31d0bf2e1)]:
+  - @universal-labs/stylesheets@1.10.2
+
 ## 1.10.1
 
 ### Patch Changes
