@@ -1,12 +1,22 @@
 import { describe, expect, it } from 'vitest';
-import { setup } from '../src';
-import { reactNativeTailwindPreset } from '../src/tailwind/preset/tailwind-preset';
+import { tailwindToCSS } from '../src';
+import { reactNativeTailwindPreset } from '../src/util/tailwind/preset/tailwind-preset';
 
-const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
+const { twj } = tailwindToCSS({
+  config: {
+    corePlugins: { preflight: false },
+    presets: [reactNativeTailwindPreset({ baseRem: 16 })],
+  },
+  options: {
+    ignoreMediaQueries: false,
+    merge: false,
+    minify: false,
+  },
+});
 
 describe('TailwindCSS layout', () => {
   it('Width', () => {
-    const css = tw('w-4');
+    const css = twj('w-4');
     expect(css).toStrictEqual({
       '.w-4': {
         width: '16px',
@@ -15,7 +25,7 @@ describe('TailwindCSS layout', () => {
   });
 
   it('Height', () => {
-    const css = tw('h-4');
+    const css = twj('h-4');
     expect(css).toStrictEqual({
       '.h-4': {
         height: '16px',

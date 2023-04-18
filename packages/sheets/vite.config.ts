@@ -8,6 +8,9 @@ export default defineConfig({
     env: {
       APP_ENV: 'test',
     },
+    deps: {
+      inline: ['react-native'],
+    },
   },
   plugins: [
     // Plugin for .d.ts files
