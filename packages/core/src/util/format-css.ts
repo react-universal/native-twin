@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 export const formatCSS = (css: string) => ({
   extractCSS(content: string, nested: boolean = false) {
     const propValueRegex = /(?:[\s\r\n]*)?(?<prop>[\w-]+)\s*:\s*(?<value>[^;\r\n]+)/gm;
@@ -16,19 +15,19 @@ export const formatCSS = (css: string) => ({
     );
   },
   merge() {
-    const blockContentRegex =
-      /(?<=\.)[^{]+\s*\{(?<content>[^{}]*(?:(?<=;)\s*\n\r?[^{}]*)*)\s*\}/gm;
-    let matchBlock: RegExpExecArray | null;
+    // const blockContentRegex =
+    //   /(?<=\.)[^{]+\s*\{(?<content>[^{}]*(?:(?<=;)\s*\n\r?[^{}]*)*)\s*\}/gm;
+    // let matchBlock: RegExpExecArray | null;
     let blockContent = '';
 
-    while ((matchBlock = blockContentRegex.exec(css)) !== null) {
-      const { content } = matchBlock.groups!;
-      blockContent += content;
-    }
+    // while ((matchBlock = blockContentRegex.exec(css)) !== null) {
+    //   const { content } = matchBlock.groups!;
+    //   blockContent += content;
+    // }
 
     let mergedCSS = this.extractCSS(blockContent);
 
-    const mediaRegex = /(?<media>@media\s*\([^\)]*\))\s*\{(?<content>[^\}]*)\}/gm;
+    const mediaRegex = /(?<media>@media\s*\([^)]*\))\s*\{(?<content>[^}]*)\}/gm;
     let matchMedia: RegExpExecArray | null;
     while ((matchMedia = mediaRegex.exec(css)) !== null) {
       const { media, content } = matchMedia.groups!;
@@ -111,7 +110,7 @@ export const formatCSS = (css: string) => ({
     return this;
   },
   removeMediaQueries() {
-    css = css.replace(/@media[^\{]+\{[^@]+\}/g, '');
+    css = css.replace(/@media[^{]+\{[^@]+\}/g, '');
 
     return this;
   },

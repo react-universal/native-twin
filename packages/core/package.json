@@ -22,9 +22,9 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/index.mjs.js",
-      "require": "./dist/index.js",
-      "browser": "./dist/cdn.min.js",
+      "import": "./build/index.mjs.js",
+      "require": "./build/index.js",
+      "browser": "./build/cdn.min.js",
       "types": "./tailwind.d.ts"
     },
     "./tailwind/preset": {
@@ -32,9 +32,9 @@
       "require": "./tailwind/preset.js"
     }
   },
-  "main": "./dist/index.mjs.js",
-  "unpkg": "./dist/cdn.min.js",
-  "module": "./dist/index.mjs.js",
+  "main": "./build/index.js",
+  "unpkg": "./build/cdn.min.js",
+  "module": "./build/index.mjs.js",
   "types": "./tailwind.d.ts",
   "files": [
     "build",
@@ -48,9 +48,9 @@
   ],
   "scripts": {
     "build:esbuild": "tsx src/build.ts",
-    "build:libs": "npx vite build && yarn build:tailwind",
+    "build:libs": "npx tsx src/build.ts && yarn build:tailwind",
     "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
-    "dev": "concurrently \"npx tsx src/build.ts -w\" \"npx vite build -c vite.tailwind.config.ts -w\"",
+    "dev": "concurrently \"npx tsx src/build.ts\" \"yarn build:tailwind -w\"",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",
     "test:ui": "vitest --ui"

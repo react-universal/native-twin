@@ -1,4 +1,10 @@
-import { ComponentType, ForwardedRef, forwardRef, ForwardRefExoticComponent } from 'react';
+import {
+  ComponentType,
+  createElement,
+  ForwardedRef,
+  forwardRef,
+  ForwardRefExoticComponent,
+} from 'react';
 import { useBuildStyledComponent } from '../hooks/useBuildStyledComponent';
 import type { StyledProps } from '../types/styled.types';
 
@@ -22,7 +28,6 @@ export function styled<T>(
       isFirstChild,
       isLastChild,
       nthChild,
-      children,
       className,
       groupID,
       parentID,
@@ -32,12 +37,11 @@ export function styled<T>(
     }: StyledProps<any>,
     ref: ForwardedRef<any>,
   ) {
-    const { componentChilds, componentInteractionHandlers, focusHandlers, componentStyles } =
+    const { componentInteractionHandlers, focusHandlers, componentStyles } =
       useBuildStyledComponent({
         isFirstChild,
         isLastChild,
         nthChild,
-        children,
         className,
         groupID,
         parentID,
@@ -45,17 +49,14 @@ export function styled<T>(
         tw,
         ...restProps,
       });
-    return (
-      <Component
-        style={componentStyles}
-        ref={ref}
-        {...focusHandlers}
-        {...restProps}
-        {...componentInteractionHandlers}
-      >
-        {componentChilds}
-      </Component>
-    );
+    // @ts-expect-error
+    return createElement(Component, {
+      style: componentStyles,
+      ref,
+      ...focusHandlers,
+      ...componentInteractionHandlers,
+      ...restProps,
+    });
   }
   Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
 

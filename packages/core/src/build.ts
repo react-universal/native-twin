@@ -64,7 +64,7 @@ const buildConfig: BuildOptions = {
           const result = await build({
             entryPoints: [path],
             minify: true,
-            logLevel: "silent",
+            logLevel: "debug",
             write: false,
           });
           return { contents: result.outputFiles[0].text, loader: "text" };
@@ -84,10 +84,14 @@ const buildConfig: BuildOptions = {
 build({
   entryPoints: { index: "src/builds/module.ts" },
   bundle: true,
-  minify: true,
+  minify: false,
   logLevel: "info",
-  outdir: "dist",
+  keepNames: true,
+  minifyIdentifiers: false,
+  mangleQuoted: false,
+  outdir: "build",
   format: "cjs",
+
   ...buildConfig,
 });
 
@@ -97,7 +101,7 @@ build({
   bundle: true,
   minify: true,
   logLevel: "info",
-  outdir: "dist",
+  outdir: "build",
   format: "esm",
   ...buildConfig,
 });
@@ -108,7 +112,7 @@ build({
   bundle: true,
   minify: true,
   logLevel: "info",
-  outdir: "dist",
+  outdir: "build",
   format: "iife",
   ...buildConfig,
 });

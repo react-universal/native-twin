@@ -1,16 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { tailwindToCSS } from '@universal-labs/core';
 import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
 import type { Config } from 'tailwindcss';
-import type {
-  AnyStyle,
-  AtomStyle,
-  GeneratedAtomsStyle,
-  GeneratedComponentsStyleSheet,
-} from '../types';
+import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
 import { cssPropertiesResolver } from '../utils';
 import { generateComponentHashID } from '../utils/hash';
-import { classNamesToArray, extractClassesGroups } from '../utils/splitClasses';
+import { classNamesToArray } from '../utils/splitClasses';
 
 let currentTailwindConfig: Config = {
   content: ['__'],
@@ -40,24 +35,10 @@ export function setTailwindConfig(config: Config) {
 }
 
 export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
-const atomsStyles: GeneratedAtomsStyle = {};
 
 export default class InlineStyleSheet {
   id: string;
   originalClasses: readonly string[];
-  classes: {
-    baseClasses: string[];
-    pointerEventsClasses: string[];
-    groupEventsClasses: string[];
-    platformClasses: string[];
-    childClasses: {
-      first: string[];
-      last: string[];
-      even: string[];
-      odd: string[];
-    };
-    appearanceClasses: string[];
-  };
 
   metadata = {
     parentID: '',
@@ -72,58 +53,82 @@ export default class InlineStyleSheet {
 
   constructor(public classNames?: string) {
     this.originalClasses = classNamesToArray(this.classNames);
-    this.id = generateComponentHashID(this.classNames ?? 'unstyled');
-    this.classes = extractClassesGroups(this.originalClasses);
-    if (this.classes.pointerEventsClasses.length > 0) {
-      this.metadata.hasPointerEvents = true;
-    }
-    if (this.classes.groupEventsClasses.length > 0) {
-      this.metadata.hasGroupEvents = true;
-    }
+    this.id = generateComponentHashID(this.originalClasses.join(' ') ?? 'unstyled');
     if (this.originalClasses.includes('group')) {
       this.metadata.isGroupParent = true;
     }
     this.getChildStyles = this.getChildStyles.bind(this);
-  }
 
-  create() {
-    if (this.id in generatedComponentStylesheets) {
-      return generatedComponentStylesheets[this.id]!;
+    const fullStyles = css.twj(this.originalClasses.join(' '));
+    const baseStyles: AnyStyle[] = [];
+    const pointerStyles: AnyStyle[] = [];
+    const groupStyles: AnyStyle[] = [];
+    const platformStyles: AnyStyle[] = [];
+    const childStyles = {
+      first: [] as AnyStyle[],
+      last: [] as AnyStyle[],
+      even: [] as AnyStyle[],
+      odd: [] as AnyStyle[],
+    };
+    for (const current of Object.keys(fullStyles)) {
+      if (
+        current.includes('.hover') ||
+        current.includes('.focus') ||
+        current.includes('.active')
+      ) {
+        pointerStyles.push(cssPropertiesResolver(fullStyles[current]));
+        this.metadata.hasPointerEvents = true;
+        continue;
+      }
+      if (
+        current.includes('.group-hover') ||
+        current.includes('.group-focus') ||
+        current.includes('.group-active')
+      ) {
+        groupStyles.push(cssPropertiesResolver(fullStyles[current]));
+        this.metadata.hasGroupEvents = true;
+        continue;
+      }
+      if (current.includes('.odd')) {
+        // childStyles.odd.push(cssPropertiesResolver(fullStyles[current]));
+        continue;
+      }
+      if (current.includes('.even')) {
+        // childStyles.even.push(cssPropertiesResolver(fullStyles[current]));
+        continue;
+      }
+      if (current.includes('.first')) {
+        // childStyles.first.push(cssPropertiesResolver(fullStyles[current]));
+        continue;
+      }
+      if (current.includes('.last')) {
+        // childStyles.last.push(cssPropertiesResolver(fullStyles[current]));
+        continue;
+      }
+      if (current.includes(`.${Platform.OS}`)) {
+        platformStyles.push(cssPropertiesResolver(fullStyles[current]));
+        continue;
+      }
+      if (!current.includes(':')) {
+        // If does not match any other then is a base style
+        baseStyles.push(cssPropertiesResolver(fullStyles[current]));
+      }
     }
-    generatedComponentStylesheets[this.id] = StyleSheet.create({
-      base: this.getStylesObject(this.classes.baseClasses),
-      pointerStyles: this.getStylesObject(this.classes.pointerEventsClasses),
-      first: this.getStylesObject(this.classes.childClasses.first),
-      last: this.getStylesObject(this.classes.childClasses.last),
-      even: this.getStylesObject(this.classes.childClasses.even),
-      odd: this.getStylesObject(this.classes.childClasses.odd),
-      group: this.getStylesObject(this.classes.groupEventsClasses),
-    });
-
-    return generatedComponentStylesheets[this.id]!;
-  }
-
-  getStylesObject(classes: string[]): AnyStyle {
-    const result: AtomStyle = {};
-    for (const currentClass of classes) {
-      if (currentClass in atomsStyles) {
-        Object.assign(result, atomsStyles[currentClass]);
-        continue;
-      }
-      const compiledClass = css.twj(currentClass);
-      if (Object.keys(compiledClass).length === 0) {
-        continue;
-      }
-      const styles = cssPropertiesResolver(compiledClass);
-      Object.defineProperty(atomsStyles, currentClass, {
-        enumerable: true,
-        configurable: true,
-        writable: false,
-        value: styles,
+    if (!generatedComponentStylesheets[this.id]) {
+      generatedComponentStylesheets[this.id] = StyleSheet.create({
+        base: StyleSheet.flatten(baseStyles),
+        pointerStyles: StyleSheet.flatten(pointerStyles),
+        first: StyleSheet.flatten(childStyles.first),
+        last: StyleSheet.flatten(childStyles.last),
+        even: StyleSheet.flatten(childStyles.even),
+        odd: StyleSheet.flatten(childStyles.odd),
+        group: StyleSheet.flatten(groupStyles),
       });
-      Object.assign(result, styles);
     }
-    return result;
+  }
+
+  getStyles() {
+    return generatedComponentStylesheets[this.id]!;
   }
 
   public getChildStyles(input: {

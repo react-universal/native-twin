@@ -1,15 +1,9 @@
+import { Platform } from 'react-native';
 import type {
   ValidAppearancePseudoSelector,
   ValidChildPseudoSelector,
   ValidInteractionPseudoSelector,
   ValidPlatformPseudoSelector,
-} from '../constants';
-import {
-  InteractionPseudoSelectors,
-  PlatformPseudoSelectors,
-  AppearancePseudoSelectors,
-  ChildPseudoSelectors,
-  GroupInteractionPseudoSelectors,
 } from '../constants';
 import { EMPTY_ARRAY } from '../constants/empties';
 
@@ -18,26 +12,22 @@ export function classNamesToArray(classNames?: string): readonly string[] {
     ?.replace(/\s+/g, ' ')
     .trim()
     .split(' ')
-    .filter(
-      (className) =>
-        className !== '' && className !== 'undefined' && typeof className !== 'undefined',
-    );
+    .filter((className) => {
+      if (className.includes('web:') && Platform.OS !== 'web') {
+        return false;
+      }
+      if (className.includes('native:') && Platform.OS === 'web') {
+        return false;
+      }
+      if (className.includes('android:') && Platform.OS !== 'android') {
+        return false;
+      }
+      if (className.includes('ios:') && Platform.OS !== 'ios') {
+        return false;
+      }
+      return className !== '' && className !== 'undefined' && typeof className !== 'undefined';
+    });
   return Object.freeze(rawClassNames ?? EMPTY_ARRAY);
-}
-
-export function extractClassNameData(className: string) {
-  if (className.includes(':')) {
-    const splittedClass = className.split(':');
-    const data = {
-      className: splittedClass[1] ?? '',
-      pseudoSelector: splittedClass[0] ?? '',
-    };
-    return data;
-  }
-  return {
-    className,
-    pseudoSelector: null,
-  };
 }
 
 export function getPseudoSelectorClassNames(
@@ -49,68 +39,4 @@ export function getPseudoSelectorClassNames(
     | ValidPlatformPseudoSelector,
 ) {
   return classNamesArray.filter((item) => item.includes(`${interaction}:`));
-}
-
-export function extractClassesGroups(originalClasses: readonly string[]) {
-  const pointerEventsClasses: string[] = [];
-  const baseClasses: string[] = [];
-  const platformClasses: string[] = [];
-  const childClasses: {
-    first: string[];
-    last: string[];
-    even: string[];
-    odd: string[];
-  } = {
-    first: [],
-    last: [],
-    even: [],
-    odd: [],
-  };
-  const appearanceClasses: string[] = [];
-  const groupEventsClasses: string[] = [];
-  for (const currentClass of originalClasses) {
-    const data = extractClassNameData(currentClass);
-    if (data.pseudoSelector) {
-      if (InteractionPseudoSelectors.some((item) => item === data.pseudoSelector)) {
-        pointerEventsClasses.push(currentClass);
-        continue;
-      }
-      if (PlatformPseudoSelectors.some((item) => item === data.pseudoSelector)) {
-        platformClasses.push(currentClass);
-        continue;
-      }
-      if (ChildPseudoSelectors.some((item) => item === data.pseudoSelector)) {
-        if (data.pseudoSelector === 'first') {
-          childClasses.first.push(currentClass);
-        }
-        if (data.pseudoSelector === 'last') {
-          childClasses.last.push(currentClass);
-        }
-        if (data.pseudoSelector === 'even') {
-          childClasses.even.push(currentClass);
-        }
-        if (data.pseudoSelector === 'odd') {
-          childClasses.odd.push(currentClass);
-        }
-        continue;
-      }
-      if (AppearancePseudoSelectors.some((item) => item === data.pseudoSelector)) {
-        appearanceClasses.push(currentClass);
-        continue;
-      }
-      if (GroupInteractionPseudoSelectors.some((item) => item === data.pseudoSelector)) {
-        groupEventsClasses.push(currentClass);
-        continue;
-      }
-    }
-    baseClasses.push(currentClass);
-  }
-  return {
-    baseClasses,
-    platformClasses,
-    childClasses,
-    appearanceClasses,
-    groupEventsClasses,
-    pointerEventsClasses,
-  };
 }

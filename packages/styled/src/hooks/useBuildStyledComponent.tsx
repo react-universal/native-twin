@@ -6,7 +6,6 @@ import {
   createComponentID,
   AnyStyle,
 } from '@universal-labs/stylesheets';
-import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 
 function useBuildStyledComponent<T>({
@@ -14,14 +13,12 @@ function useBuildStyledComponent<T>({
   isFirstChild,
   isLastChild,
   nthChild,
-  children,
   groupID,
   parentID,
   style,
   tw,
   ...restProps
 }: StyledProps<T>) {
-  console.time('useBuildStyledComponent');
   const componentID = useMemo(() => createComponentID() as string, []);
   const currentGroupID = useMemo(() => {
     return groupID ? groupID : parentID ?? 'non-group';
@@ -46,15 +43,8 @@ function useBuildStyledComponent<T>({
     id: componentID,
   });
 
-  const componentChilds = useChildren(
-    children,
-    componentID,
-    stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
-    stylesheet.getChildStyles,
-  );
-
   const componentStyles = useMemo(() => {
-    const sheet = stylesheet.create();
+    const sheet = stylesheet.getStyles();
     const styles: AnyStyle[] = [sheet.base];
     if (
       component.interactionsState.active ||
@@ -70,16 +60,13 @@ function useBuildStyledComponent<T>({
     ) {
       styles.push(sheet.group);
     }
-    return styles;
-  }, [stylesheet, component]);
-
-  console.timeEnd('useBuildStyledComponent');
+    return StyleSheet.flatten([style, styles]);
+  }, [component.interactionsState, stylesheet, style]);
 
   return {
-    componentChilds,
     componentInteractionHandlers,
     focusHandlers,
-    componentStyles: StyleSheet.flatten([style, componentStyles]),
+    componentStyles,
   };
 }
 
