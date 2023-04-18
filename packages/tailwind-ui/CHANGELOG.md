@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.10.3
+
+### Patch Changes
+
+- Updated dependencies [[`65cbb89`](https://github.com/react-universal/tailwind/commit/65cbb89eb34e9fc2495b25e595cd19426cfd7704)]:
+  - @universal-labs/primitives@1.11.0
+  - @universal-labs/core@1.11.0
+
 ## 1.10.2
 
 ### Patch Changes

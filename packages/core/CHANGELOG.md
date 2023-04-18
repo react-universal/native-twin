@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.11.0
+
+### Minor Changes
+
+- [#78](https://github.com/react-universal/tailwind/pull/78) [`65cbb89`](https://github.com/react-universal/tailwind/commit/65cbb89eb34e9fc2495b25e595cd19426cfd7704) Thanks [@chrisarts](https://github.com/chrisarts)! - performance fix for utility resolvers and css parser
+
 ## 1.10.2
 
 ### Patch Changes
