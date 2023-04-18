@@ -22,33 +22,35 @@
   },
   "exports": {
     ".": {
-      "import": "./build/index.es.js",
-      "require": "./build/index.cjs.js",
-      "browser": "./build/index.cjs.js",
-      "types": "./index.d.ts"
+      "import": "./build/index.mjs.js",
+      "require": "./build/index.js",
+      "browser": "./build/cdn.min.js",
+      "types": "./tailwind.d.ts"
     },
     "./tailwind/preset": {
       "import": "./tailwind/preset.js",
       "require": "./tailwind/preset.js"
     }
   },
-  "main": "./build/index.es.js",
-  "module": "./build/index.es.js",
-  "types": "./index.d.ts",
+  "main": "./build/index.js",
+  "unpkg": "./build/cdn.min.js",
+  "module": "./build/index.mjs.js",
+  "types": "./tailwind.d.ts",
   "files": [
     "build",
     "index.d.ts",
     "tailwind",
+    "tailwind.d.ts",
     "types.d.ts",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build:esbuild": "tsx build.ts",
-    "build:libs": "npx vite build && yarn build:tailwind",
+    "build:esbuild": "tsx src/build.ts",
+    "build:libs": "npx tsx src/build.ts && yarn build:tailwind",
     "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
-    "dev": "concurrently \"npx vite build -w\" \"npx vite build -c vite.tailwind.config.ts -w\"",
+    "dev": "concurrently \"npx tsx src/build.ts\" \"yarn build:tailwind -w\"",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",
     "test:ui": "vitest --ui"

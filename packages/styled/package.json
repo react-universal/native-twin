@@ -40,7 +40,7 @@
   "scripts": {
     "build:libs": "expo-module build -p tsconfig.build.json",
     "clean": "expo-module clean",
-    "dev": "vite build -w",
+    "dev": "expo-module build -p tsconfig.build.json -w",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",

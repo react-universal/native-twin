@@ -24,6 +24,7 @@
   "sideEffects": false,
   "main": "./build/index.umd",
   "module": "./build/index.es",
+  "source": "./src/index.ts",
   "types": "./build/index.d.ts",
   "files": [
     "build",

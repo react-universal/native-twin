@@ -1,12 +1,22 @@
 import { describe, expect, it } from 'vitest';
-import { setup } from '../src';
-import { reactNativeTailwindPreset } from '../src/tailwind/preset/tailwind-preset';
+import { tailwindToCSS } from '../src';
+import { reactNativeTailwindPreset } from '../src/util/tailwind/preset/tailwind-preset';
 
-const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
+const { twj } = tailwindToCSS({
+  config: {
+    corePlugins: { preflight: false },
+    presets: [reactNativeTailwindPreset({ baseRem: 16 })],
+  },
+  options: {
+    ignoreMediaQueries: false,
+    merge: false,
+    minify: false,
+  },
+});
 
 describe('TailwindCSS compiler', () => {
   it('Normal color', () => {
-    const css = tw('bg-black');
+    const css = twj('bg-black');
     expect(css).toStrictEqual({
       '.bg-black': {
         backgroundColor: '#000',
@@ -15,7 +25,7 @@ describe('TailwindCSS compiler', () => {
   });
 
   it('Color with opacity', () => {
-    const css = tw('bg-black/50');
+    const css = twj('bg-black/50');
     expect(css).toStrictEqual({
       '.bg-black\\/50': {
         backgroundColor: 'rgba(0,0,0,0.5)',
@@ -24,7 +34,7 @@ describe('TailwindCSS compiler', () => {
   });
 
   it('Translations', () => {
-    const css = tw('translate-x-8');
+    const css = twj('translate-x-8');
     expect(css).toStrictEqual({
       '.translate-x-8': {
         transform: 'translate(32px)',

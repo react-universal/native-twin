@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "lib": ["dom", "esnext", "dom.iterable"],
-    "module": "esnext",
+    "lib": ["dom", "ESNext","DOM.Iterable"],
+    "module": "ESNext",
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
     "stripInternal": true,
-    "target": "esnext"
+    "target": "ESNext"
   }
 }

@@ -37,7 +37,7 @@
   "scripts": {
     "build:libs": "expo-module build -p tsconfig.build.json",
     "clean": "expo-module clean",
-    "dev": "vite build -w",
+    "dev": "expo-module build -p tsconfig.build.json -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run -c vite.config.web.ts",
     "test:ui": "yarn vitest --ui"

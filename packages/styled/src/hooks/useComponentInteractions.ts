@@ -45,55 +45,29 @@ const useComponentInteractions = ({
   const componentInteractionHandlers = useMemo(() => {
     const handlers: Touchable & PressableProps = {};
     if (hasPointerInteractions || isGroupParent || hasGroupInteractions) {
-      if (ref.current.onPress) {
-        handlers.onPress = function (event) {
-          if (ref.current.onPress) {
-            ref.current.onPress(event);
-          }
-          if (hasPointerInteractions) {
-            setInteractionState(id, 'hover', true);
-          }
-          if (isGroupParent) {
-            setInteractionState(id, 'group-hover', true);
-          }
-        };
+      handlers.onTouchStart = function (event) {
+        if (ref.current.onTouchStart) {
+          ref.current.onTouchStart(event);
+        }
+        if (hasPointerInteractions) {
+          setInteractionState(id, 'hover', true);
+        }
+        if (isGroupParent) {
+          setInteractionState(id, 'group-hover', true);
+        }
+      };
 
-        handlers.onPressOut = function (event) {
-          if (ref.current.onPressOut) {
-            ref.current.onPressOut(event);
-          }
-          if (isGroupParent) {
-            setInteractionState(id, 'group-hover', false);
-          }
-          if (hasPointerInteractions) {
-            setInteractionState(id, 'hover', false);
-          }
-        };
-      } else {
-        handlers.onTouchStart = function (event) {
-          if (ref.current.onTouchStart) {
-            ref.current.onTouchStart(event);
-          }
-          if (hasPointerInteractions) {
-            setInteractionState(id, 'hover', true);
-          }
-          if (isGroupParent) {
-            setInteractionState(id, 'group-hover', true);
-          }
-        };
-
-        handlers.onTouchEnd = function (event) {
-          if (ref.current.onTouchEnd) {
-            ref.current.onTouchEnd(event);
-          }
-          if (isGroupParent) {
-            setInteractionState(id, 'group-hover', false);
-          }
-          if (hasPointerInteractions) {
-            setInteractionState(id, 'hover', false);
-          }
-        };
-      }
+      handlers.onTouchEnd = function (event) {
+        if (ref.current.onTouchEnd) {
+          ref.current.onTouchEnd(event);
+        }
+        if (isGroupParent) {
+          setInteractionState(id, 'group-hover', false);
+        }
+        if (hasPointerInteractions) {
+          setInteractionState(id, 'hover', false);
+        }
+      };
     }
     return handlers;
   }, [id, isGroupParent, hasGroupInteractions, hasPointerInteractions]);

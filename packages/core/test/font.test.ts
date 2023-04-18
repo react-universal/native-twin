@@ -1,25 +1,32 @@
 import { describe, expect, it } from 'vitest';
-import { setup } from '../src';
-import { reactNativeTailwindPreset } from '../src/tailwind/preset/tailwind-preset';
+import { tailwindToCSS } from '../src';
+import { reactNativeTailwindPreset } from '../src/util/tailwind/preset/tailwind-preset';
 
-const tw = setup({
-  content: ['__'],
-  presets: [reactNativeTailwindPreset({ baseRem: 16 })],
-  theme: {
-    extend: {
-      fontFamily: {
-        inter: 'Inter-Regular',
-        'inter-bold': 'Inter-Bold',
-        'inter-medium': 'Inter-Medium',
-        sans: 'Inter-Regular',
+const { twj } = tailwindToCSS({
+  config: {
+    theme: {
+      extend: {
+        fontFamily: {
+          inter: 'Inter-Regular',
+          'inter-bold': 'Inter-Bold',
+          'inter-medium': 'Inter-Medium',
+          sans: 'Inter-Regular',
+        },
       },
     },
+    corePlugins: { preflight: false },
+    presets: [reactNativeTailwindPreset({ baseRem: 16 })],
+  },
+  options: {
+    ignoreMediaQueries: false,
+    merge: false,
+    minify: false,
   },
 });
 
 describe('TailwindCSS Font', () => {
   it('font-size', () => {
-    const css = tw('text-2xl');
+    const css = twj('text-2xl');
     expect(css).toStrictEqual({
       '.text-2xl': {
         fontSize: '24px',
@@ -29,7 +36,7 @@ describe('TailwindCSS Font', () => {
   });
 
   it('font-family', () => {
-    const css = tw('font-inter');
+    const css = twj('font-inter');
     expect(css).toStrictEqual({
       '.font-inter': {
         fontFamily: 'Inter-Regular',
@@ -38,7 +45,7 @@ describe('TailwindCSS Font', () => {
   });
 
   it('leading', () => {
-    const css = tw('leading-5');
+    const css = twj('leading-5');
     expect(css).toStrictEqual({
       '.leading-5': {
         lineHeight: '20px',

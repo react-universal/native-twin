@@ -1,8 +1,2 @@
-export {
-  cssPropertiesResolver,
-  parseClassNames,
-  splitClassNames,
-  getClassesForSelectors,
-  getComponentClassNameSet,
-} from './helpers';
+export { cssPropertiesResolver, getClassesForSelectors } from './helpers';
 export { isValidReactNativeStyle } from './validateStyle';

@@ -1,12 +1,23 @@
 import { describe, expect, it } from 'vitest';
-import { setup } from '../src';
-import { reactNativeTailwindPreset } from '../src/tailwind/preset/tailwind-preset';
+import { tailwindToCSS } from '../src';
+import { reactNativeTailwindPreset } from '../src/util/tailwind/preset/tailwind-preset';
 
-const tw = setup({ content: ['__'], presets: [reactNativeTailwindPreset()] });
+const { twj } = tailwindToCSS({
+  config: {
+    corePlugins: { preflight: false },
+    presets: [reactNativeTailwindPreset({ baseRem: 16 })],
+  },
+  options: {
+    ignoreMediaQueries: false,
+    merge: false,
+    minify: false,
+  },
+});
 
 describe('TailwindCSS GAP', () => {
   it('gap', () => {
-    const css = tw('gap-5');
+    const css = twj('gap-5');
+
     expect(css).toStrictEqual({
       '.gap-5': {
         gap: '20px',
@@ -15,7 +26,7 @@ describe('TailwindCSS GAP', () => {
   });
 
   it('gap-x', () => {
-    const css = tw('gap-x-5');
+    const css = twj('gap-x-5');
     expect(css).toStrictEqual({
       '.gap-x-5': {
         columnGap: '20px',
@@ -24,7 +35,7 @@ describe('TailwindCSS GAP', () => {
   });
 
   it('gap-y', () => {
-    const css = tw('gap-y-5');
+    const css = twj('gap-y-5');
     expect(css).toStrictEqual({
       '.gap-y-5': {
         rowGap: '20px',
