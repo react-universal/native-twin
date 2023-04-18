@@ -52,7 +52,8 @@ export default class InlineStyleSheet {
   };
 
   constructor(public classNames?: string) {
-    this.originalClasses = classNamesToArray(this.classNames);
+    const splittedClasses = classNamesToArray(this.classNames);
+    this.originalClasses = Object.freeze(splittedClasses);
     this.id = generateComponentHashID(this.originalClasses.join(' ') ?? 'unstyled');
     if (this.originalClasses.includes('group')) {
       this.metadata.isGroupParent = true;

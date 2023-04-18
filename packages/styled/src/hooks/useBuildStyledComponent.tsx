@@ -19,6 +19,7 @@ function useBuildStyledComponent<T>({
   tw,
   ...restProps
 }: StyledProps<T>) {
+  // console.time('useBuildStyledComponent');
   const componentID = useMemo(() => createComponentID() as string, []);
   const currentGroupID = useMemo(() => {
     return groupID ? groupID : parentID ?? 'non-group';
@@ -62,6 +63,8 @@ function useBuildStyledComponent<T>({
     }
     return StyleSheet.flatten([style, styles]);
   }, [component.interactionsState, stylesheet, style]);
+
+  // console.timeEnd('useBuildStyledComponent');
 
   return {
     componentInteractionHandlers,

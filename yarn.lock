@@ -7004,7 +7004,6 @@ __metadata:
     css-to-react-native: ^3.1.0
     immer: 9.0.21
     react-native-uuid: ^2.0.1
-    tailwindest: 1.1.0
     use-sync-external-store: ^1.2.0
     vitest: ^0.28.3
   languageName: unknown
@@ -22105,13 +22104,6 @@ __metadata:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
   checksum: ec187d180c722ec4f57537f2216c7b21269b525f12aaf353cea464d939c3e6286a1221eb3e1206e45d1f015f296171309ad4d9952899b0245cd07d9500a9401f
-  languageName: node
-  linkType: hard
-
-"tailwindest@npm:1.1.0":
-  version: 1.1.0
-  resolution: "tailwindest@npm:1.1.0"
-  checksum: 344efbae25c6313ff8aab3f1c3c905b8973d682a4460de90186ba957620ae699fb3bd615619af7f46c7b6ee701b47c2d09e96f9b45d4bb1ea11b87ffb2760e68
   languageName: node
   linkType: hard
 
