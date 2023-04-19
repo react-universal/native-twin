@@ -27,7 +27,16 @@
     "strict": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@universal-labs/core": ["./packages/core/src/index.ts"],
+      "@universal-labs/stylesheets": ["./packages/stylesheets/src/index.ts"],
+      "@universal-labs/styled": ["./packages/styled/src/index.ts"],
+      "@universal-labs/primitives": ["./packages/primitives/src/index.ts"],
+      "@universal-labs/tailwind-ui": ["./packages/tailwind-ui/src/index.ts"],
+    },
   },
   "exclude": ["tmp", "node_modules", "**/build**"]
 }

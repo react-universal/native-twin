@@ -6,7 +6,9 @@ import {
   createComponentID,
   AnyStyle,
 } from '@universal-labs/stylesheets';
+import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
+import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T>({
   className,
@@ -17,9 +19,11 @@ function useBuildStyledComponent<T>({
   parentID,
   style,
   tw,
+  children,
   ...restProps
 }: StyledProps<T>) {
-  // console.time('useBuildStyledComponent');
+  useRenderCounter();
+  console.time('useBuildStyledComponent');
   const componentID = useMemo(() => createComponentID() as string, []);
   const currentGroupID = useMemo(() => {
     return groupID ? groupID : parentID ?? 'non-group';
@@ -44,6 +48,13 @@ function useBuildStyledComponent<T>({
     id: componentID,
   });
 
+  const componentChilds = useChildren(
+    children,
+    componentID,
+    stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
+    stylesheet.getChildStyles,
+  );
+
   const componentStyles = useMemo(() => {
     const sheet = stylesheet.getStyles();
     const styles: AnyStyle[] = [sheet.base];
@@ -62,14 +73,18 @@ function useBuildStyledComponent<T>({
       styles.push(sheet.group);
     }
     return StyleSheet.flatten([style, styles]);
-  }, [component.interactionsState, stylesheet, style]);
+  }, [component, stylesheet, style]);
 
-  // console.timeEnd('useBuildStyledComponent');
+  console.timeEnd('useBuildStyledComponent');
 
   return {
     componentInteractionHandlers,
     focusHandlers,
     componentStyles,
+    componentChilds,
+    groupID,
+    parentID,
+    component,
   };
 }
 

@@ -3,6 +3,11 @@ import { readdir, readFile } from 'fs/promises';
 import { parse } from 'path';
 import { fileURLToPath } from 'url';
 
+/*
+  This code was taken and adapted from tw-to-css
+
+*/
+
 const buildConfig: BuildOptions = {
   define: {
     'process.env.DEBUG': 'undefined',
@@ -27,8 +32,9 @@ const buildConfig: BuildOptions = {
     'react',
     'quick-lru',
     'postcss-nested',
+    'css-tree',
     'dlv',
-    'didyoumean'
+    'didyoumean',
   ],
   plugins: [
     {
@@ -106,13 +112,17 @@ const buildConfig: BuildOptions = {
 build({
   entryPoints: { index: 'src/builds/module.ts' },
   bundle: true,
-  minify: false,
+  minify: true,
   logLevel: 'info',
   keepNames: true,
   minifyIdentifiers: false,
   mangleQuoted: false,
   outdir: 'build',
   format: 'cjs',
+  allowOverwrite: true,
+  treeShaking: true,
+  platform: 'neutral',
+  watch: true,
   ...buildConfig,
 });
 

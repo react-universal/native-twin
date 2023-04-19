@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { H1, H2, Pressable, TextInput, View } from '@universal-labs/primitives';
+import { H1, H2, Image, Pressable, TextInput, View } from '@universal-labs/primitives';
 import clsx from 'clsx';
 
 const TextField = () => {
@@ -12,6 +12,9 @@ const TextField = () => {
     />
   );
 };
+
+const testImage = require('../../assets/favicon.png');
+
 function HomeScreen() {
   const [active, setActive] = useState(false);
   const nestedClass = useMemo(() => {
@@ -31,6 +34,11 @@ function HomeScreen() {
         >
           <H1 className='text-gray-200'>Activate</H1>
         </Pressable>
+        <Image
+          source={testImage}
+          resizeMode='cover'
+          className='overflow-hidden rounded-full border-8'
+        />
         <TextField />
         <View className='mb-2 translate-x-10 rounded-lg bg-slate-300 p-2 group-hover:bg-pink-800'>
           <H2

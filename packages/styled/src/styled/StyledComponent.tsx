@@ -33,11 +33,12 @@ export function styled<T>(
       parentID,
       style,
       tw,
+      children,
       ...restProps
     }: StyledProps<any>,
     ref: ForwardedRef<any>,
   ) {
-    const { componentInteractionHandlers, focusHandlers, componentStyles } =
+    const { componentInteractionHandlers, focusHandlers, componentStyles, componentChilds } =
       useBuildStyledComponent({
         isFirstChild,
         isLastChild,
@@ -47,16 +48,21 @@ export function styled<T>(
         parentID,
         style,
         tw,
+        children,
         ...restProps,
       });
-    // @ts-expect-error
-    return createElement(Component, {
-      style: componentStyles,
-      ref,
-      ...focusHandlers,
-      ...componentInteractionHandlers,
-      ...restProps,
-    });
+    return createElement(
+      // @ts-expect-error
+      Component,
+      {
+        style: componentStyles,
+        ref,
+        children: componentChilds,
+        ...focusHandlers,
+        ...componentInteractionHandlers,
+        ...restProps,
+      },
+    );
   }
   Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
 

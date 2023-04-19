@@ -17,10 +17,10 @@ function useChildren(
   const children = isFragment(componentChildren)
     ? componentChildren.props.children
     : componentChildren;
-  // if (totalChilds === 1) {
-  //   return children;
-  // }
   return useMemo(() => {
+    if (!children) {
+      return undefined;
+    }
     const totalChilds = Children.count(children);
     return Children.toArray(children)
       .filter(Boolean)

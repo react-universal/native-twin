@@ -6,6 +6,7 @@ import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
 import { cssPropertiesResolver } from '../utils';
 import { generateComponentHashID } from '../utils/hash';
 import { classNamesToArray } from '../utils/splitClasses';
+import SimpleLRU from './SimpleLRU';
 
 let currentTailwindConfig: Config = {
   content: ['__'],
@@ -33,6 +34,8 @@ export function setTailwindConfig(config: Config) {
     },
   });
 }
+
+const cache = new SimpleLRU(100);
 
 export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
 
@@ -155,5 +158,82 @@ export default class InlineStyleSheet {
       }
     }
     return Object.freeze(result);
+  }
+
+  getClassNameData(className: string) {
+    if (
+      className.includes('.hover') ||
+      className.includes('.focus') ||
+      className.includes('.active')
+    ) {
+      // pointerStyles.push(cssPropertiesResolver(fullStyles[current]));
+      // this.metadata.hasPointerEvents = true;
+      return {
+        kind: 'pointerEvent',
+        className,
+      };
+    }
+    if (
+      className.includes('.group-hover') ||
+      className.includes('.group-focus') ||
+      className.includes('.group-active')
+    ) {
+      // groupStyles.push(cssPropertiesResolver(fullStyles[current]));
+      this.metadata.hasGroupEvents = true;
+      return {
+        kind: 'group',
+        className,
+      };
+    }
+    if (className.includes('.odd')) {
+      // childStyles.odd.push(cssPropertiesResolver(fullStyles[current]));
+      return {
+        kind: 'odd',
+        className,
+      };
+    }
+    if (className.includes('.even')) {
+      // childStyles.even.push(cssPropertiesResolver(fullStyles[current]));
+      return {
+        kind: 'even',
+        className,
+      };
+    }
+    if (className.includes('.first')) {
+      // childStyles.first.push(cssPropertiesResolver(fullStyles[current]));
+      return {
+        kind: 'first',
+        className,
+      };
+    }
+    if (className.includes('.last')) {
+      // childStyles.last.push(cssPropertiesResolver(fullStyles[current]));
+      return {
+        kind: 'last',
+        className,
+      };
+    }
+    if (className.includes(`.${Platform.OS}`)) {
+      return {
+        kind: 'platform',
+        className,
+      };
+    }
+    if (!className.includes(':')) {
+      // If does not match any other then is a base style
+      return {
+        kind: 'base',
+        className,
+      };
+    }
+  }
+
+  parseClasses(...classes: string[]) {
+    classes.forEach((current) => {
+      const stored = cache.get(current);
+      if (stored) {
+        
+      }
+    });
   }
 }
