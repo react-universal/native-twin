@@ -4,6 +4,7 @@ import {
   setTailwindConfig as setTwindConfig,
 } from '@universal-labs/twind-native';
 import postcss from 'postcss';
+import calc from 'postcss-calc';
 import postcssVariables from 'postcss-css-variables';
 import postcssJs from 'postcss-js';
 // import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
@@ -253,7 +254,7 @@ export default class InlineStyleSheet {
 
 const toJSSObject = (cssText: string) => {
   // let root = postcss.parse(cssText);
-  const { root, css } = postcss([postcssVariables()]).process(cssText);
+  const { root, css } = postcss([postcssVariables()]).use(calc({})).process(cssText);
   return {
     object: postcssJs.objectify(root),
     css,

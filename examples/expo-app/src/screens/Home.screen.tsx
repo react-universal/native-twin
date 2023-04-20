@@ -22,7 +22,7 @@ function HomeScreen() {
       <View className='web:padding-2 flex-1 items-center justify-center bg-gray-800 align-top hover:bg-green-300'>
         <H1 className='font-inter-bold text-2xl text-gray-200 hover:text-gray-700'>H1 - 1</H1>
       </View>
-      <View className='group flex-[2] items-center justify-center border-t-8 border-t-indigo-50 bg-slate-800 hover:bg-pink-600'>
+      <View className='group -mt-[20px] flex-[2] items-center justify-center border-t-8 border-t-indigo-50 bg-slate-800 hover:bg-pink-600'>
         <H1
           className={clsx(
             ['font-inter-bold text-2xl'],
