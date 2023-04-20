@@ -38,9 +38,7 @@
   "scripts": {
     "build:esbuild": "tsx src/build.ts",
     "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest run",
-    "test:ui": "vitest --ui"
+    "lint": "eslint \"./**/*.{ts,tsx}\""
   },
   "devDependencies": {
     "@twind/core": "1.1.3",
