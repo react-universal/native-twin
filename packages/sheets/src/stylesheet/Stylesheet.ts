@@ -22,15 +22,18 @@ import { classNamesToArray } from '../utils/splitClasses';
 //   presets: [reactNativeTailwindPreset({ baseRem: 16 })],
 // };
 
-export function setTailwindConfig(config: Config) {
-  setTwindConfig({
-    colors: {
-      ...config.theme?.colors,
-      ...config.theme?.extend?.colors,
+export function setTailwindConfig(config: Config, baseRem = 16) {
+  setTwindConfig(
+    {
+      colors: {
+        ...config.theme?.colors,
+        ...config.theme?.extend?.colors,
+      },
+      // @ts-expect-error
+      fontFamily: { ...config.theme?.extend?.fontFamily },
     },
-    // @ts-expect-error
-    fontFamily: { ...config.theme?.extend?.fontFamily },
-  });
+    baseRem,
+  );
 }
 
 // const cache = new SimpleLRU(100);
