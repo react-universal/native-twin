@@ -79,6 +79,9 @@
       "**/dist/**": true,
       "**/build/**": true
     },
-    "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib"
+    "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib",
+    "cSpell.words": [
+      "ignorelist"
+    ]
   }
 }

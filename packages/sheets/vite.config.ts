@@ -31,7 +31,6 @@ export default defineConfig({
         'immer',
         'css-tree',
         '@universal-labs/core',
-        '@universal-labs/twind-native',
         'use-sync-external-store/shim',
         'react-native-uuid',
         'use-sync-external-store',

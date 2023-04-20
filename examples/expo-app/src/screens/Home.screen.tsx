@@ -18,7 +18,7 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(false);
   return (
-    <View className='flex-1'>
+    <View className='flex-1 odd:bg-white'>
       <View className='web:padding-2 flex-1 items-center justify-center bg-gray-800 align-top hover:bg-green-300'>
         <H1 className='font-inter-bold text-2xl text-gray-200 hover:text-gray-700'>H1 - 1</H1>
       </View>
@@ -41,13 +41,13 @@ function HomeScreen() {
         <Image
           source={testImage}
           resizeMode='cover'
-          className='overflow-hidden rounded-full border-8'
+          className='translate-x-2 overflow-hidden rounded-full border-8'
         />
         <TextField />
-        <View className='mb-2 rounded-lg bg-slate-300 p-2 group-hover:bg-pink-800'>
+        <View className='mb-2 -translate-x-2 rounded-lg bg-slate-300 p-2 group-hover:bg-pink-800'>
           <H2
             suppressHighlighting
-            className='font-inter-bold text-xl text-gray-800 group-hover:text-gray-300'
+            className='font-inter-bold text-xl leading-6 text-gray-800 group-hover:text-white'
           >
             Deeply nested hover
           </H2>

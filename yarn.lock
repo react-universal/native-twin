@@ -2521,6 +2521,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@config-plugins/android-jsc-intl@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@config-plugins/android-jsc-intl@npm:5.0.0"
+  peerDependencies:
+    expo: ^48
+  checksum: c4d4b5cf7e29cc1447667afbbd660766ae8291e810ea9170d5f096b9dca509c7c92f57dc85ba084d81da05864f01bedee13205fb9ca8df6b5885db61e2863ec4
+  languageName: node
+  linkType: hard
+
 "@discoveryjs/json-ext@npm:0.5.7":
   version: 0.5.7
   resolution: "@discoveryjs/json-ext@npm:0.5.7"
@@ -11949,6 +11958,7 @@ __metadata:
     "@babel/core": ^7.12.9
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": 7.18.6
+    "@config-plugins/android-jsc-intl": ^5.0.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": ^0.71.5
@@ -11958,6 +11968,7 @@ __metadata:
     expo: ^48.0.0
     expo-font: 11.1.1
     expo-status-bar: ~1.4.4
+    intl: 1.2.5
     postcss: ^8.4.21
     react: 18.2.0
     react-dom: 18.2.0
@@ -14111,6 +14122,13 @@ __metadata:
   version: 1.4.0
   resolution: "interpret@npm:1.4.0"
   checksum: 2e5f51268b5941e4a17e4ef0575bc91ed0ab5f8515e3cf77486f7c14d13f3010df9c0959f37063dcc96e78d12dc6b0bb1b9e111cdfe69771f4656d2993d36155
+  languageName: node
+  linkType: hard
+
+"intl@npm:1.2.5":
+  version: 1.2.5
+  resolution: "intl@npm:1.2.5"
+  checksum: 54c2444ec334b4e7f501c1b988ccfdae96d62a6275a915b9c75a38fc42d611bfc7dd33447e94079b7a8fdb3fbf36b95afd13132af4bfd70e2ec4bf9c9e0935f9
   languageName: node
   linkType: hard
 

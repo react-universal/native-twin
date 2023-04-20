@@ -52,7 +52,6 @@ function useBuildStyledComponent<T>({
     children,
     componentID,
     stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
-    stylesheet.metadata.isGroupParent,
     stylesheet.getChildStyles,
   );
 
@@ -73,8 +72,8 @@ function useBuildStyledComponent<T>({
     ) {
       styles.push(sheet.group);
     }
-    return StyleSheet.flatten([style, styles]);
-  }, [component, stylesheet, style]);
+    return StyleSheet.flatten([styles]);
+  }, [component, stylesheet]);
 
   return {
     componentInteractionHandlers,

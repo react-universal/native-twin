@@ -1,8 +1,15 @@
 import { Platform, StyleSheet } from 'react-native';
-import { transformClassNames, tw } from '@universal-labs/twind-native';
+import {
+  transformClassNames,
+  setTailwindConfig as setTwindConfig,
+} from '@universal-labs/twind-native';
+import postcss from 'postcss';
+import postcssVariables from 'postcss-css-variables';
+import postcssJs from 'postcss-js';
 // import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
 import type { Config } from 'tailwindcss';
 import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
+import { cssPropertiesResolver } from '../utils';
 import { generateComponentHashID } from '../utils/hash';
 import { classNamesToArray } from '../utils/splitClasses';
 
@@ -14,10 +21,15 @@ import { classNamesToArray } from '../utils/splitClasses';
 //   presets: [reactNativeTailwindPreset({ baseRem: 16 })],
 // };
 
-let currentTailwindConfig: Config = { content: ['__'] };
-
 export function setTailwindConfig(config: Config) {
-  currentTailwindConfig = config;
+  setTwindConfig({
+    colors: {
+      ...config.theme?.colors,
+      ...config.theme?.extend?.colors,
+    },
+    // @ts-expect-error
+    fontFamily: { ...config.theme?.extend?.fontFamily },
+  });
 }
 
 // const cache = new SimpleLRU(100);
@@ -57,71 +69,82 @@ export default class InlineStyleSheet {
       this.metadata.isGroupParent = true;
     }
     this.getChildStyles = this.getChildStyles.bind(this);
-    // TODO: Finalize test case
-    const baseStyles: AnyStyle[] = [];
-    const pointerStyles: AnyStyle[] = [];
-    const groupStyles: AnyStyle[] = [];
-    const platformStyles: AnyStyle[] = [];
-    const childStyles = {
-      first: [] as AnyStyle[],
-      last: [] as AnyStyle[],
-      even: [] as AnyStyle[],
-      odd: [] as AnyStyle[],
-    };
-    for (const current of splittedClasses) {
-      const fullStyles = transformClassNames(current) as any;
-      console.log('CURRENT_FULL: ', fullStyles);
-      if (
-        current.includes('hover') ||
-        current.includes('focus') ||
-        current.includes('active')
-      ) {
-        pointerStyles.push(fullStyles);
-        this.metadata.hasPointerEvents = true;
-        continue;
-      }
-      if (
-        current.includes('group-hover') ||
-        current.includes('group-focus') ||
-        current.includes('group-active')
-      ) {
-        groupStyles.push(fullStyles);
+    if (generatedComponentStylesheets[this.id]) {
+      this.styles = generatedComponentStylesheets[this.id]!;
+      if (Object.keys(this.styles.group).length > 0) {
         this.metadata.hasGroupEvents = true;
-        continue;
       }
-      if (current.includes('odd')) {
-        // childStyles.odd.push(fullStyles);
-        continue;
+      if (Object.keys(this.styles.pointerStyles).length > 0) {
+        this.metadata.hasPointerEvents = true;
       }
-      if (current.includes('even')) {
-        // childStyles.even.push(fullStyles);
-        continue;
+    } else {
+      const baseStyles: AnyStyle[] = [];
+      const pointerStyles: AnyStyle[] = [];
+      const groupStyles: AnyStyle[] = [];
+      const platformStyles: AnyStyle[] = [];
+      const childStyles = {
+        first: [] as AnyStyle[],
+        last: [] as AnyStyle[],
+        even: [] as AnyStyle[],
+        odd: [] as AnyStyle[],
+      };
+      const css = transformClassNames(...splittedClasses);
+      const JSS = toJSSObject(css);
+      for (const current of Object.entries(JSS.object)) {
+        const [className, styles] = current;
+        if (
+          className.includes('.hover') ||
+          className.includes('.focus') ||
+          className.includes('.active')
+        ) {
+          pointerStyles.push(cssPropertiesResolver(styles));
+          this.metadata.hasPointerEvents = true;
+          continue;
+        }
+        if (
+          className.includes('.group-hover') ||
+          className.includes('.group-focus') ||
+          className.includes('.group-active')
+        ) {
+          groupStyles.push(cssPropertiesResolver(styles));
+          this.metadata.hasGroupEvents = true;
+          continue;
+        }
+        if (className.includes('.odd')) {
+          childStyles.odd.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (className.includes('.even')) {
+          childStyles.even.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (className.includes('.first')) {
+          childStyles.first.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (className.includes('.last')) {
+          childStyles.last.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (className.includes(`.${Platform.OS}`)) {
+          platformStyles.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (!className.includes(':')) {
+          baseStyles.push(cssPropertiesResolver(styles));
+        }
       }
-      if (current.includes('first')) {
-        // childStyles.first.push(fullStyles);
-        continue;
-      }
-      if (current.includes('last')) {
-        // childStyles.last.push(fullStyles);
-        continue;
-      }
-      if (current.includes(`${Platform.OS}`)) {
-        platformStyles.push(fullStyles);
-        continue;
-      }
-      baseStyles.push(fullStyles);
+      this.styles = StyleSheet.create({
+        base: StyleSheet.flatten(baseStyles),
+        pointerStyles: StyleSheet.flatten(pointerStyles),
+        first: StyleSheet.flatten(childStyles.first),
+        last: StyleSheet.flatten(childStyles.last),
+        even: StyleSheet.flatten(childStyles.even),
+        odd: StyleSheet.flatten(childStyles.odd),
+        group: StyleSheet.flatten(groupStyles),
+      });
+      generatedComponentStylesheets[this.id] = this.styles;
     }
-    this.styles = StyleSheet.create({
-      base: StyleSheet.flatten(baseStyles),
-      pointerStyles: StyleSheet.flatten(pointerStyles),
-      first: StyleSheet.flatten(childStyles.first),
-      last: StyleSheet.flatten(childStyles.last),
-      even: StyleSheet.flatten(childStyles.even),
-      odd: StyleSheet.flatten(childStyles.odd),
-      group: StyleSheet.flatten(groupStyles),
-    });
-    console.log('STYLES: ', this.styles);
-    generatedComponentStylesheets[this.id] = this.styles;
   }
 
   getStyles() {
@@ -227,3 +250,12 @@ export default class InlineStyleSheet {
   //   });
   // }
 }
+
+const toJSSObject = (cssText: string) => {
+  // let root = postcss.parse(cssText);
+  const { root, css } = postcss([postcssVariables()]).process(cssText);
+  return {
+    object: postcssJs.objectify(root),
+    css,
+  };
+};
