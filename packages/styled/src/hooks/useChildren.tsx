@@ -1,10 +1,10 @@
-import { Children, cloneElement, isValidElement, useMemo } from 'react';
+import { Children, cloneElement, isValidElement, ReactNode, useMemo } from 'react';
 import { StyleProp, StyleSheet } from 'react-native';
 import type { AnyStyle } from '@universal-labs/stylesheets';
 import { isFragment } from 'react-is';
 
 function useChildren(
-  componentChildren: React.ReactNode,
+  componentChildren: ReactNode,
   componentID: string,
   groupID: string,
   getChildStyles: (input: {
@@ -17,14 +17,24 @@ function useChildren(
   const children = isFragment(componentChildren)
     ? componentChildren.props.children
     : componentChildren;
-  // if (totalChilds === 1) {
-  //   return children;
-  // }
   return useMemo(() => {
+    if (!children) {
+      return undefined;
+    }
     const totalChilds = Children.count(children);
+    if (totalChilds === 1) {
+      if (!isValidElement<{ style?: StyleProp<unknown> }>(children)) {
+        return children;
+      } else {
+        return cloneElement(children, {
+          parentID: componentID,
+          groupID,
+        } as Record<string, unknown>);
+      }
+    }
     return Children.toArray(children)
       .filter(Boolean)
-      .map((child, index) => {
+      .flatMap((child, index) => {
         if (!isValidElement<{ style?: StyleProp<unknown> }>(child)) {
           return child;
         }
@@ -38,27 +48,24 @@ function useChildren(
 
         if (!style || Object.keys(style).length === 0) {
           return cloneElement(child, {
-            // @ts-expect-error
             parentID: componentID,
             groupID,
-          });
+          } as Record<string, unknown>);
         }
         if (child.props.style) {
           return cloneElement(child, {
             style: StyleSheet.flatten([child.props.style, style]),
-            // @ts-expect-error
             parentID: componentID,
             groupID: groupID,
-          });
+          } as Record<string, unknown>);
         }
         return cloneElement(child, {
           style: StyleSheet.flatten(style),
-          // @ts-expect-error
           parentID: componentID,
           groupID: groupID,
-        });
+        } as Record<string, unknown>);
       });
-  }, [componentID, groupID, getChildStyles, children]);
+  }, [children, getChildStyles, groupID, componentID]);
 }
 
 export { useChildren };

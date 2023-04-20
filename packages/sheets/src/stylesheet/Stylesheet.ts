@@ -1,38 +1,38 @@
 import { Platform, StyleSheet } from 'react-native';
-import { tailwindToCSS } from '@universal-labs/core';
-import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
+import {
+  transformClassNames,
+  setTailwindConfig as setTwindConfig,
+} from '@universal-labs/twind-native';
+import postcss from 'postcss';
+import postcssVariables from 'postcss-css-variables';
+import postcssJs from 'postcss-js';
+// import { reactNativeTailwindPreset } from '@universal-labs/core/tailwind/preset';
 import type { Config } from 'tailwindcss';
 import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
 import { cssPropertiesResolver } from '../utils';
 import { generateComponentHashID } from '../utils/hash';
 import { classNamesToArray } from '../utils/splitClasses';
 
-let currentTailwindConfig: Config = {
-  content: ['__'],
-  corePlugins: { preflight: false },
-  presets: [reactNativeTailwindPreset({ baseRem: 16 })],
-};
+// import SimpleLRU from './SimpleLRU';
 
-let css = tailwindToCSS({
-  config: currentTailwindConfig,
-  options: {
-    ignoreMediaQueries: false,
-    merge: false,
-    minify: false,
-  },
-});
+// let currentTailwindConfig: Config = {
+//   content: ['__'],
+//   corePlugins: { preflight: false },
+//   presets: [reactNativeTailwindPreset({ baseRem: 16 })],
+// };
 
 export function setTailwindConfig(config: Config) {
-  currentTailwindConfig = config;
-  css = tailwindToCSS({
-    config,
-    options: {
-      ignoreMediaQueries: false,
-      merge: false,
-      minify: false,
+  setTwindConfig({
+    colors: {
+      ...config.theme?.colors,
+      ...config.theme?.extend?.colors,
     },
+    // @ts-expect-error
+    fontFamily: { ...config.theme?.extend?.fontFamily },
   });
 }
+
+// const cache = new SimpleLRU(100);
 
 export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
 
@@ -51,71 +51,90 @@ export default class InlineStyleSheet {
     hasGroupEvents: false,
   };
 
+  styles: {
+    base: AnyStyle;
+    pointerStyles: AnyStyle;
+    first: AnyStyle;
+    last: AnyStyle;
+    even: AnyStyle;
+    odd: AnyStyle;
+    group: AnyStyle;
+  };
+
   constructor(public classNames?: string) {
-    this.originalClasses = classNamesToArray(this.classNames);
+    const splittedClasses = classNamesToArray(this.classNames);
+    this.originalClasses = Object.freeze(splittedClasses);
     this.id = generateComponentHashID(this.originalClasses.join(' ') ?? 'unstyled');
     if (this.originalClasses.includes('group')) {
       this.metadata.isGroupParent = true;
     }
     this.getChildStyles = this.getChildStyles.bind(this);
-
-    const fullStyles = css.twj(this.originalClasses.join(' '));
-    const baseStyles: AnyStyle[] = [];
-    const pointerStyles: AnyStyle[] = [];
-    const groupStyles: AnyStyle[] = [];
-    const platformStyles: AnyStyle[] = [];
-    const childStyles = {
-      first: [] as AnyStyle[],
-      last: [] as AnyStyle[],
-      even: [] as AnyStyle[],
-      odd: [] as AnyStyle[],
-    };
-    for (const current of Object.keys(fullStyles)) {
-      if (
-        current.includes('.hover') ||
-        current.includes('.focus') ||
-        current.includes('.active')
-      ) {
-        pointerStyles.push(cssPropertiesResolver(fullStyles[current]));
-        this.metadata.hasPointerEvents = true;
-        continue;
-      }
-      if (
-        current.includes('.group-hover') ||
-        current.includes('.group-focus') ||
-        current.includes('.group-active')
-      ) {
-        groupStyles.push(cssPropertiesResolver(fullStyles[current]));
+    if (generatedComponentStylesheets[this.id]) {
+      this.styles = generatedComponentStylesheets[this.id]!;
+      if (Object.keys(this.styles.group).length > 0) {
         this.metadata.hasGroupEvents = true;
-        continue;
       }
-      if (current.includes('.odd')) {
-        // childStyles.odd.push(cssPropertiesResolver(fullStyles[current]));
-        continue;
+      if (Object.keys(this.styles.pointerStyles).length > 0) {
+        this.metadata.hasPointerEvents = true;
       }
-      if (current.includes('.even')) {
-        // childStyles.even.push(cssPropertiesResolver(fullStyles[current]));
-        continue;
+    } else {
+      const baseStyles: AnyStyle[] = [];
+      const pointerStyles: AnyStyle[] = [];
+      const groupStyles: AnyStyle[] = [];
+      const platformStyles: AnyStyle[] = [];
+      const childStyles = {
+        first: [] as AnyStyle[],
+        last: [] as AnyStyle[],
+        even: [] as AnyStyle[],
+        odd: [] as AnyStyle[],
+      };
+      const css = transformClassNames(...splittedClasses);
+      const JSS = toJSSObject(css);
+      for (const current of Object.entries(JSS.object)) {
+        const [className, styles] = current;
+        if (
+          className.includes('.hover') ||
+          className.includes('.focus') ||
+          className.includes('.active')
+        ) {
+          pointerStyles.push(cssPropertiesResolver(styles));
+          this.metadata.hasPointerEvents = true;
+          continue;
+        }
+        if (
+          className.includes('.group-hover') ||
+          className.includes('.group-focus') ||
+          className.includes('.group-active')
+        ) {
+          groupStyles.push(cssPropertiesResolver(styles));
+          this.metadata.hasGroupEvents = true;
+          continue;
+        }
+        if (className.includes('.odd')) {
+          childStyles.odd.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (className.includes('.even')) {
+          childStyles.even.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (className.includes('.first')) {
+          childStyles.first.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (className.includes('.last')) {
+          childStyles.last.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (className.includes(`.${Platform.OS}`)) {
+          platformStyles.push(cssPropertiesResolver(styles));
+          continue;
+        }
+        if (!className.includes(':')) {
+          baseStyles.push(cssPropertiesResolver(styles));
+        }
       }
-      if (current.includes('.first')) {
-        // childStyles.first.push(cssPropertiesResolver(fullStyles[current]));
-        continue;
-      }
-      if (current.includes('.last')) {
-        // childStyles.last.push(cssPropertiesResolver(fullStyles[current]));
-        continue;
-      }
-      if (current.includes(`.${Platform.OS}`)) {
-        platformStyles.push(cssPropertiesResolver(fullStyles[current]));
-        continue;
-      }
-      if (!current.includes(':')) {
-        // If does not match any other then is a base style
-        baseStyles.push(cssPropertiesResolver(fullStyles[current]));
-      }
-    }
-    if (!generatedComponentStylesheets[this.id]) {
-      generatedComponentStylesheets[this.id] = StyleSheet.create({
+      this.styles = StyleSheet.create({
         base: StyleSheet.flatten(baseStyles),
         pointerStyles: StyleSheet.flatten(pointerStyles),
         first: StyleSheet.flatten(childStyles.first),
@@ -124,6 +143,7 @@ export default class InlineStyleSheet {
         odd: StyleSheet.flatten(childStyles.odd),
         group: StyleSheet.flatten(groupStyles),
       });
+      generatedComponentStylesheets[this.id] = this.styles;
     }
   }
 
@@ -155,4 +175,87 @@ export default class InlineStyleSheet {
     }
     return Object.freeze(result);
   }
+
+  getClassNameData(className: string) {
+    if (
+      className.includes('hover') ||
+      className.includes('focus') ||
+      className.includes('active')
+    ) {
+      // pointerStyles.push(fullStyles);
+      // this.metadata.hasPointerEvents = true;
+      return {
+        kind: 'pointerEvent',
+        className,
+      };
+    }
+    if (
+      className.includes('group-hover') ||
+      className.includes('group-focus') ||
+      className.includes('group-active')
+    ) {
+      // groupStyles.push(fullStyles);
+      this.metadata.hasGroupEvents = true;
+      return {
+        kind: 'group',
+        className,
+      };
+    }
+    if (className.includes('odd')) {
+      // childStyles.odd.push(fullStyles);
+      return {
+        kind: 'odd',
+        className,
+      };
+    }
+    if (className.includes('even')) {
+      // childStyles.even.push(fullStyles);
+      return {
+        kind: 'even',
+        className,
+      };
+    }
+    if (className.includes('first')) {
+      // childStyles.first.push(fullStyles);
+      return {
+        kind: 'first',
+        className,
+      };
+    }
+    if (className.includes('last')) {
+      // childStyles.last.push(fullStyles);
+      return {
+        kind: 'last',
+        className,
+      };
+    }
+    if (className.includes(`.${Platform.OS}`)) {
+      return {
+        kind: 'platform',
+        className,
+      };
+    }
+    return {
+      kind: 'base',
+      className,
+    };
+  }
+
+  // parseClasses(...classes: string[]) {
+  //   classes.forEach((current) => {
+  //     const stored = cache.get(current);
+  //     if (stored) {
+
+  //     }
+  //   });
+  // }
 }
+
+const toJSSObject = (cssText: string) => {
+  // let root = postcss.parse(cssText);
+  const { root, css } = postcss([postcssVariables()]).process(cssText);
+  return {
+    object: postcssJs.objectify(root),
+    css,
+  };
+};

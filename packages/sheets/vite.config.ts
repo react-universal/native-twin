@@ -1,17 +1,8 @@
-/// <reference types="vitest" />
 import path from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  test: {
-    env: {
-      APP_ENV: 'test',
-    },
-    deps: {
-      inline: ['react-native'],
-    },
-  },
   plugins: [
     // Plugin for .d.ts files
     dts({
@@ -38,11 +29,11 @@ export default defineConfig({
         'react-native-web',
         'react',
         'immer',
+        'css-tree',
         '@universal-labs/core',
         'use-sync-external-store/shim',
         'react-native-uuid',
         'use-sync-external-store',
-        'tailwindest',
         'use-sync-external-store/shim/with-selector',
         '@universal-labs/core/tailwind/preset',
       ],
@@ -52,7 +43,6 @@ export default defineConfig({
         extend: true,
         externalImportAssertions: true,
         globals: {
-          tailwindest: 'tailwindest',
           immer: 'Immer',
           'css-to-react-native': 'cssToReactNative',
           'react-native': 'ReactNative',

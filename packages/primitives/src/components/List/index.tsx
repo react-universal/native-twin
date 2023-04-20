@@ -1,9 +1,9 @@
 import { ComponentType, forwardRef, PropsWithChildren } from 'react';
-import { Platform, TextProps, View, ViewProps } from 'react-native';
+import { Platform, View, ViewProps } from 'react-native';
 import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
-import Text from '../Text/Text.primitive';
+import Text, { TextProps } from '../Text/Text.primitive';
 
 function createUL(): ComponentType<ViewProps> {
   const nativeProps: any = Platform.select({
@@ -36,14 +36,14 @@ function isTextProps(props: any): props is TextProps {
 const PrimitiveUL = createUL();
 const PrimitiveLI = forwardRef((props: PropsWithChildren<LIProps>, ref: any) => {
   if (isTextProps(props)) {
-    // @ts-expect-error
+    // @ts-ignore
     const accessibilityRole: LIProps['accessibilityRole'] = Platform.select({
       web: 'listitem',
       default: props.accessibilityRole,
     });
     return <Text {...props} accessibilityRole={accessibilityRole} ref={ref} />;
   }
-  // @ts-expect-error
+  // @ts-ignore
   const accessibilityRole: LIProps['accessibilityRole'] = Platform.select({
     web: 'listitem',
     default: props.accessibilityRole,

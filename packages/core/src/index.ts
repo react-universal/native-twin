@@ -53,8 +53,8 @@ const tailwindInlineCSS: typeof types.tailwindInlineCSS =
 
     const defaultOptions = { merge: true, minify: true, ignoreMediaQueries: true };
     const twiOptions = { ...defaultOptions, ...mainOptions, ...options };
-
-    let css = formatCSS(getCSS(content, config));
+    const cssPayload = getCSS(content, config);
+    let css = formatCSS(cssPayload);
 
     if (twiOptions?.ignoreMediaQueries) {
       css.removeMediaQueries();

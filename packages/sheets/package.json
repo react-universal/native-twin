@@ -46,10 +46,11 @@
   },
   "dependencies": {
     "@universal-labs/core": "workspace:*",
+    "@universal-labs/twind-native": "workspace:*",
     "css-to-react-native": "^3.1.0",
+    "css-tree": "2.3.1",
     "immer": "9.0.21",
     "react-native-uuid": "^2.0.1",
-    "tailwindest": "1.1.0",
     "use-sync-external-store": "^1.2.0"
   },
   "devDependencies": {
