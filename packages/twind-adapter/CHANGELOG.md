@@ -1,5 +1,11 @@
 # @universal-labs/twind-native
 
+## 2.0.3
+
+### Patch Changes
+
+- [`531354d`](https://github.com/react-universal/tailwind/commit/531354d17aa053a39484e4f7519eeeb0cfa436ca) Thanks [@chrisarts](https://github.com/chrisarts)! - fix rem setup
+
 ## 2.0.2
 
 ### Patch Changes
