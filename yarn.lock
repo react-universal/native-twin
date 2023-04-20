@@ -5971,6 +5971,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@twind/core@patch:@twind/core@npm%3A1.1.3#./.yarn/patches/@twind-core-npm-1.1.3-62b4eeba21.patch::locator=universal-labs%40workspace%3A.":
+  version: 1.1.3
+  resolution: "@twind/core@patch:@twind/core@npm%3A1.1.3#./.yarn/patches/@twind-core-npm-1.1.3-62b4eeba21.patch::version=1.1.3&hash=6d104e&locator=universal-labs%40workspace%3A."
+  dependencies:
+    csstype: ^3.1.1
+  peerDependencies:
+    typescript: ^4.8.4
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 41cf546a073f14bb8218c3afc499398086c411304af36d95fc1280e0ee65826178630a8b8ff1f8d3ff649f5a60a37883ac7b8b676ef89895c84aac9175f08a8c
+  languageName: node
+  linkType: hard
+
 "@twind/preset-tailwind@npm:1.1.4":
   version: 1.1.4
   resolution: "@twind/preset-tailwind@npm:1.1.4"
@@ -23023,6 +23037,7 @@ __metadata:
     "@nrwl/nx-cloud": latest
     "@rollup/plugin-terser": ^0.4.1
     "@trivago/prettier-plugin-sort-imports": ^4.0.0
+    "@twind/core": 1.1.3
     "@types/node": 16.11.7
     "@types/postcss-js": ^4.0.0
     "@types/react-test-renderer": ^18.0.0
