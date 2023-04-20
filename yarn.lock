@@ -7033,7 +7033,6 @@ __metadata:
     "@types/react-dom": ~18.0.10
     "@types/react-native": ^0.71.5
     "@types/react-test-renderer": ^18.0.0
-    "@universal-labs/core": "workspace:*"
     "@universal-labs/primitives": "workspace:*"
     "@universal-labs/stylesheets": "workspace:*"
     class-variance-authority: 0.4.0

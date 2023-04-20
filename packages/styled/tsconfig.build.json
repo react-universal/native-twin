@@ -1,15 +1,10 @@
 {
-  "extends": "../../tsconfig.base",
+  "extends": "expo-module-scripts/tsconfig.base",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "declarationMap": false,
     "outDir": "./build",
-    "sourceMap": false,
-    "noEmit": false,
-    "importHelpers": true,
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["./src", "env.d.ts"],
+  "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/*"]
 }

@@ -122,7 +122,6 @@ build({
   allowOverwrite: true,
   treeShaking: true,
   platform: 'neutral',
-  watch: true,
   ...buildConfig,
 });
 
