@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.2
+
+### Patch Changes
+
+- [`b1e4edb`](https://github.com/react-universal/tailwind/commit/b1e4edbf4d6a1e982877e3fc4a32aca9b4d5e7fa) Thanks [@chrisarts](https://github.com/chrisarts)! - fix dynamic custom rem
+
+- Updated dependencies [[`b1e4edb`](https://github.com/react-universal/tailwind/commit/b1e4edbf4d6a1e982877e3fc4a32aca9b4d5e7fa)]:
+  - @universal-labs/stylesheets@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
