@@ -11,15 +11,13 @@ export default class SimpleLRU<T extends AnyStyle> {
   }
 
   get(key: string) {
-    if (this.cache.has(key)) {
-      return this.cache.get(key)!;
-    }
     if (this.previousCache.has(key)) {
       const value = this.previousCache.get(key)!;
       this.previousCache.delete(key);
       this.cache.set(key, value);
       return value;
     }
+    return this.cache.get(key)!;
   }
   set(key: string, value: T) {
     this.cache.set(key, value);

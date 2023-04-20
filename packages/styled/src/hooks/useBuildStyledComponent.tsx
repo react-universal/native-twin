@@ -8,7 +8,8 @@ import {
 } from '@universal-labs/stylesheets';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
-import { useRenderCounter } from './useRenderCounter';
+
+// import { useRenderCounter } from './useRenderCounter';
 
 function useBuildStyledComponent<T>({
   className,
@@ -22,8 +23,7 @@ function useBuildStyledComponent<T>({
   children,
   ...restProps
 }: StyledProps<T>) {
-  useRenderCounter();
-  console.time('useBuildStyledComponent');
+  // useRenderCounter();
   const componentID = useMemo(() => createComponentID() as string, []);
   const currentGroupID = useMemo(() => {
     return groupID ? groupID : parentID ?? 'non-group';
@@ -52,6 +52,7 @@ function useBuildStyledComponent<T>({
     children,
     componentID,
     stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
+    stylesheet.metadata.isGroupParent,
     stylesheet.getChildStyles,
   );
 
@@ -74,8 +75,6 @@ function useBuildStyledComponent<T>({
     }
     return StyleSheet.flatten([style, styles]);
   }, [component, stylesheet, style]);
-
-  console.timeEnd('useBuildStyledComponent');
 
   return {
     componentInteractionHandlers,

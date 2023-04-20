@@ -5,24 +5,16 @@
       "path": ".."
     },
     {
-      "name": "🚀 docs-page",
-      "path": "../apps/docs-page"
-    },
-    {
-      "name": "🚀 docusaurus",
-      "path": "../apps/docusaurus"
-    },
-    {
       "name": "expo-app",
       "path": "../examples/expo-app"
     },
     {
-      "name": "next-app",
-      "path": "../examples/next-app"
-    },
-    {
       "name": "📦 @universal-labs/core",
       "path": "../packages/core"
+    },
+    {
+      "name": "📦 @universal-labs/primitives",
+      "path": "../packages/primitives"
     },
     {
       "name": "📦 @universal-labs/stylesheets",
@@ -33,12 +25,8 @@
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @universal-labs/primitives",
-      "path": "../packages/primitives"
-    },
-    {
-      "name": "📦 @universal-labs/tailwind-ui",
-      "path": "../packages/tailwind-ui"
+      "name": "📦 @universal-labs/twind-native",
+      "path": "../packages/twind-adapter"
     }
   ],
   "settings": {

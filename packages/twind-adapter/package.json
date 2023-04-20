@@ -1,0 +1,56 @@
+{
+  "name": "@universal-labs/twind-native",
+  "version": "1.11.0",
+  "description": "Tailwindcss Inline StyleSheet generator for react native",
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "twind",
+    "twind-native",
+    "twind-native-plugin",
+    "twind-plugin",
+    "tailwind-plugin",
+    "react-native-web",
+    "universal-labs",
+    "react-native",
+    "react"
+  ],
+  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/tailwind",
+    "directory": "packages/twind-native"
+  },
+  "main": "./src/index.ts",
+  "files": [
+    "build",
+    "index.d.ts",
+    "tailwind",
+    "tailwind.d.ts",
+    "types.d.ts",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build:esbuild": "tsx src/build.ts",
+    "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "vitest run",
+    "test:ui": "vitest --ui"
+  },
+  "devDependencies": {
+    "@twind/core": "1.1.3",
+    "@twind/preset-tailwind": "1.1.4",
+    "css-to-react-native-transform": "2.0.0",
+    "tsx": "3.12.6"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
+  },
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+}
