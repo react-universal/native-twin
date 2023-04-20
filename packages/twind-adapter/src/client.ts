@@ -68,7 +68,10 @@ export let keyframes = /* #__PURE__ */ keyframes$.bind(tw);
 export let cx = /* #__PURE__ */ cx$.bind(tw);
 export { stringify };
 
-export const setTailwindConfig = (theme?: Twind['config']['theme']['extend']) => {
+export const setTailwindConfig = (
+  theme?: Twind['config']['theme']['extend'],
+  baseRem = 16,
+) => {
   // @ts-expect-error
   tw = twind(
     {
@@ -76,7 +79,7 @@ export const setTailwindConfig = (theme?: Twind['config']['theme']['extend']) =>
       preflight: false,
       presets: [
         presetTailwind({ disablePreflight: true }),
-        presetRemToPx({ baseRem: 16 }),
+        presetRemToPx({ baseRem }),
         presetReactNativeFlex(),
       ],
       theme: {
