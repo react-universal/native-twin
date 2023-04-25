@@ -5,13 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@adobe/css-tools@npm:4.3.0-beta.2":
-  version: 4.3.0-beta.2
-  resolution: "@adobe/css-tools@npm:4.3.0-beta.2"
-  checksum: e081dac09b49d854260a96d33afcbf58a9239bc9551f156f50837b75ff1ec02f69170bd91979786b14a4bbd33c7d195cdb20b4b8a1afee6d61cdf5946497bc14
-  languageName: node
-  linkType: hard
-
 "@algolia/autocomplete-core@npm:1.7.4":
   version: 1.7.4
   resolution: "@algolia/autocomplete-core@npm:1.7.4"
@@ -6947,18 +6940,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
   dependencies:
-    "@adobe/css-tools": 4.3.0-beta.2
     "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
     "@types/react-dom": ~18.0.10
     "@types/react-native": ^0.71.5
     "@types/use-sync-external-store": ^0.0.3
-    "@universal-labs/core": "workspace:*"
     "@universal-labs/twind-native": "workspace:*"
     css-to-react-native: ^3.1.0
     css-tree: 2.3.1
     immer: 9.0.21
-    postcss-calc: 8.2.4
     react-native-uuid: ^2.0.1
     use-sync-external-store: ^1.2.0
     vitest: ^0.28.3
@@ -18333,7 +18323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-calc@npm:8.2.4, postcss-calc@npm:^8.2.3":
+"postcss-calc@npm:^8.2.3":
   version: 8.2.4
   resolution: "postcss-calc@npm:8.2.4"
   dependencies:
