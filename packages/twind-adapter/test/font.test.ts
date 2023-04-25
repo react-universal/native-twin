@@ -27,7 +27,7 @@ describe('TailwindCSS Font', () => {
   });
 
   it('leading', () => {
-    const { css } = transformClassNames('leading-5');
+    const { css } = transformClassNames(...['leading-5']);
     expect(css).toStrictEqual('/*!dbgidc,y,leading-5*/.leading-5{line-height:20px}')
   });
 });
