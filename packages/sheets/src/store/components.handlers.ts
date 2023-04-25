@@ -1,6 +1,6 @@
 import { produce } from 'immer';
 import type { ValidGroupPseudoSelector, ValidInteractionPseudoSelector } from '../constants';
-import { generatedComponentStylesheets } from '../stylesheet/Stylesheet';
+import { generatedComponentStylesheets } from '../stylesheet/InlineStylesheet';
 import type { AnyStyle } from '../types';
 import ComponentNode, { ComponentNodeInput } from './ComponentNode';
 import { globalStore } from './global.store';
