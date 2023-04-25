@@ -25,7 +25,7 @@
   "main": "./build/index.umd",
   "module": "./build/index.es",
   "source": "./src/index.ts",
-  "types": "./build/index.d.ts",
+  "types": "./src/index.ts",
   "files": [
     "build",
     "env.d.ts",
@@ -37,7 +37,6 @@
   "scripts": {
     "build:libs": "vite build",
     "clean": "expo-module clean",
-    "dev": "vite build -w",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",
@@ -45,12 +44,10 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/core": "workspace:*",
     "@universal-labs/twind-native": "workspace:*",
     "css-to-react-native": "^3.1.0",
     "css-tree": "2.3.1",
     "immer": "9.0.21",
-    "postcss-calc": "8.2.4",
     "react-native-uuid": "^2.0.1",
     "use-sync-external-store": "^1.2.0"
   },

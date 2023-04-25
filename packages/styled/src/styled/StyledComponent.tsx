@@ -40,35 +40,39 @@ export function styled<T>(
   ) {
     // const date = new Date();
     // console.group(`Styled Component: ${Component.displayName || Component.name || 'NoName'}`);
-    // console.time('useBuildStyledComponent');
-    const { componentInteractionHandlers, focusHandlers, componentStyles, componentChilds } =
-      useBuildStyledComponent({
-        isFirstChild,
-        isLastChild,
-        nthChild,
-        className,
-        groupID,
-        parentID,
-        style,
-        tw,
-        children,
-        ...restProps,
-      });
+    console.time('useBuildStyledComponent');
+    const {
+      componentInteractionHandlers,
+      focusHandlers,
+      componentStyles,
+      componentChilds,
+      currentGroupID,
+    } = useBuildStyledComponent({
+      isFirstChild,
+      isLastChild,
+      nthChild,
+      className,
+      groupID,
+      parentID,
+      style,
+      tw,
+      children,
+      ...restProps,
+    });
     // console.debug('useBuildStyledComponent', new Date().getTime() - date.getTime());
-    // console.timeEnd('useBuildStyledComponent');
+    console.timeEnd('useBuildStyledComponent');
     // console.groupEnd();
-    return createElement(
-      // @ts-expect-error
-      Component,
-      {
-        style: componentStyles,
-        ref,
-        children: componentChilds,
-        ...focusHandlers,
-        ...componentInteractionHandlers,
-        ...restProps,
-      },
-    );
+    // @ts-ignore
+    return createElement(Component, {
+      style: componentStyles,
+      ref,
+      children: componentChilds,
+      parentID,
+      groupID: currentGroupID,
+      ...focusHandlers,
+      ...componentInteractionHandlers,
+      ...restProps,
+    });
   }
   Styled.displayName = `StyledTW.${Component.displayName || Component.name || 'NoName'}`;
 

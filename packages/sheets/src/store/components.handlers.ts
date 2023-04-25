@@ -1,13 +1,9 @@
-import { produce, enableMapSet } from 'immer';
+import { produce } from 'immer';
 import type { ValidGroupPseudoSelector, ValidInteractionPseudoSelector } from '../constants';
-import { generatedComponentStylesheets } from '../stylesheet/Stylesheet';
-import type { StyledObject } from '../types';
+import { generatedComponentStylesheets } from '../stylesheet/InlineStylesheet';
+import type { AnyStyle } from '../types';
 import ComponentNode, { ComponentNodeInput } from './ComponentNode';
 import { globalStore } from './global.store';
-
-// import { getStylesForClassProp } from './styles.handlers';
-
-enableMapSet();
 
 const registerComponentInStore = function (input: ComponentNodeInput) {
   if (input.componentID in globalStore.getState().componentsRegistry) {
@@ -23,7 +19,7 @@ const registerComponentInStore = function (input: ComponentNodeInput) {
 };
 
 function composeStylesForPseudoClasses<T extends string>(
-  styleTuples: [T, StyledObject][],
+  styleTuples: [T, AnyStyle][],
   pseudoSelector: T,
 ) {
   return styleTuples

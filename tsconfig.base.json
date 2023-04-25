@@ -1,9 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "ES2015",
-    "lib": ["dom", "esnext"],
-    "jsx": "react-jsx",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "sourceMap": true,
@@ -19,7 +16,6 @@
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "module": "esnext",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,

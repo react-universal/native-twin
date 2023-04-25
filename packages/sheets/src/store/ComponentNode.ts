@@ -1,4 +1,3 @@
-import { immerable } from 'immer';
 import type { ValidGroupPseudoSelector, ValidInteractionPseudoSelector } from '../constants';
 
 export interface ComponentNodeInput {
@@ -7,7 +6,6 @@ export interface ComponentNodeInput {
   groupID: string;
 }
 export default class ComponentNode {
-  [immerable] = true;
   id: string;
   interactionsState: Record<
     ValidInteractionPseudoSelector | ValidGroupPseudoSelector,
@@ -33,6 +31,17 @@ export default class ComponentNode {
       active: false,
       focus: false,
       hover: false,
+    };
+    this.setInteractionState = this.setInteractionState.bind(this);
+  }
+
+  setInteractionState(
+    interaction: ValidInteractionPseudoSelector | ValidGroupPseudoSelector,
+    value: boolean,
+  ) {
+    this.interactionsState = {
+      ...this.interactionsState,
+      [interaction]: value,
     };
   }
 }

@@ -5,10 +5,8 @@ import type {
   TextInputFocusEventData,
   PressableProps,
 } from 'react-native';
-import {
-  setInteractionState,
-  TValidInteractionPseudoSelectors,
-} from '@universal-labs/stylesheets';
+import { StoreManager } from '@universal-labs/stylesheets';
+import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;
@@ -16,10 +14,6 @@ interface UseComponentInteractionsArgs {
   isGroupParent: boolean;
   hasGroupInteractions: boolean;
   id: string;
-  setComponentInteractionState?(
-    interaction: TValidInteractionPseudoSelectors,
-    value: boolean,
-  ): boolean;
 }
 
 export interface InternalTouchable extends Touchable {
@@ -41,6 +35,15 @@ const useComponentInteractions = ({
         onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
       }
   >(props);
+
+  const setInteractionState = useSyncExternalStoreWithSelector(
+    StoreManager.subscribe,
+    () => StoreManager.setInteractionState,
+    () => StoreManager.setInteractionState,
+    (fn) => {
+      return fn;
+    },
+  );
 
   const componentInteractionHandlers = useMemo(() => {
     const handlers: Touchable & PressableProps = {};
@@ -70,7 +73,7 @@ const useComponentInteractions = ({
       };
     }
     return handlers;
-  }, [id, isGroupParent, hasGroupInteractions, hasPointerInteractions]);
+  }, [id, isGroupParent, hasGroupInteractions, hasPointerInteractions, setInteractionState]);
 
   const focusHandlers = useMemo(() => {
     const handlers: InternalTouchable = {};
@@ -79,13 +82,13 @@ const useComponentInteractions = ({
         if (ref.current.onFocus) {
           ref.current.onFocus(event);
         }
-        setInteractionState(id, 'focus', true);
+        StoreManager.setInteractionState(id, 'focus', true);
       };
       handlers.onBlur = function (event) {
         if (ref.current.onBlur) {
           ref.current.onBlur(event);
         }
-        setInteractionState(id, 'focus', false);
+        StoreManager.setInteractionState(id, 'focus', false);
       };
     }
     return handlers;
