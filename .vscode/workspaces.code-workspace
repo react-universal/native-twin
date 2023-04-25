@@ -5,24 +5,12 @@
       "path": ".."
     },
     {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
-    },
-    {
       "name": "📦 @universal-labs/core",
       "path": "../packages/core"
     },
     {
-      "name": "📦 @universal-labs/primitives",
-      "path": "../packages/primitives"
-    },
-    {
       "name": "📦 @universal-labs/stylesheets",
       "path": "../packages/sheets"
-    },
-    {
-      "name": "📦 @universal-labs/styled",
-      "path": "../packages/styled"
     },
     {
       "name": "📦 @universal-labs/twind-native",
@@ -50,7 +38,8 @@
       ".vscode",
       ".vscode-insiders",
       "**/app.json",
-      "**/apps/docusaurus"
+      "**/apps/docusaurus",
+      "**/packages/**/test"
     ],
     "tailwindCSS.experimental.classRegex": [
       ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
@@ -82,6 +71,7 @@
     "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib",
     "cSpell.words": [
       "ignorelist"
-    ]
+    ],
+    "testing.automaticallyOpenPeekView": "never"
   }
 }

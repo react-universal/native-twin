@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 const TextField = () => {
   const [text, setText] = useState('');
+  // console.log('Text Field RENDER');
   return (
     <TextInput
       value={text}

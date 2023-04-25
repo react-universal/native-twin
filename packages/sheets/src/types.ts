@@ -5,7 +5,6 @@ import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 export type AnyStyle = ImageStyle | TextStyle | ViewStyle;
 export type AtomStyle = { [k: string]: AnyStyle };
 export type ComponentStyleProp = StyleProp<AnyStyle>;
-export type StyledObject = Record<string, AnyStyle>;
 
 export type StyledProps<P> = {
   className?: string;
@@ -15,7 +14,7 @@ export type StyledProps<P> = {
   isLastChild: boolean;
   parentID?: string;
   children?: ReactNode;
-  style?: StyledObject;
+  style?: AnyStyle;
   groupID?: string;
 } & P;
 
@@ -29,7 +28,7 @@ export type ComponentStylesheet = {
   group: AnyStyle;
 };
 export type GeneratedAtomsStyle = {
-  [k: string]: StyledObject;
+  [k: string]: AnyStyle;
 };
 export type GeneratedComponentsStyleSheet = {
   [k: string]: ComponentStylesheet;
@@ -37,7 +36,7 @@ export type GeneratedComponentsStyleSheet = {
 
 export interface IUseStyleSheetsInput
   extends StyledProps<{
-    inlineStyles?: StyledObject;
+    inlineStyles?: AnyStyle;
     classPropsTuple?: [string, string][];
     componentID: string;
     currentGroupID: string;

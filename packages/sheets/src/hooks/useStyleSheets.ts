@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
-import { registerComponentInStore } from '../store/components.handlers';
-import { globalStore } from '../store/global.store';
+import { store } from '../store-manager/StoreManager';
+import ComponentNode from '../store/ComponentNode';
 import InlineStyleSheet from '../stylesheet/Stylesheet';
 import type { IUseStyleSheetsInput } from '../types';
 
@@ -14,22 +14,24 @@ function useComponentStyleSheets({
     return new InlineStyleSheet(className);
   }, [className]);
 
-  const registeredComponent = useMemo(() => {
-    return registerComponentInStore({
-      componentID,
-      stylesheetID: stylesheet.id,
-      groupID: stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
-    });
+  useMemo(() => {
+    return store.registerComponentInStore(
+      new ComponentNode({
+        componentID,
+        stylesheetID: stylesheet.id,
+        groupID: stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
+      }),
+    );
   }, [componentID, stylesheet.id, currentGroupID, stylesheet.metadata.isGroupParent]);
   // first we need to create a unique ID for this component to look up in the store
   // we use useMemo to ensure that the ID is only created once
 
   const component = useSyncExternalStoreWithSelector(
-    globalStore.subscribe,
-    () => globalStore.getState(),
-    () => globalStore.getState(),
-    (store) => {
-      return store.componentsRegistry[registeredComponent.id]!;
+    store.subscribe,
+    () => store.componentsRegistry,
+    () => store.componentsRegistry,
+    (record) => {
+      return record.get(componentID)!;
     },
   );
 

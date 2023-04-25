@@ -1,19 +1,23 @@
-/// <reference types="vitest" />
-// Configure Vitest (https://vitest.dev/config/)
 import terser from '@rollup/plugin-terser';
 import path from 'path';
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  test: {},
-  plugins: [],
+  plugins: [
+    dts({
+      entryRoot: path.resolve(__dirname, 'src'),
+      outputDir: 'build',
+      insertTypesEntry: true,
+    }),
+  ],
   build: {
     reportCompressedSize: true,
     chunkSizeWarningLimit: 300,
     ssr: false,
     lib: {
-      entry: path.resolve(__dirname, 'src/builds/module.ts'),
-      name: '@universal-labs/core',
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: '@universal-labs/twind-native',
       fileName: (format) => `index.${format}.js`,
       formats: ['cjs', 'es'],
     },
@@ -33,13 +37,6 @@ export default defineConfig({
     rollupOptions: {
       plugins: [terser()],
       shimMissingExports: true,
-      external: [
-        'postcss',
-        'postcss-css-variables',
-        'css-to-react-native',
-        'postcss-js',
-        'postcss-color-rgb',
-      ],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
       output: {

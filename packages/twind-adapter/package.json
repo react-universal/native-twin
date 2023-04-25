@@ -24,7 +24,9 @@
     "url": "https://github.com/react-universal/tailwind",
     "directory": "packages/twind-native"
   },
-  "main": "./src/index.ts",
+  "main": "./build/index.es.js",
+  "module": "./build/index.mjs.js",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "index.d.ts",
@@ -36,14 +38,19 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build:esbuild": "tsx src/build.ts",
+    "build:libs": "vite build",
     "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
-    "lint": "eslint \"./**/*.{ts,tsx}\""
+    "dev": "vite build -w",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "vitest run",
+    "test:ui": "vitest --ui"
   },
   "devDependencies": {
     "@twind/core": "1.1.3",
     "@twind/preset-tailwind": "1.1.4",
+    "@types/css-tree": "2.3.1",
     "css-to-react-native-transform": "2.0.0",
+    "css-tree": "2.3.1",
     "tsx": "3.12.6"
   },
   "publishConfig": {

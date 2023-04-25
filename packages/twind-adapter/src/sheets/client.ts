@@ -8,16 +8,13 @@ import {
   stringify,
   parse as parse$,
   escape,
-  inline as inline$,
 } from '@twind/core';
 import presetTailwind from '@twind/preset-tailwind';
-import presetReactNativeFlex from './presets/flex';
-import presetRemToPx from './presets/rem-to-px';
-import { translateRules } from './rules/translate';
-import { CustomConfig } from './types';
+import presetReactNativeFlex from '../presets/flex';
+import presetRemToPx from '../presets/rem-to-px';
+import { translateRules } from '../rules/translate';
+import { CustomConfig } from '../types';
 
-const preset = presetTailwind({ disablePreflight: true });
-console.log('preset', preset);
 export { escape };
 export let tw = /* #__PURE__ */ twind(
   {
@@ -39,7 +36,6 @@ export let injectGlobal = /* #__PURE__ */ injectGlobal$.bind(tw);
 export let keyframes = /* #__PURE__ */ keyframes$.bind(tw);
 export let cx = /* #__PURE__ */ cx$.bind(tw);
 export let parse = /* #__PURE__ */ parse$.bind(tw);
-export let inline = /* #__PURE__ */ inline$.bind(tw);
 export { stringify };
 
 export const setTailwindConfig = (
@@ -71,5 +67,4 @@ export const setTailwindConfig = (
   keyframes = /* #__PURE__ */ keyframes$.bind(tw);
   cx = /* #__PURE__ */ cx$.bind(tw);
   parse = /* #__PURE__ */ parse$.bind(tw);
-  inline = /* #__PURE__ */ inline$.bind(tw);
 };

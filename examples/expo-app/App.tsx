@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { View } from '@universal-labs/primitives';
 import { setTailwindConfig } from '@universal-labs/stylesheets';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 // import { FlatListScreen } from './src/screens/FlatList.screen';
@@ -18,5 +19,9 @@ export default function App() {
     }
   }, [bootFonts, isReady]);
   if (!isReady) return null;
-  return <HomeScreen />;
+  return (
+    <View style={{ backgroundColor: 'black', flex: 1 }}>
+      <HomeScreen />
+    </View>
+  );
 }

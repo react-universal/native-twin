@@ -1,21 +1,27 @@
 import { useMemo } from 'react';
 import { StyleSheet, Touchable } from 'react-native';
 import {
-  useComponentStyleSheets,
   StyledProps,
   createComponentID,
   AnyStyle,
+  InlineStyleSheet,
+  StoreManager,
 } from '@universal-labs/stylesheets';
+import { ComponentNode } from '@universal-labs/stylesheets';
+import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 
-// import { useRenderCounter } from './useRenderCounter';
-
+const defaultGroupState = Object.freeze({
+  active: false,
+  focus: false,
+  hover: false,
+  'group-active': false,
+  'group-focus': false,
+  'group-hover': false,
+});
 function useBuildStyledComponent<T>({
   className,
-  isFirstChild,
-  isLastChild,
-  nthChild,
   groupID,
   parentID,
   style,
@@ -23,22 +29,52 @@ function useBuildStyledComponent<T>({
   children,
   ...restProps
 }: StyledProps<T>) {
-  // useRenderCounter();
+  const stylesheet = useMemo(() => {
+    return new InlineStyleSheet(className ?? tw ?? '');
+  }, [className, tw]);
+
   const componentID = useMemo(() => createComponentID() as string, []);
+
   const currentGroupID = useMemo(() => {
-    return groupID ? groupID : parentID ?? 'non-group';
-  }, [parentID, groupID]);
-  const { stylesheet, component } = useComponentStyleSheets({
-    groupID,
-    className: className ?? tw,
-    inlineStyles: style,
-    isFirstChild,
-    isLastChild,
-    nthChild,
-    parentID,
-    currentGroupID,
-    componentID,
-  });
+    return groupID ? groupID : parentID ?? componentID;
+  }, [parentID, groupID, componentID]);
+  const component = useMemo(
+    () =>
+      StoreManager.registerComponentInStore(
+        new ComponentNode({
+          componentID,
+          stylesheetID: stylesheet.id,
+          groupID: stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
+        }),
+      )!,
+    [componentID, stylesheet, currentGroupID],
+  );
+
+  const interactionState = useSyncExternalStoreWithSelector(
+    StoreManager.subscribe,
+    () => component.interactionsState,
+    () => component.interactionsState,
+    (record) => {
+      return record;
+    },
+  );
+
+  const groupScope = currentGroupID === componentID ? componentID : currentGroupID;
+
+  const groupParentComponentState = useSyncExternalStoreWithSelector(
+    StoreManager.subscribe,
+    () => StoreManager.componentsRegistry.get(groupScope)!.interactionsState,
+    () => StoreManager.componentsRegistry.get(groupScope)!.interactionsState,
+    (parent) => {
+      if (
+        currentGroupID !== componentID &&
+        (stylesheet.metadata.hasGroupEvents || stylesheet.metadata.isGroupParent)
+      ) {
+        return parent;
+      }
+      return defaultGroupState;
+    },
+  );
 
   const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({
     props: restProps as Touchable,
@@ -57,23 +93,26 @@ function useBuildStyledComponent<T>({
 
   const componentStyles = useMemo(() => {
     const sheet = stylesheet.getStyles();
-    const styles: AnyStyle[] = [sheet.base];
-    if (
-      component.interactionsState.active ||
-      component.interactionsState.focus ||
-      component.interactionsState.hover
-    ) {
-      styles.push(sheet.pointerStyles);
+    const styles: AnyStyle = { ...sheet.base };
+    const interactions: AnyStyle = {};
+    if (interactionState.active || interactionState.focus || interactionState.hover) {
+      Object.assign(interactions, sheet.pointerStyles);
     }
     if (
-      component.interactionsState['group-active'] ||
-      component.interactionsState['group-focus'] ||
-      component.interactionsState['group-hover']
+      groupParentComponentState.active ||
+      groupParentComponentState.focus ||
+      groupParentComponentState.hover
     ) {
-      styles.push(sheet.group);
+      Object.assign(interactions, sheet.group);
     }
-    return StyleSheet.flatten([styles]);
-  }, [component, stylesheet]);
+    return StyleSheet.create({
+      generated: {
+        ...styles,
+        ...style,
+        ...interactions,
+      },
+    }).generated;
+  }, [interactionState, stylesheet, groupParentComponentState, style]);
 
   return {
     componentInteractionHandlers,
@@ -83,6 +122,7 @@ function useBuildStyledComponent<T>({
     groupID,
     parentID,
     component,
+    currentGroupID,
   };
 }
 
