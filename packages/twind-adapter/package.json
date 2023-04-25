@@ -39,8 +39,6 @@
   ],
   "scripts": {
     "build:libs": "vite build",
-    "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
-    "dev": "vite build -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",
     "test:ui": "vitest --ui"

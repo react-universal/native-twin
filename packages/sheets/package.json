@@ -37,7 +37,6 @@
   "scripts": {
     "build:libs": "vite build",
     "clean": "expo-module clean",
-    "dev": "vite build -w",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",
