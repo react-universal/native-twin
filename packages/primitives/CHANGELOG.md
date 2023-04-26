@@ -1,5 +1,16 @@
 # Change Log
 
+## 3.0.0
+
+### Major Changes
+
+- [`7ad840b`](https://github.com/react-universal/tailwind/commit/7ad840b9eb8a3aacfe217e997602bf80a99d0de4) Thanks [@chrisarts](https://github.com/chrisarts)! - grouping sintax experimental support
+
+### Patch Changes
+
+- Updated dependencies [[`7ad840b`](https://github.com/react-universal/tailwind/commit/7ad840b9eb8a3aacfe217e997602bf80a99d0de4)]:
+  - @universal-labs/styled@3.0.0
+
 ## 2.0.3
 
 ### Patch Changes
