@@ -9,6 +9,7 @@ import {
   parse as parse$,
   escape,
   inline as inline$,
+  shortcut as shortcut$,
 } from '@twind/core';
 import presetTailwind from '@twind/preset-tailwind';
 import presetCalc from './presets/calc';
@@ -42,6 +43,7 @@ export let keyframes = /* #__PURE__ */ keyframes$.bind(tw);
 export let cx = /* #__PURE__ */ cx$.bind(tw);
 export let parse = /* #__PURE__ */ parse$.bind(tw);
 export let inline = /* #__PURE__ */ inline$.bind(tw);
+export let shortcut = /* #__PURE__ */ shortcut$.bind(tw);
 export { stringify };
 
 export const setTailwindConfig = (
@@ -76,4 +78,5 @@ export const setTailwindConfig = (
   cx = /* #__PURE__ */ cx$.bind(tw);
   parse = /* #__PURE__ */ parse$.bind(tw);
   inline = /* #__PURE__ */ inline$.bind(tw);
+  shortcut = /* #__PURE__ */ shortcut$.bind(tw);
 };

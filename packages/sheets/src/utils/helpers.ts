@@ -36,13 +36,24 @@ export function getClassesForSelectors<T>(classNames: string[][], selectors: rea
 }
 
 export const extractCSSStyles = (ast: CssNode) => {
+  const variables: [string, string, string][] = [];
   const declarations: [string, string, string][] = [];
   walk(ast, {
     visit: 'Declaration',
     leave(node) {
+      // console.log('NODE: ', node);
       if (this.rule?.prelude?.type === 'Raw') {
+        // console.log('RAW: ', this.rule.prelude.value);
+        if (node.property.startsWith('--')) {
+          variables.push([
+            this.rule.prelude.value,
+            node.property,
+            node.value.type === 'Raw' ? node.value.value : '',
+          ]);
+        }
         if (node.value.type === 'Value') {
           let [key, value] = generate(node).split(':');
+          // console.log('key, value', key, value);
           if (key && value) {
             declarations.push([this.rule.prelude.value, key, value]);
           }
@@ -50,6 +61,6 @@ export const extractCSSStyles = (ast: CssNode) => {
       }
     },
   });
-  return { declarations };
+  return { variables, declarations };
   // console.groupEnd();
 };

@@ -1,8 +1,9 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import {
   normalizeClassNameString,
   setTailwindConfig as setTwindConfig,
   transformClassNames,
+  shortcut,
 } from '@universal-labs/twind-native';
 import transform from 'css-to-react-native';
 import cssTree from 'css-tree';
@@ -59,7 +60,14 @@ export default class InlineStyleSheet {
     if (this.originalClasses.includes('group')) {
       this.metadata.isGroupParent = true;
     }
-    const transformedClasses = transformClassNames(splittedClasses.join(' '));
+    // console.group('focus:(bg-gray-500 text-white) text-(red-500 lg)');
+    // console.debug(
+    //   'transformedClasses',
+    //   shortcut('Sheet@(focus:(bg-gray-500 text-white) text-(gray-800 lg))'),
+    // );
+    // console.groupEnd();
+    const transformedClasses = transformClassNames(classNames ?? '');
+    console.log('LEGACY', transformedClasses);
     // const base: [string, string][] = [];
     // const group: [string, string][] = [];
     const ast = cssTree.parse(transformedClasses.css, {
@@ -71,6 +79,13 @@ export default class InlineStyleSheet {
         node.prelude.type === 'Raw' &&
         splittedClasses.includes(normalizeClassNameString(node.prelude.value))
       ) {
+        if (
+          node.prelude.value.includes('ios') ||
+          node.prelude.value.includes('android') ||
+          node.prelude.value.includes('web')
+        ) {
+          return node.prelude.value.includes(Platform.OS);
+        }
         // console.debug('prelude', node.prelude);
         return true;
       }
@@ -84,8 +99,16 @@ export default class InlineStyleSheet {
             node.prelude.value.includes('.group-focus') ||
             node.prelude.value.includes('.group-hover') ||
             node.prelude.value.includes('.group-active');
+          if (
+            node.prelude.value.includes('ios') ||
+            node.prelude.value.includes('android') ||
+            node.prelude.value.includes('web')
+          ) {
+            return node.prelude.value.includes(Platform.OS);
+          }
           return true;
         }
+        return true;
       }
       return false;
     });
@@ -93,6 +116,7 @@ export default class InlineStyleSheet {
       declarations: [] as [string, string, string][],
     };
     for (const rule of rules) {
+      // console.log('JSON', JSON.stringify(cssTree.toPlainObject(rule), null, 2));
       const result = extractCSSStyles(rule);
       results.declarations.push(...result.declarations);
     }
@@ -100,14 +124,14 @@ export default class InlineStyleSheet {
     const baseDeclarations = results.declarations
       .filter((item) => !item[0].includes(':'))
       .map((item) => {
-        return transform([[item[1], item[2]]]);
+        const style = transform([[item[1], item[2]]]);
+        return style;
       });
     const pseudoDeclarations = results.declarations
       .filter((item) => item[0].includes(':'))
       .map((item) => {
-        return transform([[item[0], item[1]]]);
+        return transform([[item[1], item[2]]]);
       });
-    // console.log('baseDeclarations', results);
     this.getChildStyles = this.getChildStyles.bind(this);
     // const baseStyles: AnyStyle[] = [];
     // const pointerStyles: AnyStyle[] = [];

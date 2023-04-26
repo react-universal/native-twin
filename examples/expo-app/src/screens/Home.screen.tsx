@@ -20,7 +20,7 @@ function HomeScreen() {
   const [active, setActive] = useState(false);
   return (
     <View className='flex-1 odd:bg-white'>
-      <View className='web:padding-2 hover:(bg-green-300 p-5) flex-1 items-center justify-center bg-gray-800 align-top'>
+      <View className='web:padding-2 hover:(bg-red-300 web:(bg-blue-600) ios:(bg-pink-600) android:(bg-black) p-5)  flex-1 items-center justify-center bg-gray-800 align-top'>
         <H1 className='font-inter-bold text-2xl text-gray-200 hover:text-gray-700'>H1 - 1</H1>
       </View>
       <View className='group -mt-[20px] flex-[2] items-center justify-center border-t-8 border-t-indigo-50 bg-slate-800 hover:bg-pink-600'>
