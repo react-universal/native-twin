@@ -38,9 +38,6 @@ export function styled<T>(
     }: StyledProps<any>,
     ref: ForwardedRef<any>,
   ) {
-    // const date = new Date();
-    // console.group(`Styled Component: ${Component.displayName || Component.name || 'NoName'}`);
-    console.time('useBuildStyledComponent');
     const {
       componentInteractionHandlers,
       focusHandlers,
@@ -59,9 +56,6 @@ export function styled<T>(
       children,
       ...restProps,
     });
-    // console.debug('useBuildStyledComponent', new Date().getTime() - date.getTime());
-    console.timeEnd('useBuildStyledComponent');
-    // console.groupEnd();
     // @ts-ignore
     return createElement(Component, {
       style: componentStyles,

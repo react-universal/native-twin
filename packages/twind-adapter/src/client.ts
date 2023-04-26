@@ -11,13 +11,13 @@ import {
   inline as inline$,
 } from '@twind/core';
 import presetTailwind from '@twind/preset-tailwind';
+import presetCalc from './presets/calc';
+import presetCssVariables from './presets/css-variables';
 import presetReactNativeFlex from './presets/flex';
 import presetRemToPx from './presets/rem-to-px';
 import { translateRules } from './rules/translate';
 import { CustomConfig } from './types';
 
-const preset = presetTailwind({ disablePreflight: true });
-console.log('preset', preset);
 export { escape };
 export let tw = /* #__PURE__ */ twind(
   {
@@ -27,6 +27,8 @@ export let tw = /* #__PURE__ */ twind(
       presetTailwind({ disablePreflight: true }),
       presetRemToPx({ baseRem: 16 }),
       presetReactNativeFlex(),
+      presetCalc(),
+      presetCssVariables(),
     ],
     hash: undefined,
     stringify: (x) => stringify(x),
@@ -55,6 +57,8 @@ export const setTailwindConfig = (
         presetTailwind({ disablePreflight: true }),
         presetRemToPx({ baseRem }),
         presetReactNativeFlex(),
+        presetCalc(),
+        presetCssVariables(),
       ],
       rules: [...translateRules],
       hash: undefined,

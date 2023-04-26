@@ -90,12 +90,10 @@ export default class InlineStyleSheet {
       return false;
     });
     const results = {
-      variables: [] as [string, string, string][],
       declarations: [] as [string, string, string][],
     };
     for (const rule of rules) {
       const result = extractCSSStyles(rule);
-      results.variables.push(...result.variables);
       results.declarations.push(...result.declarations);
     }
 
@@ -107,7 +105,7 @@ export default class InlineStyleSheet {
     const pseudoDeclarations = results.declarations
       .filter((item) => item[0].includes(':'))
       .map((item) => {
-        return transform([[item[1], item[2]]]);
+        return transform([[item[0], item[1]]]);
       });
     // console.log('baseDeclarations', results);
     this.getChildStyles = this.getChildStyles.bind(this);

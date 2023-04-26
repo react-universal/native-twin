@@ -5,6 +5,7 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "declarationMap": false,
+    "jsx": "react-jsx",
     "outDir": "./build",
     "sourceMap": false,
     "noEmit": false,

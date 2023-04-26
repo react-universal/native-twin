@@ -5,8 +5,8 @@
       "path": ".."
     },
     {
-      "name": "📦 @universal-labs/core",
-      "path": "../packages/core"
+      "name": "expo-app",
+      "path": "../examples/expo-app"
     },
     {
       "name": "📦 @universal-labs/primitives",
@@ -19,10 +19,6 @@
     {
       "name": "📦 @universal-labs/styled",
       "path": "../packages/styled"
-    },
-    {
-      "name": "📦 @universal-labs/tailwind-ui",
-      "path": "../packages/tailwind-ui"
     },
     {
       "name": "📦 @universal-labs/twind-native",
