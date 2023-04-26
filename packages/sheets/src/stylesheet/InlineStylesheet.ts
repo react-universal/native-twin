@@ -3,7 +3,6 @@ import {
   normalizeClassNameString,
   setTailwindConfig as setTwindConfig,
   transformClassNames,
-  shortcut,
 } from '@universal-labs/twind-native';
 import transform from 'css-to-react-native';
 import cssTree from 'css-tree';
@@ -60,16 +59,7 @@ export default class InlineStyleSheet {
     if (this.originalClasses.includes('group')) {
       this.metadata.isGroupParent = true;
     }
-    // console.group('focus:(bg-gray-500 text-white) text-(red-500 lg)');
-    // console.debug(
-    //   'transformedClasses',
-    //   shortcut('Sheet@(focus:(bg-gray-500 text-white) text-(gray-800 lg))'),
-    // );
-    // console.groupEnd();
     const transformedClasses = transformClassNames(classNames ?? '');
-    console.log('LEGACY', transformedClasses);
-    // const base: [string, string][] = [];
-    // const group: [string, string][] = [];
     const ast = cssTree.parse(transformedClasses.css, {
       parseRulePrelude: false,
     });
@@ -116,44 +106,54 @@ export default class InlineStyleSheet {
       declarations: [] as [string, string, string][],
     };
     for (const rule of rules) {
-      // console.log('JSON', JSON.stringify(cssTree.toPlainObject(rule), null, 2));
       const result = extractCSSStyles(rule);
       results.declarations.push(...result.declarations);
     }
 
-    const baseDeclarations = results.declarations
-      .filter((item) => !item[0].includes(':'))
-      .map((item) => {
-        const style = transform([[item[1], item[2]]]);
-        return style;
-      });
-    const pseudoDeclarations = results.declarations
-      .filter((item) => item[0].includes(':'))
-      .map((item) => {
-        return transform([[item[1], item[2]]]);
-      });
+    const finalStyles = results.declarations.reduce(
+      (current, next) => {
+        if (next[0].includes(':') && !next[0].includes('.group')) {
+          current.pointerStyles.push(transform([[next[1], next[2]]]));
+        }
+        if (next[0].includes(':') && next[0].includes('.group')) {
+          current.group.push(transform([[next[1], next[2]]]));
+        }
+        if (next[0].includes(':') && next[0].includes('.odd')) {
+          current.odd.push(transform([[next[1], next[2]]]));
+        }
+        if (next[0].includes(':') && next[0].includes('.even')) {
+          current.even.push(transform([[next[1], next[2]]]));
+        }
+        if (next[0].includes(':') && next[0].includes('.first')) {
+          current.first.push(transform([[next[1], next[2]]]));
+        }
+        if (next[0].includes(':') && next[0].includes('.last')) {
+          current.last.push(transform([[next[1], next[2]]]));
+        }
+        if (!next[0].includes(':')) {
+          current.base.push(transform([[next[1], next[2]]]));
+        }
+        return current;
+      },
+      {
+        base: [] as AnyStyle[],
+        pointerStyles: [] as AnyStyle[],
+        first: [] as AnyStyle[],
+        last: [] as AnyStyle[],
+        even: [] as AnyStyle[],
+        odd: [] as AnyStyle[],
+        group: [] as AnyStyle[],
+      },
+    );
     this.getChildStyles = this.getChildStyles.bind(this);
-    // const baseStyles: AnyStyle[] = [];
-    // const pointerStyles: AnyStyle[] = [];
-    const groupStyles: AnyStyle[] = [];
-    // const platformStyles: AnyStyle[] = [];
-    const childStyles = {
-      first: [] as AnyStyle[],
-      last: [] as AnyStyle[],
-      even: [] as AnyStyle[],
-      odd: [] as AnyStyle[],
-    };
-    // @ts-expect-error
     this.styles = StyleSheet.create({
-      // @ts-expect-error
-      base: StyleSheet.flatten(baseDeclarations),
-      // @ts-expect-error
-      pointerStyles: StyleSheet.flatten(pseudoDeclarations),
-      first: StyleSheet.flatten(childStyles.first),
-      last: StyleSheet.flatten(childStyles.last),
-      even: StyleSheet.flatten(childStyles.even),
-      odd: StyleSheet.flatten(childStyles.odd),
-      group: StyleSheet.flatten(groupStyles),
+      base: StyleSheet.flatten(finalStyles.base),
+      pointerStyles: StyleSheet.flatten(finalStyles.pointerStyles),
+      first: StyleSheet.flatten(finalStyles.first),
+      last: StyleSheet.flatten(finalStyles.last),
+      even: StyleSheet.flatten(finalStyles.even),
+      odd: StyleSheet.flatten(finalStyles.odd),
+      group: StyleSheet.flatten(finalStyles.group),
     });
     generatedComponentStylesheets[this.id] = this.styles;
   }
