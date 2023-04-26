@@ -6,7 +6,7 @@ import { useLoadFonts } from './src/hooks/useLoadFonts';
 import { HomeScreen } from './src/screens/Home.screen';
 import tailwindConfig from './tailwind.config';
 
-setTailwindConfig(tailwindConfig);
+setTailwindConfig(tailwindConfig, 14);
 
 export default function App() {
   const { bootFonts } = useLoadFonts();
