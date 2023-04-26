@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.6
+
+### Patch Changes
+
+- [`97f30cd`](https://github.com/react-universal/tailwind/commit/97f30cdbf1b915ee34d8e4997aa2f68882d0e2fd) Thanks [@chrisarts](https://github.com/chrisarts)! - fix calc and operations
+
+- Updated dependencies [[`97f30cd`](https://github.com/react-universal/tailwind/commit/97f30cdbf1b915ee34d8e4997aa2f68882d0e2fd)]:
+  - @universal-labs/primitives@3.0.2
+
 ## 2.0.5
 
 ### Patch Changes
