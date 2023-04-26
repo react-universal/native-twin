@@ -1,5 +1,14 @@
 # Change Log
 
+## 3.0.2
+
+### Patch Changes
+
+- [`97f30cd`](https://github.com/react-universal/tailwind/commit/97f30cdbf1b915ee34d8e4997aa2f68882d0e2fd) Thanks [@chrisarts](https://github.com/chrisarts)! - fix calc and operations
+
+- Updated dependencies [[`97f30cd`](https://github.com/react-universal/tailwind/commit/97f30cdbf1b915ee34d8e4997aa2f68882d0e2fd)]:
+  - @universal-labs/styled@3.0.2
+
 ## 3.0.1
 
 ### Patch Changes
