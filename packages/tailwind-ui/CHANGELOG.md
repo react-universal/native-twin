@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.5
+
+### Patch Changes
+
+- [`1783448`](https://github.com/react-universal/tailwind/commit/1783448e74745ff796d51477df1a6de7e6ff3edb) Thanks [@chrisarts](https://github.com/chrisarts)! - fix types on stylesheets
+
+- Updated dependencies [[`1783448`](https://github.com/react-universal/tailwind/commit/1783448e74745ff796d51477df1a6de7e6ff3edb)]:
+  - @universal-labs/primitives@3.0.1
+
 ## 2.0.4
 
 ### Patch Changes
