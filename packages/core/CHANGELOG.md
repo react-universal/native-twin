@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.3
+
+### Patch Changes
+
+- [`e248dce`](https://github.com/react-universal/tailwind/commit/e248dcec4c876e7891c5bb92a1355dc30b3bc013) Thanks [@chrisarts](https://github.com/chrisarts)! - fix calc operation when it contains decimals
+
 ## 3.0.2
 
 ### Patch Changes
