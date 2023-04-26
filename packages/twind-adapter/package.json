@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@twind/core": "1.1.3",
+    "@twind/intellisense": "1.1.3",
     "@twind/preset-tailwind": "1.1.4"
   },
   "publishConfig": {

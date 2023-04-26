@@ -27,6 +27,13 @@
   ],
   "settings": {
     "tailwindCSS.classAttributes": ["className", "tw", "variants"],
+    "editor.suggest.showStatusBar": true,
+    "twind.debug": true,
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    },
     "eslint.validate": ["json"],
     "search.useIgnoreFiles": false,
     "search.exclude": {

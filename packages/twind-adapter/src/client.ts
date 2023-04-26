@@ -10,33 +10,26 @@ import {
   escape,
   inline as inline$,
   shortcut as shortcut$,
+  install,
+  style,
 } from '@twind/core';
 import presetTailwind from '@twind/preset-tailwind';
-import presetCalc from './presets/calc';
-import presetCssVariables from './presets/css-variables';
-import presetReactNativeFlex from './presets/flex';
-import presetRemToPx from './presets/rem-to-px';
+import twindPresetReactNative from './presets/preset-react-native';
 import { translateRules } from './rules/translate';
-import { CustomConfig } from './types';
+import type { CustomConfig } from './types';
 
-export { escape };
 export let tw = /* #__PURE__ */ twind(
   {
     ignorelist: [''],
     preflight: false,
-    presets: [
-      presetTailwind({ disablePreflight: true }),
-      presetRemToPx({ baseRem: 16 }),
-      presetReactNativeFlex(),
-      presetCalc(),
-      presetCssVariables(),
-    ],
+    presets: [presetTailwind({ disablePreflight: true }), twindPresetReactNative({})],
     hash: undefined,
     stringify: (x) => stringify(x),
     rules: [...translateRules],
   },
   virtual(true),
 );
+
 export let tx = /* #__PURE__ */ tx$.bind(tw);
 export let injectGlobal = /* #__PURE__ */ injectGlobal$.bind(tw);
 export let keyframes = /* #__PURE__ */ keyframes$.bind(tw);
@@ -44,8 +37,14 @@ export let cx = /* #__PURE__ */ cx$.bind(tw);
 export let parse = /* #__PURE__ */ parse$.bind(tw);
 export let inline = /* #__PURE__ */ inline$.bind(tw);
 export let shortcut = /* #__PURE__ */ shortcut$.bind(tw);
-export { stringify };
 
+export { escape };
+export { stringify };
+export { virtual as virtualStylesheet };
+export { style };
+export { install };
+
+export { twindPresetReactNative };
 export const setTailwindConfig = (
   theme: Exclude<CustomConfig['theme'], undefined>,
   baseRem = 16,
@@ -57,10 +56,7 @@ export const setTailwindConfig = (
       preflight: false,
       presets: [
         presetTailwind({ disablePreflight: true }),
-        presetRemToPx({ baseRem }),
-        presetReactNativeFlex(),
-        presetCalc(),
-        presetCssVariables(),
+        twindPresetReactNative({ baseRem }),
       ],
       rules: [...translateRules],
       hash: undefined,

@@ -7,6 +7,13 @@ export {
   escape,
   inline,
   shortcut,
+  virtualStylesheet,
+  cx,
+  injectGlobal,
+  keyframes,
+  style,
+  twindPresetReactNative,
+  install,
 } from './client';
 
 export { transformClassNames } from './utils/transformClassNames';

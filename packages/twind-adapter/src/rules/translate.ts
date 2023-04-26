@@ -1,6 +1,7 @@
-import { TwindRules } from '../types';
+import type { Rule } from '@twind/core';
+import type { TailwindTheme } from '@twind/preset-tailwind';
 
-export const translateRules: TwindRules = [
+export const translateRules: Rule<TailwindTheme>[] = [
   [
     '-?translate-x-(\\s*\\d+|\\[(.*)])',
     (match) => {

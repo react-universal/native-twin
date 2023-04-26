@@ -1,29 +1,25 @@
-import type { Preset } from '@twind/core';
+import type { TwindRule } from '@twind/core';
 
-export default function presetCssVariables(): Preset {
-  return {
-    finalize(rule) {
-      // const transformed = valueParser(rule.);
-      if (rule.d && rule.d?.includes('var(--')) {
-        const variable = rule.d.split(';');
-        let variableRule = variable[0];
-        let declaration = `${variable[1]};`;
-        if (variableRule && declaration) {
-          const variable = variableRule.split(':');
-          const variableName = variable[0];
-          const variableValue = variable[1];
-          if (variableValue && variableName) {
-            declaration = declaration.replace(/(var\((--[\w-]+)\))/g, (match, p1, p2) => {
-              if (p2 === variableName) {
-                return variableValue;
-              }
-              return match;
-            });
-            rule.d = `${declaration}`;
+export default function transformCssVariables(rule: TwindRule) {
+  // const transformed = valueParser(rule.);
+  if (rule.d && rule.d?.includes('var(--')) {
+    const variable = rule.d.split(';');
+    let variableRule = variable[0];
+    let declaration = `${variable[1]};`;
+    if (variableRule && declaration) {
+      const variable = variableRule.split(':');
+      const variableName = variable[0];
+      const variableValue = variable[1];
+      if (variableValue && variableName) {
+        declaration = declaration.replace(/(var\((--[\w-]+)\))/g, (match, p1, p2) => {
+          if (p2 === variableName) {
+            return variableValue;
           }
-        }
+          return match;
+        });
+        rule.d = `${declaration}`;
       }
-      return rule;
-    },
-  };
+    }
+  }
+  return rule;
 }

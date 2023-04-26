@@ -60,6 +60,9 @@ export default class InlineStyleSheet {
       this.metadata.isGroupParent = true;
     }
     const transformedClasses = transformClassNames(classNames ?? '');
+    // console.group(classNames);
+    // console.log('CLASS_NAMES: ', transformedClasses);
+    // console.groupEnd();
     const ast = cssTree.parse(transformedClasses.css, {
       parseRulePrelude: false,
     });

@@ -19,5 +19,4 @@ module.exports = {
     '<THIRD_PARTY_MODULES>',
     '^[./]',
   ],
-  plugins: [require('./merged-prettier-plugin')],
 };
