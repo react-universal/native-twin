@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/stylesheets",
-  "version": "3.0.0",
+  "version": "2.0.3",
   "description": "Stylesheets manager",
   "keywords": [
     "react-native",
@@ -24,8 +24,7 @@
   "sideEffects": false,
   "main": "./build/index.umd",
   "module": "./build/index.es",
-  "source": "./src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "env.d.ts",

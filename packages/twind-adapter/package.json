@@ -25,7 +25,7 @@
     "directory": "packages/twind-native"
   },
   "main": "./build/index.es.js",
-  "module": "./build/index.mjs.js",
+  "module": "./build/index.cjs.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
