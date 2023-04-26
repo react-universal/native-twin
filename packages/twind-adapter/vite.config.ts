@@ -39,6 +39,7 @@ export default defineConfig({
       shimMissingExports: true,
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
+      external: ['react-native', 'react-native-web'],
       output: {
         dir: 'build',
         extend: true,
