@@ -18,7 +18,7 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(false);
   return (
-    <View className='h-[10vh] flex-1 even:bg-white'>
+    <View className='h-[10vh] flex-1'>
       <View className='ios:(p-14 border-8 border-gray-200) hover:(bg-red-300 web:(bg-blue-600) ios:(bg-pink-600) android:(bg-black)) flex-1 items-center justify-center'>
         <H1 className='text(center 2xl indigo-600 capitalize) font-inter-bold hover:text-gray-700'>
           H1 - 1

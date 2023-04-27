@@ -20,7 +20,7 @@ export default function App() {
   }, [bootFonts, isReady]);
   if (!isReady) return null;
   return (
-    <View style={{ backgroundColor: 'black', flex: 1 }}>
+    <View style={{ backgroundColor: 'gray', flex: 1 }}>
       <HomeScreen />
     </View>
   );
