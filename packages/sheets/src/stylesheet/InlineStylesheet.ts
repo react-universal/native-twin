@@ -60,9 +60,6 @@ export default class InlineStyleSheet {
       this.metadata.isGroupParent = true;
     }
     const transformedClasses = transformClassNames(classNames ?? '');
-    // console.group(classNames);
-    // console.log('CLASS_NAMES: ', transformedClasses);
-    // console.groupEnd();
     const ast = cssTree.parse(transformedClasses.css, {
       parseRulePrelude: false,
     });
@@ -70,32 +67,39 @@ export default class InlineStyleSheet {
       if (
         node.type === 'Rule' &&
         node.prelude.type === 'Raw' &&
-        splittedClasses.includes(normalizeClassNameString(node.prelude.value))
+        transformedClasses.generated.includes(normalizeClassNameString(node.prelude.value))
       ) {
         if (
-          node.prelude.value.includes('ios') ||
-          node.prelude.value.includes('android') ||
-          node.prelude.value.includes('web')
+          (node.prelude.value.includes('ios') ||
+            node.prelude.value.includes('android') ||
+            node.prelude.value.includes('web')) &&
+          !node.prelude.value.includes('hover') &&
+          !node.prelude.value.includes('focus') &&
+          !node.prelude.value.includes('active')
         ) {
           return node.prelude.value.includes(Platform.OS);
         }
-        // console.debug('prelude', node.prelude);
-        return true;
+        if (!node.prelude.value.includes(':')) {
+          return true;
+        }
       }
       if (node.type === 'Rule' && node.prelude.type === 'Raw') {
         if (node.prelude.value.includes(':')) {
           this.metadata.hasPointerEvents =
-            node.prelude.value.includes('.focus') ||
-            node.prelude.value.includes('.hover') ||
-            node.prelude.value.includes('.active');
+            node.prelude.value.includes('focus') ||
+            node.prelude.value.includes('hover') ||
+            node.prelude.value.includes('active');
           this.metadata.hasGroupEvents =
-            node.prelude.value.includes('.group-focus') ||
-            node.prelude.value.includes('.group-hover') ||
-            node.prelude.value.includes('.group-active');
+            node.prelude.value.includes('group-focus') ||
+            node.prelude.value.includes('group-hover') ||
+            node.prelude.value.includes('group-active');
           if (
-            node.prelude.value.includes('ios') ||
-            node.prelude.value.includes('android') ||
-            node.prelude.value.includes('web')
+            node.prelude.value.includes('hover\\:ios') ||
+            node.prelude.value.includes('hover\\:android') ||
+            node.prelude.value.includes('hover\\:web') ||
+            node.prelude.value.includes('group-hover\\:ios') ||
+            node.prelude.value.includes('group-hover\\:android') ||
+            node.prelude.value.includes('group-hover\\:web')
           ) {
             return node.prelude.value.includes(Platform.OS);
           }
@@ -109,28 +113,41 @@ export default class InlineStyleSheet {
       declarations: [] as [string, string, string][],
     };
     for (const rule of rules) {
-      const result = extractCSSStyles(rule);
-      results.declarations.push(...result.declarations);
+      const declarations = extractCSSStyles(rule);
+      results.declarations.push(...declarations);
     }
 
     const finalStyles = results.declarations.reduce(
       (current, next) => {
-        if (next[0].includes(':') && !next[0].includes('.group')) {
+        if (
+          (next[0].includes('ios') ||
+            next[0].includes('android') ||
+            next[0].includes('web')) &&
+          !next[0].includes('hover') &&
+          !next[0].includes('focus') &&
+          !next[0].includes('active')
+        ) {
+          if (next[0].includes(Platform.OS)) {
+            current.base.push(transform([[next[1], next[2]]]));
+            return current;
+          }
+        }
+        if (next[0].includes(':') && !next[0].includes('group')) {
           current.pointerStyles.push(transform([[next[1], next[2]]]));
         }
-        if (next[0].includes(':') && next[0].includes('.group')) {
+        if (next[0].includes(':') && next[0].includes('group')) {
           current.group.push(transform([[next[1], next[2]]]));
         }
-        if (next[0].includes(':') && next[0].includes('.odd')) {
+        if (next[0].includes(':') && next[0].includes('odd')) {
           current.odd.push(transform([[next[1], next[2]]]));
         }
-        if (next[0].includes(':') && next[0].includes('.even')) {
+        if (next[0].includes(':') && next[0].includes('even')) {
           current.even.push(transform([[next[1], next[2]]]));
         }
-        if (next[0].includes(':') && next[0].includes('.first')) {
+        if (next[0].includes(':') && next[0].includes('first')) {
           current.first.push(transform([[next[1], next[2]]]));
         }
-        if (next[0].includes(':') && next[0].includes('.last')) {
+        if (next[0].includes(':') && next[0].includes('last')) {
           current.last.push(transform([[next[1], next[2]]]));
         }
         if (!next[0].includes(':')) {

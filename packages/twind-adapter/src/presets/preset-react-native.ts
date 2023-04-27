@@ -7,7 +7,6 @@ import remToPx from './rem-to-px';
 
 export default function twindPresetReactNative({ baseRem = 16 }): Preset {
   return {
-    variants: [['ios', '&:ios']],
     theme: {
       extend: {
         colors: {

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 const TextField = () => {
   const [text, setText] = useState('');
-  // console.log('Text Field RENDER');
+  console.log('Text Field RENDER');
   return (
     <TextInput
       value={text}
@@ -20,7 +20,7 @@ function HomeScreen() {
   const [active, setActive] = useState(false);
   return (
     <View className='h-[10vh] flex-1 odd:bg-black'>
-      <View className='hover:(bg-red-300 web:(bg-blue-600) ios:(bg-pink-600) android:(bg-black)) flex-1 items-center justify-center'>
+      <View className='ios:(p-14 border-8 border-gray-200) hover:(bg-red-300 web:(bg-blue-600) ios:(bg-pink-600) android:(bg-black)) flex-1 items-center justify-center'>
         <H1 className='text(center 2xl indigo-600 capitalize) font-inter-bold hover:text-gray-700'>
           H1 - 1
         </H1>

@@ -9,6 +9,14 @@
       "path": "../examples/expo-app"
     },
     {
+      "name": "next-app",
+      "path": "../examples/next-app"
+    },
+    {
+      "name": "📦 @universal-labs/core",
+      "path": "../packages/core"
+    },
+    {
       "name": "📦 @universal-labs/primitives",
       "path": "../packages/primitives"
     },
@@ -19,6 +27,10 @@
     {
       "name": "📦 @universal-labs/styled",
       "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @universal-labs/tailwind-ui",
+      "path": "../packages/tailwind-ui"
     },
     {
       "name": "📦 @universal-labs/twind-native",

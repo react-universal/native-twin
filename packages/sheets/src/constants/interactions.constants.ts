@@ -10,7 +10,7 @@ const AppearancePseudoSelectors = ['dark'] as const;
 
 const ChildPseudoSelectors = ['last', 'first', 'even', 'odd'] as const;
 
-const PlatformPseudoSelectors = ['native', 'ios', 'android', 'web'] as const;
+const PlatformPseudoSelectors = [':native', ':ios', ':android', ':web'] as const;
 
 export {
   InteractionPseudoSelectors,
