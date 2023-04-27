@@ -53,13 +53,13 @@ export default class InlineStyleSheet {
   };
 
   constructor(public classNames?: string) {
-    const splittedClasses = classNamesToArray(this.classNames);
+    const transformedClasses = transformClassNames(classNames ?? '');
+    const splittedClasses = classNamesToArray(transformedClasses.generated);
     this.originalClasses = Object.freeze(splittedClasses);
     this.id = generateComponentHashID(this.originalClasses.join(' ') ?? 'unstyled');
     if (this.originalClasses.includes('group')) {
       this.metadata.isGroupParent = true;
     }
-    const transformedClasses = transformClassNames(classNames ?? '');
     const ast = cssTree.parse(transformedClasses.css, {
       parseRulePrelude: false,
     });
@@ -69,6 +69,9 @@ export default class InlineStyleSheet {
         node.prelude.type === 'Raw' &&
         transformedClasses.generated.includes(normalizeClassNameString(node.prelude.value))
       ) {
+        if (node.prelude.value.includes('animate')) {
+          return false;
+        }
         if (
           (node.prelude.value.includes('ios') ||
             node.prelude.value.includes('android') ||
