@@ -1,5 +1,11 @@
 # @universal-labs/twind-native
 
+## 3.0.4
+
+### Patch Changes
+
+- [`8ad42d4`](https://github.com/react-universal/tailwind/commit/8ad42d40a8b7963dde8b5bcabc47ad872752bfca) Thanks [@chrisarts](https://github.com/chrisarts)! - selective styles based on platforms for normal - group - interaction utilities
+
 ## 3.0.3
 
 ### Patch Changes
