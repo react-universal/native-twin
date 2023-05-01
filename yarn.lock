@@ -6276,13 +6276,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/css-mediaquery@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@types/css-mediaquery@npm:0.1.1"
-  checksum: b8beb960238fd32b44396fd0871fc8626d9e0136217f168effccd3cc33a0673f1a94e8a982e385a46c34b5ab4b19c9220be7ec628818837a3c47dcaa973954c4
-  languageName: node
-  linkType: hard
-
 "@types/css-to-react-native@npm:^3.0.0":
   version: 3.0.0
   resolution: "@types/css-to-react-native@npm:3.0.0"
@@ -6358,15 +6351,6 @@ __metadata:
     "@types/qs": "*"
     "@types/serve-static": "*"
   checksum: 0196dacc275ac3ce89d7364885cb08e7fb61f53ca101f65886dbf1daf9b7eb05c0943e2e4bbd01b0cc5e50f37e0eea7e4cbe97d0304094411ac73e1b7998f4da
-  languageName: node
-  linkType: hard
-
-"@types/fbjs@npm:3.0.4":
-  version: 3.0.4
-  resolution: "@types/fbjs@npm:3.0.4"
-  dependencies:
-    "@types/jsdom": "*"
-  checksum: c251ab9561f9d3b127d8669f16130a205dfbba5b3ece7ac3da9d8fe202f4e78bc32afc59e0ee4a03aabb0b0a149c821a579ef1db59ee96dd9756734dbbb91511
   languageName: node
   linkType: hard
 
@@ -6452,17 +6436,6 @@ __metadata:
     expect: ^29.0.0
     pretty-format: ^29.0.0
   checksum: cd877e5c56d299cceb8bfdcbb1a77723c706750dd3c3bc47403bc3599b8faff590a3b009c68bb5b11bf7a8c77d1fb01de5e124329b4a08e65f1cdda28b0ecdb8
-  languageName: node
-  linkType: hard
-
-"@types/jsdom@npm:*":
-  version: 21.1.1
-  resolution: "@types/jsdom@npm:21.1.1"
-  dependencies:
-    "@types/node": "*"
-    "@types/tough-cookie": "*"
-    parse5: ^7.0.0
-  checksum: 7450d6e23aa31b837a1682f0e59b06838aacca85c9d030035f40e21d559169c773aee5cee9244f23c3004b78f7064f0c540ceb808d2f187deb3140f2b0449dee
   languageName: node
   linkType: hard
 
@@ -7113,10 +7086,12 @@ __metadata:
     "@types/react": 18.0.28
     "@types/react-dom": ~18.0.10
     "@types/react-is": ^17.0.3
+    "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/stylesheets": "workspace:*"
     react-is: ^18.2.0
     stable-hash: 0.0.3
     tailwind-merge: ^1.10.0
+    use-sync-external-store: ^1.2.0
     vite-plugin-multiple: 0.2.0
     vitest-react-native: 0.0.5
   peerDependencies:
@@ -7131,22 +7106,12 @@ __metadata:
   resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
   dependencies:
     "@types/css": 0.0.33
-    "@types/css-mediaquery": 0.1.1
     "@types/css-to-react-native": ^3.0.0
-    "@types/fbjs": 3.0.4
     "@types/react": ~18.0.27
-    "@types/react-dom": ~18.0.10
-    "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/twind-native": "workspace:*"
     css: ^3.0.0
-    css-color-keywords: ^1.0.0
-    css-mediaquery: ^0.1.2
     css-to-react-native: ^3.1.0
-    css-tree: 2.3.1
-    fbjs: ^3.0.4
-    postcss-value-parser: ^4.2.0
     react-native-uuid: ^2.0.1
-    use-sync-external-store: ^1.2.0
     vitest: ^0.28.3
   languageName: unknown
   linkType: soft
@@ -10095,13 +10060,6 @@ __metadata:
   peerDependencies:
     webpack: ^5.0.0
   checksum: 473cc32b6c837c2848e2051ad1ba331c1457449f47442e75a8c480d9891451434ada241f7e3de2347e57de17fcd84610b3bcfc4a9da41102cdaedd1e17902d31
-  languageName: node
-  linkType: hard
-
-"css-mediaquery@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "css-mediaquery@npm:0.1.2"
-  checksum: 8e26ae52d8aaaa71893f82fc485363ff0fab494b7d3b3464572aaed50714b8b538d33dbdaa69f0c02cf7f80d1f4d9a77519306c0492223ce91b3987475031a69
   languageName: node
   linkType: hard
 
