@@ -1,16 +1,18 @@
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 import {
-  normalizeClassNameString,
   setTailwindConfig as setTwindConfig,
   transformClassNames,
 } from '@universal-labs/twind-native';
 import transform from 'css-to-react-native';
-import cssTree from 'css-tree';
 import type { Config } from 'tailwindcss';
 import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
 import { generateComponentHashID } from '../utils/hash';
-import { extractCSSStyles } from '../utils/helpers';
 import { classNamesToArray } from '../utils/splitClasses';
+import SheetsStore from './SheetsStore';
+import { VirtualStyleSheet } from './VirtualStylesheet';
+
+const store = SheetsStore.getInstance();
 
 export function setTailwindConfig(config: Config, baseRem = 16) {
   setTwindConfig(
@@ -26,23 +28,13 @@ export function setTailwindConfig(config: Config, baseRem = 16) {
 }
 
 export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
+const virtualSheet = new VirtualStyleSheet();
 
 export default class InlineStyleSheet {
   id: string;
   originalClasses: readonly string[];
 
-  metadata = {
-    parentID: '',
-    groupID: '',
-    isFirstChild: false,
-    isLastChild: false,
-    nthChild: -1,
-    isGroupParent: false,
-    hasPointerEvents: false,
-    hasGroupEvents: false,
-  };
-
-  styles: {
+  styles?: {
     base: AnyStyle;
     pointerStyles: AnyStyle;
     first: AnyStyle;
@@ -52,137 +44,97 @@ export default class InlineStyleSheet {
     group: AnyStyle;
   };
 
+  sheet: ReturnType<VirtualStyleSheet['injectUtilities']>;
+
+  get metadata() {
+    return {
+      isGroupParent: this.originalClasses.includes('group'),
+      hasPointerEvents: Object.keys(this.getPointerEventsSheet).length > 0,
+      hasGroupEvents: this.sheet.generatedClasses.includes('group-'),
+    };
+  }
+
   constructor(public classNames?: string) {
+    const cache = store.get(classNames ?? 'unstyled');
+    if (cache) {
+      this.sheet = cache;
+    } else {
+      this.sheet = virtualSheet.injectUtilities(classNames);
+      store.setStyle(classNames ?? 'unstyled', this.sheet);
+    }
     const transformedClasses = transformClassNames(classNames ?? '');
     const splittedClasses = classNamesToArray(transformedClasses.generated);
     this.originalClasses = Object.freeze(splittedClasses);
     this.id = generateComponentHashID(this.originalClasses.join(' ') ?? 'unstyled');
-    if (this.originalClasses.includes('group')) {
-      this.metadata.isGroupParent = true;
-    }
-    const ast = cssTree.parse(transformedClasses.css, {
-      parseRulePrelude: false,
-    });
-    const rules = cssTree.findAll(ast, (node) => {
-      if (
-        node.type === 'Rule' &&
-        node.prelude.type === 'Raw' &&
-        transformedClasses.generated.includes(normalizeClassNameString(node.prelude.value))
-      ) {
-        if (node.prelude.value.includes('animate')) {
-          return false;
-        }
-        if (
-          (node.prelude.value.includes('ios') ||
-            node.prelude.value.includes('android') ||
-            node.prelude.value.includes('web')) &&
-          !node.prelude.value.includes('hover') &&
-          !node.prelude.value.includes('focus') &&
-          !node.prelude.value.includes('active')
-        ) {
-          return node.prelude.value.includes(Platform.OS);
-        }
-        if (!node.prelude.value.includes(':')) {
-          return true;
-        }
-      }
-      if (node.type === 'Rule' && node.prelude.type === 'Raw') {
-        if (node.prelude.value.includes(':')) {
-          this.metadata.hasPointerEvents =
-            node.prelude.value.includes('focus') ||
-            node.prelude.value.includes('hover') ||
-            node.prelude.value.includes('active');
-          this.metadata.hasGroupEvents =
-            node.prelude.value.includes('group-focus') ||
-            node.prelude.value.includes('group-hover') ||
-            node.prelude.value.includes('group-active');
-          if (
-            node.prelude.value.includes('hover\\:ios') ||
-            node.prelude.value.includes('hover\\:android') ||
-            node.prelude.value.includes('hover\\:web') ||
-            node.prelude.value.includes('group-hover\\:ios') ||
-            node.prelude.value.includes('group-hover\\:android') ||
-            node.prelude.value.includes('group-hover\\:web')
-          ) {
-            return node.prelude.value.includes(Platform.OS);
-          }
-          return true;
-        }
-        return true;
-      }
-      return false;
-    });
-    const results = {
-      declarations: [] as [string, string, string][],
-    };
-    for (const rule of rules) {
-      const declarations = extractCSSStyles(rule);
-      results.declarations.push(...declarations);
-    }
-
-    const finalStyles = results.declarations.reduce(
-      (current, next) => {
-        if (
-          (next[0].includes('ios') ||
-            next[0].includes('android') ||
-            next[0].includes('web')) &&
-          !next[0].includes('hover') &&
-          !next[0].includes('focus') &&
-          !next[0].includes('active')
-        ) {
-          if (next[0].includes(Platform.OS)) {
-            current.base.push(transform([[next[1], next[2]]]));
-            return current;
-          }
-        }
-        if (next[0].includes(':') && !next[0].includes('group')) {
-          current.pointerStyles.push(transform([[next[1], next[2]]]));
-        }
-        if (next[0].includes(':') && next[0].includes('group')) {
-          current.group.push(transform([[next[1], next[2]]]));
-        }
-        if (next[0].includes(':') && next[0].includes('odd')) {
-          current.odd.push(transform([[next[1], next[2]]]));
-        }
-        if (next[0].includes(':') && next[0].includes('even')) {
-          current.even.push(transform([[next[1], next[2]]]));
-        }
-        if (next[0].includes(':') && next[0].includes('first')) {
-          current.first.push(transform([[next[1], next[2]]]));
-        }
-        if (next[0].includes(':') && next[0].includes('last')) {
-          current.last.push(transform([[next[1], next[2]]]));
-        }
-        if (!next[0].includes(':')) {
-          current.base.push(transform([[next[1], next[2]]]));
-        }
-        return current;
-      },
-      {
-        base: [] as AnyStyle[],
-        pointerStyles: [] as AnyStyle[],
-        first: [] as AnyStyle[],
-        last: [] as AnyStyle[],
-        even: [] as AnyStyle[],
-        odd: [] as AnyStyle[],
-        group: [] as AnyStyle[],
-      },
-    );
     this.getChildStyles = this.getChildStyles.bind(this);
-    this.styles = StyleSheet.create({
-      base: StyleSheet.flatten(finalStyles.base),
-      pointerStyles: StyleSheet.flatten(finalStyles.pointerStyles),
-      first: StyleSheet.flatten(finalStyles.first),
-      last: StyleSheet.flatten(finalStyles.last),
-      even: StyleSheet.flatten(finalStyles.even),
-      odd: StyleSheet.flatten(finalStyles.odd),
-      group: StyleSheet.flatten(finalStyles.group),
-    });
-    generatedComponentStylesheets[this.id] = this.styles;
   }
 
   getStyles() {
     return generatedComponentStylesheets[this.id]!;
+  }
+
+  get getBaseSheet() {
+    return StyleSheet.flatten(
+      this.sheet.extracted
+        .filter((s) => {
+          if (
+            (s[0].includes('ios') || s[0].includes('web') || s[0].includes('android')) &&
+            !s[0].includes('hover') &&
+            !s[0].includes('focus') &&
+            !s[0].includes('active')
+          ) {
+            return s[0].includes(Platform.OS);
+          }
+          return !s[0].includes(':');
+        })
+        .map((s) => {
+          return transform(s[1]);
+        }) as AnyStyle[],
+    );
+  }
+
+  get groupEventsSheet() {
+    return StyleSheet.flatten(
+      this.sheet.extracted
+        .filter((s) => {
+          if (
+            (s[0].includes('ios') || s[0].includes('web') || s[0].includes('android')) &&
+            s[0].includes('group-hover') &&
+            s[0].includes('group-focus') &&
+            s[0].includes('group-active')
+          ) {
+            return s[0].includes(Platform.OS);
+          }
+          return (
+            s[0].includes('group-hover') ||
+            s[0].includes('group-focus') ||
+            s[0].includes('group-active')
+          );
+        })
+        .map((s) => {
+          return transform(s[1]);
+        }) as AnyStyle[],
+    );
+  }
+
+  get getPointerEventsSheet() {
+    return StyleSheet.flatten(
+      this.sheet.extracted
+        .filter((s) => {
+          if (
+            (s[0].includes('ios') || s[0].includes('web') || s[0].includes('android')) &&
+            s[0].includes('hover') &&
+            s[0].includes('focus') &&
+            s[0].includes('active')
+          ) {
+            return s[0].includes(Platform.OS);
+          }
+          return s[0].includes('hover') || s[0].includes('focus') || s[0].includes('active');
+        })
+        .map((s) => {
+          return transform(s[1]);
+        }) as AnyStyle[],
+    );
   }
 
   public getChildStyles(input: {
@@ -192,6 +144,7 @@ export default class InlineStyleSheet {
     isOdd: boolean;
   }) {
     const result: AnyStyle = {};
+    if (!this) return result;
     const styleSheet = generatedComponentStylesheets[this.id];
     if (styleSheet) {
       if (input.isFirstChild) {

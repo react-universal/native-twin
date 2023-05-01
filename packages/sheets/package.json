@@ -44,13 +44,21 @@
   },
   "dependencies": {
     "@universal-labs/twind-native": "workspace:*",
+    "css": "^3.0.0",
+    "css-color-keywords": "^1.0.0",
+    "css-mediaquery": "^0.1.2",
     "css-to-react-native": "^3.1.0",
     "css-tree": "2.3.1",
+    "fbjs": "^3.0.4",
+    "postcss-value-parser": "^4.2.0",
     "react-native-uuid": "^2.0.1",
     "use-sync-external-store": "^1.2.0"
   },
   "devDependencies": {
+    "@types/css": "0.0.33",
+    "@types/css-mediaquery": "0.1.1",
     "@types/css-to-react-native": "^3.0.0",
+    "@types/fbjs": "3.0.4",
     "@types/react": "~18.0.27",
     "@types/react-dom": "~18.0.10",
     "@types/use-sync-external-store": "^0.0.3",

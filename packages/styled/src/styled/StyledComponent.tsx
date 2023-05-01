@@ -39,6 +39,7 @@ export function styled<T>(
     ref: ForwardedRef<any>,
   ) {
     // console.time('Styled');
+    // console.log('CLASSNAME', className);
     const {
       componentInteractionHandlers,
       focusHandlers,
