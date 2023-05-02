@@ -5,10 +5,6 @@
       "path": ".."
     },
     {
-      "name": "🚀 docs-page",
-      "path": "../apps/docs-page"
-    },
-    {
       "name": "🚀 docusaurus",
       "path": "../apps/docusaurus"
     },
