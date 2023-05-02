@@ -5,8 +5,20 @@
       "path": ".."
     },
     {
-      "name": "📦 @universal-labs/tailwind-postcss-adapter",
-      "path": "../packages/tailwind-postcss-adapter"
+      "name": "🚀 docs-page",
+      "path": "../apps/docs-page"
+    },
+    {
+      "name": "🚀 docusaurus",
+      "path": "../apps/docusaurus"
+    },
+    {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
     },
     {
       "name": "📦 @universal-labs/primitives",
@@ -27,6 +39,10 @@
     {
       "name": "📦 @universal-labs/twind-native",
       "path": "../packages/twind-adapter"
+    },
+    {
+      "name": "📦 @universal-labs/postcss-adapter",
+      "path": "../packages/tailwind-postcss-adapter"
     }
   ],
   "settings": {
