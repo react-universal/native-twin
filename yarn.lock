@@ -6054,23 +6054,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-native@npm:12.1.1":
-  version: 12.1.1
-  resolution: "@testing-library/react-native@npm:12.1.1"
-  dependencies:
-    pretty-format: ^29.0.0
-  peerDependencies:
-    jest: ">=28.0.0"
-    react: ">=16.8.0"
-    react-native: ">=0.59"
-    react-test-renderer: ">=16.8.0"
-  peerDependenciesMeta:
-    jest:
-      optional: true
-  checksum: 6c8dafc922c03ee8a855551b9df5f9ec5886c23386a05502e2a8cbd9b0fd1cc1668c53a6bdd8c64843807dc178d0b982dfa0802f132bfb1c5658426739fcf061
-  languageName: node
-  linkType: hard
-
 "@tootallnate/once@npm:2":
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
@@ -7099,7 +7082,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/styled@workspace:packages/styled"
   dependencies:
-    "@testing-library/react-native": 12.1.1
     "@types/node": 16.11.7
     "@types/react": 18.0.28
     "@types/react-dom": ~18.0.10
@@ -7111,8 +7093,6 @@ __metadata:
     tailwind-merge: ^1.10.0
     use-sync-external-store: ^1.2.0
     vite-plugin-multiple: 0.2.0
-    vitest: ^0.28.3
-    vitest-react-native: 0.0.5
   peerDependencies:
     react: ">=18"
     react-native: ">= 0.70"
