@@ -1,4 +1,5 @@
 /// <reference types="vitest" />
+import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -10,6 +11,10 @@ export default defineConfig({
     setupFiles: ['vitest-react-native/setup'],
     // this is required for this plugin to work
     globals: true,
+    benchmark: {
+      reporters: 'json',
+      outputFile: path.join(__dirname, './benchmark/results.json'),
+    },
     env: {
       APP_ENV: 'test',
     },

@@ -1,7 +1,10 @@
 import { View } from 'react-native';
+import { setTailwindConfig } from '@universal-labs/stylesheets';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 import { styled } from '../src';
+
+setTailwindConfig({ content: ['__'] });
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();

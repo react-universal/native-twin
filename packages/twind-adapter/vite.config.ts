@@ -3,6 +3,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
+console.log('sad');
 export default defineConfig({
   plugins: [
     dts({

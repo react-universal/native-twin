@@ -22,8 +22,8 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index.umd",
-  "module": "./build/index.es",
+  "main": "./build/index.es.js",
+  "module": "./build/index.umd.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -44,16 +44,14 @@
   },
   "dependencies": {
     "@universal-labs/twind-native": "workspace:*",
+    "css": "^3.0.0",
     "css-to-react-native": "^3.1.0",
-    "css-tree": "2.3.1",
-    "react-native-uuid": "^2.0.1",
-    "use-sync-external-store": "^1.2.0"
+    "react-native-uuid": "^2.0.1"
   },
   "devDependencies": {
+    "@types/css": "0.0.33",
     "@types/css-to-react-native": "^3.0.0",
     "@types/react": "~18.0.27",
-    "@types/react-dom": "~18.0.10",
-    "@types/use-sync-external-store": "^0.0.3",
     "vitest": "^0.28.3"
   },
   "publishConfig": {

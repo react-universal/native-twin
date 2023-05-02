@@ -1,4 +1,3 @@
-/* eslint-disable unused-imports/no-unused-vars */
 import { ComponentType, createElement, ReactNode, useMemo } from 'react';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { StyledProps } from '@universal-labs/stylesheets';
@@ -9,7 +8,6 @@ function useBuildStyledComponent<T, P extends keyof T>(
   props: StyledProps<T>,
   Component: ComponentType<T>,
   ref: any,
-  styleClassProps?: P[],
 ) {
   const styles = useMemo(() => {
     const mergedClassName = props.className ? `${props.className}` : '';

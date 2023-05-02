@@ -12,8 +12,8 @@ export {
   injectGlobal,
   keyframes,
   style,
+  hash,
   twindPresetReactNative,
-  install,
 } from './client';
 
 export { transformClassNames } from './utils/transformClassNames';

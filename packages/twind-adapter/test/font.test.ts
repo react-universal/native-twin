@@ -13,21 +13,25 @@ setTailwindConfig({
 
 describe('TailwindCSS Font', () => {
   beforeEach(() => {
-    tw.clear()
-  })
+    tw.clear();
+  });
 
   it('font-size', () => {
-    const { css } = transformClassNames(...['text-2xl']);
-    expect(css).toStrictEqual('/*!dbgidc,w,text-2xl*/.text-2xl{font-size:24px;line-height:32px}')
+    const { css } = transformClassNames('text-2xl');
+    expect(css).toStrictEqual(
+      '/*!dbgidc,w,text-2xl*/.text-2xl{font-size:24px;line-height:32px}',
+    );
   });
 
   it('font-family', () => {
-    const { css } = transformClassNames(...['font-inter'])
-    expect(css).toStrictEqual('/*!dbgidc,y,font-inter*/.font-inter{font-family:Inter-Regular}')
+    const { css } = transformClassNames('font-inter');
+    expect(css).toStrictEqual(
+      '/*!dbgidc,y,font-inter*/.font-inter{font-family:Inter-Regular}',
+    );
   });
 
   it('leading', () => {
-    const { css } = transformClassNames(...['leading-5']);
-    expect(css).toStrictEqual('/*!dbgidc,y,leading-5*/.leading-5{line-height:20px}')
+    const { css } = transformClassNames('leading-5');
+    expect(css).toStrictEqual('/*!dbgidc,y,leading-5*/.leading-5{line-height:20px}');
   });
 });

@@ -6290,6 +6290,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/css@npm:0.0.33":
+  version: 0.0.33
+  resolution: "@types/css@npm:0.0.33"
+  checksum: 2dd93e3638a0f1c0cbd143188ce760efb2fedfe74cbc16b1848f202fd047ba55f2fc33de085777910228abe4e9221b7b30aaec83ff7128bce2f0a0966435dd4b
+  languageName: node
+  linkType: hard
+
 "@types/eslint-scope@npm:^3.7.3":
   version: 3.7.4
   resolution: "@types/eslint-scope@npm:3.7.4"
@@ -7079,12 +7086,13 @@ __metadata:
     "@types/react": 18.0.28
     "@types/react-dom": ~18.0.10
     "@types/react-is": ^17.0.3
+    "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/stylesheets": "workspace:*"
     react-is: ^18.2.0
     stable-hash: 0.0.3
     tailwind-merge: ^1.10.0
+    use-sync-external-store: ^1.2.0
     vite-plugin-multiple: 0.2.0
-    vitest-react-native: 0.0.5
   peerDependencies:
     react: ">=18"
     react-native: ">= 0.70"
@@ -7096,15 +7104,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
   dependencies:
+    "@types/css": 0.0.33
     "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
-    "@types/react-dom": ~18.0.10
-    "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/twind-native": "workspace:*"
+    css: ^3.0.0
     css-to-react-native: ^3.1.0
-    css-tree: 2.3.1
     react-native-uuid: ^2.0.1
-    use-sync-external-store: ^1.2.0
     vitest: ^0.28.3
   languageName: unknown
   linkType: soft
@@ -7144,6 +7150,7 @@ __metadata:
     "@twind/core": 1.1.3
     "@twind/intellisense": 1.1.3
     "@twind/preset-tailwind": 1.1.4
+    vitest-react-native: 0.0.5
   languageName: unknown
   linkType: soft
 
@@ -10153,6 +10160,17 @@ __metadata:
   version: 1.5.1
   resolution: "css.escape@npm:1.5.1"
   checksum: f6d38088d870a961794a2580b2b2af1027731bb43261cfdce14f19238a88664b351cc8978abc20f06cc6bbde725699dec8deb6fe9816b139fc3f2af28719e774
+  languageName: node
+  linkType: hard
+
+"css@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "css@npm:3.0.0"
+  dependencies:
+    inherits: ^2.0.4
+    source-map: ^0.6.1
+    source-map-resolve: ^0.6.0
+  checksum: 4273ac816ddf99b99acb9c1d1a27d86d266a533cc01118369d941d8e8a78277a83cad3315e267a398c509d930fbb86504e193ea1ebc620a4a4212e06fe76e8be
   languageName: node
   linkType: hard
 
@@ -21425,6 +21443,16 @@ __metadata:
     source-map-url: ^0.4.0
     urix: ^0.1.0
   checksum: c73fa44ac00783f025f6ad9e038ab1a2e007cd6a6b86f47fe717c3d0765b4a08d264f6966f3bd7cd9dbcd69e4832783d5472e43247775b2a550d6f2155d24bae
+  languageName: node
+  linkType: hard
+
+"source-map-resolve@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "source-map-resolve@npm:0.6.0"
+  dependencies:
+    atob: ^2.1.2
+    decode-uri-component: ^0.2.0
+  checksum: fe503b9e5dac1c54be835282fcfec10879434e7b3ee08a9774f230299c724a8d403484d9531276d1670c87390e0e4d1d3f92b14cca6e4a2445ea3016b786ecd4
   languageName: node
   linkType: hard
 

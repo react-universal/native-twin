@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,

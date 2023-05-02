@@ -10,8 +10,8 @@ import {
   escape,
   inline as inline$,
   shortcut as shortcut$,
-  install,
   style,
+  hash,
 } from '@twind/core';
 import presetTailwind from '@twind/preset-tailwind';
 import twindPresetReactNative from './presets/preset-react-native';
@@ -22,7 +22,10 @@ export let tw = /* #__PURE__ */ twind(
   {
     ignorelist: [''],
     preflight: false,
-    presets: [presetTailwind({ disablePreflight: true }), twindPresetReactNative({})],
+    presets: [
+      presetTailwind({ disablePreflight: true }),
+      twindPresetReactNative({ baseRem: 16 }),
+    ],
     hash: undefined,
     stringify: (x) => stringify(x),
     rules: [...translateRules],
@@ -41,9 +44,7 @@ export let shortcut = /* #__PURE__ */ shortcut$.bind(tw);
 export { escape };
 export { stringify };
 export { virtual as virtualStylesheet };
-export { style };
-export { install };
-
+export { style, hash };
 export { twindPresetReactNative };
 export const setTailwindConfig = (
   theme: Exclude<CustomConfig['theme'], undefined>,
