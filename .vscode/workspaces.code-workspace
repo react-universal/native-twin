@@ -29,10 +29,6 @@
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @universal-labs/tailwind-ui",
-      "path": "../packages/tailwind-ui"
-    },
-    {
       "name": "📦 @universal-labs/twind-native",
       "path": "../packages/twind-adapter"
     },
