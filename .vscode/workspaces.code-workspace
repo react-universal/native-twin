@@ -29,7 +29,7 @@
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @universal-labs/twind-native",
+      "name": "📦 @universal-labs/twind-adapter",
       "path": "../packages/twind-adapter"
     },
     {

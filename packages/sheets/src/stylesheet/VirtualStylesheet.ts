@@ -1,5 +1,5 @@
 import { hash } from '@twind/core';
-import { normalizeClassNameString, transformClassNames } from '@universal-labs/twind-native';
+import { normalizeClassNameString, transformClassNames } from '@universal-labs/twind-adapter';
 import cssParser, { Rule, Declaration } from 'css';
 
 export class VirtualStyleSheet {

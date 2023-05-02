@@ -8,7 +8,7 @@
       "@universal-labs/styled",
       "@universal-labs/stylesheets",
       "@universal-labs/primitives",
-      "@universal-labs/twind-native"
+      "@universal-labs/twind-adapter"
     ]
   ],
   "access": "public",

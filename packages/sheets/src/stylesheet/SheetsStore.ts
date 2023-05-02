@@ -1,4 +1,4 @@
-import { hash } from '@universal-labs/twind-native';
+import { hash } from '@universal-labs/twind-adapter';
 import type { VirtualStyleSheet } from './VirtualStylesheet';
 
 type Sheet = ReturnType<VirtualStyleSheet['injectUtilities']>;

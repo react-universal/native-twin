@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@universal-labs/primitives": "workspace:*",
-    "@universal-labs/twind-native": "workspace:*",
+    "@universal-labs/twind-adapter": "workspace:*",
     "expo": "^48.0.15",
     "expo-font": "~11.1.1",
     "expo-status-bar": "~1.4.4",

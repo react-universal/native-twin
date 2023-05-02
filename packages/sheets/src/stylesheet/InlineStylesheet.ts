@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import {
   setTailwindConfig as setTwindConfig,
   transformClassNames,
-} from '@universal-labs/twind-native';
+} from '@universal-labs/twind-adapter';
 import transform from 'css-to-react-native';
 import type { Config } from 'tailwindcss';
 import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';

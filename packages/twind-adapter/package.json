@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/twind-native",
+  "name": "@universal-labs/twind-adapter",
   "version": "3.0.4",
   "description": "Tailwindcss Inline StyleSheet generator for react native",
   "keywords": [
@@ -22,7 +22,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/react-universal/tailwind",
-    "directory": "packages/twind-native"
+    "directory": "packages/twind-adapter"
   },
   "main": "./build/index.es.js",
   "module": "./build/index.cjs.js",

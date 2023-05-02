@@ -3,7 +3,6 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
-console.log('sad');
 export default defineConfig({
   plugins: [
     dts({
@@ -19,7 +18,7 @@ export default defineConfig({
     ssr: false,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/twind-native',
+      name: '@universal-labs/twind-adapter',
       fileName: (format) => `index.${format}.js`,
       formats: ['cjs', 'es'],
     },
