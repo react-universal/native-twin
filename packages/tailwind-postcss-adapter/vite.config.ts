@@ -1,5 +1,4 @@
 /// <reference types="vitest" />
-// Configure Vitest (https://vitest.dev/config/)
 import terser from '@rollup/plugin-terser';
 import path from 'path';
 import { defineConfig } from 'vite';
@@ -13,7 +12,7 @@ export default defineConfig({
     ssr: false,
     lib: {
       entry: path.resolve(__dirname, 'src/builds/module.ts'),
-      name: '@universal-labs/core',
+      name: '@universal-labs/tailwind-postcss-adapter',
       fileName: (format) => `index.${format}.js`,
       formats: ['cjs', 'es'],
     },
