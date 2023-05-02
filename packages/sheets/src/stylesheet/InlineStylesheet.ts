@@ -1,11 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Platform } from 'react-native';
-import {
-  setTailwindConfig as setTwindConfig,
-  transformClassNames,
-} from '@universal-labs/twind-adapter';
 import transform from 'css-to-react-native';
-import type { Config } from 'tailwindcss';
 import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
 import { generateComponentHashID } from '../utils/hash';
 import { classNamesToArray } from '../utils/splitClasses';
@@ -13,19 +8,6 @@ import SheetsStore from './SheetsStore';
 import { VirtualStyleSheet } from './VirtualStylesheet';
 
 const store = SheetsStore.getInstance();
-
-export function setTailwindConfig(config: Config, baseRem = 16) {
-  setTwindConfig(
-    {
-      colors: {
-        ...config.theme?.colors,
-        ...config.theme?.extend?.colors,
-      },
-      fontFamily: { ...config.theme?.extend?.fontFamily },
-    },
-    baseRem,
-  );
-}
 
 export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
 const virtualSheet = new VirtualStyleSheet();
@@ -62,7 +44,7 @@ export default class InlineStyleSheet {
       this.sheet = virtualSheet.injectUtilities(classNames);
       store.setStyle(classNames ?? 'unstyled', this.sheet);
     }
-    const transformedClasses = transformClassNames(classNames ?? '');
+    const transformedClasses = virtualSheet.transformClassNames(classNames ?? '');
     const splittedClasses = classNamesToArray(transformedClasses.generated);
     this.originalClasses = Object.freeze(splittedClasses);
     this.id = generateComponentHashID(this.originalClasses.join(' ') ?? 'unstyled');

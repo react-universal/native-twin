@@ -56,3 +56,7 @@ export const extractCSSStyles = (ast: CssNode) => {
   return declarations;
   // console.groupEnd();
 };
+
+export function normalizeClassNameString(className: string): string {
+  return className.replace(/\\/g, '').replace('.', '');
+}

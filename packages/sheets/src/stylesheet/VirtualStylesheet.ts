@@ -1,10 +1,35 @@
-import { hash } from '@twind/core';
-import { normalizeClassNameString, transformClassNames } from '@universal-labs/twind-adapter';
+import { hash, initialize, stringify } from '@universal-labs/twind-adapter';
 import cssParser, { Rule, Declaration } from 'css';
+import type { Config } from 'tailwindcss';
+import { normalizeClassNameString } from '../utils/helpers';
+
+let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };
+let globalParser = initialize({
+  colors: {},
+  fontFamily: {},
+});
+export function setTailwindConfig(config: Config, baseRem = 16) {
+  currentConfig = {
+    ...currentConfig,
+    ...config,
+  };
+  globalParser.tw.destroy();
+  globalParser = initialize({
+    colors: {
+      ...currentConfig.theme?.colors,
+    },
+    fontFamily: {
+      ...currentConfig.theme?.fontFamily,
+    },
+  });
+  return {
+    baseRem,
+  };
+}
 
 export class VirtualStyleSheet {
   injectUtilities(classNames?: string) {
-    const transformedClasses = transformClassNames(classNames ?? '');
+    const transformedClasses = this.transformClassNames(classNames ?? '');
     const classNamesHash = hash(transformedClasses.generated);
     const cssA = cssParser.parse(transformedClasses.css);
     const onlyRules = cssA.stylesheet?.rules ?? [];
@@ -45,6 +70,17 @@ export class VirtualStyleSheet {
       });
     return declarations;
   };
+
+  transformClassNames(...classes: string[]) {
+    const generated = globalParser.tx(...classes);
+    const output = stringify(globalParser.tw.target);
+    globalParser.tw.clear();
+    return {
+      target: globalParser.tw.target,
+      generated,
+      css: output,
+    };
+  }
 
   createStyleSheet() {}
 }

@@ -9,21 +9,10 @@ export default function twindPresetReactNative({ baseRem = 16 }): Preset {
   return {
     theme: {
       extend: {
-        colors: {
-          primary: 'blue',
-        },
         screens: {
           ios: ':ios',
           android: ':android',
           web: ':web',
-        },
-        // @ts-expect-error
-        fontFamily: {
-          DEFAULT: 'Inter-Regular',
-          inter: 'Inter-Regular',
-          'inter-bold': 'Inter-Bold',
-          'inter-medium': 'Inter-Medium',
-          sans: 'Inter-Regular',
         },
       },
     },
