@@ -5,8 +5,8 @@
       "path": ".."
     },
     {
-      "name": "📦 @universal-labs/core",
-      "path": "../packages/core"
+      "name": "📦 @universal-labs/tailwind-postcss-adapter",
+      "path": "../packages/tailwind-postcss-adapter"
     },
     {
       "name": "📦 @universal-labs/primitives",
