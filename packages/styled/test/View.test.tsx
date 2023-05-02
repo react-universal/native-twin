@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 import { styled } from '../src';
 
-setTailwindConfig({});
+setTailwindConfig({ content: ['__'] });
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();

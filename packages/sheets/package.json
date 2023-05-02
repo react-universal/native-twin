@@ -22,8 +22,8 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index.umd",
-  "module": "./build/index.es",
+  "main": "./build/index.es.js",
+  "module": "./build/index.umd.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",

@@ -1,27 +1,16 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   resolve: {
-    // plugin adds this condition automatically
     conditions: ['react-native'],
-    alias: {
-      'react-native': 'react-native-web',
-    },
   },
   test: {
-    deps: {
-      inline: ['react-native'],
-    },
-    // this is required for this plugin to work
+    setupFiles: ['vitest-react-native/setup'],
+    environment: 'happy-dom',
     globals: true,
     env: {
       APP_ENV: 'test',
-    },
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      mainFields: ['module', 'main'],
     },
   },
 });
