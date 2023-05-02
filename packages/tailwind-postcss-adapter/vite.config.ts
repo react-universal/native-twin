@@ -1,24 +1,18 @@
+/// <reference types="vitest" />
 import terser from '@rollup/plugin-terser';
 import path from 'path';
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  plugins: [
-    dts({
-      entryRoot: path.resolve(__dirname, 'src'),
-      outputDir: 'build',
-      insertTypesEntry: true,
-      skipDiagnostics: true,
-    }),
-  ],
+  test: {},
+  plugins: [],
   build: {
     reportCompressedSize: true,
     chunkSizeWarningLimit: 300,
     ssr: false,
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/twind-adapter',
+      entry: path.resolve(__dirname, 'src/builds/module.ts'),
+      name: '@universal-labs/tailwind-postcss-adapter',
       fileName: (format) => `index.${format}.js`,
       formats: ['cjs', 'es'],
     },
@@ -38,9 +32,15 @@ export default defineConfig({
     rollupOptions: {
       plugins: [terser()],
       shimMissingExports: true,
+      external: [
+        'postcss',
+        'postcss-css-variables',
+        'css-to-react-native',
+        'postcss-js',
+        'postcss-color-rgb',
+      ],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
-      external: ['react-native', 'react-native-web'],
       output: {
         dir: 'build',
         extend: true,

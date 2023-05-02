@@ -1,4 +1,4 @@
-import { setTailwindConfig } from '@universal-labs/twind-native';
+import { setTailwindConfig } from '@universal-labs/twind-adapter';
 import { describe, expect, it } from 'vitest';
 import { VirtualStyleSheet } from '../src/stylesheet/VirtualStylesheet';
 

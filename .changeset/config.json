@@ -4,11 +4,11 @@
   "commit": false,
   "fixed": [
     [
-      "@universal-labs/core",
+      "@universal-labs/tailwind-postcss-adapter",
       "@universal-labs/styled",
       "@universal-labs/stylesheets",
       "@universal-labs/primitives",
-      "@universal-labs/twind-native"
+      "@universal-labs/twind-adapter"
     ]
   ],
   "access": "public",

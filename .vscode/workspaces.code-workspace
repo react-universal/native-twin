@@ -5,8 +5,16 @@
       "path": ".."
     },
     {
-      "name": "📦 @universal-labs/core",
-      "path": "../packages/core"
+      "name": "🚀 docusaurus",
+      "path": "../apps/docusaurus"
+    },
+    {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
     },
     {
       "name": "📦 @universal-labs/primitives",
@@ -21,12 +29,12 @@
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @universal-labs/tailwind-ui",
-      "path": "../packages/tailwind-ui"
+      "name": "📦 @universal-labs/twind-adapter",
+      "path": "../packages/twind-adapter"
     },
     {
-      "name": "📦 @universal-labs/twind-native",
-      "path": "../packages/twind-adapter"
+      "name": "📦 @universal-labs/postcss-adapter",
+      "path": "../packages/tailwind-postcss-adapter"
     }
   ],
   "settings": {
