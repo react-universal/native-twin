@@ -37,10 +37,11 @@ export default defineConfig({
         extend: true,
         externalImportAssertions: true,
         globals: {
+          react: 'React',
+          'react-native-uuid': 'reactNativeUuid',
           'css-to-react-native': 'cssToReactNative',
           'react-native': 'ReactNative',
           'react-native-web': 'ReactNativeWeb',
-          react: 'React',
           '@universal-labs/twind-native': 'UniversalLabsTwindNative',
         },
       },
