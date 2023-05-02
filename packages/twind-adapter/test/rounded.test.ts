@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { transformClassNames, tw } from '../src';
+import { initialize, stringify } from '../src';
+
+const { tx, tw } = initialize({});
 
 describe('TailwindCSS rounded', () => {
   beforeEach(() => {
@@ -7,7 +9,10 @@ describe('TailwindCSS rounded', () => {
   });
 
   it('Shadow', () => {
-    const { css } = transformClassNames('rounded-xl');
-    expect(css).toStrictEqual('/*!dbgidc,11,rounded-xl*/.rounded-xl{border-radius}');
+    const className = tx('rounded-xl');
+    expect(className).toStrictEqual('rounded-xl');
+    expect(stringify(tw.target)).toStrictEqual(
+      '/*!dbgidc,11,rounded-xl*/.rounded-xl{border-radius:12px}',
+    );
   });
 });

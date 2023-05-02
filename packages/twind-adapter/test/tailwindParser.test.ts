@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { transformClassNames, tw } from '../src';
+import { initialize, stringify } from '../src';
+
+const { tx, tw } = initialize({});
 
 describe('TailwindCSS compiler', () => {
   beforeEach(() => {
@@ -7,21 +9,26 @@ describe('TailwindCSS compiler', () => {
   });
 
   it('Normal color', () => {
-    const { css } = transformClassNames('bg-black');
-    expect(css).toStrictEqual(
-      '/*!dbgidc,w,bg-black*/.bg-black{--tw-bg-opacity;background-color}',
+    const className = tx('bg-black');
+    expect(className).toStrictEqual('bg-black');
+    expect(stringify(tw.target)).toStrictEqual(
+      '/*!dbgidc,w,bg-black*/.bg-black{background-color:rgba(0,0,0,1);}',
     );
   });
 
   it('Color with opacity', () => {
-    const { css } = transformClassNames('bg-black/50');
-    expect(css).toStrictEqual(
-      '/*!dbgidc,w,bg-black/50*/.bg-black\\/50{--tw-bg-opacity;background-color}',
+    const className = tx('bg-black/50');
+    expect(className).toStrictEqual('bg-black/50');
+    expect(stringify(tw.target)).toStrictEqual(
+      '/*!dbgidc,w,bg-black/50*/.bg-black\\/50{background-color:rgba(0,0,0,0.5);}',
     );
   });
 
   it('Translations', () => {
-    const { css } = transformClassNames('translate-x-8');
-    expect(css).toStrictEqual('/*!dbgidc,v,translate-x-8*/.translate-x-8{transform}');
+    const className = tx('translate-x-8');
+    expect(className).toStrictEqual('translate-x-8');
+    expect(stringify(tw.target)).toStrictEqual(
+      '/*!dbgidc,v,translate-x-8*/.translate-x-8{transform:translate(128px)}',
+    );
   });
 });
