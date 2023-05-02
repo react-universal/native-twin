@@ -6,6 +6,7 @@
     "noUnusedLocals": true,
     "declarationMap": false,
     "sourceMap": false,
+    "jsx": "react-jsx",
     "noEmit": true,
     "types": ["node", "vitest/globals"],
     "importHelpers": true
