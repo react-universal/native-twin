@@ -66,25 +66,3 @@ export default defineConfig({
     emptyOutDir: false,
   },
 });
-
-// const nativeConfig = getConfigForNative({
-//   dirname: __dirname,
-//   usesReactPlugin: true,
-//   externals: [
-//     'react',
-//     'react-native',
-//     'react-native-web',
-//     'react/jsx-runtime',
-//     '@universal-labs/stylesheets',
-//     'tailwind-merge',
-//   ],
-//   globals: {
-//     react: 'React',
-//     'react/jsx-runtime': 'ReactJSXRuntime',
-//     'react-native': 'ReactNative',
-//     'react-native-web': 'ReactNativeWeb',
-//     '@universal-labs/stylesheets': 'UniversalLabsStylesheets',
-//     'tailwind-merge': 'tailwindMerge',
-//   },
-//   libName: 'UniversalLabsStyled',
-// });

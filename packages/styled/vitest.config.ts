@@ -5,9 +5,14 @@ export default defineConfig({
   resolve: {
     // plugin adds this condition automatically
     conditions: ['react-native'],
+    alias: {
+      'react-native': 'react-native-web',
+    },
   },
   test: {
-    setupFiles: ['vitest-react-native/setup'],
+    deps: {
+      inline: ['react-native'],
+    },
     // this is required for this plugin to work
     globals: true,
     env: {
