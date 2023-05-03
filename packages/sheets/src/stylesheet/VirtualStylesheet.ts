@@ -148,9 +148,9 @@ export class VirtualStyleSheet {
     };
   }
 
-  // getClasses(classNames: string) {
-  //   return globalParser.cx(classNames).split(' ');
-  // }
+  getClasses(classNames: string) {
+    return globalParser.cx(classNames).split(' ');
+  }
 }
 
 export function setTailwindConfig(config: Config, baseRem = 16) {
