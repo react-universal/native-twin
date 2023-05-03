@@ -1,49 +1,115 @@
-import { hash, initialize, stringify } from '@universal-labs/twind-adapter';
+import { initialize, stringify, parse, normalize } from '@universal-labs/twind-adapter';
 import cssParser, { Rule, Declaration } from 'css';
+import transform from 'css-to-react-native';
 import type { Config } from 'tailwindcss';
+import type { AnyStyle } from '../types';
 import { normalizeClassNameString } from '../utils/helpers';
+import StyleSheetCache from './StyleSheetCache';
 
 let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };
 let globalParser = initialize({
   colors: {},
   fontFamily: {},
 });
-export function setTailwindConfig(config: Config, baseRem = 16) {
-  currentConfig = {
-    ...currentConfig,
-    ...config,
-  };
-  globalParser.tw.destroy();
-  globalParser = initialize({
-    colors: {
-      ...currentConfig.theme?.colors,
-    },
-    fontFamily: {
-      ...currentConfig.theme?.fontFamily,
-    },
-  });
-  return {
-    baseRem,
-  };
-}
+const store = new StyleSheetCache<string, AnyStyle[]>(1000);
+const declarationsRegex = /([\w-]*)\s*:\s*([^;|^}]+)/;
 
 export class VirtualStyleSheet {
   injectUtilities(classNames?: string) {
-    const transformedClasses = this.transformClassNames(classNames ?? '');
-    const classNamesHash = hash(transformedClasses.generated);
-    const cssA = cssParser.parse(transformedClasses.css);
-    const onlyRules = cssA.stylesheet?.rules ?? [];
-    const extracted = this.extractDeclarationsFromRule(
-      onlyRules.filter((r) => {
-        if (r.type !== 'rule' || !('selectors' in r)) return false;
-        return true;
-      }),
-    );
+    const classes = parse(classNames ?? '');
+    const baseUtilities: AnyStyle[] = [];
+    const pointerStyles: AnyStyle[] = [];
+    const groupStyles: AnyStyle[] = [];
+    let isGroupParent = false;
+    let hasPointerEvents = false;
+    let hasGroupeEvents = false;
+    for (const currentClassName of classes) {
+      // console.log('STYLE_RULE', currentClassName);
+      // if current class does not have any pseudo selectors is a base style
+      const cache = store.get(currentClassName.n);
+      if (currentClassName.v.length === 0) {
+        if (currentClassName.n === 'group') {
+          isGroupParent = true;
+        }
+        if (cache) {
+          baseUtilities.push(...cache);
+          continue;
+        }
+        globalParser.tx(currentClassName.n);
+        const ast = cssParser.parse(this.transformClassNames(currentClassName.n).css);
+        const normal = normalize(this.transformClassNames(currentClassName.n).css);
+        const result = declarationsRegex.exec(normal);
+        console.log('RESULT', result, normal);
+        const extracted = this.extractDeclarationsFromRule(
+          ast.stylesheet?.rules.filter((r) => {
+            if (r.type !== 'rule' || !('selectors' in r)) return false;
+            return true;
+          }) ?? [],
+        ).map((d) => {
+          return transform(d[1]);
+        });
+        baseUtilities.push(...extracted);
+        store.update(currentClassName.n, extracted);
+        continue;
+      }
+      if (
+        currentClassName.v.includes('hover') ||
+        currentClassName.v.includes('focus') ||
+        currentClassName.v.includes('active')
+      ) {
+        hasPointerEvents = true;
+        if (cache) {
+          pointerStyles.push(...cache);
+          continue;
+        }
+        globalParser.tx(currentClassName.n);
+        const ast = cssParser.parse(this.transformClassNames(currentClassName.n).css);
+        const extracted = this.extractDeclarationsFromRule(
+          ast.stylesheet?.rules.filter((r) => {
+            if (r.type !== 'rule' || !('selectors' in r)) return false;
+            return true;
+          }) ?? [],
+        ).map((d) => {
+          return transform(d[1]);
+        });
+        pointerStyles.push(...extracted);
+        store.update(currentClassName.n, extracted);
+        continue;
+      }
+      // console.log('CURRENT_CLASS', currentClassName.v);
+      if (
+        currentClassName.v.includes('group-hover') ||
+        currentClassName.v.includes('group-focus') ||
+        currentClassName.v.includes('group-active')
+      ) {
+        // hasPointerEvents = true;
+        hasGroupeEvents = true;
+        if (cache) {
+          groupStyles.push(...cache);
+          continue;
+        }
+        globalParser.tx(currentClassName.n);
+        const ast = cssParser.parse(this.transformClassNames(currentClassName.n).css);
+        const extracted = this.extractDeclarationsFromRule(
+          ast.stylesheet?.rules.filter((r) => {
+            if (r.type !== 'rule' || !('selectors' in r)) return false;
+            return true;
+          }) ?? [],
+        ).map((d) => {
+          return transform(d[1]);
+        });
+        groupStyles.push(...extracted);
+        store.update(currentClassName.n, extracted);
+      }
+    }
 
     return {
-      extracted,
-      generatedClasses: transformedClasses.generated,
-      classNamesHash,
+      baseUtilities,
+      isGroupParent,
+      pointerStyles,
+      hasPointerEvents,
+      hasGroupeEvents,
+      groupStyles,
     };
   }
 
@@ -54,6 +120,7 @@ export class VirtualStyleSheet {
           const getSelectors = next.selectors?.reduce((c, n) => {
             return `${c}${normalizeClassNameString(n)}`;
           }, ``);
+          // console.log('DECLARATIONS', next.declarations.length, next.declarations);
           if (getSelectors) {
             current.push([getSelectors, next.declarations]);
           }
@@ -82,5 +149,28 @@ export class VirtualStyleSheet {
     };
   }
 
+  getClasses(classNames: string) {
+    return globalParser.cx(classNames).split(' ');
+  }
+
   createStyleSheet() {}
+}
+
+export function setTailwindConfig(config: Config, baseRem = 16) {
+  currentConfig = {
+    ...currentConfig,
+    ...config,
+  };
+  globalParser.tw.destroy();
+  globalParser = initialize({
+    colors: {
+      ...currentConfig.theme?.colors,
+    },
+    fontFamily: {
+      ...currentConfig.theme?.fontFamily,
+    },
+  });
+  return {
+    baseRem,
+  };
 }

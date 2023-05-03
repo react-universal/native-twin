@@ -68,6 +68,8 @@ export default class StyleSheetCache<TKey, TValue> {
     // 1. Check if key exists in cache
     let node = this.lookup.get(key);
     if (!node) {
+      // 2. if it doesn't exist, we need to insert it
+      //    - Check capacity and evict if necessary
       node = createNode(value);
       this.length++;
       this.prepend(node);
@@ -75,13 +77,11 @@ export default class StyleSheetCache<TKey, TValue> {
       this.lookup.set(key, node);
       this.reverseLookup.set(node, key);
     } else {
+      // 3. if it does exist, we need to update to the front of the list
       this.detach(node);
       this.prepend(node);
       node.value = value;
     }
-    // 2. if it doesn't exist, we need to insert it
-    //    - Check capacity and evict if necessary
-    // 3. if it does exist, we need to update to the front of the list
   }
 
   get(key: TKey): TValue | null {

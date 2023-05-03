@@ -1,13 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { Platform } from 'react-native';
-import transform from 'css-to-react-native';
 import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
 import { generateComponentHashID } from '../utils/hash';
 import { classNamesToArray } from '../utils/splitClasses';
-import SheetsStore from './SheetsStore';
 import { VirtualStyleSheet } from './VirtualStylesheet';
-
-const store = SheetsStore.getInstance();
 
 export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
 const virtualSheet = new VirtualStyleSheet();
@@ -30,20 +25,14 @@ export default class InlineStyleSheet {
 
   get metadata() {
     return {
-      isGroupParent: this.originalClasses.includes('group'),
-      hasPointerEvents: Object.keys(this.getPointerEventsSheet).length > 0,
-      hasGroupEvents: this.sheet.generatedClasses.includes('group-'),
+      isGroupParent: this.sheet.isGroupParent,
+      hasPointerEvents: this.sheet.hasPointerEvents,
+      hasGroupEvents: this.sheet.hasGroupeEvents,
     };
   }
 
   constructor(public classNames?: string) {
-    const cache = store.get(classNames ?? 'unstyled');
-    if (cache) {
-      this.sheet = cache;
-    } else {
-      this.sheet = virtualSheet.injectUtilities(classNames);
-      store.setStyle(classNames ?? 'unstyled', this.sheet);
-    }
+    this.sheet = virtualSheet.injectUtilities(classNames);
     const transformedClasses = virtualSheet.transformClassNames(classNames ?? '');
     const splittedClasses = classNamesToArray(transformedClasses.generated);
     this.originalClasses = Object.freeze(splittedClasses);
@@ -56,67 +45,15 @@ export default class InlineStyleSheet {
   }
 
   get getBaseSheet() {
-    return StyleSheet.flatten(
-      this.sheet.extracted
-        .filter((s) => {
-          if (
-            (s[0].includes('ios') || s[0].includes('web') || s[0].includes('android')) &&
-            !s[0].includes('hover') &&
-            !s[0].includes('focus') &&
-            !s[0].includes('active')
-          ) {
-            return s[0].includes(Platform.OS);
-          }
-          return !s[0].includes(':');
-        })
-        .map((s) => {
-          return transform(s[1]);
-        }) as AnyStyle[],
-    );
+    return StyleSheet.flatten(this.sheet.baseUtilities);
   }
 
   get groupEventsSheet() {
-    return StyleSheet.flatten(
-      this.sheet.extracted
-        .filter((s) => {
-          if (
-            (s[0].includes('ios') || s[0].includes('web') || s[0].includes('android')) &&
-            s[0].includes('group-hover') &&
-            s[0].includes('group-focus') &&
-            s[0].includes('group-active')
-          ) {
-            return s[0].includes(Platform.OS);
-          }
-          return (
-            s[0].includes('group-hover') ||
-            s[0].includes('group-focus') ||
-            s[0].includes('group-active')
-          );
-        })
-        .map((s) => {
-          return transform(s[1]);
-        }) as AnyStyle[],
-    );
+    return StyleSheet.flatten(this.sheet.groupStyles);
   }
 
   get getPointerEventsSheet() {
-    return StyleSheet.flatten(
-      this.sheet.extracted
-        .filter((s) => {
-          if (
-            (s[0].includes('ios') || s[0].includes('web') || s[0].includes('android')) &&
-            s[0].includes('hover') &&
-            s[0].includes('focus') &&
-            s[0].includes('active')
-          ) {
-            return s[0].includes(Platform.OS);
-          }
-          return s[0].includes('hover') || s[0].includes('focus') || s[0].includes('active');
-        })
-        .map((s) => {
-          return transform(s[1]);
-        }) as AnyStyle[],
-    );
+    return StyleSheet.flatten(this.sheet.pointerStyles);
   }
 
   public getChildStyles(input: {
