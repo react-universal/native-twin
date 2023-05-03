@@ -24,6 +24,13 @@
     "url": "https://github.com/react-universal/tailwind",
     "directory": "packages/twind-adapter"
   },
+  "exports": {
+    ".": {
+      "import": "./build/index.es.js",
+      "require": "./build/index.cjs.js",
+      "types": "./build/index.d.ts"
+    }
+  },
   "main": "./build/index.cjs.js",
   "module": "./build/index.es.js",
   "types": "./build/index.d.ts",
