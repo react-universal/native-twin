@@ -34,3 +34,6 @@ test.js
 *.tgz
 *.log
 **/_release
+
+# VITE
+**benchmark/
