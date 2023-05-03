@@ -1,4 +1,5 @@
-import { initialize, stringify, parse, normalize } from '@universal-labs/twind-adapter';
+import { Platform } from 'react-native';
+import { initialize, stringify, parse } from '@universal-labs/twind-adapter';
 import cssParser, { Rule, Declaration } from 'css';
 import transform from 'css-to-react-native';
 import type { Config } from 'tailwindcss';
@@ -12,7 +13,7 @@ let globalParser = initialize({
   fontFamily: {},
 });
 const store = new StyleSheetCache<string, AnyStyle[]>(1000);
-const declarationsRegex = /([\w-]*)\s*:\s*([^;|^}]+)/;
+// const declarationsRegex = /([\w-]*)\s*:\s*([^;|^}]+)/;
 
 export class VirtualStyleSheet {
   injectUtilities(classNames?: string) {
@@ -23,31 +24,41 @@ export class VirtualStyleSheet {
     let isGroupParent = false;
     let hasPointerEvents = false;
     let hasGroupeEvents = false;
+    if (!classNames) {
+      return {
+        baseUtilities,
+        pointerStyles,
+        groupStyles,
+        isGroupParent,
+        hasPointerEvents,
+        hasGroupeEvents,
+      };
+    }
     for (const currentClassName of classes) {
-      // console.log('STYLE_RULE', currentClassName);
-      // if current class does not have any pseudo selectors is a base style
       const cache = store.get(currentClassName.n);
+      if (
+        currentClassName.v.includes('web') ||
+        currentClassName.v.includes('android') ||
+        currentClassName.v.includes('ios')
+      ) {
+        if (!currentClassName.v.includes(Platform.OS)) continue;
+      }
       if (currentClassName.v.length === 0) {
         if (currentClassName.n === 'group') {
           isGroupParent = true;
+          continue;
         }
         if (cache) {
           baseUtilities.push(...cache);
           continue;
         }
-        globalParser.tx(currentClassName.n);
         const ast = cssParser.parse(this.transformClassNames(currentClassName.n).css);
-        const normal = normalize(this.transformClassNames(currentClassName.n).css);
-        const result = declarationsRegex.exec(normal);
-        console.log('RESULT', result, normal);
         const extracted = this.extractDeclarationsFromRule(
           ast.stylesheet?.rules.filter((r) => {
             if (r.type !== 'rule' || !('selectors' in r)) return false;
             return true;
           }) ?? [],
-        ).map((d) => {
-          return transform(d[1]);
-        });
+        );
         baseUtilities.push(...extracted);
         store.update(currentClassName.n, extracted);
         continue;
@@ -62,44 +73,37 @@ export class VirtualStyleSheet {
           pointerStyles.push(...cache);
           continue;
         }
-        globalParser.tx(currentClassName.n);
         const ast = cssParser.parse(this.transformClassNames(currentClassName.n).css);
         const extracted = this.extractDeclarationsFromRule(
           ast.stylesheet?.rules.filter((r) => {
             if (r.type !== 'rule' || !('selectors' in r)) return false;
             return true;
           }) ?? [],
-        ).map((d) => {
-          return transform(d[1]);
-        });
+        );
         pointerStyles.push(...extracted);
         store.update(currentClassName.n, extracted);
         continue;
       }
-      // console.log('CURRENT_CLASS', currentClassName.v);
       if (
         currentClassName.v.includes('group-hover') ||
         currentClassName.v.includes('group-focus') ||
         currentClassName.v.includes('group-active')
       ) {
-        // hasPointerEvents = true;
         hasGroupeEvents = true;
         if (cache) {
           groupStyles.push(...cache);
           continue;
         }
-        globalParser.tx(currentClassName.n);
         const ast = cssParser.parse(this.transformClassNames(currentClassName.n).css);
         const extracted = this.extractDeclarationsFromRule(
           ast.stylesheet?.rules.filter((r) => {
             if (r.type !== 'rule' || !('selectors' in r)) return false;
             return true;
           }) ?? [],
-        ).map((d) => {
-          return transform(d[1]);
-        });
+        );
         groupStyles.push(...extracted);
         store.update(currentClassName.n, extracted);
+        continue;
       }
     }
 
@@ -122,18 +126,13 @@ export class VirtualStyleSheet {
           }, ``);
           // console.log('DECLARATIONS', next.declarations.length, next.declarations);
           if (getSelectors) {
-            current.push([getSelectors, next.declarations]);
+            current.push(...next.declarations);
           }
         }
         return current;
-      }, [] as [string, Declaration[]][])
+      }, [] as Declaration[])
       .map((d) => {
-        const declarations = d[1].reduce((current, next) => {
-          current.push([next.property!, next.value!]);
-          return current;
-        }, [] as [string, string][]);
-        const utility = d[0];
-        return [utility, declarations] as [string, [string, string][]];
+        return transform([[d.property!, d.value!]]);
       });
     return declarations;
   };
@@ -149,11 +148,9 @@ export class VirtualStyleSheet {
     };
   }
 
-  getClasses(classNames: string) {
-    return globalParser.cx(classNames).split(' ');
-  }
-
-  createStyleSheet() {}
+  // getClasses(classNames: string) {
+  //   return globalParser.cx(classNames).split(' ');
+  // }
 }
 
 export function setTailwindConfig(config: Config, baseRem = 16) {

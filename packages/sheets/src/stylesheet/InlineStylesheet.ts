@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
 import { generateComponentHashID } from '../utils/hash';
-import { classNamesToArray } from '../utils/splitClasses';
 import { VirtualStyleSheet } from './VirtualStylesheet';
 
 export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
@@ -9,7 +8,6 @@ const virtualSheet = new VirtualStyleSheet();
 
 export default class InlineStyleSheet {
   id: string;
-  originalClasses: readonly string[];
 
   styles?: {
     base: AnyStyle;
@@ -33,10 +31,7 @@ export default class InlineStyleSheet {
 
   constructor(public classNames?: string) {
     this.sheet = virtualSheet.injectUtilities(classNames);
-    const transformedClasses = virtualSheet.transformClassNames(classNames ?? '');
-    const splittedClasses = classNamesToArray(transformedClasses.generated);
-    this.originalClasses = Object.freeze(splittedClasses);
-    this.id = generateComponentHashID(this.originalClasses.join(' ') ?? 'unstyled');
+    this.id = generateComponentHashID(classNames ?? 'unstyled');
     this.getChildStyles = this.getChildStyles.bind(this);
   }
 
