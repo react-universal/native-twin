@@ -1,7 +1,6 @@
-import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
+import type { AnyStyle } from '../types';
 import { VirtualStyleSheet } from './VirtualStylesheet';
 
-export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
 const virtualSheet = new VirtualStyleSheet();
 
 export default class InlineStyleSheet {
@@ -43,20 +42,17 @@ export default class InlineStyleSheet {
   }) {
     const result: AnyStyle = {};
     if (!this) return result;
-    const styleSheet = generatedComponentStylesheets[this.id];
-    if (styleSheet) {
-      if (input.isFirstChild) {
-        Object.assign(result, styleSheet.first);
-      }
-      if (input.isLastChild) {
-        Object.assign(result, styleSheet.last);
-      }
-      if (input.isEven) {
-        Object.assign(result, styleSheet.even);
-      }
-      if (input.isOdd) {
-        Object.assign(result, styleSheet.odd);
-      }
+    if (input.isFirstChild) {
+      Object.assign(result, this.sheet.first);
+    }
+    if (input.isLastChild) {
+      Object.assign(result, this.sheet.last);
+    }
+    if (input.isEven) {
+      Object.assign(result, this.sheet.even);
+    }
+    if (input.isOdd) {
+      Object.assign(result, this.sheet.odd);
     }
     return Object.freeze(result);
   }

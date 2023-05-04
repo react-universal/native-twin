@@ -1,6 +1,4 @@
-import type { AnyStyle } from '../types';
-
-export default class SimpleLRU<T extends AnyStyle> {
+export default class SimpleLRU<T> {
   private cache: Map<string, T> = new Map();
   private previousCache: Map<string, T> = new Map();
 

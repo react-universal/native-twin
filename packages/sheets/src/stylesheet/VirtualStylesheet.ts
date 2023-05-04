@@ -1,5 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-import { initialize, stringify, hash } from '@universal-labs/twind-adapter';
+import { initialize, hash } from '@universal-labs/twind-adapter';
 import transform from 'css-to-react-native';
 import type { Config } from 'tailwindcss';
 import type { AnyStyle, ComponentStylesheet } from '../types';
@@ -15,14 +15,13 @@ import {
   isLastSelector,
 } from '../utils/recursiveParser';
 import SimpleLRU from './SimpleLRU';
-import StyleSheetCache from './StyleSheetCache';
 
 let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };
 let globalParser = initialize({
   colors: {},
   fontFamily: {},
 });
-const store = new StyleSheetCache<string, ComponentStylesheet>(1000);
+const store = new SimpleLRU<ComponentStylesheet>(1000);
 const stylesStore = new SimpleLRU(100);
 // const declarationsRegex = /([\w-]*)\s*:\s*([^;|^}]+)/;
 
@@ -47,7 +46,7 @@ export class VirtualStyleSheet {
         hasGroupeEvents: false,
         hash: hashID,
       };
-      store.update(hashID, result);
+      store.set(hashID, result);
       return result;
     }
     const transformed = this.transformClassNames(classNames);
@@ -60,7 +59,7 @@ export class VirtualStyleSheet {
       first: [] as AnyStyle[],
       last: [] as AnyStyle[],
     };
-    for (const rule of transformed.target) {
+    for (const [rule, css] of transformed.target) {
       if (isPlatformSelector(rule)) {
         if (!rule.includes(Platform.OS)) {
           continue;
@@ -93,7 +92,7 @@ export class VirtualStyleSheet {
         }
         continue;
       }
-      const extracted = extractDeclarationsFromCSS(rule);
+      const extracted = extractDeclarationsFromCSS(css);
       if (isPointer) {
         const style = transform(extracted) as AnyStyle;
         styles.pointer.push(style as AnyStyle);
@@ -137,21 +136,23 @@ export class VirtualStyleSheet {
       hasPointerEvents: styles.pointer.length > 0,
       hasGroupeEvents: styles.group.length > 0,
     };
-    store.update(hashID, result);
+    // store.update(hashID, result);
     return result;
   }
 
   transformClassNames(...classes: string[]) {
     const generated = globalParser.tx(...classes).split(' ');
-    const selected = globalParser.tw.target.filter((x) =>
-      generated.some((y) => normalizeClassNameString(x).includes(y)),
-    );
-    // console.debug(selected);
-    const output = stringify(selected);
+    const target = globalParser.tw.target.reduce((acc, curr) => {
+      const normalized = normalizeClassNameString(curr);
+      const found = generated.find((x) => normalized.includes(x));
+      if (found) {
+        acc.push([found, curr]);
+      }
+      return acc;
+    }, [] as [UtilityString: string, CssTarget: string][]);
     return {
-      target: selected,
+      target,
       generated,
-      css: output,
     };
   }
 
