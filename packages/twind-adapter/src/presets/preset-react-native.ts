@@ -10,12 +10,17 @@ export default function twindPresetReactNative({ baseRem = 16 }): Preset {
     theme: {
       extend: {
         screens: {
-          ios: ':ios',
-          android: ':android',
-          web: ':web',
+          ios: '&:ios',
+          android: '&:android',
+          web: '&:web',
         },
       },
     },
+    variants: [
+      ['ios', '&:ios'],
+      ['android', '&:android'],
+      ['web', '&:web'],
+    ],
     // @ts-expect-error
     rules: [...translateRules],
     finalize(rule) {

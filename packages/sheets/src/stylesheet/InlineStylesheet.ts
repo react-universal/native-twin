@@ -1,6 +1,4 @@
-import { StyleSheet } from 'react-native';
 import type { AnyStyle, GeneratedComponentsStyleSheet } from '../types';
-import { generateComponentHashID } from '../utils/hash';
 import { VirtualStyleSheet } from './VirtualStylesheet';
 
 export const generatedComponentStylesheets: GeneratedComponentsStyleSheet = {};
@@ -8,16 +6,6 @@ const virtualSheet = new VirtualStyleSheet();
 
 export default class InlineStyleSheet {
   id: string;
-
-  styles?: {
-    base: AnyStyle;
-    pointerStyles: AnyStyle;
-    first: AnyStyle;
-    last: AnyStyle;
-    even: AnyStyle;
-    odd: AnyStyle;
-    group: AnyStyle;
-  };
 
   sheet: ReturnType<VirtualStyleSheet['injectUtilities']>;
 
@@ -31,24 +19,20 @@ export default class InlineStyleSheet {
 
   constructor(public classNames?: string) {
     this.sheet = virtualSheet.injectUtilities(classNames);
-    this.id = generateComponentHashID(classNames ?? 'unstyled');
+    this.id = this.sheet.hash;
     this.getChildStyles = this.getChildStyles.bind(this);
   }
 
-  getStyles() {
-    return generatedComponentStylesheets[this.id]!;
-  }
-
   get getBaseSheet() {
-    return StyleSheet.flatten(this.sheet.baseUtilities);
+    return this.sheet.baseStyles;
   }
 
   get groupEventsSheet() {
-    return StyleSheet.flatten(this.sheet.groupStyles);
+    return this.sheet.groupStyles;
   }
 
   get getPointerEventsSheet() {
-    return StyleSheet.flatten(this.sheet.pointerStyles);
+    return this.sheet.pointerStyles;
   }
 
   public getChildStyles(input: {

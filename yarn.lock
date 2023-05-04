@@ -5,6 +5,13 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@adobe/css-tools@npm:4.3.0-beta.2":
+  version: 4.3.0-beta.2
+  resolution: "@adobe/css-tools@npm:4.3.0-beta.2"
+  checksum: e081dac09b49d854260a96d33afcbf58a9239bc9551f156f50837b75ff1ec02f69170bd91979786b14a4bbd33c7d195cdb20b4b8a1afee6d61cdf5946497bc14
+  languageName: node
+  linkType: hard
+
 "@algolia/autocomplete-core@npm:1.7.4":
   version: 1.7.4
   resolution: "@algolia/autocomplete-core@npm:1.7.4"
@@ -6693,6 +6700,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
   dependencies:
+    "@adobe/css-tools": 4.3.0-beta.2
     "@types/css": 0.0.33
     "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
