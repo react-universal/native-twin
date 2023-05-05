@@ -26,6 +26,7 @@ export default defineConfig({
       external: [
         'css-to-react-native',
         'react-native',
+        '@adobe/css-tools',
         'react-native-web',
         'react',
         '@universal-labs/twind-adapter',

@@ -46,12 +46,10 @@
   "dependencies": {
     "@adobe/css-tools": "4.3.0-beta.2",
     "@universal-labs/twind-adapter": "workspace:*",
-    "css": "^3.0.0",
     "css-to-react-native": "^3.1.0",
     "react-native-uuid": "^2.0.1"
   },
   "devDependencies": {
-    "@types/css": "0.0.33",
     "@types/css-to-react-native": "^3.0.0",
     "@types/react": "~18.0.27",
     "vitest": "^0.28.3"
