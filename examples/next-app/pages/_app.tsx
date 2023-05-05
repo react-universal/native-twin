@@ -1,4 +1,6 @@
 // import { Roboto } from '@next/font/google';
+import install from '@twind/with-next/app';
+import { initialize } from '@universal-labs/twind-adapter';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../styles/globals.css';
@@ -9,7 +11,13 @@ import '../styles/globals.css';
 //   variable: '--font-roboto',
 // });
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+const { tw } = initialize({
+  colors: {
+    primary: 'blue',
+  },
+});
+
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -22,3 +30,5 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     </>
   );
 }
+
+export default install(tw.config, MyApp);

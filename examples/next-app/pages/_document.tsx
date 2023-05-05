@@ -1,19 +1,8 @@
 import React from 'react';
-import { AppRegistry } from 'react-native';
-import { initialize, extract } from '@universal-labs/twind-adapter';
+import install from '@twind/with-next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-const { tw } = initialize();
-
-export async function getInitialProps({ renderPage }) {
-  AppRegistry.registerComponent('Main', () => Main);
-  const page = await renderPage();
-  const page2 = extract(page.html, tw);
-  const styles = [<style key='style-reset' dangerouslySetInnerHTML={{ __html: page2.css }} />];
-  return { ...page, styles: React.Children.toArray(styles) };
-}
-
-export default class MyDocument extends Document {
+class MyDocument extends Document {
   render() {
     const currentLocale = this.props.__NEXT_DATA__.locale || 'en';
     return (
@@ -31,4 +20,4 @@ export default class MyDocument extends Document {
   }
 }
 
-MyDocument.getInitialProps = getInitialProps;
+export default install(MyDocument);
