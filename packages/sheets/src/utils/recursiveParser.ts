@@ -18,16 +18,6 @@ function walkDeclarations(
   return walkDeclarations(declarations, transformed);
 }
 
-// function walkSelectors(
-//   ruleSelectors: CssRuleAST['selectors'],
-//   transformed: string = ``,
-// ): string {
-//   const currentSelector = ruleSelectors.shift();
-//   if (!currentSelector) return transformed;
-//   transformed = `${transformed}${currentSelector.trim()}`;
-//   return walkSelectors(ruleSelectors, normalizeClassNameString(transformed).trim());
-// }
-
 function rulesWalk(
   rules: CssStylesheetAST['stylesheet']['rules'],
   declarations: [string, string][] = [],

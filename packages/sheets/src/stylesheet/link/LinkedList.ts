@@ -1,5 +1,3 @@
-// type Node = ((DeclarationsNode | SheetNode | SheetNode) & { next: Node }) | null;
-
 class Node<T> {
   value: T;
   next: Node<T> | null;
@@ -9,7 +7,7 @@ class Node<T> {
   }
 }
 
-export class LinkedList<T> {
+class LinkedList<T> {
   tail: Node<T> | null;
   head: Node<T> | null;
   size: number;
@@ -139,4 +137,4 @@ globalSheetInstance.prepend('FIRST VALUE');
 globalSheetInstance.deleteByValue('DELETE_ME');
 // console.log('PERF: ', end - start);
 // console.log('GLOBAL: ', globalSheetInstance.toArray());
-console.log('FIND_GLOBAL: ', globalSheetInstance.find(3));
+// console.log('FIND_GLOBAL: ', globalSheetInstance.find(3));

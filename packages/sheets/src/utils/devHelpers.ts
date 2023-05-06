@@ -1,4 +1,5 @@
 const getReduxDevToolsConnection = (storeName: string) => {
+  // @ts-expect-error
   if (typeof window !== 'undefined') {
     // @ts-ignore
     return window?.__REDUX_DEVTOOLS_EXTENSION__?.connect({

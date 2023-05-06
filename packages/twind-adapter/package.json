@@ -58,6 +58,11 @@
   "devDependencies": {
     "vitest-react-native": "0.0.5"
   },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-native": ">=0.70",
+    "react-native-web": ">= 0.18.10"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"

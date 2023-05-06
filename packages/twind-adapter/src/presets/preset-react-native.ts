@@ -24,10 +24,6 @@ export default function twindPresetReactNative({ baseRem = 16 }): Preset {
     // @ts-expect-error
     rules: [...translateRules],
     finalize(rule) {
-      rule = flexToReactNative(rule);
-      rule = remToPx(rule, { baseRem });
-      rule = convertCalc(rule);
-      rule = transformCssVariables(rule);
       return rule;
     },
   };

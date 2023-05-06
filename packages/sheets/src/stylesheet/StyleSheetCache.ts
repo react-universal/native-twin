@@ -22,16 +22,14 @@ export default class StyleSheetCache<TKey, TValue> {
     if (node.next) {
       node.next.prev = node.prev;
     }
-    if (this.length === 1) {
-      this.head = this.tail = undefined;
-    }
     if (this.head === node) {
       this.head = this.head.next;
     }
     if (this.tail === node) {
       this.tail = this.tail.prev;
     }
-    node.next = node.prev = undefined;
+    node.next = undefined;
+    node.prev = undefined;
   }
 
   private prepend(node: Node<TValue>): void {
@@ -64,7 +62,7 @@ export default class StyleSheetCache<TKey, TValue> {
     this.reverseLookup = new Map();
   }
 
-  update(key: TKey, value: TValue): void {
+  set(key: TKey, value: TValue): void {
     // 1. Check if key exists in cache
     let node = this.lookup.get(key);
     if (!node) {
@@ -95,5 +93,15 @@ export default class StyleSheetCache<TKey, TValue> {
     this.prepend(node);
     // 3. return the value or undefined if it doesn't exist
     return node.value;
+  }
+
+  print() {
+    return {
+      head: this.head,
+      tail: this.tail,
+      lookup: this.lookup,
+      reverseLookup: this.reverseLookup,
+      length: this.length,
+    };
   }
 }

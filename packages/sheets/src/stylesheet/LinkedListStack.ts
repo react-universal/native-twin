@@ -1,4 +1,4 @@
-import { LinkedList } from './link/GlobalSheets';
+import { LinkedList } from './link/LinkedList';
 
 export class LinkedListStack<T> {
   list: LinkedList<T>;

@@ -2,7 +2,9 @@ import { Platform, StyleSheet } from 'react-native';
 import { initialize, hash } from '@universal-labs/twind-adapter';
 import transform from 'css-to-react-native';
 import type { Config } from 'tailwindcss';
+import { astish } from '../runtime/leaves/ClassSelector';
 import type { AnyStyle, ComponentStylesheet } from '../types';
+import { reduxDevToolsConnection } from '../utils/devHelpers';
 import { normalizeClassNameString } from '../utils/helpers';
 import {
   extractDeclarationsFromCSS,
@@ -14,20 +16,25 @@ import {
   isFirstSelector,
   isLastSelector,
 } from '../utils/recursiveParser';
-import SimpleLRU from './SimpleLRU';
+import StyleSheetCache from './StyleSheetCache';
 
 let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };
 let globalParser = initialize({
   colors: {},
   fontFamily: {},
 });
-const store = new SimpleLRU<ComponentStylesheet>(1000);
-const stylesStore = new SimpleLRU(100);
+const store = new StyleSheetCache<string, ComponentStylesheet>(100);
+const stylesStore = new StyleSheetCache<string, AnyStyle>(100);
+reduxDevToolsConnection.init();
 // const declarationsRegex = /([\w-]*)\s*:\s*([^;|^}]+)/;
 
 export class VirtualStyleSheet {
   injectUtilities(classNames?: string): ComponentStylesheet {
     const hashID = hash(classNames ?? 'unstyled');
+    // reduxDevToolsConnection.send('ACTION', {
+    //   store: Object.fromEntries(store.print()),
+    //   styles: Object.fromEntries(stylesStore.print()),
+    // });
     const cache = store.get(hashID);
     if (cache) {
       return cache;
@@ -65,7 +72,11 @@ export class VirtualStyleSheet {
           continue;
         }
       }
-
+      console.group('CSS');
+      console.log('GENERATED: ', css);
+      // astish([css]);
+      console.log('ASTISH: ', astish(css));
+      console.groupEnd();
       let isGroup = isGroupSelector(rule);
       let isPointer = isPointerSelector(rule) && !isGroup;
       let isEven = isEvenSelector(rule);
@@ -94,49 +105,63 @@ export class VirtualStyleSheet {
       }
       const extracted = extractDeclarationsFromCSS(css);
       if (isPointer) {
-        const style = transform(extracted) as AnyStyle;
+        const style = transform(extracted, ['transform']) as AnyStyle;
         styles.pointer.push(style as AnyStyle);
         stylesStore.set(rule, style);
       } else if (isGroup) {
-        const style = transform(extracted) as AnyStyle;
+        const style = transform(extracted, ['transform']) as AnyStyle;
         styles.group.push(style as AnyStyle);
         stylesStore.set(rule, style);
       } else if (isEven) {
-        const style = transform(extracted) as AnyStyle;
+        const style = transform(extracted, ['transform']) as AnyStyle;
         styles.even.push(style as AnyStyle);
         stylesStore.set(rule, style);
       } else if (isOdd) {
-        const style = transform(extracted) as AnyStyle;
+        const style = transform(extracted, ['transform']) as AnyStyle;
         styles.odd.push(style as AnyStyle);
         stylesStore.set(rule, style);
       } else if (isFirst) {
-        const style = transform(extracted) as AnyStyle;
+        const style = transform(extracted, ['transform']) as AnyStyle;
         styles.first.push(style as AnyStyle);
         stylesStore.set(rule, style);
       } else if (isLast) {
-        const style = transform(extracted) as AnyStyle;
+        const style = transform(extracted, ['transform']) as AnyStyle;
         styles.last.push(style as AnyStyle);
         stylesStore.set(rule, style);
       } else {
-        const style = transform(extracted) as AnyStyle;
+        const style = transform(extracted, ['transform']) as AnyStyle;
         styles.base.push(style as AnyStyle);
         stylesStore.set(rule, style);
       }
     }
     const result = {
+      baseStyles: {},
+      pointerStyles: {},
+      groupStyles: {},
+      even: {},
+      first: {},
+      last: {},
+      odd: {},
+      isGroupParent: false,
+      hasPointerEvents: false,
+      hasGroupeEvents: false,
       hash: hashID,
-      baseStyles: StyleSheet.flatten(styles.base),
-      pointerStyles: StyleSheet.flatten(styles.pointer),
-      groupStyles: StyleSheet.flatten(styles.group),
-      even: StyleSheet.flatten(styles.even),
-      first: StyleSheet.flatten(styles.first),
-      last: StyleSheet.flatten(styles.last),
-      odd: StyleSheet.flatten(styles.odd),
-      isGroupParent: transformed.generated.includes('group'),
-      hasPointerEvents: styles.pointer.length > 0,
-      hasGroupeEvents: styles.group.length > 0,
     };
+    // const result = {
+    //   hash: hashID,
+    //   baseStyles: StyleSheet.flatten(styles.base),
+    //   pointerStyles: StyleSheet.flatten(styles.pointer),
+    //   groupStyles: StyleSheet.flatten(styles.group),
+    //   even: StyleSheet.flatten(styles.even),
+    //   first: StyleSheet.flatten(styles.first),
+    //   last: StyleSheet.flatten(styles.last),
+    //   odd: StyleSheet.flatten(styles.odd),
+    //   isGroupParent: transformed.generated.includes('group'),
+    //   hasPointerEvents: styles.pointer.length > 0,
+    //   hasGroupeEvents: styles.group.length > 0,
+    // };
     // store.update(hashID, result);
+    store.set(hashID, result);
     return result;
   }
 

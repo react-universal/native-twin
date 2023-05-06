@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { StyleSheet, Touchable } from 'react-native';
+import { Touchable, StyleSheet } from 'react-native';
 import {
   StyledProps,
   createComponentID,
-  AnyStyle,
   InlineStyleSheet,
   StoreManager,
+  AnyStyle,
 } from '@universal-labs/stylesheets';
 import { ComponentNode } from '@universal-labs/stylesheets';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';

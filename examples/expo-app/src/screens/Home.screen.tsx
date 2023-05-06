@@ -18,13 +18,32 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(false);
   return (
-    <View className='h-[10vh] flex-1'>
-      <View className='ios:(p-14 border-8 border-gray-200) hover:(bg-red-300 web:(bg-blue-600) ios:(bg-pink-600) android:(bg-black)) flex-1 items-center justify-center'>
-        <H1 className='text(center 2xl indigo-600 capitalize) font-inter-bold hover:text-gray-700'>
+    <View className='flex-1'>
+      <View
+        className={clsx(
+          'flex-1',
+          'hover:(bg-red-300 web:(bg-blue-600) ios:(bg-pink-600) android:(bg-black))',
+          'ios:(p-14 border-gray-200)',
+          'items-center justify-center',
+        )}
+      >
+        <H1
+          className={clsx(
+            'text(center 2xl indigo-600 capitalize)',
+            'font-inter-bold hover:text-gray-700',
+          )}
+        >
           H1 - 1
         </H1>
       </View>
-      <View className='text-primary group -mt-[20px] flex-[2] items-center justify-center border-t-8 border-indigo-50 bg-gray-800 hover:bg-pink-600'>
+      <View
+        className={clsx(
+          'group',
+          'flex-[2] text-primary',
+          'bg-gray-800 hover:bg-pink-600',
+          'items-center justify-center',
+        )}
+      >
         <H1
           className={clsx(
             ['font-inter-bold text-2xl'],
@@ -43,7 +62,7 @@ function HomeScreen() {
         <Image
           source={testImage}
           resizeMode='cover'
-          className='translate-x-2 overflow-hidden rounded-full border-8'
+          className='translate-x-2 rounded-full border-1'
         />
         <TextField />
         <View className='mb-2 -top-1 -translate-x-2 rounded-lg bg-gray-300 p-2 group-hover:bg-pink-800'>
