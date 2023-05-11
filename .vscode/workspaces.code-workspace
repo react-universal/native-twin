@@ -9,6 +9,14 @@
       "path": "../examples/expo-app"
     },
     {
+      "name": "next-app",
+      "path": "../examples/next-app"
+    },
+    {
+      "name": "📦 @universal-labs/primitives",
+      "path": "../packages/primitives"
+    },
+    {
       "name": "📦 @universal-labs/stylesheets",
       "path": "../packages/sheets"
     },
@@ -83,7 +91,11 @@
     "cSpell.words": [
       "ignorelist"
     ],
-    "window.zoomLevel": 3,
-    "testing.automaticallyOpenPeekView": "never"
+    "workbench.colorCustomizations": {
+      "[Atom One Dark]": {
+        "editor.background": "#1F1F1F"
+      }
+    },
+    "window.zoomLevel": 4
   }
 }

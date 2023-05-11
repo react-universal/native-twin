@@ -1,4 +1,3 @@
-// @ts-nocheck
 import camelize from 'fbjs/lib/camelize';
 
 export type CSSObject = any;
@@ -37,11 +36,13 @@ function astish$(css: string): CSSObject[] {
       rules.push(conditions.reduce((body, condition) => ({ [condition]: body }), tree[0]));
     } else if (!block[4]) {
       // if we already have that property — start a new CSSObject
-      if (tree[0][block[1]]) {
+      if (tree[0] && block[1] && tree[0][block[1]]) {
         tree.unshift({});
         rules.push(conditions.reduce((body, condition) => ({ [condition]: body }), tree[0]));
       }
-      tree[0][camelize(block[1])] = block[2];
+      if (block[1]) {
+        tree[0][camelize(block[1])] = block[2];
+      }
     }
   }
 

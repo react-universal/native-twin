@@ -1,10 +1,10 @@
-import { Platform, StyleSheet } from 'react-native';
+/* eslint-disable no-console */
+import { Platform } from 'react-native';
 import { initialize, hash } from '@universal-labs/twind-adapter';
 import transform from 'css-to-react-native';
 import type { Config } from 'tailwindcss';
-import { astish } from '../runtime/leaves/ClassSelector';
+import { CssTokenizer } from '../runtime/parser/CssParser';
 import type { AnyStyle, ComponentStylesheet } from '../types';
-import { reduxDevToolsConnection } from '../utils/devHelpers';
 import { normalizeClassNameString } from '../utils/helpers';
 import {
   extractDeclarationsFromCSS,
@@ -25,7 +25,6 @@ let globalParser = initialize({
 });
 const store = new StyleSheetCache<string, ComponentStylesheet>(100);
 const stylesStore = new StyleSheetCache<string, AnyStyle>(100);
-reduxDevToolsConnection.init();
 // const declarationsRegex = /([\w-]*)\s*:\s*([^;|^}]+)/;
 
 export class VirtualStyleSheet {
@@ -73,9 +72,10 @@ export class VirtualStyleSheet {
         }
       }
       console.group('CSS');
-      console.log('GENERATED: ', css);
-      // astish([css]);
-      console.log('ASTISH: ', astish(css));
+      const tokenized = new CssTokenizer(css);
+      if (tokenized.ast.isError) {
+        console.debug(tokenized.ast);
+      }
       console.groupEnd();
       let isGroup = isGroupSelector(rule);
       let isPointer = isPointerSelector(rule) && !isGroup;

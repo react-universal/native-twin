@@ -11,8 +11,9 @@ describe('TailwindCSS compiler', () => {
   it('Normal color', () => {
     const className = tx('bg-black');
     expect(className).toStrictEqual('bg-black');
+    console.log('CSS: ', tw.target);
     expect(stringify(tw.target)).toStrictEqual(
-      '/*!dbgidc,w,bg-black*/.bg-black{background-color:rgba(0,0,0,1);}',
+      '/*!dbgidc,w,bg-black*/.bg-black{--tw-bg-opacity:1;background-color:rgba(0,0,0,var(--tw-bg-opacity))}',
     );
   });
 
