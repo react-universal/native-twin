@@ -7,19 +7,10 @@ import remToPx from './rem-to-px';
 
 export default function twindPresetReactNative({ baseRem = 16 }): Preset {
   return {
-    theme: {
-      extend: {
-        screens: {
-          ios: '&:ios',
-          android: '&:android',
-          web: '&:web',
-        },
-      },
-    },
     variants: [
       ['ios', '&:ios'],
       ['android', '&:android'],
-      ['web', '&:web'],
+      ['web', ':web'],
     ],
     // @ts-expect-error
     rules: [...translateRules],

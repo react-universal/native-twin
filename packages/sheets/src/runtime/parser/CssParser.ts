@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 import camelize from 'fbjs/lib/camelize';
 import { Parser } from './Parser';
+import { fullRuleMatch } from './combinator/css';
 import { matchLetters } from './combinator/letters';
 import { matchDigits } from './combinator/numbers';
 import { matchString } from './combinator/string';
@@ -29,7 +29,7 @@ export class CssTokenizer {
   }
 
   evaluate(node: any): any {
-    if (node.type === 'rule') {
+    if (node.type === 'stylesheet') {
       return this.evaluate(node.value.declarations);
     }
     if (node.type === 'comment') {
@@ -39,7 +39,7 @@ export class CssTokenizer {
       return node.value;
     }
     if (node.type === 'declarations') {
-      const splittedDeclarationsParser = matchStrictMany(
+      const splittedDeclarationsParser = matchMany(
         matchSequenceOf([
           matchMany(
             matchChoice([
@@ -75,7 +75,6 @@ export class CssTokenizer {
         }),
       ).chain((result: DeclarationNode[]) => {
         return new Parser((state) => {
-          console.log('CHAIN: ', result);
           const validDeclarations: DeclarationNode[] = [];
           const variables: Record<string, string> = {};
           for (const declaration of result) {
@@ -96,24 +95,13 @@ export class CssTokenizer {
         });
       });
       const result = splittedDeclarationsParser.run(node.value);
-      console.log('RESULT: ', result);
+      console.log('TEST: ', result);
       return result.result;
     }
   }
 
   interpreter() {
-    const parser = matchSequenceOf([commentsParser, selectorParser, declarationParser]).map(
-      (result) => {
-        return {
-          value: {
-            comments: result![0],
-            selector: result![1],
-            declarations: result![2],
-          },
-          type: 'rule',
-        };
-      },
-    );
+    const parser = fullRuleMatch;
     this.ast = parser.run(this.#rule);
     return this.evaluate(this.ast.result);
   }

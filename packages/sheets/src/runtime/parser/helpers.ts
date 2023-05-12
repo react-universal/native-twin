@@ -31,3 +31,7 @@ export function updateParserError(state: ParserState, errorMsg: string): ParserS
 export function parserSucceed<T>(result: T) {
   return new Parser((state) => updateParserResult(state, result));
 }
+
+export const tagParser =
+  (type: string) =>
+  <T>(value: T) => ({ type, value });
