@@ -29,6 +29,7 @@ export const matchCssDeclarations = new Parser((parserState) => {
           matchLetters,
           matchDigits,
           matchString(','),
+          matchString('.'),
           matchString('-'),
           matchString(':'),
           matchString(';'),
@@ -37,6 +38,9 @@ export const matchCssDeclarations = new Parser((parserState) => {
           matchString('!'),
           matchString('['),
           matchString(']'),
+          matchString('%'),
+          matchString('*'),
+          matchString(' '),
         ]),
       ),
     ).parserStateTransformerFn(parserState);
@@ -51,3 +55,41 @@ export const matchCssDeclarations = new Parser((parserState) => {
   type: 'declarations',
   value: result.join(''),
 }));
+
+// .chain((result: any) => {
+//   return new Parser((parserState) => {
+//     const variables: [string, string][] = [];
+//     const separatedBySemiColon = matchSeparatedBy(matchString(';'));
+//     const separatedByColon = matchSeparatedBy(matchString(':'));
+//     const nextState = separatedBySemiColon(
+//       matchMany(
+//         matchChoice([
+//           matchLetters,
+//           matchDigits,
+//           matchString(','),
+//           matchString('.'),
+//           matchString('-'),
+//           matchString('('),
+//           matchString(':'),
+//           matchString(')'),
+//           matchString('!'),
+//           matchString('['),
+//           matchString(']'),
+//           matchString('%'),
+//           matchString('*'),
+//           matchString(' '),
+//         ]),
+//       ).map((result: any) => {
+//         return result.join('');
+//       }),
+//     )
+//       .map((result: any) => {
+//         console.log('RESULT_MAP_COLON: ', result);
+//         return result;
+//       })
+//       .run(result.value);
+//     console.log('NEXT STATE: ', nextState);
+
+//     return parserState;
+//   });
+// });

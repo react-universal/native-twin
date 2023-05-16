@@ -1,5 +1,8 @@
 import { Parser } from '../Parser';
+import { matchMany } from '../composers/many';
+import { matchChoice } from '../composers/sequence';
 import { updateParserError, updateParserState } from '../helpers';
+import { matchDigits } from './numbers';
 
 const lettersRegex = /^[A-Za-z]+/;
 
@@ -24,3 +27,5 @@ export const matchLetters = new Parser((parserState) => {
 
   return updateParserError(parserState, `letters: Couldn't match letters at index ${index}`);
 });
+
+export const matchAlphanumeric = matchMany(matchChoice([matchLetters, matchDigits]));

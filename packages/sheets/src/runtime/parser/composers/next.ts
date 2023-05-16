@@ -1,7 +1,7 @@
 import { Parser } from '../Parser';
 import { updateParserError, updateParserState } from '../helpers';
 
-export function parseBefore(target: string) {
+export const parsePeekPositions = (positions: number) => {
   return new Parser((parserState) => {
     const { targetString, index, isError } = parserState;
 
@@ -16,23 +16,11 @@ export function parseBefore(target: string) {
     }
 
     let currentChar = '';
-    let currentIndex = index;
     let results: string[] = [];
-    while (currentIndex <= targetString.length) {
-      currentChar = targetString[currentIndex]!;
-      if (currentChar === target) {
-        return updateParserState(parserState, currentIndex, results as any);
-      }
+    for (let i = 0; i < positions; i++) {
+      currentChar = slicedTarget[i]!;
       results.push(currentChar);
-      currentIndex++;
     }
-
-    return updateParserError(
-      parserState,
-      `before: Trying to match ${target} but got "${targetString.slice(
-        index,
-        index + 10,
-      )}" at index ${index}`,
-    );
+    return updateParserState(parserState, index, results as any);
   });
-}
+};

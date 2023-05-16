@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { Platform } from 'react-native';
 import { initialize, hash } from '@universal-labs/twind-adapter';
 import transform from 'css-to-react-native';
 import type { Config } from 'tailwindcss';
@@ -17,6 +16,10 @@ import {
   isLastSelector,
 } from '../utils/recursiveParser';
 import StyleSheetCache from './StyleSheetCache';
+
+const Platform = {
+  OS: 'ios',
+};
 
 let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };
 let globalParser = initialize({

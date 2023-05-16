@@ -19,10 +19,10 @@ export const matchCssComment = new Parser((parserState) => {
   if (slicedTarget.length === 0) {
     return updateParserError(parserState, `comment: Got unexpected end of input`);
   }
-  const peekTwo = targetString.slice(0, 2);
+  const peekTwo = slicedTarget.slice(0, 2);
   if (peekTwo === '/*') {
     const parser = matchBetween(matchString('/*'), matchString('*/'));
-    return parser(
+    const nextState = parser(
       matchMany(
         matchChoice([
           matchLetters,
@@ -35,10 +35,26 @@ export const matchCssComment = new Parser((parserState) => {
           matchString(']'),
         ]),
       ),
-    ).run(targetString);
+    ).parserStateTransformerFn(parserState);
+    if (nextState.isError) {
+      return updateParserError(
+        parserState,
+        `comment: trying match "*/" but got "${targetString.slice(
+          index,
+          index + 10,
+        )}" comment at index ${index}`,
+      );
+    }
+    return nextState;
   }
 
-  return updateParserError(parserState, `comment: Couldn't match comment at index ${index}`);
+  return updateParserError(
+    parserState,
+    `comment: trying match "*/" but got "${targetString.slice(
+      index,
+      index + 10,
+    )}" comment at index ${index}`,
+  );
 }).map((result: any) => ({
   type: 'comment',
   value: result.join(''),

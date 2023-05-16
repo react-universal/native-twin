@@ -3,7 +3,7 @@ export type ParserFn = (parserState: ParserState) => ParserState;
 export interface ParserState {
   index: number;
   targetString: string;
-  result: string | null;
+  result: string | any;
   isError: boolean;
   error: string | null;
 }

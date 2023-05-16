@@ -57,3 +57,7 @@ export default class InlineStyleSheet {
     return Object.freeze(result);
   }
 }
+
+const css = new InlineStyleSheet('text-xl leading-6 text-gray-800 group-hover:text-white');
+const sheet = () => css.sheet;
+sheet(); //?

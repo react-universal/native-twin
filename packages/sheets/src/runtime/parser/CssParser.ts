@@ -4,7 +4,7 @@ import { fullRuleMatch } from './combinator/css';
 import { matchLetters } from './combinator/letters';
 import { matchDigits } from './combinator/numbers';
 import { matchString } from './combinator/string';
-import { matchMany, matchStrictMany } from './composers/many';
+import { matchMany } from './composers/many';
 import { matchChoice, matchSequenceOf } from './composers/sequence';
 import { updateParserResult } from './helpers';
 import type { ParserState } from './types';
@@ -25,12 +25,18 @@ export class CssTokenizer {
 
   constructor(rule: string) {
     this.#rule = rule;
-    this.interpreter();
   }
 
   evaluate(node: any): any {
     if (node.type === 'stylesheet') {
-      return this.evaluate(node.value.declarations);
+      return this.evaluate(node.value);
+    }
+    if (node.type === 'rules') {
+      const results = [];
+      for (const rule of node.value) {
+        results.push(this.evaluate(rule.value.declarations));
+      }
+      return results;
     }
     if (node.type === 'comment') {
       return node.value;
@@ -39,63 +45,7 @@ export class CssTokenizer {
       return node.value;
     }
     if (node.type === 'declarations') {
-      const splittedDeclarationsParser = matchMany(
-        matchSequenceOf([
-          matchMany(
-            matchChoice([
-              matchLetters,
-              matchDigits,
-              matchString('-'),
-              matchString('('),
-              matchString(')'),
-            ]),
-          ).map((result: any) => result.join('')),
-          matchString(':'),
-          matchMany(
-            matchChoice([
-              matchLetters,
-              matchDigits,
-              matchString('-'),
-              matchString('('),
-              matchString(')'),
-              matchString(','),
-              matchString('.'),
-              matchString('*'),
-              matchString(' '),
-              matchString('['),
-              matchString(']'),
-            ]),
-          ).map((result: any) => result.join('')),
-          matchString(';'),
-        ]).map((result: any) => {
-          return {
-            property: result[0],
-            value: result[2],
-          };
-        }),
-      ).chain((result: DeclarationNode[]) => {
-        return new Parser((state) => {
-          const validDeclarations: DeclarationNode[] = [];
-          const variables: Record<string, string> = {};
-          for (const declaration of result) {
-            if (declaration.property.startsWith('--')) {
-              variables[declaration.property] = declaration.value;
-            } else {
-              const newValue = declaration.value.replace(/var\((--[\w-]+)\)/g, (match, p1) =>
-                p1 in variables ? variables[p1]! : match,
-              );
-              const newProperty = camelize(declaration.property);
-              validDeclarations.push({
-                property: newProperty,
-                value: newValue,
-              });
-            }
-          }
-          return updateParserResult(state, validDeclarations);
-        });
-      });
-      const result = splittedDeclarationsParser.run(node.value);
-      console.log('TEST: ', result);
+      const result = matchDeclarations.run(node.value);
       return result.result;
     }
   }
@@ -103,104 +53,128 @@ export class CssTokenizer {
   interpreter() {
     const parser = fullRuleMatch;
     this.ast = parser.run(this.#rule);
-    return this.evaluate(this.ast.result);
+    return this.ast;
   }
 }
 
-const commentsParser = matchSequenceOf([
-  matchString('/*!'),
-  matchMany(
-    matchChoice([
-      matchLetters,
-      matchDigits,
-      matchString(','),
-      matchString('-'),
-      matchString(':'),
-      matchString('['),
-      matchString(']'),
-    ]),
-  ),
-  matchString('*/'),
-])
-  .map((result) => {
+const matchDeclarations = matchMany(
+  matchSequenceOf([
+    matchMany(
+      matchChoice([
+        matchLetters,
+        matchDigits,
+        matchString('-'),
+        matchString('('),
+        matchString(')'),
+      ]),
+    ).map((result: any) => result.join('')),
+    matchString(':'),
+    matchMany(
+      matchChoice([
+        matchLetters,
+        matchDigits,
+        matchString('-'),
+        matchString('('),
+        matchString(')'),
+        matchString(','),
+        matchString('.'),
+        matchString('*'),
+        matchString(' '),
+        matchString('['),
+        matchString(']'),
+        matchString('%'),
+      ]),
+    ).map((result: any) => result.join('')),
+    matchMany(matchChoice([matchString(';'), matchString('}')])),
+  ]).map((result: any) => {
     return {
-      value: result![1],
-      type: 'comment',
+      property: result[0],
+      value: result[2],
     };
-  })
-  .map((result: any) => {
-    return {
-      value: result.value.join(''),
-      type: 'comment',
-    };
-  });
+  }),
+).chain((result: DeclarationNode[]) => {
+  return parseDeclarationsToStyleAST(result);
+});
 
-const selectorParser = matchSequenceOf([
-  matchChoice([matchString('.'), matchString('#'), matchString('@')]),
-  matchMany(
-    matchChoice([
-      matchLetters,
-      matchDigits,
-      matchString(','),
-      matchString('.'),
-      matchString('-'),
-      matchString(':'),
-      matchString('['),
-      matchString(']'),
-      matchString('('),
-      matchString(')'),
-      matchString('&'),
-      matchString('\\'),
-      matchString(' '),
-    ]),
-  ),
-  matchString('{'),
-])
-  .map((result) => {
-    return {
-      value: result![1],
-      type: 'selector',
-    };
-  })
-  .map((result: any) => {
-    return {
-      value: result.value.join(''),
-      type: 'selector',
-    };
+const parseDeclarationsToStyleAST = (result: DeclarationNode[]) => {
+  return new Parser((state) => {
+    const validDeclarations: DeclarationNode[] = [];
+    const variables: Record<string, string> = {};
+    for (const declaration of result) {
+      if (declaration.property.startsWith('--')) {
+        variables[declaration.property] = declaration.value;
+      } else {
+        const newValue = declaration.value.replace(/var\((--[\w-]+)\)/g, (match, p1) =>
+          p1 in variables ? variables[p1]! : match,
+        );
+        const newProperty = getStylePropertyName(declaration.property);
+        const value = getStylePropertyValue(newValue);
+        validDeclarations.push({
+          property: newProperty,
+          value,
+        });
+      }
+    }
+    return updateParserResult(state, validDeclarations);
   });
+};
 
-const declarationParser = matchSequenceOf([
-  matchMany(
-    matchChoice([
-      matchLetters,
-      matchDigits,
-      matchString(','),
-      matchString(';'),
-      matchString(':'),
-      matchString('('),
-      matchString(')'),
-      matchString('['),
-      matchString(']'),
-      matchString('.'),
-      matchString(' '),
-      matchString('-'),
-      matchString('*'),
-      matchString('+'),
-      matchString('%'),
-      matchString('\\'),
-    ]),
-  ),
-  matchString('}'),
-])
-  .map((result) => {
-    return {
-      value: result![0],
-      type: 'declarations',
-    };
-  })
-  .map((result: any) => {
-    return {
-      value: result.value.join(''),
-      type: 'declarations',
-    };
-  });
+const getStylePropertyName = (property: string) => {
+  return camelize(property);
+};
+
+const getStylePropertyValue = (value: string) => {
+  console.log('VALUE: ', value);
+  const nextState = matchDeclarationValue.run(value);
+  if (nextState.result?.type === 'unit') {
+    console.log('UNIT: ', nextState);
+  }
+  return value;
+};
+
+const matchColor = matchChoice([
+  matchString('#'),
+  matchString('rgb'),
+  matchString('rgba'),
+  matchString('hsl'),
+  matchString('hsla'),
+]).map((result: any) => ({
+  type: 'color',
+  value: result,
+}));
+
+const matchUnit = matchSequenceOf([
+  matchMany(matchChoice([matchDigits, matchString('.')])),
+  matchChoice([
+    matchString('px'),
+    matchString('em'),
+    matchString('rem'),
+    matchString('vh'),
+    matchString('vw'),
+    matchString('vmin'),
+    matchString('vmax'),
+    matchString('cm'),
+    matchString('mm'),
+    matchString('in'),
+    matchString('pt'),
+    matchString('pc'),
+    matchString('ex'),
+    matchString('ch'),
+    matchString('fr'),
+    matchString('deg'),
+    matchString('rad'),
+    matchString('turn'),
+    matchString('s'),
+    matchString('ms'),
+    matchString('Hz'),
+    matchString('kHz'),
+    matchString('%'),
+  ]),
+]).map((result: any) => ({
+  type: 'unit',
+  value: result,
+}));
+
+const matchDeclarationValue = matchChoice([matchColor, matchUnit]).map(
+  (result: any) => result,
+);

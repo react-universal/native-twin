@@ -1,5 +1,15 @@
+import { matchLetters } from './combinator/letters';
 import { updateParserError, updateParserResult } from './helpers';
 import type { ParserFn, ParserState } from './types';
+
+class Node<NodeType, NodeValue> {
+  type: NodeType;
+  value: NodeValue;
+  constructor(type: NodeType, value: NodeValue) {
+    this.type = type;
+    this.value = value;
+  }
+}
 
 export class Parser {
   parserStateTransformerFn: ParserFn;
@@ -11,7 +21,7 @@ export class Parser {
     const initialState: ParserState = {
       targetString,
       index: 0,
-      result: null,
+      result: '',
       error: null,
       isError: false,
     };
@@ -51,3 +61,11 @@ export class Parser {
     });
   }
 }
+
+type Fn<W> = (x: W) => W;
+const compose =
+  <T>(...fns: Array<Fn<T>>): Fn<T> =>
+  (x) =>
+    fns.reduce((v, f) => f(v), x);
+
+const isL = compose(() => matchLetters);
