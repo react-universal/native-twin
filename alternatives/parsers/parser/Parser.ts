@@ -1,4 +1,3 @@
-import { matchLetters } from './combinator/letters';
 import { updateParserError, updateParserResult } from './helpers';
 import type { ParserFn, ParserState } from './types';
 
@@ -61,11 +60,3 @@ export class Parser {
     });
   }
 }
-
-type Fn<W> = (x: W) => W;
-const compose =
-  <T>(...fns: Array<Fn<T>>): Fn<T> =>
-  (x) =>
-    fns.reduce((v, f) => f(v), x);
-
-const isL = compose(() => matchLetters);

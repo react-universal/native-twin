@@ -62,13 +62,13 @@ function HomeScreen() {
         <Image
           source={testImage}
           resizeMode='cover'
-          className='translate-x-2 rounded-full border-1'
+          className='-translate-x-[10px] rounded-full border-1'
         />
         <TextField />
         <View className='mb-2 -top-1 -translate-x-2 rounded-lg bg-gray-300 p-2 group-hover:bg-pink-800'>
           <H2
             suppressHighlighting
-            className='font-inter-bold text-xl leading-6 text-gray-800 group-hover:text-white'
+            className='font-inter-bold text-xl leading-6 text-gray-800 group-hover:text-white -mt-2'
           >
             Deeply nested hover
           </H2>

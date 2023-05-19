@@ -24,3 +24,4 @@ export const fullRuleMatch = matchMany(
     type: 'stylesheet',
   };
 });
+console.log('0asdsad')

@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { matchLetters } from '../src/runtime/parser/combinator/letters';
-import { matchDigits } from '../src/runtime/parser/combinator/numbers';
-import { matchString } from '../src/runtime/parser/combinator/string';
-import { lazyParserMatch } from '../src/runtime/parser/composers/lazy';
-import { matchMany } from '../src/runtime/parser/composers/many';
-import { matchBetween, matchSeparatedBy } from '../src/runtime/parser/composers/separated';
-import { matchChoice, matchSequenceOf } from '../src/runtime/parser/composers/sequence';
+import { matchLetters } from '../src/parsers/parser/combinator/letters';
+import { matchDigits } from '../src/parsers/parser/combinator/numbers';
+import { matchString } from '../src/parsers/parser/combinator/string';
+import { lazyParserMatch } from '../src/parsers/parser/composers/lazy';
+import { matchMany } from '../src/parsers/parser/composers/many';
+import { matchBetween, matchSeparatedBy } from '../src/parsers/parser/composers/separated';
+import { matchChoice, matchSequenceOf } from '../src/parsers/parser/composers/sequence';
 
 describe('@universal-labs/stylesheets', () => {
   it('Parse Letters', () => {

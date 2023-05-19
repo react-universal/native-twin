@@ -1,20 +1,9 @@
-/* eslint-disable no-console */
+import { StyleSheet } from 'react-native';
 import { initialize, hash } from '@universal-labs/twind-adapter';
-import transform from 'css-to-react-native';
 import type { Config } from 'tailwindcss';
-import { CssTokenizer } from '../runtime/parser/CssParser';
+import { CssLexer } from '../runtime/astish';
 import type { AnyStyle, ComponentStylesheet } from '../types';
 import { normalizeClassNameString } from '../utils/helpers';
-import {
-  extractDeclarationsFromCSS,
-  isEvenSelector,
-  isGroupSelector,
-  isOddSelector,
-  isPlatformSelector,
-  isPointerSelector,
-  isFirstSelector,
-  isLastSelector,
-} from '../utils/recursiveParser';
 import StyleSheetCache from './StyleSheetCache';
 
 const Platform = {
@@ -68,119 +57,126 @@ export class VirtualStyleSheet {
       first: [] as AnyStyle[],
       last: [] as AnyStyle[],
     };
-    for (const [rule, css] of transformed.target) {
-      if (isPlatformSelector(rule)) {
-        if (!rule.includes(Platform.OS)) {
-          continue;
-        }
-      }
-      console.group('CSS');
-      const tokenized = new CssTokenizer(css);
-      if (tokenized.ast.isError) {
-        console.debug(tokenized.ast);
-      }
-      console.groupEnd();
-      let isGroup = isGroupSelector(rule);
-      let isPointer = isPointerSelector(rule) && !isGroup;
-      let isEven = isEvenSelector(rule);
-      let isOdd = isOddSelector(rule);
-      let isFirst = isFirstSelector(rule);
-      let isLast = isLastSelector(rule);
+    console.group('CSS_TRANSFORM');
+    console.log('TRANSFORMED: ', transformed.target);
+    const startNewLexer = performance.now();
+    const newResult = CssLexer(transformed.css);
+    console.log('NEW_RESULT: ', JSON.stringify(newResult, null, 2));
+    console.log('NEW_PERF: ', performance.now() - startNewLexer);
+    // for (const [rule, css] of transformed.target) {
+    //   if (isPlatformSelector(rule)) {
+    //     if (!rule.includes(Platform.OS)) {
+    //       continue;
+    //     }
+    //   }
 
-      const cache = stylesStore.get(rule);
-      if (cache) {
-        if (isPointer) {
-          styles.pointer.push(cache);
-        } else if (isGroup) {
-          styles.group.push(cache);
-        } else if (isEven) {
-          styles.even.push(cache);
-        } else if (isOdd) {
-          styles.odd.push(cache);
-        } else if (isFirst) {
-          styles.first.push(cache);
-        } else if (isLast) {
-          styles.last.push(cache);
-        } else {
-          styles.base.push(cache);
-        }
-        continue;
-      }
-      const extracted = extractDeclarationsFromCSS(css);
-      if (isPointer) {
-        const style = transform(extracted, ['transform']) as AnyStyle;
-        styles.pointer.push(style as AnyStyle);
-        stylesStore.set(rule, style);
-      } else if (isGroup) {
-        const style = transform(extracted, ['transform']) as AnyStyle;
-        styles.group.push(style as AnyStyle);
-        stylesStore.set(rule, style);
-      } else if (isEven) {
-        const style = transform(extracted, ['transform']) as AnyStyle;
-        styles.even.push(style as AnyStyle);
-        stylesStore.set(rule, style);
-      } else if (isOdd) {
-        const style = transform(extracted, ['transform']) as AnyStyle;
-        styles.odd.push(style as AnyStyle);
-        stylesStore.set(rule, style);
-      } else if (isFirst) {
-        const style = transform(extracted, ['transform']) as AnyStyle;
-        styles.first.push(style as AnyStyle);
-        stylesStore.set(rule, style);
-      } else if (isLast) {
-        const style = transform(extracted, ['transform']) as AnyStyle;
-        styles.last.push(style as AnyStyle);
-        stylesStore.set(rule, style);
-      } else {
-        const style = transform(extracted, ['transform']) as AnyStyle;
-        styles.base.push(style as AnyStyle);
-        stylesStore.set(rule, style);
-      }
-    }
+    //   console.log('RULE: ', rule);
+    //   console.log('CSS: ', css);
+
+    //   const startLexer = performance.now();
+    //   const lexer = new Lexer();
+    //   const lexerResult = lexer.tokenize(css);
+    //   console.log('LEXER_RESULT: ', lexerResult);
+    //   console.log('LEXER_PERF: ', performance.now() - startLexer);
+
+    //   const startParser = performance.now();
+    //   const parser = new CssTokenizer(css);
+    //   parser.interpreter();
+    //   const parserResult = parser.evaluate(parser.ast.result);
+    //   console.log('PARSER_RESULT: ', parserResult.result);
+    //   console.log('PARSER_PERF: ', performance.now() - startParser);
+
+    //   let isGroup = isGroupSelector(rule);
+    //   let isPointer = isPointerSelector(rule) && !isGroup;
+    //   let isEven = isEvenSelector(rule);
+    //   let isOdd = isOddSelector(rule);
+    //   let isFirst = isFirstSelector(rule);
+    //   let isLast = isLastSelector(rule);
+
+    //   const cache = stylesStore.get(rule);
+    //   if (cache) {
+    //     if (isPointer) {
+    //       styles.pointer.push(cache);
+    //     } else if (isGroup) {
+    //       styles.group.push(cache);
+    //     } else if (isEven) {
+    //       styles.even.push(cache);
+    //     } else if (isOdd) {
+    //       styles.odd.push(cache);
+    //     } else if (isFirst) {
+    //       styles.first.push(cache);
+    //     } else if (isLast) {
+    //       styles.last.push(cache);
+    //     } else {
+    //       styles.base.push(cache);
+    //     }
+    //     continue;
+    //   }
+    //   const extracted = extractDeclarationsFromCSS(css);
+    //   if (isPointer) {
+    //     const style = transform(extracted) as AnyStyle;
+    //     styles.pointer.push(style as AnyStyle);
+    //     stylesStore.set(rule, style);
+    //   } else if (isGroup) {
+    //     const style = transform(extracted) as AnyStyle;
+    //     styles.group.push(style as AnyStyle);
+    //     stylesStore.set(rule, style);
+    //   } else if (isEven) {
+    //     const style = transform(extracted) as AnyStyle;
+    //     styles.even.push(style as AnyStyle);
+    //     stylesStore.set(rule, style);
+    //   } else if (isOdd) {
+    //     const style = transform(extracted) as AnyStyle;
+    //     styles.odd.push(style as AnyStyle);
+    //     stylesStore.set(rule, style);
+    //   } else if (isFirst) {
+    //     const style = transform(extracted) as AnyStyle;
+    //     styles.first.push(style as AnyStyle);
+    //     stylesStore.set(rule, style);
+    //   } else if (isLast) {
+    //     const style = transform(extracted) as AnyStyle;
+    //     styles.last.push(style as AnyStyle);
+    //     stylesStore.set(rule, style);
+    //   } else {
+    //     const style = transform(extracted) as AnyStyle;
+    //     styles.base.push(style as AnyStyle);
+    //     stylesStore.set(rule, style);
+    //   }
+    // }
+    console.groupEnd();
     const result = {
-      baseStyles: {},
-      pointerStyles: {},
-      groupStyles: {},
-      even: {},
-      first: {},
-      last: {},
-      odd: {},
-      isGroupParent: false,
-      hasPointerEvents: false,
-      hasGroupeEvents: false,
       hash: hashID,
+      baseStyles: StyleSheet.flatten(styles.base),
+      pointerStyles: StyleSheet.flatten(styles.pointer),
+      groupStyles: StyleSheet.flatten(styles.group),
+      even: StyleSheet.flatten(styles.even),
+      first: StyleSheet.flatten(styles.first),
+      last: StyleSheet.flatten(styles.last),
+      odd: StyleSheet.flatten(styles.odd),
+      isGroupParent: transformed.generated.includes('group'),
+      hasPointerEvents: styles.pointer.length > 0,
+      hasGroupeEvents: styles.group.length > 0,
     };
-    // const result = {
-    //   hash: hashID,
-    //   baseStyles: StyleSheet.flatten(styles.base),
-    //   pointerStyles: StyleSheet.flatten(styles.pointer),
-    //   groupStyles: StyleSheet.flatten(styles.group),
-    //   even: StyleSheet.flatten(styles.even),
-    //   first: StyleSheet.flatten(styles.first),
-    //   last: StyleSheet.flatten(styles.last),
-    //   odd: StyleSheet.flatten(styles.odd),
-    //   isGroupParent: transformed.generated.includes('group'),
-    //   hasPointerEvents: styles.pointer.length > 0,
-    //   hasGroupeEvents: styles.group.length > 0,
-    // };
-    // store.update(hashID, result);
     store.set(hashID, result);
     return result;
   }
 
   transformClassNames(...classes: string[]) {
     const generated = globalParser.tx(...classes).split(' ');
+    let css = '';
     const target = globalParser.tw.target.reduce((acc, curr) => {
       const normalized = normalizeClassNameString(curr);
       const found = generated.find((x) => normalized.includes(x));
       if (found) {
         acc.push([found, curr]);
+        css += curr;
       }
       return acc;
     }, [] as [UtilityString: string, CssTarget: string][]);
     return {
       target,
       generated,
+      css,
     };
   }
 

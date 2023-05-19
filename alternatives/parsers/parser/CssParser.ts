@@ -124,57 +124,68 @@ const getStylePropertyName = (property: string) => {
 };
 
 const getStylePropertyValue = (value: string) => {
-  console.log('VALUE: ', value);
-  const nextState = matchDeclarationValue.run(value);
-  if (nextState.result?.type === 'unit') {
-    console.log('UNIT: ', nextState);
-  }
+  // const nextState = matchDeclarationValue.run(value);
+  // if (nextState.result?.type === 'unit') {
+  //   const { unit, value: declarationValue } = nextState.result;
+  //   if (unit.includes('em')) {
+  //     return (parseFloat(declarationValue) * 16) as any as string;
+  //   }
+  //   if (unit.includes('vh')) {
+  //     return (dimensions.height * (Number(declarationValue) / 100)) as any as string;
+  //   }
+  //   if (unit.includes('vw')) {
+  //     return (dimensions.width * (Number(declarationValue) / 100)) as any as string;
+  //   }
+  // }
   return value;
 };
 
-const matchColor = matchChoice([
-  matchString('#'),
-  matchString('rgb'),
-  matchString('rgba'),
-  matchString('hsl'),
-  matchString('hsla'),
-]).map((result: any) => ({
-  type: 'color',
-  value: result,
-}));
+// const matchColor = matchChoice([
+//   matchString('#'),
+//   matchString('rgb'),
+//   matchString('rgba'),
+//   matchString('hsl'),
+//   matchString('hsla'),
+// ]).map((result: any) => ({
+//   type: 'color',
+//   value: result,
+// }));
 
-const matchUnit = matchSequenceOf([
-  matchMany(matchChoice([matchDigits, matchString('.')])),
-  matchChoice([
-    matchString('px'),
-    matchString('em'),
-    matchString('rem'),
-    matchString('vh'),
-    matchString('vw'),
-    matchString('vmin'),
-    matchString('vmax'),
-    matchString('cm'),
-    matchString('mm'),
-    matchString('in'),
-    matchString('pt'),
-    matchString('pc'),
-    matchString('ex'),
-    matchString('ch'),
-    matchString('fr'),
-    matchString('deg'),
-    matchString('rad'),
-    matchString('turn'),
-    matchString('s'),
-    matchString('ms'),
-    matchString('Hz'),
-    matchString('kHz'),
-    matchString('%'),
-  ]),
-]).map((result: any) => ({
-  type: 'unit',
-  value: result,
-}));
+// const matchUnit = matchSequenceOf([
+//   matchMany(matchChoice([matchDigits, matchString('.')])).map((result: any) =>
+//     result.join(''),
+//   ),
+//   matchChoice([
+//     matchString('px'),
+//     matchString('em'),
+//     matchString('rem'),
+//     matchString('vh'),
+//     matchString('vw'),
+//     matchString('vmin'),
+//     matchString('vmax'),
+//     matchString('cm'),
+//     matchString('mm'),
+//     matchString('in'),
+//     matchString('pt'),
+//     matchString('pc'),
+//     matchString('ex'),
+//     matchString('ch'),
+//     matchString('fr'),
+//     matchString('deg'),
+//     matchString('rad'),
+//     matchString('turn'),
+//     matchString('s'),
+//     matchString('ms'),
+//     matchString('Hz'),
+//     matchString('kHz'),
+//     matchString('%'),
+//   ]),
+// ]).map((result: any) => ({
+//   type: 'unit',
+//   unit: result[1],
+//   value: result[0],
+// }));
 
-const matchDeclarationValue = matchChoice([matchColor, matchUnit]).map(
-  (result: any) => result,
-);
+// const matchDeclarationValue = matchChoice([matchColor, matchUnit]).map(
+//   (result: any) => result,
+// );
