@@ -1,31 +1,16 @@
-import { StyleSheet } from 'react-native';
-import { initialize, hash } from '@universal-labs/twind-adapter';
+import { hash } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
-import { CssLexer } from '../runtime/astish';
-import type { AnyStyle, ComponentStylesheet } from '../types';
-import { normalizeClassNameString } from '../utils/helpers';
+import { cssParser } from '../css/css.parser';
+import type { ComponentStylesheet } from '../types';
 import StyleSheetCache from './StyleSheetCache';
 
-const Platform = {
-  OS: 'ios',
-};
-
 let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };
-let globalParser = initialize({
-  colors: {},
-  fontFamily: {},
-});
 const store = new StyleSheetCache<string, ComponentStylesheet>(100);
-const stylesStore = new StyleSheetCache<string, AnyStyle>(100);
-// const declarationsRegex = /([\w-]*)\s*:\s*([^;|^}]+)/;
+let transform = cssParser();
 
 export class VirtualStyleSheet {
   injectUtilities(classNames?: string): ComponentStylesheet {
     const hashID = hash(classNames ?? 'unstyled');
-    // reduxDevToolsConnection.send('ACTION', {
-    //   store: Object.fromEntries(store.print()),
-    //   styles: Object.fromEntries(stylesStore.print()),
-    // });
     const cache = store.get(hashID);
     if (cache) {
       return cache;
@@ -47,141 +32,23 @@ export class VirtualStyleSheet {
       store.set(hashID, result);
       return result;
     }
-    const transformed = this.transformClassNames(classNames);
-    const styles = {
-      base: [] as AnyStyle[],
-      pointer: [] as AnyStyle[],
-      group: [] as AnyStyle[],
-      even: [] as AnyStyle[],
-      odd: [] as AnyStyle[],
-      first: [] as AnyStyle[],
-      last: [] as AnyStyle[],
-    };
-    console.group('CSS_TRANSFORM');
-    console.log('TRANSFORMED: ', transformed.target);
-    const startNewLexer = performance.now();
-    const newResult = CssLexer(transformed.css);
-    console.log('NEW_RESULT: ', JSON.stringify(newResult, null, 2));
-    console.log('NEW_PERF: ', performance.now() - startNewLexer);
-    // for (const [rule, css] of transformed.target) {
-    //   if (isPlatformSelector(rule)) {
-    //     if (!rule.includes(Platform.OS)) {
-    //       continue;
-    //     }
-    //   }
-
-    //   console.log('RULE: ', rule);
-    //   console.log('CSS: ', css);
-
-    //   const startLexer = performance.now();
-    //   const lexer = new Lexer();
-    //   const lexerResult = lexer.tokenize(css);
-    //   console.log('LEXER_RESULT: ', lexerResult);
-    //   console.log('LEXER_PERF: ', performance.now() - startLexer);
-
-    //   const startParser = performance.now();
-    //   const parser = new CssTokenizer(css);
-    //   parser.interpreter();
-    //   const parserResult = parser.evaluate(parser.ast.result);
-    //   console.log('PARSER_RESULT: ', parserResult.result);
-    //   console.log('PARSER_PERF: ', performance.now() - startParser);
-
-    //   let isGroup = isGroupSelector(rule);
-    //   let isPointer = isPointerSelector(rule) && !isGroup;
-    //   let isEven = isEvenSelector(rule);
-    //   let isOdd = isOddSelector(rule);
-    //   let isFirst = isFirstSelector(rule);
-    //   let isLast = isLastSelector(rule);
-
-    //   const cache = stylesStore.get(rule);
-    //   if (cache) {
-    //     if (isPointer) {
-    //       styles.pointer.push(cache);
-    //     } else if (isGroup) {
-    //       styles.group.push(cache);
-    //     } else if (isEven) {
-    //       styles.even.push(cache);
-    //     } else if (isOdd) {
-    //       styles.odd.push(cache);
-    //     } else if (isFirst) {
-    //       styles.first.push(cache);
-    //     } else if (isLast) {
-    //       styles.last.push(cache);
-    //     } else {
-    //       styles.base.push(cache);
-    //     }
-    //     continue;
-    //   }
-    //   const extracted = extractDeclarationsFromCSS(css);
-    //   if (isPointer) {
-    //     const style = transform(extracted) as AnyStyle;
-    //     styles.pointer.push(style as AnyStyle);
-    //     stylesStore.set(rule, style);
-    //   } else if (isGroup) {
-    //     const style = transform(extracted) as AnyStyle;
-    //     styles.group.push(style as AnyStyle);
-    //     stylesStore.set(rule, style);
-    //   } else if (isEven) {
-    //     const style = transform(extracted) as AnyStyle;
-    //     styles.even.push(style as AnyStyle);
-    //     stylesStore.set(rule, style);
-    //   } else if (isOdd) {
-    //     const style = transform(extracted) as AnyStyle;
-    //     styles.odd.push(style as AnyStyle);
-    //     stylesStore.set(rule, style);
-    //   } else if (isFirst) {
-    //     const style = transform(extracted) as AnyStyle;
-    //     styles.first.push(style as AnyStyle);
-    //     stylesStore.set(rule, style);
-    //   } else if (isLast) {
-    //     const style = transform(extracted) as AnyStyle;
-    //     styles.last.push(style as AnyStyle);
-    //     stylesStore.set(rule, style);
-    //   } else {
-    //     const style = transform(extracted) as AnyStyle;
-    //     styles.base.push(style as AnyStyle);
-    //     stylesStore.set(rule, style);
-    //   }
-    // }
-    console.groupEnd();
+    const stylesFinal = transform(classNames);
+    console.log('stylesFinal', stylesFinal);
     const result = {
       hash: hashID,
-      baseStyles: StyleSheet.flatten(styles.base),
-      pointerStyles: StyleSheet.flatten(styles.pointer),
-      groupStyles: StyleSheet.flatten(styles.group),
-      even: StyleSheet.flatten(styles.even),
-      first: StyleSheet.flatten(styles.first),
-      last: StyleSheet.flatten(styles.last),
-      odd: StyleSheet.flatten(styles.odd),
-      isGroupParent: transformed.generated.includes('group'),
-      hasPointerEvents: styles.pointer.length > 0,
-      hasGroupeEvents: styles.group.length > 0,
+      baseStyles: stylesFinal.base,
+      pointerStyles: stylesFinal.pointer,
+      groupStyles: stylesFinal.group,
+      even: stylesFinal.even,
+      first: stylesFinal.first,
+      last: stylesFinal.last,
+      odd: stylesFinal.odd,
+      isGroupParent: stylesFinal.isGroupParent,
+      hasPointerEvents: Object.keys(stylesFinal.pointer).length > 0,
+      hasGroupeEvents: Object.keys(stylesFinal.group).length > 0,
     };
     store.set(hashID, result);
     return result;
-  }
-
-  transformClassNames(...classes: string[]) {
-    const generated = globalParser.tx(...classes).split(' ');
-    let css = '';
-    const target = globalParser.tw.target.reduce((acc, curr) => {
-      const normalized = normalizeClassNameString(curr);
-      const found = generated.find((x) => normalized.includes(x));
-      if (found) {
-        acc.push([found, curr]);
-        css += curr;
-      }
-      return acc;
-    }, [] as [UtilityString: string, CssTarget: string][]);
-    return {
-      target,
-      generated,
-      css,
-    };
-  }
-
-  getClasses(classNames: string) {
-    return globalParser.cx(classNames).split(' ');
   }
 }
 
@@ -190,13 +57,16 @@ export function setTailwindConfig(config: Config, baseRem = 16) {
     ...currentConfig,
     ...config,
   };
-  globalParser.tw.destroy();
-  globalParser = initialize({
-    colors: {
-      ...currentConfig.theme?.colors,
-    },
-    fontFamily: {
-      ...currentConfig.theme?.fontFamily,
+  // globalParser.tw.destroy();
+  transform = cssParser({
+    content: ['..'],
+    theme: {
+      colors: {
+        ...currentConfig.theme?.colors,
+      },
+      fontFamily: {
+        ...currentConfig.theme?.fontFamily,
+      },
     },
   });
   return {

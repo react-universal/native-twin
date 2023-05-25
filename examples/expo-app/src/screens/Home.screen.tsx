@@ -29,7 +29,7 @@ function HomeScreen() {
       >
         <H1
           className={clsx(
-            'text(center 2xl indigo-600 capitalize)',
+            'text(center 2xl indigo-600)',
             'font-inter-bold hover:text-gray-700',
           )}
         >
@@ -39,14 +39,14 @@ function HomeScreen() {
       <View
         className={clsx(
           'group',
-          'flex-[2] text-primary',
+          'flex-[2]',
           'bg-gray-800 hover:bg-pink-600',
           'items-center justify-center',
         )}
       >
         <H1
           className={clsx(
-            ['font-inter-bold text-2xl'],
+            ['font-inter-bold text-2xl capitalize'],
             [active ? 'text-red-800' : 'text-primary'],
           )}
         >

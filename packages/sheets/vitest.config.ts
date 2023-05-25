@@ -9,6 +9,8 @@ export default defineConfig({
   },
   test: {
     setupFiles: ['vitest-react-native/setup'],
+    ui: true,
+    api: true,
     // this is required for this plugin to work
     globals: true,
     benchmark: {
