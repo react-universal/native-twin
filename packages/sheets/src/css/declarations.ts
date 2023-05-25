@@ -25,7 +25,7 @@ const cssStyleToRN = (cssStyle: Style, context: Context) => {
         continue;
       } else if (isNumber(value)) {
         if (value.startsWith('calc(')) {
-          result[key] = calculate(value.trim().slice(4));
+          result[key] = calculate(value.trim().slice(4), context);
         } else {
           result[key] = parseFloat(value);
         }

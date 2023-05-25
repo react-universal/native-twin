@@ -1,3 +1,5 @@
+import type { Context } from '../css.types';
+
 /* eslint-disable no-console */
 type Group = {
   type: 'group';
@@ -23,7 +25,7 @@ type Node = Group | Operator;
 type Element = Node | Value;
 
 /** Evaluate the string operation without relying on eval */
-export function calculate(string: string) {
+export function calculate(string: string, context: Context) {
   function applyOperator(left: number, op: Operator['operation'], right: number): number {
     console.log('applyOperator', { left, op, right });
     if (op === '+') return left + right;
@@ -40,6 +42,15 @@ export function calculate(string: string) {
       case 'multiplicative':
         return applyOperator(evaluate(root.left), root.operation, evaluate(root.right!));
       case 'number':
+        if (root.value.endsWith('px')) {
+          return parseFloat(root.value.slice(0, -2));
+        } else if (root.value.endsWith('rem') || root.value.endsWith('em')) {
+          return parseFloat(root.value) * context.units.rem;
+        } else if (root.value.endsWith('vw')) {
+          return context.units.width! * (parseFloat(root.value) / 100);
+        } else if (root.value.endsWith('vh')) {
+          return context.units.height! * (parseFloat(root.value) / 100);
+        }
         return parseFloat(root.value);
     }
   }
@@ -85,7 +96,7 @@ export function calculate(string: string) {
   string.split('').forEach((char) => {
     if (char === '(') openGroup();
     else if (char === ')') closeGroup();
-    else if ('0123456789.'.includes(char)) addNumber(char);
+    else if (char.match(/[0-9a-zA-Z.]/)) addNumber(char);
     else if ('+*-/'.includes(char)) addOperator(char as Operator['operation']);
   });
   console.log('ROOT_NODE_CALC: ', rootNode.right);
