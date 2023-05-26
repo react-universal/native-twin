@@ -17,11 +17,5 @@ export function sideValue<T extends 'padding' | 'margin' | 'border'>(
     [prefixKey + 'Right' + postFix]: right,
     [prefixKey + 'Bottom' + postFix]: bottom,
   };
-  console.group('SIDE_VALUE');
-  console.debug('VALUE', value);
-  console.debug('PREFIX_KEY: ', prefixKey);
-  console.debug('POST: ', postFix);
-  console.debug('RESULT: ', result);
-  console.groupEnd();
   return result;
 }

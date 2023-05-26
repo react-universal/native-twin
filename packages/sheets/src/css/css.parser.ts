@@ -1,12 +1,7 @@
 import { Dimensions, Platform } from 'react-native';
 import { initialize, parse as parseTxClassNames } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
-import type {
-  AnyStyle,
-  CssDeclarationAstNode,
-  CssRuleAstNode,
-  CssSheetAstNode,
-} from './css.types';
+import type { AnyStyle, CssDeclarationAstNode, CssRuleAstNode } from './css.types';
 import { cssStyleToRN } from './declarations';
 import { replaceCSSValueVariables } from './helpers';
 import { createContext } from './parsers/mediaQueries';
@@ -17,7 +12,6 @@ const { width, height } = Dimensions.get('screen');
 
 interface CssParser {
   (config?: Config, rem?: number): (...args: string[]) => {
-    ast: CssSheetAstNode;
     evaluated: ParserStylesResult;
     isGroupParent: boolean;
   };
@@ -31,11 +25,11 @@ interface ParserStylesResult {
   odd: AnyStyle;
   first: AnyStyle;
   last: AnyStyle;
-  parsed: Record<string, AnyStyle>;
 }
 
+const evaluatedRules = new Map<string, AnyStyle>();
+
 export const cssParser: CssParser = (config, rem = 16) => {
-  const evaluatedRules = new Map<string, AnyStyle>();
   const context = createContext({
     rem,
     em: rem,
@@ -81,16 +75,12 @@ export const cssParser: CssParser = (config, rem = 16) => {
           );
         }
         const parsed = evaluateDeclaration(current);
-        Object.assign(prev.parsed, {
-          [node.rawSelector]: parsed,
-        });
         Object.assign(prev.styles, parsed);
         return prev;
       },
       {
         variables: {} as Record<string, string>,
         styles: {} as AnyStyle,
-        parsed: {} as Record<string, AnyStyle>,
       },
     );
     return finalStyle;
@@ -98,17 +88,8 @@ export const cssParser: CssParser = (config, rem = 16) => {
 
   const evaluateSheet = (
     rules: CssRuleAstNode[],
-    result: ParserStylesResult = {
-      base: {},
-      even: {},
-      first: {},
-      group: {},
-      last: {},
-      odd: {},
-      pointer: {},
-      parsed: {},
-    },
-  ): ParserStylesResult => {
+    result: [CssRuleAstNode, AnyStyle][] = [],
+  ): [CssRuleAstNode, AnyStyle][] => {
     for (const rule of rules) {
       if (
         rule.rawSelector.includes('web:') ||
@@ -125,37 +106,37 @@ export const cssParser: CssParser = (config, rem = 16) => {
       }
       if (rule.isGroupEvent) {
         const applied = applyRule(rule).styles;
-        Object.assign(result.group, applied);
+        result.push([rule, applied]);
         continue;
       }
       if (rule.isPointerEvent) {
-        Object.assign(result.pointer, applyRule(rule).styles);
+        result.push([rule, applyRule(rule).styles]);
         continue;
       }
       if (rule.rawSelector.includes('first:')) {
-        Object.assign(result.first, applyRule(rule).styles);
+        result.push([rule, applyRule(rule).styles]);
         continue;
       }
       if (rule.rawSelector.includes('last:')) {
-        Object.assign(result.last, applyRule(rule).styles);
+        result.push([rule, applyRule(rule).styles]);
         continue;
       }
       if (rule.rawSelector.includes('even:')) {
-        Object.assign(result.even, applyRule(rule).styles);
+        result.push([rule, applyRule(rule).styles]);
         continue;
       }
       if (rule.rawSelector.includes('odd:')) {
-        Object.assign(result.odd, applyRule(rule).styles);
+        result.push([rule, applyRule(rule).styles]);
         continue;
       }
-      Object.assign(result.base, applyRule(rule).styles);
+      result.push([rule, applyRule(rule).styles]);
     }
 
     return result;
   };
 
   return (classNames) => {
-    let generated = tx(classNames).split(' ');
+    const generated = tx(classNames).split(' ');
     const result: ParserStylesResult = {
       base: {},
       even: {},
@@ -164,18 +145,56 @@ export const cssParser: CssParser = (config, rem = 16) => {
       last: {},
       odd: {},
       pointer: {},
-      parsed: {},
     };
-    console.group('TX');
     const parsedClassNames = parseTxClassNames(classNames);
     const createdRules: AnyStyle[] = [];
     let cssToParse = '';
     const addRuleToResult = (style: AnyStyle, variant: string[]) => {
-      if (variant.includes('hover')) {
-        Object.assign(result.pointer, style);
+      if (
+        variant.includes('group-hover') ||
+        variant.includes('group-focus') ||
+        variant.includes('group-active')
+      ) {
+        Object.assign(result.group, style);
+        return;
       }
+      if (
+        variant.includes('hover') ||
+        variant.includes('focus') ||
+        variant.includes('active')
+      ) {
+        Object.assign(result.pointer, style);
+        return;
+      }
+      if (variant.includes('first')) {
+        Object.assign(result.first, style);
+        return;
+      }
+      if (variant.includes('last')) {
+        Object.assign(result.last, style);
+        return;
+      }
+      if (variant.includes('even')) {
+        Object.assign(result.even, style);
+        return;
+      }
+      if (variant.includes('odd')) {
+        Object.assign(result.odd, style);
+        return;
+      }
+      Object.assign(result.base, style);
     };
     parsedClassNames.forEach((injected) => {
+      if (
+        injected.v.includes('web') ||
+        injected.v.includes('android') ||
+        injected.v.includes('ios') ||
+        injected.v.includes('native')
+      ) {
+        if (!injected.v.includes(Platform.OS)) {
+          return;
+        }
+      }
       const cache = evaluatedRules.get(injected.n);
       if (cache) {
         createdRules.push(cache);
@@ -187,33 +206,25 @@ export const cssParser: CssParser = (config, rem = 16) => {
         cssToParse += css;
       }
     });
-    const ast = tokenizer(cssToParse);
-    evaluateSheet(ast.rules);
-    console.groupEnd();
+    let ast = tokenizer(cssToParse);
+    const evaluated = evaluateSheet(ast.rules);
+    for (const [ruleNode, style] of evaluated) {
+      const injected = parsedClassNames.find(
+        (meta) => ruleNode.selector.includes(meta.n) || ruleNode.rawSelector.includes(meta.n),
+      );
+      if (injected) {
+        addRuleToResult(style, injected.v);
+        evaluatedRules.set(injected.n, style);
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn(`CANT ADD EVALUATED FOR: ${ruleNode.rawRule}`);
+      }
+    }
+    // @ts-expect-error
+    ast = undefined;
     return {
-      ast,
       evaluated: result,
       isGroupParent: generated.includes('group'),
     };
   };
 };
-// if (css) {
-//   const rootNode: CssSheetAstNode = {
-//     type: 'sheet',
-//     rules: [],
-//   };
-//   console.log('STEP_CSS: ', css);
-//   const ast = CssToAST(css, rootNode);
-//   const runProgram = evaluateSheet(ast.rules);
-//   evaluatedRules.set(injected.n, runProgram.parsed);
-//   Object.assign(result.base, runProgram.base);
-//   Object.assign(result.even, runProgram.even);
-//   Object.assign(result.first, runProgram.first);
-//   Object.assign(result.group, runProgram.group);
-//   Object.assign(result.last, runProgram.last);
-//   Object.assign(result.odd, runProgram.odd);
-//
-//   console.log('STEP_AST: ', ast);
-// } else {
-//   console.error(`CANT GENERATE AST FOR: ${injected.n}`);
-// }

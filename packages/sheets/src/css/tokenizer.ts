@@ -93,7 +93,6 @@ export const createCssRuleNode = (
   declarations: string,
   fullRule: string,
 ): CssRuleAstNode => {
-  console.log('FULL_RULE: ', fullRule);
   const selector = normalizeCssSelectorString(rawSelector);
   const isGroupPointerEvent = selectorIsGroupPointerEvent(selector);
   const isPointerEvent = !isGroupPointerEvent && selectorIsPointerEvent(selector);

@@ -11,6 +11,10 @@ export default defineConfig({
     setupFiles: ['vitest-react-native/setup'],
     ui: true,
     api: true,
+    coverage: {
+      provider: 'istanbul',
+      reporter: ['text', 'json', 'html'],
+    },
     // this is required for this plugin to work
     globals: true,
     benchmark: {

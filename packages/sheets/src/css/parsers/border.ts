@@ -20,7 +20,6 @@ export function border(value: string): { [x: string]: string } {
     ...sideValue('border', result.borderColor, 'Color'),
     ...sideValue('border', result.borderStyle, 'Style'),
   };
-  console.debug('BORDER_RESULT', payload);
   return payload;
 }
 
@@ -41,6 +40,5 @@ export function borderLike(
     else if (isNumber(value)) result[prefixKey + 'Width'] = value;
     else result[prefixKey + 'Color'] = value;
   });
-  console.debug('BORDER_LIKE_RESULT: ', { value, values, result });
   return result;
 }
