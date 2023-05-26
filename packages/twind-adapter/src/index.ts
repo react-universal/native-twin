@@ -15,6 +15,9 @@ import {
   normalize,
   install,
   extract,
+  match,
+  matchColor,
+  matchTheme,
 } from '@twind/core';
 import presetTailwind from '@twind/preset-tailwind';
 import twindPresetReactNative from './presets/preset-react-native';
@@ -61,4 +64,14 @@ export function initialize /* #__PURE__ */(
 export { escape };
 export { stringify };
 export { style, hash, normalize };
-export { twindPresetReactNative, parse, parseValue, asArray, install, extract };
+export {
+  twindPresetReactNative,
+  parse,
+  parseValue,
+  asArray,
+  install,
+  extract,
+  match,
+  matchColor,
+  matchTheme,
+};

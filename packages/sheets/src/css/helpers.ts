@@ -1,5 +1,4 @@
-import { normalizeClassNameString } from '../utils/helpers';
-import type { AnyStyle, Context, RuleNode } from './css.types';
+import { normalizeCssSelectorString } from '../utils/helpers';
 
 export const selectorIsGroupPointerEvent = (selector: string) => {
   return (
@@ -15,47 +14,9 @@ export const selectorIsPointerEvent = (selector: string) => {
   );
 };
 
-export const getRulesForStyleType = (
-  type: 'base' | 'pointer' | 'group' | 'even' | 'odd' | 'first' | 'last',
-  rules: RuleNode[],
-  generated: string[],
-  context: Context,
-): AnyStyle => {
-  const styles = rules.filter((x) => {
-    if (!generated.includes(x.selector)) {
-      return false;
-    }
-    if (type === 'pointer') {
-      return selectorIsPointerEvent(x.selector);
-    }
-    if (type === 'group') {
-      return selectorIsGroupPointerEvent(x.selector);
-    }
-    if (type === 'even') {
-      return x.selector.includes('even');
-    }
-    if (type === 'odd') {
-      return x.selector.includes('odd');
-    }
-    if (type === 'first') {
-      return x.selector.includes('first');
-    }
-    if (type === 'last') {
-      return x.selector.includes('last');
-    }
-    if (type === 'base') {
-      return !x.selector.includes(':');
-    }
-    return false;
-  });
-  return styles.reduce((acc, curr) => {
-    return Object.assign(acc, curr.getStyles(context));
-  }, {});
-};
-
 export const getCssForSelectors = (target: string[], generated: string[]) => {
   return target.reduce((acc, curr) => {
-    const normalized = normalizeClassNameString(curr);
+    const normalized = normalizeCssSelectorString(curr);
     const found = generated.find((x) => normalized.includes(x));
     if (found) {
       acc += curr;
@@ -73,3 +34,7 @@ export const replaceCSSValueVariables = (
   );
   return rawValue;
 };
+
+export function removeCssComment(css: string): string {
+  return css.replace(/\/\*[^]*?\*\/|\s\s+|\n/gm, '');
+}

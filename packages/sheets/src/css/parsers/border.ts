@@ -15,18 +15,20 @@ export function border(value: string): { [x: string]: string } {
     else if (value === 'none') return;
     else result.borderColor = value;
   });
-  return {
+  const payload = {
     ...sideValue('border', result.borderWidth, 'Width'),
     ...sideValue('border', result.borderColor, 'Color'),
     ...sideValue('border', result.borderStyle, 'Style'),
   };
+  console.debug('BORDER_RESULT', payload);
+  return payload;
 }
 
 /** Parse a css value for border-like elements */
 export function borderLike(
   prefixKey: 'outline' | 'borderLeft' | 'borderRight' | 'borderTop' | 'borderBottom',
   value: string,
-): { [x: string]: string } {
+) {
   const values = value.split(/\s+/gm);
   const result = {
     [prefixKey + 'Width']: '0',
@@ -39,5 +41,6 @@ export function borderLike(
     else if (isNumber(value)) result[prefixKey + 'Width'] = value;
     else result[prefixKey + 'Color'] = value;
   });
+  console.debug('BORDER_LIKE_RESULT: ', { value, values, result });
   return result;
 }

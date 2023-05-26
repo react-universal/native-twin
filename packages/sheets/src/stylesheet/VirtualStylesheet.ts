@@ -32,8 +32,7 @@ export class VirtualStyleSheet {
       store.set(hashID, result);
       return result;
     }
-    const stylesFinal = transform(classNames);
-    console.log('stylesFinal', stylesFinal);
+    const { evaluated: stylesFinal, isGroupParent } = transform(classNames);
     const result = {
       hash: hashID,
       baseStyles: stylesFinal.base,
@@ -43,7 +42,7 @@ export class VirtualStyleSheet {
       first: stylesFinal.first,
       last: stylesFinal.last,
       odd: stylesFinal.odd,
-      isGroupParent: stylesFinal.isGroupParent,
+      isGroupParent: isGroupParent,
       hasPointerEvents: Object.keys(stylesFinal.pointer).length > 0,
       hasGroupeEvents: Object.keys(stylesFinal.group).length > 0,
     };

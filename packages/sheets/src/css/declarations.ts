@@ -1,14 +1,8 @@
-import type { Context, Style, Transform } from './css.types';
-import { cssToStyle } from './parsers/declaration.parser';
+import type { AnyStyle, Context } from './css.types';
 import { calculate } from './parsers/maths';
 import { isNumber } from './parsers/numbers';
 
-export const parseDeclarations = (input: string, context: Context) => {
-  const styles = cssStyleToRN(cssToStyle(input), context);
-  return styles;
-};
-
-const cssStyleToRN = (cssStyle: Style, context: Context) => {
+export const cssStyleToRN = (cssStyle: AnyStyle, context: Context) => {
   const result: Record<string, any> = {};
   for (const [key, value] of Object.entries(cssStyle)) {
     if (typeof value === 'string') {
@@ -25,7 +19,7 @@ const cssStyleToRN = (cssStyle: Style, context: Context) => {
         continue;
       } else if (isNumber(value)) {
         if (value.startsWith('calc(')) {
-          result[key] = calculate(value.trim().slice(4), context);
+          result[key] = calculate(value.trim().slice(4), context.units);
         } else {
           result[key] = parseFloat(value);
         }
@@ -33,11 +27,11 @@ const cssStyleToRN = (cssStyle: Style, context: Context) => {
         result[key] = value;
       }
     } else if (key === 'transform') {
-      const transform = (value as Transform[]).map((v) => cssStyleToRN(v, context));
+      const transform = value.map((v: AnyStyle) => cssStyleToRN(v, context));
       result[key] = transform;
     } else {
       result[key] = value;
     }
   }
-  return result as any as Style;
+  return result as any as AnyStyle;
 };

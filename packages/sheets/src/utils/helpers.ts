@@ -1,3 +1,3 @@
-export function normalizeClassNameString(className: string): string {
+export function normalizeCssSelectorString(className: string): string {
   return className.replace(/\\/g, '').replace('.', '');
 }

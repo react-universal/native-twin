@@ -6721,7 +6721,6 @@ __metadata:
     "@types/react": ~18.0.27
     "@universal-labs/twind-adapter": "workspace:*"
     css-to-react-native: ^3.1.0
-    fp-ts: 2.15.0
     react-native-uuid: ^2.0.1
     vitest: ^0.31.1
   peerDependencies:
@@ -12481,13 +12480,6 @@ __metadata:
   version: 0.2.0
   resolution: "forwarded@npm:0.2.0"
   checksum: fd27e2394d8887ebd16a66ffc889dc983fbbd797d5d3f01087c020283c0f019a7d05ee85669383d8e0d216b116d720fc0cef2f6e9b7eb9f4c90c6e0bc7fd28e6
-  languageName: node
-  linkType: hard
-
-"fp-ts@npm:2.15.0":
-  version: 2.15.0
-  resolution: "fp-ts@npm:2.15.0"
-  checksum: 750e61ce9a448972b2ab7d2372f55efa831cfb967e62fb5a484c0df6356dcc8a81da4e94af442fcacd2245cce2e6a0de04f6ac3783a914bcb8ed2ab1dbf659aa
   languageName: node
   linkType: hard
 

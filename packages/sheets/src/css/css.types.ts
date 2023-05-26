@@ -1,5 +1,28 @@
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
+/*
+  CSS ABSOLUTE UNITS
+  https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units
+  mm: 3.78px
+  cm: 37.8px
+  in: 96px
+  pt: 1.33px
+  pc: 16px
+  px: 1px
+*/
+/*
+  CSS RELATIVE UNITS
+  https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units
+  em: 16px -> :root base
+  rem: 16px -> :root base
+  ex: NOT_IMPLEMENTED -> not supported -> fallback to px
+  ch: NOT_IMPLEMENTED -> not supported -> fallback to px
+  vw: SCREEN DIMENSIONS WIDTH -> viewport width TODO: implement size change listener
+  vh: SCREEN DIMENSIONS HEIGHT -> viewport height TODO: implement size change listener
+  vmin: SCREEN DIMENSIONS MIN -> viewport min between width and height TODO: implement size change listener
+  vmax: SCREEN DIMENSIONS MAX -> viewport max between width and height TODO: implement size change listener
+  %: RELATIVE TO PARENT ELEMENT
+*/
 export type Units = {
   '%'?: number;
   vw?: number;
@@ -96,10 +119,38 @@ export interface CssLexerState {
   targetString: string;
 }
 
-export interface RuleNode {
-  body: string;
+type CssAstNode<Type, Value> = {
+  type: Type;
+} & Value;
+
+interface SheetNodeValue {
+  rules: CssRuleAstNode[];
+}
+
+interface RuleNodeValue {
+  declarations: CssDeclarationAstNode[];
+  rawDeclarations: string;
+  rawSelector: string;
   selector: string;
   isPointerEvent: boolean;
   isGroupEvent: boolean;
-  getStyles: (context: Context) => Style;
+  rawRule: string;
 }
+interface DeclarationValue {
+  property: string;
+  value: string;
+}
+
+interface DeclarationNode {
+  rawDeclaration: string;
+  kind: 'color' | 'dimensions' | 'flex' | 'style' | 'transform' | 'variable';
+  declaration: DeclarationValue;
+}
+
+export type CssSheetAstNode = CssAstNode<'sheet', SheetNodeValue>;
+
+export type CssRuleAstNode = CssAstNode<'rule', RuleNodeValue>;
+
+export type CssDeclarationAstNode = CssAstNode<'declaration', DeclarationNode>;
+
+export type AnyCssAstNode = CssDeclarationAstNode | CssRuleAstNode | CssSheetAstNode;

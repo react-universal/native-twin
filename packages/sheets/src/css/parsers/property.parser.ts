@@ -1,4 +1,4 @@
-import type { PartialStyle } from '../css.types';
+import type { AnyStyle, PartialStyle } from '../css.types';
 import { border, borderLike } from './border';
 import { background } from './color';
 import { cornerValue } from './corners';
@@ -9,7 +9,7 @@ import { sideValue } from './spaces';
 import { transform } from './transform';
 
 interface PropertyParserFn {
-  (property: string, value: string): PartialStyle;
+  (property: string, value: string): AnyStyle;
 }
 
 export const cssDeclarationParser: PropertyParserFn = (property, value) => {
@@ -26,13 +26,13 @@ export const cssDeclarationParser: PropertyParserFn = (property, value) => {
   ) {
     return borderLike(property, value);
   }
-  if (property === 'borderWidth' || property === 'borderStyle' || property === 'borderColor') {
-    return sideValue(
-      'border',
-      value,
-      property.split('border').pop() as '' | 'Width' | 'Style' | 'Color',
-    );
-  }
+  // if (property === 'borderWidth' || property === 'borderStyle' || property === 'borderColor') {
+  //   return sideValue(
+  //     'border',
+  //     value,
+  //     property.split('border').pop() as '' | 'Width' | 'Style' | 'Color',
+  //   );
+  // }
   if (property === 'background') {
     return background(value);
   }

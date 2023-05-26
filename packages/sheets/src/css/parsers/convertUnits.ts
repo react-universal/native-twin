@@ -16,7 +16,8 @@ export function convertValue(
   units: Units,
 ): string | number {
   if (typeof value !== 'string') {
-    console.error(
+    // eslint-disable-next-line no-console
+    console.warn(
       `Failed to parse CSS instruction: ${key}=${value}. We expect a string, but ${value} was of type ${typeof value}.`,
     );
     return 0;
@@ -69,8 +70,8 @@ export function convertValue(
   });
 
   // We handle extra calculations (calc, min, max, parsing...)
-  if (convertedValue.startsWith('calc('))
-    return calculate(convertedValue.substring(4)); // remove calc. We can keep the parenthesis
+  if (convertedValue.startsWith('calc(')) return calculate(convertedValue.substring(4), units);
+  // remove calc. We can keep the parenthesis
   else if (convertedValue.startsWith('max('))
     return max(convertedValue.substring(4, convertedValue.length - 1)); // Remove max()
   else if (convertedValue.startsWith('min('))
