@@ -13,7 +13,7 @@ import {
 
 export function tokenizer(
   css: string,
-  sheet: CssSheetAstNode = {
+  rootNode: CssSheetAstNode = {
     type: 'sheet',
     rules: [],
   },
@@ -37,7 +37,7 @@ export function tokenizer(
         endOfDeclarations,
       );
       currentState.cursor = endOfDeclarations + 1;
-      sheet.rules.push(
+      rootNode.rules.push(
         createCssRuleNode(
           selector,
           ruleDeclarations,
@@ -45,11 +45,11 @@ export function tokenizer(
         ),
       );
       if (currentState.cursor < currentState.targetString.length) {
-        return tokenizer(currentState.targetString.slice(currentState.cursor), sheet);
+        return tokenizer(currentState.targetString.slice(currentState.cursor), rootNode);
       }
     }
   }
-  return sheet;
+  return rootNode;
 }
 
 export const getDeclarationKind = (

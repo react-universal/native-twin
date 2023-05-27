@@ -41,7 +41,8 @@
     "prepublishOnly": "expo-module prepublishOnly",
     "test": "vitest run",
     "test:bench": "vitest bench --ui",
-    "test:ui": "vitest --ui --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@adobe/css-tools": "4.3.0-beta.2",
