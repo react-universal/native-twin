@@ -11,6 +11,7 @@ import {
   defineConfig,
   parse,
   parseValue,
+  ParsedRule,
   asArray,
   normalize,
   install,
@@ -75,3 +76,4 @@ export {
   matchColor,
   matchTheme,
 };
+export type { ParsedRule };

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { initialize, stringify } from '@universal-labs/twind-adapter';
 import util from 'util';
 import { describe, expect, it } from 'vitest';
@@ -16,20 +17,23 @@ describe('@universal-labs/stylesheets', () => {
     expect(ast).toStrictEqual([
       {
         selector: '.translate-x-2',
-        declarations: 'transform:translate(2rem)',
+        declarations: { transform: [{ translateX: 32 }, { translateY: 0 }] },
       },
-      { selector: '.flex-1', declarations: 'flex:1 1 0%' },
+      {
+        selector: '.flex-1',
+        declarations: { flexGrow: 1, flexShrink: 1, flexBasis: '0%' },
+      },
       {
         selector: '.text-2xl',
-        declarations: 'font-size:1.5rem;line-height:2rem',
+        declarations: { fontSize: 24, lineHeight: 32 },
       },
       {
         selector: '.first\\:bg-gray-100:first-child',
-        declarations: 'background-color:rgba(243,244,246,1)',
+        declarations: { backgroundColor: 'rgba(243,244,246,1)' },
       },
       {
         selector: '.hover\\:text-red-500:hover',
-        declarations: 'color:rgba(239,68,68,1)',
+        declarations: { color: 'rgba(239,68,68,1)' },
       },
     ]);
   });
