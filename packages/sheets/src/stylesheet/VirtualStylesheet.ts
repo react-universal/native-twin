@@ -1,7 +1,6 @@
 import { hash } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
-import { selectorIsGroupPointerEvent, selectorIsPointerEvent } from '../css/helpers';
-import { CssLexer } from '../css/tokenizer-generator';
+import { lexer } from '../css/Lexer';
 import type { ComponentStylesheet } from '../types';
 import StyleSheetCache from './StyleSheetCache';
 
@@ -11,7 +10,7 @@ const store = new StyleSheetCache<string, ComponentStylesheet>(100);
 export class VirtualStyleSheet {
   injectUtilities(classNames?: string): ComponentStylesheet {
     const hashID = hash(classNames ?? 'unstyled');
-    const finalStyles = {
+    const finalStyles: ComponentStylesheet = {
       baseStyles: {},
       pointerStyles: {},
       groupStyles: {},
@@ -32,40 +31,20 @@ export class VirtualStyleSheet {
       store.set(hashID, finalStyles);
       return finalStyles;
     }
-    const injected = CssLexer.injectClassNames(classNames);
+    const injected = lexer.injectClassNames(classNames);
     if (injected.generated.includes('group')) {
       finalStyles.isGroupParent = true;
     }
-    for (const styles of CssLexer.parse()) {
-      if (selectorIsGroupPointerEvent(styles.selector)) {
-        finalStyles.hasPointerEvents = true;
-        finalStyles.hasGroupeEvents = true;
-        Object.assign(finalStyles.groupStyles, styles.declarations);
-        continue;
-      }
-      if (selectorIsPointerEvent(styles.selector)) {
-        finalStyles.hasPointerEvents = true;
-        Object.assign(finalStyles.pointerStyles, styles.declarations);
-        continue;
-      }
-      if (styles.selector.includes('first')) {
-        Object.assign(finalStyles.first, styles.declarations);
-        continue;
-      }
-      if (styles.selector.includes('last')) {
-        Object.assign(finalStyles.last, styles.declarations);
-        continue;
-      }
-      if (styles.selector.includes('even')) {
-        Object.assign(finalStyles.even, styles.declarations);
-        continue;
-      }
-      if (styles.selector.includes('odd')) {
-        Object.assign(finalStyles.odd, styles.declarations);
-        continue;
-      }
-      Object.assign(finalStyles.baseStyles, styles.declarations);
-    }
+    finalStyles.baseStyles = injected.baseCss;
+    finalStyles.pointerStyles = injected.pointerCss;
+    finalStyles.groupStyles = injected.groupCss;
+    finalStyles.even = injected.evenCss;
+    finalStyles.odd = injected.oddCss;
+    finalStyles.first = injected.firstCss;
+    finalStyles.last = injected.lastCss;
+    finalStyles.hasPointerEvents = injected.hasPointerEvents;
+    finalStyles.hasGroupeEvents = injected.hasGroupEvents;
+    finalStyles.isGroupParent = injected.isGroupParent;
     store.set(hashID, finalStyles);
     return finalStyles;
   }
@@ -76,7 +55,7 @@ export function setTailwindConfig(config: Config, baseRem = 16) {
     ...currentConfig,
     ...config,
   };
-  CssLexer.setThemeConfig(config);
+  lexer.setThemeConfig(config, baseRem);
   return {
     baseRem,
   };

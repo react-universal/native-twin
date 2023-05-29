@@ -20,13 +20,13 @@ export type StyledProps<P> = {
 
 export type ComponentStylesheet = {
   hash: string;
-  baseStyles: AnyStyle;
-  pointerStyles: AnyStyle;
-  groupStyles: AnyStyle;
-  first: AnyStyle;
-  last: AnyStyle;
-  odd: AnyStyle;
-  even: AnyStyle;
+  baseStyles: AnyStyle | (() => AnyStyle);
+  pointerStyles: AnyStyle | (() => AnyStyle);
+  groupStyles: AnyStyle | (() => AnyStyle);
+  first: AnyStyle | (() => AnyStyle);
+  last: AnyStyle | (() => AnyStyle);
+  odd: AnyStyle | (() => AnyStyle);
+  even: AnyStyle | (() => AnyStyle);
   isGroupParent: boolean;
   hasPointerEvents: boolean;
   hasGroupeEvents: boolean;
