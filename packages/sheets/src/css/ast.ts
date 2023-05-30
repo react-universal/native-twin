@@ -115,8 +115,8 @@ export class AtRuleNode {
     const ruleEndIndex = this.raw.indexOf('}', this.raw.indexOf('}')) + 1;
     const ruleStartIndex = this.raw.indexOf('{', this.raw.indexOf('{') + 1);
     const ruleDeclarations = this.raw.slice(ruleStartIndex + 1, ruleEndIndex - 1);
-    const rawStyles = replaceDeclarationVariables(ruleDeclarations);
-    const list = rawStyles.split(';');
+    // const rawStyles = replaceDeclarationVariables(ruleDeclarations);
+    const list = ruleDeclarations.split(';');
     return list.reduce((prev, current) => {
       const [name, value] = current.split(':');
       if (name && value) {
@@ -140,6 +140,14 @@ export const cssToAst = (target: string[], context: Context) => {
     odd: {} as AnyStyle,
   };
   for (const current of target) {
+    if (
+      current.includes('ios') ||
+      current.includes('android') ||
+      current.includes('web') ||
+      current.includes('native')
+    ) {
+      if (!current.includes(Platform.OS)) continue;
+    }
     const rule = virtualSheet.getRule(current) ?? virtualSheet.addRule(current);
     if (rule.type === 'at-rule') {
       const isValid = rule.condition(context);
