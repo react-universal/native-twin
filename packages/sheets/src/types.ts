@@ -20,16 +20,16 @@ export type StyledProps<P> = {
 
 export type ComponentStylesheet = {
   hash: string;
-  baseStyles: AnyStyle | (() => AnyStyle);
-  pointerStyles: AnyStyle | (() => AnyStyle);
-  groupStyles: AnyStyle | (() => AnyStyle);
-  first: AnyStyle | (() => AnyStyle);
-  last: AnyStyle | (() => AnyStyle);
-  odd: AnyStyle | (() => AnyStyle);
-  even: AnyStyle | (() => AnyStyle);
+  baseStyles: AnyStyle;
+  pointerStyles: AnyStyle;
+  groupStyles: AnyStyle;
+  first: AnyStyle;
+  last: AnyStyle;
+  odd: AnyStyle;
+  even: AnyStyle;
   isGroupParent: boolean;
   hasPointerEvents: boolean;
-  hasGroupeEvents: boolean;
+  hasGroupEvents: boolean;
 };
 export type GeneratedAtomsStyle = {
   [k: string]: AnyStyle;

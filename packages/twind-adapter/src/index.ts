@@ -49,7 +49,7 @@ export function initialize /* #__PURE__ */(
         },
       },
     },
-    virtual(true),
+    virtual(false),
   );
   const tx = tx$.bind(tw);
   const injectGlobal = injectGlobal$.bind(tw);

@@ -92,23 +92,18 @@ function useBuildStyledComponent<T>({
   );
 
   const componentStyles = useMemo(() => {
-    const styles: AnyStyle = { ...stylesheet.getBaseSheet };
-    const interactions: AnyStyle = {};
-    if (interactionState.active || interactionState.focus || interactionState.hover) {
-      Object.assign(interactions, stylesheet.getPointerEventsSheet);
-    }
-    if (
-      groupParentComponentState.active ||
-      groupParentComponentState.focus ||
-      groupParentComponentState.hover
-    ) {
-      Object.assign(interactions, stylesheet.groupEventsSheet);
-    }
+    const styles: AnyStyle = stylesheet.getStyles({
+      isParentActive:
+        groupParentComponentState.active ||
+        groupParentComponentState.focus ||
+        groupParentComponentState.hover,
+      isPointerActive:
+        interactionState.active || interactionState.focus || interactionState.hover,
+    });
     return StyleSheet.create({
       generated: {
         ...styles,
         ...style,
-        ...interactions,
       },
     }).generated;
   }, [interactionState, stylesheet, groupParentComponentState, style]);

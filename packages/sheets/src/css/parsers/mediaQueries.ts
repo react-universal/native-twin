@@ -61,8 +61,8 @@ type Constraint = {
 };
 
 export function createContext(units: Units): Context {
-  const vw = (units.vw || 1) * 100;
-  const vh = (units.vh || 1) * 100;
+  const vw = units.vw || 1;
+  const vh = units.vh || 1;
   return {
     anyHover: 'hover',
     anyPointer: Platform.OS === 'web' ? 'fine' : 'coarse',
@@ -128,13 +128,13 @@ function convertAnyValue(
 /** Check if a constraint is respected by the provided context */
 function evaluateConstraint(constraint: Constraint, context: Context): boolean {
   return (Object.keys(constraint) as (keyof Constraint)[]).every((key) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const [, baseKey, minMax] = key.match(/(.*?)(Min|Max|$)/)! as [
       string,
       keyof Context,
       'Min' | 'Max' | '',
     ];
     const value = convertAnyValue(baseKey, constraint[key] + '', context.units);
+    console.log('evaluateConstraint: ', { baseKey, value });
     if (minMax === 'Min') {
       return context[baseKey] >= value;
     } else if (key.endsWith('Max')) {
@@ -158,9 +158,13 @@ function evaluateConstraint(constraint: Constraint, context: Context): boolean {
 /** Parse media query constraint such as min-width: 600px, or screen */
 function parseConstraintValue(constraintString: string): Evaluation {
   let [key, value] = constraintString.split(':').map((v) => v.trim());
-  if (key!.startsWith('min-')) key = key!.substring(4) + 'Min';
-  else if (key!.startsWith('max-')) key = key!.substring(4) + 'Max';
+  if (key!.startsWith('min-')) {
+    key = key!.substring(4) + 'Min';
+  } else if (key!.startsWith('max-')) {
+    key = key!.substring(4) + 'Max';
+  }
   const constraint: Constraint = { [key!]: value };
+  console.log('parseConstraintValue -> constraint: ', constraint);
   return (context: Context) => evaluateConstraint(constraint, context);
 }
 
@@ -171,9 +175,14 @@ function parse(constraint: string, previous?: Evaluation): Evaluation {
 
   if (!result) {
     // If we reached the end of the string, we just return the last constraint
-    if (constraint.match(/\w/)) return parseConstraintValue(constraint);
+    console.log('NO_RESULT: ', constraint, parseConstraintValue(constraint));
+    if (constraint.match(/\w/)) {
+      return parseConstraintValue(constraint);
+    }
     // If there is just an empty string, we just ignore it by returning a truthy evaluation
-    else return previous || (() => true);
+    else {
+      return previous || (() => true);
+    }
   }
 
   const token = result[0]; // The next command we found
@@ -212,6 +221,7 @@ export const createMedia = (query: string) => {
   const parsed = query.match(/@media([\s\S]*?){([^{}]*)}/im);
   if (!parsed) throw new Error(`Parsing error: check the syntax of media query ${query}.`);
   const [, constraints, css] = parsed;
+  console.log('CONSTRAINTS: ', constraints);
   const isValid = parse(constraints!);
   return {
     css,

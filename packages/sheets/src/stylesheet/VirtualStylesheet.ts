@@ -20,7 +20,7 @@ export class VirtualStyleSheet {
       odd: {},
       isGroupParent: false,
       hasPointerEvents: false,
-      hasGroupeEvents: false,
+      hasGroupEvents: false,
       hash: hashID,
     };
     const cache = store.get(hashID);
@@ -31,19 +31,17 @@ export class VirtualStyleSheet {
       store.set(hashID, finalStyles);
       return finalStyles;
     }
-    const injected = lexer.injectClassNames(classNames);
-    if (injected.generated.includes('group')) {
-      finalStyles.isGroupParent = true;
-    }
-    finalStyles.baseStyles = injected.baseCss;
-    finalStyles.pointerStyles = injected.pointerCss;
-    finalStyles.groupStyles = injected.groupCss;
-    finalStyles.even = injected.evenCss;
-    finalStyles.odd = injected.oddCss;
-    finalStyles.first = injected.firstCss;
-    finalStyles.last = injected.lastCss;
-    finalStyles.hasPointerEvents = injected.hasPointerEvents;
-    finalStyles.hasGroupeEvents = injected.hasGroupEvents;
+    const injected = lexer.classNamesToCss(classNames);
+    finalStyles.isGroupParent = injected.isGroupParent;
+    finalStyles.baseStyles = injected.ast.base;
+    finalStyles.pointerStyles = injected.ast.pointer;
+    finalStyles.groupStyles = injected.ast.group;
+    finalStyles.even = injected.ast.even;
+    finalStyles.odd = injected.ast.odd;
+    finalStyles.first = injected.ast.first;
+    finalStyles.last = injected.ast.last;
+    finalStyles.hasPointerEvents = Object.keys(injected.ast.pointer).length > 0;
+    finalStyles.hasGroupEvents = Object.keys(injected.ast.group).length > 0;
     finalStyles.isGroupParent = injected.isGroupParent;
     store.set(hashID, finalStyles);
     return finalStyles;

@@ -1,4 +1,4 @@
-import { normalizeCssSelectorString } from '../utils/helpers';
+import type { ParsedRule } from '@universal-labs/twind-adapter';
 
 export const selectorIsGroupPointerEvent = (selector: string) => {
   return (
@@ -14,15 +14,22 @@ export const selectorIsPointerEvent = (selector: string) => {
   );
 };
 
-export const getCssForSelectors = (target: string[], generated: string[]) => {
-  return target.reduce((acc, curr) => {
-    const normalized = normalizeCssSelectorString(curr);
-    const found = generated.find((x) => normalized.includes(x));
-    if (found) {
-      acc += curr;
-    }
-    return acc;
-  }, ``);
+export const hasPointerModifier = (utility: ParsedRule) => {
+  return (
+    utility.v.includes('hover') || utility.v.includes('active') || utility.v.includes('focus')
+  );
+};
+
+export const hasGroupModifier = (utility: ParsedRule) => {
+  return (
+    utility.v.includes('group-hover') ||
+    utility.v.includes('group-active') ||
+    utility.v.includes('group-focus')
+  );
+};
+
+export const hasModifier = (utility: ParsedRule, modifier: string) => {
+  return utility.v.includes(modifier);
 };
 
 export const replaceCSSValueVariables = (

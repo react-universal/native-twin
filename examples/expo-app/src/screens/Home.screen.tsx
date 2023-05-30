@@ -22,7 +22,7 @@ function HomeScreen() {
       <View
         className={clsx(
           'flex-1',
-          'hover:(bg-red-300 web:(bg-blue-600) ios:(bg-pink-600) android:(bg-black))',
+          'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
           'ios:(p-14 border-gray-200)',
           'items-center justify-center',
         )}

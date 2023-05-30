@@ -1,112 +1,66 @@
-import { normalizeCssSelectorString } from '../utils/helpers';
-import type {
-  CssDeclarationAstNode,
-  CssLexerState,
-  CssRuleAstNode,
-  CssSheetAstNode,
-} from './css.types';
-import {
-  removeCssComment,
-  selectorIsGroupPointerEvent,
-  selectorIsPointerEvent,
-} from './helpers';
+import type { Context } from './css.types';
 
-export function tokenizer(
-  css: string,
-  rootNode: CssSheetAstNode = {
-    type: 'sheet',
-    rules: [],
-  },
-): CssSheetAstNode {
-  let currentState: CssLexerState = {
-    cursor: 0,
-    targetString: removeCssComment(css),
-  };
-  const isSelector = currentState.targetString[currentState.cursor] === '.';
-  if (isSelector) {
-    const endOfSelector = currentState.targetString.indexOf('{');
-    const selector = currentState.targetString.slice(currentState.cursor, endOfSelector);
+interface ConditionNode {
+  type: 'condition';
+  value: string;
+}
+interface OperationNode {
+  type: 'operation';
+  left: ConditionNode | null;
+  right: ConditionNode | null;
+}
 
-    currentState.cursor = endOfSelector;
-    const nextChar = currentState.targetString[currentState.cursor];
-    if (nextChar === '{') {
-      currentState.cursor += 1;
-      const endOfDeclarations = currentState.targetString.indexOf('}');
-      const ruleDeclarations = currentState.targetString.slice(
-        currentState.cursor,
-        endOfDeclarations,
-      );
-      currentState.cursor = endOfDeclarations + 1;
-      rootNode.rules.push(
-        createCssRuleNode(
-          selector,
-          ruleDeclarations,
-          currentState.targetString.slice(0, currentState.cursor),
-        ),
-      );
-      if (currentState.cursor < currentState.targetString.length) {
-        return tokenizer(currentState.targetString.slice(currentState.cursor), rootNode);
+type AnyNode = ConditionNode | OperationNode;
+
+const evaluateMedia = (node: AnyNode, context: Context): boolean => {
+  if (node.type === 'operation') {
+    const leftCondition = node.left ? evaluateMedia(node.left, context) : true;
+    const rightCondition = node.right ? evaluateMedia(node.right, context) : true;
+    return leftCondition && rightCondition;
+  }
+  if (node.type === 'condition') {
+    const [name, value] = node.value.split(':');
+    if (!name || !value) return false;
+    if (name.startsWith('min-')) {
+      if (name.endsWith('width')) {
+        return context.width >= parseFloat(value);
+      }
+      if (name.endsWith('height')) {
+        return context.height >= parseFloat(value);
+      }
+    }
+    if (name.startsWith('max-')) {
+      if (name.endsWith('width')) {
+        return context.width <= parseFloat(value);
+      }
+      if (name.endsWith('height')) {
+        return context.height <= parseFloat(value);
       }
     }
   }
-  return rootNode;
-}
-
-export const getDeclarationKind = (
-  property: string,
-  value: string,
-): CssDeclarationAstNode['kind'] => {
-  if (property.startsWith('--')) return 'variable';
-  else if (property.includes('flex')) return 'flex';
-  else if (
-    property.includes('color') ||
-    value.startsWith('#') ||
-    value.startsWith('hls') ||
-    value.startsWith('rgb')
-  )
-    return 'color';
-  else if (property.includes('transform')) return 'transform';
-  return 'style';
+  return false;
 };
 
-export const createDeclarationNode = (declarations: string): CssDeclarationAstNode[] => {
-  const declarationRows = declarations.split(';');
-  return declarationRows.reduce((prev, current) => {
-    const [property, value] = current.split(':');
-    if (property && value) {
-      prev.push({
-        type: 'declaration',
-        rawDeclaration: current,
-        kind: getDeclarationKind(property, value),
-        declaration: {
-          property,
-          value,
-        },
-      });
-    }
-    return prev;
-  }, [] as CssDeclarationAstNode[]);
-};
-
-export const createCssRuleNode = (
-  rawSelector: string,
-  declarations: string,
-  fullRule: string,
-): CssRuleAstNode => {
-  const selector = normalizeCssSelectorString(rawSelector);
-  const isGroupPointerEvent = selectorIsGroupPointerEvent(selector);
-  const isPointerEvent = !isGroupPointerEvent && selectorIsPointerEvent(selector);
-  const value = createDeclarationNode(declarations);
-
-  return {
-    type: 'rule',
-    declarations: value,
-    isGroupEvent: isGroupPointerEvent,
-    isPointerEvent,
-    rawDeclarations: declarations,
-    rawSelector,
-    selector,
-    rawRule: fullRule,
-    // getStyles: (context): Style => parseDeclarations(`${body};`, context),
+export const shouldApplyAddRule = (css: string, context: Context) => {
+  const rootNode: OperationNode = {
+    type: 'operation',
+    left: null,
+    right: null,
   };
+  const media = css.slice(0, css.indexOf('{'));
+  let cursor = 0;
+  while (cursor < media.length) {
+    const currentChar = media.charAt(cursor);
+    if (currentChar == '(') {
+      const endOfCondition = media.indexOf(')');
+      rootNode.left = {
+        type: 'condition',
+        value: media.slice(cursor + 1, endOfCondition),
+      };
+      cursor += endOfCondition + 2;
+      continue;
+    }
+    cursor++;
+  }
+  return evaluateMedia(rootNode, context);
 };
