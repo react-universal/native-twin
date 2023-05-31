@@ -18,7 +18,7 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(false);
   return (
-    <View className='flex-1 rotate-90'>
+    <View className='flex-1'>
       <View
         className={clsx(
           'flex-1',
@@ -66,7 +66,13 @@ function HomeScreen() {
           className='-translate-x-[10px] rounded-full border-1'
         />
         <TextField />
-        <View className='mb-2 -top-1 -translate-x-10 rounded-lg bg-gray-300 p-2 group-hover:bg-pink-800'>
+        <View
+          className={clsx(
+            '-top-1 -translate-x-10',
+            'mb-2 rounded-lg bg-gray-300 p-2',
+            'group-hover:bg-pink-800',
+          )}
+        >
           <H2
             suppressHighlighting
             className='font-inter-bold text-xl text-gray-800 group-hover:text-white -mt-2'

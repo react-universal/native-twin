@@ -112,45 +112,10 @@ export type Transform = {
   rotateX?: string;
   rotateY?: string;
   rotateZ?: string;
+  rotate?: string;
 };
 
 export interface CssLexerState {
   cursor: number;
   targetString: string;
 }
-
-type CssAstNode<Type, Value> = {
-  type: Type;
-} & Value;
-
-interface SheetNodeValue {
-  rules: CssRuleAstNode[];
-}
-
-interface RuleNodeValue {
-  declarations: CssDeclarationAstNode[];
-  rawDeclarations: string;
-  rawSelector: string;
-  selector: string;
-  isPointerEvent: boolean;
-  isGroupEvent: boolean;
-  rawRule: string;
-}
-interface DeclarationValue {
-  property: string;
-  value: string;
-}
-
-interface DeclarationNode {
-  rawDeclaration: string;
-  kind: 'color' | 'dimensions' | 'flex' | 'style' | 'transform' | 'variable';
-  declaration: DeclarationValue;
-}
-
-export type CssSheetAstNode = CssAstNode<'sheet', SheetNodeValue>;
-
-export type CssRuleAstNode = CssAstNode<'rule', RuleNodeValue>;
-
-export type CssDeclarationAstNode = CssAstNode<'declaration', DeclarationNode>;
-
-export type AnyCssAstNode = CssDeclarationAstNode | CssRuleAstNode | CssSheetAstNode;

@@ -1,5 +1,4 @@
 import type { AnyStyle, PartialStyle } from '../css.types';
-import { border, borderLike } from './border';
 import { background } from './color';
 import { cornerValue } from './corners';
 import { font, textDecoration } from './font';

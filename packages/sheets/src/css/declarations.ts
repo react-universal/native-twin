@@ -20,6 +20,8 @@ export const cssStyleToRN = (cssStyle: AnyStyle, context: Context) => {
       } else if (isNumber(value)) {
         if (value.startsWith('calc(')) {
           result[key] = calculate(value.trim().slice(4), context.units);
+        } else if (value.includes('deg')) {
+          result[key] = value;
         } else {
           result[key] = parseFloat(value);
         }

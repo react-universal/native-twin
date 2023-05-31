@@ -1,4 +1,5 @@
 import type { Preset } from '@twind/core';
+import { rotateRules } from '../rules/rotate';
 import { translateRules } from '../rules/translate';
 import convertCalc from './calc';
 import transformCssVariables from './css-variables';
@@ -12,7 +13,7 @@ export default function twindPresetReactNative({ baseRem = 16 }): Preset {
       ['web', ':web'],
     ],
     // @ts-expect-error
-    rules: [...translateRules],
+    rules: [...translateRules, ...rotateRules],
     finalize(rule) {
       // rule = flexToReactNative(rule);
       rule = remToPx(rule, { baseRem });

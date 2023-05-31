@@ -22,6 +22,7 @@ import {
 } from '@twind/core';
 import presetTailwind from '@twind/preset-tailwind';
 import twindPresetReactNative from './presets/preset-react-native';
+import { rotateRules } from './rules/rotate';
 import { translateRules } from './rules/translate';
 import type { CustomConfig } from './types';
 
@@ -32,7 +33,7 @@ const defaultConfig = defineConfig({
     presetTailwind({ disablePreflight: true }),
     twindPresetReactNative({ baseRem: 16 }),
   ],
-  rules: [...translateRules],
+  rules: [...translateRules, ...rotateRules],
 });
 
 export function initialize /* #__PURE__ */(
