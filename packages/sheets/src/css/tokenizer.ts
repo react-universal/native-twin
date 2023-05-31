@@ -41,7 +41,7 @@ const evaluateMedia = (node: AnyNode, context: Context): boolean => {
   return false;
 };
 
-export const shouldApplyAddRule = (css: string, context: Context) => {
+export const shouldApplyAtRule = (css: string, context: Context) => {
   const rootNode: OperationNode = {
     type: 'operation',
     left: null,

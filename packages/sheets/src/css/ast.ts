@@ -3,7 +3,7 @@ import type { AnyStyle, Context } from './css.types';
 import { cssStyleToRN } from './declarations';
 import { replaceDeclarationVariables } from './helpers';
 import { cssDeclarationParser } from './parsers/property.parser';
-import { shouldApplyAddRule } from './tokenizer';
+import { shouldApplyAtRule } from './tokenizer';
 
 class SheetNode {
   type: 'sheet' = 'sheet';
@@ -102,7 +102,7 @@ export class AtRuleNode {
   };
 
   constructor(css: string) {
-    this.condition = (context) => shouldApplyAddRule(css, context);
+    this.condition = (context) => shouldApplyAtRule(css, context);
     this.raw = css;
     const selector = css.indexOf('{', css.indexOf('{')) + 1;
     this.value = {
