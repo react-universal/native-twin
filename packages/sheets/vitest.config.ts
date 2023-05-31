@@ -9,8 +9,6 @@ export default defineConfig({
   },
   test: {
     setupFiles: ['vitest-react-native/setup'],
-    ui: true,
-    api: true,
     coverage: {
       provider: 'istanbul',
       reporter: ['text', 'json', 'html'],

@@ -6,6 +6,7 @@ import { createContext } from './parsers/mediaQueries';
 
 type SetThemeConfigFn = (input: Config, rem?: number) => void;
 const { height, width } = Dimensions.get('screen');
+
 const createTailwindInterpreter = () => {
   let processor = initialize();
   let context = createContext({

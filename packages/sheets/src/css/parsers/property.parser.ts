@@ -14,18 +14,19 @@ interface PropertyParserFn {
 
 export const cssDeclarationParser: PropertyParserFn = (property, value) => {
   property = kebab2camel(property);
-  if (property === 'border') {
-    return border(value);
-  }
-  if (
-    property === 'outline' ||
-    property === 'borderTop' ||
-    property === 'borderLeft' ||
-    property === 'borderRight' ||
-    property === 'borderBottom'
-  ) {
-    return borderLike(property, value);
-  }
+  // console.debug('cssDeclarationParser -> ', property, value);
+  // if (property === 'border') {
+  //   return border(value);
+  // }
+  // if (
+  //   property === 'outline' ||
+  //   property === 'borderTop' ||
+  //   property === 'borderLeft' ||
+  //   property === 'borderRight' ||
+  //   property === 'borderBottom'
+  // ) {
+  //   return borderLike(property, value);
+  // }
   // if (property === 'borderWidth' || property === 'borderStyle' || property === 'borderColor') {
   //   return sideValue(
   //     'border',

@@ -23,7 +23,7 @@ function HomeScreen() {
         className={clsx(
           'flex-1',
           'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
-          'ios:(p-14 bg-gray-600)',
+          'ios:(p-14 bg-gray-600 border-red-200 border-2)',
           'android:(p-14 border-red-200 border-2 bg-gray-200)',
           'items-center justify-center',
         )}
@@ -66,7 +66,7 @@ function HomeScreen() {
           className='-translate-x-[10px] rounded-full border-1'
         />
         <TextField />
-        <View className='mb-2 -top-1 -translate-x-2 rounded-lg bg-gray-300 p-2 group-hover:bg-pink-800'>
+        <View className='mb-2 -top-1 -translate-x-10 rounded-lg bg-gray-300 p-2 group-hover:bg-pink-800'>
           <H2
             suppressHighlighting
             className='font-inter-bold text-xl text-gray-800 group-hover:text-white -mt-2'

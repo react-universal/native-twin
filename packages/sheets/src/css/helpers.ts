@@ -12,7 +12,6 @@ function declarationCanBeReplaced /* #__PURE__ */(value: unknown): asserts value
 }
 
 export function replaceDeclarationVariables /* #__PURE__ */(declarations: string) {
-  console.log('DECL_TO_REPLACE: ', declarations);
   if (declarations.includes('var(')) {
     const variable = declarations.split(';');
     let variableRule = variable[0];

@@ -5,7 +5,7 @@ exports[`@universal-labs/styled > View render 1`] = `
   groupID="test"
   style={
     {
-      "flexBasis": 0,
+      "flexBasis": "0%",
       "flexGrow": 1,
       "flexShrink": 1,
     }
