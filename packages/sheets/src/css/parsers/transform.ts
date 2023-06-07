@@ -1,4 +1,6 @@
-import type { Transform } from '../css.types';
+import type { Context, Transform } from '../css.types';
+import type { CssTransformValueNode } from '../types';
+import { evaluateDimensionsValue } from './dimensions';
 
 function read2D(prefix: 'translate' | 'scale' | 'skew', value: string) {
   const [x, y = '0px'] = value.split(',').map((val) => val.trim()) as string[];
@@ -37,4 +39,24 @@ export function transform(value: string) {
     }
   }, [] as Transform[]);
   return { transform };
+}
+
+export function evaluateTransformNode(
+  node: CssTransformValueNode,
+  context: Context,
+  result: any[] = [],
+) {
+  if (node.dimension === '2d') {
+    if (node.x) {
+      result.push({
+        translateX: evaluateDimensionsValue(node.x, context),
+      });
+    }
+    if (node.y) {
+      result.push({
+        translateY: evaluateDimensionsValue(node.y, context),
+      });
+    }
+  }
+  return result;
 }

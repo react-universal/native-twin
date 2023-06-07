@@ -1,59 +1,88 @@
 /* eslint-disable no-console */
-import clsx from 'clsx';
+import { initialize } from '@universal-labs/twind-adapter';
 import util from 'util';
 import { describe, expect, it } from 'vitest';
-import { lexer } from '../src/css/Lexer';
+import { cssParser } from '../src/parser/lib/css.parsers';
+
+const { tx, tw } = initialize();
+
+const getCssForutilities = (utilities: string) => {
+  const restore = tw.snapshot();
+  tx(utilities);
+  const css = tw.target.join('');
+  restore();
+  return css;
+};
 
 describe('@universal-labs/stylesheets', () => {
-  it('CSS to AST', () => {
-    const result = lexer.classNamesToCss(clsx('text-2xl translate-x-2 flex-1'));
+  it('Css Rule Parser', () => {
+    const css = getCssForutilities('text-2xl leading-6');
 
-    console.log('AST_MEDIA: ', util.inspect(result, false, null, true /* enable colors */));
-
-    expect(result).toEqual({
-      ast: {
-        base: {
-          transform: [{ translateX: 8 }, { translateY: 0 }],
-          flexGrow: 1,
-          flexShrink: 1,
-          flexBasis: '0%',
-          fontSize: 24,
-          lineHeight: 32,
+    const ruleAst = cssParser.run(css);
+    console.group('Css translate rule Parser');
+    console.log('CSS: ', css);
+    console.log('LEXER: ', util.inspect(ruleAst, false, null, true));
+    console.groupEnd();
+    expect(ruleAst).toStrictEqual({
+      isError: false,
+      result: [
+        {
+          selector: '.text-2xl',
+          group: 'base',
+          declarations: [
+            { property: 'font-size', value: { value: '1.5', unit: 'rem' } },
+            { property: 'line-height', value: { value: '2', unit: 'rem' } },
+          ],
         },
-        pointer: {},
-        group: {},
-        first: {},
-        last: {},
-        even: {},
-        odd: {},
-      },
-      isGroupParent: false,
+        {
+          selector: '.leading-6',
+          group: 'base',
+          declarations: [
+            {
+              property: 'line-height',
+              value: { value: '1.5', unit: 'rem' },
+            },
+          ],
+        },
+      ],
+      index: 74,
+      data: null,
     });
   });
 
-  it('CSS Media Rules to AST', () => {
-    const result = lexer.classNamesToCss(
-      clsx('flex-1 bg-gray-800', 'sm:bg-white', 'hover:bg-black'),
-    );
-
-    console.log('AST_MEDIA: ', util.inspect(result, false, null, true /* enable colors */));
-
-    expect(result).toEqual({
-      ast: {
-        base: {
-          flexGrow: 1,
-          flexShrink: 1,
-          flexBasis: '0%',
-          backgroundColor: 'rgba(255,255,255,1)',
+  it('CSS: translate utilities parser', () => {
+    const css = getCssForutilities('translate-x-2 translate-y-2');
+    const ruleAst = cssParser.run(css);
+    console.group('Css translate rule Parser');
+    console.log('CSS: ', css);
+    console.log('LEXER: ', util.inspect(ruleAst, false, null, true));
+    console.groupEnd();
+    expect(ruleAst).toStrictEqual({
+      isError: false,
+      result: [
+        {
+          selector: '.translate-x-2',
+          group: 'base',
+          declarations: [
+            {
+              property: 'transform',
+              value: ['translate', '(', '0.5rem', ')'],
+            },
+          ],
         },
-        pointer: { backgroundColor: 'rgba(0,0,0,1)' },
-        group: {},
-        first: {},
-        last: {},
-        even: {},
-        odd: {},
-      },
-      isGroupParent: false,
+        {
+          selector: '.translate-y-2',
+          group: 'base',
+          declarations: [
+            {
+              property: 'transform',
+              value: ['translate', '(', '0, 2rem', ')'],
+            },
+          ],
+        },
+      ],
+      index: 87,
+      data: null,
     });
   });
 });

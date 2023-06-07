@@ -38,7 +38,7 @@ export function styled<T>(
     }: StyledProps<any>,
     ref: ForwardedRef<any>,
   ) {
-    // const start = performance.now();
+    console.time('#took');
     const {
       componentInteractionHandlers,
       focusHandlers,
@@ -57,10 +57,7 @@ export function styled<T>(
       children,
       ...restProps,
     });
-    // console.table({
-    //   classNames: className,
-    //   took: performance.now() - start,
-    // });
+    console.timeEnd('#took');
     // @ts-ignore
     return createElement(Component, {
       style: componentStyles,

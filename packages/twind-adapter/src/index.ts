@@ -29,10 +29,7 @@ import type { CustomConfig } from './types';
 const defaultConfig = defineConfig({
   ignorelist: [''],
   preflight: false,
-  presets: [
-    presetTailwind({ disablePreflight: true }),
-    twindPresetReactNative({ baseRem: 16 }),
-  ],
+  presets: [presetTailwind({ disablePreflight: true }), twindPresetReactNative()],
   rules: [...translateRules, ...rotateRules],
 });
 

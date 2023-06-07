@@ -28,3 +28,5 @@ export function matchString(s: string) {
     );
   });
 }
+
+const test = matchString('he').run('he');

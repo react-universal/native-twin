@@ -1,3 +1,4 @@
+import { StyleSheet } from 'react-native';
 import { hash } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
 import { lexer } from '../css/Lexer';
@@ -11,13 +12,15 @@ export class VirtualStyleSheet {
   injectUtilities(classNames?: string): ComponentStylesheet {
     const hashID = hash(classNames ?? 'unstyled');
     const finalStyles: ComponentStylesheet = {
-      baseStyles: {},
-      pointerStyles: {},
-      groupStyles: {},
-      even: {},
-      first: {},
-      last: {},
-      odd: {},
+      styles: {
+        base: {},
+        pointer: {},
+        group: {},
+        even: {},
+        first: {},
+        last: {},
+        odd: {},
+      },
       isGroupParent: false,
       hasPointerEvents: false,
       hasGroupEvents: false,
@@ -32,14 +35,13 @@ export class VirtualStyleSheet {
       return finalStyles;
     }
     const injected = lexer.classNamesToCss(classNames);
-    finalStyles.isGroupParent = injected.isGroupParent;
-    finalStyles.baseStyles = injected.ast.base;
-    finalStyles.pointerStyles = injected.ast.pointer;
-    finalStyles.groupStyles = injected.ast.group;
-    finalStyles.even = injected.ast.even;
-    finalStyles.odd = injected.ast.odd;
-    finalStyles.first = injected.ast.first;
-    finalStyles.last = injected.ast.last;
+    finalStyles.styles.base = StyleSheet.flatten(injected.ast.base);
+    finalStyles.styles.pointer = StyleSheet.flatten(injected.ast.pointer);
+    finalStyles.styles.group = StyleSheet.flatten(injected.ast.group);
+    finalStyles.styles.even = StyleSheet.flatten(injected.ast.even);
+    finalStyles.styles.odd = StyleSheet.flatten(injected.ast.odd);
+    finalStyles.styles.first = StyleSheet.flatten(injected.ast.first);
+    finalStyles.styles.last = StyleSheet.flatten(injected.ast.last);
     finalStyles.hasPointerEvents = Object.keys(injected.ast.pointer).length > 0;
     finalStyles.hasGroupEvents = Object.keys(injected.ast.group).length > 0;
     finalStyles.isGroupParent = injected.isGroupParent;

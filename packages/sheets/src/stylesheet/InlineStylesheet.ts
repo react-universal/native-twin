@@ -23,9 +23,9 @@ export default class InlineStyleSheet {
   }
 
   getStyles(input: { isPointerActive: boolean; isParentActive: boolean }) {
-    const styles: AnyStyle = { ...this.sheet.baseStyles };
-    if (input.isPointerActive) Object.assign(styles, this.sheet.pointerStyles);
-    if (input.isParentActive) Object.assign(styles, this.sheet.groupStyles);
+    const styles: AnyStyle = { ...this.sheet.styles.base };
+    if (input.isPointerActive) Object.assign(styles, { ...this.sheet.styles.pointer });
+    if (input.isParentActive) Object.assign(styles, { ...this.sheet.styles.group });
     return styles;
   }
 
@@ -38,16 +38,16 @@ export default class InlineStyleSheet {
     const result: AnyStyle = {};
     if (!this) return result;
     if (input.isFirstChild) {
-      Object.assign(result, this.sheet.first);
+      Object.assign(result, this.sheet.styles.first);
     }
     if (input.isLastChild) {
-      Object.assign(result, this.sheet.last);
+      Object.assign(result, this.sheet.styles.last);
     }
     if (input.isEven) {
-      Object.assign(result, this.sheet.even);
+      Object.assign(result, this.sheet.styles.even);
     }
     if (input.isOdd) {
-      Object.assign(result, this.sheet.odd);
+      Object.assign(result, this.sheet.styles.odd);
     }
     return Object.freeze(result);
   }
