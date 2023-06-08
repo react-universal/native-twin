@@ -1,4 +1,4 @@
-import { Parser, ParserState, updateResult } from '../Parser';
+import { Parser, ParserState, updateResult } from './Parser';
 
 type ParserFn<T> = (_yield: <K>(parser: Parser<K>) => K) => T;
 

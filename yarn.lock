@@ -6676,6 +6676,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@universal-labs/css@workspace:*, @universal-labs/css@workspace:packages/css":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/css@workspace:packages/css"
+  dependencies:
+    vitest: ^0.31.1
+  languageName: unknown
+  linkType: soft
+
 "@universal-labs/primitives@workspace:*, @universal-labs/primitives@workspace:packages/primitives":
   version: 0.0.0-use.local
   resolution: "@universal-labs/primitives@workspace:packages/primitives"
@@ -6719,6 +6727,7 @@ __metadata:
     "@adobe/css-tools": 4.3.0-beta.2
     "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
+    "@universal-labs/css": "workspace:*"
     "@universal-labs/twind-adapter": "workspace:*"
     css-to-react-native: ^3.1.0
     react-native-uuid: ^2.0.1

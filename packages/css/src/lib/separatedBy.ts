@@ -1,4 +1,4 @@
-import { Parser, ParserState, updateResult } from '../Parser';
+import { Parser, ParserState, updateResult } from './Parser';
 
 // separatedBy :: Parser e a s -> Parser e b s -> Parser e [b] s
 export function separatedBy<S, T, E, D>(

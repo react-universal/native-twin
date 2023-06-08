@@ -1,14 +1,13 @@
 {
-  "name": "@universal-labs/stylesheets",
+  "name": "@universal-labs/css",
   "version": "3.0.4",
-  "description": "Stylesheets manager",
+  "description": "Css parser for react native",
   "keywords": [
     "react-native",
     "tailwindcss",
-    "postcss",
-    "tailwind-ui",
     "react-native-web",
-    "universal-apps"
+    "universal-apps",
+    "react-native-css"
   ],
   "homepage": "https://github.com/react-universal/tailwind#readme",
   "bugs": {
@@ -44,27 +43,12 @@
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },
-  "dependencies": {
-    "@adobe/css-tools": "4.3.0-beta.2",
-    "@universal-labs/css": "workspace:*",
-    "@universal-labs/twind-adapter": "workspace:*",
-    "css-to-react-native": "^3.1.0",
-    "react-native-uuid": "^2.0.1"
-  },
   "devDependencies": {
-    "@types/css-to-react-native": "^3.0.0",
-    "@types/react": "~18.0.27",
     "vitest": "^0.31.1"
-  },
-  "peerDependencies": {
-    "react": ">=18",
-    "react-native": ">=0.70",
-    "react-native-web": ">= 0.18.10"
   },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "react-native": "./build/index.es.js"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
 }

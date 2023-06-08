@@ -1,4 +1,4 @@
-import { Parser, updateError, updateParserState } from '../Parser';
+import { Parser, updateError, updateParserState } from './Parser';
 
 // peek :: Parser e Char s
 export const peek: Parser<string> = new Parser(function peek$state(state) {

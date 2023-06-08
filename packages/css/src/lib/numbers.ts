@@ -1,8 +1,8 @@
-import { Parser, updateError, updateParserState } from '../Parser';
+import { Parser, updateError, updateParserState } from './Parser';
 
 const reDigit = /[0-9]/;
 // digit :: Parser e String s
-export const digit: Parser<string> = new Parser<string>(function digit$state(state) {
+export const parseDigit: Parser<string> = new Parser<string>(function digit$state(state) {
   if (state.isError) return state;
 
   const { target, index } = state;

@@ -1,6 +1,6 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import { describe, expect, it } from 'vitest';
-import { pipe } from '../src/parser/pipe.composer';
+import { pipe } from '../src/pipe.composer';
 
 const { tx, tw } = initialize();
 

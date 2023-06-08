@@ -1,7 +1,7 @@
-import { Parser, updateError, updateResult } from '../Parser';
+import { Parser, updateError, updateResult } from './Parser';
 
-// many :: Parser e s a -> Parser e s [a]
-export const many = function many<T>(parser: Parser<T>): Parser<T[]> {
+// parseMany :: Parser e s a -> Parser e s [a]
+export const parseMany = function many<T>(parser: Parser<T>): Parser<T[]> {
   return new Parser(function many$state(state) {
     if (state.isError) return state;
 
@@ -29,11 +29,11 @@ export const many = function many<T>(parser: Parser<T>): Parser<T[]> {
 };
 
 // many1 :: Parser e s a -> Parser e s [a]
-export const many1 = function many1<T>(parser: Parser<T>): Parser<T[]> {
+export const parseManyOrOne = function many1<T>(parser: Parser<T>): Parser<T[]> {
   return new Parser(function many1$state(state) {
     if (state.isError) return state;
 
-    const resState = many(parser).p(state);
+    const resState = parseManyOrOne(parser).p(state);
     if (resState.result.length) return resState;
 
     return updateError(
@@ -42,10 +42,3 @@ export const many1 = function many1<T>(parser: Parser<T>): Parser<T[]> {
     );
   });
 };
-
-// recursiveParser :: (() => Parser e a s) -> Parser e a s
-export function recursiveParser<T, E, D>(parserThunk: () => Parser<T, E, D>): Parser<T, E, D> {
-  return new Parser(function recursiveParser$state(state) {
-    return parserThunk().p(state);
-  });
-}

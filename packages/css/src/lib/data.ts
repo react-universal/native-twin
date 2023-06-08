@@ -1,4 +1,4 @@
-import { Parser, updateData } from '../Parser';
+import { Parser, updateData } from './Parser';
 
 // setData :: t -> Parser e a t
 export function setData<T, E, D2>(data: D2): Parser<T, E, D2> {

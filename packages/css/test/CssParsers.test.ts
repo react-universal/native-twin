@@ -2,7 +2,7 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import util from 'util';
 import { describe, expect, it } from 'vitest';
-import { cssParser } from '../src/parser/lib/css.parsers';
+import { cssParser } from '../src/css.parser';
 
 const { tx, tw } = initialize();
 
@@ -28,7 +28,6 @@ describe('@universal-labs/stylesheets', () => {
       result: [
         {
           selector: '.text-2xl',
-          group: 'base',
           declarations: [
             { property: 'font-size', value: { value: '1.5', unit: 'rem' } },
             { property: 'line-height', value: { value: '2', unit: 'rem' } },
@@ -36,7 +35,6 @@ describe('@universal-labs/stylesheets', () => {
         },
         {
           selector: '.leading-6',
-          group: 'base',
           declarations: [
             {
               property: 'line-height',
@@ -62,7 +60,6 @@ describe('@universal-labs/stylesheets', () => {
       result: [
         {
           selector: '.translate-x-2',
-          group: 'base',
           declarations: [
             {
               property: 'transform',
@@ -72,7 +69,6 @@ describe('@universal-labs/stylesheets', () => {
         },
         {
           selector: '.translate-y-2',
-          group: 'base',
           declarations: [
             {
               property: 'transform',

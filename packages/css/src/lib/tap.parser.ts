@@ -1,4 +1,4 @@
-import { Parser, ParserState } from '../Parser';
+import { Parser, ParserState } from './Parser';
 
 // tapParser :: (a => ()) -> Parser e a s
 export function tapParser<T, E, D>(

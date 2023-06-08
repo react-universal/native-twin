@@ -13,16 +13,12 @@
       "path": "../examples/next-app"
     },
     {
-      "name": "📦 @universal-labs/primitives",
-      "path": "../packages/primitives"
+      "name": "📦 @universal-labs/css",
+      "path": "../packages/css"
     },
     {
       "name": "📦 @universal-labs/stylesheets",
       "path": "../packages/sheets"
-    },
-    {
-      "name": "📦 @universal-labs/styled",
-      "path": "../packages/styled"
     },
     {
       "name": "📦 @universal-labs/twind-adapter",

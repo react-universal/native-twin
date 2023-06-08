@@ -1,7 +1,7 @@
-import { Parser, updateError, updateParserState, updateResult } from '../Parser';
+import { Parser, updateError, updateParserState, updateResult } from './Parser';
 
-// char :: Char -> Parser e Char s
-export const char = function char(c: string): Parser<string> {
+// parseChar :: Char -> Parser e Char s
+export const parseChar = function char(c: string): Parser<string> {
   if (!c || c.length != 1) {
     throw new TypeError(`char must be called with a single character, but got ${c}`);
   }
@@ -29,7 +29,7 @@ export const char = function char(c: string): Parser<string> {
 };
 
 // anyChar :: Parser e Char s
-export const anyChar: Parser<string> = new Parser(function anyChar$state(state) {
+export const parseAnyChar: Parser<string> = new Parser(function anyChar$state(state) {
   if (state.isError) return state;
 
   const { index, target } = state;
@@ -48,7 +48,7 @@ export const anyChar: Parser<string> = new Parser(function anyChar$state(state) 
 
 const reLetters = /^[a-zA-Z]+/;
 // regex :: RegExp -> Parser e String s
-export function regex(re: RegExp): Parser<string> {
+export function parseRegex(re: RegExp): Parser<string> {
   const typeofre = Object.prototype.toString.call(re);
   if (typeofre !== '[object RegExp]') {
     throw new TypeError(`regex must be called with a Regular Expression, but got ${typeofre}`);
@@ -82,12 +82,12 @@ export function regex(re: RegExp): Parser<string> {
   });
 }
 
-export const letters: Parser<string> = regex(reLetters).errorMap(
+export const parseLetters: Parser<string> = parseRegex(reLetters).errorMap(
   ({ index }) => `ParseError (position ${index}): Expecting letters`,
 );
 
 // literal :: String -> Parser e String s
-export function literal(s: string): Parser<string> {
+export function parseLiteral(s: string): Parser<string> {
   if (!s || s.length < 1) {
     throw new TypeError(`str must be called with a string with length > 1, but got ${s}`);
   }
@@ -114,7 +114,7 @@ export function literal(s: string): Parser<string> {
 }
 
 // everythingUntil :: Parser e a s -> Parser e String s
-export function everythingUntil(parser: Parser<any>): Parser<number[]> {
+export function parseEverythingUntil(parser: Parser<any>): Parser<number[]> {
   return new Parser((state) => {
     if (state.isError) return state;
 
@@ -150,11 +150,11 @@ export function everythingUntil(parser: Parser<any>): Parser<number[]> {
 }
 
 // everyCharUntil :: Parser e a s -> Parser e String s
-export const everyCharUntil = (parser: Parser<any>) =>
-  everythingUntil(parser).map((results) => results.join(''));
+export const parseEveryCharUntil = (parser: Parser<any>) =>
+  parseEverythingUntil(parser).map((results) => results.join(''));
 
 // endOfInput :: Parser e Null s
-export const endOfInput = new Parser<null, string>(function endOfInput$state(state) {
+export const parseEndOfInput = new Parser<null, string>(function endOfInput$state(state) {
   if (state.isError) return state;
   const { target, index } = state;
   if (index != target.length) {
