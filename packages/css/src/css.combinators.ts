@@ -1,24 +1,18 @@
-import { parseBetween } from './lib/between';
-import { parseChoice } from './lib/choice';
-import { parseMany } from './lib/many';
-import { parseSequenceOf } from './lib/sequenceOf';
-import { parseEveryCharUntil, parseChar, parseLiteral, parseRegex } from './lib/string';
+import { parseCssDeclaration } from './declarations.parser';
+import { Parser, updateResult } from './parsers/Parser';
+import {
+  parseSequenceOf,
+  parseBetween,
+  parseChoice,
+  parseMany,
+  parseEveryCharUntil,
+  parseChar,
+  parseLiteral,
+  parseRegex,
+} from './parsers/common';
+import type { CssDeclarationNode } from './types';
 
-const makePrimitiveType = <Type extends string>(type: Type) => {
-  return <Value extends string>(value: Value) =>
-    ({
-      value: value as Value,
-      type: type as Type,
-      toString: (): `${Type}::${Value}` => `${type}::${value}`,
-    } as const);
-};
-
-const selectorType = makePrimitiveType('Selector');
-const ruleType = makePrimitiveType('Rule');
-const atRuleType = makePrimitiveType('AtRule');
-const declarationType = makePrimitiveType('Declaration');
-
-const comment = parseBetween(parseLiteral('/*'))(parseLiteral('*/'))(
+export const parseComment = parseBetween(parseLiteral('/*'))(parseLiteral('*/'))(
   parseEveryCharUntil(parseLiteral('*/')),
 );
 
@@ -29,13 +23,27 @@ const newLine = parseChoice([
   parseChar('\f'),
 ]);
 
-const whiteSpace = parseChoice([parseChar(' '), parseChar('\t'), newLine]);
+export const parseWhiteSpace = parseChoice([parseChar(' '), parseChar('\t'), newLine]);
 
-const hexadecimalDigit = parseMany(
+export const parseHexadecimalDigit = parseMany(
   parseChoice([parseRegex(/^[0-9]/), parseRegex(/^[a-fA-F]/)]),
 );
 
-export const selectorParser = parseSequenceOf([
+export const parseCssSelector = parseSequenceOf([
   parseChar('.'),
   parseEveryCharUntil(parseChar('{')),
-]).map((x) => x[0] + x[1]);
+]).map((x) => x.join(''));
+
+const parseCssDeclarations = (x: string) => {
+  return new Parser<CssDeclarationNode[]>((state) => {
+    const nextState = parseMany(parseCssDeclaration).run(x);
+    if (nextState.isError) return state;
+    return updateResult(state, nextState.result);
+  });
+};
+
+export const parseCssRule = parseSequenceOf([
+  parseChar('{'),
+  parseEveryCharUntil(parseChar('}')).chain(parseCssDeclarations),
+  parseChar('}'),
+]).map((x): CssDeclarationNode[] => x[1]);

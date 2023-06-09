@@ -5,7 +5,6 @@ export class Parser<T, E = string, D = any> {
     this.p = p;
   }
 
-  // run :: Parser e a s ~> x -> Either e a
   run(target: string): ResultType<T, E, D> {
     const state = createParserState(target);
 
@@ -28,7 +27,6 @@ export class Parser<T, E = string, D = any> {
     };
   }
 
-  // map :: Parser e a s ~> (a -> b) -> Parser e b s
   map<T2>(fn: (x: T) => T2): Parser<T2, E, D> {
     const p = this.p;
     return new Parser(function Parser$map$state(state): ParserState<T2, E, D> {
@@ -38,7 +36,6 @@ export class Parser<T, E = string, D = any> {
     });
   }
 
-  // chain :: Parser e a s ~> (a -> Parser e b s) -> Parser e b s
   chain<T2>(fn: (x: T) => Parser<T2, E, D>): Parser<T2, E, D> {
     const p = this.p;
     return new Parser(function Parser$chain$state(state): ParserState<T2, E, D> {
@@ -48,7 +45,6 @@ export class Parser<T, E = string, D = any> {
     });
   }
 
-  // errorMap :: Parser e a s ~> (e -> f) -> Parser f a s
   errorMap<E2>(fn: (error: Err<E, D>) => E2): Parser<T, E2, D> {
     const p = this.p;
     return new Parser(function Parser$errorMap$state(state): ParserState<T, E2, D> {
@@ -67,12 +63,10 @@ export class Parser<T, E = string, D = any> {
     });
   }
 
-  // of :: a -> Parser e a s
   static of<T, E = any, D = null>(x: T): Parser<T, E, D> {
     return new Parser((state) => updateResult(state, x));
   }
 }
-// createParserState :: x -> s -> ParserState e a s
 const createParserState = <D>(
   target: string,
   data: D | null = null,
@@ -120,25 +114,21 @@ export type Ok<T, D> = {
   data: D;
 };
 
-// updateError :: (ParserState e a s, f) -> ParserState f a s
 export const updateError = <T, E, D, E2>(
   state: ParserState<T, E, D>,
   error: E2,
 ): ParserState<T, E2, D> => ({ ...state, isError: true, error });
 
-// updateResult :: (ParserState e a s, b) -> ParserState e b s
 export const updateResult = <T, E, D, T2>(
   state: ParserState<T, E, D>,
   result: T2,
 ): ParserState<T2, E, D> => ({ ...state, result });
 
-// updateData :: (ParserState e a s, t) -> ParserState e b t
 export const updateData = <T, E, D, D2>(
   state: ParserState<T, E, D>,
   data: D2,
 ): ParserState<T, E, D2> => ({ ...state, data });
 
-// updateResult :: (ParserState e a s, b, Integer) -> ParserState e b s
 export const updateParserState = <T, E, D, T2>(
   state: ParserState<T, E, D>,
   result: T2,

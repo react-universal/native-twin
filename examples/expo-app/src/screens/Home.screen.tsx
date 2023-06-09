@@ -16,7 +16,7 @@ const TextField = () => {
 const testImage = require('../../assets/favicon.png');
 
 function HomeScreen() {
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   return (
     <View className='flex-1'>
       <View

@@ -1,10 +1,11 @@
 import { Platform } from 'react-native';
+import { createCssParser } from '@universal-labs/css';
 import type { StyleSheetStyleGroups } from '../types';
 import type { Context } from './css.types';
-import { cssInterPreter } from './lexer.lib';
 import { evaluateDeclaration } from './parsers/declarations';
 import type { CssAstNode, CssAtRuleNode, CssRuleNode, CssSheetNode } from './types';
 
+const cssParser = createCssParser({ rem: 16, deviceHeight: 1000, deviceWidth: 2000 });
 const platformMatch = /web|ios|android|native+/;
 const createTokenizer = () => {
   const cache = new Map<string, CssRuleNode | CssAtRuleNode>();
@@ -23,13 +24,20 @@ const createTokenizer = () => {
         const seen = cache.get(current)!;
         sheetNode.rules.push(seen);
       } else {
-        const nextRule = cssInterPreter(current);
-        cache.set(current, nextRule);
-        sheetNode.rules.push(nextRule);
+        const nextRule = cssParser.tokenizeCss([current]);
+        if (nextRule.isError) {
+          return;
+        }
+        console.log('NEXT_RULE: ', nextRule);
+        // @ts-expect-error
+        cache.set(current, nextRule.result.rules[0]!);
+        // @ts-expect-error
+        sheetNode.rules.push(nextRule.result.rules[0]!);
       }
     };
     purged.forEach(parseNextRule);
 
+    // @ts-ignore
     return evaluateCss(sheetNode, context);
   };
 };
@@ -60,7 +68,7 @@ function evaluateCss(
       return result;
     case 'rule':
       ast.declarations.forEach((current) =>
-        result[ast.group].push(evaluateDeclaration(current.property, current.value, context)),
+        result['base'].push(evaluateDeclaration(current.property, current.value, context)),
       );
       return result;
     default:

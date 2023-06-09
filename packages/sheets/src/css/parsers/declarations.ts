@@ -56,6 +56,16 @@ export function evaluateDeclaration(
       return {
         [propertyCamel]: evaluateCalcOperation(node, context),
       };
+    // @ts-expect-error
+    case 'flex':
+      return {
+        // @ts-expect-error
+        flexGrow: parseFloat(node.grow.value),
+        // @ts-expect-error
+        flexShrink: parseFloat(node.shrink.value),
+        // @ts-expect-error
+        flexBasis: parseFloat(node.basis.value),
+      };
     default:
       throw new Error(
         `Cant parse declaration property: ${property} for ${JSON.stringify(node)}`,

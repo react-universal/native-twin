@@ -30,6 +30,7 @@ export default defineConfig({
         'react-native-web',
         'react',
         '@universal-labs/twind-adapter',
+        '@universal-labs/css',
         'react-native-uuid',
       ],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
