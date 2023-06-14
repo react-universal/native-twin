@@ -24,7 +24,11 @@ const createTokenizer = () => {
         const seen = cache.get(current)!;
         sheetNode.rules.push(seen);
       } else {
+        // @ts-expect-error
+        const start = performance.now();
         const nextRule = parseCss(current);
+        // @ts-expect-error
+        console.log('TOOK: ', performance.now() - start);
         // if (nextRule.isError) {
         //   return;
         // }

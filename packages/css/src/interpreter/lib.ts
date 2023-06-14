@@ -46,14 +46,14 @@ export const sequence = <A, B>(p: Parser<A>, q: Parser<B>): Parser<[A, B]> => {
 /**
  * @group combinator
  */
-const plus = <A>(p: Parser<A>, q: Parser<A>): Parser<A> => {
+export const plus = <A>(p: Parser<A>, q: Parser<A>): Parser<A> => {
   return makeParser((cs) => p(cs).concat(q(cs)));
 };
 
 /**
  * @group combinator
  */
-const plus1 = <A>(p: Parser<A>, q: Parser<A>) => {
+export const plus1 = <A>(p: Parser<A>, q: Parser<A>) => {
   return makeParser((cs) => {
     const res = plus<A>(p, q)(cs);
     return res.length && res[0] ? [res[0]] : [];
@@ -141,7 +141,7 @@ export const alphaNumeric = plus(letter, digit);
 /**
  * @group lexical combinator
  */
-const char = (x: string) => satisfies((y) => y == x);
+export const char = (x: string) => satisfies((y) => y == x);
 
 /**
  * @group lexical combinator
@@ -151,7 +151,7 @@ export const literal = (x: string): Parser<string> =>
     ? char(x[0]).bind((c) => literal(x.slice(1)).bind((cs) => unit(c + cs)))
     : unit('');
 
-export interface CssAstNode<Type extends string, Value = string> {
+export interface CssAstNode<Type extends string, Value = any> {
   type: Type;
   value: Value;
 }

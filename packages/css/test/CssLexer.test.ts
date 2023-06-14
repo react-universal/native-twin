@@ -11,18 +11,12 @@ describe('@universal-labs/stylesheets', () => {
   it('CSS Lexer', () => {
     const result = parseCss(css);
     console.log('RESULT_PARSE_SHEET: ', util.inspect(result, false, null, true));
-    expect(result).toStrictEqual({
-      type: 'sheet',
-      value: [
-        {
-          selector: { type: 'selector', value: '.text-2xl' },
-          rule: { type: 'rule', value: 'font-size:1.5rem;line-height:2rem' },
-        },
-        {
-          selector: { type: 'selector', value: '.leading-6' },
-          rule: { type: 'rule', value: 'line-height:1.5rem' },
-        },
-      ],
-    });
+    expect(result).toStrictEqual([
+      {
+        selector: '.text-2xl',
+        styles: [['font-size', '1.5rem;line-height:2rem']],
+      },
+      { selector: '.leading-6', styles: [['line-height', '1.5rem']] },
+    ]);
   });
 });
