@@ -1,1 +1,1 @@
-export { createCssParser } from './css.parser';
+export { parseCss } from './interpreter/sheet.tokenizer';

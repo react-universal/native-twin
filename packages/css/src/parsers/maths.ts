@@ -1,4 +1,4 @@
-import { parseWhiteSpace } from '../css.combinators';
+import { parseWhiteSpace } from './css.combinators';
 import type { CssValueCalcNode } from '../types';
 import { parseChar, parseChoice, parseLiteral, parseSequenceOf } from './common';
 import { parseDimensionsValue } from './units';

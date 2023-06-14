@@ -40,21 +40,6 @@ export const parseMany = function many<T>(parser: Parser<T>): Parser<T[]> {
   });
 };
 
-// many1 :: Parser e s a -> Parser e s [a]
-export const parseManyOrOne = function many1<T>(parser: Parser<T>): Parser<T[]> {
-  return new Parser(function many1$state(state) {
-    if (state.isError) return state;
-
-    const resState = parseManyOrOne(parser).p(state);
-    if (resState.result.length) return resState;
-
-    return updateError(
-      state,
-      `ParseError 'many1' (position ${state.index}): Expecting to match at least one value`,
-    );
-  });
-};
-
 export function possibly<T, E, D>(parser: Parser<T, E, D>): Parser<T | null, E, D> {
   return new Parser(function possibly$state(state) {
     if (state.isError) return state;
@@ -142,22 +127,6 @@ export function parseSeparatedBy<S, T, E, D>(
     });
   };
 }
-
-export const parseEndOfInput = new Parser<null, string>(function endOfInput$state(state) {
-  if (state.isError) return state;
-  const { target, index } = state;
-  if (index != target.length) {
-    return updateError(
-      state,
-      `ParseError 'endOfInput' (position ${index}): Expected end of input but got '${target.slice(
-        index,
-        5,
-      )}'`,
-    );
-  }
-
-  return updateResult(state, null);
-});
 
 export const parseEveryCharUntil = (parser: Parser<any>) =>
   parseEverythingUntil(parser).map((results) => results.join(''));
@@ -294,23 +263,6 @@ export function parseRegex(re: RegExp): Parser<string> {
     );
   });
 }
-
-export const parseAnyChar: Parser<string> = new Parser(function anyChar$state(state) {
-  if (state.isError) return state;
-
-  const { index, target } = state;
-  if (index < target.length) {
-    const charWidth = target.slice(index).length;
-    if (index + charWidth <= target.length) {
-      const char = target.charAt(index);
-      return updateParserState(state, char, index + charWidth);
-    }
-  }
-  return updateError(
-    state,
-    `ParseError (position ${index}): Expecting a character, but got end of input.`,
-  );
-});
 
 export const parseChar = function char(c: string): Parser<string> {
   if (!c || c.length != 1) {

@@ -1,55 +1,28 @@
+/* eslint-disable no-console */
 import { initialize } from '@universal-labs/twind-adapter';
+import util from 'util';
 import { describe, expect, it } from 'vitest';
-import { pipe } from '../src/pipe.composer';
+import { parseCss } from '../src/interpreter/sheet.tokenizer';
 
 const { tx, tw } = initialize();
-
+tx('text-2xl leading-6');
+const css = tw.target.join('');
 describe('@universal-labs/stylesheets', () => {
-  it('CSS Combinators', () => {
-    tx('text-2xl');
-    const css = tw.target.join('');
-
-    const getSelector = (css: string): ParserState[] => {
-      const input = css;
-      if (input.charAt(0) === '.') {
-        const indexOfEnd = input.indexOf('{');
-        return [[css.slice(0, indexOfEnd), css.slice(indexOfEnd)]];
-      } else {
-        return [['', css]];
-      }
-    };
-
-    const getRule = (css: ParserState[]): ParserState[] => {
-      const input = css[0]![1];
-      if (input.charAt(0) === '{') {
-        const indexOfEnd = input.indexOf('}') + 1;
-        return [...css, [input.slice(1, indexOfEnd - 1), input.slice(indexOfEnd)]];
-      } else {
-        return [...css, ['', input]];
-      }
-    };
-
-    // let cssList: List<any> = nil;
-    // const result = getSelector(css);
-    // cssList = cons(result, cssList);
-    // console.log('CSS_LIST; ', cssList);
-
-    const rule = pipe(css, getSelector, getRule);
-    expect(rule).toStrictEqual([
-      ['.text-2xl', '{font-size:1.5rem;line-height:2rem}'],
-      ['font-size:1.5rem;line-height:2rem', ''],
-    ]);
+  it('CSS Lexer', () => {
+    const result = parseCss(css);
+    console.log('RESULT_PARSE_SHEET: ', util.inspect(result, false, null, true));
+    expect(result).toStrictEqual({
+      type: 'sheet',
+      value: [
+        {
+          selector: { type: 'selector', value: '.text-2xl' },
+          rule: { type: 'rule', value: 'font-size:1.5rem;line-height:2rem' },
+        },
+        {
+          selector: { type: 'selector', value: '.leading-6' },
+          rule: { type: 'rule', value: 'line-height:1.5rem' },
+        },
+      ],
+    });
   });
 });
-
-type ParserState = [string, string];
-
-// const concatAllWithMonoID =
-//       <A>(m: MonoID<A>) =>
-//       (xs: List<A>): A =>
-//         matchList(
-//           () => m.empty,
-//           (head: A, tail: List<A>) => {
-//             return m.concat(head, concatAllWithMonoID(m)(tail));
-//           },
-//         )(xs);

@@ -1,5 +1,5 @@
-import { parseCssDeclaration } from './declarations.parser';
-import { Parser, updateResult } from './parsers/Parser';
+import type { CssDeclarationNode } from '../types';
+import { Parser, updateResult } from './Parser';
 import {
   parseSequenceOf,
   parseBetween,
@@ -9,8 +9,8 @@ import {
   parseChar,
   parseLiteral,
   parseRegex,
-} from './parsers/common';
-import type { CssDeclarationNode } from './types';
+} from './common';
+import { parseCssDeclaration } from './declarations.parser';
 
 export const parseComment = parseBetween(parseLiteral('/*'))(parseLiteral('*/'))(
   parseEveryCharUntil(parseLiteral('*/')),

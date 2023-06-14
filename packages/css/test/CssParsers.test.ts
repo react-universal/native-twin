@@ -1,6 +1,6 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import { describe, expect, it } from 'vitest';
-import { createCssParser } from '../src/css.parser';
+import { createCssParser } from '../src/parsers/css.parser';
 
 const cssParser = createCssParser({ deviceHeight: 500, deviceWidth: 200, rem: 16 });
 const { tx, tw } = initialize();

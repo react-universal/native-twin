@@ -1,18 +1,18 @@
-import { CSS_COLORS } from './constants/css.colors';
-import { Parser, updateResult } from './parsers/Parser';
+import { CSS_COLORS } from '../constants/css.colors';
+import type { CssDeclarationNode, CssValueRawNode } from '../types';
+import { Parser, updateResult } from './Parser';
 import {
   parseChar,
   parseEveryCharUntil,
   parseSequenceOf,
   parseChoice,
   parseMany,
-} from './parsers/common';
-import { parseFlexStyle } from './parsers/flex';
-import { parseFontFamily } from './parsers/font';
-import { parseCalcValue } from './parsers/maths';
-import { parseTranslateDeclaration } from './parsers/transform';
-import { parseDimensionsValue } from './parsers/units';
-import type { CssDeclarationNode, CssValueRawNode } from './types';
+} from './common';
+import { parseFlexStyle } from './flex';
+import { parseFontFamily } from './font';
+import { parseCalcValue } from './maths';
+import { parseTranslateDeclaration } from './transform';
+import { parseDimensionsValue } from './units';
 
 const parseCssDeclarationPropertyValue = (x: [string, string]) => {
   const property = x[0];

@@ -1,6 +1,6 @@
+import type { CssRuleNode, CssSheetNode } from '../types';
+import { parseMany, parseSequenceOf } from './common';
 import { parseCssRule, parseCssSelector } from './css.combinators';
-import { parseMany, parseSequenceOf } from './parsers/common';
-import type { CssRuleNode, CssSheetNode } from './types';
 
 export const createCssParser = (_config: {
   rem: number;
