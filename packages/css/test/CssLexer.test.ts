@@ -11,12 +11,9 @@ describe('@universal-labs/stylesheets', () => {
   it('CSS Lexer', () => {
     const result = parseCss(css);
     console.log('RESULT_PARSE_SHEET: ', util.inspect(result, false, null, true));
-    expect(result).toStrictEqual([
-      {
-        selector: '.text-2xl',
-        styles: [['font-size', '1.5rem;line-height:2rem']],
-      },
-      { selector: '.leading-6', styles: [['line-height', '1.5rem']] },
-    ]);
+    expect(result).toStrictEqual({
+      selectors: ['.text-2xl', '.leading-6'],
+      rules: { 'font-size': '1.5rem', 'line-height': '1.5rem' },
+    });
   });
 });

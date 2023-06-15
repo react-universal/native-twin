@@ -1,19 +1,8 @@
-import { pipe } from '../pipe.composer';
+import util from 'util';
+import { CssResult, evaluateSheet, SheetNode } from './evaluate';
 import { parseRule } from './lexer/rule.tokenizer';
 import { parseSelector } from './lexer/selector.tokenizer';
 import * as parser from './lib';
-
-interface SelectorNode extends parser.CssAstNode<'selector', string> {}
-interface RuleNode extends parser.CssAstNode<'rule', string> {}
-
-interface SheetNode extends parser.CssAstNode<'sheet'> {
-  readonly value: {
-    readonly selector: SelectorNode;
-    readonly rule: RuleNode;
-  }[];
-}
-
-type AnyCss = SelectorNode | RuleNode | SheetNode;
 
 const cssToAst: parser.Parser<SheetNode> = parser
   .many1(parser.sequence(parseSelector, parseRule))
@@ -34,41 +23,36 @@ const cssToAst: parser.Parser<SheetNode> = parser
 export const parseCss = (input: string) => {
   const ast = cssToAst(input);
   if (!ast[0]) throw new Error('Parser fail to create AST.' + input);
-  return sheetInterpreter(ast[0][0]);
+  const tree = evaluateSheet(ast[0][0]);
+
+  const payload = tree.reduce(
+    (prev, current) => {
+      prev.selectors.push(current.selector);
+      current.declaration.value.reduce((prevD, declaration) => {
+        return Object.assign(prevD, {
+          [declaration.property]: declaration.value,
+        });
+      }, prev.rules);
+      return prev;
+    },
+    {
+      selectors: [] as string[],
+      rules: {} as Record<
+        CssResult['declaration']['value'][number]['property'],
+        CssResult['declaration']['value'][number]['value']
+      >,
+    },
+  );
+
+  return payload;
 };
 
-const parseDeclaration: parser.Parser<string> = parser.makeParser((p) => {
-  const indexOfSeparator = p.indexOf(':');
-  if (indexOfSeparator < 0) return parser.absurd();
-  const property = p.slice(0, indexOfSeparator);
-  return [[property, p.slice(indexOfSeparator + 1)]];
-});
-
-const evaluateRuleNode = (node: RuleNode) => {
-  const value = parseDeclaration(node.value);
-  return value;
-};
-
-const sheetInterpreter = (node: AnyCss): any => {
-  switch (node.type) {
-    case 'rule':
-      return evaluateRuleNode(node);
-    case 'selector':
-      return node.value;
-    case 'sheet':
-      return node.value.map((a) => ({
-        selector: sheetInterpreter(a.selector),
-        styles: sheetInterpreter(a.rule),
-      }));
-    default:
-      return node;
-  }
-};
-
-export const evaluateSheet = (sheet: SheetNode) => {
-  const result = pipe(sheet, sheetInterpreter);
-  return result;
-};
-
-// const parsed = parseCss('.text-2xl{font-size:24px;line-height:32px}');
+util.inspect(
+  parseCss(
+    '.text-2xl{font-size:24px;line-height:32px}.leading{line-height:10px}.translate-x{translateX: (10px)}',
+  ),
+  false,
+  null,
+  true,
+);
 // evaluateSheet(parsed); // ?

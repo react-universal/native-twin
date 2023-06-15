@@ -29,7 +29,7 @@ export const makeParser = <A>(p: IParser<A>): Parser<A> => {
 /**
  * @group parser
  */
-const item = makeParser((cs) => (cs.length && cs[0] ? [[cs[0], cs.slice(1)]] : []));
+export const item = makeParser((cs) => (cs.length && cs[0] ? [[cs[0], cs.slice(1)]] : []));
 
 /**
  * @group parser
@@ -64,7 +64,7 @@ export const plus1 = <A>(p: Parser<A>, q: Parser<A>) => {
  * Only parses the input if predicate is true
  * @group parser
  */
-const satisfies = (predicate: (v: string) => boolean): Parser<string> => {
+export const satisfies = (predicate: (v: string) => boolean): Parser<string> => {
   return item.bind((x) => (predicate(x) ? unit(x) : zero<string>()));
 };
 
@@ -81,10 +81,11 @@ export const many1 = <A>(p: Parser<A>): Parser<A[]> =>
 
 export const many = <A>(p: Parser<A>): Parser<A[]> => plus1(many1(p), unit([]));
 
-// const separatedBy = <A>(p: Parser<A>, sep: Parser<A>) => plus1(separatedBy1(p, sep), unit([]));
+export const separatedBy = <A>(p: Parser<A>, sep: Parser<A>) =>
+  plus(separatedBy1(p, sep), unit([]));
 
-// const separatedBy1 = <A, B>(p: Parser<A>, sep: Parser<B>): Parser<A[]> =>
-//   p.bind((x) => many(sep.bind((_) => p)).bind((xs) => unit([x].concat(xs))));
+export const separatedBy1 = <A, B>(p: Parser<A>, sep: Parser<B>): Parser<A[]> =>
+  p.bind((x) => many(sep.bind((_) => p)).bind((xs) => unit([x].concat(xs))));
 
 // const token = <A>(p: Parser<A>): Parser<A> => p.bind((a) => space.bind((_) => unit(a)));
 // const symbol = (cs: string): Parser<string> => token(literal(cs));
