@@ -5,12 +5,12 @@ import { describe, expect, it } from 'vitest';
 import { parseCss } from '../src/interpreter/sheet.tokenizer';
 
 const { tx, tw } = initialize();
-tx('text-2xl leading-6');
+tx('leading-6 text-2xl');
 const css = tw.target.join('');
 describe('@universal-labs/stylesheets', () => {
   it('CSS Lexer', () => {
     const result = parseCss(css);
-    console.log('RESULT_PARSE_SHEET: ', util.inspect(result, false, null, true));
+    console.log('RESULT_PARSE_SHEET: ', util.inspect({ result, css }, false, null, true));
     expect(result).toStrictEqual({
       selectors: ['.text-2xl', '.leading-6'],
       rules: { 'font-size': '1.5rem', 'line-height': '1.5rem' },

@@ -1,9 +1,6 @@
 import { pipe } from '../pipe.composer';
-import {
-  parseDeclarationProperty,
-  parseDeclarationValue,
-} from './lexer/declaration.tokenizer';
-import * as parser from './lib';
+import { parseRuleDeclarations } from './lexer/declaration.tokenizer';
+import type * as parser from './lib';
 
 interface SelectorNode extends parser.CssAstNode<'selector', string> {}
 interface RuleNode extends parser.CssAstNode<'rule', string> {}
@@ -18,22 +15,7 @@ export interface SheetNode extends parser.CssAstNode<'sheet'> {
 type AnyCss = SelectorNode | RuleNode | SheetNode;
 
 const evaluateRuleNode = (node: RuleNode) => {
-  const value = parser
-    .many(parser.sequence(parseDeclarationProperty, parseDeclarationValue))
-    .bind((y) =>
-      parser.unit(
-        parser.mapResultToNode(
-          'declaration',
-          y.flatMap((z) => {
-            return {
-              property: z[0],
-              value: z[1],
-            };
-          }),
-        ),
-      ),
-    )(node.value)
-    .at(0)?.[0]!;
+  const value = parseRuleDeclarations(node.value).at(0)?.[0]!;
   return value;
 };
 

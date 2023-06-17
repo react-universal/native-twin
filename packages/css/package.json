@@ -44,7 +44,6 @@
     "test:ui": "vitest --ui"
   },
   "devDependencies": {
-    "fp-ts": "2.16.0",
     "vitest": "^0.31.1"
   },
   "publishConfig": {

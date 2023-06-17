@@ -21,6 +21,14 @@
       "path": "../packages/sheets"
     },
     {
+      "name": "📦 @universal-labs/styled",
+      "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @universal-labs/tailwind-postcss-adapter",
+      "path": "../packages/tailwind-postcss-adapter"
+    },
+    {
       "name": "📦 @universal-labs/twind-adapter",
       "path": "../packages/twind-adapter"
     }

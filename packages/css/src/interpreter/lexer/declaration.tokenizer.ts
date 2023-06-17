@@ -18,3 +18,19 @@ export const parseDeclarationValue: parser.Parser<string> = parser.makeParser((p
   const rest = p.slice(indexOfSeparator + 1);
   return [[value, rest]];
 });
+
+export const parseRuleDeclarations = parser
+  .many(parser.sequence(parseDeclarationProperty, parseDeclarationValue))
+  .chain((y) =>
+    parser.unit(
+      parser.mapResultToNode(
+        'declaration',
+        y.flatMap((z) => {
+          return {
+            property: z[0],
+            value: z[1],
+          };
+        }),
+      ),
+    ),
+  );
