@@ -1,3 +1,4 @@
+import type { CssDeclarationNode } from '../../types';
 import * as parser from '../lib';
 import { parseRawDeclarationValue } from './units.lexer';
 
@@ -21,10 +22,12 @@ export const parseDeclarationValue = parser.makeParser((cs) => {
   }
 });
 
-export const parseRuleDeclarations = parser.many(
-  parser.sequence(parseDeclarationProperty, parseDeclarationValue).map((x) => ({
-    type: 'declaration',
-    property: x[0],
-    value: x[1],
-  })),
+export const parseRawRuleDeclarations = parser.many(
+  parser.sequence(parseDeclarationProperty, parseDeclarationValue).map(
+    (x): CssDeclarationNode => ({
+      type: 'declaration',
+      property: x[0],
+      value: x[1],
+    }),
+  ),
 );
