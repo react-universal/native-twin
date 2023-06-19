@@ -1,14 +1,11 @@
-import type { Monad } from './functional/Monad';
+import type { CssAstNode } from '../types';
 
-interface CssNode<A, B extends string> extends Monad<A> {
-  type: B;
-  value: A;
+export interface CssNodeMonad<A extends CssAstNode> {
+  map: <B extends CssAstNode>(f: (a: A) => B) => CssNodeMonad<B>;
+  flatMap: <B extends CssAstNode>(f: (a: A) => B) => B;
 }
 
-export const CssNodeOf = <A, Type extends string>(type: Type, value: A): CssNode<A, Type> => ({
-  type,
-  value,
-  map: (f) => CssNodeOf(type, f(value)),
-  empty: value,
-  concat: (x, y) => value,
+export const CssAstOf = <A extends CssAstNode>(node: A): CssNodeMonad<A> => ({
+  map: (f) => CssAstOf(f(node)),
+  flatMap: (f) => f(node),
 });

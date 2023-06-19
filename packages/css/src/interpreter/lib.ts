@@ -1,7 +1,7 @@
 interface IParser<A> {
   (cs: string): [A, string][];
 }
-
+// >>= = >
 export interface Parser<A> extends IParser<A> {
   /**
    * chain: the same as (flatMap, bind >>=) (the fish operator)
@@ -68,6 +68,17 @@ export const satisfies = (predicate: (v: string) => boolean): Parser<string> => 
   return item.chain((x) => (predicate(x) ? unit(x) : zero<string>()));
 };
 
+export const choice = (parsers: Parser<any>[]): Parser<any> =>
+  makeParser((cs) => {
+    for (const currentParser of parsers) {
+      const nextState = currentParser(cs);
+      if (nextState.length > 0) {
+        return nextState;
+      }
+    }
+    return [];
+  });
+
 export const zero = <T>() => makeParser<T>((_) => []);
 
 export function absurd<A>(_?: never): A {
@@ -104,7 +115,7 @@ export const chainLeft = <A>(p: Parser<A>, op: Parser<(a: A) => (b: A) => A>): P
 /**
  * @group lexical combinator
  */
-const space = many(satisfies((x) => x == ' '));
+export const space = many(satisfies((x) => x == ' '));
 
 /**
  * @group lexical combinator
@@ -148,15 +159,3 @@ export const literal = (x: string): Parser<string> =>
   x.length && x[0]
     ? char(x[0]).chain((c) => literal(x.slice(1)).chain((cs) => unit(c + cs)))
     : unit('');
-
-export interface CssAstNode<Type extends string, Value = any> {
-  type: Type;
-  value: Value;
-}
-export const mapResultToNode = <T extends string, Value>(
-  type: T,
-  value: Value,
-): CssAstNode<T, Value> => ({
-  type: type as T,
-  value: value,
-});

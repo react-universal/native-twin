@@ -20,6 +20,7 @@ const defaultGroupState = Object.freeze({
   'group-focus': false,
   'group-hover': false,
 });
+
 function useBuildStyledComponent<T>({
   className,
   groupID,

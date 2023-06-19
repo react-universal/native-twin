@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
       <div style={{ flex: 1, backgroundColor: 'black', display: 'flex' }}>
-        <Component {...pageProps} />
+        <Component javascript='alguna_funcion();' {...pageProps} />
       </div>
     </>
   );

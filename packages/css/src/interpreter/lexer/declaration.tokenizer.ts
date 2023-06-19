@@ -1,36 +1,30 @@
 import * as parser from '../lib';
+import { parseRawDeclarationValue } from './units.lexer';
 
 export const parseDeclarationProperty: parser.Parser<string> = parser.makeParser((p) => {
   const indexOfSeparator = p.indexOf(':');
-  // TODO: throw proper error
   if (indexOfSeparator < 0) return [];
   const property = p.slice(0, indexOfSeparator);
   const rest = p.slice(indexOfSeparator + 1);
   return [[property, rest]];
 });
 
-export const parseDeclarationValue: parser.Parser<string> = parser.makeParser((p) => {
-  const indexOfSeparator = p.indexOf(';');
+export const parseDeclarationValue = parser.makeParser((cs) => {
+  const indexOfSeparator = cs.indexOf(';');
+
   if (indexOfSeparator < 0) {
-    return [[p.slice(0), '']];
+    return parser.apply(parseRawDeclarationValue, cs.slice(0));
+  } else {
+    const nextState = parser.apply(parseRawDeclarationValue, cs.slice(0, indexOfSeparator));
+    const rest = cs.slice(indexOfSeparator + 1);
+    return nextState.map((i) => [i[0], rest]);
   }
-  const value = p.slice(0, indexOfSeparator);
-  const rest = p.slice(indexOfSeparator + 1);
-  return [[value, rest]];
 });
 
-export const parseRuleDeclarations = parser
-  .many(parser.sequence(parseDeclarationProperty, parseDeclarationValue))
-  .chain((y) =>
-    parser.unit(
-      parser.mapResultToNode(
-        'declaration',
-        y.flatMap((z) => {
-          return {
-            property: z[0],
-            value: z[1],
-          };
-        }),
-      ),
-    ),
-  );
+export const parseRuleDeclarations = parser.many(
+  parser.sequence(parseDeclarationProperty, parseDeclarationValue).map((x) => ({
+    type: 'declaration',
+    property: x[0],
+    value: x[1],
+  })),
+);

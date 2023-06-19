@@ -3,11 +3,22 @@ export interface CssSheetNode {
   rules: (CssRuleNode | CssAtRuleNode)[];
 }
 
+export interface CssRawSheetNode {
+  type: 'raw-sheet';
+  rules: CssRawRuleNode[];
+}
+
 export interface CssRuleNode {
   type: 'rule';
   // group: StylesheetGroup;
   selector: string;
   declarations: CssDeclarationNode[];
+}
+
+export interface CssRawRuleNode {
+  type: 'raw-rule';
+  selector: string;
+  value: string;
 }
 
 export interface CssAtRuleNode extends Omit<CssRuleNode, 'type'> {
@@ -28,7 +39,7 @@ export interface CssValueRawNode {
 export interface CssValueDimensionNode {
   type: 'dimensions';
   unit: UnitValueType;
-  value: string;
+  value: string | number;
 }
 export interface CssValueCalcNode {
   type: 'calc';
@@ -68,4 +79,6 @@ export type CssAstNode =
   | CssDeclarationNode
   | CssAtRuleNode
   | CssRuleNode
-  | CssSheetNode;
+  | CssSheetNode
+  | CssRawSheetNode
+  | CssRawRuleNode;
