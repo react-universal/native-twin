@@ -6,7 +6,7 @@ import type {
   CssRuleNode,
   CssSheetNode,
 } from '../types';
-import { parseRuleDeclarations } from './lexer/declaration.tokenizer';
+import { parseRuleDeclarations } from './tokenizer/declaration.tokenizer';
 
 const evaluateRawRuleNode = (node: CssRawRuleNode): CssRuleNode => {
   const value = parseRuleDeclarations(node.value).at(0)?.[0]!;
