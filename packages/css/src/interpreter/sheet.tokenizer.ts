@@ -1,6 +1,6 @@
-import { CssAstOf } from '../parser/CssParser';
 import { evaluateRawTree } from './evaluate';
 import * as parser from './lib';
+import { CssAstOf } from './nodes.monad';
 import { cssToRawAstSheet } from './tokenizer/sheet.tokenizer';
 
 export const cssToAst = (input: string) => {

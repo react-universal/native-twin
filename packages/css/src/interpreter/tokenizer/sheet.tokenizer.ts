@@ -1,6 +1,6 @@
-import { CssAstOf, CssNodeMonad } from '../../parser/CssParser';
 import type { CssAstNode } from '../../types';
 import * as parser from '../lib';
+import { CssAstOf, CssNodeMonad } from '../nodes.monad';
 import { parseRule } from './rule.tokenizer';
 import { parseSelector } from './selector.tokenizer';
 

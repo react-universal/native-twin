@@ -1,4 +1,3 @@
-import type { CssNodeMonad } from '../parser/CssParser';
 import type {
   CssAstNode,
   CssRawRuleNode,
@@ -6,6 +5,7 @@ import type {
   CssRuleNode,
   CssSheetNode,
 } from '../types';
+import type { CssNodeMonad } from './nodes.monad';
 import { parseRuleDeclarations } from './tokenizer/declaration.tokenizer';
 
 const evaluateRawRuleNode = (node: CssRawRuleNode): CssRuleNode => {
