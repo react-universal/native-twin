@@ -1,11 +1,11 @@
 export type Option<A> = Some<A> | None;
 
-interface Some<A> {
+export interface Some<A> {
   readonly _tag: 'Some';
   readonly value: A;
 }
 
-interface None {
+export interface None {
   readonly _tag: 'None';
 }
 

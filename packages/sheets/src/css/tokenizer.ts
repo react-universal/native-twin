@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { parseCss } from '@universal-labs/css';
+import { parseCssString } from '@universal-labs/css';
 import type { StyleSheetStyleGroups } from '../types';
 import type { Context } from './css.types';
 import { evaluateDeclaration } from './parsers/declarations';
@@ -26,7 +26,7 @@ const createTokenizer = () => {
       } else {
         // @ts-expect-error
         const start = performance.now();
-        const nextRule = parseCss(current);
+        const nextRule = parseCssString(current);
         // @ts-expect-error
         console.log('TOOK: ', performance.now() - start);
         // if (nextRule.isError) {
@@ -38,8 +38,15 @@ const createTokenizer = () => {
     };
     purged.forEach(parseNextRule);
 
-    // @ts-ignore
-    return evaluateCss(sheetNode, context);
+    return {
+      base: [],
+      even: [],
+      first: [],
+      group: [],
+      last: [],
+      odd: [],
+      pointer: [],
+    };
   };
 };
 

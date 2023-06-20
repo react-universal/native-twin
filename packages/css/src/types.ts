@@ -5,7 +5,7 @@ export interface CssSheetNode {
 
 export interface CssRuleNode {
   type: 'rule';
-  // group: StylesheetGroup;
+  group: SelectorGroup;
   selector: string;
   declarations: CssDeclarationNode[];
 }
@@ -69,3 +69,11 @@ export type CssAstNode =
   | CssAtRuleNode
   | CssRuleNode
   | CssSheetNode;
+
+export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
+
+export interface EvaluatorConfig {
+  rem: number;
+  deviceWidth: number;
+  deviceHeight: number;
+}

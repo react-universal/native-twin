@@ -1,1 +1,1 @@
-export { cssToAst } from './interpreter/sheet.tokenizer';
+export { parseCssString } from './css.parser';

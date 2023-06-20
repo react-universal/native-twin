@@ -26,3 +26,11 @@ export const show: Show = (xs) => {
   if (isNil(xs)) return '';
   return `${xs.head}${isNil(xs.tail) ? '' : `, ${show(xs.tail)}`}`;
 };
+
+export type MatchList = <A, B>(
+  onNil: () => B,
+  onCons: (head: A, tail: List<A>) => B,
+) => (xs: List<A>) => B;
+
+export const matchList: MatchList = (onNil, onCons) => (xs) =>
+  isNil(xs) ? onNil() : onCons(xs.head, xs.tail);
