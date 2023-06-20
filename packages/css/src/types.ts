@@ -28,7 +28,7 @@ export interface CssValueRawNode {
 export interface CssValueDimensionNode {
   type: 'dimensions';
   unit: UnitValueType;
-  value: string | number;
+  value: number;
 }
 export interface CssValueCalcNode {
   type: 'calc';

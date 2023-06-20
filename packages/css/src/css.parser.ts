@@ -14,5 +14,5 @@ const evaluateTree =
 
 export const parseCssString = (input: string) => {
   const ast = parser.apply(parseCssToRuleNodes, input);
-  return evaluateTree(ast.at(0)?.[0] ?? []);
+  return evaluateTree(ast[0]?.[0] ?? []);
 };

@@ -1,12 +1,24 @@
+import type { CssDeclarationValueNode } from '../../types';
 import * as parser from '../lib';
-import { parseRawRuleDeclarations } from './declaration.tokenizer';
+import {
+  parseBetweenBrackets,
+  parseCalcValue,
+  parseColorValue,
+  parseDimensionsValue,
+  parseRawValue,
+  parseSemiColonSeparated,
+  parseTranslateValue,
+} from './css.common';
+import { parseDeclarationProperty } from './declaration.tokenizer';
 
-export const parseRule = parser.makeParser((cs) => {
-  const indexOfOpenBracket = cs.indexOf('}');
-  const sliced = cs.slice(1, indexOfOpenBracket);
-  const result = parser.apply(parseRawRuleDeclarations, sliced)[0];
+export const parseRawDeclarationValue: parser.Parser<CssDeclarationValueNode> = parser.choice([
+  parseColorValue,
+  parseDimensionsValue,
+  parseTranslateValue,
+  parseCalcValue,
+  parseRawValue,
+]);
 
-  if (!result) throw parser.absurd();
-
-  return [[result[0], cs.slice(indexOfOpenBracket + 1)]];
-});
+export const parseRule = parseBetweenBrackets(
+  parseSemiColonSeparated(parser.sequence(parseDeclarationProperty, parseRawDeclarationValue)),
+);

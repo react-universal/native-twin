@@ -11,20 +11,20 @@ describe('@universal-labs/stylesheets', () => {
     tw.clear();
   });
   it('CSS Lexer', () => {
-    tx('leading-6 text-2xl');
+    tx('leading-6 text-2xl -mt-2 translate-y-2');
     const css = tw.target.join('');
     const result = parseCssString(css);
 
-    console.log('RESULT_PARSE_SHEET: ', util.inspect(result(), false, null, true));
+    console.log('RESULT_PARSE_SHEET: ', util.inspect(result.ast, false, null, true));
 
-    expect(result().length).toBe(3);
+    expect(result.evaluate().length).toBe(5);
   });
 
-  it('CSS Lexer', () => {
-    tx('translate-y-2');
-    const css = tw.target.join('');
-    const result = parseCssString(css);
-    console.log('RESULT_PARSE_SHEET: ', util.inspect(result(), false, null, true));
-    expect(result().length).toBe(1);
-  });
+  // it('CSS Lexer', () => {
+  //   tx('translate-y-2');
+  //   const css = tw.target.join('');
+  //   const result = parseCssString(css);
+  //   console.log('RESULT_PARSE_SHEET: ', util.inspect(result, false, null, true));
+  //   expect(result.evaluate().length).toBe(1);
+  // });
 });
