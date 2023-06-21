@@ -47,9 +47,10 @@ export interface CssTransformValueNode {
 
 export interface CssFlexValueNode {
   type: 'flex';
-  grow: CssValueDimensionNode;
-  shrink: CssValueDimensionNode;
-  basis: CssDeclarationValueNode;
+  value: string;
+  // grow: CssValueDimensionNode;
+  // shrink: CssValueDimensionNode;
+  // basis: CssDeclarationValueNode;
 }
 
 export type CssDeclarationValueNode =

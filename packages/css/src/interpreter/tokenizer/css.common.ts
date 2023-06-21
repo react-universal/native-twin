@@ -59,6 +59,13 @@ export const parseCommaSeparated = <A>(p: parser.Parser<A>) =>
   );
 
 /**
+ * separated by space
+ */
+export const parseSpaceSeparated = <A>(p: parser.Parser<A>) =>
+  p.chain((x) =>
+    parser.many(parser.char(' ').chain((_) => p)).chain((y) => parser.unit([x].concat(y))),
+  );
+/**
  * separated by ":"
  */
 export const parseColonSeparated = <A>(p: parser.Parser<A>) =>
@@ -146,17 +153,26 @@ export const parseCalcValue = parser
   .literal('calc')
   .chain((_) => parseBetweenParens(concatDimensions));
 
-export const parseColorValue: parser.Parser<CssValueRawNode> = parser.makeParser((cs) => {
-  if (cs.startsWith('rgb')) {
-    const endIndex = cs.indexOf('}');
-    const sliced = cs.slice(0, endIndex);
-    return [[{ type: 'raw', value: sliced }, cs.slice(endIndex)]];
-  }
-  return [];
-});
+// export const parseColorValue: parser.Parser<CssValueRawNode> = parser.makeParser((cs) => {
+//   console.log('CS: ', cs);
+//   if (cs.startsWith('rgb')) {
+//     const colonIndex = cs.indexOf(';');
+//     const endRuleIndex = cs.indexOf('}');
+//     const endIndex = colonIndex + 1 == endRuleIndex ? endRuleIndex : colonIndex;
+//     const sliced = cs.slice(0, endIndex);
+//     console.log('CONDITIONS: ', { colonIndex, endRuleIndex, sliced });
+//     return [[{ type: 'raw', value: sliced }, cs.slice(endIndex)]];
+//   }
+//   return [];
+// });
 
 export const parseRawValue: parser.Parser<CssValueRawNode> = parser.makeParser((cs) => {
-  const endIndex = cs.indexOf('}');
-  const sliced = cs.slice(0, endIndex);
-  return [[{ type: 'raw', value: sliced }, cs.slice(endIndex)]];
+  const colonIndex = cs.indexOf(';');
+  if (colonIndex > 0) {
+    const sliced = cs.slice(0, colonIndex);
+    return [[{ type: 'raw', value: sliced }, cs.slice(colonIndex + 1)]];
+  }
+  const endRuleIndex = cs.indexOf('}');
+  const sliced = cs.slice(0, endRuleIndex);
+  return [[{ type: 'raw', value: sliced }, cs.slice(endRuleIndex)]];
 });

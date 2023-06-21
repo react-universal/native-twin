@@ -100,7 +100,8 @@ export const separatedBy1 = <A, B>(p: Parser<A>, sep: Parser<B>): Parser<A[]> =>
 
 export const token = <A>(p: Parser<A>): Parser<A> =>
   p.chain((a) => space.chain((_) => unit(a)));
-const symbol = (cs: string): Parser<string> => token(literal(cs));
+
+export const symbol = (cs: string): Parser<string> => token(literal(cs));
 
 export const chainLeft = <A>(p: Parser<A>, op: Parser<(a: A) => (b: A) => A>): Parser<A> => {
   var rest = (x: A): Parser<A> =>
@@ -162,9 +163,9 @@ export const literal = <A extends string>(x: A): Parser<A> =>
         .map((r: any) => r)
     : unit('');
 
-export const withDebugLogs = <A>(p: Parser<A>, msg: string): Parser<A> =>
+export const parseWithDebugLogs = <A>(p: Parser<A>): Parser<A> =>
   makeParser((cs) => {
     const debugState = p(cs);
-    console.debug(msg, debugState);
+    console.debug('DEBUG PARSER: ', { cs, debugState });
     return debugState;
   });

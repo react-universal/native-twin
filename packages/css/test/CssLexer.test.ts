@@ -11,13 +11,18 @@ describe('@universal-labs/stylesheets', () => {
     tw.clear();
   });
   it('CSS Lexer', () => {
-    tx('leading-6 text-2xl -mt-2 translate-y-2');
-    const css = tw.target.join('');
-    const result = parseCssString(css);
+    tx('flex-1 leading-6 text-2xl -mt-2 translate-y-2 hover:text-lg');
+    const result = tw.target.map((x) =>
+      parseCssString(x)(['base'], {
+        deviceHeight: 1280,
+        deviceWidth: 720,
+        rem: 16,
+      }),
+    );
 
-    console.log('RESULT_PARSE_SHEET: ', util.inspect(result.ast, false, null, true));
+    console.log('RESULT_PARSE_SHEET: ', util.inspect(result, false, null, true));
 
-    expect(result.evaluate().length).toBe(5);
+    expect(result.length).toBe(6);
   });
 
   // it('CSS Lexer', () => {

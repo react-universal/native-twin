@@ -2,8 +2,7 @@ import type { CssDeclarationValueNode } from '../../types';
 import * as parser from '../lib';
 import {
   parseBetweenBrackets,
-  parseCalcValue,
-  parseColorValue,
+  parseCalcValue, // parseColorValue,
   parseDimensionsValue,
   parseRawValue,
   parseSemiColonSeparated,
@@ -12,7 +11,7 @@ import {
 import { parseDeclarationProperty } from './declaration.tokenizer';
 
 export const parseRawDeclarationValue: parser.Parser<CssDeclarationValueNode> = parser.choice([
-  parseColorValue,
+  // parseColorValue,
   parseDimensionsValue,
   parseTranslateValue,
   parseCalcValue,

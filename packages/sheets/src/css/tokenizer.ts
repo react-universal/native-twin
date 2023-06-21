@@ -1,12 +1,10 @@
 import { Platform } from 'react-native';
 import { parseCssString } from '@universal-labs/css';
-import type { StyleSheetStyleGroups } from '../types';
-import type { Context } from './css.types';
-import { evaluateDeclaration } from './parsers/declarations';
-import type { CssAstNode, CssAtRuleNode, CssRuleNode, CssSheetNode } from './types';
+import type { AnyStyle, Context } from './css.types';
+import type { CssAtRuleNode, CssRuleNode, CssSheetNode } from './types';
 
-// const cssParser = createCssParser({ rem: 16, deviceHeight: 1000, deviceWidth: 2000 });
 const platformMatch = /web|ios|android|native+/;
+
 const createTokenizer = () => {
   const cache = new Map<string, CssRuleNode | CssAtRuleNode>();
 
@@ -19,59 +17,47 @@ const createTokenizer = () => {
       platformMatch.test(item) ? item.includes(Platform.OS) : true,
     );
 
-    const parseNextRule = (current: string) => {
-      if (cache.has(current)) {
-        const seen = cache.get(current)!;
-        sheetNode.rules.push(seen);
-      } else {
-        const nextRule = parseCssString(current);
-        // cache.set(current, nextRule.value);
-      }
-    };
-    purged.forEach(parseNextRule);
+    // const parseNextRule = (current: string) => {
+    //   if (cache.has(current)) {
+    //     const seen = cache.get(current)!;
+    //     sheetNode.rules.push(seen);
+    //   } else {
+    //     const nextRule = parseCssString(current, context);
+    //     console.log('STYLES: ');
+    //     // cache.set(current, nextRule.value);
+    //   }
+    // };
+    const data = purged.reduce(
+      (prev, current) => {
+        // console.log('SHEET: ', current);
+        const nextStyle = parseCssString(current, {
+          deviceHeight: context.deviceHeight,
+          deviceWidth: context.deviceWidth,
+          rem: context.units.rem,
+        });
+        prev[nextStyle[0]] = {
+          ...prev[nextStyle[0]],
+          ...nextStyle[1],
+        };
+        console.log('CSS: ', current);
+        return prev;
+      },
+      {
+        base: {} as AnyStyle,
+        even: {} as AnyStyle,
+        first: {} as AnyStyle,
+        group: {} as AnyStyle,
+        last: {} as AnyStyle,
+        odd: {} as AnyStyle,
+        pointer: {} as AnyStyle,
+      },
+    );
 
-    return {
-      base: [],
-      even: [],
-      first: [],
-      group: [],
-      last: [],
-      odd: [],
-      pointer: [],
-    };
+    console.log('RESULT: ', data);
+    console.log('AS_BASE: ', JSON.stringify(data.base, null, 2));
+
+    return data;
   };
 };
 
 export const evaluateTwUtilities = createTokenizer();
-
-function evaluateCss(
-  ast: CssAstNode,
-  context: Context,
-  result: StyleSheetStyleGroups = {
-    base: [],
-    even: [],
-    first: [],
-    group: [],
-    last: [],
-    odd: [],
-    pointer: [],
-  },
-) {
-  switch (ast.type) {
-    case 'sheet':
-      ast.rules.forEach((rule) => {
-        result = {
-          ...result,
-          ...evaluateCss(rule, context, result),
-        };
-      });
-      return result;
-    case 'rule':
-      ast.declarations.forEach((current) =>
-        result['base'].push(evaluateDeclaration(current.property, current.value, context)),
-      );
-      return result;
-    default:
-      throw new Error(`Not implemented evaluator for: ${JSON.stringify(ast)}`);
-  }
-}

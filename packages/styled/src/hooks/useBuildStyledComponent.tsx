@@ -101,6 +101,7 @@ function useBuildStyledComponent<T>({
       isPointerActive:
         interactionState.active || interactionState.focus || interactionState.hover,
     });
+    console.log('STYLES: ', styles);
     return StyleSheet.create({
       generated: {
         ...styles,
