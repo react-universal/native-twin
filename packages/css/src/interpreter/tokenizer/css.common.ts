@@ -153,19 +153,6 @@ export const parseCalcValue = parser
   .literal('calc')
   .chain((_) => parseBetweenParens(concatDimensions));
 
-// export const parseColorValue: parser.Parser<CssValueRawNode> = parser.makeParser((cs) => {
-//   console.log('CS: ', cs);
-//   if (cs.startsWith('rgb')) {
-//     const colonIndex = cs.indexOf(';');
-//     const endRuleIndex = cs.indexOf('}');
-//     const endIndex = colonIndex + 1 == endRuleIndex ? endRuleIndex : colonIndex;
-//     const sliced = cs.slice(0, endIndex);
-//     console.log('CONDITIONS: ', { colonIndex, endRuleIndex, sliced });
-//     return [[{ type: 'raw', value: sliced }, cs.slice(endIndex)]];
-//   }
-//   return [];
-// });
-
 export const parseRawValue: parser.Parser<CssValueRawNode> = parser.makeParser((cs) => {
   const colonIndex = cs.indexOf(';');
   if (colonIndex > 0) {

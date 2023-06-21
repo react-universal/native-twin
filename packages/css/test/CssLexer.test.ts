@@ -11,9 +11,9 @@ describe('@universal-labs/stylesheets', () => {
     tw.clear();
   });
   it('CSS Lexer', () => {
-    tx('flex-1 leading-6 text-2xl -mt-2 translate-y-2 hover:text-lg');
+    tx('flex-1 leading-6 text-2xl -mt-[10vw] translate-y-2 hover:text-lg sm:text-lg');
     const result = tw.target.map((x) =>
-      parseCssString(x)(['base'], {
+      parseCssString(x, {
         deviceHeight: 1280,
         deviceWidth: 720,
         rem: 16,

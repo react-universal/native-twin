@@ -45,20 +45,11 @@ export interface CssTransformValueNode {
   z?: CssValueDimensionNode;
 }
 
-export interface CssFlexValueNode {
-  type: 'flex';
-  value: string;
-  // grow: CssValueDimensionNode;
-  // shrink: CssValueDimensionNode;
-  // basis: CssDeclarationValueNode;
-}
-
 export type CssDeclarationValueNode =
   | CssValueDimensionNode
   | CssValueCalcNode
   | CssValueRawNode
-  | CssTransformValueNode
-  | CssFlexValueNode;
+  | CssTransformValueNode;
 /* END OF CSS VALUE TYPES */
 
 export type UnitValueType = 'none' | Omit<string, 'none'>;

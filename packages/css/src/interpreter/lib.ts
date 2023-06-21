@@ -1,7 +1,7 @@
 interface IParser<A> {
   (cs: string): [A, string][];
 }
-// >>= = >
+// >>=>
 export interface Parser<A> extends IParser<A> {
   /**
    * chain: the same as (flatMap, bind >>=) (the fish operator)
@@ -166,6 +166,7 @@ export const literal = <A extends string>(x: A): Parser<A> =>
 export const parseWithDebugLogs = <A>(p: Parser<A>): Parser<A> =>
   makeParser((cs) => {
     const debugState = p(cs);
+    // eslint-disable-next-line no-console
     console.debug('DEBUG PARSER: ', { cs, debugState });
     return debugState;
   });
