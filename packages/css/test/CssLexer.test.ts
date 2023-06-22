@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { initialize } from '@universal-labs/twind-adapter';
 import util from 'util';
 import { beforeEach, describe, expect, it } from 'vitest';

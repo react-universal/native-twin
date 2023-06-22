@@ -17,7 +17,6 @@ export const evaluateDimensionsNode = (
     case 'px':
       return node.value;
     default:
-      // console.debug('NOT_IMPLEMENTED_UNIT: ', node);
       return node.value;
   }
 };

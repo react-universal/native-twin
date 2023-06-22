@@ -1,18 +1,17 @@
 import { Platform } from 'react-native';
 import { parseCssString } from '@universal-labs/css';
 import type { AnyStyle, Context } from './css.types';
-import type { CssAtRuleNode, CssRuleNode, CssSheetNode } from './types';
 
 const platformMatch = /web|ios|android|native+/;
 
 const createTokenizer = () => {
-  const cache = new Map<string, CssRuleNode | CssAtRuleNode>();
+  // const cache = new Map<string, CssRuleNode | CssAtRuleNode>();
 
   return (target: string[], context: Context) => {
-    const sheetNode: CssSheetNode = {
-      type: 'sheet',
-      rules: [],
-    };
+    // const sheetNode: CssSheetNode = {
+    //   type: 'sheet',
+    //   rules: [],
+    // };
     const purged = target.filter((item) =>
       platformMatch.test(item) ? item.includes(Platform.OS) : true,
     );
@@ -39,7 +38,7 @@ const createTokenizer = () => {
           ...prev[nextStyle[0]],
           ...nextStyle[1],
         };
-        console.log('CSS: ', current);
+        // console.log('CSS: ', current);
         return prev;
       },
       {
@@ -53,8 +52,8 @@ const createTokenizer = () => {
       },
     );
 
-    console.log('RESULT: ', data);
-    console.log('AS_BASE: ', JSON.stringify(data.base, null, 2));
+    // console.log('RESULT: ', data);
+    // console.log('AS_BASE: ', JSON.stringify(data.base, null, 2));
 
     return data;
   };
