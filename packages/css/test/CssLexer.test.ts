@@ -2,7 +2,7 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import util from 'util';
 import { afterEach, describe, expect, it } from 'vitest';
-import { CssResolver } from '../src/parser-fn/css.resolver';
+import { CssResolver } from '../src/parser/css.resolver';
 
 const { tx, tw } = initialize();
 
@@ -28,7 +28,7 @@ describe('@universal-labs/stylesheets', () => {
   it('flex-1', () => {
     tx('flex-1');
     const result = tw.target.map(CssResolver);
-    printResult('flex-1', tw.target, result);
+    // printResult('flex-1', tw.target, result);
 
     expect(result).toStrictEqual([
       {
@@ -53,7 +53,7 @@ describe('@universal-labs/stylesheets', () => {
   it('text-2xl', () => {
     tx('text-2xl');
     const result = tw.target.map(CssResolver);
-    printResult('text-2xl', tw.target, result);
+    // printResult('text-2xl', tw.target, result);
     expect(result).toStrictEqual([
       {
         type: 'RULE',
@@ -77,7 +77,26 @@ describe('@universal-labs/stylesheets', () => {
   it('bg-gray-200', () => {
     tx('bg-gray-200');
     const result = tw.target.map(CssResolver);
-    printResult('bg-gray-200', tw.target, result);
+    // printResult('bg-gray-200', tw.target, result);
+    expect(result).toStrictEqual([
+      {
+        type: 'RULE',
+        selector: { type: 'SELECTOR', value: '.bg-gray-200', group: 'base' },
+        declarations: [
+          {
+            type: 'DECLARATION',
+            property: 'background-color',
+            value: { type: 'RAW', value: 'rgba(229,231,235,1)' },
+          },
+        ],
+      },
+    ]);
+  });
+
+  it('hover:bg-gray-200', () => {
+    tx('hover:bg-gray-200');
+    const result = tw.target.map(CssResolver);
+    printResult('hover:bg-gray-200', tw.target, result);
     expect(result).toStrictEqual([
       {
         type: 'RULE',
