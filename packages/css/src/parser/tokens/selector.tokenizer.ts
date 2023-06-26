@@ -1,4 +1,4 @@
-import * as parser from '..';
+import * as parser from '../Parser';
 
 export const parseSelector: parser.Parser<string> = parser.makeParser((cs) => {
   if (cs[0] != '.') return [];

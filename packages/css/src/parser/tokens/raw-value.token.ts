@@ -1,4 +1,4 @@
-import * as parser from '../';
+import * as parser from '../Parser';
 
 export const RawValueToken = parser.makeParser((cs) => {
   const colonIndex = cs.indexOf(';');

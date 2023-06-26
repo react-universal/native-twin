@@ -1,4 +1,4 @@
-import * as parser from '../';
+import * as parser from '../Parser';
 
 const emUnitToken = parser.token(parser.literal('em'));
 const remUnitToken = parser.token(parser.literal('rem'));

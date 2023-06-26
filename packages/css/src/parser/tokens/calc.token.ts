@@ -1,4 +1,4 @@
-import * as parser from '../';
+import * as parser from '../Parser';
 import { DimensionsToken } from './dimensions.token';
 
 const plusToken: parser.Parser<'+'> = parser.token(

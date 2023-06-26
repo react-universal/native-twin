@@ -4,7 +4,7 @@ interface IParser<A> {
 
 export interface Parser<A> extends IParser<A> {
   chain: <B>(f: (v: A) => Parser<B>) => Parser<B>;
-  map: <B>(f: (v: A) => B) => Parser<B>;
+  // map: <B>(f: (v: A) => B) => Parser<B>;
   apply: <B>(fab: Parser<(a: A) => B>) => Parser<B>;
 }
 
@@ -13,7 +13,7 @@ export const concat: any = [].concat.apply.bind([].concat, []);
 export const makeParser = <A>(p: IParser<A>): Parser<A> => {
   const currentParser = p as Parser<A>;
 
-  currentParser.map = <B>(f: (v: A) => B) => currentParser.chain((v) => unit(f(v)));
+  // currentParser.map = <B>(f: (v: A) => B) => currentParser.chain((v) => unit(f(v)));
 
   currentParser.chain = <B>(f: (v: A) => Parser<B>) =>
     makeParser<B>((cs) => concat(p(cs).map((res) => f(res[0])(res[1]))));
@@ -54,85 +54,6 @@ export const plus1 = <A>(p: Parser<A>, q: Parser<A>) =>
 export const satisfies = (predicate: (v: string) => boolean): Parser<string> =>
   item.chain((x) => (predicate(x) ? unit(x) : zero<string>()));
 
-export function choice<A>([p1]: [Parser<A>]): Parser<A>;
-export function choice<A, B>([p1, p2]: [Parser<A>, Parser<B>]): Parser<A | B>;
-export function choice<A, B, C>([p1, p2, p3]: [Parser<A>, Parser<B>, Parser<C>]): Parser<
-  A | B | C
->;
-export function choice<A, B, C, D>([p1, p2, p3, p4]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-]): Parser<A | B | C | D>;
-export function choice<A, B, C, D, E>([p1, p2, p3, p4, p5]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-]): Parser<A | B | C | D | E>;
-export function choice<A, B, C, D, E, F>([p1, p2, p3, p4, p5, p6]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-]): Parser<A | B | C | D | E | F>;
-export function choice<A, B, C, D, E, F, G>([p1, p2, p3, p4, p5, p6, p7]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-]): Parser<A | B | C | D | E | F | G>;
-export function choice<A, B, C, D, E, F, G, H>([p1, p2, p3, p4, p5, p6, p7, p8]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-]): Parser<A | B | C | D | E | F | G | H>;
-export function choice<A, B, C, D, E, F, G, H, I>([p1, p2, p3, p4, p5, p6, p7, p8, p9]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-  Parser<I>,
-]): Parser<A | B | C | D | E | F | G | H | I>;
-export function choice<A, B, C, D, E, F, G, H, I, J>([
-  p1,
-  p2,
-  p3,
-  p4,
-  p5,
-  p6,
-  p7,
-  p8,
-  p9,
-  p10,
-]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-  Parser<I>,
-  Parser<J>,
-]): Parser<A | B | C | D | E | F | G | H | I | J>;
 export function choice(parsers: Parser<any>[]): Parser<any> {
   return makeParser((cs) => {
     for (const currentParser of parsers) {
@@ -239,6 +160,8 @@ export const validNumber = token(
     many(plus(digits, char('.'))).chain((y) => (x ? unit(x + y.join('')) : unit(y.join('')))),
   ),
 );
+
+export const alphanumeric = plus(letters, digits);
 
 export const betweenParens = <A>(p: Parser<A>) =>
   char('(').chain((_) => p.chain((x) => char(')').chain((_) => unit(x))));

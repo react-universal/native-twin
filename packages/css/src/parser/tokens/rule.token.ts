@@ -1,4 +1,4 @@
-import * as parser from '..';
+import * as parser from '../Parser';
 import { CalcToken } from './calc.token';
 import { DimensionsToken } from './dimensions.token';
 import { RawValueToken } from './raw-value.token';
