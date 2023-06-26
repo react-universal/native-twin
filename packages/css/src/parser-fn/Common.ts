@@ -2,7 +2,7 @@ import * as P from './Parser';
 import * as S from './Strings';
 
 export const betweenBrackets = P.between(S.char('{'))(S.char('}'));
-export const separatedBySpace = P.sepBy(S.whitespace);
+export const separatedBySpace = P.separatedBy(S.whitespace);
 
 export const mapToTokenNode = <T, N extends string>(type: N, value: T) => ({
   type,
@@ -21,14 +21,9 @@ const exUnitToken = S.literal('ex');
 const inUnitToken = S.literal('in');
 
 export const DeclarationUnit = P.choice([
-  emUnitToken,
-  remUnitToken,
-  pxUnitToken,
+  P.choice([emUnitToken, remUnitToken]).map(() => 'rem'),
+  P.choice([pxUnitToken, cnUnitToken, exUnitToken, inUnitToken]).map(() => 'px'),
+  P.choice([vhUnitToken, vwUnitToken]).map((x) => x),
   percentageUnitToken,
-  cnUnitToken,
-  vhUnitToken,
-  vwUnitToken,
   degUnitToken,
-  exUnitToken,
-  inUnitToken,
 ]);

@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { parseCssString } from '@universal-labs/css';
+import { CssResolver } from '@universal-labs/css';
 import type { AnyStyle, Context } from './css.types';
 
 const platformMatch = /web|ios|android|native+/;
@@ -26,18 +26,23 @@ const createTokenizer = () => {
     //     // cache.set(current, nextRule.value);
     //   }
     // };
+    console.group('TOKENIZER');
+    // @ts-expect-error
+    const start = performance.now();
     const data = purged.reduce(
       (prev, current) => {
         // console.log('SHEET: ', current);
-        const nextStyle = parseCssString(current, {
-          deviceHeight: context.deviceHeight,
-          deviceWidth: context.deviceWidth,
-          rem: context.units.rem,
-        });
-        prev[nextStyle[0]] = {
-          ...prev[nextStyle[0]],
-          ...nextStyle[1],
-        };
+        // const nextStyle = CssResolver(current, {
+        //   deviceHeight: context.deviceHeight,
+        //   deviceWidth: context.deviceWidth,
+        //   rem: context.units.rem,
+        // });
+        const nextStyle = CssResolver(current);
+        // prev[nextStyle[0]] = {
+        //   ...prev[nextStyle[0]],
+        //   ...nextStyle[1],
+        // };
+        console.log('NEXT_STYLE: ', nextStyle);
         // console.log('CSS: ', current);
         return prev;
       },
@@ -51,6 +56,9 @@ const createTokenizer = () => {
         pointer: {} as AnyStyle,
       },
     );
+    // @ts-expect-error
+    console.log('TOOK: ', performance.now() - start);
+    console.groupEnd();
 
     // console.log('RESULT: ', data);
     // console.log('AS_BASE: ', JSON.stringify(data.base, null, 2));

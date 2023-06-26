@@ -1,19 +1,22 @@
 import { getSelectorGroup } from '../interpreter/utils';
-import * as C from './Common';
 import * as P from './Parser';
 import * as S from './Strings';
 import { DeclarationToken } from './tokens/Declaration.token';
+import type { AstRuleNode, AstSelectorNode } from './types';
 
-const SelectorToken = P.sequenceOf([S.char('.'), S.ident]).map((x) =>
-  C.mapToTokenNode('SELECTOR', {
-    value: x[0] + x[1],
-    group: getSelectorGroup(x[0] + x[1]),
-  }),
-);
+const SelectorToken = P.sequenceOf([S.char('.'), S.ident]).map((x): AstSelectorNode => {
+  const value = x[0] + x[1];
+  return {
+    type: 'SELECTOR',
+    value,
+    group: getSelectorGroup(value),
+  };
+});
 
-export const CssRuleToken = P.sequenceOf([SelectorToken, DeclarationToken]).map((x) =>
-  C.mapToTokenNode('RULE', {
+export const CssRuleToken = P.sequenceOf([SelectorToken, DeclarationToken]).map(
+  (x): AstRuleNode => ({
+    type: 'RULE',
     selector: x[0],
-    declaration: x[1],
+    declarations: x[1],
   }),
 );

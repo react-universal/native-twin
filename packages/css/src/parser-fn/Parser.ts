@@ -108,204 +108,6 @@ export function choice<A, B, C, D, E, F>([p1, p2, p3, p4, p5, p6]: [
   Parser<E>,
   Parser<F>,
 ]): Parser<A | B | C | D | E | F>;
-export function choice<A, B, C, D, E, F, G>([p1, p2, p3, p4, p5, p6, p7]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-]): Parser<A | B | C | D | E | F | G>;
-export function choice<A, B, C, D, E, F, G, H>([p1, p2, p3, p4, p5, p6, p7, p8]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-]): Parser<A | B | C | D | E | F | G | H>;
-export function choice<A, B, C, D, E, F, G, H, I>([p1, p2, p3, p4, p5, p6, p7, p8, p9]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-  Parser<I>,
-]): Parser<A | B | C | D | E | F | G | H | I>;
-export function choice<A, B, C, D, E, F, G, H, I, J>([
-  p1,
-  p2,
-  p3,
-  p4,
-  p5,
-  p6,
-  p7,
-  p8,
-  p9,
-  p10,
-]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-  Parser<I>,
-  Parser<J>,
-]): Parser<A | B | C | D | E | F | G | H | I | J>;
-export function choice<A, B, C, D, E, F, G, H, I, J, K>([
-  p1,
-  p2,
-  p3,
-  p4,
-  p5,
-  p6,
-  p7,
-  p8,
-  p9,
-  p10,
-  p11,
-]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-  Parser<I>,
-  Parser<J>,
-  Parser<K>,
-]): Parser<A | B | C | D | E | F | G | H | I | J | K>;
-export function choice<A, B, C, D, E, F, G, H, I, J, K, L>([
-  p1,
-  p2,
-  p3,
-  p4,
-  p5,
-  p6,
-  p7,
-  p8,
-  p9,
-  p10,
-  p11,
-  p12,
-]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-  Parser<I>,
-  Parser<J>,
-  Parser<K>,
-  Parser<L>,
-]): Parser<A | B | C | D | E | F | G | H | I | J | K | L>;
-export function choice<A, B, C, D, E, F, G, H, I, J, K, L, M>([
-  p1,
-  p2,
-  p3,
-  p4,
-  p5,
-  p6,
-  p7,
-  p8,
-  p9,
-  p10,
-  p11,
-  p12,
-  p13,
-]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-  Parser<I>,
-  Parser<J>,
-  Parser<K>,
-  Parser<L>,
-  Parser<M>,
-]): Parser<A | B | C | D | E | F | G | H | I | J | K | L | M>;
-export function choice<A, B, C, D, E, F, G, H, I, J, K, L, M, N>([
-  p1,
-  p2,
-  p3,
-  p4,
-  p5,
-  p6,
-  p7,
-  p8,
-  p9,
-  p10,
-  p11,
-  p12,
-  p13,
-  p14,
-]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-  Parser<I>,
-  Parser<J>,
-  Parser<K>,
-  Parser<L>,
-  Parser<M>,
-  Parser<N>,
-]): Parser<A | B | C | D | E | F | G | H | I | J | K | L | M | N>;
-export function choice<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>([
-  p1,
-  p2,
-  p3,
-  p4,
-  p5,
-  p6,
-  p7,
-  p8,
-  p9,
-  p10,
-  p11,
-  p12,
-  p13,
-  p14,
-  p15,
-]: [
-  Parser<A>,
-  Parser<B>,
-  Parser<C>,
-  Parser<D>,
-  Parser<E>,
-  Parser<F>,
-  Parser<G>,
-  Parser<H>,
-  Parser<I>,
-  Parser<J>,
-  Parser<K>,
-  Parser<L>,
-  Parser<M>,
-  Parser<N>,
-  Parser<O>,
-]): Parser<A | B | C | D | E | F | G | H | I | J | K | L | M | N | O>;
 export function choice(parsers: Parser<any>[]): Parser<any> {
   return new Parser((state) => {
     if (state.isError) return state;
@@ -359,11 +161,10 @@ export const many1 = <A>(parser: Parser<A>): Parser<A[]> => {
   });
 };
 
-export function sepBy<S, T, E>(
-  sepParser: Parser<S, E>,
-): (valueParser: Parser<T, E>) => Parser<T[]> {
-  return function sepBy$valParser(valueParser) {
-    return new Parser<T[]>(function sepBy$valParser$state(state) {
+export const separatedBy =
+  <S, E>(separatorParser: Parser<S, E>) =>
+  <T>(valueParser: Parser<T, E>) => {
+    return new Parser<T[]>((state) => {
       if (state.isError) return state;
 
       let nextState: PS.ParserState<S | T, E> = state;
@@ -373,7 +174,7 @@ export function sepBy<S, T, E>(
       // eslint-disable-next-line no-constant-condition
       while (true) {
         const valState = valueParser.transform(nextState);
-        const sepState = sepParser.transform(valState);
+        const sepState = separatorParser.transform(valState);
 
         if (valState.isError) {
           error = valState;
@@ -400,7 +201,6 @@ export function sepBy<S, T, E>(
       return PS.updateParserResult(nextState, results);
     });
   };
-}
 
 export const between =
   <L>(leftParser: Parser<L>) =>
@@ -409,13 +209,13 @@ export const between =
     sequenceOf([leftParser, parser, rightParser]).map(([_, x]) => x);
 
 export function recursiveParser<T, E>(parserThunk: () => Parser<T, E>): Parser<T, E> {
-  return new Parser(function recursiveParser$state(state) {
+  return new Parser((state) => {
     return parserThunk().transform(state);
   });
 }
 
 export function skip<E>(parser: Parser<any, E>): Parser<null, E> {
-  return new Parser(function skip$state(state) {
+  return new Parser((state) => {
     if (state.isError) return state;
     const nextState = parser.transform(state);
     if (nextState.isError) return nextState;
@@ -435,7 +235,7 @@ export function possibly<T, E>(parser: Parser<T, E>): Parser<T | null, E> {
 
 type ParserFn<T> = (_yield: <K>(parser: Parser<K>) => K) => T;
 export function coroutine<T>(parserFn: ParserFn<T>): Parser<T> {
-  return new Parser(function coroutine$state(state) {
+  return new Parser((state) => {
     let currentValue;
     let currentState = state;
 
@@ -465,3 +265,22 @@ export function coroutine<T>(parserFn: ParserFn<T>): Parser<T> {
     }
   });
 }
+
+export function lookAhead<T, E>(parser: Parser<T, E>): Parser<T, E> {
+  return new Parser((state) => {
+    if (state.isError) return state;
+    const nextState = parser.transform(state);
+    return nextState.isError
+      ? PS.updateParserResult(state, state.result)
+      : PS.updateParserResult(state, nextState.result);
+  });
+}
+
+export const everyCharUntil = (char: string): Parser<string> =>
+  new Parser((state) => {
+    if (state.isError) return state;
+    const { cursor, target } = state;
+    const sliced = target.slice(cursor);
+    const nextIndex = sliced.indexOf(char);
+    return PS.updateParserState(state, sliced.slice(0, nextIndex), cursor + nextIndex);
+  });

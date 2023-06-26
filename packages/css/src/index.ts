@@ -1,2 +1,1 @@
-export { parseCssString,CssParser } from './parser/css.parser';
-export { SheetRootNode } from './parser/RootNode';
+export { CssResolver } from './parser-fn/css.resolver';
