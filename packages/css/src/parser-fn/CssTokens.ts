@@ -1,8 +1,8 @@
 import { getSelectorGroup } from '../interpreter/utils';
+import type { AstRuleNode, AstSelectorNode } from '../types';
 import * as P from './Parser';
 import * as S from './Strings';
 import { DeclarationToken } from './tokens/Declaration.token';
-import type { AstRuleNode, AstSelectorNode } from './types';
 
 const SelectorToken = P.sequenceOf([S.char('.'), S.ident]).map((x): AstSelectorNode => {
   const value = x[0] + x[1];

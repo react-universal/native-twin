@@ -1,5 +1,5 @@
+import type { AstRuleNode } from '../types';
 import { CssRuleToken } from './CssTokens';
-import type { AstRuleNode } from './types';
 
 export const CreateCssResolver = () => {
   const cache = new Map<string, AstRuleNode>();

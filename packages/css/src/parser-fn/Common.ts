@@ -27,3 +27,8 @@ export const DeclarationUnit = P.choice([
   percentageUnitToken,
   degUnitToken,
 ]);
+
+const rgbaUnit = S.literal('rgba');
+const hslUnit = S.literal('hsl');
+
+export const DeclarationColor = P.choice([rgbaUnit, hslUnit]);

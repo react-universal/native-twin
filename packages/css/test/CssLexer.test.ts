@@ -62,22 +62,31 @@ describe('@universal-labs/stylesheets', () => {
           {
             type: 'DECLARATION',
             property: 'font-size',
-            value: {
-              flexBasis: { type: 'DIMENSIONS', units: '%', value: 1 },
-              flexGrow: { type: 'DIMENSIONS', value: 1.5, units: 'rem' },
-              flexShrink: { type: 'DIMENSIONS', units: 'none', value: 1 },
-              type: 'FLEX',
-            },
+            value: { type: 'DIMENSIONS', value: 1.5, units: 'rem' },
           },
           {
             type: 'DECLARATION',
             property: 'line-height',
-            value: {
-              flexBasis: { type: 'DIMENSIONS', units: '%', value: 1 },
-              flexGrow: { type: 'DIMENSIONS', value: 2, units: 'rem' },
-              flexShrink: { type: 'DIMENSIONS', units: 'none', value: 1 },
-              type: 'FLEX',
-            },
+            value: { type: 'DIMENSIONS', value: 2, units: 'rem' },
+          },
+        ],
+      },
+    ]);
+  });
+
+  it('bg-gray-200', () => {
+    tx('bg-gray-200');
+    const result = tw.target.map(CssResolver);
+    printResult('bg-gray-200', tw.target, result);
+    expect(result).toStrictEqual([
+      {
+        type: 'RULE',
+        selector: { type: 'SELECTOR', value: '.bg-gray-200', group: 'base' },
+        declarations: [
+          {
+            type: 'DECLARATION',
+            property: 'background-color',
+            value: { type: 'RAW', value: 'rgba(229,231,235,1)' },
           },
         ],
       },

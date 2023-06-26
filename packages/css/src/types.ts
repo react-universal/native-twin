@@ -1,66 +1,45 @@
-export interface CssSheetNode {
-  type: 'sheet';
-  rules: (CssRuleNode | CssAtRuleNode)[];
+export interface AstSheetNode {
+  type: 'SHEET';
+  value: AstRuleNode;
 }
 
-export interface CssRuleNode {
-  type: 'rule';
+export interface AstRuleNode {
+  type: 'RULE';
+  selector: AstSelectorNode;
+  declarations: AstDeclarationNode[];
+}
+
+export interface AstSelectorNode {
+  type: 'SELECTOR';
+  value: string;
   group: SelectorGroup;
-  selector: string;
-  declarations: CssDeclarationNode[];
 }
 
-export interface CssAtRuleNode extends Omit<CssRuleNode, 'type'> {
-  type: 'at-rule';
-}
-
-export interface CssDeclarationNode {
-  type: 'declaration';
+export interface AstDeclarationNode {
+  type: 'DECLARATION';
   property: string;
-  value: CssDeclarationValueNode;
+  value: AstDeclarationValueNode;
 }
 
-/* CSS VALUE TYPES */
-export interface CssValueRawNode {
-  type: 'raw';
+export interface AstDimensionsNode {
+  type: 'DIMENSIONS';
+  value: number;
+  units: string;
+}
+
+export interface AstRawValueNode {
+  type: 'RAW';
   value: string;
 }
-export interface CssValueDimensionNode {
-  type: 'dimensions';
-  unit: UnitValueType;
-  value: number;
-}
-export interface CssValueCalcNode {
-  type: 'calc';
-  left: CssValueDimensionNode;
-  operation: '+' | '-' | '*' | '/';
-  right: CssValueDimensionNode;
+
+export interface AstFlexNode {
+  type: 'FLEX';
+  flexBasis: AstDimensionsNode;
+  flexShrink: AstDimensionsNode;
+  flexGrow: AstDimensionsNode;
 }
 
-export interface CssTransformValueNode {
-  type: 'transform';
-  dimension: '2d' | '3d';
-  x: CssValueDimensionNode;
-  y?: CssValueDimensionNode;
-  z?: CssValueDimensionNode;
-}
-
-export type CssDeclarationValueNode =
-  | CssValueDimensionNode
-  | CssValueCalcNode
-  | CssValueRawNode
-  | CssTransformValueNode;
-/* END OF CSS VALUE TYPES */
-
-export type UnitValueType = 'none' | Omit<string, 'none'>;
-export type AssertNextTokenFn = (condition: unknown, message: string) => asserts condition;
-
-export type CssAstNode =
-  | CssDeclarationValueNode
-  | CssDeclarationNode
-  | CssAtRuleNode
-  | CssRuleNode
-  | CssSheetNode;
+export type AstDeclarationValueNode = AstDimensionsNode | AstFlexNode | AstRawValueNode;
 
 export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
 
