@@ -14,7 +14,7 @@ export const char = (cs: string): P.Parser<string> =>
     );
   });
 
-export const literal = <A extends string>(cs: A): P.Parser<A> =>
+export const literal = (cs: string): P.Parser<string> =>
   new P.Parser((state) => {
     if (state.isError) return state;
     const sliced = state.target.slice(state.cursor, state.cursor + cs.length);
@@ -53,10 +53,6 @@ export const whitespace: P.Parser<string> = regex(regexWhiteSpace);
 
 export const alphanumeric: P.Parser<string> = P.many1(
   P.choice([letters, digits, whitespace]),
-).map((x) => x.join(''));
-
-export const ident = P.many(
-  P.choice([alphanumeric, char('-'), char('\\'), whitespace]).map((x) => (x === ' ' ? '' : x)),
 ).map((x) => x.join(''));
 
 export const plusOrMinus = P.choice([char('+'), char('-')]);

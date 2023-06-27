@@ -39,7 +39,19 @@ export interface AstFlexNode {
   flexGrow: AstDimensionsNode;
 }
 
-export type AstDeclarationValueNode = AstDimensionsNode | AstFlexNode | AstRawValueNode;
+export interface AstTransformValueNode {
+  type: 'TRANSFORM';
+  dimension: '2d' | '3d';
+  x: AstDimensionsNode;
+  y?: AstDimensionsNode;
+  z?: AstDimensionsNode;
+}
+
+export type AstDeclarationValueNode =
+  | AstDimensionsNode
+  | AstFlexNode
+  | AstRawValueNode
+  | AstTransformValueNode;
 
 export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
 

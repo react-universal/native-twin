@@ -3,10 +3,12 @@ import type {
   AstDimensionsNode,
   AstFlexNode,
   AstRawValueNode,
+  AstTransformValueNode,
 } from '../../types';
-import * as C from '../Common';
 import * as P from '../Parser';
 import * as S from '../Strings';
+import { resolveCssCalc } from '../helpers';
+import * as C from './Common.tokens';
 
 const DimensionsToken = P.sequenceOf([S.float, C.DeclarationUnit]).map(
   (x): AstDimensionsNode => ({
@@ -60,28 +62,71 @@ const FlexToken = C.separatedBySpace(P.choice([DimensionsToken, NumberToken])).m
   },
 );
 
-const DeclarationPropertyToken = P.sequenceOf([S.ident, S.char(':')]).map((x) => x[0]);
-
-const DeclarationRawValueToken = P.sequenceOf([
-  P.choice([P.everyCharUntil(';'), P.everyCharUntil('}')]),
-  P.possibly(S.char(';')),
-]).map(
-  (x): AstRawValueNode => ({
-    type: 'RAW',
-    value: x[0],
-  }),
+const PropertyValidChars = P.many1(P.choice([S.alphanumeric, S.char('-')])).map((x) =>
+  x.join(''),
 );
+
+const DeclarationPropertyToken = P.sequenceOf([PropertyValidChars, S.char(':')]).map(
+  (x) => x[0],
+);
+
+// P.sequenceOf([
+//   P.choice([P.everyCharUntil(';'), P.everyCharUntil('}')]),
+//   P.possibly(S.char(';')),
+// ])
+const DeclarationRawValueToken = P.many1(P.choice([S.letters, S.char('-')])).map(
+  (x): AstRawValueNode => {
+    return {
+      type: 'RAW',
+      value: x.join(''),
+    };
+  },
+);
+
+const TranslateValueToken = P.sequenceOf([
+  C.translateKeyword,
+  S.char('('),
+  P.choice([DimensionsToken, NumberToken]),
+  P.possibly(S.literal(', ')),
+  P.choice([DimensionsToken, NumberToken]),
+  S.char(')'),
+]).map((x): AstTransformValueNode => {
+  return {
+    dimension: '2d',
+    type: 'TRANSFORM',
+    x: x[2],
+    ...(x[3] ? { y: x[4] } : {}),
+  };
+});
+
+const CalcValueToken = P.sequenceOf([
+  C.calcKeyword,
+  S.char('('),
+  P.choice([DimensionsToken, NumberToken]),
+  P.between(S.whitespace)(S.whitespace)(C.MathOperatorSymbol),
+  P.choice([DimensionsToken, NumberToken]),
+  S.char(')'),
+]).map((x): AstDimensionsNode => {
+  return resolveCssCalc(x[2], x[3], x[4]);
+});
 
 const ParseDeclarationToken = P.sequenceOf([
   DeclarationPropertyToken,
-  P.choice([ColorValueToken, DimensionsToken, FlexToken, DeclarationRawValueToken]),
+  P.choice([
+    TranslateValueToken,
+    CalcValueToken,
+    ColorValueToken,
+    DeclarationRawValueToken,
+    DimensionsToken,
+    FlexToken,
+  ]),
   P.possibly(S.char(';')),
-]).map(
-  (x): AstDeclarationNode => ({
+]).map((x): AstDeclarationNode => {
+  return {
     type: 'DECLARATION',
     property: x[0],
     value: x[1],
-  }),
-);
+  };
+});
 
 export const DeclarationToken = C.betweenBrackets(P.many(ParseDeclarationToken));

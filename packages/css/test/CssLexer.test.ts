@@ -1,25 +1,8 @@
-/* eslint-disable no-console */
 import { initialize } from '@universal-labs/twind-adapter';
-import util from 'util';
 import { afterEach, describe, expect, it } from 'vitest';
 import { CssResolver } from '../src/parser/css.resolver';
 
 const { tx, tw } = initialize();
-
-const printResult = (msg: string, target: string[], result: any) => {
-  console.log(
-    msg,
-    util.inspect(
-      {
-        target,
-        result,
-      },
-      false,
-      null,
-      true,
-    ),
-  );
-};
 
 describe('@universal-labs/stylesheets', () => {
   afterEach(() => {
@@ -96,11 +79,38 @@ describe('@universal-labs/stylesheets', () => {
   it('hover:bg-gray-200', () => {
     tx('hover:bg-gray-200');
     const result = tw.target.map(CssResolver);
-    printResult('hover:bg-gray-200', tw.target, result);
+    // printResult('hover:bg-gray-200', tw.target, result);
     expect(result).toStrictEqual([
       {
         type: 'RULE',
-        selector: { type: 'SELECTOR', value: '.bg-gray-200', group: 'base' },
+        selector: {
+          type: 'SELECTOR',
+          value: '.hover\\:bg-gray-200:hover',
+          group: 'pointer',
+        },
+        declarations: [
+          {
+            type: 'DECLARATION',
+            property: 'background-color',
+            value: { type: 'RAW', value: 'rgba(229,231,235,1)' },
+          },
+        ],
+      },
+    ]);
+  });
+
+  it('first:bg-gray-200', () => {
+    tx('first:bg-gray-200');
+    const result = tw.target.map(CssResolver);
+    // printResult('first:bg-gray-200', tw.target, result);
+    expect(result).toStrictEqual([
+      {
+        type: 'RULE',
+        selector: {
+          type: 'SELECTOR',
+          value: '.first\\:bg-gray-200:first-child',
+          group: 'first',
+        },
         declarations: [
           {
             type: 'DECLARATION',
