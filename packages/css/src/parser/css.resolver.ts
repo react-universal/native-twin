@@ -1,27 +1,47 @@
-import type { AstRuleNode } from '../types';
+import type { EvaluatorConfig, SelectorGroup } from '../types';
 import { CssParserRoutine } from './Evaluator';
+import { getSelectorGroup } from './helpers';
 
 export const CreateCssResolver = () => {
-  const cache = new Map<string, AstRuleNode>();
+  const cache = new Map<
+    string,
+    {
+      group: SelectorGroup;
+      styles: Record<string, any>;
+    }
+  >();
 
-  return (target: string[]) => {
-    const sheet: Record<string, any> = {};
-    target.forEach((current) => {
-      if (cache.has(current)) {
-        // sheet.push(cache.get(current)!);
-        Object.assign(sheet, cache.get(current)!);
-      } else {
-        const response = CssParserRoutine(current);
-        if (!response.isError) {
-          // console.warn('Parser Error: ', { response, target });
-          // @ts-expect-error
-          cache.set(current, response.result.declarations);
-          // sheet.push(cache.get(current)!);
-          Object.assign(sheet, cache.get(current)!);
+  return (target: string[], context: EvaluatorConfig) => {
+    return target.reduce(
+      (prev, current) => {
+        if (cache.has(current)) {
+          const cached = cache.get(current)!;
+          Object.assign(prev[cached.group], cached.styles);
+          return prev;
         }
-      }
-    });
-    return sheet;
+
+        const parsed = CssParserRoutine(current, context);
+
+        if (parsed.isError) return prev;
+
+        const group = getSelectorGroup(parsed.result.selector);
+        Object.assign(prev[group], parsed.result.declarations);
+        cache.set(current, {
+          group,
+          styles: parsed.result.declarations,
+        });
+        return prev;
+      },
+      {
+        base: {},
+        even: {},
+        first: {},
+        group: {},
+        last: {},
+        odd: {},
+        pointer: {},
+      } as Record<SelectorGroup, any>,
+    );
   };
 };
 

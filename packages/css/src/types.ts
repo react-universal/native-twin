@@ -5,14 +5,8 @@ export interface AstSheetNode {
 
 export interface AstRuleNode {
   type: 'RULE';
-  selector: AstSelectorNode;
+  selector: string;
   declarations: AstDeclarationNode[];
-}
-
-export interface AstSelectorNode {
-  type: 'SELECTOR';
-  value: string;
-  group: SelectorGroup;
 }
 
 export interface AstDeclarationNode {

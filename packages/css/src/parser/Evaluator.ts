@@ -1,6 +1,6 @@
-import { kebab2camel } from '../interpreter/utils';
 import type { AstDeclarationNode, AstDimensionsNode, EvaluatorConfig } from '../types';
 import * as P from './Parser';
+import { kebab2camel } from './helpers';
 import { DeclarationToken } from './tokens/Declaration.token';
 import { SelectorToken } from './tokens/Selector.token';
 
@@ -12,6 +12,7 @@ const evaluateDimensionsNode = (node: AstDimensionsNode, context: EvaluatorConfi
     case '%':
       return `${node.value}%`;
     case 'none':
+    case 'px':
     default:
       return node.value;
   }
@@ -47,14 +48,7 @@ const declarationAsStyle = (node: AstDeclarationNode, context: EvaluatorConfig) 
   return { [kebab2camel(node.property)]: node.value.value };
 };
 
-export const CssParserRoutine = (
-  target: string,
-  context: EvaluatorConfig = {
-    deviceHeight: 1280,
-    deviceWidth: 720,
-    rem: 16,
-  },
-) =>
+export const CssParserRoutine = (target: string, context: EvaluatorConfig) =>
   P.coroutine((run) => {
     const declarations: Record<string, any> = {};
     const selector = run(SelectorToken);
