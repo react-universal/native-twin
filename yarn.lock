@@ -5,13 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@adobe/css-tools@npm:4.3.0-beta.2":
-  version: 4.3.0-beta.2
-  resolution: "@adobe/css-tools@npm:4.3.0-beta.2"
-  checksum: e081dac09b49d854260a96d33afcbf58a9239bc9551f156f50837b75ff1ec02f69170bd91979786b14a4bbd33c7d195cdb20b4b8a1afee6d61cdf5946497bc14
-  languageName: node
-  linkType: hard
-
 "@algolia/autocomplete-core@npm:1.7.4":
   version: 1.7.4
   resolution: "@algolia/autocomplete-core@npm:1.7.4"
@@ -5919,13 +5912,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/css-to-react-native@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@types/css-to-react-native@npm:3.0.0"
-  checksum: 85870135513b523601270cafa8479086c4f65cef7f00d4d633cb0849efa3083ae6e3c2673dc4e8743036ad0a3f4081c507f1e96e40bb2a62e7550f765246e58a
-  languageName: node
-  linkType: hard
-
 "@types/css-tree@npm:2.3.1":
   version: 2.3.1
   resolution: "@types/css-tree@npm:2.3.1"
@@ -6724,12 +6710,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
   dependencies:
-    "@adobe/css-tools": 4.3.0-beta.2
-    "@types/css-to-react-native": ^3.0.0
     "@types/react": ~18.0.27
     "@universal-labs/css": "workspace:*"
     "@universal-labs/twind-adapter": "workspace:*"
-    css-to-react-native: ^3.1.0
     react-native-uuid: ^2.0.1
     vitest: ^0.31.1
   peerDependencies:
@@ -8666,13 +8649,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelize@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "camelize@npm:1.0.1"
-  checksum: 91d8611d09af725e422a23993890d22b2b72b4cabf7239651856950c76b4bf53fe0d0da7c5e4db05180e898e4e647220e78c9fbc976113bd96d603d1fcbfcb99
-  languageName: node
-  linkType: hard
-
 "caniuse-api@npm:^3.0.0":
   version: 3.0.0
   resolution: "caniuse-api@npm:3.0.0"
@@ -9647,13 +9623,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-color-keywords@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "css-color-keywords@npm:1.0.0"
-  checksum: 8f125e3ad477bd03c77b533044bd9e8a6f7c0da52d49bbc0bbe38327b3829d6ba04d368ca49dd9ff3b667d2fc8f1698d891c198bbf8feade1a5501bf5a296408
-  languageName: node
-  linkType: hard
-
 "css-declaration-sorter@npm:^6.3.1":
   version: 6.4.0
   resolution: "css-declaration-sorter@npm:6.4.0"
@@ -9742,17 +9711,6 @@ __metadata:
     domutils: ^3.0.1
     nth-check: ^2.0.1
   checksum: 2772c049b188d3b8a8159907192e926e11824aea525b8282981f72ba3f349cf9ecd523fdf7734875ee2cb772246c22117fc062da105b6d59afe8dcd5c99c9bda
-  languageName: node
-  linkType: hard
-
-"css-to-react-native@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "css-to-react-native@npm:3.1.0"
-  dependencies:
-    camelize: ^1.0.0
-    css-color-keywords: ^1.0.0
-    postcss-value-parser: ^4.0.2
-  checksum: 06a44d500736fd063a59c1d8d6e4a46d4a71d7c27c35662c46a5163cfb18893f54fc98a2cd61c31126731658cd2da93425b5e77a6f3897b80357d29c4f19362e
   languageName: node
   linkType: hard
 
@@ -18601,7 +18559,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-value-parser@npm:^4.0.0, postcss-value-parser@npm:^4.0.2, postcss-value-parser@npm:^4.1.0, postcss-value-parser@npm:^4.2.0":
+"postcss-value-parser@npm:^4.0.0, postcss-value-parser@npm:^4.1.0, postcss-value-parser@npm:^4.2.0":
   version: 4.2.0
   resolution: "postcss-value-parser@npm:4.2.0"
   checksum: 819ffab0c9d51cf0acbabf8996dffbfafbafa57afc0e4c98db88b67f2094cb44488758f06e5da95d7036f19556a4a732525e84289a425f4f6fd8e412a9d7442f

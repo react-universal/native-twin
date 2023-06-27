@@ -19,7 +19,7 @@ describe('TailwindCSS Font', () => {
   it('font-size', () => {
     const classNames = tx('text-2xl');
     expect(classNames).toStrictEqual('text-2xl');
-    expect(stringify(tw.target)).toStrictEqual('.text-2xl{font-size:24px;line-height:32px}');
+    expect(stringify(tw.target)).toStrictEqual('.text-2xl{font-size:1.5rem;line-height:2rem}');
   });
 
   it('font-family', () => {
@@ -31,6 +31,6 @@ describe('TailwindCSS Font', () => {
   it('leading', () => {
     const classNames = tx('leading-5');
     expect(classNames).toStrictEqual('leading-5');
-    expect(stringify(tw.target)).toStrictEqual('.leading-5{line-height:20px}');
+    expect(stringify(tw.target)).toStrictEqual('.leading-5{line-height:1.25rem}');
   });
 });

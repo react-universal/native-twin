@@ -11,6 +11,6 @@ describe('TailwindCSS rounded', () => {
   it('Shadow', () => {
     const className = tx('rounded-xl');
     expect(className).toStrictEqual('rounded-xl');
-    expect(stringify(tw.target)).toStrictEqual('.rounded-xl{border-radius:12px}');
+    expect(stringify(tw.target)).toStrictEqual('.rounded-xl{border-radius:0.75rem}');
   });
 });

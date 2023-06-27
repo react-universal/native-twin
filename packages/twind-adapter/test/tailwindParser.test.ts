@@ -25,6 +25,6 @@ describe('TailwindCSS compiler', () => {
   it('Translations', () => {
     const className = tx('translate-x-8');
     expect(className).toStrictEqual('translate-x-8');
-    expect(stringify(tw.target)).toStrictEqual('.translate-x-8{transform:translate(32px)}');
+    expect(stringify(tw.target)).toStrictEqual('.translate-x-8{transform:translate(2rem)}');
   });
 });
