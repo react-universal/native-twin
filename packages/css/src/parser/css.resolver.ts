@@ -1,20 +1,27 @@
 import type { AstRuleNode } from '../types';
-import { CssRuleToken } from './tokens/Rule.token';
+import { CssParserRoutine } from './Evaluator';
 
 export const CreateCssResolver = () => {
   const cache = new Map<string, AstRuleNode>();
-  return (target: string) => {
-    if (cache.has(target)) {
-      // console.log('CACHE_HIT: ', cache.get(target)!.selector.value);
-      return cache.get(target)!;
-    }
-    const response = CssRuleToken.run(target);
-    if (response.isError) {
-      // console.warn('Parser Error: ', { response, target });
-      return {};
-    }
-    cache.set(target, response.result);
-    return response.result;
+
+  return (target: string[]) => {
+    const sheet: Record<string, any> = {};
+    target.forEach((current) => {
+      if (cache.has(current)) {
+        // sheet.push(cache.get(current)!);
+        Object.assign(sheet, cache.get(current)!);
+      } else {
+        const response = CssParserRoutine(current);
+        if (!response.isError) {
+          // console.warn('Parser Error: ', { response, target });
+          // @ts-expect-error
+          cache.set(current, response.result.declarations);
+          // sheet.push(cache.get(current)!);
+          Object.assign(sheet, cache.get(current)!);
+        }
+      }
+    });
+    return sheet;
   };
 };
 
