@@ -1,5 +1,17 @@
 # Change Log
 
+## 4.0.0
+
+### Major Changes
+
+- [#98](https://github.com/react-universal/tailwind/pull/98) [`1f02246`](https://github.com/react-universal/tailwind/commit/1f02246afd1b22ef52509c13a39714cd254257d5) Thanks [@chrisarts](https://github.com/chrisarts)! - Adding support for exclusive RN parser
+
+### Patch Changes
+
+- Updated dependencies [[`1f02246`](https://github.com/react-universal/tailwind/commit/1f02246afd1b22ef52509c13a39714cd254257d5)]:
+  - @universal-labs/twind-adapter@4.0.0
+  - @universal-labs/css@4.0.0
+
 ## 3.0.4
 
 ### Patch Changes
