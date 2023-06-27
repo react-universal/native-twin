@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { setTailwindConfig, transformClassNames, tw } from '../src';
+import { initialize, stringify } from '../src';
 
-setTailwindConfig({
+const { tw, tx } = initialize({
   fontFamily: {
     DEFAULT: 'Inter-Regular',
     inter: 'Inter-Regular',
@@ -17,17 +17,20 @@ describe('TailwindCSS Aspect Ratio', () => {
   });
 
   it('aspect-square', () => {
-    const { css } = transformClassNames('aspect-square');
-    expect(css).toStrictEqual('/*!dbgidc,y,aspect-square*/.aspect-square{aspect-ratio:1/1}');
+    const classNames = tx('aspect-square');
+    expect(classNames).toStrictEqual('aspect-square');
+    expect(stringify(tw.target)).toStrictEqual('.aspect-square{aspect-ratio:1/1}');
   });
 
   it('aspect-video', () => {
-    const { css } = transformClassNames('aspect-video');
-    expect(css).toStrictEqual('/*!dbgidc,y,aspect-video*/.aspect-video{aspect-ratio:16/9}');
+    const classNames = tx('aspect-video');
+    expect(classNames).toStrictEqual('aspect-video');
+    expect(stringify(tw.target)).toStrictEqual('.aspect-video{aspect-ratio:16/9}');
   });
 
   it('aspect-auto', () => {
-    const { css } = transformClassNames('aspect-auto');
-    expect(css).toStrictEqual('/*!dbgidc,y,aspect-auto*/.aspect-auto{aspect-ratio:auto}');
+    const classNames = tx('aspect-auto');
+    expect(classNames).toStrictEqual('aspect-auto');
+    expect(stringify(tw.target)).toStrictEqual('.aspect-auto{aspect-ratio:auto}');
   });
 });

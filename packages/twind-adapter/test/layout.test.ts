@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { setTailwindConfig, transformClassNames, tw } from '../src';
+import { initialize, stringify } from '../src';
 
-setTailwindConfig({});
+const { tw, tx } = initialize({});
 
 describe('TailwindCSS layout', () => {
   beforeEach(() => {
@@ -9,12 +9,14 @@ describe('TailwindCSS layout', () => {
   });
 
   it('Width', () => {
-    const { css } = transformClassNames('w-4');
-    expect(css).toStrictEqual('/*!dbgidc,v,w-4*/.w-4{width:16px}');
+    const css = tx('w-4');
+    expect(css).toStrictEqual('w-4');
+    expect(stringify(tw.target)).toStrictEqual('.w-4{width:1rem}');
   });
 
   it('Height', () => {
-    const { css } = transformClassNames('h-4');
-    expect(css).toStrictEqual('/*!dbgidc,v,h-4*/.h-4{height:16px}');
+    const css = tx('h-4');
+    expect(css).toStrictEqual('h-4');
+    expect(stringify(tw.target)).toStrictEqual('.h-4{height:1rem}');
   });
 });

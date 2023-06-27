@@ -1,5 +1,5 @@
 export { createComponentID } from './utils/createComponentID';
-export { setTailwindConfig } from './stylesheet/InlineStylesheet';
+export { setTailwindConfig } from './stylesheet/VirtualStylesheet';
 export type { StyledProps, AnyStyle } from './types';
 export type {
   ValidAppearancePseudoSelector as TValidAppearancePseudoSelectors,

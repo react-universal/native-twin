@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { setTailwindConfig, transformClassNames, tw } from '../src';
+import { initialize, stringify } from '../src';
 
-setTailwindConfig({});
+const { tw, tx } = initialize({});
 
 describe('TailwindCSS GAP', () => {
   beforeEach(() => {
@@ -9,17 +9,20 @@ describe('TailwindCSS GAP', () => {
   });
 
   it('gap', () => {
-    const { css } = transformClassNames('gap-5');
-    expect(css).toStrictEqual('/*!dbgidc,v,gap-5*/.gap-5{gap:20px}');
+    const classNames = tx('gap-5');
+    expect(classNames).toStrictEqual('gap-5');
+    expect(stringify(tw.target)).toStrictEqual('.gap-5{gap:1.25rem}');
   });
 
   it('gap-x', () => {
-    const { css } = transformClassNames('gap-x-5');
-    expect(css).toStrictEqual('/*!dbgidc,y,gap-x-5*/.gap-x-5{column-gap:20px}');
+    const classNames = tx('gap-x-5');
+    expect(classNames).toStrictEqual('gap-x-5');
+    expect(stringify(tw.target)).toStrictEqual('.gap-x-5{column-gap:1.25rem}');
   });
 
   it('gap-y', () => {
-    const { css } = transformClassNames('gap-y-5');
-    expect(css).toStrictEqual('/*!dbgidc,y,gap-y-5*/.gap-y-5{row-gap:20px}');
+    const classNames = tx('gap-y-5');
+    expect(classNames).toStrictEqual('gap-y-5');
+    expect(stringify(tw.target)).toStrictEqual('.gap-y-5{row-gap:1.25rem}');
   });
 });

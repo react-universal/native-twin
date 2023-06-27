@@ -14,7 +14,7 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-app", "expo-app", "docs-page"],
+  "ignore": ["next-app", "expo-app", "docusaurus"],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }

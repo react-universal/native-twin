@@ -16,7 +16,7 @@
   "scripts": {
     "build:libs": "npx nx run-many --target=build:libs",
     "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
-    "dev": " nx watch --all -- nx run \\$NX_PROJECT_NAME:build:libs",
+    "dev": " nx watch --projects=stylesheets,primitives,styled,css,twind-adapter -- nx run \\$NX_PROJECT_NAME:build:libs",
     "docs:build": "npx nx run build --project=docusaurus",
     "docs:dev": "npx nx run dev --project=docusaurus",
     "expo:android": "yarn workspace expo-app run android",
@@ -49,7 +49,8 @@
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "@vitejs/plugin-react-swc": "^3.2.0",
-    "@vitest/ui": "^0.28.3",
+    "@vitest/coverage-istanbul": "^0.31.1",
+    "@vitest/ui": "^0.31.1",
     "concurrently": "^7.6.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
@@ -69,7 +70,7 @@
     "typescript": "^4.9.4",
     "vite": "^4.1.1",
     "vite-plugin-dts": "^2.2.0",
-    "vitest": "^0.28.3"
+    "vitest": "^0.31.1"
   },
   "packageManager": "yarn@3.4.1"
 }

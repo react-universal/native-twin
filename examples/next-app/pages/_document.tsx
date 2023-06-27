@@ -1,7 +1,8 @@
 import React from 'react';
+import install from '@twind/with-next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-export default class MyDocument extends Document {
+class MyDocument extends Document {
   render() {
     const currentLocale = this.props.__NEXT_DATA__.locale || 'en';
     return (
@@ -9,7 +10,6 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet='UTF-8' />
           <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-          <script src='http://localhost:8097'></script>
         </Head>
         <body className='min-h-screen min-w-full'>
           <Main />
@@ -19,3 +19,5 @@ export default class MyDocument extends Document {
     );
   }
 }
+
+export default install(MyDocument);

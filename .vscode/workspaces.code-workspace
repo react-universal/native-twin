@@ -5,10 +5,6 @@
       "path": ".."
     },
     {
-      "name": "🚀 docusaurus",
-      "path": "../apps/docusaurus"
-    },
-    {
       "name": "expo-app",
       "path": "../examples/expo-app"
     },
@@ -17,8 +13,8 @@
       "path": "../examples/next-app"
     },
     {
-      "name": "📦 @universal-labs/primitives",
-      "path": "../packages/primitives"
+      "name": "📦 @universal-labs/css",
+      "path": "../packages/css"
     },
     {
       "name": "📦 @universal-labs/stylesheets",
@@ -29,12 +25,12 @@
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @universal-labs/twind-adapter",
-      "path": "../packages/twind-adapter"
+      "name": "📦 @universal-labs/tailwind-postcss-adapter",
+      "path": "../packages/tailwind-postcss-adapter"
     },
     {
-      "name": "📦 @universal-labs/postcss-adapter",
-      "path": "../packages/tailwind-postcss-adapter"
+      "name": "📦 @universal-labs/twind-adapter",
+      "path": "../packages/twind-adapter"
     }
   ],
   "settings": {
@@ -99,6 +95,11 @@
     "cSpell.words": [
       "ignorelist"
     ],
-    "testing.automaticallyOpenPeekView": "never"
+    "workbench.colorCustomizations": {
+      "[Atom One Dark]": {
+        "editor.background": "#1F1F1F"
+      }
+    },
+    "window.zoomLevel": 4
   }
 }

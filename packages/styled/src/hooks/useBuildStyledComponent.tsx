@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { StyleSheet, Touchable } from 'react-native';
+import { Touchable, StyleSheet } from 'react-native';
 import {
   StyledProps,
   createComponentID,
-  AnyStyle,
   InlineStyleSheet,
   StoreManager,
+  AnyStyle,
 } from '@universal-labs/stylesheets';
 import { ComponentNode } from '@universal-labs/stylesheets';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
@@ -20,6 +20,7 @@ const defaultGroupState = Object.freeze({
   'group-focus': false,
   'group-hover': false,
 });
+
 function useBuildStyledComponent<T>({
   className,
   groupID,
@@ -92,23 +93,19 @@ function useBuildStyledComponent<T>({
   );
 
   const componentStyles = useMemo(() => {
-    const styles: AnyStyle = { ...stylesheet.getBaseSheet };
-    const interactions: AnyStyle = {};
-    if (interactionState.active || interactionState.focus || interactionState.hover) {
-      Object.assign(interactions, stylesheet.getPointerEventsSheet);
-    }
-    if (
-      groupParentComponentState.active ||
-      groupParentComponentState.focus ||
-      groupParentComponentState.hover
-    ) {
-      Object.assign(interactions, stylesheet.groupEventsSheet);
-    }
+    const styles: AnyStyle = stylesheet.getStyles({
+      isParentActive:
+        groupParentComponentState.active ||
+        groupParentComponentState.focus ||
+        groupParentComponentState.hover,
+      isPointerActive:
+        interactionState.active || interactionState.focus || interactionState.hover,
+    });
+    // console.log('STYLES: ', styles);
     return StyleSheet.create({
       generated: {
         ...styles,
         ...style,
-        ...interactions,
       },
     }).generated;
   }, [interactionState, stylesheet, groupParentComponentState, style]);

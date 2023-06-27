@@ -1,58 +1,66 @@
-import { getStylesForProperty } from 'css-to-react-native';
-import { CssNode, generate, walk } from 'css-tree';
-import type { AnyStyle } from '../types';
+import type { StylesheetGroup } from '../types';
 
-export function cssPropertiesResolver(input: any) {
-  try {
-    const styles: AnyStyle = {};
-    const transformed = Object.entries(input).reduce((previous, [name, value]) => {
-      if (name === 'colorScheme' || name === 'from' || name === 'to' || name === ':root')
-        return previous;
-      previous = Object.assign(previous, getStylesForProperty(name, String(value)));
-      return previous;
-    }, {} as AnyStyle);
-    Object.assign(styles, transformed);
-    return styles;
-    // return normalizeStyles(transform(input.trim()));
-    // return transform(input);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('cssPropertiesResolver_ERROR: ', error);
-    return {};
-  }
+export function normalizeCssSelectorString(className: string): string {
+  let result = className.replace(/\\/g, '').replace('.', '');
+  result = result.includes(':') ? result.split(':')[1]! : result;
+  return result;
 }
 
-export function getClassesForSelectors<T>(classNames: string[][], selectors: readonly T[]) {
-  const classes: [T, string][] = [];
-  for (const current of classNames) {
-    if (!current[0] || !current[1]) continue;
-    const pseudoSelector = current[0];
-    const className = current[1];
-    if (selectors.includes(pseudoSelector as T)) {
-      classes.push([pseudoSelector as T, className]);
-    }
-  }
-  return classes;
-}
-
-export const extractCSSStyles = (ast: CssNode) => {
-  const declarations: [string, string, string][] = [];
-  walk(ast, {
-    visit: 'Declaration',
-    leave(node) {
-      // console.log('NODE: ', node);
-      if (this.rule?.prelude?.type === 'Raw') {
-        // console.log('RAW: ', this.rule.prelude.value);
-        if (!node.property.startsWith('--') && node.value.type === 'Value') {
-          let [key, value] = generate(node).split(':');
-          // console.log('key, value', key, value);
-          if (key && value) {
-            declarations.push([this.rule.prelude.value, key, value]);
-          }
-        }
-      }
-    },
-  });
-  return declarations;
-  // console.groupEnd();
+export const selectorIsGroupPointerEvent = (selector: string) => {
+  return (
+    selector.includes('group-hover:') ||
+    selector.includes('group-focus:') ||
+    selector.includes('group-active:')
+  );
 };
+
+function declarationCanBeReplaced /* #__PURE__ */(value: unknown): asserts value is string {
+  if (typeof value !== 'string')
+    throw new SyntaxError(`trying to parse ${value} as string but got: ${typeof value}`);
+}
+
+export function replaceDeclarationVariables /* #__PURE__ */(declarations: string) {
+  if (declarations.includes('var(')) {
+    const variable = declarations.split(';');
+    let variableRule = variable[0];
+    let declaration = `${variable[1]}`;
+    declarationCanBeReplaced(variableRule);
+    const slicedDeclaration = variableRule.split(':');
+    const variableName = slicedDeclaration[0];
+    const variableValue = slicedDeclaration[1];
+    declarationCanBeReplaced(variableValue);
+    return declaration.replace(/(var\((--[\w-]+)\))/g, (match, _p1, p2) => {
+      if (p2 === variableName) {
+        return variableValue;
+      }
+      return match;
+    });
+  }
+  return declarations;
+}
+
+export const getSelectorGroup = (selector: string): StylesheetGroup => {
+  if (
+    selector.includes('.group-hover') ||
+    selector.includes('.group-active') ||
+    selector.includes('.group-focus')
+  ) {
+    return 'group';
+  }
+  if (
+    selector.includes(':hover') ||
+    selector.includes(':active') ||
+    selector.includes(':focus')
+  ) {
+    return 'pointer';
+  }
+  if (selector.includes('.first')) return 'first';
+  if (selector.includes('.last')) return 'last';
+  if (selector.includes('.odd')) return 'odd';
+  if (selector.includes('.even')) return 'even';
+  return 'base';
+};
+
+export function kebab2camel(input: string) {
+  return input.replace(/-./g, (x) => x.toUpperCase().charAt(1));
+}

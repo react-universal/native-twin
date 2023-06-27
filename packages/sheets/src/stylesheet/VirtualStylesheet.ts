@@ -1,50 +1,61 @@
-import { hash } from '@twind/core';
-import { normalizeClassNameString, transformClassNames } from '@universal-labs/twind-adapter';
-import cssParser, { Rule, Declaration } from 'css';
+import { hash } from '@universal-labs/twind-adapter';
+import type { Config } from 'tailwindcss';
+import { lexer } from '../css/Lexer';
+import type { ComponentStylesheet } from '../types';
+import StyleSheetCache from './StyleSheetCache';
+
+let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };
+const store = new StyleSheetCache<string, ComponentStylesheet>(100);
 
 export class VirtualStyleSheet {
-  injectUtilities(classNames?: string) {
-    const transformedClasses = transformClassNames(classNames ?? '');
-    const classNamesHash = hash(transformedClasses.generated);
-    const cssA = cssParser.parse(transformedClasses.css);
-    const onlyRules = cssA.stylesheet?.rules ?? [];
-    const extracted = this.extractDeclarationsFromRule(
-      onlyRules.filter((r) => {
-        if (r.type !== 'rule' || !('selectors' in r)) return false;
-        return true;
-      }),
-    );
-
-    return {
-      extracted,
-      generatedClasses: transformedClasses.generated,
-      classNamesHash,
+  injectUtilities(classNames?: string): ComponentStylesheet {
+    const hashID = hash(classNames ?? 'unstyled');
+    const finalStyles: ComponentStylesheet = {
+      styles: {
+        base: {},
+        pointer: {},
+        group: {},
+        even: {},
+        first: {},
+        last: {},
+        odd: {},
+      },
+      isGroupParent: false,
+      hasPointerEvents: false,
+      hasGroupEvents: false,
+      hash: hashID,
     };
+    const cache = store.get(hashID);
+    if (cache) {
+      return cache;
+    }
+    if (!classNames) {
+      store.set(hashID, finalStyles);
+      return finalStyles;
+    }
+    const injected = lexer.classNamesToCss(classNames);
+    finalStyles.styles.base = injected.ast.base;
+    finalStyles.styles.pointer = injected.ast.pointer;
+    finalStyles.styles.group = injected.ast.group;
+    finalStyles.styles.even = injected.ast.even;
+    finalStyles.styles.odd = injected.ast.odd;
+    finalStyles.styles.first = injected.ast.first;
+    finalStyles.styles.last = injected.ast.last;
+    finalStyles.hasPointerEvents = Object.keys(injected.ast.pointer).length > 0;
+    finalStyles.hasGroupEvents = Object.keys(injected.ast.group).length > 0;
+    finalStyles.isGroupParent = injected.isGroupParent;
+    store.set(hashID, finalStyles);
+    return finalStyles;
   }
+}
 
-  extractDeclarationsFromRule = (rules: Rule[]) => {
-    const declarations = rules
-      .reduce((current, next) => {
-        if (next.declarations) {
-          const getSelectors = next.selectors?.reduce((c, n) => {
-            return `${c}${normalizeClassNameString(n)}`;
-          }, ``);
-          if (getSelectors) {
-            current.push([getSelectors, next.declarations]);
-          }
-        }
-        return current;
-      }, [] as [string, Declaration[]][])
-      .map((d) => {
-        const declarations = d[1].reduce((current, next) => {
-          current.push([next.property!, next.value!]);
-          return current;
-        }, [] as [string, string][]);
-        const utility = d[0];
-        return [utility, declarations] as [string, [string, string][]];
-      });
-    return declarations;
+export function setTailwindConfig(config: Config, baseRem = 16) {
+  currentConfig = {
+    ...currentConfig,
+    ...config,
   };
-
-  createStyleSheet() {}
+  lexer.setThemeConfig(config, baseRem);
+  return {
+    baseRem,
+  };
 }

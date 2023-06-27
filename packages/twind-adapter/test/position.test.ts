@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { setTailwindConfig, transformClassNames, tw } from '../src';
+import { initialize, stringify } from '../src';
 
-setTailwindConfig({});
+const { tw, tx } = initialize({});
 
 describe('TailwindCSS Position', () => {
   beforeEach(() => {
@@ -9,54 +9,72 @@ describe('TailwindCSS Position', () => {
   });
 
   it('Right', () => {
-    const { css } = transformClassNames('right-3');
-    expect(css).toStrictEqual('/*!dbgidc,y,right-3*/.right-3{right:12px}');
+    const classNames = tx('right-3');
+    expect(classNames).toStrictEqual('right-3');
+    expect(stringify(tw.target)).toStrictEqual('.right-3{right:0.75rem}');
   });
 
   it('Left', () => {
-    const { css } = transformClassNames('left-3');
-    expect(css).toStrictEqual('/*!dbgidc,y,left-3*/.left-3{left:12px}');
+    const classNames = tx('left-3');
+    expect(classNames).toStrictEqual('left-3');
+    expect(stringify(tw.target)).toStrictEqual('.left-3{left:0.75rem}');
   });
 
   it('Top', () => {
-    const { css } = transformClassNames('top-3');
-    expect(css).toStrictEqual('/*!dbgidc,y,top-3*/.top-3{top:12px}');
+    const classNames = tx('top-3');
+    expect(classNames).toStrictEqual('top-3');
+    expect(stringify(tw.target)).toStrictEqual('.top-3{top:0.75rem}');
   });
 
   it('Bottom', () => {
-    const { css } = transformClassNames('bottom-3');
-    expect(css).toStrictEqual('/*!dbgidc,y,bottom-3*/.bottom-3{bottom:12px}');
+    const classNames = tx('bottom-3');
+    expect(classNames).toStrictEqual('bottom-3');
+    expect(stringify(tw.target)).toStrictEqual('.bottom-3{bottom:0.75rem}');
   });
 
   it('Inset', () => {
-    const { css } = transformClassNames('inset-3');
-    expect(css).toStrictEqual(
-      '/*!dbgidc,s,inset-3*/.inset-3{top:12px;right:12px;bottom:12px;left:12px}',
+    const classNames = tx('inset-3');
+    expect(classNames).toStrictEqual('inset-3');
+    expect(stringify(tw.target)).toStrictEqual(
+      '.inset-3{top:0.75rem;right:0.75rem;bottom:0.75rem;left:0.75rem}',
     );
   });
 
   it('Negative Inset', () => {
-    const { css } = transformClassNames('-inset-3');
-    expect(css).toStrictEqual('/*!dbgidc,s,-inset-3*/.-inset-3{top:-12px}');
+    const classNames = tx('-inset-3');
+    expect(classNames).toStrictEqual('-inset-3');
+
+    expect(stringify(tw.target)).toStrictEqual(
+      '.-inset-3{top:calc(0.75rem * -1);right:calc(0.75rem * -1);bottom:calc(0.75rem * -1);left:calc(0.75rem * -1)}',
+    );
   });
 
   it('Inset Y', () => {
-    const { css } = transformClassNames('inset-y-3');
-    expect(css).toStrictEqual('/*!dbgidc,w,inset-y-3*/.inset-y-3{top:12px;bottom:12px}');
+    const classNames = tx('inset-y-3');
+    expect(classNames).toStrictEqual('inset-y-3');
+    expect(stringify(tw.target)).toStrictEqual('.inset-y-3{top:0.75rem;bottom:0.75rem}');
   });
 
   it('Negative Inset Y', () => {
-    const { css } = transformClassNames('-inset-y-3');
-    expect(css).toStrictEqual('/*!dbgidc,w,-inset-y-3*/.-inset-y-3{top:-12px}');
+    const classNames = tx('-inset-y-3');
+    expect(classNames).toStrictEqual('-inset-y-3');
+    expect(stringify(tw.target)).toStrictEqual(
+      '.-inset-y-3{top:calc(0.75rem * -1);bottom:calc(0.75rem * -1)}',
+    );
   });
 
   it('Negative Inset X', () => {
-    const { css } = transformClassNames('-inset-x-3');
-    expect(css).toStrictEqual('/*!dbgidc,w,-inset-x-3*/.-inset-x-3{right:-12px}');
+    const classNames = tx('-inset-x-3');
+    expect(classNames).toStrictEqual('-inset-x-3');
+
+    expect(stringify(tw.target)).toStrictEqual(
+      '.-inset-x-3{right:calc(0.75rem * -1);left:calc(0.75rem * -1)}',
+    );
   });
 
   it('Inset X', () => {
-    const { css } = transformClassNames('inset-x-3');
-    expect(css).toStrictEqual('/*!dbgidc,w,inset-x-3*/.inset-x-3{right:12px;left:12px}');
+    const classNames = tx('inset-x-3');
+    expect(classNames).toStrictEqual('inset-x-3');
+    expect(stringify(tw.target)).toStrictEqual('.inset-x-3{right:0.75rem;left:0.75rem}');
   });
 });

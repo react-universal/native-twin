@@ -24,8 +24,8 @@
     "url": "https://github.com/react-universal/tailwind",
     "directory": "packages/twind-adapter"
   },
-  "main": "./build/index.es.js",
-  "module": "./build/index.cjs.js",
+  "main": "./build/index.cjs.js",
+  "module": "./build/index.es.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -50,6 +50,11 @@
   },
   "devDependencies": {
     "vitest-react-native": "0.0.5"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-native": ">=0.70",
+    "react-native-web": ">= 0.18.10"
   },
   "publishConfig": {
     "access": "public",

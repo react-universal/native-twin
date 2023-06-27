@@ -1,13 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { transformClassNames, tw } from '../src';
+import { initialize, stringify } from '../src';
+
+const { tx, tw } = initialize({});
 
 describe('TailwindCSS Shadow', () => {
   beforeEach(() => {
-    tw.clear()
-  })
+    tw.clear();
+  });
 
   it('Shadow', () => {
-    const { css } = transformClassNames('shadow-md');
-    expect(css).toStrictEqual('/*!0,1v*/*,::before,::after{--tw-ring-offset-shadow;--tw-ring-shadow;--tw-shadow;--tw-shadow-colored}/*!0,1v*/::backdrop{--tw-ring-offset-shadow;--tw-ring-shadow;--tw-shadow;--tw-shadow-colored}/*!dbgidc,u,shadow-md*/.shadow-md{--tw-shadow;--tw-shadow-colored;box-shadow}')
+    const className = tx('shadow-md');
+    expect(className).toStrictEqual('shadow-md');
+    expect(stringify(tw.target)).toStrictEqual(
+      '*,::before,::after{--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000}::backdrop{--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000}.shadow-md{--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);}',
+    );
   });
 });

@@ -19,13 +19,11 @@ export type StyledProps<P> = {
 } & P;
 
 export type ComponentStylesheet = {
-  base: AnyStyle;
-  pointerStyles: AnyStyle;
-  first: AnyStyle;
-  last: AnyStyle;
-  odd: AnyStyle;
-  even: AnyStyle;
-  group: AnyStyle;
+  styles: Record<keyof StyleSheetStyleGroups, AnyStyle>;
+  hash: string;
+  isGroupParent: boolean;
+  hasPointerEvents: boolean;
+  hasGroupEvents: boolean;
 };
 export type GeneratedAtomsStyle = {
   [k: string]: AnyStyle;
@@ -33,6 +31,18 @@ export type GeneratedAtomsStyle = {
 export type GeneratedComponentsStyleSheet = {
   [k: string]: ComponentStylesheet;
 };
+
+export interface StyleSheetStyleGroups {
+  base: AnyStyle[];
+  group: AnyStyle[];
+  pointer: AnyStyle[];
+  first: AnyStyle[];
+  last: AnyStyle[];
+  odd: AnyStyle[];
+  even: AnyStyle[];
+}
+
+export type StylesheetGroup = keyof StyleSheetStyleGroups;
 
 export interface IUseStyleSheetsInput
   extends StyledProps<{

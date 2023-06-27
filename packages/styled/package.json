@@ -22,12 +22,6 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "require": "./build/index.js",
-      "import": "./build/index.js"
-    }
-  },
   "main": "./build/index.js",
   "module": "./build/index.js",
   "types": "./build/index.d.ts",

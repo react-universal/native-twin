@@ -4,13 +4,11 @@ import type { TailwindTheme } from '@twind/preset-tailwind';
 export const translateRules: Rule<TailwindTheme>[] = [
   [
     '-?translate-x-(\\s*\\d+|\\[(.*)])',
-    (match) => {
+    (match, context) => {
+      const themeValue = context.theme('translate', match[1]!, match[2] ?? match[1]);
       const isNegative = match.input.startsWith('-');
-      const hasArbitrary = match[2] !== undefined;
       return {
-        transform: `translate(${isNegative ? '-' : ''}${
-          hasArbitrary ? match[2] : `${match[1]}rem`
-        })`,
+        transform: `translate(${isNegative ? '-' : ''}${themeValue})`,
       };
     },
   ],
@@ -28,7 +26,9 @@ export const translateRules: Rule<TailwindTheme>[] = [
   ],
   [
     '-?translate-(\\s*\\d+|\\[(.*)])',
-    (match) => {
+    (match, context) => {
+      console.log('MATCH: ', match);
+      console.log('CONTEXT: ', context);
       const isNegative = match.input.startsWith('-');
       const hasArbitrary = match[2] !== undefined;
       return {

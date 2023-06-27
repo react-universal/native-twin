@@ -1,16 +1,17 @@
 import { ComponentType, createElement, ReactNode, useMemo } from 'react';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import { cx } from '@twind/core';
 import type { StyledProps } from '@universal-labs/stylesheets';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 
-function useBuildStyledComponent<T, P extends keyof T>(
+function useBuildStyledComponent<T>(
   props: StyledProps<T>,
   Component: ComponentType<T>,
   ref: any,
 ) {
   const styles = useMemo(() => {
-    const mergedClassName = props.className ? `${props.className}` : '';
+    const mergedClassName = props.className ? cx(...[props.className]) : '';
 
     if (mergedClassName && props.style) {
       return [{ $$css: true, [mergedClassName]: mergedClassName } as Style, props.style];
