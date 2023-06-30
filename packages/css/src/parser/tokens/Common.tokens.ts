@@ -4,6 +4,7 @@ import * as S from '../Strings';
 export const betweenBrackets = P.between(S.char('{'))(S.char('}'));
 export const betweenParens = P.between(S.char('('))(S.char(')'));
 export const separatedBySpace = P.separatedBy(S.whitespace);
+export const separatedByComma = P.separatedBy(S.char(', '));
 
 export const mapToTokenNode = <T, N extends string>(type: N, value: T) => ({
   type,

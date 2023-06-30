@@ -123,6 +123,15 @@ export function choice<A, B, C, D, E, F>([p1, p2, p3, p4, p5, p6]: [
   Parser<E>,
   Parser<F>,
 ]): Parser<A | B | C | D | E | F>;
+export function choice<A, B, C, D, E, F, G>([p1, p2, p3, p4, p5, p6]: [
+  Parser<A>,
+  Parser<B>,
+  Parser<C>,
+  Parser<D>,
+  Parser<E>,
+  Parser<F>,
+  Parser<G>,
+]): Parser<A | B | C | D | E | F | G>;
 export function choice(parsers: Parser<any>[]): Parser<any> {
   return new Parser((state) => {
     if (state.isError) return state;
@@ -168,11 +177,18 @@ export const many = <A>(parser: Parser<A>): Parser<A[]> => {
 export const many1 = <A>(parser: Parser<A>): Parser<A[]> => {
   return new Parser((state) => {
     if (state.isError) return state;
+    // .shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)}
     const response = many(parser).transform(state);
     if (response.result.length) {
       return response;
     }
-    return PS.updateParserError(state, 'Many: does not have any result');
+    return PS.updateParserError(
+      state,
+      `Many: does not have any result at position ${state.cursor} ${state.target.slice(
+        state.cursor,
+        5,
+      )}`,
+    );
   });
 };
 
@@ -299,3 +315,17 @@ export const everyCharUntil = (char: string): Parser<string> =>
     const nextIndex = sliced.indexOf(char);
     return PS.updateParserState(state, sliced.slice(0, nextIndex), cursor + nextIndex);
   });
+
+export const peek: Parser<string> = new Parser((state) => {
+  if (state.isError) return state;
+
+  const { cursor, target } = state;
+  const sliced = target[cursor];
+  if (sliced) {
+    return PS.updateParserState(state, sliced[0], cursor);
+  }
+  return PS.updateParserError(
+    state,
+    `ParseError (position ${cursor}): Unexpected end of input.`,
+  );
+});

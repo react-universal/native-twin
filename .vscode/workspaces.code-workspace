@@ -92,9 +92,6 @@
       "**/build/**": true
     },
     "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib",
-    "cSpell.words": [
-      "ignorelist"
-    ],
     "workbench.colorCustomizations": {
       "[Atom One Dark]": {
         "editor.background": "#1F1F1F"

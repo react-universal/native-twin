@@ -33,6 +33,17 @@ export interface AstFlexNode {
   flexGrow: AstDimensionsNode;
 }
 
+export interface AstShadowNode {
+  type: 'SHADOW';
+  value: {
+    offsetX: AstDimensionsNode;
+    offsetY: AstDimensionsNode;
+    shadowRadius?: AstDimensionsNode;
+    spreadRadius?: AstDimensionsNode;
+    color?: AstRawValueNode;
+  }[];
+}
+
 export interface AstTransformValueNode {
   type: 'TRANSFORM';
   dimension: '2d' | '3d';
@@ -45,7 +56,8 @@ export type AstDeclarationValueNode =
   | AstDimensionsNode
   | AstFlexNode
   | AstRawValueNode
-  | AstTransformValueNode;
+  | AstTransformValueNode
+  | AstShadowNode;
 
 export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
 

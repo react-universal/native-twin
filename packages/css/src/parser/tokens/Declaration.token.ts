@@ -3,6 +3,7 @@ import type {
   AstDimensionsNode,
   AstFlexNode,
   AstRawValueNode,
+  AstShadowNode,
   AstTransformValueNode,
 } from '../../types';
 import * as P from '../Parser';
@@ -28,11 +29,11 @@ const NumberToken = S.float.map(
 
 const ColorValueToken = P.sequenceOf([
   C.DeclarationColor,
-  P.many1(P.choice([S.char('('), S.alphanumeric, S.char(','), S.char(')')])),
+  C.betweenParens(P.many1(P.choice([S.alphanumeric, S.char('.'), S.char(',')]))),
 ]).map(
   (x): AstRawValueNode => ({
     type: 'RAW',
-    value: x[0] + x[1].join(''),
+    value: x[0] + `(${x[1].join('')})`,
   }),
 );
 
@@ -110,23 +111,71 @@ const CalcValueToken = P.sequenceOf([
   return resolveCssCalc(x[2], x[3], x[4]);
 });
 
-const ParseDeclarationToken = P.sequenceOf([
-  DeclarationPropertyToken,
-  P.choice([
-    TranslateValueToken,
-    CalcValueToken,
-    ColorValueToken,
-    DeclarationRawValueToken,
-    DimensionsToken,
-    FlexToken,
+// patterns
+// Dimension Dimension Color; <offset-x> <offset-y> <color>
+// Dimension Dimension Dimension Color; <offset-x> <offset-y> <shadow-radius> <color>
+// Dimension Dimension Dimension Dimension Color; <offset-x> <offset-y> <shadow-radius> <spread-radius> <color>
+// Dimension Dimension Color; <offset-x> <offset-y> <color>
+
+const DimensionNextSpace = P.sequenceOf([
+  P.choice([DimensionsToken, NumberToken]),
+  S.whitespace,
+]).map((x) => x[0]);
+
+const ShadowValueToken = P.many(
+  P.sequenceOf([
+    P.possibly(S.literal(', ')),
+    // REQUIRED
+    DimensionNextSpace,
+    // REQUIRED
+    P.sequenceOf([P.choice([DimensionsToken, NumberToken]), S.whitespace]).map((x) => x[0]),
+    // OPTIONAL
+    P.possibly(P.sequenceOf([DimensionNextSpace, DimensionNextSpace, ColorValueToken])),
   ]),
-  P.possibly(S.char(';')),
-]).map((x): AstDeclarationNode => {
+).map(
+  (x): AstShadowNode => ({
+    type: 'SHADOW',
+    value: x.map((y) => ({
+      offsetX: y[1],
+      offsetY: y[2],
+      shadowRadius: y[3]?.[0],
+      spreadRadius: y[3]?.[1],
+      color: y[3]?.[2],
+    })),
+  }),
+);
+
+export const ParseDeclarationToken = P.coroutine((run): AstDeclarationNode => {
+  const property = run(DeclarationPropertyToken);
+
+  let value: AstDeclarationNode['value'] | null = null;
+
+  if (property === 'box-shadow') {
+    value = run(ShadowValueToken);
+    console.log('VALUE: ', value);
+  }
+
+  if (property === 'flex') {
+    value = run(FlexToken);
+  }
+
+  if (property === 'transform') {
+    value = run(TranslateValueToken);
+  }
+
+  if (value === null) {
+    value = run(
+      P.choice([CalcValueToken, ColorValueToken, DimensionsToken, DeclarationRawValueToken]),
+    );
+  }
+
+  run(P.possibly(S.char(';')));
+
   return {
     type: 'DECLARATION',
-    property: x[0],
-    value: x[1],
+    property,
+    value,
   };
 });
 
-export const DeclarationToken = C.betweenBrackets(P.many(ParseDeclarationToken));
+export const DeclarationTokens = C.betweenBrackets(P.many1(ParseDeclarationToken));

@@ -1,6 +1,7 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import { afterEach, describe, expect, it } from 'vitest';
 import { CssResolver } from '../src/parser/css.resolver';
+import { inspectTestElement } from './test-utils';
 
 const { tx, tw } = initialize();
 const defaultConfig = {
@@ -13,6 +14,28 @@ describe('@universal-labs/stylesheets', () => {
   afterEach(() => {
     tw.clear();
   });
+
+  it('shadow', () => {
+    tx('shadow-md');
+    const result = CssResolver(tw.target, defaultConfig);
+    inspectTestElement('shadow', tw.target, result);
+
+    expect(result.base).toStrictEqual({
+      boxShadow: undefined,
+    });
+  });
+
+  it('at-rule', () => {
+    tx('text-2xl sm:text-base');
+    const result = CssResolver(tw.target, defaultConfig);
+    // inspectTestElement('flex-1', tw.target, result);
+
+    expect(result.base).toStrictEqual({
+      fontSize: 16,
+      lineHeight: 24,
+    });
+  });
+
   it('flex-1', () => {
     tx('flex-1');
     const result = CssResolver(tw.target, defaultConfig);
@@ -24,7 +47,7 @@ describe('@universal-labs/stylesheets', () => {
       flexShrink: 1,
     });
   });
-
+  // Array;
   it('text-2xl', () => {
     tx('text-2xl');
     const result = CssResolver(tw.target, defaultConfig);
