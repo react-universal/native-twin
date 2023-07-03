@@ -1,56 +1,70 @@
-export type ParserState<T, E> = {
+export type ParserState<Result, ErrorResult, Data> = {
   target: string;
-} & InternalResultType<T, E>;
+} & InternalResultType<Result, ErrorResult, Data>;
 
-export type InternalResultType<T, E> = {
+export type InternalResultType<Result, ErrorResult, Data> = {
   isError: boolean;
-  error: E;
+  error: ErrorResult;
   cursor: number;
-  result: T;
+  result: Result;
+  data: Data;
 };
 
-export type ResultType<T, E> = Err<E> | Ok<T>;
+export type ResultType<Result, ErrorResult, Data> =
+  | ParserError<ErrorResult, Data>
+  | ParserSuccess<Result, Data>;
 
-export type Err<E> = {
+export type ParserError<ErrorResult, Data> = {
   isError: true;
-  error: E;
+  error: ErrorResult;
   cursor: number;
+  data: Data;
 };
 
-export type Ok<T> = {
+export type ParserSuccess<Result, Data> = {
   isError: false;
   cursor: number;
-  result: T;
+  result: Result;
+  data: Data;
 };
 
-export const updateParserError = <T, E, E2>(
-  state: ParserState<T, E>,
-  error: E2,
-): ParserState<T, E2> => ({ ...state, isError: true, error });
+export const updateParserError = <Result, ErrorResult, Data, ErrorResult2>(
+  state: ParserState<Result, ErrorResult, Data>,
+  error: ErrorResult2,
+): ParserState<Result, ErrorResult2, Data> => ({ ...state, isError: true, error });
 
-export const updateParserResult = <T, E, T2>(
-  state: ParserState<T, E>,
-  result: T2,
-): ParserState<T2, E> => ({ ...state, result });
+export const updateParserResult = <Result, ErrorResult, Data, Result2>(
+  state: ParserState<Result, ErrorResult, Data>,
+  result: Result2,
+): ParserState<Result2, ErrorResult, Data> => ({ ...state, result });
 
 // updateResult :: (ParserState e a s, b, Integer) -> ParserState e b s
-export const updateParserState = <T, E, T2>(
-  state: ParserState<T, E>,
-  result: T2,
+export const updateParserState = <Result, ErrorResult, Data, Result2>(
+  state: ParserState<Result, ErrorResult, Data>,
+  result: Result2,
   cursor: number,
-): ParserState<T2, E> => ({
+): ParserState<Result2, ErrorResult, Data> => ({
   ...state,
   result,
   cursor,
 });
 
 // createParserState :: x -> s -> ParserState e a s
-export const createParserState = (target: string): ParserState<null, string | null> => {
+export const createParserState = <Data>(
+  target: string,
+  data: Data | null = null,
+): ParserState<null, string | null, Data | null> => {
   return {
     target,
     isError: false,
     error: null,
     result: null,
     cursor: 0,
+    data,
   };
 };
+
+export const updateParserData = <Result, ErrorResult, Data, Data2>(
+  state: ParserState<Result, ErrorResult, Data>,
+  data: Data2,
+): ParserState<Result, ErrorResult, Data2> => ({ ...state, data });

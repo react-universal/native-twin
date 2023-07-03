@@ -1,6 +1,5 @@
 import { resolveCssCalc } from '../helpers';
-import { parser } from '../lib';
-import * as S from '../lib/common/string.parser';
+import { parser, string, number } from '../lib';
 import type {
   AstDeclarationNode,
   AstDimensionsNode,
@@ -9,9 +8,18 @@ import type {
   AstShadowNode,
   AstTransformValueNode,
 } from '../types';
-import * as C from './common.parsers';
+import {
+  betweenBrackets,
+  betweenParens,
+  calcKeyword,
+  DeclarationColor,
+  DeclarationUnit,
+  MathOperatorSymbol,
+  separatedBySpace,
+  translateKeyword,
+} from './common.parsers';
 
-const DimensionsToken = parser.sequenceOf([S.float, C.DeclarationUnit]).map(
+const DimensionsToken = parser.sequenceOf([number.float, DeclarationUnit]).map(
   (x): AstDimensionsNode => ({
     type: 'DIMENSIONS',
     value: parseFloat(x[0]),
@@ -19,7 +27,7 @@ const DimensionsToken = parser.sequenceOf([S.float, C.DeclarationUnit]).map(
   }),
 );
 
-const NumberToken = S.float.map(
+const NumberToken = number.float.map(
   (x): AstDimensionsNode => ({
     type: 'DIMENSIONS',
     value: parseFloat(x),
@@ -29,8 +37,10 @@ const NumberToken = S.float.map(
 
 const ColorValueToken = parser
   .sequenceOf([
-    C.DeclarationColor,
-    C.betweenParens(parser.many1(parser.choice([S.alphanumeric, S.char('.'), S.char(',')]))),
+    DeclarationColor,
+    betweenParens(
+      parser.many1(parser.choice([number.alphanumeric, string.char('.'), string.char(',')])),
+    ),
   ])
   .map(
     (x): AstRawValueNode => ({
@@ -39,7 +49,7 @@ const ColorValueToken = parser
     }),
   );
 
-const FlexToken = C.separatedBySpace(parser.choice([DimensionsToken, NumberToken])).map(
+const FlexToken = separatedBySpace(parser.choice([DimensionsToken, NumberToken])).map(
   (x): AstFlexNode => {
     let flexGrow: AstDimensionsNode = (x[0] as AstDimensionsNode) ?? {
       type: 'DIMENSIONS',
@@ -66,19 +76,19 @@ const FlexToken = C.separatedBySpace(parser.choice([DimensionsToken, NumberToken
 );
 
 const PropertyValidChars = parser
-  .many1(parser.choice([S.alphanumeric, S.char('-')]))
+  .many1(parser.choice([number.alphanumeric, string.char('-')]))
   .map((x) => x.join(''));
 
 const DeclarationPropertyToken = parser
-  .sequenceOf([PropertyValidChars, S.char(':')])
+  .sequenceOf([PropertyValidChars, string.char(':')])
   .map((x) => x[0]);
 
 // parser.sequenceOf([
 //   parser.choice([P.everyCharUntil(';'), P.everyCharUntil('}')]),
-//   P.parser.maybe(S.char(';')),
+//   P.parser.maybe(string.char(';')),
 // ])
 const DeclarationRawValueToken = parser
-  .many1(parser.choice([S.letters, S.char('-')]))
+  .many1(parser.choice([string.letters, string.char('-')]))
   .map((x): AstRawValueNode => {
     return {
       type: 'RAW',
@@ -88,12 +98,12 @@ const DeclarationRawValueToken = parser
 
 const TranslateValueToken = parser
   .sequenceOf([
-    C.translateKeyword,
-    S.char('('),
+    translateKeyword,
+    string.char('('),
     parser.choice([DimensionsToken, NumberToken]),
-    parser.maybe(S.literal(', ')),
+    parser.maybe(string.literal(', ')),
     parser.choice([DimensionsToken, NumberToken]),
-    S.char(')'),
+    string.char(')'),
   ])
   .map((x): AstTransformValueNode => {
     return {
@@ -106,12 +116,12 @@ const TranslateValueToken = parser
 
 const CalcValueToken = parser
   .sequenceOf([
-    C.calcKeyword,
-    S.char('('),
+    calcKeyword,
+    string.char('('),
     parser.choice([DimensionsToken, NumberToken]),
-    parser.between(S.whitespace)(S.whitespace)(C.MathOperatorSymbol),
+    parser.between(string.whitespace)(string.whitespace)(MathOperatorSymbol),
     parser.choice([DimensionsToken, NumberToken]),
-    S.char(')'),
+    string.char(')'),
   ])
   .map((x): AstDimensionsNode => {
     return resolveCssCalc(x[2], x[3], x[4]);
@@ -124,18 +134,18 @@ const CalcValueToken = parser
 // Dimension Dimension Color; <offset-x> <offset-y> <color>
 
 const DimensionNextSpace = parser
-  .sequenceOf([parser.choice([DimensionsToken, NumberToken]), S.whitespace])
+  .sequenceOf([parser.choice([DimensionsToken, NumberToken]), string.whitespace])
   .map((x) => x[0]);
 
 const ShadowValueToken = parser
   .many(
     parser.sequenceOf([
-      parser.maybe(S.literal(', ')),
+      parser.maybe(string.literal(', ')),
       // REQUIRED
       DimensionNextSpace,
       // REQUIRED
       parser
-        .sequenceOf([parser.choice([DimensionsToken, NumberToken]), S.whitespace])
+        .sequenceOf([parser.choice([DimensionsToken, NumberToken]), string.whitespace])
         .map((x) => x[0]),
       // OPTIONAL
       parser.maybe(
@@ -184,7 +194,7 @@ export const ParseDeclarationToken = parser.coroutine((run): AstDeclarationNode 
     );
   }
 
-  run(parser.maybe(S.char(';')));
+  run(parser.maybe(string.char(';')));
 
   return {
     type: 'DECLARATION',
@@ -193,4 +203,4 @@ export const ParseDeclarationToken = parser.coroutine((run): AstDeclarationNode 
   };
 });
 
-export const DeclarationTokens = C.betweenBrackets(parser.many1(ParseDeclarationToken));
+export const DeclarationTokens = betweenBrackets(parser.many1(ParseDeclarationToken));
