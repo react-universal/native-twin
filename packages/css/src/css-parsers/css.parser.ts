@@ -1,7 +1,7 @@
 import { evaluateMediaQueryConstrains } from '../evaluators/at-rule.evaluator';
 import { declarationAsStyle } from '../evaluators/declaration.evaluator';
 import { peek } from '../lib/Parser';
-import { coroutine } from '../lib/coroutine.parser';
+import { coroutine } from '../lib/common/coroutine.parser';
 import type { EvaluatorConfig } from '../types';
 import {
   GetAtRuleConditionToken,

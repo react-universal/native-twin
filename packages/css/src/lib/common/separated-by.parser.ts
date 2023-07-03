@@ -1,5 +1,5 @@
-import { Parser } from './Parser';
-import { ParserState, updateParserResult } from './ParserState';
+import { Parser } from '../Parser';
+import { ParserState, updateParserResult } from '../ParserState';
 
 export const separatedBy =
   <S, E>(separatorParser: Parser<S, E>) =>

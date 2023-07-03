@@ -1,4 +1,4 @@
-import { sequenceOf } from '../lib/sequence-of';
+import { sequenceOf } from '../lib/common/sequence-of';
 import type { AstRuleNode } from '../types';
 import { DeclarationTokens } from './declaration.parsers';
 import { SelectorToken } from './selector.parsers';

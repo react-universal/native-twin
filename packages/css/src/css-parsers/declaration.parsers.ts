@@ -1,10 +1,10 @@
 import { possibly } from '../lib/Parser';
-import { between } from '../lib/between.parser';
-import { choice } from '../lib/choice.parser';
-import { coroutine } from '../lib/coroutine.parser';
+import { between } from '../lib/common/between.parser';
+import { choice } from '../lib/common/choice.parser';
+import { coroutine } from '../lib/common/coroutine.parser';
 import { resolveCssCalc } from '../lib/helpers';
-import { many, many1 } from '../lib/many.parser';
-import { sequenceOf } from '../lib/sequence-of';
+import { many, many1 } from '../lib/common/many.parser';
+import { sequenceOf } from '../lib/common/sequence-of';
 import * as S from '../lib/string.parser';
 import type {
   AstDeclarationNode,

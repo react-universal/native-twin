@@ -1,7 +1,7 @@
 import { Parser, possibly } from './Parser';
 import { updateParserError, updateParserState } from './ParserState';
-import { choice } from './choice.parser';
-import { many, many1 } from './many.parser';
+import { choice } from './common/choice.parser';
+import { many, many1 } from './common/many.parser';
 
 export const char = (cs: string): Parser<string> =>
   new Parser((state) => {

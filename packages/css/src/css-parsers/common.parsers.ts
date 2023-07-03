@@ -1,6 +1,6 @@
-import { between } from '../lib/between.parser';
-import { choice } from '../lib/choice.parser';
-import { separatedBy } from '../lib/separated-by.parser';
+import { between } from '../lib/common/between.parser';
+import { choice } from '../lib/common/choice.parser';
+import { separatedBy } from '../lib/common/separated-by.parser';
 import * as S from '../lib/string.parser';
 
 export const betweenBrackets = between(S.char('{'))(S.char('}'));
