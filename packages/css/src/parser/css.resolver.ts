@@ -1,5 +1,5 @@
 import type { EvaluatorConfig, SelectorGroup } from '../types';
-import { CssParserRoutine } from './Evaluator';
+import { CssParserRoutine } from './css.parser';
 import { getSelectorGroup } from './helpers';
 
 export const CreateCssResolver = () => {

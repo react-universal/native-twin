@@ -21,7 +21,22 @@ describe('@universal-labs/stylesheets', () => {
     inspectTestElement('shadow', tw.target, result);
 
     expect(result.base).toStrictEqual({
-      boxShadow: undefined,
+      boxShadow: [
+        {
+          offsetX: { type: 'DIMENSIONS', value: 0, units: 'none' },
+          offsetY: { type: 'DIMENSIONS', value: 4, units: 'px' },
+          shadowRadius: { type: 'DIMENSIONS', value: 6, units: 'px' },
+          spreadRadius: { type: 'DIMENSIONS', value: -1, units: 'px' },
+          color: { type: 'RAW', value: 'rgba(0,0,0,0.1)' },
+        },
+        {
+          offsetX: { type: 'DIMENSIONS', value: 0, units: 'none' },
+          offsetY: { type: 'DIMENSIONS', value: 2, units: 'px' },
+          shadowRadius: { type: 'DIMENSIONS', value: 4, units: 'px' },
+          spreadRadius: { type: 'DIMENSIONS', value: -2, units: 'px' },
+          color: { type: 'RAW', value: 'rgba(0,0,0,0.1)' },
+        },
+      ],
     });
   });
 
