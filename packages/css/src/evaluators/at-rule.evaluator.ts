@@ -1,4 +1,4 @@
-import type { AstDeclarationNode, EvaluatorConfig } from '../../types';
+import type { AstDeclarationNode, EvaluatorConfig } from '../types';
 import { evaluateDimensionsNode } from './dimensions.evaluator';
 
 export const evaluateMediaQueryConstrains = (

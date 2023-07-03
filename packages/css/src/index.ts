@@ -1,1 +1,1 @@
-export { CssResolver } from './parser/css.resolver';
+export { CssResolver } from './css.resolver';

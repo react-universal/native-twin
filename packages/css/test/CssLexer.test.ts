@@ -1,6 +1,6 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import { afterEach, describe, expect, it } from 'vitest';
-import { CssResolver } from '../src/parser/css.resolver';
+import { CssResolver } from '../src/css.resolver';
 import { inspectTestElement } from './test-utils';
 
 const { tx, tw } = initialize();

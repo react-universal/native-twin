@@ -1,4 +1,4 @@
-import type { AstDimensionsNode, EvaluatorConfig } from '../../types';
+import type { AstDimensionsNode, EvaluatorConfig } from '../types';
 
 export const evaluateDimensionsNode = (node: AstDimensionsNode, context: EvaluatorConfig) => {
   switch (node.units) {

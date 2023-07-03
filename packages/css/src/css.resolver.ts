@@ -1,6 +1,6 @@
-import type { EvaluatorConfig, SelectorGroup } from '../types';
-import { CssParserRoutine } from './css.parser';
-import { getSelectorGroup } from './helpers';
+import { CssParserRoutine } from './css-parsers/css.parser';
+import { getSelectorGroup } from './lib/helpers';
+import type { EvaluatorConfig, SelectorGroup } from './types';
 
 export const CreateCssResolver = () => {
   const cache = new Map<

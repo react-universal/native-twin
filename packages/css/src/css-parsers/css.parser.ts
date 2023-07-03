@@ -1,19 +1,20 @@
+import { evaluateMediaQueryConstrains } from '../evaluators/at-rule.evaluator';
+import { declarationAsStyle } from '../evaluators/declaration.evaluator';
+import { peek } from '../lib/Parser';
+import { coroutine } from '../lib/coroutine.parser';
 import type { EvaluatorConfig } from '../types';
-import * as P from './Parser';
-import { evaluateMediaQueryConstrains } from './evaluators/at-rule.evaluator';
-import { declarationAsStyle } from './evaluators/declaration.evaluator';
-import { DeclarationTokens } from './tokens/Declaration.token';
-import { SelectorToken } from './tokens/Selector.token';
 import {
   GetAtRuleConditionToken,
   GetAtRuleRules,
   GetMediaRuleIdentToken,
-} from './tokens/at-rule.token';
+} from './at-rule.parsers';
+import { DeclarationTokens } from './declaration.parsers';
+import { SelectorToken } from './selector.parsers';
 
 export const CssParserRoutine = (target: string, context: EvaluatorConfig) =>
-  P.coroutine((run) => {
+  coroutine((run) => {
     const declarations: Record<string, any> = {};
-    const firstChar = run(P.peek);
+    const firstChar = run(peek);
     if (firstChar === '@') {
       run(GetMediaRuleIdentToken);
       const mediaRuleConstrains = run(GetAtRuleConditionToken);

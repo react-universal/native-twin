@@ -1,7 +1,7 @@
-import * as S from '../Strings';
-import * as C from './Common.tokens';
-import { ParseDeclarationToken } from './Declaration.token';
-import { CssRuleToken } from './Rule.token';
+import * as S from '../lib/string.parser';
+import * as C from './common.parsers';
+import { ParseDeclarationToken } from './declaration.parsers';
+import { CssRuleToken } from './rule.parsers';
 
 export const GetAtRuleConditionToken = C.betweenParens(ParseDeclarationToken);
 export const GetMediaRuleIdentToken = S.literal('@media ');

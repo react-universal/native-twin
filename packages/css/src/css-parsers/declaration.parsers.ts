@@ -1,3 +1,11 @@
+import { possibly } from '../lib/Parser';
+import { between } from '../lib/between.parser';
+import { choice } from '../lib/choice.parser';
+import { coroutine } from '../lib/coroutine.parser';
+import { resolveCssCalc } from '../lib/helpers';
+import { many, many1 } from '../lib/many.parser';
+import { sequenceOf } from '../lib/sequence-of';
+import * as S from '../lib/string.parser';
 import type {
   AstDeclarationNode,
   AstDimensionsNode,
@@ -5,13 +13,10 @@ import type {
   AstRawValueNode,
   AstShadowNode,
   AstTransformValueNode,
-} from '../../types';
-import * as P from '../Parser';
-import * as S from '../Strings';
-import { resolveCssCalc } from '../helpers';
-import * as C from './Common.tokens';
+} from '../types';
+import * as C from './common.parsers';
 
-const DimensionsToken = P.sequenceOf([S.float, C.DeclarationUnit]).map(
+const DimensionsToken = sequenceOf([S.float, C.DeclarationUnit]).map(
   (x): AstDimensionsNode => ({
     type: 'DIMENSIONS',
     value: parseFloat(x[0]),
@@ -27,9 +32,9 @@ const NumberToken = S.float.map(
   }),
 );
 
-const ColorValueToken = P.sequenceOf([
+const ColorValueToken = sequenceOf([
   C.DeclarationColor,
-  C.betweenParens(P.many1(P.choice([S.alphanumeric, S.char('.'), S.char(',')]))),
+  C.betweenParens(many1(choice([S.alphanumeric, S.char('.'), S.char(',')]))),
 ]).map(
   (x): AstRawValueNode => ({
     type: 'RAW',
@@ -37,7 +42,7 @@ const ColorValueToken = P.sequenceOf([
   }),
 );
 
-const FlexToken = C.separatedBySpace(P.choice([DimensionsToken, NumberToken])).map(
+const FlexToken = C.separatedBySpace(choice([DimensionsToken, NumberToken])).map(
   (x): AstFlexNode => {
     let flexGrow: AstDimensionsNode = (x[0] as AstDimensionsNode) ?? {
       type: 'DIMENSIONS',
@@ -63,19 +68,17 @@ const FlexToken = C.separatedBySpace(P.choice([DimensionsToken, NumberToken])).m
   },
 );
 
-const PropertyValidChars = P.many1(P.choice([S.alphanumeric, S.char('-')])).map((x) =>
-  x.join(''),
-);
+const PropertyValidChars = many1(choice([S.alphanumeric, S.char('-')])).map((x) => x.join(''));
 
-const DeclarationPropertyToken = P.sequenceOf([PropertyValidChars, S.char(':')]).map(
+const DeclarationPropertyToken = sequenceOf([PropertyValidChars, S.char(':')]).map(
   (x) => x[0],
 );
 
-// P.sequenceOf([
-//   P.choice([P.everyCharUntil(';'), P.everyCharUntil('}')]),
+// sequenceOf([
+//   choice([P.everyCharUntil(';'), P.everyCharUntil('}')]),
 //   P.possibly(S.char(';')),
 // ])
-const DeclarationRawValueToken = P.many1(P.choice([S.letters, S.char('-')])).map(
+const DeclarationRawValueToken = many1(choice([S.letters, S.char('-')])).map(
   (x): AstRawValueNode => {
     return {
       type: 'RAW',
@@ -84,12 +87,12 @@ const DeclarationRawValueToken = P.many1(P.choice([S.letters, S.char('-')])).map
   },
 );
 
-const TranslateValueToken = P.sequenceOf([
+const TranslateValueToken = sequenceOf([
   C.translateKeyword,
   S.char('('),
-  P.choice([DimensionsToken, NumberToken]),
-  P.possibly(S.literal(', ')),
-  P.choice([DimensionsToken, NumberToken]),
+  choice([DimensionsToken, NumberToken]),
+  possibly(S.literal(', ')),
+  choice([DimensionsToken, NumberToken]),
   S.char(')'),
 ]).map((x): AstTransformValueNode => {
   return {
@@ -100,12 +103,12 @@ const TranslateValueToken = P.sequenceOf([
   };
 });
 
-const CalcValueToken = P.sequenceOf([
+const CalcValueToken = sequenceOf([
   C.calcKeyword,
   S.char('('),
-  P.choice([DimensionsToken, NumberToken]),
-  P.between(S.whitespace)(S.whitespace)(C.MathOperatorSymbol),
-  P.choice([DimensionsToken, NumberToken]),
+  choice([DimensionsToken, NumberToken]),
+  between(S.whitespace)(S.whitespace)(C.MathOperatorSymbol),
+  choice([DimensionsToken, NumberToken]),
   S.char(')'),
 ]).map((x): AstDimensionsNode => {
   return resolveCssCalc(x[2], x[3], x[4]);
@@ -117,20 +120,20 @@ const CalcValueToken = P.sequenceOf([
 // Dimension Dimension Dimension Dimension Color; <offset-x> <offset-y> <shadow-radius> <spread-radius> <color>
 // Dimension Dimension Color; <offset-x> <offset-y> <color>
 
-const DimensionNextSpace = P.sequenceOf([
-  P.choice([DimensionsToken, NumberToken]),
+const DimensionNextSpace = sequenceOf([
+  choice([DimensionsToken, NumberToken]),
   S.whitespace,
 ]).map((x) => x[0]);
 
-const ShadowValueToken = P.many(
-  P.sequenceOf([
-    P.possibly(S.literal(', ')),
+const ShadowValueToken = many(
+  sequenceOf([
+    possibly(S.literal(', ')),
     // REQUIRED
     DimensionNextSpace,
     // REQUIRED
-    P.sequenceOf([P.choice([DimensionsToken, NumberToken]), S.whitespace]).map((x) => x[0]),
+    sequenceOf([choice([DimensionsToken, NumberToken]), S.whitespace]).map((x) => x[0]),
     // OPTIONAL
-    P.possibly(P.sequenceOf([DimensionNextSpace, DimensionNextSpace, ColorValueToken])),
+    possibly(sequenceOf([DimensionNextSpace, DimensionNextSpace, ColorValueToken])),
   ]),
 ).map(
   (x): AstShadowNode => ({
@@ -145,14 +148,13 @@ const ShadowValueToken = P.many(
   }),
 );
 
-export const ParseDeclarationToken = P.coroutine((run): AstDeclarationNode => {
+export const ParseDeclarationToken = coroutine((run): AstDeclarationNode => {
   const property = run(DeclarationPropertyToken);
 
   let value: AstDeclarationNode['value'] | null = null;
 
   if (property === 'box-shadow') {
     value = run(ShadowValueToken);
-    console.log('VALUE: ', value);
   }
 
   if (property === 'flex') {
@@ -165,11 +167,11 @@ export const ParseDeclarationToken = P.coroutine((run): AstDeclarationNode => {
 
   if (value === null) {
     value = run(
-      P.choice([CalcValueToken, ColorValueToken, DimensionsToken, DeclarationRawValueToken]),
+      choice([CalcValueToken, ColorValueToken, DimensionsToken, DeclarationRawValueToken]),
     );
   }
 
-  run(P.possibly(S.char(';')));
+  run(possibly(S.char(';')));
 
   return {
     type: 'DECLARATION',
@@ -178,4 +180,4 @@ export const ParseDeclarationToken = P.coroutine((run): AstDeclarationNode => {
   };
 });
 
-export const DeclarationTokens = C.betweenBrackets(P.many1(ParseDeclarationToken));
+export const DeclarationTokens = C.betweenBrackets(many1(ParseDeclarationToken));
