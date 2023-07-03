@@ -69,7 +69,7 @@ export interface CssParserData {
   deviceHeight: number;
 }
 
-interface CssParserError {
+export interface CssParserError {
   position: number;
   message: string;
 }

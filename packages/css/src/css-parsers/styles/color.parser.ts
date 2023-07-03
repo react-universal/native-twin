@@ -1,6 +1,10 @@
 import { composed, number, parser, string } from '../../lib';
 import type { AstRawValueNode } from '../../types';
-import { DeclarationColor } from '../common.parsers';
+
+const rgbaUnit = string.literal('rgba');
+const hslUnit = string.literal('hsl');
+
+export const DeclarationColor = parser.choice([rgbaUnit, hslUnit]);
 
 export const CssColorParser = parser
   .sequenceOf([

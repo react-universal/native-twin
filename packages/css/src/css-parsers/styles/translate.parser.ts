@@ -1,7 +1,8 @@
 import { parser, string } from '../../lib';
 import type { AstTransformValueNode } from '../../types';
-import { translateKeyword } from '../common.parsers';
 import { CssDimensionsParser } from '../dimensions.parser';
+
+export const translateKeyword = string.literal('translate');
 
 export const TranslateValueToken = parser
   .sequenceOf([

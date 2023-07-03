@@ -1,7 +1,6 @@
 import { parser, string, number, composed } from '../lib';
 import type { AstDeclarationNode, AstRawValueNode } from '../types';
-import { CssCalcParser } from './calc.parser';
-import { CssUnitDimensionsParser } from './dimensions.parser';
+import { CssCalcParser, CssUnitDimensionsParser } from './dimensions.parser';
 import { CssColorParser } from './styles/color.parser';
 import { FlexToken } from './styles/flex.parser';
 import { ShadowValueToken } from './styles/shadow.parser';
