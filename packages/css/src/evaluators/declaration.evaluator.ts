@@ -1,5 +1,5 @@
+import { kebab2camel } from '../helpers';
 import type { AstDeclarationNode, EvaluatorConfig } from '../types';
-import { kebab2camel } from '../lib/helpers';
 import { evaluateDimensionsNode } from './dimensions.evaluator';
 
 export const declarationAsStyle = (node: AstDeclarationNode, context: EvaluatorConfig) => {

@@ -1,50 +1,47 @@
-import { between } from '../lib/common/between.parser';
-import { choice } from '../lib/common/choice.parser';
-import { separatedBy } from '../lib/common/separated-by.parser';
-import * as S from '../lib/string.parser';
+import { parser, string } from '../lib';
 
-export const betweenBrackets = between(S.char('{'))(S.char('}'));
-export const betweenParens = between(S.char('('))(S.char(')'));
-export const separatedBySpace = separatedBy(S.whitespace);
-export const separatedByComma = separatedBy(S.char(', '));
+export const betweenBrackets = parser.between(string.char('{'))(string.char('}'));
+export const betweenParens = parser.between(string.char('('))(string.char(')'));
+export const separatedBySpace = parser.separatedBy(string.whitespace);
+export const separatedByComma = parser.separatedBy(string.char(', '));
 
 export const mapToTokenNode = <T, N extends string>(type: N, value: T) => ({
   type,
   ...value,
 });
 
-const emUnitToken = S.literal('em');
-const remUnitToken = S.literal('rem');
-const pxUnitToken = S.literal('px');
-const percentageUnitToken = S.literal('%');
-const cnUnitToken = S.literal('cn');
-const vhUnitToken = S.literal('vh');
-const vwUnitToken = S.literal('vw');
-const degUnitToken = S.literal('deg');
-const exUnitToken = S.literal('ex');
-const inUnitToken = S.literal('in');
+const emUnitToken = string.literal('em');
+const remUnitToken = string.literal('rem');
+const pxUnitToken = string.literal('px');
+const percentageUnitToken = string.literal('%');
+const cnUnitToken = string.literal('cn');
+const vhUnitToken = string.literal('vh');
+const vwUnitToken = string.literal('vw');
+const degUnitToken = string.literal('deg');
+const exUnitToken = string.literal('ex');
+const inUnitToken = string.literal('in');
 
-export const DeclarationUnit = choice([
-  choice([emUnitToken, remUnitToken]).map(() => 'rem'),
-  choice([pxUnitToken, cnUnitToken, exUnitToken, inUnitToken]).map(() => 'px'),
-  choice([vhUnitToken, vwUnitToken]).map((x) => x),
+export const DeclarationUnit = parser.choice([
+  parser.choice([emUnitToken, remUnitToken]).map(() => 'rem'),
+  parser.choice([pxUnitToken, cnUnitToken, exUnitToken, inUnitToken]).map(() => 'px'),
+  parser.choice([vhUnitToken, vwUnitToken]).map((x) => x),
   percentageUnitToken,
   degUnitToken,
 ]);
 
-const rgbaUnit = S.literal('rgba');
-const hslUnit = S.literal('hsl');
+const rgbaUnit = string.literal('rgba');
+const hslUnit = string.literal('hsl');
 
-export const DeclarationColor = choice([rgbaUnit, hslUnit]);
+export const DeclarationColor = parser.choice([rgbaUnit, hslUnit]);
 
-export const translateKeyword = S.literal('translate');
-export const calcKeyword = S.literal('calc');
+export const translateKeyword = string.literal('translate');
+export const calcKeyword = string.literal('calc');
 
-const plusOperator = S.char('+');
-const minusOperator = S.char('-');
-const multiplyOperator = S.char('*');
-const divisionOperator = S.char('/');
-export const MathOperatorSymbol = choice([
+const plusOperator = string.char('+');
+const minusOperator = string.char('-');
+const multiplyOperator = string.char('*');
+const divisionOperator = string.char('/');
+export const MathOperatorSymbol = parser.choice([
   plusOperator,
   minusOperator,
   multiplyOperator,

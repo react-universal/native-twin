@@ -1,7 +1,6 @@
 import { evaluateMediaQueryConstrains } from '../evaluators/at-rule.evaluator';
 import { declarationAsStyle } from '../evaluators/declaration.evaluator';
-import { peek } from '../lib/Parser';
-import { coroutine } from '../lib/common/coroutine.parser';
+import { parser } from '../lib';
 import type { EvaluatorConfig } from '../types';
 import {
   GetAtRuleConditionToken,
@@ -12,28 +11,30 @@ import { DeclarationTokens } from './declaration.parsers';
 import { SelectorToken } from './selector.parsers';
 
 export const CssParserRoutine = (target: string, context: EvaluatorConfig) =>
-  coroutine((run) => {
-    const declarations: Record<string, any> = {};
-    const firstChar = run(peek);
-    if (firstChar === '@') {
-      run(GetMediaRuleIdentToken);
-      const mediaRuleConstrains = run(GetAtRuleConditionToken);
-      if (evaluateMediaQueryConstrains(mediaRuleConstrains, context)) {
-        const rule = run(GetAtRuleRules);
-        rule.declarations.forEach((declaration) => {
-          const style = declarationAsStyle(declaration, context);
-          Object.assign(declarations, style);
-        });
-        return { declarations, selector: rule.selector };
+  parser
+    .coroutine((run) => {
+      const declarations: Record<string, any> = {};
+      const firstChar = run(parser.peek);
+      if (firstChar === '@') {
+        run(GetMediaRuleIdentToken);
+        const mediaRuleConstrains = run(GetAtRuleConditionToken);
+        if (evaluateMediaQueryConstrains(mediaRuleConstrains, context)) {
+          const rule = run(GetAtRuleRules);
+          rule.declarations.forEach((declaration) => {
+            const style = declarationAsStyle(declaration, context);
+            Object.assign(declarations, style);
+          });
+          return { declarations, selector: rule.selector };
+        }
+        return { declarations, selector: '' };
       }
-      return { declarations, selector: '' };
-    }
-    const selector = run(SelectorToken);
+      const selector = run(SelectorToken);
 
-    run(DeclarationTokens).forEach((declaration) => {
-      const style = declarationAsStyle(declaration, context);
-      Object.assign(declarations, style);
-    });
+      run(DeclarationTokens).forEach((declaration) => {
+        const style = declarationAsStyle(declaration, context);
+        Object.assign(declarations, style);
+      });
 
-    return { selector, declarations };
-  }).run(target);
+      return { selector, declarations };
+    })
+    .run(target);

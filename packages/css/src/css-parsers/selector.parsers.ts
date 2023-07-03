@@ -1,5 +1,5 @@
-import { everyCharUntil } from '../lib/string.parser';
+import { string } from '../lib';
 
-export const SelectorValidChars = everyCharUntil('{');
+export const SelectorValidChars = string.everyCharUntil('{');
 
 export const SelectorToken = SelectorValidChars;

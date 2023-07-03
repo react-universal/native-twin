@@ -1,7 +1,7 @@
-import { Parser, possibly } from './Parser';
-import { updateParserError, updateParserState } from './ParserState';
-import { choice } from './common/choice.parser';
-import { many, many1 } from './common/many.parser';
+import { Parser, maybe } from '../Parser';
+import { updateParserError, updateParserState } from '../ParserState';
+import { choice } from './choice.parser';
+import { many, many1 } from './many.parser';
 
 export const char = (cs: string): Parser<string> =>
   new Parser((state) => {
@@ -61,7 +61,7 @@ export const plusOrMinus = choice([char('+'), char('-')]);
 
 export const float = many(choice([plusOrMinus, digits, char('.')])).map((x) => x.join(''));
 
-export const orEmptyString = <T>(parser: Parser<T>) => possibly(parser).map((x) => x || '');
+export const orEmptyString = <T>(parser: Parser<T>) => maybe(parser).map((x) => x || '');
 
 export const everyCharUntil = (char: string): Parser<string> =>
   new Parser((state) => {
