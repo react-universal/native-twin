@@ -1,4 +1,4 @@
-import { CssParserRoutine } from './css-parsers/css.parser';
+import { SheetParser } from './css-parsers/css.parser';
 import { getSelectorGroup } from './helpers';
 import type { EvaluatorConfig, SelectorGroup } from './types';
 
@@ -20,7 +20,7 @@ export const CreateCssResolver = () => {
           return prev;
         }
 
-        const parsed = CssParserRoutine(current, context);
+        const parsed = SheetParser(context).run(current);
 
         if (parsed.isError) return prev;
 

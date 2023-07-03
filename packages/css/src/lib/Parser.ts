@@ -147,7 +147,7 @@ export class Parser<Result, ErrorResult = string, Data = any> {
 }
 
 export { between } from './common/between.parser';
-export { setData, withData } from './common/data.parser';
+export { setData, withData, getData } from './common/data.parser';
 export { skip } from './common/skip.parser';
 export { choice } from './common/choice.parser';
 export { coroutine } from './common/coroutine.parser';

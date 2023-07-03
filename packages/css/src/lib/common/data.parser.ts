@@ -1,5 +1,10 @@
 import { Parser } from '../Parser';
-import { updateParserData } from '../ParserState';
+import { updateParserData, updateParserResult } from '../ParserState';
+
+export const getData = new Parser((state) => {
+  if (state.isError) return state;
+  return updateParserResult(state, state.data);
+});
 
 export const setData = <Result, ErrorResult, Data2>(
   data: Data2,
