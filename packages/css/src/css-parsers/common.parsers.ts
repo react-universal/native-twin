@@ -1,10 +1,5 @@
 import { parser, string } from '../lib';
 
-export const betweenBrackets = parser.between(string.char('{'))(string.char('}'));
-export const betweenParens = parser.between(string.char('('))(string.char(')'));
-export const separatedBySpace = parser.separatedBy(string.whitespace);
-export const separatedByComma = parser.separatedBy(string.char(', '));
-
 export const mapToTokenNode = <T, N extends string>(type: N, value: T) => ({
   type,
   ...value,
@@ -36,14 +31,3 @@ export const DeclarationColor = parser.choice([rgbaUnit, hslUnit]);
 
 export const translateKeyword = string.literal('translate');
 export const calcKeyword = string.literal('calc');
-
-const plusOperator = string.char('+');
-const minusOperator = string.char('-');
-const multiplyOperator = string.char('*');
-const divisionOperator = string.char('/');
-export const MathOperatorSymbol = parser.choice([
-  plusOperator,
-  minusOperator,
-  multiplyOperator,
-  divisionOperator,
-]);
