@@ -1,8 +1,8 @@
 import { kebab2camel } from '../helpers';
-import type { AstDeclarationNode, EvaluatorConfig } from '../types';
+import type { AstDeclarationNode, CssParserData } from '../types';
 import { evaluateDimensionsNode } from './dimensions.evaluator';
 
-export const declarationAsStyle = (node: AstDeclarationNode, context: EvaluatorConfig) => {
+export const declarationAsStyle = (node: AstDeclarationNode, context: CssParserData) => {
   if (node.value.type === 'DIMENSIONS') {
     return {
       [kebab2camel(node.property)]: evaluateDimensionsNode(node.value, context),

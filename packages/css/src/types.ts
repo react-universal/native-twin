@@ -1,3 +1,5 @@
+import type { Parser } from './lib/Parser';
+
 export interface AstSheetNode {
   type: 'SHEET';
   value: AstRuleNode;
@@ -61,8 +63,23 @@ export type AstDeclarationValueNode =
 
 export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
 
-export interface EvaluatorConfig {
+export interface CssParserData {
   rem: number;
   deviceWidth: number;
   deviceHeight: number;
 }
+
+interface CssParserError {
+  position: number;
+  message: string;
+}
+
+export type CssParserType<Result> = Parser<Result, CssParserError, CssParserData>;
+
+export type CssParserCache = Map<
+  string,
+  {
+    group: SelectorGroup;
+    styles: Record<string, any>;
+  }
+>;

@@ -1,6 +1,6 @@
-import type { AstDimensionsNode, EvaluatorConfig } from '../types';
+import type { AstDimensionsNode, CssParserData } from '../types';
 
-export const evaluateDimensionsNode = (node: AstDimensionsNode, context: EvaluatorConfig) => {
+export const evaluateDimensionsNode = (node: AstDimensionsNode, context: CssParserData) => {
   switch (node.units) {
     case 'rem':
     case 'em':

@@ -1,17 +1,11 @@
 import { SheetParser } from './css-parsers/css.parser';
 import { getSelectorGroup } from './helpers';
-import type { EvaluatorConfig, SelectorGroup } from './types';
+import type { CssParserCache, CssParserData, SelectorGroup } from './types';
 
 export const CreateCssResolver = () => {
-  const cache = new Map<
-    string,
-    {
-      group: SelectorGroup;
-      styles: Record<string, any>;
-    }
-  >();
+  const cache: CssParserCache = new Map();
 
-  return (target: string[], context: EvaluatorConfig) => {
+  return (target: string[], context: CssParserData) => {
     return target.reduce(
       (prev, current) => {
         if (cache.has(current)) {

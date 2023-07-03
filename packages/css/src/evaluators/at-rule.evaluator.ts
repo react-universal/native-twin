@@ -1,9 +1,9 @@
-import type { AstDeclarationNode, EvaluatorConfig } from '../types';
+import type { AstDeclarationNode, CssParserData } from '../types';
 import { evaluateDimensionsNode } from './dimensions.evaluator';
 
 export const evaluateMediaQueryConstrains = (
   node: AstDeclarationNode,
-  context: EvaluatorConfig,
+  context: CssParserData,
 ) => {
   if (node.value.type === 'DIMENSIONS') {
     const value = evaluateDimensionsNode(node.value, context);

@@ -13,27 +13,11 @@ import {
   betweenParens,
   calcKeyword,
   DeclarationColor,
-  DeclarationUnit,
   MathOperatorSymbol,
   separatedBySpace,
   translateKeyword,
 } from './common.parsers';
-
-const DimensionsToken = parser.sequenceOf([number.float, DeclarationUnit]).map(
-  (x): AstDimensionsNode => ({
-    type: 'DIMENSIONS',
-    value: parseFloat(x[0]),
-    units: x[1] ?? 'none',
-  }),
-);
-
-const NumberToken = number.float.map(
-  (x): AstDimensionsNode => ({
-    type: 'DIMENSIONS',
-    value: parseFloat(x),
-    units: 'none',
-  }),
-);
+import { CssDimensionsParser, CssUnitDimensionsParser } from './dimensions.parser';
 
 const ColorValueToken = parser
   .sequenceOf([
@@ -49,31 +33,29 @@ const ColorValueToken = parser
     }),
   );
 
-const FlexToken = separatedBySpace(parser.choice([DimensionsToken, NumberToken])).map(
-  (x): AstFlexNode => {
-    let flexGrow: AstDimensionsNode = (x[0] as AstDimensionsNode) ?? {
-      type: 'DIMENSIONS',
-      units: 'none',
-      value: 1,
-    };
-    let flexShrink = (x[1] as AstDimensionsNode) ?? {
-      type: 'DIMENSIONS',
-      units: 'none',
-      value: 1,
-    };
-    let flexBasis = (x[2] as AstDimensionsNode) ?? {
-      type: 'DIMENSIONS',
-      units: '%',
-      value: 1,
-    };
-    return {
-      flexBasis,
-      flexGrow,
-      flexShrink,
-      type: 'FLEX',
-    };
-  },
-);
+const FlexToken = separatedBySpace(CssDimensionsParser).map((x): AstFlexNode => {
+  let flexGrow: AstDimensionsNode = (x[0] as AstDimensionsNode) ?? {
+    type: 'DIMENSIONS',
+    units: 'none',
+    value: 1,
+  };
+  let flexShrink = (x[1] as AstDimensionsNode) ?? {
+    type: 'DIMENSIONS',
+    units: 'none',
+    value: 1,
+  };
+  let flexBasis = (x[2] as AstDimensionsNode) ?? {
+    type: 'DIMENSIONS',
+    units: '%',
+    value: 1,
+  };
+  return {
+    flexBasis,
+    flexGrow,
+    flexShrink,
+    type: 'FLEX',
+  };
+});
 
 const PropertyValidChars = parser
   .many1(parser.choice([number.alphanumeric, string.char('-')]))
@@ -83,10 +65,6 @@ const DeclarationPropertyToken = parser
   .sequenceOf([PropertyValidChars, string.char(':')])
   .map((x) => x[0]);
 
-// parser.sequenceOf([
-//   parser.choice([P.everyCharUntil(';'), P.everyCharUntil('}')]),
-//   P.parser.maybe(string.char(';')),
-// ])
 const DeclarationRawValueToken = parser
   .many1(parser.choice([string.letters, string.char('-')]))
   .map((x): AstRawValueNode => {
@@ -100,9 +78,9 @@ const TranslateValueToken = parser
   .sequenceOf([
     translateKeyword,
     string.char('('),
-    parser.choice([DimensionsToken, NumberToken]),
+    CssDimensionsParser,
     parser.maybe(string.literal(', ')),
-    parser.choice([DimensionsToken, NumberToken]),
+    CssDimensionsParser,
     string.char(')'),
   ])
   .map((x): AstTransformValueNode => {
@@ -118,9 +96,9 @@ const CalcValueToken = parser
   .sequenceOf([
     calcKeyword,
     string.char('('),
-    parser.choice([DimensionsToken, NumberToken]),
+    CssDimensionsParser,
     parser.between(string.whitespace)(string.whitespace)(MathOperatorSymbol),
-    parser.choice([DimensionsToken, NumberToken]),
+    CssDimensionsParser,
     string.char(')'),
   ])
   .map((x): AstDimensionsNode => {
@@ -134,7 +112,7 @@ const CalcValueToken = parser
 // Dimension Dimension Color; <offset-x> <offset-y> <color>
 
 const DimensionNextSpace = parser
-  .sequenceOf([parser.choice([DimensionsToken, NumberToken]), string.whitespace])
+  .sequenceOf([CssDimensionsParser, string.whitespace])
   .map((x) => x[0]);
 
 const ShadowValueToken = parser
@@ -144,9 +122,7 @@ const ShadowValueToken = parser
       // REQUIRED
       DimensionNextSpace,
       // REQUIRED
-      parser
-        .sequenceOf([parser.choice([DimensionsToken, NumberToken]), string.whitespace])
-        .map((x) => x[0]),
+      parser.sequenceOf([CssDimensionsParser, string.whitespace]).map((x) => x[0]),
       // OPTIONAL
       parser.maybe(
         parser.sequenceOf([DimensionNextSpace, DimensionNextSpace, ColorValueToken]),
@@ -188,7 +164,7 @@ export const ParseDeclarationToken = parser.coroutine((run): AstDeclarationNode 
       parser.choice([
         CalcValueToken,
         ColorValueToken,
-        DimensionsToken,
+        CssUnitDimensionsParser,
         DeclarationRawValueToken,
       ]),
     );
