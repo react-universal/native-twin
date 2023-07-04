@@ -1,23 +1,25 @@
+import { evaluateDimensionsNode } from '../../evaluators/dimensions.evaluator';
 import { parser, string } from '../../lib';
-import type { AstTransformValueNode } from '../../types';
+import type { AnyStyle } from '../../types';
 import { CssDimensionsParser } from '../dimensions.parser';
-
-export const translateKeyword = string.literal('translate');
 
 export const TranslateValueToken = parser
   .sequenceOf([
-    translateKeyword,
+    string.literal('translate'),
     string.char('('),
     CssDimensionsParser,
     parser.maybe(string.literal(', ')),
-    CssDimensionsParser,
+    parser.maybe(CssDimensionsParser),
     string.char(')'),
   ])
-  .map((x): AstTransformValueNode => {
-    return {
-      dimension: '2d',
-      type: 'TRANSFORM',
-      x: x[2],
-      ...(x[3] ? { y: x[4] } : {}),
-    };
+  .mapFromData((x) => {
+    const styles: AnyStyle['transform'] = [
+      { translateX: evaluateDimensionsNode(x.result[2], x.data) },
+    ];
+    if (x.result[4]) {
+      styles.push({
+        translateY: evaluateDimensionsNode(x.result[4], x.data),
+      });
+    }
+    return styles;
   });

@@ -36,6 +36,6 @@ export const ShadowValueToken = parser
       },
       shadowRadius: shadow[3]?.[0] && evaluateDimensionsNode(shadow[3]![0], x.data),
       shadowOpacity: shadow[3]?.[1] && evaluateDimensionsNode(shadow[3]![1], x.data),
-      shadowColor: shadow[3]?.[2]?.value,
+      shadowColor: shadow[3]?.[2],
     };
   });

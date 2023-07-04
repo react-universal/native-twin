@@ -1,6 +1,7 @@
 import { evaluateMediaQueryConstrains } from '../evaluators/at-rule.evaluator';
 import { composed, parser, string } from '../lib';
 import type { CssParserData } from '../types';
+import { GetAtRuleConditionToken } from './at-rule.parsers';
 import { ParseCssRuleBlock } from './rule-block.parser';
 import { SelectorToken } from './selector.parsers';
 
@@ -18,7 +19,10 @@ export const SheetParser = parser.withData(
     }
 
     const selector = getNextSelector();
+    // console.log('SELECTOR: ', selector);
     const declarations = getNextRegularRule();
+    // console.log('declarations: ', declarations);
+
     return { selector, declarations };
 
     function getNextRuleType() {
@@ -34,10 +38,16 @@ export const SheetParser = parser.withData(
     function getNextMediaRule() {
       run(string.literal('@media'));
       run(string.whitespace);
-      const mediaRuleConstrains = run(composed.betweenParens(ParseCssRuleBlock));
-      // @ts-expect-error
-      if (evaluateMediaQueryConstrains(mediaRuleConstrains, context)) {
-        return run(ParseCssRuleBlock);
+      const mediaRuleConstrains = run(composed.betweenParens(GetAtRuleConditionToken));
+      if (
+        evaluateMediaQueryConstrains(
+          { property: mediaRuleConstrains[0].value, value: mediaRuleConstrains[1] },
+          context,
+        )
+      ) {
+        const rule = run(ParseCssRuleBlock);
+        run(parser.debugState('asd', 'asd'));
+        return rule;
       }
       return null;
     }

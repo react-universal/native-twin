@@ -1,5 +1,4 @@
 import { parser, string, number } from '../lib';
-import type { AstRawValueNode } from '../types';
 import { mapAsType } from './utils.parser';
 
 const TopLeftBottomRightParser = <P extends string>(prefix: P) =>
@@ -46,23 +45,35 @@ export const DimensionProperties = parser
 const PropertyValidChars = parser
   .many1(parser.choice([number.alphanumeric, string.char('-')]))
   .map((x) => x.join(''))
-  .map(mapAsType('UNKNOWN'));
+  .map(mapAsType('RAW'));
 
 const FlexProperty = string.literal('flex').map(mapAsType('FLEX-PROP'));
 const ShadowProperty = string.literal('box-shadow').map(mapAsType('SHADOW-PROP'));
 
+const ColorSuffixParser = parser
+  .sequenceOf([string.letters, string.char('-'), string.literal('color')])
+  .map((x) => x.join(''));
+
+const ColorProperty = parser
+  .choice([string.literal('color'), ColorSuffixParser])
+  .map(mapAsType('COLOR-PROP'));
+
+const TransformProperty = string.literal('transform').map(mapAsType('TRANSFORM-PROP'));
+
 export const ParseDeclarationProperty = parser
   .sequenceOf([
-    parser.choice([DimensionProperties, FlexProperty, ShadowProperty, PropertyValidChars]),
+    parser.choice([
+      DimensionProperties,
+      ColorProperty,
+      FlexProperty,
+      ShadowProperty,
+      TransformProperty,
+      PropertyValidChars,
+    ]),
     string.char(':'),
   ])
   .map((x) => x[0]);
 
-const _DeclarationRawValueToken = parser
+export const DeclarationRawValueToken = parser
   .many1(parser.choice([string.letters, string.char('-')]))
-  .map((x): AstRawValueNode => {
-    return {
-      type: 'RAW',
-      value: x.join(''),
-    };
-  });
+  .map((x) => x.join(''));
