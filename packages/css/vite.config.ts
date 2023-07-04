@@ -23,7 +23,7 @@ export default defineConfig({
       formats: ['es', 'umd'],
     },
     rollupOptions: {
-      external: [],
+      external: ['react-native', 'react'],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
       output: {

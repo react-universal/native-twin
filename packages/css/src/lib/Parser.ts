@@ -149,6 +149,7 @@ export class Parser<Result, ErrorResult = string, Data = any> {
 export { between } from './common/between.parser';
 export { setData, withData, getData } from './common/data.parser';
 export { skip } from './common/skip.parser';
+export { tapParser, debugState } from './common/debug.parser';
 export { choice } from './common/choice.parser';
 export { coroutine } from './common/coroutine.parser';
 export { lookAhead } from './common/lookahead';

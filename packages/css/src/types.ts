@@ -1,3 +1,4 @@
+import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { Parser } from './lib/Parser';
 
 export interface AstSheetNode {
@@ -30,20 +31,19 @@ export interface AstRawValueNode {
 
 export interface AstFlexNode {
   type: 'FLEX';
-  flexBasis: AstDimensionsNode;
-  flexShrink: AstDimensionsNode;
-  flexGrow: AstDimensionsNode;
+  flexBasis: string | number;
+  flexShrink: string | number;
+  flexGrow: string | number;
 }
 
 export interface AstShadowNode {
   type: 'SHADOW';
   value: {
-    offsetX: AstDimensionsNode;
-    offsetY: AstDimensionsNode;
-    shadowRadius?: AstDimensionsNode;
-    spreadRadius?: AstDimensionsNode;
-    color?: AstRawValueNode;
-  }[];
+    shadowOffset: { width: string | number; height: string | number };
+    shadowRadius?: string | number;
+    shadowOpacity?: string | number;
+    shadowColor?: string;
+  };
 }
 
 export interface AstTransformValueNode {
@@ -83,3 +83,5 @@ export type CssParserCache = Map<
     styles: Record<string, any>;
   }
 >;
+
+export type AnyStyle = ImageStyle | TextStyle | ViewStyle;

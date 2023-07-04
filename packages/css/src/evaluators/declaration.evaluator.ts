@@ -1,18 +1,21 @@
 import { kebab2camel } from '../helpers';
 import type { AstDeclarationNode, CssParserData } from '../types';
-import { evaluateDimensionsNode } from './dimensions.evaluator';
 
-export const declarationAsStyle = (node: AstDeclarationNode, context: CssParserData) => {
+export const declarationAsStyle = (node: AstDeclarationNode, _context: CssParserData) => {
   if (node.value.type === 'DIMENSIONS') {
     return {
-      [kebab2camel(node.property)]: evaluateDimensionsNode(node.value, context),
+      [kebab2camel(node.property)]: node.value,
     };
+  }
+
+  if (node.value.type === 'SHADOW') {
+    return node.value.value;
   }
   if (node.value.type === 'FLEX') {
     return {
-      flexBasis: evaluateDimensionsNode(node.value.flexBasis, context),
-      flexGrow: evaluateDimensionsNode(node.value.flexGrow, context),
-      flexShrink: evaluateDimensionsNode(node.value.flexShrink, context),
+      flexBasis: node.value.flexBasis,
+      flexGrow: node.value.flexGrow,
+      flexShrink: node.value.flexShrink,
     };
   }
   if (node.value.type === 'TRANSFORM') {
@@ -20,12 +23,12 @@ export const declarationAsStyle = (node: AstDeclarationNode, context: CssParserD
       translateX?: number | string;
       translateY?: number | string;
       translateZ?: number | string;
-    }[] = [{ translateX: evaluateDimensionsNode(node.value.x, context) }];
+    }[] = [{ translateX: node.value.x.value }];
     if (node.value.y) {
-      transform.push({ translateY: evaluateDimensionsNode(node.value.y, context) });
+      transform.push({ translateY: node.value.y.value });
     }
     if (node.value.z) {
-      transform.push({ translateZ: evaluateDimensionsNode(node.value.z, context) });
+      transform.push({ translateZ: node.value.z.value });
     }
     return { transform };
   }

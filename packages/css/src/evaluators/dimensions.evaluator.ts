@@ -6,7 +6,7 @@ export const evaluateDimensionsNode = (node: AstDimensionsNode, context: CssPars
     case 'em':
       return node.value * context.rem;
     case '%':
-      return `${node.value}%`;
+      return `${node.value}%` as unknown as number;
     case 'vh':
       return context.deviceHeight! * (node.value / 100);
     case 'vw':

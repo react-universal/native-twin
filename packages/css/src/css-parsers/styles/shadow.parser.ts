@@ -1,5 +1,6 @@
+import type { ShadowStyleIOS } from 'react-native';
+import { evaluateDimensionsNode } from '../../evaluators/dimensions.evaluator';
 import { parser, string } from '../../lib';
-import type { AstShadowNode } from '../../types';
 import { CssDimensionsParser } from '../dimensions.parser';
 import { CssColorParser } from './color.parser';
 
@@ -26,15 +27,15 @@ export const ShadowValueToken = parser
       ),
     ]),
   )
-  .map(
-    (x): AstShadowNode => ({
-      type: 'SHADOW',
-      value: x.map((y) => ({
-        offsetX: y[1],
-        offsetY: y[2],
-        shadowRadius: y[3]?.[0],
-        spreadRadius: y[3]?.[1],
-        color: y[3]?.[2],
-      })),
-    }),
-  );
+  .mapFromData((x): ShadowStyleIOS => {
+    const shadow = x.result[0]!;
+    return {
+      shadowOffset: {
+        width: evaluateDimensionsNode(shadow[1], x.data),
+        height: evaluateDimensionsNode(shadow[2], x.data),
+      },
+      shadowRadius: shadow[3]?.[0] && evaluateDimensionsNode(shadow[3]![0], x.data),
+      shadowOpacity: shadow[3]?.[1] && evaluateDimensionsNode(shadow[3]![1], x.data),
+      shadowColor: shadow[3]?.[2]?.value,
+    };
+  });

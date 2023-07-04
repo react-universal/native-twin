@@ -1,3 +1,4 @@
+import { evaluateDimensionsNode } from '../evaluators/dimensions.evaluator';
 import { resolveCssCalc } from '../helpers';
 import { composed, number, parser, string } from '../lib';
 import type { AstDimensionsNode } from '../types';
@@ -21,28 +22,17 @@ export const DeclarationUnit = parser.choice([
   degUnitToken,
 ]);
 
-export const CssUnitlessDimensionParser = number.float.map(
-  (x): AstDimensionsNode => ({
-    type: 'DIMENSIONS',
-    value: parseFloat(x),
-    units: 'none',
-  }),
-);
+export const CssDimensionsParser = parser
+  .sequenceOf([number.float, parser.maybe(DeclarationUnit)])
+  .mapFromData(
+    (x): AstDimensionsNode => ({
+      type: 'DIMENSIONS',
+      units: x.result[1] ?? 'none',
+      value: parseFloat(x.result[0]),
+    }),
+  );
 
-export const CssUnitDimensionsParser = parser.sequenceOf([number.float, DeclarationUnit]).map(
-  (x): AstDimensionsNode => ({
-    type: 'DIMENSIONS',
-    value: parseFloat(x[0]),
-    units: x[1] ?? 'none',
-  }),
-);
-
-export const CssDimensionsParser = parser.choice([
-  CssUnitDimensionsParser,
-  CssUnitlessDimensionParser,
-]);
-
-export const calcKeyword = string.literal('calc');
+const calcKeyword = string.literal('calc');
 
 export const CssCalcParser = parser
   .sequenceOf([
@@ -53,6 +43,9 @@ export const CssCalcParser = parser
     CssDimensionsParser,
     string.char(')'),
   ])
-  .map((x): AstDimensionsNode => {
-    return resolveCssCalc(x[2], x[3], x[4]);
+  .mapFromData((x) => {
+    return evaluateDimensionsNode(
+      resolveCssCalc(x.result[2], x.result[3], x.result[4]),
+      x.data,
+    );
   });
