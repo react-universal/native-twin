@@ -27,7 +27,7 @@ export function coroutine<T>(parserFn: ParserFn<T>): Parser<T> {
       if (e instanceof Error) {
         throw e;
       } else {
-        return e as ParserState<any, any, any>;
+        return e as ParserState<any>;
       }
     }
   });

@@ -1,6 +1,6 @@
 import { Parser, updateParserResult } from '../Parser';
 
-export function maybe<T, E>(parser: Parser<T, E>): Parser<T | null, E> {
+export function maybe<T>(parser: Parser<T>): Parser<T | null> {
   return new Parser((state) => {
     if (state.isError) return state;
 

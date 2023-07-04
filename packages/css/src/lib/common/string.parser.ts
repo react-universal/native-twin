@@ -8,10 +8,10 @@ export const char = (cs: string): Parser<string> =>
     if (sliced === cs) {
       return updateParserState(state, sliced, state.cursor + 1);
     }
-    return updateParserError(
-      state,
-      `Char: Parser error, expected char ${cs} but got ${sliced}`,
-    );
+    return updateParserError(state, {
+      message: `Char: Parser error, expected char ${cs} but got ${sliced}`,
+      position: state.cursor,
+    });
   });
 
 export const literal = (cs: string): Parser<string> =>
@@ -21,10 +21,10 @@ export const literal = (cs: string): Parser<string> =>
     if (sliced === cs) {
       return updateParserState(state, sliced, state.cursor + cs.length);
     }
-    return updateParserError(
-      state,
-      `Literal: Parser error, expected string ${cs} but got ${sliced}`,
-    );
+    return updateParserError(state, {
+      message: `Literal: Parser error, expected string ${cs} but got ${sliced}`,
+      position: state.cursor,
+    });
   });
 
 const regexLetters = /^[a-zA-Z]+/;
@@ -36,10 +36,10 @@ export const regex = (re: RegExp): Parser<string> =>
     const sliced = target.slice(cursor);
     const match = sliced.match(re);
     if (!match) {
-      return updateParserError(
-        state,
-        `ParserError: (position ${cursor}) regex could not match any char`,
-      );
+      return updateParserError(state, {
+        message: `ParserError: regex could not match any char`,
+        position: cursor,
+      });
     }
     return updateParserState(state, match[0], cursor + match[0].length);
   });

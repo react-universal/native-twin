@@ -1,8 +1,6 @@
 import { Parser, ParserState } from '../Parser';
 
-export const tapParser = <Result, ErrorResult, Data>(
-  fn: (state: ParserState<Result, ErrorResult, Data>) => void,
-): Parser<Result, ErrorResult, Data> =>
+export const tapParser = <Result>(fn: (state: ParserState<Result>) => void): Parser<Result> =>
   new Parser((state) => {
     fn(state);
     return state;

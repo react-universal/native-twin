@@ -30,12 +30,11 @@ export const many1 = <A>(parser: Parser<A>): Parser<A[]> => {
     if (response.result.length) {
       return response;
     }
-    return updateParserError(
-      state,
-      `Many: does not have any result at position ${state.cursor} ${state.target.slice(
-        state.cursor,
-        5,
-      )}`,
-    );
+    return updateParserError(state, {
+      message: `Many: does not have any result at position ${
+        state.cursor
+      } ${state.target.slice(state.cursor, 5)}`,
+      position: state.cursor,
+    });
   });
 };
