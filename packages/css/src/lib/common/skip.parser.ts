@@ -1,5 +1,4 @@
-import { Parser } from '../Parser';
-import { updateParserResult } from '../ParserState';
+import { Parser, updateParserResult } from '../Parser';
 
 export function skip<E>(parser: Parser<any, E>): Parser<null, E> {
   return new Parser((state) => {

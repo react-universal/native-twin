@@ -1,5 +1,4 @@
-import { Parser } from '../Parser';
-import { updateParserResult } from '../ParserState';
+import { Parser, updateParserResult } from '../Parser';
 
 export function sequenceOf<A>([p1]: [Parser<A>]): Parser<[A]>;
 export function sequenceOf<A, B>([p1, p2]: [Parser<A>, Parser<B>]): Parser<[A, B]>;

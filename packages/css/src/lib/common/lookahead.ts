@@ -1,5 +1,4 @@
-import { Parser } from '../Parser';
-import { updateParserResult } from '../ParserState';
+import { Parser, updateParserResult } from '../Parser';
 
 export function lookAhead<T, E>(parser: Parser<T, E>): Parser<T, E> {
   return new Parser((state) => {

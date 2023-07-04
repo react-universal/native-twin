@@ -1,5 +1,4 @@
-import { Parser } from '../Parser';
-import { ParserState, updateParserResult } from '../ParserState';
+import { Parser, ParserState, updateParserResult } from '../Parser';
 
 export const separatedBy =
   <S, E, D>(separatorParser: Parser<S, E, D>) =>
@@ -32,7 +31,6 @@ export const separatedBy =
       }
 
       if (error) {
-        console.log('ERROR_SEP: ', error);
         if (results.length === 0) {
           return updateParserResult(state, results) as ParserState<T[], E, D>;
         }

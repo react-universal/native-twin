@@ -1,5 +1,5 @@
-import { Parser, maybe } from '../Parser';
-import { updateParserError, updateParserState } from '../ParserState';
+import { Parser, updateParserError, updateParserState } from '../Parser';
+import { maybe } from './maybe.parser';
 
 export const char = (cs: string): Parser<string> =>
   new Parser((state) => {

@@ -1,18 +1,3 @@
-import {
-  createParserState,
-  ParserError,
-  ParserState,
-  ParserSuccess,
-  ResultType,
-  updateParserData,
-  updateParserError,
-  updateParserResult,
-} from './ParserState';
-
-type StateTransformerFunction<Result, ErrorResult = any, Data = any> = (
-  state: ParserState<any, any, any>,
-) => ParserState<Result, ErrorResult, Data>;
-
 export class Parser<Result, ErrorResult = string, Data = any> {
   transform: StateTransformerFunction<Result, ErrorResult>;
   constructor(transform: StateTransformerFunction<Result, ErrorResult>) {
@@ -146,16 +131,77 @@ export class Parser<Result, ErrorResult = string, Data = any> {
   }
 }
 
-export { between } from './common/between.parser';
-export { setData, withData, getData } from './common/data.parser';
-export { skip } from './common/skip.parser';
-export { tapParser, debugState } from './common/debug.parser';
-export { choice } from './common/choice.parser';
-export { coroutine } from './common/coroutine.parser';
-export { lookAhead } from './common/lookahead';
-export { many, many1 } from './common/many.parser';
-export { maybe } from './common/maybe.parser';
-export { peek } from './common/peek.parser';
-export { recursiveParser } from './common/recursive.parser';
-export { separatedBy } from './common/separated-by.parser';
-export { sequenceOf } from './common/sequence-of';
+export type ParserState<Result, ErrorResult, Data> = {
+  target: string;
+} & InternalResultType<Result, ErrorResult, Data>;
+
+export type InternalResultType<Result, ErrorResult, Data> = {
+  isError: boolean;
+  error: ErrorResult;
+  cursor: number;
+  result: Result;
+  data: Data;
+};
+
+export type ResultType<Result, ErrorResult, Data> =
+  | ParserError<ErrorResult, Data>
+  | ParserSuccess<Result, Data>;
+
+export type ParserError<ErrorResult, Data> = {
+  isError: true;
+  error: ErrorResult;
+  cursor: number;
+  data: Data;
+};
+
+export type ParserSuccess<Result, Data> = {
+  isError: false;
+  cursor: number;
+  result: Result;
+  data: Data;
+};
+
+export const updateParserError = <Result, ErrorResult, Data, ErrorResult2>(
+  state: ParserState<Result, ErrorResult, Data>,
+  error: ErrorResult2,
+): ParserState<Result, ErrorResult2, Data> => ({ ...state, isError: true, error });
+
+export const updateParserResult = <Result, ErrorResult, Data, Result2>(
+  state: ParserState<Result, ErrorResult, Data>,
+  result: Result2,
+): ParserState<Result2, ErrorResult, Data> => ({ ...state, result });
+
+// updateResult :: (ParserState e a s, b, Integer) -> ParserState e b s
+export const updateParserState = <Result, ErrorResult, Data, Result2>(
+  state: ParserState<Result, ErrorResult, Data>,
+  result: Result2,
+  cursor: number,
+): ParserState<Result2, ErrorResult, Data> => ({
+  ...state,
+  result,
+  cursor,
+});
+
+// createParserState :: x -> s -> ParserState e a s
+export const createParserState = <Data>(
+  target: string,
+  data: Data | null = null,
+): ParserState<null, string | null, Data | null> => {
+  return {
+    target,
+    isError: false,
+    error: null,
+    result: null,
+    cursor: 0,
+    data,
+  };
+};
+
+export const updateParserData = <Result, ErrorResult, Data, Data2>(
+  state: ParserState<Result, ErrorResult, Data>,
+  data: Data2,
+): ParserState<Result, ErrorResult, Data2> => ({ ...state, data });
+
+type StateTransformerFunction<Result, ErrorResult = any, Data = any> = (
+  state: ParserState<any, any, any>,
+) => ParserState<Result, ErrorResult, Data>;
