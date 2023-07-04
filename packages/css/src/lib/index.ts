@@ -1,39 +1,36 @@
-// Common Parsers
-import * as p from './Parser';
-import { between } from './common/between.parser';
-import { choice } from './common/choice.parser';
-import * as composed from './common/composed.parsers';
-import { coroutine } from './common/coroutine.parser';
-import { setData, withData, getData } from './common/data.parser';
-import { tapParser } from './common/debug.parser';
-import { lookAhead } from './common/lookahead';
-import { many, many1 } from './common/many.parser';
-import { maybe } from './common/maybe.parser';
-import * as number from './common/number.parser';
-import { peek } from './common/peek.parser';
-import { recursiveParser } from './common/recursive.parser';
-import { separatedBy } from './common/separated-by.parser';
-import { sequenceOf } from './common/sequence-of';
-import { skip } from './common/skip.parser';
-import * as string from './common/string.parser';
+export {
+  betweenBrackets,
+  betweenParens,
+  parseMathOperatorSymbol,
+  separatedByComma,
+  separatedBySemicolon,
+  separatedBySpace,
+} from './common/composed.parsers';
 
-const parser = {
-  ...p,
-  between,
-  setData,
-  many1,
-  skip,
-  tapParser,
-  choice,
-  coroutine,
-  lookAhead,
-  many,
-  maybe,
-  peek,
-  recursiveParser,
-  separatedBy,
-  sequenceOf,
-  withData,
-  getData,
-};
-export { parser, string, number, composed };
+export { alphanumeric, digits, float, plusOrMinus } from './common/number.parser';
+
+// Common Parsers
+export { between } from './common/between.parser';
+export { choice } from './common/choice.parser';
+
+export { coroutine } from './common/coroutine.parser';
+export { setData, withData, getData } from './common/data.parser';
+export { tapParser } from './common/debug.parser';
+export { lookAhead } from './common/lookahead';
+export { many, many1 } from './common/many.parser';
+export { maybe } from './common/maybe.parser';
+
+export { peek } from './common/peek.parser';
+export { recursiveParser } from './common/recursive.parser';
+export { separatedBy } from './common/separated-by.parser';
+export { sequenceOf } from './common/sequence-of';
+export { skip } from './common/skip.parser';
+export {
+  char,
+  everyCharUntil,
+  letters,
+  literal,
+  orEmptyString,
+  regex,
+  whitespace,
+} from './common/string.parser';
