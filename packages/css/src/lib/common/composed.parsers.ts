@@ -1,7 +1,8 @@
 import { between } from './between.parser';
 import { choice } from './choice.parser';
 import { separatedBy } from './separated-by.parser';
-import { char, whitespace } from './string.parser';
+import { sequenceOf } from './sequence-of';
+import { char, ident, literal, whitespace } from './string.parser';
 
 export const betweenBrackets = between(char('{'))(char('}'));
 export const betweenParens = between(char('('))(char(')'));
@@ -20,3 +21,18 @@ export const parseMathOperatorSymbol = choice([
   multiplyOperator,
   divisionOperator,
 ]);
+
+export const parseDeclarationUnit = choice([
+  literal('em'),
+  literal('rem'),
+  literal('px'),
+  literal('%'),
+  literal('cn'),
+  literal('vh'),
+  literal('vw'),
+  literal('deg'),
+  literal('ex'),
+  literal('in'),
+]);
+
+export const parseDeclarationProperty = sequenceOf([ident, char(':')]).map((x) => x[0]);

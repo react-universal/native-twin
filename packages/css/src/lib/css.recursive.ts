@@ -2,41 +2,32 @@ import type { FlexStyle, ShadowStyleIOS } from 'react-native';
 import { evaluateMediaQueryConstrains } from '../evaluators/at-rule.evaluator';
 import { evaluateDimensionsNode } from '../evaluators/dimensions.evaluator';
 import { kebab2camel, resolveCssCalc } from '../helpers';
+import type { AnyStyle, AstDimensionsNode } from '../types';
+import { between } from './common/between.parser';
+import { choice } from './common/choice.parser';
 import {
-  between,
+  parseDeclarationProperty,
   betweenBrackets,
   betweenParens,
-  char,
-  choice,
-  coroutine,
-  everyCharUntil,
-  float,
-  getData,
-  ident,
-  literal,
-  many,
-  many1,
-  maybe,
+  parseDeclarationUnit,
   parseMathOperatorSymbol,
-  peek,
-  recursiveParser,
   separatedBySpace,
-  sequenceOf,
-  whitespace,
-} from '../lib';
-import type { AnyStyle, AstDimensionsNode } from '../types';
+} from './common/composed.parsers';
+import { coroutine } from './common/coroutine.parser';
+import { getData } from './common/data.parser';
+import { many, many1 } from './common/many.parser';
+import { maybe } from './common/maybe.parser';
+import { float } from './common/number.parser';
+import { peek } from './common/peek.parser';
+import { recursiveParser } from './common/recursive.parser';
+import { sequenceOf } from './common/sequence-of';
+import { char, everyCharUntil, ident, literal, whitespace } from './common/string.parser';
 import { getPropertyValueType, mapSelector } from './utils.parser';
 
 /*
  ************ SELECTORS ***********
  */
 const ParseCssSelector = everyCharUntil('{').map(mapSelector);
-
-/*
- ************ DECLARATION PROPERTIES ***********
- */
-
-const ParseDeclarationProperty = sequenceOf([ident, char(':')]).map((x) => x[0]);
 
 /*
  ************ DECLARATION VALUES ***********
@@ -49,24 +40,11 @@ const CssColorParser = sequenceOf([
   return `${x[0]}(${x[1]})`;
 });
 
-const DeclarationUnit = choice([
-  literal('em'),
-  literal('rem'),
-  literal('px'),
-  literal('%'),
-  literal('cn'),
-  literal('vh'),
-  literal('vw'),
-  literal('deg'),
-  literal('ex'),
-  literal('in'),
-]);
-
 const CssDimensionsParser = recursiveParser(() =>
   choice([DimensionWithUnitsParser, CssCalcParser]),
 );
 
-const DimensionWithUnitsParser = sequenceOf([float, maybe(DeclarationUnit)]).mapFromData(
+const DimensionWithUnitsParser = sequenceOf([float, maybe(parseDeclarationUnit)]).mapFromData(
   (x): AstDimensionsNode => ({
     type: 'DIMENSIONS',
     units: x.result[1] ?? 'none',
@@ -158,7 +136,7 @@ const TranslateValueToken = sequenceOf([
 const ParseCssDeclarationLine = coroutine((run) => {
   const getValue = () => {
     const context = run(getData);
-    const property = run(ParseDeclarationProperty);
+    const property = run(parseDeclarationProperty);
     const meta = getPropertyValueType(property);
     if (meta === 'DIMENSION') {
       return {
@@ -209,7 +187,7 @@ const ParseCssDeclarationLine = coroutine((run) => {
 
 export const CssParser = recursiveParser(() => choice([AtRuleParser, RuleBlockParser]));
 
-const GetAtRuleConditionToken = sequenceOf([ParseDeclarationProperty, CssDimensionsParser]);
+const GetAtRuleConditionToken = sequenceOf([parseDeclarationProperty, CssDimensionsParser]);
 
 const AtRuleParser = coroutine((run) => {
   const context = run(getData);

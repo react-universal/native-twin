@@ -1,12 +1,11 @@
-import { CssParser } from './css-parsers/css.recursive';
-import { withData } from './lib';
+import { CssParser } from './lib/css.recursive';
 import type { CssParserCache, CssParserData, SelectorGroup } from './types';
 
 export const CreateCssResolver = () => {
   const cache: CssParserCache = new Map();
 
   const parseCssTarget = (target: string, context: CssParserData) => {
-    const parsed = withData(CssParser)(context).run(target);
+    const parsed = CssParser.run(target, context);
     if (parsed.isError) return null;
     return parsed.result;
   };
