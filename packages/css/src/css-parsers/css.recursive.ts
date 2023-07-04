@@ -1,4 +1,5 @@
 import type { FlexStyle, ShadowStyleIOS } from 'react-native';
+import { evaluateMediaQueryConstrains } from '../evaluators/at-rule.evaluator';
 import { evaluateDimensionsNode } from '../evaluators/dimensions.evaluator';
 import { kebab2camel, resolveCssCalc } from '../helpers';
 import { composed, number, parser, string } from '../lib';
@@ -216,13 +217,37 @@ const ParseCssDeclarationLine = parser.coroutine((run) => {
   return composeValue();
 });
 
-export const CssParser = parser.withData(
-  parser
-    .sequenceOf([ParseCssSelector, composed.betweenBrackets(ParseCssDeclarationLine)])
-    .map((x) => {
-      return {
-        selector: x[0],
-        declarations: x[1],
-      };
-    }),
+export const CssParser = parser.recursiveParser(() =>
+  parser.choice([AtRuleParser, RuleBlockParser]),
 );
+
+const GetAtRuleConditionToken = parser.sequenceOf([
+  ParseDeclarationProperty,
+  CssDimensionsParser,
+]);
+
+const AtRuleParser = parser.coroutine((run) => {
+  const context = run(parser.getData);
+  run(string.literal('@media'));
+  run(string.whitespace);
+  const mediaRuleConstrains = run(composed.betweenParens(GetAtRuleConditionToken));
+  if (
+    evaluateMediaQueryConstrains(
+      { property: mediaRuleConstrains[0], value: mediaRuleConstrains[1] },
+      context,
+    )
+  ) {
+    const rule = run(composed.betweenBrackets(RuleBlockParser));
+    return rule;
+  }
+  return null;
+});
+
+const RuleBlockParser = parser
+  .sequenceOf([ParseCssSelector, composed.betweenBrackets(ParseCssDeclarationLine)])
+  .map((x) => {
+    return {
+      selector: x[0],
+      declarations: x[1],
+    };
+  });

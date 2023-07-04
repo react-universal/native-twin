@@ -10,21 +10,21 @@ const defaultConfig = {
   rem: 16,
 };
 
-// describe('@universal-labs/css - AT-RULES', () => {
-//   afterEach(() => {
-//     tw.clear();
-//   });
-//   it('at-rule', () => {
-//     tx('text-2xl sm:text-base');
-//     const result = CssResolver(tw.target, defaultConfig);
-//     inspectTestElement('text-2xl sm:text-base', tw.target, result);
+describe('@universal-labs/css - AT-RULES', () => {
+  afterEach(() => {
+    tw.clear();
+  });
+  it('at-rule', () => {
+    tx('text-2xl sm:text-base');
+    const result = CssResolver(tw.target, defaultConfig);
+    inspectTestElement('text-2xl sm:text-base', tw.target, result);
 
-//     expect(result.base).toStrictEqual({
-//       fontSize: 16,
-//       lineHeight: 24,
-//     });
-//   });
-// });
+    expect(result.base).toStrictEqual({
+      fontSize: 16,
+      lineHeight: 24,
+    });
+  });
+});
 
 describe('@universal-labs/css Resular Rules', () => {
   afterEach(() => {

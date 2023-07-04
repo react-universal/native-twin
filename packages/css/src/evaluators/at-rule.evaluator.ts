@@ -8,11 +8,9 @@ export const evaluateMediaQueryConstrains = (
   },
   context: CssParserData,
 ) => {
-  console.log('NODE: ', node);
   if (node.value.type === 'DIMENSIONS') {
     const value = evaluateDimensionsNode(node.value, context);
     let valueNumber = typeof value === 'number' ? value : parseFloat(value);
-    console.log('valueNumber: ', valueNumber, context.deviceWidth);
     if (node.property === 'width') {
       return context.deviceWidth == valueNumber;
     }
