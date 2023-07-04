@@ -33,4 +33,5 @@ export {
   orEmptyString,
   regex,
   whitespace,
+  ident,
 } from './common/string.parser';

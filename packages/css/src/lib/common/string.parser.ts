@@ -46,6 +46,8 @@ export const regex = (re: RegExp): Parser<string> =>
 
 export const letters: Parser<string> = regex(regexLetters);
 
+const regexIdent = /^[_a-z0-9-]+/;
+export const ident: Parser<string> = regex(regexIdent);
 const regexWhiteSpace = /^\s+/;
 export const whitespace: Parser<string> = regex(regexWhiteSpace);
 

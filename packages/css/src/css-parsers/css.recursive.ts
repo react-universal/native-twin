@@ -3,7 +3,6 @@ import { evaluateMediaQueryConstrains } from '../evaluators/at-rule.evaluator';
 import { evaluateDimensionsNode } from '../evaluators/dimensions.evaluator';
 import { kebab2camel, resolveCssCalc } from '../helpers';
 import {
-  alphanumeric,
   between,
   betweenBrackets,
   betweenParens,
@@ -13,7 +12,7 @@ import {
   everyCharUntil,
   float,
   getData,
-  letters,
+  ident,
   literal,
   many,
   many1,
@@ -37,10 +36,7 @@ const ParseCssSelector = everyCharUntil('{').map(mapSelector);
  ************ DECLARATION PROPERTIES ***********
  */
 
-const ParseDeclarationProperty = sequenceOf([
-  many1(choice([alphanumeric, char('-')])).map((x) => x.join('')),
-  char(':'),
-]).map((x) => x[0]);
+const ParseDeclarationProperty = sequenceOf([ident, char(':')]).map((x) => x[0]);
 
 /*
  ************ DECLARATION VALUES ***********
@@ -48,12 +44,10 @@ const ParseDeclarationProperty = sequenceOf([
 
 const CssColorParser = sequenceOf([
   choice([literal('rgba'), literal('hsl'), literal('#')]),
-  betweenParens(many1(choice([alphanumeric, char('.'), char(',')])).map((x) => x.join(''))),
+  betweenParens(many1(choice([ident, char('.'), char(',')])).map((x) => x.join(''))),
 ]).map((x) => {
   return `${x[0]}(${x[1]})`;
 });
-
-const DeclarationRawValueToken = many1(choice([letters, char('-')])).map((x) => x.join(''));
 
 const DeclarationUnit = choice([
   literal('em'),
@@ -192,7 +186,7 @@ const ParseCssDeclarationLine = coroutine((run) => {
       };
     }
     return {
-      [kebab2camel(property)]: run(DeclarationRawValueToken),
+      [kebab2camel(property)]: run(ident),
     };
   };
 

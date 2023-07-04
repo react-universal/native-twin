@@ -17,7 +17,7 @@ describe('@universal-labs/css - AT-RULES', () => {
   it('at-rule', () => {
     tx('text-2xl sm:text-base');
     const result = CssResolver(tw.target, defaultConfig);
-    inspectTestElement('text-2xl sm:text-base', tw.target, result);
+    // inspectTestElement('text-2xl sm:text-base', tw.target, result);
 
     expect(result.base).toStrictEqual({
       fontSize: 16,
