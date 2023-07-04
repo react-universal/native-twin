@@ -66,7 +66,7 @@ describe('@universal-labs/css Resular Rules', () => {
   it('bg-gray-200', () => {
     tx('bg-gray-200');
     const result = CssResolver(tw.target, defaultConfig);
-    // inspectTestElement('bg-gray-200', tw.target, result);
+    inspectTestElement('bg-gray-200', tw.target, result);
     expect(result.base).toStrictEqual({ backgroundColor: 'rgba(229,231,235,1)' });
   });
 
@@ -81,7 +81,7 @@ describe('@universal-labs/css Resular Rules', () => {
   it('translate-x-2', () => {
     tx('translate-x-2');
     const result = CssResolver(tw.target, defaultConfig);
-    inspectTestElement('translate-x-2', tw.target, result);
+    // inspectTestElement('translate-x-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ transform: [{ translateX: 8 }] });
   });
@@ -105,7 +105,7 @@ describe('@universal-labs/css Resular Rules', () => {
   it('justify-center', () => {
     tx('justify-center');
     const result = CssResolver(tw.target, defaultConfig);
-    inspectTestElement('justify-center', tw.target, result);
+    // inspectTestElement('justify-center', tw.target, result);
 
     expect(result.base).toStrictEqual({ justifyContent: 'center' });
   });

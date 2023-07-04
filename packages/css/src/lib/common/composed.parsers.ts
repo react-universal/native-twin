@@ -7,6 +7,7 @@ export const betweenBrackets = between(char('{'))(char('}'));
 export const betweenParens = between(char('('))(char(')'));
 export const separatedBySpace = separatedBy(whitespace);
 export const separatedByComma = separatedBy(char(', '));
+export const separatedBySemicolon = separatedBy(char(';'));
 
 const plusOperator = char('+');
 const minusOperator = char('-');

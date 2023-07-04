@@ -2,8 +2,8 @@ import type { FlexStyle, ShadowStyleIOS } from 'react-native';
 import { evaluateDimensionsNode } from '../evaluators/dimensions.evaluator';
 import { kebab2camel, resolveCssCalc } from '../helpers';
 import { composed, number, parser, string } from '../lib';
-import type { AnyStyle, AstDeclarationNode, AstDimensionsNode, CssParserData } from '../types';
-import { mapAsType, mapSelector } from './utils.parser';
+import type { AnyStyle, AstDimensionsNode } from '../types';
+import { getPropertyValueType, mapSelector } from './utils.parser';
 
 /*
  ************ SELECTORS ***********
@@ -13,75 +13,12 @@ const ParseCssSelector = string.everyCharUntil('{').map(mapSelector);
 /*
  ************ DECLARATION PROPERTIES ***********
  */
-const TransformProperty = string.literal('transform').map(mapAsType('TRANSFORM-PROP'));
-
-const TopLeftBottomRightParser = <P extends string>(prefix: P) =>
-  parser
-    .sequenceOf([
-      string.literal(prefix),
-      string.char('-'),
-      parser.choice([
-        string.literal('top'),
-        string.literal('left'),
-        string.literal('bottom'),
-        string.literal('right'),
-      ]),
-    ])
-    .map((x) => x.join(''));
-
-const MinMaxParser = <P extends string>(suffix: P) =>
-  parser
-    .sequenceOf([
-      parser.choice([string.literal('min'), string.literal('max')]),
-      string.char('-'),
-      string.literal(suffix),
-    ])
-    .map((x) => x.join(''));
-
-const SizeParser = <P extends string>(prefix: P) =>
-  parser
-    .sequenceOf([string.literal(prefix), string.char('-'), string.literal('size')])
-    .map((x) => x.join(''));
-
-const DimensionProperties = parser
-  .choice([
-    parser.choice([string.literal('width'), string.literal('height')]),
-    parser.choice([MinMaxParser('width'), MinMaxParser('height')]),
-    parser.choice([SizeParser('font'), string.literal('line-height')]),
-    parser.choice([
-      TopLeftBottomRightParser('margin'),
-      TopLeftBottomRightParser('border'),
-      TopLeftBottomRightParser('padding'),
-    ]),
-  ])
-  .map(mapAsType('DIMENSIONS-PROP'));
-
-const PropertyValidChars = parser
-  .many1(parser.choice([number.alphanumeric, string.char('-')]))
-  .map((x) => x.join(''))
-  .map(mapAsType('RAW'));
-
-const FlexProperty = string.literal('flex').map(mapAsType('FLEX-PROP'));
-const ShadowProperty = string.literal('box-shadow').map(mapAsType('SHADOW-PROP'));
-
-const ColorSuffixParser = parser
-  .sequenceOf([string.letters, string.char('-'), string.literal('color')])
-  .map((x) => x.join(''));
-
-const ColorProperty = parser
-  .choice([string.literal('color'), ColorSuffixParser])
-  .map(mapAsType('COLOR-PROP'));
 
 const ParseDeclarationProperty = parser
   .sequenceOf([
-    parser.choice([
-      DimensionProperties,
-      ColorProperty,
-      FlexProperty,
-      ShadowProperty,
-      TransformProperty,
-      PropertyValidChars,
-    ]),
+    parser
+      .many1(parser.choice([number.alphanumeric, string.char('-')]))
+      .map((x) => x.join('')),
     string.char(':'),
   ])
   .map((x) => x[0]);
@@ -90,14 +27,9 @@ const ParseDeclarationProperty = parser
  ************ DECLARATION VALUES ***********
  */
 
-const rgbaUnit = string.literal('rgba');
-const hslUnit = string.literal('hsl');
-
-const DeclarationColor = parser.choice([rgbaUnit, hslUnit]);
-
 const CssColorParser = parser
   .sequenceOf([
-    DeclarationColor,
+    parser.choice([string.literal('rgba'), string.literal('hsl'), string.literal('#')]),
     composed.betweenParens(
       parser
         .many1(parser.choice([number.alphanumeric, string.char('.'), string.char(',')]))
@@ -180,11 +112,6 @@ const DimensionNextSpace = parser
   .sequenceOf([CssDimensionsParser, string.whitespace])
   .map((x) => x[0]);
 
-// patterns
-// Dimension Dimension Color; <offset-x> <offset-y> <color>
-// Dimension Dimension Dimension Color; <offset-x> <offset-y> <shadow-radius> <color>
-// Dimension Dimension Dimension Dimension Color; <offset-x> <offset-y> <shadow-radius> <spread-radius> <color>
-// Dimension Dimension Color; <offset-x> <offset-y> <color>
 const ShadowValueToken = parser
   .many(
     parser.sequenceOf([
@@ -233,95 +160,69 @@ const TranslateValueToken = parser
     return styles;
   });
 
-const ParseCssDeclaration = parser.coroutine((run) => {});
 /*
  ************ RULE BLOCK ***********
  */
-const ParseCssRuleBlock = parser.coroutine((run) => {
-  const context: CssParserData = run(parser.getData);
-  run(string.char('{'));
 
-  const declaration = parseDeclarations();
-  run(string.char('}'));
+const ParseCssDeclarationLine = parser.coroutine((run) => {
+  const getValue = () => {
+    const context = run(parser.getData);
+    const property = run(ParseDeclarationProperty);
+    const meta = getPropertyValueType(property);
+    if (meta === 'DIMENSION') {
+      return {
+        [kebab2camel(property)]: evaluateDimensionsNode(run(CssDimensionsParser), context),
+      };
+    }
+    if (meta === 'FLEX') {
+      return run(FlexToken);
+    }
 
-  return declaration;
+    if (meta === 'SHADOW') {
+      return run(ShadowValueToken);
+    }
 
-  function getNextProperty() {
-    return run(ParseDeclarationProperty);
-  }
+    if (meta === 'TRANSFORM') {
+      return {
+        transform: run(TranslateValueToken),
+      };
+    }
 
-  function parseDeclarations(result: AnyStyle = {}): AnyStyle {
+    if (meta === 'COLOR') {
+      const value = run(CssColorParser);
+      return {
+        [kebab2camel(property)]: value,
+      };
+    }
+    return {
+      [kebab2camel(property)]: run(DeclarationRawValueToken),
+    };
+  };
+
+  const composeValue = (result: AnyStyle = {}): AnyStyle => {
+    run(parser.maybe(string.char(';')));
     const isValid = run(parser.peek) !== '}';
-    // console.log('IS_VALID: ', isValid);
     if (!isValid) return result;
-
-    const property = getNextProperty();
-    // console.log('DECLARATION-PROP: ', property);
-    let value: AstDeclarationNode['value'] | null | any = null;
-
-    if (property.type === 'RAW') {
-      value = run(DeclarationRawValueToken);
-      // console.log('RAW: ', value);
-      Object.assign(result, {
-        [kebab2camel(property.value)]: value,
-      });
+    let value = {
+      ...result,
+      ...getValue(),
+    };
+    if (run(parser.peek) === ';') {
+      return composeValue(value);
     }
+    return value;
+  };
 
-    if (property.type === 'DIMENSIONS-PROP') {
-      value = run(CssDimensionsParser.map((x) => evaluateDimensionsNode(x, context)));
-      // console.log('DIMENSIONS-VALUE: ', value);
-      Object.assign(result, {
-        [kebab2camel(property.value)]: value,
-      });
-    }
-
-    if (property.type === 'FLEX-PROP') {
-      value = run(FlexToken);
-      Object.assign(result, value);
-    }
-    if (property.type === 'SHADOW-PROP') {
-      value = run(ShadowValueToken);
-      Object.assign(result, value);
-    }
-
-    if (property.type === 'COLOR-PROP') {
-      value = run(CssColorParser);
-      Object.assign(result, {
-        [kebab2camel(property.value)]: value,
-      });
-    }
-
-    if (property.type === 'TRANSFORM-PROP') {
-      value = run(TranslateValueToken);
-      // console.log('TRANSFORM-VALUE: ', value);
-      Object.assign(result, {
-        [property.value]: value,
-      });
-    }
-
-    const nextChar = run(parser.maybe(string.char(';')));
-    if (nextChar) {
-      return parseDeclarations(result);
-    }
-    return result;
-  }
+  return composeValue();
 });
 
 export const CssParser = parser.withData(
-  parser.coroutine((run) => {
-    const selector = getNextSelector();
-    // console.log('SELECTOR: ', selector);
-    const declarations = getNextRegularRule();
-    // console.log('declarations: ', declarations);
-
-    return { selector, declarations };
-
-    function getNextSelector() {
-      return run(ParseCssSelector);
-    }
-
-    function getNextRegularRule() {
-      return run(ParseCssRuleBlock);
-    }
-  }),
+  parser
+    .sequenceOf([ParseCssSelector, composed.betweenBrackets(ParseCssDeclarationLine)])
+    .map((x) => {
+      return {
+        selector: x[0],
+        declarations: x[1],
+      };
+    }),
 );

@@ -27,7 +27,6 @@ export const many = <A>(parser: Parser<A>): Parser<A[]> => {
 export const many1 = <A>(parser: Parser<A>): Parser<A[]> => {
   return new Parser((state) => {
     if (state.isError) return state;
-    // .shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)}
     const response = many(parser).transform(state);
     if (response.result.length) {
       return response;

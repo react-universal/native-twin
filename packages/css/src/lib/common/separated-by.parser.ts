@@ -32,6 +32,7 @@ export const separatedBy =
       }
 
       if (error) {
+        console.log('ERROR_SEP: ', error);
         if (results.length === 0) {
           return updateParserResult(state, results) as ParserState<T[], E, D>;
         }
