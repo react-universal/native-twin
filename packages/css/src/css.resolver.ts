@@ -1,4 +1,4 @@
-import { ParseCss } from './lib/css.parser';
+import { ParseCss } from './lib/css.combinators';
 import type { CssParserData, SelectorGroup } from './types';
 
 export const CreateCssResolver = () => {

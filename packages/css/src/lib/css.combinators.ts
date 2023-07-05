@@ -21,17 +21,9 @@ import { float } from './common/number.parser';
 import { peek } from './common/peek.parser';
 import { recursiveParser } from './common/recursive.parser';
 import { sequenceOf } from './common/sequence-of';
-import { char, everyCharUntil, ident, literal, whitespace } from './common/string.parser';
-import { getPropertyValueType, mapSelector } from './utils.parser';
-
-/*
- ************ SELECTORS ***********
- */
-// subsequent-sibling combinator
-// '~' === '\u{007E}'; -> true
-const ParseCssSelector = sequenceOf([char('.'), everyCharUntil('{')])
-  .map((x) => x[0] + x[1])
-  .map(mapSelector);
+import { char, ident, literal, whitespace } from './common/string.parser';
+import { ParseCssSelector } from './css/selector.parser';
+import { getPropertyValueType } from './utils.parser';
 
 /*
  ************ DECLARATION VALUES ***********

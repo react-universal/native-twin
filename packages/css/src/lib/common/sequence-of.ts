@@ -29,6 +29,7 @@ export function sequenceOf<A, B, C, D, E, F>([p1, p2, p3, p4, p5, p6]: [
 export function sequenceOf(parsers: Parser<any>[]) {
   return new Parser((state) => {
     if (state.isError) return state;
+
     const length = parsers.length;
     const results = new Array(length);
     let nextState = state;

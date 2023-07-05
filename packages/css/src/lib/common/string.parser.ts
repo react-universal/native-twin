@@ -4,6 +4,7 @@ import { maybe } from './maybe.parser';
 export const char = (cs: string): Parser<string> =>
   new Parser((state) => {
     if (state.isError) return state;
+
     const sliced = state.target.slice(state.cursor, state.cursor + 1);
     if (sliced === cs) {
       return updateParserState(state, sliced, state.cursor + 1);
@@ -17,6 +18,7 @@ export const char = (cs: string): Parser<string> =>
 export const literal = (cs: string): Parser<string> =>
   new Parser((state) => {
     if (state.isError) return state;
+
     const sliced = state.target.slice(state.cursor, state.cursor + cs.length);
     if (sliced === cs) {
       return updateParserState(state, sliced, state.cursor + cs.length);
@@ -32,6 +34,7 @@ const regexLetters = /^[a-zA-Z]+/;
 export const regex = (re: RegExp): Parser<string> =>
   new Parser((state) => {
     if (state.isError) return state;
+
     const { cursor, target } = state;
     const sliced = target.slice(cursor);
     const match = sliced.match(re);
@@ -56,6 +59,7 @@ export const orEmptyString = <T>(parser: Parser<T>) => maybe(parser).map((x) => 
 export const everyCharUntil = (char: string): Parser<string> =>
   new Parser((state) => {
     if (state.isError) return state;
+
     const { cursor, target } = state;
     const sliced = target.slice(cursor);
     const nextIndex = sliced.indexOf(char);

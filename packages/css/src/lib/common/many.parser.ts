@@ -3,6 +3,7 @@ import { Parser, updateParserResult, updateParserError } from '../Parser';
 export const many = <A>(parser: Parser<A>): Parser<A[]> => {
   return new Parser((state) => {
     if (state.isError) return state;
+
     const results = [];
     let nextState = state;
     // eslint-disable-next-line no-constant-condition
@@ -26,6 +27,7 @@ export const many = <A>(parser: Parser<A>): Parser<A[]> => {
 export const many1 = <A>(parser: Parser<A>): Parser<A[]> => {
   return new Parser((state) => {
     if (state.isError) return state;
+
     const response = many(parser).transform(state);
     if (response.result.length) {
       return response;
