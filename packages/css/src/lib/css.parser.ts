@@ -37,18 +37,18 @@ const ParseCssSelector = sequenceOf([char('.'), everyCharUntil('{')])
  ************ DECLARATION VALUES ***********
  */
 
-const CssColorParser = sequenceOf([
+const ParseCssColor = sequenceOf([
   choice([literal('rgba'), literal('hsl'), literal('#')]),
   betweenParens(many1(choice([ident, char('.'), char(',')])).map((x) => x.join(''))),
 ]).map((x) => {
   return `${x[0]}(${x[1]})`;
 });
 
-const CssDimensionsParser = recursiveParser(() =>
-  choice([DimensionWithUnitsParser, CssCalcParser]),
+const ParseCssDimensions = recursiveParser(() =>
+  choice([ParseDimensionWithUnits, ParseCssCalc]),
 );
 // 1.2rem calc(1.2rem *)
-const DimensionWithUnitsParser = sequenceOf([float, maybe(parseDeclarationUnit)]).mapFromData(
+const ParseDimensionWithUnits = sequenceOf([float, maybe(parseDeclarationUnit)]).mapFromData(
   (x) =>
     evaluateDimensionsNode(
       {
@@ -60,18 +60,18 @@ const DimensionWithUnitsParser = sequenceOf([float, maybe(parseDeclarationUnit)]
     ),
 );
 
-const CssCalcParser = sequenceOf([
+const ParseCssCalc = sequenceOf([
   literal('calc'),
   char('('),
-  DimensionWithUnitsParser,
+  ParseDimensionWithUnits,
   between(whitespace)(whitespace)(parseMathOperatorSymbol),
-  DimensionWithUnitsParser,
+  ParseDimensionWithUnits,
   char(')'),
 ]).mapFromData((x) => {
   return resolveCssCalc(x.result[2], x.result[3], x.result[4]);
 });
 
-const FlexToken = separatedBySpace(CssDimensionsParser).mapFromData((x): FlexStyle => {
+const ParseFlexValue = separatedBySpace(ParseCssDimensions).mapFromData((x): FlexStyle => {
   return x.result.reduce(
     (prev, current, index) => {
       if (index === 0) {
@@ -93,17 +93,17 @@ const FlexToken = separatedBySpace(CssDimensionsParser).mapFromData((x): FlexSty
   );
 });
 
-const DimensionNextSpace = sequenceOf([CssDimensionsParser, whitespace]).map((x) => x[0]);
+const DimensionNextSpace = sequenceOf([ParseCssDimensions, whitespace]).map((x) => x[0]);
 
-const ShadowValueToken = many(
+const ParseShadowValue = many(
   sequenceOf([
     maybe(literal(', ')),
     // REQUIRED
     DimensionNextSpace,
     // REQUIRED
-    sequenceOf([CssDimensionsParser, whitespace]).map((x) => x[0]),
+    sequenceOf([ParseCssDimensions, whitespace]).map((x) => x[0]),
     // OPTIONAL
-    maybe(sequenceOf([DimensionNextSpace, DimensionNextSpace, CssColorParser])),
+    maybe(sequenceOf([DimensionNextSpace, DimensionNextSpace, ParseCssColor])),
   ]),
 ).mapFromData((x): ShadowStyleIOS => {
   const shadow = x.result[0]!;
@@ -118,12 +118,12 @@ const ShadowValueToken = many(
   };
 });
 
-const TranslateValueToken = sequenceOf([
+const ParseTranslateValue = sequenceOf([
   literal('translate'),
   char('('),
-  CssDimensionsParser,
+  ParseCssDimensions,
   maybe(literal(', ')),
-  maybe(CssDimensionsParser),
+  maybe(ParseCssDimensions),
   char(')'),
 ]).mapFromData((x) => {
   const styles: AnyStyle['transform'] = [{ translateX: x.result[2] }];
@@ -135,10 +135,10 @@ const TranslateValueToken = sequenceOf([
   return styles;
 });
 
-const RotateValueToken = sequenceOf([
+const ParseRotateValue = sequenceOf([
   choice([literal('rotateX'), literal('rotateY'), literal('rotateZ'), literal('rotate')]),
   char('('),
-  CssDimensionsParser,
+  ParseCssDimensions,
   char(')'),
 ]).mapFromData((x): AnyStyle['transform'] => {
   if (x.result[0] === 'rotateX') {
@@ -171,25 +171,25 @@ const ParseCssDeclarationLine = coroutine((run) => {
     const meta = getPropertyValueType(property);
     if (meta === 'DIMENSION') {
       return {
-        [kebab2camel(property)]: run(CssDimensionsParser),
+        [kebab2camel(property)]: run(ParseCssDimensions),
       };
     }
     if (meta === 'FLEX') {
-      return run(FlexToken);
+      return run(ParseFlexValue);
     }
 
     if (meta === 'SHADOW') {
-      return run(ShadowValueToken);
+      return run(ParseShadowValue);
     }
 
     if (meta === 'TRANSFORM') {
       return {
-        transform: run(choice([TranslateValueToken, RotateValueToken])),
+        transform: run(choice([ParseTranslateValue, ParseRotateValue])),
       };
     }
 
     if (meta === 'COLOR') {
-      const value = run(CssColorParser);
+      const value = run(ParseCssColor);
       return {
         [kebab2camel(property)]: value,
       };
@@ -216,11 +216,11 @@ const ParseCssDeclarationLine = coroutine((run) => {
   return composeValue();
 });
 
-export const CssParser = recursiveParser(() => choice([AtRuleParser, RuleBlockParser]));
+export const ParseCss = recursiveParser(() => choice([ParseCssAtRule, ParseCssRuleBlock]));
 
-const GetAtRuleConditionToken = sequenceOf([parseDeclarationProperty, CssDimensionsParser]);
+const GetAtRuleConditionToken = sequenceOf([parseDeclarationProperty, ParseCssDimensions]);
 
-const AtRuleParser = coroutine((run) => {
+const ParseCssAtRule = coroutine((run) => {
   const context = run(getData);
   run(literal('@media'));
   run(whitespace);
@@ -231,13 +231,13 @@ const AtRuleParser = coroutine((run) => {
       context,
     )
   ) {
-    const rule = run(betweenBrackets(RuleBlockParser));
+    const rule = run(betweenBrackets(ParseCssRuleBlock));
     return rule;
   }
   return null;
 });
 
-const RuleBlockParser = sequenceOf([
+const ParseCssRuleBlock = sequenceOf([
   ParseCssSelector,
   betweenBrackets(ParseCssDeclarationLine),
 ]).map((x) => {

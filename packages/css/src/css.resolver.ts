@@ -1,9 +1,9 @@
-import { CssParser } from './lib/css.parser';
+import { ParseCss } from './lib/css.parser';
 import type { CssParserData, SelectorGroup } from './types';
 
 export const CreateCssResolver = () => {
   const parseCssTarget = (target: string, context: CssParserData) => {
-    const parsed = CssParser.run(target, context);
+    const parsed = ParseCss.run(target, context);
     if (parsed.isError) return null;
     return parsed.result;
   };
