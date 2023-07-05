@@ -1,5 +1,4 @@
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
-import type { Parser } from './lib/Parser';
 
 export interface AstSheetNode {
   type: 'SHEET';
@@ -73,8 +72,6 @@ export interface CssParserError {
   position: number;
   message: string;
 }
-
-export type CssParserType<Result> = Parser<Result, CssParserError, CssParserData>;
 
 export type CssParserCache = Map<
   string,

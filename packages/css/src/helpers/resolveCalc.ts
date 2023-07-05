@@ -1,34 +1,14 @@
-import type { AstDimensionsNode } from '../types';
-
-export const resolveCssCalc = (
-  left: AstDimensionsNode,
-  operator: string,
-  right: AstDimensionsNode,
-): AstDimensionsNode => {
+export const resolveCssCalc = (left: number, operator: string, right: number): number => {
   switch (operator) {
     case '+':
-      return {
-        ...left,
-        value: left.value + right.value,
-      };
+      return left + right;
     case '-':
-      return {
-        ...left,
-        value: left.value - right.value,
-      };
+      return left - right;
     case '*':
-      return {
-        ...left,
-        value: left.value * right.value,
-      };
+      return left * right;
     case '/':
-      return {
-        ...left,
-        value: left.value / right.value,
-      };
+      return left / right;
     default:
-      return {
-        ...left,
-      };
+      return left;
   }
 };

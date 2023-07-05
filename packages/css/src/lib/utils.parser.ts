@@ -16,11 +16,18 @@ export const mapSelector = (selector: string) => ({
 
 export const getPropertyValueType = (property: string) => {
   switch (property) {
-    case 'flex':
-      return 'FLEX';
+    case 'color':
+    case 'background-color':
+    case 'border-color':
+      return 'COLOR';
+
     case 'width':
-    case 'height': // MARGIN DIMENSIONS
-    case 'margin':
+    case 'height':
+    case 'max-width':
+    case 'max-height':
+    case 'min-width':
+    case 'min-height':
+    case 'margin': // MARGIN DIMENSIONS
     case 'margin-top':
     case 'margin-left':
     case 'margin-bottom':
@@ -32,14 +39,31 @@ export const getPropertyValueType = (property: string) => {
     case 'padding-right':
     case 'line-height': // FONT DIMENSIONS
     case 'font-size':
+    case 'top': // POSITION
+    case 'left':
+    case 'bottom':
+    case 'right':
+    case 'border-top': // BORDER
+    case 'border-left':
+    case 'border-bottom':
+    case 'border-right':
+    case 'border-radius':
+    case 'border-width':
+    case 'border-top-left-radius':
+    case 'border-top-right-radius':
+    case 'border-bottom-left-radius':
+    case 'border-bottom-right-radius':
       return 'DIMENSION';
-    case 'color':
-    case 'background-color':
-      return 'COLOR';
+
+    case 'flex':
+      return 'FLEX';
+
     case 'box-shadow':
       return 'SHADOW';
+
     case 'transform':
       return 'TRANSFORM';
+
     default:
       return 'RAW';
   }

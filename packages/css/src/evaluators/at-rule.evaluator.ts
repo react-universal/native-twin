@@ -1,15 +1,14 @@
-import type { AstDimensionsNode, CssParserData } from '../types';
-import { evaluateDimensionsNode } from './dimensions.evaluator';
+import type { CssParserData } from '../types';
 
 export const evaluateMediaQueryConstrains = (
   node: {
-    value: AstDimensionsNode;
+    value: number;
     property: string;
   },
   context: CssParserData,
 ) => {
-  if (node.value.type === 'DIMENSIONS') {
-    const value = evaluateDimensionsNode(node.value, context);
+  if (typeof node.value == 'number') {
+    const value = node.value;
     let valueNumber = typeof value === 'number' ? value : parseFloat(value);
     if (node.property === 'width') {
       return context.deviceWidth == valueNumber;

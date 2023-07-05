@@ -18,7 +18,7 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1'>
+    <View className='flex-1 rotate-[1turn]'>
       <View
         className={clsx(
           'flex-1',

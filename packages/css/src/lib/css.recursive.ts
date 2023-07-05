@@ -2,7 +2,7 @@ import type { FlexStyle, ShadowStyleIOS } from 'react-native';
 import { evaluateMediaQueryConstrains } from '../evaluators/at-rule.evaluator';
 import { evaluateDimensionsNode } from '../evaluators/dimensions.evaluator';
 import { kebab2camel, resolveCssCalc } from '../helpers';
-import type { AnyStyle, AstDimensionsNode } from '../types';
+import type { AnyStyle } from '../types';
 import { between } from './common/between.parser';
 import { choice } from './common/choice.parser';
 import {
@@ -27,7 +27,11 @@ import { getPropertyValueType, mapSelector } from './utils.parser';
 /*
  ************ SELECTORS ***********
  */
-const ParseCssSelector = everyCharUntil('{').map(mapSelector);
+// subsequent-sibling combinator
+// '~' === '\u{007E}'; -> true
+const ParseCssSelector = sequenceOf([char('.'), everyCharUntil('{')])
+  .map((x) => x[0] + x[1])
+  .map(mapSelector);
 
 /*
  ************ DECLARATION VALUES ***********
@@ -45,11 +49,15 @@ const CssDimensionsParser = recursiveParser(() =>
 );
 
 const DimensionWithUnitsParser = sequenceOf([float, maybe(parseDeclarationUnit)]).mapFromData(
-  (x): AstDimensionsNode => ({
-    type: 'DIMENSIONS',
-    units: x.result[1] ?? 'none',
-    value: parseFloat(x.result[0]),
-  }),
+  (x) =>
+    evaluateDimensionsNode(
+      {
+        type: 'DIMENSIONS',
+        units: x.result[1] ?? 'none',
+        value: parseFloat(x.result[0]),
+      },
+      x.data,
+    ),
 );
 
 const CssCalcParser = sequenceOf([
@@ -67,13 +75,13 @@ const FlexToken = separatedBySpace(CssDimensionsParser).mapFromData((x): FlexSty
   return x.result.reduce(
     (prev, current, index) => {
       if (index === 0) {
-        prev.flexShrink = evaluateDimensionsNode(current, x.data);
+        prev.flexShrink = current;
       }
       if (index === 1) {
-        prev.flexShrink = evaluateDimensionsNode(current, x.data);
+        prev.flexShrink = current;
       }
       if (index === 2) {
-        prev.flexBasis = evaluateDimensionsNode(current, x.data);
+        prev.flexBasis = current;
       }
       return prev;
     },
@@ -101,11 +109,11 @@ const ShadowValueToken = many(
   const shadow = x.result[0]!;
   return {
     shadowOffset: {
-      width: evaluateDimensionsNode(shadow[1], x.data),
-      height: evaluateDimensionsNode(shadow[2], x.data),
+      width: shadow[1],
+      height: shadow[2],
     },
-    shadowRadius: shadow[3]?.[0] && evaluateDimensionsNode(shadow[3]![0], x.data),
-    shadowOpacity: shadow[3]?.[1] && evaluateDimensionsNode(shadow[3]![1], x.data),
+    shadowRadius: shadow[3]?.[0] && shadow[3]![0],
+    shadowOpacity: shadow[3]?.[1] && shadow[3]![1],
     shadowColor: shadow[3]?.[2],
   };
 });
@@ -118,29 +126,48 @@ const TranslateValueToken = sequenceOf([
   maybe(CssDimensionsParser),
   char(')'),
 ]).mapFromData((x) => {
-  const styles: AnyStyle['transform'] = [
-    { translateX: evaluateDimensionsNode(x.result[2], x.data) },
-  ];
+  const styles: AnyStyle['transform'] = [{ translateX: x.result[2] }];
   if (x.result[4]) {
     styles.push({
-      translateY: evaluateDimensionsNode(x.result[4], x.data),
+      translateY: x.result[4],
     });
   }
   return styles;
 });
 
+const RotateValueToken = sequenceOf([
+  choice([literal('rotateX'), literal('rotateY'), literal('rotateZ'), literal('rotate')]),
+  char('('),
+  CssDimensionsParser,
+  char(')'),
+]).mapFromData((x): AnyStyle['transform'] => {
+  if (x.result[0] === 'rotateX') {
+    return [{ rotateX: `${x.result[2]}` }];
+  }
+  if (x.result[0] && 'rotateY') {
+    return [{ rotateY: `${x.result[2]}` }];
+  }
+
+  return [{ rotate: `${x.result[2]}` }];
+});
+// translate(1px, 2px)
+// translateX(1px)
+// translateY(1px)
+// rotate(1px, 2px, 3px)
+// rotateX(1px)
+// rotateY(1px)
+// rotateZ(1px)
 /*
  ************ RULE BLOCK ***********
  */
 
 const ParseCssDeclarationLine = coroutine((run) => {
   const getValue = () => {
-    const context = run(getData);
     const property = run(parseDeclarationProperty);
     const meta = getPropertyValueType(property);
     if (meta === 'DIMENSION') {
       return {
-        [kebab2camel(property)]: evaluateDimensionsNode(run(CssDimensionsParser), context),
+        [kebab2camel(property)]: run(CssDimensionsParser),
       };
     }
     if (meta === 'FLEX') {
@@ -153,7 +180,7 @@ const ParseCssDeclarationLine = coroutine((run) => {
 
     if (meta === 'TRANSFORM') {
       return {
-        transform: run(TranslateValueToken),
+        transform: run(choice([TranslateValueToken, RotateValueToken])),
       };
     }
 

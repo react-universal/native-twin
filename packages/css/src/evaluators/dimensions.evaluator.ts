@@ -1,7 +1,6 @@
 import type { AstDimensionsNode, CssParserData } from '../types';
 
 export const evaluateDimensionsNode = (node: AstDimensionsNode, context: CssParserData) => {
-  // console.log('evaluateDimensionsNode -> node', node);
   switch (node.units) {
     case 'rem':
     case 'em':
@@ -12,6 +11,12 @@ export const evaluateDimensionsNode = (node: AstDimensionsNode, context: CssPars
       return context.deviceHeight! * (node.value / 100);
     case 'vw':
       return context.deviceWidth! * (node.value / 100);
+    case 'turn':
+      return `${360 * node.value}deg` as unknown as number;
+    case 'deg':
+      return `${node.value}deg` as unknown as number;
+    case 'rad':
+      return `${node.value}rad` as unknown as number;
     case 'none':
     case 'px':
     default:

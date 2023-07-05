@@ -31,6 +31,8 @@ export const parseDeclarationUnit = choice([
   literal('vh'),
   literal('vw'),
   literal('deg'),
+  literal('rad'),
+  literal('turn'),
   literal('ex'),
   literal('in'),
 ]);
