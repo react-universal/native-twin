@@ -1,4 +1,4 @@
-import { CssParser } from './lib/css.recursive';
+import { CssParser } from './lib/css.parser';
 import type { CssParserData, SelectorGroup } from './types';
 
 export const CreateCssResolver = () => {

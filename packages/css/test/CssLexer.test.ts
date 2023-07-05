@@ -1,7 +1,8 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import { afterEach, describe, expect, it } from 'vitest';
 import { CssResolver } from '../src/css.resolver';
-import { inspectTestElement } from './test-utils';
+
+// import { inspectTestElement } from './test-utils';
 
 const { tx, tw } = initialize();
 const defaultConfig = {
@@ -34,7 +35,7 @@ describe('@universal-labs/css Resular Rules', () => {
   it('text-2xl', () => {
     tx('text-2xl rotate-[1.2turn]');
     const result = CssResolver(tw.target, defaultConfig);
-    inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
+    // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
     // const result = new CssLexer(tw.target[0]!, defaultConfig).getSelector();
     // inspectTestElement('text-2xl', tw.target, result);
     expect(result.base).toStrictEqual({
@@ -72,7 +73,7 @@ describe('@universal-labs/css Resular Rules', () => {
   it('bg-gray-200', () => {
     tx('bg-gray-200');
     const result = CssResolver(tw.target, defaultConfig);
-    inspectTestElement('bg-gray-200', tw.target, result);
+    // inspectTestElement('bg-gray-200', tw.target, result);
     expect(result.base).toStrictEqual({ backgroundColor: 'rgba(229,231,235,1)' });
   });
 

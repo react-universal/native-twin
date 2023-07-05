@@ -47,7 +47,7 @@ const CssColorParser = sequenceOf([
 const CssDimensionsParser = recursiveParser(() =>
   choice([DimensionWithUnitsParser, CssCalcParser]),
 );
-
+// 1.2rem calc(1.2rem *)
 const DimensionWithUnitsParser = sequenceOf([float, maybe(parseDeclarationUnit)]).mapFromData(
   (x) =>
     evaluateDimensionsNode(
@@ -146,6 +146,10 @@ const RotateValueToken = sequenceOf([
   }
   if (x.result[0] && 'rotateY') {
     return [{ rotateY: `${x.result[2]}` }];
+  }
+
+  if (x.result[0] && 'rotateZ') {
+    return [{ rotateZ: `${x.result[2]}` }];
   }
 
   return [{ rotate: `${x.result[2]}` }];
