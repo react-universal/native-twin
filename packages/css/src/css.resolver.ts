@@ -1,9 +1,10 @@
-import { ParseCss } from './lib/css.combinators';
-import type { CssParserData, SelectorGroup } from './types';
+import type { SelectorGroup } from './css.types';
+import { ParseCssRules } from './lib/css/rules.parser';
+import type { CssParserData } from './types';
 
 export const CreateCssResolver = () => {
   const parseCssTarget = (target: string, context: CssParserData) => {
-    const parsed = ParseCss.run(target, context);
+    const parsed = ParseCssRules.run(target, context);
     if (parsed.isError) return null;
     return parsed.result;
   };

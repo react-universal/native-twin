@@ -15,7 +15,7 @@ export const char = (cs: string): Parser<string> =>
     });
   });
 
-export const literal = (cs: string): Parser<string> =>
+export const literal = <A extends string>(cs: A): Parser<A> =>
   new Parser((state) => {
     if (state.isError) return state;
 

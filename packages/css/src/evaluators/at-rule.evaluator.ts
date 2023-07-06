@@ -9,7 +9,7 @@ export const evaluateMediaQueryConstrains = (
 ) => {
   if (typeof node.value == 'number') {
     const value = node.value;
-    let valueNumber = typeof value === 'number' ? value : parseFloat(value);
+    let valueNumber = typeof value == 'number' ? value : parseFloat(value);
     if (node.property === 'width') {
       return context.deviceWidth == valueNumber;
     }

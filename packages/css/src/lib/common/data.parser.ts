@@ -1,5 +1,5 @@
-import type { CssParserData } from '../../types';
-import { Parser, ParserState, updateParserData, updateParserResult } from '../Parser';
+import type { CssParserData, ParserState } from '../../types';
+import { Parser, updateParserData, updateParserResult } from '../Parser';
 
 export const getData = new Parser((state): ParserState<CssParserData> => {
   if (state.isError) return state;

@@ -1,4 +1,5 @@
-import { Parser, ParserState, updateParserResult } from '../Parser';
+import type { ParserState } from '../../types';
+import { Parser, updateParserResult } from '../Parser';
 
 type ParserFn<T> = (_yield: <K>(parser: Parser<K>) => K) => T;
 export function coroutine<T>(parserFn: ParserFn<T>): Parser<T> {

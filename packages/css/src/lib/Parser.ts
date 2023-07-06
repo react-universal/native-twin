@@ -1,34 +1,12 @@
-import type { CssParserData, CssParserError } from '../types';
-
-type StateTransformerFunction<Result> = (state: ParserState<any>) => ParserState<Result>;
-
-export type ParserState<Result> = {
-  target: string;
-} & InternalResultType<Result>;
-
-export type InternalResultType<Result> = {
-  isError: boolean;
-  error: CssParserError | null;
-  cursor: number;
-  result: Result;
-  data: CssParserData;
-};
-
-export type ResultType<Result> = ParserError | ParserSuccess<Result>;
-
-export type ParserError = {
-  isError: true;
-  error: CssParserError | null;
-  cursor: number;
-  data: CssParserData;
-};
-
-export type ParserSuccess<Result> = {
-  isError: false;
-  cursor: number;
-  result: Result;
-  data: CssParserData;
-};
+import type {
+  CssParserData,
+  CssParserError,
+  ResultType,
+  StateTransformerFunction,
+  ParserError,
+  ParserState,
+  ParserSuccess,
+} from '../types';
 
 export class Parser<Result> {
   transform: StateTransformerFunction<Result>;

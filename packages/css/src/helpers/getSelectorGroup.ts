@@ -1,4 +1,4 @@
-import type { SelectorGroup } from '../types';
+import type { SelectorGroup } from '../css.types';
 
 export const getSelectorGroup = (selector: string): SelectorGroup => {
   if (

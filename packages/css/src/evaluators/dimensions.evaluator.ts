@@ -1,6 +1,7 @@
-import type { AstDimensionsNode, CssParserData } from '../types';
+import type { CSSLengthUnit } from '../css.types';
+import type { CssParserData } from '../types';
 
-export const evaluateDimensionsNode = (node: AstDimensionsNode, context: CssParserData) => {
+export const evaluateDimensionsNode = (node: CSSLengthUnit, context: CssParserData) => {
   switch (node.units) {
     case 'rem':
     case 'em':
