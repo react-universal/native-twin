@@ -1,16 +1,21 @@
 import type { FlexStyle, ShadowStyleIOS } from 'react-native';
 import type { AnyStyle } from '../../../css.types';
 import { choice } from '../../common/choice.parser';
-import { betweenParens, separatedBySpace } from '../../common/composed.parsers';
-import { many, many1 } from '../../common/many.parser';
+import {
+  betweenParens,
+  separatedByComma,
+  whitespaceSurrounded,
+} from '../../common/composed.parsers';
 import { maybe } from '../../common/maybe.parser';
+import { float } from '../../common/number.parser';
 import { sequenceOf } from '../../common/sequence-of';
-import { char, ident, literal, whitespace } from '../../common/string.parser';
+import { skip } from '../../common/skip.parser';
+import { char, literal } from '../../common/string.parser';
 import { ParseCssDimensions } from '../dimensions.parser';
 
 export const ParseCssColor = sequenceOf([
   choice([literal('rgba'), literal('hsl'), literal('#')]),
-  betweenParens(many1(choice([ident, char('.'), char(',')])).map((x) => x.join(''))),
+  betweenParens(separatedByComma(float)),
 ]).map((x) => {
   return `${x[0]}(${x[1]})`;
 });
@@ -52,48 +57,46 @@ export const ParseTranslateValue = sequenceOf([
   return styles;
 });
 
-export const ParseFlexValue = separatedBySpace(ParseCssDimensions).mapFromData(
-  (x): FlexStyle => {
-    return x.result.reduce(
-      (prev, current, index) => {
-        if (index === 0) {
-          prev.flexShrink = current;
-        }
-        if (index === 1) {
-          prev.flexShrink = current;
-        }
-        if (index === 2) {
-          prev.flexBasis = current;
-        }
-        return prev;
-      },
-      {
-        flexGrow: 1,
-        flexShrink: 1,
-        flexBasis: '0%',
-      } as FlexStyle,
-    );
-  },
-);
+/* flex-grow | flex-shrink | flex-basis */
+export const ParseFlexValue = sequenceOf([
+  ParseCssDimensions,
+  maybe(ParseCssDimensions),
+  maybe(ParseCssDimensions),
+]).map(([flexGrow, flexShrink, flexBasis]): FlexStyle => {
+  return {
+    flexGrow,
+    flexShrink: flexShrink ?? flexGrow,
+    flexBasis: flexBasis ?? '0%',
+  };
+});
 
-const DimensionNextSpace = sequenceOf([ParseCssDimensions, whitespace]).map((x) => x[0]);
+// <width> <height> <radius> <spread-radius> <color>
+const ManyDimensions = sequenceOf([
+  whitespaceSurrounded(ParseCssDimensions),
+  whitespaceSurrounded(ParseCssDimensions),
+  whitespaceSurrounded(ParseCssDimensions),
+  whitespaceSurrounded(ParseCssDimensions),
+]).map(([width, height, radius, opacity]) => ({
+  width,
+  height,
+  radius,
+  opacity,
+}));
 
-export const ParseShadowValue = many(
-  sequenceOf([
-    maybe(literal(', ')),
-    DimensionNextSpace,
-    sequenceOf([ParseCssDimensions, whitespace]).map((x) => x[0]),
-    maybe(sequenceOf([DimensionNextSpace, DimensionNextSpace, ParseCssColor])),
-  ]),
-).mapFromData((x): ShadowStyleIOS => {
-  const shadow = x.result[0]!;
+export const ParseShadowValue = sequenceOf([
+  ManyDimensions,
+  ParseCssColor,
+  skip(char(',')),
+  skip(ManyDimensions),
+  skip(ParseCssColor),
+]).map((result): ShadowStyleIOS => {
   return {
     shadowOffset: {
-      width: shadow[1],
-      height: shadow[2],
+      width: result[0].width,
+      height: result[0].height,
     },
-    shadowRadius: shadow[3]?.[0] && shadow[3]![0],
-    shadowOpacity: shadow[3]?.[1] && shadow[3]![1],
-    shadowColor: shadow[3]?.[2],
+    shadowColor: result[1],
+    shadowRadius: result[0].radius,
+    shadowOpacity: result[0].opacity,
   };
 });

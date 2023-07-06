@@ -26,6 +26,15 @@ export function sequenceOf<A, B, C, D, E, F>([p1, p2, p3, p4, p5, p6]: [
   Parser<E>,
   Parser<F>,
 ]): Parser<[A, B, C, D, E, F]>;
+export function sequenceOf<A, B, C, D, E, F, G>([p1, p2, p3, p4, p5, p6]: [
+  Parser<A>,
+  Parser<B>,
+  Parser<C>,
+  Parser<D>,
+  Parser<E>,
+  Parser<F>,
+  Parser<G>,
+]): Parser<[A, B, C, D, E, F, G]>;
 export function sequenceOf(parsers: Parser<any>[]) {
   return new Parser((state) => {
     if (state.isError) return state;

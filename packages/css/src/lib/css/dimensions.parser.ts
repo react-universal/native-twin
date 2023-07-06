@@ -12,7 +12,7 @@ import { sequenceOf } from '../common/sequence-of';
 import { literal } from '../common/string.parser';
 
 export const ParseCssDimensions = recursiveParser(() =>
-  choice([ParseDimensionWithUnits, ParseCssCalc]),
+  choice([whitespaceSurrounded(ParseDimensionWithUnits), ParseCssCalc]),
 );
 
 const ParseDimensionWithUnits = sequenceOf([float, maybe(parseDeclarationUnit)]).mapFromData(
