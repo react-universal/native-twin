@@ -63,7 +63,7 @@ function HomeScreen() {
         <Image
           source={testImage}
           resizeMode='cover'
-          className='-translate-x-[10px] rounded-full border-1'
+          className='-translate-x-[10vw] rounded-full border-1'
         />
         <TextField />
         <View
@@ -75,7 +75,7 @@ function HomeScreen() {
         >
           <H2
             suppressHighlighting
-            className='font-inter-bold text-xl text-gray-800 group-hover:text-white -mt-2'
+            className='font-inter-bold rotate-6 text-xl text-gray-800 group-hover:text-white -mt-2'
           >
             Deeply nested hover
           </H2>

@@ -57,6 +57,9 @@ export const getPropertyValueType = (property: string) => {
     case 'transform':
       return 'TRANSFORM';
 
+    case 'font-family': // IDENT
+      return 'FIRST-COMMA-IDENT';
+
     default:
       return 'RAW';
   }

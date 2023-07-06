@@ -29,7 +29,7 @@ export const many1 = <A>(parser: Parser<A>): Parser<A[]> => {
     if (state.isError) return state;
 
     const response = many(parser).transform(state);
-    if (response.result.length) {
+    if (response.result.length > 0) {
       return response;
     }
     return updateParserError(state, {

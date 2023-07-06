@@ -1,10 +1,11 @@
 import type { AnyStyle } from '../../../css.types';
 import { choice } from '../../common/choice.parser';
-import { parseDeclarationProperty } from '../../common/composed.parsers';
+import { parseDeclarationProperty, separatedByComma } from '../../common/composed.parsers';
 import { coroutine } from '../../common/coroutine.parser';
+import { many } from '../../common/many.parser';
 import { maybe } from '../../common/maybe.parser';
 import { peek } from '../../common/peek.parser';
-import { ident, char } from '../../common/string.parser';
+import { ident, char, whitespace } from '../../common/string.parser';
 import { getPropertyValueType } from '../../utils.parser';
 import { ParseCssDimensions } from '../dimensions.parser';
 import {
@@ -44,6 +45,16 @@ export const ParseCssDeclarationLine = coroutine((run) => {
         [kebab2camel(property)]: value,
       };
     }
+    //CSS:  .font-sans{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"}
+
+    if (meta == 'FIRST-COMMA-IDENT') {
+      const value = separatedByComma(many(choice([ident, whitespace, char('"')]))).map((x) => {
+        return x;
+      });
+      return {
+        [kebab2camel(property)]: run(value)[0]![0],
+      };
+    }
     return {
       [kebab2camel(property)]: run(ident),
     };
@@ -51,7 +62,7 @@ export const ParseCssDeclarationLine = coroutine((run) => {
 
   const composeValue = (result: AnyStyle = {}): AnyStyle => {
     run(maybe(char(';')));
-    const isValid = run(peek) !== '}';
+    const isValid = run(peek) !== '}' || run(peek) == '"';
     if (!isValid) return result;
     let value = {
       ...result,

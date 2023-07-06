@@ -5,7 +5,11 @@ import type { CssParserData } from './types';
 export const CreateCssResolver = () => {
   const parseCssTarget = (target: string, context: CssParserData['context']) => {
     const parsed = ParseCssRules.run(target, context);
-    if (parsed.isError) return null;
+    if (parsed.isError) {
+      // console.log('CSS: ', target);
+      // console.log('ERROR: ', parsed);
+      return null;
+    }
     return parsed.result;
   };
 

@@ -1,8 +1,7 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import { afterEach, describe, expect, it } from 'vitest';
 import { CssResolver } from '../src/css.resolver';
-
-// import { inspectTestElement } from './test-utils';
+import { inspectTestElement } from './test-utils';
 
 const { tx, tw } = initialize();
 const defaultConfig = {
@@ -41,6 +40,13 @@ describe('@universal-labs/css Resular Rules', () => {
       lineHeight: 32,
       transform: [{ rotate: '432deg' }],
     });
+  });
+
+  it('font-sans', () => {
+    tx('font-sans');
+    const result = CssResolver(tw.target, defaultConfig);
+    inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
+    expect(result.base).toStrictEqual({ fontFamily: 'ui-sans-serif' });
   });
 
   it('shadow', () => {

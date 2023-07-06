@@ -40,7 +40,10 @@ export const regex = (re: RegExp): Parser<string> =>
     const match = sliced.match(re);
     if (!match) {
       return updateParserError(state, {
-        message: `ParserError: regex could not match any char`,
+        message: `ParserError: regex could not match any char at: ${cursor}, got: ${target.slice(
+          cursor,
+          cursor + 5,
+        )}`,
         position: cursor,
       });
     }
@@ -49,7 +52,7 @@ export const regex = (re: RegExp): Parser<string> =>
 
 export const letters: Parser<string> = regex(regexLetters);
 
-const regexIdent = /^[_a-z0-9-]+/;
+const regexIdent = /^[_a-z0-9A-Z-]+/;
 export const ident: Parser<string> = regex(regexIdent);
 const regexWhiteSpace = /^\s+/;
 export const whitespace: Parser<string> = regex(regexWhiteSpace);
