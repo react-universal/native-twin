@@ -22,22 +22,20 @@ export const ParseCssColor = sequenceOf([
 
 export const ParseRotateValue = sequenceOf([
   choice([literal('rotateX'), literal('rotateY'), literal('rotateZ'), literal('rotate')]),
-  char('('),
-  ParseCssDimensions,
-  char(')'),
-]).mapFromData((x): AnyStyle['transform'] => {
-  if (x.result[0] === 'rotateX') {
-    return [{ rotateX: `${x.result[2]}` }];
+  betweenParens(ParseCssDimensions),
+]).map(([key, value]): AnyStyle['transform'] => {
+  if (key == 'rotateX') {
+    return [{ rotateX: `${value}` }];
   }
-  if (x.result[0] && 'rotateY') {
-    return [{ rotateY: `${x.result[2]}` }];
+  if (key == 'rotateY') {
+    return [{ rotateY: `${value}` }];
   }
 
-  if (x.result[0] && 'rotateZ') {
-    return [{ rotateZ: `${x.result[2]}` }];
+  if (key == 'rotateZ') {
+    return [{ rotateZ: `${value}` }];
   }
 
-  return [{ rotate: `${x.result[2]}` }];
+  return [{ rotate: `${value}` }];
 });
 
 export const ParseTranslateValue = sequenceOf([
@@ -62,13 +60,13 @@ export const ParseFlexValue = sequenceOf([
   ParseCssDimensions,
   maybe(ParseCssDimensions),
   maybe(ParseCssDimensions),
-]).map(([flexGrow, flexShrink, flexBasis]): FlexStyle => {
-  return {
+]).map(
+  ([flexGrow, flexShrink, flexBasis]): FlexStyle => ({
     flexGrow,
     flexShrink: flexShrink ?? flexGrow,
     flexBasis: flexBasis ?? '0%',
-  };
-});
+  }),
+);
 
 // <width> <height> <radius> <spread-radius> <color>
 const ManyDimensions = sequenceOf([
@@ -89,8 +87,8 @@ export const ParseShadowValue = sequenceOf([
   skip(char(',')),
   skip(ManyDimensions),
   skip(ParseCssColor),
-]).map((result): ShadowStyleIOS => {
-  return {
+]).map(
+  (result): ShadowStyleIOS => ({
     shadowOffset: {
       width: result[0].width,
       height: result[0].height,
@@ -98,5 +96,5 @@ export const ParseShadowValue = sequenceOf([
     shadowColor: result[1],
     shadowRadius: result[0].radius,
     shadowOpacity: result[0].opacity,
-  };
-});
+  }),
+);

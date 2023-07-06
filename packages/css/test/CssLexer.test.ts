@@ -36,12 +36,10 @@ describe('@universal-labs/css Resular Rules', () => {
     tx('text-2xl rotate-[1.2turn]');
     const result = CssResolver(tw.target, defaultConfig);
     // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
-    // const result = new CssLexer(tw.target[0]!, defaultConfig).getSelector();
-    // inspectTestElement('text-2xl', tw.target, result);
     expect(result.base).toStrictEqual({
       fontSize: 24,
       lineHeight: 32,
-      transform: [{ rotateY: '432deg' }],
+      transform: [{ rotate: '432deg' }],
     });
   });
 
