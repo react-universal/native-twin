@@ -1,4 +1,4 @@
-import { evaluateMediaQueryConstrains } from '../../evaluators/at-rule.evaluator';
+import type { CssParserData } from '../../types';
 import { choice } from '../common/choice.parser';
 import {
   betweenBrackets,
@@ -50,3 +50,40 @@ const ParseCssAtRule = coroutine((run) => {
   }
   return null;
 });
+
+const evaluateMediaQueryConstrains = (
+  node: {
+    value: number;
+    property: string;
+  },
+  data: CssParserData,
+) => {
+  if (typeof node.value == 'number') {
+    const value = node.value;
+    let valueNumber = typeof value == 'number' ? value : parseFloat(value);
+    if (node.property === 'width') {
+      return data.context.deviceWidth == valueNumber;
+    }
+
+    if (node.property === 'height') {
+      return data.context.deviceHeight == valueNumber;
+    }
+
+    if (node.property === 'min-width') {
+      return data.context.deviceWidth >= valueNumber;
+    }
+
+    if (node.property === 'max-width') {
+      return data.context.deviceWidth <= valueNumber;
+    }
+
+    if (node.property === 'min-height') {
+      return data.context.deviceHeight >= valueNumber;
+    }
+
+    if (node.property === 'max-height') {
+      return data.context.deviceHeight <= valueNumber;
+    }
+  }
+  return true;
+};

@@ -1,5 +1,4 @@
 import type { AnyStyle } from '../../../css.types';
-import { kebab2camel } from '../../../helpers';
 import { choice } from '../../common/choice.parser';
 import { parseDeclarationProperty } from '../../common/composed.parsers';
 import { coroutine } from '../../common/coroutine.parser';
@@ -66,3 +65,8 @@ export const ParseCssDeclarationLine = coroutine((run) => {
 
   return composeValue();
 });
+
+function kebab2camel(input: string) {
+  if (!input.includes('-')) return input;
+  return input.replace(/-./g, (x) => x.toUpperCase().charAt(1));
+}

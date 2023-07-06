@@ -1,5 +1,3 @@
-import { evaluateDimensionsNode } from '../../evaluators/dimensions.evaluator';
-import { resolveCssCalc } from '../../helpers';
 import { between } from '../common/between.parser';
 import { choice } from '../common/choice.parser';
 import { parseDeclarationUnit, parseMathOperatorSymbol } from '../common/composed.parsers';
@@ -14,14 +12,30 @@ export const ParseCssDimensions = recursiveParser(() =>
 );
 // 1.2rem calc(1.2rem *)
 const ParseDimensionWithUnits = sequenceOf([float, maybe(parseDeclarationUnit)]).mapFromData(
-  (x) =>
-    evaluateDimensionsNode(
-      {
-        units: x.result[1] ?? 'none',
-        value: parseFloat(x.result[0]),
-      },
-      x.data,
-    ),
+  (parserState) => {
+    const { result, data } = parserState;
+    const value = parseFloat(result[0]);
+    switch (result[1]) {
+      case 'rem':
+      case 'em':
+        return value * data.context.rem;
+      case '%':
+        return `${value}%` as unknown as number;
+      case 'vh':
+        return data.context.deviceHeight! * (value / 100);
+      case 'vw':
+        return data.context.deviceWidth! * (value / 100);
+      case 'turn':
+        return `${360 * value}deg` as unknown as number;
+      case 'deg':
+        return `${value}deg` as unknown as number;
+      case 'rad':
+        return `${value}rad` as unknown as number;
+      case 'px':
+      default:
+        return value;
+    }
+  },
 );
 
 const ParseCssCalc = sequenceOf([
@@ -32,5 +46,18 @@ const ParseCssCalc = sequenceOf([
   ParseDimensionWithUnits,
   char(')'),
 ]).mapFromData((x) => {
-  return resolveCssCalc(x.result[2], x.result[3], x.result[4]);
+  const left = x.result[2];
+  const right = x.result[4];
+  switch (x.result[3]) {
+    case '+':
+      return left + right;
+    case '-':
+      return left - right;
+    case '*':
+      return left * right;
+    case '/':
+      return left / right;
+    default:
+      return left;
+  }
 });

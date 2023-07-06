@@ -14,7 +14,7 @@ export class Parser<Result> {
     this.transform = transform;
   }
 
-  run(target: string, context: CssParserData): ResultType<Result> {
+  run(target: string, context: CssParserData['context']): ResultType<Result> {
     const state = createParserState(target, context);
 
     const resultState = this.transform(state);
@@ -150,14 +150,23 @@ export const updateParserState = <Result, Result2>(
 });
 
 // createParserState :: x -> s -> ParserState e a s
-export const createParserState = (target: string, data: CssParserData): ParserState<null> => {
+export const createParserState = (
+  target: string,
+  context: CssParserData['context'],
+): ParserState<null> => {
   return {
     target,
     isError: false,
     error: null,
     result: null,
     cursor: 0,
-    data,
+    data: {
+      context,
+      seen: {
+        selectors: new Set(),
+        styles: {},
+      },
+    },
   };
 };
 

@@ -3,13 +3,13 @@ import { ParseCssRules } from './lib/css/rules.parser';
 import type { CssParserData } from './types';
 
 export const CreateCssResolver = () => {
-  const parseCssTarget = (target: string, context: CssParserData) => {
+  const parseCssTarget = (target: string, context: CssParserData['context']) => {
     const parsed = ParseCssRules.run(target, context);
     if (parsed.isError) return null;
     return parsed.result;
   };
 
-  return function interpreter(target: string[], context: CssParserData) {
+  return function interpreter(target: string[], context: CssParserData['context']) {
     return target.reduce(
       (prev, current) => {
         const parserResult = parseCssTarget(current, context);

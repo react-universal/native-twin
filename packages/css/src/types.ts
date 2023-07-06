@@ -1,9 +1,15 @@
-import type { SelectorGroup } from './css.types';
+import type { AnyStyle, SelectorGroup } from './css.types';
 
 export interface CssParserData {
-  rem: number;
-  deviceWidth: number;
-  deviceHeight: number;
+  context: {
+    rem: number;
+    deviceWidth: number;
+    deviceHeight: number;
+  };
+  seen: {
+    selectors: Set<string>;
+    styles: AnyStyle;
+  };
 }
 
 export interface CssParserError {
