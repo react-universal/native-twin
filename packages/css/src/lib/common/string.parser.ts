@@ -65,3 +65,5 @@ export const everyCharUntil = (char: string): Parser<string> =>
     const nextIndex = sliced.indexOf(char);
     return updateParserState(state, sliced.slice(0, nextIndex), cursor + nextIndex);
   });
+
+export const optionalWhitespace = maybe(whitespace).map((x) => x || '');

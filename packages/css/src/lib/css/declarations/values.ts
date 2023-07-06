@@ -81,11 +81,8 @@ const DimensionNextSpace = sequenceOf([ParseCssDimensions, whitespace]).map((x) 
 export const ParseShadowValue = many(
   sequenceOf([
     maybe(literal(', ')),
-    // REQUIRED
     DimensionNextSpace,
-    // REQUIRED
     sequenceOf([ParseCssDimensions, whitespace]).map((x) => x[0]),
-    // OPTIONAL
     maybe(sequenceOf([DimensionNextSpace, DimensionNextSpace, ParseCssColor])),
   ]),
 ).mapFromData((x): ShadowStyleIOS => {
