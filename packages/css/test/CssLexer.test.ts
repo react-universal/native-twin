@@ -1,7 +1,7 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import { afterEach, describe, expect, it } from 'vitest';
-import { CssResolver } from '../src/css.resolver';
-import { createParserContext } from '../src/lib/Parser';
+import { CssResolver } from '../src';
+import { createParserContext } from '../src/parsers/Parser';
 
 // import { inspectTestElement } from './test-utils';
 
