@@ -8,15 +8,13 @@ import { peek } from '../../common/peek.parser';
 import { ident, char, whitespace } from '../../common/string.parser';
 import { getPropertyValueType } from '../../utils.parser';
 import { ParseCssDimensions } from '../dimensions.parser';
-import {
-  ParseFlexValue,
-  ParseCssColor,
-  ParseRotateValue,
-  ParseShadowValue,
-  ParseTranslateValue,
-  ParseAspectRatio,
-  ParseSkewValue,
-} from './values';
+import { ParseAspectRatio } from './resolvers/aspect-ratio.parser';
+import { ParseShadowValue } from './resolvers/box-shadow.parser';
+import { ParseCssColor } from './resolvers/color.parser';
+import { ParseFlexValue } from './resolvers/flex.parser';
+import { ParseRotateValue } from './resolvers/rotate.parser';
+import { ParseSkewValue } from './resolvers/skew.parser';
+import { ParseTranslateValue } from './resolvers/translate.parser';
 
 export const ParseCssDeclarationLine = coroutine((run) => {
   const getValue = () => {
