@@ -31,18 +31,25 @@ export const parseMathOperatorSymbol = choice([
 ]);
 
 export const parseDeclarationUnit = choice([
-  literal('em'),
-  literal('rem'),
   literal('px'),
   literal('%'),
-  literal('cn'),
+  literal('em'),
+  literal('rem'),
+  literal('deg'),
   literal('vh'),
   literal('vw'),
-  literal('deg'),
   literal('rad'),
   literal('turn'),
-  literal('ex'),
-  literal('in'),
+  choice([
+    literal('pc'),
+    literal('cn'),
+    literal('ex'),
+    literal('in'),
+    literal('pt'),
+    literal('cm'),
+    literal('mm'),
+    literal('Q'),
+  ]),
 ]);
 
 export const parseDeclarationProperty = sequenceOf([ident, char(':')]).map((x) => x[0]);

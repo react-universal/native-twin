@@ -20,6 +20,8 @@ const ParseDimensionWithUnits = sequenceOf([float, maybe(parseDeclarationUnit)])
     const { result, data } = parserState;
     const value = parseFloat(result[0]);
     switch (result[1]) {
+      case 'px':
+        return value;
       case 'rem':
       case 'em':
         return value * data.context.rem;
@@ -35,7 +37,18 @@ const ParseDimensionWithUnits = sequenceOf([float, maybe(parseDeclarationUnit)])
         return `${value}deg` as unknown as number;
       case 'rad':
         return `${value}rad` as unknown as number;
-      case 'px':
+      case 'in':
+        return value * 96;
+      case 'pc':
+        return value * (96 / 6);
+      case 'pt':
+        return value * (96 / 72);
+      case 'cm':
+        return value * 97.8;
+      case 'mm':
+        return value * (97.8 / 10);
+      case 'Q':
+        return value * (97.8 / 40);
       default:
         return value;
     }

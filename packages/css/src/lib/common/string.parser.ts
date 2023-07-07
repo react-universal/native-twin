@@ -6,7 +6,7 @@ export const char = (cs: string): Parser<string> =>
     if (state.isError) return state;
 
     const sliced = state.target.slice(state.cursor, state.cursor + 1);
-    if (sliced === cs) {
+    if (sliced == cs) {
       return updateParserState(state, sliced, state.cursor + 1);
     }
     return updateParserError(state, {
@@ -20,7 +20,7 @@ export const literal = <A extends string>(cs: A): Parser<A> =>
     if (state.isError) return state;
 
     const sliced = state.target.slice(state.cursor, state.cursor + cs.length);
-    if (sliced === cs) {
+    if (sliced == cs) {
       return updateParserState(state, sliced, state.cursor + cs.length);
     }
     return updateParserError(state, {

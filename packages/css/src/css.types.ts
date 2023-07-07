@@ -10,14 +10,14 @@ type CSSUnits =
   | 'px'
   | 'cn'
   | 'vh'
+  | 'pc'
   | 'vw'
   | 'deg'
   | 'ex'
   | 'in'
   | '%'
   | 'turn'
-  | 'rad'
-  | 'none';
+  | 'rad';
 
 export type CSSLengthUnit = {
   [U in CSSUnits]: {

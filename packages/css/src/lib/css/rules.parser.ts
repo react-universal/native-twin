@@ -61,27 +61,27 @@ const evaluateMediaQueryConstrains = (
   if (typeof node.value == 'number') {
     const value = node.value;
     let valueNumber = typeof value == 'number' ? value : parseFloat(value);
-    if (node.property === 'width') {
+    if (node.property == 'width') {
       return data.context.deviceWidth == valueNumber;
     }
 
-    if (node.property === 'height') {
+    if (node.property == 'height') {
       return data.context.deviceHeight == valueNumber;
     }
 
-    if (node.property === 'min-width') {
+    if (node.property == 'min-width') {
       return data.context.deviceWidth >= valueNumber;
     }
 
-    if (node.property === 'max-width') {
+    if (node.property == 'max-width') {
       return data.context.deviceWidth <= valueNumber;
     }
 
-    if (node.property === 'min-height') {
+    if (node.property == 'min-height') {
       return data.context.deviceHeight >= valueNumber;
     }
 
-    if (node.property === 'max-height') {
+    if (node.property == 'max-height') {
       return data.context.deviceHeight <= valueNumber;
     }
   }

@@ -22,30 +22,30 @@ export const ParseCssDeclarationLine = coroutine((run) => {
   const getValue = () => {
     const property = run(parseDeclarationProperty);
     const meta = getPropertyValueType(property);
-    if (meta === 'DIMENSION') {
+    if (meta == 'DIMENSION') {
       return {
         [kebab2camel(property)]: run(ParseCssDimensions),
       };
     }
-    if (meta === 'FLEX') {
+    if (meta == 'FLEX') {
       return run(ParseFlexValue);
     }
 
-    if (meta === 'SHADOW') {
+    if (meta == 'SHADOW') {
       return run(ParseShadowValue);
     }
 
-    if (meta === 'MATH') {
+    if (meta == 'MATH') {
       return run(ParseAspectRatio);
     }
 
-    if (meta === 'TRANSFORM') {
+    if (meta == 'TRANSFORM') {
       return {
         transform: run(choice([ParseTranslateValue, ParseRotateValue, ParseSkewValue])),
       };
     }
 
-    if (meta === 'COLOR') {
+    if (meta == 'COLOR') {
       const value = run(ParseCssColor);
       return {
         [kebab2camel(property)]: value,
@@ -75,7 +75,7 @@ export const ParseCssDeclarationLine = coroutine((run) => {
       ...result,
       ...getValue(),
     };
-    if (run(peek) === ';') {
+    if (run(peek) == ';') {
       return composeValue(value);
     }
     return value;
