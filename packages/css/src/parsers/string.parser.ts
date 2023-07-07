@@ -19,12 +19,19 @@ export const literal = <A extends string>(cs: A): Parser<A> =>
   new Parser((state) => {
     if (state.isError) return state;
 
-    const sliced = state.target.slice(state.cursor, state.cursor + cs.length);
-    if (sliced == cs) {
-      return updateParserState(state, sliced, state.cursor + cs.length);
+    const { cursor, target } = state;
+
+    if (state.target[cursor] == cs[0]) {
+      const sliced = target.slice(cursor, cursor + cs.length);
+      if (sliced == cs) {
+        return updateParserState(state, sliced, cursor + cs.length);
+      }
     }
     return updateParserError(state, {
-      message: `Literal: Parser error, expected string ${cs} but got ${sliced}`,
+      message: `Literal: Parser error, expected string ${cs} but got ${target.slice(
+        cursor,
+        cursor + 5,
+      )}`,
       position: state.cursor,
     });
   });
@@ -70,3 +77,17 @@ export const everyCharUntil = (char: string): Parser<string> =>
   });
 
 export const optionalWhitespace = maybe(whitespace).map((x) => x || '');
+
+export const startOfInput = new Parser<null>((state) => {
+  if (state.isError) return state;
+
+  const { cursor } = state;
+  if (cursor > 0) {
+    return updateParserError(state, {
+      message: `ParseError 'startOfInput' (position ${cursor}): Expected start of input'`,
+      position: cursor,
+    });
+  }
+
+  return state;
+});
