@@ -1,3 +1,4 @@
+import type { Platform } from 'react-native';
 import type { SelectorGroup } from './css.types';
 import type { AnyStyle } from './rn.types';
 
@@ -6,6 +7,7 @@ export interface CssParserData {
     rem: number;
     deviceWidth: number;
     deviceHeight: number;
+    platform: Platform['OS'];
   };
   seen: {
     selectors: Set<string>;

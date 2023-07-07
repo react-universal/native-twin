@@ -1,4 +1,4 @@
-import type { ParserState } from '../../types/types';
+import type { ParserState } from '../../types/parser.types';
 import { Parser, updateParserResult } from '../Parser';
 
 export const separatedBy =

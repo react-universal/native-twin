@@ -1,4 +1,4 @@
-import type { CssParserData } from '../../types/types';
+import type { CssParserData } from '../../types/parser.types';
 import { choice } from '../common/choice.parser';
 import {
   betweenBrackets,
