@@ -5,8 +5,6 @@ import { char, everyCharUntil } from '../common/string.parser';
 /*
  ************ SELECTORS ***********
  */
-// subsequent-sibling combinator
-// '~' === '\u{007E}'; -> true
 
 export const ParseCssSelector = sequenceOf([char('.'), everyCharUntil('{')])
   .map((x) => x[0] + x[1])

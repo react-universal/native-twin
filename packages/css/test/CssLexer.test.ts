@@ -132,7 +132,7 @@ describe('@universal-labs/css Resular Rules', () => {
   it('hover:bg-gray-200', () => {
     tx('hover:bg-gray-200');
     const result = CssResolver(tw.target, defaultConfig);
-    // inspectTestElement('hover:bg-gray-200', tw.target, result);
+    inspectTestElement('hover:bg-gray-200', tw.target, result);
     expect(result.pointer).toStrictEqual({ backgroundColor: 'rgba(229,231,235,1)' });
   });
 
