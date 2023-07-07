@@ -1,4 +1,4 @@
-import type { SelectorGroup } from '../../css.types';
+import type { SelectorGroup } from '../../types/css.types';
 import { sequenceOf } from '../common/sequence-of';
 import { char, everyCharUntil } from '../common/string.parser';
 

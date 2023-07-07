@@ -1,8 +1,4 @@
-import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
-
 export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
-
-export type AnyStyle = ImageStyle | TextStyle | ViewStyle;
 
 type CSSUnits =
   | 'em'

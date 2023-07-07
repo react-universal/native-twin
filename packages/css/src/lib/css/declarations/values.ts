@@ -1,5 +1,5 @@
 import type { FlexStyle, ShadowStyleIOS } from 'react-native';
-import type { AnyStyle } from '../../../css.types';
+import type { AnyStyle } from '../../../types/rn.types';
 import { choice } from '../../common/choice.parser';
 import { betweenParens, separatedByComma } from '../../common/composed.parsers';
 import { maybe } from '../../common/maybe.parser';

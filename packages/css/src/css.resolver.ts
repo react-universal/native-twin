@@ -1,6 +1,6 @@
-import type { SelectorGroup } from './css.types';
 import { ParseCssRules } from './lib/css/rules.parser';
-import type { CssParserData } from './types';
+import type { SelectorGroup } from './types/css.types';
+import type { CssParserData } from './types/types';
 
 export const CreateCssResolver = () => {
   const parseCssTarget = (target: string, context: CssParserData['context']) => {

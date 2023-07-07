@@ -6,7 +6,7 @@ import type {
   ParserError,
   ParserState,
   ParserSuccess,
-} from '../types';
+} from '../types/types';
 
 export class Parser<Result> {
   transform: StateTransformerFunction<Result>;

@@ -1,4 +1,5 @@
-import type { AnyStyle, SelectorGroup } from './css.types';
+import type { SelectorGroup } from './css.types';
+import type { AnyStyle } from './rn.types';
 
 export interface CssParserData {
   context: {

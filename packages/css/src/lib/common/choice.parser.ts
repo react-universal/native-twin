@@ -1,4 +1,4 @@
-import type { ParserState } from '../../types';
+import type { ParserState } from '../../types/types';
 import { Parser } from '../Parser';
 
 export function choice<A>([p1]: [Parser<A>]): Parser<A>;

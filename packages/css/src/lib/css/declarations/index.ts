@@ -1,4 +1,4 @@
-import type { AnyStyle } from '../../../css.types';
+import type { AnyStyle } from '../../../types/rn.types';
 import { choice } from '../../common/choice.parser';
 import { parseDeclarationProperty, separatedByComma } from '../../common/composed.parsers';
 import { coroutine } from '../../common/coroutine.parser';
