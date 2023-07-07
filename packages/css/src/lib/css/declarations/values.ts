@@ -1,17 +1,13 @@
 import type { FlexStyle, ShadowStyleIOS } from 'react-native';
 import type { AnyStyle } from '../../../css.types';
 import { choice } from '../../common/choice.parser';
-import {
-  betweenParens,
-  separatedByComma,
-  whitespaceSurrounded,
-} from '../../common/composed.parsers';
+import { betweenParens, separatedByComma } from '../../common/composed.parsers';
 import { maybe } from '../../common/maybe.parser';
 import { float } from '../../common/number.parser';
 import { sequenceOf } from '../../common/sequence-of';
 import { skip } from '../../common/skip.parser';
 import { char, literal } from '../../common/string.parser';
-import { ParseCssDimensions } from '../dimensions.parser';
+import { ParseCssDimensions, ParseCssMath } from '../dimensions.parser';
 
 export const ParseCssColor = sequenceOf([
   choice([literal('rgba'), literal('hsl'), literal('#')]),
@@ -36,6 +32,20 @@ export const ParseRotateValue = sequenceOf([
   }
 
   return [{ rotate: `${value}` }];
+});
+
+export const ParseSkewValue = sequenceOf([
+  choice([literal('skewX'), literal('skewY')]),
+  betweenParens(ParseCssDimensions),
+]).map(([key, value]): AnyStyle['transform'] => {
+  const result: AnyStyle['transform'] = [];
+  if (key == 'skewX') {
+    result.push({ skewX: `${value}` });
+  }
+  if (key == 'skewY') {
+    result.push({ skewY: `${value}` });
+  }
+  return result;
 });
 
 export const ParseTranslateValue = sequenceOf([
@@ -68,12 +78,16 @@ export const ParseFlexValue = sequenceOf([
   }),
 );
 
+export const ParseAspectRatio = ParseCssMath.map((value) => ({
+  aspectRatio: value,
+}));
+
 // <width> <height> <radius> <spread-radius> <color>
 const ManyDimensions = sequenceOf([
-  whitespaceSurrounded(ParseCssDimensions),
-  whitespaceSurrounded(ParseCssDimensions),
-  whitespaceSurrounded(ParseCssDimensions),
-  whitespaceSurrounded(ParseCssDimensions),
+  ParseCssDimensions,
+  ParseCssDimensions,
+  ParseCssDimensions,
+  ParseCssDimensions,
 ]).map(([width, height, radius, opacity]) => ({
   width,
   height,

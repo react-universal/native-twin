@@ -14,6 +14,8 @@ import {
   ParseRotateValue,
   ParseShadowValue,
   ParseTranslateValue,
+  ParseAspectRatio,
+  ParseSkewValue,
 } from './values';
 
 export const ParseCssDeclarationLine = coroutine((run) => {
@@ -33,9 +35,13 @@ export const ParseCssDeclarationLine = coroutine((run) => {
       return run(ParseShadowValue);
     }
 
+    if (meta === 'MATH') {
+      return run(ParseAspectRatio);
+    }
+
     if (meta === 'TRANSFORM') {
       return {
-        transform: run(choice([ParseTranslateValue, ParseRotateValue])),
+        transform: run(choice([ParseTranslateValue, ParseRotateValue, ParseSkewValue])),
       };
     }
 
@@ -45,6 +51,7 @@ export const ParseCssDeclarationLine = coroutine((run) => {
         [kebab2camel(property)]: value,
       };
     }
+
     //CSS:  .font-sans{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"}
 
     if (meta == 'FIRST-COMMA-IDENT') {

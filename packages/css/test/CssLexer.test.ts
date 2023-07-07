@@ -42,10 +42,17 @@ describe('@universal-labs/css Resular Rules', () => {
     });
   });
 
+  it('skew-x-1', () => {
+    tx('skew-x-1');
+    const result = CssResolver(tw.target, defaultConfig);
+    inspectTestElement('skew-x-1', tw.target, result.base);
+    expect(result.base).toStrictEqual({ transform: [{ skewX: '1deg' }] });
+  });
+
   it('font-sans', () => {
     tx('font-sans');
     const result = CssResolver(tw.target, defaultConfig);
-    inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
+    // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
     expect(result.base).toStrictEqual({ fontFamily: 'ui-sans-serif' });
   });
 
@@ -62,8 +69,8 @@ describe('@universal-labs/css Resular Rules', () => {
     });
   });
 
-  it('flex-1', () => {
-    tx('flex-1');
+  it('flex-1 aspect-square', () => {
+    tx('flex-1 aspect-square');
     const result = CssResolver(tw.target, defaultConfig);
     // inspectTestElement('flex-1', tw.target, result);
 
@@ -71,6 +78,7 @@ describe('@universal-labs/css Resular Rules', () => {
       flexBasis: '0%',
       flexGrow: 1,
       flexShrink: 1,
+      aspectRatio: 1,
     });
   });
 

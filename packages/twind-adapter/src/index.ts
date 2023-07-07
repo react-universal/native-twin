@@ -24,13 +24,14 @@ import presetTailwind from '@twind/preset-tailwind';
 import twindPresetReactNative from './presets/preset-react-native';
 import { rotateRules } from './rules/rotate';
 import { shadowRules } from './rules/shadow';
+import { skewRules } from './rules/skew';
 import { translateRules } from './rules/translate';
 import type { CustomConfig } from './types';
 
 const defaultConfig = defineConfig({
   preflight: false,
   presets: [presetTailwind({ disablePreflight: true }), twindPresetReactNative()],
-  rules: [...translateRules, ...rotateRules, ...shadowRules],
+  rules: [...translateRules, ...rotateRules, ...shadowRules, ...skewRules],
 });
 
 export function initialize /* #__PURE__ */(
@@ -39,7 +40,6 @@ export function initialize /* #__PURE__ */(
   const tw = twind(
     {
       ...defaultConfig,
-      // ignorelist: ['shadow-(.*)'],
       theme: {
         ...defaultConfig?.theme,
         extend: {

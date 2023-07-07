@@ -36,6 +36,18 @@
   "settings": {
     "editor.suggest.showStatusBar": true,
     "twind.debug": true,
+    "twind.styles": [
+      "style",
+      "styled",
+      "tw",
+      "tx"
+    ],
+    "twind.tags": [
+      "style",
+      "styled",
+      "tw",
+      "tx"
+    ],
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,

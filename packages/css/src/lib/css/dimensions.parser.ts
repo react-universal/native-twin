@@ -42,6 +42,25 @@ const ParseDimensionWithUnits = sequenceOf([float, maybe(parseDeclarationUnit)])
   },
 );
 
+export const ParseCssMath = sequenceOf([
+  ParseCssDimensions,
+  parseMathOperatorSymbol,
+  ParseCssDimensions,
+]).map(([left, operator, right]) => {
+  switch (operator) {
+    case '+':
+      return left + right;
+    case '-':
+      return left - right;
+    case '*':
+      return left * right;
+    case '/':
+      return left / right;
+    default:
+      return left;
+  }
+});
+
 const ParseCssCalc = sequenceOf([
   literal('calc'),
   betweenParens(
