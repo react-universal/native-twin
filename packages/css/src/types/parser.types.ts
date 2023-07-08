@@ -20,13 +20,7 @@ export interface CssParserError {
   message: string;
 }
 
-export type CssParserCache = Map<
-  string,
-  {
-    group: SelectorGroup;
-    styles: Record<string, any>;
-  }
->;
+export type CssParserCache = Map<string, CssNode>;
 
 export type StateTransformerFunction<Result> = (
   state: ParserState<any>,
@@ -58,4 +52,12 @@ export type ParserSuccess<Result> = {
   cursor: number;
   result: Result;
   data: CssParserData;
+};
+
+export type CssNode = {
+  selector: {
+    group: SelectorGroup;
+    value: string;
+  };
+  declarations: AnyStyle;
 };

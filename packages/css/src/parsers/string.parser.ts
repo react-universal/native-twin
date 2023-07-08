@@ -61,6 +61,7 @@ export const letters: Parser<string> = regex(regexLetters);
 
 const regexIdent = /^[_a-z0-9A-Z-]+/;
 export const ident: Parser<string> = regex(regexIdent);
+
 const regexWhiteSpace = /^\s+/;
 export const whitespace: Parser<string> = regex(regexWhiteSpace);
 
@@ -84,7 +85,7 @@ export const startOfInput = new Parser<null>((state) => {
   const { cursor } = state;
   if (cursor > 0) {
     return updateParserError(state, {
-      message: `ParseError 'startOfInput' (position ${cursor}): Expected start of input'`,
+      message: `ParseError 'startOfInput': Expected start of input'`,
       position: cursor,
     });
   }

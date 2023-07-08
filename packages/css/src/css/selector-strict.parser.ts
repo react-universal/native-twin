@@ -29,8 +29,6 @@ const ParseSelectorCombinator = whitespaceSurrounded(
 
 const SelectorClass = sequenceOf([char('.'), ident]).map((x) => mapToken('CLASS')(x.join('')));
 
-const ParseSelector = many1(
+export const ParseSelectorStrict = many1(
   choice([SelectorClass, ParsePseudoClass, ParseSelectorTags, ParseSelectorCombinator]),
 );
-
-ParseSelector.run('.hover:bg-gray-200:hover', { deviceHeight: 0, deviceWidth: 0, rem: 16 }); //?

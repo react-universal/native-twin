@@ -1,9 +1,9 @@
 import { initialize } from '@universal-labs/twind-adapter';
 import { afterEach, describe, expect, it } from 'vitest';
 import { CssResolver } from '../src';
+import { sheetManager } from '../src/data/SheetManager';
 import { createParserContext } from '../src/parsers/Parser';
-
-// import { inspectTestElement } from './test-utils';
+import { inspectTestElement } from './test-utils';
 
 const { tx, tw } = initialize();
 const { context } = createParserContext({
@@ -12,6 +12,8 @@ const { context } = createParserContext({
   rem: 16,
   platform: 'ios',
 });
+
+const resolver = sheetManager(context);
 
 describe('@universal-labs/css - AT-RULES', () => {
   afterEach(() => {
@@ -32,6 +34,16 @@ describe('@universal-labs/css - AT-RULES', () => {
 describe('@universal-labs/css Resular Rules', () => {
   afterEach(() => {
     tw.clear();
+  });
+
+  it('text-2xl', () => {
+    tx('text-2xl');
+    const result = resolver.parse(tw.target[0]!);
+    inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result);
+    expect(result).toStrictEqual({
+      selector: { group: 'base', value: '.text-2xl' },
+      declarations: { fontSize: 24, lineHeight: 32 },
+    });
   });
 
   it('text-2xl', () => {
