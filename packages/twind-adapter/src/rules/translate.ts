@@ -26,9 +26,7 @@ export const translateRules: Rule<TailwindTheme>[] = [
   ],
   [
     '-?translate-(\\s*\\d+|\\[(.*)])',
-    (match, context) => {
-      console.log('MATCH: ', match);
-      console.log('CONTEXT: ', context);
+    (match) => {
       const isNegative = match.input.startsWith('-');
       const hasArbitrary = match[2] !== undefined;
       return {

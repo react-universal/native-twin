@@ -12,9 +12,14 @@ export default defineConfig({
     }),
   ],
   esbuild: {
-    keepNames: true,
+    treeShaking: true,
+    minifyWhitespace: true,
+    minifySyntax: true,
+    minifyIdentifiers: true,
+    legalComments: 'none',
   },
   build: {
+    minify: 'esbuild',
     outDir: 'build',
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
@@ -23,7 +28,8 @@ export default defineConfig({
       formats: ['es', 'umd'],
     },
     rollupOptions: {
-      external: [],
+      strictDeprecations: true,
+      external: ['react-native', 'react'],
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
       output: {
@@ -31,6 +37,6 @@ export default defineConfig({
         externalImportAssertions: true,
       },
     },
-    emptyOutDir: false,
+    emptyOutDir: true,
   },
 });
