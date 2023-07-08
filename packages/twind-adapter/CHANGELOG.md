@@ -1,5 +1,11 @@
 # @universal-labs/twind-native
 
+## 4.1.0
+
+### Minor Changes
+
+- [#102](https://github.com/react-universal/tailwind/pull/102) [`53fb74a`](https://github.com/react-universal/tailwind/commit/53fb74a14e6eab30f1037e26de9ce3b835bc3e5d) Thanks [@chrisarts](https://github.com/chrisarts)! - Fix many unsuported css features
+
 ## 4.0.1
 
 ## 4.0.0
