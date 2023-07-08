@@ -1,5 +1,12 @@
 # Change Log
 
+## 4.1.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @universal-labs/styled@4.1.0
+
 ## 4.0.1
 
 ### Patch Changes
