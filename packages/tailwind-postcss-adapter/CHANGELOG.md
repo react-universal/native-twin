@@ -1,5 +1,11 @@
 # Change Log
 
+## 4.1.1
+
+### Patch Changes
+
+- [`048f6e6`](https://github.com/react-universal/tailwind/commit/048f6e6262e897ccd97821e4c7a0a1f3d20e6696) Thanks [@chrisarts](https://github.com/chrisarts)! - fix z-index
+
 ## 4.1.0
 
 ## 4.0.1
