@@ -1,5 +1,3 @@
-import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
-
 /*
   CSS ABSOLUTE UNITS
   https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units
@@ -48,46 +46,3 @@ export type Context = {
   deviceAspectRatio: number;
   units: Units;
 };
-
-export type AnyStyle = ViewStyle | TextStyle | ImageStyle;
-
-export type CompleteStyle = ViewStyle & TextStyle & ImageStyle;
-
-export type PartialStyle = Partial<Record<keyof CompleteStyle, string>> & {
-  shadowOffset?: {
-    width: string;
-    height: string;
-  };
-  textShadowOffset?: {
-    width: string;
-    height: string;
-  };
-  textOverflow?: 'ellipsis';
-  transform?: Transform[];
-};
-
-export type Style = PartialStyle & {
-  hover?: PartialStyle;
-  media?: MediaQuery[];
-};
-
-export type MediaQuery = (context: Context) => false | PartialStyle;
-
-export type Transform = {
-  scaleX?: string;
-  scaleY?: string;
-  translateX?: string;
-  translateY?: string;
-  skewX?: string;
-  skewY?: string;
-  perspective?: string;
-  rotateX?: string;
-  rotateY?: string;
-  rotateZ?: string;
-  rotate?: string;
-};
-
-export interface CssLexerState {
-  cursor: number;
-  targetString: string;
-}

@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react';
 import type { StyleProp } from 'react-native';
-import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import type { AnyStyle, FinalSheet } from '@universal-labs/css';
 
-export type AnyStyle = ImageStyle | TextStyle | ViewStyle;
-export type AtomStyle = { [k: string]: AnyStyle };
 export type ComponentStyleProp = StyleProp<AnyStyle>;
 
 export type StyledProps<P> = {
@@ -19,30 +17,12 @@ export type StyledProps<P> = {
 } & P;
 
 export type ComponentStylesheet = {
-  styles: Record<keyof StyleSheetStyleGroups, AnyStyle>;
+  styles: FinalSheet;
   hash: string;
   isGroupParent: boolean;
   hasPointerEvents: boolean;
   hasGroupEvents: boolean;
 };
-export type GeneratedAtomsStyle = {
-  [k: string]: AnyStyle;
-};
-export type GeneratedComponentsStyleSheet = {
-  [k: string]: ComponentStylesheet;
-};
-
-export interface StyleSheetStyleGroups {
-  base: AnyStyle[];
-  group: AnyStyle[];
-  pointer: AnyStyle[];
-  first: AnyStyle[];
-  last: AnyStyle[];
-  odd: AnyStyle[];
-  even: AnyStyle[];
-}
-
-export type StylesheetGroup = keyof StyleSheetStyleGroups;
 
 export interface IUseStyleSheetsInput
   extends StyledProps<{

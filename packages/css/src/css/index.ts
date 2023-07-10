@@ -1,5 +1,5 @@
-import type { SelectorGroup } from '../types/css.types';
 import type { CssParserData } from '../types/parser.types';
+import type { FinalSheet } from '../types/rn.types';
 import { ParseCssRules } from './rules.parser';
 
 export const CreateCssResolver = () => {
@@ -31,7 +31,7 @@ export const CreateCssResolver = () => {
         last: {},
         odd: {},
         pointer: {},
-      } as Record<SelectorGroup, any>,
+      } as FinalSheet,
     );
   };
 };
