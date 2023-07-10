@@ -50,6 +50,9 @@ export const getPropertyValueType = (property: string) => {
     case 'gap':
     case 'column-gap':
     case 'row-gap':
+    case 'flex-grow':
+    case 'flex-basis':
+    case 'flex-shrink':
       return 'DIMENSION';
     case 'aspect-ratio':
       return 'MATH';
