@@ -1,5 +1,13 @@
 # @universal-labs/twind-native
 
+## 4.1.2
+
+### Patch Changes
+
+- [#105](https://github.com/react-universal/tailwind/pull/105) [`cbe3ed9`](https://github.com/react-universal/tailwind/commit/cbe3ed9af04e46dc84771974f2366ff0ca2200a0) Thanks [@chrisarts](https://github.com/chrisarts)! - fix utilities and clean libs
+
+- [`eb36cdc`](https://github.com/react-universal/tailwind/commit/eb36cdcba58367152e9b74434ed6d1c2947d60a3) Thanks [@chrisarts](https://github.com/chrisarts)! - fix flex utils
+
 ## 4.1.1
 
 ### Patch Changes
