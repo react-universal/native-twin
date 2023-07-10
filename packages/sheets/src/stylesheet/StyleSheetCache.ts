@@ -95,6 +95,10 @@ export default class StyleSheetCache<TKey, TValue> {
     return node.value;
   }
 
+  has(key: TKey): boolean {
+    return this.lookup.has(key);
+  }
+
   print() {
     return {
       head: this.head,

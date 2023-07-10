@@ -37,6 +37,6 @@ export default defineConfig({
         externalImportAssertions: true,
       },
     },
-    emptyOutDir: true,
+    emptyOutDir: false,
   },
 });

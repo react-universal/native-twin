@@ -1,7 +1,6 @@
 import type { TwindRule } from '@twind/core';
 
 export default function transformCssVariables(rule: TwindRule) {
-  // const transformed = valueParser(rule.);
   if (rule.d && rule.d?.includes('var(--')) {
     const variable = rule.d.split(';');
     let variableRule = variable[0];

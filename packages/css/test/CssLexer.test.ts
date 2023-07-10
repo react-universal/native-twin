@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { CssResolver } from '../src';
 import { sheetManager } from '../src/data/SheetManager';
 import { createParserContext } from '../src/parsers/Parser';
+// eslint-disable-next-line unused-imports/no-unused-imports
 import { inspectTestElement } from './test-utils';
 
 const { tx, tw } = initialize();
@@ -39,7 +40,7 @@ describe('@universal-labs/css Resular Rules', () => {
   it('text-2xl', () => {
     tx('text-2xl');
     const result = resolver.parse(tw.target[0]!);
-    inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result);
+    // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result);
     expect(result).toStrictEqual({
       selector: { group: 'base', value: '.text-2xl' },
       declarations: { fontSize: 24, lineHeight: 32 },
@@ -110,6 +111,14 @@ describe('@universal-labs/css Resular Rules', () => {
     // inspectTestElement('-mt-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ marginTop: -8 });
+  });
+
+  it('gap', () => {
+    tx('gap-2 gap-x-2 gap-y-2');
+    const result = CssResolver(tw.target, context);
+    // inspectTestElement('gap-2', tw.target, result);
+
+    expect(result.base).toStrictEqual({ gap: 8, columnGap: 8, rowGap: 8 });
   });
 
   it('translate-x-2', () => {

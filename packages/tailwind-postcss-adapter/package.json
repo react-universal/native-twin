@@ -1,6 +1,7 @@
 {
   "name": "@universal-labs/tailwind-postcss-adapter",
   "version": "4.1.1",
+  "private": true,
   "description": "Tailwindcss Inline StyleSheet generator for react native",
   "keywords": [
     "tailwind",

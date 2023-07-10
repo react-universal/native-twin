@@ -2,7 +2,7 @@
 
 exports[`@universal-labs/styled > View render 1`] = `
 <View
-  groupID="test"
+  groupID=":r0:"
   style={
     {
       "flexBasis": "0%",

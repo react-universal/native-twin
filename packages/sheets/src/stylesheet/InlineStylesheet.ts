@@ -1,4 +1,4 @@
-import type { AnyStyle } from '../types';
+import type { AnyStyle } from '@universal-labs/css';
 import { VirtualStyleSheet } from './VirtualStylesheet';
 
 const virtualSheet = new VirtualStyleSheet();
