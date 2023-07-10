@@ -47,6 +47,9 @@ export const getPropertyValueType = (property: string) => {
     case 'border-bottom-left-radius':
     case 'border-bottom-right-radius':
     case 'z-index':
+    case 'gap':
+    case 'column-gap':
+    case 'row-gap':
       return 'DIMENSION';
     case 'aspect-ratio':
       return 'MATH';
