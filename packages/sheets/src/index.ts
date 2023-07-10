@@ -1,4 +1,3 @@
-export { createComponentID } from './utils/createComponentID';
 export { setTailwindConfig } from './stylesheet/VirtualStylesheet';
 export type { StyledProps } from './types';
 export type {

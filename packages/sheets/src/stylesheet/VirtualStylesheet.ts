@@ -7,12 +7,11 @@ import StyleSheetCache from './StyleSheetCache';
 
 let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };
 const store = new StyleSheetCache<string, ComponentStylesheet>(100);
+const twind = createTwindInterpreter();
 
 export class VirtualStyleSheet {
-  private twind = createTwindInterpreter();
-
   create(input: string) {
-    const result = this.twind.classNamesToCss(input);
+    const result = twind.classNamesToCss(input);
     return result.ast;
   }
   injectUtilities(classNames?: string): ComponentStylesheet {
@@ -26,7 +25,7 @@ export class VirtualStyleSheet {
       return EMPTY_SHEET;
     }
 
-    const newSheet = this.twind.classNamesToCss(classNames);
+    const newSheet = twind.classNamesToCss(classNames);
     const styles = {
       hash: hashID,
       hasPointerEvents: Object.keys(newSheet.ast.pointer).length > 0,
@@ -44,7 +43,7 @@ export function setTailwindConfig(config: Config, baseRem = 16) {
     ...currentConfig,
     ...config,
   };
-  // lexer.setThemeConfig(config, baseRem);
+  twind.setThemeConfig(config, baseRem);
   return {
     baseRem,
   };

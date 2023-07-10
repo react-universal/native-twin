@@ -1,25 +1,16 @@
-import { useMemo } from 'react';
+import { useId, useMemo } from 'react';
 import { Touchable, StyleSheet } from 'react-native';
 import {
   StyledProps,
-  createComponentID,
   InlineStyleSheet,
   StoreManager,
   AnyStyle,
 } from '@universal-labs/stylesheets';
 import { ComponentNode } from '@universal-labs/stylesheets';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
+import { defaultGroupState } from '../constants/empties';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
-
-const defaultGroupState = Object.freeze({
-  active: false,
-  focus: false,
-  hover: false,
-  'group-active': false,
-  'group-focus': false,
-  'group-hover': false,
-});
 
 function useBuildStyledComponent<T>({
   className,
@@ -34,7 +25,7 @@ function useBuildStyledComponent<T>({
     return new InlineStyleSheet(className ?? tw ?? '');
   }, [className, tw]);
 
-  const componentID = useMemo(() => createComponentID() as string, []);
+  const componentID = useId();
 
   const currentGroupID = useMemo(() => {
     return groupID ? groupID : parentID ?? componentID;
