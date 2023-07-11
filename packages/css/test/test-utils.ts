@@ -27,9 +27,10 @@ export const generateStylesFor = (classNames: string, debug = false) => {
     rem: 16,
     platform: 'ios',
   });
+  const restore = tw.snapshot();
   tx(classNames);
   const target = [...tw.target];
-  tw.clear();
+  restore();
   const parsed = CssResolver(target, context);
   if (debug) {
     console.group('DEBUG');
