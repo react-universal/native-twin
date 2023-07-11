@@ -1,7 +1,7 @@
 {
   "folders": [
     {
-      "name": "✨ universal-labs",
+      "name": "root",
       "path": ".."
     },
     {
@@ -34,71 +34,11 @@
     }
   ],
   "settings": {
-    "editor.suggest.showStatusBar": true,
-    "twind.debug": true,
-    "twind.styles": [
-      "style",
-      "styled",
-      "tw",
-      "tx"
-    ],
-    "twind.tags": [
-      "style",
-      "styled",
-      "tw",
-      "tx"
-    ],
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
       "strings": true
     },
-    "eslint.validate": ["json"],
-    "search.useIgnoreFiles": false,
-    "search.exclude": {
-      "**/node_modules": true,
-      "**/bower_components": true,
-      "**/*.code-search": true,
-      "**/.yarn/**": true,
-      "**/build/**": true
-    },
-    "terminal.integrated.defaultLocation": "view",
-    "cSpell.ignorePaths": [
-      "package-lock.json",
-      "**/yarn.lock",
-      "node_modules",
-      "vscode-extension",
-      ".git/objects",
-      ".vscode",
-      ".vscode-insiders",
-      "**/app.json",
-      "**/apps/docusaurus",
-      "**/packages/**/test"
-    ],
-    "files.exclude": {
-      "**/.git": true,
-      "**/.svn": true,
-      "**/.hg": true,
-      "**/CVS": true,
-      "**/.DS_Store": true,
-      "**/Thumbs.db": true,
-      "**/.turbo": true,
-      "**/.swc": true
-    },
-    "files.watcherExclude": {
-      "**/.git/objects/**": true,
-      "**/.git/subtree-cache/**": true,
-      "**/node_modules/*/**": true,
-      "**/.hg/store/**": true,
-      "**/dist/**": true,
-      "**/build/**": true
-    },
-    "typescript.tsdk": "✨ universal-labs/node_modules/typescript/lib",
-    "workbench.colorCustomizations": {
-      "[Atom One Dark]": {
-        "editor.background": "#1F1F1F"
-      }
-    },
-    "window.zoomLevel": 4
+    "typescript.tsdk": "root/node_modules/typescript/lib"
   }
 }

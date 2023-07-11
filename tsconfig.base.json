@@ -1,28 +1,28 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "moduleResolution": "node",
     "esModuleInterop": true,
     "sourceMap": true,
-    "declaration": true,
-    "downlevelIteration": true,
-    "declarationMap": true,
     "strictPropertyInitialization": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
-    "allowJs": true,
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "importHelpers": true,
     "noEmit": true,
     "strict": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
-  },
-  "exclude": ["tmp", "node_modules", "**/build**","alternatives"]
+    "skipDefaultLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowUnreachableCode": false,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "isolatedModules": false
+  }
 }

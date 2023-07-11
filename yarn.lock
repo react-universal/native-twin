@@ -7106,7 +7106,6 @@ __metadata:
     "@twind/core": 1.1.3
     "@twind/intellisense": 1.1.3
     "@twind/preset-tailwind": 1.1.4
-    vitest-react-native: 0.0.5
   peerDependencies:
     react: ">=18"
     react-native: ">=0.70"
@@ -11858,6 +11857,7 @@ __metadata:
     react-native-svg: 13.9.0
     react-native-uuid: ^2.0.1
     react-native-web: ^0.19.6
+    typescript: ^5.1.3
   languageName: unknown
   linkType: soft
 
@@ -22058,7 +22058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.1.3, typescript@npm:^5.1.6":
+"typescript@npm:^5.1.3":
   version: 5.1.6
   resolution: "typescript@npm:5.1.6"
   bin:
@@ -22078,7 +22078,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.1.3#~builtin<compat/typescript>, typescript@patch:typescript@^5.1.6#~builtin<compat/typescript>":
+"typescript@patch:typescript@^5.1.3#~builtin<compat/typescript>":
   version: 5.1.6
   resolution: "typescript@patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=1f5320"
   bin:
@@ -22348,7 +22348,6 @@ __metadata:
     "@nrwl/nx-cloud": latest
     "@rollup/plugin-terser": ^0.4.1
     "@trivago/prettier-plugin-sort-imports": ^4.0.0
-    "@types/node": 16.11.7
     "@types/react-test-renderer": ^18.0.0
     "@typescript-eslint/eslint-plugin": ^5.36.1
     "@typescript-eslint/parser": ^5.36.1
@@ -22371,10 +22370,11 @@ __metadata:
     prettier: ^2.8.3
     prettier-plugin-tailwindcss: ^0.2.2
     tslib: ^2.6.0
-    typescript: ^5.1.6
+    typescript: ^5.1.3
     vite: ^4.1.1
     vite-plugin-dts: ^2.2.0
     vitest: ^0.31.1
+    vitest-react-native: ^0.1.2
   languageName: unknown
   linkType: soft
 
@@ -22764,9 +22764,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest-react-native@npm:0.0.5":
-  version: 0.0.5
-  resolution: "vitest-react-native@npm:0.0.5"
+"vitest-react-native@npm:0.1.2":
+  version: 0.1.2
+  resolution: "vitest-react-native@npm:0.1.2"
   dependencies:
     "@bunchtogether/vite-plugin-flow": ^1.0.2
     esbuild: ^0.17.10
@@ -22777,7 +22777,24 @@ __metadata:
     react: "*"
     react-native: "*"
     vite: "*"
-  checksum: f99e01eb3a962bc0d219f4c669dde650e4b04080acc3126401f667a23f8d393125924327d063c35551bced43e1c2c597e6681c74bcae3d215d80eae4ff6a5201
+  checksum: 13af73be6a65f264b9dbe773a0771f3ca5eaff28177e401c0ebcd0389099d9ea626f929b6e1beed18865a4860b599899ed510b9af4ad6e31d3ca3df7438ba90b
+  languageName: node
+  linkType: hard
+
+"vitest-react-native@patch:vitest-react-native@npm%3A0.1.2#./.yarn/patches/vitest-react-native-npm-0.1.2-0858752826.patch::locator=universal-labs%40workspace%3A.":
+  version: 0.1.2
+  resolution: "vitest-react-native@patch:vitest-react-native@npm%3A0.1.2#./.yarn/patches/vitest-react-native-npm-0.1.2-0858752826.patch::version=0.1.2&hash=b62bfe&locator=universal-labs%40workspace%3A."
+  dependencies:
+    "@bunchtogether/vite-plugin-flow": ^1.0.2
+    esbuild: ^0.17.10
+    flow-remove-types: ^2.200.0
+    pirates: ^4.0.5
+    regenerator-runtime: ^0.13.11
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    vite: "*"
+  checksum: 9e7b11a4977aa99838e983f0ff01cd022612c7bdfeab1b30f189cf24be3c2d97a020557c68148ab01c461b4174921539a658eac111eb808948201affa91066dc
   languageName: node
   linkType: hard
 

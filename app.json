@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "universal-labs",
+    "slug": "universal-labs",
+    "version": "0.0.0-development",
+    "sdkVersion": "49.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ]
+  }
+}

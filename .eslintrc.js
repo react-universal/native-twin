@@ -6,6 +6,7 @@ module.exports = {
     commonjs: true,
     node: true,
   },
+  ignorePatterns: ['**/node_modules/**/*', '**/build/**/*'],
   extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended'],
   globals: {
     Atomics: 'readonly',
