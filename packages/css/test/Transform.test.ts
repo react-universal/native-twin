@@ -28,4 +28,16 @@ describe('@universal-labs/css Resular Rules', () => {
 
     expect(result.base).toStrictEqual({ transform: [{ translateX: 0 }, { translateY: -32 }] });
   });
+
+  it('rotate-[1.2turn]', () => {
+    const result = generateStylesFor('rotate-[1.2turn]');
+    // inspectTestElement('skew-x-1', tw.target, result.base);
+    expect(result.base).toStrictEqual({ transform: [{ rotate: '432deg' }] });
+  });
+
+  it('rotate-x-[10rad]', () => {
+    const result = generateStylesFor('rotate-x-[10rad]');
+    // inspectTestElement('skew-x-1', tw.target, result.base);
+    expect(result.base).toStrictEqual({ transform: [{ rotate: '10rad' }] });
+  });
 });
