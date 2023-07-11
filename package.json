@@ -72,5 +72,5 @@
     "vitest": "^0.31.1",
     "vitest-react-native": "^0.1.2"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.6.1"
 }

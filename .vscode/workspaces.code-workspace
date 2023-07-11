@@ -1,7 +1,7 @@
 {
   "folders": [
     {
-      "name": "root",
+      "name": "✨ universal-labs",
       "path": ".."
     },
     {
@@ -13,23 +13,23 @@
       "path": "../examples/next-app"
     },
     {
-      "name": "📦 @u-labs/css",
+      "name": "📦 @universal-labs/css",
       "path": "../packages/css"
     },
     {
-      "name": "📦 @u-labs/stylesheets",
+      "name": "📦 @universal-labs/primitives",
+      "path": "../packages/primitives"
+    },
+    {
+      "name": "📦 @universal-labs/stylesheets",
       "path": "../packages/sheets"
     },
     {
-      "name": "📦 @u-labs/styled",
+      "name": "📦 @universal-labs/styled",
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @u-labs/postcss",
-      "path": "../packages/tailwind-postcss-adapter"
-    },
-    {
-      "name": "📦 @u-labs/twind",
+      "name": "📦 @universal-labs/twind-adapter",
       "path": "../packages/twind-adapter"
     }
   ],
