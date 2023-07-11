@@ -6,7 +6,6 @@
     "sourceMap": true,
     "declaration": true,
     "downlevelIteration": true,
-    "importsNotUsedAsValues": "error",
     "declarationMap": true,
     "strictPropertyInitialization": true,
     "strictFunctionTypes": true,

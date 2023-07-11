@@ -9,7 +9,7 @@
     "outDir": "./build",
     "sourceMap": false,
     "noEmit": false,
-    "types": ["node", "vitest/globals"],
+    "types": ["vitest/globals"],
     "importHelpers": true
   },
   "include": ["src", "test"]
