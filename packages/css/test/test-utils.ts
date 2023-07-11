@@ -4,7 +4,7 @@ import util from 'util';
 import { CssResolver } from '../src';
 import { createParserContext } from '../src/parsers/Parser';
 
-export const inspectTestElement = (msg: string, target: string[], result: any) => {
+const inspectTestElement = (msg: string, target: string[], result: any) => {
   console.log(
     msg,
     util.inspect(
@@ -19,7 +19,7 @@ export const inspectTestElement = (msg: string, target: string[], result: any) =
   );
 };
 
-export const generateStylesFor = (classNames: string) => {
+export const generateStylesFor = (classNames: string, debug = false) => {
   const { tx, tw } = initialize();
   const { context } = createParserContext({
     deviceHeight: 1280,
@@ -30,5 +30,12 @@ export const generateStylesFor = (classNames: string) => {
   tx(classNames);
   const target = [...tw.target];
   tw.clear();
-  return CssResolver(target, context);
+  const parsed = CssResolver(target, context);
+  if (debug) {
+    console.group('DEBUG');
+    console.log('CLASS_NAMES: ', classNames);
+    inspectTestElement('SHEET: ', target, parsed);
+    console.groupEnd();
+  }
+  return parsed;
 };
