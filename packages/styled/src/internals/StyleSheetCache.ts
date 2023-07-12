@@ -1,7 +1,7 @@
 type Node<T> = {
   value: T;
-  next?: Node<T>;
-  prev?: Node<T>;
+  next?: Node<T> | undefined;
+  prev?: Node<T> | undefined;
 };
 
 function createNode<T>(value: T): Node<T> {
@@ -10,8 +10,8 @@ function createNode<T>(value: T): Node<T> {
 
 export default class StyleSheetCache<TKey, TValue> {
   private length: number;
-  private head?: Node<TValue>;
-  private tail?: Node<TValue>;
+  private head?: Node<TValue> | undefined;
+  private tail?: Node<TValue> | undefined;
   private lookup: Map<TKey, Node<TValue>>;
   private reverseLookup: Map<Node<TValue>, TKey>;
 

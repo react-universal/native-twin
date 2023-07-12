@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View } from '@universal-labs/primitives';
-import { setTailwindConfig } from '@universal-labs/stylesheets';
+import { setTailwindConfig } from '@universal-labs/styled';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 // import { FlatListScreen } from './src/screens/FlatList.screen';
 import { HomeScreen } from './src/screens/Home.screen';

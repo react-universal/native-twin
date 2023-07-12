@@ -4,7 +4,6 @@
     "allowSyntheticDefaultImports": true,
     "declarationMap": false,
     "noImplicitAny": true,
-    "emitDeclarationOnly": true,
     "resolveJsonModule": true,
     "module": "esnext",
     "moduleResolution": "node",

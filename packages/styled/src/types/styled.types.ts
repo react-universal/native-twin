@@ -15,11 +15,6 @@ export type InferRef<T> = T extends RefAttributes<infer R> | ClassAttributes<inf
   ? R
   : unknown;
 
-// export type StyledProps<P> = {
-//   className?: string;
-//   tw?: string;
-// } & P;
-
 export type ComponentStyleProp = StyleProp<AnyStyle>;
 
 export type StyledProps<P> = {

@@ -1,14 +1,15 @@
 import { useId, useMemo } from 'react';
-import { Touchable, StyleSheet } from 'react-native';
+import { StyleSheet, Touchable } from 'react-native';
 import { AnyStyle } from '@universal-labs/css';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
 import { defaultGroupState } from '../constants/empties';
+import { SheetManager } from '../internals/sheet';
 import ComponentNode from '../internals/store/ComponentNode';
 import { StoreManager } from '../internals/store/StoreManager';
-import InlineStyleSheet from '../internals/stylesheet/InlineStylesheet';
 import { StyledProps } from '../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
+import { useStyledContext } from './useStyledContext';
 
 function useBuildStyledComponent<T>({
   className,
@@ -19,9 +20,11 @@ function useBuildStyledComponent<T>({
   children,
   ...restProps
 }: StyledProps<T>) {
+  const context = useStyledContext();
+  const manager = SheetManager(context);
   const stylesheet = useMemo(() => {
-    return new InlineStyleSheet(className ?? tw ?? '');
-  }, [className, tw]);
+    return manager(className ?? tw ?? '');
+  }, [className, tw, manager]);
 
   const componentID = useId();
 
@@ -33,11 +36,11 @@ function useBuildStyledComponent<T>({
       StoreManager.registerComponentInStore(
         new ComponentNode({
           componentID,
-          stylesheetID: stylesheet.id,
-          groupID: stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
+          stylesheetID: componentID,
+          groupID: 'stylesheet.metadata.isGroupParent ? componentID : currentGroupID',
         }),
       )!,
-    [componentID, stylesheet, currentGroupID],
+    [componentID],
   );
 
   const interactionState = useSyncExternalStoreWithSelector(

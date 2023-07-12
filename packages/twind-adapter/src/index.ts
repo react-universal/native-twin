@@ -76,3 +76,4 @@ export {
   matchTheme,
 };
 export type { ParsedRule };
+export type TwindManager = ReturnType<typeof initialize>;
