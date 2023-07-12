@@ -1,7 +1,7 @@
 import { ComponentType, createElement, ReactNode, useMemo } from 'react';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import { cx } from '@twind/core';
-import type { StyledProps } from '../types/types';
+import type { StyledProps } from '../types/styled.types';
 
 export type Style = ViewStyle & TextStyle & ImageStyle;
 

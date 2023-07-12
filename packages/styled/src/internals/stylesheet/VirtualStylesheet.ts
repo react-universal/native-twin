@@ -5,6 +5,8 @@ import type { ComponentStylesheet } from '../../types/styled.types';
 import { createTwindInterpreter } from '../css/twind';
 import StyleSheetCache from './StyleSheetCache';
 
+// 973265033
+
 let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };
 const store = new StyleSheetCache<string, ComponentStylesheet>(100);
 const twind = createTwindInterpreter();

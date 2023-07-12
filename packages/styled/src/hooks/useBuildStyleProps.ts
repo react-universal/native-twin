@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { twMerge } from 'tailwind-merge';
-import type { StyledProps } from '../types/types';
+import type { StyledProps } from '../types/styled.types';
 
 const useBuildStyleProps = <T, P extends keyof T>(
   componentProps: StyledProps<T>,
