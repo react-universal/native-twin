@@ -3,15 +3,12 @@ import { AnyStyle, CssResolver, FinalSheet } from '@universal-labs/css';
 import { initialize } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
 import { SheetInteractionState, SheetInterpreterFn, SheetManagerFn } from '../types/css.types';
-import { ComponentStylesheet } from '../types/styled.types';
-import StyleSheetCache from './StyleSheetCache';
 
 const platformMatch = /web|ios|android|native+/;
 
 export const SheetManager: SheetManagerFn = (context) => {
   // const virtualSheet = new Map<string, any>();
   // let currentConfig: Config = { content: ['_'] };
-  new StyleSheetCache<string, ComponentStylesheet>(100);
 
   function getStyles(sheet: FinalSheet, input: SheetInteractionState) {
     const styles: AnyStyle = { ...sheet.base };
