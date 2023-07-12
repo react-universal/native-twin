@@ -1,7 +1,7 @@
 import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
-} from '../constants/ValidPseudoElements';
+} from '../../constants/ValidPseudoElements';
 import type ComponentNode from './ComponentNode';
 
 class StoreManagerClass {

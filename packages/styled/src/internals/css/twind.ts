@@ -2,7 +2,7 @@ import { Dimensions, PixelRatio, Platform } from 'react-native';
 import { CssResolver } from '@universal-labs/css';
 import { initialize } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
-import type { Context, Units } from './css.types';
+import type { Context, Units } from '../../types/css.types';
 
 type SetThemeConfigFn = (input: Config, rem?: number) => void;
 const { height, width } = Dimensions.get('screen');

@@ -3,10 +3,10 @@ import { Touchable, StyleSheet } from 'react-native';
 import { AnyStyle } from '@universal-labs/css';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
 import { defaultGroupState } from '../constants/empties';
-import ComponentNode from '../store/ComponentNode';
-import { StoreManager } from '../store/StoreManager';
-import InlineStyleSheet from '../stylesheet/InlineStylesheet';
-import { StyledProps } from '../types/types';
+import ComponentNode from '../internals/store/ComponentNode';
+import { StoreManager } from '../internals/store/StoreManager';
+import InlineStyleSheet from '../internals/stylesheet/InlineStylesheet';
+import { StyledProps } from '../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 

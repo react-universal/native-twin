@@ -6,7 +6,7 @@ import type {
   PressableProps,
 } from 'react-native';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
-import { StoreManager } from '../store/StoreManager';
+import { StoreManager } from '../internals/store/StoreManager';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;
