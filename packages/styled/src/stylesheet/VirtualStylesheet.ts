@@ -1,8 +1,8 @@
 import { hash } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
-import { EMPTY_SHEET } from '../constants';
+import { EMPTY_SHEET } from '../constants/empties';
 import { createTwindInterpreter } from '../css/twind';
-import type { ComponentStylesheet } from '../types';
+import type { ComponentStylesheet } from '../types/types';
 import StyleSheetCache from './StyleSheetCache';
 
 let currentConfig: Config = { content: ['__'], theme: { colors: {}, fontFamily: {} } };

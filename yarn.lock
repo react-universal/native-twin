@@ -7044,7 +7044,8 @@ __metadata:
     "@types/react-dom": ^18.2.6
     "@types/react-is": ^17.0.3
     "@types/use-sync-external-store": ^0.0.3
-    "@universal-labs/stylesheets": "workspace:*"
+    "@universal-labs/css": "workspace:*"
+    "@universal-labs/twind-adapter": "workspace:*"
     react-is: ^18.2.0
     stable-hash: 0.0.3
     tailwind-merge: ^1.10.0
@@ -7052,22 +7053,6 @@ __metadata:
   peerDependencies:
     react: ">=18"
     react-native: ">= 0.70"
-    react-native-web: ">= 0.18.10"
-  languageName: unknown
-  linkType: soft
-
-"@universal-labs/stylesheets@workspace:*, @universal-labs/stylesheets@workspace:packages/sheets":
-  version: 0.0.0-use.local
-  resolution: "@universal-labs/stylesheets@workspace:packages/sheets"
-  dependencies:
-    "@types/react": ^18.2.14
-    "@universal-labs/css": "workspace:*"
-    "@universal-labs/twind-adapter": "workspace:*"
-    react-native-uuid: ^2.0.1
-    vitest: ^0.31.1
-  peerDependencies:
-    react: ">=18"
-    react-native: ">=0.70"
     react-native-web: ">= 0.18.10"
   languageName: unknown
   linkType: soft

@@ -1,14 +1,12 @@
 import { useId, useMemo } from 'react';
 import { Touchable, StyleSheet } from 'react-native';
-import {
-  StyledProps,
-  InlineStyleSheet,
-  StoreManager,
-  AnyStyle,
-} from '@universal-labs/stylesheets';
-import { ComponentNode } from '@universal-labs/stylesheets';
+import { AnyStyle } from '@universal-labs/css';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
 import { defaultGroupState } from '../constants/empties';
+import ComponentNode from '../store/ComponentNode';
+import { StoreManager } from '../store/StoreManager';
+import InlineStyleSheet from '../stylesheet/InlineStylesheet';
+import { StyledProps } from '../types/types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 

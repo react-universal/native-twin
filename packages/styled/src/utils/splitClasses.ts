@@ -3,7 +3,7 @@ import type {
   ValidChildPseudoSelector,
   ValidInteractionPseudoSelector,
   ValidPlatformPseudoSelector,
-} from '../constants';
+} from '../constants/ValidPseudoElements';
 
 export function getPseudoSelectorClassNames(
   classNamesArray: readonly string[],

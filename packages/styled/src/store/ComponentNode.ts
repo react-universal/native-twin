@@ -1,4 +1,7 @@
-import type { ValidGroupPseudoSelector, ValidInteractionPseudoSelector } from '../constants';
+import type {
+  ValidGroupPseudoSelector,
+  ValidInteractionPseudoSelector,
+} from '../constants/ValidPseudoElements';
 
 export interface ComponentNodeInput {
   componentID: string;

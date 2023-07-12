@@ -1,4 +1,4 @@
-import type { ValidInteractionPseudoSelector } from '../constants';
+import type { ValidInteractionPseudoSelector } from '../constants/ValidPseudoElements';
 
 type SubscriptionsCallBack<T> = (currentState: T) => void;
 

@@ -1,4 +1,4 @@
-import type { StylesheetGroup } from '../types';
+import type { SelectorGroup } from '@universal-labs/css';
 
 export interface CssSheetNode {
   type: 'sheet';
@@ -7,7 +7,7 @@ export interface CssSheetNode {
 
 export interface CssRuleNode {
   type: 'rule';
-  group: StylesheetGroup;
+  group: SelectorGroup;
   selector: string;
   declarations: CssDeclarationNode[];
 }

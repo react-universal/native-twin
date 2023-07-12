@@ -1,25 +1,28 @@
-import type { ValidGroupPseudoSelector, ValidInteractionPseudoSelector } from '../constants';
-import type ComponentNode from '../store/ComponentNode';
+import type {
+  ValidGroupPseudoSelector,
+  ValidInteractionPseudoSelector,
+} from '../constants/ValidPseudoElements';
+import type ComponentNode from './ComponentNode';
 
-class StoreManager {
+class StoreManagerClass {
   subscribers = new Set<() => void>();
   componentsRegistry = new Map<string, ComponentNode>();
-  static instance: StoreManager;
+  static instance: StoreManagerClass;
 
   private constructor() {}
   static getInstance() {
-    if (!StoreManager.instance) {
-      StoreManager.instance = new StoreManager();
-      StoreManager.instance.subscribe = StoreManager.instance.subscribe.bind(
-        StoreManager.instance,
+    if (!StoreManagerClass.instance) {
+      StoreManagerClass.instance = new StoreManagerClass();
+      StoreManagerClass.instance.subscribe = StoreManagerClass.instance.subscribe.bind(
+        StoreManagerClass.instance,
       );
-      StoreManager.instance.emitChanges = StoreManager.instance.emitChanges.bind(
-        StoreManager.instance,
+      StoreManagerClass.instance.emitChanges = StoreManagerClass.instance.emitChanges.bind(
+        StoreManagerClass.instance,
       );
-      StoreManager.instance.setInteractionState =
-        StoreManager.instance.setInteractionState.bind(StoreManager.instance);
+      StoreManagerClass.instance.setInteractionState =
+        StoreManagerClass.instance.setInteractionState.bind(StoreManagerClass.instance);
     }
-    return StoreManager.instance;
+    return StoreManagerClass.instance;
   }
 
   subscribe(fn: () => void) {
@@ -52,4 +55,4 @@ class StoreManager {
   }
 }
 
-export const store = StoreManager.getInstance();
+export const StoreManager = StoreManagerClass.getInstance();
