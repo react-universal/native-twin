@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import { AnyStyle, CssResolver, FinalSheet } from '@universal-labs/css';
-import { initialize } from '@universal-labs/twind-adapter';
+import { initialize, parse } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
 import { SheetInteractionState, SheetInterpreterFn, SheetManagerFn } from '../types/css.types';
 
@@ -43,10 +43,11 @@ export const SheetManager: SheetManagerFn = (context) => {
   }
 
   const sheetFn: SheetInterpreterFn = (classNames) => {
+    const utilities = parse(classNames);
+    console.log('UTILITIES: ', utilities);
     const restore = SheetManager.twind.tw.snapshot();
     const generateClassNames = SheetManager.twind.tx(classNames).split(' ');
-    const target = [...SheetManager.twind.tw.target];
-    restore();
+    const target = SheetManager.twind.tw.target;
     const purged = target.filter((item) =>
       platformMatch.test(item) ? item.includes(Platform.OS) : true,
     );
@@ -56,6 +57,7 @@ export const SheetManager: SheetManagerFn = (context) => {
       rem: context.units.rem,
       platform: Platform.OS,
     });
+    restore();
     return {
       finalSheet,
       getStyles: (input) => getStyles(finalSheet, input),
@@ -72,8 +74,11 @@ export const SheetManager: SheetManagerFn = (context) => {
 };
 
 SheetManager.twind = initialize();
+
 SheetManager.setThemeConfig = (config: Config) => {
   SheetManager.twind.tw.destroy();
+  //@ts-expect-error
+  SheetManager.twind = undefined;
   SheetManager.twind = initialize({
     colors: {
       ...config?.theme?.colors,
