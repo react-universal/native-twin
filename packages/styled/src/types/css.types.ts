@@ -1,3 +1,4 @@
+import type { Platform } from 'react-native';
 import { AnyStyle, FinalSheet } from '@universal-labs/css';
 import { TwindManager } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
@@ -21,10 +22,11 @@ export type Units = {
 export type StyledContext = {
   orientation: 'portrait' | 'landscape';
   resolution: number;
-  prefersReducedMotion: 'no-preference' | 'reduce';
+  fontScale: number;
   deviceWidth: number;
   deviceHeight: number;
   deviceAspectRatio: number;
+  platform: Platform['OS'];
   units: Units;
 };
 

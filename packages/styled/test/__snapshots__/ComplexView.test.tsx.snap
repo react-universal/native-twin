@@ -1,0 +1,43 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@universal-labs/styled > View render 1`] = `
+<View
+  groupID=":r0:"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  onTouchEnd={[Function]}
+  onTouchStart={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "rgba(254,205,211,1)",
+      "borderColor": "rgba(255,255,255,1)",
+      "borderWidth": 2,
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+      "justifyContent": "center",
+      "padding": 56,
+    }
+  }
+>
+  <Text
+    groupID=":r0:"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onTouchEnd={[Function]}
+    onTouchStart={[Function]}
+    parentID=":r0:"
+    style={
+      {
+        "color": "rgba(79,70,229,1)",
+        "fontSize": 24,
+        "lineHeight": 32,
+        "textAlign": "center",
+      }
+    }
+  >
+    H1 - 1
+  </Text>
+</View>
+`;

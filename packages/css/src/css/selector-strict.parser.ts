@@ -1,15 +1,10 @@
 import { choice } from '../parsers/choice.parser';
-import { whitespaceSurrounded } from '../parsers/composed.parsers';
-import { many1 } from '../parsers/many.parser';
-import { sequenceOf } from '../parsers/sequence-of';
-import { char, ident, letters } from '../parsers/string.parser';
-
-// subsequent-sibling combinator
-// '~' === '\u{007E}'; -> true
-// any element
-// '*' === '\u{002A}'; -> true
-// an element of type E
-// 'E' === '\u{0045}';
+import { coroutine } from '../parsers/coroutine.parser';
+import { many } from '../parsers/many.parser';
+import { peek } from '../parsers/peek.parser';
+import { skip } from '../parsers/skip.parser';
+import { char, ident, literal } from '../parsers/string.parser';
+import { SelectorPayload } from '../types/css.types';
 
 const mapToken =
   <A extends string, B>(type: A) =>
@@ -18,17 +13,60 @@ const mapToken =
     value,
   });
 
-const ParseSelectorTags = ident.map(mapToken('IDENT'));
-const ParsePseudoClass = sequenceOf([char(':'), letters]).map((x) =>
-  mapToken('PSEUDO')(x.join('')),
-);
+const ChildPseudoClasses = choice([
+  literal('first-child'),
+  literal('last-child'),
+  literal('only-child'),
+]);
 
-const ParseSelectorCombinator = whitespaceSurrounded(
-  choice([char('>'), char('~'), char('+')]),
-).map(mapToken('COMBINATOR'));
+const PointerPseudoClasses = choice([literal('hover'), literal('focus'), literal('active')]);
+const GroupPointerPseudoClasses = choice([
+  literal('group-hover'),
+  literal('group-focus'),
+  literal('group-active'),
+]);
 
-const SelectorClass = sequenceOf([char('.'), ident]).map((x) => mapToken('CLASS')(x.join('')));
+const ParseSelectorClassName = ident;
 
-export const ParseSelectorStrict = many1(
-  choice([SelectorClass, ParsePseudoClass, ParseSelectorTags, ParseSelectorCombinator]),
-);
+const ParseSelectorPart = choice([
+  ChildPseudoClasses.map(mapToken('CHILD_PSEUDO_CLASS')),
+  PointerPseudoClasses.map(mapToken('POINTER_PSEUDO_CLASS')),
+  GroupPointerPseudoClasses.map(mapToken('GROUP_PSEUDO_CLASS')),
+  ParseSelectorClassName.map(mapToken('IDENT_PSEUDO_CLASS')),
+]);
+
+export const ParseSelectorStrict = coroutine((run) => {
+  const token = parseNextPart();
+
+  return mapToken('SELECTOR')(token);
+
+  function parseNextPart(
+    result: SelectorPayload = { pseudoSelectors: [], selectorList: [] },
+  ): SelectorPayload {
+    const nextToken = run(peek);
+    if (nextToken == '{') {
+      return result;
+    }
+    if (nextToken == '\\') {
+      run(skip(many(char('\\'))));
+      return parseNextPart(result);
+    }
+    if (nextToken == ':') {
+      run(skip(char(':')));
+    }
+
+    if (nextToken == '.') {
+      run(skip(char('.')));
+    }
+    if (nextToken == '#') {
+      run(skip(char('#')));
+    }
+    const nextPart = run(ParseSelectorPart);
+    if (nextPart.type == 'IDENT_PSEUDO_CLASS') {
+      result.selectorList.push(nextPart.value);
+    } else {
+      result.pseudoSelectors.push(nextPart.value);
+    }
+    return parseNextPart(result);
+  }
+});

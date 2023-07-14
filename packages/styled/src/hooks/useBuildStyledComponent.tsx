@@ -21,10 +21,10 @@ function useBuildStyledComponent<T>({
   ...restProps
 }: StyledProps<T>) {
   const context = useStyledContext();
-  const manager = SheetManager(context);
   const stylesheet = useMemo(() => {
+    const manager = SheetManager(context);
     return manager(className ?? tw ?? '');
-  }, [className, tw, manager]);
+  }, [className, tw, context]);
 
   const componentID = useId();
 

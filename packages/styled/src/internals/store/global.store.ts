@@ -1,6 +1,6 @@
 import type ComponentNode from './ComponentNode';
 
-function createStore<StoreShape>(initialState: StoreShape) {
+export function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;
 
   const listeners = new Set<(state: StoreShape) => void>();

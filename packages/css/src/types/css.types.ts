@@ -30,3 +30,8 @@ export type CSSPointerEvent = {
     unit: U;
   };
 }[CSSPointerEventKind];
+
+export interface SelectorPayload {
+  selectorList: string[];
+  pseudoSelectors: string[];
+}

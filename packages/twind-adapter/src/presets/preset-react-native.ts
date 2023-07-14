@@ -7,8 +7,8 @@ import transformCssVariables from './css-variables';
 export default function twindPresetReactNative(): Preset {
   return {
     variants: [
-      ['ios', '&:ios'],
-      ['android', '&:android'],
+      ['ios', ':ios'],
+      ['android', ':android'],
       ['web', ':web'],
     ],
     // @ts-expect-error

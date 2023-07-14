@@ -1,13 +1,14 @@
 import { Platform } from 'react-native';
 import { AnyStyle, CssResolver, FinalSheet } from '@universal-labs/css';
-import { initialize, parse } from '@universal-labs/twind-adapter';
+import { hash, initialize, parse } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
 import { SheetInteractionState, SheetInterpreterFn, SheetManagerFn } from '../types/css.types';
+import { contextStore } from './store/context.store';
 
 const platformMatch = /web|ios|android|native+/;
 
 export const SheetManager: SheetManagerFn = (context) => {
-  // const virtualSheet = new Map<string, any>();
+  const virtualSheet = new Map<string, any>();
   // let currentConfig: Config = { content: ['_'] };
 
   function getStyles(sheet: FinalSheet, input: SheetInteractionState) {
@@ -44,6 +45,14 @@ export const SheetManager: SheetManagerFn = (context) => {
 
   const sheetFn: SheetInterpreterFn = (classNames) => {
     const utilities = parse(classNames);
+    const hashed = hash(classNames);
+    const isCached = virtualSheet.has(hashed);
+    if (isCached) {
+      console.log('CACHED: ', isCached);
+      return virtualSheet.get(hashed)!;
+    }
+    // const test = SheetManager.twind.tw.theme('color-blue-200');
+    // const test = SheetManager.twind.tw.theme('aria');
     console.log('UTILITIES: ', utilities);
     const restore = SheetManager.twind.tw.snapshot();
     const generateClassNames = SheetManager.twind.tx(classNames).split(' ');
@@ -58,7 +67,7 @@ export const SheetManager: SheetManagerFn = (context) => {
       platform: Platform.OS,
     });
     restore();
-    return {
+    const result: ReturnType<SheetInterpreterFn> = {
       finalSheet,
       getStyles: (input) => getStyles(finalSheet, input),
       getChildStyles: (data) => getChildStyles(finalSheet, data),
@@ -68,6 +77,8 @@ export const SheetManager: SheetManagerFn = (context) => {
         hasGroupEvents: Object.keys(finalSheet.group).length > 0,
       },
     };
+    virtualSheet.set(hashed, result);
+    return result;
   };
 
   return sheetFn;
@@ -75,7 +86,15 @@ export const SheetManager: SheetManagerFn = (context) => {
 
 SheetManager.twind = initialize();
 
-SheetManager.setThemeConfig = (config: Config) => {
+SheetManager.setThemeConfig = (config: Config, baseRem) => {
+  contextStore.setState((prev) => ({
+    ...prev,
+    units: {
+      ...prev.units,
+      em: baseRem,
+      rem: baseRem,
+    },
+  }));
   SheetManager.twind.tw.destroy();
   //@ts-expect-error
   SheetManager.twind = undefined;
