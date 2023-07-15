@@ -19,7 +19,7 @@ export const CreateCssResolver = () => {
         const parserResult = parseCssTarget(current, context);
         if (!parserResult) return prev;
 
-        Object.assign(prev[parserResult.selector.group], parserResult.declarations);
+        Object.assign(prev[parserResult.selector.value.group], parserResult.declarations);
 
         return prev;
       },

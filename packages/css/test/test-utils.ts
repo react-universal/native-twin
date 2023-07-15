@@ -19,9 +19,8 @@ export const inspectTestElement = (msg: string, target: string[], result: any) =
   );
 };
 
-const { tx, tw } = initialize();
-
 export const injectClassNames = (classNames: string) => {
+  const { tx, tw } = initialize();
   const restore = tw.snapshot();
   tx(classNames);
   const target = [...tw.target];

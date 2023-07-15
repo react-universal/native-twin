@@ -167,13 +167,7 @@ export const createParserState = (
     error: null,
     result: null,
     cursor: 0,
-    data: {
-      context,
-      seen: {
-        selectors: new Set(),
-        styles: {},
-      },
-    },
+    data: createParserContext(context),
   };
 };
 
@@ -184,8 +178,4 @@ export const updateParserData = <Result>(
 
 export const createParserContext = (context: CssParserData['context']): CssParserData => ({
   context,
-  seen: {
-    selectors: new Set(),
-    styles: {},
-  },
 });

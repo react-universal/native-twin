@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { generateStylesFor } from './test-utils';
 
-describe('@universal-labs/css Resular Rules', () => {
+describe('@universal-labs/css Font', () => {
   it('text-2xl', () => {
     const result = generateStylesFor('text-2xl');
     // inspectTestElement('text-2xl rotate-[1.2turn]', [], result);
@@ -19,7 +19,6 @@ describe('@universal-labs/css Resular Rules', () => {
 
   it('text-[2in]', () => {
     const result = generateStylesFor('text-[2in]');
-    // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
     expect(result.base).toStrictEqual({
       fontSize: 192,
     });

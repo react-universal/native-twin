@@ -12,7 +12,7 @@ import { literal, whitespace } from '../parsers/string.parser';
 import type { CssParserData } from '../types/parser.types';
 import { ParseCssDeclarationLine } from './declarations.parser';
 import { ParseCssDimensions } from './dimensions.parser';
-import { ParseCssSelector } from './selector.parser';
+import { ParseSelectorStrict } from './selector-strict.parser';
 
 /*
  ************ RULE BLOCK ***********
@@ -25,7 +25,7 @@ export const ParseCssRules = recursiveParser(() =>
 const GetAtRuleConditionToken = sequenceOf([parseDeclarationProperty, ParseCssDimensions]);
 
 const ParseCssRuleBlock = sequenceOf([
-  ParseCssSelector,
+  ParseSelectorStrict,
   betweenBrackets(ParseCssDeclarationLine),
 ]).map((x) => {
   return {

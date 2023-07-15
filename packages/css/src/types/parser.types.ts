@@ -9,10 +9,6 @@ export interface CssParserData {
     deviceHeight: number;
     platform: Platform['OS'];
   };
-  seen: {
-    selectors: Set<string>;
-    styles: AnyStyle;
-  };
 }
 
 export interface CssParserError {

@@ -6,7 +6,7 @@ import type { SelectorGroup } from '../types/css.types';
  ************ SELECTORS ***********
  */
 
-export const ParseCssSelector = sequenceOf([char('.'), everyCharUntil('{')])
+export const ParseCssSelectorWeak = sequenceOf([char('.'), everyCharUntil('{')])
   .map((x) => x[0] + x[1])
   .map((selector: string) => ({
     group: getSelectorGroup(selector),
