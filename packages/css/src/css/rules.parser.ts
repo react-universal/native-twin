@@ -8,7 +8,8 @@ import { getData, setData } from '../parsers/data.parser';
 import { maybe } from '../parsers/maybe.parser';
 import { peek } from '../parsers/peek.parser';
 import { sequenceOf } from '../parsers/sequence-of';
-import { literal, whitespace } from '../parsers/string.parser';
+import { skip } from '../parsers/skip.parser';
+import { everyCharUntil, literal, whitespace } from '../parsers/string.parser';
 import type { CssParserData } from '../types/parser.types';
 import { ParseCssDeclarationLine } from './declarations.parser';
 import { ParseCssDimensions } from './dimensions.parser';
@@ -67,14 +68,33 @@ export const ParseCssRules = coroutine((run) => {
 });
 
 const GetAtRuleConditionToken = sequenceOf([parseDeclarationProperty, ParseCssDimensions]);
+const SkipRules = skip(everyCharUntil('}'));
 
-const ParseCssRuleBlock = sequenceOf([
-  ParseSelectorStrict,
-  betweenBrackets(ParseCssDeclarationLine),
-]).map((x) => {
+const ParseCssRuleBlock = coroutine((run) => {
+  const selector = run(ParseSelectorStrict);
+  const data = run(getData);
+  const cache = data.cache.get(selector.value.selectorName);
+  if (cache) {
+    run(SkipRules);
+    run(
+      setData({
+        ...data,
+        styles: {
+          ...data.styles,
+          ...cache,
+        },
+      }),
+    );
+    return {
+      selector,
+      declarations: cache,
+    };
+  }
+  const declarations = run(betweenBrackets(ParseCssDeclarationLine));
+  data.cache.set(selector.value.selectorName, declarations);
   return {
-    selector: x[0]!,
-    declarations: x[1]!,
+    selector,
+    declarations,
   };
 });
 
