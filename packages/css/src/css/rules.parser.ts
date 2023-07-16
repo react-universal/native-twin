@@ -1,4 +1,3 @@
-import { choice } from '../parsers/choice.parser';
 import {
   betweenBrackets,
   betweenParens,
@@ -8,21 +7,12 @@ import { coroutine } from '../parsers/coroutine.parser';
 import { getData, setData } from '../parsers/data.parser';
 import { maybe } from '../parsers/maybe.parser';
 import { peek } from '../parsers/peek.parser';
-import { recursiveParser } from '../parsers/recursive.parser';
 import { sequenceOf } from '../parsers/sequence-of';
 import { literal, whitespace } from '../parsers/string.parser';
 import type { CssParserData } from '../types/parser.types';
 import { ParseCssDeclarationLine } from './declarations.parser';
 import { ParseCssDimensions } from './dimensions.parser';
-import { ParseSelectorStrict } from './selector-strict.parser';
-
-/*
- ************ RULE BLOCK ***********
- */
-
-export const ParseCssRules_ = recursiveParser(() =>
-  choice([ParseCssAtRule, ParseCssRuleBlock]),
-);
+import { ParseSelectorStrict } from './selector.parser';
 
 export const ParseCssRules = coroutine((run) => {
   const result = guessNextRule();

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ParseSelectorStrict } from '../src/css/selector-strict.parser';
+import { ParseSelectorStrict } from '../src/css/selector.parser';
 import { generateStylesFor, getTestParserData } from './test-utils';
 
 describe('@universal-labs/css - AT-RULES', () => {
