@@ -24,19 +24,18 @@ describe('@universal-labs/css Colors', () => {
 
   it('bg-gray-200', () => {
     const result = generateStylesFor('bg-gray-200');
-    // inspectTestElement('bg-gray-200', tw.target, result);
+
     expect(result.base).toStrictEqual({ backgroundColor: 'rgba(229,231,235,1)' });
   });
 
   it('hover:bg-gray-200', () => {
     const result = generateStylesFor('hover:bg-gray-200');
-    // inspectTestElement('hover:bg-gray-200', tw.target, result);
+
     expect(result.pointer).toStrictEqual({ backgroundColor: 'rgba(229,231,235,1)' });
   });
 
   it('first:bg-gray-200', () => {
     const result = generateStylesFor('first:bg-gray-200');
-    // inspectTestElement('first:bg-gray-200', tw.target, result);
 
     expect(result.first).toStrictEqual({ backgroundColor: 'rgba(229,231,235,1)' });
   });
@@ -160,7 +159,6 @@ describe('CSS - FlexBox', () => {
 
   it('justify-center', () => {
     const result = generateStylesFor('justify-center');
-    // inspectTestElement('justify-center', tw.target, result);
 
     expect(result.base).toStrictEqual({ justifyContent: 'center' });
   });
@@ -169,7 +167,6 @@ describe('CSS - FlexBox', () => {
 describe('CSS - Shadow', () => {
   test('shadow', () => {
     const result = generateStylesFor('shadow-md');
-    // inspectTestElement('shadow', tw.target, result);
 
     expect(result.base).toStrictEqual({
       shadowOffset: { width: 0, height: 4 },
@@ -183,35 +180,30 @@ describe('CSS - Shadow', () => {
 describe('@universal-labs/css Spaces', () => {
   it('-mt-2', () => {
     const result = generateStylesFor('-mt-2');
-    // inspectTestElement('-mt-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ marginTop: -8 });
   });
 
   it('p-[1vw]', () => {
     const result = generateStylesFor('p-[1vw]');
-    // inspectTestElement('-mt-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ padding: 7.2 });
   });
 
   it('aspect-square', () => {
     const result = generateStylesFor('aspect-square');
-    // inspectTestElement('-mt-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ aspectRatio: 1 });
   });
 
   it('m-[10vh]', () => {
     const result = generateStylesFor('m-[10vh]');
-    // inspectTestElement('-mt-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ margin: 128 });
   });
 
   it('mt-[10%]', () => {
     const result = generateStylesFor('mt-[10%]');
-    // inspectTestElement('-mt-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ marginTop: '10%' });
   });
@@ -220,13 +212,13 @@ describe('@universal-labs/css Spaces', () => {
 describe('@universal-labs/css Font', () => {
   it('text-2xl', () => {
     const result = generateStylesFor('text-2xl');
-    // inspectTestElement('text-2xl rotate-[1.2turn]', [], result);
+
     expect(result.base).toStrictEqual({ fontSize: 24, lineHeight: 32 });
   });
 
   it('text-2xl', () => {
     const result = generateStylesFor('text-2xl');
-    // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
+
     expect(result.base).toStrictEqual({
       fontSize: 24,
       lineHeight: 32,
@@ -242,7 +234,6 @@ describe('@universal-labs/css Font', () => {
 
   it('text-[2cm]', () => {
     const result = generateStylesFor('text-[2cm]');
-    // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
     expect(result.base).toStrictEqual({
       fontSize: 195.6,
     });
@@ -250,7 +241,6 @@ describe('@universal-labs/css Font', () => {
 
   it('text-[2mm]', () => {
     const result = generateStylesFor('text-[2mm]');
-    // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
     expect(result.base).toStrictEqual({
       fontSize: 19.56,
     });
@@ -258,7 +248,6 @@ describe('@universal-labs/css Font', () => {
 
   it('text-[2pt]', () => {
     const result = generateStylesFor('text-[2pt]');
-    // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
     expect(result.base).toStrictEqual({
       fontSize: 2.6666666666666665,
     });
@@ -266,7 +255,7 @@ describe('@universal-labs/css Font', () => {
 
   it('font-sans', () => {
     const result = generateStylesFor('font-sans');
-    // inspectTestElement('text-2xl rotate-[1.2turn]', tw.target, result.base);
+
     expect(result.base).toStrictEqual({ fontFamily: 'ui-sans-serif' });
   });
 });
@@ -274,7 +263,6 @@ describe('@universal-labs/css Font', () => {
 describe('@universal-labs/css GAP', () => {
   it('gap', () => {
     const result = generateStylesFor('gap-2 gap-x-2 gap-y-2');
-    // inspectTestElement('gap-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ gap: 8, columnGap: 8, rowGap: 8 });
   });
@@ -283,40 +271,37 @@ describe('@universal-labs/css GAP', () => {
 describe('@universal-labs/css Transform', () => {
   it('skew-x-1', () => {
     const result = generateStylesFor('skew-x-1');
-    // inspectTestElement('skew-x-1', tw.target, result.base);
+
     expect(result.base).toStrictEqual({ transform: [{ skewX: '1deg' }] });
   });
 
   it('translate-x-2', () => {
     const result = generateStylesFor('translate-x-2');
-    // inspectTestElement('translate-x-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ transform: [{ translateX: 8 }] });
   });
 
   it('translate-y-2', () => {
     const result = generateStylesFor('translate-y-2');
-    // inspectTestElement('translate-y-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ transform: [{ translateX: 0 }, { translateY: 32 }] });
   });
 
   it('-translate-y-2', () => {
     const result = generateStylesFor('-translate-y-2');
-    // inspectTestElement('translate-y-2', tw.target, result);
 
     expect(result.base).toStrictEqual({ transform: [{ translateX: 0 }, { translateY: -32 }] });
   });
 
   it('rotate-[1.2turn]', () => {
     const result = generateStylesFor('rotate-[1.2turn]');
-    // inspectTestElement('skew-x-1', tw.target, result.base);
+
     expect(result.base).toStrictEqual({ transform: [{ rotate: '432deg' }] });
   });
 
   it('rotate-x-[10rad]', () => {
     const result = generateStylesFor('rotate-x-[10rad]');
-    // inspectTestElement('skew-x-1', tw.target, result.base);
+
     expect(result.base).toStrictEqual({ transform: [{ rotate: '10rad' }] });
   });
 });
