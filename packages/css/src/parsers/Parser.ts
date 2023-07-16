@@ -178,4 +178,13 @@ export const updateParserData = <Result>(
 
 export const createParserContext = (context: CssParserData['context']): CssParserData => ({
   context,
+  styles: {
+    base: {},
+    even: {},
+    first: {},
+    group: {},
+    last: {},
+    odd: {},
+    pointer: {},
+  },
 });

@@ -5,7 +5,9 @@ import {
   parseDeclarationProperty,
 } from '../parsers/composed.parsers';
 import { coroutine } from '../parsers/coroutine.parser';
-import { getData } from '../parsers/data.parser';
+import { getData, setData } from '../parsers/data.parser';
+import { maybe } from '../parsers/maybe.parser';
+import { peek } from '../parsers/peek.parser';
 import { recursiveParser } from '../parsers/recursive.parser';
 import { sequenceOf } from '../parsers/sequence-of';
 import { literal, whitespace } from '../parsers/string.parser';
@@ -18,9 +20,61 @@ import { ParseSelectorStrict } from './selector-strict.parser';
  ************ RULE BLOCK ***********
  */
 
-export const ParseCssRules = recursiveParser(() =>
+export const ParseCssRules_ = recursiveParser(() =>
   choice([ParseCssAtRule, ParseCssRuleBlock]),
 );
+
+export const ParseCssRules = coroutine((run) => {
+  const result = guessNextRule();
+  return result;
+
+  function guessNextRule(result: any = {}) {
+    const nextToken = run(maybe(peek));
+    if (!nextToken) {
+      return result;
+    }
+    const currentData = run(getData);
+    if (nextToken == '@') {
+      const payload = run(ParseCssAtRule);
+      if (!payload) return guessNextRule(result);
+      result = {
+        ...result,
+        [payload.selector.value.group]: {
+          ...result[payload.selector.value.group],
+          ...payload?.declarations,
+        },
+      };
+      run(
+        setData({
+          ...currentData,
+          styles: {
+            ...currentData.styles,
+            ...result,
+          },
+        }),
+      );
+      return guessNextRule(result);
+    }
+    const payload = run(ParseCssRuleBlock);
+    result = {
+      ...result,
+      [payload?.selector.value.group]: {
+        ...result[payload?.selector.value.group],
+        ...payload?.declarations,
+      },
+    };
+    run(
+      setData({
+        ...currentData,
+        styles: {
+          ...currentData.styles,
+          ...result,
+        },
+      }),
+    );
+    return guessNextRule(result);
+  }
+});
 
 const GetAtRuleConditionToken = sequenceOf([parseDeclarationProperty, ParseCssDimensions]);
 
@@ -29,8 +83,8 @@ const ParseCssRuleBlock = sequenceOf([
   betweenBrackets(ParseCssDeclarationLine),
 ]).map((x) => {
   return {
-    selector: x[0],
-    declarations: x[1],
+    selector: x[0]!,
+    declarations: x[1]!,
   };
 });
 
