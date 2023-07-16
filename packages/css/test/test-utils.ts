@@ -28,20 +28,26 @@ export const injectClassNames = (classNames: string) => {
   return target;
 };
 
-export const getTestContext = () => {
-  const { context } = createParserContext({
-    deviceHeight: 1280,
-    deviceWidth: 720,
-    rem: 16,
-    platform: 'ios',
+export const getTestParserData = () => {
+  const data = createParserContext({
+    context: {
+      deviceHeight: 1280,
+      deviceWidth: 720,
+      rem: 16,
+      platform: 'ios',
+    },
+    cache: {
+      get: () => null,
+      set: () => {},
+    },
   });
-  return context;
+  return data;
 };
 
 export const generateStylesFor = (classNames: string, debug = false) => {
   const target = injectClassNames(classNames);
-  const context = getTestContext();
-  const parsed = CssResolver(target, context);
+  const parserData = getTestParserData();
+  const parsed = CssResolver(target, parserData.context);
   if (debug) {
     console.group('DEBUG');
     console.log('CLASS_NAMES: ', classNames);

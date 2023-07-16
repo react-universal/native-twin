@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ParseSelectorStrict } from '../src/css/selector-strict.parser';
-import { generateStylesFor, getTestContext } from './test-utils';
+import { generateStylesFor, getTestParserData } from './test-utils';
 
 describe('@universal-labs/css - AT-RULES', () => {
   it('at-rule', () => {
@@ -136,7 +136,7 @@ describe('CSS - FlexBox', () => {
   });
 
   test('flex none :NOT_IMPLEMENTED:', () => {
-    const flex = generateStylesFor('flex-nonde');
+    const flex = generateStylesFor('flex-none');
 
     expect(flex.base).toStrictEqual({});
   });
@@ -306,40 +306,28 @@ describe('@universal-labs/css Transform', () => {
   });
 });
 
-const testContext = getTestContext();
+const testContext = getTestParserData();
 
 const hoverCss = '.hover\\:bg-black:hover{background-color:rgba(0,0,0,1);}';
 
 describe('@universal-labs/css Parsers', () => {
   it('Strict Selector', () => {
-    const result = ParseSelectorStrict.run(hoverCss, testContext);
+    const result = ParseSelectorStrict.run(hoverCss, {
+      ...testContext,
+    });
     expect(result).toStrictEqual({
       isError: false,
       result: {
         type: 'SELECTOR',
         value: {
           pseudoSelectors: ['hover'],
-          selectorList: ['bg-black'],
+          selectorName: 'bg-black',
           group: 'pointer',
         },
       },
       cursor: 22,
       data: {
-        context: {
-          deviceHeight: 1280,
-          deviceWidth: 720,
-          rem: 16,
-          platform: 'ios',
-        },
-        styles: {
-          base: {},
-          even: {},
-          first: {},
-          group: {},
-          last: {},
-          odd: {},
-          pointer: {},
-        },
+        ...testContext,
       },
     });
   });

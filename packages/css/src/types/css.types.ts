@@ -41,7 +41,7 @@ export type CSSPointerEvent = {
 
 export interface SelectorPayload {
   group: SelectorGroup;
-  selectorList: string[];
+  selectorName: string;
   pseudoSelectors: (
     | ValidInteractionPseudoSelector
     | ValidChildPseudoSelector

@@ -59,7 +59,7 @@ export const ParseSelectorStrict = coroutine((run) => {
   return selectorToken(token);
 
   function parseNextPart(
-    result: SelectorPayload = { pseudoSelectors: [], selectorList: [], group: 'base' },
+    result: SelectorPayload = { pseudoSelectors: [], selectorName: '', group: 'base' },
   ): SelectorPayload {
     const nextToken = run(peek);
     if (nextToken == '{') {
@@ -81,8 +81,8 @@ export const ParseSelectorStrict = coroutine((run) => {
     }
     const nextPart = run(ParseSelectorPart);
     if (nextPart.type == 'IDENT_PSEUDO_CLASS') {
-      if (!result.selectorList.includes(nextPart.value)) {
-        result.selectorList.push(nextPart.value);
+      if (result.selectorName == '') {
+        result.selectorName = nextPart.value;
       }
     } else {
       if (!result.pseudoSelectors.includes(nextPart.value)) {

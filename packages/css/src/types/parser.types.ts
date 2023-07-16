@@ -10,6 +10,10 @@ export interface CssParserData {
     platform: Platform['OS'];
   };
   styles: FinalSheet;
+  cache: {
+    get: (selector: string) => AnyStyle | null;
+    set: (selector: string, style: AnyStyle) => void;
+  };
 }
 
 export interface CssParserError {
