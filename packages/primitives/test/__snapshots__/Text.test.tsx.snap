@@ -3,7 +3,7 @@
 exports[`@universal-labs/primitives > H1 render 1`] = `
 <h1
   aria-level={1}
-  className="css-text-1rynq56 text-sm"
+  className="css-text-146c3p1 text-sm"
   dir="auto"
   role="heading"
 >
