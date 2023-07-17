@@ -4,7 +4,6 @@
     "appsDir": "apps",
     "libsDir": "packages"
   },
-  "npmScope": "universal-labs",
   "affected": {
     "defaultBase": "main"
   },
