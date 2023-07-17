@@ -1,6 +1,7 @@
 import { ComponentType, forwardRef, ReactHTML } from 'react';
 import { Platform, TextProps } from 'react-native';
-import Text from './Text.primitive';
+// @ts-expect-error
+import { unstable_createElement } from 'react-native-web';
 
 function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
   const nativeProps: any = Platform.select({
@@ -11,7 +12,12 @@ function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
   });
 
   const Element = forwardRef((props: TextProps, ref) => {
-    return <Text {...nativeProps} {...props} style={[props.style]} ref={ref} />;
+    return unstable_createElement(tag, {
+      ...nativeProps,
+      ...props,
+      style: [props.style],
+      ref,
+    });
   }) as ComponentType<TextProps>;
 
   Element.displayName = tag.toLocaleUpperCase();

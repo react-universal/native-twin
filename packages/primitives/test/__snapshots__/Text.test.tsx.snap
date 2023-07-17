@@ -1,12 +1,18 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`@universal-labs/primitives > H1 render 1`] = `
-<h1
-  aria-level={1}
-  className="css-text-146c3p1 text-sm"
-  dir="auto"
-  role="heading"
+<Text
+  accessibilityRole="header"
+  groupID=":r0:"
+  style={
+    [
+      {
+        "fontSize": 14,
+        "lineHeight": 20,
+      },
+    ]
+  }
 >
   Test H1
-</h1>
+</Text>
 `;

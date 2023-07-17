@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'use-sync-external-store/shim';
+import { useSyncExternalStore } from 'react';
 import { contextStore } from '../internals/store/context.store';
 
 export const useStyledContext = () => {

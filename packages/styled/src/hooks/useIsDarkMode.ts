@@ -1,5 +1,5 @@
+import { useSyncExternalStore } from 'react';
 import { Appearance } from 'react-native';
-import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
 const checkAppearance = () => {
   const subscription = Appearance.addChangeListener(() => {});

@@ -1,8 +1,6 @@
-import { useId, useMemo } from 'react';
+import { useId, useMemo, useSyncExternalStore } from 'react';
 import { StyleSheet, Touchable } from 'react-native';
 import { AnyStyle } from '@universal-labs/css';
-import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
-import { defaultGroupState } from '../constants/empties';
 import { SheetManager } from '../internals/sheet';
 import ComponentNode from '../internals/store/ComponentNode';
 import { StoreManager } from '../internals/store/StoreManager';
@@ -37,36 +35,24 @@ function useBuildStyledComponent<T>({
         new ComponentNode({
           componentID,
           stylesheetID: componentID,
-          groupID: 'stylesheet.metadata.isGroupParent ? componentID : currentGroupID',
+          groupID: stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
         }),
       )!,
-    [componentID],
+    [componentID, stylesheet, currentGroupID],
   );
 
-  const interactionState = useSyncExternalStoreWithSelector(
+  const interactionState = useSyncExternalStore(
     StoreManager.subscribe,
     () => component.interactionsState,
     () => component.interactionsState,
-    (record) => {
-      return record;
-    },
   );
 
   const groupScope = currentGroupID === componentID ? componentID : currentGroupID;
 
-  const groupParentComponentState = useSyncExternalStoreWithSelector(
+  const groupParentComponentState = useSyncExternalStore(
     StoreManager.subscribe,
     () => StoreManager.componentsRegistry.get(groupScope)!.interactionsState,
     () => StoreManager.componentsRegistry.get(groupScope)!.interactionsState,
-    (parent) => {
-      if (
-        currentGroupID !== componentID &&
-        (stylesheet.metadata.hasGroupEvents || stylesheet.metadata.isGroupParent)
-      ) {
-        return parent;
-      }
-      return defaultGroupState;
-    },
   );
 
   const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({

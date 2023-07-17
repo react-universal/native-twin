@@ -1,12 +1,26 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`@universal-labs/primitives > View render 1`] = `
-<div
-  className="css-view-175oi2r flex-1"
-  dir={null}
+<View
+  groupID=":r0:"
+  style={
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
+  }
 >
-  <span>
+  <Text
+    groupID=":r0:"
+    parentID=":r0:"
+    style={
+      [
+        {},
+      ]
+    }
+  >
     Test View
-  </span>
-</div>
+  </Text>
+</View>
 `;

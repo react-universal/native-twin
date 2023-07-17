@@ -8,7 +8,7 @@ import {
 import { useBuildStyledComponent } from '../hooks/useBuildStyledComponent';
 import type { StyledProps } from '../types/styled.types';
 
-type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
+export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
   ? Props
   : TComponent extends React.Component<infer Props>
   ? Props

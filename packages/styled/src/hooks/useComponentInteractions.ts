@@ -1,11 +1,10 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useSyncExternalStore } from 'react';
 import type {
   NativeSyntheticEvent,
   Touchable,
   TextInputFocusEventData,
   PressableProps,
 } from 'react-native';
-import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
 import { StoreManager } from '../internals/store/StoreManager';
 
 interface UseComponentInteractionsArgs {
@@ -36,13 +35,10 @@ const useComponentInteractions = ({
       }
   >(props);
 
-  const setInteractionState = useSyncExternalStoreWithSelector(
+  const setInteractionState = useSyncExternalStore(
     StoreManager.subscribe,
     () => StoreManager.setInteractionState,
     () => StoreManager.setInteractionState,
-    (fn) => {
-      return fn;
-    },
   );
 
   const componentInteractionHandlers = useMemo(() => {

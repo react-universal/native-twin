@@ -6606,13 +6606,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/use-sync-external-store@npm:^0.0.3":
-  version: 0.0.3
-  resolution: "@types/use-sync-external-store@npm:0.0.3"
-  checksum: 161ddb8eec5dbe7279ac971531217e9af6b99f7783213566d2b502e2e2378ea19cf5e5ea4595039d730aa79d3d35c6567d48599f69773a02ffcff1776ec2a44e
-  languageName: node
-  linkType: hard
-
 "@types/ws@npm:^8.5.1":
   version: 8.5.4
   resolution: "@types/ws@npm:8.5.4"
@@ -6925,7 +6918,6 @@ __metadata:
     "@types/react": ^18.2.14
     "@types/react-dom": ^18.2.6
     "@types/react-is": ^17.0.3
-    "@types/use-sync-external-store": ^0.0.3
     "@universal-labs/css": "workspace:*"
     "@universal-labs/twind-adapter": "workspace:*"
     react-is: ^18.2.0

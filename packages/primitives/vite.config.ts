@@ -18,7 +18,7 @@ export default defineConfig({
     // Plugin for .d.ts files
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
-      outputDir: 'build/typings',
+      outputDir: 'build',
     }),
   ],
   esbuild: {
@@ -28,8 +28,8 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsPrimitives',
-      fileName: (format) => `${format}/index.native.js`,
-      formats: ['es', 'umd'],
+      fileName: () => `index.js`,
+      formats: ['es'],
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
@@ -45,7 +45,6 @@ export default defineConfig({
       output: {
         dir: 'build',
         externalImportAssertions: true,
-        extend: true,
         globals: {
           react: 'React',
           'react-native': 'ReactNative',
