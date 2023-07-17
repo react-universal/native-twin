@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import { AnyStyle, CssResolver, FinalSheet } from '@universal-labs/css';
-import { hash, initialize, parse } from '@universal-labs/twind-adapter';
+import { hash, initialize } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
 import { SheetInteractionState, SheetInterpreterFn, SheetManagerFn } from '../types/css.types';
 import { contextStore } from './store/context.store';
@@ -9,7 +9,6 @@ const platformMatch = /web|ios|android|native+/;
 
 export const SheetManager: SheetManagerFn = (context) => {
   const virtualSheet = new Map<string, any>();
-  // let currentConfig: Config = { content: ['_'] };
 
   function getStyles(sheet: FinalSheet, input: SheetInteractionState) {
     const styles: AnyStyle = { ...sheet.base };
@@ -44,16 +43,11 @@ export const SheetManager: SheetManagerFn = (context) => {
   }
 
   const sheetFn: SheetInterpreterFn = (classNames) => {
-    const utilities = parse(classNames);
     const hashed = hash(classNames);
     const isCached = virtualSheet.has(hashed);
     if (isCached) {
-      console.log('CACHED: ', isCached);
       return virtualSheet.get(hashed)!;
     }
-    // const test = SheetManager.twind.tw.theme('color-blue-200');
-    // const test = SheetManager.twind.tw.theme('aria');
-    console.log('UTILITIES: ', utilities);
     const restore = SheetManager.twind.tw.snapshot();
     const generateClassNames = SheetManager.twind.tx(classNames).split(' ');
     const target = SheetManager.twind.tw.target;
