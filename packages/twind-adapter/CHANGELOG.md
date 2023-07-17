@@ -1,5 +1,11 @@
 # @universal-labs/twind-native
 
+## 4.2.0
+
+### Minor Changes
+
+- [#107](https://github.com/react-universal/tailwind/pull/107) [`d5b1990`](https://github.com/react-universal/tailwind/commit/d5b19907004036f91810102b4bc27d0a747fb396) Thanks [@chrisarts](https://github.com/chrisarts)! - support for major utilities
+
 ## 4.1.2
 
 ### Patch Changes

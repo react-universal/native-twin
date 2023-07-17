@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/css",
-  "version": "4.1.2",
+  "version": "4.2.0",
   "description": "Css parser for react native",
   "keywords": [
     "react-native",
