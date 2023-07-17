@@ -54,5 +54,5 @@ export const generateStylesFor = (classNames: string, debug = false) => {
     inspectTestElement('SHEET: ', target, parsed);
     console.groupEnd();
   }
-  return parsed.data.styles;
+  return parsed;
 };

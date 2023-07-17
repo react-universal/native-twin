@@ -9,8 +9,9 @@ import { maybe } from '../parsers/maybe.parser';
 import { peek } from '../parsers/peek.parser';
 import { sequenceOf } from '../parsers/sequence-of';
 import { skip } from '../parsers/skip.parser';
-import { everyCharUntil, literal, whitespace } from '../parsers/string.parser';
+import { char, everyCharUntil, literal, whitespace } from '../parsers/string.parser';
 import type { CssParserData } from '../types/parser.types';
+import { FinalSheet } from '../types/rn.types';
 import { ParseCssDeclarationLine } from './declarations.parser';
 import { ParseCssDimensions } from './dimensions.parser';
 import { ParseSelectorStrict } from './selector.parser';
@@ -19,7 +20,17 @@ export const ParseCssRules = coroutine((run) => {
   const result = guessNextRule();
   return result;
 
-  function guessNextRule(result: any = {}) {
+  function guessNextRule(
+    result: FinalSheet = {
+      base: {},
+      even: {},
+      first: {},
+      group: {},
+      last: {},
+      odd: {},
+      pointer: {},
+    },
+  ): FinalSheet {
     const nextToken = run(maybe(peek));
     if (!nextToken) {
       return result;
@@ -68,23 +79,26 @@ export const ParseCssRules = coroutine((run) => {
 });
 
 const GetAtRuleConditionToken = sequenceOf([parseDeclarationProperty, ParseCssDimensions]);
-const SkipRules = skip(everyCharUntil('}'));
+const SkipRules = sequenceOf([skip(everyCharUntil('}')), char('}')]);
 
 const ParseCssRuleBlock = coroutine((run) => {
   const selector = run(ParseSelectorStrict);
+  const platformSelector = selector.value.pseudoSelectors.find(
+    (item) => item == 'ios' || item == 'android' || item == 'web',
+  );
   const data = run(getData);
+  if (platformSelector) {
+    if (!selector.value.pseudoSelectors.some((item) => item == data.context.platform)) {
+      run(SkipRules);
+      return {
+        selector,
+        declarations: {},
+      };
+    }
+  }
   const cache = data.cache.get(selector.value.selectorName);
   if (cache) {
     run(SkipRules);
-    run(
-      setData({
-        ...data,
-        styles: {
-          ...data.styles,
-          ...cache,
-        },
-      }),
-    );
     return {
       selector,
       declarations: cache,

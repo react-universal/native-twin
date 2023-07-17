@@ -19,7 +19,7 @@ export const CreateCssResolver = () => {
       },
       context,
     });
-    return parsed;
+    return parsed.data.styles;
   }
 
   function getCacheForSelector(selector: string) {

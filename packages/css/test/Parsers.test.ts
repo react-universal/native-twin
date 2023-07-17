@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { describe, expect, it } from 'vitest';
 import { ParseSelectorStrict } from '../src/css/selector.parser';
 import { generateStylesFor, getTestParserData } from './test-utils';
@@ -5,7 +6,6 @@ import { generateStylesFor, getTestParserData } from './test-utils';
 describe('@universal-labs/css - AT-RULES', () => {
   it('at-rule', () => {
     const result = generateStylesFor('text-2xl sm:text-base');
-
     expect(result.base).toStrictEqual({
       fontSize: 16,
       lineHeight: 24,
@@ -329,6 +329,39 @@ describe('@universal-labs/css Parsers', () => {
       data: {
         ...testContext,
       },
+    });
+  });
+});
+
+describe('@universal-labs/css - COMPLEX RULES', () => {
+  it('Complex', () => {
+    const result = generateStylesFor(
+      clsx(
+        'flex-1',
+        'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
+        'ios:(p-14 bg-rose-200 border-white border-2)',
+        'android:(p-14 border-green-200 border-2 bg-gray-200)',
+        'items-center justify-center md:border-3',
+      ),
+    );
+    expect(result).toStrictEqual({
+      base: {
+        flexGrow: 1,
+        flexShrink: 1,
+        flexBasis: '0%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 56,
+        backgroundColor: 'rgba(254,205,211,1)',
+        borderColor: 'rgba(255,255,255,1)',
+        borderWidth: 2,
+      },
+      pointer: { backgroundColor: 'rgba(22,163,74,1)' },
+      group: {},
+      first: {},
+      last: {},
+      even: {},
+      odd: {},
     });
   });
 });
