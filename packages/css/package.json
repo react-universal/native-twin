@@ -43,9 +43,6 @@
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },
-  "devDependencies": {
-    "vitest": "^0.31.1"
-  },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"

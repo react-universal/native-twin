@@ -18,14 +18,14 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1 rotate-[1turn]'>
+    <View className='flex-1'>
       <View
         className={clsx(
           'flex-1',
-          'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
-          'ios:(p-14 bg-red-600 border-red-200 border-2)',
-          'android:(p-14 border-red-200 border-2 bg-gray-200)',
           'items-center justify-center md:border-3',
+          'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
+          'ios:(p-14 bg-rose-200 border-white border-2)',
+          'android:(p-14 border-green-200 border-2 bg-gray-200)',
         )}
       >
         <H1

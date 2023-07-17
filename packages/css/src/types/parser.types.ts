@@ -1,6 +1,6 @@
 import type { Platform } from 'react-native';
 import type { SelectorGroup } from './css.types';
-import type { AnyStyle } from './rn.types';
+import type { AnyStyle, FinalSheet } from './rn.types';
 
 export interface CssParserData {
   context: {
@@ -9,9 +9,10 @@ export interface CssParserData {
     deviceHeight: number;
     platform: Platform['OS'];
   };
-  seen: {
-    selectors: Set<string>;
-    styles: AnyStyle;
+  styles: FinalSheet;
+  cache: {
+    get: (selector: string) => AnyStyle | null;
+    set: (selector: string, style: AnyStyle) => void;
   };
 }
 

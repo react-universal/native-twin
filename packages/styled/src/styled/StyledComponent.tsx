@@ -38,7 +38,6 @@ export function styled<T>(
     }: StyledProps<any>,
     ref: ForwardedRef<any>,
   ) {
-    // const start = performance.now();
     const {
       componentInteractionHandlers,
       focusHandlers,
@@ -57,7 +56,6 @@ export function styled<T>(
       children,
       ...restProps,
     });
-    // console.debug('TOOK: ', className, performance.now() - start);
     // @ts-ignore
     return createElement(Component, {
       style: componentStyles,

@@ -1,6 +1,6 @@
 import { Children, cloneElement, isValidElement, ReactNode, useMemo } from 'react';
 import { StyleProp, StyleSheet } from 'react-native';
-import type { AnyStyle } from '@universal-labs/stylesheets';
+import type { AnyStyle } from '@universal-labs/css';
 import { isFragment } from 'react-is';
 
 function useChildren(

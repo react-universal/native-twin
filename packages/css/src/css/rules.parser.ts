@@ -1,36 +1,114 @@
-import { choice } from '../parsers/choice.parser';
 import {
   betweenBrackets,
   betweenParens,
   parseDeclarationProperty,
 } from '../parsers/composed.parsers';
 import { coroutine } from '../parsers/coroutine.parser';
-import { getData } from '../parsers/data.parser';
-import { recursiveParser } from '../parsers/recursive.parser';
+import { getData, setData } from '../parsers/data.parser';
+import { maybe } from '../parsers/maybe.parser';
+import { peek } from '../parsers/peek.parser';
 import { sequenceOf } from '../parsers/sequence-of';
-import { literal, whitespace } from '../parsers/string.parser';
+import { skip } from '../parsers/skip.parser';
+import { char, everyCharUntil, literal, whitespace } from '../parsers/string.parser';
 import type { CssParserData } from '../types/parser.types';
+import { FinalSheet } from '../types/rn.types';
 import { ParseCssDeclarationLine } from './declarations.parser';
 import { ParseCssDimensions } from './dimensions.parser';
-import { ParseCssSelector } from './selector.parser';
+import { ParseSelectorStrict } from './selector.parser';
 
-/*
- ************ RULE BLOCK ***********
- */
+export const ParseCssRules = coroutine((run) => {
+  const result = guessNextRule();
+  return result;
 
-export const ParseCssRules = recursiveParser(() =>
-  choice([ParseCssAtRule, ParseCssRuleBlock]),
-);
+  function guessNextRule(
+    result: FinalSheet = {
+      base: {},
+      even: {},
+      first: {},
+      group: {},
+      last: {},
+      odd: {},
+      pointer: {},
+    },
+  ): FinalSheet {
+    const nextToken = run(maybe(peek));
+    if (!nextToken) {
+      return result;
+    }
+    const currentData = run(getData);
+    if (nextToken == '@') {
+      const payload = run(ParseCssAtRule);
+      if (!payload) return guessNextRule(result);
+      result = {
+        ...result,
+        [payload.selector.value.group]: {
+          ...result[payload.selector.value.group],
+          ...payload?.declarations,
+        },
+      };
+      run(
+        setData({
+          ...currentData,
+          styles: {
+            ...currentData.styles,
+            ...result,
+          },
+        }),
+      );
+      return guessNextRule(result);
+    }
+    const payload = run(ParseCssRuleBlock);
+    result = {
+      ...result,
+      [payload?.selector.value.group]: {
+        ...result[payload?.selector.value.group],
+        ...payload?.declarations,
+      },
+    };
+    run(
+      setData({
+        ...currentData,
+        styles: {
+          ...currentData.styles,
+          ...result,
+        },
+      }),
+    );
+    return guessNextRule(result);
+  }
+});
 
 const GetAtRuleConditionToken = sequenceOf([parseDeclarationProperty, ParseCssDimensions]);
+const SkipRules = sequenceOf([skip(everyCharUntil('}')), char('}')]);
 
-const ParseCssRuleBlock = sequenceOf([
-  ParseCssSelector,
-  betweenBrackets(ParseCssDeclarationLine),
-]).map((x) => {
+const ParseCssRuleBlock = coroutine((run) => {
+  const selector = run(ParseSelectorStrict);
+  const platformSelector = selector.value.pseudoSelectors.find(
+    (item) => item == 'ios' || item == 'android' || item == 'web',
+  );
+  const data = run(getData);
+  if (platformSelector) {
+    if (!selector.value.pseudoSelectors.some((item) => item == data.context.platform)) {
+      run(SkipRules);
+      return {
+        selector,
+        declarations: {},
+      };
+    }
+  }
+  const cache = data.cache.get(selector.value.selectorName);
+  if (cache) {
+    run(SkipRules);
+    return {
+      selector,
+      declarations: cache,
+    };
+  }
+  const declarations = run(betweenBrackets(ParseCssDeclarationLine));
+  data.cache.set(selector.value.selectorName, declarations);
   return {
-    selector: x[0],
-    declarations: x[1],
+    selector,
+    declarations,
   };
 });
 

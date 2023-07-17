@@ -72,3 +72,12 @@ export const getPropertyValueType = (property: string) => {
       return 'RAW';
   }
 };
+
+export const unsupportedStyles = (property: string) => {
+  if (property == 'display') {
+    return {
+      fallback: 'flex',
+    };
+  }
+  return null;
+};

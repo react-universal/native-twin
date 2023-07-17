@@ -1,3 +1,11 @@
+import {
+  ValidAppearancePseudoSelector,
+  ValidChildPseudoSelector,
+  ValidGroupPseudoSelector,
+  ValidInteractionPseudoSelector,
+  ValidPlatformPseudoSelector,
+} from '../constants/pseudo.constants';
+
 export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
 
 type CSSUnits =
@@ -30,3 +38,15 @@ export type CSSPointerEvent = {
     unit: U;
   };
 }[CSSPointerEventKind];
+
+export interface SelectorPayload {
+  group: SelectorGroup;
+  selectorName: string;
+  pseudoSelectors: (
+    | ValidInteractionPseudoSelector
+    | ValidChildPseudoSelector
+    | ValidPlatformPseudoSelector
+    | ValidGroupPseudoSelector
+    | ValidAppearancePseudoSelector
+  )[];
+}

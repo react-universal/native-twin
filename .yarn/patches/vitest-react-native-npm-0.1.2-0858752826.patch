@@ -1,0 +1,13 @@
+diff --git a/setup.js b/setup.js
+index e31a742a25f6826b15dfc208161235199716e72e..3e0de3a80137bcc0ed1408ee6cf8b51cac6c8957 100644
+--- a/setup.js
++++ b/setup.js
+@@ -121,7 +121,7 @@ addHook(
+ 
+ // adapted from https://github.com/facebook/react-native/blob/main/jest/setup.js
+ 
+-require("@react-native/polyfills/Object.es8");
++require("@react-native/js-polyfills/Object.es8");
+ // require("@react-native/polyfills/error-guard");
+ 
+ Object.defineProperties(globalThis, {

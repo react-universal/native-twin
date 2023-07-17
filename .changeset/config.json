@@ -4,9 +4,8 @@
   "commit": false,
   "fixed": [
     [
-      "@universal-labs/tailwind-postcss-adapter",
       "@universal-labs/styled",
-      "@universal-labs/stylesheets",
+      "@universal-labs/css",
       "@universal-labs/primitives",
       "@universal-labs/twind-adapter"
     ]

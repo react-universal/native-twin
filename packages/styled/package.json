@@ -42,19 +42,18 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/stylesheets": "workspace:*",
+    "@universal-labs/css": "workspace:*",
+    "@universal-labs/twind-adapter": "workspace:*",
     "react-is": "^18.2.0",
     "stable-hash": "0.0.3",
     "tailwind-merge": "^1.10.0",
     "use-sync-external-store": "^1.2.0"
   },
   "devDependencies": {
-    "@types/node": "16.11.7",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "~18.0.10",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
     "@types/react-is": "^17.0.3",
-    "@types/use-sync-external-store": "^0.0.3",
-    "vite-plugin-multiple": "0.2.0"
+    "@types/use-sync-external-store": "^0.0.3"
   },
   "peerDependencies": {
     "react": ">=18",

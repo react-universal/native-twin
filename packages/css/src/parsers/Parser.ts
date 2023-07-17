@@ -14,8 +14,14 @@ export class Parser<Result> {
     this.transform = transform;
   }
 
-  run(target: string, context: CssParserData['context']): ResultType<Result> {
-    const state = createParserState(target, context);
+  run(
+    target: string,
+    data: {
+      context: CssParserData['context'];
+      cache: CssParserData['cache'];
+    },
+  ): ResultType<Result> {
+    const state = createParserState(target, data);
 
     const resultState = this.transform(state);
 
@@ -125,11 +131,14 @@ export class Parser<Result> {
 
   fork<F>(
     target: string,
-    context: CssParserData['context'],
+    data: {
+      context: CssParserData['context'];
+      cache: CssParserData['cache'];
+    },
     errorFn: (errorMsg: CssParserError | null, parserState: ParserState<Result>) => F,
     successFn: (result: Result, parserState: ParserState<Result>) => F,
   ) {
-    const state = createParserState(target, context);
+    const state = createParserState(target, data);
     const newState = this.transform(state);
 
     if (newState.isError) return errorFn(newState.error, newState);
@@ -159,7 +168,10 @@ export const updateParserState = <Result, Result2>(
 });
 export const createParserState = (
   target: string,
-  context: CssParserData['context'],
+  data: {
+    context: CssParserData['context'];
+    cache: CssParserData['cache'];
+  },
 ): ParserState<null> => {
   return {
     target,
@@ -167,13 +179,7 @@ export const createParserState = (
     error: null,
     result: null,
     cursor: 0,
-    data: {
-      context,
-      seen: {
-        selectors: new Set(),
-        styles: {},
-      },
-    },
+    data: createParserContext(data),
   };
 };
 
@@ -182,10 +188,18 @@ export const updateParserData = <Result>(
   data: CssParserData,
 ): ParserState<Result> => ({ ...state, data });
 
-export const createParserContext = (context: CssParserData['context']): CssParserData => ({
-  context,
-  seen: {
-    selectors: new Set(),
-    styles: {},
+export const createParserContext = (data: {
+  context: CssParserData['context'];
+  cache: CssParserData['cache'];
+}): CssParserData => ({
+  ...data,
+  styles: {
+    base: {},
+    even: {},
+    first: {},
+    group: {},
+    last: {},
+    odd: {},
+    pointer: {},
   },
 });
