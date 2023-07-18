@@ -3,14 +3,9 @@ import { coroutine } from '../parsers/coroutine.parser';
 import { getData, setData } from '../parsers/data.parser';
 import { many, many1 } from '../parsers/many.parser';
 import { peek } from '../parsers/peek.parser';
-import { sequenceOf } from '../parsers/sequence-of';
 import { skip } from '../parsers/skip.parser';
-import { char, everyCharUntil, ident, literal } from '../parsers/string.parser';
-import { SelectorGroup, SelectorPayload } from '../types/css.types';
-
-/*
- ************ SELECTOR STRICT ***********
- */
+import { char, ident, literal } from '../parsers/string.parser';
+import { SelectorPayload } from '../types/css.types';
 
 const mapToken =
   <A extends string>(type: A) =>
@@ -38,18 +33,19 @@ const GroupPointerPseudoClasses = choice([
   literal('group-hover'),
   literal('group-focus'),
   literal('group-active'),
+  literal('group'),
 ]);
 
 const AppearancePseudoClasses = choice([literal('dark'), literal('light')]);
 
 const ParseSelectorClassName = many1(
-  choice([ident, skip(char('\\')), char('['), char(']'), char('%')]),
+  choice([ident, skip(char('\\')), char('['), char(']'), char('%'), char('('), char(')')]),
 ).map((x) => x.join(''));
 
 const ParseSelectorPart = choice([
   ChildPseudoClasses.map(mapToken('CHILD_PSEUDO_CLASS')),
-  PointerPseudoClasses.map(mapToken('POINTER_PSEUDO_CLASS')),
   GroupPointerPseudoClasses.map(mapToken('GROUP_PSEUDO_CLASS')),
+  PointerPseudoClasses.map(mapToken('POINTER_PSEUDO_CLASS')),
   PlatformPseudoClasses.map(mapToken('PLATFORM_PSEUDO_CLASS')),
   AppearancePseudoClasses.map(mapToken('APPEARANCE_PSEUDO_CLASS')),
   ParseSelectorClassName.map(mapToken('IDENT_PSEUDO_CLASS')),
@@ -60,7 +56,6 @@ export const ParseSelectorStrict = coroutine((run) => {
   const selectorToken = mapToken('SELECTOR');
   const data = run(getData);
   run(setData({ ...data }));
-
   return selectorToken(token);
 
   function parseNextPart(
@@ -69,6 +64,10 @@ export const ParseSelectorStrict = coroutine((run) => {
     const nextToken = run(peek);
     if (nextToken == '{') {
       return result;
+    }
+    if (nextToken == ' ') {
+      run(skip(char(' ')));
+      return parseNextPart(result);
     }
     if (nextToken == '\\') {
       run(skip(many(char('\\'))));
@@ -95,6 +94,9 @@ export const ParseSelectorStrict = coroutine((run) => {
       }
     }
     if (result.group == 'base') {
+      if (nextPart.type == 'APPEARANCE_PSEUDO_CLASS') {
+        result.group = 'base';
+      }
       if (nextPart.type == 'CHILD_PSEUDO_CLASS') {
         switch (nextPart.value) {
           case 'even':
@@ -111,46 +113,13 @@ export const ParseSelectorStrict = coroutine((run) => {
             break;
         }
       }
-      if (nextPart.type == 'GROUP_PSEUDO_CLASS') {
-        result.group = 'group';
-      }
       if (nextPart.type == 'POINTER_PSEUDO_CLASS') {
         result.group = 'pointer';
+      }
+      if (nextPart.type == 'GROUP_PSEUDO_CLASS') {
+        result.group = 'group';
       }
     }
     return parseNextPart(result);
   }
 });
-
-/*
- ************ SELECTOR WEAK ***********
- */
-
-export const ParseCssSelectorWeak = sequenceOf([char('.'), everyCharUntil('{')])
-  .map((x) => x[0] + x[1])
-  .map((selector: string) => ({
-    group: getSelectorGroup(selector),
-    value: selector,
-  }));
-
-const getSelectorGroup = (selector: string): SelectorGroup => {
-  if (
-    selector.includes('.group-hover') ||
-    selector.includes('.group-active') ||
-    selector.includes('.group-focus')
-  ) {
-    return 'group';
-  }
-  if (
-    selector.includes(':hover') ||
-    selector.includes(':active') ||
-    selector.includes(':focus')
-  ) {
-    return 'pointer';
-  }
-  if (selector.includes('.first')) return 'first';
-  if (selector.includes('.last')) return 'last';
-  if (selector.includes('.odd')) return 'odd';
-  if (selector.includes('.even')) return 'even';
-  return 'base';
-};

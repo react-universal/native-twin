@@ -30,6 +30,7 @@ import type { CustomConfig } from './types';
 
 const defaultConfig = defineConfig({
   preflight: false,
+  darkMode: 'class',
   presets: [presetTailwind({ disablePreflight: true }), twindPresetReactNative()],
   rules: [...translateRules, ...rotateRules, ...shadowRules, ...skewRules],
 });

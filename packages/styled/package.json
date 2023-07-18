@@ -5,7 +5,6 @@
   "keywords": [
     "react-native",
     "tailwindcss",
-    "postcss",
     "tailwind-ui",
     "react-native-web",
     "universal-apps"
@@ -22,8 +21,8 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index.js",
-  "module": "./build/index.js",
+  "main": "./build/index",
+  "browser": "./build/index",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -32,13 +31,12 @@
     "README.md"
   ],
   "scripts": {
-    "build:libs": "expo-module build -p tsconfig.build.json",
+    "build:libs": "vite build",
     "clean": "expo-module clean",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "prepublishOnly": "expo-module prepublishOnly",
     "test": "vitest run",
-    "test:native": "vitest run",
     "test:ui": "vitest --ui"
   },
   "dependencies": {
@@ -52,8 +50,7 @@
   "devDependencies": {
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "@types/react-is": "^17.0.3",
-    "@types/use-sync-external-store": "^0.0.3"
+    "@types/react-is": "^17.0.3"
   },
   "peerDependencies": {
     "react": ">=18",

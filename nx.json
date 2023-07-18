@@ -4,7 +4,6 @@
     "appsDir": "apps",
     "libsDir": "packages"
   },
-  "npmScope": "universal-labs",
   "affected": {
     "defaultBase": "main"
   },
@@ -12,6 +11,7 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
+        "cacheableOperations": ["build:libs"],
         "accessToken": "ZDQ5MzNlNjAtODM2Ny00NGE5LWIzZDEtM2VlYmZmMGE3ZjQ4fHJlYWQtd3JpdGU="
       }
     }
@@ -21,6 +21,8 @@
   },
   "targetDefaults": {
     "build:libs": {
+      "inputs": ["production"],
+      "outputs": ["{projectRoot}/build"],
       "dependsOn": ["^build:libs"]
     }
   },
@@ -30,8 +32,15 @@
     }
   },
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "sharedGlobals": [],
+    "default": ["sharedGlobals"],
+    "sharedGlobals": [
+      "!{projectRoot}/test/**/*",
+      "!{projectRoot}/build/**/*",
+      "{projectRoot}/src/**/*",
+      "{projectRoot}/vite.config.*",
+      "{projectRoot}/tsconfig.*",
+      "{projectRoot}/package.json"
+    ],
     "production": ["default"]
   }
 }

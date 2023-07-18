@@ -1,30 +1,8 @@
 import { ComponentType, forwardRef, PropsWithChildren } from 'react';
 import { Platform, View, ViewProps } from 'react-native';
 import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
-// @ts-expect-error
-import { unstable_createElement } from 'react-native-web';
 import Text, { TextProps } from '../Text/Text.primitive';
-
-function createUL(): ComponentType<ViewProps> {
-  const nativeProps: any = Platform.select({
-    web: {
-      accessibilityRole: 'list',
-    },
-    default: {},
-  });
-  const Element = forwardRef((props: ViewProps, ref) => {
-    if (Platform.OS === 'web') {
-      return unstable_createElement('ul', {
-        ...props,
-        ...nativeProps,
-        ref,
-      });
-    }
-    return <View {...props} {...nativeProps} ref={ref} />;
-  }) as ComponentType<ViewProps>;
-  Element.displayName = 'UL';
-  return Element;
-}
+import { UL as PrimitiveUL } from './ul';
 
 type LIProps = TextProps | ViewProps;
 
@@ -33,7 +11,6 @@ function isTextProps(props: any): props is TextProps {
   return typeof props.children === 'string';
 }
 
-const PrimitiveUL = createUL();
 const PrimitiveLI = forwardRef((props: PropsWithChildren<LIProps>, ref: any) => {
   if (isTextProps(props)) {
     // @ts-ignore
@@ -41,6 +18,7 @@ const PrimitiveLI = forwardRef((props: PropsWithChildren<LIProps>, ref: any) => 
       web: 'listitem',
       default: props.accessibilityRole,
     });
+    // @ts-expect-error
     return <Text {...props} accessibilityRole={accessibilityRole} ref={ref} />;
   }
   // @ts-ignore
@@ -53,7 +31,7 @@ const PrimitiveLI = forwardRef((props: PropsWithChildren<LIProps>, ref: any) => 
 
 PrimitiveLI.displayName = 'LI';
 
-const UL = styled(PrimitiveUL) as ForwardedStyledComponent<typeof View>;
+const UL = PrimitiveUL;
 const LI = styled(PrimitiveLI) as ForwardedStyledComponent<typeof View>;
 
 export { UL, LI };

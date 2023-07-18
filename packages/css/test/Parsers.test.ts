@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, test } from 'vitest';
 import { ParseSelectorStrict } from '../src/css/selector.parser';
 import { generateStylesFor, getTestParserData } from './test-utils';
 

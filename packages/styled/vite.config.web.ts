@@ -24,10 +24,10 @@ export default defineConfig({
   build: {
     outDir: 'build',
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
+      entry: path.resolve(__dirname, 'src/index.web.ts'),
       name: 'UniversalLabsStyled',
-      fileName: (format) => `index.${format}.js`,
-      formats: ['es', 'umd'],
+      fileName: () => `index.web.js`,
+      formats: ['cjs'],
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
@@ -36,17 +36,14 @@ export default defineConfig({
         'react/jsx-runtime',
         'react-native',
         'react-native-web',
-        '@universal-labs/stylesheets',
-        'use-sync-external-store/shim',
-        'use-sync-external-store',
+        '@universal-labs/css',
+        '@universal-labs/twind-adapter',
       ],
       treeshake: true,
       output: {
         extend: true,
         globals: {
           react: 'React',
-          'use-sync-external-store/shim': 'UseSyncExternalStoreShim',
-          'use-sync-external-store': 'UseSyncExternalStoreLegacy',
         },
         externalImportAssertions: true,
       },

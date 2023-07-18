@@ -4,10 +4,6 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  test: {
-    globals: true,
-    environment: 'happy-dom',
-  },
   plugins: [react()],
   optimizeDeps: {
     esbuildOptions: {
@@ -26,10 +22,10 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
+      entry: path.resolve(__dirname, 'src/index.web.ts'),
       name: 'UniversalLabsPrimitives',
-      fileName: (format) => `${format}/index.js`,
-      formats: ['es', 'umd'],
+      fileName: () => `index.web.js`,
+      formats: ['cjs'],
     },
     rollupOptions: {
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
@@ -42,7 +38,6 @@ export default defineConfig({
       ],
       output: {
         dir: 'build',
-        format: 'esm',
         externalImportAssertions: true,
         globals: {
           react: 'React',

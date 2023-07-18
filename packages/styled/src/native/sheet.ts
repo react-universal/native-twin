@@ -3,7 +3,7 @@ import { AnyStyle, CssResolver, FinalSheet } from '@universal-labs/css';
 import { hash, initialize } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
 import { SheetInteractionState, SheetInterpreterFn, SheetManagerFn } from '../types/css.types';
-import { contextStore } from './store/context.store';
+import { globalStore } from './store';
 
 const platformMatch = /web|ios|android|native+/;
 
@@ -59,6 +59,7 @@ export const SheetManager: SheetManagerFn = (context) => {
       deviceWidth: context.deviceHeight,
       rem: context.units.rem,
       platform: Platform.OS,
+      colorScheme: context.colorScheme,
     });
     restore();
     const result: ReturnType<SheetInterpreterFn> = {
@@ -81,17 +82,18 @@ export const SheetManager: SheetManagerFn = (context) => {
 SheetManager.twind = initialize();
 
 SheetManager.setThemeConfig = (config: Config, baseRem) => {
-  contextStore.setState((prev) => ({
+  globalStore.setState((prev) => ({
     ...prev,
-    units: {
-      ...prev.units,
-      em: baseRem,
-      rem: baseRem,
+    context: {
+      ...prev.context,
+      units: {
+        ...prev.context.units,
+        em: baseRem,
+        rem: baseRem,
+      },
     },
   }));
   SheetManager.twind.tw.destroy();
-  //@ts-expect-error
-  SheetManager.twind = undefined;
   SheetManager.twind = initialize({
     colors: {
       ...config?.theme?.colors,

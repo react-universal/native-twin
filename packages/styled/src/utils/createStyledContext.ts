@@ -1,11 +1,11 @@
-import { Dimensions, PixelRatio, Platform } from 'react-native';
-import { StyledContext, Units } from '../../types/css.types';
-import { createStore } from './global.store';
+import { Appearance, PixelRatio, Platform } from 'react-native';
+import { StyledContext, Units } from '../types/css.types';
 
-function createStyledContext(units: Pick<Units, 'rem' | 'vh' | 'vw'>): StyledContext {
+export function createStyledContext(units: Pick<Units, 'rem' | 'vh' | 'vw'>): StyledContext {
   const vw = units.vw ?? 1;
   const vh = units.vh ?? 1;
   return {
+    colorScheme: Appearance.getColorScheme()!,
     deviceAspectRatio: vw / vh,
     deviceHeight: vh,
     deviceWidth: vw,
@@ -29,13 +29,3 @@ function createStyledContext(units: Pick<Units, 'rem' | 'vh' | 'vw'>): StyledCon
     },
   };
 }
-
-const { width, height } = Dimensions.get('screen');
-
-export const contextStore = createStore(
-  createStyledContext({
-    rem: 16,
-    vh: height,
-    vw: width,
-  }),
-);

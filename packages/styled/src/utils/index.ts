@@ -1,1 +1,0 @@
-export { isValidReactNativeStyle } from './validateStyle';

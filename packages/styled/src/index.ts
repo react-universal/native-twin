@@ -1,9 +1,9 @@
-import { SheetManager } from './internals/sheet';
+import { SheetManager } from './native/sheet';
 
-export { useIsDarkMode } from './hooks/useIsDarkMode';
-export { styled } from './styled';
-export { useBuildStyledComponent } from './hooks/useBuildStyledComponent';
+export { styled } from './native/StyledComponent';
+export { useBuildStyledComponent } from './native/hooks/useStyledComponent';
+export { useStyledContext } from './native/hooks/useStyledContext';
 
 export const setTailwindConfig = SheetManager.setThemeConfig;
 
-export type { ForwardedStyledComponent } from './styled/StyledComponent';
+export type { ForwardedStyledComponent, PropsFrom } from './types/styled.types';

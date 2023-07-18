@@ -1,5 +1,3 @@
-import type ComponentNode from './ComponentNode';
-
 export function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;
 
@@ -24,13 +22,3 @@ export function createStore<StoreShape>(initialState: StoreShape) {
     subscribe,
   };
 }
-
-interface IStoreRegistryRecord<T> {
-  [k: string]: T;
-}
-
-const globalStore = createStore({
-  componentsRegistry: {} as IStoreRegistryRecord<ComponentNode>,
-});
-
-export { globalStore };

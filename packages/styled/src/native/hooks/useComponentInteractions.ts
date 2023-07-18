@@ -5,8 +5,7 @@ import type {
   TextInputFocusEventData,
   PressableProps,
 } from 'react-native';
-import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector';
-import { StoreManager } from '../internals/store/StoreManager';
+import { setComponentInteractionState } from '../store';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;
@@ -36,15 +35,6 @@ const useComponentInteractions = ({
       }
   >(props);
 
-  const setInteractionState = useSyncExternalStoreWithSelector(
-    StoreManager.subscribe,
-    () => StoreManager.setInteractionState,
-    () => StoreManager.setInteractionState,
-    (fn) => {
-      return fn;
-    },
-  );
-
   const componentInteractionHandlers = useMemo(() => {
     const handlers: Touchable & PressableProps = {};
     if (hasPointerInteractions || isGroupParent || hasGroupInteractions) {
@@ -53,10 +43,10 @@ const useComponentInteractions = ({
           ref.current.onTouchStart(event);
         }
         if (hasPointerInteractions) {
-          setInteractionState(id, 'hover', true);
+          setComponentInteractionState(id, 'hover', true);
         }
         if (isGroupParent) {
-          setInteractionState(id, 'group-hover', true);
+          setComponentInteractionState(id, 'group-hover', true);
         }
       };
 
@@ -65,15 +55,15 @@ const useComponentInteractions = ({
           ref.current.onTouchEnd(event);
         }
         if (isGroupParent) {
-          setInteractionState(id, 'group-hover', false);
+          setComponentInteractionState(id, 'group-hover', false);
         }
         if (hasPointerInteractions) {
-          setInteractionState(id, 'hover', false);
+          setComponentInteractionState(id, 'hover', false);
         }
       };
     }
     return handlers;
-  }, [id, isGroupParent, hasGroupInteractions, hasPointerInteractions, setInteractionState]);
+  }, [id, isGroupParent, hasGroupInteractions, hasPointerInteractions]);
 
   const focusHandlers = useMemo(() => {
     const handlers: InternalTouchable = {};
@@ -82,13 +72,13 @@ const useComponentInteractions = ({
         if (ref.current.onFocus) {
           ref.current.onFocus(event);
         }
-        StoreManager.setInteractionState(id, 'focus', true);
+        setComponentInteractionState(id, 'focus', true);
       };
       handlers.onBlur = function (event) {
         if (ref.current.onBlur) {
           ref.current.onBlur(event);
         }
-        StoreManager.setInteractionState(id, 'focus', false);
+        setComponentInteractionState(id, 'focus', false);
       };
     }
     return handlers;
