@@ -145,4 +145,5 @@ export const CSS_COLORS = {
   whitesmoke: '#f5f5f5',
   yellowgreen: '#9acd32',
   rebeccapurple: '#663399',
+  transparent: 'transparent',
 };

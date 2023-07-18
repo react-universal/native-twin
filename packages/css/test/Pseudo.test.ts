@@ -3,7 +3,7 @@ import { generateStylesFor } from './test-utils';
 
 describe('@universal-labs/css - Pseudo', () => {
   it('Complex', () => {
-    const result = generateStylesFor('android:mx-10 ios:px-2', true);
+    const result = generateStylesFor('android:mx-10 ios:px-2');
     expect(result).toStrictEqual({
       base: { paddingLeft: 8, paddingRight: 8 },
       even: {},
