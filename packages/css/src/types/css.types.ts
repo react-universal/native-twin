@@ -6,7 +6,16 @@ import {
   ValidPlatformPseudoSelector,
 } from '../constants/pseudo.constants';
 
-export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
+export type SelectorGroup =
+  | 'base'
+  | 'group'
+  | 'pointer'
+  | 'first'
+  | 'last'
+  | 'odd'
+  | 'even'
+  | 'light'
+  | 'dark';
 
 type CSSUnits =
   | 'em'

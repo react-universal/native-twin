@@ -3,14 +3,9 @@ import { coroutine } from '../parsers/coroutine.parser';
 import { getData, setData } from '../parsers/data.parser';
 import { many, many1 } from '../parsers/many.parser';
 import { peek } from '../parsers/peek.parser';
-import { sequenceOf } from '../parsers/sequence-of';
 import { skip } from '../parsers/skip.parser';
-import { char, everyCharUntil, ident, literal } from '../parsers/string.parser';
-import { SelectorGroup, SelectorPayload } from '../types/css.types';
-
-/*
- ************ SELECTOR STRICT ***********
- */
+import { char, ident, literal } from '../parsers/string.parser';
+import { SelectorPayload } from '../types/css.types';
 
 const mapToken =
   <A extends string>(type: A) =>
@@ -44,7 +39,7 @@ const GroupPointerPseudoClasses = choice([
 const AppearancePseudoClasses = choice([literal('dark'), literal('light')]);
 
 const ParseSelectorClassName = many1(
-  choice([ident, skip(char('\\')), char('['), char(']'), char('%')]),
+  choice([ident, skip(char('\\')), char('['), char(']'), char('%'), char('('), char(')')]),
 ).map((x) => x.join(''));
 
 const ParseSelectorPart = choice([
@@ -100,6 +95,9 @@ export const ParseSelectorStrict = coroutine((run) => {
       }
     }
     if (result.group == 'base') {
+      if (nextPart.type == 'APPEARANCE_PSEUDO_CLASS') {
+        result.group = 'base';
+      }
       if (nextPart.type == 'CHILD_PSEUDO_CLASS') {
         switch (nextPart.value) {
           case 'even':
@@ -126,36 +124,3 @@ export const ParseSelectorStrict = coroutine((run) => {
     return parseNextPart(result);
   }
 });
-
-/*
- ************ SELECTOR WEAK ***********
- */
-
-export const ParseCssSelectorWeak = sequenceOf([char('.'), everyCharUntil('{')])
-  .map((x) => x[0] + x[1])
-  .map((selector: string) => ({
-    group: getSelectorGroup(selector),
-    value: selector,
-  }));
-
-const getSelectorGroup = (selector: string): SelectorGroup => {
-  if (
-    selector.includes('.group-hover') ||
-    selector.includes('.group-active') ||
-    selector.includes('.group-focus')
-  ) {
-    return 'group';
-  }
-  if (
-    selector.includes(':hover') ||
-    selector.includes(':active') ||
-    selector.includes(':focus')
-  ) {
-    return 'pointer';
-  }
-  if (selector.includes('.first')) return 'first';
-  if (selector.includes('.last')) return 'last';
-  if (selector.includes('.odd')) return 'odd';
-  if (selector.includes('.even')) return 'even';
-  return 'base';
-};

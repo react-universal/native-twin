@@ -12,6 +12,8 @@ describe('@universal-labs/css - GROUP', () => {
         'android:(p-14 border-green-200 border-2 bg-gray-200)',
         'items-center justify-center md:border-3',
         'group-hover:text-2xl hover:text-3xl',
+        'odd:bg-black even:bg-black',
+        'first:bg-black last:bg-black',
       ),
     );
     expect(result).toStrictEqual({
@@ -26,11 +28,11 @@ describe('@universal-labs/css - GROUP', () => {
         borderColor: 'rgba(255,255,255,1)',
         borderWidth: 2,
       },
-      even: {},
-      first: {},
+      even: { backgroundColor: 'rgba(0,0,0,1)' },
+      first: { backgroundColor: 'rgba(0,0,0,1)' },
       group: { fontSize: 24, lineHeight: 32 },
-      last: {},
-      odd: {},
+      last: { backgroundColor: 'rgba(0,0,0,1)' },
+      odd: { backgroundColor: 'rgba(0,0,0,1)' },
       pointer: {
         fontSize: 30,
         lineHeight: 36,
