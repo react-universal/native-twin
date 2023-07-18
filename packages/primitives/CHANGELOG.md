@@ -1,5 +1,12 @@
 # Change Log
 
+## 4.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`1d86ae9`](https://github.com/react-universal/tailwind/commit/1d86ae962095c4996a64526f8506ecf01e90bdff)]:
+  - @universal-labs/styled@4.3.2
+
 ## 4.3.1
 
 ### Patch Changes
