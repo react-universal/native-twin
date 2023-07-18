@@ -1,5 +1,11 @@
 # Change Log
 
+## 4.1.3
+
+### Patch Changes
+
+- [`f2f600c`](https://github.com/react-universal/tailwind/commit/f2f600ceeeadd82d833ad02d4ba0920b96d969cb) Thanks [@chrisarts](https://github.com/chrisarts)! - fix transparent color error
+
 ## 4.1.2
 
 ### Patch Changes
