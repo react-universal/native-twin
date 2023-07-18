@@ -9,8 +9,7 @@ export function useCssToRN(className: string) {
 
   const stylesheet = useMemo(() => {
     const manager = SheetManager(context);
-    const result = manager(className);
-    return result;
+    return manager(className);
   }, [className, context]);
 
   return { stylesheet, componentID };
