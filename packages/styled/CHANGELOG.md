@@ -1,5 +1,15 @@
 # Change Log
 
+## 4.3.2
+
+### Patch Changes
+
+- [`1d86ae9`](https://github.com/react-universal/tailwind/commit/1d86ae962095c4996a64526f8506ecf01e90bdff) Thanks [@chrisarts](https://github.com/chrisarts)! - fix types
+
+- Updated dependencies []:
+  - @universal-labs/css@4.3.2
+  - @universal-labs/twind-adapter@4.3.2
+
 ## 4.3.1
 
 ### Patch Changes
