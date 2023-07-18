@@ -4,6 +4,7 @@ import { AnyStyle } from '@universal-labs/css';
 import { StyledProps } from '../../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
+import { useComponentRegistry } from './useComponentRegistry';
 import { useCssToRN } from './useCssToRN';
 
 function useBuildStyledComponent<T>({
@@ -15,9 +16,11 @@ function useBuildStyledComponent<T>({
   children,
   ...restProps
 }: StyledProps<T>) {
-  const { stylesheet, componentID, component, parentComponent, currentGroupID } = useCssToRN({
-    className: className ?? tw ?? '',
+  const { stylesheet, componentID } = useCssToRN(className ?? tw ?? '');
+  const { component, parentComponent, currentGroupID } = useComponentRegistry({
+    componentID,
     groupID,
+    isGroupParent: stylesheet.metadata.isGroupParent,
     parentID,
   });
 

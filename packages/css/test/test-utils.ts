@@ -31,6 +31,7 @@ export const injectClassNames = (classNames: string) => {
 export const getTestParserData = () => {
   const data = createParserContext({
     context: {
+      colorScheme: 'dark',
       deviceHeight: 1280,
       deviceWidth: 720,
       rem: 16,

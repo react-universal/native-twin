@@ -1,10 +1,11 @@
-import { PixelRatio, Platform } from 'react-native';
+import { Appearance, PixelRatio, Platform } from 'react-native';
 import { StyledContext, Units } from '../types/css.types';
 
 export function createStyledContext(units: Pick<Units, 'rem' | 'vh' | 'vw'>): StyledContext {
   const vw = units.vw ?? 1;
   const vh = units.vh ?? 1;
   return {
+    colorScheme: Appearance.getColorScheme()!,
     deviceAspectRatio: vw / vh,
     deviceHeight: vh,
     deviceWidth: vw,

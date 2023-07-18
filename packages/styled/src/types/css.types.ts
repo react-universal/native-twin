@@ -27,6 +27,7 @@ export type StyledContext = {
   deviceHeight: number;
   deviceAspectRatio: number;
   platform: Platform['OS'];
+  colorScheme: 'dark' | 'light';
   units: Units;
 };
 

@@ -56,7 +56,6 @@ export const ParseSelectorStrict = coroutine((run) => {
   const selectorToken = mapToken('SELECTOR');
   const data = run(getData);
   run(setData({ ...data }));
-
   return selectorToken(token);
 
   function parseNextPart(

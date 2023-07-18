@@ -59,6 +59,7 @@ export const SheetManager: SheetManagerFn = (context) => {
       deviceWidth: context.deviceHeight,
       rem: context.units.rem,
       platform: Platform.OS,
+      colorScheme: context.colorScheme,
     });
     restore();
     const result: ReturnType<SheetInterpreterFn> = {

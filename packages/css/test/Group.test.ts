@@ -14,7 +14,9 @@ describe('@universal-labs/css - GROUP', () => {
         'group-hover:text-2xl hover:text-3xl',
         'odd:bg-black even:bg-black',
         'first:bg-black last:bg-black',
+        'dark:bg-blue-200',
       ),
+      true,
     );
     expect(result).toStrictEqual({
       base: {
@@ -24,7 +26,7 @@ describe('@universal-labs/css - GROUP', () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 56,
-        backgroundColor: 'rgba(254,205,211,1)',
+        backgroundColor: 'rgba(191,219,254,1)',
         borderColor: 'rgba(255,255,255,1)',
         borderWidth: 2,
       },

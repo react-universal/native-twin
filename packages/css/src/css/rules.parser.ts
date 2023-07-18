@@ -96,6 +96,18 @@ const ParseCssRuleBlock = coroutine((run) => {
       };
     }
   }
+  const appearanceSelector = selector.value.pseudoSelectors.find(
+    (item) => item == 'dark' || item == 'light',
+  );
+  if (appearanceSelector) {
+    if (!selector.value.pseudoSelectors.some((item) => item == data.context.colorScheme)) {
+      run(SkipRules);
+      return {
+        selector,
+        declarations: {},
+      };
+    }
+  }
   const cache = data.cache.get(selector.value.selectorName);
   if (cache) {
     run(SkipRules);

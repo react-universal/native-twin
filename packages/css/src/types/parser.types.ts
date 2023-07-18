@@ -8,6 +8,7 @@ export interface CssParserData {
     deviceWidth: number;
     deviceHeight: number;
     platform: Platform['OS'];
+    colorScheme: 'dark' | 'light';
   };
   styles: FinalSheet;
   cache: {
