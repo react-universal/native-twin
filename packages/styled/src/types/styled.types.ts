@@ -35,7 +35,6 @@ export type StyledProps<P> = {
   isLastChild?: boolean;
   parentID?: string;
   children?: ReactNode;
-  style?: AnyStyle;
   groupID?: string;
 } & P;
 
