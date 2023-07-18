@@ -1,5 +1,11 @@
 # @universal-labs/css
 
+## 4.3.1
+
+### Patch Changes
+
+- [`b742511`](https://github.com/react-universal/tailwind/commit/b742511f45e74c300e939e2247e97005a99de160) Thanks [@chrisarts](https://github.com/chrisarts)! - fix playform utils
+
 ## 4.3.0
 
 ### Minor Changes
