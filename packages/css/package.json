@@ -35,7 +35,6 @@
   "scripts": {
     "build:libs": "vite build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "prepublishOnly": "expo-module prepublishOnly",
     "test": "vitest run",
     "test:bench": "vitest bench --ui",
     "test:coverage": "vitest --coverage",
