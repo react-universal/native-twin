@@ -35,7 +35,6 @@
     "clean": "expo-module clean",
     "expo-module": "expo-module",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "prepublishOnly": "expo-module prepublishOnly",
     "test": "vitest run",
     "test:ui": "vitest --ui"
   },
