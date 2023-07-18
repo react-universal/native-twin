@@ -12,12 +12,15 @@ function useBuildStyledComponent<T>(
 ) {
   const styles = useMemo(() => {
     const mergedClassName = props.className ? cx(...[props.className]) : '';
-
+    // @ts-expect-error
     if (mergedClassName && props.style) {
+      // @ts-expect-error
       return [{ $$css: true, [mergedClassName]: mergedClassName } as Style, props.style];
     } else if (mergedClassName) {
       return { $$css: true, [mergedClassName]: mergedClassName } as Style;
+      // @ts-expect-error
     } else if (props.style) {
+      // @ts-expect-error
       return props.style;
     }
     return {};
