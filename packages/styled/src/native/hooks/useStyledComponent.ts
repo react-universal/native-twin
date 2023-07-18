@@ -11,6 +11,7 @@ function useBuildStyledComponent<T>({
   className,
   groupID,
   parentID,
+  // @ts-expect-error
   style,
   tw,
   children,
