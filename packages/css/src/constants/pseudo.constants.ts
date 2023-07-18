@@ -5,6 +5,7 @@ const AppearancePseudoSelectors = ['dark', 'light'] as const;
 const ChildPseudoSelectors = ['last-child', 'first-child', 'even', 'odd'] as const;
 
 const GroupInteractionPseudoSelectors = [
+  'group',
   'group-hover',
   'group-active',
   'group-focus',

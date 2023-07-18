@@ -7,6 +7,10 @@ import type {
 import type { ReactNode } from 'react';
 import type { StyleProp } from 'react-native';
 import type { AnyStyle, FinalSheet } from '@universal-labs/css';
+import type {
+  ValidGroupPseudoSelector,
+  ValidInteractionPseudoSelector,
+} from '../constants/ValidPseudoElements';
 
 export type ForwardRef<T, P> = ForwardRefExoticComponent<
   PropsWithoutRef<P> & RefAttributes<T>
@@ -16,6 +20,12 @@ export type InferRef<T> = T extends RefAttributes<infer R> | ClassAttributes<inf
   : unknown;
 
 export type ComponentStyleProp = StyleProp<AnyStyle>;
+
+export interface RegisteredComponent {
+  id: string;
+  groupID: string;
+  interactionState: Record<ValidInteractionPseudoSelector | ValidGroupPseudoSelector, boolean>;
+}
 
 export type StyledProps<P> = {
   className?: string;
@@ -44,3 +54,15 @@ export interface IUseStyleSheetsInput
     componentID: string;
     currentGroupID: string;
   }> {}
+
+export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
+  ? Props
+  : TComponent extends React.Component<infer Props>
+  ? Props
+  : TComponent extends React.ComponentType<infer Props>
+  ? Props
+  : never;
+
+export type ForwardedStyledComponent<Component> = ForwardRefExoticComponent<
+  PropsFrom<Component> & StyledProps<{}>
+>;

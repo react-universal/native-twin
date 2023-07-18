@@ -38,6 +38,7 @@ const GroupPointerPseudoClasses = choice([
   literal('group-hover'),
   literal('group-focus'),
   literal('group-active'),
+  literal('group'),
 ]);
 
 const AppearancePseudoClasses = choice([literal('dark'), literal('light')]);
@@ -48,8 +49,8 @@ const ParseSelectorClassName = many1(
 
 const ParseSelectorPart = choice([
   ChildPseudoClasses.map(mapToken('CHILD_PSEUDO_CLASS')),
-  PointerPseudoClasses.map(mapToken('POINTER_PSEUDO_CLASS')),
   GroupPointerPseudoClasses.map(mapToken('GROUP_PSEUDO_CLASS')),
+  PointerPseudoClasses.map(mapToken('POINTER_PSEUDO_CLASS')),
   PlatformPseudoClasses.map(mapToken('PLATFORM_PSEUDO_CLASS')),
   AppearancePseudoClasses.map(mapToken('APPEARANCE_PSEUDO_CLASS')),
   ParseSelectorClassName.map(mapToken('IDENT_PSEUDO_CLASS')),
@@ -69,6 +70,10 @@ export const ParseSelectorStrict = coroutine((run) => {
     const nextToken = run(peek);
     if (nextToken == '{') {
       return result;
+    }
+    if (nextToken == ' ') {
+      run(skip(char(' ')));
+      return parseNextPart(result);
     }
     if (nextToken == '\\') {
       run(skip(many(char('\\'))));
@@ -111,11 +116,11 @@ export const ParseSelectorStrict = coroutine((run) => {
             break;
         }
       }
-      if (nextPart.type == 'GROUP_PSEUDO_CLASS') {
-        result.group = 'group';
-      }
       if (nextPart.type == 'POINTER_PSEUDO_CLASS') {
         result.group = 'pointer';
+      }
+      if (nextPart.type == 'GROUP_PSEUDO_CLASS') {
+        result.group = 'group';
       }
     }
     return parseNextPart(result);

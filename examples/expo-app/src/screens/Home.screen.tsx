@@ -29,10 +29,7 @@ function HomeScreen() {
         )}
       >
         <H1
-          className={clsx(
-            'text(center 2xl indigo-600)',
-            'font-inter-bold hover:text-gray-700',
-          )}
+          className={clsx('text(center 2xl primary)', 'font-inter-bold hover:text-gray-700')}
         >
           H1 - 1
         </H1>
