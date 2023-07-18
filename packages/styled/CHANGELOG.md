@@ -1,5 +1,15 @@
 # Change Log
 
+## 4.3.3
+
+### Patch Changes
+
+- [`f2f600c`](https://github.com/react-universal/tailwind/commit/f2f600ceeeadd82d833ad02d4ba0920b96d969cb) Thanks [@chrisarts](https://github.com/chrisarts)! - fix transparent color error
+
+- Updated dependencies [[`f2f600c`](https://github.com/react-universal/tailwind/commit/f2f600ceeeadd82d833ad02d4ba0920b96d969cb)]:
+  - @universal-labs/css@4.3.3
+  - @universal-labs/twind-adapter@4.3.3
+
 ## 4.3.2
 
 ### Patch Changes
