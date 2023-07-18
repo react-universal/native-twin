@@ -1,5 +1,17 @@
 # Change Log
 
+## 4.3.0
+
+### Minor Changes
+
+- [#109](https://github.com/react-universal/tailwind/pull/109) [`10d3421`](https://github.com/react-universal/tailwind/commit/10d3421a65a54c9b3299feb044063670c6af766a) Thanks [@chrisarts](https://github.com/chrisarts)! - support for more media utilities
+
+### Patch Changes
+
+- Updated dependencies [[`10d3421`](https://github.com/react-universal/tailwind/commit/10d3421a65a54c9b3299feb044063670c6af766a)]:
+  - @universal-labs/twind-adapter@4.3.0
+  - @universal-labs/css@4.3.0
+
 ## 4.2.0
 
 ### Minor Changes
