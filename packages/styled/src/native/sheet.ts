@@ -43,14 +43,15 @@ export const SheetManager: SheetManagerFn = (context) => {
   }
 
   const sheetFn: SheetInterpreterFn = (classNames) => {
+    const interpreter = SheetManager.twind ? SheetManager.twind : initialize();
     const hashed = hash(classNames);
     const isCached = virtualSheet.has(hashed);
     if (isCached) {
       return virtualSheet.get(hashed)!;
     }
-    const restore = SheetManager.twind.tw.snapshot();
-    const generateClassNames = SheetManager.twind.tx(classNames).split(' ');
-    const target = SheetManager.twind.tw.target;
+    const restore = interpreter.tw.snapshot();
+    const generateClassNames = interpreter.tx(classNames).split(' ');
+    const target = interpreter.tw.target;
     const purged = target.filter((item) =>
       platformMatch.test(item) ? item.includes(Platform.OS) : true,
     );
@@ -60,6 +61,7 @@ export const SheetManager: SheetManagerFn = (context) => {
       rem: context.units.rem,
       platform: Platform.OS,
       colorScheme: context.colorScheme,
+      debug: false,
     });
     restore();
     const result: ReturnType<SheetInterpreterFn> = {
@@ -79,27 +81,30 @@ export const SheetManager: SheetManagerFn = (context) => {
   return sheetFn;
 };
 
-SheetManager.twind = initialize();
+interface ModuleConfig {
+  rem: number;
+  theme: Config['theme'];
+}
 
-SheetManager.setThemeConfig = (config: Config, baseRem) => {
+export function install({ rem, theme }: ModuleConfig = { rem: 16, theme: {} }) {
   globalStore.setState((prev) => ({
     ...prev,
     context: {
       ...prev.context,
       units: {
         ...prev.context.units,
-        em: baseRem,
-        rem: baseRem,
+        em: rem,
+        rem: rem,
       },
     },
   }));
-  SheetManager.twind.tw.destroy();
-  SheetManager.twind = initialize({
+  const interpreter = initialize({
     colors: {
-      ...config?.theme?.colors,
+      ...theme?.colors,
     },
     fontFamily: {
-      ...config?.theme?.fontFamily,
+      ...theme?.fontFamily,
     },
   });
-};
+  SheetManager.twind = interpreter;
+}

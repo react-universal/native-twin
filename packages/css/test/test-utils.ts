@@ -28,9 +28,10 @@ export const injectClassNames = (classNames: string) => {
   return target;
 };
 
-export const getTestParserData = () => {
+export const getTestParserData = (debug = false) => {
   const data = createParserContext({
     context: {
+      debug,
       colorScheme: 'dark',
       deviceHeight: 1280,
       deviceWidth: 720,
@@ -47,13 +48,10 @@ export const getTestParserData = () => {
 
 export const generateStylesFor = (classNames: string, debug = false) => {
   const target = injectClassNames(classNames);
-  const parserData = getTestParserData();
-  const parsed = CssResolver(target, parserData.context);
-  if (debug) {
-    console.group('DEBUG');
-    console.log('CLASS_NAMES: ', classNames);
-    inspectTestElement('SHEET: ', target, parsed);
-    console.groupEnd();
-  }
+  const parserData = getTestParserData(debug);
+  const parsed = CssResolver(target, {
+    ...parserData.context,
+    debug,
+  });
   return parsed;
 };

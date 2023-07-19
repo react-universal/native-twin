@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { View } from '@universal-labs/primitives';
-import { setTailwindConfig } from '@universal-labs/styled';
+import { install } from '@universal-labs/styled';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 // import { FlatListScreen } from './src/screens/FlatList.screen';
 import { HomeScreen } from './src/screens/Home.screen';
 import tailwindConfig from './tailwind.config';
 
-setTailwindConfig(tailwindConfig, 14);
+install({
+  rem: 14,
+  theme: tailwindConfig.theme,
+});
 
 export default function App() {
   const { bootFonts } = useLoadFonts();

@@ -41,11 +41,17 @@ export default defineConfig({
       ],
       treeshake: true,
       output: {
-        extend: true,
         globals: {
           react: 'React',
         },
-        externalImportAssertions: true,
+        generatedCode: {
+          arrowFunctions: true,
+          constBindings: true,
+          objectShorthand: true,
+          preset: 'es2015',
+        },
+        interop: 'auto',
+        compact: true,
       },
     },
     emptyOutDir: false,

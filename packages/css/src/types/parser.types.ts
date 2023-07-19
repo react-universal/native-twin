@@ -9,6 +9,7 @@ export interface CssParserData {
     deviceHeight: number;
     platform: Platform['OS'];
     colorScheme: 'dark' | 'light';
+    debug: boolean;
   };
   styles: FinalSheet;
   cache: {

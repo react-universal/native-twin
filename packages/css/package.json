@@ -21,8 +21,8 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index.es.js",
-  "module": "./build/index.umd.js",
+  "main": "./build/index.cjs.js",
+  "module": "./build/index.es.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -44,5 +44,6 @@
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "react-native": "./build/index.es.js"
 }

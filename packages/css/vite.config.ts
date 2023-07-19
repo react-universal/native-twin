@@ -25,7 +25,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsCss',
       fileName: (format) => `index.${format}.js`,
-      formats: ['es', 'umd'],
+      formats: ['es', 'cjs'],
     },
     rollupOptions: {
       strictDeprecations: true,
@@ -33,8 +33,14 @@ export default defineConfig({
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
       output: {
-        extend: true,
-        externalImportAssertions: true,
+        generatedCode: {
+          arrowFunctions: true,
+          constBindings: true,
+          objectShorthand: true,
+          preset: 'es2015',
+        },
+        interop: 'auto',
+        compact: true,
       },
     },
     emptyOutDir: false,

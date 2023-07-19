@@ -45,7 +45,6 @@
   },
   "dependencies": {
     "@twind/core": "1.1.3",
-    "@twind/intellisense": "1.1.3",
     "@twind/preset-tailwind": "1.1.4"
   },
   "peerDependencies": {
@@ -57,5 +56,6 @@
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "react-native": "./build/index.es.js"
 }

@@ -1,7 +1,6 @@
 import type { Platform } from 'react-native';
 import { AnyStyle, FinalSheet } from '@universal-labs/css';
 import { TwindManager } from '@universal-labs/twind-adapter';
-import type { Config } from 'tailwindcss';
 
 export type Units = {
   '%'?: number;
@@ -60,6 +59,5 @@ export interface SheetInterpreterFn {
 
 export interface SheetManagerFn {
   (context: StyledContext): SheetInterpreterFn;
-  setThemeConfig(config: Config, rem: number): void;
-  twind: TwindManager;
+  twind?: TwindManager | undefined;
 }

@@ -46,7 +46,6 @@ export default defineConfig({
       ],
       treeshake: true,
       output: {
-        extend: true,
         externalImportAssertions: true,
         globals: {
           react: 'React',

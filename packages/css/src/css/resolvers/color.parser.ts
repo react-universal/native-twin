@@ -15,5 +15,5 @@ export const ParseCssColor = choice([
   sequenceOf([literal('#'), ident]).map((x) => {
     return `${x[0]}(${x[1]})`;
   }),
-  ...Object.keys(CSS_COLORS).map((i) => literal(i)),
+  ...CSS_COLORS.map((i) => literal(i)),
 ]);
