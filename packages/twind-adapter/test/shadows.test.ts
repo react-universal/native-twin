@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { initialize } from '../src';
 
 const { tx, tw } = initialize({});

@@ -1,5 +1,7 @@
-import { describe, expect, it } from 'vitest';
-import { initialize, stringify } from '../src';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { initialize } from '../src';
+
+const stringify = (target: string[]) => target.join('');
 
 const { tw, tx } = initialize({});
 
