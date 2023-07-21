@@ -9,7 +9,6 @@ import {
 import { StyleProp, StyleSheet, Touchable } from 'react-native';
 import type { AnyStyle } from '@universal-labs/css';
 import { Primitive, StyledProps, TemplateFunctions } from '../types/styled.types';
-import { buildClassNames } from '../utils/buildClassNames';
 import { useChildren } from './hooks/useChildren';
 import { useComponentInteractions } from './hooks/useComponentInteractions';
 import { useComponentRegistry } from './hooks/useComponentRegistry';
@@ -21,14 +20,10 @@ function createStyledComponent<
   Props extends InitialProps & StyledProps<{}> = InitialProps & StyledProps<{}>,
 >(Component: ComponentType<InitialProps>) {
   function styledComponent<S>(
-    chunks: TemplateStringsArray,
-    ...functions: (Primitive | TemplateFunctions<S & Props>)[]
+    _chunks: TemplateStringsArray,
+    ..._functions: (Primitive | TemplateFunctions<S & Props>)[]
   ) {
-    console.log('CHUNKS: ', chunks);
-    console.log('FUNCTIONS: ', functions);
     const ForwardRefComponent = forwardRef<any, S & Props>((props: S & Props, ref) => {
-      const css = buildClassNames(chunks, functions, props);
-      console.log('CSS: ', css);
       const { componentID, stylesheet } = useCssToRN(props.className ?? props.tw ?? '');
       const { component, parentComponent, currentGroupID } = useComponentRegistry({
         componentID,
