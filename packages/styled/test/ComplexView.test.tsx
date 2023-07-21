@@ -12,8 +12,8 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-const View = styledComponents.View``;
-const H1 = styledComponents.Text``;
+const View = styledComponents.View();
+const H1 = styledComponents.Text();
 
 describe('@universal-labs/styled', () => {
   it('View render', () => {
