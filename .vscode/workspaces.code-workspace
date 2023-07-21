@@ -30,6 +30,7 @@
     }
   ],
   "settings": {
+    "twind.debug": true,
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,

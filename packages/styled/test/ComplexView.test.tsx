@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import { View as NativeView, StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import clsx from 'clsx';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
-import { styled } from '../src';
+import styledComponents from '../src';
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();
@@ -12,8 +12,8 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-const View = styled(NativeView);
-const H1 = styled(Text);
+const View = styledComponents.View``;
+const H1 = styledComponents.Text``;
 
 describe('@universal-labs/styled', () => {
   it('View render', () => {

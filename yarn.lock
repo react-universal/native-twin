@@ -6120,12 +6120,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.2.6":
-  version: 18.2.6
-  resolution: "@types/react-dom@npm:18.2.6"
+"@types/react-dom@npm:18.0.10":
+  version: 18.0.10
+  resolution: "@types/react-dom@npm:18.0.10"
   dependencies:
     "@types/react": "*"
-  checksum: b56e42efab121a3a8013d2eb8c1688e6028a25ea6d33c4362d2846f0af3760b164b4d7c34846614024cfb8956cca70dd1743487f152e32ff89a00fe6fbd2be54
+  checksum: ff8282d5005a0b1cd95fb65bf79d3d8485e4cfe2aaf052129033a178684b940014a3f4536bc20d573f8a01cf4c6f4770c74988cef7c2b5cac3041d9f172647e3
   languageName: node
   linkType: hard
 
@@ -6190,7 +6190,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.14":
+"@types/react@npm:18.2.14":
   version: 18.2.14
   resolution: "@types/react@npm:18.2.14"
   dependencies:
@@ -6472,8 +6472,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/primitives@workspace:packages/primitives"
   dependencies:
-    "@types/react": ^18.2.14
-    "@types/react-dom": ^18.2.6
+    "@types/react": 18.2.14
+    "@types/react-dom": 18.0.10
     "@universal-labs/styled": "workspace:*"
   peerDependencies:
     react: ">=18"
@@ -6486,8 +6486,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/styled@workspace:packages/styled"
   dependencies:
-    "@types/react": ^18.2.14
-    "@types/react-dom": ^18.2.6
+    "@types/react": 18.2.14
+    "@types/react-dom": 18.0.10
     "@types/react-is": ^17.0.3
     "@universal-labs/css": "workspace:*"
     "@universal-labs/twind-adapter": "workspace:*"
@@ -10941,8 +10941,8 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": 7.18.6
-    "@types/react": ^18.2.14
-    "@types/react-dom": ^18.2.6
+    "@types/react": 18.2.14
+    "@types/react-dom": 18.0.10
     "@universal-labs/primitives": "workspace:*"
     "@universal-labs/twind-adapter": "workspace:*"
     babel-plugin-module-resolver: ^5.0.0
@@ -17364,58 +17364,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-tailwindcss@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "prettier-plugin-tailwindcss@npm:0.2.2"
-  peerDependencies:
-    "@prettier/plugin-php": "*"
-    "@prettier/plugin-pug": "*"
-    "@shopify/prettier-plugin-liquid": "*"
-    "@shufo/prettier-plugin-blade": "*"
-    "@trivago/prettier-plugin-sort-imports": "*"
-    prettier: ">=2.2.0"
-    prettier-plugin-astro: "*"
-    prettier-plugin-css-order: "*"
-    prettier-plugin-import-sort: "*"
-    prettier-plugin-jsdoc: "*"
-    prettier-plugin-organize-attributes: "*"
-    prettier-plugin-organize-imports: "*"
-    prettier-plugin-style-order: "*"
-    prettier-plugin-svelte: "*"
-    prettier-plugin-twig-melody: "*"
-  peerDependenciesMeta:
-    "@prettier/plugin-php":
-      optional: true
-    "@prettier/plugin-pug":
-      optional: true
-    "@shopify/prettier-plugin-liquid":
-      optional: true
-    "@shufo/prettier-plugin-blade":
-      optional: true
-    "@trivago/prettier-plugin-sort-imports":
-      optional: true
-    prettier-plugin-astro:
-      optional: true
-    prettier-plugin-css-order:
-      optional: true
-    prettier-plugin-import-sort:
-      optional: true
-    prettier-plugin-jsdoc:
-      optional: true
-    prettier-plugin-organize-attributes:
-      optional: true
-    prettier-plugin-organize-imports:
-      optional: true
-    prettier-plugin-style-order:
-      optional: true
-    prettier-plugin-svelte:
-      optional: true
-    prettier-plugin-twig-melody:
-      optional: true
-  checksum: dd4baa7b60d0cef36309a97bf884ec7beb61e29d7bf0c88036647985243535048968252f2f7159d88142695ae21fe305a6a1f96cceec36d41085cab63dbc4b25
-  languageName: node
-  linkType: hard
-
 "prettier@npm:^2.7.1, prettier@npm:^2.8.3":
   version: 2.8.3
   resolution: "prettier@npm:2.8.3"
@@ -21061,7 +21009,6 @@ __metadata:
     jsdom: latest
     nx: 16.5.2
     prettier: ^2.8.3
-    prettier-plugin-tailwindcss: ^0.2.2
     react-test-renderer: 18.2.0
     tslib: ^2.6.0
     typescript: ^5.1.3

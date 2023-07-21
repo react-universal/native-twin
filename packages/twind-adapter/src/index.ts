@@ -14,7 +14,7 @@ import { skewRules } from './rules/skew';
 import { translateRules } from './rules/translate';
 import type { CustomConfig } from './types';
 
-export { hash } from '@twind/core';
+export { hash, style as stylesGenerator, css as injectCss } from '@twind/core';
 
 const defaultConfig = defineConfig({
   preflight: false,

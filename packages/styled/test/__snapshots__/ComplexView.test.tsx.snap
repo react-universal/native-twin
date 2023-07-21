@@ -2,6 +2,7 @@
 
 exports[`@universal-labs/styled > View render 1`] = `
 <View
+  className="flex-1 hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black)) ios:(p-14 bg-rose-200 border-white border-2) android:(p-14 border-green-200 border-2 bg-gray-200) items-center justify-center md:border-3"
   groupID=":r0:"
   onBlur={[Function]}
   onFocus={[Function]}
@@ -22,6 +23,7 @@ exports[`@universal-labs/styled > View render 1`] = `
   }
 >
   <Text
+    className="text(center 2xl indigo-600) font-inter-bold hover:text-gray-700"
     groupID=":r0:"
     onBlur={[Function]}
     onFocus={[Function]}

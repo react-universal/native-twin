@@ -6,7 +6,7 @@ import type {
 } from 'react';
 import type { ReactNode } from 'react';
 import type { StyleProp } from 'react-native';
-import type { AnyStyle, FinalSheet } from '@universal-labs/css';
+import type { AnyStyle, CompleteStyle, FinalSheet } from '@universal-labs/css';
 import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
@@ -65,3 +65,11 @@ export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
 export type ForwardedStyledComponent<Component> = ForwardRefExoticComponent<
   PropsFrom<Component> & StyledProps<{}>
 >;
+
+// @typescript-eslint/no-empty-interface
+export interface DefaultTheme {}
+
+export type Primitive = number | string | null | undefined | boolean | CompleteStyle;
+export type TemplateFunctions<T> = (
+  arg: T & { className?: string; tw?: string; theme?: DefaultTheme },
+) => Primitive;

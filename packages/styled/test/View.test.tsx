@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
-import { styled } from '../src';
+import styledComponents from '../src';
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();
@@ -11,15 +10,21 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-const StyledView = styled(View);
+const StyledView = styledComponents(View)``;
 
 describe('@universal-labs/styled', () => {
   it('View render', () => {
     const component = renderer.create(<StyledView className='flex-1' />);
-    const data = component.toJSON();
-    //@ts-expect-error
-    const styles = StyleSheet.flatten(data.props.style);
-    console.log(styles, StyleSheet.flatten(styles));
+    let tree = toJson(component);
+    expect(tree).toMatchSnapshot();
+  });
+});
+
+const CustomView = styledComponents.View``;
+
+describe('@universal-labs/styled', () => {
+  it('View render', () => {
+    const component = renderer.create(<CustomView className='flex-1' />);
     let tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });

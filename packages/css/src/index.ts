@@ -1,5 +1,5 @@
 export { CssResolver } from './css';
-export type { AnyStyle, FinalSheet } from './types/rn.types';
+export type { AnyStyle, FinalSheet, CompleteStyle } from './types/rn.types';
 export type {
   CssNode,
   CssParserCache,
