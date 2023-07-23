@@ -1,8 +1,8 @@
-import { styledComponents } from './native';
+import { styledComponents } from './styled';
 
-export { useBuildStyledComponent } from './native/hooks/useStyledComponent';
-export { useStyledContext } from './native/hooks/useStyledContext';
-export { install } from './native/sheet';
+export { useBuildStyledComponent } from './styled/hooks/useStyledComponent';
+export { useStyledContext } from './styled/hooks/useStyledContext';
+export { install } from './styled/sheet';
 
 export type {
   ForwardedStyledComponent,
