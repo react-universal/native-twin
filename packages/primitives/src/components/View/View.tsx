@@ -1,6 +1,6 @@
 import { View as ReactNativeView } from 'react-native';
-import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
+import styled from '@universal-labs/styled';
 
-const View = styled(ReactNativeView) as ForwardedStyledComponent<typeof ReactNativeView>;
+const View = styled(ReactNativeView)();
 
 export default View;

@@ -1,54 +1,50 @@
 /* eslint-disable react/display-name */
-import { forwardRef, type ComponentType, Ref, ForwardRefExoticComponent } from 'react';
+import {
+  forwardRef,
+  type ComponentType,
+  Ref,
+  ForwardRefExoticComponent,
+  createElement,
+} from 'react';
 import { StyleProp } from 'react-native';
 import { StyledProps } from '../types/styled.types';
 import { useBuildStyledComponent } from './hooks/useStyledComponent';
+import { PropsWithVariants, VariantsConfig, createVariants } from './variants';
 
 function createStyledComponent<
   StyleType,
   InitialProps extends { style?: StyleProp<StyleType> },
-  Props extends InitialProps & StyledProps<{}> = InitialProps & StyledProps<{}>,
+  Props extends StyledProps<InitialProps> = StyledProps<InitialProps>,
 >(Component: ComponentType<InitialProps>) {
-  function styledComponent<S>() {
-    const ForwardRefComponent = forwardRef<any, S & Props>((props: S & Props, ref) => {
-      const {
-        componentChilds,
-        componentInteractionHandlers,
-        componentStyles,
-        currentGroupID,
-        focusHandlers,
-      } = useBuildStyledComponent(props);
+  function styledComponent<S, TConfig>(
+    config?: VariantsConfig<TConfig>,
+  ): ForwardRefExoticComponent<Props & S & PropsWithVariants<TConfig> & { ref?: Ref<any> }> {
+    const generator = createVariants(config!);
+    const ForwardRefComponent = forwardRef<any, S & Props & PropsWithVariants<TConfig>>(
+      (props: S & Props, ref) => {
+        // @ts-expect-error
+        const classNames = generator(props);
+        const {
+          componentChilds,
+          componentInteractionHandlers,
+          componentStyles,
+          currentGroupID,
+          focusHandlers,
+        } = useBuildStyledComponent({ ...props, className: classNames });
 
-      const newProps = {
-        ...props,
-        style: componentStyles,
-        children: componentChilds,
-        groupID: currentGroupID,
-        ...focusHandlers,
-        ...componentInteractionHandlers,
-      };
-      return <Component ref={ref} {...newProps} />;
-    });
-    return ForwardRefComponent as ForwardRefExoticComponent<Props & S & { ref?: Ref<any> }>;
+        return createElement(Component, {
+          ...props,
+          style: componentStyles,
+          ref,
+          children: componentChilds,
+          groupID: currentGroupID,
+          ...focusHandlers,
+          ...componentInteractionHandlers,
+        });
+      },
+    );
+    return ForwardRefComponent as any;
   }
-
-  styledComponent.attrs =
-    <Part, Result extends Partial<Props & Part> = Partial<Props & Part>>(
-      opts: Result | ((props: Props & Part) => Result),
-    ) =>
-    () => {
-      const ComponentWithAttrs = styledComponent();
-      const ForwardRefComponent = forwardRef<
-        any,
-        Omit<Props, keyof Result> &
-          Part &
-          Partial<Pick<Props, Extract<keyof Props, keyof Result>>>
-      >((props, ref) => {
-        const attrs = opts instanceof Function ? opts(props as Props & Part) : opts;
-        return <ComponentWithAttrs ref={ref} {...(props as Props & Part)} {...attrs} />;
-      });
-      return ForwardRefComponent;
-    };
 
   return styledComponent;
 }

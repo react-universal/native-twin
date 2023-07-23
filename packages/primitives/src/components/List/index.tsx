@@ -1,6 +1,6 @@
 import { ComponentType, forwardRef, PropsWithChildren } from 'react';
 import { Platform, View, ViewProps } from 'react-native';
-import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
+import styled from '@universal-labs/styled';
 import Text, { TextProps } from '../Text/Text.primitive';
 import { UL as PrimitiveUL } from './ul';
 
@@ -32,6 +32,6 @@ const PrimitiveLI = forwardRef((props: PropsWithChildren<LIProps>, ref: any) => 
 PrimitiveLI.displayName = 'LI';
 
 const UL = PrimitiveUL;
-const LI = styled(PrimitiveLI) as ForwardedStyledComponent<typeof View>;
+const LI = styled(PrimitiveLI)();
 
 export { UL, LI };

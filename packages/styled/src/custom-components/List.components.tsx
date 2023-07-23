@@ -8,85 +8,29 @@ import {
   VirtualizedListProps,
 } from 'react-native';
 import createStyledComponent, { invokeComponent } from '../native/StyledComponent';
-import { Primitive, StyledProps, TemplateFunctions } from '../types/styled.types';
+import { PropsWithVariants, VariantsConfig } from '../native/variants';
+import { StyledProps } from '../types/styled.types';
 
 export const styledFlatList =
-  <S,>(
-    chunks: TemplateStringsArray,
-    ...functions: (Primitive | TemplateFunctions<S & FlatListProps<any>>)[]
-  ) =>
-  <Type,>(props: StyledProps<S & FlatListProps<Type>>) =>
+  <S, TConfig>(config?: VariantsConfig<TConfig>) =>
+  <Type,>(props: StyledProps<S & PropsWithVariants<TConfig> & FlatListProps<Type>>) =>
     invokeComponent(
-      createStyledComponent<ViewStyle, FlatListProps<Type>>(FlatList)(chunks, ...functions),
+      createStyledComponent<ViewStyle, FlatListProps<Type>>(FlatList)(config),
       props,
-    );
-
-styledFlatList.attrs =
-  <S, Result extends Partial<S & FlatListProps<any>> = {}>(
-    opts: Result | ((props: S & FlatListProps<any>) => Result),
-  ) =>
-  (chunks: TemplateStringsArray, ...functions: (Primitive | TemplateFunctions<S>)[]) =>
-  <Props,>(componentProps: Omit<FlatListProps<Props>, keyof Result> & S & Partial<Result>) =>
-    invokeComponent(
-      createStyledComponent<ViewStyle, FlatListProps<Props>>(FlatList).attrs<S>(opts)(
-        chunks,
-        ...functions,
-      ),
-      componentProps as any,
     );
 
 export const styledSectionList =
-  <S,>(
-    chunks: TemplateStringsArray,
-    ...functions: (Primitive | TemplateFunctions<S & SectionListProps<any>>)[]
-  ) =>
-  <Type,>(props: S & SectionListProps<Type>) =>
+  <S, TConfig>(config?: VariantsConfig<TConfig>) =>
+  <Type,>(props: S & PropsWithVariants<TConfig> & SectionListProps<Type>) =>
     invokeComponent(
-      createStyledComponent<ViewStyle, SectionListProps<Type>>(SectionList)(
-        chunks,
-        ...functions,
-      ),
+      createStyledComponent<ViewStyle, SectionListProps<Type>>(SectionList)(config),
       props,
     );
-styledSectionList.attrs =
-  <S, Result extends Partial<S & SectionListProps<any>> = {}>(
-    opts: Result | ((props: S & SectionListProps<any>) => Result),
-  ) =>
-  (chunks: TemplateStringsArray, ...functions: (Primitive | TemplateFunctions<S>)[]) =>
-  <Props,>(
-    componentProps: Omit<SectionListProps<Props>, keyof Result> & S & Partial<Result>,
-  ) =>
-    invokeComponent(
-      createStyledComponent<ViewStyle, SectionListProps<Props>>(SectionList).attrs<S>(opts)(
-        chunks,
-        ...functions,
-      ),
-      componentProps as any,
-    );
+
 export const styledVirtualizedList =
-  <S,>(
-    chunks: TemplateStringsArray,
-    ...functions: (Primitive | TemplateFunctions<S & VirtualizedListProps<any>>)[]
-  ) =>
-  <Type,>(props: S & VirtualizedListProps<Type>) =>
+  <S, TConfig>(config?: VariantsConfig<TConfig>) =>
+  <Type,>(props: S & PropsWithVariants<TConfig> & VirtualizedListProps<Type>) =>
     invokeComponent(
-      createStyledComponent<ViewStyle, VirtualizedListProps<Type>>(VirtualizedList)(
-        chunks,
-        ...functions,
-      ),
+      createStyledComponent<ViewStyle, VirtualizedListProps<Type>>(VirtualizedList)(config),
       props,
-    );
-styledVirtualizedList.attrs =
-  <S, Result extends Partial<S & VirtualizedListProps<any>> = {}>(
-    opts: Result | ((props: S & VirtualizedListProps<any>) => Result),
-  ) =>
-  (chunks: TemplateStringsArray, ...functions: (Primitive | TemplateFunctions<S>)[]) =>
-  <Props,>(
-    componentProps: Omit<VirtualizedListProps<Props>, keyof Result> & S & Partial<Result>,
-  ) =>
-    invokeComponent(
-      createStyledComponent<ViewStyle, VirtualizedListProps<Props>>(VirtualizedList).attrs<S>(
-        opts,
-      )(chunks, ...functions),
-      componentProps as any,
     );

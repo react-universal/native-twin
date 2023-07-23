@@ -1,9 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@universal-labs/styled > View render 1`] = `
+exports[`@universal-labs/styled > CustomView render 1`] = `
 <View
   className="flex-1"
-  groupID=":r0:"
+  groupID=":r1:"
   style={
     {
       "flexBasis": "0%",
@@ -14,10 +14,10 @@ exports[`@universal-labs/styled > View render 1`] = `
 />
 `;
 
-exports[`@universal-labs/styled > View render 2`] = `
+exports[`@universal-labs/styled > StyledView render 1`] = `
 <View
   className="flex-1"
-  groupID=":r1:"
+  groupID=":r0:"
   style={
     {
       "flexBasis": "0%",

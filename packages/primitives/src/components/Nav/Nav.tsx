@@ -1,6 +1,6 @@
 import { ComponentType, forwardRef, ReactHTML } from 'react';
 import { Platform, View, ViewProps } from 'react-native';
-import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
+import styled from '@universal-labs/styled';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
 
@@ -16,6 +16,6 @@ function createView(tag: keyof ReactHTML): ComponentType<ViewProps> {
   return Element;
 }
 
-const Nav = styled(createView('nav')) as ForwardedStyledComponent<typeof View>;
+const Nav = styled(createView('nav'))();
 
 export default Nav;

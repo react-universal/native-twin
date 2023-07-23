@@ -1,8 +1,6 @@
 import { ScrollView as ReactNativeScrollView } from 'react-native';
-import { styled, ForwardedStyledComponent } from '@universal-labs/styled';
+import styled from '@universal-labs/styled';
 
-const ScrollView = styled(
-  ReactNativeScrollView,
-) as ForwardedStyledComponent<ReactNativeScrollView>;
+const ScrollView = styled(ReactNativeScrollView)();
 
 export default ScrollView;

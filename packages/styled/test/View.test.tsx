@@ -10,20 +10,20 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-const StyledView = styledComponents(View)``;
+const StyledView = styledComponents(View)();
 
 describe('@universal-labs/styled', () => {
-  it('View render', () => {
+  it('StyledView render', () => {
     const component = renderer.create(<StyledView className='flex-1' />);
     let tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });
 });
 
-const CustomView = styledComponents.View``;
+const CustomView = styledComponents.View();
 
 describe('@universal-labs/styled', () => {
-  it('View render', () => {
+  it('CustomView render', () => {
     const component = renderer.create(<CustomView className='flex-1' />);
     let tree = toJson(component);
     expect(tree).toMatchSnapshot();

@@ -1,9 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@universal-labs/styled > View render 1`] = `
+exports[`@universal-labs/styled > Complex View 1`] = `
 <View
-  className="flex-1 hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black)) ios:(p-14 bg-rose-200 border-white border-2) android:(p-14 border-green-200 border-2 bg-gray-200) items-center justify-center md:border-3"
   groupID=":r0:"
+  intent="secondary"
   onBlur={[Function]}
   onFocus={[Function]}
   onTouchEnd={[Function]}
@@ -42,4 +42,42 @@ exports[`@universal-labs/styled > View render 1`] = `
     H1 - 1
   </Text>
 </View>
+`;
+
+exports[`@universal-labs/styled > ScrollView render 1`] = `
+<RCTScrollView
+  className="flex-1"
+  groupID=":r2:"
+  style={
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
+  }
+>
+  <View>
+    <View
+      groupID=":r2:"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onTouchEnd={[Function]}
+      onTouchStart={[Function]}
+      parentID=":r2:"
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "rgba(254,205,211,1)",
+          "borderColor": "rgba(255,255,255,1)",
+          "borderWidth": 2,
+          "flexBasis": "0%",
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "justifyContent": "center",
+          "padding": 56,
+        }
+      }
+    />
+  </View>
+</RCTScrollView>
 `;

@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-import { StyleSheet } from 'react-native';
 import clsx from 'clsx';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
@@ -12,21 +10,35 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-const View = styledComponents.View();
+const View = styledComponents.View({
+  base: clsx(
+    'flex-1',
+    'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
+    'ios:(p-14 bg-rose-200 border-white border-2)',
+    'android:(p-14 border-green-200 border-2 bg-gray-200)',
+    'items-center justify-center md:border-3',
+  ),
+  variants: {
+    intent: {
+      primary: '',
+      secondary: '',
+      third: '',
+    },
+    active: {
+      true: '',
+      false: '',
+    },
+  },
+  defaultProps: {
+    active: true,
+  },
+});
 const H1 = styledComponents.Text();
 
 describe('@universal-labs/styled', () => {
-  it('View render', () => {
+  it('Complex View', () => {
     const component = renderer.create(
-      <View
-        className={clsx(
-          'flex-1',
-          'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
-          'ios:(p-14 bg-rose-200 border-white border-2)',
-          'android:(p-14 border-green-200 border-2 bg-gray-200)',
-          'items-center justify-center md:border-3',
-        )}
-      >
+      <View intent='secondary'>
         <H1
           className={clsx(
             'text(center 2xl indigo-600)',
@@ -37,10 +49,23 @@ describe('@universal-labs/styled', () => {
         </H1>
       </View>,
     );
-    const data = component.toJSON();
-    //@ts-expect-error
-    const styles = StyleSheet.flatten(data.props.style);
-    console.log(styles, StyleSheet.flatten(styles));
+    let tree = toJson(component);
+    expect(tree).toMatchSnapshot();
+  });
+});
+
+const ScrollView = styledComponents.ScrollView({
+  variants: {
+    intent: { primary: '', sec: '' },
+  },
+});
+describe('@universal-labs/styled', () => {
+  it('ScrollView render', () => {
+    const component = renderer.create(
+      <ScrollView className='flex-1'>
+        <View />
+      </ScrollView>,
+    );
     let tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });
