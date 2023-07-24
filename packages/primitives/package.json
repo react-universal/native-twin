@@ -1,6 +1,7 @@
 {
   "name": "@universal-labs/primitives",
   "version": "4.3.3",
+  "private": true,
   "description": "React Native primitives in styled version",
   "keywords": [
     "react-native",
@@ -34,10 +35,10 @@
     "README.md"
   ],
   "scripts": {
-    "build:libs": "vite build",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest run",
-    "test:ui": "yarn vitest --ui"
+    "build:libs:old": "vite build",
+    "lint:old": "eslint \"./**/*.{ts,tsx}\"",
+    "test:old": "vitest run",
+    "test:ui:old": "yarn vitest --ui"
   },
   "dependencies": {
     "@universal-labs/styled": "workspace:*"

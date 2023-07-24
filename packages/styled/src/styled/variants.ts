@@ -6,13 +6,14 @@ type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
 type ClassValue = string | null | undefined | ClassValue[];
 
 type ConfigSchema = Record<string, Record<string, ClassValue>>;
-export type PropsWithVariants<T> = T extends ConfigSchema ? ConfigVariants<T> : {};
+
+export type PropsWithVariants<T> = T extends ConfigSchema ? ConfigVariants<T> : T;
 
 export type VariantsConfig<T = unknown> = T extends ConfigSchema
   ? {
       base?: string;
       variants?: T;
-      defaultProps?: ConfigVariants<T>;
+      defaultVariants?: ConfigVariants<T>;
     }
   : never;
 
@@ -31,12 +32,12 @@ export const createVariants = <T>(config: VariantsConfig<T>) => {
       // @ts-expect-error
       return cx(config?.base ?? '', props?.className ?? '', props?.tw ?? '');
     }
-    const { variants, base, defaultProps } = config;
+    const { variants, base, defaultVariants } = config;
     const getVariantClassNames = Object.keys(variants).map(
       (variant: keyof typeof variants) => {
         const variantProp = props?.[variant as keyof typeof props];
         // @ts-expect-error
-        const defaultVariantProp = defaultProps?.[variant];
+        const defaultVariantProp = defaultVariants?.[variant];
 
         if (variantProp === null) return null;
 

@@ -13,20 +13,16 @@
       "path": "../examples/next-app"
     },
     {
-      "name": "📦 @lib/styled",
-      "path": "../packages/styled"
-    },
-    {
       "name": "📦 @lib/css",
       "path": "../packages/css"
     },
     {
-      "name": "📦 @lib/twind-adapter",
-      "path": "../packages/twind-adapter"
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
     },
     {
-      "name": "📦 @lib/primitives",
-      "path": "../packages/primitives"
+      "name": "📦 @lib/twind-adapter",
+      "path": "../packages/twind-adapter"
     }
   ],
   "settings": {

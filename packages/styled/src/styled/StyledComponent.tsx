@@ -14,7 +14,7 @@ import { PropsWithVariants, VariantsConfig, createVariants } from './variants';
 function createStyledComponent<
   StyleType,
   InitialProps extends { style?: StyleProp<StyleType> },
-  Props extends StyledProps<InitialProps> = StyledProps<InitialProps>,
+  Props extends StyledProps & InitialProps = StyledProps & InitialProps,
 >(Component: ComponentType<InitialProps>) {
   function styledComponent<S, TConfig>(
     config?: VariantsConfig<TConfig>,

@@ -11,6 +11,7 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
+        "cacheableOperations": ["build:libs"],
         "accessToken": "ZDQ5MzNlNjAtODM2Ny00NGE5LWIzZDEtM2VlYmZmMGE3ZjQ4fHJlYWQtd3JpdGU="
       }
     }
@@ -22,7 +23,7 @@
     "build:libs": {
       "inputs": ["production"],
       "outputs": ["{projectRoot}/build"],
-      "dependsOn": ["^build:libs"]
+      "dependsOn": ["^build:libs", "build:libs"]
     }
   },
   "pluginsConfig": {

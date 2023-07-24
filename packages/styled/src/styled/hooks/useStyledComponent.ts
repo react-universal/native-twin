@@ -7,7 +7,7 @@ import { useComponentInteractions } from './useComponentInteractions';
 import { useComponentRegistry } from './useComponentRegistry';
 import { useCssToRN } from './useCssToRN';
 
-function useBuildStyledComponent<T>({
+function useBuildStyledComponent({
   className,
   groupID,
   parentID,
@@ -16,7 +16,7 @@ function useBuildStyledComponent<T>({
   tw,
   children,
   ...restProps
-}: StyledProps<T>) {
+}: StyledProps) {
   const { stylesheet, componentID } = useCssToRN(className ?? tw ?? '');
   const { component, parentComponent, currentGroupID } = useComponentRegistry({
     componentID,

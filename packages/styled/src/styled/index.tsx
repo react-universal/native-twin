@@ -30,6 +30,7 @@ styled.TextInput = styled(RN.TextInput);
 styled.TouchableHighlight = styled(RN.TouchableHighlight);
 styled.TouchableNativeFeedback = styled(RN.TouchableNativeFeedback);
 styled.TouchableOpacity = styled(RN.TouchableOpacity);
+styled.Pressable = styled(RN.Pressable);
 styled.TouchableWithoutFeedback = styled(RN.TouchableWithoutFeedback);
 styled.View = styled(RN.View);
 styled.FlatList = styledFlatList;

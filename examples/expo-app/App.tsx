@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { View } from '@universal-labs/primitives';
+import { View } from 'react-native';
 import { install } from '@universal-labs/styled';
+import { Button } from './src/components/button';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
-// import { FlatListScreen } from './src/screens/FlatList.screen';
-import { HomeScreen } from './src/screens/Home.screen';
 import tailwindConfig from './tailwind.config';
 
 install({
@@ -23,8 +22,9 @@ export default function App() {
   }, [bootFonts, isReady]);
   if (!isReady) return null;
   return (
-    <View style={{ backgroundColor: 'gray', flex: 1 }}>
-      <HomeScreen />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Button variant='primary'>asd</Button>
+      <Button variant='secondary'>asd</Button>
     </View>
   );
 }

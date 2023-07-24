@@ -13,7 +13,7 @@ import { StyledProps } from '../types/styled.types';
 
 export const styledFlatList =
   <S, TConfig>(config?: VariantsConfig<TConfig>) =>
-  <Type,>(props: StyledProps<S & PropsWithVariants<TConfig> & FlatListProps<Type>>) =>
+  <Type,>(props: StyledProps & S & PropsWithVariants<TConfig> & FlatListProps<Type>) =>
     invokeComponent(
       createStyledComponent<ViewStyle, FlatListProps<Type>>(FlatList)(config),
       props,

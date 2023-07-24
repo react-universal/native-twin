@@ -27,7 +27,7 @@ export interface RegisteredComponent {
   interactionState: Record<ValidInteractionPseudoSelector | ValidGroupPseudoSelector, boolean>;
 }
 
-export type StyledProps<P> = {
+export type StyledProps = {
   className?: string;
   tw?: string;
   nthChild?: number;
@@ -36,7 +36,7 @@ export type StyledProps<P> = {
   parentID?: string;
   children?: ReactNode;
   groupID?: string;
-} & P;
+};
 
 export type ComponentStylesheet = {
   styles: FinalSheet;
@@ -46,13 +46,13 @@ export type ComponentStylesheet = {
   hasGroupEvents: boolean;
 };
 
-export interface IUseStyleSheetsInput
-  extends StyledProps<{
-    inlineStyles?: AnyStyle;
-    classPropsTuple?: [string, string][];
-    componentID: string;
-    currentGroupID: string;
-  }> {}
+// export interface IUseStyleSheetsInput
+//   extends StyledProps<{
+//     inlineStyles?: AnyStyle;
+//     classPropsTuple?: [string, string][];
+//     componentID: string;
+//     currentGroupID: string;
+//   }> {}
 
 export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
   ? Props
@@ -63,7 +63,7 @@ export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
   : never;
 
 export type ForwardedStyledComponent<Component> = ForwardRefExoticComponent<
-  PropsFrom<Component> & StyledProps<{}>
+  PropsFrom<Component> & StyledProps
 >;
 
 // @typescript-eslint/no-empty-interface

@@ -6,7 +6,7 @@ import type { StyledProps } from '../types/styled.types';
 export type Style = ViewStyle & TextStyle & ImageStyle;
 
 function useBuildStyledComponent<T>(
-  props: StyledProps<T>,
+  props: StyledProps,
   Component: ComponentType<T>,
   ref: any,
 ) {
