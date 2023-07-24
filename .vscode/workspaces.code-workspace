@@ -13,12 +13,12 @@
       "path": "../examples/next-app"
     },
     {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
       "name": "📦 @lib/styled",
       "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
     },
     {
       "name": "📦 @lib/twind-adapter",
@@ -26,7 +26,6 @@
     }
   ],
   "settings": {
-    "twind.debug": true,
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
