@@ -1,4 +1,4 @@
-import { styledComponents } from './styled';
+import styled from './styled';
 
 export { useBuildStyledComponent } from './hooks/useStyledComponent';
 export { useStyledContext } from './hooks/useStyledContext';
@@ -14,4 +14,4 @@ export type {
   ComponentStylesheet,
 } from './types/styled.types';
 export type { StyledContext, SheetMetadata } from './types/css.types';
-export default styledComponents;
+export default styled;

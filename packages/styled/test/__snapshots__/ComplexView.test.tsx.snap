@@ -18,12 +18,12 @@ exports[`@universal-labs/styled > Complex View 1`] = `
       "flexGrow": 1,
       "flexShrink": 1,
       "justifyContent": "center",
+      "margin": 8,
       "padding": 56,
     }
   }
 >
   <Text
-    className="text(center 2xl indigo-600) font-inter-bold hover:text-gray-700"
     groupID=":r0:"
     onBlur={[Function]}
     onFocus={[Function]}
@@ -46,7 +46,6 @@ exports[`@universal-labs/styled > Complex View 1`] = `
 
 exports[`@universal-labs/styled > ScrollView render 1`] = `
 <RCTScrollView
-  className="flex-1"
   groupID=":r2:"
   style={
     {

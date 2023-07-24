@@ -20,10 +20,9 @@ export function buildClassNames<T extends { className?: string }>(
     .flat()
     // Convert the objects to string if the result is not a primitive
     .map((chunk) => {
-      console.log('CHUNK: ', chunk);
       return typeof chunk === 'object' ? (chunk as Partial<CompleteStyle>) : chunk;
     })
     .join('');
-  if (props.className) computedString += props.className.replace(/=/gm, ':') + ';';
+  if (props.className) computedString += props.className.replace(/=/gm, ':') + '';
   return computedString;
 }

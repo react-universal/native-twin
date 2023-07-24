@@ -60,4 +60,4 @@ styled.Strong = styled(Strong);
 styled.Code = styled(Code);
 styled.P = styled(P);
 
-export { styled as styledComponents };
+export default styled;

@@ -10,7 +10,7 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-const View = styledComponents.View({
+const View = styledComponents.View.withVariants({
   base: clsx(
     'flex-1',
     'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
@@ -21,7 +21,7 @@ const View = styledComponents.View({
   variants: {
     intent: {
       primary: '',
-      secondary: '',
+      secondary: 'm-2',
       third: '',
     },
     active: {
@@ -32,8 +32,8 @@ const View = styledComponents.View({
   defaultVariants: {
     active: true,
   },
-});
-const H1 = styledComponents.Text();
+})``;
+const H1 = styledComponents.Text``;
 
 describe('@universal-labs/styled', () => {
   it('Complex View', () => {
@@ -54,11 +54,11 @@ describe('@universal-labs/styled', () => {
   });
 });
 
-const ScrollView = styledComponents.ScrollView({
+const ScrollView = styledComponents.ScrollView.withVariants({
   variants: {
     intent: { primary: '', sec: '' },
   },
-});
+})``;
 describe('@universal-labs/styled', () => {
   it('ScrollView render', () => {
     const component = renderer.create(

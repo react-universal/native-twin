@@ -8,22 +8,22 @@ import {
 } from 'react';
 import { StyleProp } from 'react-native';
 import { useBuildStyledComponent } from '../hooks/useStyledComponent';
-import { StyledProps } from '../types/styled.types';
+import { Primitive, StyledProps, TemplateFunctions } from '../types/styled.types';
+import { buildClassNames } from '../utils/buildClassNames';
 import { PropsWithVariants, VariantsConfig, createVariants } from './variants';
 
 function createStyledComponent<
   StyleType,
   InitialProps extends { style?: StyleProp<StyleType> },
-  Props extends StyledProps & InitialProps = StyledProps & InitialProps,
+  Props extends InitialProps = InitialProps,
 >(Component: ComponentType<InitialProps>) {
-  function styledComponent<S, TConfig>(
-    config?: VariantsConfig<TConfig>,
-  ): ForwardRefExoticComponent<Props & S & PropsWithVariants<TConfig> & { ref?: Ref<any> }> {
-    const generator = createVariants(config!);
-    const ForwardRefComponent = forwardRef<any, S & Props & PropsWithVariants<TConfig>>(
-      (props: S & Props, ref) => {
-        // @ts-expect-error
-        const classNames = generator(props);
+  function styledComponent<S>(
+    chunks: TemplateStringsArray,
+    ...functions: (Primitive | TemplateFunctions<S & StyledProps & Props>)[]
+  ): ForwardRefExoticComponent<Props & S & StyledProps & { ref?: Ref<any> }> {
+    const ForwardRefComponent = forwardRef<any, S & Props>(
+      (props: S & Props & StyledProps, ref) => {
+        const classNames = buildClassNames(chunks, functions, props);
         const {
           componentChilds,
           componentInteractionHandlers,
@@ -31,9 +31,13 @@ function createStyledComponent<
           currentGroupID,
           focusHandlers,
         } = useBuildStyledComponent({ ...props, className: classNames });
-
-        return createElement(Component, {
+        const newProps = {
           ...props,
+        };
+        Reflect.deleteProperty(newProps, 'className');
+        Reflect.deleteProperty(newProps, 'tw');
+        return createElement(Component, {
+          ...newProps,
           style: componentStyles,
           ref,
           children: componentChilds,
@@ -45,6 +49,41 @@ function createStyledComponent<
     );
     return ForwardRefComponent as any;
   }
+
+  // provide styled(Comp).attrs({} | () => {}) feature
+  styledComponent.withVariants = <
+    Part,
+    TConfig,
+    Result extends Partial<Props & Part> = Partial<Props & Part>,
+  >(
+    config: VariantsConfig<TConfig>,
+  ) => {
+    const classNamesGenerator = createVariants(config);
+    return (
+      chunks: TemplateStringsArray,
+      ...functions: (Primitive | TemplateFunctions<Props & Part>)[]
+    ) => {
+      const ComponentWithVariants = styledComponent(chunks, ...functions);
+      // We need to limit the props control to only Result https://www.typescriptlang.org/play?#code/GYVwdgxgLglg9mABBATgUwIZTQUQB7ZgAmaRAwnALYAOAPAAopzUDOAfABQU0BciH1Jqz6NmLAJSIAvG0QYwAT0kBvAFCJkCFlET5CJYt2rT+gsSKETpstRo3ooIFEiMDL49YgC+nvWmL+5FTUAHRYUCgsJrQASmgsIAA2OmgEgVH0GCiwGIkMlmyc4ZF8cQnJkjKItnYQWjqMaHVgwDAA5k5YpEYmbua6eBCJICT5YgA0iGVJUGyVNp52iA5OLsEcyiFbZqyTW2FQESxeHks+SyvOiI3NrR0oXUE0nufLaI5XfgGGwao+qqBILAEIgen1hNVENhtHxtCgYGA2pNtApEmhYREEW1vCpPJckDsWH9VM1tNd0Ld2j0pMh0F0viQntQuMFxAcjhsofEoHwAORwADWvJxqhuCDurmUiBRaL50KgwpOQA
+      const ForwardRefComponent = forwardRef<
+        any,
+        Omit<Props, keyof Result> &
+          Part &
+          Pick<Props, Extract<keyof Props, keyof Result>> &
+          PropsWithVariants<TConfig> &
+          StyledProps
+      >((props, ref) => {
+        const classNames = classNamesGenerator(props);
+        return createElement(ComponentWithVariants, {
+          ...(props as Props & Part),
+          ref,
+          className: classNames,
+        });
+      });
+      // TODO : Find a way to remove from the Props the properties affected by opts
+      return ForwardRefComponent;
+    };
+  };
 
   return styledComponent;
 }

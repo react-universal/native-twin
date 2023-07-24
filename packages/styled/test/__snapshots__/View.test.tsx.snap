@@ -2,7 +2,6 @@
 
 exports[`@universal-labs/styled > CustomView render 1`] = `
 <View
-  className="flex-1"
   groupID=":r1:"
   style={
     {
@@ -16,7 +15,6 @@ exports[`@universal-labs/styled > CustomView render 1`] = `
 
 exports[`@universal-labs/styled > StyledView render 1`] = `
 <View
-  className="flex-1"
   groupID=":r0:"
   style={
     {

@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
-import { StyledContext } from '../types/css.types';
 import { globalStore } from '../styled/store';
+import { StyledContext } from '../types/css.types';
 
 export const useStyledContext = () => {
   const context = useSyncExternalStore(
