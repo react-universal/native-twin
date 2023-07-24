@@ -32,7 +32,7 @@ const View = styledComponents.View.withVariants({
   defaultVariants: {
     active: true,
   },
-})``;
+});
 const H1 = styledComponents.Text``;
 
 describe('@universal-labs/styled', () => {
@@ -58,7 +58,7 @@ const ScrollView = styledComponents.ScrollView.withVariants({
   variants: {
     intent: { primary: '', sec: '' },
   },
-})``;
+});
 describe('@universal-labs/styled', () => {
   it('ScrollView render', () => {
     const component = renderer.create(

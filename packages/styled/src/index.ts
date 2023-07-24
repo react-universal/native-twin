@@ -12,6 +12,8 @@ export type {
   ComponentStyleProp,
   RegisteredComponent,
   ComponentStylesheet,
+  TemplateFunctions,
+  Primitive,
 } from './types/styled.types';
 export type { StyledContext, SheetMetadata } from './types/css.types';
 export default styled;
