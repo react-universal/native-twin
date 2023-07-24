@@ -6633,20 +6633,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/primitives@workspace:*, @universal-labs/primitives@workspace:packages/primitives":
-  version: 0.0.0-use.local
-  resolution: "@universal-labs/primitives@workspace:packages/primitives"
-  dependencies:
-    "@types/react": 18.2.14
-    "@types/react-dom": 18.0.10
-    "@universal-labs/styled": "workspace:*"
-  peerDependencies:
-    react: ">=18"
-    react-native: ">=0.70"
-    react-native-web: ">= 0.18.10"
-  languageName: unknown
-  linkType: soft
-
 "@universal-labs/styled@workspace:*, @universal-labs/styled@workspace:packages/styled":
   version: 0.0.0-use.local
   resolution: "@universal-labs/styled@workspace:packages/styled"
@@ -8582,15 +8568,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"class-variance-authority@npm:^0.6.1":
-  version: 0.6.1
-  resolution: "class-variance-authority@npm:0.6.1"
-  dependencies:
-    clsx: 1.2.1
-  checksum: 9be6b27998489c7af4535399ff00289c3347756209bb5405ca115e51bef7159f057f02532a53132299a3e26925552894ff1018bd8cc10807130b063039e82d8d
-  languageName: node
-  linkType: hard
-
 "clean-css@npm:^5.2.2, clean-css@npm:^5.3.0":
   version: 5.3.2
   resolution: "clean-css@npm:5.3.2"
@@ -8740,7 +8717,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:1.2.1, clsx@npm:^1.2.1":
+"clsx@npm:^1.2.1":
   version: 1.2.1
   resolution: "clsx@npm:1.2.1"
   checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
@@ -11117,7 +11094,6 @@ __metadata:
     "@types/react-dom": 18.0.10
     "@universal-labs/styled": "workspace:*"
     babel-plugin-module-resolver: ^5.0.0
-    class-variance-authority: ^0.6.1
     expo: ^49.0.3
     expo-build-properties: ~0.8.3
     expo-font: ~11.4.0
@@ -15735,7 +15711,6 @@ __metadata:
   dependencies:
     "@next/font": 13.0.6
     "@twind/with-next": 1.2.2
-    "@universal-labs/primitives": "workspace:*"
     "@universal-labs/twind-adapter": "workspace:*"
     autoprefixer: 10.4.13
     critters: ^0.0.16

@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import type { PressableProps } from 'react-native';
-import { Pressable } from '@universal-labs/primitives';
+import styled from '@universal-labs/styled';
 import type { SvgProps } from 'react-native-svg';
 
 interface IIConProps extends SvgProps {
@@ -12,6 +12,8 @@ interface IButtonIconProps extends PressableProps {
   onPress: () => void;
   size?: keyof typeof sizes;
 }
+
+const Pressable = styled.Pressable``;
 
 const sizes = {
   sm: '16',
