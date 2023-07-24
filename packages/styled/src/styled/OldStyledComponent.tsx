@@ -7,7 +7,7 @@ import {
 } from 'react';
 import type { PropsFrom, StyledProps } from '../types/styled.types';
 import { getComponentDisplayName } from '../utils/getComponentDisplayName';
-import { useBuildStyledComponent } from './hooks/useStyledComponent';
+import { useBuildStyledComponent } from '../hooks/useStyledComponent';
 
 export function styled<T>(
   Component: ComponentType<T>,

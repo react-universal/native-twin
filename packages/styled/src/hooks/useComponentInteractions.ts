@@ -5,7 +5,7 @@ import type {
   TextInputFocusEventData,
   PressableProps,
 } from 'react-native';
-import { setComponentInteractionState } from '../store';
+import { setComponentInteractionState } from '../styled/store';
 
 interface UseComponentInteractionsArgs {
   props: Touchable;

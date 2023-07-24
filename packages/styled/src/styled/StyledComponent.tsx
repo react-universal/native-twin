@@ -7,8 +7,8 @@ import {
   createElement,
 } from 'react';
 import { StyleProp } from 'react-native';
+import { useBuildStyledComponent } from '../hooks/useStyledComponent';
 import { StyledProps } from '../types/styled.types';
-import { useBuildStyledComponent } from './hooks/useStyledComponent';
 import { PropsWithVariants, VariantsConfig, createVariants } from './variants';
 
 function createStyledComponent<

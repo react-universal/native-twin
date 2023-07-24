@@ -1,7 +1,7 @@
 import { styledComponents } from './styled';
 
-export { useBuildStyledComponent } from './styled/hooks/useStyledComponent';
-export { useStyledContext } from './styled/hooks/useStyledContext';
+export { useBuildStyledComponent } from './hooks/useStyledComponent';
+export { useStyledContext } from './hooks/useStyledContext';
 export { install } from './styled/sheet';
 
 export type {

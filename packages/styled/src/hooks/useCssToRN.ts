@@ -1,5 +1,5 @@
 import { useId, useMemo } from 'react';
-import { SheetManager } from '../sheet';
+import { SheetManager } from '../styled/sheet';
 import { useStyledContext } from './useStyledContext';
 
 export function useCssToRN(className: string) {

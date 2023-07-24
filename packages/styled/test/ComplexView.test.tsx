@@ -29,7 +29,7 @@ const View = styledComponents.View({
       false: '',
     },
   },
-  defaultProps: {
+  defaultVariants: {
     active: true,
   },
 });
