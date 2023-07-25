@@ -50,3 +50,8 @@ export interface SelectorPayload {
     | ValidAppearancePseudoSelector
   )[];
 }
+
+export interface SheetInteractionState {
+  isPointerActive: boolean;
+  isParentActive: boolean;
+}

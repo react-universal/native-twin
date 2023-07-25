@@ -5,7 +5,7 @@ import { Spinner } from '../spinner';
 const StyledButton = styled.Pressable({
   variants: {
     variant: {
-      primary: 'bg-primary rounded-xl',
+      primary: 'bg-primary rounded-xl hover:bg-red-200',
       secondary: 'bg-gray-300',
       primaryDark: 'bg-weathermatic-500',
     },

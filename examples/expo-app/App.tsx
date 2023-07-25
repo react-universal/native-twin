@@ -24,7 +24,9 @@ export default function App() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Button variant='primary'>asd</Button>
-      <Button variant='secondary'>asd</Button>
+      <Button variant='secondary' isDisabled>
+        asd
+      </Button>
     </View>
   );
 }

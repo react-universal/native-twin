@@ -1,4 +1,5 @@
 export { CssResolver } from './css';
+export { MainSheet } from './sheet/Sheet';
 export type { AnyStyle, FinalSheet, CompleteStyle } from './types/rn.types';
 export type {
   CssNode,

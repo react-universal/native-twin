@@ -24,6 +24,7 @@ function createStyledComponent<
     const classNamesGenerator = createVariants(config!);
     const ForwardRefComponent = forwardRef<any, S & Props & PropsWithVariants<TConfig>>(
       (props: S & Props & StyledProps & PropsWithVariants<TConfig>, ref) => {
+        // const start = performance.now();
         const classNames = classNamesGenerator(props);
         const {
           componentChilds,
@@ -37,6 +38,7 @@ function createStyledComponent<
         };
         Reflect.deleteProperty(newProps, 'className');
         Reflect.deleteProperty(newProps, 'tw');
+        // console.log('TOOK: ', performance.now() - start);
         return createElement(Component, {
           ...newProps,
           style: componentStyles,

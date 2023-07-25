@@ -1,5 +1,5 @@
 import { useId, useMemo } from 'react';
-import { SheetManager } from '../styled/sheet';
+import { virtualSheet } from '../styled/VirtualSheet';
 import { useStyledContext } from './useStyledContext';
 
 export function useCssToRN(className: string) {
@@ -8,8 +8,7 @@ export function useCssToRN(className: string) {
   const { context } = useStyledContext();
 
   const stylesheet = useMemo(() => {
-    const manager = SheetManager(context);
-    return manager(className);
+    return virtualSheet(className, context);
   }, [className, context]);
 
   return { stylesheet, componentID };

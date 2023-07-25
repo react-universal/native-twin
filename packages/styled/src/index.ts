@@ -2,7 +2,7 @@ import styled from './styled';
 
 export { useBuildStyledComponent } from './hooks/useStyledComponent';
 export { useStyledContext } from './hooks/useStyledContext';
-export { install } from './styled/sheet';
+export { install, virtualSheet } from './styled/VirtualSheet';
 
 export type {
   PropsFrom,
