@@ -7,9 +7,9 @@ import {
   VirtualizedList,
   VirtualizedListProps,
 } from 'react-native';
-import createStyledComponent, { invokeComponent } from '../styled/StyledComponent';
-import { PropsWithVariants, VariantsConfig } from '../styled/variants';
-import { StyledProps } from '../types/styled.types';
+import createStyledComponent, { invokeComponent } from '../../styled/StyledComponent';
+import { PropsWithVariants, VariantsConfig } from '../../styled/variants';
+import { StyledProps } from '../../types/styled.types';
 
 export function styledFlatList<S, TConfig>(config?: VariantsConfig<TConfig>) {
   return function <Type>(

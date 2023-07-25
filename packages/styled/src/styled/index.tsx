@@ -5,7 +5,7 @@ import {
   styledFlatList,
   styledSectionList,
   styledVirtualizedList,
-} from '../custom-components/List.components';
+} from '../custom-components/NativeLists/List.components';
 import { Nav } from '../custom-components/Nav';
 import { TBody, TD, TFoot, TH, THead, TR, Table } from '../custom-components/Table';
 import { Span, H1, H2, H3, H4, H5, H6, Strong, Code, P } from '../custom-components/Text';
