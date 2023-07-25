@@ -46,7 +46,7 @@ export interface SheetInteractionState {
   isParentActive: boolean;
 }
 
-export type ClassValue = string | null | undefined | ClassValue[];
+export type ClassValue = string | null | undefined;
 
 export type ClassNamesProp =
   | {

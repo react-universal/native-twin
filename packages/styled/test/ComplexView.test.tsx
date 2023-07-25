@@ -10,7 +10,7 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-const View = styledComponents.View({
+const View = styledComponents.View.variants({
   base: clsx(
     'flex-1',
     'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
@@ -33,7 +33,7 @@ const View = styledComponents.View({
     active: true,
   },
 });
-const H1 = styledComponents.Text();
+const H1 = styledComponents.Text``;
 
 describe('@universal-labs/styled', () => {
   it('Complex View', () => {
@@ -54,7 +54,7 @@ describe('@universal-labs/styled', () => {
   });
 });
 
-const ScrollView = styledComponents.ScrollView({
+const ScrollView = styledComponents.ScrollView.variants({
   variants: {
     intent: { primary: '', sec: '' },
   },

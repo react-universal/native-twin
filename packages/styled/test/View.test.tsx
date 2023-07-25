@@ -10,7 +10,7 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-const StyledView = styledComponents(View)();
+const StyledView = styledComponents(View)``;
 
 describe('@universal-labs/styled', () => {
   it('StyledView render', () => {
@@ -20,7 +20,7 @@ describe('@universal-labs/styled', () => {
   });
 });
 
-const CustomView = styledComponents.View();
+const CustomView = styledComponents.View``;
 
 describe('@universal-labs/styled', () => {
   it('CustomView render', () => {

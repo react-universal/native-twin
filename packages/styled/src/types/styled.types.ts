@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { FinalSheet } from '@universal-labs/css';
+import type { CompleteStyle, FinalSheet } from '@universal-labs/css';
 import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
@@ -36,3 +36,11 @@ export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
   : TComponent extends React.ComponentType<infer Props>
   ? Props
   : never;
+
+// @typescript-eslint/no-empty-interface
+export interface DefaultTheme {}
+
+export type Primitive = number | string | null | undefined | boolean | CompleteStyle;
+export type TemplateFunctions<T> = (
+  arg: T & { theme?: DefaultTheme } & ClassNamesProp,
+) => Primitive;

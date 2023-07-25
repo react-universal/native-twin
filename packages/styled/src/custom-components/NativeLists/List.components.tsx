@@ -8,33 +8,45 @@ import {
   VirtualizedListProps,
 } from 'react-native';
 import createStyledComponent, { invokeComponent } from '../../styled/StyledComponent';
-import { PropsWithVariants, VariantsConfig } from '../../styled/variants';
-import { StyledProps } from '../../types/styled.types';
+import { Primitive, StyledProps, TemplateFunctions } from '../../types/styled.types';
 
-export function styledFlatList<S, TConfig>(config?: VariantsConfig<TConfig>) {
-  return function <Type>(
-    props: StyledProps & PropsWithVariants<TConfig> & S & FlatListProps<Type>,
-  ) {
+export function styledFlatList<S>(
+  chunks: TemplateStringsArray,
+  ...functions: (Primitive | TemplateFunctions<S>)[]
+) {
+  return function <Type>(props: StyledProps & S & FlatListProps<Type>) {
     return invokeComponent(
-      createStyledComponent<ViewStyle, FlatListProps<Type>>(FlatList)(config),
+      createStyledComponent<ViewStyle, FlatListProps<Type>>(FlatList)(chunks, ...functions),
       props,
     );
   };
 }
 
-export function styledSectionList<S, TConfig>(config?: VariantsConfig<TConfig>) {
-  return function <Type>(props: S & PropsWithVariants<TConfig> & SectionListProps<Type>) {
+export function styledSectionList<S>(
+  chunks: TemplateStringsArray,
+  ...functions: (Primitive | TemplateFunctions<S>)[]
+) {
+  return function <Type>(props: StyledProps & S & SectionListProps<Type>) {
     return invokeComponent(
-      createStyledComponent<ViewStyle, SectionListProps<Type>>(SectionList)(config),
+      createStyledComponent<ViewStyle, SectionListProps<Type>>(SectionList)(
+        chunks,
+        ...functions,
+      ),
       props,
     );
   };
 }
 
-export function styledVirtualizedList<S, TConfig>(config?: VariantsConfig<TConfig>) {
-  return function <Type>(props: S & PropsWithVariants<TConfig> & VirtualizedListProps<Type>) {
+export function styledVirtualizedList<S>(
+  chunks: TemplateStringsArray,
+  ...functions: (Primitive | TemplateFunctions<S>)[]
+) {
+  return function <Type>(props: StyledProps & S & VirtualizedListProps<Type>) {
     return invokeComponent(
-      createStyledComponent<ViewStyle, VirtualizedListProps<Type>>(VirtualizedList)(config),
+      createStyledComponent<ViewStyle, VirtualizedListProps<Type>>(VirtualizedList)(
+        chunks,
+        ...functions,
+      ),
       props,
     );
   };
