@@ -86,22 +86,15 @@ function createStyledComponent<
 
   styledComponent.variants = <TConfig,>(config?: VariantsConfig<TConfig>) => {
     const classNamesGenerator = createVariants(config!);
-    const ComponentWithVariants = styledComponent``;
+    const ComponentWithVariants = styledComponent`${(props) => classNamesGenerator(props)}`;
 
     // We need to limit the props control to only Result https://www.typescriptlang.org/play?#code/GYVwdgxgLglg9mABBATgUwIZTQUQB7ZgAmaRAwnALYAOAPAAopzUDOAfABQU0BciH1Jqz6NmLAJSIAvG0QYwAT0kBvAFCJkCFlET5CJYt2rT+gsSKETpstRo3ooIFEiMDL49YgC+nvWmL+5FTUAHRYUCgsJrQASmgsIAA2OmgEgVH0GCiwGIkMlmyc4ZF8cQnJkjKItnYQWjqMaHVgwDAA5k5YpEYmbua6eBCJICT5YgA0iGVJUGyVNp52iA5OLsEcyiFbZqyTW2FQESxeHks+SyvOiI3NrR0oXUE0nufLaI5XfgGGwao+qqBILAEIgen1hNVENhtHxtCgYGA2pNtApEmhYREEW1vCpPJckDsWH9VM1tNd0Ld2j0pMh0F0viQntQuMFxAcjhsofEoHwAORwADWvJxqhuCDurmUiBRaL50KgwpOQA
     const ForwardRefComponent = forwardRef<any, PropsWithVariants<TConfig> & StyledProps>(
       (props, ref) => {
-        const className = classNamesGenerator(props);
-        const classNames = buildCSSString(
-          [className] as any as TemplateStringsArray,
-          [],
-          props,
-        );
         return (
           <ComponentWithVariants
             ref={ref}
             {...(props as Props & PropsWithVariants<TConfig>)}
-            className={classNames}
           />
         );
       },

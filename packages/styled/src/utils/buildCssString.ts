@@ -12,9 +12,7 @@ export function buildCSSString<T extends ClassNamesProp>(
     .map((chunk, i) => [
       chunk,
       functions[i] instanceof Function
-        ? (functions[i] as TemplateFunctions<T>)({
-            ...props,
-          })
+        ? (functions[i] as TemplateFunctions<T>)(props)
         : functions[i],
     ])
     .flat()
