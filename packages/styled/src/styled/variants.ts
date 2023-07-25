@@ -1,9 +1,8 @@
 import { clsx } from 'clsx';
+import { ClassNamesProp, ClassValue } from '../types/css.types';
 
 const cx = clsx;
 type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
-
-type ClassValue = string | null | undefined | ClassValue[];
 
 type ConfigSchema = Record<string, Record<string, ClassValue>>;
 
@@ -27,19 +26,18 @@ const falsyToString = <T extends unknown>(value: T) =>
   typeof value === 'boolean' ? `${value}` : value === 0 ? '0' : value;
 
 export const createVariants = <T>(config: VariantsConfig<T>) => {
-  return (props: PropsWithVariants<T>) => {
-    if (!config || !config?.variants) {
-      // @ts-expect-error
-      return cx(config?.base ?? '', props?.className ?? '', props?.tw ?? '');
+  return (props?: PropsWithVariants<T> & ClassNamesProp) => {
+    if (!config || !config?.variants || config.variants == null) {
+      return cx(config.base, props?.className, props?.tw);
     }
-    const { variants, base, defaultVariants } = config;
+    const { variants, defaultVariants } = config;
     const getVariantClassNames = Object.keys(variants).map(
       (variant: keyof typeof variants) => {
         const variantProp = props?.[variant as keyof typeof props];
         // @ts-expect-error
         const defaultVariantProp = defaultVariants?.[variant];
 
-        if (variantProp === null) return null;
+        if (!variantProp) return null;
 
         const variantKey = (falsyToString(variantProp) ||
           falsyToString(defaultVariantProp)) as keyof (typeof variants)[typeof variant];
@@ -48,13 +46,6 @@ export const createVariants = <T>(config: VariantsConfig<T>) => {
       },
     );
 
-    return cx(
-      base,
-      getVariantClassNames,
-      // @ts-expect-error
-      props?.class,
-      // @ts-expect-error
-      props?.className,
-    );
+    return cx(config.base, getVariantClassNames, props?.tw, props?.className);
   };
 };

@@ -1,6 +1,4 @@
 import type { Platform } from 'react-native';
-import { AnyStyle, FinalSheet } from '@universal-labs/css';
-import { TwindManager } from '@universal-labs/twind-adapter';
 
 export type Units = {
   '%'?: number;
@@ -48,16 +46,12 @@ export interface SheetInteractionState {
   isParentActive: boolean;
 }
 
-export interface SheetInterpreterFn {
-  (classNames: string): {
-    finalSheet: FinalSheet;
-    metadata: SheetMetadata;
-    getStyles: (data: SheetInteractionState) => AnyStyle;
-    getChildStyles: (data: SheetChildState) => AnyStyle;
-  };
-}
+export type ClassValue = string | null | undefined | ClassValue[];
 
-export interface SheetManagerFn {
-  (context: StyledContext): SheetInterpreterFn;
-  twind?: TwindManager | undefined;
-}
+export type ClassNamesProp =
+  | {
+      tw: ClassValue;
+      className?: never;
+    }
+  | { tw?: never; className: ClassValue }
+  | { tw?: never; className?: never };

@@ -4,6 +4,7 @@ import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
 } from '../constants/ValidPseudoElements';
+import { ClassNamesProp } from './css.types';
 
 export interface RegisteredComponent {
   id: string;
@@ -12,15 +13,13 @@ export interface RegisteredComponent {
 }
 
 export type StyledProps = {
-  className?: string;
-  tw?: string;
   nthChild?: number;
   isFirstChild?: boolean;
   isLastChild?: boolean;
   parentID?: string;
   children?: ReactNode;
   groupID?: string;
-};
+} & ClassNamesProp;
 
 export type ComponentStylesheet = {
   styles: FinalSheet;
