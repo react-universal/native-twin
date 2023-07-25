@@ -1,4 +1,8 @@
-import { H1, P, View } from '@universal-labs/primitives';
+import styled from '@universal-labs/styled';
+
+const H1 = styled.H1();
+const P = styled.P();
+const View = styled.View();
 
 const IndexPage = () => {
   return (

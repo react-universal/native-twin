@@ -4,9 +4,12 @@ import {
   Ref,
   ForwardRefExoticComponent,
   createElement,
+  useMemo,
+  ReactNode,
 } from 'react';
 import { StyleProp } from 'react-native';
-import { useBuildStyledComponent } from '../hooks/useStyledComponent';
+import { cx } from '@twind/core';
+import { CompleteStyle } from '@universal-labs/css';
 import { StyledProps } from '../types/styled.types';
 import { getComponentDisplayName } from '../utils/getComponentDisplayName';
 import { PropsWithVariants, VariantsConfig, createVariants } from './variants';
@@ -24,28 +27,30 @@ function createStyledComponent<
     const classNamesGenerator = createVariants(config!);
     const ForwardRefComponent = forwardRef<any, S & Props & PropsWithVariants<TConfig>>(
       (props: S & Props & StyledProps & PropsWithVariants<TConfig>, ref) => {
-        const classNames = classNamesGenerator(props);
-        const {
-          componentChilds,
-          componentInteractionHandlers,
-          componentStyles,
-          currentGroupID,
-          focusHandlers,
-        } = useBuildStyledComponent({ ...props, className: classNames });
-        const newProps = {
+        const styles = useMemo(() => {
+          const classNames = classNamesGenerator(props);
+          const mergedClassName = cx(props.className ?? '') ? cx(...[classNames]) : '';
+          if (mergedClassName && props.style) {
+            return [
+              { $$css: true, [mergedClassName]: mergedClassName } as CompleteStyle,
+              props.style,
+            ];
+          } else if (mergedClassName) {
+            return { $$css: true, [mergedClassName]: mergedClassName } as CompleteStyle;
+          } else if (props.style) {
+            return props.style;
+          }
+          return {};
+        }, [props]);
+
+        const transformedComponent = createElement(Component, {
           ...props,
-        };
-        Reflect.deleteProperty(newProps, 'className');
-        Reflect.deleteProperty(newProps, 'tw');
-        return createElement(Component, {
-          ...newProps,
-          style: componentStyles,
+          style: [styles],
           ref,
-          children: componentChilds,
-          groupID: currentGroupID,
-          ...focusHandlers,
-          ...componentInteractionHandlers,
-        });
+        } as unknown as any);
+        let returnValue: ReactNode = transformedComponent;
+
+        return returnValue;
       },
     );
     ForwardRefComponent.displayName = `Styled(${getComponentDisplayName(Component)})`;

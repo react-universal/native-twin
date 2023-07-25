@@ -47,7 +47,14 @@ export const createVariants = <T>(config: VariantsConfig<T>) => {
         return variants[variant]![variantKey];
       },
     );
-    // @ts-expect-error
-    return cx(base, getVariantClassNames, props?.class, props?.className);
+
+    return cx(
+      base,
+      getVariantClassNames,
+      // @ts-expect-error
+      props?.class,
+      // @ts-expect-error
+      props?.className,
+    );
   };
 };

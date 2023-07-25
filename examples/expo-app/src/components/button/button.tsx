@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import styled, { PropsFrom } from '@universal-labs/styled';
 import { Spinner } from '../spinner';
 
-const StyledButton = styled.Pressable.withVariants({
+const StyledButton = styled.Pressable({
   variants: {
     variant: {
       primary: 'bg-primary rounded-xl',
@@ -32,9 +32,9 @@ const StyledButton = styled.Pressable.withVariants({
     layout: 'default',
     size: 'default',
   },
-})``;
+});
 
-const Strong = styled.Strong.withVariants({
+const Strong = styled.Strong({
   variants: {
     variant: {
       primary: 'text-gray-100 text-center',
@@ -49,7 +49,7 @@ const Strong = styled.Strong.withVariants({
   defaultVariants: {
     variant: 'primary',
   },
-})``;
+});
 
 type IButtonProps = {
   isLoading?: boolean;
