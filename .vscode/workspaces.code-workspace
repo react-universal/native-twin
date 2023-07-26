@@ -26,7 +26,6 @@
     }
   ],
   "settings": {
-    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
