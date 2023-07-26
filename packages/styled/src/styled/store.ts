@@ -1,9 +1,9 @@
 import { Dimensions } from 'react-native';
 import {
   ValidGroupPseudoSelector,
+  defaultGroupState,
   ValidInteractionPseudoSelector,
-} from '../constants/ValidPseudoElements';
-import { defaultGroupState } from '../constants/empties';
+} from '@universal-labs/css';
 import { RegisteredComponent } from '../types/styled.types';
 import { createStore } from '../utils/createStore';
 import { createStyledContext } from '../utils/createStyledContext';

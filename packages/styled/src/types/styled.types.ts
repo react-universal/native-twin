@@ -3,7 +3,7 @@ import type { CompleteStyle, FinalSheet } from '@universal-labs/css';
 import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
-} from '../constants/ValidPseudoElements';
+} from '@universal-labs/css';
 
 export interface RegisteredComponent {
   id: string;
