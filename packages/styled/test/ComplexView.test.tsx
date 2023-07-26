@@ -10,6 +10,23 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
+const ScrollView = styledComponents.ScrollView.variants({
+  variants: {
+    intent: { primary: '', sec: '' },
+  },
+});
+describe('@universal-labs/styled', () => {
+  it('ScrollView render', () => {
+    const component = renderer.create(
+      <ScrollView className='flex-1'>
+        <View />
+      </ScrollView>,
+    );
+    let tree = toJson(component);
+    expect(tree).toMatchSnapshot();
+  });
+});
+
 const View = styledComponents.View.variants({
   base: clsx(
     'flex-1',
@@ -48,23 +65,6 @@ describe('@universal-labs/styled', () => {
           H1 - 1
         </H1>
       </View>,
-    );
-    let tree = toJson(component);
-    expect(tree).toMatchSnapshot();
-  });
-});
-
-const ScrollView = styledComponents.ScrollView.variants({
-  variants: {
-    intent: { primary: '', sec: '' },
-  },
-});
-describe('@universal-labs/styled', () => {
-  it('ScrollView render', () => {
-    const component = renderer.create(
-      <ScrollView className='flex-1'>
-        <View />
-      </ScrollView>,
     );
     let tree = toJson(component);
     expect(tree).toMatchSnapshot();

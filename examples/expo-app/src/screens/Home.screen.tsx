@@ -1,6 +1,15 @@
 import { useState } from 'react';
-import { H1, H2, Image, Pressable, TextInput, View } from '@universal-labs/primitives';
+import styled from '@universal-labs/styled';
 import clsx from 'clsx';
+import {
+  FullView,
+  H1,
+  H2,
+  Image,
+  Pressable,
+  TextInput,
+  View,
+} from '../components/common/View';
 
 const TextField = () => {
   const [text, setText] = useState('');
@@ -15,25 +24,26 @@ const TextField = () => {
 
 const testImage = require('../../assets/favicon.png');
 
+const ExoticView = styled(View)`
+  ${clsx(
+    'flex-1',
+    'items-center justify-center md:border-3',
+    'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
+    'ios:(p-14 bg-rose-200 border-white border-2)',
+    'android:(p-14 border-green-200 border-2 bg-gray-200)',
+  )}
+`;
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1'>
-      <View
-        className={clsx(
-          'flex-1',
-          'items-center justify-center md:border-3',
-          'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
-          'ios:(p-14 bg-rose-200 border-white border-2)',
-          'android:(p-14 border-green-200 border-2 bg-gray-200)',
-        )}
-      >
+    <FullView>
+      <ExoticView>
         <H1
           className={clsx('text(center 2xl primary)', 'font-inter-bold hover:text-gray-700')}
         >
           H1 - 1
         </H1>
-      </View>
+      </ExoticView>
       <View
         className={clsx(
           'group',
@@ -78,7 +88,7 @@ function HomeScreen() {
           </H2>
         </View>
       </View>
-    </View>
+    </FullView>
   );
 }
 

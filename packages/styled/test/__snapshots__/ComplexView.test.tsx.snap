@@ -2,7 +2,7 @@
 
 exports[`@universal-labs/styled > Complex View 1`] = `
 <View
-  groupID=":r0:"
+  groupID=":r2:"
   intent="secondary"
   onBlur={[Function]}
   onFocus={[Function]}
@@ -24,12 +24,12 @@ exports[`@universal-labs/styled > Complex View 1`] = `
   }
 >
   <Text
-    groupID=":r0:"
+    groupID=":r2:"
     onBlur={[Function]}
     onFocus={[Function]}
     onTouchEnd={[Function]}
     onTouchStart={[Function]}
-    parentID=":r0:"
+    parentID=":r2:"
     style={
       {
         "color": "rgba(79,70,229,1)",
@@ -46,7 +46,7 @@ exports[`@universal-labs/styled > Complex View 1`] = `
 
 exports[`@universal-labs/styled > ScrollView render 1`] = `
 <RCTScrollView
-  groupID=":r2:"
+  groupID=":r0:"
   style={
     {
       "flexBasis": "0%",
@@ -57,12 +57,12 @@ exports[`@universal-labs/styled > ScrollView render 1`] = `
 >
   <View>
     <View
-      groupID=":r2:"
+      groupID=":r0:"
       onBlur={[Function]}
       onFocus={[Function]}
       onTouchEnd={[Function]}
       onTouchStart={[Function]}
-      parentID=":r2:"
+      parentID=":r0:"
       style={
         {
           "alignItems": "center",
