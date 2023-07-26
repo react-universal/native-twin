@@ -6,7 +6,7 @@ export { install, virtualSheet } from './styled/VirtualSheet';
 
 export type {
   PropsFrom,
-  StyledProps,
+  StyledComponentProps,
   RegisteredComponent,
   ComponentStylesheet,
 } from './types/styled.types';

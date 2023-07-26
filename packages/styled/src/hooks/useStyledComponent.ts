@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { StyleSheet, Touchable } from 'react-native';
 import { AnyStyle } from '@universal-labs/css';
-import { StyledProps } from '../types/styled.types';
+import { StyledComponentProps } from '../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useComponentRegistry } from './useComponentRegistry';
@@ -16,7 +16,7 @@ function useBuildStyledComponent({
   tw,
   children,
   ...restProps
-}: StyledProps) {
+}: StyledComponentProps) {
   const { stylesheet, componentID } = useCssToRN(className ?? tw ?? '');
   const { component, parentComponent, currentGroupID } = useComponentRegistry({
     componentID,

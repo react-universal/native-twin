@@ -6,7 +6,7 @@
     "outDir": "./build",
     "sourceMap": false,
     "noEmit": false,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "importHelpers": true
   },
   "include": ["src", "test"]

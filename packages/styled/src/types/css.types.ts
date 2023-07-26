@@ -45,13 +45,3 @@ export interface SheetInteractionState {
   isPointerActive: boolean;
   isParentActive: boolean;
 }
-
-export type ClassValue = string | null | undefined;
-
-export type ClassNamesProp =
-  | {
-      tw: ClassValue;
-      className?: never;
-    }
-  | { tw?: never; className: ClassValue }
-  | { tw?: never; className?: never };

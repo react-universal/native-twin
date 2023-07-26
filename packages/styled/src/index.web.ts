@@ -2,7 +2,7 @@ import styled from './styled';
 
 export type {
   PropsFrom,
-  StyledProps,
+  StyledComponentProps,
   RegisteredComponent,
   ComponentStylesheet,
 } from './types/styled.types';

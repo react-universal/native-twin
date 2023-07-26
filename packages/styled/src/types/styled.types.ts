@@ -4,7 +4,6 @@ import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
 } from '../constants/ValidPseudoElements';
-import { ClassNamesProp } from './css.types';
 
 export interface RegisteredComponent {
   id: string;
@@ -12,14 +11,16 @@ export interface RegisteredComponent {
   interactionState: Record<ValidInteractionPseudoSelector | ValidGroupPseudoSelector, boolean>;
 }
 
-export type StyledProps = {
+export type StyledComponentProps = {
   nthChild?: number;
   isFirstChild?: boolean;
   isLastChild?: boolean;
   parentID?: string;
   children?: ReactNode;
   groupID?: string;
-} & ClassNamesProp;
+  className?: string;
+  tw?: string;
+};
 
 export type ComponentStylesheet = {
   styles: FinalSheet;
@@ -42,5 +43,7 @@ export interface DefaultTheme {}
 
 export type Primitive = number | string | null | undefined | boolean | CompleteStyle;
 export type TemplateFunctions<T> = (
-  arg: T & { theme?: DefaultTheme } & ClassNamesProp,
+  arg: T & { theme?: DefaultTheme } & StyledComponentProps,
 ) => Primitive;
+
+export type OmitUndefined<T> = T extends undefined ? never : T;

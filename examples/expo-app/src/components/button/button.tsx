@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import styled, { PropsFrom } from '@universal-labs/styled';
 import { Spinner } from '../spinner';
 
-const StyledButton = styled.Pressable({
+const StyledButton = styled.Pressable.variants({
   variants: {
     variant: {
       primary: 'bg-primary rounded-xl hover:bg-red-200',
@@ -34,10 +34,10 @@ const StyledButton = styled.Pressable({
   },
 });
 
-const Strong = styled.Strong({
+const Strong = styled.Strong.variants({
   variants: {
     variant: {
-      primary: 'text-gray-100 text-center',
+      primary: 'text-gray-100 text-center text-xl font-bold',
       secondary: 'text-weathermatic-500',
       primaryDark: 'text-gray-200',
     },
@@ -64,7 +64,6 @@ export const Button = ({
   isLoading = false,
   isDisabled,
   textClassName,
-  className,
   ...props
 }: IButtonProps) => {
   return (
@@ -72,7 +71,6 @@ export const Button = ({
       onPress={onPress}
       disabled={isDisabled}
       accessibilityRole='button'
-      className={className}
       {...props}
     >
       {isLoading ? (
