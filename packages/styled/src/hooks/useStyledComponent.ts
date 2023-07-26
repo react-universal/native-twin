@@ -61,9 +61,6 @@ function useBuildStyledComponent({
     focusHandlers,
     componentStyles,
     componentChilds,
-    groupID,
-    parentID,
-    component,
     currentGroupID,
   };
 }
