@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "declarationMap": false,
-    "jsx": "react-native",
+    "jsx": "react-jsx",
     "outDir": "./build",
     "sourceMap": false,
     "noEmit": false,
