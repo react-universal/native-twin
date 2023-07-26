@@ -1,5 +1,5 @@
-import { ComponentType, forwardRef, ReactHTML } from 'react';
-import { Platform, TextProps } from 'react-native';
+import { type ComponentType, forwardRef, type ReactHTML } from 'react';
+import { Platform, type TextProps } from 'react-native';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
 

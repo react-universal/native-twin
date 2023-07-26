@@ -1,14 +1,18 @@
 import {
   FlatList,
-  FlatListProps,
+  type FlatListProps,
   SectionList,
-  SectionListProps,
-  ViewStyle,
+  type SectionListProps,
+  type ViewStyle,
   VirtualizedList,
-  VirtualizedListProps,
+  type VirtualizedListProps,
 } from 'react-native';
 import createStyledComponent, { invokeComponent } from '../../styled/StyledComponent';
-import { Primitive, StyledComponentProps, TemplateFunctions } from '../../types/styled.types';
+import type {
+  Primitive,
+  StyledComponentProps,
+  TemplateFunctions,
+} from '../../types/styled.types';
 
 export function styledFlatList<S>(
   chunks: TemplateStringsArray,

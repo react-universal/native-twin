@@ -1,9 +1,9 @@
 import type { ClassAttributes, ComponentProps, ComponentType } from 'react';
 import {
-  AccessibilityRole,
-  StyleProp,
+  type AccessibilityRole,
+  type StyleProp,
   Text as NativeText,
-  TextStyle as NativeTextStyle,
+  type TextStyle as NativeTextStyle,
 } from 'react-native';
 
 // https://github.com/necolas/react-native-web/issues/832

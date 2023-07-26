@@ -1,7 +1,7 @@
 import { CssResolver } from '../css';
-import { SheetInteractionState } from '../types/css.types';
-import { CssParserData } from '../types/parser.types';
-import { AnyStyle, CXProcessor, FinalSheet, GetChildStyles } from '../types/rn.types';
+import type { SheetInteractionState } from '../types/css.types';
+import type { CssParserData } from '../types/parser.types';
+import type { AnyStyle, CXProcessor, FinalSheet, GetChildStyles } from '../types/rn.types';
 
 export class MainSheet {
   private processor: CXProcessor;

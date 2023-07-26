@@ -1,12 +1,12 @@
 import styled from '@universal-labs/styled';
 
-const H1 = styled.H1();
-const P = styled.P();
-const View = styled.View();
+const H1 = styled.H1``;
+const P = styled.P``;
+const View = styled.View``;
 
 const IndexPage = () => {
   return (
-    <View className='flex-1 items-center justify-center bg-gray-100 px-[15vw]'>
+    <View className='flex-1 items-center justify-center px-[15vw]'>
       <View className='bg-slate-300 px-10 shadow-xl justify-center items-center rounded-xl py-5'>
         <H1 className='text-4xl font-bold'>Card title</H1>
         <View>

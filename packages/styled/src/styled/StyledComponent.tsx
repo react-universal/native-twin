@@ -1,16 +1,20 @@
 import {
   forwardRef,
-  type ComponentType,
-  Ref,
-  ForwardRefExoticComponent,
   createElement,
+  type ComponentType,
+  type Ref,
+  type ForwardRefExoticComponent,
 } from 'react';
-import { StyleProp } from 'react-native';
+import type { StyleProp } from 'react-native';
 import { useBuildStyledComponent } from '../hooks/useStyledComponent';
-import { Primitive, StyledComponentProps, TemplateFunctions } from '../types/styled.types';
+import type {
+  Primitive,
+  StyledComponentProps,
+  TemplateFunctions,
+} from '../types/styled.types';
 import { buildCSSString } from '../utils/buildCssString';
 import { getComponentDisplayName } from '../utils/getComponentDisplayName';
-import { VariantProps, VariantsConfig, createVariants } from './variants';
+import { type VariantProps, type VariantsConfig, createVariants } from './variants';
 
 function styledComponentsFactory<
   StyleType,

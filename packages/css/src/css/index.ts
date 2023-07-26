@@ -1,5 +1,5 @@
 import type { CssParserData } from '../types/parser.types';
-import { AnyStyle } from '../types/rn.types';
+import type { AnyStyle } from '../types/rn.types';
 import { ParseCssRules } from './rules.parser';
 
 export const CreateCssResolver = () => {

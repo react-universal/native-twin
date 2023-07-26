@@ -1,19 +1,23 @@
 import {
   forwardRef,
   type ComponentType,
-  Ref,
-  ForwardRefExoticComponent,
+  type Ref,
+  type ForwardRefExoticComponent,
   createElement,
   useMemo,
-  ReactNode,
+  type ReactNode,
 } from 'react';
-import { StyleProp } from 'react-native';
+import type { StyleProp } from 'react-native';
 import { cx } from '@twind/core';
-import { CompleteStyle } from '@universal-labs/css';
-import { Primitive, StyledComponentProps, TemplateFunctions } from '../types/styled.types';
+import type { CompleteStyle } from '@universal-labs/css';
+import type {
+  Primitive,
+  StyledComponentProps,
+  TemplateFunctions,
+} from '../types/styled.types';
 import { buildCSSString } from '../utils/buildCssString';
 import { getComponentDisplayName } from '../utils/getComponentDisplayName';
-import { VariantProps, VariantsConfig, createVariants } from './variants';
+import { type VariantProps, type VariantsConfig, createVariants } from './variants';
 
 function styledComponentsFactory<
   StyleType,

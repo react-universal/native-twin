@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { StyleSheet, Touchable } from 'react-native';
-import { AnyStyle } from '@universal-labs/css';
-import { StyledComponentProps } from '../types/styled.types';
+import type { AnyStyle } from '@universal-labs/css';
+import type { StyledComponentProps } from '../types/styled.types';
 import { useChildren } from './useChildren';
 import { useComponentInteractions } from './useComponentInteractions';
 import { useComponentRegistry } from './useComponentRegistry';

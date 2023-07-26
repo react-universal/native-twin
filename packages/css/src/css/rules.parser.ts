@@ -11,7 +11,7 @@ import { sequenceOf } from '../parsers/sequence-of';
 import { skip } from '../parsers/skip.parser';
 import { char, everyCharUntil, literal, whitespace } from '../parsers/string.parser';
 import type { CssParserData } from '../types/parser.types';
-import { FinalSheet } from '../types/rn.types';
+import type { FinalSheet } from '../types/rn.types';
 import { ParseCssDeclarationLine } from './declarations.parser';
 import { ParseCssDimensions } from './dimensions.parser';
 import { ParseSelectorStrict } from './selector.parser';

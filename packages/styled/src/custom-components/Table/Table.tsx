@@ -1,6 +1,6 @@
-import { ComponentType, forwardRef } from 'react';
-import { StyleSheet, Text, TextProps, View, ViewProps } from 'react-native';
-import { TableText, TableTextProps } from './Table.primitive';
+import { type ComponentType, forwardRef } from 'react';
+import { StyleSheet, Text, type TextProps, View, type ViewProps } from 'react-native';
+import { TableText, type TableTextProps } from './Table.primitive';
 
 export const Table = forwardRef((props: ViewProps, ref: any) => {
   return <View {...props} ref={ref} />;

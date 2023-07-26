@@ -5,7 +5,7 @@ import { many, many1 } from '../parsers/many.parser';
 import { peek } from '../parsers/peek.parser';
 import { skip } from '../parsers/skip.parser';
 import { char, ident, literal } from '../parsers/string.parser';
-import { SelectorPayload } from '../types/css.types';
+import type { SelectorPayload } from '../types/css.types';
 
 const mapToken =
   <A extends string>(type: A) =>
