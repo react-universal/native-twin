@@ -1,56 +1,87 @@
-import type { ComponentProps, ReactNode } from 'react';
-import { Strong, Pressable } from '@universal-labs/primitives';
+import type { ReactNode } from 'react';
+import styled, { PropsFrom } from '@universal-labs/styled';
 import { Spinner } from '../spinner';
-import { IButtonVariantsProps, buttonStyles, buttonTextStyles } from './variants';
+
+const StyledButton = styled.Pressable.variants({
+  variants: {
+    variant: {
+      primary: 'bg-primary rounded-xl hover:bg-red-200',
+      secondary: 'bg-gray-300',
+      primaryDark: 'bg-weathermatic-500',
+    },
+    size: {
+      default: 'w-full h-14',
+      small: 'h-10',
+      bigger: `my-3 mx-2
+        shadow-md rounded-3xl
+        dark:bg-weathermatic-500
+        desktop:w-44 desktop:h-44
+        w-40 h-36`,
+    },
+    isDisabled: {
+      true: 'bg-gray-400 hover:opacity-100',
+      false: '',
+    },
+    layout: {
+      default: 'justify-center items-center',
+      col: 'items-center justify-between',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+    layout: 'default',
+    size: 'default',
+  },
+});
+
+const Strong = styled.Strong.variants({
+  variants: {
+    variant: {
+      primary: 'text-gray-100 text-center text-xl font-bold',
+      secondary: 'text-weathermatic-500',
+      primaryDark: 'text-gray-200',
+    },
+    isDisabled: {
+      true: 'text-gray-500',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+  },
+});
 
 type IButtonProps = {
   isLoading?: boolean;
   children: ReactNode;
-  variant?: IButtonVariantsProps['variant'];
-  layout?: IButtonVariantsProps['layout'];
-  size?: IButtonVariantsProps['size'];
   isDisabled?: boolean;
-} & Omit<ComponentProps<typeof Pressable>, 'tw'>;
+  textClassName?: string;
+} & PropsFrom<typeof StyledButton>;
 
 export const Button = ({
   children,
   onPress,
   isLoading = false,
   isDisabled,
-  variant,
-  size,
-  layout,
-  className,
+  textClassName,
   ...props
 }: IButtonProps) => {
-  const buttonClass = buttonStyles({
-    variant,
-    size,
-    layout,
-    isDisabled: isDisabled || isLoading,
-    className,
-  });
-  const textClass = buttonTextStyles({
-    variant,
-    isDisabled,
-  });
   return (
-    <Pressable
+    <StyledButton
       onPress={onPress}
       disabled={isDisabled}
       accessibilityRole='button'
-      className={buttonClass}
       {...props}
     >
       {isLoading ? (
         <Spinner />
       ) : typeof children === 'string' ? (
-        <Strong accessibilityRole='text' className={textClass}>
+        <Strong accessibilityRole='text' className={textClassName}>
           {children}
         </Strong>
       ) : (
         children
       )}
-    </Pressable>
+    </StyledButton>
   );
 };

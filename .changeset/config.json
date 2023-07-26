@@ -6,7 +6,6 @@
     [
       "@universal-labs/styled",
       "@universal-labs/css",
-      "@universal-labs/primitives",
       "@universal-labs/twind-adapter"
     ]
   ],

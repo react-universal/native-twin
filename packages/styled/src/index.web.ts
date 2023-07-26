@@ -1,4 +1,10 @@
-export { styled } from './web/StyledComponent';
-export { useBuildStyledComponent } from './web/useBuildStyledComponent';
+import styled from './styled';
 
-export const setTailwindConfig = () => {};
+export type {
+  PropsFrom,
+  StyledComponentProps,
+  RegisteredComponent,
+  ComponentStylesheet,
+} from './types/styled.types';
+export type { StyledContext, SheetMetadata, Units } from './types/css.types';
+export default styled;

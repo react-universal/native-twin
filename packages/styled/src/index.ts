@@ -1,9 +1,14 @@
-import { SheetManager } from './native/sheet';
+import styled from './styled';
 
-export { styled } from './native/StyledComponent';
-export { useBuildStyledComponent } from './native/hooks/useStyledComponent';
-export { useStyledContext } from './native/hooks/useStyledContext';
+export { useBuildStyledComponent } from './hooks/useStyledComponent';
+export { useStyledContext } from './hooks/useStyledContext';
+export { install, virtualSheet } from './styled/VirtualSheet';
 
-export const setTailwindConfig = SheetManager.setThemeConfig;
-
-export type { ForwardedStyledComponent, PropsFrom } from './types/styled.types';
+export type {
+  PropsFrom,
+  StyledComponentProps,
+  RegisteredComponent,
+  ComponentStylesheet,
+} from './types/styled.types';
+export type { StyledContext, SheetMetadata, Units } from './types/css.types';
+export default styled;

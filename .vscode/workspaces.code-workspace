@@ -23,10 +23,6 @@
     {
       "name": "📦 @lib/twind-adapter",
       "path": "../packages/twind-adapter"
-    },
-    {
-      "name": "📦 @lib/primitives",
-      "path": "../packages/primitives"
     }
   ],
   "settings": {

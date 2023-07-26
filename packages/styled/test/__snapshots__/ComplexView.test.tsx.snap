@@ -1,8 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@universal-labs/styled > View render 1`] = `
+exports[`@universal-labs/styled > Complex View 1`] = `
 <View
-  groupID=":r0:"
+  groupID=":r2:"
+  intent="secondary"
   onBlur={[Function]}
   onFocus={[Function]}
   onTouchEnd={[Function]}
@@ -17,17 +18,18 @@ exports[`@universal-labs/styled > View render 1`] = `
       "flexGrow": 1,
       "flexShrink": 1,
       "justifyContent": "center",
+      "margin": 8,
       "padding": 56,
     }
   }
 >
   <Text
-    groupID=":r0:"
+    groupID=":r2:"
     onBlur={[Function]}
     onFocus={[Function]}
     onTouchEnd={[Function]}
     onTouchStart={[Function]}
-    parentID=":r0:"
+    parentID=":r2:"
     style={
       {
         "color": "rgba(79,70,229,1)",
@@ -40,4 +42,41 @@ exports[`@universal-labs/styled > View render 1`] = `
     H1 - 1
   </Text>
 </View>
+`;
+
+exports[`@universal-labs/styled > ScrollView render 1`] = `
+<RCTScrollView
+  groupID=":r0:"
+  style={
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
+  }
+>
+  <View>
+    <View
+      groupID=":r0:"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onTouchEnd={[Function]}
+      onTouchStart={[Function]}
+      parentID=":r0:"
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "rgba(254,205,211,1)",
+          "borderColor": "rgba(255,255,255,1)",
+          "borderWidth": 2,
+          "flexBasis": "0%",
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "justifyContent": "center",
+          "padding": 56,
+        }
+      }
+    />
+  </View>
+</RCTScrollView>
 `;

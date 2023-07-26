@@ -1,4 +1,3 @@
-import { useIsDarkMode } from '@universal-labs/styled';
 import Svg, { Circle } from 'react-native-svg';
 import colors from 'tailwindcss/colors';
 
@@ -21,7 +20,7 @@ export const SpinnerView = ({
   color = colors.blue[50],
   secondaryColor: secondaryColorProp,
 }: SpinnerProps) => {
-  const isDark = useIsDarkMode();
+  const isDark = false;
   const secondaryColor = secondaryColorProp
     ? secondaryColorProp
     : isDark

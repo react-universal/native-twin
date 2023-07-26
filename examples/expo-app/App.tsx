@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
-import { View } from '@universal-labs/primitives';
-import { setTailwindConfig } from '@universal-labs/styled';
+import { View } from 'react-native';
+import { install } from '@universal-labs/styled';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
-// import { FlatListScreen } from './src/screens/FlatList.screen';
 import { HomeScreen } from './src/screens/Home.screen';
 import tailwindConfig from './tailwind.config';
 
-setTailwindConfig(tailwindConfig, 14);
+install({
+  rem: 14,
+  theme: tailwindConfig.theme,
+});
 
 export default function App() {
   const { bootFonts } = useLoadFonts();
@@ -19,8 +21,9 @@ export default function App() {
     }
   }, [bootFonts, isReady]);
   if (!isReady) return null;
+  console.log('COOL_DOWN_OFF');
   return (
-    <View style={{ backgroundColor: 'gray', flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <HomeScreen />
     </View>
   );

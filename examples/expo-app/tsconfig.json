@@ -3,6 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "lib": ["DOM", "ESNext"],
+    "exactOptionalPropertyTypes": false,
     "allowJs": true,
     "resolveJsonModule": true,
     "noEmit": true

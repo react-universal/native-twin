@@ -1,6 +1,19 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@universal-labs/styled > View render 1`] = `
+exports[`@universal-labs/styled > CustomView render 1`] = `
+<View
+  groupID=":r1:"
+  style={
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
+  }
+/>
+`;
+
+exports[`@universal-labs/styled > StyledView render 1`] = `
 <View
   groupID=":r0:"
   style={

@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest';
-import { initialize, stringify } from '../src';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { initialize } from '../src';
 
 const { tx, tw } = initialize({});
+const stringify = (target: string[]) => target.join('');
 
 describe('TailwindCSS Space', () => {
   beforeEach(() => {

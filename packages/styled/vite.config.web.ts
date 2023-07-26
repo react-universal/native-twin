@@ -4,10 +4,6 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  test: {
-    globals: true,
-    environment: 'happy-dom',
-  },
   plugins: [react()],
   optimizeDeps: {
     esbuildOptions: {
@@ -35,17 +31,24 @@ export default defineConfig({
         'react',
         'react/jsx-runtime',
         'react-native',
+        '@twind/core',
         'react-native-web',
         '@universal-labs/css',
         '@universal-labs/twind-adapter',
       ],
       treeshake: true,
       output: {
-        extend: true,
         globals: {
           react: 'React',
         },
-        externalImportAssertions: true,
+        generatedCode: {
+          arrowFunctions: true,
+          constBindings: true,
+          objectShorthand: true,
+          preset: 'es2015',
+        },
+        interop: 'auto',
+        compact: true,
       },
     },
     emptyOutDir: false,

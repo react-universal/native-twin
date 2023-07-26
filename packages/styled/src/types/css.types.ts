@@ -1,7 +1,4 @@
 import type { Platform } from 'react-native';
-import { AnyStyle, FinalSheet } from '@universal-labs/css';
-import { TwindManager } from '@universal-labs/twind-adapter';
-import type { Config } from 'tailwindcss';
 
 export type Units = {
   '%'?: number;
@@ -47,19 +44,4 @@ export interface SheetChildState {
 export interface SheetInteractionState {
   isPointerActive: boolean;
   isParentActive: boolean;
-}
-
-export interface SheetInterpreterFn {
-  (classNames: string): {
-    finalSheet: FinalSheet;
-    metadata: SheetMetadata;
-    getStyles: (data: SheetInteractionState) => AnyStyle;
-    getChildStyles: (data: SheetChildState) => AnyStyle;
-  };
-}
-
-export interface SheetManagerFn {
-  (context: StyledContext): SheetInterpreterFn;
-  setThemeConfig(config: Config, rem: number): void;
-  twind: TwindManager;
 }

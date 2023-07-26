@@ -19,18 +19,14 @@ export default defineConfig({
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
       outputDir: 'build',
-      insertTypesEntry: true,
     }),
   ],
-  esbuild: {
-    keepNames: true,
-  },
   build: {
     outDir: 'build',
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UniversalLabsStyled',
-      fileName: () => `index.js`,
+      fileName: () => 'index.js',
       formats: ['es'],
     },
     rollupOptions: {
@@ -46,7 +42,6 @@ export default defineConfig({
       ],
       treeshake: true,
       output: {
-        extend: true,
         externalImportAssertions: true,
         globals: {
           react: 'React',
