@@ -41,7 +41,8 @@ export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
 // @typescript-eslint/no-empty-interface
 export interface DefaultTheme {}
 
-export type Primitive = number | string | null | undefined | boolean | CompleteStyle;
+export type Primitive = number | (string & {}) | null | undefined | boolean | CompleteStyle;
+
 export type TemplateFunctions<T> = (
   arg: T & { theme?: DefaultTheme } & StyledComponentProps,
 ) => Primitive;

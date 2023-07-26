@@ -6,6 +6,7 @@
     "outDir": "./build",
     "sourceMap": false,
     "noEmit": false,
+    "noErrorTruncation": true,
     "exactOptionalPropertyTypes": false,
     "importHelpers": true
   },
