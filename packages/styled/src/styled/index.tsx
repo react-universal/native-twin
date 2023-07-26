@@ -9,11 +9,11 @@ import {
 import { Nav } from '../custom-components/Nav';
 import { TBody, TD, TFoot, TH, THead, TR, Table } from '../custom-components/Table';
 import { Span, H1, H2, H3, H4, H5, H6, Strong, Code, P } from '../custom-components/Text';
-import createStyledComponent from './StyledComponent';
+import styledComponentsFactory from './StyledComponent';
 
 const styled = <StyleType, InitialProps extends { style?: RN.StyleProp<StyleType> }>(
   Component: React.ComponentType<InitialProps>,
-) => createStyledComponent<StyleType, InitialProps>(Component);
+) => styledComponentsFactory<StyleType, InitialProps>(Component);
 
 styled.ActivityIndicator = styled(RN.ActivityIndicator);
 styled.DrawerLayoutAndroid = styled(RN.DrawerLayoutAndroid);
