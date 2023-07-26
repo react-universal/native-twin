@@ -35,8 +35,8 @@ function styledComponentsFactory<
         const newProps = {
           ...props,
         };
-        // Reflect.deleteProperty(newProps, 'className');
-        // Reflect.deleteProperty(newProps, 'tw');
+        Reflect.deleteProperty(newProps, 'className');
+        Reflect.deleteProperty(newProps, 'tw');
         // console.log('TOOK: ', performance.now() - start);
         return createElement(Component, {
           ...newProps,
