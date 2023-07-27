@@ -16,7 +16,7 @@
 public/
 .bit/
 
-!site/public/
+!apps/site/public/
 
 # ESLint
 lint-results/
