@@ -6,9 +6,9 @@
     "outDir": "./build",
     "sourceMap": false,
     "noEmit": false,
-    "noErrorTruncation": true,
+    "module": "ES2020",
     "exactOptionalPropertyTypes": false,
     "importHelpers": true
   },
-  "include": ["src", "test"]
+  "include": ["src", "test","vite.config.*"]
 }

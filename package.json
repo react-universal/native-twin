@@ -14,7 +14,7 @@
     "apps/*"
   ],
   "scripts": {
-    "build:libs": "npx nx run-many --target=build:libs",
+    "build:libs": "yarn nx run-many --target=build:libs",
     "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "dev": " nx watch --projects=styled,css,twind-adapter -- nx run \\$NX_PROJECT_NAME:build:libs",
     "docs:build": "npx nx run build --project=docusaurus",

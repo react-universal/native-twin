@@ -31,6 +31,7 @@ module.exports = {
     'no-unused-vars': 'off',
     'react/no-unescaped-entities': 'off',
     'react-hooks/rules-of-hooks': 'error',
+    '@typescript-eslint/no-import-type-side-effects': 'error',
     'react-hooks/exhaustive-deps': [
       'error',
       {

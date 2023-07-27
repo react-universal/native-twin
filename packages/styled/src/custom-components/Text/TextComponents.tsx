@@ -1,5 +1,5 @@
-import { ComponentType, forwardRef, ReactHTML } from 'react';
-import { Platform, TextProps } from 'react-native';
+import { type ComponentType, forwardRef, type ReactHTML } from 'react';
+import { Platform, type TextProps } from 'react-native';
 import Text from './Text.primitive';
 
 function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {

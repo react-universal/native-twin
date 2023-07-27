@@ -1,5 +1,5 @@
-import { ComponentType, forwardRef } from 'react';
-import { Platform, TextProps } from 'react-native';
+import { type ComponentType, forwardRef } from 'react';
+import { Platform, type TextProps } from 'react-native';
 import Text from './Text.primitive';
 
 function createHeadingComponent(level: number): ComponentType<TextProps> {

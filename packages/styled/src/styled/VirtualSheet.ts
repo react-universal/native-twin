@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import { MainSheet } from '@universal-labs/css';
 import { hash, initialize } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
-import { StyledContext } from '../types/css.types';
+import type { StyledContext } from '../types/css.types';
 import { globalStore } from './store';
 
 let twind = initialize();

@@ -1,5 +1,5 @@
-import { ComponentType, forwardRef, PropsWithChildren } from 'react';
-import { Platform, Text, TextProps, View, ViewProps } from 'react-native';
+import { type ComponentType, forwardRef, type PropsWithChildren } from 'react';
+import { Platform, Text, type TextProps, View, type ViewProps } from 'react-native';
 import { UL as PrimitiveUL } from './ul';
 
 type LIProps = TextProps | ViewProps;

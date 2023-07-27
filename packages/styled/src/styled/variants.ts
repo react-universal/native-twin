@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { OmitUndefined, StyledComponentProps } from '../types/styled.types';
+import type { OmitUndefined, StyledComponentProps } from '../types/styled.types';
 
 const cx = clsx;
 type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;

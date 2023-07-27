@@ -1,5 +1,5 @@
-import { ComponentType, forwardRef } from 'react';
-import { ViewProps } from 'react-native';
+import { type ComponentType, forwardRef } from 'react';
+import type { ViewProps } from 'react-native';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
 

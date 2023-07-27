@@ -1,5 +1,5 @@
-import { CompleteStyle } from '@universal-labs/css';
-import { Primitive, TemplateFunctions } from '../types/styled.types';
+import type { CompleteStyle } from '@universal-labs/css';
+import type { Primitive, TemplateFunctions } from '../types/styled.types';
 
 /** Converts the tagged template string into a css string */
 export function buildCSSString<T>(
