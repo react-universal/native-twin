@@ -16,8 +16,7 @@
 public/
 .bit/
 
-# Turborepo
-.turbo
+!site/public/
 
 # ESLint
 lint-results/
