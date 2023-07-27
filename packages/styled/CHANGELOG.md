@@ -1,5 +1,20 @@
 # Change Log
 
+## 5.0.0
+
+### Major Changes
+
+- [#114](https://github.com/react-universal/tailwind/pull/114) [`8de3454`](https://github.com/react-universal/tailwind/commit/8de3454a548e004efadcd858aaf59e4b8aef8ced) Thanks [@chrisarts](https://github.com/chrisarts)! - styled components like syntax for components decoration
+
+  - Variants syntax replaced by styled function prop.
+  - Now you can construct your styles as template literals.
+
+### Patch Changes
+
+- Updated dependencies [[`8de3454`](https://github.com/react-universal/tailwind/commit/8de3454a548e004efadcd858aaf59e4b8aef8ced)]:
+  - @universal-labs/twind-adapter@5.0.0
+  - @universal-labs/css@5.0.0
+
 ## 4.3.3
 
 ### Patch Changes

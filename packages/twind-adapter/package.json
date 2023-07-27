@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/twind-adapter",
-  "version": "4.3.3",
+  "version": "5.0.0",
   "description": "Tailwindcss Inline StyleSheet generator for react native",
   "keywords": [
     "tailwind",
