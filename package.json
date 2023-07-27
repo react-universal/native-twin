@@ -11,7 +11,8 @@
   "workspaces": [
     "packages/*",
     "examples/*",
-    "apps/*"
+    "apps/*",
+    "site"
   ],
   "scripts": {
     "build:libs": "yarn nx run-many --target=build:libs",
@@ -26,6 +27,7 @@
     "libs:foreach": "yarn workspaces foreach --no-private --verbose",
     "lint": "npx nx run-many --target=lint",
     "release": "yarn build:release && changeset publish",
+    "site:dev": "npx nx run dev --project=site",
     "test": "npx nx run-many --target=test",
     "web": "npx nx dev start --project=next-app"
   },
@@ -46,7 +48,7 @@
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
-    "@vitejs/plugin-react-swc": "^3.2.0",
+    "@vitejs/plugin-react-swc": "^3.3.2",
     "@vitest/coverage-istanbul": "^0.31.1",
     "@vitest/ui": "^0.31.1",
     "concurrently": "^7.6.0",
