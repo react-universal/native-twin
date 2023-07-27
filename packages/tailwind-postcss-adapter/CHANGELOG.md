@@ -1,5 +1,11 @@
 # Change Log
 
+## 4.1.4
+
+### Patch Changes
+
+- [#117](https://github.com/react-universal/tailwind/pull/117) [`fa2031d`](https://github.com/react-universal/tailwind/commit/fa2031d31614f9dfa7ea8464f7d7dfb690878f63) Thanks [@chrisarts](https://github.com/chrisarts)! - adopt new styled api
+
 ## 4.1.3
 
 ### Patch Changes
