@@ -1,4 +1,3 @@
-// import { Roboto } from '@next/font/google';
 import { Roboto } from '@next/font/google';
 import install from '@twind/with-next/app';
 import type { AppProps } from 'next/app';
