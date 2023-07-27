@@ -1,13 +1,7 @@
 /* eslint-disable unused-imports/no-unused-vars */
-// @ts-nocheck
 import type { Tailwindest } from 'tailwindest';
 
 type Customized = Tailwindest;
-
-// type WhiteSpace = ' ' | '\n' | '\t';
-// type TrimLeft<T extends string> = T extends `${WhiteSpace}${infer U}` ? TrimLeft<U> : T;
-// type TrimRight<T extends string> = T extends `${infer U}${WhiteSpace}` ? TrimRight<U> : T;
-// type Trim<T extends string> = TrimLeft<TrimRight<T>>;
 
 type TWKeys = Exclude<
   keyof Customized,
@@ -49,7 +43,6 @@ type TWKeys = Exclude<
   | 'userSelect'
 >;
 
-export type AnyTailwindUtil = Customized[TWKeys];
 // const keys: TWKeys = '';
 // const utils: AnyTailwindUtil = 'ta';
 
@@ -74,24 +67,16 @@ type Result<R extends string = EOL> = R extends `${infer _}Error: ${infer Err}`
     : `Error: ${Err}`
   : R;
 
-// Helper type to validate that a string contains one or multiple valid
-// Tailwind classes separated by whitespace
-type ValidTailwindClassSeparatedByWhitespace<S> =
-  EatWhitespace<S> extends `${infer Class} ${infer Rest}`
-    ? Rest extends EOL
-      ? Class extends EOL
-        ? S
-        : Class extends AnyTailwindUtil
-        ? Class
-        : AnyTailwindUtil
-      : Result<`${ValidTailwindClassSeparatedByWhitespace<Class>} ${ValidTailwindClassSeparatedByWhitespace<Rest>}`>
-    : EatWhitespace<S> extends `${infer Class}`
-    ? Class extends AnyTailwindUtil
-      ? Class
-      : AnyTailwindUtil
-    : AnyTailwindUtil;
+export type AnyTailwindUtil = Customized[TWKeys];
 
-type Checked = ValidTailwindClassSeparatedByWhitespace<'f'>;
+type WithPrefix<T extends string> = NonNullable<AnyTailwindUtil> extends `${T}${string}`
+  ? AnyTailwindUtil
+  : never;
+
+type ValidTailwindClassSeparatedByWhitespace<S> =
+  EatWhitespace<S> extends `${infer Class} ${infer Rest}` ? Rest : never;
+
+type Checked = ValidTailwindClassSeparatedByWhitespace<''>;
 
 type ClassNames<R> = {
   [K in keyof R]: K extends ValidTailwindClassSeparatedByWhitespace<K>
@@ -99,17 +84,7 @@ type ClassNames<R> = {
     : ValidTailwindClassSeparatedByWhitespace<K>;
 };
 
-function classNamesWrapper<S1, S2>(
-  classesOrModifiers1: S1 extends string
-    ? ValidTailwindClassSeparatedByWhitespace<S1>
-    : ClassNames<S1>,
-  classesOrModifiers2?: S2 extends string
-    ? ValidTailwindClassSeparatedByWhitespace<S2>
-    : ClassNames<S2>,
-): string {
-  // All arguments would be passed to npmjs.com/package/classnames
-  // For the example, just return empty string.
-  return '';
-}
-
-classNamesWrapper('bg-blue-100 capitalize', 'bg-blue-200');
+// type WhiteSpace = ' ' | '\n' | '\t';
+// type TrimLeft<T extends string> = T extends `${WhiteSpace}${infer U}` ? TrimLeft<U> : T;
+// type TrimRight<T extends string> = T extends `${infer U}${WhiteSpace}` ? TrimRight<U> : T;
+// type Trim<T extends string> = TrimLeft<TrimRight<T>>;

@@ -11,15 +11,12 @@
   "workspaces": [
     "packages/*",
     "examples/*",
-    "apps/*",
-    "site"
+    "apps/*"
   ],
   "scripts": {
     "build:libs": "yarn nx run-many --target=build:libs",
     "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "dev": " nx watch --projects=styled,css,twind-adapter -- nx run \\$NX_PROJECT_NAME:build:libs",
-    "docs:build": "npx nx run build --project=docusaurus",
-    "docs:dev": "npx nx run dev --project=docusaurus",
     "expo:android": "yarn workspace expo-app run android",
     "expo:ios": "yarn workspace expo-app run ios",
     "expo:start": "yarn workspace expo-app run start",
@@ -28,8 +25,7 @@
     "lint": "npx nx run-many --target=lint",
     "release": "yarn build:release && changeset publish",
     "site:dev": "npx nx run dev --project=site",
-    "test": "npx nx run-many --target=test",
-    "web": "npx nx dev start --project=next-app"
+    "test": "npx nx run-many --target=test"
   },
   "resolutions": {
     "@twind/core@1.1.3": "patch:@twind/core@npm%3A1.1.3#./.yarn/patches/@twind-core-npm-1.1.3-62b4eeba21.patch",

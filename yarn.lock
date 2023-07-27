@@ -15707,19 +15707,11 @@ __metadata:
     autoprefixer: 10.4.13
     critters: ^0.0.16
     next: 13.1.4
-    next-compose-plugins: ^2.2.1
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-web: ^0.19.6
   languageName: unknown
   linkType: soft
-
-"next-compose-plugins@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "next-compose-plugins@npm:2.2.1"
-  checksum: 771762fda2b12b81daf10431cbb494816cff96be02b44009692c6c0eefbacd62cbf51ddb93af8d3380ec00254c6a95d64d10f744d4b9ddadefc21efee7dc69fc
-  languageName: node
-  linkType: hard
 
 "next@npm:13.1.4":
   version: 13.1.4
@@ -19397,7 +19389,6 @@ __metadata:
     autoprefixer: 10.4.13
     critters: ^0.0.16
     next: 13.1.4
-    next-compose-plugins: ^2.2.1
     react: ^18.2.0
     react-dom: ^18.2.0
     react-native-web: ^0.19.6
