@@ -4,9 +4,14 @@ import {
   type ComponentType,
   type Ref,
   type ForwardRefExoticComponent,
+  useMemo,
 } from 'react';
-import type { StyleProp } from 'react-native';
-import { useBuildStyledComponent } from '../hooks/useStyledComponent';
+import { StyleSheet, type StyleProp, type Touchable } from 'react-native';
+import { AnyStyle } from '@universal-labs/css';
+import { useChildren } from '../hooks/useChildren';
+import { useComponentInteractions } from '../hooks/useComponentInteractions';
+import { useComponentRegistry } from '../hooks/useComponentRegistry';
+import { useCssToRN } from '../hooks/useCssToRN';
 import type {
   Primitive,
   StyledComponentProps,
@@ -16,6 +21,7 @@ import { buildCSSString } from '../utils/buildCssString';
 import { getComponentDisplayName } from '../utils/getComponentDisplayName';
 import { type VariantProps, type VariantsConfig, createVariants } from './variants';
 
+// Readapted from @Sharcoux https://github.com/Sharcoux/rn-css
 function styledComponentsFactory<
   StyleType,
   InitialProps extends { style?: StyleProp<StyleType> },
@@ -28,14 +34,49 @@ function styledComponentsFactory<
     const ForwardRefComponent = forwardRef<any, S & Props>(
       (props: S & Props & StyledComponentProps, ref) => {
         const classNames = buildCSSString(chunks, functions, props);
+        const { stylesheet, componentID } = useCssToRN(classNames);
+
+        const { component, parentComponent, currentGroupID } = useComponentRegistry({
+          componentID,
+          groupID: props.groupID,
+          isGroupParent: stylesheet.metadata.isGroupParent,
+          parentID: props.parentID,
+        });
+
+        const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({
+          props: props as Touchable,
+          hasGroupInteractions: stylesheet.metadata.hasGroupEvents,
+          hasPointerInteractions: stylesheet.metadata.hasPointerEvents,
+          isGroupParent: stylesheet.metadata.isGroupParent,
+          id: componentID,
+        });
+
+        const componentChilds = useChildren(
+          props.children,
+          componentID,
+          stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
+          stylesheet.getChildStyles,
+        );
+
+        const componentStyles = useMemo(() => {
+          const styles: AnyStyle = stylesheet.getStyles({
+            isParentActive:
+              parentComponent.active || parentComponent.focus || parentComponent.hover,
+            isPointerActive:
+              component.interactionState.active ||
+              component.interactionState.focus ||
+              component.interactionState.hover,
+          });
+          return StyleSheet.create({
+            generated: {
+              ...styles,
+              //@ts-expect-error
+              ...props.style,
+            },
+          }).generated;
+        }, [component.interactionState, stylesheet, parentComponent, props.style]);
+
         // const start = performance.now();
-        const {
-          componentChilds,
-          componentInteractionHandlers,
-          componentStyles,
-          currentGroupID,
-          focusHandlers,
-        } = useBuildStyledComponent({ ...props, className: classNames });
         const newProps = {
           ...props,
         };
@@ -74,7 +115,6 @@ function styledComponentsFactory<
     if (__DEV__) {
       ForwardRefComponent.displayName = `Styled(${getComponentDisplayName(Component)})`;
     }
-    // TODO : Find a way to remove from the Props the properties affected by opts
     return ForwardRefComponent;
   };
 
