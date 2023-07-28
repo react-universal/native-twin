@@ -1,20 +1,19 @@
 import { Platform } from 'react-native';
 import { MainSheet } from '@universal-labs/css';
-import { hash, initialize } from '@universal-labs/twind-adapter';
+import { hash, Tailwind } from '@universal-labs/twind-adapter';
 import type { Config } from 'tailwindcss';
 import type { StyledContext } from '../types/css.types';
 import { globalStore } from './store';
 
-let twind = initialize();
+let twind = new Tailwind();
+
+export let cx = twind.instance.cx;
 
 const createVirtualSheet = () => {
   const processor = Object.assign(
     function (classNames: string) {
-      const restore = twind.tw.snapshot();
-      const generated = twind.tx(classNames);
-      const target = [...twind.tw.target];
-      restore();
-      return { generated, target };
+      const generated = twind.parseAndInject(classNames);
+      return generated;
     },
     {
       hash,
@@ -52,7 +51,7 @@ export function install({ rem, theme }: ModuleConfig = { rem: 16, theme: {} }) {
       },
     },
   }));
-  const interpreter = initialize({
+  twind = new Tailwind({
     colors: {
       ...theme?.colors,
     },
@@ -60,5 +59,4 @@ export function install({ rem, theme }: ModuleConfig = { rem: 16, theme: {} }) {
       ...theme?.fontFamily,
     },
   });
-  twind = interpreter;
 }

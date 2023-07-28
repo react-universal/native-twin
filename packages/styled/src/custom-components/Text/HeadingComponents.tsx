@@ -5,20 +5,12 @@ import Text from './Text.primitive';
 function createHeadingComponent(level: number): ComponentType<TextProps> {
   const nativeProps: any = Platform.select({
     web: {
-      accessibilityLevel: level,
+      'aria-level': level,
     },
     default: {},
   });
   const Element = forwardRef((props: TextProps, ref) => {
-    return (
-      <Text
-        {...nativeProps}
-        accessibilityRole='header'
-        {...props}
-        style={[props.style]}
-        ref={ref}
-      />
-    );
+    return <Text {...nativeProps} role='heading' {...props} style={[props.style]} ref={ref} />;
   }) as ComponentType<TextProps>;
 
   Element.displayName = `H${level}`;

@@ -1,11 +1,10 @@
-import clsx from 'clsx';
 import { describe, expect, it } from 'vitest';
 import { generateStylesFor } from './test-utils';
 
 describe('@universal-labs/css - GROUP', () => {
   it('Complex', () => {
     const result = generateStylesFor(
-      clsx(
+      [
         'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
         'ios:(p-14 bg-rose-200 border-white border-2)',
         'android:(p-14 border-green-200 border-2 bg-gray-200)',
@@ -14,7 +13,7 @@ describe('@universal-labs/css - GROUP', () => {
         'odd:bg-black even:bg-black',
         'first:bg-black last:bg-black',
         'dark:bg-blue-200',
-      ),
+      ].join(''),
       true,
     );
     expect(result).toStrictEqual({

@@ -11,16 +11,19 @@ export interface RegisteredComponent {
   interactionState: Record<ValidInteractionPseudoSelector | ValidGroupPseudoSelector, boolean>;
 }
 
-export type StyledComponentProps = {
+export interface ClassNameProps {
+  className?: string;
+  tw?: string;
+}
+
+export interface StyledComponentProps extends ClassNameProps {
   nthChild?: number;
   isFirstChild?: boolean;
   isLastChild?: boolean;
   parentID?: string;
   children?: ReactNode;
   groupID?: string;
-  className?: string;
-  tw?: string;
-};
+}
 
 export type ComponentStylesheet = {
   styles: FinalSheet;
