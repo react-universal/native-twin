@@ -14,7 +14,7 @@
     },
     {
       "name": "docs-site",
-      "path": "../site"
+      "path": "../apps/site"
     },
     {
       "name": "📦 @lib/styled",

@@ -1,6 +1,6 @@
-import { initialize } from '@universal-labs/twind-adapter';
+import { Tailwind } from '@universal-labs/twind-adapter';
 
-const tailwind = initialize({
+const tailwind = new Tailwind({
   colors: {
     primary: 'blue',
   },

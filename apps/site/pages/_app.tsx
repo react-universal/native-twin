@@ -18,11 +18,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Show case</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
-      <div className={`${roboto.variable} font-roboto flex flex-1`}>
+      <div className={`${roboto.variable} font-roboto flex flex-1 bg-gray-700`}>
         <Component {...pageProps} />
       </div>
     </>
   );
 }
 
-export default install(tailwind.tw.config, MyApp);
+export default install(tailwind.instance.tw.config, MyApp);

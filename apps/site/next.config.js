@@ -10,6 +10,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {},
   transpilePackages: ['react-native', 'react-native-svg', 'react-native-web'],
   /**
    * Transformation to apply for both preview and dev server
