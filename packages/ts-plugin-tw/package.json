@@ -1,0 +1,41 @@
+{
+  "name": "@universal-labs/ts-plugin-tw",
+  "displayName": "Styled Tailwind intellisense",
+  "version": "0.0.1",
+  "description": "Autocompletion for styled components with tw classes",
+  "categories": [
+    "Other"
+  ],
+  "license": "MIT",
+  "main": "build/index.js",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build:libs": "tsc -p .",
+    "e2e": "mocha e2e/tests --slow 2000 --timeout 10000",
+    "lint": "eslint src",
+    "test": "mocha ./build/test",
+    "watch:compile": "tsc --watch -p ."
+  },
+  "dependencies": {
+    "@vscode/emmet-helper": "2.9.2",
+    "typescript-template-language-service-decorator": "2.3.2",
+    "vscode-css-languageservice": "6.2.6",
+    "vscode-languageserver-textdocument": "1.0.8"
+  },
+  "devDependencies": {
+    "@types/chai": "4.3.5",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "20.2.5",
+    "@types/vscode": "^1.80.0",
+    "@vscode/test-electron": "^2.3.2",
+    "chai": "4.3.7",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  }
+}

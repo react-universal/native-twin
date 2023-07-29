@@ -27,9 +27,14 @@
     {
       "name": "📦 @lib/twind-adapter",
       "path": "../packages/twind-adapter"
+    },
+    {
+      "name": "📦 @lib/ts-plugin",
+      "path": "../packages/ts-plugin-tw"
     }
   ],
   "settings": {
+    "typescript.tsserver.log": "verbose",
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
