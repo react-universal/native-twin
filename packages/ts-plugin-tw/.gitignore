@@ -1,8 +1,0 @@
-out
-dist
-build
-node_modules
-.vscode-test/
-*.vsix
-*.log
-*.txt

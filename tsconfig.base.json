@@ -13,6 +13,7 @@
     "strict": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
+    "disableReferencedProjectLoad": true,
     "skipDefaultLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,

@@ -3,10 +3,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES2021",
-    "outDir": "build",
-    "rootDir": "src",
     "noEmit": false,
     "lib": ["ES2021"],
+    "outDir": "out",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -23,6 +22,6 @@
     //   }
     // ]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", ".vscode-test", "build", "src/**/*.test.ts", "testFixture"]
+  "exclude": ["node_modules", ".vscode-test", "build", "src/**/*.test.ts", "testFixture"],
+  "references": [{ "path": "./server" }, { "path": "./client" }]
 }

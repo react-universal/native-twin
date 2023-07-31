@@ -2,4 +2,3 @@
 // @ts-nocheck
 
 asd``;
-dadasdasd

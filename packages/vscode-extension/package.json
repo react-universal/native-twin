@@ -8,22 +8,47 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "universal-labs",
-  "main": "build/extension.js",
+  "main": "client/out/extension.js",
   "scripts": {
-    "build:libs": "tsc -b",
-    "vscode:prepublish": "yarn build:libs",
+    "compile": "tsc -b",
+    "postinstall": "cd client && yarn install && cd ../server && yarn install && cd ..",
+    "lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
+    "test": "sh ./scripts/e2e.sh",
+    "vscode:prepublish": "npm run compile",
     "watch": "tsc -b -w"
   },
   "contributes": {
-    "typescriptServerPlugins": [
-      {
-        "name": "@universal-labs/ts-plugin-tw",
-        "enableForWorkspaceTypeScriptVersions": true
+    "configuration": {
+      "type": "object",
+      "title": "Configuration for native styled",
+      "properties": {
+        "styledLanguageTW.maxNumberOfProblems": {
+          "scope": "resource",
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the server."
+        },
+        "styledLanguageTW.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the language server."
+        }
       }
-    ]
+    }
   },
+  "activationEvents": [
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact"
+  ],
   "dependencies": {
-    "@universal-labs/ts-plugin-tw": "workspace:*",
     "vscode-languageclient": "^8.1.0"
   },
   "devDependencies": {

@@ -8,13 +8,7 @@
     "noEmit": false,
     "module": "ES2020",
     "exactOptionalPropertyTypes": false,
-    "importHelpers": true,
-    "plugins": [
-      {
-        "name": "@universal-labs/ts-plugin-tw",
-        "tags": ["styled", "css", "styledComponents"]
-      }
-    ]
+    "importHelpers": true
   },
   "include": ["src", "test", "vite.config.*"]
 }
