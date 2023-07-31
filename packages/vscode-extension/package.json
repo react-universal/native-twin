@@ -1,0 +1,36 @@
+{
+  "name": "@universal-labs/vscode",
+  "version": "1.0.0",
+  "description": "Native Styled vscode extension.",
+  "categories": [
+    "Programming Languages"
+  ],
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "publisher": "universal-labs",
+  "main": "build/extension.js",
+  "scripts": {
+    "build:libs": "tsc -b",
+    "vscode:prepublish": "yarn build:libs",
+    "watch": "tsc -b -w"
+  },
+  "contributes": {
+    "typescriptServerPlugins": [
+      {
+        "name": "@universal-labs/ts-plugin-tw",
+        "enableForWorkspaceTypeScriptVersions": true
+      }
+    ]
+  },
+  "dependencies": {
+    "@universal-labs/ts-plugin-tw": "workspace:*",
+    "vscode-languageclient": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "1.80.0",
+    "@vscode/test-electron": "^2.3.3"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  }
+}

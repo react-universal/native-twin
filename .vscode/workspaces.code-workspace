@@ -31,6 +31,10 @@
     {
       "name": "📦 @lib/ts-plugin",
       "path": "../packages/ts-plugin-tw"
+    },
+    {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
     }
   ],
   "settings": {

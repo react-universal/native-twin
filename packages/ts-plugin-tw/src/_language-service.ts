@@ -1,7 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-//
-// Original code forked from https://github.com/Quramy/ts-graphql-plugin
 import * as config from './_config';
 import { ConfigurationManager } from './_configuration';
 import { VirtualDocumentProvider } from './_virtual-document-provider';
@@ -11,7 +7,7 @@ import {
   TemplateContext,
   TemplateLanguageService,
 } from 'typescript-template-language-service-decorator';
-import * as ts from 'typescript/lib/tsserverlibrary';
+import ts from 'typescript/lib/tsserverlibrary';
 import {
   FoldingRange,
   LanguageService,

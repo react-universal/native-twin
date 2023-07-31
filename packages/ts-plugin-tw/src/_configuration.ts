@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 export interface StyledPluginConfiguration {
   readonly tags: ReadonlyArray<string>;
   readonly validate: boolean;

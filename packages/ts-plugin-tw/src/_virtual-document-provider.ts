@@ -1,7 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 import { TemplateContext } from 'typescript-template-language-service-decorator';
-import * as ts from 'typescript/lib/tsserverlibrary';
+import ts from 'typescript/lib/tsserverlibrary';
 import { TextDocument, Position } from 'vscode-languageserver-textdocument';
 
 /**

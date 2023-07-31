@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 import { ConfigurationManager } from './_configuration';
 import { StyledTemplateLanguageService } from './_language-service';
 import { LanguageServiceLogger } from './_logger';
@@ -9,7 +7,7 @@ import {
   decorateWithTemplateLanguageService,
   TemplateSettings,
 } from 'typescript-template-language-service-decorator';
-import * as ts from 'typescript/lib/tsserverlibrary';
+import ts from 'typescript/lib/tsserverlibrary';
 
 export class StyledPlugin {
   private _logger?: LanguageServiceLogger;
