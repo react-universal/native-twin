@@ -10,11 +10,11 @@
   "publisher": "universal-labs",
   "main": "client/out/extension.js",
   "scripts": {
-    "compile": "tsc -b",
+    "build:libs": "tsc -b",
     "postinstall": "cd client && yarn install && cd ../server && yarn install && cd ..",
     "lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
     "test": "sh ./scripts/e2e.sh",
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "tsc -b",
     "watch": "tsc -b -w"
   },
   "contributes": {

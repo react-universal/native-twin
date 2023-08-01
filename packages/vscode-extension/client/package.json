@@ -5,6 +5,9 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "universal-labs",
+  "scripts": {
+    "build": "tsc -b"
+  },
   "dependencies": {
     "vscode-languageclient": "^8.1.0"
   },

@@ -4,6 +4,9 @@
   "description": "Native Styled TW language server.",
   "license": "MIT",
   "author": "Cristhian Gutierrez",
+  "scripts": {
+    "build": "tsc -b"
+  },
   "dependencies": {
     "typescript-template-language-service-decorator": "2.3.2",
     "vscode-languageserver": "^8.1.0",

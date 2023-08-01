@@ -16,6 +16,28 @@ serverConnection.onCompletion(_onCompletion);
 // the completion list.
 serverConnection.onCompletionResolve(_onCompletionResolved);
 
+serverConnection.onDidChangeTextDocument((handler) => {
+  serverConnection.console.log(`${handler.textDocument.uri} changed`);
+  return documents.handler.get(handler.textDocument.uri);
+});
+
+// Only keep settings for open documents
+documents.handler.onDidClose((e) => {
+  documents.documentSettings.delete(e.document.uri);
+});
+
+// The content of a text document has changed. This event is emitted
+// when the text document first opened or when its content has changed.
+// documents.handler.onDidChangeContent((change) => {
+//   serverConnection.console.log(`${change.document.getText()} changed`);
+//   documents.documentSettings.delete(change.document.uri);
+// });
+
+// serverConnection.workspace.connection.onDidChangeTextDocument((handler) => {
+//   serverConnection.console.log(`${handler.textDocument.uri} changed CONNN`);
+//   return documents.handler.get(handler.textDocument.uri);
+// });
+
 serverConnection.listen();
 
 // Make the text document manager listen on the connection

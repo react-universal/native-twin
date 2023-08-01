@@ -1,0 +1,44 @@
+Info 0    [01:18:40.850] Starting TS Server
+Info 1    [01:18:40.851] Version: 4.9.3
+Info 2    [01:18:40.851] Arguments: /Users/chripio/.nvm/versions/node/v16.20.0/bin/node /Users/chripio/work/forks/typescript-styled-plugin/e2e/node_modules/typescript/lib/tsserver --logVerbosity verbose --logFile /Users/chripio/work/forks/typescript-styled-plugin/e2e/server-fixture/log.txt --pluginProbeLocations /Users/chripio/work/forks/typescript-styled-plugin/e2e
+Info 3    [01:18:40.851] Platform: darwin NodeVersion: 16 CaseSensitive: false
+Info 4    [01:18:40.851] ServerMode: undefined syntaxOnly: false hasUnknownServerMode: undefined
+Info 5    [01:18:40.858] Binding...
+Info 6    [01:18:40.865] request:
+    {"seq":1,"type":"request","command":"open","arguments":{"file":"/Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/main.ts","fileContent":"const q = css(\"bla\")`color:`","scriptKindName":"TS"}}
+Info 7    [01:18:40.867] Search path: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture
+Info 8    [01:18:40.867] For info: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/main.ts :: Config file name: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json
+Info 9    [01:18:40.867] Creating configuration project /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json
+Info 10   [01:18:40.870] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json 2000 undefined Project: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json WatchType: Config file
+Info 11   [01:18:40.872] event:
+    {"seq":0,"type":"event","event":"projectLoadingStart","body":{"projectName":"/Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json","reason":"Creating possible configured project for /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/main.ts to open"}}
+Info 12   [01:18:40.887] Config: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json : {
+ "rootNames": [
+  "/Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/index.ts",
+  "/Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/main.ts"
+ ],
+ "options": {
+  "target": 8,
+  "module": 1,
+  "plugins": [
+   {
+    "name": "@styled/typescript-styled-plugin",
+    "tags": [
+     "css",
+     "keyframes"
+    ]
+   }
+  ],
+  "configFilePath": "/Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json"
+ }
+}
+Info 13   [01:18:40.888] DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture 1 undefined Config: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json WatchType: Wild card directory
+Info 14   [01:18:40.889] Elapsed:: 0.7925679683685303ms DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture 1 undefined Config: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json WatchType: Wild card directory
+Info 15   [01:18:40.889] Enabling plugin @styled/typescript-styled-plugin from candidate paths: /Users/chripio/work/forks/typescript-styled-plugin/e2e,/Users/chripio/work/forks/typescript-styled-plugin/e2e/node_modules/typescript/lib/tsserver.js/../../..
+Info 16   [01:18:40.890] Loading @styled/typescript-styled-plugin from /Users/chripio/work/forks/typescript-styled-plugin/e2e (resolved to /Users/chripio/work/forks/typescript-styled-plugin/e2e/node_modules)
+Info 17   [01:18:41.019] [ts-styled-plugin] config: {"tags":["css","keyframes"],"validate":true,"lint":{"emptyRules":"ignore"},"emmet":{}}
+Info 18   [01:18:41.020] Plugin activation failed: TypeError: Cannot read properties of undefined (reading 'bind')
+Info 19   [01:18:41.022] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/index.ts 500 undefined WatchType: Closed Script info
+Info 20   [01:18:41.037] Starting updateGraphWorker: Project: /Users/chripio/work/forks/typescript-styled-plugin/e2e/project-fixture/tsconfig.json
+Info 21   [01:18:41.081] DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/forks/typescript-styled-plugin/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache
+Info 22   [01:18:41.081] Elapsed:: 0.269665002822876ms DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/forks/typescript-styled-plugin/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache

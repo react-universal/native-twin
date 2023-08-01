@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "sourceMap": true,
+    "noEmit": false,
     "strict": true,
     "composite": true,
     "outDir": "out",

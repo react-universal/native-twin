@@ -17,6 +17,14 @@
       "path": "../apps/site"
     },
     {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/ts-plugin",
+      "path": "../packages/ts-plugin"
+    },
+    {
       "name": "📦 @lib/styled",
       "path": "../packages/styled"
     },
@@ -27,14 +35,9 @@
     {
       "name": "📦 @lib/twind-adapter",
       "path": "../packages/twind-adapter"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
     }
   ],
   "settings": {
-    "typescript.tsserver.log": "verbose",
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,

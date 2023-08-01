@@ -7,6 +7,8 @@ import {
   ServerOptions,
   TransportKind,
 } from 'vscode-languageclient/node';
+import { SUPPORTED_LANGUAGES } from './_config';
+import { NativeStyledCompletionItemProvider } from './tw-completion.provider';
 
 let client: LanguageClient;
 
@@ -27,7 +29,8 @@ export function activate(context: vscode.ExtensionContext) {
   // Options to control the language client
   const clientOptions: LanguageClientOptions = {
     // Register the server for plain text documents
-    documentSelector: [{ scheme: 'file', language: 'typescript' }],
+    documentSelector: SUPPORTED_LANGUAGES,
+
     synchronize: {
       // Notify the server about file changes to '.clientrc files contained in the workspace
       fileEvents: vscode.workspace.createFileSystemWatcher('**/.clientrc'),
@@ -37,10 +40,17 @@ export function activate(context: vscode.ExtensionContext) {
   // Create the language client and start the client.
   client = new LanguageClient(
     'styledLanguageTW',
-    'Language Server Native Tailwind',
+    'Tailwind Native IntelliSense',
     serverOptions,
     clientOptions,
-    true,
+  );
+
+  context.subscriptions.push(
+    vscode.languages.registerCompletionItemProvider(
+      SUPPORTED_LANGUAGES,
+      new NativeStyledCompletionItemProvider(),
+      '`',
+    ),
   );
 
   // Start the client. This will also launch the server

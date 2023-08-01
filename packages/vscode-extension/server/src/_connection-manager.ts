@@ -17,6 +17,7 @@ function createConnectionManager() {
   const connection = createConnection(ProposedFeatures.all);
   connection.onInitialize(_onInitialize);
   connection.onInitialized(_onInitialized);
+  connection.console;
 
   return connection;
 

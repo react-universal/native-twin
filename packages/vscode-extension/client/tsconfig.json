@@ -5,6 +5,7 @@
     "target": "es2020",
     "lib": ["es2020"],
     "outDir": "out",
+    "noEmit": false,
     "composite": true,
     "rootDir": "src",
     "sourceMap": true

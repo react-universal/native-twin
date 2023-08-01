@@ -28,6 +28,7 @@ module.exports = {
     'no-console': 'warn',
     'no-redeclare': 'off',
     'no-undef': 'off',
+    'no-useless-escape': 'off',
     'no-unused-vars': 'off',
     'react/no-unescaped-entities': 'off',
     'react-hooks/rules-of-hooks': 'error',

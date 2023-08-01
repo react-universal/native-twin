@@ -10,8 +10,10 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import { documents } from './_document-provider';
 import { serverConnection } from './_connection-manager';
 
-export function _onCompletionResolved(item: CompletionItem): CompletionItem {
-  serverConnection.client.connection.console.log('CONTENT: ' + item.label);
+export function _onCompletionResolved(
+  item: CompletionItem,
+  _token: CancellationToken,
+): CompletionItem {
   if (item.data === 1) {
     item.detail = 'TypeScript details';
     item.documentation = 'TypeScript documentation';
@@ -24,19 +26,22 @@ export function _onCompletionResolved(item: CompletionItem): CompletionItem {
 
 export function _onCompletion(
   params: TextDocumentPositionParams,
-  cancelToken: CancellationToken,
-  workDone: WorkDoneProgressReporter,
-  resultProgress?: ResultProgressReporter<CompletionItem[]>,
+  _cancelToken: CancellationToken,
+  _workDone: WorkDoneProgressReporter,
+  _resultProgress?: ResultProgressReporter<CompletionItem[]>,
 ): CompletionItem[] {
   const document = documents.handler.get(params.textDocument.uri);
-  const content = document?.getText();
+  const content = document?.getText({
+    start: { character: params.position.character, line: params.position.line },
+    end: { character: 0, line: params.position.line },
+  });
   serverConnection.console.log('CONTENT: ' + content);
   // The pass parameter contains the position of the text document in
   // which code complete got requested. For the example we ignore this
   // info and always provide the same completion items.
   return [
     {
-      label: 'TypeScript asdfsdfsdfsdf',
+      label: 'TypeScript',
       kind: CompletionItemKind.Text,
       data: 1,
     },

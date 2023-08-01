@@ -8,6 +8,7 @@
       "name": "Launch Demo Client",
       "runtimeExecutable": "${execPath}",
       "args": [
+        "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceRoot}"
       ],
       "sourceMaps": true,
