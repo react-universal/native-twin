@@ -9,7 +9,7 @@
     "build:libs": "tsc -p .",
     "e2e": "mocha e2e/tests --slow 2000 --timeout 10000",
     "lint": "eslint src",
-    "unit": "mocha ./build/test",
+    "unit": "npx mocha ./build/test",
     "watch:compile": "tsc --watch -p ."
   },
   "dependencies": {

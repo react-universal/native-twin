@@ -1,8 +1,11 @@
 {
   "name": "e2e",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -10,11 +13,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "typescript": "^4.9.3",
-    "@styled/typescript-styled-plugin": "file:./.."
+    "@universal-labs/ts-styled-plugin-tw": "file:./..",
+    "typescript": "^5.1.6"
   }
 }

@@ -5293,7 +5293,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin":
+"@universal-labs/ts-styled-plugin-tw@workspace:*, @universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin":
   version: 0.0.0-use.local
   resolution: "@universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin"
   dependencies:
@@ -5322,6 +5322,7 @@ __metadata:
   resolution: "@universal-labs/vscode@workspace:packages/vscode-extension"
   dependencies:
     "@types/vscode": 1.80.0
+    "@universal-labs/ts-styled-plugin-tw": "workspace:*"
     "@vscode/test-electron": ^2.3.3
     vscode-languageclient: ^8.1.0
   languageName: unknown

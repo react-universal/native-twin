@@ -40,7 +40,13 @@
           "description": "Traces the communication between VS Code and the language server."
         }
       }
-    }
+    },
+    "typescriptServerPlugins": [
+      {
+        "name": "@universal-labs/ts-styled-plugin-tw",
+        "enableForWorkspaceTypeScriptVersions": true
+      }
+    ]
   },
   "activationEvents": [
     "onLanguage:typescript",
@@ -49,6 +55,7 @@
     "onLanguage:javascriptreact"
   ],
   "dependencies": {
+    "@universal-labs/ts-styled-plugin-tw": "workspace:*",
     "vscode-languageclient": "^8.1.0"
   },
   "devDependencies": {
