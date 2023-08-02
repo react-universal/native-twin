@@ -1,6 +1,6 @@
 import { TemplateContext } from 'typescript-template-language-service-decorator';
 import { TextDocument, Position } from 'vscode-languageserver-textdocument';
-import * as ts from 'typescript/lib/tsserverlibrary';
+import ts from 'typescript/lib/tsserverlibrary';
 
 /**
  * Handles mapping between template contents to virtual documents.

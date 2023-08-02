@@ -6,9 +6,10 @@
     "outDir": "build",
     "rootDir": "src",
     "strict": true,
+    "noEmit": false,
     "declaration": true,
     "sourceMap": true,
     "skipLibCheck": true
   },
-  "exclude": ["build", "e2e", "node_modules", "test-workspace"]
+  "exclude": ["build", "e2e", "**/node_modules"]
 }

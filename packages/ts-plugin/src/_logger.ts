@@ -1,11 +1,10 @@
-import { Logger } from 'typescript-template-language-service-decorator';
+import ts from 'typescript/lib/tsserverlibrary';
 import { pluginName } from './_config';
-import * as ts from 'typescript/lib/tsserverlibrary';
 
-export class LanguageServiceLogger implements Logger {
-  constructor(private readonly info: ts.server.PluginCreateInfo) {}
+export function createLogFunction(info: ts.server.PluginCreateInfo) {
+  return (...stuff: unknown[]) => {
+    const output = stuff.map((value) => JSON.stringify(value, null, 2)).join(' ');
 
-  public log(msg: string) {
-    this.info.project.projectService.logger.info(`[${pluginName}] ${msg}`);
-  }
+    return info.project.projectService.logger.info(`[${pluginName}] ${output}`);
+  };
 }

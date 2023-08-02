@@ -10,7 +10,7 @@
     "e2e": "mocha e2e/tests --slow 2000 --timeout 10000",
     "lint": "eslint src",
     "unit": "npx mocha ./build/test",
-    "watch:compile": "tsc --watch -p ."
+    "watch:compile": "tsc -p . --watch"
   },
   "dependencies": {
     "@vscode/emmet-helper": "2.9.2",
