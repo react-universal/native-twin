@@ -62,7 +62,7 @@
     "@types/tailwindcss": "3.1.0",
     "css-tree": "2.3.1",
     "postcss-css-variables": "^0.18.0",
-    "tailwindcss": "^3.2.4",
+    "tailwindcss": "^3.3.3",
     "tsx": "3.12.6"
   },
   "peerDependencies": {

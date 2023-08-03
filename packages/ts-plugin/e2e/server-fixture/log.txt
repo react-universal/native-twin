@@ -1,0 +1,1152 @@
+Info 0    [02:07:22.223] Starting TS Server
+Info 1    [02:07:22.224] Version: 5.1.6
+Info 2    [02:07:22.224] Arguments: /Users/chripio/.nvm/versions/node/v16.20.0/bin/node /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/tsserver --logVerbosity verbose --logFile /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/server-fixture/log.txt --pluginProbeLocations /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e
+Info 3    [02:07:22.224] Platform: darwin NodeVersion: v16.20.0 CaseSensitive: false
+Info 4    [02:07:22.224] ServerMode: undefined hasUnknownServerMode: undefined
+Info 5    [02:07:22.230] Binding...
+Info 6    [02:07:22.236] request:
+    {"seq":1,"type":"request","command":"open","arguments":{"file":"/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/main.ts","fileContent":"css`color: ; boarder: 1px solid ${\"red\"};`","scriptKindName":"TS"}}
+Info 7    [02:07:22.237] Search path: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture
+Info 8    [02:07:22.238] For info: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/main.ts :: Config file name: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json
+Info 9    [02:07:22.238] Creating configuration project /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json
+Info 10   [02:07:22.240] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Config file
+Info 11   [02:07:22.242] event:
+    {
+     "seq": 0,
+     "type": "event",
+     "event": "projectLoadingStart",
+     "body": {
+      "projectName": "/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json",
+      "reason": "Creating possible configured project for /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/main.ts to open"
+     }
+    }
+Info 12   [02:07:22.255] Config: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json : {
+ "rootNames": [
+  "/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/index.ts",
+  "/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/main.ts"
+ ],
+ "options": {
+  "target": 8,
+  "module": 1,
+  "plugins": [
+   {
+    "name": "@universal-labs/ts-styled-plugin-tw",
+    "tags": [
+     "css"
+    ]
+   }
+  ],
+  "configFilePath": "/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json"
+ }
+}
+Info 13   [02:07:22.256] DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture 1 undefined Config: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Wild card directory
+Info 14   [02:07:22.257] Elapsed:: 0.6495269536972046ms DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture 1 undefined Config: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Wild card directory
+Info 15   [02:07:22.257] Enabling plugin @universal-labs/ts-styled-plugin-tw from candidate paths: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e,/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/tsserver.js/../../..
+Info 16   [02:07:22.257] Loading @universal-labs/ts-styled-plugin-tw from /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e (resolved to /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules)
+Info 17   [02:07:22.577] [ts-styled-plugin-tw] "initializing"
+Info 18   [02:07:22.577] Plugin validation succeeded
+Info 19   [02:07:22.578] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/index.ts 500 undefined WatchType: Closed Script info
+Info 20   [02:07:22.599] Starting updateGraphWorker: Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json
+Info 21   [02:07:22.629] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 22   [02:07:22.629] Elapsed:: 0.40387898683547974ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 23   [02:07:22.630] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 24   [02:07:22.630] Elapsed:: 0.14522898197174072ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 25   [02:07:22.630] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 26   [02:07:22.630] Elapsed:: 0.07723701000213623ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 27   [02:07:22.630] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 28   [02:07:22.630] Elapsed:: 0.0523720383644104ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 29   [02:07:22.630] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/argparse/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 30   [02:07:22.632] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/chai/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 31   [02:07:22.633] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 32   [02:07:22.633] Elapsed:: 0.11388599872589111ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 33   [02:07:22.633] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/chai-subset/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 34   [02:07:22.634] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/css-tree/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 35   [02:07:22.635] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/estree/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 36   [02:07:22.636] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/glob/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 37   [02:07:22.637] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/is-ci/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 38   [02:07:22.638] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/istanbul-lib-coverage/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 39   [02:07:22.639] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/istanbul-lib-report/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 40   [02:07:22.640] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/istanbul-reports/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 41   [02:07:22.641] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/json-schema/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 42   [02:07:22.641] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/json5/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 43   [02:07:22.642] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/minimatch/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 44   [02:07:22.643] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/minimist/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 45   [02:07:22.643] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/mocha/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 46   [02:07:22.646] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 47   [02:07:22.646] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/normalize-package-data/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 48   [02:07:22.647] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/parse-json/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 49   [02:07:22.648] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 50   [02:07:22.648] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/prop-types/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 51   [02:07:22.650] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/react/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 52   [02:07:22.650] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-dom/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 53   [02:07:22.652] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-is/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 54   [02:07:22.652] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-test-renderer/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 55   [02:07:22.653] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/scheduler/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 56   [02:07:22.653] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/semver/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 57   [02:07:22.654] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/stack-utils/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 58   [02:07:22.656] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 59   [02:07:22.656] Elapsed:: 0.062087953090667725ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 60   [02:07:22.656] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 61   [02:07:22.656] Elapsed:: 0.04083096981048584ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/node_modules 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Failed Lookup Locations
+Info 62   [02:07:22.656] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/tailwindcss/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 63   [02:07:22.657] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/tailwindcss/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 64   [02:07:22.657] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/vscode/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 65   [02:07:22.660] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/yargs/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 66   [02:07:22.661] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/yargs-parser/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 67   [02:07:22.662] DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/universal-labs/react-universal/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache
+Info 68   [02:07:22.662] Elapsed:: 0.01344597339630127ms DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/universal-labs/react-universal/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache
+Info 69   [02:07:23.017] DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache
+Info 70   [02:07:23.017] Elapsed:: 0.011050045490264893ms DirectoryWatcher:: Added:: WatchInfo: /users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache
+Info 71   [02:07:23.156] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 72   [02:07:23.307] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/postcss/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 73   [02:07:23.860] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/minimatch/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 74   [02:07:23.860] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/ci-info/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 75   [02:07:23.860] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/istanbul-lib-coverage/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 76   [02:07:23.861] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/istanbul-lib-report/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 77   [02:07:23.861] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/source-map-js/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 78   [02:07:23.862] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/csstype/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 79   [02:07:23.862] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/prop-types/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 80   [02:07:23.863] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/scheduler/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 81   [02:07:23.863] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-dom/node_modules/@types/react/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 82   [02:07:23.864] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-is/node_modules/@types/react/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 83   [02:07:23.864] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-test-renderer/node_modules/@types/react/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 84   [02:07:23.864] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/yargs-parser/package.json 2000 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: File location affecting resolution
+Info 85   [02:07:23.865] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 86   [02:07:23.865] Elapsed:: 0.0985870361328125ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 87   [02:07:23.865] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 88   [02:07:23.865] Elapsed:: 0.07202500104904175ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 89   [02:07:23.865] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 90   [02:07:23.865] Elapsed:: 0.05138802528381348ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 91   [02:07:23.865] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 92   [02:07:23.866] Elapsed:: 0.1356009840965271ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 93   [02:07:23.866] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 94   [02:07:23.866] Elapsed:: 0.12588995695114136ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 95   [02:07:23.866] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 96   [02:07:23.866] Elapsed:: 0.05966299772262573ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 97   [02:07:23.866] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 98   [02:07:23.866] Elapsed:: 0.05689704418182373ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/node_modules/@types 1 undefined Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json WatchType: Type roots
+Info 99   [02:07:23.866] Finishing updateGraphWorker: Project: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json Version: 1 structureChanged: true structureIsReused:: Not Elapsed: 1267.143828034401ms
+Info 100  [02:07:23.866] Project '/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json' (Configured)
+Info 101  [02:07:23.879] 	Files (187)
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es5.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2016.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2017.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2018.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2019.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2020.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2021.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.dom.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.dom.iterable.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.webworker.importscripts.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.scripthost.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.core.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.collection.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.generator.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.iterable.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.promise.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.proxy.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.reflect.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.symbol.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2016.array.include.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2017.object.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2017.string.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2017.intl.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2017.typedarrays.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2018.asynciterable.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2018.intl.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2018.promise.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2018.regexp.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2019.array.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2019.object.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2019.string.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2019.symbol.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2019.intl.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2020.bigint.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2020.date.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2020.promise.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2020.sharedmemory.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2020.string.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2020.intl.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2020.number.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2021.promise.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2021.string.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2021.weakref.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2021.intl.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.esnext.intl.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.decorators.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.decorators.legacy.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/lib.es2021.full.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/index.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/main.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/argparse/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/chai/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/chai-subset/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/css-tree/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/estree/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/assert.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/assert/strict.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/globals.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/async_hooks.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/buffer.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/child_process.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/cluster.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/console.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/constants.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/crypto.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/dgram.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/diagnostics_channel.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/dns.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/dns/promises.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/domain.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/dom-events.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/events.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/fs.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/fs/promises.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/http.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/http2.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/https.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/inspector.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/module.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/net.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/os.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/path.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/perf_hooks.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/process.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/punycode.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/querystring.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/readline.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/readline/promises.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/repl.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/stream.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/stream/promises.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/stream/consumers.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/stream/web.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/string_decoder.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/test.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/timers.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/timers/promises.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/tls.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/trace_events.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/tty.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/url.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/util.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/v8.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/vm.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/wasi.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/worker_threads.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/zlib.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/globals.global.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/node/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/minimatch/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/glob/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/ci-info/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/is-ci/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/istanbul-lib-coverage/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/istanbul-lib-report/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/istanbul-reports/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/json-schema/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/json5/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/minimist/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/mocha/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/normalize-package-data/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/parse-json/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/source-map-js/source-map.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/comment.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/at-rule.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/rule.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/container.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/declaration.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/previous-map.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/input.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/css-syntax-error.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/warning.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/document.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/root.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/lazy-result.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/no-work-result.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/processor.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/result.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/list.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/postcss-css-variables/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/prop-types/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/react/global.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/csstype/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/scheduler/tracing.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/react/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-dom/node_modules/@types/react/global.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-dom/node_modules/@types/react/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-dom/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-is/node_modules/@types/react/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-is/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-test-renderer/node_modules/@types/react/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/react-test-renderer/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/scheduler/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/semver/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/stack-utils/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/previous-map.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/input.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/css-syntax-error.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/declaration.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/root.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/warning.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/lazy-result.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/no-work-result.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/processor.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/result.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/document.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/rule.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/node.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/comment.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/container.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/at-rule.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/list.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/postcss/lib/postcss.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/tailwindcss/types/generated/corePluginList.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/tailwindcss/types/generated/colors.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/tailwindcss/types/config.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/tailwindcss/types/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/vscode/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/yargs-parser/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@types/yargs/index.d.ts
+
+
+	../node_modules/typescript/lib/lib.es5.d.ts
+	  Library referenced via 'es5' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es5' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	../node_modules/typescript/lib/lib.es2015.d.ts
+	  Library referenced via 'es2015' from file '../node_modules/typescript/lib/lib.es2016.d.ts'
+	  Library referenced via 'es2015' from file '../node_modules/typescript/lib/lib.es2016.d.ts'
+	../node_modules/typescript/lib/lib.es2016.d.ts
+	  Library referenced via 'es2016' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	  Library referenced via 'es2016' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	../node_modules/typescript/lib/lib.es2017.d.ts
+	  Library referenced via 'es2017' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	  Library referenced via 'es2017' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	../node_modules/typescript/lib/lib.es2018.d.ts
+	  Library referenced via 'es2018' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	  Library referenced via 'es2018' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	../node_modules/typescript/lib/lib.es2019.d.ts
+	  Library referenced via 'es2019' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	  Library referenced via 'es2019' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	../node_modules/typescript/lib/lib.es2020.d.ts
+	  Library referenced via 'es2020' from file '../../../../node_modules/@types/node/index.d.ts'
+	  Library referenced via 'es2020' from file '../node_modules/typescript/lib/lib.es2021.d.ts'
+	../node_modules/typescript/lib/lib.es2021.d.ts
+	  Library referenced via 'es2021' from file '../node_modules/typescript/lib/lib.es2021.full.d.ts'
+	../node_modules/typescript/lib/lib.dom.d.ts
+	  Library referenced via 'dom' from file '../node_modules/typescript/lib/lib.es2021.full.d.ts'
+	../node_modules/typescript/lib/lib.dom.iterable.d.ts
+	  Library referenced via 'dom.iterable' from file '../node_modules/typescript/lib/lib.es2021.full.d.ts'
+	../node_modules/typescript/lib/lib.webworker.importscripts.d.ts
+	  Library referenced via 'webworker.importscripts' from file '../node_modules/typescript/lib/lib.es2021.full.d.ts'
+	../node_modules/typescript/lib/lib.scripthost.d.ts
+	  Library referenced via 'scripthost' from file '../node_modules/typescript/lib/lib.es2021.full.d.ts'
+	../node_modules/typescript/lib/lib.es2015.core.d.ts
+	  Library referenced via 'es2015.core' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.core' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	../node_modules/typescript/lib/lib.es2015.collection.d.ts
+	  Library referenced via 'es2015.collection' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.collection' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	../node_modules/typescript/lib/lib.es2015.generator.d.ts
+	  Library referenced via 'es2015.generator' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.generator' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	../node_modules/typescript/lib/lib.es2015.iterable.d.ts
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2015.generator.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2018.asynciterable.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2019.object.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2020.string.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2015.generator.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2018.asynciterable.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2019.object.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2020.string.d.ts'
+	  Library referenced via 'es2015.iterable' from file '../node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts'
+	../node_modules/typescript/lib/lib.es2015.promise.d.ts
+	  Library referenced via 'es2015.promise' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.promise' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	../node_modules/typescript/lib/lib.es2015.proxy.d.ts
+	  Library referenced via 'es2015.proxy' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.proxy' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	../node_modules/typescript/lib/lib.es2015.reflect.d.ts
+	  Library referenced via 'es2015.reflect' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.reflect' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	../node_modules/typescript/lib/lib.es2015.symbol.d.ts
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2015.iterable.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2018.asynciterable.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2015.iterable.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2018.asynciterable.d.ts'
+	  Library referenced via 'es2015.symbol' from file '../node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts'
+	../node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts
+	  Library referenced via 'es2015.symbol.wellknown' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.symbol.wellknown' from file '../node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts'
+	  Library referenced via 'es2015.symbol.wellknown' from file '../node_modules/typescript/lib/lib.es2015.d.ts'
+	  Library referenced via 'es2015.symbol.wellknown' from file '../node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts'
+	../node_modules/typescript/lib/lib.es2016.array.include.d.ts
+	  Library referenced via 'es2016.array.include' from file '../node_modules/typescript/lib/lib.es2016.d.ts'
+	  Library referenced via 'es2016.array.include' from file '../node_modules/typescript/lib/lib.es2016.d.ts'
+	../node_modules/typescript/lib/lib.es2017.object.d.ts
+	  Library referenced via 'es2017.object' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	  Library referenced via 'es2017.object' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	../node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts
+	  Library referenced via 'es2017.sharedmemory' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	  Library referenced via 'es2017.sharedmemory' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	../node_modules/typescript/lib/lib.es2017.string.d.ts
+	  Library referenced via 'es2017.string' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	  Library referenced via 'es2017.string' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	../node_modules/typescript/lib/lib.es2017.intl.d.ts
+	  Library referenced via 'es2017.intl' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	  Library referenced via 'es2017.intl' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	../node_modules/typescript/lib/lib.es2017.typedarrays.d.ts
+	  Library referenced via 'es2017.typedarrays' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	  Library referenced via 'es2017.typedarrays' from file '../node_modules/typescript/lib/lib.es2017.d.ts'
+	../node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts
+	  Library referenced via 'es2018.asyncgenerator' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	  Library referenced via 'es2018.asyncgenerator' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	../node_modules/typescript/lib/lib.es2018.asynciterable.d.ts
+	  Library referenced via 'es2018.asynciterable' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	  Library referenced via 'es2018.asynciterable' from file '../node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts'
+	  Library referenced via 'esnext.asynciterable' from file '../../../../node_modules/@types/node/index.d.ts'
+	  Library referenced via 'es2018.asynciterable' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	  Library referenced via 'es2018.asynciterable' from file '../node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts'
+	../node_modules/typescript/lib/lib.es2018.intl.d.ts
+	  Library referenced via 'es2018.intl' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	  Library referenced via 'es2018.intl' from file '../node_modules/typescript/lib/lib.es2020.intl.d.ts'
+	  Library referenced via 'es2018.intl' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	  Library referenced via 'es2018.intl' from file '../node_modules/typescript/lib/lib.es2020.intl.d.ts'
+	../node_modules/typescript/lib/lib.es2018.promise.d.ts
+	  Library referenced via 'es2018.promise' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	  Library referenced via 'es2018.promise' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	../node_modules/typescript/lib/lib.es2018.regexp.d.ts
+	  Library referenced via 'es2018.regexp' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	  Library referenced via 'es2018.regexp' from file '../node_modules/typescript/lib/lib.es2018.d.ts'
+	../node_modules/typescript/lib/lib.es2019.array.d.ts
+	  Library referenced via 'es2019.array' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	  Library referenced via 'es2019.array' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	../node_modules/typescript/lib/lib.es2019.object.d.ts
+	  Library referenced via 'es2019.object' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	  Library referenced via 'es2019.object' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	../node_modules/typescript/lib/lib.es2019.string.d.ts
+	  Library referenced via 'es2019.string' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	  Library referenced via 'es2019.string' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	../node_modules/typescript/lib/lib.es2019.symbol.d.ts
+	  Library referenced via 'es2019.symbol' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	  Library referenced via 'es2019.symbol' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	../node_modules/typescript/lib/lib.es2019.intl.d.ts
+	  Library referenced via 'es2019.intl' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	  Library referenced via 'es2019.intl' from file '../node_modules/typescript/lib/lib.es2019.d.ts'
+	../node_modules/typescript/lib/lib.es2020.bigint.d.ts
+	  Library referenced via 'es2020.bigint' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	  Library referenced via 'esnext.bigint' from file '../../../../node_modules/@types/node/index.d.ts'
+	  Library referenced via 'es2020.bigint' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	../node_modules/typescript/lib/lib.es2020.date.d.ts
+	  Library referenced via 'es2020.date' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	  Library referenced via 'es2020.date' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	../node_modules/typescript/lib/lib.es2020.promise.d.ts
+	  Library referenced via 'es2020.promise' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	  Library referenced via 'es2020.promise' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	../node_modules/typescript/lib/lib.es2020.sharedmemory.d.ts
+	  Library referenced via 'es2020.sharedmemory' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	  Library referenced via 'es2020.sharedmemory' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	../node_modules/typescript/lib/lib.es2020.string.d.ts
+	  Library referenced via 'es2020.string' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	  Library referenced via 'es2020.string' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	../node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts
+	  Library referenced via 'es2020.symbol.wellknown' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	  Library referenced via 'es2020.symbol.wellknown' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	../node_modules/typescript/lib/lib.es2020.intl.d.ts
+	  Library referenced via 'es2020.intl' from file '../node_modules/typescript/lib/lib.es2020.bigint.d.ts'
+	  Library referenced via 'es2020.intl' from file '../node_modules/typescript/lib/lib.es2020.date.d.ts'
+	  Library referenced via 'es2020.intl' from file '../node_modules/typescript/lib/lib.es2020.number.d.ts'
+	  Library referenced via 'es2020.intl' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	  Library referenced via 'es2020.intl' from file '../node_modules/typescript/lib/lib.es2020.bigint.d.ts'
+	  Library referenced via 'es2020.intl' from file '../node_modules/typescript/lib/lib.es2020.date.d.ts'
+	  Library referenced via 'es2020.intl' from file '../node_modules/typescript/lib/lib.es2020.number.d.ts'
+	  Library referenced via 'es2020.intl' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	../node_modules/typescript/lib/lib.es2020.number.d.ts
+	  Library referenced via 'es2020.number' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	  Library referenced via 'es2020.number' from file '../node_modules/typescript/lib/lib.es2020.d.ts'
+	../node_modules/typescript/lib/lib.es2021.promise.d.ts
+	  Library referenced via 'es2021.promise' from file '../node_modules/typescript/lib/lib.es2021.d.ts'
+	../node_modules/typescript/lib/lib.es2021.string.d.ts
+	  Library referenced via 'es2021.string' from file '../node_modules/typescript/lib/lib.es2021.d.ts'
+	../node_modules/typescript/lib/lib.es2021.weakref.d.ts
+	  Library referenced via 'es2021.weakref' from file '../node_modules/typescript/lib/lib.es2021.d.ts'
+	../node_modules/typescript/lib/lib.es2021.intl.d.ts
+	  Library referenced via 'es2021.intl' from file '../node_modules/typescript/lib/lib.es2021.d.ts'
+	../node_modules/typescript/lib/lib.esnext.intl.d.ts
+	  Library referenced via 'esnext.intl' from file '../../../../node_modules/@types/node/index.d.ts'
+	../node_modules/typescript/lib/lib.decorators.d.ts
+	  Library referenced via 'decorators' from file '../node_modules/typescript/lib/lib.es5.d.ts'
+	  Library referenced via 'decorators' from file '../node_modules/typescript/lib/lib.es5.d.ts'
+	../node_modules/typescript/lib/lib.decorators.legacy.d.ts
+	  Library referenced via 'decorators.legacy' from file '../node_modules/typescript/lib/lib.es5.d.ts'
+	  Library referenced via 'decorators.legacy' from file '../node_modules/typescript/lib/lib.es5.d.ts'
+	../node_modules/typescript/lib/lib.es2021.full.d.ts
+	  Default library for target 'es2021'
+	index.ts
+	  Matched by default include pattern '**/*'
+	main.ts
+	  Matched by default include pattern '**/*'
+	../../../../node_modules/@types/argparse/index.d.ts
+	  Entry point for implicit type library 'argparse' with packageId '@types/argparse/index.d.ts@1.0.38'
+	../../../../node_modules/@types/chai/index.d.ts
+	  Entry point for implicit type library 'chai' with packageId '@types/chai/index.d.ts@4.3.5'
+	../../../../node_modules/@types/chai-subset/index.d.ts
+	  Entry point for implicit type library 'chai-subset' with packageId '@types/chai-subset/index.d.ts@1.3.3'
+	../../../../node_modules/@types/css-tree/index.d.ts
+	  Entry point for implicit type library 'css-tree' with packageId '@types/css-tree/index.d.ts@2.3.1'
+	../../../../node_modules/@types/estree/index.d.ts
+	  Entry point for implicit type library 'estree' with packageId '@types/estree/index.d.ts@1.0.0'
+	../../../../node_modules/@types/node/assert.d.ts
+	  Referenced via 'assert.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/assert/strict.d.ts
+	  Referenced via 'assert/strict.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/globals.d.ts
+	  Referenced via 'globals.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/async_hooks.d.ts
+	  Referenced via 'async_hooks.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/buffer.d.ts
+	  Referenced via 'buffer.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/child_process.d.ts
+	  Referenced via 'child_process.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/cluster.d.ts
+	  Referenced via 'cluster.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/console.d.ts
+	  Referenced via 'console.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/constants.d.ts
+	  Referenced via 'constants.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/crypto.d.ts
+	  Referenced via 'crypto.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/dgram.d.ts
+	  Referenced via 'dgram.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/diagnostics_channel.d.ts
+	  Referenced via 'diagnostics_channel.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/dns.d.ts
+	  Referenced via 'dns.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/dns/promises.d.ts
+	  Referenced via 'dns/promises.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	  Referenced via 'dns/promises.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/domain.d.ts
+	  Referenced via 'domain.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/dom-events.d.ts
+	  Referenced via 'dom-events.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/events.d.ts
+	  Referenced via 'events.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/fs.d.ts
+	  Referenced via 'fs.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/fs/promises.d.ts
+	  Referenced via 'fs/promises.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/http.d.ts
+	  Referenced via 'http.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/http2.d.ts
+	  Referenced via 'http2.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/https.d.ts
+	  Referenced via 'https.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/inspector.d.ts
+	  Referenced via 'inspector.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/module.d.ts
+	  Referenced via 'module.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/net.d.ts
+	  Referenced via 'net.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/os.d.ts
+	  Referenced via 'os.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/path.d.ts
+	  Referenced via 'path.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/perf_hooks.d.ts
+	  Referenced via 'perf_hooks.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/process.d.ts
+	  Referenced via 'process.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/punycode.d.ts
+	  Referenced via 'punycode.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/querystring.d.ts
+	  Referenced via 'querystring.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/readline.d.ts
+	  Referenced via 'readline.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/readline/promises.d.ts
+	  Referenced via 'readline/promises.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/repl.d.ts
+	  Referenced via 'repl.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/stream.d.ts
+	  Referenced via 'stream.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/stream/promises.d.ts
+	  Referenced via 'stream/promises.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/stream/consumers.d.ts
+	  Referenced via 'stream/consumers.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/stream/web.d.ts
+	  Referenced via 'stream/web.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/string_decoder.d.ts
+	  Referenced via 'string_decoder.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/test.d.ts
+	  Referenced via 'test.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/timers.d.ts
+	  Referenced via 'timers.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/timers/promises.d.ts
+	  Referenced via 'timers/promises.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/tls.d.ts
+	  Referenced via 'tls.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/trace_events.d.ts
+	  Referenced via 'trace_events.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/tty.d.ts
+	  Referenced via 'tty.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/url.d.ts
+	  Referenced via 'url.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/util.d.ts
+	  Referenced via 'util.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/v8.d.ts
+	  Referenced via 'v8.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/vm.d.ts
+	  Referenced via 'vm.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/wasi.d.ts
+	  Referenced via 'wasi.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/worker_threads.d.ts
+	  Referenced via 'worker_threads.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/zlib.d.ts
+	  Referenced via 'zlib.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/globals.global.d.ts
+	  Referenced via 'globals.global.d.ts' from file '../../../../node_modules/@types/node/index.d.ts'
+	../../../../node_modules/@types/node/index.d.ts
+	  Type library referenced via 'node' from file '../../../../node_modules/@types/glob/index.d.ts' with packageId '@types/node/index.d.ts@20.2.5'
+	../../../../node_modules/@types/minimatch/index.d.ts
+	  Imported via "minimatch" from file '../../../../node_modules/@types/glob/index.d.ts' with packageId '@types/minimatch/index.d.ts@5.1.2'
+	  Entry point for implicit type library 'minimatch' with packageId '@types/minimatch/index.d.ts@5.1.2'
+	../../../../node_modules/@types/glob/index.d.ts
+	  Entry point for implicit type library 'glob' with packageId '@types/glob/index.d.ts@8.1.0'
+	../../../../node_modules/ci-info/index.d.ts
+	  Imported via 'ci-info' from file '../../../../node_modules/@types/is-ci/index.d.ts' with packageId 'ci-info/index.d.ts@3.7.1'
+	../../../../node_modules/@types/is-ci/index.d.ts
+	  Entry point for implicit type library 'is-ci' with packageId '@types/is-ci/index.d.ts@3.0.0'
+	../../../../node_modules/@types/istanbul-lib-coverage/index.d.ts
+	  Entry point for implicit type library 'istanbul-lib-coverage' with packageId '@types/istanbul-lib-coverage/index.d.ts@2.0.4'
+	  Imported via 'istanbul-lib-coverage' from file '../../../../node_modules/@types/istanbul-lib-report/index.d.ts' with packageId '@types/istanbul-lib-coverage/index.d.ts@2.0.4'
+	../../../../node_modules/@types/istanbul-lib-report/index.d.ts
+	  Entry point for implicit type library 'istanbul-lib-report' with packageId '@types/istanbul-lib-report/index.d.ts@3.0.0'
+	  Imported via 'istanbul-lib-report' from file '../../../../node_modules/@types/istanbul-reports/index.d.ts' with packageId '@types/istanbul-lib-report/index.d.ts@3.0.0'
+	../../../../node_modules/@types/istanbul-reports/index.d.ts
+	  Entry point for implicit type library 'istanbul-reports' with packageId '@types/istanbul-reports/index.d.ts@3.0.1'
+	../../../../node_modules/@types/json-schema/index.d.ts
+	  Entry point for implicit type library 'json-schema' with packageId '@types/json-schema/index.d.ts@7.0.11'
+	../../../../node_modules/@types/json5/index.d.ts
+	  Entry point for implicit type library 'json5' with packageId '@types/json5/index.d.ts@0.0.29'
+	../../../../node_modules/@types/minimist/index.d.ts
+	  Entry point for implicit type library 'minimist' with packageId '@types/minimist/index.d.ts@1.2.2'
+	../../../../node_modules/@types/mocha/index.d.ts
+	  Entry point for implicit type library 'mocha' with packageId '@types/mocha/index.d.ts@10.0.1'
+	../../../../node_modules/@types/normalize-package-data/index.d.ts
+	  Entry point for implicit type library 'normalize-package-data' with packageId '@types/normalize-package-data/index.d.ts@2.4.1'
+	../../../../node_modules/@types/parse-json/index.d.ts
+	  Entry point for implicit type library 'parse-json' with packageId '@types/parse-json/index.d.ts@4.0.0'
+	../../../../node_modules/source-map-js/source-map.d.ts
+	  Imported via 'source-map-js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'source-map-js/source-map.d.ts@1.0.2'
+	  Imported via 'source-map-js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/previous-map.d.ts' with packageId 'source-map-js/source-map.d.ts@1.0.2'
+	  Imported via 'source-map-js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'source-map-js/source-map.d.ts@1.0.2'
+	  Imported via 'source-map-js' from file '../../../../node_modules/postcss/lib/previous-map.d.ts' with packageId 'source-map-js/source-map.d.ts@1.0.2'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/comment.d.ts
+	  Imported via './comment.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/comment.d.ts@8.4.21'
+	  Imported via './comment.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/comment.d.ts@8.4.21'
+	  Imported via './comment.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/comment.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/at-rule.d.ts
+	  Imported via './at-rule.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/at-rule.d.ts@8.4.21'
+	  Imported via './at-rule.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/at-rule.d.ts@8.4.21'
+	  Imported via './at-rule.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/at-rule.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/rule.d.ts
+	  Imported via './rule.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/rule.d.ts@8.4.21'
+	  Imported via './rule.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/rule.d.ts@8.4.21'
+	  Imported via './rule.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/rule.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/container.d.ts
+	  Imported via './container.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/declaration.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.21'
+	  Imported via './container.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/comment.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.21'
+	  Imported via './container.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/at-rule.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.21'
+	  Imported via './container.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/rule.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.21'
+	  Imported via './container.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/root.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.21'
+	  Imported via './container.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/document.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.21'
+	  Imported via './container.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.21'
+	  Imported via './container.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/declaration.d.ts
+	  Imported via './declaration.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/declaration.d.ts@8.4.21'
+	  Imported via './declaration.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/declaration.d.ts@8.4.21'
+	  Imported via './declaration.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/declaration.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/previous-map.d.ts
+	  Imported via './previous-map.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/input.d.ts' with packageId 'postcss/lib/previous-map.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/input.d.ts
+	  Imported via './input.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/css-syntax-error.d.ts' with packageId 'postcss/lib/input.d.ts@8.4.21'
+	  Imported via './input.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/input.d.ts@8.4.21'
+	  Imported via './input.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/input.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/css-syntax-error.d.ts
+	  Imported via './css-syntax-error.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/warning.d.ts' with packageId 'postcss/lib/css-syntax-error.d.ts@8.4.21'
+	  Imported via './css-syntax-error.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/css-syntax-error.d.ts@8.4.21'
+	  Imported via './css-syntax-error.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/css-syntax-error.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/warning.d.ts
+	  Imported via './warning.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/warning.d.ts@8.4.21'
+	  Imported via './warning.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/warning.d.ts@8.4.21'
+	  Imported via './warning.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/warning.d.ts@8.4.21'
+	  Imported via './warning.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/warning.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/document.d.ts
+	  Imported via './document.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/root.d.ts' with packageId 'postcss/lib/document.d.ts@8.4.21'
+	  Imported via './document.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/document.d.ts@8.4.21'
+	  Imported via './document.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/document.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/root.d.ts
+	  Imported via './root.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.21'
+	  Imported via './root.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/document.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.21'
+	  Imported via './root.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.21'
+	  Imported via './root.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.21'
+	  Imported via './root.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.21'
+	  Imported via './root.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/lazy-result.d.ts
+	  Imported via './lazy-result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/lazy-result.d.ts@8.4.21'
+	  Imported via './lazy-result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/lazy-result.d.ts@8.4.21'
+	  Imported via './lazy-result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/lazy-result.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/no-work-result.d.ts
+	  Imported via './no-work-result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/no-work-result.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/processor.d.ts
+	  Imported via './processor.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/result.d.ts' with packageId 'postcss/lib/processor.d.ts@8.4.21'
+	  Imported via './processor.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/processor.d.ts@8.4.21'
+	  Imported via './processor.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/processor.d.ts@8.4.21'
+	  Imported via './processor.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/processor.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/result.d.ts
+	  Imported via './result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.21'
+	  Imported via './result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.21'
+	  Imported via './result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/document.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.21'
+	  Imported via './result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/root.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.21'
+	  Imported via './result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.21'
+	  Imported via './result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.21'
+	  Imported via './result.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts
+	  Imported via './node.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.21'
+	  Imported via './node.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.21'
+	  Imported via './node.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/comment.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.21'
+	  Imported via './node.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/declaration.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.21'
+	  Imported via './node.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/warning.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/list.d.ts
+	  Imported via './list.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/list.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/postcss.d.ts
+	  Imported via 'postcss' from file '../../../../node_modules/@types/postcss-css-variables/index.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	  Imported via './postcss.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	  Imported via './postcss.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/input.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	  Imported via './postcss.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/previous-map.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	  Imported via './postcss.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/result.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	  Imported via './postcss.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	  Imported via './postcss.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	  Imported via './postcss.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/document.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	  Imported via './postcss.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/root.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	  Imported via './postcss.js' from file '../../../../node_modules/@types/postcss-css-variables/node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.21'
+	../../../../node_modules/@types/postcss-css-variables/index.d.ts
+	  Entry point for implicit type library 'postcss-css-variables' with packageId '@types/postcss-css-variables/index.d.ts@0.18.0'
+	../../../../node_modules/@types/prop-types/index.d.ts
+	  Entry point for implicit type library 'prop-types' with packageId '@types/prop-types/index.d.ts@15.7.5'
+	  Imported via 'prop-types' from file '../../../../node_modules/@types/react/index.d.ts' with packageId '@types/prop-types/index.d.ts@15.7.5'
+	  Imported via 'prop-types' from file '../../../../node_modules/@types/react-dom/node_modules/@types/react/index.d.ts' with packageId '@types/prop-types/index.d.ts@15.7.5'
+	../../../../node_modules/@types/react/global.d.ts
+	  Referenced via 'global.d.ts' from file '../../../../node_modules/@types/react/index.d.ts'
+	../../../../node_modules/csstype/index.d.ts
+	  Imported via 'csstype' from file '../../../../node_modules/@types/react/index.d.ts' with packageId 'csstype/index.d.ts@3.1.1'
+	  Imported via 'csstype' from file '../../../../node_modules/@types/react-dom/node_modules/@types/react/index.d.ts' with packageId 'csstype/index.d.ts@3.1.1'
+	../../../../node_modules/@types/scheduler/tracing.d.ts
+	  Imported via 'scheduler/tracing' from file '../../../../node_modules/@types/react/index.d.ts' with packageId '@types/scheduler/tracing.d.ts@0.16.2'
+	  Imported via 'scheduler/tracing' from file '../../../../node_modules/@types/react-dom/node_modules/@types/react/index.d.ts' with packageId '@types/scheduler/tracing.d.ts@0.16.2'
+	../../../../node_modules/@types/react/index.d.ts
+	  Entry point for implicit type library 'react' with packageId '@types/react/index.d.ts@18.2.14'
+	../../../../node_modules/@types/react-dom/node_modules/@types/react/global.d.ts
+	  Referenced via 'global.d.ts' from file '../../../../node_modules/@types/react-dom/node_modules/@types/react/index.d.ts'
+	../../../../node_modules/@types/react-dom/node_modules/@types/react/index.d.ts
+	  Imported via 'react' from file '../../../../node_modules/@types/react-dom/index.d.ts' with packageId '@types/react/index.d.ts@18.0.28'
+	../../../../node_modules/@types/react-dom/index.d.ts
+	  Entry point for implicit type library 'react-dom' with packageId '@types/react-dom/index.d.ts@18.0.10'
+	../../../../node_modules/@types/react-is/node_modules/@types/react/index.d.ts
+	  Imported via "react" from file '../../../../node_modules/@types/react-is/index.d.ts' with packageId '@types/react/index.d.ts@18.0.28'
+	  File redirects to file '../../../../node_modules/@types/react-dom/node_modules/@types/react/index.d.ts'
+	../../../../node_modules/@types/react-is/index.d.ts
+	  Entry point for implicit type library 'react-is' with packageId '@types/react-is/index.d.ts@17.0.3'
+	../../../../node_modules/@types/react-test-renderer/node_modules/@types/react/index.d.ts
+	  Imported via 'react' from file '../../../../node_modules/@types/react-test-renderer/index.d.ts' with packageId '@types/react/index.d.ts@18.0.28'
+	  File redirects to file '../../../../node_modules/@types/react-dom/node_modules/@types/react/index.d.ts'
+	../../../../node_modules/@types/react-test-renderer/index.d.ts
+	  Entry point for implicit type library 'react-test-renderer' with packageId '@types/react-test-renderer/index.d.ts@18.0.0'
+	../../../../node_modules/@types/scheduler/index.d.ts
+	  Entry point for implicit type library 'scheduler' with packageId '@types/scheduler/index.d.ts@0.16.2'
+	../../../../node_modules/@types/semver/index.d.ts
+	  Entry point for implicit type library 'semver' with packageId '@types/semver/index.d.ts@6.2.3'
+	../../../../node_modules/@types/stack-utils/index.d.ts
+	  Entry point for implicit type library 'stack-utils' with packageId '@types/stack-utils/index.d.ts@2.0.1'
+	../../../../node_modules/postcss/lib/previous-map.d.ts
+	  Imported via './previous-map.js' from file '../../../../node_modules/postcss/lib/input.d.ts' with packageId 'postcss/lib/previous-map.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/input.d.ts
+	  Imported via './input.js' from file '../../../../node_modules/postcss/lib/css-syntax-error.d.ts' with packageId 'postcss/lib/input.d.ts@8.4.27'
+	  Imported via './input.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/input.d.ts@8.4.27'
+	  Imported via './input.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/input.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/css-syntax-error.d.ts
+	  Imported via './css-syntax-error.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/css-syntax-error.d.ts@8.4.27'
+	  Imported via './css-syntax-error.js' from file '../../../../node_modules/postcss/lib/warning.d.ts' with packageId 'postcss/lib/css-syntax-error.d.ts@8.4.27'
+	  Imported via './css-syntax-error.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/css-syntax-error.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/declaration.d.ts
+	  Imported via './declaration.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/declaration.d.ts@8.4.27'
+	  Imported via './declaration.js' from file '../../../../node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/declaration.d.ts@8.4.27'
+	  Imported via './declaration.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/declaration.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/root.d.ts
+	  Imported via './root.js' from file '../../../../node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.27'
+	  Imported via './root.js' from file '../../../../node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.27'
+	  Imported via './root.js' from file '../../../../node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.27'
+	  Imported via './root.js' from file '../../../../node_modules/postcss/lib/document.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.27'
+	  Imported via './root.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.27'
+	  Imported via './root.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/root.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/warning.d.ts
+	  Imported via './warning.js' from file '../../../../node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/warning.d.ts@8.4.27'
+	  Imported via './warning.js' from file '../../../../node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/warning.d.ts@8.4.27'
+	  Imported via './warning.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/warning.d.ts@8.4.27'
+	  Imported via './warning.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/warning.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/lazy-result.d.ts
+	  Imported via './lazy-result.js' from file '../../../../node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/lazy-result.d.ts@8.4.27'
+	  Imported via './lazy-result.js' from file '../../../../node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/lazy-result.d.ts@8.4.27'
+	  Imported via './lazy-result.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/lazy-result.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/no-work-result.d.ts
+	  Imported via './no-work-result.js' from file '../../../../node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/no-work-result.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/processor.d.ts
+	  Imported via './processor.js' from file '../../../../node_modules/postcss/lib/result.d.ts' with packageId 'postcss/lib/processor.d.ts@8.4.27'
+	  Imported via './processor.js' from file '../../../../node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/processor.d.ts@8.4.27'
+	  Imported via './processor.js' from file '../../../../node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/processor.d.ts@8.4.27'
+	  Imported via './processor.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/processor.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/result.d.ts
+	  Imported via './result.js' from file '../../../../node_modules/postcss/lib/document.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.27'
+	  Imported via './result.js' from file '../../../../node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.27'
+	  Imported via './result.js' from file '../../../../node_modules/postcss/lib/root.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.27'
+	  Imported via './result.js' from file '../../../../node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.27'
+	  Imported via './result.js' from file '../../../../node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.27'
+	  Imported via './result.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.27'
+	  Imported via './result.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/result.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/document.d.ts
+	  Imported via './document.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/document.d.ts@8.4.27'
+	  Imported via './document.js' from file '../../../../node_modules/postcss/lib/root.d.ts' with packageId 'postcss/lib/document.d.ts@8.4.27'
+	  Imported via './document.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/document.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/rule.d.ts
+	  Imported via './rule.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/rule.d.ts@8.4.27'
+	  Imported via './rule.js' from file '../../../../node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/rule.d.ts@8.4.27'
+	  Imported via './rule.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/rule.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/node.d.ts
+	  Imported via './node.js' from file '../../../../node_modules/postcss/lib/comment.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.27'
+	  Imported via './node.js' from file '../../../../node_modules/postcss/lib/declaration.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.27'
+	  Imported via './node.js' from file '../../../../node_modules/postcss/lib/warning.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.27'
+	  Imported via './node.js' from file '../../../../node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.27'
+	  Imported via './node.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/node.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/comment.d.ts
+	  Imported via './comment.js' from file '../../../../node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/comment.d.ts@8.4.27'
+	  Imported via './comment.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/comment.d.ts@8.4.27'
+	  Imported via './comment.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/comment.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/container.d.ts
+	  Imported via './container.js' from file '../../../../node_modules/postcss/lib/at-rule.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.27'
+	  Imported via './container.js' from file '../../../../node_modules/postcss/lib/comment.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.27'
+	  Imported via './container.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.27'
+	  Imported via './container.js' from file '../../../../node_modules/postcss/lib/declaration.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.27'
+	  Imported via './container.js' from file '../../../../node_modules/postcss/lib/document.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.27'
+	  Imported via './container.js' from file '../../../../node_modules/postcss/lib/root.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.27'
+	  Imported via './container.js' from file '../../../../node_modules/postcss/lib/rule.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.27'
+	  Imported via './container.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/container.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/at-rule.d.ts
+	  Imported via './at-rule.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/at-rule.d.ts@8.4.27'
+	  Imported via './at-rule.js' from file '../../../../node_modules/postcss/lib/container.d.ts' with packageId 'postcss/lib/at-rule.d.ts@8.4.27'
+	  Imported via './at-rule.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/at-rule.d.ts@8.4.27'
+	  Imported via './at-rule.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/at-rule.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/list.d.ts
+	  Imported via './list.js' from file '../../../../node_modules/postcss/lib/postcss.d.ts' with packageId 'postcss/lib/list.d.ts@8.4.27'
+	../../../../node_modules/postcss/lib/postcss.d.ts
+	  Imported via 'postcss' from file '../../../../node_modules/tailwindcss/types/index.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	  Imported via './postcss.js' from file '../../../../node_modules/postcss/lib/input.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	  Imported via './postcss.js' from file '../../../../node_modules/postcss/lib/previous-map.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	  Imported via './postcss.js' from file '../../../../node_modules/postcss/lib/document.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	  Imported via './postcss.js' from file '../../../../node_modules/postcss/lib/result.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	  Imported via './postcss.js' from file '../../../../node_modules/postcss/lib/lazy-result.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	  Imported via './postcss.js' from file '../../../../node_modules/postcss/lib/root.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	  Imported via './postcss.js' from file '../../../../node_modules/postcss/lib/no-work-result.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	  Imported via './postcss.js' from file '../../../../node_modules/postcss/lib/processor.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	  Imported via './postcss.js' from file '../../../../node_modules/postcss/lib/node.d.ts' with packageId 'postcss/lib/postcss.d.ts@8.4.27'
+	../../../../node_modules/tailwindcss/types/generated/corePluginList.d.ts
+	  Imported via './generated/corePluginList' from file '../../../../node_modules/tailwindcss/types/config.d.ts' with packageId 'tailwindcss/types/generated/corePluginList.d.ts@3.3.3'
+	../../../../node_modules/tailwindcss/types/generated/colors.d.ts
+	  Imported via './generated/colors' from file '../../../../node_modules/tailwindcss/types/config.d.ts' with packageId 'tailwindcss/types/generated/colors.d.ts@3.3.3'
+	../../../../node_modules/tailwindcss/types/config.d.ts
+	  Imported via './config.d' from file '../../../../node_modules/tailwindcss/types/index.d.ts' with packageId 'tailwindcss/types/config.d.ts@3.3.3'
+	../../../../node_modules/tailwindcss/types/index.d.ts
+	  Entry point for implicit type library 'tailwindcss' with packageId 'tailwindcss/types/index.d.ts@3.3.3'
+	../../../../node_modules/@types/vscode/index.d.ts
+	  Entry point for implicit type library 'vscode' with packageId '@types/vscode/index.d.ts@1.80.0'
+	../../../../node_modules/@types/yargs-parser/index.d.ts
+	  Imported via 'yargs-parser' from file '../../../../node_modules/@types/yargs/index.d.ts' with packageId '@types/yargs-parser/index.d.ts@21.0.0'
+	  Entry point for implicit type library 'yargs-parser' with packageId '@types/yargs-parser/index.d.ts@21.0.0'
+	../../../../node_modules/@types/yargs/index.d.ts
+	  Entry point for implicit type library 'yargs' with packageId '@types/yargs/index.d.ts@17.0.20'
+
+Info 102  [02:07:23.879] -----------------------------------------------
+Info 103  [02:07:23.883] FileWatcher:: Added:: WatchInfo: /users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/package.json 250 undefined WatchType: package.json file
+Info 104  [02:07:23.883] FileWatcher:: Added:: WatchInfo: /users/chripio/work/universal-labs/react-universal/packages/ts-plugin/package.json 250 undefined WatchType: package.json file
+Info 105  [02:07:23.884] FileWatcher:: Added:: WatchInfo: /users/chripio/work/universal-labs/react-universal/package.json 250 undefined WatchType: package.json file
+Info 106  [02:07:23.890] AutoImportProviderProject: found 6 root files in 6 dependencies in 8.343698024749756 ms
+Info 107  [02:07:23.891] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/build/index.d.ts 500 undefined WatchType: Closed Script info
+Info 108  [02:07:23.892] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject1*
+Info 109  [02:07:23.994] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules 1 undefined Project: /dev/null/autoImportProviderProject1* WatchType: Failed Lookup Locations
+Info 110  [02:07:23.994] Elapsed:: 0.011180996894836426ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules 1 undefined Project: /dev/null/autoImportProviderProject1* WatchType: Failed Lookup Locations
+Info 111  [02:07:23.994] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@vscode/emmet-helper/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 112  [02:07:24.013] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/emmet/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 113  [02:07:24.014] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/abbreviation/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 114  [02:07:24.018] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/scanner/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 115  [02:07:24.021] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/css-abbreviation/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 116  [02:07:24.028] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/typescript-template-language-service-decorator/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 117  [02:07:24.031] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/vscode-css-languageservice/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 118  [02:07:24.118] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/build/node_modules 1 undefined Project: /dev/null/autoImportProviderProject1* WatchType: Failed Lookup Locations
+Info 119  [02:07:24.118] Elapsed:: 0.09273803234100342ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/build/node_modules 1 undefined Project: /dev/null/autoImportProviderProject1* WatchType: Failed Lookup Locations
+Info 120  [02:07:24.118] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/node_modules 1 undefined Project: /dev/null/autoImportProviderProject1* WatchType: Failed Lookup Locations
+Info 121  [02:07:24.118] Elapsed:: 0.008395016193389893ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/node_modules 1 undefined Project: /dev/null/autoImportProviderProject1* WatchType: Failed Lookup Locations
+Info 122  [02:07:24.118] DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/node_modules 1 undefined Project: /dev/null/autoImportProviderProject1* WatchType: Failed Lookup Locations
+Info 123  [02:07:24.118] Elapsed:: 0.009308993816375732ms DirectoryWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/packages/node_modules 1 undefined Project: /dev/null/autoImportProviderProject1* WatchType: Failed Lookup Locations
+Info 124  [02:07:24.118] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/typescript/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 125  [02:07:24.119] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/@vscode/emmet-helper/node_modules/vscode-languageserver-textdocument/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 126  [02:07:24.119] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/vscode-css-languageservice/node_modules/vscode-languageserver-textdocument/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 127  [02:07:24.120] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/vscode-languageserver-types/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 128  [02:07:24.121] FileWatcher:: Added:: WatchInfo: /Users/chripio/work/universal-labs/react-universal/node_modules/vscode-uri/package.json 2000 undefined Project: /dev/null/autoImportProviderProject1* WatchType: File location affecting resolution
+Info 129  [02:07:24.122] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject1* Version: 1 structureChanged: true structureIsReused:: Not Elapsed: 230.25962698459625ms
+Info 130  [02:07:24.122] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 131  [02:07:24.124] 	Files (37)
+	/Users/chripio/work/universal-labs/react-universal/node_modules/typescript/lib/tsserverlibrary.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/build/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/node_modules/typescript/lib/typescript.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@vscode/emmet-helper/node_modules/vscode-languageserver-textdocument/lib/umd/main.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/vscode-languageserver-types/lib/umd/main.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/vscode-uri/lib/umd/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@vscode/emmet-helper/lib/cjs/fileService.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/scanner/utils.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/scanner/scanner.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/abbreviation/dist/tokenizer/tokens.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/abbreviation/dist/tokenizer/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/abbreviation/dist/types.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/abbreviation/dist/parser/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/abbreviation/dist/convert.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/abbreviation/dist/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/css-abbreviation/dist/tokenizer/tokens.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/css-abbreviation/dist/tokenizer/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/css-abbreviation/dist/parser/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@emmetio/css-abbreviation/dist/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/emmet/dist/stylesheet/snippets.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/emmet/dist/config.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/emmet/dist/markup/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/emmet/dist/stylesheet/format.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/emmet/dist/stylesheet/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/emmet/dist/extract-abbreviation/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/emmet/dist/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@vscode/emmet-helper/lib/cjs/configCompat.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/@vscode/emmet-helper/lib/cjs/emmetHelper.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/typescript-template-language-service-decorator/lib/logger.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/typescript-template-language-service-decorator/lib/template-context.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/typescript-template-language-service-decorator/lib/template-language-service.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/typescript-template-language-service-decorator/lib/template-settings.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/typescript-template-language-service-decorator/lib/index.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/vscode-css-languageservice/node_modules/vscode-languageserver-textdocument/lib/umd/main.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/vscode-css-languageservice/lib/umd/cssLanguageTypes.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/vscode-css-languageservice/lib/umd/cssLanguageService.d.ts
+	/Users/chripio/work/universal-labs/react-universal/node_modules/vscode-languageserver-textdocument/lib/umd/main.d.ts
+
+
+	../../../../node_modules/typescript/lib/tsserverlibrary.d.ts
+	  Imported via 'typescript/lib/tsserverlibrary' from file '../../build/index.d.ts' with packageId 'typescript/lib/tsserverlibrary.d.ts@5.1.6'
+	  Imported via 'typescript/lib/tsserverlibrary' from file '../../../../node_modules/typescript-template-language-service-decorator/lib/index.d.ts' with packageId 'typescript/lib/tsserverlibrary.d.ts@5.1.6'
+	  Imported via 'typescript/lib/tsserverlibrary' from file '../../../../node_modules/typescript-template-language-service-decorator/lib/template-context.d.ts' with packageId 'typescript/lib/tsserverlibrary.d.ts@5.1.6'
+	  Imported via 'typescript/lib/tsserverlibrary' from file '../../../../node_modules/typescript-template-language-service-decorator/lib/template-language-service.d.ts' with packageId 'typescript/lib/tsserverlibrary.d.ts@5.1.6'
+	../../build/index.d.ts
+	  Root file specified for compilation
+	../node_modules/typescript/lib/typescript.d.ts
+	  Root file specified for compilation
+	../../../../node_modules/@vscode/emmet-helper/node_modules/vscode-languageserver-textdocument/lib/umd/main.d.ts
+	  Imported via 'vscode-languageserver-textdocument' from file '../../../../node_modules/@vscode/emmet-helper/lib/cjs/emmetHelper.d.ts' with packageId 'vscode-languageserver-textdocument/lib/umd/main.d.ts@1.0.10'
+	../../../../node_modules/vscode-languageserver-types/lib/umd/main.d.ts
+	  Imported via 'vscode-languageserver-types' from file '../../../../node_modules/@vscode/emmet-helper/lib/cjs/emmetHelper.d.ts' with packageId 'vscode-languageserver-types/lib/umd/main.d.ts@3.17.3'
+	  Imported via 'vscode-languageserver-types' from file '../../../../node_modules/vscode-css-languageservice/lib/umd/cssLanguageTypes.d.ts' with packageId 'vscode-languageserver-types/lib/umd/main.d.ts@3.17.3'
+	../../../../node_modules/vscode-uri/lib/umd/index.d.ts
+	  Imported via 'vscode-uri' from file '../../../../node_modules/@vscode/emmet-helper/lib/cjs/emmetHelper.d.ts' with packageId 'vscode-uri/lib/umd/index.d.ts@2.1.2'
+	  Imported via 'vscode-uri' from file '../../../../node_modules/@vscode/emmet-helper/lib/cjs/fileService.d.ts' with packageId 'vscode-uri/lib/umd/index.d.ts@2.1.2'
+	../../../../node_modules/@vscode/emmet-helper/lib/cjs/fileService.d.ts
+	  Imported via './fileService' from file '../../../../node_modules/@vscode/emmet-helper/lib/cjs/emmetHelper.d.ts' with packageId '@vscode/emmet-helper/lib/cjs/fileService.d.ts@2.9.2'
+	../../../../node_modules/@emmetio/scanner/utils.d.ts
+	  Imported via './utils.js' from file '../../../../node_modules/@emmetio/scanner/scanner.d.ts' with packageId '@emmetio/scanner/utils.d.ts@1.0.4'
+	../../../../node_modules/@emmetio/scanner/scanner.d.ts
+	  Imported via '@emmetio/scanner' from file '../../../../node_modules/@emmetio/abbreviation/dist/tokenizer/index.d.ts' with packageId '@emmetio/scanner/scanner.d.ts@1.0.4'
+	  Imported via './scanner.js' from file '../../../../node_modules/@emmetio/scanner/utils.d.ts' with packageId '@emmetio/scanner/scanner.d.ts@1.0.4'
+	  Imported via '@emmetio/scanner' from file '../../../../node_modules/@emmetio/css-abbreviation/dist/tokenizer/index.d.ts' with packageId '@emmetio/scanner/scanner.d.ts@1.0.4'
+	../../../../node_modules/@emmetio/abbreviation/dist/tokenizer/tokens.d.ts
+	  Imported via './tokens.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/tokenizer/index.d.ts' with packageId '@emmetio/abbreviation/dist/tokenizer/tokens.d.ts@2.3.3'
+	  Imported via './tokens.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/tokenizer/index.d.ts' with packageId '@emmetio/abbreviation/dist/tokenizer/tokens.d.ts@2.3.3'
+	  Imported via './tokenizer/tokens.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/index.d.ts' with packageId '@emmetio/abbreviation/dist/tokenizer/tokens.d.ts@2.3.3'
+	../../../../node_modules/@emmetio/abbreviation/dist/tokenizer/index.d.ts
+	  Imported via '../tokenizer/index.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/parser/index.d.ts' with packageId '@emmetio/abbreviation/dist/tokenizer/index.d.ts@2.3.3'
+	  Imported via './tokenizer/index.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/types.d.ts' with packageId '@emmetio/abbreviation/dist/tokenizer/index.d.ts@2.3.3'
+	  Imported via './tokenizer/index.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/index.d.ts' with packageId '@emmetio/abbreviation/dist/tokenizer/index.d.ts@2.3.3'
+	../../../../node_modules/@emmetio/abbreviation/dist/types.d.ts
+	  Imported via '../types.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/parser/index.d.ts' with packageId '@emmetio/abbreviation/dist/types.d.ts@2.3.3'
+	  Imported via './types.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/convert.d.ts' with packageId '@emmetio/abbreviation/dist/types.d.ts@2.3.3'
+	  Imported via './types.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/index.d.ts' with packageId '@emmetio/abbreviation/dist/types.d.ts@2.3.3'
+	  Imported via './types.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/index.d.ts' with packageId '@emmetio/abbreviation/dist/types.d.ts@2.3.3'
+	  Imported via "./types.js" from file '../../../../node_modules/@emmetio/abbreviation/dist/index.d.ts' with packageId '@emmetio/abbreviation/dist/types.d.ts@2.3.3'
+	../../../../node_modules/@emmetio/abbreviation/dist/parser/index.d.ts
+	  Imported via './parser/index.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/index.d.ts' with packageId '@emmetio/abbreviation/dist/parser/index.d.ts@2.3.3'
+	  Imported via './parser/index.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/convert.d.ts' with packageId '@emmetio/abbreviation/dist/parser/index.d.ts@2.3.3'
+	../../../../node_modules/@emmetio/abbreviation/dist/convert.d.ts
+	  Imported via './convert.js' from file '../../../../node_modules/@emmetio/abbreviation/dist/index.d.ts' with packageId '@emmetio/abbreviation/dist/convert.d.ts@2.3.3'
+	../../../../node_modules/@emmetio/abbreviation/dist/index.d.ts
+	  Imported via '@emmetio/abbreviation' from file '../../../../node_modules/emmet/dist/index.d.ts' with packageId '@emmetio/abbreviation/dist/index.d.ts@2.3.3'
+	  Imported via '@emmetio/abbreviation' from file '../../../../node_modules/emmet/dist/markup/index.d.ts' with packageId '@emmetio/abbreviation/dist/index.d.ts@2.3.3'
+	  Imported via '@emmetio/abbreviation' from file '../../../../node_modules/emmet/dist/config.d.ts' with packageId '@emmetio/abbreviation/dist/index.d.ts@2.3.3'
+	../../../../node_modules/@emmetio/css-abbreviation/dist/tokenizer/tokens.d.ts
+	  Imported via './tokens.js' from file '../../../../node_modules/@emmetio/css-abbreviation/dist/tokenizer/index.d.ts' with packageId '@emmetio/css-abbreviation/dist/tokenizer/tokens.d.ts@2.1.8'
+	  Imported via './tokens.js' from file '../../../../node_modules/@emmetio/css-abbreviation/dist/tokenizer/index.d.ts' with packageId '@emmetio/css-abbreviation/dist/tokenizer/tokens.d.ts@2.1.8'
+	  Imported via '../tokenizer/tokens.js' from file '../../../../node_modules/@emmetio/css-abbreviation/dist/parser/index.d.ts' with packageId '@emmetio/css-abbreviation/dist/tokenizer/tokens.d.ts@2.1.8'
+	  Imported via './tokenizer/tokens.js' from file '../../../../node_modules/@emmetio/css-abbreviation/dist/index.d.ts' with packageId '@emmetio/css-abbreviation/dist/tokenizer/tokens.d.ts@2.1.8'
+	../../../../node_modules/@emmetio/css-abbreviation/dist/tokenizer/index.d.ts
+	  Imported via './tokenizer/index.js' from file '../../../../node_modules/@emmetio/css-abbreviation/dist/index.d.ts' with packageId '@emmetio/css-abbreviation/dist/tokenizer/index.d.ts@2.1.8'
+	../../../../node_modules/@emmetio/css-abbreviation/dist/parser/index.d.ts
+	  Imported via './parser/index.js' from file '../../../../node_modules/@emmetio/css-abbreviation/dist/index.d.ts' with packageId '@emmetio/css-abbreviation/dist/parser/index.d.ts@2.1.8'
+	  Imported via './parser/index.js' from file '../../../../node_modules/@emmetio/css-abbreviation/dist/index.d.ts' with packageId '@emmetio/css-abbreviation/dist/parser/index.d.ts@2.1.8'
+	../../../../node_modules/@emmetio/css-abbreviation/dist/index.d.ts
+	  Imported via '@emmetio/css-abbreviation' from file '../../../../node_modules/emmet/dist/index.d.ts' with packageId '@emmetio/css-abbreviation/dist/index.d.ts@2.1.8'
+	  Imported via '@emmetio/css-abbreviation' from file '../../../../node_modules/emmet/dist/stylesheet/snippets.d.ts' with packageId '@emmetio/css-abbreviation/dist/index.d.ts@2.1.8'
+	  Imported via '@emmetio/css-abbreviation' from file '../../../../node_modules/emmet/dist/stylesheet/index.d.ts' with packageId '@emmetio/css-abbreviation/dist/index.d.ts@2.1.8'
+	  Imported via '@emmetio/css-abbreviation' from file '../../../../node_modules/emmet/dist/stylesheet/format.d.ts' with packageId '@emmetio/css-abbreviation/dist/index.d.ts@2.1.8'
+	../../../../node_modules/emmet/dist/stylesheet/snippets.d.ts
+	  Imported via './stylesheet/snippets.js' from file '../../../../node_modules/emmet/dist/config.d.ts' with packageId 'emmet/dist/stylesheet/snippets.d.ts@2.4.6'
+	  Imported via './snippets.js' from file '../../../../node_modules/emmet/dist/stylesheet/index.d.ts' with packageId 'emmet/dist/stylesheet/snippets.d.ts@2.4.6'
+	../../../../node_modules/emmet/dist/config.d.ts
+	  Imported via '../config.js' from file '../../../../node_modules/emmet/dist/markup/index.d.ts' with packageId 'emmet/dist/config.d.ts@2.4.6'
+	  Imported via '../config.js' from file '../../../../node_modules/emmet/dist/stylesheet/index.d.ts' with packageId 'emmet/dist/config.d.ts@2.4.6'
+	  Imported via '../config.js' from file '../../../../node_modules/emmet/dist/stylesheet/format.d.ts' with packageId 'emmet/dist/config.d.ts@2.4.6'
+	  Imported via './config.js' from file '../../../../node_modules/emmet/dist/index.d.ts' with packageId 'emmet/dist/config.d.ts@2.4.6'
+	  Imported via '../config.js' from file '../../../../node_modules/emmet/dist/extract-abbreviation/index.d.ts' with packageId 'emmet/dist/config.d.ts@2.4.6'
+	  Imported via './config.js' from file '../../../../node_modules/emmet/dist/index.d.ts' with packageId 'emmet/dist/config.d.ts@2.4.6'
+	  Imported via './config.js' from file '../../../../node_modules/emmet/dist/index.d.ts' with packageId 'emmet/dist/config.d.ts@2.4.6'
+	../../../../node_modules/emmet/dist/markup/index.d.ts
+	  Imported via './markup/index.js' from file '../../../../node_modules/emmet/dist/index.d.ts' with packageId 'emmet/dist/markup/index.d.ts@2.4.6'
+	../../../../node_modules/emmet/dist/stylesheet/format.d.ts
+	  Imported via './format.js' from file '../../../../node_modules/emmet/dist/stylesheet/index.d.ts' with packageId 'emmet/dist/stylesheet/format.d.ts@2.4.6'
+	../../../../node_modules/emmet/dist/stylesheet/index.d.ts
+	  Imported via './stylesheet/index.js' from file '../../../../node_modules/emmet/dist/index.d.ts' with packageId 'emmet/dist/stylesheet/index.d.ts@2.4.6'
+	../../../../node_modules/emmet/dist/extract-abbreviation/index.d.ts
+	  Imported via './extract-abbreviation/index.js' from file '../../../../node_modules/emmet/dist/index.d.ts' with packageId 'emmet/dist/extract-abbreviation/index.d.ts@2.4.6'
+	../../../../node_modules/emmet/dist/index.d.ts
+	  Imported via 'emmet' from file '../../../../node_modules/@vscode/emmet-helper/lib/cjs/emmetHelper.d.ts' with packageId 'emmet/dist/index.d.ts@2.4.6'
+	../../../../node_modules/@vscode/emmet-helper/lib/cjs/configCompat.d.ts
+	  Imported via './configCompat' from file '../../../../node_modules/@vscode/emmet-helper/lib/cjs/emmetHelper.d.ts' with packageId '@vscode/emmet-helper/lib/cjs/configCompat.d.ts@2.9.2'
+	../../../../node_modules/@vscode/emmet-helper/lib/cjs/emmetHelper.d.ts
+	  Root file specified for compilation
+	../../../../node_modules/typescript-template-language-service-decorator/lib/logger.d.ts
+	  Imported via './logger' from file '../../../../node_modules/typescript-template-language-service-decorator/lib/index.d.ts' with packageId 'typescript-template-language-service-decorator/lib/logger.d.ts@2.3.2'
+	../../../../node_modules/typescript-template-language-service-decorator/lib/template-context.d.ts
+	  Imported via './template-context' from file '../../../../node_modules/typescript-template-language-service-decorator/lib/template-language-service.d.ts' with packageId 'typescript-template-language-service-decorator/lib/template-context.d.ts@2.3.2'
+	  Imported via './template-context' from file '../../../../node_modules/typescript-template-language-service-decorator/lib/index.d.ts' with packageId 'typescript-template-language-service-decorator/lib/template-context.d.ts@2.3.2'
+	../../../../node_modules/typescript-template-language-service-decorator/lib/template-language-service.d.ts
+	  Imported via './template-language-service' from file '../../../../node_modules/typescript-template-language-service-decorator/lib/index.d.ts' with packageId 'typescript-template-language-service-decorator/lib/template-language-service.d.ts@2.3.2'
+	../../../../node_modules/typescript-template-language-service-decorator/lib/template-settings.d.ts
+	  Imported via './template-settings' from file '../../../../node_modules/typescript-template-language-service-decorator/lib/index.d.ts' with packageId 'typescript-template-language-service-decorator/lib/template-settings.d.ts@2.3.2'
+	../../../../node_modules/typescript-template-language-service-decorator/lib/index.d.ts
+	  Root file specified for compilation
+	../../../../node_modules/vscode-css-languageservice/node_modules/vscode-languageserver-textdocument/lib/umd/main.d.ts
+	  Imported via 'vscode-languageserver-textdocument' from file '../../../../node_modules/vscode-css-languageservice/lib/umd/cssLanguageTypes.d.ts' with packageId 'vscode-languageserver-textdocument/lib/umd/main.d.ts@1.0.10'
+	  File redirects to file '../../../../node_modules/@vscode/emmet-helper/node_modules/vscode-languageserver-textdocument/lib/umd/main.d.ts'
+	../../../../node_modules/vscode-css-languageservice/lib/umd/cssLanguageTypes.d.ts
+	  Imported via './cssLanguageTypes' from file '../../../../node_modules/vscode-css-languageservice/lib/umd/cssLanguageService.d.ts' with packageId 'vscode-css-languageservice/lib/umd/cssLanguageTypes.d.ts@6.2.6'
+	  Imported via './cssLanguageTypes' from file '../../../../node_modules/vscode-css-languageservice/lib/umd/cssLanguageService.d.ts' with packageId 'vscode-css-languageservice/lib/umd/cssLanguageTypes.d.ts@6.2.6'
+	../../../../node_modules/vscode-css-languageservice/lib/umd/cssLanguageService.d.ts
+	  Root file specified for compilation
+	../../../../node_modules/vscode-languageserver-textdocument/lib/umd/main.d.ts
+	  Root file specified for compilation
+
+Info 132  [02:07:24.124] -----------------------------------------------
+Info 133  [02:07:24.124] event:
+    {
+     "seq": 0,
+     "type": "event",
+     "event": "projectLoadingFinish",
+     "body": {
+      "projectName": "/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json"
+     }
+    }
+Info 134  [02:07:24.126] event:
+    {
+     "seq": 0,
+     "type": "event",
+     "event": "telemetry",
+     "body": {
+      "telemetryEventName": "projectInfo",
+      "payload": {
+       "projectId": "7269f0e9566614f74c5a642343c764f6676d65d1ca605a65ed05489859fd9e00",
+       "fileStats": {
+        "js": 0,
+        "jsSize": 0,
+        "jsx": 0,
+        "jsxSize": 0,
+        "ts": 2,
+        "tsSize": 114,
+        "tsx": 0,
+        "tsxSize": 0,
+        "dts": 185,
+        "dtsSize": 6300009,
+        "deferred": 0,
+        "deferredSize": 0
+       },
+       "compilerOptions": {
+        "target": "es2021",
+        "module": "commonjs",
+        "plugins": [
+         ""
+        ]
+       },
+       "typeAcquisition": {
+        "enable": false,
+        "include": false,
+        "exclude": false
+       },
+       "extends": false,
+       "files": false,
+       "include": false,
+       "exclude": false,
+       "compileOnSave": false,
+       "configFileName": "tsconfig.json",
+       "projectType": "configured",
+       "languageServiceEnabled": true,
+       "version": "5.1.6"
+      }
+     }
+    }
+Info 135  [02:07:24.126] event:
+    {
+     "seq": 0,
+     "type": "event",
+     "event": "configFileDiag",
+     "body": {
+      "triggerFile": "/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/main.ts",
+      "configFile": "/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json",
+      "diagnostics": []
+     }
+    }
+Info 136  [02:07:24.127] Project '/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json' (Configured)
+Info 136  [02:07:24.127] 	Files (187)
+
+Info 136  [02:07:24.127] -----------------------------------------------
+Info 136  [02:07:24.127] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 136  [02:07:24.127] 	Files (37)
+
+Info 136  [02:07:24.127] -----------------------------------------------
+Info 136  [02:07:24.127] Open files: 
+Info 136  [02:07:24.127] 	FileName: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/main.ts ProjectRootPath: undefined
+Info 136  [02:07:24.127] 		Projects: /Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/tsconfig.json
+Perf 136  [02:07:24.128] 1::open: async elapsed time (in milliseconds) 1891.3040
+Info 137  [02:07:24.128] request:
+    {"seq":2,"type":"request","command":"completions","arguments":{"file":"/Users/chripio/work/universal-labs/react-universal/packages/ts-plugin/e2e/project-fixture/main.ts","offset":11,"line":1}}
