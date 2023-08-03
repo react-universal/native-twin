@@ -6,17 +6,16 @@ import { LanguageServiceContext } from './language-service';
 // so we stop at the pseudo-class
 const classNameRegex = /\.((?:\\:|[^:\s])+)/gi;
 
+const tailwindDefaultCss = `@tailwind components; @tailwind utilities;`;
 export async function populateCompletions(
   context: LanguageServiceContext,
-  configPath: string,
+  _configPath: string,
 ) {
-  const result = await postcss(tailwind(configPath)).process(
-    `@tailwind components; @tailwind utilities;`,
-    {
-      from: 'tailwind.css',
-      map: false,
-    },
-  );
+  const parsed = postcss.parse(tailwindDefaultCss);
+  const result = await postcss(tailwind({ content: ['_'] })).process(parsed, {
+    parser: postcss.parse,
+    from: tailwindDefaultCss,
+  });
   context.completionEntries.clear();
 
   result.root?.walkRules((rule) => {
@@ -28,6 +27,8 @@ export async function populateCompletions(
       }
     });
   });
+  console.log('populateCompletions', context.completionEntries);
+  return result;
 }
 
 export function addClassNameToCompletions(className: string, context: LanguageServiceContext) {

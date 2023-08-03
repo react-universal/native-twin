@@ -1,9 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { initialize } from '../src';
+import { Tailwind } from '../src';
 
 const stringify = (target: string[]) => target.join('');
 
-const { tw, tx } = initialize({
+const {
+  instance: { tw, tx },
+} = new Tailwind({
   fontFamily: {
     DEFAULT: 'Inter-Regular',
     inter: 'Inter-Regular',
@@ -12,7 +14,6 @@ const { tw, tx } = initialize({
     sans: 'Inter-Regular',
   },
 });
-
 describe('TailwindCSS Aspect Ratio', () => {
   beforeEach(() => {
     tw.clear();

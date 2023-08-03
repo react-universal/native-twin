@@ -1,7 +1,17 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { initialize } from '../src';
+import { Tailwind } from '../src';
 
-const { tx, tw } = initialize({});
+const {
+  instance: { tw, tx },
+} = new Tailwind({
+  fontFamily: {
+    DEFAULT: 'Inter-Regular',
+    inter: 'Inter-Regular',
+    'inter-bold': 'Inter-Bold',
+    'inter-medium': 'Inter-Medium',
+    sans: 'Inter-Regular',
+  },
+});
 const stringify = (target: string[]) => target.join('');
 
 describe('TailwindCSS rounded', () => {

@@ -37,6 +37,9 @@ export = function init(mod: { typescript: typeof ts }) {
         info.project,
         createLanguageService(context, info),
         { tags: ['tw', 'css', 'styled'] },
+        {
+          logger: { log },
+        },
       );
     },
   };

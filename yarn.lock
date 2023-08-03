@@ -5002,6 +5002,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/postcss-js@npm:4.0.1":
+  version: 4.0.1
+  resolution: "@types/postcss-js@npm:4.0.1"
+  dependencies:
+    postcss: ^8.3.3
+  checksum: 2d21e0e420d7ce57b2431ee531392fbbd43004aac455253a3b6d7dd17dcd7363dbac2ab2fe960bcec660058891998f0d8bc7f0788d13ac4ac3a41911628ab8c2
+  languageName: node
+  linkType: hard
+
 "@types/prop-types@npm:*":
   version: 15.7.5
   resolution: "@types/prop-types@npm:15.7.5"
@@ -5288,9 +5297,11 @@ __metadata:
   dependencies:
     "@types/css-tree": 2.3.1
     "@types/postcss-css-variables": 0.18.0
+    "@types/postcss-js": 4.0.1
     "@types/tailwindcss": 3.1.0
     css-tree: 2.3.1
     postcss-css-variables: ^0.18.0
+    postcss-js: 4.0.1
     tailwindcss: ^3.3.3
     tsx: 3.12.6
   peerDependencies:
@@ -5304,6 +5315,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin"
   dependencies:
+    "@universal-labs/twind-adapter": "workspace:*"
     "@vscode/emmet-helper": 2.9.2
     postcss: 8.4.27
     tailwindcss: ^3.3.3
@@ -13481,6 +13493,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss-js@npm:4.0.1, postcss-js@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "postcss-js@npm:4.0.1"
+  dependencies:
+    camelcase-css: ^2.0.1
+  peerDependencies:
+    postcss: ^8.4.21
+  checksum: 5c1e83efeabeb5a42676193f4357aa9c88f4dc1b3c4a0332c132fe88932b33ea58848186db117cf473049fc233a980356f67db490bd0a7832ccba9d0b3fd3491
+  languageName: node
+  linkType: hard
+
 "postcss-js@npm:^4.0.0":
   version: 4.0.0
   resolution: "postcss-js@npm:4.0.0"
@@ -13489,17 +13512,6 @@ __metadata:
   peerDependencies:
     postcss: ^8.3.3
   checksum: 14be8a58670b4c5d037d40f179240a4f736d53530db727e2635638fa296bc4bff18149ca860928398aace422e55d07c9f5729eeccd395340944985199cdc82a5
-  languageName: node
-  linkType: hard
-
-"postcss-js@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "postcss-js@npm:4.0.1"
-  dependencies:
-    camelcase-css: ^2.0.1
-  peerDependencies:
-    postcss: ^8.4.21
-  checksum: 5c1e83efeabeb5a42676193f4357aa9c88f4dc1b3c4a0332c132fe88932b33ea58848186db117cf473049fc233a980356f67db490bd0a7832ccba9d0b3fd3491
   languageName: node
   linkType: hard
 
@@ -13589,7 +13601,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.27, postcss@npm:^8.4.23":
+"postcss@npm:8.4.27, postcss@npm:^8.3.3, postcss@npm:^8.4.23":
   version: 8.4.27
   resolution: "postcss@npm:8.4.27"
   dependencies:
