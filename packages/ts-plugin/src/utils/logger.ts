@@ -1,5 +1,5 @@
 import ts from 'typescript/lib/tsserverlibrary';
-import { pluginName } from './_config';
+import { pluginName } from '../constants/config.constants';
 
 export function createLogFunction(info: ts.server.PluginCreateInfo) {
   return (...stuff: unknown[]) => {

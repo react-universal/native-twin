@@ -1,6 +1,6 @@
 import postcss from 'postcss';
 import tailwind from 'tailwindcss';
-import { LanguageServiceContext } from './_language-service';
+import { LanguageServiceContext } from './language-service';
 
 // matches either an escaped colon or anything but a colon,
 // so we stop at the pseudo-class

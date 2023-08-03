@@ -1,7 +1,7 @@
 import { TemplateLanguageService } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
-import { regexExec } from './helpers';
-import { pluginName } from './_config';
+import { regexExec } from './utils/helpers';
+import { pluginName } from './constants/config.constants';
 
 export type LanguageServiceContext = {
   completionEntries: Map<string, { name: string }>;

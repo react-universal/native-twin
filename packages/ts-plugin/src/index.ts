@@ -1,7 +1,7 @@
 import ts from 'typescript/lib/tsserverlibrary';
 import { decorateWithTemplateLanguageService } from 'typescript-template-language-service-decorator';
-import { createLogFunction } from './_logger';
-import { LanguageServiceContext, createLanguageService } from './_language-service';
+import { createLogFunction } from './utils/logger';
+import { LanguageServiceContext, createLanguageService } from './language-service';
 import { populateCompletions } from './tailwind';
 import { join } from 'path';
 
@@ -17,15 +17,15 @@ export = function init(mod: { typescript: typeof ts }) {
       const configPath = join(info.project.getCurrentDirectory(), 'tailwind.config.js');
 
       if (!initialized) {
+        log('initializing');
+        initialized = true;
         populateCompletions(context, configPath)
           .catch((error) => {
-            log('an error occured:', String(error));
+            log('an error occurred:', String(error));
           })
           .then(() => {
             log('populateCompletions done');
           });
-        log('initializing');
-        initialized = true;
       } else {
         log('already initialized');
       }

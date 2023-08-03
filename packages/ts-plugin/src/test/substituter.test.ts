@@ -1,7 +1,7 @@
 // @ts-check
 import { assert } from 'chai';
 import 'mocha';
-import { getSubstitutions } from '../_substituter';
+import { getSubstitutions } from '../utils/substituter';
 
 describe('substituter', () => {
   it('should replace property value with x', () => {
