@@ -6,13 +6,15 @@
   "author": "Native Styled",
   "main": "build/index.js",
   "scripts": {
-    "build:libs": "tsc -p .",
+    "build:es": "node ./build.js",
+    "build:libs": "node ./build.js",
     "e2e": "mocha e2e/tests",
     "lint": "eslint src",
     "unit": "npx mocha ./build/test",
-    "watch:compile": "tsc -p . --watch"
+    "watch:compile": "node ./build.js --watch"
   },
   "dependencies": {
+    "@twind/intellisense": "1.1.3",
     "@universal-labs/twind-adapter": "workspace:*",
     "@vscode/emmet-helper": "2.9.2",
     "postcss": "8.4.27",

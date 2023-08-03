@@ -4,6 +4,21 @@ import { createLogFunction } from './utils/logger';
 import { LanguageServiceContext, createLanguageService } from './language-service';
 import { populateCompletions } from './tailwind';
 import { join } from 'path';
+import presetTailwind from '@twind/preset-tailwind';
+
+const completionsAPI = async (log: any) => {
+  const module = await import('@twind/intellisense');
+  const completions = module.createIntellisense({
+    presets: [presetTailwind({ disablePreflight: true })],
+  });
+  // log([...completions.enumerate()]);
+  // completions.suggestAt('bg', 2, 'typescriptreact').then((result) => {
+  //   log(result);
+  // });
+  completions.suggest('bg').then((result) => {
+    log(result);
+  });
+};
 
 export = function init(mod: { typescript: typeof ts }) {
   let initialized = false;
@@ -19,6 +34,7 @@ export = function init(mod: { typescript: typeof ts }) {
       if (!initialized) {
         log('initializing');
         initialized = true;
+        completionsAPI(log);
         populateCompletions(context, configPath)
           .catch((error) => {
             log('an error occurred:', String(error));
