@@ -29,20 +29,6 @@ export interface Intellisense<
   readonly config: TwindConfig<Theme & TailwindTheme>;
 
   suggest(input: string, options?: SuggestAtOptions): Promise<Suggestion[]>;
-  suggestAt(
-    content: string,
-    offset: number,
-    language: LanguageId,
-  ): Promise<SuggestionAt | null>;
-  documentationFor(token: string, options?: DocumentationForOptions): Promise<string | null>;
-  documentationAt(
-    content: string,
-    offset: number,
-    language: LanguageId,
-  ): Promise<DocumentationAt | null>;
-  collectColors(content: string, language: LanguageId): Promise<ColorInformation[]>;
-  validate(content: string, language: LanguageId): Promise<Diagnostics[]>;
-  enumerate(): IterableIterator<Suggestion>;
 }
 
 export interface DocumentationForOptions {

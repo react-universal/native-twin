@@ -30,9 +30,3 @@ export interface IntellisenseContext {
   isIgnored: (className: string) => boolean;
   generateCSS: (token: string) => string;
 }
-
-export interface Boundary {
-  start: number;
-  end: number;
-  content: string;
-}

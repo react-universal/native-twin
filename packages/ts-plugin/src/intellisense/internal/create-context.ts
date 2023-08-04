@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import genex from 'genex';
 
 import {
@@ -46,66 +47,6 @@ export function createIntellisenseContext(
 
   const cssCache = new QuickLRU<string, string>({ maxSize: 1000, ...options.cache });
 
-  const add = <T extends IntellisenseClass | IntellisenseVariant>(
-    target: Map<string, T>,
-    {
-      modifiers,
-      ...completion
-    }: Omit<T, 'filter' | 'value' | 'description' | 'modifiers'> & {
-      filter?: string;
-      value?: string;
-      description?: string;
-      modifiers?: AutocompleteItem['modifiers'];
-    },
-  ) => {
-    if (completion.type === 'class' && isIgnored(completion.name)) return;
-
-    if (
-      target.has(completion.name) &&
-      JSON.stringify(target.get(completion.name), ['type', 'name']) !==
-        JSON.stringify(completion, ['type', 'name'])
-    ) {
-      console.warn(`Duplicate ${completion.type}: ${JSON.stringify(completion.name)}`);
-    } else {
-      completion.value ||= completion.name;
-      completion.filter ||= spacify(completion.value);
-      completion.description ||= '';
-
-      target.set(completion.name, completion as unknown as T);
-      suggestions.push(completion as unknown as T);
-
-      if (modifiers && modifiers.length) {
-        suggestions.push({
-          ...(completion as unknown as T),
-          name: completion.name + '/',
-          value: completion.value + '/',
-          filter: spacify(completion.value + '/'),
-          description: '',
-        });
-        (completion as any).modifiers = modifiers
-          .map(({ modifier, theme, color, label }, position) => ({
-            ...(completion as unknown as Omit<T, 'modifiers'>),
-            position,
-            name: `${completion.name}/${modifier}`,
-            value: `${completion.value}/${modifier}`,
-            filter: spacify(modifier),
-            description: label || '',
-            theme,
-            color: color && parseColor(color) ? color : undefined,
-          }))
-          .filter((suggestion) => {
-            if (completion.type === 'class' && isIgnored(completion.name)) {
-              return false;
-            }
-
-            target.set(suggestion.name, suggestion as T);
-
-            return true;
-          });
-      }
-    }
-  };
-
   const deferreds: (() => void)[] = [];
 
   const context: AutocompleteContext<BaseTheme & TailwindTheme> = {
@@ -124,277 +65,15 @@ export function createIntellisenseContext(
 
   let nextIndex = 0;
 
-  for (const screen of Object.keys(tw.theme('screens'))) {
-    const name = screen + ':';
-    add(variants, {
-      type: 'variant',
-      source: `theme('screens')`,
-      index: nextIndex++,
-      position: variants.size,
-      name,
-      theme: { section: 'screens', key: screen },
-      description: mql(tw.theme('screens', screen) as MaybeArray<ScreenValue>),
-    });
-  }
-
-  for (const [pattern, resolver] of tw.config.variants) {
-    const index = nextIndex++;
-    let position = 0;
-
-    const provider = typeof resolver === 'function' && getAutocompleteProvider(resolver);
-
-    for (const value of asArray(pattern)) {
-      const condition = toCondition(value);
-      const source = condition.toString();
-
-      const re = new RegExp(condition.source.replace(/\\[dw][*+?]*/g, '\0'), condition.flags);
-      const pattern = genex(re);
-      const count = pattern.count();
-
-      if (count === Infinity) {
-        if (provider) {
-          deferreds.push(() => {
-            const match: MatchResult = Object.create([String(value)], {
-              index: { value: 0 },
-              input: { value: String(value) },
-              $$: { value: '' },
-            });
-
-            for (const completion of provider(match, context)) {
-              if (typeof completion === 'string') {
-                add(variants, {
-                  type: 'variant',
-                  source,
-                  index,
-                  position: position++,
-                  name: completion + ':',
-                });
-              } else {
-                add(variants, {
-                  type: 'variant',
-                  source,
-                  index,
-                  position: position++,
-                  name: (completion.prefix || '') + (completion.suffix || '') + ':',
-                  theme: completion.theme,
-                  description: completion.label!,
-                  modifiers: completion.modifiers,
-                });
-              }
-            }
-          });
-        } else {
-          console.warn(
-            `Can not generate completion for variant ${condition}: infinite possibilities`,
-          );
-        }
-      } else {
-        pattern.generate((value) => {
-          const match = re.exec(value) as MatchResult | null;
-
-          if (match) {
-            match.$$ = value.slice(match[0].length);
-
-            const base = value.replace(/\0/g, '');
-
-            if (provider) {
-              for (const completion of provider(match, context)) {
-                if (typeof completion === 'string') {
-                  add(variants, {
-                    type: 'variant',
-                    source,
-                    index,
-                    position: position++,
-                    name: base + completion + ':',
-                    description: '',
-                  });
-                } else {
-                  add(variants, {
-                    type: 'variant',
-                    source,
-                    index,
-                    position: position++,
-                    name: (completion.prefix ?? base) + (completion.suffix ?? '') + ':',
-                    theme: completion.theme,
-                    description: completion.label!,
-                    modifiers: completion.modifiers,
-                  });
-                }
-              }
-            } else {
-              if (value.includes('\0') || value.endsWith('-')) {
-                console.warn(
-                  `Can not generate completion for variant ${condition} with ${JSON.stringify(
-                    value,
-                  )}: missing provider`,
-                );
-              } else {
-                add(variants, {
-                  type: 'variant',
-                  source,
-                  index,
-                  position: position++,
-                  name: value + ':',
-                  description: typeof resolver == 'string' ? resolver : '',
-                });
-              }
-            }
-          }
-        });
-      }
-    }
-  }
-
-  for (const pseudoClass of simplePseudoClasses) {
-    const name = pseudoClass.slice(1) + ':';
-    if (!variants.has(name)) {
-      add(variants, {
-        type: 'variant',
-        source: 'builtin',
-        index: nextIndex++,
-        position: variants.size,
-        name,
-        value: name,
-        description: `&${pseudoClass}`,
-      });
-    }
-  }
-
+  addMediaQueries();
+  addVariants();
+  addPseudoClasses();
   if (deferreds.length) {
     for (const deferred of deferreds) {
       deferred();
     }
   }
-
-  for (const rule of tw.config.rules) {
-    const [pattern, resolver] = asArray(rule);
-
-    const index = nextIndex++;
-    let position = 0;
-
-    const provider = typeof resolver === 'function' && getAutocompleteProvider(resolver);
-
-    for (const value of asArray(pattern)) {
-      if (value === VARIANT_MARKER_RULE) {
-        continue;
-      }
-
-      const condition = toCondition(value);
-      const source = condition.toString();
-
-      const re = new RegExp(condition.source.replace(/\\[dw][*+?]*/g, '\0'), condition.flags);
-      const pattern = genex(re);
-
-      const count = pattern.count();
-
-      if (count === Infinity) {
-        if (provider) {
-          const match: MatchResult = Object.create([String(value)], {
-            index: { value: 0 },
-            input: { value: String(value) },
-            $$: { value: '' },
-          });
-
-          for (const completion of provider(match, context)) {
-            if (typeof completion === 'string') {
-              add(classes, {
-                type: 'class',
-                source,
-                index,
-                position: position++,
-                name: completion,
-              });
-            } else {
-              add(classes, {
-                type: 'class',
-                source,
-                index,
-                position: position++,
-                name: (completion.prefix || '') + (completion.suffix || ''),
-                theme: completion.theme,
-                description: completion.label!,
-                color:
-                  completion.color && parseColor(completion.color) ? completion.color : '',
-                modifiers: completion.modifiers,
-              });
-            }
-          }
-        } else {
-          console.warn(
-            `Can not generate completion for rule ${condition}: infinite possibilities`,
-          );
-        }
-      } else {
-        pattern.generate((name) => {
-          const match = re.exec(name) as MatchResult | null;
-          // console.log('MATCH: ', match);
-
-          if (match) {
-            match.$$ = name.slice(match[0].length);
-            const base = name.replace(/\0/g, '');
-
-            if (provider) {
-              for (const completion of provider(match, context)) {
-                if (typeof completion === 'string') {
-                  add(classes, {
-                    type: 'class',
-                    source,
-                    index,
-                    position: position++,
-                    name: base + completion,
-                  });
-                } else {
-                  add(classes, {
-                    type: 'class',
-                    source,
-                    index,
-                    position: position++,
-                    name: (completion.prefix ?? base) + (completion.suffix ?? ''),
-                    theme: completion.theme,
-                    description: completion.label!,
-                    color:
-                      completion.color && parseColor(completion.color) ? completion.color : '',
-                    modifiers: completion.modifiers,
-                  });
-                }
-              }
-            } else {
-              if (name.includes('\0') || name.endsWith('-')) {
-                if (typeof resolver === 'function') {
-                  if (name == 'bg-' || name == 'text-') {
-                    for (const [key] of Object.entries(tw.theme('colors'))) {
-                      add(classes, {
-                        type: 'class',
-                        source,
-                        index,
-                        position: position++,
-                        name: `${name}${key}`,
-                      });
-                    }
-                  } else {
-                    console.warn(
-                      `2. Can not generate completion for rule ${condition} with ${JSON.stringify(
-                        name,
-                      )}: missing provider`,
-                    );
-                  }
-                  // console.log('RESOLVED: ', resolved);
-                }
-              } else {
-                add(classes, {
-                  type: 'class',
-                  source,
-                  index,
-                  position: position++,
-                  name,
-                });
-              }
-            }
-          }
-        });
-      }
-    }
-  }
+  addRulesClassNames();
 
   suggestions.sort(compareSuggestions);
 
@@ -459,4 +138,346 @@ export function createIntellisenseContext(
       return result;
     },
   };
+
+  function addRulesClassNames() {
+    for (const rule of tw.config.rules) {
+      const [pattern, resolver] = asArray(rule);
+
+      const index = nextIndex++;
+      let position = 0;
+
+      const provider = typeof resolver === 'function' && getAutocompleteProvider(resolver);
+
+      for (const value of asArray(pattern)) {
+        if (value === VARIANT_MARKER_RULE) {
+          continue;
+        }
+
+        const condition = toCondition(value);
+        const source = condition.toString();
+
+        const re = new RegExp(
+          condition.source.replace(/\\[dw][*+?]*/g, '\0'),
+          condition.flags,
+        );
+        const pattern = genex(re);
+
+        const count = pattern.count();
+
+        if (count === Infinity) {
+          if (provider) {
+            const match: MatchResult = Object.create([String(value)], {
+              index: { value: 0 },
+              input: { value: String(value) },
+              $$: { value: '' },
+            });
+
+            for (const completion of provider(match, context)) {
+              if (typeof completion === 'string') {
+                addSuggestion(classes, {
+                  type: 'class',
+                  source,
+                  index,
+                  position: position++,
+                  name: completion,
+                });
+              } else {
+                addSuggestion(classes, {
+                  type: 'class',
+                  source,
+                  index,
+                  position: position++,
+                  name: (completion.prefix || '') + (completion.suffix || ''),
+                  theme: completion.theme,
+                  description: completion.label!,
+                  color:
+                    completion.color && parseColor(completion.color) ? completion.color : '',
+                  modifiers: completion.modifiers,
+                });
+              }
+            }
+          } else {
+            console.warn(
+              `Can not generate completion for rule ${condition}: infinite possibilities`,
+            );
+          }
+        } else {
+          pattern.generate((name) => {
+            const match = re.exec(name) as MatchResult | null;
+            // console.log('MATCH: ', match);
+
+            if (match) {
+              match.$$ = name.slice(match[0].length);
+              const base = name.replace(/\0/g, '');
+
+              if (provider) {
+                for (const completion of provider(match, context)) {
+                  if (typeof completion === 'string') {
+                    addSuggestion(classes, {
+                      type: 'class',
+                      source,
+                      index,
+                      position: position++,
+                      name: base + completion,
+                    });
+                  } else {
+                    addSuggestion(classes, {
+                      type: 'class',
+                      source,
+                      index,
+                      position: position++,
+                      name: (completion.prefix ?? base) + (completion.suffix ?? ''),
+                      theme: completion.theme,
+                      description: completion.label!,
+                      color:
+                        completion.color && parseColor(completion.color)
+                          ? completion.color
+                          : '',
+                      modifiers: completion.modifiers,
+                    });
+                  }
+                }
+              } else {
+                if (name.includes('\0') || name.endsWith('-')) {
+                  if (typeof resolver === 'function') {
+                    if (name == 'bg-' || name == 'text-') {
+                      for (const [key] of Object.entries(tw.theme('colors'))) {
+                        addSuggestion(classes, {
+                          type: 'class',
+                          source,
+                          index,
+                          position: position++,
+                          name: `${name}${key}`,
+                        });
+                      }
+                    } else {
+                      console.warn(
+                        `2. Can not generate completion for rule ${condition} with ${JSON.stringify(
+                          name,
+                        )}: missing provider`,
+                      );
+                    }
+                    // console.log('RESOLVED: ', resolved);
+                  }
+                } else {
+                  addSuggestion(classes, {
+                    type: 'class',
+                    source,
+                    index,
+                    position: position++,
+                    name,
+                  });
+                }
+              }
+            }
+          });
+        }
+      }
+    }
+  }
+
+  function addPseudoClasses() {
+    for (const pseudoClass of simplePseudoClasses) {
+      const name = pseudoClass.slice(1) + ':';
+      if (!variants.has(name)) {
+        addSuggestion(variants, {
+          type: 'variant',
+          source: 'builtin',
+          index: nextIndex++,
+          position: variants.size,
+          name,
+          value: name,
+          description: `&${pseudoClass}`,
+        });
+      }
+    }
+  }
+
+  function addVariants() {
+    for (const [pattern, resolver] of tw.config.variants) {
+      const index = nextIndex++;
+      let position = 0;
+
+      const provider = typeof resolver === 'function' && getAutocompleteProvider(resolver);
+
+      for (const value of asArray(pattern)) {
+        const condition = toCondition(value);
+        const source = condition.toString();
+
+        const re = new RegExp(
+          condition.source.replace(/\\[dw][*+?]*/g, '\0'),
+          condition.flags,
+        );
+        const pattern = genex(re);
+        const count = pattern.count();
+
+        if (count === Infinity) {
+          if (provider) {
+            deferreds.push(() => {
+              const match: MatchResult = Object.create([String(value)], {
+                index: { value: 0 },
+                input: { value: String(value) },
+                $$: { value: '' },
+              });
+
+              for (const completion of provider(match, context)) {
+                if (typeof completion === 'string') {
+                  addSuggestion(variants, {
+                    type: 'variant',
+                    source,
+                    index,
+                    position: position++,
+                    name: completion + ':',
+                  });
+                } else {
+                  addSuggestion(variants, {
+                    type: 'variant',
+                    source,
+                    index,
+                    position: position++,
+                    name: (completion.prefix || '') + (completion.suffix || '') + ':',
+                    theme: completion.theme,
+                    description: completion.label!,
+                    modifiers: completion.modifiers,
+                  });
+                }
+              }
+            });
+          } else {
+            console.warn(
+              `Can not generate completion for variant ${condition}: infinite possibilities`,
+            );
+          }
+        } else {
+          pattern.generate((value) => {
+            const match = re.exec(value) as MatchResult | null;
+
+            if (match) {
+              match.$$ = value.slice(match[0].length);
+
+              const base = value.replace(/\0/g, '');
+
+              if (provider) {
+                for (const completion of provider(match, context)) {
+                  if (typeof completion === 'string') {
+                    addSuggestion(variants, {
+                      type: 'variant',
+                      source,
+                      index,
+                      position: position++,
+                      name: base + completion + ':',
+                      description: '',
+                    });
+                  } else {
+                    addSuggestion(variants, {
+                      type: 'variant',
+                      source,
+                      index,
+                      position: position++,
+                      name: (completion.prefix ?? base) + (completion.suffix ?? '') + ':',
+                      theme: completion.theme,
+                      description: completion.label!,
+                      modifiers: completion.modifiers,
+                    });
+                  }
+                }
+              } else {
+                if (value.includes('\0') || value.endsWith('-')) {
+                  console.warn(
+                    `Can not generate completion for variant ${condition} with ${JSON.stringify(
+                      value,
+                    )}: missing provider`,
+                  );
+                } else {
+                  addSuggestion(variants, {
+                    type: 'variant',
+                    source,
+                    index,
+                    position: position++,
+                    name: value + ':',
+                    description: typeof resolver == 'string' ? resolver : '',
+                  });
+                }
+              }
+            }
+          });
+        }
+      }
+    }
+  }
+
+  function addMediaQueries() {
+    for (const screen of Object.keys(tw.theme('screens'))) {
+      const name = screen + ':';
+      addSuggestion(variants, {
+        type: 'variant',
+        source: `theme('screens')`,
+        index: nextIndex++,
+        position: variants.size,
+        name,
+        theme: { section: 'screens', key: screen },
+        description: mql(tw.theme('screens', screen) as MaybeArray<ScreenValue>),
+      });
+    }
+  }
+
+  function addSuggestion<T extends IntellisenseClass | IntellisenseVariant>(
+    target: Map<string, T>,
+    {
+      modifiers,
+      ...completion
+    }: Omit<T, 'filter' | 'value' | 'description' | 'modifiers'> & {
+      filter?: string;
+      value?: string;
+      description?: string;
+      modifiers?: AutocompleteItem['modifiers'];
+    },
+  ) {
+    if (completion.type === 'class' && isIgnored(completion.name)) return;
+
+    if (
+      target.has(completion.name) &&
+      JSON.stringify(target.get(completion.name), ['type', 'name']) !==
+        JSON.stringify(completion, ['type', 'name'])
+    ) {
+      // console.warn(`Duplicate ${completion.type}: ${JSON.stringify(completion.name)}`);
+    } else {
+      completion.value ||= completion.name;
+      completion.filter ||= spacify(completion.value);
+      completion.description ||= '';
+
+      target.set(completion.name, completion as unknown as T);
+      suggestions.push(completion as unknown as T);
+
+      if (modifiers && modifiers.length) {
+        suggestions.push({
+          ...(completion as unknown as T),
+          name: completion.name + '/',
+          value: completion.value + '/',
+          filter: spacify(completion.value + '/'),
+          description: '',
+        });
+        (completion as any).modifiers = modifiers
+          .map(({ modifier, theme, color, label }, position) => ({
+            ...(completion as unknown as Omit<T, 'modifiers'>),
+            position,
+            name: `${completion.name}/${modifier}`,
+            value: `${completion.value}/${modifier}`,
+            filter: spacify(modifier),
+            description: label || '',
+            theme,
+            color: color && parseColor(color) ? color : undefined,
+          }))
+          .filter((suggestion) => {
+            if (completion.type === 'class' && isIgnored(completion.name)) {
+              return false;
+            }
+
+            target.set(suggestion.name, suggestion as T);
+
+            return true;
+          });
+      }
+    }
+  }
 }
