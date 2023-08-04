@@ -1,33 +1,20 @@
-import postcss from 'postcss';
-import tailwind from 'tailwindcss';
+import { createIntellisense } from './intellisense';
 import { LanguageServiceContext } from './language-service';
+import presetTailwind from '@twind/preset-tailwind';
 
-// matches either an escaped colon or anything but a colon,
-// so we stop at the pseudo-class
-const classNameRegex = /\.((?:\\:|[^:\s])+)/gi;
-
-const tailwindDefaultCss = `@tailwind components; @tailwind utilities;`;
 export async function populateCompletions(
   context: LanguageServiceContext,
   _configPath: string,
 ) {
-  const parsed = postcss.parse(tailwindDefaultCss);
-  const result = await postcss(tailwind({ content: ['_'] })).process(parsed, {
-    parser: postcss.parse,
-    from: tailwindDefaultCss,
+  const completions = createIntellisense({
+    presets: [presetTailwind({ disablePreflight: true })],
   });
+  const result = await completions.suggest('');
   context.completionEntries.clear();
 
-  result.root?.walkRules((rule) => {
-    rule.selector.match(classNameRegex)?.forEach((match) => {
-      // remove the dot and escapes
-      const className = match.slice(1).replace(/\\/g, '');
-      if (className) {
-        addClassNameToCompletions(className, context);
-      }
-    });
+  result.forEach((className) => {
+    addClassNameToCompletions(className.name, context);
   });
-  console.log('populateCompletions', context.completionEntries);
   return result;
 }
 

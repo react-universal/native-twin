@@ -15,13 +15,7 @@ export function createLanguageService(
     getCompletionsAtPosition(templateContext) {
       const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
 
-      const entries: ts.CompletionEntry[] = [
-        {
-          kind: ts.ScriptElementKind.string,
-          name: 'bg-red-500',
-          sortText: 'bg-red-500',
-        },
-      ];
+      const entries: ts.CompletionEntry[] = [];
       info.project.projectService.logger.info(
         `[${pluginName}] ${[...templateClasses].join('--')} classes`,
       );

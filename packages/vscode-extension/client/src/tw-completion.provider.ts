@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { EXAMPLE_TW_SELECTORS } from './constants/selectors.constants';
 import { getStartLineToCursorText } from './utils/position.utils';
 
 export class NativeStyledCompletionItemProvider implements vscode.CompletionItemProvider {
@@ -30,18 +29,10 @@ export class NativeStyledCompletionItemProvider implements vscode.CompletionItem
     const currentChar = document.getText(rangeNext);
     // @ts-ignore
     const getWordRangeAtPosition = document.getText(document.getWordRangeAtPosition(position));
-
+    // @ts-ignore
     const isPrevSpace = document.getText(rangePrev) == ' ';
 
-    const completionItems = EXAMPLE_TW_SELECTORS.map((className) => {
-      const completionItem = new vscode.CompletionItem(
-        `${isPrevSpace ? '' : ' '}${className}`,
-        vscode.CompletionItemKind.Value,
-      );
-      completionItem.detail = 'Tailwind CSS class';
-      completionItem.insertText = new vscode.SnippetString('$0');
-      return completionItem;
-    });
+    const completionItems: vscode.CompletionItem[] = [];
 
     return completionItems;
   }

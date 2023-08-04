@@ -1,4 +1,4 @@
-import type { BaseTheme, Preset, TwindUserConfig } from '@twind/core';
+import type { BaseTheme, Preset, TwindUserConfig, ParsedRule } from '@twind/core';
 import type { TailwindTheme } from '@twind/preset-tailwind';
 
 export type CustomConfig = TwindUserConfig<
@@ -6,3 +6,4 @@ export type CustomConfig = TwindUserConfig<
   (Preset<TailwindTheme> | Preset<BaseTheme>)[]
 >;
 export type TwindRules = Exclude<CustomConfig['rules'], undefined>;
+export type { ParsedRule };

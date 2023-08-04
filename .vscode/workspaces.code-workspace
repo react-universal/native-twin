@@ -45,7 +45,17 @@
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [
-      "axxxx"
+      "alpinejs",
+      "autosemicolon",
+      "axxxx",
+      "cssbeautify",
+      "csstree",
+      "genex",
+      "ignorelist",
+      "Numberify",
+      "Regexper",
+      "spacify",
+      "tinycolor"
     ]
   }
 }
