@@ -17,8 +17,8 @@ import { spacify } from './spacify';
 import { compareSuggestions } from './compare-suggestion';
 import QuickLRU from 'quick-lru';
 import { Tailwind } from '@universal-labs/twind-adapter';
-import { extractRulesFromTheme } from './process-rules';
-import { extractPseudoClasses } from './process-pseudo';
+import { extractRulesFromTheme } from './extract-rules';
+import { extractPseudoClasses } from './extract-pseudo';
 import { extractVariants } from './extract-variants';
 import { extractMediaQueries } from './extract-media-queries';
 
