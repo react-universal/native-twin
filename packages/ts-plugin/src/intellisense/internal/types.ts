@@ -1,4 +1,9 @@
-import type { AutocompleteItem, Twind } from '@twind/core';
+import type {
+  AutocompleteItem,
+  Twind,
+  TailwindTheme,
+  BaseTheme,
+} from '@universal-labs/twind-adapter';
 import type { SuggestionCommon, SuggestionVariant, SuggestionClass } from '../types';
 
 export interface IntellisenseCommon extends SuggestionCommon {
@@ -18,7 +23,7 @@ export interface IntellisenseClass extends IntellisenseCommon, SuggestionClass {
 }
 
 export interface IntellisenseContext {
-  tw: Twind;
+  tw: Twind<BaseTheme & TailwindTheme>;
   variants: Map<string, IntellisenseVariant>;
   classes: Map<string, IntellisenseClass>;
   suggestions: (IntellisenseVariant | IntellisenseClass)[];

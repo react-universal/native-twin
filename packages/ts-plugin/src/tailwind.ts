@@ -7,7 +7,11 @@ export async function populateCompletions(
   _configPath: string,
 ) {
   const completions = createIntellisense({
-    presets: [presetTailwind({ disablePreflight: true })],
+    presets: [
+      presetTailwind({
+        disablePreflight: true,
+      }),
+    ],
   });
   const result = await completions.suggest('');
   context.completionEntries.clear();
@@ -25,8 +29,22 @@ export function addClassNameToCompletions(className: string, context: LanguageSe
   const variants = parts.slice(0, -1);
   const baseClassName = parts[parts.length - 1];
 
-  context.completionEntries.set(baseClassName!, { name: baseClassName! });
+  context.completionEntries.set(baseClassName!, {
+    name: baseClassName!,
+    type: 'class',
+    value: className,
+    color: '',
+    description: '',
+    detail: '',
+  });
   for (const variant of variants) {
-    context.completionEntries.set(`${variant}:`, { name: `${variant}:` });
+    context.completionEntries.set(`${variant}:`, {
+      name: `${variant}:`,
+      type: 'variant',
+      value: className,
+      color: '',
+      description: '',
+      detail: '',
+    });
   }
 }

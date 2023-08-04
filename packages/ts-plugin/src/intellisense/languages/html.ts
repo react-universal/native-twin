@@ -1,10 +1,10 @@
-import type { ParsedDevRule } from '@twind/core';
+import type { ParsedDevRule } from '@universal-labs/twind-adapter';
 import type { ColorInformation, Diagnostics, DocumentationAt } from '../types';
 import type { IntellisenseContext, Boundary } from '../internal/types';
 import csstreeParse from 'css-tree/parser';
 import csstreeWalk from 'css-tree/walker';
 import csstreeGenerate from 'css-tree/generator';
-import { parse } from '@twind/core';
+import { parse } from '@universal-labs/twind-adapter';
 import { fixClassList, parseHTML } from '../utils';
 import { toClassName } from '../utils';
 

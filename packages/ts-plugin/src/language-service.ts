@@ -1,10 +1,10 @@
 import { TemplateLanguageService } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
-import { regexExec } from './utils/helpers';
 import { pluginName } from './constants/config.constants';
+import { Suggestion } from './intellisense';
 
 export type LanguageServiceContext = {
-  completionEntries: Map<string, { name: string }>;
+  completionEntries: Map<string, Suggestion>;
 };
 
 export function createLanguageService(
@@ -28,6 +28,7 @@ export function createLanguageService(
             name: rule.name,
             sortText: rule.name,
             kind: ts.ScriptElementKind.string,
+            labelDetails: { description: rule.description!, detail: rule.detail! },
           });
         }
       });
@@ -40,25 +41,25 @@ export function createLanguageService(
       };
     },
 
-    getSemanticDiagnostics(templateContext) {
+    getSemanticDiagnostics(_templateContext) {
       const diagnostics: ts.Diagnostic[] = [];
 
-      for (const match of regexExec(/[^:\s]+:?/g, templateContext.text)) {
-        const className = match[0]!;
-        const start = match.index;
-        const length = match![0]!.length;
+      // for (const match of regexExec(/[^:\s]+:?/g, templateContext.text)) {
+      //   const className = match[0]!;
+      //   const start = match.index;
+      //   const length = match![0]!.length;
 
-        if (!languageServiceContext.completionEntries.has(className)) {
-          diagnostics.push({
-            messageText: `unknown tailwind class or variant "${className}"`,
-            start: start,
-            length: length,
-            file: templateContext.node.getSourceFile(),
-            category: ts.DiagnosticCategory.Warning,
-            code: 0, // ???
-          });
-        }
-      }
+      //   if (!languageServiceContext.completionEntries.has(className)) {
+      //     diagnostics.push({
+      //       messageText: `unknown tailwind class or variant "${className}"`,
+      //       start: start,
+      //       length: length,
+      //       file: templateContext.node.getSourceFile(),
+      //       category: ts.DiagnosticCategory.Warning,
+      //       code: 0, // ???
+      //     });
+      //   }
+      // }
 
       return diagnostics;
     },

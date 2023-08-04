@@ -6,7 +6,7 @@ import {
   cx as cx$,
   defineConfig,
 } from '@twind/core';
-import presetTailwind from '@twind/preset-tailwind';
+import presetTailwind, { TailwindTheme } from '@twind/preset-tailwind';
 import type { CustomConfig } from '../types';
 import twindPresetReactNative from './presets/preset-react-native';
 import { rotateRules } from './rules/rotate';
@@ -79,3 +79,23 @@ export class Tailwind {
 }
 
 export type TwindManager = ReturnType<typeof initialize>;
+
+export type { TailwindTheme };
+
+export type {
+  AutocompleteItem,
+  Twind,
+  BaseTheme,
+  MaybeArray,
+  MatchResult,
+  AutocompleteContext,
+  TwindConfig,
+  TwindUserConfig,
+  ScreenValue,
+  ParsedDevRule,
+  ExtractThemes,
+  Preset,
+  ExtractUserTheme,
+  ThemeFunction,
+} from '@twind/core';
+export { asArray, stringify, mql, getAutocompleteProvider, parse } from '@twind/core';

@@ -1,4 +1,10 @@
-import type { BaseTheme, ExtractUserTheme, ThemeFunction, TwindConfig } from '@twind/core';
+import type {
+  BaseTheme,
+  ExtractUserTheme,
+  TailwindTheme,
+  ThemeFunction,
+  TwindConfig,
+} from '@universal-labs/twind-adapter';
 
 import type { Numberify, RGBA } from '@ctrl/tinycolor';
 
@@ -16,9 +22,11 @@ export type LanguageId =
     )
   | (string & {});
 
-export interface Intellisense<Theme extends BaseTheme = BaseTheme> {
-  readonly theme: ThemeFunction<ExtractUserTheme<Theme>>;
-  readonly config: TwindConfig<Theme>;
+export interface Intellisense<
+  Theme extends BaseTheme & TailwindTheme = BaseTheme & TailwindTheme,
+> {
+  readonly theme: ThemeFunction<ExtractUserTheme<Theme & TailwindTheme>>;
+  readonly config: TwindConfig<Theme & TailwindTheme>;
 
   suggest(input: string, options?: SuggestAtOptions): Promise<Suggestion[]>;
   suggestAt(

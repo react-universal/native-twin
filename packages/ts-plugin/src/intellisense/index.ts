@@ -5,9 +5,10 @@ import type {
   Twind,
   TwindConfig,
   TwindUserConfig,
-} from '@twind/core';
+} from '@universal-labs/twind-adapter';
 import { matchSorter, type MatchSorterOptions } from 'match-sorter';
 import cssbeautify from 'cssbeautify';
+import { TailwindTheme } from '@twind/preset-tailwind';
 import QuickLRU from 'quick-lru';
 import type { Boundary } from './internal/types';
 import type {
@@ -17,7 +18,7 @@ import type {
   IntellisenseOptions,
   Suggestion,
 } from './types';
-import { parse, type ParsedDevRule } from '@twind/core';
+import { parse, type ParsedDevRule } from '@universal-labs/twind-adapter';
 import { createIntellisenseContext } from './internal/create-context';
 import { spacify } from './internal/spacify';
 import { compareSuggestions } from './internal/compare-suggestion';
@@ -28,12 +29,12 @@ const MDN = 'https://developer.mozilla.org';
 export function createIntellisense<Theme extends BaseTheme = BaseTheme>(
   twind: Twind<Theme>,
   options?: IntellisenseOptions,
-): Intellisense<Theme>;
+): Intellisense<Theme & TailwindTheme>;
 
 export function createIntellisense<Theme extends BaseTheme = BaseTheme>(
   config: TwindConfig<Theme>,
   options?: IntellisenseOptions,
-): Intellisense<Theme>;
+): Intellisense<Theme & TailwindTheme>;
 
 export function createIntellisense<
   Theme = BaseTheme,
@@ -41,7 +42,7 @@ export function createIntellisense<
 >(
   config: TwindUserConfig<Theme, Presets>,
   options?: IntellisenseOptions,
-): Intellisense<BaseTheme & ExtractThemes<Theme, Presets>>;
+): Intellisense<BaseTheme & TailwindTheme & ExtractThemes<Theme, Presets>>;
 
 export function createIntellisense(
   config: Twind | TwindConfig | TwindUserConfig,
@@ -56,7 +57,10 @@ export function createIntellisense(
     ...options.cache,
   });
 
-  const context = createIntellisenseContext(config, options);
+  const context = createIntellisenseContext(
+    config as Twind<BaseTheme & TailwindTheme>,
+    options,
+  );
   const { mdnOrigin = MDN } = options;
 
   // Precache empty input as it is the most common and take a while

@@ -11,5 +11,5 @@
     "sourceMap": true,
     "skipLibCheck": true
   },
-  "exclude": ["build", "e2e", "**/node_modules"]
+  "exclude": ["test","build", "e2e", "**/node_modules"]
 }

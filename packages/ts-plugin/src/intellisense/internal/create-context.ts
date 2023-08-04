@@ -4,57 +4,39 @@ import {
   asArray,
   type AutocompleteContext,
   type AutocompleteItem,
-  defineConfig,
   getAutocompleteProvider,
   type MatchResult,
   type MaybeArray,
   mql,
   type ScreenValue,
   stringify,
-  twind,
   type Twind,
   type TwindConfig,
   type TwindUserConfig,
-  virtual,
-} from '@twind/core';
+  BaseTheme,
+} from '@universal-labs/twind-adapter';
 import { toCondition } from '../utils';
+import { TailwindTheme } from '@twind/preset-tailwind';
 import type { IntellisenseOptions } from '../types';
 import type { IntellisenseContext, IntellisenseClass, IntellisenseVariant } from './types';
 import { simplePseudoClasses } from './simple-pseudo-classes';
-import { VARIANT_MARKER_RULE } from './constants';
+import { VARIANT_MARKER_RULE } from '../../constants/config.constants';
 import { parseColor } from './color';
 import { spacify } from './spacify';
 import { compareSuggestions } from './compare-suggestion';
 import QuickLRU from 'quick-lru';
+import { Tailwind } from '@universal-labs/twind-adapter';
 
 export function createIntellisenseContext(
-  config: Twind | TwindConfig | TwindUserConfig,
+  config:
+    | Twind<BaseTheme & TailwindTheme>
+    | TwindConfig<BaseTheme & TailwindTheme>
+    | TwindUserConfig<BaseTheme & TailwindTheme>,
   options: IntellisenseOptions = {},
 ): IntellisenseContext {
-  const tw = twind(
-    defineConfig({
-      hash: false,
-      preflight: false,
-      // disable autoprefix
-      stringify(property, value) {
-        return property + ':' + value;
-      },
-      presets: [
-        defineConfig(
-          (typeof config == 'function' ? config.config : config) as TwindUserConfig,
-        ),
-      ],
-      rules: [
-        // Allows to generate CSS for a variant
-        [VARIANT_MARKER_RULE, { '…': '…' }],
-      ],
-      ignorelist: [
-        // Prevent invalid class warning when generating documentation
-        /-\[…]$/,
-      ],
-    } as TwindUserConfig),
-    virtual(true),
-  );
+  const {
+    instance: { tw },
+  } = new Tailwind();
 
   const ignoreList = asArray(tw.config.ignorelist).map(toCondition);
   const isIgnored = (className: string) => ignoreList.some((re) => re.test(className));
@@ -100,7 +82,6 @@ export function createIntellisenseContext(
           filter: spacify(completion.value + '/'),
           description: '',
         });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         (completion as any).modifiers = modifiers
           .map(({ modifier, theme, color, label }, position) => ({
             ...(completion as unknown as Omit<T, 'modifiers'>),
@@ -127,7 +108,7 @@ export function createIntellisenseContext(
 
   const deferreds: (() => void)[] = [];
 
-  const context: AutocompleteContext = {
+  const context: AutocompleteContext<BaseTheme & TailwindTheme> = {
     get theme() {
       return tw.theme;
     },
@@ -303,7 +284,7 @@ export function createIntellisenseContext(
 
       const re = new RegExp(condition.source.replace(/\\[dw][*+?]*/g, '\0'), condition.flags);
       const pattern = genex(re);
-      console.log('PATTERN: ', pattern);
+
       const count = pattern.count();
 
       if (count === Infinity) {
@@ -315,7 +296,6 @@ export function createIntellisenseContext(
           });
 
           for (const completion of provider(match, context)) {
-            console.log('COMPLETION: ', completion);
             if (typeof completion === 'string') {
               add(classes, {
                 type: 'class',
@@ -347,6 +327,7 @@ export function createIntellisenseContext(
       } else {
         pattern.generate((name) => {
           const match = re.exec(name) as MatchResult | null;
+          // console.log('MATCH: ', match);
 
           if (match) {
             match.$$ = name.slice(match[0].length);
@@ -354,7 +335,6 @@ export function createIntellisenseContext(
 
             if (provider) {
               for (const completion of provider(match, context)) {
-                console.log('COMPLETIONS: ', completion);
                 if (typeof completion === 'string') {
                   add(classes, {
                     type: 'class',
@@ -380,11 +360,26 @@ export function createIntellisenseContext(
               }
             } else {
               if (name.includes('\0') || name.endsWith('-')) {
-                console.warn(
-                  `Can not generate completion for rule ${condition} with ${JSON.stringify(
-                    name,
-                  )}: missing provider`,
-                );
+                if (typeof resolver === 'function') {
+                  if (name == 'bg-' || name == 'text-') {
+                    for (const [key] of Object.entries(tw.theme('colors'))) {
+                      add(classes, {
+                        type: 'class',
+                        source,
+                        index,
+                        position: position++,
+                        name: `${name}${key}`,
+                      });
+                    }
+                  } else {
+                    console.warn(
+                      `2. Can not generate completion for rule ${condition} with ${JSON.stringify(
+                        name,
+                      )}: missing provider`,
+                    );
+                  }
+                  // console.log('RESOLVED: ', resolved);
+                }
               } else {
                 add(classes, {
                   type: 'class',
