@@ -97,5 +97,8 @@ export type {
   Preset,
   ExtractUserTheme,
   ThemeFunction,
+  MaybeColorValue,
+  Rule,
+  Variant,
 } from '@twind/core';
 export { asArray, stringify, mql, getAutocompleteProvider, parse } from '@twind/core';

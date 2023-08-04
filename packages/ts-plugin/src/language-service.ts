@@ -14,6 +14,9 @@ export function createLanguageService(
   return {
     getCompletionsAtPosition(templateContext) {
       const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
+      info.languageServiceHost.log?.(
+        `[${pluginName}] ${[...templateClasses].join('--')} classes9`,
+      );
 
       const entries: ts.CompletionEntry[] = [];
       info.project.projectService.logger.info(

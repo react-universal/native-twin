@@ -8,6 +8,9 @@ import type {
 
 import type { Numberify, RGBA } from '@ctrl/tinycolor';
 
+export type CurrentTheme = BaseTheme & TailwindTheme;
+export type TailwindConfig = TwindConfig<CurrentTheme>;
+
 export type LanguageId =
   | (
       | 'html'

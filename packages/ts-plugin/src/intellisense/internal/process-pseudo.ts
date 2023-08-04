@@ -1,4 +1,11 @@
-export const simplePseudoClasses = [
+export function extractPseudoClasses(onVariant: (completion: string) => void) {
+  for (const pseudoClass of simplePseudoClasses) {
+    const name = pseudoClass.slice(1) + ':';
+    onVariant(name);
+  }
+}
+
+const simplePseudoClasses = [
   ':active',
   ':after',
   ':any-link',

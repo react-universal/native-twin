@@ -1,4 +1,5 @@
-import { createIntellisense } from './intellisense';
+import { Tailwind } from '@universal-labs/twind-adapter';
+import { TailwindConfig, createIntellisense } from './intellisense';
 import { LanguageServiceContext } from './language-service';
 import presetTailwind from '@twind/preset-tailwind';
 
@@ -6,6 +7,11 @@ export async function populateCompletions(
   context: LanguageServiceContext,
   _configPath: string,
 ) {
+  const {
+    instance: { tw },
+  } = new Tailwind();
+  getClasses(tw.config);
+
   const completions = createIntellisense({
     presets: [
       presetTailwind({
@@ -48,3 +54,5 @@ export function addClassNameToCompletions(className: string, context: LanguageSe
     });
   }
 }
+
+export function getClasses(_config: TailwindConfig) {}

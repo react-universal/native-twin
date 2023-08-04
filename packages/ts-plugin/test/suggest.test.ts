@@ -32,5 +32,5 @@ test('suggest with empty input', async () => {
 // });
 
 test('suggest when additional modifiers exist', async () => {
-  await expect($(intellisense.suggest('bg-red'))).resolves.toMatchSnapshot();
+  await expect($(intellisense.suggest('bg-'))).resolves.toMatchSnapshot();
 });
