@@ -1,6 +1,6 @@
 import { test, expect, beforeAll } from 'vitest';
 import presetTailwind, { TailwindTheme } from '@twind/preset-tailwind';
-import { Intellisense, createIntellisense, SuggestionAt } from '.';
+import { Intellisense, createIntellisense, SuggestionAt } from '../src/intellisense';
 
 let intellisense: Intellisense<TailwindTheme>;
 

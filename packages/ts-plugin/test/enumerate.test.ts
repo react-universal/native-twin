@@ -2,7 +2,7 @@ import { test, expect } from 'vitest';
 
 import presetTailwind from '@twind/preset-tailwind';
 
-import { createIntellisense } from '.';
+import { createIntellisense } from '../src/intellisense';
 
 test('enumerate', () => {
   const intellisense = createIntellisense({

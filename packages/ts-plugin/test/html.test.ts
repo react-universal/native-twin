@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import { extractBoundary } from './html';
+import { extractBoundary } from '../src/intellisense/languages/html';
 
 test.each([
   [
