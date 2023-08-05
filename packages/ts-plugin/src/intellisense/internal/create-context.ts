@@ -29,9 +29,9 @@ export function createIntellisenseContext(
   const {
     instance: { tw },
   } = new Tailwind();
+  // console.log('END: ', tw.config.rules);
 
   const ignoreList = asArray(tw.config.ignorelist).map(toCondition);
-  const isIgnored = (className: string) => ignoreList.some((re) => re.test(className));
   const variants: IntellisenseContext['variants'] = new Map();
   const classes: IntellisenseContext['classes'] = new Map();
   const suggestions: IntellisenseContext['suggestions'] = [];
@@ -199,6 +199,10 @@ export function createIntellisenseContext(
       return result;
     },
   };
+
+  function isIgnored(className: string) {
+    return ignoreList.some((re) => re.test(className));
+  }
 
   function addSuggestion<T extends IntellisenseClass | IntellisenseVariant>(
     target: Map<string, T>,
