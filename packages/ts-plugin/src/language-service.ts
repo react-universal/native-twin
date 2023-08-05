@@ -1,7 +1,7 @@
 import { TemplateLanguageService } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
 import { pluginName } from './constants/config.constants';
-import { Suggestion } from './intellisense';
+import { Suggestion } from './create-intellisense';
 
 export type LanguageServiceContext = {
   completionEntries: Map<string, Suggestion>;

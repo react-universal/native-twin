@@ -1,5 +1,5 @@
 import { Tailwind } from '@universal-labs/twind-adapter';
-import { TailwindConfig, createIntellisense } from './intellisense';
+import { TailwindConfig, createIntellisense } from './create-intellisense';
 import { LanguageServiceContext } from './language-service';
 import presetTailwind from '@twind/preset-tailwind';
 

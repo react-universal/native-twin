@@ -9,11 +9,10 @@ import {
   type TwindConfig,
   type TwindUserConfig,
 } from '@universal-labs/twind-adapter';
-import { toCondition } from '../utils';
+import { toCondition, spacify } from '../utils';
 import type { CurrentTheme, IntellisenseOptions } from '../types';
 import type { IntellisenseContext, IntellisenseClass, IntellisenseVariant } from './types';
 import { parseColor } from './color';
-import { spacify } from './spacify';
 import { compareSuggestions } from './compare-suggestion';
 import QuickLRU from 'quick-lru';
 import { Tailwind } from '@universal-labs/twind-adapter';

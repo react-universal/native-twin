@@ -12,7 +12,7 @@ import { TailwindTheme } from '@twind/preset-tailwind';
 import QuickLRU from 'quick-lru';
 import type { CurrentTheme, Intellisense, IntellisenseOptions, Suggestion } from './types';
 import { createIntellisenseContext } from './internal/create-context';
-import { spacify } from './internal/spacify';
+import { spacify } from './utils';
 import { compareSuggestions } from './internal/compare-suggestion';
 export * from './types';
 

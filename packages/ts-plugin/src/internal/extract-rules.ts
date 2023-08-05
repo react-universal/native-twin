@@ -1,5 +1,5 @@
 import genex from 'genex';
-import { VARIANT_MARKER_RULE } from '../../constants/config.constants';
+import { VARIANT_MARKER_RULE } from '../constants/config.constants';
 import { CurrentTheme } from '../types';
 import {
   AutocompleteContext,
@@ -86,57 +86,81 @@ export function extractRulesFromTheme(
               }
             } else {
               if (name.includes('\0') || name.endsWith('-')) {
+                let injected = false;
                 if (isSpacingFunction(name)) {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('spacing'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'leading-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('lineHeight'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'h-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('height'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'max-h-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('maxHeight'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'min-h-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('minHeight'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'w-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('width'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'max-w-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('maxWidth'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'min-w-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('minWidth'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'flex-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('flex'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'aspect-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('aspectRatio'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
+                if (name.includes('scale-')) {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('scale'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
+                if (name.includes('opacity-')) {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('opacity'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
                 if (name == 'font-') {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('fontWeight'), (space) => {
                     onClass(`${name}${space}`);
                   });
@@ -144,21 +168,153 @@ export function extractRulesFromTheme(
                     onClass(`${name}${key}`);
                   }
                 }
+                if (name.includes('border-')) {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('borderWidth'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                  autocompleteColorClassnames(context.theme('colors'), (color) => {
+                    onClass(`${name}${color}`);
+                  });
+                  for (const key of [
+                    'solid',
+                    'dashed',
+                    'dotted',
+                    'double',
+                    'none',
+                    'hidden',
+                  ]) {
+                    onClass(`${name}${key}`);
+                  }
+                }
                 if (name.includes('rounded-')) {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('borderRadius'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
+                if (name == 'z-') {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('zIndex'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
+                if (name == 'basis-') {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('flexBasis'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
+                if (name == 'grow-') {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('flexGrow'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
+                if (name.includes('justify-')) {
+                  if (name.includes('justify-content')) {
+                    for (const key of [
+                      'start',
+                      'end',
+                      'center',
+                      'between',
+                      'around',
+                      'evenly',
+                    ]) {
+                      onClass(`${name}${key}`);
+                    }
+                  } else {
+                    for (const key of ['start', 'end', 'center', 'stretch', 'baseline']) {
+                      onClass(`${name}${key}`);
+                    }
+                  }
+                }
+                if (name.includes('align-')) {
+                  injected = true;
+                  if (name.includes('align-content')) {
+                    for (const key of [
+                      'center',
+                      'start',
+                      'end',
+                      'between',
+                      'around',
+                      'evenly',
+                      'stretch',
+                      'baseline',
+                    ]) {
+                      onClass(`${name}${key}`);
+                    }
+                  } else {
+                    for (const key of ['start', 'end', 'center', 'stretch', 'baseline']) {
+                      onClass(`${name}${key}`);
+                    }
+                  }
+                }
+                if (name.includes('ring-')) {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('ringColor'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                  autocompleteSpacingRules(context.theme('ringWidth'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                  autocompleteSpacingRules(context.theme('ringOpacity'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                  autocompleteSpacingRules(context.theme('ringOffsetWidth'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                  autocompleteSpacingRules(context.theme('ringOffsetColor'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
                 if (name.includes('shadow-')) {
+                  injected = true;
                   autocompleteSpacingRules(context.theme('boxShadow'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
+                if (name.includes('divide-')) {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('divideWidth'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                  for (const key of [
+                    'solid',
+                    'dashed',
+                    'dotted',
+                    'double',
+                    'none',
+                    'hidden',
+                  ]) {
+                    onClass(`${name}${key}`);
+                  }
+                  autocompleteSpacingRules(context.theme('divideOpacity'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                  autocompleteSpacingRules(context.theme('divideColor'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
+                if (name.includes('gap-')) {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('gap'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
+                if (name.includes('gap-')) {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('spacing'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
                 if (name == 'bg-' || name == 'text-') {
+                  injected = true;
                   autocompleteColorClassnames(context.theme('colors'), (color) => {
                     onClass(`${name}${color}`);
                   });
                   if (name == 'text-') {
+                    injected = true;
                     autocompleteSpacingRules(context.theme('fontSize'), (space) => {
                       onClass(`${name}${space}`);
                     });
@@ -171,7 +327,8 @@ export function extractRulesFromTheme(
                       }
                     });
                   }
-                } else {
+                }
+                if (!injected) {
                   console.warn(
                     `2. Can not generate completion for rule ${name} with condition ${condition}: missing provider`,
                   );
