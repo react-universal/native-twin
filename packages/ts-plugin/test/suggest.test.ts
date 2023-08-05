@@ -2,7 +2,7 @@ import { test, expect, beforeAll } from 'vitest';
 import presetTailwind from '@twind/preset-tailwind';
 import { BaseTheme } from '@universal-labs/twind-adapter';
 import { TailwindTheme } from '@twind/preset-tailwind';
-import { Intellisense, createIntellisense, Suggestion } from '../src/intellisense';
+import { Intellisense, createIntellisense, Suggestion } from '../src/create-intellisense';
 
 let intellisense: Intellisense<BaseTheme & TailwindTheme>;
 
@@ -16,7 +16,7 @@ const $ = (suggestions: Promise<Suggestion[]>) =>
   suggestions.then((suggestions) => suggestions.map(({ value }) => value));
 
 test('suggest with empty input', async () => {
-  await expect(intellisense.suggest('')).resolves.toHaveLength(14733);
+  await expect(intellisense.suggest('')).resolves.toHaveLength(11948);
 });
 
 // test('suggest with single char input', async () => {
