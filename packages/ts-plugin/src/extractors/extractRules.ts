@@ -14,7 +14,7 @@ import {
   autocompleteColorClassnames,
   autocompleteSpacingRules,
   isSpacingFunction,
-} from '../internal/rules-completions';
+} from '../internal/rulesCompletions';
 
 export function extractRulesFromTheme(
   input: {
