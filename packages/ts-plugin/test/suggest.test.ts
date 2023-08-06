@@ -1,15 +1,17 @@
 import { test, expect, beforeAll } from 'vitest';
 import presetTailwind from '@twind/preset-tailwind';
-import { BaseTheme } from '@universal-labs/twind-adapter';
+import { BaseTheme, defineConfig } from '@universal-labs/twind-adapter';
 import { TailwindTheme } from '@twind/preset-tailwind';
-import { Intellisense, createIntellisense, Suggestion } from '../src/create-intellisense';
+import { Intellisense, createIntellisense, Suggestion } from '../src/createIntellisense';
 
 let intellisense: Intellisense<BaseTheme & TailwindTheme>;
 
 beforeAll(() => {
-  intellisense = createIntellisense({
-    presets: [presetTailwind()],
-  });
+  intellisense = createIntellisense(
+    defineConfig({
+      presets: [presetTailwind()],
+    }),
+  );
 });
 
 const $ = (suggestions: Promise<Suggestion[]>) =>

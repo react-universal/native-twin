@@ -1,4 +1,4 @@
-import { Tailwind } from '@universal-labs/twind-adapter';
+import { Tailwind, defineConfig } from '@universal-labs/twind-adapter';
 import { TailwindConfig, createIntellisense } from './createIntellisense';
 import { LanguageServiceContext } from './languageService';
 import presetTailwind from '@twind/preset-tailwind';
@@ -12,13 +12,15 @@ export async function populateCompletions(
   } = new Tailwind();
   getClasses(tw.config);
 
-  const completions = createIntellisense({
-    presets: [
-      presetTailwind({
-        disablePreflight: true,
-      }),
-    ],
-  });
+  const completions = createIntellisense(
+    defineConfig({
+      presets: [
+        presetTailwind({
+          disablePreflight: true,
+        }),
+      ],
+    }),
+  );
   const result = await completions.suggest('');
   context.completionEntries.clear();
 

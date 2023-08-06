@@ -132,4 +132,5 @@ export {
   matchColor,
   toColorValue,
   toCSS,
+  defineConfig,
 } from '@twind/core';
