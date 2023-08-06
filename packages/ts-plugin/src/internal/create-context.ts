@@ -16,10 +16,10 @@ import { parseColor } from './color';
 import { compareSuggestions } from './compare-suggestion';
 import QuickLRU from 'quick-lru';
 import { Tailwind } from '@universal-labs/twind-adapter';
-import { extractRulesFromTheme } from './extract-rules';
-import { extractPseudoClasses } from './extract-pseudo';
-import { extractVariants } from './extract-variants';
-import { extractMediaQueries } from './extract-media-queries';
+import { extractRulesFromTheme } from '../extractors/extractRules';
+import { extractPseudoClasses } from '../extractors/extractPseudo';
+import { extractVariants } from '../extractors/extractVariants';
+import { extractMediaQueries } from '../extractors/extractMediaQueries';
 
 export function createIntellisenseContext(
   config: Twind<CurrentTheme> | TwindConfig<CurrentTheme> | TwindUserConfig<CurrentTheme>,

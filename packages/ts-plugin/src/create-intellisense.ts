@@ -1,14 +1,6 @@
-import type {
-  BaseTheme,
-  ExtractThemes,
-  Preset,
-  Twind,
-  TwindConfig,
-  TwindUserConfig,
-} from '@universal-labs/twind-adapter';
+import type { Twind, TwindConfig, TwindUserConfig } from '@universal-labs/twind-adapter';
 import { matchSorter, type MatchSorterOptions } from 'match-sorter';
 import cssbeautify from 'cssbeautify';
-import { TailwindTheme } from '@twind/preset-tailwind';
 import QuickLRU from 'quick-lru';
 import type { CurrentTheme, Intellisense, IntellisenseOptions, Suggestion } from './types';
 import { createIntellisenseContext } from './internal/create-context';
@@ -16,26 +8,8 @@ import { spacify } from './utils';
 import { compareSuggestions } from './internal/compare-suggestion';
 export * from './types';
 
-export function createIntellisense<Theme extends BaseTheme = BaseTheme>(
-  twind: Twind<Theme>,
-  options?: IntellisenseOptions,
-): Intellisense<Theme & TailwindTheme>;
-
-export function createIntellisense<Theme extends BaseTheme = BaseTheme>(
-  config: TwindConfig<Theme>,
-  options?: IntellisenseOptions,
-): Intellisense<Theme & TailwindTheme>;
-
-export function createIntellisense<
-  Theme = BaseTheme,
-  Presets extends Preset<any>[] = Preset[],
->(
-  config: TwindUserConfig<Theme, Presets>,
-  options?: IntellisenseOptions,
-): Intellisense<CurrentTheme & ExtractThemes<Theme, Presets>>;
-
 export function createIntellisense(
-  config: Twind | TwindConfig | TwindUserConfig,
+  config: Twind<CurrentTheme> | TwindConfig<CurrentTheme> | TwindUserConfig<CurrentTheme>,
   options: IntellisenseOptions = {},
 ): Intellisense {
   const suggestionCache = new QuickLRU<string, Suggestion[]>({

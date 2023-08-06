@@ -14,7 +14,7 @@ import {
   autocompleteColorClassnames,
   autocompleteSpacingRules,
   isSpacingFunction,
-} from './rules-completions';
+} from '../internal/rules-completions';
 
 export function extractRulesFromTheme(
   input: {
@@ -34,12 +34,6 @@ export function extractRulesFromTheme(
         : typeof backupResolver === 'function'
         ? getAutocompleteProvider(backupResolver)
         : undefined;
-
-    const configProvider = typeof resolver !== 'function' && resolver;
-
-    if (configProvider) {
-      console.log('configProvider: ', configProvider);
-    }
 
     for (const value of asArray(pattern)) {
       if (value === VARIANT_MARKER_RULE) {
@@ -329,6 +323,7 @@ export function extractRulesFromTheme(
                   }
                 }
                 if (!injected) {
+                  // eslint-disable-next-line no-console
                   console.warn(
                     `2. Can not generate completion for rule ${name} with condition ${condition}: missing provider`,
                   );
