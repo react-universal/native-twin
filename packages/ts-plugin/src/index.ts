@@ -1,7 +1,7 @@
 import ts from 'typescript/lib/tsserverlibrary';
 import { join } from 'path';
 import { decorateWithTemplateLanguageService } from 'typescript-template-language-service-decorator';
-import { LanguageServiceContext, createLanguageService } from './language-service';
+import { LanguageServiceContext, createLanguageService } from './languageService';
 import { populateCompletions } from './tailwind';
 
 export = function init(mod: { typescript: typeof ts }) {

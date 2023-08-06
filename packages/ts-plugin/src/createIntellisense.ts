@@ -3,9 +3,9 @@ import { matchSorter, type MatchSorterOptions } from 'match-sorter';
 import cssbeautify from 'cssbeautify';
 import QuickLRU from 'quick-lru';
 import type { CurrentTheme, Intellisense, IntellisenseOptions, Suggestion } from './types';
-import { createIntellisenseContext } from './internal/create-context';
+import { createIntellisenseContext } from './internal/createContext';
 import { spacify } from './utils';
-import { compareSuggestions } from './internal/compare-suggestion';
+import { compareSuggestions } from './internal/compareSuggestion';
 export * from './types';
 
 export function createIntellisense(

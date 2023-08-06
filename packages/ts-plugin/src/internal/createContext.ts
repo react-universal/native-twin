@@ -13,7 +13,7 @@ import { toCondition, spacify } from '../utils';
 import type { CurrentTheme, IntellisenseOptions } from '../types';
 import type { IntellisenseContext, IntellisenseClass, IntellisenseVariant } from './types';
 import { parseColor } from './color';
-import { compareSuggestions } from './compare-suggestion';
+import { compareSuggestions } from './compareSuggestion';
 import QuickLRU from 'quick-lru';
 import { Tailwind } from '@universal-labs/twind-adapter';
 import { extractRulesFromTheme } from '../extractors/extractRules';
