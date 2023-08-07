@@ -1,4 +1,4 @@
-import type { CSSObject, CSSProperties, StringLike } from './types';
+import type { CSSObject, CSSProperties, StringLike } from '../types';
 
 import { css } from './css';
 

@@ -7,7 +7,7 @@ import type {
   MaybeArray,
   ColorValue,
 } from '../types';
-import type { ParsedRule } from '../parse';
+import type { ParsedRule } from './parse';
 import type { ConvertedRule } from './precedence';
 import { Layer, moveToLayer } from './precedence';
 import { mql, hash, asArray } from '../utils';
@@ -15,9 +15,9 @@ import { mql, hash, asArray } from '../utils';
 import { atRulePrecedence, declarationPropertyPrecedence, convert } from './precedence';
 import { stringify } from './stringify';
 import { translateWith } from './translate';
-import { parse } from '../parse';
+import { parse } from './parse';
 import { compareTwindRules } from './sorted-insertion-index';
-import { toColorValue } from '../colors';
+import { toColorValue } from '../config/colors';
 
 export function serialize<Theme extends BaseTheme = BaseTheme>(
   style: CSSObject | Falsey,

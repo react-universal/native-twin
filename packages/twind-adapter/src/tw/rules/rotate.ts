@@ -1,7 +1,7 @@
-import type { Rule } from '@twind/core';
+import type { Rule, BaseTheme } from '@universal-labs/tailwind';
 import type { TailwindTheme } from '@twind/preset-tailwind';
 
-export const rotateRules: Rule<TailwindTheme>[] = [
+export const rotateRules: Rule<BaseTheme & TailwindTheme>[] = [
   [
     '-?rotate-x-(\\s*\\d+|\\[(.*)])',
     (match, context) => {

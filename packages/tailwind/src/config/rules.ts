@@ -13,10 +13,10 @@ import type {
   MatchConverter,
   Rule,
   MaybeArray,
-} from './types';
+} from '../types';
 
 import { toColorValue } from './colors';
-import { resolveThemeFunction } from './internal/serialize';
+import { resolveThemeFunction } from '../internal/serialize';
 import {
   type AutocompleteProvider,
   type AutocompleteItem,

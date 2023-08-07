@@ -1,6 +1,6 @@
-import { warn } from './internal/warn';
-import type { Sheet, SheetRule } from './types';
-import { asArray, noop } from './utils';
+import { warn } from '../internal/warn';
+import type { Sheet, SheetRule } from '../types';
+import { asArray, noop } from '../utils';
 
 function getStyleElement(selector: string | null | undefined | false): HTMLStyleElement {
   let style = document.querySelector(selector || 'style[data-twind=""]');

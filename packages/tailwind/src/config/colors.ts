@@ -1,4 +1,4 @@
-import type { ColorValue, ColorFunctionOptions, Context, Falsey } from './types';
+import type { ColorValue, ColorFunctionOptions, Context, Falsey } from '../types';
 
 function parseColorComponent(chars: string, factor: number): number {
   return Math.round(parseInt(chars, 16) * factor);

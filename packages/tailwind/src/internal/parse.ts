@@ -1,7 +1,7 @@
-import { hash } from './utils';
-import { define } from './internal/define';
-import { format } from './internal/format';
-import { Layer } from './internal/precedence';
+import { hash } from '../utils';
+import { define } from '../internal/define';
+import { format } from '../internal/format';
+import { Layer } from '../internal/precedence';
 
 export interface ParsedRule {
   /**

@@ -1,7 +1,7 @@
-import type { Class, Nested } from './types';
-import { format } from './internal/format';
-import { parse } from './parse';
-import { interpolate } from './internal/interpolate';
+import type { Class, Nested } from '../types';
+import { format } from '../internal/format';
+import { parse } from '../internal/parse';
+import { interpolate } from '../internal/interpolate';
 
 /**
  * @group Class Name Generators

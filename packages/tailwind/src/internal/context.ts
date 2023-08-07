@@ -18,7 +18,7 @@ import type {
 
 import { makeThemeFunction } from './theme';
 import { asArray, escape, hash as defaultHash, identity, noop } from '../utils';
-import { fromMatch } from '../rules';
+import { fromMatch } from '../config/rules';
 import { warn } from './warn';
 
 type ResolveFunction<Theme extends BaseTheme = BaseTheme> = (

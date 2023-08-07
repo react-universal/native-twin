@@ -1,9 +1,9 @@
-import type { Twind } from './types';
-import { changed } from './internal/changed';
-import { tw as tw$ } from './runtime';
-import { identity } from './utils';
-import { stringify } from './sheets';
-import { fixClassList, parseHTML } from './internal/parse-html';
+import type { Twind } from '../types';
+import { changed } from '../internal/changed';
+import { tw as tw$ } from '../runtime/runtime';
+import { identity } from '../utils';
+import { stringify } from '../sheets/sheets';
+import { fixClassList, parseHTML } from '../internal/parse-html';
 
 /**
  * Options for {@link inline}

@@ -1,7 +1,7 @@
-import type { Rule } from '@twind/core';
+import type { Rule, BaseTheme } from '@universal-labs/tailwind';
 import type { TailwindTheme } from '@twind/preset-tailwind';
 
-export const skewRules: Rule<TailwindTheme>[] = [
+export const skewRules: Rule<BaseTheme & TailwindTheme>[] = [
   [
     '-?skew-x-(\\s*\\d+|\\[(.*)])',
     (match, context) => {

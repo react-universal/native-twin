@@ -7,18 +7,18 @@ import type {
   TwindConfig,
   TwindRule,
   TwindUserConfig,
-} from './types';
-import type { SortableRule } from './internal/sorted-insertion-index';
+} from '../types';
+import type { SortableRule } from '../internal/sorted-insertion-index';
 
-import { sortedInsertionIndex } from './internal/sorted-insertion-index';
-import { stringify } from './internal/stringify';
-import { createContext } from './internal/context';
-import { translate, translateWith } from './internal/translate';
-import { parse } from './parse';
-import { defineConfig } from './define-config';
-import { asArray } from './utils';
-import { serialize } from './internal/serialize';
-import { Layer } from './internal/precedence';
+import { sortedInsertionIndex } from '../internal/sorted-insertion-index';
+import { stringify } from '../internal/stringify';
+import { createContext } from '../internal/context';
+import { translate, translateWith } from '../internal/translate';
+import { parse } from '../internal/parse';
+import { defineConfig } from '../config/define-config';
+import { asArray } from '../utils';
+import { serialize } from '../internal/serialize';
+import { Layer } from '../internal/precedence';
 
 /**
  * @group Runtime

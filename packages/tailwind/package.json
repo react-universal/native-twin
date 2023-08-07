@@ -13,17 +13,33 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": "./build/index.js",
+    ".": {
+      "default": "./build/index.cjs.js",
+      "import": "./build/index.es.js",
+      "require": "./build/index.cjs.js",
+      "types": "./build/index.d.ts"
+    },
+    "./tailwind": {
+      "default": "./build/tailwind/index.cjs.js",
+      "import": "./build/tailwind/index.es.js",
+      "require": "./build/tailwind/index.cjs.js",
+      "types": "./build/tailwind/index.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "main": "./build/index.cjs.js",
   "module": "./build/index.es.js",
+  "types": "./build/index.d.ts",
   "scripts": {
     "build:libs": "vite build",
     "test": "vitest"
   },
   "dependencies": {
+    "css-tree": "2.3.1",
     "csstype": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/css-tree": "2.3.1"
   },
   "publishConfig": {
     "access": "public",

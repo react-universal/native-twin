@@ -5,7 +5,7 @@ import {
   injectGlobal as injectGlobal$,
   cx as cx$,
   defineConfig,
-} from '@twind/core';
+} from '@universal-labs/tailwind';
 import presetTailwind, { TailwindTheme } from '@twind/preset-tailwind';
 import type { CustomConfig } from '../types';
 import twindPresetReactNative from './presets/preset-react-native';
@@ -14,7 +14,7 @@ import { shadowRules } from './rules/shadow';
 import { skewRules } from './rules/skew';
 import { translateRules } from './rules/translate';
 
-export { hash, style as stylesGenerator, css as injectCss } from '@twind/core';
+export { hash, style as stylesGenerator, css as injectCss } from '@universal-labs/tailwind';
 
 const defaultConfig = defineConfig({
   preflight: false,
@@ -111,7 +111,7 @@ export type {
   ColorFromThemeValue,
   AutocompleteProvider,
   VariantResolver,
-} from '@twind/core';
+} from '@universal-labs/tailwind';
 export {
   asArray,
   stringify,
@@ -133,4 +133,4 @@ export {
   toColorValue,
   toCSS,
   defineConfig,
-} from '@twind/core';
+} from '@universal-labs/tailwind';

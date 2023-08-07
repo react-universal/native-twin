@@ -1,6 +1,6 @@
-import type { Class } from './types';
-import { interpolate } from './internal/interpolate';
-import { tw as tw$ } from './runtime';
+import type { Class } from '../types';
+import { interpolate } from '../internal/interpolate';
+import { tw as tw$ } from '../runtime/runtime';
 
 export interface TxFunction {
   (...classes: Class[]): string;

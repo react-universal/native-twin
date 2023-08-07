@@ -6,6 +6,8 @@
     "noImplicitAny": true,
     "resolveJsonModule": true,
     "module": "esnext",
+    "strictFunctionTypes": false,
+    "noImplicitReturns": false,
     "moduleResolution": "node",
     "noEmit": false,
     "strict": true,

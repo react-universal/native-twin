@@ -1,7 +1,7 @@
-import type { Rule } from '@twind/core';
+import type { Rule, BaseTheme } from '@universal-labs/tailwind';
 import type { TailwindTheme } from '@twind/preset-tailwind';
 
-export const shadowRules: Rule<TailwindTheme>[] = [
+export const shadowRules: Rule<BaseTheme & TailwindTheme>[] = [
   [
     'shadow-(.*)',
     (match, context) => {

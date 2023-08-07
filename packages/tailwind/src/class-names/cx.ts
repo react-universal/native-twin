@@ -1,7 +1,7 @@
-import type { Class } from './types';
-import { parse } from './parse';
-import { format } from './internal/format';
-import { interpolate } from './internal/interpolate';
+import type { Class } from '../types';
+import { parse } from '../internal/parse';
+import { format } from '../internal/format';
+import { interpolate } from '../internal/interpolate';
 
 /**
  * Constructs `class` strings conditionally.

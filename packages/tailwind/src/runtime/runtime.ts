@@ -6,12 +6,12 @@ import type {
   TwindUserConfig,
   ExtractThemes,
   Preset,
-} from './types';
+} from '../types';
 
 import { twind } from './twind';
 import { observe } from './observe';
-import { getSheet } from './sheets';
-import { noop } from './utils';
+import { getSheet } from '../sheets/sheets';
+import { noop } from '../utils';
 
 /**
  * @group Runtime

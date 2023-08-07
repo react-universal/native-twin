@@ -5,11 +5,11 @@ import type {
   TwindUserConfig,
   Preset,
   ExtractThemes,
-} from './types';
+} from '../types';
 
-import { defineConfig } from './define-config';
+import { defineConfig } from '../config/define-config';
 import { setup } from './runtime';
-import { getSheet } from './sheets';
+import { getSheet } from '../sheets/sheets';
 
 /**
  * @group Runtime

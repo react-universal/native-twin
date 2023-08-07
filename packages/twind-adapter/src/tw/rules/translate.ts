@@ -1,7 +1,7 @@
-import type { Rule } from '@twind/core';
+import type { Rule, BaseTheme } from '@universal-labs/tailwind';
 import type { TailwindTheme } from '@twind/preset-tailwind';
 
-export const translateRules: Rule<TailwindTheme>[] = [
+export const translateRules: Rule<BaseTheme & TailwindTheme>[] = [
   [
     '-?translate-x-(\\s*\\d+|\\[(.*)])',
     (match, context) => {

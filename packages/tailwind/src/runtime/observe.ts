@@ -1,6 +1,6 @@
-import type { BaseTheme, Twind } from './types';
+import type { BaseTheme, Twind } from '../types';
 
-import { changed } from './internal/changed';
+import { changed } from '../internal/changed';
 import { tw as tw$ } from './runtime';
 
 export interface TwindMutationObserver {

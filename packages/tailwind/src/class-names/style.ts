@@ -1,13 +1,12 @@
 // Based on https://github.com/modulz/stitches
 // License MIT
-// eslint-disable @typescript-eslint/ban-types
 
-import type { Falsey, MatchResult } from './types';
-import { parse } from './parse';
-import { Layer } from './internal/precedence';
+import type { Falsey, MatchResult } from '../types';
+import { parse } from '../internal/parse';
+import { Layer } from '../internal/precedence';
 
-import { escape, hash } from './utils';
-import { define } from './internal/define';
+import { escape, hash } from '../utils';
+import { define } from '../internal/define';
 
 export type StrictMorphVariant<T> = T extends number
   ? `${T}` | T
@@ -77,7 +76,6 @@ export type When<Variants> = {
   [key in keyof Variants]?: StrictMorphVariant<keyof Variants[key]>;
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export interface StyleConfig<Variants, BaseVariants = {}> {
   /** Used as prefix */
   label?: string;

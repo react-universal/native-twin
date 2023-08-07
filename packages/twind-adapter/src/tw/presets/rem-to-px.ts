@@ -1,4 +1,4 @@
-import type { TwindRule } from '@twind/core';
+import type { TwindRule } from '@universal-labs/tailwind';
 import type { RemToPxBaseOptions } from './types';
 
 // const transformLineHeight = (rule?: string) => {

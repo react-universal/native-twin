@@ -1,11 +1,11 @@
-import type { CSSObject, CSSValue } from './types';
+import type { CSSObject, CSSValue } from '../types';
 
-import { register } from './internal/registry';
-import { serialize } from './internal/serialize';
-import { hash } from './utils';
-import { Layer } from './internal/precedence';
-import { merge } from './internal/merge';
-import { astish } from './internal/astish';
+import { register } from '../internal/registry';
+import { serialize } from '../internal/serialize';
+import { hash } from '../utils';
+import { Layer } from '../internal/precedence';
+import { merge } from '../internal/merge';
+import { astish } from '../internal/astish';
 
 /**
  * @group Class Name Generators

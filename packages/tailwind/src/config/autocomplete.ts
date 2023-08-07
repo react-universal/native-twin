@@ -6,9 +6,9 @@ import type {
   RuleResolver,
   ThemeFunction,
   VariantResolver,
-} from './types';
+} from '../types';
 import { fromMatch } from './rules';
-import { asArray } from './utils';
+import { asArray } from '../utils';
 
 export type AutocompleteItem = {
   prefix?: string;

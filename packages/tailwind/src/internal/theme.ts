@@ -5,7 +5,7 @@ import type {
   ThemeFunction,
   ThemeSectionResolverContext,
 } from '../types';
-import { toColorValue } from '../colors';
+import { toColorValue } from '../config/colors';
 import { resolveThemeFunction } from './serialize';
 
 export function makeThemeFunction<Theme extends BaseTheme = BaseTheme>({

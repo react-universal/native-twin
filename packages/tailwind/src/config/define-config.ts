@@ -5,9 +5,9 @@ import type {
   TwindUserConfig,
   ExtractThemes,
   TwindPresetConfig,
-} from './types';
+} from '../types';
 
-import { asArray } from './utils';
+import { asArray } from '../utils';
 
 /**
  * @group Configuration
