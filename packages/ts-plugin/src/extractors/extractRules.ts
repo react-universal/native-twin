@@ -9,12 +9,12 @@ import {
   asArray,
   getAutocompleteProvider,
 } from '@universal-labs/twind-adapter';
-import { toCondition } from '../utils';
+import { toCondition, isSpacingFunction } from '../utils';
 import {
   autocompleteColorClassnames,
   autocompleteSpacingRules,
-  isSpacingFunction,
-} from '../internal/rulesCompletions';
+  extractRuleModifiers,
+} from './rulesCompletions';
 
 export function extractRulesFromTheme(
   input: {
@@ -83,39 +83,87 @@ export function extractRulesFromTheme(
                 let injected = false;
                 if (isSpacingFunction(name)) {
                   injected = true;
-                  autocompleteSpacingRules(context.theme('spacing'), (space) => {
-                    onClass(`${name}${space}`);
-                  });
+                  extractRuleModifiers(
+                    { prefix: name, themeValue: context.theme('spacing') },
+                    (modifier) => {
+                      onClass(modifier);
+                    },
+                  );
                 }
                 if (name == 'leading-') {
                   injected = true;
-                  autocompleteSpacingRules(context.theme('lineHeight'), (space) => {
+                  extractRuleModifiers(
+                    { prefix: name, themeValue: context.theme('lineHeight') },
+                    (modifier) => {
+                      onClass(modifier);
+                    },
+                  );
+                }
+                if (name.includes('skew-')) {
+                  injected = true;
+                  extractRuleModifiers(
+                    { prefix: name, themeValue: context.theme('skew') },
+                    (modifier) => {
+                      onClass(modifier);
+                    },
+                  );
+                }
+                if (name.includes('translate-')) {
+                  injected = true;
+                  extractRuleModifiers(
+                    { prefix: name, themeValue: context.theme('translate') },
+                    (modifier) => {
+                      onClass(modifier);
+                    },
+                  );
+                }
+                if (name.includes('scale-')) {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('scale'), (space) => {
+                    onClass(`${name}${space}`);
+                  });
+                }
+                if (name.includes('rotate-')) {
+                  injected = true;
+                  autocompleteSpacingRules(context.theme('rotate'), (space) => {
                     onClass(`${name}${space}`);
                   });
                 }
                 if (name == 'h-') {
                   injected = true;
-                  autocompleteSpacingRules(context.theme('height'), (space) => {
-                    onClass(`${name}${space}`);
-                  });
+                  extractRuleModifiers(
+                    { prefix: name, themeValue: context.theme('height') },
+                    (modifier) => {
+                      onClass(modifier);
+                    },
+                  );
                 }
                 if (name == 'max-h-') {
                   injected = true;
-                  autocompleteSpacingRules(context.theme('maxHeight'), (space) => {
-                    onClass(`${name}${space}`);
-                  });
+                  extractRuleModifiers(
+                    { prefix: name, themeValue: context.theme('maxHeight') },
+                    (modifier) => {
+                      onClass(modifier);
+                    },
+                  );
                 }
                 if (name == 'min-h-') {
                   injected = true;
-                  autocompleteSpacingRules(context.theme('minHeight'), (space) => {
-                    onClass(`${name}${space}`);
-                  });
+                  extractRuleModifiers(
+                    { prefix: name, themeValue: context.theme('minHeight') },
+                    (modifier) => {
+                      onClass(modifier);
+                    },
+                  );
                 }
                 if (name == 'w-') {
                   injected = true;
-                  autocompleteSpacingRules(context.theme('width'), (space) => {
-                    onClass(`${name}${space}`);
-                  });
+                  extractRuleModifiers(
+                    { prefix: name, themeValue: context.theme('width') },
+                    (modifier) => {
+                      onClass(modifier);
+                    },
+                  );
                 }
                 if (name == 'max-w-') {
                   injected = true;
@@ -141,12 +189,7 @@ export function extractRulesFromTheme(
                     onClass(`${name}${space}`);
                   });
                 }
-                if (name.includes('scale-')) {
-                  injected = true;
-                  autocompleteSpacingRules(context.theme('scale'), (space) => {
-                    onClass(`${name}${space}`);
-                  });
-                }
+
                 if (name.includes('opacity-')) {
                   injected = true;
                   autocompleteSpacingRules(context.theme('opacity'), (space) => {
@@ -206,6 +249,7 @@ export function extractRulesFromTheme(
                   });
                 }
                 if (name.includes('justify-')) {
+                  injected = true;
                   if (name.includes('justify-content')) {
                     for (const key of [
                       'start',
@@ -323,10 +367,9 @@ export function extractRulesFromTheme(
                   }
                 }
                 if (!injected) {
-                  // eslint-disable-next-line no-console
-                  console.warn(
-                    `2. Can not generate completion for rule ${name} with condition ${condition}: missing provider`,
-                  );
+                  // console.warn(
+                  //   `2. Can not generate completion for rule ${name} with condition ${condition}: missing provider`,
+                  // );
                 }
               } else {
                 onClass(name);

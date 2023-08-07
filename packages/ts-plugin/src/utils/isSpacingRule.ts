@@ -1,23 +1,3 @@
-import { MaybeColorValue } from '@universal-labs/twind-adapter';
-
-export function autocompleteColorClassnames(
-  colors: Record<string, MaybeColorValue>,
-  onColor: (color: string) => void,
-) {
-  for (const key of Object.keys(colors)) {
-    onColor(key);
-  }
-}
-
-export function autocompleteSpacingRules(
-  spacing: Record<string, any>,
-  onSpacing: (color: string) => void,
-) {
-  for (const key of Object.keys(spacing)) {
-    onSpacing(key);
-  }
-}
-
 export function isSpacingFunction(name: string) {
   if (
     name.startsWith('m-') ||
@@ -48,7 +28,21 @@ export function isSpacingFunction(name: string) {
     name.startsWith('-pr-') ||
     name.startsWith('-px-') ||
     name.startsWith('-py-') ||
-    name.startsWith('space-')
+    name.startsWith('space-') ||
+    name.startsWith('scroll-m') ||
+    name.startsWith('scroll-p') ||
+    name.startsWith('-scroll-m') ||
+    name.startsWith('-scroll-p') ||
+    name.startsWith('inset') ||
+    name.startsWith('-inset') ||
+    name.startsWith('top') ||
+    name == '-top-' ||
+    name == 'left-' ||
+    name == '-left-' ||
+    name == 'bottom-' ||
+    name == '-bottom-' ||
+    name == 'right-' ||
+    name == '-right-'
   ) {
     return true;
   }

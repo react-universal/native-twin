@@ -43,9 +43,9 @@ export function extractVariants(
             }
           });
         } else {
-          console.warn(
-            `Can not generate completion for variant ${condition}: infinite possibilities`,
-          );
+          // console.warn(
+          //   `Can not generate completion for variant ${condition}: infinite possibilities`,
+          // );
         }
       } else {
         pattern.generate((value) => {
@@ -60,11 +60,11 @@ export function extractVariants(
               }
             } else {
               if (value.includes('\0') || value.endsWith('-')) {
-                console.warn(
-                  `Can not generate completion for variant ${condition} with ${JSON.stringify(
-                    value,
-                  )}: missing provider`,
-                );
+                // console.warn(
+                //   `Can not generate completion for variant ${condition} with ${JSON.stringify(
+                //     value,
+                //   )}: missing provider`,
+                // );
               } else {
                 onVariant(value);
               }

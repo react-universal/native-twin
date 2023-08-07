@@ -6162,6 +6162,7 @@ __metadata:
     genex: 1.1.0
     match-sorter: 6.3.1
     quick-lru: 6.1.1
+    ret: 0.5.0
     showdown: 2.1.0
     typescript-template-language-service-decorator: 2.3.2
     vscode-css-languageservice: 6.2.6
@@ -15533,6 +15534,13 @@ __metadata:
     onetime: ^5.1.0
     signal-exit: ^3.0.2
   checksum: f877dd8741796b909f2a82454ec111afb84eb45890eb49ac947d87991379406b3b83ff9673a46012fca0d7844bb989f45cc5b788254cf1a39b6b5a9659de0630
+  languageName: node
+  linkType: hard
+
+"ret@npm:0.5.0":
+  version: 0.5.0
+  resolution: "ret@npm:0.5.0"
+  checksum: 3763aff074a56baa072afcfb5c19b09fb7c05045a27715bf4f28395cd11ab98cc2d0698bf4a3cd3f1c5e650ed167362d354c0e545ab134a6b7ec83df5e9d7d42
   languageName: node
   linkType: hard
 

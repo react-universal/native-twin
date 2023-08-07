@@ -3,9 +3,9 @@ import { matchSorter, type MatchSorterOptions } from 'match-sorter';
 import cssbeautify from 'cssbeautify';
 import QuickLRU from 'quick-lru';
 import type { CurrentTheme, Intellisense, IntellisenseOptions, Suggestion } from './types';
-import { createIntellisenseContext } from './internal/createContext';
 import { spacify } from './utils';
 import { compareSuggestions } from './internal/compareSuggestion';
+import { TailwindContext } from './internal/tailwindContext';
 export * from './types';
 
 export function createIntellisense(
@@ -17,17 +17,18 @@ export function createIntellisense(
     ...options.cache,
   });
 
-  const context = createIntellisenseContext(config as Twind<CurrentTheme>, options);
+  const context = new TailwindContext(config as Twind<CurrentTheme>, options);
+  context.extractCompletions();
 
   // Precache empty input as it is the most common and take a while
   suggestionCache.set('', context.suggestions.map(toSuggestion));
 
   return {
     get theme() {
-      return context.tw.theme;
+      return context.tailwind.tw.theme;
     },
     get config() {
-      return context.tw.config;
+      return context.tailwind.tw.config;
     },
     async suggest(input, { prefix = '', ignore } = {}) {
       const key = JSON.stringify({ input, prefix, ignore });

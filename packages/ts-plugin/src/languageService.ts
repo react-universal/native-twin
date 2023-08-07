@@ -2,6 +2,7 @@ import { TemplateLanguageService } from 'typescript-template-language-service-de
 import ts from 'typescript/lib/tsserverlibrary';
 import { pluginName } from './constants/config.constants';
 import { Suggestion } from './createIntellisense';
+// import { inspect } from 'util';
 
 export type LanguageServiceContext = {
   completionEntries: Map<string, Suggestion>;
@@ -12,29 +13,43 @@ export function createLanguageService(
   info: ts.server.PluginCreateInfo,
 ): TemplateLanguageService {
   return {
-    getCompletionsAtPosition(templateContext) {
+    getCompletionsAtPosition(templateContext, position) {
       const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
       info.languageServiceHost.log?.(
-        `[${pluginName}] ${[...templateClasses].join('--')} classes9`,
+        `[${pluginName}] ${[...templateClasses].join(' ')} classes ${position.character}`,
       );
 
       const entries: ts.CompletionEntry[] = [];
-      info.project.projectService.logger.info(
-        `[${pluginName}] ${[...templateClasses].join('--')} classes`,
-      );
-
-      info.project.projectService.logger.info(`[${pluginName}] text ${templateContext.text}`);
-
-      languageServiceContext.completionEntries.forEach((rule) => {
-        if (!templateClasses.has(rule.name)) {
-          entries.push({
-            name: rule.name,
-            sortText: rule.name,
-            kind: ts.ScriptElementKind.string,
-            labelDetails: { description: rule.description!, detail: rule.detail! },
-          });
-        }
-      });
+      const isEmptyCompletion = templateContext.text.charAt(position.character - 1) == ' ';
+      const prevText = templateContext.text.slice(0, position.character);
+      if (prevText.length > 0 && !isEmptyCompletion) {
+        const prevClasses = prevText.split(/\s+/).filter(Boolean);
+        const completion = prevClasses[prevClasses.length - 1]!;
+        info.languageServiceHost.log?.(`[${pluginName}] TO_COMPLETED: ${completion}`);
+        languageServiceContext.completionEntries.forEach((rule) => {
+          if (rule.name.includes(completion) && !templateClasses.has(rule.name)) {
+            const splitted = rule.name.split(completion);
+            entries.push({
+              name: rule.name,
+              sortText: rule.name,
+              insertText: splitted[1] ? splitted[1] : rule.name,
+              kind: ts.ScriptElementKind.string,
+              labelDetails: { description: rule.description!, detail: rule.detail! },
+            });
+          }
+        });
+      } else {
+        languageServiceContext.completionEntries.forEach((rule) => {
+          if (!templateClasses.has(rule.name)) {
+            entries.push({
+              name: rule.name,
+              sortText: rule.name,
+              kind: ts.ScriptElementKind.string,
+              labelDetails: { description: rule.description!, detail: rule.detail! },
+            });
+          }
+        });
+      }
 
       return {
         entries,
