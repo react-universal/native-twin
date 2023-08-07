@@ -19,7 +19,7 @@
     "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
     "allowUnreachableCode": false,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "noImplicitOverride": true,
     "noUnusedLocals": true,
     "isolatedModules": false

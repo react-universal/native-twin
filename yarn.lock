@@ -6149,6 +6149,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@universal-labs/tailwind@workspace:packages/tailwind":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/tailwind@workspace:packages/tailwind"
+  dependencies:
+    csstype: ^3.1.1
+  languageName: unknown
+  linkType: soft
+
 "@universal-labs/ts-styled-plugin-tw@workspace:*, @universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin":
   version: 0.0.0-use.local
   resolution: "@universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin"

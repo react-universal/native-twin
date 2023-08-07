@@ -45,6 +45,7 @@ module.exports = {
     'react/jsx-no-target-blank': 'off',
     'react/prop-types': 'off',
     'unused-imports/no-unused-imports': 'error',
+    'no-sparse-arrays': 'off',
     'unused-imports/no-unused-vars': [
       'warn',
       { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
