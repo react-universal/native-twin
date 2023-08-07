@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { initialize } from '../src';
+import { Tailwind } from '../src';
 
 const {
   instance: { tw, tx },

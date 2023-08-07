@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import { describe, expect, it, test } from 'vitest';
 import { ParseSelectorStrict } from '../src/css/selector.parser';
 import { generateStylesFor, getTestParserData } from './test-utils';
@@ -336,13 +335,13 @@ describe('@universal-labs/css Parsers', () => {
 describe('@universal-labs/css - COMPLEX RULES', () => {
   it('Complex', () => {
     const result = generateStylesFor(
-      clsx(
+      [
         'flex-1',
         'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
         'ios:(p-14 bg-rose-200 border-white border-2)',
         'android:(p-14 border-green-200 border-2 bg-gray-200)',
         'items-center justify-center md:border-3',
-      ),
+      ].join(' '),
     );
     expect(result).toStrictEqual({
       base: {

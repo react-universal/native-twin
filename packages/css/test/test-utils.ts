@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { initialize } from '@universal-labs/twind-adapter';
+import { Tailwind } from '@universal-labs/twind-adapter';
 import util from 'util';
 import { CssResolver } from '../src';
 import { createParserContext } from '../src/parsers/Parser';
@@ -20,12 +20,9 @@ export const inspectTestElement = (msg: string, target: string[], result: any) =
 };
 
 export const injectClassNames = (classNames: string) => {
-  const { tx, tw } = initialize();
-  const restore = tw.snapshot();
-  tx(classNames);
-  const target = [...tw.target];
-  restore();
-  return target;
+  const tailwind = new Tailwind();
+  const result = tailwind.parseAndInject(classNames);
+  return result.target;
 };
 
 export const getTestParserData = (debug = false) => {

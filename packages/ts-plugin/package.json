@@ -10,7 +10,7 @@
     "build:libs": "node ./build.js",
     "e2e": "mocha e2e/tests",
     "lint": "eslint src",
-    "test": "vitest",
+    "test": "vitest run",
     "unit": "npx mocha ./build/test",
     "watch:compile": "node ./build.js"
   },

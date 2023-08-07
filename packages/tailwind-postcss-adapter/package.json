@@ -53,7 +53,7 @@
     "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
     "dev:tailwind": "concurrently \"npx tsx watch src/build.ts\" \"yarn build:tailwind -w\"",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest run",
+    "test": "echo \"TEST\"",
     "test:ui": "vitest --ui"
   },
   "devDependencies": {

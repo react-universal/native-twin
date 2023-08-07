@@ -24,25 +24,6 @@ describe('TailwindCSS Aspect Ratio', () => {
     const classNames = tx('aspect-square');
     expect(classNames).toStrictEqual('aspect-square');
     expect(stringify(tw.target)).toStrictEqual('.aspect-square{aspect-ratio:1/1}');
-    tw.config.rules.forEach((rule) => {
-      // console.log('RULE: ', rule);
-      if (Array.isArray(rule)) {
-        if (typeof rule[0] == 'string') {
-          const reg = new RegExp(rule[0]);
-          const match = reg.exec('bg-');
-          if (match) {
-            // @ts-expect-error
-            match.$$ = 'blue-200';
-            if (typeof rule[1] == 'function') {
-              // @ts-expect-error
-              const result = rule[1](match!, tw);
-              console.log('RESULT: ', result);
-            }
-            console.log('MATCHED: ', rule[1]);
-          }
-        }
-      }
-    });
   });
 
   it('aspect-video', () => {

@@ -13,7 +13,8 @@
     "build:libs": "tsc -b",
     "postinstall": "cd client && yarn install && cd ../server && yarn install && cd ..",
     "lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
-    "test": "sh ./scripts/e2e.sh",
+    "test": "echo \"TEST\"",
+    "test:e2e": "sh ./scripts/e2e.sh",
     "vscode:prepublish": "tsc -b",
     "watch": "tsc -b -w"
   },

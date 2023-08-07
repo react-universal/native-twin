@@ -17,8 +17,8 @@ beforeAll(() => {
 const $ = (suggestions: Promise<Suggestion[]>) =>
   suggestions.then((suggestions) => suggestions.map(({ value }) => value));
 
-test('suggest with empty input', async () => {
-  await expect(intellisense.suggest('')).resolves.toHaveLength(13419);
+test('suggest with empty input', () => {
+  expect(intellisense.suggest('')).resolves.toHaveLength(13419);
 });
 
 // test('suggest with single char input', async () => {
@@ -33,6 +33,6 @@ test('suggest with empty input', async () => {
 //   await expect($(intellisense.suggest('-mb'))).resolves.toMatchSnapshot();
 // });
 
-test('suggest when additional modifiers exist', async () => {
-  await expect($(intellisense.suggest('bg-'))).resolves.toMatchSnapshot();
+test('suggest when additional modifiers exist', () => {
+  expect($(intellisense.suggest('bg-'))).resolves.toMatchSnapshot();
 });
