@@ -44,7 +44,6 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@twind/preset-tailwind": "1.1.4",
     "@universal-labs/tailwind": "workspace:*"
   },
   "peerDependencies": {

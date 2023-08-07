@@ -1,5 +1,4 @@
-import type { Rule, BaseTheme } from '@universal-labs/tailwind';
-import type { TailwindTheme } from '@twind/preset-tailwind';
+import type { TailwindTheme, Rule, BaseTheme } from '@universal-labs/tailwind';
 
 export const translateRules: Rule<BaseTheme & TailwindTheme>[] = [
   [

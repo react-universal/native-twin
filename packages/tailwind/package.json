@@ -19,12 +19,6 @@
       "require": "./build/index.cjs.js",
       "types": "./build/index.d.ts"
     },
-    "./tailwind": {
-      "default": "./build/tailwind/index.cjs.js",
-      "import": "./build/tailwind/index.es.js",
-      "require": "./build/tailwind/index.cjs.js",
-      "types": "./build/tailwind/index.d.ts"
-    },
     "./package.json": "./package.json"
   },
   "main": "./build/index.cjs.js",

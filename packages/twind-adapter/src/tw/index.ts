@@ -5,8 +5,9 @@ import {
   injectGlobal as injectGlobal$,
   cx as cx$,
   defineConfig,
+  TailwindTheme,
+  presetTailwind,
 } from '@universal-labs/tailwind';
-import presetTailwind, { TailwindTheme } from '@twind/preset-tailwind';
 import type { CustomConfig } from '../types';
 import twindPresetReactNative from './presets/preset-react-native';
 import { rotateRules } from './rules/rotate';

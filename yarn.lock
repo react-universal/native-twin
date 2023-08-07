@@ -5603,19 +5603,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@twind/preset-tailwind@npm:1.1.4":
-  version: 1.1.4
-  resolution: "@twind/preset-tailwind@npm:1.1.4"
-  peerDependencies:
-    "@twind/core": ^1.1.0
-    typescript: ^4.8.4
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 06cca73fcc2877efdfce4eba0f6e53ea754cb04e0943a87c35e77f87e519f2b6dc4b000413b862db4a9ded2282a5eee9d891d3951c2fb550191a764ff8f6c992
-  languageName: node
-  linkType: hard
-
 "@twind/with-next@npm:1.2.2":
   version: 1.2.2
   resolution: "@twind/with-next@npm:1.2.2"
@@ -6156,7 +6143,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/twind-adapter@workspace:packages/twind-adapter"
   dependencies:
-    "@twind/preset-tailwind": 1.1.4
     "@universal-labs/tailwind": "workspace:*"
   peerDependencies:
     react: ">=18"

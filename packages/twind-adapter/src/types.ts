@@ -1,5 +1,10 @@
-import type { BaseTheme, Preset, TwindUserConfig, ParsedRule } from '@universal-labs/tailwind';
-import type { TailwindTheme } from '@twind/preset-tailwind';
+import type {
+  TailwindTheme,
+  BaseTheme,
+  Preset,
+  TwindUserConfig,
+  ParsedRule,
+} from '@universal-labs/tailwind';
 
 export type CustomConfig = TwindUserConfig<
   BaseTheme,

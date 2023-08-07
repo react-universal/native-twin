@@ -1,9 +1,8 @@
-import type { BaseTheme, Preset } from '@universal-labs/tailwind';
+import type { BaseTheme, Preset, TailwindTheme } from '@universal-labs/tailwind';
 import { rotateRules } from '../rules/rotate';
 import { shadowRules } from '../rules/shadow';
 import { translateRules } from '../rules/translate';
 import transformCssVariables from './css-variables';
-import { TailwindTheme } from '@twind/preset-tailwind';
 
 export default function twindPresetReactNative(): Preset<BaseTheme & TailwindTheme> {
   return {
