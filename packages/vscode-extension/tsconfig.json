@@ -7,19 +7,9 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "strict": true /* enable all strict type-checking options */
-    /* Additional Checks */
-    // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-    // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-    // "noUnusedParameters": true,  /* Report errors on unused parameters. */
-
-    // uncomment the below when debugging the typescript styled plugin
-    // "plugins": [
-    //   {
-    //     "name": "../typescript-styled-plugin"
-    //   }
-    // ]
+    "strict": true,
+    "noEmit": false,
+    "outDir": "build"
   },
   "exclude": ["node_modules", ".vscode-test", "build", "testFixture"],
-  "references": [{ "path": "./client" },{ "path": "./server" }, ]
 }

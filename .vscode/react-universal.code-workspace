@@ -56,8 +56,7 @@
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       "**/node_modules": true,
-      "**/build": true,
-      "**/out": true,
+      "**/build": false
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [
