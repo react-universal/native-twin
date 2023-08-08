@@ -4,34 +4,34 @@
       "name": "root",
       "path": ".."
     },
-    // {
-    //   "name": "expo-app",
-    //   "path": "../examples/expo-app"
-    // },
-    // {
-    //   "name": "next-app",
-    //   "path": "../examples/next-app"
-    // },
-    // {
-    //   "name": "docs-site",
-    //   "path": "../apps/site"
-    // },
-    // {
-    //   "name": "📦 @lib/styled",
-    //   "path": "../packages/styled"
-    // },
-    // {
-    //   "name": "📦 @lib/css",
-    //   "path": "../packages/css"
-    // },
-    // {
-    //   "name": "📦 @lib/tailwind",
-    //   "path": "../packages/tailwind"
-    // },
-    // {
-    //   "name": "📦 @lib/twind-adapter",
-    //   "path": "../packages/twind-adapter"
-    // },
+    {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
+    },
+    {
+      "name": "docs-site",
+      "path": "../apps/site"
+    },
+    {
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @lib/tailwind",
+      "path": "../packages/tailwind"
+    },
+    {
+      "name": "📦 @lib/twind-adapter",
+      "path": "../packages/twind-adapter"
+    },
     {
       "name": "📦 @lib/ts-plugin",
       "path": "../packages/ts-plugin"
@@ -56,7 +56,8 @@
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       "**/node_modules": true,
-      "**/build": false
+      "**/build": false,
+      "**/.vscode-test": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [

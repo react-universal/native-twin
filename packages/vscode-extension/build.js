@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const production = process.argv[2] === '--production';
+// const watch = process.argv[2] === '--watch';
 
 require('esbuild')
   .build({
@@ -8,8 +9,7 @@ require('esbuild')
     outdir: 'build',
     external: ['vscode'],
     format: 'cjs',
-    platform: 'node',
-    sourcemap: 'external',
+    sourcemap: !production,
     minify: production,
   })
   .catch((e) => {

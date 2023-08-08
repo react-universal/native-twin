@@ -9,13 +9,17 @@
 			"name": "Run Extension",
 			"type": "extensionHost",
 			"request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "sourceMaps": true,
 			"args": [
+        "--disable-extensions",
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"outFiles": [
 				"${workspaceFolder}/build/**/*.js"
 			],
-			"preLaunchTask": "${defaultBuildTask}"
+			"preLaunchTask": "${defaultBuildTask}",
+      "env": { "TSS_DEBUG": "9229", "TSS_REMOTE_DEBUG": "9229" }
 		},
 		{
 			"name": "Extension Tests",
@@ -23,7 +27,7 @@
 			"request": "launch",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--extensionTestsPath=${workspaceFolder}/build/test/suite/index"
+				"--extensionTestsPath=${workspaceFolder}/build/test/run"
 			],
 			"outFiles": [
 				"${workspaceFolder}/build/test/**/*.js"
