@@ -6,13 +6,16 @@
     [
       "@universal-labs/styled",
       "@universal-labs/css",
-      "@universal-labs/twind-adapter"
+      "@universal-labs/twind-native",
+      "@universal-labs/twind-adapter",
+      "@universal-labs/vscode",
+      "@universal-labs/ts-styled-plugin-tw"
     ]
   ],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-app", "expo-app", "docusaurus"],
+  "ignore": ["next-app", "expo-app", "site"],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }
