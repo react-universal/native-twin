@@ -4,7 +4,11 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
     "module": "ES2020",
+    "target": "ES2015",
     "moduleResolution": "node",
+    "strictFunctionTypes": false,
+    "noImplicitReturns": false,
+    "resolveJsonModule": true,
     "noEmit": true,
     "strict": true,
     "stripInternal": true

@@ -1,8 +1,4 @@
-/**
- * @module @twind/preset-tailwind/preflight
- */
-
-import type { Preflight } from '../';
+import type { Preflight } from '@universal-labs/twind-native';
 
 import baseTheme from './baseTheme';
 

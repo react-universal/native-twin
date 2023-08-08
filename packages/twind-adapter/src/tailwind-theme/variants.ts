@@ -1,19 +1,15 @@
-/**
- * @module @twind/preset-tailwind/variants
- */
-
 import {
   AutocompleteProvider,
   VariantResolver,
   Variant,
   AutocompleteItem,
   arbitrary,
-} from '../';
+} from '@universal-labs/twind-native';
+import { normalize, withAutocomplete } from '@universal-labs/twind-native';
 import type { TailwindTheme } from './types';
 
-import { normalize, withAutocomplete } from '../';
-
 const DEV = true;
+
 // indirection wrapper to remove autocomplete functions from production bundles
 function withAutocomplete$(
   rule: VariantResolver<TailwindTheme>,

@@ -1,7 +1,3 @@
-/**
- * @module @twind/preset-tailwind/defaultTheme
- */
-
 import type { BaseTheme } from './baseTheme';
 
 import * as colors from './colors';

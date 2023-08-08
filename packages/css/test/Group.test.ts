@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { cx } from '@universal-labs/twind-adapter';
+import { cx } from '@universal-labs/twind-native';
 import { generateStylesFor } from './test-utils';
 
 describe('@universal-labs/css - GROUP', () => {

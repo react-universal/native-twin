@@ -1,4 +1,5 @@
-import type { TailwindTheme, Rule, BaseTheme } from '@universal-labs/twind-native';
+import type { Rule, BaseTheme } from '@universal-labs/twind-native';
+import { TailwindTheme } from '../tailwind-theme';
 
 export const rotateRules: Rule<BaseTheme & TailwindTheme>[] = [
   [

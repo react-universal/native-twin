@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import { MainSheet } from '@universal-labs/css';
-import { hash, Tailwind } from '@universal-labs/twind-adapter';
+import { Tailwind } from '@universal-labs/twind-adapter';
+import { hash } from '@universal-labs/twind-native';
 import type { Config } from 'tailwindcss';
 import type { StyledContext } from '../types/css.types';
 import { globalStore } from './store';

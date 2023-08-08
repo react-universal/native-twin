@@ -1,8 +1,6 @@
 import { assert, test, afterEach } from 'vitest';
-
-import { apply, css, cx, style, twind, virtual } from '../';
-
-import { presetTailwind as tailwind } from '.';
+import { apply, css, cx, style, twind, virtual } from '@universal-labs/twind-native';
+import { presetTailwind as tailwind } from '../src';
 import data from './rules.test.json';
 
 const tw = twind(

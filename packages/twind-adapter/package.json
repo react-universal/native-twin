@@ -44,7 +44,11 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/twind-native": "workspace:*"
+    "@universal-labs/twind-native": "workspace:*",
+    "css-tree": "2.3.1"
+  },
+  "devDependencies": {
+    "@types/css-tree": "2.3.1"
   },
   "peerDependencies": {
     "react": ">=18",

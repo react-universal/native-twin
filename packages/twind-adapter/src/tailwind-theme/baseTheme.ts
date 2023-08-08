@@ -1,8 +1,4 @@
-/**
- * @module @twind/preset-tailwind/baseTheme
- */
-
-import type { ThemeSection, ThemeSectionResolver } from '../..';
+import type { ThemeSection, ThemeSectionResolver } from '@universal-labs/twind-native';
 import type { TailwindTheme } from './types';
 
 export type OmitedSections =
@@ -843,7 +839,6 @@ function ratios(start: number, end: number): Record<string, string> {
 
   do {
     // XXX: using var to avoid strange bug when generating cjs where `= 1` is removed
-    // eslint-disable-next-line no-var
     for (var dividend = 1; dividend < start; dividend++) {
       result[`${dividend}/${start}`] = Number(((dividend / start) * 100).toFixed(6)) + '%';
     }
@@ -881,7 +876,6 @@ function linear(
   start = 0,
   step = 1,
   result: Record<string, string> = {},
-  // eslint-disable-next-line max-params
 ): Record<string, string> {
   for (; start <= stop; start += step) {
     result[start] = start / divideBy + unit;

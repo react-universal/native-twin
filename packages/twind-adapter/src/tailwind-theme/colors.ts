@@ -1,9 +1,5 @@
 // Source from https://github.com/tailwindlabs/tailwindcss/blob/master/src/public/colors.js
 
-/**
- * @module @twind/preset-tailwind/colors
- */
-
 export const slate = {
   50: '#f8fafc',
   100: '#f1f5f9',

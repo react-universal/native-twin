@@ -39,6 +39,7 @@ export default defineConfig({
         'react/jsx-runtime',
         '@universal-labs/css',
         '@universal-labs/twind-adapter',
+        '@universal-labs/twind-native',
       ],
       treeshake: true,
       output: {

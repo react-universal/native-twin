@@ -1,9 +1,3 @@
-/**
- * @module @twind/preset-tailwind/rules
- */
-
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 import type {
   MatchResult,
   Rule,
@@ -15,8 +9,7 @@ import type {
   ThemeRuleResolver,
   ColorFromThemeValue,
   AutocompleteProvider,
-} from '../';
-
+} from '@universal-labs/twind-native';
 import {
   mql,
   match,
@@ -27,7 +20,7 @@ import {
   asArray,
   arbitrary,
   withAutocomplete,
-} from '../';
+} from '@universal-labs/twind-native';
 
 import type { TailwindTheme } from './types';
 
@@ -450,7 +443,6 @@ const rules: Rule<TailwindTheme>[] = [
   match('text-(ellipsis|clip)', 'textOverflow'),
 
   // Text Opacity
-  // @ts-expect-error
   matchTheme('text-opacity-', 'textOpacity', '--tw-text-opacity'),
 
   // Text Color
@@ -580,7 +572,6 @@ const rules: Rule<TailwindTheme>[] = [
   ),
   matchColor('to-', {
     section: 'gradientColorStops',
-    // @ts-expect-error
     property: '--tw-gradient-to',
     opacityVariable: false,
     opacitySection: 'opacity',
@@ -628,7 +619,6 @@ const rules: Rule<TailwindTheme>[] = [
   ),
 
   // Background Opacity
-  // @ts-expect-error
   matchTheme('bg-opacity-', 'backgroundOpacity', '--tw-bg-opacity'),
 
   // Background Color
@@ -669,7 +659,6 @@ const rules: Rule<TailwindTheme>[] = [
   match('border-(collapse|separate)', 'borderCollapse'),
 
   // Border Opacity
-  // @ts-expect-error
   matchTheme('border-opacity(?:$|-)', 'borderOpacity', '--tw-border-opacity'),
 
   // Border Style
@@ -738,20 +727,17 @@ const rules: Rule<TailwindTheme>[] = [
   }),
 
   // Ring Offset Opacity
-  // @ts-expect-error
   matchTheme('ring-opacity(?:$|-)', 'ringOpacity', '--tw-ring-opacity'),
 
   // Ring Offset Color
   matchColor('ring-offset-', {
     // section: 'ringOffsetColor',
-    // @ts-expect-error
     property: '--tw-ring-offset-color',
     opacityVariable: false,
     // opacitySection: section.replace('Color', 'Opacity') -> 'ringOffsetOpacity'
   }),
 
   // Ring Offset Width
-  // @ts-expect-error
   matchTheme('ring-offset(?:$|-)', 'ringOffsetWidth', '--tw-ring-offset-width'),
 
   // Ring Inset
@@ -760,7 +746,6 @@ const rules: Rule<TailwindTheme>[] = [
   // Ring Color
   matchColor('ring-', {
     // section: 'ringColor',
-    // @ts-expect-error
     property: '--tw-ring-color',
     // opacityVariable: '--tw-ring-opacity',
     // opacitySection: section.replace('Color', 'Opacity') -> 'ringOpacity'

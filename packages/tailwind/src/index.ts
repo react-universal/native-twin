@@ -19,4 +19,3 @@ export * from './runtime/twind';
 export * from './style-injectors/tx';
 export * from './types';
 export * from './utils';
-export * from './tailwind-theme';
