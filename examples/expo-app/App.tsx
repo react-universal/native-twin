@@ -21,7 +21,6 @@ export default function App() {
     }
   }, [bootFonts, isReady]);
   if (!isReady) return null;
-  console.log('COOL_DOWN_OFF');
   return (
     <View style={{ flex: 1 }}>
       <HomeScreen />
