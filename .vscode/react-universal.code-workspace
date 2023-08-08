@@ -56,7 +56,7 @@
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       "**/node_modules": true,
-      "**/builds": true,
+      "**/build": true,
       "**/out": true,
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",

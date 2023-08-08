@@ -6,7 +6,6 @@ import { populateCompletions } from './internal/tailwind';
 import { ConfigurationManager } from './configuration';
 import { StandardTemplateSourceHelper } from './source-helper';
 import { TailwindLanguageService } from './LanguageService';
-import { LanguageServiceContext } from './types';
 import { LanguageServiceLogger } from './logger';
 
 export class TailwindPluginCreator {
@@ -24,10 +23,7 @@ export class TailwindPluginCreator {
       this._configManager,
       new StandardScriptSourceHelper(this.typescript, info.project),
     );
-    const context: LanguageServiceContext = {
-      completionEntries: new Map(),
-    };
-    const languageService = new TailwindLanguageService(context, info);
+    const languageService = new TailwindLanguageService(info);
 
     let enable = this._configManager.config.enable;
     this._configManager.onUpdatedConfig(() => {
@@ -42,14 +38,14 @@ export class TailwindPluginCreator {
       ...info.languageService,
       getCompletionsAtPosition: (fileName, position, options) => {
         if (enable) {
-          const context = helper.getTemplate(fileName, position);
+          const template = helper.getTemplate(fileName, position);
 
-          if (context) {
+          if (template) {
             return translateCompletionInfo(
-              context,
+              template,
               languageService.getCompletionsAtPosition!(
-                context,
-                helper.getRelativePosition(context, position),
+                template,
+                helper.getRelativePosition(template, position),
               ),
             );
           }

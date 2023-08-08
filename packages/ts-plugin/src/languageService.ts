@@ -4,24 +4,19 @@ import {
 } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
 import { pluginName } from './constants/config.constants';
-import { LanguageServiceContext } from './types';
+import { LanguageServiceContext } from './ServiceContext';
 
 export class TailwindLanguageService implements TemplateLanguageService {
-  languageServiceContext: LanguageServiceContext;
-  info: ts.server.PluginCreateInfo;
-  constructor(
-    languageServiceContext: LanguageServiceContext,
-    info: ts.server.PluginCreateInfo,
-  ) {
-    this.languageServiceContext = languageServiceContext;
-    this.info = info;
+  context: LanguageServiceContext;
+  constructor(info: ts.server.PluginCreateInfo) {
+    this.context = new LanguageServiceContext(info);
   }
   getCompletionsAtPosition(
     templateContext: TemplateContext,
     position: ts.LineAndCharacter,
   ): ts.WithMetadata<ts.CompletionInfo> {
     const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
-    this.info.languageServiceHost.log?.(
+    this.context.pluginInfo.languageServiceHost.log?.(
       `[${pluginName}] ${[...templateClasses].join(' ')} classes ${position.character}`,
     );
 
@@ -31,8 +26,10 @@ export class TailwindLanguageService implements TemplateLanguageService {
     if (prevText.length > 0 && !isEmptyCompletion) {
       const prevClasses = prevText.split(/\s+/).filter(Boolean);
       const completion = prevClasses[prevClasses.length - 1]!;
-      this.info.languageServiceHost.log?.(`[${pluginName}] TO_COMPLETED: ${completion}`);
-      this.languageServiceContext.completionEntries.forEach((rule) => {
+      this.context.pluginInfo.languageServiceHost.log?.(
+        `[${pluginName}] TO_COMPLETED: ${completion}`,
+      );
+      this.context.completionEntries.forEach((rule) => {
         if (rule.name.includes(completion) && !templateClasses.has(rule.name)) {
           const splitted = rule.name.split(completion);
           entries.push({
@@ -45,7 +42,7 @@ export class TailwindLanguageService implements TemplateLanguageService {
         }
       });
     } else {
-      this.languageServiceContext.completionEntries.forEach((rule) => {
+      this.context.completionEntries.forEach((rule) => {
         if (!templateClasses.has(rule.name)) {
           entries.push({
             name: rule.name,

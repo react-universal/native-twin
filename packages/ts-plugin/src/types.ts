@@ -135,10 +135,6 @@ export interface TwindPluginConfiguration {
   readonly enable: boolean;
 }
 
-export type LanguageServiceContext = {
-  completionEntries: Map<string, Suggestion>;
-};
-
 export interface IntellisenseCommon extends SuggestionCommon {
   source: string;
   index: number;
