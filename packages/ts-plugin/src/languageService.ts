@@ -1,85 +1,90 @@
-import { TemplateLanguageService } from 'typescript-template-language-service-decorator';
+import {
+  TemplateContext,
+  TemplateLanguageService,
+} from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
 import { pluginName } from './constants/config.constants';
-import { Suggestion } from './createIntellisense';
-// import { inspect } from 'util';
+import { LanguageServiceContext } from './types';
 
-export type LanguageServiceContext = {
-  completionEntries: Map<string, Suggestion>;
-};
+export class TailwindLanguageService implements TemplateLanguageService {
+  languageServiceContext: LanguageServiceContext;
+  info: ts.server.PluginCreateInfo;
+  constructor(
+    languageServiceContext: LanguageServiceContext,
+    info: ts.server.PluginCreateInfo,
+  ) {
+    this.languageServiceContext = languageServiceContext;
+    this.info = info;
+  }
+  getCompletionsAtPosition(
+    templateContext: TemplateContext,
+    position: ts.LineAndCharacter,
+  ): ts.WithMetadata<ts.CompletionInfo> {
+    const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
+    this.info.languageServiceHost.log?.(
+      `[${pluginName}] ${[...templateClasses].join(' ')} classes ${position.character}`,
+    );
 
-export function createLanguageService(
-  languageServiceContext: LanguageServiceContext,
-  info: ts.server.PluginCreateInfo,
-): TemplateLanguageService {
-  return {
-    getCompletionsAtPosition(templateContext, position) {
-      const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
-      info.languageServiceHost.log?.(
-        `[${pluginName}] ${[...templateClasses].join(' ')} classes ${position.character}`,
-      );
+    const entries: ts.CompletionEntry[] = [];
+    const isEmptyCompletion = templateContext.text.charAt(position.character - 1) == ' ';
+    const prevText = templateContext.text.slice(0, position.character);
+    if (prevText.length > 0 && !isEmptyCompletion) {
+      const prevClasses = prevText.split(/\s+/).filter(Boolean);
+      const completion = prevClasses[prevClasses.length - 1]!;
+      this.info.languageServiceHost.log?.(`[${pluginName}] TO_COMPLETED: ${completion}`);
+      this.languageServiceContext.completionEntries.forEach((rule) => {
+        if (rule.name.includes(completion) && !templateClasses.has(rule.name)) {
+          const splitted = rule.name.split(completion);
+          entries.push({
+            name: rule.name,
+            sortText: rule.name,
+            insertText: splitted[1] ? splitted[1] : rule.name,
+            kind: ts.ScriptElementKind.string,
+            labelDetails: { description: rule.description!, detail: rule.detail! },
+          });
+        }
+      });
+    } else {
+      this.languageServiceContext.completionEntries.forEach((rule) => {
+        if (!templateClasses.has(rule.name)) {
+          entries.push({
+            name: rule.name,
+            sortText: rule.name,
+            kind: ts.ScriptElementKind.string,
+            labelDetails: { description: rule.description!, detail: rule.detail! },
+          });
+        }
+      });
+    }
 
-      const entries: ts.CompletionEntry[] = [];
-      const isEmptyCompletion = templateContext.text.charAt(position.character - 1) == ' ';
-      const prevText = templateContext.text.slice(0, position.character);
-      if (prevText.length > 0 && !isEmptyCompletion) {
-        const prevClasses = prevText.split(/\s+/).filter(Boolean);
-        const completion = prevClasses[prevClasses.length - 1]!;
-        info.languageServiceHost.log?.(`[${pluginName}] TO_COMPLETED: ${completion}`);
-        languageServiceContext.completionEntries.forEach((rule) => {
-          if (rule.name.includes(completion) && !templateClasses.has(rule.name)) {
-            const splitted = rule.name.split(completion);
-            entries.push({
-              name: rule.name,
-              sortText: rule.name,
-              insertText: splitted[1] ? splitted[1] : rule.name,
-              kind: ts.ScriptElementKind.string,
-              labelDetails: { description: rule.description!, detail: rule.detail! },
-            });
-          }
-        });
-      } else {
-        languageServiceContext.completionEntries.forEach((rule) => {
-          if (!templateClasses.has(rule.name)) {
-            entries.push({
-              name: rule.name,
-              sortText: rule.name,
-              kind: ts.ScriptElementKind.string,
-              labelDetails: { description: rule.description!, detail: rule.detail! },
-            });
-          }
-        });
-      }
+    return {
+      entries,
+      isGlobalCompletion: false,
+      isMemberCompletion: false,
+      isNewIdentifierLocation: false,
+    };
+  }
 
-      return {
-        entries,
-        isGlobalCompletion: false,
-        isMemberCompletion: false,
-        isNewIdentifierLocation: false,
-      };
-    },
+  getSemanticDiagnostics(_templateContext: TemplateContext) {
+    const diagnostics: ts.Diagnostic[] = [];
 
-    getSemanticDiagnostics(_templateContext) {
-      const diagnostics: ts.Diagnostic[] = [];
+    // for (const match of regexExec(/[^:\s]+:?/g, templateContext.text)) {
+    //   const className = match[0]!;
+    //   const start = match.index;
+    //   const length = match![0]!.length;
 
-      // for (const match of regexExec(/[^:\s]+:?/g, templateContext.text)) {
-      //   const className = match[0]!;
-      //   const start = match.index;
-      //   const length = match![0]!.length;
+    //   if (!languageServiceContext.completionEntries.has(className)) {
+    //     diagnostics.push({
+    //       messageText: `unknown tailwind class or variant "${className}"`,
+    //       start: start,
+    //       length: length,
+    //       file: templateContext.node.getSourceFile(),
+    //       category: ts.DiagnosticCategory.Warning,
+    //       code: 0, // ???
+    //     });
+    //   }
+    // }
 
-      //   if (!languageServiceContext.completionEntries.has(className)) {
-      //     diagnostics.push({
-      //       messageText: `unknown tailwind class or variant "${className}"`,
-      //       start: start,
-      //       length: length,
-      //       file: templateContext.node.getSourceFile(),
-      //       category: ts.DiagnosticCategory.Warning,
-      //       code: 0, // ???
-      //     });
-      //   }
-      // }
-
-      return diagnostics;
-    },
-  };
+    return diagnostics;
+  }
 }

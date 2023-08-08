@@ -2,11 +2,10 @@ import type { Twind, TwindConfig, TwindUserConfig } from '@universal-labs/twind-
 import { matchSorter, type MatchSorterOptions } from 'match-sorter';
 import cssbeautify from 'cssbeautify';
 import QuickLRU from 'quick-lru';
-import type { CurrentTheme, Intellisense, IntellisenseOptions, Suggestion } from './types';
-import { spacify } from './utils';
-import { compareSuggestions } from './internal/compareSuggestion';
-import { TailwindContext } from './internal/tailwindContext';
-export * from './types';
+import type { CurrentTheme, Intellisense, IntellisenseOptions, Suggestion } from '../types';
+import { spacify } from '../utils';
+import { compareSuggestions } from './compareSuggestion';
+import { TailwindContext } from './tailwindContext';
 
 export function createIntellisense(
   config: Twind<CurrentTheme> | TwindConfig<CurrentTheme> | TwindUserConfig<CurrentTheme>,
@@ -32,7 +31,7 @@ export function createIntellisense(
     },
     async suggest(input, { prefix = '', ignore } = {}) {
       const key = JSON.stringify({ input, prefix, ignore });
-      let result = suggestionCache.get(key);
+      let result = suggestionCache.get(key)!;
 
       if (!result) {
         let source = context.suggestions;

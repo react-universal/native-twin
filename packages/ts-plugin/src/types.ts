@@ -1,10 +1,12 @@
 import type {
+  AutocompleteItem,
   BaseTheme,
   ExtractUserTheme,
-  TailwindTheme,
   ThemeFunction,
+  Twind,
   TwindConfig,
-} from '@universal-labs/twind-adapter';
+} from '@universal-labs/twind-native';
+import type { TailwindTheme } from '@universal-labs/twind-adapter';
 
 import type { Numberify, RGBA } from '@ctrl/tinycolor';
 
@@ -125,4 +127,42 @@ export interface IntellisenseOptions {
   };
 
   mdnOrigin?: string;
+}
+
+export interface TwindPluginConfiguration {
+  readonly configFile?: string;
+  readonly tags: ReadonlyArray<string>;
+  readonly attributes: ReadonlyArray<string>;
+  readonly styles: ReadonlyArray<string>;
+  readonly debug?: boolean;
+  readonly enable: boolean;
+}
+
+export type LanguageServiceContext = {
+  completionEntries: Map<string, Suggestion>;
+};
+
+export interface IntellisenseCommon extends SuggestionCommon {
+  source: string;
+  index: number;
+  position: number;
+  filter: string;
+  theme?: AutocompleteItem['theme'];
+}
+
+export interface IntellisenseVariant extends IntellisenseCommon, SuggestionVariant {
+  modifiers?: IntellisenseVariant[];
+}
+
+export interface IntellisenseClass extends IntellisenseCommon, SuggestionClass {
+  modifiers?: IntellisenseClass[];
+}
+
+export interface IntellisenseContext {
+  tw: Twind<BaseTheme & TailwindTheme>;
+  variants: Map<string, IntellisenseVariant>;
+  classes: Map<string, IntellisenseClass>;
+  suggestions: (IntellisenseVariant | IntellisenseClass)[];
+  isIgnored: (className: string) => boolean;
+  generateCSS: (token: string) => string;
 }

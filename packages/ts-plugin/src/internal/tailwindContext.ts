@@ -7,7 +7,7 @@ import {
   AutocompleteItem,
   stringify,
 } from '@universal-labs/twind-native';
-import type { IntellisenseClass, IntellisenseContext, IntellisenseVariant } from './types';
+import type { IntellisenseClass, IntellisenseContext, IntellisenseVariant } from '../types';
 import { CurrentTheme, IntellisenseOptions } from '../types';
 import QuickLRU from 'quick-lru';
 import { spacify, toCondition } from '../utils';
