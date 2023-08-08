@@ -1,5 +1,5 @@
 import genex from 'genex';
-import { CurrentTheme } from '../types';
+import { CurrentTheme } from '../../types';
 import {
   AutocompleteContext,
   AutocompleteItem,
@@ -8,7 +8,7 @@ import {
   asArray,
   getAutocompleteProvider,
 } from '@universal-labs/twind-native';
-import { toCondition } from '../utils';
+import { toCondition } from '../../utils';
 
 export function extractVariants(
   input: {

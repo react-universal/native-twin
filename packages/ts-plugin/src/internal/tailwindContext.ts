@@ -11,11 +11,13 @@ import type { IntellisenseClass, IntellisenseContext, IntellisenseVariant } from
 import { CurrentTheme, IntellisenseOptions } from '../types';
 import QuickLRU from 'quick-lru';
 import { spacify, toCondition } from '../utils';
-import { extractMediaQueries } from '../extractors/extractMediaQueries';
 import { parseColor } from './color';
-import { extractRulesFromTheme } from '../extractors/extractRules';
-import { extractVariants } from '../extractors/extractVariants';
-import { extractPseudoClasses } from '../extractors/extractPseudo';
+import {
+  extractMediaQueries,
+  extractPseudoClasses,
+  extractRulesFromTheme,
+  extractVariants,
+} from './extractors';
 import { compareSuggestions } from './compareSuggestion';
 import { tw } from '@universal-labs/twind-adapter';
 
