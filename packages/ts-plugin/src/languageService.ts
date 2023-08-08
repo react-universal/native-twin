@@ -5,11 +5,16 @@ import {
 import ts from 'typescript/lib/tsserverlibrary';
 import { pluginName } from './constants/config.constants';
 import { LanguageServiceContext } from './ServiceContext';
+import { ConfigurationManager } from './configuration';
 
 export class TailwindLanguageService implements TemplateLanguageService {
   context: LanguageServiceContext;
-  constructor(info: ts.server.PluginCreateInfo) {
-    this.context = new LanguageServiceContext(info);
+  constructor(
+    typescript: typeof ts,
+    info: ts.server.PluginCreateInfo,
+    configManager: ConfigurationManager,
+  ) {
+    this.context = new LanguageServiceContext(typescript, info, configManager);
   }
   getCompletionsAtPosition(
     templateContext: TemplateContext,

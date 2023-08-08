@@ -1,57 +1,54 @@
 import ts from 'typescript/lib/tsserverlibrary';
-import { join } from 'path';
 import { TemplateContext } from 'typescript-template-language-service-decorator';
-import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import { populateCompletions } from './internal/tailwind';
 import { ConfigurationManager } from './configuration';
-import { StandardTemplateSourceHelper } from './source-helper';
 import { TailwindLanguageService } from './LanguageService';
-import { LanguageServiceLogger } from './logger';
 
 export class TailwindPluginCreator {
   typescript: typeof ts;
-  private _logger?: LanguageServiceLogger;
   private readonly _configManager = new ConfigurationManager();
   public constructor(typescript: typeof ts) {
     this.typescript = typescript;
   }
   create(info: ts.server.PluginCreateInfo): ts.LanguageService {
-    this._logger = new LanguageServiceLogger(info);
-
-    const helper = new StandardTemplateSourceHelper(
+    const languageService = new TailwindLanguageService(
       this.typescript,
+      info,
       this._configManager,
-      new StandardScriptSourceHelper(this.typescript, info.project),
     );
-    const languageService = new TailwindLanguageService(info);
 
     let enable = this._configManager.config.enable;
     this._configManager.onUpdatedConfig(() => {
       enable = this._configManager.config.enable;
     });
-    const configPath = join(info.project.getCurrentDirectory(), 'tailwind.config.js');
 
-    populateCompletions(context, configPath);
-    this._logger.log('tw: initialized');
+    populateCompletions(languageService.context);
+    languageService.context.logger.log('tw: initialized');
 
     return {
       ...info.languageService,
       getCompletionsAtPosition: (fileName, position, options) => {
         if (enable) {
-          const template = helper.getTemplate(fileName, position);
+          const template = languageService.context.templateSourceHelper.getTemplate(
+            fileName,
+            position,
+          );
 
           if (template) {
             return translateCompletionInfo(
               template,
-              languageService.getCompletionsAtPosition!(
+              languageService.getCompletionsAtPosition(
                 template,
-                helper.getRelativePosition(template, position),
+                languageService.context.templateSourceHelper.getRelativePosition(
+                  template,
+                  position,
+                ),
               ),
             );
           }
         }
 
-        return info.languageService.getCompletionsAtPosition!(fileName, position, options);
+        return info.languageService.getCompletionsAtPosition(fileName, position, options);
       },
     };
   }
