@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Predicate =
   | ((this: undefined, value: any, key: undefined, object: any, matcher: undefined) => unknown)
   | (<T extends Predicates>(
@@ -22,7 +21,6 @@ export type Matcher = Predicate | Predicates | RegExp | unknown;
 /**
  * Defines the predicate properties to be invoked with the corresponding property values of a given object.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Predicates extends Record<string | number | symbol, Matcher | Matcher[]> {
   // Support cyclic references
 }
@@ -79,7 +77,6 @@ function isEqual(value: unknown, other: unknown): boolean {
  *
  * @param value to check
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 function isObjectLike(value: unknown): value is object {
   return value != null && typeof value == 'object';
 }

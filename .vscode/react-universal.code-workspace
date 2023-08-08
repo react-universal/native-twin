@@ -4,42 +4,42 @@
       "name": "root",
       "path": ".."
     },
-    {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
-    },
-    {
-      "name": "next-app",
-      "path": "../examples/next-app"
-    },
-    {
-      "name": "docs-site",
-      "path": "../apps/site"
-    },
-    {
-      "name": "📦 @lib/styled",
-      "path": "../packages/styled"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/tailwind",
-      "path": "../packages/tailwind"
-    },
-    {
-      "name": "📦 @lib/twind-adapter",
-      "path": "../packages/twind-adapter"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
-    },
+    // {
+    //   "name": "expo-app",
+    //   "path": "../examples/expo-app"
+    // },
+    // {
+    //   "name": "next-app",
+    //   "path": "../examples/next-app"
+    // },
+    // {
+    //   "name": "docs-site",
+    //   "path": "../apps/site"
+    // },
+    // {
+    //   "name": "📦 @lib/styled",
+    //   "path": "../packages/styled"
+    // },
+    // {
+    //   "name": "📦 @lib/css",
+    //   "path": "../packages/css"
+    // },
+    // {
+    //   "name": "📦 @lib/tailwind",
+    //   "path": "../packages/tailwind"
+    // },
+    // {
+    //   "name": "📦 @lib/twind-adapter",
+    //   "path": "../packages/twind-adapter"
+    // },
     {
       "name": "📦 @lib/ts-plugin",
       "path": "../packages/ts-plugin"
     },
+    {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    }
   ],
   "settings": {
     "editor.quickSuggestions": {

@@ -1,7 +1,6 @@
 // Based on https://github.com/microsoft/typescript-template-language-service-decorator/blob/26deaa4fc4af1237a94a44e033e92514077fbede/src/standard-template-source-helper.ts
 
-import type * as ts from 'typescript/lib/tsserverlibrary';
-
+import type ts from 'typescript/lib/tsserverlibrary';
 import type {
   TemplateContext,
   TemplateSettings,
@@ -160,11 +159,11 @@ export class StandardTemplateSourceHelper implements TemplateSourceHelper {
     private readonly helper: ScriptSourceHelper,
   ) {
     this.templateSettings = getTemplateSettings(this.configManager);
-    this.sourceMatchers = getSourceMatchers(this.typescript, this.configManager.config);
+    this.sourceMatchers = getSourceMatchers(this.typescript, this.configManager);
 
     configManager.onUpdatedConfig(() => {
       this.templateSettings = getTemplateSettings(this.configManager);
-      this.sourceMatchers = getSourceMatchers(this.typescript, this.configManager.config);
+      this.sourceMatchers = getSourceMatchers(this.typescript, this.configManager);
     });
   }
 
