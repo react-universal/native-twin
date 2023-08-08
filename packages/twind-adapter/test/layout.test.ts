@@ -1,11 +1,9 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { Tailwind } from '../src';
 
 const stringify = (target: string[]) => target.join('');
 
-const {
-  instance: { tw, tx },
-} = new Tailwind({
+const { parseAndInject } = new Tailwind({
   fontFamily: {
     DEFAULT: 'Inter-Regular',
     inter: 'Inter-Regular',
@@ -16,19 +14,15 @@ const {
 });
 
 describe('TailwindCSS layout', () => {
-  beforeEach(() => {
-    tw.clear();
-  });
-
   it('Width', () => {
-    const css = tx('w-4');
-    expect(css).toStrictEqual('w-4');
-    expect(stringify(tw.target)).toStrictEqual('.w-4{width:1rem}');
+    const css = parseAndInject('w-4');
+    expect(css.generated).toStrictEqual('w-4');
+    expect(stringify(css.target)).toStrictEqual('.w-4{width:1rem}');
   });
 
   it('Height', () => {
-    const css = tx('h-4');
-    expect(css).toStrictEqual('h-4');
-    expect(stringify(tw.target)).toStrictEqual('.h-4{height:1rem}');
+    const css = parseAndInject('h-4');
+    expect(css.generated).toStrictEqual('h-4');
+    expect(stringify(css.target)).toStrictEqual('.h-4{height:1rem}');
   });
 });

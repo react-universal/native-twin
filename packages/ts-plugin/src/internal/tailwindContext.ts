@@ -4,10 +4,9 @@ import {
   type Twind,
   type TwindConfig,
   type TwindUserConfig,
-  Tailwind,
   AutocompleteItem,
   stringify,
-} from '@universal-labs/twind-adapter';
+} from '@universal-labs/twind-native';
 import type { IntellisenseClass, IntellisenseContext, IntellisenseVariant } from './types';
 import { CurrentTheme, IntellisenseOptions } from '../types';
 import QuickLRU from 'quick-lru';
@@ -18,11 +17,12 @@ import { extractRulesFromTheme } from '../extractors/extractRules';
 import { extractVariants } from '../extractors/extractVariants';
 import { extractPseudoClasses } from '../extractors/extractPseudo';
 import { compareSuggestions } from './compareSuggestion';
+import { tw } from '@universal-labs/twind-adapter';
 
 export class TailwindContext {
   config: Twind<CurrentTheme> | TwindConfig<CurrentTheme> | TwindUserConfig<CurrentTheme>;
   cache: QuickLRU<string, string>;
-  tailwind: Tailwind['instance'];
+  tailwind: { tw: typeof tw };
   ignoreList: (string | RegExp)[];
   variants: IntellisenseContext['variants'];
   classes: IntellisenseContext['classes'];
@@ -35,7 +35,7 @@ export class TailwindContext {
   ) {
     this.config = config;
     this.cache = new QuickLRU<string, string>({ maxSize: 1000, ...options.cache });
-    this.tailwind = new Tailwind().instance;
+    this.tailwind = { tw };
     this.ignoreList = asArray(this.tailwind.tw.config.ignorelist).map(toCondition);
     this.variants = new Map();
     this.classes = new Map();
@@ -151,7 +151,7 @@ export class TailwindContext {
   }
 
   generateCSS(token: string) {
-    let result = this.cache.get(token);
+    let result = this.cache.get(token)!;
 
     if (!result) {
       this.tailwind.tw.clear();

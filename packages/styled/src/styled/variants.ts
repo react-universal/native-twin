@@ -1,5 +1,5 @@
 import type { OmitUndefined, StyledComponentProps } from '../types/styled.types';
-import { cx } from './VirtualSheet';
+import { cx } from '@universal-labs/twind-adapter';
 
 type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
 
@@ -31,7 +31,7 @@ type VariantsFnProps<T> = T extends ConfigSchema
 export const createVariants = <T>(config: VariantsConfig<T>) => {
   return (props?: VariantsFnProps<T>) => {
     if (!config || !config?.variants || config.variants == null) {
-      return cx(...[config.base, props?.className, props?.tw]);
+      return cx`${config.base} ${props?.className} ${props?.tw}`;
     }
     const { variants, defaultVariants } = config;
     const getVariantClassNames = Object.keys(variants).map(
@@ -48,7 +48,7 @@ export const createVariants = <T>(config: VariantsConfig<T>) => {
         return variants[variant]![variantKey];
       },
     );
-    return cx(...[config.base, getVariantClassNames, props?.className, props?.tw]);
+    return cx`${config.base} ${getVariantClassNames} ${props?.className} ${props?.tw}`;
   };
 };
 

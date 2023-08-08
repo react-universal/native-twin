@@ -2,20 +2,22 @@ import {
   twind,
   virtual,
   tx as tx$,
-  injectGlobal as injectGlobal$,
   cx as cx$,
+  injectGlobal as injectGlobal$,
+  keyframes as keyframes$,
   defineConfig,
 } from '@universal-labs/twind-native';
-import type { CustomConfig } from './types';
-import twindPresetReactNative from './presets/preset-react-native';
 import { rotateRules } from './rules/rotate';
 import { shadowRules } from './rules/shadow';
 import { skewRules } from './rules/skew';
 import { translateRules } from './rules/translate';
 import { presetTailwind } from './tailwind-theme';
+import transformCssVariables from './presets/css-variables';
+import { CustomConfig } from './types';
+export type * from './types';
+export * from './tailwind-theme';
 
 const defaultConfig = defineConfig({
-  preflight: false,
   darkMode: 'class',
   ignorelist: [
     'grid-(.*)',
@@ -29,45 +31,52 @@ const defaultConfig = defineConfig({
     'delay-(.*)',
     'animate-(.*)',
   ],
-  presets: [presetTailwind({ disablePreflight: true }), twindPresetReactNative()],
+  variants: [
+    ['ios', '&:ios'],
+    ['android', '&:android'],
+    ['web', '&:web'],
+  ],
   rules: [...translateRules, ...rotateRules, ...shadowRules, ...skewRules],
+  finalize(rule) {
+    rule = transformCssVariables(rule);
+    return rule;
+  },
+  presets: [presetTailwind({ disablePreflight: true })],
 });
 
-function initialize /* #__PURE__ */(theme: Exclude<CustomConfig['theme'], undefined> = {}) {
-  const tw = twind(
-    {
-      ...defaultConfig,
-      theme: {
-        ...defaultConfig?.theme,
-        extend: {
-          ...defaultConfig?.theme?.extend,
-          ...theme,
-        },
-      },
-    },
-    virtual(false),
-  );
-  const tx = tx$.bind(tw);
-  const injectGlobal = injectGlobal$.bind(tw);
-  const cx = cx$.bind(tw);
-  return {
-    tw,
-    tx,
-    injectGlobal,
-    cx,
-  };
-}
+export let tw = /* #__PURE__ */ twind(defaultConfig, virtual(false));
+export let tx = /* #__PURE__ */ tx$.bind(tw);
+export let injectGlobal = /* #__PURE__ */ injectGlobal$.bind(tw);
+export let keyframes = /* #__PURE__ */ keyframes$.bind(tw);
+export let cx = /* #__PURE__ */ cx$.bind(tw);
 
 export class Tailwind {
-  instance: TwindManager;
   constructor(userTheme: Exclude<CustomConfig['theme'], undefined> = {}) {
-    this.instance = initialize(userTheme);
+    tw.clear();
+    tw.destroy();
+    // @ts-expect-error
+    tw = undefined;
+    tw = twind(
+      {
+        ...defaultConfig,
+        theme: {
+          ...defaultConfig.theme,
+          extend: {
+            ...defaultConfig.theme,
+            ...userTheme,
+          },
+        },
+      },
+      virtual(false),
+    );
+    tx = tx$.bind(tw);
+    cx = cx$.bind(tw);
   }
 
   parseAndInject(classNames: string) {
-    const restore = this.instance.tw.snapshot();
-    const generated = this.instance.tx(classNames);
-    const target = [...this.instance.tw.target];
+    const restore = tw.snapshot();
+    const generated = tx`${classNames}`;
+    const target = [...tw.target];
     restore();
     return {
       generated,
@@ -76,6 +85,4 @@ export class Tailwind {
   }
 }
 
-export type TwindManager = ReturnType<typeof initialize>;
 export type * from './types';
-export * from './tailwind-theme';

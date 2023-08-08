@@ -1,4 +1,4 @@
-import { MaybeColorValue } from '@universal-labs/twind-adapter';
+import { MaybeColorValue } from '@universal-labs/twind-native';
 
 export function autocompleteColorClassnames(
   colors: Record<string, MaybeColorValue>,

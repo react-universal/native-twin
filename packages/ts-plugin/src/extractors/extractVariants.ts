@@ -7,7 +7,7 @@ import {
   Variant,
   asArray,
   getAutocompleteProvider,
-} from '@universal-labs/twind-adapter';
+} from '@universal-labs/twind-native';
 import { toCondition } from '../utils';
 
 export function extractVariants(

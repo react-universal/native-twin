@@ -1,9 +1,7 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { Tailwind } from '../src';
 
-const {
-  instance: { tw, tx },
-} = new Tailwind({
+const { parseAndInject } = new Tailwind({
   fontFamily: {
     DEFAULT: 'Inter-Regular',
     inter: 'Inter-Regular',
@@ -15,13 +13,9 @@ const {
 const stringify = (target: string[]) => target.join('');
 
 describe('TailwindCSS platform variants (web)', () => {
-  beforeEach(() => {
-    tw.clear();
-  });
-
   it('Shadow', () => {
-    const classNames = tx('web:rounded-xl ios:rounded-sm');
-    expect(classNames).toStrictEqual('ios:rounded-sm web:rounded-xl');
-    expect(stringify(tw.target)).toBeDefined();
+    const classNames = parseAndInject('web:rounded-xl ios:rounded-sm');
+    expect(classNames.generated).toStrictEqual('ios:rounded-sm web:rounded-xl');
+    expect(stringify(classNames.target)).toBeDefined();
   });
 });

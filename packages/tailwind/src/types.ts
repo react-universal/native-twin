@@ -34,7 +34,6 @@ export type CSSProperties = CSS.PropertiesFallback<string | Falsey, string | Fal
 
 export type CSSFontFace = CSS.AtRule.FontFaceFallback & CSS.AtRule.FontFaceHyphenFallback;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CSSNested
   extends Record<string, CSSProperties | MaybeArray<CSSObject | string> | Falsey> {}
 

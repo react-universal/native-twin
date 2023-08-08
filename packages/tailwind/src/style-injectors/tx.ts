@@ -64,5 +64,8 @@ export const tx: TxFunction = function tx(
   ...interpolations: Class[]
 ): string {
   const tw = typeof this == 'function' ? this : tw$;
+  if (typeof strings == 'string') {
+    return tw(interpolate([strings], interpolations));
+  }
   return tw(interpolate(strings, interpolations));
 };

@@ -1,40 +1,25 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { Tailwind } from '../src';
 
 const stringify = (target: string[]) => target.join('');
-
-const {
-  instance: { tw, tx },
-} = new Tailwind({
-  fontFamily: {
-    DEFAULT: 'Inter-Regular',
-    inter: 'Inter-Regular',
-    'inter-bold': 'Inter-Bold',
-    'inter-medium': 'Inter-Medium',
-    sans: 'Inter-Regular',
-  },
-});
+const { parseAndInject } = new Tailwind();
 
 describe('TailwindCSS Aspect Ratio', () => {
-  beforeEach(() => {
-    tw.clear();
-  });
-
   it('aspect-square', () => {
-    const classNames = tx('aspect-square');
-    expect(classNames).toStrictEqual('aspect-square');
-    expect(stringify(tw.target)).toStrictEqual('.aspect-square{aspect-ratio:1/1}');
+    const classNames = parseAndInject('aspect-square');
+    expect(classNames.generated).toStrictEqual('aspect-square');
+    expect(stringify(classNames.target)).toStrictEqual('.aspect-square{aspect-ratio:1/1}');
   });
 
   it('aspect-video', () => {
-    const classNames = tx('aspect-video');
-    expect(classNames).toStrictEqual('aspect-video');
-    expect(stringify(tw.target)).toStrictEqual('.aspect-video{aspect-ratio:16/9}');
+    const classNames = parseAndInject('aspect-video');
+    expect(classNames.generated).toStrictEqual('aspect-video');
+    expect(stringify(classNames.target)).toStrictEqual('.aspect-video{aspect-ratio:16/9}');
   });
 
   it('aspect-auto', () => {
-    const classNames = tx('aspect-auto');
-    expect(classNames).toStrictEqual('aspect-auto');
-    expect(stringify(tw.target)).toStrictEqual('.aspect-auto{aspect-ratio:auto}');
+    const classNames = parseAndInject('aspect-auto');
+    expect(classNames.generated).toStrictEqual('aspect-auto');
+    expect(stringify(classNames.target)).toStrictEqual('.aspect-auto{aspect-ratio:auto}');
   });
 });

@@ -1,15 +1,13 @@
-import { Tailwind, defineConfig } from '@universal-labs/twind-adapter';
+import { Tailwind, presetTailwind, tw } from '@universal-labs/twind-adapter';
 import { TailwindConfig, createIntellisense } from './createIntellisense';
 import { LanguageServiceContext } from './languageService';
-import { presetTailwind } from '@universal-labs/twind-native';
+import { defineConfig } from '@universal-labs/twind-native';
 
 export async function populateCompletions(
   context: LanguageServiceContext,
   _configPath: string,
 ) {
-  const {
-    instance: { tw },
-  } = new Tailwind();
+  new Tailwind();
   getClasses(tw.config);
 
   const completions = createIntellisense(

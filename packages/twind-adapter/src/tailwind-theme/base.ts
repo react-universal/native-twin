@@ -1,11 +1,9 @@
 import type { BaseTheme, Preset } from '@universal-labs/twind-native';
 import type { TailwindTheme } from './types';
-
 import theme from './baseTheme';
 import preflight from './preflight';
 import rules from './rules';
 import variants from './variants';
-
 export * from './types';
 
 export interface TailwindPresetBaseOptions {

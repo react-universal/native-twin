@@ -18,7 +18,6 @@ exports[`@universal-labs/styled > Complex View 1`] = `
       "flexGrow": 1,
       "flexShrink": 1,
       "justifyContent": "center",
-      "margin": 8,
       "padding": 56,
     }
   }

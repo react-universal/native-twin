@@ -19,7 +19,7 @@ import type {
 import { makeThemeFunction } from './theme';
 import { asArray, escape, hash as defaultHash, identity, noop } from '../utils';
 import { fromMatch } from '../config/rules';
-import { warn } from './warn';
+// import { warn } from './warn';
 
 type ResolveFunction<Theme extends BaseTheme = BaseTheme> = (
   className: string,
@@ -131,11 +131,11 @@ export function createContext<Theme extends BaseTheme = BaseTheme>({
         if (rule == null && !reportedUnknownClasses.has(className)) {
           reportedUnknownClasses.add(className);
 
-          warn(
-            `Unknown class ${JSON.stringify(className)} found.`,
-            'TWIND_INVALID_CLASS',
-            className,
-          );
+          // warn(
+          //   `Unknown class ${JSON.stringify(className)} found.`,
+          //   'TWIND_INVALID_CLASS',
+          //   className,
+          // );
         }
         // DEV_BLOCK
       }

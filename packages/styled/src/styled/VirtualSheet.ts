@@ -8,8 +8,6 @@ import { globalStore } from './store';
 
 let twind = new Tailwind();
 
-export let cx = twind.instance.cx;
-
 const createVirtualSheet = () => {
   const processor = Object.assign(
     function (classNames: string) {

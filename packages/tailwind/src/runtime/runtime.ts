@@ -20,7 +20,7 @@ import { noop } from '../utils';
  */
 export function auto(install: () => void): () => void {
   // If we run in the browser we call install at latest when the body is inserted
-  // This algorith works well for _normal_ scripts (`<script src="..."></script>`)
+  // This algorithm works well for _normal_ scripts (`<script src="..."></script>`)
   // but not for modules because those are executed __after__ the DOM is ready
   // and we would have FOUC
   if (typeof document != 'undefined' && document.currentScript) {

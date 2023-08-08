@@ -1,11 +1,9 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { Tailwind } from '../src';
 
 const stringify = (target: string[]) => target.join('');
 
-const {
-  instance: { tw, tx },
-} = new Tailwind({
+const { parseAndInject } = new Tailwind({
   fontFamily: {
     DEFAULT: 'Inter-Regular',
     inter: 'Inter-Regular',
@@ -16,25 +14,25 @@ const {
 });
 
 describe('TailwindCSS Font', () => {
-  beforeEach(() => {
-    tw.clear();
-  });
-
   it('font-size', () => {
-    const classNames = tx('text-2xl');
-    expect(classNames).toStrictEqual('text-2xl');
-    expect(stringify(tw.target)).toStrictEqual('.text-2xl{font-size:1.5rem;line-height:2rem}');
+    const classNames = parseAndInject('text-2xl');
+    expect(classNames.generated).toStrictEqual('text-2xl');
+    expect(stringify(classNames.target)).toStrictEqual(
+      '.text-2xl{font-size:1.5rem;line-height:2rem}',
+    );
   });
 
   it('font-family', () => {
-    const classNames = tx('font-inter');
-    expect(classNames).toStrictEqual('font-inter');
-    expect(stringify(tw.target)).toStrictEqual('.font-inter{font-family:Inter-Regular}');
+    const classNames = parseAndInject('font-inter');
+    expect(classNames.generated).toStrictEqual('font-inter');
+    expect(stringify(classNames.target)).toStrictEqual(
+      '.font-inter{font-family:Inter-Regular}',
+    );
   });
 
   it('leading', () => {
-    const classNames = tx('leading-5');
-    expect(classNames).toStrictEqual('leading-5');
-    expect(stringify(tw.target)).toStrictEqual('.leading-5{line-height:1.25rem}');
+    const classNames = parseAndInject('leading-5');
+    expect(classNames.generated).toStrictEqual('leading-5');
+    expect(stringify(classNames.target)).toStrictEqual('.leading-5{line-height:1.25rem}');
   });
 });
