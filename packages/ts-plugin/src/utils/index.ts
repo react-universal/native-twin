@@ -3,3 +3,4 @@ export * from './toCondition';
 export * from './toClassName';
 export * from './spacify';
 export * from './isSpacingRule';
+export * from './match';

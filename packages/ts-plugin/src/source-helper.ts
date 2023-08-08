@@ -9,7 +9,7 @@ import type ScriptSourceHelper from 'typescript-template-language-service-decora
 import type TemplateSourceHelper from 'typescript-template-language-service-decorator/lib/template-source-helper';
 import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
 import type { ConfigurationManager } from './configuration';
-import { match, Matcher } from './match';
+import { match, Matcher } from './utils';
 import { getSourceMatchers } from './source-matcher';
 
 class PlaceholderSubstituter {

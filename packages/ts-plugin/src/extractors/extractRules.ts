@@ -356,6 +356,7 @@ export function extractRulesFromTheme(
                     autocompleteSpacingRules(context.theme('fontSize'), (space) => {
                       onClass(`${name}${space}`);
                     });
+                    // @ts-expect-error
                     autocompleteSpacingRules(context.theme('textAlign'), (space) => {
                       if (space == 'DEFAULT') {
                         onClass(`${name}`);

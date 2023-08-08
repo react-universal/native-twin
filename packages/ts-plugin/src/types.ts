@@ -7,7 +7,6 @@ import type {
   TwindConfig,
 } from '@universal-labs/twind-native';
 import type { TailwindTheme } from '@universal-labs/twind-adapter';
-
 import type { Numberify, RGBA } from '@ctrl/tinycolor';
 
 export type CurrentTheme = BaseTheme & TailwindTheme;
@@ -27,11 +26,9 @@ export type LanguageId =
     )
   | (string & {});
 
-export interface Intellisense<
-  Theme extends BaseTheme & TailwindTheme = BaseTheme & TailwindTheme,
-> {
-  readonly theme: ThemeFunction<ExtractUserTheme<Theme & TailwindTheme>>;
-  readonly config: TwindConfig<Theme & TailwindTheme>;
+export interface Intellisense<Theme extends CurrentTheme = CurrentTheme> {
+  readonly theme: ThemeFunction<ExtractUserTheme<CurrentTheme>>;
+  readonly config: TwindConfig<Theme>;
 
   suggest(input: string, options?: SuggestAtOptions): Promise<Suggestion[]>;
 }
@@ -159,7 +156,7 @@ export interface IntellisenseClass extends IntellisenseCommon, SuggestionClass {
 }
 
 export interface IntellisenseContext {
-  tw: Twind<BaseTheme & TailwindTheme>;
+  tw: Twind<CurrentTheme>;
   variants: Map<string, IntellisenseVariant>;
   classes: Map<string, IntellisenseClass>;
   suggestions: (IntellisenseVariant | IntellisenseClass)[];

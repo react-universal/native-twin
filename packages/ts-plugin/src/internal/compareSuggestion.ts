@@ -1,4 +1,4 @@
-import type { IntellisenseClass, IntellisenseVariant } from './types';
+import type { IntellisenseClass, IntellisenseVariant } from '../types';
 import { separatorPrecedence, atRulePrecedence } from '../utils';
 
 const collator = new Intl.Collator('en', { numeric: true });

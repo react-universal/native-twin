@@ -2,7 +2,7 @@ import { MaybeColorValue } from '@universal-labs/twind-native';
 
 export function autocompleteColorClassnames(
   colors: Record<string, MaybeColorValue>,
-  onColor: (color: string) => void,
+  onColor: (name: string) => void,
 ) {
   for (const key of Object.keys(colors)) {
     onColor(key);
@@ -11,7 +11,7 @@ export function autocompleteColorClassnames(
 
 export function autocompleteSpacingRules(
   spacing: Record<string, any>,
-  onSpacing: (color: string) => void,
+  onSpacing: (name: string) => void,
 ) {
   for (const key of Object.keys(spacing)) {
     onSpacing(key);
@@ -23,7 +23,7 @@ export function extractRuleModifiers(
     prefix: string;
     themeValue: Record<string, any>;
   },
-  onModifier: (modifier: string) => void,
+  onModifier: (name: string) => void,
 ) {
   for (const key of Object.keys(input.themeValue)) {
     onModifier(`${input.prefix}${key}`);

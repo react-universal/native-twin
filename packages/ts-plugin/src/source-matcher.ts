@@ -1,5 +1,5 @@
-import type * as ts from 'typescript/lib/tsserverlibrary';
-import type { Matcher } from './match';
+import type ts from 'typescript/lib/tsserverlibrary';
+import type { Matcher } from './utils';
 import type { ConfigurationManager } from './configuration';
 
 export const getSourceMatchers = (
