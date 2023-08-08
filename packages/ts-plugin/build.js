@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const production = process.argv[2] === '--production';
 // const watch = process.argv[2] === '--watch';
 
@@ -7,10 +6,9 @@ require('esbuild')
     entryPoints: ['./src/index.ts'],
     bundle: true,
     outdir: 'build',
-    external: ['vscode', '@twind/preset-tailwind', '@twind/core'],
+    external: ['vscode', '@universal-labs/tailwind', '@universal-labs/twind-adapter'],
     format: 'cjs',
     platform: 'node',
-    watch: !production,
     sourcemap: !production,
     minify: production,
   })

@@ -5,17 +5,14 @@ import {
   injectGlobal as injectGlobal$,
   cx as cx$,
   defineConfig,
-  TailwindTheme,
   presetTailwind,
-} from '@universal-labs/tailwind';
+} from '@universal-labs/twind-native';
 import type { CustomConfig } from '../types';
 import twindPresetReactNative from './presets/preset-react-native';
 import { rotateRules } from './rules/rotate';
 import { shadowRules } from './rules/shadow';
 import { skewRules } from './rules/skew';
 import { translateRules } from './rules/translate';
-
-export { hash, style as stylesGenerator, css as injectCss } from '@universal-labs/tailwind';
 
 const defaultConfig = defineConfig({
   preflight: false,
@@ -80,58 +77,3 @@ export class Tailwind {
 }
 
 export type TwindManager = ReturnType<typeof initialize>;
-
-export type { TailwindTheme };
-
-export type {
-  AutocompleteItem,
-  Twind,
-  BaseTheme,
-  MaybeArray,
-  MatchResult,
-  AutocompleteContext,
-  TwindConfig,
-  TwindUserConfig,
-  ScreenValue,
-  ParsedDevRule,
-  ExtractThemes,
-  Preset,
-  ExtractUserTheme,
-  ThemeFunction,
-  MaybeColorValue,
-  Rule,
-  Variant,
-  ThemeSection,
-  ThemeSectionResolver,
-  Preflight,
-  CSSProperties,
-  CSSObject,
-  CSSBase,
-  ThemeMatchResult,
-  ThemeRuleResolver,
-  ColorFromThemeValue,
-  AutocompleteProvider,
-  VariantResolver,
-} from '@universal-labs/tailwind';
-export {
-  asArray,
-  stringify,
-  arbitrary,
-  mql,
-  getAutocompleteProvider,
-  parse,
-  normalize,
-  withAutocomplete,
-  apply,
-  css,
-  cx,
-  style,
-  twind,
-  virtual,
-  match,
-  matchTheme,
-  matchColor,
-  toColorValue,
-  toCSS,
-  defineConfig,
-} from '@universal-labs/tailwind';

@@ -1,7 +1,7 @@
 import { Tailwind, defineConfig } from '@universal-labs/twind-adapter';
 import { TailwindConfig, createIntellisense } from './createIntellisense';
 import { LanguageServiceContext } from './languageService';
-import { presetTailwind } from '@universal-labs/tailwind';
+import { presetTailwind } from '@universal-labs/twind-native';
 
 export async function populateCompletions(
   context: LanguageServiceContext,

@@ -1,7 +1,7 @@
 import { test, expect, beforeAll } from 'vitest';
-import presetTailwind from '@twind/preset-tailwind';
+import { presetTailwind } from '@universal-labs/twind-native';
 import { BaseTheme, defineConfig } from '@universal-labs/twind-adapter';
-import { TailwindTheme } from '@twind/preset-tailwind';
+import { TailwindTheme } from '@universal-labs/twind-native';
 import { Intellisense, createIntellisense, Suggestion } from '../src/createIntellisense';
 
 let intellisense: Intellisense<BaseTheme & TailwindTheme>;

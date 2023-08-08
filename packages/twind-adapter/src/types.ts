@@ -4,7 +4,7 @@ import type {
   Preset,
   TwindUserConfig,
   ParsedRule,
-} from '@universal-labs/tailwind';
+} from '@universal-labs/twind-native';
 
 export type CustomConfig = TwindUserConfig<
   BaseTheme,

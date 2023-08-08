@@ -40,7 +40,7 @@ export default defineConfig({
       shimMissingExports: true,
       makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
-      external: ['react-native', 'react-native-web'],
+      external: ['react-native', 'react-native-web', '@universal-labs/twind-native'],
       output: {
         dir: 'build',
         extend: true,

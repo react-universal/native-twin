@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { StyleProp } from 'react-native';
-import { cx } from '@twind/core';
+import { cx } from '@universal-labs/twind-adapter';
 import type { CompleteStyle } from '@universal-labs/css';
 import type {
   Primitive,

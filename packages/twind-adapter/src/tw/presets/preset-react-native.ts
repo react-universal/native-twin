@@ -1,4 +1,4 @@
-import type { BaseTheme, Preset, TailwindTheme } from '@universal-labs/tailwind';
+import type { BaseTheme, Preset, TailwindTheme } from '@universal-labs/twind-native';
 import { rotateRules } from '../rules/rotate';
 import { shadowRules } from '../rules/shadow';
 import { translateRules } from '../rules/translate';

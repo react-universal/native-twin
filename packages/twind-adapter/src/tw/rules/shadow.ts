@@ -1,4 +1,4 @@
-import type { TailwindTheme, Rule, BaseTheme } from '@universal-labs/tailwind';
+import type { TailwindTheme, Rule, BaseTheme } from '@universal-labs/twind-native';
 
 export const shadowRules: Rule<BaseTheme & TailwindTheme>[] = [
   [
