@@ -44,7 +44,7 @@
               "apply"
             ]
           },
-          "styledLanguageTW.attributes": {
+          "nativeTailwind.attributes": {
             "type": "array",
             "description": "List of html/jsx attributes to enable Native Tailwind intellisense in.",
             "items": {
@@ -57,7 +57,7 @@
               "class"
             ]
           },
-          "styledLanguageTW.styles": {
+          "nativeTailwind.styles": {
             "type": "array",
             "description": "List of style/styled functions to enable Native Tailwind intellisense in.",
             "items": {
@@ -69,15 +69,15 @@
               "styled"
             ]
           },
-          "styledLanguageTW.debug": {
+          "nativeTailwind.debug": {
             "type": "boolean",
             "description": "Enable/disable additional debug information.",
             "default": false
           },
-          "styledLanguageTW.enable": {
+          "nativeTailwind.enable": {
             "type": "boolean",
             "default": true,
-            "markdownDescription": "Controls whether Twind intellisense is enabled or not."
+            "markdownDescription": "Controls whether Native Tailwind intellisense is enabled or not."
           }
         }
       }

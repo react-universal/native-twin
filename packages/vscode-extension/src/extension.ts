@@ -4,7 +4,7 @@ import { name, version as extensionVersion, publisher } from '../package.json';
 
 const typeScriptExtensionId = 'vscode.typescript-language-features';
 const pluginId = '@universal-labs/ts-styled-plugin-tw';
-const configurationSection = 'styledLanguageTW';
+const configurationSection = 'nativeTailwind';
 
 const extensionName = `${publisher}.${name}`;
 
@@ -14,9 +14,6 @@ interface SynchronizedConfiguration {
   styles: ReadonlyArray<string>;
   debug: boolean;
   enable: boolean;
-  // Readonly validate: boolean;
-  // readonly lint: { [key: string]: any };
-  // readonly emmet: { [key: string]: any };
 }
 
 type Logger = (message: string) => void;
@@ -26,7 +23,7 @@ interface State {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-  const log = createLogger(vscode.window.createOutputChannel('Tailwind IntelliSense'));
+  const log = createLogger(vscode.window.createOutputChannel('Native Tailwind IntelliSense'));
   log(`Extension Name: ${extensionName}.`);
   log(`Extension Version: ${extensionVersion}.`);
 
@@ -62,7 +59,7 @@ async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
       hasTwind = true;
     } else {
       log(
-        `No twind package and no tailwind config file found. Not activating tailwind IntelliSense.`,
+        `No Native Tailwind package and no tailwind config file found. Not activating tailwind IntelliSense.`,
       );
       hasTwind = false;
     }
@@ -82,7 +79,7 @@ async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
   };
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('universalLabs.restart', () => {
+    vscode.commands.registerCommand(`${configurationSection}.restart`, () => {
       state.hasTwind = undefined;
       listener();
     }),
@@ -102,7 +99,7 @@ async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
   };
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('universalLabs.className', () => {
+    vscode.commands.registerCommand(`${configurationSection}.className`, () => {
       replaceClassNameStrings();
     }),
   );
@@ -168,7 +165,9 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
   const config = getConfiguration();
 
   if (config.enable) {
-    log('Extension is enabled. To disable, change the `twind.enable` setting to `false`.');
+    log(
+      'Extension is enabled. To disable, change the `nativeTailwind.enable` setting to `false`.',
+    );
 
     if (state.hasTwind) {
       log(`Configuring ${pluginId} using: ${JSON.stringify(config, null, 2)}`);
@@ -177,7 +176,7 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
     }
   } else {
     log(
-      'Extension is disabled. No IntelliSense will be provided. To enable, change the `twind.enable` setting to `true`.',
+      'Extension is disabled. No IntelliSense will be provided. To enable, change the `nativeTailwind.enable` setting to `true`.',
     );
   }
 
