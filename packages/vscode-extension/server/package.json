@@ -1,0 +1,14 @@
+{
+	"name": "@universal-labs/vscode-server",
+	"version": "1.0.0",
+	"description": "Native Styled vscode extension.",
+	"license": "MIT",
+	"author": "Cristhian Gutierrez",
+	"dependencies": {
+		"vscode-languageserver": "^8.1.0",
+		"vscode-languageserver-textdocument": "^1.0.8"
+	},
+	"engines": {
+		"node": "*"
+	}
+}

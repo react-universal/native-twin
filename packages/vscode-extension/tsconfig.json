@@ -2,14 +2,17 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
-    "target": "ESNext",
-    "lib": ["ESNext"],
+    "target": "ES2020",
+    "lib": ["ES2020"],
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "strict": true,
     "noEmit": false,
-    "outDir": "build"
+    "outDir": "build",
+    "rootDir": "src"
   },
   "exclude": ["node_modules", ".vscode-test", "build"],
+  "include": ["src"],
+  "references": [{ "path": "./client" }, { "path": "./server" }]
 }

@@ -1,37 +1,30 @@
 // A launch configuration that compiles the extension and then opens it inside a new window
-// Use IntelliSense to learn about possible attributes.
-// Hover to view descriptions of existing attributes.
-// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 {
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Run Extension",
 			"type": "extensionHost",
 			"request": "launch",
-      "runtimeExecutable": "${execPath}",
-      "sourceMaps": true,
-			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}"
-			],
-			"outFiles": [
-				"${workspaceFolder}/build/**/*.js"
-			],
-			"preLaunchTask": "${defaultBuildTask}",
-      "env": { "TSS_DEBUG": "9229", "TSS_REMOTE_DEBUG": "9229" }
+			"name": "Launch Client",
+			"runtimeExecutable": "${execPath}",
+			"args": ["--extensionDevelopmentPath=${workspaceRoot}"],
+			"outFiles": ["${workspaceRoot}/client/build/**/*.js"],
+			"preLaunchTask": {
+				"type": "npm",
+				"script": "watch"
+			}
 		},
 		{
-			"name": "Extension Tests",
+			"name": "Language Server E2E Test",
 			"type": "extensionHost",
 			"request": "launch",
+			"runtimeExecutable": "${execPath}",
 			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--extensionTestsPath=${workspaceFolder}/build/test/run"
+				"--extensionDevelopmentPath=${workspaceRoot}",
+				"--extensionTestsPath=${workspaceRoot}/client/build/test/index",
+				"${workspaceRoot}/client/testFixture"
 			],
-			"outFiles": [
-				"${workspaceFolder}/build/test/**/*.js"
-			],
-			"preLaunchTask": "${defaultBuildTask}"
+			"outFiles": ["${workspaceRoot}/client/build/test/**/*.js"]
 		}
 	]
 }
