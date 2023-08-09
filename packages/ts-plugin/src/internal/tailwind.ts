@@ -3,7 +3,6 @@ import { createIntellisense } from './createIntellisense';
 import { defineConfig } from '@universal-labs/twind-native';
 import { LanguageServiceContext } from '../ServiceContext';
 import { getConfig } from './loadConfig';
-import { inspect } from 'util';
 
 export async function populateCompletions(context: LanguageServiceContext) {
   new Tailwind();
@@ -12,17 +11,21 @@ export async function populateCompletions(context: LanguageServiceContext) {
     context.pluginInfo.languageService.getProgram()?.getCurrentDirectory() ?? process.cwd(),
     'tailwind.config.js',
   );
-  console.log('CONFIG: ', inspect(config, false, null, false));
 
-  const completions = createIntellisense(
-    defineConfig({
-      presets: [
-        presetTailwind({
-          disablePreflight: true,
-        }),
-      ],
-    }),
-  );
+  const defaultConfig = defineConfig({
+    presets: [presetTailwind({ disablePreflight: true })],
+  });
+
+  const completions = createIntellisense({
+    ...defaultConfig,
+    theme: {
+      ...defaultConfig.theme,
+      extend: {
+        ...defaultConfig.theme,
+        ...config,
+      },
+    },
+  });
   const result = await completions.suggest('');
   context.completionEntries.clear();
 

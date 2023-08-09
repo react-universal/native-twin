@@ -28,6 +28,7 @@ export class TailwindLanguageService implements TemplateLanguageService {
     const entries: ts.CompletionEntry[] = [];
     const isEmptyCompletion = templateContext.text.charAt(position.character - 1) == ' ';
     const prevText = templateContext.text.slice(0, position.character);
+
     if (prevText.length > 0 && !isEmptyCompletion) {
       const prevClasses = prevText.split(/\s+/).filter(Boolean);
       const completion = prevClasses[prevClasses.length - 1]!;

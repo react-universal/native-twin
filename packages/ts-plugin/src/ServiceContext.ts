@@ -24,7 +24,7 @@ export class LanguageServiceContext {
     this.templateSourceHelper = new StandardTemplateSourceHelper(
       this.typescript,
       this.configManager,
-      new StandardScriptSourceHelper(this.typescript, info.project),
+      new StandardScriptSourceHelper(this.typescript, this.pluginInfo.project),
     );
   }
 }
