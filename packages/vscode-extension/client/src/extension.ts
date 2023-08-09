@@ -1,20 +1,20 @@
-import * as path from 'path';
-import { workspace, ExtensionContext } from 'vscode';
+import path from 'path';
+import * as vscode from 'vscode';
 import {
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
   TransportKind,
 } from 'vscode-languageclient/node';
+import { DOCUMENT_SELECTORS } from './internal/config';
+import { createLogger } from './internal/logger';
 
 let client: LanguageClient;
 
-export function activate(context: ExtensionContext) {
-  // The server is implemented in node
+export function activate(context: vscode.ExtensionContext) {
+  const log = createLogger(vscode.window.createOutputChannel('Native Tailwind IntelliSense'));
   const serverModule = context.asAbsolutePath(path.join('server', 'out', 'server.js'));
 
-  // If the extension is launched in debug mode then the debug server options are used
-  // Otherwise the run options are used
   const serverOptions: ServerOptions = {
     run: { module: serverModule, transport: TransportKind.ipc },
     debug: {
@@ -23,26 +23,24 @@ export function activate(context: ExtensionContext) {
     },
   };
 
-  // Options to control the language client
   const clientOptions: LanguageClientOptions = {
-    // Register the server for plain text documents
-    documentSelector: [{ scheme: 'file', language: 'plaintext' }],
+    documentSelector: DOCUMENT_SELECTORS,
     synchronize: {
       // Notify the server about file changes to '.clientrc files contained in the workspace
-      fileEvents: workspace.createFileSystemWatcher('**/.clientrc'),
+      fileEvents: vscode.workspace.createFileSystemWatcher('**/.clientrc'),
     },
   };
 
-  // Create the language client and start the client.
   client = new LanguageClient(
-    'languageServerExample',
-    'Language Server Example',
+    'nativeTailwind',
+    'Language Server Native Tailwind',
     serverOptions,
     clientOptions,
   );
 
-  // Start the client. This will also launch the server
-  client.start();
+  client.start().then(() => {
+    log('Intellisense setup correctly');
+  });
 }
 
 export function deactivate(): Thenable<void> | undefined {

@@ -6,12 +6,7 @@
     "exactOptionalPropertyTypes": false,
     "allowJs": true,
     "resolveJsonModule": true,
-    "noEmit": true,
-    "plugins": [
-      {
-        "name": "@universal-labs/ts-styled-plugin-tw"
-      }
-    ]
+    "noEmit": true
   },
   "references": [],
   "exclude": [

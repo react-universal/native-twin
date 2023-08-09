@@ -55,9 +55,9 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
-      "**/node_modules": true,
+      "**/node_modules": false,
       "**/build": false,
-      "**/.vscode-test": true
+      "**/.vscode-test": false
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [

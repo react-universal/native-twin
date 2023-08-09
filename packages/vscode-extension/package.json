@@ -8,13 +8,13 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "universal-labs",
-  "main": "./client/out/extension",
+  "main": "./client/out/extension.js",
   "scripts": {
-    "build:libs": "tsc -b",
+    "build:libs": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "echo \"TEST\"",
     "vscode:prepublish": "node ./build.js",
-    "watch": "tsc -b -w"
+    "watch": "node ./build.js"
   },
   "contributes": {
     "commands": [
@@ -89,16 +89,9 @@
           }
         }
       }
-    ],
-    "typescriptServerPlugins": [
-      {
-        "name": "@universal-labs/ts-styled-plugin-tw",
-        "enableForWorkspaceTypeScriptVersions": true
-      }
     ]
   },
   "activationEvents": [
-    "onStartupFinished",
     "onLanguage:typescript",
     "onLanguage:javascript",
     "onLanguage:typescriptreact",
