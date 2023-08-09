@@ -32,7 +32,7 @@ async function testCompletion(
   assert.ok(actualCompletionList.items.length >= 2);
   expectedCompletionList.items.forEach((expectedItem, i) => {
     const actualItem = actualCompletionList.items[i];
-    assert.equal(actualItem.label, expectedItem.label);
-    assert.equal(actualItem.kind, expectedItem.kind);
+    assert.equal(actualItem!.label, expectedItem.label);
+    assert.equal(actualItem!.kind, expectedItem.kind);
   });
 }

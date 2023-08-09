@@ -44,8 +44,8 @@ async function testDiagnostics(docUri: vscode.Uri, expectedDiagnostics: vscode.D
 
   expectedDiagnostics.forEach((expectedDiagnostic, i) => {
     const actualDiagnostic = actualDiagnostics[i];
-    assert.equal(actualDiagnostic.message, expectedDiagnostic.message);
-    assert.deepEqual(actualDiagnostic.range, expectedDiagnostic.range);
-    assert.equal(actualDiagnostic.severity, expectedDiagnostic.severity);
+    assert.equal(actualDiagnostic!.message, expectedDiagnostic.message);
+    assert.deepEqual(actualDiagnostic!.range, expectedDiagnostic.range);
+    assert.equal(actualDiagnostic!.severity, expectedDiagnostic.severity);
   });
 }
