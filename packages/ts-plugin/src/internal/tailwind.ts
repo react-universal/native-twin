@@ -1,12 +1,18 @@
-import { Tailwind, presetTailwind, tw } from '@universal-labs/twind-adapter';
+import { Tailwind, presetTailwind } from '@universal-labs/twind-adapter';
 import { createIntellisense } from './createIntellisense';
-import { TailwindConfig } from '../types';
 import { defineConfig } from '@universal-labs/twind-native';
 import { LanguageServiceContext } from '../ServiceContext';
+import { getConfig } from './loadConfig';
+import { inspect } from 'util';
 
 export async function populateCompletions(context: LanguageServiceContext) {
   new Tailwind();
-  getClasses(tw.config);
+  const config = getConfig(
+    context.pluginInfo.project,
+    context.pluginInfo.languageService.getProgram()?.getCurrentDirectory() ?? process.cwd(),
+    'tailwind.config.js',
+  );
+  console.log('CONFIG: ', inspect(config, false, null, false));
 
   const completions = createIntellisense(
     defineConfig({
@@ -33,14 +39,16 @@ export function addClassNameToCompletions(className: string, context: LanguageSe
   const variants = parts.slice(0, -1);
   const baseClassName = parts[parts.length - 1];
 
-  context.completionEntries.set(baseClassName!, {
-    name: baseClassName!,
-    type: 'class',
-    value: className,
-    color: '',
-    description: '',
-    detail: '',
-  });
+  if (baseClassName) {
+    context.completionEntries.set(baseClassName, {
+      name: baseClassName!,
+      type: 'class',
+      value: className,
+      color: '',
+      description: '',
+      detail: '',
+    });
+  }
   for (const variant of variants) {
     context.completionEntries.set(`${variant}:`, {
       name: `${variant}:`,
@@ -52,5 +60,3 @@ export function addClassNameToCompletions(className: string, context: LanguageSe
     });
   }
 }
-
-export function getClasses(_config: TailwindConfig) {}

@@ -1,5 +1,5 @@
 const production = process.argv[2] === '--production';
-// const watch = process.argv[2] === '--watch';
+const watch = process.argv[2] === '--watch';
 
 require('esbuild')
   .build({
@@ -9,6 +9,7 @@ require('esbuild')
     external: ['vscode', '@universal-labs/tailwind', '@universal-labs/twind-adapter'],
     format: 'cjs',
     platform: 'node',
+    watch: !!watch,
     sourcemap: !production,
     minify: production,
   })

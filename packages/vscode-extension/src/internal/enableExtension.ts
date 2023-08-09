@@ -3,16 +3,16 @@ import { Logger, State, SynchronizedConfiguration } from '../types';
 import { configurationSection, pluginId, typeScriptExtensionId } from './config';
 
 export async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
-  const state: State = { hasTwind: undefined };
+  const state: State = { hasUniversalLabs: undefined };
 
   const update = async () => {
-    const localTwindManifestFiles = await vscode.workspace.findFiles(
-      '**/node_modules/@universal-labs/package.json',
+    const localTailwindManifestFiles = await vscode.workspace.findFiles(
+      '**/node_modules/@universal-labs/tailwind/package.json',
       null,
       1,
     );
 
-    const twindConfigFiles = localTwindManifestFiles.length
+    const configFiles = localTailwindManifestFiles.length
       ? []
       : await vscode.workspace.findFiles(
           '**/tailwind.config.{ts,js,mjs,cjs}',
@@ -20,22 +20,22 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
           1,
         );
 
-    let hasTwind = false;
-    if (localTwindManifestFiles.length) {
+    let hasUniversalLabs = false;
+    if (localTailwindManifestFiles.length) {
       log(`Using local tailwind config`);
-      hasTwind = true;
-    } else if (twindConfigFiles.length) {
+      hasUniversalLabs = true;
+    } else if (configFiles.length) {
       log(`Using builtin tailwind config`);
-      hasTwind = true;
+      hasUniversalLabs = true;
     } else {
       log(
         `No Native Tailwind package and no tailwind config file found. Not activating tailwind IntelliSense.`,
       );
-      hasTwind = false;
+      hasUniversalLabs = false;
     }
 
-    if (hasTwind !== state.hasTwind) {
-      state.hasTwind = hasTwind;
+    if (hasUniversalLabs !== state.hasUniversalLabs) {
+      state.hasUniversalLabs = hasUniversalLabs;
       synchronizeConfiguration(api, state, log);
     }
   };
@@ -50,7 +50,7 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
 
   context.subscriptions.push(
     vscode.commands.registerCommand(`${configurationSection}.restart`, () => {
-      state.hasTwind = undefined;
+      state.hasUniversalLabs = undefined;
       listener();
     }),
   );
@@ -132,7 +132,7 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
       'Extension is enabled. To disable, change the `nativeTailwind.enable` setting to `false`.',
     );
 
-    if (state.hasTwind) {
+    if (state.hasUniversalLabs) {
       log(`Configuring ${pluginId} using: ${JSON.stringify(config, null, 2)}`);
     } else {
       config.enable = false;
@@ -149,9 +149,9 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
 function getConfiguration(): SynchronizedConfiguration {
   const config = vscode.workspace.getConfiguration(configurationSection);
   const outConfig: SynchronizedConfiguration = {
-    tags: ['tw', 'apply'],
-    attributes: ['tw', 'class', 'className'],
-    styles: ['style', 'styled'],
+    tags: ['tw', 'apply', 'css', 'variants'],
+    attributes: ['tw', 'class', 'className', 'variants'],
+    styles: ['style', 'styled', 'variants'],
     debug: false,
     enable: true,
   };

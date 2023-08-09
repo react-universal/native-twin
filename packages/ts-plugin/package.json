@@ -12,7 +12,7 @@
     "lint": "eslint src",
     "test": "vitest run",
     "unit": "npx mocha ./build/test",
-    "watch:compile": "node ./build.js"
+    "watch:compile": "node ./build.js --watch"
   },
   "dependencies": {
     "@ctrl/tinycolor": "3.6.0",

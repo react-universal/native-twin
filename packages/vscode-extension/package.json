@@ -41,7 +41,11 @@
             },
             "default": [
               "tw",
-              "apply"
+              "apply",
+              "css",
+              "variants",
+              "styled",
+              "tx"
             ]
           },
           "nativeTailwind.attributes": {
@@ -54,7 +58,10 @@
             "default": [
               "tw",
               "className",
-              "class"
+              "class",
+              "css",
+              "tx",
+              "cx"
             ]
           },
           "nativeTailwind.styles": {
@@ -66,7 +73,8 @@
             },
             "default": [
               "style",
-              "styled"
+              "styled",
+              "variants"
             ]
           },
           "nativeTailwind.debug": {

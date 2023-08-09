@@ -2,8 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
-    "target": "ES2021",
-    "lib": ["ES2021"],
+    "target": "ESNext",
+    "lib": ["ESNext"],
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -11,5 +11,5 @@
     "noEmit": false,
     "outDir": "build"
   },
-  "exclude": ["node_modules", ".vscode-test", "build", "testFixture"],
+  "exclude": ["node_modules", ".vscode-test", "build"],
 }

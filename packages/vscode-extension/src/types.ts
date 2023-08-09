@@ -9,5 +9,5 @@ export interface SynchronizedConfiguration {
 export type Logger = (message: string) => void;
 
 export interface State {
-  hasTwind?: boolean;
+  hasUniversalLabs?: boolean;
 }
