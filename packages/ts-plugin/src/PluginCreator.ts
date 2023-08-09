@@ -2,7 +2,7 @@ import ts from 'typescript/lib/tsserverlibrary';
 import { TemplateContext } from 'typescript-template-language-service-decorator';
 import { populateCompletions } from './internal/tailwind';
 import { ConfigurationManager } from './configuration';
-import { TailwindLanguageService } from './LanguageService';
+import { TailwindLanguageService } from './languageService';
 
 export class TailwindPluginCreator {
   typescript: typeof ts;
@@ -22,7 +22,9 @@ export class TailwindPluginCreator {
       enable = this._configManager.config.enable;
     });
 
-    populateCompletions(languageService.context);
+    populateCompletions(languageService.context).catch((error) => {
+      languageService.context.logger.log(`TW: Error populating completions, ${error}`);
+    });
     languageService.context.logger.log('tw: initialized');
 
     return {
