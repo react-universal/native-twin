@@ -1,6 +1,6 @@
 import { test, expect, beforeAll } from 'vitest';
 import { presetTailwind, TailwindTheme } from '@universal-labs/twind-adapter';
-import { BaseTheme, defineConfig } from '@universal-labs/twind-native';
+import { BaseTheme, defineConfig } from '@twind/core';
 import { createIntellisense } from '../src/internal/createIntellisense';
 import { Intellisense, Suggestion } from '../src/types';
 

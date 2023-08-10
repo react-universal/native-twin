@@ -1,6 +1,6 @@
 /* eslint-env node */
 import { createElement, Fragment } from 'react';
-import { extract } from '@universal-labs/twind-native';
+import { extract } from '@twind/core';
 import type { DocumentContext, DocumentInitialProps } from 'next/document';
 import Document from 'next/document';
 

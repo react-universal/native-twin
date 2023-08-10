@@ -6,7 +6,7 @@ import {
   injectGlobal as injectGlobal$,
   keyframes as keyframes$,
   defineConfig,
-} from '@universal-labs/twind-native';
+} from '@twind/core';
 import { rotateRules } from './rules/rotate';
 import { shadowRules } from './rules/shadow';
 import { skewRules } from './rules/skew';

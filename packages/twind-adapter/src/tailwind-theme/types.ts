@@ -1,6 +1,6 @@
-import type { BaseTheme, CSSProperties, MaybeArray } from '@universal-labs/twind-native';
+import type { BaseTheme, CSSProperties, MaybeArray } from '@twind/core';
 
-declare module '@universal-labs/twind-native' {
+declare module '@twind/core' {
   export interface CustomProperties {
     '--tw-backdrop-blur'?: string;
     '--tw-backdrop-brightness'?: string;

@@ -4,8 +4,8 @@ import {
   Variant,
   AutocompleteItem,
   arbitrary,
-} from '@universal-labs/twind-native';
-import { normalize, withAutocomplete } from '@universal-labs/twind-native';
+} from '@twind/core';
+import { normalize, withAutocomplete } from '@twind/core';
 import type { TailwindTheme } from './types';
 
 const DEV = true;

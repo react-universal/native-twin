@@ -1,4 +1,4 @@
-import type { ThemeSection, ThemeSectionResolver } from '@universal-labs/twind-native';
+import type { ThemeSection, ThemeSectionResolver } from '@twind/core';
 import type { TailwindTheme } from './types';
 
 export type OmitedSections =

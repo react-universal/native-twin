@@ -1,4 +1,4 @@
-import { MaybeArray, ScreenValue } from '@universal-labs/twind-native';
+import { MaybeArray, ScreenValue } from '@twind/core';
 
 export function extractMediaQueries(
   input: {

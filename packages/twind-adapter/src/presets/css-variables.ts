@@ -1,4 +1,4 @@
-import type { TwindRule } from '@universal-labs/twind-native';
+import type { TwindRule } from '@twind/core';
 
 export default function transformCssVariables(rule: TwindRule) {
   if (rule.d && rule.d?.includes('var(--')) {

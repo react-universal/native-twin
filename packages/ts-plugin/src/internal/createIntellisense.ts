@@ -1,4 +1,4 @@
-import type { Twind, TwindConfig, TwindUserConfig } from '@universal-labs/twind-native';
+import type { Twind, TwindConfig, TwindUserConfig } from '@twind/core';
 import { matchSorter, type MatchSorterOptions } from 'match-sorter';
 import cssbeautify from 'cssbeautify';
 import QuickLRU from 'quick-lru';

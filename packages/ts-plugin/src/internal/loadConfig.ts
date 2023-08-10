@@ -1,7 +1,7 @@
 import path from 'path';
 import Module from 'module';
 import ts from 'typescript/lib/tsserverlibrary';
-import { defineConfig } from '@universal-labs/twind-native';
+import { defineConfig } from '@twind/core';
 import type { Config as UserConfig } from 'tailwindcss';
 import { presetTailwind } from '@universal-labs/twind-adapter';
 import { TailwindConfig } from '../types';

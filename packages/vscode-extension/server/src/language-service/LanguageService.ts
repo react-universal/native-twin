@@ -1,6 +1,6 @@
 import genex from 'genex';
 import { TailwindTheme, tw } from '@universal-labs/twind-adapter';
-import { AutocompleteContext, BaseTheme, asArray } from '@universal-labs/twind-native';
+import { AutocompleteContext, BaseTheme, asArray } from '@twind/core';
 import { VARIANT_MARKER_RULE } from '../internal/config';
 import { evaluatePattern } from './parser/evaluatePattern';
 

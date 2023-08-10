@@ -21,10 +21,6 @@
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
       "name": "📦 @lib/tailwind",
       "path": "../packages/tailwind"
     },

@@ -1,4 +1,4 @@
-import type { Preset } from '@universal-labs/twind-native';
+import type { Preset } from '@twind/core';
 import type { TailwindTheme } from './types';
 
 import presetTailwindBase from './base';

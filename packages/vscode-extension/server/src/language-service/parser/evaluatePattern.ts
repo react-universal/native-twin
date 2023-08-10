@@ -1,4 +1,4 @@
-import { BaseTheme, ExtractUserTheme, ThemeFunction } from '@universal-labs/twind-native';
+import { BaseTheme, ExtractUserTheme, ThemeFunction } from '@twind/core';
 import genex from 'genex';
 import { isSpacingFunction } from './isSpacingRule';
 import {

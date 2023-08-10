@@ -6,7 +6,7 @@ import {
   DidChangeConfigurationNotification,
 } from 'vscode-languageserver/node';
 import { globalStore } from './storage';
-import { createLanguageService } from '../language-service/LanguageService';
+import { createIntellisense } from '../language-service/LanguageService';
 
 export function onInitializeConnection(params: InitializeParams) {
   const capabilities = params.capabilities;
@@ -49,7 +49,7 @@ export async function onConnectionInitialized(connection: Connection) {
   if (currentState.hasConfigurationCapability) {
     connection.client.register(DidChangeConfigurationNotification.type, undefined);
   }
-  createLanguageService();
+  createIntellisense();
   if (currentState.hasWorkspaceFolderCapability) {
     connection.workspace.onDidChangeWorkspaceFolders((_event) => {
       connection.console.log('Workspace folder change event received.');

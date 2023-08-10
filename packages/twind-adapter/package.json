@@ -44,7 +44,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/twind-native": "workspace:*",
+    "@twind/core": "1.1.3",
     "css-tree": "2.3.1"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react';
 import { createElement } from 'react';
-import type { TwindConfig, TwindUserConfig } from '@universal-labs/tailwind';
-import { install as install$ } from '@universal-labs/tailwind';
+import type { TwindConfig, TwindUserConfig } from '@twind/core';
+import { install as install$ } from '@twind/core';
 import type { AppProps } from 'next/app';
 
 export default install;

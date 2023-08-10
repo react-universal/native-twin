@@ -6,8 +6,8 @@
     [
       "@universal-labs/styled",
       "@universal-labs/css",
-      "@universal-labs/twind-native",
       "@universal-labs/twind-adapter",
+      "@universal-labs/twind-test-native",
       "@universal-labs/vscode",
       "@universal-labs/ts-styled-plugin-tw"
     ]

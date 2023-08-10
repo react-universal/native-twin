@@ -8,7 +8,7 @@ import {
   Rule,
   asArray,
   getAutocompleteProvider,
-} from '@universal-labs/twind-native';
+} from '@twind/core';
 import { toCondition, isSpacingFunction } from '../../utils';
 import {
   autocompleteColorClassnames,

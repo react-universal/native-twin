@@ -5,7 +5,7 @@ import type {
   ThemeFunction,
   Twind,
   TwindConfig,
-} from '@universal-labs/twind-native';
+} from '@twind/core';
 import type { TailwindTheme } from '@universal-labs/twind-adapter';
 import type { Numberify, RGBA } from '@ctrl/tinycolor';
 

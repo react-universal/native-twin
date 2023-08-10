@@ -1,4 +1,4 @@
-import type { Preflight } from '@universal-labs/twind-native';
+import type { Preflight } from '@twind/core';
 
 import baseTheme from './baseTheme';
 

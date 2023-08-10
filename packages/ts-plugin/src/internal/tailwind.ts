@@ -1,6 +1,6 @@
 import { Tailwind, presetTailwind } from '@universal-labs/twind-adapter';
 import { createIntellisense } from './createIntellisense';
-import { defineConfig } from '@universal-labs/twind-native';
+import { defineConfig } from '@twind/core';
 import { LanguageServiceContext } from '../ServiceContext';
 import { getConfig } from './loadConfig';
 
@@ -20,6 +20,7 @@ export async function populateCompletions(context: LanguageServiceContext) {
     ...defaultConfig,
     theme: {
       ...defaultConfig.theme,
+      // @ts-expect-error
       extend: {
         ...defaultConfig.theme,
         ...config,

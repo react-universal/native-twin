@@ -9,7 +9,7 @@ import type {
   ThemeRuleResolver,
   ColorFromThemeValue,
   AutocompleteProvider,
-} from '@universal-labs/twind-native';
+} from '@twind/core';
 import {
   mql,
   match,
@@ -20,7 +20,7 @@ import {
   asArray,
   arbitrary,
   withAutocomplete,
-} from '@universal-labs/twind-native';
+} from '@twind/core';
 
 import type { TailwindTheme } from './types';
 

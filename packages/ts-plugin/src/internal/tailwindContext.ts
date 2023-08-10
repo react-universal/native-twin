@@ -6,7 +6,7 @@ import {
   type TwindUserConfig,
   AutocompleteItem,
   stringify,
-} from '@universal-labs/twind-native';
+} from '@twind/core';
 import type { IntellisenseClass, IntellisenseContext, IntellisenseVariant } from '../types';
 import { CurrentTheme, IntellisenseOptions } from '../types';
 import QuickLRU from 'quick-lru';
