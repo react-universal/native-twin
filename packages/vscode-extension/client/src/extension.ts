@@ -7,12 +7,10 @@ import {
   TransportKind,
 } from 'vscode-languageclient/node';
 import { DOCUMENT_SELECTORS } from './internal/config';
-import { createLogger } from './internal/logger';
 
 let client: LanguageClient;
 
 export function activate(context: vscode.ExtensionContext) {
-  const log = createLogger(vscode.window.createOutputChannel('Native Tailwind IntelliSense'));
   const serverModule = context.asAbsolutePath(path.join('server', 'out', 'server.js'));
 
   const serverOptions: ServerOptions = {
@@ -33,14 +31,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   client = new LanguageClient(
     'nativeTailwind',
-    'Language Server Native Tailwind',
+    'Native Tailwind IntelliSense',
     serverOptions,
     clientOptions,
   );
 
-  client.start().then(() => {
-    log('Intellisense setup correctly');
-  });
+  client.start();
 }
 
 export function deactivate(): Thenable<void> | undefined {

@@ -11,7 +11,7 @@ connection.onInitialize(onInitializeConnection);
 
 connection.onInitialized(() => onConnectionInitialized(connection));
 
-connection.onCompletion(onCompletion);
+connection.onCompletion(async (position) => onCompletion(position, documents));
 
 connection.onCompletionResolve(onCompletionResolve);
 

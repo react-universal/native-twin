@@ -2,32 +2,29 @@ import {
   CompletionItem,
   CompletionItemKind,
   TextDocumentPositionParams,
+  TextDocuments,
 } from 'vscode-languageserver/node';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import { createIntellisense } from '../language-service/LanguageService';
 
-export function onCompletion(
-  _textDocumentPosition: TextDocumentPositionParams,
-): CompletionItem[] {
-  return [
-    {
-      label: 'TypeScript',
+export async function onCompletion(
+  pos: TextDocumentPositionParams,
+  documents: TextDocuments<TextDocument>,
+): Promise<CompletionItem[]> {
+  const service = createIntellisense();
+  const range = { start: { line: pos.position.line, character: 0 }, end: pos.position };
+  const word = documents.get(pos.textDocument.uri)?.getText(range).split(' ').slice(-1)[0];
+
+  console.log('WORD: ', word);
+  return Array.from(service.cache.values()).map((item, index) => {
+    return {
+      label: item,
       kind: CompletionItemKind.Text,
-      data: 1,
-    },
-    {
-      label: 'JavaScript',
-      kind: CompletionItemKind.Text,
-      data: 2,
-    },
-  ];
+      data: index + 1,
+    };
+  });
 }
 
 export function onCompletionResolve(item: CompletionItem): CompletionItem {
-  if (item.data === 1) {
-    item.detail = 'TypeScript details';
-    item.documentation = 'TypeScript documentation';
-  } else if (item.data === 2) {
-    item.detail = 'JavaScript details';
-    item.documentation = 'JavaScript documentation';
-  }
   return item;
 }
