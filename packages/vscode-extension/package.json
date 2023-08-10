@@ -14,7 +14,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "test": "echo \"TEST\"",
     "vscode:prepublish": "node ./build.js",
-    "watch": "node ./build.js"
+    "watch": "node ./build.js --watch"
   },
   "contributes": {
     "commands": [

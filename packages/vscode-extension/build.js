@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const production = process.argv[2] === '--production';
-// const watch = process.argv[2] === '--watch';
+const watch = process.argv[2] === '--watch';
 const esbuild = require('esbuild');
 
 esbuild
@@ -11,6 +11,8 @@ esbuild
     outdir: './client/out',
     external: ['vscode'],
     format: 'cjs',
+    logLevel: 'info',
+    watch: !!watch,
     sourcemap: !production,
     minify: production,
   })
@@ -27,6 +29,8 @@ esbuild
     platform: 'node',
     external: ['vscode'],
     format: 'cjs',
+    logLevel: 'info',
+    watch: !!watch,
     sourcemap: !production,
     minify: production,
   })
