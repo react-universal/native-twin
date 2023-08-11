@@ -13,7 +13,7 @@
     },
     {
       "type": "npm",
-      "script": "watch",
+      "script": "build:libs",
       "isBackground": true,
       "group": {
         "kind": "build",

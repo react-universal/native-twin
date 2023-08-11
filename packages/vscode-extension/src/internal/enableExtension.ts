@@ -7,7 +7,7 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
 
   const update = async () => {
     const localTailwindManifestFiles = await vscode.workspace.findFiles(
-      '**/node_modules/@universal-labs/tailwind/package.json',
+      '**/node_modules/@universal-labs/twind-adapter/package.json',
       null,
       1,
     );
@@ -73,15 +73,6 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
       replaceClassNameStrings();
     }),
   );
-
-  const twindWatcher = vscode.workspace.createFileSystemWatcher(
-    '**/node_modules/@universal-labs/tailwind/package.json',
-  );
-
-  context.subscriptions.push(twindWatcher);
-  context.subscriptions.push(twindWatcher.onDidCreate(listener));
-  context.subscriptions.push(twindWatcher.onDidChange(listener));
-  context.subscriptions.push(twindWatcher.onDidDelete(listener));
 
   const configWatcher = vscode.workspace.createFileSystemWatcher(
     '**/tailwind.config.{ts,js,mjs,cjs}',

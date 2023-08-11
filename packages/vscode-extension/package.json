@@ -8,7 +8,7 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "universal-labs",
-  "main": "./client/out/extension.js",
+  "main": "./build/extension.js",
   "scripts": {
     "build:libs": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
@@ -58,10 +58,7 @@
             "default": [
               "tw",
               "className",
-              "class",
-              "css",
-              "tx",
-              "cx"
+              "class"
             ]
           },
           "nativeTailwind.styles": {
@@ -88,6 +85,12 @@
             "markdownDescription": "Controls whether Native Tailwind intellisense is enabled or not."
           }
         }
+      }
+    ],
+    "typescriptServerPlugins": [
+      {
+        "name": "@universal-labs/ts-styled-plugin-tw",
+        "enableForWorkspaceTypeScriptVersions": true
       }
     ]
   },

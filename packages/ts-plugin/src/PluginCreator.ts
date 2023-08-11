@@ -1,8 +1,8 @@
 import ts from 'typescript/lib/tsserverlibrary';
 import { TemplateContext } from 'typescript-template-language-service-decorator';
-import { populateCompletions } from './internal/tailwind';
 import { ConfigurationManager } from './configuration';
 import { TailwindLanguageService } from './languageService';
+import { createIntellisense } from './intellisense/extractUserTheme';
 
 export class TailwindPluginCreator {
   typescript: typeof ts;
@@ -11,27 +11,45 @@ export class TailwindPluginCreator {
     this.typescript = typescript;
   }
   create(info: ts.server.PluginCreateInfo): ts.LanguageService {
+    const intellisense = createIntellisense();
     const languageService = new TailwindLanguageService(
       this.typescript,
       info,
       this._configManager,
+      intellisense,
     );
 
     let enable = this._configManager.config.enable;
     this._configManager.onUpdatedConfig(() => {
       enable = this._configManager.config.enable;
     });
-
-    populateCompletions(languageService.context).catch((error) => {
-      languageService.context.logger.log(`TW: Error populating completions, ${error}`);
-    });
-    languageService.context.logger.log('tw: initialized');
+    info.project.projectService.logger.info('tw: initialized');
 
     return {
       ...info.languageService,
+      getCompletionEntryDetails: (fileName, position, name, ...rest) => {
+        if (enable && languageService.configManager.config.enable) {
+          const context = languageService.templateSourceHelper.getTemplate(fileName, position);
+
+          if (context) {
+            return languageService.getCompletionEntryDetails(
+              context,
+              languageService.templateSourceHelper.getRelativePosition(context, position),
+              name,
+            );
+          }
+        }
+
+        return info.languageService.getCompletionEntryDetails(
+          fileName,
+          position,
+          name,
+          ...rest,
+        );
+      },
       getCompletionsAtPosition: (fileName, position, options) => {
         if (enable) {
-          const template = languageService.context.templateSourceHelper.getTemplate(
+          const template = languageService.templateSourceHelper.getTemplate(
             fileName,
             position,
           );
@@ -41,10 +59,7 @@ export class TailwindPluginCreator {
               template,
               languageService.getCompletionsAtPosition(
                 template,
-                languageService.context.templateSourceHelper.getRelativePosition(
-                  template,
-                  position,
-                ),
+                languageService.templateSourceHelper.getRelativePosition(template, position),
               ),
             );
           }

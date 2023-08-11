@@ -6,6 +6,7 @@ import {
 } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { createIntellisense } from '../language-service/LanguageService';
+import * as vscode from 'vscode-languageserver-types';
 
 export async function onCompletion(
   pos: TextDocumentPositionParams,
@@ -16,11 +17,17 @@ export async function onCompletion(
   const word = documents.get(pos.textDocument.uri)?.getText(range).split(' ').slice(-1)[0];
 
   console.log('WORD: ', word);
-  return Array.from(service.cache.values()).map((item, index) => {
+  return Array.from(service.cache.entries()).map((item, index) => {
     return {
-      label: item,
+      label: item[1],
       kind: CompletionItemKind.Text,
       data: index + 1,
+      documentation: {
+        kind: vscode.MarkupKind.Markdown,
+        value: ['```css\n' + service.getCss(item[0]).css + '\n```']
+          .filter(Boolean)
+          .join('\n\n'),
+      },
     };
   });
 }

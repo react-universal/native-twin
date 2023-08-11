@@ -43,7 +43,6 @@
       "comments": true,
       "strings": true
     },
-    "typescript.tsserver.log": "normal",
     "files.exclude": {
       "**/.git": true,
       "**/.svn": true,

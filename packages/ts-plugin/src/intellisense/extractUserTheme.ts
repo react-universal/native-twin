@@ -1,10 +1,12 @@
 import genex from 'genex';
 import { TailwindTheme, tw } from '@universal-labs/twind-adapter';
 import { AutocompleteContext, BaseTheme, asArray } from '@twind/core';
-import { VARIANT_MARKER_RULE } from '../internal/config';
-import { evaluatePattern } from './parser/evaluatePattern';
+import { evaluatePattern } from './evaluatePattern';
+import { toCondition } from '../utils';
+import cssbeautify from 'cssbeautify';
+import { VARIANT_MARKER_RULE } from '../constants/config.constants';
 
-const cache = new Map<string, string>();
+const cache = new Map<string, { className: string; css: string }>();
 
 export function createIntellisense() {
   const config = tw.config;
@@ -23,7 +25,22 @@ export function createIntellisense() {
     tw.clear();
     return {
       className,
-      css: target[0]!,
+      css: cssbeautify(
+        target
+          .filter((rule) => !/^\s*\*\s*{/.test(rule))
+          .join('\n')
+          // Add whitespace after non-escaped ,
+          .replace(/([^\\],)(\S)/g, '$1 $2'),
+        // utility.replace(/([^\\],)(\S)/g, '$1 $2')!,
+        {
+          autosemicolon: true,
+          indent: '  ',
+          openbrace: 'end-of-line',
+        },
+      )
+        .replace(/TYPESCRIPT_PLUGIN_PLACEHOLDER/g, '<...>')
+        .replace(/^(\s*)--typescript_plugin_placeholder:\s*none\s*;$/gm, '$1/* ... */')
+        .trim(),
     };
   }
 
@@ -60,19 +77,14 @@ export function createIntellisense() {
         );
         const pattern = genex(re);
         evaluatePattern(pattern, tw.theme, (className) => {
-          cache.set(className, className);
+          const data = getCss(className);
+          if (data.css !== '') {
+            cache.set(className, { className, css: data.css });
+          }
         });
       }
     }
   }
 }
 
-function toCondition(value: string | RegExp): RegExp {
-  // "visible" -> /^visible$/
-  // "(float)-(left|right|none)" -> /^(float)-(left|right|none)$/
-  // "auto-rows-" -> /^auto-rows-/
-  // "gap(-|$)" -> /^gap(-|$)/
-  return typeof value == 'string'
-    ? new RegExp('^' + value + (value.includes('$') || value.slice(-1) == '-' ? '' : '$'))
-    : value;
-}
+export type CreateIntellisenseFn = ReturnType<typeof createIntellisense>;

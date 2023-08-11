@@ -9,7 +9,7 @@ const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 connection.onInitialize(onInitializeConnection);
 
-connection.onInitialized(() => onConnectionInitialized(connection));
+connection.onInitialized((params) => onConnectionInitialized(params, connection));
 
 connection.onCompletion(async (position) => onCompletion(position, documents));
 

@@ -2,6 +2,7 @@ import {
   InitializeParams,
   TextDocumentSyncKind,
   InitializeResult,
+  InitializedParams,
   Connection,
   DidChangeConfigurationNotification,
 } from 'vscode-languageserver/node';
@@ -44,7 +45,10 @@ export function onInitializeConnection(params: InitializeParams) {
   return result;
 }
 
-export async function onConnectionInitialized(connection: Connection) {
+export async function onConnectionInitialized(
+  params: InitializedParams,
+  connection: Connection,
+) {
   const currentState = globalStore.getState();
   if (currentState.hasConfigurationCapability) {
     connection.client.register(DidChangeConfigurationNotification.type, undefined);

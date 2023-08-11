@@ -3,7 +3,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES2020",
-    "lib": ["ES2020"],
+    "lib": ["ES2021"],
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -13,6 +13,5 @@
     "rootDir": "src"
   },
   "exclude": ["node_modules", ".vscode-test", "build"],
-  "include": ["src"],
-  "references": [{ "path": "./client" }, { "path": "./server" }]
+  "include": ["src/**/*"]
 }
