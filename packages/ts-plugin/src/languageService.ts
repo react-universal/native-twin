@@ -3,7 +3,6 @@ import {
   TemplateLanguageService,
 } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
-import { pluginName } from './constants/config.constants';
 import { ConfigurationManager } from './configuration';
 import { LanguageServiceLogger } from './logger';
 import { StandardTemplateSourceHelper } from './source-helper';
@@ -39,7 +38,9 @@ export class TailwindLanguageService implements TemplateLanguageService {
   ): ts.WithMetadata<ts.CompletionInfo> {
     const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
     this.pluginInfo.languageServiceHost.log?.(
-      `[${pluginName}] ${[...templateClasses].join(' ')} classes ${position.character}`,
+      `[${ConfigurationManager.pluginName}] ${[...templateClasses].join(' ')} classes ${
+        position.character
+      }`,
     );
     // const isEmptyCompletion = templateContext.text.charAt(position.character - 1) == ' ';
     // const prevText = templateContext.text.slice(0, position.character);

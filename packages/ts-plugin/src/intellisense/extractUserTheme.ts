@@ -5,7 +5,7 @@ import { evaluatePattern } from './evaluatePattern';
 import { toCondition } from '../utils';
 import { AnyStyle, CssResolver } from '@universal-labs/css';
 import cssbeautify from 'cssbeautify';
-import { VARIANT_MARKER_RULE } from '../constants/config.constants';
+import { ConfigurationManager } from '../configuration';
 
 const cache = new Map<string, { className: string; css: string; sheet: AnyStyle }>();
 
@@ -75,7 +75,7 @@ export function createIntellisense() {
     for (const rule of rules) {
       const [pattern] = asArray(rule);
       for (const value of asArray(pattern)) {
-        if (value === VARIANT_MARKER_RULE) {
+        if (value === ConfigurationManager.VARIANT_MARKER_RULE) {
           continue;
         }
 

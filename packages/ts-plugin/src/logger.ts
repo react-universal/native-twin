@@ -1,6 +1,6 @@
 import type { Logger } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
-import { pluginName } from './constants/config.constants';
+import { ConfigurationManager } from './configuration';
 
 export class LanguageServiceLogger implements Logger {
   private readonly info: ts.server.PluginCreateInfo;
@@ -10,6 +10,8 @@ export class LanguageServiceLogger implements Logger {
   }
 
   log(message: string): void {
-    this.info.project.projectService.logger.info(`[${pluginName}] ${message}`);
+    this.info.project.projectService.logger.info(
+      `[${ConfigurationManager.pluginName}] ${message}`,
+    );
   }
 }
