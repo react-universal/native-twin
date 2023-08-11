@@ -1,9 +1,11 @@
 {
   "name": "@universal-labs/vscode",
   "version": "1.0.0",
-  "description": "Native Styled vscode extension.",
+  "description": "Native Styled Tailwind vscode extension.",
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Linters",
+    "Snippets"
   ],
   "license": "MIT",
   "author": "Cristhian Gutierrez",
@@ -56,7 +58,6 @@
               "description": "Attribute name."
             },
             "default": [
-              "tw",
               "className",
               "class"
             ]

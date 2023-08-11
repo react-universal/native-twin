@@ -1,9 +1,9 @@
 {
   "name": "@universal-labs/ts-styled-plugin-tw",
   "version": "1.0.0",
-  "description": "TypeScript language service plugin that adds IntelliSense for styled components",
+  "description": "TypeScript plugin that adds IntelliSense Native Tailwind",
   "license": "MIT",
-  "author": "Native Styled",
+  "author": "Cristhian Gutierrez",
   "main": "build/index.js",
   "scripts": {
     "build:es": "node ./build.js",
