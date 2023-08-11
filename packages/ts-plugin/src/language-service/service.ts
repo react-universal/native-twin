@@ -7,7 +7,7 @@ import { ConfigurationManager } from './configuration';
 import { LanguageServiceLogger } from './logger';
 import { StandardTemplateSourceHelper } from './source-helper';
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
-import { CreateIntellisenseFn } from './intellisense/extractUserTheme';
+import { CreateIntellisenseFn } from '../intellisense/extractUserTheme';
 import * as vscode from 'vscode-languageserver-types';
 
 export class TailwindLanguageService implements TemplateLanguageService {

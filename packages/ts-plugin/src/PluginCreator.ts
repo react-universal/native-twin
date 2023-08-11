@@ -1,7 +1,7 @@
 import ts from 'typescript/lib/tsserverlibrary';
 import { TemplateContext } from 'typescript-template-language-service-decorator';
-import { ConfigurationManager } from './configuration';
-import { TailwindLanguageService } from './languageService';
+import { ConfigurationManager } from './language-service/configuration';
+import { TailwindLanguageService } from './language-service/service';
 import { createIntellisense } from './intellisense/extractUserTheme';
 
 export class TailwindPluginCreator {

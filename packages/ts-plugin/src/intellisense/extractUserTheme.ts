@@ -5,7 +5,7 @@ import { evaluatePattern } from './evaluatePattern';
 import { toCondition } from '../utils';
 import { AnyStyle, CssResolver } from '@universal-labs/css';
 import cssbeautify from 'cssbeautify';
-import { ConfigurationManager } from '../configuration';
+import { ConfigurationManager } from '../language-service/configuration';
 
 const cache = new Map<string, { className: string; css: string; sheet: AnyStyle }>();
 
