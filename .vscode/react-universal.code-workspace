@@ -50,25 +50,10 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
-      "**/node_modules": false,
-      "**/build": false,
-      "**/.vscode-test": false
+      "**/node_modules": true,
+      "**/build": true,
+      "**/.vscode-test": true
     },
-    "typescript.tsdk": "root/node_modules/typescript/lib",
-    "cSpell.words": [
-      "alpinejs",
-      "autosemicolon",
-      "axxxx",
-      "cssbeautify",
-      "csstree",
-      "deferreds",
-      "genex",
-      "ignorelist",
-      "Numberify",
-      "openbrace",
-      "Regexper",
-      "spacify",
-      "tinycolor"
-    ]
+    "typescript.tsdk": "root/node_modules/typescript/lib"
   }
 }
