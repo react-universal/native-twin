@@ -95,10 +95,7 @@
     ]
   },
   "activationEvents": [
-    "onLanguage:typescript",
-    "onLanguage:javascript",
-    "onLanguage:typescriptreact",
-    "onLanguage:javascriptreact"
+    "onStartupFinished"
   ],
   "dependencies": {
     "@universal-labs/ts-styled-plugin-tw": "workspace:*",

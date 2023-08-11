@@ -65,6 +65,7 @@
       "genex",
       "ignorelist",
       "Numberify",
+      "openbrace",
       "Regexper",
       "spacify",
       "tinycolor"

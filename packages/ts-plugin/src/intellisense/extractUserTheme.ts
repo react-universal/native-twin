@@ -3,10 +3,11 @@ import { TailwindTheme, tw } from '@universal-labs/twind-adapter';
 import { AutocompleteContext, BaseTheme, asArray } from '@twind/core';
 import { evaluatePattern } from './evaluatePattern';
 import { toCondition } from '../utils';
+import { AnyStyle, CssResolver } from '@universal-labs/css';
 import cssbeautify from 'cssbeautify';
 import { VARIANT_MARKER_RULE } from '../constants/config.constants';
 
-const cache = new Map<string, { className: string; css: string }>();
+const cache = new Map<string, { className: string; css: string; sheet: AnyStyle }>();
 
 export function createIntellisense() {
   const config = tw.config;
@@ -23,8 +24,17 @@ export function createIntellisense() {
     const className = tw(name);
     const target = [...tw.target];
     tw.clear();
+    const sheet = CssResolver(target, {
+      colorScheme: 'light',
+      debug: false,
+      deviceHeight: 1080,
+      deviceWidth: 720,
+      platform: 'ios',
+      rem: 16,
+    });
     return {
       className,
+      sheet,
       css: cssbeautify(
         target
           .filter((rule) => !/^\s*\*\s*{/.test(rule))
@@ -79,7 +89,7 @@ export function createIntellisense() {
         evaluatePattern(pattern, tw.theme, (className) => {
           const data = getCss(className);
           if (data.css !== '') {
-            cache.set(className, { className, css: data.css });
+            cache.set(className, { className, css: data.css, sheet: data.sheet.base });
           }
         });
       }

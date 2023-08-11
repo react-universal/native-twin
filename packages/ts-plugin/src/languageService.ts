@@ -66,51 +66,30 @@ export class TailwindLanguageService implements TemplateLanguageService {
     position: ts.LineAndCharacter,
     name: string,
   ): ts.CompletionEntryDetails {
-    console.log('AAAAAAAA: ', context.text);
-    console.log('AAAAAAAA: ', position);
-    console.log('AAAAAAAA: ', name);
     return {
       name: name,
-      displayParts: [],
-      kind: ts.ScriptElementKind.unknown,
+      kind: ts.ScriptElementKind.primitiveType,
       kindModifiers: '',
+      tags: [],
+      displayParts: [],
       documentation: [
         {
           kind: vscode.MarkupKind.Markdown,
-          text: [`${'```css\n'}${this.intellisense.cache.get(name)!.css}${'\n```'}`].join(
-            '\n\n',
-          ),
+          text: getDocumentation(this.intellisense.cache.get(name)),
         },
       ],
     };
   }
 }
-
-// if (prevText.length > 0 && !isEmptyCompletion) {
-//   const prevClasses = prevText.split(/\s+/).filter(Boolean);
-//   const completion = prevClasses[prevClasses.length - 1]!;
-//   this.pluginInfo.languageServiceHost.log?.(`[${pluginName}] TO_COMPLETED: ${completion}`);
-//   this.completionEntries.forEach((rule) => {
-//     if (rule.name.includes(completion) && !templateClasses.has(rule.name)) {
-//       const splitted = rule.name.split(completion);
-//       entries.push({
-//         name: rule.name,
-//         sortText: rule.name,
-//         insertText: splitted[1] ? splitted[1] : rule.name,
-//         kind: ts.ScriptElementKind.string,
-//         labelDetails: { description: rule.description!, detail: rule.detail! },
-//       });
-//     }
-//   });
-// } else {
-//   this.completionEntries.forEach((rule) => {
-//     if (!templateClasses.has(rule.name)) {
-//       entries.push({
-//         name: rule.name,
-//         sortText: rule.name,
-//         kind: ts.ScriptElementKind.string,
-//         labelDetails: { description: rule.description!, detail: rule.detail! },
-//       });
-//     }
-//   });
-// }
+function getDocumentation(
+  data: ReturnType<TailwindLanguageService['intellisense']['cache']['get']>,
+) {
+  if (!data) return '';
+  const result: string[] = [];
+  result.push('### Css Rules \n\n');
+  result.push(`${'```css\n'}${data.css}${'\n```'}`);
+  result.push('\n\n');
+  result.push('### React Native StyleSheet \n\n');
+  result.push(`${'```json\n'}${JSON.stringify(data.sheet, null, 2)}${'\n```'}`);
+  return result.join('\n\n');
+}
