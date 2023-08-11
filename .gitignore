@@ -14,12 +14,6 @@
 !.yarn/sdks
 !.yarn/versions
 
-# Bit
-public/
-.bit/
-
-!apps/site/public/
-
 # ESLint
 lint-results/
 
@@ -31,7 +25,6 @@ lint-results/
 **/.swc
 .env
 .npmrc
-test.js
 *.tgz
 *.log
 **/_release
@@ -39,3 +32,7 @@ test.js
 # VITE
 **benchmark/
 **coverage/
+
+#VSCODE
+.vscode-test
+out
