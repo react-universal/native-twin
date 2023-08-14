@@ -1,24 +1,44 @@
 import genex from 'genex';
 import { TailwindTheme, tw } from '@universal-labs/twind-adapter';
+import { CssResolver } from '@universal-labs/css';
 import { AutocompleteContext, BaseTheme, asArray } from '@twind/core';
+import QuickLRU from 'quick-lru';
 import { evaluatePattern } from './evaluatePattern';
 import { formatCss, toCondition } from '../utils';
-import { CssResolver } from '@universal-labs/css';
 import { ConfigurationManager } from '../language-service/configuration';
-import type { Suggestion } from '../types';
-import QuickLRU from 'quick-lru';
+import type { CompletionCacheItem } from '../types';
 
 export function createIntellisense() {
-  const classesCache = new QuickLRU<string, Suggestion>({ maxSize: 20000 });
+  const classesCache = new QuickLRU<string, CompletionCacheItem>({ maxSize: 20000 });
   const config = tw.config;
   const rules = tw.config.rules;
   extractRules();
   return {
-    classesCache,
     getContext,
     config,
     getCss,
+    classesCache,
   };
+
+  function getContext() {
+    return {
+      get context() {
+        const theme = tw.theme;
+        const context: AutocompleteContext<BaseTheme & TailwindTheme> = {
+          get theme() {
+            return theme;
+          },
+          get variants() {
+            return {};
+          },
+        };
+        return context;
+      },
+      get tw() {
+        return tw;
+      },
+    };
+  }
 
   function getCss(name: string) {
     const className = tw(name);
@@ -36,23 +56,6 @@ export function createIntellisense() {
       className,
       sheet,
       css: formatCss(target),
-    };
-  }
-
-  function getContext() {
-    return {
-      get context() {
-        const theme = tw.theme;
-        const context: AutocompleteContext<BaseTheme & TailwindTheme> = {
-          get theme() {
-            return theme;
-          },
-          get variants() {
-            return {};
-          },
-        };
-        return context;
-      },
     };
   }
 
@@ -75,14 +78,12 @@ export function createIntellisense() {
           condition.flags,
         );
         const pattern = genex(re);
-        evaluatePattern(pattern, tw.theme, (className) => {
+        evaluatePattern(pattern, tw.theme, (className, isColor = false) => {
           if (className.startsWith('-') && canBeNegative) {
-            console.log('CAN_BE: ', className, value);
             return;
           }
-          const data = getCss(className);
-          if (data.css !== '' && !classesCache.has(className)) {
-            const item = { className, css: data.css, sheet: data.sheet.base, canBeNegative };
+          if (!classesCache.has(className)) {
+            const item = { className, canBeNegative, isColor };
             classesCache.set(className, item);
           }
         });

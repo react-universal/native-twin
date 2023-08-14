@@ -2,53 +2,7 @@ import cssbeautify from 'cssbeautify';
 import ts from 'typescript/lib/tsserverlibrary';
 import * as vscode from 'vscode-languageserver-types';
 import { TinyColor } from '@ctrl/tinycolor';
-import type { Suggestion } from '../types';
-
-const collator = new Intl.Collator('en', { numeric: true });
-
-export function getDocumentation(data: Suggestion) {
-  const result: string[] = [];
-  result.push('***Css Rules*** \n\n');
-  result.push(`${'```css\n'}${data.css}${'\n```'}`);
-  result.push('\n\n');
-  result.push('***React Native StyleSheet*** \n\n');
-  result.push(`${'```json\n'}${JSON.stringify(data.sheet, null, 2)}${'\n```'}`);
-  return result.join('\n\n');
-}
-
-function getKindModifiers(item: string): string {
-  if (item.startsWith('rgba')) {
-    return 'color';
-  }
-
-  return '';
-}
-
-export function sortMatcher(a: Suggestion, b: Suggestion): number {
-  if (!/^[-a-z\d]/i.test(a.className) && /^[-a-z\d]/i.test(b.className)) {
-    return -1;
-  }
-  if (/^[-a-z\d]/i.test(a.className) && !/^[-a-z\d]/i.test(b.className)) {
-    return -1;
-  }
-  const aInitial = a.className.replace(/^-/, '').split('-', 1)[0]!;
-  const bInitial = b.className.replace(/^-/, '').split('-', 1)[0]!;
-  const byInitial = collator.compare(compareByName(aInitial), compareByName(bInitial));
-  if (byInitial) {
-    return byInitial;
-  }
-  if (a.className.startsWith('-') && !b.className.startsWith('-')) {
-    return 1;
-  }
-  if (!a.className.startsWith('-') && b.className.startsWith('-')) {
-    return -1;
-  }
-  return collator.compare(compareByName(a.className), compareByName(b.className));
-}
-
-export function compareByName(s: string) {
-  return (s || '').replace(/\W/g, (x) => String.fromCharCode(127 + x.charCodeAt(0))) + '\x00';
-}
+import type { CompletionCacheItem, GetCssResult } from '../types';
 
 export function formatCss(target: string[]) {
   return cssbeautify(
@@ -67,9 +21,19 @@ export function formatCss(target: string[]) {
     .trim();
 }
 
-export function getCompletionEntryDetailsDisplayParts(suggestion: Suggestion) {
+export function getDocumentation(data: GetCssResult) {
+  const result: string[] = [];
+  result.push('***Css Rules*** \n\n');
+  result.push(`${'```css\n'}${data.css}${'\n```'}`);
+  result.push('\n\n');
+  result.push('***React Native StyleSheet*** \n\n');
+  result.push(`${'```json\n'}${JSON.stringify(data.sheet.base, null, 2)}${'\n```'}`);
+  return result.join('\n\n');
+}
+
+export function getCompletionEntryDetailsDisplayParts(suggestion: GetCssResult) {
   if (suggestion.css.includes('rgba')) {
-    const declaration = Object.values(suggestion.sheet).join('');
+    const declaration = Object.values(suggestion.sheet.base).join('');
     if (declaration.startsWith('rgba')) {
       const hex = new TinyColor(declaration);
       if (hex.isValid) {
@@ -86,13 +50,13 @@ export function getCompletionEntryDetailsDisplayParts(suggestion: Suggestion) {
 }
 
 export function createCompletionEntries(
-  list: Suggestion[],
+  list: CompletionCacheItem[],
 ): ts.WithMetadata<ts.CompletionInfo> {
   const entries = list.map((item): ts.CompletionEntry => {
     return {
       kind: ts.ScriptElementKind.string,
       name: item.className,
-      kindModifiers: getKindModifiers(Object.values(item.sheet).join('')),
+      kindModifiers: item.isColor ? 'color' : '',
       sortText: item.className,
     };
   });
@@ -105,7 +69,7 @@ export function createCompletionEntries(
   };
 }
 
-export function createCompletionEntryDetails(entry: Suggestion): ts.CompletionEntryDetails {
+export function createCompletionEntryDetails(entry: GetCssResult): ts.CompletionEntryDetails {
   const displayParts = getCompletionEntryDetailsDisplayParts(entry);
   return {
     name: entry.className,

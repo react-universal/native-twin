@@ -11,7 +11,7 @@ import { isSpacingFunction } from '../utils';
 export function evaluatePattern(
   pattern: ReturnType<typeof genex>,
   theme: ThemeFunction<ExtractUserTheme<BaseTheme & TailwindTheme>>,
-  onClass: (data: string) => void,
+  onClass: (data: string, isColor?: boolean) => void,
 ) {
   pattern.generate((name) => {
     if (name.includes('\0') || name.endsWith('-')) {
@@ -122,7 +122,7 @@ export function evaluatePattern(
           onClass(`${name}${space}`);
         });
         autocompleteColorClassnames(theme('colors'), (color) => {
-          onClass(`${name}${color}`);
+          onClass(`${name}${color}`, true);
         });
         for (const key of ['solid', 'dashed', 'dotted', 'double', 'none', 'hidden']) {
           onClass(`${name}${key}`);
@@ -227,7 +227,7 @@ export function evaluatePattern(
       if (name == 'bg-' || name == 'text-') {
         injected = true;
         autocompleteColorClassnames(theme('colors'), (color) => {
-          onClass(`${name}${color}`);
+          onClass(`${name}${color}`, true);
         });
         if (name == 'text-') {
           injected = true;

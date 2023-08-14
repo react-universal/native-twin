@@ -44,6 +44,20 @@ export class TailwindLanguageService implements TemplateLanguageService {
       // Filter insertedClasses
       originalList = originalList.filter((i) => !templateClasses.has(i.className));
     }
+    if (prevText == '-') {
+      originalList = originalList
+        .filter((x) => x.canBeNegative)
+        .map((x) => {
+          const className = `-${x.className}`;
+          const { css, sheet } = this.intellisense.getCss(className);
+          return {
+            ...x,
+            className,
+            css,
+            sheet: sheet.base,
+          };
+        });
+    }
     if (prevText.length > 0 && !isEmptyCompletion) {
       const prevClasses = prevText.split(/\s+/).filter(Boolean);
       const completion = prevClasses[prevClasses.length - 1]!;

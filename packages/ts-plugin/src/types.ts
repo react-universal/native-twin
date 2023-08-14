@@ -1,12 +1,22 @@
 import type { BaseTheme, TwindConfig } from '@twind/core';
-import type { AnyStyle } from '@universal-labs/css';
+import type { AnyStyle, FinalSheet } from '@universal-labs/css';
 import type { TailwindTheme } from '@universal-labs/twind-adapter';
 
 export type CurrentTheme = BaseTheme & TailwindTheme;
 export type TailwindConfig = TwindConfig<CurrentTheme>;
-export type Suggestion = {
+
+export interface CompletionCacheItem {
   className: string;
+  canBeNegative: boolean;
+  isColor: boolean;
+}
+export interface FinalCompletion extends CompletionCacheItem {
   css: string;
   sheet: AnyStyle;
-  canBeNegative: boolean;
-};
+}
+
+export interface GetCssResult {
+  className: string;
+  css: string;
+  sheet: FinalSheet;
+}

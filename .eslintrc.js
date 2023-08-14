@@ -1,3 +1,4 @@
+/** @type {typeof import('eslint/conf/eslint-all')} **/
 module.exports = {
   root: true,
   env: {
