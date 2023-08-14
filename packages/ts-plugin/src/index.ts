@@ -1,6 +1,7 @@
-import ts from 'typescript/lib/tsserverlibrary';
 import { TailwindPluginCreator } from './PluginCreator';
 
-export = function init(mod: { typescript: typeof ts }) {
-  return new TailwindPluginCreator(mod.typescript);
+export = function init(modules: {
+  typescript: typeof import('typescript/lib/tsserverlibrary');
+}) {
+  return new TailwindPluginCreator(modules.typescript);
 };

@@ -11,7 +11,6 @@ import { relative } from 'typescript-template-language-service-decorator/lib/nod
 import type { ConfigurationManager } from './configuration';
 import { match, Matcher } from '../utils';
 import { getSourceMatchers } from './source-matcher';
-import { inspect } from 'util';
 
 class PlaceholderSubstituter {
   public static replacePlaceholders(
@@ -230,7 +229,6 @@ export class StandardTemplateSourceHelper implements TemplateSourceHelper {
     }
 
     const { typescript: ts } = this;
-    console.log('NODE: ', inspect(node));
 
     if (ts.isTaggedTemplateExpression(node)) {
       return this.getValidTemplateNode(node.template);

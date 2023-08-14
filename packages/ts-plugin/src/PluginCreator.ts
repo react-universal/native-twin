@@ -2,7 +2,7 @@ import ts from 'typescript/lib/tsserverlibrary';
 import { TemplateContext } from 'typescript-template-language-service-decorator';
 import { ConfigurationManager } from './language-service/configuration';
 import { TailwindLanguageService } from './language-service/service';
-import { createIntellisense } from './intellisense/extractUserTheme';
+import { createIntellisense } from './intellisense/createIntellisense';
 
 export class TailwindPluginCreator {
   typescript: typeof ts;
@@ -23,7 +23,6 @@ export class TailwindPluginCreator {
     this._configManager.onUpdatedConfig(() => {
       enable = this._configManager.config.enable;
     });
-    info.project.projectService.logger.info('tw: initialized');
 
     return {
       ...info.languageService,

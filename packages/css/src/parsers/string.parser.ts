@@ -37,6 +37,7 @@ export const literal = <A extends string>(cs: A): Parser<A> =>
   });
 
 const regexLetters = /^[a-zA-Z]+/;
+const regexAnyLetter = /^[a-zA-Z]/;
 
 export const regex = (re: RegExp): Parser<string> =>
   new Parser((state) => {
@@ -58,6 +59,7 @@ export const regex = (re: RegExp): Parser<string> =>
   });
 
 export const letters: Parser<string> = regex(regexLetters);
+export const anyLetter: Parser<string> = regex(regexAnyLetter);
 
 const regexIdent = /^[_a-z0-9A-Z-]+/;
 export const ident: Parser<string> = regex(regexIdent);

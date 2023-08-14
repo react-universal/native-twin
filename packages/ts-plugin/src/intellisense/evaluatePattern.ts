@@ -16,7 +16,7 @@ export function evaluatePattern(
   pattern.generate((name) => {
     if (name.includes('\0') || name.endsWith('-')) {
       let injected = false;
-      if (isSpacingFunction(name)) {
+      if (isSpacingFunction(name) || name.includes('gap-')) {
         injected = true;
         extractRuleModifiers({ prefix: name, themeValue: theme('spacing') }, (modifier) => {
           onClass(modifier);
@@ -221,18 +221,6 @@ export function evaluatePattern(
           onClass(`${name}${space}`);
         });
         autocompleteSpacingRules(theme('divideColor'), (space) => {
-          onClass(`${name}${space}`);
-        });
-      }
-      if (name.includes('gap-')) {
-        injected = true;
-        autocompleteSpacingRules(theme('gap'), (space) => {
-          onClass(`${name}${space}`);
-        });
-      }
-      if (name.includes('gap-')) {
-        injected = true;
-        autocompleteSpacingRules(theme('spacing'), (space) => {
           onClass(`${name}${space}`);
         });
       }

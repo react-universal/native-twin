@@ -2,19 +2,19 @@ import genex from 'genex';
 import { TailwindTheme, tw } from '@universal-labs/twind-adapter';
 import { AutocompleteContext, BaseTheme, asArray } from '@twind/core';
 import { evaluatePattern } from './evaluatePattern';
-import { toCondition } from '../utils';
-import { AnyStyle, CssResolver } from '@universal-labs/css';
-import cssbeautify from 'cssbeautify';
+import { formatCss, toCondition } from '../utils';
+import { CssResolver } from '@universal-labs/css';
 import { ConfigurationManager } from '../language-service/configuration';
-
-const cache = new Map<string, { className: string; css: string; sheet: AnyStyle }>();
+import type { Suggestion } from '../types';
+import QuickLRU from 'quick-lru';
 
 export function createIntellisense() {
+  const classesCache = new QuickLRU<string, Suggestion>({ maxSize: 20000 });
   const config = tw.config;
   const rules = tw.config.rules;
   extractRules();
   return {
-    cache,
+    classesCache,
     getContext,
     config,
     getCss,
@@ -35,22 +35,7 @@ export function createIntellisense() {
     return {
       className,
       sheet,
-      css: cssbeautify(
-        target
-          .filter((rule) => !/^\s*\*\s*{/.test(rule))
-          .join('\n')
-          // Add whitespace after non-escaped ,
-          .replace(/([^\\],)(\S)/g, '$1 $2'),
-        // utility.replace(/([^\\],)(\S)/g, '$1 $2')!,
-        {
-          autosemicolon: true,
-          indent: '  ',
-          openbrace: 'end-of-line',
-        },
-      )
-        .replace(/TYPESCRIPT_PLUGIN_PLACEHOLDER/g, '<...>')
-        .replace(/^(\s*)--typescript_plugin_placeholder:\s*none\s*;$/gm, '$1/* ... */')
-        .trim(),
+      css: formatCss(target),
     };
   }
 
@@ -75,6 +60,10 @@ export function createIntellisense() {
     for (const rule of rules) {
       const [pattern] = asArray(rule);
       for (const value of asArray(pattern)) {
+        let canBeNegative = false;
+        if (typeof value == 'string' && value.startsWith('-?')) {
+          canBeNegative = true;
+        }
         if (value === ConfigurationManager.VARIANT_MARKER_RULE) {
           continue;
         }
@@ -87,9 +76,14 @@ export function createIntellisense() {
         );
         const pattern = genex(re);
         evaluatePattern(pattern, tw.theme, (className) => {
+          if (className.startsWith('-') && canBeNegative) {
+            console.log('CAN_BE: ', className, value);
+            return;
+          }
           const data = getCss(className);
-          if (data.css !== '') {
-            cache.set(className, { className, css: data.css, sheet: data.sheet.base });
+          if (data.css !== '' && !classesCache.has(className)) {
+            const item = { className, css: data.css, sheet: data.sheet.base, canBeNegative };
+            classesCache.set(className, item);
           }
         });
       }

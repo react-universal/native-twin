@@ -11,6 +11,7 @@
     "e2e": "mocha e2e/tests",
     "lint": "eslint src",
     "test": "vitest run",
+    "test:ui": "vitest --ui",
     "unit": "npx mocha ./build/test",
     "watch:compile": "node ./build.js --watch"
   },
