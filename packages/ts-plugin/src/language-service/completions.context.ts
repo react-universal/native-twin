@@ -14,24 +14,35 @@ export function getCompletionEntries(
   const prevText = templateContext.text.slice(0, position.character);
   if (isEmptyCompletion) {
     // Filter insertedClasses
-    originalList = originalList.filter((i) => !templateClasses.has(i.className));
+    originalList = originalList.filter((i) => !templateClasses.has(i.name));
   }
   if (prevText == '-') {
-    originalList = originalList
-      .filter((x) => x.canBeNegative)
-      .map((x) => {
-        const className = `-${x.className}`;
-        return {
-          ...x,
-          className,
-        };
-      });
+    originalList = originalList.filter((x) => x.name.startsWith('-'));
+  }
+  console.log('PREV: ', prevText);
+  if (prevText.endsWith('/')) {
+    const prevClasses = prevText.split(/\s+/).filter(Boolean);
+    const completion = prevClasses[prevClasses.length - 1]!;
+    const util = completionsCache
+      .filter((i) => i.name.startsWith('opacity'))
+      .map((i) => i.name.split('-')[1]!)
+      .sort((a, b) => (parseInt(a) > parseInt(b) ? -1 : 1));
+    console.log('UTIL: ', util);
+    originalList.push(
+      ...util.map(
+        (i): CompletionCacheItem => ({
+          name: `${completion}${i}`,
+          index: 0,
+          position: 0,
+        }),
+      ),
+    );
   }
   if (prevText.length > 0 && !isEmptyCompletion) {
     const prevClasses = prevText.split(/\s+/).filter(Boolean);
     const completion = prevClasses[prevClasses.length - 1]!;
     originalList = originalList.filter(
-      (i) => !templateClasses.has(i.className) && i.className.includes(completion),
+      (i) => !templateClasses.has(i.name) && i.name.includes(completion),
     );
   }
   return translateCompletionInfo(templateContext, createCompletionEntries(originalList));

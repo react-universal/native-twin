@@ -35,20 +35,20 @@ export class TailwindLanguageService implements TemplateLanguageService {
     templateContext: TemplateContext,
     position: ts.LineAndCharacter,
   ): ts.WithMetadata<ts.CompletionInfo> {
-    let originalList = Array.from(this.intellisense.classesCache.values());
+    let originalList = Array.from(this.intellisense.classes.values());
     const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
     const isEmptyCompletion = templateContext.text.charAt(position.character - 1) == ' ';
     const prevText = templateContext.text.slice(0, position.character);
 
     if (isEmptyCompletion) {
       // Filter insertedClasses
-      originalList = originalList.filter((i) => !templateClasses.has(i.className));
+      originalList = originalList.filter((i) => !templateClasses.has(i.name));
     }
     if (prevText == '-') {
       originalList = originalList
         .filter((x) => x.canBeNegative)
         .map((x) => {
-          const className = `-${x.className}`;
+          const className = `-${x.name}`;
           const { css, sheet } = this.intellisense.getCss(className);
           return {
             ...x,
@@ -62,7 +62,7 @@ export class TailwindLanguageService implements TemplateLanguageService {
       const prevClasses = prevText.split(/\s+/).filter(Boolean);
       const completion = prevClasses[prevClasses.length - 1]!;
       originalList = originalList.filter(
-        (i) => !templateClasses.has(i.className) && i.className.includes(completion),
+        (i) => !templateClasses.has(i.name) && i.name.includes(completion),
       );
     }
     return createCompletionEntries(originalList);
@@ -73,7 +73,8 @@ export class TailwindLanguageService implements TemplateLanguageService {
     position: ts.LineAndCharacter,
     name: string,
   ): ts.CompletionEntryDetails {
-    const utility = this.intellisense.classesCache.get(name)!;
+    const utility = this.intellisense.classes.get(name)!;
+    // @ts-expect-error
     return createCompletionEntryDetails(utility);
   }
 }

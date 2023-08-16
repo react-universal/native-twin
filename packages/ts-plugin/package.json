@@ -6,14 +6,12 @@
   "author": "Cristhian Gutierrez",
   "main": "build/index.js",
   "scripts": {
-    "build:es": "node ./build.js",
     "build:libs": "node ./build.js",
-    "e2e": "mocha e2e/tests",
     "lint": "eslint src",
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "unit": "npx mocha ./build/test",
-    "watch:compile": "node ./build.js --watch"
+    "vscode:dev": "node ./build.js --watch"
   },
   "dependencies": {
     "@ctrl/tinycolor": "3.6.0",

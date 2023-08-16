@@ -55,9 +55,10 @@ export function createCompletionEntries(
   const entries = list.map((item): ts.CompletionEntry => {
     return {
       kind: ts.ScriptElementKind.string,
-      name: item.className,
-      kindModifiers: item.isColor ? 'color' : '',
-      sortText: item.className,
+      name: item.name,
+      // kindModifiers: item.isColor ? 'color' : '',
+      kindModifiers: '',
+      sortText: item.name,
     };
   });
 

@@ -16,13 +16,14 @@
   "scripts": {
     "build:libs": "yarn nx run-many --target=build:libs",
     "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
-    "dev": " nx watch --projects=styled,css,twind-adapter -- nx run \\$NX_PROJECT_NAME:build:libs",
     "expo:android": "yarn workspace expo-app run android",
     "expo:ios": "yarn workspace expo-app run ios",
     "expo:start": "yarn workspace expo-app run start",
     "format": "prettier --write packages apps examples \"**/*.{js,ts,tsx,md}\"",
+    "libs:dev": "nx watch --projects=styled,css,twind-adapter -- nx run \\$NX_PROJECT_NAME:build:libs",
     "libs:foreach": "yarn workspaces foreach --no-private --verbose",
     "lint": "npx nx run-many --target=lint",
+    "plugin:dev": "nx run-many --target vscode:dev --parallel --output-style=dynamic",
     "release": "yarn build:release && changeset publish",
     "site:dev": "npx nx run dev --project=site",
     "test": "npx nx run-many --target=test"

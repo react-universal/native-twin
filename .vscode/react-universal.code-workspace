@@ -63,6 +63,7 @@
       "**/build": true,
       "**/.vscode-test": true
     },
-    "typescript.tsdk": "root/node_modules/typescript/lib"
+    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "checkpoints.showActiveFileOnly": true
   }
 }

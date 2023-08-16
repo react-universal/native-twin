@@ -1,44 +1,69 @@
-import genex from 'genex';
-import { TailwindTheme, tw } from '@universal-labs/twind-adapter';
+import { tw as internalTW } from '@universal-labs/twind-adapter';
 import { CssResolver } from '@universal-labs/css';
-import { AutocompleteContext, BaseTheme, asArray } from '@twind/core';
-import QuickLRU from 'quick-lru';
-import { evaluatePattern } from './evaluatePattern';
-import { formatCss, toCondition } from '../utils';
+import {
+  AutocompleteContext,
+  Preset,
+  TwindUserConfig,
+  defineConfig,
+  twind,
+  virtual,
+} from '@twind/core';
+import { formatCss } from '../utils';
+import type { CurrentTheme, VariantCompletionItem } from '../types';
+import { createContextExecutor } from './intellisense.compose';
 import { ConfigurationManager } from '../language-service/configuration';
-import type { CompletionCacheItem } from '../types';
 
 export function createIntellisense() {
-  const classesCache = new QuickLRU<string, CompletionCacheItem>({ maxSize: 20000 });
-  const config = tw.config;
-  const rules = tw.config.rules;
-  extractRules();
-  return {
-    getContext,
-    config,
-    getCss,
-    classesCache,
+  const variants = new Map<string, VariantCompletionItem>();
+  // const cssCache = new Map<string, string>();
+  const tw = twind(
+    {
+      preflight: false,
+      hash: false,
+      stringify(property, value) {
+        return property + ':' + value;
+      },
+      presets: [
+        defineConfig<CurrentTheme, Preset<CurrentTheme>[]>({
+          ...internalTW.config,
+          preflight: false,
+        }) as TwindUserConfig<CurrentTheme>,
+      ],
+      rules: [
+        // Allows to generate CSS for a variant
+        [ConfigurationManager.VARIANT_MARKER_RULE, { '…': '…' }],
+      ],
+      ignorelist: [
+        // Prevent invalid class warning when generating documentation
+        /-\[…]$/,
+      ],
+    } as TwindUserConfig<CurrentTheme>,
+    virtual(true),
+  );
+  const context: AutocompleteContext<CurrentTheme> = {
+    get theme() {
+      return tw.theme;
+    },
+    get variants() {
+      return Object.fromEntries(
+        Array.from(variants.values(), (variant) => [variant.name.slice(0, -1), variant.name]),
+      );
+    },
   };
-
-  function getContext() {
-    return {
-      get context() {
-        const theme = tw.theme;
-        const context: AutocompleteContext<BaseTheme & TailwindTheme> = {
-          get theme() {
-            return theme;
-          },
-          get variants() {
-            return {};
-          },
-        };
-        return context;
-      },
-      get tw() {
-        return tw;
-      },
+  let nextIndex = 0;
+  const ruleExecutor = createContextExecutor(context);
+  for (const rule of tw.config.rules) {
+    const location = {
+      index: nextIndex++,
+      position: 0,
     };
+    ruleExecutor.run(rule, location);
   }
+  return {
+    getCss,
+    classes: ruleExecutor.suggestions,
+    context,
+  };
 
   function getCss(name: string) {
     const className = tw(name);
@@ -57,38 +82,6 @@ export function createIntellisense() {
       sheet,
       css: formatCss(target),
     };
-  }
-
-  function extractRules() {
-    for (const rule of rules) {
-      const [pattern] = asArray(rule);
-      for (const value of asArray(pattern)) {
-        let canBeNegative = false;
-        if (typeof value == 'string' && value.startsWith('-?')) {
-          canBeNegative = true;
-        }
-        if (value === ConfigurationManager.VARIANT_MARKER_RULE) {
-          continue;
-        }
-
-        const condition = toCondition(value);
-
-        const re = new RegExp(
-          condition.source.replace(/\\[dw][*+?]*/g, '\0'),
-          condition.flags,
-        );
-        const pattern = genex(re);
-        evaluatePattern(pattern, tw.theme, (className, isColor = false) => {
-          if (className.startsWith('-') && canBeNegative) {
-            return;
-          }
-          if (!classesCache.has(className)) {
-            const item = { className, canBeNegative, isColor };
-            classesCache.set(className, item);
-          }
-        });
-      }
-    }
   }
 }
 

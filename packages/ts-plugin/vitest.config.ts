@@ -7,6 +7,8 @@ export default defineConfig({
       provider: 'istanbul',
       reporter: ['text', 'json', 'html'],
     },
+    globals: true,
+    onConsoleLog: () => {},
     env: {
       APP_ENV: 'test',
     },

@@ -28,7 +28,7 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
     });
 
     if (!enable) return proxy;
-    const completions = Array.from(intellisense.classesCache.values());
+    const completions = Array.from(intellisense.classes.values());
 
     proxy.getCompletionsAtPosition = (fileName, position, options) => {
       const template = helper.getTemplate(fileName, position);
@@ -55,8 +55,8 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
         );
       }
 
-      const utility = intellisense.classesCache.get(name)!;
-      const css = intellisense.getCss(utility.className);
+      const utility = intellisense.classes.get(name)!;
+      const css = intellisense.getCss(utility.name);
       return createCompletionEntryDetails(css);
     };
 

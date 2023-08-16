@@ -15,8 +15,8 @@
     "build:libs": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "echo \"TEST\"",
-    "vscode:prepublish": "node ./build.js",
-    "watch": "node ./build.js --watch"
+    "vscode:dev": "node ./build.js --watch",
+    "vscode:prepublish": "node ./build.js"
   },
   "contributes": {
     "commands": [
