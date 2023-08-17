@@ -17,28 +17,17 @@ export function createIntellisense() {
   const variants = new Map<string, VariantCompletionItem>();
   // const cssCache = new Map<string, string>();
   const tw = twind(
-    {
-      preflight: false,
-      hash: false,
-      stringify(property, value) {
-        return property + ':' + value;
-      },
+    defineConfig({
       presets: [
         defineConfig<CurrentTheme, Preset<CurrentTheme>[]>({
           ...internalTW.config,
           preflight: false,
         }) as TwindUserConfig<CurrentTheme>,
       ],
-      rules: [
-        // Allows to generate CSS for a variant
-        [ConfigurationManager.VARIANT_MARKER_RULE, { '…': '…' }],
-      ],
-      ignorelist: [
-        // Prevent invalid class warning when generating documentation
-        /-\[…]$/,
-      ],
-    } as TwindUserConfig<CurrentTheme>,
-    virtual(true),
+      rules: [[ConfigurationManager.VARIANT_MARKER_RULE, { '…': '…' }]],
+      ignorelist: [/-\[…]$/],
+    }) as TwindUserConfig<CurrentTheme>,
+    virtual(false),
   );
   const context: AutocompleteContext<CurrentTheme> = {
     get theme() {

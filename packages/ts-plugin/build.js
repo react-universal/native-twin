@@ -7,7 +7,12 @@ require('esbuild')
     entryPoints: ['./src/index.ts'],
     bundle: true,
     outdir: 'build',
-    external: ['vscode', '@universal-labs/twind-adapter', '@twind/core'],
+    external: [
+      'vscode',
+      '@universal-labs/twind-adapter',
+      '@universal-labs/css',
+      '@twind/core',
+    ],
     format: 'cjs',
     logLevel: 'info',
     platform: 'node',

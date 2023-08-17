@@ -32,9 +32,7 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
       const re = new RegExp(condition.source.replace(/\\[dw][*+?]*/g, '\0'), condition.flags);
       const generator = genex(re);
       const count = generator.count();
-      // console.log('CAN_NEGATE: ', re.source);
       const canBeNegative = canBeNegativePattern(re.source);
-      // console.log('IS_NEGATE: ', canBeNegative);
 
       if (count === Infinity) {
         const generatedList = generator.generate();
@@ -47,7 +45,6 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
           input: { value: String(generated) },
           $$: { value: '' },
         });
-        // console.log('INFINITE: ', base);
         if (ruleResolver) {
           processRuleWithResolver(generated, match, canBeNegative, ruleResolver, location);
         }
@@ -56,10 +53,10 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
       if (count !== Infinity) {
         generator.generate((generatedPattern) => {
           const match = re.exec(generatedPattern) as MatchResult | null;
-          const base = generatedPattern.replace(/\0/g, '');
-          const isUncompleted = isUncompletedPattern(base);
           if (match) {
             match.$$ = generatedPattern.slice(match[0].length);
+            const base = generatedPattern.replace(/\0/g, '');
+            const isUncompleted = isUncompletedPattern(base);
             // 2086
             if (ruleResolver) {
               processPattern(base, match, location, canBeNegative, ruleResolver);
@@ -68,7 +65,10 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
               processPattern(base, match, location, canBeNegative);
             }
             if (!isUncompleted) {
-              addCompletion({ canBeNegative, name: base, theme: null }, location);
+              addCompletion(
+                { canBeNegative, name: base, theme: null, isColor: false },
+                location,
+              );
               processPattern(base, match, location, canBeNegative);
             }
           }
@@ -85,21 +85,22 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
   };
 
   function addCompletion(
-    input: Pick<ClassCompletionItem, 'name' | 'canBeNegative' | 'theme'>,
+    input: Pick<ClassCompletionItem, 'name' | 'canBeNegative' | 'theme' | 'isColor'>,
     location: RuleCacheLocation,
   ) {
     suggestions.set(input.name, {
       ...input,
-      isColor: false,
+      isColor: input.isColor,
       index: location.index,
       position: location.position++,
       kind: 'class',
     });
     if (input.canBeNegative) {
-      suggestions.set(`-${input.name}`, {
+      const negativeName = input.name.startsWith('-') ? input.name : `-${input.name}`;
+      suggestions.set(negativeName, {
         ...input,
-        name: `-${input.name}`,
-        isColor: false,
+        name: negativeName,
+        isColor: input.isColor,
         index: location.index,
         position: location.position++,
         kind: 'class',
@@ -118,13 +119,13 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
       const [base] = pattern.split('-');
       const composed = composeClassPatterns(base!, context.theme('colors'));
       for (const name of composed) {
-        addCompletion({ name, theme: null, canBeNegative }, location);
+        addCompletion({ name, theme: null, canBeNegative, isColor: true }, location);
       }
     }
     if (isSpacingFunction(pattern)) {
       const composed = composeClassPatterns(pattern, context.theme('spacing'));
       for (const name of composed) {
-        addCompletion({ name, theme: null, canBeNegative }, location);
+        addCompletion({ name, theme: null, canBeNegative, isColor: false }, location);
       }
     }
     if (resolver) {
@@ -132,7 +133,7 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
     } else {
       const composed = composeClassDetails(pattern, undefined, context);
       for (const name of composed) {
-        addCompletion({ name, theme: null, canBeNegative }, location);
+        addCompletion({ name, theme: null, canBeNegative, isColor: false }, location);
       }
     }
   }
@@ -147,7 +148,7 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
     const resolved = getClassNameDetails(match, resolver);
     const composed = composeClassDetails(pattern, resolved, context);
     for (const name of composed) {
-      addCompletion({ name, theme: resolved, canBeNegative }, location);
+      addCompletion({ name, theme: resolved, canBeNegative, isColor: false }, location);
     }
   }
 

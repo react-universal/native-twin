@@ -8,12 +8,12 @@ export type TailwindConfig = TwindConfig<CurrentTheme>;
 export interface CompletionCacheItem {
   name: string;
   position: number;
+  isColor: boolean;
   index: number;
 }
 export interface ClassCompletionItem extends CompletionCacheItem {
   canBeNegative: boolean;
   kind: 'class';
-  isColor: boolean;
   theme: RuleResult;
 }
 

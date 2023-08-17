@@ -56,8 +56,7 @@ export function createCompletionEntries(
     return {
       kind: ts.ScriptElementKind.string,
       name: item.name,
-      // kindModifiers: item.isColor ? 'color' : '',
-      kindModifiers: '',
+      kindModifiers: item.isColor ? 'color' : '',
       sortText: item.name,
     };
   });

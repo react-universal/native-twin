@@ -60,7 +60,7 @@
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       "**/node_modules": true,
-      "**/build": true,
+      "**/build": false,
       "**/.vscode-test": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
