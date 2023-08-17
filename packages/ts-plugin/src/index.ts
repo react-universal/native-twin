@@ -1,3 +1,9 @@
+/**********************************************
+ * Credits: @sastan https://github.com/sastan *
+ * Repo: https://github.com/tw-in-js/twind    *
+ * ********************************************
+ */
+
 import ts from 'typescript/lib/tsserverlibrary';
 import { createIntellisense } from './intellisense/createIntellisense';
 import { ConfigurationManager } from './language-service/configuration';
