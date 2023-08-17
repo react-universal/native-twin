@@ -6,4 +6,10 @@ describe('TS PLUGIN', () => {
     const intellisense = createIntellisense();
     expect(intellisense.classes.size).toStrictEqual(5608);
   });
+  it('Enumerate completions', () => {
+    const intellisense = createIntellisense();
+    expect(Array.from(intellisense.classes, ([name]) => name)).toMatchSnapshot(
+      'Completions Snapshot',
+    );
+  });
 });

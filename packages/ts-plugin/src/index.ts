@@ -1,4 +1,5 @@
 /**********************************************
+ * Readapted from Twind Intellisense
  * Credits: @sastan https://github.com/sastan *
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
