@@ -64,6 +64,9 @@
       "**/.vscode-test": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
-    "checkpoints.showActiveFileOnly": true
+    "checkpoints.showActiveFileOnly": true,
+    "cSpell.words": [
+      "sastan"
+    ]
   }
 }
