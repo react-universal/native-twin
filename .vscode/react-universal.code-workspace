@@ -45,7 +45,8 @@
       ".git/objects",
       ".vscode",
       ".vscode-insiders",
-      "**/colors.ts"
+      "**/colors.ts",
+      "**/*.snap"
     ],
     "editor.quickSuggestions": {
       "other": true,

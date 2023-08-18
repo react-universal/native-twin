@@ -2,7 +2,7 @@ import cssbeautify from 'cssbeautify';
 import ts from 'typescript/lib/tsserverlibrary';
 import * as vscode from 'vscode-languageserver-types';
 import { TinyColor } from '@ctrl/tinycolor';
-import type { CompletionCacheItem, GetCssResult } from '../types';
+import type { CompletionItem, GetCssResult } from '../types';
 
 export function formatCss(target: string[]) {
   return cssbeautify(
@@ -50,13 +50,13 @@ export function getCompletionEntryDetailsDisplayParts(suggestion: GetCssResult) 
 }
 
 export function createCompletionEntries(
-  list: CompletionCacheItem[],
+  list: CompletionItem[],
 ): ts.WithMetadata<ts.CompletionInfo> {
   const entries = list.map((item): ts.CompletionEntry => {
     return {
       kind: ts.ScriptElementKind.string,
       name: item.name,
-      kindModifiers: item.isColor ? 'color' : '',
+      kindModifiers: item.kind == 'class' && item.isColor ? 'color' : '',
       sortText: item.name,
     };
   });

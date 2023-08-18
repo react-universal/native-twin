@@ -16,19 +16,18 @@ import { ConfigurationManager } from '../language-service/configuration';
 export function createIntellisense() {
   const variants = new Map<string, VariantCompletionItem>();
   // const cssCache = new Map<string, string>();
-  const tw = twind(
-    defineConfig({
-      presets: [
-        defineConfig<CurrentTheme, Preset<CurrentTheme>[]>({
-          ...internalTW.config,
-          preflight: false,
-        }) as TwindUserConfig<CurrentTheme>,
-      ],
-      rules: [[ConfigurationManager.VARIANT_MARKER_RULE, { '…': '…' }]],
-      ignorelist: [/-\[…]$/],
-    }) as TwindUserConfig<CurrentTheme>,
-    virtual(false),
-  );
+  const config = defineConfig({
+    preflight: false,
+    presets: [
+      defineConfig<CurrentTheme, Preset<CurrentTheme>[]>({
+        ...internalTW.config,
+        preflight: false,
+      }) as TwindUserConfig<CurrentTheme>,
+    ],
+    rules: [[ConfigurationManager.VARIANT_MARKER_RULE, { '…': '…' }]],
+    ignorelist: [/-\[…]$/],
+  }) as TwindUserConfig<CurrentTheme>;
+  const tw = twind(config, virtual(false));
   const context: AutocompleteContext<CurrentTheme> = {
     get theme() {
       return tw.theme;
@@ -40,7 +39,7 @@ export function createIntellisense() {
     },
   };
   let nextIndex = 0;
-  const ruleExecutor = createContextExecutor(context);
+  const ruleExecutor = createContextExecutor(context, tw.theme());
   for (const rule of tw.config.rules) {
     const location = {
       index: nextIndex++,
@@ -48,6 +47,9 @@ export function createIntellisense() {
     };
     ruleExecutor.run(rule, location);
   }
+  // for (const variant of tw.config.variants) {
+  //   console.log('VV: ', variant);
+  // }
   return {
     getCss,
     classes: ruleExecutor.suggestions,

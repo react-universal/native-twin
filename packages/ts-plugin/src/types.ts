@@ -5,24 +5,31 @@ import type { TailwindTheme } from '@universal-labs/twind-adapter';
 export type CurrentTheme = BaseTheme & TailwindTheme;
 export type TailwindConfig = TwindConfig<CurrentTheme>;
 
-export interface CompletionCacheItem {
+interface CommonCompletionItem {
   name: string;
   position: number;
-  isColor: boolean;
   index: number;
 }
-export interface ClassCompletionItem extends CompletionCacheItem {
+export interface ClassCompletionItem extends CommonCompletionItem {
   canBeNegative: boolean;
   kind: 'class';
+  isColor: boolean;
   theme: RuleResult;
 }
 
-export interface VariantCompletionItem extends CompletionCacheItem {
+export interface VariantCompletionItem extends CommonCompletionItem {
   kind: 'variant';
 }
+
+export type CompletionItem = ClassCompletionItem | VariantCompletionItem;
 
 export interface GetCssResult {
   className: string;
   css: string;
   sheet: FinalSheet;
+}
+
+export interface CompletionItemLocation {
+  position: number;
+  index: number;
 }

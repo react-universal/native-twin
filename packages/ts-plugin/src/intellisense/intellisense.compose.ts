@@ -4,23 +4,34 @@ import {
   Rule,
   RuleResolver,
   RuleResult,
+  ThemeConfig,
+  ThemeFunction,
   asArray,
   escape,
 } from '@twind/core';
 import genex from 'genex';
-import { ClassCompletionItem, CurrentTheme } from '../types';
+import {
+  ClassCompletionItem,
+  CurrentTheme,
+  CompletionItem,
+  CompletionItemLocation,
+} from '../types';
 import { isSpacingFunction, toCondition } from '../utils';
 import { ConfigurationManager } from '../language-service/configuration';
+import { makeThemeFunction } from './theme';
 
-interface RuleCacheLocation {
-  position: number;
-  index: number;
-}
+// a[1]
+// [|0|1|2|3|4|5|5|]
+// x00 x01 x02
+export function createContextExecutor(
+  context: AutocompleteContext<CurrentTheme>,
+  theme: ThemeConfig<CurrentTheme>,
+) {
+  const themeResolver = makeThemeFunction<CurrentTheme>(theme as ThemeConfig<CurrentTheme>);
+  const suggestions: Map<string, CompletionItem> = new Map();
+  // const utilities: Map<string, any> = new Map();
 
-export function createContextExecutor(context: AutocompleteContext<CurrentTheme>) {
-  const suggestions: Map<string, ClassCompletionItem> = new Map();
-
-  function ruleExecutor$(rule: Rule<CurrentTheme>, location: RuleCacheLocation) {
+  function ruleExecutor$(rule: Rule<CurrentTheme>, location: CompletionItemLocation) {
     const [rawPattern, resolver] = asArray(rule);
     const ruleResolver = typeof resolver == 'function' ? resolver : undefined;
 
@@ -54,8 +65,9 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
         generator.generate((generatedPattern) => {
           const match = re.exec(generatedPattern) as MatchResult | null;
           if (match) {
-            match.$$ = generatedPattern.slice(match[0].length);
+            match.$$ = generatedPattern.slice(match[0]!.length);
             const base = generatedPattern.replace(/\0/g, '');
+            // console.log('MATCH: ', base, match);
             const isUncompleted = isUncompletedPattern(base);
             // 2086
             if (ruleResolver) {
@@ -71,6 +83,9 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
               );
               processPattern(base, match, location, canBeNegative);
             }
+            if (isUncompleted && !ruleResolver) {
+              // console.log('UNCOMPLETED: ', pattern);
+            }
           }
         });
       }
@@ -78,7 +93,7 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
 
     return suggestions;
   }
-
+  let logged = false;
   return {
     run: ruleExecutor$,
     suggestions,
@@ -86,8 +101,11 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
 
   function addCompletion(
     input: Pick<ClassCompletionItem, 'name' | 'canBeNegative' | 'theme' | 'isColor'>,
-    location: RuleCacheLocation,
+    location: CompletionItemLocation,
   ) {
+    // const name = input.name.replace(/-/g, '.');
+    // console.log('INPUT: ', name);
+    // const resolved = context.theme(input.name);
     suggestions.set(input.name, {
       ...input,
       isColor: input.isColor,
@@ -111,7 +129,7 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
   function processPattern(
     pattern: string,
     match: MatchResult,
-    location: RuleCacheLocation,
+    location: CompletionItemLocation,
     canBeNegative: boolean,
     resolver?: RuleResolver<CurrentTheme>,
   ) {
@@ -128,6 +146,10 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
         addCompletion({ name, theme: null, canBeNegative, isColor: false }, location);
       }
     }
+    const aliasLookup = alias(pattern, context.theme);
+    for (const name of aliasLookup) {
+      addCompletion({ name, theme: null, canBeNegative, isColor: false }, location);
+    }
     if (resolver) {
       processRuleWithResolver(pattern, match, canBeNegative, resolver, location);
     } else {
@@ -143,7 +165,7 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
     match: MatchResult,
     canBeNegative: boolean,
     resolver: RuleResolver<CurrentTheme>,
-    location: RuleCacheLocation,
+    location: CompletionItemLocation,
   ) {
     const resolved = getClassNameDetails(match, resolver);
     const composed = composeClassDetails(pattern, resolved, context);
@@ -161,7 +183,7 @@ export function createContextExecutor(context: AutocompleteContext<CurrentTheme>
   function getClassNameDetails(match: MatchResult, resolver: RuleResolver<CurrentTheme>) {
     try {
       return resolver(match, {
-        ...context,
+        theme: themeResolver,
         s: () => '',
         d: () => {},
         h: (value) => value,
@@ -197,6 +219,8 @@ function composeClassDetails(
       const checkPrefix = context.theme(parts[0]);
       if (checkPrefix && Object.keys(checkPrefix ?? {}).length) {
         composed.push(...composeClassPatterns(prefix, checkPrefix));
+      } else {
+        // console.log('NO_PREFIX: ', prefix, parts);
       }
     }
   } else {
@@ -218,3 +242,86 @@ function composeClassDetails(
   }
   return composed;
 }
+// interface AliasData<Section extends string> {
+//   sections: Section[];
+// }
+// type UtilitiesAlias<T extends string, Sections extends string> = [T, AliasData<Sections>[]];
+
+const createCondition = <T extends string>(
+  sections: T[],
+  conditions: ('startsWith' | 'endsWidth' | 'equals')[],
+) => {
+  return {
+    sections,
+    conditions,
+  };
+};
+
+const utilitiesAlias = [
+  ['max-h-', createCondition(['maxHeight'], ['startsWith'])],
+  ['min-h-', createCondition(['minHeight'], ['startsWith'])],
+  ['h-', createCondition(['height'], ['startsWith'])],
+  ['max-w-', createCondition(['maxWidth'], ['startsWith'])],
+  ['min-w-', createCondition(['minWidth'], ['startsWith'])],
+  ['w-', createCondition(['width'], ['startsWith'])],
+  ['leading-', createCondition(['lineHeight'], ['equals'])],
+  ['divide-x', createCondition(['divideWidth'], ['startsWith'])],
+  ['divide-y', createCondition(['divideWidth'], ['startsWith'])],
+  ['cursor-', createCondition(['cursor'], ['equals'])],
+  ['border-', createCondition(['borderWidth'], ['equals'])],
+  ['border-x', createCondition(['borderWidth'], ['startsWith'])],
+  ['border-y', createCondition(['borderWidth'], ['startsWith'])],
+  ['border-t', createCondition(['borderWidth'], ['startsWith'])],
+  ['border-l', createCondition(['borderWidth'], ['startsWith'])],
+  ['border-b', createCondition(['borderWidth'], ['startsWith'])],
+  ['border-r', createCondition(['borderWidth'], ['startsWith'])],
+  ['stroke-', createCondition(['strokeWidth'], ['equals'])],
+  ['ring-offset-', createCondition(['ringOffsetWidth'], ['startsWith'])],
+  ['ring-', createCondition(['ringWidth'], ['startsWith'])],
+  ['outline-', createCondition(['outlineWidth'], ['equals'])],
+  ['columns-', createCondition(['columns'], ['equals'])],
+] as const;
+
+type SingleAlias = (typeof utilitiesAlias)[number];
+const alias = (basePattern: string, theme: ThemeFunction<CurrentTheme>) => {
+  const response: string[] = [];
+  for (const [utilityName, data] of utilitiesAlias) {
+    data.conditions.forEach((condition) => {
+      response.push(...getConditionTheme(utilityName, basePattern, condition, data.sections));
+    });
+  }
+  return response;
+  function getConditionTheme(
+    basePattern: string,
+    utilityName: string,
+    condition: 'startsWith' | 'endsWidth' | 'equals',
+    themeSections: SingleAlias[1]['sections'],
+  ) {
+    return themeSections.flatMap((section) => {
+      let compare =
+        (condition == 'endsWidth' && utilityName.endsWith(basePattern)) ||
+        (condition == 'startsWith' && utilityName.startsWith(basePattern)) ||
+        (condition == 'equals' && utilityName == basePattern);
+
+      if (compare) {
+        const composed = composeClassPatterns(utilityName, theme(section));
+        return composed;
+      }
+      return [];
+    });
+  }
+  // return checker.find(([base]) => {
+  //   if (basePattern.includes('opacity')) return false;
+  // if (basePattern.startsWith('border-'))
+  //   return (
+  //     basePattern === 'border-' ||
+  //     basePattern.startsWith('border-x') ||
+  //     basePattern.startsWith('border-y') ||
+  //     basePattern.startsWith('border-t') ||
+  //     basePattern.startsWith('border-l') ||
+  //     basePattern.startsWith('border-b') ||
+  //     basePattern.startsWith('border-r')
+  //   );
+  //   return base === basePattern || basePattern.startsWith(base);
+  // });
+};

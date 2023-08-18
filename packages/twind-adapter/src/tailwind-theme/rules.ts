@@ -257,52 +257,76 @@ const rules: Rule<TailwindTheme>[] = [
   /* BOX ALIGNMENT */
   // Justify Items
   // Justify Self
-  withAutocomplete$(
+  match(
     '(justify-(?:items|self))-',
-    DEV &&
-      (({ 1: $1 }) =>
-        $1!.endsWith('-items-')
-          ? ['start', 'end', 'center', 'stretch']
-          : /* '-self-' */ ['auto', 'start', 'end', 'center', 'stretch']),
+    'justifyItems',
+    // ({ $$, 1: $1 }) => {
+    //   return { ['justify-' + $$]: $1! };
+    // },
+    // DEV &&
+    //   (({ 1: $1 }) =>
+    //     $1!.endsWith('-items-')
+    //       ? ['start', 'end', 'center', 'stretch']
+    //       : /* '-self-' */ ['auto', 'start', 'end', 'center', 'stretch']),
   ),
 
   // Justify Content
-  withAutocomplete$(
-    match('justify-', 'justifyContent', convertContentValue),
-    DEV && (() => ['start', 'end', 'center', 'between', 'around', 'evenly']),
+  match(
+    `justify-(${['start', 'end', 'center', 'between', 'around', 'evenly'].join('|')})`,
+    (match) => {
+      return { [('justify-' + 'content') as 'justifyContent']: match[1] };
+    },
   ),
 
   // Align Content
   // Align Items
   // Align Self
-  withAutocomplete$(
-    match('(content|items|self)-', (match) => ({
-      [('align-' + match[1]) as 'align-content']: convertContentValue(match),
-    })),
-    DEV &&
-      (({ 1: $1 }) =>
-        $1 == 'content'
-          ? ['center', 'start', 'end', 'between', 'around', 'evenly', 'stretch', 'baseline']
-          : $1 == 'items'
-          ? ['start', 'end', 'center', 'stretch', 'baseline']
-          : /* $1 == 'self' */ ['auto', 'start', 'end', 'center', 'stretch', 'baseline']),
-  ),
+  match('content-(center|start|end|between|around|evenly|stretch|baseline)', (match) => {
+    return { [('align-' + 'content') as 'align-content']: match[1] };
+  }),
+  match('self-(center|start|end|stretch|baseline)', (match) => {
+    return { [('align-' + 'self') as 'align-content']: match[1] };
+  }),
+  match('items-(center|start|end|stretch|baseline)', (match) => {
+    return { [('align-' + 'items') as 'align-content']: match[1] };
+  }),
+  // withAutocomplete$(
+  //   match('(content|items|self)-', (match) => ({
+  //     [('align-' + match[1]) as 'align-content']: convertContentValue(match),
+  //   })),
+  //   DEV &&
+  //     (({ 1: $1 }) =>
+  //       $1 == 'content'
+  //         ? ['center', 'start', 'end', 'between', 'around', 'evenly', 'stretch', 'baseline']
+  //         : $1 == 'items'
+  //         ? ['start', 'end', 'center', 'stretch', 'baseline']
+  //         : /* $1 == 'self' */ ['auto', 'start', 'end', 'center', 'stretch', 'baseline']),
+  // ),
 
   // Place Content
   // Place Items
   // Place Self
-  withAutocomplete$(
-    match('(place-(content|items|self))-', ({ 1: $1, $$ }) => ({
-      [$1 as 'place-content']: ('wun'.includes($$[3]!) ? 'space-' : '') + $$,
-    })),
-    DEV &&
-      (({ 2: $2 }) =>
-        $2 == 'content'
-          ? ['center', 'start', 'end', 'between', 'around', 'evenly', 'stretch', 'baseline']
-          : $2 == 'items'
-          ? ['start', 'end', 'center', 'stretch', 'baseline']
-          : /* $2 == 'self' */ ['auto', 'start', 'end', 'center', 'stretch', 'baseline']),
-  ),
+  match('place-content-(center|start|end|stretch|baseline|between|around|evenly)', (match) => {
+    return { [('place-' + 'content') as 'align-content']: match[1] };
+  }),
+  match('place-items-(center|start|end|stretch|baseline)', (match) => {
+    return { [('place-' + 'items') as 'align-content']: match[1] };
+  }),
+  match('place-self-(center|start|end|stretch|baseline|auto)', (match) => {
+    return { [('place-' + 'self') as 'align-content']: match[1] };
+  }),
+  // withAutocomplete$(
+  //   match('(place-(content|items|self))-', ({ 1: $1, $$ }) => ({
+  //     [$1 as 'place-content']: ('wun'.includes($$[3]!) ? 'space-' : '') + $$,
+  //   })),
+  //   DEV &&
+  //     (({ 2: $2 }) =>
+  //       $2 == 'content'
+  //         ? ['center', 'start', 'end', 'between', 'around', 'evenly', 'stretch', 'baseline']
+  //         : $2 == 'items'
+  //         ? ['start', 'end', 'center', 'stretch', 'baseline']
+  //         : /* $2 == 'self' */ ['auto', 'start', 'end', 'center', 'stretch', 'baseline']),
+  // ),
 
   /* SPACING */
   // Padding
@@ -914,72 +938,75 @@ const rules: Rule<TailwindTheme>[] = [
   withAutocomplete$('(appearance)-', DEV && (() => ['auto', 'none'])),
 
   // Columns
-  matchTheme('(columns)-' /*, 'columns' */),
-  withAutocomplete$('(columns)-(\\d+)', DEV && (() => range({ end: 12 }))),
+  matchTheme('(columns)-', 'columns'),
+  // match(`columns-(${range({ end: 12 }).join('|')})`),
+  // withAutocomplete$('(columns)-(\\d+)', DEV && (() => range({ end: 12 }))),
 
   // Break Before, After and Inside
-  withAutocomplete$(
-    '(break-(?:before|after|inside))-',
-    DEV &&
-      (({ 1: $1 }) =>
-        $1!.endsWith('-inside-')
-          ? ['auto', 'avoid', 'avoid-page', 'avoid-column']
-          : /* before || after */ [
-              'auto',
-              'avoid',
-              'all',
-              'avoid-page',
-              'page',
-              'left',
-              'right',
-              'column',
-            ]),
-  ),
+  match('break-(before|after)-(auto|avoid|all|avoid-page|page|left|right|column)'),
+  match('break-inside-(auto|avoid|all|avoid-page|avoid-column)'),
+  // withAutocomplete$(
+  //   '(break-(?:before|after|inside))-',
+  //   DEV &&
+  //     (({ 1: $1 }) =>
+  //       $1!.endsWith('-inside-')
+  //         ? ['auto', 'avoid', 'avoid-page', 'avoid-column']
+  //         : /* before || after */ [
+  //             'auto',
+  //             'avoid',
+  //             'all',
+  //             'avoid-page',
+  //             'page',
+  //             'left',
+  //             'right',
+  //             'column',
+  //           ]),
+  // ),
 
   // Cursor
-  matchTheme('(cursor)-' /*, 'cursor' */),
-  withAutocomplete$(
-    '(cursor)-',
-    DEV &&
-      (() => [
-        'alias',
-        'all-scroll',
-        'auto',
-        'cell',
-        'col-resize',
-        'context-menu',
-        'copy',
-        'crosshair',
-        'default',
-        'e-resize',
-        'ew-resize',
-        'grab',
-        'grabbing',
-        'help',
-        'move',
-        'n-resize',
-        'ne-resize',
-        'nesw-resize',
-        'no-drop',
-        'none',
-        'not-allowed',
-        'ns-resize',
-        'nw-resize',
-        'nwse-resize',
-        'pointer',
-        'progress',
-        'row-resize',
-        's-resize',
-        'se-resize',
-        'sw-resize',
-        'text',
-        'vertical-text',
-        'w-resize',
-        'wait',
-        'zoom-in',
-        'zoom-out',
-      ]),
-  ),
+  matchTheme(`cursor-(${getCursorData().join('|')})` /*, 'cursor' */),
+  // withAutocomplete$(
+  //   '(cursor)-',
+  //   DEV &&
+  //     (() => [
+  //       'alias',
+  //       'all-scroll',
+  //       'auto',
+  //       'cell',
+  //       'col-resize',
+  //       'context-menu',
+  //       'copy',
+  //       'crosshair',
+  //       'default',
+  //       'e-resize',
+  //       'ew-resize',
+  //       'grab',
+  //       'grabbing',
+  //       'help',
+  //       'move',
+  //       'n-resize',
+  //       'ne-resize',
+  //       'nesw-resize',
+  //       'no-drop',
+  //       'none',
+  //       'not-allowed',
+  //       'ns-resize',
+  //       'nw-resize',
+  //       'nwse-resize',
+  //       'pointer',
+  //       'progress',
+  //       'row-resize',
+  //       's-resize',
+  //       'se-resize',
+  //       'sw-resize',
+  //       'text',
+  //       'vertical-text',
+  //       'w-resize',
+  //       'wait',
+  //       'zoom-in',
+  //       'zoom-out',
+  //     ]),
+  // ),
 
   // Scroll Snap Type
   match('snap-(none)', 'scroll-snap-type'),
@@ -1050,11 +1077,13 @@ const rules: Rule<TailwindTheme>[] = [
   matchTheme('outline-', 'outlineWidth'),
 
   // Pointer Events
-  withAutocomplete$('(pointer-events)-', DEV && (() => ['auto', 'none'])),
+  matchColor('pointer-events-(auto|none)'),
+  // withAutocomplete$('(pointer-events)-', DEV && (() => ['auto', 'none'])),
 
   // Will Change
-  matchTheme('(will-change)-' /*, 'willChange' */),
-  withAutocomplete$('(will-change)-', DEV && (() => ['auto', 'contents', 'transform'])),
+  match('will-change-(auto|contents|transform)', 'willChange'),
+  // matchTheme('(will-change)-' /*, 'willChange' */),
+  // withAutocomplete$('(will-change)-', DEV && (() => ['auto', 'contents', 'transform'])),
 
   // Resize
   [
@@ -1131,22 +1160,6 @@ function join(
   value: ThemeMatchResult<MaybeArray<string>> | MaybeArray<string> | undefined,
 ): string | undefined {
   return value && '' + ((value as ThemeMatchResult<MaybeArray<string>>)._ || value);
-}
-
-function convertContentValue({ $$ }: MatchResult) {
-  return (
-    ({
-      // /* aut*/ o: '',
-      /* sta*/ r /*t*/: 'flex-',
-      /* end*/ '': 'flex-',
-      // /* cen*/ t /*er*/: '',
-      /* bet*/ w /*een*/: 'space-',
-      /* aro*/ u /*nd*/: 'space-',
-      /* eve*/ n /*ly*/: 'space-',
-      // /* str*/ e /*tch*/: '',
-      // /* bas*/ l /*ine*/: '',
-    }[$$[3] || ''] || '') + $$
-  );
 }
 
 function edge(
@@ -1288,4 +1301,45 @@ function asDefaults(props: CSSObject): { '@layer defaults': CSSBase } {
       '::backdrop': props,
     },
   };
+}
+
+function getCursorData() {
+  return [
+    'alias',
+    'all-scroll',
+    'auto',
+    'cell',
+    'col-resize',
+    'context-menu',
+    'copy',
+    'crosshair',
+    'default',
+    'e-resize',
+    'ew-resize',
+    'grab',
+    'grabbing',
+    'help',
+    'move',
+    'n-resize',
+    'ne-resize',
+    'nesw-resize',
+    'no-drop',
+    'none',
+    'not-allowed',
+    'ns-resize',
+    'nw-resize',
+    'nwse-resize',
+    'pointer',
+    'progress',
+    'row-resize',
+    's-resize',
+    'se-resize',
+    'sw-resize',
+    'text',
+    'vertical-text',
+    'w-resize',
+    'wait',
+    'zoom-in',
+    'zoom-out',
+  ];
 }
