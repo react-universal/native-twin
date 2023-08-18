@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/tailwind",
+      "path": "../packages/native-tailwind"
+    },
+    {
       "name": "📦 @lib/styled",
       "path": "../packages/styled"
     },

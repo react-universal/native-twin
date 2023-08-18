@@ -1,0 +1,37 @@
+{
+  "name": "@universal-labs/native-tailwind",
+  "version": "5.0.1",
+  "description": "Tailwindcss StyleSheet generator for react native/web",
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "tailwind-native",
+    "tailwind-plugin",
+    "react-native-web",
+    "universal-labs",
+    "react-native",
+    "react"
+  ],
+  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/tailwind",
+    "directory": "packages/native-tailwind"
+  },
+  "main": "./build/index.cjs.js",
+  "module": "./build/index.es.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "index.d.ts",
+    "tailwind",
+    "tailwind.d.ts",
+    "types.d.ts",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ]
+}

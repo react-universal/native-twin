@@ -2,8 +2,9 @@
 import install from '@twind/with-next/app';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { tw } from '@universal-labs/twind-adapter';
 import '../styles/globals.css';
-import tailwind from '../styles/tw';
+import '../styles/tw';
 
 // const roboto = Roboto({
 //   subsets: ['latin'],
@@ -25,4 +26,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default install(tailwind.tw.config, MyApp);
+export default install(tw.config, MyApp);
