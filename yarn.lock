@@ -6097,6 +6097,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@universal-labs/native-tailwind@workspace:packages/native-tailwind":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/native-tailwind@workspace:packages/native-tailwind"
+  languageName: unknown
+  linkType: soft
+
 "@universal-labs/styled@workspace:*, @universal-labs/styled@workspace:packages/styled":
   version: 0.0.0-use.local
   resolution: "@universal-labs/styled@workspace:packages/styled"

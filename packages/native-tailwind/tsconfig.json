@@ -2,15 +2,19 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
-    "module": "ES2020",
+    "module": "ESNext",
+    "noUnusedLocals": false,
     "target": "ESNext",
     "moduleResolution": "node",
+    "moduleDetection": "auto",
     "strictFunctionTypes": false,
     "noImplicitReturns": false,
     "resolveJsonModule": true,
     "noEmit": true,
     "strict": true,
-    "stripInternal": true
+    "stripInternal": true,
+    "noImplicitAny": false
   }
 }

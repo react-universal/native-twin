@@ -1,4 +1,5 @@
 /* eslint-disable unused-imports/no-unused-vars */
+// @ts-nocheck
 import type { Tailwindest } from 'tailwindest';
 
 type Customized = Tailwindest;
@@ -83,8 +84,44 @@ type ClassNames<R> = {
     ? R[K]
     : ValidTailwindClassSeparatedByWhitespace<K>;
 };
+type Normal = '          sdfsdf       ';
+type Test1 = Trim<'          sdfsdf       '>;
 
-// type WhiteSpace = ' ' | '\n' | '\t';
-// type TrimLeft<T extends string> = T extends `${WhiteSpace}${infer U}` ? TrimLeft<U> : T;
-// type TrimRight<T extends string> = T extends `${infer U}${WhiteSpace}` ? TrimRight<U> : T;
-// type Trim<T extends string> = TrimLeft<TrimRight<T>>;
+type WhiteSpace = ' ' | '\n' | '\t';
+type TrimLeft<T extends string> = T extends `${WhiteSpace}${infer U}` ? TrimLeft<U> : T;
+type TrimRight<T extends string> = T extends `${infer U}${WhiteSpace}` ? TrimRight<U> : T;
+type Trim<T extends string> = TrimLeft<TrimRight<T>>;
+
+type String10TextFail = String10<'123456789'>;
+type String10TextSuccess = String10<'0123456789'>;
+
+type String10<
+  T extends string,
+  N extends number = 10,
+  L extends any[] = [],
+  A extends string = '',
+> = N extends L['length']
+  ? A
+  : T extends `${infer F}${infer R}`
+  ? String10<R, N, [0, ...L], `${A}${F}`>
+  : A;
+
+type Test = IsValidString<'012345678', 10>;
+
+type IsNumberEqual<T extends number, L extends number> = `${L}` extends `${T}` ? true : never;
+
+type LengthOfString<
+  S extends string,
+  T extends string[] = [],
+> = S extends `${string}${infer R}` ? LengthOfString<R, [...T, string]> : T['length'];
+
+type IsValidString<T extends string, N extends number> = true extends IsNumberEqual<
+  LengthOfString<T>,
+  N
+>
+  ? T
+  : never;
+
+type TestApi = ValidateApiKey<'012345678', 10>;
+
+type ValidateApiKey<T extends string, N extends number> = `api-${IsValidString<T, N>}`;

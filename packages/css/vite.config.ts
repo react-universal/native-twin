@@ -22,9 +22,13 @@ export default defineConfig({
     minify: 'esbuild',
     outDir: 'build',
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: path.resolve(__dirname, 'src/index.ts'),
+        parser: path.resolve(__dirname, 'src/parser-module.ts'),
+      },
       name: 'UniversalLabsCss',
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format, name) =>
+        name == 'parser' && format == 'cjs' ? `${name}.${format}` : `${name}.${format}.js`,
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
