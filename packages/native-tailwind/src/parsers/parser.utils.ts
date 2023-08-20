@@ -1,4 +1,3 @@
-import { createParserContext } from '@universal-labs/css/parser';
 import { ClassNameToken, ParsedRule } from './types';
 
 export function parseClassNameTokens(...tokens: ClassNameToken[]): string {
@@ -26,18 +25,3 @@ export function parsedRuleToString(rule: ParsedRule, mediaRules: string[]) {
   );
   return `${fixedPoints.prefix}${rule.i ? '!' : ''}${rule.n}${fixedPoints.suffix}`;
 }
-
-export const defaultParserContext = createParserContext({
-  cache: {
-    get: () => null,
-    set: () => {},
-  },
-  context: {
-    colorScheme: 'light',
-    debug: false,
-    deviceHeight: 1820,
-    deviceWidth: 720,
-    platform: 'ios',
-    rem: 16,
-  },
-});
