@@ -9,20 +9,3 @@ export interface SortableRule {
    */
   name?: string | null;
 }
-
-export interface ParsedRule {
-  /**
-   * The utility name including `-` if set, but without `!` and variants
-   */
-  readonly n: string;
-
-  /**
-   * All variants without trailing colon: `hover`, `after:`, `[...]`
-   */
-  readonly v: string[];
-
-  /**
-   * Something like `!underline` or `!bg-red-500` or `!red-500`
-   */
-  readonly i?: boolean;
-}

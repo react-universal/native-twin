@@ -1,35 +1,30 @@
 import { createParserContext } from '@universal-labs/css/parser';
-
-export interface ClassNameToken {
-  readonly type: 'CLASS_NAME';
-  readonly variant: boolean;
-  readonly important: boolean;
-  readonly name: string;
-}
-
-export interface ClassGroupToken {
-  readonly type: 'GROUP';
-  readonly variant: boolean;
-  readonly important: boolean;
-  readonly name: string;
-  readonly list: (ClassNameToken | ClassGroupToken)[];
-}
-
-export type RuleToken = ClassNameToken | ClassGroupToken;
+import { ClassNameToken, ParsedRule } from './types';
 
 export function parseClassNameTokens(...tokens: ClassNameToken[]): string {
-  let allImportant = false;
   return tokens.reduce((prev, current, currentIndex) => {
-    if (prev == '') prev += '.';
     prev += current.name;
-    if (current.variant) {
-      prev += prev.endsWith(':') ? '' : ':';
-      if (current.important) allImportant = true;
-    }
     if (currentIndex == tokens.length - 1) return prev;
-    if (current.important || (!current.variant && allImportant)) prev += '!';
     return prev;
   }, ``);
+}
+
+export function parsedRuleToString(rule: ParsedRule, mediaRules: string[]) {
+  const fixedPoints = rule.v.reduce(
+    (prev, current) => {
+      if (mediaRules.includes(current)) {
+        prev.prefix += `${current}:`;
+      } else {
+        prev.suffix += `:${current}`;
+      }
+      return prev;
+    },
+    {
+      prefix: '.',
+      suffix: '',
+    },
+  );
+  return `${fixedPoints.prefix}${rule.i ? '!' : ''}${rule.n}${fixedPoints.suffix}`;
 }
 
 export const defaultParserContext = createParserContext({

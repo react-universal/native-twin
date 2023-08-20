@@ -1,23 +1,24 @@
 import * as P from '@universal-labs/css/parser';
-import {
-  ClassNameToken,
-  ClassGroupToken,
-  parseClassNameTokens,
-  defaultParserContext,
-} from './parser.utils';
+import { parseClassNameTokens } from './parser.utils';
+import { ParsedRule, ClassGroupToken, ClassNameToken } from './types';
 
-const regexIdent = /^[_a-z0-9A-Z-!:]+/;
+const regexIdent = /^[_a-z0-9A-Z-!]+/;
+const regexVariantIdent = /^[_a-z0-9A-Z-!]+[:]/;
 
-const parseVariants = P.many1(P.choice([P.regex(regexIdent)]));
-const parseClassName = P.regex(regexIdent).map((x): ClassNameToken => {
-  const name = x;
-  return {
-    type: 'CLASS_NAME',
-    name,
-    important: name.startsWith('!'),
-    variant: x.includes(':'),
-  };
-});
+const parseVariants = P.many(P.regex(regexVariantIdent));
+
+const parseClassName = P.sequenceOf([parseVariants, P.maybe(P.regex(regexIdent))]).map(
+  (x): ClassNameToken => {
+    const name = x[1] ?? '';
+    return {
+      type: 'CLASS_NAME',
+      name: name.replace(/!/g, ''),
+      important: name.includes('!') || x[0].some((y) => y.includes('!')),
+      variant: x[0].length > 0,
+      variants: x[0].filter((y) => !!y).map((z) => z.replace(/[!:]+/g, '')),
+    };
+  },
+);
 
 const parseGroupValues = P.recursiveParser(() => P.choice([parseClassGroup, parseClassName]));
 
@@ -28,23 +29,23 @@ const parseClassGroup = P.sequenceOf([
         type: 'CLASS_NAME',
         important: false,
         name: '',
+        variants: [],
         variant: false,
       },
   ),
   P.char('('),
   P.separatedBySpace(parseGroupValues),
   P.char(')'),
-]).map((x): ClassGroupToken => {
-  // console.log('XX: ', x);
-  return {
+]).map(
+  (x): ClassGroupToken => ({
     ...x[0],
     type: 'GROUP',
     list: x[2],
-  };
-}) as P.Parser<ClassGroupToken>;
+  }),
+) as P.Parser<ClassGroupToken>;
 
-const matchClassTokens = P.coroutine((run) => {
-  let classNames: string[] = [];
+export const parseRawClassTokens = P.coroutine((run) => {
+  let classNames: ParsedRule[] = [];
   parseClasses();
   return classNames;
 
@@ -71,35 +72,41 @@ const matchClassTokens = P.coroutine((run) => {
     return parseClasses();
   }
 
-  function createRule(baseToken: ClassNameToken, groups: ClassGroupToken | null): string[] {
-    console.log('TOKENS: ', { baseToken, groups });
+  function createRule(
+    baseToken: ClassNameToken,
+    groups: ClassGroupToken | null,
+  ): ParsedRule[] {
     if (!groups) {
-      return Array.of(`.${baseToken.name}`);
+      return [
+        {
+          n: baseToken.name,
+          v: baseToken.variants,
+          i: baseToken.important,
+        },
+      ];
     }
-    const classNames = groups.list.flatMap((rule) => {
+    const classNames = groups.list.flatMap((rule): ParsedRule[] => {
       if (rule.type == 'GROUP') {
         if (rule.variant) {
-          return createRule({ ...baseToken, name: rule.name }, rule);
+          return createRule(
+            {
+              ...baseToken,
+              name: rule.name,
+              important: rule.important || baseToken.important,
+            },
+            rule,
+          );
         }
         return createRule(baseToken, rule);
       }
-      return parseClassNameTokens(baseToken, rule);
+      return [
+        {
+          n: parseClassNameTokens(baseToken, rule),
+          v: baseToken.variants,
+          i: baseToken.important || rule.important,
+        },
+      ];
     });
     return classNames;
   }
 });
-
-export function parseRawRules(text: string) {
-  const result = matchClassTokens.run(text, defaultParserContext);
-  if (result.isError) {
-    // eslint-disable-next-line no-console
-    console.log('ERROR: ', { error: result.error, cursor: result.cursor });
-    return null;
-  }
-  return result.result;
-}
-
-// matchClassTokens.run(
-//   'hover:focus:(a) md:(bg-black sm:(bg-blue-200)) bg-blue-300 xl:bg-white text-2xl',
-//   defaultParserContext,
-// ); /*?+*/
