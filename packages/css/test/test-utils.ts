@@ -2,7 +2,7 @@
 import { Tailwind } from '@universal-labs/twind-adapter';
 import util from 'util';
 import { CssResolver } from '../src';
-import { createParserContext } from '../src/parsers/Parser';
+import { createCssParserContext } from '../src/parsers/Parser';
 
 export const inspectTestElement = (msg: string, target: string[], result: any) => {
   console.log(
@@ -26,7 +26,7 @@ export const injectClassNames = (classNames: string) => {
 };
 
 export const getTestParserData = (debug = false) => {
-  const data = createParserContext({
+  const data = createCssParserContext({
     context: {
       debug,
       colorScheme: 'dark',

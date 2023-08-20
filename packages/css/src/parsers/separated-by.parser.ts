@@ -2,12 +2,12 @@ import type { ParserState } from '../types/parser.types';
 import { Parser, updateParserResult } from './Parser';
 
 export const separatedBy =
-  <S>(separatorParser: Parser<S>) =>
+  <S, Data>(separatorParser: Parser<S, Data>) =>
   <T>(valueParser: Parser<T>) => {
     return new Parser<T[]>((state) => {
       if (state.isError) return state;
 
-      let nextState: ParserState<S | T> = state;
+      let nextState: ParserState<S | T, Data> = state;
       let error = null;
       const results: T[] = [];
 
@@ -33,7 +33,7 @@ export const separatedBy =
 
       if (error) {
         if (results.length == 0) {
-          return updateParserResult(state, results) as ParserState<T[]>;
+          return updateParserResult(state, results) as ParserState<T[], Data>;
         }
         return error;
       }

@@ -25,20 +25,20 @@ export interface CssParserError {
 
 export type CssParserCache = Map<string, CssNode>;
 
-export type StateTransformerFunction<Result> = (
-  state: ParserState<any>,
-) => ParserState<Result>;
+export type StateTransformerFunction<Result, Data = any> = (
+  state: ParserState<any, Data>,
+) => ParserState<Result, Data>;
 
-export type ParserState<Result> = {
+export type ParserState<Result, Data> = {
   target: string;
-} & InternalResultType<Result>;
+} & InternalResultType<Result, Data>;
 
-export type InternalResultType<Result> = {
+export type InternalResultType<Result, Data> = {
   isError: boolean;
   error: CssParserError | null;
   cursor: number;
   result: Result;
-  data: CssParserData;
+  data: Data;
 };
 
 export type ResultType<Result> = ParserError | ParserSuccess<Result>;

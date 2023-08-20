@@ -242,6 +242,6 @@ export function choice(parsers: Parser<any>[]): Parser<any> {
       }
     }
 
-    return error as ParserState<any>;
+    return error as ParserState<any, any>;
   });
 }

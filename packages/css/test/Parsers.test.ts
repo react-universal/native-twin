@@ -125,19 +125,29 @@ describe('CSS - FlexBox', () => {
   test('flex auto :NOT_IMPLEMENTED:', () => {
     const flexWrap = generateStylesFor('flex-auto');
 
-    expect(flexWrap.base).toStrictEqual({});
+    expect(flexWrap.base).toStrictEqual({
+      flexBasis: 'auto',
+      flexGrow: 1,
+      flexShrink: 1,
+    });
   });
 
   test('flex initial :NOT_IMPLEMENTED:', () => {
     const flex = generateStylesFor('flex-initial');
 
-    expect(flex.base).toStrictEqual({});
+    expect(flex.base).toStrictEqual({
+      flexBasis: 'auto',
+      flexGrow: 0,
+      flexShrink: 1,
+    });
   });
 
   test('flex none :NOT_IMPLEMENTED:', () => {
     const flex = generateStylesFor('flex-none');
 
-    expect(flex.base).toStrictEqual({});
+    expect(flex.base).toStrictEqual({
+      flex: 'none',
+    });
   });
 
   test('flex grow', () => {
