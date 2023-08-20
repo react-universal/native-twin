@@ -37,7 +37,7 @@ describe('@universal-labs/native-tailwind - Raw rules parser', () => {
   it('Parse nested grouped rules', () => {
     const result = parseRawRules('md:(!bg-black !sm:(bg-blue-200 h-24))');
     const classNames = result.map((x) => parsedRuleToString(x, screens));
-    expect(classNames).toStrictEqual(['.md:!bg-black', '.md:bg-blue-200', '.md:h-24']);
+    expect(classNames).toStrictEqual(['.md:!bg-black', '.md:!bg-blue-200', '.md:!h-24']);
     expect(result).toStrictEqual([
       { n: 'bg-black', v: ['md'], i: true },
       { n: 'bg-blue-200', v: ['md'], i: true },
