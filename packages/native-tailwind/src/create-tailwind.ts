@@ -1,4 +1,4 @@
-import { SortableRule } from './types';
+import { SortableRule } from './parsers/types';
 
 export function tailwind() {
   // Map of tokens to generated className
