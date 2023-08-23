@@ -15,7 +15,7 @@ export class Parser<Result, Data = any> {
   }
 
   run(target: string, data: Data): ResultType<Result> {
-    const state = createParserState(target, data);
+    const state = createParserState<Data>(target, data);
 
     const resultState = this.transform(state);
 

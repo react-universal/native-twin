@@ -1,6 +1,7 @@
 {
   "name": "@universal-labs/native-tailwind",
   "version": "5.0.1",
+  "private": true,
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
     "tailwind",
@@ -35,6 +36,8 @@
     "CHANGELOG.md"
   ],
   "scripts": {
+    "build:libs": "echo \"build...\"",
+    "test": "vitest run",
     "test:ui": "vitest --ui"
   },
   "dependencies": {

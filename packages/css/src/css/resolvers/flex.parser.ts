@@ -18,6 +18,6 @@ export const ParseFlexValue = choice([
     }),
   ),
   literal('none').map((x) => ({
-    flex: 'none',
+    flex: x as unknown as number,
   })),
 ]);

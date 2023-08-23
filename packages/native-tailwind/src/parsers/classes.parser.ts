@@ -6,8 +6,9 @@ const regexIdent = /^[_a-z0-9A-Z-!]+/;
 const regexVariantIdent = /^[_a-z0-9A-Z-!]+[:]/;
 
 const parseVariants = P.many(P.regex(regexVariantIdent));
+const parseClassFeature = P.regex(regexIdent);
 
-const parseClassName = P.sequenceOf([parseVariants, P.maybe(P.regex(regexIdent))]).map(
+const parseClassName = P.sequenceOf([parseVariants, P.maybe(parseClassFeature)]).map(
   (x): ClassNameToken => {
     const name = x[1] ?? '';
     return {

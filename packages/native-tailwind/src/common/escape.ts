@@ -92,6 +92,3 @@ export function escapeSelector(str: string): string {
   }
   return result;
 }
-
-// escapeSelector('md:!asd-1:hover'); //?
-// escape('md:!asd-1:hover'); //?

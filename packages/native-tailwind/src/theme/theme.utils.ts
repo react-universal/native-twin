@@ -1,3 +1,5 @@
+import { TailwindTheme, ThemeSectionResolver } from './theme.types';
+
 // 0: '0px',
 // 2: '2px',
 // 4: '4px',
@@ -67,4 +69,8 @@ export function createPercentRatios(start: number, end: number): Record<string, 
   return result;
 }
 
-// createLinearUnits(12, '', 1, 1); //?
+export function themeAlias<Section extends keyof TailwindTheme>(
+  section: Section,
+): ThemeSectionResolver<TailwindTheme[Section], TailwindTheme> {
+  return ({ theme }) => theme(section);
+}

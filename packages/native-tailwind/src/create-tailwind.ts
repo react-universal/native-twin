@@ -12,11 +12,16 @@ export function tailwind() {
   // to prevent double insertions
   let insertedRules = new Set<string>();
 
-  return Object.defineProperties(function tw(tokens: string) {
-    tokens = '' + tokens;
-    let className = cache.get(tokens);
-    if (!className) {
-      const classNames = new Set<string | undefined>();
-    }
-  }, Object.getOwnPropertyDescriptors({}));
+  return Object.defineProperties(
+    function tw(tokens: string) {
+      tokens = '' + tokens;
+      let className = cache.get(tokens);
+      if (!className) {
+        const classNames = new Set<string | undefined>();
+      }
+    },
+    Object.getOwnPropertyDescriptors({
+      theme: {},
+    }),
+  );
 }

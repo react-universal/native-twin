@@ -1,17 +1,10 @@
-import type { TailwindTheme } from './tailwind.types';
-import type { ThemeSection, ThemeSectionResolver } from './theme.types';
-import { createExponentialUnits, createLinearUnits, createPercentRatios } from './theme.utils';
-
-export type StableSections =
-  | 'screens'
-  | 'columns'
-  | 'spacing'
-  | 'durations'
-  | 'borderRadius'
-  | 'borderWidth'
-  | 'boxShadow'
-  | 'fontFamily'
-  | 'fontSize';
+import { TailwindTheme, ThemeSection } from './theme.types';
+import {
+  themeAlias,
+  createExponentialUnits,
+  createLinearUnits,
+  createPercentRatios,
+} from './theme.utils';
 
 export type OmitedSections =
   | 'aria'
@@ -29,7 +22,18 @@ export type OmitedSections =
   | 'supports'
   | 'transformOrigin';
 
-export type TailwindBaseTheme = {
+export type StableSections =
+  | 'screens'
+  | 'columns'
+  | 'spacing'
+  | 'durations'
+  | 'borderRadius'
+  | 'borderWidth'
+  | 'boxShadow'
+  | 'fontFamily'
+  | 'fontSize';
+
+export type BaseTheme = {
   [Section in StableSections]: Section extends 'fontSize'
     ? {
         xs: [size: string, lineHeight: string];
@@ -56,7 +60,7 @@ export type TailwindBaseTheme = {
   [Section in OmitedSections]?: ThemeSection<TailwindTheme[Section], TailwindTheme>;
 };
 
-export const baseTailwindTheme: TailwindBaseTheme = {
+export const baseTailwindTheme: BaseTheme = {
   screens: {
     sm: '640px',
     md: '768px',
@@ -86,35 +90,17 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     0: '0px',
     .../* #__PURE__ */ createLinearUnits(4, 'rem', 4, 0.5, 0.5),
     // 0.5: '0.125rem',
-    // 1: '0.25rem',
-    // 1.5: '0.375rem',
-    // 2: '0.5rem',
-    // 2.5: '0.625rem',
-    // 3: '0.75rem',
-    // 3.5: '0.875rem',
+    // ...
     // 4: '1rem',
     .../* #__PURE__ */ createLinearUnits(12, 'rem', 4, 5),
     // 5: '1.25rem',
-    // 6: '1.5rem',
-    // 7: '1.75rem',
-    // 8: '2rem',
-    // 9: '2.25rem',
-    // 10: '2.5rem',
-    // 11: '2.75rem',
+    // ...
     // 12: '3rem',
     14: '3.5rem',
     .../* #__PURE__ */ createLinearUnits(64, 'rem', 4, 16, 4),
     // 16: '4rem',
     // 20: '5rem',
-    // 24: '6rem',
-    // 28: '7rem',
-    // 32: '8rem',
-    // 36: '9rem',
-    // 40: '10rem',
-    // 44: '11rem',
-    // 48: '12rem',
-    // 52: '13rem',
-    // 56: '14rem',
+    // ...
     // 60: '15rem',
     // 64: '16rem',
     72: '18rem',
@@ -143,17 +129,17 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     square: '1/1',
     video: '16/9',
   },
-  backdropBlur: /* #__PURE__ */ alias('blur'),
-  backdropBrightness: /* #__PURE__ */ alias('brightness'),
-  backdropContrast: /* #__PURE__ */ alias('contrast'),
-  backdropGrayscale: /* #__PURE__ */ alias('grayscale'),
-  backdropHueRotate: /* #__PURE__ */ alias('hueRotate'),
-  backdropInvert: /* #__PURE__ */ alias('invert'),
-  backdropOpacity: /* #__PURE__ */ alias('opacity'),
-  backdropSaturate: /* #__PURE__ */ alias('saturate'),
-  backdropSepia: /* #__PURE__ */ alias('sepia'),
+  backdropBlur: /* #__PURE__ */ themeAlias('blur'),
+  backdropBrightness: /* #__PURE__ */ themeAlias('brightness'),
+  backdropContrast: /* #__PURE__ */ themeAlias('contrast'),
+  backdropGrayscale: /* #__PURE__ */ themeAlias('grayscale'),
+  backdropHueRotate: /* #__PURE__ */ themeAlias('hueRotate'),
+  backdropInvert: /* #__PURE__ */ themeAlias('invert'),
+  backdropOpacity: /* #__PURE__ */ themeAlias('opacity'),
+  backdropSaturate: /* #__PURE__ */ themeAlias('saturate'),
+  backdropSepia: /* #__PURE__ */ themeAlias('sepia'),
 
-  backgroundColor: /* #__PURE__ */ alias('colors'),
+  backgroundColor: /* #__PURE__ */ themeAlias('colors'),
   backgroundImage: {
     none: 'none',
     // These are built-in
@@ -166,7 +152,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     // 'gradient-to-l': 'linear-gradient(to left, var(--tw-gradient-stops))',
     // 'gradient-to-tl': 'linear-gradient(to top left, var(--tw-gradient-stops))',
   },
-  backgroundOpacity: /* #__PURE__ */ alias('opacity'),
+  backgroundOpacity: /* #__PURE__ */ themeAlias('opacity'),
   // backgroundPosition: {
   //   // The following are already handled by the plugin:
   //   // center, right, left, bottom, top
@@ -191,15 +177,12 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   brightness: {
     .../* #__PURE__ */ createLinearUnits(200, '', 100, 0, 50),
     // 0: '0',
-    // 50: '.5',
-    // 150: '1.5',
+    // ...
     // 200: '2',
 
     .../* #__PURE__ */ createLinearUnits(110, '', 100, 90, 5),
     // 90: '.9',
-    // 95: '.95',
-    // 100: '1',
-    // 105: '1.05',
+    // ...
     // 110: '1.1',
     75: '0.75',
     125: '1.25',
@@ -208,7 +191,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     DEFAULT: theme('colors.gray.200', 'currentColor'),
     ...theme('colors'),
   }),
-  borderOpacity: /* #__PURE__ */ alias('opacity'),
+  borderOpacity: /* #__PURE__ */ themeAlias('opacity'),
   borderRadius: {
     none: '0px',
     sm: '0.125rem',
@@ -221,13 +204,12 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     '1/2': '50%',
     full: '9999px',
   },
-  borderSpacing: /* #__PURE__ */ alias('spacing'),
+  borderSpacing: /* #__PURE__ */ themeAlias('spacing'),
   borderWidth: {
     DEFAULT: '1px',
     .../* #__PURE__ */ createExponentialUnits(8, 'px'),
     // 0: '0px',
-    // 2: '2px',
-    // 4: '4px',
+    // ...
     // 8: '8px',
   },
   boxShadow: {
@@ -240,12 +222,12 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     inner: 'inset 0 2px 4px 0 rgba(0,0,0,0.05)',
     none: '0 0 #0000',
   },
-  boxShadowColor: alias('colors'),
+  boxShadowColor: themeAlias('colors'),
   // container: {},
   // cursor: {
   //   // Default values are handled by plugin
   // },
-  caretColor: /* #__PURE__ */ alias('colors'),
+  caretColor: /* #__PURE__ */ themeAlias('colors'),
   accentColor: ({ theme }) => ({
     auto: 'auto',
     ...theme('colors'),
@@ -253,8 +235,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   contrast: {
     .../* #__PURE__ */ createLinearUnits(200, '', 100, 0, 50),
     // 0: '0',
-    // 50: '.5',
-    // 150: '1.5',
+    // ...
     // 200: '2',
     75: '0.75',
     125: '1.25',
@@ -262,9 +243,9 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   content: {
     none: 'none',
   },
-  divideColor: /* #__PURE__ */ alias('borderColor'),
-  divideOpacity: /* #__PURE__ */ alias('borderOpacity'),
-  divideWidth: /* #__PURE__ */ alias('borderWidth'),
+  divideColor: /* #__PURE__ */ themeAlias('borderColor'),
+  divideOpacity: /* #__PURE__ */ themeAlias('borderOpacity'),
+  divideWidth: /* #__PURE__ */ themeAlias('borderWidth'),
   dropShadow: {
     sm: '0 1px 1px rgba(0,0,0,0.05)',
     DEFAULT: ['0 1px 2px rgba(0,0,0,0.1)', '0 1px 1px rgba(0,0,0,0.06)'],
@@ -304,32 +285,12 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     ...theme('spacing'),
     ...createPercentRatios(2, 6),
     // '1/2': '50%',
-    // '1/3': '33.333333%',
-    // '2/3': '66.666667%',
-    // '1/4': '25%',
-    // '2/4': '50%',
-    // '3/4': '75%',
-    // '1/5': '20%',
-    // '2/5': '40%',
-    // '3/5': '60%',
-    // '4/5': '80%',
-    // '1/6': '16.666667%',
-    // '2/6': '33.333333%',
-    // '3/6': '50%',
-    // '4/6': '66.666667%',
+    // ...
     // '5/6': '83.333333%',
 
     ...createPercentRatios(12, 12),
     // '1/12': '8.333333%',
-    // '2/12': '16.666667%',
-    // '3/12': '25%',
-    // '4/12': '33.333333%',
-    // '5/12': '41.666667%',
-    // '6/12': '50%',
-    // '7/12': '58.333333%',
-    // '8/12': '66.666667%',
-    // '9/12': '75%',
-    // '10/12': '83.333333%',
+    // ...
     // '11/12': '91.666667%',
 
     auto: 'auto',
@@ -378,8 +339,8 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     extrabold: '800',
     black: '900',
   },
-  gap: /* #__PURE__ */ alias('spacing'),
-  gradientColorStops: /* #__PURE__ */ alias('colors'),
+  gap: /* #__PURE__ */ themeAlias('spacing'),
+  gradientColorStops: /* #__PURE__ */ themeAlias('colors'),
   gridAutoColumns: {
     auto: 'auto',
     min: 'min-content',
@@ -426,19 +387,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     ...theme('spacing'),
     ...createPercentRatios(2, 6),
     // '1/2': '50%',
-    // '1/3': '33.333333%',
-    // '2/3': '66.666667%',
-    // '1/4': '25%',
-    // '2/4': '50%',
-    // '3/4': '75%',
-    // '1/5': '20%',
-    // '2/5': '40%',
-    // '3/5': '60%',
-    // '4/5': '80%',
-    // '1/6': '16.666667%',
-    // '2/6': '33.333333%',
-    // '3/6': '50%',
-    // '4/6': '66.666667%',
+    // ...
     // '5/6': '83.333333%',
     min: 'min-content',
     max: 'max-content',
@@ -451,10 +400,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     ...theme('spacing'),
     ...createPercentRatios(2, 4),
     // '1/2': '50%',
-    // '1/3': '33.333333%',
-    // '2/3': '66.666667%',
-    // '1/4': '25%',
-    // '2/4': '50%',
+    // ...
     // '3/4': '75%',
     auto: 'auto',
     full: '100%',
@@ -508,12 +454,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   lineHeight: {
     .../* #__PURE__ */ createLinearUnits(10, 'rem', 4, 3),
     // 3: '.75rem',
-    // 4: '1rem',
-    // 5: '1.25rem',
-    // 6: '1.5rem',
-    // 7: '1.75rem',
-    // 8: '2rem',
-    // 9: '2.25rem',
+    // ...
     // 10: '2.5rem',
     none: '1',
     tight: '1.25',
@@ -579,14 +520,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   opacity: {
     .../* #__PURE__ */ createLinearUnits(100, '', 100, 0, 10),
     // 0: '0',
-    // 10: '0.1',
-    // 20: '0.2',
-    // 30: '0.3',
-    // 40: '0.4',
-    // 60: '0.6',
-    // 70: '0.7',
-    // 80: '0.8',
-    // 90: '0.9',
+    // ...
     // 100: '1',
     5: '0.05',
     25: '0.25',
@@ -596,47 +530,32 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   order: {
     // Handled by plugin
     // 1: '1',
-    // 2: '2',
-    // 3: '3',
-    // 4: '4',
-    // 5: '5',
-    // 6: '6',
-    // 7: '7',
-    // 8: '8',
-    // 9: '9',
-    // 10: '10',
-    // 11: '11',
+    // ...
     // 12: '12',
     first: '-9999',
     last: '9999',
     none: '0',
   },
-  padding: /* #__PURE__ */ alias('spacing'),
-  placeholderColor: /* #__PURE__ */ alias('colors'),
-  placeholderOpacity: /* #__PURE__ */ alias('opacity'),
-  outlineColor: /* #__PURE__ */ alias('colors'),
+  padding: /* #__PURE__ */ themeAlias('spacing'),
+  placeholderColor: /* #__PURE__ */ themeAlias('colors'),
+  placeholderOpacity: /* #__PURE__ */ themeAlias('opacity'),
+  outlineColor: /* #__PURE__ */ themeAlias('colors'),
   outlineOffset: /* #__PURE__ */ createExponentialUnits(8, 'px'),
   // 0: '0px',
-  // 1: '1px',
-  // 2: '2px',
-  // 4: '4px',
+  // ...
   // 8: '8px',,
   outlineWidth: /* #__PURE__ */ createExponentialUnits(8, 'px'),
   // 0: '0px',
-  // 1: '1px',
-  // 2: '2px',
-  // 4: '4px',
-  // 8: '8px',,
+  // ...
+  // 8: '8px',
   ringColor: ({ theme }) => ({
     ...theme('colors'),
     DEFAULT: '#3b82f6',
   }),
-  ringOffsetColor: /* #__PURE__ */ alias('colors'),
+  ringOffsetColor: /* #__PURE__ */ themeAlias('colors'),
   ringOffsetWidth: /* #__PURE__ */ createExponentialUnits(8, 'px'),
   // 0: '0px',
-  // 1: '1px',
-  // 2: '2px',
-  // 4: '4px',
+  // ...
   // 8: '8px',,
   ringOpacity: ({ theme }) => ({
     ...theme('opacity'),
@@ -646,9 +565,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     DEFAULT: '3px',
     .../* #__PURE__ */ createExponentialUnits(8, 'px'),
     // 0: '0px',
-    // 1: '1px',
-    // 2: '2px',
-    // 4: '4px',
+    // ...
     // 8: '8px',
   },
   rotate: {
@@ -667,9 +584,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   },
   saturate: /* #__PURE__ */ createLinearUnits(200, '', 100, 0, 50),
   // 0: '0',
-  // 50: '.5',
-  // 100: '1',
-  // 150: '1.5',
+  // ...
   // 200: '2',
   scale: {
     .../* #__PURE__ */ createLinearUnits(150, '', 100, 0, 50),
@@ -678,15 +593,13 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     // 150: '1.5',
     .../* #__PURE__ */ createLinearUnits(110, '', 100, 90, 5),
     // 90: '.9',
-    // 95: '.95',
-    // 100: '1',
-    // 105: '1.05',
+    // ...
     // 110: '1.1',
     75: '0.75',
     125: '1.25',
   },
-  scrollMargin: /* #__PURE__ */ alias('spacing'),
-  scrollPadding: /* #__PURE__ */ alias('spacing'),
+  scrollMargin: /* #__PURE__ */ themeAlias('spacing'),
+  scrollPadding: /* #__PURE__ */ themeAlias('spacing'),
   sepia: {
     0: '0',
     DEFAULT: '100%',
@@ -701,7 +614,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     // 6: '6deg',
     // 12: '12deg',
   },
-  space: /* #__PURE__ */ alias('spacing'),
+  space: /* #__PURE__ */ themeAlias('spacing'),
   stroke: ({ theme }) => ({
     ...theme('colors'),
     none: 'none',
@@ -710,29 +623,25 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   // 0: '0',
   // 1: '1',
   // 2: '2',,
-  textColor: /* #__PURE__ */ alias('colors'),
-  textDecorationColor: /* #__PURE__ */ alias('colors'),
+  textColor: /* #__PURE__ */ themeAlias('colors'),
+  textDecorationColor: /* #__PURE__ */ themeAlias('colors'),
   textDecorationThickness: {
     'from-font': 'from-font',
     auto: 'auto',
     .../* #__PURE__ */ createExponentialUnits(8, 'px'),
     // 0: '0px',
-    // 1: '1px',
-    // 2: '2px',
-    // 4: '4px',
+    // ...
     // 8: '8px',
   },
   textUnderlineOffset: {
     auto: 'auto',
     .../* #__PURE__ */ createExponentialUnits(8, 'px'),
     // 0: '0px',
-    // 1: '1px',
-    // 2: '2px',
-    // 4: '4px',
+    // ...
     // 8: '8px',
   },
-  textIndent: /* #__PURE__ */ alias('spacing'),
-  textOpacity: /* #__PURE__ */ alias('opacity'),
+  textIndent: /* #__PURE__ */ themeAlias('spacing'),
+  textOpacity: /* #__PURE__ */ themeAlias('opacity'),
   // transformOrigin: {
   //   // The following are already handled by the plugin:
   //   // center, right, left, bottom, top
@@ -742,7 +651,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     ...theme('durations'),
     DEFAULT: '150ms',
   }),
-  transitionDelay: /* #__PURE__ */ alias('durations'),
+  transitionDelay: /* #__PURE__ */ themeAlias('durations'),
   transitionProperty: {
     none: 'none',
     all: 'all',
@@ -764,10 +673,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     ...theme('spacing'),
     ...createPercentRatios(2, 4),
     // '1/2': '50%',
-    // '1/3': '33.333333%',
-    // '2/3': '66.666667%',
-    // '1/4': '25%',
-    // '2/4': '50%',
+    // ...
     // '3/4': '75%',
     full: '100%',
   }),
@@ -788,17 +694,8 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   zIndex: {
     .../* #__PURE__ */ createLinearUnits(50, '', 1, 0, 10),
     // 0: '0',
-    // 10: '10',
-    // 20: '20',
-    // 30: '30',
-    // 40: '40',
+    // ...
     // 50: '50',
     auto: 'auto',
   },
 };
-
-function alias<Section extends keyof TailwindTheme>(
-  section: Section,
-): ThemeSectionResolver<TailwindTheme[Section], TailwindTheme> {
-  return ({ theme }) => theme(section);
-}
