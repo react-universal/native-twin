@@ -1,4 +1,7 @@
-import { TailwindTheme, ThemeSectionResolver } from './theme.types';
+import { toArray } from '../common/fn.helpers';
+import { colorToColorValue } from '../parsers/color.parser';
+import { BaseTheme, Context } from '../types';
+import { ColorValue, TailwindTheme, ThemeSectionResolver } from './theme.types';
 
 // 0: '0px',
 // 2: '2px',
@@ -73,4 +76,32 @@ export function themeAlias<Section extends keyof TailwindTheme>(
   section: Section,
 ): ThemeSectionResolver<TailwindTheme[Section], TailwindTheme> {
   return ({ theme }) => theme(section);
+}
+
+export function resolveThemeFunction<Theme extends BaseTheme = BaseTheme>(
+  value: string,
+  theme: Context<Theme>['theme'],
+): string {
+  // support theme(...) function in values
+  // calc(100vh - theme('spacing.12'))
+  // theme('borderColor.DEFAULT', 'currentColor')
+
+  // PERF: check for theme before running the regexp
+  // if (value.includes('theme')) {
+  return value.replace(
+    /theme\((["'`])?(.+?)\1(?:\s*,\s*(["'`])?(.+?)\3)?\)/g,
+    (_, __, key: string, ___, defaultValue = '') => {
+      const value = theme(key, defaultValue);
+
+      if (typeof value == 'function' && /color|fill|stroke/i.test(key)) {
+        // @ts-expect-error
+        return colorToColorValue(value as ColorValue);
+      }
+
+      return '' + toArray(value as unknown).filter((v) => Object(v) !== v);
+    },
+  );
+  // }
+
+  // return value
 }

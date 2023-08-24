@@ -4,6 +4,7 @@ import type {
   ScreenValue,
   ThemeConfig,
   ThemeFunction,
+  ThemeSectionResolver,
 } from './theme/theme.types';
 
 export interface BaseTheme {
@@ -105,27 +106,7 @@ export interface Context<Theme extends BaseTheme = BaseTheme> {
   r: (value: string, isDark?: boolean) => RuleResult;
 }
 
-export type RuleResult = string | CSSObject | Falsey | Partial<TailwindRule>[];
-
-export interface TailwindRule {
-  /** The calculated precedence taking all variants into account. */
-  p: number;
-
-  /* The precedence of the properties within {@link d}. */
-  o: number;
-
-  /** Additional classNames to propagate, does not include name */
-  c?: string;
-
-  /** The rulesets (selectors and at-rules). expanded variants `@media ...`, `@supports ...`, `&:focus`, `.dark &` */
-  r: string[];
-
-  /** The name to use for `&` expansion in selectors. Maybe empty for at-rules like `@import`, `@font-face`, `@media`, ... */
-  n?: string;
-
-  /** The stringified declarations. */
-  d?: string;
-}
+export type RuleResult = string | CSSObject | Falsey;
 
 export type RuleResolver<
   Theme extends BaseTheme = BaseTheme,
@@ -137,6 +118,11 @@ export type MatchConverter<
   Match extends MatchResult = MatchResult,
 > = (match: Match, context: Context<Theme>) => string;
 
+export type ThemeMatchResult<Value> = MatchResult & {
+  /** The found theme value */
+  _: Value;
+};
+
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;
 
@@ -145,7 +131,25 @@ export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   ignorelist: (string | RegExp)[];
 }
 
-export type ThemeMatchResult<Value> = MatchResult & {
-  /** The found theme value */
-  _: Value;
-};
+export type ExtractUserTheme<T> = {
+  [key in keyof T]: key extends 'extend'
+    ? never
+    : T[key] extends ThemeSectionResolver<infer Value, T & BaseTheme>
+    ? Value
+    : T[key];
+} & BaseTheme;
+
+/** @experimental */
+export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I,
+) => void
+  ? I
+  : never;
+
+export type ExtractThemes<Theme> = UnionToIntersection<ExtractUserTheme<Theme> | BaseTheme>;
+
+export interface TailwindUserConfig<Theme = BaseTheme> {
+  theme?: ThemeConfig<BaseTheme & ExtractThemes<Theme>>;
+  rules?: Rule<BaseTheme & ExtractThemes<Theme>>[];
+  ignorelist: (string | RegExp)[];
+}

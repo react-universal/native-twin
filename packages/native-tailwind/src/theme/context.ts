@@ -13,13 +13,14 @@ import {
   RuleResult,
   TailwindConfig,
 } from '../types';
-import { match } from './rules';
+import { fromMatch } from './rules';
 import { createThemeFunction } from './theme';
 
 type ResolveFunction<Theme extends BaseTheme = BaseTheme> = (
   className: string,
   context: Context<Theme>,
   isDark?: boolean,
+  cssProp?: string,
 ) => RuleResult;
 
 export function createContext<Theme extends BaseTheme = BaseTheme>({
@@ -36,45 +37,32 @@ export function createContext<Theme extends BaseTheme = BaseTheme>({
     condition.test(value),
   );
 
-  const ctx: Context<Theme> = {
+  const ctx = {
     theme: createThemeFunction(theme),
 
     r(className, isDark) {
       const key = JSON.stringify([className, isDark]);
 
       if (!ruleCache.has(key)) {
-        ruleCache.set(
-          key,
-          !ignored(className, ctx) &&
-            find(className, rules, ruleResolvers, getRuleResolver, ctx, isDark),
-        );
+        ruleCache.set(key, !ignored(className, ctx) && resolveRule(className, isDark));
       }
       return ruleCache.get(key);
     },
-  };
+  } satisfies Context<Theme>;
 
   return ctx;
-}
 
-function find<Value, Config, Result, Theme extends BaseTheme = BaseTheme>(
-  value: Value,
-  list: Config[],
-  cache: Map<Config, (value: Value, context: Context<Theme>, isDark?: boolean) => Result>,
-  getResolver: (
-    item: Config,
-  ) => (value: Value, context: Context<Theme>, isDark?: boolean) => Result,
-  context: Context<Theme>,
-  isDark?: boolean,
-) {
-  for (const item of list) {
-    let resolver = cache.get(item);
+  function resolveRule(token: string, isDark?: boolean) {
+    for (const item of rules) {
+      let resolver = ruleResolvers.get(item);
 
-    if (!resolver) {
-      cache.set(item, (resolver = getResolver(item)));
+      if (!resolver) {
+        ruleResolvers.set(item, (resolver = getRuleResolver(item)));
+      }
+
+      const resolved = resolver(token, ctx, isDark);
+      if (resolved) return resolved;
     }
-
-    const resolved = resolver(value, context, isDark);
-    if (resolved) return resolved;
   }
 }
 
@@ -92,7 +80,7 @@ function createResolveFunction<Theme extends BaseTheme = BaseTheme>(
   resolve?: keyof CSSProperties | string | CSSObject | RuleResolver<Theme>,
   convert?: MatchConverter<Theme>,
 ): ResolveFunction<Theme> {
-  return createResolve(patterns, match(patterns, resolve as keyof CSSProperties, convert)[1]);
+  return createResolve(patterns, fromMatch(resolve as keyof CSSProperties, convert));
 }
 
 function createResolve<Result, Theme extends BaseTheme = BaseTheme>(
@@ -107,7 +95,7 @@ function createResolve<Result, Theme extends BaseTheme = BaseTheme>(
       // this will create the following match string eg: bg-gray-200 will became gray-200
       match.$$ = value.slice(match[0].length);
       match.dark = isDark;
-      // console.log('EXEC: ', match);
+      console.log('EXEC: ', match, resolve(match, context));
 
       return resolve(match, context);
     }
