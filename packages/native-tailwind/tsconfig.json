@@ -16,5 +16,6 @@
     "strict": true,
     "stripInternal": true,
     "noImplicitAny": false
-  }
+  },
+  "exclude": ["**/old-v/**/*"]
 }

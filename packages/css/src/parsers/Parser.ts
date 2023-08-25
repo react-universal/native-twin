@@ -1,5 +1,4 @@
 import type {
-  CssParserData,
   CssParserError,
   ResultType,
   StateTransformerFunction,
@@ -9,13 +8,13 @@ import type {
 } from '../types/parser.types';
 
 export class Parser<Result, Data = any> {
-  transform: StateTransformerFunction<Result>;
-  constructor(transform: StateTransformerFunction<Result>) {
+  transform: StateTransformerFunction<Result, Data>;
+  constructor(transform: StateTransformerFunction<Result, Data>) {
     this.transform = transform;
   }
 
-  run(target: string, data: Data): ResultType<Result> {
-    const state = createParserState<Data>(target, data);
+  run(target: string): ResultType<Result, Data> {
+    const state = createParserState(target);
 
     const resultState = this.transform(state);
 
@@ -36,7 +35,7 @@ export class Parser<Result, Data = any> {
     };
   }
 
-  map<Result2>(fn: (x: Result) => Result2): Parser<Result2> {
+  map<Result2>(fn: (x: Result) => Result2): Parser<Result2, Data> {
     const parser = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
       const newState = parser(state);
@@ -45,7 +44,7 @@ export class Parser<Result, Data = any> {
     });
   }
 
-  chain<Result2>(fn: (x: Result) => Parser<Result2>): Parser<Result2> {
+  chain<Result2>(fn: (x: Result) => Parser<Result2>): Parser<Result2, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
       const newState = p(state);
@@ -54,7 +53,7 @@ export class Parser<Result, Data = any> {
     });
   }
 
-  errorMap(fn: (error: ParserError) => CssParserError): Parser<Result> {
+  errorMap(fn: (error: ParserError<Data>) => CssParserError): Parser<Result, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result, Data> => {
       const nextState = p(state);
@@ -72,20 +71,24 @@ export class Parser<Result, Data = any> {
     });
   }
 
-  errorChain<Result2>(fn: (error: ParserError) => Parser<Result2>): Parser<Result2> {
+  errorChain<Result2, Data2>(
+    fn: (error: ParserError<Data>) => Parser<Result2, Data2>,
+  ): Parser<Result2, Data2> {
     const p = this.transform;
-    return new Parser((state): ParserState<Result2, Data> => {
+    return new Parser((state): ParserState<Result2, Data2> => {
       const nextState = p(state);
       if (nextState.isError) {
         const { error, cursor, data } = nextState;
         const nextParser = fn({ isError: true, error, cursor, data });
         return nextParser.transform({ ...nextState, isError: false });
       }
-      return nextState as unknown as ParserState<Result2, Data>;
+      return nextState as unknown as ParserState<Result2, Data2>;
     });
   }
 
-  mapFromData<Result2>(fn: (data: ParserSuccess<Result>) => Result2): Parser<Result2, Data> {
+  mapFromData<Result2>(
+    fn: (data: ParserSuccess<Result, Data>) => Result2,
+  ): Parser<Result2, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
       const newState = p(state);
@@ -104,8 +107,8 @@ export class Parser<Result, Data = any> {
   }
 
   chainFromData<Result2>(
-    fn: (data: { result: Result; data: CssParserData }) => Parser<Result2>,
-  ): Parser<Result2> {
+    fn: (data: { result: Result; data: Data }) => Parser<Result2, Data>,
+  ): Parser<Result2, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
       const newState = p(state);
@@ -115,7 +118,7 @@ export class Parser<Result, Data = any> {
     });
   }
 
-  mapData(fn: (data: CssParserData) => CssParserData): Parser<Result> {
+  mapData<Data2>(fn: (data: Data) => Data2): Parser<Result, Data2> {
     const p = this.transform;
     return new Parser((state) => {
       const newState = p(state);
@@ -125,10 +128,7 @@ export class Parser<Result, Data = any> {
 
   fork<F>(
     target: string,
-    data: {
-      context: CssParserData['context'];
-      cache: CssParserData['cache'];
-    },
+    data: Data,
     errorFn: (errorMsg: CssParserError | null, parserState: ParserState<Result, Data>) => F,
     successFn: (result: Result, parserState: ParserState<Result, Data>) => F,
   ) {
@@ -139,7 +139,7 @@ export class Parser<Result, Data = any> {
     return successFn(newState.result, newState);
   }
 
-  static of<Result>(x: Result): Parser<Result> {
+  static of<Result, Data = null>(x: Result): Parser<Result, Data> {
     return new Parser((state) => updateParserResult(state, x));
   }
 }
@@ -174,15 +174,12 @@ export const createParserState = <Data>(
   };
 };
 
-export const updateParserData = <Result, Data>(
+export const updateParserData = <Result, Data, Data2>(
   state: ParserState<Result, Data>,
-  data: Data,
-): ParserState<Result, Data> => ({ ...state, data });
+  data: Data2,
+): ParserState<Result, Data2> => ({ ...state, data });
 
-export const createCssParserContext = (data: {
-  context: CssParserData['context'];
-  cache: CssParserData['cache'];
-}): CssParserData => ({
+export const createCssParserContext = <Data>(data: Data) => ({
   ...data,
   styles: {
     base: {},

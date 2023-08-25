@@ -1,4 +1,5 @@
-import type { BaseTheme, CSSProperties, KebabCase, MaybeArray } from '../types';
+import { CSSProperties } from './css.types';
+import { KebabCase, MaybeArray } from './util.types';
 
 export type ScreenValue =
   | string
@@ -50,6 +51,28 @@ export type ThemeConfig<Theme extends BaseTheme = BaseTheme> = PartialTheme<Them
   extend?: PartialTheme<Theme>;
 };
 
+export type ThemeValue<T> = T extends Record<string, infer V>
+  ? Exclude<V, Record<string, V>>
+  : T;
+
+export interface Container {
+  screens?: BaseTheme['screens'];
+  center?: boolean;
+  padding?: string | Record<string, string>;
+}
+
+export type FontSizeValue =
+  | string
+  | [size: string, lineHeight: string]
+  | [
+      size: string,
+      options: { lineHeight?: string; letterSpacing?: string; fontWeight?: string },
+    ];
+
+export type FontFamilyValue =
+  | MaybeArray<string>
+  | [fontFamily: MaybeArray<string>, configuration: { fontFeatureSettings?: string }];
+
 export interface ThemeFunction<Theme extends BaseTheme = BaseTheme> {
   (): Theme;
 
@@ -94,30 +117,10 @@ export interface ThemeFunction<Theme extends BaseTheme = BaseTheme> {
   <T>(key: string, defaultValue: T): T | string;
 }
 
-// Get the leaf theme value and omit nested records like for colors
-export type ThemeValue<T> = T extends Record<string, infer V>
-  ? Exclude<V, Record<string, V>>
-  : T;
+export interface BaseTheme {
+  screens: Record<string, MaybeArray<ScreenValue>>;
+  colors: Record<string, MaybeColorValue>;
 
-export interface Container {
-  screens?: BaseTheme['screens'];
-  center?: boolean;
-  padding?: string | Record<string, string>;
-}
-
-export type FontSizeValue =
-  | string
-  | [size: string, lineHeight: string]
-  | [
-      size: string,
-      options: { lineHeight?: string; letterSpacing?: string; fontWeight?: string },
-    ];
-
-export type FontFamilyValue =
-  | MaybeArray<string>
-  | [fontFamily: MaybeArray<string>, configuration: { fontFeatureSettings?: string }];
-
-export interface TailwindTheme extends BaseTheme {
   columns: Record<string, string>;
   spacing: Record<string, string>;
   durations: Record<string, MaybeArray<string>>;

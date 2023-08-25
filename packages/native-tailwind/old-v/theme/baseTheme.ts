@@ -1,4 +1,4 @@
-import { TailwindTheme, ThemeSection } from './theme.types';
+import { BaseTheme, ThemeSection } from '../theme.types';
 import {
   themeAlias,
   createExponentialUnits,
@@ -33,7 +33,7 @@ export type StableSections =
   | 'fontFamily'
   | 'fontSize';
 
-export type BaseTheme = {
+export type TailwindBaseTheme = {
   [Section in StableSections]: Section extends 'fontSize'
     ? {
         xs: [size: string, lineHeight: string];
@@ -50,17 +50,17 @@ export type BaseTheme = {
         '8xl': [size: string, lineHeight: string];
         '9xl': [size: string, lineHeight: string];
       }
-    : TailwindTheme[Section];
+    : BaseTheme[Section];
 } & {
-  [Section in Exclude<keyof TailwindTheme, StableSections | OmitedSections>]: ThemeSection<
-    TailwindTheme[Section],
-    TailwindTheme
+  [Section in Exclude<keyof BaseTheme, StableSections | OmitedSections>]: ThemeSection<
+    BaseTheme[Section],
+    BaseTheme
   >;
 } & {
-  [Section in OmitedSections]?: ThemeSection<TailwindTheme[Section], TailwindTheme>;
+  [Section in OmitedSections]?: ThemeSection<BaseTheme[Section], BaseTheme>;
 };
 
-export const baseTailwindTheme: BaseTheme = {
+export const baseTailwindTheme: TailwindBaseTheme = {
   screens: {
     sm: '640px',
     md: '768px',

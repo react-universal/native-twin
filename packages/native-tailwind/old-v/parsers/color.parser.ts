@@ -1,4 +1,4 @@
-import { ColorFunctionOptions, ColorValue } from '../theme/theme.types';
+import { ColorFunctionOptions, ColorValue } from '../theme.types';
 
 function parseColorSection(chars: string, factor: number): number {
   return Math.round(parseInt(chars, 16) * factor);

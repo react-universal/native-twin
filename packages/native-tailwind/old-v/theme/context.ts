@@ -1,18 +1,16 @@
 import { toArray, toCondition } from '../common/fn.helpers';
+import { CSSObject, CSSProperties } from '../css.types';
+import { BaseTheme } from '../theme.types';
 import {
-  BaseTheme,
-  CSSObject,
-  CSSProperties,
   Context,
-  Falsey,
   MatchConverter,
   MatchResult,
-  MaybeArray,
   Rule,
   RuleResolver,
   RuleResult,
   TailwindConfig,
 } from '../types';
+import { MaybeArray, Falsey } from '../util.types';
 import { fromMatch } from './rules';
 import { createThemeFunction } from './theme';
 
@@ -91,11 +89,8 @@ function createResolve<Result, Theme extends BaseTheme = BaseTheme>(
     const match = condition.exec(value) as MatchResult | Falsey;
 
     if (match) {
-      // MATCH.$_ = value
-      // this will create the following match string eg: bg-gray-200 will became gray-200
       match.$$ = value.slice(match[0].length);
       match.dark = isDark;
-      console.log('EXEC: ', match, resolve(match, context));
 
       return resolve(match, context);
     }

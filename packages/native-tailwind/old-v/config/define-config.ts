@@ -1,5 +1,8 @@
 import { toArray } from '../common/fn.helpers';
-import { BaseTheme, ExtractThemes, TailwindConfig, TailwindUserConfig } from '../types';
+import { BaseTheme } from '../theme.types';
+import { baseTailwindTheme } from '../theme/baseTheme';
+import { ExtractThemes, TailwindConfig, TailwindUserConfig } from '../types';
+import * as colors from '../theme/colors';
 
 export function createTailwindConfig<Theme = BaseTheme>({
   ...userConfig
@@ -8,6 +11,8 @@ export function createTailwindConfig<Theme = BaseTheme>({
     ignorelist: toArray(userConfig.ignorelist),
     rules: toArray(userConfig.rules),
     theme: {
+      colors,
+      ...baseTailwindTheme,
       ...((userConfig.theme ?? {}) as TailwindConfig<
         BaseTheme & ExtractThemes<Theme>
       >['theme']),

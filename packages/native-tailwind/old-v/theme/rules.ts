@@ -1,20 +1,17 @@
 import { colorToColorValue } from '../parsers/color.parser';
 import {
-  BaseTheme,
-  CSSObject,
-  CSSProperties,
   Context,
-  KebabCase,
   MatchConverter,
   MatchResult,
-  MaybeArray,
   Rule,
   RuleResolver,
   RuleResult,
   ThemeMatchResult,
 } from '../types';
-import { ColorFunction, ColorValue, ThemeValue } from './theme.types';
+import { BaseTheme, ColorFunction, ColorValue, ThemeValue } from '../theme.types';
 import { resolveThemeFunction } from './theme.utils';
+import { KebabCase, MaybeArray } from '../util.types';
+import { CSSObject, CSSProperties } from '../css.types';
 
 export type ThemeMatchConverter<Value, Theme extends BaseTheme = BaseTheme> = MatchConverter<
   Theme,
@@ -97,12 +94,6 @@ export function fromMatch<Theme extends BaseTheme = BaseTheme>(
   };
 }
 
-/**
- * @group Configuration
- * @param pattern
- * @param resolve
- * @param convert
- */
 export function match<Theme extends BaseTheme = BaseTheme>(
   pattern: MaybeArray<string | RegExp>,
   resolve?: RuleResolver<Theme> | (string & {}) | CSSObject | keyof CSSProperties,
@@ -137,14 +128,6 @@ export function matchTheme<
   return [pattern, fromTheme(section, resolve, convert)];
 }
 
-/**
- * @group Configuration
- * @internal
- * @param section
- * @param resolve
- * @param convert
- * @returns
- */
 export function fromTheme<
   Theme extends BaseTheme = BaseTheme,
   Section extends keyof Theme & string = keyof Theme & string,
@@ -196,10 +179,10 @@ export function arbitrary<Theme extends BaseTheme = BaseTheme>(
   context: Context<Theme>,
 ): string | undefined {
   if (value[0] == '[' && value.slice(-1) == ']') {
-    value = normalize(resolveThemeFunction(value.slice(1, -1), context.theme));
+    value = resolveThemeFunction(value.slice(1, -1), context.theme);
 
     if (!section) return value;
-
+    console.log('SDD', value);
     if (
       // Respect type hints from the user on ambiguous arbitrary values - https://tailwindcss.com/docs/adding-custom-styles#resolving-ambiguities
       !(
@@ -271,13 +254,6 @@ export function normalize(value: string): string {
   );
 }
 
-/**
- * @group Configuration
- * @param pattern
- * @param options
- * @param resolve
- * @returns
- */
 export function matchColor<
   Theme extends BaseTheme = BaseTheme,
   Section extends keyof FilterByThemeValue<Theme, ColorValue> = keyof FilterByThemeValue<
@@ -296,13 +272,6 @@ export function matchColor<
   return [pattern, colorFromTheme(options, resolve)];
 }
 
-/**
- * @group Configuration
- * @internal
- * @param options
- * @param resolve
- * @returns
- */
 export function colorFromTheme<
   Theme extends BaseTheme = BaseTheme,
   Section extends keyof FilterByThemeValue<Theme, ColorValue> = keyof FilterByThemeValue<
@@ -400,10 +369,6 @@ export function colorFromTheme<
   };
 }
 
-/**
- * @internal
- * @param input
- */
 export function parseValue(
   input: string,
 ):
@@ -420,12 +385,6 @@ export function parseValue(
   ];
 }
 
-/**
- * @internal
- * @param property
- * @param value
- * @returns
- */
 export function toCSS(property: string, value: string | ColorFromThemeValue): CSSObject {
   const properties: CSSObject = {};
 

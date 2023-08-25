@@ -1,6 +1,6 @@
 import { noop } from '../common/fn.helpers';
-import { ThemeConfig } from '../theme/theme.types';
-import { BaseTheme, StringLike } from '../types';
+import { BaseTheme, ThemeConfig } from '../theme.types';
+import { StringLike } from '../util.types';
 
 interface TwInjector<Theme extends BaseTheme = BaseTheme, Target = unknown> {
   (tokens: StringLike): string;

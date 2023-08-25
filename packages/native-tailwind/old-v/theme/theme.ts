@@ -1,11 +1,11 @@
 import { colorToColorValue } from '../parsers/color.parser';
-import { BaseTheme } from '../types';
 import {
+  BaseTheme,
   MaybeColorValue,
   ThemeConfig,
   ThemeFunction,
   ThemeSectionResolverContext,
-} from './theme.types';
+} from '../theme.types';
 
 export function createThemeFunction<Theme extends BaseTheme = BaseTheme>({
   extend = {},

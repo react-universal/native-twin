@@ -1,7 +1,7 @@
 import { toArray } from '../common/fn.helpers';
 import { colorToColorValue } from '../parsers/color.parser';
-import { BaseTheme, Context } from '../types';
-import { ColorValue, TailwindTheme, ThemeSectionResolver } from './theme.types';
+import { Context } from '../types';
+import { ColorValue, BaseTheme, ThemeSectionResolver } from '../theme.types';
 
 // 0: '0px',
 // 2: '2px',
@@ -72,9 +72,9 @@ export function createPercentRatios(start: number, end: number): Record<string, 
   return result;
 }
 
-export function themeAlias<Section extends keyof TailwindTheme>(
+export function themeAlias<Section extends keyof BaseTheme>(
   section: Section,
-): ThemeSectionResolver<TailwindTheme[Section], TailwindTheme> {
+): ThemeSectionResolver<BaseTheme[Section], BaseTheme> {
   return ({ theme }) => theme(section);
 }
 

@@ -41,6 +41,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@universal-labs/css": "workspace:*",
     "csstype": "3.1.2"
   }
 }
