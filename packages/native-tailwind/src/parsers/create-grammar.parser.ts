@@ -9,20 +9,7 @@ import {
 } from './rules/color.rules';
 import { matchTypographyUtils } from './rules/typography';
 import { matchFlexUtils } from './rules/flex';
-
-export function createThemeAccess<Theme extends BaseTheme = BaseTheme>(
-  theme: ThemeConfig<Theme>,
-) {
-  return (segments: string[], themeSection: keyof BaseTheme) => {
-    return segments.reduce((prev, current) => {
-      if (!current || !prev) return null;
-      if (current in prev) {
-        return prev[current];
-      }
-      return prev;
-    }, theme[themeSection]);
-  };
-}
+import { createThemeFunction } from '../theme/theme.context';
 
 // const parseColors = P.choice([]);
 const parseOthers = P.choice([matchTypographyUtils, matchFlexUtils, matchOpacityRule]);
@@ -36,7 +23,7 @@ function resolveTokens<Theme extends BaseTheme = BaseTheme>(
     if (typeof colorPalette[x] === 'object') return [];
     return x;
   });
-  const themeResolver = createThemeAccess(theme);
+  createThemeFunction(theme);
   const colorsParser = createColorParsers(['bg-', 'text-'], colorKeys);
 
   return P.separatedBy(P.whitespace)(P.choice([colorsParser, parseOthers])).run(tokens);
