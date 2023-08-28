@@ -1,6 +1,6 @@
 import * as P from '@universal-labs/css/parser';
 import { matchArbitrary, matchTwSegment } from '../common.parsers';
-import { MaybeColorValue } from '../../theme.types';
+import { MaybeColorValue } from '../../types/theme.types';
 
 const matchColorModifier = P.sequenceOf([
   P.char('/'),

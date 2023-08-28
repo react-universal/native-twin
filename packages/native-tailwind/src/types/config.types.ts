@@ -1,3 +1,4 @@
+import { CSSProperties } from './css.types';
 import { BaseTheme, ThemeConfig, ThemeFunction, ThemeSectionResolver } from './theme.types';
 import { MaybeArray, UnionToIntersection } from './util.types';
 
@@ -6,7 +7,7 @@ export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
 
   rules: Rule<Theme>[];
 
-  ignorelist: (string | RegExp)[];
+  ignorelist: string[];
 }
 
 export type ExtractUserTheme<T> = {
@@ -22,12 +23,14 @@ export type ExtractThemes<Theme> = UnionToIntersection<ExtractUserTheme<Theme> |
 export interface TailwindUserConfig<Theme = BaseTheme> {
   theme?: ThemeConfig<BaseTheme & ExtractThemes<Theme>>;
   rules?: Rule<BaseTheme>[];
-  ignorelist: (string | RegExp)[];
+  ignorelist: string[];
 }
 
-interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
-  propertyAlias: MaybeArray<keyof Theme>;
+export interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
+  themeAlias: keyof Theme;
+  propertyAlias?: keyof CSSProperties;
   canBeNegative?: boolean | undefined;
+  isColor?: boolean | undefined;
 }
 export type Rule<Theme extends BaseTheme = BaseTheme> =
   //   | [pattern: string, alias: string & {}]
@@ -41,7 +44,7 @@ export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
 
   rules: Rule<Theme>[];
 
-  ignorelist: (string | RegExp)[];
+  ignorelist: string[];
 }
 
 export interface Context<Theme extends BaseTheme = BaseTheme> {

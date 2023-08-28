@@ -4,6 +4,7 @@ export interface ClassNameToken {
   readonly variants: string[];
   readonly important: boolean;
   readonly name: string;
+  readonly modifiers: any;
 }
 
 export interface ClassGroupToken {

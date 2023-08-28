@@ -11,4 +11,5 @@ export type {
   ComponentStylesheet,
 } from './types/styled.types';
 export type { StyledContext, SheetMetadata, Units } from './types/css.types';
+
 export default styled;

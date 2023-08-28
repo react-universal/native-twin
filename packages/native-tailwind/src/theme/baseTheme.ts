@@ -1,4 +1,4 @@
-import { BaseTheme, ThemeSection } from '../theme.types';
+import { BaseTheme, ThemeSection } from '../types/theme.types';
 import {
   themeAlias,
   createExponentialUnits,
@@ -666,6 +666,14 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   // 1: '1',
   // 2: '2',,
   textColor: /* #__PURE__ */ themeAlias('colors'),
+  textAlign: {
+    left: 'left',
+    center: 'center',
+    right: 'right',
+    justify: 'justify',
+    start: 'start',
+    end: 'end',
+  },
   textDecorationColor: /* #__PURE__ */ themeAlias('colors'),
   textDecorationThickness: {
     'from-font': 'from-font',

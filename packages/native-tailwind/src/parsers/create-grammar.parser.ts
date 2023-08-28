@@ -1,5 +1,5 @@
 import * as P from '@universal-labs/css/parser';
-import { BaseTheme, MaybeColorValue, ThemeConfig } from '../theme.types';
+import { BaseTheme, MaybeColorValue, ThemeConfig } from '../types/theme.types';
 import {
   createColorParsers,
   flattenColorPalette,

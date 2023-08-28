@@ -1,4 +1,4 @@
-import { BaseTheme, ThemeSectionResolver } from '../theme.types';
+import { BaseTheme, ThemeSectionResolver } from '../types/theme.types';
 
 // 0: '0px',
 // 2: '2px',

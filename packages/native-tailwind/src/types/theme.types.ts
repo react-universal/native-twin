@@ -191,6 +191,7 @@ export interface BaseTheme {
   strokeWidth: Record<string, string>;
   supports: Record<string, string>;
   textColor: BaseTheme['colors'];
+  textAlign: Record<string, string>;
   textDecorationColor: BaseTheme['colors'];
   textDecorationThickness: Record<string, string>;
   textIndent: Record<string, string>;

@@ -1,20 +1,33 @@
-import { Rule } from '../config.types';
-import { BaseTheme } from '../theme.types';
+import { Rule } from '../types/config.types';
+import { BaseTheme } from '../types/theme.types';
 
 export const tailwindBaseRules: Rule<BaseTheme>[] = [
+  // COLOR UTILS
+  ['bg-', { themeAlias: 'colors', propertyAlias: 'backgroundColor', isColor: true }],
+  ['text-', { themeAlias: 'colors', propertyAlias: 'color', isColor: true }],
   // FLEX
-  ['flex-', { propertyAlias: ['flex', 'flexDirection'] }],
-  ['items-', { propertyAlias: 'alignItems' }],
-  ['self-', { propertyAlias: 'alignSelf' }],
-  ['content-', { propertyAlias: 'placeContent' }],
-  ['justify-', { propertyAlias: 'justifyItems' }],
-  [['gap-', 'gap-x', 'gap-y'], { propertyAlias: 'gap' }],
+  ['flex-', { themeAlias: 'flex' }],
+  ['flex-', { themeAlias: 'flexDirection' }],
+  ['items-', { themeAlias: 'alignItems' }],
+  ['self-', { themeAlias: 'alignSelf' }],
+  ['content-', { themeAlias: 'placeContent' }],
+  ['justify-', { themeAlias: 'justifyItems' }],
+
+  // GAP
+  [['gap-', 'gap-x', 'gap-y'], { themeAlias: 'gap' }],
+
   // // LAYOUT
-  ['aspect-', { propertyAlias: 'aspectRatio' }],
-  [['hidden', 'flex'], { propertyAlias: 'display' }],
-  [['p-', 'px-', 'py-'], { propertyAlias: 'padding', canBeNegative: true }],
-  [['m-', 'mx-', 'my-'], { propertyAlias: 'margin', canBeNegative: true }],
-  ['leading-', { propertyAlias: 'lineHeight' }],
-  ['bg-', { propertyAlias: 'backgroundColor' }],
-  ['font-', { propertyAlias: ['fontSize', 'fontWeight'] }],
+  ['aspect-', { themeAlias: 'aspectRatio' }],
+  [['hidden', 'flex'], { themeAlias: 'display' }],
+
+  // SPACING
+  [['p-', 'px-', 'py-'], { themeAlias: 'padding', canBeNegative: true }],
+  [['m-', 'mx-', 'my-'], { themeAlias: 'margin', canBeNegative: true }],
+  ['leading-', { themeAlias: 'lineHeight' }],
+
+  // FONT
+  ['font-', { themeAlias: 'fontWeight' }],
+  // TEXT
+  ['text-', { themeAlias: 'textAlign' }],
+  ['text-', { themeAlias: 'fontSize' }],
 ];

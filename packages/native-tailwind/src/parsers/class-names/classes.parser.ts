@@ -1,25 +1,36 @@
 import * as P from '@universal-labs/css/parser';
 import { parseClassNameTokens } from './parser.utils';
-import { ParsedRule, ClassGroupToken, ClassNameToken } from '../../parser.types';
+import { ParsedRule, ClassGroupToken, ClassNameToken } from '../../types/parser.types';
+import { matchArbitrary } from '../common.parsers';
 
 const regexIdent = /^[_a-z0-9A-Z-!]+/;
 const regexVariantIdent = /^[_a-z0-9A-Z-!]+[:]/;
 
+const matchColorModifier = P.sequenceOf([
+  P.char('/'),
+  P.choice([P.digits, matchArbitrary]),
+]).map((x) => ({
+  modifier: x[1],
+}));
+
 const parseVariants = P.many(P.regex(regexVariantIdent));
 const parseClassFeature = P.regex(regexIdent);
 
-const parseClassName = P.sequenceOf([parseVariants, P.maybe(parseClassFeature)]).map(
-  (x): ClassNameToken => {
-    const name = x[1] ?? '';
-    return {
-      type: 'CLASS_NAME',
-      name: name.replace(/!/g, ''),
-      important: name.includes('!') || x[0].some((y) => y.includes('!')),
-      variant: x[0].length > 0,
-      variants: x[0].filter((y) => !!y).map((z) => z.replace(/[!:]+/g, '')),
-    };
-  },
-);
+const parseClassName = P.sequenceOf([
+  parseVariants,
+  P.maybe(parseClassFeature),
+  P.maybe(matchColorModifier),
+]).map((x): ClassNameToken => {
+  const name = x[1] ?? '';
+  return {
+    type: 'CLASS_NAME',
+    name: name.replace(/!/g, ''),
+    important: name.includes('!') || x[0].some((y) => y.includes('!')),
+    variant: x[0].length > 0,
+    variants: x[0].filter((y) => !!y).map((z) => z.replace(/[!:]+/g, '')),
+    modifiers: x[2],
+  };
+});
 
 const parseGroupValues = P.recursiveParser(() => P.choice([parseClassGroup, parseClassName]));
 
@@ -32,6 +43,7 @@ const parseClassGroup = P.sequenceOf([
         name: '',
         variants: [],
         variant: false,
+        modifiers: null,
       },
   ),
   P.char('('),
@@ -106,6 +118,7 @@ export const parseRawClassTokens = P.coroutine((run) => {
           n: parseClassNameTokens(baseToken, rule),
           v: baseToken.variants,
           i: baseToken.important || rule.important,
+          m: rule.modifiers,
         },
       ];
     });
