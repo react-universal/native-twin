@@ -33,47 +33,11 @@ export type ThemeConfig<Theme extends BaseTheme = BaseTheme> = PartialTheme<Them
 };
 
 export interface ThemeFunction<Theme extends BaseTheme = BaseTheme> {
-  (): Theme;
-
-  <Section extends keyof Theme & string>(
+  <Section extends keyof Theme>(section: Section | KebabCase<Section>): Theme[Section];
+  <Section extends keyof Theme>(
     section: Section | KebabCase<Section>,
-  ): Theme[Section];
-
-  <Section extends keyof Theme & string, Key extends keyof Theme[Section]>(
-    section: Section | KebabCase<Section>,
-    key: Key,
-  ): ThemeValue<Theme[Section]> | undefined;
-
-  <Section extends keyof Theme & string>(section: Section | KebabCase<Section>, key: string):
-    | ThemeValue<Theme[Section]>
-    | undefined;
-
-  <Section extends keyof Theme & string, Key extends keyof Theme[Section]>(
-    section: Section | KebabCase<Section>,
-    key: Key,
-    defaultValue: ThemeValue<Theme[Section]>,
+    segments: string[],
   ): ThemeValue<Theme[Section]>;
-
-  <Section extends keyof Theme & string>(
-    section: Section | KebabCase<Section>,
-    key: string,
-    defaultValue: ThemeValue<Theme[Section]>,
-  ): ThemeValue<Theme[Section]>;
-
-  // TODO deep path from theme: https://github.com/ghoullier/awesome-template-literal-types#dot-notation-string-type-safe
-  <Section extends keyof Theme & string>(key: `${Section}.${string}`): ThemeValue<
-    Theme[Section]
-  >;
-
-  <Section extends keyof Theme & string>(
-    key: `${Section}.${string}`,
-    defaultValue: ThemeValue<Theme[Section]>,
-  ): ThemeValue<Theme[Section]>;
-
-  (section: string): unknown | undefined;
-  (section: string, key: string): unknown | string | undefined;
-  <T>(section: string, key: string, defaultValue: T): T | string;
-  <T>(key: string, defaultValue: T): T | string;
 }
 
 /* THEME VALUES */
@@ -166,7 +130,13 @@ export interface BaseTheme {
   flexBasis: Record<string, string>;
   flexGrow: Record<string, number | string>;
   flexShrink: Record<string, number | string>;
+  flexDirection: Record<string, string>;
+  justifyItems: Record<string, string>;
+  placeContent: Record<string, string>;
+  alignItems: Record<string, string>;
+  alignSelf: Record<string, string>;
   fontFamily: Record<string, FontFamilyValue>;
+  display: Record<string, string>;
   fontSize: Record<string, FontSizeValue>;
   fontWeight: Record<string, string>;
   gap: Record<string, string>;

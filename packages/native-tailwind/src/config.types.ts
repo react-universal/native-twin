@@ -22,15 +22,21 @@ export type ExtractThemes<Theme> = UnionToIntersection<ExtractUserTheme<Theme> |
 
 export interface TailwindUserConfig<Theme = BaseTheme> {
   theme?: ThemeConfig<BaseTheme & ExtractThemes<Theme>>;
-  rules?: Rule<BaseTheme & ExtractThemes<Theme>>[];
+  rules?: Rule<BaseTheme>[];
   ignorelist: (string | RegExp)[];
 }
 
+interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
+  propertyAlias: keyof Theme | keyof CSSProperties;
+  canBeNegative: boolean;
+}
 export type Rule<Theme extends BaseTheme = BaseTheme> =
   | [pattern: string, alias: string & {}]
+  | [pattern: string, alias: (string & {})[]]
   | [pattern: string, alias: keyof Theme]
   | [pattern: string, property: keyof CSSProperties]
-  | [pattern: string, css: CSSObject];
+  | [pattern: string, css: CSSObject]
+  | [pattern: string, config: RuleConfig<Theme>];
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;

@@ -5,7 +5,7 @@ import { ExtractThemes, TailwindConfig, TailwindUserConfig } from '../config.typ
 import * as colors from '../theme/colors';
 import { tailwindBaseRules } from '../theme/tailwind-rules';
 
-export function defineConfig<Theme = BaseTheme>({
+export function defineConfig<Theme extends BaseTheme = BaseTheme>({
   ...userConfig
 }: TailwindUserConfig<Theme>): TailwindConfig<BaseTheme & ExtractThemes<Theme>> {
   const config: TailwindConfig<BaseTheme & ExtractThemes<Theme>> = {

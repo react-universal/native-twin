@@ -187,9 +187,9 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     75: '0.75',
     125: '1.25',
   },
-  borderColor: ({ theme }) => ({
-    DEFAULT: theme('colors.gray.200', 'currentColor'),
-    ...theme('colors'),
+  borderColor: ({ theme, colors }) => ({
+    DEFAULT: theme('colors', ['gray', '200']),
+    ...colors,
   }),
   borderOpacity: /* #__PURE__ */ themeAlias('opacity'),
   borderRadius: {
@@ -304,6 +304,44 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     DEFAULT: 1,
     0: 0,
   },
+  flexDirection: {
+    'row-reverse': 'row-reverse',
+    'col-reverse': 'col-reverse',
+    col: 'column',
+    row: 'row',
+  },
+  justifyItems: {
+    start: 'start',
+    end: 'end',
+    center: 'center',
+    stretch: 'stretch',
+    between: 'between',
+    around: 'around',
+    evenly: 'evenly',
+  },
+  placeContent: {
+    start: 'start',
+    end: 'end',
+    center: 'center',
+    stretch: 'stretch',
+    between: 'between',
+    around: 'around',
+    evenly: 'evenly',
+    baseline: 'baseline',
+  },
+  alignItems: {
+    start: 'start',
+    end: 'end',
+    center: 'center',
+    stretch: 'stretch',
+  },
+  alignSelf: {
+    start: 'start',
+    end: 'end',
+    center: 'center',
+    stretch: 'stretch',
+    auto: 'auto',
+  },
   fontFamily: {
     sans: 'ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"'.split(
       ',',
@@ -338,6 +376,10 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     bold: '700',
     extrabold: '800',
     black: '900',
+  },
+  display: {
+    hidden: 'hidden',
+    flex: 'flex',
   },
   gap: /* #__PURE__ */ themeAlias('spacing'),
   gradientColorStops: /* #__PURE__ */ themeAlias('colors'),

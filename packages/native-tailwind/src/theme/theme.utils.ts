@@ -74,5 +74,3 @@ export function themeAlias<Section extends keyof BaseTheme>(
 ): ThemeSectionResolver<BaseTheme[Section], BaseTheme> {
   return ({ theme }) => theme(section);
 }
-
-

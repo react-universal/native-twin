@@ -1,9 +1,9 @@
-import { Context } from '../config.types';
+import { Context, TailwindConfig } from '../config.types';
 import { BaseTheme, ThemeConfig, ThemeFunction } from '../theme.types';
 
-export function createThemeContext<Theme extends BaseTheme = BaseTheme>(
-  themeConfig: ThemeConfig<Theme>,
-): Context<Theme> {
+export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
+  theme: themeConfig,
+}: TailwindConfig<Theme>): Context<Theme> {
   createThemeFunction(themeConfig);
   const ctx: Context<Theme> = {
     theme: createThemeFunction(themeConfig),
@@ -18,54 +18,32 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>(
 export function createThemeFunction<Theme extends BaseTheme = BaseTheme>({
   extend = {},
   ...baseConfig
-}: ThemeConfig<Theme>): ThemeFunction<Theme> {
-  // const resolved: Record<string, any> = {};
-  // const resolveContext: ThemeSectionResolverContext<Theme> = {
-  //   get colors() {
-  //     return theme('colors');
-  //   },
-
-  //   theme,
-
-  //   breakpoints(screens) {
-  //     const breakpoints = {} as Record<string, string>;
-
-  //     for (const key in screens) {
-  //       if (typeof screens[key] == 'string') {
-  //         breakpoints['screen-' + key] = screens[key] as string;
-  //       }
-  //     }
-
-  //     return breakpoints;
-  //   },
-  // };
-
-  return theme;
+}: ThemeConfig<Theme>) {
+  // console.log('sad', theme('colors', []));
+  return theme as ThemeFunction<Theme>;
 
   function theme(
-    sectionKey?: string,
-    _key?: string,
-    _defaultValue?: any,
-    _opacityValue?: string | undefined,
+    themeSection: keyof typeof baseConfig & keyof typeof extend,
+    segments: string[] = [],
   ) {
-    if (sectionKey) {
-      // TODO: Fix overload cases where areas match a section key or arbitrary value
-      return {} as any;
-    }
-    const result = {} as Record<string, any>;
-
-    for (const section of [...Object.keys(baseConfig), ...Object.keys(extend)]) {
-      result[section] = theme(section);
-    }
-    return result;
-  }
-  function _resolveThemeValue(segments: string[], themeSection: keyof BaseTheme) {
-    return segments.reduce((prev, current) => {
-      if (!current || !prev) return null;
-      if (current in prev) {
-        return prev[current];
+    if (themeSection in baseConfig) {
+      let initialValue = baseConfig[themeSection];
+      if (themeSection in extend) {
+        initialValue = {
+          ...initialValue,
+          ...extend[themeSection],
+        };
       }
-      return prev;
-    }, baseConfig[themeSection]);
+      return segments.reduce((prev, current) => {
+        if (!current || !prev) return null;
+        if (typeof prev == 'object') {
+          if (current in prev) {
+            return prev[current];
+          }
+        }
+        return prev;
+      }, initialValue);
+    }
+    return null;
   }
 }

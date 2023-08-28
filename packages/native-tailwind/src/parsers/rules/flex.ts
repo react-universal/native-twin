@@ -4,7 +4,7 @@ import { matchAxisXYSegments, matchTwSegment } from '../common.parsers';
 const flexSegment = P.literal('flex-');
 
 // Flex Direction
-export const matchFlexDirectionRule = P.sequenceOf([
+const matchFlexDirectionRule = P.sequenceOf([
   flexSegment,
   P.choice([
     P.literal('row-reverse'),
@@ -14,19 +14,19 @@ export const matchFlexDirectionRule = P.sequenceOf([
   ]),
 ]);
 
-export const matchFlexWrapRule = P.sequenceOf([
+const matchFlexWrapRule = P.sequenceOf([
   flexSegment,
   P.choice([P.literal('wrap-reverse'), P.literal('wrap'), P.literal('nowrap')]),
 ]);
 
-export const matchFlexLevelRule = P.sequenceOf([flexSegment, matchTwSegment]);
+const matchFlexLevelRule = P.sequenceOf([flexSegment, matchTwSegment]);
 
 // Flex grow / shrink / basis
-export const matchFlexGrowRule = P.sequenceOf([P.literal('grow-'), matchTwSegment]);
-export const matchFlexBasisRule = P.sequenceOf([P.literal('basis-'), matchTwSegment]);
-export const matchFlexShrinkRule = P.sequenceOf([P.literal('shrink-'), matchTwSegment]);
+const matchFlexGrowRule = P.sequenceOf([P.literal('grow-'), matchTwSegment]);
+const matchFlexBasisRule = P.sequenceOf([P.literal('basis-'), matchTwSegment]);
+const matchFlexShrinkRule = P.sequenceOf([P.literal('shrink-'), matchTwSegment]);
 
-export const matchFlexGap = P.sequenceOf([
+const matchFlexGap = P.sequenceOf([
   P.literal('gap-'),
   P.maybe(P.sequenceOf([matchAxisXYSegments, P.char('-')])),
   matchTwSegment,
@@ -47,6 +47,7 @@ const justifySelf = P.sequenceOf([
     P.literal('auto'),
   ]),
 ]);
+
 const contentAlign = P.sequenceOf([
   P.literal('content-'),
   P.choice([
@@ -60,7 +61,8 @@ const contentAlign = P.sequenceOf([
     P.literal('baseline'),
   ]),
 ]);
-export const matchFlexAlign = P.sequenceOf([
+
+const matchFlexAlign = P.sequenceOf([
   P.literal('justify-'),
   P.choice([
     justifyItems,
@@ -77,7 +79,7 @@ export const matchFlexAlign = P.sequenceOf([
 // Align Content
 // Align Items
 // Align Self
-export const matchFlexAligns = P.choice([justifyItems, justifySelf, contentAlign]);
+const matchFlexAligns = P.choice([justifyItems, justifySelf, contentAlign]);
 
 export const matchFlexUtils = P.choice([
   matchFlexDirectionRule,
