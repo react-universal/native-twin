@@ -1,6 +1,5 @@
-import { CSSObject, CSSProperties } from './css.types';
 import { BaseTheme, ThemeConfig, ThemeFunction, ThemeSectionResolver } from './theme.types';
-import { UnionToIntersection } from './util.types';
+import { MaybeArray, UnionToIntersection } from './util.types';
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;
@@ -27,16 +26,15 @@ export interface TailwindUserConfig<Theme = BaseTheme> {
 }
 
 interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
-  propertyAlias: keyof Theme | keyof CSSProperties;
-  canBeNegative: boolean;
+  propertyAlias: MaybeArray<keyof Theme>;
+  canBeNegative?: boolean | undefined;
 }
 export type Rule<Theme extends BaseTheme = BaseTheme> =
-  | [pattern: string, alias: string & {}]
-  | [pattern: string, alias: (string & {})[]]
-  | [pattern: string, alias: keyof Theme]
-  | [pattern: string, property: keyof CSSProperties]
-  | [pattern: string, css: CSSObject]
-  | [pattern: string, config: RuleConfig<Theme>];
+  //   | [pattern: string, alias: string & {}]
+  //   | [pattern: string, alias: keyof Theme];
+  // // | [pattern: string, property: keyof CSSProperties]
+  // // | [pattern: string, css: CSSObject]
+  [pattern: MaybeArray<string>, config: RuleConfig<Theme>];
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;
