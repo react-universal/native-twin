@@ -9,7 +9,6 @@ import {
 } from './rules/color.rules';
 import { matchTypographyUtils } from './rules/typography';
 import { matchFlexUtils } from './rules/flex';
-import { createThemeFunction } from '../theme/theme.context';
 
 // const parseColors = P.choice([]);
 const parseOthers = P.choice([matchTypographyUtils, matchFlexUtils, matchOpacityRule]);
@@ -23,7 +22,6 @@ function resolveTokens<Theme extends BaseTheme = BaseTheme>(
     if (typeof colorPalette[x] === 'object') return [];
     return x;
   });
-  createThemeFunction(theme);
   const colorsParser = createColorParsers(['bg-', 'text-'], colorKeys);
 
   return P.separatedBy(P.whitespace)(P.choice([colorsParser, parseOthers])).run(tokens);

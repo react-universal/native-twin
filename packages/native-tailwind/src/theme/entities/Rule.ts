@@ -4,41 +4,34 @@ import { BaseTheme } from '../../theme.types';
 
 export class RuleHandler<Theme extends BaseTheme = BaseTheme> {
   ruleConfig: Rule<Theme>;
-  themeValues: Record<string, string> = {};
+  themeValues: Record<string, any> = {};
   constructor(themeRule: Rule<Theme>) {
     this.ruleConfig = themeRule;
   }
 
   extractThemeValues(ctx: Context<Theme>) {
-    const themeObj: Record<string, any> = {};
     for (const pattern of toArray(this.ruleConfig[0])) {
-      if (!pattern.endsWith('-')) {
-        for (const section of toArray(this.ruleConfig[1].propertyAlias)) {
+      for (const section of toArray(this.ruleConfig[1].propertyAlias)) {
+        if (!pattern.endsWith('-')) {
           let rawValue = ctx.theme(section, [pattern]);
           if (typeof rawValue == 'function') rawValue = rawValue(ctx);
-          if (typeof rawValue == 'string') {
-            themeObj[pattern] = {
-              [section]: rawValue,
-            };
-            continue;
-          }
+          this.themeValues[pattern] = {
+            [section]: rawValue,
+          };
+          continue;
         }
-        continue;
-      }
-      for (const section of toArray(this.ruleConfig[1].propertyAlias)) {
         let rawValue = ctx.theme(section);
         if (typeof rawValue == 'function') rawValue = rawValue(ctx);
         const themeValue = flattenObject(rawValue);
         for (const key in themeValue) {
           if (typeof themeValue[key] == 'string') {
-            themeObj[`${pattern}${key}`] = {
+            this.themeValues[`${pattern}${key}`] = {
               [section]: themeValue[key],
             };
           }
         }
       }
     }
-    this.themeValues = themeObj;
     return this.themeValues;
   }
 }
@@ -51,7 +44,6 @@ function flattenObject(theme: any, path: string[] = []) {
 
     let keyPath = [...path, key];
     if (value) {
-      // a-
       flatten[keyPath.join('-')] = value;
     }
 

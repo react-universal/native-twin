@@ -25,15 +25,10 @@ export function createTailwind<Theme = BaseTheme>({
     },
   }) as TailwindConfig<BaseTheme>;
   const context = createThemeContext<BaseTheme>(config);
-  createRulePatterns().map((x) => x.extractThemeValues(context));
+  // createRulePatterns().map((x) => x.extractThemeValues(context));
   return context;
 
   function createRulePatterns() {
     return config.rules.map((x) => new RuleHandler(x));
   }
 }
-
-const tailwind = createTailwind({ ignorelist: [], rules: [], theme: {} });
-
-tailwind.theme('colors', ['blue', '50']); // ?
-tailwind.theme('colors', ['blue', '300']); // ?

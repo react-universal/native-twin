@@ -4,7 +4,6 @@ import { BaseTheme, ThemeConfig, ThemeFunction } from '../theme.types';
 export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   theme: themeConfig,
 }: TailwindConfig<Theme>): Context<Theme> {
-  createThemeFunction(themeConfig);
   const ctx: Context<Theme> = {
     theme: createThemeFunction(themeConfig),
     r(_value, _isDark) {
@@ -15,11 +14,10 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   return ctx;
 }
 
-export function createThemeFunction<Theme extends BaseTheme = BaseTheme>({
+function createThemeFunction<Theme extends BaseTheme = BaseTheme>({
   extend = {},
   ...baseConfig
 }: ThemeConfig<Theme>) {
-  // console.log('sad', theme('colors', []));
   return theme as ThemeFunction<Theme>;
 
   function theme(
