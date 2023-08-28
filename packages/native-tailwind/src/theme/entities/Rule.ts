@@ -1,3 +1,4 @@
+import * as P from '@universal-labs/css/parser';
 import { toArray } from '../../common/fn.helpers';
 import { Context, Rule } from '../../config.types';
 import { BaseTheme } from '../../theme.types';
@@ -5,8 +6,17 @@ import { BaseTheme } from '../../theme.types';
 export class RuleHandler<Theme extends BaseTheme = BaseTheme> {
   ruleConfig: Rule<Theme>;
   themeValues: Record<string, any> = {};
+  isColor = false;
   constructor(themeRule: Rule<Theme>) {
     this.ruleConfig = themeRule;
+  }
+
+  parser() {
+    const patterns = Object.keys(this.themeValues);
+    return P.choice(patterns.map((x) => P.literal(x))).map((x: string) => ({
+      rule: this.ruleConfig,
+      value: x,
+    }));
   }
 
   extractThemeValues(ctx: Context<Theme>) {

@@ -92,6 +92,7 @@ export const parseRawClassTokens = P.coroutine((run) => {
           return createRule(
             {
               ...baseToken,
+              variants: [...baseToken.variants, ...rule.variants],
               name: rule.name,
               important: rule.important || baseToken.important,
             },

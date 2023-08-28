@@ -11,6 +11,7 @@ export interface ClassGroupToken {
   readonly important: boolean;
   readonly name: string;
   readonly variant: boolean;
+  readonly variants: string[];
   readonly list: (ClassNameToken | ClassGroupToken)[];
 }
 

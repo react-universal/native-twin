@@ -14,6 +14,7 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   return ctx;
 }
 
+/** Resolved theme values on the theme config */
 function createThemeFunction<Theme extends BaseTheme = BaseTheme>({
   extend = {},
   ...baseConfig

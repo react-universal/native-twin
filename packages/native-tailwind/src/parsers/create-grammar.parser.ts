@@ -1,7 +1,5 @@
 import * as P from '@universal-labs/css/parser';
 import { BaseTheme, MaybeColorValue, ThemeConfig } from '../theme.types';
-import * as colors from '../theme/colors';
-import { baseTailwindTheme } from '../theme/baseTheme';
 import {
   createColorParsers,
   flattenColorPalette,
@@ -26,9 +24,3 @@ function resolveTokens<Theme extends BaseTheme = BaseTheme>(
 
   return P.separatedBy(P.whitespace)(P.choice([colorsParser, parseOthers])).run(tokens);
 }
-
-resolveTokens(
-  { colors, ...baseTailwindTheme },
-  'bg-gray-200 text-blue-200/[0.1] opacity-2 text-lg justify-center',
-);
-// ?
