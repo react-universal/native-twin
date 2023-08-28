@@ -89,20 +89,9 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     px: '1px',
     0: '0px',
     .../* #__PURE__ */ createLinearUnits(4, 'rem', 4, 0.5, 0.5),
-    // 0.5: '0.125rem',
-    // ...
-    // 4: '1rem',
     .../* #__PURE__ */ createLinearUnits(12, 'rem', 4, 5),
-    // 5: '1.25rem',
-    // ...
-    // 12: '3rem',
     14: '3.5rem',
     .../* #__PURE__ */ createLinearUnits(64, 'rem', 4, 16, 4),
-    // 16: '4rem',
-    // 20: '5rem',
-    // ...
-    // 60: '15rem',
-    // 64: '16rem',
     72: '18rem',
     80: '20rem',
     96: '24rem',
@@ -139,7 +128,6 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   backdropSaturate: /* #__PURE__ */ themeAlias('saturate'),
   backdropSepia: /* #__PURE__ */ themeAlias('sepia'),
 
-  backgroundColor: /* #__PURE__ */ themeAlias('colors'),
   backgroundImage: {
     none: 'none',
     // These are built-in
@@ -208,9 +196,6 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   borderWidth: {
     DEFAULT: '1px',
     .../* #__PURE__ */ createExponentialUnits(8, 'px'),
-    // 0: '0px',
-    // ...
-    // 8: '8px',
   },
   boxShadow: {
     sm: '0 1px 2px 0 rgba(0,0,0,0.05)',
@@ -234,9 +219,6 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   }),
   contrast: {
     .../* #__PURE__ */ createLinearUnits(200, '', 100, 0, 50),
-    // 0: '0',
-    // ...
-    // 200: '2',
     75: '0.75',
     125: '1.25',
   },
@@ -284,14 +266,8 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   flexBasis: ({ theme }) => ({
     ...theme('spacing'),
     ...createPercentRatios(2, 6),
-    // '1/2': '50%',
-    // ...
-    // '5/6': '83.333333%',
 
     ...createPercentRatios(12, 12),
-    // '1/12': '8.333333%',
-    // ...
-    // '11/12': '91.666667%',
 
     auto: 'auto',
     full: '100%',
@@ -428,9 +404,6 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   height: ({ theme }) => ({
     ...theme('spacing'),
     ...createPercentRatios(2, 6),
-    // '1/2': '50%',
-    // ...
-    // '5/6': '83.333333%',
     min: 'min-content',
     max: 'max-content',
     fit: 'fit-content',
@@ -441,9 +414,6 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   inset: ({ theme }) => ({
     ...theme('spacing'),
     ...createPercentRatios(2, 4),
-    // '1/2': '50%',
-    // ...
-    // '3/4': '75%',
     auto: 'auto',
     full: '100%',
   }),
@@ -495,9 +465,6 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   },
   lineHeight: {
     .../* #__PURE__ */ createLinearUnits(10, 'rem', 4, 3),
-    // 3: '.75rem',
-    // ...
-    // 10: '2.5rem',
     none: '1',
     tight: '1.25',
     snug: '1.375',
@@ -561,19 +528,12 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   // },
   opacity: {
     .../* #__PURE__ */ createLinearUnits(100, '', 100, 0, 10),
-    // 0: '0',
-    // ...
-    // 100: '1',
     5: '0.05',
     25: '0.25',
     75: '0.75',
     95: '0.95',
   },
   order: {
-    // Handled by plugin
-    // 1: '1',
-    // ...
-    // 12: '12',
     first: '-9999',
     last: '9999',
     none: '0',
@@ -583,22 +543,13 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   placeholderOpacity: /* #__PURE__ */ themeAlias('opacity'),
   outlineColor: /* #__PURE__ */ themeAlias('colors'),
   outlineOffset: /* #__PURE__ */ createExponentialUnits(8, 'px'),
-  // 0: '0px',
-  // ...
-  // 8: '8px',,
   outlineWidth: /* #__PURE__ */ createExponentialUnits(8, 'px'),
-  // 0: '0px',
-  // ...
-  // 8: '8px',
   ringColor: ({ theme }) => ({
     ...theme('colors'),
     DEFAULT: '#3b82f6',
   }),
   ringOffsetColor: /* #__PURE__ */ themeAlias('colors'),
   ringOffsetWidth: /* #__PURE__ */ createExponentialUnits(8, 'px'),
-  // 0: '0px',
-  // ...
-  // 8: '8px',,
   ringOpacity: ({ theme }) => ({
     ...theme('opacity'),
     DEFAULT: '0.5',
@@ -606,37 +557,16 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   ringWidth: {
     DEFAULT: '3px',
     .../* #__PURE__ */ createExponentialUnits(8, 'px'),
-    // 0: '0px',
-    // ...
-    // 8: '8px',
   },
   rotate: {
     .../* #__PURE__ */ createExponentialUnits(2, 'deg'),
-    // 0: '0deg',
-    // 1: '1deg',
-    // 2: '2deg',
     .../* #__PURE__ */ createExponentialUnits(12, 'deg', 3),
-    // 3: '3deg',
-    // 6: '6deg',
-    // 12: '12deg',
     .../* #__PURE__ */ createExponentialUnits(180, 'deg', 45),
-    // 45: '45deg',
-    // 90: '90deg',
-    // 180: '180deg',
   },
   saturate: /* #__PURE__ */ createLinearUnits(200, '', 100, 0, 50),
-  // 0: '0',
-  // ...
-  // 200: '2',
   scale: {
     .../* #__PURE__ */ createLinearUnits(150, '', 100, 0, 50),
-    // 0: '0',
-    // 50: '.5',
-    // 150: '1.5',
     .../* #__PURE__ */ createLinearUnits(110, '', 100, 90, 5),
-    // 90: '.9',
-    // ...
-    // 110: '1.1',
     75: '0.75',
     125: '1.25',
   },
@@ -648,13 +578,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   },
   skew: {
     .../* #__PURE__ */ createExponentialUnits(2, 'deg'),
-    // 0: '0deg',
-    // 1: '1deg',
-    // 2: '2deg',
     .../* #__PURE__ */ createExponentialUnits(12, 'deg', 3),
-    // 3: '3deg',
-    // 6: '6deg',
-    // 12: '12deg',
   },
   space: /* #__PURE__ */ themeAlias('spacing'),
   stroke: ({ theme }) => ({
@@ -662,10 +586,6 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     none: 'none',
   }),
   strokeWidth: /* #__PURE__ */ createLinearUnits(2),
-  // 0: '0',
-  // 1: '1',
-  // 2: '2',,
-  textColor: /* #__PURE__ */ themeAlias('colors'),
   textAlign: {
     left: 'left',
     center: 'center',
@@ -679,16 +599,10 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     'from-font': 'from-font',
     auto: 'auto',
     .../* #__PURE__ */ createExponentialUnits(8, 'px'),
-    // 0: '0px',
-    // ...
-    // 8: '8px',
   },
   textUnderlineOffset: {
     auto: 'auto',
     .../* #__PURE__ */ createExponentialUnits(8, 'px'),
-    // 0: '0px',
-    // ...
-    // 8: '8px',
   },
   textIndent: /* #__PURE__ */ themeAlias('spacing'),
   textOpacity: /* #__PURE__ */ themeAlias('opacity'),
@@ -722,9 +636,6 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   translate: ({ theme }) => ({
     ...theme('spacing'),
     ...createPercentRatios(2, 4),
-    // '1/2': '50%',
-    // ...
-    // '3/4': '75%',
     full: '100%',
   }),
   width: ({ theme }) => ({
@@ -743,9 +654,6 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   },
   zIndex: {
     .../* #__PURE__ */ createLinearUnits(50, '', 1, 0, 10),
-    // 0: '0',
-    // ...
-    // 50: '50',
     auto: 'auto',
   },
 };

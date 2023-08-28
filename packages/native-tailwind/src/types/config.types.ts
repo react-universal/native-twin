@@ -1,6 +1,6 @@
-import { CSSProperties } from './css.types';
+import { CSSObject, CSSProperties } from './css.types';
 import { BaseTheme, ThemeConfig, ThemeFunction, ThemeSectionResolver } from './theme.types';
-import { MaybeArray, UnionToIntersection } from './util.types';
+import { Falsey, MaybeArray, UnionToIntersection } from './util.types';
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;
@@ -26,18 +26,23 @@ export interface TailwindUserConfig<Theme = BaseTheme> {
   ignorelist: string[];
 }
 
+export type RuleResult = string | CSSObject | Falsey;
+export type RuleResolver<Theme extends BaseTheme = BaseTheme> = (
+  match: any,
+  context: Context<Theme>,
+) => RuleResult;
+
 export interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
   themeAlias: keyof Theme;
   propertyAlias?: keyof CSSProperties;
   canBeNegative?: boolean | undefined;
   isColor?: boolean | undefined;
+  resolver?: RuleResolver<Theme> | undefined;
 }
-export type Rule<Theme extends BaseTheme = BaseTheme> =
-  //   | [pattern: string, alias: string & {}]
-  //   | [pattern: string, alias: keyof Theme];
-  // // | [pattern: string, property: keyof CSSProperties]
-  // // | [pattern: string, css: CSSObject]
-  [pattern: MaybeArray<string>, config: RuleConfig<Theme>];
+export type Rule<Theme extends BaseTheme = BaseTheme> = [
+  pattern: MaybeArray<string>,
+  config: RuleConfig<Theme>,
+];
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;

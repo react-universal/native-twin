@@ -33,4 +33,4 @@ export function createTailwind<Theme = BaseTheme, Target = unknown>(
 }
 
 const tw = createTailwind({ ignorelist: [] }, virtual(true));
-tw('bg-black md:(bg-blue-200/10) text-blue-200 text-center'); //?
+tw('bg-black md:(bg-blue-200/10) text-blue-200 text-lg'); //?

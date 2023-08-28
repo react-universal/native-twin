@@ -1,4 +1,3 @@
-// import * as P from '@universal-labs/css/parser';
 import { toArray } from '../../common/fn.helpers';
 import { Context, Rule, RuleConfig } from '../../types/config.types';
 import { BaseTheme } from '../../types/theme.types';
@@ -35,36 +34,15 @@ export class RuleHandler<Theme extends BaseTheme = BaseTheme> {
     if (!value) {
       return null;
     }
-    return {
+    if (this.ruleConfig.resolver) {
+      return this.ruleConfig.resolver(value, ctx);
+    }
+    const result = {
       [this.ruleConfig.propertyAlias ?? this.ruleConfig.themeAlias]: value ?? followingMatch,
     };
+    this.cache.set(token, result);
+    return this.cache.get(token)!;
   }
-
-  // extractThemeValues(ctx: Context<Theme>) {
-  //   for (const pattern of toArray(this.basePatterns)) {
-  //     for (const section of toArray(this.ruleConfig.propertyAlias)) {
-  //       if (!pattern.endsWith('-')) {
-  //         let rawValue = ctx.theme(section, [pattern]);
-  //         if (typeof rawValue == 'function') rawValue = rawValue(ctx);
-  //         this.themeValues[pattern] = {
-  //           [section]: rawValue,
-  //         };
-  //         continue;
-  //       }
-  //       let rawValue = ctx.theme(section);
-  //       if (typeof rawValue == 'function') rawValue = rawValue(ctx);
-  //       const themeValue = flattenObject(rawValue);
-  //       for (const key in themeValue) {
-  //         if (typeof themeValue[key] == 'string') {
-  //           this.themeValues[`${pattern}${key}`] = {
-  //             [section]: themeValue[key],
-  //           };
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return this.themeValues;
-  // }
 }
 
 // function flattenObject(theme: any, path: string[] = []) {

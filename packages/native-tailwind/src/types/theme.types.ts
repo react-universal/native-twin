@@ -101,7 +101,6 @@ export interface BaseTheme {
   backdropOpacity: Record<string, string>;
   backdropSaturate: Record<string, string>;
   backdropSepia: Record<string, string>;
-  backgroundColor: BaseTheme['colors'];
   backgroundImage: Record<string, MaybeArray<string>>;
   backgroundOpacity: Record<string, string>;
   backgroundPosition: Record<string, string>;
@@ -190,7 +189,6 @@ export interface BaseTheme {
   stroke: BaseTheme['colors'];
   strokeWidth: Record<string, string>;
   supports: Record<string, string>;
-  textColor: BaseTheme['colors'];
   textAlign: Record<string, string>;
   textDecorationColor: BaseTheme['colors'];
   textDecorationThickness: Record<string, string>;

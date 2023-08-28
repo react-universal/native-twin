@@ -23,11 +23,27 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
   // SPACING
   [['p-', 'px-', 'py-'], { themeAlias: 'padding', canBeNegative: true }],
   [['m-', 'mx-', 'my-'], { themeAlias: 'margin', canBeNegative: true }],
-  ['leading-', { themeAlias: 'lineHeight' }],
 
   // FONT
   ['font-', { themeAlias: 'fontWeight' }],
+  ['leading-', { themeAlias: 'lineHeight' }],
   // TEXT
   ['text-', { themeAlias: 'textAlign' }],
-  ['text-', { themeAlias: 'fontSize' }],
+  [
+    'text-',
+    {
+      themeAlias: 'fontSize',
+      resolver(match) {
+        if (typeof match == 'string') {
+          return {
+            fontSize: match,
+          };
+        }
+        return {
+          fontSize: match[0],
+          lineHeight: match[1],
+        };
+      },
+    },
+  ],
 ];
