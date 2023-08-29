@@ -39,6 +39,11 @@ export interface ParsedRule {
    * Something like `!underline` or `!bg-red-500` or `!red-500`
    */
   readonly i?: boolean;
+
+  /**
+   * Something like `!underline` or `!bg-red-500` or `!red-500`
+   */
+  readonly m?: any;
 }
 
 export interface SortableRule {

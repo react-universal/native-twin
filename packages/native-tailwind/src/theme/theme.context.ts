@@ -1,28 +1,30 @@
+import { RuleHandler } from '../css/Rule';
 import { Context, TailwindConfig } from '../types/config.types';
 import { BaseTheme, ThemeConfig, ThemeFunction } from '../types/theme.types';
-import { RuleHandler } from './entities/Rule';
 
 export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   theme: themeConfig,
   rules,
 }: TailwindConfig<Theme>): Context<Theme> {
-  const ruleHandlers = rules.map((x) => new RuleHandler(x));
+  const ruleHandlers: RuleHandler<Theme>[] = [];
+  const cache = new Map<string, any>();
   const ctx: Context<Theme> = {
     theme: createThemeFunction(themeConfig),
     r(token) {
+      if (cache.has(token)) {
+        return cache.get(token);
+      }
+      if (ruleHandlers.length == 0) {
+        for (const rule of rules) {
+          ruleHandlers.push(new RuleHandler(rule));
+        }
+      }
       for (const current of ruleHandlers) {
-        const nextToken = current.testToken(token, ctx);
+        const nextToken = current.resolve(token, ctx);
         if (nextToken) {
+          cache.set(token, nextToken);
           return nextToken;
         }
-        // if (Object.keys(current.themeValues).length == 0) {
-        //   console.log('HAS_N', current);
-        //   current.extractThemeValues(ctx);
-        // }
-        // const result = current.parser().run(token);
-        // if (!result.isError) {
-        //   return result;
-        // }
       }
       return null;
     },
@@ -59,5 +61,3 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
     }
   }
 }
-
-/** Resolved theme values on the theme config */

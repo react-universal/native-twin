@@ -52,6 +52,10 @@ const parseClassGroup = P.sequenceOf([
 ]).map(
   (x): ClassGroupToken => ({
     ...x[0],
+    name:
+      x[0].name != '' && !x[0].variant && !x[0].name.endsWith('-')
+        ? `${x[0].name}-`
+        : x[0].name,
     type: 'GROUP',
     list: x[2],
   }),
@@ -113,9 +117,14 @@ export const parseRawClassTokens = P.coroutine((run) => {
         }
         return createRule(baseToken, rule);
       }
+      // console.log('BB: ', { baseToken, rule });
+      let newToken = { ...baseToken };
+      if (!newToken.variant && !newToken.name.endsWith('-')) {
+        newToken.name = `${newToken.name}-`;
+      }
       return [
         {
-          n: parseClassNameTokens(baseToken, rule),
+          n: parseClassNameTokens(newToken, rule),
           v: baseToken.variants,
           i: baseToken.important || rule.important,
           m: rule.modifiers,

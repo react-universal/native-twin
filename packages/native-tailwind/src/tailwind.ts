@@ -3,7 +3,7 @@ import { defineConfig } from './config/define-config';
 import { BaseTheme } from './types/theme.types';
 import { createThemeContext } from './theme/theme.context';
 import { StringLike } from './types/util.types';
-import { Sheet, virtual } from './css/sheets';
+import { Sheet } from './css/sheets';
 import { parseRawRules } from './parsers/class-names';
 
 export function createTailwind<Theme = BaseTheme, Target = unknown>(
@@ -31,6 +31,3 @@ export function createTailwind<Theme = BaseTheme, Target = unknown>(
     }),
   );
 }
-
-const tw = createTailwind({ ignorelist: [] }, virtual(true));
-tw('bg-black md:(bg-blue-200/10) text-blue-200 text-lg'); //?

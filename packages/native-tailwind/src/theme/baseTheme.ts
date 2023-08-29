@@ -164,14 +164,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   },
   brightness: {
     .../* #__PURE__ */ createLinearUnits(200, '', 100, 0, 50),
-    // 0: '0',
-    // ...
-    // 200: '2',
-
     .../* #__PURE__ */ createLinearUnits(110, '', 100, 90, 5),
-    // 90: '.9',
-    // ...
-    // 110: '1.1',
     75: '0.75',
     125: '1.25',
   },

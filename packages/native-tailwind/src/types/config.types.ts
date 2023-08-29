@@ -1,6 +1,6 @@
 import { CSSObject, CSSProperties } from './css.types';
 import { BaseTheme, ThemeConfig, ThemeFunction, ThemeSectionResolver } from './theme.types';
-import { Falsey, MaybeArray, UnionToIntersection } from './util.types';
+import { Falsey, UnionToIntersection } from './util.types';
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;
@@ -8,6 +8,11 @@ export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   rules: Rule<Theme>[];
 
   ignorelist: string[];
+
+  root?: {
+    /** Default 16px */
+    rem: number;
+  };
 }
 
 export type ExtractUserTheme<T> = {
@@ -27,8 +32,9 @@ export interface TailwindUserConfig<Theme = BaseTheme> {
 }
 
 export type RuleResult = string | CSSObject | Falsey;
+
 export type RuleResolver<Theme extends BaseTheme = BaseTheme> = (
-  match: any,
+  match: RegExpExecArray,
   context: Context<Theme>,
 ) => RuleResult;
 
@@ -39,10 +45,9 @@ export interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
   isColor?: boolean | undefined;
   resolver?: RuleResolver<Theme> | undefined;
 }
-export type Rule<Theme extends BaseTheme = BaseTheme> = [
-  pattern: MaybeArray<string>,
-  config: RuleConfig<Theme>,
-];
+export type Rule<Theme extends BaseTheme = BaseTheme> =
+  | [pattern: string | RegExp, config: RuleConfig<Theme>]
+  | [pattern: string | RegExp, resolver: RuleResolver<Theme>];
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;

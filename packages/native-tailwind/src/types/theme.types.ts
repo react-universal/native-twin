@@ -35,9 +35,9 @@ export type ThemeConfig<Theme extends BaseTheme = BaseTheme> = PartialTheme<Them
 export interface ThemeFunction<Theme extends BaseTheme = BaseTheme> {
   <Section extends keyof Theme>(section: Section | KebabCase<Section>): Theme[Section];
   <Section extends keyof Theme>(
-    section: Section | KebabCase<Section>,
+    section: Section | KebabCase<Section> | (string & {}),
     segments: string[],
-  ): ThemeValue<Theme[Section]>;
+  ): ThemeValue<Theme[Section]> | any;
 }
 
 /* THEME VALUES */
