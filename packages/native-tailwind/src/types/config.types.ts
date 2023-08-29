@@ -1,6 +1,11 @@
-import { CSSObject, CSSProperties } from './css.types';
-import { BaseTheme, ThemeConfig, ThemeFunction, ThemeSectionResolver } from './theme.types';
-import { Falsey, UnionToIntersection } from './util.types';
+import type { CSSObject, CSSProperties } from './css.types';
+import type {
+  BaseTheme,
+  ThemeConfig,
+  ThemeFunction,
+  ThemeSectionResolver,
+} from './theme.types';
+import type { Falsey, UnionToIntersection } from './util.types';
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;
@@ -38,12 +43,15 @@ export type RuleResolver<Theme extends BaseTheme = BaseTheme> = (
   context: Context<Theme>,
 ) => RuleResult;
 
+export type PlatformSupport = 'native' | 'web';
+
 export interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
   themeAlias: keyof Theme;
   propertyAlias?: keyof CSSProperties;
   canBeNegative?: boolean | undefined;
   isColor?: boolean | undefined;
   resolver?: RuleResolver<Theme> | undefined;
+  support: PlatformSupport[];
 }
 export type Rule<Theme extends BaseTheme = BaseTheme> =
   | [pattern: string | RegExp, config: RuleConfig<Theme>]

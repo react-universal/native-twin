@@ -3,7 +3,7 @@ import { parseClassNameTokens } from './parser.utils';
 import { ParsedRule, ClassGroupToken, ClassNameToken } from '../../types/parser.types';
 import { matchArbitrary } from '../common.parsers';
 
-const regexIdent = /^[_a-z0-9A-Z-!]+/;
+const regexIdent = /^[_a-z0-9A-Z-!.]+/;
 const regexVariantIdent = /^[_a-z0-9A-Z-!]+[:]/;
 
 const matchColorModifier = P.sequenceOf([

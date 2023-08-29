@@ -4,15 +4,31 @@ import { BaseTheme } from '../types/theme.types';
 
 export const tailwindBaseRules: Rule<BaseTheme>[] = [
   // COLOR UTILS
-  ['bg-', { themeAlias: 'colors', propertyAlias: 'backgroundColor', isColor: true }],
-  ['text-', { themeAlias: 'colors', propertyAlias: 'color', isColor: true }],
+  [
+    'bg-',
+    {
+      themeAlias: 'colors',
+      propertyAlias: 'backgroundColor',
+      isColor: true,
+      support: ['native', 'web'],
+    },
+  ],
+  [
+    'text-',
+    {
+      themeAlias: 'colors',
+      propertyAlias: 'color',
+      isColor: true,
+      support: ['native', 'web'],
+    },
+  ],
   // FLEX
-  ['flex-', { themeAlias: 'flex' }],
-  ['flex-', { themeAlias: 'flexDirection' }],
-  ['items-', { themeAlias: 'alignItems' }],
-  ['self-', { themeAlias: 'alignSelf' }],
-  ['content-', { themeAlias: 'placeContent' }],
-  ['justify-', { themeAlias: 'justifyItems' }],
+  ['flex-', { themeAlias: 'flex', support: ['native', 'web'] }],
+  ['flex-', { themeAlias: 'flexDirection', support: ['native', 'web'] }],
+  ['items-', { themeAlias: 'alignItems', support: ['native', 'web'] }],
+  ['self-', { themeAlias: 'alignSelf', support: ['native', 'web'] }],
+  ['content-', { themeAlias: 'placeContent', support: ['native', 'web'] }],
+  ['justify-', { themeAlias: 'justifyItems', support: ['native', 'web'] }],
 
   // GAP
   [
@@ -30,9 +46,9 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
   // // LAYOUT
   [
     /aspect-(video|square)/,
-    (match, context) => {
+    ({ 1: $1 }, context) => {
       return {
-        aspectRatio: context.theme('aspectRatio', [match[1]]),
+        aspectRatio: context.theme('aspectRatio', [$1]),
       };
     },
   ],
@@ -46,18 +62,23 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
   ],
 
   // SPACING
-  [/p([xytrbl])-?(.*)/, edge('padding', 'padding')],
-  ['-?m(-[xytrbl])', { themeAlias: 'margin', canBeNegative: true }],
+  [/p([xytrbl]?)-?(.*)/, edge('padding', 'padding')],
+  [
+    /-?m([xytrbl]?)-?(.*)/,
+    edge('margin', 'margin'),
+    // { themeAlias: 'margin', canBeNegative: true, support: ['native', 'web'] },
+  ],
 
   // FONT
-  ['font-', { themeAlias: 'fontWeight' }],
-  ['leading-', { themeAlias: 'lineHeight' }],
+  ['font-', { themeAlias: 'fontWeight', support: ['native', 'web'] }],
+  ['leading-', { themeAlias: 'lineHeight', support: ['native', 'web'] }],
   // TEXT
-  ['text-', { themeAlias: 'textAlign' }],
+  ['text-', { themeAlias: 'textAlign', support: ['native', 'web'] }],
   [
     'text-',
     {
       themeAlias: 'fontSize',
+      support: ['native', 'web'],
       resolver(match) {
         if (typeof match == 'string') {
           return {
@@ -90,7 +111,6 @@ function edge(property: string, propertyPrefix: string, propertySuffix = ''): Ru
         x: 'lr',
         y: 'tb',
       }[$1 as 'x' | 'y'] || $1 + $1;
-
     return edges
       ? {
           [propertyPrefix + '-' + position(edges[0]) + propertySuffix]: context.theme(

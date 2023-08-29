@@ -11,7 +11,8 @@ export class RuleHandler<Theme extends BaseTheme = BaseTheme> {
   }
 
   resolve(token: string, ctx: Context<Theme>) {
-    const match = toCondition(this.basePattern).exec(token);
+    const condition = toCondition(this.basePattern);
+    const match = condition.exec(token);
     if (!match) return null;
     if (typeof this.basePattern == 'string' && typeof this.ruleConfig == 'object') {
       if (token.startsWith('-') && !this.ruleConfig.canBeNegative) return null;
