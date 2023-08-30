@@ -38,8 +38,12 @@ export interface TailwindUserConfig<Theme = BaseTheme> {
 
 export type RuleResult = string | CSSObject | Falsey;
 
+export type ExpArrayMatchResult = RegExpExecArray & {
+  $$: string;
+};
+
 export type RuleResolver<Theme extends BaseTheme = BaseTheme> = (
-  match: RegExpExecArray,
+  match: ExpArrayMatchResult,
   context: Context<Theme>,
 ) => RuleResult;
 
@@ -49,13 +53,11 @@ export interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
   themeAlias: keyof Theme;
   propertyAlias?: keyof CSSProperties;
   canBeNegative?: boolean | undefined;
-  isColor?: boolean | undefined;
   resolver?: RuleResolver<Theme> | undefined;
   support: PlatformSupport[];
 }
 export type Rule<Theme extends BaseTheme = BaseTheme> =
-  | [pattern: string | RegExp, config: RuleConfig<Theme>]
-  | [pattern: string | RegExp, resolver: RuleResolver<Theme>];
+  | [pattern: string | RegExp, config: RuleConfig<Theme>];
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;

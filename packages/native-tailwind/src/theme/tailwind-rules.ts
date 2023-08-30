@@ -9,7 +9,6 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     {
       themeAlias: 'colors',
       propertyAlias: 'backgroundColor',
-      isColor: true,
       support: ['native', 'web'],
     },
   ],
@@ -18,7 +17,6 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     {
       themeAlias: 'colors',
       propertyAlias: 'color',
-      isColor: true,
       support: ['native', 'web'],
     },
   ],
@@ -33,38 +31,57 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
   // GAP
   [
     /gap-([xy]?)-?(.*)/,
-    ({ 1: $axis, 2: $value }, context) => {
-      if (!$value) return null;
-      let prop = 'gap';
-      if ($axis == 'x') prop = 'rowGap';
-      if ($axis == 'y') prop = 'columnGap';
-      return {
-        [prop]: context.theme('gap', $value),
-      } as CSSObject;
+    {
+      themeAlias: 'gap',
+      support: ['native', 'web'],
+      resolver: ({ 1: $axis, 2: $value }, context) => {
+        if (!$value) return null;
+        let prop = 'gap';
+        if ($axis == 'x') prop = 'rowGap';
+        if ($axis == 'y') prop = 'columnGap';
+        return {
+          [prop]: context.theme('gap', $value),
+        } as CSSObject;
+      },
     },
   ],
 
   // // LAYOUT
   [
     /aspect-(video|square)/,
-    ({ 1: $1 }, context) => {
-      if (!$1) return null;
-      return {
-        aspectRatio: context.theme('aspectRatio', $1),
-      };
+    {
+      support: [],
+      themeAlias: 'aspectRatio',
+      resolver: ({ 1: $1 }, context) => {
+        if (!$1) return null;
+        return {
+          aspectRatio: context.theme('aspectRatio', $1),
+        };
+      },
     },
   ],
   [
     '(hidden|flex)',
-    (match, context) => {
-      return {
-        display: context.theme('display', match[0]),
-      };
+    {
+      themeAlias: 'display',
+      support: ['native', 'web'],
+      resolver: (match, context) => {
+        return {
+          display: context.theme('display', match[0]),
+        };
+      },
     },
   ],
 
   // SPACING
-  [/p([xytrbl]?)-?(.*)/, edge('padding', 'padding')],
+  [
+    /p([xytrbl]?)-?(.*)/,
+    {
+      themeAlias: 'padding',
+      support: ['native', 'web'],
+      resolver: edge('padding', 'padding'),
+    },
+  ],
   [
     /-?m([xytrbl]?)-?(.*)/,
 
@@ -87,15 +104,20 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     {
       themeAlias: 'fontSize',
       support: ['native', 'web'],
-      resolver(match) {
-        if (typeof match == 'string') {
+      resolver(match, ctx) {
+        const value = ctx.theme('fontSize', match.$$);
+        if (!value) return null;
+        if (typeof value[1] == 'string') {
           return {
-            fontSize: match,
+            'font-size': value[0]!,
+            'line-height': value[1]!,
           };
         }
         return {
-          fontSize: match[0],
-          lineHeight: match[1],
+          'font-size': value[0]!,
+          'line-height': value[1].lineHeight,
+          'font-weight': value[1].fontWeight,
+          'letter-spacing': value[1].letterSpacing,
         };
       },
     },

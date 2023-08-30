@@ -1,9 +1,9 @@
 import { toCondition } from '../theme/theme.utils';
-import { Context, Rule, RuleConfig, RuleResolver } from '../types/config.types';
+import { Context, ExpArrayMatchResult, Rule, RuleConfig } from '../types/config.types';
 import { BaseTheme } from '../types/theme.types';
 
 export class RuleHandler<Theme extends BaseTheme = BaseTheme> {
-  ruleConfig: RuleConfig<Theme> | RuleResolver<Theme>;
+  ruleConfig: RuleConfig<Theme>;
   private basePattern: string | RegExp;
   constructor(themeRule: Rule<Theme>) {
     this.ruleConfig = themeRule[1];
@@ -12,11 +12,15 @@ export class RuleHandler<Theme extends BaseTheme = BaseTheme> {
 
   resolve(token: string, ctx: Context<Theme>) {
     const condition = toCondition(this.basePattern);
-    const match = condition.exec(token);
+    let match = condition.exec(token) as ExpArrayMatchResult;
     if (!match) return null;
+    match.$$ = token.slice(match[0].length);
+    if (this.ruleConfig.resolver && typeof this.ruleConfig.resolver == 'function') {
+      return this.ruleConfig.resolver(match, ctx);
+    }
 
     // Rule is [pattern, RuleConfig]
-    if (typeof this.basePattern == 'string' && typeof this.ruleConfig == 'object') {
+    if (typeof this.basePattern == 'string') {
       if (token.startsWith('-') && !this.ruleConfig.canBeNegative) return null;
 
       const section = this.ruleConfig.themeAlias;
@@ -35,15 +39,6 @@ export class RuleHandler<Theme extends BaseTheme = BaseTheme> {
       return result;
     }
 
-    // Rule is [pattern, RuleResolver]
-    if (typeof this.ruleConfig == 'function') {
-      return this.ruleConfig(match, ctx);
-    }
-
-    // Rule is [pattern, RuleConfig with: {..., resolver: RuleResolver}]
-    if (this.ruleConfig.resolver && typeof this.ruleConfig.resolver == 'function') {
-      return this.ruleConfig.resolver(match, ctx);
-    }
     return null;
   }
 }
