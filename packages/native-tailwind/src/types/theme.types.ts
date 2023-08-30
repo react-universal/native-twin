@@ -45,9 +45,6 @@ export interface ThemeFunction<Theme extends BaseTheme = BaseTheme> {
     key?: string,
     defaultValue?: string,
   ): ThemeValue<Theme[Section]>;
-  // (section: string): unknown | undefined;
-  // (section: string, key: string): unknown | string | undefined;
-  // <T>(section: string, key: string, defaultValue: T): T | string;
 }
 
 /* THEME VALUES */
