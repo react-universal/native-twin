@@ -9,7 +9,6 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     {
       themeAlias: 'colors',
       propertyAlias: 'backgroundColor',
-      support: ['native', 'web'],
     },
   ],
   [
@@ -17,23 +16,21 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     {
       themeAlias: 'colors',
       propertyAlias: 'color',
-      support: ['native', 'web'],
     },
   ],
   // FLEX
-  ['flex-', { themeAlias: 'flex', support: ['native', 'web'] }],
-  ['flex-', { themeAlias: 'flexDirection', support: ['native', 'web'] }],
-  ['items-', { themeAlias: 'alignItems', support: ['native', 'web'] }],
-  ['self-', { themeAlias: 'alignSelf', support: ['native', 'web'] }],
-  ['content-', { themeAlias: 'placeContent', support: ['native', 'web'] }],
-  ['justify-', { themeAlias: 'justifyItems', support: ['native', 'web'] }],
+  ['flex-', { themeAlias: 'flex' }],
+  ['flex-', { themeAlias: 'flexDirection' }],
+  ['items-', { themeAlias: 'alignItems' }],
+  ['self-', { themeAlias: 'alignSelf' }],
+  ['content-', { themeAlias: 'placeContent' }],
+  ['justify-', { themeAlias: 'justifyItems' }],
 
   // GAP
   [
     /gap-([xy]?)-?(.*)/,
     {
       themeAlias: 'gap',
-      support: ['native', 'web'],
       resolver: ({ 1: $axis, 2: $value }, context) => {
         if (!$value) return null;
         let prop = 'gap';
@@ -46,11 +43,10 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     },
   ],
 
-  // // LAYOUT
+  // LAYOUT
   [
     /aspect-(video|square)/,
     {
-      support: [],
       themeAlias: 'aspectRatio',
       resolver: ({ 1: $1 }, context) => {
         if (!$1) return null;
@@ -64,7 +60,6 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     '(hidden|flex)',
     {
       themeAlias: 'display',
-      support: ['native', 'web'],
       resolver: (match, context) => {
         return {
           display: context.theme('display', match[0]),
@@ -78,7 +73,6 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     /p([xytrbl]?)-?(.*)/,
     {
       themeAlias: 'padding',
-      support: ['native', 'web'],
       resolver: edge('padding', 'padding'),
     },
   ],
@@ -89,21 +83,20 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
       themeAlias: 'margin',
       propertyAlias: 'margin',
       canBeNegative: true,
-      support: ['native', 'web'],
       resolver: edge('margin', 'margin'),
     },
   ],
 
   // FONT
-  ['font-', { themeAlias: 'fontWeight', support: ['native', 'web'] }],
-  ['leading-', { themeAlias: 'lineHeight', support: ['native', 'web'] }],
+  ['font-', { themeAlias: 'fontWeight' }],
+  ['leading-', { themeAlias: 'lineHeight' }],
   // TEXT
-  ['text-', { themeAlias: 'textAlign', support: ['native', 'web'] }],
+  ['text-', { themeAlias: 'textAlign' }],
   [
     'text-',
     {
       themeAlias: 'fontSize',
-      support: ['native', 'web'],
+
       resolver(match, ctx) {
         const value = ctx.theme('fontSize', match.$$);
         if (!value) return null;
@@ -136,12 +129,12 @@ function position(shorthand: string, separator = '-'): string {
 
 function edge(property: string, propertyPrefix: string, propertySuffix = ''): RuleResolver {
   return ({ 1: $1, 2: $2 }, context): any => {
-    if (!$1 || !$2) return null;
     const edges =
       {
         x: 'lr',
         y: 'tb',
-      }[$1 as 'x' | 'y'] || $1 + $1;
+      }[$1 as 'x' | 'y'] || $1! + $1!;
+    // if (!edges) return null;
     if (!edges[0] || !edges[1]) {
       return { [propertyPrefix + propertySuffix]: context.theme(property, $2) };
     }

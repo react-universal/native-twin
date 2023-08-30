@@ -54,7 +54,7 @@ export interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
   propertyAlias?: keyof CSSProperties;
   canBeNegative?: boolean | undefined;
   resolver?: RuleResolver<Theme> | undefined;
-  support: PlatformSupport[];
+  support?: PlatformSupport[];
 }
 export type Rule<Theme extends BaseTheme = BaseTheme> =
   | [pattern: string | RegExp, config: RuleConfig<Theme>];
@@ -76,4 +76,6 @@ export interface Context<Theme extends BaseTheme = BaseTheme> {
    *
    */
   r: (value: string, isDark?: boolean) => RuleResult;
+
+  isSupported: (support: PlatformSupport[]) => boolean;
 }

@@ -1,4 +1,5 @@
-import { RuleHandler } from '../css/Rule';
+import { Platform, PlatformOSType } from 'react-native';
+import { RuleHandler } from './Rule';
 import { Context, RuleResult, TailwindConfig } from '../types/config.types';
 import { BaseTheme, ThemeConfig, ThemeFunction } from '../types/theme.types';
 
@@ -8,15 +9,23 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
 }: TailwindConfig<Theme>): Context<Theme> {
   const ruleHandlers: RuleHandler<Theme>[] = [];
   const cache = new Map<string, RuleResult>();
+  const platform: PlatformOSType =
+    Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
   const ctx: Context<Theme> = {
     theme: createThemeFunction(themeConfig),
+    isSupported(support) {
+      return support.includes(platform);
+    },
     r(token) {
       if (cache.has(token)) {
         return cache.get(token);
       }
       if (ruleHandlers.length == 0) {
         for (const rule of rules) {
-          ruleHandlers.push(new RuleHandler(rule));
+          const handler = new RuleHandler(rule);
+          if (ctx.isSupported(handler.support)) {
+            ruleHandlers.push(handler);
+          }
         }
       }
       for (const current of ruleHandlers) {

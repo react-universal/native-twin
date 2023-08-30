@@ -1,13 +1,17 @@
-import { toCondition } from '../theme/theme.utils';
+import { toCondition } from './theme.utils';
 import { Context, ExpArrayMatchResult, Rule, RuleConfig } from '../types/config.types';
 import { BaseTheme } from '../types/theme.types';
 
 export class RuleHandler<Theme extends BaseTheme = BaseTheme> {
   ruleConfig: RuleConfig<Theme>;
   private basePattern: string | RegExp;
+  support: Exclude<RuleConfig<Theme>['support'], undefined> = ['native', 'web'];
   constructor(themeRule: Rule<Theme>) {
     this.ruleConfig = themeRule[1];
     this.basePattern = themeRule[0];
+    if (this.ruleConfig.support) {
+      this.support = this.ruleConfig.support;
+    }
   }
 
   resolve(token: string, ctx: Context<Theme>) {
