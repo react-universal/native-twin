@@ -1,41 +1,13 @@
 import * as P from '@universal-labs/css/parser';
 import { inspect } from 'util';
-import { ParsedRule } from '../types/parser.types';
-
-interface VariantToken {
-  type: 'VARIANT';
-  value: {
-    important: boolean;
-    name: string;
-  }[];
-}
-interface ColorModifierToken {
-  type: 'COLOR_MODIFIER';
-  value: string;
-}
-interface ClassNameToken {
-  type: 'CLASS_NAME';
-  value: {
-    important: boolean;
-    name: string;
-    modifier: ColorModifierToken | null;
-  };
-}
-interface VariantClassToken {
-  type: 'VARIANT_CLASS';
-  value: [VariantToken, ClassNameToken];
-}
-interface ArbitraryToken {
-  type: 'ARBITRARY';
-  value: string;
-}
-interface GroupToken {
-  type: 'GROUP';
-  value: {
-    base: ClassNameToken | VariantToken;
-    content: (ClassNameToken | GroupToken | VariantClassToken | ArbitraryToken)[];
-  };
-}
+import {
+  ArbitraryToken,
+  ClassNameToken,
+  GroupToken,
+  ParsedRule,
+  VariantClassToken,
+  VariantToken,
+} from '../types/parser.types';
 
 // UTILS
 const classNameIdent = /^[a-z0-9A-Z-.]+/;
@@ -52,7 +24,6 @@ const mapArbitrary = mapResult('ARBITRARY');
 const mapClassName = mapResult('CLASS_NAME');
 const mapVariant = mapResult('VARIANT');
 const mapVariantClass = mapResult('VARIANT_CLASS');
-// const mapGroupName = mapResult('GROUP_NAME');
 const mapGroup = mapResult('GROUP');
 const mapColorModifier = mapResult('COLOR_MODIFIER');
 
@@ -68,24 +39,28 @@ const matchArbitrary = P.between(P.char('['))(P.char(']'))(P.everyCharUntil(']')
   (x) => `[${x}]`,
 );
 
+/** Match color modifiers like: `.../10` or `.../[...]` */
 const colorModifier = P.sequenceOf([P.char('/'), P.choice([P.digits, matchArbitrary])]).map(
   (x) => mapColorModifier(x[1]),
 );
 
+/** Match important prefix like: `!hidden` */
 const maybeImportant = P.maybe(P.char('!')).map((x) => !!x);
 
+/** Match variants prefixes like `md:` or stacked like `hover:md:` or `!md:hover:` */
 const matchVariant = P.many1(
   P.sequenceOf([maybeImportant, P.regex(classNameIdent), P.char(':')]),
 ).map(
   (x): VariantToken =>
     mapVariant(
       x.map((y) => ({
-        important: y[0],
-        name: y[1],
+        i: y[0],
+        n: y[1],
       })),
     ),
 );
 
+/** Match classnames with important prefix arbitrary and color modifiers */
 const matchClassName = P.sequenceOf([
   maybeImportant,
   P.regex(classNameIdent),
@@ -94,24 +69,28 @@ const matchClassName = P.sequenceOf([
 ]).map(
   (x): ClassNameToken =>
     mapClassName({
-      important: x[0],
-      name: x[1] + (x[2] ? x[2] : ''),
-      modifier: x[3],
+      i: x[0],
+      n: x[1] + (x[2] ? x[2] : ''),
+      m: x[3],
     }),
 );
 
+/** Match variants prefixes that includes a single class like `md:bg-blue-200` */
 const matchVariantClass = P.sequenceOf([matchVariant, matchClassName]).map(
   (x): VariantClassToken => mapVariantClass(x),
 );
 
 // GROUPS
-
+/** Match any valid TW ident or arbitrary separated by spaces */
 const matchGroupContent = matchBetweenParens(
   P.separatedBySpace(
     P.choice([validValues, matchArbitrary.map((x): ArbitraryToken => mapArbitrary(x))]),
   ),
 );
 
+/**
+ * Match className groups like `md:(...)` or stacked like `hover:md:(...)` or feature prefix `text(...)`
+ * */
 const matchGroup = P.sequenceOf([
   P.choice([matchVariant, matchClassName]),
   matchGroupContent,
@@ -122,7 +101,7 @@ const matchGroup = P.sequenceOf([
       content: x[1],
     }),
 );
-
+/** Recursive syntax parser all utils separated by space */
 const classParser = P.separatedBySpace(validValues);
 
 function translateRules(
@@ -133,19 +112,19 @@ function translateRules(
   if (!current) return result;
   if (current.type == 'CLASS_NAME') {
     result.push({
-      n: current.value.name,
+      n: current.value.n,
       v: [],
-      i: current.value.important,
-      m: current.value.modifier,
+      i: current.value.i,
+      m: current.value.m,
     });
     return translateRules(tokens, result);
   }
   if (current.type == 'VARIANT_CLASS') {
     result.push({
-      n: current.value[1].value.name,
-      v: current.value[0].value.map((x) => x.name),
-      i: current.value[1].value.important || current.value[0].value.some((x) => x.important),
-      m: current.value[1].value.modifier,
+      n: current.value[1].value.n,
+      v: current.value[0].value.map((x) => x.n),
+      i: current.value[1].value.i || current.value[0].value.some((x) => x.i),
+      m: current.value[1].value.m,
     });
     return translateRules(tokens, result);
   }
@@ -155,15 +134,15 @@ function translateRules(
       if (baseValue.type == 'CLASS_NAME') {
         return {
           ...x,
-          i: baseValue.value.important,
-          m: baseValue.value.modifier,
-          n: baseValue.value.name + '-' + x.n,
+          i: baseValue.value.i,
+          m: baseValue.value.m,
+          n: baseValue.value.n + '-' + x.n,
         };
       }
       return {
         ...x,
-        v: [...x.v, ...baseValue.value.map((y) => y.name)],
-        i: x.i || baseValue.value.some((y) => y.important),
+        v: [...x.v, ...baseValue.value.map((y) => y.n)],
+        i: x.i || baseValue.value.some((y) => y.i),
       };
     });
     result.push(...content);
@@ -183,24 +162,23 @@ function mergeGroups(
       n: nextToken.value,
       v: [],
       i: false,
+      m: null,
     });
   }
   if (nextToken.type == 'CLASS_NAME') {
     results.push({
-      n: nextToken.value.name,
+      n: nextToken.value.n,
       v: [],
-      i: nextToken.value.important,
-      m: nextToken.value.modifier,
+      i: nextToken.value.i,
+      m: nextToken.value.m,
     });
   }
   if (nextToken.type == 'VARIANT_CLASS') {
     results.push({
-      n: nextToken.value[1].value.name,
-      v: nextToken.value[0].value.map((y) => y.name),
-      i:
-        nextToken.value[1].value.important ||
-        nextToken.value[0].value.some((y) => y.important),
-      m: nextToken.value[1].value.modifier,
+      n: nextToken.value[1].value.n,
+      v: nextToken.value[0].value.map((y) => y.n),
+      i: nextToken.value[1].value.i || nextToken.value[0].value.some((y) => y.i),
+      m: nextToken.value[1].value.m,
     });
   }
   if (nextToken.type == 'GROUP') {
@@ -209,15 +187,15 @@ function mergeGroups(
       if (baseValue.type == 'CLASS_NAME') {
         return {
           ...x,
-          i: baseValue.value.important,
-          m: baseValue.value.modifier,
-          n: baseValue.value.name + '-' + x.n,
+          i: baseValue.value.i,
+          m: baseValue.value.m,
+          n: baseValue.value.n + '-' + x.n,
         };
       }
       return {
         ...x,
-        v: [...x.v, ...baseValue.value.map((y) => y.name)],
-        i: x.i || baseValue.value.some((y) => y.important),
+        v: [...x.v, ...baseValue.value.map((y) => y.n)],
+        i: x.i || baseValue.value.some((y) => y.i),
       };
     });
     results.push(...parts);
@@ -235,6 +213,3 @@ export function parseTWTokens(rules: string) {
   }
   return translateRules(data.result);
 }
-
-// parseTWTokens('md:(text(center [16px] sm:(blue-200) hover:sm:(10xl)))'); //?
-// parseTWTokens('px-2 mx-[10px] text(center 2xl) bg-blue-200 justify-center'); //?

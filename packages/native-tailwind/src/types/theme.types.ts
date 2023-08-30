@@ -33,11 +33,21 @@ export type ThemeConfig<Theme extends BaseTheme = BaseTheme> = PartialTheme<Them
 };
 
 export interface ThemeFunction<Theme extends BaseTheme = BaseTheme> {
-  <Section extends keyof Theme>(section: Section | KebabCase<Section>): Theme[Section];
+  <Section extends keyof Theme & string>(
+    section: Section | KebabCase<Section>,
+  ): Theme[Section];
+  <Section extends keyof Theme>(
+    section: Section | KebabCase<Section>,
+    key?: string,
+  ): ThemeValue<Theme[Section]>;
   <Section extends keyof Theme>(
     section: Section | KebabCase<Section> | (string & {}),
-    segments: string[],
-  ): ThemeValue<Theme[Section]> | any;
+    key?: string,
+    defaultValue?: string,
+  ): ThemeValue<Theme[Section]>;
+  // (section: string): unknown | undefined;
+  // (section: string, key: string): unknown | string | undefined;
+  // <T>(section: string, key: string, defaultValue: T): T | string;
 }
 
 /* THEME VALUES */

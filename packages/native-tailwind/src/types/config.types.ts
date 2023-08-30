@@ -15,7 +15,7 @@ export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   ignorelist: string[];
 
   root?: {
-    /** Default 16px */
+    /** Default `16px` */
     rem: number;
   };
 }
@@ -66,14 +66,12 @@ export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
 }
 
 export interface Context<Theme extends BaseTheme = BaseTheme> {
-  /** Allows to resolve theme values. */
+  /** Allows to resolve theme values */
   theme: ThemeFunction<Theme>;
 
   /**
    * resolves a rule
    *
-   * @private
    */
-  /** TODO: bring back Rule result (maybe parsed?) */
-  r: (value: string, isDark?: boolean) => any;
+  r: (value: string, isDark?: boolean) => RuleResult;
 }

@@ -1,7 +1,10 @@
 import type * as CSS from 'csstype';
 import { Falsey, MaybeArray, StringLike } from './util.types';
+import { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 
 export type CSSValue = string | number | bigint | Falsey | StringLike;
+
+export type AnyReactNativeStyle = TextStyle & ViewStyle & ImageStyle;
 
 export type TypedAtRulesKeys =
   | `@layer ${'defaults' | 'base' | 'components' | 'shortcuts' | 'utilities' | 'overrides'}`

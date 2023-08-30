@@ -6101,7 +6101,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/native-tailwind@workspace:packages/native-tailwind"
   dependencies:
+    "@universal-labs/css": "workspace:*"
     csstype: 3.1.2
+  peerDependencies:
+    react-native: ">=0.71.0"
   languageName: unknown
   linkType: soft
 

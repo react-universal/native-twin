@@ -169,7 +169,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     125: '1.25',
   },
   borderColor: ({ theme, colors }) => ({
-    DEFAULT: theme('colors', ['gray', '200']),
+    DEFAULT: theme('colors', 'gray-200'),
     ...colors,
   }),
   borderOpacity: /* #__PURE__ */ themeAlias('opacity'),

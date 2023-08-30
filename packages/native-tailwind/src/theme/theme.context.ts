@@ -1,5 +1,5 @@
 import { RuleHandler } from '../css/Rule';
-import { Context, TailwindConfig } from '../types/config.types';
+import { Context, RuleResult, TailwindConfig } from '../types/config.types';
 import { BaseTheme, ThemeConfig, ThemeFunction } from '../types/theme.types';
 
 export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
@@ -7,7 +7,7 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   rules,
 }: TailwindConfig<Theme>): Context<Theme> {
   const ruleHandlers: RuleHandler<Theme>[] = [];
-  const cache = new Map<string, any>();
+  const cache = new Map<string, RuleResult>();
   const ctx: Context<Theme> = {
     theme: createThemeFunction(themeConfig),
     r(token) {
@@ -22,9 +22,6 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
       for (const current of ruleHandlers) {
         const nextToken = current.resolve(token, ctx);
         if (nextToken) {
-          // console.log('TOKEN: ', token);
-          // console.log('CURRENT: ', current);
-          // console.log('NEXT_TOKEN: ', nextToken);
           cache.set(token, nextToken);
           return nextToken;
         }
@@ -41,14 +38,19 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
     return theme as ThemeFunction<Theme>;
     function theme(
       themeSection: keyof typeof baseConfig & keyof typeof extend,
-      segments: string[] = [],
+      key?: string,
+      defaultValue?: string,
     ) {
-      if (segments.some((x) => x.startsWith('[') && x.endsWith(']'))) {
-        let result = '';
-        for (const current of segments) {
-          result = current.slice(1, -1);
-        }
-        return result;
+      if (!key) {
+        const config = baseConfig[themeSection];
+        return {
+          ...config,
+          ...extend[themeSection],
+        };
+      }
+      // The utility has an arbitrary value
+      if (key.startsWith('[') && key.endsWith(']')) {
+        return key.slice(1, -1);
       }
       if (themeSection in baseConfig) {
         let initialValue = baseConfig[themeSection];
@@ -59,7 +61,7 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
             ...extend[themeSection],
           };
         }
-        return segments.reduce((prev, current) => {
+        return key.split('-').reduce((prev, current) => {
           if (!current || !prev) return null;
           if (typeof prev == 'object') {
             return prev[current];
@@ -67,7 +69,7 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
           return prev;
         }, initialValue);
       }
-      return null;
+      return defaultValue ?? null;
     }
   }
 }

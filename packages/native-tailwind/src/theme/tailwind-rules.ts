@@ -1,6 +1,6 @@
-import { Rule, RuleResolver } from '../types/config.types';
-import { CSSObject } from '../types/css.types';
-import { BaseTheme } from '../types/theme.types';
+import type { Rule, RuleResolver } from '../types/config.types';
+import type { CSSObject } from '../types/css.types';
+import type { BaseTheme } from '../types/theme.types';
 
 export const tailwindBaseRules: Rule<BaseTheme>[] = [
   // COLOR UTILS
@@ -39,7 +39,7 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
       if ($axis == 'x') prop = 'rowGap';
       if ($axis == 'y') prop = 'columnGap';
       return {
-        [prop]: context.theme('gap', [$value]),
+        [prop]: context.theme('gap', $value),
       } as CSSObject;
     },
   ],
@@ -50,7 +50,7 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     ({ 1: $1 }, context) => {
       if (!$1) return null;
       return {
-        aspectRatio: context.theme('aspectRatio', [$1]),
+        aspectRatio: context.theme('aspectRatio', $1),
       };
     },
   ],
@@ -58,7 +58,7 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
     '(hidden|flex)',
     (match, context) => {
       return {
-        display: context.theme('display', [match[0]]),
+        display: context.theme('display', match[0]),
       };
     },
   ],
@@ -113,7 +113,7 @@ function position(shorthand: string, separator = '-'): string {
 }
 
 function edge(property: string, propertyPrefix: string, propertySuffix = ''): RuleResolver {
-  return ({ 1: $1, 2: $2 }, context) => {
+  return ({ 1: $1, 2: $2 }, context): any => {
     if (!$1 || !$2) return null;
     const edges =
       {
@@ -121,15 +121,17 @@ function edge(property: string, propertyPrefix: string, propertySuffix = ''): Ru
         y: 'tb',
       }[$1 as 'x' | 'y'] || $1 + $1;
     if (!edges[0] || !edges[1]) {
-      return { [propertyPrefix + propertySuffix]: context.theme(property, [$2]) };
+      return { [propertyPrefix + propertySuffix]: context.theme(property, $2) };
     }
     return {
-      [propertyPrefix + '-' + position(edges[0]) + propertySuffix]: context.theme(property, [
+      [propertyPrefix + '-' + position(edges[0]) + propertySuffix]: context.theme(
+        property,
         $2,
-      ]),
-      [propertyPrefix + '-' + position(edges[1]) + propertySuffix]: context.theme(property, [
+      ),
+      [propertyPrefix + '-' + position(edges[1]) + propertySuffix]: context.theme(
+        property,
         $2,
-      ]),
+      ),
     };
   };
 }

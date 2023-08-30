@@ -1,28 +1,37 @@
-export interface ClassNameToken {
-  readonly type: 'CLASS_NAME';
-  readonly variant: boolean;
-  readonly variants: string[];
-  readonly important: boolean;
-  readonly name: string;
-  readonly modifiers: any;
-}
-
-export interface ClassGroupToken {
-  readonly type: 'GROUP';
-  readonly important: boolean;
-  readonly name: string;
-  readonly variant: boolean;
-  readonly variants: string[];
-  readonly list: (ClassNameToken | ClassGroupToken)[];
-}
-
 export interface VariantToken {
-  readonly type: 'VARIANT';
-  name: string;
-  important: boolean;
+  type: 'VARIANT';
+  value: {
+    i: boolean;
+    n: string;
+  }[];
 }
-
-export type RuleToken = ClassNameToken | ClassGroupToken;
+export interface ColorModifierToken {
+  type: 'COLOR_MODIFIER';
+  value: string;
+}
+export interface ClassNameToken {
+  type: 'CLASS_NAME';
+  value: {
+    i: boolean;
+    n: string;
+    m: ColorModifierToken | null;
+  };
+}
+export interface VariantClassToken {
+  type: 'VARIANT_CLASS';
+  value: [VariantToken, ClassNameToken];
+}
+export interface ArbitraryToken {
+  type: 'ARBITRARY';
+  value: string;
+}
+export interface GroupToken {
+  type: 'GROUP';
+  value: {
+    base: ClassNameToken | VariantToken;
+    content: (ClassNameToken | GroupToken | VariantClassToken | ArbitraryToken)[];
+  };
+}
 
 export interface ParsedRule {
   /**
@@ -31,14 +40,17 @@ export interface ParsedRule {
   readonly n: string;
 
   /**
-   * All variants without trailing colon: `hover`, `after:`, `[...]`
+   * All variants without trailing colon: `hover`, `focus:`
    */
   readonly v: string[];
 
   /**
-   * Something like `!underline` or `!bg-red-500` or `!red-500`
+   * Has the util an important `!` symbol
    */
-  readonly i?: boolean;
+  readonly i: boolean;
 
-  readonly m?: any;
+  /**
+   * Has the util a color modifier `bg-red-200/10` or `bg-red-200/[0.5]` symbol
+   */
+  readonly m: ColorModifierToken | null;
 }
