@@ -41,7 +41,7 @@ export type InternalResultType<Result, Data> = {
   data: Data;
 };
 
-export type ResultType<Result, Data> = ParserError<Data> | ParserSuccess<Result, Data>;
+export type ResultType<Result, Data> = ParserSuccess<Result, Data> | ParserError<Data>;
 
 export type ParserError<Data> = {
   isError: true;

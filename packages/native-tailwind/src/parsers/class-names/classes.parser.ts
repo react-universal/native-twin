@@ -7,7 +7,7 @@ const regexIdent = /^[_a-z0-9A-Z-!.]+/;
 const regexVariantIdent = /^[_a-z0-9A-Z-!]+[:]/;
 
 const matchColorModifier = P.sequenceOf([
-  P.char('/'),
+  P.maybe(P.char('/')),
   P.choice([P.digits, matchArbitrary]),
 ]).map((x) => ({
   modifier: x[1],
@@ -20,6 +20,7 @@ const parseClassName = P.sequenceOf([
   parseVariants,
   P.maybe(parseClassFeature),
   P.maybe(matchColorModifier),
+  P.maybe(matchArbitrary),
 ]).map((x): ClassNameToken => {
   const name = x[1] ?? '';
   return {
@@ -117,7 +118,6 @@ export const parseRawClassTokens = P.coroutine((run) => {
         }
         return createRule(baseToken, rule);
       }
-      // console.log('BB: ', { baseToken, rule });
       let newToken = { ...baseToken };
       if (!newToken.variant && !newToken.name.endsWith('-')) {
         newToken.name = `${newToken.name}-`;

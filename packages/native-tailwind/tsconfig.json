@@ -10,7 +10,7 @@
     "moduleResolution": "node",
     "moduleDetection": "auto",
     "strictFunctionTypes": false,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noImplicitReturns": false,
     "resolveJsonModule": true,
     "noEmit": true,

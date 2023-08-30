@@ -4,7 +4,7 @@ import { BaseTheme } from './types/theme.types';
 import { createThemeContext } from './theme/theme.context';
 import { StringLike } from './types/util.types';
 import { Sheet } from './css/sheets';
-import { parseRawRules } from './parsers/class-names';
+import { parseTWTokens } from './parsers/tailwind.parser';
 
 export function createTailwind<Theme = BaseTheme, Target = unknown>(
   userConfig: TailwindUserConfig<Theme>,
@@ -15,8 +15,7 @@ export function createTailwind<Theme = BaseTheme, Target = unknown>(
   return Object.defineProperties(
     function tw(tokens: StringLike) {
       const result: any[] = [];
-      const parsedRules = parseRawRules(tokens);
-      for (const rule of parsedRules) {
+      for (const rule of parseTWTokens(tokens)) {
         const ruleData = context.r(rule.n);
         if (ruleData) {
           result.push(ruleData);

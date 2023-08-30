@@ -22,6 +22,9 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
       for (const current of ruleHandlers) {
         const nextToken = current.resolve(token, ctx);
         if (nextToken) {
+          // console.log('TOKEN: ', token);
+          // console.log('CURRENT: ', current);
+          // console.log('NEXT_TOKEN: ', nextToken);
           cache.set(token, nextToken);
           return nextToken;
         }
@@ -40,6 +43,13 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
       themeSection: keyof typeof baseConfig & keyof typeof extend,
       segments: string[] = [],
     ) {
+      if (segments.some((x) => x.startsWith('[') && x.endsWith(']'))) {
+        let result = '';
+        for (const current of segments) {
+          result = current.slice(1, -1);
+        }
+        return result;
+      }
       if (themeSection in baseConfig) {
         let initialValue = baseConfig[themeSection];
         if (typeof initialValue == 'function') initialValue = initialValue(ctx);

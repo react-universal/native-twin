@@ -34,6 +34,7 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
   [
     /gap-([xy]?)-?(.*)/,
     ({ 1: $axis, 2: $value }, context) => {
+      if (!$value) return null;
       let prop = 'gap';
       if ($axis == 'x') prop = 'rowGap';
       if ($axis == 'y') prop = 'columnGap';
@@ -47,6 +48,7 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
   [
     /aspect-(video|square)/,
     ({ 1: $1 }, context) => {
+      if (!$1) return null;
       return {
         aspectRatio: context.theme('aspectRatio', [$1]),
       };
@@ -65,8 +67,14 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
   [/p([xytrbl]?)-?(.*)/, edge('padding', 'padding')],
   [
     /-?m([xytrbl]?)-?(.*)/,
-    edge('margin', 'margin'),
-    // { themeAlias: 'margin', canBeNegative: true, support: ['native', 'web'] },
+
+    {
+      themeAlias: 'margin',
+      propertyAlias: 'margin',
+      canBeNegative: true,
+      support: ['native', 'web'],
+      resolver: edge('margin', 'margin'),
+    },
   ],
 
   // FONT
@@ -106,22 +114,22 @@ function position(shorthand: string, separator = '-'): string {
 
 function edge(property: string, propertyPrefix: string, propertySuffix = ''): RuleResolver {
   return ({ 1: $1, 2: $2 }, context) => {
+    if (!$1 || !$2) return null;
     const edges =
       {
         x: 'lr',
         y: 'tb',
       }[$1 as 'x' | 'y'] || $1 + $1;
-    return edges
-      ? {
-          [propertyPrefix + '-' + position(edges[0]) + propertySuffix]: context.theme(
-            property,
-            [$2],
-          ),
-          [propertyPrefix + '-' + position(edges[1]) + propertySuffix]: context.theme(
-            property,
-            [$2],
-          ),
-        }
-      : { [propertyPrefix + propertySuffix]: context.theme(property, [$2]) };
+    if (!edges[0] || !edges[1]) {
+      return { [propertyPrefix + propertySuffix]: context.theme(property, [$2]) };
+    }
+    return {
+      [propertyPrefix + '-' + position(edges[0]) + propertySuffix]: context.theme(property, [
+        $2,
+      ]),
+      [propertyPrefix + '-' + position(edges[1]) + propertySuffix]: context.theme(property, [
+        $2,
+      ]),
+    };
   };
 }
