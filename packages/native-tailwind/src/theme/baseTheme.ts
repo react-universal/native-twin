@@ -1,4 +1,4 @@
-import { BaseTheme, ThemeSection } from '../types/theme.types';
+import type { BaseTheme, ThemeSection } from '../types/theme.types';
 import {
   themeAlias,
   createExponentialUnits,
@@ -259,9 +259,7 @@ export const baseTailwindTheme: TailwindBaseTheme = {
   flexBasis: ({ theme }) => ({
     ...theme('spacing'),
     ...createPercentRatios(2, 6),
-
     ...createPercentRatios(12, 12),
-
     auto: 'auto',
     full: '100%',
   }),

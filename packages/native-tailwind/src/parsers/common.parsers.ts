@@ -1,4 +1,5 @@
 import * as P from '@universal-labs/css/parser';
+
 const parseTwSegment = /^[a-z0-9A-Z]+/;
 
 export const matchTwSegment = P.regex(parseTwSegment);

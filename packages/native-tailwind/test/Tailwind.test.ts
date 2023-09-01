@@ -8,13 +8,13 @@ describe('@universal-labs/native-tailwind - TW call', () => {
   it('Insert rules', () => {
     const result = tailwind('px-2 p-10 mx-2.5 text(center 2xl) bg-blue-200 justify-center');
     expect(result).toStrictEqual([
-      { 'padding-left': '0.5rem', 'padding-right': '0.5rem' },
+      { paddingLeft: '0.5rem', paddingRight: '0.5rem' },
       { padding: '2.5rem' },
-      { 'margin-left': '0.625rem', 'margin-right': '0.625rem' },
-      { 'text-align': 'center' },
-      { 'font-size': '1.5rem', 'line-height': '2rem' },
-      { 'background-color': '#bfdbfe' },
-      { 'justify-items': 'center' },
+      { marginLeft: '0.625rem', marginRight: '0.625rem' },
+      { textAlign: 'center' },
+      { fontSize: '1.5rem', lineHeight: '2rem' },
+      { backgroundColor: 'rgba(191,219,254,1)' },
+      { justifyItems: 'center' },
     ]);
   });
 });

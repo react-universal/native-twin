@@ -1,7 +1,7 @@
+import type { BaseTheme } from '../types/theme.types';
+import type { ExtractThemes, TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import { toArray } from '../common/fn.helpers';
-import { BaseTheme } from '../types/theme.types';
 import { baseTailwindTheme } from '../theme/baseTheme';
-import { ExtractThemes, TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import * as colors from '../theme/colors';
 import { tailwindBaseRules } from '../theme/tailwind-rules';
 

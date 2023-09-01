@@ -70,7 +70,7 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
 
   // SPACING
   [
-    /p([xytrbl]?)-?(.*)/,
+    /^p([xytrbl]?)-?(.*)/,
     {
       themeAlias: 'padding',
       resolver: edge('padding', 'padding'),

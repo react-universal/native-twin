@@ -1,20 +1,6 @@
 import { noop } from '../common/fn.helpers';
+import type { Sheet } from '../types/css.types';
 
-export interface Sheet<Target = unknown> {
-  readonly target: Target;
-  insert(cssText: string, index: number): void;
-  snapshot(): () => void;
-  /** Clears all CSS rules from the sheet. */
-  clear(): void;
-  destroy(): void;
-  resume(addClassName: (className: string) => void, insert: (cssText: string) => void): void;
-}
-
-/**
- * @group Sheets
- * @param includeResumeData
- * @returns
- */
 export function virtual(includeResumeData?: boolean): Sheet<string[]> {
   const target: string[] = [];
 

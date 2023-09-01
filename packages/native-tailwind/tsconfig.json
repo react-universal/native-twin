@@ -8,6 +8,7 @@
     "noUnusedLocals": false,
     "target": "ESNext",
     "moduleResolution": "node",
+    "verbatimModuleSyntax": true,
     "moduleDetection": "auto",
     "strictFunctionTypes": false,
     "strictNullChecks": true,

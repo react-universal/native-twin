@@ -18,11 +18,6 @@ export function isString(s: any): s is string {
 }
 
 // Based on https://stackoverflow.com/a/52171480
-/**
- * @group Configuration
- * @param value
- * @returns
- */
 export function hash(value: string): string {
   for (var h = 9, index = value.length; index--; ) {
     h = Math.imul(h ^ value.charCodeAt(index), 0x5f356495);

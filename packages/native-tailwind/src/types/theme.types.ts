@@ -1,5 +1,5 @@
-import { CSSProperties } from './css.types';
-import { KebabCase, MaybeArray } from './util.types';
+import type { CSSProperties } from './css.types';
+import type { KebabCase, MaybeArray } from './util.types';
 
 /* THEME CONFIG */
 export type ThemeValue<T> = T extends Record<string, infer V>
@@ -33,9 +33,7 @@ export type ThemeConfig<Theme extends BaseTheme = BaseTheme> = PartialTheme<Them
 };
 
 export interface ThemeFunction<Theme extends BaseTheme = BaseTheme> {
-  <Section extends keyof Theme & string>(
-    section: Section | KebabCase<Section>,
-  ): Theme[Section];
+  <Section extends keyof Theme>(section: Section | KebabCase<Section>): Theme[Section];
   <Section extends keyof Theme>(
     section: Section | KebabCase<Section>,
     key?: string,

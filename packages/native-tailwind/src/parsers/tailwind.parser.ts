@@ -1,6 +1,5 @@
 import * as P from '@universal-labs/css/parser';
-import { inspect } from 'util';
-import {
+import type {
   ArbitraryToken,
   ClassNameToken,
   GroupToken,
@@ -205,7 +204,6 @@ function mergeGroups(
 
 export function parseTWTokens(rules: string) {
   const data = classParser.run(rules);
-  inspect(data, false, null);
   if (data.isError) {
     // eslint-disable-next-line no-console
     console.warn('Failed parsing rules: ', rules);

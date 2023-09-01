@@ -1,4 +1,4 @@
-import { ClassNameToken, ParsedRule } from '../types/parser.types';
+import type { ClassNameToken, ParsedRule } from '../types/parser.types';
 
 export function parseClassNameTokens(...tokens: ClassNameToken[]): string {
   return tokens.reduce((prev, current, currentIndex) => {

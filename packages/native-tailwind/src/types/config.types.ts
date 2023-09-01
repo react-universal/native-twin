@@ -1,4 +1,5 @@
 import type { CSSObject, CSSProperties } from './css.types';
+import type { ParsedRule } from './parser.types';
 import type {
   BaseTheme,
   ThemeConfig,
@@ -36,7 +37,7 @@ export interface TailwindUserConfig<Theme = BaseTheme> {
   ignorelist: string[];
 }
 
-export type RuleResult = string | CSSObject | Falsey;
+export type RuleResult = string | CSSObject | Falsey | Record<string, string>;
 
 export type ExpArrayMatchResult = RegExpExecArray & {
   $$: string;
@@ -75,7 +76,8 @@ export interface Context<Theme extends BaseTheme = BaseTheme> {
    * resolves a rule
    *
    */
-  r: (value: string, isDark?: boolean) => RuleResult;
+  r: (value: ParsedRule, isDark?: boolean) => RuleResult;
 
   isSupported: (support: PlatformSupport[]) => boolean;
+  mode: PlatformSupport[number];
 }

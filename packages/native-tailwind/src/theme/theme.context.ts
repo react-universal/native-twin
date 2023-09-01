@@ -1,7 +1,8 @@
-import { Platform, PlatformOSType } from 'react-native';
+import type { ParsedRule } from '../types/parser.types';
+import type { Context, RuleResult, TailwindConfig } from '../types/config.types';
+import type { BaseTheme, ThemeConfig, ThemeFunction } from '../types/theme.types';
+import { Platform, type PlatformOSType } from 'react-native';
 import { RuleHandler } from './Rule';
-import { Context, RuleResult, TailwindConfig } from '../types/config.types';
-import { BaseTheme, ThemeConfig, ThemeFunction } from '../types/theme.types';
 
 export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   theme: themeConfig,
@@ -12,13 +13,14 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   const platform: PlatformOSType =
     Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
   const ctx: Context<Theme> = {
+    mode: platform,
     theme: createThemeFunction(themeConfig),
     isSupported(support) {
       return support.includes(platform);
     },
-    r(token) {
-      if (cache.has(token)) {
-        return cache.get(token);
+    r(token: ParsedRule) {
+      if (cache.has(token.n)) {
+        return cache.get(token.n);
       }
       if (ruleHandlers.length == 0) {
         for (const rule of rules) {
@@ -31,7 +33,7 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
       for (const current of ruleHandlers) {
         const nextToken = current.resolve(token, ctx);
         if (nextToken) {
-          cache.set(token, nextToken);
+          cache.set(token.n, nextToken);
           return nextToken;
         }
       }
@@ -51,11 +53,16 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
       defaultValue?: string,
     ) {
       if (!key) {
-        const config = baseConfig[themeSection];
+        let config = baseConfig[themeSection];
+        if (typeof config == 'function') config = config(ctx);
         return {
           ...config,
           ...extend[themeSection],
         };
+      }
+      // console.log('KEY: ', key, themeSection);
+      if (key[0] == '[' && key.slice(-1) == ']') {
+        return key.slice(1, -1);
       }
       // The utility has an arbitrary value
       if (key.startsWith('[') && key.endsWith(']')) {

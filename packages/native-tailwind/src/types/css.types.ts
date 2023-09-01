@@ -1,6 +1,6 @@
 import type * as CSS from 'csstype';
-import { Falsey, MaybeArray, StringLike } from './util.types';
-import { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import type { Falsey, MaybeArray, StringLike } from './util.types';
+import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 
 export type CSSValue = string | number | bigint | Falsey | StringLike;
 
@@ -38,3 +38,13 @@ export interface CustomProperties {
 export type CSSProperties = CSS.PropertiesFallback<string | Falsey, string | Falsey> &
   CSS.PropertiesHyphenFallback<string | Falsey, string | Falsey> &
   Partial<CustomProperties>;
+
+export interface Sheet<Target = unknown> {
+  readonly target: Target;
+  insert(cssText: string, index: number): void;
+  snapshot(): () => void;
+  /** Clears all CSS rules from the sheet. */
+  clear(): void;
+  destroy(): void;
+  resume(addClassName: (className: string) => void, insert: (cssText: string) => void): void;
+}
