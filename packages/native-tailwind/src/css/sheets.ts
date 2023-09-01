@@ -1,7 +1,7 @@
 import { noop } from '../common/fn.helpers';
 import type { Sheet } from '../types/css.types';
 
-export function virtual(includeResumeData?: boolean): Sheet<string[]> {
+export function createVirtualSheet(includeResumeData?: boolean): Sheet<string[]> {
   const target: string[] = [];
 
   return {

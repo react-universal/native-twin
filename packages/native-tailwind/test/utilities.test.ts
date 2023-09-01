@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createTailwind } from '../src/tailwind';
-import { virtual } from '../src/css/sheets';
+import { createVirtualSheet } from '../src/css/sheets';
 
 const tailwind = createTailwind(
   {
@@ -13,7 +13,7 @@ const tailwind = createTailwind(
       },
     },
   },
-  virtual(true),
+  createVirtualSheet(true),
 );
 
 describe('@universal-labs/native-tailwind - Spacing Utilities', () => {

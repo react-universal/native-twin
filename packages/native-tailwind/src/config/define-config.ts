@@ -3,7 +3,7 @@ import type { ExtractThemes, TailwindConfig, TailwindUserConfig } from '../types
 import { toArray } from '../common/fn.helpers';
 import { baseTailwindTheme } from '../theme/baseTheme';
 import * as colors from '../theme/colors';
-import { tailwindBaseRules } from '../theme/tailwind-rules';
+import { tailwindBaseRules } from '../theme/rules/tailwind-rules';
 
 export function defineConfig<Theme extends BaseTheme = BaseTheme>({
   ...userConfig

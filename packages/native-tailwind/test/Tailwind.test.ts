@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { createTailwind } from '../src/tailwind';
-import { virtual } from '../src/css/sheets';
+import { createVirtualSheet } from '../src/css/sheets';
 
-const tailwind = createTailwind({ ignorelist: [] }, virtual(true));
+const tailwind = createTailwind({ ignorelist: [] }, createVirtualSheet(true));
 
 describe('@universal-labs/native-tailwind - TW call', () => {
   it('Insert rules', () => {
