@@ -1,3 +1,10 @@
+/**********************************************
+ * Readapted from Twind                       *
+ * Credits: @sastan https://github.com/sastan *
+ * Repo: https://github.com/tw-in-js/twind    *
+ * ********************************************
+ */
+
 import type { ExtractThemes, TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { BaseTheme, ThemeFunction } from './types/theme.types';
 import type { StringLike } from './types/util.types';
