@@ -48,8 +48,8 @@ export function createTailwind<Theme = BaseTheme, Target = unknown>(
   );
 }
 
-// const tailwind = createTailwind({
-//   ignorelist: [],
-// });
+const tailwind = createTailwind({
+  ignorelist: [],
+});
 
-// tailwind('-z-10'); //?
+tailwind('bg-blue-200/50'); //?

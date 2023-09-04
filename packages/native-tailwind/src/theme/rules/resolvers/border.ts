@@ -1,9 +1,9 @@
 import type { Rule } from '../../../types/config.types';
 import type { BaseTheme } from '../../../types/theme.types';
 
-export const borderThemeValues: Rule<BaseTheme>[] = [
+export const borderThemeRules: Rule<BaseTheme>[] = [
   [
-    /^border-([xytrbl])-(.+)/,
+    /^border-([xytrbl])-(.*)$/,
     {
       themeAlias: 'borderColor',
       expansion: {
@@ -14,7 +14,7 @@ export const borderThemeValues: Rule<BaseTheme>[] = [
     },
   ],
   [
-    /^border-([xytrbl])-(.+)/,
+    /^border-([xytrbl])-(.*)/,
     {
       themeAlias: 'borderWidth',
       expansion: {
@@ -25,10 +25,10 @@ export const borderThemeValues: Rule<BaseTheme>[] = [
     },
   ],
   [
-    /^border-(.+)/,
+    /^border-(.+)$/,
     {
       themeAlias: 'borderColor',
     },
   ],
-  [/border-(.+)/, { themeAlias: 'borderWidth' }],
+  [/^border-(.+)/, { themeAlias: 'borderWidth' }],
 ];

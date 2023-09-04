@@ -1,7 +1,7 @@
 import type { Rule } from '../../../types/config.types';
 import type { BaseTheme } from '../../../types/theme.types';
 
-export const positionThemeValues: Rule<BaseTheme>[] = [
+export const positionThemeRules: Rule<BaseTheme>[] = [
   [
     '-?(top|bottom|left|right)(?:$|-)',
     {

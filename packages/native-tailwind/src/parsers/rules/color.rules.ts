@@ -1,6 +1,5 @@
 import * as P from '@universal-labs/css/parser';
 import { matchArbitrary, matchTwSegment } from '../common.parsers';
-import { MaybeColorValue } from '../../types/theme.types';
 
 const matchColorModifier = P.sequenceOf([
   P.char('/'),
@@ -30,32 +29,3 @@ export const createColorParsers = (prefixes: string[], colors: string[]) => {
 };
 
 export const matchOpacityRule = P.sequenceOf([P.literal('opacity-'), matchTwSegment]);
-
-export function flattenColorPalette(
-  colors: Record<string, MaybeColorValue>,
-  path: string[] = [],
-) {
-  const flatten: Record<string, MaybeColorValue> = {};
-
-  for (const key in colors) {
-    const value = colors[key];
-
-    let keyPath = [...path, key];
-    if (value) {
-      flatten[keyPath.join('-')] = value;
-    }
-
-    if (key == 'DEFAULT') {
-      keyPath = path;
-      if (value) {
-        flatten[path.join('-')] = value;
-      }
-    }
-
-    if (typeof value == 'object') {
-      Object.assign(flatten, flattenColorPalette(value, keyPath));
-    }
-  }
-
-  return flatten;
-}

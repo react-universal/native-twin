@@ -103,6 +103,7 @@ export interface BaseTheme {
   backdropGrayscale: Record<string, string>;
   backdropHueRotate: Record<string, string>;
   backdropInvert: Record<string, string>;
+  boxDecorationBreak: Record<string, string>;
   backdropOpacity: Record<string, string>;
   backdropSaturate: Record<string, string>;
   backdropSepia: Record<string, string>;

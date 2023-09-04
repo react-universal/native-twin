@@ -8,7 +8,8 @@ import type {
 } from '../types/config.types';
 import type { ParsedRule } from '../types/parser.types';
 import type { BaseTheme } from '../types/theme.types';
-import { toColorValue, toCondition } from './theme.utils';
+import { colorResolver } from './resolvers/color.resolver';
+import { toCondition } from './theme.utils';
 
 export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
   rule: Rule<Theme>,
@@ -17,20 +18,30 @@ export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
   const basePattern = rule[0];
   const ruleRegex = toCondition(rule[0]);
   const ruleConfig = rule[1];
-  const maybeColorValue = /color|fill|stroke/i.test(
-    String(ruleConfig.propertyAlias ?? ruleConfig.themeAlias),
-  );
-  let resolver: RuleResolver | null = null;
-  if (ruleConfig.resolver && typeof ruleConfig.resolver == 'function') {
-    resolver = ruleConfig.resolver;
-  }
+  const isColorRule =
+    typeof ruleConfig == 'object' &&
+    /color|fill|stroke/i.test(String(ruleConfig.propertyAlias ?? ruleConfig.themeAlias));
+
   return (parsedRule: ParsedRule): RuleResult => {
     const token = parsedRule.n;
     const match = getMatch(token, ruleRegex);
     if (!match) return null;
 
+    // Rule ends with arbitrary value
     if (token.includes('[') && token.slice(-1) == ']') {
       match.$$ = token.slice(token.indexOf('['));
+    }
+
+    // Rule already has a resolver
+    if (typeof ruleConfig == 'function') {
+      const value = ruleConfig(match, ctx);
+      if (value) return value;
+      return null;
+    }
+
+    let resolver: RuleResolver | null = null;
+    if (!resolver && ruleConfig.resolver && typeof ruleConfig.resolver == 'function') {
+      resolver = ruleConfig.resolver;
     }
     if (resolver) {
       const data = resolver(match, ctx);
@@ -44,15 +55,12 @@ export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
       if (kind == 'edges') return resolveEdgeRule(match, parsedRule, ruleConfig.expansion);
     }
 
-    if (maybeColorValue && !ruleConfig.resolver) {
-      const value = ctx.theme('colors', match[1] || match.$$);
-      if (value && typeof value == 'string') {
-        const data = resolveColor(parsedRule, value);
-        if (typeof data == 'string') {
-          return {
-            [ruleConfig.propertyAlias ?? ruleConfig.themeAlias]: data,
-          };
-        }
+    if (isColorRule) {
+      const data = colorResolver(parsedRule, match, ctx);
+      if (typeof data == 'string') {
+        return {
+          [ruleConfig.propertyAlias ?? ruleConfig.themeAlias]: data,
+        };
       }
     }
 
@@ -91,12 +99,19 @@ export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
     parsedRule: ParsedRule,
     config: RuleExpansionProperties,
   ) {
+    if (typeof ruleConfig == 'function') {
+      return ruleConfig(match, ctx);
+    }
     const finalRuleBlock: Record<string, string> = {};
     const { prefix, suffix } = config;
     const properties = getEdgeProperties(prefix, suffix, match).map((x) =>
       x.replace(/[A-Z]/g, (_) => '-' + _.toLowerCase()),
     );
+    // console.log('MM', match);
     let value = ctx.theme(ruleConfig.themeAlias, match[2]);
+    if (isColorRule && typeof value == 'string') {
+      value = colorResolver(parsedRule, match, ctx) as any;
+    }
     if (value && typeof value == 'string') {
       const isNegative = ruleConfig.canBeNegative && parsedRule.n.startsWith('-');
       for (const key of properties) {
@@ -108,21 +123,6 @@ export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
     }
     return null;
   }
-}
-
-function resolveColor(parsedRule: ParsedRule, themeValue: string) {
-  if (parsedRule.m) {
-    let opacity = parsedRule.m.value;
-    if (opacity.startsWith('[') && opacity.endsWith(']')) {
-      opacity = opacity.slice(1, -1);
-    }
-    return toColorValue(themeValue, {
-      opacityValue: opacity,
-    });
-  }
-  return toColorValue(themeValue, {
-    opacityValue: '1',
-  });
 }
 
 function getMatch(token: string, regex: RegExp): ExpArrayMatchResult | null {

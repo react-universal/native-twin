@@ -2,6 +2,7 @@ import type { CSSObject, CSSProperties } from './css.types';
 import type { ParsedRule } from './parser.types';
 import type {
   BaseTheme,
+  MaybeColorValue,
   ThemeConfig,
   ThemeFunction,
   ThemeSectionResolver,
@@ -66,7 +67,8 @@ export type RuleConfig<Theme extends BaseTheme = BaseTheme> = {
   support?: PlatformSupport[];
 };
 export type Rule<Theme extends BaseTheme = BaseTheme> =
-  | [pattern: string | RegExp, config: RuleConfig<Theme>];
+  | [pattern: string | RegExp, config: RuleConfig<Theme>]
+  | [pattern: string | RegExp, resolver: RuleResolver<Theme>];
 
 export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   theme: ThemeConfig<Theme>;
@@ -78,6 +80,7 @@ export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
 
 export interface Context<Theme extends BaseTheme = BaseTheme> {
   /** Allows to resolve theme values */
+  colors: Record<string, MaybeColorValue>;
   theme: ThemeFunction<Theme>;
 
   /**

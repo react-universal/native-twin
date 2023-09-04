@@ -1,3 +1,5 @@
+import type { MaybeColorValue } from '../types/theme.types';
+
 export function identity<A>(a: A): A {
   return a;
 }
@@ -24,4 +26,33 @@ export function hash(value: string): string {
   }
 
   return '#' + ((h ^ (h >>> 9)) >>> 0).toString(36);
+}
+
+export function flattenColorPalette(
+  colors: Record<string, MaybeColorValue>,
+  path: string[] = [],
+) {
+  const flatten: Record<string, MaybeColorValue> = {};
+
+  for (const key in colors) {
+    const value = colors[key];
+
+    let keyPath = [...path, key];
+    if (value) {
+      flatten[keyPath.join('-')] = value;
+    }
+
+    if (key == 'DEFAULT') {
+      keyPath = path;
+      if (value) {
+        flatten[path.join('-')] = value;
+      }
+    }
+
+    if (typeof value == 'object') {
+      Object.assign(flatten, flattenColorPalette(value, keyPath));
+    }
+  }
+
+  return flatten;
 }

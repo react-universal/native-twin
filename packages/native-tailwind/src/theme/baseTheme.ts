@@ -647,4 +647,10 @@ export const baseTailwindTheme: TailwindBaseTheme = {
     .../* #__PURE__ */ createLinearUnits(50, '', 1, 0, 10),
     auto: 'auto',
   },
+
+  // CUSTOM
+  boxDecorationBreak: {
+    slice: 'slice',
+    clone: 'clone',
+  },
 };

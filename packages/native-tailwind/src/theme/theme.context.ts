@@ -3,39 +3,46 @@ import type { Context, RuleResult, TailwindConfig } from '../types/config.types'
 import type { BaseTheme, ThemeConfig, ThemeFunction } from '../types/theme.types';
 import type { PlatformOSType } from 'react-native';
 import { createRuleResolver } from './Rule';
+import { flattenColorPalette } from '../common/fn.helpers';
 
 export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   theme: themeConfig,
   rules,
 }: TailwindConfig<Theme>): Context<Theme> {
-  // const ruleHandlers: RuleHandler<Theme>[] = [];
+  const ruleHandlers = new Map<string, (rule: ParsedRule) => RuleResult>();
   const cache = new Map<string, RuleResult>();
   const platform: PlatformOSType = 'native';
   // Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
   const ctx: Context<Theme> = {
+    get colors() {
+      return flattenColorPalette(ctx.theme('colors'));
+    },
+
     mode: platform,
+
     theme: createThemeFunction(themeConfig),
+
     isSupported(support) {
       return support.includes(platform);
     },
+
     r(token: ParsedRule) {
-      if (cache.has(token.n)) {
-        return cache.get(token.n);
+      let cacheKey = token.n;
+      if (token.m) {
+        cacheKey = cacheKey + `/${token.m.value}`;
       }
-      // if (ruleHandlers.length == 0) {
-      //   for (const rule of rules) {
-      //     const handler = new RuleHandler(rule);
-      //     if (ctx.isSupported(handler.support)) {
-      //       ruleHandlers.push(handler);
-      //     }
-      //   }
-      // }
+      if (cache.has(cacheKey)) {
+        return cache.get(cacheKey);
+      }
       for (const current of rules) {
-        const executor = createRuleResolver(current, ctx);
-        const nextToken = executor(token);
-        // console.log('NEXT: ', nextToken);
+        let resolver = ruleHandlers.get(current[0].toString())!;
+        if (!resolver) {
+          ruleHandlers.set(current[0].toString(), createRuleResolver(current, ctx));
+          resolver = ruleHandlers.get(current[0].toString())!;
+        }
+        const nextToken = resolver(token);
         if (nextToken) {
-          cache.set(token.n, nextToken);
+          cache.set(cacheKey, nextToken);
           return nextToken;
         }
       }
@@ -57,12 +64,13 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
       if (!key) {
         let config = baseConfig[themeSection];
         if (typeof config == 'function') config = config(ctx);
+
         return {
           ...config,
           ...extend[themeSection],
         };
       }
-      // console.log('KEY: ', key, themeSection);
+
       if (key[0] == '[' && key.slice(-1) == ']') {
         return key.slice(1, -1);
       }

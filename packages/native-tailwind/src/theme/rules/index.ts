@@ -1,32 +1,28 @@
 import type { Rule } from '../../types/config.types';
 import type { BaseTheme } from '../../types/theme.types';
-import { borderThemeValues } from './resolvers/border';
+import { borderThemeRules } from './resolvers/border';
+import { boxThemeRules } from './resolvers/box';
 import { colorThemeRules } from './resolvers/color';
 import { flexThemeRules } from './resolvers/flex';
 import { gapThemeRules } from './resolvers/gap';
 import { displayThemeRules } from './resolvers/layout';
-import { positionThemeValues } from './resolvers/position';
+import { positionThemeRules } from './resolvers/position';
 import { aspectRatioThemeRules } from './resolvers/size';
 import { marginThemeRules, paddingThemeRules } from './resolvers/spacing';
-import {
-  fontSizeThemeRules,
-  fontWeightThemeRules,
-  lineHeightThemeRules,
-  textAlignThemeRules,
-} from './resolvers/typography';
+import { tableThemeRules } from './resolvers/table';
+import { typographyThemeRules } from './resolvers/typography';
 
 export const tailwindBaseRules: Rule<BaseTheme>[] = [
   ...colorThemeRules,
   ...flexThemeRules,
   ...paddingThemeRules,
   ...marginThemeRules,
-  ...positionThemeValues,
-  ...fontWeightThemeRules,
-  ...lineHeightThemeRules,
-  ...textAlignThemeRules,
-  ...fontSizeThemeRules,
+  ...positionThemeRules,
+  ...typographyThemeRules,
   ...displayThemeRules,
-  ...borderThemeValues,
+  ...borderThemeRules,
   ...gapThemeRules,
   ...aspectRatioThemeRules,
+  ...boxThemeRules,
+  ...tableThemeRules,
 ];
