@@ -1,16 +1,16 @@
 import type { Rule } from '../../types/config.types';
 import type { BaseTheme } from '../../types/theme.types';
-import { borderThemeRules } from './resolvers/border';
-import { boxThemeRules } from './resolvers/box';
-import { colorThemeRules } from './resolvers/color';
-import { flexThemeRules } from './resolvers/flex';
-import { gapThemeRules } from './resolvers/gap';
-import { displayThemeRules } from './resolvers/layout';
-import { positionThemeRules } from './resolvers/position';
-import { aspectRatioThemeRules } from './resolvers/size';
-import { marginThemeRules, paddingThemeRules } from './resolvers/spacing';
-import { tableThemeRules } from './resolvers/table';
-import { typographyThemeRules } from './resolvers/typography';
+import { borderThemeRules } from './patterns/border';
+import { boxThemeRules } from './patterns/box';
+import { colorThemeRules } from './patterns/color';
+import { flexThemeRules } from './patterns/flex';
+import { gapThemeRules } from './patterns/gap';
+import { displayThemeRules } from './patterns/layout';
+import { positionThemeRules } from './patterns/position';
+import { aspectRatioThemeRules } from './patterns/size';
+import { marginThemeRules, paddingThemeRules } from './patterns/spacing';
+import { tableThemeRules } from './patterns/table';
+import { typographyThemeRules } from './patterns/typography';
 
 export const tailwindBaseRules: Rule<BaseTheme>[] = [
   ...colorThemeRules,
