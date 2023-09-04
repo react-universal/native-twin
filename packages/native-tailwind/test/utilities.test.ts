@@ -44,9 +44,26 @@ describe('@universal-labs/native-tailwind - Color Utilities', () => {
   it('Custom color', () => {
     expect(tailwind('bg-primary')).toStrictEqual([{ backgroundColor: 'rgba(5,88,249,1)' }]);
   });
+  it('Opacity', () => {
+    expect(tailwind('opacity-10')).toStrictEqual([{ opacity: '0.1' }]);
+  });
   it('Color modifier', () => {
     expect(tailwind('bg-blue-200/[0.5]')).toStrictEqual([
       { backgroundColor: 'rgba(191,219,254,0.5)' },
+    ]);
+  });
+});
+
+describe('@universal-labs/native-tailwind - Position Utilities', () => {
+  it('top|right|bottom|left', () => {
+    expect(tailwind('top-2')).toStrictEqual([{ top: '0.5rem' }]);
+  });
+});
+
+describe('@universal-labs/native-tailwind - Border Utilities', () => {
+  it('t|r|b|l', () => {
+    expect(tailwind('border-x-1')).toStrictEqual([
+      { borderLeftWidth: '1px', borderRightWidth: '1px' },
     ]);
   });
 });

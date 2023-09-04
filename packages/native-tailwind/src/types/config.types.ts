@@ -50,13 +50,21 @@ export type RuleResolver<Theme extends BaseTheme = BaseTheme> = (
 
 export type PlatformSupport = 'native' | 'web';
 
-export interface RuleConfig<Theme extends BaseTheme = BaseTheme> {
+type RuleExpansions = 'edges';
+export type RuleExpansionProperties = {
+  kind: RuleExpansions;
+  prefix: string;
+  suffix: string;
+};
+
+export type RuleConfig<Theme extends BaseTheme = BaseTheme> = {
   themeAlias: keyof Theme;
   propertyAlias?: keyof CSSProperties;
+  expansion?: RuleExpansionProperties;
   canBeNegative?: boolean | undefined;
   resolver?: RuleResolver<Theme> | undefined;
   support?: PlatformSupport[];
-}
+};
 export type Rule<Theme extends BaseTheme = BaseTheme> =
   | [pattern: string | RegExp, config: RuleConfig<Theme>];
 

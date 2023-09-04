@@ -23,7 +23,7 @@ interface RuntimeTW<Theme extends BaseTheme = BaseTheme> {
 
 export function createTailwind<Theme = BaseTheme, Target = unknown>(
   userConfig: TailwindUserConfig<Theme>,
-  _sheet: Sheet<Target>,
+  _sheet?: Sheet<Target>,
 ): RuntimeTW<BaseTheme & ExtractThemes<Theme>> {
   const config = defineConfig(userConfig) as TailwindConfig<BaseTheme>;
   const context = createThemeContext<BaseTheme>(config);
@@ -47,3 +47,9 @@ export function createTailwind<Theme = BaseTheme, Target = unknown>(
     }),
   );
 }
+
+// const tailwind = createTailwind({
+//   ignorelist: [],
+// });
+
+// tailwind('-z-10'); //?

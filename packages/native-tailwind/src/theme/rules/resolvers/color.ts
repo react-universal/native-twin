@@ -16,4 +16,10 @@ export const colorThemeRules: Rule<BaseTheme>[] = [
       propertyAlias: 'color',
     },
   ],
+  [
+    'opacity-',
+    {
+      themeAlias: 'opacity',
+    },
+  ],
 ];

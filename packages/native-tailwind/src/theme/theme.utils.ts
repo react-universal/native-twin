@@ -1,4 +1,3 @@
-import type { RuleResolver } from '../types/config.types';
 import type {
   BaseTheme,
   ColorFunctionOptions,
@@ -111,42 +110,4 @@ export function toColorValue(
 
   if (options.opacityValue == '0') return '#0000';
   return color.replace(/^(rgb|hsl)(\([^)]+)\)$/, `$1a$2,${options.opacityValue})`);
-}
-
-function position(shorthand: string, separator = '-'): string {
-  const longhand: string[] = [];
-
-  for (const short of shorthand) {
-    longhand.push({ t: 'top', r: 'right', b: 'bottom', l: 'left' }[short] as string);
-  }
-
-  return longhand.join(separator);
-}
-
-export function resolveEdges(
-  property: string,
-  propertyPrefix: string,
-  propertySuffix = '',
-): RuleResolver {
-  return ({ 1: $1, 2: $2 }, context): any => {
-    const edges =
-      {
-        x: 'lr',
-        y: 'tb',
-      }[$1 as 'x' | 'y'] || $1! + $1!;
-    // if (!edges) return null;
-    if (!edges[0] || !edges[1]) {
-      return { [propertyPrefix + propertySuffix]: context.theme(property, $2) };
-    }
-    return {
-      [propertyPrefix + '-' + position(edges[0]) + propertySuffix]: context.theme(
-        property,
-        $2,
-      ),
-      [propertyPrefix + '-' + position(edges[1]) + propertySuffix]: context.theme(
-        property,
-        $2,
-      ),
-    };
-  };
 }

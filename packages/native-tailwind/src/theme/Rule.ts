@@ -2,96 +2,159 @@ import type {
   Context,
   ExpArrayMatchResult,
   Rule,
-  RuleConfig,
+  RuleExpansionProperties,
+  RuleResolver,
   RuleResult,
 } from '../types/config.types';
-import type { BaseTheme, ThemeValue } from '../types/theme.types';
 import type { ParsedRule } from '../types/parser.types';
+import type { BaseTheme } from '../types/theme.types';
 import { toColorValue, toCondition } from './theme.utils';
 
-export class RuleHandler<Theme extends BaseTheme = BaseTheme> {
-  ruleConfig: RuleConfig<Theme>;
-  private basePattern: string | RegExp;
-  support: Exclude<RuleConfig<Theme>['support'], undefined> = ['native', 'web'];
-  constructor(themeRule: Rule<Theme>) {
-    this.ruleConfig = themeRule[1];
-    this.basePattern = themeRule[0];
-    if (this.ruleConfig.support) {
-      this.support = this.ruleConfig.support;
-    }
+export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
+  rule: Rule<Theme>,
+  ctx: Context<Theme>,
+) {
+  const basePattern = rule[0];
+  const ruleRegex = toCondition(rule[0]);
+  const ruleConfig = rule[1];
+  const maybeColorValue = /color|fill|stroke/i.test(
+    String(ruleConfig.propertyAlias ?? ruleConfig.themeAlias),
+  );
+  let resolver: RuleResolver | null = null;
+  if (ruleConfig.resolver && typeof ruleConfig.resolver == 'function') {
+    resolver = ruleConfig.resolver;
   }
-
-  get isColorRule() {
-    return /color|fill|stroke/i.test(
-      String(this.ruleConfig.themeAlias) ?? this.ruleConfig.propertyAlias,
-    );
-  }
-
-  private resolveColor(
-    parsedRule: ParsedRule,
-    themeValue: ThemeValue<Theme['colors']>,
-  ): RuleResult {
-    let key = this.ruleConfig.propertyAlias ?? String(this.ruleConfig.themeAlias);
-    if (parsedRule.m) {
-      let opacity = parsedRule.m.value;
-      if (opacity.startsWith('[') && opacity.endsWith(']')) {
-        opacity = opacity.slice(1, -1);
-      }
-      key = key.replace(/[A-Z]/g, (_) => '-' + _.toLowerCase());
-      return {
-        [key]: toColorValue(themeValue, {
-          opacityValue: opacity,
-        }),
-      };
-    }
-    return {
-      [key]: toColorValue(themeValue, {
-        opacityValue: '1',
-      }),
-    };
-  }
-
-  resolve(parsedRule: ParsedRule, ctx: Context<Theme>): RuleResult {
-    const condition = toCondition(this.basePattern);
+  return (parsedRule: ParsedRule): RuleResult => {
     const token = parsedRule.n;
-    let match = condition.exec(token) as ExpArrayMatchResult;
+    const match = getMatch(token, ruleRegex);
     if (!match) return null;
-    match.$$ = token.slice(match[0].length);
-
-    if (this.isColorRule && !this.ruleConfig.resolver) {
-      const value = ctx.theme('colors', match.$$);
-      if (value) return this.resolveColor(parsedRule, value);
-    }
 
     if (token.includes('[') && token.slice(-1) == ']') {
       match.$$ = token.slice(token.indexOf('['));
     }
-    // console.log('MATCH: ', match);
-
-    if (this.ruleConfig.resolver && typeof this.ruleConfig.resolver == 'function') {
-      return this.ruleConfig.resolver(match, ctx);
-    }
-
-    // Rule is [pattern, RuleConfig]
-    if (typeof this.basePattern == 'string') {
-      if (token.startsWith('-') && !this.ruleConfig.canBeNegative) return null;
-
-      const section = this.ruleConfig.themeAlias;
-      let value = ctx.theme(section, token.slice(this.basePattern.length));
-
-      if (!value) {
-        return null;
+    if (resolver) {
+      const data = resolver(match, ctx);
+      if (typeof data == 'object') {
+        return data;
       }
-
-      let key = String(this.ruleConfig.propertyAlias ?? this.ruleConfig.themeAlias);
-      key = key.replace(/[A-Z]/g, (_) => '-' + _.toLowerCase());
-
-      const result = {
-        [key]: value!,
-      };
-      return result;
     }
 
+    if (ruleConfig.expansion) {
+      const { kind } = ruleConfig.expansion;
+      if (kind == 'edges') return resolveEdgeRule(match, parsedRule, ruleConfig.expansion);
+    }
+
+    if (maybeColorValue && !ruleConfig.resolver) {
+      const value = ctx.theme('colors', match[1] || match.$$);
+      if (value && typeof value == 'string') {
+        const data = resolveColor(parsedRule, value);
+        if (typeof data == 'string') {
+          return {
+            [ruleConfig.propertyAlias ?? ruleConfig.themeAlias]: data,
+          };
+        }
+      }
+    }
+
+    if (typeof basePattern == 'string') {
+      if (token.startsWith('-') && !ruleConfig.canBeNegative) return null;
+
+      let value: any = null;
+      value = ctx.theme(ruleConfig.themeAlias, token.slice(basePattern.length));
+
+      if (typeof value == 'string') {
+        let key = String(ruleConfig.propertyAlias ?? ruleConfig.themeAlias);
+        key = key.replace(/[A-Z]/g, (_) => '-' + _.toLowerCase());
+        if (ruleConfig.canBeNegative && parsedRule.n.startsWith('-')) {
+          value = `-${value}`;
+        }
+        return {
+          [key]: value,
+        };
+      }
+    } else {
+      let value = ctx.theme(ruleConfig.themeAlias, match[1]);
+      if (value) {
+        const isNegative = ruleConfig.canBeNegative && parsedRule.n.startsWith('-');
+        return {
+          [ruleConfig.propertyAlias ?? ruleConfig.themeAlias]: `${
+            isNegative ? '-' : ''
+          }${value}`,
+        };
+      }
+    }
+    return null;
+  };
+
+  function resolveEdgeRule(
+    match: ExpArrayMatchResult,
+    parsedRule: ParsedRule,
+    config: RuleExpansionProperties,
+  ) {
+    const finalRuleBlock: Record<string, string> = {};
+    const { prefix, suffix } = config;
+    const properties = getEdgeProperties(prefix, suffix, match).map((x) =>
+      x.replace(/[A-Z]/g, (_) => '-' + _.toLowerCase()),
+    );
+    let value = ctx.theme(ruleConfig.themeAlias, match[2]);
+    if (value && typeof value == 'string') {
+      const isNegative = ruleConfig.canBeNegative && parsedRule.n.startsWith('-');
+      for (const key of properties) {
+        Object.assign(finalRuleBlock, {
+          [key]: `${isNegative ? '-' : ''}${value}`,
+        });
+      }
+      return finalRuleBlock;
+    }
     return null;
   }
+}
+
+function resolveColor(parsedRule: ParsedRule, themeValue: string) {
+  if (parsedRule.m) {
+    let opacity = parsedRule.m.value;
+    if (opacity.startsWith('[') && opacity.endsWith(']')) {
+      opacity = opacity.slice(1, -1);
+    }
+    return toColorValue(themeValue, {
+      opacityValue: opacity,
+    });
+  }
+  return toColorValue(themeValue, {
+    opacityValue: '1',
+  });
+}
+
+function getMatch(token: string, regex: RegExp): ExpArrayMatchResult | null {
+  let match = regex.exec(token) as ExpArrayMatchResult;
+  if (!match) return null;
+  match.$$ = token.slice(match[0].length);
+  return match;
+}
+
+function position(shorthand: string, separator = '-'): string {
+  const longhand: string[] = [];
+
+  for (const short of shorthand) {
+    longhand.push({ t: 'top', r: 'right', b: 'bottom', l: 'left' }[short] as string);
+  }
+
+  return longhand.join(separator);
+}
+
+function getEdgeProperties(
+  propertyPrefix: string,
+  propertySuffix = '',
+  { 1: $1 }: ExpArrayMatchResult,
+): string[] {
+  const result: string[] = [];
+  const edges =
+    {
+      x: 'lr',
+      y: 'tb',
+    }[$1 as 'x' | 'y'] || $1! + $1!;
+  if (!edges[0] && !edges[1]) result.push(propertyPrefix + propertySuffix);
+  if (edges[0]) result.push(propertyPrefix + '-' + position(edges[0]) + propertySuffix);
+  if (edges[1]) result.push(propertyPrefix + '-' + position(edges[1]) + propertySuffix);
+  return result;
 }

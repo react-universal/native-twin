@@ -1,13 +1,16 @@
 import type { Rule } from '../../../types/config.types';
 import type { BaseTheme } from '../../../types/theme.types';
-import { resolveEdges } from '../../theme.utils';
 
 export const paddingThemeRules: Rule<BaseTheme>[] = [
   [
     /^p([xytrbl]?)-?(.*)/,
     {
       themeAlias: 'padding',
-      resolver: resolveEdges('padding', 'padding'),
+      expansion: {
+        kind: 'edges',
+        prefix: 'padding',
+        suffix: '',
+      },
     },
   ],
 ];
@@ -18,9 +21,12 @@ export const marginThemeRules: Rule<BaseTheme>[] = [
 
     {
       themeAlias: 'margin',
-      propertyAlias: 'margin',
       canBeNegative: true,
-      resolver: resolveEdges('margin', 'margin'),
+      expansion: {
+        kind: 'edges',
+        prefix: 'margin',
+        suffix: '',
+      },
     },
   ],
 ];

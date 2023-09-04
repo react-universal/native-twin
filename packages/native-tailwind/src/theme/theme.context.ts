@@ -1,17 +1,17 @@
 import type { ParsedRule } from '../types/parser.types';
 import type { Context, RuleResult, TailwindConfig } from '../types/config.types';
 import type { BaseTheme, ThemeConfig, ThemeFunction } from '../types/theme.types';
-import { Platform, type PlatformOSType } from 'react-native';
-import { RuleHandler } from './Rule';
+import type { PlatformOSType } from 'react-native';
+import { createRuleResolver } from './Rule';
 
 export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   theme: themeConfig,
   rules,
 }: TailwindConfig<Theme>): Context<Theme> {
-  const ruleHandlers: RuleHandler<Theme>[] = [];
+  // const ruleHandlers: RuleHandler<Theme>[] = [];
   const cache = new Map<string, RuleResult>();
-  const platform: PlatformOSType =
-    Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
+  const platform: PlatformOSType = 'native';
+  // Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
   const ctx: Context<Theme> = {
     mode: platform,
     theme: createThemeFunction(themeConfig),
@@ -22,16 +22,18 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
       if (cache.has(token.n)) {
         return cache.get(token.n);
       }
-      if (ruleHandlers.length == 0) {
-        for (const rule of rules) {
-          const handler = new RuleHandler(rule);
-          if (ctx.isSupported(handler.support)) {
-            ruleHandlers.push(handler);
-          }
-        }
-      }
-      for (const current of ruleHandlers) {
-        const nextToken = current.resolve(token, ctx);
+      // if (ruleHandlers.length == 0) {
+      //   for (const rule of rules) {
+      //     const handler = new RuleHandler(rule);
+      //     if (ctx.isSupported(handler.support)) {
+      //       ruleHandlers.push(handler);
+      //     }
+      //   }
+      // }
+      for (const current of rules) {
+        const executor = createRuleResolver(current, ctx);
+        const nextToken = executor(token);
+        // console.log('NEXT: ', nextToken);
         if (nextToken) {
           cache.set(token.n, nextToken);
           return nextToken;
