@@ -14,7 +14,7 @@ describe('@universal-labs/native-tailwind - TW call', () => {
       { textAlign: 'center' },
       { fontSize: '1.5rem', lineHeight: '2rem' },
       { backgroundColor: 'rgba(191,219,254,1)' },
-      { justifyItems: 'center' },
+      { justifyContent: 'center' },
     ]);
   });
 });

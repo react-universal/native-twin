@@ -88,7 +88,7 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
           };
         }
         return key.split('-').reduce((prev, current) => {
-          if (!current || !prev) return null;
+          if (!prev) return null;
           if (typeof prev == 'object') {
             return prev[current];
           }

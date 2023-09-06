@@ -47,6 +47,7 @@ export type ExpArrayMatchResult = RegExpExecArray & {
 export type RuleResolver<Theme extends BaseTheme = BaseTheme> = (
   match: ExpArrayMatchResult,
   context: Context<Theme>,
+  parsedRule: ParsedRule,
 ) => RuleResult;
 
 export type PlatformSupport = 'native' | 'web';

@@ -52,4 +52,4 @@ const tailwind = createTailwind({
   ignorelist: [],
 });
 
-tailwind('bg-blue-200/50'); //?
+tailwind('justify-between'); //?

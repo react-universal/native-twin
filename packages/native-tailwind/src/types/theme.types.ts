@@ -137,6 +137,7 @@ export interface BaseTheme {
   flexShrink: Record<string, number | string>;
   flexDirection: Record<string, string>;
   justifyItems: Record<string, string>;
+  justifyContent: Record<string, string>;
   placeContent: Record<string, string>;
   alignItems: Record<string, string>;
   alignSelf: Record<string, string>;

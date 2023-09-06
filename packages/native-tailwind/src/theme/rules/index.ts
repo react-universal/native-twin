@@ -1,5 +1,6 @@
 import type { Rule } from '../../types/config.types';
 import type { BaseTheme } from '../../types/theme.types';
+import { alignmentsThemeRules } from './patterns/alignments';
 import { borderThemeRules } from './patterns/border';
 import { boxThemeRules } from './patterns/box';
 import { colorThemeRules } from './patterns/color';
@@ -25,4 +26,5 @@ export const tailwindBaseRules: Rule<BaseTheme>[] = [
   ...aspectRatioThemeRules,
   ...boxThemeRules,
   ...tableThemeRules,
+  ...alignmentsThemeRules,
 ];

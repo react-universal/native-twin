@@ -34,17 +34,17 @@ export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
 
     // Rule already has a resolver
     if (typeof ruleConfig == 'function') {
-      const value = ruleConfig(match, ctx);
+      const value = ruleConfig(match, ctx, parsedRule);
       if (value) return value;
       return null;
     }
 
     let resolver: RuleResolver | null = null;
-    if (!resolver && ruleConfig.resolver && typeof ruleConfig.resolver == 'function') {
+    if (ruleConfig.resolver && typeof ruleConfig.resolver == 'function') {
       resolver = ruleConfig.resolver;
     }
     if (resolver) {
-      const data = resolver(match, ctx);
+      const data = resolver(match, ctx, parsedRule);
       if (typeof data == 'object') {
         return data;
       }
@@ -55,7 +55,7 @@ export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
       if (kind == 'edges') return resolveEdgeRule(match, parsedRule, ruleConfig.expansion);
     }
 
-    if (isColorRule) {
+    if (isColorRule && !resolver) {
       const data = colorResolver(parsedRule, match, ctx);
       if (typeof data == 'string') {
         return {
@@ -69,6 +69,7 @@ export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
 
       let value: any = null;
       value = ctx.theme(ruleConfig.themeAlias, token.slice(basePattern.length));
+      if (!value) return null;
 
       if (typeof value == 'string') {
         let key = String(ruleConfig.propertyAlias ?? ruleConfig.themeAlias);
@@ -100,7 +101,7 @@ export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
     config: RuleExpansionProperties,
   ) {
     if (typeof ruleConfig == 'function') {
-      return ruleConfig(match, ctx);
+      return ruleConfig(match, ctx, parsedRule);
     }
     const finalRuleBlock: Record<string, string> = {};
     const { prefix, suffix } = config;
@@ -157,4 +158,35 @@ function getEdgeProperties(
   if (edges[0]) result.push(propertyPrefix + '-' + position(edges[0]) + propertySuffix);
   if (edges[1]) result.push(propertyPrefix + '-' + position(edges[1]) + propertySuffix);
   return result;
+}
+
+export function createThemeRule<Theme extends BaseTheme = BaseTheme>(
+  rule: Rule<Theme>,
+  section: any,
+  ctx: Context<Theme>,
+) {
+  const completions: string[] = [];
+  // const condition = toCondition(rule[0]);
+  // const matchParser = P.regex(condition);
+  const themeValues = ctx.theme(section);
+  if (typeof themeValues == 'object') {
+    return flattenSection(themeValues);
+  }
+  return completions;
+
+  function flattenSection(obj: any, path: string[] = []) {
+    const allPaths: any[] = [];
+    for (const key in obj) {
+      const value = obj[key];
+      let keyPath = [...path, key];
+      if (key == 'DEFAULT') {
+        continue;
+      }
+      if (typeof value == 'object') {
+        allPaths.push(...flattenSection(value, keyPath));
+      }
+      allPaths.push(keyPath.join('-'));
+    }
+    return allPaths;
+  }
 }
