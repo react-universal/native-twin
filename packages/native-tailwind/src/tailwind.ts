@@ -48,8 +48,8 @@ export function createTailwind<Theme = BaseTheme, Target = unknown>(
   );
 }
 
-const tailwind = createTailwind({
-  ignorelist: [],
-});
+// const tailwind = createTailwind({
+//   ignorelist: [],
+// });
 
-tailwind('justify-between'); //?
+// tailwind('bg-blue-200'); //?

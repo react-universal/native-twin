@@ -101,7 +101,7 @@ const matchGroup = P.sequenceOf([
     }),
 );
 /** Recursive syntax parser all utils separated by space */
-const classParser = P.separatedBySpace(validValues);
+export const tailwindClassNamesParser = P.separatedBySpace(validValues);
 
 function translateRules(
   tokens: (GroupToken | VariantClassToken | ClassNameToken | ArbitraryToken)[],
@@ -203,7 +203,7 @@ function mergeGroups(
 }
 
 export function parseTWTokens(rules: string) {
-  const data = classParser.run(rules);
+  const data = tailwindClassNamesParser.run(rules);
   if (data.isError) {
     // eslint-disable-next-line no-console
     console.warn('Failed parsing rules: ', rules);

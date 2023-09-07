@@ -1,7 +1,8 @@
+import type { PlatformOSType } from 'react-native';
 import type { ParsedRule } from '../types/parser.types';
 import type { Context, RuleResult, TailwindConfig } from '../types/config.types';
-import type { BaseTheme, ThemeConfig, ThemeFunction } from '../types/theme.types';
-import type { PlatformOSType } from 'react-native';
+import type { BaseTheme } from '../types/theme.types';
+import { createThemeFunction } from './theme.function';
 import { createRuleResolver } from './Rule';
 import { flattenColorPalette } from '../common/fn.helpers';
 
@@ -10,6 +11,7 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
   rules,
 }: TailwindConfig<Theme>): Context<Theme> {
   const ruleHandlers = new Map<string, (rule: ParsedRule) => RuleResult>();
+  // const ruleParsers = new Map<string, ThemeObjectParser>();
   const cache = new Map<string, RuleResult>();
   const platform: PlatformOSType = 'native';
   // Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
@@ -42,7 +44,7 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
         }
         const nextToken = resolver(token);
         if (nextToken) {
-          cache.set(cacheKey, nextToken);
+          cache.set(token.n, nextToken);
           return nextToken;
         }
       }
@@ -50,52 +52,4 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
     },
   };
   return ctx;
-
-  function createThemeFunction<Theme extends BaseTheme = BaseTheme>({
-    extend = {},
-    ...baseConfig
-  }: ThemeConfig<Theme>) {
-    return theme as ThemeFunction<Theme>;
-    function theme(
-      themeSection: keyof typeof baseConfig & keyof typeof extend,
-      key?: string,
-      defaultValue?: string,
-    ) {
-      if (!key) {
-        let config = baseConfig[themeSection];
-        if (typeof config == 'function') config = config(ctx);
-
-        return {
-          ...config,
-          ...extend[themeSection],
-        };
-      }
-
-      if (key[0] == '[' && key.slice(-1) == ']') {
-        return key.slice(1, -1);
-      }
-      // The utility has an arbitrary value
-      if (key.startsWith('[') && key.endsWith(']')) {
-        return key.slice(1, -1);
-      }
-      if (themeSection in baseConfig) {
-        let initialValue = baseConfig[themeSection];
-        if (typeof initialValue == 'function') initialValue = initialValue(ctx);
-        if (themeSection in extend) {
-          initialValue = {
-            ...initialValue,
-            ...extend[themeSection],
-          };
-        }
-        return key.split('-').reduce((prev, current) => {
-          if (!prev) return null;
-          if (typeof prev == 'object') {
-            return prev[current];
-          }
-          return prev;
-        }, initialValue);
-      }
-      return defaultValue ?? null;
-    }
-  }
 }

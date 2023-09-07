@@ -8,7 +8,7 @@ import type {
 } from '../types/config.types';
 import type { ParsedRule } from '../types/parser.types';
 import type { BaseTheme } from '../types/theme.types';
-import { colorResolver } from './resolvers/color.resolver';
+import { colorResolver } from './matchers/color.resolver';
 import { toCondition } from './theme.utils';
 
 export function createRuleResolver<Theme extends BaseTheme = BaseTheme>(
@@ -158,35 +158,4 @@ function getEdgeProperties(
   if (edges[0]) result.push(propertyPrefix + '-' + position(edges[0]) + propertySuffix);
   if (edges[1]) result.push(propertyPrefix + '-' + position(edges[1]) + propertySuffix);
   return result;
-}
-
-export function createThemeRule<Theme extends BaseTheme = BaseTheme>(
-  rule: Rule<Theme>,
-  section: any,
-  ctx: Context<Theme>,
-) {
-  const completions: string[] = [];
-  // const condition = toCondition(rule[0]);
-  // const matchParser = P.regex(condition);
-  const themeValues = ctx.theme(section);
-  if (typeof themeValues == 'object') {
-    return flattenSection(themeValues);
-  }
-  return completions;
-
-  function flattenSection(obj: any, path: string[] = []) {
-    const allPaths: any[] = [];
-    for (const key in obj) {
-      const value = obj[key];
-      let keyPath = [...path, key];
-      if (key == 'DEFAULT') {
-        continue;
-      }
-      if (typeof value == 'object') {
-        allPaths.push(...flattenSection(value, keyPath));
-      }
-      allPaths.push(keyPath.join('-'));
-    }
-    return allPaths;
-  }
 }

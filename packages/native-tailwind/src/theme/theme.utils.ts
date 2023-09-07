@@ -111,3 +111,24 @@ export function toColorValue(
   if (options.opacityValue == '0') return '#0000';
   return color.replace(/^(rgb|hsl)(\([^)]+)\)$/, `$1a$2,${options.opacityValue})`);
 }
+
+export function flattenThemeSection(obj: any, path: string[] = []) {
+  const flatten: Record<string, any> = {};
+  for (const key in obj) {
+    const value = obj[key];
+    let keyPath = [...path, key];
+    if (value) {
+      flatten[keyPath.join('-')] = value;
+    }
+    if (key == 'DEFAULT') {
+      keyPath = path;
+      if (value) {
+        flatten[path.join('-')] = value;
+      }
+    }
+    if (typeof value == 'object') {
+      Object.assign(flatten, flattenThemeSection(value, keyPath));
+    }
+  }
+  return flatten;
+}
