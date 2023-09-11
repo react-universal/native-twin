@@ -63,7 +63,8 @@ export interface TailwindRuleResolver<Theme extends __Theme__ = __Theme__>
   pattern: string;
 }
 
-export interface ThemeContext {
+export interface ThemeContext<Theme extends __Theme__ = {}> {
+  theme: ThemeFunction<Theme>;
   /** Allows to resolve theme values */
   colors: Record<string, string>;
   /**
@@ -74,4 +75,8 @@ export interface ThemeContext {
 
   isSupported: (support: PlatformSupport[]) => boolean;
   mode: PlatformSupport[number];
+}
+
+export interface ThemeFunction<Theme extends __Theme__ = {}> {
+  (section: keyof ThemeConfig<Theme> | (string & {}), rule: ParsedRule): string | undefined;
 }

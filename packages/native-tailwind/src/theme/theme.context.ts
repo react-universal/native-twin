@@ -1,8 +1,16 @@
 import type { PlatformOSType } from 'react-native';
-import type { Rule, RuleResult, TailwindConfig, ThemeContext } from '../types/config.types';
+import type {
+  Rule,
+  RuleResolver,
+  RuleResult,
+  TailwindConfig,
+  ThemeContext,
+} from '../types/config.types';
 import type { ParsedRule } from '../types/parser.types';
 import type { __Theme__ } from '../types/theme.types';
 import { flattenColorPalette } from '../utils/theme-utils';
+import { createRuleParser, resolveThemeValue } from './rule-resolver';
+import { createThemeFunction } from './theme.function';
 
 export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
@@ -20,7 +28,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
     mode: platform,
 
-    // theme: createThemeFunction(themeConfig),
+    theme: createThemeFunction(themeConfig),
 
     isSupported(support) {
       return support.includes(platform);
@@ -46,14 +54,27 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   return ctx;
 
   function resolveRule(rule: Rule<Theme>, parsedRule: ParsedRule) {
-    const resolver = rule[1];
-    if (typeof resolver == 'function') {
-      const nextToken = resolver(parsedRule.n, themeConfig, parsedRule);
+    const resolver = getRuleResolver(rule);
+    const nextToken = resolver(parsedRule.n, themeConfig, parsedRule);
 
-      if (nextToken) {
-        cache.set(parsedRule.n, nextToken);
-        return nextToken;
-      }
+    if (nextToken) {
+      cache.set(parsedRule.n, nextToken);
+      return nextToken;
     }
+  }
+
+  function getRuleResolver(rule: Rule<Theme>): RuleResolver<Theme> {
+    if (typeof rule[1] == 'function') {
+      return rule[1];
+    }
+    const section = rule[1];
+    const parser = createRuleParser(rule[0]);
+    if (typeof section == 'object') {
+      return (token) => {
+        if (parser.run(token).isError) return;
+        return section;
+      };
+    }
+    return resolveThemeValue(rule[0], section, rule[2])[1];
   }
 }

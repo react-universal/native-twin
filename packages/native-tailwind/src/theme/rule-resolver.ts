@@ -13,7 +13,7 @@ const defaultRuleMeta: RuleMeta = {
 
 const maybeNegative = P.maybe(P.char('-'));
 
-function createRuleParser(pattern: string, meta = defaultRuleMeta) {
+export function createRuleParser(pattern: string, meta = defaultRuleMeta) {
   const baseParser = P.literal(pattern);
   if (meta.canBeNegative) {
     return P.sequenceOf([maybeNegative, baseParser]).map((x) => x[1]);

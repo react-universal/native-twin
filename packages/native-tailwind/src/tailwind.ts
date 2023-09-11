@@ -55,4 +55,4 @@ const tailwind = createTailwind({
   ignorelist: [],
 });
 
-tailwind('border-1'); //?
+tailwind('border-blue-300'); //?
