@@ -1,5 +1,5 @@
 import type { PlatformOSType } from 'react-native';
-import type { RuleResult, TailwindConfig, ThemeContext } from '../types/config.types';
+import type { Rule, RuleResult, TailwindConfig, ThemeContext } from '../types/config.types';
 import type { ParsedRule } from '../types/parser.types';
 import type { __Theme__ } from '../types/theme.types';
 import { flattenColorPalette } from '../utils/theme-utils';
@@ -35,30 +35,30 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
         return cache.get(cacheKey);
       }
       for (const current of rules) {
-        if (typeof current == 'function') {
-          const result = current.test(token.n);
-
-          if (result) {
-            const nextToken = current(
-              token.n.slice(current.pattern.length),
-              themeConfig,
-              token,
-            );
-            if (nextToken) {
-              cache.set(token.n, nextToken);
-              return nextToken;
-            }
-          }
+        const value = resolveRule(current, token);
+        if (value) {
+          return value;
         }
-        // let resolver = ruleHandlers.get(current[0].toString())!;
-        // if (!resolver) {
-        //   ruleHandlers.set(current[0].toString(), createRuleResolver(current, ctx));
-        //   resolver = ruleHandlers.get(current[0].toString())!;
-        // }
-        // const nextToken = resolver(token);
       }
       return null;
     },
   };
   return ctx;
+
+  function resolveRule(rule: Rule<Theme>, token: ParsedRule) {
+    if (typeof rule == 'function') {
+      const result = rule.test(token.n);
+
+      if (result) {
+        const pattern = token.n.slice(rule.pattern.length - 1);
+        // console.log('PATTERN: ', pattern);
+        // console.log('asd: ', token.n.slice(rule.pattern.length - 1));
+        const nextToken = rule(pattern, themeConfig, token);
+        if (nextToken) {
+          cache.set(token.n, nextToken);
+          return nextToken;
+        }
+      }
+    }
+  }
 }

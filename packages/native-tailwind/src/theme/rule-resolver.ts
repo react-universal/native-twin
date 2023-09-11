@@ -8,6 +8,7 @@ import { flattenThemeSection, toColorValue } from './theme.utils';
 const defaultRuleMeta: RuleMeta = {
   canBeNegative: false,
   feature: 'default',
+  baseProperty: undefined,
 };
 
 const maybeNegative = P.maybe(P.char('-'));

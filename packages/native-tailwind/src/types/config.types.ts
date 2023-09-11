@@ -39,7 +39,7 @@ export type RuleExpansionProperties = {
 };
 
 export type RuleResolver<Theme extends __Theme__ = {}> = (
-  followingSegment: string,
+  token: string,
   theme: ThemeConfig<Theme>,
   parsed: ParsedRule,
 ) => RuleResult | Falsey;
@@ -55,6 +55,7 @@ export type PatternParserResolver = Parser<string>;
 export interface RuleMeta {
   canBeNegative: boolean;
   feature: 'edges' | 'corners' | 'colors' | 'default';
+  baseProperty?: string | undefined;
 }
 export interface TailwindRuleResolver<Theme extends __Theme__ = __Theme__>
   extends RuleResolver<Theme> {
