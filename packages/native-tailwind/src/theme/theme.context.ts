@@ -45,19 +45,14 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   };
   return ctx;
 
-  function resolveRule(rule: Rule<Theme>, token: ParsedRule) {
-    if (typeof rule == 'function') {
-      const result = rule.test(token.n);
+  function resolveRule(rule: Rule<Theme>, parsedRule: ParsedRule) {
+    const resolver = rule[1];
+    if (typeof resolver == 'function') {
+      const nextToken = resolver(parsedRule.n, themeConfig, parsedRule);
 
-      if (result) {
-        const pattern = token.n.slice(rule.pattern.length - 1);
-        // console.log('PATTERN: ', pattern);
-        // console.log('asd: ', token.n.slice(rule.pattern.length - 1));
-        const nextToken = rule(pattern, themeConfig, token);
-        if (nextToken) {
-          cache.set(token.n, nextToken);
-          return nextToken;
-        }
+      if (nextToken) {
+        cache.set(parsedRule.n, nextToken);
+        return nextToken;
       }
     }
   }

@@ -1,5 +1,5 @@
-import { noop } from '../common/fn.helpers';
 import type { Sheet } from '../types/css.types';
+import { noop } from '../utils/helpers';
 
 export function createVirtualSheet(includeResumeData?: boolean): Sheet<string[]> {
   const target: string[] = [];

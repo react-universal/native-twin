@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { parseTWTokens } from '../src/parsers/tailwind.parser';
 import { parsedRuleToString } from '../src/parsers/parser.utils';
+import { parseTWTokens } from '../src/parsers/tailwind.parser';
 
 const screens = ['md', 'sm', 'lg', 'xl', '2xl'];
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { createTailwind } from '../src/tailwind';
 import { createVirtualSheet } from '../src/css/sheets';
+import { createTailwind } from '../src/tailwind';
 
 const tailwind = createTailwind({ ignorelist: [] }, createVirtualSheet(true));
 

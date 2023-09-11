@@ -1,5 +1,5 @@
 import * as P from '@universal-labs/css/parser';
-import type { RuleMeta, RuleResolver, TailwindRuleResolver } from '../types/config.types';
+import type { Rule, RuleMeta } from '../types/config.types';
 import type { CSSProperties } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
 import { flattenColorPalette } from '../utils/theme-utils';
@@ -25,10 +25,14 @@ let resolvedColors = new Map<string, string>();
 export function resolveColorValue(
   pattern: string,
   property: keyof CSSProperties,
-): TailwindRuleResolver<__Theme__> {
-  const parser = createRuleParser(pattern);
-  return Object.defineProperties(
-    function resolver(following, theme, parsedRule) {
+): Rule<__Theme__> {
+  return [
+    pattern,
+    (token, theme, rule) => {
+      const parser = createRuleParser(pattern);
+      if (parser.run(token).isError) return undefined;
+
+      const following = token.slice(pattern.length);
       if (resolvedColors.size == 0) {
         const colors = flattenColorPalette(theme.colors ?? {});
         resolvedColors = new Map(Object.entries(colors));
@@ -36,45 +40,36 @@ export function resolveColorValue(
       if (resolvedColors.has(following)) {
         return {
           [property]: toColorValue(resolvedColors.get(following)!, {
-            opacityValue: parsedRule.m?.value ?? '1',
+            opacityValue: rule.m?.value ?? '1',
           }),
         };
       }
-    } as RuleResolver<__Theme__>,
-    Object.getOwnPropertyDescriptors({
-      test(token: string) {
-        return parser.run(token).isError;
-      },
-      get pattern() {
-        return pattern;
-      },
-    }),
-  ) as TailwindRuleResolver<__Theme__>;
+    },
+  ];
 }
 
 export function resolveThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
   themeSection: keyof Theme,
   property: keyof CSSProperties,
-  _meta = defaultRuleMeta,
-): TailwindRuleResolver<__Theme__> {
-  const parser = createRuleParser(pattern);
-  return Object.defineProperties(
-    function resolver(following, theme) {
+  _meta: RuleMeta = {
+    canBeNegative: false,
+    feature: 'default',
+    baseProperty: undefined,
+  },
+): Rule<Theme> {
+  return [
+    pattern,
+    (token, theme) => {
+      const parser = createRuleParser(pattern);
+      if (parser.run(token).isError) return undefined;
+      const following = token.slice(pattern.length);
       const themeSectionValues = flattenThemeSection(theme[themeSection] ?? {});
       if (following in themeSectionValues) {
         return {
           [property]: themeSectionValues[following],
         };
       }
-    } as RuleResolver<Theme>,
-    Object.getOwnPropertyDescriptors({
-      test(token: string) {
-        return parser.run(token).isError;
-      },
-      get pattern() {
-        return pattern;
-      },
-    }),
-  ) as TailwindRuleResolver<Theme>;
+    },
+  ];
 }

@@ -48,7 +48,7 @@ export type Rule<Theme extends object = {}> =
   | [string, keyof Theme | (string & {}), keyof CSSProperties]
   | [string, CSSProperties]
   | [string, RuleResolver<Theme>]
-  | TailwindRuleResolver<Theme>;
+  | [string, TailwindRuleResolver<Theme>];
 
 export type PatternParserResolver = Parser<string>;
 
