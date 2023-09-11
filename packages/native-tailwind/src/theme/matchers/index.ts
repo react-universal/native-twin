@@ -1,12 +1,11 @@
-import type { RuleConfig } from '../../types/config.types';
 import * as P from '@universal-labs/css/parser';
+import type { Rule } from '../../types/config.types';
 import type { ParsedRule } from '../../types/parser.types';
-import type { BaseTheme } from '../../types/theme.types';
+import type { __Theme__ } from '../../types/theme.types';
 
 const themeValueParser = (sections: Record<string, string>, segment: string) =>
   new P.Parser((state) => {
     if (segment in sections) {
-      console.log('RESULT: ', segment);
       return P.updateParserResult(state, sections[segment]);
     }
     return P.updateParserError(state, {
@@ -15,9 +14,9 @@ const themeValueParser = (sections: Record<string, string>, segment: string) =>
     });
   });
 
-export function matchThemeValue<Theme extends BaseTheme = BaseTheme>(
+export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
-  _config: RuleConfig<Theme>,
+  _config: Rule<Theme>,
 ) {
   const parser = P.literal(pattern);
   return (parsed: ParsedRule, sections: Record<string, string>) => {

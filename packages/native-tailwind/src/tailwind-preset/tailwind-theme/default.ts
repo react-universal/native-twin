@@ -1,0 +1,65 @@
+import { colors } from './colors';
+import {
+  fontFamily,
+  fontSize,
+  fontWeight,
+  letterSpacing,
+  lineHeight,
+  textIndent,
+  textShadow,
+  textStrokeWidth,
+  wordSpacing,
+} from './font';
+import {
+  borderRadius,
+  boxShadow,
+  breakpoints,
+  duration,
+  easing,
+  lineWidth,
+  ringWidth,
+  spacing,
+  verticalBreakpoints,
+} from './mixed';
+import { blur, dropShadow } from './filters';
+import { containers, height, maxHeight, maxWidth, width } from './size';
+import { preflightBase } from './preflight';
+import type { __Theme__ } from '../../types/theme.types';
+
+export const theme = {
+  blockSize: height,
+  blur,
+  borderRadius,
+  boxShadow,
+  breakpoints,
+  colors,
+  containers,
+  dropShadow,
+  duration,
+  easing,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  height,
+  inlineSize: width,
+  letterSpacing,
+  lineHeight,
+  lineWidth,
+  maxBlockSize: maxHeight,
+  maxHeight,
+  maxInlineSize: maxWidth,
+  maxWidth,
+  minBlockSize: maxHeight,
+  minHeight: maxHeight,
+  minInlineSize: maxWidth,
+  minWidth: maxWidth,
+  preflightBase,
+  ringWidth,
+  spacing,
+  textIndent,
+  textShadow,
+  textStrokeWidth,
+  verticalBreakpoints,
+  width,
+  wordSpacing,
+} satisfies __Theme__;

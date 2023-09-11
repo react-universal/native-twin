@@ -1,9 +1,10 @@
+import { literal } from '@universal-labs/css/parser';
 import type { Rule } from '../../../types/config.types';
 import type { BaseTheme } from '../../../types/theme.types';
 
 export const borderThemeRules: Rule<BaseTheme>[] = [
   [
-    /^border-([xytrbl])-(.*)$/,
+    literal('border-'),
     {
       themeAlias: 'borderColor',
       expansion: {

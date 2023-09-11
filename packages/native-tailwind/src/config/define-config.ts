@@ -1,32 +1,19 @@
-import type { BaseTheme } from '../types/theme.types';
-import type { ExtractThemes, TailwindConfig, TailwindUserConfig } from '../types/config.types';
-import { toArray } from '../common/fn.helpers';
-import { baseTailwindTheme } from '../theme/baseTheme';
-import * as colors from '../theme/colors';
-import { tailwindBaseRules } from '../theme/rules';
+import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
+import { themeRules } from '../tailwind-preset/tailwind-rules';
+import { asArray } from '../utils/helpers';
+import { createTailwindTheme } from './create-theme';
+import type { __Theme__ } from '../types/theme.types';
 
-export function defineConfig<Theme extends BaseTheme = BaseTheme>({
+export function defineConfig<Theme extends __Theme__ = __Theme__>({
   ...userConfig
-}: TailwindUserConfig<Theme>): TailwindConfig<BaseTheme & ExtractThemes<Theme>> {
-  const config: TailwindConfig<BaseTheme & ExtractThemes<Theme>> = {
-    ignorelist: toArray(userConfig.ignorelist),
-    rules: [...toArray(userConfig.rules), ...toArray(tailwindBaseRules)],
+}: TailwindUserConfig<Theme>): TailwindConfig<__Theme__> {
+  const theme = createTailwindTheme(userConfig.theme);
+  const config: TailwindConfig<__Theme__> = {
+    ignorelist: asArray(userConfig.ignorelist),
+    rules: [...asArray(userConfig.rules), ...asArray(themeRules)],
     theme: {
-      colors: {
-        white: '#fff',
-        black: '#000',
-        current: 'currentColor',
-        ...colors,
-      },
-      ...baseTailwindTheme,
-      ...((userConfig.theme ?? {}) as TailwindConfig<
-        BaseTheme & ExtractThemes<Theme>
-      >['theme']),
-      extend: {
-        ...((userConfig.theme?.extend ?? {}) as TailwindConfig<
-          BaseTheme & ExtractThemes<Theme>
-        >['theme']['extend']),
-      },
+      ...theme,
+      extend: userConfig.theme?.extend,
     },
   };
   return config;

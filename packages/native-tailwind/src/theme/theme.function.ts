@@ -1,11 +1,6 @@
-import type {
-  BaseTheme,
-  ThemeConfig,
-  ThemeFunction,
-  ThemeSectionResolverContext,
-} from '../types/theme.types';
+import type { ThemeConfig, __Theme__ } from '../types/theme.types';
 
-export function createThemeFunction<Theme extends BaseTheme = BaseTheme>({
+export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
   extend = {},
   ...baseConfig
 }: ThemeConfig<Theme>) {

@@ -1,15 +1,10 @@
+import type { Parser } from '@universal-labs/css/parser';
 import type { CSSObject, CSSProperties } from './css.types';
 import type { ParsedRule } from './parser.types';
-import type {
-  BaseTheme,
-  MaybeColorValue,
-  ThemeConfig,
-  ThemeFunction,
-  ThemeSectionResolver,
-} from './theme.types';
-import type { Falsey, UnionToIntersection } from './util.types';
+import type { ThemeConfig, __Theme__ } from './theme.types';
+import type { Falsey } from './util.types';
 
-export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
+export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   theme: ThemeConfig<Theme>;
 
   rules: Rule<Theme>[];
@@ -22,19 +17,9 @@ export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
   };
 }
 
-export type ExtractUserTheme<T> = {
-  [key in keyof T]: key extends 'extend'
-    ? never
-    : T[key] extends ThemeSectionResolver<infer Value, T & BaseTheme>
-    ? Value
-    : T[key];
-} & BaseTheme;
-
-export type ExtractThemes<Theme> = UnionToIntersection<ExtractUserTheme<Theme> | BaseTheme>;
-
-export interface TailwindUserConfig<Theme = BaseTheme> {
-  theme?: ThemeConfig<BaseTheme & ExtractThemes<Theme>>;
-  rules?: Rule<BaseTheme>[];
+export interface TailwindUserConfig<Theme = __Theme__, UserTheme extends object = {}> {
+  theme?: ThemeConfig<Theme & UserTheme>;
+  rules?: Rule<__Theme__>[];
   ignorelist: string[];
 }
 
@@ -43,12 +28,6 @@ export type RuleResult = string | CSSObject | Falsey | Record<string, string>;
 export type ExpArrayMatchResult = RegExpExecArray & {
   $$: string;
 };
-
-export type RuleResolver<Theme extends BaseTheme = BaseTheme> = (
-  match: ExpArrayMatchResult,
-  context: Context<Theme>,
-  parsedRule: ParsedRule,
-) => RuleResult;
 
 export type PlatformSupport = 'native' | 'web';
 
@@ -59,31 +38,33 @@ export type RuleExpansionProperties = {
   suffix: string;
 };
 
-export type RuleConfig<Theme extends BaseTheme = BaseTheme> = {
-  themeAlias: keyof Theme;
-  propertyAlias?: keyof CSSProperties;
-  expansion?: RuleExpansionProperties;
-  canBeNegative?: boolean | undefined;
-  resolver?: RuleResolver<Theme> | undefined;
-  support?: PlatformSupport[];
-};
-export type Rule<Theme extends BaseTheme = BaseTheme> =
-  | [pattern: string | RegExp, config: RuleConfig<Theme>]
-  | [pattern: string | RegExp, resolver: RuleResolver<Theme>];
+export type RuleResolver<Theme extends __Theme__ = {}> = (
+  followingSegment: string,
+  theme: ThemeConfig<Theme>,
+  parsed: ParsedRule,
+) => RuleResult | Falsey;
 
-export interface TailwindConfig<Theme extends BaseTheme = BaseTheme> {
-  theme: ThemeConfig<Theme>;
+export type Rule<Theme extends object = {}> =
+  | [string, keyof Theme | (string & {}), keyof CSSProperties]
+  | [string, CSSProperties]
+  | [string, RuleResolver<Theme>]
+  | TailwindRuleResolver<Theme>;
 
-  rules: Rule<Theme>[];
+export type PatternParserResolver = Parser<string>;
 
-  ignorelist: string[];
+export interface RuleMeta {
+  canBeNegative: boolean;
+  feature: 'edges' | 'corners' | 'colors' | 'default';
+}
+export interface TailwindRuleResolver<Theme extends __Theme__ = __Theme__>
+  extends RuleResolver<Theme> {
+  test: (token: string) => boolean;
+  pattern: string;
 }
 
-export interface Context<Theme extends BaseTheme = BaseTheme> {
+export interface ThemeContext {
   /** Allows to resolve theme values */
-  colors: Record<string, MaybeColorValue>;
-  theme: ThemeFunction<Theme>;
-
+  colors: Record<string, string>;
   /**
    * resolves a rule
    *

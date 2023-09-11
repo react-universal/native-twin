@@ -1,28 +1,26 @@
 import type { PlatformOSType } from 'react-native';
+import type { RuleResult, TailwindConfig, ThemeContext } from '../types/config.types';
 import type { ParsedRule } from '../types/parser.types';
-import type { Context, RuleResult, TailwindConfig } from '../types/config.types';
-import type { BaseTheme } from '../types/theme.types';
-import { createThemeFunction } from './theme.function';
-import { createRuleResolver } from './Rule';
-import { flattenColorPalette } from '../common/fn.helpers';
+import type { __Theme__ } from '../types/theme.types';
+import { flattenColorPalette } from '../utils/theme-utils';
 
-export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
+export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
-}: TailwindConfig<Theme>): Context<Theme> {
-  const ruleHandlers = new Map<string, (rule: ParsedRule) => RuleResult>();
+}: TailwindConfig<Theme>): ThemeContext {
+  // const ruleHandlers = new Map<string, (rule: ParsedRule) => RuleResult>();
   // const ruleParsers = new Map<string, ThemeObjectParser>();
   const cache = new Map<string, RuleResult>();
   const platform: PlatformOSType = 'native';
   // Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
-  const ctx: Context<Theme> = {
+  const ctx: ThemeContext = {
     get colors() {
-      return flattenColorPalette(ctx.theme('colors'));
+      return flattenColorPalette(themeConfig['colors'] ?? {});
     },
 
     mode: platform,
 
-    theme: createThemeFunction(themeConfig),
+    // theme: createThemeFunction(themeConfig),
 
     isSupported(support) {
       return support.includes(platform);
@@ -37,16 +35,27 @@ export function createThemeContext<Theme extends BaseTheme = BaseTheme>({
         return cache.get(cacheKey);
       }
       for (const current of rules) {
-        let resolver = ruleHandlers.get(current[0].toString())!;
-        if (!resolver) {
-          ruleHandlers.set(current[0].toString(), createRuleResolver(current, ctx));
-          resolver = ruleHandlers.get(current[0].toString())!;
+        if (typeof current == 'function') {
+          const result = current.test(token.n);
+
+          if (result) {
+            const nextToken = current(
+              token.n.slice(current.pattern.length),
+              themeConfig,
+              token,
+            );
+            if (nextToken) {
+              cache.set(token.n, nextToken);
+              return nextToken;
+            }
+          }
         }
-        const nextToken = resolver(token);
-        if (nextToken) {
-          cache.set(token.n, nextToken);
-          return nextToken;
-        }
+        // let resolver = ruleHandlers.get(current[0].toString())!;
+        // if (!resolver) {
+        //   ruleHandlers.set(current[0].toString(), createRuleResolver(current, ctx));
+        //   resolver = ruleHandlers.get(current[0].toString())!;
+        // }
+        // const nextToken = resolver(token);
       }
       return null;
     },
