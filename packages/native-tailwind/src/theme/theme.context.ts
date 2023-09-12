@@ -7,11 +7,9 @@ import type {
   TailwindConfig,
   ThemeContext,
 } from '../types/config.types';
-import type { CSSProperties } from '../types/css.types';
 import type { ParsedRule } from '../types/parser.types';
 import type { __Theme__ } from '../types/theme.types';
 import { flattenColorPalette } from '../utils/theme-utils';
-import { resolveThemeValue } from './rule-resolver';
 import { createThemeFunction } from './theme.function';
 import { toCondition } from './theme.utils';
 
@@ -59,15 +57,13 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   return ctx;
 
   function getRuleResolver(rule: Rule<Theme>): RuleResolver<Theme> {
-    if (typeof rule[1] == 'object') {
-      return (_) => {
-        return rule[1] as CSSProperties;
-      };
+    if (typeof rule[1] == 'function') {
+      return rule[1];
     }
     if (typeof rule[2] == 'function') {
       return rule[2];
     }
-    return resolveThemeValue(rule[0], rule[1], rule[2], rule[3])[2];
+    throw new Error('');
   }
   function getRuleHandler(rule: Rule<Theme>) {
     const key = JSON.stringify([rule[0], rule[1]]);
@@ -77,8 +73,10 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
     const resolver = getRuleResolver(rule);
     const condition = toCondition(rule[0]);
     const handler = (parsedRule: ParsedRule) => {
+      // console.log('HANDLER: ', parsedRule);
       const match: ExpArrayMatchResult = condition.exec(parsedRule.n) as ExpArrayMatchResult;
       if (!match) return;
+      console.log('MATCH: ', match, condition.source);
       match.$$ = parsedRule.n.slice(match[0].length);
       return resolver(match, ctx, parsedRule);
     };

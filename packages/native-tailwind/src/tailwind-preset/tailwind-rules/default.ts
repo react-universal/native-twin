@@ -8,13 +8,13 @@ import { positionRules } from './position';
 import { spacingRules } from './spacing';
 
 export const themeRules: Rule[] = [
+  backgroundRules,
+  flexRules,
+  spacingRules,
+  positionRules,
+  textAlignsRules,
+  borderRules,
   outlineRules,
   verticalAlignsRules,
-  borderRules,
-  textAlignsRules,
   appearanceRules,
-  backgroundRules,
-  spacingRules,
-  flexRules,
-  positionRules,
 ].flat(1);

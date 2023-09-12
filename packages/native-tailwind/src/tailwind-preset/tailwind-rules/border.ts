@@ -1,4 +1,4 @@
-import { resolveColorValue, resolveThemeValue } from '../../theme/rule-resolver';
+import { matchThemeColor, matchThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 import type { __Theme__ } from '../../types/theme.types';
 import { globalKeywords } from '../../utils/mappings';
@@ -18,13 +18,11 @@ export const borderStyles = [
 ];
 
 export const borderRules: Rule<__Theme__>[] = [
-  resolveColorValue('border-', 'borderColor'),
-  resolveThemeValue('border-', 'borderWidth', 'borderWidth', {
-    canBeNegative: false,
+  matchThemeColor('border-', 'borderColor'),
+  matchThemeValue('border-', 'borderWidth', 'borderWidth', {
     feature: 'edges',
   }),
-  resolveThemeValue('rounded-', 'borderRadius', 'borderRadius', {
-    canBeNegative: false,
+  matchThemeValue('rounded-', 'borderRadius', 'borderRadius', {
     feature: 'corners',
   }),
 ];

@@ -1,21 +1,17 @@
-import { resolveThemeValue } from '../../theme/rule-resolver';
+import { matchThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 
 export const positionRules: Rule[] = [
-  resolveThemeValue('-?top-', 'spacing', 'top', {
+  matchThemeValue('-?top-', 'spacing', 'top', {
     canBeNegative: true,
-    feature: 'default',
   }),
-  resolveThemeValue('-?left-', 'spacing', 'left', {
+  matchThemeValue('-?left-', 'spacing', 'left', {
     canBeNegative: true,
-    feature: 'default',
   }),
-  resolveThemeValue('-?bottom-', 'spacing', 'bottom', {
+  matchThemeValue('-?bottom-', 'spacing', 'bottom', {
     canBeNegative: true,
-    feature: 'default',
   }),
-  resolveThemeValue('-?right-', 'spacing', 'right', {
+  matchThemeValue('-?right-', 'spacing', 'right', {
     canBeNegative: true,
-    feature: 'default',
   }),
 ];

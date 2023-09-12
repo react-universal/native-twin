@@ -3,14 +3,18 @@ import type { CSSProperties } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
 import { toColorValue } from './theme.utils';
 
-export function resolveColorValue(
+export function matchCssObject(
+  pattern: string,
+  resolver: RuleResolver<__Theme__>,
+  meta: RuleMeta = {},
+): [string, RuleResolver<__Theme__>, RuleMeta] {
+  return [pattern, resolver, meta];
+}
+
+export function matchThemeColor(
   pattern: string,
   property: keyof CSSProperties,
-  _meta: RuleMeta = {
-    canBeNegative: false,
-    feature: 'default',
-    baseProperty: undefined,
-  },
+  _meta: RuleMeta = {},
 ): [string, keyof CSSProperties, RuleResolver<__Theme__>] {
   return [
     pattern,
@@ -27,10 +31,10 @@ export function resolveColorValue(
   ];
 }
 
-export function resolveThemeValue<Theme extends __Theme__ = __Theme__>(
+export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
   themeSection: keyof Theme | (string & {}),
-  property: keyof CSSProperties | undefined,
+  property: keyof CSSProperties,
   meta: RuleMeta = {
     canBeNegative: false,
     feature: 'default',
@@ -46,13 +50,13 @@ export function resolveThemeValue<Theme extends __Theme__ = __Theme__>(
         const value = meta.customValues[match.$$];
         if (!value) return;
         return {
-          [property ?? themeSection]: maybeNegative(match[0], value),
+          [property]: maybeNegative(match[0], value),
         };
       }
       const themeSectionValue = context.theme(themeSection, match.$$);
       if (themeSectionValue) {
         return {
-          [property ?? themeSection]: maybeNegative(match[0], themeSectionValue),
+          [property]: maybeNegative(match[0], themeSectionValue),
         };
       }
     },

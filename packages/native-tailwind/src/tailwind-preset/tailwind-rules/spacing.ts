@@ -1,16 +1,16 @@
-import { resolveThemeValue } from '../../theme/rule-resolver';
+import { matchThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 import type { __Theme__ } from '../../types/theme.types';
 
 export const spacingRules: Rule<__Theme__>[] = [
-  resolveThemeValue('-?p-', 'spacing', 'padding', {
+  matchThemeValue('-?p(?<edge>[xytrbl])?-(.+)', 'spacing', 'padding', {
     canBeNegative: true,
     feature: 'edges',
     baseProperty: 'padding',
   }),
-  resolveThemeValue('m', 'spacing', 'padding', {
+  matchThemeValue('-?m-?', 'spacing', 'margin', {
     canBeNegative: true,
     feature: 'edges',
-    baseProperty: 'padding',
+    baseProperty: 'margin',
   }),
 ];

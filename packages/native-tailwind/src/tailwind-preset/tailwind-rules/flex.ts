@@ -1,4 +1,4 @@
-import { resolveThemeValue } from '../../theme/rule-resolver';
+import { matchThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 
 const justifyData = {
@@ -11,10 +11,13 @@ const justifyData = {
   stretch: 'space-stretch',
 };
 export const flexRules: Rule[] = [
-  ['flex', { display: 'flex' }],
-  resolveThemeValue('justify-', '', 'justifyContent', {
-    canBeNegative: false,
-    feature: 'default',
+  matchThemeValue('flex', '', 'display', {
+    customValues: { '': 'flex' },
+  }),
+  matchThemeValue('flex-', '', 'flex', {
+    customValues: { 1: '1 1 0%', auto: '1 1 auto', initial: '0 1 auto', none: 'none' },
+  }),
+  matchThemeValue('justify-', '', 'justifyContent', {
     customValues: justifyData,
   }),
 ];

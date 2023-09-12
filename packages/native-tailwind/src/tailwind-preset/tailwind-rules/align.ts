@@ -1,4 +1,4 @@
-import { resolveThemeValue } from '../../theme/rule-resolver';
+import { matchThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 import { globalKeywords } from '../../utils/mappings';
 
@@ -20,7 +20,7 @@ const verticalAlignAlias: Record<string, string> = {
 };
 
 export const verticalAlignsRules: Rule[] = [
-  resolveThemeValue('align-', '', 'verticalAlign', {
+  matchThemeValue('align-', '', 'verticalAlign', {
     canBeNegative: false,
     feature: 'default',
     customValues: verticalAlignAlias,
@@ -36,9 +36,7 @@ const textAligns = {
   end: 'end',
 };
 export const textAlignsRules: Rule[] = [
-  resolveThemeValue('text-', '', 'textAlign', {
-    canBeNegative: false,
-    feature: 'default',
+  matchThemeValue('text-', '', 'textAlign', {
     customValues: textAligns,
   }),
 ];

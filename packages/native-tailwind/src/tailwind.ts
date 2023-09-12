@@ -51,4 +51,4 @@ const tailwind = createTailwind({
   ignorelist: [],
 });
 
-tailwind('text-center'); //?
+tailwind('p-2'); //?

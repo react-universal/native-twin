@@ -27,6 +27,9 @@ export type RuleResult = CSSProperties | Falsey | Record<string, string>;
 
 export type ExpArrayMatchResult = RegExpExecArray & {
   $$: string;
+  groups?: {
+    edge?: string;
+  };
 };
 
 export type PlatformSupport = 'native' | 'web';
@@ -45,20 +48,21 @@ export type RuleResolver<Theme extends __Theme__ = {}> = (
 ) => RuleResult | Falsey;
 
 export type Rule<Theme extends object = {}> =
-  | [pattern: string, section: keyof Theme | (string & {})]
-  | [pattern: string, style: CSSProperties]
+  | [pattern: string, resolver: RuleResolver<Theme>, meta?: RuleMeta]
   | [
       pattern: string,
       section: keyof Theme | (string & {}),
       resolver: RuleResolver<Theme>,
       meta?: RuleMeta,
     ];
+// | [pattern: string, section: keyof Theme | (string & {})]
+// | [pattern: string, style: CSSProperties];
 
 export type PatternParserResolver<T extends string> = Parser<T>;
 
 export interface RuleMeta {
-  canBeNegative: boolean;
-  feature: 'edges' | 'corners' | 'colors' | 'default';
+  canBeNegative?: boolean;
+  feature?: 'edges' | 'corners' | 'colors' | 'default';
   baseProperty?: string | undefined;
   customValues?: Record<string, string>;
 }
