@@ -51,4 +51,4 @@ const tailwind = createTailwind({
   ignorelist: [],
 });
 
-tailwind('border-blue-200 p-1'); //?
+tailwind('text-center'); //?

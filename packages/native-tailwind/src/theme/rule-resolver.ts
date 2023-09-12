@@ -1,7 +1,7 @@
 import type { RuleMeta, RuleResolver } from '../types/config.types';
 import type { CSSProperties } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
-import { flattenThemeSection, toColorValue } from './theme.utils';
+import { toColorValue } from './theme.utils';
 
 export function resolveColorValue(
   pattern: string,
@@ -15,11 +15,10 @@ export function resolveColorValue(
   return [
     pattern,
     property,
-    (context, rule) => {
-      const following = rule.n.slice(pattern.length);
-      if (following in context.colors) {
+    (match, context, rule) => {
+      if (match.$$ in context.colors) {
         return {
-          [property]: toColorValue(context.colors[following]!, {
+          [property]: toColorValue(context.colors[match.$$]!, {
             opacityValue: rule.m?.value ?? '1',
           }),
         };
@@ -28,34 +27,41 @@ export function resolveColorValue(
   ];
 }
 
-const flattenSections = new Map<any, Record<string, string>>();
 export function resolveThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
   themeSection: keyof Theme | (string & {}),
   property: keyof CSSProperties | undefined,
-  _meta: RuleMeta = {
+  meta: RuleMeta = {
     canBeNegative: false,
     feature: 'default',
     baseProperty: undefined,
+    customValues: undefined,
   },
 ): [string, keyof Theme | (string & {}), RuleResolver<Theme>] {
   return [
     pattern,
     themeSection,
-    (context, rule) => {
-      if (!flattenSections.has(themeSection)) {
-        flattenSections.set(
-          themeSection,
-          flattenThemeSection(context.theme(themeSection, rule)),
-        );
-      }
-      const themeSectionValue = flattenSections.get(themeSection);
-      const following = rule.n.slice(pattern.length);
-      if (themeSectionValue && following in themeSectionValue) {
+    (match, context) => {
+      if (meta.customValues) {
+        const value = meta.customValues[match.$$];
+        if (!value) return;
         return {
-          [property ?? themeSection]: themeSectionValue[following],
+          [property ?? themeSection]: maybeNegative(match[0], value),
+        };
+      }
+      const themeSectionValue = context.theme(themeSection, match.$$);
+      if (themeSectionValue) {
+        return {
+          [property ?? themeSection]: maybeNegative(match[0], themeSectionValue),
         };
       }
     },
   ];
+}
+
+function maybeNegative(base: string, value: string) {
+  if (base.startsWith('-')) {
+    return `-${value}`;
+  }
+  return value;
 }

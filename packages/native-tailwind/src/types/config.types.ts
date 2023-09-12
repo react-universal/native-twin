@@ -39,14 +39,20 @@ export type RuleExpansionProperties = {
 };
 
 export type RuleResolver<Theme extends __Theme__ = {}> = (
+  match: ExpArrayMatchResult,
   context: ThemeContext<Theme>,
   parsed: ParsedRule,
 ) => RuleResult | Falsey;
 
 export type Rule<Theme extends object = {}> =
-  | [string, keyof Theme | (string & {}), keyof CSSProperties]
-  | [string, CSSProperties]
-  | [string, keyof Theme | (string & {}), RuleResolver<Theme>];
+  | [pattern: string, section: keyof Theme | (string & {})]
+  | [pattern: string, style: CSSProperties]
+  | [
+      pattern: string,
+      section: keyof Theme | (string & {}),
+      resolver: RuleResolver<Theme>,
+      meta?: RuleMeta,
+    ];
 
 export type PatternParserResolver<T extends string> = Parser<T>;
 
@@ -54,6 +60,7 @@ export interface RuleMeta {
   canBeNegative: boolean;
   feature: 'edges' | 'corners' | 'colors' | 'default';
   baseProperty?: string | undefined;
+  customValues?: Record<string, string>;
 }
 
 export interface ThemeContext<Theme extends __Theme__ = {}> {
@@ -71,5 +78,5 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
 }
 
 export interface ThemeFunction<Theme extends __Theme__ = {}> {
-  (section: keyof ThemeConfig<Theme> | (string & {}), rule: ParsedRule): string | undefined;
+  (section: keyof ThemeConfig<Theme> | (string & {}), segment: string): string | undefined;
 }

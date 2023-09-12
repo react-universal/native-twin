@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { resolveThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 import { globalKeywords } from '../../utils/mappings';
 
@@ -20,28 +20,25 @@ const verticalAlignAlias: Record<string, string> = {
 };
 
 export const verticalAlignsRules: Rule[] = [
-  [
-    'align-',
-    (following) => {
-      if (following in verticalAlignAlias) {
-        return {
-          verticalAlign: following,
-        };
-      }
-    },
-  ],
+  resolveThemeValue('align-', '', 'verticalAlign', {
+    canBeNegative: false,
+    feature: 'default',
+    customValues: verticalAlignAlias,
+  }),
 ];
 
-const textAligns = ['center', 'left', 'right', 'justify', 'start', 'end'];
+const textAligns = {
+  center: 'center',
+  left: 'left',
+  right: 'right',
+  justify: 'justify',
+  start: 'start',
+  end: 'end',
+};
 export const textAlignsRules: Rule[] = [
-  [
-    'text-',
-    (following) => {
-      if (textAligns.includes(following)) {
-        return {
-          textAlign: following as CSSProperties['textAlign'],
-        };
-      }
-    },
-  ],
+  resolveThemeValue('text-', '', 'textAlign', {
+    canBeNegative: false,
+    feature: 'default',
+    customValues: textAligns,
+  }),
 ];
