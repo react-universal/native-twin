@@ -55,7 +55,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
   function resolveRule(rule: Rule<Theme>, parsedRule: ParsedRule) {
     const resolver = getRuleResolver(rule);
-    const nextToken = resolver(parsedRule.n, themeConfig, parsedRule);
+    const nextToken = resolver(parsedRule.n, ctx, parsedRule);
 
     if (nextToken) {
       cache.set(parsedRule.n, nextToken);

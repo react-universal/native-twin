@@ -1,4 +1,4 @@
-import type { __Theme__ } from '../../config/theme-types';
+import type { __Theme__ } from '../../types/theme.types';
 
 export const baseSize = {
   xs: '20rem',

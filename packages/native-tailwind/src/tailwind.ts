@@ -13,12 +13,12 @@ import type {
   TailwindRuleResolver,
   TailwindUserConfig,
 } from './types/config.types';
-import type { CSSObject, Sheet } from './types/css.types';
+import type { CSSProperties, Sheet } from './types/css.types';
 import type { __Theme__ } from './types/theme.types';
 import type { StringLike } from './types/util.types';
 
 interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
-  (tokens: StringLike): CSSObject[];
+  (tokens: StringLike): CSSProperties[];
   target: string[];
   readonly theme: TailwindRuleResolver<Theme>;
   readonly config: TailwindConfig<Theme>;
@@ -32,7 +32,7 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
   const context = createThemeContext<__Theme__>(config);
   return Object.defineProperties(
     function tw(tokens: StringLike) {
-      const result: CSSObject[] = [];
+      const result: CSSProperties[] = [];
       for (const rule of parseTWTokens(tokens)) {
         const ruleData = context.r(rule);
         if (ruleData) {

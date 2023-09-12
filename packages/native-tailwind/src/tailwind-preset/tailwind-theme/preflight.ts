@@ -1,5 +1,5 @@
+import type { __Theme__ } from '../../types/theme.types';
 import { boxShadowsBase, ringBase, transformBase } from '../tailwind-rules';
-import type { __Theme__ } from '../../config/theme-types';
 
 export const preflightBase = {
   ...transformBase,

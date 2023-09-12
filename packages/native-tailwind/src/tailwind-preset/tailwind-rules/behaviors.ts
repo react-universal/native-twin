@@ -1,4 +1,4 @@
-import { resolveColorValue } from '../../theme/rule-resolver';
+import { resolveColorValue, resolveThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 import type { __Theme__ } from '../../types/theme.types';
 import { globalKeywords } from '../../utils/mappings';
@@ -18,29 +18,9 @@ const outlineStyles = [
 ];
 
 export const outlineRules: Rule<__Theme__>[] = [
-  [
-    'outline-width-',
-    (following, theme) => {
-      const value = theme.lineWidth?.[following];
-      if (value) {
-        return {
-          outlineWidth: following,
-        };
-      }
-    },
-  ],
-  resolveColorValue('outline-color-', 'outline-color'),
-  [
-    'outline-offset-',
-    (following, theme) => {
-      const value = theme.lineWidth?.[following];
-      if (value) {
-        return {
-          outlineOffset: value,
-        };
-      }
-    },
-  ],
+  resolveThemeValue('outline-offset-', 'lineWidth', 'outlineWidth'),
+  resolveColorValue('outline-color-', 'outlineColor'),
+  resolveThemeValue('outline-offset-', 'lineWidth', 'outlineOffset'),
   ...[
     ...outlineStyles.map((x): Rule<__Theme__> => {
       return [

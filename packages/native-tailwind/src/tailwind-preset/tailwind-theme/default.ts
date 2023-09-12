@@ -1,4 +1,6 @@
+import type { __Theme__ } from '../../types/theme.types';
 import { colors } from './colors';
+import { blur, dropShadow } from './filters';
 import {
   fontFamily,
   fontSize,
@@ -21,10 +23,8 @@ import {
   spacing,
   verticalBreakpoints,
 } from './mixed';
-import { blur, dropShadow } from './filters';
-import { containers, height, maxHeight, maxWidth, width } from './size';
 import { preflightBase } from './preflight';
-import type { __Theme__ } from '../../types/theme.types';
+import { containers, height, maxHeight, maxWidth, width } from './size';
 
 export const theme = {
   blockSize: height,

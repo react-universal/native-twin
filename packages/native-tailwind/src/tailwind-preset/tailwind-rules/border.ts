@@ -19,7 +19,7 @@ export const borderStyles = [
 
 export const borderRules: Rule<__Theme__>[] = [
   resolveColorValue('border-', 'borderColor'),
-  resolveThemeValue('border-', 'borderWidth', 'border-width', {
+  resolveThemeValue('border-', 'borderWidth', 'borderWidth', {
     canBeNegative: false,
     feature: 'edges',
   }),

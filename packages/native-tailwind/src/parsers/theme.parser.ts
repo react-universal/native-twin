@@ -1,5 +1,4 @@
 import * as P from '@universal-labs/css/parser';
-import type { MaybeColorValue } from '../types/theme.types';
 
 // const cache = new WeakMap<any, string>();
 
@@ -28,7 +27,7 @@ export function createThemeObjectParser(base: string, themeObj: Record<string, s
 
 export function createThemeColorParser(
   base: string,
-  themeObj: Record<string, MaybeColorValue>,
+  themeObj: Record<string, Record<string, string>>,
 ) {
   const patternsParser: P.Parser<string> = P.choice(
     Object.keys(themeObj)

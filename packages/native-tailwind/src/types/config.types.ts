@@ -1,5 +1,5 @@
 import type { Parser } from '@universal-labs/css/parser';
-import type { CSSObject, CSSProperties } from './css.types';
+import type { CSSProperties } from './css.types';
 import type { ParsedRule } from './parser.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey } from './util.types';
@@ -23,7 +23,7 @@ export interface TailwindUserConfig<Theme = __Theme__, UserTheme extends object 
   ignorelist: string[];
 }
 
-export type RuleResult = string | CSSObject | Falsey | Record<string, string>;
+export type RuleResult = CSSProperties | Falsey | Record<string, string>;
 
 export type ExpArrayMatchResult = RegExpExecArray & {
   $$: string;
@@ -40,7 +40,7 @@ export type RuleExpansionProperties = {
 
 export type RuleResolver<Theme extends __Theme__ = {}> = (
   token: string,
-  theme: ThemeConfig<Theme>,
+  context: ThemeContext<Theme>,
   parsed: ParsedRule,
 ) => RuleResult | Falsey;
 
@@ -50,7 +50,7 @@ export type Rule<Theme extends object = {}> =
   | [string, RuleResolver<Theme>]
   | [string, TailwindRuleResolver<Theme>];
 
-export type PatternParserResolver = Parser<string>;
+export type PatternParserResolver<T extends string> = Parser<T>;
 
 export interface RuleMeta {
   canBeNegative: boolean;

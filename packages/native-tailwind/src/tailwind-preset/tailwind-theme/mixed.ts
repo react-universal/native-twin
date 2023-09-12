@@ -1,5 +1,5 @@
+import type { __Theme__ } from '../../types/theme.types';
 import { createExponentialUnits } from '../../utils/theme-utils';
-import type { __Theme__ } from '../../config/theme-types';
 
 // keep in ASC order: container.ts and breakpoints.ts need that order
 export const breakpoints = {

@@ -3,8 +3,7 @@
 //
 // and Windi CSS
 // https://github.com/windicss/windicss/blob/main/src/config/colors.ts
-
-import type { __Theme__ } from '../../config/theme-types';
+import type { __Theme__ } from '../../types/theme.types';
 
 export const colors = {
   inherit: 'inherit',

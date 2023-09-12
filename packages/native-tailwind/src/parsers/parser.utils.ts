@@ -1,6 +1,6 @@
 import * as P from '@universal-labs/css/parser';
+import type { PatternParserResolver } from '../types/config.types';
 import type { ClassNameToken, ParsedRule } from '../types/parser.types';
-import type { RuleParserResolver } from '../types/config.types';
 
 export function parseClassNameTokens(...tokens: ClassNameToken[]): string {
   return tokens.reduce((prev, current, currentIndex) => {
@@ -32,6 +32,8 @@ export function createLiteralChoiceParser<T extends string>(keys: T[]): P.Parser
   return P.choice(keys.map((x) => P.literal(x)));
 }
 
-export function createLiteralParser<T extends string>(startsWith: T): RuleParserResolver<T> {
+export function createLiteralParser<T extends string>(
+  startsWith: T,
+): PatternParserResolver<T> {
   return P.literal(startsWith);
 }
