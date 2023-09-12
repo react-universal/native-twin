@@ -5,7 +5,6 @@ export type {
   CssNode,
   CssParserCache,
   CssParserData,
-  CssParserError,
   InternalResultType,
   ParserError,
   ParserState,

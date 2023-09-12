@@ -34,7 +34,7 @@ export const getTestParserData = (debug = false) => {
       deviceWidth: 720,
       rem: 16,
       platform: 'ios',
-    },
+    } as const,
     cache: {
       get: () => null,
       set: () => {},

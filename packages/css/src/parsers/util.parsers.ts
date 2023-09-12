@@ -1,7 +1,6 @@
-import type { CssParserError } from '../types/parser.types';
 import { Parser, updateParserError, updateParserResult } from './Parser';
 
-export const fail = (errorData: CssParserError) => {
+export const fail = (errorData: string) => {
   return new Parser<any>((state) => {
     if (state.isError) return state;
 
@@ -23,10 +22,7 @@ export const endOfInput = new Parser<null>((state) => {
   if (state.isError) return state;
   const { cursor, target } = state;
   if (cursor != target.length) {
-    return updateParserError(state, {
-      message: `Expected end of input but got '${target[cursor]}'`,
-      position: cursor,
-    });
+    return updateParserError(state, `Expected end of input but got '${target[cursor]}'`);
   }
 
   return updateParserResult(state, null);

@@ -1,5 +1,4 @@
 import type {
-  CssParserError,
   ResultType,
   StateTransformerFunction,
   ParserError,
@@ -53,7 +52,7 @@ export class Parser<Result, Data = any> {
     });
   }
 
-  errorMap(fn: (error: ParserError<Data>) => CssParserError): Parser<Result, Data> {
+  errorMap(fn: (error: ParserError<Data>) => string): Parser<Result, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result, Data> => {
       const nextState = p(state);
@@ -129,7 +128,7 @@ export class Parser<Result, Data = any> {
   fork<F>(
     target: string,
     data: Data,
-    errorFn: (errorMsg: CssParserError | null, parserState: ParserState<Result, Data>) => F,
+    errorFn: (errorMsg: string | null, parserState: ParserState<Result, Data>) => F,
     successFn: (result: Result, parserState: ParserState<Result, Data>) => F,
   ) {
     const state = createParserState(target, data);
@@ -145,7 +144,7 @@ export class Parser<Result, Data = any> {
 }
 export const updateParserError = <Result, Data>(
   state: ParserState<Result, Data>,
-  error: CssParserError,
+  error: string,
 ): ParserState<Result, Data> => ({ ...state, isError: true, error });
 export const updateParserResult = <Result, Result2, Data>(
   state: ParserState<Result, Data>,

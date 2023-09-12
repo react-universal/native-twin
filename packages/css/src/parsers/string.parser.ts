@@ -9,10 +9,10 @@ export const char = (cs: string): Parser<string> =>
     if (sliced == cs) {
       return updateParserState(state, sliced, state.cursor + 1);
     }
-    return updateParserError(state, {
-      message: `Char: Parser error, expected char ${cs} but got ${sliced}`,
-      position: state.cursor,
-    });
+    return updateParserError(
+      state,
+      `Char: Parser error, expected char ${cs} but got ${sliced}`,
+    );
   });
 
 export const literal = <A extends string>(cs: A): Parser<A> =>
@@ -27,13 +27,13 @@ export const literal = <A extends string>(cs: A): Parser<A> =>
         return updateParserState(state, sliced, cursor + cs.length);
       }
     }
-    return updateParserError(state, {
-      message: `Literal: Parser error, expected string ${cs} but got ${target.slice(
+    return updateParserError(
+      state,
+      `Literal: Parser error, expected string ${cs} but got ${target.slice(
         cursor,
         cursor + 5,
       )}`,
-      position: state.cursor,
-    });
+    );
   });
 
 const regexLetters = /^[a-zA-Z]+/;
@@ -47,13 +47,13 @@ export const regex = (re: RegExp): Parser<string> =>
     const sliced = target.slice(cursor);
     const match = sliced.match(re);
     if (!match) {
-      return updateParserError(state, {
-        message: `ParserError: regex could not match any char at: ${cursor}, got: ${target.slice(
+      return updateParserError(
+        state,
+        `ParserError: regex could not match any char at: ${cursor}, got: ${target.slice(
           cursor,
           cursor + 5,
         )}`,
-        position: cursor,
-      });
+      );
     }
     return updateParserState(state, match[0], cursor + match[0].length);
   });
@@ -86,10 +86,7 @@ export const startOfInput = new Parser<null>((state) => {
 
   const { cursor } = state;
   if (cursor > 0) {
-    return updateParserError(state, {
-      message: `ParseError 'startOfInput': Expected start of input'`,
-      position: cursor,
-    });
+    return updateParserError(state, `ParseError 'startOfInput': Expected start of input'`);
   }
 
   return state;

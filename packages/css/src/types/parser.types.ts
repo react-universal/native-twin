@@ -18,11 +18,6 @@ export interface CssParserData {
   };
 }
 
-export interface CssParserError {
-  position: number;
-  message: string;
-}
-
 export type CssParserCache = Map<string, CssNode>;
 
 export type StateTransformerFunction<Result, Data = any> = (
@@ -35,7 +30,7 @@ export type ParserState<Result, Data> = {
 
 export type InternalResultType<Result, Data> = {
   isError: boolean;
-  error: CssParserError | null;
+  error: string | null;
   cursor: number;
   result: Result;
   data: Data;
@@ -45,7 +40,7 @@ export type ResultType<Result, Data> = ParserSuccess<Result, Data> | ParserError
 
 export type ParserError<Data> = {
   isError: true;
-  error: CssParserError | null;
+  error: string | null;
   cursor: number;
   data: Data;
 };
