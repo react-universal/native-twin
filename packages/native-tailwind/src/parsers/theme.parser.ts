@@ -57,10 +57,7 @@ export function createThemeColorParser<Theme extends __Theme__ = __Theme__>(
           };
           return P.updateParserResult(state, declaration);
         }
-        return P.updateParserError(state, {
-          message: `Could not find color: ${segment}`,
-          position: cursor,
-        });
+        return P.updateParserError(state, `Could not find color: ${segment}`);
       }),
   );
 }
