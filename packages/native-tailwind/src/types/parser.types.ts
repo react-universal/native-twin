@@ -54,3 +54,8 @@ export interface ParsedRule {
    */
   readonly m: ColorModifierToken | null;
 }
+
+export interface RulePatternToken {
+  base: string;
+  negative: boolean;
+}

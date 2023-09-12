@@ -1,24 +1,7 @@
-import * as P from '@universal-labs/css/parser';
 import type { RuleMeta, RuleResolver } from '../types/config.types';
 import type { CSSProperties } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
 import { flattenThemeSection, toColorValue } from './theme.utils';
-
-const defaultRuleMeta: RuleMeta = {
-  canBeNegative: false,
-  feature: 'default',
-  baseProperty: undefined,
-};
-
-const maybeNegative = P.maybe(P.char('-'));
-
-export function createRuleParser(pattern: string, meta = defaultRuleMeta) {
-  const baseParser = P.literal(pattern);
-  if (meta.canBeNegative) {
-    return P.sequenceOf([maybeNegative, baseParser]).map((x) => x[1]);
-  }
-  return baseParser;
-}
 
 export function resolveColorValue(
   pattern: string,
@@ -28,14 +11,12 @@ export function resolveColorValue(
     feature: 'default',
     baseProperty: undefined,
   },
-): [string, RuleResolver<__Theme__>] {
+): [string, keyof CSSProperties, RuleResolver<__Theme__>] {
   return [
     pattern,
-    (token, context, rule) => {
-      const parser = createRuleParser(pattern);
-      if (parser.run(token).isError) return undefined;
-
-      const following = token.slice(pattern.length);
+    property,
+    (context, rule) => {
+      const following = rule.n.slice(pattern.length);
       if (following in context.colors) {
         return {
           [property]: toColorValue(context.colors[following]!, {
@@ -47,6 +28,7 @@ export function resolveColorValue(
   ];
 }
 
+const flattenSections = new Map<any, Record<string, string>>();
 export function resolveThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
   themeSection: keyof Theme | (string & {}),
@@ -56,17 +38,22 @@ export function resolveThemeValue<Theme extends __Theme__ = __Theme__>(
     feature: 'default',
     baseProperty: undefined,
   },
-): [string, RuleResolver<Theme>] {
+): [string, keyof Theme | (string & {}), RuleResolver<Theme>] {
   return [
     pattern,
-    (token, context, rule) => {
-      const parser = createRuleParser(pattern);
-      if (parser.run(token).isError) return undefined;
-      const following = token.slice(pattern.length);
-      const themeSectionValues = flattenThemeSection(context.theme(themeSection, rule));
-      if (following in themeSectionValues) {
+    themeSection,
+    (context, rule) => {
+      if (!flattenSections.has(themeSection)) {
+        flattenSections.set(
+          themeSection,
+          flattenThemeSection(context.theme(themeSection, rule)),
+        );
+      }
+      const themeSectionValue = flattenSections.get(themeSection);
+      const following = rule.n.slice(pattern.length);
+      if (themeSectionValue && following in themeSectionValue) {
         return {
-          [themeSection ?? property]: themeSectionValues[following],
+          [property ?? themeSection]: themeSectionValue[following],
         };
       }
     },

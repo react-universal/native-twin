@@ -1,4 +1,5 @@
 import type { PlatformOSType } from 'react-native';
+import { createRulePatternParser } from '../parsers/theme.parser';
 import type {
   Rule,
   RuleResolver,
@@ -9,14 +10,14 @@ import type {
 import type { ParsedRule } from '../types/parser.types';
 import type { __Theme__ } from '../types/theme.types';
 import { flattenColorPalette } from '../utils/theme-utils';
-import { createRuleParser, resolveThemeValue } from './rule-resolver';
+import { resolveThemeValue } from './rule-resolver';
 import { createThemeFunction } from './theme.function';
 
 export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
 }: TailwindConfig<Theme>): ThemeContext {
-  // const ruleHandlers = new Map<string, (rule: ParsedRule) => RuleResult>();
+  const ruleHandlers = new Map<string, (parsedRule: ParsedRule) => RuleResult>();
   // const ruleParsers = new Map<string, ThemeObjectParser>();
   const cache = new Map<string, RuleResult>();
   const platform: PlatformOSType = 'native';
@@ -54,8 +55,8 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   return ctx;
 
   function resolveRule(rule: Rule<Theme>, parsedRule: ParsedRule) {
-    const resolver = getRuleResolver(rule);
-    const nextToken = resolver(parsedRule.n, ctx, parsedRule);
+    const resolver = getRuleHandler(rule);
+    const nextToken = resolver(parsedRule);
 
     if (nextToken) {
       cache.set(parsedRule.n, nextToken);
@@ -64,17 +65,28 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   }
 
   function getRuleResolver(rule: Rule<Theme>): RuleResolver<Theme> {
-    if (typeof rule[1] == 'function') {
-      return rule[1];
+    if (typeof rule[2] == 'function') {
+      return rule[2];
     }
     const section = rule[1];
-    const parser = createRuleParser(rule[0]);
     if (typeof section == 'object') {
-      return (token) => {
-        if (parser.run(token).isError) return;
+      return (_) => {
         return section;
       };
     }
-    return resolveThemeValue(rule[0], section, rule[2])[1];
+    return resolveThemeValue(rule[0], section, rule[2])[2];
+  }
+  function getRuleHandler(rule: Rule<Theme>) {
+    const key = JSON.stringify(rule);
+    if (ruleHandlers.has(key)) {
+      return ruleHandlers.get(key)!;
+    }
+    const parser = createRulePatternParser(rule[0]);
+    const handler = (parsedRule: ParsedRule) => {
+      if (parser.run(parsedRule.n).isError) return;
+      return getRuleResolver(rule)(ctx, parsedRule);
+    };
+    ruleHandlers.set(key, handler)!;
+    return ruleHandlers.get(key)!;
   }
 }

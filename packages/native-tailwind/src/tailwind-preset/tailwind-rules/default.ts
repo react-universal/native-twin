@@ -3,6 +3,7 @@ import { textAlignsRules, verticalAlignsRules } from './align';
 import { backgroundRules } from './background';
 import { appearanceRules, outlineRules } from './behaviors';
 import { borderRules } from './border';
+import { spacingRules } from './spacing';
 
 export const themeRules: Rule[] = [
   outlineRules,
@@ -11,4 +12,5 @@ export const themeRules: Rule[] = [
   textAlignsRules,
   appearanceRules,
   backgroundRules,
+  spacingRules,
 ].flat(1);

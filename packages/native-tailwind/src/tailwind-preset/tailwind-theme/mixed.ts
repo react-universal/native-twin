@@ -1,5 +1,5 @@
 import type { __Theme__ } from '../../types/theme.types';
-import { createExponentialUnits } from '../../utils/theme-utils';
+import { createExponentialUnits, createLinearUnits } from '../../utils/theme-utils';
 
 // keep in ASC order: container.ts and breakpoints.ts need that order
 export const breakpoints = {
@@ -32,6 +32,17 @@ export const spacing = {
   '7xl': '4.5rem',
   '8xl': '6rem',
   '9xl': '8rem',
+
+  // CUSTOM
+  px: '1px',
+  0: '0px',
+  .../* #__PURE__ */ createLinearUnits(4, 'rem', 4, 0.5, 0.5),
+  .../* #__PURE__ */ createLinearUnits(12, 'rem', 4, 5),
+  14: '3.5rem',
+  .../* #__PURE__ */ createLinearUnits(64, 'rem', 4, 16, 4),
+  72: '18rem',
+  80: '20rem',
+  96: '24rem',
 } satisfies __Theme__['spacing'];
 
 export const duration = {

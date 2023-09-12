@@ -1,8 +1,8 @@
-import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import { themeRules } from '../tailwind-preset/tailwind-rules';
+import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
+import type { __Theme__ } from '../types/theme.types';
 import { asArray } from '../utils/helpers';
 import { createTailwindTheme } from './create-theme';
-import type { __Theme__ } from '../types/theme.types';
 
 export function defineConfig<Theme extends __Theme__ = __Theme__>({
   ...userConfig

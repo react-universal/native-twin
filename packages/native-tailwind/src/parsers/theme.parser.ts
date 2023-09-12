@@ -1,55 +1,66 @@
 import * as P from '@universal-labs/css/parser';
+import { toColorValue } from '../theme/theme.utils';
+import type { RuleMeta, ThemeContext } from '../types/config.types';
+import type { CSSProperties } from '../types/css.types';
+import type { ParsedRule, RulePatternToken } from '../types/parser.types';
+import type { __Theme__ } from '../types/theme.types';
 
-// const cache = new WeakMap<any, string>();
+const defaultRuleMeta: RuleMeta = {
+  canBeNegative: false,
+  feature: 'default',
+  baseProperty: undefined,
+};
 
-export function createThemeObjectParser(base: string, themeObj: Record<string, string>) {
-  const patternsParser: P.Parser<string> = P.choice(
-    Object.keys(themeObj)
-      .filter((x) => typeof themeObj[x] == 'string')
-      .map((x) => P.literal(x)),
+const maybeNegative = P.maybe(P.char('-'));
+
+export function createRulePatternParser(pattern: string, meta = defaultRuleMeta) {
+  const baseParser = P.literal(pattern);
+  if (meta.canBeNegative) {
+    return P.sequenceOf([maybeNegative, baseParser]).map(
+      (x): RulePatternToken => ({
+        base: x[1],
+        negative: false,
+      }),
+    );
+  }
+  return baseParser.map(
+    (x): RulePatternToken => ({
+      base: x,
+      negative: false,
+    }),
   );
-  const ruleParser = P.sequenceOf([P.literal(base), patternsParser]).chain((result) => {
-    if (result[1] in themeObj) {
-      const data = themeObj[result[1]];
-      if (data) return P.succeedWith(data);
-    }
-    return P.fail({
-      message: `Theme section not found: ${result[0]}${result[1]}`,
-      position: 0,
-    });
-  });
-  return function tailwindThemeParser(token: string) {
-    const parserData = ruleParser.run(token);
-    if (parserData.isError) return null;
-    return parserData.result;
-  };
 }
 
-export function createThemeColorParser(
-  base: string,
-  themeObj: Record<string, Record<string, string>>,
+export function createThemeColorParser<Theme extends __Theme__ = __Theme__>(
+  patternParser: P.Parser<RulePatternToken>,
+  property: keyof CSSProperties,
+  _meta: RuleMeta = {
+    canBeNegative: false,
+    feature: 'default',
+    baseProperty: undefined,
+  },
+  context: ThemeContext<Theme>,
+  parsedRule: ParsedRule,
 ) {
-  const patternsParser: P.Parser<string> = P.choice(
-    Object.keys(themeObj)
-      .filter((x) => typeof themeObj[x] == 'string')
-      .map((x) => P.literal(x)),
+  return patternParser.chain(
+    () =>
+      new P.Parser((state) => {
+        if (state.isError) return state;
+        const { target, cursor } = state;
+        const segment = target.slice(cursor);
+        if (segment in context.colors) {
+          const color = toColorValue(context.colors[segment]!, {
+            opacityValue: parsedRule.m?.value ?? '1',
+          });
+          const declaration = {
+            [property]: color,
+          };
+          return P.updateParserResult(state, declaration);
+        }
+        return P.updateParserError(state, {
+          message: `Could not find color: ${segment}`,
+          position: cursor,
+        });
+      }),
   );
-  const ruleParser = P.sequenceOf([P.literal(base), patternsParser]).chain((result) => {
-    if (result[1] in themeObj) {
-      let data = themeObj[result[1]];
-
-      if (data) return P.succeedWith(data);
-    }
-    return P.fail({
-      message: `Theme section not found: ${result[0]}${result[1]}`,
-      position: 0,
-    });
-  });
-  return function tailwindThemeParser(token: string) {
-    const parserData = ruleParser.run(token);
-    if (parserData.isError) return null;
-    return parserData.result;
-  };
 }
-
-export type ThemeObjectParser = ReturnType<typeof createThemeObjectParser>;

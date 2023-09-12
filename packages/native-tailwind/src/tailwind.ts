@@ -8,11 +8,7 @@ import { defineConfig } from './config/define-config';
 import { translateRuleResults } from './css/translate';
 import { parseTWTokens } from './parsers/tailwind.parser';
 import { createThemeContext } from './theme/theme.context';
-import type {
-  TailwindConfig,
-  TailwindRuleResolver,
-  TailwindUserConfig,
-} from './types/config.types';
+import type { RuleResolver, TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { CSSProperties, Sheet } from './types/css.types';
 import type { __Theme__ } from './types/theme.types';
 import type { StringLike } from './types/util.types';
@@ -20,7 +16,7 @@ import type { StringLike } from './types/util.types';
 interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
   (tokens: StringLike): CSSProperties[];
   target: string[];
-  readonly theme: TailwindRuleResolver<Theme>;
+  readonly theme: RuleResolver<Theme>;
   readonly config: TailwindConfig<Theme>;
 }
 
@@ -55,4 +51,4 @@ const tailwind = createTailwind({
   ignorelist: [],
 });
 
-tailwind('border-blue-300'); //?
+tailwind('border-blue-200 p-1'); //?
