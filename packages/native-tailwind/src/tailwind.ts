@@ -51,4 +51,4 @@ const tailwind = createTailwind({
   ignorelist: [],
 });
 
-tailwind('p-2'); //?
+tailwind('px-2'); //?

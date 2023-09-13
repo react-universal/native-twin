@@ -1,4 +1,4 @@
-import type { MaybeColorValue } from '../types/theme.types';
+import type { Colors } from '../types/theme.types';
 
 // 0: '0px',
 // 2: '2px',
@@ -70,10 +70,10 @@ export function createPercentRatios(start: number, end: number): Record<string, 
 }
 
 export function flattenColorPalette(
-  colors: Record<string, MaybeColorValue>,
+  colors: Colors,
   path: string[] = [],
-) {
-  const flatten: Record<string, MaybeColorValue> = {};
+): Record<string, string> {
+  const flatten: Record<string, string> | Colors = {};
 
   for (const key in colors) {
     const value = colors[key];
@@ -95,5 +95,26 @@ export function flattenColorPalette(
     }
   }
 
+  return flatten as any;
+}
+
+export function flattenThemeSection(obj: any, path: string[] = []) {
+  const flatten: Record<string, any> = {};
+  for (const key in obj) {
+    const value = obj[key];
+    let keyPath = [...path, key];
+    if (value) {
+      flatten[keyPath.join('-')] = value;
+    }
+    if (key == 'DEFAULT') {
+      keyPath = path;
+      if (value) {
+        flatten[path.join('-')] = value;
+      }
+    }
+    if (typeof value == 'object') {
+      Object.assign(flatten, flattenThemeSection(value, keyPath));
+    }
+  }
   return flatten;
 }

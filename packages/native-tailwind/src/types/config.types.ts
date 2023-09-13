@@ -1,6 +1,6 @@
 import type { Parser } from '@universal-labs/css/parser';
 import type { CSSProperties } from './css.types';
-import type { ParsedRule } from './parser.types';
+import type { ParsedRule, RuleHandlerToken } from './parser.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey } from './util.types';
 
@@ -42,7 +42,8 @@ export type RuleExpansionProperties = {
 };
 
 export type RuleResolver<Theme extends __Theme__ = {}> = (
-  match: ExpArrayMatchResult,
+  // match: ExpArrayMatchResult | RuleHandlerToken,
+  match: RuleHandlerToken,
   context: ThemeContext<Theme>,
   parsed: ParsedRule,
 ) => RuleResult | Falsey;

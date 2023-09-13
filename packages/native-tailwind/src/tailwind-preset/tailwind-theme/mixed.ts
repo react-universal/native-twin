@@ -10,6 +10,14 @@ export const breakpoints = {
   '2xl': '1536px',
 } satisfies __Theme__['breakpoints'];
 
+export const opacity = {
+  .../* #__PURE__ */ createLinearUnits(100, '', 100, 0, 10),
+  5: '0.05',
+  25: '0.25',
+  75: '0.75',
+  95: '0.95',
+} satisfies __Theme__['opacity'];
+
 export const verticalBreakpoints = { ...breakpoints } satisfies __Theme__['breakpoints'];
 
 export const lineWidth = {

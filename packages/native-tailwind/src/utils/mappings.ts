@@ -6,7 +6,7 @@ export const globalKeywords = [
   'unset',
 ] as const;
 
-export const directionMap: Record<string, string[]> = {
+export const directionMap = {
   l: ['-left'],
   r: ['-right'],
   t: ['-top'],
@@ -22,7 +22,7 @@ export const directionMap: Record<string, string[]> = {
   ie: ['-inline-end'],
   block: ['-block-start', '-block-end'],
   inline: ['-inline-start', '-inline-end'],
-};
+} satisfies Record<string, string[]>;
 
 export const insetMap: Record<string, string[]> = {
   ...directionMap,
@@ -71,45 +71,3 @@ export const cornerMap = {
   'be-ie': ['-end-end'],
   'ie-be': ['-end-end'],
 } satisfies Record<string, string[]>;
-
-export const xyzMap = {
-  x: ['-x'],
-  y: ['-y'],
-  z: ['-z'],
-  '': ['-x', '-y'],
-} satisfies Record<string, string[]>;
-
-const basePositionMap = [
-  'top',
-  'top center',
-  'top left',
-  'top right',
-  'bottom',
-  'bottom center',
-  'bottom left',
-  'bottom right',
-  'left',
-  'left center',
-  'left top',
-  'left bottom',
-  'right',
-  'right center',
-  'right top',
-  'right bottom',
-  'center',
-  'center top',
-  'center bottom',
-  'center left',
-  'center right',
-  'center center',
-];
-
-export const positionMap: Record<string, string> = Object.assign(
-  {},
-
-  // [{ top: 'top' }, { 'top-center': 'top center' }, ...]
-  ...basePositionMap.map((p) => ({ [p.replace(/ /, '-')]: p })),
-
-  // [{ t: 'top' }, { tc: 'top center' }, ...]
-  ...basePositionMap.map((p) => ({ [p.replace(/\b(\w)\w+/g, '$1').replace(/ /, '')]: p })),
-);

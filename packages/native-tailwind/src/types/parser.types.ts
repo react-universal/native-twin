@@ -55,7 +55,19 @@ export interface ParsedRule {
   readonly m: ColorModifierToken | null;
 }
 
-export interface RulePatternToken {
+export interface SegmentToken {
+  type: 'segment';
+  value: string;
+}
+
+export interface ArbitrarySegmentToken {
+  type: 'arbitrary';
+  value: string;
+}
+
+export interface RuleHandlerToken {
   base: string;
+  suffixes: string[];
+  segment: SegmentToken | ArbitrarySegmentToken;
   negative: boolean;
 }

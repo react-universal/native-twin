@@ -8,6 +8,9 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
   return theme as ThemeFunction<Theme>;
 
   function theme(themeSection: keyof Omit<ThemeConfig<Theme>, 'extend'>, segment: string) {
+    if (segment.startsWith('[') && segment.endsWith(']')) {
+      return segment.slice(1, -1);
+    }
     const config = baseConfig[themeSection];
     if (themeSection in extend) {
       Object.assign(config ?? {}, { ...extend[themeSection] });

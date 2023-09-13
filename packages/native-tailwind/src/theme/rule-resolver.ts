@@ -1,7 +1,7 @@
 import type { RuleMeta, RuleResolver } from '../types/config.types';
 import type { CSSProperties } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
-import { toColorValue } from './theme.utils';
+import { toColorValue } from '../utils/color-utils';
 
 export function matchCssObject(
   pattern: string,
@@ -14,20 +14,23 @@ export function matchCssObject(
 export function matchThemeColor(
   pattern: string,
   property: keyof CSSProperties,
-  _meta: RuleMeta = {},
-): [string, keyof CSSProperties, RuleResolver<__Theme__>] {
+  meta: RuleMeta = {},
+): [string, keyof CSSProperties, RuleResolver<__Theme__>, RuleMeta] {
   return [
     pattern,
     property,
     (match, context, rule) => {
-      if (match.$$ in context.colors) {
+      const color = context.colors[match.segment.value];
+      if (color) {
+        const opacity = context.theme('opacity', rule.m?.value ?? '100');
         return {
-          [property]: toColorValue(context.colors[match.$$]!, {
-            opacityValue: rule.m?.value ?? '1',
+          [property]: toColorValue(color!, {
+            opacityValue: opacity ?? '1',
           }),
         };
       }
     },
+    meta,
   ];
 }
 
@@ -41,31 +44,47 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
     baseProperty: undefined,
     customValues: undefined,
   },
-): [string, keyof Theme | (string & {}), RuleResolver<Theme>] {
+): [string, keyof Theme | (string & {}), RuleResolver<Theme>, RuleMeta] {
   return [
     pattern,
     themeSection,
     (match, context) => {
       if (meta.customValues) {
-        const value = meta.customValues[match.$$];
+        let value =
+          match.segment.type == 'arbitrary'
+            ? match.segment.value
+            : meta.customValues[match.segment.value];
         if (!value) return;
         return {
-          [property]: maybeNegative(match[0], value),
+          [property]: value,
         };
       }
-      const themeSectionValue = context.theme(themeSection, match.$$);
-      if (themeSectionValue) {
+      let value: string | null = null;
+      if (match.segment.type == 'arbitrary') {
+        value = match.segment.value;
+      } else {
+        value = context.theme(themeSection, match.segment.value) ?? null;
+      }
+      if (value) {
+        if (meta.feature == 'edges') {
+          const result: Record<string, string> = {};
+          for (const key of getPropertiesForEdges(property, match.suffixes)) {
+            result[key] = value;
+          }
+          return result;
+        }
         return {
-          [property]: maybeNegative(match[0], themeSectionValue),
+          [property]: value,
         };
       }
     },
+    meta,
   ];
 }
 
-function maybeNegative(base: string, value: string) {
-  if (base.startsWith('-')) {
-    return `-${value}`;
-  }
-  return value;
+function getPropertiesForEdges(property: string, data: string[]) {
+  if (data.length == 0) return [property];
+  return data.map((x) => {
+    return `${property}${x}`;
+  });
 }

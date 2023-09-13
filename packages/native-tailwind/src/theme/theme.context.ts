@@ -1,7 +1,8 @@
 import type { PlatformOSType } from 'react-native';
+import { buildRuleHandlerParser } from '../parsers/theme.parser';
 import type {
-  ExpArrayMatchResult,
   Rule,
+  RuleMeta,
   RuleResolver,
   RuleResult,
   TailwindConfig,
@@ -11,7 +12,6 @@ import type { ParsedRule } from '../types/parser.types';
 import type { __Theme__ } from '../types/theme.types';
 import { flattenColorPalette } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
-import { toCondition } from './theme.utils';
 
 export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
@@ -71,14 +71,17 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
       return ruleHandlers.get(key)!;
     }
     const resolver = getRuleResolver(rule);
-    const condition = toCondition(rule[0]);
+    let meta: RuleMeta = {};
+    if (typeof rule[2] == 'object') meta = rule[2];
+    if (typeof rule[3] == 'object' && Object.keys(meta).length == 0) meta = rule[3];
+    const parser = buildRuleHandlerParser(rule[0], meta);
     const handler = (parsedRule: ParsedRule) => {
-      // console.log('HANDLER: ', parsedRule);
-      const match: ExpArrayMatchResult = condition.exec(parsedRule.n) as ExpArrayMatchResult;
-      if (!match) return;
-      console.log('MATCH: ', match, condition.source);
-      match.$$ = parsedRule.n.slice(match[0].length);
-      return resolver(match, ctx, parsedRule);
+      const result = parser.run(parsedRule.n);
+      if (result.isError) return;
+      // const match: ExpArrayMatchResult = condition.exec(parsedRule.n) as ExpArrayMatchResult;
+      // if (!match) return;
+      // match.$$ = parsedRule.n.slice(match[0].length);
+      return resolver(result.result, ctx, parsedRule);
     };
     ruleHandlers.set(key, handler);
     return handler;

@@ -34,6 +34,7 @@ export interface Colors {
 export interface __Theme__ {
   screens?: Record<string, ScreenValue>;
   colors?: Colors;
+  opacity?: Record<string, string>;
 
   width?: Record<string, string>;
   height?: Record<string, string>;

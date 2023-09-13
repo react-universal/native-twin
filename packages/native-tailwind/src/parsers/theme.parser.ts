@@ -1,63 +1,80 @@
 import * as P from '@universal-labs/css/parser';
-import { toColorValue } from '../theme/theme.utils';
-import type { RuleMeta, ThemeContext } from '../types/config.types';
-import type { CSSProperties } from '../types/css.types';
-import type { ParsedRule, RulePatternToken } from '../types/parser.types';
-import type { __Theme__ } from '../types/theme.types';
+import type { RuleMeta } from '../types/config.types';
+import type {
+  ArbitrarySegmentToken,
+  RuleHandlerToken,
+  SegmentToken,
+} from '../types/parser.types';
+import { directionMap } from '../utils/mappings';
 
-const defaultRuleMeta: RuleMeta = {
-  canBeNegative: false,
-  feature: 'default',
-  baseProperty: undefined,
-};
+const classNameIdent = /^[a-z0-9A-Z-.]+/;
+const segmentParser = P.regex(classNameIdent).map(
+  (x): SegmentToken => ({
+    type: 'segment',
+    value: x,
+  }),
+);
 
-const maybeNegative = P.maybe(P.char('-'));
+const maybeNegative = P.maybe(P.char('-')).map((x) => !!x);
 
-export function createRulePatternParser(pattern: string, meta = defaultRuleMeta) {
-  const baseParser = P.literal(pattern);
-  if (meta.canBeNegative) {
-    return P.sequenceOf([maybeNegative, baseParser]).map(
-      (x): RulePatternToken => ({
-        base: x[1],
-        negative: false,
-      }),
-    );
-  }
-  return baseParser.map(
-    (x): RulePatternToken => ({
-      base: x,
-      negative: false,
-    }),
-  );
-}
+const betweenSquareBrackets = P.between(P.char('['))(P.char(']'));
+const arbitraryParser = betweenSquareBrackets(P.regex(classNameIdent)).map(
+  (x): ArbitrarySegmentToken => ({
+    type: 'arbitrary',
+    value: x,
+  }),
+);
 
-export function createThemeColorParser<Theme extends __Theme__ = __Theme__>(
-  patternParser: P.Parser<RulePatternToken>,
-  property: keyof CSSProperties,
-  _meta: RuleMeta = {
+const edgesParser = P.sequenceOf([
+  P.choice([
+    P.literal('x'),
+    P.literal('y'),
+    P.literal('t'),
+    P.literal('l'),
+    P.literal('b'),
+    P.literal('r'),
+  ]),
+  P.char('-'),
+]).map((x) => {
+  return directionMap[x[0]];
+});
+
+export function buildRuleHandlerParser(
+  pattern: string,
+  meta: RuleMeta = {
     canBeNegative: false,
     feature: 'default',
     baseProperty: undefined,
   },
-  context: ThemeContext<Theme>,
-  parsedRule: ParsedRule,
-) {
-  return patternParser.chain(
-    () =>
-      new P.Parser((state) => {
-        if (state.isError) return state;
-        const { target, cursor } = state;
-        const segment = target.slice(cursor);
-        if (segment in context.colors) {
-          const color = toColorValue(context.colors[segment]!, {
-            opacityValue: parsedRule.m?.value ?? '1',
-          });
-          const declaration = {
-            [property]: color,
-          };
-          return P.updateParserResult(state, declaration);
-        }
-        return P.updateParserError(state, `Could not find color: ${segment}`);
-      }),
-  );
+): P.Parser<RuleHandlerToken> {
+  let patternParser = P.literal(pattern);
+  if (meta.feature == 'edges') {
+    if (!pattern.endsWith('-')) {
+      patternParser = P.sequenceOf([patternParser, P.maybe(P.char('-'))]).map((x) => x[0]);
+    }
+    return P.sequenceOf([
+      maybeNegative,
+      patternParser,
+      P.maybe(edgesParser),
+      P.choice([arbitraryParser, segmentParser]),
+      P.endOfInput,
+    ]).map((x) => ({
+      segment: x[3],
+      base: x[1],
+      negative: x[0],
+      suffixes: x[2] ?? [],
+    }));
+  }
+
+  return P.sequenceOf([
+    maybeNegative,
+    patternParser,
+    P.choice([arbitraryParser, segmentParser]),
+    P.endOfInput,
+  ]).map((x) => ({
+    segment: x[2],
+    base: x[1],
+    suffixes: [],
+    negative: x[0],
+  }));
 }
