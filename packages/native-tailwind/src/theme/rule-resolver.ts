@@ -101,6 +101,20 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
           }
           return result;
         }
+
+        if (meta.feature == 'corners') {
+          const result: Record<string, string> = {};
+          for (const key of getPropertiesForCorners(
+            {
+              prefix: meta.prefix ?? property,
+              suffix: meta.suffix ?? '',
+            },
+            match.suffixes,
+          )) {
+            result[key] = maybeNegative(match.negative, value);
+          }
+          return result;
+        }
         return {
           [property]: maybeNegative(match.negative, value),
         };
@@ -113,6 +127,16 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
 function getPropertiesForEdges(property: { prefix: string; suffix: string }, edges: string[]) {
   if (edges.length == 0) return [`${property.prefix}${property.suffix}`];
   return edges.map((x) => {
+    return `${property.prefix}${x}${property.suffix}`;
+  });
+}
+
+function getPropertiesForCorners(
+  property: { prefix: string; suffix: string },
+  corners: string[],
+) {
+  if (corners.length == 0) return [`${property.prefix}${property.suffix}`];
+  return corners.map((x) => {
     return `${property.prefix}${x}${property.suffix}`;
   });
 }

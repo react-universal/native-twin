@@ -30,5 +30,7 @@ export const borderRules: Rule<__Theme__>[] = [
   }),
   matchThemeValue('rounded-', 'borderRadius', 'borderRadius', {
     feature: 'corners',
+    prefix: 'border',
+    suffix: '-radius',
   }),
 ];

@@ -51,7 +51,6 @@ export const cornerMap = {
   lb: ['-bottom-left'],
   br: ['-bottom-right'],
   rb: ['-bottom-right'],
-  '': [''],
   bs: ['-start-start', '-start-end'],
   be: ['-end-start', '-end-end'],
   s: ['-end-start', '-start-start'],

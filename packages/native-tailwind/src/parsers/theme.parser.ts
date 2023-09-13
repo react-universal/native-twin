@@ -5,7 +5,8 @@ import type {
   RuleHandlerToken,
   SegmentToken,
 } from '../types/parser.types';
-import { directionMap } from '../utils/mappings';
+import { keysOf } from '../utils/helpers';
+import { cornerMap, directionMap } from '../utils/mappings';
 
 const classNameIdent = /^[a-z0-9A-Z-.]+/;
 const arbitraryIdent = /^[a-z0-9A-Z-.#]+/;
@@ -40,6 +41,12 @@ const edgesParser = P.sequenceOf([
   return directionMap[x[0]];
 });
 
+const cornersParser = P.choice(
+  keysOf(cornerMap).map((x) => P.sequenceOf([P.literal(x), P.char('-')])),
+).map((x: [keyof typeof cornerMap, string]) => {
+  return cornerMap[x[0]];
+});
+
 export function buildRuleHandlerParser(
   pattern: string,
   meta: RuleMeta = {
@@ -58,6 +65,24 @@ export function buildRuleHandlerParser(
       maybeNegative,
       patternParser,
       P.maybe(edgesParser),
+      P.choice([arbitraryParser, segmentParser]),
+      P.endOfInput,
+    ]).map((x) => ({
+      segment: x[3],
+      base: x[1],
+      negative: x[0],
+      suffixes: x[2] ?? [],
+    }));
+  }
+
+  if (meta.feature == 'corners') {
+    if (!pattern.endsWith('-')) {
+      patternParser = P.sequenceOf([patternParser, P.maybe(P.char('-'))]).map((x) => x[0]);
+    }
+    return P.sequenceOf([
+      maybeNegative,
+      patternParser,
+      P.maybe(cornersParser),
       P.choice([arbitraryParser, segmentParser]),
       P.endOfInput,
     ]).map((x) => ({

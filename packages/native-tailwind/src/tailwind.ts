@@ -58,4 +58,4 @@ const tailwind = createTailwind({
   },
 });
 
-tailwind('border-x-blue-200/90'); //?
+tailwind('rounded-tl-sm'); //?
