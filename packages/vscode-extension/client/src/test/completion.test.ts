@@ -1,5 +1,5 @@
-import * as vscode from 'vscode';
 import * as assert from 'assert';
+import * as vscode from 'vscode';
 import { getDocUri, activate } from './helper';
 
 suite('Should do completion', () => {

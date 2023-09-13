@@ -1,7 +1,7 @@
-import { createConnection, TextDocuments, ProposedFeatures } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { onConnectionInitialized, onInitializeConnection } from './internal/ConnectionManager';
+import { createConnection, TextDocuments, ProposedFeatures } from 'vscode-languageserver/node';
 import { onCompletion, onCompletionResolve } from './internal/Completions';
+import { onConnectionInitialized, onInitializeConnection } from './internal/ConnectionManager';
 
 const connection = createConnection(ProposedFeatures.all);
 

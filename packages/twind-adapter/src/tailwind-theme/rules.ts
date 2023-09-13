@@ -21,7 +21,6 @@ import {
   arbitrary,
   withAutocomplete,
 } from '@twind/core';
-
 import type { TailwindTheme } from './types';
 
 const DEV = true;

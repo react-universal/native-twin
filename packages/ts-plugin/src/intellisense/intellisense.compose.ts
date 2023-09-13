@@ -10,6 +10,7 @@ import {
   escape,
 } from '@twind/core';
 import genex from 'genex';
+import { ConfigurationManager } from '../language-service/configuration';
 import {
   ClassCompletionItem,
   CurrentTheme,
@@ -17,7 +18,6 @@ import {
   CompletionItemLocation,
 } from '../types';
 import { isSpacingFunction, toCondition } from '../utils';
-import { ConfigurationManager } from '../language-service/configuration';
 import { makeThemeFunction } from './theme';
 
 // a[1]

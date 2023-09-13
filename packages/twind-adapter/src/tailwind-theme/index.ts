@@ -1,8 +1,7 @@
 import type { Preset } from '@twind/core';
-import type { TailwindTheme } from './types';
-
 import presetTailwindBase from './base';
 import * as colors from './colors';
+import type { TailwindTheme } from './types';
 
 export * from './types';
 

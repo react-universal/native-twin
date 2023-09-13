@@ -6,8 +6,8 @@ import {
   Connection,
   DidChangeConfigurationNotification,
 } from 'vscode-languageserver/node';
-import { globalStore } from './storage';
 import { createIntellisense } from '../language-service/LanguageService';
+import { globalStore } from './storage';
 
 export function onInitializeConnection(params: InitializeParams) {
   const capabilities = params.capabilities;

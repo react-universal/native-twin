@@ -7,7 +7,7 @@
   "main": "build/index.js",
   "scripts": {
     "build:libs": "node ./build.js",
-    "lint": "eslint src",
+    "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "unit": "npx mocha ./build/test",

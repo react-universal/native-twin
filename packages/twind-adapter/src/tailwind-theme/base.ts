@@ -1,9 +1,10 @@
 import type { BaseTheme, Preset } from '@twind/core';
-import type { TailwindTheme } from './types';
 import theme from './baseTheme';
 import preflight from './preflight';
 import rules from './rules';
+import type { TailwindTheme } from './types';
 import variants from './variants';
+
 export * from './types';
 
 export interface TailwindPresetBaseOptions {

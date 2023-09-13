@@ -4,13 +4,12 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
-
+import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import ts from 'typescript/lib/tsserverlibrary';
 import { createIntellisense } from './intellisense/createIntellisense';
-import { ConfigurationManager } from './language-service/configuration';
 import { getCompletionEntries } from './language-service/completions.context';
+import { ConfigurationManager } from './language-service/configuration';
 import { StandardTemplateSourceHelper } from './language-service/source-helper';
-import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import { createCompletionEntryDetails } from './utils';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {

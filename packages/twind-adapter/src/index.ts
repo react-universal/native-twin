@@ -7,13 +7,14 @@ import {
   keyframes as keyframes$,
   defineConfig,
 } from '@twind/core';
+import transformCssVariables from './presets/css-variables';
 import { rotateRules } from './rules/rotate';
 import { shadowRules } from './rules/shadow';
 import { skewRules } from './rules/skew';
 import { translateRules } from './rules/translate';
 import { presetTailwind } from './tailwind-theme';
-import transformCssVariables from './presets/css-variables';
 import { CustomConfig } from './types';
+
 export type * from './types';
 export * from './tailwind-theme';
 

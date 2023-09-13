@@ -1,5 +1,5 @@
-import { assert, test } from 'vitest';
 import { css, twind, virtual } from '@twind/core';
+import { assert, test } from 'vitest';
 import { presetTailwind as tailwind } from '../src';
 
 test('preflight on first inject', () => {

@@ -1,8 +1,8 @@
 // import { Roboto } from '@next/font/google';
 import install from '@twind/with-next/app';
+import { tw } from '@universal-labs/twind-adapter';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { tw } from '@universal-labs/twind-adapter';
 import '../styles/globals.css';
 import '../styles/tw';
 

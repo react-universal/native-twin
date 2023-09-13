@@ -1,12 +1,12 @@
 import { BaseTheme, ExtractUserTheme, ThemeFunction } from '@twind/core';
+import { TailwindTheme } from '@universal-labs/twind-adapter';
 import genex from 'genex';
+import { isSpacingFunction } from '../utils';
 import {
   autocompleteColorClassnames,
   autocompleteSpacingRules,
   extractRuleModifiers,
 } from './rulesCompletions';
-import { TailwindTheme } from '@universal-labs/twind-adapter';
-import { isSpacingFunction } from '../utils';
 
 export function evaluatePattern(
   pattern: ReturnType<typeof genex>,

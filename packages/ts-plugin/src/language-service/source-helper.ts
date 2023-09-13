@@ -1,15 +1,14 @@
 // Based on https://github.com/microsoft/typescript-template-language-service-decorator/blob/26deaa4fc4af1237a94a44e033e92514077fbede/src/standard-template-source-helper.ts
-
-import type ts from 'typescript/lib/tsserverlibrary';
 import type {
   TemplateContext,
   TemplateSettings,
 } from 'typescript-template-language-service-decorator';
+import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
 import type ScriptSourceHelper from 'typescript-template-language-service-decorator/lib/script-source-helper';
 import type TemplateSourceHelper from 'typescript-template-language-service-decorator/lib/template-source-helper';
-import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
-import type { ConfigurationManager } from './configuration';
+import type ts from 'typescript/lib/tsserverlibrary';
 import { match, Matcher } from '../utils';
+import type { ConfigurationManager } from './configuration';
 import { getSourceMatchers } from './source-matcher';
 
 class PlaceholderSubstituter {

@@ -1,5 +1,3 @@
-import { tw as internalTW } from '@universal-labs/twind-adapter';
-import { CssResolver } from '@universal-labs/css';
 import {
   AutocompleteContext,
   Preset,
@@ -8,10 +6,12 @@ import {
   twind,
   virtual,
 } from '@twind/core';
-import { formatCss } from '../utils';
-import type { CurrentTheme, VariantCompletionItem } from '../types';
-import { createContextExecutor } from './intellisense.compose';
+import { CssResolver } from '@universal-labs/css';
+import { tw as internalTW } from '@universal-labs/twind-adapter';
 import { ConfigurationManager } from '../language-service/configuration';
+import type { CurrentTheme, VariantCompletionItem } from '../types';
+import { formatCss } from '../utils';
+import { createContextExecutor } from './intellisense.compose';
 
 export function createIntellisense() {
   const variants = new Map<string, VariantCompletionItem>();

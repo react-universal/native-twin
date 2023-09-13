@@ -1,5 +1,4 @@
 import type { Preflight } from '@twind/core';
-
 import baseTheme from './baseTheme';
 
 const preflight: Preflight = {

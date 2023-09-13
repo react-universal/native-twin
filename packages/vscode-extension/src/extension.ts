@@ -1,7 +1,7 @@
 // Based on https://github.com/mjbvz/vscode-lit-html/blob/master/src/index.ts
 import * as vscode from 'vscode';
-import { enableExtension } from './internal/enableExtension';
 import { pluginId } from './internal/config';
+import { enableExtension } from './internal/enableExtension';
 import { createLogger } from './internal/logger';
 
 export async function activate(context: vscode.ExtensionContext) {

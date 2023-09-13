@@ -1,12 +1,12 @@
 import { TemplateContext } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
-import { CompletionCacheItem } from '../types';
+import { CompletionItem } from '../types';
 import { createCompletionEntries } from '../utils';
 
 export function getCompletionEntries(
   templateContext: TemplateContext,
   position: ts.LineAndCharacter,
-  completionsCache: CompletionCacheItem[],
+  completionsCache: CompletionItem[],
 ) {
   let originalList = [...completionsCache];
   const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
@@ -30,7 +30,11 @@ export function getCompletionEntries(
     console.log('UTIL: ', util);
     originalList.push(
       ...util.map(
-        (i): CompletionCacheItem => ({
+        (i): CompletionItem => ({
+          canBeNegative: false,
+          kind: 'class',
+          isColor: false,
+          theme: {},
           name: `${completion}${i}`,
           index: 0,
           position: 0,

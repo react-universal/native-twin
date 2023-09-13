@@ -1,12 +1,12 @@
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import * as vscode from 'vscode-languageserver-types';
 import {
   CompletionItem,
   CompletionItemKind,
   TextDocumentPositionParams,
   TextDocuments,
 } from 'vscode-languageserver/node';
-import { TextDocument } from 'vscode-languageserver-textdocument';
 import { createIntellisense } from '../language-service/LanguageService';
-import * as vscode from 'vscode-languageserver-types';
 
 export async function onCompletion(
   pos: TextDocumentPositionParams,

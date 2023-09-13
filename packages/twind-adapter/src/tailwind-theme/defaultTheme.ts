@@ -1,8 +1,6 @@
 import type { BaseTheme } from './baseTheme';
-
-import * as colors from './colors';
-
 import baseTheme from './baseTheme';
+import * as colors from './colors';
 
 export type DefaultTheme = { colors: typeof colors } & BaseTheme;
 

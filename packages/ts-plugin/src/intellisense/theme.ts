@@ -7,6 +7,7 @@ import type {
   ThemeSectionResolverContext,
 } from '@twind/core';
 import { toColorValue, Context, asArray } from '@twind/core';
+
 // “Never memorize something that you can look up.” - Albert Einstein
 
 export function resolveThemeFunction<Theme extends BaseTheme = BaseTheme>(

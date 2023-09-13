@@ -2,13 +2,13 @@ import {
   TemplateContext,
   TemplateLanguageService,
 } from 'typescript-template-language-service-decorator';
+import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import ts from 'typescript/lib/tsserverlibrary';
+import { CreateIntellisenseFn } from '../intellisense/createIntellisense';
+import { createCompletionEntries, createCompletionEntryDetails } from '../utils';
 import { ConfigurationManager } from './configuration';
 import { LanguageServiceLogger } from './logger';
 import { StandardTemplateSourceHelper } from './source-helper';
-import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
-import { CreateIntellisenseFn } from '../intellisense/createIntellisense';
-import { createCompletionEntries, createCompletionEntryDetails } from '../utils';
 
 export class TailwindLanguageService implements TemplateLanguageService {
   configManager: ConfigurationManager;
@@ -46,7 +46,7 @@ export class TailwindLanguageService implements TemplateLanguageService {
     }
     if (prevText == '-') {
       originalList = originalList
-        .filter((x) => x.canBeNegative)
+        // .filter((x) => x.)
         .map((x) => {
           const className = `-${x.name}`;
           const { css, sheet } = this.intellisense.getCss(className);

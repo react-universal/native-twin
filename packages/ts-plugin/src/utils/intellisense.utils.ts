@@ -1,7 +1,7 @@
+import { TinyColor } from '@ctrl/tinycolor';
 import cssbeautify from 'cssbeautify';
 import ts from 'typescript/lib/tsserverlibrary';
 import * as vscode from 'vscode-languageserver-types';
-import { TinyColor } from '@ctrl/tinycolor';
 import type { CompletionItem, GetCssResult } from '../types';
 
 export function formatCss(target: string[]) {

@@ -1,7 +1,7 @@
+import { cx } from '@universal-labs/twind-adapter';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 import styledComponents from '../src';
-import { cx } from '@universal-labs/twind-adapter';
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();

@@ -1,7 +1,4 @@
 // @ts-nocheck
-import genex from 'genex';
-import { VARIANT_MARKER_RULE } from '../../constants/config.constants';
-import { CurrentTheme } from '../../types';
 import {
   AutocompleteContext,
   AutocompleteItem,
@@ -10,6 +7,9 @@ import {
   asArray,
   getAutocompleteProvider,
 } from '@twind/core';
+import genex from 'genex';
+import { VARIANT_MARKER_RULE } from '../../constants/config.constants';
+import { CurrentTheme } from '../../types';
 import { toCondition, isSpacingFunction } from '../../utils';
 import {
   autocompleteColorClassnames,
