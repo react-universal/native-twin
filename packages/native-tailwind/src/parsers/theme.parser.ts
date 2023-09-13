@@ -8,6 +8,7 @@ import type {
 import { directionMap } from '../utils/mappings';
 
 const classNameIdent = /^[a-z0-9A-Z-.]+/;
+const arbitraryIdent = /^[a-z0-9A-Z-.#]+/;
 const segmentParser = P.regex(classNameIdent).map(
   (x): SegmentToken => ({
     type: 'segment',
@@ -18,7 +19,7 @@ const segmentParser = P.regex(classNameIdent).map(
 const maybeNegative = P.maybe(P.char('-')).map((x) => !!x);
 
 const betweenSquareBrackets = P.between(P.char('['))(P.char(']'));
-const arbitraryParser = betweenSquareBrackets(P.regex(classNameIdent)).map(
+const arbitraryParser = betweenSquareBrackets(P.regex(arbitraryIdent)).map(
   (x): ArbitrarySegmentToken => ({
     type: 'arbitrary',
     value: x,

@@ -74,6 +74,11 @@
       "sastan",
       "TRBL",
       "xytrbl"
-    ]
+    ],
+    "workbench.colorCustomizations": {
+      "[Atom One Dark]": {
+        "editor.background": "#1F1F1F"
+      }
+    }
   }
 }

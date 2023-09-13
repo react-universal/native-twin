@@ -47,15 +47,15 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
   );
 }
 
-// const tailwind = createTailwind({
-//   ignorelist: [],
-//   theme: {
-//     extend: {
-//       colors: {
-//         primary: '#0558f9',
-//       },
-//     },
-//   },
-// });
+const tailwind = createTailwind({
+  ignorelist: [],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#0558f9',
+      },
+    },
+  },
+});
 
-// tailwind('bg-primary'); //?
+tailwind('border-x-blue-200/90'); //?

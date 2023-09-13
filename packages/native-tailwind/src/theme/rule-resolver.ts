@@ -20,16 +20,34 @@ export function matchThemeColor(
     pattern,
     property,
     (match, context, rule) => {
-      let color = context.colors[match.segment.value];
+      let color: string | null | undefined;
+      if (match.segment.type == 'arbitrary') {
+        color = match.segment.value;
+      }
       if (!color) {
-        color = context.theme('colors', match.segment.value);
+        color =
+          context.colors[match.segment.value] ?? context.theme('colors', match.segment.value);
       }
       if (color) {
         const opacity = context.theme('opacity', rule.m?.value ?? '100');
+        color = toColorValue(color!, {
+          opacityValue: opacity ?? '1',
+        });
+        if (meta.feature == 'edges') {
+          const result: Record<string, string> = {};
+          for (const key of getPropertiesForEdges(
+            {
+              prefix: meta.prefix ?? property,
+              suffix: meta.suffix ?? '',
+            },
+            match.suffixes,
+          )) {
+            result[key] = color;
+          }
+          return result;
+        }
         return {
-          [property]: toColorValue(color!, {
-            opacityValue: opacity ?? '1',
-          }),
+          [property]: color,
         };
       }
     },
