@@ -44,7 +44,8 @@ export function buildRuleHandlerParser(
   meta: RuleMeta = {
     canBeNegative: false,
     feature: 'default',
-    baseProperty: undefined,
+    prefix: undefined,
+    suffix: undefined,
   },
 ): P.Parser<RuleHandlerToken> {
   let patternParser = P.literal(pattern);

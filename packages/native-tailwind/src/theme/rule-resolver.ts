@@ -20,7 +20,10 @@ export function matchThemeColor(
     pattern,
     property,
     (match, context, rule) => {
-      const color = context.colors[match.segment.value];
+      let color = context.colors[match.segment.value];
+      if (!color) {
+        color = context.theme('colors', match.segment.value);
+      }
       if (color) {
         const opacity = context.theme('opacity', rule.m?.value ?? '100');
         return {
@@ -41,7 +44,8 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   meta: RuleMeta = {
     canBeNegative: false,
     feature: 'default',
-    baseProperty: undefined,
+    prefix: '',
+    suffix: '',
     customValues: undefined,
   },
 ): [string, keyof Theme | (string & {}), RuleResolver<Theme>, RuleMeta] {
@@ -56,7 +60,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
             : meta.customValues[match.segment.value];
         if (!value) return;
         return {
-          [property]: value,
+          [property]: maybeNegative(match.negative, value),
         };
       }
       let value: string | null = null;
@@ -68,13 +72,19 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
       if (value) {
         if (meta.feature == 'edges') {
           const result: Record<string, string> = {};
-          for (const key of getPropertiesForEdges(property, match.suffixes)) {
-            result[key] = value;
+          for (const key of getPropertiesForEdges(
+            {
+              prefix: meta.prefix ?? property,
+              suffix: meta.suffix ?? '',
+            },
+            match.suffixes,
+          )) {
+            result[key] = maybeNegative(match.negative, value);
           }
           return result;
         }
         return {
-          [property]: value,
+          [property]: maybeNegative(match.negative, value),
         };
       }
     },
@@ -82,9 +92,16 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   ];
 }
 
-function getPropertiesForEdges(property: string, data: string[]) {
-  if (data.length == 0) return [property];
-  return data.map((x) => {
-    return `${property}${x}`;
+function getPropertiesForEdges(property: { prefix: string; suffix: string }, edges: string[]) {
+  if (edges.length == 0) return [`${property.prefix}${property.suffix}`];
+  return edges.map((x) => {
+    return `${property.prefix}${x}${property.suffix}`;
   });
+}
+
+function maybeNegative(isNegative: boolean, value: string) {
+  if (isNegative) {
+    return `-${value}`;
+  }
+  return value;
 }

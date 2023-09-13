@@ -28,6 +28,7 @@ describe('@universal-labs/native-tailwind - Spacing Utilities', () => {
   });
   it('margins', () => {
     expect(tailwind('m-2')).toStrictEqual([{ margin: '0.5rem' }]);
+    expect(tailwind('-m-2')).toStrictEqual([{ margin: '-0.5rem' }]);
     expect(tailwind('mx-2')).toStrictEqual([{ marginLeft: '0.5rem', marginRight: '0.5rem' }]);
     expect(tailwind('my-2')).toStrictEqual([{ marginTop: '0.5rem', marginBottom: '0.5rem' }]);
   });

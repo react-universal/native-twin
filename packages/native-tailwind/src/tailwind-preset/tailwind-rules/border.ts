@@ -18,9 +18,15 @@ export const borderStyles = [
 ];
 
 export const borderRules: Rule<__Theme__>[] = [
-  matchThemeColor('border-', 'borderColor'),
+  matchThemeColor('border-', 'borderColor', {
+    feature: 'edges',
+    prefix: 'border',
+    suffix: '-color',
+  }),
   matchThemeValue('border-', 'borderWidth', 'borderWidth', {
     feature: 'edges',
+    prefix: 'border',
+    suffix: '-width',
   }),
   matchThemeValue('rounded-', 'borderRadius', 'borderRadius', {
     feature: 'corners',

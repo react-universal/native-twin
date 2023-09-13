@@ -11,9 +11,9 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
     if (segment.startsWith('[') && segment.endsWith(']')) {
       return segment.slice(1, -1);
     }
-    const config = baseConfig[themeSection];
+    let config = baseConfig[themeSection];
     if (themeSection in extend) {
-      Object.assign(config ?? {}, { ...extend[themeSection] });
+      config = Object.assign(config ?? {}, { ...extend[themeSection] });
     }
     return segment.split('-').reduce((prev, current) => {
       if (!prev) return null;
