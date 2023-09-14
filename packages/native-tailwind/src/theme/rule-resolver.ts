@@ -69,7 +69,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
 ): [string, keyof Theme | (string & {}), RuleResolver<Theme>, RuleMeta] {
   return [
     pattern,
-    themeSection,
+    themeSection == '' && property ? property : themeSection,
     (match, context) => {
       if (meta.customValues) {
         let value =

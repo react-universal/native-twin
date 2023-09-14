@@ -66,7 +66,9 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
     throw new Error('');
   }
   function getRuleHandler(rule: Rule<Theme>) {
-    const key = JSON.stringify([rule[0], rule[1]]);
+    const key = JSON.stringify(
+      rule.filter((x) => typeof x !== 'function' && typeof x !== 'object'),
+    );
     if (ruleHandlers.has(key)) {
       return ruleHandlers.get(key)!;
     }

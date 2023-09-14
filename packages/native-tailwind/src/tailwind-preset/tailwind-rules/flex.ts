@@ -17,6 +17,14 @@ export const flexRules: Rule[] = [
   matchThemeValue('flex-', '', 'flex', {
     customValues: { 1: '1 1 0%', auto: '1 1 auto', initial: '0 1 auto', none: 'none' },
   }),
+  matchThemeValue('flex-', '', 'flexDirection', {
+    customValues: {
+      col: 'column',
+      'col-reverse': 'column-reverse',
+      row: 'row',
+      'row-reverse': 'row-reverse',
+    },
+  }),
   matchThemeValue('justify-', '', 'justifyContent', {
     customValues: justifyData,
   }),

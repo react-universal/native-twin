@@ -58,4 +58,4 @@ const tailwind = createTailwind({
   },
 });
 
-tailwind('rounded-tl-sm'); //?
+tailwind('gap-2'); //?

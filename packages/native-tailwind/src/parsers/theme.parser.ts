@@ -5,8 +5,7 @@ import type {
   RuleHandlerToken,
   SegmentToken,
 } from '../types/parser.types';
-import { keysOf } from '../utils/helpers';
-import { cornerMap, directionMap } from '../utils/mappings';
+import { cornersParser, edgesParser } from './rules.parser';
 
 const classNameIdent = /^[a-z0-9A-Z-.]+/;
 const arbitraryIdent = /^[a-z0-9A-Z-.#]+/;
@@ -26,26 +25,6 @@ const arbitraryParser = betweenSquareBrackets(P.regex(arbitraryIdent)).map(
     value: x,
   }),
 );
-
-const edgesParser = P.sequenceOf([
-  P.choice([
-    P.literal('x'),
-    P.literal('y'),
-    P.literal('t'),
-    P.literal('l'),
-    P.literal('b'),
-    P.literal('r'),
-  ]),
-  P.char('-'),
-]).map((x) => {
-  return directionMap[x[0]];
-});
-
-const cornersParser = P.choice(
-  keysOf(cornerMap).map((x) => P.sequenceOf([P.literal(x), P.char('-')])),
-).map((x: [keyof typeof cornerMap, string]) => {
-  return cornerMap[x[0]];
-});
 
 export function buildRuleHandlerParser(
   pattern: string,

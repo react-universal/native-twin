@@ -6,11 +6,15 @@ export const spacingRules: Rule<__Theme__>[] = [
   matchThemeValue('p', 'spacing', 'padding', {
     canBeNegative: true,
     feature: 'edges',
-    baseProperty: 'padding',
+    prefix: 'padding',
   }),
   matchThemeValue('m', 'spacing', 'margin', {
     canBeNegative: true,
     feature: 'edges',
-    baseProperty: 'margin',
+    prefix: 'margin',
+  }),
+  matchThemeValue('gap-', 'spacing', 'gap', {
+    feature: 'xy',
+    prefix: 'gap',
   }),
 ];

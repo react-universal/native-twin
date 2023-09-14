@@ -63,7 +63,7 @@ export type PatternParserResolver<T extends string> = Parser<T>;
 
 export interface RuleMeta {
   canBeNegative?: boolean;
-  feature?: 'edges' | 'corners' | 'colors' | 'default';
+  feature?: 'edges' | 'corners' | 'colors' | 'default' | 'xy';
   prefix?: string | undefined;
   suffix?: string | undefined;
   customValues?: Record<string, string>;

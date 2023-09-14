@@ -1,6 +1,9 @@
 import type { __Theme__ } from '../../types/theme.types';
+import { createPercentRatios } from '../../utils/theme-utils';
+import { spacing } from './mixed';
 
 export const baseSize = {
+  ...spacing,
   xs: '20rem',
   sm: '24rem',
   md: '28rem',
@@ -13,6 +16,9 @@ export const baseSize = {
   '6xl': '72rem',
   '7xl': '80rem',
   prose: '65ch',
+  full: '100%',
+  ...createPercentRatios(2, 6),
+  ...createPercentRatios(12, 12),
 };
 
 export const width = {
@@ -22,20 +28,20 @@ export const width = {
 } satisfies __Theme__['width'];
 
 export const maxWidth = {
-  none: 'none',
   ...baseSize,
+  none: 'none',
   screen: '100vw',
 } satisfies __Theme__['maxWidth'];
 
 export const height = {
-  auto: 'auto',
   ...baseSize,
+  auto: 'auto',
   screen: '100vh',
 } satisfies __Theme__['height'];
 
 export const maxHeight = {
-  none: 'none',
   ...baseSize,
+  none: 'none',
   screen: '100vh',
 } satisfies __Theme__['maxHeight'];
 
