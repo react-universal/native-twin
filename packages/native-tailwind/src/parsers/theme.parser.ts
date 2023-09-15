@@ -88,14 +88,19 @@ export function buildRuleHandlerParser(
 }
 
 export class RuleHandler<Theme extends __Theme__ = {}> {
-  patternParser: P.Parser<string>;
-  ruleParser: P.Parser<RuleHandlerToken>;
+  private patternParser: P.Parser<string>;
+  private ruleParser: P.Parser<RuleHandlerToken>;
   constructor(
     private pattern: string,
     private resolver: RuleResolver<Theme>,
     private meta: RuleMeta,
   ) {
-    this.patternParser = P.literal(pattern);
+    if (pattern.includes('|')) {
+      const parts = pattern.split('|');
+      this.patternParser = P.choice(parts.map((x) => P.literal(x)));
+    } else {
+      this.patternParser = P.literal(pattern);
+    }
     if (this.meta.feature == 'edges') {
       this.ruleParser = this.resolveEdges();
     } else if (this.meta.feature == 'corners') {
@@ -118,6 +123,19 @@ export class RuleHandler<Theme extends __Theme__ = {}> {
   }
 
   private defaultResolver() {
+    if (this.pattern.includes('|')) {
+      return P.sequenceOf([maybeNegative, this.patternParser, P.endOfInput]).map(
+        (x): RuleHandlerToken => ({
+          segment: {
+            type: 'segment',
+            value: x[1],
+          },
+          base: x[1],
+          suffixes: [],
+          negative: x[0],
+        }),
+      );
+    }
     return P.sequenceOf([
       maybeNegative,
       this.patternParser,

@@ -46,16 +46,3 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
     }),
   );
 }
-
-const tailwind = createTailwind({
-  ignorelist: [],
-  theme: {
-    extend: {
-      colors: {
-        primary: '#0558f9',
-      },
-    },
-  },
-});
-
-tailwind('basis-auto'); // ?
