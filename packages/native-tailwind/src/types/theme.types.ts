@@ -40,6 +40,7 @@ export interface __Theme__ {
   height?: Record<string, string>;
   maxWidth?: Record<string, string>;
   flexBasis?: Record<string, string>;
+  flexGrow?: Record<string, string>;
   maxHeight?: Record<string, string>;
   minWidth?: Record<string, string>;
   minHeight?: Record<string, string>;

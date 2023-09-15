@@ -6,3 +6,4 @@ export * from './font';
 export * from './mixed';
 export * from './preflight';
 export * from './size';
+export * from './flex';

@@ -1,6 +1,7 @@
 import type { __Theme__ } from '../../types/theme.types';
 import { colors } from './colors';
 import { blur, dropShadow } from './filters';
+import { flexBasis, flexGrow } from './flex';
 import {
   fontFamily,
   fontSize,
@@ -18,7 +19,6 @@ import {
   breakpoints,
   duration,
   easing,
-  flexBasis,
   lineWidth,
   ringWidth,
   spacing,
@@ -39,6 +39,7 @@ export const theme = {
   duration,
   easing,
   flexBasis,
+  flexGrow,
   fontFamily,
   fontSize,
   fontWeight,

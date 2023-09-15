@@ -1,9 +1,5 @@
 import type { __Theme__ } from '../../types/theme.types';
-import {
-  createExponentialUnits,
-  createLinearUnits,
-  createPercentRatios,
-} from '../../utils/theme-utils';
+import { createExponentialUnits, createLinearUnits } from '../../utils/theme-utils';
 
 // keep in ASC order: container.ts and breakpoints.ts need that order
 export const breakpoints = {
@@ -129,11 +125,3 @@ export const zIndex = {
   .../* #__PURE__ */ createLinearUnits(50, '', 1, 0, 10),
   auto: 'auto',
 } satisfies __Theme__['zIndex'];
-
-export const flexBasis = {
-  ...spacing,
-  .../* #__PURE__ */ createPercentRatios(2, 6),
-  .../* #__PURE__ */ createPercentRatios(12, 12),
-  auto: 'auto',
-  full: '100%',
-};

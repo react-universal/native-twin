@@ -33,6 +33,7 @@ export const flexRules: Rule[] = [
     },
   }),
   matchThemeValue('basis-', 'flexBasis', 'flexBasis'),
+  matchThemeValue('grow-', 'flexGrow', 'flexGrow'),
   matchThemeValue('justify-', '', 'justifyContent', {
     customValues: justifyData,
   }),
