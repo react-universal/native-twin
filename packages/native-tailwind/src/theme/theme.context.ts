@@ -1,5 +1,5 @@
 import type { PlatformOSType } from 'react-native';
-import { buildRuleHandlerParser } from '../parsers/theme.parser';
+import { RuleHandler } from '../parsers/theme.parser';
 import type {
   Rule,
   RuleMeta,
@@ -17,7 +17,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
 }: TailwindConfig<Theme>): ThemeContext {
-  const ruleHandlers = new Map<string, (parsedRule: ParsedRule) => RuleResult>();
+  const ruleHandlers = new Map<string, RuleHandler<Theme>>();
   const cache = new Map<string, RuleResult>();
   const platform: PlatformOSType = 'native';
   // Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
@@ -43,8 +43,19 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
         return cache.get(cacheKey);
       }
       for (const current of rules) {
-        const resolver = getRuleHandler(current);
-        const nextToken = resolver(token);
+        const key = JSON.stringify(
+          current.filter((x) => typeof x !== 'function' && typeof x !== 'object'),
+        );
+        let handler = ruleHandlers.get(key)!;
+        if (!handler) {
+          let meta: RuleMeta = {};
+          if (typeof current[2] == 'object') meta = current[2];
+          if (typeof current[3] == 'object' && Object.keys(meta).length == 0)
+            meta = current[3];
+          handler = new RuleHandler(current[0], getRuleResolver(current), meta);
+          ruleHandlers.set(key, handler);
+        }
+        const nextToken = handler.run(token, ctx);
 
         if (nextToken) {
           cache.set(cacheKey, nextToken);
@@ -64,28 +75,5 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
       return rule[2];
     }
     throw new Error('');
-  }
-  function getRuleHandler(rule: Rule<Theme>) {
-    const key = JSON.stringify(
-      rule.filter((x) => typeof x !== 'function' && typeof x !== 'object'),
-    );
-    if (ruleHandlers.has(key)) {
-      return ruleHandlers.get(key)!;
-    }
-    const resolver = getRuleResolver(rule);
-    let meta: RuleMeta = {};
-    if (typeof rule[2] == 'object') meta = rule[2];
-    if (typeof rule[3] == 'object' && Object.keys(meta).length == 0) meta = rule[3];
-    const parser = buildRuleHandlerParser(rule[0], meta);
-    const handler = (parsedRule: ParsedRule) => {
-      const result = parser.run(parsedRule.n);
-      if (result.isError) return;
-      // const match: ExpArrayMatchResult = condition.exec(parsedRule.n) as ExpArrayMatchResult;
-      // if (!match) return;
-      // match.$$ = parsedRule.n.slice(match[0].length);
-      return resolver(result.result, ctx, parsedRule);
-    };
-    ruleHandlers.set(key, handler);
-    return handler;
   }
 }

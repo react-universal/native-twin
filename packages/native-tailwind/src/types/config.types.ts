@@ -25,21 +25,9 @@ export interface TailwindUserConfig<Theme = __Theme__, UserTheme extends object 
 
 export type RuleResult = CSSProperties | Falsey | Record<string, string>;
 
-export type ExpArrayMatchResult = RegExpExecArray & {
-  $$: string;
-  groups?: {
-    edge?: string;
-  };
-};
-
 export type PlatformSupport = 'native' | 'web';
 
-type RuleExpansions = 'edges';
-export type RuleExpansionProperties = {
-  kind: RuleExpansions;
-  prefix: string;
-  suffix: string;
-};
+type RuleFeatures = 'edges' | 'corners' | 'colors' | 'default' | 'gap';
 
 export type RuleResolver<Theme extends __Theme__ = {}> = (
   // match: ExpArrayMatchResult | RuleHandlerToken,
@@ -63,7 +51,7 @@ export type PatternParserResolver<T extends string> = Parser<T>;
 
 export interface RuleMeta {
   canBeNegative?: boolean;
-  feature?: 'edges' | 'corners' | 'colors' | 'default' | 'xy';
+  feature?: RuleFeatures;
   prefix?: string | undefined;
   suffix?: string | undefined;
   customValues?: Record<string, string>;

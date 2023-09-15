@@ -23,7 +23,7 @@ export default function App() {
   if (!isReady) return null;
   return (
     <View style={{ flex: 1 }}>
-      <Text style={{flexDirection: ''}} />
+      <Text style={{}} />
       <HomeScreen />
     </View>
   );

@@ -1,5 +1,9 @@
 import type { __Theme__ } from '../../types/theme.types';
-import { createExponentialUnits, createLinearUnits } from '../../utils/theme-utils';
+import {
+  createExponentialUnits,
+  createLinearUnits,
+  createPercentRatios,
+} from '../../utils/theme-utils';
 
 // keep in ASC order: container.ts and breakpoints.ts need that order
 export const breakpoints = {
@@ -23,6 +27,7 @@ export const verticalBreakpoints = { ...breakpoints } satisfies __Theme__['break
 export const lineWidth = {
   DEFAULT: '1px',
   none: '0',
+  .../* #__PURE__ */ createLinearUnits(10, 'rem', 4, 3),
 } satisfies __Theme__['lineWidth'];
 
 export const spacing = {
@@ -75,6 +80,7 @@ export const borderRadius = {
   xl: '0.75rem',
   '2xl': '1rem',
   '3xl': '1.5rem',
+  '1/2': '50%',
   full: '9999px',
 } satisfies __Theme__['borderRadius'];
 
@@ -118,3 +124,16 @@ export const borderWidth = {
   DEFAULT: '1px',
   .../* #__PURE__ */ createExponentialUnits(8, 'px'),
 } satisfies __Theme__['borderWidth'];
+
+export const zIndex = {
+  .../* #__PURE__ */ createLinearUnits(50, '', 1, 0, 10),
+  auto: 'auto',
+} satisfies __Theme__['zIndex'];
+
+export const flexBasis = {
+  ...spacing,
+  .../* #__PURE__ */ createPercentRatios(2, 6),
+  .../* #__PURE__ */ createPercentRatios(12, 12),
+  auto: 'auto',
+  full: '100%',
+};

@@ -14,7 +14,7 @@ export const spacingRules: Rule<__Theme__>[] = [
     prefix: 'margin',
   }),
   matchThemeValue('gap-', 'spacing', 'gap', {
-    feature: 'xy',
+    feature: 'gap',
     prefix: 'gap',
   }),
 ];

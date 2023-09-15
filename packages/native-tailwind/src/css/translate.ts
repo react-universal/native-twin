@@ -1,14 +1,14 @@
 import type { RuleResult, ThemeContext } from '../types/config.types';
-import type { CSSObject } from '../types/css.types';
+import type { CSSProperties } from '../types/css.types';
 
-export function translateRuleResults(rule: RuleResult, _ctx: ThemeContext): CSSObject[] {
-  const stylesOrCss: CSSObject[] = [];
+export function translateRuleResults(rule: RuleResult, _ctx: ThemeContext): CSSProperties[] {
+  const stylesOrCss: CSSProperties[] = [];
   if (!rule) return stylesOrCss;
   if (typeof rule == 'object') {
     const newRule: any = {};
     for (let key of Object.keys(rule)) {
       const newKey = key.replace(/-([a-z])/g, (k) => k[1]!.toUpperCase()!);
-      newRule[newKey] = rule[key];
+      newRule[newKey] = rule[key as keyof CSSProperties];
     }
     stylesOrCss.push(newRule);
   }

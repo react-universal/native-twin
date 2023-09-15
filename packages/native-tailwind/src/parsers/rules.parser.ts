@@ -1,5 +1,5 @@
 import * as P from '@universal-labs/css/parser';
-import { keysOf } from '../utils/helpers';
+import { asArray, keysOf } from '../utils/helpers';
 import { cornerMap, directionMap } from '../utils/mappings';
 
 export const edgesParser = P.sequenceOf([
@@ -23,15 +23,13 @@ export const cornersParser = P.choice(
 });
 
 export const gapParser = P.sequenceOf([
-  P.choice([
-    P.literal('x'),
-    P.literal('y'),
-    P.literal('t'),
-    P.literal('l'),
-    P.literal('b'),
-    P.literal('r'),
-  ]),
+  P.choice([P.literal('x'), P.literal('y')]),
   P.char('-'),
 ]).map((x) => {
-  return directionMap[x[0]];
+  return asArray(
+    {
+      x: 'column',
+      y: 'row',
+    }[x[0]],
+  );
 });

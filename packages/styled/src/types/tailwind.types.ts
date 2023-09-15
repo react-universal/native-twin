@@ -74,8 +74,35 @@ type WithPrefix<T extends string> = NonNullable<AnyTailwindUtil> extends `${T}${
   ? AnyTailwindUtil
   : never;
 
+function classNamesWrapper<S1, S2>(
+  classesOrModifiers1: S1 extends string
+    ? ValidTailwindClassSeparatedByWhitespace<S1>
+    : ClassNames<S1>,
+  classesOrModifiers2?: S2 extends string
+    ? ValidTailwindClassSeparatedByWhitespace<S2>
+    : ClassNames<S2>,
+): string {
+  // All arguments would be passed to npmjs.com/package/classnames
+  // For the example, just return empty string.
+  return '';
+}
+
+classNamesWrapper('bg-blue-100 capitalize b', 'bg-blue-200');
+
 type ValidTailwindClassSeparatedByWhitespace<S> =
-  EatWhitespace<S> extends `${infer Class} ${infer Rest}` ? Rest : never;
+  EatWhitespace<S> extends `${infer Class} ${infer Rest}`
+    ? Rest extends EOL
+      ? Class extends EOL
+        ? S
+        : Class extends AnyTailwindUtil
+        ? Class
+        : AnyTailwindUtil
+      : Result<`${ValidTailwindClassSeparatedByWhitespace<Class>} ${ValidTailwindClassSeparatedByWhitespace<Rest>}`>
+    : EatWhitespace<S> extends `${infer Class}`
+    ? Class extends AnyTailwindUtil
+      ? Class
+      : AnyTailwindUtil
+    : AnyTailwindUtil;
 
 type Checked = ValidTailwindClassSeparatedByWhitespace<''>;
 

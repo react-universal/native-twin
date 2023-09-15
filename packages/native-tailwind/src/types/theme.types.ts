@@ -39,6 +39,7 @@ export interface __Theme__ {
   width?: Record<string, string>;
   height?: Record<string, string>;
   maxWidth?: Record<string, string>;
+  flexBasis?: Record<string, string>;
   maxHeight?: Record<string, string>;
   minWidth?: Record<string, string>;
   minHeight?: Record<string, string>;
@@ -98,4 +99,5 @@ export interface __Theme__ {
   /** Used to generate CSS variables placeholder in preflight */
   preflightRoot?: MaybeArray<string>;
   preflightBase?: Record<string, string | number>;
+  zIndex?: Record<string, string>;
 }

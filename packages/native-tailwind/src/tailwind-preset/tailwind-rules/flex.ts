@@ -25,6 +25,14 @@ export const flexRules: Rule[] = [
       'row-reverse': 'row-reverse',
     },
   }),
+  matchThemeValue('flex-', '', 'flexWrap', {
+    customValues: {
+      wrap: 'wrap',
+      'wrap-reverse': 'wrap-reverse',
+      nowrap: 'nowrap',
+    },
+  }),
+  matchThemeValue('basis-', 'flexBasis', 'flexBasis'),
   matchThemeValue('justify-', '', 'justifyContent', {
     customValues: justifyData,
   }),

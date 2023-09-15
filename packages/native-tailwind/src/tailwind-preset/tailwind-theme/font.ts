@@ -1,4 +1,5 @@
 import type { __Theme__ } from '../../types/theme.types';
+import { createLinearUnits } from '../../utils/theme-utils';
 
 export const fontFamily = {
   sans: [
@@ -81,6 +82,7 @@ export const lineHeight = {
   normal: '1.5',
   relaxed: '1.625',
   loose: '2',
+  .../* #__PURE__ */ createLinearUnits(10, 'rem', 4, 3),
 } satisfies __Theme__['lineHeight'];
 
 export const letterSpacing = {

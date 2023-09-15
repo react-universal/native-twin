@@ -58,4 +58,4 @@ const tailwind = createTailwind({
   },
 });
 
-tailwind('gap-2'); //?
+tailwind('basis-auto'); // ?

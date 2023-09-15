@@ -81,12 +81,14 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
           [property]: maybeNegative(match.negative, value),
         };
       }
+
       let value: string | null = null;
       if (match.segment.type == 'arbitrary') {
         value = match.segment.value;
       } else {
         value = context.theme(themeSection, match.segment.value) ?? null;
       }
+
       if (value) {
         if (meta.feature == 'edges') {
           const result: Record<string, string> = {};
@@ -115,6 +117,20 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
           }
           return result;
         }
+
+        if (meta.feature == 'gap') {
+          const result: Record<string, string> = {};
+          for (const key of getPropertiesForGap(
+            {
+              prefix: meta.suffix ?? '',
+              suffix: property ?? '',
+            },
+            match.suffixes,
+          )) {
+            result[key] = maybeNegative(match.negative, value);
+          }
+          return result;
+        }
         return {
           [property]: maybeNegative(match.negative, value),
         };
@@ -131,6 +147,16 @@ function getPropertiesForEdges(property: { prefix: string; suffix: string }, edg
   });
 }
 
+function getPropertiesForGap(property: { prefix: string; suffix: string }, edges: string[]) {
+  if (edges.length == 0) return [`${property.prefix}${property.suffix}`];
+  return edges.map((x) => {
+    return `${property.prefix}${x}${property.suffix.replace(
+      /^[a-z]/,
+      (k) => k[0]?.toUpperCase()! ?? '',
+    )}`;
+  });
+}
+
 function getPropertiesForCorners(
   property: { prefix: string; suffix: string },
   corners: string[],
@@ -142,7 +168,7 @@ function getPropertiesForCorners(
 }
 
 function maybeNegative(isNegative: boolean, value: string) {
-  if (isNegative) {
+  if (isNegative && (!value.startsWith('0') || value.startsWith('0.'))) {
     return `-${value}`;
   }
   return value;
