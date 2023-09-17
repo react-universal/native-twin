@@ -61,4 +61,4 @@ const tailwind = createTailwind({
   },
 });
 
-tailwind('text-2xl'); // ?
+tailwind('mx-1'); // ?

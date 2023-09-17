@@ -170,9 +170,12 @@ function getPropertiesForCorners(
   });
 }
 
-function maybeNegative(isNegative: boolean, value: string) {
-  if (isNegative && (!value.startsWith('0') || value.startsWith('0.'))) {
-    return `-${value}`;
+function maybeNegative(isNegative: boolean, value: string): string {
+  if (isNegative && (!`${value}`.startsWith('0') || `${value}`.startsWith('0.'))) {
+    if (isNaN(Number(value))) {
+      return `-${value}`;
+    }
+    return (Number(value) * -1) as unknown as any;
   }
   return value;
 }

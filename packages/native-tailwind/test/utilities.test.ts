@@ -18,19 +18,15 @@ const tailwind = createTailwind(
 
 describe('@universal-labs/native-tailwind - Spacing Utilities', () => {
   it('paddings', () => {
-    expect(tailwind('p-2')).toStrictEqual([{ padding: '0.5rem' }]);
-    expect(tailwind('px-2')).toStrictEqual([
-      { paddingLeft: '0.5rem', paddingRight: '0.5rem' },
-    ]);
-    expect(tailwind('py-2')).toStrictEqual([
-      { paddingTop: '0.5rem', paddingBottom: '0.5rem' },
-    ]);
+    expect(tailwind('p-2')).toStrictEqual([{ padding: 8 }]);
+    expect(tailwind('px-2')).toStrictEqual([{ paddingLeft: 8, paddingRight: 8 }]);
+    expect(tailwind('py-2')).toStrictEqual([{ paddingTop: 8, paddingBottom: 8 }]);
   });
   it('margins', () => {
-    expect(tailwind('m-2')).toStrictEqual([{ margin: '0.5rem' }]);
-    expect(tailwind('-m-2')).toStrictEqual([{ margin: '-0.5rem' }]);
-    expect(tailwind('mx-2')).toStrictEqual([{ marginLeft: '0.5rem', marginRight: '0.5rem' }]);
-    expect(tailwind('my-2')).toStrictEqual([{ marginTop: '0.5rem', marginBottom: '0.5rem' }]);
+    expect(tailwind('m-2')).toStrictEqual([{ margin: 8 }]);
+    expect(tailwind('-m-2')).toStrictEqual([{ margin: -8 }]);
+    expect(tailwind('mx-2')).toStrictEqual([{ marginLeft: 8, marginRight: 8 }]);
+    expect(tailwind('my-2')).toStrictEqual([{ marginTop: 8, marginBottom: 8 }]);
   });
   it('arbitrary', () => {
     expect(tailwind('m-[20px]')).toStrictEqual([{ margin: '20px' }]);
@@ -60,14 +56,14 @@ describe('@universal-labs/native-tailwind - Color Utilities', () => {
 
 describe('@universal-labs/native-tailwind - Position Utilities', () => {
   it('top|right|bottom|left', () => {
-    expect(tailwind('top-2')).toStrictEqual([{ top: '0.5rem' }]);
+    expect(tailwind('top-2')).toStrictEqual([{ top: 8 }]);
   });
 });
 
 describe('@universal-labs/native-tailwind - Border Utilities', () => {
   it('t|r|b|l', () => {
     expect(tailwind('border-x-1')).toStrictEqual([
-      { borderLeftWidth: '1px', borderRightWidth: '1px' },
+      { borderLeftWidth: 1, borderRightWidth: 1 },
     ]);
   });
 });
