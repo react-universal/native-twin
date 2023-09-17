@@ -1,5 +1,5 @@
 import type { RuleMeta, RuleResolver } from '../types/config.types';
-import type { CSSProperties } from '../types/css.types';
+import type { CompleteStyle } from '../types/rn.types';
 import type { __Theme__ } from '../types/theme.types';
 import { toColorValue } from '../utils/color-utils';
 
@@ -13,9 +13,9 @@ export function matchCssObject(
 
 export function matchThemeColor(
   pattern: string,
-  property: keyof CSSProperties,
+  property: keyof CompleteStyle,
   meta: RuleMeta = {},
-): [string, keyof CSSProperties, RuleResolver<__Theme__>, RuleMeta] {
+): [string, keyof CompleteStyle, RuleResolver<__Theme__>, RuleMeta] {
   return [
     pattern,
     property,
@@ -58,83 +58,86 @@ export function matchThemeColor(
 export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
   themeSection: keyof Theme | (string & {}),
-  property: keyof CSSProperties,
+  property: keyof CompleteStyle,
   meta: RuleMeta = {
     canBeNegative: false,
     feature: 'default',
     prefix: '',
     suffix: '',
-    customValues: undefined,
   },
 ): [string, keyof Theme | (string & {}), RuleResolver<Theme>, RuleMeta] {
   return [
     pattern,
     themeSection == '' && property ? property : themeSection,
-    (match, context) => {
-      if (meta.customValues) {
-        let value =
-          match.segment.type == 'arbitrary'
-            ? match.segment.value
-            : meta.customValues[match.segment.value];
-        if (!value) return;
-        return {
-          [property]: maybeNegative(match.negative, value),
-        };
-      }
+    (match, context, parsedRule) => {
+      // if (meta.customValues) {
+      //   let value =
+      //     match.segment.type == 'arbitrary'
+      //       ? match.segment.value
+      //       : meta.customValues[match.segment.value];
+      //   if (!value) return;
+      //   return {
+      //    [property]: maybeNegative(match.negative, value),
+      //   };
+      // }
 
       let value: string | null = null;
+      let segmentValue = match.segment.value;
+      if (parsedRule.m) {
+        segmentValue += `/${parsedRule.m.value}`;
+      }
       if (match.segment.type == 'arbitrary') {
-        value = match.segment.value;
+        value = segmentValue;
       } else {
-        value = context.theme(themeSection, match.segment.value) ?? null;
+        value = context.theme(themeSection, segmentValue) ?? null;
       }
 
-      if (value) {
-        if (meta.feature == 'edges') {
-          const result: Record<string, string> = {};
-          for (const key of getPropertiesForEdges(
-            {
-              prefix: meta.prefix ?? property,
-              suffix: meta.suffix ?? '',
-            },
-            match.suffixes,
-          )) {
-            result[key] = maybeNegative(match.negative, value);
-          }
-          return result;
-        }
+      if (!value) return;
 
-        if (meta.feature == 'corners') {
-          const result: Record<string, string> = {};
-          for (const key of getPropertiesForCorners(
-            {
-              prefix: meta.prefix ?? property,
-              suffix: meta.suffix ?? '',
-            },
-            match.suffixes,
-          )) {
-            result[key] = maybeNegative(match.negative, value);
-          }
-          return result;
+      if (meta.feature == 'edges') {
+        const result: Record<string, string> = {};
+        for (const key of getPropertiesForEdges(
+          {
+            prefix: meta.prefix ?? property,
+            suffix: meta.suffix ?? '',
+          },
+          match.suffixes,
+        )) {
+          result[key] = maybeNegative(match.negative, value);
         }
-
-        if (meta.feature == 'gap') {
-          const result: Record<string, string> = {};
-          for (const key of getPropertiesForGap(
-            {
-              prefix: meta.suffix ?? '',
-              suffix: property ?? '',
-            },
-            match.suffixes,
-          )) {
-            result[key] = maybeNegative(match.negative, value);
-          }
-          return result;
-        }
-        return {
-          [property]: maybeNegative(match.negative, value),
-        };
+        return result;
       }
+
+      if (meta.feature == 'corners') {
+        const result: Record<string, string> = {};
+        for (const key of getPropertiesForCorners(
+          {
+            prefix: meta.prefix ?? property,
+            suffix: meta.suffix ?? '',
+          },
+          match.suffixes,
+        )) {
+          result[key] = maybeNegative(match.negative, value);
+        }
+        return result;
+      }
+
+      if (meta.feature == 'gap') {
+        const result: Record<string, string> = {};
+        for (const key of getPropertiesForGap(
+          {
+            prefix: meta.suffix ?? '',
+            suffix: property ?? '',
+          },
+          match.suffixes,
+        )) {
+          result[key] = maybeNegative(match.negative, value);
+        }
+        return result;
+      }
+      return {
+        [property]: maybeNegative(match.negative, value),
+      };
     },
     meta,
   ];

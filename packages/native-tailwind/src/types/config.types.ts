@@ -1,6 +1,6 @@
 import type { Parser } from '@universal-labs/css/parser';
-import type { CSSProperties } from './css.types';
 import type { ParsedRule, RuleHandlerToken } from './parser.types';
+import type { CompleteStyle } from './rn.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey } from './util.types';
 
@@ -10,11 +10,6 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   rules: Rule<Theme>[];
 
   ignorelist: string[];
-
-  root?: {
-    /** Default `16px` */
-    rem: number;
-  };
 }
 
 export interface TailwindUserConfig<Theme = __Theme__, UserTheme extends object = {}> {
@@ -23,14 +18,13 @@ export interface TailwindUserConfig<Theme = __Theme__, UserTheme extends object 
   ignorelist: string[];
 }
 
-export type RuleResult = CSSProperties | Falsey | Record<string, string>;
+export type RuleResult = CompleteStyle | Falsey | Record<string, string>;
 
 export type PlatformSupport = 'native' | 'web';
 
 type RuleFeatures = 'edges' | 'corners' | 'colors' | 'default' | 'gap';
 
 export type RuleResolver<Theme extends __Theme__ = {}> = (
-  // match: ExpArrayMatchResult | RuleHandlerToken,
   match: RuleHandlerToken,
   context: ThemeContext<Theme>,
   parsed: ParsedRule,
@@ -54,7 +48,7 @@ export interface RuleMeta {
   feature?: RuleFeatures;
   prefix?: string | undefined;
   suffix?: string | undefined;
-  customValues?: Record<string, string>;
+  // customValues?: Record<string, string>;
 }
 
 export interface ThemeContext<Theme extends __Theme__ = {}> {

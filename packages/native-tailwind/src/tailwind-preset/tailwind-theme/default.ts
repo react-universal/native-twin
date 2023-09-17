@@ -1,7 +1,8 @@
 import type { __Theme__ } from '../../types/theme.types';
+import { textAlign, verticalAlign } from './aligns';
 import { colors } from './colors';
 import { blur, dropShadow } from './filters';
-import { flexBasis, flexGrow } from './flex';
+import { flex, flexBasis, flexDirection, flexGrow, flexWrap, justifyContent } from './flex';
 import {
   fontFamily,
   fontSize,
@@ -11,6 +12,7 @@ import {
   textIndent,
   textShadow,
   textStrokeWidth,
+  textTransform,
   wordSpacing,
 } from './font';
 import {
@@ -20,12 +22,13 @@ import {
   duration,
   easing,
   lineWidth,
+  overflow,
   ringWidth,
   spacing,
   verticalBreakpoints,
 } from './mixed';
 import { preflightBase } from './preflight';
-import { containers, height, maxHeight, maxWidth, width } from './size';
+import { aspectRatio, containers, height, maxHeight, maxWidth, width } from './size';
 
 export const theme = {
   blockSize: height,
@@ -46,10 +49,19 @@ export const theme = {
   height,
   inlineSize: width,
   letterSpacing,
+  verticalAlign,
+  aspectRatio,
+  textTransform,
+  textAlign,
   lineHeight,
   lineWidth,
   maxBlockSize: maxHeight,
   maxHeight,
+  flex,
+  flexDirection,
+  flexWrap,
+  justifyContent,
+  overflow,
   maxInlineSize: maxWidth,
   maxWidth,
   minBlockSize: maxHeight,

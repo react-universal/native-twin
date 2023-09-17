@@ -54,8 +54,11 @@ const tailwind = createTailwind({
       colors: {
         primary: '#0558f9',
       },
+      borderWidth: {
+        sm: '100px',
+      },
     },
   },
 });
 
-tailwind('grow-1'); // ?
+tailwind('text-2xl'); // ?

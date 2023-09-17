@@ -48,3 +48,8 @@ export const maxHeight = {
 export const containers = Object.fromEntries(
   Object.entries(baseSize).map(([k, v]) => [k, `(min-width: ${v})`]),
 ) satisfies __Theme__['containers'];
+
+export const aspectRatio = {
+  square: '1/1',
+  video: '16/9',
+} satisfies __Theme__['aspectRatio'];

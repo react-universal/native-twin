@@ -108,3 +108,15 @@ export const fontWeight = {
 } satisfies __Theme__['fontWeight'];
 
 export const wordSpacing = letterSpacing satisfies __Theme__['letterSpacing'];
+
+export const textDecorationStyle = {
+  solid: 'solid',
+  double: 'double',
+  dotted: 'dotted',
+} satisfies __Theme__['textDecorationStyle'];
+
+export const textTransform = {
+  capitalize: 'capitalize',
+  uppercase: 'uppercase',
+  lowercase: 'lowercase',
+} satisfies __Theme__['textTransform'];

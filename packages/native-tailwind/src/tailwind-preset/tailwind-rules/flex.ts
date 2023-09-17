@@ -1,40 +1,14 @@
-import { matchThemeValue } from '../../theme/rule-resolver';
+import { matchCssObject, matchThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 
-const justifyData = {
-  start: 'flex-start',
-  end: 'flex-end',
-  center: 'center',
-  between: 'space-between',
-  around: 'space-around',
-  evenly: 'space-evenly',
-  stretch: 'space-stretch',
-};
 export const flexRules: Rule[] = [
-  matchThemeValue('flex', '', 'display', {
-    customValues: { '': 'flex' },
-  }),
-  matchThemeValue('flex-', '', 'flex', {
-    customValues: { 1: '1 1 0%', auto: '1 1 auto', initial: '0 1 auto', none: 'none' },
-  }),
-  matchThemeValue('flex-', '', 'flexDirection', {
-    customValues: {
-      col: 'column',
-      'col-reverse': 'column-reverse',
-      row: 'row',
-      'row-reverse': 'row-reverse',
-    },
-  }),
-  matchThemeValue('flex-', '', 'flexWrap', {
-    customValues: {
-      wrap: 'wrap',
-      'wrap-reverse': 'wrap-reverse',
-      nowrap: 'nowrap',
-    },
-  }),
+  matchCssObject('flex', () => ({
+    display: 'flex',
+  })),
+  matchThemeValue('flex-', 'flex', 'flex'),
+  matchThemeValue('flex-', 'flexDirection', 'flexDirection'),
+  matchThemeValue('flex-', 'flexWrap', 'flexWrap'),
   matchThemeValue('basis-', 'flexBasis', 'flexBasis'),
   matchThemeValue('grow-', 'flexGrow', 'flexGrow'),
-  matchThemeValue('justify-', '', 'justifyContent', {
-    customValues: justifyData,
-  }),
+  matchThemeValue('justify-', 'justifyContent', 'justifyContent'),
 ];

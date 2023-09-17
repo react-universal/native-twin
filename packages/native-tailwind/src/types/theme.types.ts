@@ -35,6 +35,12 @@ export interface __Theme__ {
   screens?: Record<string, ScreenValue>;
   colors?: Colors;
   opacity?: Record<string, string>;
+  root?: {
+    /** Default `16px` */
+    rem: number;
+    deviceWidth: number;
+    deviceHeight: number;
+  };
 
   width?: Record<string, string>;
   height?: Record<string, string>;
@@ -46,11 +52,21 @@ export interface __Theme__ {
   minHeight?: Record<string, string>;
   inlineSize?: Record<string, string>;
   blockSize?: Record<string, string>;
+  verticalAlign?: Record<string, string>;
+  textAlign?: Record<string, string>;
+  flex?: Record<string, string>;
+  flexDirection?: Record<string, string>;
+  flexWrap?: Record<string, string>;
+  justifyContent?: Record<string, string>;
+  overflow?: Record<string, string>;
+  aspectRatio?: Record<string, string>;
   maxInlineSize?: Record<string, string>;
   maxBlockSize?: Record<string, string>;
   minInlineSize?: Record<string, string>;
   minBlockSize?: Record<string, string>;
   borderRadius?: Record<string, string>;
+  textDecorationStyle?: Record<string, string>;
+  textTransform?: Record<string, string>;
   borderWidth?: Record<string, string>;
   breakpoints?: Record<string, string>;
   verticalBreakpoints?: Record<string, string>;

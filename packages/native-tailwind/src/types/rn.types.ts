@@ -1,21 +1,17 @@
-import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import type {
+  ImageStyle,
+  TextStyle,
+  ViewStyle,
+  FlexAlignType,
+  DimensionValue,
+} from 'react-native';
 
 export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
 
-export type AnyStyle = ImageStyle | TextStyle | ViewStyle;
+export type PartialStyle = ImageStyle | TextStyle | ViewStyle;
 
-export type FinalSheet = Record<SelectorGroup, AnyStyle>;
+export type FinalSheet = Record<SelectorGroup, CompleteStyle>;
 
-export type CompleteStyle = ViewStyle & TextStyle & ImageStyle;
+export interface CompleteStyle extends ViewStyle, TextStyle, Omit<ImageStyle, 'overflow'> {}
 
-export interface CXProcessor {
-  (classNames: string): { generated: string; target: string[] };
-  hash(classNames: string): string;
-}
-
-export interface GetChildStyles {
-  isFirstChild: boolean;
-  isLastChild: boolean;
-  isEven: boolean;
-  isOdd: boolean;
-}
+export type { FlexAlignType, DimensionValue };

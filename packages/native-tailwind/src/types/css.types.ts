@@ -1,12 +1,21 @@
 import type { CSSProperties } from 'react';
-import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { Falsey, StringLike } from './util.types';
 
 export type CSSValue = string | number | bigint | Falsey | StringLike;
 
 export type { CSSProperties };
 
-export type AnyReactNativeStyle = TextStyle & ViewStyle & ImageStyle;
+export interface CXProcessor {
+  (classNames: string): { generated: string; target: string[] };
+  hash(classNames: string): string;
+}
+
+export interface GetChildStyles {
+  isFirstChild: boolean;
+  isLastChild: boolean;
+  isEven: boolean;
+  isOdd: boolean;
+}
 
 export interface Sheet<Target = unknown> {
   readonly target: Target;

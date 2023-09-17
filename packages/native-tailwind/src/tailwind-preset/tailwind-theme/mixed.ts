@@ -125,3 +125,9 @@ export const zIndex = {
   .../* #__PURE__ */ createLinearUnits(50, '', 1, 0, 10),
   auto: 'auto',
 } satisfies __Theme__['zIndex'];
+
+export const overflow = {
+  visible: 'visible',
+  hidden: 'hidden',
+  none: 'scroll',
+} satisfies __Theme__['overflow'];

@@ -36,17 +36,21 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
     r(token: ParsedRule) {
       let cacheKey = token.n;
+
       if (token.m) {
         cacheKey = cacheKey + `/${token.m.value}`;
       }
+
       if (cache.has(cacheKey)) {
         return cache.get(cacheKey);
       }
+
       for (const current of rules) {
         const key = JSON.stringify(
           current.filter((x) => typeof x !== 'function' && typeof x !== 'object'),
         );
-        let handler = ruleHandlers.get(key)!;
+        let handler = ruleHandlers.get(key);
+
         if (!handler) {
           let meta: RuleMeta = {};
           if (typeof current[2] == 'object') meta = current[2];

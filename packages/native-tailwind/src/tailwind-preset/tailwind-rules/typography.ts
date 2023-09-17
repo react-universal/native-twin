@@ -13,6 +13,7 @@ export const fontThemeRules: Rule<__Theme__>[] = [
         };
       }
       let value = ctx.theme('fontSize', match.segment.value);
+      if (!value) return;
       if (Array.isArray(value)) {
         const [size, leading] = value as string[];
         if (size && leading) {
@@ -23,7 +24,6 @@ export const fontThemeRules: Rule<__Theme__>[] = [
         }
         if (size) value = size;
       }
-      if (!value) return;
       return {
         fontSize: value,
       };
@@ -33,18 +33,6 @@ export const fontThemeRules: Rule<__Theme__>[] = [
   matchThemeValue('font-', 'fontFamily', 'fontFamily'),
   matchThemeValue('leading-', 'lineHeight', 'lineHeight'),
   matchThemeColor('decoration-', 'textDecorationColor'),
-  matchThemeValue('decoration-', '', 'textDecorationStyle', {
-    customValues: {
-      solid: 'solid',
-      double: 'double',
-      dotted: 'dotted',
-    },
-  }),
-  matchThemeValue('capitalize|uppercase|lowercase', '', 'textTransform', {
-    customValues: {
-      capitalize: 'capitalize',
-      uppercase: 'uppercase',
-      lowercase: 'lowercase',
-    },
-  }),
+  matchThemeValue('decoration-', 'textDecorationStyle', 'textDecorationStyle'),
+  matchThemeValue('capitalize|uppercase|lowercase', 'textTransform', 'textTransform'),
 ];

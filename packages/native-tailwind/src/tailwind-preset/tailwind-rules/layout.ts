@@ -5,11 +5,5 @@ export const layoutThemeRules: Rule[] = [
   matchCssObject('hidden', () => ({
     display: 'none',
   })),
-  matchThemeValue('overflow-', '', 'overflow', {
-    customValues: {
-      visible: 'visible',
-      hidden: 'hidden',
-      none: 'scroll',
-    },
-  }),
+  matchThemeValue('overflow-', 'overflow', 'overflow'),
 ];
