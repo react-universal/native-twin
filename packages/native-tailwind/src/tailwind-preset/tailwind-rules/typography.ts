@@ -24,8 +24,9 @@ export const fontThemeRules: Rule<__Theme__>[] = [
         }
         if (size) value = size;
       }
+      if (!value) return;
       return {
-        fontSize: value,
+        fontSize: value as any,
       };
     },
   ],
@@ -35,4 +36,5 @@ export const fontThemeRules: Rule<__Theme__>[] = [
   matchThemeColor('decoration-', 'textDecorationColor'),
   matchThemeValue('decoration-', 'textDecorationStyle', 'textDecorationStyle'),
   matchThemeValue('capitalize|uppercase|lowercase', 'textTransform', 'textTransform'),
+  matchThemeValue('italic|normal', 'fontStyle', 'fontStyle'),
 ];

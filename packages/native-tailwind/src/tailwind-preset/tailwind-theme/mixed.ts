@@ -131,3 +131,15 @@ export const overflow = {
   hidden: 'hidden',
   none: 'scroll',
 } satisfies __Theme__['overflow'];
+
+export const objectFit = {
+  cover: 'cover',
+  contain: 'contain',
+  fill: 'fill',
+  'scale-down': 'scale-down',
+} satisfies __Theme__['objectFit'];
+
+export const position = {
+  absolute: 'absolute',
+  relative: 'relative',
+} satisfies __Theme__['position'];

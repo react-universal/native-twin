@@ -4,6 +4,7 @@ import { spacing } from './mixed';
 export const flexGrow = {
   DEFAULT: '1',
   0: '0',
+  1: '1',
 };
 export const flexBasis = {
   ...spacing,

@@ -120,3 +120,8 @@ export const textTransform = {
   uppercase: 'uppercase',
   lowercase: 'lowercase',
 } satisfies __Theme__['textTransform'];
+
+export const fontStyle = {
+  normal: 'normal',
+  italic: 'italic',
+} satisfies __Theme__['fontStyle'];

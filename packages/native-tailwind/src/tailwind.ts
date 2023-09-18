@@ -61,4 +61,4 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
 //   },
 // });
 
-// tailwind('-mx-1'); // ?
+// tailwind('text-center'); // ?

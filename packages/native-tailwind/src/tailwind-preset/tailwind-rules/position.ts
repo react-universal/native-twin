@@ -14,6 +14,7 @@ export const positionRules: Rule[] = [
   matchThemeValue('right-', 'spacing', 'right', {
     canBeNegative: true,
   }),
+  matchThemeValue('absolute|relative', 'position', 'position'),
   matchThemeValue('z-', 'zIndex', 'zIndex', {
     canBeNegative: true,
   }),

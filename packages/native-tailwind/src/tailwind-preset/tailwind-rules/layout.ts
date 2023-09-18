@@ -6,4 +6,5 @@ export const layoutThemeRules: Rule[] = [
     display: 'none',
   })),
   matchThemeValue('overflow-', 'overflow', 'overflow'),
+  matchThemeValue('object-', 'objectFit', 'objectFit'),
 ];
