@@ -2,6 +2,7 @@ import type { RuleMeta, RuleResolver } from '../types/config.types';
 import type { CompleteStyle } from '../types/rn.types';
 import type { __Theme__ } from '../types/theme.types';
 import { toColorValue } from '../utils/color-utils';
+import { asArray } from '../utils/helpers';
 
 export function matchCssObject(
   pattern: string,
@@ -70,19 +71,9 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
     pattern,
     themeSection == '' && property ? property : themeSection,
     (match, context, parsedRule) => {
-      // if (meta.customValues) {
-      //   let value =
-      //     match.segment.type == 'arbitrary'
-      //       ? match.segment.value
-      //       : meta.customValues[match.segment.value];
-      //   if (!value) return;
-      //   return {
-      //    [property]: maybeNegative(match.negative, value),
-      //   };
-      // }
-
       let value: string | null = null;
       let segmentValue = match.segment.value;
+
       if (parsedRule.m) {
         segmentValue += `/${parsedRule.m.value}`;
       }
@@ -93,51 +84,50 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
       }
 
       if (!value) return;
+      let result: Record<string, string> = {};
+      let properties = getProperties();
+      value = maybeNegative(match.negative, value);
 
-      if (meta.feature == 'edges') {
-        const result: Record<string, string> = {};
-        for (const key of getPropertiesForEdges(
-          {
-            prefix: meta.prefix ?? property,
-            suffix: meta.suffix ?? '',
-          },
-          match.suffixes,
-        )) {
-          result[key] = maybeNegative(match.negative, value);
-        }
-        return result;
+      if (typeof value == 'object' && !Array.isArray(value)) {
+        return value;
       }
+      for (const current of properties) {
+        result[current] = value;
+      }
+      return result;
 
-      if (meta.feature == 'corners') {
-        const result: Record<string, string> = {};
-        for (const key of getPropertiesForCorners(
-          {
-            prefix: meta.prefix ?? property,
-            suffix: meta.suffix ?? '',
-          },
-          match.suffixes,
-        )) {
-          result[key] = maybeNegative(match.negative, value);
+      function getProperties() {
+        if (meta.feature == 'edges') {
+          return getPropertiesForEdges(
+            {
+              prefix: meta.prefix ?? property,
+              suffix: meta.suffix ?? '',
+            },
+            match.suffixes,
+          );
         }
-        return result;
-      }
 
-      if (meta.feature == 'gap') {
-        const result: Record<string, string> = {};
-        for (const key of getPropertiesForGap(
-          {
-            prefix: meta.suffix ?? '',
-            suffix: property ?? '',
-          },
-          match.suffixes,
-        )) {
-          result[key] = maybeNegative(match.negative, value);
+        if (meta.feature == 'corners') {
+          return getPropertiesForCorners(
+            {
+              prefix: meta.prefix ?? property,
+              suffix: meta.suffix ?? '',
+            },
+            match.suffixes,
+          );
         }
-        return result;
+
+        if (meta.feature == 'gap') {
+          return getPropertiesForGap(
+            {
+              prefix: meta.suffix ?? '',
+              suffix: property ?? '',
+            },
+            match.suffixes,
+          );
+        }
+        return asArray(property);
       }
-      return {
-        [property]: maybeNegative(match.negative, value),
-      };
     },
     meta,
   ];
@@ -173,9 +163,9 @@ function getPropertiesForCorners(
 function maybeNegative(isNegative: boolean, value: string): string {
   if (isNegative && (!`${value}`.startsWith('0') || `${value}`.startsWith('0.'))) {
     if (isNaN(Number(value))) {
-      return `-${value}`;
+      return `-${value}${value.endsWith('px') ? '' : 'px'}`;
     }
-    return (Number(value) * -1) as unknown as any;
+    return (Number(value) * -1) as any;
   }
   return value;
 }

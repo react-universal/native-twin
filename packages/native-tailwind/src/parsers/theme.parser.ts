@@ -45,6 +45,19 @@ export class RuleHandler<Theme extends __Theme__ = {}> {
   }
 
   private defaultResolver() {
+    if (!this.pattern.endsWith('-')) {
+      return P.sequenceOf([maybeNegative, this.patternParser, P.endOfInput]).map(
+        (x): RuleHandlerToken => ({
+          segment: {
+            type: 'segment',
+            value: x[1],
+          },
+          base: x[1],
+          suffixes: [],
+          negative: x[0],
+        }),
+      );
+    }
     if (this.pattern.includes('|')) {
       return P.sequenceOf([maybeNegative, this.patternParser, P.endOfInput]).map(
         (x): RuleHandlerToken => ({
