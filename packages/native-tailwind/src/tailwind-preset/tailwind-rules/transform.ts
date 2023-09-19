@@ -1,15 +1,22 @@
-export const transformBase = {
-  // transform
-  '--un-rotate': 0,
-  '--un-rotate-x': 0,
-  '--un-rotate-y': 0,
-  '--un-rotate-z': 0,
-  '--un-scale-x': 1,
-  '--un-scale-y': 1,
-  '--un-scale-z': 1,
-  '--un-skew-x': 0,
-  '--un-skew-y': 0,
-  '--un-translate-x': 0,
-  '--un-translate-y': 0,
-  '--un-translate-z': 0,
-};
+import { matchThemeValue } from '../../theme/rule-resolver';
+import type { Rule } from '../../types/config.types';
+import type { __Theme__ } from '../../types/theme.types';
+
+export const translateRules: Rule<__Theme__>[] = [
+  matchThemeValue('translate-', 'translate', 'transform', {
+    feature: 'transform-2d',
+    prefix: 'translate',
+  }),
+  matchThemeValue('rotate-', 'rotate', 'transform', {
+    feature: 'transform-2d',
+    prefix: 'rotate',
+  }),
+  matchThemeValue('skew-', 'skew', 'transform', {
+    feature: 'transform-2d',
+    prefix: 'skew',
+  }),
+  matchThemeValue('scale-', 'scale', 'transform', {
+    feature: 'transform-2d',
+    prefix: 'scale',
+  }),
+];

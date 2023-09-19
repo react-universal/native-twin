@@ -21,7 +21,7 @@ export type RuleResult = CompleteStyle | Falsey | Record<string, string>;
 
 export type PlatformSupport = 'native' | 'web';
 
-type RuleFeatures = 'edges' | 'corners' | 'colors' | 'default' | 'gap';
+type RuleFeatures = 'edges' | 'corners' | 'colors' | 'default' | 'gap' | 'transform-2d';
 
 export type RuleResolver<Theme extends __Theme__ = {}> = (
   match: RuleHandlerToken,

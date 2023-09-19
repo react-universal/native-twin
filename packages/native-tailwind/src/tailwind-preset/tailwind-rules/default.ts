@@ -10,6 +10,7 @@ import { positionRules } from './position';
 import { boxShadowRules } from './shadows';
 import { sizeRules } from './size';
 import { spacingRules } from './spacing';
+import { translateRules } from './transform';
 import { fontThemeRules } from './typography';
 
 export const themeRules: Rule[] = [
@@ -27,4 +28,5 @@ export const themeRules: Rule[] = [
   verticalAlignsRules,
   appearanceRules,
   boxShadowRules,
+  translateRules,
 ].flat(1);

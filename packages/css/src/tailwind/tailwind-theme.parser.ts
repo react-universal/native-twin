@@ -10,14 +10,14 @@ import {
   RuleHandlerToken,
   SegmentToken,
 } from '../types/tailwind.types';
-import { cornersParser, edgesParser, gapParser } from './rules.parser';
+import { cornersParser, edgesParser, gapParser, transform2dParser } from './rules.parser';
 
 export class RuleHandler {
   private patternParser: Parser<string>;
   private ruleParser: Parser<RuleHandlerToken>;
   constructor(
     private pattern: string,
-    private feature: 'edges' | 'corners' | 'gap' | 'default' | 'colors',
+    private feature: 'edges' | 'corners' | 'gap' | 'default' | 'colors' | 'transform-2d',
   ) {
     if (pattern.includes('|')) {
       const parts = pattern.split('|');
@@ -29,6 +29,8 @@ export class RuleHandler {
       this.ruleParser = this.resolveEdges();
     } else if (this.feature == 'corners') {
       this.ruleParser = this.resolveCorners();
+    } else if (this.feature == 'transform-2d') {
+      this.ruleParser = this.resolveTransform2d();
     } else if (this.feature == 'gap') {
       this.ruleParser = this.resolveGap();
     } else {
@@ -88,6 +90,24 @@ export class RuleHandler {
       maybeNegative,
       this.patternParser,
       maybe(cornersParser),
+      choice([arbitraryParser, segmentParser]),
+      endOfInput,
+    ]).map((x) => ({
+      segment: x[3],
+      base: x[1],
+      negative: x[0],
+      suffixes: x[2] ?? [],
+    }));
+  }
+
+  private resolveTransform2d() {
+    if (!this.pattern.endsWith('-')) {
+      this.patternParser = sequenceOf([this.patternParser, maybe(char('-'))]).map((x) => x[0]);
+    }
+    return sequenceOf([
+      maybeNegative,
+      this.patternParser,
+      maybe(transform2dParser),
       choice([arbitraryParser, segmentParser]),
       endOfInput,
     ]).map((x) => ({

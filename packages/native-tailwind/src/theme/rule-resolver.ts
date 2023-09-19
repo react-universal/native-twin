@@ -94,6 +94,11 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
       for (const current of properties) {
         result[current] = value;
       }
+      if (property == 'transform') {
+        return {
+          transform: [result],
+        } as any;
+      }
       return result;
 
       function getProperties() {
@@ -105,6 +110,10 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
             },
             match.suffixes,
           );
+        }
+
+        if (meta.feature == 'transform-2d') {
+          return getPropertiesForTransform2d(meta.prefix ?? property, match.suffixes);
         }
 
         if (meta.feature == 'corners') {
@@ -137,6 +146,13 @@ function getPropertiesForEdges(property: { prefix: string; suffix: string }, edg
   if (edges.length == 0) return [`${property.prefix}${property.suffix}`];
   return edges.map((x) => {
     return `${property.prefix}${x}${property.suffix}`;
+  });
+}
+
+function getPropertiesForTransform2d(property: string, sides: string[]) {
+  if (sides.length == 0) return [`${property}`];
+  return sides.map((x) => {
+    return `${property}${x}`;
   });
 }
 

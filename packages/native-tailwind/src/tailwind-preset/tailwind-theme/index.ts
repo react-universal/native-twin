@@ -9,3 +9,4 @@ export * from './preflight';
 export * from './size';
 export * from './flex';
 export * from './image';
+export * from './transform';

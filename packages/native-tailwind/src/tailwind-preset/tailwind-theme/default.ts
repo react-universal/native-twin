@@ -32,6 +32,7 @@ import {
 } from './mixed';
 import { preflightBase } from './preflight';
 import { aspectRatio, containers, height, maxHeight, maxWidth, width } from './size';
+import { rotate, scale, skew, translate } from './transform';
 
 export const theme = {
   blockSize: height,
@@ -62,6 +63,10 @@ export const theme = {
   lineWidth,
   maxBlockSize: maxHeight,
   maxHeight,
+  translate,
+  rotate,
+  skew,
+  scale,
   flex,
   flexDirection,
   flexWrap,

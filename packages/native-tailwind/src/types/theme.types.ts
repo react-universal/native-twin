@@ -91,6 +91,10 @@ export interface __Theme__ {
   lineWidth?: Record<string, string>;
   spacing?: Record<string, string>;
   duration?: Record<string, string>;
+  translate?: Record<string, string>;
+  rotate?: Record<string, string>;
+  scale?: Record<string, string>;
+  skew?: Record<string, string>;
   aria?: Record<string, string>;
   data?: Record<string, string>;
   // filters
