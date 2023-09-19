@@ -13,4 +13,5 @@ export const flexRules: Rule[] = [
   matchThemeValue('justify-', 'justifyContent', 'justifyContent'),
   matchThemeValue('items-', 'alignItems', 'alignItems'),
   matchThemeValue('self-', 'alignItems', 'alignSelf'),
+  matchThemeValue('content-', 'alignContent', 'alignContent'),
 ];

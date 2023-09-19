@@ -7,6 +7,7 @@ import { flexRules } from './flex';
 import { layoutThemeRules } from './layout';
 import { opacityRules } from './opacity';
 import { positionRules } from './position';
+import { boxShadowRules } from './shadows';
 import { sizeRules } from './size';
 import { spacingRules } from './spacing';
 import { fontThemeRules } from './typography';
@@ -25,4 +26,5 @@ export const themeRules: Rule[] = [
   outlineRules,
   verticalAlignsRules,
   appearanceRules,
+  boxShadowRules,
 ].flat(1);

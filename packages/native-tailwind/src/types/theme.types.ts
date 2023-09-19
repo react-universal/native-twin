@@ -45,7 +45,9 @@ export interface __Theme__ {
   resizeMode?: Record<string, string>;
   position?: Record<string, string>;
   alignItems?: Record<string, string>;
+  alignContent?: Record<string, string>;
   borderStyle?: Record<string, string>;
+  backfaceVisibility?: Record<string, string>;
   fontStyle?: Record<string, string>;
   width?: Record<string, string>;
   height?: Record<string, string>;
@@ -81,7 +83,7 @@ export interface __Theme__ {
   lineHeight?: Record<string, string>;
   letterSpacing?: Record<string, string>;
   wordSpacing?: Record<string, string>;
-  boxShadow?: Record<string, string | string[]>;
+  boxShadow?: Record<string, Record<string, any>>;
   textIndent?: Record<string, string>;
   textShadow?: Record<string, string | string[]>;
   textStrokeWidth?: Record<string, string>;

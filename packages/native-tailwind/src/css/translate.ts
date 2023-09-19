@@ -1,6 +1,6 @@
+import type { ParsedRule } from '@universal-labs/css/tailwind';
 import type { RuleResult, ThemeContext } from '../types/config.types';
 import type { CSSProperties } from '../types/css.types';
-import type { ParsedRule } from '../types/parser.types';
 import type { CompleteStyle } from '../types/rn.types';
 
 export function translateRuleResults(

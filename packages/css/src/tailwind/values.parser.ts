@@ -16,7 +16,7 @@ export const parseCssValue = (
     deviceWidth: number;
   },
 ) => {
-  const type = getPropertyValueType(prop);
+  const type = getPropertyValueType(prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
   if (type == 'DIMENSION') {
     const data = ParseDimensionWithUnits(context).run(value);
     if (!data.isError) return data.result;

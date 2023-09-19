@@ -86,27 +86,54 @@ export const borderStyle = {
   dashed: 'dashed',
 } satisfies __Theme__['borderStyle'];
 
+export const backfaceVisibility = {
+  visible: 'visible',
+  hidden: 'hidden',
+} satisfies __Theme__['backfaceVisibility'];
+
 export const boxShadow = {
-  DEFAULT: [
-    'var(--un-shadow-inset) 0 1px 3px 0 rgba(0,0,0,0.1)',
-    'var(--un-shadow-inset) 0 1px 2px -1px rgba(0,0,0,0.1)',
-  ],
-  none: '0 0 rgba(0,0,0,0)',
-  sm: 'var(--un-shadow-inset) 0 1px 2px 0 rgba(0,0,0,0.05)',
-  md: [
-    'var(--un-shadow-inset) 0 4px 6px -1px rgba(0,0,0,0.1)',
-    'var(--un-shadow-inset) 0 2px 4px -2px rgba(0,0,0,0.1)',
-  ],
-  lg: [
-    'var(--un-shadow-inset) 0 10px 15px -3px rgba(0,0,0,0.1)',
-    'var(--un-shadow-inset) 0 4px 6px -4px rgba(0,0,0,0.1)',
-  ],
-  xl: [
-    'var(--un-shadow-inset) 0 20px 25px -5px rgba(0,0,0,0.1)',
-    'var(--un-shadow-inset) 0 8px 10px -6px rgba(0,0,0,0.1)',
-  ],
-  '2xl': 'var(--un-shadow-inset) 0 25px 50px -12px rgba(0,0,0,0.25)',
-  inner: 'inset 0 2px 4px 0 rgba(0,0,0,0.05)',
+  DEFAULT: {
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: 'rgba(0,0,0,0.1)',
+    shadowRadius: 3,
+    shadowOpacity: 0,
+    elevation: 1,
+  },
+  none: {
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    shadowColor: 'rgba(0,0,0,0.1)',
+    elevation: 0,
+  },
+  sm: {
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: 'rgba(0,0,0,0.1)',
+    shadowRadius: 3,
+    shadowOpacity: 0,
+    elevation: 1,
+  },
+  md: {
+    shadowOffset: { width: 0, height: 4 },
+    shadowColor: 'rgba(0,0,0,0.1)',
+    shadowRadius: 6,
+    shadowOpacity: -1,
+    elevation: 3,
+  },
+  lg: {
+    shadowOffset: { width: 0, height: 4 },
+    shadowColor: 'rgba(0,0,0,0.1)',
+    shadowRadius: 6,
+    shadowOpacity: -1,
+    elevation: 6,
+  },
+  xl: {
+    shadowOffset: { width: 0, height: 20 },
+    shadowColor: 'rgba(0,0,0,0.1)',
+    shadowRadius: 25,
+    shadowOpacity: -5,
+    elevation: 9,
+  },
 } satisfies __Theme__['boxShadow'];
 
 export const easing = {

@@ -61,4 +61,4 @@ const tailwind = createTailwind({
   },
 });
 
-tailwind('border-dashed'); // ?
+tailwind('shadow-sm'); // ?
