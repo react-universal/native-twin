@@ -16,6 +16,7 @@ import {
   textTransform,
   wordSpacing,
 } from './font';
+import { resizeMode } from './image';
 import {
   borderRadius,
   boxShadow,
@@ -77,6 +78,7 @@ export const theme = {
   spacing,
   textIndent,
   textShadow,
+  resizeMode,
   textStrokeWidth,
   verticalBreakpoints,
   width,

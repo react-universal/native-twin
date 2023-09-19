@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { install } from '@universal-labs/styled';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 import { HomeScreen } from './src/screens/Home.screen';
@@ -24,6 +24,7 @@ export default function App() {
   return (
     <View style={{ flex: 1 }}>
       <Text style={{}} />
+      <Image source={{ uri: '' }} style={{}} />
       <HomeScreen />
     </View>
   );

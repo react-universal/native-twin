@@ -30,6 +30,7 @@ export const fontThemeRules: Rule<__Theme__>[] = [
       };
     },
   ],
+  matchThemeColor('text-', 'color'),
   matchThemeValue('font-', 'fontWeight', 'fontWeight'),
   matchThemeValue('font-', 'fontFamily', 'fontFamily'),
   matchThemeValue('leading-', 'lineHeight', 'lineHeight'),

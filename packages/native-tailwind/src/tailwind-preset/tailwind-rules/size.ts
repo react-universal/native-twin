@@ -8,4 +8,5 @@ export const sizeRules = [
   matchThemeValue('max-h-', 'maxHeight', 'maxHeight'),
   matchThemeValue('min-w-', 'minWidth', 'minWidth'),
   matchThemeValue('min-h-', 'minHeight', 'minHeight'),
+  matchThemeValue('resize-', 'resizeMode', 'resizeMode'),
 ];

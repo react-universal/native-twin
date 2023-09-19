@@ -42,6 +42,7 @@ export interface __Theme__ {
     deviceHeight: number;
   };
   objectFit?: Record<string, string>;
+  resizeMode?: Record<string, string>;
   position?: Record<string, string>;
   fontStyle?: Record<string, string>;
   width?: Record<string, string>;

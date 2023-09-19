@@ -47,18 +47,18 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
   );
 }
 
-// const tailwind = createTailwind({
-//   ignorelist: [],
-//   theme: {
-//     extend: {
-//       colors: {
-//         primary: '#0558f9',
-//       },
-//       borderWidth: {
-//         sm: '100px',
-//       },
-//     },
-//   },
-// });
+const tailwind = createTailwind({
+  ignorelist: [],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#0558f9',
+      },
+      borderWidth: {
+        sm: '100px',
+      },
+    },
+  },
+});
 
-// tailwind('-m-8'); // ?
+tailwind('resize-center'); // ?
