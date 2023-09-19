@@ -1,6 +1,6 @@
 import { describe, expect, it, test } from 'vitest';
 import { ParseSelectorStrict } from '../src/css/selector.parser';
-import { generateStylesFor, getTestParserData } from './test-utils';
+import { generateStylesFor } from './test-utils';
 
 describe('@universal-labs/css - AT-RULES', () => {
   it('at-rule', () => {
@@ -315,15 +315,11 @@ describe('@universal-labs/css Transform', () => {
   });
 });
 
-const testContext = getTestParserData();
-
 const hoverCss = '.hover\\:bg-black:hover{background-color:rgba(0,0,0,1);}';
 
 describe('@universal-labs/css Parsers', () => {
   it('Strict Selector', () => {
-    const result = ParseSelectorStrict.run(hoverCss, {
-      ...testContext,
-    });
+    const result = ParseSelectorStrict.run(hoverCss);
     expect(result).toStrictEqual({
       isError: false,
       result: {
@@ -335,9 +331,7 @@ describe('@universal-labs/css Parsers', () => {
         },
       },
       cursor: 22,
-      data: {
-        ...testContext,
-      },
+      data: {},
     });
   });
 });

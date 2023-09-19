@@ -7,14 +7,6 @@ describe('@universal-labs/css - Unsupported', () => {
       'grid-cols-1 col-span-1 row-span-2 auto-cols-min auto-rows-min',
       true,
     );
-    expect(result).toStrictEqual({
-      base: {},
-      even: {},
-      first: {},
-      group: {},
-      last: {},
-      odd: {},
-      pointer: {},
-    });
+    expect(result).toStrictEqual({});
   });
 });

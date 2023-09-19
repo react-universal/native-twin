@@ -32,7 +32,7 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
       for (const rule of parseTWTokens(tokens)) {
         const ruleData = context.r(rule);
         if (ruleData) {
-          result.push(...translateRuleResults(ruleData, context));
+          result.push(...translateRuleResults(ruleData, rule, context));
         }
       }
       return result;
