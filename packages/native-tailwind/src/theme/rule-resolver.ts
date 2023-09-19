@@ -163,7 +163,7 @@ function getPropertiesForCorners(
 function maybeNegative(isNegative: boolean, value: string): string {
   if (isNegative && (!`${value}`.startsWith('0') || `${value}`.startsWith('0.'))) {
     if (isNaN(Number(value))) {
-      return `-${value}${value.endsWith('px') ? '' : 'px'}`;
+      return `-${value}${value.endsWith('px') ? '' : ''}`;
     }
     return (Number(value) * -1) as any;
   }

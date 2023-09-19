@@ -16,7 +16,10 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
 }: TailwindConfig<Theme>): ThemeContext {
-  const ruleHandlers = new Map<string, RuleHandler>();
+  const ruleHandlers = new Map<
+    string,
+    (token: ParsedRule, ctx: ThemeContext<Theme>) => RuleResult
+  >();
   const cache = new Map<string, RuleResult>();
   const platform: PlatformOSType = 'native';
   // Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
@@ -55,18 +58,16 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
           if (typeof current[2] == 'object') meta = current[2];
           if (typeof current[3] == 'object' && Object.keys(meta).length == 0)
             meta = current[3];
-          handler = new RuleHandler(current[0], meta.feature ?? 'default');
+          const ruleHandler = new RuleHandler(current[0], meta.feature ?? 'default');
+          const resolver = getRuleResolver(current);
+          handler = createRuleHandler(ruleHandler, resolver);
           ruleHandlers.set(key, handler);
         }
-        const match = handler.getParser().run(token.n);
+        const nextToken = handler(token, ctx);
 
-        if (!match.isError) {
-          const resolver = getRuleResolver(current);
-          const nextToken = resolver(match.result, ctx, token);
-          if (nextToken) {
-            cache.set(cacheKey, nextToken);
-            return nextToken;
-          }
+        if (nextToken) {
+          cache.set(cacheKey, nextToken);
+          return nextToken;
         }
       }
       return null;
@@ -83,4 +84,17 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
     }
     throw new Error('');
   }
+}
+
+function createRuleHandler<Theme extends __Theme__ = __Theme__>(
+  handler: RuleHandler,
+  resolver: RuleResolver,
+) {
+  return (token: ParsedRule, ctx: ThemeContext<Theme>) => {
+    const match = handler.getParser().run(token.n);
+    if (match.isError) return null;
+    const nextToken = resolver(match.result, ctx, token);
+    if (!nextToken) return null;
+    return nextToken;
+  };
 }

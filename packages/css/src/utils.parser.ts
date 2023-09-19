@@ -10,62 +10,63 @@ export const mapAsType =
 export const getPropertyValueType = (property: string) => {
   switch (property) {
     case 'color':
-    case 'background-color':
-    case 'border-color':
+    case 'backgroundColor':
+    case 'borderColor':
       return 'COLOR';
 
     case 'width':
     case 'height':
-    case 'max-width':
-    case 'max-height':
-    case 'min-width':
-    case 'min-height':
+    case 'maxWidth':
+    case 'maxHeight':
+    case 'minWidth':
+    case 'minHeight':
     case 'margin': // MARGIN DIMENSIONS
-    case 'margin-top':
-    case 'margin-left':
-    case 'margin-bottom':
-    case 'margin-right':
+    case 'marginTop':
+    case 'marginLeft':
+    case 'marginBottom':
+    case 'marginRight':
     case 'padding': // PADDING DIMENSIONS
-    case 'padding-top':
-    case 'padding-left':
-    case 'padding-bottom':
-    case 'padding-right':
-    case 'line-height': // FONT DIMENSIONS
-    case 'font-size':
+    case 'paddingTop':
+    case 'paddingLeft':
+    case 'paddingBottom':
+    case 'paddingRight':
+    case 'lineHeight': // FONT DIMENSIONS
+    case 'fontSize':
     case 'top': // POSITION
     case 'left':
     case 'bottom':
     case 'right':
-    case 'border-top': // BORDER
-    case 'border-left':
-    case 'border-bottom':
-    case 'border-right':
-    case 'border-radius':
-    case 'border-width':
-    case 'border-top-left-radius':
-    case 'border-top-right-radius':
-    case 'border-bottom-left-radius':
-    case 'border-bottom-right-radius':
-    case 'z-index':
+    case 'borderTop': // BORDER
+    case 'borderLeft':
+    case 'borderBottom':
+    case 'borderRight':
+    case 'borderRadius':
+    case 'borderWidth':
+    case 'borderTopLeftRadius':
+    case 'borderTopRightRadius':
+    case 'borderBottomLeftRadius':
+    case 'border-bottomRightRadius':
+    case 'zIndex':
     case 'gap':
-    case 'column-gap':
-    case 'row-gap':
-    case 'flex-grow':
-    case 'flex-basis':
-    case 'flex-shrink':
+    case 'columnGap':
+    case 'rowGap':
+    case 'flexGrow':
+    case 'flexBasis':
+    case 'flexShrink':
+    case 'spacing':
       return 'DIMENSION';
-    case 'aspect-ratio':
+    case 'aspectRatio':
       return 'MATH';
     case 'flex':
       return 'FLEX';
 
-    case 'box-shadow':
+    case 'boxShadow':
       return 'SHADOW';
 
     case 'transform':
       return 'TRANSFORM';
 
-    case 'font-family': // IDENT
+    case 'fontFamily': // IDENT
       return 'FIRST-COMMA-IDENT';
 
     default:

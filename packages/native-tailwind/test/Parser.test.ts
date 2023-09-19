@@ -1,5 +1,5 @@
+import { parseTWTokens } from '@universal-labs/css/tailwind';
 import { describe, expect, it } from 'vitest';
-import { parseTWTokens } from '../src/parsers/tailwind.parser';
 import { parsedRuleToString } from '../src/utils/css-utils';
 
 const screens = ['md', 'sm', 'lg', 'xl', '2xl'];
