@@ -1,5 +1,5 @@
 import type { PlatformOSType } from 'react-native';
-import { RuleHandler } from '../parsers/theme.parser';
+import { type ParsedRule, RuleHandler } from '@universal-labs/css/tailwind';
 import type {
   Rule,
   RuleMeta,
@@ -8,7 +8,6 @@ import type {
   TailwindConfig,
   ThemeContext,
 } from '../types/config.types';
-import type { ParsedRule } from '../types/parser.types';
 import type { __Theme__ } from '../types/theme.types';
 import { flattenColorPalette } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
@@ -17,7 +16,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
 }: TailwindConfig<Theme>): ThemeContext {
-  const ruleHandlers = new Map<string, RuleHandler<Theme>>();
+  const ruleHandlers = new Map<string, RuleHandler>();
   const cache = new Map<string, RuleResult>();
   const platform: PlatformOSType = 'native';
   // Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
@@ -56,14 +55,18 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
           if (typeof current[2] == 'object') meta = current[2];
           if (typeof current[3] == 'object' && Object.keys(meta).length == 0)
             meta = current[3];
-          handler = new RuleHandler(current[0], getRuleResolver(current), meta);
+          handler = new RuleHandler(current[0], meta.feature ?? 'default');
           ruleHandlers.set(key, handler);
         }
-        const nextToken = handler.run(token, ctx);
+        const match = handler.getParser().run(token.n);
 
-        if (nextToken) {
-          cache.set(cacheKey, nextToken);
-          return nextToken;
+        if (!match.isError) {
+          const resolver = getRuleResolver(current);
+          const nextToken = resolver(match.result, ctx, token);
+          if (nextToken) {
+            cache.set(cacheKey, nextToken);
+            return nextToken;
+          }
         }
       }
       return null;

@@ -1,5 +1,4 @@
-import type { Parser } from '@universal-labs/css/parser';
-import type { ParsedRule, RuleHandlerToken } from './parser.types';
+import type { Parser, ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
 import type { CompleteStyle } from './rn.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey } from './util.types';

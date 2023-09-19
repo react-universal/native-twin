@@ -1,4 +1,4 @@
-import type { ClassNameToken, ParsedRule } from '../types/parser.types';
+import type { ClassNameToken, ParsedRule } from '@universal-labs/css/tailwind';
 
 /**
  * @description CSS Selector Escape

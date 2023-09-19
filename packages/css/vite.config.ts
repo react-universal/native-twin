@@ -24,11 +24,11 @@ export default defineConfig({
     lib: {
       entry: {
         index: path.resolve(__dirname, 'src/index.ts'),
-        parser: path.resolve(__dirname, 'src/parser-module.ts'),
+        tailwind: path.resolve(__dirname, 'src/tailwind/index.ts'),
       },
       name: 'UniversalLabsCss',
       fileName: (format, name) =>
-        name == 'parser' && format == 'cjs' ? `${name}.${format}` : `${name}.${format}.js`,
+        name == 'tailwind' && format == 'cjs' ? `${name}.${format}` : `${name}.${format}.js`,
       formats: ['es', 'cjs'],
     },
     rollupOptions: {

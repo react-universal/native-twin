@@ -5,6 +5,7 @@ export interface VariantToken {
     n: string;
   }[];
 }
+
 export interface ColorModifierToken {
   type: 'COLOR_MODIFIER';
   value: string;

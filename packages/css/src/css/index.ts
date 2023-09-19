@@ -1,4 +1,4 @@
-import { withData } from '../parser-module';
+import { withData } from '../parsers/data.parser';
 import type { CssParserData } from '../types/parser.types';
 import type { AnyStyle, FinalSheet } from '../types/rn.types';
 import { ParseCssRules } from './rules.parser';

@@ -38,19 +38,19 @@
         "require": "./build/index.cjs"
       }
     },
-    "./parser": {
-      "default": "./build/parser.cjs",
-      "types": "./build/parser.d.ts",
-      "esnext": "./build/parser.es.js",
-      "module": "./build/parser.es.js",
-      "browser": "./build/parser.cjs",
-      "require": "./build/parser.cjs",
-      "import": "./build/parser.es.js",
+    "./tailwind": {
+      "default": "./build/tailwind.cjs",
+      "types": "./build/tailwind.d.ts",
+      "esnext": "./build/tailwind.es.js",
+      "module": "./build/tailwind.es.js",
+      "browser": "./build/tailwind.cjs",
+      "require": "./build/tailwind.cjs",
+      "import": "./build/tailwind.es.js",
       "node": {
         "esnext": "./build.es.js",
-        "default": "./build/parser.cjs",
-        "import": "./build/parser.es.js",
-        "require": "./build/parser.cjs"
+        "default": "./build/tailwind.cjs",
+        "import": "./build/tailwind.es.js",
+        "require": "./build/tailwind.cjs"
       }
     },
     "./package.json": "./package.json"

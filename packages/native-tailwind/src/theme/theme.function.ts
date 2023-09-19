@@ -1,4 +1,4 @@
-import { parseCssValue } from '../parsers/values.parser';
+import { parseCssValue } from '@universal-labs/css/tailwind';
 import type { ThemeFunction } from '../types/config.types';
 import type { ThemeConfig, __Theme__ } from '../types/theme.types';
 

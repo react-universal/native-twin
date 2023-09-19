@@ -1,4 +1,5 @@
-import { globalKeywords } from '../../utils/mappings';
+import { globalKeywords } from '@universal-labs/css/tailwind';
+import type { __Theme__ } from '../../types/theme.types';
 
 export const verticalAlign = {
   mid: 'middle',
@@ -15,7 +16,7 @@ export const verticalAlign = {
   sub: 'sub',
   super: 'super',
   ...Object.fromEntries(globalKeywords.map((x) => [x, x])),
-};
+} satisfies __Theme__['verticalAlign'];
 
 export const textAlign = {
   center: 'center',
@@ -24,4 +25,4 @@ export const textAlign = {
   justify: 'justify',
   start: 'start',
   end: 'end',
-};
+} satisfies __Theme__['textAlign'];

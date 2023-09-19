@@ -1,7 +1,8 @@
 import type { FlexStyle } from 'react-native';
-import { choice, literal } from '../../parser-module';
+import { choice } from '../../parsers/choice.parser';
 import { maybe } from '../../parsers/maybe.parser';
 import { sequenceOf } from '../../parsers/sequence-of';
+import { literal } from '../../parsers/string.parser';
 import { ParseCssDimensions } from '../dimensions.parser';
 
 /* flex-grow | flex-shrink | flex-basis */

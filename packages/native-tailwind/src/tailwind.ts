@@ -4,9 +4,9 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
+import { parseTWTokens } from '@universal-labs/css/tailwind';
 import { defineConfig } from './config/define-config';
 import { translateRuleResults } from './css/translate';
-import { parseTWTokens } from './parsers/tailwind.parser';
 import { createThemeContext } from './theme/theme.context';
 import type { RuleResolver, TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { CSSProperties, Sheet } from './types/css.types';
@@ -38,7 +38,7 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
       return result;
     } as RuntimeTW<__Theme__ & Theme>,
     Object.getOwnPropertyDescriptors({
-      get target() {
+      get target(): string[] {
         return [];
       },
       theme: config.theme,
@@ -47,18 +47,19 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
   );
 }
 
-// const tailwind = createTailwind({
-//   ignorelist: [],
-//   theme: {
-//     extend: {
-//       colors: {
-//         primary: '#0558f9',
-//       },
-//       borderWidth: {
-//         sm: '100px',
-//       },
-//     },
-//   },
-// });
+const tailwind = createTailwind({
+  ignorelist: [],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#0558f9',
+      },
+      borderWidth: {
+        sm: '100px',
+      },
+    },
+  },
+});
 
-// tailwind('text-center'); // ?
+tailwind('text-center'); // ?
+tailwind('text-center'); // ?

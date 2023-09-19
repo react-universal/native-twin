@@ -1,7 +1,7 @@
+import { globalKeywords } from '@universal-labs/css/tailwind';
 import { matchThemeColor, matchThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 import type { __Theme__ } from '../../types/theme.types';
-import { globalKeywords } from '../../utils/mappings';
 
 export const borderStyles = [
   'solid',

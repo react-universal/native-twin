@@ -1,52 +1,48 @@
-import * as P from '@universal-labs/css/parser';
-import type { RuleMeta, RuleResolver, ThemeContext } from '../types/config.types';
-import type {
+import { Parser } from '../parsers/Parser';
+import { between } from '../parsers/between.parser';
+import { choice } from '../parsers/choice.parser';
+import { maybe } from '../parsers/maybe.parser';
+import { sequenceOf } from '../parsers/sequence-of';
+import { char, literal, regex } from '../parsers/string.parser';
+import { endOfInput } from '../parsers/util.parsers';
+import {
   ArbitrarySegmentToken,
-  ParsedRule,
   RuleHandlerToken,
   SegmentToken,
-} from '../types/parser.types';
-import type { __Theme__ } from '../types/theme.types';
+} from '../types/tailwind.types';
 import { cornersParser, edgesParser, gapParser } from './rules.parser';
 
-export class RuleHandler<Theme extends __Theme__ = {}> {
-  private patternParser: P.Parser<string>;
-  private ruleParser: P.Parser<RuleHandlerToken>;
+export class RuleHandler {
+  private patternParser: Parser<string>;
+  private ruleParser: Parser<RuleHandlerToken>;
   constructor(
     private pattern: string,
-    private resolver: RuleResolver<Theme>,
-    private meta: RuleMeta,
+    private feature: 'edges' | 'corners' | 'gap' | 'default' | 'colors',
   ) {
     if (pattern.includes('|')) {
       const parts = pattern.split('|');
-      this.patternParser = P.choice(parts.map((x) => P.literal(x)));
+      this.patternParser = choice(parts.map((x) => literal(x)));
     } else {
-      this.patternParser = P.literal(pattern);
+      this.patternParser = literal(pattern);
     }
-    if (this.meta.feature == 'edges') {
+    if (this.feature == 'edges') {
       this.ruleParser = this.resolveEdges();
-    } else if (this.meta.feature == 'corners') {
+    } else if (this.feature == 'corners') {
       this.ruleParser = this.resolveCorners();
-    } else if (this.meta.feature == 'gap') {
+    } else if (this.feature == 'gap') {
       this.ruleParser = this.resolveGap();
     } else {
       this.ruleParser = this.defaultResolver();
     }
   }
 
-  run(token: ParsedRule, context: ThemeContext<Theme>) {
-    const result = this.ruleParser
-      .map((x) => {
-        return this.resolver(x, context, token);
-      })
-      .run(token.n);
-    if (result.isError) return;
-    return result.result;
+  getParser() {
+    return this.ruleParser;
   }
 
   private defaultResolver() {
     if (!this.pattern.endsWith('-')) {
-      return P.sequenceOf([maybeNegative, this.patternParser, P.endOfInput]).map(
+      return sequenceOf([maybeNegative, this.patternParser, endOfInput]).map(
         (x): RuleHandlerToken => ({
           segment: {
             type: 'segment',
@@ -59,7 +55,7 @@ export class RuleHandler<Theme extends __Theme__ = {}> {
       );
     }
     if (this.pattern.includes('|')) {
-      return P.sequenceOf([maybeNegative, this.patternParser, P.endOfInput]).map(
+      return sequenceOf([maybeNegative, this.patternParser, endOfInput]).map(
         (x): RuleHandlerToken => ({
           segment: {
             type: 'segment',
@@ -71,11 +67,11 @@ export class RuleHandler<Theme extends __Theme__ = {}> {
         }),
       );
     }
-    return P.sequenceOf([
+    return sequenceOf([
       maybeNegative,
       this.patternParser,
-      P.choice([arbitraryParser, segmentParser]),
-      P.endOfInput,
+      choice([arbitraryParser, segmentParser]),
+      endOfInput,
     ]).map((x) => ({
       segment: x[2],
       base: x[1],
@@ -86,16 +82,14 @@ export class RuleHandler<Theme extends __Theme__ = {}> {
 
   private resolveCorners() {
     if (!this.pattern.endsWith('-')) {
-      this.patternParser = P.sequenceOf([this.patternParser, P.maybe(P.char('-'))]).map(
-        (x) => x[0],
-      );
+      this.patternParser = sequenceOf([this.patternParser, maybe(char('-'))]).map((x) => x[0]);
     }
-    return P.sequenceOf([
+    return sequenceOf([
       maybeNegative,
       this.patternParser,
-      P.maybe(cornersParser),
-      P.choice([arbitraryParser, segmentParser]),
-      P.endOfInput,
+      maybe(cornersParser),
+      choice([arbitraryParser, segmentParser]),
+      endOfInput,
     ]).map((x) => ({
       segment: x[3],
       base: x[1],
@@ -106,16 +100,14 @@ export class RuleHandler<Theme extends __Theme__ = {}> {
 
   private resolveEdges() {
     if (!this.pattern.endsWith('-')) {
-      this.patternParser = P.sequenceOf([this.patternParser, P.maybe(P.char('-'))]).map(
-        (x) => x[0],
-      );
+      this.patternParser = sequenceOf([this.patternParser, maybe(char('-'))]).map((x) => x[0]);
     }
-    return P.sequenceOf([
+    return sequenceOf([
       maybeNegative,
       this.patternParser,
-      P.maybe(edgesParser),
-      P.choice([arbitraryParser, segmentParser]),
-      P.endOfInput,
+      maybe(edgesParser),
+      choice([arbitraryParser, segmentParser]),
+      endOfInput,
     ]).map((x) => ({
       segment: x[3],
       base: x[1],
@@ -124,12 +116,12 @@ export class RuleHandler<Theme extends __Theme__ = {}> {
     }));
   }
   private resolveGap() {
-    return P.sequenceOf([
+    return sequenceOf([
       maybeNegative,
       this.patternParser,
-      P.maybe(gapParser),
-      P.choice([arbitraryParser, segmentParser]),
-      P.endOfInput,
+      maybe(gapParser),
+      choice([arbitraryParser, segmentParser]),
+      endOfInput,
     ]).map((x) => ({
       segment: x[3],
       base: x[1],
@@ -141,17 +133,17 @@ export class RuleHandler<Theme extends __Theme__ = {}> {
 
 const classNameIdent = /^[a-z0-9A-Z-.]+/;
 const arbitraryIdent = /^[a-z0-9A-Z-.#]+/;
-const segmentParser = P.regex(classNameIdent).map(
+const segmentParser = regex(classNameIdent).map(
   (x): SegmentToken => ({
     type: 'segment',
     value: x,
   }),
 );
 
-const maybeNegative = P.maybe(P.char('-')).map((x) => !!x);
+const maybeNegative = maybe(char('-')).map((x) => !!x);
 
-const betweenSquareBrackets = P.between(P.char('['))(P.char(']'));
-const arbitraryParser = betweenSquareBrackets(P.regex(arbitraryIdent)).map(
+const betweenSquareBrackets = between(char('['))(char(']'));
+const arbitraryParser = betweenSquareBrackets(regex(arbitraryIdent)).map(
   (x): ArbitrarySegmentToken => ({
     type: 'arbitrary',
     value: x,
