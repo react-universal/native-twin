@@ -61,4 +61,4 @@ const tailwind = createTailwind({
   },
 });
 
-tailwind('resize-center'); // ?
+tailwind('border-dashed'); // ?

@@ -80,6 +80,12 @@ export const borderRadius = {
   full: '9999px',
 } satisfies __Theme__['borderRadius'];
 
+export const borderStyle = {
+  solid: 'solid',
+  dotted: 'dotted',
+  dashed: 'dashed',
+} satisfies __Theme__['borderStyle'];
+
 export const boxShadow = {
   DEFAULT: [
     'var(--un-shadow-inset) 0 1px 3px 0 rgba(0,0,0,0.1)',

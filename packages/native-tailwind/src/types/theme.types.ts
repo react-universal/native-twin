@@ -44,6 +44,8 @@ export interface __Theme__ {
   objectFit?: Record<string, string>;
   resizeMode?: Record<string, string>;
   position?: Record<string, string>;
+  alignItems?: Record<string, string>;
+  borderStyle?: Record<string, string>;
   fontStyle?: Record<string, string>;
   width?: Record<string, string>;
   height?: Record<string, string>;

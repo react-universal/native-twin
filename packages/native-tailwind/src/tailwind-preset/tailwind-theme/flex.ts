@@ -1,3 +1,4 @@
+import type { __Theme__ } from '../../types/theme.types';
 import { createPercentRatios } from '../../utils/theme-utils';
 import { spacing } from './mixed';
 
@@ -38,3 +39,12 @@ export const justifyContent = {
   evenly: 'space-evenly',
   stretch: 'space-stretch',
 };
+
+export const alignItems = {
+  'flex-start': 'flex-start',
+  'flex-end': 'flex-end',
+  center: 'center',
+  auto: 'auto',
+  stretch: 'stretch',
+  baseline: 'baseline',
+} satisfies __Theme__['alignItems'];
