@@ -33,7 +33,29 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
     theme: createThemeFunction(themeConfig),
 
     get breakpoints() {
-      return Object.keys({ ...themeConfig.screens, ...themeConfig.extend?.screens });
+      return { ...themeConfig.screens, ...themeConfig.extend?.screens };
+    },
+
+    v(variants) {
+      const root = themeConfig.root;
+      for (const v of variants) {
+        if (v in this.breakpoints) {
+          const width = root?.deviceHeight ?? 0;
+          const value = this.breakpoints[v];
+          if (typeof value == 'number') {
+            return width >= value;
+          }
+          if (typeof value == 'object') {
+            if ('raw' in value) {
+              return width >= value.raw;
+            }
+            if (value.max && value.min) return width <= value.max && width >= value.min;
+            if (value.max) return width <= value.max;
+            if (value.min) return width >= value.min;
+          }
+        }
+      }
+      return true;
     },
 
     isSupported(support) {

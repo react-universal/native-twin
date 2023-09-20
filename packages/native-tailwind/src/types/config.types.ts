@@ -53,12 +53,13 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
   theme: ThemeFunction<Theme>;
   /** Allows to resolve theme values */
   colors: Record<string, string>;
-  breakpoints: string[];
+  breakpoints: Exclude<__Theme__['screens'], undefined>;
   /**
    * resolves a rule
    *
    */
   r: (value: ParsedRule, isDark?: boolean) => RuleResult;
+  v: (variants: string[]) => boolean;
 
   isSupported: (support: PlatformSupport[]) => boolean;
   mode: PlatformSupport[number];

@@ -33,11 +33,18 @@ export class StyleGroup {
 
 function getSelectorGroup(rule: ParsedRule): SelectorGroup {
   if (rule.v.length == 0) return 'base';
-  if ('group' in rule.v) return 'group';
-  if ('odd' in rule.v) return 'odd';
-  if ('even' in rule.v) return 'even';
-  if ('first' in rule.v) return 'first';
-  if ('last' in rule.v) return 'last';
-  if ('pointer' in rule.v) return 'pointer';
+  if (
+    rule.v.includes('group') ||
+    rule.v.includes('group-hover') ||
+    rule.v.includes('group-active') ||
+    rule.v.includes('group-focus')
+  )
+    return 'group';
+  if (rule.v.includes('odd')) return 'odd';
+  if (rule.v.includes('even')) return 'even';
+  if (rule.v.includes('first')) return 'first';
+  if (rule.v.includes('last')) return 'last';
+  if (rule.v.includes('hover') || rule.v.includes('focus') || rule.v.includes('active'))
+    return 'pointer';
   return 'base';
 }

@@ -14,10 +14,10 @@ export type ThemeConfig<Theme extends object = object> = PartialTheme<Theme> & {
 };
 
 type ScreenValue =
-  | string
-  | { raw: string }
-  | { min: string; max?: string }
-  | { min?: string; max: string };
+  | number
+  | { raw: number }
+  | { min: number; max?: number }
+  | { min?: number; max: number };
 
 export interface ThemeAnimation {
   keyframes?: Record<string, string>;
@@ -75,8 +75,7 @@ export interface __Theme__ {
   textDecorationStyle?: Record<string, string>;
   textTransform?: Record<string, string>;
   borderWidth?: Record<string, string>;
-  breakpoints?: Record<string, string>;
-  verticalBreakpoints?: Record<string, string>;
+  verticalBreakpoints?: Record<string, string | number>;
   fontFamily?: Record<string, string>;
   fontSize?: Record<string, string | [string, string]>;
   fontWeight?: Record<string, string>;

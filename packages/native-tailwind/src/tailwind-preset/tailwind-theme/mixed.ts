@@ -2,13 +2,13 @@ import type { __Theme__ } from '../../types/theme.types';
 import { createExponentialUnits, createLinearUnits } from '../../utils/theme-utils';
 
 // keep in ASC order: container.ts and breakpoints.ts need that order
-export const breakpoints = {
-  sm: '640px',
-  md: '768px',
-  lg: '1024px',
-  xl: '1280px',
-  '2xl': '1536px',
-} satisfies __Theme__['breakpoints'];
+export const screens = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  '2xl': 1536,
+} satisfies __Theme__['screens'];
 
 export const opacity = {
   .../* #__PURE__ */ createLinearUnits(100, '', 100, 0, 10),
@@ -18,7 +18,7 @@ export const opacity = {
   95: '0.95',
 } satisfies __Theme__['opacity'];
 
-export const verticalBreakpoints = { ...breakpoints } satisfies __Theme__['breakpoints'];
+export const verticalBreakpoints = { ...screens } satisfies __Theme__['verticalBreakpoints'];
 
 export const lineWidth = {
   DEFAULT: '1px',

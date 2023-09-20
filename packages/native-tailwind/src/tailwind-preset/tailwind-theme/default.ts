@@ -20,7 +20,7 @@ import { resizeMode } from './image';
 import {
   borderRadius,
   boxShadow,
-  breakpoints,
+  screens,
   duration,
   easing,
   lineWidth,
@@ -39,7 +39,7 @@ export const theme = {
   blur,
   borderRadius,
   boxShadow,
-  breakpoints,
+  screens,
   colors,
   containers,
   dropShadow,

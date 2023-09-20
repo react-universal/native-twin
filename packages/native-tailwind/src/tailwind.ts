@@ -5,7 +5,7 @@
  * ********************************************
  */
 import type { AnyStyle, FinalSheet } from '@universal-labs/css';
-import { parseTWTokens } from '@universal-labs/css/tailwind';
+import { parseTWTokens, type ParsedRule } from '@universal-labs/css/tailwind';
 import { defineConfig } from './config/define-config';
 import { createVirtualSheet } from './css/sheets';
 import { StyleGroup } from './css/style.compositions';
@@ -28,11 +28,18 @@ export function createTailwind<Theme = __Theme__>(
 ): RuntimeTW<__Theme__ & Theme> {
   const config = defineConfig(userConfig) as TailwindConfig<__Theme__>;
   const context = createThemeContext<__Theme__>(config);
+  const cache = new Map<StringLike, FinalSheet>();
+  const breakpoints = Object.keys(context.breakpoints);
   return Object.defineProperties(
     function tw(tokens: StringLike) {
+      if (cache.has(tokens)) {
+        return cache.get(tokens);
+      }
       const styles = new StyleGroup();
       for (const rule of parseTWTokens(tokens)) {
-        const className = parsedRuleToString(rule, context.breakpoints);
+        if (!isApplicativeRule(rule)) continue;
+        const className = parsedRuleToString(rule, breakpoints);
+
         const style = sheet.getClassName(className);
         if (style) {
           styles.addStyle(rule, style);
@@ -44,7 +51,8 @@ export function createTailwind<Theme = __Theme__>(
           }
         }
       }
-      return styles.finalSheet;
+      cache.set(tokens, styles.finalSheet);
+      return cache.get(tokens);
     } as RuntimeTW<__Theme__ & Theme>,
     Object.getOwnPropertyDescriptors({
       get target(): AnyStyle[] {
@@ -54,20 +62,25 @@ export function createTailwind<Theme = __Theme__>(
       config,
     }),
   );
+
+  function isApplicativeRule(rule: ParsedRule) {
+    if (rule.v.length == 0) return true;
+    return context.v(rule.v);
+  }
 }
 
-const tailwind = createTailwind({
-  ignorelist: [],
-  theme: {
-    extend: {
-      colors: {
-        primary: '#0558f9',
-      },
-      borderWidth: {
-        sm: '100px',
-      },
-    },
-  },
-});
+// const tailwind = createTailwind({
+//   ignorelist: [],
+//   theme: {
+//     extend: {
+//       colors: {
+//         primary: '#0558f9',
+//       },
+//       borderWidth: {
+//         sm: '100px',
+//       },
+//     },
+//   },
+// });
 
-tailwind('border-x-1'); //?
+// tailwind('border-x-1 2xl:bg-blue'); //?
