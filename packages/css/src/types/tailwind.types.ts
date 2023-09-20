@@ -72,3 +72,12 @@ export interface RuleHandlerToken {
   segment: SegmentToken | ArbitrarySegmentToken;
   negative: boolean;
 }
+
+export type CssFeature =
+  | 'edges'
+  | 'corners'
+  | 'colors'
+  | 'default'
+  | 'gap'
+  | 'transform-2d'
+  | 'transform-3d';

@@ -37,11 +37,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
     },
 
     r(token: ParsedRule) {
-      let cacheKey = token.n;
-
-      if (token.m) {
-        cacheKey = cacheKey + `/${token.m.value}`;
-      }
+      const cacheKey = getRuleCacheKey(token);
 
       if (cache.has(cacheKey)) {
         return cache.get(cacheKey);
@@ -56,8 +52,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
         if (!handler) {
           let meta: RuleMeta = {};
           if (typeof current[2] == 'object') meta = current[2];
-          if (typeof current[3] == 'object' && Object.keys(meta).length == 0)
-            meta = current[3];
+          if (typeof current[3] == 'object') meta = current[3];
           const ruleHandler = new RuleHandler(current[0], meta.feature ?? 'default');
           const resolver = getRuleResolver(current);
           handler = createRuleHandler(ruleHandler, resolver);
@@ -67,13 +62,22 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
         if (nextToken) {
           cache.set(cacheKey, nextToken);
-          return nextToken;
+          return cache.get(cacheKey);
         }
       }
       return null;
     },
   };
   return ctx;
+
+  function getRuleCacheKey(rule: ParsedRule) {
+    let cacheKey = rule.n;
+
+    if (rule.m) {
+      cacheKey = cacheKey + `/${rule.m.value}`;
+    }
+    return cacheKey;
+  }
 
   function getRuleResolver(rule: Rule<Theme>): RuleResolver<Theme> {
     if (typeof rule[1] == 'function') {

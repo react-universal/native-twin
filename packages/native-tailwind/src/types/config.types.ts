@@ -1,4 +1,5 @@
 import type { Parser, ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
+import type { CssFeature } from '@universal-labs/css/tailwind';
 import type { CompleteStyle } from './rn.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey } from './util.types';
@@ -21,8 +22,6 @@ export type RuleResult = CompleteStyle | Falsey | Record<string, string>;
 
 export type PlatformSupport = 'native' | 'web';
 
-type RuleFeatures = 'edges' | 'corners' | 'colors' | 'default' | 'gap' | 'transform-2d';
-
 export type RuleResolver<Theme extends __Theme__ = {}> = (
   match: RuleHandlerToken,
   context: ThemeContext<Theme>,
@@ -44,7 +43,7 @@ export type PatternParserResolver<T extends string> = Parser<T>;
 
 export interface RuleMeta {
   canBeNegative?: boolean;
-  feature?: RuleFeatures;
+  feature?: CssFeature;
   prefix?: string | undefined;
   suffix?: string | undefined;
   // customValues?: Record<string, string>;

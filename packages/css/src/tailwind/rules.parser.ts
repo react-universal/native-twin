@@ -18,6 +18,13 @@ export const transform2dParser = sequenceOf([
   return asArray(x[0].toUpperCase());
 });
 
+export const transform3dParser = sequenceOf([
+  choice([literal('x'), literal('y'), literal('z')]),
+  char('-'),
+]).map((x) => {
+  return asArray(x[0].toUpperCase());
+});
+
 export const cornersParser = choice(
   keysOf(cornerMap).map((x) => sequenceOf([literal(x), char('-')])),
 ).map((x: [keyof typeof cornerMap, string]) => {
