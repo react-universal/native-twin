@@ -6,17 +6,17 @@ export const borderRules: Rule<__Theme__>[] = [
   matchThemeColor('border-', 'borderColor', {
     feature: 'edges',
     prefix: 'border',
-    suffix: '-color',
+    suffix: 'Color',
   }),
   matchThemeValue('border-', 'borderStyle', 'borderStyle'),
   matchThemeValue('border-', 'borderWidth', 'borderWidth', {
     feature: 'edges',
     prefix: 'border',
-    suffix: '-width',
+    suffix: 'Width',
   }),
   matchThemeValue('rounded-', 'borderRadius', 'borderRadius', {
     feature: 'corners',
     prefix: 'border',
-    suffix: '-radius',
+    suffix: 'Radius',
   }),
 ];

@@ -12,15 +12,15 @@ import type { __Theme__ } from '../types/theme.types';
 import { flattenColorPalette } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
 
+interface RuleHandlerFn<Theme extends __Theme__ = __Theme__> {
+  (token: ParsedRule, ctx: ThemeContext<Theme>): RuleResult;
+}
+
 export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
 }: TailwindConfig<Theme>): ThemeContext {
-  const ruleHandlers = new Map<
-    string,
-    (token: ParsedRule, ctx: ThemeContext<Theme>) => RuleResult
-  >();
-  const cache = new Map<string, RuleResult>();
+  const ruleHandlers = new Map<string, RuleHandlerFn<Theme>>();
   const platform: PlatformOSType = 'native';
   // Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
   const ctx: ThemeContext = {
@@ -32,17 +32,15 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
     theme: createThemeFunction(themeConfig),
 
+    get breakpoints() {
+      return Object.keys({ ...themeConfig.screens, ...themeConfig.extend?.screens });
+    },
+
     isSupported(support) {
       return support.includes(platform);
     },
 
     r(token: ParsedRule) {
-      const cacheKey = getRuleCacheKey(token);
-
-      if (cache.has(cacheKey)) {
-        return cache.get(cacheKey);
-      }
-
       for (const current of rules) {
         const key = JSON.stringify(
           current.filter((x) => typeof x !== 'function' && typeof x !== 'object'),
@@ -53,31 +51,23 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
           let meta: RuleMeta = {};
           if (typeof current[2] == 'object') meta = current[2];
           if (typeof current[3] == 'object') meta = current[3];
-          const ruleHandler = new RuleHandler(current[0], meta.feature ?? 'default');
           const resolver = getRuleResolver(current);
-          handler = createRuleHandler(ruleHandler, resolver);
+          handler = createRuleHandler(
+            new RuleHandler(current[0], meta.feature ?? 'default'),
+            resolver,
+          );
           ruleHandlers.set(key, handler);
         }
         const nextToken = handler(token, ctx);
 
         if (nextToken) {
-          cache.set(cacheKey, nextToken);
-          return cache.get(cacheKey);
+          return nextToken;
         }
       }
       return null;
     },
   };
   return ctx;
-
-  function getRuleCacheKey(rule: ParsedRule) {
-    let cacheKey = rule.n;
-
-    if (rule.m) {
-      cacheKey = cacheKey + `/${rule.m.value}`;
-    }
-    return cacheKey;
-  }
 
   function getRuleResolver(rule: Rule<Theme>): RuleResolver<Theme> {
     if (typeof rule[1] == 'function') {
@@ -93,7 +83,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 function createRuleHandler<Theme extends __Theme__ = __Theme__>(
   handler: RuleHandler,
   resolver: RuleResolver,
-) {
+): RuleHandlerFn<Theme> {
   return (token: ParsedRule, ctx: ThemeContext<Theme>) => {
     const match = handler.getParser().run(token.n);
     if (match.isError) return null;

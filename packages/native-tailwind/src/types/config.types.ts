@@ -53,6 +53,7 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
   theme: ThemeFunction<Theme>;
   /** Allows to resolve theme values */
   colors: Record<string, string>;
+  breakpoints: string[];
   /**
    * resolves a rule
    *

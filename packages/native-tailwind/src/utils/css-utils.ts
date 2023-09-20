@@ -37,7 +37,9 @@ export function parsedRuleToString(rule: ParsedRule, mediaRules: string[]) {
       suffix: '',
     },
   );
-  return `${fixedPoints.prefix}${rule.i ? '!' : ''}${rule.n}${fixedPoints.suffix}`;
+  return `${fixedPoints.prefix}${rule.i ? '!' : ''}${rule.n}${
+    rule.m ? `/${rule.m.value}` : ''
+  }${fixedPoints.suffix}`;
 }
 
 export const getPropertyValueType = (property: string) => {

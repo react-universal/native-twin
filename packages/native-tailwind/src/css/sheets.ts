@@ -1,34 +1,26 @@
+import type { AnyStyle } from '@universal-labs/css';
 import type { Sheet } from '../types/css.types';
-import { noop } from '../utils/helpers';
 
-export function createVirtualSheet(includeResumeData?: boolean): Sheet<string[]> {
-  const target: string[] = [];
+export function createVirtualSheet(): Sheet<AnyStyle> {
+  const target: Map<string, AnyStyle> = new Map();
 
   return {
     target,
 
-    snapshot() {
-      // collect current rules
-      const rules = [...target];
-
-      return () => {
-        // remove all existing rules and add all snapshot rules back
-        target.splice(0, target.length, ...rules);
-      };
-    },
-
     clear() {
-      target.length = 0;
+      target.clear();
     },
 
     destroy() {
       this.clear();
     },
 
-    insert(css, index) {
-      target.splice(index, 0, includeResumeData ? css : css);
+    insert(key, parsedRule, styles) {
+      target.set(key, styles);
     },
 
-    resume: noop,
+    getClassName(key) {
+      return target.get(key);
+    },
   };
 }

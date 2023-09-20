@@ -10,6 +10,8 @@ export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) ex
   ? I
   : never;
 
+export type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
+
 export type KebabCase<S> = S extends `${infer C}${infer T}`
   ? KebabCase<T> extends infer U
     ? U extends string
