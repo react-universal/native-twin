@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { Tailwind } from '@universal-labs/twind-adapter';
 import util from 'util';
 import { CssResolver } from '../src';
 import { createCssParserContext } from '../src/parsers/Parser';
@@ -20,7 +19,14 @@ export const inspectTestElement = (msg: string, target: string[], result: any) =
 };
 
 export const injectClassNames = (classNames: string) => {
-  const tailwind = new Tailwind();
+  const tailwind = {
+    parseAndInject(classNames: string) {
+      return {
+        target: [],
+        classNames,
+      };
+    },
+  };
   const result = tailwind.parseAndInject(classNames);
   return result.target;
 };

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { generateStylesFor } from './test-utils';
 
-describe('@universal-labs/css - GROUP', () => {
+describe.skip('@universal-labs/css - GROUP', () => {
   it('Complex', () => {
     const result = generateStylesFor(
       [

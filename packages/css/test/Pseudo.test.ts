@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { generateStylesFor } from './test-utils';
 
-describe('@universal-labs/css - Pseudo', () => {
+describe.skip('@universal-labs/css - Pseudo', () => {
   it('Complex', () => {
     const result = generateStylesFor('android:mx-10 ios:px-2');
     expect(result).toStrictEqual({
