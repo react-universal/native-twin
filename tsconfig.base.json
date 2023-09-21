@@ -6,7 +6,6 @@
     "strictFunctionTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
-    "verbatimModuleSyntax": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "importHelpers": true,

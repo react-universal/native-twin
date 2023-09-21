@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Logger } from '../types';
+import type { Logger } from '../types';
 
 export function createLogger(outputChannel: vscode.OutputChannel): Logger {
   return (message) => {

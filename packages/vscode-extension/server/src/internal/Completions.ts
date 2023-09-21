@@ -3,7 +3,7 @@ import * as vscode from 'vscode-languageserver-types';
 import {
   CompletionItem,
   CompletionItemKind,
-  TextDocumentPositionParams,
+  type TextDocumentPositionParams,
   TextDocuments,
 } from 'vscode-languageserver/node';
 import { createIntellisense } from '../language-service/LanguageService';

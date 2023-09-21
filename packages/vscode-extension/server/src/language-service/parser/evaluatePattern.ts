@@ -1,5 +1,3 @@
-import { BaseTheme, ExtractUserTheme, ThemeFunction } from '@twind/core';
-import { TailwindTheme } from '@universal-labs/twind-adapter';
 import genex from 'genex';
 import { isSpacingFunction } from './isSpacingRule';
 import {

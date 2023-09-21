@@ -1,4 +1,4 @@
-import ret, { Token, types } from 'ret';
+import ret, { type Token, types } from 'ret';
 import { inspect } from 'util';
 
 function createTokens(expr: string) {

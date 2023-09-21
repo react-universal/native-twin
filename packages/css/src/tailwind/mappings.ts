@@ -18,10 +18,7 @@ export const directionMap = {
   '': [''],
   bs: ['BlockStart'],
   be: ['BlockEnd'],
-  is: ['InlineStart'],
-  ie: ['InlineEnd'],
   block: ['BlockStart', 'BlockEnd'],
-  inline: ['InlineStart', 'InlineEnd'],
 } satisfies Record<string, string[]>;
 
 export const cornerMap = {

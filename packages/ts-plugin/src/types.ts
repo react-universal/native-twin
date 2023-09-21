@@ -1,9 +1,12 @@
-import type { BaseTheme, RuleResult, TwindConfig } from '@twind/core';
 import type { FinalSheet } from '@universal-labs/css';
-import type { TailwindTheme } from '@universal-labs/twind-adapter';
+import {
+  __Theme__,
+  TailwindConfig as InternalTWConfig,
+  RuleResult,
+} from '@universal-labs/native-tailwind';
 
-export type CurrentTheme = BaseTheme & TailwindTheme;
-export type TailwindConfig = TwindConfig<CurrentTheme>;
+export type CurrentTheme = __Theme__;
+export type TailwindConfig = InternalTWConfig<CurrentTheme>;
 
 interface CommonCompletionItem {
   name: string;

@@ -1,9 +1,9 @@
 import {
-  InitializeParams,
+  type InitializeParams,
   TextDocumentSyncKind,
-  InitializeResult,
-  InitializedParams,
-  Connection,
+  type InitializeResult,
+  type InitializedParams,
+  type Connection,
   DidChangeConfigurationNotification,
 } from 'vscode-languageserver/node';
 import { createIntellisense } from '../language-service/LanguageService';

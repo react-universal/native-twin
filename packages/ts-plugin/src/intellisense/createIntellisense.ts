@@ -1,79 +1,116 @@
+import { cornerMap, directionMap } from '@universal-labs/css/tailwind';
 import {
-  AutocompleteContext,
-  Preset,
-  TwindUserConfig,
+  Rule,
+  RuleMeta,
+  RuleResolver,
+  __Theme__,
+  asArray,
+  createTailwind,
+  createThemeContext,
   defineConfig,
-  twind,
-  virtual,
-} from '@twind/core';
-import { CssResolver } from '@universal-labs/css';
-import { tw as internalTW } from '@universal-labs/twind-adapter';
-import { ConfigurationManager } from '../language-service/configuration';
-import type { CurrentTheme, VariantCompletionItem } from '../types';
-import { formatCss } from '../utils';
-import { createContextExecutor } from './intellisense.compose';
+} from '@universal-labs/native-tailwind';
+import { CompletionItem } from '../types';
 
 export function createIntellisense() {
-  const variants = new Map<string, VariantCompletionItem>();
   // const cssCache = new Map<string, string>();
-  const config = defineConfig({
-    preflight: false,
-    presets: [
-      defineConfig<CurrentTheme, Preset<CurrentTheme>[]>({
-        ...internalTW.config,
-        preflight: false,
-      }) as TwindUserConfig<CurrentTheme>,
-    ],
-    rules: [[ConfigurationManager.VARIANT_MARKER_RULE, { '…': '…' }]],
-    ignorelist: [/-\[…]$/],
-  }) as TwindUserConfig<CurrentTheme>;
-  const tw = twind(config, virtual(false));
-  const context: AutocompleteContext<CurrentTheme> = {
-    get theme() {
-      return tw.theme;
-    },
-    get variants() {
-      return Object.fromEntries(
-        Array.from(variants.values(), (variant) => [variant.name.slice(0, -1), variant.name]),
-      );
-    },
-  };
+  const suggestions: Map<string, CompletionItem> = new Map();
+  const config = defineConfig({});
+  const tw = createTailwind(config);
+  const context = createThemeContext(config);
   let nextIndex = 0;
-  const ruleExecutor = createContextExecutor(context, tw.theme());
   for (const rule of tw.config.rules) {
-    const location = {
-      index: nextIndex++,
-      position: 0,
-    };
-    ruleExecutor.run(rule, location);
+    const { themeSection, isColor, getExpansions, location, meta, values } = getRuleData(rule);
+    for (const suffix in isColor ? context.colors : (values as Record<string, string>)) {
+      for (const className of getExpansions(suffix)) {
+        if (!className.includes('DEFAULT')) {
+          suggestions.set(className, {
+            canBeNegative: !!meta.canBeNegative,
+            isColor: isColor,
+            kind: 'class',
+            name: className,
+            theme: context.theme(themeSection, suffix),
+            ...location,
+          });
+        }
+      }
+    }
   }
   // for (const variant of tw.config.variants) {
   //   console.log('VV: ', variant);
   // }
   return {
     getCss,
-    classes: ruleExecutor.suggestions,
-    context,
+    classes: suggestions,
   };
+
+  function getRuleData(rule: Rule<__Theme__>) {
+    const location = {
+      index: nextIndex++,
+      position: 0,
+    };
+    const basePattern = rule[0];
+    let resolver: RuleResolver<__Theme__> | undefined;
+    let meta: RuleMeta = {
+      canBeNegative: false,
+      feature: 'default',
+    };
+    let themeSection: string = '';
+    if (typeof rule[1] == 'function') {
+      resolver = rule[1];
+    }
+    if (typeof rule[2] == 'function') {
+      resolver = rule[2];
+    }
+    if (typeof rule[2] == 'object') meta = rule[2];
+    if (typeof rule[3] == 'object') meta = rule[3];
+    if (typeof rule[1] == 'string') themeSection = rule[1];
+    if (typeof rule[2] == 'string') themeSection = rule[2];
+    if (/color|fill|stroke/i.test(themeSection)) themeSection = 'colors';
+    const result = {
+      themeSection,
+      resolver,
+      meta,
+      location,
+      basePattern,
+      isColor: themeSection == 'colors',
+      values: config.theme[themeSection as keyof typeof config.theme],
+      getExpansions(suffix: string) {
+        const composer = composeClassName(basePattern);
+        if (meta.feature == 'edges') {
+          return Object.keys(directionMap).map((x) => composer(composeExpansion(x) + suffix));
+        }
+        if (meta.feature == 'corners') {
+          return Object.keys(cornerMap).map((x) => composer(composeExpansion(x) + suffix));
+        }
+        return asArray(composer(suffix));
+      },
+    };
+    return result;
+  }
 
   function getCss(name: string) {
     const className = tw(name);
-    const target = [...tw.target];
-    tw.clear();
-    const sheet = CssResolver(target, {
-      colorScheme: 'light',
-      debug: false,
-      deviceHeight: 1080,
-      deviceWidth: 720,
-      platform: 'ios',
-      rem: 16,
-    });
+    const sheet = tw.target.find((x) => x.name == name);
     return {
       className,
       sheet,
-      css: formatCss(target),
+      css: '',
     };
   }
 }
+
+const composeClassName = (pattern: string) => (suffix: string) => {
+  if (pattern.endsWith('-')) {
+    return `${pattern}${suffix}`;
+  }
+  return suffix;
+};
+
+const composeExpansion = (expansion: string) => {
+  if (!expansion || expansion == '') {
+    return expansion;
+  }
+  return `${expansion}-`;
+};
 
 export type CreateIntellisenseFn = ReturnType<typeof createIntellisense>;

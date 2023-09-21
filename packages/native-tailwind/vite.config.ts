@@ -55,6 +55,6 @@ export default defineConfig({
         compact: true,
       },
     },
-    emptyOutDir: true,
+    emptyOutDir: false,
   },
 });

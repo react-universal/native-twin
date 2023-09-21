@@ -2,8 +2,8 @@ import path from 'path';
 import * as vscode from 'vscode';
 import {
   LanguageClient,
-  LanguageClientOptions,
-  ServerOptions,
+  type LanguageClientOptions,
+  type ServerOptions,
   TransportKind,
 } from 'vscode-languageclient/node';
 import { DOCUMENT_SELECTORS } from './internal/config';
