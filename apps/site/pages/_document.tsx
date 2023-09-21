@@ -1,8 +1,7 @@
 import React from 'react';
-import install from '@twind/with-next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-class MyDocument extends Document {
+export default class MyDocument extends Document {
   // @ts-expect-error
   render() {
     const currentLocale = this.props.__NEXT_DATA__.locale || 'en';
@@ -21,4 +20,4 @@ class MyDocument extends Document {
   }
 }
 
-export default install(MyDocument);
+// export default install(MyDocument);

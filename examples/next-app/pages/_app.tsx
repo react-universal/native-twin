@@ -1,6 +1,4 @@
 // import { Roboto } from '@next/font/google';
-import install from '@twind/with-next/app';
-import { tw } from '@universal-labs/twind-adapter';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../styles/globals.css';
@@ -12,7 +10,7 @@ import '../styles/tw';
 //   variable: '--font-roboto',
 // });
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -26,4 +24,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default install(tw.config, MyApp);
+// export default install(tw.config, MyApp);

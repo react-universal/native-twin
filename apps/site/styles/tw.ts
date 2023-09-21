@@ -1,6 +1,4 @@
-import { Tailwind } from '@universal-labs/twind-adapter';
-
-const tailwind = new Tailwind({
+const tailwind = {
   colors: {
     primary: 'blue',
   },
@@ -10,5 +8,5 @@ const tailwind = new Tailwind({
     'roboto-medium': ['var(--font-roboto)'],
     sans: ['var(--font-roboto)'],
   },
-});
+};
 export default tailwind;

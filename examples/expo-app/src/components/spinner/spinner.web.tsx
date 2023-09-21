@@ -1,5 +1,5 @@
 import styled from '@universal-labs/styled';
-import { SpinnerView, SpinnerProps } from './spinner-view';
+import { SpinnerView, type SpinnerProps } from './spinner-view';
 
 const View = styled.View``;
 

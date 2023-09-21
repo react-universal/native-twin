@@ -6,7 +6,7 @@ import Animated, {
   withRepeat,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { SpinnerView, SpinnerProps } from './spinner-view';
+import { SpinnerView, type SpinnerProps } from './spinner-view';
 
 const Spinner = ({ duration = 750, ...rest }: SpinnerProps) => {
   const transition = useSharedValue(0);

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import styled, { PropsFrom } from '@universal-labs/styled';
+import styled, { type PropsFrom } from '@universal-labs/styled';
 import { Spinner } from '../spinner';
 
 const StyledButton = styled.Pressable.variants({
