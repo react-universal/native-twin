@@ -13,7 +13,7 @@ import { createVirtualSheet } from './css/sheets';
 import { StyleGroup } from './css/style.compositions';
 import { createThemeContext } from './theme/theme.context';
 import type { TailwindConfig, TailwindUserConfig } from './types/config.types';
-import type { GetChildStyles } from './types/css.types';
+import type { GetChildStyles, Sheet } from './types/css.types';
 import type { ComponentSheet, RuntimeTW, __Theme__ } from './types/theme.types';
 import type { StringLike } from './types/util.types';
 import { parsedRuleToString } from './utils/css-utils';
@@ -67,8 +67,8 @@ export function createTailwind<Theme = __Theme__>(
       return cache.get(tokens);
     } as RuntimeTW<__Theme__ & Theme>,
     Object.getOwnPropertyDescriptors({
-      get target(): FinalRule[] {
-        return Array.from(sheet.target.values());
+      get sheet(): Sheet<FinalRule> {
+        return sheet;
       },
       theme: context.theme,
       config,

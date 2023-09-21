@@ -3,7 +3,7 @@ import type { SheetInteractionState } from '@universal-labs/css/build/types/css.
 import type { FinalRule } from '../css/rules';
 import type { StyleGroup } from '../css/style.compositions';
 import type { TailwindConfig, ThemeFunction } from './config.types';
-import type { GetChildStyles } from './css.types';
+import type { GetChildStyles, Sheet } from './css.types';
 import type { MaybeArray, StringLike } from './util.types';
 
 export interface ComponentSheet {
@@ -19,7 +19,7 @@ export interface ComponentSheet {
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
   (tokens: StringLike): ComponentSheet;
-  target: FinalRule[];
+  sheet: Sheet<FinalRule>;
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
   readonly destroy: () => void;
