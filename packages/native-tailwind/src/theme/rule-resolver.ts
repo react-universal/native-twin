@@ -1,3 +1,4 @@
+import { parseCssValue } from '@universal-labs/css/tailwind';
 import type { RuleMeta, RuleResolver } from '../types/config.types';
 import type { CompleteStyle } from '../types/rn.types';
 import type { __Theme__ } from '../types/theme.types';
@@ -78,7 +79,11 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
         segmentValue += `/${parsedRule.m.value}`;
       }
       if (match.segment.type == 'arbitrary') {
-        value = segmentValue;
+        value = parseCssValue((themeSection as string) ?? property, segmentValue, {
+          deviceHeight: context.root.deviceHeight,
+          deviceWidth: context.root.deviceWidth,
+          rem: context.root.rem,
+        }) as string;
       } else {
         value = context.theme(themeSection, segmentValue) ?? null;
       }
@@ -179,7 +184,7 @@ function getPropertiesForCorners(
 function maybeNegative(isNegative: boolean, value: string): string {
   if (isNegative && (!`${value}`.startsWith('0') || `${value}`.startsWith('0.'))) {
     if (isNaN(Number(value))) {
-      return `-${value}${value.endsWith('px') ? '' : ''}`;
+      return `-${value}`;
     }
     return (Number(value) * -1) as any;
   }

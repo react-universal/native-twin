@@ -38,6 +38,7 @@ export default defineConfig({
         'react-is',
         'react/jsx-runtime',
         '@universal-labs/css',
+        '@universal-labs/native-tailwind',
         '@universal-labs/twind-adapter',
         '@twind/core',
       ],

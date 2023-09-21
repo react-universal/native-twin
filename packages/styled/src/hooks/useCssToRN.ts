@@ -1,15 +1,12 @@
 import { useId, useMemo } from 'react';
-import { virtualSheet } from '../styled/VirtualSheet';
-import { useStyledContext } from './useStyledContext';
+import { tw } from '@universal-labs/native-tailwind';
 
 export function useCssToRN(className: string) {
   const componentID = useId();
 
-  const { context } = useStyledContext();
-
   const stylesheet = useMemo(() => {
-    return virtualSheet(className, context);
-  }, [className, context]);
+    return tw(className);
+  }, [className]);
 
   return { stylesheet, componentID };
 }

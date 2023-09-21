@@ -28,13 +28,16 @@ export class StyleGroup {
 
   get finalSheet(): FinalSheet {
     return Object.freeze(
-      this.ruleSet.reduce((prev, current) => {
-        prev[current.kind] = {
-          ...prev[current.kind],
-          ...current.style,
-        };
-        return prev;
-      }, emptySheet),
+      this.ruleSet.reduce(
+        (prev, current) => {
+          prev[current.kind] = {
+            ...prev[current.kind],
+            ...current.style,
+          };
+          return prev;
+        },
+        { ...emptySheet },
+      ),
     );
   }
 }

@@ -1,7 +1,9 @@
-import { cx } from '@universal-labs/twind-adapter';
+import { defineConfig, setup } from '@universal-labs/native-tailwind';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 import styledComponents from '../src';
+
+setup(defineConfig({}));
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();
@@ -28,11 +30,10 @@ describe('@universal-labs/styled', () => {
 });
 
 const View = styledComponents.View.variants({
-  base: cx`
-    flex-1 
-    hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))
-    ios:(p-14 bg-rose-200 border-white border-2)
-    android:(p-14 border-green-200 border-2 bg-gray-200)
+  base: `
+    flex-1
+    hover:(bg-blue-600)
+    p-14 bg-rose-200 border-white border-2
     items-center justify-center md:border-3
   `,
   variants: {

@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Image, Text, View } from 'react-native';
-import { install } from '@universal-labs/styled';
+import { View } from 'react-native';
+import { setup } from '@universal-labs/native-tailwind';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 import { HomeScreen } from './src/screens/Home.screen';
 import tailwindConfig from './tailwind.config';
 
-install({
-  rem: 14,
-  theme: tailwindConfig.theme,
-});
+setup(tailwindConfig);
 
 export default function App() {
   const { bootFonts } = useLoadFonts();
@@ -23,8 +20,6 @@ export default function App() {
   if (!isReady) return null;
   return (
     <View style={{ flex: 1 }}>
-      <Text style={{}} />
-      <Image source={{ uri: '' }} style={{}} />
       <HomeScreen />
     </View>
   );

@@ -1,7 +1,15 @@
+import type { StyleProp } from 'react-native';
 import type { FinalRule } from '../css/rules';
 import type { Falsey, StringLike } from './util.types';
 
-export type CSSValue = string | number | bigint | Falsey | StringLike;
+export type CSSValue =
+  | string
+  | number
+  | bigint
+  | Falsey
+  | StringLike
+  | StyleProp<any>
+  | CSSValue[];
 
 export interface CXProcessor {
   (classNames: string): { generated: string; target: string[] };

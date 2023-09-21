@@ -1,4 +1,29 @@
-import type { MaybeArray } from './util.types';
+import type { AnyStyle } from '@universal-labs/css';
+import type { SheetInteractionState } from '@universal-labs/css/build/types/css.types';
+import type { FinalRule } from '../css/rules';
+import type { StyleGroup } from '../css/style.compositions';
+import type { TailwindConfig, ThemeFunction } from './config.types';
+import type { GetChildStyles } from './css.types';
+import type { MaybeArray, StringLike } from './util.types';
+
+export interface ComponentSheet {
+  getStyles: (input: SheetInteractionState) => AnyStyle;
+  getChildStyles: (data: GetChildStyles) => AnyStyle;
+  metadata: {
+    isGroupParent: boolean;
+    hasPointerEvents: boolean;
+    hasGroupEvents: boolean;
+  };
+  styles: StyleGroup;
+}
+
+export interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
+  (tokens: StringLike): ComponentSheet;
+  target: FinalRule[];
+  readonly theme: ThemeFunction<Theme>;
+  readonly config: TailwindConfig<Theme>;
+  readonly destroy: () => void;
+}
 
 /* THEME CONFIG */
 export type ThemeValue<T> = T extends Record<string, infer V>

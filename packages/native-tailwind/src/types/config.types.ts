@@ -15,7 +15,7 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
 export interface TailwindUserConfig<Theme = __Theme__, UserTheme extends object = {}> {
   theme?: ThemeConfig<Theme & UserTheme>;
   rules?: Rule<__Theme__>[];
-  ignorelist: string[];
+  ignorelist?: string[];
 }
 
 export type RuleResult = CompleteStyle | Falsey | Record<string, string>;
@@ -60,6 +60,13 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
    */
   r: (value: ParsedRule, isDark?: boolean) => RuleResult;
   v: (variants: string[]) => boolean;
+
+  root: {
+    /** Default `16px` */
+    rem: number;
+    deviceWidth: number;
+    deviceHeight: number;
+  };
 
   isSupported: (support: PlatformSupport[]) => boolean;
   mode: PlatformSupport[number];

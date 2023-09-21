@@ -29,5 +29,5 @@ export function buildCSSString<T>(
   if (props.tw) {
     computedString += ` ${props.tw}`;
   }
-  return computedString;
+  return computedString.trim();
 }

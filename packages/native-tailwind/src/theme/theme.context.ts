@@ -32,6 +32,12 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
     theme: createThemeFunction(themeConfig),
 
+    root: {
+      rem: themeConfig.root?.rem ?? 16,
+      deviceHeight: themeConfig.root?.deviceHeight ?? 16,
+      deviceWidth: themeConfig.root?.deviceWidth ?? 16,
+    },
+
     get breakpoints() {
       return { ...themeConfig.screens, ...themeConfig.extend?.screens };
     },
