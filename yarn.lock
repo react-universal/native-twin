@@ -6246,12 +6246,11 @@ __metadata:
     "@types/cssbeautify": 0.3.2
     "@types/showdown": 2.0.1
     "@universal-labs/css": "workspace:*"
+    "@universal-labs/native-tailwind": "workspace:*"
     "@vscode/emmet-helper": 2.9.2
     cssbeautify: 0.3.1
-    genex: 1.1.0
     match-sorter: 6.3.1
     quick-lru: 6.1.1
-    ret: 0.5.0
     showdown: 2.1.0
     typescript-template-language-service-decorator: 2.3.2
     vscode-css-languageservice: 6.2.6
@@ -10543,15 +10542,6 @@ __metadata:
     strip-ansi: ^6.0.1
     wide-align: ^1.1.5
   checksum: 788b6bfe52f1dd8e263cda800c26ac0ca2ff6de0b6eee2fe0d9e3abf15e149b651bd27bf5226be10e6e3edb5c4e5d5985a5a1a98137e7a892f75eff76467ad2d
-  languageName: node
-  linkType: hard
-
-"genex@npm:1.1.0":
-  version: 1.1.0
-  resolution: "genex@npm:1.1.0"
-  dependencies:
-    ret: ^0.2.2
-  checksum: 220e594a9aedf949544dbe05b29b6df5f72efeb5caf2c13d09f628be05c64ae028694f4f60ee098c0394f9aceae3c754270d08aee3c79a7362a104437b6fd97a
   languageName: node
   linkType: hard
 
@@ -15716,20 +15706,6 @@ __metadata:
     onetime: ^5.1.0
     signal-exit: ^3.0.2
   checksum: f877dd8741796b909f2a82454ec111afb84eb45890eb49ac947d87991379406b3b83ff9673a46012fca0d7844bb989f45cc5b788254cf1a39b6b5a9659de0630
-  languageName: node
-  linkType: hard
-
-"ret@npm:0.5.0":
-  version: 0.5.0
-  resolution: "ret@npm:0.5.0"
-  checksum: 3763aff074a56baa072afcfb5c19b09fb7c05045a27715bf4f28395cd11ab98cc2d0698bf4a3cd3f1c5e650ed167362d354c0e545ab134a6b7ec83df5e9d7d42
-  languageName: node
-  linkType: hard
-
-"ret@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "ret@npm:0.2.2"
-  checksum: 774964bb413a3525e687bca92d81c1cd75555ec33147c32ecca22f3d06409e35df87952cfe3d57afff7650a0f7e42139cf60cb44e94c29dde390243bc1941f16
   languageName: node
   linkType: hard
 

@@ -1,4 +1,4 @@
-import type { ParsedRule } from '@universal-labs/twind-adapter';
+import { ParsedRule } from '@universal-labs/css/tailwind';
 
 export function toClassName(rule: ParsedRule): string {
   return [...rule.v, (rule.i ? '!' : '') + rule.n].join(':');

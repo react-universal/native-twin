@@ -27,13 +27,15 @@ export function getDocumentation(data: GetCssResult) {
   result.push(`${'```css\n'}${data.css}${'\n```'}`);
   result.push('\n\n');
   result.push('***React Native StyleSheet*** \n\n');
-  result.push(`${'```json\n'}${JSON.stringify(data.sheet.base, null, 2)}${'\n```'}`);
+  result.push(
+    `${'```json\n'}${JSON.stringify(data.sheet.styles.finalSheet.base, null, 2)}${'\n```'}`,
+  );
   return result.join('\n\n');
 }
 
 export function getCompletionEntryDetailsDisplayParts(suggestion: GetCssResult) {
   if (suggestion.css.includes('rgba')) {
-    const declaration = Object.values(suggestion.sheet.base).join('');
+    const declaration = Object.values(suggestion.sheet.styles.finalSheet.base).join('');
     if (declaration.startsWith('rgba')) {
       const hex = new TinyColor(declaration);
       if (hex.isValid) {

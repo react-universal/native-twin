@@ -19,7 +19,7 @@ export function createIntellisense() {
   const context = createThemeContext(config);
   let nextIndex = 0;
   for (const rule of tw.config.rules) {
-    const { themeSection, isColor, getExpansions, location, meta, values } = getRuleData(rule);
+    const { isColor, getExpansions, location, meta, values } = getRuleData(rule);
     for (const suffix in isColor ? context.colors : (values as Record<string, string>)) {
       for (const className of getExpansions(suffix)) {
         if (!className.includes('DEFAULT')) {
@@ -28,7 +28,7 @@ export function createIntellisense() {
             isColor: isColor,
             kind: 'class',
             name: className,
-            theme: context.theme(themeSection, suffix),
+            theme: tw(className),
             ...location,
           });
         }
@@ -89,10 +89,9 @@ export function createIntellisense() {
   }
 
   function getCss(name: string) {
-    const className = tw(name);
-    const sheet = tw.target.find((x) => x.name == name);
+    const sheet = tw(name)!;
     return {
-      className,
+      className: name,
       sheet,
       css: '',
     };

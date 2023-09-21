@@ -1,8 +1,7 @@
-import type { FinalSheet } from '@universal-labs/css';
 import {
   __Theme__,
+  ComponentSheet,
   TailwindConfig as InternalTWConfig,
-  RuleResult,
 } from '@universal-labs/native-tailwind';
 
 export type CurrentTheme = __Theme__;
@@ -17,7 +16,7 @@ export interface ClassCompletionItem extends CommonCompletionItem {
   canBeNegative: boolean;
   kind: 'class';
   isColor: boolean;
-  theme: RuleResult;
+  theme: ComponentSheet | null;
 }
 
 export interface VariantCompletionItem extends CommonCompletionItem {
@@ -29,7 +28,7 @@ export type CompletionItem = ClassCompletionItem | VariantCompletionItem;
 export interface GetCssResult {
   className: string;
   css: string;
-  sheet: FinalSheet;
+  sheet: ComponentSheet;
 }
 
 export interface CompletionItemLocation {

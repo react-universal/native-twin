@@ -54,7 +54,7 @@ export class TailwindLanguageService implements TemplateLanguageService {
             ...x,
             className,
             css,
-            sheet: sheet.base,
+            sheet: sheet.styles.finalSheet.base,
           };
         });
     }

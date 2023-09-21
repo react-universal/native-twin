@@ -34,7 +34,7 @@ export function getCompletionEntries(
           canBeNegative: false,
           kind: 'class',
           isColor: false,
-          theme: {},
+          theme: null,
           name: `${completion}${i}`,
           index: 0,
           position: 0,
