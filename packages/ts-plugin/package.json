@@ -28,7 +28,6 @@
     "vscode-languageserver-textdocument": "1.0.8"
   },
   "devDependencies": {
-    "@twind/core": "1.1.3",
     "@types/cssbeautify": "0.3.2",
     "@types/showdown": "2.0.1"
   }

@@ -17,10 +17,6 @@
       "path": "../packages/css"
     },
     {
-      "name": "📦 @lib/twind-adapter",
-      "path": "../packages/twind-adapter"
-    },
-    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },

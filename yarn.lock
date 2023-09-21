@@ -5722,34 +5722,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@twind/core@npm:1.1.3":
-  version: 1.1.3
-  resolution: "@twind/core@npm:1.1.3"
-  dependencies:
-    csstype: ^3.1.1
-  peerDependencies:
-    typescript: ^4.8.4
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 18ad6fc44795209147dec1518778307b99d6ee339f2f4d2a981056d986ea1905817ea3d1c3f3c274cee79e65b70f1ee427a88a63dd943e613fb047f943454523
-  languageName: node
-  linkType: hard
-
-"@twind/core@patch:@twind/core@npm%3A1.1.3#./.yarn/patches/@twind-core-npm-1.1.3-62b4eeba21.patch::locator=universal-labs%40workspace%3A.":
-  version: 1.1.3
-  resolution: "@twind/core@patch:@twind/core@npm%3A1.1.3#./.yarn/patches/@twind-core-npm-1.1.3-62b4eeba21.patch::version=1.1.3&hash=6d104e&locator=universal-labs%40workspace%3A."
-  dependencies:
-    csstype: ^3.1.1
-  peerDependencies:
-    typescript: ^4.8.4
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 41cf546a073f14bb8218c3afc499398086c411304af36d95fc1280e0ee65826178630a8b8ff1f8d3ff649f5a60a37883ac7b8b676ef89895c84aac9175f08a8c
-  languageName: node
-  linkType: hard
-
 "@twind/with-next@npm:1.2.2":
   version: 1.2.2
   resolution: "@twind/with-next@npm:1.2.2"
@@ -6271,7 +6243,6 @@ __metadata:
   resolution: "@universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin"
   dependencies:
     "@ctrl/tinycolor": 3.6.0
-    "@twind/core": 1.1.3
     "@types/cssbeautify": 0.3.2
     "@types/showdown": 2.0.1
     "@universal-labs/css": "workspace:*"
@@ -6288,25 +6259,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/twind-adapter-deprecated@workspace:packages/twind-adapter":
-  version: 0.0.0-use.local
-  resolution: "@universal-labs/twind-adapter-deprecated@workspace:packages/twind-adapter"
-  dependencies:
-    "@twind/core": 1.1.3
-    "@types/css-tree": 2.3.1
-    css-tree: 2.3.1
-  peerDependencies:
-    react: ">=18"
-    react-native: ">=0.70"
-    react-native-web: ">= 0.18.10"
-  languageName: unknown
-  linkType: soft
-
 "@universal-labs/vscode@workspace:packages/vscode-extension":
   version: 0.0.0-use.local
   resolution: "@universal-labs/vscode@workspace:packages/vscode-extension"
   dependencies:
-    "@twind/core": 1.1.3
     "@types/vscode": 1.80.0
     "@universal-labs/ts-styled-plugin-tw": "workspace:*"
     "@vscode/test-electron": ^2.3.3
@@ -8389,7 +8345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:3.1.2, csstype@npm:^3.1.1":
+"csstype@npm:3.1.2":
   version: 3.1.2
   resolution: "csstype@npm:3.1.2"
   checksum: e1a52e6c25c1314d6beef5168da704ab29c5186b877c07d822bd0806717d9a265e8493a2e35ca7e68d0f5d472d43fac1cdce70fd79fd0853dff81f3028d857b5
