@@ -4,9 +4,10 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
-import type { AnyStyle, FinalSheet } from '@universal-labs/css';
+import type { FinalSheet } from '@universal-labs/css';
 import { parseTWTokens, type ParsedRule } from '@universal-labs/css/tailwind';
 import { defineConfig } from './config/define-config';
+import { FinalRule } from './css/rules';
 import { createVirtualSheet } from './css/sheets';
 import { StyleGroup } from './css/style.compositions';
 import { createThemeContext } from './theme/theme.context';
@@ -17,7 +18,7 @@ import { parsedRuleToString } from './utils/css-utils';
 
 interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
   (tokens: StringLike): FinalSheet;
-  target: AnyStyle[];
+  target: FinalRule[];
   readonly theme: RuleResolver<Theme>;
   readonly config: TailwindConfig<Theme>;
 }
@@ -30,6 +31,7 @@ export function createTailwind<Theme = __Theme__>(
   const context = createThemeContext<__Theme__>(config);
   const cache = new Map<StringLike, FinalSheet>();
   const breakpoints = Object.keys(context.breakpoints);
+
   return Object.defineProperties(
     function tw(tokens: StringLike) {
       if (cache.has(tokens)) {
@@ -38,16 +40,17 @@ export function createTailwind<Theme = __Theme__>(
       const styles = new StyleGroup();
       for (const rule of parseTWTokens(tokens)) {
         if (!isApplicativeRule(rule)) continue;
-        const className = parsedRuleToString(rule, breakpoints);
+        const className = parsedRuleToString(rule, breakpoints); //?
 
         const style = sheet.getClassName(className);
         if (style) {
-          styles.addStyle(rule, style);
+          styles.addStyle(style);
         } else {
           const ruleData = context.r(rule);
           if (ruleData) {
-            sheet.insert(className, rule, ruleData);
-            styles.addStyle(rule, ruleData);
+            const finalRule = new FinalRule(className, rule, ruleData);
+            sheet.insert(className, finalRule);
+            styles.addStyle(finalRule);
           }
         }
       }
@@ -55,7 +58,7 @@ export function createTailwind<Theme = __Theme__>(
       return cache.get(tokens);
     } as RuntimeTW<__Theme__ & Theme>,
     Object.getOwnPropertyDescriptors({
-      get target(): AnyStyle[] {
+      get target(): FinalRule[] {
         return Array.from(sheet.target.values());
       },
       theme: config.theme,
@@ -69,18 +72,18 @@ export function createTailwind<Theme = __Theme__>(
   }
 }
 
-// const tailwind = createTailwind({
-//   ignorelist: [],
-//   theme: {
-//     extend: {
-//       colors: {
-//         primary: '#0558f9',
-//       },
-//       borderWidth: {
-//         sm: '100px',
-//       },
-//     },
-//   },
-// });
+const tailwind = createTailwind({
+  ignorelist: [],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#0558f9',
+      },
+      borderWidth: {
+        sm: '100px',
+      },
+    },
+  },
+});
 
-// tailwind('border-x-1 2xl:bg-blue'); //?
+tailwind('hover:border-x-1 hover:bg-blue 2xl:bg-blue'); //?

@@ -1,5 +1,4 @@
-import type { AnyStyle } from '@universal-labs/css';
-import type { ParsedRule } from '@universal-labs/css/tailwind';
+import type { FinalRule } from '../css/rules';
 import type { Falsey, StringLike } from './util.types';
 
 export type CSSValue = string | number | bigint | Falsey | StringLike;
@@ -18,8 +17,8 @@ export interface GetChildStyles {
 
 export interface Sheet<Target = unknown> {
   readonly target: Map<string, Target>;
-  insert(key: string, rule: ParsedRule, styles: Target): void;
-  getClassName(key: string): AnyStyle | undefined;
+  insert(key: string, rule: FinalRule): void;
+  getClassName(key: string): FinalRule | undefined;
   // snapshot(): () => void;
   /** Clears all CSS rules from the sheet. */
   clear(): void;

@@ -1,8 +1,8 @@
-import type { AnyStyle } from '@universal-labs/css';
 import type { Sheet } from '../types/css.types';
+import type { FinalRule } from './rules';
 
-export function createVirtualSheet(): Sheet<AnyStyle> {
-  const target: Map<string, AnyStyle> = new Map();
+export function createVirtualSheet(): Sheet<FinalRule> {
+  const target: Map<string, FinalRule> = new Map();
 
   return {
     target,
@@ -15,8 +15,8 @@ export function createVirtualSheet(): Sheet<AnyStyle> {
       this.clear();
     },
 
-    insert(key, parsedRule, styles) {
-      target.set(key, styles);
+    insert(key, rule: FinalRule) {
+      target.set(key, rule);
     },
 
     getClassName(key) {
