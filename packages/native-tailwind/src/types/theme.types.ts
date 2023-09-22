@@ -1,7 +1,6 @@
-import type { AnyStyle } from '@universal-labs/css';
+import type { AnyStyle, FinalSheet } from '@universal-labs/css';
 import type { SheetInteractionState } from '@universal-labs/css/build/types/css.types';
 import type { FinalRule } from '../css/rules';
-import type { StyleGroup } from '../css/style.compositions';
 import type { TailwindConfig, ThemeFunction } from './config.types';
 import type { GetChildStyles, Sheet } from './css.types';
 import type { MaybeArray, StringLike } from './util.types';
@@ -14,7 +13,7 @@ export interface ComponentSheet {
     hasPointerEvents: boolean;
     hasGroupEvents: boolean;
   };
-  styles: StyleGroup;
+  sheet: FinalSheet;
 }
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__> {

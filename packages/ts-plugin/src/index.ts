@@ -1,9 +1,3 @@
-/**********************************************
- * Readapted from Twind Intellisense
- * Credits: @sastan https://github.com/sastan *
- * Repo: https://github.com/tw-in-js/twind    *
- * ********************************************
- */
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import ts from 'typescript/lib/tsserverlibrary';
 import { createIntellisense } from './intellisense/createIntellisense';
@@ -62,8 +56,7 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       }
 
       const utility = intellisense.classes.get(name)!;
-      const css = intellisense.getCss(utility.name);
-      return createCompletionEntryDetails(css);
+      return createCompletionEntryDetails(utility);
     };
 
     return proxy;

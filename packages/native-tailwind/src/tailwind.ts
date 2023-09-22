@@ -62,7 +62,7 @@ export function createTailwind<Theme = __Theme__>(
           return getStyles(styles.finalSheet, input);
         },
         getChildStyles: (data: GetChildStyles) => getChildStyles(styles.finalSheet, data),
-        styles,
+        sheet: styles.finalSheet,
       });
       return cache.get(tokens);
     } as RuntimeTW<__Theme__ & Theme>,
@@ -119,4 +119,7 @@ function getChildStyles(sheet: FinalSheet, input: GetChildStyles) {
 //   },
 // });
 
-// tailwind(`-translate-x-[10vh]`).getStyles({ isParentActive: false, isPointerActive: false }); //?
+// tailwind(`text(blue-200 [16px]) bg-blue`).getStyles({
+//   isParentActive: false,
+//   isPointerActive: false,
+// }); //?

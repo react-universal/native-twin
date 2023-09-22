@@ -6,7 +6,7 @@
   "author": "Cristhian Gutierrez",
   "main": "build/index.js",
   "scripts": {
-    "build:libs": "node ./build.js",
+    "build:libs": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest run",
     "test:ui": "vitest --ui",

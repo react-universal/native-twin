@@ -1,6 +1,5 @@
 import {
   __Theme__,
-  ComponentSheet,
   TailwindConfig as InternalTWConfig,
 } from '@universal-labs/native-tailwind';
 
@@ -13,10 +12,12 @@ interface CommonCompletionItem {
   index: number;
 }
 export interface ClassCompletionItem extends CommonCompletionItem {
-  canBeNegative: boolean;
   kind: 'class';
+  property: string;
+  themeSection: string;
+  canBeNegative: boolean;
   isColor: boolean;
-  theme: ComponentSheet | null;
+  themeValue: string | null;
 }
 
 export interface VariantCompletionItem extends CommonCompletionItem {
@@ -24,12 +25,6 @@ export interface VariantCompletionItem extends CommonCompletionItem {
 }
 
 export type CompletionItem = ClassCompletionItem | VariantCompletionItem;
-
-export interface GetCssResult {
-  className: string;
-  css: string;
-  sheet: ComponentSheet;
-}
 
 export interface CompletionItemLocation {
   position: number;

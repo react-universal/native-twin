@@ -2,6 +2,11 @@
 
 exports[`TS PLUGIN > Enumerate completions > Completions Snapshot 1`] = `
 [
+  "sm",
+  "md",
+  "lg",
+  "xl",
+  "2xl",
   "bg-inherit",
   "bg-current",
   "bg-transparent",
@@ -1227,7 +1232,6 @@ exports[`TS PLUGIN > Enumerate completions > Completions Snapshot 1`] = `
   "e-sm",
   "x-sm",
   "y-sm",
-  "sm",
   "bs-sm",
   "be-sm",
   "block-sm",
@@ -1239,7 +1243,6 @@ exports[`TS PLUGIN > Enumerate completions > Completions Snapshot 1`] = `
   "e-lg",
   "x-lg",
   "y-lg",
-  "lg",
   "bs-lg",
   "be-lg",
   "block-lg",
@@ -1251,7 +1254,6 @@ exports[`TS PLUGIN > Enumerate completions > Completions Snapshot 1`] = `
   "e-xl",
   "x-xl",
   "y-xl",
-  "xl",
   "bs-xl",
   "be-xl",
   "block-xl",
@@ -1263,7 +1265,6 @@ exports[`TS PLUGIN > Enumerate completions > Completions Snapshot 1`] = `
   "e-2xl",
   "x-2xl",
   "y-2xl",
-  "2xl",
   "bs-2xl",
   "be-2xl",
   "block-2xl",

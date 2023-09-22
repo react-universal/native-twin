@@ -7,7 +7,11 @@ import { createLogger } from './internal/logger';
 export async function activate(context: vscode.ExtensionContext) {
   const log = createLogger(vscode.window.createOutputChannel('Native Tailwind IntelliSense'));
 
-  await enableExtension(context, log).catch((error) => {
-    log(`Activating ${pluginId} failed: ${error.stack}`);
-  });
+  await enableExtension(context, log)
+    .catch((error) => {
+      log(`Activating ${pluginId} failed: ${error.stack}`);
+    })
+    .then((c) => {
+      log(`Activating ${pluginId} failed: ${c}`);
+    });
 }

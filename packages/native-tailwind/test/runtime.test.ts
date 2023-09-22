@@ -9,7 +9,7 @@ describe('@universal-labs/native-tailwind - TW call', () => {
     px-2 m-10 
     text(2xl indigo-200)
   `;
-    expect(result.styles.finalSheet.base).toStrictEqual({
+    expect(result.sheet.base).toStrictEqual({
       color: 'rgba(199,210,254,1)',
       fontSize: 24,
       lineHeight: 32,

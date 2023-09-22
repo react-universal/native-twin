@@ -2,7 +2,7 @@ import { TinyColor } from '@ctrl/tinycolor';
 import cssbeautify from 'cssbeautify';
 import ts from 'typescript/lib/tsserverlibrary';
 import * as vscode from 'vscode-languageserver-types';
-import type { CompletionItem, GetCssResult } from '../types';
+import type { ClassCompletionItem, CompletionItem } from '../types';
 
 export function formatCss(target: string[]) {
   return cssbeautify(
@@ -21,23 +21,29 @@ export function formatCss(target: string[]) {
     .trim();
 }
 
-export function getDocumentation(data: GetCssResult) {
+export function getDocumentation(data: ClassCompletionItem) {
+  if (!data.property || !data.themeValue) return '';
   const result: string[] = [];
-  result.push('***Css Rules*** \n\n');
-  result.push(`${'```css\n'}${data.css}${'\n```'}`);
-  result.push('\n\n');
+  // result.push('***Css Rules*** \n\n');
+  // result.push(`${'```css\n'}${data.css}${'\n```'}`);
+  // result.push('\n\n');
   result.push('***React Native StyleSheet*** \n\n');
   result.push(
-    `${'```json\n'}${JSON.stringify(data.sheet.styles.finalSheet.base, null, 2)}${'\n```'}`,
+    `${'```json\n'}${JSON.stringify(
+      {
+        [data.property]: data.themeValue,
+      },
+      null,
+      2,
+    )}${'\n```'}`,
   );
   return result.join('\n\n');
 }
 
-export function getCompletionEntryDetailsDisplayParts(suggestion: GetCssResult) {
-  if (suggestion.css.includes('rgba')) {
-    const declaration = Object.values(suggestion.sheet.styles.finalSheet.base).join('');
-    if (declaration.startsWith('rgba')) {
-      const hex = new TinyColor(declaration);
+export function getCompletionEntryDetailsDisplayParts(suggestion: ClassCompletionItem) {
+  if (suggestion.isColor && suggestion.themeValue) {
+    if (suggestion.themeValue.startsWith('rgba')) {
+      const hex = new TinyColor(suggestion.themeValue);
       if (hex.isValid) {
         return [
           {
@@ -46,6 +52,13 @@ export function getCompletionEntryDetailsDisplayParts(suggestion: GetCssResult) 
           },
         ];
       }
+    } else {
+      return [
+        {
+          kind: 'color',
+          text: suggestion.themeValue,
+        },
+      ];
     }
   }
   return [];
@@ -71,10 +84,12 @@ export function createCompletionEntries(
   };
 }
 
-export function createCompletionEntryDetails(entry: GetCssResult): ts.CompletionEntryDetails {
-  const displayParts = getCompletionEntryDetailsDisplayParts(entry);
+export function createCompletionEntryDetails(
+  item: ClassCompletionItem,
+): ts.CompletionEntryDetails {
+  const displayParts = getCompletionEntryDetailsDisplayParts(item);
   return {
-    name: entry.className,
+    name: item.name,
     kind: ts.ScriptElementKind.primitiveType,
     kindModifiers: displayParts.length > 0 ? 'color' : '',
     tags: [],
@@ -82,7 +97,7 @@ export function createCompletionEntryDetails(entry: GetCssResult): ts.Completion
     documentation: [
       {
         kind: vscode.MarkupKind.Markdown,
-        text: getDocumentation(entry),
+        text: getDocumentation(item),
       },
     ],
   };

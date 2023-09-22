@@ -11,7 +11,7 @@ import {
   View,
 } from '../components/common/View';
 
-css``;
+css`bg`;
 // styled('')``
 
 const TextField = () => {

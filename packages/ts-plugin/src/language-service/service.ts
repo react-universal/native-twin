@@ -49,12 +49,12 @@ export class TailwindLanguageService implements TemplateLanguageService {
         // .filter((x) => x.)
         .map((x) => {
           const className = `-${x.name}`;
-          const { css, sheet } = this.intellisense.getCss(className);
+          const completion = this.intellisense.classes.get(className);
           return {
             ...x,
             className,
-            css,
-            sheet: sheet.styles.finalSheet.base,
+            css: '',
+            sheet: completion,
           };
         });
     }
@@ -74,7 +74,6 @@ export class TailwindLanguageService implements TemplateLanguageService {
     name: string,
   ): ts.CompletionEntryDetails {
     const utility = this.intellisense.classes.get(name)!;
-    // @ts-expect-error
     return createCompletionEntryDetails(utility);
   }
 }

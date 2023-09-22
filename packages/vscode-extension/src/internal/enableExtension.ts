@@ -88,7 +88,7 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
 
   context.subscriptions.push(packageWatcher);
   context.subscriptions.push(packageWatcher.onDidCreate(listener));
-  context.subscriptions.push(packageWatcher.onDidCreate(listener));
+  context.subscriptions.push(packageWatcher.onDidChange(listener));
   context.subscriptions.push(packageWatcher.onDidDelete(listener));
 
   await update();

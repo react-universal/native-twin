@@ -32,10 +32,12 @@ export function getCompletionEntries(
           canBeNegative: false,
           kind: 'class',
           isColor: false,
-          theme: null,
+          themeValue: null,
           name: `${completion}${i}`,
           index: 0,
           position: 0,
+          property: '',
+          themeSection: '',
         }),
       ),
     );
