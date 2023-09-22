@@ -11,7 +11,7 @@ export class LanguageServiceLogger implements Logger {
 
   log(message: string): void {
     this.info.project.projectService.logger.info(
-      `[${ConfigurationManager.pluginName}] ${message}`,
+      `[${ConfigurationManager.pluginName}]: ${message}`,
     );
   }
 }

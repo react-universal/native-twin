@@ -7,11 +7,9 @@
   "main": "build/index.js",
   "scripts": {
     "build:libs": "node ./build.js",
-    "e2e": "mocha e2e/tests --slow 2000 --timeout 10000",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest run",
     "test:ui": "vitest --ui",
-    "unit": "npx mocha ./build/test",
     "vscode:dev": "node ./build.js --watch"
   },
   "dependencies": {

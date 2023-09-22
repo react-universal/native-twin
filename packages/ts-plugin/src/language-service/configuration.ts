@@ -9,7 +9,6 @@ export interface TwindPluginConfiguration {
 
 export class ConfigurationManager {
   static readonly pluginName = 'ts-styled-plugin-tw';
-  static readonly VARIANT_MARKER_RULE = /^…$/;
   private static readonly defaultConfiguration: TwindPluginConfiguration = {
     tags: ['tw', 'apply', 'css', 'styled', 'variants'],
     attributes: ['tw', 'class', 'className', 'variants'],

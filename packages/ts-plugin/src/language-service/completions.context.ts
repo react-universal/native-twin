@@ -19,7 +19,6 @@ export function getCompletionEntries(
   if (prevText == '-') {
     originalList = originalList.filter((x) => x.name.startsWith('-'));
   }
-  console.log('PREV: ', prevText);
   if (prevText.endsWith('/')) {
     const prevClasses = prevText.split(/\s+/).filter(Boolean);
     const completion = prevClasses[prevClasses.length - 1]!;
@@ -27,7 +26,6 @@ export function getCompletionEntries(
       .filter((i) => i.name.startsWith('opacity'))
       .map((i) => i.name.split('-')[1]!)
       .sort((a, b) => (parseInt(a) > parseInt(b) ? -1 : 1));
-    console.log('UTIL: ', util);
     originalList.push(
       ...util.map(
         (i): CompletionItem => ({
