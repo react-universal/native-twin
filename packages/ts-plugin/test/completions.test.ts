@@ -13,8 +13,8 @@ const createServerWithMockFile = (fileContents: string) => {
 
 describe('Completions', () => {
   it('Completions for empty string', async () => {
-    const server = createServerWithMockFile('const q = css``');
-    server.sendCommand('completions', { file: mockFileName, offset: 15, line: 1 });
+    const server = createServerWithMockFile('const q = css`hover:`');
+    server.sendCommand('completions', { file: mockFileName, offset: 18, line: 1 });
 
     await server.close();
     const completionsResponse = getFirstResponseOfType('completions', server);

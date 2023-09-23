@@ -34,7 +34,6 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
     // const completions = Array.from(intellisense.classes.values());
 
     proxy.getCompletionsAtPosition = (fileName, position, options) => {
-      console.log('ASD');
       const template = helper.getTemplate(fileName, position);
 
       if (template) {

@@ -53,6 +53,21 @@
         "require": "./build/tailwind.cjs"
       }
     },
+    "./parser": {
+      "default": "./build/parser.cjs",
+      "types": "./build/parser.d.ts",
+      "esnext": "./build/parser.es.js",
+      "module": "./build/parser.es.js",
+      "browser": "./build/parser.cjs",
+      "require": "./build/parser.cjs",
+      "import": "./build/parser.es.js",
+      "node": {
+        "esnext": "./build.es.js",
+        "default": "./build/parser.cjs",
+        "import": "./build/parser.es.js",
+        "require": "./build/parser.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "main": "./build/index.cjs",

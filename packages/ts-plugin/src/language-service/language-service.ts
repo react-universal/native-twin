@@ -4,8 +4,8 @@ import {
 } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
 import { inspect } from 'util';
-import { ConfigurationManager } from './configuration';
 import { LanguageServiceLogger } from './logger';
+import { parse } from './parser';
 
 function getCompletionsAtPosition(
   context: TemplateContext,
@@ -14,12 +14,14 @@ function getCompletionsAtPosition(
 ): ts.WithMetadata<ts.CompletionInfo> {
   const text = context.text;
   const textOffset = context.toOffset(position);
-  logger.log(
-    `${ConfigurationManager.pluginName}: ${inspect({
-      text,
-      textOffset,
-    })}`,
-  );
+  const ruleTokens = parse(text, textOffset);
+  if (ruleTokens.isError) {
+    logger.log(`Error: ${inspect(ruleTokens.error)}`);
+  }
+  if (!ruleTokens.isError) {
+    logger.log(`VALID: ${inspect(ruleTokens.result)}`);
+  }
+
   return {
     entries: [],
     isGlobalCompletion: false,

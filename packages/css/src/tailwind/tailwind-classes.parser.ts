@@ -34,26 +34,31 @@ const mapVariantClass = mapResult('VARIANT_CLASS');
 const mapGroup = mapResult('GROUP');
 const mapColorModifier = mapResult('COLOR_MODIFIER');
 
-const validValues = recursiveParser(
+export const parseValidTokenRecursive = recursiveParser(
   (): Parser<GroupToken | VariantClassToken | ClassNameToken> =>
-    choice([matchGroup, matchVariantClass, matchClassName]),
+    choice([parseRuleGroup, parseVariantClass, parseClassName]),
 );
 
 // CLASSNAMES
 
 /** Match value inside [...] */
-const matchArbitrary = between(char('['))(char(']'))(everyCharUntil(']')).map((x) => `[${x}]`);
-
-/** Match color modifiers like: `.../10` or `.../[...]` */
-const colorModifier = sequenceOf([char('/'), choice([digits, matchArbitrary])]).map((x) =>
-  mapColorModifier(x[1]),
+export const parseArbitraryValue = between(char('['))(char(']'))(everyCharUntil(']')).map(
+  (x) => `[${x}]`,
 );
 
+/** Match color modifiers like: `.../10` or `.../[...]` */
+export const colorModifier = sequenceOf([
+  char('/'),
+  choice([digits, parseArbitraryValue]),
+]).map((x) => mapColorModifier(x[1]));
+
 /** Match important prefix like: `!hidden` */
-const maybeImportant = maybe(char('!')).map((x) => !!x);
+export const parseMaybeImportant = maybe(char('!')).map((x) => !!x);
 
 /** Match variants prefixes like `md:` or stacked like `hover:md:` or `!md:hover:` */
-const matchVariant = many1(sequenceOf([maybeImportant, regex(classNameIdent), char(':')])).map(
+export const parseVariant = many1(
+  sequenceOf([parseMaybeImportant, regex(classNameIdent), char(':')]),
+).map(
   (x): VariantToken =>
     mapVariant(
       x.map((y) => ({
@@ -64,10 +69,10 @@ const matchVariant = many1(sequenceOf([maybeImportant, regex(classNameIdent), ch
 );
 
 /** Match classnames with important prefix arbitrary and color modifiers */
-const matchClassName = sequenceOf([
-  maybeImportant,
+export const parseClassName = sequenceOf([
+  parseMaybeImportant,
   regex(classNameIdent),
-  maybe(matchArbitrary),
+  maybe(parseArbitraryValue),
   maybe(colorModifier),
 ]).map(
   (x): ClassNameToken =>
@@ -79,22 +84,28 @@ const matchClassName = sequenceOf([
 );
 
 /** Match variants prefixes that includes a single class like `md:bg-blue-200` */
-const matchVariantClass = sequenceOf([matchVariant, matchClassName]).map(
+const parseVariantClass = sequenceOf([parseVariant, parseClassName]).map(
   (x): VariantClassToken => mapVariantClass(x),
 );
 
 // GROUPS
 /** Match any valid TW ident or arbitrary separated by spaces */
-const matchGroupContent = matchBetweenParens(
+export const parseGroupContent = matchBetweenParens(
   separatedBySpace(
-    choice([validValues, matchArbitrary.map((x): ArbitraryToken => mapArbitrary(x))]),
+    choice([
+      parseValidTokenRecursive,
+      parseArbitraryValue.map((x): ArbitraryToken => mapArbitrary(x)),
+    ]),
   ),
 );
 
 /**
  * Match className groups like `md:(...)` or stacked like `hover:md:(...)` or feature prefix `text(...)`
  * */
-const matchGroup = sequenceOf([choice([matchVariant, matchClassName]), matchGroupContent]).map(
+export const parseRuleGroup = sequenceOf([
+  choice([parseVariant, parseClassName]),
+  parseGroupContent,
+]).map(
   (x): GroupToken =>
     mapGroup({
       base: x[0],
@@ -102,9 +113,9 @@ const matchGroup = sequenceOf([choice([matchVariant, matchClassName]), matchGrou
     }),
 );
 /** Recursive syntax parser all utils separated by space */
-export const tailwindClassNamesParser = separatedBySpace(validValues);
+export const tailwindClassNamesParser = separatedBySpace(parseValidTokenRecursive);
 
-function translateRules(
+export function translateRuleTokens(
   tokens: (GroupToken | VariantClassToken | ClassNameToken | ArbitraryToken)[],
   result: ParsedRule[] = [],
 ): ParsedRule[] {
@@ -117,7 +128,7 @@ function translateRules(
       i: current.value.i,
       m: current.value.m,
     });
-    return translateRules(tokens, result);
+    return translateRuleTokens(tokens, result);
   }
   if (current.type == 'VARIANT_CLASS') {
     result.push({
@@ -126,11 +137,11 @@ function translateRules(
       i: current.value[1].value.i || current.value[0].value.some((x) => x.i),
       m: current.value[1].value.m,
     });
-    return translateRules(tokens, result);
+    return translateRuleTokens(tokens, result);
   }
   if (current.type == 'GROUP') {
     const baseValue = current.value.base;
-    const content = mergeGroups(current.value.content).map((x) => {
+    const content = mergeRuleGroupTokens(current.value.content).map((x) => {
       if (baseValue.type == 'CLASS_NAME') {
         return {
           ...x,
@@ -146,12 +157,12 @@ function translateRules(
       };
     });
     result.push(...content);
-    return translateRules(tokens, result);
+    return translateRuleTokens(tokens, result);
   }
   return result;
 }
 
-function mergeGroups(
+export function mergeRuleGroupTokens(
   groupContent: (ClassNameToken | VariantClassToken | ArbitraryToken | GroupToken)[],
   results: ParsedRule[] = [],
 ): ParsedRule[] {
@@ -183,7 +194,7 @@ function mergeGroups(
   }
   if (nextToken.type == 'GROUP') {
     const baseValue = nextToken.value.base;
-    const parts = mergeGroups(nextToken.value.content).map((x): ParsedRule => {
+    const parts = mergeRuleGroupTokens(nextToken.value.content).map((x): ParsedRule => {
       if (baseValue.type == 'CLASS_NAME') {
         return {
           ...x,
@@ -200,7 +211,7 @@ function mergeGroups(
     });
     results.push(...parts);
   }
-  return mergeGroups(groupContent, results);
+  return mergeRuleGroupTokens(groupContent, results);
 }
 
 export function parseTWTokens(rules: string) {
@@ -210,5 +221,5 @@ export function parseTWTokens(rules: string) {
     console.warn('Failed parsing rules: ', rules);
     return [];
   }
-  return translateRules(data.result);
+  return translateRuleTokens(data.result);
 }
