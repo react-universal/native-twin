@@ -1,9 +1,15 @@
-const { fork } = require('child_process');
-const path = require('path');
-const readline = require('readline');
+import { fork } from 'child_process';
+import path from 'path';
+import readline from 'readline';
 
 class TSServer {
-  constructor(project) {
+  responses: any[] = [];
+  _exitPromise: Promise<any>;
+  _pendingResponses: number;
+  _isClosed: boolean;
+  _server: any;
+  _seq: number;
+  constructor(project: any) {
     const logFile = path.join(__dirname, 'log.log');
     const tsserverPath = path.join(
       __dirname,
@@ -35,10 +41,10 @@ class TSServer {
       server.on('exit', (code) => resolve(code));
       server.on('error', (reason) => reject(reason));
     });
-    server.stdout.setEncoding('utf-8');
+    server.stdout?.setEncoding('utf-8');
     readline
       .createInterface({
-        input: server.stdout,
+        input: server.stdout!,
       })
       .on('line', (line) => {
         if (line[0] !== '{') {
@@ -66,7 +72,7 @@ class TSServer {
     this._pendingResponses = 0;
   }
 
-  send(command, responseExpected) {
+  send(command: any, responseExpected: any) {
     if (this._isClosed) {
       throw new Error('server is closed');
     }
@@ -78,7 +84,7 @@ class TSServer {
     this._server.stdin.write(req);
   }
 
-  sendCommand(name, args) {
+  sendCommand(name: string, args: any) {
     this.send({ command: name, arguments: args }, true);
   }
 
@@ -97,8 +103,6 @@ class TSServer {
   }
 }
 
-function createServer(project) {
+export default function createServer(project?: any) {
   return new TSServer(project || 'project-fixture');
 }
-
-module.exports = createServer;

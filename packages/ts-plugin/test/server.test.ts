@@ -5,7 +5,7 @@ import createServer from './server-fixture';
 
 const mockFileName = path.join(__dirname, 'project-fixture', 'main.ts');
 
-const createServerWithMockFile = (fileContents) => {
+const createServerWithMockFile = (fileContents: string) => {
   const server = createServer();
   openMockFile(server, mockFileName, fileContents);
   return server;
