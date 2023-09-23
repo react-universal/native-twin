@@ -10,46 +10,70 @@ export function getCompletionEntries(
 ) {
   let originalList = [...completionsCache];
   const templateClasses = new Set(templateContext.text.split(/\s+/).filter(Boolean));
-  const isEmptyCompletion = templateContext.text.charAt(position.character - 1) == ' ';
+
   const prevText = templateContext.text.slice(0, position.character);
-  if (isEmptyCompletion) {
-    // Filter insertedClasses
-    originalList = originalList.filter((i) => !templateClasses.has(i.name));
-  }
-  if (prevText == '-') {
-    originalList = originalList.filter((x) => x.name.startsWith('-'));
-  }
-  if (prevText.endsWith('/')) {
-    const prevClasses = prevText.split(/\s+/).filter(Boolean);
-    const completion = prevClasses[prevClasses.length - 1]!;
-    const util = completionsCache
-      .filter((i) => i.name.startsWith('opacity'))
-      .map((i) => i.name.split('-')[1]!)
-      .sort((a, b) => (parseInt(a) > parseInt(b) ? -1 : 1));
-    originalList.push(
-      ...util.map(
-        (i): CompletionItem => ({
-          canBeNegative: false,
-          kind: 'class',
-          isColor: false,
-          themeValue: null,
-          name: `${completion}${i}`,
-          index: 0,
-          position: 0,
-          property: '',
-          themeSection: '',
-        }),
-      ),
-    );
-  }
-  if (prevText.length > 0 && !isEmptyCompletion) {
-    const prevClasses = prevText.split(/\s+/).filter(Boolean);
-    const completion = prevClasses[prevClasses.length - 1]!;
-    originalList = originalList.filter(
-      (i) => !templateClasses.has(i.name) && i.name.includes(completion),
-    );
-  }
+  const isEmptyCompletion = templateContext.text.charAt(position.character - 1) == ' ';
+  completionsForEmpty();
+  completionForNegatives();
+  completionForColorOpacity();
+  filterExistingCompletions();
   return translateCompletionInfo(templateContext, createCompletionEntries(originalList));
+
+  function completionsForEmpty() {
+    if (isEmptyCompletion) {
+      // Filter insertedClasses
+      originalList = originalList.filter((i) => !templateClasses.has(i.name));
+    }
+  }
+  function completionForNegatives() {
+    if (prevText == '-') {
+      originalList = originalList
+        .filter((x) => {
+          if (x.kind == 'variant') return false;
+          return x.canBeNegative;
+        })
+        .map((x) => ({
+          ...x,
+          name: `-${x.name}`,
+        }));
+    }
+  }
+
+  function filterExistingCompletions() {
+    if (prevText.length > 0 && !isEmptyCompletion) {
+      const prevClasses = prevText.split(/\s+/).filter(Boolean);
+      const completion = prevClasses[prevClasses.length - 1]!;
+      originalList = originalList.filter(
+        (i) => !templateClasses.has(i.name) && i.name.includes(completion),
+      );
+    }
+  }
+
+  function completionForColorOpacity() {
+    if (prevText.endsWith('/')) {
+      const prevClasses = prevText.split(/\s+/).filter(Boolean);
+      const completion = prevClasses[prevClasses.length - 1]!;
+      const util = completionsCache
+        .filter((i) => i.name.startsWith('opacity'))
+        .map((i) => i.name.split('-')[1]!)
+        .sort((a, b) => (parseInt(a) > parseInt(b) ? -1 : 1));
+      originalList.push(
+        ...util.map(
+          (i): CompletionItem => ({
+            canBeNegative: false,
+            kind: 'class',
+            isColor: false,
+            themeValue: null,
+            name: `${completion}${i}`,
+            index: 0,
+            position: 0,
+            property: '',
+            themeSection: '',
+          }),
+        ),
+      );
+    }
+  }
 }
 
 const translateCompletionInfo = (

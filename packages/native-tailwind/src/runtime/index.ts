@@ -11,13 +11,13 @@ let active: RuntimeTW;
 function assertActive() {
   if (__DEV__ && !active) {
     throw new Error(
-      `No active twind instance found. Make sure to call setup or install before accessing tw.`,
+      `No active instance found. Make sure to call setup or install before accessing tw.`,
     );
   }
 }
 
 /**
- * A proxy to the currently active Twind instance.
+ * A proxy to the currently active instance.
  * @group Style Injectors
  */
 export const tw: RuntimeTW<any> = /* #__PURE__ */ new Proxy(

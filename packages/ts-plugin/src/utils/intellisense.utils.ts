@@ -1,25 +1,7 @@
 import { TinyColor } from '@ctrl/tinycolor';
-import cssbeautify from 'cssbeautify';
 import ts from 'typescript/lib/tsserverlibrary';
 import * as vscode from 'vscode-languageserver-types';
 import type { ClassCompletionItem, CompletionItem } from '../types';
-
-export function formatCss(target: string[]) {
-  return cssbeautify(
-    target
-      .filter((rule) => !/^\s*\*\s*{/.test(rule))
-      .join('\n')
-      .replace(/([^\\],)(\S)/g, '$1 $2'),
-    {
-      autosemicolon: true,
-      indent: '  ',
-      openbrace: 'end-of-line',
-    },
-  )
-    .replace(/TYPESCRIPT_PLUGIN_PLACEHOLDER/g, '<...>')
-    .replace(/^(\s*)--typescript_plugin_placeholder:\s*none\s*;$/gm, '$1/* ... */')
-    .trim();
-}
 
 export function getDocumentation(data: ClassCompletionItem) {
   if (!data.property || !data.themeValue) return '';
@@ -40,23 +22,16 @@ export function getDocumentation(data: ClassCompletionItem) {
   return result.join('\n\n');
 }
 
-export function getCompletionEntryDetailsDisplayParts(suggestion: ClassCompletionItem) {
+export function getCompletionEntryDetailsDisplayParts(
+  suggestion: ClassCompletionItem,
+): ts.SymbolDisplayPart[] {
   if (suggestion.isColor && suggestion.themeValue) {
-    if (suggestion.themeValue.startsWith('rgba')) {
-      const hex = new TinyColor(suggestion.themeValue);
-      if (hex.isValid) {
-        return [
-          {
-            kind: 'color',
-            text: hex.toHexString(),
-          },
-        ];
-      }
-    } else {
+    const hex = new TinyColor(suggestion.themeValue);
+    if (hex.isValid) {
       return [
         {
           kind: 'color',
-          text: suggestion.themeValue,
+          text: hex.toHexString(),
         },
       ];
     }
@@ -73,6 +48,7 @@ export function createCompletionEntries(
       name: item.name,
       kindModifiers: item.kind == 'class' && item.isColor ? 'color' : '',
       sortText: item.name,
+      insertText: item.name,
     };
   });
 

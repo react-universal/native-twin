@@ -3,15 +3,23 @@ import ts from 'typescript/lib/tsserverlibrary';
 import { ConfigurationManager } from './configuration';
 
 export class LanguageServiceLogger implements Logger {
-  private readonly info: ts.server.PluginCreateInfo;
+  private readonly pluginInfo: ts.server.PluginCreateInfo;
 
   constructor(info: ts.server.PluginCreateInfo) {
-    this.info = info;
+    this.pluginInfo = info;
+  }
+
+  private sendMessage(message: string, kind: ts.server.Msg) {
+    this.pluginInfo.project.projectService.logger.msg(
+      `[${ConfigurationManager.pluginName}]: ${message}`,
+      kind,
+    );
   }
 
   log(message: string): void {
-    this.info.project.projectService.logger.info(
-      `[${ConfigurationManager.pluginName}]: ${message}`,
-    );
+    this.sendMessage(message, ts.server.Msg.Info);
+  }
+  perf(message: string): void {
+    this.sendMessage(message, ts.server.Msg.Perf);
   }
 }

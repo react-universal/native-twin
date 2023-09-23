@@ -1,8 +1,9 @@
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import ts from 'typescript/lib/tsserverlibrary';
 import { createIntellisense } from './intellisense/createIntellisense';
-import { getCompletionEntries } from './language-service/completions.context';
 import { ConfigurationManager } from './language-service/configuration';
+import { NativeTailwindLanguageService } from './language-service/language-service';
+import { LanguageServiceLogger } from './language-service/logger';
 import { StandardTemplateSourceHelper } from './language-service/source-helper';
 import { createCompletionEntryDetails } from './utils';
 
@@ -22,22 +23,24 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       configManager,
       new StandardScriptSourceHelper(modules.typescript, info.project),
     );
+    const logger = new LanguageServiceLogger(info);
+    const languageService = new NativeTailwindLanguageService(logger);
     let enable = configManager.config.enable;
     configManager.onUpdatedConfig(() => {
       enable = configManager.config.enable;
     });
 
     if (!enable) return proxy;
-    const completions = Array.from(intellisense.classes.values());
+    // const completions = Array.from(intellisense.classes.values());
 
     proxy.getCompletionsAtPosition = (fileName, position, options) => {
+      console.log('ASD');
       const template = helper.getTemplate(fileName, position);
 
       if (template) {
-        return getCompletionEntries(
+        return languageService.getCompletionsAtPosition(
           template,
           helper.getRelativePosition(template, position),
-          completions,
         );
       }
 

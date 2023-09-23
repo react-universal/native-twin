@@ -7,6 +7,7 @@ import {
   createTailwind,
   createThemeContext,
   defineConfig,
+  flattenThemeSection,
 } from '@universal-labs/native-tailwind';
 import { ClassCompletionItem, VariantCompletionItem } from '../types';
 
@@ -54,6 +55,7 @@ export function createIntellisense() {
   }
   return {
     classes,
+    variants,
     context,
     tw,
   };
@@ -85,7 +87,7 @@ export function createIntellisense() {
       basePattern,
       isColor: themeSection == 'colors',
       property,
-      values: config.theme[themeSection as keyof typeof config.theme],
+      values: flattenThemeSection(config.theme[themeSection as keyof typeof config.theme]),
       getExpansions(suffix: string) {
         const composer = composeClassName(basePattern);
         if (meta.feature == 'edges') {
@@ -105,7 +107,9 @@ const composeClassName = (pattern: string) => (suffix: string) => {
   if (pattern.endsWith('-')) {
     return `${pattern}${suffix}`;
   }
-  return suffix;
+  if (suffix == pattern) return pattern;
+  if (pattern.includes('|')) return suffix;
+  return pattern + suffix;
 };
 
 const composeExpansion = (expansion: string) => {
