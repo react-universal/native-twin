@@ -1,3 +1,9 @@
+/**********************************************
+ * Taken from Twind                       *
+ * Credits: @sastan https://github.com/sastan *
+ * Repo: https://github.com/tw-in-js/twind    *
+ * ********************************************
+ */
 export interface ParsedCompletionRule {
   /**
    * The string indicated by loc

@@ -5,7 +5,7 @@ import {
   createCompletionEntryDetails,
 } from './language-service/completions.service';
 import { ConfigurationManager } from './language-service/configuration';
-import { NativeTailwindIntellisense } from './language-service/createIntellisense';
+import { NativeTailwindIntellisense } from './language-service/intellisense.service';
 import { LanguageServiceLogger } from './language-service/logger';
 import { StandardTemplateSourceHelper } from './language-service/source-helper';
 

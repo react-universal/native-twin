@@ -10,7 +10,7 @@ import {
   createTailwind,
   createThemeContext,
   defineConfig,
-  flattenThemeSection,
+  flattenColorPalette,
 } from '@universal-labs/native-tailwind';
 import { ClassCompletionToken, VariantCompletionToken } from '../types';
 import { ConfigurationManager } from './configuration';
@@ -114,6 +114,13 @@ export class NativeTailwindIntellisense {
     if (/color|fill|stroke/i.test(themeSection)) {
       themeSection = 'colors';
     }
+    let values: any = {};
+    if (themeSection == 'colors') {
+      values = flattenColorPalette(this.tailwindConfig.theme.colors ?? {});
+    } else {
+      values =
+        this.tailwindConfig.theme[themeSection as keyof typeof this.tailwindConfig.theme];
+    }
     const result = {
       themeSection,
       meta,
@@ -121,9 +128,7 @@ export class NativeTailwindIntellisense {
       basePattern,
       isColor: themeSection == 'colors',
       property,
-      values: flattenThemeSection(
-        this.tailwindConfig.theme[themeSection as keyof typeof this.tailwindConfig.theme],
-      ),
+      values,
       getExpansions(suffix: string) {
         const composer = composeClassName(basePattern);
         if (meta.feature == 'edges') {

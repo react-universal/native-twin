@@ -3,7 +3,7 @@ import { TemplateContext } from 'typescript-template-language-service-decorator'
 import ts from 'typescript/lib/tsserverlibrary';
 import * as vscode from 'vscode-languageserver-types';
 import { ClassCompletionToken, CompletionToken } from '../types';
-import { NativeTailwindIntellisense } from './createIntellisense';
+import { NativeTailwindIntellisense } from './intellisense.service';
 import { ParsedCompletionRule, parse } from './parser';
 
 export function getCompletionsAtPosition(

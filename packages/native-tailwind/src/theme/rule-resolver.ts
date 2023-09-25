@@ -74,7 +74,6 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
     (match, context, parsedRule) => {
       let value: string | null = null;
       let segmentValue = match.segment.value;
-
       if (parsedRule.m) {
         segmentValue += `/${parsedRule.m.value}`;
       }

@@ -41,8 +41,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/css": "workspace:*",
-    "csstype": "3.1.2"
+    "@universal-labs/css": "workspace:*"
   },
   "peerDependencies": {
     "react-native": ">=0.71.0"

@@ -115,11 +115,15 @@ function getChildStyles(sheet: FinalSheet, input: GetChildStyles) {
 //       borderWidth: {
 //         sm: '100px',
 //       },
+//       fontFamily: {
+//         inter: 'Inter-Regular',
+//         'inter-bold': 'Inter-Bold',
+//       },
 //     },
 //   },
 // });
 
-// tailwind(`text(blue-200 [16px]) bg-blue`).getStyles({
+// tailwind(`p-10 mx-2.5 text(center 2xl) bg-blue-200 justify-center`).getStyles({
 //   isParentActive: false,
 //   isPointerActive: false,
 // }); //?
