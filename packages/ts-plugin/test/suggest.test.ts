@@ -1,13 +1,20 @@
 import { expect, it, describe } from 'vitest';
-import { createIntellisense } from '../src/intellisense/createIntellisense';
+import { ConfigurationManager } from '../src/language-service/configuration';
+import { NativeTailwindIntellisense } from '../src/language-service/createIntellisense';
+import { LanguageServiceLogger } from '../src/language-service/logger';
 
-const intellisense = createIntellisense();
+const config = new ConfigurationManager();
+// @ts-expect-error
+const logger: LanguageServiceLogger = {
+  log: () => {},
+};
+const intellisense = new NativeTailwindIntellisense(logger, config);
 describe('TS PLUGIN', () => {
   it('Complete suggestion list', () => {
-    expect(intellisense.classes.size).toStrictEqual(11954);
+    expect(intellisense.completions().classes.size).toStrictEqual(12557);
   });
   it('Enumerate completions', () => {
-    expect(Array.from(intellisense.classes, ([name]) => name)).toMatchSnapshot(
+    expect(Array.from(intellisense.completions().classes, ([name]) => name)).toMatchSnapshot(
       'Completions Snapshot',
     );
   });

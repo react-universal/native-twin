@@ -43,8 +43,8 @@ describe('@universal-labs/native-tailwind - Spacing Utilities', () => {
   it('arbitrary', () => {
     expect(tailwind('m-[20px]').sheet.base).toStrictEqual({ margin: 20 });
     expect(tailwind('-mx-[20px]').sheet.base).toStrictEqual({
-      marginLeft: '-20px',
-      marginRight: '-20px',
+      marginLeft: -20,
+      marginRight: -20,
     });
     // expect(tailwind('bg-blue-200/10')).toStrictEqual([{ margin: '20px' }]);
   });
