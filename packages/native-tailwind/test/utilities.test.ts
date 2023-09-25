@@ -41,7 +41,7 @@ describe('@universal-labs/native-tailwind - Spacing Utilities', () => {
     });
   });
   it('arbitrary', () => {
-    expect(tailwind('m-[20px]').sheet.base).toStrictEqual({ margin: '20px' });
+    expect(tailwind('m-[20px]').sheet.base).toStrictEqual({ margin: 20 });
     expect(tailwind('-mx-[20px]').sheet.base).toStrictEqual({
       marginLeft: '-20px',
       marginRight: '-20px',

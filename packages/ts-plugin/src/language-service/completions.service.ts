@@ -1,6 +1,8 @@
+import { TinyColor } from '@ctrl/tinycolor';
 import { TemplateContext } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
-import { CompletionToken } from '../types';
+import * as vscode from 'vscode-languageserver-types';
+import { ClassCompletionToken, CompletionToken } from '../types';
 import { NativeTailwindIntellisense } from './createIntellisense';
 import { ParsedCompletionRule, parse } from './parser';
 
@@ -27,8 +29,8 @@ function getCompletionEntries(
 ): ts.CompletionEntry[] {
   const result: ts.CompletionEntry[] = [];
   const { completions } = intellisense;
-  const hasScreenValue = rule.variants.some((x) => completions.screens.has(x.value));
-  const screens = hasScreenValue ? [] : Array.from(completions.variants.values());
+  const hasScreenValue = rule.variants.some((x) => completions().screens.has(x.value));
+  const screens = hasScreenValue ? [] : Array.from(completions().variants.values());
   let index = screens.length;
   if (!hasScreenValue && rule.raw == '') {
     screens.forEach((x, i) => {
@@ -41,7 +43,7 @@ function getCompletionEntries(
       });
     });
   }
-  for (const token of completions.classes.values()) {
+  for (const token of completions().classes.values()) {
     const nextToken = createCompletionEntry(context, rule, token, index);
     if (!nextToken) continue;
     result.push(nextToken);
@@ -87,7 +89,15 @@ function createCompletionEntry(
     kind: getCompletionTokenKind(completion),
     kindModifiers: getKindModifiers(completion),
     name,
-
+    sourceDisplay: [
+      {
+        kind: 'color',
+        text:
+          completion.kind == 'class' && completion.themeValue
+            ? `${completion.property}: ${completion.themeValue}`
+            : '',
+      },
+    ],
     sortText: sortedIndex.toString().padStart(8, '0'),
     insertText,
     replacementSpan,
@@ -109,4 +119,62 @@ function getKindModifiers(item: CompletionToken): string {
   }
 
   return '';
+}
+
+export function getDocumentation(data: ClassCompletionToken) {
+  if (!data.property || !data.themeValue) return '';
+  const result: string[] = [];
+  // result.push('***Css Rules*** \n\n');
+  // result.push(`${'```css\n'}${data.css}${'\n```'}`);
+  // result.push('\n\n');
+  result.push('***React Native StyleSheet*** \n\n');
+  result.push(
+    `${'```json\n'}${JSON.stringify(
+      {
+        [data.property]: data.themeValue,
+      },
+      null,
+      2,
+    )}${'\n```'}`,
+  );
+  return result.join('\n\n');
+}
+
+export function getCompletionEntryDetailsDisplayParts(
+  suggestion: ClassCompletionToken,
+): ts.SymbolDisplayPart[] {
+  if (
+    suggestion.isColor &&
+    suggestion.themeValue &&
+    (suggestion.themeValue.startsWith('#') || suggestion.themeValue.startsWith('rgb'))
+  ) {
+    const hex = new TinyColor(suggestion.themeValue);
+    if (hex.isValid) {
+      return [
+        {
+          kind: 'color',
+          text: hex.toHexString(),
+        },
+      ];
+    }
+  }
+  return [];
+}
+
+export function createCompletionEntryDetails(
+  item: ClassCompletionToken,
+): ts.CompletionEntryDetails {
+  const displayParts = getCompletionEntryDetailsDisplayParts(item);
+  return {
+    name: item.name,
+    kind: ts.ScriptElementKind.string,
+    kindModifiers: displayParts.length > 0 ? 'color' : '',
+    displayParts,
+    documentation: [
+      {
+        kind: vscode.MarkupKind.Markdown,
+        text: getDocumentation(item),
+      },
+    ],
+  };
 }

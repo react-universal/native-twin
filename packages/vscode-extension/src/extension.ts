@@ -11,7 +11,7 @@ export async function activate(context: vscode.ExtensionContext) {
     .catch((error) => {
       log(`Activating ${pluginId} failed: ${error.stack}`);
     })
-    .then((c) => {
-      log(`Activating ${pluginId} failed: ${c}`);
+    .then(() => {
+      log(`Activating ${pluginId} success`);
     });
 }

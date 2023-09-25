@@ -32,9 +32,10 @@ export class NativeTailwindIntellisense {
     this.tailwindConfig = defineConfig({});
     this.tw = createTailwind(this.tailwindConfig);
     this.context = createThemeContext(this.tailwindConfig);
+    this.completions = this.completions.bind(this);
   }
 
-  get completions() {
+  completions() {
     if (this._variants.size == 0) {
       this.fillVariants();
     }

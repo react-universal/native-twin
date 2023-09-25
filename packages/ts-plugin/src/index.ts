@@ -1,6 +1,9 @@
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import ts from 'typescript/lib/tsserverlibrary';
-import { getCompletionsAtPosition } from './language-service/completions.service';
+import {
+  getCompletionsAtPosition,
+  createCompletionEntryDetails,
+} from './language-service/completions.service';
 import { ConfigurationManager } from './language-service/configuration';
 import { NativeTailwindIntellisense } from './language-service/createIntellisense';
 import { LanguageServiceLogger } from './language-service/logger';
@@ -45,14 +48,16 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       return info.languageService.getCompletionsAtPosition(fileName, position, options);
     };
 
-    // proxy.getCompletionEntryDetails = (fileName, position, name, ...rest) => {
-    //   const context = helper.getTemplate(fileName, position);
-    //   if (!context) {
-    //     const utility = intellisense.completions.classes.get(name)!;
-    //     return createCompletionEntryDetails(utility);
-    //   }
-    //   return info.languageService.getCompletionEntryDetails(fileName, position, name, ...rest);
-    // };
+    proxy.getCompletionEntryDetails = (fileName, position, name, ...rest) => {
+      const context = helper.getTemplate(fileName, position);
+      if (context) {
+        const utility = intellisense.completions().classes.get(name);
+        if (utility) {
+          return createCompletionEntryDetails(utility);
+        }
+      }
+      return info.languageService.getCompletionEntryDetails(fileName, position, name, ...rest);
+    };
 
     return proxy;
   }
