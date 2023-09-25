@@ -101,7 +101,7 @@ export interface __Theme__ {
   borderWidth?: Record<string, string>;
   verticalBreakpoints?: Record<string, string | number>;
   fontFamily?: Record<string, string>;
-  fontSize?: Record<string, string | [string, string]>;
+  fontSize?: Record<string, string>;
   fontWeight?: Record<string, string>;
   lineHeight?: Record<string, string>;
   letterSpacing?: Record<string, string>;

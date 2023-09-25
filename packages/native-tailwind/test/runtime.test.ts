@@ -12,7 +12,6 @@ describe('@universal-labs/native-tailwind - TW call', () => {
     expect(result.sheet.base).toStrictEqual({
       color: 'rgba(199,210,254,1)',
       fontSize: 24,
-      lineHeight: 32,
       paddingLeft: 8,
       paddingRight: 8,
       margin: 40,

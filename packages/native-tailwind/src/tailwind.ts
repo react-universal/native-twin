@@ -105,25 +105,25 @@ function getChildStyles(sheet: FinalSheet, input: GetChildStyles) {
   return Object.freeze(result);
 }
 
-// const tailwind = createTailwind({
-//   ignorelist: [],
-//   theme: {
-//     extend: {
-//       colors: {
-//         primary: '#0558f9',
-//       },
-//       borderWidth: {
-//         sm: '100px',
-//       },
-//       fontFamily: {
-//         inter: 'Inter-Regular',
-//         'inter-bold': 'Inter-Bold',
-//       },
-//     },
-//   },
-// });
+const tailwind = createTailwind({
+  ignorelist: [],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#0558f9',
+      },
+      borderWidth: {
+        sm: '100px',
+      },
+      fontFamily: {
+        inter: 'Inter-Regular',
+        'inter-bold': 'Inter-Bold',
+      },
+    },
+  },
+});
 
-// tailwind(`p-10 mx-2.5 text(center 2xl) bg-blue-200 justify-center`).getStyles({
-//   isParentActive: false,
-//   isPointerActive: false,
-// }); //?
+tailwind(`text-[16px] font-[#fff]`).getStyles({
+  isParentActive: false,
+  isPointerActive: false,
+}); //?

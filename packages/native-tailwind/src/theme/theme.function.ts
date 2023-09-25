@@ -13,7 +13,7 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
 
   function theme(themeSection: keyof Omit<ThemeConfig<Theme>, 'extend'>, segment: string) {
     if (segment.startsWith('[') && segment.endsWith(']')) {
-      return segment.slice(1, -1);
+      return parseCssValue(themeSection as string, segment.slice(1, -1), root);
     }
     let config = baseConfig[themeSection];
     if (themeSection in extend) {
@@ -31,19 +31,8 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
         value = resolved[themeSection as string][segment];
       }
     }
-    // let value = segment.split('-').reduce((prev, current) => {
-    //   if (!prev) return null;
-    //   if (typeof prev == 'object') {
-    //     return prev[current];
-    //   }
-    //   return prev;
-    // }, config as any);
     if (value) {
-      if (Array.isArray(value)) {
-        value = value.map((x) => parseCssValue(themeSection as string, x, root));
-      } else {
-        value = parseCssValue(themeSection as string, value, root);
-      }
+      value = parseCssValue(themeSection as string, value, root);
     }
     return value;
   }
