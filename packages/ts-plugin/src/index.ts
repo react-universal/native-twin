@@ -1,11 +1,10 @@
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import ts from 'typescript/lib/tsserverlibrary';
-import { createIntellisense } from './intellisense/createIntellisense';
+import { getCompletionsAtPosition } from './language-service/completions.service';
 import { ConfigurationManager } from './language-service/configuration';
-import { NativeTailwindLanguageService } from './language-service/language-service';
+import { NativeTailwindService } from './language-service/createIntellisense';
 import { LanguageServiceLogger } from './language-service/logger';
 import { StandardTemplateSourceHelper } from './language-service/source-helper';
-import { createCompletionEntryDetails } from './utils';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
   function create(info: ts.server.PluginCreateInfo) {
@@ -17,49 +16,42 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
     }
 
     const configManager = new ConfigurationManager();
-    const intellisense = createIntellisense();
+    const intellisense = new NativeTailwindService();
     const helper = new StandardTemplateSourceHelper(
       modules.typescript,
       configManager,
       new StandardScriptSourceHelper(modules.typescript, info.project),
     );
     const logger = new LanguageServiceLogger(info);
-    const languageService = new NativeTailwindLanguageService(logger);
     let enable = configManager.config.enable;
     configManager.onUpdatedConfig(() => {
       enable = configManager.config.enable;
     });
 
     if (!enable) return proxy;
-    // const completions = Array.from(intellisense.classes.values());
 
     proxy.getCompletionsAtPosition = (fileName, position, options) => {
       const template = helper.getTemplate(fileName, position);
 
       if (template) {
-        return languageService.getCompletionsAtPosition(
+        return getCompletionsAtPosition(
           template,
           helper.getRelativePosition(template, position),
+          intellisense,
         );
       }
 
       return info.languageService.getCompletionsAtPosition(fileName, position, options);
     };
 
-    proxy.getCompletionEntryDetails = (fileName, position, name, ...rest) => {
-      const context = helper.getTemplate(fileName, position);
-      if (!context) {
-        return info.languageService.getCompletionEntryDetails(
-          fileName,
-          position,
-          name,
-          ...rest,
-        );
-      }
-
-      const utility = intellisense.classes.get(name)!;
-      return createCompletionEntryDetails(utility);
-    };
+    // proxy.getCompletionEntryDetails = (fileName, position, name, ...rest) => {
+    //   const context = helper.getTemplate(fileName, position);
+    //   if (!context) {
+    //     const utility = intellisense.completions.classes.get(name)!;
+    //     return createCompletionEntryDetails(utility);
+    //   }
+    //   return info.languageService.getCompletionEntryDetails(fileName, position, name, ...rest);
+    // };
 
     return proxy;
   }

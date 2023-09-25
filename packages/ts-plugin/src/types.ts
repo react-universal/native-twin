@@ -6,12 +6,12 @@ import {
 export type CurrentTheme = __Theme__;
 export type TailwindConfig = InternalTWConfig<CurrentTheme>;
 
-interface CommonCompletionItem {
+interface CommonCompletionToken {
   name: string;
   position: number;
   index: number;
 }
-export interface ClassCompletionItem extends CommonCompletionItem {
+export interface ClassCompletionToken extends CommonCompletionToken {
   kind: 'class';
   property: string;
   themeSection: string;
@@ -20,11 +20,11 @@ export interface ClassCompletionItem extends CommonCompletionItem {
   themeValue: string | null;
 }
 
-export interface VariantCompletionItem extends CommonCompletionItem {
+export interface VariantCompletionToken extends CommonCompletionToken {
   kind: 'variant';
 }
 
-export type CompletionItem = ClassCompletionItem | VariantCompletionItem;
+export type CompletionToken = ClassCompletionToken | VariantCompletionToken;
 
 export interface CompletionItemLocation {
   position: number;

@@ -42,6 +42,7 @@ class TSServer {
       server.on('error', (reason) => reject(reason));
     });
     server.stdout?.setEncoding('utf-8');
+
     readline
       .createInterface({
         input: server.stdout!,

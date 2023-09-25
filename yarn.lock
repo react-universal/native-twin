@@ -6255,6 +6255,7 @@ __metadata:
     typescript-template-language-service-decorator: 2.3.2
     vscode-css-languageservice: 6.2.6
     vscode-languageserver-textdocument: 1.0.8
+    vscode-languageserver-types: 3.17.4
   languageName: unknown
   linkType: soft
 
@@ -18113,6 +18114,13 @@ __metadata:
   version: 3.17.3
   resolution: "vscode-languageserver-types@npm:3.17.3"
   checksum: fbc8221297261f659a6482875ff2a419dc9d55965dc53745797da569ff9f819cd832e6f2699017baadd946548bbfe212e3f6971f3d960f12dc0ee9c629dacc07
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver-types@npm:3.17.4":
+  version: 3.17.4
+  resolution: "vscode-languageserver-types@npm:3.17.4"
+  checksum: 1b8efd06e7c7a43c8cafba2f0c2e3ad841e24eeca526060f2929dc249d5464bba8e0d3de3e8608fa0b5f88ecc71b022adc6082d87982b80f42c827b043347269
   languageName: node
   linkType: hard
 
