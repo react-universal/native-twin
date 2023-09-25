@@ -1,13 +1,13 @@
 import { TemplateContext } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
 import { CompletionToken } from '../types';
-import { NativeTailwindService } from './createIntellisense';
+import { NativeTailwindIntellisense } from './createIntellisense';
 import { ParsedCompletionRule, parse } from './parser';
 
 export function getCompletionsAtPosition(
   context: TemplateContext,
   position: ts.LineAndCharacter,
-  intellisense: NativeTailwindService,
+  intellisense: NativeTailwindIntellisense,
 ): ts.WithMetadata<ts.CompletionInfo> {
   const text = context.text;
   const textOffset = context.toOffset(position);
@@ -23,23 +23,24 @@ export function getCompletionsAtPosition(
 function getCompletionEntries(
   context: TemplateContext,
   rule: ParsedCompletionRule,
-  intellisense: NativeTailwindService,
+  intellisense: NativeTailwindIntellisense,
 ): ts.CompletionEntry[] {
   const result: ts.CompletionEntry[] = [];
   const { completions } = intellisense;
   const hasScreenValue = rule.variants.some((x) => completions.screens.has(x.value));
   const screens = hasScreenValue ? [] : Array.from(completions.variants.values());
   let index = screens.length;
-  // if (!hasScreenValue) {
-  //   screens.forEach((x, i) => {
-  //     result.push({
-  //       kind: ts.ScriptElementKind.alias,
-  //       name: x.name,
-  //       sortText: i.toString().padStart(8, '0'),
-  //       insertText: x.name,
-  //     });
-  //   });
-  // }
+  if (!hasScreenValue && rule.raw == '') {
+    screens.forEach((x, i) => {
+      result.push({
+        kind: ts.ScriptElementKind.alias,
+        name: x.name,
+        sortText: i.toString().padStart(8, '0'),
+        kindModifiers: getCompletionTokenKind(x),
+        labelDetails: { description: 'Screen Media Query', detail: 'Screens' },
+      });
+    });
+  }
   for (const token of completions.classes.values()) {
     const nextToken = createCompletionEntry(context, rule, token, index);
     if (!nextToken) continue;
@@ -75,30 +76,15 @@ function createCompletionEntry(
     } else {
       return null;
     }
-    // if (rule.name == '') {
-
-    // }
-    // if (rule.name != '') {
-    //   if (name.startsWith(rule.prefix + '-' + rule.value)) {
-    //   }
-    // }
   }
   if (rule.prefix == '') {
     if ((rule.name != '' || rule.raw != '') && !completion.name.startsWith(rule.name)) {
       return null;
     }
-    // replacementSpan.start = context.toOffset(context.toPosition(rule.loc.start));
-    // replacementSpan.length = context.toOffset(
-    //   context.toPosition(completion.name.length - rule.value.length),
-    // );ç
     replacementSpan = undefined;
     insertText = completion.name.slice(rule.name.length);
     name = completion.name;
   }
-  // console.log(
-  //   'AAAASDSALDJASLDJALASKDJ: ',
-  //   inspect({ replacementSpan, insertText, name }, false, null),
-  // );
   return {
     kind: getCompletionTokenKind(completion),
     kindModifiers: getKindModifiers(completion),

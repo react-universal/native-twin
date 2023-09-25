@@ -13,19 +13,25 @@ import {
   flattenThemeSection,
 } from '@universal-labs/native-tailwind';
 import { ClassCompletionToken, VariantCompletionToken } from '../types';
+import { ConfigurationManager } from './configuration';
+import { LanguageServiceLogger } from './logger';
 
-export class NativeTailwindService {
+export class NativeTailwindIntellisense {
+  logger: LanguageServiceLogger;
+  pluginConfig: ConfigurationManager;
   private _classes: Map<string, ClassCompletionToken> = new Map();
   private _variants: Map<string, VariantCompletionToken> = new Map();
-  config: TailwindConfig;
+  tailwindConfig: TailwindConfig;
   tw: RuntimeTW;
   context: ThemeContext;
   nextIndex = 0;
 
-  constructor() {
-    this.config = defineConfig({});
-    this.tw = createTailwind(this.config);
-    this.context = createThemeContext(this.config);
+  constructor(logger: LanguageServiceLogger, pluginConfig: ConfigurationManager) {
+    this.pluginConfig = pluginConfig;
+    this.logger = logger;
+    this.tailwindConfig = defineConfig({});
+    this.tw = createTailwind(this.tailwindConfig);
+    this.context = createThemeContext(this.tailwindConfig);
   }
 
   get completions() {
@@ -115,7 +121,7 @@ export class NativeTailwindService {
       isColor: themeSection == 'colors',
       property,
       values: flattenThemeSection(
-        this.config.theme[themeSection as keyof typeof this.config.theme],
+        this.tailwindConfig.theme[themeSection as keyof typeof this.tailwindConfig.theme],
       ),
       getExpansions(suffix: string) {
         const composer = composeClassName(basePattern);

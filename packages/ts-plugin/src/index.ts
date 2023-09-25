@@ -2,7 +2,7 @@ import StandardScriptSourceHelper from 'typescript-template-language-service-dec
 import ts from 'typescript/lib/tsserverlibrary';
 import { getCompletionsAtPosition } from './language-service/completions.service';
 import { ConfigurationManager } from './language-service/configuration';
-import { NativeTailwindService } from './language-service/createIntellisense';
+import { NativeTailwindIntellisense } from './language-service/createIntellisense';
 import { LanguageServiceLogger } from './language-service/logger';
 import { StandardTemplateSourceHelper } from './language-service/source-helper';
 
@@ -16,13 +16,14 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
     }
 
     const configManager = new ConfigurationManager();
-    const intellisense = new NativeTailwindService();
+    const logger = new LanguageServiceLogger(info);
+    const intellisense = new NativeTailwindIntellisense(logger, configManager);
     const helper = new StandardTemplateSourceHelper(
       modules.typescript,
       configManager,
       new StandardScriptSourceHelper(modules.typescript, info.project),
     );
-    const logger = new LanguageServiceLogger(info);
+
     let enable = configManager.config.enable;
     configManager.onUpdatedConfig(() => {
       enable = configManager.config.enable;
