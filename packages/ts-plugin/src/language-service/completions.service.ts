@@ -68,10 +68,8 @@ function createCompletionEntry(
     if (name.startsWith(rule.name)) {
       name = completion.name.slice(rule.prefix.length);
       replacementSpan = undefined;
-      // insertText = completion.name.slice(rule.name.length);
       if (name.startsWith('-')) {
         name = name.slice(1);
-        // insertText = name.slice(rule.raw.length);
       }
     } else {
       return null;
