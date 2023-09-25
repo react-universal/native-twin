@@ -80,7 +80,7 @@ function createCompletionEntry(
       return null;
     }
     replacementSpan = undefined;
-    insertText = completion.name.slice(rule.name.length);
+    // insertText = completion.name.slice(rule.raw.length);
     name = completion.name;
   }
   return {
