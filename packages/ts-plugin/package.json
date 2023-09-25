@@ -27,7 +27,6 @@
   },
   "devDependencies": {
     "@types/cssbeautify": "0.3.2",
-    "@types/showdown": "2.0.1",
-    "vscode-languageserver-types": "3.17.4"
+    "@types/showdown": "2.0.1"
   }
 }

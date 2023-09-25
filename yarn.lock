@@ -6020,7 +6020,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/vscode@npm:1.80.0, @types/vscode@npm:^1.80.0":
+"@types/vscode@npm:1.80.0":
   version: 1.80.0
   resolution: "@types/vscode@npm:1.80.0"
   checksum: 442c55fb83151d36aa30c895dacb3f2320a7a7a1c8d956f1f1902618b6f3cddec070a88e494fe7e6db4aec481e9f44d4df0077d2598edb815ebffb6e7ea0e176
@@ -6255,7 +6255,6 @@ __metadata:
     typescript-template-language-service-decorator: 2.3.2
     vscode-css-languageservice: 6.2.6
     vscode-languageserver-textdocument: 1.0.8
-    vscode-languageserver-types: 3.17.4
   languageName: unknown
   linkType: soft
 
@@ -17620,7 +17619,6 @@ __metadata:
     "@types/mocha": ^10.0.1
     "@types/node": 20.2.5
     "@types/react-test-renderer": ^18.0.0
-    "@types/vscode": ^1.80.0
     "@typescript-eslint/eslint-plugin": 5.62.0
     "@typescript-eslint/parser": 5.62.0
     "@vitejs/plugin-react-swc": ^3.3.2
@@ -18114,13 +18112,6 @@ __metadata:
   version: 3.17.3
   resolution: "vscode-languageserver-types@npm:3.17.3"
   checksum: fbc8221297261f659a6482875ff2a419dc9d55965dc53745797da569ff9f819cd832e6f2699017baadd946548bbfe212e3f6971f3d960f12dc0ee9c629dacc07
-  languageName: node
-  linkType: hard
-
-"vscode-languageserver-types@npm:3.17.4":
-  version: 3.17.4
-  resolution: "vscode-languageserver-types@npm:3.17.4"
-  checksum: 1b8efd06e7c7a43c8cafba2f0c2e3ad841e24eeca526060f2929dc249d5464bba8e0d3de3e8608fa0b5f88ecc71b022adc6082d87982b80f42c827b043347269
   languageName: node
   linkType: hard
 
