@@ -6,7 +6,7 @@ export interface SynchronizedConfiguration {
   enable: boolean;
 }
 
-export type Logger = (message: string) => void;
+export type LoggerFn = (message: string) => void;
 
 export interface State {
   hasUniversalLabs?: boolean;

@@ -5,7 +5,10 @@ const esbuild = require('esbuild');
 
 esbuild
   .build({
-    entryPoints: ['./src/extension.ts'],
+    entryPoints: {
+      extension: './src/client/index.ts',
+      server: './src/server/index.ts',
+    },
     bundle: true,
     platform: 'node',
     outdir: 'build',
@@ -13,7 +16,7 @@ esbuild
     format: 'cjs',
     logLevel: 'info',
     watch: !!watch,
-    sourcemap: !production,
+    sourcemap: 'external',
     minify: production,
   })
   .catch((e) => {

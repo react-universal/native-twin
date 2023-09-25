@@ -87,27 +87,21 @@
           }
         }
       }
-    ],
-    "typescriptServerPlugins": [
-      {
-        "name": "@universal-labs/ts-styled-plugin-tw",
-        "enableForWorkspaceTypeScriptVersions": true
-      }
     ]
   },
   "activationEvents": [
     "onStartupFinished"
   ],
   "dependencies": {
-    "@universal-labs/ts-styled-plugin-tw": "workspace:*",
-    "vscode-languageclient": "^8.1.0"
+    "vscode-languageclient": "^9.0.0",
+    "vscode-languageserver": "^9.0.0"
   },
   "devDependencies": {
-    "@types/vscode": "1.80.0",
-    "@vscode/test-electron": "^2.3.3",
-    "vscode-test": "1.6.1"
+    "@types/vscode": "^1.82.0",
+    "@vscode/test-electron": "^2.3.4",
+    "vscode-test": "^1.6.1"
   },
   "engines": {
-    "vscode": "^1.80.0"
+    "vscode": "^1.82.0"
   }
 }

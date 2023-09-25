@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { Logger } from '../types';
+import { LoggerFn } from '../types';
 
-export function createLogger(outputChannel: vscode.OutputChannel): Logger {
+export function createLogger(outputChannel: vscode.OutputChannel): LoggerFn {
   return (message) => {
     const title = new Date().toLocaleTimeString();
     outputChannel.appendLine(`[${title}] ${message}`);

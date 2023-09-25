@@ -50,7 +50,6 @@
     "@vitejs/plugin-react-swc": "^3.3.2",
     "@vitest/coverage-istanbul": "^0.31.1",
     "@vitest/ui": "^0.31.1",
-    "@vscode/test-electron": "^2.3.2",
     "chai": "4.3.7",
     "concurrently": "^7.6.0",
     "eslint": "~8.15.0",

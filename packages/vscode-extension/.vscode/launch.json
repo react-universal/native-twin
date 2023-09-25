@@ -6,10 +6,10 @@
       "type": "extensionHost",
       "request": "launch",
       "name": "Launch Extension",
+      "runtimeExecutable": "${execPath}",
       "preLaunchTask": "${defaultBuildTask}",
       "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
-      "outFiles": ["${workspaceRoot}/build/**/*.js"],
-      "sourceMaps": true
+      "outFiles": ["${workspaceRoot}/build/*.js", "${workspaceRoot}/build/**/*.js", "${workspaceRoot}/build/**/*.js.map"]
     }
   ]
 }

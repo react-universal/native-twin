@@ -8,11 +8,11 @@
     "module": "ESNext",
     "resolveJsonModule": true,
     "noEmit": true,
-    "plugins": [
-      {
-        "name": "@universal-labs/ts-styled-plugin-tw"
-      }
-    ]
+    // "plugins": [
+    //   {
+    //     "name": "@universal-labs/ts-styled-plugin-tw"
+    //   }
+    // ]
   },
   "references": [],
   "exclude": [

@@ -6020,10 +6020,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/vscode@npm:1.80.0":
-  version: 1.80.0
-  resolution: "@types/vscode@npm:1.80.0"
-  checksum: 442c55fb83151d36aa30c895dacb3f2320a7a7a1c8d956f1f1902618b6f3cddec070a88e494fe7e6db4aec481e9f44d4df0077d2598edb815ebffb6e7ea0e176
+"@types/vscode@npm:^1.82.0":
+  version: 1.82.0
+  resolution: "@types/vscode@npm:1.82.0"
+  checksum: 2c546b61a0f52c8153bf52645e230e192609a77cd482c96a8eaa5f7008763b25bab684c688a77713dcb087464f99ff979a232bf145038f9cb91a395feb6a09d9
   languageName: node
   linkType: hard
 
@@ -6238,7 +6238,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/ts-styled-plugin-tw@workspace:*, @universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin":
+"@universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin":
   version: 0.0.0-use.local
   resolution: "@universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin"
   dependencies:
@@ -6262,11 +6262,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/vscode@workspace:packages/vscode-extension"
   dependencies:
-    "@types/vscode": 1.80.0
-    "@universal-labs/ts-styled-plugin-tw": "workspace:*"
-    "@vscode/test-electron": ^2.3.3
-    vscode-languageclient: ^8.1.0
-    vscode-test: 1.6.1
+    "@types/vscode": ^1.82.0
+    "@vscode/test-electron": ^2.3.4
+    vscode-languageclient: ^9.0.0
+    vscode-languageserver: ^9.0.0
+    vscode-test: ^1.6.1
   languageName: unknown
   linkType: soft
 
@@ -6423,15 +6423,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vscode/test-electron@npm:^2.3.2, @vscode/test-electron@npm:^2.3.3":
-  version: 2.3.3
-  resolution: "@vscode/test-electron@npm:2.3.3"
+"@vscode/test-electron@npm:^2.3.4":
+  version: 2.3.4
+  resolution: "@vscode/test-electron@npm:2.3.4"
   dependencies:
     http-proxy-agent: ^4.0.1
     https-proxy-agent: ^5.0.0
     jszip: ^3.10.1
-    semver: ^7.3.8
-  checksum: ecb5a52e7a02303c622a4c98b50a387ca3575d586766ab7c4a0cef6248486a0d96f72270a0f9e7321279aabdb8b39a0d770088049f1630dff1908f71946b6835
+    semver: ^7.5.2
+  checksum: 78de21d66be5affa26789e41a3f645bd07978a993ef026219136e55e4b7025e5e13f03bd9a1a1696690f802fed3e2e363828d1933e5bd581cadee94655272f00
   languageName: node
   linkType: hard
 
@@ -15955,7 +15955,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.8, semver@npm:^7.5.3":
+"semver@npm:^7.5.2, semver@npm:^7.5.3":
   version: 7.5.4
   resolution: "semver@npm:7.5.4"
   dependencies:
@@ -17624,7 +17624,6 @@ __metadata:
     "@vitejs/plugin-react-swc": ^3.3.2
     "@vitest/coverage-istanbul": ^0.31.1
     "@vitest/ui": ^0.31.1
-    "@vscode/test-electron": ^2.3.2
     chai: 4.3.7
     concurrently: ^7.6.0
     eslint: ~8.15.0
@@ -18066,31 +18065,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vscode-jsonrpc@npm:8.1.0":
-  version: 8.1.0
-  resolution: "vscode-jsonrpc@npm:8.1.0"
-  checksum: 8980037cc0014802e6ac1e5dfcff9a65e8292727096dfd23c92d2039c0c45de74a00d6ee06938cf1a671286dd8258a5f418cf048c26ad0fcb0c44f96c9e0f278
+"vscode-jsonrpc@npm:8.2.0":
+  version: 8.2.0
+  resolution: "vscode-jsonrpc@npm:8.2.0"
+  checksum: f302a01e59272adc1ae6494581fa31c15499f9278df76366e3b97b2236c7c53ebfc71efbace9041cfd2caa7f91675b9e56f2407871a1b3c7f760a2e2ee61484a
   languageName: node
   linkType: hard
 
-"vscode-languageclient@npm:^8.1.0":
-  version: 8.1.0
-  resolution: "vscode-languageclient@npm:8.1.0"
+"vscode-languageclient@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "vscode-languageclient@npm:9.0.0"
   dependencies:
     minimatch: ^5.1.0
     semver: ^7.3.7
-    vscode-languageserver-protocol: 3.17.3
-  checksum: b9d46aa256188dae19dcc5adb502be7193564b3313cbf20f99f83730ffbbf88cec40a08c4cafdc005b65c6385544c9f316de9b152067ab263221383326f00f95
+    vscode-languageserver-protocol: 3.17.4
+  checksum: bb0c89933d8ec764c0712a8e217146e96244acc905916cdce3cc195a5f04a222855f44394735d7279abfd1857b01e29e19038699774a28dbe202d274312fffa8
   languageName: node
   linkType: hard
 
-"vscode-languageserver-protocol@npm:3.17.3":
-  version: 3.17.3
-  resolution: "vscode-languageserver-protocol@npm:3.17.3"
+"vscode-languageserver-protocol@npm:3.17.4":
+  version: 3.17.4
+  resolution: "vscode-languageserver-protocol@npm:3.17.4"
   dependencies:
-    vscode-jsonrpc: 8.1.0
-    vscode-languageserver-types: 3.17.3
-  checksum: ffea508b2efd7f4853f1cef5e5eac58672f0ae71a9ec275ad37a4a2a24cdc3ff023f941e759951aee01c79da3f3279f10e034f19d875f081eb387181241bd836
+    vscode-jsonrpc: 8.2.0
+    vscode-languageserver-types: 3.17.4
+  checksum: 1503b0cd2f2a7662ac7fa307180f5c65d2eb090020201376705f603144f65beadf10f0ec9014b3d6dc916196b7353a07c31f25ff7d27f7104a3e2f81efa61fb7
   languageName: node
   linkType: hard
 
@@ -18108,14 +18107,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vscode-languageserver-types@npm:3.17.3, vscode-languageserver-types@npm:^3.15.1, vscode-languageserver-types@npm:^3.17.3":
+"vscode-languageserver-types@npm:3.17.4":
+  version: 3.17.4
+  resolution: "vscode-languageserver-types@npm:3.17.4"
+  checksum: 1b8efd06e7c7a43c8cafba2f0c2e3ad841e24eeca526060f2929dc249d5464bba8e0d3de3e8608fa0b5f88ecc71b022adc6082d87982b80f42c827b043347269
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver-types@npm:^3.15.1, vscode-languageserver-types@npm:^3.17.3":
   version: 3.17.3
   resolution: "vscode-languageserver-types@npm:3.17.3"
   checksum: fbc8221297261f659a6482875ff2a419dc9d55965dc53745797da569ff9f819cd832e6f2699017baadd946548bbfe212e3f6971f3d960f12dc0ee9c629dacc07
   languageName: node
   linkType: hard
 
-"vscode-test@npm:1.6.1":
+"vscode-languageserver@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "vscode-languageserver@npm:9.0.0"
+  dependencies:
+    vscode-languageserver-protocol: 3.17.4
+  bin:
+    installServerIntoExtension: bin/installServerIntoExtension
+  checksum: 2239bed997c01650ecc368bb08e57a7cb74b4b3d4de48534237f374ba4c275378889bd625ec944fcde96bdd69c73a6e2a867bf34c00261920e98d73ac07e8e97
+  languageName: node
+  linkType: hard
+
+"vscode-test@npm:^1.6.1":
   version: 1.6.1
   resolution: "vscode-test@npm:1.6.1"
   dependencies:

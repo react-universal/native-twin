@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { Logger, State, SynchronizedConfiguration } from '../types';
+import { LoggerFn, State, SynchronizedConfiguration } from '../types';
 import { configurationSection, pluginId, typeScriptExtensionId } from './config';
 
-export async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
+export async function enableExtension(context: vscode.ExtensionContext, log: LoggerFn) {
   const state: State = { hasUniversalLabs: undefined };
 
   const update = async () => {
@@ -94,7 +94,7 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
   await update();
 }
 
-async function activateTypescriptPlugin(log: Logger) {
+async function activateTypescriptPlugin(log: LoggerFn) {
   const extension = vscode.extensions.getExtension(typeScriptExtensionId);
   if (!extension) {
     log(`Extension ${typeScriptExtensionId} not found. No IntelliSense will be provided.`);
@@ -115,7 +115,7 @@ async function activateTypescriptPlugin(log: Logger) {
   return api;
 }
 
-function synchronizeConfiguration(api: any, state: State, log: Logger) {
+function synchronizeConfiguration(api: any, state: State, log: LoggerFn) {
   const config = getConfiguration();
 
   if (config.enable) {
