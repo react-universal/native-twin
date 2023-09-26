@@ -55,7 +55,9 @@ export const getPropertyValueType = (property: string) => {
     case 'flex-shrink':
     case 'translate':
     case 'translateX':
+    case 'translate-x':
     case 'translateY':
+    case 'translate-y':
     case 'scale':
     case 'scaleX':
     case 'scaleY':

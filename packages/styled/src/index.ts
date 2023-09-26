@@ -9,6 +9,6 @@ export type {
   RegisteredComponent,
   ComponentStylesheet,
 } from './types/styled.types';
-export type { StyledContext, SheetMetadata, Units } from './types/css.types';
+export type { SheetMetadata } from './types/css.types';
 
 export default styled;

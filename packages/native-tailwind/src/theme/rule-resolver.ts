@@ -100,13 +100,14 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
 
       if (typeof value == 'object' && !Array.isArray(value)) {
         declarations.push(...(Object.entries(value) as [string, string][]));
-      } else {
-        for (const current of properties) {
-          declarations.push([current, maybeNegative(match.negative, value)]);
-        }
+      }
+      for (const current of properties) {
+        declarations.push([current, maybeNegative(match.negative, value)]);
       }
       if (property == 'transform') {
-        declarations.push([property, maybeNegative(match.negative, value)]);
+        const entries = [...declarations];
+        declarations.length = 0;
+        declarations.push(['transform', entries as any]);
       }
       return {
         className: toClassName(parsedRule),

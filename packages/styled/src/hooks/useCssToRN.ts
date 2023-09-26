@@ -64,7 +64,14 @@ export function createComponentSheet(entries: SheetEntry[], context: StyledConte
 function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
   return entries.reduce(
     (prev, current) => {
-      Object.assign(prev[current.group], composeDeclarations(current.declarations, context));
+      let nextDecl = composeDeclarations(current.declarations, context);
+      if (nextDecl.transform && prev[current.group].transform) {
+        nextDecl.transform = [
+          ...(prev[current.group].transform as any),
+          ...nextDecl.transform,
+        ];
+      }
+      Object.assign(prev[current.group], nextDecl);
       return prev;
     },
     {
@@ -82,6 +89,22 @@ function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
 function composeDeclarations(declarations: SheetEntryDeclaration[], context: StyledContext) {
   return declarations.reduce((prev, current) => {
     let value: any = current[1];
+    if (Array.isArray(current[1])) {
+      value = [];
+      for (const t of current[1]) {
+        value.push({
+          [t[0]]: parseCssValue(t[0], t[1], {
+            rem: context.units.rem,
+            deviceHeight: context.deviceHeight,
+            deviceWidth: context.deviceWidth,
+          }),
+        });
+      }
+      Object.assign(prev, {
+        transform: [...(prev['transform'] ?? []), ...value],
+      });
+      return prev;
+    }
     if (typeof value == 'string') {
       value = parseCssValue(current[0], value, {
         rem: context.units.rem,

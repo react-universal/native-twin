@@ -23,7 +23,7 @@ describe('@universal-labs/styled', () => {
   });
 });
 
-const CustomView = styledComponents.View``;
+const CustomView = styledComponents.View`rotate-6 translate-x-4`;
 
 describe('@universal-labs/styled', () => {
   it('CustomView render', () => {
