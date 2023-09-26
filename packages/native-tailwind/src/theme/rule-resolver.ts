@@ -1,6 +1,6 @@
+import type { CompleteStyle } from '@universal-labs/css';
 import { parseCssValue } from '@universal-labs/css/tailwind';
 import type { Rule, RuleMeta, RuleResolver } from '../types/config.types';
-import type { CompleteStyle } from '../types/rn.types';
 import type { __Theme__ } from '../types/theme.types';
 import { toColorValue } from '../utils/color-utils';
 import { asArray } from '../utils/helpers';
@@ -83,7 +83,9 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
       }
       if (match.segment.type == 'arbitrary') {
         value = parseCssValue((themeSection as string) ?? property, segmentValue, {
+          // @ts-expect-error
           deviceHeight: context.root.deviceHeight,
+          // @ts-expect-error TODO:
           deviceWidth: context.root.deviceWidth,
           rem: context.root.rem,
         }) as string;

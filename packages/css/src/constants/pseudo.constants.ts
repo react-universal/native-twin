@@ -26,3 +26,7 @@ export type ValidAppearancePseudoSelector = (typeof AppearancePseudoSelectors)[n
 export type ValidChildPseudoSelector = (typeof ChildPseudoSelectors)[number];
 export type ValidPlatformPseudoSelector = (typeof PlatformPseudoSelectors)[number];
 export type ValidGroupPseudoSelector = (typeof GroupInteractionPseudoSelectors)[number];
+export type ValidPlatformInteractionPseudoSelector =
+  | `${
+      | ValidInteractionPseudoSelector
+      | ValidGroupPseudoSelector}:${ValidPlatformPseudoSelector}`;

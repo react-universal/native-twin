@@ -57,7 +57,11 @@ export function toString(value: CSSValue): string {
 }
 
 export function toClassName(rule: ParsedRule): string {
-  return [...rule.v, (rule.i ? '!' : '') + rule.n].join(':');
+  let modifier = '';
+  if (rule.m) {
+    modifier = `/${rule.m.value}`;
+  }
+  return `.${[...rule.v, (rule.i ? '!' : '') + rule.n + modifier].join(':')}`;
 }
 
 export function format(rules: ParsedRule[]): string {

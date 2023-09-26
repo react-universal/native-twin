@@ -1,8 +1,7 @@
-import type { Sheet } from '../types/css.types';
-import type { FinalRule } from './rules';
+import type { Sheet, SheetEntry } from '../types/css.types';
 
-export function createVirtualSheet(): Sheet<FinalRule> {
-  const target: Map<string, FinalRule> = new Map();
+export function createVirtualSheet(): Sheet<SheetEntry> {
+  const target: Map<string, SheetEntry> = new Map();
 
   return {
     target,
@@ -15,8 +14,8 @@ export function createVirtualSheet(): Sheet<FinalRule> {
       this.clear();
     },
 
-    insert(key, rule: FinalRule) {
-      target.set(key, rule);
+    insert(entry) {
+      target.set(entry[0], entry);
     },
 
     getClassName(key) {

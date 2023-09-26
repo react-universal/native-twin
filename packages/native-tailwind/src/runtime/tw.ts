@@ -1,5 +1,4 @@
-import type { FinalRule } from '../css/rules';
-import type { Sheet } from '../types/css.types';
+import type { Sheet, SheetEntry } from '../types/css.types';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
 import { noop } from '../utils/helpers';
 
@@ -60,7 +59,7 @@ export const tw: RuntimeTW<any> = /* #__PURE__ */ new Proxy(
   },
 );
 
-export type SheetFactory = () => Sheet<FinalRule>;
+export type SheetFactory = () => Sheet<SheetEntry>;
 
 export function setup<Theme extends __Theme__ = __Theme__>(
   tw$: RuntimeTW<Theme>,

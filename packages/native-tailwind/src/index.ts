@@ -24,6 +24,5 @@ export * from './utils/css-utils';
 /** TYPES */
 export type * from './types/config.types';
 export type * from './types/css.types';
-export type * from './types/rn.types';
 export type * from './types/theme.types';
 export type * from './types/util.types';

@@ -60,12 +60,10 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
   root: {
     /** Default `16px` */
     rem: number;
-    deviceWidth: number;
-    deviceHeight: number;
   };
 
-  isSupported: (support: PlatformSupport[]) => boolean;
-  mode: PlatformSupport[number];
+  // isSupported: (support: PlatformSupport[]) => boolean;
+  // mode: PlatformSupport[number];
 }
 
 export interface ThemeFunction<Theme extends __Theme__ = {}> {

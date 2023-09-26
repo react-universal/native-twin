@@ -1,53 +1,68 @@
-import type { AnyStyle, FinalSheet, SelectorGroup } from '@universal-labs/css';
+import type {
+  AnyStyle,
+  FinalSheet,
+  GetChildStylesArgs,
+  SheetInteractionState,
+} from '@universal-labs/css';
 import type { ParsedRule } from '@universal-labs/css/tailwind';
-import type { FinalRule } from './rules';
+import type { RuleResult } from '../types/config.types';
+import type { SheetEntry } from '../types/css.types';
+import { getRuleSelectorGroup } from '../utils/css-utils';
+import { toClassName } from '../utils/string-utils';
 
-interface RuleSet {
-  parsed: ParsedRule;
-  style: AnyStyle;
-  kind: SelectorGroup;
+export function getStyleData(rule: ParsedRule, styles: RuleResult): SheetEntry {
+  const className = toClassName(rule);
+  let group = getRuleSelectorGroup(rule);
+  if (!styles) return [className, group, {}];
+  return [className, group, styles];
 }
 
-export class StyleGroup {
-  // private base: AnyStyle = {};
-  // private even: AnyStyle = {};
-  // private first: AnyStyle = {};
-  // private group: AnyStyle = {};
-  // private last: AnyStyle = {};
-  // private odd: AnyStyle = {};
-  // private pointer: AnyStyle = {};
-  ruleSet: RuleSet[] = [];
-
-  addStyle(rule: FinalRule) {
-    this.ruleSet.push({
-      parsed: rule.parsed,
-      style: rule.style,
-      kind: rule.selectorGroup,
-    });
+export function createComponentSheet(entries: SheetEntry[]) {
+  const sheet = getSheetEntryStyles(entries);
+  return {
+    getChildStyles,
+    getStyles,
+    sheet,
+  };
+  function getStyles(input: SheetInteractionState) {
+    const styles: AnyStyle = { ...sheet.base };
+    if (input.isPointerActive) Object.assign(styles, { ...sheet.pointer });
+    if (input.isParentActive) Object.assign(styles, { ...sheet.group });
+    return styles;
   }
 
-  get finalSheet(): FinalSheet {
-    return Object.freeze(
-      this.ruleSet.reduce(
-        (prev, current) => {
-          prev[current.kind] = {
-            ...prev[current.kind],
-            ...current.style,
-          };
-          return prev;
-        },
-        { ...emptySheet },
-      ),
-    );
+  function getChildStyles(input: GetChildStylesArgs) {
+    const result: AnyStyle = {};
+    if (input.isFirstChild) {
+      Object.assign(result, sheet.first);
+    }
+    if (input.isLastChild) {
+      Object.assign(result, sheet.last);
+    }
+    if (input.isEven) {
+      Object.assign(result, sheet.even);
+    }
+    if (input.isOdd) {
+      Object.assign(result, sheet.odd);
+    }
+    return Object.freeze(result);
   }
 }
 
-const emptySheet: FinalSheet = Object.seal({
-  base: {},
-  even: {},
-  first: {},
-  group: {},
-  last: {},
-  odd: {},
-  pointer: {},
-});
+function getSheetEntryStyles(entries: SheetEntry[]) {
+  return entries.reduce(
+    (prev, current) => {
+      Object.assign(prev[current[1]], current[2]);
+      return prev;
+    },
+    {
+      base: {},
+      even: {},
+      first: {},
+      group: {},
+      last: {},
+      odd: {},
+      pointer: {},
+    } as FinalSheet,
+  );
+}

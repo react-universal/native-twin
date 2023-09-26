@@ -1,7 +1,6 @@
-import type { AnyStyle } from '@universal-labs/css';
+import type { AnyStyle, CompleteStyle } from '@universal-labs/css';
 import type { ParsedRule } from '@universal-labs/css/tailwind';
 import type { RuleResult, ThemeContext } from '../types/config.types';
-import type { CompleteStyle } from '../types/rn.types';
 
 export function translateRuleResults(
   rule: RuleResult,

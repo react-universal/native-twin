@@ -1,8 +1,6 @@
 import { parseTWTokens } from '@universal-labs/css/tailwind';
 import { describe, expect, it } from 'vitest';
-import { parsedRuleToString } from '../src/utils/css-utils';
-
-const screens = ['md', 'sm', 'lg', 'xl', '2xl'];
+import { toClassName } from '../src/utils/string-utils';
 
 describe('@universal-labs/native-tailwind - Raw rules parser', () => {
   it('Parse regular rules', () => {
@@ -41,7 +39,7 @@ describe('@universal-labs/native-tailwind - Raw rules parser', () => {
   });
   it('Parse nested grouped rules', () => {
     const result = parseTWTokens('md:(!bg-black !sm:(bg-blue-200 h-24))');
-    const classNames = result.map((x) => parsedRuleToString(x, screens));
+    const classNames = result.map((x) => toClassName(x));
     expect(classNames).toStrictEqual(['.md:!bg-black', '.sm:md:!bg-blue-200', '.sm:md:!h-24']);
     expect(result).toStrictEqual([
       { n: 'bg-black', v: ['md'], i: true, m: null },

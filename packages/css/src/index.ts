@@ -1,5 +1,13 @@
 export { CssResolver } from './css';
-export type { AnyStyle, FinalSheet, CompleteStyle } from './types/rn.types';
+export type {
+  AnyStyle,
+  FinalSheet,
+  CompleteStyle,
+  GetChildStylesArgs,
+  DimensionValue,
+  FlexAlignType,
+  PartialStyle,
+} from './types/rn.types';
 export type {
   CssNode,
   CssParserCache,
@@ -11,6 +19,12 @@ export type {
   ResultType,
   StateTransformerFunction,
 } from './types/parser.types';
-export type { CSSLengthUnit, CSSPointerEvent, SelectorGroup } from './types/css.types';
-export * from './constants/ValidPseudoElements';
+export type {
+  CSSLengthUnit,
+  CSSPointerEvent,
+  SelectorGroup,
+  SheetInteractionState,
+  SelectorPayload,
+} from './types/css.types';
 export * from './constants/empties';
+export * from './constants/pseudo.constants';

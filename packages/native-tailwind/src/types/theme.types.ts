@@ -1,13 +1,12 @@
-import type { AnyStyle, FinalSheet } from '@universal-labs/css';
+import type { AnyStyle, FinalSheet, GetChildStylesArgs } from '@universal-labs/css';
 import type { SheetInteractionState } from '@universal-labs/css/build/types/css.types';
-import type { FinalRule } from '../css/rules';
 import type { TailwindConfig, ThemeFunction } from './config.types';
-import type { GetChildStyles, Sheet } from './css.types';
+import type { Sheet, SheetEntry } from './css.types';
 import type { MaybeArray, StringLike } from './util.types';
 
 export interface ComponentSheet {
   getStyles: (input: SheetInteractionState) => AnyStyle;
-  getChildStyles: (data: GetChildStyles) => AnyStyle;
+  getChildStyles: (data: GetChildStylesArgs) => AnyStyle;
   metadata: {
     isGroupParent: boolean;
     hasPointerEvents: boolean;
@@ -18,7 +17,7 @@ export interface ComponentSheet {
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
   (tokens: StringLike): ComponentSheet;
-  sheet: Sheet<FinalRule>;
+  sheet: Sheet<SheetEntry>;
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
   readonly destroy: () => void;
@@ -62,8 +61,6 @@ export interface __Theme__ {
   root?: {
     /** Default `16px` */
     rem: number;
-    deviceWidth: number;
-    deviceHeight: number;
   };
   objectFit?: Record<string, string>;
   resizeMode?: Record<string, string>;

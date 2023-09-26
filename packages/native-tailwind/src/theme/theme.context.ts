@@ -1,4 +1,3 @@
-import { Platform, type PlatformOSType } from 'react-native';
 import { type ParsedRule, RuleHandler } from '@universal-labs/css/tailwind';
 import type {
   Rule,
@@ -21,32 +20,30 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   rules,
 }: TailwindConfig<Theme>): ThemeContext {
   const ruleHandlers = new Map<string, RuleHandlerFn<Theme>>();
-  const mode: PlatformOSType =
-    Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
   const ctx: ThemeContext = {
     get colors() {
       return flattenColorPalette(themeConfig['colors'] ?? {});
     },
 
-    mode,
-
     theme: createThemeFunction(themeConfig),
 
     root: {
       rem: themeConfig.root?.rem ?? 16,
-      deviceHeight: themeConfig.root?.deviceHeight ?? 16,
-      deviceWidth: themeConfig.root?.deviceWidth ?? 16,
+      // deviceHeight: themeConfig.root?.deviceHeight ?? 16,
+      // deviceWidth: themeConfig.root?.deviceWidth ?? 16,
     },
 
     get breakpoints() {
-      return { ...themeConfig.screens, ...themeConfig.extend?.screens };
+      return Object.assign(themeConfig.screens ?? {}, themeConfig.extend?.screens);
     },
 
     v(variants) {
-      const root = themeConfig.root;
+      if (variants.length == 0) return true;
       for (const v of variants) {
         if (v in this.breakpoints) {
-          const width = root?.deviceHeight ?? 0;
+          // TODO: set right Width
+          // const width = root?.deviceHeight ?? 0;
+          const width = 10;
           const value = this.breakpoints[v];
           if (typeof value == 'number') {
             return width >= value;
@@ -62,10 +59,6 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
         }
       }
       return true;
-    },
-
-    isSupported(support) {
-      return support.includes(mode);
     },
 
     r(token: ParsedRule) {
@@ -98,13 +91,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   return ctx;
 
   function getRuleResolver(rule: Rule<Theme>): RuleResolver<Theme> {
-    if (typeof rule[1] == 'function') {
-      return rule[1];
-    }
-    if (typeof rule[2] == 'function') {
-      return rule[2];
-    }
-    throw new Error('');
+    return rule[2];
   }
 }
 

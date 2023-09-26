@@ -1,5 +1,5 @@
 import type { StyleProp } from 'react-native';
-import type { FinalRule } from '../css/rules';
+import type { AnyStyle, SelectorGroup } from '@universal-labs/css';
 import type { Falsey, StringLike } from './util.types';
 
 export type CSSValue =
@@ -11,22 +11,12 @@ export type CSSValue =
   | StyleProp<any>
   | CSSValue[];
 
-export interface CXProcessor {
-  (classNames: string): { generated: string; target: string[] };
-  hash(classNames: string): string;
-}
-
-export interface GetChildStyles {
-  isFirstChild: boolean;
-  isLastChild: boolean;
-  isEven: boolean;
-  isOdd: boolean;
-}
+export type SheetEntry = [className: string, group: SelectorGroup, styles: AnyStyle];
 
 export interface Sheet<Target = unknown> {
   readonly target: Map<string, Target>;
-  insert(key: string, rule: FinalRule): void;
-  getClassName(key: string): FinalRule | undefined;
+  insert(entry: SheetEntry): void;
+  getClassName(key: string): SheetEntry | undefined;
   // snapshot(): () => void;
   /** Clears all CSS rules from the sheet. */
   clear(): void;

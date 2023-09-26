@@ -13,6 +13,7 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
 
   function theme(themeSection: keyof Omit<ThemeConfig<Theme>, 'extend'>, segment: string) {
     if (segment.startsWith('[') && segment.endsWith(']')) {
+      // @ts-expect-error
       return parseCssValue(themeSection as string, segment.slice(1, -1), root);
     }
     let config = baseConfig[themeSection];
@@ -32,6 +33,7 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
       }
     }
     if (value) {
+      // @ts-expect-error
       value = parseCssValue(themeSection as string, value, root);
     }
     return value;
