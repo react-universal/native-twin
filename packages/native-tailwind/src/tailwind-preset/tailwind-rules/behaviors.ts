@@ -1,21 +1,6 @@
-import { globalKeywords } from '@universal-labs/css/tailwind';
 import { matchCssObject } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
 import type { __Theme__ } from '../../types/theme.types';
-
-const _outlineStyles = [
-  'auto',
-  'dashed',
-  'dotted',
-  'double',
-  'hidden',
-  'solid',
-  'groove',
-  'ridge',
-  'inset',
-  'outset',
-  ...globalKeywords,
-].map((x) => [x, x]);
 
 export const outlineRules: Rule<__Theme__>[] = [
   // matchThemeValue('outline-width-', 'lineWidth', 'outlineWidth'),

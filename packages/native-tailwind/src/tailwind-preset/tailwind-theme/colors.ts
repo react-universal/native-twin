@@ -324,32 +324,17 @@ export const colors = {
     900: '#0f0f0f',
     950: '#080808',
   },
-  get lightblue() {
-    return this['sky']!;
-  },
   get lightBlue() {
     return this['sky']!;
-  },
-  get warmgray() {
-    return this['stone']!;
   },
   get warmGray() {
     return this['stone']!;
   },
-  get truegray() {
-    return this['neutral']!;
-  },
   get trueGray() {
     return this['neutral']!;
   },
-  get coolgray() {
-    return this['gray']!;
-  },
   get coolGray() {
     return this['gray']!;
-  },
-  get bluegray() {
-    return this['slate']!;
   },
   get blueGray() {
     return this['slate']!;
