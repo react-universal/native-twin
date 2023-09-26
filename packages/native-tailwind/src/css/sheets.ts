@@ -15,7 +15,7 @@ export function createVirtualSheet(): Sheet<SheetEntry> {
     },
 
     insert(entry) {
-      target.set(entry[0], entry);
+      target.set(entry.className, entry);
     },
 
     getClassName(key) {

@@ -1,20 +1,19 @@
-import type { CSSValue } from '../types/css.types';
+import type { CSSValue, SheetEntry } from '../types/css.types';
 import type { ComponentSheet } from '../types/theme.types';
 import { interpolate } from '../utils/string-utils';
-import { getDefaultStyledContext } from '../utils/theme-utils';
 import { tw as tw$ } from './tw';
 
 export interface TxFunction {
-  (...classes: CSSValue[]): ComponentSheet;
+  (...classes: CSSValue[]): SheetEntry[];
 
-  (strings: TemplateStringsArray, ...interpolations: readonly CSSValue[]): ComponentSheet;
+  (strings: TemplateStringsArray, ...interpolations: readonly CSSValue[]): SheetEntry[];
 
-  bind(thisArg?: ((tokens: string) => ComponentSheet) | undefined | void): TxFunction;
+  bind(thisArg?: ((tokens: string) => SheetEntry[]) | undefined | void): TxFunction;
 
   call(
-    thisArg: ((tokens: string) => ComponentSheet) | undefined | void,
+    thisArg: ((tokens: string) => SheetEntry[]) | undefined | void,
     ...classes: CSSValue[]
-  ): ComponentSheet;
+  ): SheetEntry[];
   call(
     thisArg: ((tokens: string) => string) | undefined | void,
     strings: TemplateStringsArray,
@@ -22,7 +21,7 @@ export interface TxFunction {
   ): string;
 
   apply(
-    thisArg: ((tokens: string) => ComponentSheet) | undefined | void,
+    thisArg: ((tokens: string) => SheetEntry[]) | undefined | void,
     classes:
       | CSSValue[]
       | [strings: TemplateStringsArray, ...interpolations: readonly CSSValue[]],
@@ -66,10 +65,10 @@ export interface TxFunction {
  * @returns the class name
  */
 export const tx: TxFunction = function tx(
-  this: ((tokens: string) => ComponentSheet) | undefined | void,
+  this: ((tokens: string) => SheetEntry[]) | undefined | void,
   strings: TemplateStringsArray | CSSValue,
   ...interpolations: CSSValue[]
-): ComponentSheet {
+): SheetEntry[] {
   const tw = typeof this == 'function' ? this : tw$;
-  return tw(interpolate(strings, interpolations), getDefaultStyledContext())!;
+  return tw(interpolate(strings, interpolations))!;
 };

@@ -1,9 +1,14 @@
 import { matchCssObject, matchThemeValue } from '../../theme/rule-resolver';
 import type { Rule } from '../../types/config.types';
+import { getRuleSelectorGroup } from '../../utils/css-utils';
+import { toClassName } from '../../utils/string-utils';
 
 export const flexRules: Rule[] = [
-  matchCssObject('flex', () => ({
-    display: 'flex',
+  matchCssObject('flex', (match, ctx, rule) => ({
+    className: toClassName(rule),
+    declarations: [['display', 'flex']],
+    group: getRuleSelectorGroup(rule),
+    rule,
   })),
   matchThemeValue('flex-', 'flex', 'flex'),
   matchThemeValue('flex-', 'flexDirection', 'flexDirection'),

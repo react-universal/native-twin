@@ -7,7 +7,6 @@ import type {
   TailwindConfig,
   ThemeContext,
 } from '../types/config.types';
-import type { StyledContext } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
 import { flattenColorPalette, getDefaultStyledContext } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
@@ -54,7 +53,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
       return true;
     },
 
-    r(token: ParsedRule, styledContext = getDefaultStyledContext()) {
+    r(token: ParsedRule) {
       for (const current of rules) {
         const key = JSON.stringify(
           current.filter((x) => typeof x !== 'function' && typeof x !== 'object'),
@@ -69,7 +68,6 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
           handler = createRuleHandler(
             new RuleHandler(current[0], meta.feature ?? 'default'),
             resolver,
-            styledContext,
           );
           ruleHandlers.set(key, handler);
         }
@@ -92,12 +90,11 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 function createRuleHandler<Theme extends __Theme__ = __Theme__>(
   handler: RuleHandler,
   resolver: RuleResolver,
-  styledContext: StyledContext,
 ): RuleHandlerFn<Theme> {
   return (token: ParsedRule, ctx: ThemeContext<Theme>) => {
     const match = handler.getParser().run(token.n);
     if (match.isError) return null;
-    const nextToken = resolver(match.result, ctx, token, styledContext);
+    const nextToken = resolver(match.result, ctx, token);
     if (!nextToken) return null;
     return nextToken;
   };

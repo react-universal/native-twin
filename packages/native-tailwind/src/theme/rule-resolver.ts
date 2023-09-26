@@ -1,9 +1,11 @@
 import type { CompleteStyle } from '@universal-labs/css';
-import { parseCssValue } from '@universal-labs/css/tailwind';
 import type { Rule, RuleMeta, RuleResolver } from '../types/config.types';
+import type { SheetEntryDeclaration } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
 import { toColorValue } from '../utils/color-utils';
+import { getRuleSelectorGroup } from '../utils/css-utils';
 import { asArray } from '../utils/helpers';
+import { toClassName } from '../utils/string-utils';
 
 export function matchCssObject(
   pattern: string,
@@ -26,6 +28,8 @@ export function matchThemeColor(
     'colors',
     (match, context, rule) => {
       let color: string | null | undefined;
+      const className = toClassName(rule);
+      const declarations: SheetEntryDeclaration[] = [];
       if (match.segment.type == 'arbitrary') {
         color = match.segment.value;
       }
@@ -39,7 +43,6 @@ export function matchThemeColor(
           opacityValue: opacity ?? '1',
         });
         if (meta.feature == 'edges') {
-          const result: Record<string, string> = {};
           for (const key of getPropertiesForEdges(
             {
               prefix: meta.prefix ?? property,
@@ -47,12 +50,16 @@ export function matchThemeColor(
             },
             match.suffixes,
           )) {
-            result[key] = color;
+            declarations.push([key, color]);
           }
-          return result;
+        } else {
+          declarations.push([property, color]);
         }
         return {
-          [property]: color,
+          className,
+          group: getRuleSelectorGroup(rule),
+          rule,
+          declarations,
         };
       }
     },
@@ -75,39 +82,38 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   return [
     pattern,
     themeSection,
-    (match, context, parsedRule, styledContext) => {
+    (match, context, parsedRule) => {
       let value: string | null = null;
       let segmentValue = match.segment.value;
+      const declarations: SheetEntryDeclaration[] = [];
       if (parsedRule.m) {
         segmentValue += `/${parsedRule.m.value}`;
       }
       if (match.segment.type == 'arbitrary') {
-        value = parseCssValue((themeSection as string) ?? property, segmentValue, {
-          deviceHeight: styledContext?.deviceHeight ?? 0,
-          deviceWidth: styledContext?.deviceWidth ?? 0,
-          rem: styledContext?.units.rem ?? 16,
-        }) as string;
+        value = segmentValue;
       } else {
         value = context.theme(themeSection, segmentValue) ?? null;
       }
 
       if (!value) return;
-      let result: Record<string, string> = {};
       let properties = getProperties();
-      value = maybeNegative(match.negative, value);
 
       if (typeof value == 'object' && !Array.isArray(value)) {
-        return value;
-      }
-      for (const current of properties) {
-        result[current] = value;
+        declarations.push(...(Object.entries(value) as [string, string][]));
+      } else {
+        for (const current of properties) {
+          declarations.push([current, maybeNegative(match.negative, value)]);
+        }
       }
       if (property == 'transform') {
-        return {
-          transform: [result],
-        } as any;
+        declarations.push([property, maybeNegative(match.negative, value)]);
       }
-      return result;
+      return {
+        className: toClassName(parsedRule),
+        declarations,
+        group: getRuleSelectorGroup(parsedRule),
+        rule: parsedRule,
+      };
 
       function getProperties() {
         if (meta.feature == 'edges') {
@@ -186,10 +192,7 @@ function getPropertiesForCorners(
 
 function maybeNegative(isNegative: boolean, value: string): string {
   if (isNegative && (!`${value}`.startsWith('0') || `${value}`.startsWith('0.'))) {
-    if (isNaN(Number(value))) {
-      return `-${value}`;
-    }
-    return (Number(value) * -1) as any;
+    return `-${value}`;
   }
   return value;
 }

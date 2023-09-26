@@ -1,5 +1,6 @@
 import type { PlatformOSType, StyleProp } from 'react-native';
 import type { AnyStyle, SelectorGroup } from '@universal-labs/css';
+import type { ParsedRule } from '@universal-labs/css/tailwind';
 import type { Falsey, StringLike } from './util.types';
 
 export type CSSValue =
@@ -11,7 +12,13 @@ export type CSSValue =
   | StyleProp<any>
   | CSSValue[];
 
-export type SheetEntry = [className: string, group: SelectorGroup, styles: AnyStyle];
+export type SheetEntryDeclaration = [prop: string, value: string | AnyStyle];
+export interface SheetEntry {
+  className: string;
+  group: SelectorGroup;
+  rule: ParsedRule;
+  declarations: SheetEntryDeclaration[];
+}
 
 export interface Sheet<Target = unknown> {
   readonly target: Map<string, Target>;

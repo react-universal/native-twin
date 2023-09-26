@@ -1,21 +1,6 @@
-import type {
-  AnyStyle,
-  FinalSheet,
-  GetChildStylesArgs,
-  SheetInteractionState,
-} from '@universal-labs/css';
-import type { ParsedRule } from '@universal-labs/css/tailwind';
-import type { RuleResult } from '../types/config.types';
+// @ts-nocheck
+import type { AnyStyle, GetChildStylesArgs, SheetInteractionState } from '@universal-labs/css';
 import type { SheetEntry } from '../types/css.types';
-import { getRuleSelectorGroup } from '../utils/css-utils';
-import { toClassName } from '../utils/string-utils';
-
-export function getStyleData(rule: ParsedRule, styles: RuleResult): SheetEntry {
-  const className = toClassName(rule);
-  let group = getRuleSelectorGroup(rule);
-  if (!styles) return [className, group, {}];
-  return [className, group, styles];
-}
 
 export function createComponentSheet(entries: SheetEntry[]) {
   const sheet = getSheetEntryStyles(entries);
@@ -47,22 +32,4 @@ export function createComponentSheet(entries: SheetEntry[]) {
     }
     return Object.freeze(result);
   }
-}
-
-function getSheetEntryStyles(entries: SheetEntry[]) {
-  return entries.reduce(
-    (prev, current) => {
-      Object.assign(prev[current[1]], current[2]);
-      return prev;
-    },
-    {
-      base: {},
-      even: {},
-      first: {},
-      group: {},
-      last: {},
-      odd: {},
-      pointer: {},
-    } as FinalSheet,
-  );
 }

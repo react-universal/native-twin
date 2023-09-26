@@ -2,7 +2,7 @@ import type { PlatformOSType } from 'react-native';
 import type { CompleteStyle } from '@universal-labs/css';
 import type { ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
 import type { CssFeature } from '@universal-labs/css/tailwind';
-import type { StyledContext } from './css.types';
+import type { SheetEntry, StyledContext } from './css.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey } from './util.types';
 
@@ -20,7 +20,7 @@ export interface TailwindUserConfig<Theme = __Theme__, UserTheme extends object 
   ignorelist?: string[];
 }
 
-export type RuleResult = CompleteStyle | Falsey | Record<string, string>;
+export type RuleResult = SheetEntry | Falsey;
 
 export type PlatformSupport = 'native' | 'web';
 

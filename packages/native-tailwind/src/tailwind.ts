@@ -7,12 +7,11 @@
 import { parseTWTokens } from '@universal-labs/css/tailwind';
 import { defineConfig } from './config/define-config';
 import { createVirtualSheet } from './css/sheets';
-import { createComponentSheet, getStyleData } from './css/style.compositions';
 import { setup } from './runtime';
 import { createThemeContext } from './theme/theme.context';
 import type { TailwindConfig, TailwindUserConfig } from './types/config.types';
-import type { Sheet, SheetEntry, StyledContext } from './types/css.types';
-import type { ComponentSheet, RuntimeTW, __Theme__ } from './types/theme.types';
+import type { Sheet, SheetEntry } from './types/css.types';
+import type { RuntimeTW, __Theme__ } from './types/theme.types';
 import { interpolate, toClassName } from './utils/string-utils';
 
 export function createTailwind<Theme = __Theme__>(
@@ -21,18 +20,16 @@ export function createTailwind<Theme = __Theme__>(
 ): RuntimeTW<__Theme__ & Theme> {
   const config = defineConfig(userConfig) as TailwindConfig<__Theme__>;
   const context = createThemeContext<__Theme__>(config);
-  const cache = new Map<string, ComponentSheet>();
+  const cache = new Map<string, SheetEntry[]>();
 
   const runtime = Object.defineProperties(
-    function tw(tokens, styledContext: StyledContext) {
+    function tw(tokens) {
       tokens = interpolate`${[tokens]}`;
       if (cache.has(tokens)) {
         return cache.get(tokens);
       }
       const styles: SheetEntry[] = [];
-      let isGroupParent = false;
       for (const rule of parseTWTokens(tokens)) {
-        if (rule.n == 'group') isGroupParent = true;
         if (!context.v(rule.v)) continue;
         const className = toClassName(rule);
 
@@ -40,25 +37,16 @@ export function createTailwind<Theme = __Theme__>(
         if (style) {
           styles.push(style);
         } else {
-          const ruleData = context.r(rule, styledContext);
+          const ruleData = context.r(rule);
           if (ruleData) {
-            const ruleStyles = getStyleData(rule, ruleData); //?
-            sheet.insert(ruleStyles);
-            styles.push(ruleStyles);
+            sheet.insert(ruleData);
+            styles.push(ruleData);
           }
         }
       }
-      const componentSheet = createComponentSheet(styles);
-      cache.set(tokens, {
-        ...componentSheet,
-        metadata: {
-          isGroupParent,
-          hasGroupEvents: styles.some((x) => x[1] == 'group'),
-          hasPointerEvents: styles.some((x) => x[1] == 'pointer'),
-        },
-      });
+      cache.set(tokens, styles);
 
-      return cache.get(tokens);
+      return styles;
     } as RuntimeTW<__Theme__ & Theme>,
     Object.getOwnPropertyDescriptors({
       get sheet(): Sheet<SheetEntry> {
@@ -71,3 +59,7 @@ export function createTailwind<Theme = __Theme__>(
   setup(runtime);
   return runtime;
 }
+
+// const tw = createTailwind({});
+
+// tw('shadow-sm'); //?
