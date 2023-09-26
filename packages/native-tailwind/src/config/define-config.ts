@@ -11,6 +11,10 @@ export function defineConfig<Theme extends __Theme__ = __Theme__>({
   const config: TailwindConfig<__Theme__> = {
     ignorelist: asArray(userConfig.ignorelist),
     rules: [...asArray(userConfig.rules), ...asArray(themeRules)],
+    root: {
+      rem: 16,
+      ...userConfig.root,
+    },
     theme: {
       ...theme,
       extend: userConfig.theme?.extend,

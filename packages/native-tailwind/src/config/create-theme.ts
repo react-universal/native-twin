@@ -11,11 +11,6 @@ export function createTailwindTheme<UserTheme = {}>(
   userTheme: UserTheme,
 ): __Theme__ & UserTheme {
   return {
-    root: {
-      rem: 16,
-      deviceHeight: 1280,
-      deviceWidth: 720,
-    },
     ...tailwindTheme,
     ...userTheme,
   };

@@ -1,6 +1,9 @@
 import { createTailwind } from '@universal-labs/native-tailwind';
 
 export default createTailwind({
+  root: {
+    rem: 14,
+  },
   theme: {
     extend: {
       colors: {

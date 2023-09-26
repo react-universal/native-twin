@@ -2,7 +2,7 @@ import type { PlatformOSType } from 'react-native';
 import type { CompleteStyle } from '@universal-labs/css';
 import type { ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
 import type { CssFeature } from '@universal-labs/css/tailwind';
-import type { SheetEntry, StyledContext } from './css.types';
+import type { SheetEntry } from './css.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey } from './util.types';
 
@@ -12,12 +12,18 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   rules: Rule<Theme>[];
 
   ignorelist: string[];
+  root?: {
+    rem: number;
+  };
 }
 
 export interface TailwindUserConfig<Theme = __Theme__, UserTheme extends object = {}> {
   theme?: ThemeConfig<Theme & UserTheme>;
   rules?: Rule<__Theme__>[];
   ignorelist?: string[];
+  root?: {
+    rem: number;
+  };
 }
 
 export type RuleResult = SheetEntry | Falsey;
@@ -28,7 +34,6 @@ export type RuleResolver<Theme extends __Theme__ = {}> = (
   match: RuleHandlerToken,
   context: ThemeContext<Theme>,
   parsed: ParsedRule,
-  styledContext?: StyledContext,
 ) => RuleResult | Falsey;
 
 export type Rule<Theme extends __Theme__ = __Theme__> = [
@@ -56,7 +61,7 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
    * resolves a rule
    *
    */
-  r: (value: ParsedRule, context?: StyledContext) => RuleResult;
+  r: (value: ParsedRule) => RuleResult;
   v: (variants: string[]) => boolean;
 
   // isSupported: (support: PlatformSupport[]) => boolean;

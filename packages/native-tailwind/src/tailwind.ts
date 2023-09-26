@@ -62,7 +62,9 @@ export function createTailwind<Theme = __Theme__>(
         return sheet;
       },
       theme: context.theme,
-      config,
+      get config() {
+        return config;
+      },
     }),
   );
   setup(runtime);

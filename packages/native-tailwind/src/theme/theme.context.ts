@@ -8,7 +8,7 @@ import type {
   ThemeContext,
 } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
-import { flattenColorPalette, getDefaultStyledContext } from '../utils/theme-utils';
+import { flattenColorPalette } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
 
 interface RuleHandlerFn<Theme extends __Theme__ = __Theme__> {
@@ -31,25 +31,25 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
       return Object.assign(themeConfig.screens ?? {}, themeConfig.extend?.screens);
     },
 
-    v(variants, context = getDefaultStyledContext()) {
+    v(variants) {
       if (variants.length == 0) return true;
-      for (const v of variants) {
-        if (v in this.breakpoints) {
-          const width = context.deviceWidth;
-          const value = this.breakpoints[v];
-          if (typeof value == 'number') {
-            return width >= value;
-          }
-          if (typeof value == 'object') {
-            if ('raw' in value) {
-              return width >= value.raw;
-            }
-            if (value.max && value.min) return width <= value.max && width >= value.min;
-            if (value.max) return width <= value.max;
-            if (value.min) return width >= value.min;
-          }
-        }
-      }
+      // for (const v of variants) {
+      //   if (v in this.breakpoints) {
+      //     const width = context.deviceWidth;
+      //     const value = this.breakpoints[v];
+      //     if (typeof value == 'number') {
+      //       return width >= value;
+      //     }
+      //     if (typeof value == 'object') {
+      //       if ('raw' in value) {
+      //         return width >= value.raw;
+      //       }
+      //       if (value.max && value.min) return width <= value.max && width >= value.min;
+      //       if (value.max) return width <= value.max;
+      //       if (value.min) return width >= value.min;
+      //     }
+      //   }
+      // }
       return true;
     },
 

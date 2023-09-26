@@ -33,7 +33,7 @@ const ExoticView = styled(View)`
     'items-center justify-center md:border-3',
     'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
     'ios:(p-14 bg-rose-200 border-white border-2)',
-    'android:(p-14 border-green-200 border-2 bg-gray-200)',
+    'android:(p-14 border-green-200 border-2 bg-gray-50)',
   )}
 `;
 function HomeScreen() {
@@ -41,11 +41,13 @@ function HomeScreen() {
   return (
     <FullView>
       <ExoticView>
-        <H1
-          className={clsx('text(center 2xl primary)', 'font-inter-bold hover:text-gray-700')}
-        >
-          H1 - 1
-        </H1>
+        <View className='bg-white shadow-md rounded-xl p-2'>
+          <H1
+            className={clsx('text(center 2xl primary)', 'font-inter-bold hover:text-gray-700')}
+          >
+            H1 - 1
+          </H1>
+        </View>
       </ExoticView>
       <View
         className={clsx(

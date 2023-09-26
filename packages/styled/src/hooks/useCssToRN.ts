@@ -6,12 +6,8 @@ import {
   SheetInteractionState,
 } from '@universal-labs/css';
 import { parseCssValue } from '@universal-labs/css/tailwind';
-import {
-  SheetEntry,
-  SheetEntryDeclaration,
-  StyledContext,
-  tw,
-} from '@universal-labs/native-tailwind';
+import { SheetEntry, SheetEntryDeclaration, tw } from '@universal-labs/native-tailwind';
+import { StyledContext } from '../types/css.types';
 import { useStyledContext } from './useStyledContext';
 
 export function useCssToRN(className: string) {
@@ -94,7 +90,7 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
       for (const t of current[1]) {
         value.push({
           [t[0]]: parseCssValue(t[0], t[1], {
-            rem: context.units.rem,
+            rem: tw.config.root?.rem ?? context.units.rem,
             deviceHeight: context.deviceHeight,
             deviceWidth: context.deviceWidth,
           }),
@@ -107,7 +103,7 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
     }
     if (typeof value == 'string') {
       value = parseCssValue(current[0], value, {
-        rem: context.units.rem,
+        rem: tw.config.root?.rem ?? context.units.rem,
         deviceHeight: context.deviceHeight,
         deviceWidth: context.deviceWidth,
       });

@@ -13,6 +13,7 @@ export function translateRuleResults(
     const newRule: any = {};
     for (let key of Object.keys(rule)) {
       const newKey = key.replace(/-([a-z])/g, (k) => k[1]!.toUpperCase()!);
+      // @ts-expect-error
       newRule[newKey] = rule[key as keyof CompleteStyle];
     }
     stylesOrCss.push(newRule);

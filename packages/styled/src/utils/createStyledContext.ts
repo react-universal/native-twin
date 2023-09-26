@@ -1,5 +1,5 @@
 import { Appearance, PixelRatio, Platform } from 'react-native';
-import type { StyledContext, Units } from '@universal-labs/native-tailwind';
+import { Units, StyledContext } from '../types/css.types';
 
 export function createStyledContext(units: Pick<Units, 'rem' | 'vh' | 'vw'>): StyledContext {
   const vw = units.vw ?? 1;

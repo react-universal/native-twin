@@ -58,10 +58,7 @@ export interface __Theme__ {
   screens?: Record<string, ScreenValue>;
   colors?: Colors;
   opacity?: Record<string, string>;
-  root?: {
-    /** Default `16px` */
-    rem: number;
-  };
+
   objectFit?: Record<string, string>;
   resizeMode?: Record<string, string>;
   position?: Record<string, string>;
