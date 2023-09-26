@@ -1,20 +1,27 @@
 import { parseCssValue } from '@universal-labs/css/tailwind';
 import type { ThemeFunction } from '../types/config.types';
+import type { StyledContext } from '../types/css.types';
 import type { ThemeConfig, __Theme__ } from '../types/theme.types';
-import { flattenThemeSection } from '../utils/theme-utils';
+import { flattenThemeSection, getDefaultStyledContext } from '../utils/theme-utils';
 
 export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
   extend = {},
   ...baseConfig
 }: ThemeConfig<Theme>) {
   const resolved: Record<string, any> = {};
-  const root = baseConfig.root!;
   return theme as ThemeFunction<Theme>;
 
-  function theme(themeSection: keyof Omit<ThemeConfig<Theme>, 'extend'>, segment: string) {
+  function theme(
+    themeSection: keyof Omit<ThemeConfig<Theme>, 'extend'>,
+    segment: string,
+    styledContext: StyledContext = getDefaultStyledContext(),
+  ) {
     if (segment.startsWith('[') && segment.endsWith(']')) {
-      // @ts-expect-error
-      return parseCssValue(themeSection as string, segment.slice(1, -1), root);
+      return parseCssValue(themeSection as string, segment.slice(1, -1), {
+        deviceHeight: styledContext.deviceHeight,
+        deviceWidth: styledContext.deviceWidth,
+        rem: styledContext.units.rem,
+      });
     }
     let config = baseConfig[themeSection];
     if (themeSection in extend) {
@@ -33,8 +40,11 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
       }
     }
     if (value) {
-      // @ts-expect-error
-      value = parseCssValue(themeSection as string, value, root);
+      value = parseCssValue(themeSection as string, value, {
+        deviceHeight: styledContext.deviceHeight,
+        deviceWidth: styledContext.deviceWidth,
+        rem: styledContext.units.rem,
+      });
     }
     return value;
   }

@@ -1,3 +1,4 @@
+import type { StyledContext } from '../types/css.types';
 import type { Colors } from '../types/theme.types';
 
 // 0: '0px',
@@ -117,4 +118,33 @@ export function flattenThemeSection(obj: any, path: string[] = []) {
     }
   }
   return flatten;
+}
+
+export function getDefaultStyledContext(): StyledContext {
+  const vw = 1;
+  const vh = 1;
+  return {
+    colorScheme: 'light',
+    deviceAspectRatio: vw / vh,
+    deviceHeight: vh,
+    deviceWidth: vw,
+    orientation: vw > vh ? 'landscape' : 'portrait',
+    resolution: 16,
+    fontScale: 16,
+    platform: 'web',
+    units: {
+      rem: 16,
+      em: 16,
+      cm: 37.8,
+      mm: 3.78,
+      in: 96,
+      pt: 1.33,
+      pc: 16,
+      px: 1,
+      vmin: vw < vh ? vw : vh,
+      vmax: vw > vh ? vw : vh,
+      vw,
+      vh,
+    },
+  };
 }

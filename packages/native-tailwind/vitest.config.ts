@@ -4,7 +4,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   resolve: {
-    // plugin adds this condition automatically
     conditions: ['react-native'],
   },
   test: {

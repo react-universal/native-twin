@@ -1,7 +1,8 @@
 import type { PlatformOSType } from 'react-native';
+import type { CompleteStyle } from '@universal-labs/css';
 import type { ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
 import type { CssFeature } from '@universal-labs/css/tailwind';
-import type { CompleteStyle } from './rn.types';
+import type { StyledContext } from './css.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey } from './util.types';
 
@@ -27,6 +28,7 @@ export type RuleResolver<Theme extends __Theme__ = {}> = (
   match: RuleHandlerToken,
   context: ThemeContext<Theme>,
   parsed: ParsedRule,
+  styledContext?: StyledContext,
 ) => RuleResult | Falsey;
 
 export type Rule<Theme extends __Theme__ = __Theme__> = [
@@ -54,13 +56,8 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
    * resolves a rule
    *
    */
-  r: (value: ParsedRule, isDark?: boolean) => RuleResult;
+  r: (value: ParsedRule, context?: StyledContext) => RuleResult;
   v: (variants: string[]) => boolean;
-
-  root: {
-    /** Default `16px` */
-    rem: number;
-  };
 
   // isSupported: (support: PlatformSupport[]) => boolean;
   // mode: PlatformSupport[number];

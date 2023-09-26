@@ -1,4 +1,4 @@
-import type { StyleProp } from 'react-native';
+import type { PlatformOSType, StyleProp } from 'react-native';
 import type { AnyStyle, SelectorGroup } from '@universal-labs/css';
 import type { Falsey, StringLike } from './util.types';
 
@@ -23,3 +23,31 @@ export interface Sheet<Target = unknown> {
   destroy(): void;
   // resume(addClassName: (className: string) => void, insert: (cssText: string) => void): void;
 }
+
+export type Units = {
+  '%'?: number;
+  vw?: number;
+  vh?: number;
+  vmin?: number;
+  vmax?: number;
+  em: number;
+  rem: number;
+  px: number;
+  pt: number;
+  pc: number;
+  in: number;
+  cm: number;
+  mm: number;
+};
+
+export type StyledContext = {
+  orientation: 'portrait' | 'landscape';
+  resolution: number;
+  fontScale: number;
+  deviceWidth: number;
+  deviceHeight: number;
+  deviceAspectRatio: number;
+  platform: PlatformOSType;
+  colorScheme: 'dark' | 'light';
+  units: Units;
+};

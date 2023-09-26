@@ -11,7 +11,7 @@ import { createComponentSheet, getStyleData } from './css/style.compositions';
 import { setup } from './runtime';
 import { createThemeContext } from './theme/theme.context';
 import type { TailwindConfig, TailwindUserConfig } from './types/config.types';
-import type { Sheet, SheetEntry } from './types/css.types';
+import type { Sheet, SheetEntry, StyledContext } from './types/css.types';
 import type { ComponentSheet, RuntimeTW, __Theme__ } from './types/theme.types';
 import { interpolate, toClassName } from './utils/string-utils';
 
@@ -24,7 +24,7 @@ export function createTailwind<Theme = __Theme__>(
   const cache = new Map<string, ComponentSheet>();
 
   const runtime = Object.defineProperties(
-    function tw(tokens) {
+    function tw(tokens, styledContext: StyledContext) {
       tokens = interpolate`${[tokens]}`;
       if (cache.has(tokens)) {
         return cache.get(tokens);
@@ -40,7 +40,7 @@ export function createTailwind<Theme = __Theme__>(
         if (style) {
           styles.push(style);
         } else {
-          const ruleData = context.r(rule);
+          const ruleData = context.r(rule, styledContext);
           if (ruleData) {
             const ruleStyles = getStyleData(rule, ruleData); //?
             sheet.insert(ruleStyles);
@@ -71,26 +71,3 @@ export function createTailwind<Theme = __Theme__>(
   setup(runtime);
   return runtime;
 }
-
-// const tailwind = createTailwind({
-//   ignorelist: [],
-//   theme: {
-//     extend: {
-//       colors: {
-//         primary: '#0558f9',
-//       },
-//       borderWidth: {
-//         sm: '100px',
-//       },
-//       fontFamily: {
-//         inter: 'Inter-Regular',
-//         'inter-bold': 'Inter-Bold',
-//       },
-//     },
-//   },
-// });
-
-// tailwind(`text-[16px] font-[#fff] hover:bg-blue/10`).getStyles({
-//   isParentActive: false,
-//   isPointerActive: false,
-// }); //?

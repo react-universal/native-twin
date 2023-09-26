@@ -2,7 +2,11 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  resolve: {
+    conditions: ['react-native'],
+  },
   test: {
+    setupFiles: ['vitest-react-native/setup'],
     coverage: {
       provider: 'istanbul',
       reporter: ['text', 'json', 'html'],

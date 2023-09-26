@@ -7,8 +7,9 @@ import type {
   TailwindConfig,
   ThemeContext,
 } from '../types/config.types';
+import type { StyledContext } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
-import { flattenColorPalette } from '../utils/theme-utils';
+import { flattenColorPalette, getDefaultStyledContext } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
 
 interface RuleHandlerFn<Theme extends __Theme__ = __Theme__> {
@@ -27,23 +28,15 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
     theme: createThemeFunction(themeConfig),
 
-    root: {
-      rem: themeConfig.root?.rem ?? 16,
-      // deviceHeight: themeConfig.root?.deviceHeight ?? 16,
-      // deviceWidth: themeConfig.root?.deviceWidth ?? 16,
-    },
-
     get breakpoints() {
       return Object.assign(themeConfig.screens ?? {}, themeConfig.extend?.screens);
     },
 
-    v(variants) {
+    v(variants, context = getDefaultStyledContext()) {
       if (variants.length == 0) return true;
       for (const v of variants) {
         if (v in this.breakpoints) {
-          // TODO: set right Width
-          // const width = root?.deviceHeight ?? 0;
-          const width = 10;
+          const width = context.deviceWidth;
           const value = this.breakpoints[v];
           if (typeof value == 'number') {
             return width >= value;
@@ -61,7 +54,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
       return true;
     },
 
-    r(token: ParsedRule) {
+    r(token: ParsedRule, styledContext = getDefaultStyledContext()) {
       for (const current of rules) {
         const key = JSON.stringify(
           current.filter((x) => typeof x !== 'function' && typeof x !== 'object'),
@@ -76,6 +69,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
           handler = createRuleHandler(
             new RuleHandler(current[0], meta.feature ?? 'default'),
             resolver,
+            styledContext,
           );
           ruleHandlers.set(key, handler);
         }
@@ -98,11 +92,12 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 function createRuleHandler<Theme extends __Theme__ = __Theme__>(
   handler: RuleHandler,
   resolver: RuleResolver,
+  styledContext: StyledContext,
 ): RuleHandlerFn<Theme> {
   return (token: ParsedRule, ctx: ThemeContext<Theme>) => {
     const match = handler.getParser().run(token.n);
     if (match.isError) return null;
-    const nextToken = resolver(match.result, ctx, token);
+    const nextToken = resolver(match.result, ctx, token, styledContext);
     if (!nextToken) return null;
     return nextToken;
   };

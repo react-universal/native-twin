@@ -75,7 +75,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   return [
     pattern,
     themeSection,
-    (match, context, parsedRule) => {
+    (match, context, parsedRule, styledContext) => {
       let value: string | null = null;
       let segmentValue = match.segment.value;
       if (parsedRule.m) {
@@ -83,11 +83,9 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
       }
       if (match.segment.type == 'arbitrary') {
         value = parseCssValue((themeSection as string) ?? property, segmentValue, {
-          // @ts-expect-error
-          deviceHeight: context.root.deviceHeight,
-          // @ts-expect-error TODO:
-          deviceWidth: context.root.deviceWidth,
-          rem: context.root.rem,
+          deviceHeight: styledContext?.deviceHeight ?? 0,
+          deviceWidth: styledContext?.deviceWidth ?? 0,
+          rem: styledContext?.units.rem ?? 16,
         }) as string;
       } else {
         value = context.theme(themeSection, segmentValue) ?? null;

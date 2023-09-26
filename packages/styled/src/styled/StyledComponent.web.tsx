@@ -8,8 +8,8 @@ import {
   type ReactNode,
 } from 'react';
 import type { StyleProp } from 'react-native';
-import { cx } from '@twind/core';
 import type { CompleteStyle } from '@universal-labs/css';
+import { cx } from '@universal-labs/native-tailwind';
 import type {
   Primitive,
   StyledComponentProps,

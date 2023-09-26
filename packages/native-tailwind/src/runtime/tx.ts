@@ -1,6 +1,7 @@
 import type { CSSValue } from '../types/css.types';
 import type { ComponentSheet } from '../types/theme.types';
 import { interpolate } from '../utils/string-utils';
+import { getDefaultStyledContext } from '../utils/theme-utils';
 import { tw as tw$ } from './tw';
 
 export interface TxFunction {
@@ -70,5 +71,5 @@ export const tx: TxFunction = function tx(
   ...interpolations: CSSValue[]
 ): ComponentSheet {
   const tw = typeof this == 'function' ? this : tw$;
-  return tw(interpolate(strings, interpolations))!;
+  return tw(interpolate(strings, interpolations), getDefaultStyledContext())!;
 };
