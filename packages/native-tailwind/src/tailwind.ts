@@ -72,38 +72,25 @@ export function createTailwind<Theme = __Theme__>(
   return runtime;
 }
 
-const tailwind = createTailwind({
-  ignorelist: [],
-  theme: {
-    extend: {
-      colors: {
-        primary: '#0558f9',
-      },
-      borderWidth: {
-        sm: '100px',
-      },
-      fontFamily: {
-        inter: 'Inter-Regular',
-        'inter-bold': 'Inter-Bold',
-      },
-    },
-  },
-});
-
-tailwind(`text-[16px] font-[#fff] hover:bg-blue/10`).getStyles({
-  isParentActive: false,
-  isPointerActive: false,
-}); //?
-
-// cache.set(tokens, {
-//   metadata: {
-//     hasGroupEvents: Object.keys(styles.finalSheet.group).length > 0,
-//     hasPointerEvents: Object.keys(styles.finalSheet.pointer).length > 0,
-//     isGroupParent,
+// const tailwind = createTailwind({
+//   ignorelist: [],
+//   theme: {
+//     extend: {
+//       colors: {
+//         primary: '#0558f9',
+//       },
+//       borderWidth: {
+//         sm: '100px',
+//       },
+//       fontFamily: {
+//         inter: 'Inter-Regular',
+//         'inter-bold': 'Inter-Bold',
+//       },
+//     },
 //   },
-//   getStyles(input) {
-//     return getStyles(styles.finalSheet, input);
-//   },
-//   getChildStyles: (data: GetChildStylesArgs) => getChildStyles(styles.finalSheet, data),
-//   sheet: styles.finalSheet,
 // });
+
+// tailwind(`text-[16px] font-[#fff] hover:bg-blue/10`).getStyles({
+//   isParentActive: false,
+//   isPointerActive: false,
+// }); //?
