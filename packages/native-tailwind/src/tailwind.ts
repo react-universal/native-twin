@@ -31,6 +31,15 @@ export function createTailwind<Theme = __Theme__>(
       const styles: SheetEntry[] = [];
       for (const rule of parseTWTokens(tokens)) {
         if (!context.v(rule.v)) continue;
+        if (rule.n == 'group') {
+          styles.push({
+            className: 'group',
+            declarations: [],
+            group: 'base',
+            rule,
+          });
+          continue;
+        }
         const className = toClassName(rule);
 
         const style = sheet.getClassName(className);
