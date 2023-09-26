@@ -71,6 +71,6 @@ export function createTailwind<Theme = __Theme__>(
   return runtime;
 }
 
-// const tw = createTailwind({});
+const tw = createTailwind({});
 
-// tw('shadow-sm'); //?
+tw('border-be-1'); //?

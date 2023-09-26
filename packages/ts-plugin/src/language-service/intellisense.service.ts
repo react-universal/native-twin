@@ -56,21 +56,20 @@ export class NativeTailwindIntellisense {
         ? this.context.colors
         : (values as Record<string, string>)) {
         for (const className of getExpansions(suffix)) {
+          if (className.includes('DEFAULT')) continue;
           const themeValue = this.tw.theme(themeSection, suffix);
           if (!themeValue) continue;
           if (isColor && typeof themeValue == 'object') continue;
-          if (!className.includes('DEFAULT')) {
-            this._classes.set(className, {
-              canBeNegative: !!meta.canBeNegative,
-              isColor: isColor,
-              kind: 'class',
-              name: className,
-              themeValue,
-              themeSection,
-              property,
-              ...location,
-            });
-          }
+          this._classes.set(className, {
+            canBeNegative: !!meta.canBeNegative,
+            isColor: isColor,
+            kind: 'class',
+            name: className,
+            themeValue,
+            themeSection,
+            property,
+            ...location,
+          });
         }
       }
     }
@@ -132,12 +131,21 @@ export class NativeTailwindIntellisense {
       getExpansions(suffix: string) {
         const composer = composeClassName(basePattern);
         if (meta.feature == 'edges') {
-          return Object.keys(directionMap).map((x) => composer(composeExpansion(x) + suffix));
+          return Object.keys(directionMap)
+            .filter((x) => {
+              if (themeSection == 'spacing' && !property.includes('border')) {
+                return !x.includes('block') && !x.includes('s') && !x.includes('e');
+              }
+              return true;
+            })
+            .map((x) => composer(composeExpansion(x) + suffix).replace('--', '-'));
         }
         if (meta.feature == 'corners') {
-          return Object.keys(cornerMap).map((x) => composer(composeExpansion(x) + suffix));
+          return Object.keys(cornerMap).map((x) =>
+            composer(composeExpansion(x) + suffix).replace('--', '-'),
+          );
         }
-        return asArray(composer(suffix));
+        return asArray(composer(suffix).replace('--', '-'));
       },
     };
     return result;
@@ -155,7 +163,7 @@ const composeClassName = (pattern: string) => (suffix: string) => {
 
 const composeExpansion = (expansion: string) => {
   if (!expansion || expansion == '') {
-    return expansion;
+    return `-${expansion}`;
   }
   return `${expansion}-`;
 };

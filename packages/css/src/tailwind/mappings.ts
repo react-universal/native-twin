@@ -11,14 +11,14 @@ export const directionMap = {
   r: ['Right'],
   t: ['Top'],
   b: ['Bottom'],
-  s: ['InlineStart'],
-  e: ['InlineEnd'],
+  // s: ['InlineStart'],
+  // e: ['InlineEnd'],
   x: ['Left', 'Right'],
   y: ['Top', 'Bottom'],
   '': [''],
-  bs: ['BlockStart'],
-  be: ['BlockEnd'],
-  block: ['BlockStart', 'BlockEnd'],
+  // bs: ['BlockStart'],
+  // be: ['BlockEnd'],
+  // block: ['BlockStart', 'BlockEnd'],
 } satisfies Record<string, string[]>;
 
 export const cornerMap = {
