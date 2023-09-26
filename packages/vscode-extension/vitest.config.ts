@@ -12,6 +12,9 @@ export default defineConfig({
     env: {
       APP_ENV: 'test',
     },
+    cache: {
+      dir: 'test/.cache',
+    },
   },
   optimizeDeps: {
     esbuildOptions: {

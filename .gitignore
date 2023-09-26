@@ -32,6 +32,7 @@ lint-results/
 # VITE
 **benchmark/
 **coverage/
+**.cache/
 
 #VSCODE
 .vscode-test
