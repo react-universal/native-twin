@@ -1,6 +1,6 @@
-import { defineConfig } from '@universal-labs/native-tailwind';
+import { createTailwind } from '@universal-labs/native-tailwind';
 
-export default defineConfig({
+export default createTailwind({
   theme: {
     extend: {
       colors: {

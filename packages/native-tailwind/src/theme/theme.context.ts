@@ -1,4 +1,4 @@
-import type { PlatformOSType } from 'react-native';
+import { Platform, type PlatformOSType } from 'react-native';
 import { type ParsedRule, RuleHandler } from '@universal-labs/css/tailwind';
 import type {
   Rule,
@@ -21,14 +21,14 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   rules,
 }: TailwindConfig<Theme>): ThemeContext {
   const ruleHandlers = new Map<string, RuleHandlerFn<Theme>>();
-  const platform: PlatformOSType = 'native';
-  // Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
+  const mode: PlatformOSType =
+    Platform.OS == 'android' || Platform.OS == 'ios' ? 'native' : 'web';
   const ctx: ThemeContext = {
     get colors() {
       return flattenColorPalette(themeConfig['colors'] ?? {});
     },
 
-    mode: platform,
+    mode,
 
     theme: createThemeFunction(themeConfig),
 
@@ -65,7 +65,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
     },
 
     isSupported(support) {
-      return support.includes(platform);
+      return support.includes(mode);
     },
 
     r(token: ParsedRule) {

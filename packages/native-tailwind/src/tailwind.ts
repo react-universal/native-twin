@@ -11,6 +11,7 @@ import { defineConfig } from './config/define-config';
 import { FinalRule } from './css/rules';
 import { createVirtualSheet } from './css/sheets';
 import { StyleGroup } from './css/style.compositions';
+import { setup } from './runtime';
 import { createThemeContext } from './theme/theme.context';
 import type { TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { GetChildStyles, Sheet } from './types/css.types';
@@ -28,7 +29,7 @@ export function createTailwind<Theme = __Theme__>(
   const cache = new Map<StringLike, ComponentSheet>();
   const breakpoints = Object.keys(context.breakpoints);
 
-  return Object.defineProperties(
+  const runtime = Object.defineProperties(
     function tw(tokens: StringLike) {
       if (cache.has(tokens)) {
         return cache.get(tokens);
@@ -74,6 +75,8 @@ export function createTailwind<Theme = __Theme__>(
       config,
     }),
   );
+  setup(runtime);
+  return runtime;
 
   function isApplicativeRule(rule: ParsedRule) {
     if (rule.v.length == 0) return true;

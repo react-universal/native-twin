@@ -1,3 +1,4 @@
+import type { PlatformOSType } from 'react-native';
 import type { ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
 import type { CssFeature } from '@universal-labs/css/tailwind';
 import type { CompleteStyle } from './rn.types';
@@ -41,6 +42,7 @@ export interface RuleMeta {
   prefix?: string | undefined;
   suffix?: string | undefined;
   styleProperty?: keyof CompleteStyle;
+  support?: PlatformOSType[];
 }
 
 export interface ThemeContext<Theme extends __Theme__ = {}> {

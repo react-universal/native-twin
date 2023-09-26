@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { defineConfig, setup, tx } from '../src';
+import { createTailwind, setup, tx } from '../src';
 
-setup(defineConfig({}));
+setup(createTailwind({}));
 
 describe('@universal-labs/native-tailwind - TW call', () => {
   it('Insert rules', () => {

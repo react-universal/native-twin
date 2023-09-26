@@ -1,7 +1,7 @@
-import { tw as tw$ } from '.';
 import type { CSSValue } from '../types/css.types';
 import type { ComponentSheet } from '../types/theme.types';
 import { interpolate } from '../utils/string-utils';
+import { tw as tw$ } from './tw';
 
 export interface TxFunction {
   (...classes: CSSValue[]): ComponentSheet;
