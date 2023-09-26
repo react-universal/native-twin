@@ -1,7 +1,6 @@
-import type { ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
 import type { FinalRule } from '../css/rules';
 import { createTailwind } from '../tailwind';
-import type { TailwindConfig, TailwindUserConfig, ThemeContext } from '../types/config.types';
+import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { Sheet } from '../types/css.types';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
 import { noop } from '../utils/helpers';
@@ -41,20 +40,19 @@ export const tw: RuntimeTW<any> = /* #__PURE__ */ new Proxy(
         assertActive();
       }
 
-      const value = active[property as keyof RuntimeTW];
-
-      if (typeof value === 'function') {
+      // const value = active[property as keyof RuntimeTW];
+      if (property === 'theme') {
+        const value = active[property];
         return function () {
           if (__DEV__) assertActive();
-          // @ts-expect-error
-          return value.apply(
-            active,
-            arguments as unknown as [
-              match: RuleHandlerToken,
-              context: ThemeContext<__Theme__>,
-              parsed: ParsedRule,
-            ],
-          );
+          return value.apply(active, arguments as unknown as [string, string]);
+        };
+      }
+      const value = active[property as Exclude<keyof RuntimeTW, 'theme'>];
+      if (typeof value == 'function') {
+        return function () {
+          if (__DEV__) assertActive();
+          return value.apply(active);
         };
       }
 

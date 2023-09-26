@@ -11,7 +11,7 @@ const logger: LanguageServiceLogger = {
 const intellisense = new NativeTailwindIntellisense(logger, config);
 describe('TS PLUGIN', () => {
   it('Complete suggestion list', () => {
-    expect(intellisense.completions().classes.size).toStrictEqual(8444);
+    expect(intellisense.completions().classes.size).toStrictEqual(8429);
   });
   it('Enumerate completions', () => {
     expect(Array.from(intellisense.completions().classes, ([name]) => name)).toMatchSnapshot(

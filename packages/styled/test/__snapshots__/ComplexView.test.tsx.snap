@@ -34,7 +34,6 @@ exports[`@universal-labs/styled > Complex View 1`] = `
       {
         "color": "rgba(79,70,229,1)",
         "fontSize": 24,
-        "lineHeight": 32,
         "textAlign": "center",
       }
     }

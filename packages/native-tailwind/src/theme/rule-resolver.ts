@@ -1,5 +1,5 @@
 import { parseCssValue } from '@universal-labs/css/tailwind';
-import type { RuleMeta, RuleResolver } from '../types/config.types';
+import type { Rule, RuleMeta, RuleResolver } from '../types/config.types';
 import type { CompleteStyle } from '../types/rn.types';
 import type { __Theme__ } from '../types/theme.types';
 import { toColorValue } from '../utils/color-utils';
@@ -9,18 +9,21 @@ export function matchCssObject(
   pattern: string,
   resolver: RuleResolver<__Theme__>,
   meta: RuleMeta = {},
-): [string, RuleResolver<__Theme__>, RuleMeta] {
-  return [pattern, resolver, meta];
+): Rule<__Theme__> {
+  return [pattern, null, resolver, meta];
 }
 
 export function matchThemeColor(
   pattern: string,
   property: keyof CompleteStyle,
-  meta: RuleMeta = {},
-): [string, keyof CompleteStyle, RuleResolver<__Theme__>, RuleMeta] {
+  meta: RuleMeta = {
+    feature: 'default',
+    styleProperty: property,
+  },
+): Rule<__Theme__> {
   return [
     pattern,
-    property,
+    'colors',
     (match, context, rule) => {
       let color: string | null | undefined;
       if (match.segment.type == 'arbitrary') {
@@ -59,18 +62,19 @@ export function matchThemeColor(
 
 export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
-  themeSection: keyof Theme | (string & {}),
+  themeSection: keyof Theme,
   property: keyof CompleteStyle,
   meta: RuleMeta = {
     canBeNegative: false,
     feature: 'default',
     prefix: '',
     suffix: '',
+    styleProperty: property,
   },
-): [string, keyof Theme | (string & {}), RuleResolver<Theme>, RuleMeta] {
+): Rule<Theme> {
   return [
     pattern,
-    themeSection == '' && property ? property : themeSection,
+    themeSection,
     (match, context, parsedRule) => {
       let value: string | null = null;
       let segmentValue = match.segment.value;

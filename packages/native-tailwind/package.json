@@ -44,6 +44,10 @@
     "@universal-labs/css": "workspace:*"
   },
   "peerDependencies": {
+    "react": ">=18.0",
     "react-native": ">=0.71.0"
+  },
+  "optionalDependencies": {
+    "next": ">=13.0"
   }
 }

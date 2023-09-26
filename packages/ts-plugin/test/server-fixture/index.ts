@@ -1,6 +1,13 @@
 import { fork } from 'child_process';
+import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
+
+const logFile = path.join(__dirname, 'log.log');
+
+if (!fs.existsSync(logFile)) {
+  fs.writeFileSync(logFile, '', 'utf-8');
+}
 
 class TSServer {
   responses: any[] = [];
@@ -10,7 +17,6 @@ class TSServer {
   _server: any;
   _seq: number;
   constructor(project: any) {
-    const logFile = path.join(__dirname, 'log.log');
     const tsserverPath = path.join(
       __dirname,
       '..',

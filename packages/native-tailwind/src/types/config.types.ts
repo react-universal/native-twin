@@ -1,4 +1,4 @@
-import type { Parser, ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
+import type { ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
 import type { CssFeature } from '@universal-labs/css/tailwind';
 import type { CompleteStyle } from './rn.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
@@ -28,25 +28,19 @@ export type RuleResolver<Theme extends __Theme__ = {}> = (
   parsed: ParsedRule,
 ) => RuleResult | Falsey;
 
-export type Rule<Theme extends object = {}> =
-  | [pattern: string, resolver: RuleResolver<Theme>, meta?: RuleMeta]
-  | [
-      pattern: string,
-      section: keyof Theme | (string & {}),
-      resolver: RuleResolver<Theme>,
-      meta?: RuleMeta,
-    ];
-// | [pattern: string, section: keyof Theme | (string & {})]
-// | [pattern: string, style: CSSProperties];
-
-export type PatternParserResolver<T extends string> = Parser<T>;
+export type Rule<Theme extends __Theme__ = __Theme__> = [
+  pattern: string,
+  section: keyof Theme | null,
+  resolver: RuleResolver<Theme>,
+  meta?: RuleMeta,
+];
 
 export interface RuleMeta {
   canBeNegative?: boolean;
   feature?: CssFeature;
   prefix?: string | undefined;
   suffix?: string | undefined;
-  // customValues?: Record<string, string>;
+  styleProperty?: keyof CompleteStyle;
 }
 
 export interface ThemeContext<Theme extends __Theme__ = {}> {
