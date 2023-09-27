@@ -1,4 +1,5 @@
 import { useId, useMemo } from 'react';
+import { Platform } from 'react-native';
 import {
   AnyStyle,
   FinalSheet,
@@ -60,6 +61,8 @@ export function createComponentSheet(entries: SheetEntry[], context: StyledConte
 function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
   return entries.reduce(
     (prev, current) => {
+      const validRule = isApplicativeRule(current.rule.v, context);
+      if (!validRule) return prev;
       let nextDecl = composeDeclarations(current.declarations, context);
       if (nextDecl.transform && prev[current.group].transform) {
         nextDecl.transform = [
@@ -118,4 +121,35 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
 
     return prev;
   }, {} as AnyStyle);
+}
+
+const platformVariants = ['web', 'native', 'ios', 'android'];
+function isApplicativeRule(variants: string[], context: StyledContext) {
+  if (variants.length == 0) return true;
+  const screens = tw.config.theme['screens'];
+  for (const v of variants) {
+    if (platformVariants.includes(v)) {
+      if (v == 'web' && Platform.OS != 'web') return false;
+      if (v == 'native' && Platform.OS == 'web') return false;
+      if (v == 'ios' && Platform.OS != 'ios') return false;
+      if (v == 'android' && Platform.OS != 'android') return false;
+    }
+    if (v in screens) {
+      const width = context.deviceWidth;
+      const value = screens[v];
+      if (typeof value == 'number' && width >= value) {
+        return false;
+      }
+      if (typeof value == 'object') {
+        if ('raw' in value && !(width >= value.raw)) {
+          return false;
+        }
+        if (value.max && value.min && !(width <= value.max && width >= value.min))
+          return false;
+        if (value.max && !(width <= value.max)) return false;
+        if (value.min && !(width >= value.min)) return false;
+      }
+    }
+  }
+  return true;
 }

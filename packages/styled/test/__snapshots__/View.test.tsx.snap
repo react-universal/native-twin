@@ -5,17 +5,17 @@ exports[`@universal-labs/styled > CustomView render 1`] = `
   groupID=":r1:"
   style={
     {
+      "elevation": 1,
       "flexBasis": "0%",
       "flexGrow": 1,
       "flexShrink": 1,
-      "transform": [
-        {
-          "rotate": "6deg",
-        },
-        {
-          "translateX": 16,
-        },
-      ],
+      "shadowColor": "rgb(0,0,0)",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.3,
+      "shadowRadius": 3,
     }
   }
 />

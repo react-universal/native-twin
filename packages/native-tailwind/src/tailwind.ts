@@ -70,7 +70,3 @@ export function createTailwind<Theme = __Theme__>(
   setup(runtime);
   return runtime;
 }
-
-const tw = createTailwind({});
-
-tw('border-be-1'); //?

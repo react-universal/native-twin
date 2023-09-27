@@ -23,7 +23,7 @@ describe('@universal-labs/styled', () => {
   });
 });
 
-const CustomView = styledComponents.View`shadow-sm`;
+const CustomView = styledComponents.View`shadow-sm web:p-10`;
 
 describe('@universal-labs/styled', () => {
   it('CustomView render', () => {
