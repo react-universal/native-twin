@@ -6197,6 +6197,9 @@ __metadata:
     next: ">=13.0"
     react: ">=18.0"
     react-native: ">=0.71.0"
+  peerDependenciesMeta:
+    next:
+      optional: true
   languageName: unknown
   linkType: soft
 
