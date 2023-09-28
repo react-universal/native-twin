@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/vscode",
-  "version": "1.0.0",
+  "version": "5.1.0",
   "description": "Native Styled Tailwind vscode extension.",
   "categories": [
     "Programming Languages",
