@@ -1,0 +1,10 @@
+.vscode/**
+.vscode-test/**
+.gitignore
+test/
+src/**
+**/*.map
+.github/**
+.nvmrc
+.editorConfig
+build.js

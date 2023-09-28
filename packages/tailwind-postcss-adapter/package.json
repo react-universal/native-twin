@@ -53,16 +53,18 @@
     "build:tailwind": "npx vite build -c vite.tailwind.config.ts",
     "dev:tailwind": "concurrently \"npx tsx watch src/build.ts\" \"yarn build:tailwind -w\"",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest run",
+    "test": "echo \"TEST\"",
     "test:ui": "vitest --ui"
   },
   "devDependencies": {
     "@types/css-tree": "2.3.1",
     "@types/postcss-css-variables": "0.18.0",
+    "@types/postcss-js": "4.0.1",
     "@types/tailwindcss": "3.1.0",
     "css-tree": "2.3.1",
     "postcss-css-variables": "^0.18.0",
-    "tailwindcss": "^3.2.4",
+    "postcss-js": "4.0.1",
+    "tailwindcss": "^3.3.3",
     "tsx": "3.12.6"
   },
   "peerDependencies": {

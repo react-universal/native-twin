@@ -1,7 +1,9 @@
-import clsx from 'clsx';
+import { createTailwind } from '@universal-labs/native-tailwind';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 import styledComponents from '../src';
+
+createTailwind({});
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();
@@ -28,13 +30,12 @@ describe('@universal-labs/styled', () => {
 });
 
 const View = styledComponents.View.variants({
-  base: clsx(
-    'flex-1',
-    'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
-    'ios:(p-14 bg-rose-200 border-white border-2)',
-    'android:(p-14 border-green-200 border-2 bg-gray-200)',
-    'items-center justify-center md:border-3',
-  ),
+  base: `
+    flex-1
+    hover:(bg-blue-600)
+    p-14 bg-rose-200 border-white border-2
+    items-center justify-center md:border-3
+  `,
   variants: {
     intent: {
       primary: '',
@@ -50,20 +51,16 @@ const View = styledComponents.View.variants({
     active: true,
   },
 });
-const H1 = styledComponents.Text``;
+const H1 = styledComponents.Text`
+  text(center 2xl indigo-600)
+  hover:text-gray-700
+`;
 
 describe('@universal-labs/styled', () => {
   it('Complex View', () => {
     const component = renderer.create(
       <View intent='secondary'>
-        <H1
-          className={clsx(
-            'text(center 2xl indigo-600)',
-            'font-inter-bold hover:text-gray-700',
-          )}
-        >
-          H1 - 1
-        </H1>
+        <H1>H1 - 1</H1>
       </View>,
     );
     let tree = toJson(component);

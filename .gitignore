@@ -5,19 +5,14 @@
 
 # Yarn Berry
 .pnp.*
-.yarn/*
+/.yarn/*.gz
+**/.yarn/cache
+**/.yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-
-# Bit
-public/
-.bit/
-
-# Turborepo
-.turbo
 
 # ESLint
 lint-results/
@@ -30,7 +25,6 @@ lint-results/
 **/.swc
 .env
 .npmrc
-test.js
 *.tgz
 *.log
 **/_release
@@ -38,3 +32,8 @@ test.js
 # VITE
 **benchmark/
 **coverage/
+**.cache/
+
+#VSCODE
+.vscode-test
+out

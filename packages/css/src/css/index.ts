@@ -1,5 +1,6 @@
+import { withData } from '../parsers/data.parser';
 import type { CssParserData } from '../types/parser.types';
-import type { AnyStyle } from '../types/rn.types';
+import type { AnyStyle, FinalSheet } from '../types/rn.types';
 import { ParseCssRules } from './rules.parser';
 
 export const CreateCssResolver = () => {
@@ -12,14 +13,15 @@ export const CreateCssResolver = () => {
   };
 
   function parseCssTarget(target: string, context: CssParserData['context']) {
-    const parsed = ParseCssRules.run(target, {
+    const parsed = withData(ParseCssRules)({
       cache: {
         get: getCacheForSelector,
         set: setCacheForSelector,
       },
       context,
-    });
-    return parsed.data.styles;
+      styles: {},
+    }).run(target);
+    return parsed.data.styles as FinalSheet;
   }
 
   function getCacheForSelector(selector: string) {

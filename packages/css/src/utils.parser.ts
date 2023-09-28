@@ -53,6 +53,15 @@ export const getPropertyValueType = (property: string) => {
     case 'flex-grow':
     case 'flex-basis':
     case 'flex-shrink':
+    case 'translate':
+    case 'translateX':
+    case 'translate-x':
+    case 'translateY':
+    case 'translate-y':
+    case 'scale':
+    case 'scaleX':
+    case 'scaleY':
+    case 'spacing':
       return 'DIMENSION';
     case 'aspect-ratio':
       return 'MATH';

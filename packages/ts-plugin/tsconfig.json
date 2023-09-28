@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ESNext",
+    "outDir": "build",
+    "rootDir": "src",
+    "strict": true,
+    "noEmit": false,
+    "declaration": true,
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["test", "build", "e2e", "**/node_modules", "vitest.config.ts"]
+}

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styled from '@universal-labs/styled';
-import clsx from 'clsx';
 import {
   FullView,
   H1,
@@ -10,6 +9,9 @@ import {
   TextInput,
   View,
 } from '../components/common/View';
+
+// css`bg`;
+// styled('')``
 
 const TextField = () => {
   const [text, setText] = useState('');
@@ -25,38 +27,41 @@ const TextField = () => {
 const testImage = require('../../assets/favicon.png');
 
 const ExoticView = styled(View)`
-  ${clsx(
-    'flex-1',
-    'items-center justify-center md:border-3',
-    'hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))',
-    'ios:(p-14 bg-rose-200 border-white border-2)',
-    'android:(p-14 border-green-200 border-2 bg-gray-200)',
-  )}
+    flex-1
+    items-center justify-center md:border-3
+    hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))
+    ios:(p-14 bg-rose-200 border-white border-2)
+    android:(p-14 border-green-200 border-2 bg-gray-50)
 `;
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
     <FullView>
       <ExoticView>
-        <H1
-          className={clsx('text(center 2xl primary)', 'font-inter-bold hover:text-gray-700')}
-        >
-          H1 - 1
-        </H1>
+        <View className='bg-white shadow-md rounded-xl p-2'>
+          <H1
+            className={`
+              text(center 2xl primary)
+              font-inter-bold hover:text-gray-700
+            `}
+          >
+            H1 - 1
+          </H1>
+        </View>
       </ExoticView>
       <View
-        className={clsx(
-          'group',
-          'flex-[2]',
-          'bg-gray-800 hover:bg-pink-600',
-          'items-center justify-center',
-        )}
+        className={`
+          group
+          flex-[2]
+          bg-gray-800 hover:bg-pink-600
+          items-center justify-center
+        `}
       >
         <H1
-          className={clsx(
-            ['font-inter-bold text-2xl capitalize'],
-            [active ? 'text-red-800' : 'text-primary'],
-          )}
+          className={`
+          font-inter-bold text-2xl capitalize
+          ${active ? 'text-red-800' : 'text-primary'}
+          `}
         >
           Nested Hover
         </H1>
@@ -74,11 +79,11 @@ function HomeScreen() {
         />
         <TextField />
         <View
-          className={clsx(
-            '-top-1 -translate-x-2',
-            'mb-2 rounded-lg bg-gray-300 p-2',
-            'group-hover:bg-pink-800',
-          )}
+          className={`
+            -top-1 -translate-x-2
+            mb-2 rounded-lg bg-gray-300 p-2
+            group-hover:bg-pink-800
+          `}
         >
           <H2
             suppressHighlighting

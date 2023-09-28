@@ -1,3 +1,4 @@
+/** @type {typeof import('eslint/conf/eslint-all')} **/
 module.exports = {
   root: true,
   env: {
@@ -28,6 +29,7 @@ module.exports = {
     'no-console': 'warn',
     'no-redeclare': 'off',
     'no-undef': 'off',
+    'no-useless-escape': 'off',
     'no-unused-vars': 'off',
     'react/no-unescaped-entities': 'off',
     'react-hooks/rules-of-hooks': 'error',
@@ -44,6 +46,7 @@ module.exports = {
     'react/jsx-no-target-blank': 'off',
     'react/prop-types': 'off',
     'unused-imports/no-unused-imports': 'error',
+    'no-sparse-arrays': 'off',
     'unused-imports/no-unused-vars': [
       'warn',
       { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },

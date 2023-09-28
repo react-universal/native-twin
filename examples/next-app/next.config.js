@@ -1,5 +1,4 @@
 const { DefinePlugin } = require('webpack');
-const withPlugins = require('next-compose-plugins');
 
 /** @type {import('next').NextConfig} **/
 const nextConfig = {
@@ -10,13 +9,8 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    optimizeCss: true,
-    legacyBrowsers: false,
-    forceSwcTransforms: true,
-    scrollRestoration: true,
-    gzipSize: true,
-    appDir: false,
+  compiler: {
+    styledComponents: true,
   },
   transpilePackages: [
     'react-native',
@@ -24,11 +18,6 @@ const nextConfig = {
     'react-native-web',
     '@expo/html-elements',
   ],
-  outputFileTracing: false,
-  swcMinify: true,
-  compress: true,
-  poweredByHeader: false,
-  optimizeFonts: true,
   /**
    * Transformation to apply for both preview and dev server
    * @param config {import('webpack').Configuration}
@@ -78,19 +67,6 @@ const nextConfig = {
   },
 };
 
-const transformer = withPlugins(
-  [
-    // withTM,
-    // withPWA,
-    // [withExpo, { projectRoot: __dirname + '/../..' }],
-  ].filter(Boolean),
-  nextConfig,
-);
-
-module.exports = function (name, { defaultConfig }) {
-  const config = transformer(name, {
-    ...defaultConfig,
-    ...nextConfig,
-  });
-  return config;
+module.exports = {
+  ...nextConfig,
 };

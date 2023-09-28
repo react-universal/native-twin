@@ -1,0 +1,80 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": ".."
+    },
+    {
+      "name": "📦 @lib/tailwind",
+      "path": "../packages/native-tailwind"
+    },
+    {
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/ts-plugin",
+      "path": "../packages/ts-plugin"
+    },
+    {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
+    },
+    {
+      "name": "docs-site",
+      "path": "../apps/site"
+    }
+  ],
+  "settings": {
+    "cSpell.ignorePaths": [
+      "package-lock.json",
+      "node_modules",
+      "vscode-extension",
+      ".git/objects",
+      ".vscode",
+      ".vscode-insiders",
+      "**/colors.ts",
+      "**/*.snap"
+    ],
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    },
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/node_modules": false,
+      "**/build": false,
+      "**/.vscode-test": true
+    },
+    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "checkpoints.showActiveFileOnly": true,
+    "cSpell.words": [
+      "sastan",
+      "TRBL",
+      "xytrbl"
+    ],
+    "workbench.colorCustomizations": {
+      "[Atom One Dark]": {
+        "editor.background": "#1F1F1F"
+      }
+    }
+  }
+}

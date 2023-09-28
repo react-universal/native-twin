@@ -1,20 +1,22 @@
 import type { CompleteStyle } from '@universal-labs/css';
-import type { Primitive, TemplateFunctions } from '../types/styled.types';
+import type { ClassNameProps, Primitive, TemplateFunctions } from '../types/styled.types';
 
 /** Converts the tagged template string into a css string */
 export function buildCSSString<T>(
   chunks: TemplateStringsArray,
-  functions: (Primitive | TemplateFunctions<T & { className?: string; tw?: string }>)[],
-  props: T & { className?: string; tw?: string },
+  functions: (Primitive | TemplateFunctions<T & ClassNameProps>)[],
+  props: T & ClassNameProps,
 ) {
   let computedString = chunks
     // Evaluate the chunks from the tagged template
-    .map((chunk, i) => [
-      chunk,
-      functions[i] instanceof Function
-        ? (functions[i] as TemplateFunctions<T>)(props)
-        : functions[i],
-    ])
+    .map((chunk, i) => {
+      return [
+        chunk,
+        functions[i] instanceof Function
+          ? (functions[i] as TemplateFunctions<T>)(props)
+          : functions[i],
+      ];
+    })
     .flat()
     // Convert the objects to string if the result is not a primitive
     .map((chunk) => {
@@ -27,5 +29,5 @@ export function buildCSSString<T>(
   if (props.tw) {
     computedString += ` ${props.tw}`;
   }
-  return computedString;
+  return computedString.trim();
 }

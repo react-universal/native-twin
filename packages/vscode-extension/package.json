@@ -1,0 +1,113 @@
+{
+  "name": "@universal-labs/vscode",
+  "version": "1.0.0",
+  "description": "Native Styled Tailwind vscode extension.",
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Snippets"
+  ],
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "publisher": "universal-labs",
+  "main": "./build/extension.js",
+  "scripts": {
+    "build:libs": "node ./build.js --production",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "echo \"TEST\"",
+    "vscode:dev": "node ./build.js --watch",
+    "vscode:prepublish": "node ./build.js"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "nativeTailwind.restart",
+        "title": "Native Tailwind: Restart IntelliSense"
+      },
+      {
+        "command": "nativeTailwind.className",
+        "title": "Native Tailwind: Replace className strings"
+      }
+    ],
+    "configuration": [
+      {
+        "id": "nativeTailwind",
+        "title": "Native Tailwind",
+        "properties": {
+          "styledLanguageTW.tags": {
+            "type": "array",
+            "description": "List of template tags to enable Native Tailwind intellisense in.",
+            "items": {
+              "type": "string",
+              "description": "Tag name."
+            },
+            "default": [
+              "tw",
+              "apply",
+              "css",
+              "variants",
+              "styled",
+              "tx"
+            ]
+          },
+          "nativeTailwind.attributes": {
+            "type": "array",
+            "description": "List of html/jsx attributes to enable Native Tailwind intellisense in.",
+            "items": {
+              "type": "string",
+              "description": "Attribute name."
+            },
+            "default": [
+              "className",
+              "class"
+            ]
+          },
+          "nativeTailwind.styles": {
+            "type": "array",
+            "description": "List of style/styled functions to enable Native Tailwind intellisense in.",
+            "items": {
+              "type": "string",
+              "description": "Style function name."
+            },
+            "default": [
+              "style",
+              "styled",
+              "variants"
+            ]
+          },
+          "nativeTailwind.debug": {
+            "type": "boolean",
+            "description": "Enable/disable additional debug information.",
+            "default": false
+          },
+          "nativeTailwind.enable": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Controls whether Native Tailwind intellisense is enabled or not."
+          }
+        }
+      }
+    ],
+    "typescriptServerPlugins": [
+      {
+        "name": "@universal-labs/ts-styled-plugin-tw",
+        "enableForWorkspaceTypeScriptVersions": true
+      }
+    ]
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "dependencies": {
+    "@universal-labs/ts-styled-plugin-tw": "workspace:*",
+    "vscode-languageclient": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "1.80.0",
+    "@vscode/test-electron": "^2.3.3",
+    "vscode-test": "1.6.1"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  }
+}

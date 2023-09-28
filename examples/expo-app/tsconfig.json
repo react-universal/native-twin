@@ -5,8 +5,14 @@
     "lib": ["DOM", "ESNext"],
     "exactOptionalPropertyTypes": false,
     "allowJs": true,
+    "module": "ESNext",
     "resolveJsonModule": true,
-    "noEmit": true
+    "noEmit": true,
+    "plugins": [
+      {
+        "name": "@universal-labs/ts-styled-plugin-tw"
+      }
+    ]
   },
   "references": [],
   "exclude": [

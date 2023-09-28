@@ -7,7 +7,7 @@ import {
   useMemo,
 } from 'react';
 import { StyleSheet, type StyleProp, type Touchable } from 'react-native';
-import { AnyStyle } from '@universal-labs/css';
+import type { AnyStyle } from '@universal-labs/css';
 import { useChildren } from '../hooks/useChildren';
 import { useComponentInteractions } from '../hooks/useComponentInteractions';
 import { useComponentRegistry } from '../hooks/useComponentRegistry';
@@ -70,8 +70,7 @@ function styledComponentsFactory<
           return StyleSheet.create({
             generated: {
               ...styles,
-              //@ts-expect-error
-              ...props.style,
+              ...(props?.style as unknown as AnyStyle),
             },
           }).generated;
         }, [component.interactionState, stylesheet, parentComponent, props.style]);
@@ -117,34 +116,6 @@ function styledComponentsFactory<
     }
     return ForwardRefComponent;
   };
-
-  // provide styled(Comp).attrs({} | () => {}) feature
-  // styledComponent.attrs =
-  //   <Part, Result extends Partial<Props & Part> = Partial<Props & StyledProps & Part>>(
-  //     opts: Result | ((props: Props & Part) => Result),
-  //   ) =>
-  //   (
-  //     chunks: TemplateStringsArray,
-  //     ...functions: (Primitive | TemplateFunctions<Props & Part>)[]
-  //   ) => {
-  //     const ComponentWithAttrs = styledComponent(chunks, ...functions);
-  //     // We need to limit the props control to only Result https://www.typescriptlang.org/play?#code/GYVwdgxgLglg9mABBATgUwIZTQUQB7ZgAmaRAwnALYAOAPAAopzUDOAfABQU0BciH1Jqz6NmLAJSIAvG0QYwAT0kBvAFCJkCFlET5CJYt2rT+gsSKETpstRo3ooIFEiMDL49YgC+nvWmL+5FTUAHRYUCgsJrQASmgsIAA2OmgEgVH0GCiwGIkMlmyc4ZF8cQnJkjKItnYQWjqMaHVgwDAA5k5YpEYmbua6eBCJICT5YgA0iGVJUGyVNp52iA5OLsEcyiFbZqyTW2FQESxeHks+SyvOiI3NrR0oXUE0nufLaI5XfgGGwao+qqBILAEIgen1hNVENhtHxtCgYGA2pNtApEmhYREEW1vCpPJckDsWH9VM1tNd0Ld2j0pMh0F0viQntQuMFxAcjhsofEoHwAORwADWvJxqhuCDurmUiBRaL50KgwpOQA
-  //     const ForwardRefComponent = forwardRef<
-  //       any,
-  //       Omit<Props, keyof Result> &
-  //         StyledProps &
-  //         Part &
-  //         Partial<Pick<Props, Extract<keyof Props, keyof Result>>>
-  //     >((props, ref) => {
-  //       const attrs = opts instanceof Function ? opts(props as Props & Part) : opts;
-  //       return <ComponentWithAttrs ref={ref} {...(props as Props & Part)} {...attrs} />;
-  //     });
-  //     if (__DEV__) {
-  //       ForwardRefComponent.displayName = `Styled(${getComponentDisplayName(Component)})`;
-  //     }
-  //     // TODO : Find a way to remove from the Props the properties affected by opts
-  //     return ForwardRefComponent;
-  //   };
 
   return styledComponent;
 }

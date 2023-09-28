@@ -1,7 +1,5 @@
-import { clsx } from 'clsx';
 import type { OmitUndefined, StyledComponentProps } from '../types/styled.types';
 
-const cx = clsx;
 type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
 
 type ConfigSchema = Record<string, Record<string, string>>;
@@ -32,11 +30,18 @@ type VariantsFnProps<T> = T extends ConfigSchema
 export const createVariants = <T>(config: VariantsConfig<T>) => {
   return (props?: VariantsFnProps<T>) => {
     if (!config || !config?.variants || config.variants == null) {
-      return cx(config.base, props?.className, props?.tw);
+      let composed = config.base ?? '';
+      if (props?.className) {
+        composed += `${composed == '' ? '' : ' '}${props.className}`;
+      }
+      if (props?.tw) {
+        composed += `${composed == '' ? '' : ' '}${props.tw}`;
+      }
+      return composed.trim();
     }
     const { variants, defaultVariants } = config;
-    const getVariantClassNames = Object.keys(variants).map(
-      (variant: keyof typeof variants) => {
+    const getVariantClassNames = Object.keys(variants)
+      .map((variant: keyof typeof variants) => {
         const variantProp = props?.[variant as keyof typeof props];
         // @ts-expect-error
         const defaultVariantProp = defaultVariants?.[variant];
@@ -47,10 +52,19 @@ export const createVariants = <T>(config: VariantsConfig<T>) => {
           falsyToString(defaultVariantProp)) as keyof (typeof variants)[typeof variant];
 
         return variants[variant]![variantKey];
-      },
-    );
-
-    return cx(config.base, getVariantClassNames, props?.tw, props?.className);
+      })
+      .filter(Boolean);
+    let composed = config.base ?? '';
+    if (getVariantClassNames) {
+      composed += `${composed == '' ? '' : ' '}${getVariantClassNames}`;
+    }
+    if (props?.className) {
+      composed += `${composed == '' ? '' : ' '}${props.className}`;
+    }
+    if (props?.tw) {
+      composed += `${composed == '' ? '' : ' '}${props.tw}`;
+    }
+    return composed.trim();
   };
 };
 

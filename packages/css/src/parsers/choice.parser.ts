@@ -225,6 +225,40 @@ export function choice<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>([
   Parser<N>,
   Parser<O>,
 ]): Parser<A | B | C | D | E | F | G | H | I | J | K | L | M | N | O>;
+export function choice<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P>([
+  p1,
+  p2,
+  p3,
+  p4,
+  p5,
+  p6,
+  p7,
+  p8,
+  p9,
+  p10,
+  p11,
+  p12,
+  p13,
+  p14,
+  p15,
+]: [
+  Parser<A>,
+  Parser<B>,
+  Parser<C>,
+  Parser<D>,
+  Parser<E>,
+  Parser<F>,
+  Parser<G>,
+  Parser<H>,
+  Parser<I>,
+  Parser<J>,
+  Parser<K>,
+  Parser<L>,
+  Parser<M>,
+  Parser<N>,
+  Parser<O>,
+  Parser<P>,
+]): Parser<A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P>;
 export function choice(parsers: Parser<any>[]): Parser<any>;
 export function choice(parsers: Parser<any>[]): Parser<any> {
   if (parsers.length == 0) throw new Error(`List of parsers can't be empty.`);
@@ -242,6 +276,6 @@ export function choice(parsers: Parser<any>[]): Parser<any> {
       }
     }
 
-    return error as ParserState<any>;
+    return error as ParserState<any, any>;
   });
 }

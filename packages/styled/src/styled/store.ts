@@ -15,6 +15,7 @@ const createComponent = (id: string, groupID: string) => {
         'group-active': false,
         'group-focus': false,
         'group-hover': false,
+        group: false,
         active: false,
         focus: false,
         hover: false,

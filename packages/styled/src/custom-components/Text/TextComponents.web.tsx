@@ -6,7 +6,7 @@ import { unstable_createElement } from 'react-native-web';
 function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
   const nativeProps: any = Platform.select({
     web: {
-      accessibilityRole: 'text',
+      role: 'text',
     },
     default: {},
   });

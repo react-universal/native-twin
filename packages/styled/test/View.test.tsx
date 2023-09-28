@@ -1,7 +1,10 @@
 import { View } from 'react-native';
+import { createTailwind } from '@universal-labs/native-tailwind';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 import styledComponents from '../src';
+
+createTailwind({});
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();
@@ -20,7 +23,7 @@ describe('@universal-labs/styled', () => {
   });
 });
 
-const CustomView = styledComponents.View``;
+const CustomView = styledComponents.View`shadow-sm web:p-10`;
 
 describe('@universal-labs/styled', () => {
   it('CustomView render', () => {

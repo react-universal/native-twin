@@ -1,4 +1,22 @@
-import type { Platform } from 'react-native';
+import { PlatformOSType } from 'react-native';
+
+export interface SheetMetadata {
+  isGroupParent: boolean;
+  hasPointerEvents: boolean;
+  hasGroupEvents: boolean;
+}
+
+export interface SheetChildState {
+  isFirstChild: boolean;
+  isLastChild: boolean;
+  isEven: boolean;
+  isOdd: boolean;
+}
+
+export interface SheetInteractionState {
+  isPointerActive: boolean;
+  isParentActive: boolean;
+}
 
 export type Units = {
   '%'?: number;
@@ -23,25 +41,7 @@ export type StyledContext = {
   deviceWidth: number;
   deviceHeight: number;
   deviceAspectRatio: number;
-  platform: Platform['OS'];
+  platform: PlatformOSType;
   colorScheme: 'dark' | 'light';
   units: Units;
 };
-
-export interface SheetMetadata {
-  isGroupParent: boolean;
-  hasPointerEvents: boolean;
-  hasGroupEvents: boolean;
-}
-
-export interface SheetChildState {
-  isFirstChild: boolean;
-  isLastChild: boolean;
-  isEven: boolean;
-  isOdd: boolean;
-}
-
-export interface SheetInteractionState {
-  isPointerActive: boolean;
-  isParentActive: boolean;
-}

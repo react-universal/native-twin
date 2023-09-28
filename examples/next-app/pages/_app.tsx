@@ -1,9 +1,8 @@
 // import { Roboto } from '@next/font/google';
-import install from '@twind/with-next/app';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../styles/globals.css';
-import tailwind from '../styles/tw';
+import '../styles/tw';
 
 // const roboto = Roboto({
 //   subsets: ['latin'],
@@ -11,7 +10,7 @@ import tailwind from '../styles/tw';
 //   variable: '--font-roboto',
 // });
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -25,4 +24,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default install(tailwind.tw.config, MyApp);
+// export default install(tw.config, MyApp);

@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { install } from '@universal-labs/styled';
+import { setup } from '@universal-labs/native-tailwind';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 import { HomeScreen } from './src/screens/Home.screen';
 import tailwindConfig from './tailwind.config';
 
-install({
-  rem: 14,
-  theme: tailwindConfig.theme,
-});
+setup(tailwindConfig);
 
 export default function App() {
   const { bootFonts } = useLoadFonts();
@@ -21,7 +18,6 @@ export default function App() {
     }
   }, [bootFonts, isReady]);
   if (!isReady) return null;
-  console.log('COOL_DOWN_OFF');
   return (
     <View style={{ flex: 1 }}>
       <HomeScreen />

@@ -10,5 +10,5 @@
     "exactOptionalPropertyTypes": false,
     "importHelpers": true
   },
-  "include": ["src", "test","vite.config.*"]
+  "include": ["src", "test", "vite.config.*"]
 }

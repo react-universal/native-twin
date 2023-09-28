@@ -1,0 +1,14 @@
+// A launch configuration that compiles the extension and then opens it inside a new window
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to VS Code TS Server",
+      "type": "node",
+      "request": "attach",
+      "port": 5859,
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/build/**/*.js", "!**/node_modules/**"]
+    }
+  ]
+}

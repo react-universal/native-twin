@@ -1,0 +1,32 @@
+{
+  "name": "@universal-labs/ts-styled-plugin-tw",
+  "version": "1.0.0",
+  "description": "TypeScript plugin that adds IntelliSense Native Tailwind",
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "main": "build/index.js",
+  "scripts": {
+    "build:libs": "node ./build.js --production",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "vscode:dev": "node ./build.js --watch"
+  },
+  "dependencies": {
+    "@ctrl/tinycolor": "3.6.0",
+    "@universal-labs/css": "workspace:*",
+    "@universal-labs/native-tailwind": "workspace:*",
+    "@vscode/emmet-helper": "2.9.2",
+    "cssbeautify": "0.3.1",
+    "match-sorter": "6.3.1",
+    "quick-lru": "6.1.1",
+    "showdown": "2.1.0",
+    "typescript-template-language-service-decorator": "2.3.2",
+    "vscode-css-languageservice": "6.2.6",
+    "vscode-languageserver-textdocument": "1.0.8"
+  },
+  "devDependencies": {
+    "@types/cssbeautify": "0.3.2",
+    "@types/showdown": "2.0.1"
+  }
+}

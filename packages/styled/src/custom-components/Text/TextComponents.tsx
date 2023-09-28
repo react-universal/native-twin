@@ -5,7 +5,7 @@ import Text from './Text.primitive';
 function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
   const nativeProps: any = Platform.select({
     web: {
-      accessibilityRole: 'text',
+      role: 'text',
     },
     default: {},
   });

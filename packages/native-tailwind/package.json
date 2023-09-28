@@ -1,0 +1,56 @@
+{
+  "name": "@universal-labs/native-tailwind",
+  "version": "5.0.1",
+  "private": true,
+  "description": "Tailwindcss StyleSheet generator for react native/web",
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "tailwind-native",
+    "react-native-web",
+    "universal-labs",
+    "react-native",
+    "react"
+  ],
+  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/tailwind",
+    "directory": "packages/native-tailwind"
+  },
+  "sideEffects": false,
+  "main": "./build/index.cjs.js",
+  "module": "./build/index.es.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "index.d.ts",
+    "tailwind",
+    "tailwind.d.ts",
+    "types.d.ts",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build:libs": "vite build",
+    "test": "vitest run",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@universal-labs/css": "workspace:*"
+  },
+  "peerDependencies": {
+    "next": ">=13.0",
+    "react": ">=18.0",
+    "react-native": ">=0.71.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  }
+}

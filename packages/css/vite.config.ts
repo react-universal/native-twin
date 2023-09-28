@@ -22,9 +22,18 @@ export default defineConfig({
     minify: 'esbuild',
     outDir: 'build',
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: path.resolve(__dirname, 'src/index.ts'),
+        tailwind: path.resolve(__dirname, 'src/tailwind/index.ts'),
+        parser: path.resolve(__dirname, 'src/parser-module.ts'),
+      },
       name: 'UniversalLabsCss',
-      fileName: (format) => `index.${format}.js`,
+      fileName: (format, name) => {
+        if ((name == 'tailwind' || name == 'parser') && format == 'cjs') {
+          return `${name}.${format}`;
+        }
+        return `${name}.${format}.js`;
+      },
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
