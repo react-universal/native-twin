@@ -24,18 +24,7 @@ export default defineConfig({
     rollupOptions: {
       strictDeprecations: true,
       external: ['react-native', 'react'],
-      makeAbsoluteExternalsRelative: 'ifRelativeSource',
       treeshake: true,
-      output: {
-        generatedCode: {
-          arrowFunctions: true,
-          constBindings: true,
-          objectShorthand: true,
-          preset: 'es2015',
-        },
-        interop: 'auto',
-        compact: true,
-      },
     },
     emptyOutDir: false,
   },
