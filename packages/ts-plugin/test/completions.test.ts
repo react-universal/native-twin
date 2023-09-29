@@ -20,7 +20,7 @@ describe('Completions', () => {
 
       await server.close();
       const completionsResponse = getFirstResponseOfType('completions', server);
-      console.log('RESPONSE: ', JSON.stringify(completionsResponse, null, 2));
+      // console.log('RESPONSE: ', JSON.stringify(completionsResponse, null, 2));
       expect(completionsResponse.success).toBeTruthy();
     },
     {
