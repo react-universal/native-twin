@@ -1,4 +1,4 @@
-import { type ParsedRule, RuleHandler } from '@universal-labs/css/tailwind';
+import { type ParsedRule, RuleHandler } from '@universal-labs/css';
 import type {
   Rule,
   RuleMeta,

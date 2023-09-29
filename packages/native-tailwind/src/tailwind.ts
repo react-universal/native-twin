@@ -4,10 +4,10 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
-import { parseTWTokens } from '@universal-labs/css/tailwind';
+import { parseTWTokens } from '@universal-labs/css';
 import { defineConfig } from './config/define-config';
 import { createVirtualSheet } from './css/sheets';
-import { setup } from './runtime';
+import { setup } from './runtime/tw';
 import { createThemeContext } from './theme/theme.context';
 import type { TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { Sheet, SheetEntry } from './types/css.types';
@@ -97,3 +97,6 @@ export function createTailwind<Theme = __Theme__>(
   setup(runtime);
   return runtime;
 }
+
+// const test = createTailwind({});
+// test('min-w-full'); //?

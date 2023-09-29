@@ -1,4 +1,8 @@
-export { CssResolver } from './css';
+export * from './css';
+export * from './tailwind';
+export * from './constants/empties';
+export * from './constants/pseudo.constants';
+
 export type {
   AnyStyle,
   FinalSheet,
@@ -26,5 +30,5 @@ export type {
   SheetInteractionState,
   SelectorPayload,
 } from './types/css.types';
-export * from './constants/empties';
-export * from './constants/pseudo.constants';
+
+export * from './types/tailwind.types';

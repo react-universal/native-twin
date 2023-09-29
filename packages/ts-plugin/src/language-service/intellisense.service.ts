@@ -1,4 +1,4 @@
-import { cornerMap, directionMap } from '@universal-labs/css/tailwind';
+import { cornerMap, directionMap } from '@universal-labs/css';
 import {
   Rule,
   RuleMeta,

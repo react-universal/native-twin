@@ -1,5 +1,5 @@
 import type { SelectorGroup } from '@universal-labs/css';
-import type { ClassNameToken, ParsedRule } from '@universal-labs/css/tailwind';
+import type { ClassNameToken, ParsedRule } from '@universal-labs/css';
 import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
 import type { ScreenValue, __Theme__ } from '../types/theme.types';
 

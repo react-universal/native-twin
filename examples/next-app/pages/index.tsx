@@ -11,7 +11,7 @@ const IndexPage = () => {
         <H1 className='text-4xl font-bold'>Card title</H1>
         <View>
           <P className='text(2xl slate-800) font-medium'>Subtitle</P>
-          <P className='text(lg slate-900)'>
+          <P className='text(lg slate-900) min-w-full'>
             dslkfjsdlkf jlksdjflk jsdlk fsdlkflsdkjlsdkjlkdsjsdlkflskdfl lkdsjflksdj lskd
             jlksdjf sdlklks djflksjfdslkjflsdkjflksdjflk jl sjdflkjsdlkf
           </P>

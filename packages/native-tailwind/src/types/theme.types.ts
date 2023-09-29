@@ -1,5 +1,9 @@
-import type { AnyStyle, FinalSheet, GetChildStylesArgs } from '@universal-labs/css';
-import type { SheetInteractionState } from '@universal-labs/css/build/types/css.types';
+import type {
+  SheetInteractionState,
+  AnyStyle,
+  FinalSheet,
+  GetChildStylesArgs,
+} from '@universal-labs/css';
 import type { TailwindConfig, ThemeFunction } from './config.types';
 import type { Sheet, SheetEntry } from './css.types';
 import type { MaybeArray, StringLike } from './util.types';

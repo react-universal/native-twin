@@ -30,26 +30,17 @@ function styledComponentsFactory<
   ): ForwardRefExoticComponent<Props & S & StyledComponentProps & { ref?: Ref<any> }> {
     const ForwardRefComponent = forwardRef<any, S & Props>(
       (props: S & Props & StyledComponentProps, ref) => {
-        const classNames = buildCSSString(chunks, functions, props);
-        // const start = performance.now();
+        const classNames = cx`${buildCSSString(chunks, functions, props)}`;
         const styles = useMemo(() => {
-          const mergedClassName = cx(props.className ?? '') ? cx(...[classNames]) : '';
-          if (mergedClassName && props.style) {
-            return [
-              { $$css: true, [mergedClassName]: mergedClassName } as CompleteStyle,
-              props.style,
-            ];
-          } else if (mergedClassName) {
-            return { $$css: true, [mergedClassName]: mergedClassName } as CompleteStyle;
-          } else if (props.style) {
-            return props.style;
+          if (props.style) {
+            return [{ $$css: true, [classNames]: classNames } as CompleteStyle, props.style];
+          } else {
+            return { $$css: true, [classNames]: classNames } as CompleteStyle;
           }
-          return {};
         }, [props, classNames]);
-        // console.log('TOOK: ', performance.now() - start);
         const transformedComponent = createElement(Component, {
           ...props,
-          style: [styles],
+          style: styles,
           ref,
         } as unknown as any);
         let returnValue: ReactNode = transformedComponent;

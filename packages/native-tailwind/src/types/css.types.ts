@@ -1,6 +1,5 @@
 import type { StyleProp } from 'react-native';
-import type { AnyStyle, SelectorGroup } from '@universal-labs/css';
-import type { ParsedRule } from '@universal-labs/css/tailwind';
+import type { ParsedRule, AnyStyle, SelectorGroup } from '@universal-labs/css';
 import type { Falsey, StringLike } from './util.types';
 
 export type CSSValue =
