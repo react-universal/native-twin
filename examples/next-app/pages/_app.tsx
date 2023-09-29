@@ -1,5 +1,5 @@
 // import { Roboto } from '@next/font/google';
-import { installApp } from '@universal-labs/native-tailwind-nextjs/app';
+import { installApp } from '@universal-labs/native-tailwind-nextjs/_app';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../styles/globals.css';

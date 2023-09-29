@@ -24,24 +24,24 @@
   },
   "sideEffects": false,
   "exports": {
-    "./app": {
-      "types": "./build/app.d.ts",
-      "module": "./build/app.es.js",
-      "import": "./build/app.es.js",
+    "./_app": {
+      "types": "./build/_app.d.ts",
+      "module": "./build/_app.es.js",
+      "import": "./build/_app.es.js",
       "node": {
-        "import": "./build/app.es.js",
-        "require": "./build/app.cjs.js"
+        "import": "./build/_app.es.js",
+        "require": "./build/_app.cjs.js"
       },
-      "default": "./build/app.cjs.js"
+      "default": "./build/_app.cjs.js"
     },
-    "./document": {
-      "types": "./build/document.d.ts",
-      "module": "./build/document.es.js",
+    "./_document": {
+      "types": "./build/_document.d.ts",
+      "module": "./build/_document.es.js",
       "node": {
-        "import": "./build/document.es.js",
-        "require": "./build/document.cjs.js"
+        "import": "./build/_document.es.js",
+        "require": "./build/_document.cjs.js"
       },
-      "default": "./build/document.cjs.js"
+      "default": "./build/_document.cjs.js"
     },
     "./package.json": "./package.json"
   },

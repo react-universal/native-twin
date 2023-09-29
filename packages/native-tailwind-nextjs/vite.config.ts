@@ -29,8 +29,8 @@ export default defineConfig({
     ssr: false,
     lib: {
       entry: {
-        app: path.resolve(__dirname, 'src/app.ts'),
-        document: path.resolve(__dirname, 'src/document.ts'),
+        _app: path.resolve(__dirname, 'src/_app.ts'),
+        _document: path.resolve(__dirname, 'src/_document.ts'),
       },
       name: '@universal-labs/native-tailwind-nextjs',
       fileName: (format, name) => `${name}.${format}.js`,

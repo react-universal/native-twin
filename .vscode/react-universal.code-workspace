@@ -5,12 +5,20 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/tailwind",
-      "path": "../packages/native-tailwind"
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
     },
     {
       "name": "📦 @lib/styled",
       "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @lib/tailwind",
+      "path": "../packages/native-tailwind"
     },
     {
       "name": "📦 @lib/css",
@@ -27,14 +35,6 @@
     {
       "name": "📦 @lib/with-nextjs",
       "path": "../packages/native-tailwind-nextjs"
-    },
-    {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
-    },
-    {
-      "name": "next-app",
-      "path": "../examples/next-app"
     },
     {
       "name": "docs-site",

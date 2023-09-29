@@ -1,5 +1,5 @@
 import React from 'react';
-import { installDocument } from '@universal-labs/native-tailwind-nextjs/document';
+import { installDocument } from '@universal-labs/native-tailwind-nextjs/_document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
