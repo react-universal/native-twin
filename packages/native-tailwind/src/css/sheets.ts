@@ -1,14 +1,14 @@
 import type { Sheet, SheetEntry } from '../types/css.types';
 import { noop } from '../utils/helpers';
 
-export function createVirtualSheet(): Sheet<SheetEntry> {
-  let target: Map<string, SheetEntry> = new Map();
+export function createVirtualSheet(): Sheet<SheetEntry[]> {
+  const target: SheetEntry[] = [];
 
   return {
     target,
 
     clear() {
-      target.clear();
+      target.length = 0;
     },
 
     destroy() {
@@ -16,21 +16,15 @@ export function createVirtualSheet(): Sheet<SheetEntry> {
     },
 
     insert(entry) {
-      target.set(entry.className, entry);
-    },
-
-    getClassName(key) {
-      return target.get(key);
+      target.push(entry);
     },
 
     snapshot() {
       // collect current rules
-      const rules = new Map([...target]);
-      // target.clear();
+      const rules = [...target];
 
       return () => {
-        target.clear();
-        target = rules;
+        target.splice(0, target.length, ...rules);
       };
     },
     resume: noop,

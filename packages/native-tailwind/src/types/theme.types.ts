@@ -21,7 +21,7 @@ export interface ComponentSheet {
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
   (tokens: StringLike): SheetEntry[];
-  sheet: Sheet<SheetEntry>;
+  sheet: Sheet<SheetEntry[]>;
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
   readonly destroy: () => void;

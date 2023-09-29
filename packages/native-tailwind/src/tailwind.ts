@@ -21,6 +21,7 @@ export function createTailwind<Theme = __Theme__>(
   const config = defineConfig(userConfig) as TailwindConfig<__Theme__>;
   const context = createThemeContext<__Theme__>(config);
   let cache = new Map<string, SheetEntry[]>();
+  const insertedRules = new Set<string>();
 
   const runtime = Object.defineProperties(
     function tw(tokens) {
@@ -42,15 +43,13 @@ export function createTailwind<Theme = __Theme__>(
         }
         const className = toClassName(rule);
 
-        const style = sheet.getClassName(className);
-        if (style) {
-          styles.push(style);
-        } else {
-          const ruleData = context.r(rule);
-          if (ruleData) {
+        const ruleData = context.r(rule);
+        if (ruleData) {
+          if (!insertedRules.has(className)) {
+            insertedRules.add(className);
             sheet.insert(ruleData);
-            styles.push(ruleData);
           }
+          styles.push(ruleData);
         }
       }
       cache.set(tokens, styles);
@@ -58,12 +57,12 @@ export function createTailwind<Theme = __Theme__>(
       return styles;
     } as RuntimeTW<__Theme__ & Theme>,
     Object.getOwnPropertyDescriptors({
-      get sheet(): Sheet<SheetEntry> {
+      get sheet(): Sheet<SheetEntry[]> {
         return sheet;
       },
 
       get target(): SheetEntry[] {
-        return Array.from([...sheet.target.values()]);
+        return sheet.target;
       },
 
       theme: context.theme,

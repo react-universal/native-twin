@@ -8,6 +8,7 @@ import type {
   ThemeContext,
 } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
+import { toClassName } from '../utils/string-utils';
 import { flattenColorPalette } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
 
@@ -20,6 +21,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   rules,
 }: TailwindConfig<Theme>): ThemeContext {
   const ruleHandlers = new Map<string, RuleHandlerFn<Theme>>();
+  const cache = new Map<string, RuleResult>();
   const ctx: ThemeContext = {
     get colors() {
       return flattenColorPalette(themeConfig['colors'] ?? {});
@@ -33,28 +35,15 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
     v(variants) {
       if (variants.length == 0) return true;
-      // for (const v of variants) {
-      //   if (v in this.breakpoints) {
-      //     const width = context.deviceWidth;
-      //     const value = this.breakpoints[v];
-      //     if (typeof value == 'number') {
-      //       return width >= value;
-      //     }
-      //     if (typeof value == 'object') {
-      //       if ('raw' in value) {
-      //         return width >= value.raw;
-      //       }
-      //       if (value.max && value.min) return width <= value.max && width >= value.min;
-      //       if (value.max) return width <= value.max;
-      //       if (value.min) return width >= value.min;
-      //     }
-      //   }
-      // }
       return true;
     },
 
     r(token: ParsedRule) {
       for (const current of rules) {
+        const className = toClassName(token);
+        if (cache.has(className)) {
+          return cache.get(className);
+        }
         const key = JSON.stringify(
           current.filter((x) => typeof x !== 'function' && typeof x !== 'object'),
         );

@@ -44,8 +44,6 @@ export default defineConfig({
       external: [
         'react-native',
         '@universal-labs/css',
-        '@universal-labs/css/tailwind',
-        '@universal-labs/css/parser',
         '@universal-labs/native-tailwind',
         'next',
         'next/app',

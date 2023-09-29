@@ -3,12 +3,8 @@ import {
   type ComponentType,
   type Ref,
   type ForwardRefExoticComponent,
-  createElement,
-  useMemo,
-  type ReactNode,
 } from 'react';
 import type { StyleProp } from 'react-native';
-import type { CompleteStyle } from '@universal-labs/css';
 import { cx } from '@universal-labs/native-tailwind';
 import type {
   Primitive,
@@ -31,21 +27,19 @@ function styledComponentsFactory<
     const ForwardRefComponent = forwardRef<any, S & Props>(
       (props: S & Props & StyledComponentProps, ref) => {
         const classNames = cx`${buildCSSString(chunks, functions, props)}`;
-        const styles = useMemo(() => {
-          if (props.style) {
-            return [{ $$css: true, [classNames]: classNames } as CompleteStyle, props.style];
-          } else {
-            return { $$css: true, [classNames]: classNames } as CompleteStyle;
-          }
-        }, [props, classNames]);
-        const transformedComponent = createElement(Component, {
-          ...props,
-          style: styles,
-          ref,
-        } as unknown as any);
-        let returnValue: ReactNode = transformedComponent;
-
-        return returnValue;
+        return (
+          <Component
+            {...props}
+            style={[
+              {
+                $$css: true,
+                [classNames]: classNames,
+              },
+              props.style,
+            ]}
+            ref={ref}
+          />
+        );
       },
     );
     if (__DEV__) {

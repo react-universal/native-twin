@@ -26,9 +26,8 @@ export interface SheetEntry {
 }
 
 export interface Sheet<Target = unknown> {
-  readonly target: Map<string, Target>;
+  readonly target: Target;
   insert(entry: SheetEntry): void;
-  getClassName(key: string): SheetEntry | undefined;
   snapshot(): () => void;
   /** Clears all CSS rules from the sheet. */
   clear(): void;
