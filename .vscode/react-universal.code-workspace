@@ -57,17 +57,6 @@
       "comments": true,
       "strings": true
     },
-    "files.exclude": {
-      "**/.git": true,
-      "**/.svn": true,
-      "**/.hg": true,
-      "**/CVS": true,
-      "**/.DS_Store": true,
-      "**/Thumbs.db": true,
-      "**/node_modules": false,
-      "**/build": false,
-      "**/.vscode-test": true
-    },
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "checkpoints.showActiveFileOnly": true,
     "cSpell.words": [
