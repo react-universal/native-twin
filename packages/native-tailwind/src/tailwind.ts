@@ -20,7 +20,7 @@ export function createTailwind<Theme = __Theme__>(
 ): RuntimeTW<__Theme__ & Theme> {
   const config = defineConfig(userConfig) as TailwindConfig<__Theme__>;
   const context = createThemeContext<__Theme__>(config);
-  const cache = new Map<string, SheetEntry[]>();
+  let cache = new Map<string, SheetEntry[]>();
 
   const runtime = Object.defineProperties(
     function tw(tokens) {
@@ -61,9 +61,36 @@ export function createTailwind<Theme = __Theme__>(
       get sheet(): Sheet<SheetEntry> {
         return sheet;
       },
+
+      get target(): SheetEntry[] {
+        return Array.from([...sheet.target.values()]);
+      },
+
       theme: context.theme,
       get config() {
         return config;
+      },
+
+      snapshot() {
+        const restoreSheet = sheet.snapshot();
+        const cache$ = new Map(cache);
+
+        return () => {
+          restoreSheet();
+
+          cache = cache$;
+        };
+      },
+
+      clear() {
+        sheet.clear();
+
+        cache = new Map();
+      },
+
+      destroy() {
+        this.clear();
+        sheet.destroy();
       },
     }),
   );

@@ -21,6 +21,9 @@ export interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
   readonly destroy: () => void;
+  readonly snapshot: () => () => void;
+  readonly clear: () => void;
+  readonly target: SheetEntry[];
 }
 
 /* THEME CONFIG */
@@ -36,7 +39,7 @@ export type ThemeConfig<Theme extends object = object> = PartialTheme<Theme> & {
   extend?: PartialTheme<Theme>;
 };
 
-type ScreenValue =
+export type ScreenValue =
   | number
   | { raw: number }
   | { min: number; max?: number }

@@ -6188,11 +6188,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/native-tailwind@workspace:*, @universal-labs/native-tailwind@workspace:packages/native-tailwind":
+"@universal-labs/native-tailwind-nextjs@workspace:*, @universal-labs/native-tailwind-nextjs@workspace:packages/native-tailwind-nextjs":
   version: 0.0.0-use.local
-  resolution: "@universal-labs/native-tailwind@workspace:packages/native-tailwind"
+  resolution: "@universal-labs/native-tailwind-nextjs@workspace:packages/native-tailwind-nextjs"
   dependencies:
     "@universal-labs/css": "workspace:*"
+    "@universal-labs/native-tailwind": "workspace:*"
   peerDependencies:
     next: ">=13.0"
     react: ">=18.0"
@@ -6200,6 +6201,17 @@ __metadata:
   peerDependenciesMeta:
     next:
       optional: true
+  languageName: unknown
+  linkType: soft
+
+"@universal-labs/native-tailwind@workspace:*, @universal-labs/native-tailwind@workspace:packages/native-tailwind":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/native-tailwind@workspace:packages/native-tailwind"
+  dependencies:
+    "@universal-labs/css": "workspace:*"
+  peerDependencies:
+    react: ">=18.0"
+    react-native: ">=0.71.0"
   languageName: unknown
   linkType: soft
 
@@ -13532,6 +13544,9 @@ __metadata:
   dependencies:
     "@next/font": 13.0.6
     "@twind/with-next": 1.2.2
+    "@universal-labs/native-tailwind": "workspace:*"
+    "@universal-labs/native-tailwind-nextjs": "workspace:*"
+    "@universal-labs/styled": "workspace:*"
     autoprefixer: 10.4.13
     critters: ^0.0.16
     next: 13.1.4

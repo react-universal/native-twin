@@ -31,10 +31,9 @@ export default defineConfig({
         'react',
         'react/jsx-runtime',
         'react-native',
-        '@twind/core',
         'react-native-web',
         '@universal-labs/css',
-        '@universal-labs/twind-adapter',
+        '@universal-labs/native-tailwind',
       ],
       treeshake: true,
       output: {

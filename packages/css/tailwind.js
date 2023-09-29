@@ -1,1 +1,1 @@
-export * from './build/tailwind';
+export * from './build/tailwind.cjs';

@@ -1,7 +1,8 @@
 import React from 'react';
+import { installDocument } from '@universal-labs/native-tailwind-nextjs/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-export default class MyDocument extends Document {
+class MyDocument extends Document {
   // @ts-expect-error
   render() {
     const currentLocale = this.props.__NEXT_DATA__.locale || 'en';
@@ -20,4 +21,4 @@ export default class MyDocument extends Document {
   }
 }
 
-// export default install(MyDocument);
+export default installDocument(MyDocument);

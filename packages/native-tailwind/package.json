@@ -22,7 +22,7 @@
     "directory": "packages/native-tailwind"
   },
   "sideEffects": false,
-  "main": "./build/index.cjs.js",
+  "main": "./build/index.es.js",
   "module": "./build/index.es.js",
   "types": "./build/index.d.ts",
   "files": [
@@ -44,13 +44,7 @@
     "@universal-labs/css": "workspace:*"
   },
   "peerDependencies": {
-    "next": ">=13.0",
     "react": ">=18.0",
     "react-native": ">=0.71.0"
-  },
-  "peerDependenciesMeta": {
-    "next": {
-      "optional": true
-    }
   }
 }

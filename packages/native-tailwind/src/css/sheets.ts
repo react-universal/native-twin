@@ -1,7 +1,8 @@
 import type { Sheet, SheetEntry } from '../types/css.types';
+import { noop } from '../utils/helpers';
 
 export function createVirtualSheet(): Sheet<SheetEntry> {
-  const target: Map<string, SheetEntry> = new Map();
+  let target: Map<string, SheetEntry> = new Map();
 
   return {
     target,
@@ -21,5 +22,17 @@ export function createVirtualSheet(): Sheet<SheetEntry> {
     getClassName(key) {
       return target.get(key);
     },
+
+    snapshot() {
+      // collect current rules
+      const rules = new Map([...target]);
+      // target.clear();
+
+      return () => {
+        target.clear();
+        target = rules;
+      };
+    },
+    resume: noop,
   };
 }

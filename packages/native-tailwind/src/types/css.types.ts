@@ -30,9 +30,9 @@ export interface Sheet<Target = unknown> {
   readonly target: Map<string, Target>;
   insert(entry: SheetEntry): void;
   getClassName(key: string): SheetEntry | undefined;
-  // snapshot(): () => void;
+  snapshot(): () => void;
   /** Clears all CSS rules from the sheet. */
   clear(): void;
   destroy(): void;
-  // resume(addClassName: (className: string) => void, insert: (cssText: string) => void): void;
+  resume(addClassName: (className: string) => void, insert: (cssText: string) => void): void;
 }

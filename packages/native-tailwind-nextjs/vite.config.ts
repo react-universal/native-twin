@@ -28,9 +28,12 @@ export default defineConfig({
     minify: 'esbuild',
     ssr: false,
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/tailwind',
-      fileName: (format) => `index.${format}.js`,
+      entry: {
+        app: path.resolve(__dirname, 'src/app.ts'),
+        document: path.resolve(__dirname, 'src/document.ts'),
+      },
+      name: '@universal-labs/native-tailwind-nextjs',
+      fileName: (format, name) => `${name}.${format}.js`,
       formats: ['cjs', 'es'],
     },
     rollupOptions: {
@@ -43,6 +46,10 @@ export default defineConfig({
         '@universal-labs/css',
         '@universal-labs/css/tailwind',
         '@universal-labs/css/parser',
+        '@universal-labs/native-tailwind',
+        'next',
+        'next/app',
+        'next/document',
         'react',
         'react/jsx-runtime',
         'react-native-web',

@@ -1,11 +1,21 @@
-/**
- * @type {import('tailwindcss').Config}
- */
-module.exports = {
+import { defineConfig } from '@universal-labs/native-tailwind';
+
+export default defineConfig({
+  root: {
+    rem: 14,
+  },
   theme: {
-    colors: {
-      primary: 'blue',
+    extend: {
+      colors: {
+        primary: 'blue',
+      },
+      fontFamily: {
+        DEFAULT: 'Inter-Regular',
+        inter: 'Inter-Regular',
+        'inter-bold': 'Inter-Bold',
+        'inter-medium': 'Inter-Medium',
+        sans: 'Inter-Regular',
+      },
     },
   },
-  content: ['./pages/**/*.{js,jsx,ts,tsx}', '../../packages/**/*.{js,jsx,ts,tsx}'],
-};
+});
