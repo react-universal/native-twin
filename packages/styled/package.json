@@ -45,8 +45,7 @@
   "devDependencies": {
     "@types/react": "18.2.14",
     "@types/react-dom": "18.0.10",
-    "@types/react-is": "^17.0.3",
-    "tailwindest": "2.1.1"
+    "@types/react-is": "^17.0.3"
   },
   "peerDependencies": {
     "react": ">=18",

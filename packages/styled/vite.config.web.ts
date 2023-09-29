@@ -40,14 +40,6 @@ export default defineConfig({
         globals: {
           react: 'React',
         },
-        generatedCode: {
-          arrowFunctions: true,
-          constBindings: true,
-          objectShorthand: true,
-          preset: 'es2015',
-        },
-        interop: 'auto',
-        compact: true,
       },
     },
     emptyOutDir: false,

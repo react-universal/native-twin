@@ -39,7 +39,6 @@ export default defineConfig({
         'react/jsx-runtime',
         '@universal-labs/css',
         '@universal-labs/native-tailwind',
-        '@twind/core',
       ],
       treeshake: true,
       output: {
@@ -50,6 +49,7 @@ export default defineConfig({
           'react-native': 'ReactNative',
           'react-native-web': 'ReactNativeWeb',
           '@universal-labs/css': 'UniversalLabsCss',
+          '@universal-labs/native-tailwind': 'UniversalLabsTailwind',
         },
       },
     },
