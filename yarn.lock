@@ -6226,7 +6226,6 @@ __metadata:
     "@universal-labs/native-tailwind": "workspace:*"
     react-is: ^18.2.0
     stable-hash: 0.0.3
-    tailwindest: 2.1.1
   peerDependencies:
     react: ">=18"
     react-native: ">= 0.70"
@@ -16847,13 +16846,6 @@ __metadata:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
   checksum: 0195c7a3ebb0de5e391d2a883d777c78a4749f0c532d204ee8aea9129f2ed8e701d8c0c276aa5f7338d07176a3c2a7682c1d0ab9c8a6c2abe6d9325c2954eb50
-  languageName: node
-  linkType: hard
-
-"tailwindest@npm:2.1.1":
-  version: 2.1.1
-  resolution: "tailwindest@npm:2.1.1"
-  checksum: 814755dd4f31a4b3a8f6c41703fd7e468655858a82e75fc30c7d0349ada44daab0e2f4f8d5909226468b7af003e3b80bccc81fc1804e8d9d207ab11efc24ab19
   languageName: node
   linkType: hard
 
