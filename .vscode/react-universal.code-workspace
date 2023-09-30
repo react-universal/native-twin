@@ -25,6 +25,10 @@
       "path": "../packages/css"
     },
     {
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },

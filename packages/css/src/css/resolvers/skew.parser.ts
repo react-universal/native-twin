@@ -1,13 +1,10 @@
-import { choice } from '../../parsers/choice.parser';
-import { betweenParens } from '../../parsers/composed.parsers';
-import { sequenceOf } from '../../parsers/sequence-of';
-import { literal } from '../../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
 import type { AnyStyle } from '../../types/rn.types';
 import { ParseCssDimensions } from '../dimensions.parser';
 
-export const ParseSkewValue = sequenceOf([
-  choice([literal('skewX'), literal('skewY')]),
-  betweenParens(ParseCssDimensions),
+export const ParseSkewValue = P.sequenceOf([
+  P.choice([P.literal('skewX'), P.literal('skewY')]),
+  P.betweenParens(ParseCssDimensions),
 ]).map(([key, value]): AnyStyle['transform'] => {
   const result: AnyStyle['transform'] = [];
   if (key == 'skewX') {

@@ -1,0 +1,17 @@
+{
+  "name": "@universal-labs/arc-parser",
+  "version": "1.0.0",
+  "description": "Parser combinators library",
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "sideEffects": false,
+  "main": "build/index.js",
+  "scripts": {
+    "build:libs": "tsup ",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "vitest run",
+    "test:bench": "vitest bench --ui",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui"
+  }
+}

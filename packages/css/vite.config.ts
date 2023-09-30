@@ -23,7 +23,7 @@ export default defineConfig({
     },
     rollupOptions: {
       strictDeprecations: true,
-      external: ['react-native', 'react'],
+      external: ['react-native', 'react', '@universal-labs/arc-parser'],
       treeshake: true,
     },
     emptyOutDir: false,

@@ -12,7 +12,6 @@ esbuild
     external: ['vscode'],
     format: 'cjs',
     logLevel: 'info',
-    watch: !!watch,
     sourcemap: !production,
     minify: production,
   })

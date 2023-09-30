@@ -1,4 +1,4 @@
-import { withData } from '../parsers/data.parser';
+import * as P from '@universal-labs/arc-parser';
 import type { CssParserData } from '../types/parser.types';
 import type { AnyStyle, FinalSheet } from '../types/rn.types';
 import { ParseCssRules } from './rules.parser';
@@ -13,7 +13,7 @@ export const CreateCssResolver = () => {
   };
 
   function parseCssTarget(target: string, context: CssParserData['context']) {
-    const parsed = withData(ParseCssRules)({
+    const parsed = P.withData(ParseCssRules)({
       cache: {
         get: getCacheForSelector,
         set: setCacheForSelector,

@@ -1,43 +1,49 @@
-import { choice } from '../parsers/choice.parser';
-import { sequenceOf } from '../parsers/sequence-of';
-import { char, literal } from '../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
 import { cornerMap, directionMap } from './mappings';
 import { asArray, keysOf } from './tailwind.utils';
 
-export const edgesParser = sequenceOf([
-  choice([literal('x'), literal('y'), literal('t'), literal('l'), literal('b'), literal('r')]),
-  char('-'),
+export const edgesParser = P.sequenceOf([
+  P.choice([
+    P.literal('x'),
+    P.literal('y'),
+    P.literal('t'),
+    P.literal('l'),
+    P.literal('b'),
+    P.literal('r'),
+  ]),
+  P.char('-'),
 ]).map((x) => {
   return directionMap[x[0]];
 });
 
-export const transform2dParser = sequenceOf([
-  choice([literal('x'), literal('y')]),
-  char('-'),
+export const transform2dParser = P.sequenceOf([
+  P.choice([P.literal('x'), P.literal('y')]),
+  P.char('-'),
 ]).map((x) => {
   return asArray(x[0].toUpperCase());
 });
 
-export const transform3dParser = sequenceOf([
-  choice([literal('x'), literal('y'), literal('z')]),
-  char('-'),
+export const transform3dParser = P.sequenceOf([
+  P.choice([P.literal('x'), P.literal('y'), P.literal('z')]),
+  P.char('-'),
 ]).map((x) => {
   return asArray(x[0].toUpperCase());
 });
 
-export const cornersParser = choice(
-  keysOf(cornerMap).map((x) => sequenceOf([literal(x), char('-')])),
+export const cornersParser = P.choice(
+  keysOf(cornerMap).map((x) => P.sequenceOf([P.literal(x), P.char('-')])),
 ).map((x: [keyof typeof cornerMap, string]) => {
   return cornerMap[x[0]];
 });
 
-export const gapParser = sequenceOf([choice([literal('x'), literal('y')]), char('-')]).map(
-  (x) => {
-    return asArray(
-      {
-        x: 'column',
-        y: 'row',
-      }[x[0]],
-    );
-  },
-);
+export const gapParser = P.sequenceOf([
+  P.choice([P.literal('x'), P.literal('y')]),
+  P.char('-'),
+]).map((x) => {
+  return asArray(
+    {
+      x: 'column',
+      y: 'row',
+    }[x[0]],
+  );
+});

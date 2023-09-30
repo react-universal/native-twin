@@ -12,17 +12,7 @@ export type {
   FlexAlignType,
   PartialStyle,
 } from './types/rn.types';
-export type {
-  CssNode,
-  CssParserCache,
-  CssParserData,
-  InternalResultType,
-  ParserError,
-  ParserState,
-  ParserSuccess,
-  ResultType,
-  StateTransformerFunction,
-} from './types/parser.types';
+export type { CssNode, CssParserCache, CssParserData } from './types/parser.types';
 export type {
   CSSLengthUnit,
   CSSPointerEvent,

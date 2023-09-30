@@ -9,6 +9,7 @@
       "@universal-labs/native-tw",
       "@universal-labs/native-tw-nextjs",
       "@universal-labs/vscode",
+      "@universal-labs/arc-parser",
       "@universal-labs/ts-styled-plugin-tw"
     ]
   ],

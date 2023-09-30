@@ -1,13 +1,15 @@
-import { choice } from '../../parsers/choice.parser';
-import { betweenParens } from '../../parsers/composed.parsers';
-import { sequenceOf } from '../../parsers/sequence-of';
-import { literal } from '../../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
 import type { AnyStyle } from '../../types/rn.types';
 import { ParseCssDimensions } from '../dimensions.parser';
 
-export const ParseRotateValue = sequenceOf([
-  choice([literal('rotateX'), literal('rotateY'), literal('rotateZ'), literal('rotate')]),
-  betweenParens(ParseCssDimensions),
+export const ParseRotateValue = P.sequenceOf([
+  P.choice([
+    P.literal('rotateX'),
+    P.literal('rotateY'),
+    P.literal('rotateZ'),
+    P.literal('rotate'),
+  ]),
+  P.betweenParens(ParseCssDimensions),
 ]).map(([key, value]): AnyStyle['transform'] => {
   if (key == 'rotateX') {
     return [{ rotateX: `${value}` }];

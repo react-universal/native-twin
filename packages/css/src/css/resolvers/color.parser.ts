@@ -1,19 +1,16 @@
+import * as P from '@universal-labs/arc-parser';
+import { ident } from '../../common.parsers';
 import { CSS_COLORS } from '../../constants/css.colors';
-import { choice } from '../../parsers/choice.parser';
-import { betweenParens, separatedByComma } from '../../parsers/composed.parsers';
-import { float } from '../../parsers/number.parser';
-import { sequenceOf } from '../../parsers/sequence-of';
-import { ident, literal } from '../../parsers/string.parser';
 
-export const ParseCssColor = choice([
-  sequenceOf([
-    choice([literal('rgba'), literal('hsl')]),
-    betweenParens(separatedByComma(float)),
+export const ParseCssColor = P.choice([
+  P.sequenceOf([
+    P.choice([P.literal('rgba'), P.literal('hsl')]),
+    P.betweenParens(P.separatedByComma(P.float)),
   ]).map((x) => {
     return `${x[0]}(${x[1]})`;
   }),
-  sequenceOf([literal('#'), ident]).map((x) => {
+  P.sequenceOf([P.literal('#'), ident]).map((x) => {
     return `${x[0]}(${x[1]})`;
   }),
-  ...CSS_COLORS.map((i) => literal(i)),
+  ...CSS_COLORS.map((i) => P.literal(i)),
 ]);

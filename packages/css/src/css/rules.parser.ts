@@ -1,22 +1,12 @@
-import {
-  betweenBrackets,
-  betweenParens,
-  parseDeclarationProperty,
-} from '../parsers/composed.parsers';
-import { coroutine } from '../parsers/coroutine.parser';
-import { getData, setData } from '../parsers/data.parser';
-import { maybe } from '../parsers/maybe.parser';
-import { peek } from '../parsers/peek.parser';
-import { sequenceOf } from '../parsers/sequence-of';
-import { skip } from '../parsers/skip.parser';
-import { char, everyCharUntil, literal, whitespace } from '../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
+import { parseDeclarationProperty } from '../common.parsers';
 import type { CssParserData } from '../types/parser.types';
 import type { FinalSheet } from '../types/rn.types';
 import { ParseCssDeclarationLine } from './declarations.parser';
 import { ParseCssDimensions } from './dimensions.parser';
 import { ParseSelectorStrict } from './selector.parser';
 
-export const ParseCssRules = coroutine((run) => {
+export const ParseCssRules = P.coroutine((run) => {
   const result = guessNextRule();
   return result;
 
@@ -31,11 +21,11 @@ export const ParseCssRules = coroutine((run) => {
       pointer: {},
     },
   ): FinalSheet {
-    const nextToken = run(maybe(peek));
+    const nextToken = run(P.maybe(P.peek));
     if (!nextToken) {
       return result;
     }
-    const currentData = run(getData);
+    const currentData = run(P.getData);
     if (nextToken == '@') {
       const payload = run(ParseCssAtRule);
       if (!payload) return guessNextRule(result);
@@ -47,7 +37,7 @@ export const ParseCssRules = coroutine((run) => {
         },
       };
       run(
-        setData({
+        P.setData({
           ...currentData,
           styles: {
             ...currentData.styles,
@@ -66,7 +56,7 @@ export const ParseCssRules = coroutine((run) => {
       },
     };
     run(
-      setData({
+      P.setData({
         ...currentData,
         styles: {
           ...currentData.styles,
@@ -78,15 +68,15 @@ export const ParseCssRules = coroutine((run) => {
   }
 });
 
-const GetAtRuleConditionToken = sequenceOf([parseDeclarationProperty, ParseCssDimensions]);
-const SkipRules = sequenceOf([skip(everyCharUntil('}')), char('}')]);
+const GetAtRuleConditionToken = P.sequenceOf([parseDeclarationProperty, ParseCssDimensions]);
+const SkipRules = P.sequenceOf([P.skip(P.everyCharUntil('}')), P.char('}')]);
 
-const ParseCssRuleBlock = coroutine((run) => {
+const ParseCssRuleBlock = P.coroutine((run) => {
   const selector = run(ParseSelectorStrict);
   const platformSelector = selector.value.pseudoSelectors.find(
     (item) => item == 'ios' || item == 'android' || item == 'web',
   );
-  const data = run(getData);
+  const data = run(P.getData);
   if (platformSelector) {
     if (!selector.value.pseudoSelectors.some((item) => item == data.context.platform)) {
       run(SkipRules);
@@ -116,7 +106,7 @@ const ParseCssRuleBlock = coroutine((run) => {
       declarations: cache,
     };
   }
-  const declarations = run(betweenBrackets(ParseCssDeclarationLine));
+  const declarations = run(P.betweenBrackets(ParseCssDeclarationLine));
   data.cache.set(selector.value.selectorName, declarations);
   return {
     selector,
@@ -124,18 +114,18 @@ const ParseCssRuleBlock = coroutine((run) => {
   };
 });
 
-const ParseCssAtRule = coroutine((run) => {
-  const context = run(getData);
-  run(literal('@media'));
-  run(whitespace);
-  const mediaRuleConstrains = run(betweenParens(GetAtRuleConditionToken));
+const ParseCssAtRule = P.coroutine((run) => {
+  const context = run(P.getData);
+  run(P.literal('@media'));
+  run(P.whitespace);
+  const mediaRuleConstrains = run(P.betweenParens(GetAtRuleConditionToken));
   if (
     evaluateMediaQueryConstrains(
       { property: mediaRuleConstrains[0], value: mediaRuleConstrains[1] },
       context,
     )
   ) {
-    const rule = run(betweenBrackets(ParseCssRuleBlock));
+    const rule = run(P.betweenBrackets(ParseCssRuleBlock));
     return rule;
   }
   return null;

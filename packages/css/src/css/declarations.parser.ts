@@ -1,10 +1,5 @@
-import { choice } from '../parsers/choice.parser';
-import { parseDeclarationProperty, separatedByComma } from '../parsers/composed.parsers';
-import { coroutine } from '../parsers/coroutine.parser';
-import { many } from '../parsers/many.parser';
-import { maybe } from '../parsers/maybe.parser';
-import { peek } from '../parsers/peek.parser';
-import { ident, char, whitespace } from '../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
+import { ident, parseDeclarationProperty } from '../common.parsers';
 import type { AnyStyle } from '../types/rn.types';
 import { getPropertyValueType } from '../utils.parser';
 import { ParseCssDimensions } from './dimensions.parser';
@@ -16,7 +11,7 @@ import { ParseRotateValue } from './resolvers/rotate.parser';
 import { ParseSkewValue } from './resolvers/skew.parser';
 import { ParseTranslateValue } from './resolvers/translate.parser';
 
-export const ParseCssDeclarationLine = coroutine((run) => {
+export const ParseCssDeclarationLine = P.coroutine((run) => {
   const getValue = () => {
     const property = run(parseDeclarationProperty);
     const meta = getPropertyValueType(property);
@@ -39,7 +34,7 @@ export const ParseCssDeclarationLine = coroutine((run) => {
 
     if (meta == 'TRANSFORM') {
       return {
-        transform: run(choice([ParseTranslateValue, ParseRotateValue, ParseSkewValue])),
+        transform: run(P.choice([ParseTranslateValue, ParseRotateValue, ParseSkewValue])),
       };
     }
 
@@ -53,7 +48,9 @@ export const ParseCssDeclarationLine = coroutine((run) => {
     //CSS:  .font-sans{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"}
 
     if (meta == 'FIRST-COMMA-IDENT') {
-      const value = separatedByComma(many(choice([ident, whitespace, char('"')]))).map((x) => {
+      const value = P.separatedByComma(
+        P.many(P.choice([ident, P.whitespace, P.char('"')])),
+      ).map((x) => {
         return x;
       });
       return {
@@ -66,14 +63,14 @@ export const ParseCssDeclarationLine = coroutine((run) => {
   };
 
   const composeValue = (result: AnyStyle = {}): AnyStyle => {
-    run(maybe(char(';')));
-    const isValid = run(peek) !== '}' || run(peek) == '"';
+    run(P.maybe(P.char(';')));
+    const isValid = run(P.peek) !== '}' || run(P.peek) == '"';
     if (!isValid) return result;
     let value = {
       ...result,
       ...getValue(),
     };
-    if (run(peek) == ';') {
+    if (run(P.peek) == ';') {
       return composeValue(value);
     }
     return value;

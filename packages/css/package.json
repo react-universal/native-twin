@@ -41,6 +41,9 @@
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },
+  "dependencies": {
+    "@universal-labs/arc-parser": "workspace:*"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"

@@ -1,13 +1,4 @@
-import { Parser } from '../parsers/Parser';
-import { between } from '../parsers/between.parser';
-import { choice } from '../parsers/choice.parser';
-import { separatedBySpace } from '../parsers/composed.parsers';
-import { many1 } from '../parsers/many.parser';
-import { maybe } from '../parsers/maybe.parser';
-import { digits } from '../parsers/number.parser';
-import { recursiveParser } from '../parsers/recursive.parser';
-import { sequenceOf } from '../parsers/sequence-of';
-import { char, everyCharUntil, regex } from '../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
 import type {
   ArbitraryToken,
   ClassNameToken,
@@ -19,7 +10,7 @@ import type {
 
 const classNameIdent = /^[a-z0-9A-Z-.]+/;
 
-const matchBetweenParens = between(char('('))(char(')'));
+const matchBetweenParens = P.between(P.char('('))(P.char(')'));
 
 const mapResult =
   <Type extends string>(type: Type) =>
@@ -34,30 +25,30 @@ const mapVariantClass = mapResult('VARIANT_CLASS');
 const mapGroup = mapResult('GROUP');
 const mapColorModifier = mapResult('COLOR_MODIFIER');
 
-export const parseValidTokenRecursive = recursiveParser(
-  (): Parser<GroupToken | VariantClassToken | ClassNameToken> =>
-    choice([parseRuleGroup, parseVariantClass, parseClassName]),
+export const parseValidTokenRecursive = P.recursiveParser(
+  (): P.Parser<GroupToken | VariantClassToken | ClassNameToken> =>
+    P.choice([parseRuleGroup, parseVariantClass, parseClassName]),
 );
 
 // CLASSNAMES
 
 /** Match value inside [...] */
-export const parseArbitraryValue = between(char('['))(char(']'))(everyCharUntil(']')).map(
-  (x) => `[${x}]`,
-);
+export const parseArbitraryValue = P.between(P.char('['))(P.char(']'))(
+  P.everyCharUntil(']'),
+).map((x) => `[${x}]`);
 
 /** Match color modifiers like: `.../10` or `.../[...]` */
-export const colorModifier = sequenceOf([
-  char('/'),
-  choice([digits, parseArbitraryValue]),
+export const colorModifier = P.sequenceOf([
+  P.char('/'),
+  P.choice([P.digits, parseArbitraryValue]),
 ]).map((x) => mapColorModifier(x[1]));
 
 /** Match important prefix like: `!hidden` */
-export const parseMaybeImportant = maybe(char('!')).map((x) => !!x);
+export const parseMaybeImportant = P.maybe(P.char('!')).map((x) => !!x);
 
 /** Match variants prefixes like `md:` or stacked like `hover:md:` or `!md:hover:` */
-export const parseVariant = many1(
-  sequenceOf([parseMaybeImportant, regex(classNameIdent), char(':')]),
+export const parseVariant = P.many1(
+  P.sequenceOf([parseMaybeImportant, P.regex(classNameIdent), P.char(':')]),
 ).map(
   (x): VariantToken =>
     mapVariant(
@@ -69,11 +60,11 @@ export const parseVariant = many1(
 );
 
 /** Match classnames with important prefix arbitrary and color modifiers */
-export const parseClassName = sequenceOf([
+export const parseClassName = P.sequenceOf([
   parseMaybeImportant,
-  regex(classNameIdent),
-  maybe(parseArbitraryValue),
-  maybe(colorModifier),
+  P.regex(classNameIdent),
+  P.maybe(parseArbitraryValue),
+  P.maybe(colorModifier),
 ]).map(
   (x): ClassNameToken =>
     mapClassName({
@@ -84,15 +75,15 @@ export const parseClassName = sequenceOf([
 );
 
 /** Match variants prefixes that includes a single class like `md:bg-blue-200` */
-const parseVariantClass = sequenceOf([parseVariant, parseClassName]).map(
+const parseVariantClass = P.sequenceOf([parseVariant, parseClassName]).map(
   (x): VariantClassToken => mapVariantClass(x),
 );
 
 // GROUPS
 /** Match any valid TW ident or arbitrary separated by spaces */
 export const parseGroupContent = matchBetweenParens(
-  separatedBySpace(
-    choice([
+  P.separatedBySpace(
+    P.choice([
       parseValidTokenRecursive,
       parseArbitraryValue.map((x): ArbitraryToken => mapArbitrary(x)),
     ]),
@@ -102,8 +93,8 @@ export const parseGroupContent = matchBetweenParens(
 /**
  * Match className groups like `md:(...)` or stacked like `hover:md:(...)` or feature prefix `text(...)`
  * */
-export const parseRuleGroup = sequenceOf([
-  choice([parseVariant, parseClassName]),
+export const parseRuleGroup = P.sequenceOf([
+  P.choice([parseVariant, parseClassName]),
   parseGroupContent,
 ]).map(
   (x): GroupToken =>
@@ -113,7 +104,7 @@ export const parseRuleGroup = sequenceOf([
     }),
 );
 /** Recursive syntax parser all utils separated by space */
-export const tailwindClassNamesParser = separatedBySpace(parseValidTokenRecursive);
+export const tailwindClassNamesParser = P.separatedBySpace(parseValidTokenRecursive);
 
 export function translateRuleTokens(
   tokens: (GroupToken | VariantClassToken | ClassNameToken | ArbitraryToken)[],

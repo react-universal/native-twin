@@ -4,7 +4,7 @@ import type {
   ParserError,
   ParserState,
   ParserSuccess,
-} from '../types/parser.types';
+} from '../types';
 
 export class Parser<Result, Data = any> {
   transform: StateTransformerFunction<Result, Data>;
