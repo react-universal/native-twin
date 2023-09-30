@@ -8,8 +8,6 @@
     "resolveJsonModule": false,
     "module": "CommonJS",
     "outDir": "build",
-    "declarationDir": "build",
-    "declaration": true,
     "lib": ["ES2015", "ESNext"],
     "moduleResolution": "node",
     "noEmit": false,

@@ -7,7 +7,7 @@
   "sideEffects": false,
   "main": "build/index.js",
   "scripts": {
-    "build:libs": "tsup ",
+    "build:libs": "vite build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",
     "test:bench": "vitest bench --ui",
