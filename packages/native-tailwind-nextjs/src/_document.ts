@@ -1,6 +1,6 @@
 /* eslint-env node */
 import { createElement, Fragment } from 'react';
-import { extract, tw } from '@universal-labs/native-tailwind';
+import { extract, tw } from '@universal-labs/native-tw';
 import type { DocumentContext, DocumentInitialProps } from 'next/document';
 import Document from 'next/document';
 

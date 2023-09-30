@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/native-tailwind",
+  "name": "@universal-labs/native-tw",
   "version": "5.0.1",
   "private": true,
   "description": "Tailwindcss StyleSheet generator for react native/web",

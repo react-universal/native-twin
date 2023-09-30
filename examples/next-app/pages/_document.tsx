@@ -15,14 +15,12 @@ export async function getInitialProps(ctx: DocumentContext): Promise<DocumentIni
   // @ts-expect-error
   const { getStyleElement } = AppRegistry.getApplication('Main');
   const page = await ctx.renderPage();
-  const styles = [getStyleElement()];
-  return { ...page, styles: React.Children.toArray(styles) };
+  return { ...page, styles: getStyleElement() };
 }
 
 class MyDocument extends Document {
   getInitialProps = getInitialProps;
-  // @ts-expect-error
-  render() {
+  override render() {
     const currentLocale = this.props.__NEXT_DATA__.locale || 'en';
     return (
       <Html lang={currentLocale}>

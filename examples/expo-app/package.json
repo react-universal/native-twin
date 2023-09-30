@@ -9,7 +9,7 @@
     "start": "expo start -c"
   },
   "dependencies": {
-    "@universal-labs/native-tailwind": "workspace:*",
+    "@universal-labs/native-tw": "workspace:*",
     "@universal-labs/styled": "workspace:*",
     "clsx": "2.0.0",
     "expo": "^49.0.3",

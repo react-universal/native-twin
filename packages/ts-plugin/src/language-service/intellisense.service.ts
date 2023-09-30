@@ -11,7 +11,7 @@ import {
   createThemeContext,
   defineConfig,
   flattenColorPalette,
-} from '@universal-labs/native-tailwind';
+} from '@universal-labs/native-tw';
 import { ClassCompletionToken, VariantCompletionToken } from '../types';
 import { ConfigurationManager } from './configuration';
 import { LanguageServiceLogger } from './logger';

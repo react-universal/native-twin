@@ -17,7 +17,7 @@ export default defineConfig({
     outDir: 'build',
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/tailwind',
+      name: '@universal-labs/native-tw',
       fileName: (format) => `index.${format}.js`,
       formats: ['es', 'cjs'],
     },

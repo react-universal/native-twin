@@ -6,6 +6,8 @@
     [
       "@universal-labs/styled",
       "@universal-labs/css",
+      "@universal-labs/native-tw",
+      "@universal-labs/native-tw-nextjs",
       "@universal-labs/vscode",
       "@universal-labs/ts-styled-plugin-tw"
     ]

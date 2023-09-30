@@ -32,7 +32,7 @@ export default defineConfig({
         _app: path.resolve(__dirname, 'src/_app.ts'),
         _document: path.resolve(__dirname, 'src/_document.ts'),
       },
-      name: '@universal-labs/native-tailwind-nextjs',
+      name: '@universal-labs/native-tw-nextjs',
       fileName: (format, name) => `${name}.${format}.js`,
       formats: ['cjs', 'es'],
     },
@@ -44,7 +44,7 @@ export default defineConfig({
       external: [
         'react-native',
         '@universal-labs/css',
-        '@universal-labs/native-tailwind',
+        '@universal-labs/native-tw',
         'next',
         'next/app',
         'next/document',

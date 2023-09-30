@@ -16,7 +16,7 @@ const tailwind = createTailwind(
   createVirtualSheet(),
 );
 
-describe('@universal-labs/native-tailwind - Spacing Utilities', () => {
+describe('@universal-labs/native-tw - Spacing Utilities', () => {
   it('paddings', () => {
     expect(tailwind('p-2')).toStrictEqual([
       {
@@ -112,7 +112,7 @@ describe('@universal-labs/native-tailwind - Spacing Utilities', () => {
   });
 });
 
-describe('@universal-labs/native-tailwind - Color Utilities', () => {
+describe('@universal-labs/native-tw - Color Utilities', () => {
   it('Basic color', () => {
     expect(tailwind('bg-black')).toStrictEqual([
       {
@@ -160,7 +160,7 @@ describe('@universal-labs/native-tailwind - Color Utilities', () => {
   });
 });
 
-describe('@universal-labs/native-tailwind - Position Utilities', () => {
+describe('@universal-labs/native-tw - Position Utilities', () => {
   it('top|right|bottom|left', () => {
     expect(tailwind('top-2')).toStrictEqual([
       {
@@ -173,7 +173,7 @@ describe('@universal-labs/native-tailwind - Position Utilities', () => {
   });
 });
 
-describe('@universal-labs/native-tailwind - Border Utilities', () => {
+describe('@universal-labs/native-tw - Border Utilities', () => {
   it('t|r|b|l', () => {
     expect(tailwind('border-x-1')).toStrictEqual([
       {

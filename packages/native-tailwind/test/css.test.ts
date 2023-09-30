@@ -6,7 +6,7 @@ import { sheetEntriesToCss } from '../src/css/translate';
 
 setup(createTailwind({}));
 
-describe('@universal-labs/native-tailwind - Raw rules parser', () => {
+describe('@universal-labs/native-tw - Raw rules parser', () => {
   it('Sheet entries to CSS', () => {
     const entries = tx`bg-blue-200 text-center`;
     const css = sheetEntriesToCss(entries);
