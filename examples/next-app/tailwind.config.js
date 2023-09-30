@@ -1,4 +1,4 @@
-import { defineConfig } from '@universal-labs/native-tailwind';
+import { defineConfig } from '@universal-labs/native-tw';
 
 export default defineConfig({
   root: {

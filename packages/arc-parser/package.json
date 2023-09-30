@@ -5,7 +5,8 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.js",
+  "main": "build/index.cjs.js",
+  "module": "build/index.es.js",
   "scripts": {
     "build:libs": "vite build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",

@@ -6,9 +6,8 @@ export default defineConfig({
   plugins: [
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
-      outputDir: 'build',
+      outDir: 'build',
       insertTypesEntry: true,
-      skipDiagnostics: true,
     }),
   ],
   build: {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { setup } from '@universal-labs/native-tailwind';
+import { setup } from '@universal-labs/native-tw';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 import { HomeScreen } from './src/screens/Home.screen';
 import tailwindConfig from './tailwind.config';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppRegistry } from 'react-native';
-import { installDocument } from '@universal-labs/native-tailwind-nextjs/_document';
+import { installDocument } from '@universal-labs/native-tw-nextjs/_document';
 import Document, {
   Html,
   Head,

@@ -1,1 +1,1 @@
-export * from './build/document';
+export * from './build/_document';
