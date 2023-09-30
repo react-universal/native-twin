@@ -10,9 +10,8 @@ export default defineConfig({
     react(),
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
-      outputDir: 'build',
+      outDir: 'build',
       insertTypesEntry: true,
-      skipDiagnostics: false,
     }),
   ],
   esbuild: {

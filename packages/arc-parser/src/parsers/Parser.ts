@@ -177,16 +177,3 @@ export const updateParserData = <Result, Data, Data2>(
   state: ParserState<Result, Data>,
   data: Data2,
 ): ParserState<Result, Data2> => ({ ...state, data });
-
-export const createCssParserContext = <Data>(data: Data) => ({
-  ...data,
-  styles: {
-    base: {},
-    even: {},
-    first: {},
-    group: {},
-    last: {},
-    odd: {},
-    pointer: {},
-  },
-});

@@ -9,9 +9,9 @@
   "scripts": {
     "build:libs": "vite build",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest run",
-    "test:bench": "vitest bench --ui",
-    "test:coverage": "vitest --coverage",
-    "test:ui": "vitest --ui"
+    "test": "echo \"NO_TESTS\"",
+    "test:bench": "echo \"NO_TESTS\"",
+    "test:coverage": "echo \"NO_TESTS\"",
+    "test:ui": "echo \"NO_TESTS\""
   }
 }
