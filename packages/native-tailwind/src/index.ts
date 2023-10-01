@@ -5,6 +5,7 @@ export * from './runtime/install';
 export * from './runtime/ssr';
 export * from './runtime/tw';
 export * from './runtime/tx';
+export * from './runtime/observe';
 
 /** CSS */
 export * from './css/sheets';

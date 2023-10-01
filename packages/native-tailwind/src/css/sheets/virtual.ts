@@ -1,5 +1,5 @@
-import type { Sheet, SheetEntry } from '../types/css.types';
-import { noop } from '../utils/helpers';
+import type { Sheet, SheetEntry } from '../../types/css.types';
+import { noop } from '../../utils/helpers';
 
 export function createVirtualSheet(): Sheet<SheetEntry[]> {
   const target: SheetEntry[] = [];

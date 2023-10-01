@@ -1,72 +1,77 @@
-import type { Sheet, SheetEntry } from '../types/css.types';
+import { getSheet } from '../css/sheets';
+import { createTailwind } from '../tailwind';
+import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
+import type { Sheet } from '../types/css.types';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
 import { noop } from '../utils/helpers';
+import { observe } from './observe';
 
-// let active: RuntimeTW = noop;
+let active: RuntimeTW;
 
-// function assertActive() {
-//   if (__DEV__ && !tw) {
-//     throw new Error(
-//       `No active instance found. Make sure to call setup or install before accessing tw.`,
-//     );
-//   }
-// }
+function assertActive() {
+  if (__DEV__ && !tw) {
+    throw new Error(
+      `No active instance found. Make sure to call setup or install before accessing tw.`,
+    );
+  }
+}
 
-// @ts-expect-error
-export let tw: RuntimeTW<any> = noop;
+export let tw: RuntimeTW<any> = /* #__PURE__ */ new Proxy(
+  // just exposing the active as tw should work with most bundlers
+  // as ES module export can be re-assigned BUT some bundlers to not honor this
+  // -> using a delegation proxy here
+  noop as unknown as RuntimeTW<any>,
+  {
+    apply(_target, _thisArg, args) {
+      if (__DEV__) assertActive();
+      return active(args[0]);
+    },
 
-// /* #__PURE__ */ new Proxy(
-//   // just exposing the active as tw should work with most bundlers
-//   // as ES module export can be re-assigned BUT some bundlers to not honor this
-//   // -> using a delegation proxy here
-//   noop as unknown as RuntimeTW<any>,
-//   {
-//     apply(_target, _thisArg, args) {
-//       if (__DEV__) assertActive();
-//       console.log('THIS_ARG_PROXY: ', _thisArg);
-//       return active.apply(_thisArg, args);
-//     },
+    get(target, property) {
+      if (__DEV__) {
+        // Workaround webpack accessing the prototype in dev mode
+        if (!active && property in target) {
+          return (target as any)[property];
+        }
 
-//     get(target, property) {
-//       if (__DEV__) {
-//         // Workaround webpack accessing the prototype in dev mode
-//         if (!active && property in target) {
-//           return (target as any)[property];
-//         }
+        assertActive();
+      }
 
-//         assertActive();
-//       }
+      // const value = active[property as keyof RuntimeTW];
+      if (property === 'theme') {
+        const value = active[property];
+        return function () {
+          if (__DEV__) assertActive();
+          return value.apply(active, arguments as unknown as [string, string]);
+        };
+      }
+      const value = active[property as Exclude<keyof RuntimeTW, 'theme'>];
+      if (typeof value == 'function') {
+        return function () {
+          if (__DEV__) assertActive();
+          return value.apply(active);
+        };
+      }
 
-//       // const value = active[property as keyof RuntimeTW];
-//       if (property === 'theme') {
-//         const value = active[property];
-//         return function () {
-//           if (__DEV__) assertActive();
-//           return value.apply(active, arguments as unknown as [string, string]);
-//         };
-//       }
-//       const value = active[property as Exclude<keyof RuntimeTW, 'theme'>];
-//       if (typeof value == 'function') {
-//         return function () {
-//           if (__DEV__) assertActive();
-//           return value.apply(active);
-//         };
-//       }
+      return value;
+    },
+  },
+);
 
-//       return value;
-//     },
-//   },
-// );
+export type SheetFactory<Target> = () => Sheet<Target>;
 
-export type SheetFactory = () => Sheet<SheetEntry>;
-
-export function setup<Theme extends __Theme__ = __Theme__>(
-  tw$: RuntimeTW<Theme>,
+export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
+  config: TailwindConfig<any> | TailwindUserConfig<any> = {},
+  sheet: Sheet<Target> | SheetFactory<Target> = getSheet as SheetFactory<Target>,
+  target?: HTMLElement,
 ): RuntimeTW<Theme> {
-  // active?.destroy();
+  active?.destroy();
 
   // active = tw$ as RuntimeTW;
-  tw = tw$;
+  active = observe(
+    createTailwind(config as TailwindUserConfig, typeof sheet == 'function' ? sheet() : sheet),
+    target,
+  );
 
-  return tw as unknown as RuntimeTW<Theme>;
+  return active as unknown as RuntimeTW<Theme>;
 }

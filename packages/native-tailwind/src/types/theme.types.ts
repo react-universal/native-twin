@@ -19,15 +19,15 @@ export interface ComponentSheet {
   sheet: FinalSheet;
 }
 
-export interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
+export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];
-  sheet: Sheet<SheetEntry[]>;
+  sheet: Sheet<Target>;
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
-  readonly destroy: () => void;
-  readonly snapshot: () => () => void;
-  readonly clear: () => void;
-  readonly target: SheetEntry[];
+  readonly target: Target;
+  destroy: () => void;
+  snapshot: () => () => void;
+  clear: () => void;
 }
 
 /* THEME CONFIG */

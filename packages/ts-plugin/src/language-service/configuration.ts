@@ -1,4 +1,4 @@
-export interface TwindPluginConfiguration {
+export interface TailwindPluginConfiguration {
   readonly configFile?: string;
   readonly tags: ReadonlyArray<string>;
   readonly attributes: ReadonlyArray<string>;
@@ -9,7 +9,7 @@ export interface TwindPluginConfiguration {
 
 export class ConfigurationManager {
   static readonly pluginName = 'ts-styled-plugin-tw';
-  private static readonly defaultConfiguration: TwindPluginConfiguration = {
+  private static readonly defaultConfiguration: TailwindPluginConfiguration = {
     tags: ['tw', 'apply', 'css', 'styled', 'variants'],
     attributes: ['tw', 'class', 'className', 'variants'],
     styles: ['style', 'styled'],
@@ -19,16 +19,16 @@ export class ConfigurationManager {
 
   private readonly _configUpdatedListeners = new Set<() => void>();
 
-  public get config(): TwindPluginConfiguration {
+  public get config(): TailwindPluginConfiguration {
     return this._configuration;
   }
 
-  private _configuration: TwindPluginConfiguration = {
+  private _configuration: TailwindPluginConfiguration = {
     ...ConfigurationManager.defaultConfiguration,
     tags: [...ConfigurationManager.defaultConfiguration.tags],
   };
 
-  public updateFromPluginConfig(config: Partial<TwindPluginConfiguration> = {}): void {
+  public updateFromPluginConfig(config: Partial<TailwindPluginConfiguration> = {}): void {
     const mergedConfig = {
       ...ConfigurationManager.defaultConfiguration,
       ...config,

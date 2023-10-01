@@ -12,13 +12,18 @@
       "name": "next-app",
       "path": "../examples/next-app"
     },
+    
+    {
+      "name": "📦 @lib/tailwind",
+      "path": "../packages/native-tailwind"
+    },
     {
       "name": "📦 @lib/styled",
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @lib/tailwind",
-      "path": "../packages/native-tailwind"
+      "name": "📦 @lib/with-nextjs",
+      "path": "../packages/native-tailwind-nextjs"
     },
     {
       "name": "📦 @lib/css",
@@ -35,10 +40,6 @@
     {
       "name": "📦 @lib/ts-plugin",
       "path": "../packages/ts-plugin"
-    },
-    {
-      "name": "📦 @lib/with-nextjs",
-      "path": "../packages/native-tailwind-nextjs"
     },
     {
       "name": "docs-site",

@@ -7,16 +7,15 @@
 import { parseTWTokens } from '@universal-labs/css';
 import { defineConfig } from './config/define-config';
 import { createVirtualSheet } from './css/sheets';
-import { setup } from './runtime/tw';
 import { createThemeContext } from './theme/theme.context';
 import type { TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { Sheet, SheetEntry } from './types/css.types';
 import type { RuntimeTW, __Theme__ } from './types/theme.types';
 import { interpolate, toClassName } from './utils/string-utils';
 
-export function createTailwind<Theme = __Theme__>(
+export function createTailwind<Theme = __Theme__, Target = unknown>(
   userConfig: TailwindUserConfig<Theme>,
-  sheet = createVirtualSheet(),
+  sheet: Sheet<Target> = createVirtualSheet() as Sheet<Target>,
 ): RuntimeTW<__Theme__ & Theme> {
   const config = defineConfig(userConfig) as TailwindConfig<__Theme__>;
   const context = createThemeContext<__Theme__>(config);
@@ -31,7 +30,6 @@ export function createTailwind<Theme = __Theme__>(
       }
       const styles: SheetEntry[] = [];
       for (const rule of parseTWTokens(tokens)) {
-        if (!context.v(rule.v)) continue;
         if (rule.n == 'group') {
           styles.push({
             className: 'group',
@@ -57,11 +55,11 @@ export function createTailwind<Theme = __Theme__>(
       return styles;
     } as RuntimeTW<__Theme__ & Theme>,
     Object.getOwnPropertyDescriptors({
-      get sheet(): Sheet<SheetEntry[]> {
+      get sheet() {
         return sheet;
       },
 
-      get target(): SheetEntry[] {
+      get target() {
         return sheet.target;
       },
 
@@ -93,7 +91,6 @@ export function createTailwind<Theme = __Theme__>(
       },
     }),
   );
-  setup(runtime);
   return runtime;
 }
 

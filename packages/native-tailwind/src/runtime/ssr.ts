@@ -16,10 +16,13 @@ export interface ExtractResult {
 }
 
 export function extract(html: string, tw: RuntimeTW<any> = tw$): ExtractResult {
+  const restore = tw.snapshot();
   const result = {
     html: consume(html, tw),
-    css: sheetEntriesToCss(tw.target, tw.config.theme['screens']),
+    css: sheetEntriesToCss(tw.target as any, tw.config.theme['screens']),
   };
+
+  restore();
 
   return result;
 }
@@ -38,7 +41,6 @@ export function consume(
       .join(' ');
 
     tw(classList);
-
     // We only need to shift things around if we need to actually change the markup
     if (changed(value, classList)) {
       // We've hit another mutation boundary
