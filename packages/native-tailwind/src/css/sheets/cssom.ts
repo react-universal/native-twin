@@ -1,6 +1,6 @@
 import type { Sheet } from '../../types/css.types';
+import { sheetEntryDeclarationsToCss } from '../../utils/css-utils';
 import { noop } from '../../utils/helpers';
-import { toClassName } from '../../utils/string-utils';
 import { warn } from '../../utils/warn';
 import { getStyleElement } from './utils';
 
@@ -42,10 +42,11 @@ export function createCssomSheet(
     },
 
     insert(entry) {
-      const className = toClassName(entry.rule);
+      const className = entry.className;
+      const cssText = sheetEntryDeclarationsToCss(entry.declarations);
       try {
         // Insert
-        target.insertRule(className);
+        target.insertRule(cssText);
       } catch (error) {
         // Empty rule to keep index valid — not using `*{}` as that would show up in all rules (DX)
         target.insertRule(':root{}');

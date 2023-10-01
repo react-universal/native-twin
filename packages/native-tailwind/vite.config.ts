@@ -14,6 +14,7 @@ export default defineConfig({
     reportCompressedSize: true,
     chunkSizeWarningLimit: 10,
     outDir: 'build',
+    minify: false,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: '@universal-labs/native-tw',

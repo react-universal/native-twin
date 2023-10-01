@@ -6,7 +6,7 @@ import type { RuntimeTW, __Theme__ } from '../types/theme.types';
 import { noop } from '../utils/helpers';
 import { observe } from './observe';
 
-let active: RuntimeTW;
+let active: RuntimeTW = noop as any as RuntimeTW;
 
 function assertActive() {
   if (__DEV__ && !tw) {
@@ -24,7 +24,7 @@ export let tw: RuntimeTW<any> = /* #__PURE__ */ new Proxy(
   {
     apply(_target, _thisArg, args) {
       if (__DEV__) assertActive();
-      return active(args[0]);
+      return active.apply(_thisArg, args);
     },
 
     get(target, property) {
@@ -65,8 +65,6 @@ export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
   sheet: Sheet<Target> | SheetFactory<Target> = getSheet as SheetFactory<Target>,
   target?: HTMLElement,
 ): RuntimeTW<Theme> {
-  active?.destroy();
-
   // active = tw$ as RuntimeTW;
   active = observe(
     createTailwind(config as TailwindUserConfig, typeof sheet == 'function' ? sheet() : sheet),

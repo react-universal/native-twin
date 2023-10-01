@@ -1,5 +1,7 @@
+import { parseTWTokens } from '@universal-labs/css';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
 import { changed } from '../utils/css-utils';
+import { toClassName } from '../utils/string-utils';
 import { tw as tw$ } from './tw';
 
 export interface TailwindMutationObserver {
@@ -68,8 +70,13 @@ export function mutationObserver<Theme extends __Theme__ = __Theme__>(
     let className: string;
 
     // try do keep classNames unmodified
-    // @ts-expect-error
-    if (tokens && changed(tokens, (className = tw(tokens)))) {
+    const classList = parseTWTokens(tokens ?? '')
+      .map((x) => toClassName(x))
+      .join(' ');
+    tw(classList)
+      .map((x) => toClassName(x.rule))
+      .join(' ');
+    if (tokens && changed(tokens, (className = classList))) {
       // Not using `target.className = ...` as that is read-only for SVGElements
       target.setAttribute('class', className);
     }

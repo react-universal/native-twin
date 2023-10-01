@@ -37,6 +37,7 @@
   ],
   "scripts": {
     "build:libs": "vite build",
+    "libs:dev": "tsc -p . --watch",
     "test": "vitest run",
     "test:ui": "vitest --ui"
   },

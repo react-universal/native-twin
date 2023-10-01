@@ -39,7 +39,6 @@ export function consume(
     const classList = parseTWTokens(fixClassList(value, quote))
       .map((x) => toClassName(x))
       .join(' ');
-
     tw(classList);
     // We only need to shift things around if we need to actually change the markup
     if (changed(value, classList)) {
