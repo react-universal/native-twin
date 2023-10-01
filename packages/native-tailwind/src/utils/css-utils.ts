@@ -51,10 +51,6 @@ export function getRuleSelectorGroup(rule: ParsedRule): SelectorGroup {
  * @returns are they different
  */
 export function changed(a: string, b: string): boolean {
-  a = JSON.stringify(a);
-  b = JSON.stringify(b);
-  // console.log('AAA: ', a);
-  // console.log('BB: ', b);
   return a != b && '' + a.split(' ').sort() != '' + b.split(' ').sort();
 }
 

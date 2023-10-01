@@ -4,7 +4,7 @@ import { defineConfig, extract, install, tw } from '../src';
 install(defineConfig({}));
 
 const html1 = `<html><head></head><body class="min-h-screen min-w-full"><div class="bg-blue-200" /></body>`;
-const html2 = `<html><head></head><body class="min-h-screen min-w-full"><div class="bg-red-200" /></body>`;
+const html2 = `<html><head></head><body class="min-h-screen min-w-full"><div class="bg-red-200 hover:bg-blue-200" /></body>`;
 
 describe('@universal-labs/native-twin - TW call', () => {
   it('Insert rules', () => {
@@ -17,6 +17,9 @@ describe('@universal-labs/native-twin - TW call', () => {
     );
     const result2 = extract(html2, tw);
     // console.log('EXTRACTED_2: ', result2.css);
-    expect(result2.css).toStrictEqual('.bg-red-200{background-color:rgba(254,202,202,1);}');
+    expect(result2.css).toStrictEqual(
+      '.bg-red-200{background-color:rgba(254,202,202,1);}\n' +
+        '.hover:bg-blue-200:hover{background-color:rgba(191,219,254,1);}',
+    );
   });
 });

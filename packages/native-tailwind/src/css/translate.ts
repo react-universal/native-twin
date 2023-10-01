@@ -3,7 +3,7 @@ import type { ParsedRule } from '@universal-labs/css';
 import type { RuleResult, ThemeContext } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
-import { entryAtRuleWrapper, sheetEntryDeclarationsToCss } from '../utils/css-utils';
+import { entryAtRuleWrapper, escape, sheetEntryDeclarationsToCss } from '../utils/css-utils';
 import { toClassName } from '../utils/string-utils';
 
 export function translateRuleResults(
@@ -34,9 +34,17 @@ export function sheetEntriesToCss(
   }
   return entries
     .map((x) => {
-      const className = toClassName(x.rule);
+      let className = toClassName(x.rule);
+      const variants = x.rule.v
+        .filter((v) => !(v in screens))
+        .map((v) => `:${v}`)
+        .join('');
       const valueEntries = sheetEntryDeclarationsToCss(x.declarations);
-      return entryAtRuleWrapper(x, `.${className}{${valueEntries}}`, screens);
+      return entryAtRuleWrapper(
+        x,
+        `.${escape(className)}${variants}{${valueEntries}}`,
+        screens,
+      );
     })
     .join('\n');
 }

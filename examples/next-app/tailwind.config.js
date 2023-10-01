@@ -1,4 +1,4 @@
-import { defineConfig } from '@universal-labs/native-tw';
+import { defineConfig } from '@universal-labs/native-twin';
 
 export default defineConfig({
   root: {
