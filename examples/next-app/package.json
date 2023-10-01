@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@next/font": "13.0.6",
-    "@twind/with-next": "1.2.2",
     "@universal-labs/native-tw": "workspace:*",
     "@universal-labs/native-tw-nextjs": "workspace:*",
     "@universal-labs/styled": "workspace:*",

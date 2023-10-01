@@ -5706,21 +5706,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@twind/with-next@npm:1.2.2":
-  version: 1.2.2
-  resolution: "@twind/with-next@npm:1.2.2"
-  peerDependencies:
-    "@twind/core": ^1.1.0
-    next: 12.x || 13.x
-    react: ^16.6.0 || 17.x || 18.x
-    typescript: ^4.8.4
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 1c1567dff7e6a00bae8de16a71200316ac910e0f654da51ee90dfaddaeeb39fa602fd683ac6a4ea0319a15b4d4ba4d93257dbf5d0e6731a5f05a5489edd9a959
-  languageName: node
-  linkType: hard
-
 "@types/argparse@npm:1.0.38":
   version: 1.0.38
   resolution: "@types/argparse@npm:1.0.38"
@@ -13479,7 +13464,6 @@ __metadata:
   resolution: "next-app@workspace:examples/next-app"
   dependencies:
     "@next/font": 13.0.6
-    "@twind/with-next": 1.2.2
     "@universal-labs/native-tw": "workspace:*"
     "@universal-labs/native-tw-nextjs": "workspace:*"
     "@universal-labs/styled": "workspace:*"
@@ -15942,7 +15926,6 @@ __metadata:
   resolution: "site@workspace:apps/site"
   dependencies:
     "@next/font": 13.0.6
-    "@twind/with-next": 1.2.2
     autoprefixer: 10.4.13
     critters: ^0.0.16
     next: 13.1.4
