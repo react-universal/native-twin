@@ -9,6 +9,7 @@ export default defineConfig({
       entryRoot: path.resolve(__dirname, 'src'),
       outDir: 'build',
       insertTypesEntry: false,
+      logLevel: 'error',
     }),
   ],
   build: {

@@ -12,6 +12,7 @@ export default defineConfig({
       entryRoot: path.resolve(__dirname, 'src'),
       outDir: 'build',
       insertTypesEntry: true,
+      logLevel: 'error',
     }),
   ],
   esbuild: {
@@ -31,7 +32,7 @@ export default defineConfig({
         _app: path.resolve(__dirname, 'src/_app.ts'),
         _document: path.resolve(__dirname, 'src/_document.ts'),
       },
-      name: '@universal-labs/native-tw-nextjs',
+      name: '@universal-labs/native-twin-nextjs',
       fileName: (format, name) => `${name}.${format}.js`,
       formats: ['cjs', 'es'],
     },
@@ -43,7 +44,7 @@ export default defineConfig({
       external: [
         'react-native',
         '@universal-labs/css',
-        '@universal-labs/native-tw',
+        '@universal-labs/native-twin',
         'next',
         'next/app',
         'next/document',

@@ -1,8 +1,8 @@
 /* eslint-env node, browser */
 import type { ComponentType } from 'react';
 import { createElement } from 'react';
-import type { TailwindConfig, TailwindUserConfig } from '@universal-labs/native-tw';
-import { install as install$ } from '@universal-labs/native-tw';
+import type { TailwindConfig, TailwindUserConfig } from '@universal-labs/native-twin';
+import { install as install$ } from '@universal-labs/native-twin';
 import type { AppProps } from 'next/app';
 
 export { installApp };

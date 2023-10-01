@@ -3,7 +3,7 @@ import { createTailwind, setup, tx } from '../src';
 
 setup(createTailwind({}));
 
-describe('@universal-labs/native-tw - TW call', () => {
+describe('@universal-labs/native-twin - TW call', () => {
   it('Insert rules', () => {
     const result = tx`
     px-2 m-10 

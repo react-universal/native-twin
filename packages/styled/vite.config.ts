@@ -19,8 +19,10 @@ export default defineConfig({
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
       outDir: 'build',
+      logLevel: 'error',
     }),
   ],
+  logLevel: 'info',
   build: {
     outDir: 'build',
     lib: {
@@ -38,7 +40,7 @@ export default defineConfig({
         'react-is',
         'react/jsx-runtime',
         '@universal-labs/css',
-        '@universal-labs/native-tw',
+        '@universal-labs/native-twin',
       ],
       treeshake: true,
       output: {
@@ -49,7 +51,7 @@ export default defineConfig({
           'react-native': 'ReactNative',
           'react-native-web': 'ReactNativeWeb',
           '@universal-labs/css': 'UniversalLabsCss',
-          '@universal-labs/native-tw': 'UniversalLabsTailwind',
+          '@universal-labs/native-twin': 'UniversalLabsTailwind',
         },
       },
     },

@@ -4,7 +4,7 @@ import { createTailwind } from '../src/tailwind';
 
 const tailwind = createTailwind({ ignorelist: [] }, createVirtualSheet());
 
-describe('@universal-labs/native-tw - TW call', () => {
+describe('@universal-labs/native-twin - TW call', () => {
   it('Insert rules', () => {
     const result = tailwind('px-2 p-10 mx-2.5 text(center 2xl) bg-blue-200 justify-center');
     expect(result).toStrictEqual([
