@@ -1,16 +1,14 @@
-import { maybe } from '../../parsers/maybe.parser';
-import { sequenceOf } from '../../parsers/sequence-of';
-import { char, literal } from '../../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
 import type { AnyStyle } from '../../types/rn.types';
 import { ParseCssDimensions } from '../dimensions.parser';
 
-export const ParseTranslateValue = sequenceOf([
-  literal('translate'),
-  char('('),
+export const ParseTranslateValue = P.sequenceOf([
+  P.literal('translate'),
+  P.char('('),
   ParseCssDimensions,
-  maybe(literal(', ')),
-  maybe(ParseCssDimensions),
-  char(')'),
+  P.maybe(P.literal(', ')),
+  P.maybe(ParseCssDimensions),
+  P.char(')'),
 ]).mapFromData((x) => {
   const styles: AnyStyle['transform'] = [{ translateX: x.result[2] }];
   if (x.result[4]) {

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import util from 'util';
 import { CssResolver } from '../src';
-import { createCssParserContext } from '../src/parsers/Parser';
+import { createCssParserContext } from '../src/utils.parser';
 
 export const inspectTestElement = (msg: string, target: string[], result: any) => {
   console.log(

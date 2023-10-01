@@ -1,4 +1,8 @@
-export { CssResolver } from './css';
+export * from './css';
+export * from './tailwind';
+export * from './constants/empties';
+export * from './constants/pseudo.constants';
+
 export type {
   AnyStyle,
   FinalSheet,
@@ -8,17 +12,7 @@ export type {
   FlexAlignType,
   PartialStyle,
 } from './types/rn.types';
-export type {
-  CssNode,
-  CssParserCache,
-  CssParserData,
-  InternalResultType,
-  ParserError,
-  ParserState,
-  ParserSuccess,
-  ResultType,
-  StateTransformerFunction,
-} from './types/parser.types';
+export type { CssNode, CssParserCache, CssParserData } from './types/parser.types';
 export type {
   CSSLengthUnit,
   CSSPointerEvent,
@@ -26,5 +20,5 @@ export type {
   SheetInteractionState,
   SelectorPayload,
 } from './types/css.types';
-export * from './constants/empties';
-export * from './constants/pseudo.constants';
+
+export * from './types/tailwind.types';

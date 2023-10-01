@@ -1,10 +1,4 @@
-import { Parser } from '../parsers/Parser';
-import { between } from '../parsers/between.parser';
-import { choice } from '../parsers/choice.parser';
-import { maybe } from '../parsers/maybe.parser';
-import { sequenceOf } from '../parsers/sequence-of';
-import { char, literal, regex } from '../parsers/string.parser';
-import { endOfInput } from '../parsers/util.parsers';
+import * as P from '@universal-labs/arc-parser';
 import {
   ArbitrarySegmentToken,
   RuleHandlerToken,
@@ -20,14 +14,14 @@ import {
 } from './rules.parser';
 
 export class RuleHandler {
-  private patternParser: Parser<string>;
-  private ruleParser: Parser<RuleHandlerToken>;
+  private patternParser: P.Parser<string>;
+  private ruleParser: P.Parser<RuleHandlerToken>;
   constructor(private pattern: string, private feature: CssFeature) {
     if (pattern.includes('|')) {
       const parts = pattern.split('|');
-      this.patternParser = choice(parts.map((x) => literal(x)));
+      this.patternParser = P.choice(parts.map((x) => P.literal(x)));
     } else {
-      this.patternParser = literal(pattern);
+      this.patternParser = P.literal(pattern);
     }
     if (this.feature == 'edges') {
       this.ruleParser = this.resolveEdges();
@@ -50,7 +44,7 @@ export class RuleHandler {
 
   private defaultResolver() {
     if (!this.pattern.endsWith('-')) {
-      return sequenceOf([maybeNegative, this.patternParser, endOfInput]).map(
+      return P.sequenceOf([maybeNegative, this.patternParser, P.endOfInput]).map(
         (x): RuleHandlerToken => ({
           segment: {
             type: 'segment',
@@ -63,7 +57,7 @@ export class RuleHandler {
       );
     }
     if (this.pattern.includes('|')) {
-      return sequenceOf([maybeNegative, this.patternParser, endOfInput]).map(
+      return P.sequenceOf([maybeNegative, this.patternParser, P.endOfInput]).map(
         (x): RuleHandlerToken => ({
           segment: {
             type: 'segment',
@@ -75,11 +69,11 @@ export class RuleHandler {
         }),
       );
     }
-    return sequenceOf([
+    return P.sequenceOf([
       maybeNegative,
       this.patternParser,
-      choice([arbitraryParser, segmentParser]),
-      endOfInput,
+      P.choice([arbitraryParser, segmentParser]),
+      P.endOfInput,
     ]).map((x) => ({
       segment: x[2],
       base: x[1],
@@ -90,14 +84,16 @@ export class RuleHandler {
 
   private resolveCorners() {
     if (!this.pattern.endsWith('-')) {
-      this.patternParser = sequenceOf([this.patternParser, maybe(char('-'))]).map((x) => x[0]);
+      this.patternParser = P.sequenceOf([this.patternParser, P.maybe(P.char('-'))]).map(
+        (x) => x[0],
+      );
     }
-    return sequenceOf([
+    return P.sequenceOf([
       maybeNegative,
       this.patternParser,
-      maybe(cornersParser),
-      choice([arbitraryParser, segmentParser]),
-      endOfInput,
+      P.maybe(cornersParser),
+      P.choice([arbitraryParser, segmentParser]),
+      P.endOfInput,
     ]).map((x) => ({
       segment: x[3],
       base: x[1],
@@ -108,14 +104,16 @@ export class RuleHandler {
 
   private resolveTransform2d() {
     if (!this.pattern.endsWith('-')) {
-      this.patternParser = sequenceOf([this.patternParser, maybe(char('-'))]).map((x) => x[0]);
+      this.patternParser = P.sequenceOf([this.patternParser, P.maybe(P.char('-'))]).map(
+        (x) => x[0],
+      );
     }
-    return sequenceOf([
+    return P.sequenceOf([
       maybeNegative,
       this.patternParser,
-      maybe(transform2dParser),
-      choice([arbitraryParser, segmentParser]),
-      endOfInput,
+      P.maybe(transform2dParser),
+      P.choice([arbitraryParser, segmentParser]),
+      P.endOfInput,
     ]).map((x) => ({
       segment: x[3],
       base: x[1],
@@ -126,14 +124,16 @@ export class RuleHandler {
 
   private resolveTransform3d() {
     if (!this.pattern.endsWith('-')) {
-      this.patternParser = sequenceOf([this.patternParser, maybe(char('-'))]).map((x) => x[0]);
+      this.patternParser = P.sequenceOf([this.patternParser, P.maybe(P.char('-'))]).map(
+        (x) => x[0],
+      );
     }
-    return sequenceOf([
+    return P.sequenceOf([
       maybeNegative,
       this.patternParser,
-      maybe(transform3dParser),
-      choice([arbitraryParser, segmentParser]),
-      endOfInput,
+      P.maybe(transform3dParser),
+      P.choice([arbitraryParser, segmentParser]),
+      P.endOfInput,
     ]).map((x) => ({
       segment: x[3],
       base: x[1],
@@ -144,14 +144,16 @@ export class RuleHandler {
 
   private resolveEdges() {
     if (!this.pattern.endsWith('-')) {
-      this.patternParser = sequenceOf([this.patternParser, maybe(char('-'))]).map((x) => x[0]);
+      this.patternParser = P.sequenceOf([this.patternParser, P.maybe(P.char('-'))]).map(
+        (x) => x[0],
+      );
     }
-    return sequenceOf([
+    return P.sequenceOf([
       maybeNegative,
       this.patternParser,
-      maybe(edgesParser),
-      choice([arbitraryParser, segmentParser]),
-      endOfInput,
+      P.maybe(edgesParser),
+      P.choice([arbitraryParser, segmentParser]),
+      P.endOfInput,
     ]).map((x) => ({
       segment: x[3],
       base: x[1],
@@ -160,12 +162,12 @@ export class RuleHandler {
     }));
   }
   private resolveGap() {
-    return sequenceOf([
+    return P.sequenceOf([
       maybeNegative,
       this.patternParser,
-      maybe(gapParser),
-      choice([arbitraryParser, segmentParser]),
-      endOfInput,
+      P.maybe(gapParser),
+      P.choice([arbitraryParser, segmentParser]),
+      P.endOfInput,
     ]).map((x) => ({
       segment: x[3],
       base: x[1],
@@ -177,17 +179,17 @@ export class RuleHandler {
 
 const classNameIdent = /^[a-z0-9A-Z-.]+/;
 const arbitraryIdent = /^[a-z0-9A-Z-.#]+/;
-const segmentParser = regex(classNameIdent).map(
+const segmentParser = P.regex(classNameIdent).map(
   (x): SegmentToken => ({
     type: 'segment',
     value: x,
   }),
 );
 
-const maybeNegative = maybe(char('-')).map((x) => !!x);
+const maybeNegative = P.maybe(P.char('-')).map((x) => !!x);
 
-const betweenSquareBrackets = between(char('['))(char(']'));
-const arbitraryParser = betweenSquareBrackets(regex(arbitraryIdent)).map(
+const betweenSquareBrackets = P.between(P.char('['))(P.char(']'));
+const arbitraryParser = betweenSquareBrackets(P.regex(arbitraryIdent)).map(
   (x): ArbitrarySegmentToken => ({
     type: 'arbitrary',
     value: x,

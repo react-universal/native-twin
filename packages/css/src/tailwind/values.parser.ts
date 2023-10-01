@@ -1,10 +1,5 @@
 import type { FlexStyle } from 'react-native';
-import { choice } from '../parsers/choice.parser';
-import { whitespaceSurrounded } from '../parsers/composed.parsers';
-import { maybe } from '../parsers/maybe.parser';
-import { float } from '../parsers/number.parser';
-import { sequenceOf } from '../parsers/sequence-of';
-import { literal } from '../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
 import { getPropertyValueType } from '../utils.parser';
 
 export const parseCssValue = (
@@ -30,25 +25,25 @@ export const parseCssValue = (
   return value;
 };
 
-export const parseDeclarationUnit = choice([
-  literal('px'),
-  literal('%'),
-  literal('em'),
-  literal('rem'),
-  literal('deg'),
-  literal('vh'),
-  literal('vw'),
-  literal('rad'),
-  literal('turn'),
-  choice([
-    literal('pc'),
-    literal('cn'),
-    literal('ex'),
-    literal('in'),
-    literal('pt'),
-    literal('cm'),
-    literal('mm'),
-    literal('Q'),
+export const parseDeclarationUnit = P.choice([
+  P.literal('px'),
+  P.literal('%'),
+  P.literal('em'),
+  P.literal('rem'),
+  P.literal('deg'),
+  P.literal('vh'),
+  P.literal('vw'),
+  P.literal('rad'),
+  P.literal('turn'),
+  P.choice([
+    P.literal('pc'),
+    P.literal('cn'),
+    P.literal('ex'),
+    P.literal('in'),
+    P.literal('pt'),
+    P.literal('cm'),
+    P.literal('mm'),
+    P.literal('Q'),
   ]),
 ]);
 
@@ -56,18 +51,18 @@ const ParseCssDimensions = (context: {
   rem: number;
   deviceHeight: number;
   deviceWidth: number;
-}) => choice([whitespaceSurrounded(ParseDimensionWithUnits(context))]);
+}) => P.choice([P.whitespaceSurrounded(ParseDimensionWithUnits(context))]);
 
 export const ParseFlexValue = (context: {
   rem: number;
   deviceHeight: number;
   deviceWidth: number;
 }) =>
-  choice([
-    sequenceOf([
+  P.choice([
+    P.sequenceOf([
       ParseCssDimensions(context),
-      maybe(ParseCssDimensions(context)),
-      maybe(choice([ParseCssDimensions(context), literal('auto')])),
+      P.maybe(ParseCssDimensions(context)),
+      P.maybe(P.choice([ParseCssDimensions(context), P.literal('auto')])),
     ]).map(
       ([flexGrow, flexShrink, flexBasis]): FlexStyle => ({
         flexGrow,
@@ -75,7 +70,7 @@ export const ParseFlexValue = (context: {
         flexBasis: flexBasis ?? '0%',
       }),
     ),
-    literal('none').map((x) => ({
+    P.literal('none').map((x) => ({
       flex: x as unknown as number,
     })),
   ]);
@@ -85,7 +80,7 @@ export const ParseDimensionWithUnits = (context: {
   deviceHeight: number;
   deviceWidth: number;
 }) =>
-  sequenceOf([float, maybe(parseDeclarationUnit)]).map((result) => {
+  P.sequenceOf([P.float, P.maybe(parseDeclarationUnit)]).map((result) => {
     const value = parseFloat(result[0]);
     switch (result[1]) {
       case 'px':

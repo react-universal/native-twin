@@ -1,5 +1,7 @@
 import type { SelectorGroup } from '@universal-labs/css';
-import type { ClassNameToken, ParsedRule } from '@universal-labs/css/tailwind';
+import type { ClassNameToken, ParsedRule } from '@universal-labs/css';
+import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
+import type { ScreenValue, __Theme__ } from '../types/theme.types';
 
 /**
  * @description CSS Selector Escape
@@ -23,26 +25,6 @@ export function parseClassNameTokens(...tokens: ClassNameToken[]): string {
   }, ``);
 }
 
-// export function parsedRuleToString(rule: ParsedRule, mediaRules: string[]) {
-//   const fixedPoints = rule.v.reduce(
-//     (prev, current) => {
-//       if (mediaRules.includes(current)) {
-//         prev.prefix += `${current}:`;
-//       } else {
-//         prev.suffix += `:${current}`;
-//       }
-//       return prev;
-//     },
-//     {
-//       prefix: '.',
-//       suffix: '',
-//     },
-//   );
-//   return `${fixedPoints.prefix}${rule.i ? '!' : ''}${rule.n}${
-//     rule.m ? `/${rule.m.value}` : ''
-//   }${fixedPoints.suffix}`;
-// }
-
 export function getRuleSelectorGroup(rule: ParsedRule): SelectorGroup {
   if (rule.v.length == 0) return 'base';
   if (
@@ -61,69 +43,65 @@ export function getRuleSelectorGroup(rule: ParsedRule): SelectorGroup {
   return 'base';
 }
 
-export const getPropertyValueType = (property: string) => {
-  switch (property) {
-    case 'color':
-    case 'backgroundColor':
-    case 'borderColor':
-      return 'COLOR';
+/**
+ * Determines if two class name strings contain the same classes.
+ *
+ * @param a first class names
+ * @param b second class names
+ * @returns are they different
+ */
+export function changed(a: string, b: string): boolean {
+  a = JSON.stringify(a);
+  b = JSON.stringify(b);
+  // console.log('AAA: ', a);
+  // console.log('BB: ', b);
+  return a != b && '' + a.split(' ').sort() != '' + b.split(' ').sort();
+}
 
-    case 'width':
-    case 'height':
-    case 'maxWidth':
-    case 'maxHeight':
-    case 'minWidth':
-    case 'minHeight':
-    case 'margin': // MARGIN DIMENSIONS
-    case 'marginTop':
-    case 'marginLeft':
-    case 'marginBottom':
-    case 'marginRight':
-    case 'padding': // PADDING DIMENSIONS
-    case 'paddingTop':
-    case 'paddingLeft':
-    case 'paddingBottom':
-    case 'paddingRight':
-    case 'lineHeight': // FONT DIMENSIONS
-    case 'fontSize':
-    case 'top': // POSITION
-    case 'left':
-    case 'bottom':
-    case 'right':
-    case 'borderTop': // BORDER
-    case 'borderLeft':
-    case 'borderBottom':
-    case 'borderRight':
-    case 'borderRadius':
-    case 'borderWidth':
-    case 'borderTopLeftRadius':
-    case 'borderTopRightRadius':
-    case 'borderBottomLeftRadius':
-    case 'border-bottomRightRadius':
-    case 'zIndex':
-    case 'gap':
-    case 'columnGap':
-    case 'rowGap':
-    case 'flexGrow':
-    case 'flexBasis':
-    case 'flexShrink':
-    case 'spacing':
-      return 'DIMENSION';
-    case 'aspectRatio':
-      return 'MATH';
-    case 'flex':
-      return 'FLEX';
+export function hyphenateProp(prop: string) {
+  return prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
 
-    case 'boxShadow':
-      return 'SHADOW';
-
-    case 'transform':
-      return 'TRANSFORM';
-
-    case 'fontFamily': // IDENT
-      return 'FIRST-COMMA-IDENT';
-
-    default:
-      return 'RAW';
+export function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[]) {
+  const body: [string, string][] = [];
+  for (const d of decls) {
+    if (typeof d[1] == 'object' && !Array.isArray(d[1])) {
+      body.push(...Object.entries(d[1]));
+    }
+    if (Array.isArray(d[1])) {
+      body.push(...d[1]);
+    }
+    if (typeof d[1] == 'string') {
+      body.push([d[0], d[1]]);
+    }
   }
-};
+  return parseRuleBodyEntries(body);
+}
+
+export function parseRuleBodyEntries(entries: [string, string][]): string {
+  return entries.flatMap((x) => `${hyphenateProp(x[0])}:${x[1]};`).join('');
+}
+
+export function entryAtRuleWrapper(
+  entry: SheetEntry,
+  cssText: string,
+  screens: __Theme__['screens'] = {},
+) {
+  let result = cssText;
+  if (entry.rule.v.length == 0) {
+    return result;
+  }
+  for (const v of entry.rule.v) {
+    if (v in screens) {
+      result += getMediaRule(screens[v], result);
+    }
+  }
+  return result;
+}
+
+function getMediaRule(screen: ScreenValue | undefined, text: string) {
+  if (typeof screen == 'number') {
+    return `@media (min-width: ${screen}px){${text}}`;
+  }
+  return text;
+}

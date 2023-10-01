@@ -1,6 +1,5 @@
 import type { StyleProp } from 'react-native';
-import type { AnyStyle, SelectorGroup } from '@universal-labs/css';
-import type { ParsedRule } from '@universal-labs/css/tailwind';
+import type { ParsedRule, AnyStyle, SelectorGroup } from '@universal-labs/css';
 import type { Falsey, StringLike } from './util.types';
 
 export type CSSValue =
@@ -16,9 +15,11 @@ export type SheetEntryTransformDeclaration = [
   prop: 'transform',
   transform: [transformProp: string, value: string][],
 ];
+
 export type SheetEntryDeclaration =
   | [prop: string, value: string | AnyStyle]
   | SheetEntryTransformDeclaration;
+
 export interface SheetEntry {
   className: string;
   group: SelectorGroup;
@@ -27,12 +28,11 @@ export interface SheetEntry {
 }
 
 export interface Sheet<Target = unknown> {
-  readonly target: Map<string, Target>;
+  readonly target: Target;
   insert(entry: SheetEntry): void;
-  getClassName(key: string): SheetEntry | undefined;
-  // snapshot(): () => void;
+  snapshot(): () => void;
   /** Clears all CSS rules from the sheet. */
   clear(): void;
   destroy(): void;
-  // resume(addClassName: (className: string) => void, insert: (cssText: string) => void): void;
+  resume(addClassName: (className: string) => void, insert: (cssText: string) => void): void;
 }

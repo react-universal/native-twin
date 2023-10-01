@@ -1,10 +1,5 @@
-import { choice } from '../parsers/choice.parser';
-import { coroutine } from '../parsers/coroutine.parser';
-import { getData, setData } from '../parsers/data.parser';
-import { many, many1 } from '../parsers/many.parser';
-import { peek } from '../parsers/peek.parser';
-import { skip } from '../parsers/skip.parser';
-import { char, ident, literal } from '../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
+import { ident } from '../common.parsers';
 import type { SelectorPayload } from '../types/css.types';
 
 const mapToken =
@@ -14,35 +9,47 @@ const mapToken =
     value,
   });
 
-const ChildPseudoClasses = choice([
-  literal('first-child'),
-  literal('last-child'),
-  literal('even'),
-  literal('odd'),
+const ChildPseudoClasses = P.choice([
+  P.literal('first-child'),
+  P.literal('last-child'),
+  P.literal('even'),
+  P.literal('odd'),
 ]);
 
-const PlatformPseudoClasses = choice([
-  literal('web'),
-  literal('native'),
-  literal('ios'),
-  literal('android'),
+const PlatformPseudoClasses = P.choice([
+  P.literal('web'),
+  P.literal('native'),
+  P.literal('ios'),
+  P.literal('android'),
 ]);
 
-const PointerPseudoClasses = choice([literal('hover'), literal('focus'), literal('active')]);
-const GroupPointerPseudoClasses = choice([
-  literal('group-hover'),
-  literal('group-focus'),
-  literal('group-active'),
-  literal('group'),
+const PointerPseudoClasses = P.choice([
+  P.literal('hover'),
+  P.literal('focus'),
+  P.literal('active'),
+]);
+const GroupPointerPseudoClasses = P.choice([
+  P.literal('group-hover'),
+  P.literal('group-focus'),
+  P.literal('group-active'),
+  P.literal('group'),
 ]);
 
-const AppearancePseudoClasses = choice([literal('dark'), literal('light')]);
+const AppearancePseudoClasses = P.choice([P.literal('dark'), P.literal('light')]);
 
-const ParseSelectorClassName = many1(
-  choice([ident, skip(char('\\')), char('['), char(']'), char('%'), char('('), char(')')]),
+const ParseSelectorClassName = P.many1(
+  P.choice([
+    ident,
+    P.skip(P.char('\\')),
+    P.char('['),
+    P.char(']'),
+    P.char('%'),
+    P.char('('),
+    P.char(')'),
+  ]),
 ).map((x) => x.join(''));
 
-const ParseSelectorPart = choice([
+const ParseSelectorPart = P.choice([
   ChildPseudoClasses.map(mapToken('CHILD_PSEUDO_CLASS')),
   GroupPointerPseudoClasses.map(mapToken('GROUP_PSEUDO_CLASS')),
   PointerPseudoClasses.map(mapToken('POINTER_PSEUDO_CLASS')),
@@ -51,38 +58,38 @@ const ParseSelectorPart = choice([
   ParseSelectorClassName.map(mapToken('IDENT_PSEUDO_CLASS')),
 ]);
 
-export const ParseSelectorStrict = coroutine((run) => {
+export const ParseSelectorStrict = P.coroutine((run) => {
   const token = parseNextPart();
   const selectorToken = mapToken('SELECTOR');
-  const data = run(getData);
-  run(setData({ ...data }));
+  const data = run(P.getData);
+  run(P.setData({ ...data }));
 
   return selectorToken(token);
 
   function parseNextPart(
     result: SelectorPayload = { pseudoSelectors: [], selectorName: '', group: 'base' },
   ): SelectorPayload {
-    const nextToken = run(peek);
+    const nextToken = run(P.peek);
     if (nextToken == '{') {
       return result;
     }
     if (nextToken == ' ') {
-      run(skip(char(' ')));
+      run(P.skip(P.char(' ')));
       return parseNextPart(result);
     }
     if (nextToken == '\\') {
-      run(skip(many(char('\\'))));
+      run(P.skip(P.many(P.char('\\'))));
       return parseNextPart(result);
     }
     if (nextToken == ':') {
-      run(skip(char(':')));
+      run(P.skip(P.char(':')));
     }
 
     if (nextToken == '.') {
-      run(skip(char('.')));
+      run(P.skip(P.char('.')));
     }
     if (nextToken == '#') {
-      run(skip(char('#')));
+      run(P.skip(P.char('#')));
     }
     const nextPart = run(ParseSelectorPart);
     if (nextPart.type == 'IDENT_PSEUDO_CLASS') {

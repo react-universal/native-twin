@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 const production = process.argv[2] === '--production';
-const watch = process.argv[2] === '--watch';
 
 require('esbuild')
   .build({
@@ -9,16 +8,14 @@ require('esbuild')
     outdir: 'build',
     external: [
       'vscode',
-      '@universal-labs/native-tailwind',
+      '@universal-labs/native-tw',
       '@universal-labs/css',
-      '@universal-labs/tailwind',
       '@universal-labs/parser',
       'react-native',
     ],
     format: 'cjs',
     logLevel: 'info',
     platform: 'node',
-    watch: !!watch,
     sourcemap: !production,
     minify: production,
   })

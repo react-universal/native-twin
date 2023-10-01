@@ -16,7 +16,6 @@ const styled = <StyleType, InitialProps extends { style?: RN.StyleProp<StyleType
 ) => styledComponentsFactory<StyleType, InitialProps>(Component);
 
 styled.ActivityIndicator = styled(RN.ActivityIndicator);
-styled.DrawerLayoutAndroid = styled(RN.DrawerLayoutAndroid);
 styled.Image = styled(RN.Image);
 styled.ImageBackground = styled(RN.ImageBackground);
 styled.KeyboardAvoidingView = styled(RN.KeyboardAvoidingView);

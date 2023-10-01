@@ -3,13 +3,9 @@ import {
   type ComponentType,
   type Ref,
   type ForwardRefExoticComponent,
-  createElement,
-  useMemo,
-  type ReactNode,
 } from 'react';
 import type { StyleProp } from 'react-native';
-import type { CompleteStyle } from '@universal-labs/css';
-import { cx } from '@universal-labs/native-tailwind';
+import { cx } from '@universal-labs/native-tw';
 import type {
   Primitive,
   StyledComponentProps,
@@ -30,31 +26,20 @@ function styledComponentsFactory<
   ): ForwardRefExoticComponent<Props & S & StyledComponentProps & { ref?: Ref<any> }> {
     const ForwardRefComponent = forwardRef<any, S & Props>(
       (props: S & Props & StyledComponentProps, ref) => {
-        const classNames = buildCSSString(chunks, functions, props);
-        // const start = performance.now();
-        const styles = useMemo(() => {
-          const mergedClassName = cx(props.className ?? '') ? cx(...[classNames]) : '';
-          if (mergedClassName && props.style) {
-            return [
-              { $$css: true, [mergedClassName]: mergedClassName } as CompleteStyle,
+        const classNames = cx`${buildCSSString(chunks, functions, props)}`;
+        return (
+          <Component
+            {...props}
+            style={[
+              {
+                $$css: true,
+                [classNames]: classNames,
+              },
               props.style,
-            ];
-          } else if (mergedClassName) {
-            return { $$css: true, [mergedClassName]: mergedClassName } as CompleteStyle;
-          } else if (props.style) {
-            return props.style;
-          }
-          return {};
-        }, [props, classNames]);
-        // console.log('TOOK: ', performance.now() - start);
-        const transformedComponent = createElement(Component, {
-          ...props,
-          style: [styles],
-          ref,
-        } as unknown as any);
-        let returnValue: ReactNode = transformedComponent;
-
-        return returnValue;
+            ]}
+            ref={ref}
+          />
+        );
       },
     );
     if (__DEV__) {

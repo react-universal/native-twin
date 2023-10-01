@@ -10,7 +10,7 @@ function createHeadingComponent(level: number): ComponentType<TextProps> {
     default: {},
   });
   const Element = forwardRef((props: TextProps, ref) => {
-    return <Text {...nativeProps} role='heading' {...props} style={[props.style]} ref={ref} />;
+    return <Text {...nativeProps} role='heading' {...props} ref={ref} />;
   }) as ComponentType<TextProps>;
 
   Element.displayName = `H${level}`;

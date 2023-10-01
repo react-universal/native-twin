@@ -1,12 +1,10 @@
 import type { ShadowStyleIOS } from 'react-native';
-import { sequenceOf } from '../../parsers/sequence-of';
-import { skip } from '../../parsers/skip.parser';
-import { char } from '../../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
 import { ParseCssDimensions } from '../dimensions.parser';
 import { ParseCssColor } from './color.parser';
 
 // <width> <height> <radius> <spread-radius> <color>
-const ShadowValues = sequenceOf([
+const ShadowValues = P.sequenceOf([
   ParseCssDimensions,
   ParseCssDimensions,
   ParseCssDimensions,
@@ -18,12 +16,12 @@ const ShadowValues = sequenceOf([
   opacity,
 }));
 
-export const ParseShadowValue = sequenceOf([
+export const ParseShadowValue = P.sequenceOf([
   ShadowValues,
   ParseCssColor,
-  skip(char(',')),
-  skip(ShadowValues),
-  skip(ParseCssColor),
+  P.skip(P.char(',')),
+  P.skip(ShadowValues),
+  P.skip(ParseCssColor),
 ]).map(
   (result): ShadowStyleIOS => ({
     shadowOffset: {

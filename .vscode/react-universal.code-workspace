@@ -5,6 +5,15 @@
       "path": ".."
     },
     {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
+    },
+    
+    {
       "name": "📦 @lib/tailwind",
       "path": "../packages/native-tailwind"
     },
@@ -13,8 +22,16 @@
       "path": "../packages/styled"
     },
     {
+      "name": "📦 @lib/with-nextjs",
+      "path": "../packages/native-tailwind-nextjs"
+    },
+    {
       "name": "📦 @lib/css",
       "path": "../packages/css"
+    },
+    {
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
     },
     {
       "name": "📦 @lib/vscode",
@@ -23,14 +40,6 @@
     {
       "name": "📦 @lib/ts-plugin",
       "path": "../packages/ts-plugin"
-    },
-    {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
-    },
-    {
-      "name": "next-app",
-      "path": "../examples/next-app"
     },
     {
       "name": "docs-site",
@@ -52,17 +61,6 @@
       "other": true,
       "comments": true,
       "strings": true
-    },
-    "files.exclude": {
-      "**/.git": true,
-      "**/.svn": true,
-      "**/.hg": true,
-      "**/CVS": true,
-      "**/.DS_Store": true,
-      "**/Thumbs.db": true,
-      "**/node_modules": false,
-      "**/build": false,
-      "**/.vscode-test": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "checkpoints.showActiveFileOnly": true,

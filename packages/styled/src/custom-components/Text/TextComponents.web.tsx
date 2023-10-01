@@ -15,7 +15,6 @@ function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
     return unstable_createElement(tag, {
       ...nativeProps,
       ...props,
-      style: [props.style],
       ref,
     });
   }) as ComponentType<TextProps>;

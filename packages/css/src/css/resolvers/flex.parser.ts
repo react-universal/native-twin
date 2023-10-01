@@ -1,16 +1,13 @@
 import type { FlexStyle } from 'react-native';
-import { choice } from '../../parsers/choice.parser';
-import { maybe } from '../../parsers/maybe.parser';
-import { sequenceOf } from '../../parsers/sequence-of';
-import { literal } from '../../parsers/string.parser';
+import * as P from '@universal-labs/arc-parser';
 import { ParseCssDimensions } from '../dimensions.parser';
 
 /* flex-grow | flex-shrink | flex-basis */
-export const ParseFlexValue = choice([
-  sequenceOf([
+export const ParseFlexValue = P.choice([
+  P.sequenceOf([
     ParseCssDimensions,
-    maybe(ParseCssDimensions),
-    maybe(choice([ParseCssDimensions, literal('auto')])),
+    P.maybe(ParseCssDimensions),
+    P.maybe(P.choice([ParseCssDimensions, P.literal('auto')])),
   ]).map(
     ([flexGrow, flexShrink, flexBasis]): FlexStyle => ({
       flexGrow,
@@ -18,7 +15,7 @@ export const ParseFlexValue = choice([
       flexBasis: flexBasis ?? '0%',
     }),
   ),
-  literal('none').map((x) => ({
+  P.literal('none').map((x) => ({
     flex: x as unknown as number,
   })),
 ]);

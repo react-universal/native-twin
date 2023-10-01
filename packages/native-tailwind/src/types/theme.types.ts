@@ -1,5 +1,9 @@
-import type { AnyStyle, FinalSheet, GetChildStylesArgs } from '@universal-labs/css';
-import type { SheetInteractionState } from '@universal-labs/css/build/types/css.types';
+import type {
+  SheetInteractionState,
+  AnyStyle,
+  FinalSheet,
+  GetChildStylesArgs,
+} from '@universal-labs/css';
 import type { TailwindConfig, ThemeFunction } from './config.types';
 import type { Sheet, SheetEntry } from './css.types';
 import type { MaybeArray, StringLike } from './util.types';
@@ -15,12 +19,15 @@ export interface ComponentSheet {
   sheet: FinalSheet;
 }
 
-export interface RuntimeTW<Theme extends __Theme__ = __Theme__> {
+export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];
-  sheet: Sheet<SheetEntry>;
+  sheet: Sheet<Target>;
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
-  readonly destroy: () => void;
+  readonly target: Target;
+  destroy: () => void;
+  snapshot: () => () => void;
+  clear: () => void;
 }
 
 /* THEME CONFIG */
@@ -36,7 +43,7 @@ export type ThemeConfig<Theme extends object = object> = PartialTheme<Theme> & {
   extend?: PartialTheme<Theme>;
 };
 
-type ScreenValue =
+export type ScreenValue =
   | number
   | { raw: number }
   | { min: number; max?: number }

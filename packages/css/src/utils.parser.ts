@@ -90,3 +90,16 @@ export const unsupportedStyles = (property: string) => {
   }
   return null;
 };
+
+export const createCssParserContext = <Data>(data: Data) => ({
+  ...data,
+  styles: {
+    base: {},
+    even: {},
+    first: {},
+    group: {},
+    last: {},
+    odd: {},
+    pointer: {},
+  },
+});

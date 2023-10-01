@@ -1,9 +1,26 @@
 import React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { AppRegistry } from 'react-native';
+import { installDocument } from '@universal-labs/native-tw-nextjs/_document';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+  DocumentInitialProps,
+} from 'next/document';
 
-export default class MyDocument extends Document {
+export async function getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
+  AppRegistry.registerComponent('Main', () => Main);
   // @ts-expect-error
-  render() {
+  const { getStyleElement } = AppRegistry.getApplication('Main');
+  const page = await ctx.renderPage();
+  return { ...page, styles: getStyleElement() };
+}
+
+class MyDocument extends Document {
+  getInitialProps = getInitialProps;
+  override render() {
     const currentLocale = this.props.__NEXT_DATA__.locale || 'en';
     return (
       <Html lang={currentLocale}>
@@ -20,4 +37,4 @@ export default class MyDocument extends Document {
   }
 }
 
-// export default install(MyDocument);
+export default installDocument(MyDocument);

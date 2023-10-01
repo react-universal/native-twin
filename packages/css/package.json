@@ -21,56 +21,7 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "default": "./build/index.cjs.js",
-      "types": "./build/index.d.ts",
-      "esnext": "./build/index.es.js",
-      "module": "./build./indexes.js",
-      "browser": "./build/index.cjs.js",
-      "require": "./build/index.cjs.js",
-      "import": "./build/index.es.js",
-      "node": {
-        "esnext": "./build.es.js",
-        "default": "./build/index.cjs",
-        "import": "./build/index.es.js",
-        "require": "./build/index.cjs"
-      }
-    },
-    "./tailwind": {
-      "default": "./build/tailwind.cjs",
-      "types": "./build/tailwind.d.ts",
-      "esnext": "./build/tailwind.es.js",
-      "module": "./build/tailwind.es.js",
-      "browser": "./build/tailwind.cjs",
-      "require": "./build/tailwind.cjs",
-      "import": "./build/tailwind.es.js",
-      "node": {
-        "esnext": "./build.es.js",
-        "default": "./build/tailwind.cjs",
-        "import": "./build/tailwind.es.js",
-        "require": "./build/tailwind.cjs"
-      }
-    },
-    "./parser": {
-      "default": "./build/parser.cjs",
-      "types": "./build/parser.d.ts",
-      "esnext": "./build/parser.es.js",
-      "module": "./build/parser.es.js",
-      "browser": "./build/parser.cjs",
-      "require": "./build/parser.cjs",
-      "import": "./build/parser.es.js",
-      "node": {
-        "esnext": "./build.es.js",
-        "default": "./build/parser.cjs",
-        "import": "./build/parser.es.js",
-        "require": "./build/parser.cjs"
-      }
-    },
-    "./package.json": "./package.json"
-  },
-  "main": "./build/index.cjs",
+  "main": "./build/index.cjs.js",
   "module": "./build/index.es.js",
   "types": "./build/index.d.ts",
   "files": [
@@ -89,6 +40,9 @@
     "test:bench": "vitest bench --ui",
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@universal-labs/arc-parser": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

@@ -1,7 +1,10 @@
 import type { PlatformOSType } from 'react-native';
-import type { CompleteStyle } from '@universal-labs/css';
-import type { ParsedRule, RuleHandlerToken } from '@universal-labs/css/tailwind';
-import type { CssFeature } from '@universal-labs/css/tailwind';
+import type {
+  CssFeature,
+  CompleteStyle,
+  ParsedRule,
+  RuleHandlerToken,
+} from '@universal-labs/css';
 import type { SheetEntry } from './css.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey } from './util.types';

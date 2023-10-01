@@ -1,4 +1,4 @@
-import type { ParsedRule } from '@universal-labs/css/tailwind';
+import type { ParsedRule } from '@universal-labs/css';
 import type { CSSValue } from '../types/css.types';
 
 export function interleave<Interpolations>(
@@ -61,7 +61,7 @@ export function toClassName(rule: ParsedRule): string {
   if (rule.m) {
     modifier = `/${rule.m.value}`;
   }
-  return `.${[...rule.v, (rule.i ? '!' : '') + rule.n + modifier].join(':')}`;
+  return `${[...rule.v, (rule.i ? '!' : '') + rule.n + modifier].join(':')}`;
 }
 
 export function format(rules: ParsedRule[]): string {

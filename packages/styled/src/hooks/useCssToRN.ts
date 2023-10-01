@@ -6,8 +6,8 @@ import {
   GetChildStylesArgs,
   SheetInteractionState,
 } from '@universal-labs/css';
-import { parseCssValue } from '@universal-labs/css/tailwind';
-import { SheetEntry, SheetEntryDeclaration, tw } from '@universal-labs/native-tailwind';
+import { parseCssValue } from '@universal-labs/css';
+import { SheetEntry, SheetEntryDeclaration, tw } from '@universal-labs/native-tw';
 import { StyledContext } from '../types/css.types';
 import { useStyledContext } from './useStyledContext';
 

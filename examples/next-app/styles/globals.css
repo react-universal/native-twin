@@ -11,6 +11,8 @@ html,
 body,
 #__next {
   width: 100%;
+  display: flex;
+  flex: 1 1 0%;
   /* To smooth any scrolling behavior */
   -webkit-overflow-scrolling: touch;
   margin: 0px;

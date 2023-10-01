@@ -9,7 +9,7 @@
     "start": "expo start -c"
   },
   "dependencies": {
-    "@universal-labs/native-tailwind": "workspace:*",
+    "@universal-labs/native-tw": "workspace:*",
     "@universal-labs/styled": "workspace:*",
     "clsx": "2.0.0",
     "expo": "^49.0.3",
@@ -31,6 +31,6 @@
     "@types/react": "18.2.14",
     "@types/react-dom": "18.0.10",
     "babel-plugin-module-resolver": "^5.0.0",
-    "typescript": "^5.1.3"
+    "typescript": "5.1.6"
   }
 }

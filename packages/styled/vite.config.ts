@@ -18,7 +18,7 @@ export default defineConfig({
     // Plugin for .d.ts files
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
-      outputDir: 'build',
+      outDir: 'build',
     }),
   ],
   build: {
@@ -38,8 +38,7 @@ export default defineConfig({
         'react-is',
         'react/jsx-runtime',
         '@universal-labs/css',
-        '@universal-labs/native-tailwind',
-        '@twind/core',
+        '@universal-labs/native-tw',
       ],
       treeshake: true,
       output: {
@@ -50,6 +49,7 @@ export default defineConfig({
           'react-native': 'ReactNative',
           'react-native-web': 'ReactNativeWeb',
           '@universal-labs/css': 'UniversalLabsCss',
+          '@universal-labs/native-tw': 'UniversalLabsTailwind',
         },
       },
     },

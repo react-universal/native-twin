@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/native-tailwind",
+  "name": "@universal-labs/native-tw",
   "version": "5.0.1",
   "private": true,
   "description": "Tailwindcss StyleSheet generator for react native/web",
@@ -37,6 +37,7 @@
   ],
   "scripts": {
     "build:libs": "vite build",
+    "libs:dev": "tsc -p . --watch",
     "test": "vitest run",
     "test:ui": "vitest --ui"
   },
@@ -44,13 +45,7 @@
     "@universal-labs/css": "workspace:*"
   },
   "peerDependencies": {
-    "next": ">=13.0",
     "react": ">=18.0",
     "react-native": ">=0.71.0"
-  },
-  "peerDependenciesMeta": {
-    "next": {
-      "optional": true
-    }
   }
 }

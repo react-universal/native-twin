@@ -1,0 +1,12 @@
+diff --git a/setup.js b/setup.js
+index 9fa43a0f780f80097cf6e71c919ae28d984f57ad..860ba08915af5f364a7f00b923d4b0919ddc8724 100644
+--- a/setup.js
++++ b/setup.js
+@@ -46,7 +46,6 @@ const crossPlatformFiles = [
+   "legacySendAccessibilityEvent",
+   "DatePickerIOS",
+   "DatePickerIOS.flow",
+-  "DrawerLayoutAndroid",
+   "ToastAndroid",
+ ];
+ 

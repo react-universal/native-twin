@@ -11,7 +11,7 @@ function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
   });
 
   const Element = forwardRef((props: TextProps, ref) => {
-    return <Text {...nativeProps} {...props} style={[props.style]} ref={ref} />;
+    return <Text {...nativeProps} {...props} ref={ref} />;
   }) as ComponentType<TextProps>;
 
   Element.displayName = tag.toLocaleUpperCase();

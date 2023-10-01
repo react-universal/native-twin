@@ -1,8 +1,9 @@
 // import { Roboto } from '@next/font/google';
+import { installApp } from '@universal-labs/native-tw-nextjs/_app';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../styles/globals.css';
-import '../styles/tw';
+import twConfig from '../tailwind.config';
 
 // const roboto = Roboto({
 //   subsets: ['latin'],
@@ -10,18 +11,18 @@ import '../styles/tw';
 //   variable: '--font-roboto',
 // });
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
         <title>Show case</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
-      <div style={{ flex: 1, backgroundColor: 'gray', display: 'flex' }}>
+      <div className='flex-1 bg-gray-200 flex'>
         <Component {...pageProps} />
       </div>
     </>
   );
 }
 
-// export default install(tw.config, MyApp);
+export default installApp(twConfig, MyApp);
