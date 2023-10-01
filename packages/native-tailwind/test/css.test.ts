@@ -23,7 +23,7 @@ describe('@universal-labs/native-twin - Raw rules parser', () => {
     expect(css).toStrictEqual(
       '.bg-blue-200{background-color:rgba(191,219,254,1);}\n' +
         '.text-center{text-align:center;}\n' +
-        '.md:text-left{text-align:left;}@media (min-width: 768px){.md:text-left{text-align:left;}}',
+        '.md\\:text-left{text-align:left;}@media (min-width: 768px){.md\\:text-left{text-align:left;}}',
     );
   });
 });

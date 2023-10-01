@@ -19,7 +19,7 @@ describe('@universal-labs/native-twin - TW call', () => {
     // console.log('EXTRACTED_2: ', result2.css);
     expect(result2.css).toStrictEqual(
       '.bg-red-200{background-color:rgba(254,202,202,1);}\n' +
-        '.hover:bg-blue-200:hover{background-color:rgba(191,219,254,1);}',
+        '.hover\\:bg-blue-200:hover{background-color:rgba(191,219,254,1);}',
     );
   });
 });
