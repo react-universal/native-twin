@@ -70,7 +70,7 @@
     "prettier": "^2.8.3",
     "react-test-renderer": "18.2.0",
     "tslib": "^2.6.2",
-    "typescript": "5.2.2",
+    "typescript": "5.1.6",
     "vite": "^4.4.9",
     "vite-plugin-dts": "^3.6.0",
     "vite-plugin-multiple": "^0.2.0",
