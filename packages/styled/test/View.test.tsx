@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { createTailwind } from '@universal-labs/native-tw';
+import { createTailwind } from '@universal-labs/native-twin';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 import styledComponents from '../src';

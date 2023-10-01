@@ -1,4 +1,4 @@
-import { createTailwind } from '@universal-labs/native-tw';
+import { createTailwind } from '@universal-labs/native-twin';
 
 export default createTailwind({
   root: {
