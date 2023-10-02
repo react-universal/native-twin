@@ -1,7 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { createTailwind, setup, tx } from '../src';
+import { defineConfig, setup, tx } from '../src';
 
-setup(createTailwind({}));
+setup(
+  defineConfig({
+    theme: {
+      extend: {
+        fontFamily: {
+          inter: 'Inter',
+        },
+      },
+    },
+  }),
+);
 
 describe('@universal-labs/native-twin - TW call', () => {
   it('Insert rules', () => {

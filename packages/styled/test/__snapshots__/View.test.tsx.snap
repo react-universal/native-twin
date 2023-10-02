@@ -1,15 +1,35 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`@universal-labs/styled > CustomView render 1`] = `
-<div
-  className="css-view-175oi2r shadow-sm web:p-10 flex-1"
-  dir={null}
+<View
+  groupID=":r1:"
+  style={
+    {
+      "elevation": 1,
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+      "shadowColor": "rgb(0,0,0)",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.3,
+      "shadowRadius": 3,
+    }
+  }
 />
 `;
 
 exports[`@universal-labs/styled > StyledView render 1`] = `
-<div
-  className="css-view-175oi2r flex-1"
-  dir={null}
+<View
+  groupID=":r0:"
+  style={
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
+  }
 />
 `;

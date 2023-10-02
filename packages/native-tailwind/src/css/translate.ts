@@ -1,5 +1,6 @@
 import type { AnyStyle, CompleteStyle } from '@universal-labs/css';
 import type { ParsedRule } from '@universal-labs/css';
+import { resolve } from '../runtime/registry';
 import type { RuleResult, ThemeContext } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
@@ -47,4 +48,13 @@ export function sheetEntriesToCss(
       );
     })
     .join('\n');
+}
+
+export function translateParsedRule(rule: ParsedRule, context: ThemeContext): SheetEntry[] {
+  const result = resolve(rule, context);
+  if (!result) {
+    // propagate className as is
+    return [{ className: toClassName(rule), declarations: [], group: 'base', rule }];
+  }
+  return [];
 }

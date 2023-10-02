@@ -22,6 +22,7 @@ export function useCssToRN(className: string) {
 }
 
 export function createComponentSheet(entries: SheetEntry[], context: StyledContext) {
+  console.log('ENTRIES: ', entries, tw);
   const sheet = getSheetEntryStyles(entries, context);
   return {
     getChildStyles,
