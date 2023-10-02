@@ -6124,7 +6124,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/native-twin-nextjs@workspace:packages/native-tailwind-nextjs"
   dependencies:
-    "@universal-labs/css": "workspace:*"
     "@universal-labs/native-twin": "workspace:*"
   peerDependencies:
     next: ">=13.0"
@@ -6141,6 +6140,17 @@ __metadata:
   resolution: "@universal-labs/native-twin@workspace:packages/native-tailwind"
   dependencies:
     "@universal-labs/css": "workspace:*"
+  peerDependencies:
+    react: ">=18.0"
+    react-native: ">=0.71.0"
+  languageName: unknown
+  linkType: soft
+
+"@universal-labs/preset-tailwind@workspace:*, @universal-labs/preset-tailwind@workspace:packages/preset-tailwind":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/preset-tailwind@workspace:packages/preset-tailwind"
+  dependencies:
+    "@universal-labs/native-twin": "workspace:*"
   peerDependencies:
     react: ">=18.0"
     react-native: ">=0.71.0"
@@ -6174,6 +6184,7 @@ __metadata:
     "@types/showdown": 2.0.1
     "@universal-labs/css": "workspace:*"
     "@universal-labs/native-twin": "workspace:*"
+    "@universal-labs/preset-tailwind": "workspace:*"
     "@vscode/emmet-helper": 2.9.2
     cssbeautify: 0.3.1
     match-sorter: 6.3.1
@@ -9563,6 +9574,7 @@ __metadata:
     "@types/react": 18.2.14
     "@types/react-dom": 18.0.10
     "@universal-labs/native-twin": "workspace:*"
+    "@universal-labs/preset-tailwind": "workspace:*"
     "@universal-labs/styled": "workspace:*"
     babel-plugin-module-resolver: ^5.0.0
     clsx: 2.0.0
@@ -13310,6 +13322,7 @@ __metadata:
     "@next/font": 13.0.6
     "@universal-labs/native-twin": "workspace:*"
     "@universal-labs/native-twin-nextjs": "workspace:*"
+    "@universal-labs/preset-tailwind": "workspace:*"
     "@universal-labs/styled": "workspace:*"
     autoprefixer: 10.4.13
     critters: ^0.0.16

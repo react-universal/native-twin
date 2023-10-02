@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@universal-labs/native-twin": "workspace:*",
+    "@universal-labs/preset-tailwind": "workspace:*",
     "@universal-labs/styled": "workspace:*",
     "clsx": "2.0.0",
     "expo": "^49.0.3",

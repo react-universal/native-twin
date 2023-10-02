@@ -12,6 +12,7 @@
     "@next/font": "13.0.6",
     "@universal-labs/native-twin": "workspace:*",
     "@universal-labs/native-twin-nextjs": "workspace:*",
+    "@universal-labs/preset-tailwind": "workspace:*",
     "@universal-labs/styled": "workspace:*",
     "autoprefixer": "10.4.13",
     "critters": "^0.0.16",

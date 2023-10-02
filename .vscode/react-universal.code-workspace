@@ -22,6 +22,10 @@
       "path": "../packages/styled"
     },
     {
+      "name": "📦 @lib/preset-tw",
+      "path": "../packages/preset-tailwind"
+    },
+    {
       "name": "📦 @lib/with-nextjs",
       "path": "../packages/native-tailwind-nextjs"
     },

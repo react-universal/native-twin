@@ -2,7 +2,7 @@ import type {
   Preset,
   TailwindConfig,
   TailwindUserConfig,
-  TwindPresetConfig,
+  TailwindPresetConfig,
 } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
 import { asArray } from '../utils/helpers';
@@ -31,7 +31,7 @@ export function defineConfig<
     },
   ])) {
     const { ignorelist, preflight, rules, theme } =
-      typeof preset == 'function' ? preset(config) : (preset as TwindPresetConfig<Theme>);
+      typeof preset == 'function' ? preset(config) : (preset as TailwindPresetConfig<Theme>);
     config = {
       preflight,
       root: config.root,

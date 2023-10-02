@@ -11,8 +11,8 @@ import {
   createThemeContext,
   defineConfig,
   flattenColorPalette,
-  presetTailwind,
 } from '@universal-labs/native-twin';
+import { presetTailwind } from '@universal-labs/preset-tailwind';
 import { ClassCompletionToken, VariantCompletionToken } from '../types';
 import { ConfigurationManager } from './configuration';
 import { LanguageServiceLogger } from './logger';

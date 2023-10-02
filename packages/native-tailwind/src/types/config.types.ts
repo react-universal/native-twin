@@ -81,12 +81,12 @@ export interface ThemeFunction<Theme extends __Theme__ = {}> {
 }
 
 export interface PresetThunk<Theme = __Theme__> {
-  (config: TailwindConfig<Theme & __Theme__>): TwindPresetConfig<Theme>;
+  (config: TailwindConfig<Theme & __Theme__>): TailwindPresetConfig<Theme>;
 }
 
-export type Preset<Theme = __Theme__> = TwindPresetConfig<Theme> | PresetThunk<Theme>;
+export type Preset<Theme = __Theme__> = TailwindPresetConfig<Theme> | PresetThunk<Theme>;
 
-export interface TwindPresetConfig<Theme = __Theme__> {
+export interface TailwindPresetConfig<Theme = __Theme__> {
   /** Allows to change how the `dark` variant is used (default: `"media"`) */
   // darkMode?: DarkModeConfig;
   // darkColor?: DarkColor<Theme & __Theme__>;
