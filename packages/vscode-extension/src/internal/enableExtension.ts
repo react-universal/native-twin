@@ -120,7 +120,7 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
 
   if (config.enable) {
     log(
-      'Extension is enabled. To disable, change the `nativeTailwind.enable` setting to `false`.',
+      'Extension is enabled. To disable, change the `nativeTwin.enable` setting to `false`.',
     );
 
     if (state.hasUniversalLabs) {
@@ -130,7 +130,7 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
     }
   } else {
     log(
-      'Extension is disabled. No IntelliSense will be provided. To enable, change the `nativeTailwind.enable` setting to `true`.',
+      'Extension is disabled. No IntelliSense will be provided. To enable, change the `nativeTwin.enable` setting to `true`.',
     );
   }
 

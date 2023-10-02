@@ -1,7 +1,7 @@
 {
-  "name": "@universal-labs/vscode",
+  "name": "@universal-labs/native-twin-vscode",
   "version": "1.0.0",
-  "description": "Native Styled Tailwind vscode extension.",
+  "description": "Native Twin vscode extension.",
   "categories": [
     "Programming Languages",
     "Linters",
@@ -21,22 +21,22 @@
   "contributes": {
     "commands": [
       {
-        "command": "nativeTailwind.restart",
-        "title": "Native Tailwind: Restart IntelliSense"
+        "command": "nativeTwin.restart",
+        "title": "Native Twin: Restart IntelliSense"
       },
       {
-        "command": "nativeTailwind.className",
-        "title": "Native Tailwind: Replace className strings"
+        "command": "nativeTwin.className",
+        "title": "Native Twin: Replace className strings"
       }
     ],
     "configuration": [
       {
-        "id": "nativeTailwind",
-        "title": "Native Tailwind",
+        "id": "nativeTwin",
+        "title": "Native Twin",
         "properties": {
           "styledLanguageTW.tags": {
             "type": "array",
-            "description": "List of template tags to enable Native Tailwind intellisense in.",
+            "description": "List of template tags to enable Native Twin intellisense in.",
             "items": {
               "type": "string",
               "description": "Tag name."
@@ -50,9 +50,9 @@
               "tx"
             ]
           },
-          "nativeTailwind.attributes": {
+          "nativeTwin.attributes": {
             "type": "array",
-            "description": "List of html/jsx attributes to enable Native Tailwind intellisense in.",
+            "description": "List of html/jsx attributes to enable Native Twin intellisense in.",
             "items": {
               "type": "string",
               "description": "Attribute name."
@@ -62,9 +62,9 @@
               "class"
             ]
           },
-          "nativeTailwind.styles": {
+          "nativeTwin.styles": {
             "type": "array",
-            "description": "List of style/styled functions to enable Native Tailwind intellisense in.",
+            "description": "List of style/styled functions to enable Native Twin intellisense in.",
             "items": {
               "type": "string",
               "description": "Style function name."
@@ -75,15 +75,15 @@
               "variants"
             ]
           },
-          "nativeTailwind.debug": {
+          "nativeTwin.debug": {
             "type": "boolean",
             "description": "Enable/disable additional debug information.",
             "default": false
           },
-          "nativeTailwind.enable": {
+          "nativeTwin.enable": {
             "type": "boolean",
             "default": true,
-            "markdownDescription": "Controls whether Native Tailwind intellisense is enabled or not."
+            "markdownDescription": "Controls whether Native Twin intellisense is enabled or not."
           }
         }
       }

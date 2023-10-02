@@ -6156,6 +6156,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@universal-labs/native-twin-vscode@workspace:packages/vscode-extension":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/native-twin-vscode@workspace:packages/vscode-extension"
+  dependencies:
+    "@types/vscode": 1.80.0
+    "@universal-labs/native-twin-ts-plugin": "workspace:*"
+    "@vscode/test-electron": ^2.3.3
+    vscode-languageclient: ^8.1.0
+    vscode-test: 1.6.1
+  languageName: unknown
+  linkType: soft
+
 "@universal-labs/native-twin@workspace:*, @universal-labs/native-twin@workspace:packages/native-tailwind":
   version: 0.0.0-use.local
   resolution: "@universal-labs/native-twin@workspace:packages/native-tailwind"
@@ -6193,18 +6205,6 @@ __metadata:
     react: ">=18"
     react-native: ">= 0.70"
     react-native-web: ">= 0.18.10"
-  languageName: unknown
-  linkType: soft
-
-"@universal-labs/vscode@workspace:packages/vscode-extension":
-  version: 0.0.0-use.local
-  resolution: "@universal-labs/vscode@workspace:packages/vscode-extension"
-  dependencies:
-    "@types/vscode": 1.80.0
-    "@universal-labs/native-twin-ts-plugin": "workspace:*"
-    "@vscode/test-electron": ^2.3.3
-    vscode-languageclient: ^8.1.0
-    vscode-test: 1.6.1
   languageName: unknown
   linkType: soft
 
