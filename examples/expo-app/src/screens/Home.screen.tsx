@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { tw } from '@universal-labs/native-twin';
 import styled from '@universal-labs/styled';
 import {
   FullView,
@@ -35,7 +34,6 @@ const ExoticView = styled(View)`
     android:(p-14 border-green-200 border-2 bg-gray-50)
 `;
 function HomeScreen() {
-  console.log('TW: ', JSON.stringify(tw.config.theme['fontFamily'], null, 2));
   const [active, setActive] = useState(true);
   return (
     <FullView>
@@ -43,7 +41,7 @@ function HomeScreen() {
         <View className='bg-white shadow-md rounded-xl p-2'>
           <H1
             className={`
-              text(center 2xl primary)
+              text(center base primary)
               font-inter-bold hover:text-gray-700
             `}
           >

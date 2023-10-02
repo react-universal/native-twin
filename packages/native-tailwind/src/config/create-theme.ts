@@ -12,7 +12,6 @@ export function createTailwindTheme<UserTheme = {}>(
 ): __Theme__ & UserTheme {
   return {
     ...tailwindTheme,
-    ...tailwindTheme.theme,
     ...userTheme,
   };
 }

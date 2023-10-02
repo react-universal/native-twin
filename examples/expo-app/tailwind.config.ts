@@ -1,8 +1,8 @@
-import { createTailwind } from '@universal-labs/native-twin';
+import { defineConfig, presetTailwindBase } from '@universal-labs/native-twin';
 
-export default createTailwind({
+export default defineConfig({
   root: {
-    rem: 14,
+    rem: 16,
   },
   theme: {
     extend: {
@@ -18,4 +18,5 @@ export default createTailwind({
       },
     },
   },
+  presets: [presetTailwindBase()],
 });

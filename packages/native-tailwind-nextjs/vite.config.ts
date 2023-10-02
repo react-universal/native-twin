@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
-      outDir: 'build',
+      outputDir: 'build',
       insertTypesEntry: true,
       logLevel: 'error',
     }),

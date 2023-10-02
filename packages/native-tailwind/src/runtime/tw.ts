@@ -65,6 +65,9 @@ export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
   sheet: Sheet<Target> | SheetFactory<Target> = getSheet as SheetFactory<Target>,
   target?: HTMLElement,
 ): RuntimeTW<Theme> {
+  if ('destroy' in active) {
+    active?.destroy();
+  }
   // active = tw$ as RuntimeTW;
   active = observe(
     createTailwind(config as TailwindUserConfig, typeof sheet == 'function' ? sheet() : sheet),

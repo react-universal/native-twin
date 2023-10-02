@@ -1,24 +1,53 @@
-import { themeRules } from '../tailwind-preset/tailwind-rules';
-import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
+import type {
+  Preset,
+  TailwindConfig,
+  TailwindUserConfig,
+  TwindPresetConfig,
+} from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
 import { asArray } from '../utils/helpers';
-import { createTailwindTheme } from './create-theme';
 
-export function defineConfig<Theme extends __Theme__ = __Theme__>({
+export function defineConfig<
+  Theme extends __Theme__ = __Theme__,
+  Presets extends Preset<any>[] = Preset[],
+>({
+  presets = [] as unknown as Presets,
   ...userConfig
-}: TailwindUserConfig<Theme>): TailwindConfig<__Theme__> {
-  const theme = createTailwindTheme(userConfig.theme);
-  const config: TailwindConfig<__Theme__> = {
+}: TailwindUserConfig<Theme, Presets>): TailwindConfig<__Theme__> {
+  let config: TailwindConfig<__Theme__> = {
     ignorelist: asArray(userConfig.ignorelist),
-    rules: [...asArray(userConfig.rules), ...asArray(themeRules)],
+    rules: asArray(userConfig.rules),
     root: {
-      rem: 16,
+      rem: userConfig.root?.rem ?? 16,
       ...userConfig.root,
     },
-    theme: {
-      ...theme,
-      extend: userConfig.theme?.extend,
-    },
+    theme: {},
   };
+  for (const preset of asArray([
+    ...presets,
+    {
+      theme: userConfig.theme as TailwindConfig<__Theme__>['theme'],
+      root: userConfig.root,
+    },
+  ])) {
+    const { ignorelist, preflight, rules, theme } =
+      typeof preset == 'function' ? preset(config) : (preset as TwindPresetConfig<Theme>);
+    config = {
+      preflight,
+      root: config.root,
+      theme: {
+        ...config.theme,
+        ...theme,
+        extend: {
+          ...config.theme.extend,
+          ...theme?.extend,
+        },
+      },
+
+      // variants: [...config.variants, ...asArray(variants)],
+      rules: [...config.rules, ...asArray(rules)],
+      ignorelist: [...config.ignorelist, ...asArray(ignorelist)],
+    } as TailwindConfig<__Theme__>;
+  }
   return config;
 }

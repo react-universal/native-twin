@@ -14,6 +14,7 @@ export * from './css/translate';
 /** CONFIG */
 export * from './config/define-config';
 export * from './config/create-theme';
+export * from './tailwind-preset';
 
 /** THEME */
 export * from './theme/theme.context';
