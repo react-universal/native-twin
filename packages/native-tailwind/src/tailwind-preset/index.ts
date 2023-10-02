@@ -9,9 +9,7 @@ export interface TailwindPresetBaseOptions {
   disablePreflight?: boolean | undefined;
 }
 
-export function presetTailwindBase({
-  colors,
-}: TailwindPresetBaseOptions = {}): Preset<__Theme__> {
+export function presetTailwind({ colors }: TailwindPresetBaseOptions = {}): Preset<__Theme__> {
   let userColors: __Theme__['colors'] = {};
   if (colors) {
     userColors = {

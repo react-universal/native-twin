@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import { inspect } from 'util';
 import { describe, expect, it } from 'vitest';
-import { createTailwind, setup, tw, tx } from '../src';
+import { defineConfig, presetTailwind, setup, tw, tx } from '../src';
 import { sheetEntriesToCss } from '../src/css/translate';
 
-setup(createTailwind({}));
+setup(defineConfig({ presets: [presetTailwind()] }));
 
 describe('@universal-labs/native-twin - Raw rules parser', () => {
   it('Sheet entries to CSS', () => {

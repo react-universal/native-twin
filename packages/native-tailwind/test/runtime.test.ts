@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { defineConfig, setup, tx } from '../src';
+import { defineConfig, presetTailwind, setup, tx } from '../src';
 
 setup(
   defineConfig({
+    presets: [presetTailwind()],
     theme: {
       extend: {
         fontFamily: {

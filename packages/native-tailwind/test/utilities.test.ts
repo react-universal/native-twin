@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { presetTailwind } from '../src';
 import { createVirtualSheet } from '../src/css/sheets';
 import { createTailwind } from '../src/tailwind';
 
 const tailwind = createTailwind(
   {
+    presets: [presetTailwind()],
     ignorelist: [],
     theme: {
       extend: {

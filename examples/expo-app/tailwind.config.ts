@@ -1,4 +1,4 @@
-import { defineConfig, presetTailwindBase } from '@universal-labs/native-twin';
+import { defineConfig, presetTailwind } from '@universal-labs/native-twin';
 
 export default defineConfig({
   root: {
@@ -18,5 +18,5 @@ export default defineConfig({
       },
     },
   },
-  presets: [presetTailwindBase()],
+  presets: [presetTailwind()],
 });

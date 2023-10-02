@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { defineConfig, extract, install, tw } from '../src';
+import { defineConfig, extract, install, presetTailwind, tw } from '../src';
 
-install(defineConfig({}));
+install(
+  defineConfig({
+    presets: [presetTailwind()],
+  }),
+);
 
 const html1 = `<html><head></head><body class="min-h-screen min-w-full"><div class="bg-blue-200" /></body>`;
 const html2 = `<html><head></head><body class="min-h-screen min-w-full"><div class="bg-red-200 hover:bg-blue-200" /></body>`;

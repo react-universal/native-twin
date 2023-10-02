@@ -11,6 +11,7 @@ import {
   createThemeContext,
   defineConfig,
   flattenColorPalette,
+  presetTailwind,
 } from '@universal-labs/native-twin';
 import { ClassCompletionToken, VariantCompletionToken } from '../types';
 import { ConfigurationManager } from './configuration';
@@ -29,7 +30,9 @@ export class NativeTailwindIntellisense {
   constructor(logger: LanguageServiceLogger, pluginConfig: ConfigurationManager) {
     this.pluginConfig = pluginConfig;
     this.logger = logger;
-    this.tailwindConfig = defineConfig({});
+    this.tailwindConfig = defineConfig({
+      presets: [presetTailwind()],
+    });
     this.tw = createTailwind(this.tailwindConfig);
     this.context = createThemeContext(this.tailwindConfig);
     this.completions = this.completions.bind(this);
