@@ -1,37 +1,81 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`@universal-labs/styled > Complex View 1`] = `
-<div
-  className="css-view-175oi2r flex-1 hover:bg-blue-600 p-14 bg-rose-200 border-white border-2 items-center justify-center md:border-3 m-2"
-  dir={null}
+<View
+  groupID=":r2:"
+  intent="secondary"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  onTouchEnd={[Function]}
+  onTouchStart={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "rgba(254,205,211,1)",
+      "borderColor": "rgba(255,255,255,1)",
+      "borderWidth": 2,
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+      "justifyContent": "center",
+      "margin": 8,
+      "padding": 56,
+    }
+  }
 >
-  <div
-    className="css-text-146c3p1 text-center text-2xl text-indigo-600 hover:text-gray-700"
-    dir="auto"
+  <Text
+    groupID=":r2:"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onTouchEnd={[Function]}
+    onTouchStart={[Function]}
+    parentID=":r2:"
+    style={
+      {
+        "color": "rgba(79,70,229,1)",
+        "fontSize": 24,
+        "textAlign": "center",
+      }
+    }
   >
     H1 - 1
-  </div>
-</div>
+  </Text>
+</View>
 `;
 
 exports[`@universal-labs/styled > ScrollView render 1`] = `
-<div
-  className="css-view-175oi2r r-WebkitOverflowScrolling-150rngu r-flexDirection-eqz5dr r-flexGrow-16y2uox r-flexShrink-1wbh5a2 r-overflowX-11yh6sk r-overflowY-1rnoaur r-transform-agouwx flex-1 flex-1"
-  dir={null}
-  onScroll={[Function]}
-  onTouchEnd={[Function]}
-  onTouchMove={[Function]}
-  onTouchStart={[Function]}
-  onWheel={[Function]}
+<RCTScrollView
+  groupID=":r0:"
+  style={
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
+  }
 >
-  <div
-    className="css-view-175oi2r"
-    dir={null}
-  >
-    <div
-      className="css-view-175oi2r flex-1 hover:bg-blue-600 p-14 bg-rose-200 border-white border-2 items-center justify-center md:border-3"
-      dir={null}
+  <View>
+    <View
+      groupID=":r0:"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onTouchEnd={[Function]}
+      onTouchStart={[Function]}
+      parentID=":r0:"
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "rgba(254,205,211,1)",
+          "borderColor": "rgba(255,255,255,1)",
+          "borderWidth": 2,
+          "flexBasis": "0%",
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "justifyContent": "center",
+          "padding": 56,
+        }
+      }
     />
-  </div>
-</div>
+  </View>
+</RCTScrollView>
 `;

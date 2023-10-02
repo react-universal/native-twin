@@ -2,7 +2,7 @@ import { parseTWTokens } from '@universal-labs/css';
 import { describe, expect, it } from 'vitest';
 import { toClassName } from '../src/utils/string-utils';
 
-describe('@universal-labs/native-tw - Raw rules parser', () => {
+describe('@universal-labs/native-twin - Raw rules parser', () => {
   it('Parse regular rules', () => {
     const result = parseTWTokens('bg-blue-300 xl:bg-white hover:text-2xl');
     expect(result).toStrictEqual([

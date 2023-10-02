@@ -1,5 +1,5 @@
 // import { Roboto } from '@next/font/google';
-import { installApp } from '@universal-labs/native-tw-nextjs/_app';
+import { installApp } from '@universal-labs/native-twin-nextjs/_app';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../styles/globals.css';

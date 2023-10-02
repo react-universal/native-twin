@@ -5,7 +5,7 @@ import {
   type ForwardRefExoticComponent,
 } from 'react';
 import type { StyleProp } from 'react-native';
-import { cx } from '@universal-labs/native-tw';
+import { cx } from '@universal-labs/native-twin';
 import type {
   Primitive,
   StyledComponentProps,

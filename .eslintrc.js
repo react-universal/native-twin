@@ -55,5 +55,13 @@ module.exports = {
     'react/display-name': 'warn',
     'no-async-promise-executor': 'warn',
   },
+  // overrides: [
+  //   {
+  //     files: ['**/test/**/*'],
+  //     rules: {
+  //       '@nrwl/nx/enforce-module-boundaries': 'off',
+  //     },
+  //   },
+  // ],
   reportUnusedDisableDirectives: true,
 };

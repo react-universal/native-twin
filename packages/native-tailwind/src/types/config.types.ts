@@ -7,7 +7,7 @@ import type {
 } from '@universal-labs/css';
 import type { SheetEntry } from './css.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
-import type { Falsey } from './util.types';
+import type { Falsey, MaybeArray } from './util.types';
 
 export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   theme: ThemeConfig<Theme>;
@@ -20,13 +20,18 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   };
 }
 
-export interface TailwindUserConfig<Theme = __Theme__, UserTheme extends object = {}> {
+export interface TailwindUserConfig<
+  Theme = __Theme__,
+  UserTheme extends object = {},
+  Presets extends Preset<any>[] = Preset[],
+> {
   theme?: ThemeConfig<Theme & UserTheme>;
   rules?: Rule<__Theme__>[];
   ignorelist?: string[];
   root?: {
     rem: number;
   };
+  presets?: Presets;
 }
 
 export type RuleResult = SheetEntry | Falsey;
@@ -73,4 +78,28 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
 
 export interface ThemeFunction<Theme extends __Theme__ = {}> {
   (section: keyof ThemeConfig<Theme> | (string & {}), segment: string): string | undefined;
+}
+
+export interface PresetThunk<Theme = __Theme__> {
+  (config: TailwindConfig<Theme & __Theme__>): TailwindPresetConfig<Theme>;
+}
+
+export type Preset<Theme = __Theme__> = TailwindPresetConfig<Theme> | PresetThunk<Theme>;
+
+export interface TailwindPresetConfig<Theme = __Theme__> {
+  /** Allows to change how the `dark` variant is used (default: `"media"`) */
+  // darkMode?: DarkModeConfig;
+  // darkColor?: DarkColor<Theme & __Theme__>;
+
+  theme?: ThemeConfig<Theme & __Theme__>;
+
+  preflight?: false;
+  // variants?: Variant<Theme & BaseTheme>[];
+  rules?: Rule<Theme & __Theme__>[];
+
+  // hash?: boolean | undefined | HashFunction;
+  // stringify?: StringifyDeclaration<Theme & BaseTheme>;
+  ignorelist?: MaybeArray<string | RegExp>;
+
+  // finalize?: MaybeArray<Finalize<Theme & BaseTheme>>;
 }

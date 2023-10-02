@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "noUnusedLocals": false,
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "auto",
+    "strictFunctionTypes": false,
+    "strictNullChecks": true,
+    "noImplicitReturns": false,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "strict": true,
+    "stripInternal": true,
+    "noImplicitAny": true
+  },
+  "exclude": ["build"]
+}

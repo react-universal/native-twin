@@ -1,10 +1,11 @@
 import { View } from 'react-native';
-import { createTailwind } from '@universal-labs/native-tw';
+import { defineConfig, setup } from '@universal-labs/native-twin';
+import { presetTailwind } from '@universal-labs/preset-tailwind';
 import renderer from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
 import styledComponents from '../src';
 
-createTailwind({});
+setup(defineConfig({ presets: [presetTailwind()] }));
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();

@@ -1,9 +1,11 @@
-import { defineConfig } from '@universal-labs/native-tw';
+import { defineConfig } from '@universal-labs/native-twin';
+import { presetTailwind } from '@universal-labs/preset-tailwind';
 
 export default defineConfig({
   root: {
     rem: 14,
   },
+  presets: [presetTailwind()],
   theme: {
     extend: {
       colors: {

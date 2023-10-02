@@ -7,8 +7,9 @@ export default defineConfig({
     // Plugin for .d.ts files
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
-      outDir: 'build',
+      outputDir: 'build',
       insertTypesEntry: false,
+      logLevel: 'error',
     }),
   ],
   build: {

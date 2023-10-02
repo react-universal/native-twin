@@ -22,6 +22,7 @@
     "exactOptionalPropertyTypes": false,
     "noImplicitOverride": true,
     "noUnusedLocals": true,
-    "isolatedModules": false
+    "isolatedModules": false,
+    "downlevelIteration": true
   }
 }

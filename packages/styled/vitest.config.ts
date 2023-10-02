@@ -1,29 +1,26 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-  optimizeDeps: {
-    esbuildOptions: {
-      mainFields: ['module', 'main'],
-      resolveExtensions: ['.web.js', '.web.jsx', '.web.ts', '.web.tsx', '.ts', '.js'],
-    },
-  },
   resolve: {
-    extensions: ['.web.tsx', '.web.jsx', '.web.js', '.tsx', '.ts', '.js'],
-    alias: {
-      'react-native': 'react-native-web',
-    },
     conditions: ['react-native'],
   },
   test: {
     setupFiles: ['vitest-react-native/setup'],
-    environment: 'happy-dom',
+    deps: {
+      external: ['react-native'],
+    },
     globals: true,
     env: {
       APP_ENV: 'test',
     },
     cache: {
       dir: 'test/.cache',
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      mainFields: ['module', 'main'],
     },
   },
 });

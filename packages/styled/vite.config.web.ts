@@ -33,7 +33,7 @@ export default defineConfig({
         'react-native',
         'react-native-web',
         '@universal-labs/css',
-        '@universal-labs/native-tw',
+        '@universal-labs/native-twin',
       ],
       treeshake: true,
       output: {

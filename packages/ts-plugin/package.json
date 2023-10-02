@@ -15,7 +15,8 @@
   "dependencies": {
     "@ctrl/tinycolor": "3.6.0",
     "@universal-labs/css": "workspace:*",
-    "@universal-labs/native-tw": "workspace:*",
+    "@universal-labs/native-twin": "workspace:*",
+    "@universal-labs/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "2.9.2",
     "cssbeautify": "0.3.1",
     "match-sorter": "6.3.1",

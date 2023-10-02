@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/native-tw-nextjs",
+  "name": "@universal-labs/native-twin-nextjs",
   "version": "5.0.1",
   "private": true,
   "description": "React Native Web Tailwindcss for nextjs",
@@ -62,8 +62,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@universal-labs/css": "workspace:*",
-    "@universal-labs/native-tw": "workspace:*"
+    "@universal-labs/native-twin": "workspace:*"
   },
   "peerDependencies": {
     "next": ">=13.0",

@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@universal-labs/css": "workspace:*",
-    "@universal-labs/native-tw": "workspace:*",
+    "@universal-labs/native-twin": "workspace:*",
     "react-is": "^18.2.0",
     "stable-hash": "0.0.3"
   },

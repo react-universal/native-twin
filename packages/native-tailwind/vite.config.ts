@@ -6,18 +6,18 @@ export default defineConfig({
   plugins: [
     dts({
       entryRoot: path.resolve(__dirname, 'src'),
-      outDir: 'build',
+      outputDir: 'build',
       insertTypesEntry: true,
+      logLevel: 'error',
     }),
   ],
   build: {
     reportCompressedSize: true,
     chunkSizeWarningLimit: 10,
     outDir: 'build',
-    minify: false,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@universal-labs/native-tw',
+      name: '@universal-labs/native-twin',
       fileName: (format) => `index.${format}.js`,
       formats: ['es', 'cjs'],
     },
