@@ -83,7 +83,7 @@ export function fixClassList(value: string, quote: string): string {
   //
   //     If a class name contains `'`, `"`, or `&` those will be replaced with HTML entities
   //     To fix this we replace those for depending on the actual symbol that is being used
-  //     As an alternative we could always escape class names direcly in twind like react does
+  //     As an alternative we could always escape class names direcly in tailwind like react does
   //     but this works for now
   return (
     quote == `"`

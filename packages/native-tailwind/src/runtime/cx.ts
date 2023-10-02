@@ -5,8 +5,8 @@ import { format, interpolate } from '../utils/string-utils';
 /**
  * Constructs `class` strings conditionally.
  *
- * Twinds version of popular libraries like [classnames](https://github.com/JedWatson/classnames) or [clsx](https://github.com/lukeed/clsx).
- * The key advantage of `cx` is that it supports twinds enhanced class name syntax like grouping and aliases.
+ * Clone version of popular libraries like [classnames](https://github.com/JedWatson/classnames) or [clsx](https://github.com/lukeed/clsx).
+ * The key advantage of `cx` is that it supports tailwind enhanced class name syntax like grouping and aliases.
  *
  * @group Class Name Generators
  * @param strings
@@ -18,8 +18,8 @@ export function cx(strings: TemplateStringsArray, ...interpolations: CSSValue[])
 /**
  * Constructs `class` strings conditionally.
  *
- * Twinds version of popular libraries like [classnames](https://github.com/JedWatson/classnames) or [clsx](https://github.com/lukeed/clsx).
- * The key advantage of `cx` is that it supports twinds enhanced class name syntax like grouping and aliases.
+ * Clone version of popular libraries like [classnames](https://github.com/JedWatson/classnames) or [clsx](https://github.com/lukeed/clsx).
+ * The key advantage of `cx` is that it supports tailwind enhanced class name syntax like grouping and aliases.
  *
  * @group Class Name Generators
  * @param input
