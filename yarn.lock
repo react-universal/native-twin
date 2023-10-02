@@ -6135,6 +6135,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@universal-labs/native-twin-ts-plugin@workspace:*, @universal-labs/native-twin-ts-plugin@workspace:packages/ts-plugin":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/native-twin-ts-plugin@workspace:packages/ts-plugin"
+  dependencies:
+    "@ctrl/tinycolor": 3.6.0
+    "@types/cssbeautify": 0.3.2
+    "@types/showdown": 2.0.1
+    "@universal-labs/css": "workspace:*"
+    "@universal-labs/native-twin": "workspace:*"
+    "@universal-labs/preset-tailwind": "workspace:*"
+    "@vscode/emmet-helper": 2.9.2
+    cssbeautify: 0.3.1
+    match-sorter: 6.3.1
+    quick-lru: 6.1.1
+    showdown: 2.1.0
+    typescript-template-language-service-decorator: 2.3.2
+    vscode-css-languageservice: 6.2.6
+    vscode-languageserver-textdocument: 1.0.8
+  languageName: unknown
+  linkType: soft
+
 "@universal-labs/native-twin@workspace:*, @universal-labs/native-twin@workspace:packages/native-tailwind":
   version: 0.0.0-use.local
   resolution: "@universal-labs/native-twin@workspace:packages/native-tailwind"
@@ -6175,33 +6196,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/ts-styled-plugin-tw@workspace:*, @universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin":
-  version: 0.0.0-use.local
-  resolution: "@universal-labs/ts-styled-plugin-tw@workspace:packages/ts-plugin"
-  dependencies:
-    "@ctrl/tinycolor": 3.6.0
-    "@types/cssbeautify": 0.3.2
-    "@types/showdown": 2.0.1
-    "@universal-labs/css": "workspace:*"
-    "@universal-labs/native-twin": "workspace:*"
-    "@universal-labs/preset-tailwind": "workspace:*"
-    "@vscode/emmet-helper": 2.9.2
-    cssbeautify: 0.3.1
-    match-sorter: 6.3.1
-    quick-lru: 6.1.1
-    showdown: 2.1.0
-    typescript-template-language-service-decorator: 2.3.2
-    vscode-css-languageservice: 6.2.6
-    vscode-languageserver-textdocument: 1.0.8
-  languageName: unknown
-  linkType: soft
-
 "@universal-labs/vscode@workspace:packages/vscode-extension":
   version: 0.0.0-use.local
   resolution: "@universal-labs/vscode@workspace:packages/vscode-extension"
   dependencies:
     "@types/vscode": 1.80.0
-    "@universal-labs/ts-styled-plugin-tw": "workspace:*"
+    "@universal-labs/native-twin-ts-plugin": "workspace:*"
     "@vscode/test-electron": ^2.3.3
     vscode-languageclient: ^8.1.0
     vscode-test: 1.6.1

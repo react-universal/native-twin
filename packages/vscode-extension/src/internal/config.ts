@@ -1,7 +1,7 @@
 export const typeScriptExtensionId = 'vscode.typescript-language-features';
-export const pluginId = '@universal-labs/ts-styled-plugin-tw';
+export const pluginId = '@universal-labs/native-twin-ts-plugin';
 export const configurationSection = 'nativeTailwind';
-const packageName = '@universal-labs/vscode';
+const packageName = '@universal-labs/native-twin-vscode';
 const publisher = 'universal-labs';
 export const extensionChannelName = 'Native Tailwind IntelliSense';
 export const extensionName = `${publisher}.${packageName}`;

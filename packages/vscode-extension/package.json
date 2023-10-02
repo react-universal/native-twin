@@ -90,7 +90,7 @@
     ],
     "typescriptServerPlugins": [
       {
-        "name": "@universal-labs/ts-styled-plugin-tw",
+        "name": "@universal-labs/native-twin-ts-plugin",
         "enableForWorkspaceTypeScriptVersions": true
       }
     ]
@@ -99,7 +99,7 @@
     "onStartupFinished"
   ],
   "dependencies": {
-    "@universal-labs/ts-styled-plugin-tw": "workspace:*",
+    "@universal-labs/native-twin-ts-plugin": "workspace:*",
     "vscode-languageclient": "^8.1.0"
   },
   "devDependencies": {

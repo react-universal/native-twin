@@ -10,7 +10,7 @@
     "noEmit": true,
     "plugins": [
       {
-        "name": "@universal-labs/ts-styled-plugin-tw"
+        "name": "@universal-labs/native-twin-ts-plugin"
       }
     ]
   },
