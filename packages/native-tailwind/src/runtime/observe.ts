@@ -1,6 +1,6 @@
+import { compareClassNames } from '@universal-labs/css';
 import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
-import { changed } from '../utils/css-utils';
 import { toClassName } from '../utils/string-utils';
 import { tw as tw$ } from './tw';
 
@@ -76,7 +76,7 @@ export function mutationObserver<Theme extends __Theme__ = __Theme__>(
     tw(classList)
       .map((x) => toClassName(x.rule))
       .join(' ');
-    if (tokens && changed(tokens, (className = classList))) {
+    if (tokens && compareClassNames(tokens, (className = classList))) {
       // Not using `target.className = ...` as that is read-only for SVGElements
       target.setAttribute('class', className);
     }

@@ -5,20 +5,6 @@ import type { ScreenValue, __Theme__ } from '../types/theme.types';
 import type { MaybeArray } from '../types/util.types';
 import { asArray } from './helpers';
 
-/**
- * @description CSS Selector Escape
- */
-export function escape(string: string) {
-  return (
-    string
-      // Simplified escape testing only for chars that we know happen to be in tailwind directives
-      .replace(/[!"'`*+.,;:\\/<=>?@#$%&^|~()[\]{}]/g, '\\$&')
-      // If the character is the first character and is in the range [0-9] (2xl, ...)
-      // https://drafts.csswg.org/cssom/#escape-a-character-as-code-point
-      .replace(/^\d/, '\\3$& ')
-  );
-}
-
 export function parseClassNameTokens(...tokens: ClassNameToken[]): string {
   return tokens.reduce((prev, current, currentIndex) => {
     prev += current.value.n;
@@ -43,17 +29,6 @@ export function getRuleSelectorGroup(rule: ParsedRule): SelectorGroup {
   if (rule.v.includes('hover') || rule.v.includes('focus') || rule.v.includes('active'))
     return 'pointer';
   return 'base';
-}
-
-/**
- * Determines if two class name strings contain the same classes.
- *
- * @param a first class names
- * @param b second class names
- * @returns are they different
- */
-export function changed(a: string, b: string): boolean {
-  return a != b && '' + a.split(' ').sort() != '' + b.split(' ').sort();
 }
 
 export function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[]) {

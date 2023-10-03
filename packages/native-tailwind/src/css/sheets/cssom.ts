@@ -43,6 +43,7 @@ export function createCssomSheet(
 
     insert(entry) {
       const className = entry.className;
+      // console.log('CSSOM_ENTRY: ', entry);
       const cssText = sheetEntryDeclarationsToCss(entry.declarations);
       try {
         // Insert

@@ -1,9 +1,9 @@
+import { compareClassNames } from '@universal-labs/css';
 import { sheetEntriesToCss } from '../css/translate';
 import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { SheetEntry } from '../types/css.types';
 import type { RuntimeTW } from '../types/theme.types';
 import type { StringLike } from '../types/util.types';
-import { changed } from '../utils/css-utils';
 import { fixClassList, parseHTML } from '../utils/parse-html';
 import { toClassName } from '../utils/string-utils';
 import { tw as tw$ } from './tw';
@@ -41,7 +41,7 @@ export function consume(
       .join(' ');
     tw(classList);
     // We only need to shift things around if we need to actually change the markup
-    if (changed(value, classList)) {
+    if (compareClassNames(value, classList)) {
       // We've hit another mutation boundary
 
       // Add quote if necessary

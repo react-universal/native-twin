@@ -9,6 +9,7 @@ export { getPropertyValueType } from './utils.parser';
 export { toCamelCase } from './convert/toCamelCase';
 export { toHyphenCase } from './convert/toHyphenCase';
 export { toTailDashed } from './convert/toTailDashed';
+export { toColorValue } from './convert/toColorValue';
 
 //CSS UTILS
 export {
@@ -20,6 +21,9 @@ export {
   pseudoPrecedence,
   separatorPrecedence,
 } from './css/precedence';
+export { escapeSelector } from './utils/escape-selector';
+export { compareClassNames } from './utils/compare';
+export { hash } from './utils/hash';
 
 export type {
   AnyStyle,

@@ -24,7 +24,6 @@ export * from './utils/string-utils';
 export * from './utils/helpers';
 export * from './utils/object.utils';
 export * from './utils/theme-utils';
-export * from './utils/color-utils';
 export * from './utils/css-utils';
 
 // PARSERS

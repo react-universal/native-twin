@@ -16,6 +16,7 @@ export function createVirtualSheet(): Sheet<SheetEntry[]> {
     },
 
     insert(entry) {
+      // console.log('VIRTUAL_ENTRY: ', entry);
       target.push(entry);
     },
 

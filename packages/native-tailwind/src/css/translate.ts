@@ -1,10 +1,15 @@
-import { toCamelCase, type AnyStyle, type CompleteStyle } from '@universal-labs/css';
+import {
+  toCamelCase,
+  type AnyStyle,
+  type CompleteStyle,
+  escapeSelector,
+} from '@universal-labs/css';
 import { resolveRule } from '../runtime/registry';
 import type { RuleResult, ThemeContext } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
 import type { ParsedRule } from '../types/tailwind.types';
 import type { __Theme__ } from '../types/theme.types';
-import { entryAtRuleWrapper, escape, sheetEntryDeclarationsToCss } from '../utils/css-utils';
+import { entryAtRuleWrapper, sheetEntryDeclarationsToCss } from '../utils/css-utils';
 import { toClassName } from '../utils/string-utils';
 
 export function translateRuleResults(
@@ -43,7 +48,7 @@ export function sheetEntriesToCss(
       const valueEntries = sheetEntryDeclarationsToCss(x.declarations);
       return entryAtRuleWrapper(
         x,
-        `.${escape(className)}${variants}{${valueEntries}}`,
+        `.${escapeSelector(className)}${variants}{${valueEntries}}`,
         screens,
       );
     })

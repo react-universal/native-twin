@@ -1,8 +1,5 @@
 import type { DeepPartial } from '../types/util.types';
-
-export function isObject(item: any): item is Record<string, any> {
-  return item && typeof item === 'object' && !Array.isArray(item);
-}
+import { isObject } from './helpers';
 
 export function mergeDeep<T>(original: T, patch: DeepPartial<T>, mergeArray = false): T {
   const o = original as any;

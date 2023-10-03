@@ -35,6 +35,7 @@ export function createDomSheet(
 
     insert(entry) {
       const node = sheetEntriesToCss([entry], tw?.config?.theme['screens'] ?? {});
+      // console.log('DOM_ENTRY: ', entry);
       target.insertBefore(document.createTextNode(node), null);
     },
 

@@ -1,8 +1,7 @@
-import type { CompleteStyle } from '@universal-labs/css';
+import { toColorValue, type CompleteStyle } from '@universal-labs/css';
 import type { Rule, RuleMeta, RuleResolver } from '../types/config.types';
 import type { SheetEntryDeclaration } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
-import { toColorValue } from '../utils/color-utils';
 import { getRuleSelectorGroup } from '../utils/css-utils';
 import { asArray } from '../utils/helpers';
 import { toClassName } from '../utils/string-utils';
