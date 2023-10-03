@@ -6172,6 +6172,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@universal-labs/native-twin@workspace:packages/native-tailwind"
   dependencies:
+    "@universal-labs/arc-parser": "workspace:*"
     "@universal-labs/css": "workspace:*"
   peerDependencies:
     react: ">=18.0"
