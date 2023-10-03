@@ -3,22 +3,14 @@
     {
       "name": "root",
       "path": ".."
-    },
+    },    
     {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
-    },
-    {
-      "name": "next-app",
-      "path": "../examples/next-app"
+      "name": "📦 @lib/tailwind",
+      "path": "../packages/native-tailwind"
     },
     {
       "name": "📦 @lib/css",
       "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/tailwind",
-      "path": "../packages/native-tailwind"
     },
     {
       "name": "📦 @lib/styled",
@@ -31,6 +23,30 @@
     {
       "name": "📦 @lib/with-nextjs",
       "path": "../packages/native-tailwind-nextjs"
+    },
+    {
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/ts-plugin",
+      "path": "../packages/ts-plugin"
+    },
+    {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
+    },
+    {
+      "name": "docs-site",
+      "path": "../apps/site"
     }
   ],
   "settings": {
