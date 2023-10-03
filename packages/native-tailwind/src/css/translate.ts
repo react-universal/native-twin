@@ -1,4 +1,4 @@
-import type { AnyStyle, CompleteStyle } from '@universal-labs/css';
+import { toCamelCase, type AnyStyle, type CompleteStyle } from '@universal-labs/css';
 import { resolveRule } from '../runtime/registry';
 import type { RuleResult, ThemeContext } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
@@ -17,7 +17,7 @@ export function translateRuleResults(
   if (typeof rule == 'object') {
     const newRule: any = {};
     for (let key of Object.keys(rule)) {
-      const newKey = key.replace(/-([a-z])/g, (k) => k[1]!.toUpperCase()!);
+      const newKey = toCamelCase(key);
       // @ts-expect-error
       newRule[newKey] = rule[key as keyof CompleteStyle];
     }

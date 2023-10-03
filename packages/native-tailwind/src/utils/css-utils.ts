@@ -81,21 +81,24 @@ export function entryAtRuleWrapper(
   cssText: string,
   screens: __Theme__['screens'] = {},
 ) {
-  let result = cssText;
+  let result = '';
   if (entry.rule.v.length == 0) {
-    return result;
+    return cssText;
   }
   for (const v of entry.rule.v) {
     if (v in screens) {
-      result += getMediaRule(screens[v], result);
+      result += getMediaRule(screens[v], cssText);
     }
+  }
+  if (result == '') {
+    return cssText;
   }
   return result;
 }
 
 function getMediaRule(screen: ScreenValue | undefined, text: string) {
-  if (typeof screen == 'number') {
-    return `@media (min-width: ${screen}px){${text}}`;
+  if (typeof screen == 'string') {
+    return `@media (min-width: ${screen}){${text}}`;
   }
   return text;
 }
