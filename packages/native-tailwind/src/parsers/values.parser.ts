@@ -1,6 +1,6 @@
 import type { FlexStyle } from 'react-native';
 import * as P from '@universal-labs/arc-parser';
-import { getPropertyValueType } from '../utils.parser';
+import { getPropertyValueType } from '@universal-labs/css';
 
 export const parseCssValue = (
   prop: string,

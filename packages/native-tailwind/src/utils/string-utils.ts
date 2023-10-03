@@ -1,5 +1,5 @@
-import type { ParsedRule } from '@universal-labs/css';
 import type { CSSValue } from '../types/css.types';
+import type { ParsedRule } from '../types/tailwind.types';
 
 export function interleave<Interpolations>(
   strings: TemplateStringsArray,

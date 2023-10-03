@@ -1,4 +1,4 @@
-import { type ParsedRule, RuleHandler } from '@universal-labs/css';
+import { RuleHandler } from '../parsers/tailwind-theme.parser';
 import type {
   Rule,
   RuleMeta,
@@ -7,7 +7,9 @@ import type {
   TailwindConfig,
   ThemeContext,
 } from '../types/config.types';
+import type { ParsedRule } from '../types/tailwind.types';
 import type { __Theme__ } from '../types/theme.types';
+import type { MaybeArray } from '../types/util.types';
 import { toClassName } from '../utils/string-utils';
 import { flattenColorPalette } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
@@ -20,6 +22,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
 }: TailwindConfig<Theme>): ThemeContext {
+  const variantCache = new Map<string, MaybeArray<string>>();
   const ruleHandlers = new Map<string, RuleHandlerFn<Theme>>();
   const cache = new Map<string, RuleResult>();
   const ctx: ThemeContext = {
@@ -33,9 +36,15 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
       return Object.assign(themeConfig.screens ?? {}, themeConfig.extend?.screens);
     },
 
-    v(variants) {
-      if (variants.length == 0) return true;
-      return true;
+    v(value) {
+      // if (!variantCache.has(value)) {
+      //   variantCache.set(
+      //     value,
+      //     find(value, variants, variantResolvers, getVariantResolver, ctx) || '&:' + value,
+      //   );
+      // }
+
+      return variantCache.get(value) as string;
     },
 
     r(token: ParsedRule) {

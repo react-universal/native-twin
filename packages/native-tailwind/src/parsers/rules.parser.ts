@@ -1,5 +1,5 @@
 import * as P from '@universal-labs/arc-parser';
-import { cornerMap, directionMap } from './mappings';
+import { cornerMap, directionMap } from '@universal-labs/css';
 import { asArray, keysOf } from './tailwind.utils';
 
 export const edgesParser = P.sequenceOf([

@@ -1,7 +1,25 @@
 export * from './css';
-export * from './tailwind';
 export * from './constants/empties';
 export * from './constants/pseudo.constants';
+export * from './constants/mappings';
+
+export { getPropertyValueType } from './utils.parser';
+
+// CONVERT
+export { toCamelCase } from './convert/toCamelCase';
+export { toHyphenCase } from './convert/toHyphenCase';
+export { toTailDashed } from './convert/toTailDashed';
+
+//CSS UTILS
+export {
+  type ConvertedRule,
+  Layer,
+  atRulePrecedence,
+  declarationPropertyPrecedence,
+  moveToLayer,
+  pseudoPrecedence,
+  separatorPrecedence,
+} from './css/precedence';
 
 export type {
   AnyStyle,
@@ -20,5 +38,3 @@ export type {
   SheetInteractionState,
   SelectorPayload,
 } from './types/css.types';
-
-export * from './types/tailwind.types';

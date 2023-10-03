@@ -1,7 +1,9 @@
-import type { SelectorGroup } from '@universal-labs/css';
-import type { ClassNameToken, ParsedRule } from '@universal-labs/css';
+import { toHyphenCase, type SelectorGroup } from '@universal-labs/css';
 import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
+import type { ClassNameToken, ParsedRule } from '../types/tailwind.types';
 import type { ScreenValue, __Theme__ } from '../types/theme.types';
+import type { MaybeArray } from '../types/util.types';
+import { asArray } from './helpers';
 
 /**
  * @description CSS Selector Escape
@@ -54,10 +56,6 @@ export function changed(a: string, b: string): boolean {
   return a != b && '' + a.split(' ').sort() != '' + b.split(' ').sort();
 }
 
-export function hyphenateProp(prop: string) {
-  return prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-}
-
 export function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[]) {
   const body: [string, string][] = [];
   for (const d of decls) {
@@ -75,7 +73,7 @@ export function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[]) {
 }
 
 export function parseRuleBodyEntries(entries: [string, string][]): string {
-  return entries.flatMap((x) => `${hyphenateProp(x[0])}:${x[1]};`).join('');
+  return entries.flatMap((x) => `${toHyphenCase(x[0])}:${x[1]};`).join('');
 }
 
 export function entryAtRuleWrapper(
@@ -100,4 +98,32 @@ function getMediaRule(screen: ScreenValue | undefined, text: string) {
     return `@media (min-width: ${screen}px){${text}}`;
   }
   return text;
+}
+
+/**
+ * @internal
+ * @param screen
+ * @param prefix
+ * @returns
+ */
+export function mql(screen: MaybeArray<ScreenValue>, prefix = '@media '): string {
+  return (
+    prefix +
+    asArray(screen)
+      .map((screen) => {
+        if (typeof screen == 'string') {
+          screen = { min: screen };
+        }
+
+        return (
+          (screen as { raw?: string }).raw ||
+          Object.keys(screen)
+            .map(
+              (feature) => `(${feature}-width:${(screen as Record<string, string>)[feature]})`,
+            )
+            .join(' and ')
+        );
+      })
+      .join(',')
+  );
 }

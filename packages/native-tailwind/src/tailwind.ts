@@ -4,14 +4,15 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
-import { parseTWTokens } from '@universal-labs/css';
 import { defineConfig } from './config/define-config';
 import { createVirtualSheet } from './css/sheets';
+import { translateRuleSet } from './css/translate';
+import { parseTWTokens } from './parsers/tailwind-classes.parser';
 import { createThemeContext } from './theme/theme.context';
 import type { TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { Sheet, SheetEntry } from './types/css.types';
 import type { RuntimeTW, __Theme__ } from './types/theme.types';
-import { interpolate, toClassName } from './utils/string-utils';
+import { interpolate } from './utils/string-utils';
 
 export function createTailwind<Theme = __Theme__, Target = unknown>(
   userConfig: TailwindUserConfig<Theme>,
@@ -29,26 +30,12 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
         return cache.get(tokens);
       }
       const styles: SheetEntry[] = [];
-      for (const rule of parseTWTokens(tokens)) {
-        if (rule.n == 'group') {
-          styles.push({
-            className: 'group',
-            declarations: [],
-            group: 'base',
-            rule,
-          });
-          continue;
+      for (const rule of translateRuleSet(parseTWTokens(tokens), context)) {
+        if (!insertedRules.has(rule.className)) {
+          insertedRules.add(rule.className);
+          sheet.insert(rule);
         }
-        const className = toClassName(rule);
-
-        const ruleData = context.r(rule);
-        if (ruleData) {
-          if (!insertedRules.has(className)) {
-            insertedRules.add(className);
-            sheet.insert(ruleData);
-          }
-          styles.push(ruleData);
-        }
+        styles.push(rule);
       }
       cache.set(tokens, styles);
 

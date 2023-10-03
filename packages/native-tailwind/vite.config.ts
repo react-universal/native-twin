@@ -22,8 +22,6 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      shimMissingExports: true,
-      strictDeprecations: true,
       treeshake: true,
       external: [
         'react-native',
@@ -31,10 +29,8 @@ export default defineConfig({
         'react/jsx-runtime',
         'react-native-web',
         '@universal-labs/css',
+        '@universal-labs/arc-parser',
       ],
-      output: {
-        compact: true,
-      },
     },
 
     emptyOutDir: false,

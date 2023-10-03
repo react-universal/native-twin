@@ -1,4 +1,4 @@
-import { parseTWTokens } from '@universal-labs/css';
+import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { CSSValue } from '../types/css.types';
 import { format, interpolate } from '../utils/string-utils';
 

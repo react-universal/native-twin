@@ -44,10 +44,10 @@ export type ThemeConfig<Theme extends object = object> = PartialTheme<Theme> & {
 };
 
 export type ScreenValue =
-  | number
-  | { raw: number }
-  | { min: number; max?: number }
-  | { min?: number; max: number };
+  | string
+  | { raw: string }
+  | { min: string; max?: string }
+  | { min?: string; max: string };
 
 export interface ThemeAnimation {
   keyframes?: Record<string, string>;

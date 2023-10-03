@@ -1,8 +1,8 @@
 import type { AnyStyle, CompleteStyle } from '@universal-labs/css';
-import type { ParsedRule } from '@universal-labs/css';
-import { resolve } from '../runtime/registry';
+import { resolveRule } from '../runtime/registry';
 import type { RuleResult, ThemeContext } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
+import type { ParsedRule } from '../types/tailwind.types';
 import type { __Theme__ } from '../types/theme.types';
 import { entryAtRuleWrapper, escape, sheetEntryDeclarationsToCss } from '../utils/css-utils';
 import { toClassName } from '../utils/string-utils';
@@ -50,11 +50,33 @@ export function sheetEntriesToCss(
     .join('\n');
 }
 
+export function translateRuleSet(rules: ParsedRule[], context: ThemeContext) {
+  const result: SheetEntry[] = [];
+  for (const rule of rules) {
+    if (rule.n == 'group') {
+      result.push({
+        className: 'group',
+        declarations: [],
+        group: 'base',
+        rule,
+      });
+      continue;
+    }
+    for (const entry of translateParsedRule(rule, context)) {
+      result.push(entry);
+    }
+  }
+  return result;
+}
+
 export function translateParsedRule(rule: ParsedRule, context: ThemeContext): SheetEntry[] {
-  const result = resolve(rule, context);
+  const result = resolveRule(rule, context);
   if (!result) {
     // propagate className as is
     return [{ className: toClassName(rule), declarations: [], group: 'base', rule }];
   }
-  return [];
+  if (Array.isArray(result)) {
+    return result;
+  }
+  return [result];
 }

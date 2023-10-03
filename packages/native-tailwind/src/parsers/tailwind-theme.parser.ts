@@ -1,5 +1,5 @@
 import * as P from '@universal-labs/arc-parser';
-import {
+import type {
   ArbitrarySegmentToken,
   RuleHandlerToken,
   SegmentToken,

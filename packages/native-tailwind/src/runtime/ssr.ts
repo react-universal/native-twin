@@ -1,5 +1,5 @@
-import { parseTWTokens } from '@universal-labs/css';
 import { sheetEntriesToCss } from '../css/translate';
+import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { SheetEntry } from '../types/css.types';
 import type { RuntimeTW } from '../types/theme.types';
 import type { StringLike } from '../types/util.types';

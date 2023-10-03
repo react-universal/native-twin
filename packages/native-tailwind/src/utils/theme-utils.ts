@@ -1,4 +1,10 @@
-import type { Colors } from '../types/theme.types';
+import { type ConvertedRule, atRulePrecedence, pseudoPrecedence } from '@universal-labs/css';
+import type { ThemeContext } from '../types/config.types';
+import type { ParsedRule } from '../types/tailwind.types';
+import type { Colors, __Theme__ } from '../types/theme.types';
+import { mql } from './css-utils';
+import { asArray } from './helpers';
+import { toClassName } from './string-utils';
 
 // 0: '0px',
 // 2: '2px',
@@ -117,4 +123,35 @@ export function flattenThemeSection(obj: any, path: string[] = []) {
     }
   }
   return flatten;
+}
+
+export function convert<Theme extends __Theme__ = __Theme__>(
+  { n: name, i: important, v: variants = [], m: modifier }: ParsedRule,
+  context: ThemeContext<Theme>,
+  precedence: number,
+  conditions?: string[],
+): ConvertedRule {
+  if (name) {
+    name = toClassName({ n: name, i: important, v: variants, m: modifier });
+  }
+
+  conditions = [...asArray(conditions)];
+
+  for (const variant of variants) {
+    const screen = context.theme('screens', variant);
+
+    for (const condition of asArray((screen && mql(screen)) || context.v(variant))) {
+      conditions.push(condition);
+
+      precedence |= screen
+        ? (1 << 26) /* Shifts.screens */ | atRulePrecedence(condition)
+        : variant == 'dark'
+        ? 1 << 30 /* Shifts.darkMode */
+        : condition[0] == '@'
+        ? atRulePrecedence(condition)
+        : pseudoPrecedence(condition);
+    }
+  }
+
+  return { n: name, p: precedence, r: conditions, i: important };
 }

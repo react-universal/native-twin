@@ -27,6 +27,10 @@ export * from './utils/theme-utils';
 export * from './utils/color-utils';
 export * from './utils/css-utils';
 
+// PARSERS
+export { parseTWTokens } from './parsers/tailwind-classes.parser';
+export { parseCssValue } from './parsers/values.parser';
+
 /** TYPES */
 export type * from './types/config.types';
 export type * from './types/css.types';

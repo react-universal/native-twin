@@ -1,11 +1,7 @@
 import type { PlatformOSType } from 'react-native';
-import type {
-  CssFeature,
-  CompleteStyle,
-  ParsedRule,
-  RuleHandlerToken,
-} from '@universal-labs/css';
+import type { CompleteStyle } from '@universal-labs/css';
 import type { SheetEntry } from './css.types';
+import type { CssFeature, ParsedRule, RuleHandlerToken } from './tailwind.types';
 import type { ThemeConfig, __Theme__ } from './theme.types';
 import type { Falsey, MaybeArray } from './util.types';
 
@@ -13,6 +9,7 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   theme: ThemeConfig<Theme>;
 
   rules: Rule<Theme>[];
+  variants?: Variant<Theme & __Theme__>[];
 
   ignorelist: string[];
   root?: {
@@ -27,6 +24,7 @@ export interface TailwindUserConfig<
 > {
   theme?: ThemeConfig<Theme & UserTheme>;
   rules?: Rule<__Theme__>[];
+  variants?: Variant<Theme & __Theme__>[];
   ignorelist?: string[];
   root?: {
     rem: number;
@@ -60,6 +58,18 @@ export interface RuleMeta {
   support?: PlatformOSType[];
 }
 
+export type VariantResult = MaybeArray<string> | Falsey;
+
+export type VariantResolver<Theme extends __Theme__ = __Theme__> = (
+  match: RuleHandlerToken,
+  context: ThemeContext<Theme>,
+) => VariantResult;
+
+export type Variant<Theme extends __Theme__ = __Theme__> = [
+  condition: MaybeArray<string>,
+  resolve: string | VariantResolver<Theme>,
+];
+
 export interface ThemeContext<Theme extends __Theme__ = {}> {
   theme: ThemeFunction<Theme>;
   /** Allows to resolve theme values */
@@ -70,7 +80,7 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
    *
    */
   r: (value: ParsedRule) => RuleResult;
-  v: (variants: string[]) => boolean;
+  v: (value: string) => MaybeArray<string>;
 
   // isSupported: (support: PlatformSupport[]) => boolean;
   // mode: PlatformSupport[number];
@@ -96,6 +106,8 @@ export interface TailwindPresetConfig<Theme = __Theme__> {
   preflight?: false;
   // variants?: Variant<Theme & BaseTheme>[];
   rules?: Rule<Theme & __Theme__>[];
+
+  variants?: Variant<Theme & __Theme__>[];
 
   // hash?: boolean | undefined | HashFunction;
   // stringify?: StringifyDeclaration<Theme & BaseTheme>;

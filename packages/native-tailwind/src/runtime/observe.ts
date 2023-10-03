@@ -1,4 +1,4 @@
-import { parseTWTokens } from '@universal-labs/css';
+import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
 import { changed } from '../utils/css-utils';
 import { toClassName } from '../utils/string-utils';

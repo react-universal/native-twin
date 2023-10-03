@@ -1,5 +1,5 @@
-import { parseTWTokens } from '@universal-labs/css';
 import { describe, expect, it } from 'vitest';
+import { parseTWTokens } from '../src';
 import { toClassName } from '../src/utils/string-utils';
 
 describe('@universal-labs/native-twin - Raw rules parser', () => {
