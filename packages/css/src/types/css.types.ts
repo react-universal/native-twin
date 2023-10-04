@@ -55,3 +55,22 @@ export interface SheetInteractionState {
   isPointerActive: boolean;
   isParentActive: boolean;
 }
+
+export interface SheetRule {
+  className: string;
+  declarations: {
+    property: string;
+    value: string;
+  };
+  isMedia: boolean;
+  pseudos: string[];
+}
+
+export interface GlobalSheet {
+  readonly target: Map<string, SheetRule>;
+  readonly insertedClasses: Set<string>;
+  insert(rule: SheetRule): void;
+  snapshot(): () => void;
+  clear(): void;
+  stringify(): string;
+}

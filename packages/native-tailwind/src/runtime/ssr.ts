@@ -1,10 +1,10 @@
-import { compareClassNames } from '@universal-labs/css';
+import { compareClassNames, fixHTMLTagClassNamesList } from '@universal-labs/css';
 import { sheetEntriesToCss } from '../css/translate';
 import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { SheetEntry } from '../types/css.types';
 import type { RuntimeTW } from '../types/theme.types';
 import type { StringLike } from '../types/util.types';
-import { fixClassList, parseHTML } from '../utils/parse-html';
+import { parseHTML } from '../utils/parse-html';
 import { toClassName } from '../utils/string-utils';
 import { tw as tw$ } from './tw';
 
@@ -19,7 +19,7 @@ export function extract(html: string, tw: RuntimeTW<any> = tw$): ExtractResult {
   const restore = tw.snapshot();
   const result = {
     html: consume(html, tw),
-    css: sheetEntriesToCss(tw.target as any, tw.config.theme['screens']),
+    css: sheetEntriesToCss(tw.target as any),
   };
 
   restore();
@@ -36,7 +36,7 @@ export function consume(
 
   parseHTML(markup, (startIndex, endIndex, quote) => {
     const value = markup.slice(startIndex, endIndex);
-    const classList = parseTWTokens(fixClassList(value, quote))
+    const classList = parseTWTokens(fixHTMLTagClassNamesList(value, quote))
       .map((x) => toClassName(x))
       .join(' ');
     tw(classList);

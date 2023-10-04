@@ -1,17 +1,9 @@
 import { toHyphenCase, type SelectorGroup } from '@universal-labs/css';
-import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
-import type { ClassNameToken, ParsedRule } from '../types/tailwind.types';
-import type { ScreenValue, __Theme__ } from '../types/theme.types';
+import type { SheetEntryDeclaration } from '../types/css.types';
+import type { ParsedRule } from '../types/tailwind.types';
+import type { ScreenValue } from '../types/theme.types';
 import type { MaybeArray } from '../types/util.types';
 import { asArray } from './helpers';
-
-export function parseClassNameTokens(...tokens: ClassNameToken[]): string {
-  return tokens.reduce((prev, current, currentIndex) => {
-    prev += current.value.n;
-    if (currentIndex == tokens.length - 1) return prev;
-    return prev;
-  }, ``);
-}
 
 export function getRuleSelectorGroup(rule: ParsedRule): SelectorGroup {
   if (rule.v.length == 0) return 'base';
@@ -51,31 +43,12 @@ export function parseRuleBodyEntries(entries: [string, string][]): string {
   return entries.flatMap((x) => `${toHyphenCase(x[0])}:${x[1]};`).join('');
 }
 
-export function entryAtRuleWrapper(
-  entry: SheetEntry,
-  cssText: string,
-  screens: __Theme__['screens'] = {},
-) {
-  let result = '';
-  if (entry.rule.v.length == 0) {
-    return cssText;
-  }
-  for (const v of entry.rule.v) {
-    if (v in screens) {
-      result += getMediaRule(screens[v], cssText);
-    }
-  }
-  if (result == '') {
-    return cssText;
-  }
+export function entryAtRuleWrapper(mql: string[], cssText: string) {
+  const result = asArray(mql).reduce((prev, current) => {
+    prev = `${current}{${prev}}`;
+    return prev;
+  }, cssText);
   return result;
-}
-
-function getMediaRule(screen: ScreenValue | undefined, text: string) {
-  if (typeof screen == 'string') {
-    return `@media (min-width: ${screen}){${text}}`;
-  }
-  return text;
 }
 
 /**
@@ -85,6 +58,7 @@ function getMediaRule(screen: ScreenValue | undefined, text: string) {
  * @returns
  */
 export function mql(screen: MaybeArray<ScreenValue>, prefix = '@media '): string {
+  // if (!screen) return '';
   return (
     prefix +
     asArray(screen)

@@ -1,4 +1,3 @@
-import { tw } from '../../runtime/tw';
 import type { Sheet } from '../../types/css.types';
 import { noop } from '../../utils/helpers';
 import { sheetEntriesToCss } from '../translate';
@@ -33,10 +32,15 @@ export function createDomSheet(
       target.remove();
     },
 
-    insert(entry) {
-      const node = sheetEntriesToCss([entry], tw?.config?.theme['screens'] ?? {});
+    insert(entry, index) {
+      const node = typeof entry == 'string' ? entry : sheetEntriesToCss([entry]);
+      for (const n of target.childNodes) {
+        if (n.textContent?.includes(node)) {
+          return;
+        }
+      }
       // console.log('DOM_ENTRY: ', entry);
-      target.insertBefore(document.createTextNode(node), null);
+      target.insertBefore(document.createTextNode(node), target.childNodes[index] || null);
     },
 
     resume: noop,

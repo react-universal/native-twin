@@ -36,7 +36,7 @@ function installDocument<Component extends typeof Document = typeof Document>(
           Fragment,
           null,
           createElement('style', {
-            'data-native-tailwind': '',
+            'data-native-twin': '',
             nonce: options.nonce,
             dangerouslySetInnerHTML: {
               __html: css,

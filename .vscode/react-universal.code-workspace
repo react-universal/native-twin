@@ -5,12 +5,12 @@
       "path": ".."
     },    
     {
-      "name": "📦 @lib/tailwind",
-      "path": "../packages/native-tailwind"
-    },
-    {
       "name": "📦 @lib/css",
       "path": "../packages/css"
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-tailwind"
     },
     {
       "name": "📦 @lib/styled",

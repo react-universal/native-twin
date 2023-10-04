@@ -6,11 +6,13 @@
  */
 import { defineConfig } from './config/define-config';
 import { createVirtualSheet } from './css/sheets';
+import { sortedInsertionIndex } from './css/sorted-insertion-index';
 import { translateRuleSet } from './css/translate';
 import { parseTWTokens } from './parsers/tailwind-classes.parser';
 import { createThemeContext } from './theme/theme.context';
 import type { TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { Sheet, SheetEntry } from './types/css.types';
+import type { ParsedRule } from './types/tailwind.types';
 import type { RuntimeTW, __Theme__ } from './types/theme.types';
 import { interpolate } from './utils/string-utils';
 
@@ -22,6 +24,16 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
   const context = createThemeContext<__Theme__>(config);
   let cache = new Map<string, SheetEntry[]>();
   const insertedRules = new Set<string>();
+  // An array of precedence by index within the sheet
+  // always sorted
+  let sortedPrecedences: ParsedRule[] = [];
+
+  function insert(rule: SheetEntry) {
+    insertedRules.add(rule.className);
+    const index = sortedInsertionIndex(sortedPrecedences, rule.rule);
+    sheet.insert(rule, index);
+    sortedPrecedences.splice(index, 0, rule.rule);
+  }
 
   const runtime = Object.defineProperties(
     function tw(tokens) {
@@ -32,13 +44,11 @@ export function createTailwind<Theme = __Theme__, Target = unknown>(
       const styles: SheetEntry[] = [];
       for (const rule of translateRuleSet(parseTWTokens(tokens), context)) {
         if (!insertedRules.has(rule.className)) {
-          insertedRules.add(rule.className);
-          sheet.insert(rule);
+          insert(rule);
         }
         styles.push(rule);
       }
       cache.set(tokens, styles);
-
       return styles;
     } as RuntimeTW<__Theme__ & Theme>,
     Object.getOwnPropertyDescriptors({

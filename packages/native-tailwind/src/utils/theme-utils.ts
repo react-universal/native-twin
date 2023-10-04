@@ -1,4 +1,4 @@
-import { type ConvertedRule, atRulePrecedence, pseudoPrecedence } from '@universal-labs/css';
+import { atRulePrecedence, pseudoPrecedence } from '@universal-labs/css';
 import type { ThemeContext } from '../types/config.types';
 import type { ParsedRule } from '../types/tailwind.types';
 import type { Colors, __Theme__ } from '../types/theme.types';
@@ -130,9 +130,9 @@ export function convert<Theme extends __Theme__ = __Theme__>(
   context: ThemeContext<Theme>,
   precedence: number,
   conditions?: string[],
-): ConvertedRule {
+): ParsedRule {
   if (name) {
-    name = toClassName({ n: name, i: important, v: variants, m: modifier });
+    name = toClassName({ n: name, i: important, v: variants, m: modifier, p: 0 });
   }
 
   conditions = [...asArray(conditions)];
@@ -153,5 +153,5 @@ export function convert<Theme extends __Theme__ = __Theme__>(
     }
   }
 
-  return { n: name, p: precedence, r: conditions, i: important };
+  return { n: name, p: precedence, i: important, m: modifier, v: conditions };
 }

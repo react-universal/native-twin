@@ -118,6 +118,7 @@ export function translateRuleTokens(
       v: [],
       i: current.value.i,
       m: current.value.m,
+      p: 0,
     });
     return translateRuleTokens(tokens, result);
   }
@@ -127,6 +128,7 @@ export function translateRuleTokens(
       v: current.value[0].value.map((x) => x.n),
       i: current.value[1].value.i || current.value[0].value.some((x) => x.i),
       m: current.value[1].value.m,
+      p: 0,
     });
     return translateRuleTokens(tokens, result);
   }
@@ -165,6 +167,7 @@ export function mergeRuleGroupTokens(
       v: [],
       i: false,
       m: null,
+      p: 0,
     });
   }
   if (nextToken.type == 'CLASS_NAME') {
@@ -173,6 +176,7 @@ export function mergeRuleGroupTokens(
       v: [],
       i: nextToken.value.i,
       m: nextToken.value.m,
+      p: 0,
     });
   }
   if (nextToken.type == 'VARIANT_CLASS') {
@@ -181,6 +185,7 @@ export function mergeRuleGroupTokens(
       v: nextToken.value[0].value.map((y) => y.n),
       i: nextToken.value[1].value.i || nextToken.value[0].value.some((y) => y.i),
       m: nextToken.value[1].value.m,
+      p: 0,
     });
   }
   if (nextToken.type == 'GROUP') {

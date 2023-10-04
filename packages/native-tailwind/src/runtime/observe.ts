@@ -73,9 +73,7 @@ export function mutationObserver<Theme extends __Theme__ = __Theme__>(
     const classList = parseTWTokens(tokens ?? '')
       .map((x) => toClassName(x))
       .join(' ');
-    tw(classList)
-      .map((x) => toClassName(x.rule))
-      .join(' ');
+    tw(classList);
     if (tokens && compareClassNames(tokens, (className = classList))) {
       // Not using `target.className = ...` as that is read-only for SVGElements
       target.setAttribute('class', className);

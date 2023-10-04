@@ -11,18 +11,21 @@ describe('@universal-labs/native-twin - Raw rules parser', () => {
         v: [],
         i: false,
         m: null,
+        p: 0,
       },
       {
         n: 'bg-white',
         v: ['xl'],
         i: false,
         m: null,
+        p: 0,
       },
       {
         n: 'text-2xl',
         v: ['hover'],
         i: false,
         m: null,
+        p: 0,
       },
     ]);
   });
@@ -34,6 +37,7 @@ describe('@universal-labs/native-twin - Raw rules parser', () => {
         v: ['hover', 'focus'],
         i: false,
         m: null,
+        p: 0,
       },
     ]);
   });
@@ -42,9 +46,9 @@ describe('@universal-labs/native-twin - Raw rules parser', () => {
     const classNames = result.map((x) => toClassName(x));
     expect(classNames).toStrictEqual(['md:!bg-black', 'sm:md:!bg-blue-200', 'sm:md:!h-24']);
     expect(result).toStrictEqual([
-      { n: 'bg-black', v: ['md'], i: true, m: null },
-      { n: 'bg-blue-200', v: ['sm', 'md'], i: true, m: null },
-      { n: 'h-24', v: ['sm', 'md'], i: true, m: null },
+      { n: 'bg-black', v: ['md'], i: true, m: null, p: 0 },
+      { n: 'bg-blue-200', v: ['sm', 'md'], i: true, m: null, p: 0 },
+      { n: 'h-24', v: ['sm', 'md'], i: true, m: null, p: 0 },
     ]);
   });
 });

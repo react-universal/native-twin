@@ -35,6 +35,9 @@ export interface GroupToken {
 }
 
 export interface ParsedRule {
+  /** The calculated precedence taking all variants into account. */
+  readonly p: number;
+
   /**
    * The utility name including `-` if set, but without `!` and variants
    */

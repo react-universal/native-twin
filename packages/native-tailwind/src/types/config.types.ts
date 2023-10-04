@@ -36,11 +36,11 @@ export type RuleResult = SheetEntry | Falsey;
 
 export type PlatformSupport = 'native' | 'web';
 
-export type RuleResolver<Theme extends __Theme__ = {}> = (
-  match: RuleHandlerToken,
-  context: ThemeContext<Theme>,
-  parsed: ParsedRule,
-) => RuleResult | Falsey;
+export interface RuleResolver<Theme extends __Theme__ = {}> {
+  (match: RuleHandlerToken, context: ThemeContext<Theme>, parsed: ParsedRule):
+    | RuleResult
+    | Falsey;
+}
 
 export type Rule<Theme extends __Theme__ = __Theme__> = [
   pattern: string,
@@ -60,10 +60,9 @@ export interface RuleMeta {
 
 export type VariantResult = MaybeArray<string> | Falsey;
 
-export type VariantResolver<Theme extends __Theme__ = __Theme__> = (
-  match: RuleHandlerToken,
-  context: ThemeContext<Theme>,
-) => VariantResult;
+export interface VariantResolver<Theme extends __Theme__ = __Theme__> {
+  (match: RuleHandlerToken, context: ThemeContext<Theme>): VariantResult;
+}
 
 export type Variant<Theme extends __Theme__ = __Theme__> = [
   condition: MaybeArray<string>,
@@ -87,6 +86,9 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
 }
 
 export interface ThemeFunction<Theme extends __Theme__ = {}> {
+  <Section extends keyof ThemeConfig<Theme>>(section: Section):
+    | ThemeConfig<Theme>[Section]
+    | undefined;
   (section: keyof ThemeConfig<Theme> | (string & {}), segment: string): string | undefined;
 }
 

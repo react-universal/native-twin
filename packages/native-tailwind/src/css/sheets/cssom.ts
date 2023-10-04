@@ -1,7 +1,7 @@
 import type { Sheet } from '../../types/css.types';
-import { sheetEntryDeclarationsToCss } from '../../utils/css-utils';
 import { noop } from '../../utils/helpers';
 import { warn } from '../../utils/warn';
+import { sheetEntriesToCss } from '../translate';
 import { getStyleElement } from './utils';
 
 export function createCssomSheet(
@@ -41,16 +41,15 @@ export function createCssomSheet(
       target.ownerNode?.remove();
     },
 
-    insert(entry) {
+    insert(entry, index) {
       const className = entry.className;
-      // console.log('CSSOM_ENTRY: ', entry);
-      const cssText = sheetEntryDeclarationsToCss(entry.declarations);
+      const cssText = typeof entry == 'string' ? entry : sheetEntriesToCss([entry]);
       try {
         // Insert
-        target.insertRule(cssText);
+        target.insertRule(cssText, index);
       } catch (error) {
         // Empty rule to keep index valid — not using `*{}` as that would show up in all rules (DX)
-        target.insertRule(':root{}');
+        target.insertRule(':root{}', index);
 
         // Some thrown errors are because of specific pseudo classes
         // lets filter them to prevent unnecessary warnings

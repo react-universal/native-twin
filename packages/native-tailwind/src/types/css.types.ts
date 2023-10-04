@@ -26,11 +26,12 @@ export interface SheetEntry {
   group: SelectorGroup;
   rule: ParsedRule;
   declarations: SheetEntryDeclaration[];
+  mql: string[];
 }
 
 export interface Sheet<Target = unknown> {
   readonly target: Target;
-  insert(entry: SheetEntry): void;
+  insert(entry: SheetEntry, index: number): void;
   snapshot(): () => void;
   /** Clears all CSS rules from the sheet. */
   clear(): void;

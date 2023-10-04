@@ -69,10 +69,11 @@ export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
     active?.destroy();
   }
   // active = tw$ as RuntimeTW;
-  active = observe(
-    createTailwind(config as TailwindUserConfig, typeof sheet == 'function' ? sheet() : sheet),
-    target,
+  const instance = createTailwind(
+    config as TailwindUserConfig,
+    typeof sheet == 'function' ? sheet() : sheet,
   );
+  active = observe(instance, target);
 
   return active as unknown as RuntimeTW<Theme>;
 }
