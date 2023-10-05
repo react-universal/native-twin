@@ -22,6 +22,7 @@ export const outlineRules: Rule<__Theme__>[] = [
       ],
       group: getRuleSelectorGroup(rule),
       rule,
+      mql: [],
     };
   }),
 ];
@@ -32,5 +33,6 @@ export const appearanceRules: Rule[] = [
     declarations: [['appearance', 'none']],
     group: getRuleSelectorGroup(rule),
     rule,
+    mql: [],
   })),
 ];

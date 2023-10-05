@@ -24,3 +24,9 @@ export function isString(s: any): s is string {
 export function isObject(item: any): item is Record<string, any> {
   return item && typeof item === 'object' && !Array.isArray(item);
 }
+
+export function asRegExp(value: string | RegExp): RegExp {
+  return typeof value == 'string'
+    ? new RegExp('^' + value + (value.includes('$') || value.slice(-1) == '-' ? '' : '$'))
+    : value;
+}

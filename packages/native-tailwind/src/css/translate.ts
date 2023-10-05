@@ -22,7 +22,7 @@ export function sheetEntriesToCss(entries: SheetEntry[]): string {
         .join('');
       const valueEntries = sheetEntryDeclarationsToCss(x.declarations);
       return entryAtRuleWrapper(
-        x.mql,
+        x.conditions,
         `.${escapeSelector(className)}${variants}{${valueEntries}}`,
       );
     })
@@ -42,7 +42,7 @@ export function translateRuleSet(
         declarations: [],
         group: 'base',
         rule,
-        mql: [],
+        conditions: [],
       });
       continue;
     }
@@ -71,23 +71,32 @@ export function translateParsedRule(rule: ParsedRule, context: ThemeContext): Sh
   const result = resolveRule(rule, context);
   if (!result) {
     // propagate className as is
-    return [{ className: toClassName(rule), declarations: [], group: 'base', rule, mql: [] }];
+    return [
+      { className: toClassName(rule), declarations: [], group: 'base', rule, conditions: [] },
+    ];
   }
   const entries: SheetEntry[] = [];
   const medias: string[] = [];
+  const variants: string[] = [];
   for (const entry of asArray(result)) {
     if (entry.rule.v.length == 0) {
-      entries.push({ ...entry, mql: [] });
+      entries.push({ ...entry, conditions: [] });
       continue;
     }
     for (const v of entry.rule.v) {
       const screen = context.theme('screens', v);
-      if (!screen) continue;
-      const media = mql(screen);
-      if (media == '') continue;
-      medias.push(media);
+      if (screen) {
+        const media = mql(screen);
+        if (media == '') continue;
+        medias.push(media);
+        continue;
+      }
+      const variant = context.v(v);
+      if (variant) {
+        variants.push(...asArray(variant));
+      }
     }
-    entry.mql = medias;
+    entry.conditions = medias;
     entries.push(entry);
   }
   return entries;

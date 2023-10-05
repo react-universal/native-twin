@@ -26,7 +26,8 @@ export interface SheetEntry {
   group: SelectorGroup;
   rule: ParsedRule;
   declarations: SheetEntryDeclaration[];
-  mql: string[];
+  /** The rule sets (selectors and at-rules). expanded variants `@media ...`, `@supports ...`, `&:focus`, `.dark &` */
+  conditions: string[];
 }
 
 export interface Sheet<Target = unknown> {

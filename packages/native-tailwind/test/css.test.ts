@@ -36,7 +36,7 @@ setup(
 
 describe('@universal-labs/native-twin - Raw rules parser', () => {
   it('Sheet entries to CSS', () => {
-    const entries = tx`bg-primary px-1 asd md:sm:px-2`;
+    const entries = tx`bg-primary px-1 first-letter:px-2 asd md:sm:px-2`;
     const css = sheetEntriesToCss(entries);
     // console.log('CSS: ', css);
     // console.log('ENTRIES: ', entries);

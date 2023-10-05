@@ -16,6 +16,9 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
     rem: number;
   };
 }
+export interface ReMatchResult extends RegExpExecArray {
+  $$: string;
+}
 
 export interface TailwindUserConfig<
   Theme = __Theme__,
@@ -61,11 +64,11 @@ export interface RuleMeta {
 export type VariantResult = MaybeArray<string> | Falsey;
 
 export interface VariantResolver<Theme extends __Theme__ = __Theme__> {
-  (match: RuleHandlerToken, context: ThemeContext<Theme>): VariantResult;
+  (match: ReMatchResult, context: ThemeContext<Theme>): VariantResult;
 }
 
 export type Variant<Theme extends __Theme__ = __Theme__> = [
-  condition: MaybeArray<string>,
+  condition: string | RegExp,
   resolve: string | VariantResolver<Theme>,
 ];
 
@@ -79,7 +82,7 @@ export interface ThemeContext<Theme extends __Theme__ = {}> {
    *
    */
   r: (value: ParsedRule) => RuleResult;
-  v: (value: string) => MaybeArray<string>;
+  v: (value: string) => VariantResult;
 
   // isSupported: (support: PlatformSupport[]) => boolean;
   // mode: PlatformSupport[number];
