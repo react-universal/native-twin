@@ -9,7 +9,7 @@ export const flexRules: Rule[] = [
     declarations: [['display', 'flex']],
     group: getRuleSelectorGroup(rule),
     rule,
-    mql: [],
+    conditions: [],
   })),
   matchThemeValue('flex-', 'flex', 'flex'),
   matchThemeValue('flex-', 'flexDirection', 'flexDirection'),

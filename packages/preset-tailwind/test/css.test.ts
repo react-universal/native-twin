@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { defineConfig, setup, tw, tx, sheetEntriesToCss } from '@universal-labs/native-twin';
+import { defineConfig, setup, tx, sheetEntriesToCss } from '@universal-labs/native-twin';
 import { inspect } from 'util';
 import { describe, expect, it } from 'vitest';
 import { presetTailwind } from '../src';
@@ -17,7 +17,7 @@ describe('@universal-labs/native-twin - Raw rules parser', () => {
   });
   it('Sheet entries to CSS', () => {
     const entries = tx`bg-blue-200 text-center md:text-left`;
-    const css = sheetEntriesToCss(entries, tw.config.theme['screens']);
+    const css = sheetEntriesToCss(entries);
     console.log('CSS', inspect(css));
     console.log('ENTRIES: ', inspect(entries, false, null, true));
     expect(css).toStrictEqual(

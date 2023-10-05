@@ -4,7 +4,7 @@ import type {
   TailwindUserConfig,
   TailwindPresetConfig,
 } from '../types/config.types';
-import type { __Theme__ } from '../types/theme.types';
+import type { ExtractThemes, __Theme__ } from '../types/theme.types';
 import { asArray } from '../utils/helpers';
 import { defaultVariants } from './defaults/variants';
 
@@ -14,11 +14,16 @@ export function defineConfig<
 >({
   presets = [] as unknown as Presets,
   ...userConfig
-}: TailwindUserConfig<Theme, Presets>): TailwindConfig<__Theme__> {
-  let config: TailwindConfig<__Theme__> = {
+}: TailwindUserConfig<Theme, Presets>): TailwindConfig<
+  __Theme__ & ExtractThemes<Theme, Presets>
+> {
+  let config: TailwindConfig<__Theme__ & ExtractThemes<Theme, Presets>> = {
+    darkMode: undefined,
+    mode: userConfig.mode ?? 'native',
+    preflight: userConfig.preflight !== false && [],
     ignorelist: asArray(userConfig.ignorelist),
     rules: asArray(userConfig.rules),
-    variants: asArray((userConfig.variants ?? []).concat(defaultVariants)),
+    variants: asArray(userConfig.variants).concat(defaultVariants),
     root: {
       rem: userConfig.root?.rem ?? 16,
       ...userConfig.root,
@@ -28,17 +33,19 @@ export function defineConfig<
   for (const preset of asArray([
     ...presets,
     {
+      darkMode: userConfig.darkMode,
+      preflight: userConfig.preflight !== false && asArray(userConfig.preflight),
       theme: userConfig.theme as TailwindConfig<__Theme__>['theme'],
       root: userConfig.root,
-      variants: userConfig.variants,
     },
   ])) {
-    const { ignorelist, preflight, rules, theme, variants } =
+    const { ignorelist, preflight, rules, theme, variants, darkMode } =
       typeof preset == 'function' ? preset(config) : (preset as TailwindPresetConfig<Theme>);
     config = {
-      preflight,
+      preflight: config.preflight !== false &&
+        preflight !== false && [...asArray(config.preflight), ...asArray(preflight)],
       root: config.root,
-      variants: config.variants?.concat(variants ?? []),
+      darkMode,
       theme: {
         ...config.theme,
         ...theme,
@@ -48,10 +55,10 @@ export function defineConfig<
         },
       },
 
-      // variants: [...config.variants, ...asArray(variants)],
+      variants: [...config.variants, ...asArray(variants)],
       rules: [...config.rules, ...asArray(rules)],
       ignorelist: [...config.ignorelist, ...asArray(ignorelist)],
-    } as TailwindConfig<__Theme__>;
+    } as TailwindConfig<__Theme__ & ExtractThemes<Theme, Presets>>;
   }
   return config;
 }

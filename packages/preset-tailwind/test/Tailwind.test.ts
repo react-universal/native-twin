@@ -3,7 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { presetTailwind } from '../src';
 
 const tailwind = createTailwind(
-  { ignorelist: [], presets: [presetTailwind()] },
+  {
+    ignorelist: [],
+    presets: [presetTailwind()],
+  },
   createVirtualSheet(),
 );
 

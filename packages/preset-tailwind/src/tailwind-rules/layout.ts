@@ -8,7 +8,7 @@ export const layoutThemeRules: Rule[] = [
     declarations: [['display', 'none']],
     group: getRuleSelectorGroup(rule),
     rule,
-    mql: [],
+    conditions: [],
   })),
   matchThemeValue('overflow-', 'overflow', 'overflow'),
   matchThemeValue('object-', 'objectFit', 'objectFit'),

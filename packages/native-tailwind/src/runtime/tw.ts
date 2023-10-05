@@ -1,10 +1,10 @@
 import { getSheet } from '../css/sheets';
-import { createTailwind } from '../tailwind';
-import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
+import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { Sheet } from '../types/css.types';
-import type { RuntimeTW, __Theme__ } from '../types/theme.types';
+import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
 import { noop } from '../utils/helpers';
 import { observe } from './observe';
+import { createTailwind } from './tailwind';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
 
@@ -59,6 +59,22 @@ export let tw: RuntimeTW<any> = /* #__PURE__ */ new Proxy(
 );
 
 export type SheetFactory<Target> = () => Sheet<Target>;
+
+export function setup<Theme extends __Theme__ = __Theme__, SheetTarget = unknown>(
+  config?: TailwindConfig<Theme>,
+  sheet?: Sheet<SheetTarget> | SheetFactory<SheetTarget>,
+  target?: HTMLElement,
+): RuntimeTW<Theme, SheetTarget>;
+
+export function setup<
+  Theme = __Theme__,
+  Presets extends Preset<any>[] = Preset[],
+  SheetTarget = unknown,
+>(
+  config?: TailwindUserConfig<Theme, Presets>,
+  sheet?: Sheet<SheetTarget> | SheetFactory<SheetTarget>,
+  target?: HTMLElement,
+): RuntimeTW<__Theme__ & ExtractThemes<Theme, Presets>, SheetTarget>;
 
 export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
   config: TailwindConfig<any> | TailwindUserConfig<any> = {},

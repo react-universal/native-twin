@@ -71,7 +71,7 @@ export const ParseFlexValue = (context: {
       }),
     ),
     P.literal('none').map((x) => ({
-      flex: x as unknown as number,
+      flex: x,
     })),
   ]);
 

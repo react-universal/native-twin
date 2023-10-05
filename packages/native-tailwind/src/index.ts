@@ -1,5 +1,5 @@
 /** RUNTIME */
-export * from './tailwind';
+export * from './runtime/tailwind';
 export * from './runtime/cx';
 export * from './runtime/install';
 export * from './runtime/ssr';
