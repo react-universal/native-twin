@@ -213,9 +213,27 @@ export function mergeRuleGroupTokens(
 export function parseTWTokens(rules: string) {
   const data = tailwindClassNamesParser.run(rules);
   if (data.isError) {
-    // eslint-disable-next-line no-console
-    console.warn('Failed parsing rules: ', rules);
+    console.warn('Failed parsing rules: ', rules, data);
     return [];
   }
   return translateRuleTokens(data.result);
 }
+
+/** 
+ * POSSIBLE ERROR CHAIN 
+ * .errorChain((x) => {
+      return new P.Parser((s) => {
+        const newTarget = s.target.slice(0, x.cursor - 1);
+        const newState = tailwindClassNamesParser.transform({
+          ...s,
+          result: null,
+          isError: false,
+          error: null,
+          cursor: 0,
+          target: newTarget,
+        });
+        console.log('NEW_STATE: ', newState);
+        return { ...newState };
+      });
+    })
+ * */

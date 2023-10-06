@@ -104,9 +104,7 @@ export function createTailwind(
   return runtime;
 }
 
-// const test = createTailwind({});
-// test('min-w-full'); //?
-// const t = createTailwind(
+// const test = createTailwind(
 //   {
 //     mode: 'native',
 //     theme: {
@@ -117,4 +115,4 @@ export function createTailwind(
 //   },
 //   createVirtualSheet(),
 // );
-// t.theme('as');
+// test('text(ss)'); //?
