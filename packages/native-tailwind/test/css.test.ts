@@ -42,8 +42,9 @@ describe('@universal-labs/native-twin - Raw rules parser', () => {
     // console.log('ENTRIES: ', entries);
     expect(css).toStrictEqual(
       '@media (min-width:740px){@media (min-width:640px){.md\\:sm\\:px-2{padding-left:2rem;padding-right:2rem;}}}\n' +
+        '.first-letter\\:px-2::first-letter{padding-left:2rem;padding-right:2rem;}\n' +
+        '.\\!px-1{padding-left:1rem !important;padding-right:1rem !important;}\n' +
         '.asd{}\n' +
-        '.px-1{padding-left:1rem;padding-right:1rem;}\n' +
         '.bg-primary{background-color:blue;}',
     );
   });

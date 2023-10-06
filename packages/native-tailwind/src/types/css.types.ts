@@ -1,6 +1,5 @@
 import type { StyleProp } from 'react-native';
 import type { AnyStyle, SelectorGroup } from '@universal-labs/css';
-import type { ParsedRule } from './tailwind.types';
 import type { Falsey, StringLike } from './util.types';
 
 export type CSSValue =
@@ -24,10 +23,15 @@ export type SheetEntryDeclaration =
 export interface SheetEntry {
   className: string;
   group: SelectorGroup;
-  rule: ParsedRule;
   declarations: SheetEntryDeclaration[];
   /** The rule sets (selectors and at-rules). expanded variants `@media ...`, `@supports ...`, `&:focus`, `.dark &` */
   conditions: string[];
+  precedence: number;
+  important: boolean;
+}
+
+export interface SheetEntryCss extends Omit<SheetEntry, 'declarations'> {
+  declarations: string;
 }
 
 export interface Sheet<Target = unknown> {

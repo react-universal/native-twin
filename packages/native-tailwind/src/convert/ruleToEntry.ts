@@ -21,25 +21,24 @@ export function translateRuleSet(
         className: 'group',
         declarations: [],
         group: 'base',
-        rule,
         conditions: [],
+        precedence: Layer.u,
+        important: rule.i,
       });
       continue;
     }
     for (const entry of translateParsedRule(rule, context)) {
-      const newRule = convert(entry.rule, context, precedence);
+      const newRule = convert(rule, context, precedence);
       result.splice(
         sortedInsertionIndex(
-          result.map((x) => x.rule),
-          entry.rule,
+          result.map((x) => x),
+          entry,
         ),
         0,
         {
           ...entry,
-          rule: {
-            ...entry.rule,
-            p: moveToLayer(precedence, newRule.p ?? precedence),
-          },
+          precedence: moveToLayer(precedence, newRule.p ?? precedence),
+          conditions: newRule.v,
         },
       );
     }
@@ -52,18 +51,25 @@ export function translateParsedRule(rule: ParsedRule, context: ThemeContext): Sh
   if (!result) {
     // propagate className as is
     return [
-      { className: toClassName(rule), declarations: [], group: 'base', rule, conditions: [] },
+      {
+        className: toClassName(rule),
+        declarations: [],
+        group: 'base',
+        conditions: [],
+        precedence: Layer.u,
+        important: rule.i,
+      },
     ];
   }
   const entries: SheetEntry[] = [];
   const medias: string[] = [];
   const variants: string[] = [];
   for (const entry of asArray(result)) {
-    if (entry.rule.v.length == 0) {
+    if (entry.conditions.length == 0) {
       entries.push({ ...entry, conditions: [] });
       continue;
     }
-    for (const v of entry.rule.v) {
+    for (const v of rule.v) {
       const screen = context.theme('screens', v);
       if (screen) {
         const media = mql(screen);

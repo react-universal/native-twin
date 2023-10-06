@@ -1,23 +1,6 @@
-import type {
-  SheetInteractionState,
-  AnyStyle,
-  FinalSheet,
-  GetChildStylesArgs,
-} from '@universal-labs/css';
 import type { Preset, TailwindConfig, ThemeFunction } from './config.types';
 import type { Sheet, SheetEntry } from './css.types';
 import type { ArrayType, MaybeArray, StringLike, UnionToIntersection } from './util.types';
-
-export interface ComponentSheet {
-  getStyles: (input: SheetInteractionState) => AnyStyle;
-  getChildStyles: (data: GetChildStylesArgs) => AnyStyle;
-  metadata: {
-    isGroupParent: boolean;
-    hasPointerEvents: boolean;
-    hasGroupEvents: boolean;
-  };
-  sheet: FinalSheet;
-}
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];

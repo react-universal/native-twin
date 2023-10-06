@@ -60,6 +60,8 @@ export function matchThemeColor(
           rule,
           declarations,
           conditions: [],
+          precedence: 0,
+          important: rule.i,
         };
       }
     },
@@ -115,8 +117,9 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
         className: toClassName(parsedRule),
         declarations,
         group: getRuleSelectorGroup(parsedRule),
-        rule: parsedRule,
         conditions: [],
+        precedence: 0,
+        important: parsedRule.i,
       };
 
       function getProperties() {

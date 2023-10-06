@@ -1,5 +1,5 @@
 import { Layer } from '@universal-labs/css';
-import type { ParsedRule } from '../types/tailwind.types';
+import type { SheetEntry } from '../types/css.types';
 
 const collator = new Intl.Collator('en', { numeric: true });
 
@@ -9,8 +9,8 @@ const collator = new Intl.Collator('en', { numeric: true });
  * @returns The insertion index
  */
 export function sortedInsertionIndex(
-  array: readonly ParsedRule[],
-  element: ParsedRule,
+  array: readonly SheetEntry[],
+  element: SheetEntry,
 ): number {
   // Find position using binary search
   for (var low = 0, high = array.length; low < high; ) {
@@ -27,19 +27,19 @@ export function sortedInsertionIndex(
   return high;
 }
 
-export function compareTwRules(a: ParsedRule, b: ParsedRule): number {
+export function compareTwRules(a: SheetEntry, b: SheetEntry): number {
   // base and overrides (css) layers are kept in order they are declared
-  const layer = a.p & Layer.o;
+  const layer = a.precedence & Layer.o;
 
-  if (layer == (b.p & Layer.o) && (layer == Layer.b || layer == Layer.o)) {
+  if (layer == (b.precedence & Layer.o) && (layer == Layer.b || layer == Layer.o)) {
     return 0;
   }
 
   return (
-    a.p - b.p ||
+    a.precedence - b.precedence ||
     // a.o - b.o ||
-    collator.compare(byModifier(a.n), byModifier(b.n)) ||
-    collator.compare(byName(a.n), byName(b.n))
+    collator.compare(byModifier(a.className), byModifier(b.className)) ||
+    collator.compare(byName(a.className), byName(b.className))
   );
 }
 

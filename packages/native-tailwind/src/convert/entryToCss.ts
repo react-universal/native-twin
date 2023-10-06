@@ -1,26 +1,34 @@
-import { escapeSelector, simplePseudoLookup, toHyphenCase } from '@universal-labs/css';
+import { escapeSelector, toHyphenCase } from '@universal-labs/css';
 import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
 import { asArray } from '../utils/helpers';
-import { toClassName } from '../utils/string-utils';
 
 export function sheetEntriesToCss(entries: SheetEntry[]): string {
-  if (!entries) {
-    return '';
-  }
-  return entries
+  return asArray(entries)
+    .filter(Boolean)
     .map((x) => {
-      let className = toClassName(x.rule);
-      const variants = x.rule.v
-        .filter((v) => simplePseudoLookup[`:${v}`] || simplePseudoLookup[v])
-        .map((v) => `:${v}`)
-        .join('');
-      const valueEntries = sheetEntryDeclarationsToCss(x.declarations, x.rule.i);
-      return entryAtRuleWrapper(
-        x.conditions,
-        `.${escapeSelector(className)}${variants}{${valueEntries}}`,
-      );
+      return getEntryRuleBlock(x);
     })
     .join('\n');
+}
+
+export function getEntryRuleBlock(entry: SheetEntry) {
+  let className = `.${escapeSelector(entry.className)}`;
+  const atRules: string[] = [];
+  const declarations = sheetEntryDeclarationsToCss(entry.declarations, entry.important);
+  for (const condition of entry.conditions) {
+    // Media query
+    if (condition.startsWith('@') && condition[1] == 'm') {
+      atRules.push(condition);
+      continue;
+    }
+    // Pseudo
+    if (condition.startsWith('&')) {
+      className += condition.replace('&', '');
+    }
+  }
+  return atRules.reduce((prev, current) => {
+    return `${current}{${prev}}`;
+  }, `${className}{${declarations}}`);
 }
 
 export function sheetEntryDeclarationsToCss(
@@ -39,19 +47,11 @@ export function sheetEntryDeclarationsToCss(
       body.push([d[0], d[1]]);
     }
   }
-  return parseRuleBodyEntries(body, important);
+  return declarationToCss(body, important);
 }
 
-export function parseRuleBodyEntries(entries: [string, string][], important = false): string {
+export function declarationToCss(entries: [string, string][], important = false): string {
   return entries
     .flatMap((x) => `${toHyphenCase(x[0])}:${x[1]}${important ? ' !important' : ''};`)
     .join('');
-}
-
-export function entryAtRuleWrapper(mql: string[], cssText: string) {
-  const result = asArray(mql).reduce((prev, current) => {
-    prev = `${current}{${prev}}`;
-    return prev;
-  }, cssText);
-  return result;
 }
