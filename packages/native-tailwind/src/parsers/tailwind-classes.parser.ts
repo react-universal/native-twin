@@ -134,7 +134,7 @@ export function translateRuleTokens(
   }
   if (current.type == 'GROUP') {
     const baseValue = current.value.base;
-    const content = mergeRuleGroupTokens(current.value.content).map((x) => {
+    const content = mergeParsedRuleGroupTokens(current.value.content).map((x) => {
       if (baseValue.type == 'CLASS_NAME') {
         return {
           ...x,
@@ -155,7 +155,7 @@ export function translateRuleTokens(
   return result;
 }
 
-export function mergeRuleGroupTokens(
+export function mergeParsedRuleGroupTokens(
   groupContent: (ClassNameToken | VariantClassToken | ArbitraryToken | GroupToken)[],
   results: ParsedRule[] = [],
 ): ParsedRule[] {
@@ -190,7 +190,7 @@ export function mergeRuleGroupTokens(
   }
   if (nextToken.type == 'GROUP') {
     const baseValue = nextToken.value.base;
-    const parts = mergeRuleGroupTokens(nextToken.value.content).map((x): ParsedRule => {
+    const parts = mergeParsedRuleGroupTokens(nextToken.value.content).map((x): ParsedRule => {
       if (baseValue.type == 'CLASS_NAME') {
         return {
           ...x,
@@ -207,7 +207,7 @@ export function mergeRuleGroupTokens(
     });
     results.push(...parts);
   }
-  return mergeRuleGroupTokens(groupContent, results);
+  return mergeParsedRuleGroupTokens(groupContent, results);
 }
 
 export function parseTWTokens(rules: string) {
@@ -216,7 +216,7 @@ export function parseTWTokens(rules: string) {
     console.warn('Failed parsing rules: ', rules, data);
     return [];
   }
-  return translateRuleTokens(data.result);
+  return mergeParsedRuleGroupTokens(data.result);
 }
 
 /** 
