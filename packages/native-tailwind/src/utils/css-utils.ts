@@ -1,5 +1,4 @@
-import { toHyphenCase, type SelectorGroup } from '@universal-labs/css';
-import type { SheetEntryDeclaration } from '../types/css.types';
+import type { SelectorGroup } from '@universal-labs/css';
 import type { ParsedRule } from '../types/tailwind.types';
 import type { ScreenValue } from '../types/theme.types';
 import type { MaybeArray } from '../types/util.types';
@@ -21,34 +20,6 @@ export function getRuleSelectorGroup(rule: ParsedRule): SelectorGroup {
   if (rule.v.includes('hover') || rule.v.includes('focus') || rule.v.includes('active'))
     return 'pointer';
   return 'base';
-}
-
-export function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[]) {
-  const body: [string, string][] = [];
-  for (const d of decls) {
-    if (typeof d[1] == 'object' && !Array.isArray(d[1])) {
-      body.push(...Object.entries(d[1]));
-    }
-    if (Array.isArray(d[1])) {
-      body.push(...d[1]);
-    }
-    if (typeof d[1] == 'string') {
-      body.push([d[0], d[1]]);
-    }
-  }
-  return parseRuleBodyEntries(body);
-}
-
-export function parseRuleBodyEntries(entries: [string, string][]): string {
-  return entries.flatMap((x) => `${toHyphenCase(x[0])}:${x[1]};`).join('');
-}
-
-export function entryAtRuleWrapper(mql: string[], cssText: string) {
-  const result = asArray(mql).reduce((prev, current) => {
-    prev = `${current}{${prev}}`;
-    return prev;
-  }, cssText);
-  return result;
 }
 
 /**

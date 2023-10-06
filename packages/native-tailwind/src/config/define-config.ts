@@ -33,6 +33,8 @@ export function defineConfig<
   for (const preset of asArray([
     ...presets,
     {
+      presets: [],
+      mode: userConfig.mode,
       darkMode: userConfig.darkMode,
       preflight: userConfig.preflight !== false && asArray(userConfig.preflight),
       theme: userConfig.theme as TailwindConfig<__Theme__>['theme'],
@@ -45,6 +47,7 @@ export function defineConfig<
       preflight: config.preflight !== false &&
         preflight !== false && [...asArray(config.preflight), ...asArray(preflight)],
       root: config.root,
+      mode: config.mode,
       darkMode,
       theme: {
         ...config.theme,

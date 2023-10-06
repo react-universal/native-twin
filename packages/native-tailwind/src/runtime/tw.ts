@@ -1,10 +1,10 @@
-import { getSheet } from '../css/sheets';
+import { createTailwind } from '../native-twin';
+import { getSheet } from '../sheets';
 import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { Sheet } from '../types/css.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
 import { noop } from '../utils/helpers';
 import { observe } from './observe';
-import { createTailwind } from './tailwind';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
 

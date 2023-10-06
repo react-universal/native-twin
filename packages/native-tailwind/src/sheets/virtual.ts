@@ -1,5 +1,5 @@
-import type { Sheet, SheetEntry } from '../../types/css.types';
-import { noop } from '../../utils/helpers';
+import type { Sheet, SheetEntry } from '../types/css.types';
+import { noop } from '../utils/helpers';
 
 export function createVirtualSheet(): Sheet<SheetEntry[]> {
   // const utilities = new Set<string>();
@@ -18,9 +18,6 @@ export function createVirtualSheet(): Sheet<SheetEntry[]> {
     },
 
     insert(entry, index) {
-      // if (entry.mql.length > 0 && !mediaRules.has(entry.className)) {
-      //   mediaRules.add(entry.className);
-      // }
       target.splice(index, 0, entry);
     },
 

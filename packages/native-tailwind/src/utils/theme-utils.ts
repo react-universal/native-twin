@@ -141,6 +141,7 @@ export function convert<Theme extends __Theme__ = __Theme__>(
     const screen = context.theme('screens', variant);
 
     for (const condition of asArray((screen && mql(screen)) || context.v(variant))) {
+      if (!condition) continue;
       conditions.push(condition);
 
       precedence |= screen

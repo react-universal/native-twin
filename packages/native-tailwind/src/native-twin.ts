@@ -4,16 +4,16 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
-import { defineConfig } from '../config/define-config';
-import { sortedInsertionIndex } from '../css/sorted-insertion-index';
-import { translateRuleSet } from '../css/translate';
-import { parseTWTokens } from '../parsers/tailwind-classes.parser';
-import { createThemeContext } from '../theme/theme.context';
-import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
-import type { Sheet, SheetEntry } from '../types/css.types';
-import type { ParsedRule } from '../types/tailwind.types';
-import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
-import { interpolate } from '../utils/string-utils';
+import { defineConfig } from './config/define-config';
+import { translateRuleSet } from './convert/ruleToEntry';
+import { parseTWTokens } from './parsers/tailwind-classes.parser';
+import { createThemeContext } from './theme/theme.context';
+import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
+import type { Sheet, SheetEntry } from './types/css.types';
+import type { ParsedRule } from './types/tailwind.types';
+import type { ExtractThemes, RuntimeTW, __Theme__ } from './types/theme.types';
+import { sortedInsertionIndex } from './utils/sorted-insertion-index';
+import { interpolate } from './utils/string-utils';
 
 export function createTailwind<Theme extends __Theme__ = __Theme__, Target = unknown>(
   config: TailwindConfig<Theme>,
@@ -109,10 +109,16 @@ export function createTailwind(
 //     mode: 'native',
 //     theme: {
 //       asd: {
-//         asd: '',
+//         asd: '1rem',
+//         case: '2rem',
+//       },
+//       colors: {
+//         black: '#000',
 //       },
 //     },
+//     rules: [matchThemeColor('text-', 'color'), matchThemeValue('asd-', 'asd', 'padding')],
 //   },
 //   createVirtualSheet(),
 // );
-// test('text(ss)'); //?
+// test.theme('asd'); //?
+// test('asd-case'); //?

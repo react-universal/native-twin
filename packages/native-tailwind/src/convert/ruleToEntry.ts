@@ -1,33 +1,13 @@
-import { escapeSelector, simplePseudoLookup, Layer, moveToLayer } from '@universal-labs/css';
-import { resolveRule } from '../runtime/registry';
+import { Layer, moveToLayer } from '@universal-labs/css';
+import { resolveRule } from '../store/registry';
 import type { ThemeContext } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
 import type { ParsedRule } from '../types/tailwind.types';
-import { entryAtRuleWrapper, mql, sheetEntryDeclarationsToCss } from '../utils/css-utils';
+import { mql } from '../utils/css-utils';
 import { asArray } from '../utils/helpers';
+import { sortedInsertionIndex } from '../utils/sorted-insertion-index';
 import { toClassName } from '../utils/string-utils';
 import { convert } from '../utils/theme-utils';
-import { sortedInsertionIndex } from './sorted-insertion-index';
-
-export function sheetEntriesToCss(entries: SheetEntry[]): string {
-  if (!entries) {
-    return '';
-  }
-  return entries
-    .map((x) => {
-      let className = toClassName(x.rule);
-      const variants = x.rule.v
-        .filter((v) => simplePseudoLookup[`:${v}`] || simplePseudoLookup[v])
-        .map((v) => `:${v}`)
-        .join('');
-      const valueEntries = sheetEntryDeclarationsToCss(x.declarations);
-      return entryAtRuleWrapper(
-        x.conditions,
-        `.${escapeSelector(className)}${variants}{${valueEntries}}`,
-      );
-    })
-    .join('\n');
-}
 
 export function translateRuleSet(
   rules: ParsedRule[],

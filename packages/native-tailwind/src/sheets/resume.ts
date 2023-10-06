@@ -1,5 +1,5 @@
-import type { Sheet, SheetEntry } from '../../types/css.types';
-import { asArray } from '../../utils/helpers';
+import type { Sheet, SheetEntry } from '../types/css.types';
+import { asArray } from '../utils/helpers';
 import { createCssomSheet } from './cssom';
 import { createDomSheet } from './dom';
 import { createVirtualSheet } from './virtual';

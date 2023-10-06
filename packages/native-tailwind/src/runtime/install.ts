@@ -1,5 +1,5 @@
 import { defineConfig } from '../config/define-config';
-import { getSheet } from '../css/sheets';
+import { getSheet } from '../sheets';
 import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
 import { setup } from './tw';

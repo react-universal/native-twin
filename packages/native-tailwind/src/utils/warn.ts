@@ -19,7 +19,6 @@ export function warn<Code extends keyof WarningEventMap>(
       dispatchEvent(event);
 
       if (!event.defaultPrevented) {
-        // eslint-disable-next-line no-console
         console.warn(`[${code}] ${message}`, { detail });
       }
     } else if (typeof process == 'object' && typeof process.emitWarning == 'function') {
@@ -27,7 +26,6 @@ export function warn<Code extends keyof WarningEventMap>(
       process.emitWarning(message, { code, detail } as unknown as string);
     } else {
       // Fallback
-      // eslint-disable-next-line no-console
       console.warn(`[${code}] ${message}`, { detail });
     }
   }

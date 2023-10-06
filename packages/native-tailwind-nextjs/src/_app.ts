@@ -20,7 +20,7 @@ function installApp<Props, Component>(
   config: TailwindConfig | TailwindUserConfig,
   AppComponent: React.JSXElementConstructor<Props> & Component = NativeTailwindApp as any,
 ): Component {
-  install$(config as TailwindUserConfig);
+  install$(Object.assign({ mode: 'web' }, config) as TailwindUserConfig);
   return AppComponent;
 }
 

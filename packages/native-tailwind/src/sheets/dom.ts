@@ -1,7 +1,7 @@
-import type { Sheet } from '../../types/css.types';
-import { noop } from '../../utils/helpers';
-import { sheetEntriesToCss } from '../translate';
-import { getStyleElement } from './utils';
+import { sheetEntriesToCss } from '../convert/entryToCss';
+import type { Sheet } from '../types/css.types';
+import { noop } from '../utils/helpers';
+import { getStyleElement } from './getSheet';
 
 export function createDomSheet(
   element?: HTMLStyleElement | string | null | false,

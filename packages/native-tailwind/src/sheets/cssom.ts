@@ -1,8 +1,8 @@
-import type { Sheet } from '../../types/css.types';
-import { noop } from '../../utils/helpers';
-import { warn } from '../../utils/warn';
-import { sheetEntriesToCss } from '../translate';
-import { getStyleElement } from './utils';
+import { sheetEntriesToCss } from '../convert/entryToCss';
+import type { Sheet } from '../types/css.types';
+import { noop } from '../utils/helpers';
+import { warn } from '../utils/warn';
+import { getStyleElement } from './getSheet';
 
 export function createCssomSheet(
   element?: CSSStyleSheet | HTMLStyleElement | string | null | false,
