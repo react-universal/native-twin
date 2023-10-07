@@ -1,5 +1,4 @@
 import type { CSSValue, SheetEntry } from '../types/css.types';
-import type { ComponentSheet } from '../types/theme.types';
 import { interpolate } from '../utils/string-utils';
 import { tw as tw$ } from './tw';
 
@@ -25,7 +24,7 @@ export interface TxFunction {
     classes:
       | CSSValue[]
       | [strings: TemplateStringsArray, ...interpolations: readonly CSSValue[]],
-  ): ComponentSheet;
+  ): SheetEntry[];
 }
 
 export const tx: TxFunction = function tx(

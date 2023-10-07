@@ -4,15 +4,10 @@ import { noop } from '../utils/helpers';
 import { warn } from '../utils/warn';
 import { getStyleElement } from './getSheet';
 
-export function createCssomSheet(
-  element?: CSSStyleSheet | HTMLStyleElement | string | null | false,
-): Sheet<CSSStyleSheet> {
+export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> {
   const target = (element as CSSStyleSheet)?.cssRules
     ? (element as CSSStyleSheet)
-    : ((element && typeof element != 'string'
-        ? (element as HTMLStyleElement)
-        : getStyleElement(element)
-      ).sheet as CSSStyleSheet);
+    : (getStyleElement(element as any).sheet as CSSStyleSheet);
 
   return {
     target,

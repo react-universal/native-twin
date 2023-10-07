@@ -34,12 +34,6 @@ export function createDomSheet(
 
     insert(entry, index) {
       const node = typeof entry == 'string' ? entry : sheetEntriesToCss([entry]);
-      for (const n of target.childNodes) {
-        if (n.textContent?.includes(node)) {
-          return;
-        }
-      }
-      // console.log('DOM_ENTRY: ', entry);
       target.insertBefore(document.createTextNode(node), target.childNodes[index] || null);
     },
 
