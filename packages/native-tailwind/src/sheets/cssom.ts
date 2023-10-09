@@ -8,7 +8,7 @@ export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> 
   const target = (element as CSSStyleSheet)?.cssRules
     ? (element as CSSStyleSheet)
     : (getStyleElement(element as any).sheet as CSSStyleSheet);
-
+  console.log('CSSOM_TARGET: ', target);
   return {
     target,
 
@@ -49,11 +49,15 @@ export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> 
         // Some thrown errors are because of specific pseudo classes
         // lets filter them to prevent unnecessary warnings
         // ::-moz-focus-inner
-        // :-moz-focusring
+        // :-moz-focus-ring
         if (!/:-[mwo]/.test(className)) {
           warn((error as Error).message, 'TW_INVALID_CSS', className);
         }
       }
+    },
+
+    insertPreflight(data) {
+      return [];
     },
 
     resume: noop,

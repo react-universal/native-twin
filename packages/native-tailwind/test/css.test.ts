@@ -39,7 +39,7 @@ describe('@universal-labs/native-twin - Raw rules parser', () => {
     const entries = tx`bg-primary !px-1 first-letter:px-2 asd md:sm:px-2`;
     const css = sheetEntriesToCss(entries);
     // console.log('CSS: ', css);
-    // console.log('ENTRIES: ', entries);
+    // console.log('ENTRIES: ', tw.sheet);
     expect(css).toStrictEqual(
       '@media (min-width:740px){@media (min-width:640px){.md\\:sm\\:px-2{padding-left:2rem;padding-right:2rem;}}}\n' +
         '.first-letter\\:px-2::first-letter{padding-left:2rem;padding-right:2rem;}\n' +

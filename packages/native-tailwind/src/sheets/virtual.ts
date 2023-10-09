@@ -29,6 +29,9 @@ export function createVirtualSheet(): Sheet<SheetEntry[]> {
         target.splice(0, target.length, ...rules);
       };
     },
+    insertPreflight() {
+      return [];
+    },
     resume: noop,
   };
 }

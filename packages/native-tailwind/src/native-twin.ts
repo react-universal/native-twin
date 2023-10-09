@@ -4,6 +4,7 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
+import { Layer } from '@universal-labs/css';
 import { defineConfig } from './config/define-config';
 import { translateRuleSet } from './convert/ruleToEntry';
 import { parseTWTokens } from './parsers/tailwind-classes.parser';
@@ -11,6 +12,7 @@ import { createThemeContext } from './theme/theme.context';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { Sheet, SheetEntry } from './types/css.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from './types/theme.types';
+import { asArray } from './utils/helpers';
 import { sortedInsertionIndex } from './utils/sorted-insertion-index';
 import { interpolate } from './utils/string-utils';
 
@@ -49,6 +51,30 @@ export function createTailwind(
 
   const runtime = Object.defineProperties(
     function tw(tokens) {
+      if (!cache.size) {
+        sheet.clear();
+        for (let preflight of asArray(config.preflight)) {
+          if (typeof preflight == 'function') {
+            preflight = preflight(context);
+          }
+
+          if (preflight) {
+            sheet.insertPreflight(preflight);
+            for (const p of Object.entries(preflight)) {
+              const entry: SheetEntry = {
+                className: p[0],
+                conditions: [],
+                declarations: Object.entries(p[1]) as any,
+                group: 'base',
+                important: false,
+                precedence: Layer.b,
+              };
+              sortedPrecedences.push(entry);
+              cache.set(entry.className, [entry]);
+            }
+          }
+        }
+      }
       tokens = interpolate`${[tokens]}`;
       if (cache.has(tokens)) {
         return cache.get(tokens);

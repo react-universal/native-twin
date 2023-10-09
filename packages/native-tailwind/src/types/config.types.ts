@@ -13,7 +13,7 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   mode: 'web' | 'native';
   rules: Rule<Theme>[];
   variants: Variant<Theme>[];
-  preflight: false | MaybeArray<Record<string, any>>;
+  preflight: Preflight;
   ignorelist: string[];
   root: {
     rem: number;
@@ -29,7 +29,7 @@ export interface TailwindUserConfig<
   rules?: Rule<__Theme__ & ExtractThemes<Theme, Presets>>[];
   mode?: 'web' | 'native';
   variants?: Variant<__Theme__ & ExtractThemes<Theme, Presets>>[];
-  preflight?: false | MaybeArray<Record<string, any>>;
+  preflight?: Preflight;
   ignorelist?: string[];
   root?: {
     rem: number;
@@ -45,6 +45,7 @@ export interface PresetThunk<Theme = __Theme__> {
 
 export type Preset<Theme = __Theme__> = TailwindPresetConfig<Theme> | PresetThunk<Theme>;
 
+export type Preflight = false | MaybeArray<Record<string, any>>;
 export interface TailwindPresetConfig<Theme = __Theme__> {
   /** Allows to change how the `dark` variant is used (default: `"media"`) */
   darkMode?: DarkModeConfig;
@@ -52,7 +53,7 @@ export interface TailwindPresetConfig<Theme = __Theme__> {
   theme?: ThemeConfig<Theme & __Theme__>;
   mode?: 'web' | 'native';
 
-  preflight?: false | MaybeArray<Record<string, any>>;
+  preflight?: Preflight;
   rules?: Rule<Theme & __Theme__>[];
 
   variants?: Variant<Theme & __Theme__>[];

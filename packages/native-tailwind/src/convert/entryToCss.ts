@@ -35,6 +35,7 @@ export function sheetEntryDeclarationsToCss(
   decls: SheetEntryDeclaration[],
   important = false,
 ) {
+  if (!decls) return '';
   const body: [string, string][] = [];
   for (const d of decls) {
     if (typeof d[1] == 'object' && !Array.isArray(d[1])) {

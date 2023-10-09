@@ -1,3 +1,4 @@
+import { toHyphenCase } from '@universal-labs/css';
 import { sheetEntriesToCss } from '../convert/entryToCss';
 import type { Sheet } from '../types/css.types';
 import { noop } from '../utils/helpers';
@@ -7,7 +8,6 @@ export function createDomSheet(
   element?: HTMLStyleElement | string | null | false,
 ): Sheet<HTMLStyleElement> {
   const target = element && typeof element != 'string' ? element : getStyleElement(element);
-
   return {
     target,
 
@@ -35,6 +35,21 @@ export function createDomSheet(
     insert(entry, index) {
       const node = typeof entry == 'string' ? entry : sheetEntriesToCss([entry]);
       target.insertBefore(document.createTextNode(node), target.childNodes[index] || null);
+    },
+
+    insertPreflight(data) {
+      const nodes: string[] = [];
+      for (const p of Object.entries(data)) {
+        const className = p[0];
+        const declarations: string[] = [];
+        for (const d of Object.entries(p[1])) {
+          declarations.push([toHyphenCase(d[0]), d[1]].join(':'));
+        }
+        const current = `${className}{${declarations.join(';')}}`;
+        nodes.push(current);
+      }
+      target.prepend(...nodes);
+      return nodes;
     },
 
     resume: noop,
