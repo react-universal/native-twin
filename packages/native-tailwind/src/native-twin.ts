@@ -6,7 +6,7 @@
  */
 import { Layer } from '@universal-labs/css';
 import { defineConfig } from './config/define-config';
-import { translateRuleSet } from './convert/ruleToEntry';
+import { parsedRuleToEntry } from './convert/ruleToEntry';
 import { parseTWTokens } from './parsers/tailwind-classes.parser';
 import { createThemeContext } from './theme/theme.context';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
@@ -42,45 +42,17 @@ export function createTailwind(
   // always sorted
   let sortedPrecedences: SheetEntry[] = [];
 
-  function insert(entry: SheetEntry) {
-    insertedRules.add(entry.className);
-    const index = sortedInsertionIndex(sortedPrecedences, entry);
-    sheet.insert(entry, index);
-    sortedPrecedences.splice(index, 0, entry);
-  }
-
   const runtime = Object.defineProperties(
     function tw(tokens) {
-      if (!cache.size) {
-        sheet.clear();
-        for (let preflight of asArray(config.preflight)) {
-          if (typeof preflight == 'function') {
-            preflight = preflight(context);
-          }
-
-          if (preflight) {
-            sheet.insertPreflight(preflight);
-            for (const p of Object.entries(preflight)) {
-              const entry: SheetEntry = {
-                className: p[0],
-                conditions: [],
-                declarations: Object.entries(p[1]) as any,
-                group: 'base',
-                important: false,
-                precedence: Layer.b,
-              };
-              sortedPrecedences.push(entry);
-              cache.set(entry.className, [entry]);
-            }
-          }
-        }
-      }
+      insertPreflight();
       tokens = interpolate`${[tokens]}`;
       if (cache.has(tokens)) {
         return cache.get(tokens);
       }
       const styles: SheetEntry[] = [];
-      for (const entry of translateRuleSet(parseTWTokens(tokens), context)) {
+      for (const rule of parseTWTokens(tokens)) {
+        const entry = parsedRuleToEntry(rule, context);
+        // console.log('ENTRY: ', entry);
         if (!insertedRules.has(entry.className)) {
           insert(entry);
         }
@@ -91,9 +63,6 @@ export function createTailwind(
     } as RuntimeTW,
 
     Object.getOwnPropertyDescriptors({
-      get sheet() {
-        return sheet;
-      },
       get target() {
         return sheet.target;
       },
@@ -121,23 +90,38 @@ export function createTailwind(
     }),
   );
   return runtime;
-}
 
-// const test = createTailwind(
-//   {
-//     mode: 'native',
-//     theme: {
-//       asd: {
-//         asd: '1rem',
-//         case: '2rem',
-//       },
-//       colors: {
-//         black: '#000',
-//       },
-//     },
-//     rules: [matchThemeColor('text-', 'color'), matchThemeValue('asd-', 'asd', 'padding')],
-//   },
-//   createVirtualSheet(),
-// );
-// test.theme('asd'); //?
-// test('asd-case'); //?
+  function insert(entry: SheetEntry) {
+    insertedRules.add(entry.className);
+    const index = sortedInsertionIndex(sortedPrecedences, entry);
+    sheet.insert(entry, index);
+    sortedPrecedences.splice(index, 0, entry);
+  }
+
+  function insertPreflight() {
+    if (!cache.size) {
+      sheet.clear();
+      for (let preflight of asArray(config.preflight)) {
+        if (typeof preflight == 'function') {
+          preflight = preflight(context);
+        }
+
+        if (preflight) {
+          sheet.insertPreflight(preflight);
+          for (const p of Object.entries(preflight)) {
+            const entry: SheetEntry = {
+              className: p[0],
+              conditions: [],
+              declarations: Object.entries(p[1]) as any,
+              group: 'base',
+              important: false,
+              precedence: Layer.b,
+            };
+            sortedPrecedences.push(entry);
+            cache.set(entry.className, [entry]);
+          }
+        }
+      }
+    }
+  }
+}

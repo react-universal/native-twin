@@ -1,5 +1,4 @@
 import type { CSSValue } from '../types/css.types';
-import type { ParsedRule } from '../types/tailwind.types';
 
 export function interleave<Interpolations>(
   strings: TemplateStringsArray,
@@ -54,16 +53,4 @@ export function toString(value: CSSValue): string {
   }
 
   return result;
-}
-
-export function toClassName(rule: ParsedRule): string {
-  let modifier = '';
-  if (rule.m) {
-    modifier = `/${rule.m.value}`;
-  }
-  return `${[...rule.v, (rule.i ? '!' : '') + rule.n + modifier].join(':')}`;
-}
-
-export function format(rules: ParsedRule[]): string {
-  return rules.map(toClassName).join(' ');
 }

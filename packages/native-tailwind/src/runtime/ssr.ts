@@ -1,11 +1,11 @@
 import { compareClassNames, fixHTMLTagClassNamesList } from '@universal-labs/css';
 import { sheetEntriesToCss } from '../convert/entryToCss';
+import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { SheetEntry } from '../types/css.types';
 import type { RuntimeTW } from '../types/theme.types';
 import type { StringLike } from '../types/util.types';
 import { parseHTML } from '../utils/parse-html';
-import { toClassName } from '../utils/string-utils';
 import { tw as tw$ } from './tw';
 
 export interface ExtractResult {
@@ -37,7 +37,7 @@ export function consume(
   parseHTML(markup, (startIndex, endIndex, quote) => {
     const value = markup.slice(startIndex, endIndex);
     const classList = parseTWTokens(fixHTMLTagClassNamesList(value, quote))
-      .map((x) => toClassName(x))
+      .map(parsedRuleToClassName)
       .join(' ');
     tw(classList);
     // We only need to shift things around if we need to actually change the markup

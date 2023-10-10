@@ -1,10 +1,9 @@
 import type { Preset, TailwindConfig, ThemeFunction } from './config.types';
-import type { Sheet, SheetEntry } from './css.types';
+import type { SheetEntry } from './css.types';
 import type { ArrayType, MaybeArray, StringLike, UnionToIntersection } from './util.types';
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];
-  sheet: Sheet<Target>;
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
   readonly target: Target;

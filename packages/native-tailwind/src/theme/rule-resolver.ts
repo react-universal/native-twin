@@ -1,10 +1,10 @@
 import { toColorValue, type CompleteStyle } from '@universal-labs/css';
+import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import type { Rule, RuleMeta, RuleResolver } from '../types/config.types';
 import type { SheetEntryDeclaration } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
 import { getRuleSelectorGroup } from '../utils/css-utils';
 import { asArray } from '../utils/helpers';
-import { toClassName } from '../utils/string-utils';
 
 export function matchCssObject(
   pattern: string,
@@ -27,7 +27,7 @@ export function matchThemeColor(
     'colors',
     (match, context, rule) => {
       let color: string | null | undefined;
-      const className = toClassName(rule);
+      const className = parsedRuleToClassName(rule);
       const declarations: SheetEntryDeclaration[] = [];
       if (match.segment.type == 'arbitrary') {
         color = match.segment.value;
@@ -114,7 +114,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
         declarations.push(['transform', entries as any]);
       }
       return {
-        className: toClassName(parsedRule),
+        className: parsedRuleToClassName(parsedRule),
         declarations,
         group: getRuleSelectorGroup(parsedRule),
         conditions: [],

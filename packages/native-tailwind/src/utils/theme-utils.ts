@@ -1,10 +1,10 @@
 import { atRulePrecedence, pseudoPrecedence } from '@universal-labs/css';
+import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import type { ThemeContext } from '../types/config.types';
 import type { ParsedRule } from '../types/tailwind.types';
 import type { Colors, __Theme__ } from '../types/theme.types';
 import { mql } from './css-utils';
 import { asArray } from './helpers';
-import { toClassName } from './string-utils';
 
 // 0: '0px',
 // 2: '2px',
@@ -132,7 +132,7 @@ export function convert<Theme extends __Theme__ = __Theme__>(
   conditions?: string[],
 ): ParsedRule {
   if (name) {
-    name = toClassName({ n: name, i: important, v: variants, m: modifier, p: 0 });
+    name = parsedRuleToClassName({ n: name, i: important, v: variants, m: modifier, p: 0 });
   }
 
   conditions = [...asArray(conditions)];

@@ -9,7 +9,7 @@ const registry = new Map<string, RegisterCallback>();
 export type RegisterCallback = (
   rule: ParsedRule,
   context: ThemeContext,
-) => Falsey | SheetEntry[];
+) => Falsey | SheetEntry;
 
 export function register(className: string, factory: RegisterCallback): string {
   registry.set(className, factory);
@@ -19,7 +19,7 @@ export function register(className: string, factory: RegisterCallback): string {
 export function resolveRule<Theme extends __Theme__ = __Theme__>(
   rule: ParsedRule,
   context: ThemeContext<Theme>,
-): RuleResult | SheetEntry[] {
+): RuleResult {
   const factory = registry.get(rule.n);
 
   return factory ? factory(rule, context as any) : context.r(rule);

@@ -9,7 +9,6 @@ export const createVariantResolver = <Theme extends __Theme__ = __Theme__>(
   const condition = asRegExp(rawPattern);
   return (token: string, context: ThemeContext) => {
     const match = condition.exec(token) as ReMatchResult;
-    // console.log('MATCH: ', match, variant);
     if (!match) return null;
     match.$$ = token.slice(match[0].length);
     if (typeof resolver == 'string') {

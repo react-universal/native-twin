@@ -16,7 +16,8 @@ export {
   sheetEntriesToCss,
   sheetEntryDeclarationsToCss,
 } from './convert/entryToCss';
-export { translateParsedRule, translateRuleSet } from './convert/ruleToEntry';
+export { parsedRuleToEntry } from './convert/ruleToEntry';
+export { parsedRuleSetToClassNames, parsedRuleToClassName } from './convert/ruleToClassName';
 
 /** CONFIG */
 export { defineConfig } from './config/define-config';
@@ -27,7 +28,7 @@ export { createThemeFunction } from './theme/theme.function';
 export { matchCssObject, matchThemeColor, matchThemeValue } from './theme/rule-resolver';
 
 /** UTILS */
-export { format, interleave, interpolate, toClassName } from './utils/string-utils';
+export { interleave, interpolate } from './utils/string-utils';
 export { asArray, asRegExp, identity, noop } from './utils/helpers';
 export {
   convert,

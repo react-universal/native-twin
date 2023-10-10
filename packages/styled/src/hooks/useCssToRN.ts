@@ -32,7 +32,7 @@ export function createComponentSheet(entries: SheetEntry[], context: StyledConte
     getStyles,
     sheet,
     metadata: {
-      isGroupParent: entries.some((x) => x.rule.n == 'group'),
+      isGroupParent: entries.some((x) => x.className == 'group'),
       hasGroupEvents: Object.keys(sheet.group).length > 0,
       hasPointerEvents: Object.keys(sheet.pointer).length > 0,
     },
@@ -65,7 +65,7 @@ export function createComponentSheet(entries: SheetEntry[], context: StyledConte
 function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
   return entries.reduce(
     (prev, current) => {
-      const validRule = isApplicativeRule(current.rule.v, context);
+      const validRule = isApplicativeRule(current.conditions, context);
       if (!validRule) return prev;
       let nextDecl = composeDeclarations(current.declarations, context);
       if (nextDecl.transform && prev[current.group].transform) {
@@ -131,7 +131,8 @@ const platformVariants = ['web', 'native', 'ios', 'android'];
 function isApplicativeRule(variants: string[], context: StyledContext) {
   if (variants.length == 0) return true;
   const screens = tw.config.theme['screens'];
-  for (const v of variants) {
+  for (let v of variants) {
+    v = v.replace('&:', '');
     if (platformVariants.includes(v)) {
       if (v == 'web' && Platform.OS != 'web') return false;
       if (v == 'native' && Platform.OS == 'web') return false;
@@ -139,6 +140,7 @@ function isApplicativeRule(variants: string[], context: StyledContext) {
       if (v == 'android' && Platform.OS != 'android') return false;
     }
     if (v in screens) {
+      tw.theme('screens');
       const width = context.deviceWidth;
       const value = screens[v];
       if (typeof value == 'number' && width >= value) {

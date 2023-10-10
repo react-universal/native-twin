@@ -23,18 +23,16 @@ export function sortedInsertionIndex(
       high = pivot;
     }
   }
-
   return high;
 }
 
 export function compareTwRules(a: SheetEntry, b: SheetEntry): number {
   // base and overrides (css) layers are kept in order they are declared
   const layer = a.precedence & Layer.o;
-
+  // console.log('LAYER: ', layer);
   if (layer == (b.precedence & Layer.o) && (layer == Layer.b || layer == Layer.o)) {
     return 0;
   }
-
   return (
     a.precedence - b.precedence ||
     // a.o - b.o ||

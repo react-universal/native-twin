@@ -1,3 +1,4 @@
+import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import { createRuleResolver } from '../parsers/rule-handler';
 import { createVariantResolver } from '../parsers/variant-handler';
 import type {
@@ -11,7 +12,6 @@ import type { SheetEntry } from '../types/css.types';
 import type { ParsedRule } from '../types/tailwind.types';
 import type { __Theme__ } from '../types/theme.types';
 import type { MaybeArray } from '../types/util.types';
-import { toClassName } from '../utils/string-utils';
 import { flattenColorPalette } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
 
@@ -72,7 +72,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
     r(token: ParsedRule) {
       for (const current of rules) {
-        const className = toClassName(token);
+        const className = parsedRuleToClassName(token);
 
         if (rulesCache.has(className)) {
           return rulesCache.get(className);

@@ -1,6 +1,7 @@
+import { parsedRuleSetToClassNames } from '../convert/ruleToClassName';
 import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { CSSValue } from '../types/css.types';
-import { format, interpolate } from '../utils/string-utils';
+import { interpolate } from '../utils/string-utils';
 
 /**
  * Constructs `class` strings conditionally.
@@ -30,5 +31,5 @@ export function cx(
   strings: TemplateStringsArray | CSSValue,
   ...interpolations: CSSValue[]
 ): string {
-  return format(parseTWTokens(interpolate(strings, interpolations)));
+  return parsedRuleSetToClassNames(parseTWTokens(interpolate(strings, interpolations)));
 }

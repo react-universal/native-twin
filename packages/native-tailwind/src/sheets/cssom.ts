@@ -8,7 +8,7 @@ export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> 
   const target = (element as CSSStyleSheet)?.cssRules
     ? (element as CSSStyleSheet)
     : (getStyleElement(element as any).sheet as CSSStyleSheet);
-  console.log('CSSOM_TARGET: ', target);
+
   return {
     target,
 
@@ -56,7 +56,7 @@ export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> 
       }
     },
 
-    insertPreflight(data) {
+    insertPreflight() {
       return [];
     },
 

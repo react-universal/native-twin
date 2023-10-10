@@ -8,6 +8,7 @@ export function createDomSheet(
   element?: HTMLStyleElement | string | null | false,
 ): Sheet<HTMLStyleElement> {
   const target = element && typeof element != 'string' ? element : getStyleElement(element);
+
   return {
     target,
 

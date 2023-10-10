@@ -41,11 +41,11 @@ describe('@universal-labs/native-twin - Raw rules parser', () => {
     // console.log('CSS: ', css);
     // console.log('ENTRIES: ', tw.sheet);
     expect(css).toStrictEqual(
-      '@media (min-width:740px){@media (min-width:640px){.md\\:sm\\:px-2{padding-left:2rem;padding-right:2rem;}}}\n' +
-        '.first-letter\\:px-2::first-letter{padding-left:2rem;padding-right:2rem;}\n' +
-        '.\\!px-1{padding-left:1rem !important;padding-right:1rem !important;}\n' +
-        '.asd{}\n' +
-        '.bg-primary{background-color:blue;}',
+      `.bg-primary{background-color:blue;}
+.\\!px-1{padding-left:1rem !important;padding-right:1rem !important;}
+.first-letter\\:px-2::first-letter{padding-left:2rem;padding-right:2rem;}
+.asd{}
+@media (min-width:740px){@media (min-width:640px){.md\\:sm\\:px-2{padding-left:2rem;padding-right:2rem;}}}`,
     );
   });
 });
