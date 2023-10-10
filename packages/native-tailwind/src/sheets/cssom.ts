@@ -1,3 +1,4 @@
+import { toHyphenCase } from '@universal-labs/css';
 import { sheetEntriesToCss } from '../convert/entryToCss';
 import type { Sheet } from '../types/css.types';
 import { noop } from '../utils/helpers';
@@ -38,7 +39,7 @@ export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> 
 
     insert(entry, index) {
       const className = entry.className;
-      const cssText = typeof entry == 'string' ? entry : sheetEntriesToCss([entry]);
+      const cssText = typeof entry == 'string' ? entry : sheetEntriesToCss(entry);
       try {
         // Insert
         target.insertRule(cssText, index);
@@ -56,8 +57,20 @@ export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> 
       }
     },
 
-    insertPreflight() {
-      return [];
+    insertPreflight(data) {
+      const nodes: string[] = [];
+      for (const p of Object.entries(data)) {
+        const className = p[0];
+        const declarations: string[] = [];
+        for (const d of Object.entries(p[1])) {
+          declarations.push([toHyphenCase(d[0]), d[1]].join(':'));
+        }
+        const current = `${className}{${declarations.join(';')}}`;
+        nodes.push(current);
+        target.insertRule(current, 0);
+      }
+
+      return nodes;
     },
 
     resume: noop,

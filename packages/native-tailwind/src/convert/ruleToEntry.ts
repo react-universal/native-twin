@@ -16,6 +16,17 @@ export function parsedRuleToEntry(rule: ParsedRule, context: ThemeContext): Shee
       important: rule.i,
     };
   }
+  if (context.mode == 'web') {
+    if (rule.v.includes('ios') || rule.v.includes('android') || rule.v.includes('native')) {
+      return {
+        className: parsedRuleToClassName(rule),
+        declarations: [],
+        selectors: [],
+        precedence: Layer.u,
+        important: rule.i,
+      };
+    }
+  }
   const result = resolveRule(rule, context);
   if (!result) {
     // propagate className as is
