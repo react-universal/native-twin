@@ -98,7 +98,7 @@ export function createTailwind(
   }
 
   function insertPreflight() {
-    if (!cache.size && config.mode === 'web') {
+    if (!cache.size && config.mode === 'web' && config.preflight) {
       sheet.clear();
       for (let preflight of asArray(config.preflight)) {
         if (typeof preflight == 'function') {
