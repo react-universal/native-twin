@@ -2,7 +2,7 @@ import { escapeSelector, toHyphenCase } from '@universal-labs/css';
 import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
 import { asArray } from '../utils/helpers';
 
-export function sheetEntriesToCss(entries: SheetEntry[]): string {
+export function sheetEntriesToCss(entries: SheetEntry[] | SheetEntry): string {
   return asArray(entries)
     .filter(Boolean)
     .map((x) => {
@@ -15,7 +15,7 @@ export function getEntryRuleBlock(entry: SheetEntry) {
   let className = `.${escapeSelector(entry.className)}`;
   const atRules: string[] = [];
   const declarations = sheetEntryDeclarationsToCss(entry.declarations, entry.important);
-  for (const condition of entry.conditions) {
+  for (const condition of entry.selectors) {
     // Media query
     if (condition.startsWith('@') && condition[1] == 'm') {
       atRules.push(condition);
@@ -24,6 +24,10 @@ export function getEntryRuleBlock(entry: SheetEntry) {
     // Pseudo
     if (condition.startsWith('&')) {
       className += condition.replace('&', '');
+    }
+
+    if (condition.endsWith('&')) {
+      className = `${condition.replace('&', '')}${className}`;
     }
   }
   return atRules.reduce((prev, current) => {

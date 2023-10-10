@@ -60,7 +60,6 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
           variantsHandlers.set(current, handler);
         }
         const nextToken = handler(value, ctx);
-
         if (nextToken) {
           variantCache.set(value, nextToken);
           return nextToken;

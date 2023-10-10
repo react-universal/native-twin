@@ -52,7 +52,6 @@ export function createTailwind(
       const styles: SheetEntry[] = [];
       for (const rule of parseTWTokens(tokens)) {
         const entry = parsedRuleToEntry(rule, context);
-        // console.log('ENTRY: ', entry);
         if (!insertedRules.has(entry.className)) {
           insert(entry);
         }
@@ -99,7 +98,7 @@ export function createTailwind(
   }
 
   function insertPreflight() {
-    if (!cache.size) {
+    if (!cache.size && config.mode !== 'native') {
       sheet.clear();
       for (let preflight of asArray(config.preflight)) {
         if (typeof preflight == 'function') {
@@ -111,9 +110,8 @@ export function createTailwind(
           for (const p of Object.entries(preflight)) {
             const entry: SheetEntry = {
               className: p[0],
-              conditions: [],
+              selectors: [],
               declarations: Object.entries(p[1]) as any,
-              group: 'base',
               important: false,
               precedence: Layer.b,
             };

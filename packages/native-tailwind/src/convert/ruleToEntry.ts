@@ -11,8 +11,7 @@ export function parsedRuleToEntry(rule: ParsedRule, context: ThemeContext): Shee
     return {
       className: 'group',
       declarations: [],
-      group: 'base',
-      conditions: [],
+      selectors: [],
       precedence: Layer.u,
       important: rule.i,
     };
@@ -23,14 +22,13 @@ export function parsedRuleToEntry(rule: ParsedRule, context: ThemeContext): Shee
     return {
       className: parsedRuleToClassName(rule),
       declarations: [],
-      group: 'base',
-      conditions: [],
+      selectors: [],
       precedence: Layer.u,
       important: rule.i,
     };
   }
   const newRule = convert(rule, context, Layer.u);
-  result.conditions = newRule.v;
+  result.selectors = newRule.v;
   result.precedence = moveToLayer(Layer.u, newRule.p);
   return result;
 }

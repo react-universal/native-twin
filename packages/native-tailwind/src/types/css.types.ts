@@ -1,5 +1,5 @@
 import type { StyleProp } from 'react-native';
-import type { AnyStyle, SelectorGroup } from '@universal-labs/css';
+import type { AnyStyle } from '@universal-labs/css';
 import type { Preflight } from './config.types';
 import type { Falsey, StringLike } from './util.types';
 
@@ -23,10 +23,9 @@ export type SheetEntryDeclaration =
 
 export interface SheetEntry {
   className: string;
-  group: SelectorGroup;
   declarations: SheetEntryDeclaration[];
   /** The rule sets (selectors and at-rules). expanded variants `@media ...`, `@supports ...`, `&:focus`, `.dark &` */
-  conditions: string[];
+  selectors: string[];
   precedence: number;
   important: boolean;
 }

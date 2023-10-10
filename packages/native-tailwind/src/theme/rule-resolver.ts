@@ -3,7 +3,6 @@ import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import type { Rule, RuleMeta, RuleResolver } from '../types/config.types';
 import type { SheetEntryDeclaration } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
-import { getRuleSelectorGroup } from '../utils/css-utils';
 import { asArray } from '../utils/helpers';
 
 export function matchCssObject(
@@ -56,10 +55,9 @@ export function matchThemeColor(
         }
         return {
           className,
-          group: getRuleSelectorGroup(rule),
           rule,
           declarations,
-          conditions: [],
+          selectors: [],
           precedence: 0,
           important: rule.i,
         };
@@ -116,8 +114,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
       return {
         className: parsedRuleToClassName(parsedRule),
         declarations,
-        group: getRuleSelectorGroup(parsedRule),
-        conditions: [],
+        selectors: [],
         precedence: 0,
         important: parsedRule.i,
       };
