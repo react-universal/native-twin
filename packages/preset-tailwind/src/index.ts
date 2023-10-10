@@ -1,7 +1,7 @@
 import type { Preset, __Theme__ } from '@universal-labs/native-twin';
 import { themeRules } from './tailwind-rules';
 import * as tailwindTheme from './tailwind-theme';
-import preflight from './tailwind-theme/preflight';
+import { preflight } from './tailwind-theme/preflight';
 
 export interface TailwindPresetBaseOptions {
   colors?: __Theme__['colors'];

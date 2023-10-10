@@ -4,7 +4,7 @@
 import type { Preflight } from '@universal-labs/native-twin';
 import { fontFamily } from './font';
 
-const preflight: Preflight = {
+export const preflight: Preflight = {
   /*
     1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
     2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
@@ -238,5 +238,3 @@ const preflight: Preflight = {
   /* Make elements with the HTML hidden attribute stay hidden by default */
   '[hidden]': { display: 'none' },
 };
-
-export default preflight;
