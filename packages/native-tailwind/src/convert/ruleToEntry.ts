@@ -1,5 +1,4 @@
 import { Layer, moveToLayer } from '@universal-labs/css';
-import { resolveRule } from '../store/registry';
 import type { ThemeContext } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
 import type { ParsedRule } from '../types/tailwind.types';
@@ -27,7 +26,7 @@ export function parsedRuleToEntry(rule: ParsedRule, context: ThemeContext): Shee
       };
     }
   }
-  const result = resolveRule(rule, context);
+  const result = context.r(rule);
   if (!result) {
     // propagate className as is
     return {
@@ -38,8 +37,8 @@ export function parsedRuleToEntry(rule: ParsedRule, context: ThemeContext): Shee
       important: rule.i,
     };
   }
-  const newRule = convert(rule, context, Layer.u);
+  const newRule = context.mode === 'web' ? convert(rule, context, Layer.u) : rule;
   result.selectors = newRule.v;
-  result.precedence = moveToLayer(Layer.u, newRule.p);
+  result.precedence = context.mode === 'web' ? moveToLayer(Layer.u, newRule.p) : rule.p;
   return result;
 }

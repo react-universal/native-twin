@@ -129,7 +129,7 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
 const platformVariants = ['web', 'native', 'ios', 'android'];
 function isApplicativeRule(variants: string[], context: StyledContext) {
   if (variants.length == 0) return true;
-  const screens = tw.config.theme['screens'];
+  const screens = tw.theme('screens');
   for (let v of variants) {
     v = v.replace('&:', '');
     if (platformVariants.includes(v)) {
@@ -141,8 +141,8 @@ function isApplicativeRule(variants: string[], context: StyledContext) {
     if (v in screens) {
       tw.theme('screens');
       const width = context.deviceWidth;
-      const value = screens[v];
-      if (typeof value == 'number' && width >= value) {
+      const value = screens[v].replace('px', '');
+      if (typeof value == 'string' && width >= Number(value)) {
         return false;
       }
       if (typeof value == 'object') {
