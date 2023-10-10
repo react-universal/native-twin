@@ -92,6 +92,9 @@ export function createTailwind(
 
   function insert(entry: SheetEntry) {
     insertedRules.add(entry.className);
+    if (entry.declarations.length == 0) {
+      return;
+    }
     const index = sortedInsertionIndex(sortedPrecedences, entry);
     sheet.insert(entry, index);
     sortedPrecedences.splice(index, 0, entry);
