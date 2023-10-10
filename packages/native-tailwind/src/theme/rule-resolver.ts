@@ -55,7 +55,6 @@ export function matchThemeColor(
         }
         return {
           className,
-          rule,
           declarations,
           selectors: [],
           precedence: 0,

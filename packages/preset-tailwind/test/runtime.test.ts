@@ -4,6 +4,7 @@ import { presetTailwind } from '../src';
 
 setup(
   defineConfig({
+    mode: 'web',
     presets: [presetTailwind()],
     theme: {
       extend: {
@@ -28,26 +29,30 @@ describe('@universal-labs/native-twin - TW call', () => {
           ['paddingLeft', '0.5rem'],
           ['paddingRight', '0.5rem'],
         ],
-        group: 'base',
-        rule: { n: 'px-2', v: [], i: false, m: null },
+        important: false,
+        precedence: 805306368,
+        selectors: [],
       },
       {
         className: 'm-10',
         declarations: [['margin', '2.5rem']],
-        group: 'base',
-        rule: { n: 'm-10', v: [], i: false, m: null },
+        important: false,
+        precedence: 805306368,
+        selectors: [],
       },
       {
         className: 'text-2xl',
         declarations: [['fontSize', '1.5rem']],
-        group: 'base',
-        rule: { n: 'text-2xl', v: [], i: false, m: null },
+        important: false,
+        precedence: 805306368,
+        selectors: [],
       },
       {
         className: 'text-indigo-200',
-        group: 'base',
-        rule: { n: 'text-indigo-200', v: [], i: false, m: null },
         declarations: [['color', 'rgba(199,210,254,1)']],
+        important: false,
+        precedence: 805306368,
+        selectors: [],
       },
     ]);
   });

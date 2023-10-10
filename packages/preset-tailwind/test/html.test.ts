@@ -4,6 +4,7 @@ import { presetTailwind } from '../src';
 
 install(
   defineConfig({
+    mode: 'web',
     presets: [presetTailwind()],
   }),
 );

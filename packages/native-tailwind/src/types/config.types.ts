@@ -119,6 +119,7 @@ export interface ThemeContext<Theme extends __Theme__ = __Theme__> {
   /** Allows to resolve theme values */
   colors: Record<string, string>;
   breakpoints: Exclude<__Theme__['screens'], undefined>;
+  mode: TailwindConfig['mode'];
   /** resolves a rule */
   r: (value: ParsedRule) => RuleResult;
   v: (value: string) => VariantResult;

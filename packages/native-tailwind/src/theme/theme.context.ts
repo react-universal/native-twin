@@ -26,6 +26,7 @@ interface VariantHandlerFn<Theme extends __Theme__ = __Theme__> {
 export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
+  mode,
   variants = [],
 }: TailwindConfig<Theme>): ThemeContext<Theme> {
   const variantCache = new Map<string, MaybeArray<string>>();
@@ -46,6 +47,10 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
 
     get breakpoints() {
       return Object.assign(themeConfig.screens ?? {}, themeConfig.extend?.screens);
+    },
+
+    get mode() {
+      return mode;
     },
 
     v(value) {

@@ -10,6 +10,7 @@ import {
 
 setup(
   defineConfig({
+    mode: 'web',
     rules: [
       matchThemeColor('bg-', 'backgroundColor'),
       matchThemeValue('p', 'spacing', 'padding', {

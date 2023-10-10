@@ -7,6 +7,7 @@ import {
   SheetInteractionState,
 } from '@universal-labs/css';
 import {
+  getRuleSelectorGroup,
   parseCssValue,
   SheetEntry,
   SheetEntryDeclaration,
@@ -65,16 +66,14 @@ export function createComponentSheet(entries: SheetEntry[], context: StyledConte
 function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
   return entries.reduce(
     (prev, current) => {
-      const validRule = isApplicativeRule(current.conditions, context);
+      const validRule = isApplicativeRule(current.selectors, context);
       if (!validRule) return prev;
       let nextDecl = composeDeclarations(current.declarations, context);
-      if (nextDecl.transform && prev[current.group].transform) {
-        nextDecl.transform = [
-          ...(prev[current.group].transform as any),
-          ...nextDecl.transform,
-        ];
+      const group = getRuleSelectorGroup(current.selectors);
+      if (nextDecl.transform && prev[group].transform) {
+        nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
       }
-      Object.assign(prev[current.group], nextDecl);
+      Object.assign(prev[group], nextDecl);
       return prev;
     },
     {
