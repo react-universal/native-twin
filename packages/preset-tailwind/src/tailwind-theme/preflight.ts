@@ -13,7 +13,7 @@ export const preflight: Preflight = {
     boxSizing: 'border-box' /* 1 */,
     borderWidth: '0' /* 2 */,
     borderStyle: 'solid' /* 2 */,
-    borderColor: 'current' /* 2 */,
+    borderColor: 'currentColor' /* 2 */,
   },
 
   '::before,::after': { '--tw-content': "''" },

@@ -130,9 +130,6 @@ export interface __Theme__ {
     maxWidth?: Record<string, string>;
   };
   // vars
-  /** Used to generate CSS variables placeholder in preflight */
-  preflightRoot?: MaybeArray<string>;
-  preflightBase?: Record<string, string | number>;
   zIndex?: Record<string, string>;
 }
 
