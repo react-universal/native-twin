@@ -45,6 +45,10 @@
       "path": "../examples/next-app"
     },
     {
+      "name": "next-app-dir",
+      "path": "../examples/next-app-dir"
+    },
+    {
       "name": "docs-site",
       "path": "../apps/site"
     }
