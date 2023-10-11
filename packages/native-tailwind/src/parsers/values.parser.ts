@@ -1,6 +1,7 @@
 import type { FlexStyle } from 'react-native';
 import * as P from '@universal-labs/arc-parser';
-import { getPropertyValueType } from '@universal-labs/css';
+import { getPropertyValueType, unitlessCssProps } from '@universal-labs/css';
+import { hasOwnProperty } from '../utils/helpers';
 
 export const parseCssValue = (
   prop: string,
@@ -11,6 +12,12 @@ export const parseCssValue = (
     deviceWidth: number;
   },
 ) => {
+  const isUnitLess = !prop.includes('flex') && hasOwnProperty.call(unitlessCssProps, prop);
+  if (isUnitLess) {
+    const data = parseUnitlessValue.run(value);
+    if (!data.isError) return data.result;
+    return value;
+  }
   const type = getPropertyValueType(prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
   if (type == 'DIMENSION') {
     const data = ParseDimensionWithUnits(context).run(value);
@@ -24,6 +31,8 @@ export const parseCssValue = (
   }
   return value;
 };
+
+const parseUnitlessValue = P.float;
 
 export const parseDeclarationUnit = P.choice([
   P.literal('px'),

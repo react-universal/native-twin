@@ -5,6 +5,13 @@ import type { ParsedRule } from '../types/tailwind.types';
 import { convert } from '../utils/theme-utils';
 import { parsedRuleToClassName } from './ruleToClassName';
 
+/**
+ * Converts a parsed rule to a sheet entry based on the given context.
+ *
+ * @param {ParsedRule} rule - The parsed rule to convert.
+ * @param {ThemeContext} context - The context in which the conversion is happening.
+ * @return {SheetEntry} The converted sheet entry.
+ */
 export function parsedRuleToEntry(rule: ParsedRule, context: ThemeContext): SheetEntry {
   if (rule.n == 'group') {
     return {
@@ -15,8 +22,11 @@ export function parsedRuleToEntry(rule: ParsedRule, context: ThemeContext): Shee
       important: rule.i,
     };
   }
-  if (context.mode == 'web') {
-    if (rule.v.includes('ios') || rule.v.includes('android') || rule.v.includes('native')) {
+  if (context.mode === 'web') {
+    if (
+      (rule.v.includes('ios') || rule.v.includes('android') || rule.v.includes('native')) &&
+      !rule.v.includes('web')
+    ) {
       return {
         className: parsedRuleToClassName(rule),
         declarations: [],

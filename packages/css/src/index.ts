@@ -1,8 +1,30 @@
 // CONSTANTS
-export * from './constants/empties';
-export * from './constants/pseudo.constants';
-export * from './constants/mappings';
-export * from './constants/simplePseudos';
+export {
+  EMPTY_ARRAY,
+  EMPTY_COMPONENT_SHEET,
+  EMPTY_OBJECT,
+  defaultGroupState,
+} from './constants/empties';
+export {
+  AppearancePseudoSelectors,
+  ChildPseudoSelectors,
+  GroupInteractionPseudoSelectors,
+  InteractionPseudoSelectors,
+  PlatformPseudoSelectors,
+  type ValidAppearancePseudoSelector,
+  type ValidChildPseudoSelector,
+  type ValidGroupPseudoSelector,
+  type ValidInteractionPseudoSelector,
+  type ValidPlatformInteractionPseudoSelector,
+  type ValidPlatformPseudoSelector,
+} from './constants/pseudo.constants';
+export { cornerMap, directionMap, globalKeywords } from './constants/mappings';
+export {
+  type SimplePseudos,
+  simplePseudoLookup,
+  simplePseudos,
+} from './constants/simplePseudos';
+export { unitlessCssProps } from './constants/css.unitless';
 
 // CONVERT
 export { toCamelCase } from './convert/toCamelCase';

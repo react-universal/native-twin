@@ -21,12 +21,6 @@ export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   return 'base';
 }
 
-/**
- * @internal
- * @param screen
- * @param prefix
- * @returns
- */
 export function mql(screen: MaybeArray<ScreenValue>, prefix = '@media '): string {
   // if (!screen) return '';
   return (
