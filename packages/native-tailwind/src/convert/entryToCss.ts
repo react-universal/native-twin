@@ -58,42 +58,9 @@ export function sheetEntryDeclarationsToCss(
     }
     if (Array.isArray(d.value)) {
       if (d.prop === 'transform') {
-        const hasTransform = body.find((x) => x[0] === 'transform');
-        const declValue = d.value.reduce((prev, current) => {
-          if (current.prop === 'translate') {
-            prev += `translate(${current.value}, ${current.value})`;
-          }
-          if (current.prop === 'translateX') {
-            prev += `translateX(${current.value})`;
-          }
-          if (current.prop === 'translateY') {
-            prev += `translateY(${current.value})`;
-          }
-          if (current.prop === 'skew') {
-            prev += `skew(${current.value}, ${current.value})`;
-          }
-          if (current.prop === 'skewX') {
-            prev += `skewX(${current.value}, ${current.value})`;
-          }
-          if (current.prop === 'skewY') {
-            prev += `skewY(${current.value}, ${current.value})`;
-          }
-          if (current.prop === 'scale') {
-            prev += `scale(${current.value})`;
-          }
-          if (current.prop === 'scaleX') {
-            prev += `scaleX(${current.value}, ${current.value})`;
-          }
-          if (current.prop === 'scaleY') {
-            prev += `scaleY(${current.value}, ${current.value})`;
-          }
-          return prev;
-        }, '');
-        if (hasTransform) {
-          hasTransform[1] = `${hasTransform[1]} ${declValue}`;
-        } else {
-          body.push(['transform', declValue]);
-        }
+        const transformValue = rnTransformToCss(d.value);
+        body.push(...transformValue);
+        body.push(['transform', 'var(--tw-transform)']);
       }
     }
     if (typeof d.value == 'string') {
@@ -107,4 +74,71 @@ export function declarationToCss(entries: [string, string][], important = false)
   return entries
     .flatMap((x) => `${toHyphenCase(x[0])}:${x[1]}${important ? ' !important' : ''};`)
     .join('');
+}
+
+export function rnTransformToCss(transform: SheetEntryDeclaration[]): [string, any][] {
+  const value = transform.flatMap((current): [string, any][] => {
+    if (current.prop === 'translate') {
+      return [
+        ['--tw-translate-x', current.value],
+        ['--tw-translate-y', current.value],
+      ];
+      // prev += `--tw-translate-x=${current.value};--tw-translate-y=${current.value};`;
+      // prev += `translate(${current.value}, ${current.value})`;
+    }
+    if (current.prop === 'translateX') {
+      // prev += `--tw-translate-x=${current.value};`;
+      // prev += `translateX(${current.value})`;
+      return [['--tw-translate-x', current.value]];
+    }
+    if (current.prop === 'translateY') {
+      // prev += `--tw-translate-y=${current.value};`;
+      // prev += `translateY(${current.value})`;
+      return [['--tw-translate-y', current.value]];
+    }
+    if (current.prop === 'skew') {
+      return [
+        ['--tw-skew-x', current.value],
+        ['--tw-skew-y', current.value],
+      ];
+      // prev += `--tw-skew-x=${current.value};--tw-skew-y=${current.value};`;
+      // prev += `skew(${current.value}, ${current.value})`;
+    }
+    if (current.prop === 'skewX') {
+      return [['--tw-skew-x', current.value]];
+      // prev += `--tw-skew-x=${current.value};`;
+      // prev += `skewX(${current.value}, ${current.value})`;
+    }
+    if (current.prop === 'skewY') {
+      return [['--tw-skew-y', current.value]];
+      // prev += `--tw-skew-y=${current.value};`;
+      // prev += `skewY(${current.value}, ${current.value})`;
+    }
+    if (current.prop === 'scale') {
+      return [
+        ['--tw-scale-x', current.value],
+        ['--tw-scale-y', current.value],
+      ];
+      // prev += `--tw-scale-x=${current.value};--tw-scale-y=${current.value};`;
+      // prev += `scale(${current.value})`;
+    }
+    if (current.prop === 'scaleX') {
+      return [['--tw-scale-x', current.value]];
+      // prev += `--tw-scale-x=${current.value};`;
+      // prev += `scaleX(${current.value}, ${current.value})`;
+    }
+    if (current.prop === 'scaleY') {
+      return [['--tw-scale-y', current.value]];
+      // prev += `--tw-scale-y=${current.value};`;
+      // prev += `scaleY(${current.value}, ${current.value})`;
+    }
+    if (current.prop === 'rotate') {
+      return [['--tw-rotate', current.value]];
+      // prev += `--tw-scale-y=${current.value};`;
+      // prev += `scaleY(${current.value}, ${current.value})`;
+    }
+    return [];
+  });
+
+  return value;
 }

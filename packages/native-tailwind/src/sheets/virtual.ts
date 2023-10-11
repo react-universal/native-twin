@@ -1,4 +1,5 @@
-import type { Sheet, SheetEntry } from '../types/css.types';
+import { Layer } from '@universal-labs/css';
+import type { Sheet, SheetEntry, SheetEntryDeclaration } from '../types/css.types';
 import { noop } from '../utils/helpers';
 
 export function createVirtualSheet(): Sheet<SheetEntry[]> {
@@ -29,8 +30,27 @@ export function createVirtualSheet(): Sheet<SheetEntry[]> {
         target.splice(0, target.length, ...rules);
       };
     },
-    insertPreflight() {
-      return [];
+    insertPreflight(data) {
+      const nodes: string[] = [];
+      for (const p of Object.entries(data)) {
+        const className = p[0];
+        const declarations: SheetEntryDeclaration[] = [];
+        for (const d of Object.entries(p[1])) {
+          declarations.push({
+            prop: d[0],
+            value: d[1] as any,
+          });
+        }
+        target.push({
+          className: className,
+          declarations,
+          important: false,
+          precedence: Layer.b,
+          selectors: [],
+        });
+      }
+
+      return nodes;
     },
     resume: noop,
   };

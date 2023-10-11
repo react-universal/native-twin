@@ -67,7 +67,19 @@ export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> 
         }
         const current = `${className}{${declarations.join(';')}}`;
         nodes.push(current);
-        target.insertRule(current, 0);
+        try {
+          target.insertRule(current, 0);
+        } catch (error) {
+          target.insertRule(':root{}', 0);
+
+          // Some thrown errors are because of specific pseudo classes
+          // lets filter them to prevent unnecessary warnings
+          // ::-moz-focus-inner
+          // :-moz-focus-ring
+          if (!/:-[mwo]/.test(className)) {
+            warn((error as Error).message, 'TW_INVALID_CSS', className);
+          }
+        }
       }
 
       return nodes;

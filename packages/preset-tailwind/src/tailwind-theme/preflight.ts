@@ -5,6 +5,32 @@ import type { Preflight } from '@universal-labs/native-twin';
 import { fontFamily } from './font';
 
 export const preflight: Preflight = {
+  '*,::before,::after ': {
+    '--tw-translate-x': '0',
+    '--tw-translate-y': '0',
+    '--tw-rotate': '0',
+    '--tw-skew-x': '0',
+    '--tw-skew-y': '0',
+    '--tw-scale-x': '1',
+    '--tw-scale-y': '1',
+    '--tw-transform': `translateX(var(--tw-translate-x))
+    translateY(var(--tw-translate-y)) rotate(var(--tw-rotate))
+    skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
+    scaleY(var(--tw-scale-y))`,
+  },
+  '::backdrop': {
+    '--tw-translate-x': '0',
+    '--tw-translate-y': '0',
+    '--tw-rotate': '0',
+    '--tw-skew-x': '0',
+    '--tw-skew-y': '0',
+    '--tw-scale-x': '1',
+    '--tw-scale-y': '1',
+    '--tw-transform': `translateX(var(--tw-translate-x))
+    translateY(var(--tw-translate-y)) rotate(var(--tw-rotate))
+    skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
+    scaleY(var(--tw-scale-y))`,
+  },
   /*
     1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
     2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
