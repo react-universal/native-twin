@@ -38,8 +38,6 @@ export function createTailwind(
   const context = createThemeContext<__Theme__>(config);
   let cache = new Map<string, SheetEntry[]>();
   const insertedRules = new Set<string>();
-  // An array of precedence by index within the sheet
-  // always sorted
   let sortedPrecedences: SheetEntry[] = [];
 
   const runtime = Object.defineProperties(
@@ -81,6 +79,8 @@ export function createTailwind(
       clear() {
         sheet.clear();
         cache = new Map();
+        insertedRules.clear();
+        sortedPrecedences = [];
       },
       destroy() {
         this.clear();

@@ -6,13 +6,13 @@ import multiple from 'vite-plugin-multiple';
 
 export default defineConfig({
   plugins: [
-    multiple([
-      {
-        name: 'web',
-        config: 'vite.config.web.ts',
-        command: 'build',
-      },
-    ]),
+    // multiple([
+    //   {
+    //     name: 'web',
+    //     config: 'vite.config.web.ts',
+    //     command: 'build',
+    //   },
+    // ]),
     // Plugin for react related libs
     react(),
     // Plugin for .d.ts files

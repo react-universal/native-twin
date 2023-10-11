@@ -26,7 +26,7 @@ export { defineConfig } from './config/define-config';
 /** THEME */
 export { createThemeContext } from './theme/theme.context';
 export { createThemeFunction } from './theme/theme.function';
-export { matchCssObject, matchThemeColor, matchThemeValue } from './theme/rule-resolver';
+export { matchCssObject, matchThemeColor, matchThemeValue } from './theme/theme.match';
 
 /** UTILS */
 export { interleave, interpolate } from './utils/string-utils';

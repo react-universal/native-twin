@@ -1,13 +1,8 @@
-import { type ComponentType, forwardRef, type ReactHTML } from 'react';
-import { Platform, View, type ViewProps } from 'react-native';
-// @ts-expect-error
-import { unstable_createElement } from 'react-native-web';
+import { type ComponentType, forwardRef } from 'react';
+import { View, type ViewProps } from 'react-native';
 
-function createView(tag: keyof ReactHTML): ComponentType<ViewProps> {
+function createView(tag: string): ComponentType<ViewProps> {
   const Element = forwardRef((props: ViewProps, ref: any) => {
-    if (Platform.OS === 'web') {
-      return unstable_createElement(tag, { ...props, ref });
-    }
     return <View {...props} ref={ref} />;
   }) as ComponentType<ViewProps>;
 
@@ -15,6 +10,6 @@ function createView(tag: keyof ReactHTML): ComponentType<ViewProps> {
   return Element;
 }
 
-const Nav = createView('nav');
+const Nav = createView('Nav');
 
 export default Nav;

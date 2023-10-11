@@ -20,15 +20,24 @@ export function useComponentRegistry({
 
   const groupScope = currentGroupID === componentID ? componentID : currentGroupID;
 
-  const component = useSyncExternalStore(globalStore.subscribe, () =>
-    registerComponent({
-      groupID: isGroupParent ? componentID : currentGroupID,
-      id: componentID,
-    }),
+  const component = useSyncExternalStore(
+    globalStore.subscribe,
+    () =>
+      registerComponent({
+        groupID: isGroupParent ? componentID : currentGroupID,
+        id: componentID,
+      }),
+    () =>
+      registerComponent({
+        groupID: isGroupParent ? componentID : currentGroupID,
+        id: componentID,
+      }),
   );
 
-  const parentComponent = useSyncExternalStore(globalStore.subscribe, () =>
-    getParentComponentState(groupScope),
+  const parentComponent = useSyncExternalStore(
+    globalStore.subscribe,
+    () => getParentComponentState(groupScope),
+    () => getParentComponentState(groupScope),
   );
   return { component, parentComponent, currentGroupID };
 }
