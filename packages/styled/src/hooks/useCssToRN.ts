@@ -90,17 +90,19 @@ function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
 
 function composeDeclarations(declarations: SheetEntryDeclaration[], context: StyledContext) {
   return declarations.reduce((prev, current) => {
-    let value: any = current[1];
-    if (Array.isArray(current[1])) {
+    let value: any = current.value;
+    if (Array.isArray(current.value)) {
       value = [];
-      for (const t of current[1]) {
-        value.push({
-          [t[0]]: parseCssValue(t[0], t[1], {
-            rem: tw.config.root?.rem ?? context.units.rem,
-            deviceHeight: context.deviceHeight,
-            deviceWidth: context.deviceWidth,
-          }),
-        });
+      for (const t of current.value) {
+        if (typeof t.value == 'string') {
+          value.push({
+            [t.prop]: parseCssValue(t.prop, t.value, {
+              rem: tw.config.root?.rem ?? context.units.rem,
+              deviceHeight: context.deviceHeight,
+              deviceWidth: context.deviceWidth,
+            }),
+          });
+        }
       }
       Object.assign(prev, {
         transform: [...(prev['transform'] ?? []), ...value],
@@ -108,7 +110,7 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
       return prev;
     }
     if (typeof value == 'string') {
-      value = parseCssValue(current[0], value, {
+      value = parseCssValue(current.prop, value, {
         rem: tw.config.root?.rem ?? context.units.rem,
         deviceHeight: context.deviceHeight,
         deviceWidth: context.deviceWidth,
@@ -118,7 +120,7 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
       Object.assign(prev, value);
     } else {
       Object.assign(prev, {
-        [current[0]]: value,
+        [current.prop]: value,
       });
     }
 

@@ -18,6 +18,7 @@ setup(
         feature: 'edges',
         prefix: 'padding',
       }),
+      matchThemeValue('shadow-', 'boxShadow', 'shadowRadius'),
     ],
     theme: {
       screens: {
@@ -30,6 +31,15 @@ setup(
       spacing: {
         1: '1rem',
         2: '2rem',
+      },
+      boxShadow: {
+        sm: {
+          shadowOffset: { width: 0, height: 1 },
+          shadowColor: 'rgb(0,0,0)',
+          shadowRadius: 3,
+          shadowOpacity: 0.3,
+          elevation: 1,
+        },
       },
     },
   }),

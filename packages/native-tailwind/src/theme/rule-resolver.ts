@@ -48,10 +48,13 @@ export function matchThemeColor(
             },
             match.suffixes,
           )) {
-            declarations.push([key, color]);
+            declarations.push({
+              prop: key,
+              value: color,
+            });
           }
         } else {
-          declarations.push([property, color]);
+          declarations.push({ prop: property, value: color });
         }
         return {
           className,
@@ -103,12 +106,18 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
 
       // }
       for (const current of properties) {
-        declarations.push([current, maybeNegative(match.negative, value)]);
+        declarations.push({
+          prop: current,
+          value: maybeNegative(match.negative, value),
+        });
       }
       if (property == 'transform') {
         const entries = [...declarations];
         declarations.length = 0;
-        declarations.push(['transform', entries as any]);
+        declarations.push({
+          prop: 'transform',
+          value: entries,
+        });
       }
       return {
         className: parsedRuleToClassName(parsedRule),

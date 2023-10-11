@@ -14,7 +14,7 @@ const IndexPage = () => {
   return (
     <View className='items-center justify-center bg-gray-900 flex-1'>
       <View className='bg-slate-300 px-8 justify-center ios:items-center py-5 rounded-xl'>
-        <H1 className='text(4xl group-hover:(blue-200) sm:5xl) font-bold -translate-1 first-letter:mx-10'>
+        <H1 className='text(4xl group-hover:(blue-200) sm:5xl) font-bold -translate-1 scale-50 first-letter:mx-10'>
           Card title
         </H1>
         <View>

@@ -13,8 +13,14 @@ export const outlineRules: Rule<__Theme__>[] = [
     return {
       className: parsedRuleToClassName(rule),
       declarations: [
-        ['outline', '2px solid transparent'],
-        ['outlineOffset', '2px'],
+        {
+          prop: 'outline',
+          value: '2px solid transparent',
+        },
+        {
+          prop: 'outlineOffset',
+          value: '2px',
+        },
       ],
       selectors: [],
       conditions: rule.v,
@@ -27,7 +33,12 @@ export const outlineRules: Rule<__Theme__>[] = [
 export const appearanceRules: Rule[] = [
   matchCssObject('appearance-none', (match, ctx, rule) => ({
     className: parsedRuleToClassName(rule),
-    declarations: [['appearance', 'none']],
+    declarations: [
+      {
+        prop: 'appearance',
+        value: 'none',
+      },
+    ],
     conditions: rule.v,
     selectors: [],
     important: rule.i,

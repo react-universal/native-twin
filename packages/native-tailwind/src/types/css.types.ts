@@ -17,9 +17,10 @@ export type SheetEntryTransformDeclaration = [
   transform: [transformProp: string, value: string][],
 ];
 
-export type SheetEntryDeclaration =
-  | [prop: string, value: string | AnyStyle]
-  | SheetEntryTransformDeclaration;
+export type SheetEntryDeclaration = {
+  prop: string;
+  value: string | AnyStyle | SheetEntryDeclaration[];
+};
 
 export interface SheetEntry {
   className: string;

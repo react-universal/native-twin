@@ -5,7 +5,12 @@ import { parsedRuleToClassName } from '@universal-labs/native-twin';
 export const layoutThemeRules: Rule[] = [
   matchCssObject('hidden', (match, ctx, rule) => ({
     className: parsedRuleToClassName(rule),
-    declarations: [['display', 'none']],
+    declarations: [
+      {
+        prop: 'display',
+        value: 'none',
+      },
+    ],
     conditions: rule.v,
     important: rule.i,
     precedence: rule.p,

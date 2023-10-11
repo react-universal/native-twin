@@ -5,7 +5,12 @@ import { parsedRuleToClassName } from '@universal-labs/native-twin';
 export const flexRules: Rule[] = [
   matchCssObject('flex', (match, ctx, rule) => ({
     className: parsedRuleToClassName(rule),
-    declarations: [['display', 'flex']],
+    declarations: [
+      {
+        prop: 'display',
+        value: 'flex',
+      },
+    ],
     conditions: rule.v,
     important: rule.i,
     precedence: rule.p,

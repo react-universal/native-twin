@@ -1,4 +1,4 @@
-import { escapeSelector, toHyphenCase } from '@universal-labs/css';
+import { escapeSelector, toColorValue, toHyphenCase } from '@universal-labs/css';
 import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
 import { asArray } from '../utils/helpers';
 
@@ -42,14 +42,62 @@ export function sheetEntryDeclarationsToCss(
   if (!decls) return '';
   const body: [string, string][] = [];
   for (const d of decls) {
-    if (typeof d[1] == 'object' && !Array.isArray(d[1])) {
-      body.push(...Object.entries(d[1]));
+    if (typeof d.value == 'object' && !Array.isArray(d.value)) {
+      if (d.prop === 'shadowRadius') {
+        body.push([
+          'boxShadow',
+          `${d.value.shadowOffset?.width ?? 0}px ${d.value.shadowOffset?.height ?? 1}px ${
+            d.value.shadowRadius ?? 5
+          }px ${toColorValue(String(d.value.shadowColor) ?? 'rgb(0,0,0)', {
+            opacityValue: String(d.value.shadowOpacity) ?? '1',
+          })}`,
+        ]);
+        continue;
+      }
+      body.push(...Object.entries(d.value));
     }
-    if (Array.isArray(d[1])) {
-      body.push(...d[1]);
+    if (Array.isArray(d.value)) {
+      if (d.prop === 'transform') {
+        const hasTransform = body.find((x) => x[0] === 'transform');
+        const declValue = d.value.reduce((prev, current) => {
+          if (current.prop === 'translate') {
+            prev += `translate(${current.value}, ${current.value})`;
+          }
+          if (current.prop === 'translateX') {
+            prev += `translateX(${current.value})`;
+          }
+          if (current.prop === 'translateY') {
+            prev += `translateY(${current.value})`;
+          }
+          if (current.prop === 'skew') {
+            prev += `skew(${current.value}, ${current.value})`;
+          }
+          if (current.prop === 'skewX') {
+            prev += `skewX(${current.value}, ${current.value})`;
+          }
+          if (current.prop === 'skewY') {
+            prev += `skewY(${current.value}, ${current.value})`;
+          }
+          if (current.prop === 'scale') {
+            prev += `scale(${current.value})`;
+          }
+          if (current.prop === 'scaleX') {
+            prev += `scaleX(${current.value}, ${current.value})`;
+          }
+          if (current.prop === 'scaleY') {
+            prev += `scaleY(${current.value}, ${current.value})`;
+          }
+          return prev;
+        }, '');
+        if (hasTransform) {
+          hasTransform[1] = `${hasTransform[1]} ${declValue}`;
+        } else {
+          body.push(['transform', declValue]);
+        }
+      }
     }
-    if (typeof d[1] == 'string') {
-      body.push([d[0], d[1]]);
+    if (typeof d.value == 'string') {
+      body.push([d.prop, d.value]);
     }
   }
   return declarationToCss(body, important);
