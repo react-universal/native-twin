@@ -29,6 +29,10 @@
       "path": "../packages/arc-parser"
     },
     {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },
