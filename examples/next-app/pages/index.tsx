@@ -1,10 +1,4 @@
-import styled from '@universal-labs/styled';
-
-// import { GetServerSidePropsResult } from 'next';
-
-const H1 = styled.H1``;
-const P = styled.P``;
-const View = styled.View``;
+import { H1, P, View } from '@universal-labs/styled';
 
 // export function getServerSideProps(): GetServerSidePropsResult<any> {
 //   return { props: { asd: 1 } };
