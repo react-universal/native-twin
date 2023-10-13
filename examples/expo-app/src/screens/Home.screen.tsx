@@ -1,14 +1,5 @@
 import { useState } from 'react';
-import styled from '@universal-labs/styled';
-import {
-  FullView,
-  H1,
-  H2,
-  Image,
-  Pressable,
-  TextInput,
-  View,
-} from '../components/common/View';
+import { H1, H2, Image, Pressable, TextInput, View } from '@universal-labs/styled';
 
 // css`bg`;
 // styled('')``
@@ -19,25 +10,24 @@ const TextField = () => {
     <TextInput
       value={text}
       onChangeText={(data) => setText(data)}
-      className='bg-pink-400 focus:bg-white'
+      className='bg-pink-400 focus:bg-white text(base black 5xl md:6xl)'
     />
   );
 };
 
 const testImage = require('../../assets/favicon.png');
 
-const ExoticView = styled(View)`
-    flex-1
-    items-center justify-center md:border-3
-    hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))
-    ios:(p-14 bg-rose-200 border-white border-2)
-    android:(p-14 border-green-200 border-2 bg-gray-50)
-`;
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <FullView>
-      <ExoticView>
+    <View className='flex-1'>
+      <View
+        className={`flex-1
+    items-center justify-center md:border-3
+    hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))
+    ios:(p-14 bg-rose-200 border-white border-2)
+    android:(p-14 border-green-200 border-2 bg-gray-50)`}
+      >
         <View className='bg-white shadow-md rounded-xl p-2'>
           <H1
             className={`
@@ -48,7 +38,7 @@ function HomeScreen() {
             H1 - 1
           </H1>
         </View>
-      </ExoticView>
+      </View>
       <View
         className={`
           group
@@ -93,7 +83,7 @@ function HomeScreen() {
           </H2>
         </View>
       </View>
-    </FullView>
+    </View>
   );
 }
 

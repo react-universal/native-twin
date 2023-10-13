@@ -6,17 +6,17 @@
     [
       "@universal-labs/styled",
       "@universal-labs/css",
-      "@universal-labs/native-tw",
-      "@universal-labs/native-tw-nextjs",
-      "@universal-labs/vscode",
+      "@universal-labs/native-twin",
+      "@universal-labs/native-twin-nextjs",
+      "@universal-labs/preset-tailwind",
       "@universal-labs/arc-parser",
-      "@universal-labs/ts-styled-plugin-tw"
+      "@universal-labs/native-twin-ts-plugin"
     ]
   ],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-app", "expo-app", "site"],
+  "ignore": ["next-app", "expo-app", "site", "@universal-labs/native-twin-vscode"],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }

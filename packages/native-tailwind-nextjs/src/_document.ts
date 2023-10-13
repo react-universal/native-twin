@@ -1,6 +1,6 @@
 /* eslint-env node */
 import { createElement, Fragment } from 'react';
-import { extract, tw } from '@universal-labs/native-twin';
+import { extract } from '@universal-labs/native-twin';
 import type { DocumentContext, DocumentInitialProps } from 'next/document';
 import Document from 'next/document';
 
@@ -30,13 +30,13 @@ function installDocument<Component extends typeof Document = typeof Document>(
       ctx.defaultGetInitialProps = async (ctx, options: { nonce?: string } = {}) => {
         const props = await defaultGetInitialProps(ctx, options);
 
-        const { html, css } = extract(props.html, tw);
+        const { html, css } = extract(props.html);
 
         const styles = createElement(
           Fragment,
           null,
           createElement('style', {
-            'data-native-tailwind': '',
+            'data-native-twin': '',
             nonce: options.nonce,
             dangerouslySetInnerHTML: {
               __html: css,

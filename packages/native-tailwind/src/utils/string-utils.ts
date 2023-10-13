@@ -1,4 +1,3 @@
-import type { ParsedRule } from '@universal-labs/css';
 import type { CSSValue } from '../types/css.types';
 
 export function interleave<Interpolations>(
@@ -56,14 +55,32 @@ export function toString(value: CSSValue): string {
   return result;
 }
 
-export function toClassName(rule: ParsedRule): string {
-  let modifier = '';
-  if (rule.m) {
-    modifier = `/${rule.m.value}`;
+export function normalize(value: string): string {
+  // Keep raw strings if it starts with `url(`
+  if (value.includes('url(')) {
+    return value.replace(
+      /(.*?)(url\(.*?\))(.*?)/g,
+      (_, before = '', url, after = '') => normalize(before) + url + normalize(after),
+    );
   }
-  return `${[...rule.v, (rule.i ? '!' : '') + rule.n + modifier].join(':')}`;
-}
 
-export function format(rules: ParsedRule[]): string {
-  return rules.map(toClassName).join(' ');
+  return (
+    value
+      // Convert `_` to ` `, except for escaped underscores `\_`
+      .replace(
+        /(^|[^\\])_+/g,
+        (fullMatch, characterBefore: string) =>
+          characterBefore + ' '.repeat(fullMatch.length - characterBefore.length),
+      )
+      .replace(/\\_/g, '_')
+
+      // Add spaces around operators inside math functions like calc() that do not follow an operator
+      // or '('.
+      .replace(/(calc|min|max|clamp)\(.+\)/g, (match) =>
+        match.replace(
+          /(-?\d*\.?\d(?!\b-.+[,)](?![^+\-/*])\D)(?:%|[a-z]+)?|\))([+\-/*])/g,
+          '$1 $2 ',
+        ),
+      )
+  );
 }

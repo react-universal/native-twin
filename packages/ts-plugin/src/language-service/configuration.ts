@@ -8,7 +8,7 @@ export interface TailwindPluginConfiguration {
 }
 
 export class ConfigurationManager {
-  static readonly pluginName = 'ts-styled-plugin-tw';
+  static readonly pluginName = 'native-twin-ts-plugin';
   private static readonly defaultConfiguration: TailwindPluginConfiguration = {
     tags: ['tw', 'apply', 'css', 'styled', 'variants'],
     attributes: ['tw', 'class', 'className', 'variants'],

@@ -3,6 +3,8 @@ export type MaybeArray<T> = T | T[];
 
 export type StringLike = { toString(): string } & string;
 
+export type ArrayType<T> = T extends (infer Item)[] ? Item : T;
+
 /** @experimental */
 export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
   k: infer I,

@@ -1,0 +1,36 @@
+{
+  "name": "@universal-labs/native-twin-babel",
+  "version": "1.0.0",
+  "description": "Native Twin babel plugin",
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "sideEffects": false,
+  "main": "build/index.cjs.js",
+  "module": "build/index.es.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build:libs": "vite build",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "vitest run",
+    "test:bench": "echo \"NO_TESTS\"",
+    "test:coverage": "echo \"NO_TESTS\"",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@universal-labs/arc-parser": "workspace:*",
+    "@universal-labs/css": "workspace:*",
+    "@universal-labs/native-twin": "workspace:*",
+    "@universal-labs/preset-tailwind": "workspace:*",
+    "@universal-labs/styled": "workspace:*"
+  },
+  "devDependencies": {
+    "@babel/plugin-syntax-jsx": "^7.22.5",
+    "@types/babel-plugin-syntax-jsx": "^6.18.0",
+    "@types/babel-traverse": "^6.25.8",
+    "@types/babel-types": "^7.0.12",
+    "@types/babel__core": "^7.20.2",
+    "babel-plugin-tester": "^11.0.4",
+    "babel-traverse": "^6.26.0",
+    "babel-types": "^6.26.0"
+  }
+}

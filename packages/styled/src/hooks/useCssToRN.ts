@@ -6,8 +6,13 @@ import {
   GetChildStylesArgs,
   SheetInteractionState,
 } from '@universal-labs/css';
-import { parseCssValue } from '@universal-labs/css';
-import { SheetEntry, SheetEntryDeclaration, tw } from '@universal-labs/native-twin';
+import {
+  getRuleSelectorGroup,
+  parseCssValue,
+  SheetEntry,
+  SheetEntryDeclaration,
+  tw,
+} from '@universal-labs/native-twin';
 import { StyledContext } from '../types/css.types';
 import { useStyledContext } from './useStyledContext';
 
@@ -28,7 +33,7 @@ export function createComponentSheet(entries: SheetEntry[], context: StyledConte
     getStyles,
     sheet,
     metadata: {
-      isGroupParent: entries.some((x) => x.rule.n == 'group'),
+      isGroupParent: entries.some((x) => x.className == 'group'),
       hasGroupEvents: Object.keys(sheet.group).length > 0,
       hasPointerEvents: Object.keys(sheet.pointer).length > 0,
     },
@@ -61,16 +66,14 @@ export function createComponentSheet(entries: SheetEntry[], context: StyledConte
 function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
   return entries.reduce(
     (prev, current) => {
-      const validRule = isApplicativeRule(current.rule.v, context);
+      const validRule = isApplicativeRule(current.selectors, context);
       if (!validRule) return prev;
       let nextDecl = composeDeclarations(current.declarations, context);
-      if (nextDecl.transform && prev[current.group].transform) {
-        nextDecl.transform = [
-          ...(prev[current.group].transform as any),
-          ...nextDecl.transform,
-        ];
+      const group = getRuleSelectorGroup(current.selectors);
+      if (nextDecl.transform && prev[group].transform) {
+        nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
       }
-      Object.assign(prev[current.group], nextDecl);
+      Object.assign(prev[group], nextDecl);
       return prev;
     },
     {
@@ -87,17 +90,19 @@ function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
 
 function composeDeclarations(declarations: SheetEntryDeclaration[], context: StyledContext) {
   return declarations.reduce((prev, current) => {
-    let value: any = current[1];
-    if (Array.isArray(current[1])) {
+    let value: any = current.value;
+    if (Array.isArray(current.value)) {
       value = [];
-      for (const t of current[1]) {
-        value.push({
-          [t[0]]: parseCssValue(t[0], t[1], {
-            rem: tw.config.root?.rem ?? context.units.rem,
-            deviceHeight: context.deviceHeight,
-            deviceWidth: context.deviceWidth,
-          }),
-        });
+      for (const t of current.value) {
+        if (typeof t.value == 'string') {
+          value.push({
+            [t.prop]: parseCssValue(t.prop, t.value, {
+              rem: tw.config.root?.rem ?? context.units.rem,
+              deviceHeight: context.deviceHeight,
+              deviceWidth: context.deviceWidth,
+            }),
+          });
+        }
       }
       Object.assign(prev, {
         transform: [...(prev['transform'] ?? []), ...value],
@@ -105,7 +110,7 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
       return prev;
     }
     if (typeof value == 'string') {
-      value = parseCssValue(current[0], value, {
+      value = parseCssValue(current.prop, value, {
         rem: tw.config.root?.rem ?? context.units.rem,
         deviceHeight: context.deviceHeight,
         deviceWidth: context.deviceWidth,
@@ -115,7 +120,7 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
       Object.assign(prev, value);
     } else {
       Object.assign(prev, {
-        [current[0]]: value,
+        [current.prop]: value,
       });
     }
 
@@ -126,8 +131,9 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
 const platformVariants = ['web', 'native', 'ios', 'android'];
 function isApplicativeRule(variants: string[], context: StyledContext) {
   if (variants.length == 0) return true;
-  const screens = tw.config.theme['screens'];
-  for (const v of variants) {
+  const screens = tw.theme('screens');
+  for (let v of variants) {
+    v = v.replace('&:', '');
     if (platformVariants.includes(v)) {
       if (v == 'web' && Platform.OS != 'web') return false;
       if (v == 'native' && Platform.OS == 'web') return false;
@@ -135,9 +141,10 @@ function isApplicativeRule(variants: string[], context: StyledContext) {
       if (v == 'android' && Platform.OS != 'android') return false;
     }
     if (v in screens) {
+      tw.theme('screens');
       const width = context.deviceWidth;
-      const value = screens[v];
-      if (typeof value == 'number' && width >= value) {
+      const value = screens[v].replace('px', '');
+      if (typeof value == 'string' && width >= Number(value)) {
         return false;
       }
       if (typeof value == 'object') {

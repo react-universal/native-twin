@@ -3,11 +3,11 @@ import { createExponentialUnits, createLinearUnits } from '@universal-labs/nativ
 
 // keep in ASC order: container.ts and breakpoints.ts need that order
 export const screens = {
-  sm: 640,
-  md: 768,
-  lg: 1024,
-  xl: 1280,
-  '2xl': 1536,
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1280px',
+  '2xl': '1536px',
 } satisfies __Theme__['screens'];
 
 export const opacity = {

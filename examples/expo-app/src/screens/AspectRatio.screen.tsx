@@ -1,4 +1,4 @@
-import { H1, H2, View } from '@universal-labs/primitives';
+import { H1, H2, View } from '@universal-labs/styled';
 
 const AspectRatio = () => {
   return (

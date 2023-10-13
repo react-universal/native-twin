@@ -1,8 +1,8 @@
-import { getSheet } from '../css/sheets';
-import { createTailwind } from '../tailwind';
-import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
+import { createTailwind } from '../native-twin';
+import { getSheet } from '../sheets/getSheet';
+import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { Sheet } from '../types/css.types';
-import type { RuntimeTW, __Theme__ } from '../types/theme.types';
+import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
 import { noop } from '../utils/helpers';
 import { observe } from './observe';
 
@@ -60,6 +60,22 @@ export let tw: RuntimeTW<any> = /* #__PURE__ */ new Proxy(
 
 export type SheetFactory<Target> = () => Sheet<Target>;
 
+export function setup<Theme extends __Theme__ = __Theme__, SheetTarget = unknown>(
+  config?: TailwindConfig<Theme>,
+  sheet?: Sheet<SheetTarget> | SheetFactory<SheetTarget>,
+  target?: HTMLElement,
+): RuntimeTW<Theme, SheetTarget>;
+
+export function setup<
+  Theme = __Theme__,
+  Presets extends Preset<any>[] = Preset[],
+  SheetTarget = unknown,
+>(
+  config?: TailwindUserConfig<Theme, Presets>,
+  sheet?: Sheet<SheetTarget> | SheetFactory<SheetTarget>,
+  target?: HTMLElement,
+): RuntimeTW<__Theme__ & ExtractThemes<Theme, Presets>, SheetTarget>;
+
 export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
   config: TailwindConfig<any> | TailwindUserConfig<any> = {},
   sheet: Sheet<Target> | SheetFactory<Target> = getSheet as SheetFactory<Target>,
@@ -69,10 +85,11 @@ export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
     active?.destroy();
   }
   // active = tw$ as RuntimeTW;
-  active = observe(
-    createTailwind(config as TailwindUserConfig, typeof sheet == 'function' ? sheet() : sheet),
-    target,
+  const instance = createTailwind(
+    config as TailwindUserConfig,
+    typeof sheet == 'function' ? sheet() : sheet,
   );
+  active = observe(instance, target);
 
   return active as unknown as RuntimeTW<Theme>;
 }

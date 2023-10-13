@@ -3,18 +3,13 @@
     {
       "name": "root",
       "path": ".."
+    },    
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
     },
     {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
-    },
-    {
-      "name": "next-app",
-      "path": "../examples/next-app"
-    },
-    
-    {
-      "name": "📦 @lib/tailwind",
+      "name": "📦 @lib/native-twin",
       "path": "../packages/native-tailwind"
     },
     {
@@ -30,12 +25,12 @@
       "path": "../packages/native-tailwind-nextjs"
     },
     {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
       "name": "📦 @lib/arc-parser",
       "path": "../packages/arc-parser"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
     },
     {
       "name": "📦 @lib/vscode",
@@ -44,6 +39,18 @@
     {
       "name": "📦 @lib/ts-plugin",
       "path": "../packages/ts-plugin"
+    },
+    {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-app",
+      "path": "../examples/next-app"
+    },
+    {
+      "name": "next-app-dir",
+      "path": "../examples/next-app-dir"
     },
     {
       "name": "docs-site",
@@ -72,11 +79,6 @@
       "sastan",
       "TRBL",
       "xytrbl"
-    ],
-    "workbench.colorCustomizations": {
-      "[Atom One Dark]": {
-        "editor.background": "#1F1F1F"
-      }
-    }
+    ]
   }
 }

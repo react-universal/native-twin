@@ -1,27 +1,9 @@
-import type {
-  SheetInteractionState,
-  AnyStyle,
-  FinalSheet,
-  GetChildStylesArgs,
-} from '@universal-labs/css';
-import type { TailwindConfig, ThemeFunction } from './config.types';
-import type { Sheet, SheetEntry } from './css.types';
-import type { MaybeArray, StringLike } from './util.types';
-
-export interface ComponentSheet {
-  getStyles: (input: SheetInteractionState) => AnyStyle;
-  getChildStyles: (data: GetChildStylesArgs) => AnyStyle;
-  metadata: {
-    isGroupParent: boolean;
-    hasPointerEvents: boolean;
-    hasGroupEvents: boolean;
-  };
-  sheet: FinalSheet;
-}
+import type { Preset, TailwindConfig, ThemeFunction } from './config.types';
+import type { SheetEntry } from './css.types';
+import type { ArrayType, MaybeArray, StringLike, UnionToIntersection } from './util.types';
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];
-  sheet: Sheet<Target>;
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
   readonly target: Target;
@@ -44,10 +26,10 @@ export type ThemeConfig<Theme extends object = object> = PartialTheme<Theme> & {
 };
 
 export type ScreenValue =
-  | number
-  | { raw: number }
-  | { min: number; max?: number }
-  | { min?: number; max: number };
+  | string
+  | { raw: string }
+  | { min: string; max?: string }
+  | { min?: string; max: string };
 
 export interface ThemeAnimation {
   keyframes?: Record<string, string>;
@@ -148,8 +130,36 @@ export interface __Theme__ {
     maxWidth?: Record<string, string>;
   };
   // vars
-  /** Used to generate CSS variables placeholder in preflight */
-  preflightRoot?: MaybeArray<string>;
-  preflightBase?: Record<string, string | number>;
   zIndex?: Record<string, string>;
 }
+
+export interface ThemeSectionResolverContext<Theme extends __Theme__ = __Theme__> {
+  readonly colors: Theme['colors'];
+
+  readonly theme: ThemeFunction<ExtractUserTheme<Theme>>;
+  /**
+   * No-op function as negated values are automatically inferred and do _not_ need to be in the theme.
+   */
+  readonly negative: (scale: Record<string, string>) => Record<string, string>;
+  readonly breakpoints: (
+    screens: Record<string, MaybeArray<ScreenValue>>,
+  ) => Record<string, string>;
+}
+
+export interface ThemeSectionResolver<Value, Theme extends __Theme__ = __Theme__> {
+  (context: ThemeSectionResolverContext<Theme>): Value;
+}
+
+export type ExtractTheme<T> = T extends Preset<infer Theme> ? Theme : T;
+
+export type ExtractUserTheme<T> = {
+  [key in keyof T]: key extends 'extend'
+    ? never
+    : T[key] extends ThemeSectionResolver<infer Value, T & __Theme__>
+    ? Value
+    : T[key];
+} & __Theme__;
+
+export type ExtractThemes<Theme, Presets extends Preset<any>[]> = UnionToIntersection<
+  ExtractTheme<ExtractUserTheme<Theme> | __Theme__ | ArrayType<Presets>>
+>;

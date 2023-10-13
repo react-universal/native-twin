@@ -1,14 +1,20 @@
 import { matchCssObject, matchThemeValue } from '@universal-labs/native-twin';
 import type { Rule } from '@universal-labs/native-twin';
-import { getRuleSelectorGroup } from '@universal-labs/native-twin';
-import { toClassName } from '@universal-labs/native-twin';
+import { parsedRuleToClassName } from '@universal-labs/native-twin';
 
 export const flexRules: Rule[] = [
   matchCssObject('flex', (match, ctx, rule) => ({
-    className: toClassName(rule),
-    declarations: [['display', 'flex']],
-    group: getRuleSelectorGroup(rule),
-    rule,
+    className: parsedRuleToClassName(rule),
+    declarations: [
+      {
+        prop: 'display',
+        value: 'flex',
+      },
+    ],
+    conditions: rule.v,
+    important: rule.i,
+    precedence: rule.p,
+    selectors: [],
   })),
   matchThemeValue('flex-', 'flex', 'flex'),
   matchThemeValue('flex-', 'flexDirection', 'flexDirection'),

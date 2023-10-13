@@ -1,6 +1,7 @@
 import type { Preset, __Theme__ } from '@universal-labs/native-twin';
 import { themeRules } from './tailwind-rules';
 import * as tailwindTheme from './tailwind-theme';
+import { preflight } from './tailwind-theme/preflight';
 
 export interface TailwindPresetBaseOptions {
   colors?: __Theme__['colors'];
@@ -8,7 +9,10 @@ export interface TailwindPresetBaseOptions {
   disablePreflight?: boolean | undefined;
 }
 
-export function presetTailwind({ colors }: TailwindPresetBaseOptions = {}): Preset<__Theme__> {
+export function presetTailwind({
+  colors,
+  disablePreflight,
+}: TailwindPresetBaseOptions = {}): Preset<__Theme__> {
   let userColors: __Theme__['colors'] = {};
   if (colors) {
     userColors = {
@@ -24,7 +28,7 @@ export function presetTailwind({ colors }: TailwindPresetBaseOptions = {}): Pres
   }
   return {
     // allow other preflight to run
-    // preflight: disablePreflight ? undefined : preflightBase,
+    preflight: disablePreflight ? undefined : preflight,
     theme: {
       ...tailwindTheme,
       ...tailwindTheme.theme,

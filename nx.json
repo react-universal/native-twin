@@ -11,7 +11,7 @@
     "default": {
       "runner": "nx-cloud",
       "options": {
-        "cacheableOperations": [],
+        "cacheableOperations": ["build:libs"],
         "accessToken": "ZDQ5MzNlNjAtODM2Ny00NGE5LWIzZDEtM2VlYmZmMGE3ZjQ4fHJlYWQtd3JpdGU="
       }
     }

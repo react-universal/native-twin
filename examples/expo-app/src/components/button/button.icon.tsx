@@ -13,7 +13,7 @@ interface IButtonIconProps extends PressableProps {
   size?: keyof typeof sizes;
 }
 
-const Pressable = styled.Pressable``;
+const Pressable = styled.Pressable;
 
 const sizes = {
   sm: '16',

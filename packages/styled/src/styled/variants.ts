@@ -29,42 +29,38 @@ type VariantsFnProps<T> = T extends ConfigSchema
 
 export const createVariants = <T>(config: VariantsConfig<T>) => {
   return (props?: VariantsFnProps<T>) => {
-    if (!config || !config?.variants || config.variants == null) {
+    if (!config || !config?.variants || config.variants === null) {
       let composed = config.base ?? '';
       if (props?.className) {
-        composed += `${composed == '' ? '' : ' '}${props.className}`;
+        composed += `${composed === '' ? '' : ' '}${props.className}`;
       }
       if (props?.tw) {
-        composed += `${composed == '' ? '' : ' '}${props.tw}`;
+        composed += `${composed === '' ? '' : ' '}${props.tw}`;
       }
       return composed.trim();
     }
     const { variants, defaultVariants } = config;
-    const getVariantClassNames = Object.keys(variants)
-      .map((variant: keyof typeof variants) => {
-        const variantProp = props?.[variant as keyof typeof props];
-        // @ts-expect-error
-        const defaultVariantProp = defaultVariants?.[variant];
+    let variantClassNames = config.base ?? '';
+    for (const v in variants ?? {}) {
+      const variantProp = props?.[v as keyof typeof props];
+      const defaultVariantProp = defaultVariants?.[v];
+      const variantKey = (falsyToString(variantProp) ||
+        falsyToString(defaultVariantProp)) as keyof (typeof variants)[typeof v];
 
-        if (variantProp === null) return null;
-
-        const variantKey = (falsyToString(variantProp) ||
-          falsyToString(defaultVariantProp)) as keyof (typeof variants)[typeof variant];
-
-        return variants[variant]![variantKey];
-      })
-      .filter(Boolean);
-    let composed = config.base ?? '';
-    if (getVariantClassNames) {
-      composed += `${composed == '' ? '' : ' '}${getVariantClassNames}`;
+      const data = variants[v]![variantKey];
+      if (data) {
+        variantClassNames += ` ${data} `;
+      }
     }
+    variantClassNames = variantClassNames.trim();
+
     if (props?.className) {
-      composed += `${composed == '' ? '' : ' '}${props.className}`;
+      variantClassNames += `${variantClassNames === '' ? '' : ' '}${props.className}`;
     }
     if (props?.tw) {
-      composed += `${composed == '' ? '' : ' '}${props.tw}`;
+      variantClassNames += `${variantClassNames === '' ? '' : ' '}${props.tw}`;
     }
-    return composed.trim();
+    return variantClassNames.trim();
   };
 };
 

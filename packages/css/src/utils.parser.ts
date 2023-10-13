@@ -30,7 +30,6 @@ export const getPropertyValueType = (property: string) => {
     case 'padding-left':
     case 'padding-bottom':
     case 'padding-right':
-    case 'line-height': // FONT DIMENSIONS
     case 'font-size':
     case 'top': // POSITION
     case 'left':

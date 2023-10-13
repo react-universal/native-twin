@@ -26,7 +26,7 @@ module.exports = {
   rules: {
     '@nrwl/nx/enforce-module-boundaries': ['error', {}],
     'react/no-children-prop': 'off',
-    'no-console': 'warn',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-redeclare': 'off',
     'no-undef': 'off',
     'no-useless-escape': 'off',

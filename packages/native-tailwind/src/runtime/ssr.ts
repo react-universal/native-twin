@@ -1,11 +1,11 @@
-import { parseTWTokens } from '@universal-labs/css';
-import { sheetEntriesToCss } from '../css/translate';
+import { compareClassNames, fixHTMLTagClassNamesList } from '@universal-labs/css';
+import { sheetEntriesToCss } from '../convert/entryToCss';
+import { parsedRuleToClassName } from '../convert/ruleToClassName';
+import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { SheetEntry } from '../types/css.types';
 import type { RuntimeTW } from '../types/theme.types';
 import type { StringLike } from '../types/util.types';
-import { changed } from '../utils/css-utils';
-import { fixClassList, parseHTML } from '../utils/parse-html';
-import { toClassName } from '../utils/string-utils';
+import { parseHTML } from '../utils/parse-html';
 import { tw as tw$ } from './tw';
 
 export interface ExtractResult {
@@ -19,7 +19,7 @@ export function extract(html: string, tw: RuntimeTW<any> = tw$): ExtractResult {
   const restore = tw.snapshot();
   const result = {
     html: consume(html, tw),
-    css: sheetEntriesToCss(tw.target as any, tw.config.theme['screens']),
+    css: sheetEntriesToCss(tw.target as any),
   };
 
   restore();
@@ -36,12 +36,12 @@ export function consume(
 
   parseHTML(markup, (startIndex, endIndex, quote) => {
     const value = markup.slice(startIndex, endIndex);
-    const classList = parseTWTokens(fixClassList(value, quote))
-      .map((x) => toClassName(x))
+    const classList = parseTWTokens(fixHTMLTagClassNamesList(value, quote))
+      .map(parsedRuleToClassName)
       .join(' ');
     tw(classList);
     // We only need to shift things around if we need to actually change the markup
-    if (changed(value, classList)) {
+    if (compareClassNames(value, classList)) {
       // We've hit another mutation boundary
 
       // Add quote if necessary

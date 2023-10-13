@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react';
-import styled, { type PropsFrom } from '@universal-labs/styled';
+import { PressableProps } from 'react-native';
+import { createVariants, VariantProps, Pressable, Strong } from '@universal-labs/styled';
 import { Spinner } from '../spinner';
 
-const StyledButton = styled.Pressable.variants({
+const StyledButton = createVariants({
   variants: {
     variant: {
       primary: 'bg-primary rounded-xl hover:bg-red-200',
@@ -34,7 +35,7 @@ const StyledButton = styled.Pressable.variants({
   },
 });
 
-const Strong = styled.Strong.variants({
+const strongVariants = createVariants({
   variants: {
     variant: {
       primary: 'text-gray-100 text-center text-xl font-bold',
@@ -56,7 +57,8 @@ type IButtonProps = {
   children: ReactNode;
   isDisabled?: boolean;
   textClassName?: string;
-} & PropsFrom<typeof StyledButton>;
+} & PressableProps &
+  VariantProps<typeof StyledButton>;
 
 export const Button = ({
   children,
@@ -67,7 +69,8 @@ export const Button = ({
   ...props
 }: IButtonProps) => {
   return (
-    <StyledButton
+    <Pressable
+      className={StyledButton(props)}
       onPress={onPress}
       disabled={isDisabled}
       accessibilityRole='button'
@@ -76,12 +79,18 @@ export const Button = ({
       {isLoading ? (
         <Spinner />
       ) : typeof children === 'string' ? (
-        <Strong accessibilityRole='text' className={textClassName}>
+        <Strong
+          accessibilityRole='text'
+          className={strongVariants({
+            ...props,
+            className: textClassName,
+          })}
+        >
           {children}
         </Strong>
       ) : (
         children
       )}
-    </StyledButton>
+    </Pressable>
   );
 };

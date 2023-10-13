@@ -30,7 +30,6 @@ import {
   spacing,
   verticalBreakpoints,
 } from './mixed';
-import { preflightBase } from './preflight';
 import { aspectRatio, containers, height, maxHeight, maxWidth, width } from './size';
 import { rotate, scale, skew, translate } from './transform';
 
@@ -78,7 +77,6 @@ export const theme = {
   minHeight: maxHeight,
   minInlineSize: maxWidth,
   minWidth: maxWidth,
-  preflightBase,
   ringWidth,
   spacing,
   textIndent,

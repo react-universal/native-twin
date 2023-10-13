@@ -21,20 +21,13 @@ export function isString(s: any): s is string {
   return typeof s === 'string';
 }
 
-// Based on https://stackoverflow.com/a/52171480
-export function hash(value: string): string {
-  for (var h = 9, index = value.length; index--; ) {
-    h = Math.imul(h ^ value.charCodeAt(index), 0x5f356495);
-  }
-
-  return '#' + ((h ^ (h >>> 9)) >>> 0).toString(36);
+export function isObject(item: any): item is Record<string, any> {
+  return item && typeof item === 'object' && !Array.isArray(item);
 }
 
-export function toCondition(value: string | RegExp): RegExp {
-  // "visible" -> /^visible$/
-  // "(float)-(left|right|none)" -> /^(float)-(left|right|none)$/
-  // "auto-rows-" -> /^auto-rows-/
-  // "gap(-|$)" -> /^gap(-|$)/
+export const hasOwnProperty = {}.hasOwnProperty;
+
+export function asRegExp(value: string | RegExp): RegExp {
   return typeof value == 'string'
     ? new RegExp('^' + value + (value.includes('$') || value.slice(-1) == '-' ? '' : '$'))
     : value;

@@ -6,6 +6,7 @@ export const useStyledContext = () => {
   const context = useSyncExternalStore(
     globalStore.subscribe,
     () => globalStore.getState().context,
+    () => globalStore.getState().context,
   );
 
   const onChangeColorScheme = (scheme: StyledContext['colorScheme']) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { setup } from '@universal-labs/native-twin';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 import { HomeScreen } from './src/screens/Home.screen';
@@ -20,7 +20,12 @@ export default function App() {
   if (!isReady) return null;
   return (
     <View style={{ flex: 1 }}>
+      {/* <Text>asd</Text> */}
       <HomeScreen />
     </View>
   );
 }
+
+StyleSheet.create({
+  a: {},
+});

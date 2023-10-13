@@ -9,6 +9,7 @@ import {
   asArray,
   createTailwind,
   createThemeContext,
+  createVirtualSheet,
   defineConfig,
   flattenColorPalette,
 } from '@universal-labs/native-twin';
@@ -33,7 +34,7 @@ export class NativeTailwindIntellisense {
     this.tailwindConfig = defineConfig({
       presets: [presetTailwind()],
     });
-    this.tw = createTailwind(this.tailwindConfig);
+    this.tw = createTailwind(this.tailwindConfig, createVirtualSheet());
     this.context = createThemeContext(this.tailwindConfig);
     this.completions = this.completions.bind(this);
   }

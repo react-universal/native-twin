@@ -42,6 +42,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@universal-labs/arc-parser": "workspace:*",
     "@universal-labs/css": "workspace:*"
   },
   "peerDependencies": {

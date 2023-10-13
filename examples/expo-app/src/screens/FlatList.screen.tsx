@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { SafeAreaView } from 'react-native';
-import { H2, Pressable, Span, View, FlatList } from '@universal-labs/primitives';
+import { H2, Pressable, Span, View, FlatList } from '@universal-labs/styled';
 
 const data = [
   {
@@ -29,7 +29,7 @@ const FlatListScreen = () => {
         </Pressable>
         <FlatList
           data={items}
-          contentContainerStyle='bg-gray-600 hover:bg-white'
+          // contentContainerStyle='bg-gray-600 hover:bg-white'
           renderItem={({ item }) => {
             return (
               <View className='hover:bg-pink-500'>

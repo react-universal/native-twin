@@ -3,7 +3,7 @@
   "version": "1.4.10",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build-next-example": "next build",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"
@@ -14,9 +14,7 @@
     "@universal-labs/native-twin-nextjs": "workspace:*",
     "@universal-labs/preset-tailwind": "workspace:*",
     "@universal-labs/styled": "workspace:*",
-    "autoprefixer": "10.4.13",
-    "critters": "^0.0.16",
-    "next": "13.1.4",
+    "next": "13.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native-web": "^0.19.6"
