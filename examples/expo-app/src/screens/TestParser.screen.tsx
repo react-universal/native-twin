@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { H1, H2, Image, Pressable, TextInput, View } from '@universal-labs/primitives';
-import clsx from 'clsx';
+import { cx } from '@universal-labs/native-twin';
+import { H1, H2, Image, Pressable, TextInput, View } from '@universal-labs/styled';
 
 const TextField = () => {
   const [text, setText] = useState('');
@@ -16,11 +16,11 @@ const TextField = () => {
 const testImage = require('../../assets/favicon.png');
 
 function HomeScreen() {
-  const [active, setActive] = useState(false);
+  const [_, setActive] = useState(false);
   return (
     <View className='flex-1'>
       <View
-        className={clsx(
+        className={cx(
           'flex-1',
           'hover:(bg-red-300 web:(bg-blue-600) ios:(bg-pink-600) android:(bg-black))',
           'ios:(p-14 border-gray-200)',
@@ -28,7 +28,7 @@ function HomeScreen() {
         )}
       />
       <View
-        className={clsx(
+        className={cx(
           'group',
           'flex-[2]',
           'bg-gray-800 hover:bg-pink-600',

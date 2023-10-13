@@ -1,10 +1,13 @@
 import { defineConfig, setup } from '@universal-labs/native-twin';
 import { presetTailwind } from '@universal-labs/preset-tailwind';
 import renderer from 'react-test-renderer';
-import { describe, expect, it } from 'vitest';
-import styledComponents from '../src';
+import { beforeAll, describe, expect, it } from 'vitest';
+import { ScrollView, styled, View } from '../src';
+import { createVariants } from '../src/styled/variants';
 
-setup(defineConfig({ presets: [presetTailwind()] }));
+beforeAll(() => {
+  setup(defineConfig({ presets: [presetTailwind()] }));
+});
 
 function toJson(component: renderer.ReactTestRenderer) {
   const result = component.toJSON();
@@ -13,11 +16,6 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-const ScrollView = styledComponents.ScrollView.variants({
-  variants: {
-    intent: { primary: '', sec: '' },
-  },
-});
 describe('@universal-labs/styled', () => {
   it('ScrollView render', () => {
     const component = renderer.create(
@@ -30,7 +28,7 @@ describe('@universal-labs/styled', () => {
   });
 });
 
-const View = styledComponents.View.variants({
+const viewVariants = createVariants({
   base: `
     flex-1
     hover:(bg-blue-600)
@@ -52,19 +50,36 @@ const View = styledComponents.View.variants({
     active: true,
   },
 });
-const H1 = styledComponents.Text`
-  text(center 2xl indigo-600)
-  hover:text-gray-700
-`;
+const H1 = styled.Text;
 
 describe('@universal-labs/styled', () => {
   it('Complex View', () => {
+    const className = viewVariants({ intent: 'secondary' });
     const component = renderer.create(
-      <View intent='secondary'>
-        <H1>H1 - 1</H1>
+      <View className={className}>
+        <H1 className='text(center 2xl indigo-600) hover:text-gray-700'>H1 - 1</H1>
       </View>,
     );
     let tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });
 });
+
+// NOT WORKING
+// describe('@universal-labs/styled', () => {
+//   it('FlatList', () => {
+//     const className = viewVariants({ intent: 'secondary' });
+//     const component = renderer.create(
+//       <FlatList
+//         data={[{ key: 'i1' }, { key: 'i2' }]}
+//         renderItem={(props) => (
+//           <H1 className='text(center 2xl indigo-600) hover:text-gray-700'>{props.item.key}</H1>
+//         )}
+//         className={className}
+//         keyExtractor={(i) => i.key}
+//       />,
+//     );
+//     let tree = toJson(component);
+//     expect(tree).toMatchSnapshot();
+//   });
+// });

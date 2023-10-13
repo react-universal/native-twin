@@ -1,14 +1,14 @@
 import React from 'react';
 import * as RN from 'react-native';
-import { LI, UL } from '../custom-components/List';
+import * as List from '../custom-components/List';
 import {
   styledFlatList,
   styledSectionList,
   styledVirtualizedList,
 } from '../custom-components/NativeLists/List.components';
-import { Nav } from '../custom-components/Nav';
-import { TBody, TD, TFoot, TH, THead, TR, Table } from '../custom-components/Table';
-import { Span, H1, H2, H3, H4, H5, H6, Strong, Code, P } from '../custom-components/Text';
+import * as NavComp from '../custom-components/Nav';
+import * as TableComps from '../custom-components/Table';
+import * as TextComps from '../custom-components/Text';
 import styledComponentsFactory from './StyledComponent';
 
 const styled = <StyleType, InitialProps extends { style?: RN.StyleProp<StyleType> }>(
@@ -37,26 +37,69 @@ styled.SectionList = styledSectionList;
 styled.VirtualizedList = styledVirtualizedList;
 
 // WEB
-styled.LI = styled(LI);
-styled.UL = styled(UL);
-styled.Nav = styled(Nav);
-styled.Table = styled(Table);
-styled.THead = styled(THead);
-styled.TFoot = styled(TFoot);
-styled.TH = styled(TH);
-styled.TD = styled(TD);
-styled.TBody = styled(TBody);
-styled.TR = styled(TR);
+styled.LI = styled(List.LI);
+styled.UL = styled(List.UL);
+styled.Nav = styled(NavComp.Nav);
+styled.Table = styled(TableComps.Table);
+styled.THead = styled(TableComps.THead);
+styled.TFoot = styled(TableComps.TFoot);
+styled.TH = styled(TableComps.TH);
+styled.TD = styled(TableComps.TD);
+styled.TBody = styled(TableComps.TBody);
+styled.TR = styled(TableComps.TR);
 
-styled.Span = styled(Span);
-styled.H1 = styled(H1);
-styled.H2 = styled(H2);
-styled.H3 = styled(H3);
-styled.H4 = styled(H4);
-styled.H5 = styled(H5);
-styled.H6 = styled(H6);
-styled.Strong = styled(Strong);
-styled.Code = styled(Code);
-styled.P = styled(P);
+styled.Span = styled(TextComps.Span);
+styled.H1 = styled(TextComps.H1);
+styled.H2 = styled(TextComps.H2);
+styled.H3 = styled(TextComps.H3);
+styled.H4 = styled(TextComps.H4);
+styled.H5 = styled(TextComps.H5);
+styled.H6 = styled(TextComps.H6);
+styled.Strong = styled(TextComps.Strong);
+styled.Code = styled(TextComps.Code);
+styled.P = styled(TextComps.P);
 
-export default styled;
+export const {
+  ActivityIndicator,
+  Code,
+  FlatList,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
+  Image,
+  ImageBackground,
+  KeyboardAvoidingView,
+  LI,
+  Modal,
+  Nav,
+  P,
+  Pressable,
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  SectionList,
+  Span,
+  Strong,
+  Switch,
+  TBody,
+  TD,
+  TFoot,
+  TH,
+  THead,
+  TR,
+  Table,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  UL,
+  View,
+  VirtualizedList,
+} = styled;
+
+export { styled };

@@ -1,10 +1,11 @@
-import { View } from '@universal-labs/primitives';
-import { Button } from '@universal-labs/tailwind-ui';
+import { View, Pressable, Text } from '@universal-labs/styled';
 
 const ButtonsScreen = () => {
   return (
     <View className='flex-1 items-center justify-center'>
-      <Button variant='primaryDark'>asd</Button>
+      <Pressable>
+        <Text>asd</Text>
+      </Pressable>
     </View>
   );
 };
