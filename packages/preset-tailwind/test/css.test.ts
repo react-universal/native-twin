@@ -6,7 +6,7 @@ import { presetTailwind } from '../src';
 
 setup(defineConfig({ presets: [presetTailwind()], mode: 'web' }));
 
-describe('@universal-labs/native-twin - Raw rules parser', () => {
+describe('@universal-labs/preset-tailwind - Raw rules parser', () => {
   it('Sheet entries to CSS', () => {
     const entries = tx`bg-blue-200 text-center`;
     const css = sheetEntriesToCss(entries);

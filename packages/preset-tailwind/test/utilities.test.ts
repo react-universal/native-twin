@@ -18,12 +18,17 @@ const tailwind = createTailwind(
   createVirtualSheet(),
 );
 
-describe('@universal-labs/native-twin - Spacing Utilities', () => {
+describe('@universal-labs/preset-tailwind - Spacing Utilities', () => {
   it('paddings', () => {
     expect(tailwind('p-2')).toStrictEqual([
       {
         className: 'p-2',
-        declarations: [['padding', '0.5rem']],
+        declarations: [
+          {
+            prop: 'padding',
+            value: '0.5rem',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -33,8 +38,8 @@ describe('@universal-labs/native-twin - Spacing Utilities', () => {
       {
         className: 'px-2',
         declarations: [
-          ['paddingLeft', '0.5rem'],
-          ['paddingRight', '0.5rem'],
+          { prop: 'paddingLeft', value: '0.5rem' },
+          { prop: 'paddingRight', value: '0.5rem' },
         ],
         important: false,
         precedence: 805306368,
@@ -45,8 +50,8 @@ describe('@universal-labs/native-twin - Spacing Utilities', () => {
       {
         className: 'py-2',
         declarations: [
-          ['paddingTop', '0.5rem'],
-          ['paddingBottom', '0.5rem'],
+          { prop: 'paddingTop', value: '0.5rem' },
+          { prop: 'paddingBottom', value: '0.5rem' },
         ],
         important: false,
         precedence: 805306368,
@@ -58,7 +63,12 @@ describe('@universal-labs/native-twin - Spacing Utilities', () => {
     expect(tailwind('m-2')).toStrictEqual([
       {
         className: 'm-2',
-        declarations: [['margin', '0.5rem']],
+        declarations: [
+          {
+            prop: 'margin',
+            value: '0.5rem',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -67,7 +77,12 @@ describe('@universal-labs/native-twin - Spacing Utilities', () => {
     expect(tailwind('-m-2')).toStrictEqual([
       {
         className: '-m-2',
-        declarations: [['margin', '-0.5rem']],
+        declarations: [
+          {
+            prop: 'margin',
+            value: '-0.5rem',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -77,8 +92,8 @@ describe('@universal-labs/native-twin - Spacing Utilities', () => {
       {
         className: 'mx-2',
         declarations: [
-          ['marginLeft', '0.5rem'],
-          ['marginRight', '0.5rem'],
+          { prop: 'marginLeft', value: '0.5rem' },
+          { prop: 'marginRight', value: '0.5rem' },
         ],
         important: false,
         precedence: 805306368,
@@ -89,8 +104,14 @@ describe('@universal-labs/native-twin - Spacing Utilities', () => {
       {
         className: 'my-2',
         declarations: [
-          ['marginTop', '0.5rem'],
-          ['marginBottom', '0.5rem'],
+          {
+            prop: 'marginTop',
+            value: '0.5rem',
+          },
+          {
+            prop: 'marginBottom',
+            value: '0.5rem',
+          },
         ],
         important: false,
         precedence: 805306368,
@@ -102,7 +123,12 @@ describe('@universal-labs/native-twin - Spacing Utilities', () => {
     expect(tailwind('m-[20px]')).toStrictEqual([
       {
         className: 'm-[20px]',
-        declarations: [['margin', '20px']],
+        declarations: [
+          {
+            prop: 'margin',
+            value: '20px',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -112,8 +138,14 @@ describe('@universal-labs/native-twin - Spacing Utilities', () => {
       {
         className: '-mx-[20px]',
         declarations: [
-          ['marginLeft', '-20px'],
-          ['marginRight', '-20px'],
+          {
+            prop: 'marginLeft',
+            value: '-20px',
+          },
+          {
+            prop: 'marginRight',
+            value: '-20px',
+          },
         ],
         important: false,
         precedence: 805306368,
@@ -128,7 +160,12 @@ describe('@universal-labs/native-twin - Color Utilities', () => {
     expect(tailwind('bg-black')).toStrictEqual([
       {
         className: 'bg-black',
-        declarations: [['backgroundColor', 'rgba(0,0,0,1)']],
+        declarations: [
+          {
+            prop: 'backgroundColor',
+            value: 'rgba(0,0,0,1)',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -139,7 +176,12 @@ describe('@universal-labs/native-twin - Color Utilities', () => {
     expect(tailwind('bg-primary')).toStrictEqual([
       {
         className: 'bg-primary',
-        declarations: [['backgroundColor', 'rgba(5,88,249,1)']],
+        declarations: [
+          {
+            prop: 'backgroundColor',
+            value: 'rgba(5,88,249,1)',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -150,7 +192,12 @@ describe('@universal-labs/native-twin - Color Utilities', () => {
     expect(tailwind('opacity-10')).toStrictEqual([
       {
         className: 'opacity-10',
-        declarations: [['opacity', '0.1']],
+        declarations: [
+          {
+            prop: 'opacity',
+            value: '0.1',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -161,7 +208,12 @@ describe('@universal-labs/native-twin - Color Utilities', () => {
     expect(tailwind('bg-blue-200/[0.5]')).toStrictEqual([
       {
         className: 'bg-blue-200/[0.5]',
-        declarations: [['backgroundColor', 'rgba(191,219,254,0.5)']],
+        declarations: [
+          {
+            prop: 'backgroundColor',
+            value: 'rgba(191,219,254,0.5)',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -170,12 +222,17 @@ describe('@universal-labs/native-twin - Color Utilities', () => {
   });
 });
 
-describe('@universal-labs/native-twin - Position Utilities', () => {
+describe('@universal-labs/preset-tailwind - Position Utilities', () => {
   it('top|right|bottom|left', () => {
     expect(tailwind('top-2')).toStrictEqual([
       {
         className: 'top-2',
-        declarations: [['top', '0.5rem']],
+        declarations: [
+          {
+            prop: 'top',
+            value: '0.5rem',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -184,14 +241,14 @@ describe('@universal-labs/native-twin - Position Utilities', () => {
   });
 });
 
-describe('@universal-labs/native-twin - Border Utilities', () => {
+describe('@universal-labs/preset-tailwind - Border Utilities', () => {
   it('t|r|b|l', () => {
     expect(tailwind('border-x-1')).toStrictEqual([
       {
         className: 'border-x-1',
         declarations: [
-          ['borderLeftWidth', '1px'],
-          ['borderRightWidth', '1px'],
+          { prop: 'borderLeftWidth', value: '1px' },
+          { prop: 'borderRightWidth', value: '1px' },
         ],
         important: false,
         precedence: 805306368,

@@ -11,15 +11,21 @@ const tailwind = createTailwind(
   createVirtualSheet(),
 );
 
-describe('@universal-labs/native-twin - TW call', () => {
+describe('@universal-labs/preset-tailwind - TW call', () => {
   it('Insert rules', () => {
     const result = tailwind('px-2 p-10 mx-2.5 text(center 2xl) bg-blue-200 justify-center');
     expect(result).toStrictEqual([
       {
         className: 'px-2',
         declarations: [
-          ['paddingLeft', '0.5rem'],
-          ['paddingRight', '0.5rem'],
+          {
+            prop: 'paddingLeft',
+            value: '0.5rem',
+          },
+          {
+            prop: 'paddingRight',
+            value: '0.5rem',
+          },
         ],
         important: false,
         precedence: 805306368,
@@ -27,7 +33,12 @@ describe('@universal-labs/native-twin - TW call', () => {
       },
       {
         className: 'p-10',
-        declarations: [['padding', '2.5rem']],
+        declarations: [
+          {
+            prop: 'padding',
+            value: '2.5rem',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -35,8 +46,14 @@ describe('@universal-labs/native-twin - TW call', () => {
       {
         className: 'mx-2.5',
         declarations: [
-          ['marginLeft', '0.625rem'],
-          ['marginRight', '0.625rem'],
+          {
+            prop: 'marginLeft',
+            value: '0.625rem',
+          },
+          {
+            prop: 'marginRight',
+            value: '0.625rem',
+          },
         ],
         important: false,
         precedence: 805306368,
@@ -44,14 +61,24 @@ describe('@universal-labs/native-twin - TW call', () => {
       },
       {
         className: 'text-center',
-        declarations: [['textAlign', 'center']],
+        declarations: [
+          {
+            prop: 'textAlign',
+            value: 'center',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
       },
       {
         className: 'text-2xl',
-        declarations: [['fontSize', '1.5rem']],
+        declarations: [
+          {
+            prop: 'fontSize',
+            value: '1.5rem',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
@@ -61,11 +88,21 @@ describe('@universal-labs/native-twin - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
-        declarations: [['backgroundColor', 'rgba(191,219,254,1)']],
+        declarations: [
+          {
+            prop: 'backgroundColor',
+            value: 'rgba(191,219,254,1)',
+          },
+        ],
       },
       {
         className: 'justify-center',
-        declarations: [['justifyContent', 'center']],
+        declarations: [
+          {
+            prop: 'justifyContent',
+            value: 'center',
+          },
+        ],
         important: false,
         precedence: 805306368,
         selectors: [],
