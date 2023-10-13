@@ -1,4 +1,5 @@
 import babel, { PluginObj } from '@babel/core';
+// @ts-expect-error
 import syntax from '@babel/plugin-syntax-jsx';
 
 export default function nativeTwinBabelPlugin({ types: t }: typeof babel): PluginObj {
@@ -6,13 +7,13 @@ export default function nativeTwinBabelPlugin({ types: t }: typeof babel): Plugi
     inherits: syntax,
     visitor: {
       Identifier: {
-        enter(path) {
+        enter(_path) {
           // const isTemplate = t.isTemplateLiteral(path.node);
           // console.log('IS_TEMPLATE: ', isTemplate);
         },
       },
       TaggedTemplateExpression: {
-        enter(path, state) {
+        enter(path, _state) {
           t.traverse(path.node, {
             enter(node) {
               if (node.type == 'TaggedTemplateExpression') {
