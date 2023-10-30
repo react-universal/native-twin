@@ -24,25 +24,8 @@
   },
   "sideEffects": false,
   "exports": {
-    "./_app": {
-      "types": "./build/_app.d.ts",
-      "module": "./build/_app.es.js",
-      "import": "./build/_app.es.js",
-      "node": {
-        "import": "./build/_app.es.js",
-        "require": "./build/_app.cjs.js"
-      },
-      "default": "./build/_app.cjs.js"
-    },
-    "./_document": {
-      "types": "./build/_document.d.ts",
-      "module": "./build/_document.es.js",
-      "node": {
-        "import": "./build/_document.es.js",
-        "require": "./build/_document.cjs.js"
-      },
-      "default": "./build/_document.cjs.js"
-    },
+    "./_app": "./build/_app.js",
+    "./_document": "./build/_document.js",
     "./package.json": "./package.json"
   },
   "types": "./build/index.d.ts",
@@ -58,6 +41,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",

@@ -12110,9 +12110,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"next-app@workspace:examples/next-app":
+"next-pages-example@workspace:examples/next-app":
   version: 0.0.0-use.local
-  resolution: "next-app@workspace:examples/next-app"
+  resolution: "next-pages-example@workspace:examples/next-app"
   dependencies:
     "@next/font": 13.0.6
     "@universal-labs/native-twin": "workspace:*"

@@ -5,11 +5,11 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.cjs.js",
-  "module": "build/index.es.js",
+  "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
