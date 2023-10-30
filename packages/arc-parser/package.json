@@ -9,11 +9,10 @@
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc -p tsconfig.build.json",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "echo \"NO_TESTS\"",
-    "test:bench": "echo \"NO_TESTS\"",
-    "test:coverage": "echo \"NO_TESTS\"",
-    "test:ui": "echo \"NO_TESTS\""
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:watch": "jest --watch"
   }
 }

@@ -57,9 +57,11 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -p .",
-    "test": "echo \"NO_TEST\"",
-    "test:ui": "vitest --ui"
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@universal-labs/native-twin": "workspace:*"

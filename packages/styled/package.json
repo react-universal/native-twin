@@ -31,10 +31,11 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc -p tsconfig.build.json",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest run",
-    "test:ui": "vitest --ui"
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@universal-labs/css": "workspace:*",
