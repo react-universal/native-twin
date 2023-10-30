@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import { parseTWTokens, parsedRuleToClassName } from '../src';
 
 describe('@universal-labs/native-twin - Raw rules parser', () => {
