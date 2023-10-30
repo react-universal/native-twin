@@ -22,8 +22,7 @@
     "directory": "packages/native-tailwind"
   },
   "sideEffects": false,
-  "main": "./build/index.cjs.js",
-  "module": "./build/index.es.js",
+  "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",

@@ -16,5 +16,5 @@
     "target": "ESNext"
   },
   "include": ["src", "test", "./*.d.ts"],
-  "exclude": ["build"]
+  "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js"]
 }
