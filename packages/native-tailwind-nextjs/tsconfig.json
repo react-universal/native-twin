@@ -7,8 +7,6 @@
     "module": "ESNext",
     "noUnusedLocals": false,
     "target": "ESNext",
-    "moduleResolution": "node",
-    "moduleDetection": "auto",
     "strictFunctionTypes": false,
     "strictNullChecks": true,
     "noImplicitReturns": false,
@@ -18,5 +16,6 @@
     "stripInternal": true,
     "noImplicitAny": true
   },
+  "include": ["src/**/*"],
   "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js"]
 }

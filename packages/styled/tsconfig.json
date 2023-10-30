@@ -1,11 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "declarationMap": false,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
-    "outDir": "./build",
-    "sourceMap": false,
-    "noEmit": false,
+    "outDir": "build",
+    "sourceMap": true,
     "module": "ES2020",
     "exactOptionalPropertyTypes": false,
     "importHelpers": true
