@@ -31,7 +31,7 @@
     "README.md"
   ],
   "scripts": {
-    "build:libs": "vite build",
+    "build": "tsc -p .",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "vitest run",
     "test:ui": "vitest --ui"

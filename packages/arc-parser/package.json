@@ -9,7 +9,7 @@
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "build:libs": "vite build",
+    "build": "tsc -p .",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "echo \"NO_TESTS\"",
     "test:bench": "echo \"NO_TESTS\"",

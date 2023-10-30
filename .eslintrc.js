@@ -22,9 +22,8 @@ module.exports = {
     },
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports', '@nrwl/nx'],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'unused-imports'],
   rules: {
-    '@nrwl/nx/enforce-module-boundaries': ['error', {}],
     'react/no-children-prop': 'off',
     'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-redeclare': 'off',
@@ -55,13 +54,5 @@ module.exports = {
     'react/display-name': 'warn',
     'no-async-promise-executor': 'warn',
   },
-  // overrides: [
-  //   {
-  //     files: ['**/test/**/*'],
-  //     rules: {
-  //       '@nrwl/nx/enforce-module-boundaries': 'off',
-  //     },
-  //   },
-  // ],
   reportUnusedDisableDirectives: true,
 };

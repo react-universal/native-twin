@@ -1,4 +1,5 @@
 {
+  "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -9,7 +10,6 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "importHelpers": true,
-    "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
     "strictNullChecks": true,

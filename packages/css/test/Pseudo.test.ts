@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import { generateStylesFor } from './test-utils';
 
 describe.skip('@universal-labs/css - Pseudo', () => {

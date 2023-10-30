@@ -21,6 +21,7 @@ function styledComponentsFactory<
   Props extends InitialProps = InitialProps,
 >(
   Component: ComponentType<InitialProps>,
+  styledProp: string = 'style',
 ): ForwardRefExoticComponent<Props & StyledComponentProps & { ref?: Ref<any> }> {
   const ForwardRefComponent = forwardRef((props: any, ref) => {
     const classNames = props.className ?? props.tw ?? '';
@@ -74,7 +75,7 @@ function styledComponentsFactory<
     // console.log('TOOK: ', performance.now() - start);
     return createElement(Component, {
       ...newProps,
-      style: componentStyles,
+      [styledProp]: componentStyles,
       ref,
       children: componentChilds,
       groupID: currentGroupID,
