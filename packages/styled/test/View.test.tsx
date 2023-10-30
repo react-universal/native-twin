@@ -1,7 +1,6 @@
 import { defineConfig, setup } from '@universal-labs/native-twin';
 import { presetTailwind } from '@universal-labs/preset-tailwind';
 import renderer from 'react-test-renderer';
-import { beforeAll, describe, expect, it } from 'vitest';
 import { View as StyledView } from '../src';
 
 beforeAll(() => {

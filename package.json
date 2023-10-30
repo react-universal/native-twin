@@ -14,7 +14,7 @@
     "apps/*"
   ],
   "scripts": {
-    "build:libs": "turbo run build --filter='./packages/native-tailwind'",
+    "build:libs": "turbo run build --filter='./packages/*'",
     "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "expo:android": "yarn workspace expo-app run android",
     "expo:ios": "yarn workspace expo-app run ios",
@@ -26,10 +26,7 @@
     "plugin:dev": "nx run-many --target vscode:dev --parallel --output-style=dynamic",
     "release": "yarn build:release && changeset publish",
     "site:dev": "npx nx run dev --project=site",
-    "test": "turbo test --continue --filter='./packages/native-tailwind'"
-  },
-  "resolutions": {
-    "vitest-react-native@^0.1.2": "patch:vitest-react-native@npm%3A0.1.2#./.yarn/patches/vitest-react-native-npm-0.1.2-0858752826.patch"
+    "test": "turbo test --continue"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",

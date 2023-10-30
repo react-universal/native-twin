@@ -1,5 +1,4 @@
 import { defineConfig, install, tw, extract } from '@universal-labs/native-twin';
-import { describe, expect, it } from 'vitest';
 import { presetTailwind } from '../src';
 
 install(
