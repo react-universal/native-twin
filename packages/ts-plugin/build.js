@@ -7,7 +7,7 @@ require('esbuild')
     outdir: 'build',
     external: [
       'vscode',
-      '@universal-labs/native-tw',
+      '@universal-labs/native-twin',
       '@universal-labs/css',
       '@universal-labs/parser',
       'react-native',
