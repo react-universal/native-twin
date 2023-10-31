@@ -2,7 +2,7 @@
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
     "moduleResolution": "node",
-    "types": ["node"],
+    "types": ["node", "react-native", "jest"],
     "declaration": true,
     "esModuleInterop": true,
     "sourceMap": true,

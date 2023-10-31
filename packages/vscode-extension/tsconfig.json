@@ -12,6 +12,6 @@
     "outDir": "build",
     "rootDir": "src"
   },
-  "exclude": ["node_modules", ".vscode-test", "build"],
+  "exclude": ["node_modules", ".vscode-test", "build", "build.js"],
   "include": ["src/**/*"]
 }

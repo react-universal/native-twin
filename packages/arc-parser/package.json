@@ -10,9 +10,6 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "jest",
-    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
-    "test:watch": "jest --watch"
+    "lint": "eslint \"./**/*.{ts,tsx}\""
   }
 }

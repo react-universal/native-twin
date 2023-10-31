@@ -1,4 +1,3 @@
-import { expect, it, describe } from 'vitest';
 import { ConfigurationManager } from '../src/language-service/configuration';
 import { NativeTailwindIntellisense } from '../src/language-service/intellisense.service';
 import { LanguageServiceLogger } from '../src/language-service/logger';

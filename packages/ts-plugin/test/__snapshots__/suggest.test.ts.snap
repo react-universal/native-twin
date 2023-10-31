@@ -1,6 +1,6 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TS PLUGIN > Enumerate completions > Completions Snapshot 1`] = `
+exports[`TS PLUGIN Enumerate completions: Completions Snapshot 1`] = `
 [
   "bg-inherit",
   "bg-current",

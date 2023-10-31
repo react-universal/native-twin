@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const production = process.argv[2] === '--production';
 
 require('esbuild')

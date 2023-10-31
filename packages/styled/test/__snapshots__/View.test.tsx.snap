@@ -1,6 +1,6 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@universal-labs/styled > CustomView render 1`] = `
+exports[`@universal-labs/styled CustomView render 1`] = `
 <View
   groupID=":r1:"
   style={
@@ -21,7 +21,7 @@ exports[`@universal-labs/styled > CustomView render 1`] = `
 />
 `;
 
-exports[`@universal-labs/styled > StyledView render 1`] = `
+exports[`@universal-labs/styled StyledView render 1`] = `
 <View
   groupID=":r0:"
   style={

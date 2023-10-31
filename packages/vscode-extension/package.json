@@ -12,7 +12,7 @@
   "publisher": "universal-labs",
   "main": "./build/extension.js",
   "scripts": {
-    "build:libs": "node ./build.js --production",
+    "build": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "echo \"TEST\"",
     "vscode:dev": "node ./build.js --watch",
