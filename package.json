@@ -15,19 +15,17 @@
   ],
   "scripts": {
     "build": "turbo run build --filter='./packages/*'",
-    "build:release": "yarn build:libs && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
+    "build:release": "yarn build && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "build:watch": "turbo run build:watch --filter='./packages/*'",
     "example:next-pages": "turbo run dev --filter='next-pages-example'",
     "expo:android": "yarn workspace expo-app run android",
     "expo:ios": "yarn workspace expo-app run ios",
     "expo:start": "yarn workspace expo-app run start",
     "format": "prettier --write packages apps examples \"**/*.{js,ts,tsx,md}\"",
-    "libs:dev": "nx watch --all -- nx run \\$NX_PROJECT_NAME:build:libs",
     "libs:foreach": "yarn workspaces foreach --no-private --verbose",
-    "lint": "npx nx run-many --target=lint",
-    "plugin:dev": "nx run-many --target vscode:dev --parallel --output-style=dynamic",
+    "lint": "turbo run lint",
     "release": "yarn build:release && changeset publish",
-    "site:dev": "npx nx run dev --project=site",
+    "site:dev": "turbo run dev --project=site",
     "test": "turbo test --continue"
   },
   "devDependencies": {

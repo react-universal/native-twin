@@ -27,7 +27,7 @@ jobs:
         run: yarn --immutable
 
       - name: Run build
-        run: yarn build:libs
+        run: yarn build
 
       - name: Run tests
         run: yarn test
