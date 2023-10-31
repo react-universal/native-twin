@@ -31,5 +31,8 @@ export function cx(
   strings: TemplateStringsArray | CSSValue,
   ...interpolations: CSSValue[]
 ): string {
-  return parsedRuleSetToClassNames(parseTWTokens(interpolate(strings, interpolations)));
+  if (Array.isArray(strings)) {
+    return parsedRuleSetToClassNames(parseTWTokens(interpolate(strings, interpolations)));
+  }
+  return parsedRuleSetToClassNames(parseTWTokens(strings ?? ''));
 }
