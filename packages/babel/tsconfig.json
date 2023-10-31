@@ -2,18 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "declarationMap": false,
     "noImplicitAny": true,
-    "sourceMap": false,
-    "jsx": "react-jsx",
     "resolveJsonModule": false,
-    "module": "CommonJS",
-    "outDir": "build",
-    "lib": ["ES2015", "ESNext"],
-    "moduleResolution": "node",
-    "noEmit": false,
-    "strict": true,
-    "target": "ESNext"
+    "strict": true
   },
   "include": ["src", "test", "./*.d.ts"],
   "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js"]

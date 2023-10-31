@@ -3,6 +3,8 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "build",
+    "declaration": true,
+    "sourceMap": true,
     "noEmit": false
   },
   "exclude": ["./test/"]

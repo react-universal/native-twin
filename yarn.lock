@@ -3755,16 +3755,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/source-map@npm:^0.3.3":
-  version: 0.3.5
-  resolution: "@jridgewell/source-map@npm:0.3.5"
-  dependencies:
-    "@jridgewell/gen-mapping": ^0.3.0
-    "@jridgewell/trace-mapping": ^0.3.9
-  checksum: 1ad4dec0bdafbade57920a50acec6634f88a0eb735851e0dda906fa9894e7f0549c492678aad1a10f8e144bfe87f238307bf2a914a1bc85b7781d345417e9f6f
-  languageName: node
-  linkType: hard
-
 "@jridgewell/sourcemap-codec@npm:1.4.14, @jridgewell/sourcemap-codec@npm:^1.4.10":
   version: 1.4.14
   resolution: "@jridgewell/sourcemap-codec@npm:1.4.14"
@@ -4322,22 +4312,6 @@ __metadata:
   peerDependencies:
     react-native: "*"
   checksum: ad9628a04e72420326fd5ef09c746ad9cd6cff745b73850c7297429e3c42927043d1310896a72aa94497dc6b7f1abc2be1081b465734f7673f0e7d36aaae5e53
-  languageName: node
-  linkType: hard
-
-"@rollup/plugin-terser@npm:^0.4.1":
-  version: 0.4.3
-  resolution: "@rollup/plugin-terser@npm:0.4.3"
-  dependencies:
-    serialize-javascript: ^6.0.1
-    smob: ^1.0.0
-    terser: ^5.17.4
-  peerDependencies:
-    rollup: ^2.x || ^3.x
-  peerDependenciesMeta:
-    rollup:
-      optional: true
-  checksum: 0d697e816f32e9609c48defbda6f3ed90548126fbf673451cfde2c576a7511073cd25d45a9669f179d0b89485e62f56cabeb65428c2232469ab6057ae5dc7709
   languageName: node
   linkType: hard
 
@@ -5022,9 +4996,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/native-twin-nextjs@workspace:*, @universal-labs/native-twin-nextjs@workspace:packages/native-tailwind-nextjs":
+"@universal-labs/native-twin-nextjs@workspace:*, @universal-labs/native-twin-nextjs@workspace:packages/native-twin-nextjs":
   version: 0.0.0-use.local
-  resolution: "@universal-labs/native-twin-nextjs@workspace:packages/native-tailwind-nextjs"
+  resolution: "@universal-labs/native-twin-nextjs@workspace:packages/native-twin-nextjs"
   dependencies:
     "@universal-labs/native-twin": "workspace:*"
   peerDependencies:
@@ -5070,9 +5044,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@universal-labs/native-twin@workspace:*, @universal-labs/native-twin@workspace:packages/native-tailwind":
+"@universal-labs/native-twin@workspace:*, @universal-labs/native-twin@workspace:packages/native-twin":
   version: 0.0.0-use.local
-  resolution: "@universal-labs/native-twin@workspace:packages/native-tailwind"
+  resolution: "@universal-labs/native-twin@workspace:packages/native-twin"
   dependencies:
     "@universal-labs/arc-parser": "workspace:*"
     "@universal-labs/css": "workspace:*"
@@ -5253,7 +5227,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.5.0, acorn@npm:^8.8.0, acorn@npm:^8.8.2":
+"acorn@npm:^8.5.0, acorn@npm:^8.8.0":
   version: 8.8.2
   resolution: "acorn@npm:8.8.2"
   bin:
@@ -14479,15 +14453,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"serialize-javascript@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "serialize-javascript@npm:6.0.1"
-  dependencies:
-    randombytes: ^2.1.0
-  checksum: 3c4f4cb61d0893b988415bdb67243637333f3f574e9e9cc9a006a2ced0b390b0b3b44aef8d51c951272a9002ec50885eefdc0298891bc27eb2fe7510ea87dc4f
-  languageName: node
-  linkType: hard
-
 "serve-static@npm:^1.13.1":
   version: 1.15.0
   resolution: "serve-static@npm:1.15.0"
@@ -14682,13 +14647,6 @@ __metadata:
   bin:
     smartwrap: src/terminal-adapter.js
   checksum: 1a6833eb1c3d8488b036df66dcab37dcdda5270bb9629c471155785c09ee1b591177a9774c588c43f8fa28833204500019265da2ffed28ac7bbf4589b943d2fa
-  languageName: node
-  linkType: hard
-
-"smob@npm:^1.0.0":
-  version: 1.4.1
-  resolution: "smob@npm:1.4.1"
-  checksum: 3bd9e6bcc440356b0e06165f04f0ea170ebc1d57713e4a1d64c57227cb423d8346d3e0894fd7ce28bf75958f73a62f91ba13574a9a0fb4cbc271fa9ef5d75f4e
   languageName: node
   linkType: hard
 
@@ -15314,20 +15272,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:^5.17.4":
-  version: 5.20.0
-  resolution: "terser@npm:5.20.0"
-  dependencies:
-    "@jridgewell/source-map": ^0.3.3
-    acorn: ^8.8.2
-    commander: ^2.20.0
-    source-map-support: ~0.5.20
-  bin:
-    terser: bin/terser
-  checksum: 251d1b62d7c651ace29f997cf336ff5d5f8e30c65c8698ab7b831764d9e012ab0640895cb609906fb939a5bdf5143d73b5781c5c8c67b9216c77ce92dafdc0bc
-  languageName: node
-  linkType: hard
-
 "test-exclude@npm:^6.0.0":
   version: 6.0.0
   resolution: "test-exclude@npm:6.0.0"
@@ -15887,7 +15831,6 @@ __metadata:
   dependencies:
     "@changesets/changelog-github": ^0.4.8
     "@changesets/cli": ^2.26.0
-    "@rollup/plugin-terser": ^0.4.1
     "@testing-library/react-native": ^12.0.1
     "@trivago/prettier-plugin-sort-imports": ^4.2.0
     "@tsconfig/react-native": ^3.0.2
