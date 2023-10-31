@@ -18,6 +18,7 @@
     "build:release": "yarn build && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "build:watch": "turbo run build:watch --filter='./packages/*'",
     "dev": "npm_config_loglevel=silent turbo dev",
+    "docs:build": "turbo run build --filter='./apps/site'",
     "example:expo": "yarn workspace expo-app run start",
     "example:next-pages": "turbo run dev --filter='next-pages-example'",
     "format": "prettier --write packages apps examples \"**/*.{js,ts,tsx,md}\"",

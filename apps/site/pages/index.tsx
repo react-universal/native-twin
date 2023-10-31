@@ -1,8 +1,4 @@
-import styled from '@universal-labs/styled';
-
-const H1 = styled.H1``;
-const P = styled.P``;
-const View = styled.View``;
+import { View, H1, P } from '@universal-labs/styled';
 
 const IndexPage = () => {
   return (
