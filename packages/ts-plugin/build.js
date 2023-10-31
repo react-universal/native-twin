@@ -8,6 +8,7 @@ require('esbuild')
     external: [
       'vscode',
       '@universal-labs/native-twin',
+      '@universal-labs/preset-tailwind',
       '@universal-labs/css',
       '@universal-labs/parser',
       'react-native',
