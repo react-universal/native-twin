@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/native-twin",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
     "tailwind",

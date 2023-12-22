@@ -1,5 +1,15 @@
 # next-app-dir
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [[`b2f195f`](https://github.com/react-universal/tailwind/commit/b2f195f41897ab1c051a7be6e293a53fad61a3af)]:
+  - @universal-labs/native-twin-nextjs@5.0.3
+  - @universal-labs/preset-tailwind@5.0.3
+  - @universal-labs/native-twin@5.0.3
+  - @universal-labs/styled@5.0.3
+
 ## 0.1.1
 
 ### Patch Changes
