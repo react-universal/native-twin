@@ -1,5 +1,15 @@
 # @universal-labs/native-twin
 
+## 5.0.4
+
+### Patch Changes
+
+- [`a69242d`](https://github.com/react-universal/tailwind/commit/a69242db17d38024b8938ede6046d4e696dd170a) Thanks [@chrisarts](https://github.com/chrisarts)! - Fix publish config
+
+- Updated dependencies [[`a69242d`](https://github.com/react-universal/tailwind/commit/a69242db17d38024b8938ede6046d4e696dd170a)]:
+  - @universal-labs/arc-parser@5.0.4
+  - @universal-labs/css@5.0.4
+
 ## 5.0.3
 
 ### Patch Changes
