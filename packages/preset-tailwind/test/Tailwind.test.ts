@@ -1,5 +1,4 @@
 import { createTailwind, createVirtualSheet } from '@universal-labs/native-twin';
-import { describe, expect, it } from 'vitest';
 import { presetTailwind } from '../src';
 
 const tailwind = createTailwind(

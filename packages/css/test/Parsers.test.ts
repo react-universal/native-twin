@@ -1,4 +1,3 @@
-import { describe, expect, it, test } from 'vitest';
 import { ParseSelectorStrict } from '../src/css/selector.parser';
 import { generateStylesFor } from './test-utils';
 

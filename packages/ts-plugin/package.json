@@ -6,10 +6,9 @@
   "author": "Cristhian Gutierrez",
   "main": "build/index.js",
   "scripts": {
-    "build:libs": "node ./build.js --production",
+    "build": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
-    "test": "vitest run",
-    "test:ui": "vitest --ui",
+    "test": "jest",
     "vscode:dev": "node ./build.js --watch"
   },
   "dependencies": {

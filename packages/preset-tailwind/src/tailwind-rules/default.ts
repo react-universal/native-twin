@@ -29,4 +29,4 @@ export const themeRules: Rule[] = [
   appearanceRules,
   boxShadowRules,
   translateRules,
-].flat(1);
+].flat(1) as Rule[];

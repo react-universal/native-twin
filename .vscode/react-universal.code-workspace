@@ -10,7 +10,7 @@
     },
     {
       "name": "📦 @lib/native-twin",
-      "path": "../packages/native-tailwind"
+      "path": "../packages/native-twin"
     },
     {
       "name": "📦 @lib/styled",
@@ -22,7 +22,7 @@
     },
     {
       "name": "📦 @lib/with-nextjs",
-      "path": "../packages/native-tailwind-nextjs"
+      "path": "../packages/native-twin-nextjs"
     },
     {
       "name": "📦 @lib/arc-parser",
@@ -45,7 +45,7 @@
       "path": "../examples/expo-app"
     },
     {
-      "name": "next-app",
+      "name": "next-pages-example",
       "path": "../examples/next-app"
     },
     {

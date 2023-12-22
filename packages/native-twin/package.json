@@ -1,0 +1,54 @@
+{
+  "name": "@universal-labs/native-twin",
+  "version": "5.0.1",
+  "private": true,
+  "description": "Tailwindcss StyleSheet generator for react native/web",
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "tailwind-native",
+    "react-native-web",
+    "universal-labs",
+    "react-native",
+    "react"
+  ],
+  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/tailwind",
+    "directory": "packages/native-tailwind"
+  },
+  "sideEffects": false,
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "index.d.ts",
+    "tailwind",
+    "tailwind.d.ts",
+    "types.d.ts",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@universal-labs/arc-parser": "workspace:*",
+    "@universal-labs/css": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18.0",
+    "react-native": ">=0.71.0"
+  }
+}

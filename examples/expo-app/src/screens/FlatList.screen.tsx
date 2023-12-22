@@ -29,7 +29,7 @@ const FlatListScreen = () => {
         </Pressable>
         <FlatList
           data={items}
-          // contentContainerStyle='bg-gray-600 hover:bg-white'
+          className='bg-gray-600 hover:bg-white p-10'
           renderItem={({ item }) => {
             return (
               <View className='hover:bg-pink-500'>

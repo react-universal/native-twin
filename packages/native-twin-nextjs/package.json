@@ -1,0 +1,61 @@
+{
+  "name": "@universal-labs/native-twin-nextjs",
+  "version": "5.0.1",
+  "private": true,
+  "description": "React Native Web Tailwindcss for nextjs",
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "tailwind-native",
+    "react-native-web",
+    "universal-labs",
+    "react-native",
+    "react",
+    "nextjs"
+  ],
+  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/tailwind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/tailwind",
+    "directory": "packages/native-tailwind-nextjs"
+  },
+  "sideEffects": false,
+  "exports": {
+    "./_app": "./build/_app.js",
+    "./_document": "./build/_document.js",
+    "./package.json": "./package.json"
+  },
+  "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "index.d.ts",
+    "tailwind",
+    "tailwind.d.ts",
+    "types.d.ts",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "lint": "eslint \"./**/*.{ts,tsx}\""
+  },
+  "dependencies": {
+    "@universal-labs/native-twin": "workspace:*"
+  },
+  "peerDependencies": {
+    "next": ">=13.0",
+    "react": ">=18.0",
+    "react-native": ">=0.71.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  }
+}

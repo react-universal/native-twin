@@ -9,12 +9,13 @@
   "module": "build/index.es.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "build:libs": "vite build",
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "vitest run",
-    "test:bench": "echo \"NO_TESTS\"",
-    "test:coverage": "echo \"NO_TESTS\"",
-    "test:ui": "vitest --ui"
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@universal-labs/arc-parser": "workspace:*",

@@ -2,6 +2,7 @@
 **node_modules
 /.pnp
 .pnp.js
+**/.turbo
 
 # Yarn Berry
 .pnp.*
@@ -37,3 +38,6 @@ lint-results/
 #VSCODE
 .vscode-test
 out
+
+# TypeScript cache
+*.tsbuildinfo

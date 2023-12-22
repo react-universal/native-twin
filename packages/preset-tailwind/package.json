@@ -22,8 +22,7 @@
     "directory": "packages/preset-tailwind"
   },
   "sideEffects": false,
-  "main": "./build/index.cjs.js",
-  "module": "./build/index.es.js",
+  "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -36,10 +35,13 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build:libs": "vite build",
-    "libs:dev": "tsc -p . --watch",
-    "test": "vitest run",
-    "test:ui": "vitest --ui"
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@universal-labs/native-twin": "workspace:*"

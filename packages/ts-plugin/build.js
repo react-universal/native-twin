@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const production = process.argv[2] === '--production';
 
 require('esbuild')
@@ -8,7 +7,8 @@ require('esbuild')
     outdir: 'build',
     external: [
       'vscode',
-      '@universal-labs/native-tw',
+      '@universal-labs/native-twin',
+      '@universal-labs/preset-tailwind',
       '@universal-labs/css',
       '@universal-labs/parser',
       'react-native',

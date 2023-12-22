@@ -5,15 +5,12 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.cjs.js",
-  "module": "build/index.es.js",
+  "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "build:libs": "vite build",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "echo \"NO_TESTS\"",
-    "test:bench": "echo \"NO_TESTS\"",
-    "test:coverage": "echo \"NO_TESTS\"",
-    "test:ui": "echo \"NO_TESTS\""
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "lint": "eslint \"./**/*.{ts,tsx}\""
   }
 }
