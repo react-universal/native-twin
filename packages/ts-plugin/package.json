@@ -28,5 +28,9 @@
   "devDependencies": {
     "@types/cssbeautify": "0.3.2",
     "@types/showdown": "2.0.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
   }
 }

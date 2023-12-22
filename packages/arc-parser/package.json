@@ -12,5 +12,9 @@
     "build:watch": "tsc -p tsconfig.build.json -w",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\""
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
   }
 }

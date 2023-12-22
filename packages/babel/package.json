@@ -33,5 +33,9 @@
     "babel-plugin-tester": "^11.0.4",
     "babel-traverse": "^6.26.0",
     "babel-types": "^6.26.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
   }
 }
