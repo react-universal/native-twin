@@ -1,5 +1,12 @@
 # @universal-labs/css
 
+## 5.0.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @universal-labs/arc-parser@5.0.2
+
 ## 5.0.1
 
 ### Patch Changes

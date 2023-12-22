@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/native-twin-ts-plugin",
-  "version": "1.0.0",
+  "version": "5.0.2",
   "description": "TypeScript plugin that adds IntelliSense Native Tailwind",
   "license": "MIT",
   "author": "Cristhian Gutierrez",

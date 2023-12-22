@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/preset-tailwind",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "private": true,
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
