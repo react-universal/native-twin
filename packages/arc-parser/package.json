@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/arc-parser",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Parser combinators library",
   "license": "MIT",
   "author": "Cristhian Gutierrez",
