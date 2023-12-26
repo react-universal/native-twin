@@ -18,7 +18,19 @@ exports[`@universal-labs/styled CustomView render 1`] = `
       "shadowRadius": 3,
     }
   }
-/>
+>
+  <Text
+    groupID=":r1:"
+    parentID=":r1:"
+    style={
+      {
+        "lineHeight": 1.5,
+      }
+    }
+  >
+    asd
+  </Text>
+</View>
 `;
 
 exports[`@universal-labs/styled StyledView render 1`] = `

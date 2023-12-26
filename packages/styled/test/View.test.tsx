@@ -1,7 +1,7 @@
 import { defineConfig, setup } from '@universal-labs/native-twin';
 import { presetTailwind } from '@universal-labs/preset-tailwind';
 import renderer from 'react-test-renderer';
-import { View as StyledView } from '../src';
+import { View as StyledView, Text } from '../src';
 
 beforeAll(() => {
   setup(defineConfig({ presets: [presetTailwind()] }));
@@ -25,7 +25,9 @@ describe('@universal-labs/styled', () => {
 describe('@universal-labs/styled', () => {
   it('CustomView render', () => {
     const component = renderer.create(
-      <StyledView className='shadow-sm web:p-10 sm:p-10 flex-1' />,
+      <StyledView className='shadow-sm web:p-10 sm:p-10 flex-1'>
+        <Text className='leading-6'>asd</Text>
+      </StyledView>,
     );
     let tree = toJson(component);
     expect(tree).toMatchSnapshot();

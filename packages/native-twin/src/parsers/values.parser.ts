@@ -32,7 +32,7 @@ export const parseCssValue = (
   return value;
 };
 
-const parseUnitlessValue = P.float;
+const parseUnitlessValue = P.float.map((x) => Number(x));
 
 export const parseDeclarationUnit = P.choice([
   P.literal('px'),
