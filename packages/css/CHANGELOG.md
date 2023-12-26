@@ -1,5 +1,14 @@
 # @universal-labs/css
 
+## 5.0.5
+
+### Patch Changes
+
+- [`fc50e31`](https://github.com/react-universal/tailwind/commit/fc50e31c851500a63f9739695cf72f12d5e05618) Thanks [@chrisarts](https://github.com/chrisarts)! - fix: Unitless values to number
+
+- Updated dependencies [[`fc50e31`](https://github.com/react-universal/tailwind/commit/fc50e31c851500a63f9739695cf72f12d5e05618)]:
+  - @universal-labs/arc-parser@5.0.5
+
 ## 5.0.4
 
 ### Patch Changes

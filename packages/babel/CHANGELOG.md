@@ -1,5 +1,18 @@
 # @universal-labs/native-twin-babel
 
+## 1.0.4
+
+### Patch Changes
+
+- [`fc50e31`](https://github.com/react-universal/tailwind/commit/fc50e31c851500a63f9739695cf72f12d5e05618) Thanks [@chrisarts](https://github.com/chrisarts)! - fix: Unitless values to number
+
+- Updated dependencies [[`fc50e31`](https://github.com/react-universal/tailwind/commit/fc50e31c851500a63f9739695cf72f12d5e05618)]:
+  - @universal-labs/arc-parser@5.0.5
+  - @universal-labs/css@5.0.5
+  - @universal-labs/native-twin@5.0.5
+  - @universal-labs/preset-tailwind@5.0.5
+  - @universal-labs/styled@5.0.5
+
 ## 1.0.3
 
 ### Patch Changes

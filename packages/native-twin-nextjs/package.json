@@ -1,6 +1,6 @@
 {
   "name": "@universal-labs/native-twin-nextjs",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "React Native Web Tailwindcss for nextjs",
   "keywords": [
     "tailwind",
