@@ -138,6 +138,15 @@ export class Parser<Result, Data = any> {
     return successFn(newState.result, newState);
   }
 
+  apply<Result2>(fn: (x?: Result) => Parser<Result2, Data>): Parser<Result2, Data> {
+    const transform = this.transform;
+    return new Parser((state): ParserState<Result2, Data> => {
+      const newState = transform(state);
+      if (newState.isError) return newState as unknown as ParserState<Result2, Data>;
+      return fn(newState.result).transform(newState);
+    });
+  }
+
   static of<Result, Data = null>(x: Result): Parser<Result, Data> {
     return new Parser((state) => updateParserResult(state, x));
   }

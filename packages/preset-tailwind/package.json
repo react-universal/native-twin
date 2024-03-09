@@ -49,6 +49,9 @@
     "react": ">=18.0",
     "react-native": ">=0.71.0"
   },
+  "optionalDependencies": {
+    "jest": "*"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"

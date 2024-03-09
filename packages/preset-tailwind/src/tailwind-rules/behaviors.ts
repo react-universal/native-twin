@@ -10,6 +10,9 @@ export const outlineRules: Rule<__Theme__>[] = [
   //   customValues: Object.fromEntries(outlineStyles),
   // }),
   matchCssObject('outline-none', (match, ctx, rule) => {
+    if (ctx.mode == 'native') {
+      return null;
+    }
     return {
       className: parsedRuleToClassName(rule),
       declarations: [

@@ -25,7 +25,7 @@ describe('@universal-labs/styled', () => {
 describe('@universal-labs/styled', () => {
   it('CustomView render', () => {
     const component = renderer.create(
-      <StyledView className='shadow-sm web:p-10 sm:p-10 flex-1'>
+      <StyledView className='shadow-sm web:p-10 sm:p-10 flex-1 outline-none'>
         <Text className='leading-6'>asd</Text>
       </StyledView>,
     );

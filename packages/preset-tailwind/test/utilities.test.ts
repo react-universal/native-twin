@@ -45,6 +45,15 @@ describe('@universal-labs/preset-tailwind - Spacing Utilities', () => {
         selectors: [],
       },
     ]);
+    expect(tailwind('absolute')).toStrictEqual([
+      {
+        className: 'absolute',
+        declarations: [{ prop: 'position', value: 'absolute' }],
+        important: false,
+        precedence: 805306368,
+        selectors: [],
+      },
+    ]);
     expect(tailwind('py-2')).toStrictEqual([
       {
         className: 'py-2',

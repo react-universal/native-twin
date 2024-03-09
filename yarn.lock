@@ -5061,9 +5061,13 @@ __metadata:
   resolution: "@universal-labs/preset-tailwind@workspace:packages/preset-tailwind"
   dependencies:
     "@universal-labs/native-twin": "workspace:*"
+    jest: "*"
   peerDependencies:
     react: ">=18.0"
     react-native: ">=0.71.0"
+  dependenciesMeta:
+    jest:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -10735,7 +10739,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^29.3.1":
+"jest@npm:*, jest@npm:^29.3.1":
   version: 29.7.0
   resolution: "jest@npm:29.7.0"
   dependencies:
