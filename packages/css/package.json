@@ -42,7 +42,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@universal-labs/arc-parser": "workspace:*"
+    "@universal-labs/arc-parser": "workspace:*",
+    "fp-ts": "2.16.2"
   },
   "publishConfig": {
     "access": "public",

@@ -59,26 +59,37 @@
   ],
   "settings": {
     "cSpell.ignorePaths": [
-      "package-lock.json",
+      "yarn.lock",
       "node_modules",
       "vscode-extension",
       ".git/objects",
+      "css.colors.ts",
       ".vscode",
       ".vscode-insiders",
       "**/colors.ts",
-      "**/*.snap"
+      "**/*.snap",
+      "**/*.json"
     ],
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
       "strings": true
     },
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      ".turbo": true
+    },
     "typescript.tsdk": "root/node_modules/typescript/lib",
-    "checkpoints.showActiveFileOnly": true,
     "cSpell.words": [
       "sastan",
       "TRBL",
       "xytrbl"
-    ]
+    ],
+    "CodeGPT.apiKey": "Custom"
   }
 }

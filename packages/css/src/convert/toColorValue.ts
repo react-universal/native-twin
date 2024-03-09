@@ -1,3 +1,12 @@
+/**
+ * Converts the given input to a color value.
+ * @param {string} color - The input to be converted to a color value.
+ * @returns {string} - The resulting color value.
+ *
+ * @example
+ * // returns "#FFFFFF"
+ * toColorValue(255, 255, 255);
+ */
 export function toColorValue(
   color: string,
   options = {

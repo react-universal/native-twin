@@ -1,6 +1,6 @@
+// spell-checker: disable
 export function fixHTMLTagClassNamesList(value: string, quote: string): string {
   // const value = markup.slice(startIndex, endIndex)
-
   // Lets handle some special react cases:
   //   * arbitrary values for `content-`
   //     <span class="before:content-[&#x27;asas&#x27;]"></span>

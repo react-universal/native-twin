@@ -1,6 +1,6 @@
 /**
  * @description Returns the given value converted to kebab-case.
- * @example toCamelCase('paddingTop') => 'padding-top'
+ * @example toHyphenCase('paddingTop') => 'padding-top'
  * */
 export const toHyphenCase = (value: string) => {
   if (value.startsWith('Webkit')) {
