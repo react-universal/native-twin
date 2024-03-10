@@ -17,6 +17,7 @@ export * from './parsers/sequence-of';
 export * from './parsers/skip.parser';
 export * from './parsers/string.parser';
 export * from './parsers/util.parsers';
+export * from './parsers/functional.parsers';
 export type {
   InternalResultType,
   ParserError,

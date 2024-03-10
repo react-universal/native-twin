@@ -1,5 +1,6 @@
 import * as P from '@universal-labs/arc-parser';
-import { parseDeclarationUnit, parseMathOperatorSymbol } from '../common.parsers';
+import { parseMathOperatorSymbol } from '../common.parsers';
+import { declarationUnitParser } from '../parsers/data-type.parser';
 
 export const ParseCssDimensions = P.recursiveParser(() =>
   P.choice([P.whitespaceSurrounded(ParseDimensionWithUnits), ParseCssCalc]),
@@ -7,11 +8,11 @@ export const ParseCssDimensions = P.recursiveParser(() =>
 
 const ParseDimensionWithUnits = P.sequenceOf([
   P.float,
-  P.maybe(parseDeclarationUnit),
+  P.maybe(declarationUnitParser),
 ]).mapFromData((parserState) => {
   const { result, data } = parserState;
   const value = parseFloat(result[0]);
-  switch (result[1]) {
+  switch (result[1]?.value) {
     case 'px':
       return value;
     case 'rem':

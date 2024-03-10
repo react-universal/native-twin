@@ -27,3 +27,9 @@ export type CssNode = {
   };
   declarations: AnyStyle;
 };
+
+export interface Token<T, U> {
+  type: T;
+  value: U;
+}
+export type TokenIdentity = <T extends string>(type: T) => <U>(value: U) => Token<T, U>;

@@ -9,7 +9,8 @@ export { mutationObserver, observe } from './runtime/observe';
 
 /** CSS */
 export { createCssomSheet } from './sheets/cssom';
-export { getSheet, getStyleElement } from './sheets/getSheet';
+export { getSheet } from './sheets/getSheet';
+export { getStyleElement } from './sheets/getStyleElement';
 export { createVirtualSheet } from './sheets/virtual';
 export {
   declarationToCss,

@@ -90,6 +90,13 @@
       "TRBL",
       "xytrbl"
     ],
-    "CodeGPT.apiKey": "Custom"
+    "CodeGPT.apiKey": "Custom",
+    "testing.openTesting": "neverOpen",
+    "jest.enable": true,
+    "jest.outputConfig": {
+      "revealOn": "run",
+      "revealWithFocus": "none",
+      "clearOnRun": "none",
+    }
   }
 }

@@ -2612,6 +2612,8 @@ exports[`TS PLUGIN Enumerate completions: Completions Snapshot 1`] = `
   "right-2.5",
   "right-3.5",
   "absolute",
+  "absoluterelative",
+  "relativeabsolute",
   "relative",
   "z-0",
   "z-10",

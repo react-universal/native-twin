@@ -63,15 +63,5 @@
     "turbo": "^1.10.16",
     "typescript": "^5.2.2"
   },
-  "majestic": {
-    "jestScriptPath": "./node_modules/jest/bin/jest.js",
-    "configs": {
-      "css": {
-        "args": [
-          "--config=./packages/css/jest.config.js"
-        ]
-      }
-    }
-  },
   "packageManager": "yarn@4.1.1"
 }

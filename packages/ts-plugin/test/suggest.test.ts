@@ -10,7 +10,7 @@ const logger: LanguageServiceLogger = {
 const intellisense = new NativeTailwindIntellisense(logger, config);
 describe('TS PLUGIN', () => {
   it('Complete suggestion list', () => {
-    expect(intellisense.completions().classes.size).toStrictEqual(5528);
+    expect(intellisense.completions().classes.size).toStrictEqual(5530);
   });
   it('Enumerate completions', () => {
     expect(Array.from(intellisense.completions().classes, ([name]) => name)).toMatchSnapshot(

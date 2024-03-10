@@ -8,20 +8,24 @@ import type {
 
 export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
 
-type CSSUnits =
+export type CSSUnits =
+  | 'px'
+  | '%'
   | 'em'
   | 'rem'
-  | 'px'
-  | 'cn'
-  | 'vh'
-  | 'pc'
-  | 'vw'
   | 'deg'
+  | 'vh'
+  | 'vw'
+  | 'rad'
+  | 'turn'
+  | 'pc'
+  | 'cn'
   | 'ex'
   | 'in'
-  | '%'
-  | 'turn'
-  | 'rad';
+  | 'pt'
+  | 'cm'
+  | 'mm'
+  | 'Q';
 
 export type CSSLengthUnit = {
   [U in CSSUnits]: {
@@ -74,3 +78,12 @@ export interface GlobalSheet {
   clear(): void;
   stringify(): string;
 }
+
+export type CssFeature =
+  | 'edges'
+  | 'corners'
+  | 'colors'
+  | 'default'
+  | 'gap'
+  | 'transform-2d'
+  | 'transform-3d';

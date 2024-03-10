@@ -26,6 +26,11 @@ export {
 } from './constants/simplePseudos';
 export { unitlessCssProps } from './constants/css.unitless';
 
+export {
+  declarationUnitParser,
+  declarationValueWithUnitParser,
+} from './parsers/data-type.parser';
+
 // CONVERT
 export { toCamelCase } from './convert/toCamelCase';
 export { toHyphenCase } from './convert/toHyphenCase';

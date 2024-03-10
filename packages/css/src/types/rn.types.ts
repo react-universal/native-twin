@@ -23,3 +23,9 @@ export type FinalSheet = Record<SelectorGroup, CompleteStyle>;
 export interface CompleteStyle extends ViewStyle, TextStyle, Omit<ImageStyle, 'overflow'> {}
 
 export type { FlexAlignType, DimensionValue };
+
+export interface RuntimeContext {
+  rem: number;
+  deviceHeight: number;
+  deviceWidth: number;
+}

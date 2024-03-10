@@ -43,7 +43,8 @@
   },
   "dependencies": {
     "@universal-labs/arc-parser": "workspace:*",
-    "fp-ts": "2.16.2"
+    "fp-ts": "2.16.2",
+    "ts-pattern": "5.0.8"
   },
   "publishConfig": {
     "access": "public",
