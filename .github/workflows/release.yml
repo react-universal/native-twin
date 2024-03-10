@@ -17,10 +17,10 @@ jobs:
         
       - uses: fregante/setup-git-user@v1
 
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js 20.x
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20.x
           cache: yarn
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
