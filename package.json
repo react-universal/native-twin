@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-universal/tailwind.git"
+    "url": "https://github.com/react-universal/native-twin.git"
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
