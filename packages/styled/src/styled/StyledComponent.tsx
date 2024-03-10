@@ -86,7 +86,9 @@ function styledComponentsFactory<
   if (__DEV__) {
     ForwardRefComponent.displayName = `Styled(${getComponentDisplayName(Component)})`;
   }
-  return ForwardRefComponent;
+  return ForwardRefComponent as ForwardRefExoticComponent<
+    Props & StyledComponentProps & { ref?: Ref<any> }
+  >;
 }
 
 export default styledComponentsFactory;
