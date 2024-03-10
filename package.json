@@ -61,7 +61,7 @@
     "react-test-renderer": "18.2.0",
     "tslib": "^2.6.0",
     "turbo": "^1.12.5",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.2"
   },
   "packageManager": "yarn@4.1.1"
 }

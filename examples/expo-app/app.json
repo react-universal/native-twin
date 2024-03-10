@@ -14,7 +14,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "expo.universal.css"
@@ -36,7 +38,8 @@
             "flipper": true
           }
         }
-      ]
+      ],
+      "expo-font"
     ]
   }
 }
