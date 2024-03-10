@@ -27,9 +27,9 @@ export {
 export { unitlessCssProps } from './constants/css.unitless';
 
 export {
-  declarationUnitParser,
+  cssValueUnitParser as declarationUnitParser,
   declarationValueWithUnitParser,
-} from './parsers/data-type.parser';
+} from './features/css/css-common.parser';
 
 // CONVERT
 export { toCamelCase } from './convert/toCamelCase';
@@ -62,3 +62,12 @@ export { globalSheet } from './sheets/virtual';
 export type * from './types/rn.types';
 export type * from './types/parser.types';
 export type * from './types/css.types';
+
+// TAILWIND
+export { parseTWTokens, getTWFeatureParser } from './features/tailwind';
+export type {
+  ParsedRule,
+  ArbitrarySegmentToken,
+  RuleHandlerToken,
+  SegmentToken,
+} from './features/tailwind';

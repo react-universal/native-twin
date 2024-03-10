@@ -1,5 +1,5 @@
 import * as P from '@universal-labs/arc-parser';
-import { mapAsType } from '../utils.parser';
+import { mapAsType } from '../../utils.parser';
 
 const mapToAttributeSelector = mapAsType('ATTRIBUTE_SELECTOR');
 const mapToElementSelector = mapAsType('ELEMENT_SELECTOR');

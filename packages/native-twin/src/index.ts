@@ -43,7 +43,6 @@ export {
 export { getRuleSelectorGroup, mql } from './utils/css-utils';
 
 // PARSERS
-export { parseTWTokens } from './parsers/tailwind-classes.parser';
 export { parseCssValue } from './parsers/values.parser';
 
 /** TYPES */

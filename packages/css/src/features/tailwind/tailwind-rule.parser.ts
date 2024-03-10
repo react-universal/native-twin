@@ -6,7 +6,7 @@ import type {
   ParsedRule,
   VariantClassToken,
   VariantToken,
-} from '../types/tailwind.types';
+} from './tailwind.types';
 
 const classNameIdent = /^[a-z0-9A-Z-.]+/;
 
@@ -25,7 +25,7 @@ const mapVariantClass = mapResult('VARIANT_CLASS');
 const mapGroup = mapResult('GROUP');
 const mapColorModifier = mapResult('COLOR_MODIFIER');
 
-export const parseValidTokenRecursive = P.recursiveParser(
+const parseValidTokenRecursive = P.recursiveParser(
   (): P.Parser<GroupToken | VariantClassToken | ClassNameToken> =>
     P.choice([parseRuleGroup, parseVariantClass, parseClassName]),
 );
@@ -33,21 +33,21 @@ export const parseValidTokenRecursive = P.recursiveParser(
 // CLASSNAMES
 
 /** Match value inside [...] */
-export const parseArbitraryValue = P.between(P.char('['))(P.char(']'))(
-  P.everyCharUntil(']'),
-).map((x) => `[${x}]`);
+const parseArbitraryValue = P.between(P.char('['))(P.char(']'))(P.everyCharUntil(']')).map(
+  (x) => `[${x}]`,
+);
 
 /** Match color modifiers like: `.../10` or `.../[...]` */
-export const colorModifier = P.sequenceOf([
+const colorModifier = P.sequenceOf([
   P.char('/'),
   P.choice([P.digits, parseArbitraryValue]),
 ]).map((x) => mapColorModifier(x[1]));
 
 /** Match important prefix like: `!hidden` */
-export const parseMaybeImportant = P.maybe(P.char('!')).map((x) => !!x);
+const parseMaybeImportant = P.maybe(P.char('!')).map((x) => !!x);
 
 /** Match variants prefixes like `md:` or stacked like `hover:md:` or `!md:hover:` */
-export const parseVariant = P.many1(
+const parseVariant = P.many1(
   P.sequenceOf([parseMaybeImportant, P.regex(classNameIdent), P.char(':')]),
 ).map(
   (x): VariantToken =>
@@ -60,7 +60,7 @@ export const parseVariant = P.many1(
 );
 
 /** Match classnames with important prefix arbitrary and color modifiers */
-export const parseClassName = P.sequenceOf([
+const parseClassName = P.sequenceOf([
   parseMaybeImportant,
   P.regex(classNameIdent),
   P.maybe(parseArbitraryValue),
@@ -81,7 +81,7 @@ const parseVariantClass = P.sequenceOf([parseVariant, parseClassName]).map(
 
 // GROUPS
 /** Match any valid TW ident or arbitrary separated by spaces */
-export const parseGroupContent = matchBetweenParens(
+const parseGroupContent = matchBetweenParens(
   P.separatedBySpace(
     P.choice([
       parseValidTokenRecursive,
@@ -93,7 +93,7 @@ export const parseGroupContent = matchBetweenParens(
 /**
  * Match className groups like `md:(...)` or stacked like `hover:md:(...)` or feature prefix `text(...)`
  * */
-export const parseRuleGroup = P.sequenceOf([
+const parseRuleGroup = P.sequenceOf([
   P.choice([parseVariant, parseClassName]),
   parseGroupContent,
 ]).map(
@@ -104,58 +104,58 @@ export const parseRuleGroup = P.sequenceOf([
     }),
 );
 /** Recursive syntax parser all utils separated by space */
-export const tailwindClassNamesParser = P.separatedBySpace(parseValidTokenRecursive);
+const tailwindClassNamesParser = P.separatedBySpace(parseValidTokenRecursive);
 
-export function translateRuleTokens(
-  tokens: (GroupToken | VariantClassToken | ClassNameToken | ArbitraryToken)[],
-  result: ParsedRule[] = [],
-): ParsedRule[] {
-  const current = tokens.shift();
-  if (!current) return result;
-  if (current.type == 'CLASS_NAME') {
-    result.push({
-      n: current.value.n,
-      v: [],
-      i: current.value.i,
-      m: current.value.m,
-      p: 0,
-    });
-    return translateRuleTokens(tokens, result);
-  }
-  if (current.type == 'VARIANT_CLASS') {
-    result.push({
-      n: current.value[1].value.n,
-      v: current.value[0].value.map((x) => x.n),
-      i: current.value[1].value.i || current.value[0].value.some((x) => x.i),
-      m: current.value[1].value.m,
-      p: 0,
-    });
-    return translateRuleTokens(tokens, result);
-  }
-  if (current.type == 'GROUP') {
-    const baseValue = current.value.base;
-    const content = mergeParsedRuleGroupTokens(current.value.content).map((x) => {
-      if (baseValue.type == 'CLASS_NAME') {
-        return {
-          ...x,
-          i: baseValue.value.i,
-          m: baseValue.value.m,
-          n: baseValue.value.n + '-' + x.n,
-        };
-      }
-      return {
-        ...x,
-        v: [...x.v, ...baseValue.value.map((y) => y.n)],
-        i: x.i || baseValue.value.some((y) => y.i),
-      };
-    });
-    result.push(...content);
-    return translateRuleTokens(tokens, result);
-  }
-  return result;
-}
+// function translateRuleTokens(
+//   tokens: (GroupToken | VariantClassToken | ClassNameToken | ArbitraryToken)[],
+//   result: ParsedRule[] = [],
+// ): ParsedRule[] {
+//   const current = tokens.shift();
+//   if (!current) return result;
+//   if (current.type == 'CLASS_NAME') {
+//     result.push({
+//       n: current.value.n,
+//       v: [],
+//       i: current.value.i,
+//       m: current.value.m,
+//       p: 0,
+//     });
+//     return translateRuleTokens(tokens, result);
+//   }
+//   if (current.type == 'VARIANT_CLASS') {
+//     result.push({
+//       n: current.value[1].value.n,
+//       v: current.value[0].value.map((x) => x.n),
+//       i: current.value[1].value.i || current.value[0].value.some((x) => x.i),
+//       m: current.value[1].value.m,
+//       p: 0,
+//     });
+//     return translateRuleTokens(tokens, result);
+//   }
+//   if (current.type == 'GROUP') {
+//     const baseValue = current.value.base;
+//     const content = mergeParsedRuleGroupTokens(current.value.content).map((x) => {
+//       if (baseValue.type == 'CLASS_NAME') {
+//         return {
+//           ...x,
+//           i: baseValue.value.i,
+//           m: baseValue.value.m,
+//           n: baseValue.value.n + '-' + x.n,
+//         };
+//       }
+//       return {
+//         ...x,
+//         v: [...x.v, ...baseValue.value.map((y) => y.n)],
+//         i: x.i || baseValue.value.some((y) => y.i),
+//       };
+//     });
+//     result.push(...content);
+//     return translateRuleTokens(tokens, result);
+//   }
+//   return result;
+// }
 
-export function mergeParsedRuleGroupTokens(
+function mergeParsedRuleGroupTokens(
   groupContent: (ClassNameToken | VariantClassToken | ArbitraryToken | GroupToken)[],
   results: ParsedRule[] = [],
 ): ParsedRule[] {
@@ -210,6 +210,9 @@ export function mergeParsedRuleGroupTokens(
   return mergeParsedRuleGroupTokens(groupContent, results);
 }
 
+/**
+ * @category `Tailwind Parsers`
+ * */
 export function parseTWTokens(rules: string) {
   const data = tailwindClassNamesParser.run(rules);
   if (data.isError) {

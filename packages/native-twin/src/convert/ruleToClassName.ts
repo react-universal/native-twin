@@ -1,4 +1,4 @@
-import type { ParsedRule } from '../types/tailwind.types';
+import type { ParsedRule } from '@universal-labs/css';
 
 export function parsedRuleToClassName(rule: ParsedRule): string {
   let modifier = '';

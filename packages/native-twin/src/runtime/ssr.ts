@@ -1,7 +1,10 @@
-import { compareClassNames, fixHTMLTagClassNamesList } from '@universal-labs/css';
+import {
+  compareClassNames,
+  fixHTMLTagClassNamesList,
+  parseTWTokens,
+} from '@universal-labs/css';
 import { sheetEntriesToCss } from '../convert/entryToCss';
 import { parsedRuleToClassName } from '../convert/ruleToClassName';
-import { parseTWTokens } from '../parsers/tailwind-classes.parser';
 import type { SheetEntry } from '../types/css.types';
 import type { RuntimeTW } from '../types/theme.types';
 import type { StringLike } from '../types/util.types';

@@ -1,7 +1,6 @@
-import { Layer, moveToLayer } from '@universal-labs/css';
+import { Layer, moveToLayer, type ParsedRule } from '@universal-labs/css';
 import type { ThemeContext } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
-import type { ParsedRule } from '../types/tailwind.types';
 import { convert } from '../utils/theme-utils';
 import { parsedRuleToClassName } from './ruleToClassName';
 

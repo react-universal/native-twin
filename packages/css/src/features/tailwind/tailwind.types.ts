@@ -34,6 +34,7 @@ export interface GroupToken {
   };
 }
 
+/** @category `Tailwind Types` */
 export interface ParsedRule {
   /** The calculated precedence taking all variants into account. */
   readonly p: number;

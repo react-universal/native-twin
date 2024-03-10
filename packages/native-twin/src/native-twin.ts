@@ -5,9 +5,9 @@
  * ********************************************
  */
 import { Layer } from '@universal-labs/css';
+import { parseTWTokens } from '@universal-labs/css';
 import { defineConfig } from './config/define-config';
 import { parsedRuleToEntry } from './convert/ruleToEntry';
-import { parseTWTokens } from './parsers/tailwind-classes.parser';
 import { createThemeContext } from './theme/theme.context';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { Sheet, SheetEntry } from './types/css.types';

@@ -1,7 +1,6 @@
-import { atRulePrecedence, pseudoPrecedence } from '@universal-labs/css';
+import { atRulePrecedence, pseudoPrecedence, type ParsedRule } from '@universal-labs/css';
 import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import type { ThemeContext } from '../types/config.types';
-import type { ParsedRule } from '../types/tailwind.types';
 import type { Colors, __Theme__ } from '../types/theme.types';
 import { mql } from './css-utils';
 import { asArray } from './helpers';

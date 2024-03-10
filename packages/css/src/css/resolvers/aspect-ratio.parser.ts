@@ -1,5 +1,5 @@
-import { ParseCssMath } from '../dimensions.parser';
+// import { ParseCssMath } from '../dimensions.parser';
 
-export const ParseAspectRatio = ParseCssMath.map((value) => ({
-  aspectRatio: value,
-}));
+// export const ParseAspectRatio = ParseCssMath.map((value) => ({
+//   aspectRatio: value,
+// }));

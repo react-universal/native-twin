@@ -1,3 +1,4 @@
+import type { ParsedRule } from '@universal-labs/css';
 import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import { createRuleResolver } from '../parsers/rule-handler';
 import { createVariantResolver } from '../parsers/variant-handler';
@@ -9,7 +10,6 @@ import type {
   VariantResult,
 } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
-import type { ParsedRule } from '../types/tailwind.types';
 import type { __Theme__ } from '../types/theme.types';
 import type { MaybeArray } from '../types/util.types';
 import { flattenColorPalette } from '../utils/theme-utils';
