@@ -5454,12 +5454,16 @@ __metadata:
     "@types/react-is": "npm:^17.0.3"
     "@universal-labs/css": "workspace:*"
     "@universal-labs/native-twin": "workspace:*"
+    jest: "npm:*"
     react-is: "npm:^18.2.0"
     stable-hash: "npm:0.0.3"
   peerDependencies:
     react: ">=18"
     react-native: ">= 0.70"
     react-native-web: ">= 0.18.10"
+  dependenciesMeta:
+    jest:
+      optional: true
   languageName: unknown
   linkType: soft
 

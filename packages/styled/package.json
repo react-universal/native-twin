@@ -55,6 +55,9 @@
     "react-native": ">= 0.70",
     "react-native-web": ">= 0.18.10"
   },
+  "optionalDependencies": {
+    "jest": "*"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
