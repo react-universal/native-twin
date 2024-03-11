@@ -1,5 +1,5 @@
 import { globalKeywords } from '@universal-labs/css';
-import type { __Theme__ } from '@universal-labs/native-twin';
+import { TailwindPresetTheme } from '../types/theme.types';
 
 export const verticalAlign = {
   mid: 'middle',
@@ -16,7 +16,7 @@ export const verticalAlign = {
   sub: 'sub',
   super: 'super',
   ...Object.fromEntries(globalKeywords.map((x) => [x, x])),
-} satisfies __Theme__['verticalAlign'];
+} satisfies TailwindPresetTheme['verticalAlign'];
 
 export const textAlign = {
   center: 'center',
@@ -25,4 +25,4 @@ export const textAlign = {
   justify: 'justify',
   start: 'start',
   end: 'end',
-} satisfies __Theme__['textAlign'];
+} satisfies TailwindPresetTheme['textAlign'];

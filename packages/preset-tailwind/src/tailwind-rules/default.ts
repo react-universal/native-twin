@@ -1,4 +1,5 @@
 import type { Rule } from '@universal-labs/native-twin';
+import { TailwindPresetTheme } from '../types/theme.types';
 import { textAlignsRules, verticalAlignsRules } from './align';
 import { backgroundRules } from './background';
 import { appearanceRules, outlineRules } from './behaviors';
@@ -13,7 +14,7 @@ import { spacingRules } from './spacing';
 import { translateRules } from './transform';
 import { fontThemeRules } from './typography';
 
-export const themeRules: Rule[] = [
+export const themeRules: Rule<TailwindPresetTheme>[] = [
   backgroundRules,
   flexRules,
   spacingRules,

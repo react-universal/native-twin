@@ -1,10 +1,11 @@
-import type { Preset, __Theme__ } from '@universal-labs/native-twin';
+import type { Preset } from '@universal-labs/native-twin';
 import { themeRules } from './tailwind-rules';
 import * as tailwindTheme from './tailwind-theme';
 import { preflight } from './tailwind-theme/preflight';
+import { TailwindPresetTheme } from './types/theme.types';
 
 export interface TailwindPresetBaseOptions {
-  colors?: __Theme__['colors'];
+  colors?: TailwindPresetTheme['colors'];
   /** Allows to disable to tailwind preflight (default: `false` eg include the tailwind preflight ) */
   disablePreflight?: boolean | undefined;
 }
@@ -12,8 +13,8 @@ export interface TailwindPresetBaseOptions {
 export function presetTailwind({
   colors,
   disablePreflight,
-}: TailwindPresetBaseOptions = {}): Preset<__Theme__> {
-  let userColors: __Theme__['colors'] = {};
+}: TailwindPresetBaseOptions = {}): Preset<TailwindPresetTheme> {
+  let userColors: TailwindPresetTheme['colors'] = {};
   if (colors) {
     userColors = {
       inherit: 'inherit',

@@ -1,6 +1,7 @@
-import { matchThemeValue } from '@universal-labs/native-twin';
+import { Rule, matchThemeValue } from '@universal-labs/native-twin';
+import { TailwindPresetTheme } from '../types/theme.types';
 
-export const sizeRules = [
+export const sizeRules: Rule<TailwindPresetTheme>[] = [
   matchThemeValue('aspect-', 'aspectRatio', 'aspectRatio'),
   matchThemeValue('w-', 'width', 'width'),
   matchThemeValue('h-', 'height', 'height'),

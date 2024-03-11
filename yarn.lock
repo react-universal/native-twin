@@ -5375,8 +5375,6 @@ __metadata:
   dependencies:
     "@universal-labs/arc-parser": "workspace:*"
     "@universal-labs/helpers": "workspace:*"
-    fp-ts: "npm:2.16.2"
-    ts-pattern: "npm:5.0.8"
   languageName: unknown
   linkType: soft
 
@@ -9505,13 +9503,6 @@ __metadata:
     combined-stream: "npm:^1.0.8"
     mime-types: "npm:^2.1.12"
   checksum: 10/7264aa760a8cf09482816d8300f1b6e2423de1b02bba612a136857413fdc96d7178298ced106817655facc6b89036c6e12ae31c9eb5bdc16aabf502ae8a5d805
-  languageName: node
-  linkType: hard
-
-"fp-ts@npm:2.16.2":
-  version: 2.16.2
-  resolution: "fp-ts@npm:2.16.2"
-  checksum: 10/61c1f3db171191527e9d902a8a0195942e8de9380c0c491c61e3e2c39d6007c6432be03e9f55d73dd8aae1431f35083c729636c59bbd185830b09e5db2615adb
   languageName: node
   linkType: hard
 
@@ -16327,13 +16318,6 @@ __metadata:
   version: 0.1.13
   resolution: "ts-interface-checker@npm:0.1.13"
   checksum: 10/9f7346b9e25bade7a1050c001ec5a4f7023909c0e1644c5a96ae20703a131627f081479e6622a4ecee2177283d0069e651e507bedadd3904fc4010ab28ffce00
-  languageName: node
-  linkType: hard
-
-"ts-pattern@npm:5.0.8":
-  version: 5.0.8
-  resolution: "ts-pattern@npm:5.0.8"
-  checksum: 10/a57f7def89c0fae3065d56a1fb94510688910b4b99610a41b2b3df277d92af17c26a4a65717e7d7c3ac085258d20144f2f5a748d860c043609aea29cff7a43ab
   languageName: node
   linkType: hard
 
