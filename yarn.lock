@@ -5429,6 +5429,7 @@ __metadata:
     "@types/cssbeautify": "npm:0.3.2"
     "@types/showdown": "npm:2.0.1"
     "@universal-labs/css": "workspace:*"
+    "@universal-labs/helpers": "workspace:*"
     "@universal-labs/native-twin": "workspace:*"
     "@universal-labs/preset-tailwind": "workspace:*"
     "@vscode/emmet-helper": "npm:2.9.2"

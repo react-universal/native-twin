@@ -1,4 +1,5 @@
 import { cornerMap, directionMap } from '@universal-labs/css';
+import { asArray } from '@universal-labs/helpers';
 import {
   Rule,
   RuleMeta,
@@ -6,7 +7,6 @@ import {
   TailwindConfig,
   ThemeContext,
   __Theme__,
-  asArray,
   createTailwind,
   createThemeContext,
   createVirtualSheet,

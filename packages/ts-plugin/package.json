@@ -14,6 +14,7 @@
   "dependencies": {
     "@ctrl/tinycolor": "3.6.0",
     "@universal-labs/css": "workspace:*",
+    "@universal-labs/helpers": "workspace:*",
     "@universal-labs/native-twin": "workspace:*",
     "@universal-labs/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "2.9.2",
