@@ -11,6 +11,7 @@ require('esbuild')
       '@universal-labs/preset-tailwind',
       '@universal-labs/css',
       '@universal-labs/parser',
+      '@universal-labs/helpers',
       'react-native',
     ],
     format: 'cjs',
