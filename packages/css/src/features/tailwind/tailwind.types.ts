@@ -35,7 +35,7 @@ export interface GroupToken {
 }
 
 /** @category `Tailwind Types` */
-export interface ParsedRule {
+export interface TWParsedRule {
   /** The calculated precedence taking all variants into account. */
   readonly p: number;
 

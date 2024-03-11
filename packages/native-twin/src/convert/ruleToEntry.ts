@@ -1,4 +1,4 @@
-import { Layer, moveToLayer, type ParsedRule } from '@universal-labs/css';
+import { Layer, moveToLayer, type TWParsedRule } from '@universal-labs/css';
 import type { ThemeContext } from '../types/config.types';
 import type { SheetEntry } from '../types/css.types';
 import { convert } from '../utils/theme-utils';
@@ -11,7 +11,7 @@ import { parsedRuleToClassName } from './ruleToClassName';
  * @param {ThemeContext} context - The context in which the conversion is happening.
  * @return {SheetEntry} The converted sheet entry.
  */
-export function parsedRuleToEntry(rule: ParsedRule, context: ThemeContext): SheetEntry {
+export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): SheetEntry {
   if (rule.n == 'group') {
     return {
       className: 'group',

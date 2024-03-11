@@ -1,4 +1,4 @@
-import { atRulePrecedence, pseudoPrecedence, type ParsedRule } from '@universal-labs/css';
+import { atRulePrecedence, pseudoPrecedence, type TWParsedRule } from '@universal-labs/css';
 import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import type { ThemeContext } from '../types/config.types';
 import type { Colors, __Theme__ } from '../types/theme.types';
@@ -125,11 +125,11 @@ export function flattenThemeSection(obj: any, path: string[] = []) {
 }
 
 export function convert<Theme extends __Theme__ = __Theme__>(
-  { n: name, i: important, v: variants = [], m: modifier }: ParsedRule,
+  { n: name, i: important, v: variants = [], m: modifier }: TWParsedRule,
   context: ThemeContext<Theme>,
   precedence: number,
   conditions?: string[],
-): ParsedRule {
+): TWParsedRule {
   if (name) {
     name = parsedRuleToClassName({ n: name, i: important, v: variants, m: modifier, p: 0 });
   }

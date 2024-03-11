@@ -4,7 +4,7 @@ export { getTWFeatureParser } from './tailwind-features.parser';
 
 // TYPES
 export type {
-  ParsedRule,
+  TWParsedRule,
   ArbitrarySegmentToken,
   RuleHandlerToken,
   SegmentToken,

@@ -2,7 +2,7 @@ import type { PlatformOSType } from 'react-native';
 import type {
   CompleteStyle,
   CssFeature,
-  ParsedRule,
+  TWParsedRule,
   RuleHandlerToken,
 } from '@universal-labs/css';
 import type { SheetEntry } from './css.types';
@@ -82,7 +82,7 @@ export interface RuleResolver<Theme extends __Theme__ = {}> {
   (
     match: RuleHandlerToken,
     context: ThemeContext<Theme>,
-    parsed: ParsedRule,
+    parsed: TWParsedRule,
   ): RuleResult | Falsey;
 }
 
@@ -127,7 +127,7 @@ export interface ThemeContext<Theme extends __Theme__ = __Theme__> {
   breakpoints: Exclude<__Theme__['screens'], undefined>;
   mode: TailwindConfig['mode'];
   /** resolves a rule */
-  r: (value: ParsedRule) => RuleResult;
+  r: (value: TWParsedRule) => RuleResult;
   v: (value: string) => VariantResult;
 
   // isSupported: (support: PlatformSupport[]) => boolean;

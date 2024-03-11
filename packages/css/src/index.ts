@@ -66,7 +66,7 @@ export type * from './types/css.types';
 // TAILWIND
 export { parseTWTokens, getTWFeatureParser } from './features/tailwind';
 export type {
-  ParsedRule,
+  TWParsedRule,
   ArbitrarySegmentToken,
   RuleHandlerToken,
   SegmentToken,

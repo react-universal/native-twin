@@ -3,7 +3,7 @@ import type {
   ArbitraryToken,
   ClassNameToken,
   GroupToken,
-  ParsedRule,
+  TWParsedRule,
   VariantClassToken,
   VariantToken,
 } from './tailwind.types';
@@ -157,8 +157,8 @@ const tailwindClassNamesParser = P.separatedBySpace(parseValidTokenRecursive);
 
 function mergeParsedRuleGroupTokens(
   groupContent: (ClassNameToken | VariantClassToken | ArbitraryToken | GroupToken)[],
-  results: ParsedRule[] = [],
-): ParsedRule[] {
+  results: TWParsedRule[] = [],
+): TWParsedRule[] {
   let nextToken = groupContent.shift();
   if (!nextToken) return results;
   if (nextToken.type == 'ARBITRARY') {
@@ -190,21 +190,23 @@ function mergeParsedRuleGroupTokens(
   }
   if (nextToken.type == 'GROUP') {
     const baseValue = nextToken.value.base;
-    const parts = mergeParsedRuleGroupTokens(nextToken.value.content).map((x): ParsedRule => {
-      if (baseValue.type == 'CLASS_NAME') {
+    const parts = mergeParsedRuleGroupTokens(nextToken.value.content).map(
+      (x): TWParsedRule => {
+        if (baseValue.type == 'CLASS_NAME') {
+          return {
+            ...x,
+            i: baseValue.value.i,
+            m: baseValue.value.m,
+            n: baseValue.value.n + '-' + x.n,
+          };
+        }
         return {
           ...x,
-          i: baseValue.value.i,
-          m: baseValue.value.m,
-          n: baseValue.value.n + '-' + x.n,
+          v: [...x.v, ...baseValue.value.map((y) => y.n)],
+          i: x.i || baseValue.value.some((y) => y.i),
         };
-      }
-      return {
-        ...x,
-        v: [...x.v, ...baseValue.value.map((y) => y.n)],
-        i: x.i || baseValue.value.some((y) => y.i),
-      };
-    });
+      },
+    );
     results.push(...parts);
   }
   return mergeParsedRuleGroupTokens(groupContent, results);

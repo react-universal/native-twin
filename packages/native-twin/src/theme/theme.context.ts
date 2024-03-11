@@ -1,4 +1,4 @@
-import type { ParsedRule } from '@universal-labs/css';
+import type { TWParsedRule } from '@universal-labs/css';
 import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import { createRuleResolver } from '../parsers/rule-handler';
 import { createVariantResolver } from '../parsers/variant-handler';
@@ -16,7 +16,7 @@ import { flattenColorPalette } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
 
 interface RuleHandlerFn<Theme extends __Theme__ = __Theme__> {
-  (token: ParsedRule, ctx: ThemeContext<Theme>): RuleResult;
+  (token: TWParsedRule, ctx: ThemeContext<Theme>): RuleResult;
 }
 
 interface VariantHandlerFn<Theme extends __Theme__ = __Theme__> {
@@ -74,7 +74,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
       return variantCache.get(value);
     },
 
-    r(token: ParsedRule) {
+    r(token: TWParsedRule) {
       for (const current of rules) {
         const className = parsedRuleToClassName(token);
 

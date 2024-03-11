@@ -1,12 +1,12 @@
 import * as P from '@universal-labs/arc-parser';
-import { getTWFeatureParser, type ParsedRule } from '@universal-labs/css';
+import { getTWFeatureParser, type TWParsedRule } from '@universal-labs/css';
 import type { Rule, ThemeContext } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
 
 export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(rule: Rule<Theme>) => {
   const [_, __, resolver] = rule;
   const parser = createRuleMatcher(rule);
-  return (token: ParsedRule, context: ThemeContext) => {
+  return (token: TWParsedRule, context: ThemeContext) => {
     const parserResult = parser.run(token.n);
     if (parserResult.isError) return null;
     const nextToken = resolver(parserResult.result, context, token);

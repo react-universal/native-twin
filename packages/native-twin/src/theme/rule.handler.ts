@@ -1,4 +1,4 @@
-import type { ParsedRule } from '@universal-labs/css';
+import type { TWParsedRule } from '@universal-labs/css';
 import { createRuleResolver } from '../parsers/rule-handler';
 import type { Rule, ThemeContext } from '../types/config.types';
 import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
@@ -12,7 +12,7 @@ export function createRuleController<Theme extends __Theme__ = __Theme__>(
   const declarations: SheetEntryDeclaration[] = [];
   const additionalEntries: SheetEntry[] = [];
   return {
-    resolveRule(token: ParsedRule, ctx: ThemeContext<Theme>) {
+    resolveRule(token: TWParsedRule, ctx: ThemeContext<Theme>) {
       return resolver(token, ctx);
     },
     addCssVar(name: string, value: string) {
