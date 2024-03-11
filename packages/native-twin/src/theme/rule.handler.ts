@@ -1,7 +1,6 @@
-import type { TWParsedRule } from '@universal-labs/css';
+import type { TWParsedRule, SheetEntry, SheetEntryDeclaration } from '@universal-labs/css';
 import { createRuleResolver } from '../parsers/rule-handler';
 import type { Rule, ThemeContext } from '../types/config.types';
-import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
 
 export function createRuleController<Theme extends __Theme__ = __Theme__>(

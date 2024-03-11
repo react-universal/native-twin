@@ -1,7 +1,9 @@
-import { parseTWTokens } from '@universal-labs/css';
-import { parsedRuleSetToClassNames } from '../convert/ruleToClassName';
-import type { CSSValue } from '../types/css.types';
-import { interpolate } from '../utils/string-utils';
+import {
+  interpolate,
+  parseTWTokens,
+  parsedRuleSetToClassNames,
+  type CSSValue,
+} from '@universal-labs/css';
 
 /**
  * Constructs `class` strings conditionally.

@@ -1,11 +1,5 @@
-import {
-  defineConfig,
-  setup,
-  tx,
-  sheetEntriesToCss,
-  matchThemeColor,
-  matchThemeValue,
-} from '../src';
+import { sheetEntriesToCss } from '@universal-labs/css';
+import { defineConfig, setup, tx, matchThemeColor, matchThemeValue } from '../src';
 
 setup(
   defineConfig({

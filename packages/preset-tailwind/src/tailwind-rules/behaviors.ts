@@ -1,4 +1,5 @@
-import { parsedRuleToClassName, matchCssObject } from '@universal-labs/native-twin';
+import { parsedRuleToClassName } from '@universal-labs/css';
+import { matchCssObject } from '@universal-labs/native-twin';
 import type { Rule } from '@universal-labs/native-twin';
 import type { __Theme__ } from '@universal-labs/native-twin';
 

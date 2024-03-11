@@ -1,5 +1,5 @@
+import { createPercentRatios } from '@universal-labs/helpers';
 import type { __Theme__ } from '@universal-labs/native-twin';
-import { createPercentRatios } from '@universal-labs/native-twin';
 import { spacing } from './mixed';
 
 export const baseSize = {

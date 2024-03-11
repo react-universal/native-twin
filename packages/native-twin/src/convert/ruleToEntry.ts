@@ -1,8 +1,12 @@
-import { Layer, moveToLayer, type TWParsedRule } from '@universal-labs/css';
+import {
+  Layer,
+  moveToLayer,
+  parsedRuleToClassName,
+  type SheetEntry,
+  type TWParsedRule,
+} from '@universal-labs/css';
 import type { ThemeContext } from '../types/config.types';
-import type { SheetEntry } from '../types/css.types';
-import { convert } from '../utils/theme-utils';
-import { parsedRuleToClassName } from './ruleToClassName';
+import { convert } from './convertRule';
 
 /**
  * Converts a parsed rule to a sheet entry based on the given context.

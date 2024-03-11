@@ -4,10 +4,11 @@ import type {
   CssFeature,
   TWParsedRule,
   RuleHandlerToken,
+  Preflight,
+  SheetEntry,
 } from '@universal-labs/css';
-import type { SheetEntry } from './css.types';
+import type { Falsey, MaybeArray } from '@universal-labs/helpers';
 import type { ExtractThemes, ThemeConfig, __Theme__ } from './theme.types';
-import type { Falsey, MaybeArray } from './util.types';
 
 // CONFIGURATION TYPES
 
@@ -49,7 +50,6 @@ export interface PresetThunk<Theme = __Theme__> {
 
 export type Preset<Theme = __Theme__> = TailwindPresetConfig<Theme> | PresetThunk<Theme>;
 
-export type Preflight = false | MaybeArray<Record<string, any>>;
 export interface TailwindPresetConfig<Theme = __Theme__> {
   /** Allows to change how the `dark` variant is used (default: `"media"`) */
   darkMode?: DarkModeConfig;

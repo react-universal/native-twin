@@ -1,7 +1,6 @@
-import type { SelectorGroup } from '@universal-labs/css';
-import { asArray } from '@universal-labs/helpers';
-import type { ScreenValue } from '../types/theme.types';
-import type { MaybeArray } from '../types/util.types';
+import { MaybeArray, asArray } from '@universal-labs/helpers';
+import { SelectorGroup } from '../css/css.types';
+import { TWScreenValueConfig } from './tailwind.types';
 
 export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   if (variants.length == 0) return 'base';
@@ -21,7 +20,7 @@ export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   return 'base';
 }
 
-export function mql(screen: MaybeArray<ScreenValue>, prefix = '@media '): string {
+export function mql(screen: MaybeArray<TWScreenValueConfig>, prefix = '@media '): string {
   // if (!screen) return '';
   return (
     prefix +

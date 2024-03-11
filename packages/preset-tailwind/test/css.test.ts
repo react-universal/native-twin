@@ -1,4 +1,5 @@
-import { defineConfig, setup, tx, sheetEntriesToCss } from '@universal-labs/native-twin';
+import { sheetEntriesToCss } from '@universal-labs/css';
+import { defineConfig, setup, tx } from '@universal-labs/native-twin';
 import { presetTailwind } from '../src';
 
 setup(defineConfig({ presets: [presetTailwind()], mode: 'web' }));

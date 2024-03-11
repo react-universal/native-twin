@@ -1,8 +1,7 @@
+import { getSheet, type Sheet } from '@universal-labs/css';
 import { noop } from '@universal-labs/helpers';
 import { createTailwind } from '../native-twin';
-import { getSheet } from '../sheets/getSheet';
 import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
-import type { Sheet } from '../types/css.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
 import { mutationObserver } from './mutation-observer';
 

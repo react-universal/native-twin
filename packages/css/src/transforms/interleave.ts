@@ -1,4 +1,4 @@
-import type { CSSValue } from '../types/css.types';
+import { CSSValue } from '../css/css.types';
 
 export function interleave<Interpolations>(
   strings: TemplateStringsArray,

@@ -1,5 +1,5 @@
-import { Layer } from '@universal-labs/css';
-import type { SheetEntry } from '../types/css.types';
+import { Layer } from '../css/precedence';
+import { SheetEntry } from '../sheets/sheet.types';
 
 const collator = new Intl.Collator('en', { numeric: true });
 

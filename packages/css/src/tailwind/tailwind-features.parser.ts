@@ -1,6 +1,6 @@
 import * as P from '@universal-labs/arc-parser';
 import { asArray, keysOf } from '@universal-labs/helpers';
-import { CssFeature } from '../types/css.types';
+import { CssFeature } from '../css/css.types';
 import {
   maybeNegativeParser,
   twArbitraryParser,

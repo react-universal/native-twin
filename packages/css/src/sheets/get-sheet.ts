@@ -1,7 +1,7 @@
-import type { Sheet, SheetEntry } from '../types/css.types';
-import { createCssomSheet } from './cssom';
-import { createDomSheet } from './dom';
-import { createVirtualSheet } from './virtual';
+import { createCssomSheet } from './cssom.sheet';
+import { createDomSheet } from './dom.sheet';
+import { Sheet, SheetEntry } from './sheet.types';
+import { createVirtualSheet } from './virtual.sheet';
 
 /**
  * Returns a sheet useable in the current environment.

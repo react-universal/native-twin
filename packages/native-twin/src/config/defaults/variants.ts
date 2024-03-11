@@ -1,5 +1,5 @@
+import { normalize } from '@universal-labs/css';
 import type { Variant } from '../../types/config.types';
-import { normalize } from '../../utils/string-utils';
 
 export const defaultVariants: Variant[] = [
   ['focus-within', '&:focus-within'],

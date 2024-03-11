@@ -1,5 +1,4 @@
-import { parseTWTokens } from '@universal-labs/css';
-import { parsedRuleToClassName } from '../src';
+import { parseTWTokens, parsedRuleToClassName } from '../src';
 
 describe('@universal-labs/native-twin - Raw rules parser', () => {
   it('Parse regular rules', () => {

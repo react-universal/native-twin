@@ -1,7 +1,7 @@
 /**
  * @module @twind/preset-tailwind/preflight
  */
-import type { Preflight } from '@universal-labs/native-twin';
+import type { Preflight } from '@universal-labs/css';
 import { fontFamily } from './font';
 
 export const preflight: Preflight = {

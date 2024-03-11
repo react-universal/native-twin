@@ -1,5 +1,5 @@
 import { escapeSelector, asArray, toColorValue, toHyphenCase } from '@universal-labs/helpers';
-import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
+import { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types';
 
 export function sheetEntriesToCss(entries: SheetEntry[] | SheetEntry): string {
   return asArray(entries)
@@ -10,7 +10,7 @@ export function sheetEntriesToCss(entries: SheetEntry[] | SheetEntry): string {
     .join('\n');
 }
 
-export function getEntryRuleBlock(entry: SheetEntry) {
+function getEntryRuleBlock(entry: SheetEntry) {
   let className = `.${escapeSelector(entry.className)}`;
   const atRules: string[] = [];
   const declarations = sheetEntryDeclarationsToCss(entry.declarations, entry.important);
@@ -34,10 +34,7 @@ export function getEntryRuleBlock(entry: SheetEntry) {
   }, `${className}{${declarations}}`);
 }
 
-export function sheetEntryDeclarationsToCss(
-  decls: SheetEntryDeclaration[],
-  important = false,
-) {
+function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[], important = false) {
   if (!decls) return '';
   const body: [string, string][] = [];
   for (const d of decls) {
@@ -69,13 +66,13 @@ export function sheetEntryDeclarationsToCss(
   return declarationToCss(body, important);
 }
 
-export function declarationToCss(entries: [string, string][], important = false): string {
+function declarationToCss(entries: [string, string][], important = false): string {
   return entries
     .flatMap((x) => `${toHyphenCase(x[0])}:${x[1]}${important ? ' !important' : ''};`)
     .join('');
 }
 
-export function rnTransformToCss(transform: SheetEntryDeclaration[]): [string, any][] {
+function rnTransformToCss(transform: SheetEntryDeclaration[]): [string, any][] {
   const value = transform.flatMap((current): [string, any][] => {
     if (current.prop === 'translate') {
       return [

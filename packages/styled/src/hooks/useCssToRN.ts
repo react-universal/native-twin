@@ -5,14 +5,11 @@ import {
   FinalSheet,
   GetChildStylesArgs,
   SheetInteractionState,
-} from '@universal-labs/css';
-import {
-  getRuleSelectorGroup,
-  parseCssValue,
   SheetEntry,
   SheetEntryDeclaration,
-  tw,
-} from '@universal-labs/native-twin';
+  getRuleSelectorGroup,
+} from '@universal-labs/css';
+import { parseCssValue, tw } from '@universal-labs/native-twin';
 import { StyledContext } from '../types/css.types';
 import { useStyledContext } from './useStyledContext';
 

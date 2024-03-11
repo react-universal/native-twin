@@ -4,17 +4,14 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
-import { Layer } from '@universal-labs/css';
-import { parseTWTokens } from '@universal-labs/css';
+import { Layer, type Sheet, type SheetEntry } from '@universal-labs/css';
+import { parseTWTokens, sortedInsertionIndex, interpolate } from '@universal-labs/css';
 import { asArray } from '@universal-labs/helpers';
 import { defineConfig } from './config/define-config';
 import { parsedRuleToEntry } from './convert/ruleToEntry';
 import { createThemeContext } from './theme/theme.context';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
-import type { Sheet, SheetEntry } from './types/css.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from './types/theme.types';
-import { sortedInsertionIndex } from './utils/sorted-insertion-index';
-import { interpolate } from './utils/string-utils';
 
 export function createTailwind<Theme extends __Theme__ = __Theme__, Target = unknown>(
   config: TailwindConfig<Theme>,

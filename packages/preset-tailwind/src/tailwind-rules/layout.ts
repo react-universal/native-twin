@@ -1,6 +1,6 @@
+import { parsedRuleToClassName } from '@universal-labs/css';
 import { matchCssObject, matchThemeValue } from '@universal-labs/native-twin';
 import type { Rule } from '@universal-labs/native-twin';
-import { parsedRuleToClassName } from '@universal-labs/native-twin';
 
 export const layoutThemeRules: Rule[] = [
   matchCssObject('hidden', (match, ctx, rule) => ({

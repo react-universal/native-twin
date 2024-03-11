@@ -76,3 +76,9 @@ export interface RuleHandlerToken {
   segment: SegmentToken | ArbitrarySegmentToken;
   negative: boolean;
 }
+
+export type TWScreenValueConfig =
+  | string
+  | { raw: string }
+  | { min: string; max?: string }
+  | { min?: string; max: string };

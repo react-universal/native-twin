@@ -1,6 +1,12 @@
+import type { SheetEntry, TWScreenValueConfig } from '@universal-labs/css';
+import type {
+  ArrayType,
+  ColorsRecord,
+  MaybeArray,
+  StringLike,
+  UnionToIntersection,
+} from '@universal-labs/helpers';
 import type { Preset, TailwindConfig, ThemeFunction } from './config.types';
-import type { SheetEntry } from './css.types';
-import type { ArrayType, MaybeArray, StringLike, UnionToIntersection } from './util.types';
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];
@@ -24,12 +30,6 @@ export type ThemeConfig<Theme extends object = object> = PartialTheme<Theme> & {
   extend?: PartialTheme<Theme>;
 };
 
-export type ScreenValue =
-  | string
-  | { raw: string }
-  | { min: string; max?: string }
-  | { min?: string; max: string };
-
 export interface ThemeAnimation {
   keyframes?: Record<string, string>;
   durations?: Record<string, string>;
@@ -38,13 +38,9 @@ export interface ThemeAnimation {
   counts?: Record<string, string | number>;
 }
 
-export interface Colors {
-  [key: string]: (Colors & { DEFAULT?: string }) | string;
-}
-
 export interface __Theme__ {
-  screens?: Record<string, ScreenValue>;
-  colors?: Colors;
+  screens?: Record<string, TWScreenValueConfig>;
+  colors?: ColorsRecord;
   opacity?: Record<string, string>;
 
   objectFit?: Record<string, string>;
@@ -141,7 +137,7 @@ export interface ThemeSectionResolverContext<Theme extends __Theme__ = __Theme__
    */
   readonly negative: (scale: Record<string, string>) => Record<string, string>;
   readonly breakpoints: (
-    screens: Record<string, MaybeArray<ScreenValue>>,
+    screens: Record<string, MaybeArray<TWScreenValueConfig>>,
   ) => Record<string, string>;
 }
 

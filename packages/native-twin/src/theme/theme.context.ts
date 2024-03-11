@@ -1,5 +1,9 @@
-import type { TWParsedRule } from '@universal-labs/css';
-import { parsedRuleToClassName } from '../convert/ruleToClassName';
+import {
+  type TWParsedRule,
+  type SheetEntry,
+  parsedRuleToClassName,
+} from '@universal-labs/css';
+import { flattenColorPalette, type MaybeArray } from '@universal-labs/helpers';
 import { createRuleResolver } from '../parsers/rule-handler';
 import { createVariantResolver } from '../parsers/variant-handler';
 import type {
@@ -9,10 +13,7 @@ import type {
   Variant,
   VariantResult,
 } from '../types/config.types';
-import type { SheetEntry } from '../types/css.types';
 import type { __Theme__ } from '../types/theme.types';
-import type { MaybeArray } from '../types/util.types';
-import { flattenColorPalette } from '../utils/theme-utils';
 import { createThemeFunction } from './theme.function';
 
 interface RuleHandlerFn<Theme extends __Theme__ = __Theme__> {
