@@ -18,8 +18,8 @@ export function getSheet(
     typeof document === 'undefined'
       ? createVirtualSheet()
       : useDOMSheet
-      ? createDomSheet()
-      : createCssomSheet();
+        ? createDomSheet()
+        : createCssomSheet();
 
   return sheet;
 }

@@ -153,10 +153,10 @@ export function convert<Theme extends __Theme__ = __Theme__>(
       precedence |= screen
         ? (1 << 26) /* Shifts.screens */ | atRulePrecedence(condition)
         : variant == 'dark'
-        ? 1 << 30 /* Shifts.darkMode */
-        : condition[0] == '@'
-        ? atRulePrecedence(condition)
-        : pseudoPrecedence(condition);
+          ? 1 << 30 /* Shifts.darkMode */
+          : condition[0] == '@'
+            ? atRulePrecedence(condition)
+            : pseudoPrecedence(condition);
     }
   }
 

@@ -70,9 +70,8 @@ type Result<R extends string = EOL> = R extends `${infer _}Error: ${infer Err}`
 
 export type AnyTailwindUtil = Customized[TWKeys];
 
-type WithPrefix<T extends string> = NonNullable<AnyTailwindUtil> extends `${T}${string}`
-  ? AnyTailwindUtil
-  : never;
+type WithPrefix<T extends string> =
+  NonNullable<AnyTailwindUtil> extends `${T}${string}` ? AnyTailwindUtil : never;
 
 function classNamesWrapper<S1, S2>(
   classesOrModifiers1: S1 extends string
@@ -95,14 +94,14 @@ type ValidTailwindClassSeparatedByWhitespace<S> =
       ? Class extends EOL
         ? S
         : Class extends AnyTailwindUtil
-        ? Class
-        : AnyTailwindUtil
+          ? Class
+          : AnyTailwindUtil
       : Result<`${ValidTailwindClassSeparatedByWhitespace<Class>} ${ValidTailwindClassSeparatedByWhitespace<Rest>}`>
     : EatWhitespace<S> extends `${infer Class}`
-    ? Class extends AnyTailwindUtil
-      ? Class
-      : AnyTailwindUtil
-    : AnyTailwindUtil;
+      ? Class extends AnyTailwindUtil
+        ? Class
+        : AnyTailwindUtil
+      : AnyTailwindUtil;
 
 type Checked = ValidTailwindClassSeparatedByWhitespace<''>;
 
@@ -130,8 +129,8 @@ type String10<
 > = N extends L['length']
   ? A
   : T extends `${infer F}${infer R}`
-  ? String10<R, N, [0, ...L], `${A}${F}`>
-  : A;
+    ? String10<R, N, [0, ...L], `${A}${F}`>
+    : A;
 
 type Test = IsValidString<'012345678', 10>;
 
@@ -142,12 +141,8 @@ type LengthOfString<
   T extends string[] = [],
 > = S extends `${string}${infer R}` ? LengthOfString<R, [...T, string]> : T['length'];
 
-type IsValidString<T extends string, N extends number> = true extends IsNumberEqual<
-  LengthOfString<T>,
-  N
->
-  ? T
-  : never;
+type IsValidString<T extends string, N extends number> =
+  true extends IsNumberEqual<LengthOfString<T>, N> ? T : never;
 
 type TestApi = ValidateApiKey<'012345678', 10>;
 

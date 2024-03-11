@@ -79,9 +79,11 @@ export type RuleResult = SheetEntry | Falsey;
 export type PlatformSupport = 'native' | 'web';
 
 export interface RuleResolver<Theme extends __Theme__ = {}> {
-  (match: RuleHandlerToken, context: ThemeContext<Theme>, parsed: ParsedRule):
-    | RuleResult
-    | Falsey;
+  (
+    match: RuleHandlerToken,
+    context: ThemeContext<Theme>,
+    parsed: ParsedRule,
+  ): RuleResult | Falsey;
 }
 
 export type Rule<Theme extends __Theme__ = __Theme__> = [

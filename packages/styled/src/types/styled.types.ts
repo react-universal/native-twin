@@ -33,13 +33,14 @@ export type ComponentStylesheet = {
   hasGroupEvents: boolean;
 };
 
-export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
-  ? Props
-  : TComponent extends React.Component<infer Props>
-  ? Props
-  : TComponent extends React.ComponentType<infer Props>
-  ? Props
-  : never;
+export type PropsFrom<TComponent> =
+  TComponent extends React.FC<infer Props>
+    ? Props
+    : TComponent extends React.Component<infer Props>
+      ? Props
+      : TComponent extends React.ComponentType<infer Props>
+        ? Props
+        : never;
 
 // @typescript-eslint/no-empty-interface
 export interface DefaultTheme {}

@@ -18,8 +18,8 @@ export function fixHTMLTagClassNamesList(value: string, quote: string): string {
       ? // `'` -> &#39; &apos; &#x27;
         value.replace(/(=|\[)(?:&#39;|&apos;|&#x27;)|(?:&#39;|&apos;|&#x27;)(])/g, `$1'$2`)
       : quote == `'`
-      ? // `"` -> &#34; &quot; &#x22;
-        value.replace(/(=|\[)(?:&#34;|&quot;|&#x22;)|(?:&#34;|&quot;|&#x22;)(])/g, `$1"$2`)
-      : value
+        ? // `"` -> &#34; &quot; &#x22;
+          value.replace(/(=|\[)(?:&#34;|&quot;|&#x22;)|(?:&#34;|&quot;|&#x22;)(])/g, `$1"$2`)
+        : value
   ).replace(/(&#38;|&amp;|&#x26;)/g, '&');
 }

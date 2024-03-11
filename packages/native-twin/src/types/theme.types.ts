@@ -13,9 +13,8 @@ export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown
 }
 
 /* THEME CONFIG */
-export type ThemeValue<T> = T extends Record<string, infer V>
-  ? Exclude<V, Record<string, V>>
-  : T;
+export type ThemeValue<T> =
+  T extends Record<string, infer V> ? Exclude<V, Record<string, V>> : T;
 
 export type PartialTheme<Theme extends object = object> = {
   [Section in keyof Theme]?: Theme[Section];
@@ -156,8 +155,8 @@ export type ExtractUserTheme<T> = {
   [key in keyof T]: key extends 'extend'
     ? never
     : T[key] extends ThemeSectionResolver<infer Value, T & __Theme__>
-    ? Value
-    : T[key];
+      ? Value
+      : T[key];
 } & __Theme__;
 
 export type ExtractThemes<Theme, Presets extends Preset<any>[]> = UnionToIntersection<
