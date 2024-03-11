@@ -1,8 +1,7 @@
-import { toHyphenCase } from '@universal-labs/css';
+import { getStyleElement } from '@universal-labs/css';
+import { noop, toHyphenCase } from '@universal-labs/helpers';
 import { sheetEntriesToCss } from '../convert/entryToCss';
 import type { Sheet } from '../types/css.types';
-import { noop } from '../utils/helpers';
-import { getStyleElement } from './getStyleElement';
 
 export function createDomSheet(
   element?: HTMLStyleElement | string | null | false,

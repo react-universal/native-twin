@@ -3,14 +3,13 @@ export { createTailwind } from './native-twin';
 export { cx } from './runtime/cx';
 export { install } from './runtime/install';
 export { type ExtractResult, consume, extract } from './runtime/ssr';
-export { setup, tw } from './runtime/tw';
+export { setup, tw, observe } from './runtime/tw';
 export { type TxFunction, tx } from './runtime/tx';
-export { mutationObserver, observe } from './runtime/observe';
+export { mutationObserver } from './runtime/mutation-observer';
 
 /** CSS */
 export { createCssomSheet } from './sheets/cssom';
 export { getSheet } from './sheets/getSheet';
-export { getStyleElement } from './sheets/getStyleElement';
 export { createVirtualSheet } from './sheets/virtual';
 export {
   declarationToCss,
@@ -31,7 +30,6 @@ export { matchCssObject, matchThemeColor, matchThemeValue } from './theme/theme.
 
 /** UTILS */
 export { interleave, interpolate } from './utils/string-utils';
-export { asArray, asRegExp, identity, noop } from './utils/helpers';
 export {
   convert,
   createExponentialUnits,

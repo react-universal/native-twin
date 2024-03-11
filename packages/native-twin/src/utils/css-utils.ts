@@ -1,7 +1,7 @@
 import type { SelectorGroup } from '@universal-labs/css';
+import { asArray } from '@universal-labs/helpers';
 import type { ScreenValue } from '../types/theme.types';
 import type { MaybeArray } from '../types/util.types';
-import { asArray } from './helpers';
 
 export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   if (variants.length == 0) return 'base';

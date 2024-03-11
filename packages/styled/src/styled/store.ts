@@ -4,8 +4,8 @@ import {
   defaultGroupState,
   type ValidInteractionPseudoSelector,
 } from '@universal-labs/css';
+import { createStore } from '@universal-labs/helpers';
 import type { RegisteredComponent } from '../types/styled.types';
-import { createStore } from '../utils/createStore';
 import { createStyledContext } from '../utils/createStyledContext';
 
 const createComponent = (id: string, groupID: string) => {

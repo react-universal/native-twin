@@ -11,13 +11,13 @@
     "react-native",
     "react"
   ],
-  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
-    "url": "https://github.com/react-universal/tailwind/issues"
+    "url": "https://github.com/react-universal/native-twin/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-universal/tailwind",
+    "url": "https://github.com/react-universal/native-twin",
     "directory": "packages/native-tailwind"
   },
   "sideEffects": false,
@@ -44,7 +44,8 @@
   },
   "dependencies": {
     "@universal-labs/arc-parser": "workspace:*",
-    "@universal-labs/css": "workspace:*"
+    "@universal-labs/css": "workspace:*",
+    "@universal-labs/helpers": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18.0",

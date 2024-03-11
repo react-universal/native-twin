@@ -3,7 +3,11 @@
     {
       "name": "root",
       "path": ".."
-    },    
+    },
+    {
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
+    },
     {
       "name": "📦 @lib/css",
       "path": "../packages/css"
@@ -82,7 +86,16 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
-      ".turbo": true
+      ".turbo": true,
+      "**/CHANGELOG.md": true,
+      "**/jest.config.js": true,
+      "**/LICENSE": true,
+      "**/babel.config.js": true,
+      "**/build": true,
+      "**/turbo.json": true,
+      // "**/.eslintrc.json": true,
+      // "**/.eslintignore": true,
+      "**/README.md": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [

@@ -4,7 +4,7 @@ import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
   ValidPlatformPseudoSelector,
-} from '../constants/pseudo.constants';
+} from '../css/css.types';
 
 export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
 

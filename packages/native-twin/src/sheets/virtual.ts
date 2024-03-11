@@ -1,6 +1,6 @@
 import { Layer } from '@universal-labs/css';
+import { noop } from '@universal-labs/helpers';
 import type { Sheet, SheetEntry, SheetEntryDeclaration } from '../types/css.types';
-import { noop } from '../utils/helpers';
 
 export function createVirtualSheet(): Sheet<SheetEntry[]> {
   // const utilities = new Set<string>();

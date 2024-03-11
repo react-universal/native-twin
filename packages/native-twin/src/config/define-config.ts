@@ -1,3 +1,4 @@
+import { asArray } from '@universal-labs/helpers';
 import type {
   Preset,
   TailwindConfig,
@@ -5,7 +6,6 @@ import type {
   TailwindPresetConfig,
 } from '../types/config.types';
 import type { ExtractThemes, __Theme__ } from '../types/theme.types';
-import { asArray } from '../utils/helpers';
 import { defaultVariants } from './defaults/variants';
 
 export function defineConfig<

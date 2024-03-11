@@ -1,6 +1,6 @@
-import { defineConfig, createTailwind, createVirtualSheet } from '@universal-labs/native-twin';
 import pluginTester from 'babel-plugin-tester';
 import path from 'path';
+import { defineConfig, createTailwind, createVirtualSheet } from '@universal-labs/native-twin';
 import nativeTwinBabelPlugin from '../src';
 
 createTailwind(defineConfig({}), createVirtualSheet());

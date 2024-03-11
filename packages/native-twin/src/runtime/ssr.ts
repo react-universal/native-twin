@@ -1,8 +1,5 @@
-import {
-  compareClassNames,
-  fixHTMLTagClassNamesList,
-  parseTWTokens,
-} from '@universal-labs/css';
+import { parseTWTokens } from '@universal-labs/css';
+import { compareClassNames, fixHTMLTagClassNamesList } from '@universal-labs/helpers';
 import { sheetEntriesToCss } from '../convert/entryToCss';
 import { parsedRuleToClassName } from '../convert/ruleToClassName';
 import type { SheetEntry } from '../types/css.types';

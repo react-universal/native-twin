@@ -1,6 +1,6 @@
+import { asRegExp } from '@universal-labs/helpers';
 import type { ReMatchResult, ThemeContext, Variant } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
-import { asRegExp } from '../utils/helpers';
 
 export const createVariantResolver = <Theme extends __Theme__ = __Theme__>(
   variant: Variant<Theme>,

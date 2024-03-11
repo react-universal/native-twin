@@ -1,9 +1,10 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "react-universal/tailwind" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "react-universal/native-twin" }],
   "commit": false,
   "fixed": [
     [
+      "@universal-labs/helpers",
       "@universal-labs/styled",
       "@universal-labs/css",
       "@universal-labs/native-twin",

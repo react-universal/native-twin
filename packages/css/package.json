@@ -9,14 +9,14 @@
     "universal-apps",
     "react-native-css"
   ],
-  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
-    "url": "https://github.com/react-universal/tailwind/issues"
+    "url": "https://github.com/react-universal/native-twin/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-universal/tailwind",
-    "directory": "packages/stylesheets"
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/css"
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@universal-labs/arc-parser": "workspace:*",
+    "@universal-labs/helpers": "workspace:*",
     "fp-ts": "2.16.2",
     "ts-pattern": "5.0.8"
   },

@@ -1,6 +1,6 @@
+import renderer from 'react-test-renderer';
 import { defineConfig, setup } from '@universal-labs/native-twin';
 import { presetTailwind } from '@universal-labs/preset-tailwind';
-import renderer from 'react-test-renderer';
 import { ScrollView, styled, View } from '../src';
 import { createVariants } from '../src/styled/variants';
 

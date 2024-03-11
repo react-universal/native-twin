@@ -6,7 +6,7 @@ import {
   unitlessCssProps,
   type RuntimeContext,
 } from '@universal-labs/css';
-import { hasOwnProperty } from '../utils/helpers';
+import { hasOwnProperty } from '@universal-labs/helpers';
 
 export const parseCssValue = (
   prop: string,

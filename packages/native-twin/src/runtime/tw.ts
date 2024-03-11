@@ -1,10 +1,10 @@
+import { noop } from '@universal-labs/helpers';
 import { createTailwind } from '../native-twin';
 import { getSheet } from '../sheets/getSheet';
 import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { Sheet } from '../types/css.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
-import { noop } from '../utils/helpers';
-import { observe } from './observe';
+import { mutationObserver } from './mutation-observer';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
 
@@ -92,4 +92,24 @@ export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
   active = observe(instance, target);
 
   return active as unknown as RuntimeTW<Theme>;
+}
+
+export function observe<Theme extends __Theme__ = __Theme__>(
+  tw$: RuntimeTW<Theme> = tw as unknown as RuntimeTW<Theme>,
+  target: false | Node = typeof document != 'undefined' && document.documentElement,
+): RuntimeTW<Theme> {
+  if (target) {
+    const observer = mutationObserver(tw$);
+
+    observer.observe(target);
+
+    // monkey patch tw.destroy to disconnect this observer
+    const { destroy } = tw$;
+    tw$.destroy = () => {
+      observer.disconnect();
+      destroy.call(tw$);
+    };
+  }
+
+  return tw$;
 }

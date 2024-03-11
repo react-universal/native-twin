@@ -1,14 +1,7 @@
 {
-  "name": "@universal-labs/styled",
+  "name": "@universal-labs/helpers",
   "version": "5.0.5",
-  "description": "Styled components for css in react native",
-  "keywords": [
-    "react-native",
-    "tailwindcss",
-    "tailwind-ui",
-    "react-native-web",
-    "universal-apps"
-  ],
+  "description": "Helpers for common utilities",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
     "url": "https://github.com/react-universal/native-twin/issues"
@@ -16,13 +9,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/react-universal/native-twin",
-    "directory": "packages/styled"
+    "directory": "packages/helpers"
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index",
-  "browser": "./build/index",
+  "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
@@ -38,26 +30,6 @@
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
-  },
-  "dependencies": {
-    "@universal-labs/css": "workspace:*",
-    "@universal-labs/helpers": "workspace:*",
-    "@universal-labs/native-twin": "workspace:*",
-    "react-is": "^18.2.0",
-    "stable-hash": "0.0.3"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.64",
-    "@types/react-dom": "18.0.10",
-    "@types/react-is": "^17.0.3"
-  },
-  "peerDependencies": {
-    "react": ">=18",
-    "react-native": ">= 0.70",
-    "react-native-web": ">= 0.18.10"
-  },
-  "optionalDependencies": {
-    "jest": "*"
   },
   "publishConfig": {
     "access": "public",

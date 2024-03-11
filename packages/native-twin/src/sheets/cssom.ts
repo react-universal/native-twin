@@ -1,9 +1,8 @@
-import { toHyphenCase } from '@universal-labs/css';
+import { getStyleElement } from '@universal-labs/css';
+import { noop, toHyphenCase } from '@universal-labs/helpers';
 import { sheetEntriesToCss } from '../convert/entryToCss';
 import type { Sheet } from '../types/css.types';
-import { noop } from '../utils/helpers';
 import { warn } from '../utils/warn';
-import { getStyleElement } from './getStyleElement';
 
 export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> {
   const target = (element as CSSStyleSheet)?.cssRules

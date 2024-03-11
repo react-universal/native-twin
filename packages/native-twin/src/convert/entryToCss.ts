@@ -1,6 +1,5 @@
-import { escapeSelector, toColorValue, toHyphenCase } from '@universal-labs/css';
+import { escapeSelector, asArray, toColorValue, toHyphenCase } from '@universal-labs/helpers';
 import type { SheetEntry, SheetEntryDeclaration } from '../types/css.types';
-import { asArray } from '../utils/helpers';
 
 export function sheetEntriesToCss(entries: SheetEntry[] | SheetEntry): string {
   return asArray(entries)

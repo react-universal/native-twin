@@ -5374,8 +5374,15 @@ __metadata:
   resolution: "@universal-labs/css@workspace:packages/css"
   dependencies:
     "@universal-labs/arc-parser": "workspace:*"
+    "@universal-labs/helpers": "workspace:*"
     fp-ts: "npm:2.16.2"
     ts-pattern: "npm:5.0.8"
+  languageName: unknown
+  linkType: soft
+
+"@universal-labs/helpers@workspace:*, @universal-labs/helpers@workspace:packages/helpers":
+  version: 0.0.0-use.local
+  resolution: "@universal-labs/helpers@workspace:packages/helpers"
   languageName: unknown
   linkType: soft
 
@@ -5453,6 +5460,7 @@ __metadata:
   dependencies:
     "@universal-labs/arc-parser": "workspace:*"
     "@universal-labs/css": "workspace:*"
+    "@universal-labs/helpers": "workspace:*"
   peerDependencies:
     react: ">=18.0"
     react-native: ">=0.71.0"
@@ -5482,6 +5490,7 @@ __metadata:
     "@types/react-dom": "npm:18.0.10"
     "@types/react-is": "npm:^17.0.3"
     "@universal-labs/css": "workspace:*"
+    "@universal-labs/helpers": "workspace:*"
     "@universal-labs/native-twin": "workspace:*"
     jest: "npm:*"
     react-is: "npm:^18.2.0"
