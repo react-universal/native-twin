@@ -2,8 +2,8 @@
 import type { ComponentType } from 'react';
 import { createElement } from 'react';
 import type { AppProps } from 'next/app';
-import type { TailwindConfig, TailwindUserConfig } from '@universal-labs/native-twin';
-import { install as install$ } from '@universal-labs/native-twin';
+import type { TailwindConfig, TailwindUserConfig } from '@native-twin/core';
+import { install as install$ } from '@native-twin/core';
 
 export { installApp };
 

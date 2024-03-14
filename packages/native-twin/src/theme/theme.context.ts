@@ -1,9 +1,5 @@
-import {
-  type TWParsedRule,
-  type SheetEntry,
-  parsedRuleToClassName,
-} from '@universal-labs/css';
-import { flattenColorPalette, type MaybeArray } from '@universal-labs/helpers';
+import { type TWParsedRule, type SheetEntry, parsedRuleToClassName } from '@native-twin/css';
+import { flattenColorPalette, type MaybeArray } from '@native-twin/helpers';
 import { createRuleResolver } from '../parsers/rule-handler';
 import { createVariantResolver } from '../parsers/variant-handler';
 import type {

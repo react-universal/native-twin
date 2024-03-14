@@ -3,8 +3,8 @@ import {
   type ValidGroupPseudoSelector,
   defaultGroupState,
   type ValidInteractionPseudoSelector,
-} from '@universal-labs/css';
-import { createStore } from '@universal-labs/helpers';
+} from '@native-twin/css';
+import { createStore } from '@native-twin/helpers';
 import type { RegisteredComponent } from '../types/styled.types';
 import { createStyledContext } from '../utils/createStyledContext';
 

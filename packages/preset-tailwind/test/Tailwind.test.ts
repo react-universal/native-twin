@@ -1,9 +1,10 @@
-import { createVirtualSheet } from '@universal-labs/css';
-import { createTailwind } from '@universal-labs/native-twin';
+import { createTailwind } from '@native-twin/core';
+import { createVirtualSheet } from '@native-twin/css';
 import { presetTailwind } from '../src';
 
 const tailwind = createTailwind(
   {
+    content: [],
     mode: 'web',
     ignorelist: [],
     presets: [presetTailwind()],
@@ -11,7 +12,7 @@ const tailwind = createTailwind(
   createVirtualSheet(),
 );
 
-describe('@universal-labs/preset-tailwind - TW call', () => {
+describe('@native-twin/preset-tailwind - TW call', () => {
   it('Insert rules', () => {
     const result = tailwind('px-2 p-10 mx-2.5 text(center 2xl) bg-blue-200 justify-center');
     expect(result).toStrictEqual([

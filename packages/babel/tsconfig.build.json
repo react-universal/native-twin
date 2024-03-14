@@ -3,7 +3,8 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "build",
-    "noEmit": false
+    "noEmit": false,
+    "noEmitOnError": false
   },
-  "exclude": ["./test/"]
+  "exclude": ["./test/", "./src/bck"]
 }

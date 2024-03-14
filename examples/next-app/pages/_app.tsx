@@ -1,7 +1,7 @@
 // import { Roboto } from '@next/font/google';
-import { installApp } from '@universal-labs/native-twin-nextjs/_app';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { installApp } from '@native-twin/nextjs/_app';
 import '../styles/globals.css';
 import twConfig from '../tailwind.config';
 

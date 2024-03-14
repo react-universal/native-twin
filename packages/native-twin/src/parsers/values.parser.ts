@@ -1,12 +1,12 @@
 import type { FlexStyle } from 'react-native';
-import * as P from '@universal-labs/arc-parser';
+import * as P from '@native-twin/arc-parser';
 import {
   declarationValueWithUnitParser,
   getPropertyValueType,
   unitlessCssProps,
   type RuntimeContext,
-} from '@universal-labs/css';
-import { hasOwnProperty } from '@universal-labs/helpers';
+} from '@native-twin/css';
+import { hasOwnProperty } from '@native-twin/helpers';
 
 export const parseCssValue = (
   prop: string,

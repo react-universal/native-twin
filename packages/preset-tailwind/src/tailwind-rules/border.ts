@@ -1,5 +1,5 @@
-import { matchThemeColor, matchThemeValue } from '@universal-labs/native-twin';
-import type { Rule } from '@universal-labs/native-twin';
+import { matchThemeColor, matchThemeValue } from '@native-twin/core';
+import type { Rule } from '@native-twin/core';
 import { TailwindPresetTheme } from '../types/theme.types';
 
 export const borderRules: Rule<TailwindPresetTheme>[] = [

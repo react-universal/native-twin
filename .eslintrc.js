@@ -54,5 +54,4 @@ module.exports = {
     'react/display-name': 'warn',
     'no-async-promise-executor': 'warn',
   },
-  reportUnusedDisableDirectives: true,
 };

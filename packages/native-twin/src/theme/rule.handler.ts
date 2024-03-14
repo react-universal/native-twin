@@ -1,4 +1,4 @@
-import type { TWParsedRule, SheetEntry, SheetEntryDeclaration } from '@universal-labs/css';
+import type { TWParsedRule, SheetEntry, SheetEntryDeclaration } from '@native-twin/css';
 import { createRuleResolver } from '../parsers/rule-handler';
 import type { Rule, ThemeContext } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';

@@ -2,7 +2,7 @@ import {
   createExponentialUnits,
   createLinearUnits,
   createPercentRatios,
-} from '@universal-labs/helpers';
+} from '@native-twin/helpers';
 import { TailwindPresetTheme } from '../types/theme.types';
 import { spacing } from './mixed';
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { H1, H2, Image, Pressable, TextInput, View } from '@universal-labs/styled';
+import { H1, H2, Image, Pressable, TextInput, View } from '@native-twin/styled';
 
 // css`bg`;
 // styled('')``

@@ -1,5 +1,5 @@
-import { getSheet, type Sheet } from '@universal-labs/css';
-import { noop } from '@universal-labs/helpers';
+import { getSheet, type Sheet } from '@native-twin/css';
+import { noop } from '@native-twin/helpers';
 import { createTailwind } from '../native-twin';
 import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
@@ -76,7 +76,7 @@ export function setup<
 ): RuntimeTW<__Theme__ & ExtractThemes<Theme, Presets>, SheetTarget>;
 
 export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
-  config: TailwindConfig<any> | TailwindUserConfig<any> = {},
+  config: TailwindConfig<any> | TailwindUserConfig<any> = { content: [] },
   sheet: Sheet<Target> | SheetFactory<Target> = getSheet as SheetFactory<Target>,
   target?: HTMLElement,
 ): RuntimeTW<Theme> {

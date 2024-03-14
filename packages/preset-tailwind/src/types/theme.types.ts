@@ -1,4 +1,4 @@
-import { ThemeAnimation, __Theme__ } from '@universal-labs/native-twin';
+import { ThemeAnimation, __Theme__ } from '@native-twin/core';
 
 export interface TailwindPresetTheme extends __Theme__ {
   opacity?: Record<string, string>;

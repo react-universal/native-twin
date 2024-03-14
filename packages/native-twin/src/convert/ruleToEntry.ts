@@ -4,7 +4,7 @@ import {
   parsedRuleToClassName,
   type SheetEntry,
   type TWParsedRule,
-} from '@universal-labs/css';
+} from '@native-twin/css';
 import type { ThemeContext } from '../types/config.types';
 import { convert } from './convertRule';
 

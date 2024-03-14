@@ -1,4 +1,4 @@
-import type { CompleteStyle } from '@universal-labs/css';
+import type { CompleteStyle } from '@native-twin/css';
 import type { ClassNameProps, Primitive, TemplateFunctions } from '../types/styled.types';
 
 /** Converts the tagged template string into a css string */

@@ -3,13 +3,13 @@ import {
   parsedRuleToClassName,
   sheetEntriesToCss,
   parseHTML,
-} from '@universal-labs/css';
-import type { SheetEntry } from '@universal-labs/css';
+} from '@native-twin/css';
+import type { SheetEntry } from '@native-twin/css';
 import {
   compareClassNames,
   fixHTMLTagClassNamesList,
   type StringLike,
-} from '@universal-labs/helpers';
+} from '@native-twin/helpers';
 import type { RuntimeTW } from '../types/theme.types';
 import { tw as tw$ } from './tw';
 

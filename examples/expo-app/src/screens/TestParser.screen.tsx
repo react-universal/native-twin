@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { cx } from '@universal-labs/native-twin';
-import { H1, H2, Image, Pressable, TextInput, View } from '@universal-labs/styled';
+import { cx } from '@native-twin/core';
+import { H1, H2, Image, Pressable, TextInput, View } from '@native-twin/styled';
 
 const TextField = () => {
   const [text, setText] = useState('');

@@ -1,4 +1,4 @@
-import { globalKeywords } from '@universal-labs/css';
+import { globalKeywords } from '@native-twin/css';
 import { TailwindPresetTheme } from '../types/theme.types';
 
 export const verticalAlign = {

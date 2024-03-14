@@ -1,6 +1,5 @@
 import React from 'react';
 import { AppRegistry } from 'react-native';
-import { installDocument } from '@universal-labs/native-twin-nextjs/_document';
 import Document, {
   Html,
   Head,
@@ -9,6 +8,7 @@ import Document, {
   DocumentContext,
   DocumentInitialProps,
 } from 'next/document';
+import { installDocument } from '@native-twin/nextjs/_document';
 
 export async function getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
   AppRegistry.registerComponent('Main', () => Main);

@@ -1,6 +1,6 @@
 import renderer from 'react-test-renderer';
-import { defineConfig, setup } from '@universal-labs/native-twin';
-import { presetTailwind } from '@universal-labs/preset-tailwind';
+import { defineConfig, setup } from '@native-twin/core';
+import { presetTailwind } from '@native-twin/preset-tailwind';
 import { View as StyledView, Text } from '../src';
 
 beforeAll(() => {
@@ -14,7 +14,7 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-describe('@universal-labs/styled', () => {
+describe('@native-twin/styled', () => {
   it('StyledView render', () => {
     const component = renderer.create(<StyledView className='flex-1' />);
     let tree = toJson(component);
@@ -22,7 +22,7 @@ describe('@universal-labs/styled', () => {
   });
 });
 
-describe('@universal-labs/styled', () => {
+describe('@native-twin/styled', () => {
   it('CustomView render', () => {
     const component = renderer.create(
       <StyledView className='shadow-sm web:p-10 sm:p-10 flex-1 outline-none'>

@@ -1,5 +1,6 @@
 import { useId, useMemo } from 'react';
 import { Platform } from 'react-native';
+import { parseCssValue, tw } from '@native-twin/core';
 import {
   AnyStyle,
   FinalSheet,
@@ -8,8 +9,7 @@ import {
   SheetEntry,
   SheetEntryDeclaration,
   getRuleSelectorGroup,
-} from '@universal-labs/css';
-import { parseCssValue, tw } from '@universal-labs/native-twin';
+} from '@native-twin/css';
 import { StyledContext } from '../types/css.types';
 import { useStyledContext } from './useStyledContext';
 

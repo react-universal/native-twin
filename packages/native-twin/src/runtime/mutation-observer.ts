@@ -1,4 +1,4 @@
-import { compareClassNames } from '@universal-labs/helpers';
+import { compareClassNames } from '@native-twin/helpers';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
 
 export interface TailwindMutationObserver {

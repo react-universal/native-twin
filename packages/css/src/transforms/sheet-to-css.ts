@@ -1,4 +1,4 @@
-import { escapeSelector, asArray, toColorValue, toHyphenCase } from '@universal-labs/helpers';
+import { escapeSelector, asArray, toColorValue, toHyphenCase } from '@native-twin/helpers';
 import { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types';
 
 export function sheetEntriesToCss(entries: SheetEntry[] | SheetEntry): string {

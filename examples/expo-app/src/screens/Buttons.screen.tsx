@@ -1,4 +1,4 @@
-import { View, Pressable, Text } from '@universal-labs/styled';
+import { View, Pressable, Text } from '@native-twin/styled';
 
 const ButtonsScreen = () => {
   return (

@@ -1,11 +1,11 @@
-import type { SheetEntry, TWScreenValueConfig } from '@universal-labs/css';
+import type { SheetEntry, TWScreenValueConfig } from '@native-twin/css';
 import type {
   ArrayType,
   ColorsRecord,
   MaybeArray,
   StringLike,
   UnionToIntersection,
-} from '@universal-labs/helpers';
+} from '@native-twin/helpers';
 import type { Preset, TailwindConfig, ThemeFunction } from './config.types';
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {

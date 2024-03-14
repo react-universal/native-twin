@@ -1,4 +1,4 @@
-import * as P from '@universal-labs/arc-parser';
+import * as P from '@native-twin/arc-parser';
 import { CSSUnits, ParserToken } from './css.types';
 import { cssUnitToken, floatToken, numericToken } from './tokens';
 

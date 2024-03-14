@@ -2,20 +2,33 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "cache": false
+      "dependsOn": ["^build"],
+      "cache": false,
+      "inputs": ["src/*"],
+      "outputs": ["build/*"]
     },
     "build:watch": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "inputs": ["src/*"],
+      "outputs": ["build/*"]
     },
     "test": {
       "dependsOn": ["^build"]
+    },
+    "clean": {
+      "cache": false
     },
     "lint": {
       "cache": true
     },
     "test:watch": {
       "cache": false
+    },
+    "test:debug": {
+      "cache": false,
+      "dependsOn": ["build"],
+      "persistent": true
     },
     "dev": {
       "cache": false,

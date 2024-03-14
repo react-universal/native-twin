@@ -1,4 +1,4 @@
-import { createPercentRatios } from '@universal-labs/helpers';
+import { createPercentRatios } from '@native-twin/helpers';
 import { TailwindPresetTheme } from '../types/theme.types';
 import { spacing } from './mixed';
 

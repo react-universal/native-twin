@@ -1,4 +1,4 @@
-import { H1, P, View } from '@universal-labs/styled';
+import { H1, P, View } from '@native-twin/styled';
 
 // export function getServerSideProps(): GetServerSidePropsResult<any> {
 //   return { props: { asd: 1 } };

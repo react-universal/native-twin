@@ -1,6 +1,6 @@
 export { hash } from './hash.utils';
 
-export { createStore } from './store.utils';
+export { createStore, createValueStore } from './store.utils';
 
 export {
   getNonce,

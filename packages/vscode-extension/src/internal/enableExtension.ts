@@ -7,7 +7,7 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
 
   const update = async () => {
     const localTailwindManifestFiles = await vscode.workspace.findFiles(
-      '**/node_modules/@universal-labs/preset-tailwind/package.json',
+      '**/node_modules/@native-twin/preset-tailwind/package.json',
       null,
       1,
     );

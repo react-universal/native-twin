@@ -1,0 +1,122 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": ".."
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/preset-tw",
+      "path": "../packages/preset-tailwind"
+    },
+    {
+      "name": "📦 @lib/with-nextjs",
+      "path": "../packages/native-twin-nextjs"
+    },
+    {
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/ts-plugin",
+      "path": "../packages/ts-plugin"
+    },
+    {
+      "name": "expo-app",
+      "path": "../examples/expo-app"
+    },
+    {
+      "name": "next-pages-example",
+      "path": "../examples/next-app"
+    },
+    {
+      "name": "next-app-dir",
+      "path": "../examples/next-app-dir"
+    },
+    {
+      "name": "docs-site",
+      "path": "../apps/site"
+    }
+  ],
+  "settings": {
+    "cSpell.ignorePaths": [
+      "yarn.lock",
+      "node_modules",
+      "vscode-extension",
+      ".git/objects",
+      "css.colors.ts",
+      ".vscode",
+      ".vscode-insiders",
+      "**/colors.ts",
+      "**/*.snap",
+      "**/*.json"
+    ],
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    },
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      ".turbo": false,
+      "**/CHANGELOG.md": false,
+      "**/jest.config.js": false,
+      "**/LICENSE": false,
+      "**/babel.config.js": false,
+      "**/build": false,
+      "**/turbo.json": false,
+      "**/.eslintrc.json": false,
+      "**/.eslintignore": false,
+      "**/README.md": false
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/bower_components": true,
+      "**/*.code-search": true,
+      "**/build": true
+    },
+    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "cSpell.words": [
+      "sastan",
+      "TRBL",
+      "xytrbl"
+    ],
+    "testing.openTesting": "neverOpen"
+  }
+}

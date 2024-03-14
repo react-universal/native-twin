@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@universal-labs/styled Complex View 1`] = `
+exports[`@native-twin/styled Complex View 1`] = `
 <View
   groupID=":r2:"
   onBlur={[Function]}
@@ -42,7 +42,7 @@ exports[`@universal-labs/styled Complex View 1`] = `
 </View>
 `;
 
-exports[`@universal-labs/styled ScrollView render 1`] = `
+exports[`@native-twin/styled ScrollView render 1`] = `
 <RCTScrollView
   groupID=":r0:"
   style={

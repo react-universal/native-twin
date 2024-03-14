@@ -1,6 +1,6 @@
 import { generateStylesFor } from './test-utils';
 
-describe.skip('@universal-labs/css - GROUP', () => {
+describe.skip('@native-twin/css - GROUP', () => {
   it('Complex', () => {
     const result = generateStylesFor(
       [

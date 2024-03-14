@@ -1,5 +1,5 @@
 {
-  "name": "universal-labs",
+  "name": "native-twin",
   "version": "0.0.0-development",
   "private": true,
   "repository": {
@@ -42,6 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vscode/test-electron": "^2.3.2",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "chai": "4.3.7",
     "concurrently": "^7.6.0",
     "esbuild": "^0.19.5",
@@ -62,6 +63,10 @@
     "tslib": "^2.6.2",
     "turbo": "^1.12.5",
     "typescript": "^5.4.2"
+  },
+  "overrides": {
+    "@babel/types": "7.23.9",
+    "@babel/core": "7.23.9"
   },
   "packageManager": "yarn@4.1.1"
 }

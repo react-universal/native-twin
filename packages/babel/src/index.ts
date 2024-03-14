@@ -1,35 +1,41 @@
-import babel, { PluginObj } from '@babel/core';
-// @ts-expect-error
-import syntax from '@babel/plugin-syntax-jsx';
+import { PluginObj } from '@babel/core';
+import { addNamed } from '@babel/helper-module-imports';
+import { PLUGIN_IMPORT_META } from './constants/plugin.constants';
+import { isReactImport, isReactRequire } from './effects/path.effects';
+import { createMemberExpressionProgram } from './effects/programs';
+import { createVisitorContext } from './effects/visitor-context';
+import { BabelAPI } from './types';
 
-export default function nativeTwinBabelPlugin({ types: t }: typeof babel): PluginObj {
+export default function nativeTwinBabelPlugin(babel: BabelAPI): PluginObj {
+  // const t = babel.types;
+  const createContext = createVisitorContext(babel.types);
+
   return {
-    inherits: syntax,
+    name: '@native-twin/babel',
     visitor: {
-      Identifier: {
-        enter(_path) {
-          // const isTemplate = t.isTemplateLiteral(path.node);
-          // console.log('IS_TEMPLATE: ', isTemplate);
-        },
+      MemberExpression(path, state) {
+        const context = createContext(path, state);
+
+        if (!context.stateContext.isValidPath) return;
+
+        const shouldReplace = createMemberExpressionProgram(path);
+
+        if (shouldReplace) {
+          path.replaceWith(addNamed(path, ...PLUGIN_IMPORT_META));
+          return;
+        }
       },
-      TaggedTemplateExpression: {
-        enter(path, _state) {
-          t.traverse(path.node, {
-            enter(node) {
-              if (node.type == 'TaggedTemplateExpression') {
-                // console.log('TaggedTemplateExpression: ', node);
-              }
-              if (node.type == 'TemplateLiteral') {
-                // console.log('TemplateLiteral: ', node.quasis);
-              }
-              if (node.type == 'TemplateElement') {
-                console.log('TemplateElement: ', node);
-              }
-            },
-          });
-        },
+      Identifier(path, state) {
+        const context = createContext(path, state);
+        if (!context.stateContext.isValidPath) return;
+        if (path.node.name === 'createElement' && path.parentPath.isCallExpression()) {
+          const binding = path.scope.getBinding(path.node.name);
+          if (!binding) return;
+          if (isReactRequire(binding) || isReactImport(binding)) {
+            path.replaceWith(addNamed(path, ...PLUGIN_IMPORT_META));
+          }
+        }
       },
     },
-    name: 'Native Twin',
   };
 }

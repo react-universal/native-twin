@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/styled",
+  "name": "@native-twin/styled",
   "version": "5.0.5",
   "description": "Styled components for css in react native",
   "keywords": [
@@ -33,6 +33,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest",
@@ -40,9 +41,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@universal-labs/css": "workspace:*",
-    "@universal-labs/helpers": "workspace:*",
-    "@universal-labs/native-twin": "workspace:*",
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
     "react-is": "^18.2.0",
     "stable-hash": "0.0.3"
   },

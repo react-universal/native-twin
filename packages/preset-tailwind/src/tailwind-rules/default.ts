@@ -1,4 +1,4 @@
-import type { Rule } from '@universal-labs/native-twin';
+import type { Rule } from '@native-twin/core';
 import { TailwindPresetTheme } from '../types/theme.types';
 import { textAlignsRules, verticalAlignsRules } from './align';
 import { backgroundRules } from './background';

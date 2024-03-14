@@ -1,6 +1,6 @@
 import renderer from 'react-test-renderer';
-import { defineConfig, setup } from '@universal-labs/native-twin';
-import { presetTailwind } from '@universal-labs/preset-tailwind';
+import { defineConfig, setup } from '@native-twin/core';
+import { presetTailwind } from '@native-twin/preset-tailwind';
 import { ScrollView, styled, View } from '../src';
 import { createVariants } from '../src/styled/variants';
 
@@ -15,7 +15,7 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-describe('@universal-labs/styled', () => {
+describe('@native-twin/styled', () => {
   it('ScrollView render', () => {
     const component = renderer.create(
       <ScrollView className='flex-1'>
@@ -51,7 +51,7 @@ const viewVariants = createVariants({
 });
 const H1 = styled.Text;
 
-describe('@universal-labs/styled', () => {
+describe('@native-twin/styled', () => {
   it('Complex View', () => {
     const className = viewVariants({ intent: 'secondary' });
     const component = renderer.create(
@@ -65,7 +65,7 @@ describe('@universal-labs/styled', () => {
 });
 
 // NOT WORKING
-// describe('@universal-labs/styled', () => {
+// describe('@native-twin/styled', () => {
 //   it('FlatList', () => {
 //     const className = viewVariants({ intent: 'secondary' });
 //     const component = renderer.create(

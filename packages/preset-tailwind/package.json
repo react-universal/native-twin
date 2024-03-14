@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/preset-tailwind",
+  "name": "@native-twin/preset-tailwind",
   "version": "5.0.5",
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
@@ -36,6 +36,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest",
@@ -43,7 +44,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@universal-labs/native-twin": "workspace:*"
+    "@native-twin/core": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18.0",

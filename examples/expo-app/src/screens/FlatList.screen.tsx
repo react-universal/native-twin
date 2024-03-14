@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { SafeAreaView } from 'react-native';
-import { H2, Pressable, Span, View, FlatList } from '@universal-labs/styled';
+import { H2, Pressable, Span, View, FlatList } from '@native-twin/styled';
 
 const data = [
   {

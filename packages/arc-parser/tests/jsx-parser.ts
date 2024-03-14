@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import * as P from '../src';
 
-const example = `
+const _example = `
   <div className="asd">
     sadad<div className="123" />
   </div>
@@ -14,11 +14,11 @@ const createTag =
     value,
   });
 
-const mapToOpenTag = createTag('OPEN_TAG');
-const mapToCloseTag = createTag('CLOSE_TAG');
-const mapToTagChild = createTag('TAG_CHILD');
-const mapTagNameTag = createTag('TAG_NAME');
-const mapToAutoCloseTag = createTag('AUTO_CLOSE_TAG');
+const _mapToOpenTag = createTag('OPEN_TAG');
+const _mapToCloseTag = createTag('CLOSE_TAG');
+const _mapToTagChild = createTag('TAG_CHILD');
+const _mapTagNameTag = createTag('TAG_NAME');
+const _mapToAutoCloseTag = createTag('AUTO_CLOSE_TAG');
 const mapTagProperty = createTag('TAG_PROPERTY');
 
 const parseTagNameIdent = P.regex(/^[0-9a-zA-Z]+/);

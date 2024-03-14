@@ -1,4 +1,4 @@
-import { noop } from '@universal-labs/helpers';
+import { noop } from '@native-twin/helpers';
 import { Layer } from '../css/precedence';
 import { Sheet, SheetEntry, SheetEntryDeclaration } from './sheet.types';
 

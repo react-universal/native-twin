@@ -1,4 +1,4 @@
-import { Rule, matchThemeValue } from '@universal-labs/native-twin';
+import { Rule, matchThemeValue } from '@native-twin/core';
 import { TailwindPresetTheme } from '../types/theme.types';
 
 export const sizeRules: Rule<TailwindPresetTheme>[] = [

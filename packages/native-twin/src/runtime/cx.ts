@@ -3,7 +3,7 @@ import {
   parseTWTokens,
   parsedRuleSetToClassNames,
   type CSSValue,
-} from '@universal-labs/css';
+} from '@native-twin/css';
 
 /**
  * Constructs `class` strings conditionally.
