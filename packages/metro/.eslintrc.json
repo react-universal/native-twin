@@ -1,0 +1,15 @@
+{
+  "extends": "../../.eslintrc",
+  "rules": {
+    "unused-imports/no-unused-vars": "off",
+    "no-fallthrough": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "no-case-declarations": "off",
+    "no-console": "off",
+    "no-unsafe-optional-chaining": "off",
+    "no-empty": "off",
+    "react/jsx-key": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/display-name": "off"
+  }
+}

@@ -1,16 +1,21 @@
 import { sheetEntriesToCss } from '@universal-labs/css';
+import { presetTailwind } from '@universal-labs/preset-tailwind';
 import { defineConfig, setup, tx, matchThemeColor, matchThemeValue } from '../src';
 
 setup(
   defineConfig({
+    content: [],
     mode: 'web',
+    presets: [presetTailwind()],
     rules: [
       matchThemeColor('bg-', 'backgroundColor'),
+      // @ts-ignore
       matchThemeValue('p', 'spacing', 'padding', {
         canBeNegative: true,
         feature: 'edges',
         prefix: 'padding',
       }),
+      // @ts-ignore
       matchThemeValue('shadow-', 'boxShadow', 'shadowRadius'),
     ],
     theme: {

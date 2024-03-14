@@ -2,7 +2,7 @@ import { sheetEntriesToCss } from '@universal-labs/css';
 import { defineConfig, setup, tx } from '@universal-labs/native-twin';
 import { presetTailwind } from '../src';
 
-setup(defineConfig({ presets: [presetTailwind()], mode: 'web' }));
+setup(defineConfig({ content: [], presets: [presetTailwind()], mode: 'web' }));
 
 describe('@universal-labs/preset-tailwind - Raw rules parser', () => {
   it('Sheet entries to CSS', () => {

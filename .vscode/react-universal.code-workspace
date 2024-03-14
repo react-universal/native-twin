@@ -5,6 +5,14 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
+    },
+    {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
     },
@@ -16,50 +24,46 @@
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
-    {
-      "name": "📦 @lib/styled",
-      "path": "../packages/styled"
-    },
-    {
-      "name": "📦 @lib/preset-tw",
-      "path": "../packages/preset-tailwind"
-    },
-    {
-      "name": "📦 @lib/with-nextjs",
-      "path": "../packages/native-twin-nextjs"
-    },
-    {
-      "name": "📦 @lib/arc-parser",
-      "path": "../packages/arc-parser"
-    },
+    // {
+    //   "name": "📦 @lib/preset-tw",
+    //   "path": "../packages/preset-tailwind"
+    // },
     {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
     },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @lib/ts-plugin",
-      "path": "../packages/ts-plugin"
-    },
+    // {
+    //   "name": "📦 @lib/with-nextjs",
+    //   "path": "../packages/native-twin-nextjs"
+    // },
+    // {
+    //   "name": "📦 @lib/arc-parser",
+    //   "path": "../packages/arc-parser"
+    // },
+    // {
+    //   "name": "📦 @lib/vscode",
+    //   "path": "../packages/vscode-extension"
+    // },
+    // {
+    //   "name": "📦 @lib/ts-plugin",
+    //   "path": "../packages/ts-plugin"
+    // },
     {
       "name": "expo-app",
       "path": "../examples/expo-app"
     },
-    {
-      "name": "next-pages-example",
-      "path": "../examples/next-app"
-    },
-    {
-      "name": "next-app-dir",
-      "path": "../examples/next-app-dir"
-    },
-    {
-      "name": "docs-site",
-      "path": "../apps/site"
-    }
+    // {
+    //   "name": "next-pages-example",
+    //   "path": "../examples/next-app"
+    // },
+    // {
+    //   "name": "next-app-dir",
+    //   "path": "../examples/next-app-dir"
+    // },
+    // {
+    //   "name": "docs-site",
+    //   "path": "../apps/site"
+    // }
   ],
   "settings": {
     "cSpell.ignorePaths": [
@@ -88,14 +92,20 @@
       "**/Thumbs.db": true,
       ".turbo": true,
       "**/CHANGELOG.md": true,
-      "**/jest.config.js": true,
+      // "**/jest.config.js": true,
       "**/LICENSE": true,
-      "**/babel.config.js": true,
-      "**/build": true,
+      // "**/babel.config.js": true,
+      // "**/build": true,
       "**/turbo.json": true,
       // "**/.eslintrc.json": true,
       // "**/.eslintignore": true,
       "**/README.md": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/bower_components": true,
+      "**/*.code-search": true,
+      "**/build": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [
@@ -109,7 +119,7 @@
     "jest.outputConfig": {
       "revealOn": "run",
       "revealWithFocus": "none",
-      "clearOnRun": "none",
+      "clearOnRun": "none"
     }
   }
 }

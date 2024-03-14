@@ -1,0 +1,46 @@
+{
+  "name": "@universal-labs/native-twin-jsx",
+  "version": "1.0.4",
+  "description": "Native Twin metro transformer",
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "sideEffects": false,
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
+    "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "jest",
+    "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@universal-labs/css": "workspace:*",
+    "@universal-labs/helpers": "workspace:*",
+    "@universal-labs/native-twin": "workspace:*",
+    "@universal-labs/preset-tailwind": "workspace:*",
+    "@universal-labs/styled": "workspace:*",
+    "jiti": "1.21.0",
+    "micromatch": "4.0.5"
+  },
+  "devDependencies": {
+    "@types/connect": "3.4.38",
+    "@types/micromatch": "^4.0.4",
+    "metro-react-native-babel-preset": "^0.77.0",
+    "react-native-safe-area-context": "4.9.0"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-native": "*"
+  },
+  "optionalDependencies": {
+    "jest": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
+  }
+}

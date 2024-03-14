@@ -76,7 +76,7 @@ export function setup<
 ): RuntimeTW<__Theme__ & ExtractThemes<Theme, Presets>, SheetTarget>;
 
 export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
-  config: TailwindConfig<any> | TailwindUserConfig<any> = {},
+  config: TailwindConfig<any> | TailwindUserConfig<any> = { content: [] },
   sheet: Sheet<Target> | SheetFactory<Target> = getSheet as SheetFactory<Target>,
   target?: HTMLElement,
 ): RuntimeTW<Theme> {

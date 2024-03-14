@@ -13,6 +13,7 @@ import type { ExtractThemes, ThemeConfig, __Theme__ } from './theme.types';
 // CONFIGURATION TYPES
 
 export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
+  content: string[];
   darkMode: DarkModeConfig;
   theme: ThemeConfig<Theme>;
   mode: 'web' | 'native';
@@ -29,6 +30,7 @@ export interface TailwindUserConfig<
   Theme = __Theme__,
   Presets extends Preset<any>[] = Preset[],
 > {
+  content: string[];
   darkMode?: DarkModeConfig;
   theme?: Theme | ThemeConfig<__Theme__ & ExtractThemes<Theme, Presets>>;
   rules?: Rule<__Theme__ & ExtractThemes<Theme, Presets>>[];

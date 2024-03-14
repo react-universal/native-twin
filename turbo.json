@@ -17,6 +17,11 @@
     "test:watch": {
       "cache": false
     },
+    "test:debug": {
+      "cache": false,
+      "dependsOn": ["build"],
+      "persistent": true
+    },
     "dev": {
       "cache": false,
       "persistent": true

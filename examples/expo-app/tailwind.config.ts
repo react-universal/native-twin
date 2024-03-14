@@ -2,6 +2,7 @@ import { defineConfig } from '@universal-labs/native-twin';
 import { presetTailwind } from '@universal-labs/preset-tailwind';
 
 export default defineConfig({
+  content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
   root: {
     rem: 16,
   },

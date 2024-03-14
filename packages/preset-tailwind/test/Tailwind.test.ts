@@ -4,6 +4,7 @@ import { presetTailwind } from '../src';
 
 const tailwind = createTailwind(
   {
+    content: [],
     mode: 'web',
     ignorelist: [],
     presets: [presetTailwind()],

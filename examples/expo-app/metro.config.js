@@ -16,4 +16,5 @@ config.resolver.nodeModulesPaths = [
 /**
  * @type {import('expo/metro-config')}
  */
+// const { withNativeTwin } = require('@universal-labs/native-twin-metro/metro');
 module.exports = config;
