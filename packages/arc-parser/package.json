@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/arc-parser",
+  "name": "@native-twin/arc-parser",
   "version": "5.0.5",
   "description": "Parser combinators library",
   "license": "MIT",
@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\""
   },

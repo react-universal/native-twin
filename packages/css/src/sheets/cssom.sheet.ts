@@ -1,4 +1,4 @@
-import { noop, toHyphenCase, warn } from '@universal-labs/helpers';
+import { noop, toHyphenCase, warn } from '@native-twin/helpers';
 import { getStyleElement } from '../html/get-style-element';
 import { sheetEntriesToCss } from '../transforms/sheet-to-css';
 import { Sheet } from './sheet.types';

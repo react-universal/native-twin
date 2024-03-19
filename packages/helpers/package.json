@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/helpers",
+  "name": "@native-twin/helpers",
   "version": "5.0.5",
   "description": "Helpers for common utilities",
   "homepage": "https://github.com/react-universal/native-twin#readme",
@@ -25,6 +25,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\""
   },

@@ -1,4 +1,4 @@
-import { flattenObjectByPath } from '@universal-labs/helpers';
+import { flattenObjectByPath } from '@native-twin/helpers';
 import type { ThemeFunction } from '../types/config.types';
 import type { ThemeConfig, __Theme__ } from '../types/theme.types';
 

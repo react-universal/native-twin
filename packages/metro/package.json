@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/native-twin-metro",
+  "name": "@native-twin/native-twin-metro",
   "version": "1.0.4",
   "description": "Native Twin metro transformer",
   "license": "MIT",
@@ -10,19 +10,20 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@universal-labs/css": "workspace:*",
-    "@universal-labs/helpers": "workspace:*",
-    "@universal-labs/native-twin": "workspace:*",
-    "@universal-labs/preset-tailwind": "workspace:*",
-    "@universal-labs/styled": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
+    "@native-twin/native-twin": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*",
+    "@native-twin/styled": "workspace:*",
     "jiti": "1.21.0",
     "micromatch": "4.0.5"
   },

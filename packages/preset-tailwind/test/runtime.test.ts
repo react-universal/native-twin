@@ -1,4 +1,4 @@
-import { defineConfig, setup, tx } from '@universal-labs/native-twin';
+import { defineConfig, setup, tx } from '@native-twin/native-twin';
 import { presetTailwind } from '../src';
 
 setup(
@@ -15,7 +15,7 @@ setup(
   }),
 );
 
-describe('@universal-labs/preset-tailwind - TW call', () => {
+describe('@native-twin/preset-tailwind - TW call', () => {
   it('Insert rules', () => {
     const result = tx`
     px-2 m-10 

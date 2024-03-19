@@ -1,7 +1,7 @@
 import { ParseSelectorStrict } from '../src/css/selector.parser';
 import { generateStylesFor } from './test-utils';
 
-describe.skip('@universal-labs/css - AT-RULES', () => {
+describe.skip('@native-twin/css - AT-RULES', () => {
   it('at-rule', () => {
     const result = generateStylesFor('text-2xl sm:text-base');
     expect(result.base).toStrictEqual({
@@ -11,7 +11,7 @@ describe.skip('@universal-labs/css - AT-RULES', () => {
   });
 });
 
-describe.skip('@universal-labs/css Colors', () => {
+describe.skip('@native-twin/css Colors', () => {
   it('bg-gray-200 text-white', () => {
     const result = generateStylesFor('bg-gray-200 text-white');
     expect(result.base).toStrictEqual({
@@ -185,7 +185,7 @@ describe.skip('CSS - Shadow', () => {
   });
 });
 
-describe.skip('@universal-labs/css Spaces', () => {
+describe.skip('@native-twin/css Spaces', () => {
   it('-mt-2', () => {
     const result = generateStylesFor('-mt-2');
 
@@ -217,7 +217,7 @@ describe.skip('@universal-labs/css Spaces', () => {
   });
 });
 
-describe.skip('@universal-labs/css Font', () => {
+describe.skip('@native-twin/css Font', () => {
   it('text-2xl', () => {
     const result = generateStylesFor('text-2xl');
 
@@ -268,7 +268,7 @@ describe.skip('@universal-labs/css Font', () => {
   });
 });
 
-describe.skip('@universal-labs/css GAP', () => {
+describe.skip('@native-twin/css GAP', () => {
   it('gap', () => {
     const result = generateStylesFor('gap-2 gap-x-2 gap-y-2');
 
@@ -276,7 +276,7 @@ describe.skip('@universal-labs/css GAP', () => {
   });
 });
 
-describe.skip('@universal-labs/css Transform', () => {
+describe.skip('@native-twin/css Transform', () => {
   it('skew-x-1', () => {
     const result = generateStylesFor('skew-x-1');
 
@@ -316,7 +316,7 @@ describe.skip('@universal-labs/css Transform', () => {
 
 const hoverCss = '.hover\\:bg-black:hover{background-color:rgba(0,0,0,1);}';
 
-describe.skip('@universal-labs/css Parsers', () => {
+describe.skip('@native-twin/css Parsers', () => {
   it('Strict Selector', () => {
     const result = ParseSelectorStrict.run(hoverCss);
     expect(result).toStrictEqual({
@@ -335,7 +335,7 @@ describe.skip('@universal-labs/css Parsers', () => {
   });
 });
 
-describe.skip('@universal-labs/css - COMPLEX RULES', () => {
+describe.skip('@native-twin/css - COMPLEX RULES', () => {
   it('Complex', () => {
     const result = generateStylesFor(
       [

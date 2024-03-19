@@ -1,7 +1,7 @@
 import { ComponentProps, ComponentType, forwardRef } from 'react';
 import { render as tlRender } from '@testing-library/react-native';
 import * as JSX from 'react/jsx-runtime';
-import { CompleteStyle } from '@universal-labs/css';
+import { CompleteStyle } from '@native-twin/css';
 // import { cssToReactNativeRuntime } from '../css-to-rn';
 // import { cssInterop, remapProps, interopComponents } from '../runtime/api';
 import '../runtime/components';

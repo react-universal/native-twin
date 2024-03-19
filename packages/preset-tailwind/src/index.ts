@@ -1,4 +1,4 @@
-import type { Preset } from '@universal-labs/native-twin';
+import type { Preset } from '@native-twin/native-twin';
 import { themeRules } from './tailwind-rules';
 import * as tailwindTheme from './tailwind-theme';
 import { preflight } from './tailwind-theme/preflight';

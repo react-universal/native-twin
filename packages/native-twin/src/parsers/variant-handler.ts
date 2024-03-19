@@ -1,4 +1,4 @@
-import { asRegExp } from '@universal-labs/helpers';
+import { asRegExp } from '@native-twin/helpers';
 import type { ReMatchResult, ThemeContext, Variant } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
 

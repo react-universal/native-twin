@@ -1,4 +1,4 @@
-import { __Theme__, TailwindConfig as InternalTWConfig } from '@universal-labs/native-twin';
+import { __Theme__, TailwindConfig as InternalTWConfig } from '@native-twin/native-twin';
 
 export type CurrentTheme = __Theme__;
 export type TailwindConfig = InternalTWConfig<CurrentTheme>;

@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/native-twin-nextjs",
+  "name": "@native-twin/native-twin-nextjs",
   "version": "5.0.5",
   "description": "React Native Web Tailwindcss for nextjs",
   "keywords": [
@@ -41,11 +41,12 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@universal-labs/native-twin": "workspace:*"
+    "@native-twin/native-twin": "workspace:*"
   },
   "peerDependencies": {
     "next": ">=13.0",

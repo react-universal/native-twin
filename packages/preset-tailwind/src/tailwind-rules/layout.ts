@@ -1,6 +1,6 @@
-import { parsedRuleToClassName } from '@universal-labs/css';
-import { matchCssObject, matchThemeValue } from '@universal-labs/native-twin';
-import type { Rule } from '@universal-labs/native-twin';
+import { parsedRuleToClassName } from '@native-twin/css';
+import { matchCssObject, matchThemeValue } from '@native-twin/native-twin';
+import type { Rule } from '@native-twin/native-twin';
 import { TailwindPresetTheme } from '../types/theme.types';
 
 export const layoutThemeRules: Rule<TailwindPresetTheme>[] = [

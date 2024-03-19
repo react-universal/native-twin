@@ -1,4 +1,4 @@
-import * as P from '@universal-labs/arc-parser';
+import * as P from '@native-twin/arc-parser';
 import { ArbitrarySegmentToken, SegmentToken } from './tailwind.types';
 
 /**

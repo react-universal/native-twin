@@ -1,4 +1,4 @@
-import { createLinearUnits } from '@universal-labs/helpers';
+import { createLinearUnits } from '@native-twin/helpers';
 import { TailwindPresetTheme } from '../types/theme.types';
 
 export const fontFamily = {

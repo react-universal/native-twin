@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/native-twin-babel",
+  "name": "@native-twin/native-twin-babel",
   "version": "1.0.4",
   "description": "Native Twin babel plugin",
   "license": "MIT",
@@ -11,9 +11,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "jest --verbose=false --reporters=default /private/var/folders/dj/3l9ndf9j07b6nvw021xrp1h00000gn/T/jest-tools.js",
+    "test": "jest",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },

@@ -18,7 +18,7 @@ module.exports = {
     'react-native-gesture-handler',
     '^(react|react-native)$',
     '<THIRD_PARTY_MODULES>',
-    '^@universal-labs/(.*)$',
+    '^@native-twin/(.*)$',
     '^[./]',
   ],
 };

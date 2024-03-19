@@ -1,6 +1,6 @@
 import { generateStylesFor } from './test-utils';
 
-describe.skip('@universal-labs/css - Pseudo', () => {
+describe.skip('@native-twin/css - Pseudo', () => {
   it('Complex', () => {
     const result = generateStylesFor('android:mx-10 ios:px-2');
     expect(result).toStrictEqual({

@@ -1,5 +1,5 @@
-import { cornerMap, createVirtualSheet, directionMap } from '@universal-labs/css';
-import { asArray, flattenColorPalette } from '@universal-labs/helpers';
+import { cornerMap, createVirtualSheet, directionMap } from '@native-twin/css';
+import { asArray, flattenColorPalette } from '@native-twin/helpers';
 import {
   Rule,
   RuleMeta,
@@ -10,8 +10,8 @@ import {
   createTailwind,
   createThemeContext,
   defineConfig,
-} from '@universal-labs/native-twin';
-import { presetTailwind } from '@universal-labs/preset-tailwind';
+} from '@native-twin/native-twin';
+import { presetTailwind } from '@native-twin/preset-tailwind';
 import { ClassCompletionToken, VariantCompletionToken } from '../types';
 import { ConfigurationManager } from './configuration';
 import { LanguageServiceLogger } from './logger';

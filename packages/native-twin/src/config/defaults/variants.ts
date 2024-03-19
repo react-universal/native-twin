@@ -1,4 +1,4 @@
-import { normalize } from '@universal-labs/css';
+import { normalize } from '@native-twin/css';
 import type { Variant } from '../../types/config.types';
 
 export const defaultVariants: Variant[] = [

@@ -74,7 +74,7 @@ pluginTester({
       codeFixture: path.join('./fixtures/denied-modules/code.js'),
       outputFixture: path.join('./fixtures/denied-modules/output.js'),
       babelOptions: {
-        filename: '/node_modules/@universal-labs/native-twin-metro/someFile.js',
+        filename: '/node_modules/@native-twin/native-twin-metro/someFile.js',
       },
     },
   },

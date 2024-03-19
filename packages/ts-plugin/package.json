@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/native-twin-ts-plugin",
+  "name": "@native-twin/native-twin-ts-plugin",
   "version": "5.0.5",
   "description": "TypeScript plugin that adds IntelliSense Native Tailwind",
   "license": "MIT",
@@ -7,16 +7,17 @@
   "main": "build/index.js",
   "scripts": {
     "build": "node ./build.js --production",
+    "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "jest",
     "vscode:dev": "node ./build.js --watch"
   },
   "dependencies": {
     "@ctrl/tinycolor": "3.6.0",
-    "@universal-labs/css": "workspace:*",
-    "@universal-labs/helpers": "workspace:*",
-    "@universal-labs/native-twin": "workspace:*",
-    "@universal-labs/preset-tailwind": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
+    "@native-twin/native-twin": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "2.9.2",
     "cssbeautify": "0.3.1",
     "match-sorter": "6.3.1",

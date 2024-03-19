@@ -1,4 +1,4 @@
-import { getSheet } from '@universal-labs/css';
+import { getSheet } from '@native-twin/css';
 import { defineConfig } from '../config/define-config';
 import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';

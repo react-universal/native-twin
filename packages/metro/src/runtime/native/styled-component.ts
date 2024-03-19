@@ -10,9 +10,9 @@ import {
   type SheetEntryDeclaration,
   type SheetInteractionState,
   getRuleSelectorGroup,
-} from '@universal-labs/css';
-import { parseCssValue, tw } from '@universal-labs/native-twin';
-import type { StyledContext, Units } from '@universal-labs/styled';
+} from '@native-twin/css';
+import { parseCssValue, tw } from '@native-twin/native-twin';
+import type { StyledContext, Units } from '@native-twin/styled';
 import { DEFAULT_CONTAINER_NAME } from '../../shared';
 import { cleanupEffect } from '../observable';
 import { variableContext, containerContext } from './globals';
@@ -278,7 +278,7 @@ export function createPropState(componentState: ComponentState, config: Componen
       dependencies: new Set<() => void>(),
       rerun(isRendering = false) {
         cleanupEffect(propState.styleEffect);
-
+        // @ts-expect-error
         const props: Record<string, any> = {};
         // const normalizedProps: Record<string, any> = {};
         const delayedValues: (() => void)[] = [];

@@ -1,4 +1,4 @@
-import { createExponentialUnits, createLinearUnits } from '@universal-labs/helpers';
+import { createExponentialUnits, createLinearUnits } from '@native-twin/helpers';
 import { TailwindPresetTheme } from '../types/theme.types';
 
 // keep in ASC order: container.ts and breakpoints.ts need that order

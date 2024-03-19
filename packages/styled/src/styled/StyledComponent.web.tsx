@@ -1,6 +1,6 @@
 import { forwardRef, type ComponentType } from 'react';
 import type { StyleProp } from 'react-native';
-import { cx } from '@universal-labs/native-twin';
+import { cx } from '@native-twin/native-twin';
 import type { StyledComponentProps } from '../types/styled.types';
 import { getComponentDisplayName } from '../utils/getComponentDisplayName';
 

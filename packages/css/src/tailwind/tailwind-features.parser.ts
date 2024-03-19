@@ -1,5 +1,5 @@
-import * as P from '@universal-labs/arc-parser';
-import { asArray, keysOf } from '@universal-labs/helpers';
+import * as P from '@native-twin/arc-parser';
+import { asArray, keysOf } from '@native-twin/helpers';
 import { CssFeature } from '../css/css.types';
 import {
   maybeNegativeParser,

@@ -1,4 +1,4 @@
-import { MaybeArray, asArray } from '@universal-labs/helpers';
+import { MaybeArray, asArray } from '@native-twin/helpers';
 import { SelectorGroup } from '../css/css.types';
 import { TWScreenValueConfig } from './tailwind.types';
 

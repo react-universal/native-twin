@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/native-twin-vscode",
+  "name": "@native-twin/native-twin-vscode",
   "version": "1.0.0",
   "private": true,
   "description": "Native Twin vscode extension.",
@@ -14,6 +14,7 @@
   "main": "./build/extension.js",
   "scripts": {
     "build": "node ./build.js --production",
+    "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "echo \"TEST\"",
     "vscode:dev": "node ./build.js --watch",
@@ -91,7 +92,7 @@
     ],
     "typescriptServerPlugins": [
       {
-        "name": "@universal-labs/native-twin-ts-plugin",
+        "name": "@native-twin/native-twin-ts-plugin",
         "enableForWorkspaceTypeScriptVersions": true
       }
     ]
@@ -100,7 +101,7 @@
     "onStartupFinished"
   ],
   "dependencies": {
-    "@universal-labs/native-twin-ts-plugin": "workspace:*",
+    "@native-twin/native-twin-ts-plugin": "workspace:*",
     "vscode-languageclient": "^8.1.0"
   },
   "devDependencies": {

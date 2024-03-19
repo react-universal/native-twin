@@ -1,4 +1,4 @@
-import { MaybeArray } from '@universal-labs/helpers';
+import { MaybeArray } from '@native-twin/helpers';
 import { AnyStyle } from '../react-native/rn.types';
 
 export type Preflight = false | MaybeArray<Record<string, any>>;

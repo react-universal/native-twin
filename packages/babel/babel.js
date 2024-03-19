@@ -6,7 +6,7 @@ module.exports = function () {
         '@babel/plugin-transform-react-jsx',
         {
           runtime: 'automatic',
-          importSource: '@universal-labs/native-twin-metro',
+          importSource: '@native-twin/native-twin-metro',
         },
       ],
       'react-native-reanimated/plugin',

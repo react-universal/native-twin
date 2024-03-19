@@ -2,8 +2,8 @@ import {
   parsedRuleToClassName,
   type CompleteStyle,
   type SheetEntryDeclaration,
-} from '@universal-labs/css';
-import { asArray, toColorValue } from '@universal-labs/helpers';
+} from '@native-twin/css';
+import { asArray, toColorValue } from '@native-twin/helpers';
 import type { Rule, RuleMeta, RuleResolver } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
 

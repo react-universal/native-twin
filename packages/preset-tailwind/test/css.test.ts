@@ -1,10 +1,10 @@
-import { sheetEntriesToCss } from '@universal-labs/css';
-import { defineConfig, setup, tx } from '@universal-labs/native-twin';
+import { sheetEntriesToCss } from '@native-twin/css';
+import { defineConfig, setup, tx } from '@native-twin/native-twin';
 import { presetTailwind } from '../src';
 
 setup(defineConfig({ content: [], presets: [presetTailwind()], mode: 'web' }));
 
-describe('@universal-labs/preset-tailwind - Raw rules parser', () => {
+describe('@native-twin/preset-tailwind - Raw rules parser', () => {
   it('Sheet entries to CSS', () => {
     const entries = tx`bg-blue-200 text-center`;
     const css = sheetEntriesToCss(entries);

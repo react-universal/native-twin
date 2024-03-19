@@ -4,9 +4,9 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
-import { Layer, type Sheet, type SheetEntry } from '@universal-labs/css';
-import { parseTWTokens, sortedInsertionIndex, interpolate } from '@universal-labs/css';
-import { asArray } from '@universal-labs/helpers';
+import { Layer, type Sheet, type SheetEntry } from '@native-twin/css';
+import { parseTWTokens, sortedInsertionIndex, interpolate } from '@native-twin/css';
+import { asArray } from '@native-twin/helpers';
 import { defineConfig } from './config/define-config';
 import { parsedRuleToEntry } from './convert/ruleToEntry';
 import { createThemeContext } from './theme/theme.context';

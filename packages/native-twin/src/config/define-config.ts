@@ -1,4 +1,4 @@
-import { asArray } from '@universal-labs/helpers';
+import { asArray } from '@native-twin/helpers';
 import type {
   Preset,
   TailwindConfig,

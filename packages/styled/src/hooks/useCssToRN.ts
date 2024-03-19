@@ -8,8 +8,8 @@ import {
   SheetEntry,
   SheetEntryDeclaration,
   getRuleSelectorGroup,
-} from '@universal-labs/css';
-import { parseCssValue, tw } from '@universal-labs/native-twin';
+} from '@native-twin/css';
+import { parseCssValue, tw } from '@native-twin/native-twin';
 import { StyledContext } from '../types/css.types';
 import { useStyledContext } from './useStyledContext';
 

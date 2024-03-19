@@ -6,8 +6,8 @@ import {
   FunctionComponent,
   JSXElementConstructor,
 } from 'react';
-import { CompleteStyle, SheetEntry, SheetEntryDeclaration } from '@universal-labs/css';
-import { RegisteredComponent } from '@universal-labs/styled';
+import { CompleteStyle, SheetEntry, SheetEntryDeclaration } from '@native-twin/css';
+import { RegisteredComponent } from '@native-twin/styled';
 import { Effect, Observable } from '../observable';
 import type { createPropState } from './styled-component';
 

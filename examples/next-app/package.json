@@ -9,11 +9,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@native-twin/native-twin": "workspace:*",
+    "@native-twin/native-twin-nextjs": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*",
+    "@native-twin/styled": "workspace:*",
     "@next/font": "13.0.6",
-    "@universal-labs/native-twin": "workspace:*",
-    "@universal-labs/native-twin-nextjs": "workspace:*",
-    "@universal-labs/preset-tailwind": "workspace:*",
-    "@universal-labs/styled": "workspace:*",
     "next": "13.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,4 +1,4 @@
-import { createInteropElement as _createInteropElement } from '@universal-labs/native-twin-metro';
+import { createInteropElement as _createInteropElement } from '@native-twin/native-twin-metro';
 
 var _react = _interopRequireDefault(require('react'));
 export default function App() {

@@ -11,7 +11,7 @@ export default function nativeTwinBabelPlugin(babel: BabelAPI): PluginObj {
   const createContext = createVisitorContext(babel.types);
 
   return {
-    name: '@universal-labs/native-twin-metro-imports',
+    name: '@native-twin/native-twin-metro-imports',
     visitor: {
       MemberExpression(path, state) {
         const context = createContext(path, state);

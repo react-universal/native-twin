@@ -1,6 +1,6 @@
 import { parseTWTokens, parsedRuleToClassName } from '../src';
 
-describe('@universal-labs/native-twin - Raw rules parser', () => {
+describe('@native-twin/native-twin - Raw rules parser', () => {
   it('Parse regular rules', () => {
     const result = parseTWTokens('bg-blue-300 xl:bg-white hover:text-2xl');
     expect(result).toStrictEqual([

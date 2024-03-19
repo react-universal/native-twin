@@ -1,4 +1,4 @@
-import type { SheetEntry } from '@universal-labs/css';
+import type { SheetEntry } from '@native-twin/css';
 import { Observable, observable } from '../observable';
 
 export const globalStyles = new Map<string, Observable<SheetEntry>>();

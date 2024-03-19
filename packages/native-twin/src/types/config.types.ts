@@ -6,8 +6,8 @@ import type {
   RuleHandlerToken,
   Preflight,
   SheetEntry,
-} from '@universal-labs/css';
-import type { Falsey, MaybeArray } from '@universal-labs/helpers';
+} from '@native-twin/css';
+import type { Falsey, MaybeArray } from '@native-twin/helpers';
 import type { ExtractThemes, ThemeConfig, __Theme__ } from './theme.types';
 
 // CONFIGURATION TYPES

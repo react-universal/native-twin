@@ -1,19 +1,19 @@
 import micromatch from 'micromatch';
 import path from 'node:path';
-import type { SheetEntry, createVirtualSheet } from '@universal-labs/css';
-import * as NativeTwinCss from '@universal-labs/css';
-import * as NativeTwin from '@universal-labs/native-twin';
-import type { TailwindPresetTheme } from '@universal-labs/preset-tailwind/build/types/theme.types';
+import type { SheetEntry, createVirtualSheet } from '@native-twin/css';
+import * as NativeTwinCss from '@native-twin/css';
+import * as NativeTwin from '@native-twin/native-twin';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind/build/types/theme.types';
 import { requireJS } from './load-js';
 
 let tw: ReturnType<typeof loadNativeTwinConfig> | null = null;
 
 function loadNativeTwin(): typeof NativeTwin {
-  return requireJS('@universal-labs/native-twin');
+  return requireJS('@native-twin/native-twin');
 }
 
 function loadVirtualSheet(): ReturnType<typeof createVirtualSheet> {
-  return (requireJS('@universal-labs/css') as typeof NativeTwinCss).createVirtualSheet();
+  return (requireJS('@native-twin/css') as typeof NativeTwinCss).createVirtualSheet();
 }
 
 function loadNativeTwinConfig(

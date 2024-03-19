@@ -2,7 +2,7 @@
 import { createElement, Fragment } from 'react';
 import type { DocumentContext, DocumentInitialProps } from 'next/document';
 import Document from 'next/document';
-import { extract } from '@universal-labs/native-twin';
+import { extract } from '@native-twin/native-twin';
 
 export { installDocument };
 

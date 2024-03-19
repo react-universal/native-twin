@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
-import type { CompleteStyle, FinalSheet } from '@universal-labs/css';
+import type { CompleteStyle, FinalSheet } from '@native-twin/css';
 import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
-} from '@universal-labs/css';
+} from '@native-twin/css';
 
 export interface RegisteredComponent {
   id: string;

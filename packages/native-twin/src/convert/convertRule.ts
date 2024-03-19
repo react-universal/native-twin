@@ -4,8 +4,8 @@ import {
   pseudoPrecedence,
   mql,
   type TWParsedRule,
-} from '@universal-labs/css';
-import { asArray } from '@universal-labs/helpers';
+} from '@native-twin/css';
+import { asArray } from '@native-twin/helpers';
 import type { ThemeContext } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
 

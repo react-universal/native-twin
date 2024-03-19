@@ -1,4 +1,4 @@
-import * as P from '@universal-labs/arc-parser';
+import * as P from '@native-twin/arc-parser';
 import { mapAsType } from '../utils.parser';
 
 const mapToAttributeSelector = mapAsType('ATTRIBUTE_SELECTOR');
