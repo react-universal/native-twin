@@ -3,10 +3,7 @@ import { groupContext } from '../../context';
 import { StyledComponentHandler } from '../../store/component.store';
 import { ComponentConfig } from '../../types/styled.types';
 
-export function useComponentState(
-  configs: ComponentConfig[],
-  props: Record<string, any> | null,
-) {
+export function useTwinHandler(configs: ComponentConfig[], props: Record<string, any> | null) {
   const getChildStyles = useContext(groupContext);
   const componentHandlerRef = useRef(new StyledComponentHandler(configs, props));
 

@@ -66,7 +66,10 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
       }
     }
     // if (props?.['className']) {
-    //   console.log('CLASSNAME: ', props['className']);
+    //   console.log('JSX_CLASSNAMES: ', {
+    //     classNames: props['className'],
+    //     type,
+    //   });
     // }
 
     // if (props?.['configs'] && props?.['children']) {
