@@ -76,3 +76,5 @@ export function createComponentSheet(entries: SheetEntry[] = [], context: Styled
     return Object.freeze(result);
   }
 }
+
+export type ComponentSheet = ReturnType<typeof createComponentSheet>;

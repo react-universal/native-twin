@@ -1,6 +1,11 @@
-import { type ComponentType, createElement } from 'react';
-import { groupContext } from '../context';
-import { StyledComponentHandler } from '../store/component.store';
+import { type ComponentType, createElement, useState } from 'react';
+import {
+  InteractionPropsState,
+  TwinContext,
+  useTwinContext,
+  useTwinProvider,
+} from '../context/twin.context';
+import { JSXStyledProps } from '../jsx/jsx-custom-props';
 import { getComponentType } from '../utils/react.utils';
 
 /**
@@ -13,19 +18,49 @@ import { getComponentType } from '../utils/react.utils';
  */
 export function renderTwinComponent(
   baseComponent: ComponentType<any>,
-  state: StyledComponentHandler,
+  meta: JSXStyledProps[1]['metadata'],
   props: Record<string, any>,
+  ref: Record<string, any>,
 ) {
   let component = baseComponent;
+  const [_state, setState] = useTwinContext();
+  const providerValues = useTwinProvider();
+  const [_internalState, setInternalState] = useState({
+    isPointerActive: false,
+    isGroupActive: meta.isGroupParent,
+  });
 
-  attachInteractionProps(state, props);
+  if (meta.hasPointerEvents || meta.hasGroupEvents) {
+    props['onTouchStart'] = (event: unknown) => {
+      ref?.['onTouchStart']?.(event);
+      setInternalState((p) => ({
+        ...p,
+        isPointerActive: true,
+      }));
+      setState?.({
+        isPointerActive: true,
+        isGroupActive: meta.isGroupParent,
+      });
+    };
+    props['onTouchEnd'] = (event: unknown) => {
+      ref?.['onTouchEnd']?.(event);
+      setInternalState((p) => ({
+        ...p,
+        isPointerActive: false,
+      }));
+      // setState?.({
+      //   isPointerActive: false,
+      //   isGroupActive: false,
+      // });
+    };
+  }
 
-  if (state.propsMeta.isGroupParent) {
+  if (meta.isGroupParent) {
     props = {
-      value: state.getChildStyles,
+      value: providerValues,
       children: createElement(component, props),
     };
-    component = groupContext.Provider;
+    component = TwinContext.Provider;
   }
 
   if (component === baseComponent) {
@@ -48,20 +83,21 @@ export function renderTwinComponent(
   }
 }
 
-function attachInteractionProps(state: StyledComponentHandler, props: Record<string, any>) {
-  if (state.propsMeta.hasPointerEvents || state.propsMeta.hasGroupEvents) {
+export function attachInteractionProps(
+  meta: JSXStyledProps[1]['metadata'],
+  setState: ((values: Partial<InteractionPropsState>) => void) | null,
+  props: Record<string, any>,
+) {
+  if (meta.hasPointerEvents || meta.hasGroupEvents) {
     props['onTouchStart'] = (event: unknown) => {
-      state.runtimeProps?.['onTouchStart']?.(event);
-      state.setInteractions({
-        ...state.localInteractionsState,
-        hover: true,
+      // state.runtimeProps?.['onTouchStart']?.(event);
+      setState?.({
+        isPointerActive: true,
       });
     };
     props['onTouchEnd'] = (event: unknown) => {
-      state.runtimeProps?.['onTouchEnd']?.(event);
-      state.setInteractions({
-        ...state.localInteractionsState,
-        hover: false,
+      setState?.({
+        isPointerActive: false,
       });
     };
   }

@@ -20,12 +20,12 @@ export default function App() {
   return (
     <StrictMode>
       <View
-        className='flex-1 bg-red hover:(bg-white) justify-center items-end'
+        className='flex-1 bg-red group hover:(bg-white) justify-center items-end'
         // // @ts-expect-error
         // onPressIn={() => setIsReady((p) => !p)}
       >
-        <Text className='text(white 5xl) hover:(text-blue)'>asd</Text>
-        <Text className='text(white 5xl) hover:(text-blue)'>asd</Text>
+        <Text className='text(white 5xl) group-hover:(text-gray)'>asd</Text>
+        <Text className='text(black 5xl) hover:(text-green)'>asd</Text>
       </View>
     </StrictMode>
   );

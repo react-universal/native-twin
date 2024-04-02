@@ -29,16 +29,10 @@ export const createStylableComponent = <
    */
   if (type === 'function') {
     component = (props: Record<string, any>): any => {
-      // if (props && !props['configs']) {
-      //   props['configs'] = configs;
-      // }
       return twinComponent(baseComponent, configs, props, undefined);
     };
   } else {
     component = forwardRef<unknown, Record<string, any>>((props, ref): any => {
-      // if (props && !props['configs']) {
-      //   props['configs'] = configs;
-      // }
       return twinComponent(baseComponent, configs, props, ref);
     });
   }
