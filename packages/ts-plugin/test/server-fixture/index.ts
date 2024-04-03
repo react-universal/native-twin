@@ -16,7 +16,7 @@ class TSServer {
   _isClosed: boolean;
   _server: any;
   _seq: number;
-  constructor(project: any) {
+  constructor(project: any, pluginName: string) {
     const tsserverPath = path.join(
       __dirname,
       '..',
@@ -28,19 +28,23 @@ class TSServer {
       'lib',
       'tsserver',
     );
+    console.log('PRO: ', project);
     const server = fork(
       tsserverPath,
       [
         '--logVerbosity',
-        'verbose',
+        'normal',
         '--logFile',
         logFile,
         '--pluginProbeLocations',
-        path.join(__dirname, '..'),
+        project,
+        '--globalPlugins',
+        pluginName,
       ],
       {
-        cwd: path.join(__dirname, '..', project),
+        cwd: project,
         stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
+        execArgv: [`--inspect=${5999}`],
       },
     );
     this._exitPromise = new Promise((resolve, reject) => {
@@ -110,6 +114,6 @@ class TSServer {
   }
 }
 
-export default function createServer(project?: any) {
-  return new TSServer(project || 'project-fixture');
+export default function createServer(project?: any, pluginName = '@native-twin/ts-plugin') {
+  return new TSServer(project || 'project-fixture', pluginName);
 }

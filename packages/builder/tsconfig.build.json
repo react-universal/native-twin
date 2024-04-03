@@ -1,12 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "build",
-    "declarationMap": true,
-    "verbatimModuleSyntax": false,
-    "module": "CommonJS",
     "noEmit": false,
-    "importHelpers": true
+    "module": "CommonJS",
+    "declarationMap": true
   },
   "exclude": ["./test/"]
 }

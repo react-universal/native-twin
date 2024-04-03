@@ -6,8 +6,10 @@
   "author": "Cristhian Gutierrez",
   "main": "build/index.js",
   "scripts": {
-    "build": "node ./build.js --production",
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rm -rf build",
+    "esbuild:build": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "jest",
     "vscode:dev": "node ./build.js --watch"
@@ -20,6 +22,7 @@
     "@native-twin/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "2.9.2",
     "cssbeautify": "0.3.1",
+    "effect": "^2.4.17",
     "match-sorter": "6.3.1",
     "quick-lru": "6.1.1",
     "showdown": "2.1.0",
@@ -30,6 +33,9 @@
   "devDependencies": {
     "@types/cssbeautify": "0.3.2",
     "@types/showdown": "2.0.1"
+  },
+  "optionalDependencies": {
+    "jest": "*"
   },
   "publishConfig": {
     "access": "public",

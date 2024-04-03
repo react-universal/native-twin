@@ -5,50 +5,6 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/styled",
-      "path": "../packages/styled"
-    },
-    {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/preset-tw",
-      "path": "../packages/preset-tailwind"
-    },
-    {
-      "name": "📦 @lib/with-nextjs",
-      "path": "../packages/native-twin-nextjs"
-    },
-    {
-      "name": "📦 @lib/arc-parser",
-      "path": "../packages/arc-parser"
-    },
-    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },
@@ -57,20 +13,24 @@
       "path": "../packages/ts-plugin"
     },
     {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
       "name": "expo-app",
       "path": "../examples/expo-app"
-    },
-    {
-      "name": "next-pages-example",
-      "path": "../examples/next-app"
-    },
-    {
-      "name": "next-app-dir",
-      "path": "../examples/next-app-dir"
-    },
-    {
-      "name": "docs-site",
-      "path": "../apps/site"
     }
   ],
   "settings": {

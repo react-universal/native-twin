@@ -7,8 +7,15 @@
       "request": "launch",
       "name": "Launch Extension",
       "preLaunchTask": "${defaultBuildTask}",
-      "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
-      "outFiles": ["${workspaceRoot}/build/**/*.js"],
+      "args": [
+        "--extensionDevelopmentPath=${workspaceRoot}"
+      ],
+      "env": {
+        "TSSERVER": "9229"
+      },
+      "outFiles": [
+        "${workspaceRoot}/build/**/*.js"
+      ],
       "sourceMaps": true
     }
   ]

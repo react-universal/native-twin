@@ -1,8 +1,12 @@
 import { TinyColor } from '@ctrl/tinycolor';
 import { TemplateContext } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
+import { inspect } from 'util';
 import * as vscode from 'vscode-languageserver-types';
+import { RuntimeTW } from '@native-twin/core';
+import { tailwindClassNamesParser } from '@native-twin/css';
 import { ClassCompletionToken, CompletionToken } from '../types';
+import { debugLog } from '../utils';
 import { NativeTailwindIntellisense } from './intellisense.service';
 import { ParsedCompletionRule, parse } from './parser';
 
@@ -14,6 +18,11 @@ export function getCompletionsAtPosition(
   const text = context.text;
   const textOffset = context.toOffset(position);
   const parsedRule = parse(text, textOffset, true);
+
+  ts.SyntaxKind.NoSubstitutionTemplateLiteral
+  // ts.SyntaxKind.TemplateExpression
+  console.log('BASE_PARSER: ', inspect(tailwindClassNamesParser.run(text), false, null));
+  console.log('FULL_PARSER: ', inspect(position));
   return {
     isGlobalCompletion: false,
     isMemberCompletion: false,
@@ -121,22 +130,34 @@ function getKindModifiers(item: CompletionToken): string {
   return '';
 }
 
-export function getDocumentation(data: ClassCompletionToken) {
+export function getDocumentation(data: ClassCompletionToken, tw: RuntimeTW) {
   if (!data.property || !data.themeValue) return '';
   const result: string[] = [];
   // result.push('***Css Rules*** \n\n');
   // result.push(`${'```css\n'}${data.css}${'\n```'}`);
   // result.push('\n\n');
-  result.push('***React Native StyleSheet*** \n\n');
-  result.push(
-    `${'```json\n'}${JSON.stringify(
-      {
-        [data.property]: data.themeValue,
-      },
-      null,
-      2,
-    )}${'\n```'}`,
+  const resolver = tw(data.name);
+  debugLog(
+    {
+      symbol: '📗',
+      msg: `____DATA_____`,
+      value: resolver,
+    },
+    true,
   );
+  const prop = resolver.reduce(
+    (prev, current) => {
+      current.declarations.forEach((x) => {
+        prev[x.prop] = x.value;
+      });
+      return {
+        ...prev,
+      };
+    },
+    {} as Record<string, any>,
+  );
+  result.push('***React Native StyleSheet*** \n\n');
+  result.push(`${'```json\n'}${JSON.stringify(prop, null, 2)}${'\n```'}`);
   return result.join('\n\n');
 }
 
@@ -163,6 +184,7 @@ export function getCompletionEntryDetailsDisplayParts(
 
 export function createCompletionEntryDetails(
   item: ClassCompletionToken,
+  twRuntime: RuntimeTW,
 ): ts.CompletionEntryDetails {
   const displayParts = getCompletionEntryDetailsDisplayParts(item);
   return {
@@ -173,7 +195,7 @@ export function createCompletionEntryDetails(
     documentation: [
       {
         kind: vscode.MarkupKind.Markdown,
-        text: getDocumentation(item),
+        text: getDocumentation(item, twRuntime),
       },
     ],
   };

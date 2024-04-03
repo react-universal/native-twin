@@ -13,6 +13,10 @@ describe('TS PLUGIN', () => {
     expect(intellisense.completions().classes.size).toStrictEqual(5530);
   });
   it('Enumerate completions', () => {
+    // const utility = intellisense.completions().classes.get('border-blue');
+    // if (utility) {
+    //   console.log('UTIL: ', createCompletionEntryDetails(utility, intellisense.tw));
+    // }
     expect(Array.from(intellisense.completions().classes, ([name]) => name)).toMatchSnapshot(
       'Completions Snapshot',
     );

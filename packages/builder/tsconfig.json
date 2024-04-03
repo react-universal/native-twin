@@ -3,10 +3,10 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declarationMap": false,
-    "strictFunctionTypes": false,
     "noImplicitAny": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "CommonJS",
+    "resolveJsonModule": true,
+    "lib": ["ESNext"],
+    "module": "ESNext",
     "moduleResolution": "node",
     "noEmit": false,
     "strict": true,

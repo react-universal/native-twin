@@ -1,3 +1,4 @@
+// @ts-noCheck
 import { type ComponentType, createElement, useState } from 'react';
 import {
   InteractionPropsState,

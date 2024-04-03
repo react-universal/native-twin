@@ -30,6 +30,7 @@ export class NativeTailwindIntellisense {
     this.pluginConfig = pluginConfig;
     this.logger = logger;
     this.tailwindConfig = defineConfig({
+      content: [],
       presets: [presetTailwind()],
     });
     this.tw = createTailwind(this.tailwindConfig, createVirtualSheet());

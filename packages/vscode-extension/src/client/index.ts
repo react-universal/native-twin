@@ -16,13 +16,13 @@ import {
 
 let serverOptions: ServerOptions = {
   run: {
-    module: path.resolve(__dirname, '..', './server'),
+    module: path.resolve(__dirname, './server'),
     transport: TransportKind.ipc,
   },
   debug: {
-    module: path.resolve(__dirname, '..', './server'),
+    module: path.resolve(__dirname, './server'),
     transport: TransportKind.ipc,
-    options: { execArgv: ['--nolazy', '--inspect=6009'] },
+    options: { execArgv: ['--nolazy', '--inspect=9229'] },
   },
 };
 
@@ -72,3 +72,5 @@ export const client = new LanguageClient(
   serverOptions,
   clientOptions,
 );
+
+client.debug('asd');

@@ -3,7 +3,7 @@ import { Logger, State, SynchronizedConfiguration } from '../types';
 import { configurationSection, pluginId, typeScriptExtensionId } from './config';
 
 export async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
-  const state: State = { hasUniversalLabs: undefined };
+  const state: State = { hasConfigFile: undefined };
 
   const update = async () => {
     const localTailwindManifestFiles = await vscode.workspace.findFiles(
@@ -20,22 +20,22 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
           1,
         );
 
-    let hasUniversalLabs = false;
+    let hasConfigFile = false;
     if (localTailwindManifestFiles.length) {
       log(`Using local tailwind config`);
-      hasUniversalLabs = true;
+      hasConfigFile = true;
     } else if (configFiles.length) {
       log(`Using builtin tailwind config`);
-      hasUniversalLabs = true;
+      hasConfigFile = true;
     } else {
       log(
         `No Native Tailwind package and no tailwind config file found. Not activating tailwind IntelliSense.`,
       );
-      hasUniversalLabs = false;
+      hasConfigFile = false;
     }
 
-    if (hasUniversalLabs !== state.hasUniversalLabs) {
-      state.hasUniversalLabs = hasUniversalLabs;
+    if (hasConfigFile !== state.hasConfigFile) {
+      state.hasConfigFile = hasConfigFile;
       synchronizeConfiguration(api, state, log);
     }
   };
@@ -50,7 +50,7 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
 
   context.subscriptions.push(
     vscode.commands.registerCommand(`${configurationSection}.restart`, () => {
-      state.hasUniversalLabs = undefined;
+      state.hasConfigFile = undefined;
       listener();
     }),
   );
@@ -123,7 +123,7 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
       'Extension is enabled. To disable, change the `nativeTwin.enable` setting to `false`.',
     );
 
-    if (state.hasUniversalLabs) {
+    if (state.hasConfigFile) {
       log(`Configuring ${pluginId} using: ${JSON.stringify(config, null, 2)}`);
     } else {
       config.enable = false;

@@ -53,7 +53,7 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       if (context) {
         const utility = intellisense.completions().classes.get(name);
         if (utility) {
-          return createCompletionEntryDetails(utility);
+          return createCompletionEntryDetails(utility, intellisense.tw);
         }
       }
       return info.languageService.getCompletionEntryDetails(fileName, position, name, ...rest);

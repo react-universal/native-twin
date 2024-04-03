@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-export const openMockFile = (server, mockFileName, fileContent) => {
+export const openMockFile = (server: any, mockFileName: any, fileContent: any) => {
   server.send({
     command: 'open',
     arguments: {
@@ -12,12 +12,12 @@ export const openMockFile = (server, mockFileName, fileContent) => {
   return server;
 };
 
-export const getFirstResponseOfType = (command, server) => {
-  const response = server.responses.find((response) => response.command === command);
+export const getFirstResponseOfType = (command: any, server: any) => {
+  const response = server.responses.find((response: any) => response.command === command);
   assert.isTrue(response !== undefined);
   return response;
 };
 
-export const getResponsesOfType = (command, server) => {
-  return server.responses.filter((response) => response.command === command);
+export const getResponsesOfType = (command: any, server: any) => {
+  return server.responses.filter((response: any) => response.command === command);
 };

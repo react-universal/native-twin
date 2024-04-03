@@ -1,4 +1,28 @@
 {
   "extends": "../../tsconfig.base.json",
-  "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js", "build.js"]
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declarationMap": false,
+    "strictFunctionTypes": false,
+    "noImplicitAny": true,
+    "lib": [
+      "ESNext"
+    ],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "strict": true,
+    "target": "esnext"
+  },
+  "include": [
+    "src",
+    "test",
+    "./*.d.ts"
+  ],
+  "exclude": [
+    "build",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
 }

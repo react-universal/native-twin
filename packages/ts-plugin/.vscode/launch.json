@@ -6,9 +6,34 @@
       "name": "Attach to VS Code TS Server",
       "type": "node",
       "request": "attach",
-      "port": 5859,
+      "port": 5999,
       "sourceMaps": true,
-      "outFiles": ["${workspaceRoot}/build/**/*.js", "!**/node_modules/**"]
+      "outFiles": [
+        "${workspaceRoot}/build/**/*.js",
+        "!**/node_modules/**"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach To TS Server",
+      "port": 5999
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "suppressMultipleSessionWarning": true,
+      "name": "Jest Tests",
+      // "program": "../../node_modules/.bin/jest",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "../../node_modules/.bin/jest",
+      ],
+      "console": "integratedTerminal",
+      "env": {
+        "TSS_DEBUG": "5999"
+      },
+      "sourceMaps": true,
     }
   ]
 }

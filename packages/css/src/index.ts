@@ -17,7 +17,7 @@ export {
 } from './css/precedence';
 
 // TAILWIND
-export { parseTWTokens } from './tailwind/tailwind-rule.parser';
+export { parseTWTokens, tailwindClassNamesParser } from './tailwind/tailwind-rule.parser';
 export {
   globalKeywords,
   cornerMap,
@@ -31,6 +31,11 @@ export {
   TWParsedRule,
   RuleHandlerToken,
   TWScreenValueConfig,
+  ArbitraryToken,
+  ClassNameToken,
+  GroupToken,
+  VariantClassToken,
+  VariantToken,
 } from './tailwind/tailwind.types';
 
 // CSS FEATURES

@@ -10,7 +10,7 @@
   ],
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "publisher": "universal-labs",
+  "publisher": "native-twin",
   "main": "./build/extension.js",
   "scripts": {
     "build": "node ./build.js --production",
@@ -92,7 +92,7 @@
     ],
     "typescriptServerPlugins": [
       {
-        "name": "@native-twin/plugin",
+        "name": "@native-twin/ts-plugin",
         "enableForWorkspaceTypeScriptVersions": true
       }
     ]
@@ -102,7 +102,8 @@
   ],
   "dependencies": {
     "@native-twin/ts-plugin": "workspace:*",
-    "vscode-languageclient": "^8.1.0"
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1"
   },
   "devDependencies": {
     "@types/vscode": "1.80.0",

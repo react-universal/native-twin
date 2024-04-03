@@ -4,6 +4,6 @@ export const debugLog = <T>(
 ) => {
   if (debug) {
     // eslint-disable-next-line no-console
-    console.debug(`(${_input.symbol}) - ${_input.msg}`, _input.value);
+    console.debug(`(${_input.symbol}) - ${_input.msg}`, JSON.stringify(_input.value, null, 2));
   }
 };

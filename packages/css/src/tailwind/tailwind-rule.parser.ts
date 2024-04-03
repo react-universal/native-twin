@@ -104,7 +104,7 @@ const parseRuleGroup = P.sequenceOf([
     }),
 );
 /** Recursive syntax parser all utils separated by space */
-const tailwindClassNamesParser = P.separatedBySpace(parseValidTokenRecursive);
+export const tailwindClassNamesParser = P.separatedBySpace(parseValidTokenRecursive);
 
 // function translateRuleTokens(
 //   tokens: (GroupToken | VariantClassToken | ClassNameToken | ArbitraryToken)[],

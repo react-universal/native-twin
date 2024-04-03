@@ -16,6 +16,10 @@
     "test": {
       "dependsOn": ["^build"]
     },
+    "vscode:dev": {
+      "dependsOn": ["^build"],
+      "persistent": true
+    },
     "clean": {
       "cache": false
     },
