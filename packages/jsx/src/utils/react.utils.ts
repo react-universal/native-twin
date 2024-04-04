@@ -26,7 +26,7 @@ export const externalCallbackRef = {} as {
  */
 export function nativeStyleToProp(props: Record<string, any>, config: ComponentConfig) {
   if (config.target !== 'style' || !config.nativeStyleToProp) return;
-  for (let move of Object.entries(config.nativeStyleToProp)) {
+  for (const move of Object.entries(config.nativeStyleToProp)) {
     const source = move[0];
     const sourceValue = props[config.target]?.[source];
     if (sourceValue === undefined) continue;

@@ -102,7 +102,7 @@ export const createElementRunnable = (path: NodePath<t.MemberExpression>) => {
     Ctx.add(CallExpressionSvc, {
       getReactRequire(node) {
         return node.pipe(
-          O.flatMap(([_, node]) =>
+          O.flatMap(([, node]) =>
             t.isIdentifier(node.callee, { name: 'require' }) &&
             t.isStringLiteral(node.arguments[0], { value: 'react' })
               ? O.some(true)
@@ -112,7 +112,7 @@ export const createElementRunnable = (path: NodePath<t.MemberExpression>) => {
       },
       isInteropRequire(node) {
         return node.pipe(
-          O.flatMap(([_, node]) => {
+          O.flatMap(([, node]) => {
             if (
               t.isIdentifier(node.callee, { name: '_interopRequireDefault' }) && // const <name> = _interopRequireDefault(require("react"))
               t.isCallExpression(node.arguments[0]) &&

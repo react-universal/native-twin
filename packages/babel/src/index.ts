@@ -4,11 +4,10 @@ import { PLUGIN_IMPORT_META } from './constants/plugin.constants';
 import { isReactImport, isReactRequire } from './effects/path.effects';
 import { createMemberExpressionProgram } from './effects/programs';
 import { createVisitorContext } from './effects/visitor-context';
-import { BabelAPI } from './types';
 
-export default function nativeTwinBabelPlugin(babel: BabelAPI): PluginObj {
+export default function nativeTwinBabelPlugin(): PluginObj {
   // const t = babel.types;
-  const createContext = createVisitorContext(babel.types);
+  const createContext = createVisitorContext();
 
   return {
     name: '@native-twin/babel',

@@ -14,7 +14,7 @@ import {
   extensionChannelName,
 } from '../internal/config';
 
-let serverOptions: ServerOptions = {
+const serverOptions: ServerOptions = {
   run: {
     module: path.resolve(__dirname, './server'),
     transport: TransportKind.ipc,
@@ -30,7 +30,7 @@ let serverOptions: ServerOptions = {
 const workspaceFolders = vscode.workspace.workspaceFolders;
 const workspaceRoot = workspaceFolders ? workspaceFolders[0]?.uri.fsPath : null;
 
-let clientOptions: LanguageClientOptions = {
+const clientOptions: LanguageClientOptions = {
   documentSelector: DOCUMENT_SELECTORS,
   synchronize: {
     // TODO let users customize this

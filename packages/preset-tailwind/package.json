@@ -56,5 +56,16 @@
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
+  },
+  "nx": {
+    "includedScripts": [
+      "build",
+      "build:watch",
+      "clean",
+      "dev",
+      "lint",
+      "test:debug",
+      "test:watch"
+    ]
   }
 }

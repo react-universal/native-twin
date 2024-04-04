@@ -5,7 +5,7 @@ import { LanguageServiceLogger } from '../src/language-service/logger';
 const config = new ConfigurationManager();
 // @ts-expect-error
 const logger: LanguageServiceLogger = {
-  log: () => {},
+  log: () => void {},
 };
 const intellisense = new NativeTailwindIntellisense(logger, config);
 describe('TS PLUGIN', () => {

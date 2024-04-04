@@ -9,7 +9,6 @@ import {
   DidChangeConfigurationNotification,
   CompletionItem,
   CompletionItemKind,
-  TextDocumentPositionParams,
   TextDocumentSyncKind,
   InitializeResult,
   DocumentDiagnosticReportKind,
@@ -73,7 +72,7 @@ connection.onInitialized(() => {
     connection.client.register(DidChangeConfigurationNotification.type, undefined);
   }
   if (hasWorkspaceFolderCapability) {
-    connection.workspace.onDidChangeWorkspaceFolders((_event) => {
+    connection.workspace.onDidChangeWorkspaceFolders(() => {
       connection.console.log('Workspace folder change event received.');
     });
   }
@@ -192,31 +191,29 @@ async function validateTextDocument(textDocument: TextDocument): Promise<Diagnos
   return diagnostics;
 }
 
-connection.onDidChangeWatchedFiles((_change) => {
+connection.onDidChangeWatchedFiles(() => {
   // Monitored files have change in VSCode
   connection.console.log('We received a file change event');
 });
 
 // This handler provides the initial list of the completion items.
-connection.onCompletion(
-  (_textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
-    // The pass parameter contains the position of the text document in
-    // which code complete got requested. For the example we ignore this
-    // info and always provide the same completion items.
-    return [
-      {
-        label: 'TypeScript',
-        kind: CompletionItemKind.Text,
-        data: 1,
-      },
-      {
-        label: 'JavaScript',
-        kind: CompletionItemKind.Text,
-        data: 2,
-      },
-    ];
-  },
-);
+connection.onCompletion((): CompletionItem[] => {
+  // The pass parameter contains the position of the text document in
+  // which code complete got requested. For the example we ignore this
+  // info and always provide the same completion items.
+  return [
+    {
+      label: 'TypeScript',
+      kind: CompletionItemKind.Text,
+      data: 1,
+    },
+    {
+      label: 'JavaScript',
+      kind: CompletionItemKind.Text,
+      data: 2,
+    },
+  ];
+});
 
 // This handler resolves additional information for the item selected in
 // the completion list.

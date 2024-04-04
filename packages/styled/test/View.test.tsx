@@ -17,7 +17,7 @@ function toJson(component: renderer.ReactTestRenderer) {
 describe('@native-twin/styled', () => {
   it('StyledView render', () => {
     const component = renderer.create(<StyledView className='flex-1' />);
-    let tree = toJson(component);
+    const tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });
 });
@@ -29,7 +29,7 @@ describe('@native-twin/styled', () => {
         <Text className='leading-6'>asd</Text>
       </StyledView>,
     );
-    let tree = toJson(component);
+    const tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });
 });

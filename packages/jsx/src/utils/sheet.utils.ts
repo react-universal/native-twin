@@ -15,7 +15,7 @@ export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledC
     (prev, current) => {
       const validRule = isApplicativeRule(current.selectors, context);
       if (!validRule) return prev;
-      let nextDecl = composeDeclarations(current.declarations, context);
+      const nextDecl = composeDeclarations(current.declarations, context);
       const group = getRuleSelectorGroup(current.selectors);
       if (nextDecl.transform && prev[group].transform) {
         nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];

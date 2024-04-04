@@ -1,6 +1,6 @@
 {
   "extends": "../../.eslintrc.json",
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": ["!**/*", "build"],
   "overrides": [
     {
       "files": [
@@ -9,7 +9,9 @@
       "extends": [
         "plugin:@nx/typescript"
       ],
-      "rules": {}
+      "rules": {
+        "no-useless-escape": "off"
+      }
     }
   ]
 }

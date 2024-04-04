@@ -22,7 +22,7 @@ describe('@native-twin/styled', () => {
         <View />
       </ScrollView>,
     );
-    let tree = toJson(component);
+    const tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });
 });
@@ -59,7 +59,7 @@ describe('@native-twin/styled', () => {
         <H1 className='text(center 2xl indigo-600) hover:text-gray-700'>H1 - 1</H1>
       </View>,
     );
-    let tree = toJson(component);
+    const tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });
 });

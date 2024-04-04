@@ -1,12 +1,10 @@
 import { sheetEntriesToCss } from '@native-twin/css';
-import { presetTailwind } from '@native-twin/preset-tailwind';
 import { defineConfig, setup, tx, matchThemeColor, matchThemeValue } from '../src';
 
 setup(
   defineConfig({
     content: [],
     mode: 'web',
-    presets: [presetTailwind()],
     rules: [
       matchThemeColor('bg-', 'backgroundColor'),
       // @ts-ignore

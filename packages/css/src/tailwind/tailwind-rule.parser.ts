@@ -159,7 +159,7 @@ function mergeParsedRuleGroupTokens(
   groupContent: (ClassNameToken | VariantClassToken | ArbitraryToken | GroupToken)[],
   results: TWParsedRule[] = [],
 ): TWParsedRule[] {
-  let nextToken = groupContent.shift();
+  const nextToken = groupContent.shift();
   if (!nextToken) return results;
   if (nextToken.type == 'ARBITRARY') {
     results.push({

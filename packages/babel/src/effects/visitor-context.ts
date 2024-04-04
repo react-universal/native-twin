@@ -1,10 +1,9 @@
 import { PluginPass, NodePath } from '@babel/core';
-import { BabelAPI } from '../types';
 
 const allowedFileRegex =
-  /^(?!.*[\/\\](react|react-native|react-native-web|\@native-twin\/*)[\/\\]).*$/;
+  /^(?!.*[/\\](react|react-native|react-native-web|@native-twin\/*)[/\\]).*$/;
 
-const isValidFile = (x: string = '') => allowedFileRegex.test(x);
+const isValidFile = (x = '') => allowedFileRegex.test(x);
 
 const createVisitorStateContext = (state: PluginPass) => {
   return {
@@ -24,7 +23,7 @@ const createVisitorStateContext = (state: PluginPass) => {
 // };
 
 export const createVisitorContext =
-  (_types: BabelAPI['types']) =>
+  () =>
   <T>(path: NodePath<T>, state: PluginPass) => {
     const stateContext = createVisitorStateContext(state);
 

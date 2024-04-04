@@ -49,7 +49,7 @@ export function createPropState(
      */
     declarationEffect: {
       dependencies: new Set<() => void>(),
-      rerun(isRendering: boolean = false) {
+      rerun(isRendering = false) {
         // Clean up any previous effects which may have subscribed to external event handlers
         cleanupEffect(propState.declarationEffect);
 

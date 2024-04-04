@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import micromatch from 'micromatch';
 import path from 'node:path';
 import * as NativeTwin from '@native-twin/core';
@@ -45,7 +46,7 @@ export function getUserNativeWindConfig(
 
 export function setupNativeTwin(
   config: any,
-  options: { platform: string; hot: boolean; dev: boolean },
+  _options: { platform: string; hot: boolean; dev: boolean },
 ) {
   if (tw) return tw;
   const nativeWind = loadNativeTwin();

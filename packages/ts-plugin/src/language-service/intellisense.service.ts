@@ -106,7 +106,7 @@ export class NativeTailwindIntellisense {
       canBeNegative: false,
       feature: 'default',
     };
-    let themeSection: string = '';
+    let themeSection = '';
     let property = '';
     if (typeof rule[2] == 'object') meta = rule[2];
     if (typeof rule[3] == 'object') meta = rule[3];

@@ -13,7 +13,7 @@
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "jest --passWithNoTests",
+    "test": "nx test --passWithNoTests",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand --silent false --watch",
     "test:watch": "jest --watch"
   },
@@ -32,5 +32,8 @@
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
+  },
+  "nx": {
+    "includedScripts": []
   }
 }

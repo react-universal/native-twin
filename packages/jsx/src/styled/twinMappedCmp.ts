@@ -18,7 +18,7 @@ export const withMappedProps = <
     ref: any,
   ) {
     for (const config of configs) {
-      let rawStyles = [];
+      const rawStyles = [];
 
       const source = props?.[config.source];
 

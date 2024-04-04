@@ -38,9 +38,9 @@ export const TwinContext = createContext<TwinInteractions>({
   get() {
     return false;
   },
-  set() {},
+  set: () => void {},
   subscribe() {
-    return () => {};
+    return () => void {};
   },
 });
 
@@ -52,10 +52,10 @@ export function useTwinContext(
   styledProps: JSXStyledProps[] = [],
 ): [boolean, (values: boolean) => void] {
   const context = useContext(TwinContext);
-  const [_state, setState] = useState(context.get());
+  const [, setState] = useState(context.get());
 
   useEffect(() => {
-    let isGroupParent = styledProps.some(
+    const isGroupParent = styledProps.some(
       (x) => x[1].metadata.isGroupParent || x[1].metadata.hasGroupEvents,
     );
     return context?.subscribe(() => {

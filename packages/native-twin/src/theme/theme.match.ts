@@ -100,7 +100,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
       }
 
       if (!value) return;
-      let properties = getProperties();
+      const properties = getProperties();
 
       // if (typeof value == 'object' && !Array.isArray(value)) {
       //   declarations.push(...(Object.entries(value) as [string, string][]));

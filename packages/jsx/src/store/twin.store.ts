@@ -14,7 +14,7 @@ interface TwinStore {
   };
 }
 
-let proxyObj: Record<string, TwinStore> = {};
+const proxyObj: Record<string, TwinStore> = {};
 
 const globalStore = new Proxy(proxyObj, {
   get(target, key, receiver) {
@@ -29,7 +29,7 @@ const globalStore = new Proxy(proxyObj, {
 });
 
 export function createTwinStore() {
-  let subscribers = new Set<() => void>();
+  const subscribers = new Set<() => void>();
 
   return {
     currentState: globalStore,
@@ -69,7 +69,7 @@ export function createTwinStore() {
     if (id in globalStore) {
       return Reflect.get(globalStore, id);
     }
-    let meta = {
+    const meta = {
       hasGroupEvents: styledProps.some((x) => x[1].metadata.hasGroupEvents),
       hasPointerEvents: styledProps.some((x) => x[1].metadata.hasPointerEvents),
       isGroupParent: styledProps.some((x) => x[1].metadata.isGroupParent),

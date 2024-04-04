@@ -6,6 +6,7 @@
   "scripts": {
     "android": "expo start --android -c",
     "ios": "expo start --ios -c",
+    "lint": "echo $HOME",
     "start": "expo start -c"
   },
   "dependencies": {

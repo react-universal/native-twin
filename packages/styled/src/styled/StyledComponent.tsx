@@ -24,7 +24,7 @@ function styledComponentsFactory<
   Props extends InitialProps = InitialProps,
 >(
   Component: ComponentType<InitialProps>,
-  styledProp: string = 'style',
+  styledProp = 'style',
 ): ForwardRefExoticComponent<Props & StyledComponentProps & { ref?: Ref<any> }> {
   const ForwardRefComponent = forwardRef((props: any, ref) => {
     const classNames = props.className ?? props.tw ?? '';

@@ -148,7 +148,7 @@ export const CSS_COLORS = [
   'transparent',
 ] as const;
 
-export let unitlessCssProps: { [key: string]: 1 } = {
+export const unitlessCssProps: { [key: string]: 1 } = {
   animationIterationCount: 1,
   aspectRatio: 1,
   borderImageOutset: 1,

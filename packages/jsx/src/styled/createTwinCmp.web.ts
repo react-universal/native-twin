@@ -24,7 +24,7 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
 
     props = { ...props, ref };
     for (const config of configs) {
-      let newStyles: any = [];
+      const newStyles: any = [];
       const source = props[config.source];
       const target: any = props[config.target];
 

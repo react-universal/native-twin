@@ -42,7 +42,6 @@ export type PropsFrom<TComponent> =
         ? Props
         : never;
 
-// @typescript-eslint/no-empty-interface
 export interface DefaultTheme {}
 
 export type Primitive = number | (string & {}) | null | undefined | boolean | CompleteStyle;

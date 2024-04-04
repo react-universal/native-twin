@@ -14,9 +14,9 @@ function installDocument<Component extends typeof Document = typeof Document>(
 function installDocument<Component extends typeof Document = typeof Document>(
   BaseComponent: Component = Document as Component,
 ): Component {
-  // @ts-ignore
+  // @ts-expect-error
   return class NativeTailwindDocument extends BaseComponent {
-    // @ts-ignore
+    // @ts-expect-error
     static async getInitialProps(
       ctx: DocumentContext & {
         defaultGetInitialProps: (

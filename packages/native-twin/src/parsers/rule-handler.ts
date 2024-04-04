@@ -17,6 +17,6 @@ export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(rule: Ru
 
 export const createRuleMatcher = <Theme extends __Theme__ = __Theme__>(rule: Rule<Theme>) => {
   const [rawPattern, _, __, meta] = rule;
-  let patternParser = P.literal(rawPattern);
+  const patternParser = P.literal(rawPattern);
   return getTWFeatureParser(rawPattern, patternParser, meta?.feature);
 };
