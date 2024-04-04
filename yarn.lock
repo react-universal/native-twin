@@ -12165,9 +12165,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-app@workspace:examples/expo-app":
+"expo-app@workspace:apps/expo-app":
   version: 0.0.0-use.local
-  resolution: "expo-app@workspace:examples/expo-app"
+  resolution: "expo-app@workspace:apps/expo-app"
   dependencies:
     "@native-twin/core": "workspace:*"
     "@native-twin/jsx": "workspace:*"
@@ -17328,9 +17328,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-app-dir@workspace:examples/next-app-dir":
+"next-app-dir@workspace:apps/next-app-dir":
   version: 0.0.0-use.local
-  resolution: "next-app-dir@workspace:examples/next-app-dir"
+  resolution: "next-app-dir@workspace:apps/next-app-dir"
   dependencies:
     "@native-twin/core": "workspace:*"
     "@native-twin/nextjs": "workspace:*"
@@ -17344,9 +17344,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"next-pages-example@workspace:examples/next-app":
+"next-pages-example@workspace:apps/next-app":
   version: 0.0.0-use.local
-  resolution: "next-pages-example@workspace:examples/next-app"
+  resolution: "next-pages-example@workspace:apps/next-app"
   dependencies:
     "@native-twin/core": "workspace:*"
     "@native-twin/nextjs": "workspace:*"

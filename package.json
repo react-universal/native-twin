@@ -10,11 +10,10 @@
   "author": "Cristhian Gutierrez",
   "workspaces": [
     "packages/*",
-    "examples/*",
     "apps/*"
   ],
   "scripts": {
-    "build": "nx run-many -t build",
+    "build:libs": "nx run-many -t build",
     "build:release": "yarn build && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
     "build:watch": "nx run-many -t build:watch",
     "docs:build": "nx run -t docs:build",
