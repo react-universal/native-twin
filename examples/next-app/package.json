@@ -3,9 +3,9 @@
   "version": "1.4.10",
   "private": true,
   "scripts": {
-    "build-next-example": "next build",
     "dev": "next dev",
     "lint": "next lint",
+    "next:build": "next build",
     "start": "next start"
   },
   "dependencies": {
