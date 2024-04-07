@@ -2,13 +2,15 @@ import * as Ctx from 'effect/Context';
 import * as Data from 'effect/Data';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import { LanguageClient, LanguageClientOptions } from 'vscode-languageclient/node';
-// import { DocumentSelector } from 'vscode-languageclient/node';
-// import { configurationSection } from '../../internal/config';
-// import { ClientConfigContext } from '../config/client.config';
-// import { config } from '../config/config.actions';
-import { ServerConfigContext } from '../config/server.config';
-import { VSCodeContext } from '../vscode/vscode.context';
+import * as Option from 'effect/Option';
+import path from 'path';
+import * as vscode from 'vscode';
+import {
+  LanguageClient,
+  LanguageClientOptions,
+  NodeModule,
+  TransportKind,
+} from 'vscode-languageclient/node';
 
 export class LanguageOptions extends Data.TaggedClass(
   'LanguageClientOptions',
@@ -18,17 +20,52 @@ export class LanguageOptions extends Data.TaggedClass(
   }
 }
 
-export class LanguageClientContext extends Ctx.Tag('LanguageClientContext')<
+export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext')<
   LanguageClientContext,
   LanguageClient
+>() {}
+
+export class ClientLanguageOptionsContext extends Ctx.Tag('language/ClientConfigContext')<
+  ClientLanguageOptionsContext,
+  {
+    readonly workspaceFolders: Effect.Effect<readonly vscode.WorkspaceFolder[]>;
+    readonly workspaceRoot: Option.Option<string>;
+  }
 >() {
-  static readonly Live = Layer.scoped(
-    LanguageClientContext,
-    Effect.all([ServerConfigContext, VSCodeContext]).pipe(
-      Effect.map(([serverConfig]) => {
-        return LanguageClientContext.of(new LanguageClient('asd', serverConfig, {}));
+  static readonly Live = Layer.effect(
+    ClientLanguageOptionsContext,
+    Effect.succeed(vscode.workspace.workspaceFolders).pipe(
+      Effect.map((x) => x ?? []),
+      Effect.map((x) => {
+        return ClientLanguageOptionsContext.of({
+          workspaceFolders: Effect.succeed(x),
+          workspaceRoot: Option.fromNullable(x[0]?.uri.fsPath ?? null),
+        });
       }),
     ),
+  );
+}
+
+export class ServerLanguageOptionsContext extends Ctx.Tag(
+  'language/ServerLanguageOptionsContext',
+)<
+  ServerLanguageOptionsContext,
+  {
+    readonly run: NodeModule;
+    readonly debug: NodeModule;
+  }
+>() {
+  static readonly Live = Layer.succeed(
+    ServerLanguageOptionsContext,
+    ServerLanguageOptionsContext.of({
+      run: {
+        module: path.resolve(__dirname, './server'),
+        transport: TransportKind.ipc,
+      },
+      debug: {
+        module: path.resolve(__dirname, './server'),
+      },
+    }),
   );
 }
 
