@@ -1,29 +1,24 @@
-// Based on https://github.com/mjbvz/vscode-lit-html/blob/master/src/index.ts
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 import * as vscode from 'vscode';
-import { LanguageClient } from 'vscode-languageclient/node';
-import { client as internalCLient } from './client';
-import { createLogger } from './internal/logger';
+import { ClientConfigContext } from './client/config/client.config';
+import { ServerConfigContext } from './client/config/server.config';
+import { logger } from './client/debug/debug.context';
+import { LanguageClientContext } from './client/language/language.context';
+import { activateExtension, VSCodeContext } from './client/vscode/vscode.context';
+import { extensionChannelName } from './internal/config';
 
-let client: LanguageClient;
+const MainLive = Layer.mergeAll(
+  Layer.empty.pipe(Layer.provide(logger(extensionChannelName))),
+  ClientConfigContext.Live,
+  ServerConfigContext.Live,
+  LanguageClientContext.Live,
+  // ad
+);
 
-export async function activate(_context: vscode.ExtensionContext) {
-  const log = createLogger(vscode.window.createOutputChannel('Native Tailwind IntelliSense'));
-
-  log('sdfasd');
-  client = internalCLient;
-  client.start();
-  // await enableExtension(context, log)
-  //   .catch((error) => {
-  //     log(`Activating ${pluginId} failed: ${error.stack}`);
-  //   })
-  //   .then(() => {
-  //     log(`Activating ${pluginId} success`);
-  //   });
-}
-
-export function deactivate(): Thenable<void> | undefined {
-  if (!client) {
-    return undefined;
-  }
-  return client.stop();
+export function activate(context: vscode.ExtensionContext) {
+  activateExtension(MainLive).pipe(
+    Effect.provideService(VSCodeContext, context),
+    Effect.runFork,
+  );
 }

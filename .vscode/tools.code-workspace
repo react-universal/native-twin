@@ -5,32 +5,20 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
     },
     {
       "name": "📦 @lib/ts-plugin",
       "path": "../packages/ts-plugin"
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
     },
     {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "expo-app",
-      "path": "../examples/expo-app"
+      "name": "📦 @effect-vscode",
+      "path": "../../forks/vscode-extension"
     }
   ],
   "settings": {

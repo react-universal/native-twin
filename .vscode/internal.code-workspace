@@ -58,15 +58,15 @@
     },
     {
       "name": "expo-app",
-      "path": "../examples/expo-app"
+      "path": "../apps/expo-app"
     },
     {
       "name": "next-pages-example",
-      "path": "../examples/next-app"
+      "path": "../apps/next-app"
     },
     {
       "name": "next-app-dir",
-      "path": "../examples/next-app-dir"
+      "path": "../apps/next-app-dir"
     },
     {
       "name": "docs-site",
