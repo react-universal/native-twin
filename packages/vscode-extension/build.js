@@ -22,8 +22,8 @@ esbuild
     external: ['vscode'],
     format: 'cjs',
     logLevel: 'info',
-    sourcemap: !production,
-    minify: production,
+    sourcemap: true,
+    minify: false,
   })
   .catch((e) => {
     console.error(e);

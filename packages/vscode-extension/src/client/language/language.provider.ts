@@ -11,7 +11,7 @@ import {
 import {
   configurationSection,
   DOCUMENT_SELECTORS,
-  extensionName,
+  extensionServerChannelName,
 } from '../../internal/config';
 import {
   ClientLanguageOptionsContext,
@@ -59,7 +59,7 @@ export const LanguageClientLive = Layer.effect(
         },
       },
     };
-    return new LanguageClient(extensionName, serverOptions, clientConfig);
+    return new LanguageClient(extensionServerChannelName, serverOptions, clientConfig);
   }),
 )
   .pipe(Layer.provide(ClientLanguageOptionsContext.Live))

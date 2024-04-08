@@ -15,10 +15,6 @@
     {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @effect-vscode",
-      "path": "../../forks/vscode-extension"
     }
   ],
   "settings": {

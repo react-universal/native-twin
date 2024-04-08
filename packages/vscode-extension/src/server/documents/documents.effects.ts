@@ -18,6 +18,6 @@ function getDocumentSettings(resource: string): Promise<ExampleSettings> {
 /**
  * @category effects
  */
-export function getDocumentSettings(resource: string, settings: ExtensionSettings, connection: ) {
+export function getDocumentSettings(resource: string, settings: ExtensionSettings, connection) {
 
 }
