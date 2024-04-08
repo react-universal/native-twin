@@ -14,7 +14,8 @@
   "main": "./build/extension.js",
   "scripts": {
     "build": "node ./build.js --production",
-    "build:tsc": "tsc",
+    "build:tsc": "tsc -b",
+    "build:tsc:watch": "tsc -b -w",
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "echo \"TEST\"",
@@ -35,7 +36,8 @@
     "configuration": [
       {
         "id": "nativeTwin",
-        "title": "Native Twin",
+        "title": "Native Twin Configuration",
+        "type": "object",
         "properties": {
           "styledLanguageTW.tags": {
             "type": "array",
@@ -85,16 +87,21 @@
           },
           "nativeTwin.enable": {
             "type": "boolean",
-            "default": true,
+            "default": false,
             "markdownDescription": "Controls whether Native Twin intellisense is enabled or not."
+          },
+          "nativeTwin.trace.server": {
+            "scope": "window",
+            "type": "string",
+            "enum": [
+              "off",
+              "messages",
+              "verbose"
+            ],
+            "default": "off",
+            "description": "Traces the communication between VS Code and the language server."
           }
         }
-      }
-    ],
-    "typescriptServerPlugins": [
-      {
-        "name": "@native-twin/ts-plugin",
-        "enableForWorkspaceTypeScriptVersions": true
       }
     ]
   },

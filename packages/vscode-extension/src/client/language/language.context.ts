@@ -63,7 +63,7 @@ export class ServerLanguageOptionsContext extends Ctx.Tag(
         transport: TransportKind.ipc,
       },
       debug: {
-        module: path.resolve(__dirname, './server'),
+        module: path.resolve(__dirname, '../../server'),
       },
     }),
   );

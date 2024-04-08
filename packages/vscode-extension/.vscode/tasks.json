@@ -13,7 +13,7 @@
     },
     {
       "type": "npm",
-      "script": "build",
+      "script": "build:tsc:watch",
       "isBackground": true,
       "group": {
         "kind": "build",

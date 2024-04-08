@@ -6,9 +6,15 @@
       "type": "extensionHost",
       "request": "launch",
       "name": "Launch Extension",
-      "preLaunchTask": "${defaultBuildTask}",
+      "runtimeExecutable": "${execPath}",
+      "autoAttachChildProcesses": true,
+      "preLaunchTask": {
+				"type": "npm",
+				"script": "build:tsc:watch"
+			},
       "args": [
-        "--extensionDevelopmentPath=${workspaceRoot}"
+        "--extensionDevelopmentPath=${workspaceRoot}",
+        "--disable-extensions"
       ],
       "env": {
         "TSSERVER": "9229"
