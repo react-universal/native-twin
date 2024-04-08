@@ -3,22 +3,23 @@ import * as vscode from 'vscode';
 import { LanguageClient } from 'vscode-languageclient/node';
 import { client as internalClient } from './client';
 import { createLogger } from './internal/logger';
+import { enableExtension } from './internal/enableExtension';
+import { pluginId } from './internal/config';
 
 let client: LanguageClient;
 
-export async function activate(_context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   const log = createLogger(vscode.window.createOutputChannel('Native Tailwind IntelliSense'));
 
-  log('sdfasd');
   client = internalClient;
   client.start();
-  // await enableExtension(context, log)
-  //   .catch((error) => {
-  //     log(`Activating ${pluginId} failed: ${error.stack}`);
-  //   })
-  //   .then(() => {
-  //     log(`Activating ${pluginId} success`);
-  //   });
+  await enableExtension(context, log)
+    .catch((error) => {
+      log(`Activating ${pluginId} failed: ${error.stack}`);
+    })
+    .then(() => {
+      log(`Activating ${pluginId} success`);
+    });
 }
 
 export function deactivate(): Thenable<void> | undefined {
