@@ -1,7 +1,7 @@
 // Based on https://github.com/mjbvz/vscode-lit-html/blob/master/src/index.ts
 import * as vscode from 'vscode';
 import { LanguageClient } from 'vscode-languageclient/node';
-import { client as internalClient } from './client';
+import { client as internalClient } from '../src/client';
 import { createLogger } from './internal/logger';
 import { enableExtension } from './internal/enableExtension';
 import { pluginId } from './internal/config';

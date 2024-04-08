@@ -12,7 +12,7 @@ import {
   DOCUMENT_SELECTORS,
   configurationSection,
   extensionChannelName,
-} from '../internal/config';
+} from './extension/extension.constants';
 
 const serverOptions: ServerOptions = {
   run: {

@@ -3,7 +3,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES2020",
-    "lib": ["ES2021"],
+    "lib": [
+      "ES2021"
+    ],
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -12,6 +14,14 @@
     "outDir": "build",
     "rootDir": "src"
   },
-  "exclude": ["node_modules", ".vscode-test", "build", "build.js"],
-  "include": ["src/**/*"]
+  "exclude": [
+    "node_modules",
+    ".vscode-test",
+    "build",
+    "build.js",
+    "ts-extension"
+  ],
+  "include": [
+    "src/**/*"
+  ]
 }

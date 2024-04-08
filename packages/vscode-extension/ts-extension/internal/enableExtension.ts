@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Logger, State, SynchronizedConfiguration } from '../types';
+import { Logger, State, SynchronizedConfiguration } from '../../src/types';
 import { configurationSection, pluginId, typeScriptExtensionId } from './config';
 
 export async function enableExtension(context: vscode.ExtensionContext, log: Logger) {

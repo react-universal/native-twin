@@ -12,7 +12,7 @@ import {
   configurationSection,
   DOCUMENT_SELECTORS,
   extensionServerChannelName,
-} from '../../internal/config';
+} from '../extension/extension.constants';
 import {
   ClientLanguageOptionsContext,
   LanguageClientContext,

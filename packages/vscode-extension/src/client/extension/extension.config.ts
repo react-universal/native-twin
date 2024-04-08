@@ -5,7 +5,7 @@ import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as vscode from 'vscode';
 import { listenFork } from './extension.handlers';
-import { ConfigRef } from '../../internal/internal.types';
+import { ConfigRef } from './internal.types';
 
 export const extensionConfig = <A>(
   namespace: string,
