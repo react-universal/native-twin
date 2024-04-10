@@ -1,6 +1,7 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
+import { inspect } from 'util';
 import * as vscode from 'vscode';
 import {
   LanguageClient,
@@ -24,6 +25,12 @@ export const LanguageClientLive = Layer.effect(
   Effect.gen(function* (_) {
     const clientOptions = yield* _(ClientLanguageOptionsContext);
     const serverOptions = yield* _(ServerLanguageOptionsContext);
+    yield* _(
+      Effect.log(
+        `CONFIG: ${inspect(vscode.workspace.getConfiguration(configurationSection), false, null, true)}`,
+      ),
+    );
+    yield* _(Effect.log(`asdmsadkaskldjaskldj`));
     const clientConfig: LanguageClientOptions = {
       documentSelector: DOCUMENT_SELECTORS,
       synchronize: {

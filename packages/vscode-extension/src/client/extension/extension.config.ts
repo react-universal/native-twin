@@ -4,7 +4,7 @@ import * as Scope from 'effect/Scope';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as vscode from 'vscode';
-import { listenFork } from './extension.handlers';
+import { listenForkEvent } from '../../shared/utils.shared';
 import { ConfigRef } from './internal.types';
 
 export const extensionConfig = <A>(
@@ -15,10 +15,11 @@ export const extensionConfig = <A>(
     const get = () => vscode.workspace.getConfiguration(namespace).get<A>(setting);
     const ref = yield* _(SubscriptionRef.make<Option.Option<A>>(Option.fromNullable(get())));
     yield* _(
-      listenFork(vscode.workspace.onDidChangeConfiguration, (_) =>
+      listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) =>
         SubscriptionRef.set(ref, Option.fromNullable(get())),
       ),
     );
+
     return {
       get: SubscriptionRef.get(ref),
       changes: Stream.changes(ref.changes),
@@ -35,7 +36,7 @@ export const extensionConfigValue = <A>(
     const ref = yield* _(SubscriptionRef.make(get() ?? defaultValue));
 
     yield* _(
-      listenFork(vscode.workspace.onDidChangeConfiguration, (_) =>
+      listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) =>
         SubscriptionRef.set(ref, get() ?? defaultValue),
       ),
     );

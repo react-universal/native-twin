@@ -1,7 +1,12 @@
+import { Effect } from 'effect';
 import * as E from 'effect/Effect';
-import { ClientCapabilities } from 'vscode-languageserver/node';
+import {
+  ClientCapabilities,
+  InitializeResult,
+  TextDocumentSyncKind,
+} from 'vscode-languageserver/node';
 
-export const setConfigCapabilities = (capabilities: ClientCapabilities) => {
+export const getClientCapabilities = (capabilities: ClientCapabilities) => {
   return E.Do.pipe(
     E.bind('hasConfigurationCapability', () =>
       E.succeed(!!(capabilities.workspace && !!capabilities.workspace.configuration)),
@@ -18,6 +23,28 @@ export const setConfigCapabilities = (capabilities: ClientCapabilities) => {
         ),
       ),
     ),
-    E.runSync,
-  );
+  )
+    .pipe(
+      Effect.map((x): InitializeResult => {
+        const result: InitializeResult = {
+          capabilities: {
+            textDocumentSync: TextDocumentSyncKind.Incremental,
+            // Tell the client that this server supports code completion.
+            completionProvider: {
+              resolveProvider: true,
+            },
+            workspace: {
+              workspaceFolders: {
+                supported: x.hasConfigurationCapability,
+              },
+            },
+            diagnosticProvider: {
+              interFileDependencies: false,
+              workspaceDiagnostics: false,
+            },
+          },
+        };
+        return result;
+      }),
+    )
 };

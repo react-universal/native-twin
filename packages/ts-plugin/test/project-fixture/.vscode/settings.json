@@ -1,4 +1,5 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
-    "typescript.tsserver.log": "normal"
+    "nativeTwin.trace.server": "verbose",
+    "nativeTwin.debug": true
 }
