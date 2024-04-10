@@ -15,7 +15,7 @@ export const disposable = <A>(
   return thenable(f).pipe(Effect.flatMap(Effect.fromNullable));
 };
 
-export const listenEvent = <A, R>(
+export const listenDisposableEvent = <A, R>(
   event: Event<A>,
   f: (data: A) => Effect.Effect<void, never, R>,
 ): Effect.Effect<never, never, R> => {
@@ -39,4 +39,4 @@ export const listenEvent = <A, R>(
 export const listenForkEvent = <A, R>(
   event: Event<A>,
   f: (data: A) => Effect.Effect<void, never, R>,
-) => Effect.forkScoped(listenEvent(event, f));
+) => Effect.forkScoped(listenDisposableEvent(event, f));

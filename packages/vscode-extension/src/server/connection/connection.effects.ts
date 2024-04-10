@@ -2,7 +2,9 @@ import { Effect } from 'effect';
 import * as E from 'effect/Effect';
 import {
   ClientCapabilities,
+  Disposable,
   InitializeResult,
+  ServerRequestHandler,
   TextDocumentSyncKind,
 } from 'vscode-languageserver/node';
 
@@ -23,28 +25,34 @@ export const getClientCapabilities = (capabilities: ClientCapabilities) => {
         ),
       ),
     ),
-  )
-    .pipe(
-      Effect.map((x): InitializeResult => {
-        const result: InitializeResult = {
-          capabilities: {
-            textDocumentSync: TextDocumentSyncKind.Incremental,
-            // Tell the client that this server supports code completion.
-            completionProvider: {
-              resolveProvider: true,
-            },
-            workspace: {
-              workspaceFolders: {
-                supported: x.hasConfigurationCapability,
-              },
-            },
-            diagnosticProvider: {
-              interFileDependencies: false,
-              workspaceDiagnostics: false,
+  ).pipe(
+    Effect.map((x): InitializeResult => {
+      const result: InitializeResult = {
+        capabilities: {
+          textDocumentSync: TextDocumentSyncKind.Incremental,
+          // Tell the client that this server supports code completion.
+          completionProvider: {
+            resolveProvider: true,
+          },
+          workspace: {
+            workspaceFolders: {
+              supported: x.hasConfigurationCapability,
             },
           },
-        };
-        return result;
-      }),
-    )
+          diagnosticProvider: {
+            interFileDependencies: false,
+            workspaceDiagnostics: false,
+          },
+        },
+      };
+      return result;
+    }),
+  );
+};
+
+export const installConnectionRequestHandler = <Params, Result, Error>(
+  event: (handler: ServerRequestHandler<Params, Result, never, Error>) => Disposable,
+  handler: (x: Params) => Result,
+) => {
+  return Effect.succeed(event((x) => handler(x)));
 };

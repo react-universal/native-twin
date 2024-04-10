@@ -3,10 +3,11 @@ import * as Option from 'effect/Option';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver/node';
 import { ConnectionContext } from '../connection/connection.context';
-import { DocumentsContextLive } from './documents.context';
+import { DocumentsContext } from './documents.context';
+
 
 export const getDocument = (uri: string) => {
-  return DocumentsContextLive.pipe(Effect.flatMap((x) => Option.fromNullable(x.get(uri))));
+  return DocumentsContext.pipe(Effect.flatMap((x) => Option.fromNullable(x.get(uri))));
 };
 
 export function getDocumentSettings(resource: string) {
