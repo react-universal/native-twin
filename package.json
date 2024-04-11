@@ -18,6 +18,7 @@
     "build:watch": "nx run-many -t build:watch",
     "docs:build": "nx run -t docs:build",
     "example:expo": "yarn workspace expo-app run start",
+    "extension:dev": "nx run-many -t vscode:dev",
     "format": "prettier --write packages apps examples \"**/*.{js,ts,tsx,md}\"",
     "libs:foreach": "yarn workspaces foreach --no-private --verbose",
     "lint": "nx run-many -t lint",
@@ -67,12 +68,12 @@
     "tslib": "^2.6.2",
     "typescript": "^5.4.2"
   },
+  "packageManager": "yarn@4.1.1",
   "nx": {
     "includedScripts": []
   },
   "overrides": {
     "@babel/types": "7.23.9",
     "@babel/core": "7.23.9"
-  },
-  "packageManager": "yarn@4.1.1"
+  }
 }
