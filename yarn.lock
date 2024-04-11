@@ -3992,13 +3992,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/schema@npm:^0.64.18":
-  version: 0.64.18
-  resolution: "@effect/schema@npm:0.64.18"
+"@effect/schema@npm:^0.64.20":
+  version: 0.64.20
+  resolution: "@effect/schema@npm:0.64.20"
   peerDependencies:
-    effect: ^2.4.17
+    effect: ^2.4.18
     fast-check: ^3.13.2
-  checksum: 10/49815afc86ceb46c200c07a77f7dbf3ab75185d2f265e7695ead221845cf5da70ab7eca17a21793230527dd90e95c529bcf591ec7715d7481cbeeac1c299c4b6
+  checksum: 10/731c458940ef296bffa94e2e323b8dbf6672c1581d9b00ce78417a3dfa62860cd93fe7272ea1e1afc9041abba965cc503e30f9b471971ff4cc5b8247be1b895d
   languageName: node
   linkType: hard
 
@@ -5285,10 +5285,10 @@ __metadata:
     "@babel/preset-typescript": "npm:7.23.3"
     "@babel/traverse": "npm:^7.24.0"
     "@babel/types": "npm:^7.24.0"
-    "@effect/schema": "npm:^0.64.18"
+    "@effect/schema": "npm:^0.64.20"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
     babel-plugin-tester: "npm:^11.0.4"
-    effect: "npm:^2.4.17"
+    effect: "npm:^2.4.18"
     jest: "npm:*"
     metro-react-native-babel-preset: "npm:^0.77.0"
     react-native-reanimated: "npm:~3.6.2"
@@ -5307,10 +5307,10 @@ __metadata:
     "@effect/platform-node": "npm:0.45.25"
     "@effect/printer": "npm:0.32.1"
     "@effect/printer-ansi": "npm:0.32.25"
-    "@effect/schema": "npm:^0.64.18"
+    "@effect/schema": "npm:^0.64.20"
     "@effect/typeclass": "npm:0.23.16"
     "@types/fs-extra": "npm:11.0.4"
-    effect: "npm:^2.4.17"
+    effect: "npm:^2.4.18"
     esbuild: "npm:^0.20.2"
     fs-extra: "npm:11.2.0"
   bin:
@@ -5454,14 +5454,14 @@ __metadata:
     "@types/showdown": "npm:2.0.1"
     "@vscode/emmet-helper": "npm:2.9.2"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^2.4.17"
+    effect: "npm:^2.4.18"
     jest: "npm:*"
     match-sorter: "npm:6.3.1"
     quick-lru: "npm:6.1.1"
     showdown: "npm:2.1.0"
     typescript-template-language-service-decorator: "npm:2.3.2"
     vscode-css-languageservice: "npm:6.2.6"
-    vscode-languageserver-textdocument: "npm:1.0.8"
+    vscode-languageserver-textdocument: "npm:^1.0.11"
   dependenciesMeta:
     jest:
       optional: true
@@ -5472,11 +5472,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/vscode@workspace:packages/vscode-extension"
   dependencies:
+    "@effect/schema": "npm:^0.64.20"
     "@native-twin/ts-plugin": "workspace:*"
     "@types/vscode": "npm:1.80.0"
     "@vscode/test-electron": "npm:^2.3.3"
+    effect: "npm:^2.4.18"
     vscode-languageclient: "npm:^9.0.1"
     vscode-languageserver: "npm:^9.0.1"
+    vscode-languageserver-textdocument: "npm:^1.0.11"
     vscode-test: "npm:1.6.1"
   languageName: unknown
   linkType: soft
@@ -11221,10 +11224,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"effect@npm:^2.4.17":
-  version: 2.4.17
-  resolution: "effect@npm:2.4.17"
-  checksum: 10/ac7dd8c677e729d41baccfcef39b986b009be8d865de363cf552a4130bbc2a97c8f25820882525c44ed354b6ef02d7e6dc707377c5d167791bcfcc39ce322bdf
+"effect@npm:^2.4.18":
+  version: 2.4.18
+  resolution: "effect@npm:2.4.18"
+  checksum: 10/508192d58e6aa19c78929d379004e7f66c3e95e021e0cc5d5177c4dd693452b3c6459d89a1b1bd1abd3bb3fbe65ec8b96d66fa407f1aafb02edb456c86b2e93e
   languageName: node
   linkType: hard
 
@@ -22671,17 +22674,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vscode-languageserver-textdocument@npm:1.0.8":
-  version: 1.0.8
-  resolution: "vscode-languageserver-textdocument@npm:1.0.8"
-  checksum: 10/2bb2b8ecbf683e3e56c225b24cfed7ed898ad24b1c8c9f6633f440c43d9329e83e43e5b529385c7ff88e4b418cb5721ec225a826d2e2a420f792cfe11078a9b8
-  languageName: node
-  linkType: hard
-
 "vscode-languageserver-textdocument@npm:^1.0.1, vscode-languageserver-textdocument@npm:^1.0.8":
   version: 1.0.10
   resolution: "vscode-languageserver-textdocument@npm:1.0.10"
   checksum: 10/4edf7d190fccf1f0b8c2e3fe0e7a783844df22cf5ed66ff1a30854131a012b748b59c3e478a65e9471fbd8b7da18c668e5f0251aed6c9543399cbc5e71afd84b
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver-textdocument@npm:^1.0.11":
+  version: 1.0.11
+  resolution: "vscode-languageserver-textdocument@npm:1.0.11"
+  checksum: 10/6096d2a85570e819e01ff406de7c88c48211e6874c6fc71df92193aa8b5aadf40591e44f033d634a95d04975d7aad29049d3eccab617ca41c189ae325aadb913
   languageName: node
   linkType: hard
 

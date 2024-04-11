@@ -22,13 +22,13 @@
     "@native-twin/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "2.9.2",
     "cssbeautify": "0.3.1",
-    "effect": "^2.4.17",
+    "effect": "^2.4.18",
     "match-sorter": "6.3.1",
     "quick-lru": "6.1.1",
     "showdown": "2.1.0",
     "typescript-template-language-service-decorator": "2.3.2",
     "vscode-css-languageservice": "6.2.6",
-    "vscode-languageserver-textdocument": "1.0.8"
+    "vscode-languageserver-textdocument": "^1.0.11"
   },
   "devDependencies": {
     "@types/cssbeautify": "0.3.2",

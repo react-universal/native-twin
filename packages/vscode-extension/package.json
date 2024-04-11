@@ -87,7 +87,7 @@
           },
           "nativeTwin.enable": {
             "type": "boolean",
-            "default": false,
+            "default": true,
             "markdownDescription": "Controls whether Native Twin intellisense is enabled or not."
           },
           "nativeTwin.trace.server": {
@@ -103,17 +103,24 @@
           }
         }
       }
+    ],
+    "typescriptServerPlugins": [
+      {
+        "name": "@native-twin/ts-plugin",
+        "enableForWorkspaceTypeScriptVersions": true
+      }
     ]
   },
   "activationEvents": [
     "onStartupFinished"
   ],
   "dependencies": {
-    "@effect/schema": "0.64.19",
+    "@effect/schema": "^0.64.20",
     "@native-twin/ts-plugin": "workspace:*",
-    "effect": "2.4.18",
+    "effect": "^2.4.18",
     "vscode-languageclient": "^9.0.1",
-    "vscode-languageserver": "^9.0.1"
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.11"
   },
   "devDependencies": {
     "@types/vscode": "1.80.0",
