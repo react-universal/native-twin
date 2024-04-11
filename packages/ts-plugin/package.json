@@ -12,7 +12,7 @@
     "esbuild:build": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "jest",
-    "vscode:dev": "node ./build.js --watch"
+    "vscode:dev": "tsc -p tsconfig.build.json -w"
   },
   "dependencies": {
     "@ctrl/tinycolor": "3.6.0",

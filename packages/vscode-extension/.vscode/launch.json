@@ -16,13 +16,19 @@
         "--extensionDevelopmentPath=${workspaceRoot}",
         "--disable-extensions"
       ],
-      "env": {
-        "TSSERVER": "9229"
-      },
       "outFiles": [
-        "${workspaceRoot}/build/**/*.js"
+        "${workspaceRoot}/build/**/*.js",
+        "${workspaceRoot:}/build/**/*.js"
       ],
-      "sourceMaps": true
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/../**",
+        "!**/node_modules/**"
+      ],
+      "sourceMapPathOverrides": {
+        "📦 @lib/ts-plugin": "${workspaceFolder}../ts-plugin/*"
+      }
     }
-  ]
+  ],
 }

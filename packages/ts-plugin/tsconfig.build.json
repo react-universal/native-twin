@@ -5,8 +5,7 @@
     "outDir": "build",
     "declaration": true,
     "sourceMap": true,
-    "noEmit": false,
-    "declarationMap": true
+    "noEmit": false
   },
   "exclude": ["./test/"]
 }

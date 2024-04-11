@@ -19,7 +19,7 @@
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "echo \"TEST\"",
-    "vscode:dev": "node ./build.js --watch",
+    "vscode:dev": "tsc -b -w",
     "vscode:prepublish": "node ./build.js"
   },
   "contributes": {

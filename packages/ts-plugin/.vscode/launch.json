@@ -8,9 +8,14 @@
       "request": "attach",
       "port": 5999,
       "sourceMaps": true,
+      "preLaunchTask": {
+				"type": "npm",
+				"script": "build:tsc:watch"
+			},
+      "debugServer": 5999,
       "outFiles": [
         "${workspaceRoot}/build/**/*.js",
-        "!**/node_modules/**"
+        "${workspaceRoot:ts-plugin}/packages/**/*.js"
       ]
     },
     {
