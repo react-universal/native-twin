@@ -7,7 +7,7 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build:tsc:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rm -rf build",
     "esbuild:build": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",

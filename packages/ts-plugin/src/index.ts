@@ -1,13 +1,12 @@
+import { Effect } from 'effect';
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import ts from 'typescript/lib/tsserverlibrary';
+import { inspect } from 'util';
 import {
-  getCompletionsAtPosition,
-  createCompletionEntryDetails,
-} from './language-service/completions.service';
-import { ConfigurationManager } from './language-service/configuration';
-import { NativeTailwindIntellisense } from './language-service/intellisense.service';
-import { LanguageServiceLogger } from './language-service/logger';
-import { StandardTemplateSourceHelper } from './language-service/source-helper';
+  LanguageService,
+  LanguageServiceLive,
+  LanguageTemplateSourceContext,
+} from './language/template.context';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
   function create(info: ts.server.PluginCreateInfo) {
@@ -18,46 +17,46 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
     }
 
-    const configManager = new ConfigurationManager();
-    const logger = new LanguageServiceLogger(info);
-    const intellisense = new NativeTailwindIntellisense(logger, configManager);
-    const helper = new StandardTemplateSourceHelper(
-      modules.typescript,
-      configManager,
+    // const configManager = new ConfigurationManager();
+    // const logger = new LanguageServiceLogger(info);
+    // const intellisense = new NativeTailwindIntellisense(logger, configManager);
+
+    const PluginEffect = Effect.provideService(
+      LanguageTemplateSourceContext,
       new StandardScriptSourceHelper(modules.typescript, info.project),
     );
-
-    let enable = configManager.config.enable;
-    configManager.onUpdatedConfig(() => {
-      enable = configManager.config.enable;
-    });
-
-    if (!enable) return proxy;
+    const PluginContext = Effect.provide(LanguageService, LanguageServiceLive);
 
     proxy.getCompletionsAtPosition = (fileName, position, options) => {
-      const template = helper.getTemplate(fileName, position);
+      const data = Effect.runSync(PluginEffect(PluginContext))
+        .getTemplateNode(fileName, position)
+        .pipe(Effect.tap((x) => Effect.log(`TEMPLATE: ${x}`)));
 
-      if (template) {
-        return getCompletionsAtPosition(
-          template,
-          helper.getRelativePosition(template, position),
-          intellisense,
-        );
-      }
-
+      info.project.log(inspect(data, false, 3));
+      info.languageServiceHost.log?.(inspect(data, false, 3));
       return info.languageService.getCompletionsAtPosition(fileName, position, options);
+
+      // if (template) {
+      //   return getCompletionsAtPosition(
+      //     template,
+      //     helper.getRelativePosition(template, position),
+      //     intellisense,
+      //   );
+      // }
+
+      // return info.languageService.getCompletionsAtPosition(fileName, position, options);
     };
 
-    proxy.getCompletionEntryDetails = (fileName, position, name, ...rest) => {
-      const context = helper.getTemplate(fileName, position);
-      if (context) {
-        const utility = intellisense.completions().classes.get(name);
-        if (utility) {
-          return createCompletionEntryDetails(utility, intellisense.tw);
-        }
-      }
-      return info.languageService.getCompletionEntryDetails(fileName, position, name, ...rest);
-    };
+    // proxy.getCompletionEntryDetails = (fileName, position, name, ...rest) => {
+    //   const context = helper.getTemplate(fileName, position);
+    //   if (context) {
+    //     const utility = intellisense.completions().classes.get(name);
+    //     if (utility) {
+    //       return createCompletionEntryDetails(utility, intellisense.tw);
+    //     }
+    //   }
+    //   return info.languageService.getCompletionEntryDetails(fileName, position, name, ...rest);
+    // };
 
     return proxy;
   }

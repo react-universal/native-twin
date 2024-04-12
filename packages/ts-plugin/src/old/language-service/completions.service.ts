@@ -1,10 +1,8 @@
 import { TinyColor } from '@ctrl/tinycolor';
 import { TemplateContext } from 'typescript-template-language-service-decorator';
 import ts from 'typescript/lib/tsserverlibrary';
-import { inspect } from 'util';
 import * as vscode from 'vscode-languageserver-types';
 import { RuntimeTW } from '@native-twin/core';
-import { tailwindClassNamesParser } from '@native-twin/css';
 import { ClassCompletionToken, CompletionToken } from '../types';
 import { debugLog } from '../utils';
 import { NativeTailwindIntellisense } from './intellisense.service';
@@ -21,8 +19,6 @@ export function getCompletionsAtPosition(
 
   ts.SyntaxKind.NoSubstitutionTemplateLiteral
   // ts.SyntaxKind.TemplateExpression
-  console.log('BASE_PARSER: ', inspect(tailwindClassNamesParser.run(text), false, null));
-  console.log('FULL_PARSER: ', inspect(position));
   return {
     isGlobalCompletion: false,
     isMemberCompletion: false,

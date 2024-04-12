@@ -9,7 +9,6 @@
         "kind": "build",
         "isDefault": true
       },
-      "label": "extension",
       "presentation": {
         "panel": "dedicated",
         "reveal": "never"
