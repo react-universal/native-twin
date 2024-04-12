@@ -1,6 +1,6 @@
-import { ConfigurationManager } from '../src/old/language-service/configuration';
-import { NativeTailwindIntellisense } from '../src/old/language-service/intellisense.service';
-import { LanguageServiceLogger } from '../src/old/language-service/logger';
+import { ConfigurationManager } from '../old/language-service/configuration';
+import { NativeTailwindIntellisense } from '../old/language-service/intellisense.service';
+import { LanguageServiceLogger } from '../old/language-service/logger';
 
 const config = new ConfigurationManager();
 // @ts-expect-error

@@ -2,7 +2,16 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import { TailwindPluginConfiguration } from '../old/language-service/configuration';
+
+export interface TailwindPluginConfiguration {
+  readonly configFile?: string;
+  readonly tags: ReadonlyArray<string>;
+  readonly attributes: ReadonlyArray<string>;
+  readonly styles: ReadonlyArray<string>;
+  readonly debug?: boolean;
+  readonly enable: boolean;
+}
+
 
 export class ConfigurationContext extends Context.Tag('config/context')<
   ConfigurationContext,
