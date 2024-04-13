@@ -1,6 +1,10 @@
 import * as vscode from 'vscode';
 import { Logger, State, SynchronizedConfiguration } from '../../types';
-import { configurationSection, pluginId, typeScriptExtensionId } from '../extension/extension.constants';
+import {
+  configurationSection,
+  pluginId,
+  typeScriptExtensionId,
+} from '../extension/extension.constants';
 
 export async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
   const state: State = { hasConfigFile: undefined };
@@ -40,6 +44,14 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
     }
   };
 
+  context.subscriptions.push(
+    vscode.commands.registerCommand(`${configurationSection}.restart`, (...args) => {
+      state.hasConfigFile = undefined;
+      listener();
+      console.log('ARGS: ', args);
+    }),
+  );
+
   const api = await activateTypescriptPlugin(log);
 
   const listener = () => {
@@ -47,13 +59,6 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
       log(error.stacktrace);
     });
   };
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand(`${configurationSection}.restart`, () => {
-      state.hasConfigFile = undefined;
-      listener();
-    }),
-  );
 
   const replaceClassNameStrings = () => {
     const editor = vscode.window.activeTextEditor;

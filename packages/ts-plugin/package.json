@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:tsc:watch": "tsc -p tsconfig.build.json -w",
+    "circular": "madge --extensions ts --circular --no-color --no-spinner --warning src",
     "clean": "rm -rf build",
     "esbuild:build": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
@@ -32,7 +33,8 @@
   },
   "devDependencies": {
     "@types/cssbeautify": "0.3.2",
-    "@types/showdown": "2.0.1"
+    "@types/showdown": "2.0.1",
+    "madge": "7.0.0"
   },
   "optionalDependencies": {
     "jest": "*"

@@ -1,17 +1,19 @@
-// Based on https://github.com/mjbvz/vscode-lit-html/blob/master/src/index.ts
+import { Logger, LogLevel } from 'effect';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 import * as vscode from 'vscode';
-import { pluginId } from './client/extension/extension.constants';
-import { createLogger } from './client/utils/logger';
-import { enableExtension } from './client/utils/enableExtension';
+import { logger } from './client/debug/debug.context';
+import { extensionChannelName } from './client/extension/extension.constants';
+import { activateExtension, ExtensionContext } from './client/extension/extension.context';
+import { LanguageClientLive } from './client/language/language.provider';
 
-export async function activate(context: vscode.ExtensionContext) {
-  const log = createLogger(vscode.window.createOutputChannel('Native Tailwind IntelliSense'));
+const MainLive = Layer.empty.pipe(Layer.provide(logger(extensionChannelName)));
 
-  await enableExtension(context, log)
-    .catch((error) => {
-      log(`Activating ${pluginId} failed: ${error.stack}`);
-    })
-    .then(() => {
-      log(`Activating ${pluginId} success`);
-    });
+export function activate(context: vscode.ExtensionContext) {
+  activateExtension(MainLive).pipe(
+    Effect.provideService(ExtensionContext, context),
+    Effect.provide(LanguageClientLive),
+    Logger.withMinimumLogLevel(LogLevel.All),
+    Effect.runFork,
+  );
 }

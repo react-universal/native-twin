@@ -1,12 +1,9 @@
-import { Effect } from 'effect';
-import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
+import { Effect, Layer } from 'effect';
 import ts from 'typescript/lib/tsserverlibrary';
 import { inspect } from 'util';
-import {
-  LanguageService,
-  LanguageServiceLive,
-  LanguageTemplateSourceContext,
-} from './language/template.context';
+import { getCompletionsAtPosition } from './completions/completions.context';
+import { ConfigurationLive } from './config-manager/configuration.context';
+import { createLanguagePluginLayer } from './language/language.context';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
   function create(info: ts.server.PluginCreateInfo) {
@@ -16,21 +13,49 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       // @ts-expect-error - JS runtime trickery which is tricky to type tersely
       proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
     }
+    const command = info.session?.executeCommand({
+      command: 'nativeTwin.restart',
+      seq: 1,
+      type: 'request',
+      arguments: ['true'],
+    });
+
+    console.log('COMMAND: ', command);
 
     // const configManager = new ConfigurationManager();
     // const logger = new LanguageServiceLogger(info);
     // const intellisense = new NativeTailwindIntellisense(logger, configManager);
+    console.log('CONFIG: ', info.config);
+    console.log('CONFIG: ', info.session);
+    console.log('CONFIG: ', info.languageServiceHost);
+    info.languageServiceHost.log?.('asd');
+    info.session?.send({
+      seq: 1,
+      type: 'response',
+    });
 
-    const PluginEffect = Effect.provideService(
-      LanguageTemplateSourceContext,
-      new StandardScriptSourceHelper(modules.typescript, info.project),
+    const languageServiceLayer = createLanguagePluginLayer(modules.typescript, info).pipe(
+      Layer.provide(ConfigurationLive),
     );
-    const PluginContext = Effect.provide(LanguageService, LanguageServiceLive);
 
     proxy.getCompletionsAtPosition = (fileName, position, options) => {
-      const data = Effect.runSync(PluginEffect(PluginContext))
-        .getTemplateNode(fileName, position)
-        .pipe(Effect.tap((x) => Effect.log(`TEMPLATE: ${x}`)));
+      const runnable = Effect.provide(
+        getCompletionsAtPosition(fileName, position),
+        languageServiceLayer,
+      );
+      const data = Effect.runSync(
+        runnable.pipe(
+          Effect.tap((x) =>
+            Effect.sync(() => {
+              info.project.projectService.logger.info(
+                '[@twin/language-service] NODE RESULT ' + inspect(x),
+              );
+            }),
+          ),
+        ),
+      );
+
+      console.log('DATA: ', data);
 
       info.project.log(inspect(data, false, 3));
       info.languageServiceHost.log?.(inspect(data, false, 3));

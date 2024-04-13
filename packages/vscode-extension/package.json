@@ -39,7 +39,7 @@
         "title": "Native Twin Configuration",
         "type": "object",
         "properties": {
-          "styledLanguageTW.tags": {
+          "nativeTwin.tags": {
             "type": "array",
             "description": "List of template tags to enable Native Twin intellisense in.",
             "items": {
