@@ -1,3 +1,4 @@
+import { DevTools } from '@effect/experimental';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
@@ -11,6 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
     Effect.provideService(ExtensionContext, context),
     Effect.provide(LanguageClientLive),
     Logger.withMinimumLogLevel(LogLevel.All),
+    Effect.provide(DevTools.layer()),
     Effect.runFork,
   );
 }

@@ -1,15 +1,9 @@
-import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as vscode from 'vscode';
 
-export class VSCodeDebugContext extends Ctx.Tag('vscode/VSCodeDebugContext')<
-  VSCodeDebugContext,
-  vscode.DebugSession
->() {}
-
-export const logger = (name: string) =>
+export const ExtensionLogger = (name: string) =>
   Logger.replaceScoped(
     Logger.defaultLogger,
     Effect.gen(function* (_) {
