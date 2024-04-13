@@ -1,16 +1,13 @@
-import { Logger, LogLevel } from 'effect';
 import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
+import * as LogLevel from 'effect/LogLevel';
+import * as Logger from 'effect/Logger';
 import * as vscode from 'vscode';
-import { logger } from './client/debug/debug.context';
-import { extensionChannelName } from './client/extension/extension.constants';
+import { ClientMainLive } from './client';
 import { activateExtension, ExtensionContext } from './client/extension/extension.context';
 import { LanguageClientLive } from './client/language/language.provider';
 
-const MainLive = Layer.empty.pipe(Layer.provide(logger(extensionChannelName)));
-
 export function activate(context: vscode.ExtensionContext) {
-  activateExtension(MainLive).pipe(
+  activateExtension(ClientMainLive).pipe(
     Effect.provideService(ExtensionContext, context),
     Effect.provide(LanguageClientLive),
     Logger.withMinimumLogLevel(LogLevel.All),

@@ -103,12 +103,6 @@
           }
         }
       }
-    ],
-    "typescriptServerPlugins": [
-      {
-        "name": "@native-twin/ts-plugin",
-        "enableForWorkspaceTypeScriptVersions": true
-      }
     ]
   },
   "activationEvents": [

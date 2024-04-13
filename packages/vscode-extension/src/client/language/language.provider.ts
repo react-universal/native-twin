@@ -30,7 +30,6 @@ export const LanguageClientLive = Layer.effect(
         `CONFIG: ${inspect(vscode.workspace.getConfiguration(configurationSection), false, null, true)}`,
       ),
     );
-    yield* _(Effect.log(`asdmsadkaskldjaskldj`));
     const clientConfig: LanguageClientOptions = {
       documentSelector: DOCUMENT_SELECTORS,
       synchronize: {
@@ -66,7 +65,9 @@ export const LanguageClientLive = Layer.effect(
         },
       },
     };
-    return new LanguageClient(extensionServerChannelName, serverOptions, clientConfig);
+    const client = new LanguageClient(extensionServerChannelName, serverOptions, clientConfig);
+
+    return client;
   }),
 )
   .pipe(Layer.provide(ClientLanguageOptionsContext.Live))

@@ -1,5 +1,4 @@
-import { Effect } from 'effect';
-import * as E from 'effect/Effect';
+import * as Effect from 'effect/Effect';
 import {
   ClientCapabilities,
   InitializeResult,
@@ -7,15 +6,15 @@ import {
 } from 'vscode-languageserver/node';
 
 export const getClientCapabilities = (capabilities: ClientCapabilities) => {
-  return E.Do.pipe(
-    E.bind('hasConfigurationCapability', () =>
-      E.succeed(!!(capabilities.workspace && !!capabilities.workspace.configuration)),
+  return Effect.Do.pipe(
+    Effect.bind('hasConfigurationCapability', () =>
+      Effect.succeed(!!(capabilities.workspace && !!capabilities.workspace.configuration)),
     ),
-    E.bind('hasWorkspaceFolderCapability', () =>
-      E.succeed(!!(capabilities.workspace && !!capabilities.workspace.workspaceFolders)),
+    Effect.bind('hasWorkspaceFolderCapability', () =>
+      Effect.succeed(!!(capabilities.workspace && !!capabilities.workspace.workspaceFolders)),
     ),
-    E.bind('hasDiagnosticRelatedInformationCapability', () =>
-      E.succeed(
+    Effect.bind('hasDiagnosticRelatedInformationCapability', () =>
+      Effect.succeed(
         !!(
           capabilities.textDocument &&
           capabilities.textDocument.publishDiagnostics &&
