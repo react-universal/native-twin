@@ -2,12 +2,12 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import { ConnectionContext } from '../connection/connection.context';
-import { DocumentResource, DocumentsContext } from '../documents/documents.context';
+import { DocumentResource, DocumentsService } from '../documents/documents.context';
 
 export const DocumentResourceHandler = Layer.effect(
   DocumentResource,
   Effect.gen(function* ($) {
-    const docsHandler = yield* $(DocumentsContext);
+    const docsHandler = yield* $(DocumentsService);
     const connection = yield* $(ConnectionContext);
     return {
       acquireDocument: (uri: string) =>

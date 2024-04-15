@@ -2,12 +2,12 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver/node';
+import { configurationSection } from '../../client/extension/extension.constants';
 import { ConnectionContext } from '../connection/connection.context';
-import { DocumentsContext } from './documents.context';
-
+import { DocumentsService } from './documents.context';
 
 export const getDocument = (uri: string) => {
-  return DocumentsContext.pipe(Effect.flatMap((x) => Option.fromNullable(x.get(uri))));
+  return DocumentsService.pipe(Effect.flatMap((x) => Option.fromNullable(x.get(uri))));
 };
 
 export function getDocumentSettings(resource: string) {
@@ -17,7 +17,7 @@ export function getDocumentSettings(resource: string) {
       Effect.promise(() =>
         connection.workspace.getConfiguration({
           scopeUri: resource,
-          section: 'languageServerExample',
+          section: configurationSection,
         }),
       ),
     );

@@ -56,7 +56,6 @@ export const ConnectionLive = Layer.scoped(
         ];
       }),
     );
-
     yield* $(
       addServerRequestHandler(connection.languages.diagnostics.on, (_params) => {
         return {

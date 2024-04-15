@@ -19,20 +19,20 @@ export const ExtensionLogger = (name: string) =>
         switch (options.logLevel) {
           case LogLevel.Trace:
             channel.trace(message);
-            return;
+            break;
           case LogLevel.Debug:
             channel.debug(message);
-            return;
+            break;
           case LogLevel.Warning:
             channel.warn(message);
-            return;
+            break;
           case LogLevel.Error:
           case LogLevel.Fatal:
             channel.error(message);
-            return;
+            break;
           default:
             channel.info(message);
-            return;
+            break;
         }
       });
     }),

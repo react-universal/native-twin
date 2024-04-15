@@ -6,7 +6,6 @@ import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as Scope from 'effect/Scope';
 import * as vscode from 'vscode';
-import { LanguageClientContext } from '../language/language.context';
 
 export class ExtensionContext extends Ctx.Tag('vscode/ExtensionCtx')<
   ExtensionContext,
@@ -14,15 +13,15 @@ export class ExtensionContext extends Ctx.Tag('vscode/ExtensionCtx')<
 >() {}
 
 export const activateExtension = <E>(layer: Layer.Layer<never, E, ExtensionContext>) => {
-  return Effect.gen(function* (_) {
-    const context = yield* _(ExtensionContext);
-    const languageServer = yield* _(LanguageClientContext);
-    languageServer.start();
-    const scope = yield* _(Scope.make());
+  return Effect.gen(function* ($) {
+    const context = yield* $(ExtensionContext);
+    const scope = yield* $(Scope.make());
+
     context.subscriptions.push({
       dispose: () => Effect.runFork(Scope.close(scope, Exit.unit)),
     });
-    yield* _(Layer.buildWithScope(layer, scope));
+
+    yield* $(Layer.buildWithScope(layer, scope));
   })
     .pipe(Effect.catchAllCause(Effect.logFatal))
     .pipe(Logger.withMinimumLogLevel(LogLevel.All));

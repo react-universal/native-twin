@@ -109,7 +109,6 @@
     "onStartupFinished"
   ],
   "dependencies": {
-    "@effect/experimental": "0.14.12",
     "@effect/schema": "^0.64.20",
     "@native-twin/ts-plugin": "workspace:*",
     "effect": "^2.4.18",
