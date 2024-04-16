@@ -1,4 +1,8 @@
-import { Context, Effect, Layer, Option } from 'effect';
+import { SubscriptionRef } from 'effect';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
 import {
   CancellationToken,
   CompletionItem,
@@ -6,10 +10,10 @@ import {
   CompletionParams,
   ResultProgressReporter,
   WorkDoneProgressReporter,
-  Range,
 } from 'vscode-languageserver/node';
+import { DocumentResource } from '../documents/document.resource';
 import { DocumentsService } from '../documents/documents.context';
-import { getTemplateTS } from './language-parser';
+import { TwinContext } from '../services/twin.context';
 
 export class LanguageService extends Context.Tag('language/service')<
   LanguageService,
@@ -27,29 +31,19 @@ export const LanguageServiceLive = Layer.scoped(
   LanguageService,
   Effect.gen(function* ($) {
     const documentsHandler = yield* $(DocumentsService);
+    const twinContext = yield* $(TwinContext);
+
     return {
       onComPletion: (params, _cancel, _progress, _result) =>
         Effect.gen(function* ($1) {
-          const document = Option.fromNullable(
-            documentsHandler.get(params.textDocument.uri),
-          ).pipe(
-            Option.map((x) => ({
-              document: x,
-              template: getTemplateTS(x, params.position),
-            })),
-            Option.map((x) => {
-              return {
-                ...x,
-                text: x.document.getText(
-                  Range.create(
-                    x.document.positionAt(x.template.templateStart),
-                    x.document.positionAt(x.template.templateEnd),
-                  ),
-                ),
-              };
-            }),
-          );
-          yield* $1(Effect.log(document));
+          const tw = yield* $1(SubscriptionRef.get(twinContext.tw));
+          const resource = new DocumentResource({
+            document: Option.fromNullable(documentsHandler.get(params.textDocument.uri)),
+          });
+          const document = resource.getTemplateContext(params.position);
+          const tokens = tw.pipe(Option.map((x) => x(`${document}`)));
+          yield* $1(Effect.log(tokens));
+          yield* $1(Effect.log(`DOCUMENT: ${document}`));
 
           return Option.some([]);
         }),

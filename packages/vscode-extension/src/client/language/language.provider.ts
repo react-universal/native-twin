@@ -45,6 +45,16 @@ export const LanguageClientLive = Layer.scoped(
       },
     };
 
+    const configFiles = yield* $(
+      thenable(() =>
+        vscode.workspace.findFiles(
+          '**/tailwind.config.{ts,js,mjs,cjs}',
+          '**/node_modules/**',
+          1,
+        ),
+      ),
+    );
+
     const clientConfig: LanguageClientOptions = {
       documentSelector: DOCUMENT_SELECTORS,
       synchronize: {
@@ -57,6 +67,7 @@ export const LanguageClientLive = Layer.scoped(
       initializationOptions: {
         ...vscode.workspace.getConfiguration(configurationSection), // Pass the config to the server
         tsconfigFiles: tsconfigFiles,
+        twinConfigFile: configFiles.at(0),
         workspaceRoot: workspace?.at(0),
 
         capabilities: {
