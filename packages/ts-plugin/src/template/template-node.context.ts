@@ -1,62 +1,129 @@
-import * as Context from 'effect/Context';
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
 import ts from 'typescript';
+import { TemplateSettings } from 'typescript-template-language-service-decorator';
 import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
-import { TemplateSourceHelperService } from './template.services';
+import ScriptSourceHelper from 'typescript-template-language-service-decorator/lib/script-source-helper';
 
-export class TemplateNodeService extends Context.Tag('ts/template/node')<
-  TemplateNodeService,
-  {
-    /**
-     * Map a location from within the template string to an offset within the template string
-     */
-    toOffset(location: ts.LineAndCharacter): Effect.Effect<number>;
-    /**
-     * Map an offset within the template string to a location within the template string
-     */
-    toPosition(offset: number): Effect.Effect<ts.LineAndCharacter>;
+const kText = Symbol('kText');
+
+export class StandardTemplateContext /* implements TemplateContext */ {
+  private [kText]: string | undefined = undefined;
+
+  constructor(
+    public readonly typescript: typeof ts,
+    public readonly fileName: string,
+    public readonly node: ts.StringLiteralLike | ts.TemplateLiteral,
+    private readonly helper: ScriptSourceHelper,
+    private readonly templateSettings: TemplateSettings,
+  ) {}
+
+  public toOffset(position: ts.LineAndCharacter): number {
+    const docOffset = this.helper.getOffset(
+      this.fileName,
+      position.line + this.stringBodyPosition.line,
+      position.line === 0
+        ? this.stringBodyPosition.character + position.character
+        : position.character,
+    );
+    return docOffset - this.stringBodyOffset;
   }
->() {}
 
-export const templateNodeServiceProvider = (filename: string, node: ts.TemplateLiteral) =>
-  Layer.scoped(
-    TemplateNodeService,
-    Effect.gen(function* ($) {
-      const templateContext = yield* $(TemplateSourceHelperService);
+  public toPosition(offset: number): ts.LineAndCharacter {
+    const docPosition = this.helper.getLineAndChar(
+      this.fileName,
+      this.stringBodyOffset + offset,
+    );
+    return relative(this.stringBodyPosition, docPosition);
+  }
 
-      const stringBodyOffset = node.getStart() + 1;
-      const stringBodyPosition = templateContext.helper.getLineAndChar(
-        filename,
-        stringBodyOffset,
-      );
+  // @memoize
+  private get stringBodyOffset(): number {
+    return this.node.getStart() + 1;
+  }
 
-      return {
-        toOffset: (position) =>
-          Effect.gen(function* ($1) {
-            const line = position.line + stringBodyPosition.line;
-            const char =
-              position.line === 0
-                ? stringBodyPosition.character + position.character
-                : position.character;
+  // @memoize
+  private get stringBodyPosition(): ts.LineAndCharacter {
+    return this.helper.getLineAndChar(this.fileName, this.stringBodyOffset);
+  }
 
-            const docOffset = yield* $1(
-              Effect.succeed(templateContext.helper.getOffset(filename, line, char)),
-            );
+  // @memoize
+  public get text(): string {
+    return (
+      this[kText] ||
+      (this[kText] = this.typescript.isTemplateExpression(this.node)
+        ? PlaceholderSubstituter.replacePlaceholders(
+            this.typescript,
+            this.templateSettings,
+            this.node,
+          )
+        : this.node.text)
+    );
+  }
 
-            return docOffset - stringBodyOffset;
-          }),
+  // @memoize
+  public get rawText(): string {
+    return this.node.getText().slice(1, -1);
+  }
+}
 
-        toPosition: (offset) =>
-          Effect.gen(function* ($1) {
-            const docPosition = yield* $1(
-              Effect.succeed(
-                templateContext.helper.getLineAndChar(filename, stringBodyOffset + offset),
-              ),
-            );
+class PlaceholderSubstituter {
+  public static replacePlaceholders(
+    typescript: typeof ts,
+    settings: TemplateSettings,
+    node: ts.TemplateExpression | ts.NoSubstitutionTemplateLiteral,
+  ): string {
+    const literalContents = node.getText().slice(1, -1);
+    if (node.kind === typescript.SyntaxKind.NoSubstitutionTemplateLiteral) {
+      return literalContents;
+    }
 
-            return relative(stringBodyPosition, docPosition);
-          }),
-      };
-    }),
-  );
+    return PlaceholderSubstituter.getSubstitutions(
+      settings,
+      literalContents,
+      PlaceholderSubstituter.getPlaceholderSpans(node),
+    );
+  }
+
+  private static getPlaceholderSpans(node: ts.TemplateExpression) {
+    const spans: Array<{ start: number; end: number }> = [];
+    const stringStart = node.getStart() + 1;
+
+    let nodeStart = node.head.end - stringStart - 2;
+    for (const child of node.templateSpans.map((x) => x.literal)) {
+      const start = child.getStart() - stringStart + 1;
+      spans.push({ start: nodeStart, end: start });
+      nodeStart = child.getEnd() - stringStart - 2;
+    }
+    return spans;
+  }
+
+  private static getSubstitutions(
+    settings: TemplateSettings,
+    contents: string,
+    locations: ReadonlyArray<{ start: number; end: number }>,
+  ): string {
+    if (settings.getSubstitutions) {
+      return settings.getSubstitutions(contents, locations);
+    }
+
+    const parts: string[] = [];
+    let lastIndex = 0;
+    for (const span of locations) {
+      parts.push(contents.slice(lastIndex, span.start));
+      parts.push(this.getSubstitution(settings, contents, span.start, span.end));
+      lastIndex = span.end;
+    }
+    parts.push(contents.slice(lastIndex));
+    return parts.join('');
+  }
+
+  private static getSubstitution(
+    settings: TemplateSettings,
+    templateString: string,
+    start: number,
+    end: number,
+  ): string {
+    return settings.getSubstitution
+      ? settings.getSubstitution(templateString, start, end)
+      : 'x'.repeat(end - start);
+  }
+}

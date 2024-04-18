@@ -1,16 +1,33 @@
-import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import * as Option from 'effect/Option';
+import { parseTemplate } from '../template/template.parser';
 import { TemplateSourceHelperService } from '../template/template.services';
-
-export class CompletionsService extends Context.Tag('ts/completions')<
-  CompletionsService,
-  {
-    getCompletionsAtPosition(fileName: string, position: number): Effect.Effect<any>;
-  }
->() {}
+import { getTemplateContext } from '../template/template.utils';
 
 export const getCompletionsAtPosition = (filename: string, position: number) =>
   Effect.gen(function* ($) {
     const templateContext = yield* $(TemplateSourceHelperService);
-    return templateContext.getTemplateNode(filename, position);
+    const template = yield* $(
+      templateContext.getTemplateNode(filename, position).pipe(
+        Option.map((x) => {
+          return getTemplateContext(x, position);
+        }),
+      ),
+      Effect.flatten,
+    );
+
+    return template.pipe(
+      Option.map((context) => {
+        const templatePosition = templateContext.getRelativePosition(context, position);
+        const textOffset = context.toOffset(templatePosition);
+        return {
+          template: {
+            context,
+            templatePosition,
+            textOffset,
+          },
+          positionAST: parseTemplate(context.text, textOffset, true),
+        };
+      }),
+    );
   });

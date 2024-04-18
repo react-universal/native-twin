@@ -105,6 +105,10 @@ export class NativeTailwindIntellisense {
     let meta: RuleMeta = {
       canBeNegative: false,
       feature: 'default',
+      prefix: '',
+      styleProperty: undefined,
+      suffix: '',
+      support: [],
     };
     let themeSection = '';
     let property = '';

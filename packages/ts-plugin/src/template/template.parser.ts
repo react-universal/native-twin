@@ -60,10 +60,14 @@ export interface RuleVariant {
   loc: TextRange;
 }
 
-export function parse(input: string, position?: number): ParsedCompletionRule[];
-export function parse(input: string, position: number, exact: boolean): ParsedCompletionRule;
+export function parseTemplate(input: string, position?: number): ParsedCompletionRule[];
+export function parseTemplate(
+  input: string,
+  position: number,
+  exact: boolean,
+): ParsedCompletionRule;
 
-export function parse(
+export function parseTemplate(
   input: string,
   position?: number,
   exact?: boolean,
@@ -165,14 +169,16 @@ function toRule(identifier: Identifier): ParsedCompletionRule {
   rule.name =
     (rule.negated ? '-' : '') +
     names.reduce(
-      (name, part) => (part === '&' ? name : name && part ? `${name}-${part}` : name || part),
+      (name, part) =>
+        part === '&' ? name : name && part ? `${name}-${part}` : name || part,
       '',
     );
 
   rule.prefix = names
     .slice(0, -1)
     .reduce(
-      (name, part) => (part === '&' ? name : name && part ? `${name}-${part}` : name || part),
+      (name, part) =>
+        part === '&' ? name : name && part ? `${name}-${part}` : name || part,
       '',
     );
 

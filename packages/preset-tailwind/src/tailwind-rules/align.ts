@@ -6,6 +6,10 @@ export const verticalAlignsRules: Rule<TailwindPresetTheme>[] = [
   matchThemeValue('align-', 'verticalAlign', 'verticalAlign', {
     canBeNegative: false,
     feature: 'default',
+    prefix: '',
+    styleProperty: 'verticalAlign',
+    suffix: '',
+    support: [],
   }),
 ];
 

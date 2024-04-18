@@ -1,18 +1,21 @@
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
+// Based on https://github.com/mjbvz/vscode-lit-html/blob/master/src/index.ts
 import * as vscode from 'vscode';
-import {
-  activateExtension,
-  ExtensionContext,
-} from './client/extension/extension.context';
-import { LanguageClientLive } from './client/language/language.provider';
-import { LoggerLayer } from './client/services/logger.service';
+import { pluginId } from './client/extension/extension.constants';
+import { enableExtension } from './client/utils/enableExtension';
+import { createLogger } from './client/utils/logger';
 
-const MainLive = Layer.mergeAll(LanguageClientLive).pipe(Layer.provide(LoggerLayer));
+export async function activate(context: vscode.ExtensionContext) {
+  const log = createLogger(vscode.window.createOutputChannel('Native Tailwind IntelliSense'));
 
-export function activate(context: vscode.ExtensionContext) {
-  activateExtension(MainLive).pipe(
-    Effect.provideService(ExtensionContext, context),
-    Effect.runFork,
-  );
+  await enableExtension(context, log)
+    .catch((error) => {
+      log(`Activating ${pluginId} failed: ${error.stack}`);
+    })
+    .then(() => {
+      log(`Activating ${pluginId} success`);
+    });
+
+  // vscode.window.createOutputChannel('nativeTwin');
+  // vscode.window.createOutputChannel('@native-twin/ts-plugin');
+
 }

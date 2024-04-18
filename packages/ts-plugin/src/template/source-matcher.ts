@@ -1,10 +1,10 @@
 import type ts from 'typescript/lib/tsserverlibrary';
-import type { TailwindPluginConfiguration } from '../config-manager/configuration.context';
+import type { NativeTwinPluginConfiguration } from '../plugin.types';
 import type { Matcher } from '../utils/match';
 
 export const getSourceMatchers = (
   { SyntaxKind }: typeof ts,
-  configManager: TailwindPluginConfiguration,
+  configManager: NativeTwinPluginConfiguration,
 ): Matcher[] => [
   // tw`...`
   {

@@ -1,16 +1,16 @@
 // A launch configuration that compiles the extension and then opens it inside a new window
 {
   "version": "0.2.0",
-  // "compounds": [
-  //   {
-  //     "name": "Compound",
-  //     "configurations": [
-  //       "Launch Extension",
-  //       "Attach to VS Code TS Server"
-  //     ],
-  //     "preLaunchTask": "npm: build:tsc:watch"
-  //   }
-  // ],
+  "compounds": [
+    {
+      "name": "Compound",
+      "configurations": [
+        "Launch Extension",
+        "Attach to VS Code TS Server"
+      ],
+      "preLaunchTask": "npm: build:tsc:watch"
+    }
+  ],
   "configurations": [
     {
       "type": "extensionHost",

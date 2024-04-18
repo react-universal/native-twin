@@ -96,12 +96,12 @@ export type Rule<Theme extends __Theme__ = __Theme__> = [
 ];
 
 export interface RuleMeta {
-  canBeNegative?: boolean;
-  feature?: CssFeature;
-  prefix?: string | undefined;
-  suffix?: string | undefined;
-  styleProperty?: keyof CompleteStyle;
-  support?: PlatformOSType[];
+  canBeNegative: boolean;
+  feature: CssFeature;
+  prefix: string | undefined;
+  suffix: string | undefined;
+  styleProperty: keyof CompleteStyle | undefined;
+  support: PlatformOSType[];
 }
 
 // VARIANTS CONFIG TYPES

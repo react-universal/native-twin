@@ -1,48 +1,48 @@
-import { Effect, Layer } from 'effect';
+import { Layer } from 'effect';
+import * as Effect from 'effect/Effect';
 import ts from 'typescript/lib/tsserverlibrary';
 import { inspect } from 'util';
 import { getCompletionsAtPosition } from './completions/completions.context';
-import { ConfigurationLive } from './config-manager/configuration.context';
-import { createLanguagePluginLayer } from './language/language.context';
+import { createTwin } from './intellisense/intellisense.config';
+import { IntellisenseServiceLive } from './language/intellisense.service';
+import { buildTSPluginService } from './plugin/ts-plugin.context';
+import { createTemplateService } from './template/template.provider';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
   function create(info: ts.server.PluginCreateInfo) {
     const proxy: ts.LanguageService = Object.create(null);
-    for (const k of Object.keys(info.languageService) as Array<keyof ts.LanguageService>) {
+    for (const k of Object.keys(info.languageService) as Array<
+      keyof ts.LanguageService
+    >) {
       const x = info.languageService[k]!;
       // @ts-expect-error - JS runtime trickery which is tricky to type tersely
       proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
     }
-    const command = info.session?.executeCommand({
-      command: 'nativeTwin.restart',
-      seq: 1,
-      type: 'request',
-      arguments: ['true'],
-    });
-
-    console.log('COMMAND: ', command);
 
     // const configManager = new ConfigurationManager();
     // const logger = new LanguageServiceLogger(info);
     // const intellisense = new NativeTailwindIntellisense(logger, configManager);
-    console.log('CONFIG: ', info.config);
-    console.log('CONFIG: ', info.session);
-    console.log('CONFIG: ', info.languageServiceHost);
-    info.languageServiceHost.log?.('asd');
-    info.session?.send({
-      seq: 1,
-      type: 'response',
+    const twin = createTwin(info);
+
+    const PluginServiceLive = buildTSPluginService({
+      plugin: { ts: modules.typescript, info, config: twin.pluginConfig },
+      tailwind: {
+        config: twin.twinConfig,
+        context: twin.twin.context,
+        tw: twin.twin.tw,
+      },
     });
 
-    const languageServiceLayer = createLanguagePluginLayer(modules.typescript, info).pipe(
-      Layer.provide(ConfigurationLive),
-    );
+    const TemplateServiceLive = createTemplateService(modules.typescript, info);
+
+    const layer = Layer.mergeAll(IntellisenseServiceLive, TemplateServiceLive);
 
     proxy.getCompletionsAtPosition = (fileName, position, options) => {
       const runnable = Effect.provide(
         getCompletionsAtPosition(fileName, position),
-        languageServiceLayer,
-      );
+        layer,
+      ).pipe(Effect.provide(PluginServiceLive));
+
       const data = Effect.runSync(
         runnable.pipe(
           Effect.tap((x) =>

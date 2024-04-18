@@ -10,7 +10,14 @@ import type { __Theme__ } from '../types/theme.types';
 export function matchCssObject(
   pattern: string,
   resolver: RuleResolver<__Theme__>,
-  meta: RuleMeta = {},
+  meta: RuleMeta = {
+    canBeNegative: false,
+    feature: 'default',
+    prefix: '',
+    suffix: '',
+    styleProperty: undefined,
+    support: [],
+  },
 ): Rule<__Theme__> {
   return [pattern, null, resolver, meta];
 }
@@ -21,6 +28,10 @@ export function matchThemeColor(
   meta: RuleMeta = {
     feature: 'default',
     styleProperty: property,
+    canBeNegative: false,
+    prefix: '',
+    suffix: '',
+    support: [],
   },
 ): Rule<__Theme__> {
   return [
@@ -35,7 +46,8 @@ export function matchThemeColor(
       }
       if (!color) {
         color =
-          context.colors[match.segment.value] ?? context.theme('colors', match.segment.value);
+          context.colors[match.segment.value] ??
+          context.theme('colors', match.segment.value);
       }
       if (color) {
         const opacity = context.theme('opacity', rule.m?.value ?? '100');
@@ -81,6 +93,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
     prefix: '',
     suffix: '',
     styleProperty: property,
+    support: [],
   },
 ): Rule<Theme> {
   return [
@@ -170,7 +183,10 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   ];
 }
 
-function getPropertiesForEdges(property: { prefix: string; suffix: string }, edges: string[]) {
+function getPropertiesForEdges(
+  property: { prefix: string; suffix: string },
+  edges: string[],
+) {
   if (edges.length == 0) return [`${property.prefix}${property.suffix}`];
   return edges.map((x) => {
     return `${property.prefix}${x}${property.suffix}`;
@@ -184,7 +200,10 @@ function getPropertiesForTransform2d(property: string, sides: string[]) {
   });
 }
 
-function getPropertiesForGap(property: { prefix: string; suffix: string }, edges: string[]) {
+function getPropertiesForGap(
+  property: { prefix: string; suffix: string },
+  edges: string[],
+) {
   if (edges.length == 0) return [`${property.prefix}${property.suffix}`];
   return edges.map((x) => {
     return `${property.prefix}${x}${property.suffix.replace(
