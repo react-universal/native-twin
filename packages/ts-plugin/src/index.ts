@@ -3,10 +3,11 @@ import * as Effect from 'effect/Effect';
 import ts from 'typescript/lib/tsserverlibrary';
 import { inspect } from 'util';
 import { getCompletionsAtPosition } from './completions/completions.context';
+import { ParserServiceLive } from './language/parser.service';
 import { createTwin } from './intellisense/intellisense.config';
 import { IntellisenseServiceLive } from './language/intellisense.service';
 import { buildTSPluginService } from './plugin/ts-plugin.context';
-import { createTemplateService } from './template/template.provider';
+import { createTemplateService } from './template/template.services';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
   function create(info: ts.server.PluginCreateInfo) {
@@ -35,7 +36,11 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
 
     const TemplateServiceLive = createTemplateService(modules.typescript, info);
 
-    const layer = Layer.mergeAll(IntellisenseServiceLive, TemplateServiceLive);
+    const layer = Layer.mergeAll(
+      IntellisenseServiceLive,
+      TemplateServiceLive,
+      ParserServiceLive,
+    );
 
     proxy.getCompletionsAtPosition = (fileName, position, options) => {
       const runnable = Effect.provide(

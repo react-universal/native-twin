@@ -1,49 +1,62 @@
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
+import { ParserService } from '../language/parser.service';
+import { TSPluginService } from '../plugin/ts-plugin.context';
+import {
+  getTokenAtPosition,
+  locatedParsedRuleLocatedSheetEntry,
+} from '../template/template.parser';
 import { TemplateSourceHelperService } from '../template/template.services';
-import { getTemplateContext } from '../template/template.utils';
-import { getTokenAtPosition, templateParser } from './template.parser';
 
 export const getCompletionsAtPosition = (filename: string, position: number) => {
   return Effect.gen(function* ($) {
-    const parsedTemplate = yield* $(getParsedTemplate(filename, position));
+    const helper = yield* $(TemplateSourceHelperService);
+    const { tailwind } = yield* $(TSPluginService);
+    const intellisenseService = yield* $(ParserService);
 
-    return parsedTemplate.pipe(
-      Option.map((x) => getTokenAtPosition(x.parsed[0], x.textOffset)),
+    const node = helper.getTemplateNode(filename, position);
+    const templateContext = helper.getTemplateContext(node, position);
+    const parsedTemplate = templateContext.pipe(
+      Option.flatMap((x) => intellisenseService.parseTemplate(x.text)),
     );
+    const tokenAtPosition = Option.zipWith(
+      templateContext,
+      parsedTemplate,
+      (context, parsed) => {
+        const templatePosition = helper.getRelativePosition(context, position);
+        const textOffset = context.toOffset(templatePosition);
+        return getTokenAtPosition(parsed, textOffset);
+      },
+    );
+
+    const entries = tokenAtPosition.pipe(
+      Option.map((x) =>
+        x.map((y) => locatedParsedRuleLocatedSheetEntry(y, tailwind.context)),
+      ),
+    );
+
+    return entries;
   });
 };
 
-export const getParsedTemplate = (filename: string, position: number) => {
-  return Effect.gen(function* ($) {
-    const templateContext = yield* $(TemplateSourceHelperService);
+// export const getParsedTemplate = (filename: string, position: number) => {
+//   return Effect.gen(function* ($) {
+//     const templateContext = yield* $(TemplateSourceHelperService);
 
-    const data = yield* $(
-      templateContext.getTemplateNode(filename, position).pipe(
-        Option.map((x) => {
-          return getTemplateContext(x, position);
-        }),
-      ),
-      Effect.flatten,
-      Effect.map(
-        pipe(
-          Option.map((context) => {
-            const templatePosition = templateContext.getRelativePosition(
-              context,
-              position,
-            );
-            const textOffset = context.toOffset(templatePosition);
-            return {
-              textOffset,
-              templatePosition,
-              context,
-              parsed: templateParser(context.text),
-            };
-          }),
-        ),
-      ),
-    );
-    return data;
-  });
-};
+//     const data = yield* $(
+//       templateContext.getTemplateNode(filename, position),
+//       (x) => templateContext.getTemplateContext(x, position),
+//       Option.map((context) => {
+//         const templatePosition = templateContext.getRelativePosition(context, position);
+//         const textOffset = context.toOffset(templatePosition);
+//         return {
+//           textOffset,
+//           templatePosition,
+//           context,
+//           parsed: templateParser(context.text),
+//         };
+//       }),
+//     );
+//     return data;
+//   });
+// };

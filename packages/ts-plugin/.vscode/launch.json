@@ -19,7 +19,7 @@
       "type": "node",
       "request": "launch",
       "suppressMultipleSessionWarning": true,
-      "name": "Jest Tests",
+      "name": "Test ts-plugin",
       // "program": "../../node_modules/.bin/jest",
       "runtimeArgs": [
         "--inspect-brk",

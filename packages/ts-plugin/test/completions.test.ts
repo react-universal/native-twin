@@ -12,8 +12,8 @@ const createServerWithMockFile = (fileContents: string) => {
 
 describe('Completions', () => {
   it('Completions for empty string', async () => {
-    const server = createServerWithMockFile('const q = css`bg border-1`');
-    server.sendCommand('completions', { file: mockFileName, offset: 17, line: 1 });
+    const server = createServerWithMockFile('const q = css``');
+    server.sendCommand('completions', { file: mockFileName, offset: 15, line: 1 });
 
     await server.close();
     const completionsResponse = getFirstResponseOfType('completions', server);

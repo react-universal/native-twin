@@ -1,492 +1,255 @@
-/**********************************************
- * Taken from Twind                       *
- * Credits: @sastan https://github.com/sastan *
- * Repo: https://github.com/tw-in-js/twind    *
- * ********************************************
- */
-export interface ParsedCompletionRule {
-  /**
-   * The string indicated by loc
-   */
-  raw: string;
+import * as P from '@native-twin/arc-parser';
+import { convert, ThemeContext } from '@native-twin/core';
+import {
+  ArbitraryToken,
+  ClassNameToken,
+  VariantClassToken,
+  VariantToken,
+  Layer as CssLayer,
+  moveToLayer,
+  parsedRuleToClassName,
+} from '@native-twin/css';
+import * as TwParser from '@native-twin/css/tailwind-parser';
+import {
+  LocatedGroupToken,
+  LocatedParsedRule,
+  LocatedParser,
+  LocatedSheetEntry,
+  TemplateToken,
+} from './template.types';
 
-  /**
-   * The rule with all variants
-   */
-  value: string;
+const mapWithLocation = <A extends object>(
+  x: P.ParserState<A, any>,
+  initialIndex: number,
+): LocatedParser<A> => ({
+  ...x.result,
+  start: initialIndex,
+  end: x.cursor,
+});
 
-  /**
-   * The utility name including `-` if it is negated.
-   */
-  name: string;
+const parseVariant: P.Parser<LocatedParser<VariantToken>> =
+  TwParser.parseVariant.mapFromState(mapWithLocation);
 
-  /**
-   * If this utility is within a prefix group the aggregated prefix.
-   */
-  prefix: string;
+const parseClassName: P.Parser<LocatedParser<ClassNameToken>> =
+  TwParser.parseClassName.mapFromState(mapWithLocation);
+const parseVariantClass: P.Parser<LocatedParser<VariantClassToken>> =
+  TwParser.parseVariantClass.mapFromState(mapWithLocation);
+const parseArbitraryValue: P.Parser<LocatedParser<ArbitraryToken>> =
+  TwParser.parseArbitraryValue.map(TwParser.mapArbitrary).mapFromState(mapWithLocation);
 
-  /**
-   * Is the rule negated like `-mx`
-   */
-  negated: boolean;
+export const parseValidTokenRecursiveWeak: P.Parser<
+  | LocatedParser<LocatedGroupToken>
+  | LocatedParser<VariantClassToken>
+  | LocatedParser<ClassNameToken>
+  | LocatedParser<VariantToken>
+> = P.recursiveParser(() =>
+  P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
+);
 
-  /**
-   * Something like `underline!` or `bg-red-500!` or `red-500!`
-   */
-  important: boolean;
+/** Match any valid TW ident or arbitrary separated by spaces */
+const parseGroupContentWeak: P.Parser<TemplateToken[]> = P.sequenceOf([
+  P.char('('),
+  P.many1(
+    P.choice([parseValidTokenRecursiveWeak, parseArbitraryValue, P.skip(P.whitespace)]),
+  ),
+  P.maybe(P.char(')')),
+]).map((x) => {
+  const newValue = x[1].filter((y): y is TemplateToken => typeof y !== 'string' && y !== null);
+  return newValue;
+});
 
-  variants: RuleVariant[];
+const parseRuleGroupWeak: P.Parser<LocatedParser<LocatedGroupToken>> = P.choice([
+  P.sequenceOf([parseVariant, parseGroupContentWeak]),
+  P.sequenceOf([parseClassName, parseGroupContentWeak]),
+]).mapFromState(
+  (x, i): LocatedParser<LocatedGroupToken> =>
+    mapWithLocation(
+      {
+        ...x,
+        result: TwParser.mapGroup({
+          base: x.result[0],
+          content: x.result[1],
+        }),
+      },
+      i,
+    ),
+);
 
-  loc: TextRange;
-  spans: TextRange[];
-}
+const extractClassNameToken = (
+  token: LocatedParser<ClassNameToken>,
+): LocatedParsedRule => ({
+  n: token.value.n,
+  v: [],
+  i: token.value.i,
+  m: token.value.m,
+  p: 0,
+  loc: { start: token.start, end: token.end },
+  type: token.type,
+});
 
-export interface RuleVariant {
-  /**
-   * The string indicated by loc
-   */
-  raw: string;
+const extractArbitraryToken = (
+  token: LocatedParser<ArbitraryToken>,
+): LocatedParsedRule => ({
+  n: token.value,
+  v: [],
+  i: false,
+  m: null,
+  p: 0,
+  loc: { start: token.start, end: token.end },
+  type: token.type,
+});
 
-  /**
-   * The value like: `hover:` or `after::`
-   */
-  value: string;
+const extractVariantClassToken = (
+  token: LocatedParser<VariantClassToken>,
+): LocatedParsedRule => ({
+  n: token.value[1].value.n,
+  v: token.value[0].value.map((y) => y.n),
+  i: token.value[1].value.i || token.value[0].value.some((y) => y.i),
+  m: token.value[1].value.m,
+  p: 0,
+  loc: { start: token.start, end: token.end },
+  type: token.type,
+});
 
-  /**
-   * Name without last colon like: `hover` or `after:`
-   */
-  name: string;
-
-  loc: TextRange;
-}
-
-export function parseTemplate(input: string, position?: number): ParsedCompletionRule[];
-export function parseTemplate(
-  input: string,
-  position: number,
-  exact: boolean,
-): ParsedCompletionRule;
-
-export function parseTemplate(
-  input: string,
-  position?: number,
-  exact?: boolean,
-): ParsedCompletionRule[] | ParsedCompletionRule {
-  const root = astish(input, exact ? position : undefined);
-
-  if (exact) {
-    let node: Exclude<Node, null> = root;
-
-    while (node.next) {
-      node = node.next;
-    }
-
-    return toRule(
-      node.kind === NodeKind.Identifier
-        ? node
-        : createIdentifier(node, node, '', node.loc.end),
-    );
+export function mergeParsedRuleGroupTokens(
+  groupContent: TemplateToken[],
+  results: LocatedParsedRule[] = [],
+): LocatedParsedRule[] {
+  const nextToken = groupContent.shift();
+  if (!nextToken) return results;
+  if (nextToken.type == 'ARBITRARY') {
+    results.push(extractArbitraryToken(nextToken));
   }
-
-  const rules: ParsedCompletionRule[] = [];
-
-  for (let node: Node | null = root; (node = node.next); ) {
-    if (node.kind === NodeKind.Identifier && node.terminator) {
-      rules.push(toRule(node));
-    }
+  if (nextToken.type == 'CLASS_NAME') {
+    results.push(extractClassNameToken(nextToken));
   }
+  if (nextToken.type == 'VARIANT_CLASS') {
+    results.push(extractVariantClassToken(nextToken));
+  }
+  if (nextToken.type == 'GROUP') {
+    const baseValue = nextToken.value.base;
 
-  if (position != null) {
-    const rulesAtPosition = rules.filter((rule) =>
-      rule.spans.some((loc) => loc.start <= position && position < loc.end),
-    );
-
-    if (rulesAtPosition.length) {
-      return rulesAtPosition;
-    }
-
-    // Find closest group for position and check rules
-    let group = root.loc;
-
-    for (let node: Node = root; node; node = node.next) {
-      if (
-        node.kind === NodeKind.Group &&
-        node.loc.start <= position &&
-        position < node.loc.end &&
-        (group.start < node.loc.start || node.loc.start < group.end)
-      ) {
-        group = node.loc;
+    if (nextToken.value.content.length === 0) {
+      if (baseValue.type === 'VARIANT') {
+        for (const value of baseValue.value) {
+          results.push({
+            i: baseValue.value.some((x) => x.i),
+            loc: {
+              end: baseValue.end,
+              start: baseValue.start,
+            },
+            m: null,
+            n: '',
+            p: 0,
+            type: baseValue.type,
+            v: [value.n],
+          });
+        }
       }
     }
-
-    return rules.filter((rule) =>
-      rule.spans.some((loc) => group.start <= loc.start && loc.end <= group.end),
+    const parts = mergeParsedRuleGroupTokens(nextToken.value.content).map(
+      (x): LocatedParsedRule => {
+        if (baseValue.type == 'CLASS_NAME') {
+          return {
+            ...x,
+            i: baseValue.value.i,
+            m: baseValue.value.m,
+            n: baseValue.value.n + '-' + x.n,
+            type: baseValue.type,
+            loc: {
+              end: baseValue.end,
+              start: baseValue.start,
+            },
+          };
+        }
+        return {
+          ...x,
+          v: [...x.v, ...baseValue.value.map((y) => y.n)],
+          i: x.i || baseValue.value.some((y) => y.i),
+          type: baseValue.type,
+          loc: {
+            end: baseValue.end,
+            start: baseValue.start,
+          },
+        };
+      },
     );
+    results.push(...parts);
   }
-  return rules;
+  return mergeParsedRuleGroupTokens(groupContent, results);
 }
 
-function toRuleVariant(node: Variant): RuleVariant {
-  return { raw: node.raw, value: node.value, name: node.name, loc: node.loc };
-}
-
-function toRule(identifier: Identifier): ParsedCompletionRule {
-  const rule: ParsedCompletionRule = {
-    raw: identifier.raw,
-    value: '',
-    name: '',
-    prefix: '',
-    important: false,
-    negated: false,
-    loc: identifier.loc,
-    spans: [],
-    variants: [],
-  };
-
-  const names: string[] = [];
-
-  for (let node: Node | null = identifier; node; node = node.parent) {
-    // join consecutive spans
-    const loc = { ...node.loc };
-    if (node.kind !== NodeKind.Group) {
-      const firstSpan = rule.spans[0];
-      if (firstSpan?.start === loc.end) {
-        firstSpan.start = loc.start;
-      } else {
-        rule.spans.unshift(loc);
+export const getTokenAtPosition = (tokens: TemplateToken[], position: number) => {
+  const rangedTokens = tokens
+    .filter((x) => position >= x.start && position <= x.end)
+    .map((x): TemplateToken => {
+      if (x.type === 'VARIANT') {
+        return {
+          ...x,
+          type: 'GROUP',
+          value: {
+            base: x,
+            content: [],
+          },
+        };
       }
-    }
-
-    if (node.kind === NodeKind.Identifier) {
-      rule.important = rule.important || node.important;
-      rule.negated = rule.negated || node.negated;
-      names.unshift(node.name);
-    } else if (node.kind === NodeKind.Variant) {
-      rule.variants.unshift(toRuleVariant(node));
-    }
-  }
-
-  rule.name =
-    (rule.negated ? '-' : '') +
-    names.reduce(
-      (name, part) =>
-        part === '&' ? name : name && part ? `${name}-${part}` : name || part,
-      '',
-    );
-
-  rule.prefix = names
-    .slice(0, -1)
-    .reduce(
-      (name, part) =>
-        part === '&' ? name : name && part ? `${name}-${part}` : name || part,
-      '',
-    );
-
-  if (rule.prefix && rule.negated) {
-    rule.prefix = '-' + rule.prefix;
-  }
-
-  rule.value =
-    rule.variants.map((variant) => variant.value).join('') +
-    (rule.important ? '!' : '') +
-    rule.name;
-
-  return rule;
-}
-
-export interface TextRange {
-  start: number;
-  end: number;
-}
-
-export const enum NodeKind {
-  Group = 1,
-  Identifier = 2,
-  Variant = 3,
-}
-
-export type Node = Variant | Identifier | Group | null;
+      return x;
+    });
+  return mergeParsedRuleGroupTokens(rangedTokens);
+};
 
 /**
- * `text(lg sm:base) hover:underline`
+ * Converts a parsed rule to a sheet entry based on the given context.
  *
- * text -> identifier: prev: null, next: group, parent: root
- * group -> group: prev: text, next: lg, parent: text
- * lg -> identifier: prev: text, next: sm, parent: group, end: true
- * whitespace -> parent = node.parent.kind = 'Group' -> parent = group
- * sm -> variant: prev: lg, next: base, parent: group
- * base -> identifier: prev: sm, next: hover, parent: sm, end: true
- * ) -> whitespace -> parent = group -> parent.parent.kind = 'Group' -> parent = root
- * hover -> variant: prev: base, next: underline, parent: root
- * underline -> variant: prev: hover, next: null, parent: hover, end: true
+ * @param {ParsedRule} rule - The parsed rule to convert.
+ * @param {ThemeContext} context - The context in which the conversion is happening.
+ * @return {SheetEntry} The converted sheet entry.
  */
-export interface BaseNode {
-  /** Points to previous node */
-  prev: Node;
-
-  /** Points to next node */
-  next: Node;
-
-  /** Points to parent node */
-  parent: Node;
-
-  loc: TextRange;
-}
-
-export interface Identifier extends BaseNode {
-  kind: NodeKind.Identifier;
-  raw: string;
-  name: string;
-
-  terminator: boolean;
-
-  /**
-   * Something like `-mx`
-   */
-  negated: boolean;
-
-  /**
-   * Something like `underline!` or `bg-red-500!` or `red-500!`
-   */
-  important: boolean;
-}
-
-/**
- * Something like `hover:` or `after::`
- */
-export interface Variant extends BaseNode {
-  kind: NodeKind.Variant;
-
-  /**
-   * Raw value like: `hover:` or `after::`
-   */
-  raw: string;
-
-  /**
-   * The value like: `hover:` or `after::`
-   */
-  value: string;
-
-  /**
-   * Name without last colon like: `hover` or `after:`
-   */
-  name: string;
-}
-
-/**
- * `(text-bold)` or `(bold underline)`
- */
-export interface Group extends BaseNode {
-  kind: NodeKind.Group;
-  // body: (Variant | Identifier | Group)[]
-}
-
-export function astish(text: string, atPosition = Infinity): Group {
-  let buffer = '';
-  let start = 0;
-
-  const root: Group = {
-    kind: NodeKind.Group,
-
-    prev: null,
-    next: null,
-    parent: null,
-
-    loc: { start, end: text.length },
-  };
-
-  let parent: Exclude<Node, null> = root;
-  let node: Exclude<Node, null> = root;
-
-  for (
-    let char: string, inArbitrary = false, position = 0;
-    (char = text[position]!);
-    position++
-  ) {
-    if (position >= atPosition) {
-      node.next = createIdentifier(node, parent, buffer, start);
-
-      return root;
-    }
-
-    if ((inArbitrary && !/\s/.test(char)) || char == '[') {
-      buffer += char;
-      inArbitrary = char != ']';
-      continue;
-    }
-
-    switch (char) {
-      case ':':
-        if (buffer) {
-          buffer += char;
-
-          if (text[position + 1] == ':') {
-            buffer += text[position++];
-          }
-
-          parent = node = node.next = createVariant(node, parent, buffer, start);
-
-          buffer = '';
-          start = position + 1;
-        } else {
-          // Invalid
-        }
-
-        break;
-
-      case '(': {
-        // If there is a token this is the prefix for all grouped tokens
-        if (buffer) {
-          parent = node = node.next = createIdentifier(node, parent, buffer, start);
-        }
-
-        parent = node = node.next = createGroup(node, parent, position);
-
-        buffer = '';
-        start = position + 1;
-
-        break;
-      }
-
-      case ')':
-      case ' ':
-      case '\t':
-      case '\n':
-      case '\r':
-        if (buffer || node.kind == NodeKind.Variant) {
-          parent =
-            node =
-            node.next =
-              createIdentifier(node, parent, buffer, start, /* terminator */ true);
-        }
-
-        parent = getParentGroup(parent) || root;
-
-        if (char == ')') {
-          parent.loc.end = position + 1;
-          parent = parent.parent || root;
-        }
-
-        buffer = '';
-        start = position + 1;
-
-        break;
-
-      default:
-        buffer += char;
+export function locatedParsedRuleLocatedSheetEntry(
+  rule: LocatedParsedRule,
+  context: ThemeContext,
+): LocatedSheetEntry {
+  if (rule.n == 'group') {
+    return {
+      className: 'group',
+      declarations: [],
+      selectors: [],
+      precedence: CssLayer.u,
+      important: rule.i,
+      loc: rule.loc,
+    };
+  }
+  if (context.mode === 'web') {
+    if (
+      (rule.v.includes('ios') ||
+        rule.v.includes('android') ||
+        rule.v.includes('native')) &&
+      !rule.v.includes('web')
+    ) {
+      return {
+        className: parsedRuleToClassName(rule),
+        declarations: [],
+        selectors: [],
+        precedence: CssLayer.u,
+        important: rule.i,
+        loc: rule.loc,
+      };
     }
   }
-
-  // Consume remaining buffer or completion triggered at the end
-  if (buffer || node.kind == NodeKind.Variant || atPosition === text.length) {
-    node.next = createIdentifier(node, parent, buffer, start, true);
+  const result = context.r(rule);
+  if (!result) {
+    // propagate className as is
+    return {
+      className: parsedRuleToClassName(rule),
+      declarations: [],
+      selectors: [],
+      precedence: CssLayer.u,
+      important: rule.i,
+      loc: rule.loc,
+    };
   }
-
-  return root;
+  const newRule = context.mode === 'web' ? convert(rule, context, CssLayer.u) : rule;
+  result.selectors = newRule.v;
+  result.precedence = moveToLayer(CssLayer.u, newRule.p);
+  return { ...result, loc: rule.loc };
 }
-
-function getParentGroup(node: Node): Group | null {
-  while (node && node.kind != NodeKind.Group) {
-    node = node.parent;
-  }
-
-  return node;
-}
-
-function createGroup(node: Node, parent: Node, position: number): Group {
-  return {
-    kind: NodeKind.Group,
-    prev: node,
-    next: null,
-    parent,
-    loc: {
-      start: position,
-      end: position + 1,
-    },
-  };
-}
-
-function createVariant(
-  node: Exclude<Node, null>,
-  parent: Node,
-  raw: string,
-  start: number,
-): Variant {
-  if (raw[0] == '!') {
-    raw = raw.slice(1);
-    parent = node = node.next = createIdentifier(node, parent, '!', start);
-    start += 1;
-  }
-
-  return {
-    kind: NodeKind.Variant,
-
-    prev: node,
-    next: null,
-    parent,
-
-    /**
-     * Raw value like: `hover:` or `after::`
-     */
-    raw,
-
-    value: raw,
-
-    /**
-     * Name without last colon like: `hover` or `after:`
-     */
-    name: raw.slice(0, -1),
-
-    // isPseudoElement: raw.endsWith('::'),
-
-    loc: {
-      start,
-      end: start + raw.length,
-    },
-  };
-}
-
-function createIdentifier(
-  node: Node,
-  parent: Node,
-  raw: string,
-  start: number,
-  terminator = false,
-): Identifier {
-  let name = raw;
-  let negated = false;
-  let important = false;
-
-  if (name[0] == '!') {
-    name = name.slice(1);
-    important = true;
-  } else if (name[name.length - 1] == '!') {
-    name = name.slice(0, -1);
-    important = true;
-  }
-
-  if (name[0] == '-') {
-    name = name.slice(1);
-    negated = true;
-  }
-
-  return {
-    kind: NodeKind.Identifier,
-    prev: node,
-    next: null,
-    parent,
-    raw,
-    name,
-    terminator,
-    negated,
-    important,
-    loc: {
-      start,
-      end: start + raw.length,
-    },
-  };
-}
-
-// const test = parse('text(cen)', 8, true); //?
-
-// inspect(test, false, null, false); // ?

@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
     },
