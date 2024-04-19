@@ -38,25 +38,3 @@ export const getCompletionsAtPosition = (filename: string, position: number) => 
     return entries;
   });
 };
-
-// export const getParsedTemplate = (filename: string, position: number) => {
-//   return Effect.gen(function* ($) {
-//     const templateContext = yield* $(TemplateSourceHelperService);
-
-//     const data = yield* $(
-//       templateContext.getTemplateNode(filename, position),
-//       (x) => templateContext.getTemplateContext(x, position),
-//       Option.map((context) => {
-//         const templatePosition = templateContext.getRelativePosition(context, position);
-//         const textOffset = context.toOffset(templatePosition);
-//         return {
-//           textOffset,
-//           templatePosition,
-//           context,
-//           parsed: templateParser(context.text),
-//         };
-//       }),
-//     );
-//     return data;
-//   });
-// };
