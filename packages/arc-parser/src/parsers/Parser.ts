@@ -43,6 +43,17 @@ export class Parser<Result, Data = any> {
     });
   }
 
+  mapFromState<Result2>(
+    fn: (x: ParserState<Result, Data>, initialIndex: number) => Result2,
+  ): Parser<Result2, Data> {
+    const parser = this.transform;
+    return new Parser((state): ParserState<Result2, Data> => {
+      const newState = parser(state);
+      if (newState.isError) return newState as unknown as ParserState<Result2, Data>;
+      return updateParserResult(newState, fn(newState, state.cursor));
+    });
+  }
+
   chain<Result2>(fn: (x: Result) => Parser<Result2>): Parser<Result2, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {

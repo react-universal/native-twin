@@ -1,1 +1,1 @@
-css`bg(blue) md:(text-lg text-blue)`
+css`asd-asd bg(blue) md:`

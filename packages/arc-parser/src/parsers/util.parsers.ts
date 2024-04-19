@@ -1,3 +1,4 @@
+import { ParserState } from '../types';
 import { Parser, updateParserError, updateParserResult } from './Parser';
 
 export const fail = (errorData: string) => {
@@ -32,5 +33,12 @@ export function mapTo<T>(fn: <U>(x: U) => T): Parser<T> {
   return new Parser((state) => {
     if (state.isError) return state;
     return updateParserResult(state, fn(state.result));
+  });
+}
+
+export function mapState<T>(fn: <U>(x: ParserState<U, any>) => T): Parser<T> {
+  return new Parser((state) => {
+    if (state.isError) return state;
+    return updateParserResult(state, fn(state));
   });
 }

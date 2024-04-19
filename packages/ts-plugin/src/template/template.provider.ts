@@ -5,8 +5,7 @@ import ts from 'typescript';
 import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import { TSPluginService } from '../plugin/ts-plugin.context';
-import { match } from '../utils/match';
-import { getSourceMatchers } from './source-matcher';
+import { match, getSourceMatchers } from '../utils/match';
 import { TemplateSourceHelperService } from './template.services';
 import { getValidTemplateNode } from './template.utils';
 
