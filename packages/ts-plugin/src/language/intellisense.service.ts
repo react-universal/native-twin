@@ -1,8 +1,10 @@
+import { Stream } from 'effect';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import { __Theme__ } from '@native-twin/core';
 import { TSPluginService } from '../plugin/ts-plugin.context';
+import { LocatedSheetEntry } from '../template/template.types';
 import { getRuleInfo, RuleInfo } from './intellisense.utils';
 
 interface CommonCompletionToken {
@@ -30,19 +32,23 @@ export interface CompletionItemLocation {
   index: number;
 }
 
+interface TwinRule {
+  ruleInfo: RuleInfo;
+  completion: {
+    className: string;
+    declarations: string[];
+    declarationValue: string;
+  };
+}
+
 export class IntellisenseService extends Context.Tag('plugin/IntellisenseService')<
   IntellisenseService,
   {
-    twinClasses: Map<string, ClassCompletionToken>;
-    twinVariants: Map<string, VariantCompletionToken>;
-    twinRules: {
-      ruleInfo: RuleInfo;
-      completion: {
-        className: string;
-        declarations: string[];
-        declarationValue: string;
-      };
-    }[];
+    store: {
+      twinVariants: Map<string, VariantCompletionToken>;
+      twinRules: Map<string, TwinRule>;
+    };
+    findRuleCompletions: (rule: LocatedSheetEntry) => TwinRule[];
   }
 >() {}
 
@@ -50,7 +56,6 @@ export const IntellisenseServiceLive = Layer.scoped(
   IntellisenseService,
   Effect.gen(function* ($) {
     const { tailwind } = yield* $(TSPluginService);
-    const twinClasses = new Map<string, ClassCompletionToken>();
     const twinVariants = new Map<string, VariantCompletionToken>();
     const theme = { ...tailwind.tw.config.theme };
     const themeSections = new Set(Object.keys({ ...theme, ...theme.extend }).sort());
@@ -61,28 +66,52 @@ export const IntellisenseServiceLive = Layer.scoped(
     const currentConfig = tailwind.config;
     // const context = main.tailwind.context;
 
-    for (const variant in {
-      ...currentConfig.theme.screens,
-      ...currentConfig.theme.extend?.screens,
-    }) {
-      const location = {
-        index: nextIndex++,
-        position: twinVariants.size,
-      };
-      twinVariants.set(variant, {
-        kind: 'variant',
-        name: `${variant}:`,
-        ...location,
-      });
-    }
+    yield* $(
+      Effect.sync(() => {
+        for (const variant in {
+          ...currentConfig.theme.screens,
+          ...currentConfig.theme.extend?.screens,
+        }) {
+          const location = {
+            index: nextIndex++,
+            position: twinVariants.size,
+          };
+          twinVariants.set(variant, {
+            kind: 'variant',
+            name: `${variant}:`,
+            ...location,
+          });
+        }
+      }),
+    );
 
-    const twinRules = yield* $(buildRulesInfo);
-    console.log('DATA: ', twinRules, themeSections);
+    const twinRules = yield* $(
+      buildRulesInfo,
+      Effect.map((x) => x.map((y) => [y.completion.className, y] as const)),
+      Effect.map((x) => new Map(x)),
+    );
 
     return IntellisenseService.of({
-      twinClasses,
-      twinVariants,
-      twinRules,
+      store: {
+        twinVariants,
+        twinRules,
+      },
+      findRuleCompletions: (rule) => {
+        Stream.fromIterable(twinRules);
+        // .pipe(Stream.filter(x => {
+        //   x.completion.
+        // }))
+        return Array.from(twinRules.values()).filter((x) => {
+          if (
+            x.completion.className.startsWith(rule.className) ||
+            rule.className.startsWith(x.ruleInfo.pattern) ||
+            x.ruleInfo.compositions.some((y) => y.composed.startsWith(rule.className))
+          ) {
+            return true;
+          }
+          return false;
+        });
+      },
     });
   }),
 );

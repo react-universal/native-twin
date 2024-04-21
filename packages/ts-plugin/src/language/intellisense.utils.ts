@@ -7,7 +7,7 @@ import {
   directionMap,
   TWScreenValueConfig,
 } from '@native-twin/css';
-import { ColorsRecord } from '@native-twin/helpers';
+import { ColorsRecord, asArray } from '@native-twin/helpers';
 // import { asArray } from '@native-twin/helpers';
 import { InternalTwinConfig } from '../intellisense/intellisense.config';
 
@@ -46,6 +46,14 @@ export class RuleInfo implements Equal.Equal {
     }
     if (this.meta.feature === 'corners') {
       mapper = cornerMap;
+    }
+    if (this.meta.feature === 'default') {
+      return asArray({
+        composed: this.pattern,
+        classNameExpansion: '',
+        classNameSuffix: '',
+        declarationSuffixes: [''],
+      });
     }
 
     const suffixes = Object.entries(mapper).flatMap((x) => {

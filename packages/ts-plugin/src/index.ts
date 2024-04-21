@@ -1,9 +1,7 @@
-import { Layer } from 'effect';
 import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 import ts from 'typescript/lib/tsserverlibrary';
-import { inspect } from 'util';
 import { getCompletionsAtPosition } from './completions/completions.context';
-import { ParserServiceLive } from './language/parser.service';
 import { createTwin } from './intellisense/intellisense.config';
 import { IntellisenseServiceLive } from './language/intellisense.service';
 import { buildTSPluginService } from './plugin/ts-plugin.context';
@@ -36,35 +34,28 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
 
     const TemplateServiceLive = createTemplateService(modules.typescript, info);
 
-    const layer = Layer.mergeAll(
-      IntellisenseServiceLive,
-      TemplateServiceLive,
-      ParserServiceLive,
-    );
+    const layer = Layer.mergeAll(IntellisenseServiceLive, TemplateServiceLive);
 
-    proxy.getCompletionsAtPosition = (fileName, position, options) => {
+    proxy.getCompletionsAtPosition = (fileName, position, _options) => {
       const runnable = Effect.provide(
         getCompletionsAtPosition(fileName, position),
         layer,
       ).pipe(Effect.provide(PluginServiceLive));
 
-      const data = Effect.runSync(
-        runnable.pipe(
-          Effect.tap((x) =>
-            Effect.sync(() => {
-              info.project.projectService.logger.info(
-                '[@twin/language-service] NODE RESULT ' + inspect(x),
-              );
-            }),
-          ),
-        ),
-      );
+      const data = Effect.runSync(runnable);
 
       console.log('DATA: ', data);
 
-      info.project.log(inspect(data, false, 3));
-      info.languageServiceHost.log?.(inspect(data, false, 3));
-      return info.languageService.getCompletionsAtPosition(fileName, position, options);
+      return {
+        entries: [],
+        isGlobalCompletion: false,
+        isMemberCompletion: true,
+        isNewIdentifierLocation: true,
+      };
+
+      // info.project.log(inspect(data, false, 3));
+      // info.languageServiceHost.log?.(inspect(data, false, 3));
+      // return info.languageService.getCompletionsAtPosition(fileName, position, options);
 
       // if (template) {
       //   return getCompletionsAtPosition(

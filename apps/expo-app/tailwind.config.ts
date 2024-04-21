@@ -1,7 +1,7 @@
 import { defineConfig } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 
-export default defineConfig({
+const a = defineConfig({
   content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
   root: {
     rem: 16,

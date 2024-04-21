@@ -66,7 +66,7 @@
       "**/CHANGELOG.md": true,
       "**/jest.config.js": false,
       "**/LICENSE": true,
-      "**/babel.config.js": true,
+      // "**/babel.config.js": true,
       "**/build": true,
       "**/turbo.json": true,
       "**/.eslintrc.json": false,

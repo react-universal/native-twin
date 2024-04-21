@@ -1,21 +1,16 @@
 import * as P from '@native-twin/arc-parser';
-import { convert, ThemeContext } from '@native-twin/core';
 import {
   ArbitraryToken,
   ClassNameToken,
   VariantClassToken,
   VariantToken,
-  Layer as CssLayer,
-  moveToLayer,
-  parsedRuleToClassName,
 } from '@native-twin/css';
 import * as TwParser from '@native-twin/css/tailwind-parser';
 import {
   LocatedGroupToken,
-  LocatedParsedRule,
   LocatedParser,
-  LocatedSheetEntry,
   TemplateToken,
+  TemplateTokenWithText,
 } from './template.types';
 
 const mapWithLocation = <A extends object>(
@@ -37,7 +32,7 @@ const parseVariantClass: P.Parser<LocatedParser<VariantClassToken>> =
 const parseArbitraryValue: P.Parser<LocatedParser<ArbitraryToken>> =
   TwParser.parseArbitraryValue.map(TwParser.mapArbitrary).mapFromState(mapWithLocation);
 
-export const parseValidTokenRecursiveWeak: P.Parser<
+const parseValidTokenRecursiveWeak: P.Parser<
   | LocatedParser<LocatedGroupToken>
   | LocatedParser<VariantClassToken>
   | LocatedParser<ClassNameToken>
@@ -54,7 +49,9 @@ const parseGroupContentWeak: P.Parser<TemplateToken[]> = P.sequenceOf([
   ),
   P.maybe(P.char(')')),
 ]).map((x) => {
-  const newValue = x[1].filter((y): y is TemplateToken => typeof y !== 'string' && y !== null);
+  const newValue = x[1].filter(
+    (y): y is TemplateToken => typeof y !== 'string' && y !== null,
+  );
   return newValue;
 });
 
@@ -75,181 +72,65 @@ const parseRuleGroupWeak: P.Parser<LocatedParser<LocatedGroupToken>> = P.choice(
     ),
 );
 
-const extractClassNameToken = (
-  token: LocatedParser<ClassNameToken>,
-): LocatedParsedRule => ({
-  n: token.value.n,
-  v: [],
-  i: token.value.i,
-  m: token.value.m,
-  p: 0,
-  loc: { start: token.start, end: token.end },
-  type: token.type,
-});
+export const parseTemplate = (template: string): TemplateTokenWithText[] => {
+  const weakParser = P.sequenceOf([
+    P.separatedBySpace(parseValidTokenRecursiveWeak),
+    P.endOfInput,
+  ]).run(template);
+  if (weakParser.isError) {
+    return [];
+  }
 
-const extractArbitraryToken = (
-  token: LocatedParser<ArbitraryToken>,
-): LocatedParsedRule => ({
-  n: token.value,
-  v: [],
-  i: false,
-  m: null,
-  p: 0,
-  loc: { start: token.start, end: token.end },
-  type: token.type,
-});
+  const data = addTextToTemplateTokens(weakParser.result[0], template);
 
-const extractVariantClassToken = (
-  token: LocatedParser<VariantClassToken>,
-): LocatedParsedRule => ({
-  n: token.value[1].value.n,
-  v: token.value[0].value.map((y) => y.n),
-  i: token.value[1].value.i || token.value[0].value.some((y) => y.i),
-  m: token.value[1].value.m,
-  p: 0,
-  loc: { start: token.start, end: token.end },
-  type: token.type,
-});
+  return data;
+};
 
-export function mergeParsedRuleGroupTokens(
+function addTextToTemplateTokens(
   groupContent: TemplateToken[],
-  results: LocatedParsedRule[] = [],
-): LocatedParsedRule[] {
+  text: string,
+  results: TemplateTokenWithText[] = [],
+): TemplateTokenWithText[] {
   const nextToken = groupContent.shift();
   if (!nextToken) return results;
   if (nextToken.type == 'ARBITRARY') {
-    results.push(extractArbitraryToken(nextToken));
+    results.push({
+      ...nextToken,
+      text: text.slice(nextToken.start, nextToken.end),
+    });
   }
   if (nextToken.type == 'CLASS_NAME') {
-    results.push(extractClassNameToken(nextToken));
+    results.push({
+      ...nextToken,
+      text: text.slice(nextToken.start, nextToken.end),
+    });
   }
   if (nextToken.type == 'VARIANT_CLASS') {
-    results.push(extractVariantClassToken(nextToken));
+    results.push({
+      ...nextToken,
+      text: text.slice(nextToken.start, nextToken.end),
+    });
   }
   if (nextToken.type == 'GROUP') {
-    const baseValue = nextToken.value.base;
-
-    if (nextToken.value.content.length === 0) {
-      if (baseValue.type === 'VARIANT') {
-        for (const value of baseValue.value) {
-          results.push({
-            i: baseValue.value.some((x) => x.i),
-            loc: {
-              end: baseValue.end,
-              start: baseValue.start,
-            },
-            m: null,
-            n: '',
-            p: 0,
-            type: baseValue.type,
-            v: [value.n],
-          });
-        }
-      }
-    }
-    const parts = mergeParsedRuleGroupTokens(nextToken.value.content).map(
-      (x): LocatedParsedRule => {
-        if (baseValue.type == 'CLASS_NAME') {
-          return {
-            ...x,
-            i: baseValue.value.i,
-            m: baseValue.value.m,
-            n: baseValue.value.n + '-' + x.n,
-            type: baseValue.type,
-            loc: {
-              end: baseValue.end,
-              start: baseValue.start,
-            },
-          };
-        }
+    const newContent = addTextToTemplateTokens(nextToken.value.content, text).map(
+      (x): TemplateTokenWithText => {
         return {
           ...x,
-          v: [...x.v, ...baseValue.value.map((y) => y.n)],
-          i: x.i || baseValue.value.some((y) => y.i),
-          type: baseValue.type,
-          loc: {
-            end: baseValue.end,
-            start: baseValue.start,
-          },
+          text: text.slice(x.start, x.end),
         };
       },
     );
-    results.push(...parts);
-  }
-  return mergeParsedRuleGroupTokens(groupContent, results);
-}
-
-export const getTokenAtPosition = (tokens: TemplateToken[], position: number) => {
-  const rangedTokens = tokens
-    .filter((x) => position >= x.start && position <= x.end)
-    .map((x): TemplateToken => {
-      if (x.type === 'VARIANT') {
-        return {
-          ...x,
-          type: 'GROUP',
-          value: {
-            base: x,
-            content: [],
-          },
-        };
-      }
-      return x;
+    results.push({
+      ...nextToken,
+      value: {
+        base: {
+          ...nextToken.value.base,
+          text: text.slice(nextToken.value.base.start, nextToken.value.base.end),
+        },
+        content: newContent,
+      },
+      text: text.slice(nextToken.start, nextToken.end),
     });
-  return mergeParsedRuleGroupTokens(rangedTokens);
-};
-
-/**
- * Converts a parsed rule to a sheet entry based on the given context.
- *
- * @param {ParsedRule} rule - The parsed rule to convert.
- * @param {ThemeContext} context - The context in which the conversion is happening.
- * @return {SheetEntry} The converted sheet entry.
- */
-export function locatedParsedRuleLocatedSheetEntry(
-  rule: LocatedParsedRule,
-  context: ThemeContext,
-): LocatedSheetEntry {
-  if (rule.n == 'group') {
-    return {
-      className: 'group',
-      declarations: [],
-      selectors: [],
-      precedence: CssLayer.u,
-      important: rule.i,
-      loc: rule.loc,
-    };
   }
-  if (context.mode === 'web') {
-    if (
-      (rule.v.includes('ios') ||
-        rule.v.includes('android') ||
-        rule.v.includes('native')) &&
-      !rule.v.includes('web')
-    ) {
-      return {
-        className: parsedRuleToClassName(rule),
-        declarations: [],
-        selectors: [],
-        precedence: CssLayer.u,
-        important: rule.i,
-        loc: rule.loc,
-      };
-    }
-  }
-  const result = context.r(rule);
-  if (!result) {
-    // propagate className as is
-    return {
-      className: parsedRuleToClassName(rule),
-      declarations: [],
-      selectors: [],
-      precedence: CssLayer.u,
-      important: rule.i,
-      loc: rule.loc,
-    };
-  }
-  const newRule = context.mode === 'web' ? convert(rule, context, CssLayer.u) : rule;
-  result.selectors = newRule.v;
-  result.precedence = moveToLayer(CssLayer.u, newRule.p);
-  return { ...result, loc: rule.loc };
+  return addTextToTemplateTokens(groupContent, text, results);
 }
