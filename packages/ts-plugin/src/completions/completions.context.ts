@@ -12,39 +12,12 @@ export const getCompletionsAtPosition = (filename: string, position: number) => 
 
     const resource = yield* $(acquireTemplateNode(filename, position));
 
-    // const node = helper.getTemplateNode(filename, position);
-    // const templateContext = helper.getTemplateContext(node, position);
-    // const parsedTemplate = Option.map(templateContext, (x) => parseTemplate(x.text)).pipe(
-    //   Option.getOrElse((): TemplateTokenWithText[] => []),
-    // );
-
-    // const positions = Option.map(templateContext, (context) => {
-    //   const templatePosition = helper.getRelativePosition(context, position);
-    //   const textOffset = context.toOffset(templatePosition);
-    //   const documentPosition = {
-    //     start: context.node.getStart(),
-    //     end: context.node.getEnd(),
-    //   };
-    //   return {
-    //     templatePosition,
-    //     textOffset,
-    //     documentPosition,
-    //   };
-    // });
-
-    // const tokenAtPosition = Option.map(positions, (x) =>
-    //   getTokenAtPosition(parsedTemplate, x.textOffset),
-    // );
-
     const completionRules = Option.map(resource, (node) => {
       return intellisense.findRuleCompletions(
         node.tokenAtPosition,
         node.positions.relative.offset,
       );
     });
-    //  Option.zipWith(tokenAtPosition, positions, (token, pos) =>
-    //   intellisense.findRuleCompletions(token, pos.textOffset),
-    // );
 
     const completionEntries = Option.zipWith(resource, completionRules, (node, rules) => {
       
