@@ -8,11 +8,9 @@ import {
   TWScreenValueConfig,
 } from '@native-twin/css';
 import { ColorsRecord, asArray } from '@native-twin/helpers';
-// import { asArray } from '@native-twin/helpers';
-import { InternalTwinConfig } from '../intellisense/intellisense.config';
+import { InternalTwinConfig } from './intellisense.config';
 
 type InternalRule = Rule<InternalTwinConfig['theme']>;
-// type RuleInfo = ReturnType<typeof getRuleInfo>;
 
 export class RuleInfo implements Equal.Equal {
   readonly pattern: string;
@@ -125,37 +123,6 @@ export class RuleInfo implements Equal.Equal {
     return false;
   }
 }
-
-export const getRuleInfo = (rule: InternalRule) => {
-  return new RuleInfo(rule);
-  // let meta: RuleMeta = {
-  //   prefix: '',
-  //   styleProperty: undefined,
-  //   suffix: '',
-  //   support: [],
-  //   canBeNegative: false,
-  //   feature: 'default',
-  // };
-
-  // if (typeof rule[3] === 'object') {
-  //   meta = rule[3];
-  // }
-
-  // const ruleInfo = {
-  //   pattern: rule[0],
-  //   property: rule[1],
-  //   resolver: rule[2],
-  //   meta: meta,
-  // };
-
-  // return {
-  //   ...ruleInfo,
-  //   compositions: createRuleComposer({
-  //     feature: ruleInfo.meta.feature,
-  //     pattern: ruleInfo.pattern,
-  //   }),
-  // };
-};
 
 export const createRuleComposer = (ruleInfo: {
   pattern: string;

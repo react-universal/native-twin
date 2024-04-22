@@ -3,7 +3,7 @@ import * as Layer from 'effect/Layer';
 import ts from 'typescript/lib/tsserverlibrary';
 import { getCompletionsAtPosition } from './completions/completions.context';
 import { createTwin } from './intellisense/intellisense.config';
-import { IntellisenseServiceLive } from './language/intellisense.service';
+import { IntellisenseServiceLive } from './intellisense/intellisense.service';
 import { buildTSPluginService } from './plugin/ts-plugin.context';
 import { createTemplateService } from './template/template.services';
 
@@ -36,48 +36,59 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
 
     const layer = Layer.mergeAll(IntellisenseServiceLive, TemplateServiceLive);
 
-    proxy.getCompletionsAtPosition = (fileName, position, _options) => {
+    proxy.getCompletionEntrySymbol = (filename, position, name, source) => {
+      const result = info.languageService.getCompletionEntrySymbol(
+        filename,
+        position,
+        name,
+        source,
+      );
+      return result;
+    };
+
+    proxy.getCompletionsAtPosition = (fileName, position, _options, _formatSettings) => {
+      const original = info.languageService.getCompletionsAtPosition(
+        fileName,
+        position,
+        _options,
+        _formatSettings,
+      );
+      console.log('ORIGINAL: ', original);
       const runnable = Effect.provide(
         getCompletionsAtPosition(fileName, position),
         layer,
       ).pipe(Effect.provide(PluginServiceLive));
 
-      const data = Effect.runSync(runnable);
-
-      console.log('DATA: ', data);
+      const completionEntries = Effect.runSync(runnable);
 
       return {
-        entries: [],
+        entries: completionEntries,
         isGlobalCompletion: false,
-        isMemberCompletion: true,
-        isNewIdentifierLocation: true,
+        isMemberCompletion: false,
+        isNewIdentifierLocation: false,
       };
-
-      // info.project.log(inspect(data, false, 3));
-      // info.languageServiceHost.log?.(inspect(data, false, 3));
-      // return info.languageService.getCompletionsAtPosition(fileName, position, options);
-
-      // if (template) {
-      //   return getCompletionsAtPosition(
-      //     template,
-      //     helper.getRelativePosition(template, position),
-      //     intellisense,
-      //   );
-      // }
-
-      // return info.languageService.getCompletionsAtPosition(fileName, position, options);
     };
 
-    // proxy.getCompletionEntryDetails = (fileName, position, name, ...rest) => {
-    //   const context = helper.getTemplate(fileName, position);
-    //   if (context) {
-    //     const utility = intellisense.completions().classes.get(name);
-    //     if (utility) {
-    //       return createCompletionEntryDetails(utility, intellisense.tw);
-    //     }
-    //   }
-    //   return info.languageService.getCompletionEntryDetails(fileName, position, name, ...rest);
-    // };
+    proxy.getCompletionEntryDetails = (
+      fileName,
+      position,
+      name,
+      _format,
+      _source,
+      _preferences,
+      _data,
+    ) => {
+      const original = info.languageService.getCompletionEntryDetails(
+        fileName,
+        position,
+        name,
+        _format,
+        _source,
+        _preferences,
+        _data,
+      );
+      return original;
+    };
 
     return proxy;
   }

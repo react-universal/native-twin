@@ -74,7 +74,8 @@ const parseRuleGroupWeak: P.Parser<LocatedParser<LocatedGroupToken>> = P.choice(
 
 export const parseTemplate = (template: string): TemplateTokenWithText[] => {
   const weakParser = P.sequenceOf([
-    P.separatedBySpace(parseValidTokenRecursiveWeak),
+    P.many1(P.whitespaceSurrounded(parseValidTokenRecursiveWeak)),
+    P.maybe(P.optionalWhitespace),
     P.endOfInput,
   ]).run(template);
   if (weakParser.isError) {

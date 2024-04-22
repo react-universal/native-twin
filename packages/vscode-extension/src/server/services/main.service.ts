@@ -28,6 +28,11 @@ export const startServer = () => {
         .pipe(Option.getOrElse(() => []));
     });
 
+    connection.onCompletionResolve((params, token) => {
+      console.log('PARAMS: ', params, token);
+      return params;
+    });
+
     connection.onInitialize((params) => {
       const userConfig = Option.fromNullable(params.initializationOptions?.twinConfigFile)
         .pipe(

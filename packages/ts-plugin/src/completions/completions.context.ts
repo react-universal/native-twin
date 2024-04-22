@@ -2,105 +2,69 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as ReadonlyArray from 'effect/ReadonlyArray';
 import ts from 'typescript';
-import { IntellisenseService } from '../language/intellisense.service';
-import { getTokenAtPosition } from '../template/parser.service';
-import { parseTemplate } from '../template/template.parser';
-import { TemplateSourceHelperService } from '../template/template.services';
-import {
-  LocatedGroupTokenWithText,
-  TemplateTokenWithText,
-} from '../template/template.types';
+import { IntellisenseService } from '../intellisense/intellisense.service';
+import { acquireTemplateNode } from '../resources/template-node.resource';
+import { completionRuleToEntry } from './completions.utils';
 
 export const getCompletionsAtPosition = (filename: string, position: number) => {
   return Effect.gen(function* ($) {
-    const helper = yield* $(TemplateSourceHelperService);
-
-    const node = helper.getTemplateNode(filename, position);
-    const templateContext = helper.getTemplateContext(node, position);
-    const parsedTemplate = Option.map(templateContext, (x) => parseTemplate(x.text)).pipe(
-      Option.getOrElse((): TemplateTokenWithText[] => []),
-    );
-
-    const positions = Option.map(templateContext, (context) => {
-      const templatePosition = helper.getRelativePosition(context, position);
-      const textOffset = context.toOffset(templatePosition);
-      return {
-        templatePosition,
-        textOffset,
-      };
-    });
-
-    const tokenAtPosition = Option.map(positions, (x) => {
-      return getTokenAtPosition(parsedTemplate, x.textOffset);
-    });
-
-    // console.log('tokenAtPosition: ', tokenAtPosition);
-
-    // const rules = tokensToRules(parsedTemplate);
-    // const ruleAtPosition = tokensToRules(tokenAtPosition);
-
-    const completions = Option.zipWith(tokenAtPosition, positions, (token, pos) => {
-      return getCompletionsForTokenAtPosition(token, pos.textOffset);
-    });
-    const data = yield* $(completions, Effect.flatten);
-
-    console.log('rules: ', {
-      tokenAtPosition,
-      parsedTemplate,
-      completions,
-      data,
-    });
-
-    return [] as ts.CompletionEntry[];
-  });
-};
-
-const getCompletionsForTokenAtPosition = (
-  tokens: TemplateTokenWithText[],
-  position: number,
-) => {
-  return Effect.gen(function* ($) {
-    const positionToken = tokens
-      .map((x) => getCompletionParts(x))
-      .flat()
-      .filter((x) => {
-        return position >= x.start && position <= x.end;
-      });
     const intellisense = yield* $(IntellisenseService);
-    const results = ReadonlyArray.map(positionToken, (token) => {
-      const completionByToken = Array.from(intellisense.store.twinRules.values()).filter(
-        (x) => x.completion.className.startsWith(token.text),
+
+    const resource = yield* $(acquireTemplateNode(filename, position));
+
+    // const node = helper.getTemplateNode(filename, position);
+    // const templateContext = helper.getTemplateContext(node, position);
+    // const parsedTemplate = Option.map(templateContext, (x) => parseTemplate(x.text)).pipe(
+    //   Option.getOrElse((): TemplateTokenWithText[] => []),
+    // );
+
+    // const positions = Option.map(templateContext, (context) => {
+    //   const templatePosition = helper.getRelativePosition(context, position);
+    //   const textOffset = context.toOffset(templatePosition);
+    //   const documentPosition = {
+    //     start: context.node.getStart(),
+    //     end: context.node.getEnd(),
+    //   };
+    //   return {
+    //     templatePosition,
+    //     textOffset,
+    //     documentPosition,
+    //   };
+    // });
+
+    // const tokenAtPosition = Option.map(positions, (x) =>
+    //   getTokenAtPosition(parsedTemplate, x.textOffset),
+    // );
+
+    const completionRules = Option.map(resource, (node) => {
+      return intellisense.findRuleCompletions(
+        node.tokenAtPosition,
+        node.positions.relative.offset,
       );
+    });
+    //  Option.zipWith(tokenAtPosition, positions, (token, pos) =>
+    //   intellisense.findRuleCompletions(token, pos.textOffset),
+    // );
 
-      return completionByToken;
+    const completionEntries = Option.zipWith(resource, completionRules, (node, rules) => {
+      
+      return ReadonlyArray.map(rules, (rule, i) => {
+        const documentPosition = node.node.pos + 1;
+        const documentStart = rule.token.start + documentPosition;
+        const documentEnd = rule.token.end + documentPosition;
+        const replacementSpan: ts.TextSpan = {
+          start: node.context.toOffset(node.context.toPosition(documentStart)),
+          length:
+            node.context.toOffset(node.context.toPosition(documentEnd)) -
+            node.context.toOffset(node.context.toPosition(documentStart)),
+        };
+        return {
+          ...completionRuleToEntry(rule, i),
+          replacementSpan: replacementSpan,
+        };
+      });
     });
 
-    return results;
+    return completionEntries.pipe(Option.getOrElse(() => [])) as ts.CompletionEntry[];
   });
-};
-
-const getCompletionParts = (
-  token: TemplateTokenWithText,
-): Exclude<TemplateTokenWithText, LocatedGroupTokenWithText>[] => {
-  if (token.type === 'CLASS_NAME') {
-    return [token];
-  }
-
-  if (token.type === 'ARBITRARY') {
-    return [token];
-  }
-  if (token.type === 'VARIANT') {
-    return [token];
-  }
-  if (token.type === 'VARIANT_CLASS') {
-    return [token];
-  }
-  if (token.type === 'GROUP') {
-    const classNames = token.value.content.flatMap((x) => {
-      return getCompletionParts(x);
-    });
-    return classNames;
-  }
-
-  return [];
 };

@@ -1,45 +1,15 @@
-import { Stream } from 'effect';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import * as ReadonlyArray from 'effect/ReadonlyArray';
 import { __Theme__ } from '@native-twin/core';
 import { TSPluginService } from '../plugin/ts-plugin.context';
-import { LocatedSheetEntry } from '../template/template.types';
-import { getRuleInfo, RuleInfo } from './intellisense.utils';
-
-interface CommonCompletionToken {
-  name: string;
-  position: number;
-  index: number;
-}
-export interface ClassCompletionToken extends CommonCompletionToken {
-  kind: 'class';
-  property: string;
-  themeSection: string;
-  canBeNegative: boolean;
-  isColor: boolean;
-  themeValue: string | null;
-}
-
-export interface VariantCompletionToken extends CommonCompletionToken {
-  kind: 'variant';
-}
-
-export type CompletionToken = ClassCompletionToken | VariantCompletionToken;
-
-export interface CompletionItemLocation {
-  position: number;
-  index: number;
-}
-
-interface TwinRule {
-  ruleInfo: RuleInfo;
-  completion: {
-    className: string;
-    declarations: string[];
-    declarationValue: string;
-  };
-}
+import {
+  LocatedGroupTokenWithText,
+  TemplateTokenWithText,
+} from '../template/template.types';
+import { TwinRule, VariantCompletionToken } from './intellisense.types';
+import { RuleInfo } from './intellisense.utils';
 
 export class IntellisenseService extends Context.Tag('plugin/IntellisenseService')<
   IntellisenseService,
@@ -48,7 +18,10 @@ export class IntellisenseService extends Context.Tag('plugin/IntellisenseService
       twinVariants: Map<string, VariantCompletionToken>;
       twinRules: Map<string, TwinRule>;
     };
-    findRuleCompletions: (rule: LocatedSheetEntry) => TwinRule[];
+    findRuleCompletions: (
+      rule: TemplateTokenWithText[],
+      position: number,
+    ) => (TwinRule & { token: TemplateTokenWithText })[];
   }
 >() {}
 
@@ -96,21 +69,21 @@ export const IntellisenseServiceLive = Layer.scoped(
         twinVariants,
         twinRules,
       },
-      findRuleCompletions: (rule) => {
-        Stream.fromIterable(twinRules);
-        // .pipe(Stream.filter(x => {
-        //   x.completion.
-        // }))
-        return Array.from(twinRules.values()).filter((x) => {
-          if (
-            x.completion.className.startsWith(rule.className) ||
-            rule.className.startsWith(x.ruleInfo.pattern) ||
-            x.ruleInfo.compositions.some((y) => y.composed.startsWith(rule.className))
-          ) {
-            return true;
-          }
-          return false;
-        });
+      findRuleCompletions: (tokens, position) => {
+        const positionToken = tokens
+          .map((x) => getCompletionParts(x))
+          .flat()
+          .filter((x) => {
+            return position >= x.start && position <= x.end;
+          });
+        const collected = ReadonlyArray.map(positionToken, (token) => {
+          const completionByToken = Array.from(twinRules.values()).filter((x) =>
+            x.completion.className.startsWith(token.text),
+          );
+          return completionByToken.map((x) => ({ ...x, token }));
+        }).flat();
+
+        return collected;
       },
     });
   }),
@@ -133,7 +106,7 @@ const buildRulesInfo = Effect.gen(function* ($) {
     };
   }[] = [];
   for (const rule of tw.config.rules) {
-    const ruleInfo = getRuleInfo(rule);
+    const ruleInfo = new RuleInfo(rule);
     const values =
       ruleInfo.themeSection === 'colors'
         ? colorPalette
@@ -147,3 +120,29 @@ const buildRulesInfo = Effect.gen(function* ($) {
 
   return combined;
 });
+
+const getCompletionParts = (
+  token: TemplateTokenWithText,
+): Exclude<TemplateTokenWithText, LocatedGroupTokenWithText>[] => {
+  if (token.type === 'CLASS_NAME') {
+    return [token];
+  }
+
+  if (token.type === 'ARBITRARY') {
+    return [token];
+  }
+  if (token.type === 'VARIANT') {
+    return [token];
+  }
+  if (token.type === 'VARIANT_CLASS') {
+    return [token];
+  }
+  if (token.type === 'GROUP') {
+    const classNames = token.value.content.flatMap((x) => {
+      return getCompletionParts(x);
+    });
+    return classNames;
+  }
+
+  return [];
+};
