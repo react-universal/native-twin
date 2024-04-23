@@ -8,36 +8,12 @@ import {
   parsedRuleToClassName,
 } from '@native-twin/css';
 import {
-  LocatedGroupToken,
   LocatedGroupTokenWithText,
   LocatedParsedRule,
   LocatedParser,
   LocatedSheetEntry,
   TemplateTokenWithText,
-} from './template.types';
-
-export const getTokenAtPosition = (
-  tokens: TemplateTokenWithText[],
-  position: number,
-): TemplateTokenWithText[] => {
-  return tokens
-    .filter((x) => position >= x.start && position <= x.end)
-    .map((x) => {
-      if (x.type === 'VARIANT') {
-        return {
-          ...x,
-          type: 'GROUP',
-          value: {
-            base: x,
-            content: [],
-          },
-          end: x.end,
-          start: x.start,
-        } satisfies LocatedGroupToken;
-      }
-      return x;
-    });
-};
+} from '../template/template.types';
 
 export const classNameTokenToRule = (
   token: LocatedParser<ClassNameToken>,

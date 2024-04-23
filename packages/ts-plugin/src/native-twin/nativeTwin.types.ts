@@ -1,4 +1,5 @@
-import { RuleInfo } from "./intellisense.utils";
+import { TemplateTokenWithText } from '../template/template.types';
+import { TwinRuleWithCompletion } from './nativeTwin.rules';
 
 interface CommonCompletionToken {
   name: string;
@@ -25,11 +26,7 @@ export interface CompletionItemLocation {
   index: number;
 }
 
-export interface TwinRule {
-  ruleInfo: RuleInfo;
-  completion: {
-    className: string;
-    declarations: string[];
-    declarationValue: string;
-  };
+export interface CompletionRuleWithToken {
+  ruleInfo: TwinRuleWithCompletion;
+  token: TemplateTokenWithText;
 }

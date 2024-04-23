@@ -6,7 +6,7 @@ import {
   InternalTwFn,
   InternalTwinConfig,
   InternalTwinThemeContext,
-} from '../intellisense/intellisense.config';
+} from './nativeTwin.config';
 import { NativeTwinPluginConfiguration } from '../plugin.types';
 
 interface TSPluginContext {

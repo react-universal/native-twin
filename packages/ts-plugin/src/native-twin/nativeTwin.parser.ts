@@ -11,7 +11,7 @@ import {
   LocatedParser,
   TemplateToken,
   TemplateTokenWithText,
-} from './template.types';
+} from '../template/template.types';
 
 const mapWithLocation = <A extends object>(
   x: P.ParserState<A, any>,
@@ -72,17 +72,16 @@ const parseRuleGroupWeak: P.Parser<LocatedParser<LocatedGroupToken>> = P.choice(
     ),
 );
 
-export const parseTemplate = (template: string): TemplateTokenWithText[] => {
-  const weakParser = P.sequenceOf([
-    P.many1(P.whitespaceSurrounded(parseValidTokenRecursiveWeak)),
-    P.maybe(P.optionalWhitespace),
-    P.endOfInput,
-  ]).run(template);
-  if (weakParser.isError) {
+export const parseTemplate = (template: string): TemplateTokenWithText[] => {  
+  const parsed = P.many(
+    P.whitespaceSurrounded(P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName])),
+  ).run(template);
+
+  if (parsed.isError) {
     return [];
   }
 
-  const data = addTextToTemplateTokens(weakParser.result[0], template);
+  const data = addTextToTemplateTokens(parsed.result, template);
 
   return data;
 };

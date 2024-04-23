@@ -1,11 +1,15 @@
+import { Option } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import ts from 'typescript/lib/tsserverlibrary';
-import { getCompletionsAtPosition } from './completions/completions.context';
-import { createTwin } from './intellisense/intellisense.config';
-import { IntellisenseServiceLive } from './intellisense/intellisense.service';
-import { buildTSPluginService } from './plugin/ts-plugin.context';
-import { createTemplateService } from './template/template.services';
+import {
+  getCompletionEntryDetails,
+  getCompletionsAtPosition,
+} from './completions/completions.context';
+import { NativeTwinServiceLive } from './native-twin/nativeTwin.service';
+import { buildTSPluginService } from './plugin/TSPlugin.service';
+import { createTwin } from './plugin/nativeTwin.config';
+import { TemplateSourceHelperServiceLive } from './template/template.service';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
   function create(info: ts.server.PluginCreateInfo) {
@@ -32,32 +36,16 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       },
     });
 
-    const TemplateServiceLive = createTemplateService(modules.typescript, info);
-
-    const layer = Layer.mergeAll(IntellisenseServiceLive, TemplateServiceLive);
-
-    proxy.getCompletionEntrySymbol = (filename, position, name, source) => {
-      const result = info.languageService.getCompletionEntrySymbol(
-        filename,
-        position,
-        name,
-        source,
-      );
-      return result;
-    };
+    const layer = Layer.mergeAll(
+      NativeTwinServiceLive,
+      TemplateSourceHelperServiceLive,
+    ).pipe(Layer.provide(PluginServiceLive));
 
     proxy.getCompletionsAtPosition = (fileName, position, _options, _formatSettings) => {
-      const original = info.languageService.getCompletionsAtPosition(
-        fileName,
-        position,
-        _options,
-        _formatSettings,
-      );
-      console.log('ORIGINAL: ', original);
       const runnable = Effect.provide(
         getCompletionsAtPosition(fileName, position),
         layer,
-      ).pipe(Effect.provide(PluginServiceLive));
+      );
 
       const completionEntries = Effect.runSync(runnable);
 
@@ -69,25 +57,18 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       };
     };
 
-    proxy.getCompletionEntryDetails = (
-      fileName,
-      position,
-      name,
-      _format,
-      _source,
-      _preferences,
-      _data,
-    ) => {
-      const original = info.languageService.getCompletionEntryDetails(
-        fileName,
-        position,
-        name,
-        _format,
-        _source,
-        _preferences,
-        _data,
+    proxy.getCompletionEntryDetails = (fileName, position, name) => {
+      const runnable = Effect.provide(
+        getCompletionEntryDetails(fileName, position, name),
+        layer,
       );
-      return original;
+
+      const completionEntries = Effect.runSync(runnable);
+
+      return Option.match(completionEntries, {
+        onNone: () => undefined,
+        onSome: (x) => x,
+      });
     };
 
     return proxy;
