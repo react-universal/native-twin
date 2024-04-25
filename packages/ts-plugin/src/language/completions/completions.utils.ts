@@ -1,68 +1,53 @@
 import { TinyColor } from '@ctrl/tinycolor';
 import ts from 'typescript';
 import * as vscode from 'vscode-languageserver-types';
-import { RuleInfo, TwinRuleWithCompletion } from '../native-twin/nativeTwin.rules';
-import { CompletionRuleWithToken } from '../native-twin/nativeTwin.types';
+import {
+  TwinRuleCompletionWithToken,
+  TwinRuleParts,
+  TwinRuleWithCompletion,
+} from '../../native-twin/nativeTwin.types';
+import { getDocumentation } from '../utils/documentation';
 
 export const completionRuleToEntry = (
-  completionRule: CompletionRuleWithToken,
+  completionRule: TwinRuleCompletionWithToken,
   replacementSpan: ts.TextSpan,
   index: number,
 ): ts.CompletionEntry => {
-  const { ruleInfo: rule } = completionRule;
+  const { value } = completionRule;
   return {
     kind: getCompletionTokenKind(completionRule),
-    filterText: rule.completion.className,
-    kindModifiers: getKindModifiers(rule.twinRule),
-    name: rule.completion.className,
+    filterText: value.completion.className,
+    kindModifiers: getKindModifiers(value.rule),
+    name: value.completion.className,
     sortText: index.toString().padStart(8, '0'),
     sourceDisplay: getCompletionEntryDetailsDisplayParts({
-      completion: rule.completion,
-      twinRule: rule.twinRule,
+      completion: value.completion,
+      composition: value.composition,
+      rule: value.rule,
     }),
     replacementSpan,
-    insertText: rule.completion.className,
-    source: rule.completion.className,
+    insertText: value.completion.className,
+    source: value.completion.className,
     isRecommended: true,
   };
 };
 
-export function getDocumentation({ completion, twinRule }: TwinRuleWithCompletion) {
-  if (!twinRule.property || !completion.declarationValue) return '';
-  const result: string[] = [];
-  // result.push('***Css Rules*** \n\n');
-  // result.push(`${'```css\n'}${data.css}${'\n```'}`);
-  // result.push('\n\n');
-  const prop = completion.declarations.reduce(
-    (prev, current) => {
-      return {
-        [current]: completion.declarationValue,
-        ...prev,
-      };
-    },
-    {} as Record<string, any>,
-  );
-  result.push('***React Native StyleSheet*** \n\n');
-  result.push(`${'```json\n'}${JSON.stringify(prop, null, 2)}${'\n```'}`);
-  return result.join('\n\n');
-}
-
 function getCompletionTokenKind({
   token,
-  ruleInfo,
-}: CompletionRuleWithToken): ts.ScriptElementKind {
+  value,
+}: TwinRuleCompletionWithToken): ts.ScriptElementKind {
   if (token.type === 'VARIANT' || token.type === 'VARIANT_CLASS') {
     return ts.ScriptElementKind.moduleElement;
   }
 
-  if (ruleInfo.twinRule.themeSection == 'colors') {
+  if (value.rule.themeSection == 'colors') {
     return ts.ScriptElementKind.primitiveType;
   }
 
   return ts.ScriptElementKind.string;
 }
 
-function getKindModifiers(item: RuleInfo): string {
+function getKindModifiers(item: TwinRuleParts): string {
   if (item.meta.feature === 'colors' || item.themeSection === 'colors') {
     return 'color';
   }
@@ -70,10 +55,10 @@ function getKindModifiers(item: RuleInfo): string {
 }
 
 export function getCompletionEntryDetailsDisplayParts({
-  twinRule,
+  rule,
   completion,
 }: TwinRuleWithCompletion): ts.SymbolDisplayPart[] {
-  if (twinRule.meta.feature === 'colors' || twinRule.themeSection === 'colors') {
+  if (rule.meta.feature === 'colors' || rule.themeSection === 'colors') {
     const hex = new TinyColor(completion.declarationValue);
     if (hex.isValid) {
       return [

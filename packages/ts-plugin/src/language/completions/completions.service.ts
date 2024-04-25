@@ -1,10 +1,14 @@
-import { HashSet, ReadonlyArray } from 'effect';
 import * as Effect from 'effect/Effect';
+import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
+import * as ReadonlyArray from 'effect/ReadonlyArray';
 import ts from 'typescript';
-import { NativeTwinService } from '../native-twin/nativeTwin.service';
-import { acquireTemplateNode } from '../template/TemplateNode.service';
-import { completionRuleToEntry, createCompletionEntryDetails } from './completions.utils';
+import {
+  completionRuleToEntry,
+  createCompletionEntryDetails,
+} from './completions.utils';
+import { NativeTwinService } from '../../native-twin/nativeTwin.service';
+import { acquireTemplateNode } from '../../template/TemplateNode.service';
 
 export const getCompletionsAtPosition = (filename: string, position: number) => {
   return Effect.gen(function* ($) {

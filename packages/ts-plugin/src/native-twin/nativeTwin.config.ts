@@ -56,7 +56,7 @@ const loadUserTwinConfigFile = (info: ts.server.PluginCreateInfo): InternalTwinC
   const fileExists = info.project.projectService.host.fileExists(file);
   if (fileExists) {
     const config = requireJS(file);
-    return config;
+    return defineConfig(config);
   }
   return defineConfig({
     content: [],

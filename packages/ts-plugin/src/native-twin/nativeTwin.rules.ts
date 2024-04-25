@@ -1,84 +1,45 @@
-import * as Equal from 'effect/Equal';
-import * as Hash from 'effect/Hash';
-import { Rule, RuleMeta } from '@native-twin/core';
-import {
-  CompleteStyle,
-  cornerMap,
-  directionMap,
-  TWScreenValueConfig,
-} from '@native-twin/css';
+import { RuleMeta } from '@native-twin/core';
+import { cornerMap, directionMap, TWScreenValueConfig } from '@native-twin/css';
 import { ColorsRecord, asArray } from '@native-twin/helpers';
-import { InternalTwinConfig } from '../plugin/nativeTwin.config';
+import { DEFAULT_RULE_META } from '../utils/constants.utils';
+import {
+  InternalNativeTwinRule,
+  TwinRuleParts,
+  TwinRuleWithCompletion,
+} from './nativeTwin.types';
 
-export type InternalNativeTwinRule = Rule<InternalTwinConfig['theme']>;
+export function getRuleParts(rule: InternalNativeTwinRule): TwinRuleParts {
+  const pattern = rule[0];
+  const resolver = rule[2];
+  const meta = rule[3] ?? DEFAULT_RULE_META;
+  let themeSection: TwinRuleParts['themeSection'];
+  let property: TwinRuleParts['property'];
 
-export class TwinRuleWithCompletion {
-  constructor(
-    readonly twinRule: RuleInfo,
-    readonly completion: {
-      className: string;
-      declarations: string[];
-      declarationValue: string;
-    },
-  ) {}
+  if (meta.styleProperty) {
+    themeSection = rule[1];
+    property = meta.styleProperty;
+  } else if (meta.prefix && meta.prefix !== '') {
+    property = meta.prefix;
+    themeSection = rule[1];
+  } else {
+    themeSection = rule[1];
+    property = rule[1];
+  }
+
+  return {
+    pattern,
+    resolver,
+    themeSection,
+    property,
+    meta,
+  };
 }
 
-export class RuleInfo implements Equal.Equal {
-  private readonly pattern: string;
-  readonly property: InternalNativeTwinRule[1] | keyof CompleteStyle | (string & {});
-  readonly themeSection: InternalNativeTwinRule[1] | (string & {});
-  readonly resolver: InternalNativeTwinRule[2];
-  readonly meta: RuleMeta;
-
-  constructor(rule: InternalNativeTwinRule) {
-    this.pattern = rule[0];
-    this.resolver = rule[2];
-    this.meta = rule[3] ?? RuleInfo.defaultRuleMeta;
-    if (this.meta.styleProperty) {
-      this.themeSection = rule[1];
-      this.property = this.meta.styleProperty;
-    } else if (this.meta.prefix && this.meta.prefix !== '') {
-      this.property = this.meta.prefix;
-      this.themeSection = rule[1];
-    } else {
-      this.themeSection = rule[1];
-      this.property = rule[1];
-    }
-  }
-
-  get compositions() {
-    return createCompositions(this.pattern, this.meta);
-  }
-
-  createClassNames(values: Record<string, TWScreenValueConfig> | ColorsRecord) {
-    return createRuleClassNames(values, this.compositions, this.meta, this.property);
-  }
-
-  private static get defaultRuleMeta(): RuleMeta {
-    return {
-      prefix: '',
-      styleProperty: undefined,
-      suffix: '',
-      support: [],
-      canBeNegative: false,
-      feature: 'default',
-    };
-  }
-
-  [Hash.symbol](): number {
-    const combine = Hash.combine(Hash.string(`${this.pattern}-${this.property}`));
-    return combine(Hash.structure(this.meta));
-  }
-
-  [Equal.symbol](that: Equal.Equal): boolean {
-    return (
-      that instanceof RuleInfo &&
-      Equal.equals(this.pattern, that.pattern) &&
-      Equal.equals(this.property, that.property) &&
-      Equal.equals(this.themeSection, that.themeSection)
-    );
-  }
-}
+export const createRuleCompositions = (rule: InternalNativeTwinRule) => {
+  const parts = getRuleParts(rule);
+  const compositions = createCompositions(parts.pattern, parts.meta);
+  return compositions.map((composition) => ({ composition, parts }));
+};
 
 export const createRuleComposer = (ruleInfo: {
   pattern: string;
@@ -131,7 +92,7 @@ const composeExpansion = (expansion: string) => {
   return `${expansion}-`;
 };
 
-const createCompositions = (pattern: string, meta: RuleInfo['meta']) => {
+export const createCompositions = (pattern: string, meta: RuleMeta) => {
   const composer = composeClassName(pattern);
   let mapper: Record<string, string[]> = {};
 
@@ -164,11 +125,10 @@ const createCompositions = (pattern: string, meta: RuleInfo['meta']) => {
   return suffixes;
 };
 
-const createRuleClassNames = (
+export const createRuleClassNames = (
   values: Record<string, TWScreenValueConfig> | ColorsRecord,
-  compositions: RuleInfo['compositions'],
-  meta: RuleInfo['meta'],
-  property: RuleInfo['property'],
+  composition: TwinRuleWithCompletion['composition'],
+  rule: TwinRuleParts,
 ) => {
   const result: {
     className: string;
@@ -177,20 +137,20 @@ const createRuleClassNames = (
   }[] = [];
   for (const key in values) {
     if (key.includes('DEFAULT')) continue;
-    const parts = compositions.map((x) => ({
-      className: `${x.composed}${key}`.replace('--', '-'),
-      declarations: x.declarationSuffixes.map((x) => `${property ?? ''}${x}`),
+    const parts = {
+      className: `${composition.composed}${key}`.replace('--', '-'),
+      declarations: composition.declarationSuffixes.map(
+        (x) => `${rule.property ?? ''}${x}${rule.meta.suffix ?? ''}`,
+      ),
       declarationValue: values[key] as string,
-    }));
-    result.push(...parts);
-    if (meta.canBeNegative) {
-      result.push(
-        ...parts.map((x) => ({
-          ...x,
-          declarationValue: `-${values[key]}`,
-          className: `-${x.className}`,
-        })),
-      );
+    };
+    result.push(parts);
+    if (rule.meta.canBeNegative) {
+      result.push({
+        ...parts,
+        declarationValue: `-${values[key]}`,
+        className: `-${parts.className}`,
+      });
     }
   }
 

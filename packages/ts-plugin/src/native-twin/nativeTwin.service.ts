@@ -1,4 +1,5 @@
 import { pipe } from 'effect';
+import * as ReadonlyArray from 'effect/ReadonlyArray'
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
@@ -9,8 +10,12 @@ import {
   LocatedGroupTokenWithText,
   TemplateTokenWithText,
 } from '../template/template.types';
-import { RuleInfo, TwinRuleWithCompletion } from './nativeTwin.rules';
-import { CompletionRuleWithToken, VariantCompletionToken } from './nativeTwin.types';
+import { createRuleClassNames, createRuleCompositions } from './nativeTwin.rules';
+import {
+  TwinRuleWithCompletion,
+  VariantCompletionToken,
+  TwinRuleCompletionWithToken,
+} from './nativeTwin.types';
 
 export class NativeTwinService extends Context.Tag('plugin/IntellisenseService')<
   NativeTwinService,
@@ -22,7 +27,7 @@ export class NativeTwinService extends Context.Tag('plugin/IntellisenseService')
     findRuleCompletions: (
       rule: TemplateTokenWithText[],
       position: number,
-    ) => HashSet.HashSet<CompletionRuleWithToken>;
+    ) => HashSet.HashSet<TwinRuleCompletionWithToken>;
   }
 >() {}
 
@@ -42,28 +47,37 @@ export const NativeTwinServiceLive = Layer.scoped(
       ...currentConfig.theme.extend?.screens,
     });
     const colorPalette = tailwind.context.colors;
-    // const context = main.tailwind.context;
 
-    const twinRules = HashSet.fromIterable(tailwind.tw.config.rules).pipe(
-      HashSet.flatMap((rule): HashSet.HashSet<TwinRuleWithCompletion> => {
-        const ruleInfo = new RuleInfo(rule);
+    const twinRules: HashSet.HashSet<TwinRuleWithCompletion> = pipe(
+      ReadonlyArray.fromIterable(tailwind.tw.config.rules),
+      ReadonlyArray.map((x) => createRuleCompositions(x)),
+      ReadonlyArray.flatten,
+      ReadonlyArray.map((x) => {
         const values =
-          ruleInfo.themeSection === 'colors'
+          x.parts.themeSection === 'colors'
             ? colorPalette
-            : tailwind.context.theme(ruleInfo.themeSection as keyof __Theme__) ?? {};
-        return HashSet.fromIterable(
-          ruleInfo
-            .createClassNames(values)
-            .map((x) => new TwinRuleWithCompletion(ruleInfo, x)),
+            : tailwind.context.theme(x.parts.themeSection as keyof __Theme__) ?? {};
+        return createRuleClassNames(values, x.composition, x.parts).map(
+          (className): TwinRuleWithCompletion => ({
+            completion: className,
+            composition: x.composition,
+            rule: x.parts,
+          }),
         );
       }),
+      ReadonlyArray.flatten,
+      ReadonlyArray.sortBy((x, y) =>
+        x.completion.className > y.completion.className ? 1 : -1,
+      ),
+      HashSet.fromIterable,
     );
 
     const twinVariants = HashSet.fromIterable(variants).pipe(
       HashSet.map((variant) => {
         return {
           kind: 'variant',
-          name: `${variant}:`,
+          name: `${variant[0]}:`,
+          value: variant[1],
           index: nextIndex++,
           position: nextIndex,
         } as const;
@@ -79,18 +93,18 @@ export const NativeTwinServiceLive = Layer.scoped(
         const positionToken = tokens
           .map((x) => getCompletionParts(x))
           .flat()
-          .filter((x) => {
-            return position >= x.start && position <= x.end;
-          });
+          .filter((x) => position >= x.start && position <= x.end);
         const collected = pipe(
           twinRules,
           HashSet.flatMap((ruleInfo) => {
             return HashSet.fromIterable(positionToken).pipe(
               HashSet.filter((x) => ruleInfo.completion.className.startsWith(x.text)),
-              HashSet.map((token) => ({
-                ruleInfo,
-                token,
-              })),
+              HashSet.map(
+                (token): TwinRuleCompletionWithToken => ({
+                  value: ruleInfo,
+                  token,
+                }),
+              ),
             );
           }),
         );

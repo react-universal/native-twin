@@ -1,4 +1,8 @@
-import { type TWParsedRule, type SheetEntry, parsedRuleToClassName } from '@native-twin/css';
+import {
+  type TWParsedRule,
+  type SheetEntry,
+  parsedRuleToClassName,
+} from '@native-twin/css';
 import { flattenColorPalette, type MaybeArray } from '@native-twin/helpers';
 import { createRuleResolver } from '../parsers/rule-handler';
 import { createVariantResolver } from '../parsers/variant-handler';
@@ -37,7 +41,10 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   // };
   const ctx: ThemeContext = {
     get colors() {
-      return flattenColorPalette(themeConfig['colors'] ?? {});
+      return flattenColorPalette(
+        Object.assign(themeConfig['colors'] ?? {}, themeConfig['extend']?.['colors'] ?? {}) ??
+          {},
+      );
     },
 
     theme: createThemeFunction(themeConfig),

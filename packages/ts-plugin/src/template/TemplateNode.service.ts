@@ -1,3 +1,6 @@
+import { pipe } from 'effect/Function';
+import * as Data from 'effect/Data';
+import * as ReadonlyArray from 'effect/ReadonlyArray';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import { parseTemplate } from '../native-twin/nativeTwin.parser';
@@ -7,6 +10,32 @@ import {
   TemplateSourceHelperService,
 } from './template.context';
 import { LocatedGroupToken } from './template.types';
+
+export class TempleNode extends Data.Class<
+  Omit<TemplateNodeShape, 'getTokenAtPosition'>
+> {
+  getTokenAtPosition(offset: number) {
+    return pipe(
+      ReadonlyArray.fromIterable(this.parsedTemplate),
+      ReadonlyArray.filter((x) => offset >= x.start && offset <= x.end),
+      ReadonlyArray.map((x) => {
+        if (x.type === 'VARIANT') {
+          return {
+            ...x,
+            type: 'GROUP',
+            value: {
+              base: x,
+              content: [],
+            },
+            end: x.end,
+            start: x.start,
+          } satisfies LocatedGroupToken;
+        }
+        return x;
+      }),
+    );
+  }
+}
 
 export const acquireTemplateNode = (
   filename: string,

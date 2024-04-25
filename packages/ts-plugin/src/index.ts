@@ -1,14 +1,14 @@
-import { Option } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
 import ts from 'typescript/lib/tsserverlibrary';
 import {
-  getCompletionEntryDetails,
-  getCompletionsAtPosition,
-} from './completions/completions.context';
+  LanguageProviderService,
+  LanguageProviderServiceLive,
+} from './language/language.service';
+import { createTwin } from './native-twin/nativeTwin.config';
 import { NativeTwinServiceLive } from './native-twin/nativeTwin.service';
 import { buildTSPluginService } from './plugin/TSPlugin.service';
-import { createTwin } from './plugin/nativeTwin.config';
 import { TemplateSourceHelperServiceLive } from './template/template.service';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
@@ -39,36 +39,39 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
     const layer = Layer.mergeAll(
       NativeTwinServiceLive,
       TemplateSourceHelperServiceLive,
+      LanguageProviderServiceLive,
     ).pipe(Layer.provide(PluginServiceLive));
 
     proxy.getCompletionsAtPosition = (fileName, position, _options, _formatSettings) => {
-      const runnable = Effect.provide(
-        getCompletionsAtPosition(fileName, position),
-        layer,
+      return Effect.gen(function* ($) {
+        const languageService = yield* $(LanguageProviderService);
+        return yield* $(languageService.getCompletionsAtPosition(fileName, position));
+      }).pipe(
+        Effect.provide(layer),
+        Effect.map((x) => ({
+          entries: x,
+          isGlobalCompletion: false,
+          isMemberCompletion: false,
+          isNewIdentifierLocation: false,
+        })),
+        Effect.runSync,
       );
-
-      const completionEntries = Effect.runSync(runnable);
-
-      return {
-        entries: completionEntries,
-        isGlobalCompletion: false,
-        isMemberCompletion: false,
-        isNewIdentifierLocation: false,
-      };
     };
 
     proxy.getCompletionEntryDetails = (fileName, position, name) => {
-      const runnable = Effect.provide(
-        getCompletionEntryDetails(fileName, position, name),
-        layer,
-      );
+      return Effect.gen(function* ($) {
+        const languageService = yield* $(LanguageProviderService);
+        return yield* $(
+          languageService.getCompletionEntryDetails(fileName, position, name),
+        );
+      }).pipe(Effect.provide(layer), Effect.runSync, Option.getOrUndefined);
+    };
 
-      const completionEntries = Effect.runSync(runnable);
-
-      return Option.match(completionEntries, {
-        onNone: () => undefined,
-        onSome: (x) => x,
-      });
+    proxy.getQuickInfoAtPosition = (fileName, position) => {
+      return Effect.gen(function* ($) {
+        const languageService = yield* $(LanguageProviderService);
+        return yield* $(languageService.getQuickInfoAtPosition(fileName, position));
+      }).pipe(Effect.provide(layer), Effect.runSync, Option.getOrUndefined);
     };
 
     return proxy;
