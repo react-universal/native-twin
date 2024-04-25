@@ -1,21 +1,13 @@
 import { pipe } from 'effect';
-import * as ReadonlyArray from 'effect/ReadonlyArray'
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
+import * as ReadonlyArray from 'effect/ReadonlyArray';
 import { __Theme__ } from '@native-twin/core';
 import { TSPluginService } from '../plugin/TSPlugin.service';
-import {
-  LocatedGroupTokenWithText,
-  TemplateTokenWithText,
-} from '../template/template.types';
 import { createRuleClassNames, createRuleCompositions } from './nativeTwin.rules';
-import {
-  TwinRuleWithCompletion,
-  VariantCompletionToken,
-  TwinRuleCompletionWithToken,
-} from './nativeTwin.types';
+import { TwinRuleWithCompletion, VariantCompletionToken } from './nativeTwin.types';
 
 export class NativeTwinService extends Context.Tag('plugin/IntellisenseService')<
   NativeTwinService,
@@ -24,10 +16,6 @@ export class NativeTwinService extends Context.Tag('plugin/IntellisenseService')
       twinVariants: HashSet.HashSet<VariantCompletionToken>;
       twinRules: HashSet.HashSet<TwinRuleWithCompletion>;
     };
-    findRuleCompletions: (
-      rule: TemplateTokenWithText[],
-      position: number,
-    ) => HashSet.HashSet<TwinRuleCompletionWithToken>;
   }
 >() {}
 
@@ -89,53 +77,6 @@ export const NativeTwinServiceLive = Layer.scoped(
         twinVariants,
         twinRules,
       },
-      findRuleCompletions: (tokens, position) => {
-        const positionToken = tokens
-          .map((x) => getCompletionParts(x))
-          .flat()
-          .filter((x) => position >= x.start && position <= x.end);
-        const collected = pipe(
-          twinRules,
-          HashSet.flatMap((ruleInfo) => {
-            return HashSet.fromIterable(positionToken).pipe(
-              HashSet.filter((x) => ruleInfo.completion.className.startsWith(x.text)),
-              HashSet.map(
-                (token): TwinRuleCompletionWithToken => ({
-                  value: ruleInfo,
-                  token,
-                }),
-              ),
-            );
-          }),
-        );
-        return collected;
-      },
     });
   }),
 );
-
-const getCompletionParts = (
-  token: TemplateTokenWithText,
-): Exclude<TemplateTokenWithText, LocatedGroupTokenWithText>[] => {
-  if (token.type === 'CLASS_NAME') {
-    return [token];
-  }
-
-  if (token.type === 'ARBITRARY') {
-    return [token];
-  }
-  if (token.type === 'VARIANT') {
-    return [token];
-  }
-  if (token.type === 'VARIANT_CLASS') {
-    return [token];
-  }
-  if (token.type === 'GROUP') {
-    const classNames = token.value.content.flatMap((x) => {
-      return getCompletionParts(x);
-    });
-    return classNames;
-  }
-
-  return [];
-};

@@ -6,33 +6,12 @@ import {
   TwinRuleParts,
   TwinRuleWithCompletion,
 } from '../../native-twin/nativeTwin.types';
-import { getDocumentation } from '../utils/documentation';
+import {
+  LocatedGroupTokenWithText,
+  TemplateTokenWithText,
+} from '../../template/template.types';
 
-export const completionRuleToEntry = (
-  completionRule: TwinRuleCompletionWithToken,
-  replacementSpan: ts.TextSpan,
-  index: number,
-): ts.CompletionEntry => {
-  const { value } = completionRule;
-  return {
-    kind: getCompletionTokenKind(completionRule),
-    filterText: value.completion.className,
-    kindModifiers: getKindModifiers(value.rule),
-    name: value.completion.className,
-    sortText: index.toString().padStart(8, '0'),
-    sourceDisplay: getCompletionEntryDetailsDisplayParts({
-      completion: value.completion,
-      composition: value.composition,
-      rule: value.rule,
-    }),
-    replacementSpan,
-    insertText: value.completion.className,
-    source: value.completion.className,
-    isRecommended: true,
-  };
-};
-
-function getCompletionTokenKind({
+export function getCompletionTokenKind({
   token,
   value,
 }: TwinRuleCompletionWithToken): ts.ScriptElementKind {
@@ -47,7 +26,7 @@ function getCompletionTokenKind({
   return ts.ScriptElementKind.string;
 }
 
-function getKindModifiers(item: TwinRuleParts): string {
+export function getKindModifiers(item: TwinRuleParts): string {
   if (item.meta.feature === 'colors' || item.themeSection === 'colors') {
     return 'color';
   }
@@ -89,4 +68,50 @@ export function createCompletionEntryDetails(
       },
     ],
   };
+}
+
+export type CompletionPart = Exclude<TemplateTokenWithText, LocatedGroupTokenWithText>;
+export const getCompletionParts = (token: TemplateTokenWithText): CompletionPart[] => {
+  if (token.type === 'CLASS_NAME') {
+    return [token];
+  }
+
+  if (token.type === 'ARBITRARY') {
+    return [token];
+  }
+  if (token.type === 'VARIANT') {
+    return [token];
+  }
+  if (token.type === 'VARIANT_CLASS') {
+    return [token];
+  }
+  if (token.type === 'GROUP') {
+    const classNames = token.value.content.flatMap((x) => {
+      return getCompletionParts(x);
+    });
+    return classNames;
+  }
+
+  return [];
+};
+
+export function getDocumentation({ completion, rule }: TwinRuleWithCompletion) {
+  if (!rule.property || !completion.declarationValue) return '';
+  const result: string[] = [];
+  // result.push('***Css Rules*** \n\n');
+  // result.push(`${'```css\n'}${data.css}${'\n```'}`);
+  // result.push('\n\n');
+  const prop = completion.declarations.reduce(
+    (prev, current) => {
+      return {
+        [current]: completion.declarationValue,
+        ...prev,
+      };
+    },
+    {} as Record<string, any>,
+  );
+  result.push('***React Native StyleSheet*** \n\n');
+  result.push(`***className: ${completion.className}*** \n\n`);
+  result.push(`${'```json\n'}${JSON.stringify(prop, null, 2)}${'\n```'}`);
+  return result.join('\n\n');
 }
