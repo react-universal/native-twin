@@ -1,10 +1,10 @@
 import type ts from 'typescript/lib/tsserverlibrary';
-import type { SynchronizedConfiguration } from '../../types'
+import type { NativeTwinPluginConfiguration } from '../../types'
 import type { Matcher } from '../utils/match';
 
 export const getSourceMatchers = (
   { SyntaxKind }: typeof ts,
-  configManager: SynchronizedConfiguration,
+  configManager: NativeTwinPluginConfiguration,
 ): Matcher[] => [
   // tw`...`
   {

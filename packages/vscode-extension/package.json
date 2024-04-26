@@ -103,22 +103,18 @@
           }
         }
       }
-    ],
-    "typescriptServerPlugins": [
-      {
-        "name": "@native-twin/ts-plugin",
-        "enableForWorkspaceTypeScriptVersions": true
-      }
     ]
   },
   "activationEvents": [
     "onStartupFinished"
   ],
   "dependencies": {
+    "@ctrl/tinycolor": "3.6.0",
     "@effect/schema": "^0.64.20",
     "@native-twin/ts-plugin": "workspace:*",
     "clear-module": "4.1.2",
     "effect": "^2.4.18",
+    "ts-morph": "^22.0.0",
     "vscode-languageclient": "^9.0.1",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.11"

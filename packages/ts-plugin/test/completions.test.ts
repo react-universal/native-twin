@@ -18,9 +18,12 @@ describe('Completions', () => {
     await server.close();
     const completionsResponse = getFirstResponseOfType('completions', server);
     // console.log('RESPONSE: ', JSON.stringify(completionsResponse, null, 2));
+    if (completionsResponse.body) {
+      console.log('SIZE: ', completionsResponse.body.length);
+    }
 
     expect(completionsResponse.success).toBeTruthy();
-  }, 1000000);
+  });
 
   // it('Completions for partial className', () => {
   //   const server = createServerWithMockFile('const q = css`bg-`');

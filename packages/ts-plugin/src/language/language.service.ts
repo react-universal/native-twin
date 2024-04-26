@@ -16,25 +16,17 @@ import {
   filterCompletionByTemplateOffset,
 } from './utils/transforms';
 
-export class LanguageProviderService extends Context.Tag('providers/hover')<
+export class LanguageProviderService extends Context.Tag('language/service')<
   LanguageProviderService,
   {
     getQuickInfoAtPosition: (
       filename: string,
       position: number,
-    ) => Effect.Effect<
-      Option.Option<ts.QuickInfo>,
-      never,
-      TemplateSourceHelperService | NativeTwinService
-    >;
+    ) => Effect.Effect<Option.Option<ts.QuickInfo>>;
     getCompletionsAtPosition: (
       filename: string,
       position: number,
-    ) => Effect.Effect<
-      ts.CompletionEntry[],
-      never,
-      TemplateSourceHelperService | NativeTwinService
-    >;
+    ) => Effect.Effect<ts.CompletionEntry[]>;
     getCompletionEntryDetails: (
       fileName: string,
       position: number,
@@ -43,16 +35,21 @@ export class LanguageProviderService extends Context.Tag('providers/hover')<
   }
 >() {}
 
-export const LanguageProviderServiceLive = Layer.scoped(
+export const LanguageProviderServiceLive = Layer.effect(
   LanguageProviderService,
   Effect.gen(function* ($) {
     const twinService = yield* $(NativeTwinService);
+    const templateService = yield* $(TemplateSourceHelperService);
 
     return {
       getCompletionsAtPosition(filename, position) {
         return Effect.gen(function* ($) {
-          const resource = yield* $(acquireTemplateNode(filename, position));
-          const completionTokens = yield* $(createCompletionsWithToken(resource));
+          const resource = yield* $(
+            acquireTemplateNode(filename, position, templateService),
+          );
+          const completionTokens = yield* $(
+            createCompletionsWithToken(resource, twinService),
+          );
           const completionRules = filterCompletionByTemplateOffset(
             completionTokens,
             Option.map(resource, (x) => x.positions.relative.offset).pipe(
@@ -69,28 +66,10 @@ export const LanguageProviderServiceLive = Layer.scoped(
           ) as ts.CompletionEntry[];
         });
       },
-      getQuickInfoAtPosition(filename, position) {
-        return Effect.gen(function* ($) {
-          const resource = yield* $(acquireTemplateNode(filename, position));
-          const completionTokens = yield* $(createCompletionsWithToken(resource));
 
-          const completionRules2 = filterCompletionByTemplateOffset(
-            completionTokens,
-            Option.map(resource, (x) => x.positions.relative.offset).pipe(
-              Option.getOrElse(() => 0),
-            ),
-          );
-
-          const quickInfo = Option.flatMap(resource, (node) => {
-            return completionRulesToQuickInfo(node, completionRules2);
-          });
-
-          return quickInfo;
-        });
-      },
       getCompletionEntryDetails(fileName, position, name) {
         return Effect.sync(function () {
-          const completionEntryDetails = twinService.store.twinRules.pipe(
+          return twinService.store.twinRules.pipe(
             HashSet.filter((x) => x.completion.className === name),
             HashSet.map((x) => createCompletionEntryDetails(x)),
             HashSet.values,
@@ -98,8 +77,28 @@ export const LanguageProviderServiceLive = Layer.scoped(
             ReadonlyArray.fromIterable,
             ReadonlyArray.head,
           );
+        });
+      },
 
-          return completionEntryDetails;
+      getQuickInfoAtPosition(filename, position) {
+        return Effect.gen(function* ($) {
+          const resource = yield* $(
+            acquireTemplateNode(filename, position, templateService),
+          );
+          const completionTokens = yield* $(
+            createCompletionsWithToken(resource, twinService),
+          );
+
+          const completionRules = filterCompletionByTemplateOffset(
+            completionTokens,
+            Option.map(resource, (x) => x.positions.relative.offset).pipe(
+              Option.getOrElse(() => 0),
+            ),
+          );
+
+          return Option.flatMap(resource, (node) => {
+            return completionRulesToQuickInfo(node, completionRules);
+          });
         });
       },
     };

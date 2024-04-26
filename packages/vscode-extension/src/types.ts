@@ -1,9 +1,12 @@
-export interface SynchronizedConfiguration {
-  tags: ReadonlyArray<string>;
-  attributes: ReadonlyArray<string>;
-  styles: ReadonlyArray<string>;
+export interface NativeTwinPluginConfiguration {
+  tags: string[];
+  attributes: string[];
+  styles: string[];
   debug: boolean;
   enable: boolean;
+  trace: {
+    server: string;
+  };
 }
 
 export type Logger = (message: string) => void;

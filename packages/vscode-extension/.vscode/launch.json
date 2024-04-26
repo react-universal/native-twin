@@ -36,9 +36,9 @@
         "${workspaceFolder}/../**",
         "!**/node_modules/**"
       ],
-      "sourceMapPathOverrides": {
-        "📦 @lib/ts-plugin": "${workspaceFolder}../ts-plugin/*"
-      }
+      // "sourceMapPathOverrides": {
+      //   "📦 @lib/ts-plugin": "${workspaceFolder}../ts-plugin/*"
+      // }
     }
   ],
 }

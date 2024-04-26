@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
-import { Logger, State, SynchronizedConfiguration } from '../../types';
+import { Logger, State, NativeTwinPluginConfiguration } from '../../types';
 import {
+  DOCUMENT_SELECTORS,
   configurationSection,
   pluginId,
   typeScriptExtensionId,
@@ -96,17 +97,40 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
   context.subscriptions.push(packageWatcher.onDidChange(listener));
   context.subscriptions.push(packageWatcher.onDidDelete(listener));
 
+  log('COMMANDS: ' + JSON.stringify(await vscode.commands.getCommands(true), null, 2));
+  context.subscriptions.push(
+    vscode.languages.registerCompletionItemProvider(
+      DOCUMENT_SELECTORS,
+      {
+        provideCompletionItems(document, position, token, context) {
+          log('DOC: ' + JSON.stringify({ document, position, token, context }, null, 2));
+          return undefined;
+        },
+        resolveCompletionItem(item, token) {
+          log('RESOLVE' + JSON.stringify({ item, token }, null, 2));
+          return undefined;
+        },
+      },
+      '`',
+    ),
+  );
+
   await update();
 }
 
 async function activateTypescriptPlugin(log: Logger) {
   const extension = vscode.extensions.getExtension(typeScriptExtensionId);
   if (!extension) {
-    log(`Extension ${typeScriptExtensionId} not found. No IntelliSense will be provided.`);
+    log(
+      `Extension ${typeScriptExtensionId} not found. No IntelliSense will be provided.`,
+    );
     return;
   }
 
-  await extension.activate();
+  const ext = await extension.activate();
+  if (!ext) {
+    log(`can not get the extension activated`);
+  }
 
   const api = extension.exports?.getAPI?.(0);
 
@@ -142,14 +166,17 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
   api.configurePlugin(pluginId, config);
 }
 
-function getConfiguration(): SynchronizedConfiguration {
+function getConfiguration(): NativeTwinPluginConfiguration {
   const config = vscode.workspace.getConfiguration(configurationSection);
-  const outConfig: SynchronizedConfiguration = {
+  const outConfig: NativeTwinPluginConfiguration = {
     tags: ['tw', 'apply', 'css', 'variants'],
     attributes: ['tw', 'class', 'className', 'variants'],
     styles: ['style', 'styled', 'variants'],
     debug: false,
     enable: true,
+    trace: {
+      server: 'off',
+    },
   };
 
   withConfigValue<string[]>(config, 'tags', (tags) => {

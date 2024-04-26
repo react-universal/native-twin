@@ -67,7 +67,7 @@ export const TemplateSourceHelperServiceLive = Layer.scoped(
         };
       },
 
-      getTemplateNode(fileName, position) {
+      getTemplateSourceNode(fileName, position) {
         const node = helper.getNode(fileName, position);
         return Option.fromNullable(node).pipe(
           Option.flatMap((x) => {

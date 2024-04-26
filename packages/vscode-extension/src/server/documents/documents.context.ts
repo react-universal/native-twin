@@ -3,7 +3,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { TextDocuments } from 'vscode-languageserver/node';
-import { ConnectionContext } from '../connection/connection.context';
+import { ConnectionService } from '../connection/connection.service';
 
 export class DocumentsService extends Ctx.Tag('vscode/DocumentsService')<
   DocumentsService,
@@ -13,7 +13,8 @@ export class DocumentsService extends Ctx.Tag('vscode/DocumentsService')<
 export const DocumentsServiceLive = Layer.effect(
   DocumentsService,
   Effect.gen(function* ($) {
-    const connection = yield* $(ConnectionContext);
+    const connectionRef = yield* $(ConnectionService);
+    const connection = yield* $(connectionRef.connectionRef.get)
     const handler = new TextDocuments(TextDocument);
 
     // handler.onDidChangeContent((change) => {

@@ -1,5 +1,7 @@
 // import { TinyColor } from '@ctrl/tinycolor';
-import ts from 'typescript';
+import { TinyColor } from '@ctrl/tinycolor';
+import { CompletionItemKind } from 'vscode-languageserver';
+import { FinalSheet } from '@native-twin/css';
 import {
   TwinRuleCompletionWithToken,
   TwinRuleParts,
@@ -13,16 +15,16 @@ import {
 export function getCompletionTokenKind({
   token,
   rule,
-}: TwinRuleCompletionWithToken): ts.ScriptElementKind {
-  if (token.type === 'VARIANT' || token.type === 'VARIANT_CLASS') {
-    return ts.ScriptElementKind.moduleElement;
-  }
-
+}: TwinRuleCompletionWithToken): CompletionItemKind {
   if (rule.themeSection == 'colors') {
-    return ts.ScriptElementKind.constElement;
+    return CompletionItemKind.Color;
   }
 
-  return ts.ScriptElementKind.string;
+  if (token.type === 'VARIANT' || token.type === 'VARIANT_CLASS') {
+    return CompletionItemKind.Constant;
+  }
+
+  return CompletionItemKind.Constant;
 }
 
 export function getKindModifiers(item: TwinRuleParts): string {
@@ -35,43 +37,47 @@ export function getKindModifiers(item: TwinRuleParts): string {
 export function getCompletionEntryDetailsDisplayParts({
   rule,
   completion,
-}: TwinRuleWithCompletion): ts.SymbolDisplayPart[] {
+}: TwinRuleWithCompletion) {
   if (rule.meta.feature === 'colors' || rule.themeSection === 'colors') {
-    // const hex = new TinyColor(completion.declarationValue);
-    return [
-      {
+    const hex = new TinyColor(completion.declarationValue);
+    if (hex.isValid) {
+      return {
         kind: 'color',
-        text: completion.declarationValue,
-      },
-    ];
+        text: hex.toHexString(),
+      };
+    }
+    return {
+      kind: 'color',
+      text: completion.declarationValue,
+    };
   }
-  return [];
+  return undefined;
 }
 
-export function createCompletionEntryDetails(
-  item: TwinRuleWithCompletion,
-): ts.CompletionEntryDetails {
-  const displayParts = getCompletionEntryDetailsDisplayParts(item);
-  // const documentation = getDocumentation(item);
-  return {
-    name: item.completion.className,
-    kind: ts.ScriptElementKind.constElement,
-    kindModifiers: item.rule.themeSection === 'colors' ? 'color' : 'text',
-    sourceDisplay: [
-      {
-        kind: item.rule.themeSection === 'colors' ? 'color' : 'text',
-        text: item.completion.className,
-      },
-    ],
-    displayParts,
-    // documentation: [
-    //   {
-    //     kind: vscode.MarkupKind.Markdown,
-    //     text: documentation,
-    //   },
-    // ],
-  };
-}
+// export function createCompletionEntryDetails(
+//   item: TwinRuleWithCompletion,
+// ): ts.CompletionEntryDetails {
+//   const displayParts = getCompletionEntryDetailsDisplayParts(item);
+//   // const documentation = getDocumentation(item);
+//   return {
+//     name: item.completion.className,
+//     kind: ts.ScriptElementKind.constElement,
+//     kindModifiers: item.rule.themeSection === 'colors' ? 'color' : 'text',
+//     sourceDisplay: [
+//       {
+//         kind: item.rule.themeSection === 'colors' ? 'color' : 'text',
+//         text: item.completion.className,
+//       },
+//     ],
+//     displayParts,
+//     // documentation: [
+//     //   {
+//     //     kind: vscode.MarkupKind.Markdown,
+//     //     text: documentation,
+//     //   },
+//     // ],
+//   };
+// }
 
 export type CompletionPart = Exclude<TemplateTokenWithText, LocatedGroupTokenWithText>;
 export const getCompletionParts = (token: TemplateTokenWithText): CompletionPart[] => {
@@ -99,8 +105,8 @@ export const getCompletionParts = (token: TemplateTokenWithText): CompletionPart
 };
 
 export function getDocumentation(
-  completionRule: TwinRuleCompletionWithToken,
-  replacement: ts.TextSpan,
+  completionRule: TwinRuleWithCompletion,
+  sheetEntry: FinalSheet,
 ) {
   const { completion, rule } = completionRule;
   if (!rule.property || !completion.declarationValue) return '';
@@ -120,11 +126,12 @@ export function getDocumentation(
   result.push('***React Native StyleSheet*** \n\n');
   result.push(`***className: ${completion.className}*** \n\n`);
   result.push(`${'```json\n'}${JSON.stringify(prop, null, 2)}${'\n```'}`);
-  result.push(createDebugHover(completionRule, replacement));
+  result.push(`${'```json\n'}${JSON.stringify(sheetEntry, null, 2)}${'\n```'}`);
+  result.push(createDebugHover(completionRule));
   return result.join('\n\n');
 }
 
-export function createDebugHover(rule: TwinRuleWithCompletion, replacement: ts.TextSpan) {
+export function createDebugHover(rule: TwinRuleWithCompletion) {
   const result: string[] = [];
   result.push('********************************************\n');
   result.push('#### Debug Info');
@@ -139,10 +146,6 @@ export function createDebugHover(rule: TwinRuleWithCompletion, replacement: ts.T
 
   result.push('##### Rule:');
   result.push(`${'```json\n'}${JSON.stringify(rule.rule, null, 2)}${'\n```'}`);
-  result.push('********************************************\n');
-
-  result.push('##### Replacement Span:');
-  result.push(`${'```json\n'}${JSON.stringify(replacement, null, 2)}${'\n```'}`);
   result.push('********************************************\n');
 
   return result.join('\n\n');

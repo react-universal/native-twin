@@ -5489,6 +5489,7 @@ __metadata:
     "@vscode/test-electron": "npm:^2.3.3"
     clear-module: "npm:4.1.2"
     effect: "npm:^2.4.18"
+    ts-morph: "npm:^22.0.0"
     vscode-languageclient: "npm:^9.0.1"
     vscode-languageserver: "npm:^9.0.1"
     vscode-languageserver-textdocument: "npm:^1.0.11"
@@ -6951,6 +6952,18 @@ __metadata:
   version: 0.2.0
   resolution: "@trysound/sax@npm:0.2.0"
   checksum: 10/7379713eca480ac0d9b6c7b063e06b00a7eac57092354556c81027066eb65b61ea141a69d0cc2e15d32e05b2834d4c9c2184793a5e36bbf5daf05ee5676af18c
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.23.0":
+  version: 0.23.0
+  resolution: "@ts-morph/common@npm:0.23.0"
+  dependencies:
+    fast-glob: "npm:^3.3.2"
+    minimatch: "npm:^9.0.3"
+    mkdirp: "npm:^3.0.1"
+    path-browserify: "npm:^1.0.1"
+  checksum: 10/05eabbab5a63d71a7dac17202519d23d4d4ec30780364d4dc3096ca86291e19f0284d0592a6ee89ec257204075a985d00f4788d816a89c41d0c1e0c8d281c480
   languageName: node
   linkType: hard
 
@@ -9916,6 +9929,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"code-block-writer@npm:^13.0.1":
+  version: 13.0.1
+  resolution: "code-block-writer@npm:13.0.1"
+  checksum: 10/3da803b1149d05a09b99e150df0e6d2ac5007bcf2ddd23d72e8b3e827cb6b7cb69b695472cfbc8b46a2bca4e7c11636788b9a7e7d518f3b45d0bddcac240b4af
+  languageName: node
+  linkType: hard
+
 "code-point-at@npm:^1.0.0":
   version: 1.1.0
   resolution: "code-point-at@npm:1.1.0"
@@ -12584,7 +12604,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.7":
+"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.7, fast-glob@npm:^3.3.2":
   version: 3.3.2
   resolution: "fast-glob@npm:3.3.2"
   dependencies:
@@ -17237,6 +17257,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^9.0.3":
+  version: 9.0.4
+  resolution: "minimatch@npm:9.0.4"
+  dependencies:
+    brace-expansion: "npm:^2.0.1"
+  checksum: 10/4cdc18d112b164084513e890d6323370db14c22249d536ad1854539577a895e690a27513dc346392f61a4a50afbbd8abc88f3f25558bfbbbb862cd56508b20f5
+  languageName: node
+  linkType: hard
+
 "minimist-options@npm:^4.0.2":
   version: 4.1.0
   resolution: "minimist-options@npm:4.1.0"
@@ -17372,6 +17401,15 @@ __metadata:
   bin:
     mkdirp: bin/cmd.js
   checksum: 10/d71b8dcd4b5af2fe13ecf3bd24070263489404fe216488c5ba7e38ece1f54daf219e72a833a3a2dc404331e870e9f44963a33399589490956bff003a3404d3b2
+  languageName: node
+  linkType: hard
+
+"mkdirp@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "mkdirp@npm:3.0.1"
+  bin:
+    mkdirp: dist/cjs/src/bin.js
+  checksum: 10/16fd79c28645759505914561e249b9a1f5fe3362279ad95487a4501e4467abeb714fd35b95307326b8fd03f3c7719065ef11a6f97b7285d7888306d1bd2232ba
   languageName: node
   linkType: hard
 
@@ -22416,6 +22454,16 @@ __metadata:
     typescript: "*"
     webpack: ^5.0.0
   checksum: 10/a85d43bb6f72858d613290ac02d1d24e81c38ba2dcb98b90465dc97eb6c2036bf9a389542c1a7865548643e7ed39f063fdff2dbb3e5aafbc511de6a3eb275adf
+  languageName: node
+  linkType: hard
+
+"ts-morph@npm:^22.0.0":
+  version: 22.0.0
+  resolution: "ts-morph@npm:22.0.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.23.0"
+    code-block-writer: "npm:^13.0.1"
+  checksum: 10/e5d81d0d8d990fa9f86e285bd4052bcfa462e2f798f7eda86e11afc7d884dfdb053998dcbf79942942e8032070f8b266745e017771674a169731494fe035e192
   languageName: node
   linkType: hard
 

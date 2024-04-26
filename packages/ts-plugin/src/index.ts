@@ -39,7 +39,6 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
     const layer = Layer.mergeAll(
       NativeTwinServiceLive,
       TemplateSourceHelperServiceLive,
-      LanguageProviderServiceLive,
     ).pipe(Layer.provide(PluginServiceLive));
 
     proxy.getCompletionsAtPosition = (fileName, position, _options, _formatSettings) => {
@@ -47,31 +46,49 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
         const languageService = yield* $(LanguageProviderService);
         return yield* $(languageService.getCompletionsAtPosition(fileName, position));
       }).pipe(
+        Effect.provide(LanguageProviderServiceLive),
         Effect.provide(layer),
-        Effect.map((x) => ({
-          entries: x,
-          isGlobalCompletion: false,
-          isMemberCompletion: false,
-          isNewIdentifierLocation: false,
-        })),
+        Effect.map(
+          (x): ts.WithMetadata<ts.CompletionInfo> => ({
+            entries: x,
+            isGlobalCompletion: false,
+            isMemberCompletion: false,
+            isNewIdentifierLocation: false,
+          }),
+        ),
         Effect.runSync,
       );
     };
 
-    proxy.getCompletionEntryDetails = (fileName, position, name) => {
+    proxy.getCompletionEntrySymbol = (filename, position, bane, source) => {
+      console.log({ filename, position, bane, source });
+      return undefined;
+    };
+    proxy.getCompletionEntryDetails = (fileName, position, name, ...args) => {
+      console.log('ARGS: ', args);
       return Effect.gen(function* ($) {
         const languageService = yield* $(LanguageProviderService);
         return yield* $(
           languageService.getCompletionEntryDetails(fileName, position, name),
         );
-      }).pipe(Effect.provide(layer), Effect.runSync, Option.getOrUndefined);
+      }).pipe(
+        Effect.provide(LanguageProviderServiceLive),
+        Effect.provide(layer),
+        Effect.runSync,
+        Option.getOrUndefined,
+      );
     };
 
     proxy.getQuickInfoAtPosition = (fileName, position) => {
       return Effect.gen(function* ($) {
         const languageService = yield* $(LanguageProviderService);
         return yield* $(languageService.getQuickInfoAtPosition(fileName, position));
-      }).pipe(Effect.provide(layer), Effect.runSync, Option.getOrUndefined);
+      }).pipe(
+        Effect.provide(LanguageProviderServiceLive),
+        Effect.provide(layer),
+        Effect.runSync,
+        Option.getOrUndefined,
+      );
     };
 
     return proxy;

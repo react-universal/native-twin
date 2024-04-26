@@ -13,12 +13,12 @@
       "path": "../packages/babel"
     },
     {
-      "name": "📦 @lib/ts-plugin",
-      "path": "../packages/ts-plugin"
-    },
-    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/ts-plugin",
+      "path": "../packages/ts-plugin"
     }
   ],
   "settings": {

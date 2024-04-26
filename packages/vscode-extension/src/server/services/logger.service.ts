@@ -2,7 +2,7 @@ import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 // import { inspect } from 'util';
-import { ConnectionContext } from '../connection/connection.context';
+import { ConnectionService } from '../connection/connection.service';
 
 // export const loggerLayer = (connection: Connection) =>
 //   Logger.replace(Logger.defaultLogger, createConnectionLogger(connection));
@@ -15,10 +15,11 @@ import { ConnectionContext } from '../connection/connection.context';
  * @category Logger
  * @group Services
  */
-export const LoggerLayer = Logger.replaceEffect(
+export const LoggerLive = Logger.replaceEffect(
   Logger.defaultLogger,
   Effect.gen(function* ($) {
-    const connection = yield* $(ConnectionContext);
+    const connectionRef = yield* $(ConnectionService);
+    const connection = yield* $(connectionRef.connectionRef.get)
     return Logger.make((options) => {
       const logService = connection.console;
       const message = Logger.logfmtLogger.log(options);

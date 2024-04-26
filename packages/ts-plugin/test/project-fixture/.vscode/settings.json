@@ -2,6 +2,7 @@
     "typescript.tsdk": "node_modules/typescript/lib",
     "nativeTwin.trace.server": "verbose",
     "nativeTwin.enable": true,
+    "editor.suggest.showColors": true,
     "typescript.tsserver.log": "verbose",
     "nativeTwin.debug": true
 }

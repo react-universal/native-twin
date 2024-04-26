@@ -1,19 +1,37 @@
-import { pipe } from 'effect/Function';
 import * as Data from 'effect/Data';
-import * as ReadonlyArray from 'effect/ReadonlyArray';
 import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
+import * as ReadonlyArray from 'effect/ReadonlyArray';
+import ts from 'typescript';
+import { TemplateContext } from 'typescript-template-language-service-decorator';
 import { parseTemplate } from '../native-twin/nativeTwin.parser';
-import {
-  TemplateNodeService,
-  TemplateNodeShape,
-  TemplateSourceHelperService,
-} from './template.context';
-import { LocatedGroupToken } from './template.types';
+import { TemplateSourceHelperServiceShape } from './template.context';
+import { LocatedGroupToken, TemplateTokenWithText } from './template.types';
 
-export class TempleNode extends Data.Class<
-  Omit<TemplateNodeShape, 'getTokenAtPosition'>
-> {
+interface TemplateNodeShape {
+  readonly node:
+    | ts.StringLiteral
+    | ts.NoSubstitutionTemplateLiteral
+    | ts.TemplateExpression;
+  readonly cursorPosition: number;
+  readonly templateContext: TemplateContext;
+  readonly parsedTemplate: TemplateTokenWithText[];
+  readonly positions: {
+    relative: {
+      position: ts.LineAndCharacter;
+      offset: number;
+    };
+    document: {
+      start: number;
+      end: number;
+    };
+  };
+
+  // getTokenAtPosition(offset: number): TemplateTokenWithText[];
+}
+
+export class TemplateNode extends Data.Class<TemplateNodeShape> {
   getTokenAtPosition(offset: number) {
     return pipe(
       ReadonlyArray.fromIterable(this.parsedTemplate),
@@ -40,14 +58,10 @@ export class TempleNode extends Data.Class<
 export const acquireTemplateNode = (
   filename: string,
   position: number,
-): Effect.Effect<
-  Option.Option<TemplateNodeShape>,
-  never,
-  TemplateSourceHelperService
-> => {
-  return Effect.gen(function* ($) {
-    const templateSvc = yield* $(TemplateSourceHelperService);
-    const templateNode = templateSvc.getTemplateNode(filename, position);
+  templateSvc: TemplateSourceHelperServiceShape,
+) => {
+  return Effect.sync(() => {
+    const templateNode = templateSvc.getTemplateSourceNode(filename, position);
 
     const templateContext = templateSvc.getTemplateContext(templateNode, position);
     const parsedTemplate = Option.map(templateContext, (x) => parseTemplate(x.text));
@@ -60,7 +74,7 @@ export const acquireTemplateNode = (
           start: context.node.getStart(),
           end: context.node.getEnd(),
         };
-        return TemplateNodeService.of({
+        return new TemplateNode({
           node,
           cursorPosition: position,
           templateContext: context,
@@ -71,25 +85,6 @@ export const acquireTemplateNode = (
               offset: textOffset,
             },
             document: documentPosition,
-          },
-          getTokenAtPosition(offset) {
-            return parsed
-              .filter((x) => offset >= x.start && offset <= x.end)
-              .map((x) => {
-                if (x.type === 'VARIANT') {
-                  return {
-                    ...x,
-                    type: 'GROUP',
-                    value: {
-                      base: x,
-                      content: [],
-                    },
-                    end: x.end,
-                    start: x.start,
-                  } satisfies LocatedGroupToken;
-                }
-                return x;
-              });
           },
         });
       }),

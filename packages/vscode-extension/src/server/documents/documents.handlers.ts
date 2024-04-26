@@ -3,8 +3,8 @@ import * as Option from 'effect/Option';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver/node';
 import { configurationSection } from '../../client/extension/extension.constants';
-import { ConnectionContext } from '../connection/connection.context';
 import { DocumentsService } from './documents.context';
+import { ConnectionService } from '../connection/connection.service';
 
 export const getDocument = (uri: string) => {
   return DocumentsService.pipe(Effect.flatMap((x) => Option.fromNullable(x.get(uri))));
@@ -12,7 +12,8 @@ export const getDocument = (uri: string) => {
 
 export function getDocumentSettings(resource: string) {
   return Effect.gen(function* ($) {
-    const connection = yield* $(ConnectionContext);
+    const connectionRef = yield* $(ConnectionService);
+    const connection = yield* $(connectionRef.connectionRef.get)
     const result = yield* $(
       Effect.promise(() =>
         connection.workspace.getConfiguration({
