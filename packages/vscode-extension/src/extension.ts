@@ -6,14 +6,15 @@ import {
   ExtensionContext,
 } from './client/extension/extension.context';
 import { LanguageClientLive } from './client/language/language.provider';
-import { LoggerLayer } from './client/services/logger.service';
+import { ClientCustomLogger } from './client/services/logger.service';
 
-const MainLive = Layer.mergeAll(LanguageClientLive).pipe(Layer.provide(LoggerLayer));
+const MainLive = Layer.mergeAll(LanguageClientLive).pipe(
+  Layer.provide(ClientCustomLogger),
+);
 
 export function activate(context: vscode.ExtensionContext) {
   activateExtension(MainLive).pipe(
     Effect.provideService(ExtensionContext, context),
-    Effect.tap(x => Effect.log(x)),
     Effect.runFork,
   );
 }

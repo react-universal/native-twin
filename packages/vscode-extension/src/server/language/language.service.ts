@@ -1,23 +1,15 @@
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as ReadonlyArray from 'effect/ReadonlyArray';
 import * as Ref from 'effect/Ref';
-import {
-  CancellationToken,
-  CompletionItem,
-  CompletionList,
-  CompletionParams,
-  Hover,
-  HoverParams,
-  ResultProgressReporter,
-  WorkDoneProgressReporter,
-} from 'vscode-languageserver/node';
-import { DocumentsService } from '../documents/documents.context';
+import * as vscode from 'vscode-languageserver/node';
+import { DocumentsService } from '../documents/documents.service';
 import { NativeTwinService } from '../native-twin/nativeTwin.service';
-import { acquireTemplateNode } from '../template/TemplateNode.service';
+import { TwinRuleCompletionWithToken } from '../native-twin/nativeTwin.types';
 import { createStyledContext, getSheetEntryStyles } from '../utils/sheet.utils';
 import {
   completionRuleToQuickInfo,
@@ -31,23 +23,23 @@ export class LanguageService extends Context.Tag('language/service')<
   LanguageService,
   {
     onComPletion: (
-      params: CompletionParams,
-      cancelToken: CancellationToken,
-      progress: WorkDoneProgressReporter,
-      resultProgress: ResultProgressReporter<CompletionItem[]> | undefined,
-    ) => Effect.Effect<CompletionList | CompletionItem[]>;
+      params: vscode.CompletionParams,
+      cancelToken: vscode.CancellationToken,
+      progress: vscode.WorkDoneProgressReporter,
+      resultProgress: vscode.ResultProgressReporter<vscode.CompletionItem[]> | undefined,
+    ) => Effect.Effect<vscode.CompletionList | vscode.CompletionItem[]>;
 
     onCompletionResolve: (
-      params: CompletionItem,
-      cancelToken: CancellationToken,
-    ) => Effect.Effect<CompletionItem>;
+      params: vscode.CompletionItem,
+      cancelToken: vscode.CancellationToken,
+    ) => Effect.Effect<vscode.CompletionItem>;
 
     onHover: (
-      params: HoverParams,
-      cancelToken: CancellationToken,
-      progress: WorkDoneProgressReporter,
-      resultProgress: ResultProgressReporter<CompletionItem[]> | undefined,
-    ) => Effect.Effect<Option.Option<Hover>>;
+      params: vscode.HoverParams,
+      cancelToken: vscode.CancellationToken,
+      progress: vscode.WorkDoneProgressReporter,
+      resultProgress: vscode.ResultProgressReporter<vscode.CompletionItem[]> | undefined,
+    ) => Effect.Effect<Option.Option<vscode.Hover>>;
   }
 >() {}
 
@@ -88,59 +80,92 @@ export const LanguageServiceLive = Layer.scoped(
       onComPletion: (params, _cancel, _progress, _result) =>
         Effect.gen(function* ($1) {
           const twinStore = yield* $1(Ref.get(twinContext.store));
-          const document = acquireTemplateNode(
-            params.position,
-            documentsHandler.get(params.textDocument.uri),
+          const twinDocument = documentsHandler.getDocument(params.textDocument);
+          const completionTokens = pipe(
+            Option.flatMap(twinDocument, (doc) => {
+              return doc.getTemplateNodeAtPosition(params.position).pipe(
+                Option.map((atPosition) => {
+                  const text = atPosition.node.getText();
+                  const parsed = atPosition.parsedNode;
+                  console.log(text, parsed);
+                  const completionWithToken = createCompletionsWithToken(
+                    atPosition,
+                    twinStore,
+                  );
+                  const relativePosition = doc.getRelativePosition(
+                    params.position.character - atPosition.range.start.character,
+                  );
+                  const relativeOffset = doc.getRelativeOffset(
+                    atPosition,
+                    relativePosition,
+                  );
+                  const filtered = filterCompletionByTemplateOffset(
+                    completionWithToken,
+                    relativeOffset,
+                  );
+                  return filtered;
+                }),
+              );
+            }),
+            Option.getOrElse(() => HashSet.empty<TwinRuleCompletionWithToken>()),
           );
 
-          const completionTokens = yield* $1(
-            createCompletionsWithToken(document, twinStore),
-          );
+          const completionEntries = completionRulesToEntries(completionTokens);
 
-          const completionRules = filterCompletionByTemplateOffset(
-            completionTokens,
-            Option.map(document, (x) => x.positions.relative.offset).pipe(
-              Option.getOrElse(() => 0),
-            ),
-          );
-
-          // yield* $1(Effect.log(`DOCUMENT: ${document} ${completionTokens}`));
-
-          const completionEntries = completionRulesToEntries(completionRules);
-
-          return completionEntries;
+          return completionEntries as vscode.CompletionItem[];
         }),
 
       onHover(params) {
         return Effect.gen(function* ($1) {
           const twin = yield* $(twinContext.nativeTwin.get);
-          const twinStore = yield* $1(Ref.get(twinContext.store));
-          const document = acquireTemplateNode(
-            params.position,
-            documentsHandler.get(params.textDocument.uri),
-          );
           const context = createStyledContext(twin.config.root.rem);
-
-          const completionTokens = yield* $1(
-            createCompletionsWithToken(document, twinStore),
-          );
-
-          const maybeHover = filterCompletionByTemplateOffset(
-            completionTokens,
-            Option.map(document, (x) => x.positions.relative.offset).pipe(
-              Option.getOrElse(() => 0),
-            ),
-          ).pipe(
-            HashSet.map((x) => {
-              const sheet = twin.tw(x.completion.className);
-              const finalSheet = getSheetEntryStyles(sheet, context);
-              return completionRuleToQuickInfo(x, finalSheet);
+          const twinStore = yield* $1(Ref.get(twinContext.store));
+          const twinDocument = documentsHandler.getDocument(params.textDocument);
+          const maybeHover = pipe(
+            Option.flatMap(twinDocument, (doc) => {
+              return doc.getTemplateNodeAtPosition(params.position).pipe(
+                Option.map((atPosition) => {
+                  const completionWithToken = createCompletionsWithToken(
+                    atPosition,
+                    twinStore,
+                  );
+                  const relativePosition = doc.getRelativePosition(
+                    params.position.character - atPosition.range.start.character,
+                  );
+                  const relativeOffset = doc.getRelativeOffset(
+                    atPosition,
+                    relativePosition,
+                  );
+                  return filterCompletionByTemplateOffset(
+                    completionWithToken,
+                    relativeOffset,
+                  ).pipe(
+                    HashSet.map((x) => {
+                      const sheet = twin.tw(x.completion.className);
+                      const finalSheet = getSheetEntryStyles(sheet, context);
+                      let quickInfo = completionRuleToQuickInfo(x, finalSheet);
+                      const offsetStarts =
+                        atPosition.range.start.character + x.token.start;
+                      const offsetEnds = atPosition.range.start.character + x.token.end;
+                      const startPos = doc.internal.positionAt(offsetStarts);
+                      const endPos = doc.internal.positionAt(offsetEnds);
+                      const hoverRange = vscode.Range.create(startPos, endPos);
+                      quickInfo = {
+                        ...quickInfo,
+                        range: hoverRange,
+                      };
+                      return quickInfo;
+                    }),
+                    ReadonlyArray.fromIterable,
+                    ReadonlyArray.head,
+                  );
+                }),
+              );
             }),
-            ReadonlyArray.fromIterable,
-            ReadonlyArray.head,
+            Option.flatten,
           );
 
-          return maybeHover;
+          return maybeHover as Option.Option<vscode.Hover>;
         });
       },
     };

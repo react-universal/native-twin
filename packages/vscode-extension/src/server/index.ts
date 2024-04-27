@@ -4,7 +4,7 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { getClientCapabilities } from './connection/connection.handlers';
 import { ConnectionService } from './connection/connection.service';
-import { DocumentsServiceLive } from './documents/documents.context';
+import { DocumentsServiceLive } from './documents/documents.service';
 import { LanguageService, LanguageServiceLive } from './language/language.service';
 import {
   NativeTwinServiceLive,

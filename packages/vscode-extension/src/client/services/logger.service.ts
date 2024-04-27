@@ -9,7 +9,7 @@ import { extensionChannelName } from '../extension/extension.constants';
  * @category Logger
  * @group Services
  */
-export const LoggerLayer = Logger.replaceScoped(
+export const ClientCustomLogger = Logger.replaceScoped(
   Logger.defaultLogger,
   Effect.gen(function* ($) {
     const channel = yield* $(
@@ -17,7 +17,12 @@ export const LoggerLayer = Logger.replaceScoped(
         Effect.sync(() =>
           vscode.window.createOutputChannel(extensionChannelName, { log: true }),
         ),
-        (channel) => Effect.sync(() => channel.dispose()),
+        (channel) => {
+          return Effect.sync(() => {
+            channel.clear();
+            return channel.dispose();
+          });
+        },
       ),
     );
 

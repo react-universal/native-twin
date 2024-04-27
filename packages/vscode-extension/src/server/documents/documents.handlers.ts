@@ -1,14 +1,8 @@
 import * as Effect from 'effect/Effect';
-import * as Option from 'effect/Option';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver/node';
 import { configurationSection } from '../../client/extension/extension.constants';
-import { DocumentsService } from './documents.context';
 import { ConnectionService } from '../connection/connection.service';
-
-export const getDocument = (uri: string) => {
-  return DocumentsService.pipe(Effect.flatMap((x) => Option.fromNullable(x.get(uri))));
-};
 
 export function getDocumentSettings(resource: string) {
   return Effect.gen(function* ($) {

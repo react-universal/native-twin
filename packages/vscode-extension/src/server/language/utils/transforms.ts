@@ -1,4 +1,3 @@
-import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
@@ -6,12 +5,12 @@ import * as ReadonlyArray from 'effect/ReadonlyArray';
 import * as vscode from 'vscode-languageserver-types';
 import { CompletionItem } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
+import { TemplateNode } from '../../documents/document.resource';
 import { TwinStore } from '../../native-twin/nativeTwin.service';
 import {
   TwinRuleCompletionWithToken,
   TwinRuleWithCompletion,
 } from '../../native-twin/nativeTwin.types';
-import { TemplateNode } from '../../template/TemplateNode.service';
 import {
   CompletionPart,
   getCompletionEntryDetailsDisplayParts,
@@ -20,45 +19,39 @@ import {
   getDocumentation,
 } from './language.utils';
 
-export const createCompletionsWithToken = (
-  template: Option.Option<TemplateNode>,
-  store: TwinStore,
-) => {
-  return Effect.sync(() => {
-    const positionTokens: CompletionPart[] = Option.map(template, (node) =>
-      pipe(
-        ReadonlyArray.fromIterable(node.parsedTemplate),
-        ReadonlyArray.map((x) => getCompletionParts(x)),
-        ReadonlyArray.flatten,
-      ),
-    ).pipe(Option.getOrElse(() => []));
+export const createCompletionsWithToken = (template: TemplateNode, store: TwinStore) => {
+  const positionTokens: CompletionPart[] = pipe(
+    template.parsedNode,
+    ReadonlyArray.fromIterable,
+    ReadonlyArray.map((x) => getCompletionParts(x)),
+    ReadonlyArray.flatten,
+  );
 
-    return pipe(
-      store.twinRules,
-      HashSet.flatMap((ruleInfo) => {
-        return HashSet.fromIterable(positionTokens).pipe(
-          HashSet.filter((x) => {
-            if (ruleInfo.completion.className === x.text) {
-              return true;
-            }
-            if (x.type === 'VARIANT_CLASS') {
-              return ruleInfo.completion.className.startsWith(x.value[1].value.n);
-            }
+  return pipe(
+    store.twinRules,
+    HashSet.flatMap((ruleInfo) => {
+      return HashSet.fromIterable(positionTokens).pipe(
+        HashSet.filter((x) => {
+          if (ruleInfo.completion.className === x.text) {
+            return true;
+          }
+          if (x.type === 'VARIANT_CLASS') {
+            return ruleInfo.completion.className.startsWith(x.value[1].value.n);
+          }
 
-            return ruleInfo.completion.className.startsWith(x.text);
+          return ruleInfo.completion.className.startsWith(x.text);
+        }),
+        HashSet.map(
+          (token): TwinRuleCompletionWithToken => ({
+            completion: ruleInfo.completion,
+            composition: ruleInfo.composition,
+            rule: ruleInfo.rule,
+            token,
           }),
-          HashSet.map(
-            (token): TwinRuleCompletionWithToken => ({
-              completion: ruleInfo.completion,
-              composition: ruleInfo.composition,
-              rule: ruleInfo.rule,
-              token,
-            }),
-          ),
-        );
-      }),
-    );
-  });
+        ),
+      );
+    }),
+  );
 };
 
 export const filterCompletionByTemplateOffset = (
@@ -84,6 +77,7 @@ export const completionRuleToEntry = (
     labelDetails: {
       description: completion.declarations.join(','),
     },
+    commitCharacters: ['-', '[', ']', '/', ',', '(', ')'],
     // replacementSpan,
     insertText: completion.className,
     // source: completion.className,

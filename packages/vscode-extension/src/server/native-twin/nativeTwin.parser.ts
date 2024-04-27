@@ -73,7 +73,7 @@ const parseRuleGroupWeak: P.Parser<LocatedParser<LocatedGroupToken>> = P.choice(
 );
 
 export const parseTemplate = (template: string): TemplateTokenWithText[] => {
-  const parsed = P.many(
+  const parsed = P.many1(
     P.whitespaceSurrounded(
       P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
     ),
