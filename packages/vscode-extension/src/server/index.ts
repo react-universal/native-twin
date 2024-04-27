@@ -1,11 +1,13 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
+import * as Runtime from 'effect/Runtime';
 import * as vscode from 'vscode-languageserver-types';
+import { CancellationToken } from 'vscode-languageserver/node';
 import { getClientCapabilities } from './connection/connection.handlers';
 import { ConnectionService } from './connection/connection.service';
-import { DocumentsServiceLive } from './documents/documents.service';
-import { LanguageService, LanguageServiceLive } from './language/language.service';
+import { DocumentsService, DocumentsServiceLive } from './documents/documents.service';
+import * as LanguageService from './language/language.service';
 import {
   NativeTwinServiceLive,
   NativeTwinService,
@@ -13,18 +15,18 @@ import {
 import { LoggerLive } from './services/logger.service';
 import { TypescriptService } from './services/typescript.service';
 
-const MainLive = LanguageServiceLive.pipe(
-  Layer.provideMerge(NativeTwinServiceLive),
-  Layer.provide(DocumentsServiceLive),
-  Layer.provide(TypescriptService.Live),
-  Layer.provide(LoggerLive),
-);
+const ConnectionNeededLayers = Layer.merge(
+  DocumentsServiceLive,
+  NativeTwinServiceLive,
+).pipe(Layer.provideMerge(LoggerLive));
+
+const ProgramLive = ConnectionNeededLayers.pipe(Layer.provide(TypescriptService.Live));
 
 const program = Effect.gen(function* ($) {
   const connectionRef = yield* $(ConnectionService);
   const twin = yield* $(NativeTwinService);
+  const documentsService = yield* $(DocumentsService);
   const connection = yield* $(connectionRef.connectionRef.get);
-  const language = yield* $(LanguageService);
 
   connection.onInitialize((params) => {
     const configOptions = params.initializationOptions;
@@ -48,21 +50,66 @@ const program = Effect.gen(function* ($) {
   });
 
   connection.onCompletion((params, token, pr, rp) => {
-    return language.onComPletion(params, token, pr, rp).pipe(Effect.runSync);
+    return runWithTokenDefault(
+      LanguageService.getCompletionsAtPosition(params, token, pr, rp).pipe(
+        Effect.provideService(NativeTwinService, twin),
+        Effect.provideService(DocumentsService, documentsService),
+      ),
+      token,
+    );
   });
-  connection.onCompletionResolve((params, token) => {
-    return language.onCompletionResolve(params, token).pipe(Effect.runSync);
+  connection.onCompletionResolve(async (params, token) => {
+    const response = await runWithTokenDefault(
+      LanguageService.getCompletionEntryDetails(params, token).pipe(
+        Effect.provideService(NativeTwinService, twin),
+        Effect.provideService(DocumentsService, documentsService),
+      ),
+      token,
+    );
+    if (!response) return params;
+
+    return response;
   });
-  connection.onHover((params, token, workDoneProgress, resultProgress) => {
-    return language
-      .onHover(params, token, workDoneProgress, resultProgress)
-      .pipe(Effect.runSync)
-      .pipe(Option.getOrUndefined);
+  connection.onHover((...args) => {
+    return runWithTokenDefault(
+      LanguageService.getQuickInfoAtPosition(...args).pipe(
+        Effect.provideService(NativeTwinService, twin),
+        Effect.provideService(DocumentsService, documentsService),
+      ),
+      args[1],
+    );
   });
 
   connection.listen();
-}).pipe(Effect.provide(MainLive));
+}).pipe(Effect.provide(ProgramLive));
 
 const runnable = Effect.provide(program, ConnectionService.Live);
 
 Effect.runFork(runnable);
+
+export const runWithToken = <R>(runtime: Runtime.Runtime<R>) => {
+  const runCallback = Runtime.runCallback(runtime);
+  return <E, A>(effect: Effect.Effect<A, E, R>, token: CancellationToken) =>
+    new Promise<A | undefined>((resolve) => {
+      const cancel = runCallback(effect, {
+        onExit: (exit) => {
+          if (exit._tag === 'Success') {
+            resolve(exit.value);
+          } else {
+            resolve(undefined);
+          }
+          tokenDispose.dispose();
+        },
+      });
+      const tokenDispose = token.onCancellationRequested(() => {
+        cancel();
+      });
+    });
+};
+export const runWithTokenDefault = runWithToken(Runtime.defaultRuntime);
+
+export const thenable = <A>(f: () => Thenable<A>) => {
+  return Effect.async<A>((resume) => {
+    f().then((_) => resume(Effect.succeed(_)));
+  });
+};

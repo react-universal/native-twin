@@ -17,7 +17,7 @@ export class DocumentsService extends Ctx.Tag('vscode/DocumentsService')<
   DocumentsServiceShape
 >() {}
 
-export const DocumentsServiceLive = Layer.effect(
+export const DocumentsServiceLive = Layer.scoped(
   DocumentsService,
   Effect.gen(function* ($) {
     const connectionRef = yield* $(ConnectionService);
