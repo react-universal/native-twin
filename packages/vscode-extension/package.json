@@ -109,15 +109,11 @@
     "onStartupFinished"
   ],
   "dependencies": {
-    "@ctrl/tinycolor": "3.6.0",
-    "@effect/schema": "^0.64.20",
+    "@effect/schema": "^0.66.10",
+    "@native-twin/language-server": "workspace:*",
     "@native-twin/ts-plugin": "workspace:*",
-    "clear-module": "4.1.2",
-    "effect": "^2.4.18",
-    "ts-morph": "^22.0.0",
-    "vscode-languageclient": "^9.0.1",
-    "vscode-languageserver": "^9.0.1",
-    "vscode-languageserver-textdocument": "^1.0.11"
+    "effect": "^3.0.7",
+    "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
     "@types/vscode": "1.80.0",

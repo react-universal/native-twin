@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2020",
+    "lib": [
+      "ES2021"
+    ],
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "noEmit": false,
+    "outDir": "build",
+    "rootDir": "src"
+  },
+  "exclude": [
+    "node_modules",
+    ".vscode-test",
+    "build",
+    "build.js",
+    "ts-extension"
+  ],
+  "include": [
+    "src/**/*"
+  ]
+}

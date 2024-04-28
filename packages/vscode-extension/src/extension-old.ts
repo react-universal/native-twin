@@ -1,8 +1,8 @@
 // Based on https://github.com/mjbvz/vscode-lit-html/blob/master/src/index.ts
 import * as vscode from 'vscode';
-import { pluginId } from './client/extension/extension.constants';
-import { enableExtension } from './client/utils/enableExtension';
-import { createLogger } from './client/utils/logger';
+import { pluginId } from './services/extension/extension.constants';
+import { enableExtension } from './utils/enableExtension';
+import { createLogger } from './utils/logger';
 
 export async function activate(context: vscode.ExtensionContext) {
   const log = createLogger(

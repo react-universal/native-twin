@@ -17,6 +17,10 @@
       "path": "../packages/vscode-extension"
     },
     {
+      "name": "📦 @lib/languase-server",
+      "path": "../packages/language-server"
+    },
+    {
       "name": "📦 @lib/ts-plugin",
       "path": "../packages/ts-plugin"
     }
