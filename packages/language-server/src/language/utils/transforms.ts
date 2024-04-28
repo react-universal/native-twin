@@ -1,15 +1,13 @@
+import * as ReadonlyArray from 'effect/Array';
+import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
-import * as ReadonlyArray from 'effect/Array';
 import * as vscode from 'vscode-languageserver-types';
 import { CompletionItem } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
 import { TemplateNode } from '../../documents/document.resource';
-import {
-  TwinRuleCompletionWithToken,
-  TwinRuleWithCompletion,
-} from '../../native-twin/native-twin.types';
+import { TwinRuleWithCompletion } from '../../native-twin/native-twin.types';
 import { TwinStore } from '../../native-twin/native-twin.utils';
 import {
   CompletionPart,
@@ -42,11 +40,10 @@ export const createCompletionsWithToken = (template: TemplateNode, store: TwinSt
           return ruleInfo.completion.className.startsWith(x.text);
         }),
         HashSet.map(
-          (token): TwinRuleCompletionWithToken => ({
+          (): TwinRuleWithCompletion => ({
             completion: ruleInfo.completion,
             composition: ruleInfo.composition,
             rule: ruleInfo.rule,
-            token,
             order: ruleInfo.order,
           }),
         ),
@@ -55,18 +52,18 @@ export const createCompletionsWithToken = (template: TemplateNode, store: TwinSt
   );
 };
 
-export const filterCompletionByTemplateOffset = (
-  tokens: HashSet.HashSet<TwinRuleCompletionWithToken>,
-  position: number,
-) => HashSet.filter(tokens, (x) => position >= x.token.start && position <= x.token.end);
+// export const filterCompletionByTemplateOffset = (
+//   tokens: HashSet.HashSet<TwinRuleWithCompletion>,
+//   position: number,
+// ) => HashSet.filter(tokens, (x) => position >= x.token.start && position <= x.token.end);
 
 export const completionRuleToEntry = (
-  completionRule: TwinRuleCompletionWithToken,
+  completionRule: TwinRuleWithCompletion,
   // replacementSpan: ts.TextSpan,
   index: number,
 ): vscode.CompletionItem => {
   const { completion } = completionRule;
-  return {
+  return Data.struct({
     // symbol: {} as any,
     kind: getCompletionTokenKind(completionRule),
     filterText: completion.className,
@@ -78,12 +75,12 @@ export const completionRuleToEntry = (
     labelDetails: {
       description: completion.declarations.join(','),
     },
-    commitCharacters: ['-', '[', ']', '/', ',', '(', ')'],
+    commitCharacters: ['-'],
     // replacementSpan,
     insertText: completion.className,
     // source: completion.className,
     // isRecommended: true,
-  };
+  });
 };
 
 export function createCompletionEntryDetails(
@@ -103,7 +100,7 @@ export function createCompletionEntryDetails(
 }
 
 export const completionRulesToEntries = (
-  completionRules: HashSet.HashSet<TwinRuleCompletionWithToken>,
+  completionRules: HashSet.HashSet<TwinRuleWithCompletion>,
 ) => {
   let i = 0;
   return HashSet.map(completionRules, (rule) => {
@@ -123,7 +120,7 @@ export const completionRulesToEntries = (
 };
 
 export function completionRulesToQuickInfo(
-  completionRules: HashSet.HashSet<TwinRuleCompletionWithToken>,
+  completionRules: HashSet.HashSet<TwinRuleWithCompletion>,
   sheetEntry: FinalSheet,
 ): Option.Option<vscode.Hover> {
   return HashSet.map(completionRules, (rule) => {
@@ -148,12 +145,12 @@ export function completionRuleToQuickInfo(
 ): vscode.Hover {
   const documentation = getDocumentation(item, sheetEntry);
 
-  return {
+  return Data.struct({
     contents: [
       {
         language: vscode.MarkupKind.Markdown,
         value: documentation,
       },
     ],
-  };
+  });
 }

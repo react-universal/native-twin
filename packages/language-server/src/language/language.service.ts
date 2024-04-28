@@ -1,22 +1,22 @@
+import { MutableHashSet } from 'effect';
+import * as ReadonlyArray from 'effect/Array';
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
-import * as ReadonlyArray from 'effect/Array';
 import * as Ref from 'effect/Ref';
 import * as vscode from 'vscode-languageserver/node';
 import { TemplateNode, TwinDocument } from '../documents/document.resource';
 import { DocumentsService } from '../documents/documents.service';
 import { NativeTwinService } from '../native-twin/native-twin.service';
-import { TwinRuleCompletionWithToken } from '../native-twin/native-twin.types';
+import { TwinRuleWithCompletion } from '../native-twin/native-twin.types';
 import { TwinStore } from '../native-twin/native-twin.utils';
+import { TemplateTokenWithText } from '../template/template.types';
 import { createStyledContext, getSheetEntryStyles } from '../utils/sheet.utils';
 import {
   completionRuleToQuickInfo,
   completionRulesToEntries,
   createCompletionEntryDetails,
   createCompletionsWithToken,
-  filterCompletionByTemplateOffset,
 } from './utils/transforms';
 
 export const getCompletionsAtPosition = (
@@ -25,10 +25,10 @@ export const getCompletionsAtPosition = (
   _progress: vscode.WorkDoneProgressReporter,
   _resultProgress: vscode.ResultProgressReporter<vscode.CompletionItem[]> | undefined,
 ) => {
-  return Effect.gen(function* ($) {
-    const documentsHandler = yield* $(DocumentsService);
-    const twinContext = yield* $(NativeTwinService);
-    const twinStore = yield* $(Ref.get(twinContext.store));
+  return Effect.gen(function* () {
+    const documentsHandler = yield* DocumentsService;
+    const twinContext = yield* NativeTwinService;
+    const twinStore = yield* Ref.get(twinContext.store);
 
     const twinDocument = documentsHandler.getDocument(params.textDocument);
     const templateNodeAtPosition = Option.flatMap(twinDocument, (doc) =>
@@ -42,7 +42,7 @@ export const getCompletionsAtPosition = (
       templateNodeAtPosition,
       (document, nodeAtPosition) =>
         completionsComposer(document, nodeAtPosition).filtered,
-    ).pipe(Option.getOrElse(() => HashSet.empty<TwinRuleCompletionWithToken>()));
+    ).pipe(Option.getOrElse(() => HashSet.empty<TwinRuleWithCompletion>()));
 
     const completionEntries = completionRulesToEntries(completionTokens);
 
@@ -97,46 +97,39 @@ export const getQuickInfoAtPosition = (
     const twin = yield* $(twinContext.nativeTwin.get);
     const context = createStyledContext(twin.config.root.rem);
     const twinDocument = documentsHandler.getDocument(params.textDocument);
-    const maybeHover = pipe(
-      Option.flatMap(twinDocument, (doc) => {
-        return doc.getTemplateNodeAtPosition(params.position).pipe(
-          Option.map((atPosition) => {
-            const relativePosition = doc.getRelativePosition(
-              params.position.character - atPosition.range.start.character,
-            );
-            const relativeOffset = doc.getRelativeOffset(atPosition, relativePosition);
 
-            const completionWithToken = createCompletionsWithToken(atPosition, twinStore);
-
-            return filterCompletionByTemplateOffset(
-              completionWithToken,
-              relativeOffset,
-            ).pipe(
-              HashSet.map((x) => {
-                const sheet = twin.tw(x.completion.className);
-                const finalSheet = getSheetEntryStyles(sheet, context);
-                let quickInfo = completionRuleToQuickInfo(x, finalSheet);
-                const offsetStarts = atPosition.range.start.character + x.token.start;
-                const offsetEnds = atPosition.range.start.character + x.token.end;
-                const startPos = doc.internal.positionAt(offsetStarts);
-                const endPos = doc.internal.positionAt(offsetEnds);
-                const hoverRange = vscode.Range.create(startPos, endPos);
-                quickInfo = {
-                  ...quickInfo,
-                  range: hoverRange,
-                };
-                return quickInfo;
-              }),
-              ReadonlyArray.fromIterable,
-              ReadonlyArray.head,
-            );
-          }),
-        );
-      }),
-      Option.flatten,
+    const templateNodeAtPosition = Option.flatMap(twinDocument, (doc) =>
+      doc.getTemplateNodeAtPosition(params.position),
     );
 
-    return maybeHover.pipe(Option.getOrUndefined);
+    const completionsComposer = composeCompletionTokens(twinStore)(params.position);
+
+    const completionTokens = Option.zipWith(
+      twinDocument,
+      templateNodeAtPosition,
+      (document, nodeAtPosition) =>
+        completionsComposer(document, nodeAtPosition).filtered.pipe(
+          HashSet.map((x) => {
+            const sheet = twin.tw(x.completion.className);
+            const finalSheet = getSheetEntryStyles(sheet, context);
+            let quickInfo = completionRuleToQuickInfo(x, finalSheet);
+            const offsetStarts = nodeAtPosition.range.start.character;
+            const offsetEnds = nodeAtPosition.range.start.character;
+            const startPos = document.handler.positionAt(offsetStarts);
+            const endPos = document.handler.positionAt(offsetEnds);
+            const hoverRange = vscode.Range.create(startPos, endPos);
+            quickInfo = {
+              ...quickInfo,
+              range: hoverRange,
+            };
+            return quickInfo;
+          }),
+          ReadonlyArray.fromIterable,
+          ReadonlyArray.head,
+        ),
+    ).pipe(Option.flatten);
+
+    return completionTokens.pipe(Option.getOrUndefined);
   });
 };
 
@@ -144,17 +137,20 @@ const composeCompletionTokens =
   (completions: TwinStore) =>
   (position: vscode.Position) =>
   (document: TwinDocument, nodeAtPosition: TemplateNode) => {
+    MutableHashSet.empty<TemplateTokenWithText>();
     const relativePosition = document.getRelativePosition(
       position.character - nodeAtPosition.range.start.character,
     );
     const relativeOffset = document.getRelativeOffset(nodeAtPosition, relativePosition);
 
     const completionWithToken = createCompletionsWithToken(nodeAtPosition, completions);
+    const tokensAtPosition = nodeAtPosition.getTokensAtPosition(relativeOffset);
 
-    const filtered = filterCompletionByTemplateOffset(
-      completionWithToken,
-      relativeOffset,
-    );
+    const filtered = HashSet.filter(completionWithToken, () => {
+      return tokensAtPosition.some(
+        (y) => relativeOffset >= y.start && relativeOffset <= y.end,
+      );
+    });
 
     return {
       relativePosition,

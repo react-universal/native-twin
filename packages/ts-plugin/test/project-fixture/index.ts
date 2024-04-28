@@ -1,3 +1,3 @@
-css`bg bg(blue) md:(hover:bg-red text-lg bg)`
-//                                      ^40 -> Global
-//                                      ^36 -> Relative
+css`bg bg(blue) md:(bg-red text-lg bg)`
+//                        ^26 -> Global
+//                        ^22 -> Relative

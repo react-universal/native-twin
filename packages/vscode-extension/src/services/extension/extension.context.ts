@@ -18,7 +18,7 @@ export const activateExtension = <E>(layer: Layer.Layer<never, E, ExtensionConte
     const scope = yield* $(Scope.make());
 
     context.subscriptions.push({
-      dispose: () => Effect.runFork(Scope.close(scope, Exit.unit)),
+      dispose: () => Effect.runFork(Scope.close(scope, Exit.void)),
     });
 
     yield* $(Layer.buildWithScope(layer, scope));

@@ -3,7 +3,6 @@ import { TinyColor } from '@ctrl/tinycolor';
 import { CompletionItemKind } from 'vscode-languageserver';
 import { FinalSheet } from '@native-twin/css';
 import {
-  TwinRuleCompletionWithToken,
   TwinRuleParts,
   TwinRuleWithCompletion,
 } from '../../native-twin/native-twin.types';
@@ -13,16 +12,15 @@ import {
 } from '../../template/template.types';
 
 export function getCompletionTokenKind({
-  token,
   rule,
-}: TwinRuleCompletionWithToken): CompletionItemKind {
+}: TwinRuleWithCompletion): CompletionItemKind {
   if (rule.themeSection == 'colors') {
     return CompletionItemKind.Color;
   }
 
-  if (token.type === 'VARIANT' || token.type === 'VARIANT_CLASS') {
-    return CompletionItemKind.Constant;
-  }
+  // if (token.type === 'VARIANT' || token.type === 'VARIANT_CLASS') {
+  //   return CompletionItemKind.Constant;
+  // }
 
   return CompletionItemKind.Constant;
 }

@@ -1,16 +1,15 @@
 import { Rule, RuleMeta } from '@native-twin/core';
 import { CompleteStyle } from '@native-twin/css';
-import { TemplateTokenWithText } from '../template/template.types';
 import { InternalTwinConfig } from './native-twin.resource';
 
 export type InternalNativeTwinRule = Rule<InternalTwinConfig['theme']>;
 
-interface CommonCompletionToken {
+interface CommonCompletion {
   name: string;
   position: number;
   index: number;
 }
-export interface ClassCompletionToken extends CommonCompletionToken {
+export interface TwinClassCompletion extends CommonCompletion {
   kind: 'class';
   property: string;
   themeSection: string;
@@ -19,13 +18,8 @@ export interface ClassCompletionToken extends CommonCompletionToken {
   themeValue: string | null;
 }
 
-export interface VariantCompletionToken extends CommonCompletionToken {
+export interface TwinVariantCompletion extends CommonCompletion {
   kind: 'variant';
-}
-
-export interface CompletionItemLocation {
-  position: number;
-  index: number;
 }
 
 export interface TwinVariantParts {
@@ -54,8 +48,4 @@ export interface TwinRuleWithCompletion {
     classNameSuffix: string;
     declarationSuffixes: string[];
   };
-}
-
-export interface TwinRuleCompletionWithToken extends TwinRuleWithCompletion {
-  token: TemplateTokenWithText;
 }

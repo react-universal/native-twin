@@ -4,10 +4,10 @@ import * as ReadonlyArray from 'effect/Array';
 import { __Theme__ } from '@native-twin/core';
 import * as NativeTwinResource from './native-twin.resource';
 import { createRuleClassNames, createRuleCompositions } from './native-twin.rules';
-import { TwinRuleWithCompletion, VariantCompletionToken } from './native-twin.types';
+import { TwinRuleWithCompletion, TwinVariantCompletion } from './native-twin.types';
 
 export interface TwinStore {
-  twinVariants: HashSet.HashSet<VariantCompletionToken>;
+  twinVariants: HashSet.HashSet<TwinVariantCompletion>;
   twinRules: HashSet.HashSet<TwinRuleWithCompletion>;
 }
 
@@ -77,7 +77,7 @@ export const createTwinStore = (
   );
 
   const twinVariants = HashSet.fromIterable(variants).pipe(
-    HashSet.map((variant): VariantCompletionToken => {
+    HashSet.map((variant): TwinVariantCompletion => {
       return {
         kind: 'variant',
         name: `${variant[0]}:`,

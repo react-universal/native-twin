@@ -24,10 +24,6 @@ export const DocumentsServiceLive = Layer.scoped(
     const connection = yield* $(connectionRef.connectionRef.get);
     const handler = new vscode.TextDocuments(TextDocument);
 
-    // handler.onDidChangeContent((change) => {
-    //   validateTextDocument(change.document);
-    // });
-
     handler.listen(connection);
 
     return {

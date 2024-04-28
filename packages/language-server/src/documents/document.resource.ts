@@ -1,8 +1,8 @@
+import * as ReadonlyArray from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import * as ReadonlyArray from 'effect/Array';
 import ts from 'typescript';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import { Position, Range } from 'vscode-languageserver/node';
@@ -10,45 +10,46 @@ import { parseTemplate } from '../native-twin/native-twin.parser';
 import { LocatedGroupToken } from '../template/template.types';
 
 export class TwinDocument implements Equal.Equal {
-  readonly internal: VSCDocument.TextDocument;
+  readonly handler: VSCDocument.TextDocument;
 
   constructor(document: VSCDocument.TextDocument) {
-    this.internal = document;
+    this.handler = document;
   }
 
   /** Gets the document full text */
   get fullText() {
-    return this.internal.getText();
+    return this.handler.getText();
   }
 
   /** Gets the `typescript` AST */
   get getDocumentSource() {
     return ts.createSourceFile(
-      this.internal.uri,
-      this.internal.getText(),
+      this.handler.uri,
+      this.handler.getText(),
       ts.ScriptTarget.Latest,
       /*setParentNodes*/ true,
     );
   }
 
   getTextForRange(range: Range) {
-    return this.internal.getText(range);
+    const text = this.handler.getText(range);
+    return text;
   }
 
   getRelativeOffset(template: TemplateNode, position: Position) {
-    return this.internal.offsetAt({
+    return this.handler.offsetAt({
       line: template.range.start.line,
       character: position.character - template.range.start.character,
     });
   }
 
   getRelativePosition(relativeOffset: number) {
-    return this.internal.positionAt(relativeOffset);
+    return this.handler.positionAt(relativeOffset);
   }
 
   /** Gets the template literal at this position */
   getTemplateNodeAtPosition(position: Position): Option.Option<TemplateNode> {
-    const cursorOffset = this.internal.offsetAt(position);
+    const cursorOffset = this.handler.offsetAt(position);
 
     const source = this.getDocumentSource;
     const template = getTemplateLiteralNode(source, cursorOffset);
@@ -58,8 +59,8 @@ export class TwinDocument implements Equal.Equal {
         const templateStart = x.getStart() + 1;
         const templateEnd = x.getEnd() - 1;
         return Range.create(
-          this.internal.positionAt(templateStart),
-          this.internal.positionAt(templateEnd),
+          this.handler.positionAt(templateStart),
+          this.handler.positionAt(templateEnd),
         );
       }),
     );
