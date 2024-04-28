@@ -17,7 +17,7 @@
       "path": "../packages/vscode-extension"
     },
     {
-      "name": "📦 @lib/languase-server",
+      "name": "📦 @lib/language-server",
       "path": "../packages/language-server"
     },
     {
