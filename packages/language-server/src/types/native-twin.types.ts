@@ -1,6 +1,6 @@
 import { Rule, RuleMeta } from '@native-twin/core';
 import { CompleteStyle } from '@native-twin/css';
-import { InternalTwinConfig } from './native-twin.resource';
+import { InternalTwinConfig } from '../native-twin/native-twin.resource';
 
 export type InternalNativeTwinRule = Rule<InternalTwinConfig['theme']>;
 

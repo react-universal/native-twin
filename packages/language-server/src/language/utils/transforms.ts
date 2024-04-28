@@ -7,8 +7,8 @@ import * as vscode from 'vscode-languageserver-types';
 import { CompletionItem } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
 import { TemplateNode } from '../../documents/document.resource';
-import { TwinRuleWithCompletion } from '../../native-twin/native-twin.types';
 import { TwinStore } from '../../native-twin/native-twin.utils';
+import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import {
   CompletionPart,
   getCompletionEntryDetailsDisplayParts,
@@ -23,6 +23,7 @@ export const createCompletionsWithToken = (template: TemplateNode, store: TwinSt
     ReadonlyArray.fromIterable,
     ReadonlyArray.map((x) => getCompletionParts(x)),
     ReadonlyArray.flatten,
+    ReadonlyArray.dedupe,
   );
 
   return pipe(
@@ -30,14 +31,14 @@ export const createCompletionsWithToken = (template: TemplateNode, store: TwinSt
     HashSet.flatMap((ruleInfo) => {
       return HashSet.fromIterable(positionTokens).pipe(
         HashSet.filter((x) => {
-          if (ruleInfo.completion.className === x.text) {
+          if (ruleInfo.completion.className === x.parts.text) {
             return true;
           }
-          if (x.type === 'VARIANT_CLASS') {
-            return ruleInfo.completion.className.startsWith(x.value[1].value.n);
+          if (x.parts.type === 'VARIANT_CLASS') {
+            return ruleInfo.completion.className.startsWith(x.parts.value[1].value.n);
           }
 
-          return ruleInfo.completion.className.startsWith(x.text);
+          return ruleInfo.completion.className.startsWith(x.parts.text);
         }),
         HashSet.map(
           (): TwinRuleWithCompletion => ({
@@ -59,27 +60,22 @@ export const createCompletionsWithToken = (template: TemplateNode, store: TwinSt
 
 export const completionRuleToEntry = (
   completionRule: TwinRuleWithCompletion,
-  // replacementSpan: ts.TextSpan,
   index: number,
 ): vscode.CompletionItem => {
   const { completion } = completionRule;
   return Data.struct({
-    // symbol: {} as any,
     kind: getCompletionTokenKind(completionRule),
     filterText: completion.className,
-    // kindModifiers: getKindModifiers(rule),
+
     label: completion.className,
     sortText: index.toString().padStart(8, '0'),
-    // sourceDisplay: getCompletionEntryDetailsDisplayParts(completionRule),
     detail: getCompletionEntryDetailsDisplayParts(completionRule)?.text,
     labelDetails: {
       description: completion.declarations.join(','),
     },
-    commitCharacters: ['-'],
-    // replacementSpan,
     insertText: completion.className,
-    // source: completion.className,
-    // isRecommended: true,
+    insertTextFormat: 2,
+    textEditText: completionRule.completion.className,
   });
 };
 
@@ -116,7 +112,7 @@ export const completionRulesToEntries = (
     //     node.templateContext.toOffset(node.templateContext.toPosition(documentStart)),
     // };
     return completionRuleToEntry(rule, i++);
-  }).pipe(HashSet.values, ReadonlyArray.fromIterable);
+  }).pipe(HashSet.values, ReadonlyArray.fromIterable, ReadonlyArray.dedupe);
 };
 
 export function completionRulesToQuickInfo(

@@ -1,15 +1,14 @@
 // import { TinyColor } from '@ctrl/tinycolor';
 import { TinyColor } from '@ctrl/tinycolor';
+import { Hash } from 'effect';
+import * as Equal from 'effect/Equal';
 import { CompletionItemKind } from 'vscode-languageserver';
 import { FinalSheet } from '@native-twin/css';
-import {
-  TwinRuleParts,
-  TwinRuleWithCompletion,
-} from '../../native-twin/native-twin.types';
 import {
   LocatedGroupTokenWithText,
   TemplateTokenWithText,
 } from '../../template/template.types';
+import { TwinRuleParts, TwinRuleWithCompletion } from '../../types/native-twin.types';
 
 export function getCompletionTokenKind({
   rule,
@@ -77,21 +76,32 @@ export function getCompletionEntryDetailsDisplayParts({
 //   };
 // }
 
-export type CompletionPart = Exclude<TemplateTokenWithText, LocatedGroupTokenWithText>;
-export const getCompletionParts = (token: TemplateTokenWithText): CompletionPart[] => {
-  if (token.type === 'CLASS_NAME') {
-    return [token];
+export type CompletionPartShape = Exclude<
+  TemplateTokenWithText,
+  LocatedGroupTokenWithText
+>;
+
+export class CompletionPart implements Equal.Equal {
+  constructor(readonly parts: CompletionPartShape) {}
+
+  [Equal.symbol](that: unknown): boolean {
+    return that instanceof CompletionPart && this.parts.text === this.parts.text;
   }
 
-  if (token.type === 'ARBITRARY') {
-    return [token];
+  [Hash.symbol]() {
+    return Hash.string(this.parts.text);
   }
-  if (token.type === 'VARIANT') {
-    return [token];
+}
+export const getCompletionParts = (token: TemplateTokenWithText): CompletionPart[] => {
+  if (
+    token.type === 'CLASS_NAME' ||
+    token.type === 'ARBITRARY' ||
+    token.type === 'VARIANT_CLASS' ||
+    token.type === 'VARIANT'
+  ) {
+    return [new CompletionPart(token)];
   }
-  if (token.type === 'VARIANT_CLASS') {
-    return [token];
-  }
+
   if (token.type === 'GROUP') {
     const classNames = token.value.content.flatMap((x) => {
       return getCompletionParts(x);

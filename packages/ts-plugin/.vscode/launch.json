@@ -11,6 +11,11 @@
 				"type": "npm",
 				"script": "build:tsc:watch"
 			},
+      "presentation": {
+        "hidden": true,
+        "group": "",
+        "order": 1
+      },
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"
       ]
@@ -29,6 +34,11 @@
       "console": "integratedTerminal",
       "env": {
         "TSS_DEBUG": "5999"
+      },
+      "presentation": {
+        "hidden": false,
+        "group": "",
+        "order": 9
       },
       "sourceMaps": true,
     }

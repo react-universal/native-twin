@@ -18,14 +18,13 @@ import { ConnectionService } from '../connection/connection.service';
 export const LoggerLive = Logger.replaceEffect(
   Logger.defaultLogger,
   Effect.gen(function* ($) {
-    const connectionRef = yield* $(ConnectionService);
-    const connection = yield* $(connectionRef.connectionRef.get)
+    const { Connection } = yield* $(ConnectionService);
     return Logger.make((options) => {
-      const logService = connection.console;
+      const logService = Connection.console;
       const message = Logger.logfmtLogger.log(options);
       switch (options.logLevel) {
         case LogLevel.Trace:
-          connection.tracer.log(message);
+          Connection.tracer.log(message);
           return;
         case LogLevel.Debug:
           logService.debug(message + ' DEBUG WORK');

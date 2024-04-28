@@ -7,7 +7,7 @@ import {
   InternalNativeTwinRule,
   TwinRuleParts,
   TwinRuleWithCompletion,
-} from './native-twin.types';
+} from '../types/native-twin.types';
 
 export function getRuleParts(rule: InternalNativeTwinRule): TwinRuleParts {
   const pattern = rule[0];

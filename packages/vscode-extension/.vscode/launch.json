@@ -8,6 +8,11 @@
         "Launch Extension",
         "Attach to VS Code TS Server"
       ],
+      "presentation": {
+        "hidden": false,
+        "group": "tools",
+        "order": 2
+      },
       "preLaunchTask": "npm: build:tsc:watch"
     },
     {
@@ -16,6 +21,11 @@
         "Launch Extension",
         "Launch Extension Server"
       ],
+      "presentation": {
+        "hidden": false,
+        "group": "tools",
+        "order": 1
+      },
       "preLaunchTask": "npm: build:tsc:watch"
     }
   ],
@@ -29,6 +39,11 @@
       "preLaunchTask": {
         "type": "npm",
         "script": "build:tsc:watch"
+      },
+      "presentation": {
+        "hidden": true,
+        "group": "",
+        "order": 1
       },
       "args": [
         "--extensionDevelopmentPath=${workspaceRoot}",

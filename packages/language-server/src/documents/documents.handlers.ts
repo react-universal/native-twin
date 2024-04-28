@@ -7,11 +7,10 @@ export const configurationSection = 'nativeTwin';
 
 export function getDocumentSettings(resource: string) {
   return Effect.gen(function* ($) {
-    const connectionRef = yield* $(ConnectionService);
-    const connection = yield* $(connectionRef.connectionRef.get);
+    const { Connection } = yield* $(ConnectionService);
     const result = yield* $(
       Effect.promise(() =>
-        connection.workspace.getConfiguration({
+        Connection.workspace.getConfiguration({
           scopeUri: resource,
           section: configurationSection,
         }),
