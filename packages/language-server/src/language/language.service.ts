@@ -2,7 +2,7 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
-import * as ReadonlyArray from 'effect/ReadonlyArray';
+import * as ReadonlyArray from 'effect/Array';
 import * as Ref from 'effect/Ref';
 import * as vscode from 'vscode-languageserver/node';
 import { TemplateNode, TwinDocument } from '../documents/document.resource';

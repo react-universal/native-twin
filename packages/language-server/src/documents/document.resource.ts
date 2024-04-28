@@ -2,7 +2,7 @@ import * as Equal from 'effect/Equal';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import * as ReadonlyArray from 'effect/ReadonlyArray';
+import * as ReadonlyArray from 'effect/Array';
 import ts from 'typescript';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import { Position, Range } from 'vscode-languageserver/node';

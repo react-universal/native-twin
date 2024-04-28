@@ -22,7 +22,7 @@
     "match-sorter": "6.3.4",
     "showdown": "2.1.0",
     "ts-morph": "^22.0.0",
-    "vscode-css-languageservice": "6.2.6",
+    "vscode-css-languageservice": "^6.2.14",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.11"
   },

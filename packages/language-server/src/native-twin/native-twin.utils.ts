@@ -1,6 +1,6 @@
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
-import * as ReadonlyArray from 'effect/ReadonlyArray';
+import * as ReadonlyArray from 'effect/Array';
 import { __Theme__ } from '@native-twin/core';
 import * as NativeTwinResource from './native-twin.resource';
 import { createRuleClassNames, createRuleCompositions } from './native-twin.rules';

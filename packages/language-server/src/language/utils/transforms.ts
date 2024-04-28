@@ -1,7 +1,7 @@
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
-import * as ReadonlyArray from 'effect/ReadonlyArray';
+import * as ReadonlyArray from 'effect/Array';
 import * as vscode from 'vscode-languageserver-types';
 import { CompletionItem } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';

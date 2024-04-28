@@ -23,7 +23,7 @@
     "@native-twin/preset-tailwind": "workspace:*",
     "effect": "^3.0.7",
     "typescript-template-language-service-decorator": "2.3.2",
-    "vscode-css-languageservice": "6.2.6",
+    "vscode-css-languageservice": "^6.2.14",
     "vscode-languageserver-textdocument": "^1.0.11"
   },
   "devDependencies": {
