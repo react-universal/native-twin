@@ -14,16 +14,13 @@ import {
 import { LoggerLive } from './services/logger.service';
 import { TypescriptService } from './services/typescript.service';
 
-const ConnectionNeededLayers = LanguageService.LanguageServiceLive.pipe(
-  Layer.provideMerge(DocumentsServiceLive),
-).pipe(Layer.provide(LoggerLive));
+const ConnectionNeededLayers = DocumentsServiceLive.pipe(Layer.provide(LoggerLive));
 
 const ProgramLive = ConnectionNeededLayers.pipe(Layer.provide(TypescriptService.Live));
 
 const program = Effect.gen(function* ($) {
   const { Connection } = yield* $(ConnectionService);
   const documentsService = yield* $(DocumentsService);
-  const languageService = yield* $(LanguageService.LanguageService);
   const twinLayer = Layer.succeed(NativeTwinManagerService, new NativeTwinManager());
   const twinManagerRuntime = ManagedRuntime.make(twinLayer);
 
@@ -53,9 +50,11 @@ const program = Effect.gen(function* ($) {
     );
   });
 
-  Connection.onCompletion((params, token, pr, rp) => {
+  Connection.onCompletion((...args) => {
     const completions = twinManagerRuntime.runSync(
-      languageService.getCompletionsAtPosition(params, token, pr, rp),
+      LanguageService.getCompletionsAtPosition(...args).pipe(
+        Effect.provideService(DocumentsService, documentsService),
+      ),
     );
 
     return {
@@ -64,13 +63,21 @@ const program = Effect.gen(function* ($) {
       itemDefaults: {},
     };
   });
+
   Connection.onCompletionResolve(async (params, token) => {
     return twinManagerRuntime.runSync(
-      languageService.getCompletionEntryDetails(params, token),
+      LanguageService.getCompletionEntryDetails(params, token).pipe(
+        Effect.provideService(DocumentsService, documentsService),
+      ),
     );
   });
+
   Connection.onHover((...args) => {
-    return twinManagerRuntime.runSync(languageService.getQuickInfoAtPosition(...args));
+    return twinManagerRuntime.runSync(
+      LanguageService.getQuickInfoAtPosition(...args).pipe(
+        Effect.provideService(DocumentsService, documentsService),
+      ),
+    );
   });
 
   Connection.listen();

@@ -1,7 +1,10 @@
 import { TinyColor } from '@ctrl/tinycolor';
-import { CompletionItemKind } from 'vscode-languageserver';
+import * as ReadonlyArray from 'effect/Array';
+import { pipe } from 'effect/Function';
+import { CompletionItemKind, Position } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
+import { TemplateNode, TwinDocument } from '../../documents/document.resource';
 import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleParts, TwinRuleWithCompletion } from '../../types/native-twin.types';
 
@@ -62,6 +65,27 @@ export const getFlattenTemplateToken = (
   }
 
   return [];
+};
+
+export const extractTokenAtPositionFromTemplateNode = (
+  document: TwinDocument,
+  templateNode: TemplateNode,
+  position: Position,
+) => {
+  const relativeOffset = document.getRelativeOffset(templateNode, position);
+  const tokensAtPosition = pipe(
+    templateNode.getTokensAtPosition(relativeOffset),
+    // ReadonlyArray.flatMap((x) => getCompletionParts(x)),
+    ReadonlyArray.map((x) => ({
+      ...x,
+      documentRange: document.getTokenPosition(x, templateNode.range),
+    })),
+    ReadonlyArray.filter(
+      (x) => relativeOffset >= x.loc.start && relativeOffset <= x.loc.end,
+    ),
+  );
+
+  return tokensAtPosition;
 };
 
 export function getDocumentation(sheetEntry: FinalSheet) {
