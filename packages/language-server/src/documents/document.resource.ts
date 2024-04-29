@@ -6,9 +6,8 @@ import * as Option from 'effect/Option';
 import ts from 'typescript';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import { Position, Range } from 'vscode-languageserver/node';
-import { CompletionPartShape } from '../language/utils/language.utils';
-import { parseTemplate } from '../lib/native-twin.parser';
-import { LocatedGroupToken } from '../template/template.types';
+import { parseTemplate } from '../native-twin/native-twin.parser';
+import { TemplateTokenWithText } from '../template/template.models';
 
 export class TwinDocument implements Equal.Equal {
   readonly handler: VSCDocument.TextDocument;
@@ -49,10 +48,12 @@ export class TwinDocument implements Equal.Equal {
   }
 
   getTokenPosition(
-    part: Pick<CompletionPartShape, 'start' | 'text'>,
+    part: Pick<TemplateTokenWithText, 'loc' | 'text'>,
     templateRange: Range,
   ) {
-    const realStart = this.handler.positionAt(part.start + templateRange.start.character);
+    const realStart = this.handler.positionAt(
+      part.loc.start + templateRange.start.character,
+    );
     const realEnd = {
       ...realStart,
       character: realStart.character + part.text.length,
@@ -105,20 +106,20 @@ export class TemplateNode implements Equal.Equal {
   getTokensAtPosition(offset: number) {
     return pipe(
       this.parsedNode,
-      ReadonlyArray.filter((x) => offset >= x.start && offset <= x.end),
+      ReadonlyArray.filter((x) => offset >= x.loc.start && offset <= x.loc.end),
       ReadonlyArray.map((x) => {
-        if (x.type === 'VARIANT') {
-          return {
-            ...x,
-            type: 'GROUP',
-            value: {
-              base: x,
-              content: [],
-            },
-            end: x.end,
-            start: x.start,
-          } satisfies LocatedGroupToken;
-        }
+        // if (x.token.type === 'VARIANT') {
+        //   return {
+        //     ...x,
+        //     type: 'GROUP',
+        //     value: {
+        //       base: x.token,
+        //       content: [],
+        //     },
+        //     end: x.loc.end,
+        //     start: x.loc.start,
+        //   } satisfies LocatedGroupToken;
+        // }
         return x;
       }),
     );

@@ -1,12 +1,8 @@
 import { TinyColor } from '@ctrl/tinycolor';
-import * as Equal from 'effect/Equal';
-import * as Hash from 'effect/Hash';
 import { CompletionItemKind } from 'vscode-languageserver';
 import { FinalSheet } from '@native-twin/css';
-import {
-  LocatedGroupTokenWithText,
-  TemplateTokenWithText,
-} from '../../template/template.types';
+import { asArray } from '@native-twin/helpers';
+import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleParts, TwinRuleWithCompletion } from '../../types/native-twin.types';
 
 export function getCompletionTokenKind({
@@ -46,48 +42,21 @@ export function getCompletionEntryDetailsDisplayParts({
   return undefined;
 }
 
-export type CompletionPartShape = Exclude<
-  TemplateTokenWithText,
-  LocatedGroupTokenWithText
->;
-
-export class CompletionPart implements Equal.Equal {
-  readonly start: number;
-  readonly end: number;
-  readonly text: string;
-  readonly type: TemplateTokenWithText['type'];
-  readonly value: TemplateTokenWithText['value'];
-  readonly parts: CompletionPartShape;
-  constructor(token: CompletionPartShape) {
-    this.start = token.start;
-    this.end = token.end;
-    this.text = token.text;
-    this.type = token.type;
-    this.value = token.value;
-    this.parts = token;
-  }
-
-  [Equal.symbol](that: unknown): boolean {
-    return that instanceof CompletionPart && this.parts.text === this.parts.text;
-  }
-
-  [Hash.symbol]() {
-    return Hash.string(this.parts.text);
-  }
-}
-export const getCompletionParts = (token: TemplateTokenWithText): CompletionPart[] => {
+export const getFlattenTemplateToken = (
+  item: TemplateTokenWithText,
+): TemplateTokenWithText[] => {
   if (
-    token.type === 'CLASS_NAME' ||
-    token.type === 'ARBITRARY' ||
-    token.type === 'VARIANT_CLASS' ||
-    token.type === 'VARIANT'
+    item.token.type === 'CLASS_NAME' ||
+    item.token.type === 'ARBITRARY' ||
+    item.token.type === 'VARIANT_CLASS' ||
+    item.token.type === 'VARIANT'
   ) {
-    return [new CompletionPart(token)];
+    return asArray(item);
   }
 
-  if (token.type === 'GROUP') {
-    const classNames = token.value.content.flatMap((x) => {
-      return getCompletionParts(x);
+  if (item.token.type === 'GROUP') {
+    const classNames = item.token.value.content.flatMap((x) => {
+      return getFlattenTemplateToken(x);
     });
     return classNames;
   }

@@ -35,21 +35,14 @@ export interface LocatedSheetEntry extends SheetEntry {
   };
 }
 
-export type TemplateTokenWithText = (
-  | Exclude<TemplateToken, LocatedGroupToken>
-  | LocatedGroupTokenWithText
-) & {
-  text: string;
-};
+// export type TemplateTokenWithText = (
+//   | Exclude<TemplateToken, LocatedGroupToken>
+//   | LocatedGroupTokenWithText
+// ) & {
+//   text: string;
+// };
 
-export interface LocatedGroupTokenWithText {
-  type: 'GROUP';
-  start: number;
-  end: number;
-  value: {
-    base:
-      | (LocatedParser<ClassNameToken> & { text: string })
-      | (LocatedParser<VariantToken> & { text: string });
-    content: TemplateTokenWithText[];
-  };
-}
+// export type CompletionPartShape = Exclude<
+//   TemplateTokenWithText,
+//   LocatedGroupTokenWithText
+// >;

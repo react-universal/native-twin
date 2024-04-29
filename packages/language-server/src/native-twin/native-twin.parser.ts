@@ -6,12 +6,13 @@ import {
   VariantToken,
 } from '@native-twin/css';
 import * as TwParser from '@native-twin/css/tailwind-parser';
+import { TemplateTokenWithText } from '../template/template.models';
 import {
   LocatedGroupToken,
   LocatedParser,
   TemplateToken,
-  TemplateTokenWithText,
 } from '../template/template.types';
+import { addTextToParsedRules } from '../template/utils/template.maps';
 
 const mapWithLocation = <A extends object>(
   x: P.ParserState<A, any>,
@@ -83,56 +84,7 @@ export const parseTemplate = (template: string): TemplateTokenWithText[] => {
     return [];
   }
 
-  const data = addTextToTemplateTokens(parsed.result, template);
+  const data = addTextToParsedRules(parsed.result, template);
 
   return data;
 };
-
-function addTextToTemplateTokens(
-  groupContent: TemplateToken[],
-  text: string,
-  results: TemplateTokenWithText[] = [],
-): TemplateTokenWithText[] {
-  const nextToken = groupContent.shift();
-  if (!nextToken) return results;
-  if (nextToken.type == 'ARBITRARY') {
-    results.push({
-      ...nextToken,
-      text: text.slice(nextToken.start, nextToken.end),
-    });
-  }
-  if (nextToken.type == 'CLASS_NAME') {
-    results.push({
-      ...nextToken,
-      text: text.slice(nextToken.start, nextToken.end),
-    });
-  }
-  if (nextToken.type == 'VARIANT_CLASS') {
-    results.push({
-      ...nextToken,
-      text: text.slice(nextToken.start, nextToken.end),
-    });
-  }
-  if (nextToken.type == 'GROUP') {
-    const newContent = addTextToTemplateTokens(nextToken.value.content, text).map(
-      (x): TemplateTokenWithText => {
-        return {
-          ...x,
-          text: text.slice(x.start, x.end),
-        };
-      },
-    );
-    results.push({
-      ...nextToken,
-      value: {
-        base: {
-          ...nextToken.value.base,
-          text: text.slice(nextToken.value.base.start, nextToken.value.base.end),
-        },
-        content: newContent,
-      },
-      text: text.slice(nextToken.start, nextToken.end),
-    });
-  }
-  return addTextToTemplateTokens(groupContent, text, results);
-}

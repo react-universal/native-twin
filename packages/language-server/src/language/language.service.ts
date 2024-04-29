@@ -8,10 +8,9 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { TemplateNode, TwinDocument } from '../documents/document.resource';
 import { DocumentsService } from '../documents/documents.service';
-import { NativeTwinManagerService } from '../native-twin/native-twin.service';
+import { NativeTwinManagerService } from '../native-twin/native-twin.models';
 import { createStyledContext, getSheetEntryStyles } from '../utils/sheet.utils';
 import * as Completions from './utils/completions.maps';
-import { getCompletionParts } from './utils/language.utils';
 
 export class LanguageService extends Context.Tag('language/service')<
   LanguageService,
@@ -113,9 +112,9 @@ export const LanguageServiceLive = Layer.scoped(
               );
               const tokensAtPosition = pipe(
                 nodeAtPosition.getTokensAtPosition(relativeOffset),
-                ReadonlyArray.flatMap((x) => getCompletionParts(x)),
+                // ReadonlyArray.flatMap((x) => getCompletionParts(x)),
                 ReadonlyArray.filter(
-                  (x) => relativeOffset >= x.start && relativeOffset <= x.end,
+                  (x) => relativeOffset >= x.loc.start && relativeOffset <= x.loc.end,
                 ),
               );
 
@@ -170,12 +169,14 @@ export const extractTokenFromNode = (
   const relativeOffset = document.getRelativeOffset(templateNode, position);
   const tokensAtPosition = pipe(
     templateNode.getTokensAtPosition(relativeOffset),
-    ReadonlyArray.flatMap((x) => getCompletionParts(x)),
+    // ReadonlyArray.flatMap((x) => getCompletionParts(x)),
     ReadonlyArray.map((x) => ({
       ...x,
       documentRange: document.getTokenPosition(x, templateNode.range),
     })),
-    ReadonlyArray.filter((x) => relativeOffset >= x.start && relativeOffset <= x.end),
+    ReadonlyArray.filter(
+      (x) => relativeOffset >= x.loc.start && relativeOffset <= x.loc.end,
+    ),
   );
 
   return tokensAtPosition;

@@ -7,21 +7,21 @@ import * as vscode from 'vscode-languageserver-types';
 import { CompletionItem } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
 import { TemplateNode, TwinDocument } from '../../documents/document.resource';
-import { TwinStore } from '../../native-twin/native-twin.service';
+import { TwinStore } from '../../native-twin/native-twin.models';
+import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import {
-  CompletionPart,
   getCompletionEntryDetailsDisplayParts,
-  getCompletionParts,
   getCompletionTokenKind,
   getDocumentation,
+  getFlattenTemplateToken,
 } from './language.utils';
 
 export const createCompletionsWithToken = (template: TemplateNode, store: TwinStore) => {
-  const positionTokens: CompletionPart[] = pipe(
+  const positionTokens: TemplateTokenWithText[] = pipe(
     template.parsedNode,
     ReadonlyArray.fromIterable,
-    ReadonlyArray.map((x) => getCompletionParts(x)),
+    ReadonlyArray.map((x) => getFlattenTemplateToken(x)),
     ReadonlyArray.flatten,
     ReadonlyArray.dedupe,
   );
@@ -31,14 +31,14 @@ export const createCompletionsWithToken = (template: TemplateNode, store: TwinSt
     HashSet.flatMap((ruleInfo) => {
       return HashSet.fromIterable(positionTokens).pipe(
         HashSet.filter((x) => {
-          if (ruleInfo.completion.className === x.parts.text) {
+          if (ruleInfo.completion.className === x.text) {
             return true;
           }
-          if (x.parts.type === 'VARIANT_CLASS') {
-            return ruleInfo.completion.className.startsWith(x.parts.value[1].value.n);
+          if (x.token.type === 'VARIANT_CLASS') {
+            return ruleInfo.completion.className.startsWith(x.token.value[1].value.n);
           }
 
-          return ruleInfo.completion.className.startsWith(x.parts.text);
+          return ruleInfo.completion.className.startsWith(x.text);
         }),
         HashSet.map(
           (): TwinRuleWithCompletion => ({
@@ -158,12 +158,13 @@ export const composeCompletionTokens =
 
     const completionWithToken = createCompletionsWithToken(nodeAtPosition, completions);
     const tokensAtPosition = nodeAtPosition.getTokensAtPosition(relativeOffset);
-    const parts = tokensAtPosition
-      .flatMap((x) => getCompletionParts(x))
-      .filter((x) => relativeOffset >= x.parts.start && relativeOffset <= x.parts.end);
+    let parts = tokensAtPosition.flatMap((x) => getFlattenTemplateToken(x));
+    parts = parts.filter((x) => {
+      return relativeOffset >= x.loc.start && relativeOffset <= x.loc.end;
+    });
 
     const filtered = HashSet.filter(completionWithToken, (x) => {
-      return parts.some((y) => x.completion.className.startsWith(y.parts.text));
+      return parts.some((y) => x.completion.className.startsWith(y.text));
     });
 
     return {

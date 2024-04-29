@@ -10,7 +10,7 @@ import * as LanguageService from './language/language.service';
 import {
   NativeTwinManager,
   NativeTwinManagerService,
-} from './native-twin/native-twin.service';
+} from './native-twin/native-twin.models';
 import { LoggerLive } from './services/logger.service';
 import { TypescriptService } from './services/typescript.service';
 
