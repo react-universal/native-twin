@@ -67,6 +67,7 @@
       "**/*.code-search": true,
       "**/build": true
     },
+    "editor.fontSize": 15,
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [
       "sastan",

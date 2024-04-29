@@ -1,7 +1,6 @@
-// import { TinyColor } from '@ctrl/tinycolor';
 import { TinyColor } from '@ctrl/tinycolor';
-import { Hash } from 'effect';
 import * as Equal from 'effect/Equal';
+import * as Hash from 'effect/Hash';
 import { CompletionItemKind } from 'vscode-languageserver';
 import { FinalSheet } from '@native-twin/css';
 import {
@@ -16,10 +15,6 @@ export function getCompletionTokenKind({
   if (rule.themeSection == 'colors') {
     return CompletionItemKind.Color;
   }
-
-  // if (token.type === 'VARIANT' || token.type === 'VARIANT_CLASS') {
-  //   return CompletionItemKind.Constant;
-  // }
 
   return CompletionItemKind.Constant;
 }
@@ -51,38 +46,26 @@ export function getCompletionEntryDetailsDisplayParts({
   return undefined;
 }
 
-// export function createCompletionEntryDetails(
-//   item: TwinRuleWithCompletion,
-// ): ts.CompletionEntryDetails {
-//   const displayParts = getCompletionEntryDetailsDisplayParts(item);
-//   // const documentation = getDocumentation(item);
-//   return {
-//     name: item.completion.className,
-//     kind: ts.ScriptElementKind.constElement,
-//     kindModifiers: item.rule.themeSection === 'colors' ? 'color' : 'text',
-//     sourceDisplay: [
-//       {
-//         kind: item.rule.themeSection === 'colors' ? 'color' : 'text',
-//         text: item.completion.className,
-//       },
-//     ],
-//     displayParts,
-//     // documentation: [
-//     //   {
-//     //     kind: vscode.MarkupKind.Markdown,
-//     //     text: documentation,
-//     //   },
-//     // ],
-//   };
-// }
-
 export type CompletionPartShape = Exclude<
   TemplateTokenWithText,
   LocatedGroupTokenWithText
 >;
 
 export class CompletionPart implements Equal.Equal {
-  constructor(readonly parts: CompletionPartShape) {}
+  readonly start: number;
+  readonly end: number;
+  readonly text: string;
+  readonly type: TemplateTokenWithText['type'];
+  readonly value: TemplateTokenWithText['value'];
+  readonly parts: CompletionPartShape;
+  constructor(token: CompletionPartShape) {
+    this.start = token.start;
+    this.end = token.end;
+    this.text = token.text;
+    this.type = token.type;
+    this.value = token.value;
+    this.parts = token;
+  }
 
   [Equal.symbol](that: unknown): boolean {
     return that instanceof CompletionPart && this.parts.text === this.parts.text;
@@ -112,30 +95,15 @@ export const getCompletionParts = (token: TemplateTokenWithText): CompletionPart
   return [];
 };
 
-export function getDocumentation(
-  completionRule: TwinRuleWithCompletion,
-  sheetEntry: FinalSheet,
-) {
-  const { completion, rule } = completionRule;
-  if (!rule.property || !completion.declarationValue) return '';
+export function getDocumentation(sheetEntry: FinalSheet) {
   const result: string[] = [];
   // result.push('***Css Rules*** \n\n');
   // result.push(`${'```css\n'}${data.css}${'\n```'}`);
   // result.push('\n\n');
-  const prop = completion.declarations.reduce(
-    (prev, current) => {
-      return {
-        [current]: completion.declarationValue,
-        ...prev,
-      };
-    },
-    {} as Record<string, any>,
-  );
+  // result.push(`***className: ${completion.className}*** \n\n`);
   result.push('***React Native StyleSheet*** \n\n');
-  result.push(`***className: ${completion.className}*** \n\n`);
-  result.push(`${'```json\n'}${JSON.stringify(prop, null, 2)}${'\n```'}`);
   result.push(`${'```json\n'}${JSON.stringify(sheetEntry, null, 2)}${'\n```'}`);
-  result.push(createDebugHover(completionRule));
+  // result.push(createDebugHover(completionRule));
   return result.join('\n\n');
 }
 

@@ -6,7 +6,8 @@ import * as Option from 'effect/Option';
 import ts from 'typescript';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import { Position, Range } from 'vscode-languageserver/node';
-import { parseTemplate } from '../native-twin/native-twin.parser';
+import { CompletionPartShape } from '../language/utils/language.utils';
+import { parseTemplate } from '../lib/native-twin.parser';
 import { LocatedGroupToken } from '../template/template.types';
 
 export class TwinDocument implements Equal.Equal {
@@ -45,6 +46,18 @@ export class TwinDocument implements Equal.Equal {
 
   getRelativePosition(relativeOffset: number) {
     return this.handler.positionAt(relativeOffset);
+  }
+
+  getTokenPosition(
+    part: Pick<CompletionPartShape, 'start' | 'text'>,
+    templateRange: Range,
+  ) {
+    const realStart = this.handler.positionAt(part.start + templateRange.start.character);
+    const realEnd = {
+      ...realStart,
+      character: realStart.character + part.text.length,
+    };
+    return Range.create(realStart, realEnd);
   }
 
   /** Gets the template literal at this position */
@@ -91,7 +104,7 @@ export class TemplateNode implements Equal.Equal {
 
   getTokensAtPosition(offset: number) {
     return pipe(
-      ReadonlyArray.fromIterable(this.parsedNode),
+      this.parsedNode,
       ReadonlyArray.filter((x) => offset >= x.start && offset <= x.end),
       ReadonlyArray.map((x) => {
         if (x.type === 'VARIANT') {

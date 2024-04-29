@@ -8,7 +8,6 @@ import * as ClientConfig from './client.config';
 export class ConnectionService extends Context.Tag('connection/service')<
   ConnectionService,
   {
-    start: () => void;
     Connection: Connection;
     ClientConfig: SubscriptionRef.SubscriptionRef<ClientConfig.ExtensionClientConfig>;
   }
@@ -20,9 +19,6 @@ export class ConnectionService extends Context.Tag('connection/service')<
       const clientConfig = yield* $(ClientConfig.make);
 
       return {
-        start: () => {
-          connection.listen();
-        },
         Connection: connection,
         ClientConfig: clientConfig,
       };

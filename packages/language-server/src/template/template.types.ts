@@ -2,7 +2,6 @@ import {
   ArbitraryToken,
   ClassNameToken,
   SheetEntry,
-  TWParsedRule,
   VariantClassToken,
   VariantToken,
 } from '@native-twin/css';
@@ -28,14 +27,6 @@ export type TemplateToken =
   | LocatedParser<VariantToken>
   | LocatedParser<ClassNameToken>
   | LocatedParser<ArbitraryToken>;
-
-export interface LocatedParsedRule extends TWParsedRule {
-  loc: {
-    start: number;
-    end: number;
-  };
-  type: TemplateToken['type'];
-}
 
 export interface LocatedSheetEntry extends SheetEntry {
   loc: {

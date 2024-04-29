@@ -6,8 +6,8 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { CompletionItem } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
-import { TemplateNode } from '../../documents/document.resource';
-import { TwinStore } from '../../native-twin/native-twin.utils';
+import { TemplateNode, TwinDocument } from '../../documents/document.resource';
+import { TwinStore } from '../../native-twin/native-twin.service';
 import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import {
   CompletionPart,
@@ -81,10 +81,9 @@ export const completionRuleToEntry = (
 
 export function createCompletionEntryDetails(
   completion: CompletionItem,
-  item: TwinRuleWithCompletion,
   sheetEntry: FinalSheet,
 ): CompletionItem {
-  const documentation = getDocumentation(item, sheetEntry);
+  const documentation = getDocumentation(sheetEntry);
 
   return {
     ...completion,
@@ -119,7 +118,7 @@ export function completionRulesToQuickInfo(
   completionRules: HashSet.HashSet<TwinRuleWithCompletion>,
   sheetEntry: FinalSheet,
 ): Option.Option<vscode.Hover> {
-  return HashSet.map(completionRules, (rule) => {
+  return HashSet.map(completionRules, (_rule) => {
     // const documentPosition = node.node.pos + 1;
     // const documentStart = rule.token.start + documentPosition;
     // const documentEnd = rule.token.end + documentPosition;
@@ -131,15 +130,12 @@ export function completionRulesToQuickInfo(
     //     node.templateContext.toOffset(node.templateContext.toPosition(documentEnd)) -
     //     node.templateContext.toOffset(node.templateContext.toPosition(documentStart)),
     // };
-    return completionRuleToQuickInfo(rule, sheetEntry);
+    return completionRuleToQuickInfo(sheetEntry);
   }).pipe(HashSet.values, (x) => ReadonlyArray.fromIterable(x), ReadonlyArray.head);
 }
 
-export function completionRuleToQuickInfo(
-  item: TwinRuleWithCompletion,
-  sheetEntry: FinalSheet,
-): vscode.Hover {
-  const documentation = getDocumentation(item, sheetEntry);
+export function completionRuleToQuickInfo(sheetEntry: FinalSheet): vscode.Hover {
+  const documentation = getDocumentation(sheetEntry);
 
   return Data.struct({
     contents: [
@@ -150,3 +146,31 @@ export function completionRuleToQuickInfo(
     ],
   });
 }
+
+export const composeCompletionTokens =
+  (completions: TwinStore) =>
+  (position: vscode.Position) =>
+  (document: TwinDocument, nodeAtPosition: TemplateNode) => {
+    const relativePosition = document.getRelativePosition(
+      position.character - nodeAtPosition.range.start.character,
+    );
+    const relativeOffset = document.getRelativeOffset(nodeAtPosition, relativePosition);
+
+    const completionWithToken = createCompletionsWithToken(nodeAtPosition, completions);
+    const tokensAtPosition = nodeAtPosition.getTokensAtPosition(relativeOffset);
+    const parts = tokensAtPosition
+      .flatMap((x) => getCompletionParts(x))
+      .filter((x) => relativeOffset >= x.parts.start && relativeOffset <= x.parts.end);
+
+    const filtered = HashSet.filter(completionWithToken, (x) => {
+      return parts.some((y) => x.completion.className.startsWith(y.parts.text));
+    });
+
+    return {
+      relativePosition,
+      relativeOffset,
+      completionWithToken,
+      filtered,
+      tokensAtPosition: parts,
+    };
+  };
