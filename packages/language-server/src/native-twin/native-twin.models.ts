@@ -15,6 +15,7 @@ import {
   TwinRuleWithCompletion,
   TwinVariantCompletion,
 } from '../types/native-twin.types';
+import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
 import { requireJS } from '../utils/load-js';
 import { createTwinStore } from './utils/native-twin.utils';
 
@@ -32,24 +33,10 @@ export class NativeTwinManagerService extends Context.Tag('NativeTwinManager')<
   NativeTwinManager
 >() {}
 
-const defaultConfig = {
-  content: [],
-  theme: {},
-  darkMode: 'class',
-  ignorelist: [],
-  mode: 'native',
-  preflight: {},
-  root: {
-    rem: 16,
-  },
-  rules: [],
-  variants: [],
-} as InternalTwinConfig;
-
 export class NativeTwinManager {
   tw: InternalTwFn;
   context: InternalTwinThemeContext;
-  userConfig: InternalTwinConfig = defaultConfig;
+  userConfig: InternalTwinConfig = DEFAULT_TWIN_CONFIG;
   completions: TwinStore = {
     twinRules: HashSet.empty<TwinRuleWithCompletion>(),
     twinVariants: HashSet.empty<TwinVariantCompletion>(),
