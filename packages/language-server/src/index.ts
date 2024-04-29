@@ -1,9 +1,7 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import * as Option from 'effect/Option';
-import * as vscode from 'vscode-languageserver-types';
-import { getClientCapabilities } from './connection/connection.handlers';
+import { initializeConnection } from './connection/connection.handlers';
 import { ConnectionService } from './connection/connection.service';
 import { DocumentsService, DocumentsServiceLive } from './documents/documents.service';
 import * as LanguageService from './language/language.service';
@@ -24,30 +22,8 @@ const program = Effect.gen(function* ($) {
   const twinLayer = Layer.succeed(NativeTwinManagerService, new NativeTwinManager());
   const twinManagerRuntime = ManagedRuntime.make(twinLayer);
 
-  Connection.onInitialize((params) => {
-    return twinManagerRuntime.runSync(
-      Effect.gen(function* () {
-        const manager = yield* NativeTwinManagerService;
-
-        const configOptions = params.initializationOptions;
-
-        if (configOptions) {
-          const twinConfigFile = Option.fromNullable<vscode.URI>(
-            configOptions?.twinConfigFile.path,
-          );
-          manager.loadUserFile(
-            Option.map(twinConfigFile, (a) => {
-              console.log('asd,', a);
-              return a;
-            }).pipe(Option.getOrElse(() => '')),
-          );
-        }
-
-        const capabilities = yield* getClientCapabilities(params.capabilities);
-
-        return capabilities;
-      }),
-    );
+  Connection.onInitialize((...args) => {
+    return twinManagerRuntime.runSync(initializeConnection(...args));
   });
 
   Connection.onCompletion((...args) => {
@@ -64,9 +40,9 @@ const program = Effect.gen(function* ($) {
     };
   });
 
-  Connection.onCompletionResolve(async (params, token) => {
+  Connection.onCompletionResolve(async (...args) => {
     return twinManagerRuntime.runSync(
-      LanguageService.getCompletionEntryDetails(params, token).pipe(
+      LanguageService.getCompletionEntryDetails(...args).pipe(
         Effect.provideService(DocumentsService, documentsService),
       ),
     );

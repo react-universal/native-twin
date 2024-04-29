@@ -1,6 +1,36 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
+import { NativeTwinManagerService } from '../native-twin/native-twin.models';
+
+export const initializeConnection = (
+  params: vscode.InitializeParams,
+  _token: vscode.CancellationToken,
+  _workDoneProgress: vscode.WorkDoneProgressReporter,
+  _resultProgress?: vscode.ResultProgressReporter<never> | undefined,
+) => {
+  return Effect.gen(function* () {
+    const manager = yield* NativeTwinManagerService;
+
+    const configOptions = params.initializationOptions;
+
+    if (configOptions) {
+      const twinConfigFile = Option.fromNullable<vscode.URI>(
+        configOptions?.twinConfigFile.path,
+      );
+      manager.loadUserFile(
+        Option.map(twinConfigFile, (a) => {
+          console.log('asd,', a);
+          return a;
+        }).pipe(Option.getOrElse(() => '')),
+      );
+    }
+
+    const capabilities = yield* getClientCapabilities(params.capabilities);
+
+    return capabilities;
+  });
+};
 
 export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) => {
   return Effect.Do.pipe(
@@ -36,9 +66,9 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
             // },
             hoverProvider: true,
             // TODO: Provide Commands implementation
-            // executeCommandProvider: {
-            //   commands: ['getColors']
-            // },
+            executeCommandProvider: {
+              commands: ['getColors'],
+            },
             workspaceSymbolProvider: {
               resolveProvider: true,
             },
