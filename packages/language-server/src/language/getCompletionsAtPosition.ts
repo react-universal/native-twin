@@ -1,5 +1,5 @@
 import * as Effect from 'effect/Effect';
-import * as HashSet from 'effect/HashSet';
+// import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { DocumentsService } from '../documents/documents.service';
@@ -35,14 +35,6 @@ export const getCompletionsAtPosition = (
       Option.let('tokensAtPosition', ({ nodeAtPosition, relativeOffset }) =>
         nodeAtPosition.getTokensAtPosition(relativeOffset),
       ),
-      Option.let('textAtPosition', ({ document }) =>
-        document.handler.getText(
-          vscode.Range.create(params.position, {
-            ...params.position,
-            character: params.position.character + 1,
-          }),
-        ),
-      ),
       Option.let('flattenCompletions', ({ tokensAtPosition, relativeOffset }) =>
         tokensAtPosition
           .flatMap((x) => getFlattenTemplateToken(x))
@@ -50,15 +42,16 @@ export const getCompletionsAtPosition = (
             return relativeOffset >= x.loc.start && relativeOffset <= x.loc.end;
           }),
       ),
-      Option.let('filteredCompletions', ({ ruleCompletions, flattenCompletions }) =>
-        HashSet.filter(ruleCompletions, (x) => {
-          return  flattenCompletions.some((y) =>
-            x.completion.className.startsWith(y.text),
-          );
-        }),
-      ),
+      // Option.let('filteredCompletions', ({ ruleCompletions, flattenCompletions }) =>
+      //   HashSet.filter(ruleCompletions, (x) => {
+      //     return flattenCompletions.some((y) =>
+      //       x.completion.className.startsWith(y.text),
+      //     );
+      //   }),
+      // ),
       Option.match({
-        onSome: (a) => Completions.completionRulesToEntries(a.filteredCompletions),
+        onSome: (completionsList) =>
+          Completions. completionRulesToEntries(completionsList.ruleCompletions),
         onNone: (): vscode.CompletionItem[] => [],
       }),
     );

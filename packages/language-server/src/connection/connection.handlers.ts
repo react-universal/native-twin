@@ -2,6 +2,7 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { NativeTwinManagerService } from '../native-twin/native-twin.models';
+import { ConfigManagerService } from './client.config';
 
 export const initializeConnection = (
   params: vscode.InitializeParams,
@@ -11,6 +12,7 @@ export const initializeConnection = (
 ) => {
   return Effect.gen(function* () {
     const manager = yield* NativeTwinManagerService;
+    const configManager = yield* ConfigManagerService;
 
     const configOptions = params.initializationOptions;
 
@@ -18,16 +20,14 @@ export const initializeConnection = (
       const twinConfigFile = Option.fromNullable<vscode.URI>(
         configOptions?.twinConfigFile.path,
       );
-      manager.loadUserFile(
-        Option.map(twinConfigFile, (a) => {
-          console.log('asd,', a);
-          return a;
-        }).pipe(Option.getOrElse(() => '')),
-      );
+      manager.loadUserFile(Option.getOrElse(twinConfigFile, () => ''));
     }
 
     const capabilities = yield* getClientCapabilities(params.capabilities);
-
+    configManager.onUpdateConfig({
+      config: configOptions,
+      ...configOptions,
+    });
     return capabilities;
   });
 };
@@ -64,7 +64,11 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
             //   documentSelector: DOCUMENT_SELECTORS,
             //   id: 'nativeTwinColor',
             // },
+            colorProvider: {
+              documentSelector: [{ pattern: '*/.{ts,js}' }],
+            },
             hoverProvider: true,
+            documentHighlightProvider: true,
             // TODO: Provide Commands implementation
             executeCommandProvider: {
               commands: ['getColors'],
@@ -78,7 +82,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
               completionItem: {
                 labelDetailsSupport: true,
               },
-              allCommitCharacters: ['`'],
+              allCommitCharacters: ['`', '-'],
               triggerCharacters: ['`'],
             },
             workspace: {

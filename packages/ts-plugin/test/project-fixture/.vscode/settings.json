@@ -4,5 +4,10 @@
     "nativeTwin.enable": true,
     "editor.suggest.showColors": true,
     "typescript.tsserver.log": "verbose",
-    "nativeTwin.debug": true
+    "nativeTwin.debug": true,
+    "editor.quickSuggestions": {
+        "other": "on",
+        "comments": "off",
+        "strings": "on"
+    }
 }

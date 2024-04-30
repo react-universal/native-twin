@@ -8,12 +8,15 @@ import * as VSCDocument from 'vscode-languageserver-textdocument';
 import { Position, Range } from 'vscode-languageserver/node';
 import { parseTemplate } from '../native-twin/native-twin.parser';
 import { TemplateTokenWithText } from '../template/template.models';
+import { Matcher, match } from '../utils/match';
 
 export class TwinDocument implements Equal.Equal {
   readonly handler: VSCDocument.TextDocument;
+  readonly sourceMatchers: Matcher[];
 
-  constructor(document: VSCDocument.TextDocument) {
+  constructor(document: VSCDocument.TextDocument, matcher: Matcher[]) {
     this.handler = document;
+    this.sourceMatchers = matcher;
   }
 
   /** Gets the document full text */
@@ -66,12 +69,13 @@ export class TwinDocument implements Equal.Equal {
     const cursorOffset = this.handler.offsetAt(position);
 
     const source = this.getDocumentSource;
-    const template = getTemplateLiteralNode(source, cursorOffset);
+    const template = getTemplateLiteralNode(source, cursorOffset, this.sourceMatchers);
 
     const templateRange = template.pipe(
       Option.map((x) => {
-        const templateStart = x.getStart() + 1;
-        const templateEnd = x.getEnd() - 1;
+        const templateStart =
+          x.getStart() + x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
+        const templateEnd = x.getEnd() - x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
         return Range.create(
           this.handler.positionAt(templateStart),
           this.handler.positionAt(templateEnd),
@@ -95,7 +99,10 @@ export class TwinDocument implements Equal.Equal {
 
 export class TemplateNode implements Equal.Equal {
   constructor(
-    readonly node: ts.TemplateLiteral,
+    readonly node:
+      | ts.TemplateLiteral
+      | ts.StringLiteralLike
+      | ts.NoSubstitutionTemplateLiteral,
     readonly range: Range,
   ) {}
 
@@ -136,19 +143,52 @@ export class TemplateNode implements Equal.Equal {
   }
 }
 
-function getTemplateLiteralNode(source: ts.SourceFile, cursorOffset: number) {
-  let template: ts.TemplateLiteral | ts.NoSubstitutionTemplateLiteral | undefined;
+function getTemplateLiteralNode(
+  source: ts.SourceFile,
+  cursorOffset: number,
+  sourceMatchers: Matcher[],
+) {
+  let template:
+    | ts.StringLiteralLike
+    | ts.TemplateLiteral
+    | ts.NoSubstitutionTemplateLiteral
+    | undefined;
   // getTokenAtPosition is not really public but widely used. May break in a future version.
   let token = (ts as any).getTokenAtPosition(source, cursorOffset);
+
+  if (ts.isStringLiteralLike(token) && ts.isBinaryExpression(token.parent)) {
+    return Option.none();
+  }
+
   while (token) {
     if (
       token.kind === ts.SyntaxKind.NoSubstitutionTemplateLiteral ||
-      token.kind === ts.SyntaxKind.TemplateExpression
+      token.kind === ts.SyntaxKind.TemplateExpression ||
+      token.kind === ts.SyntaxKind.StringLiteral
     ) {
       template = token;
     }
+
     token = token.parent;
   }
 
-  return Option.fromNullable(template);
+  return Option.fromNullable(template).pipe(
+    Option.flatMap((x) => {
+      let currentNode: ts.Node = x;
+      while (currentNode && !ts.isSourceFile(currentNode)) {
+        const matched = match(currentNode, sourceMatchers);
+        if (matched) {
+          return Option.some(x);
+        }
+
+        if (ts.isCallLikeExpression(currentNode)) {
+          return Option.none();
+        }
+
+        // TODO stop conditions
+        currentNode = currentNode.parent;
+      }
+      return Option.none();
+    }),
+  );
 }

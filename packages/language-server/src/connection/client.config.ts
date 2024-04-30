@@ -1,3 +1,4 @@
+import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
@@ -51,3 +52,38 @@ export const make = Effect.map(
   } as ExtensionClientConfig),
   (value) => value,
 );
+
+export class ConfigManagerService extends Context.Tag('ConfigManagerService')<
+  ConfigManagerService,
+  ConfigManager
+>() {}
+
+export class ConfigManager {
+  tsconfig: Option.Option<vscode.Uri>;
+  twinConfigFile: Option.Option<vscode.Uri>;
+  workspaceRoot: Option.Option<vscode.WorkspaceFolder>;
+  config: NativeTwinPluginConfiguration;
+  constructor(config: {
+    readonly tsconfig: Option.Option<vscode.Uri>;
+    readonly twinConfigFile: Option.Option<vscode.Uri>;
+    readonly workspaceRoot: Option.Option<vscode.WorkspaceFolder>;
+    readonly config: NativeTwinPluginConfiguration;
+  }) {
+    this.config = config.config;
+    this.tsconfig = config.tsconfig;
+    this.twinConfigFile = config.twinConfigFile;
+    this.workspaceRoot = config.workspaceRoot;
+  }
+
+  onUpdateConfig(config: {
+    readonly tsconfig: Option.Option<vscode.Uri>;
+    readonly twinConfigFile: Option.Option<vscode.Uri>;
+    readonly workspaceRoot: Option.Option<vscode.WorkspaceFolder>;
+    readonly config: NativeTwinPluginConfiguration;
+  }) {
+    this.config = config.config;
+    this.tsconfig = config.tsconfig;
+    this.twinConfigFile = config.twinConfigFile;
+    this.workspaceRoot = config.workspaceRoot;
+  }
+}

@@ -24,7 +24,8 @@
     "ts-morph": "^22.0.0",
     "vscode-css-languageservice": "^6.2.14",
     "vscode-languageserver": "^9.0.1",
-    "vscode-languageserver-textdocument": "^1.0.11"
+    "vscode-languageserver-textdocument": "^1.0.11",
+    "vscode-languageserver-types": "^3.17.5"
   },
   "devDependencies": {
     "@types/cssbeautify": "^0.3.5",

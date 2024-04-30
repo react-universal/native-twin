@@ -1,5 +1,6 @@
 import { RuleMeta } from '@native-twin/core';
 import { InternalTwinConfig } from '../native-twin/native-twin.models';
+import { NativeTwinPluginConfiguration } from '../types/extension.types';
 
 export const DEFAULT_RULE_META: RuleMeta = {
   canBeNegative: false,
@@ -23,3 +24,14 @@ export const DEFAULT_TWIN_CONFIG = {
   rules: [],
   variants: [],
 } as InternalTwinConfig;
+
+export const DEFAULT_PLUGIN_CONFIG: NativeTwinPluginConfiguration = {
+  tags: ['tw', 'apply', 'css', 'variants'],
+  attributes: ['tw', 'class', 'className', 'variants'],
+  styles: ['style', 'styled', 'variants'],
+  debug: false,
+  enable: true,
+  trace: {
+    server: 'off',
+  },
+};
