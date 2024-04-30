@@ -17,6 +17,7 @@ import {
   getDocumentationMarkdown,
   getFlattenTemplateToken,
 } from './language.utils';
+import { orderCompletions } from './completion.ord';
 
 export const createCompletionsWithToken = (template: TemplateNode, store: TwinStore) => {
   const positionTokens: TemplateTokenWithText[] = pipe(
@@ -95,6 +96,7 @@ export const completionRulesToEntries = (
   let i = 0;
   return pipe(
     ReadonlyArray.fromIterable(completionRules),
+    ReadonlyArray.sort(orderCompletions),
     ReadonlyArray.map((rule) => completionRuleToEntry(rule, i++)),
     ReadonlyArray.dedupe,
   );
