@@ -1,29 +1,23 @@
+/* eslint-disable no-useless-escape */
 import { TinyColor } from '@ctrl/tinycolor';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
-import { CompletionItemKind, Position } from 'vscode-languageserver/node';
+import * as vscode from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import { TemplateNode, TwinDocument } from '../../documents/document.resource';
 import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleParts, TwinRuleWithCompletion } from '../../types/native-twin.types';
 
-export function getCompletionTokenKind({
+export const getCompletionTokenKind = ({
   rule,
-}: TwinRuleWithCompletion): CompletionItemKind {
-  if (rule.themeSection == 'colors') {
-    return CompletionItemKind.Color;
-  }
+}: TwinRuleWithCompletion): vscode.CompletionItemKind =>
+  rule.themeSection == 'colors'
+    ? vscode.CompletionItemKind.Color
+    : vscode.CompletionItemKind.Constant;
 
-  return CompletionItemKind.Constant;
-}
-
-export function getKindModifiers(item: TwinRuleParts): string {
-  if (item.meta.feature === 'colors' || item.themeSection === 'colors') {
-    return 'color';
-  }
-  return '';
-}
+export const getKindModifiers = (item: TwinRuleParts): string =>
+  item.meta.feature === 'colors' || item.themeSection === 'colors' ? 'color' : '';
 
 export function getCompletionEntryDetailsDisplayParts({
   rule,
@@ -67,38 +61,51 @@ export const getFlattenTemplateToken = (
   return [];
 };
 
-export const extractTokenAtPositionFromTemplateNode = (
+export const extractTokensAtPositionFromTemplateNode = (
   document: TwinDocument,
   templateNode: TemplateNode,
-  position: Position,
+  position: vscode.Position,
 ) => {
   const relativeOffset = document.getRelativeOffset(templateNode, position);
-  const tokensAtPosition = pipe(
+  return pipe(
     templateNode.getTokensAtPosition(relativeOffset),
-    // ReadonlyArray.flatMap((x) => getCompletionParts(x)),
-    ReadonlyArray.map((x) => ({
-      ...x,
-      documentRange: document.getTokenPosition(x, templateNode.range),
-    })),
+    ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
     ReadonlyArray.filter(
       (x) => relativeOffset >= x.loc.start && relativeOffset <= x.loc.end,
     ),
   );
-
-  return tokensAtPosition;
 };
 
-export function getDocumentation(sheetEntry: FinalSheet) {
+export const getRangeFromTokensAtPosition = (
+  document: TwinDocument,
+  nodeAtPosition: TemplateNode,
+  templateTokens: TemplateTokenWithText[],
+) => {
+  return pipe(
+    templateTokens,
+    ReadonlyArray.map((completion) => {
+      return document.getTokenPosition(completion, nodeAtPosition.range);
+    }),
+  );
+};
+
+export function getDocumentationMarkdown(sheetEntry: FinalSheet) {
   const result: string[] = [];
   // result.push('***Css Rules*** \n\n');
   // result.push(`${'```css\n'}${data.css}${'\n```'}`);
   // result.push('\n\n');
   // result.push(`***className: ${completion.className}*** \n\n`);
-  result.push('***React Native StyleSheet*** \n\n');
-  result.push(`${'```json\n'}${JSON.stringify(sheetEntry, null, 2)}${'\n```'}`);
+  result.push('### ***React Native StyleSheet*** \n');
+  result.push(createJSONMarkdownString(sheetEntry.base));
   // result.push(createDebugHover(completionRule));
-  return result.join('\n\n');
+  return result.join('\n');
 }
+
+const createJSONMarkdownString = <T extends object>(x: T) =>
+  `${'```json '}
+${JSON.stringify(x, null, 2)}
+${' ```'}`;
+// sanitizeJSON(`${'```json\n'}${JSON.stringify(x, null, 2)}${'\n```'}`);
 
 export function createDebugHover(rule: TwinRuleWithCompletion) {
   const result: string[] = [];

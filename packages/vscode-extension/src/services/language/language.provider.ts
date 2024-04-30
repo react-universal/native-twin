@@ -8,7 +8,9 @@ import {
   ErrorAction,
   CloseAction,
   TransportKind,
+  ServerOptions,
 } from 'vscode-languageclient/node';
+// import { parseTemplate } from '@native-twin/language-server/plugin-parser';
 import {
   configurationSection,
   DOCUMENT_SELECTORS,
@@ -35,13 +37,14 @@ export const LanguageClientLive = Layer.scoped(
       ),
     );
 
-    const serverConfig = {
+    const serverConfig: ServerOptions = {
       run: {
         module: path.resolve(__dirname, '../../servers/native-twin.server'),
         transport: TransportKind.ipc,
       },
       debug: {
         module: path.resolve(__dirname, '../../servers/native-twin.server'),
+        transport: TransportKind.ipc,
       },
     };
 
@@ -58,14 +61,37 @@ export const LanguageClientLive = Layer.scoped(
     const clientConfig: LanguageClientOptions = {
       documentSelector: DOCUMENT_SELECTORS,
       synchronize: {
-        // TODO let users customize this
-        // TODO ignore any files that are git-ignored like node_modules
         fileEvents: fileEvents,
-        configurationSection: configurationSection, // The configuration section the server wants to listen for
+        configurationSection: configurationSection,
+      },
+      markdown: {
+        isTrusted: true,
+      },
+      middleware: {
+        // provideCompletionItem: async (document, position, context, token, next) => {
+        //   const data = await next(document, position, context, token);
+        //   return data;
+        // },
+        // resolveCompletionItem: async (item, token, next) => {
+        //   const data = await next(item, token);
+        //   if (data) {
+        //     console.log('resolveCompletionItem: ', data);
+        //   }
+        //   return data;
+        // },
+        // provideHover: async (document, position, token, next) => {
+        //   const data = await next(document, position, token);
+        //   if (data?.range) {
+        //     if (data.range.contains(position)) {
+        //       data.
+        //     }
+        //   }
+        //   return data;
+        // },
       },
 
       initializationOptions: {
-        ...vscode.workspace.getConfiguration(configurationSection), // Pass the config to the server
+        ...vscode.workspace.getConfiguration(configurationSection),
         tsconfigFiles: tsconfigFiles,
         twinConfigFile: configFiles.at(0),
         workspaceRoot: workspace?.at(0),
@@ -99,7 +125,6 @@ export const LanguageClientLive = Layer.scoped(
     );
 
     yield* $(Effect.promise(() => client.start()));
-
     yield* $(Effect.log('Language client started!'));
 
     return client;

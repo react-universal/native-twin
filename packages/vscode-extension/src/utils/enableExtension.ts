@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
-import { Logger, State, NativeTwinPluginConfiguration } from '../types';
 import {
   DOCUMENT_SELECTORS,
   configurationSection,
   pluginId,
   typeScriptExtensionId,
 } from '../services/extension/extension.constants';
+import { Logger, State, NativeTwinPluginConfiguration } from '../types';
 
 export async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
   const state: State = { hasConfigFile: undefined };
@@ -79,6 +79,40 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
       replaceClassNameStrings();
     }),
   );
+
+  const sleep = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
+  const disposable = vscode.commands.registerCommand(
+    'nativeTwin.executeSleep',
+    async () => {
+      // eslint-disable-next-line no-async-promise-executor
+      return new Promise(async (resolve) => {
+        await vscode.window.withProgress(
+          {
+            location: vscode.ProgressLocation.Notification,
+            title: 'Searching...',
+            cancellable: true,
+          },
+          async (progress, token) => {
+            token.onCancellationRequested(async () => {
+              return resolve(false);
+            });
+
+            await sleep(10000);
+
+            return resolve(true);
+          },
+        );
+      });
+    },
+  );
+  context.subscriptions.push(disposable);
+
+  await vscode.commands
+    .getCommands(true)
+    .then((x) => log('COMMANDS: ' + JSON.stringify(x, null)));
 
   const configWatcher = vscode.workspace.createFileSystemWatcher(
     '**/tailwind.config.{ts,js,mjs,cjs}',

@@ -15,12 +15,17 @@ import { TypescriptService } from './services/typescript.service';
 const ConnectionNeededLayers = DocumentsServiceLive.pipe(Layer.provide(LoggerLive));
 
 const ProgramLive = ConnectionNeededLayers.pipe(Layer.provide(TypescriptService.Live));
-
+const sleep = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 const program = Effect.gen(function* ($) {
   const { Connection } = yield* $(ConnectionService);
   const documentsService = yield* $(DocumentsService);
   const twinLayer = Layer.succeed(NativeTwinManagerService, new NativeTwinManager());
-  const twinManagerRuntime = ManagedRuntime.make(twinLayer);
+  const documentLayer = Layer.succeed(DocumentsService, documentsService);
+  const twinManagerRuntime = ManagedRuntime.make(
+    twinLayer.pipe(Layer.provideMerge(documentLayer)),
+  );
 
   Connection.onInitialize((...args) => {
     return twinManagerRuntime.runSync(initializeConnection(...args));
@@ -28,9 +33,7 @@ const program = Effect.gen(function* ($) {
 
   Connection.onCompletion((...args) => {
     const completions = twinManagerRuntime.runSync(
-      LanguageService.getCompletionsAtPosition(...args).pipe(
-        Effect.provideService(DocumentsService, documentsService),
-      ),
+      LanguageService.getCompletionsAtPosition(...args),
     );
 
     return {
@@ -40,20 +43,21 @@ const program = Effect.gen(function* ($) {
     };
   });
 
-  Connection.onCompletionResolve(async (...args) => {
-    return twinManagerRuntime.runSync(
-      LanguageService.getCompletionEntryDetails(...args).pipe(
-        Effect.provideService(DocumentsService, documentsService),
-      ),
-    );
+  Connection.onRequest('executeSleep', async (params, token) => {
+    // Listen for a cancellation request from the language client.
+    token.onCancellationRequested(async () => {
+      Connection.console.log('Cancellation requested');
+    });
+
+    await sleep(10000);
+  });
+
+  Connection.onCompletionResolve((...args) => {
+    return twinManagerRuntime.runSync(LanguageService.getCompletionEntryDetails(...args));
   });
 
   Connection.onHover((...args) => {
-    return twinManagerRuntime.runSync(
-      LanguageService.getQuickInfoAtPosition(...args).pipe(
-        Effect.provideService(DocumentsService, documentsService),
-      ),
-    );
+    return twinManagerRuntime.runSync(LanguageService.getQuickInfoAtPosition(...args));
   });
 
   Connection.listen();

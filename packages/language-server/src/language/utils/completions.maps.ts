@@ -4,16 +4,17 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
-import { CompletionItem } from 'vscode-languageserver/node';
+import { CompletionItem, Range } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
-import { TemplateNode, TwinDocument } from '../../documents/document.resource';
+import { TemplateNode } from '../../documents/document.resource';
 import { TwinStore } from '../../native-twin/native-twin.models';
 import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleWithCompletion } from '../../types/native-twin.types';
+import { VscodeCompletionItem } from '../language.models';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
-  getDocumentation,
+  getDocumentationMarkdown,
   getFlattenTemplateToken,
 } from './language.utils';
 
@@ -53,20 +54,14 @@ export const createCompletionsWithToken = (template: TemplateNode, store: TwinSt
   );
 };
 
-// export const filterCompletionByTemplateOffset = (
-//   tokens: HashSet.HashSet<TwinRuleWithCompletion>,
-//   position: number,
-// ) => HashSet.filter(tokens, (x) => position >= x.token.start && position <= x.token.end);
-
 export const completionRuleToEntry = (
   completionRule: TwinRuleWithCompletion,
   index: number,
-): vscode.CompletionItem => {
+) => {
   const { completion } = completionRule;
-  return Data.struct({
+  return new VscodeCompletionItem({
     kind: getCompletionTokenKind(completionRule),
     filterText: completion.className,
-
     label: completion.className,
     sortText: index.toString().padStart(8, '0'),
     detail: getCompletionEntryDetailsDisplayParts(completionRule)?.text,
@@ -83,7 +78,7 @@ export function createCompletionEntryDetails(
   completion: CompletionItem,
   sheetEntry: FinalSheet,
 ): CompletionItem {
-  const documentation = getDocumentation(sheetEntry);
+  const documentation = getDocumentationMarkdown(sheetEntry);
 
   return {
     ...completion,
@@ -98,25 +93,31 @@ export const completionRulesToEntries = (
   completionRules: HashSet.HashSet<TwinRuleWithCompletion>,
 ) => {
   let i = 0;
-  return HashSet.map(completionRules, (rule) => {
-    // const documentPosition = node.node.pos + 1;
-    // const documentStart = rule.token.start + documentPosition;
-    // const documentEnd = rule.token.end + documentPosition;
-    // const replacementSpan: vscode.CompletionItem[''] = {
-    //   start: node.document.document.offsetAt(
-    //     node.templateContext.toPosition(documentStart),
-    //   ),
-    //   length:
-    //     node.templateContext.toOffset(node.templateContext.toPosition(documentEnd)) -
-    //     node.templateContext.toOffset(node.templateContext.toPosition(documentStart)),
-    // };
-    return completionRuleToEntry(rule, i++);
-  }).pipe(HashSet.values, ReadonlyArray.fromIterable, ReadonlyArray.dedupe);
+  return pipe(
+    ReadonlyArray.fromIterable(completionRules),
+    ReadonlyArray.map((rule) => completionRuleToEntry(rule, i++)),
+    ReadonlyArray.dedupe,
+  );
+  // return HashSet.map(completionRules, (rule) => {
+  //   // const documentPosition = node.node.pos + 1;
+  //   // const documentStart = rule.token.start + documentPosition;
+  //   // const documentEnd = rule.token.end + documentPosition;
+  //   // const replacementSpan: vscode.CompletionItem[''] = {
+  //   //   start: node.document.document.offsetAt(
+  //   //     node.templateContext.toPosition(documentStart),
+  //   //   ),
+  //   //   length:
+  //   //     node.templateContext.toOffset(node.templateContext.toPosition(documentEnd)) -
+  //   //     node.templateContext.toOffset(node.templateContext.toPosition(documentStart)),
+  //   // };
+  //   return completionRuleToEntry(rule, i++);
+  // }).pipe(ReadonlyArray.fromIterable, ReadonlyArray.dedupe);
 };
 
 export function completionRulesToQuickInfo(
   completionRules: HashSet.HashSet<TwinRuleWithCompletion>,
   sheetEntry: FinalSheet,
+  range: Range,
 ): Option.Option<vscode.Hover> {
   return HashSet.map(completionRules, (_rule) => {
     // const documentPosition = node.node.pos + 1;
@@ -130,48 +131,21 @@ export function completionRulesToQuickInfo(
     //     node.templateContext.toOffset(node.templateContext.toPosition(documentEnd)) -
     //     node.templateContext.toOffset(node.templateContext.toPosition(documentStart)),
     // };
-    return completionRuleToQuickInfo(sheetEntry);
+    return completionRuleToQuickInfo(sheetEntry, range);
   }).pipe(HashSet.values, (x) => ReadonlyArray.fromIterable(x), ReadonlyArray.head);
 }
 
-export function completionRuleToQuickInfo(sheetEntry: FinalSheet): vscode.Hover {
-  const documentation = getDocumentation(sheetEntry);
+export function completionRuleToQuickInfo(
+  sheetEntry: FinalSheet,
+  range: Range,
+): vscode.Hover {
+  const documentation = getDocumentationMarkdown(sheetEntry);
 
   return Data.struct({
-    contents: [
-      {
-        language: vscode.MarkupKind.Markdown,
-        value: documentation,
-      },
-    ],
+    range,
+    contents: {
+      language: vscode.MarkupKind.Markdown,
+      value: documentation,
+    },
   });
 }
-
-export const composeCompletionTokens =
-  (completions: TwinStore) =>
-  (position: vscode.Position) =>
-  (document: TwinDocument, nodeAtPosition: TemplateNode) => {
-    const relativePosition = document.getRelativePosition(
-      position.character - nodeAtPosition.range.start.character,
-    );
-    const relativeOffset = document.getRelativeOffset(nodeAtPosition, relativePosition);
-
-    const completionWithToken = createCompletionsWithToken(nodeAtPosition, completions);
-    const tokensAtPosition = nodeAtPosition.getTokensAtPosition(relativeOffset);
-    let parts = tokensAtPosition.flatMap((x) => getFlattenTemplateToken(x));
-    parts = parts.filter((x) => {
-      return relativeOffset >= x.loc.start && relativeOffset <= x.loc.end;
-    });
-
-    const filtered = HashSet.filter(completionWithToken, (x) => {
-      return parts.some((y) => x.completion.className.startsWith(y.text));
-    });
-
-    return {
-      relativePosition,
-      relativeOffset,
-      completionWithToken,
-      filtered,
-      tokensAtPosition: parts,
-    };
-  };
