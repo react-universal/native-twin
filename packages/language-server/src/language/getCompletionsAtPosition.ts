@@ -32,11 +32,9 @@ export const getCompletionsAtPosition = (
       Option.let('ruleCompletions', ({ nodeAtPosition }) =>
         Completions.createCompletionsWithToken(nodeAtPosition, twinStore),
       ),
-      Option.let('tokensAtPosition', ({ nodeAtPosition, relativeOffset }) =>
-        nodeAtPosition.getTokensAtPosition(relativeOffset),
-      ),
-      Option.let('flattenCompletions', ({ tokensAtPosition, relativeOffset }) =>
-        tokensAtPosition
+      Option.let('flattenCompletions', ({ relativeOffset, nodeAtPosition }) =>
+        nodeAtPosition
+          .getTokensAtPosition(relativeOffset)
           .flatMap((x) => getFlattenTemplateToken(x))
           .filter((x) => {
             return relativeOffset >= x.loc.start && relativeOffset <= x.loc.end;
@@ -51,7 +49,7 @@ export const getCompletionsAtPosition = (
       // ),
       Option.match({
         onSome: (completionsList) =>
-          Completions. completionRulesToEntries(completionsList.ruleCompletions),
+          Completions.completionRulesToEntries(completionsList.ruleCompletions),
         onNone: (): vscode.CompletionItem[] => [],
       }),
     );

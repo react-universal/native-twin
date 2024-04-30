@@ -8,7 +8,8 @@ import * as VSCDocument from 'vscode-languageserver-textdocument';
 import { Position, Range } from 'vscode-languageserver/node';
 import { parseTemplate } from '../native-twin/native-twin.parser';
 import { TemplateTokenWithText } from '../template/template.models';
-import { Matcher, match } from '../utils/match';
+import { Matcher } from '../utils/match';
+import { getTemplateLiteralNode } from './utils/document.utils';
 
 export class TwinDocument implements Equal.Equal {
   readonly handler: VSCDocument.TextDocument;
@@ -73,9 +74,10 @@ export class TwinDocument implements Equal.Equal {
 
     const templateRange = template.pipe(
       Option.map((x) => {
-        const templateStart =
-          x.getStart() + x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
-        const templateEnd = x.getEnd() - x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
+        const templateStart = x.getStart() + 1;
+        // x.getStart() + x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
+        const templateEnd = x.getEnd() - 1;
+        // x.getEnd() - x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
         return Range.create(
           this.handler.positionAt(templateStart),
           this.handler.positionAt(templateEnd),
@@ -107,28 +109,15 @@ export class TemplateNode implements Equal.Equal {
   ) {}
 
   get parsedNode() {
-    return parseTemplate(this.node.getText().slice(1, -1));
+    const text = this.node.getFullText().slice(1, -1);
+    const parsed = parseTemplate(text);
+    return parsed;
   }
 
   getTokensAtPosition(offset: number) {
     return pipe(
       this.parsedNode,
       ReadonlyArray.filter((x) => offset >= x.loc.start && offset <= x.loc.end),
-      ReadonlyArray.map((x) => {
-        // if (x.token.type === 'VARIANT') {
-        //   return {
-        //     ...x,
-        //     type: 'GROUP',
-        //     value: {
-        //       base: x.token,
-        //       content: [],
-        //     },
-        //     end: x.loc.end,
-        //     start: x.loc.start,
-        //   } satisfies LocatedGroupToken;
-        // }
-        return x;
-      }),
     );
   }
 
@@ -141,54 +130,4 @@ export class TemplateNode implements Equal.Equal {
       `${this.range.end.character}-${this.range.start.character}-${this.node.getFullText()}`,
     );
   }
-}
-
-function getTemplateLiteralNode(
-  source: ts.SourceFile,
-  cursorOffset: number,
-  sourceMatchers: Matcher[],
-) {
-  let template:
-    | ts.StringLiteralLike
-    | ts.TemplateLiteral
-    | ts.NoSubstitutionTemplateLiteral
-    | undefined;
-  // getTokenAtPosition is not really public but widely used. May break in a future version.
-  let token = (ts as any).getTokenAtPosition(source, cursorOffset);
-
-  if (ts.isStringLiteralLike(token) && ts.isBinaryExpression(token.parent)) {
-    return Option.none();
-  }
-
-  while (token) {
-    if (
-      token.kind === ts.SyntaxKind.NoSubstitutionTemplateLiteral ||
-      token.kind === ts.SyntaxKind.TemplateExpression ||
-      token.kind === ts.SyntaxKind.StringLiteral
-    ) {
-      template = token;
-    }
-
-    token = token.parent;
-  }
-
-  return Option.fromNullable(template).pipe(
-    Option.flatMap((x) => {
-      let currentNode: ts.Node = x;
-      while (currentNode && !ts.isSourceFile(currentNode)) {
-        const matched = match(currentNode, sourceMatchers);
-        if (matched) {
-          return Option.some(x);
-        }
-
-        if (ts.isCallLikeExpression(currentNode)) {
-          return Option.none();
-        }
-
-        // TODO stop conditions
-        currentNode = currentNode.parent;
-      }
-      return Option.none();
-    }),
-  );
 }
