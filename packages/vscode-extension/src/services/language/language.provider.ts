@@ -88,10 +88,14 @@ export const LanguageClientLive = Layer.scoped(
         //   }
         //   return data;
         // },
-        // provideColorPresentations: async (color, context, token, next) => {
-        //   const result = await next(color, context, token);
-        //   return result;
-        // },
+        provideColorPresentations: async (_color, _context, _token, _next) => {
+          // await next(color, context, token);
+          return [];
+        },
+        provideDocumentColors: async (document, token, next) => {
+          const data = await next(document, token);
+          return data;
+        },
       },
 
       initializationOptions: {

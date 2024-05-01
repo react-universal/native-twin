@@ -7,7 +7,7 @@ export const configurationSection = 'nativeTwin';
 
 export function getDocumentSettings(resource: string) {
   return Effect.gen(function* ($) {
-    const { Connection } = yield* $(ConnectionService);
+    const Connection = yield* $(ConnectionService);
     const result = yield* $(
       Effect.promise(() =>
         Connection.workspace.getConfiguration({

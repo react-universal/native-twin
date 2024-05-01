@@ -1,9 +1,9 @@
-import { pipe } from 'effect';
+import { pipe } from 'effect/Function';
+import * as ReadonlyArray from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
-import * as ReadonlyArray from 'effect/ReadonlyArray';
 import { __Theme__ } from '@native-twin/core';
 import { TSPluginService } from '../plugin/TSPlugin.service';
 import { createRuleClassNames, createRuleCompositions } from './nativeTwin.rules';

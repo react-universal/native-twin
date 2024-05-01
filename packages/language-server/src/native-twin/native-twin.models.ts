@@ -1,5 +1,6 @@
 import * as Context from 'effect/Context';
 import * as HashSet from 'effect/HashSet';
+import * as Layer from 'effect/Layer';
 import {
   __Theme__,
   createTailwind,
@@ -27,11 +28,6 @@ export interface TwinStore {
   twinVariants: HashSet.HashSet<TwinVariantCompletion>;
   twinRules: HashSet.HashSet<TwinRuleWithCompletion>;
 }
-
-export class NativeTwinManagerService extends Context.Tag('NativeTwinManager')<
-  NativeTwinManagerService,
-  NativeTwinManager
->() {}
 
 export class NativeTwinManager {
   tw: InternalTwFn;
@@ -75,4 +71,11 @@ export class NativeTwinManager {
 
     return defineConfig(file);
   }
+}
+
+export class NativeTwinManagerService extends Context.Tag('NativeTwinManager')<
+  NativeTwinManagerService,
+  NativeTwinManager
+>() {
+  static Live = Layer.succeed(NativeTwinManagerService, new NativeTwinManager());
 }

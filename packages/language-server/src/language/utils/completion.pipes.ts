@@ -11,28 +11,28 @@ export const extractDocumentAndPositions = (
     Option.bind('nodeAtPosition', ({ document }) =>
       document.getTemplateNodeAtPosition(position),
     ),
-    Option.let('relativePosition', ({ nodeAtPosition, document }) =>
-      document.getRelativePosition(
-        position.character - nodeAtPosition.range.start.character,
-      ),
+    Option.let('cursorOffset', ({ document }) =>
+      document.handler.offsetAt(position),
     ),
-    Option.let('relativeOffset', ({ nodeAtPosition, document, relativePosition }) =>
-      document.getRelativeOffset(nodeAtPosition, relativePosition),
+    Option.let('cursorPosition', ({ document, cursorOffset }) =>
+      document.handler.positionAt(cursorOffset),
     ),
     Option.let('isWhiteSpace', ({ document }) => {
-      return document
-        .getTextForRange(
-          Range.create(
-            {
-              ...position,
-              character: position.character - 1,
-            },
-            {
-              ...position,
-              character: position.character + 1,
-            },
-          ),
-        )
-        .replaceAll(/\s/g, '') === '';
+      return (
+        document
+          .getTextForRange(
+            Range.create(
+              {
+                ...position,
+                character: position.character - 1,
+              },
+              {
+                ...position,
+                character: position.character + 1,
+              },
+            ),
+          )
+          .replaceAll(/\s/g, '') === ''
+      );
     }),
   );

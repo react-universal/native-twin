@@ -66,9 +66,9 @@ export const extractTokensAtPositionFromTemplateNode = (
   templateNode: TemplateNode,
   position: vscode.Position,
 ) => {
-  const relativeOffset = document.getRelativeOffset(templateNode, position);
+  const relativeOffset = document.handler.offsetAt(position);
   return pipe(
-    templateNode.getTokensAtPosition(relativeOffset),
+    getTokensAtOffset(templateNode, relativeOffset),
     ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
     ReadonlyArray.filter(
       (x) => relativeOffset >= x.loc.start && relativeOffset <= x.loc.end,
@@ -126,3 +126,12 @@ export function createDebugHover(rule: TwinRuleWithCompletion) {
 
   return result.join('\n\n');
 }
+
+export const getTokensAtOffset = (node: TemplateNode, offset: number) => {
+  return pipe(
+    node.parsedNode,
+    ReadonlyArray.filter((x) => {
+      return offset >= x.bodyLoc.start && offset <= x.bodyLoc.end;
+    }),
+  );
+};

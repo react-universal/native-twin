@@ -6,7 +6,7 @@ import ts from 'typescript';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver/node';
 import { ConfigManagerService } from '../connection/client.config';
-import { getSourceMatchers } from '../language/source-matcher';
+import { getSourceMatchers } from '../utils/match';
 import { TwinDocument } from './document.resource';
 
 interface DocumentsServiceShape {

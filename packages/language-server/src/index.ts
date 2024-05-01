@@ -1,62 +1,60 @@
-import { Option } from 'effect';
+import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as ManagedRuntime from 'effect/ManagedRuntime';
-import { ConfigManager, ConfigManagerService } from './connection/client.config';
+import { ConfigManagerService } from './connection/client.config';
 import { initializeConnection } from './connection/connection.handlers';
 import { ConnectionService } from './connection/connection.service';
 import { DocumentsService, DocumentsServiceLive } from './documents/documents.service';
 import * as LanguageService from './language/language.service';
-import {
-  NativeTwinManager,
-  NativeTwinManagerService,
-} from './native-twin/native-twin.models';
-// import { LoggerLive } from './services/logger.service';
-// import { TypescriptService } from './services/typescript.service';
-import { DEFAULT_PLUGIN_CONFIG } from './utils/constants.utils';
+import { NativeTwinManagerService } from './native-twin/native-twin.models';
+import { runWithTokenDefault } from './utils/effect.utils';
 
-// const ProgramLive = ConnectionNeededLayers.pipe(Layer.provide(TypescriptService.Live));
-const sleep = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-const program = Effect.gen(function* ($) {
-  const { Connection } = yield* $(ConnectionService);
-  // const documentsService = yield* $(DocumentsService);
-  const twinLayer = Layer.succeed(NativeTwinManagerService, new NativeTwinManager());
-  const configLayer = Layer.succeed(
-    ConfigManagerService,
-    new ConfigManager({
-      config: DEFAULT_PLUGIN_CONFIG,
-      tsconfig: Option.none(),
-      twinConfigFile: Option.none(),
-      workspaceRoot: Option.none(),
-    }),
-  );
-  // const documentLayer = Layer.succeed(DocumentsService, DocumentsServiceLive);
-  const twinManagerRuntime = ManagedRuntime.make(
-    twinLayer
-      .pipe(Layer.provideMerge(DocumentsServiceLive))
-      .pipe(Layer.provideMerge(configLayer)),
+const MainLive = Layer.mergeAll(
+  ConnectionService.Live,
+  DocumentsServiceLive,
+  NativeTwinManagerService.Live,
+).pipe(Layer.provideMerge(ConfigManagerService.Live));
+
+const program = Effect.gen(function* () {
+  const connectionService = yield* ConnectionService;
+  const Connection = connectionService;
+  const configService = yield* ConfigManagerService;
+  const documentService = yield* DocumentsService;
+  const nativeTwinManager = yield* NativeTwinManagerService;
+
+  const localContext = Context.empty().pipe(
+    Context.add(ConfigManagerService, configService),
+    Context.add(DocumentsService, documentService),
+    Context.add(NativeTwinManagerService, nativeTwinManager),
+    Context.add(ConnectionService, connectionService),
   );
 
-  Connection.onInitialize((...args) => {
-    return twinManagerRuntime.runSync(initializeConnection(...args));
+  Connection.onInitialize(async (...args) => {
+    return runWithTokenDefault(
+      initializeConnection(...args).pipe(Effect.provide(localContext)),
+      args[1],
+    ).then((x) => x ?? { capabilities: {} });
   });
 
-  Connection.onCompletion((...args) => {
-    const completions = twinManagerRuntime.runSync(
-      LanguageService.getCompletionsAtPosition(...args),
+  Connection.onCompletion(async (...args) => {
+    const completions = await runWithTokenDefault(
+      LanguageService.getCompletionsAtPosition(...args).pipe(
+        Effect.provide(localContext),
+      ),
+      args[1],
     );
+
+    if (!completions) return undefined;
 
     return {
       isIncomplete: true,
-      items: completions,
+      items: completions.entries,
       itemDefaults: {},
     };
   });
 
-  Connection.onDocumentHighlight((params) => {
-    Connection.console.info('onDocumentHighlight: ' + JSON.stringify(params, null, 2));
+  Connection.onDocumentHighlight((_params) => {
+    // Connection.console.info('onDocumentHighlight: ' + JSON.stringify(params, null, 2));
     return undefined;
   });
 
@@ -70,32 +68,28 @@ const program = Effect.gen(function* ($) {
     return undefined;
   });
 
-  Connection.onRequest('executeSleep', async (params, token) => {
-    // Listen for a cancellation request from the language client.
-    token.onCancellationRequested(async () => {
-      Connection.console.log('Cancellation requested');
-    });
-
-    await sleep(10000);
-  });
-
-  Connection.onCompletionResolve((...args) => {
-    return twinManagerRuntime.runSync(LanguageService.getCompletionEntryDetails(...args));
+  Connection.onCompletionResolve(async (...args) => {
+    return runWithTokenDefault(
+      LanguageService.getCompletionEntryDetails(...args).pipe(
+        Effect.provide(localContext),
+      ),
+      args[1],
+    ).then((x) => x ?? args[0]);
   });
 
   Connection.onHover((...args) => {
-    return twinManagerRuntime.runSync(LanguageService.getQuickInfoAtPosition(...args));
+    return runWithTokenDefault(
+      LanguageService.getQuickInfoAtPosition(...args).pipe(Effect.provide(localContext)),
+      args[1],
+    );
   });
 
   Connection.listen();
-  twinManagerRuntime.runFork(
-    Effect.gen(function* () {
-      const documentsService = yield* DocumentsService;
-      documentsService.handler.listen(Connection);
-    }),
-  );
+  documentService.handler.listen(Connection);
 });
+// .pipe(Effect.provide(LoggerLive))
+// .pipe(Logger.withMinimumLogLevel(LogLevel.All));
 
-const runnable = Effect.provide(program, ConnectionService.Live);
+const runnable = Effect.provide(program, MainLive);
 
 Effect.runFork(runnable);

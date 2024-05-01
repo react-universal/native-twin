@@ -64,15 +64,13 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
             //   documentSelector: DOCUMENT_SELECTORS,
             //   id: 'nativeTwinColor',
             // },
-            colorProvider: {
-              documentSelector: [{ pattern: '*/.{ts,js}' }],
-            },
+            colorProvider: true,
             hoverProvider: true,
             documentHighlightProvider: true,
             // TODO: Provide Commands implementation
-            executeCommandProvider: {
-              commands: ['getColors'],
-            },
+            // executeCommandProvider: {
+            //   commands: ['getColors'],
+            // },
             workspaceSymbolProvider: {
               resolveProvider: true,
             },
@@ -82,7 +80,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
               completionItem: {
                 labelDetailsSupport: true,
               },
-              allCommitCharacters: ['`', '-'],
+              // allCommitCharacters: ['`', '-'],
               triggerCharacters: ['`'],
             },
             workspace: {

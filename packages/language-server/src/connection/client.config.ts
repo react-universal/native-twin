@@ -1,9 +1,11 @@
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import type * as vscode from 'vscode';
 import { NativeTwinPluginConfiguration } from '../types/extension.types';
+import { DEFAULT_PLUGIN_CONFIG } from '../utils/constants.utils';
 
 export interface ExtensionClientConfig extends NativeTwinPluginConfiguration {
   tsconfig: Option.Option<vscode.Uri>;
@@ -53,11 +55,6 @@ export const make = Effect.map(
   (value) => value,
 );
 
-export class ConfigManagerService extends Context.Tag('ConfigManagerService')<
-  ConfigManagerService,
-  ConfigManager
->() {}
-
 export class ConfigManager {
   tsconfig: Option.Option<vscode.Uri>;
   twinConfigFile: Option.Option<vscode.Uri>;
@@ -86,4 +83,19 @@ export class ConfigManager {
     this.twinConfigFile = config.twinConfigFile;
     this.workspaceRoot = config.workspaceRoot;
   }
+}
+
+export class ConfigManagerService extends Context.Tag('ConfigManagerService')<
+  ConfigManagerService,
+  ConfigManager
+>() {
+  static Live = Layer.succeed(
+    ConfigManagerService,
+    new ConfigManager({
+      config: DEFAULT_PLUGIN_CONFIG,
+      tsconfig: Option.none(),
+      twinConfigFile: Option.none(),
+      workspaceRoot: Option.none(),
+    }),
+  );
 }

@@ -1,6 +1,4 @@
-import * as ReadonlyArray from 'effect/Array';
 import * as Equal from 'effect/Equal';
-import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import ts from 'typescript';
@@ -86,7 +84,7 @@ export class TwinDocument implements Equal.Equal {
     );
 
     return Option.zipWith(template, templateRange, (node, range) => {
-      return new TemplateNode(node, range);
+      return new TemplateNode(this, node, range);
     });
   }
 
@@ -101,6 +99,7 @@ export class TwinDocument implements Equal.Equal {
 
 export class TemplateNode implements Equal.Equal {
   constructor(
+    readonly handler: TwinDocument,
     readonly node:
       | ts.TemplateLiteral
       | ts.StringLiteralLike
@@ -109,16 +108,10 @@ export class TemplateNode implements Equal.Equal {
   ) {}
 
   get parsedNode() {
-    const text = this.node.getFullText().slice(1, -1);
-    const parsed = parseTemplate(text);
+    const text = this.node.getText().slice(1, -1);
+    const offset = this.handler.handler.offsetAt(this.range.start);
+    const parsed = parseTemplate(text, offset);
     return parsed;
-  }
-
-  getTokensAtPosition(offset: number) {
-    return pipe(
-      this.parsedNode,
-      ReadonlyArray.filter((x) => offset >= x.loc.start && offset <= x.loc.end),
-    );
   }
 
   [Equal.symbol](that: unknown) {

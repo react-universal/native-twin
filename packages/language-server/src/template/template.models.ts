@@ -5,7 +5,11 @@ import { LocatedGroupToken, LocatedParser, TemplateToken } from './template.type
 
 export class TemplateTokenWithText implements Equal.Equal {
   readonly token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText;
-  readonly loc: {
+  loc: {
+    readonly start: number;
+    readonly end: number;
+  };
+  bodyLoc: {
     readonly start: number;
     readonly end: number;
   };
@@ -14,11 +18,16 @@ export class TemplateTokenWithText implements Equal.Equal {
   constructor(
     token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText,
     text: string,
+    templateStarts: number,
   ) {
     this.loc = {
       end: token.end,
       start: token.start,
     };
+    this.bodyLoc = {
+      end: token.end + templateStarts,
+      start: token.start + templateStarts,
+    }
     this.text = text;
     this.token = token;
   }
