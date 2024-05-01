@@ -8,11 +8,7 @@ import { NativeTwinManagerService } from '../native-twin/native-twin.models';
 import { createStyledContext, getSheetEntryStyles } from '../utils/sheet.utils';
 import { extractDocumentAndPositions } from './utils/completion.pipes';
 import * as Completions from './utils/completions.maps';
-import {
-  extractTokensAtPositionFromTemplateNode,
-  getFlattenTemplateToken,
-  getTokensAtOffset,
-} from './utils/language.utils';
+import { getFlattenTemplateToken, getTokensAtOffset } from './utils/language.utils';
 
 export const getQuickInfoAtPosition = (
   params: vscode.HoverParams,
@@ -44,13 +40,6 @@ export const getQuickInfoAtPosition = (
               (x) => cursorOffset >= x.bodyLoc.start && cursorOffset <= x.bodyLoc.end,
             ),
           ReadonlyArray.dedupe,
-        ),
-      ),
-      Option.let('tokensWithText', ({ document, nodeAtPosition }) =>
-        extractTokensAtPositionFromTemplateNode(
-          document,
-          nodeAtPosition,
-          params.position,
         ),
       ),
       Option.bind('firstToken', ({ flattenCompletions }) =>
