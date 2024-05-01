@@ -17,6 +17,7 @@ export default function App() {
     }
   }, [bootFonts, isReady]);
   if (!isReady) return null;
+
   return (
     <StrictMode>
       <View
