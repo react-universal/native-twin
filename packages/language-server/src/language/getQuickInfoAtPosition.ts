@@ -1,5 +1,6 @@
 import * as ReadonlyArray from 'effect/Array';
 import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { DocumentsService } from '../documents/documents.service';
@@ -9,7 +10,8 @@ import { extractDocumentAndPositions } from './utils/completion.pipes';
 import * as Completions from './utils/completions.maps';
 import {
   extractTokensAtPositionFromTemplateNode,
-  getRangeFromTokensAtPosition,
+  getFlattenTemplateToken,
+  getTokensAtOffset,
 } from './utils/language.utils';
 
 export const getQuickInfoAtPosition = (
@@ -33,6 +35,17 @@ export const getQuickInfoAtPosition = (
           documentsHandler.getDocument(params.textDocument),
           params.position,
         ),
+
+      Option.let('flattenCompletions', ({ cursorOffset, nodeAtPosition }) =>
+        pipe(
+          getTokensAtOffset(nodeAtPosition, cursorOffset)
+            .flatMap((x) => getFlattenTemplateToken(x))
+            .filter(
+              (x) => cursorOffset >= x.bodyLoc.start && cursorOffset <= x.bodyLoc.end,
+            ),
+          ReadonlyArray.dedupe,
+        ),
+      ),
       Option.let('tokensWithText', ({ document, nodeAtPosition }) =>
         extractTokensAtPositionFromTemplateNode(
           document,
@@ -40,12 +53,13 @@ export const getQuickInfoAtPosition = (
           params.position,
         ),
       ),
-      Option.bind('firstToken', ({ tokensWithText }) =>
-        ReadonlyArray.head(tokensWithText),
+      Option.bind('firstToken', ({ flattenCompletions }) =>
+        ReadonlyArray.head(flattenCompletions),
       ),
-      Option.bind('hoverRange', ({ document, tokensWithText, nodeAtPosition }) =>
-        ReadonlyArray.head(
-          getRangeFromTokensAtPosition(document, nodeAtPosition, tokensWithText),
+      Option.let('hoverRange', ({ firstToken, document }) =>
+        vscode.Range.create(
+          document.handler.positionAt(firstToken.bodyLoc.start),
+          document.handler.positionAt(firstToken.bodyLoc.end),
         ),
       ),
       Option.let('finalSheet', ({ firstToken }) =>
