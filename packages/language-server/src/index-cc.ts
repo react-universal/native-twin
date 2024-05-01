@@ -51,7 +51,7 @@ const program = Effect.gen(function* ($) {
 
     return {
       isIncomplete: true,
-      items: completions.entries,
+      items: completions,
       itemDefaults: {},
     };
   });

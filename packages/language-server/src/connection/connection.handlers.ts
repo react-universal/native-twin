@@ -98,7 +98,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
         return result;
       }),
     )
-    .pipe(Effect.tap(() => Effect.log(`Server Capabilities Filled`)));
+    .pipe(Effect.tap(() => Effect.logDebug(`Server Capabilities Filled`)));
 };
 
 export const addServerRequestHandler = <Params, Result, Error>(

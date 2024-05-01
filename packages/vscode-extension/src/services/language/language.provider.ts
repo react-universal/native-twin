@@ -9,8 +9,8 @@ import {
   CloseAction,
   TransportKind,
   ServerOptions,
+  Message,
 } from 'vscode-languageclient/node';
-// import { parseTemplate } from '@native-twin/language-server/plugin-parser';
 import {
   configurationSection,
   DOCUMENT_SELECTORS,
@@ -67,6 +67,19 @@ export const LanguageClientLive = Layer.scoped(
       markdown: {
         isTrusted: true,
       },
+      connectionOptions: {
+        messageStrategy: {
+          handleMessage(message, next) {
+            if (Message.isNotification(message)) {
+              if (message.method === 'window/logMessage') {
+                console.log('asdasdasd', message);
+              }
+            }
+            next(message);
+          },
+        },
+      },
+
       middleware: {
         // provideCompletionItem: async (document, position, context, token, next) => {
         //   const data = await next(document, position, context, token);
@@ -113,6 +126,7 @@ export const LanguageClientLive = Layer.scoped(
           },
         },
       },
+      progressOnInitialization: true,
       errorHandler: {
         error: () => {
           return {
@@ -133,7 +147,7 @@ export const LanguageClientLive = Layer.scoped(
     );
 
     yield* $(Effect.promise(() => client.start()));
-    yield* $(Effect.log('Language client started!'));
+    // yield* $(Effect.log('Language client started!'));
 
     return client;
   }),

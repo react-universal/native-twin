@@ -1,7 +1,6 @@
 import * as ReadonlyArray from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { DocumentsService } from '../documents/documents.service';
@@ -42,20 +41,37 @@ export const getCompletionsAtPosition = (
         ),
       ),
 
-      Option.let('filteredCompletions', ({ ruleCompletions, flattenCompletions }) =>
-        HashSet.filter(ruleCompletions, (x) => {
-          return flattenCompletions.some((y) =>
-            x.completion.className.startsWith(y.text),
-          );
-        }),
+      Option.let(
+        'filteredCompletions',
+        ({ ruleCompletions, flattenCompletions, document }) =>
+          pipe(
+            ReadonlyArray.fromIterable(flattenCompletions),
+            ReadonlyArray.flatMap((x) => {
+              const range = vscode.Range.create(
+                document.handler.positionAt(x.bodyLoc.start),
+                document.handler.positionAt(x.bodyLoc.end),
+              );
+              return pipe(
+                ReadonlyArray.fromIterable(ruleCompletions),
+                ReadonlyArray.filter((y) => y.completion.className.startsWith(x.text)),
+                ReadonlyArray.map((z) => Completions.completionRuleToEntry(z, z.order)),
+                ReadonlyArray.dedupe,
+                ReadonlyArray.map((zz) => ({
+                  ...zz,
+                  textEdit: {
+                    insert: range,
+                    range: range,
+                    newText: zz.label,
+                    replace: range,
+                  },
+                })),
+              );
+            }),
+          ),
       ),
-
       Option.match({
-        onSome: (completionsList) => ({
-          ...completionsList,
-          entries: Completions.completionRulesToEntries(completionsList.ruleCompletions),
-        }),
-        onNone: () => null,
+        onSome: ({ filteredCompletions }) => filteredCompletions,
+        onNone: () => [],
       }),
     );
   });

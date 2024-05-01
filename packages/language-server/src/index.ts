@@ -1,13 +1,14 @@
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { ConfigManagerService } from './connection/client.config';
 import { initializeConnection } from './connection/connection.handlers';
 import { ConnectionService } from './connection/connection.service';
 import { DocumentsService, DocumentsServiceLive } from './documents/documents.service';
 import * as LanguageService from './language/language.service';
 import { NativeTwinManagerService } from './native-twin/native-twin.models';
-import { runWithTokenDefault } from './utils/effect.utils';
+import { sendDebugLog } from './services/logger.service';
 
 const MainLive = Layer.mergeAll(
   ConnectionService.Live,
@@ -29,28 +30,35 @@ const program = Effect.gen(function* () {
     Context.add(ConnectionService, connectionService),
   );
 
+  const localLayer = Layer.succeedContext(localContext);
+
+  const runtime = ManagedRuntime.make(localLayer);
+
   Connection.onInitialize(async (...args) => {
-    return runWithTokenDefault(
-      initializeConnection(...args).pipe(Effect.provide(localContext)),
-      args[1],
-    ).then((x) => x ?? { capabilities: {} });
+    return runtime.runPromise(initializeConnection(...args));
   });
 
   Connection.onCompletion(async (...args) => {
-    const completions = await runWithTokenDefault(
-      LanguageService.getCompletionsAtPosition(...args).pipe(
-        Effect.provide(localContext),
-      ),
-      args[1],
+    const completions = await runtime.runPromise(
+      LanguageService.getCompletionsAtPosition(...args),
     );
-
-    if (!completions) return undefined;
 
     return {
       isIncomplete: true,
-      items: completions.entries,
-      itemDefaults: {},
+      items: completions,
     };
+  });
+
+  Connection.onCompletionResolve(async (...args) => {
+    return runtime.runPromise(
+      LanguageService.getCompletionEntryDetails(...args).pipe(
+        Effect.tap((x) => sendDebugLog('CompletionItems', x)),
+      ),
+    );
+  });
+
+  Connection.onHover((...args) => {
+    return runtime.runPromise(LanguageService.getQuickInfoAtPosition(...args));
   });
 
   Connection.onDocumentHighlight((_params) => {
@@ -68,27 +76,9 @@ const program = Effect.gen(function* () {
     return undefined;
   });
 
-  Connection.onCompletionResolve(async (...args) => {
-    return runWithTokenDefault(
-      LanguageService.getCompletionEntryDetails(...args).pipe(
-        Effect.provide(localContext),
-      ),
-      args[1],
-    ).then((x) => x ?? args[0]);
-  });
-
-  Connection.onHover((...args) => {
-    return runWithTokenDefault(
-      LanguageService.getQuickInfoAtPosition(...args).pipe(Effect.provide(localContext)),
-      args[1],
-    );
-  });
-
   Connection.listen();
   documentService.handler.listen(Connection);
 });
-// .pipe(Effect.provide(LoggerLive))
-// .pipe(Logger.withMinimumLogLevel(LogLevel.All));
 
 const runnable = Effect.provide(program, MainLive);
 

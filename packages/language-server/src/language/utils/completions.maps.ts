@@ -11,13 +11,13 @@ import { TwinStore } from '../../native-twin/native-twin.models';
 import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import { VscodeCompletionItem } from '../language.models';
+import { orderCompletions } from './completion.ord';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
   getDocumentationMarkdown,
   getFlattenTemplateToken,
 } from './language.utils';
-import { orderCompletions } from './completion.ord';
 
 export const createCompletionsWithToken = (template: TemplateNode, store: TwinStore) => {
   const positionTokens: TemplateTokenWithText[] = pipe(
@@ -91,11 +91,11 @@ export function createCompletionEntryDetails(
 }
 
 export const completionRulesToEntries = (
-  completionRules: HashSet.HashSet<TwinRuleWithCompletion>,
+  completionRules: ReadonlyArray<TwinRuleWithCompletion>,
 ) => {
   let i = 0;
   return pipe(
-    ReadonlyArray.fromIterable(completionRules),
+    completionRules,
     ReadonlyArray.sort(orderCompletions),
     ReadonlyArray.map((rule) => completionRuleToEntry(rule, i++)),
     ReadonlyArray.dedupe,

@@ -21,8 +21,10 @@ export function interpolate(
     Array.isArray(strings) &&
     Array.isArray((strings as unknown as TemplateStringsArray).raw)
   ) {
-    return interleave(strings as unknown as TemplateStringsArray, interpolations, (value) =>
-      toString(value).trim(),
+    return interleave(
+      strings as unknown as TemplateStringsArray,
+      interpolations,
+      (value) => toString(value).trim(),
     );
   }
 
