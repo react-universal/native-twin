@@ -44,29 +44,10 @@ export const getCompletionsAtPosition = (
       Option.let(
         'filteredCompletions',
         ({ ruleCompletions, flattenCompletions, document }) =>
-          pipe(
-            ReadonlyArray.fromIterable(flattenCompletions),
-            ReadonlyArray.flatMap((x) => {
-              const range = vscode.Range.create(
-                document.handler.positionAt(x.bodyLoc.start),
-                document.handler.positionAt(x.bodyLoc.end),
-              );
-              return pipe(
-                ReadonlyArray.fromIterable(ruleCompletions),
-                ReadonlyArray.filter((y) => y.completion.className.startsWith(x.text)),
-                ReadonlyArray.map((z) => Completions.completionRuleToEntry(z, z.order)),
-                ReadonlyArray.dedupe,
-                ReadonlyArray.map((zz) => ({
-                  ...zz,
-                  textEdit: {
-                    insert: range,
-                    range: range,
-                    newText: zz.label,
-                    replace: range,
-                  },
-                })),
-              );
-            }),
+          Completions.completionRulesToEntries(
+            flattenCompletions,
+            ruleCompletions,
+            document,
           ),
       ),
       Option.match({

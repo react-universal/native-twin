@@ -6,12 +6,11 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { CompletionItem, Range } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
-import { TemplateNode } from '../../documents/document.resource';
+import { TemplateNode, TwinDocument } from '../../documents/document.resource';
 import { TwinStore } from '../../native-twin/native-twin.models';
 import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import { VscodeCompletionItem } from '../language.models';
-import { orderCompletions } from './completion.ord';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
@@ -91,29 +90,34 @@ export function createCompletionEntryDetails(
 }
 
 export const completionRulesToEntries = (
-  completionRules: ReadonlyArray<TwinRuleWithCompletion>,
+  flattenCompletions: ReadonlyArray<TemplateTokenWithText>,
+  ruleCompletions: HashSet.HashSet<TwinRuleWithCompletion>,
+  document: TwinDocument,
 ) => {
-  let i = 0;
   return pipe(
-    completionRules,
-    ReadonlyArray.sort(orderCompletions),
-    ReadonlyArray.map((rule) => completionRuleToEntry(rule, i++)),
-    ReadonlyArray.dedupe,
+    ReadonlyArray.fromIterable(flattenCompletions),
+    ReadonlyArray.flatMap((x) => {
+      const range = vscode.Range.create(
+        document.handler.positionAt(x.bodyLoc.start),
+        document.handler.positionAt(x.bodyLoc.end),
+      );
+      return pipe(
+        ReadonlyArray.fromIterable(ruleCompletions),
+        ReadonlyArray.filter((y) => y.completion.className.startsWith(x.text)),
+        ReadonlyArray.map((z) => completionRuleToEntry(z, z.order)),
+        ReadonlyArray.dedupe,
+        ReadonlyArray.map((zz) => ({
+          ...zz,
+          textEdit: {
+            insert: range,
+            range: range,
+            newText: zz.label,
+            replace: range,
+          },
+        })),
+      );
+    }),
   );
-  // return HashSet.map(completionRules, (rule) => {
-  //   // const documentPosition = node.node.pos + 1;
-  //   // const documentStart = rule.token.start + documentPosition;
-  //   // const documentEnd = rule.token.end + documentPosition;
-  //   // const replacementSpan: vscode.CompletionItem[''] = {
-  //   //   start: node.document.document.offsetAt(
-  //   //     node.templateContext.toPosition(documentStart),
-  //   //   ),
-  //   //   length:
-  //   //     node.templateContext.toOffset(node.templateContext.toPosition(documentEnd)) -
-  //   //     node.templateContext.toOffset(node.templateContext.toPosition(documentStart)),
-  //   // };
-  //   return completionRuleToEntry(rule, i++);
-  // }).pipe(ReadonlyArray.fromIterable, ReadonlyArray.dedupe);
 };
 
 export function completionRulesToQuickInfo(
@@ -122,17 +126,6 @@ export function completionRulesToQuickInfo(
   range: Range,
 ): Option.Option<vscode.Hover> {
   return HashSet.map(completionRules, (_rule) => {
-    // const documentPosition = node.node.pos + 1;
-    // const documentStart = rule.token.start + documentPosition;
-    // const documentEnd = rule.token.end + documentPosition;
-    // const replacementSpan: ts.TextSpan = {
-    //   start: node.templateContext.toOffset(
-    //     node.templateContext.toPosition(documentStart),
-    //   ),
-    //   length:
-    //     node.templateContext.toOffset(node.templateContext.toPosition(documentEnd)) -
-    //     node.templateContext.toOffset(node.templateContext.toPosition(documentStart)),
-    // };
     return completionRuleToQuickInfo(sheetEntry, range);
   }).pipe(HashSet.values, (x) => ReadonlyArray.fromIterable(x), ReadonlyArray.head);
 }
