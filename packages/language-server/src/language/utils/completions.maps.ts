@@ -6,8 +6,7 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { CompletionItem, Range } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
-import { TemplateNode, TwinDocument } from '../../documents/document.resource';
-import { TwinStore } from '../../native-twin/native-twin.models';
+import { TwinDocument } from '../../documents/document.resource';
 import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import { VscodeCompletionItem } from '../language.models';
@@ -15,44 +14,7 @@ import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
   getDocumentationMarkdown,
-  getFlattenTemplateToken,
 } from './language.utils';
-
-export const createCompletionsWithToken = (template: TemplateNode, store: TwinStore) => {
-  const positionTokens: TemplateTokenWithText[] = pipe(
-    template.parsedNode,
-    ReadonlyArray.fromIterable,
-    ReadonlyArray.map((x) => getFlattenTemplateToken(x)),
-    ReadonlyArray.flatten,
-    ReadonlyArray.dedupe,
-  );
-
-  return pipe(
-    store.twinRules,
-    HashSet.flatMap((ruleInfo) => {
-      return HashSet.fromIterable(positionTokens).pipe(
-        HashSet.filter((x) => {
-          if (ruleInfo.completion.className === x.text) {
-            return true;
-          }
-          if (x.token.type === 'VARIANT_CLASS') {
-            return ruleInfo.completion.className.startsWith(x.token.value[1].value.n);
-          }
-
-          return ruleInfo.completion.className.startsWith(x.text);
-        }),
-        HashSet.map(
-          (): TwinRuleWithCompletion => ({
-            completion: ruleInfo.completion,
-            composition: ruleInfo.composition,
-            rule: ruleInfo.rule,
-            order: ruleInfo.order,
-          }),
-        ),
-      );
-    }),
-  );
-};
 
 export const completionRuleToEntry = (
   completionRule: TwinRuleWithCompletion,

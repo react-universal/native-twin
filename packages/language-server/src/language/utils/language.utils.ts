@@ -61,21 +61,6 @@ export const getFlattenTemplateToken = (
   return [];
 };
 
-export const extractTokensAtPositionFromTemplateNode = (
-  document: TwinDocument,
-  templateNode: TemplateNode,
-  position: vscode.Position,
-) => {
-  const relativeOffset = document.handler.offsetAt(position);
-  return pipe(
-    getTokensAtOffset(templateNode, relativeOffset),
-    ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
-    ReadonlyArray.filter(
-      (x) => relativeOffset >= x.loc.start && relativeOffset <= x.loc.end,
-    ),
-  );
-};
-
 export const getRangeFromTokensAtPosition = (
   document: TwinDocument,
   nodeAtPosition: TemplateNode,
@@ -127,11 +112,3 @@ export function createDebugHover(rule: TwinRuleWithCompletion) {
   return result.join('\n\n');
 }
 
-export const getTokensAtOffset = (node: TemplateNode, offset: number) => {
-  return pipe(
-    node.parsedNode,
-    ReadonlyArray.filter((x) => {
-      return offset >= x.bodyLoc.start && offset <= x.bodyLoc.end;
-    }),
-  );
-};
