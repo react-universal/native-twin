@@ -25,7 +25,7 @@ export const extractTemplateAtPosition = (
     Option.let('isWhiteSpace', ({ document }) => {
       return (
         document
-          .getTextForRange(
+          .handler.getText(
             vscode.Range.create(
               {
                 ...position,
@@ -49,8 +49,7 @@ export const extractRuleCompletionsFromTemplate = (
   const positionTokens: TemplateTokenWithText[] = pipe(
     template.parsedNode,
     ReadonlyArray.fromIterable,
-    ReadonlyArray.map((x) => getFlattenTemplateToken(x)),
-    ReadonlyArray.flatten,
+    ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
     ReadonlyArray.dedupe,
   );
 

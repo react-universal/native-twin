@@ -69,7 +69,7 @@ export const getRangeFromTokensAtPosition = (
   return pipe(
     templateTokens,
     ReadonlyArray.map((completion) => {
-      return document.getTokenPosition(completion, nodeAtPosition.range);
+      return document.getRangeAtPosition(completion, nodeAtPosition.range);
     }),
   );
 };

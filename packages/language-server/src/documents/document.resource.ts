@@ -18,11 +18,6 @@ export class TwinDocument implements Equal.Equal {
     this.sourceMatchers = matcher;
   }
 
-  /** Gets the document full text */
-  get fullText() {
-    return this.handler.getText();
-  }
-
   /** Gets the `typescript` AST */
   get getDocumentSource() {
     return ts.createSourceFile(
@@ -33,11 +28,6 @@ export class TwinDocument implements Equal.Equal {
     );
   }
 
-  getTextForRange(range: Range) {
-    const text = this.handler.getText(range);
-    return text;
-  }
-
   getRelativeOffset(template: TemplateNode, position: Position) {
     return this.handler.offsetAt({
       line: template.range.start.line,
@@ -45,11 +35,7 @@ export class TwinDocument implements Equal.Equal {
     });
   }
 
-  getRelativePosition(relativeOffset: number) {
-    return this.handler.positionAt(relativeOffset);
-  }
-
-  getTokenPosition(
+  getRangeAtPosition(
     part: Pick<TemplateTokenWithText, 'loc' | 'text'>,
     templateRange: Range,
   ) {
@@ -89,11 +75,11 @@ export class TwinDocument implements Equal.Equal {
   }
 
   [Equal.symbol](that: unknown) {
-    return that instanceof TwinDocument && that.fullText === this.fullText;
+    return that instanceof TwinDocument && that.handler.getText() === this.handler.getText();
   }
 
   [Hash.symbol](): number {
-    return Hash.hash(this.fullText);
+    return Hash.hash(this.handler.getText());
   }
 }
 
