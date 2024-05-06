@@ -24,8 +24,8 @@ export const extractTemplateAtPosition = (
     ),
     Option.let('isWhiteSpace', ({ document }) => {
       return (
-        document
-          .handler.getText(
+        document.handler
+          .getText(
             vscode.Range.create(
               {
                 ...position,
@@ -77,15 +77,16 @@ export const extractRuleCompletionsFromTemplate = (
         ),
       );
     }),
+    // ReadonlyArray.fromIterable,
+    // // ReadonlyArray.dedupe,
+    // (self) => ReadonlyArray.dedupeWith(self, eqTwinRuleWithCompletion),
   );
 };
 
 export const getTokensAtOffset = (node: TemplateNode, offset: number) => {
   return pipe(
     node.parsedNode,
-    ReadonlyArray.filter((x) => {
-      return offset >= x.bodyLoc.start && offset <= x.bodyLoc.end;
-    }),
+    ReadonlyArray.filter((x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end),
     ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
     ReadonlyArray.filter((x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end),
     ReadonlyArray.dedupe,
