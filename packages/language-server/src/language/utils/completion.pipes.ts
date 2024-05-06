@@ -77,9 +77,6 @@ export const extractRuleCompletionsFromTemplate = (
         ),
       );
     }),
-    // ReadonlyArray.fromIterable,
-    // // ReadonlyArray.dedupe,
-    // (self) => ReadonlyArray.dedupeWith(self, eqTwinRuleWithCompletion),
   );
 };
 

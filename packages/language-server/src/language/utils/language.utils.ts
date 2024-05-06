@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 import { TinyColor } from '@ctrl/tinycolor';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
