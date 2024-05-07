@@ -44,6 +44,7 @@ export const getCompletionsAtPosition = (
             document,
           ),
       ),
+
       Option.match({
         onSome: (result) => result.filteredCompletions,
         onNone: () => [],

@@ -9,7 +9,6 @@ import {
   CloseAction,
   TransportKind,
   ServerOptions,
-  Message,
 } from 'vscode-languageclient/node';
 import {
   configurationSection,
@@ -66,19 +65,20 @@ export const LanguageClientLive = Layer.scoped(
       },
       markdown: {
         isTrusted: true,
+        supportHtml: true,
       },
-      connectionOptions: {
-        messageStrategy: {
-          handleMessage(message, next) {
-            if (Message.isNotification(message)) {
-              if (message.method === 'window/logMessage') {
-                console.log('asdasdasd', message);
-              }
-            }
-            next(message);
-          },
-        },
-      },
+      // connectionOptions: {
+      //   messageStrategy: {
+      //     handleMessage(message, next) {
+      //       if (Message.isNotification(message)) {
+      //         if (message.method === 'window/logMessage') {
+      //           console.log('asdasdasd', message);
+      //         }
+      //       }
+      //       next(message);
+      //     },
+      //   },
+      // },
 
       middleware: {
         // provideCompletionItem: async (document, position, context, token, next) => {

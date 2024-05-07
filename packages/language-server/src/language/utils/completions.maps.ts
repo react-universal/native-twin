@@ -10,7 +10,7 @@ import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import { VscodeCompletionItem } from '../language.models';
 import {
-  getCompletionEntryDetailsDisplayParts,
+  // getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
   getDocumentationMarkdown,
 } from './language.utils';
@@ -25,7 +25,8 @@ export const completionRuleToEntry = (
     filterText: completion.className,
     label: completion.className,
     sortText: index.toString().padStart(8, '0'),
-    detail: getCompletionEntryDetailsDisplayParts(completionRule)?.text,
+    // detail: getCompletionEntryDetailsDisplayParts(completionRule)?.text,
+    detail: undefined,
     labelDetails: {
       description: completion.declarations.join(','),
     },
@@ -40,14 +41,15 @@ export function createCompletionEntryDetails(
   sheetEntry: FinalSheet,
 ): vscode.CompletionItem {
   const documentation = getDocumentationMarkdown(sheetEntry);
-
-  return {
-    ...completion,
-    documentation: {
-      kind: vscode.MarkupKind.Markdown,
-      value: documentation,
-    },
-  };
+  completion.documentation = documentation;
+  return completion;
+  // return {
+  //   ...completion,
+  //   documentation: {
+  //     kind: vscode.MarkupKind.Markdown,
+  //     value: documentation,
+  //   },
+  // };
 }
 
 export const completionRulesToEntries = (

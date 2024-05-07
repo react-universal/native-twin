@@ -79,7 +79,7 @@ export function getDocumentationMarkdown(sheetEntry: FinalSheet) {
   // result.push(`${'```css\n'}${data.css}${'\n```'}`);
   // result.push('\n\n');
   // result.push(`***className: ${completion.className}*** \n\n`);
-  result.push('### ***React Native StyleSheet*** \n');
+  result.push('***React Native StyleSheet*** \n');
   result.push(createJSONMarkdownString(sheetEntry.base));
   // result.push(createDebugHover(completionRule));
   return result.join('\n');
