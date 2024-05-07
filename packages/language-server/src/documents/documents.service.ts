@@ -17,23 +17,23 @@ interface DocumentsServiceShape {
 export class DocumentsService extends Ctx.Tag('vscode/DocumentsService')<
   DocumentsService,
   DocumentsServiceShape
->() {}
-
-export const DocumentsServiceLive = Layer.scoped(
-  DocumentsService,
-  Effect.gen(function* () {
-    const handler = new vscode.TextDocuments(TextDocument);
-    const configManager = yield* ConfigManagerService;
-    const sourceMatchers = getSourceMatchers(ts, configManager.config);
-    return {
-      handler,
-      getDocument(id) {
-        return Option.fromNullable(handler.get(id.uri)).pipe(
-          Option.map((x) => {
-            return new TwinDocument(x, sourceMatchers);
-          }),
-        );
-      },
-    };
-  }),
-);
+>() {
+  static Live = Layer.scoped(
+    DocumentsService,
+    Effect.gen(function* () {
+      const handler = new vscode.TextDocuments(TextDocument);
+      const configManager = yield* ConfigManagerService;
+      const sourceMatchers = getSourceMatchers(ts, configManager.config);
+      return {
+        handler,
+        getDocument(id) {
+          return Option.fromNullable(handler.get(id.uri)).pipe(
+            Option.map((x) => {
+              return new TwinDocument(x, sourceMatchers);
+            }),
+          );
+        },
+      };
+    }),
+  );
+}

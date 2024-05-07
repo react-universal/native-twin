@@ -4,9 +4,12 @@ import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { TemplateNode, TwinDocument } from '../../documents/document.resource';
-import { TwinStore } from '../../native-twin/native-twin.models';
-import { TemplateTokenWithText } from '../../template/template.models';
-import { TwinRuleWithCompletion } from '../../types/native-twin.types';
+import { NativeTwinManagerService } from '../../native-twin/native-twin.models';
+import {
+  LocatedGroupTokenWithText,
+  TemplateTokenWithText,
+} from '../../template/template.models';
+import { TwinVariantCompletion } from '../../types/native-twin.types';
 import { getFlattenTemplateToken } from './language.utils';
 
 export const extractTemplateAtPosition = (
@@ -42,42 +45,71 @@ export const extractTemplateAtPosition = (
     }),
   );
 
-export const extractRuleCompletionsFromTemplate = (
+export const extractTemplateTokenAtPosition = (
   template: TemplateNode,
-  store: TwinStore,
+  position: vscode.Position,
+  twinService: NativeTwinManagerService['Type'],
 ) => {
-  const positionTokens: TemplateTokenWithText[] = pipe(
-    template.parsedNode,
-    ReadonlyArray.fromIterable,
-    ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
-    ReadonlyArray.dedupe,
-  );
-
+  const offset = template.handler.handler.offsetAt(position);
   return pipe(
-    store.twinRules,
-    HashSet.flatMap((ruleInfo) => {
-      return HashSet.fromIterable(positionTokens).pipe(
-        HashSet.filter((x) => {
-          if (ruleInfo.completion.className === x.text) {
-            return true;
-          }
-          if (x.token.type === 'VARIANT_CLASS') {
-            return ruleInfo.completion.className.startsWith(x.token.value[1].value.n);
-          }
-
-          return ruleInfo.completion.className.startsWith(x.text);
-        }),
-        HashSet.map(
-          (): TwinRuleWithCompletion => ({
-            completion: ruleInfo.completion,
-            composition: ruleInfo.composition,
-            rule: ruleInfo.rule,
-            order: ruleInfo.order,
-          }),
-        ),
+    template.parsedNode,
+    ReadonlyArray.findFirst((x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end),
+    Option.map((x) => {
+      const variantsSuggestions: TwinVariantCompletion[] = [];
+      const flatten = getFlattenTemplateToken(x).filter(
+        (y) => offset >= y.bodyLoc.start && offset <= y.bodyLoc.end,
       );
+      if (x.token.type === 'GROUP') {
+        variantsSuggestions.push(
+          ...extractGroupVariantsSuggestions(x.token, twinService),
+        );
+      }
+
+      const rules = extractClassSuggestions(flatten, twinService);
+      return { variantsSuggestions, rules };
     }),
   );
+};
+
+const extractClassSuggestions = (
+  tokens: TemplateTokenWithText[],
+  twinService: NativeTwinManagerService['Type'],
+) => {
+  const uniqueTokens = pipe(tokens, ReadonlyArray.dedupe);
+
+  return pipe(
+    twinService.completions.twinRules,
+    ReadonlyArray.fromIterable,
+    ReadonlyArray.filter((x) => {
+      return uniqueTokens.some((y) => {
+        if (x.completion.className === y.text) return true;
+        if (y.token.type === 'VARIANT_CLASS') {
+          return x.completion.className.startsWith(y.token.value[1].value.n);
+        }
+        return x.completion.className.startsWith(y.text);
+      });
+    }),
+  );
+};
+
+const extractGroupVariantsSuggestions = (
+  group: LocatedGroupTokenWithText,
+  twinService: NativeTwinManagerService['Type'],
+) => {
+  const variantsSuggestions: TwinVariantCompletion[] = [];
+  if (group.value.base.token.type === 'VARIANT') {
+    const includedVariants = group.value.base.token.value.map((x) => `${x.n}:`);
+    pipe(
+      twinService.completions.twinVariants,
+      HashSet.forEach((x) => {
+        if (!includedVariants.includes(x.name)) {
+          variantsSuggestions.push(x);
+        }
+      }),
+    );
+  }
+
+  return variantsSuggestions;
 };
 
 export const getTokensAtOffset = (node: TemplateNode, offset: number) => {

@@ -5,7 +5,7 @@ import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { ConfigManager, ConfigManagerService } from './connection/client.config';
 import { initializeConnection } from './connection/connection.handlers';
 import { ConnectionService } from './connection/connection.service';
-import { DocumentsService, DocumentsServiceLive } from './documents/documents.service';
+import { DocumentsService } from './documents/documents.service';
 import * as LanguageService from './language/language.service';
 import {
   NativeTwinManager,
@@ -31,7 +31,7 @@ const program = Effect.gen(function* ($) {
   const connectionLayer = Layer.succeed(ConnectionService, connectionService);
   const loggerLayer = LoggerLive.pipe(Layer.provideMerge(connectionLayer));
   const twinLayer = Layer.succeed(NativeTwinManagerService, new NativeTwinManager())
-    .pipe(Layer.provideMerge(DocumentsServiceLive))
+    .pipe(Layer.provideMerge(DocumentsService.Live))
     .pipe(Layer.provideMerge(configLayer))
     .pipe(Layer.provide(loggerLayer));
   const twinManagerRuntime = ManagedRuntime.make(twinLayer);

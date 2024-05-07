@@ -4,7 +4,6 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
-import { CompletionItem, Range } from 'vscode-languageserver/node';
 import { FinalSheet } from '@native-twin/css';
 import { TwinDocument } from '../../documents/document.resource';
 import { TemplateTokenWithText } from '../../template/template.models';
@@ -37,9 +36,9 @@ export const completionRuleToEntry = (
 };
 
 export function createCompletionEntryDetails(
-  completion: CompletionItem,
+  completion: vscode.CompletionItem,
   sheetEntry: FinalSheet,
-): CompletionItem {
+): vscode.CompletionItem {
   const documentation = getDocumentationMarkdown(sheetEntry);
 
   return {
@@ -52,12 +51,12 @@ export function createCompletionEntryDetails(
 }
 
 export const completionRulesToEntries = (
-  flattenCompletions: ReadonlyArray<TemplateTokenWithText>,
-  ruleCompletions: HashSet.HashSet<TwinRuleWithCompletion>,
+  flattenTemplateTokens: ReadonlyArray<TemplateTokenWithText>,
+  ruleCompletions: ReadonlyArray<TwinRuleWithCompletion>,
   document: TwinDocument,
 ) => {
   return pipe(
-    ReadonlyArray.fromIterable(flattenCompletions),
+    flattenTemplateTokens,
     ReadonlyArray.flatMap((x) => {
       const range = vscode.Range.create(
         document.handler.positionAt(x.bodyLoc.start),
@@ -85,7 +84,7 @@ export const completionRulesToEntries = (
 export function completionRulesToQuickInfo(
   completionRules: HashSet.HashSet<TwinRuleWithCompletion>,
   sheetEntry: FinalSheet,
-  range: Range,
+  range: vscode.Range,
 ): Option.Option<vscode.Hover> {
   return HashSet.map(completionRules, (_rule) => {
     return completionRuleToQuickInfo(sheetEntry, range);
@@ -94,7 +93,7 @@ export function completionRulesToQuickInfo(
 
 export function completionRuleToQuickInfo(
   sheetEntry: FinalSheet,
-  range: Range,
+  range: vscode.Range,
 ): vscode.Hover {
   const documentation = getDocumentationMarkdown(sheetEntry);
 

@@ -3,7 +3,7 @@ import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import ts from 'typescript';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
-import { Position, Range } from 'vscode-languageserver/node';
+import * as vscode from 'vscode-languageserver/node';
 import { parseTemplate } from '../native-twin/native-twin.parser';
 import { TemplateTokenWithText } from '../template/template.models';
 import { Matcher } from '../utils/match';
@@ -28,7 +28,7 @@ export class TwinDocument implements Equal.Equal {
     );
   }
 
-  getRelativeOffset(template: TemplateNode, position: Position) {
+  getRelativeOffset(template: TemplateNode, position: vscode.Position) {
     return this.handler.offsetAt({
       line: template.range.start.line,
       character: position.character - template.range.start.character,
@@ -37,7 +37,7 @@ export class TwinDocument implements Equal.Equal {
 
   getRangeAtPosition(
     part: Pick<TemplateTokenWithText, 'loc' | 'text'>,
-    templateRange: Range,
+    templateRange: vscode.Range,
   ) {
     const realStart = this.handler.positionAt(
       part.loc.start + templateRange.start.character,
@@ -46,11 +46,11 @@ export class TwinDocument implements Equal.Equal {
       ...realStart,
       character: realStart.character + part.text.length,
     };
-    return Range.create(realStart, realEnd);
+    return vscode.Range.create(realStart, realEnd);
   }
 
   /** Gets the template literal at this position */
-  getTemplateNodeAtPosition(position: Position): Option.Option<TemplateNode> {
+  getTemplateNodeAtPosition(position: vscode.Position): Option.Option<TemplateNode> {
     const cursorOffset = this.handler.offsetAt(position);
 
     const source = this.getDocumentSource;
@@ -62,7 +62,7 @@ export class TwinDocument implements Equal.Equal {
         // x.getStart() + x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
         const templateEnd = x.getEnd() - 1;
         // x.getEnd() - x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
-        return Range.create(
+        return vscode.Range.create(
           this.handler.positionAt(templateStart),
           this.handler.positionAt(templateEnd),
         );
@@ -90,7 +90,7 @@ export class TemplateNode implements Equal.Equal {
       | ts.TemplateLiteral
       | ts.StringLiteralLike
       | ts.NoSubstitutionTemplateLiteral,
-    readonly range: Range,
+    readonly range: vscode.Range,
   ) {}
 
   get parsedNode() {

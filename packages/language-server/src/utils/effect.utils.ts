@@ -1,10 +1,10 @@
 import * as Effect from 'effect/Effect';
 import * as Runtime from 'effect/Runtime';
-import { CancellationToken } from 'vscode-languageserver/node';
+import * as vscode from 'vscode-languageserver/node';
 
 export const runWithToken = <R>(runtime: Runtime.Runtime<R>) => {
   const runCallback = Runtime.runCallback(runtime);
-  return <E, A>(effect: Effect.Effect<A, E, R>, token: CancellationToken) =>
+  return <E, A>(effect: Effect.Effect<A, E, R>, token: vscode.CancellationToken) =>
     new Promise<A | undefined>((resolve) => {
       const cancel = runCallback(effect, {
         onExit: (exit) => {

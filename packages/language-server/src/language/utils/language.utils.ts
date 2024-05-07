@@ -110,4 +110,3 @@ export function createDebugHover(rule: TwinRuleWithCompletion) {
 
   return result.join('\n\n');
 }
-

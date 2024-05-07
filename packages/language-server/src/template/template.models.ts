@@ -1,7 +1,6 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import { ClassNameToken, VariantToken } from '@native-twin/css';
-import { LocatedGroupToken, LocatedParser, TemplateToken } from './template.types';
+import { LocatedGroupToken, TemplateToken } from './template.types';
 
 export class TemplateTokenWithText implements Equal.Equal {
   readonly token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText;
@@ -27,7 +26,7 @@ export class TemplateTokenWithText implements Equal.Equal {
     this.bodyLoc = {
       end: token.end + templateStarts,
       start: token.start + templateStarts,
-    }
+    };
     this.text = text;
     this.token = token;
   }
@@ -46,9 +45,7 @@ export interface LocatedGroupTokenWithText {
   start: number;
   end: number;
   value: {
-    base:
-      | (LocatedParser<ClassNameToken> & { text: string })
-      | (LocatedParser<VariantToken> & { text: string });
+    base: TemplateTokenWithText;
     content: TemplateTokenWithText[];
   };
 }

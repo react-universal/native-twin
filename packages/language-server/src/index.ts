@@ -5,14 +5,14 @@ import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { ConfigManagerService } from './connection/client.config';
 import { initializeConnection } from './connection/connection.handlers';
 import { ConnectionService } from './connection/connection.service';
-import { DocumentsService, DocumentsServiceLive } from './documents/documents.service';
+import { DocumentsService } from './documents/documents.service';
 import * as LanguageService from './language/language.service';
 import { NativeTwinManagerService } from './native-twin/native-twin.models';
 import { sendDebugLog } from './services/logger.service';
 
 const MainLive = Layer.mergeAll(
   ConnectionService.Live,
-  DocumentsServiceLive,
+  DocumentsService.Live,
   NativeTwinManagerService.Live,
 ).pipe(Layer.provideMerge(ConfigManagerService.Live));
 

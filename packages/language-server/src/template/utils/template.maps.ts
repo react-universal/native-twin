@@ -39,15 +39,18 @@ export function addTextToParsedRules(
       return x;
     });
 
+    const base = new TemplateTokenWithText(
+      nextToken.value.base,
+      text.slice(nextToken.value.base.start, nextToken.value.base.end),
+      templateStarts,
+    );
+
     results.push(
       new TemplateTokenWithText(
         {
           ...nextToken,
           value: {
-            base: {
-              ...nextToken.value.base,
-              text: text.slice(nextToken.value.base.start, nextToken.value.base.end),
-            },
+            base: base,
             content: newContent,
           },
         },

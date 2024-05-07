@@ -1,6 +1,6 @@
 import * as Effect from 'effect/Effect';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver/node';
+import * as vscode from 'vscode-languageserver/node';
 import { ConnectionService } from '../connection/connection.service';
 
 export const configurationSection = 'nativeTwin';
@@ -30,12 +30,12 @@ export function validateTextDocument(textDocument: TextDocument) {
     let m: RegExpExecArray | null;
 
     let problems = 0;
-    const diagnostics: Diagnostic[] = [];
+    const diagnostics: vscode.Diagnostic[] = [];
 
     while ((m = pattern.exec(text)) && problems < settings.maxNumberOfProblems) {
       problems++;
-      const diagnostic: Diagnostic = {
-        severity: DiagnosticSeverity.Warning,
+      const diagnostic: vscode.Diagnostic = {
+        severity: vscode.DiagnosticSeverity.Warning,
         range: {
           start: textDocument.positionAt(m.index),
           end: textDocument.positionAt(m.index + m[0].length),

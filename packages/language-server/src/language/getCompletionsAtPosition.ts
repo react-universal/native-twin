@@ -4,8 +4,8 @@ import * as vscode from 'vscode-languageserver/node';
 import { DocumentsService } from '../documents/documents.service';
 import { NativeTwinManagerService } from '../native-twin/native-twin.models';
 import {
-  extractRuleCompletionsFromTemplate,
   extractTemplateAtPosition,
+  extractTemplateTokenAtPosition,
   getTokensAtOffset,
 } from './utils/completion.pipes';
 import * as Completions from './utils/completions.maps';
@@ -17,7 +17,7 @@ export const getCompletionsAtPosition = (
   _resultProgress: vscode.ResultProgressReporter<vscode.CompletionItem[]> | undefined,
 ) => {
   return Effect.gen(function* () {
-    const { completions: twinStore } = yield* NativeTwinManagerService;
+    const twinService = yield* NativeTwinManagerService;
     const documentsHandler = yield* DocumentsService;
 
     return Option.Do.pipe(
@@ -27,25 +27,25 @@ export const getCompletionsAtPosition = (
           params.position,
         ),
 
-      Option.let('ruleCompletions', ({ templateAtPosition }) =>
-        extractRuleCompletionsFromTemplate(templateAtPosition, twinStore),
+      Option.bind('tokenAtPosition', ({ templateAtPosition }) =>
+        extractTemplateTokenAtPosition(templateAtPosition, params.position, twinService),
       ),
 
-      Option.let('flattenCompletions', ({ cursorOffset, templateAtPosition }) =>
+      Option.let('flattenTemplateTokens', ({ cursorOffset, templateAtPosition }) =>
         getTokensAtOffset(templateAtPosition, cursorOffset),
       ),
 
       Option.let(
         'filteredCompletions',
-        ({ ruleCompletions, flattenCompletions, document }) =>
+        ({ tokenAtPosition, flattenTemplateTokens, document }) =>
           Completions.completionRulesToEntries(
-            flattenCompletions,
-            ruleCompletions,
+            flattenTemplateTokens,
+            tokenAtPosition.rules,
             document,
           ),
       ),
       Option.match({
-        onSome: ({ filteredCompletions }) => filteredCompletions,
+        onSome: (result) => result.filteredCompletions,
         onNone: () => [],
       }),
     );

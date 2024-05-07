@@ -1,4 +1,5 @@
-import { Equal, Hash } from 'effect';
+import * as Equal from 'effect/Equal';
+import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
 
 interface CompletionItemShape extends vscode.CompletionItem {
