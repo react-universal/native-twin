@@ -38,12 +38,12 @@ export const getQuickInfoAtPosition = (
       ),
       Option.let('hoverRange', ({ firstToken, document }) =>
         vscode.Range.create(
-          document.handler.positionAt(firstToken.bodyLoc.start),
-          document.handler.positionAt(firstToken.bodyLoc.end),
+          document.handler.positionAt(firstToken.token.bodyLoc.start),
+          document.handler.positionAt(firstToken.token.bodyLoc.end),
         ),
       ),
       Option.let('finalSheet', ({ firstToken }) =>
-        getSheetEntryStyles(twinManager.tw(firstToken.text), context),
+        getSheetEntryStyles(twinManager.tw(firstToken.token.text), context),
       ),
       Option.map((x) =>
         Completions.completionRuleToQuickInfo(x.finalSheet, x.hoverRange),

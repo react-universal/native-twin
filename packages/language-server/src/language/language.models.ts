@@ -1,6 +1,7 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
+import { TemplateTokenWithText } from '../template/template.models';
 
 interface CompletionItemShape extends vscode.CompletionItem {
   readonly label: string;
@@ -20,7 +21,7 @@ export class VscodeCompletionItem implements CompletionItemShape, Equal.Equal {
   readonly sortText: string;
   readonly detail: string | undefined;
   readonly labelDetails: vscode.CompletionItemLabelDetails;
-  readonly insertText: string;
+  insertText: string;
   readonly insertTextFormat: vscode.InsertTextFormat;
   readonly textEditText: string;
   constructor(completion: CompletionItemShape) {
@@ -41,5 +42,20 @@ export class VscodeCompletionItem implements CompletionItemShape, Equal.Equal {
 
   [Hash.symbol](): number {
     return Hash.string(this.label);
+  }
+}
+
+export class TemplateTokenData implements Equal.Equal {
+  constructor(
+    readonly token: TemplateTokenWithText,
+    readonly base: TemplateTokenWithText | null,
+  ) {}
+
+  [Equal.symbol](that: unknown): boolean {
+    return that instanceof TemplateTokenData && this.token.text === that.token.text;
+  }
+
+  [Hash.symbol](): number {
+    return Hash.string(this.token.text);
   }
 }

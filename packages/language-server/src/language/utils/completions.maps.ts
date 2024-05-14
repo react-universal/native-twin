@@ -1,32 +1,29 @@
 import * as ReadonlyArray from 'effect/Array';
-import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { FinalSheet } from '@native-twin/css';
 import { TwinDocument } from '../../documents/document.resource';
-import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleWithCompletion } from '../../types/native-twin.types';
-import { VscodeCompletionItem } from '../language.models';
+import { TemplateTokenData, VscodeCompletionItem } from '../language.models';
 import {
-  // getCompletionEntryDetailsDisplayParts,
+  getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
   getDocumentationMarkdown,
 } from './language.utils';
 
 export const completionRuleToEntry = (
   completionRule: TwinRuleWithCompletion,
-  index: number,
+  _index: number,
 ) => {
-  const { completion } = completionRule;
+  const { completion, order } = completionRule;
   return new VscodeCompletionItem({
     kind: getCompletionTokenKind(completionRule),
     filterText: completion.className,
     label: completion.className,
-    sortText: index.toString().padStart(8, '0'),
-    // detail: getCompletionEntryDetailsDisplayParts(completionRule)?.text,
-    detail: undefined,
+    sortText: order.toString().padStart(8, '0'),
+    detail: getCompletionEntryDetailsDisplayParts(completionRule)?.text,
     labelDetails: {
       description: completion.declarations.join(','),
     },
@@ -41,19 +38,17 @@ export function createCompletionEntryDetails(
   sheetEntry: FinalSheet,
 ): vscode.CompletionItem {
   const documentation = getDocumentationMarkdown(sheetEntry);
-  completion.documentation = documentation;
-  return completion;
-  // return {
-  //   ...completion,
-  //   documentation: {
-  //     kind: vscode.MarkupKind.Markdown,
-  //     value: documentation,
-  //   },
-  // };
+  return {
+    ...completion,
+    documentation: {
+      kind: vscode.MarkupKind.Markdown,
+      value: documentation,
+    },
+  };
 }
 
 export const completionRulesToEntries = (
-  flattenTemplateTokens: ReadonlyArray<TemplateTokenWithText>,
+  flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,
   ruleCompletions: ReadonlyArray<TwinRuleWithCompletion>,
   document: TwinDocument,
 ) => {
@@ -61,20 +56,26 @@ export const completionRulesToEntries = (
     flattenTemplateTokens,
     ReadonlyArray.flatMap((x) => {
       const range = vscode.Range.create(
-        document.handler.positionAt(x.bodyLoc.start),
-        document.handler.positionAt(x.bodyLoc.end),
+        document.handler.positionAt(x.token.bodyLoc.start),
+        document.handler.positionAt(x.token.bodyLoc.end),
       );
       return pipe(
         ReadonlyArray.fromIterable(ruleCompletions),
-        ReadonlyArray.filter((y) => y.completion.className.startsWith(x.text)),
-        ReadonlyArray.map((z) => completionRuleToEntry(z, z.order)),
+        ReadonlyArray.filter((y) => y.completion.className.startsWith(x.token.text)),
+        ReadonlyArray.map((completion) => {
+          const result = completionRuleToEntry(completion, completion.order);
+          if (x.base && x.base.token.type === 'CLASS_NAME') {
+            result.insertText = result.insertText.replace(`${x.base.token.value.n}-`, '');
+          }
+          return result;
+        }),
         ReadonlyArray.dedupe,
-        ReadonlyArray.map((zz) => ({
-          ...zz,
+        ReadonlyArray.map((item) => ({
+          ...item,
           textEdit: {
             insert: range,
             range: range,
-            newText: zz.label,
+            newText: item.insertText,
             replace: range,
           },
         })),
@@ -99,11 +100,11 @@ export function completionRuleToQuickInfo(
 ): vscode.Hover {
   const documentation = getDocumentationMarkdown(sheetEntry);
 
-  return Data.struct({
+  return {
     range,
     contents: {
-      language: vscode.MarkupKind.Markdown,
+      kind: vscode.MarkupKind.Markdown,
       value: documentation,
     },
-  });
+  };
 }

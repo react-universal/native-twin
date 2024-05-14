@@ -36,7 +36,7 @@ export const getCompletionsAtPosition = (
       ),
 
       Option.let(
-        'filteredCompletions',
+        'completionEntries',
         ({ tokenAtPosition, flattenTemplateTokens, document }) =>
           Completions.completionRulesToEntries(
             flattenTemplateTokens,
@@ -46,7 +46,7 @@ export const getCompletionsAtPosition = (
       ),
 
       Option.match({
-        onSome: (result) => result.filteredCompletions,
+        onSome: (result) => result.completionEntries,
         onNone: () => [],
       }),
     );

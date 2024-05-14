@@ -5,11 +5,9 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { TemplateNode, TwinDocument } from '../../documents/document.resource';
 import { NativeTwinManagerService } from '../../native-twin/native-twin.models';
-import {
-  LocatedGroupTokenWithText,
-  TemplateTokenWithText,
-} from '../../template/template.models';
+import { LocatedGroupTokenWithText } from '../../template/template.models';
 import { TwinVariantCompletion } from '../../types/native-twin.types';
+import { TemplateTokenData } from '../language.models';
 import { getFlattenTemplateToken } from './language.utils';
 
 export const extractTemplateAtPosition = (
@@ -57,7 +55,7 @@ export const extractTemplateTokenAtPosition = (
     Option.map((x) => {
       const variantsSuggestions: TwinVariantCompletion[] = [];
       const flatten = getFlattenTemplateToken(x).filter(
-        (y) => offset >= y.bodyLoc.start && offset <= y.bodyLoc.end,
+        (y) => offset >= y.token.bodyLoc.start && offset <= y.token.bodyLoc.end,
       );
       if (x.token.type === 'GROUP') {
         variantsSuggestions.push(
@@ -72,7 +70,7 @@ export const extractTemplateTokenAtPosition = (
 };
 
 const extractClassSuggestions = (
-  tokens: TemplateTokenWithText[],
+  tokens: TemplateTokenData[],
   twinService: NativeTwinManagerService['Type'],
 ) => {
   const uniqueTokens = pipe(tokens, ReadonlyArray.dedupe);
@@ -82,11 +80,11 @@ const extractClassSuggestions = (
     ReadonlyArray.fromIterable,
     ReadonlyArray.filter((x) => {
       return uniqueTokens.some((y) => {
-        if (x.completion.className === y.text) return true;
-        if (y.token.type === 'VARIANT_CLASS') {
-          return x.completion.className.startsWith(y.token.value[1].value.n);
+        if (x.completion.className === y.token.text) return true;
+        if (y.token.token.type === 'VARIANT_CLASS') {
+          return x.completion.className.startsWith(y.token.token.value[1].value.n);
         }
-        return x.completion.className.startsWith(y.text);
+        return x.completion.className.startsWith(y.token.text);
       });
     }),
   );
@@ -117,7 +115,9 @@ export const getTokensAtOffset = (node: TemplateNode, offset: number) => {
     node.parsedNode,
     ReadonlyArray.filter((x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end),
     ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
-    ReadonlyArray.filter((x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end),
+    ReadonlyArray.filter(
+      (x) => offset >= x.token.bodyLoc.start && offset <= x.token.bodyLoc.end,
+    ),
     ReadonlyArray.dedupe,
   );
 };

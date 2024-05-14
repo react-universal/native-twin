@@ -7,6 +7,7 @@ import { asArray } from '@native-twin/helpers';
 import { TemplateNode, TwinDocument } from '../../documents/document.resource';
 import { TemplateTokenWithText } from '../../template/template.models';
 import { TwinRuleParts, TwinRuleWithCompletion } from '../../types/native-twin.types';
+import { TemplateTokenData } from '../language.models';
 
 export const getCompletionTokenKind = ({
   rule,
@@ -40,20 +41,34 @@ export function getCompletionEntryDetailsDisplayParts({
 
 export const getFlattenTemplateToken = (
   item: TemplateTokenWithText,
-): TemplateTokenWithText[] => {
+  base: TemplateTokenWithText | null = null,
+): TemplateTokenData[] => {
   if (
     item.token.type === 'CLASS_NAME' ||
     item.token.type === 'ARBITRARY' ||
     item.token.type === 'VARIANT_CLASS' ||
     item.token.type === 'VARIANT'
   ) {
-    return asArray(item);
+    if (base?.token.type === 'CLASS_NAME' && item.token.type === 'CLASS_NAME') {
+      return asArray(
+        new TemplateTokenData(
+          new TemplateTokenWithText(
+            item.token,
+            `${base.token.value.n}-${item.text}`,
+            item.templateStarts,
+          ),
+          base,
+        ),
+      );
+    }
+    return asArray(new TemplateTokenData(item, base));
   }
 
   if (item.token.type === 'GROUP') {
-    const classNames = item.token.value.content.flatMap((x) => {
-      return getFlattenTemplateToken(x);
-    });
+    const base = item.token.value.base;
+    const classNames = item.token.value.content.flatMap((x) =>
+      getFlattenTemplateToken(x, base),
+    );
     return classNames;
   }
 
@@ -79,17 +94,14 @@ export function getDocumentationMarkdown(sheetEntry: FinalSheet) {
   // result.push(`${'```css\n'}${data.css}${'\n```'}`);
   // result.push('\n\n');
   // result.push(`***className: ${completion.className}*** \n\n`);
-  result.push('***React Native StyleSheet*** \n');
+  result.push('#### React Native StyleSheet\n');
   result.push(createJSONMarkdownString(sheetEntry.base));
   // result.push(createDebugHover(completionRule));
   return result.join('\n');
 }
 
 const createJSONMarkdownString = <T extends object>(x: T) =>
-  `${'```json '}
-${JSON.stringify(x, null, 2)}
-${' ```'}`;
-// sanitizeJSON(`${'```json\n'}${JSON.stringify(x, null, 2)}${'\n```'}`);
+  ['```json', JSON.stringify(x, null, 2), '```'].join('\n');
 
 export function createDebugHover(rule: TwinRuleWithCompletion) {
   const result: string[] = [];
