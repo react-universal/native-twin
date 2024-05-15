@@ -69,7 +69,7 @@ export const extractTemplateTokenAtPosition = (
   );
 };
 
-const extractClassSuggestions = (
+export const extractClassSuggestions = (
   tokens: TemplateTokenData[],
   twinService: NativeTwinManagerService['Type'],
 ) => {

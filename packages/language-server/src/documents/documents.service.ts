@@ -29,7 +29,7 @@ export class DocumentsService extends Ctx.Tag('vscode/DocumentsService')<
         getDocument(id) {
           return Option.fromNullable(handler.get(id.uri)).pipe(
             Option.map((x) => {
-              return new TwinDocument(x, sourceMatchers);
+              return new TwinDocument(x, sourceMatchers, configManager.config);
             }),
           );
         },

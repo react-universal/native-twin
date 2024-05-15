@@ -66,14 +66,14 @@ const program = Effect.gen(function* () {
     return undefined;
   });
 
-  Connection.onColorPresentation((_params) => {
-    // Connection.console.info('onColorPresentation: ' + JSON.stringify(params, null, 2));
+  Connection.onColorPresentation((params) => {
+    Connection.console.info('onColorPresentation: ' + JSON.stringify(params, null, 2));
     return undefined;
   });
 
-  Connection.onDocumentColor((_params) => {
-    // Connection.console.info('onDocumentColor: ' + JSON.stringify(params, null, 2));
-    return undefined;
+  Connection.onDocumentColor((...params) => {
+    Connection.console.info('onDocumentColor: ' + JSON.stringify(params, null, 2));
+    return runtime.runPromise(LanguageService.getDocumentColors(...params));
   });
 
   Connection.listen();

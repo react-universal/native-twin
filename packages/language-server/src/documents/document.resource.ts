@@ -6,16 +6,23 @@ import * as VSCDocument from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver/node';
 import { parseTemplate } from '../native-twin/native-twin.parser';
 import { TemplateTokenWithText } from '../template/template.models';
+import { NativeTwinPluginConfiguration } from '../types/extension.types';
 import { Matcher } from '../utils/match';
-import { getTemplateLiteralNode } from './utils/document.utils';
+import { getAllDocumentTemplates, getTemplateLiteralNode } from './utils/document.utils';
 
 export class TwinDocument implements Equal.Equal {
   readonly handler: VSCDocument.TextDocument;
   readonly sourceMatchers: Matcher[];
+  readonly config: NativeTwinPluginConfiguration;
 
-  constructor(document: VSCDocument.TextDocument, matcher: Matcher[]) {
+  constructor(
+    document: VSCDocument.TextDocument,
+    matcher: Matcher[],
+    config: NativeTwinPluginConfiguration,
+  ) {
     this.handler = document;
     this.sourceMatchers = matcher;
+    this.config = config;
   }
 
   /** Gets the `typescript` AST */
@@ -59,9 +66,7 @@ export class TwinDocument implements Equal.Equal {
     const templateRange = template.pipe(
       Option.map((x) => {
         const templateStart = x.getStart() + 1;
-        // x.getStart() + x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
         const templateEnd = x.getEnd() - 1;
-        // x.getEnd() - x.kind !== ts.SyntaxKind.StringLiteral ? 1 : 0;
         return vscode.Range.create(
           this.handler.positionAt(templateStart),
           this.handler.positionAt(templateEnd),
@@ -74,8 +79,18 @@ export class TwinDocument implements Equal.Equal {
     });
   }
 
+  getAllTemplates() {
+    const source = this.getDocumentSource;
+    return getAllDocumentTemplates(source, this.sourceMatchers).map((x) => {
+      const position = this.handler.positionAt(x.getStart());
+      return this.getTemplateNodeAtPosition(position);
+    });
+  }
+
   [Equal.symbol](that: unknown) {
-    return that instanceof TwinDocument && that.handler.getText() === this.handler.getText();
+    return (
+      that instanceof TwinDocument && that.handler.getText() === this.handler.getText()
+    );
   }
 
   [Hash.symbol](): number {

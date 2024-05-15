@@ -1,6 +1,24 @@
 import * as Option from 'effect/Option';
 import ts from 'typescript';
 import { Matcher, match } from '../../utils/match';
+import { sourceVisitor } from './document.ast';
+
+export const getAllDocumentTemplates = (
+  source: ts.SourceFile,
+  sourceMatchers: Matcher[],
+) => {
+  const templates: (
+    | ts.StringLiteralLike
+    | ts.TemplateLiteral
+    | ts.NoSubstitutionTemplateLiteral
+  )[] = [];
+
+  sourceVisitor(source, sourceMatchers, (node) => {
+    templates.push(node as any);
+  });
+
+  return templates;
+};
 
 export function getTemplateLiteralNode(
   source: ts.SourceFile,
