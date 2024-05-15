@@ -68,7 +68,7 @@ const program = Effect.gen(function* () {
 
   Connection.onColorPresentation((params) => {
     Connection.console.info('onColorPresentation: ' + JSON.stringify(params, null, 2));
-    return undefined;
+    return [];
   });
 
   Connection.onDocumentColor((...params) => {

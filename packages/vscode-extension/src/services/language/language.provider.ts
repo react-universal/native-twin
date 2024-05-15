@@ -67,50 +67,6 @@ export const LanguageClientLive = Layer.scoped(
         isTrusted: true,
         supportHtml: true,
       },
-      // connectionOptions: {
-      //   messageStrategy: {
-      //     handleMessage(message, next) {
-      //       if (Message.isNotification(message)) {
-      //         if (message.method === 'window/logMessage') {
-      //           console.log('asdasdasd', message);
-      //         }
-      //       }
-      //       next(message);
-      //     },
-      //   },
-      // },
-
-      middleware: {
-        // provideCompletionItem: async (document, position, context, token, next) => {
-        //   const data = await next(document, position, context, token);
-        //   return data;
-        // },
-        // resolveCompletionItem: async (item, token, next) => {
-        //   const data = await next(item, token);
-        //   if (data) {
-        //     console.log('resolveCompletionItem: ', data);
-        //   }
-        //   return data;
-        // },
-        // provideHover: async (document, position, token, next) => {
-        //   const data = await next(document, position, token);
-        //   if (data?.range) {
-        //     if (data.range.contains(position)) {
-        //       data.
-        //     }
-        //   }
-        //   return data;
-        // },
-        provideColorPresentations: async (_color, _context, _token, _next) => {
-          // await next(color, context, token);
-          return [];
-        },
-        provideDocumentColors: async (document, token, next) => {
-          const data = await next(document, token);
-          return data;
-        },
-      },
-
       initializationOptions: {
         ...vscode.workspace.getConfiguration(configurationSection),
         tsconfigFiles: tsconfigFiles,
