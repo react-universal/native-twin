@@ -37,7 +37,12 @@ export class VscodeCompletionItem implements CompletionItemShape, Equal.Equal {
   }
 
   [Equal.symbol](that: unknown): boolean {
-    return that instanceof VscodeCompletionItem && this.label === that.label;
+    return (
+      that instanceof VscodeCompletionItem &&
+      this.label === that.label &&
+      this.textEditText === that.textEditText &&
+      this.sortText === that.sortText
+    );
   }
 
   [Hash.symbol](): number {
@@ -52,10 +57,19 @@ export class TemplateTokenData implements Equal.Equal {
   ) {}
 
   [Equal.symbol](that: unknown): boolean {
-    return that instanceof TemplateTokenData && this.token.text === that.token.text;
+    return (
+      that instanceof TemplateTokenData &&
+      this.token.text === that.token.text &&
+      this.token.bodyLoc.start === that.token.bodyLoc.start &&
+      this.token.bodyLoc.end === that.token.bodyLoc.end
+    );
   }
 
   [Hash.symbol](): number {
-    return Hash.string(this.token.text);
+    return Hash.array([
+      this.token.text,
+      this.token.bodyLoc.start,
+      this.token.bodyLoc.end,
+    ]);
   }
 }

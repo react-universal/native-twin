@@ -52,7 +52,9 @@
               "css",
               "variants",
               "styled",
-              "tx"
+              "tx",
+              "style",
+              "createVariants"
             ]
           },
           "nativeTwin.attributes": {

@@ -66,4 +66,5 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
   };
 }
 
+// @ts-expect-error
 export = init;

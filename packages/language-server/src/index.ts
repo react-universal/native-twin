@@ -62,7 +62,6 @@ const program = Effect.gen(function* () {
   });
 
   Connection.onDocumentHighlight((_params) => {
-    // Connection.console.info('onDocumentHighlight: ' + JSON.stringify(params, null, 2));
     return undefined;
   });
 

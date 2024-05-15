@@ -34,11 +34,20 @@ export class TemplateTokenWithText implements Equal.Equal {
   }
 
   [Equal.symbol](that: unknown): boolean {
-    return that instanceof TemplateTokenWithText && this.text === this.text;
+    return (
+      that instanceof TemplateTokenWithText &&
+      this.text === that.text &&
+      this.bodyLoc.start === that.bodyLoc.start &&
+      this.bodyLoc.end === that.bodyLoc.end
+    );
   }
 
   [Hash.symbol]() {
-    return Hash.string(this.text);
+    return Hash.array([
+      this.text,
+      this.bodyLoc.start,
+      this.bodyLoc.end,
+    ]);
   }
 }
 

@@ -1,45 +1,29 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import ts from 'typescript';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver/node';
 import { parseTemplate } from '../native-twin/native-twin.parser';
 import { TemplateTokenWithText } from '../template/template.models';
 import { NativeTwinPluginConfiguration } from '../types/extension.types';
-import { Matcher } from '../utils/match';
-import { getAllDocumentTemplates, getTemplateLiteralNode } from './utils/document.utils';
+import { getTwinStringRanges } from './utils/document.ast';
 
 export class TwinDocument implements Equal.Equal {
   readonly handler: VSCDocument.TextDocument;
-  readonly sourceMatchers: Matcher[];
   readonly config: NativeTwinPluginConfiguration;
 
-  constructor(
-    document: VSCDocument.TextDocument,
-    matcher: Matcher[],
-    config: NativeTwinPluginConfiguration,
-  ) {
+  constructor(document: VSCDocument.TextDocument, config: NativeTwinPluginConfiguration) {
     this.handler = document;
-    this.sourceMatchers = matcher;
     this.config = config;
   }
 
-  /** Gets the `typescript` AST */
-  get getDocumentSource() {
-    return ts.createSourceFile(
-      this.handler.uri,
-      this.handler.getText(),
-      ts.ScriptTarget.Latest,
-      /*setParentNodes*/ true,
+  get languageRanges() {
+    return getTwinStringRanges(this.handler.getText(), this.config).map((x) =>
+      vscode.Range.create(
+        this.handler.positionAt(x.start.index),
+        this.handler.positionAt(x.end.index),
+      ),
     );
-  }
-
-  getRelativeOffset(template: TemplateNode, position: vscode.Position) {
-    return this.handler.offsetAt({
-      line: template.range.start.line,
-      character: position.character - template.range.start.character,
-    });
   }
 
   getRangeAtPosition(
@@ -60,36 +44,31 @@ export class TwinDocument implements Equal.Equal {
   getTemplateNodeAtPosition(position: vscode.Position): Option.Option<TemplateNode> {
     const cursorOffset = this.handler.offsetAt(position);
 
-    const source = this.getDocumentSource;
-    const template = getTemplateLiteralNode(source, cursorOffset, this.sourceMatchers);
-
-    const templateRange = template.pipe(
-      Option.map((x) => {
-        const templateStart = x.getStart() + 1;
-        const templateEnd = x.getEnd() - 1;
-        return vscode.Range.create(
-          this.handler.positionAt(templateStart),
-          this.handler.positionAt(templateEnd),
-        );
-      }),
+    const source = Option.fromNullable(
+      this.languageRanges.find(
+        (x) =>
+          cursorOffset >= this.handler.offsetAt(x.start) &&
+          cursorOffset <= this.handler.offsetAt(x.end),
+      ),
     );
 
-    return Option.zipWith(template, templateRange, (node, range) => {
-      return new TemplateNode(this, node, range);
-    });
+    return Option.map(
+      source,
+      (range) => new TemplateNode(this, this.handler.getText(range), range),
+    );
   }
 
   getAllTemplates() {
-    const source = this.getDocumentSource;
-    return getAllDocumentTemplates(source, this.sourceMatchers).map((x) => {
-      const position = this.handler.positionAt(x.getStart());
-      return this.getTemplateNodeAtPosition(position);
+    return this.languageRanges.map((x) => {
+      return new TemplateNode(this, this.handler.getText(x), x);
     });
   }
 
   [Equal.symbol](that: unknown) {
     return (
-      that instanceof TwinDocument && that.handler.getText() === this.handler.getText()
+      that instanceof TwinDocument &&
+      that.handler.getText() === this.handler.getText() &&
+      this.handler.uri === that.handler.uri
     );
   }
 
@@ -101,27 +80,32 @@ export class TwinDocument implements Equal.Equal {
 export class TemplateNode implements Equal.Equal {
   constructor(
     readonly handler: TwinDocument,
-    readonly node:
-      | ts.TemplateLiteral
-      | ts.StringLiteralLike
-      | ts.NoSubstitutionTemplateLiteral,
+    readonly text: string,
     readonly range: vscode.Range,
   ) {}
 
   get parsedNode() {
-    const text = this.node.getText().slice(1, -1);
-    const offset = this.handler.handler.offsetAt(this.range.start);
+    const text = this.text.replace("'", '');
+    let offset = this.handler.handler.offsetAt(this.range.start);
+    if (this.text.startsWith("'")) {
+      offset = offset + 1;
+    }
     const parsed = parseTemplate(text, offset);
     return parsed;
   }
 
   [Equal.symbol](that: unknown) {
-    return that instanceof TemplateNode && that.range === this.range;
+    return (
+      that instanceof TemplateNode &&
+      that.range === this.range &&
+      this.range.start.character === that.range.start.character &&
+      that.text === this.text
+    );
   }
 
   [Hash.symbol](): number {
     return Hash.hash(
-      `${this.range.end.character}-${this.range.start.character}-${this.node.getFullText()}`,
+      `${this.range.end.character}-${this.range.start.character}-${this.text}`,
     );
   }
 }

@@ -21,9 +21,7 @@ export const getDocumentColors = (
 
     return Option.Do.pipe(
       Option.bind('document', () => documentsHandler.getDocument(params.textDocument)),
-
-      Option.bind('templates', (x) => Option.all(x.document.getAllTemplates())),
-
+      Option.let('templates', (x) => x.document.getAllTemplates()),
       Option.map(({ templates, document }) =>
         getDocumentTemplatesColors(templates, twinService, document),
       ),

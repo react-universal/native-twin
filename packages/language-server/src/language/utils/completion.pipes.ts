@@ -133,12 +133,8 @@ export const getDocumentTemplatesColors = (
 ) => {
   return pipe(
     templates,
-    ReadonlyArray.dedupe,
     ReadonlyArray.flatMap((template) => template.parsedNode),
-    ReadonlyArray.flatMap((x) => {
-      const flatten = getFlattenTemplateToken(x);
-      return flatten;
-    }),
+    ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
     ReadonlyArray.dedupe,
     ReadonlyArray.flatMap((x) => templateTokenToColorInfo(x, twinService, twinDocument)),
   );
