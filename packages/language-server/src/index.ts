@@ -72,7 +72,7 @@ const program = Effect.gen(function* () {
   });
 
   Connection.onDocumentColor((...params) => {
-    Connection.console.info('onDocumentColor: ' + JSON.stringify(params, null, 2));
+    // Connection.console.info('onDocumentColor: ' + JSON.stringify(params, null, 2));
     return runtime.runPromise(LanguageService.getDocumentColors(...params));
   });
 

@@ -59,18 +59,9 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
         const result: vscode.InitializeResult = {
           capabilities: {
             textDocumentSync: vscode.TextDocumentSyncKind.Incremental,
-            // TODO: Provide color implementation
-            // colorProvider: {
-            //   documentSelector: DOCUMENT_SELECTORS,
-            //   id: 'nativeTwinColor',
-            // },
             colorProvider: true,
             hoverProvider: true,
             documentHighlightProvider: true,
-            // TODO: Provide Commands implementation
-            // executeCommandProvider: {
-            //   commands: ['getColors'],
-            // },
             workspaceSymbolProvider: {
               resolveProvider: true,
             },
@@ -80,7 +71,6 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
               completionItem: {
                 labelDetailsSupport: true,
               },
-              // allCommitCharacters: ['`', '-'],
               triggerCharacters: ['`'],
             },
             workspace: {
