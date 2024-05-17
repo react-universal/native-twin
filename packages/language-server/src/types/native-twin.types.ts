@@ -35,6 +35,7 @@ export interface TwinRuleParts {
 }
 
 export interface TwinRuleWithCompletion {
+  kind: 'rule';
   readonly order: number;
   readonly rule: TwinRuleParts;
   readonly completion: {

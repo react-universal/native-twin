@@ -1,9 +1,9 @@
+import * as ReadonlyArray from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import * as ReadonlyArray from 'effect/ReadonlyArray';
 import ts from 'typescript/lib/tsserverlibrary';
 import { NativeTwinService } from '../native-twin/nativeTwin.service';
 import { acquireTemplateNode } from '../template/TemplateNode.service';

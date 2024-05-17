@@ -10,6 +10,6 @@ createVariants({
   }
  })
 
- css`bg(blue-200) md:(bg-red text-lg)`
+ css`bg(blue-500)  md:(bg-red text-lg)`
 //                        ^26 -> Global
 //                        ^22 -> Relative

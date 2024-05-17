@@ -5,22 +5,27 @@ import * as vscode from 'vscode';
 import {
   LanguageClient,
   LanguageClientOptions,
-  ErrorAction,
-  CloseAction,
   TransportKind,
   ServerOptions,
 } from 'vscode-languageclient/node';
 import {
   configurationSection,
-  DOCUMENT_SELECTORS,
   extensionServerChannelName,
 } from '../extension/extension.constants';
-import { thenable } from '../extension/extension.utils';
+import { ExtensionContext } from '../extension/extension.context';
+import { registerCommand, thenable } from '../extension/extension.utils';
 import { LanguageClientContext } from './language.context';
+import {
+  getDefaultLanguageCLientOptions,
+  onLanguageClientClosed,
+  onLanguageClientError,
+  onProvideDocumentColors,
+} from './language.fn';
 
 export const LanguageClientLive = Layer.scoped(
   LanguageClientContext,
   Effect.gen(function* ($) {
+    const extensionCtx = yield* ExtensionContext;
     const workspace = vscode.workspace.workspaceFolders;
 
     const tsconfigFiles = yield* $(
@@ -57,53 +62,67 @@ export const LanguageClientLive = Layer.scoped(
       ),
     );
 
+    if (configFiles.length === 0) {
+      yield* Effect.logWarning('Cant find a native-twin configuration file');
+    }
+
+    const colorDecorationType = vscode.window.createTextEditorDecorationType({
+      before: {
+        width: '0.8em',
+        height: '0.8em',
+        contentText: ' ',
+        border: '0.1em solid',
+        margin: '0.1em 0.2em 0',
+      },
+      dark: {
+        before: {
+          borderColor: '#eeeeee',
+        },
+      },
+      light: {
+        before: {
+          borderColor: '#000000',
+        },
+      },
+    });
+
+    extensionCtx.subscriptions.push(colorDecorationType);
+
     const clientConfig: LanguageClientOptions = {
-      documentSelector: DOCUMENT_SELECTORS,
+      ...getDefaultLanguageCLientOptions({
+        tsConfigFiles: tsconfigFiles ?? [],
+        twinConfigFile: configFiles.at(0),
+        workspaceRoot: workspace?.at(0),
+      }),
       synchronize: {
         fileEvents: fileEvents,
         configurationSection: configurationSection,
       },
-      markdown: {
-        isTrusted: true,
-        supportHtml: true,
-      },
-      initializationOptions: {
-        ...vscode.workspace.getConfiguration(configurationSection),
-        tsconfigFiles: tsconfigFiles,
-        twinConfigFile: configFiles.at(0),
-        workspaceRoot: workspace?.at(0),
-
-        capabilities: {
-          completion: {
-            dynamicRegistration: false,
-            completionItem: {
-              snippetSupport: true,
-            },
-          },
-        },
-      },
-      progressOnInitialization: true,
       errorHandler: {
-        error: () => {
-          return {
-            action: ErrorAction.Shutdown,
-          };
-        },
-        closed: async () => {
-          return {
-            action: CloseAction.DoNotRestart,
-          };
-        },
+        error: onLanguageClientError,
+        closed: onLanguageClientClosed,
+      },
+      middleware: {
+        provideDocumentColors: async (document, token, next) =>
+          onProvideDocumentColors(document, token, next, colorDecorationType),
       },
     };
-    const client = new LanguageClient(
-      extensionServerChannelName,
-      serverConfig,
-      clientConfig,
+    const client = yield* Effect.acquireRelease(
+      Effect.sync(
+        () => new LanguageClient(extensionServerChannelName, serverConfig, clientConfig),
+      ),
+      (x) => Effect.promise(() => x.dispose()),
     );
 
     yield* $(Effect.promise(() => client.start()));
-    // yield* $(Effect.log('Language client started!'));
+    yield* $(Effect.log('Language client started!'));
+
+    yield* registerCommand(`${configurationSection}.restart`, () =>
+      Effect.gen(function* () {
+        yield* Effect.promise(() => client.restart());
+        yield* Effect.logInfo('Client restarted');
+      }),
+    );
 
     return client;
   }),

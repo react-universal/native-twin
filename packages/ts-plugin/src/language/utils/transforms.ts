@@ -1,8 +1,8 @@
+import * as ReadonlyArray from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
-import * as ReadonlyArray from 'effect/ReadonlyArray';
 import ts from 'typescript';
 import * as vscode from 'vscode-languageserver-types';
 import { NativeTwinService } from '../../native-twin/nativeTwin.service';

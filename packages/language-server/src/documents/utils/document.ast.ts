@@ -50,7 +50,7 @@ const templateExpressionMatcher = (
   return templateExpressionMatcher(node, results);
 };
 
-export const getTwinStringRanges = (
+export const getDocumentLanguageLocations = (
   code: string,
   config: NativeTwinPluginConfiguration,
 ) => {

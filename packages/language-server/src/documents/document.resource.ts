@@ -1,3 +1,4 @@
+import * as t from '@babel/types';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
@@ -6,7 +7,7 @@ import * as vscode from 'vscode-languageserver/node';
 import { parseTemplate } from '../native-twin/native-twin.parser';
 import { TemplateTokenWithText } from '../template/template.models';
 import { NativeTwinPluginConfiguration } from '../types/extension.types';
-import { getTwinStringRanges } from './utils/document.ast';
+import { getDocumentLanguageLocations } from './utils/document.ast';
 
 export class TwinDocument implements Equal.Equal {
   readonly handler: VSCDocument.TextDocument;
@@ -18,7 +19,7 @@ export class TwinDocument implements Equal.Equal {
   }
 
   get languageRanges() {
-    return getTwinStringRanges(this.handler.getText(), this.config).map((x) =>
+    return getDocumentLanguageLocations(this.handler.getText(), this.config).map((x) =>
       vscode.Range.create(
         this.handler.positionAt(x.start.index),
         this.handler.positionAt(x.end.index),
@@ -107,5 +108,50 @@ export class TemplateNode implements Equal.Equal {
     return Hash.hash(
       `${this.range.end.character}-${this.range.start.character}-${this.text}`,
     );
+  }
+}
+
+export class DocumentLanguageRegion implements Equal.Equal {
+  private constructor(
+    readonly range: vscode.Range,
+    readonly offset: {
+      start: number;
+      end: number;
+    },
+  ) {}
+
+  static create(
+    document: VSCDocument.TextDocument,
+    range: vscode.Range | t.SourceLocation,
+  ): DocumentLanguageRegion {
+    if (vscode.Range.is(range)) {
+      return new DocumentLanguageRegion(range, {
+        start: document.offsetAt(range.start),
+        end: document.offsetAt(range.end),
+      });
+    }
+
+    const newRange = vscode.Range.create(
+      document.positionAt(range.start.index),
+      document.positionAt(range.end.index),
+    );
+
+    return new DocumentLanguageRegion(newRange, {
+      start: document.offsetAt(newRange.start),
+      end: document.offsetAt(newRange.end),
+    });
+  }
+
+  [Equal.symbol](that: unknown): boolean {
+    return (
+      that instanceof DocumentLanguageRegion &&
+      this.offset.start === that.offset.start &&
+      this.offset.end === that.offset.end &&
+      this.range.start.character === that.range.start.character
+    );
+  }
+
+  [Hash.symbol](): number {
+    return Hash.array([this.offset.start, this.offset.end, this.range.start.character]);
   }
 }

@@ -36,6 +36,17 @@ export const createTwinStore = (nativeTwinHandler: {
     ...nativeTwinHandler.config.theme.extend?.colors,
   };
 
+  const twinVariants = HashSet.fromIterable(variants).pipe(
+    HashSet.map((variant): TwinVariantCompletion => {
+      return {
+        kind: 'variant',
+        name: `${variant[0]}:`,
+        index: currentIndex++,
+        position: currentIndex,
+      } as const;
+    }),
+  );
+
   const twinThemeRules = ReadonlyArray.fromIterable(nativeTwinHandler.tw.config.rules);
 
   const flattenRules = ReadonlyArray.flatMap(twinThemeRules, (rule) => {
@@ -48,6 +59,7 @@ export const createTwinStore = (nativeTwinHandler: {
             ) ?? {};
       return createRuleClassNames(values, composition.composition, composition.parts).map(
         (className): TwinRuleWithCompletion => ({
+          kind: 'rule',
           completion: className,
           composition: composition.composition,
           rule: composition.parts,
@@ -79,17 +91,6 @@ export const createTwinStore = (nativeTwinHandler: {
     // ReadonlyArray.flatten,
     ReadonlyArray.sortBy((x, y) => (x.order > y.order ? 1 : -1)),
     HashSet.fromIterable,
-  );
-
-  const twinVariants = HashSet.fromIterable(variants).pipe(
-    HashSet.map((variant): TwinVariantCompletion => {
-      return {
-        kind: 'variant',
-        name: `${variant[0]}:`,
-        index: currentIndex++,
-        position: currentIndex,
-      } as const;
-    }),
   );
 
   return {

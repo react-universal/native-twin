@@ -7,7 +7,7 @@ import {
 } from '../services/extension/extension.constants';
 import { Logger, State, NativeTwinPluginConfiguration } from '../types';
 
-export async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
+export async function __enableExtension(context: vscode.ExtensionContext, log: Logger) {
   const state: State = { hasConfigFile: undefined };
 
   const update = async () => {

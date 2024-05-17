@@ -1,128 +1,131 @@
 import { TinyColor } from '@ctrl/tinycolor';
 import * as ReadonlyArray from 'effect/Array';
+import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver/node';
-import { TemplateNode, TwinDocument } from '../../documents/document.resource';
+import { ConfigManagerService } from '../../connection/client.config';
+import {
+  DocumentLanguageRegion,
+  TemplateNode,
+  TwinDocument,
+} from '../../documents/document.resource';
+import { DocumentsService } from '../../documents/documents.service';
+import { getDocumentLanguageLocations } from '../../documents/utils/document.ast';
 import {
   NativeTwinManager,
   NativeTwinManagerService,
 } from '../../native-twin/native-twin.models';
-import { LocatedGroupTokenWithText } from '../../template/template.models';
-import { TwinVariantCompletion } from '../../types/native-twin.types';
+import { parseTemplate } from '../../native-twin/native-twin.parser';
+import { TemplateTokenWithText } from '../../template/template.models';
+import { NativeTwinPluginConfiguration } from '../../types/extension.types';
+import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import { TemplateTokenData } from '../language.models';
 import { getFlattenTemplateToken } from './language.utils';
 
-export const extractTemplateAtPosition = (
-  maybeDocument: Option.Option<TwinDocument>,
-  position: vscode.Position,
+export const extractDocumentNodeAtPosition = (
+  params: vscode.TextDocumentPositionParams,
 ) =>
+  Effect.gen(function* () {
+    const documentsHandler = yield* DocumentsService;
+    const { config } = yield* ConfigManagerService;
+    return Option.Do.pipe(
+      Option.bind('document', () =>
+        documentsHandler.acquireDocument(params.textDocument.uri),
+      ),
+      Option.let('regions', ({ document }) =>
+        getDocumentLanguageRegions(document, config),
+      ),
+      Option.let('cursorOffset', ({ document }) => document.offsetAt(params.position)),
+      Option.let(
+        'isEmptyCompletion',
+        ({ document, cursorOffset }) =>
+          document
+            .getText(
+              vscode.Range.create(
+                document.positionAt(cursorOffset - 1),
+                document.positionAt(cursorOffset + 1),
+              ),
+            )
+            .replaceAll(/\s/g, '') === '',
+      ),
+      Option.bind('rangeAtPosition', ({ regions, cursorOffset }) =>
+        Option.fromNullable(
+          regions.find(
+            (x) => cursorOffset >= x.offset.start && cursorOffset <= x.offset.end,
+          ),
+        ),
+      ),
+      Option.let('textAtPosition', ({ rangeAtPosition, document }) => {
+        return document.getText(rangeAtPosition.range);
+      }),
+      Option.let('parsedText', ({ textAtPosition, rangeAtPosition }) =>
+        parseTemplate(textAtPosition, rangeAtPosition.offset.start),
+      ),
+    );
+  });
+
+interface ExtractParsedParams {
+  parsedText: TemplateTokenWithText[];
+  cursorOffset: number;
+}
+export const extractParsedNodesAtPosition = ({
+  cursorOffset,
+  parsedText,
+}: ExtractParsedParams) =>
   Option.Do.pipe(
-    Option.bind('document', () => maybeDocument),
-    Option.bind('templateAtPosition', ({ document }) =>
-      document.getTemplateNodeAtPosition(position),
+    Option.bind('parsedNodeAtPosition', () =>
+      pipe(
+        parsedText,
+        ReadonlyArray.findFirst(
+          (x) => cursorOffset >= x.bodyLoc.start && cursorOffset <= x.bodyLoc.end,
+        ),
+      ),
     ),
-    Option.let('cursorOffset', ({ document }) => document.handler.offsetAt(position)),
-    Option.let('cursorPosition', ({ document, cursorOffset }) =>
-      document.handler.positionAt(cursorOffset),
+    Option.let('flattenNodes', ({ parsedNodeAtPosition }) =>
+      pipe(
+        parsedNodeAtPosition,
+        getFlattenTemplateToken,
+        ReadonlyArray.filter(
+          (y) =>
+            cursorOffset >= y.token.bodyLoc.start && cursorOffset <= y.token.bodyLoc.end,
+        ),
+        // FIXME: filter nodes instead dedupe
+        ReadonlyArray.dedupe,
+      ),
     ),
-    Option.let('isWhiteSpace', ({ document }) => {
-      return (
-        document.handler
-          .getText(
-            vscode.Range.create(
-              {
-                ...position,
-                character: position.character - 1,
-              },
-              {
-                ...position,
-                character: position.character + 1,
-              },
-            ),
-          )
-          .replaceAll(/\s/g, '') === ''
-      );
-    }),
   );
 
-export const extractTemplateTokenAtPosition = (
-  template: TemplateNode,
-  position: vscode.Position,
-  twinService: NativeTwinManagerService['Type'],
-) => {
-  const offset = template.handler.handler.offsetAt(position);
-  return pipe(
-    template.parsedNode,
-    ReadonlyArray.findFirst((x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end),
-    Option.map((x) => {
-      const variantsSuggestions: TwinVariantCompletion[] = [];
-      const flatten = getFlattenTemplateToken(x).filter(
-        (y) => offset >= y.token.bodyLoc.start && offset <= y.token.bodyLoc.end,
-      );
-      if (x.token.type === 'GROUP') {
-        variantsSuggestions.push(
-          ...extractGroupVariantsSuggestions(x.token, twinService),
-        );
+const createCompletionTokenResolver =
+  ({ base, token }: TemplateTokenData) =>
+  (twinRule: TwinRuleWithCompletion) => {
+    if (token.text === twinRule.completion.className) return true;
+    if (token.token.type === 'VARIANT_CLASS') {
+      return twinRule.completion.className.startsWith(token.token.value[1].value.n);
+    }
+
+    if (base) {
+      if (base.token.type === 'CLASS_NAME') {
+        return twinRule.completion.className.startsWith(base.token.value.n);
       }
+    }
 
-      const rules = extractClassSuggestions(flatten, twinService);
-      return { variantsSuggestions, rules };
-    }),
-  );
-};
+    return twinRule.completion.className.startsWith(token.text);
+  };
 
-export const extractClassSuggestions = (
+export const getCompletionsForTokens = (
   tokens: TemplateTokenData[],
   twinService: NativeTwinManagerService['Type'],
 ) => {
-  const uniqueTokens = pipe(tokens, ReadonlyArray.dedupe);
-
+  // TODO: Remove necessary?
+  // const uniqueTokens = pipe(tokens, ReadonlyArray.dedupe);
+  const resolvers = tokens.map(createCompletionTokenResolver);
   return pipe(
     twinService.completions.twinRules,
     ReadonlyArray.fromIterable,
-    ReadonlyArray.filter((x) => {
-      return uniqueTokens.some((y) => {
-        if (x.completion.className === y.token.text) return true;
-        if (y.token.token.type === 'VARIANT_CLASS') {
-          return x.completion.className.startsWith(y.token.token.value[1].value.n);
-        }
-        return x.completion.className.startsWith(y.token.text);
-      });
-    }),
-  );
-};
-
-const extractGroupVariantsSuggestions = (
-  group: LocatedGroupTokenWithText,
-  twinService: NativeTwinManagerService['Type'],
-) => {
-  const variantsSuggestions: TwinVariantCompletion[] = [];
-  if (group.value.base.token.type === 'VARIANT') {
-    const includedVariants = group.value.base.token.value.map((x) => `${x.n}:`);
-    pipe(
-      twinService.completions.twinVariants,
-      HashSet.forEach((x) => {
-        if (!includedVariants.includes(x.name)) {
-          variantsSuggestions.push(x);
-        }
-      }),
-    );
-  }
-
-  return variantsSuggestions;
-};
-
-export const getTokensAtOffset = (node: TemplateNode, offset: number) => {
-  return pipe(
-    node.parsedNode,
-    ReadonlyArray.filter((x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end),
-    ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
-    ReadonlyArray.filter(
-      (x) => offset >= x.token.bodyLoc.start && offset <= x.token.bodyLoc.end,
-    ),
-    ReadonlyArray.dedupe,
+    ReadonlyArray.filter((x) => resolvers.some((y) => y(x))),
   );
 };
 
@@ -130,22 +133,21 @@ export const getDocumentTemplatesColors = (
   templates: TemplateNode[],
   twinService: NativeTwinManager,
   twinDocument: TwinDocument,
-) => {
-  return pipe(
+) =>
+  pipe(
     templates,
     ReadonlyArray.flatMap((template) => template.parsedNode),
     ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
     ReadonlyArray.dedupe,
     ReadonlyArray.flatMap((x) => templateTokenToColorInfo(x, twinService, twinDocument)),
   );
-};
 
 const templateTokenToColorInfo = (
   templateNode: TemplateTokenData,
   twinService: NativeTwinManager,
   twinDocument: TwinDocument,
-): vscode.ColorInformation[] => {
-  return twinService.completions.twinRules.pipe(
+): vscode.ColorInformation[] =>
+  twinService.completions.twinRules.pipe(
     HashSet.filter((y) => y.completion.className === templateNode.token.text),
     ReadonlyArray.fromIterable,
     ReadonlyArray.map((completion) => ({ node: templateNode, completion })),
@@ -161,4 +163,11 @@ const templateTokenToColorInfo = (
       };
     }),
   );
-};
+
+export const getDocumentLanguageRegions = (
+  document: TextDocument,
+  config: NativeTwinPluginConfiguration,
+) =>
+  getDocumentLanguageLocations(document.getText(), config).map((x) =>
+    DocumentLanguageRegion.create(document, x),
+  );

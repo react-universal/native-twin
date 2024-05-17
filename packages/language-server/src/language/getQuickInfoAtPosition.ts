@@ -2,10 +2,14 @@ import * as ReadonlyArray from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
+import { ConfigManagerService } from '../connection/client.config';
 import { DocumentsService } from '../documents/documents.service';
 import { NativeTwinManagerService } from '../native-twin/native-twin.models';
 import { createStyledContext, getSheetEntryStyles } from '../utils/sheet.utils';
-import { extractTemplateAtPosition, getTokensAtOffset } from './utils/completion.pipes';
+import {
+  extractDocumentNodeAtPosition,
+  extractParsedNodesAtPosition,
+} from './utils/completion.pipes';
 import * as Completions from './utils/completions.maps';
 
 export const getQuickInfoAtPosition = (
@@ -16,30 +20,30 @@ export const getQuickInfoAtPosition = (
 ): Effect.Effect<
   vscode.Hover | undefined,
   never,
-  DocumentsService | NativeTwinManagerService
+  DocumentsService | NativeTwinManagerService | ConfigManagerService
 > => {
   return Effect.gen(function* () {
-    const documentsHandler = yield* DocumentsService;
     const twinManager = yield* NativeTwinManagerService;
     const context = createStyledContext(twinManager.userConfig.root.rem);
 
-    const hoverEntry = Option.Do.pipe(
-      () =>
-        extractTemplateAtPosition(
-          documentsHandler.getDocument(params.textDocument),
-          params.position,
-        ),
+    const extracted = yield* extractDocumentNodeAtPosition(params);
 
-      Option.let('flattenCompletions', ({ cursorOffset, templateAtPosition }) =>
-        getTokensAtOffset(templateAtPosition, cursorOffset),
+    const hoverEntry = Option.Do.pipe(
+      () => extracted,
+
+      Option.bind('flattenCompletions', ({ cursorOffset, parsedText }) =>
+        extractParsedNodesAtPosition({
+          cursorOffset,
+          parsedText,
+        }),
       ),
       Option.bind('firstToken', ({ flattenCompletions }) =>
-        ReadonlyArray.head(flattenCompletions),
+        ReadonlyArray.head(flattenCompletions.flattenNodes),
       ),
       Option.let('hoverRange', ({ firstToken, document }) =>
         vscode.Range.create(
-          document.handler.positionAt(firstToken.token.bodyLoc.start),
-          document.handler.positionAt(firstToken.token.bodyLoc.end),
+          document.positionAt(firstToken.token.bodyLoc.start),
+          document.positionAt(firstToken.token.bodyLoc.end),
         ),
       ),
       Option.let('finalSheet', ({ firstToken }) =>

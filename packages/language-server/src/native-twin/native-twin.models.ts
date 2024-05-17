@@ -64,12 +64,16 @@ export class NativeTwinManager {
   }
 
   private getUserConfig(filePath: string) {
-    const file = requireJS(filePath);
-    if (!file) {
-      throw new Error('Cant resolve user config at path ' + filePath);
-    }
+    try {
+      const file = requireJS(filePath);
+      if (!file) {
+        throw new Error('Cant resolve user config at path ' + filePath);
+      }
 
-    return defineConfig(file);
+      return defineConfig(file);
+    } catch {
+      throw new Error('Cant resolve user config');
+    }
   }
 }
 

@@ -10,6 +10,7 @@ import { TwinDocument } from './document.resource';
 interface DocumentsServiceShape {
   handler: vscode.TextDocuments<TextDocument>;
   getDocument: (uri: vscode.TextDocumentIdentifier) => Option.Option<TwinDocument>;
+  acquireDocument: (uri: string) => Option.Option<TextDocument>;
 }
 
 export class DocumentsService extends Ctx.Tag('vscode/DocumentsService')<
@@ -23,6 +24,9 @@ export class DocumentsService extends Ctx.Tag('vscode/DocumentsService')<
       const configManager = yield* ConfigManagerService;
       return {
         handler,
+        acquireDocument(uri) {
+          return Option.fromNullable(handler.get(uri));
+        },
         getDocument(id) {
           return Option.fromNullable(handler.get(id.uri)).pipe(
             Option.map((x) => {

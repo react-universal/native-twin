@@ -18,9 +18,11 @@ export const initializeConnection = (
 
     if (configOptions) {
       const twinConfigFile = Option.fromNullable<vscode.URI>(
-        configOptions?.twinConfigFile.path,
+        configOptions?.twinConfigFile?.path,
       );
-      manager.loadUserFile(Option.getOrElse(twinConfigFile, () => ''));
+      Option.map(twinConfigFile, (x) => {
+        manager.loadUserFile(x);
+      });
     }
 
     const capabilities = yield* getClientCapabilities(params.capabilities);

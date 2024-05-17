@@ -1,8 +1,8 @@
+import * as ReadonlyArray from 'effect/Array';
 import * as Data from 'effect/Data';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import * as ReadonlyArray from 'effect/ReadonlyArray';
 import ts from 'typescript';
 import { TemplateContext } from 'typescript-template-language-service-decorator';
 import { parseTemplate } from '../native-twin/nativeTwin.parser';

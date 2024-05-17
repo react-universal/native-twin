@@ -1,12 +1,12 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
-import { DocumentsService } from '../documents/documents.service';
 import { NativeTwinManagerService } from '../native-twin/native-twin.models';
+import { VscodeCompletionItem } from './language.models';
 import {
-  extractTemplateAtPosition,
-  extractTemplateTokenAtPosition,
-  getTokensAtOffset,
+  getCompletionsForTokens,
+  extractDocumentNodeAtPosition,
+  extractParsedNodesAtPosition,
 } from './utils/completion.pipes';
 import * as Completions from './utils/completions.maps';
 
@@ -15,40 +15,50 @@ export const getCompletionsAtPosition = (
   _cancelToken: vscode.CancellationToken,
   _progress: vscode.WorkDoneProgressReporter,
   _resultProgress: vscode.ResultProgressReporter<vscode.CompletionItem[]> | undefined,
-) => {
-  return Effect.gen(function* () {
+) =>
+  Effect.gen(function* () {
     const twinService = yield* NativeTwinManagerService;
-    const documentsHandler = yield* DocumentsService;
+    const extracted = yield* extractDocumentNodeAtPosition(params);
 
-    return Option.Do.pipe(
-      () =>
-        extractTemplateAtPosition(
-          documentsHandler.getDocument(params.textDocument),
-          params.position,
-        ),
-
-      Option.bind('tokenAtPosition', ({ templateAtPosition }) =>
-        extractTemplateTokenAtPosition(templateAtPosition, params.position, twinService),
+    const nodesAtPosition = extracted.pipe(
+      Option.flatMap((meta) =>
+        extractParsedNodesAtPosition({
+          cursorOffset: meta.cursorOffset,
+          parsedText: meta.parsedText,
+        }),
       ),
-
-      Option.let('flattenTemplateTokens', ({ cursorOffset, templateAtPosition }) =>
-        getTokensAtOffset(templateAtPosition, cursorOffset),
-      ),
-
-      Option.let(
-        'completionEntries',
-        ({ tokenAtPosition, flattenTemplateTokens, document }) =>
-          Completions.completionRulesToEntries(
-            flattenTemplateTokens,
-            tokenAtPosition.rules,
-            document,
-          ),
-      ),
-
-      Option.match({
-        onSome: (result) => result.completionEntries,
-        onNone: () => [],
-      }),
     );
+
+    console.log('NODES: ', nodesAtPosition);
+
+    const completionEntries = Option.flatMap(extracted, (meta) => {
+      if (meta.isEmptyCompletion) {
+        return Option.some(
+          Completions.getAllCompletionRules(
+            twinService.completions,
+            vscode.Range.create(
+              meta.document.positionAt(meta.cursorOffset),
+              meta.document.positionAt(meta.cursorOffset + 1),
+            ),
+          ),
+        );
+      }
+
+      return Option.map(
+        extractParsedNodesAtPosition({
+          cursorOffset: meta.cursorOffset,
+          parsedText: meta.parsedText,
+        }),
+        (x) => {
+          const tokens = getCompletionsForTokens(x.flattenNodes, twinService);
+          return Completions.completionRulesToEntries(
+            x.flattenNodes,
+            tokens,
+            meta.document,
+          );
+        },
+      );
+    });
+
+    return Option.getOrElse(completionEntries, (): VscodeCompletionItem[] => []);
   });
-};
