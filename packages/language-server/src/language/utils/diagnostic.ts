@@ -7,13 +7,13 @@ import * as vscode from 'vscode-languageserver/node';
 import { RuntimeTW } from '@native-twin/core';
 import { SheetEntry } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import { ConfigManagerService } from '../connection/client.config';
-import { DocumentsService } from '../documents/documents.service';
-import { documentLanguageRegionToRange } from '../documents/utils/document.utils';
-import { parseTemplate } from '../native-twin/native-twin.parser';
-import { DiagnosticsMeta, DiagnosticsToken, TemplateTokenData } from './language.models';
-import { getDocumentLanguageRegions } from './utils/completion.pipes';
-import { getFlattenTemplateToken } from './utils/language.utils';
+import { ConfigManagerService } from '../../connection/client.config';
+import { DocumentsService } from '../../documents/documents.service';
+import { documentLanguageRegionToRange } from '../../documents/utils/document.utils';
+import { parseTemplate } from '../../native-twin/native-twin.parser';
+import { DiagnosticsMeta, DiagnosticsToken, TemplateTokenData } from '../language.models';
+import { getDocumentLanguageRegions } from './completion.pipes';
+import { getFlattenTemplateToken } from './language.utils';
 
 export const extractDocumentAndRegions = (params: vscode.TextDocumentIdentifier) =>
   Effect.gen(function* () {
@@ -55,25 +55,45 @@ export const diagnosticTokensToDiagnosticItems = (
     tokens,
     ReadOnlyArray.flatMap((diagnosticToken) => {
       const entries = diagnosticToken.getSheetEntries(tw);
+      const entriesProps = getDiagnosticTokenDeclProps(entries);
       return ReadOnlyArray.filterMap(diagnosticToken.flattenUnique, (item) => {
+        diagnosticToken.flattenUnique;
         const itemEntries = item.getSheetEntries(tw);
 
-        const classNamesCount = itemEntries
-          .map((x) => x.className)
-          .reduce((acc, x) => {
-            if (entries.some((y) => y.className === x)) {
-              acc = acc + 1;
-            }
-            return acc;
-          }, 0);
-        if (classNamesCount > 1) {
+        const duplicatedClassNames = itemEntries.filter(
+          (x) => entries.filter((y) => y.className === x.className).length > 1,
+        );
+
+        const declarationProps = getDiagnosticTokenDeclProps(itemEntries);
+        const duplicatedProps = declarationProps.filter(
+          (x) =>
+            entriesProps.filter(
+              (y) =>
+                y.prop === x.prop &&
+                x.selectors.sort().join(',') === y.selectors.sort().join(','),
+            ).length > 1,
+        );
+
+        if (duplicatedProps.length) {
           return Option.some(
             vscode.Diagnostic.create(
               vscode.Range.create(
                 document.positionAt(item.token.bodyLoc.start),
                 document.positionAt(item.token.bodyLoc.end),
               ),
-              'Duplicated declaration',
+              'Duplicated Css Property',
+            ),
+          );
+        }
+
+        if (duplicatedClassNames.length) {
+          return Option.some(
+            vscode.Diagnostic.create(
+              vscode.Range.create(
+                document.positionAt(item.token.bodyLoc.start),
+                document.positionAt(item.token.bodyLoc.end),
+              ),
+              'Duplicated ClassName',
             ),
           );
         }

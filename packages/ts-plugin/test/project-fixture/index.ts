@@ -10,6 +10,7 @@ import {createVariants} from '@native-twin/styled';
 //   }
 //  })
 
- css`bg(blue-500 md:red) bg-blue-500 text-blue-200 bg-rose-100 md:(bg-red text-lg)`
+//  css`bg(blue-500 md:red) bg-blue-500 bg-pink md:(bg-red text-lg)`
+ css`bg(blue-500 md:red) md:(bg-pink)`
 //                        ^26 -> Global
 //                        ^22 -> Relative

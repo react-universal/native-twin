@@ -7,7 +7,7 @@ import {
   extractDocumentAndRegions,
   extractDuplicatedTokens,
   extractTokensFromDocumentRegions,
-} from './diagnostic';
+} from './utils/diagnostic';
 
 export const getDocumentDiagnostics = (
   params: vscode.DocumentDiagnosticParams,
@@ -27,10 +27,12 @@ export const getDocumentDiagnostics = (
       Option.let('duplicatedClassesDiagnostics', ({ meta, regionTokens }) =>
         extractDuplicatedTokens(meta, regionTokens),
       ),
-      Option.let('duplicatedDeclarationsProp', ({ regionTokens, meta }) =>
+      // Option.let('diagnostics', ({ regionTokens, meta }) =>
+      //   diagnosticTokensToDiagnosticItems(meta.document, regionTokens, twinManager.tw),
+      // ),
+      Option.map(({ meta, regionTokens }) =>
         diagnosticTokensToDiagnosticItems(meta.document, regionTokens, twinManager.tw),
       ),
-      Option.map((x) => [...x.duplicatedClassesDiagnostics, ...x.duplicatedDeclarationsProp]),
     );
 
     return {
