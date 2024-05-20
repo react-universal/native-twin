@@ -64,7 +64,11 @@ export const completionRulesToEntries = (
       );
       return pipe(
         ReadonlyArray.fromIterable(ruleCompletions),
-        ReadonlyArray.filter((y) => y.completion.className.startsWith(x.token.text)),
+        ReadonlyArray.filter(
+          (y) =>
+            y.completion.className.startsWith(x.token.text) ||
+            y.completion.className.startsWith(x.token.completionText),
+        ),
         ReadonlyArray.map((completion) => {
           let insertText = completion.completion.className;
           if (x.base && x.base.token.type === 'CLASS_NAME') {

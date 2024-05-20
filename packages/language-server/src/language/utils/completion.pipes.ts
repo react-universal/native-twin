@@ -25,8 +25,6 @@ import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import { TemplateTokenData } from '../language.models';
 import { getFlattenTemplateToken } from './language.utils';
 
-
-
 export const extractDocumentNodeAtPosition = (
   params: vscode.TextDocumentPositionParams,
 ) =>
@@ -103,7 +101,20 @@ export const extractParsedNodesAtPosition = ({
 const createCompletionTokenResolver =
   ({ base, token }: TemplateTokenData) =>
   (twinRule: TwinRuleWithCompletion) => {
-    if (token.text === twinRule.completion.className) return true;
+    let completionText = token.completionText;
+
+    if (token.token.type === 'VARIANT_CLASS' && base) {
+      if (base.token.type === 'CLASS_NAME') {
+        completionText = `${base.token.value.n}-${token.token.value[1].value.n}`;
+      }
+
+      if (base.token.type === 'VARIANT') {
+        completionText = `${token.token.value[1].value.n}`;
+      }
+    }
+
+    if (completionText === twinRule.completion.className) return true;
+
     if (token.token.type === 'VARIANT_CLASS') {
       return twinRule.completion.className.startsWith(token.token.value[1].value.n);
     }
@@ -114,7 +125,7 @@ const createCompletionTokenResolver =
       }
     }
 
-    return twinRule.completion.className.startsWith(token.text);
+    return twinRule.completion.className.startsWith(completionText);
   };
 
 export const getCompletionsForTokens = (

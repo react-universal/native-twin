@@ -5,7 +5,6 @@ import { NativeTwinManagerService } from '../native-twin/native-twin.models';
 import {
   diagnosticTokensToDiagnosticItems,
   extractDocumentAndRegions,
-  extractDuplicatedTokens,
   extractTokensFromDocumentRegions,
 } from './utils/diagnostic';
 
@@ -24,12 +23,6 @@ export const getDocumentDiagnostics = (
     const diagnosticItems = Option.Do.pipe(
       Option.bind('meta', () => extracted),
       Option.let('regionTokens', ({ meta }) => extractTokensFromDocumentRegions(meta)),
-      Option.let('duplicatedClassesDiagnostics', ({ meta, regionTokens }) =>
-        extractDuplicatedTokens(meta, regionTokens),
-      ),
-      // Option.let('diagnostics', ({ regionTokens, meta }) =>
-      //   diagnosticTokensToDiagnosticItems(meta.document, regionTokens, twinManager.tw),
-      // ),
       Option.map(({ meta, regionTokens }) =>
         diagnosticTokensToDiagnosticItems(meta.document, regionTokens, twinManager.tw),
       ),

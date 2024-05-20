@@ -6,12 +6,11 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver/node';
 import { RuntimeTW } from '@native-twin/core';
 import { SheetEntry } from '@native-twin/css';
-import { asArray } from '@native-twin/helpers';
 import { ConfigManagerService } from '../../connection/client.config';
 import { DocumentsService } from '../../documents/documents.service';
 import { documentLanguageRegionToRange } from '../../documents/utils/document.utils';
 import { parseTemplate } from '../../native-twin/native-twin.parser';
-import { DiagnosticsMeta, DiagnosticsToken, TemplateTokenData } from '../language.models';
+import { DiagnosticsMeta, DiagnosticsToken } from '../language.models';
 import { getDocumentLanguageRegions } from './completion.pipes';
 import { getFlattenTemplateToken } from './language.utils';
 
@@ -103,7 +102,6 @@ export const diagnosticTokensToDiagnosticItems = (
   );
 };
 
-// RR
 export const getDiagnosticTokenDeclProps = (entries: SheetEntry[]) =>
   ReadOnlyArray.flatMap(entries, (x) =>
     x.declarations.map((y) => ({
@@ -112,61 +110,3 @@ export const getDiagnosticTokenDeclProps = (entries: SheetEntry[]) =>
       selectors: x.selectors,
     })),
   );
-
-export const extractDuplicatedTokens = (
-  meta: DiagnosticsMeta,
-  tokens: DiagnosticsToken[],
-) =>
-  pipe(
-    tokens,
-    ReadOnlyArray.filterMap((current) => {
-      const duplicates = hasDuplicatedTokens(current.flatten);
-      if (duplicates.length) {
-        return Option.some(duplicates);
-      }
-      return Option.none();
-    }),
-    ReadOnlyArray.flatten,
-    ReadOnlyArray.flatMap((x): vscode.Diagnostic[] => {
-      return asArray({
-        range: vscode.Range.create(
-          meta.document.positionAt(x.token.bodyLoc.start),
-          meta.document.positionAt(x.token.bodyLoc.end),
-        ),
-        message: 'Duplicated className',
-      });
-    }),
-  );
-
-/**
- * Case 1: Not duplicated classes
- */
-export const hasDuplicatedTokens = (tokens: TemplateTokenData[]) => {
-  const results: TemplateTokenData[] = [];
-  pipe(
-    tokens,
-    ReadOnlyArray.dedupe,
-    ReadOnlyArray.forEach((x) =>
-      pipe(
-        tokens,
-        ReadOnlyArray.dedupe,
-        ReadOnlyArray.filterMap((y) => {
-          if (x.token.text === y.token.text) {
-            return Option.some(y);
-          }
-          return Option.none();
-        }),
-        (filtered) => {
-          if (filtered.length > 1) {
-            results.push(x);
-          }
-        },
-      ),
-    ),
-  );
-  return results;
-};
-
-export const createTokenResolver =
-  (tokensList: TemplateTokenData[]) => (token: TemplateTokenData) =>
-    tokensList.some((x) => x.token.text === token.token.text);

@@ -57,7 +57,12 @@ export const getFlattenTemplateToken = (
       console.log(base, item);
       return asArray(
         new TemplateTokenData(
-          new TemplateTokenWithText(item.token, className, item.templateStarts),
+          new TemplateTokenWithText(
+            item.token,
+            className,
+            item.templateStarts,
+            item.text,
+          ),
           base,
         ),
       );
