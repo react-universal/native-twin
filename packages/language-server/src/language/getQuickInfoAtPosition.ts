@@ -10,7 +10,7 @@ import {
   extractDocumentNodeAtPosition,
   extractParsedNodesAtPosition,
 } from './utils/completion.pipes';
-import * as Completions from './utils/completions.maps';
+import { completionRuleToQuickInfo } from './utils/quickInfo.utils';
 
 export const getQuickInfoAtPosition = (
   params: vscode.HoverParams,
@@ -49,9 +49,7 @@ export const getQuickInfoAtPosition = (
       Option.let('finalSheet', ({ firstToken }) =>
         getSheetEntryStyles(twinManager.tw(firstToken.token.text), context),
       ),
-      Option.map((x) =>
-        Completions.completionRuleToQuickInfo(x.finalSheet, x.hoverRange),
-      ),
+      Option.map((x) => completionRuleToQuickInfo(x.finalSheet, x.hoverRange)),
     );
 
     return Option.getOrUndefined(hoverEntry);

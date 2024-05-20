@@ -1,7 +1,5 @@
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
-import * as HashSet from 'effect/HashSet';
-import * as Option from 'effect/Option';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver-types';
 import { FinalSheet } from '@native-twin/css';
@@ -64,11 +62,22 @@ export const completionRulesToEntries = (
       );
       return pipe(
         ReadonlyArray.fromIterable(ruleCompletions),
-        ReadonlyArray.filter(
-          (y) =>
-            y.completion.className.startsWith(x.token.text) ||
-            y.completion.className.startsWith(x.token.completionText),
-        ),
+        ReadonlyArray.filter((y) => {
+          if (y.completion.className.startsWith(x.token.text)) return true;
+          if (y.completion.className.startsWith(x.token.completionText)) return true;
+          if (x.base) {
+            if (x.base.token.type === 'CLASS_NAME') {
+              if (x.token.token.type === 'VARIANT_CLASS') {
+                const className = `${x.base.token.value.n}-${x.token.token.value[1].value.n}`;
+                if (y.completion.className.startsWith(className)) {
+                  return true;
+                }
+              }
+            }
+          }
+
+          return false;
+        }),
         ReadonlyArray.map((completion) => {
           let insertText = completion.completion.className;
           if (x.base && x.base.token.type === 'CLASS_NAME') {
@@ -87,22 +96,3 @@ export const completionRuleToEntry = (
   insertText: string,
 ) => new VscodeCompletionItem(completionRule, range, insertText);
 
-export const completionRulesToQuickInfo = (
-  completionRules: HashSet.HashSet<TwinRuleWithCompletion>,
-  sheetEntry: FinalSheet,
-  range: vscode.Range,
-): Option.Option<vscode.Hover> =>
-  HashSet.map(completionRules, (_rule) => {
-    return completionRuleToQuickInfo(sheetEntry, range);
-  }).pipe(HashSet.values, (x) => ReadonlyArray.fromIterable(x), ReadonlyArray.head);
-
-export const completionRuleToQuickInfo = (
-  sheetEntry: FinalSheet,
-  range: vscode.Range,
-): vscode.Hover => ({
-  range,
-  contents: {
-    kind: vscode.MarkupKind.Markdown,
-    value: getDocumentationMarkdown(sheetEntry),
-  },
-});
