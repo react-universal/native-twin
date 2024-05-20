@@ -7,13 +7,13 @@ import * as vscode from 'vscode-languageserver/node';
 import { RuntimeTW } from '@native-twin/core';
 import { SheetEntry } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import { ConfigManagerService } from '../../connection/client.config';
-import { DocumentsService } from '../../documents/documents.service';
-import { documentLanguageRegionToRange } from '../../documents/utils/document.utils';
-import { parseTemplate } from '../../native-twin/native-twin.parser';
-import { DiagnosticsMeta, DiagnosticsToken, TemplateTokenData } from '../language.models';
-import { getDocumentLanguageRegions } from './completion.pipes';
-import { getFlattenTemplateToken } from './language.utils';
+import { ConfigManagerService } from '../connection/client.config';
+import { DocumentsService } from '../documents/documents.service';
+import { documentLanguageRegionToRange } from '../documents/utils/document.utils';
+import { parseTemplate } from '../native-twin/native-twin.parser';
+import { DiagnosticsMeta, DiagnosticsToken, TemplateTokenData } from './language.models';
+import { getDocumentLanguageRegions } from './utils/completion.pipes';
+import { getFlattenTemplateToken } from './utils/language.utils';
 
 export const extractDocumentAndRegions = (params: vscode.TextDocumentIdentifier) =>
   Effect.gen(function* () {

@@ -7,7 +7,7 @@ import {
   extractDocumentAndRegions,
   extractDuplicatedTokens,
   extractTokensFromDocumentRegions,
-} from './utils/diagnostic';
+} from './diagnostic';
 
 export const getDocumentDiagnostics = (
   params: vscode.DocumentDiagnosticParams,
