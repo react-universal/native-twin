@@ -75,6 +75,10 @@ const program = Effect.gen(function* () {
     return runtime.runPromise(LanguageService.getDocumentColors(...params));
   });
 
+  Connection.languages.diagnostics.on(async (...args) => {
+    return runtime.runPromise(LanguageService.getDocumentDiagnostics(...args));
+  });
+
   Connection.listen();
   documentService.handler.listen(Connection);
 });

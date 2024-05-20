@@ -80,11 +80,10 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
                 supported: x.hasConfigurationCapability,
               },
             },
-            // TODO: Provide diagnostics implementation
-            // diagnosticProvider: {
-            //   interFileDependencies: false,
-            //   workspaceDiagnostics: false,
-            // },
+            diagnosticProvider: {
+              interFileDependencies: false,
+              workspaceDiagnostics: false,
+            },
           },
         };
         return result;

@@ -1,11 +1,18 @@
+// import * as ReadOnlyArray from 'effect/Array';
+import * as Data from 'effect/Data';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver-types';
+import { RuntimeTW } from '@native-twin/core';
+import { SheetEntry } from '@native-twin/css';
+import { DocumentLanguageRegion } from '../documents/document.resource';
 import { TemplateTokenWithText } from '../template/template.models';
 import {
   TwinRuleWithCompletion,
   TwinVariantCompletion,
 } from '../types/native-twin.types';
+import { isSameRange } from '../utils/vscode.utils';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
@@ -81,10 +88,19 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
 }
 
 export class TemplateTokenData implements Equal.Equal {
+  private _entries: SheetEntry[] | undefined = undefined;
   constructor(
     readonly token: TemplateTokenWithText,
     readonly base: TemplateTokenWithText | null,
   ) {}
+
+  getSheetEntries(tw: RuntimeTW) {
+    if (this._entries) {
+      return this._entries;
+    }
+    this._entries = tw(`${this.token.text}`);
+    return this._entries;
+  }
 
   [Equal.symbol](that: unknown): boolean {
     return (
@@ -101,5 +117,53 @@ export class TemplateTokenData implements Equal.Equal {
       this.token.bodyLoc.start,
       this.token.bodyLoc.end,
     ]);
+  }
+}
+
+export interface DiagnosticsMeta {
+  readonly document: TextDocument;
+  readonly regions: DocumentLanguageRegion[];
+}
+
+export interface DiagnosticsTokenShape {
+  parsed: TemplateTokenWithText[];
+  flatten: TemplateTokenData[];
+  range: vscode.Range;
+  text: string;
+}
+
+export class DiagnosticsToken
+  extends Data.TaggedClass('DiagnosticsToken')<DiagnosticsTokenShape>
+  implements Equal.Equal
+{
+  private _entries: SheetEntry[] | undefined = undefined;
+  [Equal.symbol](that: unknown): boolean {
+    return (
+      that instanceof DiagnosticsToken &&
+      this.flatten.length === that.flatten.length &&
+      this.parsed.length === that.parsed.length &&
+      isSameRange(this.range, that.range)
+    );
+  }
+
+  [Hash.symbol](): number {
+    return Hash.array([Hash.structure(this.range), this.text, this.flatten.length]);
+  }
+
+  get flattenUnique() {
+    return this.flatten;
+  }
+
+  getSheetEntries(tw: RuntimeTW) {
+    if (this._entries) {
+      return this._entries;
+    }
+    const text = this.text.replace(/'/g, '');
+    this._entries = tw(`${text}`);
+    return this._entries;
+  }
+
+  get sameClassNames() {
+    return;
   }
 }

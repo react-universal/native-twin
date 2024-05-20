@@ -25,6 +25,8 @@ import { TwinRuleWithCompletion } from '../../types/native-twin.types';
 import { TemplateTokenData } from '../language.models';
 import { getFlattenTemplateToken } from './language.utils';
 
+
+
 export const extractDocumentNodeAtPosition = (
   params: vscode.TextDocumentPositionParams,
 ) =>
