@@ -1,23 +1,14 @@
-import { TinyColor } from '@ctrl/tinycolor';
 import * as ReadonlyArray from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver/node';
 import { ConfigManagerService } from '../../connection/client.config';
-import {
-  DocumentLanguageRegion,
-  TemplateNode,
-  TwinDocument,
-} from '../../documents/document.resource';
+import { DocumentLanguageRegion } from '../../documents/document.resource';
 import { DocumentsService } from '../../documents/documents.service';
 import { getDocumentLanguageLocations } from '../../documents/utils/document.ast';
-import {
-  NativeTwinManager,
-  NativeTwinManagerService,
-} from '../../native-twin/native-twin.models';
+import { NativeTwinManagerService } from '../../native-twin/native-twin.models';
 import { parseTemplate } from '../../native-twin/native-twin.parser';
 import { TemplateTokenWithText } from '../../template/template.models';
 import { NativeTwinPluginConfiguration } from '../../types/extension.types';
@@ -132,8 +123,6 @@ export const getCompletionsForTokens = (
   tokens: TemplateTokenData[],
   twinService: NativeTwinManagerService['Type'],
 ) => {
-  // TODO: Remove necessary?
-  // const uniqueTokens = pipe(tokens, ReadonlyArray.dedupe);
   const resolvers = tokens.map(createCompletionTokenResolver);
   return pipe(
     twinService.completions.twinRules,
@@ -141,41 +130,6 @@ export const getCompletionsForTokens = (
     ReadonlyArray.filter((x) => resolvers.some((y) => y(x))),
   );
 };
-
-export const getDocumentTemplatesColors = (
-  templates: TemplateNode[],
-  twinService: NativeTwinManager,
-  twinDocument: TwinDocument,
-) =>
-  pipe(
-    templates,
-    ReadonlyArray.flatMap((template) => template.parsedNode),
-    ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
-    ReadonlyArray.dedupe,
-    ReadonlyArray.flatMap((x) => templateTokenToColorInfo(x, twinService, twinDocument)),
-  );
-
-const templateTokenToColorInfo = (
-  templateNode: TemplateTokenData,
-  twinService: NativeTwinManager,
-  twinDocument: TwinDocument,
-): vscode.ColorInformation[] =>
-  twinService.completions.twinRules.pipe(
-    HashSet.filter((y) => y.completion.className === templateNode.token.text),
-    ReadonlyArray.fromIterable,
-    ReadonlyArray.map((completion) => ({ node: templateNode, completion })),
-    ReadonlyArray.filter((x) => x.completion.rule.themeSection === 'colors'),
-    ReadonlyArray.map((x): vscode.ColorInformation => {
-      const color = new TinyColor(x.completion.completion.declarationValue).toRgb();
-      return {
-        range: vscode.Range.create(
-          twinDocument.handler.positionAt(x.node.token.bodyLoc.start),
-          twinDocument.handler.positionAt(x.node.token.bodyLoc.end),
-        ),
-        color: vscode.Color.create(color.r / 255, color.g / 255, color.b / 255, color.a),
-      };
-    }),
-  );
 
 export const getDocumentLanguageRegions = (
   document: TextDocument,

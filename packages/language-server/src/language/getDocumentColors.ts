@@ -3,7 +3,7 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { DocumentsService } from '../documents/documents.service';
 import { NativeTwinManagerService } from '../native-twin/native-twin.models';
-import { getDocumentTemplatesColors } from './utils/completion.pipes';
+import { getDocumentTemplatesColors } from './utils/colorInfo.utils';
 
 export const getDocumentColors = (
   params: vscode.DocumentColorParams,

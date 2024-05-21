@@ -95,4 +95,3 @@ export const completionRuleToEntry = (
   range: vscode.Range,
   insertText: string,
 ) => new VscodeCompletionItem(completionRule, range, insertText);
-
