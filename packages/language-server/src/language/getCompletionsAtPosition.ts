@@ -20,17 +20,6 @@ export const getCompletionsAtPosition = (
     const twinService = yield* NativeTwinManagerService;
     const extracted = yield* extractDocumentNodeAtPosition(params);
 
-    const nodesAtPosition = extracted.pipe(
-      Option.flatMap((meta) =>
-        extractParsedNodesAtPosition({
-          cursorOffset: meta.cursorOffset,
-          parsedText: meta.parsedText,
-        }),
-      ),
-    );
-
-    console.log('NODES: ', nodesAtPosition);
-
     const completionEntries = Option.flatMap(extracted, (meta) => {
       if (meta.isEmptyCompletion) {
         return Option.some(

@@ -13,14 +13,12 @@ export class TemplateTokenWithText implements Equal.Equal {
     readonly end: number;
   };
   text: string;
-  completionText: string;
   templateStarts: number;
 
   constructor(
     token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText,
     text: string,
     templateStarts: number,
-    completionText: string = text,
   ) {
     this.templateStarts = templateStarts;
     this.loc = {
@@ -33,7 +31,6 @@ export class TemplateTokenWithText implements Equal.Equal {
     };
     this.text = text;
     this.token = token;
-    this.completionText = completionText;
   }
 
   [Equal.symbol](that: unknown): boolean {

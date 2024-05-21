@@ -14,8 +14,8 @@ export const getDocumentColors = (
   vscode.ColorInformation[],
   never,
   NativeTwinManagerService | DocumentsService
-> => {
-  return Effect.gen(function* () {
+> =>
+  Effect.gen(function* () {
     const twinService = yield* NativeTwinManagerService;
     const documentsHandler = yield* DocumentsService;
 
@@ -32,4 +32,3 @@ export const getDocumentColors = (
       }),
     );
   });
-};

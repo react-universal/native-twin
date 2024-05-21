@@ -19,7 +19,7 @@ import {
 } from './utils/language.utils';
 
 export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal {
-  readonly label: string;
+  label: string;
   readonly kind: vscode.CompletionItemKind;
   readonly filterText: string;
   readonly sortText: string;
@@ -27,7 +27,7 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
   readonly labelDetails: vscode.CompletionItemLabelDetails;
   insertText: string;
   readonly insertTextFormat: vscode.InsertTextFormat;
-  readonly textEditText: string;
+  textEditText: string;
   readonly textEdit: vscode.TextEdit;
 
   constructor(

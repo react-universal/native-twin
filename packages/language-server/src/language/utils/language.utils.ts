@@ -56,12 +56,7 @@ export const getFlattenTemplateToken = (
       const className = `${base.token.value.map((x) => x.n).join(':')}:${item.text}`;
       return asArray(
         new TemplateTokenData(
-          new TemplateTokenWithText(
-            item.token,
-            className,
-            item.templateStarts,
-            item.text,
-          ),
+          new TemplateTokenWithText(item.token, className, item.templateStarts),
           base,
         ),
       );

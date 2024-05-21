@@ -90,32 +90,22 @@ export const extractParsedNodesAtPosition = ({
   );
 
 const createCompletionTokenResolver =
-  ({ base, token }: TemplateTokenData) =>
-  (twinRule: TwinRuleWithCompletion) => {
-    let completionText = token.completionText;
-
-    if (token.token.type === 'VARIANT_CLASS' && base) {
-      if (base.token.type === 'CLASS_NAME') {
-        completionText = `${base.token.value.n}-${token.token.value[1].value.n}`;
-      }
-
-      if (base.token.type === 'VARIANT') {
-        completionText = `${token.token.value[1].value.n}`;
-      }
+  (node: TemplateTokenData) => (twinRule: TwinRuleWithCompletion) => {
+    let completionText = node.token.text;
+    if (node.token.token.type === 'VARIANT_CLASS') {
+      const variantText = `${node.token.token.value[0].value.map((x) => x.n).join(':')}:`;
+        completionText = completionText.replace(variantText, '');
     }
-
-    if (completionText === twinRule.completion.className) return true;
-
-    if (token.token.type === 'VARIANT_CLASS') {
-      return twinRule.completion.className.startsWith(token.token.value[1].value.n);
-    }
-
-    if (base) {
-      if (base.token.type === 'CLASS_NAME') {
-        return twinRule.completion.className.startsWith(base.token.value.n);
+    if (node.base) {
+      if (node.base.token.type === 'VARIANT') {
+        const variantText = `${node.base.token.value.map((x) => x.n).join(':')}:`;
+        completionText = completionText.replace(variantText, '');
+      }
+      if (node.base.token.type === 'VARIANT_CLASS') {
+        const variantText = `${node.base.token.value[0].value.map((x) => x.n).join(':')}:`;
+        completionText = completionText.replace(variantText, '');
       }
     }
-
     return twinRule.completion.className.startsWith(completionText);
   };
 

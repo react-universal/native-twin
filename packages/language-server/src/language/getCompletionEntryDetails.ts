@@ -13,7 +13,6 @@ export const getCompletionEntryDetails = (
 ): Effect.Effect<vscode.CompletionItem, never, NativeTwinManagerService> => {
   return Effect.gen(function* () {
     const twin = yield* NativeTwinManagerService;
-
     return yield* Effect.Do.pipe(
       () =>
         Effect.succeed({
