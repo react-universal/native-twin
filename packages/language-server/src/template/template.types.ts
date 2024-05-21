@@ -5,6 +5,7 @@ import {
   VariantClassToken,
   VariantToken,
 } from '@native-twin/css';
+import { TemplateTokenWithText } from './template.models';
 
 export type LocatedParser<A extends object> = {
   start: number;
@@ -35,14 +36,12 @@ export interface LocatedSheetEntry extends SheetEntry {
   };
 }
 
-// export type TemplateTokenWithText = (
-//   | Exclude<TemplateToken, LocatedGroupToken>
-//   | LocatedGroupTokenWithText
-// ) & {
-//   text: string;
-// };
-
-// export type CompletionPartShape = Exclude<
-//   TemplateTokenWithText,
-//   LocatedGroupTokenWithText
-// >;
+export interface LocatedGroupTokenWithText {
+  type: 'GROUP';
+  start: number;
+  end: number;
+  value: {
+    base: TemplateTokenWithText;
+    content: TemplateTokenWithText[];
+  };
+}

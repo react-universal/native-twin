@@ -3,21 +3,19 @@ import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
-import { TemplateNode, TwinDocument } from '../../documents/document.resource';
-import { NativeTwinManager } from '../../native-twin/native-twin.models';
-import { TwinRuleWithCompletion } from '../../types/native-twin.types';
-import { TemplateTokenData } from '../language.models';
-import { getFlattenTemplateToken } from './language.utils';
+import { TwinDocument } from '../../documents/models/twin-document.model';
+import { NativeTwinManager } from '../../native-twin/native-twin.service';
+import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
+import { TemplateTokenData } from '../models/template-token-data.model';
 
 export const getDocumentTemplatesColors = (
-  templates: TemplateNode[],
   twinService: NativeTwinManager,
   twinDocument: TwinDocument,
 ) =>
   pipe(
-    templates,
-    ReadonlyArray.flatMap((template) => template.parsedNode),
-    ReadonlyArray.flatMap((x) => getFlattenTemplateToken(x)),
+    twinDocument.getLanguageRegions(),
+    ReadonlyArray.flatMap((template) => template.parsedText),
+    ReadonlyArray.flatMap((x) => x.flattenToken),
     ReadonlyArray.dedupe,
     ReadonlyArray.flatMap((x) => templateTokenToColorInfo(x, twinService, twinDocument)),
   );
@@ -29,10 +27,10 @@ const templateTokenToColorInfo = (
   twinDocument: TwinDocument,
 ): vscode.ColorInformation[] => {
   const range = vscode.Range.create(
-    twinDocument.handler.positionAt(templateNode.token.bodyLoc.start),
-    twinDocument.handler.positionAt(templateNode.token.bodyLoc.end),
+    twinDocument.offsetToPosition(templateNode.token.bodyLoc.start),
+    twinDocument.offsetToPosition(templateNode.token.bodyLoc.end),
   );
-  const templateFilter = getTemplateNodeClassNameAndRange(templateNode, range);
+  const templateFilter = templateNode.adjustColorInfo(range);
   return twinService.completions.twinRules.pipe(
     ReadonlyArray.fromIterable,
     ReadonlyArray.filterMap((y) =>
@@ -49,7 +47,7 @@ const templateTokenToColorInfo = (
 
 /** File private */
 const completionRuleToColorInfo = (
-  rule: TwinRuleWithCompletion,
+  rule: TwinRuleCompletion,
   range: vscode.Range,
 ) => ({
   range: range,
@@ -59,32 +57,3 @@ const completionRuleToColorInfo = (
 /** File private */
 const toVsCodeColor = (color: Numberify<RGBA>): vscode.Color =>
   vscode.Color.create(color.r / 255, color.g / 255, color.b / 255, color.a);
-
-/** File private */
-const getTemplateNodeClassNameAndRange = (
-  templateNode: TemplateTokenData,
-  range: vscode.Range,
-) => {
-  let className = templateNode.token.text;
-
-  if (templateNode.base) {
-    if (templateNode.base.token.type === 'VARIANT') {
-      const variantText = `${templateNode.base.token.value.map((x) => x.n).join(':')}:`;
-      className = className.replace(variantText, '');
-    }
-    if (templateNode.base.token.type === 'VARIANT_CLASS') {
-      const variantText = `${templateNode.base.token.value[0].value.map((x) => x.n).join(':')}:`;
-      className = className.replace(variantText, '');
-    }
-  }
-  if (templateNode.token.token.type === 'VARIANT_CLASS') {
-    const variantText = `${templateNode.token.token.value[0].value.map((x) => x.n).join(':')}:`;
-    className = className.replace(variantText, '');
-  }
-  if (templateNode.token.token.type === 'VARIANT_CLASS') {
-    const variantText = `${templateNode.token.token.value[0].value.map((x) => x.n).join(':')}:`;
-    const newOffset = range.start.character + variantText.length;
-    range.start.character = newOffset;
-  }
-  return { className, range };
-};

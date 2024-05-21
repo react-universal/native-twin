@@ -3,11 +3,11 @@ import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { FinalSheet } from '@native-twin/css';
-import { TwinRuleWithCompletion } from '../../types/native-twin.types';
+import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
 import { getDocumentationMarkdown } from './language.utils';
 
 export const completionRulesToQuickInfo = (
-  completionRules: HashSet.HashSet<TwinRuleWithCompletion>,
+  completionRules: HashSet.HashSet<TwinRuleCompletion>,
   sheetEntry: FinalSheet,
   range: vscode.Range,
 ): Option.Option<vscode.Hover> =>

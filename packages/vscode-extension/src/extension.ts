@@ -4,11 +4,11 @@ import * as vscode from 'vscode';
 import {
   activateExtension,
   ExtensionContext,
-} from './services/extension/extension.context';
-import { LanguageClientLive } from './services/language/language.provider';
-import { ClientCustomLogger } from './services/logger.service';
+} from './extension/extension.service';
+import { LanguageClientContext } from './language/language.service';
+import { ClientCustomLogger } from './utils/logger.service';
 
-const MainLive = Layer.mergeAll(LanguageClientLive).pipe(
+const MainLive = Layer.mergeAll(LanguageClientContext.Live).pipe(
   Layer.provide(ClientCustomLogger),
 );
 

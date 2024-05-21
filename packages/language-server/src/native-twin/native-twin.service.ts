@@ -1,40 +1,26 @@
 import * as Context from 'effect/Context';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
-import {
-  __Theme__,
-  createTailwind,
-  createThemeContext,
-  defineConfig,
-  RuntimeTW,
-  TailwindConfig,
-  ThemeContext,
-} from '@native-twin/core';
-import { createVirtualSheet, SheetEntry } from '@native-twin/css';
-import { TailwindPresetTheme } from '@native-twin/preset-tailwind/build/types/theme.types';
-import {
-  TwinRuleWithCompletion,
-  TwinVariantCompletion,
-} from '../types/native-twin.types';
+import { createTailwind, createThemeContext, defineConfig } from '@native-twin/core';
+import { createVirtualSheet } from '@native-twin/css';
 import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
 import { requireJS } from '../utils/load-js';
+import {
+  InternalTwFn,
+  InternalTwinConfig,
+  InternalTwinThemeContext,
+  TwinStore,
+  TwinRuleCompletion,
+  TwinVariantCompletion,
+} from './native-twin.types';
 import { createTwinStore } from './utils/native-twin.utils';
-
-export type InternalTwinConfig = TailwindConfig<__Theme__ & TailwindPresetTheme>;
-export type InternalTwFn = RuntimeTW<__Theme__ & TailwindPresetTheme, SheetEntry[]>;
-export type InternalTwinThemeContext = ThemeContext<__Theme__ & TailwindPresetTheme>;
-
-export interface TwinStore {
-  twinVariants: HashSet.HashSet<TwinVariantCompletion>;
-  twinRules: HashSet.HashSet<TwinRuleWithCompletion>;
-}
 
 export class NativeTwinManager {
   tw: InternalTwFn;
   context: InternalTwinThemeContext;
   userConfig: InternalTwinConfig = DEFAULT_TWIN_CONFIG;
   completions: TwinStore = {
-    twinRules: HashSet.empty<TwinRuleWithCompletion>(),
+    twinRules: HashSet.empty<TwinRuleCompletion>(),
     twinVariants: HashSet.empty<TwinVariantCompletion>(),
   };
 

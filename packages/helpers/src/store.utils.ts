@@ -30,6 +30,7 @@ export function createStore<StoreShape>(initialState: StoreShape) {
     listeners.forEach((listeners) => listeners(currentState));
   }
 }
+
 export interface ValueStoreOptions<StoreName extends string> {
   name: StoreName;
 }

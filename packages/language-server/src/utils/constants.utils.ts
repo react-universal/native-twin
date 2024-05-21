@@ -1,5 +1,5 @@
 import { RuleMeta } from '@native-twin/core';
-import { InternalTwinConfig } from '../native-twin/native-twin.models';
+import { InternalTwinConfig } from '../native-twin/native-twin.types';
 import { NativeTwinPluginConfiguration } from '../types/extension.types';
 
 export const DEFAULT_RULE_META: RuleMeta = {

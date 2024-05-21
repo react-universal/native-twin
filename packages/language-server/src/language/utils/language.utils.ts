@@ -4,15 +4,19 @@ import { pipe } from 'effect/Function';
 import * as vscode from 'vscode-languageserver/node';
 import { FinalSheet, VariantClassToken } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import { TemplateNode, TwinDocument } from '../../documents/document.resource';
+import { DocumentLanguageRegion } from '../../documents/models/language-region.model';
+import { TwinDocument } from '../../documents/models/twin-document.model';
+import {
+  TwinRuleParts,
+  TwinRuleCompletion,
+} from '../../native-twin/native-twin.types';
 import { TemplateTokenWithText } from '../../template/template.models';
 import { LocatedParser } from '../../template/template.types';
-import { TwinRuleParts, TwinRuleWithCompletion } from '../../types/native-twin.types';
-import { TemplateTokenData } from '../language.models';
+import { TemplateTokenData } from '../models/template-token-data.model';
 
 export const getCompletionTokenKind = ({
   rule,
-}: TwinRuleWithCompletion): vscode.CompletionItemKind =>
+}: TwinRuleCompletion): vscode.CompletionItemKind =>
   rule.themeSection == 'colors'
     ? vscode.CompletionItemKind.Color
     : vscode.CompletionItemKind.Constant;
@@ -23,7 +27,7 @@ export const getKindModifiers = (item: TwinRuleParts): string =>
 export function getCompletionEntryDetailsDisplayParts({
   rule,
   completion,
-}: TwinRuleWithCompletion) {
+}: TwinRuleCompletion) {
   if (rule.meta.feature === 'colors' || rule.themeSection === 'colors') {
     const hex = new TinyColor(completion.declarationValue);
     if (hex.isValid) {
@@ -108,7 +112,7 @@ const variantTokenToString = (token: LocatedParser<VariantClassToken>) =>
 
 export const getRangeFromTokensAtPosition = (
   document: TwinDocument,
-  nodeAtPosition: TemplateNode,
+  nodeAtPosition: DocumentLanguageRegion,
   templateTokens: TemplateTokenWithText[],
 ) => {
   return pipe(
@@ -134,7 +138,7 @@ export function getDocumentationMarkdown(sheetEntry: FinalSheet) {
 const createJSONMarkdownString = <T extends object>(x: T) =>
   ['```json', JSON.stringify(x, null, 2), '```'].join('\n');
 
-export function createDebugHover(rule: TwinRuleWithCompletion) {
+export function createDebugHover(rule: TwinRuleCompletion) {
   const result: string[] = [];
   result.push('********************************************\n');
   result.push('#### Debug Info');

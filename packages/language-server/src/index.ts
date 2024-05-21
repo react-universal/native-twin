@@ -1,20 +1,19 @@
-import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { ConfigManagerService } from './connection/client.config';
 import { initializeConnection } from './connection/connection.handlers';
 import { ConnectionService } from './connection/connection.service';
 import { DocumentsService } from './documents/documents.service';
-import * as LanguageService from './language/language.service';
-import { NativeTwinManagerService } from './native-twin/native-twin.models';
+import { LanguageServiceLive, createLanguageService } from './language';
+import { NativeTwinManagerService } from './native-twin/native-twin.service';
 import { sendDebugLog } from './services/logger.service';
 
-const MainLive = Layer.mergeAll(
-  ConnectionService.Live,
-  DocumentsService.Live,
-  NativeTwinManagerService.Live,
-).pipe(Layer.provideMerge(ConfigManagerService.Live));
+const MainLive = Layer.mergeAll(ConnectionService.Live, LanguageServiceLive).pipe(
+  Layer.provideMerge(
+    Layer.mergeAll(DocumentsService.Live, NativeTwinManagerService.Live),
+  ),
+  Layer.provideMerge(ConfigManagerService.Live),
+);
 
 const program = Effect.gen(function* () {
   const connectionService = yield* ConnectionService;
@@ -22,25 +21,15 @@ const program = Effect.gen(function* () {
   const configService = yield* ConfigManagerService;
   const documentService = yield* DocumentsService;
   const nativeTwinManager = yield* NativeTwinManagerService;
+  const languageService = yield* createLanguageService;
 
-  const localContext = Context.empty().pipe(
-    Context.add(ConfigManagerService, configService),
-    Context.add(DocumentsService, documentService),
-    Context.add(NativeTwinManagerService, nativeTwinManager),
-    Context.add(ConnectionService, connectionService),
+  Connection.onInitialize(async (...args) =>
+    initializeConnection(...args, nativeTwinManager, configService),
   );
 
-  const localLayer = Layer.succeedContext(localContext);
-
-  const runtime = ManagedRuntime.make(localLayer);
-
-  Connection.onInitialize(async (...args) => {
-    return runtime.runPromise(initializeConnection(...args));
-  });
-
   Connection.onCompletion(async (...args) => {
-    const completions = await runtime.runPromise(
-      LanguageService.getCompletionsAtPosition(...args),
+    const completions = await Effect.runPromise(
+      languageService.completions.getCompletionsAtPosition(...args),
     );
 
     return {
@@ -49,35 +38,25 @@ const program = Effect.gen(function* () {
     };
   });
 
-  Connection.onCompletionResolve(async (...args) => {
-    return runtime.runPromise(
-      LanguageService.getCompletionEntryDetails(...args).pipe(
-        Effect.tap((x) => sendDebugLog('CompletionItems', x)),
-      ),
-    );
-  });
+  Connection.onCompletionResolve(async (...args) =>
+    Effect.runPromise(
+      languageService.completions
+        .getCompletionEntryDetails(...args)
+        .pipe(Effect.tap((x) => sendDebugLog('CompletionItems', x))),
+    ),
+  );
 
-  Connection.onHover((...args) => {
-    return runtime.runPromise(LanguageService.getQuickInfoAtPosition(...args));
-  });
+  Connection.onHover(async (...args) =>
+    Effect.runPromise(languageService.documentation.getHover(...args)),
+  );
 
-  Connection.onDocumentHighlight((_params) => {
-    return undefined;
-  });
+  Connection.onDocumentColor(async (...params) =>
+    Effect.runPromise(languageService.documentation.getDocumentColors(...params)),
+  );
 
-  Connection.onColorPresentation((params) => {
-    Connection.console.info('onColorPresentation: ' + JSON.stringify(params, null, 2));
-    return [];
-  });
-
-  Connection.onDocumentColor((...params) => {
-    // Connection.console.info('onDocumentColor: ' + JSON.stringify(params, null, 2));
-    return runtime.runPromise(LanguageService.getDocumentColors(...params));
-  });
-
-  Connection.languages.diagnostics.on(async (...args) => {
-    return runtime.runPromise(LanguageService.getDocumentDiagnostics(...args));
-  });
+  Connection.languages.diagnostics.on(async (...args) =>
+    Effect.runPromise(languageService.diagnostics.getDocumentDiagnostics(...args)),
+  );
 
   Connection.listen();
   documentService.handler.listen(Connection);

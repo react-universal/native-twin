@@ -1,113 +1,14 @@
 import * as ReadonlyArray from 'effect/Array';
-import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as Option from 'effect/Option';
-import { TextDocument } from 'vscode-languageserver-textdocument';
-import * as vscode from 'vscode-languageserver/node';
-import { ConfigManagerService } from '../../connection/client.config';
-import { DocumentLanguageRegion } from '../../documents/document.resource';
-import { DocumentsService } from '../../documents/documents.service';
-import { getDocumentLanguageLocations } from '../../documents/utils/document.ast';
-import { NativeTwinManagerService } from '../../native-twin/native-twin.models';
-import { parseTemplate } from '../../native-twin/native-twin.parser';
+import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
+import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
 import { TemplateTokenWithText } from '../../template/template.models';
-import { NativeTwinPluginConfiguration } from '../../types/extension.types';
-import { TwinRuleWithCompletion } from '../../types/native-twin.types';
-import { TemplateTokenData } from '../language.models';
+import { TemplateTokenData } from '../models/template-token-data.model';
 import { getFlattenTemplateToken } from './language.utils';
 
-export const extractDocumentNodeAtPosition = (
-  params: vscode.TextDocumentPositionParams,
-) =>
-  Effect.gen(function* () {
-    const documentsHandler = yield* DocumentsService;
-    const { config } = yield* ConfigManagerService;
-    return Option.Do.pipe(
-      Option.bind('document', () =>
-        documentsHandler.acquireDocument(params.textDocument.uri),
-      ),
-      Option.let('regions', ({ document }) =>
-        getDocumentLanguageRegions(document, config),
-      ),
-      Option.let('cursorOffset', ({ document }) => document.offsetAt(params.position)),
-      Option.let(
-        'isEmptyCompletion',
-        ({ document, cursorOffset }) =>
-          document
-            .getText(
-              vscode.Range.create(
-                document.positionAt(cursorOffset - 1),
-                document.positionAt(cursorOffset + 1),
-              ),
-            )
-            .replaceAll(/\s/g, '') === '',
-      ),
-      Option.bind('rangeAtPosition', ({ regions, cursorOffset }) =>
-        Option.fromNullable(
-          regions.find(
-            (x) => cursorOffset >= x.offset.start && cursorOffset <= x.offset.end,
-          ),
-        ),
-      ),
-      Option.let('textAtPosition', ({ rangeAtPosition, document }) => {
-        return document.getText(rangeAtPosition.range);
-      }),
-      Option.let('parsedText', ({ textAtPosition, rangeAtPosition }) =>
-        parseTemplate(textAtPosition, rangeAtPosition.offset.start),
-      ),
-    );
-  });
-
-interface ExtractParsedParams {
-  parsedText: TemplateTokenWithText[];
-  cursorOffset: number;
-}
-export const extractParsedNodesAtPosition = ({
-  cursorOffset,
-  parsedText,
-}: ExtractParsedParams) =>
-  Option.Do.pipe(
-    Option.bind('parsedNodeAtPosition', () =>
-      pipe(
-        parsedText,
-        ReadonlyArray.findFirst(
-          (x) => cursorOffset >= x.bodyLoc.start && cursorOffset <= x.bodyLoc.end,
-        ),
-      ),
-    ),
-    Option.let('flattenNodes', ({ parsedNodeAtPosition }) =>
-      pipe(
-        parsedNodeAtPosition,
-        getFlattenTemplateToken,
-        ReadonlyArray.filter(
-          (y) =>
-            cursorOffset >= y.token.bodyLoc.start && cursorOffset <= y.token.bodyLoc.end,
-        ),
-        // FIXME: filter nodes instead dedupe
-        ReadonlyArray.dedupe,
-      ),
-    ),
-  );
-
 const createCompletionTokenResolver =
-  (node: TemplateTokenData) => (twinRule: TwinRuleWithCompletion) => {
-    let completionText = node.token.text;
-    if (node.token.token.type === 'VARIANT_CLASS') {
-      const variantText = `${node.token.token.value[0].value.map((x) => x.n).join(':')}:`;
-        completionText = completionText.replace(variantText, '');
-    }
-    if (node.base) {
-      if (node.base.token.type === 'VARIANT') {
-        const variantText = `${node.base.token.value.map((x) => x.n).join(':')}:`;
-        completionText = completionText.replace(variantText, '');
-      }
-      if (node.base.token.type === 'VARIANT_CLASS') {
-        const variantText = `${node.base.token.value[0].value.map((x) => x.n).join(':')}:`;
-        completionText = completionText.replace(variantText, '');
-      }
-    }
-    return twinRule.completion.className.startsWith(completionText);
-  };
+  (node: TemplateTokenData) => (twinRule: TwinRuleCompletion) =>
+    twinRule.completion.className.startsWith(node.getTokenClassName());
 
 export const getCompletionsForTokens = (
   tokens: TemplateTokenData[],
@@ -121,10 +22,14 @@ export const getCompletionsForTokens = (
   );
 };
 
-export const getDocumentLanguageRegions = (
-  document: TextDocument,
-  config: NativeTwinPluginConfiguration,
+export const findExactTokenFromTemplateNode = (
+  token: TemplateTokenWithText,
+  cursorOffset: number,
 ) =>
-  getDocumentLanguageLocations(document.getText(), config).map((x) =>
-    DocumentLanguageRegion.create(document, x),
+  pipe(
+    token,
+    getFlattenTemplateToken,
+    ReadonlyArray.findFirst(
+      (y) => cursorOffset >= y.token.bodyLoc.start && cursorOffset <= y.token.bodyLoc.end,
+    ),
   );

@@ -1,95 +1,79 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
-import { NativeTwinManagerService } from '../native-twin/native-twin.models';
+import { NativeTwinManagerService } from '../native-twin/native-twin.service';
 import { ConfigManagerService } from './client.config';
 
 export const initializeConnection = (
   params: vscode.InitializeParams,
   _token: vscode.CancellationToken,
   _workDoneProgress: vscode.WorkDoneProgressReporter,
-  _resultProgress?: vscode.ResultProgressReporter<never> | undefined,
+  _resultProgress: vscode.ResultProgressReporter<never> | undefined,
+  manager: NativeTwinManagerService['Type'],
+  configManager: ConfigManagerService['Type'],
 ) => {
-  return Effect.gen(function* () {
-    const manager = yield* NativeTwinManagerService;
-    const configManager = yield* ConfigManagerService;
+  const configOptions = params.initializationOptions;
 
-    const configOptions = params.initializationOptions;
-
-    if (configOptions) {
-      const twinConfigFile = Option.fromNullable<vscode.URI>(
-        configOptions?.twinConfigFile?.path,
-      );
-      Option.map(twinConfigFile, (x) => {
-        manager.loadUserFile(x);
-      });
-    }
-
-    const capabilities = yield* getClientCapabilities(params.capabilities);
-    configManager.onUpdateConfig({
-      config: configOptions,
-      ...configOptions,
+  if (configOptions) {
+    const twinConfigFile = Option.fromNullable<vscode.URI>(
+      configOptions?.twinConfigFile?.path,
+    );
+    Option.map(twinConfigFile, (x) => {
+      manager.loadUserFile(x);
     });
-    return capabilities;
+  }
+
+  const capabilities = getClientCapabilities(params.capabilities);
+  configManager.onUpdateConfig({
+    config: configOptions,
+    ...configOptions,
   });
+  return capabilities;
 };
 
 export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) => {
-  return Effect.Do.pipe(
-    Effect.bind('hasConfigurationCapability', () =>
-      Effect.succeed(
-        !!(capabilities.workspace && !!capabilities.workspace.configuration),
-      ),
+  const setup = {
+    hasConfigurationCapability: !!(
+      capabilities.workspace && !!capabilities.workspace.configuration
     ),
-    Effect.bind('hasWorkspaceFolderCapability', () =>
-      Effect.succeed(
-        !!(capabilities.workspace && !!capabilities.workspace.workspaceFolders),
-      ),
+    hasWorkspaceFolderCapability: !!(
+      capabilities.workspace && !!capabilities.workspace.workspaceFolders
     ),
-    Effect.bind('hasDiagnosticRelatedInformationCapability', () =>
-      Effect.succeed(
-        !!(
-          capabilities.textDocument &&
-          capabilities.textDocument.publishDiagnostics &&
-          capabilities.textDocument.publishDiagnostics.relatedInformation
-        ),
-      ),
+    hasDiagnosticRelatedInformationCapability: !!(
+      capabilities.textDocument &&
+      capabilities.textDocument.publishDiagnostics &&
+      capabilities.textDocument.publishDiagnostics.relatedInformation
     ),
-  )
-    .pipe(
-      Effect.map((x): vscode.InitializeResult => {
-        const result: vscode.InitializeResult = {
-          capabilities: {
-            textDocumentSync: vscode.TextDocumentSyncKind.Incremental,
-            colorProvider: true,
-            hoverProvider: true,
-            documentHighlightProvider: true,
-            workspaceSymbolProvider: {
-              resolveProvider: true,
-            },
-            // Tell the client that this server supports code completion.
-            completionProvider: {
-              resolveProvider: true,
-              completionItem: {
-                labelDetailsSupport: true,
-              },
-              triggerCharacters: ['`'],
-            },
-            workspace: {
-              workspaceFolders: {
-                supported: x.hasConfigurationCapability,
-              },
-            },
-            diagnosticProvider: {
-              interFileDependencies: false,
-              workspaceDiagnostics: false,
-            },
-          },
-        };
-        return result;
-      }),
-    )
-    .pipe(Effect.tap(() => Effect.logDebug(`Server Capabilities Filled`)));
+  };
+  const result: vscode.InitializeResult = {
+    capabilities: {
+      textDocumentSync: vscode.TextDocumentSyncKind.Incremental,
+      colorProvider: true,
+      hoverProvider: true,
+      documentHighlightProvider: false,
+      workspaceSymbolProvider: {
+        resolveProvider: true,
+      },
+      // Tell the client that this server supports code completion.
+      completionProvider: {
+        resolveProvider: true,
+        completionItem: {
+          labelDetailsSupport: true,
+        },
+        triggerCharacters: ['`'],
+      },
+      workspace: {
+        workspaceFolders: {
+          supported: setup.hasConfigurationCapability,
+        },
+      },
+      diagnosticProvider: {
+        interFileDependencies: false,
+        workspaceDiagnostics: false,
+      },
+    },
+  };
+  return result;
 };
 
 export const addServerRequestHandler = <Params, Result, Error>(
@@ -116,23 +100,4 @@ export const addConnectionRequestHandler = <Params, Result, Error>(
       return handler(...args);
     });
   });
-};
-
-export const onInitializeConnection = (params: vscode.InitializeParams) => {
-  const configOptions = params.initializationOptions;
-
-  const configFiles = {
-    tsconfig: Option.fromNullable<vscode.URI>(configOptions?.tsconfigFiles?.[0]),
-    twinConfigFile: Option.fromNullable<vscode.URI>(configOptions?.twinConfigFile),
-    workspaceRoot: Option.fromNullable<vscode.WorkspaceFolder>(
-      configOptions?.workspaceRoot,
-    ),
-  };
-
-  const capabilities = getClientCapabilities(params.capabilities).pipe(Effect.runSync);
-
-  return {
-    capabilities,
-    configFiles,
-  };
 };

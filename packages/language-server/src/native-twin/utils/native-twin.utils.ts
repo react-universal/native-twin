@@ -2,17 +2,15 @@ import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { __Theme__ } from '@native-twin/core';
+import { createRuleClassNames, createRuleCompositions } from '../native-twin.rules';
 import {
-  TwinRuleWithCompletion,
+  TwinRuleCompletion,
   TwinVariantCompletion,
-} from '../../types/native-twin.types';
-import {
   InternalTwFn,
   InternalTwinConfig,
   InternalTwinThemeContext,
   TwinStore,
-} from '../native-twin.models';
-import { createRuleClassNames, createRuleCompositions } from '../native-twin.rules';
+} from '../native-twin.types';
 
 export const createTwinStore = (nativeTwinHandler: {
   tw: InternalTwFn;
@@ -58,7 +56,7 @@ export const createTwinStore = (nativeTwinHandler: {
               composition.parts.themeSection as keyof __Theme__,
             ) ?? {};
       return createRuleClassNames(values, composition.composition, composition.parts).map(
-        (className): TwinRuleWithCompletion => ({
+        (className): TwinRuleCompletion => ({
           kind: 'rule',
           completion: className,
           composition: composition.composition,
@@ -69,7 +67,7 @@ export const createTwinStore = (nativeTwinHandler: {
     });
   });
 
-  const composedTwinRules: HashSet.HashSet<TwinRuleWithCompletion> = pipe(
+  const composedTwinRules: HashSet.HashSet<TwinRuleCompletion> = pipe(
     flattenRules,
     // ReadonlyArray.fromIterable(nativeTwinHandler.tw.config.rules),
     // ReadonlyArray.map((x) => createRuleCompositions(x)),

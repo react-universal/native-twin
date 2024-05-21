@@ -1,14 +1,19 @@
 import * as Equivalence from 'effect/Equivalence';
 import * as Order from 'effect/Order';
+import * as vscode from 'vscode-languageserver/node';
 import {
-  TwinRuleWithCompletion,
+  TwinRuleCompletion,
   TwinVariantCompletion,
-} from '../../types/native-twin.types';
-import { TemplateTokenData } from '../language.models';
+} from '../../native-twin/native-twin.types';
 
 export const orderCompletions = Order.mapInput(
   Order.number,
-  (x: TwinRuleWithCompletion) => x.order,
+  (x: TwinRuleCompletion) => x.order,
+);
+
+export const diagnosticItemEquivalence = Equivalence.mapInput(
+  Equivalence.string,
+  (x: vscode.Diagnostic) => x.message,
 );
 
 export const orderVariantsCompletions = Order.mapInput(
@@ -17,7 +22,7 @@ export const orderVariantsCompletions = Order.mapInput(
 );
 
 export const eqTwinRuleWithCompletion = Equivalence.mapInput(
-  (x: TwinRuleWithCompletion) => x.completion.className,
+  (x: TwinRuleCompletion) => x.completion.className,
 )(Equivalence.string);
 
 export const eqTwinVariantWithCompletion = Equivalence.mapInput(
@@ -25,30 +30,7 @@ export const eqTwinVariantWithCompletion = Equivalence.mapInput(
 )(Equivalence.number);
 
 export const compareTwinRuleWithClassName =
-  (twinRule: TwinRuleWithCompletion) => (data: string[]) => {
+  (twinRule: TwinRuleCompletion) => (data: string[]) => {
     const { completion } = twinRule;
     return data.some((x) => completion.className.startsWith(x));
   };
-
-export const _getClassNameFromTokenData = (templateNode: TemplateTokenData) => {
-  const { token: node, base } = templateNode;
-
-  let nodeText = node.text;
-  let baseText = '';
-  if (base) {
-    if (base.token.type === 'CLASS_NAME') {
-      if (!nodeText.startsWith(base.token.value.n)) {
-        baseText = `${base.token.value.n}-`;
-      }
-    }
-    if (base.token.type === 'VARIANT_CLASS') {
-      baseText = `${base.token.value[1].value.n}-`;
-    }
-  }
-
-  if (node.token.type === 'VARIANT_CLASS') {
-    nodeText = `${node.token.value[1].value.n}`;
-  }
-
-  return `${baseText}${nodeText}`;
-};

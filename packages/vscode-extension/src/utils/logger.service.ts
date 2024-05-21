@@ -2,7 +2,7 @@ import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as vscode from 'vscode';
-import { extensionChannelName } from './extension/extension.constants';
+import { extensionChannelName } from '../extension/extension.constants';
 
 /**
  * @domain `Client`

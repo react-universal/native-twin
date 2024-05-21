@@ -16,23 +16,25 @@ import {
   filterCompletionByTemplateOffset,
 } from './utils/transforms';
 
+interface LanguageServiceShape {
+  getQuickInfoAtPosition: (
+    filename: string,
+    position: number,
+  ) => Effect.Effect<Option.Option<ts.QuickInfo>>;
+  getCompletionsAtPosition: (
+    filename: string,
+    position: number,
+  ) => Effect.Effect<ts.CompletionEntry[]>;
+  getCompletionEntryDetails: (
+    fileName: string,
+    position: number,
+    name: string,
+  ) => Effect.Effect<Option.Option<ts.CompletionEntryDetails>>;
+}
+
 export class LanguageProviderService extends Context.Tag('language/service')<
   LanguageProviderService,
-  {
-    getQuickInfoAtPosition: (
-      filename: string,
-      position: number,
-    ) => Effect.Effect<Option.Option<ts.QuickInfo>>;
-    getCompletionsAtPosition: (
-      filename: string,
-      position: number,
-    ) => Effect.Effect<ts.CompletionEntry[]>;
-    getCompletionEntryDetails: (
-      fileName: string,
-      position: number,
-      name: string,
-    ) => Effect.Effect<Option.Option<ts.CompletionEntryDetails>>;
-  }
+  LanguageServiceShape
 >() {}
 
 export const LanguageProviderServiceLive = Layer.effect(

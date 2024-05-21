@@ -6,8 +6,8 @@ import { DEFAULT_RULE_META } from '../utils/constants.utils';
 import {
   InternalNativeTwinRule,
   TwinRuleParts,
-  TwinRuleWithCompletion,
-} from '../types/native-twin.types';
+  TwinRuleCompletion,
+} from './native-twin.types';
 
 export function getRuleParts(rule: InternalNativeTwinRule): TwinRuleParts {
   const pattern = rule[0];
@@ -130,7 +130,7 @@ export const createCompositions = (pattern: string, meta: RuleMeta) => {
 
 export const createRuleClassNames = (
   values: Record<string, TWScreenValueConfig> | ColorsRecord,
-  composition: TwinRuleWithCompletion['composition'],
+  composition: TwinRuleCompletion['composition'],
   rule: TwinRuleParts,
 ) => {
   const result: {

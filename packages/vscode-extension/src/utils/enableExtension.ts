@@ -4,7 +4,7 @@ import {
   configurationSection,
   pluginId,
   typeScriptExtensionId,
-} from '../services/extension/extension.constants';
+} from '../extension/extension.constants';
 import { Logger, State, NativeTwinPluginConfiguration } from '../types';
 
 export async function __enableExtension(context: vscode.ExtensionContext, log: Logger) {

@@ -1,6 +1,11 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import { LocatedGroupToken, TemplateToken } from './template.types';
+import { getFlattenTemplateToken } from '../language/utils/language.utils';
+import {
+  LocatedGroupToken,
+  LocatedGroupTokenWithText,
+  TemplateToken,
+} from './template.types';
 
 export class TemplateTokenWithText implements Equal.Equal {
   readonly token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText;
@@ -14,6 +19,10 @@ export class TemplateTokenWithText implements Equal.Equal {
   };
   text: string;
   templateStarts: number;
+
+  get flattenToken() {
+    return getFlattenTemplateToken(this);
+  }
 
   constructor(
     token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText,
@@ -45,14 +54,4 @@ export class TemplateTokenWithText implements Equal.Equal {
   [Hash.symbol]() {
     return Hash.array([this.text, this.bodyLoc.start, this.bodyLoc.end]);
   }
-}
-
-export interface LocatedGroupTokenWithText {
-  type: 'GROUP';
-  start: number;
-  end: number;
-  value: {
-    base: TemplateTokenWithText;
-    content: TemplateTokenWithText[];
-  };
 }

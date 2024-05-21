@@ -1,6 +1,3 @@
-import { Equal } from 'effect';
-import * as Brand from 'effect/Brand';
-import * as Data from 'effect/Data';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
@@ -12,27 +9,6 @@ import { TSPluginService } from '../plugin/TSPlugin.service';
 import { match, getSourceMatchers } from '../utils/match';
 import { TemplateSourceHelperService } from './template.context';
 import { getValidTemplateNode, StandardTemplateContext } from './template.utils';
-
-type Int = number & Brand.Brand<'Int'>;
-
-const Int = Brand.refined<Int>(
-  (n) => Number.isInteger(n),
-  (n) => Brand.error(`Expected an integer value but received ${n}`),
-);
-
-interface Person {
-  _tag: 'Person';
-  name: string;
-}
-
-const Person = Data.tagged<Person>('Person');
-
-const person1 = Person({ name: 'Elias' });
-const person2 = Person({ name: 'Elias' });
-
-Equal.equals(person1, person2);
-
-
 
 export const TemplateSourceHelperServiceLive = Layer.scoped(
   TemplateSourceHelperService,
