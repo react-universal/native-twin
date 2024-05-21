@@ -30,7 +30,7 @@ export const compareTwinRuleWithClassName =
     return data.some((x) => completion.className.startsWith(x));
   };
 
-export const getClassNameFromTokenData = (templateNode: TemplateTokenData) => {
+export const _getClassNameFromTokenData = (templateNode: TemplateTokenData) => {
   const { token: node, base } = templateNode;
 
   let nodeText = node.text;

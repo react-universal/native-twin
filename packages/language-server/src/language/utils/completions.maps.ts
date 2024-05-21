@@ -13,12 +13,6 @@ import { TemplateTokenData, VscodeCompletionItem } from '../language.models';
 import { compareTwinRuleWithClassName } from './completion.ap';
 import { getDocumentationMarkdown } from './language.utils';
 
-export const variantCompletionToEntry = (
-  variant: TwinVariantCompletion,
-  range: vscode.Range,
-  insertText: string,
-) => new VscodeCompletionItem(variant, range, insertText);
-
 export const createCompletionEntryDetails = (
   completion: vscode.CompletionItem,
   sheetEntry: FinalSheet,
@@ -47,42 +41,6 @@ export const getAllCompletionRules = (
     ReadonlyArray.fromIterable,
     ReadonlyArray.map((x) => variantCompletionToEntry(x, range, x.name)),
     ReadonlyArray.appendAll(rules),
-  );
-};
-
-export const filterTokensFromRules = (
-  flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,
-  ruleCompletions: ReadonlyArray<TwinRuleWithCompletion>,
-) => {
-  return pipe(
-    ruleCompletions,
-    ReadonlyArray.fromIterable,
-    ReadonlyArray.filterMap((rule) => {
-      const resolver = compareTwinRuleWithClassName(rule);
-      ruleCompletions;
-      const match = flattenTemplateTokens.find((x) => {
-        let className = x.token.text;
-        if (x.base) {
-          if (x.base.token.type === 'VARIANT') {
-            const variantText = `${x.base.token.value.map((x) => x.n).join(':')}:`;
-            className = className.replace(variantText, '');
-          }
-          if (x.base.token.type === 'VARIANT_CLASS') {
-            const variantText = `${x.base.token.value[0].value.map((x) => x.n).join(':')}:`;
-            className = className.replace(variantText, '');
-          }
-        }
-        if (x.token.token.type === 'VARIANT_CLASS') {
-          const variantText = `${x.token.token.value[0].value.map((x) => x.n).join(':')}:`;
-          className = className.replace(variantText, '');
-        }
-        return resolver([className]);
-      });
-      if (match) {
-        return Option.some({ rule, match });
-      }
-      return Option.none();
-    }),
   );
 };
 
@@ -123,3 +81,47 @@ export const completionRuleToEntry = (
   range: vscode.Range,
   insertText: string,
 ) => new VscodeCompletionItem(completionRule, range, insertText);
+
+/** File private */
+export const variantCompletionToEntry = (
+  variant: TwinVariantCompletion,
+  range: vscode.Range,
+  insertText: string,
+) => new VscodeCompletionItem(variant, range, insertText);
+
+/** File private */
+const filterTokensFromRules = (
+  flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,
+  ruleCompletions: ReadonlyArray<TwinRuleWithCompletion>,
+) => {
+  return pipe(
+    ruleCompletions,
+    ReadonlyArray.fromIterable,
+    ReadonlyArray.filterMap((rule) => {
+      const resolver = compareTwinRuleWithClassName(rule);
+      ruleCompletions;
+      const match = flattenTemplateTokens.find((x) => {
+        let className = x.token.text;
+        if (x.base) {
+          if (x.base.token.type === 'VARIANT') {
+            const variantText = `${x.base.token.value.map((x) => x.n).join(':')}:`;
+            className = className.replace(variantText, '');
+          }
+          if (x.base.token.type === 'VARIANT_CLASS') {
+            const variantText = `${x.base.token.value[0].value.map((x) => x.n).join(':')}:`;
+            className = className.replace(variantText, '');
+          }
+        }
+        if (x.token.token.type === 'VARIANT_CLASS') {
+          const variantText = `${x.token.token.value[0].value.map((x) => x.n).join(':')}:`;
+          className = className.replace(variantText, '');
+        }
+        return resolver([className]);
+      });
+      if (match) {
+        return Option.some({ rule, match });
+      }
+      return Option.none();
+    }),
+  );
+};

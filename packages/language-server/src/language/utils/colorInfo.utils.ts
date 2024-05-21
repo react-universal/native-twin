@@ -22,6 +22,7 @@ export const getDocumentTemplatesColors = (
     ReadonlyArray.flatMap((x) => templateTokenToColorInfo(x, twinService, twinDocument)),
   );
 
+/** File private */
 const templateTokenToColorInfo = (
   templateNode: TemplateTokenData,
   twinService: NativeTwinManager,
@@ -46,6 +47,7 @@ const templateTokenToColorInfo = (
   );
 };
 
+/** File private */
 const completionRuleToColorInfo = (
   rule: TwinRuleWithCompletion,
   range: vscode.Range,
@@ -54,9 +56,11 @@ const completionRuleToColorInfo = (
   color: toVsCodeColor(new TinyColor(rule.completion.declarationValue).toRgb()),
 });
 
+/** File private */
 const toVsCodeColor = (color: Numberify<RGBA>): vscode.Color =>
   vscode.Color.create(color.r / 255, color.g / 255, color.b / 255, color.a);
 
+/** File private */
 const getTemplateNodeClassNameAndRange = (
   templateNode: TemplateTokenData,
   range: vscode.Range,
