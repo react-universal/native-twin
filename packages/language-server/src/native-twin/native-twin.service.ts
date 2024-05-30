@@ -1,7 +1,13 @@
 import * as Context from 'effect/Context';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
-import { createTailwind, createThemeContext, defineConfig } from '@native-twin/core';
+import {
+  createTailwind,
+  createThemeContext,
+  cx,
+  defineConfig,
+  setup,
+} from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
 import { requireJS } from '../utils/load-js';
@@ -29,6 +35,10 @@ export class NativeTwinManager {
     this.context = this.getContext();
   }
 
+  get cx() {
+    return cx;
+  }
+
   loadUserFile(configFile: string) {
     this.userConfig = this.getUserConfig(configFile);
     this.tw = this.getNativeTwin();
@@ -46,7 +56,9 @@ export class NativeTwinManager {
   }
 
   private getNativeTwin() {
-    return createTailwind(this.userConfig, createVirtualSheet());
+    const sheet = createVirtualSheet();
+    setup(this.userConfig, sheet);
+    return createTailwind(this.userConfig, sheet);
   }
 
   private getUserConfig(filePath: string) {

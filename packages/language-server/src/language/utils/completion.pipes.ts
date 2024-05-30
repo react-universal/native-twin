@@ -2,13 +2,9 @@ import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
-import { TemplateTokenWithText } from '../../template/template.models';
-import { TemplateTokenData } from '../models/template-token-data.model';
+import { TemplateTokenData } from '../../template/models/template-token-data.model';
+import { TemplateTokenWithText } from '../../template/models/template-token.model';
 import { getFlattenTemplateToken } from './language.utils';
-
-const createCompletionTokenResolver =
-  (node: TemplateTokenData) => (twinRule: TwinRuleCompletion) =>
-    twinRule.completion.className.startsWith(node.getTokenClassName());
 
 export const getCompletionsForTokens = (
   tokens: TemplateTokenData[],
@@ -33,3 +29,8 @@ export const findExactTokenFromTemplateNode = (
       (y) => cursorOffset >= y.token.bodyLoc.start && cursorOffset <= y.token.bodyLoc.end,
     ),
   );
+
+/** File Private */
+const createCompletionTokenResolver =
+  (node: TemplateTokenData) => (twinRule: TwinRuleCompletion) =>
+    twinRule.completion.className.startsWith(node.getTokenClassName());

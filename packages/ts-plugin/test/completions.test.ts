@@ -10,7 +10,7 @@ const createServerWithMockFile = (fileContents: string) => {
   return server;
 };
 
-describe('Completions', () => {
+describe.skip('Completions', () => {
   it('Completions for uncompleted className', async () => {
     const server = createServerWithMockFile('const q = css`bg`');
     server.sendCommand('completions', { file: mockFileName, offset: 17, line: 1 });

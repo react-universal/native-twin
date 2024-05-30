@@ -5,6 +5,7 @@ import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
+import { sheetEntriesToCss } from '@native-twin/css';
 import { DocumentsService } from '../documents/documents.service';
 import { NativeTwinManagerService } from '../native-twin/native-twin.service';
 import { createStyledContext, getSheetEntryStyles } from '../utils/sheet.utils';
@@ -47,22 +48,28 @@ export class LanguageCompletions extends Context.Tag('lsp/completions')<
               ),
               Option.let(
                 'parsedText',
-                ({ languageRegionAtPosition }) => languageRegionAtPosition.parsedText,
+                ({ languageRegionAtPosition }) => languageRegionAtPosition.regionNodes,
               ),
             );
 
             const completionEntries = Option.flatMap(extracted, (meta) => {
-              // if (meta.isEmptyCompletion) {
-              //   return Option.some(
-              //     Completions.getAllCompletionRules(
-              //       twinService.completions,
-              //       vscode.Range.create(
-              //         meta.document.offsetToPosition(meta.cursorOffset),
-              //         meta.document.offsetToPosition(meta.cursorOffset + 1),
-              //       ),
-              //     ),
-              //   );
-              // }
+              const text = meta.document.getText(
+                vscode.Range.create(
+                  meta.document.offsetToPosition(meta.cursorOffset - 1),
+                  meta.document.offsetToPosition(meta.cursorOffset + 1),
+                ),
+              );
+              if (text === '``') {
+                return Option.some(
+                  Completions.getAllCompletionRules(
+                    twinService.completions,
+                    vscode.Range.create(
+                      meta.document.offsetToPosition(meta.cursorOffset),
+                      meta.document.offsetToPosition(meta.cursorOffset + 1),
+                    ),
+                  ),
+                );
+              }
               return Option.map(
                 meta.languageRegionAtPosition.getParsedNodeAtOffset(meta.cursorOffset),
                 (x) => {
@@ -93,8 +100,9 @@ export class LanguageCompletions extends Context.Tag('lsp/completions')<
                 HashSet.map(completionRules, (x) => {
                   const sheet = twinService.tw(x.completion.className);
                   const finalSheet = getSheetEntryStyles(sheet, context);
+                  const css = sheetEntriesToCss(sheet);
 
-                  return Completions.createCompletionEntryDetails(entry, finalSheet);
+                  return Completions.createCompletionEntryDetails(entry, css, finalSheet);
                 }),
               ),
               Effect.map((x) =>

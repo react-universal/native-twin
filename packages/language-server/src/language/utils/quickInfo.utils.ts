@@ -9,19 +9,21 @@ import { getDocumentationMarkdown } from './language.utils';
 export const completionRulesToQuickInfo = (
   completionRules: HashSet.HashSet<TwinRuleCompletion>,
   sheetEntry: FinalSheet,
+  css: string,
   range: vscode.Range,
 ): Option.Option<vscode.Hover> =>
   HashSet.map(completionRules, (_rule) => {
-    return completionRuleToQuickInfo(sheetEntry, range);
+    return completionRuleToQuickInfo(sheetEntry, css, range);
   }).pipe(HashSet.values, (x) => ReadonlyArray.fromIterable(x), ReadonlyArray.head);
 
 export const completionRuleToQuickInfo = (
   sheetEntry: FinalSheet,
+  css: string,
   range: vscode.Range,
 ): vscode.Hover => ({
   range,
   contents: {
     kind: vscode.MarkupKind.Markdown,
-    value: getDocumentationMarkdown(sheetEntry),
+    value: getDocumentationMarkdown(sheetEntry, css),
   },
 });

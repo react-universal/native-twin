@@ -23,9 +23,17 @@ const program = Effect.gen(function* () {
   const nativeTwinManager = yield* NativeTwinManagerService;
   const languageService = yield* createLanguageService;
 
-  Connection.onInitialize(async (...args) =>
-    initializeConnection(...args, nativeTwinManager, configService),
-  );
+  Connection.onInitialize(async (...args) => {
+    const init = initializeConnection(...args, nativeTwinManager, configService);
+    return init;
+  });
+
+  Connection.onInitialized(async () => {
+    await Connection.sendRequest(
+      'nativeTwinInitialized',
+      nativeTwinManager.userConfig.mode,
+    );
+  });
 
   Connection.onCompletion(async (...args) => {
     const completions = await Effect.runPromise(

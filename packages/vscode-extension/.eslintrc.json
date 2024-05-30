@@ -2,7 +2,9 @@
   "extends": "../../.eslintrc.json",
   "ignorePatterns": [
     "!**/*",
-    "ts-extension"
+    "ts-extension",
+    "project-fixture",
+    ".vscode-test.mjs"
   ],
   "overrides": [
     {

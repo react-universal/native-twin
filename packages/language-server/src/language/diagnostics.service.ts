@@ -34,15 +34,8 @@ export class LanguageDiagnostics extends Context.Tag('lsp/diagnostics')<
           return Effect.gen(function* () {
             const document = documentsHandler.getDocument(params.textDocument);
 
-            const diagnosticItems = Option.Do.pipe(
-              Option.bind('document', () => document),
-              Option.map(({ document }) =>
-                diagnosticTokensToDiagnosticItems(
-                  document,
-                  document.getLanguageRegions(),
-                  twinService.tw,
-                ),
-              ),
+            const diagnosticItems = Option.map(document, (doc) =>
+              diagnosticTokensToDiagnosticItems(doc, twinService),
             );
 
             return {

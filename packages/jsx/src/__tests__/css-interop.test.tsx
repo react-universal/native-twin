@@ -19,9 +19,9 @@ test('normal component', () => {
     </TwinView>,
   );
   // console.log('JSON: ', tree.toJSON());
-  tree.debug({
-    message: 'TREE',
-  });
+  // tree.debug({
+  //   message: 'TREE',
+  // });
   // const component = screen.getByTestId(testID);
   // expect(component).toBeDefined();
   // expect(component.props).toEqual({
@@ -31,6 +31,7 @@ test('normal component', () => {
   //     color: 'rgba(255,255,255,1)',
   //   },
   // });
+  expect(tree).toMatchSnapshot();
 });
 
 // test('mapping', () => {

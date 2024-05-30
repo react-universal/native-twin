@@ -6,7 +6,7 @@ import * as vscode from 'vscode-languageserver/node';
 import { TwinDocument } from '../../documents/models/twin-document.model';
 import { NativeTwinManager } from '../../native-twin/native-twin.service';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
-import { TemplateTokenData } from '../models/template-token-data.model';
+import { TemplateTokenData } from '../../template/models/template-token-data.model';
 
 export const getDocumentTemplatesColors = (
   twinService: NativeTwinManager,
@@ -14,7 +14,7 @@ export const getDocumentTemplatesColors = (
 ) =>
   pipe(
     twinDocument.getLanguageRegions(),
-    ReadonlyArray.flatMap((template) => template.parsedText),
+    ReadonlyArray.flatMap((template) => template.regionNodes),
     ReadonlyArray.flatMap((x) => x.flattenToken),
     ReadonlyArray.dedupe,
     ReadonlyArray.flatMap((x) => templateTokenToColorInfo(x, twinService, twinDocument)),

@@ -6,6 +6,9 @@
     "lib": [
       "ES2021"
     ],
+    "types": [
+      "mocha"
+    ],
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -18,8 +21,8 @@
     "node_modules",
     ".vscode-test",
     "build",
-    "build.js",
-    "ts-extension"
+    "ts-extension",
+    "project-fixture"
   ],
   "include": [
     "src/**/*"

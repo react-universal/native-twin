@@ -56,6 +56,14 @@ export const createRuleComposer = (ruleInfo: {
     mapper = cornerMap;
   }
 
+  if (ruleInfo.feature === 'transform-2d') {
+    ruleInfo;
+    // if (sides.length == 0) return [`${property}`];
+    // return sides.map((x) => {
+    //   return `${property}${x}`;
+    // });
+  }
+
   const suffixes = Object.entries(mapper).flatMap((x) => {
     return Data.struct({
       classNameSuffix: x[0],
@@ -102,6 +110,19 @@ export const createCompositions = (pattern: string, meta: RuleMeta) => {
   }
   if (meta.feature === 'corners') {
     mapper = cornerMap;
+  }
+  if (meta.feature === 'transform-2d') {
+    mapper = {
+      x: directionMap.x,
+      y: directionMap.y,
+    };
+  }
+  if (meta.feature === 'transform-3d') {
+    mapper = {
+      x: directionMap.x,
+      y: directionMap.y,
+      z: directionMap.x,
+    };
   }
   if (meta.feature === 'default') {
     return asArray(

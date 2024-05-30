@@ -4,6 +4,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
+import { sheetEntriesToCss } from '@native-twin/css';
 import { DocumentsService } from '../documents/documents.service';
 import { NativeTwinManagerService } from '../native-twin/native-twin.service';
 import { createStyledContext, getSheetEntryStyles } from '../utils/sheet.utils';
@@ -60,10 +61,16 @@ export class LanguageDocumentation extends Context.Tag('lsp/documentation')<
                   document.offsetToPosition(firstToken.token.bodyLoc.end),
                 ),
               ),
-              Option.let('finalSheet', ({ firstToken }) =>
-                getSheetEntryStyles(twinService.tw(firstToken.token.text), context),
+              Option.let('sheet', ({ firstToken }) => {
+                const entries = twinService.tw(firstToken.token.text);
+                return {
+                  rn: getSheetEntryStyles(entries, context),
+                  css: sheetEntriesToCss(entries),
+                };
+              }),
+              Option.map((x) =>
+                completionRuleToQuickInfo(x.sheet.rn, x.sheet.css, x.hoverRange),
               ),
-              Option.map((x) => completionRuleToQuickInfo(x.finalSheet, x.hoverRange)),
             );
 
             return Option.getOrUndefined(hoverEntry);

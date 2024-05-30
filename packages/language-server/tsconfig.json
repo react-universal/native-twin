@@ -10,18 +10,14 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "strict": true,
-    "noEmit": false,
-    "outDir": "build",
-    "rootDir": "src"
+    "noEmit": true
   },
   "exclude": [
     "node_modules",
     ".vscode-test",
     "build",
-    "build.js",
+    "esbuild.mjs",
     "ts-extension"
   ],
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src", "test", "./*.d.ts"]
 }

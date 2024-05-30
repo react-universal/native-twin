@@ -1,7 +1,7 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
-import { SheetEntry } from '@native-twin/css';
+import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
 import { isSameRange } from '../../utils/vscode.utils';
 
 export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
@@ -15,33 +15,29 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
   constructor(data: {
     range: vscode.Range;
     kind: keyof typeof DIAGNOSTIC_ERROR_KIND;
-    entries: SheetEntry[];
+    entries: TwinSheetEntry[];
     uri: string;
     text: string;
+    relatedInfo: vscode.DiagnosticRelatedInformation[];
   }) {
     const meta = DIAGNOSTIC_ERROR_KIND[data.kind];
     this.message = meta.message;
     this.range = data.range;
-    this.relatedInformation = [
-      {
-        location: vscode.Location.create(data.uri, this.range),
-        message: data.text,
-      },
-    ];
+    this.relatedInformation = data.relatedInfo;
     this.code = this.getSourceCode(data.kind, data.entries);
     this.source = meta.code;
     this.severity = vscode.DiagnosticSeverity.Warning;
-    this.tags = [vscode.DiagnosticTag.Unnecessary];
+    this.tags = [];
   }
 
-  private getSourceCode(kind: keyof typeof DIAGNOSTIC_ERROR_KIND, entries: SheetEntry[]) {
+  private getSourceCode(
+    kind: keyof typeof DIAGNOSTIC_ERROR_KIND,
+    entries: TwinSheetEntry[],
+  ) {
     if (kind === 'DUPLICATED_CLASS_NAME') {
-      return entries.map((x) => x.className).join(', ');
+      return entries.map((x) => x.entry.className).join(', ');
     }
-    return entries
-      .flatMap((x) => x.declarations)
-      .flatMap((x) => x.prop)
-      .join(', ');
+    return entries.flatMap((x) => x.declarationProp).join(', ');
   }
 
   [Equal.symbol](that: unknown): boolean {
@@ -60,7 +56,7 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
 
 export const DIAGNOSTIC_ERROR_KIND = {
   DUPLICATED_DECLARATION: {
-    code: 'DUPLICATED_PROP',
+    code: 'DUPLICATED_DECLARATION',
     message: 'Duplicated CSS Declaration',
   },
   DUPLICATED_CLASS_NAME: {

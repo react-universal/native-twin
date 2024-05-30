@@ -3,7 +3,7 @@ import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver/node';
-import { TemplateTokenWithText } from '../../template/template.models';
+import { TemplateTokenWithText } from '../../template/models/template-token.model';
 import { NativeTwinPluginConfiguration } from '../../types/extension.types';
 import { getDocumentLanguageLocations } from '../utils/document.ast';
 import { DocumentLanguageRegion } from './language-region.model';

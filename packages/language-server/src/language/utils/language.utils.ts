@@ -1,4 +1,5 @@
 import { TinyColor } from '@ctrl/tinycolor';
+import toCssFormat from 'cssbeautify';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as vscode from 'vscode-languageserver/node';
@@ -6,13 +7,10 @@ import { FinalSheet, VariantClassToken } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import { DocumentLanguageRegion } from '../../documents/models/language-region.model';
 import { TwinDocument } from '../../documents/models/twin-document.model';
-import {
-  TwinRuleParts,
-  TwinRuleCompletion,
-} from '../../native-twin/native-twin.types';
-import { TemplateTokenWithText } from '../../template/template.models';
+import { TwinRuleParts, TwinRuleCompletion } from '../../native-twin/native-twin.types';
+import { TemplateTokenData } from '../../template/models/template-token-data.model';
+import { TemplateTokenWithText } from '../../template/models/template-token.model';
 import { LocatedParser } from '../../template/template.types';
-import { TemplateTokenData } from '../models/template-token-data.model';
 
 export const getCompletionTokenKind = ({
   rule,
@@ -123,12 +121,17 @@ export const getRangeFromTokensAtPosition = (
   );
 };
 
-export function getDocumentationMarkdown(sheetEntry: FinalSheet) {
+export function getDocumentationMarkdown(sheetEntry: FinalSheet, css: string) {
   const result: string[] = [];
-  // result.push('***Css Rules*** \n\n');
-  // result.push(`${'```css\n'}${data.css}${'\n```'}`);
-  // result.push('\n\n');
-  // result.push(`***className: ${completion.className}*** \n\n`);
+  result.push('***Css Rules*** \n\n');
+  result.push(
+    `${'```css\n'}${toCssFormat(css, {
+      indent: '  ',
+      openbrace: 'end-of-line',
+      autosemicolon: true,
+    })}${'\n```'}`,
+  );
+  result.push('\n\n');
   result.push('#### React Native StyleSheet\n');
   result.push(createJSONMarkdownString(sheetEntry.base));
   // result.push(createDebugHover(completionRule));

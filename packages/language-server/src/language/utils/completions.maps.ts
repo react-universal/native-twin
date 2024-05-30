@@ -6,19 +6,20 @@ import { FinalSheet } from '@native-twin/css';
 import { TwinDocument } from '../../documents/models/twin-document.model';
 import { TwinStore } from '../../native-twin/native-twin.types';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
+import { TemplateTokenData } from '../../template/models/template-token-data.model';
 import { VscodeCompletionItem } from '../models/completion.model';
-import { TemplateTokenData } from '../models/template-token-data.model';
 import { compareTwinRuleWithClassName } from './completion.ap';
 import { getDocumentationMarkdown } from './language.utils';
 
 export const createCompletionEntryDetails = (
   completion: vscode.CompletionItem,
+  css: string,
   sheetEntry: FinalSheet,
 ): vscode.CompletionItem => ({
   ...completion,
   documentation: {
     kind: vscode.MarkupKind.Markdown,
-    value: getDocumentationMarkdown(sheetEntry),
+    value: getDocumentationMarkdown(sheetEntry, css),
   },
 });
 
@@ -70,7 +71,6 @@ const filterTokensFromRules = (
     ReadonlyArray.fromIterable,
     ReadonlyArray.filterMap((rule) => {
       const resolver = compareTwinRuleWithClassName(rule);
-      ruleCompletions;
       const match = flattenTemplateTokens.find((x) => {
         return resolver([x.getTokenClassName()]);
       });

@@ -17,13 +17,13 @@ import {
 } from '../extension/extension.constants';
 import { ExtensionContext } from '../extension/extension.service';
 import { registerCommand, thenable } from '../extension/extension.utils';
-import { createFileWatchers, getColorDecoration, getConfigFiles } from './language.utils';
 import {
   getDefaultLanguageCLientOptions,
   onLanguageClientClosed,
   onLanguageClientError,
   onProvideDocumentColors,
 } from './language.fn';
+import { createFileWatchers, getColorDecoration, getConfigFiles } from './language.utils';
 
 export class LanguageOptionsState extends Data.TaggedClass('LanguageClientOptions')<{
   client: SubscriptionRef.SubscriptionRef<LanguageClientOptions>;
@@ -90,6 +90,10 @@ export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext
 
       yield* $(Effect.promise(() => client.start()));
       yield* $(Effect.log('Language client started!'));
+
+      client.onRequest('nativeTwinInitialized', () => {
+        return { t: true };
+      });
 
       yield* registerCommand(`${configurationSection}.restart`, () =>
         Effect.gen(function* () {

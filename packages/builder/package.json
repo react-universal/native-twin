@@ -23,7 +23,8 @@
     "@effect/typeclass": "0.23.16",
     "effect": "^3.0.7",
     "esbuild": "^0.20.2",
-    "fs-extra": "11.2.0"
+    "fs-extra": "11.2.0",
+    "minimist": "^1.2.8"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4"

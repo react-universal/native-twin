@@ -31,6 +31,7 @@
       "cache": false
     },
     "build": {
+      "cache": true,
       "inputs": [
         "production"
       ],
@@ -44,6 +45,11 @@
     },
     "build:libs": {
       "cache": true
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ]
     }
   },
   "namedInputs": {

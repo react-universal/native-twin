@@ -1,106 +1,129 @@
 import * as ReadOnlyArray from 'effect/Array';
-import { pipe } from 'effect/Function';
+import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
-import { RuntimeTW } from '@native-twin/core';
-import { SheetEntry } from '@native-twin/css';
-import { DocumentLanguageRegion } from '../../documents/models/language-region.model';
 import { TwinDocument } from '../../documents/models/twin-document.model';
-import { VscodeDiagnosticItem } from '../models/diagnostic.model';
-import { getFlattenTemplateToken } from './language.utils';
+import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
+import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
+import { TemplateTokenWithText } from '../../template/models/template-token.model';
+import { isSameRange } from '../../utils/vscode.utils';
+import { DIAGNOSTIC_ERROR_KIND, VscodeDiagnosticItem } from '../models/diagnostic.model';
+
+const createRegionEntriesExtractor =
+  (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>
+  () => {
+    return ReadOnlyArray.filterMap(
+      (x: TwinSheetEntry): Option.Option<DiagnosticToken> => {
+        if (isSameClassName(entry, x)) {
+          return Option.some({
+            kind: 'DUPLICATED_CLASS_NAME',
+            node: x,
+            range: getRange(x.token.bodyLoc),
+            uri: uri,
+          });
+        }
+        if (isSameDeclarationProp(entry, x)) {
+          return Option.some({
+            kind: 'DUPLICATED_DECLARATION',
+            node: x,
+            range: getRange(x.token.bodyLoc),
+            uri: uri,
+          });
+        }
+        return Option.none();
+      },
+    );
+  };
 
 export const diagnosticTokensToDiagnosticItems = (
   document: TwinDocument,
-  tokens: DocumentLanguageRegion[],
-  tw: RuntimeTW,
-) =>
-  pipe(
-    tokens,
-    ReadOnlyArray.flatMap((diagnosticToken) => {
-      const text = diagnosticToken.text.replace(/'/g, '');
-      const entries = tw(`${text}`);
-      const entriesProps = getDiagnosticTokenDeclProps(entries);
-      const flatten = diagnosticToken.parsedText.flatMap((x) =>
-        getFlattenTemplateToken(x),
+  twinService: NativeTwinManagerService['Type'],
+): VscodeDiagnosticItem[] => {
+  const getRange = bodyLocToRange(document);
+  return pipe(
+    document.getLanguageRegions(),
+    ReadOnlyArray.flatMap((region) => {
+      const regionEntries = region.getFullSheetEntries(twinService.tw);
+      const generateExtractor = flip(createRegionEntriesExtractor)();
+      return pipe(
+        regionEntries,
+        ReadOnlyArray.map((regionNode) => {
+          const range = getRange(regionNode.token.bodyLoc);
+          const duplicates = generateExtractor(
+            regionNode,
+            getRange,
+            document.uri,
+          )(regionEntries);
+
+          if (duplicates.length < 1) return [];
+          const relatedInfo = regionDescriptions(duplicates, document.uri);
+          return pipe(
+            duplicates,
+            ReadOnlyArray.filter((x) => !isSameRange(x.range, range)),
+            ReadOnlyArray.map(
+              ({ kind, node }) =>
+                new VscodeDiagnosticItem({
+                  range,
+                  kind: kind,
+                  entries: [node],
+                  uri: document.uri,
+                  text: node.token.text,
+                  relatedInfo: relatedInfo.filter((x) => x.kind === kind),
+                }),
+            ),
+            ReadOnlyArray.filterMap((x) => (x === null ? Option.none() : Option.some(x))),
+          );
+        }),
       );
-      const visited: { className: string; prop: string; index: number }[] = [];
-      const r = ReadOnlyArray.reduce(flatten, visited, (prev, current, index) => {
-        const itemEntries = current.getSheetEntries(tw);
-        const prop = itemEntries.flatMap((x) => x.declarations.map((x) => x.prop)).join();
-        if (
-          entries.filter((x) => x.declarations.flatMap((x) => x.prop).join() === prop)
-            .length > 1
-        ) {
-          prev.push({
-            className: itemEntries.map((x) => x.className).join(),
-            prop: prop,
-            index,
-          });
-        }
-        // const grouped = ReadOnlyArray.groupBy(b, (x) => x.className);
-        // const grouped2 = ReadOnlyArray.groupBy(b, (x) => x.prop);
-        // console.log(grouped, grouped2, itemEntries);
-        return prev;
-      });
-      console.log(r);
-      return ReadOnlyArray.filterMap(flatten, (item) => {
-        const itemEntries = item.getSheetEntries(tw);
-
-        const duplicatedClassNames = itemEntries.filter(
-          (x) => entries.filter((y) => y.className === x.className).length > 1,
-        );
-
-        const declarationProps = getDiagnosticTokenDeclProps(itemEntries);
-        const duplicatedProps = declarationProps.filter(
-          (x) =>
-            entriesProps.filter(
-              (y) =>
-                y.prop === x.prop &&
-                x.selectors.sort().join(',') === y.selectors.sort().join(','),
-            ).length > 1,
-        );
-
-        if (duplicatedProps.length) {
-          const range = vscode.Range.create(
-            document.offsetToPosition(item.token.bodyLoc.start),
-            document.offsetToPosition(item.token.bodyLoc.end),
-          );
-          return Option.some(
-            new VscodeDiagnosticItem({
-              range,
-              kind: 'DUPLICATED_DECLARATION',
-              entries: itemEntries,
-              uri: document.uri,
-              text: item.token.text,
-            }),
-          );
-        }
-
-        if (duplicatedClassNames.length) {
-          return Option.some(
-            new VscodeDiagnosticItem({
-              range: vscode.Range.create(
-                document.offsetToPosition(item.token.bodyLoc.start),
-                document.offsetToPosition(item.token.bodyLoc.end),
-              ),
-              kind: 'DUPLICATED_CLASS_NAME',
-              entries: itemEntries,
-              uri: document.uri,
-              text: item.token.text,
-            }),
-          );
-        }
-        return Option.none();
-      });
     }),
+    ReadOnlyArray.flatten,
     ReadOnlyArray.dedupe,
   );
+};
 
-export const getDiagnosticTokenDeclProps = (entries: SheetEntry[]) =>
-  ReadOnlyArray.flatMap(entries, (x) =>
-    x.declarations.map((y) => ({
-      prop: y.prop,
-      className: x.className,
-      selectors: x.selectors,
-    })),
+interface DiagnosticToken {
+  kind: keyof typeof DIAGNOSTIC_ERROR_KIND;
+  node: TwinSheetEntry;
+  range: vscode.Range;
+  uri: string;
+}
+
+export const diagnosticTokenToVscode = (
+  { range, kind, node, uri }: DiagnosticToken,
+  relatedInfo: vscode.DiagnosticRelatedInformation[],
+) => {
+  return new VscodeDiagnosticItem({
+    range,
+    kind: kind,
+    entries: [node],
+    uri: uri,
+    text: node.token.text,
+    relatedInfo: relatedInfo,
+  });
+};
+
+const regionDescriptions = (data: DiagnosticToken[], uri: string) => {
+  return pipe(
+    data,
+    ReadOnlyArray.map((x) => {
+      return {
+        kind: x.kind,
+        location: vscode.Location.create(uri, x.range),
+        message: x.node.entry.className,
+      };
+    }),
   );
+};
+
+const bodyLocToRange =
+  (document: TwinDocument) => (bodyLoc: TemplateTokenWithText['bodyLoc']) =>
+    vscode.Range.create(
+      document.offsetToPosition(bodyLoc.start),
+      document.offsetToPosition(bodyLoc.end),
+    );
+
+export const isSameClassName = (a: TwinSheetEntry, b: TwinSheetEntry) =>
+  a.entry.className === b.entry.className;
+
+const isSameDeclarationProp = (a: TwinSheetEntry, b: TwinSheetEntry) =>
+  a.declarationProp === b.declarationProp && a.selector === b.selector;

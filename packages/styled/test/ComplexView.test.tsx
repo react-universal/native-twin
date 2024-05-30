@@ -5,7 +5,7 @@ import { ScrollView, styled, View } from '../src';
 import { createVariants } from '../src/styled/variants';
 
 beforeAll(() => {
-  setup(defineConfig({ presets: [presetTailwind()] }));
+  setup(defineConfig({ content: [], presets: [presetTailwind()] }));
 });
 
 function toJson(component: renderer.ReactTestRenderer) {

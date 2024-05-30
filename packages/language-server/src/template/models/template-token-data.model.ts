@@ -2,11 +2,11 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
 import { RuntimeTW } from '@native-twin/core';
-import { SheetEntry } from '@native-twin/css';
-import { TemplateTokenWithText } from '../../template/template.models';
+import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
+import { TemplateTokenWithText } from './template-token.model';
 
 export class TemplateTokenData implements Equal.Equal {
-  private _entries: SheetEntry[] | undefined = undefined;
+  private _entries: TwinSheetEntry[] | undefined = undefined;
   constructor(
     readonly token: TemplateTokenWithText,
     readonly base: TemplateTokenWithText | null,
@@ -16,7 +16,9 @@ export class TemplateTokenData implements Equal.Equal {
     if (this._entries) {
       return this._entries;
     }
-    this._entries = tw(`${this.token.text}`);
+    this._entries = tw(`${this.token.text}`).map(
+      (x) => new TwinSheetEntry(x, this.token),
+    );
     return this._entries;
   }
 
@@ -42,6 +44,10 @@ export class TemplateTokenData implements Equal.Equal {
     }
 
     return className;
+  }
+
+  getFullCLassName() {
+    return this.token.text;
   }
 
   adjustTextInsert(insertText: string, range: vscode.Range) {

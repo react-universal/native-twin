@@ -4,7 +4,7 @@ import { presetTailwind } from '@native-twin/preset-tailwind';
 import { View as StyledView, Text } from '../src';
 
 beforeAll(() => {
-  setup(defineConfig({ presets: [presetTailwind()] }));
+  setup(defineConfig({ content: [], presets: [presetTailwind()] }));
 });
 
 function toJson(component: renderer.ReactTestRenderer) {

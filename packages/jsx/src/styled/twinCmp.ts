@@ -1,4 +1,4 @@
-import { ComponentType, createElement, useRef } from 'react';
+import { ComponentType, createElement } from 'react';
 import { groupContext } from '../context';
 import { JSXStyledProps } from '../jsx/jsx-custom-props';
 import { useTwinStore } from '../store/twin.store';
@@ -12,19 +12,17 @@ export function twinComponent(
   ref: any,
 ) {
   let component = baseComponent;
-  // const providerValues = useTwinProvider();
-  // const [isParentActive, setParentState] = useTwinContext(props?.['styledProps']);
 
   const { state, onChange, id, parentState } = useTwinStore(props?.['styledProps']);
-  const renderCount = useRef(0);
+  // const renderCount = useRef(0);
 
   props = Object.assign({ ref }, props);
   if (props['className']) {
-    console.group('CLASSES: ', props['className']);
-    console.log('RENDER_COUNT: ', ++renderCount.current);
-    console.log('STORE: ', state);
-    console.log('PARENT: ', parentState);
-    console.groupEnd();
+    // console.group('CLASSES: ', props['className']);
+    // console.log('RENDER_COUNT: ', ++renderCount.current);
+    // console.log('STORE: ', state);
+    // console.log('PARENT: ', parentState);
+    // console.groupEnd();
   }
 
   if (props['styledProps']) {
@@ -83,27 +81,4 @@ export function twinComponent(
   } else {
     return createElement(component, props);
   }
-
-  // Object.assign(props, styledProps);
-
-  // return renderTwinComponent(component, meta, props, ref);
 }
-
-// export function twinComponent(
-//   component: ComponentType<any>,
-//   configs: ComponentConfig[],
-//   props: Record<string, any> | null,
-//   ref: any,
-// ) {
-//   const { styledProps, componentHandlerRef } = useComponentState(configs, props);
-
-//   props = Object.assign({ ref }, props);
-//   for (const x of componentHandlerRef.current.propStates) {
-//     if (x.target !== x.source) {
-//       delete props[x.source];
-//     }
-//   }
-//   Object.assign(props, styledProps);
-
-//   return renderTwinComponent(component, componentHandlerRef.current, props);
-// }

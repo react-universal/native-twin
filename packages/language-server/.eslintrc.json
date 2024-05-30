@@ -2,7 +2,9 @@
   "extends": "../../.eslintrc.json",
   "ignorePatterns": [
     "!**/*",
-    "ts-extension"
+    "ts-extension",
+    "tests/fixtures",
+    "esbuild.mjs"
   ],
   "overrides": [
     {
@@ -13,6 +15,7 @@
         "plugin:@nx/typescript"
       ],
       "rules": {
+        "@typescript-eslint/no-empty-function": "off",
         "require-yield": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-empty-interface": "off",

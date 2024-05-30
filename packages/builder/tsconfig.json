@@ -12,6 +12,6 @@
     "strict": true,
     "target": "esnext"
   },
-  "include": ["src", "test", "./*.d.ts"],
-  "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js"]
+  "include": ["src"],
+  "exclude": ["build"]
 }

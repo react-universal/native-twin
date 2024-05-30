@@ -5,6 +5,7 @@ import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver/node';
+import { RuntimeTW } from '@native-twin/core';
 import { parseTemplate } from '../../native-twin/native-twin.parser';
 
 export class DocumentLanguageRegion implements Equal.Equal {
@@ -17,13 +18,27 @@ export class DocumentLanguageRegion implements Equal.Equal {
     readonly text: string,
   ) {}
 
-  get parsedText() {
+  get regionNodes() {
     return parseTemplate(this.text, this.offset.start);
+  }
+
+  get flatRegionNodes() {
+    return pipe(
+      this.regionNodes,
+      ReadonlyArray.flatMap((x) => x.flattenToken),
+      ReadonlyArray.dedupe,
+    );
+  }
+
+  getFullSheetEntries(tw: RuntimeTW) {
+    return this.flatRegionNodes.flatMap((x) => x.getSheetEntries(tw));
+    // const text = this.text.replace(/'/g, '');
+    // return tw(`${text}`).map((x) => new TwinSheetEntry(x));
   }
 
   getParsedNodeAtOffset(offset: number) {
     return pipe(
-      this.parsedText,
+      this.regionNodes,
       ReadonlyArray.findFirst(
         (x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end,
       ),

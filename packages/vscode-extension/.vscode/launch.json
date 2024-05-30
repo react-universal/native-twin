@@ -62,6 +62,22 @@
       // "sourceMapPathOverrides": {
       //   "📦 @lib/ts-plugin": "${workspaceFolder}../ts-plugin/*"
       // }
+    },
+    {
+      "name": "Extension Tests",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/build/test/run"
+      ],
+      "preLaunchTask": {
+        "type": "npm",
+        "script": "build:tsc:watch"
+      },
+      "outFiles": ["${workspaceFolder}/build/test/**/*.js"]
     }
   ],
 }

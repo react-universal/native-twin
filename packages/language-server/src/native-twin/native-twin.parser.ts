@@ -6,7 +6,7 @@ import {
   VariantToken,
 } from '@native-twin/css';
 import * as TwParser from '@native-twin/css/tailwind-parser';
-import { TemplateTokenWithText } from '../template/template.models';
+import { TemplateTokenWithText } from '../template/models/template-token.model';
 import {
   LocatedGroupToken,
   LocatedParser,

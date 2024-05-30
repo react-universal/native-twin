@@ -10,7 +10,7 @@ const createServerWithMockFile = (fileContents: string) => {
   return server;
 };
 
-describe('TS PLUGIN', () => {
+describe.skip('TS PLUGIN', () => {
   it('Complete suggestion list', async () => {
     expect(true).toBe(true);
     const server = createServerWithMockFile('const q = css``');

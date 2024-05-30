@@ -1,8 +1,8 @@
+import { ColorsRecord } from './utility.types';
+
 // 0: '0px',
 // 2: '2px',
 // 4: '4px',
-import { ColorsRecord } from './utility.types';
-
 // 8: '8px',
 export function createExponentialUnits(
   stop: number,
