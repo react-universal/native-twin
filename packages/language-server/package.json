@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/language-server",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Native Twin language server provider",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
