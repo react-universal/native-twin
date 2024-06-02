@@ -1,1 +1,1 @@
-css``
+css`bg-rose-50 bg(red-500/10)`

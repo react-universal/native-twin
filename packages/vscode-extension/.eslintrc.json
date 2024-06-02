@@ -5,7 +5,8 @@
     "ts-extension",
     "project-fixture",
     ".vscode-test.mjs",
-    ".vscode-test"
+    ".vscode-test",
+    "esbuild.mjs"
   ],
   "overrides": [
     {

@@ -21,7 +21,7 @@ export default function App() {
   return (
     <StrictMode>
       <View
-        className='flex-1 bg-red group hover:(bg-white) justify-center items-end'
+        className='flex-1 bg-red group hover:(bg-white) justify-center items-end last:text-pink'
         // // @ts-expect-error
         // onPressIn={() => setIsReady((p) => !p)}
       >

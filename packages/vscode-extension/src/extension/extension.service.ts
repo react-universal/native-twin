@@ -8,8 +8,6 @@ import * as Scope from 'effect/Scope';
 import * as vscode from 'vscode';
 import { LanguageClientContext } from '../language/language.service';
 
-// import { LanguageClientContext } from '../language/language.service';
-
 export class ExtensionContext extends Context.Tag('vscode/ExtensionCtx')<
   ExtensionContext,
   vscode.ExtensionContext

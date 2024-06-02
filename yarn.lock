@@ -5493,22 +5493,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@native-twin/vscode@workspace:packages/vscode-extension":
-  version: 0.0.0-use.local
-  resolution: "@native-twin/vscode@workspace:packages/vscode-extension"
-  dependencies:
-    "@effect/schema": "npm:^0.66.10"
-    "@native-twin/language-server": "workspace:*"
-    "@native-twin/ts-plugin": "workspace:*"
-    "@types/vscode": "npm:^1.89.0"
-    "@vscode/test-cli": "npm:^0.0.9"
-    "@vscode/test-electron": "npm:^2.4.0"
-    effect: "npm:^3.0.7"
-    vscode-languageclient: "npm:^9.0.1"
-    vscode-test: "npm:^1.6.1"
-  languageName: unknown
-  linkType: soft
-
 "@next/env@npm:14.1.4":
   version: 14.1.4
   resolution: "@next/env@npm:14.1.4"
@@ -17832,6 +17816,22 @@ __metadata:
   checksum: 10/276feb8e30189fe18718e85b6f82e4f952822baa2e7696f771cc42571a235b789dc5907a14d9ffb6838c3e4ff4c25717c2575e5ce1cf6e02e496e204c11e57f6
   languageName: node
   linkType: hard
+
+"native-twin-vscode@workspace:packages/vscode-extension":
+  version: 0.0.0-use.local
+  resolution: "native-twin-vscode@workspace:packages/vscode-extension"
+  dependencies:
+    "@effect/schema": "npm:^0.66.10"
+    "@native-twin/language-server": "workspace:*"
+    "@native-twin/ts-plugin": "workspace:*"
+    "@types/vscode": "npm:^1.89.0"
+    "@vscode/test-cli": "npm:^0.0.9"
+    "@vscode/test-electron": "npm:^2.4.0"
+    effect: "npm:^3.0.7"
+    vscode-languageclient: "npm:^9.0.1"
+    vscode-test: "npm:^1.6.1"
+  languageName: unknown
+  linkType: soft
 
 "native-twin@workspace:.":
   version: 0.0.0-use.local

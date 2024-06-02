@@ -43,3 +43,4 @@ out
 *.tsbuildinfo
 
 .nx/cache
+*.vsix

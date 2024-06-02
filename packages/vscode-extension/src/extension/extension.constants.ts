@@ -3,7 +3,7 @@ import { DocumentSelector } from 'vscode-languageclient/node';
 export const typeScriptExtensionId = 'vscode.typescript-language-features';
 export const pluginId = '@native-twin/ts-plugin';
 export const configurationSection = 'nativeTwin';
-const packageName = '@native-twin/vscode';
+const packageName = 'native-twin-vscode';
 const publisher = 'native-twin';
 export const extensionChannelName = 'Native Twin Language Client';
 export const extensionServerChannelName = 'Native Twin Language Server';
