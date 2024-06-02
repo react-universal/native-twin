@@ -4,6 +4,7 @@ import * as tailwindTheme from './tailwind-theme';
 import { preflight } from './tailwind-theme/preflight';
 import { TailwindPresetTheme } from './types/theme.types';
 
+export type { TailwindPresetTheme };
 export interface TailwindPresetBaseOptions {
   colors?: TailwindPresetTheme['colors'];
   /** Allows to disable to tailwind preflight (default: `false` eg include the tailwind preflight ) */

@@ -11,7 +11,7 @@ import {
 import '@native-twin/core';
 import { createVirtualSheet, SheetEntry } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { TailwindPresetTheme } from '@native-twin/preset-tailwind/build/types/theme.types';
+import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { NativeTwinPluginConfiguration } from '../plugin.types';
 import { requireJS } from '../utils/load-config';
 

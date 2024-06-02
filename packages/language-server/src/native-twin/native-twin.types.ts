@@ -8,7 +8,7 @@ import {
   RuleMeta,
 } from '@native-twin/core';
 import { SheetEntry, CompleteStyle } from '@native-twin/css';
-import { TailwindPresetTheme } from '@native-twin/preset-tailwind/build/types/theme.types';
+import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 
 export type InternalTwinConfig = TailwindConfig<__Theme__ & TailwindPresetTheme>;
 export type InternalTwFn = RuntimeTW<__Theme__ & TailwindPresetTheme, SheetEntry[]>;

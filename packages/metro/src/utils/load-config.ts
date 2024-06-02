@@ -4,7 +4,7 @@ import path from 'node:path';
 import * as NativeTwin from '@native-twin/core';
 import type { SheetEntry, createVirtualSheet } from '@native-twin/css';
 import * as NativeTwinCss from '@native-twin/css';
-import type { TailwindPresetTheme } from '@native-twin/preset-tailwind/build/types/theme.types';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { requireJS } from './load-js';
 
 let tw: ReturnType<typeof loadNativeTwinConfig> | null = null;

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Logger, State, SynchronizedConfiguration } from '../../src/types';
+import { Logger, State, NativeTwinPluginConfiguration } from '../../src/types';
 import { configurationSection, pluginId, typeScriptExtensionId } from './config';
 
 export async function enableExtension(context: vscode.ExtensionContext, log: Logger) {
@@ -61,6 +61,7 @@ export async function enableExtension(context: vscode.ExtensionContext, log: Log
       const document = editor.document;
       const selection = editor.selection;
       const word = document.getText(selection);
+      // @ts-expect-error
       const replaced = word.replaceAll(/className="([^"].*)"/g, `className={tw\`$1\`}`);
       editor.edit((editBuilder) => {
         editBuilder.replace(selection, replaced);
@@ -137,10 +138,13 @@ function synchronizeConfiguration(api: any, state: State, log: Logger) {
   api.configurePlugin(pluginId, config);
 }
 
-function getConfiguration(): SynchronizedConfiguration {
+function getConfiguration(): NativeTwinPluginConfiguration {
   const config = vscode.workspace.getConfiguration(configurationSection);
-  const outConfig: SynchronizedConfiguration = {
+  const outConfig: NativeTwinPluginConfiguration = {
     tags: ['tw', 'apply', 'css', 'variants'],
+    trace: {
+      server: "off"
+    },
     attributes: ['tw', 'class', 'className', 'variants'],
     styles: ['style', 'styled', 'variants'],
     debug: false,
