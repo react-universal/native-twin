@@ -1,22 +1,23 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "react-universal/tailwind" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "universal-labs/native-twin" }],
   "commit": false,
   "fixed": [
     [
-      "@universal-labs/styled",
-      "@universal-labs/css",
-      "@universal-labs/native-twin",
-      "@universal-labs/native-twin-nextjs",
-      "@universal-labs/preset-tailwind",
-      "@universal-labs/arc-parser",
-      "@universal-labs/native-twin-ts-plugin"
+      "@native-twin/helpers",
+      "@native-twin/styled",
+      "@native-twin/css",
+      "@native-twin/core",
+      "@native-twin/nextjs",
+      "@native-twin/preset-tailwind",
+      "@native-twin/arc-parser",
+      "@native-twin/ts-plugin"
     ]
   ],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-pages-example", "expo-app", "site", "@universal-labs/native-twin-vscode"],
+  "ignore": ["next-pages-example", "expo-app", "site", "@native-twin/vscode"],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }

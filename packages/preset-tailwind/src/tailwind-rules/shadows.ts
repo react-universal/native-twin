@@ -1,7 +1,7 @@
-import { matchThemeValue } from '@universal-labs/native-twin';
-import type { Rule } from '@universal-labs/native-twin';
-import type { __Theme__ } from '@universal-labs/native-twin';
+import { matchThemeValue } from '@native-twin/core';
+import type { Rule } from '@native-twin/core';
+import { TailwindPresetTheme } from '../types/theme.types';
 
-export const boxShadowRules: Rule<__Theme__>[] = [
+export const boxShadowRules: Rule<TailwindPresetTheme>[] = [
   matchThemeValue('shadow-', 'boxShadow', 'shadowRadius'),
 ];

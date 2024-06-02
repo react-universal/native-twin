@@ -1,5 +1,5 @@
-import type { __Theme__ } from '@universal-labs/native-twin';
-import { createLinearUnits } from '@universal-labs/native-twin';
+import { createLinearUnits } from '@native-twin/helpers';
+import { TailwindPresetTheme } from '../types/theme.types';
 
 export const fontFamily = {
   sans: [
@@ -29,9 +29,9 @@ export const fontFamily = {
     '"Courier New"',
     'monospace',
   ].join(','),
-} satisfies __Theme__['fontFamily'];
+} satisfies TailwindPresetTheme['fontFamily'];
 
-export const fontSize: __Theme__['fontSize'] = {
+export const fontSize: TailwindPresetTheme['fontSize'] = {
   xs: '0.75rem',
   sm: '0.875rem',
   base: '1rem',
@@ -45,9 +45,9 @@ export const fontSize: __Theme__['fontSize'] = {
   '7xl': '4.5rem',
   '8xl': '6rem',
   '9xl': '8rem',
-} satisfies __Theme__['fontSize'];
+} satisfies TailwindPresetTheme['fontSize'];
 
-export const textIndent: __Theme__['textIndent'] = {
+export const textIndent: TailwindPresetTheme['textIndent'] = {
   DEFAULT: '1.5rem',
   xs: '0.5rem',
   sm: '1rem',
@@ -56,15 +56,15 @@ export const textIndent: __Theme__['textIndent'] = {
   xl: '2.5rem',
   '2xl': '3rem',
   '3xl': '4rem',
-} satisfies __Theme__['textIndent'];
+} satisfies TailwindPresetTheme['textIndent'];
 
-export const textStrokeWidth: __Theme__['textStrokeWidth'] = {
+export const textStrokeWidth: TailwindPresetTheme['textStrokeWidth'] = {
   DEFAULT: '1.5rem',
   none: '0',
   sm: 'thin',
   md: 'medium',
   lg: 'thick',
-} satisfies __Theme__['textStrokeWidth'];
+} satisfies TailwindPresetTheme['textStrokeWidth'];
 
 export const textShadow = {
   DEFAULT: ['0 0 1px rgba(0,0,0,0.2)', '0 0 1px rgba(1,0,5,0.1)'],
@@ -73,7 +73,7 @@ export const textShadow = {
   md: ['0 1px 2px rgba(30,29,39,0.19)', '1px 2px 4px rgba(54,64,147,0.18)'],
   lg: ['3px 3px 6px rgba(0,0,0,0.26)', '0 0 5px rgba(15,3,86,0.22)'],
   xl: ['1px 1px 3px rgba(0,0,0,0.29)', '2px 4px 7px rgba(73,64,125,0.35)'],
-} satisfies __Theme__['textShadow'];
+} satisfies TailwindPresetTheme['textShadow'];
 
 export const lineHeight = {
   none: '1',
@@ -83,7 +83,7 @@ export const lineHeight = {
   relaxed: '1.625',
   loose: '2',
   .../* #__PURE__ */ createLinearUnits(10, 'rem', 4, 3),
-} satisfies __Theme__['lineHeight'];
+} satisfies TailwindPresetTheme['lineHeight'];
 
 export const letterSpacing = {
   tighter: '-0.05em',
@@ -92,7 +92,7 @@ export const letterSpacing = {
   wide: '0.025em',
   wider: '0.05em',
   widest: '0.1em',
-} satisfies __Theme__['letterSpacing'];
+} satisfies TailwindPresetTheme['letterSpacing'];
 
 export const fontWeight = {
   thin: '100',
@@ -105,23 +105,23 @@ export const fontWeight = {
   extrabold: '800',
   black: '900',
   // int[0, 900] -> int
-} satisfies __Theme__['fontWeight'];
+} satisfies TailwindPresetTheme['fontWeight'];
 
-export const wordSpacing = letterSpacing satisfies __Theme__['letterSpacing'];
+export const wordSpacing = letterSpacing satisfies TailwindPresetTheme['letterSpacing'];
 
 export const textDecorationStyle = {
   solid: 'solid',
   double: 'double',
   dotted: 'dotted',
-} satisfies __Theme__['textDecorationStyle'];
+} satisfies TailwindPresetTheme['textDecorationStyle'];
 
 export const textTransform = {
   capitalize: 'capitalize',
   uppercase: 'uppercase',
   lowercase: 'lowercase',
-} satisfies __Theme__['textTransform'];
+} satisfies TailwindPresetTheme['textTransform'];
 
 export const fontStyle = {
   normal: 'normal',
   italic: 'italic',
-} satisfies __Theme__['fontStyle'];
+} satisfies TailwindPresetTheme['fontStyle'];

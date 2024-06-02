@@ -1,7 +1,12 @@
 import type { FlexStyle } from 'react-native';
-import * as P from '@universal-labs/arc-parser';
-import { getPropertyValueType, unitlessCssProps } from '@universal-labs/css';
-import { hasOwnProperty } from '../utils/helpers';
+import * as P from '@native-twin/arc-parser';
+import {
+  declarationValueWithUnitParser,
+  getPropertyValueType,
+  unitlessCssProps,
+  type RuntimeContext,
+} from '@native-twin/css';
+import { hasOwnProperty } from '@native-twin/helpers';
 
 export const parseCssValue = (
   prop: string,
@@ -34,39 +39,13 @@ export const parseCssValue = (
 
 const parseUnitlessValue = P.float.map((x) => Number(x));
 
-export const parseDeclarationUnit = P.choice([
-  P.literal('px'),
-  P.literal('%'),
-  P.literal('em'),
-  P.literal('rem'),
-  P.literal('deg'),
-  P.literal('vh'),
-  P.literal('vw'),
-  P.literal('rad'),
-  P.literal('turn'),
-  P.choice([
-    P.literal('pc'),
-    P.literal('cn'),
-    P.literal('ex'),
-    P.literal('in'),
-    P.literal('pt'),
-    P.literal('cm'),
-    P.literal('mm'),
-    P.literal('Q'),
-  ]),
-]);
-
 const ParseCssDimensions = (context: {
   rem: number;
   deviceHeight: number;
   deviceWidth: number;
 }) => P.choice([P.whitespaceSurrounded(ParseDimensionWithUnits(context))]);
 
-export const ParseFlexValue = (context: {
-  rem: number;
-  deviceHeight: number;
-  deviceWidth: number;
-}) =>
+export const ParseFlexValue = (context: RuntimeContext) =>
   P.choice([
     P.sequenceOf([
       ParseCssDimensions(context),
@@ -89,9 +68,9 @@ export const ParseDimensionWithUnits = (context: {
   deviceHeight: number;
   deviceWidth: number;
 }) =>
-  P.sequenceOf([P.float, P.maybe(parseDeclarationUnit)]).map((result) => {
+  declarationValueWithUnitParser.map((result) => {
     const value = parseFloat(result[0]);
-    switch (result[1]) {
+    switch (result[1]?.value) {
       case 'px':
         return value;
       case 'rem':

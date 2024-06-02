@@ -1,5 +1,5 @@
-import type { __Theme__ } from '@universal-labs/native-twin';
-import { createPercentRatios } from '@universal-labs/native-twin';
+import { createPercentRatios } from '@native-twin/helpers';
+import { TailwindPresetTheme } from '../types/theme.types';
 import { spacing } from './mixed';
 
 export const baseSize = {
@@ -25,31 +25,31 @@ export const width = {
   auto: 'auto',
   ...baseSize,
   screen: '100vw',
-} satisfies __Theme__['width'];
+} satisfies TailwindPresetTheme['width'];
 
 export const maxWidth = {
   ...baseSize,
   none: 'none',
   screen: '100vw',
-} satisfies __Theme__['maxWidth'];
+} satisfies TailwindPresetTheme['maxWidth'];
 
 export const height = {
   ...baseSize,
   auto: 'auto',
   screen: '100vh',
-} satisfies __Theme__['height'];
+} satisfies TailwindPresetTheme['height'];
 
 export const maxHeight = {
   ...baseSize,
   none: 'none',
   screen: '100vh',
-} satisfies __Theme__['maxHeight'];
+} satisfies TailwindPresetTheme['maxHeight'];
 
 export const containers = Object.fromEntries(
   Object.entries(baseSize).map(([k, v]) => [k, `(min-width: ${v})`]),
-) satisfies __Theme__['containers'];
+) satisfies TailwindPresetTheme['containers'];
 
 export const aspectRatio = {
   square: '1/1',
   video: '16/9',
-} satisfies __Theme__['aspectRatio'];
+} satisfies TailwindPresetTheme['aspectRatio'];

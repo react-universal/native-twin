@@ -1,4 +1,4 @@
-import { View, H1, P } from '@universal-labs/styled';
+import { View, H1, P } from '@native-twin/styled';
 
 const IndexPage = () => {
   return (

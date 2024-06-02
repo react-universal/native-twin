@@ -1,4 +1,4 @@
-import type { __Theme__ } from '@universal-labs/native-twin';
+import { TailwindPresetTheme } from '../types/theme.types';
 import { textAlign, verticalAlign } from './aligns';
 import { colors } from './colors';
 import { blur, dropShadow } from './filters';
@@ -86,4 +86,4 @@ export const theme = {
   verticalBreakpoints,
   width,
   wordSpacing,
-} satisfies __Theme__;
+} satisfies TailwindPresetTheme;

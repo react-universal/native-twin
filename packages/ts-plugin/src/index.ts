@@ -1,62 +1,94 @@
-import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
 import ts from 'typescript/lib/tsserverlibrary';
 import {
-  getCompletionsAtPosition,
-  createCompletionEntryDetails,
-} from './language-service/completions.service';
-import { ConfigurationManager } from './language-service/configuration';
-import { NativeTailwindIntellisense } from './language-service/intellisense.service';
-import { LanguageServiceLogger } from './language-service/logger';
-import { StandardTemplateSourceHelper } from './language-service/source-helper';
+  LanguageProviderService,
+  LanguageProviderServiceLive,
+} from './language/language.service';
+import { createTwin } from './native-twin/nativeTwin.config';
+import { NativeTwinServiceLive } from './native-twin/nativeTwin.service';
+import { buildTSPluginService } from './plugin/TSPlugin.service';
+import { TemplateSourceHelperServiceLive } from './template/template.service';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
   function create(info: ts.server.PluginCreateInfo) {
     const proxy: ts.LanguageService = Object.create(null);
-    for (let k of Object.keys(info.languageService) as Array<keyof ts.LanguageService>) {
+    for (const k of Object.keys(info.languageService) as Array<
+      keyof ts.LanguageService
+    >) {
       const x = info.languageService[k]!;
       // @ts-expect-error - JS runtime trickery which is tricky to type tersely
       proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
     }
 
-    const configManager = new ConfigurationManager();
-    const logger = new LanguageServiceLogger(info);
-    const intellisense = new NativeTailwindIntellisense(logger, configManager);
-    const helper = new StandardTemplateSourceHelper(
-      modules.typescript,
-      configManager,
-      new StandardScriptSourceHelper(modules.typescript, info.project),
-    );
+    // const configManager = new ConfigurationManager();
+    // const logger = new LanguageServiceLogger(info);
+    // const intellisense = new NativeTailwindIntellisense(logger, configManager);
+    const twin = createTwin(info);
 
-    let enable = configManager.config.enable;
-    configManager.onUpdatedConfig(() => {
-      enable = configManager.config.enable;
+    const PluginServiceLive = buildTSPluginService({
+      plugin: { ts: modules.typescript, info, config: twin.pluginConfig },
+      tailwind: {
+        config: twin.twinConfig,
+        context: twin.twin.context,
+        tw: twin.twin.tw,
+      },
     });
 
-    if (!enable) return proxy;
+    const layer = Layer.mergeAll(
+      NativeTwinServiceLive,
+      TemplateSourceHelperServiceLive,
+    ).pipe(Layer.provide(PluginServiceLive));
 
-    proxy.getCompletionsAtPosition = (fileName, position, options) => {
-      const template = helper.getTemplate(fileName, position);
-
-      if (template) {
-        return getCompletionsAtPosition(
-          template,
-          helper.getRelativePosition(template, position),
-          intellisense,
-        );
-      }
-
-      return info.languageService.getCompletionsAtPosition(fileName, position, options);
+    proxy.getCompletionsAtPosition = (fileName, position, _options, _formatSettings) => {
+      return Effect.gen(function* ($) {
+        const languageService = yield* $(LanguageProviderService);
+        return yield* $(languageService.getCompletionsAtPosition(fileName, position));
+      }).pipe(
+        Effect.provide(LanguageProviderServiceLive),
+        Effect.provide(layer),
+        Effect.map(
+          (x): ts.WithMetadata<ts.CompletionInfo> => ({
+            entries: x,
+            isGlobalCompletion: false,
+            isMemberCompletion: false,
+            isNewIdentifierLocation: false,
+          }),
+        ),
+        Effect.runSync,
+      );
     };
 
-    proxy.getCompletionEntryDetails = (fileName, position, name, ...rest) => {
-      const context = helper.getTemplate(fileName, position);
-      if (context) {
-        const utility = intellisense.completions().classes.get(name);
-        if (utility) {
-          return createCompletionEntryDetails(utility);
-        }
-      }
-      return info.languageService.getCompletionEntryDetails(fileName, position, name, ...rest);
+    proxy.getCompletionEntrySymbol = (filename, position, bane, source) => {
+      console.log({ filename, position, bane, source });
+      return undefined;
+    };
+    proxy.getCompletionEntryDetails = (fileName, position, name, ...args) => {
+      console.log('ARGS: ', args);
+      return Effect.gen(function* ($) {
+        const languageService = yield* $(LanguageProviderService);
+        return yield* $(
+          languageService.getCompletionEntryDetails(fileName, position, name),
+        );
+      }).pipe(
+        Effect.provide(LanguageProviderServiceLive),
+        Effect.provide(layer),
+        Effect.runSync,
+        Option.getOrUndefined,
+      );
+    };
+
+    proxy.getQuickInfoAtPosition = (fileName, position) => {
+      return Effect.gen(function* ($) {
+        const languageService = yield* $(LanguageProviderService);
+        return yield* $(languageService.getQuickInfoAtPosition(fileName, position));
+      }).pipe(
+        Effect.provide(LanguageProviderServiceLive),
+        Effect.provide(layer),
+        Effect.runSync,
+        Option.getOrUndefined,
+      );
     };
 
     return proxy;

@@ -1,0 +1,4 @@
+{
+  "main": "../build/styled/StyledComponent",
+  "types": "../build/styled/StyledComponent.d.ts"
+}

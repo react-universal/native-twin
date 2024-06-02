@@ -41,3 +41,5 @@ out
 
 # TypeScript cache
 *.tsbuildinfo
+
+.nx/cache

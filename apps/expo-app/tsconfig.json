@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ESNext"],
+    "exactOptionalPropertyTypes": false,
+    "allowJs": true,
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "plugins": [
+      {
+        "name": "@native-twin/ts-plugin"
+      }
+    ]
+  },
+  "references": [],
+  "exclude": [
+    "node_modules",
+    ".expo",
+    "android",
+    "ios",
+    ".turbo",
+    "babel.config.js",
+    "app.config.js",
+    "metro.config.js"
+  ],
+  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json"]
+}

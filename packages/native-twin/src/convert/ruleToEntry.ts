@@ -1,9 +1,12 @@
-import { Layer, moveToLayer } from '@universal-labs/css';
+import {
+  Layer,
+  moveToLayer,
+  parsedRuleToClassName,
+  type SheetEntry,
+  type TWParsedRule,
+} from '@native-twin/css';
 import type { ThemeContext } from '../types/config.types';
-import type { SheetEntry } from '../types/css.types';
-import type { ParsedRule } from '../types/tailwind.types';
-import { convert } from '../utils/theme-utils';
-import { parsedRuleToClassName } from './ruleToClassName';
+import { convert } from './convertRule';
 
 /**
  * Converts a parsed rule to a sheet entry based on the given context.
@@ -12,7 +15,7 @@ import { parsedRuleToClassName } from './ruleToClassName';
  * @param {ThemeContext} context - The context in which the conversion is happening.
  * @return {SheetEntry} The converted sheet entry.
  */
-export function parsedRuleToEntry(rule: ParsedRule, context: ThemeContext): SheetEntry {
+export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): SheetEntry {
   if (rule.n == 'group') {
     return {
       className: 'group',

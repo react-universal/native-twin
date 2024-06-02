@@ -1,36 +1,49 @@
 {
-  "name": "@universal-labs/native-twin-ts-plugin",
+  "name": "@native-twin/ts-plugin",
   "version": "5.0.5",
   "description": "TypeScript plugin that adds IntelliSense Native Tailwind",
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "main": "build/index.js",
   "scripts": {
-    "build": "node ./build.js --production",
+    "build": "tsc -p tsconfig.build.json",
+    "build:tsc:watch": "tsc -p tsconfig.build.json -w",
+    "circular": "madge --extensions ts --circular --no-color --no-spinner --warning src",
+    "clean": "rm -rf build",
+    "esbuild:build": "node ./build.js --production",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "jest",
-    "vscode:dev": "node ./build.js --watch"
+    "vscode:dev": "tsc -p tsconfig.build.json -w"
   },
   "dependencies": {
-    "@ctrl/tinycolor": "3.6.0",
-    "@universal-labs/css": "workspace:*",
-    "@universal-labs/native-twin": "workspace:*",
-    "@universal-labs/preset-tailwind": "workspace:*",
-    "@vscode/emmet-helper": "2.9.2",
-    "cssbeautify": "0.3.1",
-    "match-sorter": "6.3.1",
-    "quick-lru": "6.1.1",
-    "showdown": "2.1.0",
+    "@ctrl/tinycolor": "^4.1.0",
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*",
+    "effect": "^3.0.7",
     "typescript-template-language-service-decorator": "2.3.2",
-    "vscode-css-languageservice": "6.2.6",
-    "vscode-languageserver-textdocument": "1.0.8"
+    "vscode-css-languageservice": "^6.2.14",
+    "vscode-languageserver-textdocument": "^1.0.11"
   },
   "devDependencies": {
-    "@types/cssbeautify": "0.3.2",
-    "@types/showdown": "2.0.1"
+    "madge": "7.0.0"
+  },
+  "optionalDependencies": {
+    "jest": "*"
   },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
+  },
+  "nx": {
+    "includedScripts": [
+      "build",
+      "build:watch",
+      "clean",
+      "esbuild:build",
+      "lint",
+      "vscode:dev"
+    ]
   }
 }

@@ -1,12 +1,12 @@
-import type { __Theme__ } from '@universal-labs/native-twin';
-import { createPercentRatios } from '@universal-labs/native-twin';
+import { createPercentRatios } from '@native-twin/helpers';
+import { TailwindPresetTheme } from '../types/theme.types';
 import { spacing } from './mixed';
 
 export const flexGrow = {
   DEFAULT: '1',
   0: '0',
   1: '1',
-} satisfies __Theme__['flexGrow'];
+} satisfies TailwindPresetTheme['flexGrow'];
 
 export const flexBasis = {
   ...spacing,
@@ -14,27 +14,27 @@ export const flexBasis = {
   .../* #__PURE__ */ createPercentRatios(12, 12),
   auto: 'auto',
   full: '100%',
-} satisfies __Theme__['flexBasis'];
+} satisfies TailwindPresetTheme['flexBasis'];
 
 export const flex = {
   1: '1 1 0%',
   auto: '1 1 auto',
   initial: '0 1 auto',
   none: 'none',
-} satisfies __Theme__['flex'];
+} satisfies TailwindPresetTheme['flex'];
 
 export const flexDirection = {
   col: 'column',
   'col-reverse': 'column-reverse',
   row: 'row',
   'row-reverse': 'row-reverse',
-} satisfies __Theme__['flexDirection'];
+} satisfies TailwindPresetTheme['flexDirection'];
 
 export const flexWrap = {
   wrap: 'wrap',
   'wrap-reverse': 'wrap-reverse',
   nowrap: 'nowrap',
-} satisfies __Theme__['flexWrap'];
+} satisfies TailwindPresetTheme['flexWrap'];
 
 export const justifyContent = {
   start: 'flex-start',
@@ -44,7 +44,7 @@ export const justifyContent = {
   around: 'space-around',
   evenly: 'space-evenly',
   stretch: 'space-stretch',
-} satisfies __Theme__['justifyContent'];
+} satisfies TailwindPresetTheme['justifyContent'];
 
 export const alignItems = {
   start: 'flex-start',
@@ -53,7 +53,7 @@ export const alignItems = {
   auto: 'auto',
   stretch: 'stretch',
   baseline: 'baseline',
-} satisfies __Theme__['alignItems'];
+} satisfies TailwindPresetTheme['alignItems'];
 
 export const alignContent = {
   start: 'flex-start',
@@ -62,4 +62,4 @@ export const alignContent = {
   stretch: 'stretch',
   between: 'space-between',
   around: 'space-around',
-} satisfies __Theme__['alignContent'];
+} satisfies TailwindPresetTheme['alignContent'];

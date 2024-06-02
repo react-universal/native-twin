@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/preset-tailwind",
+  "name": "@native-twin/preset-tailwind",
   "version": "5.0.5",
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
@@ -11,13 +11,13 @@
     "react-native",
     "react"
   ],
-  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
-    "url": "https://github.com/react-universal/tailwind/issues"
+    "url": "https://github.com/react-universal/native-twin/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-universal/tailwind",
+    "url": "https://github.com/react-universal/native-twin",
     "directory": "packages/preset-tailwind"
   },
   "sideEffects": false,
@@ -36,6 +36,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest",
@@ -43,14 +44,28 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@universal-labs/native-twin": "workspace:*"
+    "@native-twin/core": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18.0",
     "react-native": ">=0.71.0"
   },
+  "optionalDependencies": {
+    "jest": "*"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
+  },
+  "nx": {
+    "includedScripts": [
+      "build",
+      "build:watch",
+      "clean",
+      "dev",
+      "lint",
+      "test:debug",
+      "test:watch"
+    ]
   }
 }

@@ -1,8 +1,9 @@
-import { defineConfig, install, tw, extract } from '@universal-labs/native-twin';
+import { defineConfig, install, tw, extract } from '@native-twin/core';
 import { presetTailwind } from '../src';
 
 install(
   defineConfig({
+    content: [],
     mode: 'web',
     presets: [presetTailwind()],
   }),
@@ -11,7 +12,7 @@ install(
 const html1 = `<html><head></head><body class="min-h-screen min-w-full"><div class="bg-blue-200" /></body>`;
 const html2 = `<html><head></head><body class="min-h-screen min-w-full"><div class="bg-red-200 hover:bg-blue-200" /></body>`;
 
-describe('@universal-labs/preset-tailwind - TW call', () => {
+describe('@native-twin/preset-tailwind - TW call', () => {
   it('Insert rules', () => {
     const result = extract(html1, tw);
     // console.log('EXTRACTED_1: ', result.css);

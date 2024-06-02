@@ -1,11 +1,16 @@
-import { compareClassNames, fixHTMLTagClassNamesList } from '@universal-labs/css';
-import { sheetEntriesToCss } from '../convert/entryToCss';
-import { parsedRuleToClassName } from '../convert/ruleToClassName';
-import { parseTWTokens } from '../parsers/tailwind-classes.parser';
-import type { SheetEntry } from '../types/css.types';
+import {
+  parseTWTokens,
+  parsedRuleToClassName,
+  sheetEntriesToCss,
+  parseHTML,
+} from '@native-twin/css';
+import type { SheetEntry } from '@native-twin/css';
+import {
+  compareClassNames,
+  fixHTMLTagClassNamesList,
+  type StringLike,
+} from '@native-twin/helpers';
 import type { RuntimeTW } from '../types/theme.types';
-import type { StringLike } from '../types/util.types';
-import { parseHTML } from '../utils/parse-html';
 import { tw as tw$ } from './tw';
 
 export interface ExtractResult {

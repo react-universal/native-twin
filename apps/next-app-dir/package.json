@@ -1,0 +1,24 @@
+{
+  "name": "next-app-dir",
+  "version": "0.1.4",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "lint": "echo $HOME",
+    "next:build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@native-twin/core": "workspace:*",
+    "@native-twin/nextjs": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*",
+    "@native-twin/styled": "workspace:*",
+    "next": "^14.1.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native-web": "^0.19.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.2"
+  }
+}

@@ -1,5 +1,5 @@
-import type { __Theme__ } from '@universal-labs/native-twin';
-import { createExponentialUnits, createLinearUnits } from '@universal-labs/native-twin';
+import { createExponentialUnits, createLinearUnits } from '@native-twin/helpers';
+import { TailwindPresetTheme } from '../types/theme.types';
 
 // keep in ASC order: container.ts and breakpoints.ts need that order
 export const screens = {
@@ -8,7 +8,7 @@ export const screens = {
   lg: '1024px',
   xl: '1280px',
   '2xl': '1536px',
-} satisfies __Theme__['screens'];
+} satisfies TailwindPresetTheme['screens'];
 
 export const opacity = {
   .../* #__PURE__ */ createLinearUnits(100, '', 100, 0, 10),
@@ -16,15 +16,17 @@ export const opacity = {
   25: '0.25',
   75: '0.75',
   95: '0.95',
-} satisfies __Theme__['opacity'];
+} satisfies TailwindPresetTheme['opacity'];
 
-export const verticalBreakpoints = { ...screens } satisfies __Theme__['verticalBreakpoints'];
+export const verticalBreakpoints = {
+  ...screens,
+} satisfies TailwindPresetTheme['verticalBreakpoints'];
 
 export const lineWidth = {
   DEFAULT: '1px',
   none: '0',
   .../* #__PURE__ */ createLinearUnits(10, 'rem', 4, 3),
-} satisfies __Theme__['lineWidth'];
+} satisfies TailwindPresetTheme['lineWidth'];
 
 export const spacing = {
   DEFAULT: '1rem',
@@ -52,7 +54,7 @@ export const spacing = {
   72: '18rem',
   80: '20rem',
   96: '24rem',
-} satisfies __Theme__['spacing'];
+} satisfies TailwindPresetTheme['spacing'];
 
 export const duration = {
   DEFAULT: '150ms',
@@ -65,7 +67,7 @@ export const duration = {
   500: '500ms',
   700: '700ms',
   1000: '1000ms',
-} satisfies __Theme__['duration'];
+} satisfies TailwindPresetTheme['duration'];
 
 export const borderRadius = {
   DEFAULT: '0.25rem',
@@ -78,18 +80,18 @@ export const borderRadius = {
   '3xl': '1.5rem',
   '1/2': '50%',
   full: '9999px',
-} satisfies __Theme__['borderRadius'];
+} satisfies TailwindPresetTheme['borderRadius'];
 
 export const borderStyle = {
   solid: 'solid',
   dotted: 'dotted',
   dashed: 'dashed',
-} satisfies __Theme__['borderStyle'];
+} satisfies TailwindPresetTheme['borderStyle'];
 
 export const backfaceVisibility = {
   visible: 'visible',
   hidden: 'hidden',
-} satisfies __Theme__['backfaceVisibility'];
+} satisfies TailwindPresetTheme['backfaceVisibility'];
 
 export const boxShadow = {
   DEFAULT: {
@@ -134,7 +136,7 @@ export const boxShadow = {
     shadowOpacity: 0.3,
     elevation: 9,
   },
-} satisfies __Theme__['boxShadow'];
+} satisfies TailwindPresetTheme['boxShadow'];
 
 export const easing = {
   DEFAULT: 'cubic-bezier(0.4, 0, 0.2, 1)',
@@ -142,37 +144,37 @@ export const easing = {
   in: 'cubic-bezier(0.4, 0, 1, 1)',
   out: 'cubic-bezier(0, 0, 0.2, 1)',
   'in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
-} satisfies __Theme__['easing'];
+} satisfies TailwindPresetTheme['easing'];
 
 export const ringWidth = {
   DEFAULT: '1px',
   none: '0',
-} satisfies __Theme__['ringWidth'];
+} satisfies TailwindPresetTheme['ringWidth'];
 
 export const borderWidth = {
   DEFAULT: '1px',
   .../* #__PURE__ */ createExponentialUnits(8, 'px'),
-} satisfies __Theme__['borderWidth'];
+} satisfies TailwindPresetTheme['borderWidth'];
 
 export const zIndex = {
   .../* #__PURE__ */ createLinearUnits(50, '', 1, 0, 10),
   auto: 'auto',
-} satisfies __Theme__['zIndex'];
+} satisfies TailwindPresetTheme['zIndex'];
 
 export const overflow = {
   visible: 'visible',
   hidden: 'hidden',
   none: 'scroll',
-} satisfies __Theme__['overflow'];
+} satisfies TailwindPresetTheme['overflow'];
 
 export const objectFit = {
   cover: 'cover',
   contain: 'contain',
   fill: 'fill',
   'scale-down': 'scale-down',
-} satisfies __Theme__['objectFit'];
+} satisfies TailwindPresetTheme['objectFit'];
 
 export const position = {
   absolute: 'absolute',
   relative: 'relative',
-} satisfies __Theme__['position'];
+} satisfies TailwindPresetTheme['position'];

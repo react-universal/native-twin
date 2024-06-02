@@ -1,18 +1,15 @@
 import { useId, useMemo } from 'react';
 import { Platform } from 'react-native';
+import { parseCssValue, tw } from '@native-twin/core';
 import {
   AnyStyle,
   FinalSheet,
   GetChildStylesArgs,
   SheetInteractionState,
-} from '@universal-labs/css';
-import {
-  getRuleSelectorGroup,
-  parseCssValue,
   SheetEntry,
   SheetEntryDeclaration,
-  tw,
-} from '@universal-labs/native-twin';
+  getRuleSelectorGroup,
+} from '@native-twin/css';
 import { StyledContext } from '../types/css.types';
 import { useStyledContext } from './useStyledContext';
 
@@ -68,7 +65,7 @@ function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
     (prev, current) => {
       const validRule = isApplicativeRule(current.selectors, context);
       if (!validRule) return prev;
-      let nextDecl = composeDeclarations(current.declarations, context);
+      const nextDecl = composeDeclarations(current.declarations, context);
       const group = getRuleSelectorGroup(current.selectors);
       if (nextDecl.transform && prev[group].transform) {
         nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];

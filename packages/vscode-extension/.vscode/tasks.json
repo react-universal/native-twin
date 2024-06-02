@@ -3,7 +3,7 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "build:libs",
+      "script": "build",
       "group": "build",
       "presentation": {
         "panel": "dedicated",
@@ -13,7 +13,7 @@
     },
     {
       "type": "npm",
-      "script": "build:libs",
+      "script": "build:tsc:watch",
       "isBackground": true,
       "group": {
         "kind": "build",

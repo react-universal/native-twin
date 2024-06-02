@@ -1,8 +1,8 @@
 /* eslint-env node */
 import { createElement, Fragment } from 'react';
-import { extract } from '@universal-labs/native-twin';
 import type { DocumentContext, DocumentInitialProps } from 'next/document';
 import Document from 'next/document';
+import { extract } from '@native-twin/core';
 
 export { installDocument };
 
@@ -14,9 +14,9 @@ function installDocument<Component extends typeof Document = typeof Document>(
 function installDocument<Component extends typeof Document = typeof Document>(
   BaseComponent: Component = Document as Component,
 ): Component {
-  // @ts-ignore
+  // @ts-expect-error
   return class NativeTailwindDocument extends BaseComponent {
-    // @ts-ignore
+    // @ts-expect-error
     static async getInitialProps(
       ctx: DocumentContext & {
         defaultGetInitialProps: (

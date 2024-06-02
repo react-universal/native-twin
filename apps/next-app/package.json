@@ -1,0 +1,22 @@
+{
+  "name": "next-pages-example",
+  "version": "1.4.10",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "lint": "next lint",
+    "next:build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@native-twin/core": "workspace:*",
+    "@native-twin/nextjs": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*",
+    "@native-twin/styled": "workspace:*",
+    "@next/font": "^14.1.4",
+    "next": "^14.1.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native-web": "^0.19.6"
+  }
+}

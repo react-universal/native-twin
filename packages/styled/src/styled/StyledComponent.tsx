@@ -7,7 +7,7 @@ import {
   useMemo,
 } from 'react';
 import { StyleSheet, type StyleProp, type Touchable } from 'react-native';
-import type { AnyStyle } from '@universal-labs/css';
+import type { AnyStyle } from '@native-twin/css';
 import { useChildren } from '../hooks/useChildren';
 import { useComponentInteractions } from '../hooks/useComponentInteractions';
 import { useComponentRegistry } from '../hooks/useComponentRegistry';
@@ -15,13 +15,16 @@ import { useCssToRN } from '../hooks/useCssToRN';
 import type { StyledComponentProps } from '../types/styled.types';
 import { getComponentDisplayName } from '../utils/getComponentDisplayName';
 
+export type { StyledComponentProps };
+export { useCssToRN, useComponentRegistry, useComponentInteractions };
+
 function styledComponentsFactory<
   StyleType,
   InitialProps extends { style?: StyleProp<StyleType> },
   Props extends InitialProps = InitialProps,
 >(
   Component: ComponentType<InitialProps>,
-  styledProp: string = 'style',
+  styledProp = 'style',
 ): ForwardRefExoticComponent<Props & StyledComponentProps & { ref?: Ref<any> }> {
   const ForwardRefComponent = forwardRef((props: any, ref) => {
     const classNames = props.className ?? props.tw ?? '';
@@ -86,7 +89,9 @@ function styledComponentsFactory<
   if (__DEV__) {
     ForwardRefComponent.displayName = `Styled(${getComponentDisplayName(Component)})`;
   }
-  return ForwardRefComponent;
+  return ForwardRefComponent as ForwardRefExoticComponent<
+    Props & StyledComponentProps & { ref?: Ref<any> }
+  >;
 }
 
 export default styledComponentsFactory;

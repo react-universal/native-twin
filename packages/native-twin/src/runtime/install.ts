@@ -1,5 +1,5 @@
+import { getSheet } from '@native-twin/css';
 import { defineConfig } from '../config/define-config';
-import { getSheet } from '../sheets/getSheet';
 import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
 import { setup } from './tw';

@@ -1,133 +1,46 @@
-import * as P from '@universal-labs/arc-parser';
-import { ident } from '../common.parsers';
-import type { SelectorPayload } from '../types/css.types';
+import * as P from '@native-twin/arc-parser';
+import { mapAsType } from '../utils.parser';
 
-const mapToken =
-  <A extends string>(type: A) =>
-  <B>(value: B) => ({
-    type,
-    value,
-  });
+const mapToAttributeSelector = mapAsType('ATTRIBUTE_SELECTOR');
+const mapToElementSelector = mapAsType('ELEMENT_SELECTOR');
+const mapToPseudoClassSelector = mapAsType('PSEUDO_CLASS_SELECTOR');
+const mapToPseudoElementSelector = mapAsType('PSEUDO_ELEMENT_SELECTOR');
 
-const ChildPseudoClasses = P.choice([
-  P.literal('first-child'),
-  P.literal('last-child'),
-  P.literal('even'),
-  P.literal('odd'),
-]);
-
-const PlatformPseudoClasses = P.choice([
-  P.literal('web'),
-  P.literal('native'),
-  P.literal('ios'),
-  P.literal('android'),
-]);
-
-const PointerPseudoClasses = P.choice([
-  P.literal('hover'),
-  P.literal('focus'),
-  P.literal('active'),
-]);
-const GroupPointerPseudoClasses = P.choice([
-  P.literal('group-hover'),
-  P.literal('group-focus'),
-  P.literal('group-active'),
-  P.literal('group'),
-]);
-
-const AppearancePseudoClasses = P.choice([P.literal('dark'), P.literal('light')]);
-
-const ParseSelectorClassName = P.many1(
+const selectorParserRecursive = P.recursiveParser(() =>
   P.choice([
-    ident,
-    P.skip(P.char('\\')),
-    P.char('['),
-    P.char(']'),
-    P.char('%'),
-    P.char('('),
-    P.char(')'),
+    AttributeSelector,
+    PseudoClassSelector,
+    PseudoElementSelector,
+    ElementParser,
+    ClassParser,
   ]),
-).map((x) => x.join(''));
+);
 
-const ParseSelectorPart = P.choice([
-  ChildPseudoClasses.map(mapToken('CHILD_PSEUDO_CLASS')),
-  GroupPointerPseudoClasses.map(mapToken('GROUP_PSEUDO_CLASS')),
-  PointerPseudoClasses.map(mapToken('POINTER_PSEUDO_CLASS')),
-  PlatformPseudoClasses.map(mapToken('PLATFORM_PSEUDO_CLASS')),
-  AppearancePseudoClasses.map(mapToken('APPEARANCE_PSEUDO_CLASS')),
-  ParseSelectorClassName.map(mapToken('IDENT_PSEUDO_CLASS')),
-]);
+const validClassIdent = P.regex(/^[a-zA-Z0-9-]+/);
 
-export const ParseSelectorStrict = P.coroutine((run) => {
-  const token = parseNextPart();
-  const selectorToken = mapToken('SELECTOR');
-  const data = run(P.getData);
-  run(P.setData({ ...data }));
+const quoteParser = P.choice([P.char("'"), P.char('"')]);
 
-  return selectorToken(token);
+// [type='button']
+const betweenSquareBrackets = P.between(P.char('['))(P.char(']'));
+const betweenSingleQuotes = P.between(quoteParser)(quoteParser);
 
-  function parseNextPart(
-    result: SelectorPayload = { pseudoSelectors: [], selectorName: '', group: 'base' },
-  ): SelectorPayload {
-    const nextToken = run(P.peek);
-    if (nextToken == '{') {
-      return result;
-    }
-    if (nextToken == ' ') {
-      run(P.skip(P.char(' ')));
-      return parseNextPart(result);
-    }
-    if (nextToken == '\\') {
-      run(P.skip(P.many(P.char('\\'))));
-      return parseNextPart(result);
-    }
-    if (nextToken == ':') {
-      run(P.skip(P.char(':')));
-    }
+const ElementParser = validClassIdent.map(mapToElementSelector);
 
-    if (nextToken == '.') {
-      run(P.skip(P.char('.')));
-    }
-    if (nextToken == '#') {
-      run(P.skip(P.char('#')));
-    }
-    const nextPart = run(ParseSelectorPart);
-    if (nextPart.type == 'IDENT_PSEUDO_CLASS') {
-      if (result.selectorName == '') {
-        result.selectorName = nextPart.value;
-      }
-    } else {
-      if (!result.pseudoSelectors.includes(nextPart.value)) {
-        result.pseudoSelectors.push(nextPart.value);
-      }
-    }
-    if (result.group == 'base') {
-      if (nextPart.type == 'APPEARANCE_PSEUDO_CLASS') {
-        result.group = 'base';
-      }
-      if (nextPart.type == 'CHILD_PSEUDO_CLASS') {
-        switch (nextPart.value) {
-          case 'even':
-            result.group = 'even';
-            break;
-          case 'first-child':
-            result.group = 'first';
-            break;
-          case 'last-child':
-            result.group = 'last';
-            break;
-          case 'odd':
-            result.group = 'odd';
-            break;
-        }
-      }
-      if (nextPart.type == 'POINTER_PSEUDO_CLASS') {
-        result.group = 'pointer';
-      }
-      if (nextPart.type == 'GROUP_PSEUDO_CLASS') {
-        result.group = 'group';
-      }
-    }
-    return parseNextPart(result);
-  }
-});
+const AttributeSelector = betweenSquareBrackets(
+  P.sequenceOf([validClassIdent, P.char('='), betweenSingleQuotes(validClassIdent)]),
+).map((x) => mapToAttributeSelector(`[${x[0]}${x[1]}'${x[2]}']`));
+
+const ClassParser = P.sequenceOf([P.char('.'), validClassIdent]).map((x) =>
+  mapToAttributeSelector(x.join('')),
+);
+
+const PseudoClassSelector = P.sequenceOf([P.char(':'), validClassIdent]).map((x) =>
+  mapToPseudoClassSelector(x.join('')),
+);
+const PseudoElementSelector = P.sequenceOf([P.literal('::'), validClassIdent]).map((x) =>
+  mapToPseudoElementSelector(x.join('')),
+);
+
+const selectorParser = P.separatedByComma(P.many1(selectorParserRecursive));
+
+selectorParser.run('.mx-10::first-letter,a'); //?

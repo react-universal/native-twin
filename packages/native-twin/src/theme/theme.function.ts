@@ -1,6 +1,6 @@
+import { flattenObjectByPath } from '@native-twin/helpers';
 import type { ThemeFunction } from '../types/config.types';
 import type { ThemeConfig, __Theme__ } from '../types/theme.types';
-import { flattenThemeSection } from '../utils/theme-utils';
 
 export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
   extend = {},
@@ -23,7 +23,7 @@ export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
       value = resolved[themeSection as string][segment];
     }
     if (!value && config) {
-      const flatten = flattenThemeSection(config);
+      const flatten = flattenObjectByPath(config);
       if (!flatten) return null;
       resolved[themeSection as string] = flatten;
       value = resolved[themeSection as string][segment];

@@ -1,7 +1,9 @@
-import { parsedRuleSetToClassNames } from '../convert/ruleToClassName';
-import { parseTWTokens } from '../parsers/tailwind-classes.parser';
-import type { CSSValue } from '../types/css.types';
-import { interpolate } from '../utils/string-utils';
+import {
+  interpolate,
+  parseTWTokens,
+  parsedRuleSetToClassNames,
+  type CSSValue,
+} from '@native-twin/css';
 
 /**
  * Constructs `class` strings conditionally.

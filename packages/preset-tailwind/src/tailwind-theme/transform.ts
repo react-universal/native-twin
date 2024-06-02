@@ -1,16 +1,16 @@
-import type { __Theme__ } from '@universal-labs/native-twin';
 import {
   createExponentialUnits,
   createLinearUnits,
   createPercentRatios,
-} from '@universal-labs/native-twin';
+} from '@native-twin/helpers';
+import { TailwindPresetTheme } from '../types/theme.types';
 import { spacing } from './mixed';
 
 export const translate = {
   ...spacing,
   .../* #__PURE__ */ createPercentRatios(2, 4),
   full: '100%',
-} satisfies __Theme__['translate'];
+} satisfies TailwindPresetTheme['translate'];
 
 export const rotate = {
   .../* #__PURE__ */ createExponentialUnits(2, 'deg'),
@@ -25,7 +25,7 @@ export const rotate = {
   // 45: '45deg',
   // 90: '90deg',
   // 180: '180deg',
-} satisfies __Theme__['rotate'];
+} satisfies TailwindPresetTheme['rotate'];
 
 export const skew = {
   .../* #__PURE__ */ createExponentialUnits(2, 'deg'),
@@ -36,7 +36,7 @@ export const skew = {
   // 3: '3deg',
   // 6: '6deg',
   // 12: '12deg',
-} satisfies __Theme__['skew'];
+} satisfies TailwindPresetTheme['skew'];
 
 export const scale = {
   .../* #__PURE__ */ createLinearUnits(150, '', 100, 0, 50),
@@ -51,4 +51,4 @@ export const scale = {
   // 110: '1.1',
   75: '0.75',
   125: '1.25',
-} satisfies __Theme__['scale'];
+} satisfies TailwindPresetTheme['scale'];

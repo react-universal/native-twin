@@ -10,6 +10,8 @@
 //   variants = 0,
 // }
 
+// spell-checker: disable
+
 export const Layer = {
   /**
    * 1. `default` (public)

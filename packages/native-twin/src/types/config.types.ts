@@ -1,13 +1,19 @@
 import type { PlatformOSType } from 'react-native';
-import type { CompleteStyle } from '@universal-labs/css';
-import type { SheetEntry } from './css.types';
-import type { CssFeature, ParsedRule, RuleHandlerToken } from './tailwind.types';
+import type {
+  CompleteStyle,
+  CssFeature,
+  TWParsedRule,
+  RuleHandlerToken,
+  Preflight,
+  SheetEntry,
+} from '@native-twin/css';
+import type { Falsey, MaybeArray } from '@native-twin/helpers';
 import type { ExtractThemes, ThemeConfig, __Theme__ } from './theme.types';
-import type { Falsey, MaybeArray } from './util.types';
 
 // CONFIGURATION TYPES
 
 export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
+  content: string[];
   darkMode: DarkModeConfig;
   theme: ThemeConfig<Theme>;
   mode: 'web' | 'native';
@@ -24,6 +30,7 @@ export interface TailwindUserConfig<
   Theme = __Theme__,
   Presets extends Preset<any>[] = Preset[],
 > {
+  content: string[];
   darkMode?: DarkModeConfig;
   theme?: Theme | ThemeConfig<__Theme__ & ExtractThemes<Theme, Presets>>;
   rules?: Rule<__Theme__ & ExtractThemes<Theme, Presets>>[];
@@ -45,7 +52,6 @@ export interface PresetThunk<Theme = __Theme__> {
 
 export type Preset<Theme = __Theme__> = TailwindPresetConfig<Theme> | PresetThunk<Theme>;
 
-export type Preflight = false | MaybeArray<Record<string, any>>;
 export interface TailwindPresetConfig<Theme = __Theme__> {
   /** Allows to change how the `dark` variant is used (default: `"media"`) */
   darkMode?: DarkModeConfig;
@@ -75,9 +81,11 @@ export type RuleResult = SheetEntry | Falsey;
 export type PlatformSupport = 'native' | 'web';
 
 export interface RuleResolver<Theme extends __Theme__ = {}> {
-  (match: RuleHandlerToken, context: ThemeContext<Theme>, parsed: ParsedRule):
-    | RuleResult
-    | Falsey;
+  (
+    match: RuleHandlerToken,
+    context: ThemeContext<Theme>,
+    parsed: TWParsedRule,
+  ): RuleResult | Falsey;
 }
 
 export type Rule<Theme extends __Theme__ = __Theme__> = [
@@ -88,12 +96,12 @@ export type Rule<Theme extends __Theme__ = __Theme__> = [
 ];
 
 export interface RuleMeta {
-  canBeNegative?: boolean;
-  feature?: CssFeature;
-  prefix?: string | undefined;
-  suffix?: string | undefined;
-  styleProperty?: keyof CompleteStyle;
-  support?: PlatformOSType[];
+  canBeNegative: boolean;
+  feature: CssFeature;
+  prefix: string | undefined;
+  suffix: string | undefined;
+  styleProperty: keyof CompleteStyle | undefined;
+  support: PlatformOSType[];
 }
 
 // VARIANTS CONFIG TYPES
@@ -121,7 +129,7 @@ export interface ThemeContext<Theme extends __Theme__ = __Theme__> {
   breakpoints: Exclude<__Theme__['screens'], undefined>;
   mode: TailwindConfig['mode'];
   /** resolves a rule */
-  r: (value: ParsedRule) => RuleResult;
+  r: (value: TWParsedRule) => RuleResult;
   v: (value: string) => VariantResult;
 
   // isSupported: (support: PlatformSupport[]) => boolean;

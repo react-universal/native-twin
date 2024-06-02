@@ -3,7 +3,7 @@
 //
 // and Windi CSS
 // https://github.com/windicss/windicss/blob/main/src/config/colors.ts
-import type { __Theme__ } from '@universal-labs/native-twin';
+import { TailwindPresetTheme } from '../types/theme.types';
 
 export const colors = {
   inherit: 'inherit',
@@ -339,10 +339,10 @@ export const colors = {
   get blueGray() {
     return this['slate']!;
   },
-} satisfies __Theme__['colors'];
+} satisfies TailwindPresetTheme['colors'];
 
 // assign default color, and color shortcuts
-Object.values(colors as Required<__Theme__>['colors']).forEach((color) => {
+Object.values(colors as Required<TailwindPresetTheme>['colors']).forEach((color) => {
   if (typeof color !== 'string' && color !== undefined) {
     color.DEFAULT = color.DEFAULT || (color[400] as string);
   }

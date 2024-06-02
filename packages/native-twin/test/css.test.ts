@@ -1,22 +1,19 @@
-import {
-  defineConfig,
-  setup,
-  tx,
-  sheetEntriesToCss,
-  matchThemeColor,
-  matchThemeValue,
-} from '../src';
+import { sheetEntriesToCss } from '@native-twin/css';
+import { defineConfig, setup, tx, matchThemeColor, matchThemeValue } from '../src';
 
 setup(
   defineConfig({
+    content: [],
     mode: 'web',
     rules: [
       matchThemeColor('bg-', 'backgroundColor'),
+      // @ts-ignore
       matchThemeValue('p', 'spacing', 'padding', {
         canBeNegative: true,
         feature: 'edges',
         prefix: 'padding',
       }),
+      // @ts-ignore
       matchThemeValue('shadow-', 'boxShadow', 'shadowRadius'),
     ],
     theme: {
@@ -44,7 +41,7 @@ setup(
   }),
 );
 
-describe('@universal-labs/native-twin - Raw rules parser', () => {
+describe('@native-twin/core - Raw rules parser', () => {
   it('Sheet entries to CSS', () => {
     const entries = tx`bg-primary !px-1 first-letter:px-2 asd md:sm:px-2`;
     const css = sheetEntriesToCss(entries);

@@ -3,9 +3,9 @@ import {
   type ValidGroupPseudoSelector,
   defaultGroupState,
   type ValidInteractionPseudoSelector,
-} from '@universal-labs/css';
+} from '@native-twin/css';
+import { createStore } from '@native-twin/helpers';
 import type { RegisteredComponent } from '../types/styled.types';
-import { createStore } from '../utils/createStore';
 import { createStyledContext } from '../utils/createStyledContext';
 
 const createComponent = (id: string, groupID: string) => {

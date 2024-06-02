@@ -1,8 +1,9 @@
-import { parsedRuleToClassName, matchCssObject } from '@universal-labs/native-twin';
-import type { Rule } from '@universal-labs/native-twin';
-import type { __Theme__ } from '@universal-labs/native-twin';
+import { matchCssObject } from '@native-twin/core';
+import type { Rule } from '@native-twin/core';
+import { parsedRuleToClassName } from '@native-twin/css';
+import { TailwindPresetTheme } from '../types/theme.types';
 
-export const outlineRules: Rule<__Theme__>[] = [
+export const outlineRules: Rule<TailwindPresetTheme>[] = [
   // matchThemeValue('outline-width-', 'lineWidth', 'outlineWidth'),
   // matchThemeColor('outline-', 'outlineColor'),
   // matchThemeValue('outline-offset-', 'lineWidth', 'outlineOffset'),
@@ -10,6 +11,9 @@ export const outlineRules: Rule<__Theme__>[] = [
   //   customValues: Object.fromEntries(outlineStyles),
   // }),
   matchCssObject('outline-none', (match, ctx, rule) => {
+    if (ctx.mode == 'native') {
+      return null;
+    }
     return {
       className: parsedRuleToClassName(rule),
       declarations: [

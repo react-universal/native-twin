@@ -1,4 +1,4 @@
-import type { __Theme__ } from '@universal-labs/native-twin';
+import { TailwindPresetTheme } from '../types/theme.types';
 
 export const resizeMode = {
   cover: 'cover',
@@ -6,4 +6,4 @@ export const resizeMode = {
   stretch: 'stretch',
   repeat: 'repeat',
   center: 'center',
-} satisfies __Theme__['resizeMode'];
+} satisfies TailwindPresetTheme['resizeMode'];

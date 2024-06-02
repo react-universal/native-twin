@@ -1,3 +1,4 @@
+import { asArray } from '@native-twin/helpers';
 import type {
   Preset,
   TailwindConfig,
@@ -5,7 +6,6 @@ import type {
   TailwindPresetConfig,
 } from '../types/config.types';
 import type { ExtractThemes, __Theme__ } from '../types/theme.types';
-import { asArray } from '../utils/helpers';
 import { defaultVariants } from './defaults/variants';
 
 export function defineConfig<
@@ -18,6 +18,7 @@ export function defineConfig<
   __Theme__ & ExtractThemes<Theme, Presets>
 > {
   let config: TailwindConfig<__Theme__ & ExtractThemes<Theme, Presets>> = {
+    content: userConfig.content,
     darkMode: undefined,
     mode: userConfig.mode ?? 'native',
     preflight: userConfig.preflight !== false && [],
@@ -44,6 +45,7 @@ export function defineConfig<
     const { ignorelist, preflight, rules, theme, variants, darkMode } =
       typeof preset == 'function' ? preset(config) : (preset as TailwindPresetConfig<Theme>);
     config = {
+      content: userConfig.content,
       preflight: config.preflight !== false &&
         preflight !== false && [...asArray(config.preflight), ...asArray(preflight)],
       root: config.root,

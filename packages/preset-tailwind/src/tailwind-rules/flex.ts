@@ -1,8 +1,9 @@
-import { matchCssObject, matchThemeValue } from '@universal-labs/native-twin';
-import type { Rule } from '@universal-labs/native-twin';
-import { parsedRuleToClassName } from '@universal-labs/native-twin';
+import { matchCssObject, matchThemeValue } from '@native-twin/core';
+import type { Rule } from '@native-twin/core';
+import { parsedRuleToClassName } from '@native-twin/css';
+import { TailwindPresetTheme } from '../types/theme.types';
 
-export const flexRules: Rule[] = [
+export const flexRules: Rule<TailwindPresetTheme>[] = [
   matchCssObject('flex', (match, ctx, rule) => ({
     className: parsedRuleToClassName(rule),
     declarations: [

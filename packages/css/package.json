@@ -1,5 +1,5 @@
 {
-  "name": "@universal-labs/css",
+  "name": "@native-twin/css",
   "version": "5.0.5",
   "description": "Css parser for react native",
   "keywords": [
@@ -9,14 +9,14 @@
     "universal-apps",
     "react-native-css"
   ],
-  "homepage": "https://github.com/react-universal/tailwind#readme",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
-    "url": "https://github.com/react-universal/tailwind/issues"
+    "url": "https://github.com/react-universal/native-twin/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-universal/tailwind",
-    "directory": "packages/stylesheets"
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/css"
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
@@ -35,6 +35,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest",
@@ -42,11 +43,23 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@universal-labs/arc-parser": "workspace:*"
+    "@native-twin/arc-parser": "workspace:*",
+    "@native-twin/helpers": "workspace:*"
   },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "nx": {
+    "includedScripts": [
+      "build",
+      "build:watch",
+      "clean",
+      "dev",
+      "lint",
+      "test:debug",
+      "test:watch"
+    ]
+  }
 }

@@ -6,9 +6,41 @@
       "name": "Attach to VS Code TS Server",
       "type": "node",
       "request": "attach",
-      "port": 5859,
       "sourceMaps": true,
-      "outFiles": ["${workspaceRoot}/build/**/*.js", "!**/node_modules/**"]
+      "preLaunchTask": {
+				"type": "npm",
+				"script": "build:tsc:watch"
+			},
+      "presentation": {
+        "hidden": true,
+        "group": "",
+        "order": 1
+      },
+      "outFiles": [
+        "${workspaceRoot}/build/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "suppressMultipleSessionWarning": true,
+      "name": "Test ts-plugin",
+      // "program": "../../node_modules/.bin/jest",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "../../node_modules/.bin/jest",
+        "--watch"
+      ],
+      "console": "integratedTerminal",
+      "env": {
+        "TSS_DEBUG": "5999"
+      },
+      "presentation": {
+        "hidden": false,
+        "group": "",
+        "order": 9
+      },
+      "sourceMaps": true,
     }
   ]
 }
