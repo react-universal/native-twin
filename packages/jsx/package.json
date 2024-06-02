@@ -22,7 +22,7 @@
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "nx test --passWithNoTests",
+    "test": "jest",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand --silent false --watch",
     "test:watch": "jest --watch"
   },
