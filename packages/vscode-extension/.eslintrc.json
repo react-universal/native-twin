@@ -4,7 +4,8 @@
     "!**/*",
     "ts-extension",
     "project-fixture",
-    ".vscode-test.mjs"
+    ".vscode-test.mjs",
+    ".vscode-test"
   ],
   "overrides": [
     {

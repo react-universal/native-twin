@@ -26,6 +26,9 @@ jobs:
       - name: Install deps with yarn
         run: yarn --immutable
 
+      - name: Run linter
+        run: yarn lint
+
       - name: Run build
         run: yarn build
 
