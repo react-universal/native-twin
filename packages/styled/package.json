@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/styled",
-  "version": "5.0.5",
+  "version": "6.0.0",
   "description": "Styled components for css in react native",
   "keywords": [
     "react-native",

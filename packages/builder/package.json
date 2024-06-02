@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/builder",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Native Twin packages bundler",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
