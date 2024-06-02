@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/nextjs",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "React Native Web Tailwindcss for nextjs",
   "keywords": [
     "tailwind",

@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/preset-tailwind",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
     "tailwind",

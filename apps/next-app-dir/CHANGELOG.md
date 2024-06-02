@@ -1,5 +1,17 @@
 # next-app-dir
 
+## 0.1.6
+
+### Patch Changes
+
+- [`b20fc07`](https://github.com/react-universal/native-twin/commit/b20fc079cf0f68cad73810e3701e9f94e41bcb1c) Thanks [@chrisarts](https://github.com/chrisarts)! - fix building scripts
+
+- Updated dependencies [[`b20fc07`](https://github.com/react-universal/native-twin/commit/b20fc079cf0f68cad73810e3701e9f94e41bcb1c)]:
+  - @native-twin/core@6.0.1
+  - @native-twin/nextjs@6.0.1
+  - @native-twin/preset-tailwind@6.0.1
+  - @native-twin/styled@6.0.1
+
 ## 0.1.5
 
 ### Patch Changes
