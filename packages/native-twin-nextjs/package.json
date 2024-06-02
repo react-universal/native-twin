@@ -19,7 +19,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/react-universal/native-twin",
-    "directory": "packages/native-tailwind-nextjs"
+    "directory": "packages/native-twin-nextjs"
   },
   "sideEffects": false,
   "exports": {

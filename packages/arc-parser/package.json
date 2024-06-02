@@ -2,6 +2,15 @@
   "name": "@native-twin/arc-parser",
   "version": "5.0.5",
   "description": "Parser combinators library",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/arc-parser"
+  },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,

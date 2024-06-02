@@ -2,6 +2,15 @@
   "name": "@native-twin/ts-plugin",
   "version": "5.0.5",
   "description": "TypeScript plugin that adds IntelliSense Native Tailwind",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/ts-plugin"
+  },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "main": "build/index.js",

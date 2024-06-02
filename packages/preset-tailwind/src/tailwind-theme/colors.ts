@@ -3,6 +3,7 @@
 //
 // and Windi CSS
 // https://github.com/windicss/windicss/blob/main/src/config/colors.ts
+import { ColorsRecord } from '@native-twin/helpers';
 import { TailwindPresetTheme } from '../types/theme.types';
 
 export const colors = {
@@ -325,19 +326,19 @@ export const colors = {
     950: '#080808',
   },
   get lightBlue() {
-    return this['sky']!;
+    return this['sky'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
   },
   get warmGray() {
-    return this['stone']!;
+    return this['stone'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
   },
   get trueGray() {
-    return this['neutral']!;
+    return this['neutral'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
   },
   get coolGray() {
-    return this['gray']!;
+    return this['gray'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
   },
   get blueGray() {
-    return this['slate']!;
+    return this['slate'] as string | (ColorsRecord & { DEFAULT?: string | undefined });
   },
 } satisfies TailwindPresetTheme['colors'];
 

@@ -11,7 +11,10 @@
       "@native-twin/nextjs",
       "@native-twin/preset-tailwind",
       "@native-twin/arc-parser",
-      "@native-twin/ts-plugin"
+      "@native-twin/ts-plugin",
+      "@native-twin/jsx",
+      "@native-twin/babel",
+      "@native-twin/language-server"
     ]
   ],
   "access": "public",
