@@ -5238,20 +5238,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@legendapp/state@npm:2.1.8":
-  version: 2.1.8
-  resolution: "@legendapp/state@npm:2.1.8"
-  dependencies:
-    use-sync-external-store: "npm:^1.2.0"
-  peerDependencies:
-    react: ">=16.8.0"
-  peerDependenciesMeta:
-    react:
-      optional: true
-  checksum: 10/4c3255dfc26aada8ec58a9d7b1c81a4e977305250b63fb32868937276c0956247ae5379a39ffb9ecf0ab869e7852d037aab6c6ac0dbc3594f6c06f0010dec788
-  languageName: node
-  linkType: hard
-
 "@leichtgewicht/ip-codec@npm:^2.0.1":
   version: 2.0.5
   resolution: "@leichtgewicht/ip-codec@npm:2.0.5"
@@ -5366,7 +5352,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/jsx@workspace:packages/jsx"
   dependencies:
-    "@legendapp/state": "npm:2.1.8"
     "@native-twin/css": "workspace:*"
     "@native-twin/styled": "workspace:*"
     jest: "npm:*"
@@ -23430,15 +23415,6 @@ __metadata:
     querystringify: "npm:^2.1.1"
     requires-port: "npm:^1.0.0"
   checksum: 10/c9e96bc8c5b34e9f05ddfeffc12f6aadecbb0d971b3cc26015b58d5b44676a99f50d5aeb1e5c9e61fa4d49961ae3ab1ae997369ed44da51b2f5ac010d188e6ad
-  languageName: node
-  linkType: hard
-
-"use-sync-external-store@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "use-sync-external-store@npm:1.2.0"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/a676216affc203876bd47981103f201f28c2731361bb186367e12d287a7566763213a8816910c6eb88265eccd4c230426eb783d64c373c4a180905be8820ed8e
   languageName: node
   linkType: hard
 
