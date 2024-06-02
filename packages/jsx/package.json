@@ -27,7 +27,6 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@legendapp/state": "2.1.8",
     "@native-twin/css": "workspace:*",
     "@native-twin/styled": "workspace:*"
   },
@@ -41,8 +40,5 @@
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
-  },
-  "nx": {
-    "includedScripts": []
   }
 }
