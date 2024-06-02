@@ -14,6 +14,7 @@
       "@native-twin/ts-plugin",
       "@native-twin/jsx",
       "@native-twin/babel",
+      "@native-twin/metro",
       "@native-twin/language-server"
     ]
   ],
