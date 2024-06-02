@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
-import { SafeAreaView } from 'react-native';
-import { H2, Pressable, Span, View, FlatList } from '@native-twin/styled';
+import { Text, Pressable, View, FlatList, SafeAreaView } from 'react-native';
 
 const data = [
   {
@@ -25,7 +24,7 @@ const FlatListScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View className='flex-1'>
         <Pressable onPress={addItem} className='bg-gray-400'>
-          <H2>Add item</H2>
+          <Text>Add item</Text>
         </Pressable>
         <FlatList
           data={items}
@@ -33,7 +32,7 @@ const FlatListScreen = () => {
           renderItem={({ item }) => {
             return (
               <View className='hover:bg-pink-500'>
-                <Span>{item.label}</Span>
+                <Text>{item.label}</Text>
               </View>
             );
           }}

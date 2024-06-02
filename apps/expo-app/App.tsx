@@ -1,8 +1,8 @@
 import { StrictMode, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
 import { setup } from '@native-twin/core';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 import tailwindConfig from './tailwind.config';
+import { HomeScreen } from './src/screens/Home.screen';
 
 setup(tailwindConfig);
 
@@ -20,14 +20,7 @@ export default function App() {
 
   return (
     <StrictMode>
-      <View
-        className='flex-1 bg-red group hover:(bg-white) justify-center items-end last:text-pink'
-        // // @ts-expect-error
-        // onPressIn={() => setIsReady((p) => !p)}
-      >
-        <Text className='text(white 5xl) group-hover:(text-gray)'>asd</Text>
-        <Text className='text(black 5xl) hover:(text-green)'>asd</Text>
-      </View>
+      <HomeScreen />
     </StrictMode>
   );
 }

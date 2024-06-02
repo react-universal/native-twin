@@ -1,17 +1,17 @@
-import { H1, H2, View } from '@native-twin/styled';
+import { Text, View } from 'react-native';
 
 const AspectRatio = () => {
   return (
     <View className='flex-1'>
-      <H1>Aspect Ratio</H1>
+      <Text>Aspect Ratio</Text>
       <View className='aspect-square flex-1 bg-white'>
-        <H2>Square</H2>
+        <Text>Square</Text>
       </View>
       <View className='aspect-video flex-1 bg-gray-500'>
-        <H2>Video</H2>
+        <Text>Video</Text>
       </View>
       <View className='aspect-auto flex-1 bg-gray-800'>
-        <H2 className='text-gray-200'>Auto</H2>
+        <Text className='text-gray-200'>Auto</Text>
       </View>
     </View>
   );

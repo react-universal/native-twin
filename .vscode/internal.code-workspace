@@ -120,6 +120,7 @@
       "**/build": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
+    "typescript.tsserver.log": "verbose",
     "cSpell.words": [
       "sastan",
       "TRBL",

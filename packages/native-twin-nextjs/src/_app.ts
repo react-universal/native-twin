@@ -1,6 +1,6 @@
 /* eslint-env node, browser */
 import type { ComponentType } from 'react';
-import { createElement } from 'react';
+import React from 'react';
 import type { AppProps } from 'next/app';
 import type { TailwindConfig, TailwindUserConfig } from '@native-twin/core';
 import { install as install$ } from '@native-twin/core';
@@ -30,5 +30,5 @@ function installApp<Props, Component>(
 }
 
 function NativeTailwindApp(props: AppProps) {
-  return createElement(props.Component as ComponentType<any>, props.pageProps);
+  return React.createElement(props.Component as ComponentType<any>, props.pageProps);
 }

@@ -1,1 +1,1 @@
-css`bg-rose-50 bg(red-500/10)`
+css`md:bg-red-100/50 bg(md:black rose-50/50 hover:pink-100)`

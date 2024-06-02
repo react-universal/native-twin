@@ -5,6 +5,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
+    "jsxImportSource": "@native-twin/jsx",
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,

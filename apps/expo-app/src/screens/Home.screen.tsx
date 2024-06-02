@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { H1, H2, Image, Pressable, TextInput, View } from '@native-twin/styled';
+import { Text, Image, Pressable, TextInput, View } from 'react-native';
 
 // css`bg`;
 // styled('')``
@@ -29,14 +29,14 @@ function HomeScreen() {
     android:(p-14 border-green-200 border-2 bg-gray-50)`}
       >
         <View className='bg-white shadow-md rounded-xl p-2'>
-          <H1
+          <Text
             className={`
               text(center base primary)
               font-inter-bold hover:text-gray-700
             `}
           >
-            H1 - 1
-          </H1>
+            Text - 1
+          </Text>
         </View>
       </View>
       <View
@@ -47,20 +47,20 @@ function HomeScreen() {
           items-center justify-center
         `}
       >
-        <H1
+        <Text
           className={`
           font-inter-bold text-2xl capitalize
           ${active ? 'text-red-800' : 'text-primary'}
           `}
         >
           Nested Hover
-        </H1>
+        </Text>
         <Pressable
           onPressIn={() => {
             setActive((prevState) => !prevState);
           }}
         >
-          <H1 className='text-gray-200'>Activate</H1>
+          <Text className='text-gray-200'>Activate</Text>
         </Pressable>
         <Image
           source={testImage}
@@ -75,12 +75,12 @@ function HomeScreen() {
             group-hover:bg-pink-800
           `}
         >
-          <H2
+          <Text
             suppressHighlighting
             className='font-inter-bold rotate-6 text-xl text-gray-800 group-hover:text-white -mt-2'
           >
             Deeply nested hover
-          </H2>
+          </Text>
         </View>
       </View>
     </View>

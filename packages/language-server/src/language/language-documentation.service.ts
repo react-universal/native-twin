@@ -52,25 +52,63 @@ export class LanguageDocumentation extends Context.Tag('lsp/documentation')<
                   document.positionToOffset(params.position),
                 ),
               ),
-              Option.bind('firstToken', ({ flattenCompletions }) =>
-                ReadonlyArray.head(flattenCompletions.flattenToken),
+              Option.let('cursorOffset', ({ document }) =>
+                document.positionToOffset(params.position),
               ),
-              Option.let('hoverRange', ({ firstToken, document }) =>
-                vscode.Range.create(
-                  document.offsetToPosition(firstToken.token.bodyLoc.start),
-                  document.offsetToPosition(firstToken.token.bodyLoc.end),
-                ),
+              Option.bind(
+                'tokenAtPosition',
+                ({ flattenCompletions, cursorOffset, document }) => {
+                  return ReadonlyArray.findFirst(
+                    flattenCompletions.flattenToken,
+                    (x) =>
+                      cursorOffset >= x.token.bodyLoc.start &&
+                      cursorOffset <= x.token.bodyLoc.end,
+                  ).pipe(
+                    Option.map((x): { range: vscode.Range; text: string } => ({
+                      range: vscode.Range.create(
+                        document.offsetToPosition(x.token.bodyLoc.start),
+                        document.offsetToPosition(x.token.bodyLoc.end),
+                      ),
+                      text: x.token.text,
+                    })),
+                    Option.match({
+                      onSome(a) {
+                        return Option.some(a);
+                      },
+                      onNone() {
+                        const token = flattenCompletions.token;
+                        if (
+                          token.type === 'GROUP' &&
+                          cursorOffset >= token.value.base.bodyLoc.start &&
+                          cursorOffset <= token.value.base.bodyLoc.end
+                        ) {
+                          return Option.some({
+                            range: vscode.Range.create(
+                              document.offsetToPosition(flattenCompletions.bodyLoc.start),
+                              document.offsetToPosition(flattenCompletions.bodyLoc.end),
+                            ),
+                            text: flattenCompletions.text,
+                          });
+                        }
+                        return Option.none();
+                      },
+                    }),
+                  );
+                },
               ),
-              Option.let('sheet', ({ firstToken }) => {
-                const entries = twinService.tw(firstToken.token.text);
-                return {
+              Option.map(({ tokenAtPosition }) => {
+                const cx = twinService.cx`${tokenAtPosition.text}`;
+                const entries = twinService.tx`${[cx]}`;
+                const sheet = {
                   rn: getSheetEntryStyles(entries, context),
                   css: sheetEntriesToCss(entries),
                 };
+                return completionRuleToQuickInfo(
+                  sheet.rn,
+                  sheet.css,
+                  tokenAtPosition.range,
+                );
               }),
-              Option.map((x) =>
-                completionRuleToQuickInfo(x.sheet.rn, x.sheet.css, x.hoverRange),
-              ),
             );
 
             return Option.getOrUndefined(hoverEntry);

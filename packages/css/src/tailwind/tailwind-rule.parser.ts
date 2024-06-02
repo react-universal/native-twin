@@ -8,7 +8,7 @@ import type {
   VariantToken,
 } from './tailwind.types';
 
-const classNameIdent = /^[a-z0-9A-Z-.]+/;
+export const classNameIdent = /^[a-z0-9A-Z-.]+/;
 
 export const parseClassNameIdent = P.regex(classNameIdent);
 
@@ -109,55 +109,6 @@ export const parseRuleGroup = P.sequenceOf([
 /** Recursive syntax parser all utils separated by space */
 export const tailwindClassNamesParser = P.separatedBySpace(parseValidTokenRecursive);
 
-// function translateRuleTokens(
-//   tokens: (GroupToken | VariantClassToken | ClassNameToken | ArbitraryToken)[],
-//   result: ParsedRule[] = [],
-// ): ParsedRule[] {
-//   const current = tokens.shift();
-//   if (!current) return result;
-//   if (current.type == 'CLASS_NAME') {
-//     result.push({
-//       n: current.value.n,
-//       v: [],
-//       i: current.value.i,
-//       m: current.value.m,
-//       p: 0,
-//     });
-//     return translateRuleTokens(tokens, result);
-//   }
-//   if (current.type == 'VARIANT_CLASS') {
-//     result.push({
-//       n: current.value[1].value.n,
-//       v: current.value[0].value.map((x) => x.n),
-//       i: current.value[1].value.i || current.value[0].value.some((x) => x.i),
-//       m: current.value[1].value.m,
-//       p: 0,
-//     });
-//     return translateRuleTokens(tokens, result);
-//   }
-//   if (current.type == 'GROUP') {
-//     const baseValue = current.value.base;
-//     const content = mergeParsedRuleGroupTokens(current.value.content).map((x) => {
-//       if (baseValue.type == 'CLASS_NAME') {
-//         return {
-//           ...x,
-//           i: baseValue.value.i,
-//           m: baseValue.value.m,
-//           n: baseValue.value.n + '-' + x.n,
-//         };
-//       }
-//       return {
-//         ...x,
-//         v: [...x.v, ...baseValue.value.map((y) => y.n)],
-//         i: x.i || baseValue.value.some((y) => y.i),
-//       };
-//     });
-//     result.push(...content);
-//     return translateRuleTokens(tokens, result);
-//   }
-//   return result;
-// }
-
 export function mergeParsedRuleGroupTokens(
   groupContent: (ClassNameToken | VariantClassToken | ArbitraryToken | GroupToken)[],
   results: TWParsedRule[] = [],
@@ -199,12 +150,13 @@ export function mergeParsedRuleGroupTokens(
           return {
             ...x,
             i: baseValue.value.i,
-            m: baseValue.value.m,
+            m: baseValue.value.m ?? x.m,
             n: baseValue.value.n + '-' + x.n,
           };
         }
         return {
           ...x,
+          m: x.m,
           v: [...x.v, ...baseValue.value.map((y) => y.n)],
           i: x.i || baseValue.value.some((y) => y.i),
         };

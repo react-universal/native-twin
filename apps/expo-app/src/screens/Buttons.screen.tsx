@@ -1,4 +1,4 @@
-import { View, Pressable, Text } from '@native-twin/styled';
+import { View, Pressable, Text } from 'react-native';
 
 const ButtonsScreen = () => {
   return (

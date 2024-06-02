@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Show case</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
-      <div className='flex-1 bg-gray-200 flex'>
+      <div className='flex-1 bg-gray-600 flex'>
         <Component {...pageProps} />
       </div>
     </>

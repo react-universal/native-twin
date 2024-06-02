@@ -1,8 +1,10 @@
 import { Component, createElement, forwardRef } from 'react';
+import { cx } from '@native-twin/core';
 import { REACT_FORWARD_REF_SYMBOL } from '../constants';
 import type { JSXFunction, JSXInternalProps } from '../types/jsx.types';
 import { getNormalizeConfig } from '../utils/config.utils';
 
+// TODO: Check this on every react web fmw
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 
 export const createStylableComponent = (baseComponent: any, mapping: any): any => {
@@ -25,7 +27,7 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
     props = { ...props, ref };
     for (const config of configs) {
       const newStyles: any = [];
-      const source = props[config.source];
+      const source = cx`${props[config.source]}`;
       const target: any = props[config.target];
 
       // Ensure we only add non-empty strings

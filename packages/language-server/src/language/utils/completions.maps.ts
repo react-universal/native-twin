@@ -3,6 +3,7 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { FinalSheet } from '@native-twin/css';
+import { asArray } from '@native-twin/helpers';
 import { TwinDocument } from '../../documents/models/twin-document.model';
 import { TwinStore } from '../../native-twin/native-twin.types';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
@@ -47,7 +48,7 @@ export const completionRulesToEntries = (
   document: TwinDocument,
 ) => {
   const filtered = filterTokensFromRules(flattenTemplateTokens, ruleCompletions);
-  return ReadonlyArray.map(filtered, (suggestion) => {
+  return ReadonlyArray.flatMap(filtered, (suggestion) => {
     const { match, rule } = suggestion;
     const { insertText, range } = match.adjustTextInsert(
       rule.completion.className,
@@ -56,8 +57,17 @@ export const completionRulesToEntries = (
         document.offsetToPosition(match.token.bodyLoc.end),
       ),
     );
+    // const token = match.token.token;
+    // if (token.type === 'CLASS_NAME') {
+    //   match;
+    //   if (token.value.m) {
+    //     if (token.value.m.value === 'NONE') {
+          
+    //     }
+    //   }
+    // }
     const result = new VscodeCompletionItem(rule, range, insertText);
-    return result;
+    return asArray(result);
   });
 };
 

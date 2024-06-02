@@ -1,8 +1,12 @@
+import { ScrollView as RNScrollView, View as RNView, Text as RNText } from 'react-native';
 import renderer from 'react-test-renderer';
 import { defineConfig, setup } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { ScrollView, styled, View } from '../src';
+import { createStyledComponent } from '../src';
 import { createVariants } from '../src/styled/variants';
+
+const ScrollView = createStyledComponent(RNScrollView, 'contentContainerStyle');
+const View = createStyledComponent(RNView, 'style');
 
 beforeAll(() => {
   setup(defineConfig({ content: [], presets: [presetTailwind()] }));
@@ -49,7 +53,7 @@ const viewVariants = createVariants({
     active: true,
   },
 });
-const H1 = styled.Text;
+const H1 = createStyledComponent(RNText, 'style');
 
 describe('@native-twin/styled', () => {
   it('Complex View', () => {

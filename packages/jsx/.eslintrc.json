@@ -12,6 +12,7 @@
         "plugin:@nx/typescript"
       ],
       "rules": {
+        "@typescript-eslint/ban-ts-comment": "off",
         "unused-imports/no-unused-vars": "off",
         "no-fallthrough": "off",
         "react-hooks/rules-of-hooks": "off",

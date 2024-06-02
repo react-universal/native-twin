@@ -26,8 +26,28 @@ const mapWithLocation = <A extends object>(
 const parseVariant: P.Parser<LocatedParser<VariantToken>> =
   TwParser.parseVariant.mapFromState(mapWithLocation);
 
-const parseClassName: P.Parser<LocatedParser<ClassNameToken>> =
-  TwParser.parseClassName.mapFromState(mapWithLocation);
+/** Match color modifiers like: `.../10` or `.../[...]` */
+export const colorModifier = P.sequenceOf([
+  P.char('/'),
+  P.maybe(P.choice([P.digits, TwParser.parseArbitraryValue])),
+]).map((x) => TwParser.mapColorModifier(x[1] ?? 'NONE'));
+
+/** Match classnames with important prefix arbitrary and color modifiers */
+export const parseClassName = P.sequenceOf([
+  TwParser.parseMaybeImportant,
+  P.regex(TwParser.classNameIdent),
+  P.maybe(TwParser.parseArbitraryValue),
+  P.maybe(colorModifier),
+])
+  .map(
+    (x): ClassNameToken =>
+      TwParser.mapClassName({
+        i: x[0],
+        n: x[1] + (x[2] ? x[2] : ''),
+        m: x[3],
+      }),
+  )
+  .mapFromState(mapWithLocation);
 const parseVariantClass: P.Parser<LocatedParser<VariantClassToken>> =
   TwParser.parseVariantClass.mapFromState(mapWithLocation);
 const parseArbitraryValue: P.Parser<LocatedParser<ArbitraryToken>> =

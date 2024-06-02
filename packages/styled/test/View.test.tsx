@@ -1,7 +1,11 @@
 import renderer from 'react-test-renderer';
 import { defineConfig, setup } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { View as StyledView, Text } from '../src';
+import { View as RNView, Text as RNText } from 'react-native';
+import { createStyledComponent } from '../src';
+
+const Text = createStyledComponent(RNText, 'style');
+const StyledView = createStyledComponent(RNView, 'style');
 
 beforeAll(() => {
   setup(defineConfig({ content: [], presets: [presetTailwind()] }));

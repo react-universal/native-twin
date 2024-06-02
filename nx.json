@@ -30,6 +30,19 @@
       ],
       "cache": false
     },
+    "nextjs:pages:dev": {
+      "cache": false,
+      "dependsOn": [
+        "^build",
+        "build"
+      ],
+      "inputs": [
+        "^production",
+        "{projectRoot}/pages/*",
+        "{projectRoot}/styles/*",
+        "{projectRoot}/public/*"
+      ]
+    },
     "build": {
       "cache": true,
       "inputs": [
@@ -62,6 +75,8 @@
       "{projectRoot}/src/**/*",
       "{projectRoot}/vite.config.*",
       "{projectRoot}/tsconfig.*",
+      "{projectRoot}/next.config.js",
+      "{projectRoot}/tailwind.config.js",
       "{projectRoot}/package.json"
     ],
     "production": [

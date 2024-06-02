@@ -22,7 +22,7 @@
   "publisher": "native-twin",
   "main": "./build/extension.js",
   "scripts": {
-    "build": "node ./esbuild.mjs",
+    "build": "yarn clean && yarn build:tsc",
     "build:tsc": "tsc -b",
     "build:tsc:watch": "tsc -b -w",
     "clean": "rm -rf build",

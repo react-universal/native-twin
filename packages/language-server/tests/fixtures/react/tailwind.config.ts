@@ -11,6 +11,10 @@ export default defineConfig({
       colors: {
         primary: 'blue',
       },
+      screens: {
+        md: '640px',
+        sm: '740px',
+      },
       fontFamily: {
         DEFAULT: 'Inter-Regular',
         inter: 'Inter-Regular',
