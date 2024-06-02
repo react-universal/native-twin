@@ -1,5 +1,6 @@
 /** @type {import("jest").Config} */
 module.exports = {
   preset: 'jest-expo/ios',
-  roots: ['tests']
+  roots: ['tests'],
+  passWithNoTests: true,
 };
