@@ -21,7 +21,7 @@
     "example:expo": "yarn workspace expo-app run start",
     "extension:dev": "nx run-many -t vscode:dev",
     "format": "prettier --write packages apps examples \"**/*.{js,ts,tsx,md}\"",
-    "libs:foreach": "yarn workspaces foreach --no-private --verbose",
+    "libs:foreach": "yarn workspaces foreach --all --no-private --verbose",
     "lint": "nx run-many -t lint",
     "release": "yarn build:release && changeset publish",
     "test": "nx run-many -t test"

@@ -8,6 +8,15 @@
     "Linters",
     "Snippets"
   ],
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/vscode-extension"
+  },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "native-twin",

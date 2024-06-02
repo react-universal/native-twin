@@ -2,6 +2,15 @@
   "name": "@native-twin/language-server",
   "version": "5.0.5",
   "description": "Native Twin language server provider",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/language-server"
+  },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "main": "build/index.js",

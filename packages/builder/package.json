@@ -2,6 +2,15 @@
   "name": "@native-twin/builder",
   "version": "1.0.4",
   "description": "Native Twin packages bundler",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/builder"
+  },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
@@ -28,5 +37,9 @@
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
   }
 }
