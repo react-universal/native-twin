@@ -7,6 +7,8 @@ const nextConfig = {
     'react-native-svg',
     'react-native-web',
     '@expo/html-elements',
+    '@native-twin/jsx',
+    "@native-twin/core"
   ],
   /**
    * Transformation to apply for both preview and dev server
@@ -14,7 +16,8 @@ const nextConfig = {
    * @param options
    * @returns {import('webpack').Configuration}
    */
-  webpack(config) {
+  webpack(config, context) {
+    console.log('CONTEXT: ', context);
     // Mix in aliases
     if (!config.resolve) {
       config.resolve = {};

@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "next lint",
     "next:build": "next build",
-    "nextjs:pages:dev": "next dev",
+    "nextjs:dev": "next dev",
     "start": "next start"
   },
   "dependencies": {
@@ -14,7 +14,7 @@
     "@native-twin/nextjs": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@native-twin/styled": "workspace:*",
-    "next": "^14.1.4",
+    "next": "^14.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native-web": "^0.19.6"

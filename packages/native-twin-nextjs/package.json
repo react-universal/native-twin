@@ -49,9 +49,8 @@
     "@native-twin/core": "workspace:*"
   },
   "peerDependencies": {
-    "next": ">=13.0",
-    "react": ">=18.0",
-    "react-native": ">=0.71.0"
+    "next": ">=14.0",
+    "react": ">=18.0"
   },
   "peerDependenciesMeta": {
     "next": {

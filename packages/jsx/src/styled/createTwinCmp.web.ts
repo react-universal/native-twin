@@ -1,5 +1,5 @@
 import { Component, createElement, forwardRef } from 'react';
-import { cx } from '@native-twin/core';
+import { cx, tw } from '@native-twin/core';
 import { REACT_FORWARD_REF_SYMBOL } from '../constants';
 import type { JSXFunction, JSXInternalProps } from '../types/jsx.types';
 import { getNormalizeConfig } from '../utils/config.utils';
@@ -27,23 +27,18 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
     props = { ...props, ref };
     for (const config of configs) {
       const newStyles: any = [];
-      const source = cx`${props[config.source]}`;
-      const target: any = props[config.target];
+      let source = props[config.source];
 
       // Ensure we only add non-empty strings
       if (typeof source === 'string' && source) {
+        source = cx`${source}`;
+        tw(`${source}`);
         newStyles.push({
           $$css: true,
           [source]: source,
         } as any);
-      }
-
-      delete props[config.source];
-
-      if (Array.isArray(target)) {
-        newStyles.push(...target);
-      } else if (target) {
-        newStyles.push(target);
+      } else if (source) {
+        newStyles.push(source);
       }
 
       if (newStyles.length > 0) {

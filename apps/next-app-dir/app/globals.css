@@ -3,6 +3,14 @@ div[data-nextjs-scroll-focus-boundary] {
   flex: 1 1 0%;
 }
 
+div {
+  align-items: stretch;
+  display: flex;
+  flex-basis: auto;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
 /**
   * Building on the RNWeb reset:
   * https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/exports/StyleSheet/initialRules.js
