@@ -5472,7 +5472,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@native-twin/ts-plugin@workspace:*, @native-twin/ts-plugin@workspace:packages/ts-plugin":
+"@native-twin/ts-plugin@workspace:packages/ts-plugin":
   version: 0.0.0-use.local
   resolution: "@native-twin/ts-plugin@workspace:packages/ts-plugin"
   dependencies:
@@ -17823,7 +17823,6 @@ __metadata:
   dependencies:
     "@effect/schema": "npm:^0.66.10"
     "@native-twin/language-server": "workspace:*"
-    "@native-twin/ts-plugin": "workspace:*"
     "@types/vscode": "npm:^1.89.0"
     "@vscode/test-cli": "npm:^0.0.9"
     "@vscode/test-electron": "npm:^2.4.0"

@@ -123,7 +123,6 @@
   "dependencies": {
     "@effect/schema": "^0.66.10",
     "@native-twin/language-server": "workspace:*",
-    "@native-twin/ts-plugin": "workspace:*",
     "effect": "^3.0.7",
     "vscode-languageclient": "^9.0.1"
   },

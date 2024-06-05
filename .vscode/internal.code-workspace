@@ -57,10 +57,6 @@
       "path": "../packages/language-server"
     },
     {
-      "name": "📦 @lib/ts-plugin",
-      "path": "../packages/ts-plugin"
-    },
-    {
       "name": "expo-app",
       "path": "../apps/expo-app"
     },
