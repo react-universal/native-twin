@@ -1,0 +1,31 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "build/**"
+      ]
+    },
+    "build:watch": {
+      "persistent": true,
+      "cache": false
+    },
+    "next:app:dev": {
+      "cache": false,
+      "interactive": true,
+      "outputLogs": "full",
+      "persistent": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "build/**"
+      ]
+    }
+  }
+}

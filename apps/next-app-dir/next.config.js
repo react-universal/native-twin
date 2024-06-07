@@ -16,8 +16,8 @@ const nextConfig = {
    * @param options
    * @returns {import('webpack').Configuration}
    */
-  webpack(config, context) {
-    console.log('CONTEXT: ', context);
+  webpack(config, _context) {
+    // console.log('CONTEXT: ', context);
     // Mix in aliases
     if (!config.resolve) {
       config.resolve = {};

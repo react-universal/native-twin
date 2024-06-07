@@ -3,8 +3,8 @@
   "version": "0.1.6",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "lint": "echo $HOME",
+    "next:app:dev": "next dev",
     "next:build": "next build",
     "start": "next start"
   },

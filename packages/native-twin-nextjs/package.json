@@ -25,6 +25,7 @@
   "exports": {
     "./_app": "./build/_app.js",
     "./_document": "./build/_document.js",
+    "./app": "./build/app.js",
     "./package.json": "./package.json"
   },
   "types": "./build/index.d.ts",

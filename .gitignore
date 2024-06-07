@@ -44,3 +44,5 @@ out
 
 .nx/cache
 *.vsix
+# Turborepo
+.turbo
