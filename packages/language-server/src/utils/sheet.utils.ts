@@ -83,7 +83,7 @@ export function createStyledContext(rem: number): StyledContext {
     orientation: 'portrait',
     resolution: 720,
     fontScale: 1,
-    platform: 'native',
+    platform: 'web',
     units: {
       rem,
       em: rem,

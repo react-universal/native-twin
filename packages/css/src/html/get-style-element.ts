@@ -5,7 +5,7 @@ export function getStyleElement(
 
   if (!style || style.tagName != 'STYLE') {
     style = document.createElement('style');
-    document.head.prepend(style);
+    document.head.append(style);
   }
   (style as HTMLElement).dataset['nativeTwin'] = 'claimed';
 

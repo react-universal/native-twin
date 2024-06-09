@@ -44,14 +44,14 @@ exports[`@native-twin/styled Complex View 1`] = `
 
 exports[`@native-twin/styled ScrollView render 1`] = `
 <RCTScrollView
-  groupID=":r0:"
-  style={
+  contentContainerStyle={
     {
       "flexBasis": "0%",
       "flexGrow": 1,
       "flexShrink": 1,
     }
   }
+  groupID=":r0:"
 >
   <View>
     <View

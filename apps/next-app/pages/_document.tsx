@@ -1,4 +1,3 @@
-import React from 'react';
 import { AppRegistry } from 'react-native';
 import Document, {
   Html,
@@ -15,7 +14,7 @@ export async function getInitialProps(ctx: DocumentContext): Promise<DocumentIni
   // @ts-expect-error
   const { getStyleElement } = AppRegistry.getApplication('Main');
   const page = await ctx.renderPage();
-  return { ...page, styles: getStyleElement() };
+  return { ...page };
 }
 
 class MyDocument extends Document {

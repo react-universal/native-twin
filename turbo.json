@@ -1,0 +1,67 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "build/**"
+      ]
+    },
+    "build:watch": {
+      "persistent": true,
+      "cache": false
+    },
+    "lint": {
+      "cache": true
+    },
+    "next:app:dev": {
+      "cache": false,
+      "interactive": true,
+      "outputLogs": "full",
+      "persistent": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "build/**"
+      ]
+    },
+    "docs:dev": {
+      "cache": false,
+      "interactive": true,
+      "outputLogs": "full",
+      "persistent": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "build/**"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "twin-run:dev": {
+      "cache": false,
+      "interactive": true,
+      "outputLogs": "full",
+      "persistent": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "build/**"
+      ]
+    }
+  }
+}

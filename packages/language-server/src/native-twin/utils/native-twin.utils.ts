@@ -2,6 +2,8 @@ import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { __Theme__ } from '@native-twin/core';
+import { TWScreenValueConfig } from '@native-twin/css';
+import { ColorsRecord, asArray, toColorValue } from '@native-twin/helpers';
 import { createRuleClassNames, createRuleCompositions } from '../native-twin.rules';
 import {
   TwinRuleCompletion,
@@ -23,7 +25,6 @@ export const createTwinStore = (nativeTwinHandler: {
   themeSections.delete('theme');
   themeSections.delete('extend');
   let currentIndex = 0;
-  // let position = 0;
   const currentConfig = nativeTwinHandler.config;
   const variants = Object.entries({
     ...currentConfig.theme.screens,
@@ -46,22 +47,47 @@ export const createTwinStore = (nativeTwinHandler: {
   );
 
   const twinThemeRules = ReadonlyArray.fromIterable(nativeTwinHandler.tw.config.rules);
-
+  const opacities = Object.entries(nativeTwinHandler.context.theme('opacity') ?? {});
   const flattenRules = ReadonlyArray.flatMap(twinThemeRules, (rule) => {
     return createRuleCompositions(rule).flatMap((composition) => {
-      const values =
-        composition.parts.themeSection === 'colors'
-          ? colorPalette
-          : nativeTwinHandler.context.theme(
-              composition.parts.themeSection as keyof __Theme__,
-            ) ?? {};
-      return createRuleClassNames(values, composition.composition, composition.parts).map(
-        (className): TwinRuleCompletion => ({
-          kind: 'rule',
-          completion: className,
-          composition: composition.composition,
-          rule: composition.parts,
-          order: currentIndex++,
+      let values: Record<string, TWScreenValueConfig> | ColorsRecord = {};
+      if (composition.parts.themeSection === 'colors') {
+        values = colorPalette;
+      } else {
+        values =
+          nativeTwinHandler.context.theme(
+            composition.parts.themeSection as keyof __Theme__,
+          ) ?? {};
+      }
+      return pipe(
+        createRuleClassNames(values, composition.composition, composition.parts),
+        ReadonlyArray.flatMap((className): TwinRuleCompletion[] => {
+          const insertRule: TwinRuleCompletion = {
+            kind: 'rule',
+            completion: className,
+            composition: composition.composition,
+            rule: composition.parts,
+            order: currentIndex++,
+          };
+
+          if (insertRule.rule.themeSection === 'colors') {
+            const newColors = opacities.map((x) => {
+              const completion = {
+                ...insertRule.completion,
+                className: `${insertRule.completion.className}/${x[0]}`,
+                declarationValue: toColorValue(insertRule.completion.declarationValue, {
+                  opacityValue: x[1],
+                }),
+              };
+              return {
+                ...insertRule,
+                completion,
+                order: currentIndex++,
+              };
+            });
+            return [...newColors, insertRule];
+          }
+          return asArray(insertRule);
         }),
       );
     });
@@ -69,24 +95,6 @@ export const createTwinStore = (nativeTwinHandler: {
 
   const composedTwinRules: HashSet.HashSet<TwinRuleCompletion> = pipe(
     flattenRules,
-    // ReadonlyArray.fromIterable(nativeTwinHandler.tw.config.rules),
-    // ReadonlyArray.map((x) => createRuleCompositions(x)),
-    // ReadonlyArray.flatten,
-    // ReadonlyArray.map((x) => {
-    //   const values =
-    //     x.parts.themeSection === 'colors'
-    //       ? colorPalette
-    //       : nativeTwinHandler.context.theme(x.parts.themeSection as keyof __Theme__) ??
-    //         {};
-    //   return createRuleClassNames(values, x.composition, x.parts).map(
-    //     (className): TwinRuleWithCompletion => ({
-    //       completion: className,
-    //       composition: x.composition,
-    //       rule: x.parts,
-    //     }),
-    //   );
-    // }),
-    // ReadonlyArray.flatten,
     ReadonlyArray.sortBy((x, y) => (x.order > y.order ? 1 : -1)),
     HashSet.fromIterable,
   );

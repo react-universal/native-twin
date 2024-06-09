@@ -57,10 +57,6 @@
       "path": "../packages/language-server"
     },
     {
-      "name": "📦 @lib/ts-plugin",
-      "path": "../packages/ts-plugin"
-    },
-    {
       "name": "expo-app",
       "path": "../apps/expo-app"
     },
@@ -74,7 +70,7 @@
     },
     {
       "name": "docs-site",
-      "path": "../apps/site"
+      "path": "../apps/docs-site"
     }
   ],
   "settings": {
@@ -120,6 +116,7 @@
       "**/build": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
+    "typescript.tsserver.log": "verbose",
     "cSpell.words": [
       "sastan",
       "TRBL",

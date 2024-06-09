@@ -115,9 +115,9 @@ export const getRangeFromTokensAtPosition = (
 ) => {
   return pipe(
     templateTokens,
-    ReadonlyArray.map((completion) => {
-      return document.getRangeAtPosition(completion, nodeAtPosition.range);
-    }),
+    ReadonlyArray.map((completion) =>
+      document.getRangeAtPosition(completion, nodeAtPosition.range),
+    ),
   );
 };
 
@@ -126,14 +126,15 @@ export function getDocumentationMarkdown(sheetEntry: FinalSheet, css: string) {
   result.push('***Css Rules*** \n\n');
   result.push(
     `${'```css\n'}${toCssFormat(css, {
-      indent: '  ',
+      indent: `\t`,
       openbrace: 'end-of-line',
       autosemicolon: true,
     })}${'\n```'}`,
   );
   result.push('\n\n');
   result.push('#### React Native StyleSheet\n');
-  result.push(createJSONMarkdownString(sheetEntry.base));
+  const rnSheet = Object.entries(sheetEntry).filter((x) => Object.keys(x[1]).length > 0);
+  result.push(createJSONMarkdownString(Object.fromEntries(rnSheet)));
   // result.push(createDebugHover(completionRule));
   return result.join('\n');
 }

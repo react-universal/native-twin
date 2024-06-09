@@ -25,6 +25,7 @@
   "exports": {
     "./_app": "./build/_app.js",
     "./_document": "./build/_document.js",
+    "./app": "./build/app.js",
     "./package.json": "./package.json"
   },
   "types": "./build/index.d.ts",
@@ -49,9 +50,8 @@
     "@native-twin/core": "workspace:*"
   },
   "peerDependencies": {
-    "next": ">=13.0",
-    "react": ">=18.0",
-    "react-native": ">=0.71.0"
+    "next": ">=14.0",
+    "react": ">=18.0"
   },
   "peerDependenciesMeta": {
     "next": {

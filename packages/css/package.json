@@ -25,12 +25,10 @@
   "types": "./build/index.d.ts",
   "files": [
     "build",
-    "tailwind.js",
-    "tailwind.d.ts",
-    "parser.d.ts",
     "LICENSE",
     "CHANGELOG.md",
-    "README.md"
+    "README.md",
+    "tailwind-parser"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -46,20 +44,12 @@
     "@native-twin/arc-parser": "workspace:*",
     "@native-twin/helpers": "workspace:*"
   },
+  "optionalDependencies": {
+    "jest": "*"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
-  "nx": {
-    "includedScripts": [
-      "build",
-      "build:watch",
-      "clean",
-      "dev",
-      "lint",
-      "test:debug",
-      "test:watch"
-    ]
-  }
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
 }

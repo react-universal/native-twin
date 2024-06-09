@@ -7,6 +7,7 @@ import {
   cx,
   defineConfig,
   setup,
+  tx,
 } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
@@ -37,6 +38,10 @@ export class NativeTwinManager {
 
   get cx() {
     return cx;
+  }
+
+  get tx() {
+    return tx;
   }
 
   loadUserFile(configFile: string) {

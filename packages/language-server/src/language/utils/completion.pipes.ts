@@ -32,5 +32,14 @@ export const findExactTokenFromTemplateNode = (
 
 /** File Private */
 const createCompletionTokenResolver =
-  (node: TemplateTokenData) => (twinRule: TwinRuleCompletion) =>
-    twinRule.completion.className.startsWith(node.getTokenClassName());
+  (node: TemplateTokenData) => (twinRule: TwinRuleCompletion) => {
+    const tokenClassName = node.getTokenClassName();
+    if (
+      !tokenClassName.includes('/') &&
+      twinRule.rule.themeSection === 'colors' &&
+      twinRule.completion.className.includes('/')
+    ) {
+      return false;
+    }
+    return twinRule.completion.className.startsWith(tokenClassName);
+  };

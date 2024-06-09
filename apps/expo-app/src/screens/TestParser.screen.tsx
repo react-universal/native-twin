@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { cx } from '@native-twin/core';
-import { H1, H2, Image, Pressable, TextInput, View } from '@native-twin/styled';
+import { Text, Image, Pressable, TextInput, View } from 'react-native';
 
 const TextField = () => {
   const [text, setText] = useState('');
@@ -40,7 +40,7 @@ function HomeScreen() {
             setActive((prevState) => !prevState);
           }}
         >
-          <H1 className='text-gray-200'>Activate</H1>
+          <Text className='text-gray-200'>Activate</Text>
         </Pressable>
         <Image
           source={testImage}
@@ -49,12 +49,12 @@ function HomeScreen() {
         />
         <TextField />
         <View className='mb-2 -top-1 -translate-x-2 rounded-lg bg-gray-300 p-2 group-hover:bg-pink-800'>
-          <H2
+          <Text
             suppressHighlighting
             className='font-inter-bold text-xl text-gray-800 group-hover:text-white -mt-2'
           >
             Deeply nested hover
-          </H2>
+          </Text>
         </View>
       </View>
     </View>

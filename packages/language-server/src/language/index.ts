@@ -4,6 +4,9 @@ import { LanguageDiagnostics } from './diagnostics.service';
 import { LanguageDocumentation } from './language-documentation.service';
 import { LanguageCompletions } from './language.service';
 
+// @ts-expect-error
+globalThis['__DEV__'] = false;
+
 export const createLanguageService = Effect.scoped(
   Effect.gen(function* () {
     const completions = yield* LanguageCompletions;

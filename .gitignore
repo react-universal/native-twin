@@ -43,3 +43,6 @@ out
 *.tsbuildinfo
 
 .nx/cache
+*.vsix
+# Turborepo
+.turbo

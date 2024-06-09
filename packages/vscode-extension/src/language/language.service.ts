@@ -48,7 +48,7 @@ export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext
 
       const serverConfig: ServerOptions = {
         run: {
-          module: path.resolve(__dirname, '../servers/native-twin.server'),
+          module: path.resolve(__dirname, './native-twin.server'),
           transport: TransportKind.ipc,
         },
         debug: {

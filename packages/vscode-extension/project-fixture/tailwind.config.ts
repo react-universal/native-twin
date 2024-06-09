@@ -6,8 +6,17 @@ export default defineConfig({
   root: {
     rem: 16,
   },
+  mode: 'web',
   theme: {
+    screens: {
+      md: '640px',
+      sm: '740px',
+    },
     extend: {
+      screens: {
+        md: '640px',
+        sm: '740px',
+      },
       colors: {
         primary: 'blue',
       },

@@ -1,5 +1,5 @@
 {
-  "name": "@native-twin/vscode",
+  "name": "native-twin-vscode",
   "version": "1.0.0",
   "private": true,
   "description": "Native Twin vscode extension.",
@@ -22,7 +22,7 @@
   "publisher": "native-twin",
   "main": "./build/extension.js",
   "scripts": {
-    "build": "node ./build.js --production",
+    "build": "yarn clean && yarn build:tsc",
     "build:tsc": "tsc -b",
     "build:tsc:watch": "tsc -b -w",
     "clean": "rm -rf build",
@@ -30,7 +30,7 @@
     "vsc-test": "vscode-test --watch",
     "vsc:test": "sh ./scripts/e2e.sh",
     "vscode:dev": "tsc -b -w",
-    "vscode:prepublish": "node ./build.js"
+    "vscode:prepublish": "node ./esbuild.mjs"
   },
   "contributes": {
     "commands": [
@@ -123,7 +123,6 @@
   "dependencies": {
     "@effect/schema": "^0.66.10",
     "@native-twin/language-server": "workspace:*",
-    "@native-twin/ts-plugin": "workspace:*",
     "effect": "^3.0.7",
     "vscode-languageclient": "^9.0.1"
   },

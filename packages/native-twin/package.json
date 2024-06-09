@@ -31,7 +31,8 @@
     "types.d.ts",
     "LICENSE",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "expo-snack.js"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -51,6 +52,9 @@
   "peerDependencies": {
     "react": ">=18.0",
     "react-native": ">=0.71.0"
+  },
+  "optionalDependencies": {
+    "jest": "*"
   },
   "publishConfig": {
     "access": "public",

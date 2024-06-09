@@ -6,7 +6,9 @@ export function stylizeJSXChilds(props: JSXInternalProps | null | undefined) {
   if (props && props['children'] && props['className']) {
     const originalChild = props['children'];
 
-    const children = isFragment(originalChild) ? originalChild.props.children : originalChild;
+    const children = isFragment(originalChild)
+      ? originalChild.props.children
+      : originalChild;
 
     const totalChilds = Children.count(children);
 
