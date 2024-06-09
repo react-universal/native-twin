@@ -14,23 +14,7 @@
         "*.js",
         "*.jsx"
       ],
-      "rules": {
-        "@nx/enforce-module-boundaries": [
-          "error",
-          {
-            "enforceBuildableLibDependency": true,
-            "allow": ["/*test/*/", "/*expo-snack.js"],
-            "depConstraints": [
-              {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": [
-                  "*"
-                ]
-              }
-            ]
-          }
-        ]
-      }
+      "rules": {}
     },
     {
       "files": [

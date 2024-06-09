@@ -13,6 +13,9 @@
       "persistent": true,
       "cache": false
     },
+    "lint": {
+      "cache": true
+    },
     "next:app:dev": {
       "cache": false,
       "interactive": true,
