@@ -70,7 +70,7 @@
     },
     {
       "name": "docs-site",
-      "path": "../apps/site"
+      "path": "../apps/docs-site"
     }
   ],
   "settings": {

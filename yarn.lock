@@ -5197,6 +5197,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@monaco-editor/loader@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@monaco-editor/loader@npm:1.4.0"
+  dependencies:
+    state-local: "npm:^1.0.6"
+  peerDependencies:
+    monaco-editor: ">= 0.21.0 < 1"
+  checksum: 10/32ad01de015fc187450aa1cc0aa763af167664b6a61efcb9e1523a0f51ca5d0b35ba11ed95889edd6d774dfe98f196ef58f1607243abcbdd3d6d743f82ba8285
+  languageName: node
+  linkType: hard
+
+"@monaco-editor/react@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "@monaco-editor/react@npm:4.6.0"
+  dependencies:
+    "@monaco-editor/loader": "npm:^1.4.0"
+  peerDependencies:
+    monaco-editor: ">= 0.25.0 < 1"
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10/e32724ebcc2fc81e91169d69eff8533e15a595c13156ec57965238a0f0afa67e2ed2abbf735a57cfaae15430bbc905b016b644bf7383a82d607501d557a6dd82
+  languageName: node
+  linkType: hard
+
 "@native-twin/arc-parser@workspace:*, @native-twin/arc-parser@workspace:packages/arc-parser":
   version: 0.0.0-use.local
   resolution: "@native-twin/arc-parser@workspace:packages/arc-parser"
@@ -5253,9 +5277,13 @@ __metadata:
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
+    jest: "npm:*"
   peerDependencies:
     react: ">=18.0"
     react-native: ">=0.71.0"
+  dependenciesMeta:
+    jest:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -5265,6 +5293,10 @@ __metadata:
   dependencies:
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/helpers": "workspace:*"
+    jest: "npm:*"
+  dependenciesMeta:
+    jest:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -15529,6 +15561,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"native-twin-docs@workspace:apps/docs-site":
+  version: 0.0.0-use.local
+  resolution: "native-twin-docs@workspace:apps/docs-site"
+  dependencies:
+    "@monaco-editor/react": "npm:^4.6.0"
+    "@native-twin/core": "workspace:*"
+    "@native-twin/jsx": "workspace:*"
+    "@native-twin/nextjs": "workspace:*"
+    "@native-twin/preset-tailwind": "workspace:*"
+    "@native-twin/styled": "workspace:*"
+    next: "npm:^14.2.3"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-native: "npm:0.73.4"
+    react-native-web: "npm:^0.19.6"
+  languageName: unknown
+  linkType: soft
+
 "native-twin-vscode@workspace:packages/vscode-extension":
   version: 0.0.0-use.local
   resolution: "native-twin-vscode@workspace:packages/vscode-extension"
@@ -18686,6 +18736,13 @@ __metadata:
   dependencies:
     type-fest: "npm:^0.7.1"
   checksum: 10/f4fbddfc09121d91e587b60de4beb4941108e967d71ad3a171812dc839b010ca374d064ad0a296295fed13acd103609d99a4224a25b4e67de13cae131f1901ee
+  languageName: node
+  linkType: hard
+
+"state-local@npm:^1.0.6":
+  version: 1.0.7
+  resolution: "state-local@npm:1.0.7"
+  checksum: 10/1d956043e270861d40a639ff3457938cf61dbc7e25209d21b55060d8dfaf74742b8a1e525ed6fcb0c2d89b7d3e305bb8589bf27392012889456b3ad82a4b7d0a
   languageName: node
   linkType: hard
 

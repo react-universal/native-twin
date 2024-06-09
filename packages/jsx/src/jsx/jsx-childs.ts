@@ -3,8 +3,6 @@ import { isFragment } from 'react-is';
 import { JSXInternalProps } from '../types/jsx.types';
 
 export function stylizeJSXChilds(props: JSXInternalProps | null | undefined) {
-  // TODO: Check this on every react web fmw
-  if (typeof window !== 'undefined') return;
   if (props && props['children'] && props['className']) {
     const originalChild = props['children'];
 

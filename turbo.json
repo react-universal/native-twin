@@ -26,6 +26,39 @@
         "!.next/cache/**",
         "build/**"
       ]
+    },
+    "docs:dev": {
+      "cache": false,
+      "interactive": true,
+      "outputLogs": "full",
+      "persistent": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "build/**"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "twin-run:dev": {
+      "cache": false,
+      "interactive": true,
+      "outputLogs": "full",
+      "persistent": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "build/**"
+      ]
     }
   }
 }

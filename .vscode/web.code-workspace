@@ -5,6 +5,14 @@
       "path": ".."
     },
     {
+      "name": "docs-site",
+      "path": "../apps/docs-site"
+    },
+    {
+      "name": "twin-run",
+      "path": "../apps/twin-run"
+    },
+    {
       "name": "📦 @lib/jsx",
       "path": "../packages/jsx"
     },

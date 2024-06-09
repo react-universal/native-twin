@@ -1,7 +1,7 @@
 'use client';
 
 import { createElement, Fragment, ReactNode, useState } from 'react';
-import { StyleSheet } from 'react-native';
+// import { StyleSheet } from 'react-native';
 import { useServerInsertedHTML } from 'next/navigation';
 import { install, TailwindConfig, TailwindUserConfig } from '@native-twin/core';
 import { sheetEntriesToCss, SheetEntry } from '@native-twin/css';
@@ -19,8 +19,7 @@ export const NativeTwinSheet = (twinConfig: TailwindUserConfig | TailwindConfig)
       return install(config, !__DEV__);
     });
     useServerInsertedHTML(() => {
-      // @ts-expect-error ----
-      const rnSheet = StyleSheet.getSheet();
+      // const rnSheet = StyleSheet.getSheet();
       const styles = createElement(
         Fragment,
         null,
@@ -31,13 +30,13 @@ export const NativeTwinSheet = (twinConfig: TailwindUserConfig | TailwindConfig)
             __html: sheetEntriesToCss(twin.target as SheetEntry[]),
           },
         }),
-        createElement('style', {
-          nonce: null,
-          id: rnSheet.id,
-          dangerouslySetInnerHTML: {
-            __html: rnSheet.textContent,
-          },
-        }),
+        // createElement('style', {
+        //   nonce: null,
+        //   id: rnSheet.id,
+        //   dangerouslySetInnerHTML: {
+        //     __html: rnSheet.textContent,
+        //   },
+        // }),
       );
       return styles;
     });
