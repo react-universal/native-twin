@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/css",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "description": "Css parser for react native",
   "keywords": [
     "react-native",
