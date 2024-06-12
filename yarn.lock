@@ -5352,6 +5352,36 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@native-twin/language-service@workspace:packages/language-service":
+  version: 0.0.0-use.local
+  resolution: "@native-twin/language-service@workspace:packages/language-service"
+  dependencies:
+    "@ctrl/tinycolor": "npm:^4.1.0"
+    "@native-twin/core": "workspace:*"
+    "@native-twin/preset-tailwind": "workspace:*"
+    "@types/cssbeautify": "npm:^0.3.5"
+    "@types/showdown": "npm:^2.0.6"
+    "@vscode/emmet-helper": "npm:^2.9.3"
+    cssbeautify: "npm:0.3.1"
+    effect: "npm:^3.0.7"
+    jest: "npm:*"
+    madge: "npm:7.0.0"
+    match-sorter: "npm:6.3.4"
+    showdown: "npm:2.1.0"
+    ts-morph: "npm:^22.0.0"
+    vscode-css-languageservice: "npm:^6.2.14"
+    vscode-languageserver: "npm:^9.0.1"
+    vscode-languageserver-protocol: "npm:^3.17.5"
+    vscode-languageserver-textdocument: "npm:^1.0.11"
+    vscode-languageserver-types: "npm:^3.17.5"
+  dependenciesMeta:
+    jest:
+      optional: true
+  bin:
+    native-twin-language-server: ./bin/native-twin-language-server
+  languageName: unknown
+  linkType: soft
+
 "@native-twin/metro@workspace:*, @native-twin/metro@workspace:packages/metro":
   version: 0.0.0-use.local
   resolution: "@native-twin/metro@workspace:packages/metro"
