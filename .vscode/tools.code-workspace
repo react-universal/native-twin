@@ -9,10 +9,6 @@
       "path": "../sites/twin.run"
     },
     {
-      "name": "📦 twin.docs",
-      "path": "../sites/twin.docs"
-    },
-    {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
