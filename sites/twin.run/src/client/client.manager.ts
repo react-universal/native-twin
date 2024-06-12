@@ -3,6 +3,7 @@ import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-over
 import getTextmateServiceOverride from '@codingame/monaco-vscode-textmate-service-override';
 import getConfigurationServiceOverride from '@codingame/monaco-vscode-configuration-service-override';
 import getEditorServiceOverride from '@codingame/monaco-vscode-editor-service-override';
+import getEditorViewsOverride from '@codingame/monaco-vscode-views-service-override'
 import getOutputServiceOverride from '@codingame/monaco-vscode-output-service-override';
 import getLifecycleServiceOverride from '@codingame/monaco-vscode-lifecycle-service-override';
 import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
@@ -140,6 +141,7 @@ export class ClientManager {
           ...getExplorerServiceOverride(),
           ...getLanguagesServiceOverride(),
           // ...getStorageServiceOverride(),
+          ...getEditorViewsOverride(),
           ...getViewsServiceOverride(),
         },
         // enableExtHostWorker: true,

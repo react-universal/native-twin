@@ -5,8 +5,11 @@ import {
   CompletionItemKind,
   TextDocumentSyncKind,
   createConnection,
+  TextDocuments,
 } from 'vscode-languageserver/browser.js';
-import { documentsHandler } from './documents.js';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+
+export const documentsHandler = new TextDocuments(TextDocument);
 
 /* browser specific setup code */
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
@@ -14,8 +17,8 @@ const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScop
 
 // Inject the shared services and language-specific services
 const connection = createConnection(messageReader, messageWriter);
-
 // Start the language server with the shared services
+
 connection.onInitialize(() => {
   return {
     capabilities: {
@@ -46,6 +49,7 @@ connection.onInitialized((x) => {
   console.log('WORKER_connection.onInitialized', x);
 });
 connection.onCompletion((x) => {
+  console.log('DOCUMENT: ', documentsHandler.get(x.textDocument.uri));
   console.log('WORKER_connection.onCompletion', x);
   const doc = documentsHandler.get(x.textDocument.uri);
   console.log('DOC: ', doc);

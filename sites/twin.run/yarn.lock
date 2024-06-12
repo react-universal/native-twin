@@ -1136,6 +1136,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@entur/vite-plugin-assets-json@npm:^0.0.9":
+  version: 0.0.9
+  resolution: "@entur/vite-plugin-assets-json@npm:0.0.9"
+  checksum: 10/fe278260f3a8d28fd8b26afd94648934258e5cb3e7a2e3d72a4c2a71dade1ba9028b14fe12a1141a68ca11294163960e1ee0df3e8b007e54031279a8e5d86436
+  languageName: node
+  linkType: hard
+
 "@esbuild/aix-ppc64@npm:0.20.2":
   version: 0.20.2
   resolution: "@esbuild/aix-ppc64@npm:0.20.2"
@@ -1934,6 +1941,30 @@ __metadata:
   bin:
     native-twin-language-server: bin/native-twin-language-server
   checksum: 10/b2cfd0193007d859b7f71319587a96be97c23c4a1547e83c2c830f437cbef4647fd76a432aa3745b48ae7966f44f01e12eac22b2f292809ac6e6fb0589931df0
+  languageName: node
+  linkType: hard
+
+"@native-twin/language-service@file:../../packages/language-service::locator=twin-run%40workspace%3A.":
+  version: 6.0.1
+  resolution: "@native-twin/language-service@file:../../packages/language-service#../../packages/language-service::hash=e99ec3&locator=twin-run%40workspace%3A."
+  dependencies:
+    "@ctrl/tinycolor": "npm:^4.1.0"
+    "@vscode/emmet-helper": "npm:^2.9.3"
+    cssbeautify: "npm:0.3.1"
+    effect: "npm:^3.0.7"
+    jest: "npm:*"
+    match-sorter: "npm:6.3.4"
+    showdown: "npm:2.1.0"
+    ts-morph: "npm:^22.0.0"
+    vscode-css-languageservice: "npm:^6.2.14"
+    vscode-languageserver: "npm:^9.0.1"
+    vscode-languageserver-protocol: "npm:^3.17.5"
+    vscode-languageserver-textdocument: "npm:^1.0.11"
+    vscode-languageserver-types: "npm:^3.17.5"
+  dependenciesMeta:
+    jest:
+      optional: true
+  checksum: 10/03cca1cce0c276b7557a106cffc8315844800c34d68b7032af8bc1768cf855f040a47851a34127bbb193e48bf7fe4f765683396cf71bce934fad26826a6ad381
   languageName: node
   linkType: hard
 
@@ -7462,9 +7493,11 @@ __metadata:
     "@codingame/monaco-vscode-views-service-override": "npm:~5.2.0"
     "@codingame/monaco-vscode-workbench-service-override": "npm:~5.2.0"
     "@codingame/monaco-vscode-working-copy-service-override": "npm:~5.2.0"
+    "@entur/vite-plugin-assets-json": "npm:^0.0.9"
     "@native-twin/core": "npm:^6.1.0"
     "@native-twin/css": "npm:^6.1.0"
     "@native-twin/language-server": "npm:^6.1.0"
+    "@native-twin/language-service": "file:../../packages/language-service"
     "@native-twin/preset-tailwind": "npm:^6.1.0"
     "@rollup/pluginutils": "npm:^5.1.0"
     "@typefox/monaco-editor-react": "npm:^4.2.0"

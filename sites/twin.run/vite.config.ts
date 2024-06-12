@@ -3,8 +3,10 @@ import path from 'path';
 import fs from 'fs';
 import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 import vsixPlugin from '@codingame/monaco-vscode-rollup-vsix-plugin';
+import assetsJSON from '@entur/vite-plugin-assets-json';
 
 export default defineConfig({
+  assetsInclude: ['**/*.json'],
   optimizeDeps: {
     esbuildOptions: {
       sourcemap: 'inline',
@@ -16,6 +18,7 @@ export default defineConfig({
   },
   plugins: [
     vsixPlugin(),
+    assetsJSON(),
     {
       // For the *-language-features extensions which use SharedArrayBuffer
       name: 'configure-response-headers',
@@ -29,6 +32,7 @@ export default defineConfig({
         });
       },
     },
+
     {
       name: 'force-prevent-transform-assets',
       apply: 'serve',
@@ -39,6 +43,14 @@ export default defineConfig({
               const pathname = new URL(req.originalUrl, import.meta.url).pathname;
               if (pathname.endsWith('.html')) {
                 res.setHeader('Content-Type', 'text/html');
+                res.writeHead(200);
+                res.write(fs.readFileSync(path.join(__dirname, pathname)));
+                res.end();
+              }
+
+              if (pathname.endsWith('.json')) {
+                console.log('JSON: ', pathname);
+                res.setHeader('Content-Type', 'application/json');
                 res.writeHead(200);
                 res.write(fs.readFileSync(path.join(__dirname, pathname)));
                 res.end();
@@ -65,6 +77,7 @@ export default defineConfig({
     rollupOptions: {
       // plugins: [vsixPlugin()],
       logLevel: 'debug',
+      // external: ['@babel/traverse'],
     },
   },
   resolve: {

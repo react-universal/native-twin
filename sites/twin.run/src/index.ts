@@ -1,6 +1,7 @@
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
 import '@codingame/monaco-vscode-typescript-basics-default-extension';
 import '@codingame/monaco-vscode-typescript-language-features-default-extension';
+import '@codingame/monaco-vscode-npm-default-extension';
 import { useWorkerFactory } from 'monaco-editor-wrapper/workerFactory';
 import { clientManager } from './client/client.manager';
 import workerUrl from './workers/twin.worker?worker&url';
