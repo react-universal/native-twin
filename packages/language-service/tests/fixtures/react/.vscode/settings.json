@@ -3,8 +3,7 @@
     "nativeTwin.trace.server": "verbose",
     "nativeTwin.enable": true,
     "editor.suggest.showColors": true,
-    "markdown.trace.server": "verbose",
-    "typescript.tsserver.log": "off",
+    "typescript.tsserver.log": "verbose",
     "nativeTwin.debug": true,
     "editor.quickSuggestions": {
         "other": "on",

@@ -13,6 +13,10 @@
       "path": "../packages/babel"
     },
     {
+      "name": "📦 @lib/language-service",
+      "path": "../packages/language-service"
+    },
+    {
       "name": "📦 @lib/language-server",
       "path": "../packages/language-server"
     },
