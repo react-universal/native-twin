@@ -18,7 +18,7 @@ import {
 import { ExtensionContext } from '../extension/extension.service';
 import { registerCommand, thenable } from '../extension/extension.utils';
 import {
-  getDefaultLanguageCLientOptions,
+  getDefaultLanguageClientOptions,
   onLanguageClientClosed,
   onLanguageClientError,
   onProvideDocumentColors,
@@ -62,7 +62,7 @@ export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext
       extensionCtx.subscriptions.push(colorDecorationType);
 
       const clientConfig: LanguageClientOptions = {
-        ...getDefaultLanguageCLientOptions({
+        ...getDefaultLanguageClientOptions({
           tsConfigFiles: tsconfigFiles ?? [],
           twinConfigFile: configFiles.at(0),
           workspaceRoot: workspace?.at(0),

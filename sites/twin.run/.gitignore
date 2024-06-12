@@ -1,0 +1,48 @@
+# dependencies
+**node_modules
+/.pnp
+.pnp.js
+**/.turbo
+
+# Yarn Berry
+.pnp.*
+/.yarn/*.gz
+**/.yarn/cache
+**/.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# ESLint
+lint-results/
+
+**build/
+**dist/
+
+**.next/
+
+**/.swc
+.env
+.npmrc
+*.tgz
+*.log
+**/_release
+
+# VITE
+**benchmark/
+**coverage/
+**.cache/
+
+#VSCODE
+.vscode-test
+out
+
+# TypeScript cache
+*.tsbuildinfo
+
+.nx/cache
+*.vsix
+# Turborepo
+.turbo

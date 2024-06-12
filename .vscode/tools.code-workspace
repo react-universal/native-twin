@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "📦 twin.run",
+      "path": "../sites/twin.run"
+    },
+    {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
