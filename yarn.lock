@@ -5332,6 +5332,8 @@ __metadata:
   resolution: "@native-twin/language-server@workspace:packages/language-server"
   dependencies:
     "@ctrl/tinycolor": "npm:^4.1.0"
+    "@native-twin/core": "workspace:*"
+    "@native-twin/preset-tailwind": "workspace:*"
     "@types/cssbeautify": "npm:^0.3.5"
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
