@@ -1,30 +1,46 @@
 import { Binding, NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import * as E from 'effect/Effect';
-import * as O from 'effect/Option';
+import * as Effect from 'effect/Effect';
+import * as Option from 'effect/Option';
 
-export const getCallExpression = (x: E.Effect<O.Option<t.VariableDeclarator>>) => {
-  return x.pipe(E.map(O.map((a) => (t.isCallExpression(a.init) ? O.some(a.init) : O.none()))));
+export const getCallExpression = (
+  x: Effect.Effect<Option.Option<t.VariableDeclarator>>,
+) => {
+  return x.pipe(
+    Effect.map(
+      Option.map((a) =>
+        t.isCallExpression(a.init) ? Option.some(a.init) : Option.none(),
+      ),
+    ),
+  );
 };
 
 export const getImport = (x: Binding) => {
-  return E.sync(() => (x.path.isImportSpecifier() ? O.some(x.path.node) : O.none()));
+  return Effect.sync(() =>
+    x.path.isImportSpecifier() ? Option.some(x.path.node) : Option.none(),
+  );
 };
 
 export const getImportDefault = (x: Binding) => {
-  return E.sync(() => (x.path.isImportDefaultSpecifier() ? O.some(x.path.node) : O.none()));
+  return Effect.sync(() =>
+    x.path.isImportDefaultSpecifier() ? Option.some(x.path.node) : Option.none(),
+  );
 };
 
 export const getImportDeclaration = (x: Binding) => {
-  return E.sync(() => (x.path.isImportDeclaration() ? O.some(x.path.node) : O.none()));
+  return Effect.sync(() =>
+    x.path.isImportDeclaration() ? Option.some(x.path.node) : Option.none(),
+  );
 };
 
 export const getImportNamesPace = (x: Binding) => {
-  return E.sync(() => (x.path.isImportNamespaceSpecifier() ? O.some(x.path.node) : O.none()));
+  return Effect.sync(() =>
+    x.path.isImportNamespaceSpecifier() ? Option.some(x.path.node) : Option.none(),
+  );
 };
 
 export const isImportDeclaration = (x: NodePath<t.Node>) => {
-  return E.sync(() => t.isImportDeclaration(x.node));
+  return Effect.sync(() => t.isImportDeclaration(x.node));
 };
 
 /**
@@ -32,21 +48,25 @@ export const isImportDeclaration = (x: NodePath<t.Node>) => {
  * @param {t.MemberExpression} node
  * @returns
  */
-const getCreateElementIdent = (node: t.MemberExpression): O.Option<t.Expression> => {
-  return O.Do.pipe(() =>
-    t.isIdentifier(node.property, { name: 'createElement' }) ? O.some(node.object) : O.none(),
+const getCreateElementIdent = (node: t.MemberExpression): Option.Option<t.Expression> => {
+  return Option.Do.pipe(() =>
+    t.isIdentifier(node.property, { name: 'createElement' })
+      ? Option.some(node.object)
+      : Option.none(),
   );
 };
 
 /**
  * @step `Step #2`
  */
-const getReactIdent = (node: O.Option<t.Expression>): O.Option<t.Identifier> => {
+const getReactIdent = (
+  node: Option.Option<t.Expression>,
+): Option.Option<t.Identifier> => {
   return node.pipe(
-    O.flatMap((x) =>
+    Option.flatMap((x) =>
       t.isIdentifier(x, { name: 'react' }) || t.isIdentifier(x, { name: 'React' })
-        ? O.some(x)
-        : O.none(),
+        ? Option.some(x)
+        : Option.none(),
     ),
   );
 };
@@ -56,50 +76,62 @@ const getReactIdent = (node: O.Option<t.Expression>): O.Option<t.Identifier> => 
  */
 const getBinding =
   (path: NodePath<t.MemberExpression>) =>
-  (node: O.Option<t.Identifier>): O.Option<Binding> => {
-    return node.pipe(O.flatMap((a) => O.fromNullable(path.scope.getBinding(a.name))));
+  (node: Option.Option<t.Identifier>): Option.Option<Binding> => {
+    return node.pipe(
+      Option.flatMap((a) => Option.fromNullable(path.scope.getBinding(a.name))),
+    );
   };
 
 /**
  * @step `Step #3`
  */
 const bindingToVariableDeclarator = (
-  binding: O.Option<Binding>,
-): O.Option<t.VariableDeclarator> => {
+  binding: Option.Option<Binding>,
+): Option.Option<t.VariableDeclarator> => {
   return binding.pipe(
-    O.flatMap((x) => (x.path.isVariableDeclarator() ? O.some(x.path.node) : O.none())),
+    Option.flatMap((x) =>
+      x.path.isVariableDeclarator() ? Option.some(x.path.node) : Option.none(),
+    ),
   );
 };
 
-const getBindingCallExpression = (binding: O.Option<Binding>): O.Option<t.CallExpression> => {
+const getBindingCallExpression = (
+  binding: Option.Option<Binding>,
+): Option.Option<t.CallExpression> => {
   return binding.pipe(
     bindingToVariableDeclarator,
-    O.flatMap((x) => (t.isCallExpression(x.init) ? O.some(x.init) : O.none())),
+    Option.flatMap((x) =>
+      t.isCallExpression(x.init) ? Option.some(x.init) : Option.none(),
+    ),
   );
 };
 
 /**
  * @step `Step #4`
  */
-const getReactRequire = (node: O.Option<t.CallExpression>): O.Option<boolean> => {
+const getReactRequire = (
+  node: Option.Option<t.CallExpression>,
+): Option.Option<boolean> => {
   return node.pipe(
-    O.flatMap((x) =>
+    Option.flatMap((x) =>
       t.isIdentifier(x.callee, { name: 'require' }) &&
       t.isStringLiteral(x.arguments[0], { value: 'react' })
-        ? O.some(true)
-        : O.none(),
+        ? Option.some(true)
+        : Option.none(),
     ),
   );
 };
 
-export const pipeMaybeReactFromMemberExpression = (path: NodePath<t.MemberExpression>) => {
-  return E.Do.pipe(
-    () => O.some(path),
+export const pipeMaybeReactFromMemberExpression = (
+  path: NodePath<t.MemberExpression>,
+) => {
+  return Effect.Do.pipe(
+    () => Option.some(path),
     () => getCreateElementIdent(path.node),
     getReactIdent,
     getBinding(path),
     getBindingCallExpression,
     getReactRequire,
-    O.getOrElse(() => false),
+    Option.getOrElse(() => false),
   );
 };

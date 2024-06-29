@@ -69,6 +69,25 @@ pluginTester({
       babelOptions: { filename: '/someFile.js' },
     },
 
+    // 'createELement from 3rd party compiled': {
+    //   // skip: true,
+    //   codeFixture: path.join('./fixtures/compiled/code.js'),
+    //   // outputFixture: path.join('./fixtures/compiled/output.js'),
+    //   // babelOptions: { filename: path.join('./fixtures/compiled/out.js') },
+    //   // output: path.join('./fixtures/compiled/output.js'),
+    //   // execFixture: path.join('./fixtures/compiled/code.js'),
+    //   // snapshot: true,
+    //   babelOptions: {
+    //     filename: path.join('./fixtures/compiled/code.js'),
+    //     highlightCode: true,
+    //     code: true,
+    //     minified: false,
+    //   },
+    //   // snapshot: true,
+    //   // outputFixture: path.join('./fixtures/compiled/out.js'),
+    //   // execFixture: path.join('./fixtures/compiled/output.js'),
+    // },
+
     'createElement from denied modules': {
       // skip: true,
       codeFixture: path.join('./fixtures/denied-modules/code.js'),

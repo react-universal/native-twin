@@ -1,39 +1,47 @@
 import { NodePath, Binding } from '@babel/traverse';
 import * as t from '@babel/types';
-import * as E from 'effect/Effect';
+import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';
-import * as O from 'effect/Option';
+import * as Option from 'effect/Option';
 import {
-  CallExpressionSvc,
-  CreateElementSvc,
+  ReactService,
+  BabelService,
   NodeBindingSvc,
-  createElementRunnable,
-} from './services';
+  makeServiceLayer,
+} from '../services';
 
 export const createMemberExpressionProgram = (path: NodePath<t.MemberExpression>) => {
-  const context = createElementRunnable(path);
-  const program = E.all([CreateElementSvc, NodeBindingSvc, CallExpressionSvc]).pipe(
-    E.flatMap(([createElement, binding, callExp]) => {
-      const fromRequire = (x: O.Option<Binding>) =>
-        x.pipe(
-          binding.getVariableDeclarator,
-          binding.getCallExpression,
-          (node) => [callExp.getReactRequire(node), callExp.isInteropRequire(node)] as const,
-          O.firstSomeOf,
-        );
-      return createElement
-        .getCreateElementExpression()
-        .pipe(createElement.getReactIdent, binding.getBinding)
-        .pipe(
-          (x) => [fromRequire(x), binding.getImportDeclaration(x)] as const,
-          O.firstSomeOf,
-        );
-    }),
-  );
-  return E.provide(program, context).pipe(
-    E.runSyncExit,
+  const context = makeServiceLayer(path);
+  const program = Effect.gen(function* () {
+    const createElement = yield* ReactService;
+    const binding = yield* NodeBindingSvc;
+    const callExp = yield* BabelService;
+    const fromRequire = (x: Option.Option<Binding>) =>
+      x.pipe(
+        binding.getVariableDeclarator,
+        binding.getCallExpression,
+        (node) =>
+          [callExp.getReactRequire(node), callExp.isInteropRequire(node)] as const,
+        Option.firstSomeOf,
+      );
+
+    return yield* createElement
+      .getCreateElementExpression()
+      .pipe((x) => {
+        console.log('CREATE_ELEMENT: ', x);
+        return x;
+      })
+      .pipe(createElement.getReactIdent, binding.getBinding)
+      .pipe(
+        (x) => [fromRequire(x), binding.getImportDeclaration(x)] as const,
+        Option.firstSomeOf,
+      );
+  });
+  return Effect.provide(program, context).pipe(
+    Effect.runSyncExit,
     Exit.match({
-      onFailure() {
+      onFailure(cause) {
+        console.log('CAUSE:', cause);
         return false;
       },
       onSuccess() {
