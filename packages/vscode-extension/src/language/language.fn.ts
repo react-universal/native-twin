@@ -76,7 +76,7 @@ export const onProvideDocumentColors = async (
   return editableColors;
 };
 
-export const getDefaultLanguageCLientOptions = (data: {
+export const getDefaultLanguageClientOptions = (data: {
   tsConfigFiles: vscode.Uri[];
   twinConfigFile: vscode.Uri | undefined;
   workspaceRoot: vscode.WorkspaceFolder | undefined;

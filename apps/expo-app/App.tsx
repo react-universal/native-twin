@@ -1,8 +1,8 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { setup } from '@native-twin/core';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
-import tailwindConfig from './tailwind.config';
 import { HomeScreen } from './src/screens/Home.screen';
+import tailwindConfig from './tailwind.config';
 
 setup(tailwindConfig);
 

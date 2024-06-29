@@ -3,17 +3,6 @@
     "nativeTwin.trace.server": "verbose",
     "nativeTwin.enable": true,
     "editor.suggest.showColors": true,
-    "nativeTwin.tags": [
-        "tw",
-        "apply",
-        "css",
-        "variants",
-        "styled",
-        "tx",
-        "style",
-        "createVariants",
-        "custom"
-    ],
     "markdown.trace.server": "verbose",
     "typescript.tsserver.log": "off",
     "nativeTwin.debug": true,

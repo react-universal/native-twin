@@ -15,7 +15,8 @@
       "@native-twin/jsx",
       "@native-twin/babel",
       "@native-twin/metro",
-      "@native-twin/language-server"
+      "@native-twin/language-server",
+      "@native-twin/language-service"
     ]
   ],
   "access": "public",

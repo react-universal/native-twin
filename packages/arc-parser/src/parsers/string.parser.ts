@@ -83,8 +83,30 @@ export const startOfInput = new Parser<null>((state) => {
 
   const { cursor } = state;
   if (cursor > 0) {
-    return updateParserError(state, `ParseError 'startOfInput': Expected start of input'`);
+    return updateParserError(
+      state,
+      `ParseError 'startOfInput': Expected start of input'`,
+    );
   }
 
   return state;
 });
+
+export const anythingExcept = function anythingExcept(
+  parser: Parser<any>,
+): Parser<number> {
+  return new Parser(function anythingExcept$state(state) {
+    if (state.isError) return state;
+    const { target, cursor } = state;
+
+    const out = parser.transform(state);
+    if (out.isError) {
+      return updateParserState(state, target.slice(cursor, cursor + 1), cursor + 1);
+    }
+
+    return updateParserError(
+      state,
+      `ParseError 'anythingExcept' (position ${cursor}): Matched '${out.result}' from the exception parser`,
+    );
+  });
+};

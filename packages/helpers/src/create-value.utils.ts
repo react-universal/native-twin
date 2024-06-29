@@ -1,4 +1,4 @@
-import { ColorsRecord } from './utility.types';
+
 
 // 0: '0px',
 // 2: '2px',
@@ -69,31 +69,3 @@ export function createPercentRatios(start: number, end: number): Record<string, 
   return result;
 }
 
-export function flattenColorPalette(
-  colors: ColorsRecord,
-  path: string[] = [],
-): Record<string, string> {
-  const flatten: Record<string, string> | ColorsRecord = {};
-
-  for (const key in colors) {
-    const value = colors[key];
-
-    let keyPath = [...path, key];
-    if (value) {
-      flatten[keyPath.join('-')] = value;
-    }
-
-    if (key == 'DEFAULT') {
-      keyPath = path;
-      if (value) {
-        flatten[path.join('-')] = value;
-      }
-    }
-
-    if (typeof value == 'object') {
-      Object.assign(flatten, flattenColorPalette(value, keyPath));
-    }
-  }
-
-  return flatten as any;
-}

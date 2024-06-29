@@ -13,9 +13,7 @@ export function asArray<T>(value: T | T[] = []): T[] {
   return Array.isArray(value) ? value : [value];
 }
 
-export function identity<A>(a: A): A {
-  return a;
-}
+export const identity = <A>(a: A): A => a;
 
 export function keysOf<Obj extends object>(obj: Obj): (keyof Obj)[] {
   return Object.keys(obj) as (keyof Obj)[];

@@ -5,12 +5,20 @@
       "path": ".."
     },
     {
+      "name": "📦 twin.run",
+      "path": "../sites/twin.run"
+    },
+    {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
     {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/language-service",
+      "path": "../packages/language-service"
     },
     {
       "name": "📦 @lib/language-server",

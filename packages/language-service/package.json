@@ -1,0 +1,68 @@
+{
+  "name": "@native-twin/language-service",
+  "version": "6.0.1",
+  "description": "Native Twin language server provider",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/language-server"
+  },
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:tsc": "tsc -p tsconfig.build.json",
+    "build:tsc:watch": "tsc -p tsconfig.build.json --watch",
+    "build:watch": "node esbuild.mjs --watch",
+    "clean": "rm -rf build",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "jest --passWithNoTests",
+    "vscode:dev": "tsc -p tsconfig.build.json --watch"
+  },
+  "dependencies": {
+    "@ctrl/tinycolor": "^4.1.0",
+    "@native-twin/core": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*",
+    "@vscode/emmet-helper": "^2.9.3",
+    "cssbeautify": "0.3.1",
+    "effect": "^3.0.7",
+    "match-sorter": "6.3.4",
+    "showdown": "2.1.0",
+    "ts-morph": "^22.0.0",
+    "vscode-css-languageservice": "^6.2.14",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-protocol": "^3.17.5",
+    "vscode-languageserver-textdocument": "^1.0.11",
+    "vscode-languageserver-types": "^3.17.5"
+  },
+  "devDependencies": {
+    "@types/cssbeautify": "^0.3.5",
+    "@types/showdown": "^2.0.6",
+    "madge": "7.0.0"
+  },
+  "optionalDependencies": {
+    "jest": "*"
+  },
+  "engines": {
+    "vscode": "^1.89.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
+  },
+  "nx": {
+    "includedScripts": [
+      "build",
+      "build:watch",
+      "clean",
+      "esbuild:build",
+      "lint",
+      "vscode:dev"
+    ]
+  }
+}

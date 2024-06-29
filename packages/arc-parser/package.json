@@ -21,7 +21,10 @@
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "echo $HOME"
+    "test": "jest"
+  },
+  "optionalDependencies": {
+    "jest": "*"
   },
   "publishConfig": {
     "access": "public",

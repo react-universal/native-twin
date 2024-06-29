@@ -1,0 +1,9 @@
+{
+  // "workbench.colorTheme": "Default Dark+",
+  "cSpell.words": [
+    "eruda",
+    "ipynb",
+    "seti"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

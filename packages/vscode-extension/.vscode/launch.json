@@ -6,7 +6,7 @@
       "name": "Lanuch extension + TS Plugin",
       "configurations": [
         "Launch Extension",
-        "Attach to VS Code TS Server"
+        "Launch Extension Server"
       ],
       "presentation": {
         "hidden": false,

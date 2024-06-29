@@ -1,8 +1,42 @@
 import { useState } from 'react';
-import { Text, Image, Pressable, TextInput, View } from 'react-native';
+import { Text, Image, Pressable, TextInput, View, PressableProps } from 'react-native';
+import { VariantProps, createVariants } from '@native-twin/styled';
 
 // css`bg`;
 // styled('')``
+
+const buttonVariants = createVariants({
+  base: 'py-5 m-1 rounded-md items-center justify-center',
+  variants: {
+    variant: {
+      primary: 'bg-blue-200',
+      secondary: 'bg-white',
+    },
+    size: {
+      large: 'w-40',
+      small: 'w-4',
+    },
+    isDisable: {
+      true: 'opacity-30',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+  },
+});
+type ButtonVariantProps = VariantProps<typeof buttonVariants>;
+
+type ButtonProps = ButtonVariantProps & PressableProps;
+
+const Button = (props: ButtonProps) => {
+  const className = buttonVariants(props);
+  return (
+    <Pressable className={className}>
+      <Text>asd</Text>
+    </Pressable>
+  );
+};
 
 const TextField = () => {
   const [text, setText] = useState('');
@@ -28,6 +62,7 @@ function HomeScreen() {
     ios:(p-14 bg-rose-200 border-white border-2)
     android:(p-14 border-green-200 border-2 bg-gray-50)`}
       >
+        <Button size='large' />
         <View className='bg-white shadow-md rounded-xl p-2'>
           <Text
             className={`

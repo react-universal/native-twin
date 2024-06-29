@@ -1,8 +1,9 @@
 import { NodePath, Binding } from '@babel/traverse';
 import { MemberExpression } from '@babel/types';
 import * as t from '@babel/types';
-import { Console, Effect } from 'effect';
-import * as O from 'effect/Option';
+import * as Console from 'effect/Console';
+import * as Effect from 'effect/Effect';
+import * as Option from 'effect/Option';
 
 export const debugEffect = <T>(x: Effect.Effect<T>) => Console.log(x);
 
@@ -36,7 +37,10 @@ export const isReactRequire = (x: Binding) => {
     ) {
       return true;
     } else if (
-      t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireDefault' }) && // const <name> = _interopRequireDefault(require("react"))
+      // const <name> = _interopRequireDefault(require("react"))
+      (t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireDefault' }) ||
+        t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireWildcard' }) ||
+        t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireWildcard' })) &&
       t.isCallExpression(x.path.node.init.arguments[0]) &&
       t.isIdentifier(x.path.node.init.arguments[0].callee, { name: 'require' }) &&
       t.isStringLiteral(x.path.node.init.arguments[0].arguments[0], {
@@ -67,11 +71,11 @@ export const isReactImport = (x: Binding) => {
 };
 
 export const pipeMemberExpression = (self: NodePath<MemberExpression>) => {
-  return O.Do.pipe(
-    () => (isCreateElementIdent(self.node) ? O.some(self) : O.none()),
-    O.flatMapNullable(getReactIdent),
-    O.flatMapNullable((x) => self.scope.getBinding(x)),
-    O.map((x) => isReactRequire(x) || isReactImport(x)),
-    O.getOrElse(() => false),
+  return Option.Do.pipe(
+    () => (isCreateElementIdent(self.node) ? Option.some(self) : Option.none()),
+    Option.flatMapNullable(getReactIdent),
+    Option.flatMapNullable((x) => self.scope.getBinding(x)),
+    Option.map((x) => isReactRequire(x) || isReactImport(x)),
+    Option.getOrElse(() => false),
   );
 };
