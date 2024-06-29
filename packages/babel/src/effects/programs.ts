@@ -26,11 +26,8 @@ export const createMemberExpressionProgram = (path: NodePath<t.MemberExpression>
       );
 
     return yield* createElement
-      .getCreateElementExpression()
-      .pipe((x) => {
-        console.log('CREATE_ELEMENT: ', x);
-        return x;
-      })
+      .getCreateElementExpression(path)
+      .pipe((x) => x)
       .pipe(createElement.getReactIdent, binding.getBinding)
       .pipe(
         (x) => [fromRequire(x), binding.getImportDeclaration(x)] as const,
@@ -40,8 +37,7 @@ export const createMemberExpressionProgram = (path: NodePath<t.MemberExpression>
   return Effect.provide(program, context).pipe(
     Effect.runSyncExit,
     Exit.match({
-      onFailure(cause) {
-        console.log('CAUSE:', cause);
+      onFailure() {
         return false;
       },
       onSuccess() {

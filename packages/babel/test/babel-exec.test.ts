@@ -1,5 +1,4 @@
 import * as babel from '@babel/core';
-import * as t from '@babel/types';
 import { readFileSync } from 'fs';
 import path from 'path';
 
@@ -23,6 +22,6 @@ describe('Babel exec test', () => {
       console.log('CODE: ', output.code);
     }
 
-    expect(true).toBeTruthy();
+    expect(output?.code).toBeDefined();
   });
 });

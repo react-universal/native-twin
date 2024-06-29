@@ -9,7 +9,9 @@
       "extends": [
         "plugin:@nx/typescript"
       ],
-      "rules": {}
+      "rules": {
+        "require-yield": "off"
+      }
     }
   ]
 }
