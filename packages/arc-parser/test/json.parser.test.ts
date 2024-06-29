@@ -1,61 +1,111 @@
-import { inspect } from 'util';
 import * as P from '../src';
 
-const objectParser = P.between(P.char('{'))(P.char('}'));
-const commaParser = P.char(',');
+type AnyType = string | number | boolean | number | null | object | AnyType[];
+
+const JSONValue: P.Parser<AnyType> = P.recursiveParser(() =>
+  P.choice([stringParser, numberValue, booleanValue, nullValue, arrayParser, JSONParser]),
+);
+
+const scaped = P.sequenceOf([P.literal('\\'), P.char('"')]).map((x) => x[1]);
 const stringParser = P.between(P.char('"'))(P.char('"'))(
-  P.many(P.choice([P.letters, P.digits])),
+  P.many1(P.choice([scaped, P.alphanumeric, P.anythingExcept(P.char('"'))])),
 ).map((x) => x.join(''));
-const JSONIdent = P.choice([stringParser, P.char('-')]);
-const colonParser = P.char(':');
 
-// "ads":
-const JSONKeyParser = P.sequenceOf([stringParser, colonParser]);
+const numberValue = P.float.map((x) => Number(x));
 
-const JSONValue = P.sequenceOf([
-  P.whitespace,
+const nullValue = P.literal('null').map(() => null);
+
+const booleanValue = P.choice([P.literal('true'), P.literal('false')]).map(
+  (x) => x === 'true',
+);
+
+const JSONKeyValue = P.sequenceOf([
   stringParser,
-  colonParser,
-  P.whitespace,
-  stringParser,
-  P.maybe(commaParser),
-]).map((x) => ({
-  key: x[1],
-  value: x[4],
-}));
+  P.whitespaceSurrounded(P.char(':')),
+  JSONValue,
+]).map((x) => [[x[0]], x[2]]);
 
-const JSONParser = P.sequenceOf([
-  P.char('\n'),
-  P.char('{'),
-  P.many(JSONValue),
-  P.whitespace,
-  P.char('}'),
-]).map((x) => x[2]);
+const arrayParser: P.Parser<AnyType[]> = P.between(P.char('['))(P.char(']'))(
+  P.separatedBySpacedComma(JSONValue),
+);
 
-describe('Parser', () => {
-  it('JSON parser', () => {
-    const data = `
+const JSONParser = P.betweenSpacedBrackets(P.separatedBySpacedComma(JSONKeyValue)).map(
+  Object.fromEntries,
+);
+
+const parsThisFuckJSON = (data: string) => {
+  return JSONValue.run(data);
+};
+
+const test1 = `
 {
-  "rod-rigo": "23234sadasd",
-  "rodrigo1": "23234sadasd",
-  "rodrigo2": "23234sadasd"
+  "name": "@native-twin/arc-parser",
+  "version": "6.0.1",
+  "description": "Parser combinators library",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/arc-parser"
+  },
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "sideEffects": false,
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf build",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "lint": "eslint \\"./**/*.{ts,tsx}\\"",
+    "test": "jest"
+  },
+  "optionalDependencies": {
+    "jest": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
+  }
 }
+
 `;
-    const result = JSONParser.run(data);
-    if (result.isError) {
-      console.log(inspect(result, false, null, true));
-    } else {
-      console.log('RESULT:');
-      console.log(inspect(result, false, null, true));
-    }
-    console.log
+
+const result = parsThisFuckJSON(test1);
+if (!result.isError) {
+  result.result; // ?
+}
+JSON.parse(test1); //?
+
+describe('JSON parser', () => {
+  it('Parse package.json', () => {
+    const result = parsThisFuckJSON(test1); //?
     expect(result.isError).toBeFalsy();
+    if (!result.isError) {
+      expect(result.result).toStrictEqual(JSON.parse(test1));
+    }
   });
 });
 
-const a = {
-  "rod-rigo": '23234sadasd',
-  rodrigo1: '23234sadasd',
-  rodrigo2: '23234sadasd',
-};
+// const getObject = (token: JsonObject | AnyToken): any => {
+//   if (token.type === 'OBJECT') return fromObject(token);
+//   if (token.type === 'ARRAY') {
+//     return fromArray(token);
+//   }
 
+//   return token.value;
+
+//   function fromObject(token: JsonObject) {
+//     const tuples = token.value.map((x) => [x[0], getObject(x[1])]);
+//     return Object.fromEntries(tuples);
+//   }
+//   function fromArray(token: ArrayToken): any[] {
+//     return token.value.map((x) => getObject(x));
+//   }
+// };
+// if (!result.isError) {
+//   getObject(result.result);
+// }

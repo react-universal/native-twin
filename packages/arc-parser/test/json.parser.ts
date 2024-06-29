@@ -74,7 +74,11 @@ const test1 = `
 
 `;
 
-const result = parsThisFuckJSON(test1); //?
+const result = parsThisFuckJSON(test1);
+if (!result.isError) {
+  result.result; // ?
+}
+JSON.parse(test1); //?
 
 // const getObject = (token: JsonObject | AnyToken): any => {
 //   if (token.type === 'OBJECT') return fromObject(token);
