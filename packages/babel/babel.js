@@ -9,7 +9,6 @@ module.exports = function () {
           importSource: '@native-twin/jsx',
         },
       ],
-      'react-native-reanimated/plugin',
     ],
   };
 };

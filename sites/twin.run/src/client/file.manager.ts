@@ -2,9 +2,9 @@ import * as vscode from 'vscode';
 import * as monaco from 'monaco-editor';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
-  RegisteredFileSystemProvider,
   RegisteredMemoryFile,
   registerFileSystemOverlay,
+  RegisteredFileSystemProvider,
 } from '@codingame/monaco-vscode-files-service-override';
 import type { IStoredWorkspace } from '@codingame/monaco-vscode-configuration-service-override';
 
@@ -14,13 +14,22 @@ export class FileManager {
   readonly rootPath = '/workspace';
   readonly fileSystemProvider = new RegisteredFileSystemProvider(false);
   readonly languageId = 'typescript';
-  readonly code = 'css``';
-  readonly codeUri = '/workspace/css.ts';
 
   createFile(name: string, content: string) {
-    this.fileSystemProvider.registerFile(
-      new RegisteredMemoryFile(vscode.Uri.file(`${this.rootPath}/${name}`), content),
+    const file = new RegisteredMemoryFile(
+      vscode.Uri.file(`${this.rootPath}/${name}`).with({ scheme: 'typescript' }),
+      content,
     );
+    this.fileSystemProvider.registerFile(file);
+    return file;
+  }
+
+  fileToURI(name: string) {
+    return vscode.Uri.file(`${this.rootPath}/${name}`);
+  }
+
+  createModel(fileContents: string, fileName: string) {
+    monaco.editor.createModel(fileContents, this.languageId, this.fileToURI(fileName));
   }
 
   createDocument(vscodeDocument: vscode.TextDocument) {

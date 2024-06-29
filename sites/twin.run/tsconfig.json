@@ -5,7 +5,7 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "WebWorker"],
     "jsx": "react",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
@@ -21,5 +21,5 @@
     "noUncheckedIndexedAccess": true
   },
   "exclude": ["src/content"],
-  "include": ["src", "vite.config.ts"]
+  "include": ["src", "vite.config.mts"]
 }

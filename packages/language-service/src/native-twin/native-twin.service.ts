@@ -1,6 +1,4 @@
-import * as Context from 'effect/Context';
 import * as HashSet from 'effect/HashSet';
-import * as Layer from 'effect/Layer';
 import {
   createTailwind,
   createThemeContext,
@@ -22,7 +20,7 @@ import type {
 } from './native-twin.types';
 import { createTwinStore } from './utils/native-twin.utils';
 
-export class NativeTwinManager {
+export class NativeTwinManagerService {
   tw: InternalTwFn;
   context: InternalTwinThemeContext;
   userConfig: InternalTwinConfig = DEFAULT_TWIN_CONFIG;
@@ -78,11 +76,4 @@ export class NativeTwinManager {
       throw new Error('Cant resolve user config');
     }
   }
-}
-
-export class NativeTwinManagerService extends Context.Tag('NativeTwinManager')<
-  NativeTwinManagerService,
-  NativeTwinManager
->() {
-  static Live = Layer.succeed(NativeTwinManagerService, new NativeTwinManager());
 }

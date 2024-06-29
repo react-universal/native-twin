@@ -6,13 +6,15 @@ import vsixPlugin from '@codingame/monaco-vscode-rollup-vsix-plugin';
 import assetsJSON from '@entur/vite-plugin-assets-json';
 
 export default defineConfig({
-  assetsInclude: ['**/*.json'],
+  assetsInclude: ['**/*.json', '**/*.wasm'],
   optimizeDeps: {
+    exclude: ['@rollup/browser'],
     esbuildOptions: {
       sourcemap: 'inline',
-      plugins: [importMetaUrlPlugin as any],
+      plugins: [importMetaUrlPlugin],
     },
   },
+  publicDir: 'public',
   worker: {
     format: 'es',
   },
@@ -77,10 +79,10 @@ export default defineConfig({
     rollupOptions: {
       // plugins: [vsixPlugin()],
       logLevel: 'debug',
-      // external: ['@babel/traverse'],
+      external: ['@rollup/browser'],
     },
   },
   resolve: {
-    dedupe: ['vscode'],
+    dedupe: ['vscode', '@rollup/browser'],
   },
 });

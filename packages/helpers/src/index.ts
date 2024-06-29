@@ -9,7 +9,14 @@ export {
   compareClassNames,
 } from './browser.utils';
 
-export { asRegExp, asNumber, asString, asArray, identity, keysOf } from './identity.utils';
+export {
+  asRegExp,
+  asNumber,
+  asString,
+  asArray,
+  identity,
+  keysOf,
+} from './identity.utils';
 
 export { toColorValue } from './color.utils';
 
@@ -34,7 +41,6 @@ export {
   createExponentialUnits,
   createLinearUnits,
   createPercentRatios,
-  flattenColorPalette,
 } from './create-value.utils';
 
-export { flattenObjectByPath } from './object.utils';
+export { flattenObjectByPath, flattenColorPalette } from './object.utils';

@@ -6,19 +6,22 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
   const configs = type?.defaultProps?.['configs'] as ComponentConfig[];
   if (props?.['className']) {
     const className = props['className'];
-    props['className'] = cx(`${className}`);
+    let twinClassName = cx(`${className}`);
+    if (typeof className === 'string' && twinClassName === '') {
+      twinClassName = className;
+    }
     tw(`${className}`);
+    props['className'] = twinClassName;
     props['style'] = [
       {
         $$css: true,
-        [className]: className,
+        [twinClassName]: twinClassName,
       },
-      props?.['style']
+      props?.['style'] ?? '',
     ];
   }
 
   if (props && configs) {
-    console.log('CONFIGS');
     for (const config of configs) {
       const source = props?.[config.source];
       // const sheet = props[`_${config.target}`];

@@ -1,60 +1,35 @@
-import * as Ctx from 'effect/Context';
-import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as Layer from 'effect/Layer';
-import * as HM from 'effect/MutableHashMap';
 import * as Option from 'effect/Option';
-import type { TextDocuments } from 'vscode-languageserver';
+import type { Connection, TextDocuments } from 'vscode-languageserver';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import type * as vscode from 'vscode-languageserver-types';
-import { ConfigManagerService } from '../config/client.config';
 import { TwinDocument } from './models/twin-document.model';
-import { DocumentCacheKey, getDocumentCacheKey } from './utils/documents.cache';
 
 interface DocumentsServiceShape {
   handler: TextDocuments<TextDocument>;
   getDocument: (uri: vscode.TextDocumentIdentifier) => Option.Option<TwinDocument>;
 }
+interface DocumentConfig {
+  tags: string[];
+  attributes: string[];
+}
 
-export class DocumentsService extends Ctx.Tag('vscode/DocumentsService')<
-  DocumentsService,
-  DocumentsServiceShape
->() {}
+export class DocumentsService implements DocumentsServiceShape {
+  readonly handler: TextDocuments<TextDocument>;
+  readonly config: DocumentConfig;
+  constructor(handler: TextDocuments<TextDocument>, config: DocumentConfig) {
+    this.handler = handler;
+    this.config = config;
+  }
 
-export const createTextDocumentLayer = (handler: TextDocuments<TextDocument>) =>
-  Layer.scoped(
-    DocumentsService,
-    Effect.gen(function* () {
-      const configManager = yield* ConfigManagerService;
-      const cache = HM.empty<DocumentCacheKey, TwinDocument>();
+  getDocument(id: vscode.TextDocumentIdentifier): Option.Option<TwinDocument> {
+    return pipe(
+      Option.fromNullable(this.handler.get(id.uri)),
+      Option.map((x) => new TwinDocument(x, this.config)),
+    );
+  }
 
-      const createTwinDocument = (id: vscode.TextDocumentIdentifier) => {
-        const getDocument = handler.get(id.uri);
-        if (getDocument) {
-          pipe(
-            cache,
-            HM.set(
-              getDocumentCacheKey(id.uri),
-              new TwinDocument(getDocument, configManager.config),
-            ),
-          );
-        }
-        return pipe(cache, HM.get(getDocumentCacheKey(id.uri)));
-      };
-
-      const getDocument = (id: vscode.TextDocumentIdentifier) => {
-        return cache.pipe(
-          HM.get(getDocumentCacheKey(id.uri)),
-          Option.match({
-            onSome: (x) => Option.some(x),
-            onNone: () => createTwinDocument(id),
-          }),
-        );
-      };
-
-      return {
-        handler,
-        getDocument,
-      };
-    }),
-  );
+  setupConnection(connection: Connection) {
+    this.handler.listen(connection);
+  }
+}

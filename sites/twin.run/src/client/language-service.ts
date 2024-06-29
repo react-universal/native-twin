@@ -3,13 +3,13 @@ import { clientManager } from './client.manager';
 
 export class CompletionsProvider implements vscode.CompletionItemProvider {
   async provideCompletionItems(
-    document: vscode.TextDocument,
+    _document: vscode.TextDocument,
     _position: vscode.Position,
     _token: vscode.CancellationToken,
     _context: vscode.CompletionContext,
   ): Promise<vscode.CompletionItem[] | vscode.CompletionList<vscode.CompletionItem>> {
-    const doc = clientManager.fileManager.createDocument(document);
-    console.log('COMPLETION', doc.getText());
+    // const doc = clientManager.fileManager.createDocument(document);
+    // console.log('COMPLETION', doc.getText());
     // const jsonDocument = document;
     // const completionList = await jsonService.doComplete(
     //   document,
@@ -17,6 +17,13 @@ export class CompletionsProvider implements vscode.CompletionItemProvider {
     //   jsonDocument
     // );
     // console.log("LIST: ", { jsonDocument, completionList });
+    // console.log('LANGS: ', monaco.languages.getLanguages());
+    // const worker = await monaco.languages.typescript.getTypeScriptWorker();
+    // console.log('WORKER: ', worker);
+    // const client = await worker(_document.uri);
+    // console.log('CLIENT: ', client);
+    // const output = await client.getEmitOutput(_document.fileName);
+    // console.log('OUT: ', output);
     return clientManager.protocolConverter.asCompletionResult([]);
   }
 

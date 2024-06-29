@@ -8,6 +8,7 @@ import {
   TextDocuments,
 } from 'vscode-languageserver/browser.js';
 import { TextDocument } from 'vscode-languageserver-textdocument';
+// import * as monaco from 'monaco-editor';
 
 export const documentsHandler = new TextDocuments(TextDocument);
 
@@ -48,12 +49,15 @@ connection.onInitialize(() => {
 connection.onInitialized((x) => {
   console.log('WORKER_connection.onInitialized', x);
 });
-connection.onCompletion((x) => {
-  console.log('DOCUMENT: ', documentsHandler.get(x.textDocument.uri));
-  console.log('WORKER_connection.onCompletion', x);
-  const doc = documentsHandler.get(x.textDocument.uri);
-  console.log('DOC: ', doc);
-  console.log('HANDLER: ', documentsHandler);
+console.log('SELF: ', self);
+connection.onCompletion(async (x) => {
+  // console.log('DOCUMENT: ', documentsHandler.get(x.textDocument.uri));
+  // console.log('WORKER_connection.onCompletion', x);
+  // const doc = documentsHandler.get(x.textDocument.uri);
+  // const ts = await monaco.languages.typescript.getTypeScriptWorker();
+  // const client = ts(monaco.Uri.file(x.textDocument.uri));
+  // console.log('CLIENT: ', client);
+  console.log('PATH: ', new URL(x.textDocument.uri, import.meta.url));
   return [
     {
       label: 'asd',

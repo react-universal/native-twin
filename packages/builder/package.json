@@ -14,6 +14,7 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
+  "type": "module",
   "bin": {
     "twin-build": "./build/twin-build.js"
   },

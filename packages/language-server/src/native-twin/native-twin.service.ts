@@ -10,8 +10,9 @@ import {
   tx,
 } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
+import { presetTailwind } from '@native-twin/preset-tailwind';
 import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
-import { requireJS } from '../utils/load-js';
+import { requireJS } from '../utils/load-config';
 import {
   InternalTwFn,
   InternalTwinConfig,
@@ -75,7 +76,11 @@ export class NativeTwinManager {
 
       return defineConfig(file);
     } catch {
-      throw new Error('Cant resolve user config');
+      console.warn('Cant resolve user config fallback to default twin config');
+      return defineConfig({
+        content: [''],
+        presets: [presetTailwind()],
+      });
     }
   }
 }

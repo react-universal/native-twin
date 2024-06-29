@@ -6,9 +6,6 @@ const nextConfig = {
     'react-native',
     'react-native-svg',
     'react-native-web',
-    '@expo/html-elements',
-    '@native-twin/jsx',
-    "@native-twin/core"
   ],
   /**
    * Transformation to apply for both preview and dev server
@@ -55,6 +52,20 @@ const nextConfig = {
         __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
       }),
     );
+
+    config.module.rules.push({
+      test: /\.+(ts|tsx)$/,
+      // exclude: /(layout)\.+(js|jsx|mjs|ts|tsx)$/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            ["@babel/preset-typescript"],
+            '@native-twin/babel/babel',
+          ],
+        },
+      },
+    });
 
     return config;
   },

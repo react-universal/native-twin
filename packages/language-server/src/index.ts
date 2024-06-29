@@ -28,13 +28,6 @@ const program = Effect.gen(function* () {
     return init;
   });
 
-  Connection.onInitialized(async () => {
-    await Connection.sendRequest(
-      'nativeTwinInitialized',
-      nativeTwinManager.userConfig.mode,
-    );
-  });
-
   Connection.onCompletion(async (...args) => {
     const completions = await Effect.runPromise(
       languageService.completions.getCompletionsAtPosition(...args),

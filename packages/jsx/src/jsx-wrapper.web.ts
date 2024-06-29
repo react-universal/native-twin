@@ -27,10 +27,6 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
       // Swap the component type with styled if it exists
       type = stylizedComponents.get(type) ?? type;
     }
-
-    // if (typeof window === 'undefined') {
-    //   stylizeJSXChilds(props);
-    // }
     jsxStyles(props, type);
     // console.log('WRAPPER: ', type, props);
 

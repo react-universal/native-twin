@@ -1,5 +1,3 @@
-import * as Context from 'effect/Context';
-import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode';
 import {
@@ -7,11 +5,11 @@ import {
   NativeTwinPluginConfiguration,
 } from '../utils/constants.utils';
 
-export class ConfigManager {
-  tsconfig: Option.Option<vscode.Uri>;
-  twinConfigFile: Option.Option<vscode.Uri>;
-  workspaceRoot: Option.Option<vscode.WorkspaceFolder>;
-  config: NativeTwinPluginConfiguration;
+export class ConfigManagerService {
+  tsconfig: Option.Option<vscode.Uri> = Option.none();
+  twinConfigFile: Option.Option<vscode.Uri> = Option.none();
+  workspaceRoot: Option.Option<vscode.WorkspaceFolder> = Option.none();
+  config: NativeTwinPluginConfiguration = DEFAULT_PLUGIN_CONFIG;
   constructor(config: {
     readonly tsconfig: Option.Option<vscode.Uri>;
     readonly twinConfigFile: Option.Option<vscode.Uri>;
@@ -35,19 +33,4 @@ export class ConfigManager {
     this.twinConfigFile = config.twinConfigFile;
     this.workspaceRoot = config.workspaceRoot;
   }
-}
-
-export class ConfigManagerService extends Context.Tag('ConfigManagerService')<
-  ConfigManagerService,
-  ConfigManager
->() {
-  static Live = Layer.succeed(
-    ConfigManagerService,
-    new ConfigManager({
-      config: DEFAULT_PLUGIN_CONFIG,
-      tsconfig: Option.none(),
-      twinConfigFile: Option.none(),
-      workspaceRoot: Option.none(),
-    }),
-  );
 }
