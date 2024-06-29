@@ -1,5 +1,20 @@
 # @native-twin/metro
 
+## 6.2.0
+
+### Minor Changes
+
+- [#138](https://github.com/react-universal/native-twin/pull/138) [`e41f563`](https://github.com/react-universal/native-twin/commit/e41f5630996a023254e12c0e9bf6d997e932c5ac) Thanks [@chrisarts](https://github.com/chrisarts)! - Mugrated to turbo transitional
+
+### Patch Changes
+
+- Updated dependencies [[`e41f563`](https://github.com/react-universal/native-twin/commit/e41f5630996a023254e12c0e9bf6d997e932c5ac), [`e41f563`](https://github.com/react-universal/native-twin/commit/e41f5630996a023254e12c0e9bf6d997e932c5ac)]:
+  - @native-twin/core@6.2.0
+  - @native-twin/helpers@6.2.0
+  - @native-twin/styled@6.2.0
+  - @native-twin/css@6.2.0
+  - @native-twin/preset-tailwind@6.2.0
+
 ## 6.1.0
 
 ### Minor Changes

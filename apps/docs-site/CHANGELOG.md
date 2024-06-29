@@ -1,5 +1,22 @@
 # native-twin-docs
 
+## 1.6.0
+
+### Minor Changes
+
+- [#138](https://github.com/react-universal/native-twin/pull/138) [`e41f563`](https://github.com/react-universal/native-twin/commit/e41f5630996a023254e12c0e9bf6d997e932c5ac) Thanks [@chrisarts](https://github.com/chrisarts)! - Mugrated to turbo transitional
+
+### Patch Changes
+
+- [#138](https://github.com/react-universal/native-twin/pull/138) [`e41f563`](https://github.com/react-universal/native-twin/commit/e41f5630996a023254e12c0e9bf6d997e932c5ac) Thanks [@chrisarts](https://github.com/chrisarts)! - Babel plugin interop
+
+- Updated dependencies [[`e41f563`](https://github.com/react-universal/native-twin/commit/e41f5630996a023254e12c0e9bf6d997e932c5ac), [`e41f563`](https://github.com/react-universal/native-twin/commit/e41f5630996a023254e12c0e9bf6d997e932c5ac)]:
+  - @native-twin/nextjs@6.2.0
+  - @native-twin/core@6.2.0
+  - @native-twin/styled@6.2.0
+  - @native-twin/jsx@6.2.0
+  - @native-twin/preset-tailwind@6.2.0
+
 ## 1.5.0
 
 ### Minor Changes
