@@ -3,7 +3,7 @@ import ReactJSXRuntime from 'react/jsx-dev-runtime';
 import jsxWrapper from './jsx-wrapper';
 
 /**
- * This the entry point for the react-native-css-interop runtime.
+ * This the entry point for the @native-twin/jsx runtime.
  * The babel plugin swaps the `jsxImportSource` to this module.
  * These functions need to be very light weight as they are the hottest function calls in a React application
  * @see https://babeljs.io/docs/babel-plugin-transform-react-jsx

@@ -11,6 +11,6 @@ module.exports = function (api) {
       '@native-twin/babel/babel',
     ],
 
-    plugins: [['react-native-reanimated/plugin']],
+    plugins: ['react-native-reanimated/plugin'],
   };
 };

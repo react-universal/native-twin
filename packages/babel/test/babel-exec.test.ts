@@ -1,5 +1,5 @@
 import * as babel from '@babel/core';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
 describe('Babel exec test', () => {
@@ -7,7 +7,7 @@ describe('Babel exec test', () => {
     const code = readFileSync(
       path.join(__dirname, './fixtures/compiled/code.js'),
     ).toString('utf-8');
-    console.log('CODE: ', code);
+    // console.log('CODE: ', code);
 
     const output = babel.transform(code, {
       presets: [require('../babel')],
@@ -18,9 +18,6 @@ describe('Babel exec test', () => {
       },
       compact: false,
     });
-    if (output) {
-      console.log('CODE: ', output.code);
-    }
 
     expect(output?.code).toBeDefined();
   });

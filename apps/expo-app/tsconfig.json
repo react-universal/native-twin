@@ -1,11 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "lib": ["DOM", "ESNext"],
     "exactOptionalPropertyTypes": false,
     "allowJs": true,
-    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ESNext",
     "resolveJsonModule": true,
     "noEmit": true
   },

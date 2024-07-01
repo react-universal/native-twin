@@ -10,7 +10,7 @@ export default function nativeTwinBabelPlugin(): PluginObj {
   const createContext = createVisitorContext();
 
   return {
-    name: '@native-twin/babel',
+    name: '@native-twin/babel-plugin',
     visitor: {
       MemberExpression(path, state) {
         const context = createContext(path, state);
@@ -21,7 +21,9 @@ export default function nativeTwinBabelPlugin(): PluginObj {
 
         if (shouldReplace) {
           path.replaceWith(addNamed(path, ...PLUGIN_IMPORT_META));
-          return;
+          state.file.scope.path.traverse({
+            Identifier() {},
+          });
         }
       },
       Identifier(path, state) {

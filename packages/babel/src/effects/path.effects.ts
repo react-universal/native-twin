@@ -38,9 +38,7 @@ export const isReactRequire = (x: Binding) => {
       return true;
     } else if (
       // const <name> = _interopRequireDefault(require("react"))
-      (t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireDefault' }) ||
-        t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireWildcard' }) ||
-        t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireWildcard' })) &&
+      t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireDefault' }) &&
       t.isCallExpression(x.path.node.init.arguments[0]) &&
       t.isIdentifier(x.path.node.init.arguments[0].callee, { name: 'require' }) &&
       t.isStringLiteral(x.path.node.init.arguments[0].arguments[0], {

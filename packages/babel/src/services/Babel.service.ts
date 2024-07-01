@@ -19,7 +19,7 @@ export class BabelService extends Context.Tag('CallExpressionSvc')<
 >() {}
 
 const allowedFileRegex =
-  /^(?!.*[/\\](react|react-native|react-native-web|@native-twin\/*)[/\\]).*$/;
+  /^(?!.*[/\\](react|react-native|react-native-web|@native-twin*)[/\\]).*$/;
 
 const isValidFile = (x = '') => allowedFileRegex.test(x);
 
@@ -44,8 +44,7 @@ export const makeBabelService = (path: NodePath) =>
         Option.flatMap(([, node]) => {
           if (
             // const <name> = _interopRequireDefault(require("react"))
-            (t.isIdentifier(node.callee, { name: '_interopRequireDefault' }) ||
-              t.isIdentifier(node.callee, { name: '_interopRequireWildcard' })) &&
+            t.isIdentifier(node.callee, { name: '_interopRequireDefault' }) &&
             t.isCallExpression(node.arguments[0]) &&
             t.isIdentifier(node.arguments[0].callee, { name: 'require' }) &&
             t.isStringLiteral(node.arguments[0].arguments[0], {

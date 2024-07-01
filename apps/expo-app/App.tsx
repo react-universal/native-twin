@@ -1,7 +1,8 @@
-import { StrictMode, useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useEffect, useState } from 'react';
 import { setup } from '@native-twin/core';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
-import { HomeScreen } from './src/screens/Home.screen';
+import { TabViewExample } from './src/screens/TabsView.screen';
 import tailwindConfig from './tailwind.config';
 
 setup(tailwindConfig);
@@ -19,8 +20,8 @@ export default function App() {
   if (!isReady) return null;
 
   return (
-    <StrictMode>
-      <HomeScreen />
-    </StrictMode>
+    <GestureHandlerRootView className='flex-1'>
+      <TabViewExample />
+    </GestureHandlerRootView>
   );
 }

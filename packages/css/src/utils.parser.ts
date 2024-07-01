@@ -41,6 +41,10 @@ export const getPropertyValueType = (property: string) => {
     case 'border-right':
     case 'border-radius':
     case 'border-width':
+    case 'border-top-width':
+    case 'border-bottom-width':
+    case 'border-left-width':
+    case 'border-right-width':
     case 'border-top-left-radius':
     case 'border-top-right-radius':
     case 'border-bottom-left-radius':

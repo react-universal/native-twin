@@ -78,6 +78,8 @@
       "TRBL",
       "xytrbl"
     ],
-    "testing.openTesting": "neverOpen"
+    "testing.openTesting": "neverOpen",
+    "jestrunner.jestCommand": "yarn test --",
+    "jestrunner.jestPath": "${workspaceFolder}/../../node_modules/.bin/jest",
   }
 }

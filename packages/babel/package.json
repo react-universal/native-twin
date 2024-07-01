@@ -33,14 +33,16 @@
     "@babel/types": "^7.24.0",
     "@effect/schema": "^0.66.10",
     "babel-plugin-tester": "^11.0.4",
-    "effect": "^3.0.7"
+    "effect": "3.4.5"
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",
     "@babel/preset-typescript": "7.23.3",
     "@types/babel__helper-module-imports": "^7.18.3",
-    "metro-react-native-babel-preset": "^0.77.0",
-    "react-native-reanimated": "~3.6.2"
+    "metro-react-native-babel-preset": "^0.77.0"
+  },
+  "peerDependencies": {
+    "react-native-reanimated": "*"
   },
   "optionalDependencies": {
     "jest": "*"

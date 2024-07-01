@@ -30,6 +30,9 @@
     "@native-twin/css": "workspace:*",
     "@native-twin/styled": "workspace:*"
   },
+  "devDependencies": {
+    "@babel/plugin-transform-private-methods": "^7.24.7"
+  },
   "peerDependencies": {
     "react": ">=18",
     "react-native": "*"

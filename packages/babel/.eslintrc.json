@@ -1,6 +1,8 @@
 {
   "extends": "../../.eslintrc.json",
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": [
+    "!**/*"
+  ],
   "overrides": [
     {
       "files": [
@@ -10,7 +12,10 @@
         "plugin:@nx/typescript"
       ],
       "rules": {
-        "require-yield": "off"
+        "require-yield": "off",
+        "no-useless-escape": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-empty-function": "off"
       }
     }
   ]
