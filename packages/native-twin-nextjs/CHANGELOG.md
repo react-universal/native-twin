@@ -1,5 +1,12 @@
 # @universal-labs/native-twin-nextjs
 
+## 6.3.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @native-twin/core@6.3.0
+
 ## 6.2.0
 
 ### Minor Changes

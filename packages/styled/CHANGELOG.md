@@ -1,5 +1,14 @@
 # Change Log
 
+## 6.3.0
+
+### Patch Changes
+
+- Updated dependencies [[`8fc6baa`](https://github.com/react-universal/native-twin/commit/8fc6baaa1513caffeaf9dc37cd3bfbcf88308612)]:
+  - @native-twin/css@6.3.0
+  - @native-twin/core@6.3.0
+  - @native-twin/helpers@6.3.0
+
 ## 6.2.0
 
 ### Minor Changes
