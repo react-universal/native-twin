@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/metro",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "description": "Native Twin metro transformer",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {

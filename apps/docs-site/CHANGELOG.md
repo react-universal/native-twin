@@ -1,5 +1,20 @@
 # native-twin-docs
 
+## 1.7.0
+
+### Minor Changes
+
+- [`8fc6baa`](https://github.com/react-universal/native-twin/commit/8fc6baaa1513caffeaf9dc37cd3bfbcf88308612) Thanks [@chrisarts](https://github.com/chrisarts)! - Babel plugin improved
+
+### Patch Changes
+
+- Updated dependencies [[`8fc6baa`](https://github.com/react-universal/native-twin/commit/8fc6baaa1513caffeaf9dc37cd3bfbcf88308612)]:
+  - @native-twin/jsx@6.3.0
+  - @native-twin/styled@6.3.0
+  - @native-twin/core@6.3.0
+  - @native-twin/nextjs@6.3.0
+  - @native-twin/preset-tailwind@6.3.0
+
 ## 1.6.0
 
 ### Minor Changes

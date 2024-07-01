@@ -1,5 +1,11 @@
 # @universal-labs/native-twin-babel
 
+## 6.3.0
+
+### Minor Changes
+
+- [`8fc6baa`](https://github.com/react-universal/native-twin/commit/8fc6baaa1513caffeaf9dc37cd3bfbcf88308612) Thanks [@chrisarts](https://github.com/chrisarts)! - Babel plugin improved
+
 ## 6.2.0
 
 ### Minor Changes
