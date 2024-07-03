@@ -29,10 +29,13 @@ export function twinComponent(
     const styledProps = props['styledProps'] as JSXStyledProps[];
 
     for (const style of styledProps) {
-      props[style[0]] = style[1].getStyles({
-        isParentActive: parentState.isGroupActive,
-        isPointerActive: state.interactions.isLocalActive,
-      });
+      props[style[0]] = Object.assign(
+        style[1].getStyles({
+          isParentActive: parentState.isGroupActive,
+          isPointerActive: state.interactions.isLocalActive,
+        }),
+        { ...props[style[0]] } ?? {},
+      );
     }
   }
 

@@ -9,12 +9,16 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
   const styledProps: JSXStyledProps[] = [];
   if (props && configs) {
     for (const config of configs) {
+      // console.log('TYPE: ', { type, props }, false, null, false);
       const source = props?.[config.source];
       // const sheet = props[`_${config.target}`];
       if (!source) continue;
 
       if (source) {
-        const finalSheet = createComponentSheet(tw(`${source}`), StyleSheet.runtimeContext);
+        const finalSheet = createComponentSheet(
+          tw(`${source}`),
+          StyleSheet.runtimeContext,
+        );
         styledProps.push([config.target, finalSheet]);
         // props[config.target] = finalSheet.getStyles({
         //   isParentActive: false,

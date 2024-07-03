@@ -13,7 +13,7 @@ import { VariantProps, createVariants } from '@native-twin/styled';
 // css`bg`;
 // styled('')``
 
-const { width: SCREEN_W, height: SCREEN_H } = Dimensions.get('window');
+const { width: SCREEN_W } = Dimensions.get('window');
 
 const buttonVariants = createVariants({
   base: 'py-5 m-1 rounded-md items-center justify-center',
@@ -71,7 +71,7 @@ function HomeScreen() {
           hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))
           ios:(p-14 bg-rose-200 border-black border-2 dark:(bg-red-500))
           android:(p-14 border-green-200 border-2 bg-gray-50 dark:(bg-purple-500))
-          sm:(m-10)
+          md:(m-10)
         `}
       >
         <Button size='large' />
@@ -82,7 +82,7 @@ function HomeScreen() {
               font-inter-bold hover:text-gray-700
             `}
           >
-            {`WIDTH: ${SCREEN_W} \nHEIGHT: ${SCREEN_H}`}
+            {`WIDTH: ${SCREEN_W}`}
           </Text>
         </View>
       </View>
@@ -111,14 +111,14 @@ function HomeScreen() {
         <Image
           source={testImage}
           resizeMode='cover'
-          className='-translate-x-[10vw] rounded-full border-1'
+          className='-translate-x-[10vw] rounded-full border-1 w-5 h-5'
         />
         <TextField />
         <View
           className={`
             -top-1 -translate-x-2
             mb-2 rounded-lg bg-gray-300 p-2
-            group-hover:bg-pink-800
+            group-hover:bg-pink-800s
           `}
         >
           <Text

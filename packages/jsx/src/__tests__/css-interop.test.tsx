@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native';
-import { render } from '@testing-library/react-native';
-import { act } from 'react-test-renderer';
+import { render, act, fireEvent } from '@testing-library/react-native';
 import { colorScheme } from '../observables';
 import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
 
@@ -36,6 +35,19 @@ test('dark mode', () => {
   );
 
   expect(tree).toMatchSnapshot();
+});
+
+test('Interactions', async () => {
+  const TwinPressable = createMockComponent(View, { className: 'style' });
+
+  colorScheme.set('dark');
+  const tree = render(
+    <TwinPressable testID={testID} className='bg-black hover:(bg-gray-200)' />,
+  );
+  const button = tree.getByTestId(testID);
+
+  await act(() => fireEvent(button, 'touchStart'));
+  expect(button).toHaveStyle({ backgroundColor: 'rgba(229,231,235,1)' });
 });
 
 // test('mapping', () => {

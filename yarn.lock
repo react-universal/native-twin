@@ -11352,6 +11352,7 @@ __metadata:
     expo: "npm:^51.0.17"
     expo-build-properties: "npm:~0.12.3"
     expo-font: "npm:~12.0.7"
+    expo-image: "npm:~1.12.12"
     expo-status-bar: "npm:~1.12.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
@@ -11422,6 +11423,15 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 10/75c887f232b1a60270388daf59801be8575c20ddb24b6548b43bd1961cfaf0b5524cd4e4c00270d83478f9071cef4d51c4d2d92eff227cef93e5a0afd3fa3247
+  languageName: node
+  linkType: hard
+
+"expo-image@npm:~1.12.12":
+  version: 1.12.12
+  resolution: "expo-image@npm:1.12.12"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/bd23e43483d91490ed1e8f72e28196e538a42e388be37b8220c79eaa7e345fb2f0b3a79ce4297ed9e1c51520535313b7e450635c160f2e833480c30db8b0cac6
   languageName: node
   linkType: hard
 

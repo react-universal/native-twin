@@ -1,6 +1,9 @@
 import { forwardRef } from 'react';
 import type { JSXFunction } from '../types/jsx.types';
-import type { StylableComponentConfigOptions, ReactComponent } from '../types/styled.types';
+import type {
+  StylableComponentConfigOptions,
+  ReactComponent,
+} from '../types/styled.types';
 import { getNormalizeConfig } from '../utils/config.utils';
 import { getComponentType } from '../utils/react.utils';
 import { twinComponent } from './twinCmp';

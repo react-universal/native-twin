@@ -32,12 +32,7 @@
     },
     "plugins": [
       [
-        "expo-build-properties",
-        {
-          "ios": {
-            "flipper": true
-          }
-        }
+        "expo-build-properties"
       ],
       "expo-font"
     ]

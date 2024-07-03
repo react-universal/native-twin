@@ -137,6 +137,7 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
             rem: context.units.rem,
           }) as number;
         }
+        console.log('MAX_MIN', max, min);
         if (max && min && !(width <= max && width >= min)) {
           return false;
         }
