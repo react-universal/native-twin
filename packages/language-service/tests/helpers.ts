@@ -4,7 +4,7 @@ import { DOCUMENT_SELECTORS, configurationSection } from '../src/utils/constants
 
 export const createLanguageClient = () => {};
 
-export const getDefaultLanguageCLientOptions = (data: {
+export const getDefaultLanguageClientOptions = (data: {
   tsConfigFiles: vscode.Uri[];
   twinConfigFile: vscode.Uri | undefined;
   workspaceRoot: vscode.WorkspaceFolder | undefined;

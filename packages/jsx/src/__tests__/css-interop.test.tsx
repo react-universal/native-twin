@@ -1,5 +1,7 @@
 import { Text, View } from 'react-native';
 import { render } from '@testing-library/react-native';
+import { act } from 'react-test-renderer';
+import { colorScheme } from '../observables';
 import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
 
 const testID = 'native-twin-element';
@@ -15,22 +17,24 @@ test('normal component', () => {
 
   const tree = render(
     <TwinView testID={testID} className='bg-black hover:bg-white'>
-      <TwinText className='text(white lg)'>asad</TwinText>
+      <TwinText className='text(white lg)'>Sample Text</TwinText>
     </TwinView>,
   );
-  // console.log('JSON: ', tree.toJSON());
-  // tree.debug({
-  //   message: 'TREE',
-  // });
-  // const component = screen.getByTestId(testID);
-  // expect(component).toBeDefined();
-  // expect(component.props).toEqual({
-  //   testID,
-  //   differentStyleProp: {
-  //     backgroundColor: 'rgba(0,0,0,1)',
-  //     color: 'rgba(255,255,255,1)',
-  //   },
-  // });
+  expect(tree).toMatchSnapshot();
+});
+
+test('dark mode', () => {
+  const TwinView = createMockComponent(View, { className: 'style' });
+  const TwinText = createMockComponent(Text, { className: 'style' });
+
+  act(() => colorScheme.set('dark'));
+
+  const tree = render(
+    <TwinView testID={testID} className='bg-black hover:bg-white dark:bg-red'>
+      <TwinText className='text(white lg)'>Sample Text</TwinText>
+    </TwinView>,
+  );
+
   expect(tree).toMatchSnapshot();
 });
 

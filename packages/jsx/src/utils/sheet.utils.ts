@@ -1,4 +1,4 @@
-import { Appearance, PixelRatio, Platform } from 'react-native';
+import { PixelRatio, Platform } from 'react-native';
 import { parseCssValue, tw } from '@native-twin/core';
 import {
   AnyStyle,
@@ -8,7 +8,7 @@ import {
   SheetEntryDeclaration,
 } from '@native-twin/css';
 import { StyledContext } from '@native-twin/styled';
-import { rem, vh, vw } from '../observables';
+import { colorScheme, rem, vh, vw } from '../observables';
 
 export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
   return entries.reduce(
@@ -31,6 +31,7 @@ export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledC
       last: {},
       odd: {},
       pointer: {},
+      dark: {},
     } as FinalSheet,
   );
 }
@@ -82,6 +83,7 @@ const platformVariants = ['web', 'native', 'ios', 'android'];
 export function isApplicativeRule(variants: string[], context: StyledContext) {
   if (variants.length == 0) return true;
   const screens = tw.theme('screens');
+
   for (let v of variants) {
     v = v.replace('&:', '');
     if (platformVariants.includes(v)) {
@@ -90,6 +92,12 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
       if (v == 'ios' && Platform.OS != 'ios') return false;
       if (v == 'android' && Platform.OS != 'android') return false;
     }
+    // if (
+    //   (v === 'dark' && context.colorScheme === 'light') ||
+    //   (v === 'light' && context.colorScheme === 'dark')
+    // ) {
+    //   return false;
+    // }
     if (v in screens) {
       tw.theme('screens');
       const width = context.deviceWidth;
@@ -115,7 +123,7 @@ export function createStyledContext(): StyledContext {
   const vh$ = vh.get();
   const vw$ = vw.get();
   return {
-    colorScheme: Appearance.getColorScheme()!,
+    colorScheme: colorScheme.get()!,
     deviceAspectRatio: vw$ / vh$,
     deviceHeight: vh$,
     deviceWidth: vw$,

@@ -3,7 +3,9 @@ import { getTWFeatureParser, type TWParsedRule } from '@native-twin/css';
 import type { Rule, ThemeContext } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
 
-export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(rule: Rule<Theme>) => {
+export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(
+  rule: Rule<Theme>,
+) => {
   const [_, __, resolver] = rule;
   const parser = createRuleMatcher(rule);
   return (token: TWParsedRule, context: ThemeContext) => {
@@ -15,8 +17,13 @@ export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(rule: Ru
   };
 };
 
-export const createRuleMatcher = <Theme extends __Theme__ = __Theme__>(rule: Rule<Theme>) => {
+export const createRuleMatcher = <Theme extends __Theme__ = __Theme__>(
+  rule: Rule<Theme>,
+) => {
   const [rawPattern, _, __, meta] = rule;
-  const patternParser = P.literal(rawPattern);
+  let patternParser = P.literal(rawPattern);
+  if (rawPattern.includes('|')) {
+    patternParser = P.choice(rawPattern.split('|').map((x) => P.literal(x)));
+  }
   return getTWFeatureParser(rawPattern, patternParser, meta?.feature);
 };

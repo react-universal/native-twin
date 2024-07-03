@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, useWindowDimensions } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 
-const FirstRoute = () => <View className='flex-1 bg-blue-200' style={{ flex: 1 }} />;
+const FirstRoute = () => <View className='flex-1 bg-blue-200 border-8 border-white' style={{ flex: 1 }} />;
 
 const SecondRoute = () => <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
 

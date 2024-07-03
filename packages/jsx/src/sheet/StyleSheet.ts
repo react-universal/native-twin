@@ -41,7 +41,7 @@ const internalSheet: TwinStyleSheet = {
 export const StyleSheet = Object.assign({}, internalSheet, NativeSheet);
 
 export function createComponentSheet(entries: SheetEntry[] = [], context: StyledContext) {
-  const sheet = getSheetEntryStyles(entries, context);
+  const sheet = getSheetEntryStyles(entries, StyleSheet.runtimeContext);
   return {
     getChildStyles,
     getStyles,
@@ -52,10 +52,15 @@ export function createComponentSheet(entries: SheetEntry[] = [], context: Styled
       hasPointerEvents: Object.keys(sheet.pointer).length > 0,
     },
   };
+
   function getStyles(input: SheetInteractionState) {
     const styles: AnyStyle = { ...sheet.base };
+    if (colorScheme.get() === 'dark') {
+      Object.assign(styles, { ...sheet.dark });
+    }
     if (input.isPointerActive) Object.assign(styles, { ...sheet.pointer });
     if (input.isParentActive) Object.assign(styles, { ...sheet.group });
+
     return styles;
   }
 

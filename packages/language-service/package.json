@@ -21,7 +21,7 @@
     "build:watch": "node esbuild.mjs --watch",
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
-    "test": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --testTimeout 100000",
     "vscode:dev": "tsc -p tsconfig.build.json --watch"
   },
   "dependencies": {

@@ -37,7 +37,22 @@ export type CssFeature =
   | 'transform-2d'
   | 'transform-3d';
 
-export type SelectorGroup = 'base' | 'group' | 'pointer' | 'first' | 'last' | 'odd' | 'even';
+export type SelectorGroup =
+  | 'base'
+  | 'group'
+  | 'pointer'
+  | 'first'
+  | 'last'
+  | 'odd'
+  | 'even'
+  | 'dark';
+
+export type CSSLengthUnit = {
+  [U in CSSUnits]: {
+    value: number;
+    units: U;
+  };
+}[CSSUnits];
 
 export type CSSUnits =
   | 'px'

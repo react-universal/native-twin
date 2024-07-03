@@ -11,11 +11,17 @@ export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
     variants.includes('group-focus')
   )
     return 'group';
+
+  if (variants.includes('dark')) return 'dark';
   if (variants.includes('odd')) return 'odd';
   if (variants.includes('even')) return 'even';
   if (variants.includes('first')) return 'first';
   if (variants.includes('last')) return 'last';
-  if (variants.includes('hover') || variants.includes('focus') || variants.includes('active'))
+  if (
+    variants.includes('hover') ||
+    variants.includes('focus') ||
+    variants.includes('active')
+  )
     return 'pointer';
   return 'base';
 }
@@ -34,7 +40,8 @@ export function mql(screen: MaybeArray<TWScreenValueConfig>, prefix = '@media ')
           (screen as { raw?: string }).raw ||
           Object.keys(screen)
             .map(
-              (feature) => `(${feature}-width:${(screen as Record<string, string>)[feature]})`,
+              (feature) =>
+                `(${feature}-width:${(screen as Record<string, string>)[feature]})`,
             )
             .join(' and ')
         );

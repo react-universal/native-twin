@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`normal component 1`] = `
+exports[`dark mode 1`] = `
 <View
   configs={
     [
@@ -15,7 +15,7 @@ exports[`normal component 1`] = `
   onTouchStart={[Function]}
   style={
     {
-      "backgroundColor": "rgba(0,0,0,1)",
+      "backgroundColor": "rgba(248,113,113,1)",
     }
   }
   styledProps={
@@ -33,6 +33,9 @@ exports[`normal component 1`] = `
           "sheet": {
             "base": {
               "backgroundColor": "rgba(0,0,0,1)",
+            },
+            "dark": {
+              "backgroundColor": "rgba(248,113,113,1)",
             },
             "even": {},
             "first": {},
@@ -89,6 +92,7 @@ exports[`normal component 1`] = `
                 "color": "rgba(255,255,255,1)",
                 "fontSize": 18,
               },
+              "dark": {},
               "even": {},
               "first": {},
               "group": {},
@@ -101,7 +105,115 @@ exports[`normal component 1`] = `
       ]
     }
   >
-    asad
+    Sample Text
+  </RCTText>
+</View>
+`;
+
+exports[`normal component 1`] = `
+<View
+  configs={
+    [
+      {
+        "nativeStyleToProp": undefined,
+        "source": "className",
+        "target": "style",
+      },
+    ]
+  }
+  onTouchEnd={[Function]}
+  onTouchStart={[Function]}
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,1)",
+    }
+  }
+  styledProps={
+    [
+      [
+        "style",
+        {
+          "getChildStyles": [Function],
+          "getStyles": [Function],
+          "metadata": {
+            "hasGroupEvents": false,
+            "hasPointerEvents": true,
+            "isGroupParent": false,
+          },
+          "sheet": {
+            "base": {
+              "backgroundColor": "rgba(0,0,0,1)",
+            },
+            "dark": {},
+            "even": {},
+            "first": {},
+            "group": {},
+            "last": {},
+            "odd": {},
+            "pointer": {
+              "backgroundColor": "rgba(255,255,255,1)",
+            },
+          },
+        },
+      ],
+    ]
+  }
+  testID="native-twin-element"
+>
+  <RCTText
+    accessible={true}
+    allowFontScaling={true}
+    configs={
+      [
+        {
+          "nativeStyleToProp": undefined,
+          "source": "className",
+          "target": "style",
+        },
+      ]
+    }
+    ellipsizeMode="tail"
+    isHighlighted={false}
+    lastOrd={0}
+    ord={0}
+    selectionColor={null}
+    style={
+      {
+        "color": "rgba(255,255,255,1)",
+        "fontSize": 18,
+      }
+    }
+    styledProps={
+      [
+        [
+          "style",
+          {
+            "getChildStyles": [Function],
+            "getStyles": [Function],
+            "metadata": {
+              "hasGroupEvents": false,
+              "hasPointerEvents": false,
+              "isGroupParent": false,
+            },
+            "sheet": {
+              "base": {
+                "color": "rgba(255,255,255,1)",
+                "fontSize": 18,
+              },
+              "dark": {},
+              "even": {},
+              "first": {},
+              "group": {},
+              "last": {},
+              "odd": {},
+              "pointer": {},
+            },
+          },
+        ],
+      ]
+    }
+  >
+    Sample Text
   </RCTText>
 </View>
 `;
