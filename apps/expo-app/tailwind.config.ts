@@ -8,6 +8,12 @@ export default defineConfig({
   },
   theme: {
     extend: {
+      screens: {
+        sm: {
+          min: '200px',
+          max: '500px',
+        },
+      },
       colors: {
         primary: 'blue',
       },

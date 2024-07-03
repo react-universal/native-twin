@@ -1,9 +1,19 @@
 import { useState } from 'react';
-import { Text, Image, Pressable, TextInput, View, PressableProps } from 'react-native';
+import {
+  Text,
+  Image,
+  Pressable,
+  TextInput,
+  View,
+  PressableProps,
+  Dimensions,
+} from 'react-native';
 import { VariantProps, createVariants } from '@native-twin/styled';
 
 // css`bg`;
 // styled('')``
+
+const { width: SCREEN_W, height: SCREEN_H } = Dimensions.get('window');
 
 const buttonVariants = createVariants({
   base: 'py-5 m-1 rounded-md items-center justify-center',
@@ -56,11 +66,13 @@ function HomeScreen() {
   return (
     <View className='flex-1'>
       <View
-        className={`flex-1
-    items-center justify-center md:border-3
-    hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))
-    ios:(p-14 bg-rose-200 border-white border-2)
-    android:(p-14 border-green-200 border-2 bg-gray-50)`}
+        className={`
+          flex-1 items-center justify-center md:border-3
+          hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))
+          ios:(p-14 bg-rose-200 border-black border-2 dark:(bg-red-500))
+          android:(p-14 border-green-200 border-2 bg-gray-50 dark:(bg-purple-500))
+          sm:(m-10)
+        `}
       >
         <Button size='large' />
         <View className='bg-white shadow-md rounded-xl p-2'>
@@ -70,22 +82,21 @@ function HomeScreen() {
               font-inter-bold hover:text-gray-700
             `}
           >
-            Text - 1
+            {`WIDTH: ${SCREEN_W} \nHEIGHT: ${SCREEN_H}`}
           </Text>
         </View>
       </View>
       <View
         className={`
           group
-          flex-[2]
+          flex-[2] items-center justify-center
           bg-gray-800 hover:bg-pink-600
-          items-center justify-center
         `}
       >
         <Text
           className={`
-          font-inter-bold text-2xl capitalize
-          ${active ? 'text-red-800' : 'text-primary'}
+            font-inter-bold text-2xl capitalize
+            ${active ? 'text-red-800' : 'text-primary'}
           `}
         >
           Nested Hover

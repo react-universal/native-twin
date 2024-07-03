@@ -98,21 +98,50 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
     // ) {
     //   return false;
     // }
-    if (v in screens) {
-      tw.theme('screens');
+    if (screens && v in screens) {
+      const variant = screens[v];
       const width = context.deviceWidth;
-      const value = screens[v].replace('px', '');
-      if (typeof value == 'string' && width >= Number(value)) {
-        return false;
-      }
-      if (typeof value == 'object') {
-        if ('raw' in value && !(width >= value.raw)) {
+      if (typeof variant === 'string') {
+        const value = parseCssValue('min-width', variant, {
+          deviceHeight: context.deviceHeight,
+          deviceWidth: context.deviceWidth,
+          rem: context.units.rem,
+        }) as number;
+        if (width >= Number(value)) {
           return false;
         }
-        if (value.max && value.min && !(width <= value.max && width >= value.min))
+      }
+
+      if (typeof variant == 'object') {
+        let min: null | number = null;
+        let max: null | number = null;
+        // if ('raw' in variant && !(width >= Number(variant.raw))) {
+        if ('raw' in variant) {
+          min = parseCssValue('min-width', variant.raw, {
+            deviceHeight: context.deviceHeight,
+            deviceWidth: context.deviceWidth,
+            rem: context.units.rem,
+          }) as number;
+        }
+        if ('min' in variant && variant.min) {
+          min = parseCssValue('min-width', variant.min, {
+            deviceHeight: context.deviceHeight,
+            deviceWidth: context.deviceWidth,
+            rem: context.units.rem,
+          }) as number;
+        }
+        if ('max' in variant && variant.max) {
+          max = parseCssValue('max-width', variant.max, {
+            deviceHeight: context.deviceHeight,
+            deviceWidth: context.deviceWidth,
+            rem: context.units.rem,
+          }) as number;
+        }
+        if (max && min && !(width <= max && width >= min)) {
           return false;
-        if (value.max && !(width <= value.max)) return false;
-        if (value.min && !(width >= value.min)) return false;
+        }
+        if (max && !(width <= max)) return false;
+        if (min && !(width >= min)) return false;
       }
     }
   }

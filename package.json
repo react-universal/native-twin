@@ -62,7 +62,7 @@
     "react-test-renderer": "18.2.0",
     "rimraf": "^5.0.7",
     "tslib": "^2.6.3",
-    "turbo": "^2.0.3",
+    "turbo": "^2.0.6",
     "typescript": "~5.3.3"
   },
   "packageManager": "yarn@4.2.2",

@@ -15,7 +15,7 @@ function assertActive() {
   }
 }
 
-export const tw: RuntimeTW<any> = /* #__PURE__ */ new Proxy(
+export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
   // just exposing the active as tw should work with most bundlers
   // as ES module export can be re-assigned BUT some bundlers to not honor this
   // -> using a delegation proxy here
