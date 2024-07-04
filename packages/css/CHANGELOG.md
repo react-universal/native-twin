@@ -1,5 +1,13 @@
 # @universal-labs/css
 
+## 6.4.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @native-twin/helpers@6.4.0
+  - @native-twin/arc-parser@6.4.0
+
 ## 6.3.0
 
 ### Minor Changes

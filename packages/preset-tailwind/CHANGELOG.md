@@ -1,5 +1,12 @@
 # @universal-labs/preset-tailwind
 
+## 6.4.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @native-twin/core@6.4.0
+
 ## 6.3.0
 
 ### Patch Changes

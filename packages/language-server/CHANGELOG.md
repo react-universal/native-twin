@@ -1,5 +1,13 @@
 # @native-twin/language-server
 
+## 6.4.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @native-twin/core@6.4.0
+  - @native-twin/preset-tailwind@6.4.0
+
 ## 6.3.0
 
 ### Minor Changes
