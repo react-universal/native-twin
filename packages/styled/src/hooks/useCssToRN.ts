@@ -137,21 +137,66 @@ function isApplicativeRule(variants: string[], context: StyledContext) {
       if (v == 'ios' && Platform.OS != 'ios') return false;
       if (v == 'android' && Platform.OS != 'android') return false;
     }
-    if (v in screens) {
-      tw.theme('screens');
-      const width = context.deviceWidth;
-      const value = screens[v].replace('px', '');
-      if (typeof value == 'string' && width >= Number(value)) {
-        return false;
+    for (let v of variants) {
+      v = v.replace('&:', '');
+      if (platformVariants.includes(v)) {
+        if (v == 'web' && Platform.OS != 'web') return false;
+        if (v == 'native' && Platform.OS == 'web') return false;
+        if (v == 'ios' && Platform.OS != 'ios') return false;
+        if (v == 'android' && Platform.OS != 'android') return false;
       }
-      if (typeof value == 'object') {
-        if ('raw' in value && !(width >= value.raw)) {
-          return false;
+      // if (
+      //   (v === 'dark' && context.colorScheme === 'light') ||
+      //   (v === 'light' && context.colorScheme === 'dark')
+      // ) {
+      //   return false;
+      // }
+      if (screens && v in screens) {
+        const variant = screens[v];
+        const width = context.deviceWidth;
+        if (typeof variant === 'string') {
+          const value = parseCssValue('min-width', variant, {
+            deviceHeight: context.deviceHeight,
+            deviceWidth: context.deviceWidth,
+            rem: context.units.rem,
+          }) as number;
+          if (width >= Number(value)) {
+            return false;
+          }
         }
-        if (value.max && value.min && !(width <= value.max && width >= value.min))
-          return false;
-        if (value.max && !(width <= value.max)) return false;
-        if (value.min && !(width >= value.min)) return false;
+  
+        if (typeof variant == 'object') {
+          let min: null | number = null;
+          let max: null | number = null;
+          // if ('raw' in variant && !(width >= Number(variant.raw))) {
+          if ('raw' in variant) {
+            min = parseCssValue('min-width', variant.raw, {
+              deviceHeight: context.deviceHeight,
+              deviceWidth: context.deviceWidth,
+              rem: context.units.rem,
+            }) as number;
+          }
+          if ('min' in variant && variant.min) {
+            min = parseCssValue('min-width', variant.min, {
+              deviceHeight: context.deviceHeight,
+              deviceWidth: context.deviceWidth,
+              rem: context.units.rem,
+            }) as number;
+          }
+          if ('max' in variant && variant.max) {
+            max = parseCssValue('max-width', variant.max, {
+              deviceHeight: context.deviceHeight,
+              deviceWidth: context.deviceWidth,
+              rem: context.units.rem,
+            }) as number;
+          }
+          console.log('MAX_MIN', max, min);
+          if (max && min && !(width <= max && width >= min)) {
+            return false;
+          }
+          if (max && !(width <= max)) return false;
+          if (min && !(width >= min)) return false;
+        }
       }
     }
   }
