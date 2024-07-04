@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/ts-plugin",
-  "version": "6.3.0",
+  "version": "6.4.0",
   "description": "TypeScript plugin that adds IntelliSense Native Tailwind",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {

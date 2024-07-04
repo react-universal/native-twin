@@ -1,5 +1,18 @@
 # Change Log
 
+## 6.4.0
+
+### Minor Changes
+
+- [`7ee5e16`](https://github.com/react-universal/native-twin/commit/7ee5e1673bf6be31b32851cb214d338473e1b8f2) Thanks [@chrisarts](https://github.com/chrisarts)! - Fix JSX runtime errors on animations
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @native-twin/helpers@6.4.0
+  - @native-twin/css@6.4.0
+  - @native-twin/core@6.4.0
+
 ## 6.3.0
 
 ### Patch Changes
