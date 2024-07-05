@@ -5,16 +5,12 @@
       "path": ".."
     },
     {
-      "name": "📦 twin.run",
-      "path": "../sites/twin.run"
-    },
-    {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
     },
     {
       "name": "📦 @lib/language-service",
@@ -27,21 +23,13 @@
     {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
     }
   ],
   "settings": {
-    "cSpell.ignorePaths": [
-      "yarn.lock",
-      "node_modules",
-      "vscode-extension",
-      ".git/objects",
-      "css.colors.ts",
-      ".vscode",
-      ".vscode-insiders",
-      "**/colors.ts",
-      "**/*.snap",
-      "**/*.json"
-    ],
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
@@ -55,31 +43,30 @@
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       ".turbo": false,
-      "**/CHANGELOG.md": false,
+      "**/CHANGELOG.md": true,
       "**/jest.config.js": false,
-      "**/LICENSE": false,
+      "**/LICENSE": true,
       "**/babel.config.js": false,
       "**/build": false,
-      "**/turbo.json": false,
+      "**/turbo.json": true,
       "**/.eslintrc.json": false,
-      "**/.eslintignore": false,
-      "**/README.md": false
+      "**/.eslintignore": true,
+      "**/README.md": true
     },
     "search.exclude": {
       "**/node_modules": true,
-      "**/bower_components": true,
       "**/*.code-search": true,
       "**/build": true
     },
-    "editor.fontSize": 15,
+    "editor.fontSize": 16,
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [
       "sastan",
       "TRBL",
       "xytrbl"
     ],
-    "testing.openTesting": "neverOpen",
-    "jestrunner.jestCommand": "yarn test --",
-    "jestrunner.jestPath": "${workspaceFolder}/../../node_modules/.bin/jest",
+    "jest.jestCommandLine": "yarn test --",
+    "jest.enable": true,
+    "jest.runMode": "on-demand"
   }
 }

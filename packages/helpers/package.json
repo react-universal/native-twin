@@ -28,7 +28,11 @@
     "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\""
+    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "test": "jest"
+  },
+  "optionalDependencies": {
+    "jest": "*"
   },
   "publishConfig": {
     "access": "public",

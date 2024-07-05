@@ -74,11 +74,6 @@ const test1 = `
 
 `;
 
-const result = parsThisFuckJSON(test1);
-if (!result.isError) {
-  result.result; // ?
-}
-JSON.parse(test1); //?
 
 describe('JSON parser', () => {
   it('Parse package.json', () => {

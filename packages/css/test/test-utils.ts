@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import util from 'util';
 import { CssResolver } from '../src';
 import { createCssParserContext } from '../src/utils.parser';

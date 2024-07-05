@@ -126,6 +126,19 @@
       "TRBL",
       "xytrbl"
     ],
-    "testing.openTesting": "neverOpen"
+    "jest.enable": true,
+    "jest.disabledWorkspaceFolders": [
+      "root",
+      "📦 @lib/builder",
+      "📦 @lib/metro",
+      "📦 @lib/with-nextjs",
+      "📦 @lib/vscode",
+      "📦 @lib/language-service",
+      "📦 @lib/language-server",
+      "expo-app",
+      "next-pages-example",
+      "next-app-dir",
+      "docs-site"
+    ]
   }
 }

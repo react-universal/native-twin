@@ -1,5 +1,5 @@
 import * as P from '@native-twin/arc-parser';
-import { CSSUnits, ParserToken } from './css.types';
+import type { CSSUnits, ParserToken } from './css.types';
 import { cssUnitToken, floatToken, numericToken } from './tokens';
 
 export const parseIntegerToken = P.digits.map(numericToken);

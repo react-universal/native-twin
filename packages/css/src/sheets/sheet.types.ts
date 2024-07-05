@@ -1,5 +1,5 @@
-import { MaybeArray } from '@native-twin/helpers';
-import { AnyStyle } from '../react-native/rn.types';
+import type { MaybeArray } from '@native-twin/helpers';
+import type { AnyStyle } from '../react-native/rn.types';
 
 export type Preflight = false | MaybeArray<Record<string, any>>;
 

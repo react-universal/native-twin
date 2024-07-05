@@ -4,7 +4,7 @@ import type {
   ViewStyle, // FlexAlignType,
   // DimensionValue,
 } from 'react-native';
-import { SelectorGroup } from '../css/css.types';
+import type { SelectorGroup } from '../css/css.types';
 
 export type AnyStyle = ImageStyle | TextStyle | ViewStyle;
 

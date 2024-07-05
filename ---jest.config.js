@@ -1,9 +1,11 @@
 /** @type {import('jest').Config} */
 module.exports = {
-  projects: ['<rootDir>/packages/*'],
-  passWithNoTests: true,
+  projects: ['<rootDir>', '<rootDir>/packages/*'],
+  passWithNoTests: false,
+  displayName: "Root",
   watchman: false,
-  preset: 'jest-expo/ios',
+  verbose: true,
+  preset: 'jest-expo',
   testPathIgnorePatterns: ['packages/vscode-extension/src/test/suite'],
   modulePathIgnorePatterns: ['vscode'],
   transformIgnorePatterns: [
