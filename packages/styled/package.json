@@ -50,14 +50,14 @@
   },
   "devDependencies": {
     "@native-twin/builder": "workspace:*",
-    "@types/react": "^18.2.64",
-    "@types/react-dom": "18.0.10",
     "@types/react-is": "^17.0.3"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-native": ">= 0.70",
-    "react-native-web": ">= 0.18.10"
+    "@types/react": "*",
+    "@types/react-dom": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-web": "*"
   },
   "optionalDependencies": {
     "jest": "*"

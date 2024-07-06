@@ -5289,16 +5289,16 @@ __metadata:
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
-    "@types/react": "npm:^18.2.64"
-    "@types/react-dom": "npm:18.0.10"
     "@types/react-is": "npm:^17.0.3"
     jest: "npm:*"
     react-is: "npm:^18.2.0"
     stable-hash: "npm:0.0.3"
   peerDependencies:
-    react: ">=18"
-    react-native: ">= 0.70"
-    react-native-web: ">= 0.18.10"
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: "*"
+    react-native: "*"
+    react-native-web: "*"
   dependenciesMeta:
     jest:
       optional: true
@@ -7089,15 +7089,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.0.10":
-  version: 18.0.10
-  resolution: "@types/react-dom@npm:18.0.10"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10/fbc4ea2eb2e5fff8716bd323f850904f3aec1cbb257bf0799a23111b6d98b83c5b7e58b96c4bdd11033004668424672fd29f7412160bb0cdf2305066de1ce300
-  languageName: node
-  linkType: hard
-
 "@types/react-dom@npm:~18.2.25":
   version: 18.2.25
   resolution: "@types/react-dom@npm:18.2.25"
@@ -7133,17 +7124,6 @@ __metadata:
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10/7a752e6c5e76139f258bc14827d2c574bb76d6e7eb1b240f24f79b269153cb88668c34ba7078d3de99ec1973b7022e1f788e71117bd52a287f382d24bb80be40
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^18.2.64":
-  version: 18.2.64
-  resolution: "@types/react@npm:18.2.64"
-  dependencies:
-    "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
-    csstype: "npm:^3.0.2"
-  checksum: 10/e82bd16660030c9aabdb5027bb9bf69570a90813e4a894c17bfb288978c2b80251def5754e455d72aa3485d99136e1b11b694f78c586e5918e10b3bb09b91b3c
   languageName: node
   linkType: hard
 
