@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { tw } from '@native-twin/core';
+import { atom, useAtomValue } from '@native-twin/helpers';
 import { JSXStyledProps } from '../../jsx/jsx-custom-props';
 import { ComponentSheet, createComponentSheet } from '../../sheet/StyleSheet';
-import { atom, useAtomValue } from '../../store/atomic.store';
 import { colorScheme } from '../../store/observables/colorScheme.obs';
 import { styledContext } from '../../store/observables/styles.obs';
 import { twinConfigObservable } from '../../store/observables/twin.observer';

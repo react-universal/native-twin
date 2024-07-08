@@ -1,7 +1,7 @@
 import { Appearance, Dimensions } from 'react-native';
 import { AnyStyle, FinalSheet, SheetEntry } from '@native-twin/css';
+import { Atom } from '@native-twin/helpers';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
-import { Atom } from '../store/atomic.store';
 
 export interface TwinStyleSheet {
   [INTERNAL_RESET](options?: {

@@ -1,5 +1,5 @@
 import type { SheetEntry } from '@native-twin/css';
-import { atom, Atom } from './atomic.store';
+import { Atom, atom } from '@native-twin/helpers';
 
 export const globalStyles = new Map<string, Atom<SheetEntry>>();
 export const opaqueStyles = new WeakMap<object, SheetEntry>();

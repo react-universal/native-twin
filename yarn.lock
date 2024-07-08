@@ -5158,7 +5158,7 @@ __metadata:
   dependencies:
     "@babel/plugin-transform-private-methods": "npm:^7.24.7"
     "@native-twin/css": "workspace:*"
-    "@native-twin/styled": "workspace:*"
+    "@native-twin/helpers": "workspace:*"
     jest: "npm:*"
   peerDependencies:
     react: ">=18"

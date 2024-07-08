@@ -7,9 +7,9 @@ import type {
   JSXElementConstructor,
 } from 'react';
 import type { AnyStyle, CompleteStyle } from '@native-twin/css';
+import { Atom } from '@native-twin/helpers';
 import type { RegisteredComponent } from '@native-twin/styled';
 import { createComponentSheet } from '../sheet/StyleSheet';
-import { Atom } from '../store/atomic.store';
 import { createPropState } from '../utils/styled.utils';
 
 type InteractionState = RegisteredComponent['interactionState'];

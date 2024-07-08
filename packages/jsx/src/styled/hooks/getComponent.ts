@@ -1,5 +1,5 @@
 import { ComponentSheet } from '../../sheet/StyleSheet';
-import { Atom, TwinStore, atom } from '../../store/atomic.store';
+import { Atom, TwinStore, atom } from '@native-twin/helpers';
 
 const componentsCache = new Map<string, Atom<TwinStore>>();
 

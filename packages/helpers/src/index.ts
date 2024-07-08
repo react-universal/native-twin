@@ -44,3 +44,13 @@ export {
 } from './create-value.utils';
 
 export { flattenObjectByPath, flattenColorPalette } from './object.utils';
+
+export {
+  Atom,
+  AtomGetter,
+  TwinStore,
+  atom,
+  atomStateMap,
+  useAtom,
+  useAtomValue,
+} from './atom.store';

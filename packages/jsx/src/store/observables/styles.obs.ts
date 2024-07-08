@@ -1,5 +1,5 @@
 import { PixelRatio, Platform, PlatformOSType } from 'react-native';
-import { atom, useAtomValue } from '../atomic.store';
+import { atom, useAtomValue } from '@native-twin/helpers';
 import { colorScheme } from './colorScheme.obs';
 import { twinConfigObservable } from './twin.observer';
 import { viewport } from './viewport.obs';

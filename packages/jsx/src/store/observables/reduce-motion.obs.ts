@@ -1,6 +1,6 @@
 import { AccessibilityInfo } from 'react-native';
 import { INTERNAL_RESET } from '../../utils/constants';
-import { atom } from '../atomic.store';
+import { atom } from '@native-twin/helpers';
 
 /**
  * isReduceMotionEnabled

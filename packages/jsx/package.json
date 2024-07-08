@@ -27,7 +27,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@native-twin/css": "workspace:*"
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*"
   },
   "devDependencies": {
     "@babel/plugin-transform-private-methods": "^7.24.7"
