@@ -7,7 +7,7 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
   const configs = type?.defaultProps?.['configs'] as ComponentConfig[];
   const styledProps: JSXStyledProps[] = [];
   if (props && configs) {
-    let debug = false;
+    // let debug = false;
     for (const config of configs) {
       // console.log('TYPE: ', { type, props }, false, null, false);
       const source = props?.[config.source];
@@ -15,7 +15,7 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
       if (!source) continue;
 
       if (source) {
-        debug = true;
+        // debug = true;
         const finalSheet = StyleSheet.registerClassNames(source);
         styledProps.push([config.target, finalSheet]);
         // props[config.target] = finalSheet.getStyles({
@@ -25,8 +25,8 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
       }
     }
     props['styledProps'] = styledProps;
-    if (debug) {
-      console.debug('CMP: ', type, props);
-    }
+    // if (debug) {
+    //   console.debug('CMP: ', type, props);
+    // }
   }
 }

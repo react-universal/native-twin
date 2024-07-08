@@ -1,4 +1,4 @@
-import { useCallback, useContext, useId, useRef } from 'react';
+import { useCallback, useContext, useId } from 'react';
 import { groupContext } from '../../context';
 import { ComponentSheet } from '../../sheet/StyleSheet';
 import { atom, useAtom, useAtomValue } from '../../store/atomic.store';
@@ -8,7 +8,7 @@ import { getTwinComponent } from './getComponent';
 export const useTwinComponent = (styledProps: [string, ComponentSheet][] = []) => {
   const id = useId();
   const context = useContext(groupContext);
-  console.log('RENDER_COUNTER: ', ++useRef(0).current);
+  // console.log('RENDER_COUNTER: ', ++useRef(0).current);
 
   const [state, setState] = useAtom(getTwinComponent(id, styledProps));
  
