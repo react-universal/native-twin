@@ -18,7 +18,6 @@ export function twinComponent(
   //     delete props[x.source];
   //   }
   // }
-  console.log('PROPS_____: ', props);
 
   if (component === baseComponent) {
     switch (getComponentType(component)) {

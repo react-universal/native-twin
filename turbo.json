@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
   "tasks": {
     "build": {
       "dependsOn": [
@@ -8,6 +9,12 @@
       "outputs": [
         "build/**"
       ]
+    },
+    "mobile:dev": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "interactive": true
     },
     "build:watch": {
       "persistent": true,

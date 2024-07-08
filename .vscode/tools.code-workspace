@@ -48,7 +48,7 @@
       "**/LICENSE": true,
       "**/babel.config.js": false,
       "**/build": false,
-      "**/turbo.json": true,
+      "**/turbo.json": false,
       "**/.eslintrc.json": false,
       "**/.eslintignore": true,
       "**/README.md": true
@@ -65,8 +65,19 @@
       "TRBL",
       "xytrbl"
     ],
-    "jest.jestCommandLine": "yarn test --",
     "jest.enable": true,
-    "jest.runMode": "on-demand"
+    "jest.disabledWorkspaceFolders": [
+      "root",
+      "📦 @lib/builder",
+      "📦 @lib/metro",
+      "📦 @lib/with-nextjs",
+      "📦 @lib/vscode",
+      "📦 @lib/language-service",
+      "📦 @lib/language-server",
+      "expo-app",
+      "next-pages-example",
+      "next-app-dir",
+      "docs-site"
+    ]
   }
 }

@@ -9,13 +9,13 @@ import type {
 import type { AnyStyle, CompleteStyle } from '@native-twin/css';
 import type { RegisteredComponent } from '@native-twin/styled';
 import { createComponentSheet } from '../sheet/StyleSheet';
-import type { Effect, Observable } from '../utils/observable';
 import { createPropState } from '../utils/styled.utils';
+import { Atom } from '../store/store.types';
 
 type InteractionState = RegisteredComponent['interactionState'];
 
 export type ComponentInteractionState = {
-  [K in keyof InteractionState]: Observable<InteractionState[K]>;
+  [K in keyof InteractionState]: Atom<InteractionState[K]>;
 };
 
 export type StyledComponentSheet = ReturnType<typeof createComponentSheet>;
@@ -37,6 +37,8 @@ export interface StyledComponentState {
   // };
   propStates: ReturnType<typeof createPropState>[];
 }
+
+export type StyledSubscription = 'vh' | 'vw' | 'rem' | 'em' | 'appearance';
 
 export type ComponentConfig = {
   target: string;
@@ -83,8 +85,8 @@ export type PropState = ComponentConfig & {
   sheet: StyledComponentSheet | null;
   currentStyles: AnyStyle;
 
-  declarationEffect: Effect;
-  styleEffect: Effect;
+  // declarationEffect: Effect;
+  // styleEffect: Effect;
 };
 
 export type NativeTwinGeneratedProps<T extends StylableComponentConfigOptions<any>> = {

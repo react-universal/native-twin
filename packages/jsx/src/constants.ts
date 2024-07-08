@@ -1,5 +1,5 @@
+import { atom } from './store/atomic.store';
 import { ComponentInteractionState } from './types/styled.types';
-import { observable } from './utils/observable';
 
 export const REACT_FORWARD_REF_SYMBOL = Symbol.for('react.forward_ref');
 
@@ -24,11 +24,11 @@ export const UpgradeState = {
 } as const;
 
 export const DEFAULT_INTERACTIONS_STATE: ComponentInteractionState = Object.freeze({
-  active: observable(false, { staticValue: true }),
-  focus: observable(false, { staticValue: true }),
-  hover: observable(false, { staticValue: true }),
-  'group-active': observable(false, { staticValue: true }),
-  'group-focus': observable(false, { staticValue: true }),
-  'group-hover': observable(false, { staticValue: true }),
-  group: observable(false, { staticValue: true }),
+  active: atom(false),
+  focus: atom(false),
+  hover: atom(false),
+  'group-active': atom(false),
+  'group-focus': atom(false),
+  'group-hover': atom(false),
+  group: atom(false),
 });

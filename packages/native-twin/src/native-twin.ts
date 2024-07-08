@@ -36,6 +36,7 @@ export function createTailwind(
   let cache = new Map<string, SheetEntry[]>();
   const insertedRules = new Set<string>();
   let sortedPrecedences: SheetEntry[] = [];
+  const subscriptions = new Set<(cb: TailwindConfig<any>) => void>();
 
   const runtime = Object.defineProperties(
     function tw(tokens) {
@@ -78,12 +79,25 @@ export function createTailwind(
         cache = new Map();
         insertedRules.clear();
         sortedPrecedences = [];
+        subscriptions.clear();
       },
-      destroy() {
+      destroy(nextConfig) {
+        if (nextConfig) {
+          subscriptions.forEach((cb) => {
+            cb && cb(nextConfig as any);
+          });
+        }
         this.clear();
         sheet.destroy();
       },
-    }),
+      observeConfig(cb) {
+        subscriptions.add(cb);
+        return () => {
+          subscriptions.delete(cb);
+        };
+      },
+      subscriptions,
+    } as RuntimeTW),
   );
   return runtime;
 

@@ -13,9 +13,11 @@ export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
   readonly target: Target;
-  destroy: () => void;
+  destroy: (nextConfig?: TailwindConfig<Theme>) => void;
   snapshot: () => () => void;
   clear: () => void;
+  observeConfig: (cb: (config: TailwindConfig<Theme>) => void) => () => void;
+  subscriptions: Set<(cb: TailwindConfig<any>) => void>
 }
 
 /* THEME CONFIG */

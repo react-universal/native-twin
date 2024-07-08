@@ -1,8 +1,7 @@
 import { Appearance, Dimensions } from 'react-native';
-import { SheetEntry } from '@native-twin/css';
-import { StyledContext } from '@native-twin/styled';
+import { AnyStyle, FinalSheet, SheetEntry } from '@native-twin/css';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../constants';
-import { Observable } from '../utils/observable';
+import { Atom } from '../store/store.types';
 
 export interface TwinStyleSheet {
   [INTERNAL_RESET](options?: {
@@ -14,6 +13,8 @@ export interface TwinStyleSheet {
   // register(options: StyleSheetRegisterOptions): void;
   // registerCompiled(options: StyleSheetRegisterCompiledOptions): void;
   getFlag(name: string): string | undefined;
-  getGlobalStyle(name: string): Observable<SheetEntry> | undefined;
-  runtimeContext: StyledContext;
+  getGlobalStyle(name: string): Atom<SheetEntry> | undefined;
+  compile: (tokens: string) => FinalSheet;
+  registerComponent(source: string): SheetEntry[];
+  styles: Map<string, AnyStyle>;
 }

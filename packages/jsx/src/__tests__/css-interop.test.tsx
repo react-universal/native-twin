@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import { render, act, fireEvent } from '@testing-library/react-native';
-import { colorScheme } from '../observables';
+import { colorScheme } from '../store/observables/colorScheme.obs';
 import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
 
 const testID = 'native-twin-element';

@@ -1,3 +1,3 @@
-import { ComponentSheet } from '../sheet/StyleSheet';
+import { SheetEntry } from '@native-twin/css';
 
-export type JSXStyledProps = [string, ComponentSheet];
+export type JSXStyledProps = [string, SheetEntry[]];

@@ -1,3 +1,4 @@
+/* eslint-disable prefer-spread */
 import { getSheet, type Sheet } from '@native-twin/css';
 import { noop } from '@native-twin/helpers';
 import { createTailwind } from '../native-twin';
@@ -6,6 +7,7 @@ import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
 import { mutationObserver } from './mutation-observer';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
+// const subscriptions = new Set<(cb: TailwindConfig<any>) => void>();
 
 function assertActive() {
   if (__DEV__ && !tw) {
@@ -30,11 +32,23 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
       if (__DEV__) {
         // Workaround webpack accessing the prototype in dev mode
         if (!active && property in target) {
+          console.log('IN_TARGET: ', property, target);
           return (target as any)[property];
         }
 
         assertActive();
       }
+
+      // if (property === 'observeConfig') {
+      //   // @ts-expect-error
+      //   subscriptions.add.apply(subscriptions, arguments);
+      //   return function () {
+      //     return () => {
+      //       // @ts-expect-error
+      //       subscriptions.delete.apply(subscriptions, arguments);
+      //     };
+      //   };
+      // }
 
       // const value = active[property as keyof RuntimeTW];
       if (property === 'theme') {
@@ -44,8 +58,16 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
           return value.apply(active, arguments as unknown as [string, string]);
         };
       }
+      if (property === 'observeConfig') {
+        const value = active[property];
+        return function () {
+          if (__DEV__) assertActive();
+          return value.apply(active, arguments as unknown as any);
+        };
+      }
       const value = active[property as Exclude<keyof RuntimeTW, 'theme'>];
       if (typeof value == 'function') {
+        console.log('AS_FUNCTION: ', property, target);
         return function () {
           if (__DEV__) assertActive();
           return value.apply(active);
@@ -81,7 +103,7 @@ export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
   target?: HTMLElement,
 ): RuntimeTW<Theme> {
   if ('destroy' in active) {
-    active?.destroy();
+    active?.destroy(config as any);
   }
   // active = tw$ as RuntimeTW;
   const instance = createTailwind(

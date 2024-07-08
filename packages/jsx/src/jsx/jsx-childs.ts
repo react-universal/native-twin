@@ -16,12 +16,27 @@ export function stylizeJSXChilds(props: JSXInternalProps | null | undefined) {
       if (!isValidElement<any>(children)) {
         props['children'] = children;
       } else {
+        // const child = props['children'];
+        // if (!child['ord']) {
+        // }
         props['children'] = cloneElement(children, {
           ord: 0,
           lastOrd: 0,
         } as Record<string, unknown>);
       }
     } else {
+      // if (
+      //   Children.toArray(children)
+      //     .filter(Boolean)
+      //     .every((x) => {
+      //       if (!isValidElement<any>(x)) {
+      //         return true;
+      //       }
+      //       return x['props']['ord'];
+      //     })
+      // ) {
+      //   return;
+      // }
       props['children'] = Children.toArray(children)
         .filter(Boolean)
         .flatMap((child, index) => {

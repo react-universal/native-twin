@@ -1,5 +1,6 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native';
 import { setup } from '@native-twin/core';
 import { useLoadFonts } from './src/hooks/useLoadFonts';
 import { TabViewExample } from './src/screens/TabsView.screen';
@@ -20,8 +21,10 @@ export default function App() {
   if (!isReady) return null;
 
   return (
-    <GestureHandlerRootView className='flex-1'>
-      <TabViewExample />
+    <GestureHandlerRootView className='flex-1 bg-black'>
+      <SafeAreaView className='flex-1'>
+        <TabViewExample />
+      </SafeAreaView>
     </GestureHandlerRootView>
   );
 }

@@ -1,9 +1,9 @@
 import { ComponentType, createElement } from 'react';
 import { groupContext } from '../context';
-import { JSXStyledProps } from '../jsx/jsx-custom-props';
-import { useTwinStore } from '../store/twin.store';
 import type { ComponentConfig } from '../types/styled.types';
 import { getComponentType } from '../utils/react.utils';
+import { useStyledProps } from './hooks/useStyledContext';
+import { useTwinComponent } from './hooks/useTwinComponent';
 
 export function twinComponent(
   baseComponent: ComponentType<any>,
@@ -13,30 +13,27 @@ export function twinComponent(
 ) {
   let component = baseComponent;
 
-  const { state, onChange, id, parentState } = useTwinStore(props?.['styledProps']);
-  // const renderCount = useRef(0);
+  const { styles, colorTheme } = useStyledProps(props);
+  const { state, parentState, onChange, id } = useTwinComponent(styles);
 
   props = Object.assign({ ref }, props);
-  if (props['className']) {
-    // console.group('CLASSES: ', props['className']);
-    // console.log('RENDER_COUNT: ', ++renderCount.current);
-    // console.log('STORE: ', state);
-    // console.log('PARENT: ', parentState);
-    // console.groupEnd();
-  }
 
-  if (props['styledProps']) {
-    const styledProps = props['styledProps'] as JSXStyledProps[];
-
-    for (const style of styledProps) {
+  if (styles.length > 0) {
+    for (const style of styles) {
       props[style[0]] = Object.assign(
-        style[1].getStyles({
-          isParentActive: parentState.isGroupActive,
-          isPointerActive: state.interactions.isLocalActive,
-        }),
+        style[1].getStyles(
+          {
+            isParentActive: parentState.isGroupActive,
+            isPointerActive: state.interactions.isLocalActive,
+          },
+          colorTheme,
+        ),
         { ...props[style[0]] } ?? {},
       );
     }
+    // if (styledProps.length > 0) {
+    //   console.log('STYLED_PROPS: ', styledProps);
+    // }
   }
 
   for (const x of configs) {
@@ -48,12 +45,10 @@ export function twinComponent(
   if (state.meta.hasPointerEvents || state.meta.hasGroupEvents) {
     props['onTouchStart'] = (event: unknown) => {
       ref?.['onTouchStart']?.(event);
-      // setIsOwnPointerActive(true);
       onChange(true);
     };
     props['onTouchEnd'] = (event: unknown) => {
       ref?.['onTouchEnd']?.(event);
-      // setIsOwnPointerActive(false);
       onChange(false);
     };
   }

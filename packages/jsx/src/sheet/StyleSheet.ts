@@ -1,4 +1,9 @@
-import { Appearance, Dimensions, StyleSheet as NativeSheet } from 'react-native';
+import {
+  Appearance,
+  ColorSchemeName,
+  Dimensions,
+  StyleSheet as NativeSheet,
+} from 'react-native';
 import { tw } from '@native-twin/core';
 import {
   AnyStyle,
@@ -8,24 +13,25 @@ import {
 } from '@native-twin/css';
 import { StyledContext } from '@native-twin/styled';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../constants';
-import { colorScheme, rem, vh, vw } from '../observables';
-import { warned, warnings } from '../store/static.store';
+import { styledContext } from '../store/observables/styles.obs';
+import { twinConfigObservable } from '../store/observables/twin.observer';
 import { globalStyles } from '../store/styles.store';
-import { createStyledContext, getSheetEntryStyles } from '../utils/sheet.utils';
+import { getSheetEntryStyles } from '../utils/sheet.utils';
 import { TwinStyleSheet } from './sheet.types';
 
 const internalSheet: TwinStyleSheet = {
   [INTERNAL_FLAGS]: {},
   [INTERNAL_RESET]({ dimensions = Dimensions, appearance = Appearance } = {}) {
     globalStyles.clear();
-    warnings.clear();
-    warned.clear();
+    // warnings.clear();
+    // warned.clear();
 
-    rem.set(tw.config.root.rem ?? 16);
+    // rem.set(tw.config.root.rem ?? 16);
 
-    vw[INTERNAL_RESET](dimensions);
-    vh[INTERNAL_RESET](dimensions);
-    colorScheme[INTERNAL_RESET](appearance);
+    // vw[INTERNAL_RESET](dimensions);
+    // vh[INTERNAL_RESET](dimensions);
+    // colorScheme[INTERNAL_RESET](appearance);
+    twinConfigObservable.set(tw.config);
   },
   getFlag(name: string) {
     return this[INTERNAL_FLAGS][name];
@@ -33,15 +39,21 @@ const internalSheet: TwinStyleSheet = {
   getGlobalStyle(name) {
     return globalStyles.get(name);
   },
-  get runtimeContext() {
-    return createStyledContext();
+  compile(tokens) {
+    const entries = tw(tokens);
+    return getSheetEntryStyles(entries, styledContext.get());
   },
+  registerComponent(source: string) {
+    const entries = tw(`${source}`);
+    return entries;
+  },
+  styles: new Map(),
 };
 
 export const StyleSheet = Object.assign({}, internalSheet, NativeSheet);
 
 export function createComponentSheet(entries: SheetEntry[] = [], context: StyledContext) {
-  const sheet = getSheetEntryStyles(entries, StyleSheet.runtimeContext);
+  const sheet = StyleSheet.create(getSheetEntryStyles(entries, context));
   return {
     getChildStyles,
     getStyles,
@@ -53,9 +65,9 @@ export function createComponentSheet(entries: SheetEntry[] = [], context: Styled
     },
   };
 
-  function getStyles(input: SheetInteractionState) {
+  function getStyles(input: SheetInteractionState, theme: ColorSchemeName) {
     const styles: AnyStyle = { ...sheet.base };
-    if (colorScheme.get() === 'dark') {
+    if (theme === 'dark') {
       Object.assign(styles, { ...sheet.dark });
     }
     if (input.isPointerActive) Object.assign(styles, { ...sheet.pointer });

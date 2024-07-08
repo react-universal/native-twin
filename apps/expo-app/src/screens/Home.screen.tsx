@@ -69,9 +69,9 @@ function HomeScreen() {
         className={`
           flex-1 items-center justify-center md:border-3
           hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-black))
-          ios:(p-14 bg-rose-200 border-black border-2 dark:(bg-red-500))
+          ios:(p-14 bg-rose-200 border-black border-2 dark:(bg-blue-500))
           android:(p-14 border-green-200 border-2 bg-gray-50 dark:(bg-purple-500))
-          md:(m-10)
+          md:(m-10) bg-red-500
         `}
       >
         <Button size='large' />
@@ -106,7 +106,7 @@ function HomeScreen() {
             setActive((prevState) => !prevState);
           }}
         >
-          <Text className='text-gray-200'>Activate</Text>
+          <Text className='text-gray-200 text-3xl'>Activate</Text>
         </Pressable>
         <Image
           source={testImage}
@@ -123,7 +123,7 @@ function HomeScreen() {
         >
           <Text
             suppressHighlighting
-            className='font-inter-bold rotate-6 text-xl text-gray-800 group-hover:text-white -mt-2'
+            className='font-inter-bold rotate-6 text-2xl text-gray-800 group-hover:text-white -mt-2'
           >
             Deeply nested hover
           </Text>

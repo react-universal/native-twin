@@ -7,6 +7,7 @@
     "android": "expo start --android -c",
     "ios": "expo start --ios -c",
     "lint": "echo $HOME",
+    "mobile:dev": "expo start --clear",
     "start": "expo start -c"
   },
   "dependencies": {

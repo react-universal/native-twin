@@ -19,5 +19,5 @@
     "app.config.js",
     "metro.config.js"
   ],
-  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json"]
+  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json", "wdyr.js"]
 }

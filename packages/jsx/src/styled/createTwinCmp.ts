@@ -45,6 +45,8 @@ export const createStylableComponent = <
   component.defaultProps = {
     configs,
   };
+  // @ts-expect-error
+  component.whyDidYouRender = true;
   stylizedComponents.set(baseComponent, component);
 
   return component;

@@ -1,4 +1,4 @@
-import { PixelRatio, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { parseCssValue, tw } from '@native-twin/core';
 import {
   AnyStyle,
@@ -8,7 +8,6 @@ import {
   SheetEntryDeclaration,
 } from '@native-twin/css';
 import { StyledContext } from '@native-twin/styled';
-import { colorScheme, rem, vh, vw } from '../observables';
 
 export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
   return entries.reduce(
@@ -40,19 +39,22 @@ export function composeDeclarations(
   declarations: SheetEntryDeclaration[],
   context: StyledContext,
 ) {
+  const styledCtx = {
+    rem: context.units.rem,
+    deviceHeight: context.deviceHeight,
+    deviceWidth: context.deviceWidth,
+  };
   return declarations.reduce((prev, current) => {
     let value: any = current.value;
     if (Array.isArray(current.value)) {
       value = [];
       for (const t of current.value) {
         if (typeof t.value == 'string') {
-          value.push({
-            [t.prop]: parseCssValue(t.prop, t.value, {
-              rem: tw.config.root?.rem ?? context.units.rem,
-              deviceHeight: context.deviceHeight,
-              deviceWidth: context.deviceWidth,
-            }),
-          });
+          if (t.value) {
+            value.push({
+              [t.prop]: parseCssValue(t.prop, t.value, styledCtx),
+            });
+          }
         }
       }
       Object.assign(prev, {
@@ -61,11 +63,7 @@ export function composeDeclarations(
       return prev;
     }
     if (typeof value == 'string') {
-      value = parseCssValue(current.prop, value, {
-        rem: tw.config.root?.rem ?? context.units.rem,
-        deviceHeight: context.deviceHeight,
-        deviceWidth: context.deviceWidth,
-      });
+      value = parseCssValue(current.prop, value, styledCtx);
     }
     if (typeof value == 'object') {
       Object.assign(prev, value);
@@ -147,33 +145,4 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
     }
   }
   return true;
-}
-
-export function createStyledContext(): StyledContext {
-  const vh$ = vh.get();
-  const vw$ = vw.get();
-  return {
-    colorScheme: colorScheme.get()!,
-    deviceAspectRatio: vw$ / vh$,
-    deviceHeight: vh$,
-    deviceWidth: vw$,
-    orientation: vw$ > vh$ ? 'landscape' : 'portrait',
-    resolution: PixelRatio.getPixelSizeForLayoutSize(vw$),
-    fontScale: PixelRatio.getFontScale(),
-    platform: Platform.OS,
-    units: {
-      rem: rem.get(),
-      em: rem.get(),
-      cm: 37.8,
-      mm: 3.78,
-      in: 96,
-      pt: 1.33,
-      pc: 16,
-      px: 1,
-      vmin: vw$ < vh$ ? vw$ : vh$,
-      vmax: vw$ > vh$ ? vw$ : vh$,
-      vw: vw$,
-      vh: vh$,
-    },
-  };
 }

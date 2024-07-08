@@ -1,5 +1,4 @@
-import { tw } from '@native-twin/core';
-import { createComponentSheet, StyleSheet } from '../sheet/StyleSheet';
+import { StyleSheet } from '../sheet/StyleSheet';
 import { JSXInternalProps } from '../types/jsx.types';
 import { ComponentConfig } from '../types/styled.types';
 import { JSXStyledProps } from './jsx-custom-props';
@@ -8,6 +7,7 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
   const configs = type?.defaultProps?.['configs'] as ComponentConfig[];
   const styledProps: JSXStyledProps[] = [];
   if (props && configs) {
+    let debug = false;
     for (const config of configs) {
       // console.log('TYPE: ', { type, props }, false, null, false);
       const source = props?.[config.source];
@@ -15,10 +15,8 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
       if (!source) continue;
 
       if (source) {
-        const finalSheet = createComponentSheet(
-          tw(`${source}`),
-          StyleSheet.runtimeContext,
-        );
+        debug = true;
+        const finalSheet = StyleSheet.registerComponent(source);
         styledProps.push([config.target, finalSheet]);
         // props[config.target] = finalSheet.getStyles({
         //   isParentActive: false,
@@ -27,5 +25,8 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
       }
     }
     props['styledProps'] = styledProps;
+    if (debug) {
+      console.debug('CMP: ', type, props);
+    }
   }
 }
