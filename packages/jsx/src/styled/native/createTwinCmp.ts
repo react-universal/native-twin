@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
-import type { JSXFunction } from '../types/jsx.types';
+import type { JSXFunction } from '../../types/jsx.types';
 import type {
   StylableComponentConfigOptions,
   ReactComponent,
-} from '../types/styled.types';
-import { getNormalizeConfig } from '../utils/config.utils';
-import { getComponentType } from '../utils/react.utils';
+} from '../../types/styled.types';
+import { getNormalizeConfig } from '../../utils/config.utils';
+import { getComponentType } from '../../utils/react.utils';
 import { twinComponent } from './twinCmp';
 
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();

@@ -8,7 +8,7 @@ import '../components';
 import { INTERNAL_RESET } from '../constants';
 import wrapJSX from '../jsx-wrapper';
 import { StyleSheet } from '../sheet/StyleSheet';
-import { stylizedComponents, createStylableComponent } from '../styled/createTwinCmp';
+import { stylizedComponents, createStylableComponent } from '../styled';
 import type {
   StylableComponentConfigOptions,
   ReactComponent,

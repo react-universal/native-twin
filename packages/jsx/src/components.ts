@@ -17,8 +17,7 @@ import {
   KeyboardAvoidingView,
   VirtualizedList,
 } from 'react-native';
-import { createStylableComponent } from './styled/createTwinCmp';
-import { withMappedProps } from './styled/twinMappedCmp';
+import { withMappedProps, createStylableComponent } from './styled';
 
 createStylableComponent(Image, { className: 'style' });
 createStylableComponent(Pressable, { className: 'style' });

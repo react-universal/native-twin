@@ -1,5 +1,4 @@
-import { createStylableComponent } from './styled/createTwinCmp';
-import { withMappedProps } from './styled/twinMappedCmp';
+import { withMappedProps, createStylableComponent } from './styled';
 
 if (typeof window !== 'undefined') {
   const {

@@ -7,7 +7,7 @@ import {
   SheetEntry,
   SheetEntryDeclaration,
 } from '@native-twin/css';
-import { StyledContext } from '../sheet/sheet.types';
+import { StyledContext } from '../store/observables/styles.obs';
 
 export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
   return entries.reduce(

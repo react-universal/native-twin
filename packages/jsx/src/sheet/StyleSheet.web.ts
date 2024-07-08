@@ -1,6 +1,7 @@
 import { SheetEntry } from '@native-twin/css';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../constants';
-import { StyledContext, TwinStyleSheet } from './sheet.types';
+import { StyledContext } from '../store/observables/styles.obs';
+import { TwinStyleSheet } from './sheet.types';
 
 // TODO: Check this on every react web fmw
 const internalSheet: TwinStyleSheet = {

@@ -1,9 +1,36 @@
-import { PixelRatio, Platform } from 'react-native';
-import { StyledContext } from '../../sheet/sheet.types';
+import { PixelRatio, Platform, PlatformOSType } from 'react-native';
 import { atom, useAtomValue } from '../atomic.store';
 import { colorScheme } from './colorScheme.obs';
 import { twinConfigObservable } from './twin.observer';
 import { viewport } from './viewport.obs';
+
+export type Units = {
+  '%'?: number;
+  vw?: number;
+  vh?: number;
+  vmin?: number;
+  vmax?: number;
+  em: number;
+  rem: number;
+  px: number;
+  pt: number;
+  pc: number;
+  in: number;
+  cm: number;
+  mm: number;
+};
+
+export type StyledContext = {
+  orientation: 'portrait' | 'landscape';
+  resolution: number;
+  fontScale: number;
+  deviceWidth: number;
+  deviceHeight: number;
+  deviceAspectRatio: number;
+  platform: PlatformOSType;
+  colorScheme: 'dark' | 'light';
+  units: Units;
+};
 
 export const styledContext = atom((get): StyledContext => {
   const { height: vh$, width: vw$ } = get(viewport);

@@ -7,11 +7,11 @@ import {
   SheetInteractionState,
 } from '@native-twin/css';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../constants';
-import { styledContext } from '../store/observables/styles.obs';
+import { StyledContext, styledContext } from '../store/observables/styles.obs';
 import { twinConfigObservable } from '../store/observables/twin.observer';
 import { globalStyles } from '../store/styles.store';
 import { getSheetEntryStyles } from '../utils/sheet.utils';
-import { StyledContext, TwinStyleSheet } from './sheet.types';
+import { TwinStyleSheet } from './sheet.types';
 
 const internalSheet: TwinStyleSheet = {
   [INTERNAL_FLAGS]: {},
