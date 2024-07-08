@@ -82,15 +82,20 @@ export function createTailwind(
         subscriptions.clear();
       },
       destroy(nextConfig) {
-        if (nextConfig) {
-          subscriptions.forEach((cb) => {
-            cb && cb(nextConfig as any);
-          });
+        if (__DEV__) {
+          if (nextConfig) {
+            subscriptions.forEach((cb) => {
+              cb && cb(nextConfig as any);
+            });
+          }
         }
         this.clear();
         sheet.destroy();
       },
       observeConfig(cb) {
+        if (!__DEV__) {
+          return () => void {};
+        }
         subscriptions.add(cb);
         return () => {
           subscriptions.delete(cb);

@@ -9,8 +9,8 @@ import type {
 import type { AnyStyle, CompleteStyle } from '@native-twin/css';
 import type { RegisteredComponent } from '@native-twin/styled';
 import { createComponentSheet } from '../sheet/StyleSheet';
+import { Atom } from '../store/atomic.store';
 import { createPropState } from '../utils/styled.utils';
-import { Atom } from '../store/store.types';
 
 type InteractionState = RegisteredComponent['interactionState'];
 

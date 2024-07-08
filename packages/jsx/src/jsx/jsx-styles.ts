@@ -16,7 +16,7 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
 
       if (source) {
         debug = true;
-        const finalSheet = StyleSheet.registerComponent(source);
+        const finalSheet = StyleSheet.registerClassNames(source);
         styledProps.push([config.target, finalSheet]);
         // props[config.target] = finalSheet.getStyles({
         //   isParentActive: false,

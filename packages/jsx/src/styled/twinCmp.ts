@@ -2,7 +2,7 @@ import { ComponentType, createElement } from 'react';
 import { groupContext } from '../context';
 import type { ComponentConfig } from '../types/styled.types';
 import { getComponentType } from '../utils/react.utils';
-import { useStyledProps } from './hooks/useStyledContext';
+import { useStyledProps } from './hooks/useStyledProps';
 import { useTwinComponent } from './hooks/useTwinComponent';
 
 export function twinComponent(

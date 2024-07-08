@@ -1,4 +1,4 @@
-import './wdyr';
+// import './wdyr';
 import { registerRootComponent } from 'expo';
 import App from './App';
 

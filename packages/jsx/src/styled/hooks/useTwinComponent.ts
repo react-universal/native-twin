@@ -6,12 +6,12 @@ import { DEFAULT_INTERACTIONS } from '../../utils/constants';
 import { getTwinComponent } from './getComponent';
 
 export const useTwinComponent = (styledProps: [string, ComponentSheet][] = []) => {
+  const id = useId();
   const context = useContext(groupContext);
   console.log('RENDER_COUNTER: ', ++useRef(0).current);
-  const id = useId();
 
   const [state, setState] = useAtom(getTwinComponent(id, styledProps));
-
+ 
   const parentState = useAtomValue(
     atom((get) => {
       if (!context || !state.meta.hasGroupEvents) {

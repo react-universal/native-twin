@@ -67,6 +67,13 @@ pluginTester({
       babelOptions: { filename: '/someFile.js' },
     },
 
+    'compiled babel expo': {
+      // skip: true,
+      codeFixture: path.join('./fixtures/compiled/code.js'),
+      outputFixture: path.join('./fixtures/compiled/out.js'),
+      babelOptions: { filename: '/someFile.js' },
+    },
+
     'createElement from denied modules': {
       // skip: true,
       codeFixture: path.join('./fixtures/denied-modules/code.js'),

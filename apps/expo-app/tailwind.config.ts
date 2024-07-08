@@ -4,7 +4,7 @@ import { presetTailwind } from '@native-twin/preset-tailwind';
 export default defineConfig({
   content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
   root: {
-    rem: 40,
+    rem: 16,
   },
   theme: {
     extend: {

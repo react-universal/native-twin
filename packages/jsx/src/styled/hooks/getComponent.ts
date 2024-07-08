@@ -1,7 +1,5 @@
-// import { JSXStyledProps } from '../jsx/jsx-custom-props';
 import { ComponentSheet } from '../../sheet/StyleSheet';
-import { atom } from '../../store/atomic.store';
-import { Atom, TwinStore } from '../../store/store.types';
+import { Atom, TwinStore, atom } from '../../store/atomic.store';
 
 const componentsCache = new Map<string, Atom<TwinStore>>();
 
@@ -27,6 +25,5 @@ export function getTwinComponent(
   };
   const value = atom(values);
   componentsCache.set(id, value);
-  // weakCache.set(value, value);
   return componentsCache.get(id)!;
 }

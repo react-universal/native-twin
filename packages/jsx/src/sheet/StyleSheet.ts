@@ -1,9 +1,4 @@
-import {
-  Appearance,
-  ColorSchemeName,
-  Dimensions,
-  StyleSheet as NativeSheet,
-} from 'react-native';
+import { ColorSchemeName, StyleSheet as NativeSheet } from 'react-native';
 import { tw } from '@native-twin/core';
 import {
   AnyStyle,
@@ -11,26 +6,17 @@ import {
   SheetEntry,
   SheetInteractionState,
 } from '@native-twin/css';
-import { StyledContext } from '@native-twin/styled';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../constants';
 import { styledContext } from '../store/observables/styles.obs';
 import { twinConfigObservable } from '../store/observables/twin.observer';
 import { globalStyles } from '../store/styles.store';
 import { getSheetEntryStyles } from '../utils/sheet.utils';
-import { TwinStyleSheet } from './sheet.types';
+import { StyledContext, TwinStyleSheet } from './sheet.types';
 
 const internalSheet: TwinStyleSheet = {
   [INTERNAL_FLAGS]: {},
-  [INTERNAL_RESET]({ dimensions = Dimensions, appearance = Appearance } = {}) {
+  [INTERNAL_RESET]() {
     globalStyles.clear();
-    // warnings.clear();
-    // warned.clear();
-
-    // rem.set(tw.config.root.rem ?? 16);
-
-    // vw[INTERNAL_RESET](dimensions);
-    // vh[INTERNAL_RESET](dimensions);
-    // colorScheme[INTERNAL_RESET](appearance);
     twinConfigObservable.set(tw.config);
   },
   getFlag(name: string) {
@@ -43,7 +29,10 @@ const internalSheet: TwinStyleSheet = {
     const entries = tw(tokens);
     return getSheetEntryStyles(entries, styledContext.get());
   },
-  registerComponent(source: string) {
+  entriesToFinalSheet(entries) {
+    return getSheetEntryStyles(entries, styledContext.get());
+  },
+  registerClassNames(source: string) {
     const entries = tw(`${source}`);
     return entries;
   },
