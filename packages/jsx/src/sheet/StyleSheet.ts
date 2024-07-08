@@ -6,7 +6,7 @@ import {
   SheetEntry,
   SheetInteractionState,
 } from '@native-twin/css';
-import { INTERNAL_FLAGS, INTERNAL_RESET } from '../constants';
+import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 import { StyledContext, styledContext } from '../store/observables/styles.obs';
 import { twinConfigObservable } from '../store/observables/twin.observer';
 import { globalStyles } from '../store/styles.store';

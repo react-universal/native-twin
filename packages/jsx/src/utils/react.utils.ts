@@ -1,5 +1,5 @@
-import { REACT_FORWARD_REF_SYMBOL } from '../constants';
 import { ComponentConfig } from '../types/styled.types';
+import { REACT_FORWARD_REF_SYMBOL } from './constants';
 
 export function getComponentType(component: any) {
   switch (typeof component) {

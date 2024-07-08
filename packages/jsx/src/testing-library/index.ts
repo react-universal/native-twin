@@ -5,7 +5,7 @@ import * as JSX from 'react/jsx-runtime';
 import { setup } from '@native-twin/core';
 import type { CompleteStyle } from '@native-twin/css';
 import '../components';
-import { INTERNAL_RESET } from '../constants';
+import { INTERNAL_RESET } from '../utils/constants';
 import wrapJSX from '../jsx-wrapper';
 import { StyleSheet } from '../sheet/StyleSheet';
 import { stylizedComponents, createStylableComponent } from '../styled';
