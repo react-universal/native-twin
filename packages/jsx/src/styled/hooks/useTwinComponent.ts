@@ -2,8 +2,8 @@ import { useCallback, useContext, useId } from 'react';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
 import { groupContext } from '../../context';
 import { ComponentSheet } from '../../sheet/StyleSheet';
+import { getTwinComponent } from '../../store/components.store';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants';
-import { getTwinComponent } from './getComponent';
 
 export const useTwinComponent = (styledProps: [string, ComponentSheet][] = []) => {
   const id = useId();
