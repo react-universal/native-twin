@@ -1,31 +1,65 @@
-import { Appearance, Dimensions } from 'react-native';
-import { AnyStyle, FinalSheet, SheetEntry } from '@native-twin/css';
+import { TailwindConfig, __Theme__ } from '@native-twin/core';
+import {
+  AnyStyle,
+  FinalSheet,
+  GetChildStylesArgs,
+  SheetEntry,
+  SheetInteractionState,
+} from '@native-twin/css';
 import { Atom } from '@native-twin/helpers';
+import { JSXStyledProps } from '../jsx/jsx-custom-props';
+import { StyledContext } from '../store/observables/styles.obs';
+import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 
 export interface TwinStyleSheet {
-  [INTERNAL_RESET](options?: {
-    dimensions?: Dimensions;
-    appearance?: typeof Appearance;
-  }): void;
+  [INTERNAL_RESET](tw?: TailwindConfig<__Theme__>): void;
   [INTERNAL_FLAGS]: Record<string, string>;
-  // unstable_hook_onClassName?(callback: (c: string) => void): void;
-  // register(options: StyleSheetRegisterOptions): void;
-  // registerCompiled(options: StyleSheetRegisterCompiledOptions): void;
   getFlag(name: string): string | undefined;
   getGlobalStyle(name: string): Atom<SheetEntry> | undefined;
   compile(tokens: string): FinalSheet;
   registerClassNames(source: string): SheetEntry[];
   entriesToFinalSheet(entries: SheetEntry[]): FinalSheet;
-  styles: Map<string, ComponentSheet>;
+  registerComponent(
+    id: string,
+    data: {
+      configs: ComponentConfig[];
+      props: Record<string, any> | null;
+      context: StyledContext;
+    },
+  ): RegisteredComponent;
+  getComponentState(id: string): Atom<ComponentState>;
+}
+
+export interface ComponentState {
+  isGroupActive: boolean;
+  isLocalActive: boolean;
+}
+
+export interface RegisteredComponent {
+  id: string;
+  prevProps: JSXStyledProps;
+  sheets: ComponentSheet[];
+  metadata: {
+    isGroupParent: boolean;
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
+  };
 }
 
 export interface ComponentSheet {
+  prop: string;
   sheet: FinalSheet;
-  styles: {
-    base: AnyStyle;
-    active: AnyStyle;
-    first: AnyStyle;
-    last: AnyStyle;
+  getChildStyles(input: Partial<GetChildStylesArgs>): AnyStyle;
+  getStyles: (input: Partial<SheetInteractionState>) => AnyStyle;
+  metadata: {
+    isGroupParent: boolean;
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
   };
+  recompute(): ComponentSheet;
+}
+
+export interface ComponentConfigProps extends ComponentConfig {
+  className: string;
 }

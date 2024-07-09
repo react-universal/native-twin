@@ -1,9 +1,9 @@
-import { ComponentType, createElement } from 'react';
+import { ComponentType, createElement, useDebugValue, useId } from 'react';
 import { groupContext } from '../../context';
+import { colorScheme } from '../../store/observables/colorScheme.obs';
 import type { ComponentConfig } from '../../types/styled.types';
 import { getComponentType } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';
-import { useTwinComponent } from '../hooks/useTwinComponent';
 
 export function twinComponent(
   baseComponent: ComponentType<any>,
@@ -12,28 +12,28 @@ export function twinComponent(
   ref: any,
 ) {
   let component = baseComponent;
-
-  const { styles, colorTheme } = useStyledProps(props);
-  const { state, parentState, onChange, id } = useTwinComponent(styles);
+  const id = useId();
+  const { state, componentStyles, parentState, onChange } = useStyledProps(
+    id,
+    configs,
+    props,
+  );
+  useDebugValue({ parentState, state });
 
   props = Object.assign({ ref }, props);
 
-  if (styles.length > 0) {
-    for (const style of styles) {
-      props[style[0]] = Object.assign(
-        style[1].getStyles(
-          {
-            isParentActive: parentState.isGroupActive,
-            isPointerActive: state.interactions.isLocalActive,
-          },
-          colorTheme,
-        ),
-        { ...props[style[0]] } ?? {},
+  if (componentStyles.sheets.length > 0) {
+    for (const style of componentStyles.sheets) {
+      const oldProps = props[style.prop] ? { ...props[style.prop] } : {};
+      props[style.prop] = Object.assign(
+        style.getStyles({
+          isParentActive: parentState.isGroupActive,
+          isPointerActive: state.isLocalActive,
+          dark: colorScheme.get() === 'dark',
+        }),
+        oldProps,
       );
     }
-    // if (styledProps.length > 0) {
-    //   console.log('STYLED_PROPS: ', styledProps);
-    // }
   }
 
   for (const x of configs) {
@@ -42,18 +42,25 @@ export function twinComponent(
     }
   }
 
-  if (state.meta.hasPointerEvents || state.meta.hasGroupEvents) {
-    props['onTouchStart'] = (event: unknown) => {
-      ref?.['onTouchStart']?.(event);
-      onChange(true);
-    };
-    props['onTouchEnd'] = (event: unknown) => {
-      ref?.['onTouchEnd']?.(event);
-      onChange(false);
-    };
+  if (
+    componentStyles.metadata.hasPointerEvents ||
+    componentStyles.metadata.hasGroupEvents
+  ) {
+    if (!props['onTouchStart']) {
+      props['onTouchStart'] = (event: unknown) => {
+        ref?.['onTouchStart']?.(event);
+        onChange(true);
+      };
+    }
+    if (!props['onTouchEnd']) {
+      props['onTouchEnd'] = (event: unknown) => {
+        ref?.['onTouchEnd']?.(event);
+        onChange(false);
+      };
+    }
   }
 
-  if (state.meta.isGroupParent) {
+  if (componentStyles.metadata.isGroupParent) {
     props = {
       value: id,
       children: createElement(component, props),

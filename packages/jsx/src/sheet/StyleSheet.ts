@@ -1,4 +1,5 @@
-import { ColorSchemeName, StyleSheet as NativeSheet } from 'react-native';
+import { StyleSheet as NativeSheet } from 'react-native';
+import * as Equal from 'effect/Equal';
 import { tw } from '@native-twin/core';
 import {
   AnyStyle,
@@ -6,18 +7,35 @@ import {
   SheetEntry,
   SheetInteractionState,
 } from '@native-twin/css';
-import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
-import { StyledContext, styledContext } from '../store/observables/styles.obs';
+import { Atom, atom } from '@native-twin/helpers';
+import { JSXStyledProps } from '../jsx/jsx-custom-props';
+import { StyledContext, remObs, styledContext } from '../store/observables/styles.obs';
 import { twinConfigObservable } from '../store/observables/twin.observer';
 import { globalStyles } from '../store/styles.store';
+import { ComponentConfig } from '../types/styled.types';
+import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 import { getSheetEntryStyles } from '../utils/sheet.utils';
-import { TwinStyleSheet } from './sheet.types';
+import {
+  ComponentConfigProps,
+  ComponentSheet,
+  RegisteredComponent,
+  TwinStyleSheet,
+  ComponentState,
+} from './sheet.types';
+
+const componentsRegistry: Map<string, RegisteredComponent> = new Map();
+const componentsState: Map<string, Atom<ComponentState>> = new Map();
 
 const internalSheet: TwinStyleSheet = {
-  [INTERNAL_FLAGS]: {},
-  [INTERNAL_RESET]() {
+  [INTERNAL_FLAGS]: {
+    STARTED: 'NO',
+  },
+  [INTERNAL_RESET](twConfig) {
     globalStyles.clear();
-    twinConfigObservable.set(tw.config);
+    const config = twConfig ?? tw.config;
+    twinConfigObservable.set(config);
+    remObs.set(config.root.rem);
+    this[INTERNAL_FLAGS]['STARTED'] = 'YES';
   },
   getFlag(name: string) {
     return this[INTERNAL_FLAGS][name];
@@ -36,17 +54,66 @@ const internalSheet: TwinStyleSheet = {
     const entries = tw(`${source}`);
     return entries;
   },
-  styles: new Map(),
+  registerComponent(id, params) {
+    const component = componentsRegistry.get(id);
+    const styledMaps = (params.props?.['styledProps'] as JSXStyledProps) ?? {};
+
+    if (component) {
+      if (styledMaps && Equal.equals(styledMaps, component.prevProps)) {
+        console.log('CONTEXT: ', params.context.units.rem);
+        component.sheets = component.sheets.map((x) => x.recompute());
+        return component;
+      }
+    }
+
+    const sheets: ComponentSheet[] = [];
+    for (const style of styledMaps.styleTuples ?? []) {
+      const entries = tw(`${style.className}`);
+      sheets.push(createComponentSheet(style.target, entries, params.context));
+    }
+    const registerComponent: RegisteredComponent = {
+      id,
+      prevProps: styledMaps,
+      sheets,
+      metadata: {
+        isGroupParent: sheets.some((x) => x.metadata.isGroupParent),
+        hasGroupEvents: sheets.some((x) => x.metadata.hasGroupEvents),
+        hasPointerEvents: sheets.some((x) => x.metadata.hasPointerEvents),
+      },
+    };
+    componentsRegistry.set(id, registerComponent);
+    if (!componentsState.has(id)) {
+      componentsState.set(id, atom({ isGroupActive: false, isLocalActive: false }));
+    }
+    return componentsRegistry.get(id)!;
+  },
+  getComponentState(id) {
+    const component = componentsState.get(id);
+
+    return component!;
+  },
 };
 
 export const StyleSheet = Object.assign({}, internalSheet, NativeSheet);
 
-export function createComponentSheet(entries: SheetEntry[] = [], context: StyledContext) {
+export function createComponentSheet(
+  prop: string,
+  entries: SheetEntry[] = [],
+  context: StyledContext,
+): ComponentSheet {
   const sheet = StyleSheet.create(getSheetEntryStyles(entries, context));
+  const base = sheet.base;
+  if (context.colorScheme === 'dark') {
+    Object.assign({ ...base }, { ...sheet.dark });
+  }
   return {
-    getChildStyles,
+    prop,
     getStyles,
     sheet,
+    getChildStyles,
+    recompute: () => {
+      return createComponentSheet(prop, entries, styledContext.get());
+    },
     metadata: {
       isGroupParent: entries.some((x) => x.className == 'group'),
       hasGroupEvents: Object.keys(sheet.group).length > 0,
@@ -54,18 +121,16 @@ export function createComponentSheet(entries: SheetEntry[] = [], context: Styled
     },
   };
 
-  function getStyles(input: SheetInteractionState, theme: ColorSchemeName) {
+  function getStyles(input: Partial<SheetInteractionState>) {
     const styles: AnyStyle = { ...sheet.base };
-    if (theme === 'dark') {
-      Object.assign(styles, { ...sheet.dark });
-    }
+    if (input.dark) Object.assign(styles, { ...sheet.dark });
     if (input.isPointerActive) Object.assign(styles, { ...sheet.pointer });
     if (input.isParentActive) Object.assign(styles, { ...sheet.group });
 
     return styles;
   }
 
-  function getChildStyles(input: GetChildStylesArgs) {
+  function getChildStyles(input: Partial<GetChildStylesArgs>) {
     const result: AnyStyle = {};
     if (input.isFirstChild) {
       Object.assign(result, sheet.first);
@@ -83,4 +148,25 @@ export function createComponentSheet(entries: SheetEntry[] = [], context: Styled
   }
 }
 
-export type ComponentSheet = ReturnType<typeof createComponentSheet>;
+export type ComponentSheetHandler = ReturnType<typeof createComponentSheet>;
+
+export const intersectConfigProps = (
+  props: Record<string, any>,
+  configs: ComponentConfig[],
+): ComponentConfigProps[] => {
+  const styledProps: ComponentConfigProps[] = [];
+  if (props && configs) {
+    for (const config of configs) {
+      const source = props?.[config.source];
+      if (!source) continue;
+
+      if (source) {
+        styledProps.push({
+          ...config,
+          className: source,
+        });
+      }
+    }
+  }
+  return styledProps;
+};

@@ -40,4 +40,5 @@ export type SheetEntryTransformDeclaration = [
 export interface SheetInteractionState {
   isPointerActive: boolean;
   isParentActive: boolean;
+  dark?: boolean;
 }

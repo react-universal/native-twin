@@ -1,12 +1,24 @@
-import { Atom, TwinStore, atom } from '@native-twin/helpers';
-import { ComponentSheet } from '../sheet/StyleSheet';
+import { Atom, atom } from '@native-twin/helpers';
+import { ComponentSheet } from '../sheet/sheet.types';
 
-const componentsCache = new Map<string, Atom<TwinStore>>();
+export interface ComponentState {
+  meta: {
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
+    isGroupParent: boolean;
+  };
+  interactions: {
+    isLocalActive: boolean;
+    isGroupActive: boolean;
+  };
+}
+
+const componentsCache = new Map<string, Atom<ComponentState>>();
 
 export function getTwinComponent(
   id: string,
   styledProps: [string, ComponentSheet][] = [],
-): Atom<TwinStore> {
+): Atom<ComponentState> {
   const component = componentsCache.get(id);
   if (component) {
     return component;

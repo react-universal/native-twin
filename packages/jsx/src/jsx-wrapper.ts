@@ -1,3 +1,5 @@
+// import { stylizeJSXChilds } from './jsx/jsx-childs';
+// import { jsxStyles } from './jsx/jsx-styles';
 import { stylizeJSXChilds } from './jsx/jsx-childs';
 import { jsxStyles } from './jsx/jsx-styles';
 import { stylizedComponents } from './styled';

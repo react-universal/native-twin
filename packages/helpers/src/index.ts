@@ -48,7 +48,6 @@ export { flattenObjectByPath, flattenColorPalette } from './object.utils';
 export {
   Atom,
   AtomGetter,
-  TwinStore,
   atom,
   atomStateMap,
   useAtom,

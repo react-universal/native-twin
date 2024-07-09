@@ -1,14 +1,15 @@
-import { useCallback, useContext, useId } from 'react';
+import { useCallback, useContext } from 'react';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
 import { groupContext } from '../../context';
-import { ComponentSheet } from '../../sheet/StyleSheet';
+import { ComponentSheet } from '../../sheet/sheet.types';
 import { getTwinComponent } from '../../store/components.store';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants';
 
-export const useTwinComponent = (styledProps: [string, ComponentSheet][] = []) => {
-  const id = useId();
+export const useTwinComponent = (
+  id: string,
+  styledProps: [string, ComponentSheet][] = [],
+) => {
   const context = useContext(groupContext);
-  // console.log('RENDER_COUNTER: ', ++useRef(0).current);
 
   const [state, setState] = useAtom(getTwinComponent(id, styledProps));
 

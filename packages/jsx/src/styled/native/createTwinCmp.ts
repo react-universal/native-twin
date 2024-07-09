@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import type { JSXFunction } from '../../types/jsx.types';
 import type {
   StylableComponentConfigOptions,
@@ -49,5 +49,5 @@ export const createStylableComponent = <
   component.whyDidYouRender = true;
   stylizedComponents.set(baseComponent, component);
 
-  return component;
+  return memo(component);
 };

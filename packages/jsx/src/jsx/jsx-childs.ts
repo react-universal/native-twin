@@ -14,29 +14,21 @@ export function stylizeJSXChilds(props: JSXInternalProps | null | undefined) {
 
     if (totalChilds === 1) {
       if (!isValidElement<any>(children)) {
-        props['children'] = children;
+        return;
       } else {
-        // const child = props['children'];
-        // if (!child['ord']) {
-        // }
         props['children'] = cloneElement(children, {
           ord: 0,
           lastOrd: 0,
         } as Record<string, unknown>);
       }
     } else {
-      // if (
-      //   Children.toArray(children)
-      //     .filter(Boolean)
-      //     .every((x) => {
-      //       if (!isValidElement<any>(x)) {
-      //         return true;
-      //       }
-      //       return x['props']['ord'];
-      //     })
-      // ) {
-      //   return;
-      // }
+      if (
+        Children.toArray(children)
+          .filter(Boolean)
+          .every((x) => !isValidElement<any>(x))
+      ) {
+        return;
+      }
       props['children'] = Children.toArray(children)
         .filter(Boolean)
         .flatMap((child, index) => {

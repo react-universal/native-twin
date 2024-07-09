@@ -1,7 +1,6 @@
 import { PixelRatio, Platform, PlatformOSType } from 'react-native';
-import { atom, useAtomValue } from '@native-twin/helpers';
+import { atom } from '@native-twin/helpers';
 import { colorScheme } from './colorScheme.obs';
-import { twinConfigObservable } from './twin.observer';
 import { viewport } from './viewport.obs';
 
 export type Units = {
@@ -32,11 +31,14 @@ export type StyledContext = {
   units: Units;
 };
 
+export const remObs = atom(14);
+
 export const styledContext = atom((get): StyledContext => {
   const { height: vh$, width: vw$ } = get(viewport);
-  const rem = get(twinConfigObservable)?.root.rem ?? 14;
+  const rem = get(remObs);
+  const colorSc = get(colorScheme) ?? 'light';
   return {
-    colorScheme: get(colorScheme) ?? 'light',
+    colorScheme: colorSc,
     deviceAspectRatio: vw$ / vh$,
     deviceHeight: vh$,
     deviceWidth: vw$,
@@ -60,5 +62,3 @@ export const styledContext = atom((get): StyledContext => {
     },
   };
 });
-
-export const useStyledContext = () => useAtomValue(styledContext);

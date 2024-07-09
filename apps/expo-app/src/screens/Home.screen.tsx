@@ -118,7 +118,7 @@ function HomeScreen() {
           className={`
             -top-1 -translate-x-2
             mb-2 rounded-lg bg-gray-300 p-2
-            group-hover:bg-pink-800s
+            group-hover:bg-pink-800
           `}
         >
           <Text

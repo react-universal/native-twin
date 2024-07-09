@@ -19,53 +19,15 @@ exports[`dark mode 1`] = `
     }
   }
   styledProps={
-    [
-      [
-        "style",
-        [
-          {
-            "className": "bg-black",
-            "declarations": [
-              {
-                "prop": "backgroundColor",
-                "value": "rgba(0,0,0,1)",
-              },
-            ],
-            "important": false,
-            "precedence": 0,
-            "selectors": [],
-          },
-          {
-            "className": "hover:bg-white",
-            "declarations": [
-              {
-                "prop": "backgroundColor",
-                "value": "rgba(255,255,255,1)",
-              },
-            ],
-            "important": false,
-            "precedence": 0,
-            "selectors": [
-              "hover",
-            ],
-          },
-          {
-            "className": "dark:bg-red",
-            "declarations": [
-              {
-                "prop": "backgroundColor",
-                "value": "rgba(248,113,113,1)",
-              },
-            ],
-            "important": false,
-            "precedence": 0,
-            "selectors": [
-              "dark",
-            ],
-          },
-        ],
+    JSXStyledProps {
+      "styleTuples": [
+        {
+          "className": "bg-black hover:bg-white dark:bg-red",
+          "prop": "className",
+          "target": "style",
+        },
       ],
-    ]
+    }
   }
   testID="native-twin-element"
 >
@@ -93,37 +55,15 @@ exports[`dark mode 1`] = `
       }
     }
     styledProps={
-      [
-        [
-          "style",
-          [
-            {
-              "className": "text-white",
-              "declarations": [
-                {
-                  "prop": "color",
-                  "value": "rgba(255,255,255,1)",
-                },
-              ],
-              "important": false,
-              "precedence": 0,
-              "selectors": [],
-            },
-            {
-              "className": "text-lg",
-              "declarations": [
-                {
-                  "prop": "fontSize",
-                  "value": "1.125rem",
-                },
-              ],
-              "important": false,
-              "precedence": 0,
-              "selectors": [],
-            },
-          ],
+      JSXStyledProps {
+        "styleTuples": [
+          {
+            "className": "text(white lg)",
+            "prop": "className",
+            "target": "style",
+          },
         ],
-      ]
+      }
     }
   >
     Sample Text
@@ -150,39 +90,15 @@ exports[`normal component 1`] = `
     }
   }
   styledProps={
-    [
-      [
-        "style",
-        [
-          {
-            "className": "bg-black",
-            "declarations": [
-              {
-                "prop": "backgroundColor",
-                "value": "rgba(0,0,0,1)",
-              },
-            ],
-            "important": false,
-            "precedence": 0,
-            "selectors": [],
-          },
-          {
-            "className": "hover:bg-white",
-            "declarations": [
-              {
-                "prop": "backgroundColor",
-                "value": "rgba(255,255,255,1)",
-              },
-            ],
-            "important": false,
-            "precedence": 0,
-            "selectors": [
-              "hover",
-            ],
-          },
-        ],
+    JSXStyledProps {
+      "styleTuples": [
+        {
+          "className": "bg-black hover:bg-white",
+          "prop": "className",
+          "target": "style",
+        },
       ],
-    ]
+    }
   }
   testID="native-twin-element"
 >
@@ -210,37 +126,15 @@ exports[`normal component 1`] = `
       }
     }
     styledProps={
-      [
-        [
-          "style",
-          [
-            {
-              "className": "text-white",
-              "declarations": [
-                {
-                  "prop": "color",
-                  "value": "rgba(255,255,255,1)",
-                },
-              ],
-              "important": false,
-              "precedence": 0,
-              "selectors": [],
-            },
-            {
-              "className": "text-lg",
-              "declarations": [
-                {
-                  "prop": "fontSize",
-                  "value": "1.125rem",
-                },
-              ],
-              "important": false,
-              "precedence": 0,
-              "selectors": [],
-            },
-          ],
+      JSXStyledProps {
+        "styleTuples": [
+          {
+            "className": "text(white lg)",
+            "prop": "className",
+            "target": "style",
+          },
         ],
-      ]
+      }
     }
   >
     Sample Text

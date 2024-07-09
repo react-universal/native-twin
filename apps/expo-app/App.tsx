@@ -22,6 +22,7 @@ export default function App() {
 
   return (
     <GestureHandlerRootView className='flex-1 bg-black'>
+      {/* className -> style */}
       <SafeAreaView className='flex-1'>
         <TabViewExample />
       </SafeAreaView>

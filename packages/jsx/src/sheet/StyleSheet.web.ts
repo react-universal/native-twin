@@ -6,7 +6,7 @@ import { TwinStyleSheet } from './sheet.types';
 // TODO: Check this on every react web fmw
 const internalSheet: TwinStyleSheet = {
   [INTERNAL_FLAGS]: {},
-  [INTERNAL_RESET]({ dimensions, appearance } = {}) {
+  [INTERNAL_RESET]() {
     // vw[INTERNAL_RESET](dimensions);
     // vh[INTERNAL_RESET](dimensions);
     // colorScheme[INTERNAL_RESET](appearance);
