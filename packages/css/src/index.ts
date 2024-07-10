@@ -52,7 +52,7 @@ export {
 export type {
   AnyStyle,
   CompleteStyle,
-  RuntimeContext,
+  ParserRuntimeContext,
   FinalSheet,
   GetChildStylesArgs,
 } from './react-native/rn.types';
@@ -71,6 +71,8 @@ export type {
   SheetEntryTransformDeclaration,
   SheetInteractionState,
 } from './sheets/sheet.types';
+export type { CssUnitsContext, RuntimeContext } from './react-native/styles.context';
+export { createStyledContext } from './react-native/styles.context';
 
 export { defaultGroupState } from './sheets/sheets.constants';
 
@@ -81,5 +83,8 @@ export { getSheet } from './sheets/get-sheet';
 
 // TRANSFORMS
 export { sheetEntriesToCss } from './transforms/sheet-to-css';
-export { parsedRuleToClassName, parsedRuleSetToClassNames } from './transforms/rule-to-css';
+export {
+  parsedRuleToClassName,
+  parsedRuleSetToClassNames,
+} from './transforms/rule-to-css';
 export { interpolate, normalize } from './transforms/interleave';

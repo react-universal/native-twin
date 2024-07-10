@@ -1,12 +1,12 @@
-import { Dimensions } from 'react-native';
+import { Appearance, Dimensions, PixelRatio, Platform } from 'react-native';
 import {
   type ValidGroupPseudoSelector,
   defaultGroupState,
   type ValidInteractionPseudoSelector,
+  createStyledContext,
 } from '@native-twin/css';
 import { createStore } from '@native-twin/helpers';
 import type { RegisteredComponent } from '../types/styled.types';
-import { createStyledContext } from '../utils/createStyledContext';
 
 const createComponent = (id: string, groupID: string) => {
   return new Proxy<RegisteredComponent>(
@@ -39,11 +39,17 @@ const { width, height } = Dimensions.get('screen');
 
 export const globalStore = createStore({
   components: {} as Record<string, RegisteredComponent>,
-  context: createStyledContext({
-    rem: 16,
-    vh: height,
-    vw: width,
-  }),
+  context: createStyledContext(
+    {
+      rem: 16,
+      vh: height,
+      vw: width,
+    },
+    Appearance.getColorScheme(),
+    PixelRatio.getPixelSizeForLayoutSize(width),
+    PixelRatio.getFontScale(),
+    Platform.OS,
+  ),
 });
 
 export type GlobalStore = ReturnType<(typeof globalStore)['getState']>;

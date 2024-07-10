@@ -41,6 +41,4 @@ const PseudoElementSelector = P.sequenceOf([P.literal('::'), validClassIdent]).m
   mapToPseudoElementSelector(x.join('')),
 );
 
-const selectorParser = P.separatedByComma(P.many1(selectorParserRecursive));
-
-selectorParser.run('.mx-10::first-letter,a'); //?
+export const selectorParser = P.separatedByComma(P.many1(selectorParserRecursive));

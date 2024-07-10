@@ -48,13 +48,14 @@ export type SelectorGroup =
   | 'dark';
 
 export type CSSLengthUnit = {
-  [U in CSSUnits]: {
-    value: number;
-    units: U;
-  };
-}[CSSUnits];
+  [U in CSSUnit]: number;
+}[CSSUnit];
 
-export type CSSUnits =
+export type CssUnits = {
+  [U in CSSUnit]: number;
+}[CSSUnit];
+
+export type CSSUnit =
   | 'px'
   | '%'
   | 'em'
@@ -71,7 +72,9 @@ export type CSSUnits =
   | 'pt'
   | 'cm'
   | 'mm'
-  | 'Q';
+  | 'Q'
+  | 'vmin'
+  | 'vmax';
 
 export interface ParserToken<T, U> {
   type: T;

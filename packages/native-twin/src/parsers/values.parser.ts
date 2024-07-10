@@ -4,7 +4,7 @@ import {
   declarationValueWithUnitParser,
   getPropertyValueType,
   unitlessCssProps,
-  type RuntimeContext,
+  type ParserRuntimeContext,
 } from '@native-twin/css';
 import { hasOwnProperty } from '@native-twin/helpers';
 
@@ -17,13 +17,16 @@ export const parseCssValue = (
     deviceWidth: number;
   },
 ) => {
-  const isUnitLess = !prop.includes('flex') && hasOwnProperty.call(unitlessCssProps, prop);
+  const isUnitLess =
+    !prop.includes('flex') && hasOwnProperty.call(unitlessCssProps, prop);
   if (isUnitLess) {
     const data = parseUnitlessValue.run(value);
     if (!data.isError) return data.result;
     return value;
   }
-  const type = getPropertyValueType(prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
+  const type = getPropertyValueType(
+    prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
+  );
   if (type == 'DIMENSION') {
     const data = ParseDimensionWithUnits(context).run(value);
     if (!data.isError) return data.result;
@@ -45,7 +48,7 @@ const ParseCssDimensions = (context: {
   deviceWidth: number;
 }) => P.choice([P.whitespaceSurrounded(ParseDimensionWithUnits(context))]);
 
-export const ParseFlexValue = (context: RuntimeContext) =>
+export const ParseFlexValue = (context: ParserRuntimeContext) =>
   P.choice([
     P.sequenceOf([
       ParseCssDimensions(context),

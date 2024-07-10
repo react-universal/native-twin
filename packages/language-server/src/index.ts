@@ -9,7 +9,7 @@ import { NativeTwinManagerService } from './native-twin/native-twin.service';
 import { sendDebugLog } from './services/logger.service';
 
 const MainLive = Layer.mergeAll(ConnectionService.Live, LanguageServiceLive).pipe(
-  Layer.provideMerge(
+  Layer.provideMerge( 
     Layer.mergeAll(DocumentsService.Live, NativeTwinManagerService.Live),
   ),
   Layer.provideMerge(ConfigManagerService.Live),

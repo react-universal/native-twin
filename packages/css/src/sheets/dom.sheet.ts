@@ -10,7 +10,7 @@ export function createDomSheet(
 
   return {
     target,
-
+    registry: new Map(),
     snapshot() {
       // collect current rules
       const rules = Array.from(target.childNodes, (node) => node.textContent as string);

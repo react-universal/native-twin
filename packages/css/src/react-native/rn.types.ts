@@ -1,8 +1,7 @@
 import type {
   ImageStyle,
   TextStyle,
-  ViewStyle, // FlexAlignType,
-  // DimensionValue,
+  ViewStyle,
 } from 'react-native';
 import type { SelectorGroup } from '../css/css.types';
 
@@ -10,7 +9,7 @@ export type AnyStyle = ImageStyle | TextStyle | ViewStyle;
 
 export interface CompleteStyle extends ViewStyle, TextStyle, Omit<ImageStyle, 'overflow'> {}
 
-export interface RuntimeContext {
+export interface ParserRuntimeContext {
   rem: number;
   deviceHeight: number;
   deviceWidth: number;

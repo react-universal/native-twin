@@ -10,10 +10,17 @@ export interface Sheet<Target = unknown> {
   /** Clears all CSS rules from the sheet. */
   clear(): void;
   destroy(): void;
-  resume(addClassName: (className: string) => void, insert: (cssText: string) => void): void;
+  resume(
+    addClassName: (className: string) => void,
+    insert: (cssText: string) => void,
+  ): void;
   insertPreflight(data: Preflight): string[];
+  registry: Map<string, SheetEntryRegistry>;
 }
 
+export interface SheetEntryRegistry extends SheetEntry {
+  index: number;
+}
 export interface SheetEntry {
   className: string;
   declarations: SheetEntryDeclaration[];

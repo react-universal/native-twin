@@ -10,7 +10,7 @@ export function createCssomSheet(element?: CSSStyleSheet): Sheet<CSSStyleSheet> 
 
   return {
     target,
-
+    registry: new Map(),
     snapshot() {
       // collect current rules
       const rules = Array.from(target.cssRules, (rule) => rule.cssText);

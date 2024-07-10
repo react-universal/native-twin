@@ -12,5 +12,3 @@ export type {
   ComponentStylesheet,
 } from './types/styled.types';
 
-// CUSTOM
-export { createStyledContext } from './utils/createStyledContext';
