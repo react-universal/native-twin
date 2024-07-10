@@ -1,6 +1,5 @@
 import { StyleSheet as NativeSheet } from 'react-native';
 import * as Equal from 'effect/Equal';
-import { tw } from '@native-twin/core';
 import {
   AnyStyle,
   GetChildStylesArgs,
@@ -15,6 +14,7 @@ import { globalStyles } from '../store/styles.store';
 import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 import { getSheetEntryStyles } from '../utils/sheet.utils';
+import { tw } from './native-tw';
 import {
   ComponentConfigProps,
   ComponentSheet,
@@ -60,7 +60,6 @@ const internalSheet: TwinStyleSheet = {
 
     if (component) {
       if (styledMaps && Equal.equals(styledMaps, component.prevProps)) {
-        console.log('CONTEXT: ', params.context.units.rem);
         component.sheets = component.sheets.map((x) => x.recompute());
         return component;
       }
