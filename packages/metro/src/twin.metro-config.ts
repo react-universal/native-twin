@@ -32,7 +32,7 @@ export function withNativeTwin(
         projectRoot: projectRoot,
       }),
     },
-    transformerPath: require.resolve('./metro.transformer'),
+    // transformerPath: require.resolve('./metro.transformer'),
     reporter: {
       update(event) {
         if (event.type === 'worker_stdout_chunk') {

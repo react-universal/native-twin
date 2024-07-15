@@ -1,13 +1,19 @@
 import { PluginPass, NodePath } from '@babel/core';
+import micromatch from 'micromatch';
 
 const allowedFileRegex =
   /^(?!.*[/\\](react|react-native|react-native-web|@native-twin\/*)[/\\]).*$/;
 
-const isValidFile = (x = '') => allowedFileRegex.test(x);
+const isValidFile = (x = '', allowedFiles: string[]) => {
+  if (!micromatch.isMatch(x, allowedFiles)) {
+    return false;
+  }
+  return allowedFileRegex.test(x);
+};
 
-const createVisitorStateContext = (state: PluginPass) => {
+const createVisitorStateContext = (state: PluginPass, allowedPaths: string[]) => {
   return {
-    isValidPath: isValidFile(state.filename),
+    isValidPath: isValidFile(state.filename, allowedPaths),
   };
 };
 
@@ -23,9 +29,9 @@ const createVisitorStateContext = (state: PluginPass) => {
 // };
 
 export const createVisitorContext =
-  () =>
+  (allowedPaths: string[]) =>
   <T>(path: NodePath<T>, state: PluginPass) => {
-    const stateContext = createVisitorStateContext(state);
+    const stateContext = createVisitorStateContext(state, allowedPaths);
 
     return {
       stateContext,

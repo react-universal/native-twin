@@ -31,3 +31,4 @@ export const transformKeys = new Set([
 ]);
 
 export const TWIN_CACHE_DIR = '.twin-cache';
+export const platformVariants = ['web', 'native', 'ios', 'android'];

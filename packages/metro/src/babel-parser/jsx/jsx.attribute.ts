@@ -1,11 +1,12 @@
+import template from '@babel/template';
+import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
+import { RuntimeTW } from '@native-twin/core';
+import { getSheetEntryStyles as getSheetEntryStylesRuntime } from '@native-twin/jsx/build/utils/sheet.utils';
+import { getSheetEntryStyles } from '../twin/styles.compiler';
+import { createObjectExpression, createPrimitiveExpression } from '../utils/babel.utils';
 import { AnyPrimitive, JSXChildElement } from './jsx.types';
 
-export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {
-  if (typeof value === 'string') return t.stringLiteral(value);
-  if (typeof value === 'number') return t.numericLiteral(value);
-  return t.booleanLiteral(value);
-};
 export const createJsxAttribute = (name: string, value: AnyPrimitive) => {
   const expression = createPrimitiveExpression(value);
   return t.jsxAttribute(t.jsxIdentifier(name), t.jsxExpressionContainer(expression));
@@ -35,3 +36,44 @@ export const addJsxAttribute = (
   const newAttribute = createJsxAttribute(name, value);
   element.openingElement.attributes.push(newAttribute);
 };
+
+export const visitJSXAttribute = (attribute: NodePath<t.JSXAttribute>, tw: RuntimeTW) => {
+  if (attribute.node.name.name === 'className') {
+    if (t.isJSXExpressionContainer(attribute.node.value)) {
+      if (t.isTemplateLiteral(attribute.node.value.expression)) {
+        const cooked = attribute.node.value.expression.quasis
+          .map((x) => x.value.cooked?.trim().replace(/\n/g, ' ').replace(/\s+/g, ' '))
+          .filter((x) => x !== undefined);
+        console.log('COOKED: ', cooked.join(' '));
+      }
+    }
+    if (t.isStringLiteral(attribute.node.value)) {
+      const entries = tw(attribute.node.value.value);
+      const sheet = getSheetEntryStyles(entries, tw);
+      const styles = createObjectExpression(sheet);
+      const newAttribute = t.jsxAttribute(
+        t.jsxIdentifier('style'),
+        t.jsxExpressionContainer(styles),
+      );
+      // attribute.replaceWith(newAttribute);
+      if (t.isJSXOpeningElement(attribute.parent)) {
+        attribute.parent.attributes.push(newAttribute);
+      }
+      // console.log('PARENT: ', attribute.parent.type);
+      // if (t.isJSXOpeningElement(attribute.parent)) {
+      //   const newAttribute = t.jsxAttribute(
+      //     t.jsxIdentifier('getStyles'),
+      //     t.jsxExpressionContainer(createBabelStylesTemplate()),
+      //   );
+      //   attribute.parent.attributes.push(newAttribute);
+      // }
+    }
+  }
+};
+
+export function createBabelStylesTemplate() {
+  const ast = template.expression(`
+    ${getSheetEntryStylesRuntime.toString()}
+  `);
+  return ast();
+}

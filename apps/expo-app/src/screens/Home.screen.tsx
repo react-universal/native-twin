@@ -1,53 +1,7 @@
 import { useState } from 'react';
-import { Text, Image, Pressable, TextInput, View, PressableProps } from 'react-native';
-import { VariantProps, createVariants } from '@native-twin/styled';
-
-// css`bg`;
-// styled('')``
-
-const buttonVariants = createVariants({
-  base: 'py-5 m-1 rounded-md items-center justify-center ',
-  variants: {
-    variant: {
-      primary: 'bg-blue-200',
-      secondary: 'bg-white',
-    },
-    size: {
-      large: 'w-40',
-      small: 'w-4',
-    },
-    isDisable: {
-      true: 'opacity-30',
-      false: '',
-    },
-  },
-  defaultVariants: {
-    variant: 'primary',
-  },
-});
-type ButtonVariantProps = VariantProps<typeof buttonVariants>;
-
-type ButtonProps = ButtonVariantProps & PressableProps;
-
-const Button = (props: ButtonProps) => {
-  const className = buttonVariants(props);
-  return (
-    <Pressable className={className}>
-      <Text>asd</Text>
-    </Pressable>
-  );
-};
-
-const TextField = () => {
-  const [text, setText] = useState('');
-  return (
-    <TextInput
-      value={text}
-      onChangeText={(data) => setText(data)}
-      className='bg-pink-400 focus:bg-white text(base black 5xl md:6xl)'
-    />
-  );
-};
+import { Text, Image, Pressable, View } from 'react-native';
+import { Button } from '../components/Button';
+import { TextField } from '../components/TextField';
 
 const testImage = require('../../assets/favicon.png');
 
@@ -89,7 +43,7 @@ function HomeScreen() {
             ${active ? 'text-red-800' : 'text-primary'}
           `}
         >
-          Nested Hover
+          Nested Hover22222
         </Text>
         <Pressable
           onPressIn={() => {

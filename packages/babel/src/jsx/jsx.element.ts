@@ -1,9 +1,16 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
+import { RuntimeTW } from '@native-twin/core';
 import { addJsxAttribute } from './jsx.attribute';
+import { visitJSXOpeningElement } from './jsx.openingElement';
 
-export const visitJSXElement = (element: NodePath<t.JSXElement>) => {
+export const visitJSXElement = (element: NodePath<t.JSXElement>, twin: RuntimeTW) => {
   addOrderToJSXChilds(element.node);
+  element.traverse({
+    JSXOpeningElement(openingElement) {
+      visitJSXOpeningElement(openingElement, twin);
+    },
+  });
 };
 
 const addOrderToJSXChilds = (element: t.JSXElement) => {
@@ -25,5 +32,3 @@ const addOrderToJSXChilds = (element: t.JSXElement) => {
 const countJSXElementChilds = (element: t.JSXElement) => {
   return element.children.filter((x) => t.isJSXElement(x)).length;
 };
-
-

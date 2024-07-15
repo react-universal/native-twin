@@ -1,7 +1,7 @@
-module.exports = function () {
+module.exports = function (_, options) {
   return {
     plugins: [
-      require('./build').default,
+      [require('./build').default, options],
       [
         '@babel/plugin-transform-react-jsx',
         {

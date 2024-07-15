@@ -28,15 +28,14 @@ export const transform: TwinTransformFn = async (
 
     const code = Buffer.from(data).toString('utf8');
 
-    const tw = setupNativeTwin(twConfig, {
+    const twin = setupNativeTwin(twConfig, {
       dev: options.dev,
       hot: options.hot,
       platform: options.platform,
     });
-    const transformed = getDocumentLanguageLocations(code, tw);
+    const transformed = getDocumentLanguageLocations(code, twin.tw);
     if (transformed) {
       const code = Buffer.from(transformed.generatedCode.code);
-      console.log('BUFFERED: ', transformed.generatedCode);
       return worker.transform(config, projectRoot, filename, code, options);
     }
   }

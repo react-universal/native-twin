@@ -1,24 +1,29 @@
 import * as babel from '@babel/core';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
 describe('Babel exec test', () => {
   it('Test exec code', () => {
-
-    const code = readFileSync(
-      path.join(__dirname, './fixtures/jsx/code.jsx'),
-    ).toString('utf-8');
+    const code = readFileSync(path.join(__dirname, './fixtures/jsx/code.tsx')).toString(
+      'utf-8',
+    );
     // console.log('CODE: ', code);
 
     const output = babel.transform(code, {
       presets: [require('../babel')],
-      filename: '/someFile.js',
+      filename: path.join(__dirname, 'fixtures', 'jsx', 'code.tsx'),
+      cwd: path.join(__dirname),
       minified: false,
       generatorOpts: {
         minified: false,
       },
       compact: false,
     });
+
+    console.log(output?.code);
+    if (output?.code) {
+      writeFileSync(path.join(__dirname, 'fixtures', 'jsx', 'out.jsx'), output.code);
+    }
 
     expect(output?.code).toBeDefined();
   });

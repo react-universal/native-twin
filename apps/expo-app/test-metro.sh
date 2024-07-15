@@ -1,5 +1,5 @@
 #env bin/zsh
-npx metro build src/screens/Home.screen.tsx \
+npx metro build index.js \
 -c=metro.config.js \
 --minify=false \
 --source-map=false \

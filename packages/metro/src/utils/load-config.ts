@@ -1,8 +1,8 @@
 import micromatch from 'micromatch';
 import path from 'node:path';
-import * as NativeTwin from '@native-twin/core';
+import type * as NativeTwin from '@native-twin/core';
 import type { SheetEntry, createVirtualSheet } from '@native-twin/css';
-import * as NativeTwinCss from '@native-twin/css';
+import type * as NativeTwinCss from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { requireJS } from './load-js';
 
@@ -47,10 +47,12 @@ export function setupNativeTwin(
   config: any,
   _options: { platform: string; hot: boolean; dev: boolean },
 ) {
-  if (tw) return tw;
+  if (tw) {
+    return { tw, created: false };
+  }
   const nativeWind = loadNativeTwin();
   tw = loadNativeTwinConfig(nativeWind, config);
   // console.log('TW: ', tw);
 
-  return tw;
+  return { tw, created: true };
 }
