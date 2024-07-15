@@ -3,8 +3,7 @@ import { tw } from '@native-twin/core';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
 import { groupContext } from '../../context';
 import { StyleSheet } from '../../sheet/StyleSheet';
-import { styledContext } from '../../store/observables/styles.obs';
-import { twinConfigObservable } from '../../store/observables/twin.observer';
+import { styledContext, twinConfigObservable } from '../../store/observables';
 import { ComponentConfig } from '../../types/styled.types';
 import { DEFAULT_INTERACTIONS, INTERNAL_RESET } from '../../utils/constants';
 

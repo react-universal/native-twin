@@ -1,6 +1,6 @@
 import { ComponentType, createElement, forwardRef, useDebugValue, useId } from 'react';
 import { groupContext } from '../../context';
-import { colorScheme } from '../../store/observables/colorScheme.obs';
+import { colorScheme } from '../../store/observables';
 import type { ComponentConfig } from '../../types/styled.types';
 import { getComponentType } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';

@@ -8,8 +8,12 @@ import {
 } from '@native-twin/css';
 import { Atom, atom } from '@native-twin/helpers';
 import { JSXStyledProps } from '../jsx/jsx-custom-props';
-import { StyledContext, remObs, styledContext } from '../store/observables/styles.obs';
-import { twinConfigObservable } from '../store/observables/twin.observer';
+import {
+  StyledContext,
+  remObs,
+  styledContext,
+  twinConfigObservable,
+} from '../store/observables';
 import { globalStyles } from '../store/styles.store';
 import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';

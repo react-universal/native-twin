@@ -1,6 +1,3 @@
-/**
- * Color scheme
- */
 import { AppState, Appearance, NativeEventSubscription } from 'react-native';
 import { atom } from '@native-twin/helpers';
 

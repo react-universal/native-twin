@@ -45,8 +45,6 @@ exports[`dark mode 1`] = `
     }
     ellipsizeMode="tail"
     isHighlighted={false}
-    lastOrd={0}
-    ord={0}
     selectionColor={null}
     style={
       {
@@ -116,8 +114,6 @@ exports[`normal component 1`] = `
     }
     ellipsizeMode="tail"
     isHighlighted={false}
-    lastOrd={0}
-    ord={0}
     selectionColor={null}
     style={
       {
