@@ -44,6 +44,7 @@ export interface RegisteredComponent {
     isGroupParent: boolean;
     hasGroupEvents: boolean;
     hasPointerEvents: boolean;
+    hasAnimations: boolean;
   };
 }
 
@@ -56,6 +57,7 @@ export interface ComponentSheet {
     isGroupParent: boolean;
     hasGroupEvents: boolean;
     hasPointerEvents: boolean;
+    hasAnimations: boolean;
   };
   recompute(): ComponentSheet;
 }

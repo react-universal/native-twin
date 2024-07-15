@@ -52,6 +52,7 @@ export function createVirtualSheet(): Sheet<SheetEntry[]> {
           important: false,
           precedence: Layer.b,
           selectors: [],
+          animations: [],
         });
       }
 

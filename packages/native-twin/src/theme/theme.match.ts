@@ -76,10 +76,31 @@ export function matchThemeColor(
           selectors: [],
           precedence: 0,
           important: rule.i,
+          animations: [],
         };
       }
     },
     meta,
+  ];
+}
+
+export function matchAnimation<Theme extends __Theme__ = __Theme__>(
+  pattern: string,
+): Rule<Theme> {
+  return [
+    pattern,
+    null,
+    (_match, ctx, parsed) => {
+      const animation = ctx.animations.find((x) => x[0] === parsed.n);
+      return {
+        className: animation?.[0] ?? 'NONCE',
+        declarations: [] as any,
+        animations: asArray(animation?.[1]),
+        important: false,
+        precedence: 0,
+        selectors: [],
+      };
+    },
   ];
 }
 
@@ -140,6 +161,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
         selectors: [],
         precedence: 0,
         important: parsedRule.i,
+        animations: [],
       };
 
       function getProperties() {

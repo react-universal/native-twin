@@ -12,6 +12,7 @@
         "plugin:@nx/typescript"
       ],
       "rules": {
+        "prefer-const": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "unused-imports/no-unused-vars": "off",
         "no-fallthrough": "off",

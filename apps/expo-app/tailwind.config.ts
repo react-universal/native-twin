@@ -1,7 +1,8 @@
-import { defineConfig } from '@native-twin/core';
+// import { Keyframe } from 'react-native-reanimated';
+import { defineConfig, matchAnimation } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 
-export default defineConfig({
+export const twinConfig = defineConfig({
   content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
   root: {
     rem: 16,
@@ -26,5 +27,18 @@ export default defineConfig({
       },
     },
   },
+  rules: [matchAnimation('slideIn')],
   presets: [presetTailwind()],
+  // animations: [
+  //   [
+  //     'slideIn',
+  //     new Keyframe({
+  //       0: { transform: [{ rotateX: '10deg' }] },
+  //       50: { transform: [{ rotateX: '45deg' }] },
+  //       100: { transform: [{ rotateX: '180deg' }] },
+  //     }),
+  //   ],
+  // ],
 });
+
+export default twinConfig;

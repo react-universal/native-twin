@@ -12,3 +12,7 @@ web-build/
 
 # macOS
 .DS_Store
+
+# Test
+metro-test/
+.twin-cache

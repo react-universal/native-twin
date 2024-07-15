@@ -17,7 +17,8 @@
     "ios",
     "babel.config.js",
     "app.config.js",
-    "metro.config.js"
+    "metro.config.js",
+    "metro-test"
   ],
-  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json", "wdyr.js"]
+  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json", "wdyr.js", "metro.transformer.js"]
 }

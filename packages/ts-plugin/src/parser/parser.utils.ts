@@ -165,6 +165,7 @@ export function locatedParsedRuleLocatedSheetEntry(
       precedence: CssLayer.u,
       important: rule.i,
       loc: rule.loc,
+      animations: [],
     };
   }
   if (context.mode === 'web') {
@@ -181,6 +182,7 @@ export function locatedParsedRuleLocatedSheetEntry(
         precedence: CssLayer.u,
         important: rule.i,
         loc: rule.loc,
+        animations: [],
       };
     }
   }
@@ -194,6 +196,7 @@ export function locatedParsedRuleLocatedSheetEntry(
       precedence: CssLayer.u,
       important: rule.i,
       loc: rule.loc,
+      animations: [],
     };
   }
   const newRule = context.mode === 'web' ? convert(rule, context, CssLayer.u) : rule;

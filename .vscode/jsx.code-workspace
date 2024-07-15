@@ -1,0 +1,79 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": ".."
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/language-server",
+      "path": "../packages/language-server"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "@apps/expo",
+      "path": "../apps/expo-app"
+    }
+  ],
+  "settings": {
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    },
+    "vsc-lfs.fileFilters": [".js"],
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      ".turbo": false,
+      "**/CHANGELOG.md": true,
+      "**/jest.config.js": false,
+      "**/LICENSE": true,
+      "**/babel.config.js": false,
+      "**/build": false,
+      "**/turbo.json": false,
+      "**/.eslintrc.json": false,
+      "**/.eslintignore": true,
+      "**/README.md": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/*.code-search": true,
+      "**/build": true
+    },
+    "editor.fontSize": 16,
+    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "cSpell.words": [
+      "sastan",
+      "TRBL",
+      "xytrbl"
+    ],
+    "jest.enable": true,
+    "jest.disabledWorkspaceFolders": [
+      "root",
+      "📦 @lib/native-twin",
+      "📦 @lib/metro",
+      "📦 @lib/jsx",
+      "📦 @lib/language-server",
+      "@apps/expo-app"
+    ]
+  }
+}

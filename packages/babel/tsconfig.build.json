@@ -3,6 +3,9 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "build",
+    "importHelpers": false,
+    "sourceMap": true,
+    "declarationMap": true,
     "noEmit": false,
     "noEmitOnError": false
   },

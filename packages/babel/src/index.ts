@@ -6,7 +6,6 @@ import { createMemberExpressionProgram } from './effects/programs';
 import { createVisitorContext } from './effects/visitor-context';
 
 export default function nativeTwinBabelPlugin(): PluginObj {
-  // const t = babel.types;
   const createContext = createVisitorContext();
 
   return {

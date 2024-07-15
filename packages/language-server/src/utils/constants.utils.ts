@@ -46,6 +46,7 @@ export const DEFAULT_TWIN_CONFIG = {
   rules: [],
   variants: [],
   presets: [presetTailwind()],
+  animations: [],
 } as InternalTwinConfig;
 
 export const DEFAULT_PLUGIN_CONFIG: NativeTwinPluginConfiguration = {

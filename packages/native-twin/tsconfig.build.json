@@ -8,5 +8,5 @@
     "noEmit": false,
     "importHelpers": true
   },
-  "exclude": ["./test/"]
+  "exclude": ["./test/", "build"]
 }

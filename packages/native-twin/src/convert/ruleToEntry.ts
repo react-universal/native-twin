@@ -23,6 +23,7 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
       selectors: [],
       precedence: Layer.u,
       important: rule.i,
+      animations: [],
     };
   }
   if (context.mode === 'web') {
@@ -38,6 +39,7 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
         selectors: [],
         precedence: Layer.u,
         important: rule.i,
+        animations: [],
       };
     }
   }
@@ -50,6 +52,7 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
       selectors: [],
       precedence: Layer.u,
       important: rule.i,
+      animations: [],
     };
   }
   const newRule = context.mode === 'web' ? convert(rule, context, Layer.u) : rule;

@@ -13,6 +13,10 @@
       "path": "../packages/jsx"
     },
     {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
       "name": "📦 @lib/language-service",
       "path": "../packages/language-service"
     },
@@ -27,6 +31,10 @@
     {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
+    },
+    {
+      "name": "@apps/expo",
+      "path": "../apps/expo-app"
     }
   ],
   "settings": {

@@ -17,7 +17,7 @@ export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown
   snapshot: () => () => void;
   clear: () => void;
   observeConfig: (cb: (config: TailwindConfig<Theme>) => void) => () => void;
-  subscriptions: Set<(cb: TailwindConfig<any>) => void>
+  subscriptions: Set<(cb: TailwindConfig<any>) => void>;
 }
 
 /* THEME CONFIG */
@@ -43,6 +43,7 @@ export interface ThemeAnimation {
 export interface __Theme__ {
   screens?: Record<string, TWScreenValueConfig>;
   colors?: ColorsRecord;
+  animations?: Record<string, string>;
 }
 
 export interface ThemeSectionResolverContext<Theme extends __Theme__ = __Theme__> {

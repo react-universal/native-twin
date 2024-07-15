@@ -1,22 +1,12 @@
 import { useState } from 'react';
-import {
-  Text,
-  Image,
-  Pressable,
-  TextInput,
-  View,
-  PressableProps,
-  Dimensions,
-} from 'react-native';
+import { Text, Image, Pressable, TextInput, View, PressableProps } from 'react-native';
 import { VariantProps, createVariants } from '@native-twin/styled';
 
 // css`bg`;
 // styled('')``
 
-const { width: SCREEN_W } = Dimensions.get('window');
-
 const buttonVariants = createVariants({
-  base: 'py-5 m-1 rounded-md items-center justify-center',
+  base: 'py-5 m-1 rounded-md items-center justify-center ',
   variants: {
     variant: {
       primary: 'bg-blue-200',
@@ -67,7 +57,7 @@ function HomeScreen() {
     <View className='flex-1'>
       <View
         className={`
-          flex-1 items-center justify-center md:border-3
+          flex-1 items-center justify-center md:border-3   
           hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-green))
           ios:(p-14 bg-rose-200 border-black border-2 dark:(bg-blue-500))
           android:(p-14 border-green-200 border-2 bg-gray-800 dark:(bg-purple-500))
@@ -82,7 +72,7 @@ function HomeScreen() {
               font-inter-bold hover:text-gray-700
             `}
           >
-            {`WIDTH: ${SCREEN_W}`}
+            Hello World
           </Text>
         </View>
       </View>

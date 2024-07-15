@@ -133,6 +133,7 @@ export function createTailwind(
               declarations: Object.entries(p[1]) as any,
               important: false,
               precedence: Layer.b,
+              animations: [],
             };
             sortedPrecedences.push(entry);
             cache.set(entry.className, [entry]);

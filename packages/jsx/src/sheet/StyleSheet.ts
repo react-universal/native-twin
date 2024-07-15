@@ -78,6 +78,7 @@ const internalSheet: TwinStyleSheet = {
         isGroupParent: sheets.some((x) => x.metadata.isGroupParent),
         hasGroupEvents: sheets.some((x) => x.metadata.hasGroupEvents),
         hasPointerEvents: sheets.some((x) => x.metadata.hasPointerEvents),
+        hasAnimations: sheets.some((x) => x.metadata.hasAnimations),
       },
     };
     componentsRegistry.set(id, registerComponent);
@@ -117,6 +118,7 @@ export function createComponentSheet(
       isGroupParent: entries.some((x) => x.className == 'group'),
       hasGroupEvents: Object.keys(sheet.group).length > 0,
       hasPointerEvents: Object.keys(sheet.pointer).length > 0,
+      hasAnimations: entries.some((x) => x.animations.length > 0),
     },
   };
 

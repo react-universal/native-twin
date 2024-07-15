@@ -43,6 +43,7 @@ export const DEFAULT_TWIN_CONFIG = {
   },
   rules: [],
   variants: [],
+  animations: [],
 } as InternalTwinConfig;
 
 export const DEFAULT_PLUGIN_CONFIG = {

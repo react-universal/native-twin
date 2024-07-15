@@ -30,6 +30,7 @@ export function defineConfig<
       ...userConfig.root,
     },
     theme: {},
+    animations: userConfig.animations ?? [],
   };
   for (const preset of asArray([
     ...presets,
@@ -42,9 +43,12 @@ export function defineConfig<
       root: userConfig.root,
     },
   ])) {
-    const { ignorelist, preflight, rules, theme, variants, darkMode } =
-      typeof preset == 'function' ? preset(config) : (preset as TailwindPresetConfig<Theme>);
+    const { ignorelist, preflight, rules, theme, variants, darkMode, animations } =
+      typeof preset == 'function'
+        ? preset(config)
+        : (preset as TailwindPresetConfig<Theme>);
     config = {
+      animations: [...asArray(config.animations), ...asArray(animations)],
       content: userConfig.content,
       preflight: config.preflight !== false &&
         preflight !== false && [...asArray(config.preflight), ...asArray(preflight)],

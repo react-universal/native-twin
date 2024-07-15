@@ -9,7 +9,7 @@
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "importHelpers": true,
+    "declarationMap": true,
     "strict": true,
     "types": ["node", "react-native", "jest"],
     "skipLibCheck": true,

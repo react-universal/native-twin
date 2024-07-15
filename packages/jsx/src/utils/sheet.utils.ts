@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import { parseCssValue, tw } from '@native-twin/core';
 import {
   AnyStyle,
@@ -7,7 +6,7 @@ import {
   SheetEntry,
   SheetEntryDeclaration,
 } from '@native-twin/css';
-import { StyledContext } from '../store/observables/styles.obs';
+import type { StyledContext } from '../store/observables/styles.obs';
 
 export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
   return entries.reduce(
@@ -85,10 +84,14 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
   for (let v of variants) {
     v = v.replace('&:', '');
     if (platformVariants.includes(v)) {
-      if (v == 'web' && Platform.OS != 'web') return false;
-      if (v == 'native' && Platform.OS == 'web') return false;
-      if (v == 'ios' && Platform.OS != 'ios') return false;
-      if (v == 'android' && Platform.OS != 'android') return false;
+      if (v == 'web' && context.platform != 'web') return false;
+      if (v == 'native' && context.platform == 'web') return false;
+      if (v == 'ios' && context.platform != 'ios') return false;
+      if (v == 'android' && context.platform != 'android') return false;
+      // if (v == 'web' && Platform.OS != 'web') return false;
+      // if (v == 'native' && Platform.OS == 'web') return false;
+      // if (v == 'ios' && Platform.OS != 'ios') return false;
+      // if (v == 'android' && Platform.OS != 'android') return false;
     }
     // if (
     //   (v === 'dark' && context.colorScheme === 'light') ||
@@ -135,7 +138,6 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
             rem: context.units.rem,
           }) as number;
         }
-        console.log('MAX_MIN', max, min);
         if (max && min && !(width <= max && width >= min)) {
           return false;
         }

@@ -1,6 +1,6 @@
 import type { IncomingMessage } from 'connect';
 import type { ServerResponse } from 'http';
-import { METRO_ENDPOINT } from './constants';
+import { METRO_ENDPOINT } from '../../utils/constants';
 
 const connections = new Set<ServerResponse<IncomingMessage>>();
 const last = {
@@ -9,11 +9,11 @@ const last = {
   json: undefined as string | undefined,
 };
 
-export const middleware = [
+export const twinMiddleware = [
   `/${METRO_ENDPOINT}`,
   (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
     const version = parseInt(req.url?.split('?version=')[1] ?? '0');
-
+    console.log('HIT_MIDDLEWARE: ');
     if (version && version < last.version) {
       res.write(`data: {"version":${last.version},"data":${last.json}}\n\n`);
       res.end();

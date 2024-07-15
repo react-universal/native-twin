@@ -1,6 +1,4 @@
 // import { stylizeJSXChilds } from './jsx/jsx-childs';
-// import { jsxStyles } from './jsx/jsx-styles';
-import { stylizeJSXChilds } from './jsx/jsx-childs';
 import { jsxStyles } from './jsx/jsx-styles';
 import { stylizedComponents } from './styled';
 import type { JSXFunction } from './types/jsx.types';
@@ -29,7 +27,7 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
       type = stylizedComponents.get(type) ?? type;
     }
 
-    stylizeJSXChilds(props);
+    // stylizeJSXChilds(props);
     jsxStyles(props, type);
 
     // Call the original jsx function with the new type

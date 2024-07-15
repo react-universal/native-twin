@@ -1,11 +1,12 @@
 import * as babel from '@babel/core';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import path from 'path';
 
 describe('Babel exec test', () => {
   it('Test exec code', () => {
+
     const code = readFileSync(
-      path.join(__dirname, './fixtures/compiled/code.js'),
+      path.join(__dirname, './fixtures/jsx/code.jsx'),
     ).toString('utf-8');
     // console.log('CODE: ', code);
 

@@ -19,6 +19,7 @@ export const useStyledProps = (
   }
   const context = useContext(groupContext);
   const styledCtx = useAtomValue(styledContext);
+
   const componentStyles = useMemo(
     () => StyleSheet.registerComponent(id, { props, configs, context: styledCtx }),
     [props, styledCtx, context, id, configs],

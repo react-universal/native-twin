@@ -1,3 +1,5 @@
+export const METRO_ENDPOINT = `__native_twin_update_endpoint`;
+
 export const INTERNAL_RESET = Symbol();
 export const INTERNAL_SET = Symbol();
 export const INTERNAL_FLAGS = Symbol();
@@ -27,3 +29,5 @@ export const transformKeys = new Set([
   'skewX',
   'skewY',
 ]);
+
+export const TWIN_CACHE_DIR = '.twin-cache';

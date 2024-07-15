@@ -1,4 +1,4 @@
-import { ComponentType, createElement, useDebugValue, useId } from 'react';
+import { ComponentType, createElement, forwardRef, useDebugValue, useId } from 'react';
 import { groupContext } from '../../context';
 import { colorScheme } from '../../store/observables/colorScheme.obs';
 import type { ComponentConfig } from '../../types/styled.types';
@@ -60,6 +60,10 @@ export function twinComponent(
     }
   }
 
+  if (componentStyles.metadata.hasAnimations && 1 === Number(2)) {
+    component = createAnimatedComponent(component);
+  }
+
   if (componentStyles.metadata.isGroupParent) {
     props = {
       value: id,
@@ -86,4 +90,83 @@ export function twinComponent(
   } else {
     return createElement(component, props);
   }
+}
+
+const animatedCache = new Map<ComponentType<any> | string, ComponentType<any>>();
+
+function createAnimatedComponent(Component: ComponentType<any>): any {
+  if (animatedCache.has(Component)) {
+    return animatedCache.get(Component)!;
+  } else if (Component.displayName?.startsWith('AnimatedComponent')) {
+    return Component;
+  }
+
+  if (
+    !(
+      typeof Component !== 'function' ||
+      (Component.prototype && Component.prototype.isReactComponent)
+    )
+  ) {
+    throw new Error(
+      `Looks like you're passing an animation style to a function component \`${Component.name}\`. Please wrap your function component with \`React.forwardRef()\` or use a class component instead.`,
+    );
+  }
+
+  const { default: Animated, useAnimatedStyle } =
+    require('react-native-reanimated') as typeof import('react-native-reanimated');
+
+  let AnimatedComponent = Animated.createAnimatedComponent(
+    Component as React.ComponentClass,
+  );
+
+  /**
+   * TODO: This wrapper shouldn't be needed, as we should just run the hook in the
+   * original component. However, we get an error about running on the JS thread?
+   */
+  const AnimatedComponentWrapper = forwardRef((props: any, ref: any) => {
+    /**
+     * This code shouldn't be needed, but inline shared values are not working properly.
+     * https://github.com/software-mansion/react-native-reanimated/issues/5296
+     */
+    const propStyle = props.style;
+    const style = useAnimatedStyle(() => {
+      const style: Record<string, any> = {};
+
+      if (!propStyle) return style;
+
+      for (const key of Object.keys(propStyle)) {
+        const value = propStyle[key];
+
+        if (typeof value === 'object' && '_isReanimatedSharedValue' in value) {
+          style[key] = value.value;
+        } else if (key === 'transform') {
+          style['transform'] = value.map((v: any) => {
+            const [key, value] = Object.entries(v)[0] as any;
+            if (typeof value === 'object' && 'value' in value) {
+              return { [key]: value.value };
+            } else {
+              return { [key]: value };
+            }
+          });
+        } else {
+          style[key] = value;
+        }
+      }
+
+      return style;
+    }, [propStyle]);
+
+    return createElement(AnimatedComponent, {
+      ...props,
+      style,
+      ref,
+    });
+  });
+  AnimatedComponentWrapper.displayName = `TwinAnimatedComponentWrapper(${
+    Component.displayName ?? Component.name
+  })`;
+
+  animatedCache.set(Component, AnimatedComponentWrapper);
+
+  return AnimatedComponentWrapper;
 }

@@ -1,3 +1,4 @@
+import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type { MaybeArray } from '@native-twin/helpers';
 import type { AnyStyle } from '../react-native/rn.types';
 
@@ -24,6 +25,7 @@ export interface SheetEntryRegistry extends SheetEntry {
 export interface SheetEntry {
   className: string;
   declarations: SheetEntryDeclaration[];
+  animations: ReanimatedKeyframe[];
   /** The rule sets (selectors and at-rules). expanded variants `@media ...`, `@supports ...`, `&:focus`, `.dark &` */
   selectors: string[];
   precedence: number;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import micromatch from 'micromatch';
 import path from 'node:path';
 import * as NativeTwin from '@native-twin/core';
@@ -51,7 +50,7 @@ export function setupNativeTwin(
   if (tw) return tw;
   const nativeWind = loadNativeTwin();
   tw = loadNativeTwinConfig(nativeWind, config);
-  console.log('TW: ', tw);
+  // console.log('TW: ', tw);
 
   return tw;
 }
