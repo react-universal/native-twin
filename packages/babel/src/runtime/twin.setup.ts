@@ -53,7 +53,7 @@ export function setupNativeTwin(
   config: Option.Option<
     NativeTwin.TailwindConfig<NativeTwin.__Theme__ & TailwindPresetTheme>
   >,
-  _options: { platform: string; hot: boolean; dev: boolean },
+  _options: TwinBabelOptions,
 ) {
   if (tw) {
     return Option.some(tw);

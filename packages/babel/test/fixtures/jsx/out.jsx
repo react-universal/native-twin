@@ -41,18 +41,7 @@ export default function App() {
     }), _jsx(Text, {
       entries_expressions: ["style", `${true && 'text-xl'}`],
       styledProps: {
-        "entries": [{
-          "className": "text-lg",
-          "declarations": [{
-            "prop": "fontSize",
-            "value": "1.125rem"
-          }],
-          "selectors": [],
-          "precedence": 0,
-          "important": false,
-          "animations": [],
-          "index": 1
-        }],
+        "entries": [],
         "prop": "className",
         "target": "style"
       },

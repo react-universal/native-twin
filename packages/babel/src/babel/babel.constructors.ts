@@ -1,14 +1,8 @@
 import template from '@babel/template';
 import * as t from '@babel/types';
 import { isObject } from '@native-twin/helpers';
-import { getSheetEntryStyles as getSheetEntryStylesRuntime } from '@native-twin/jsx/build/utils/sheet.utils';
 import { AnyPrimitive } from '../jsx/jsx.types';
-
-const valueIsPrimitive = (value: unknown): value is AnyPrimitive => {
-  return (
-    typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean'
-  );
-};
+import { valueIsPrimitive } from './babel.validators';
 
 export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {
   if (typeof value === 'string') return t.stringLiteral(value);
@@ -21,16 +15,6 @@ export const createObjectExpressionWithTemplate = <T extends object>(expression:
   return ast();
 };
 
-export function createBabelStylesTemplate(styles: any) {
-  const ast = template.expression(`
-  () => {
-   const styles = ${JSON.stringify(styles)}
-    return ${getSheetEntryStylesRuntime.toString()}
-  }
-  `);
-  return ast();
-}
-
 export const createObjectExpression = <T extends object>(
   obj: T,
 ): t.ObjectExpression | t.ArrayExpression => {
@@ -40,7 +24,7 @@ export const createObjectExpression = <T extends object>(
   return t.objectExpression(createOjectExpressionProperties(Object.entries(obj)));
 };
 
-const createArrayExpression = <T>(
+export const createArrayExpression = <T>(
   x: T[],
   results: t.Expression[] = [],
 ): t.Expression[] => {
@@ -63,7 +47,7 @@ const createArrayExpression = <T>(
   return createArrayExpression(x, results);
 };
 
-const createOjectExpressionProperties = (
+export const createOjectExpressionProperties = (
   entries: [string, any][],
   results: t.ObjectProperty[] = [],
 ): t.ObjectProperty[] => {

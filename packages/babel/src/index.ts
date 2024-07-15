@@ -1,34 +1,18 @@
 import { PluginObj } from '@babel/core';
 import { addNamed } from '@babel/helper-module-imports';
-import * as Option from 'effect/Option';
-import nodePath from 'node:path';
-import { RuntimeTW } from '@native-twin/core';
+import { createVisitorContext } from './babel/babel.common';
 import { PLUGIN_IMPORT_META } from './constants/plugin.constants';
 import { isReactImport, isReactRequire } from './effects/path.effects';
 import { createMemberExpressionProgram } from './effects/programs';
-import { createVisitorContext } from './effects/visitor-context';
 import { visitJSXElement } from './jsx/jsx.element';
-import { getUserTwinConfig, setupNativeTwin } from './runtime/twin.setup';
-import { TwinBabelOptions } from './types/plugin.types';
-
-let twin: Option.Option<RuntimeTW> = Option.none();
+import { BabelAPI, TwinBabelOptions } from './types/plugin.types';
 
 export default function nativeTwinBabelPlugin(
-  _: any,
+  _: BabelAPI,
   options: TwinBabelOptions,
   cwd: string,
 ): PluginObj {
-  const twConfig = getUserTwinConfig(cwd, options);
-  twin = setupNativeTwin(twConfig, {
-    dev: false,
-    hot: false,
-    platform: 'ios',
-  });
-  const allowedPaths = twConfig.pipe(
-    Option.map((x) => x.content.map((x) => nodePath.resolve(cwd, nodePath.join(x)))),
-    Option.getOrElse((): string[] => []),
-  );
-  const createContext = createVisitorContext(allowedPaths);
+  const createContext = createVisitorContext(cwd, options);
   return {
     name: '@native-twin/babel-plugin',
     visitor: {
@@ -41,9 +25,6 @@ export default function nativeTwinBabelPlugin(
 
         if (shouldReplace) {
           path.replaceWith(addNamed(path, ...PLUGIN_IMPORT_META));
-          state.file.scope.path.traverse({
-            Identifier() {},
-          });
         }
       },
       Identifier(path, state) {
@@ -59,10 +40,10 @@ export default function nativeTwinBabelPlugin(
       },
       JSXElement: (path, state) => {
         const context = createContext(path, state);
-        if (!context.stateContext.isValidPath || twin._tag === 'None') {
+        if (!context.stateContext.isValidPath || context.twin._tag === 'None') {
           return;
         }
-        visitJSXElement(path, twin.value);
+        visitJSXElement(path, context.twin.value);
       },
     },
   };

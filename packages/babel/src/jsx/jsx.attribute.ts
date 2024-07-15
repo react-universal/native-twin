@@ -2,7 +2,10 @@ import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { RuntimeTW } from '@native-twin/core';
 import { SheetEntry } from '@native-twin/css';
-import { createObjectExpression, createPrimitiveExpression } from '../utils/babel.utils';
+import {
+  createObjectExpression,
+  createPrimitiveExpression,
+} from '../babel/babel.constructors';
 import { MappedComponent, mappedComponents } from '../utils/component.maps';
 import { AnyPrimitive, JSXChildElement } from './jsx.types';
 
@@ -66,7 +69,6 @@ export const visitJSXAttribute = (
   if (t.isTemplateLiteral(classNameValue.value)) {
     const cooked = templateLiteralToStringLike(classNameValue.value);
     classProp.entries = twin(cooked.strings);
-    console.log('COOKED: ', cooked);
     expressions = { expression: cooked.expressions, prop: classNameValue.target };
   }
 
@@ -93,7 +95,7 @@ export const visitJSXAttribute = (
 
   const jsxClassProp = t.jsxAttribute(
     t.jsxIdentifier('styledProps'),
-    t.jsxExpressionContainer(createObjectExpression({...classProp})),
+    t.jsxExpressionContainer(createObjectExpression({ ...classProp })),
   );
   openingElement.node.attributes.push(jsxClassProp);
 };
