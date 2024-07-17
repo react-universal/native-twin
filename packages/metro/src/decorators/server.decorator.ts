@@ -3,7 +3,7 @@ import { ServerConfigT } from 'metro-config';
 import { TailwindConfig, __Theme__ } from '@native-twin/core';
 import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { setupNativeTwin } from '../utils/load-config';
-import { twinMiddleware } from './server-middlewares/poll-updates-server';
+import { createTwinServerMiddleware } from './server-middlewares/poll-updates-server';
 
 export const decorateMetroServer = (
   metroServer: ServerConfigT,
@@ -15,11 +15,13 @@ export const decorateMetroServer = (
     ...metroServer,
     enhanceMiddleware(middleware, metroServer) {
       let server = connect()
-        .use(...twinMiddleware)
+        .use(...createTwinServerMiddleware())
         .use('/', async (req, _res, next) => {
           const url = new URL(req.url!, 'http://localhost');
           const platform = url.searchParams.get('platform');
-
+          req.on('data', (chunk) => {
+            console.log('CHUNK: ', chunk);
+          });
           if (platform) {
             try {
               setupNativeTwin(twConfig, {

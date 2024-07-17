@@ -11,24 +11,6 @@ exports[`dark mode 1`] = `
       },
     ]
   }
-  onTouchEnd={[Function]}
-  onTouchStart={[Function]}
-  style={
-    {
-      "backgroundColor": "rgba(248,113,113,1)",
-    }
-  }
-  styledProps={
-    JSXStyledProps {
-      "styleTuples": [
-        {
-          "className": "bg-black hover:bg-white dark:bg-red",
-          "prop": "className",
-          "target": "style",
-        },
-      ],
-    }
-  }
   testID="native-twin-element"
 >
   <RCTText
@@ -46,23 +28,6 @@ exports[`dark mode 1`] = `
     ellipsizeMode="tail"
     isHighlighted={false}
     selectionColor={null}
-    style={
-      {
-        "color": "rgba(255,255,255,1)",
-        "fontSize": 18,
-      }
-    }
-    styledProps={
-      JSXStyledProps {
-        "styleTuples": [
-          {
-            "className": "text(white lg)",
-            "prop": "className",
-            "target": "style",
-          },
-        ],
-      }
-    }
   >
     Sample Text
   </RCTText>
@@ -80,24 +45,6 @@ exports[`normal component 1`] = `
       },
     ]
   }
-  onTouchEnd={[Function]}
-  onTouchStart={[Function]}
-  style={
-    {
-      "backgroundColor": "rgba(0,0,0,1)",
-    }
-  }
-  styledProps={
-    JSXStyledProps {
-      "styleTuples": [
-        {
-          "className": "bg-black hover:bg-white",
-          "prop": "className",
-          "target": "style",
-        },
-      ],
-    }
-  }
   testID="native-twin-element"
 >
   <RCTText
@@ -115,23 +62,6 @@ exports[`normal component 1`] = `
     ellipsizeMode="tail"
     isHighlighted={false}
     selectionColor={null}
-    style={
-      {
-        "color": "rgba(255,255,255,1)",
-        "fontSize": 18,
-      }
-    }
-    styledProps={
-      JSXStyledProps {
-        "styleTuples": [
-          {
-            "className": "text(white lg)",
-            "prop": "className",
-            "target": "style",
-          },
-        ],
-      }
-    }
   >
     Sample Text
   </RCTText>

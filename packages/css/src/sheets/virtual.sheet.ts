@@ -24,8 +24,8 @@ export function createVirtualSheet(): Sheet<SheetEntry[]> {
     },
 
     insert(entry, index) {
-      registry.set(entry.className, Object.assign(entry, { index }));
       target.splice(index, 0, entry);
+      // registry.set(entry.className, Object.assign(entry, { index }));
     },
 
     snapshot() {

@@ -1,33 +1,34 @@
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
-import { tw } from '@native-twin/core';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
 import { groupContext } from '../../context';
 import { StyleSheet } from '../../sheet/StyleSheet';
+import { tw } from '../../sheet/native-tw';
 import { styledContext, twinConfigObservable } from '../../store/observables';
-import { ComponentConfig } from '../../types/styled.types';
+import { BabelStyledProps } from '../../types/jsx.types';
 import { DEFAULT_INTERACTIONS, INTERNAL_RESET } from '../../utils/constants';
 
 export const useStyledProps = (
   id: string,
-  configs: ComponentConfig[],
-  props: Record<string, any> | null,
+  styledProps: BabelStyledProps[],
+  debug: boolean,
 ) => {
   const renderCount = useRef(0);
-  if (props?.['debug']) {
-    console.debug('RENDER_COUNTER: ', ++renderCount.current);
+  if (debug) {
+    console.debug('RENDER_COUNTER: ', id, ++renderCount.current);
   }
   const context = useContext(groupContext);
   const styledCtx = useAtomValue(styledContext);
 
   const componentStyles = useMemo(
-    () => StyleSheet.registerComponent(id, { props, configs, context: styledCtx }),
-    [props, styledCtx, context, id, configs],
+    () => StyleSheet.registerComponent(id, styledProps ?? [], styledCtx),
+    [styledProps, styledCtx, id],
   );
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 
   const parentState = useAtomValue(
     atom((get) => {
+      // console.log('PARENT_STATE');
       if (!context || !componentStyles.metadata.hasGroupEvents) {
         return DEFAULT_INTERACTIONS;
       }

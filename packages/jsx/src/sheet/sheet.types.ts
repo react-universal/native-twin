@@ -9,6 +9,7 @@ import {
 import { Atom } from '@native-twin/helpers';
 import { JSXStyledProps } from '../jsx/jsx-custom-props';
 import { StyledContext } from '../store/observables/styles.obs';
+import { BabelStyledProps } from '../types/jsx.types';
 import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 
@@ -22,11 +23,8 @@ export interface TwinStyleSheet {
   entriesToFinalSheet(entries: SheetEntry[]): FinalSheet;
   registerComponent(
     id: string,
-    data: {
-      configs: ComponentConfig[];
-      props: Record<string, any> | null;
-      context: StyledContext;
-    },
+    props: BabelStyledProps[],
+    context: StyledContext,
   ): RegisteredComponent;
   getComponentState(id: string): Atom<ComponentState>;
 }

@@ -13,6 +13,7 @@ describe('Babel exec test', () => {
       presets: [require('../babel')],
       filename: path.join(__dirname, 'fixtures', 'jsx', 'code.tsx'),
       cwd: path.join(__dirname),
+      envName: 'development',
       minified: false,
       generatorOpts: {
         minified: false,

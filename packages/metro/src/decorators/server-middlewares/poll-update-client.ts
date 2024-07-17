@@ -6,9 +6,7 @@ async function pollServer(version = 1) {
   try {
     const response = await fetch(`${url}${METRO_ENDPOINT}?version=${version}`);
     if (!response.ok) {
-      console.error(
-        'There was a problem connecting to the native-twin Metro server',
-      );
+      console.error('There was a problem connecting to the native-twin Metro server');
     }
 
     const body = await response.text();
@@ -22,6 +20,8 @@ async function pollServer(version = 1) {
       //   ...data.data,
       // });
     }
+
+    console.log('POOL_SERVER', version);
 
     return pollServer(version);
   } catch (error: any) {}

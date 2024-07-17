@@ -1,13 +1,12 @@
 import * as Option from 'effect/Option';
 import fs from 'node:fs';
 import path from 'node:path';
-
 import type * as NativeTwin from '@native-twin/core';
 import type { SheetEntry, createVirtualSheet } from '@native-twin/css';
 import type * as NativeTwinCss from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { TWIN_DEFAULT_FILES } from '../constants/plugin.constants';
-import { TwinBabelOptions } from '../types/plugin.types';
+import type { TwinBabelOptions } from '../types/plugin.types';
 import { requireJS } from '../utils/load-js';
 
 let tw: ReturnType<typeof loadNativeTwinConfig> | null = null;

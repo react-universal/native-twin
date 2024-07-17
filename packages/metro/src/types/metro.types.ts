@@ -23,3 +23,9 @@ export type ComposableTransformerConfigT = TransformerConfigT & {
 export interface ComposableIntermediateConfigT extends IntermediateConfigT {
   transformer: ComposableTransformerConfigT;
 }
+
+export interface TwinServerDataBuffer {
+  rem: number;
+  version: number;
+  data: string | Buffer;
+}

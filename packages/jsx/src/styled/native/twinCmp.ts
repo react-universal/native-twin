@@ -1,4 +1,4 @@
-import { ComponentType, createElement, forwardRef, useDebugValue, useId } from 'react';
+import { ComponentType, createElement, forwardRef, useId } from 'react';
 import { groupContext } from '../../context';
 import { colorScheme } from '../../store/observables';
 import type { ComponentConfig } from '../../types/styled.types';
@@ -13,12 +13,12 @@ export function twinComponent(
 ) {
   let component = baseComponent;
   const id = useId();
+  // console.log('ID: ', id);
   const { state, componentStyles, parentState, onChange } = useStyledProps(
     id,
-    configs,
-    props,
+    props?.['styledProps'] ?? [],
+    props?.['debug'] ?? false,
   );
-  useDebugValue({ parentState, state });
 
   props = Object.assign({ ref }, props);
 

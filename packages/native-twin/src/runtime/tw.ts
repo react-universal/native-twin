@@ -5,12 +5,13 @@ import { createTailwind } from '../native-twin';
 import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
 import { mutationObserver } from './mutation-observer';
+import { isDevEnvironment } from './runtime.utils';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
 // const subscriptions = new Set<(cb: TailwindConfig<any>) => void>();
 
 function assertActive() {
-  if (__DEV__ && !tw) {
+  if (isDevEnvironment() && !tw) {
     throw new Error(
       `No active instance found. Make sure to call setup or install before accessing tw.`,
     );
@@ -24,15 +25,14 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
   noop as unknown as RuntimeTW<any>,
   {
     apply(_target, _thisArg, args) {
-      if (__DEV__) assertActive();
+      if (isDevEnvironment()) assertActive();
       return active.apply(_thisArg, args);
     },
 
     get(target, property) {
-      if (__DEV__) {
+      if (isDevEnvironment()) {
         // Workaround webpack accessing the prototype in dev mode
         if (!active && property in target) {
-          console.log('IN_TARGET: ', property, target);
           return (target as any)[property];
         }
 
@@ -54,22 +54,21 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
       if (property === 'theme') {
         const value = active[property];
         return function () {
-          if (__DEV__) assertActive();
+          if (isDevEnvironment()) assertActive();
           return value.apply(active, arguments as unknown as [string, string]);
         };
       }
       if (property === 'observeConfig') {
         const value = active[property];
         return function () {
-          if (__DEV__) assertActive();
+          if (isDevEnvironment()) assertActive();
           return value.apply(active, arguments as unknown as any);
         };
       }
       const value = active[property as Exclude<keyof RuntimeTW, 'theme'>];
       if (typeof value == 'function') {
-        console.log('AS_FUNCTION: ', property, target);
         return function () {
-          if (__DEV__) assertActive();
+          if (isDevEnvironment()) assertActive();
           return value.apply(active);
         };
       }

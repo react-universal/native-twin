@@ -1,10 +1,10 @@
-import { PluginPass, NodePath } from '@babel/core';
+import type { PluginPass, NodePath } from '@babel/core';
 import * as Option from 'effect/Option';
 import micromatch from 'micromatch';
 import nodePath from 'node:path';
-import { RuntimeTW } from '@native-twin/core';
+import type { RuntimeTW } from '@native-twin/core';
 import { getUserTwinConfig, setupNativeTwin } from '../runtime/twin.setup';
-import { TwinBabelOptions } from '../types/plugin.types';
+import type { TwinBabelOptions } from '../types/plugin.types';
 
 let twin: Option.Option<RuntimeTW> = Option.none();
 

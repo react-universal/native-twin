@@ -9,6 +9,7 @@ import { parseTWTokens, sortedInsertionIndex, interpolate } from '@native-twin/c
 import { asArray } from '@native-twin/helpers';
 import { defineConfig } from './config/define-config';
 import { parsedRuleToEntry } from './convert/ruleToEntry';
+import { isDevEnvironment } from './runtime/runtime.utils';
 import { createThemeContext } from './theme/theme.context';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from './types/theme.types';
@@ -82,7 +83,7 @@ export function createTailwind(
         subscriptions.clear();
       },
       destroy(nextConfig) {
-        if (__DEV__) {
+        if (isDevEnvironment()) {
           if (nextConfig) {
             subscriptions.forEach((cb) => {
               cb && cb(nextConfig as any);
@@ -93,7 +94,7 @@ export function createTailwind(
         sheet.destroy();
       },
       observeConfig(cb) {
-        if (!__DEV__) {
+        if (!isDevEnvironment()) {
           return () => void {};
         }
         subscriptions.add(cb);

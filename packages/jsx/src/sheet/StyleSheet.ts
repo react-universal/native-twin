@@ -1,5 +1,4 @@
 import { StyleSheet as NativeSheet } from 'react-native';
-import * as Equal from 'effect/Equal';
 import {
   AnyStyle,
   GetChildStylesArgs,
@@ -7,7 +6,6 @@ import {
   SheetInteractionState,
 } from '@native-twin/css';
 import { Atom, atom } from '@native-twin/helpers';
-import { JSXStyledProps } from '../jsx/jsx-custom-props';
 import {
   StyledContext,
   remObs,
@@ -58,25 +56,23 @@ const internalSheet: TwinStyleSheet = {
     const entries = tw(`${source}`);
     return entries;
   },
-  registerComponent(id, params) {
+  registerComponent(id, props, context) {
     const component = componentsRegistry.get(id);
-    const styledMaps = (params.props?.['styledProps'] as JSXStyledProps) ?? {};
-
     if (component) {
-      if (styledMaps && Equal.equals(styledMaps, component.prevProps)) {
-        component.sheets = component.sheets.map((x) => x.recompute());
-        return component;
+      // console.log('RECALCULATE', id);
+      return component;
+    }
+    const sheets: ComponentSheet[] = [];
+    for (const style of props) {
+      if (style.templateLiteral) {
+        style.entries.push(...tw(`${style.templateLiteral}`));
       }
+      sheets.push(createComponentSheet(style.target, style.entries, context));
     }
 
-    const sheets: ComponentSheet[] = [];
-    for (const style of styledMaps.styleTuples ?? []) {
-      const entries = tw(`${style.className}`);
-      sheets.push(createComponentSheet(style.target, entries, params.context));
-    }
     const registerComponent: RegisteredComponent = {
       id,
-      prevProps: styledMaps,
+      prevProps: {},
       sheets,
       metadata: {
         isGroupParent: sheets.some((x) => x.metadata.isGroupParent),
@@ -84,7 +80,7 @@ const internalSheet: TwinStyleSheet = {
         hasPointerEvents: sheets.some((x) => x.metadata.hasPointerEvents),
         hasAnimations: sheets.some((x) => x.metadata.hasAnimations),
       },
-    };
+    } as RegisteredComponent;
     componentsRegistry.set(id, registerComponent);
     if (!componentsState.has(id)) {
       componentsState.set(id, atom({ isGroupActive: false, isLocalActive: false }));

@@ -1,96 +1,105 @@
 import type { IncomingMessage } from 'connect';
 import type { ServerResponse } from 'http';
+import { TwinServerDataBuffer } from '../../types/metro.types';
 import { METRO_ENDPOINT } from '../../utils/constants';
 
 const connections = new Set<ServerResponse<IncomingMessage>>();
-const last = {
+const currentState: TwinServerDataBuffer = {
   version: 0,
-  data: undefined as any | undefined,
-  json: undefined as string | undefined,
+  data: '',
+  rem: 12,
 };
 
-export const twinMiddleware = [
-  `/${METRO_ENDPOINT}`,
-  (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
-    const version = parseInt(req.url?.split('?version=')[1] ?? '0');
-    console.log('HIT_MIDDLEWARE: ');
-    if (version && version < last.version) {
-      res.write(`data: {"version":${last.version},"data":${last.json}}\n\n`);
-      res.end();
-      return;
-    }
+export const createTwinServerMiddleware = () =>
+  [
+    `/${METRO_ENDPOINT}`,
+    (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
+      const version = parseInt(req.url?.split('?version=')[1] ?? '0');
+      console.log('HIT_MIDDLEWARE: ', version);
 
-    connections.add(res);
+      if (version && version < currentState.version) {
+        res.write(
+          `data: {"version":${currentState.version},"data":${JSON.stringify(currentState.data)}}\n\n`,
+        );
+        console.log('CURRENT_VERSION: ', currentState.version);
+        console.log('NEW_VERSION: ', version);
+        res.end();
+        return;
+      }
 
-    res.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      Connection: 'keep-alive',
-    });
+      connections.add(res);
 
-    setTimeout(() => {
-      res.end();
-      connections.delete(res);
-    }, 30000);
+      res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+      });
 
-    req.on('close', () => connections.delete(res));
-  },
-] as const;
+      setTimeout(() => {
+        res.end();
+        connections.delete(res);
+      }, 30000);
 
-export function sendUpdate(data: string | Buffer, version: number) {
-  const newData = {};
+      req.on('close', () => connections.delete(res));
+    },
+  ] as const;
 
-  const newJson = JSON.stringify(newData);
+export function sendUpdate(nextData: string, version: number) {
+  console.log('SEND_DATA: ', version);
+  const newData: TwinServerDataBuffer = JSON.parse(nextData);
 
-  const dataToSend = last.data ? getDiff(newData, last.data) : newJson;
+  // const newJson = JSON.stringify(newData);
 
-  last.version = version;
-  last.data = newData;
-  last.json = newJson;
+  const dataToSend =
+    currentState.data && currentState.data !== nextData ? nextData : currentState;
+
+  currentState.version = version;
+  currentState.data = JSON.stringify(newData.data);
+  // last.json = newJson;
 
   for (const connection of connections) {
-    connection.write(`data: {"version":${last.version},"data":${dataToSend}}\n\n`);
+    connection.write(
+      `data: {"version":${currentState.version},"data":${JSON.stringify(dataToSend)}}\n\n`,
+    );
     connection.end();
   }
 }
 
-function getDiff(current: any, previous: any) {
-  return JSON.stringify({
-    $$compiled: true,
-    flags: current.flags,
-    rem: current.rem,
-    rootVariables: current.rootVariables,
-    universalVariables: current.universalVariables,
-    rules: current.rules?.filter((rule: any) => {
-      const match = previous.rules?.find((r: any) => r[0] === rule[0]);
-      return match ? !deepEqual(rule, match) : true;
-    }),
-    keyframes: current.keyframes?.filter((keyframe: any) => {
-      const match = previous.keyframes?.find((r: any) => r[0] === keyframe[0]);
-      return match ? !deepEqual(keyframe, match) : true;
-    }),
-  });
-}
+// function getDiff(current: any, previous: any) {
+//   return JSON.stringify({
+//     $$compiled: true,
+//     flags: current.flags,
+//     rem: current.rem,
+//     rules: current.rules?.filter((rule: any) => {
+//       const match = previous.rules?.find((r: any) => r[0] === rule[0]);
+//       return match ? !deepEqual(rule, match) : true;
+//     }),
+//     keyframes: current.keyframes?.filter((keyframe: any) => {
+//       const match = previous.keyframes?.find((r: any) => r[0] === keyframe[0]);
+//       return match ? !deepEqual(keyframe, match) : true;
+//     }),
+//   });
+// }
 
-function deepEqual(obj1: any, obj2: any) {
-  if (obj1 === obj2) {
-    // it's just the same object. No need to compare.
-    return true;
-  }
+// function deepEqual(obj1: any, obj2: any) {
+//   if (obj1 === obj2) {
+//     // it's just the same object. No need to compare.
+//     return true;
+//   }
 
-  //check if value is primitive
-  if (obj1 !== Object(obj1) && obj2 !== Object(obj2)) {
-    // compare primitives
-    return obj1 === obj2;
-  }
+//   //check if value is primitive
+//   if (obj1 !== Object(obj1) && obj2 !== Object(obj2)) {
+//     // compare primitives
+//     return obj1 === obj2;
+//   }
 
-  if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
+//   if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
 
-  // compare objects with same number of keys
-  for (const key in obj1) {
-    if (!(key in obj2)) return false; //other object doesn't have this prop
-    if (!deepEqual(obj1[key], obj2[key])) return false;
-  }
+//   // compare objects with same number of keys
+//   for (const key in obj1) {
+//     if (!(key in obj2)) return false; //other object doesn't have this prop
+//     if (!deepEqual(obj1[key], obj2[key])) return false;
+//   }
 
-  return true;
-}
+//   return true;
+// }

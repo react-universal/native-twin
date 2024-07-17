@@ -8,14 +8,15 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1'>
+    <View className='flex-1 bg-black'>
       <View
         className={`
           flex-1 items-center justify-center md:border-3   
           hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-green))
-          ios:(p-14 bg-rose-200 border-black border-2 dark:(bg-blue-500))
+          ios:(p-16 border-black border-2 dark:(bg-blue-500))
           android:(p-14 border-green-200 border-2 bg-gray-800 dark:(bg-purple-500))
           md:(m-10)
+          bg-red-200
         `}
       >
         <Button size='large' />

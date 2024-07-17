@@ -28,6 +28,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@native-twin/babel": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",

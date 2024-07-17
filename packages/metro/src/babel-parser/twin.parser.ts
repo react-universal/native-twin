@@ -2,32 +2,41 @@ import generate from '@babel/generator';
 import { parse, ParseResult } from '@babel/parser';
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
-import { RuntimeTW } from '@native-twin/core';
-import { visitJSXAttribute } from './jsx/jsx.attribute';
-import { visitJSXElement } from './jsx/jsx.element';
+import {
+  addOrderToJSXChilds,
+  compileMappedAttributes,
+  createJSXElementHandler,
+  StyledPropEntries,
+} from '@native-twin/babel/jsx-babel';
+import type { RuntimeTW } from '@native-twin/core';
 
-export const getDocumentLanguageLocations = (code: string, tw: RuntimeTW) => {
+export const parseDocument = (code: string, tw: RuntimeTW) => {
+  const compiledClasses: StyledPropEntries['entries'] = [];
+  new Map<string, any>()
   try {
     const parsed = parse(code, {
       plugins: ['jsx', 'typescript'],
       sourceType: 'module',
       errorRecovery: true,
     });
-
     traverse(parsed, {
-      JSXElement: (path) => {
-        visitJSXElement(path);
-        path.traverse({
-          JSXAttribute: (attribute) => {
-            visitJSXAttribute(attribute, tw);
-          },
-        });
+      JSXElement: (path, state) => {
+        const handler = createJSXElementHandler(path);
+        addOrderToJSXChilds(handler);
+
+        const classNames = handler.openingElement.extractClassNames();
+        const attributes = compileMappedAttributes([...classNames], tw);
+        for (const prop of attributes) {
+          
+          handler.openingElement.addStyledProp(prop);
+          compiledClasses.push(...prop.entries);
+        }
       },
     });
 
     const generatedCode = generate(parsed);
     // console.log('RESULT: ', generatedCode.code);
-    return { parsed, generatedCode };
+    return { parsed, generatedCode, compiledClasses };
   } catch {
     // console.log('ERROR: ', e);
     return null;

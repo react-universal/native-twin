@@ -1,7 +1,7 @@
 import template from '@babel/template';
 import * as t from '@babel/types';
 import { isObject } from '@native-twin/helpers';
-import { AnyPrimitive } from '../jsx/jsx.types';
+import type { AnyPrimitive } from '../jsx/jsx.types';
 import { valueIsPrimitive } from './babel.validators';
 
 export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {
@@ -28,7 +28,7 @@ export const createArrayExpression = <T>(
   x: T[],
   results: t.Expression[] = [],
 ): t.Expression[] => {
-  const next = x.shift();
+  const [next, ...rest] = x;
   if (!next) return results;
 
   let value: t.Expression | null = null;
@@ -44,14 +44,14 @@ export const createArrayExpression = <T>(
   if (value) {
     results.push(value);
   }
-  return createArrayExpression(x, results);
+  return createArrayExpression(rest, results);
 };
 
 export const createOjectExpressionProperties = (
   entries: [string, any][],
   results: t.ObjectProperty[] = [],
 ): t.ObjectProperty[] => {
-  const next = entries.shift();
+  const [next, ...rest] = entries;
   if (!next) {
     return results;
   }
@@ -68,5 +68,18 @@ export const createOjectExpressionProperties = (
   if (value) {
     results.push(t.objectProperty(key, value));
   }
-  return createOjectExpressionProperties(entries, results);
+  return createOjectExpressionProperties(rest, results);
+};
+
+export const templateLiteralToStringLike = (literal: t.TemplateLiteral) => {
+  const strings = literal.quasis
+    .map((x) => (x.value.cooked ? x.value.cooked : x.value.raw))
+    .map((x) => x.trim().replace(/\n/g, '').trim().replace(/\s+/g, ' '))
+    .filter((x) => x.length > 0)
+    .join('');
+  const expressions = t.templateLiteral(
+    literal.quasis.map(() => t.templateElement({ raw: '', cooked: '' })),
+    literal.expressions,
+  );
+  return { strings, expressions: expressions };
 };

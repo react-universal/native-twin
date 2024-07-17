@@ -15,6 +15,6 @@ export type TwinTransformFn = (
   config: NativeTwinTransformerOpts,
   projectRoot: string,
   filename: string,
-  data: Buffer,
+  data: Buffer | string,
   options: JsTransformOptions,
 ) => Promise<TransformResponse>;
