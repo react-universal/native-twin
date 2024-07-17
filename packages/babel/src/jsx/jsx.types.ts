@@ -25,7 +25,7 @@ export interface JSXOpeningElementHandler {
   getAttributes: () => t.JSXAttribute[];
   isSelfClosed: () => boolean;
   extractClassNames: () => JSXMappedAttribute[];
-  addStyledProp: (prop: StyledPropEntries) => void;
+  addStyledProp: (id: string, prop: StyledPropEntries) => void;
   styledPropsToObject(classProps: StyledPropEntries): [string, RuntimeComponentEntry];
 }
 

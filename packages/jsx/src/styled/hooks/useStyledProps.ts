@@ -19,10 +19,9 @@ export const useStyledProps = (
   const context = useContext(groupContext);
   const styledCtx = useAtomValue(styledContext);
 
-  const componentStyles = useMemo(
-    () => StyleSheet.registerComponent(id, styledProps ?? [], styledCtx),
-    [styledProps, styledCtx, id],
-  );
+  const componentStyles = useMemo(() => {
+    return StyleSheet.registerComponent(id, styledProps ?? [], styledCtx);
+  }, [styledProps, styledCtx, id]);
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 

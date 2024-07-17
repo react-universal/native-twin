@@ -16,14 +16,14 @@ function HomeScreen() {
           ios:(p-16 border-black border-2 dark:(bg-blue-500))
           android:(p-14 border-green-200 border-2 bg-gray-800 dark:(bg-purple-500))
           md:(m-10)
-          bg-red-200
+          bg-blue-500
         `}
       >
         <Button size='large' />
         <View className='bg-white shadow-md rounded-xl p-2'>
           <Text
             className={`
-              text(center base primary)
+              text(center xl primary)
               font-inter-bold hover:text-gray-700
             `}
           >

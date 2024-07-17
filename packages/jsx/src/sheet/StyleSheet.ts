@@ -33,6 +33,7 @@ const internalSheet: TwinStyleSheet = {
     STARTED: 'NO',
   },
   [INTERNAL_RESET](twConfig) {
+    console.log('INTERNAL_RESET');
     globalStyles.clear();
     const config = twConfig ?? tw.config;
     twinConfigObservable.set(config);
@@ -59,7 +60,6 @@ const internalSheet: TwinStyleSheet = {
   registerComponent(id, props, context) {
     const component = componentsRegistry.get(id);
     if (component) {
-      // console.log('RECALCULATE', id);
       return component;
     }
     const sheets: ComponentSheet[] = [];

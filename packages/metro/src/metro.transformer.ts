@@ -56,18 +56,23 @@ export const transform: TwinTransformFn = async (
       hot: options.hot,
       platform: options.platform,
     });
-    const transformed = parseDocument(data, twin.tw);
+    const transformed = parseDocument(filename, cacheH.get(), data, twin.tw);
     if (transformed) {
-      data = transformed.generatedCode.code ?? data;
+      data = transformed.generatedCode.code;
+      const runtimeStyles = Object.fromEntries(transformed.twinComponentStyles.entries());
+      const runtimeCode = `\nvar __twinComponentStyles = {...${JSON.stringify(runtimeStyles)}}`;
+
       if (options.platform !== 'web' && options.dev && options.hot) {
-        data = `${data}\nrequire("@native-twin/metro/build/poll-update-client")`;
+        data = `${data}\n${runtimeCode}\nrequire("@native-twin/metro/build/poll-update-client")`;
       }
 
       if (cacheH.isNew()) {
+        cacheH.increment();
         cacheH.concatBuffer(transformed.compiledClasses);
         sendUpdate(cacheH.currentBuffer(), cacheH.get());
+      } else {
+        cacheH.increment();
       }
-      cacheH.increment();
     }
   }
 

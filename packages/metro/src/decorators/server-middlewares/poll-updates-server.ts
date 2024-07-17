@@ -10,56 +10,50 @@ const currentState: TwinServerDataBuffer = {
   rem: 12,
 };
 
-export const createTwinServerMiddleware = () =>
-  [
-    `/${METRO_ENDPOINT}`,
-    (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
-      const version = parseInt(req.url?.split('?version=')[1] ?? '0');
-      console.log('HIT_MIDDLEWARE: ', version);
+export const createTwinServerMiddleware = [
+  `/${METRO_ENDPOINT}`,
+  (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
+    const version = parseInt(req.url?.split('?version=')[1] ?? '0');
+    console.log('HIT_MIDDLEWARE: ', version, currentState.version);
 
-      if (version && version < currentState.version) {
-        res.write(
-          `data: {"version":${currentState.version},"data":${JSON.stringify(currentState.data)}}\n\n`,
-        );
-        console.log('CURRENT_VERSION: ', currentState.version);
-        console.log('NEW_VERSION: ', version);
-        res.end();
-        return;
-      }
+    if (version && version < currentState.version) {
+      res.write(
+        `data: {"version":${currentState.version},"data":${JSON.stringify(currentState.data)}}\n\n`,
+      );
+      console.log('CURRENT_VERSION: ', currentState.version);
+      console.log('NEW_VERSION: ', version);
+      res.end();
+      return;
+    }
 
-      connections.add(res);
+    connections.add(res);
 
-      res.writeHead(200, {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
-      });
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      Connection: 'keep-alive',
+    });
 
-      setTimeout(() => {
-        res.end();
-        connections.delete(res);
-      }, 30000);
+    setTimeout(() => {
+      res.end();
+      connections.delete(res);
+    }, 30000);
 
-      req.on('close', () => connections.delete(res));
-    },
-  ] as const;
+    req.on('close', () => connections.delete(res));
+  },
+] as const;
 
 export function sendUpdate(nextData: string, version: number) {
-  console.log('SEND_DATA: ', version);
   const newData: TwinServerDataBuffer = JSON.parse(nextData);
+  console.log('SEND_DATA: ', version);
 
-  // const newJson = JSON.stringify(newData);
-
-  const dataToSend =
-    currentState.data && currentState.data !== nextData ? nextData : currentState;
-
-  currentState.version = version;
+  currentState.version = ++version;
   currentState.data = JSON.stringify(newData.data);
   // last.json = newJson;
 
   for (const connection of connections) {
     connection.write(
-      `data: {"version":${currentState.version},"data":${JSON.stringify(dataToSend)}}\n\n`,
+      `data: {"version":${currentState.version},"data":${JSON.stringify(newData)}}\n\n`,
     );
     connection.end();
   }

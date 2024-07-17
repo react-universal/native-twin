@@ -15,7 +15,7 @@ export const decorateMetroServer = (
     ...metroServer,
     enhanceMiddleware(middleware, metroServer) {
       let server = connect()
-        .use(...createTwinServerMiddleware())
+        .use(...createTwinServerMiddleware)
         .use('/', async (req, _res, next) => {
           const url = new URL(req.url!, 'http://localhost');
           const platform = url.searchParams.get('platform');

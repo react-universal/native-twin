@@ -6,13 +6,19 @@ import {
   addOrderToJSXChilds,
   compileMappedAttributes,
   createJSXElementHandler,
+  RuntimeComponentEntry,
   StyledPropEntries,
 } from '@native-twin/babel/jsx-babel';
 import type { RuntimeTW } from '@native-twin/core';
 
-export const parseDocument = (code: string, tw: RuntimeTW) => {
+export const parseDocument = (
+  fileName: string,
+  version: number,
+  code: string,
+  tw: RuntimeTW,
+) => {
   const compiledClasses: StyledPropEntries['entries'] = [];
-  new Map<string, any>()
+  const twinComponentStyles = new Map<string, RuntimeComponentEntry[]>();
   try {
     const parsed = parse(code, {
       plugins: ['jsx', 'typescript'],
@@ -26,19 +32,25 @@ export const parseDocument = (code: string, tw: RuntimeTW) => {
 
         const classNames = handler.openingElement.extractClassNames();
         const attributes = compileMappedAttributes([...classNames], tw);
+        const componentStyles: RuntimeComponentEntry[] = [];
+        const uid = path.scope.generateUidIdentifier(fileName);
+        const id = `${uid.name}-${version}`;
         for (const prop of attributes) {
-          
-          handler.openingElement.addStyledProp(prop);
+          handler.openingElement.addStyledProp(id, prop);
           compiledClasses.push(...prop.entries);
+          const runtime = handler.openingElement.styledPropsToObject(prop);
+          componentStyles.push(runtime[1]);
         }
+        twinComponentStyles.set(id, componentStyles);
       },
     });
 
     const generatedCode = generate(parsed);
     // console.log('RESULT: ', generatedCode.code);
-    return { parsed, generatedCode, compiledClasses };
-  } catch {
-    // console.log('ERROR: ', e);
+    console.log('STYLES: ', twinComponentStyles);
+    return { parsed, generatedCode, compiledClasses, twinComponentStyles };
+  } catch (e) {
+    console.log('ERROR: ', e);
     return null;
   }
 };

@@ -52,7 +52,7 @@ export const transform = async ({ filename, options, src }: TransformerOpt) => {
       hot: options.hot,
       platform: options.platform,
     });
-    const transformed = parseDocument(src, twin.tw);
+    const transformed = parseDocument(filename, cacheH.get(), src, twin.tw);
     if (transformed) {
       const code = transformed.generatedCode.code;
       // if (options.platform !== 'web' && options.dev && options.hot) {
