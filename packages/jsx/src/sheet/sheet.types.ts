@@ -18,8 +18,6 @@ export interface TwinStyleSheet {
   [INTERNAL_FLAGS]: Record<string, string>;
   getFlag(name: string): string | undefined;
   getGlobalStyle(name: string): Atom<SheetEntry> | undefined;
-  compile(tokens: string): FinalSheet;
-  registerClassNames(source: string): SheetEntry[];
   entriesToFinalSheet(entries: SheetEntry[]): FinalSheet;
   registerComponent(
     id: string,

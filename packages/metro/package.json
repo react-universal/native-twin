@@ -34,6 +34,7 @@
     "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@native-twin/styled": "workspace:*",
+    "effect": "^3.5.5",
     "jiti": "1.21.0",
     "micromatch": "4.0.5",
     "sucrase": "^3.35.0"

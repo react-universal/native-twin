@@ -11,7 +11,7 @@ function HomeScreen() {
     <View className='flex-1 bg-black'>
       <View
         className={`
-          flex-1 items-center justify-center md:border-3   
+          flex-1 items-center justify-center md:border-3
           hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-green))
           ios:(p-16 border-black border-2 dark:(bg-blue-500))
           android:(p-14 border-green-200 border-2 bg-gray-800 dark:(bg-purple-500))
@@ -51,7 +51,7 @@ function HomeScreen() {
             setActive((prevState) => !prevState);
           }}
         >
-          <Text className='text-gray-200 text-3xl'>Activate</Text>
+          <Text className='text-gray-200  text-3xl'>Activate</Text>
         </Pressable>
         <Image
           source={testImage}

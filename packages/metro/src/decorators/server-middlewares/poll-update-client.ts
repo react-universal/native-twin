@@ -1,10 +1,8 @@
-import { METRO_ENDPOINT } from '../../utils/constants';
-
 const url = require('react-native/Libraries/Core/Devtools/getDevServer')().url;
 
 async function pollServer(version = 1) {
   try {
-    const response = await fetch(`${url}${METRO_ENDPOINT}?version=${version}`);
+    const response = await fetch(`${url}__native_twin_update_endpoint?version=${version}`);
     if (!response.ok) {
       console.error('There was a problem connecting to the native-twin Metro server');
     }
@@ -13,6 +11,7 @@ async function pollServer(version = 1) {
 
     if (body.startsWith('data: ')) {
       const data = JSON.parse(body.replace('data: ', ''));
+      console.log('WRITE_INCOMING_VERSION: ', data.version);
       version = data.version;
 
       // StyleSheet.registerCompiled({

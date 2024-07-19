@@ -1,3 +1,5 @@
+import path from 'path';
+
 export const METRO_ENDPOINT = `__native_twin_update_endpoint`;
 
 export const INTERNAL_RESET = Symbol();
@@ -30,5 +32,8 @@ export const transformKeys = new Set([
   'skewY',
 ]);
 
-export const TWIN_CACHE_DIR = '.twin-cache';
+export const TWIN_MODULES_CACHE_DIR = 'node_modules';
+export const TWIN_CACHE_DIR = ['node_modules', '.cache', 'native-twin'].join(path.sep);
+export const TWIN_CACHE_DIR_RUNTIME = ['.cache', 'native-twin'].join(path.sep);
+export const TWIN_STYLES_FILE = 'twin.styles.ts';
 export const platformVariants = ['web', 'native', 'ios', 'android'];

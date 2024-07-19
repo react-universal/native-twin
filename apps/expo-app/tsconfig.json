@@ -1,24 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "react-native",
     "lib": ["DOM", "ESNext"],
     "exactOptionalPropertyTypes": false,
     "allowJs": true,
     "moduleResolution": "node",
     "target": "ESNext",
-    "resolveJsonModule": true,
     "noEmit": true
   },
-  "exclude": [
-    "node_modules",
-    ".expo",
-    "android",
-    "ios",
-    "babel.config.js",
-    "app.config.js",
-    "metro.config.js",
-    "metro-test"
-  ],
-  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json", "wdyr.js", "metro.transformer.js"]
+  "exclude": ["node_modules", ".expo"],
+  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json", "wdyr.js"]
 }

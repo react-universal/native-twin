@@ -55,7 +55,8 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
       animations: [],
     };
   }
-  const newRule = context.mode === 'web' ? convert(rule, context, Layer.u) : rule;
+  // const newRule = context.mode === 'web' ? convert(rule, context, Layer.u) : rule;
+  const newRule = convert(rule, context, Layer.u);
   result.selectors = newRule.v;
   result.precedence = moveToLayer(Layer.u, newRule.p);
   return result;

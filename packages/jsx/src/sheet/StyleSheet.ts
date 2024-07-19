@@ -46,20 +46,13 @@ const internalSheet: TwinStyleSheet = {
   getGlobalStyle(name) {
     return globalStyles.get(name);
   },
-  compile(tokens) {
-    const entries = tw(tokens);
-    return getSheetEntryStyles(entries, styledContext.get());
-  },
   entriesToFinalSheet(entries) {
     return getSheetEntryStyles(entries, styledContext.get());
-  },
-  registerClassNames(source: string) {
-    const entries = tw(`${source}`);
-    return entries;
   },
   registerComponent(id, props, context) {
     const component = componentsRegistry.get(id);
     if (component) {
+      component.sheets = component.sheets.map((x) => x.recompute());
       return component;
     }
     const sheets: ComponentSheet[] = [];
@@ -67,7 +60,9 @@ const internalSheet: TwinStyleSheet = {
       if (style.templateLiteral) {
         style.entries.push(...tw(`${style.templateLiteral}`));
       }
-      sheets.push(createComponentSheet(style.target, style.entries, context));
+      sheets.push(
+        createComponentSheet(style.target, style.entries, context ?? styledContext.get()),
+      );
     }
 
     const registerComponent: RegisteredComponent = {
@@ -99,8 +94,9 @@ export const StyleSheet = Object.assign({}, internalSheet, NativeSheet);
 export function createComponentSheet(
   prop: string,
   entries: SheetEntry[] = [],
-  context: StyledContext,
+  ctx?: StyledContext,
 ): ComponentSheet {
+  const context = ctx ?? styledContext.get();
   const sheet = StyleSheet.create(getSheetEntryStyles(entries, context));
   const base = sheet.base;
   if (context.colorScheme === 'dark') {

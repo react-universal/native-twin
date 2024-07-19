@@ -2,6 +2,7 @@ import type { Binding } from '@babel/traverse';
 import * as t from '@babel/types';
 import type { Option } from 'effect';
 import type { SheetEntry } from '@native-twin/css';
+import { ComponentSheet } from '@native-twin/jsx/build/sheet/sheet.types';
 import type { MappedComponent } from '../utils/component.maps';
 
 export type JSXChildElement = t.JSXElement['children'][number];
@@ -19,6 +20,7 @@ export interface JSXElementHandler {
 }
 
 export interface JSXOpeningElementHandler {
+  openingElement: t.JSXOpeningElement,
   getElementName: () => Option.Option<string>;
   getElementConfig: () => Option.Option<MappedComponent>;
   mutateAttributes: (fn: MapAttributeFn) => void;
@@ -46,4 +48,5 @@ export interface RuntimeComponentEntry {
   prop: string;
   target: string;
   entries: SheetEntry[];
+  metadata: ComponentSheet['metadata'];
 }

@@ -1,9 +1,10 @@
-import { GetTransformOptions, mergeConfig } from 'metro-config';
+import { GetTransformOptions } from 'metro-config';
+import fs from 'node:fs';
 import path from 'node:path';
 import { decorateMetroServer } from './decorators/server.decorator';
-// import { createMetroResolver } from './modules/metro.resolver';
 import { ComposableIntermediateConfigT } from './types/metro.types';
 import { MetroWithNativeWindOptions } from './types/metro.types';
+import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from './utils/constants';
 import { getUserNativeWindConfig } from './utils/load-config';
 
 export function withNativeTwin(
@@ -14,46 +15,25 @@ export function withNativeTwin(
     configPath: twinConfigPath = 'tailwind.config.ts',
   }: MetroWithNativeWindOptions = {},
 ): ComposableIntermediateConfigT {
+  const twinFilePath = path.join(projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
+  console.log('START_METRO');
+  if (fs.existsSync(twinFilePath)) {
+    fs.writeFileSync(twinFilePath, '');
+  }
   const getTransformOptions = async (...args: Parameters<GetTransformOptions>) => {
-    if (metroConfig.transformer?.getTransformOptions) {
-      const options = {
-        ...args[1],
-        tailwindConfigPath: twinConfigPath,
-        outputDir: output,
-        allowedFiles: twConfig.content,
-      };
-      return metroConfig.transformer?.getTransformOptions(
-        args[0],
-        options as Parameters<GetTransformOptions>['1'],
-        args[2],
-      );
-    }
-    return {};
+    return metroConfig.transformer?.getTransformOptions(...args);
   };
   const output = path.resolve(projectRoot, path.join(outputDir));
+  if (!fs.existsSync(path.resolve(output))) {
+    fs.mkdirSync(output, { recursive: true });
+  }
 
   const twConfig = getUserNativeWindConfig(twinConfigPath, output);
   metroConfig.server = decorateMetroServer(metroConfig.server, twConfig);
 
-  const newConfig: ComposableIntermediateConfigT = {
+  return {
     ...metroConfig,
-    // resolver: {
-    //   ...metroConfig.resolver,
-    //   resolveRequest: createMetroResolver({
-    //     configPath: twinConfigPath,
-    //     projectRoot: projectRoot,
-    //   }),
-    // },
-
-    // stickyWorkers: true,
-    // server: {
-    //   ...metroConfig.server,
-    //   rewriteRequestUrl(url) {
-    //     console.log('URL: ', url);
-    //     return url;
-    //   },
-
-    // },
+    resetCache: true,
     // resetCache: true,
     reporter: {
       update(event) {
@@ -62,16 +42,15 @@ export function withNativeTwin(
         }
       },
     },
-    transformerPath: require.resolve('./metro.transformer'),
+    // transformerPath: require.resolve('./metro.transformer'),
     transformer: {
       ...metroConfig.transformer,
       tailwindConfigPath: twinConfigPath,
       outputDir: output,
       allowedFiles: twConfig.content,
       // transformerPath: require.resolve('./metro.transformer'),
-      // babelTransformerPath: require.resolve('./metro.babel-transformer'),
+      babelTransformerPath: require.resolve('./metro.babel-transformer'),
       getTransformOptions,
     },
   };
-  return mergeConfig(metroConfig, newConfig);
 }

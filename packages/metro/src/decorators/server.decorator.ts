@@ -15,13 +15,10 @@ export const decorateMetroServer = (
     ...metroServer,
     enhanceMiddleware(middleware, metroServer) {
       let server = connect()
-        .use(...createTwinServerMiddleware)
+        .use(createTwinServerMiddleware[0], createTwinServerMiddleware[1])
         .use('/', async (req, _res, next) => {
           const url = new URL(req.url!, 'http://localhost');
           const platform = url.searchParams.get('platform');
-          req.on('data', (chunk) => {
-            console.log('CHUNK: ', chunk);
-          });
           if (platform) {
             try {
               setupNativeTwin(twConfig, {

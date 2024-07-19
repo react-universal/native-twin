@@ -1,27 +1,28 @@
 import type { IncomingMessage } from 'connect';
+import createServer from 'connect';
 import type { ServerResponse } from 'http';
 import { TwinServerDataBuffer } from '../../types/metro.types';
 import { METRO_ENDPOINT } from '../../utils/constants';
 
 const connections = new Set<ServerResponse<IncomingMessage>>();
 const currentState: TwinServerDataBuffer = {
-  version: 0,
+  version: 1,
   data: '',
   rem: 12,
 };
 
-export const createTwinServerMiddleware = [
+export const createTwinServerMiddleware: [string, createServer.NextHandleFunction] = [
   `/${METRO_ENDPOINT}`,
   (req: IncomingMessage, res: ServerResponse<IncomingMessage>) => {
     const version = parseInt(req.url?.split('?version=')[1] ?? '0');
-    console.log('HIT_MIDDLEWARE: ', version, currentState.version);
+    console.log('MIDDLEWARE: request-Version: ', req.url?.split('?version=')[1]);
+    console.log('MIDDLEWARE: state-Version: ', currentState.version);
 
     if (version && version < currentState.version) {
       res.write(
         `data: {"version":${currentState.version},"data":${JSON.stringify(currentState.data)}}\n\n`,
       );
-      console.log('CURRENT_VERSION: ', currentState.version);
-      console.log('NEW_VERSION: ', version);
+      console.log('WRITE_RES', currentState.data);
       res.end();
       return;
     }
@@ -41,7 +42,7 @@ export const createTwinServerMiddleware = [
 
     req.on('close', () => connections.delete(res));
   },
-] as const;
+];
 
 export function sendUpdate(nextData: string, version: number) {
   const newData: TwinServerDataBuffer = JSON.parse(nextData);

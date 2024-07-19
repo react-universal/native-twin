@@ -13,10 +13,12 @@ export function twinComponent(
 ) {
   let component = baseComponent;
   const id = useId();
+  const componentID = props?.['_twinComponentID'];
   // console.log('ID: ', id);
   const { state, componentStyles, parentState, onChange } = useStyledProps(
-    id,
+    componentID ?? id,
     props?.['styledProps'] ?? [],
+    props?.['_twinComponentSheet'],
     props?.['debug'] ?? false,
   );
 

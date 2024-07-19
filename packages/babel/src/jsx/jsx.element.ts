@@ -1,6 +1,7 @@
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as Option from 'effect/Option';
+import { getRuleSelectorGroup } from '@native-twin/css';
 // import { createObjectExpression } from '../babel/babel.constructors';
 import { isReactNativeImport } from '../babel/babel.validators';
 import { mappedComponents } from '../utils/component.maps';
@@ -53,10 +54,11 @@ export const createJSXElementHandler = (
   }
 };
 
-const createJSXOpeningElementHandler = (
+export const createJSXOpeningElementHandler = (
   openingElement: t.JSXOpeningElement,
 ): JSXOpeningElementHandler => {
   return {
+    openingElement,
     getElementName,
     getElementConfig,
     mutateAttributes,
@@ -96,16 +98,50 @@ const createJSXOpeningElementHandler = (
       t.jsxIdentifier('styledProps'),
       t.jsxExpressionContainer(value),
     );
+
     openingElement.attributes.push(jsxClassProp);
   }
 
   function styledPropsToObject(
     classProps: StyledPropEntries,
   ): [string, RuntimeComponentEntry] {
-    return [
-      classProps.classNames,
-      { prop: classProps.prop, target: classProps.target, entries: classProps.entries },
-    ];
+    const metadata = getEntryGroups(classProps);
+    const data = {
+      prop: classProps.prop,
+      target: classProps.target,
+      entries: classProps.entries,
+      metadata,
+    };
+    return [classProps.classNames, data];
+  }
+
+  function getEntryGroups(
+    classProps: StyledPropEntries,
+  ): RuntimeComponentEntry['metadata'] {
+    return classProps.entries
+      .map((x) => [x.className, ...x.selectors])
+      .reduce(
+        (prev, current): RuntimeComponentEntry['metadata'] => {
+          const selector = getRuleSelectorGroup(current);
+          if (current.includes('group')) {
+            prev.isGroupParent = true;
+          }
+          if (selector === 'group') {
+            prev.hasGroupEvents = true;
+          }
+          if (selector === 'pointer') {
+            prev.hasPointerEvents = true;
+          }
+
+          return prev;
+        },
+        {
+          hasAnimations: false,
+          hasGroupEvents: false,
+          hasPointerEvents: false,
+          isGroupParent: false,
+        } as RuntimeComponentEntry['metadata'],
+      );
   }
 
   function isSelfClosed() {

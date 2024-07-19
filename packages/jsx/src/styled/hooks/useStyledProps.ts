@@ -3,6 +3,7 @@ import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
 import { groupContext } from '../../context';
 import { StyleSheet } from '../../sheet/StyleSheet';
 import { tw } from '../../sheet/native-tw';
+import { RegisteredComponent } from '../../sheet/sheet.types';
 import { styledContext, twinConfigObservable } from '../../store/observables';
 import { BabelStyledProps } from '../../types/jsx.types';
 import { DEFAULT_INTERACTIONS, INTERNAL_RESET } from '../../utils/constants';
@@ -10,6 +11,7 @@ import { DEFAULT_INTERACTIONS, INTERNAL_RESET } from '../../utils/constants';
 export const useStyledProps = (
   id: string,
   styledProps: BabelStyledProps[],
+  compiledSheet: RegisteredComponent | null = null,
   debug: boolean,
 ) => {
   const renderCount = useRef(0);
@@ -20,8 +22,13 @@ export const useStyledProps = (
   const styledCtx = useAtomValue(styledContext);
 
   const componentStyles = useMemo(() => {
+    if (compiledSheet) {
+      // console.log('USING_COMPILED: ', id);
+      return compiledSheet;
+    }
+    // console.log('NOT_COMPILED');
     return StyleSheet.registerComponent(id, styledProps ?? [], styledCtx);
-  }, [styledProps, styledCtx, id]);
+  }, [styledProps, compiledSheet, styledCtx, id]);
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 

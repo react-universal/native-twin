@@ -41,14 +41,29 @@ export const parseDocument = (
           const runtime = handler.openingElement.styledPropsToObject(prop);
           componentStyles.push(runtime[1]);
         }
+        if (componentStyles.length > 0) {
+          const callProp = t.callExpression(
+            t.identifier('get_compiled____styles___'),
+            [],
+          );
+          handler.openingElement.openingElement.attributes.push(
+            t.jsxAttribute(
+              t.jsxIdentifier('getTwinSheet'),
+              t.jsxExpressionContainer(callProp),
+            ),
+          );
+        }
+        handler.openingElement.openingElement.attributes.push(
+          t.jsxAttribute(t.jsxIdentifier('_twinComponentID'), t.stringLiteral(id)),
+        );
         twinComponentStyles.set(id, componentStyles);
       },
     });
 
     const generatedCode = generate(parsed);
     // console.log('RESULT: ', generatedCode.code);
-    console.log('STYLES: ', twinComponentStyles);
-    return { parsed, generatedCode, compiledClasses, twinComponentStyles };
+    // console.log('STYLES: ', twinComponentStyles);
+    return { code: generatedCode.code, compiledClasses, twinComponentStyles };
   } catch (e) {
     console.log('ERROR: ', e);
     return null;

@@ -10,6 +10,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "declarationMap": true,
+    "moduleResolution": "Node",
     "strict": true,
     "types": ["node", "react-native", "jest"],
     "skipLibCheck": true,
