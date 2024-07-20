@@ -3,10 +3,10 @@ import micromatch from 'micromatch';
 import path from 'node:path';
 import { parseDocument } from './babel-parser/twin.parser';
 // import { sendUpdate } from './decorators/server-middlewares/poll-updates-server';
-import { getOrCreateTwinFileHandler } from './services/files/file.manager';
-import { createStyleSheetManager } from './twin/Stylesheet.manager';
-import { TwinTransformFn } from './types/transformer.types';
-import { getUserNativeWindConfig, setupNativeTwin } from './utils/load-config';
+import { getOrCreateTwinFileHandler } from './files/file.manager';
+import { createStyleSheetManager } from '../twin/Stylesheet.manager';
+import { TwinTransformFn } from '../types/transformer.types';
+import { getUserNativeWindConfig, setupNativeTwin } from '../utils/load-config';
 
 export const transform: TwinTransformFn = async (
   config,

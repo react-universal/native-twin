@@ -2,15 +2,15 @@ import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import micromatch from 'micromatch';
 import fs from 'node:fs';
 import path from 'node:path';
+import { sendUpdate } from '../decorators/server-middlewares/poll-updates-server';
 import { parseDocument } from './babel-parser/twin.parser';
-import { sendUpdate } from './decorators/server-middlewares/poll-updates-server';
-import { getOrCreateTwinFileHandler } from './services/files/file.manager';
+import { getOrCreateTwinFileHandler } from './files/file.manager';
 import {
   createStyleSheetManager,
   twinModuleExportString,
-} from './twin/Stylesheet.manager';
-import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from './utils/constants';
-import { getUserNativeWindConfig, setupNativeTwin } from './utils/load-config';
+} from '../twin/Stylesheet.manager';
+import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../utils/constants';
+import { getUserNativeWindConfig, setupNativeTwin } from '../utils/load-config';
 
 interface TransformerOpt {
   src: string;
@@ -76,7 +76,6 @@ export const transform = async ({ filename, options, src }: TransformerOpt) => {
       sheet.registerEntries(transformed.compiledClasses);
       const runtimeStyles = Array.from(transformed.twinComponentStyles.entries());
 
-      // src = `${sheet.getRuntimeCode(filename)}\n${src}`;
       src = `${src}\nvar __twinComponentStyles = ${JSON.stringify(Object.fromEntries(runtimeStyles))}`;
 
       const compiled = runtimeStyles.map((x) => {
@@ -84,7 +83,6 @@ export const transform = async ({ filename, options, src }: TransformerOpt) => {
         return [x[0], styles] as const;
       });
 
-      // let code = '';
       if (compiled.length > 0) {
         const componentsContent = Array.from(runtimeStyles).map(
           ([key, value]): [string, any] => {
@@ -107,10 +105,6 @@ export const transform = async ({ filename, options, src }: TransformerOpt) => {
           );
         }
       }
-      // console.log('SRC: ', src);
-
-      // src = `${src}\n\nvar compiled____styles___ = ${JSON.stringify(Object.fromEntries(compiled))}`;
-      // console.log('SRC: ', src);
     }
   }
 

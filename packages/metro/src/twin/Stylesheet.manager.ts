@@ -1,7 +1,7 @@
 import path from 'path';
 import { RuntimeTW } from '@native-twin/core';
 import { SheetEntry } from '@native-twin/css';
-import { createTwinFileService } from '../services/files/file.service';
+import { createTwinFileService } from '../transformer/files/file.service';
 import { TWIN_STYLES_FILE, TWIN_CACHE_DIR_RUNTIME } from '../utils/constants';
 
 const globalEntries: SheetEntry[] = [];

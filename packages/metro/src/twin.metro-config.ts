@@ -49,7 +49,7 @@ export function withNativeTwin(
       outputDir: output,
       allowedFiles: twConfig.content,
       // transformerPath: require.resolve('./metro.transformer'),
-      babelTransformerPath: require.resolve('./metro.babel-transformer'),
+      babelTransformerPath: require.resolve('./transformer/metro.babel-transformer'),
       getTransformOptions,
     },
   };
