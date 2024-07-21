@@ -3,7 +3,7 @@ import { ServerConfigT } from 'metro-config';
 import { TailwindConfig, __Theme__ } from '@native-twin/core';
 import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { setupNativeTwin } from '../utils/load-config';
-import { createTwinServerMiddleware } from './server-middlewares/poll-updates-server';
+import { createTwinServerMiddleware } from './poll-updates-server';
 
 export const decorateMetroServer = (
   metroServer: ServerConfigT,

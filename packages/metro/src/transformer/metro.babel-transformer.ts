@@ -1,7 +1,7 @@
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import micromatch from 'micromatch';
 import path from 'node:path';
-import { sendUpdate } from '../server/server-middlewares/poll-updates-server';
+import { sendUpdate } from '../server/poll-updates-server';
 import {
   createStyleSheetManager,
   twinModuleExportString,

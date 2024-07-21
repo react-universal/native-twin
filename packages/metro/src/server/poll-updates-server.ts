@@ -1,8 +1,8 @@
 import type { IncomingMessage } from 'connect';
 import createServer from 'connect';
 import type { ServerResponse } from 'http';
-import { TwinServerDataBuffer } from '../../types/metro.types';
-import { METRO_ENDPOINT } from '../../utils/constants';
+import { TwinServerDataBuffer } from '../types/metro.types';
+import { METRO_ENDPOINT } from '../utils/constants';
 
 const connections = new Set<ServerResponse<IncomingMessage>>();
 const currentState: TwinServerDataBuffer = {
