@@ -1,7 +1,7 @@
 import { GetTransformOptions } from 'metro-config';
 import fs from 'node:fs';
 import path from 'node:path';
-import { decorateMetroServer } from './decorators/server.decorator';
+import { decorateMetroServer } from './server/server.decorator';
 import { ComposableIntermediateConfigT } from './types/metro.types';
 import { MetroWithNativeWindOptions } from './types/metro.types';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from './utils/constants';

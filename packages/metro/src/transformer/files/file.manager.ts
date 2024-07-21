@@ -8,41 +8,33 @@ export const opaqueCache = new Map<string, TwinFileHandler>();
 export let twinConfig: TailwindConfig<__Theme__ & TailwindPresetTheme>;
 
 export function getOrCreateTwinFileHandler(data: TwinFileHandlerArgs) {
-  let handler: TwinFileHandler;
-  if (opaqueCache.has(data.filename)) {
-    handler = opaqueCache.get(data.filename)!;
-    if (handler.refreshFileData(ensureBuffer(data.data))) {
-      handler.version = handler.version + 1;
-    }
-    // console.log('FROM_CACHE', {
-    //   size: opaqueCache.size,
-    //   entries: opaqueCache,
-    //   data,
-    // });
-  } else {
+  if (!opaqueCache.has(data.filename)) {
     const fileHandler = createTwinFile(data);
     opaqueCache.set(data.filename, fileHandler);
-    handler = fileHandler;
+  } else {
+    const handler = opaqueCache.get(data.filename)!;
+    handler.refreshFileData(ensureBuffer(data.data));
   }
 
-  return handler;
+  return opaqueCache.get(data.filename)!;
 }
 
 export const createTwinFile = ({
   projectRoot,
   data,
+  filename,
 }: TwinFileHandlerArgs): TwinFileHandler => {
   const service = createTwinFileService(projectRoot);
 
-  let compile = true;
-  let state = {
+  const state = {
     service,
     version: 1,
     getCurrentBuffer,
     refreshFileData,
     updateBuffer,
-    compile,
+    compile: true,
     currentBuffer: ensureBuffer(data),
+    filename,
   };
   return state;
 
@@ -51,9 +43,7 @@ export const createTwinFile = ({
     if (sameData) {
       return false;
     }
-    compile = true;
     updateBuffer(data);
-
     return true;
   }
 
@@ -67,10 +57,11 @@ export const createTwinFile = ({
 
   function updateBuffer(newBuffer: Buffer) {
     state.currentBuffer = ensureBuffer(newBuffer);
-    state = {
+
+    opaqueCache.set(state.filename, {
       ...state,
       version: state.version + 1,
-    };
+    });
   }
 };
 

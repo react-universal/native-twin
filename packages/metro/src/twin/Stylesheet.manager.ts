@@ -68,3 +68,5 @@ function entriesToObject(newEntries: SheetEntry[]) {
     });
   }, {});
 }
+
+export type StyleManagerHandler = ReturnType<typeof createStyleSheetManager>;

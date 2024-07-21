@@ -18,3 +18,16 @@ export type TwinTransformFn = (
   data: Buffer | string,
   options: JsTransformOptions,
 ) => Promise<TransformResponse>;
+
+export interface TwinTransformerOptions {
+  src: string;
+  filename: string;
+  options: {
+    projectRoot: string;
+    platform: string;
+    dev: boolean;
+    hot: boolean;
+    type: string;
+    cache: number;
+  };
+}

@@ -1,33 +1,18 @@
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import micromatch from 'micromatch';
-import fs from 'node:fs';
 import path from 'node:path';
-import { sendUpdate } from '../decorators/server-middlewares/poll-updates-server';
-import { parseDocument } from './babel-parser/twin.parser';
-import { getOrCreateTwinFileHandler } from './files/file.manager';
+import { sendUpdate } from '../server/server-middlewares/poll-updates-server';
 import {
   createStyleSheetManager,
   twinModuleExportString,
 } from '../twin/Stylesheet.manager';
-import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../utils/constants';
+import { TwinTransformerOptions } from '../types/transformer.types';
 import { getUserNativeWindConfig, setupNativeTwin } from '../utils/load-config';
+import { parseDocument } from './babel-parser/twin.parser';
+import { cssTransformer } from './css.transformer';
+import { getOrCreateTwinFileHandler } from './files/file.manager';
 
-interface TransformerOpt {
-  src: string;
-  filename: string;
-  options: {
-    projectRoot: string;
-    platform: string;
-    dev: boolean;
-    hot: boolean;
-    type: string;
-    cache: number;
-  };
-}
-
-export const transform = async ({ filename, options, src }: TransformerOpt) => {
-  // console.log('CONFIG: ', config);
-  // console.log('REST: ', { projectRoot, filename, data, options });
+export const transform = async ({ filename, options, src }: TwinTransformerOptions) => {
   const sheet = createStyleSheetManager(options.projectRoot);
   const handler = getOrCreateTwinFileHandler({
     data: src,
@@ -44,24 +29,12 @@ export const transform = async ({ filename, options, src }: TransformerOpt) => {
 
   const isCss = options.type !== 'asset' && matchCss(filename);
 
-  if (isCss) {
-    const cssOutput = path.join(options.projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
-    if (!fs.existsSync(cssOutput)) {
-      fs.writeFileSync(cssOutput, '');
-    }
-    sheet.setRuntimeSheet();
-    src = fs.readFileSync(cssOutput, 'utf8');
-    src = `${src}\nrequire("@native-twin/metro/build/decorators/server-middlewares/poll-update-client")`;
-    // @ts-expect-error
-    return upstreamTransformer.transform({ src, filename, options });
-  }
+  if (isCss) return cssTransformer({ filename, options, src }, sheet);
 
   if (!micromatch.isMatch(path.resolve(options.projectRoot, filename), allowedPaths)) {
     // @ts-expect-error
     return upstreamTransformer.transform({ src, filename, options });
   }
-
-  // console.log('ALLOWED: ', { filename, options });
 
   if (options.platform) {
     const twin = setupNativeTwin(twConfig, {
@@ -115,10 +88,6 @@ export const transform = async ({ filename, options, src }: TransformerOpt) => {
 function matchCss(filePath: string): boolean {
   return /\.css$/.test(filePath);
 }
-
-// function matchCssModule(filePath: string): boolean {
-//   return /\.module(\.(native|ios|android|web))?\.css$/.test(filePath);
-// }
 
 const createRuntimeFunction = (functionName: string, contents: string) => {
   return `function ${functionName}() ${createBlockContent(contents)}`;

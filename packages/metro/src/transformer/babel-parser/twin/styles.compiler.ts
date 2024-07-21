@@ -6,7 +6,7 @@ import {
   SheetEntry,
   SheetEntryDeclaration,
 } from '@native-twin/css';
-import { platformVariants } from '../../utils/constants';
+import { platformVariants } from '../../../utils/constants';
 
 export function getSheetEntryStyles(entries: SheetEntry[] = [], tw: RuntimeTW) {
   return entries.reduce(

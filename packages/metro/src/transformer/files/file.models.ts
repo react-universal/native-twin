@@ -1,6 +1,5 @@
 import { MixedOutput } from 'metro';
 import { FileStore, CacheStore } from 'metro-cache';
-import { NativeTwinTransformerOpts } from '../../types/transformer.types';
 
 export interface TwinFileService {
   getTwinCachePath(fileName: string): void;
@@ -21,7 +20,6 @@ export interface TwinFileWriteOptions {
 }
 
 export interface TwinFileHandlerArgs {
-  config?: NativeTwinTransformerOpts;
   projectRoot: string;
   filename: string;
   data: Buffer | string;

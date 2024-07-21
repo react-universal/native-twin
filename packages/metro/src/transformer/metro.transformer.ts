@@ -25,7 +25,7 @@ export const transform: TwinTransformFn = async (
   if (!micromatch.isMatch(path.resolve(projectRoot, filename), allowedPaths)) {
     return transformer(config, projectRoot, filename, data, options);
   }
-  const handler = getOrCreateTwinFileHandler({ config, data, filename, projectRoot });
+  const handler = getOrCreateTwinFileHandler({ data, filename, projectRoot });
 
   if (options.platform && handler.compile) {
     data = Buffer.from(data).toString('utf8');
