@@ -1,7 +1,7 @@
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import fs from 'node:fs';
 import path from 'node:path';
-import { StyleManagerHandler } from '../twin/Stylesheet.manager';
+import { StyleManagerHandler } from '../sheet/Stylesheet.manager';
 import { TwinTransformerOptions } from '../types/transformer.types';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../utils/constants';
 

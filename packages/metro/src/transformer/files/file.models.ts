@@ -3,15 +3,10 @@ import { FileStore, CacheStore } from 'metro-cache';
 
 export interface TwinFileService {
   getTwinCachePath(fileName: string): void;
-  createFile(
-    fileName: string,
-    contents: string,
-    options: TwinFileWriteOptions,
-  ): void;
+  createFile(fileName: string, contents: string, options: TwinFileWriteOptions): void;
   fileExists(fileName: string): boolean;
   setFileContents(filename: string, contents: string): Buffer | null;
   filesCache?: FileStore<CacheStore<MixedOutput>>;
-  setRootDir(newRootDir: string): void;
   getFile(filename: string): Buffer | null;
 }
 
@@ -23,8 +18,10 @@ export interface TwinFileHandlerArgs {
   projectRoot: string;
   filename: string;
   data: Buffer | string;
+  type: string;
+  platform: string;
 }
-export interface TwinFileHandler  {
+export interface TwinFileHandler {
   service: TwinFileService;
   version: number;
   compile: boolean;

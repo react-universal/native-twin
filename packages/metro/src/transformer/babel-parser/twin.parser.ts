@@ -60,12 +60,26 @@ export const parseDocument = (
       },
     });
 
+    // traverse(parsed, {
+    //   Program(program) {
+    //     if (compiledClasses.length) {
+    //       const variable = t.variableDeclaration('const', [
+    //         t.variableDeclarator(t.identifier('__twinComponentStyles')),
+    //       ]);
+    //       program.insertAfter(variable);
+    //     }
+    //   },
+    // });
+
     const generatedCode = generate(parsed);
     // console.log('RESULT: ', generatedCode.code);
     // console.log('STYLES: ', twinComponentStyles);
     return { code: generatedCode.code, compiledClasses, twinComponentStyles };
-  } catch (e) {
-    console.log('ERROR: ', e);
+  } catch (e: any) {
+    console.log('ERROR: ', {
+      message: e.message,
+      code,
+    });
     return null;
   }
 };

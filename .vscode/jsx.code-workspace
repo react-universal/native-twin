@@ -5,24 +5,28 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
     },
     {
       "name": "📦 @lib/jsx",
       "path": "../packages/jsx"
     },
     {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
     },
     {
       "name": "📦 @lib/language-server",
       "path": "../packages/language-server"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
     },
     {
       "name": "@apps/expo",
@@ -35,7 +39,9 @@
       "comments": true,
       "strings": true
     },
-    "vsc-lfs.fileFilters": [".js"],
+    "vsc-lfs.fileFilters": [
+      ".js"
+    ],
     "files.exclude": {
       "**/.git": true,
       "**/.svn": true,

@@ -1,10 +1,10 @@
 import path from 'path';
 import { RuntimeTW } from '@native-twin/core';
 import { SheetEntry } from '@native-twin/css';
-import { createTwinFileService } from '../transformer/files/file.service';
 import { TWIN_STYLES_FILE, TWIN_CACHE_DIR_RUNTIME } from '../utils/constants';
 
 const globalEntries: SheetEntry[] = [];
+// @ts-expect-error
 const sheetFile = createTwinFileService();
 export const twinModuleExportString = 'module.exports = ';
 
