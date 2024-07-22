@@ -48,5 +48,6 @@ export interface RuntimeComponentEntry {
   prop: string;
   target: string;
   entries: SheetEntry[];
+  expression: string;
   metadata: ComponentSheet['metadata'];
 }

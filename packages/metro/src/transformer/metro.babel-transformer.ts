@@ -1,29 +1,31 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
+import path from 'path';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { sendUpdate } from '../server/poll-updates-server';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
 import { TwinTransformerOptions } from '../types/transformer.types';
+import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../utils/constants';
+import { ensureBuffer } from '../utils/file.utils';
 import { setupNativeTwin } from '../utils/load-config';
-import { FileServiceLive } from './files/file.service';
+import { TransformerConfig } from './transformer.config';
 import {
-  MetroTransformContext,
-  TransformerService,
+  BabelTransformContext,
+  BabelTransformService,
   TransformerServiceLive,
 } from './transformer.service';
 
 const MainLayer = Layer.mergeAll(
-  FileServiceLive,
   DocumentServiceLive,
   StyleSheetServiceLive,
   TransformerServiceLive,
 );
 
 const program = Effect.gen(function* () {
-  const context = yield* MetroTransformContext;
+  const context = yield* BabelTransformContext;
   const documents = yield* DocumentService;
-  const transformer = yield* TransformerService;
+  const transformer = yield* BabelTransformService;
   const sheet = yield* StyleSheetService;
 
   const transformFile = documents.getDocument({
@@ -38,11 +40,8 @@ const program = Effect.gen(function* () {
     Option.getOrElse(() => false),
   );
   if (isCss) {
-    const css = sheet.refreshSheet(context.options.dev);
-    return transformer.transform({
-      ...context,
-      src: css,
-    });
+    const css = sheet.refreshSheet();
+    return transformer.transformCSS(css);
   }
 
   const twinConfig = transformer.getTwinConfig();
@@ -83,9 +82,24 @@ const program = Effect.gen(function* () {
 });
 
 const runnable = Effect.provide(program, MainLayer);
+
 export const transform = async (context: TwinTransformerOptions) => {
+  const cssOutput = path.join(
+    context.options.projectRoot,
+    TWIN_CACHE_DIR,
+    TWIN_STYLES_FILE,
+  );
   return runnable.pipe(
-    Effect.provideService(MetroTransformContext, context),
+    Effect.provideService(BabelTransformContext, context),
+    Effect.provideService(TransformerConfig, {
+      cssOutput,
+      filename: context.filename,
+      fileType: context.options.type,
+      isDev: context.options.dev,
+      platform: context.options.platform,
+      projectRoot: context.options.projectRoot,
+      sourceCode: ensureBuffer(context.src),
+    }),
     Effect.runSync,
   );
 };

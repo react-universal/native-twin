@@ -56,3 +56,12 @@ export function setupNativeTwin(
 
   return { tw, created: true };
 }
+
+export const getTwinConfig = (projectRoot: string) => {
+  const twinConfig = getUserNativeWindConfig(
+    path.resolve(projectRoot, 'tailwind.config.ts'),
+    path.join(projectRoot, '.twin-cache'),
+  );
+  const allowedPaths = twinConfig.content.map((x) => path.resolve(projectRoot, x));
+  return { twinConfig, allowedPaths };
+};

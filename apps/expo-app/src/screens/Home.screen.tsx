@@ -16,7 +16,7 @@ function HomeScreen() {
           ios:(p-16 border-black border-2 dark:(bg-blue-500))
           android:(p-14 border-green-200 border-2 bg-gray-800 dark:(bg-purple-500))
           md:(m-10)
-          bg-blue-500
+          bg-red-500
         `}
       >
         <Button size='large' />

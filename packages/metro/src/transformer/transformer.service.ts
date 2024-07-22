@@ -6,36 +6,31 @@ import micromatch from 'micromatch';
 import path from 'node:path';
 import { __Theme__, TailwindConfig } from '@native-twin/core';
 import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import { TwinTransformerOptions } from '../types/transformer.types';
-import { getUserNativeWindConfig } from '../utils/load-config';
+import { TransformWorkerArgs, TwinTransformerOptions } from '../types/transformer.types';
+import { twinHMRString } from '../utils/constants';
+import { getTwinConfig } from '../utils/load-config';
+import { TransformerConfig } from './transformer.config';
 
-interface TransformerContext {
-  getTwinConfig(): TailwindConfig<__Theme__ & TailwindPresetTheme>;
-  transform(data: TwinTransformerOptions): any;
-  isNotAllowedPath(): boolean;
-}
-
-export class MetroTransformContext extends Context.Tag('metro/MetroTransformService')<
-  MetroTransformContext,
+export class BabelTransformContext extends Context.Tag('metro/MetroTransformService')<
+  BabelTransformContext,
   TwinTransformerOptions
 >() {}
 
-export class TransformerService extends Context.Tag('babel/TransformerService')<
-  TransformerService,
-  TransformerContext
+export class BabelTransformService extends Context.Tag('babel/BabelTransformService')<
+  BabelTransformService,
+  {
+    getTwinConfig(): TailwindConfig<__Theme__ & TailwindPresetTheme>;
+    transform(data: TwinTransformerOptions): any;
+    transformCSS(css: string): any;
+    isNotAllowedPath(): boolean;
+  }
 >() {}
 
 export const TransformerServiceLive = Layer.effect(
-  TransformerService,
+  BabelTransformService,
   Effect.gen(function* () {
-    const { options, filename } = yield* MetroTransformContext;
-    const twinConfig = getUserNativeWindConfig(
-      path.resolve(options.projectRoot, 'tailwind.config.ts'),
-      path.join(options.projectRoot, '.twin-cache'),
-    );
-    const allowedPaths = twinConfig.content.map((x) =>
-      path.resolve(options.projectRoot, x),
-    );
+    const { options, filename } = yield* BabelTransformContext;
+    const { allowedPaths, twinConfig } = getTwinConfig(options.projectRoot);
     return {
       getTwinConfig: () => {
         return twinConfig;
@@ -49,6 +44,48 @@ export const TransformerServiceLive = Layer.effect(
       transform: (data: TwinTransformerOptions) => {
         // @ts-expect-error
         return upstreamTransformer.transform(data);
+      },
+      transformCSS: (css: string) => {
+        let code = css;
+        if (options.dev) {
+          code = `${code}\n${twinHMRString}`;
+        }
+        // @ts-expect-error
+        return upstreamTransformer.transform({
+          options,
+          filename,
+          src: code,
+        });
+      },
+    };
+  }),
+);
+
+export class MetroTransformerContext extends Context.Tag('MetroTransformerService')<
+  MetroTransformerContext,
+  TransformWorkerArgs
+>() {}
+
+export class MetroTransformerService extends Context.Tag('MetroTransformerService')<
+  MetroTransformerService,
+  {
+    isNotAllowedPath(): boolean;
+    getTwinConfig(): TailwindConfig<__Theme__ & TailwindPresetTheme>;
+  }
+>() {}
+
+export const MetroTransformerServiceLive = Layer.effect(
+  MetroTransformerService,
+  Effect.gen(function* () {
+    const { filename, projectRoot } = yield* TransformerConfig;
+
+    const { allowedPaths, twinConfig } = getTwinConfig(projectRoot);
+    return {
+      getTwinConfig: () => {
+        return twinConfig;
+      },
+      isNotAllowedPath: () => {
+        return !micromatch.isMatch(path.resolve(projectRoot, filename), allowedPaths);
       },
     };
   }),

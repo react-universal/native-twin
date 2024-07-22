@@ -49,6 +49,9 @@ const internalSheet: TwinStyleSheet = {
   entriesToFinalSheet(entries) {
     return getSheetEntryStyles(entries, styledContext.get());
   },
+  getComponentByID(id: string) {
+    return componentsRegistry.get(id);
+  },
   registerComponent(id, props, context) {
     const component = componentsRegistry.get(id);
     if (component) {

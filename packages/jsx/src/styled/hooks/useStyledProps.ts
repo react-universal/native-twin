@@ -5,12 +5,12 @@ import { StyleSheet } from '../../sheet/StyleSheet';
 import { tw } from '../../sheet/native-tw';
 import { RegisteredComponent } from '../../sheet/sheet.types';
 import { styledContext, twinConfigObservable } from '../../store/observables';
-import { BabelStyledProps } from '../../types/jsx.types';
+// import { BabelStyledProps } from '../../types/jsx.types';
 import { DEFAULT_INTERACTIONS, INTERNAL_RESET } from '../../utils/constants';
 
 export const useStyledProps = (
   id: string,
-  styledProps: BabelStyledProps[],
+  // styledProps: BabelStyledProps[],
   compiledSheet: RegisteredComponent | null = null,
   debug: boolean,
 ) => {
@@ -19,7 +19,7 @@ export const useStyledProps = (
     console.debug('RENDER_COUNTER: ', id, ++renderCount.current);
   }
   const context = useContext(groupContext);
-  const styledCtx = useAtomValue(styledContext);
+  useAtomValue(styledContext);
 
   const componentStyles = useMemo(() => {
     if (compiledSheet) {
@@ -27,15 +27,15 @@ export const useStyledProps = (
       return compiledSheet;
     }
     // console.log('NOT_COMPILED');
-    return StyleSheet.registerComponent(id, styledProps ?? [], styledCtx);
-  }, [styledProps, compiledSheet, styledCtx, id]);
+    return StyleSheet.getComponentByID(id);
+  }, [id]);
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 
   const parentState = useAtomValue(
     atom((get) => {
       // console.log('PARENT_STATE');
-      if (!context || !componentStyles.metadata.hasGroupEvents) {
+      if (!context || !componentStyles?.metadata.hasGroupEvents) {
         return DEFAULT_INTERACTIONS;
       }
       return get(StyleSheet.getComponentState(context));
@@ -45,8 +45,8 @@ export const useStyledProps = (
   const onChange = useCallback(
     (active: boolean) => {
       if (
-        componentStyles.metadata.hasPointerEvents ||
-        componentStyles.metadata.isGroupParent
+        componentStyles?.metadata.hasPointerEvents ||
+        componentStyles?.metadata.isGroupParent
       ) {
         setState({
           isLocalActive: active,

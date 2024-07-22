@@ -1,8 +1,9 @@
+import generator from '@babel/generator';
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as Option from 'effect/Option';
 import { getRuleSelectorGroup } from '@native-twin/css';
-// import { createObjectExpression } from '../babel/babel.constructors';
+// import { templateLiteralToStringLike } from '../babel';
 import { isReactNativeImport } from '../babel/babel.validators';
 import { mappedComponents } from '../utils/component.maps';
 import { extractElementClassNames } from './jsx.maps';
@@ -70,47 +71,37 @@ export const createJSXOpeningElementHandler = (
   };
 
   function addStyledProp(id: string, classProps: StyledPropEntries) {
-    // const valueObject = createObjectExpression({
-    //   prop: classProps.prop,
-    //   target: classProps.target,
-    //   entries: classProps.entries,
-    // });
-    // const valueObject = createObjectExpression({
-    //   prop: classProps.prop,
-    //   target: classProps.target,
-    //   entries: classProps.entries,
-    // });
-    // if (classProps.expression && t.isObjectExpression(valueObject)) {
-    //   valueObject.properties.unshift(
-    //     t.objectProperty(t.identifier('templateLiteral'), classProps.expression),
-    //   );
-    // }
-    const value = t.memberExpression(
-      t.identifier('__twinComponentStyles'),
-      t.stringLiteral(id),
-      true,
-    );
+    if (classProps.expression) {
+      const template = t.jsxAttribute(
+        t.jsxIdentifier('__classNameExpression'),
+        t.jsxExpressionContainer(classProps.expression),
+      );
+      openingElement.attributes.push(template);
+    }
+    // const value = t.memberExpression(
+    //   t.identifier('__twinComponentStyles'),
+    //   t.stringLiteral(id),
+    //   true,
+    // );
 
-    // const value = t.isArrayExpression(valueObject)
-    //   ? valueObject
-    //   : t.arrayExpression([valueObject]);
-    const jsxClassProp = t.jsxAttribute(
-      t.jsxIdentifier('styledProps'),
-      t.jsxExpressionContainer(value),
-    );
+    // const jsxClassProp = t.jsxAttribute(
+    //   t.jsxIdentifier('styledProps'),
+    //   t.jsxExpressionContainer(value),
+    // );
 
-    openingElement.attributes.push(jsxClassProp);
+    // openingElement.attributes.push(jsxClassProp);
   }
 
   function styledPropsToObject(
     classProps: StyledPropEntries,
   ): [string, RuntimeComponentEntry] {
     const metadata = getEntryGroups(classProps);
-    const data = {
+    const data: RuntimeComponentEntry = {
       prop: classProps.prop,
       target: classProps.target,
       entries: classProps.entries,
       metadata,
+      expression: classProps.expression ? generator(classProps.expression).code : ``,
     };
     return [classProps.classNames, data];
   }

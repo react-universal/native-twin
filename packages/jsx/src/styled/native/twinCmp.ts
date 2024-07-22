@@ -17,14 +17,14 @@ export function twinComponent(
   // console.log('ID: ', id);
   const { state, componentStyles, parentState, onChange } = useStyledProps(
     componentID ?? id,
-    props?.['styledProps'] ?? [],
+    // props?.['styledProps'] ?? [],
     props?.['_twinComponentSheet'],
     props?.['debug'] ?? false,
   );
 
   props = Object.assign({ ref }, props);
 
-  if (componentStyles.sheets.length > 0) {
+  if (componentStyles && componentStyles.sheets.length > 0) {
     for (const style of componentStyles.sheets) {
       const oldProps = props[style.prop] ? { ...props[style.prop] } : {};
       props[style.prop] = Object.assign(
@@ -45,8 +45,8 @@ export function twinComponent(
   }
 
   if (
-    componentStyles.metadata.hasPointerEvents ||
-    componentStyles.metadata.hasGroupEvents
+    componentStyles?.metadata.hasPointerEvents ||
+    componentStyles?.metadata.hasGroupEvents
   ) {
     if (!props['onTouchStart']) {
       props['onTouchStart'] = (event: unknown) => {
@@ -62,13 +62,13 @@ export function twinComponent(
     }
   }
 
-  if (componentStyles.metadata.hasAnimations && 1 === Number(2)) {
+  if (componentStyles?.metadata.hasAnimations && 1 === Number(2)) {
     component = createAnimatedComponent(component);
   }
 
-  if (componentStyles.metadata.isGroupParent) {
+  if (componentStyles?.metadata.isGroupParent) {
     props = {
-      value: id,
+      value: componentID ?? id,
       children: createElement(component, props),
     };
     component = groupContext.Provider;

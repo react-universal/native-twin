@@ -42,14 +42,14 @@ export function withNativeTwin(
         }
       },
     },
-    // transformerPath: require.resolve('./metro.transformer'),
+    transformerPath: require.resolve('./transformer/metro.transformer'),
     transformer: {
       ...metroConfig.transformer,
       tailwindConfigPath: twinConfigPath,
       outputDir: output,
       allowedFiles: twConfig.content,
       // transformerPath: require.resolve('./metro.transformer'),
-      babelTransformerPath: require.resolve('./transformer/metro.babel-transformer'),
+      // babelTransformerPath: require.resolve('./transformer/metro.babel-transformer'),
       getTransformOptions,
     },
   };

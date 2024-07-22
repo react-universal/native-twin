@@ -29,3 +29,15 @@ export interface TwinServerDataBuffer {
   version: number;
   data: string | Buffer;
 }
+
+export interface TwinFileWriteOptions {
+  overwrite: boolean;
+}
+
+export interface TwinFileHandlerArgs {
+  projectRoot: string;
+  filename: string;
+  data: Buffer | string;
+  type: string;
+  platform: string;
+}

@@ -4,7 +4,7 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as HM from 'effect/MutableHashMap';
 import * as Option from 'effect/Option';
-import { TwinFileHandlerArgs } from '../transformer/files/file.models';
+import { TwinFileHandlerArgs } from '../types/metro.types';
 import { ensureBuffer } from '../utils/file.utils';
 import { DocumentCacheKey, getDocumentCacheKey } from './documents.cache';
 import { TransformFile } from './models/TransformFile.model';

@@ -3,40 +3,32 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import fs from 'node:fs';
-import path from 'node:path';
 import { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import { SheetEntry } from '@native-twin/css';
-import { MetroTransformContext } from '../transformer/transformer.service';
-import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../utils/constants';
+import { TransformerConfig } from '../transformer/transformer.config';
+import { twinHMRString, twinModuleExportString } from '../utils/constants';
 import { createObjectExpression, createRuntimeFunction } from '../utils/file.utils';
-
-interface StyleSheetShape {
-  entries: SheetEntry[];
-  cssOutput: string;
-  twinModuleExportString: string;
-  getSheetDocumentText(): string;
-  refreshSheet(isDev: boolean): string;
-  registerEntries(entries: SheetEntry[]): string;
-  entriesToObject(newEntries: SheetEntry[]): object;
-  readSheet(): string;
-  getComponentFunction(componentStyles: [string, RuntimeComponentEntry[]][]): string;
-}
 
 export class StyleSheetService extends Context.Tag('files/StyleSheetService')<
   StyleSheetService,
-  StyleSheetShape
+  {
+    entries: SheetEntry[];
+    cssOutput: string;
+    getSheetDocumentText(): string;
+    refreshSheet(): string;
+    registerEntries(entries: SheetEntry[]): string;
+    entriesToObject(newEntries: SheetEntry[]): object;
+    readSheet(): string;
+    getComponentFunction(componentStyles: [string, RuntimeComponentEntry[]][]): string;
+  }
 >() {}
 
-const twinModuleExportString = 'module.exports = ';
-const twinHMRString = 'require("@native-twin/metro/build/server/poll-update-client")';
 const sheetEntries = ReadOnlyArray.empty<SheetEntry>();
 
 export const StyleSheetServiceLive = Layer.scoped(
   StyleSheetService,
   Effect.gen(function* () {
-    const { options } = yield* MetroTransformContext;
-
-    const cssOutput = path.join(options.projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
+    const { cssOutput } = yield* TransformerConfig;
 
     if (!fs.existsSync(cssOutput)) {
       fs.writeFileSync(cssOutput, '');
@@ -45,7 +37,6 @@ export const StyleSheetServiceLive = Layer.scoped(
     return {
       entries: sheetEntries,
       cssOutput,
-      twinModuleExportString,
       getSheetDocumentText,
       refreshSheet,
       registerEntries,
@@ -101,16 +92,13 @@ export const StyleSheetServiceLive = Layer.scoped(
         sheetEntries.push(entry);
       }
 
-      return refreshSheet(options.dev);
+      return refreshSheet();
     }
 
-    function refreshSheet(isDev: boolean): string {
+    function refreshSheet(): string {
       let code = getSheetDocumentText();
 
       code = `${twinModuleExportString}${code}`;
-      // if (isDev) {
-      //   code = `${code}\n${twinHMRString}`;
-      // }
 
       fs.writeFileSync(cssOutput, code);
       return fs.readFileSync(cssOutput, 'utf-8');

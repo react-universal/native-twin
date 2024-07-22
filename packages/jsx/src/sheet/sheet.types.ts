@@ -19,6 +19,7 @@ export interface TwinStyleSheet {
   getFlag(name: string): string | undefined;
   getGlobalStyle(name: string): Atom<SheetEntry> | undefined;
   entriesToFinalSheet(entries: SheetEntry[]): FinalSheet;
+  getComponentByID(id: string): RegisteredComponent | undefined;
   registerComponent(
     id: string,
     props: BabelStyledProps[],
