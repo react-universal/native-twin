@@ -1,12 +1,10 @@
-type Prop = string;
-type Target = string;
 export interface MappedComponent {
   name: string;
-  config: Record<Prop, Target>;
+  config: Record<string, string>;
 }
 const createHandler = () => {
   const mappedComponents: MappedComponent[] = [];
-  const createStylableComponent = <T extends Record<Prop, Target>>(
+  const createStylableComponent = <T extends Record<string, string>>(
     component: string,
     styles: T,
   ) => {

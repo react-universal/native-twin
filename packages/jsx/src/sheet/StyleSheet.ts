@@ -60,7 +60,7 @@ const internalSheet: TwinStyleSheet = {
     }
     const sheets: ComponentSheet[] = [];
     for (const style of props) {
-      if (style.templateLiteral) {
+      if (style?.templateLiteral) {
         style.entries.push(...tw(`${style.templateLiteral}`));
       }
       sheets.push(

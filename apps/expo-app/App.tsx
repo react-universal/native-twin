@@ -6,6 +6,7 @@ import tailwindConfig from './tailwind.config';
 setup(tailwindConfig);
 
 export default function App() {
+  // return <SimpleComponent />
   return (
     <GestureHandlerRootView className='flex-1'>
       <HomeScreen />

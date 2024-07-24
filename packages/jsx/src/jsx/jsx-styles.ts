@@ -8,11 +8,8 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
   const componentID = props?.['_twinComponentID'];
   const twinSheet = props?.['getTwinSheet'];
   if (componentID && twinSheet) {
-    if (typeof twinSheet === 'object') {
-      if (componentID in twinSheet) {
-        props['_twinComponentSheet'] = twinSheet[componentID];
-      }
-    }
+    console.log('TWIN_SHEET', componentID, twinSheet);
+    props['_twinComponentSheet'] = twinSheet;
   }
   // const configs = type?.defaultProps?.['configs'] as ComponentConfig[];
   // const styledProps: JSXStyleProp[] = [];

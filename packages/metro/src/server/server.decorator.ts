@@ -1,7 +1,7 @@
 import connect from 'connect';
-import { ServerConfigT } from 'metro-config';
-import { TailwindConfig, __Theme__ } from '@native-twin/core';
-import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
+import type { ServerConfigT } from 'metro-config';
+import type { TailwindConfig, __Theme__ } from '@native-twin/core';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { setupNativeTwin } from '../utils/load-config';
 import { createTwinServerMiddleware } from './poll-updates-server';
 

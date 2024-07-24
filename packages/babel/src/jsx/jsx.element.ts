@@ -101,7 +101,7 @@ export const createJSXOpeningElementHandler = (
       target: classProps.target,
       entries: classProps.entries,
       metadata,
-      expression: classProps.expression ? generator(classProps.expression).code : ``,
+      templateLiteral: classProps.expression ? generator(classProps.expression).code : ``,
     };
     return [classProps.classNames, data];
   }

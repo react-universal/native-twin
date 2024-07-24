@@ -15,7 +15,7 @@ export const createObjectExpressionWithTemplate = <T extends object>(expression:
   return ast();
 };
 
-export const createObjectExpression = <T extends object>(
+export const createObjectExpressionAST = <T extends object>(
   obj: T,
 ): t.ObjectExpression | t.ArrayExpression => {
   if (Array.isArray(obj)) {
@@ -38,7 +38,7 @@ export const createArrayExpression = <T>(
   }
 
   if (isObject(next) || Array.isArray(next)) {
-    value = createObjectExpression(next);
+    value = createObjectExpressionAST(next);
   }
 
   if (value) {
@@ -62,7 +62,7 @@ export const createOjectExpressionProperties = (
   }
 
   if (isObject(next[1]) || Array.isArray(next[1])) {
-    value = createObjectExpression(next[1]);
+    value = createObjectExpressionAST(next[1]);
   }
 
   if (value) {

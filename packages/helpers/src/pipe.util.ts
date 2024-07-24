@@ -21,6 +21,7 @@ export function pipeBuilder<Input, Output>(fn: Fn<Input, Output>): Pipe<Input, O
 export const builder = pipeBuilder((x: number) => x)
   .pipe((x) => x * 2)
   .pipe((x) => `${x}`)
+  .pipe((x) => x)
   .build();
 
 builder(1); // ?

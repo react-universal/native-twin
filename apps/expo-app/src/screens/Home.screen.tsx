@@ -8,16 +8,17 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1 bg-black'>
+    <View className='flex-1 bg-red'>
       <View
         className={`
-          flex-1 items-center justify-center md:border-3
+          flex-1 items-center justify-center md:border-2
           hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-green))
           ios:(p-16 border-black border-2 dark:(bg-blue-500))
           android:(p-14 border-green-200 border-2 bg-gray-800 dark:(bg-purple-500))
           md:(m-10)
           bg-red-500
         `}
+        debug
       >
         <Button size='large' />
         <View className='bg-white shadow-md rounded-xl p-2'>
@@ -55,8 +56,13 @@ function HomeScreen() {
         </Pressable>
         <Image
           source={testImage}
-          resizeMode='cover'
+          resizeMode='contain'
+          resizeMethod='resize'
           className='-translate-x-[10vw] rounded-full border-1 w-5 h-5'
+          style={{
+            width: 100,
+            height: 100,
+          }}
         />
         <TextField />
         <View
@@ -65,6 +71,7 @@ function HomeScreen() {
             mb-2 rounded-lg bg-gray-300 p-2
             group-hover:bg-pink-800
           `}
+          debug
         >
           <Text
             suppressHighlighting

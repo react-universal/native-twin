@@ -110,3 +110,7 @@ export const addJsxAttribute = (
   const newAttribute = createJsxAttribute(name, value);
   element.openingElement.attributes.push(newAttribute);
 };
+
+export const createRequireExpression = (path: string) => {
+  return t.callExpression(t.identifier('require'), [t.stringLiteral(path)]);
+};

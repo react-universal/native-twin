@@ -2,10 +2,10 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import fs from 'node:fs';
 import path from 'node:path';
-import { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
-import { RuntimeTW } from '@native-twin/core';
-import { parseDocument } from '../../babel/twin.parser';
-import { TwinFileHandlerArgs } from '../../types/metro.types';
+import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
+import type { RuntimeTW } from '@native-twin/core';
+import { twinShift } from '../../babel/twin.shift';
+import type { TwinFileHandlerArgs } from '../../types/metro.types';
 import { ensureBuffer, matchCss } from '../../utils/file.utils';
 
 export class TransformFile implements Equal.Equal {
@@ -48,7 +48,7 @@ export class TransformFile implements Equal.Equal {
   }
 
   compileFile(tw: RuntimeTW) {
-    return parseDocument(this.filename, this.version, this.getText(), tw);
+    return twinShift(this.filename, this.getText());
   }
 
   getTwinComponentStyles(compiled: [string, RuntimeComponentEntry[]][]) {

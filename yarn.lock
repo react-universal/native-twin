@@ -5185,7 +5185,7 @@ __metadata:
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
     showdown: "npm:2.1.0"
-    ts-morph: "npm:^22.0.0"
+    ts-morph: "npm:^23.0.0"
     vscode-css-languageservice: "npm:^6.2.14"
     vscode-languageserver: "npm:^9.0.1"
     vscode-languageserver-protocol: "npm:^3.17.5"
@@ -5215,7 +5215,7 @@ __metadata:
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
     showdown: "npm:2.1.0"
-    ts-morph: "npm:^22.0.0"
+    ts-morph: "npm:^23.0.0"
     vscode-css-languageservice: "npm:^6.2.14"
     vscode-languageserver: "npm:^9.0.1"
     vscode-languageserver-protocol: "npm:^3.17.5"
@@ -5231,6 +5231,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/metro@workspace:packages/metro"
   dependencies:
+    "@babel/helper-module-imports": "npm:^7.22.15"
+    "@babel/traverse": "npm:^7.24.0"
+    "@babel/types": "npm:^7.24.0"
     "@native-twin/babel": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
@@ -5240,15 +5243,18 @@ __metadata:
     "@types/connect": "npm:3.4.38"
     "@types/micromatch": "npm:^4.0.4"
     "@types/shelljs": "npm:^0"
+    ast-pretty-print: "npm:^2.0.1"
     effect: "npm:^3.5.5"
     jest: "npm:*"
     jiti: "npm:1.21.0"
     metro-react-native-babel-preset: "npm:^0.77.0"
     micromatch: "npm:4.0.5"
+    piscina: "npm:^4.6.1"
     proxy-polyfill: "npm:^0.3.2"
     react-native-safe-area-context: "npm:4.9.0"
     shelljs: "npm:^0.8.5"
     sucrase: "npm:^3.35.0"
+    ts-morph: "npm:^23.0.0"
   peerDependencies:
     react: ">=18"
     react-native: "*"
@@ -6734,15 +6740,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/common@npm:~0.23.0":
-  version: 0.23.0
-  resolution: "@ts-morph/common@npm:0.23.0"
+"@ts-morph/common@npm:~0.24.0":
+  version: 0.24.0
+  resolution: "@ts-morph/common@npm:0.24.0"
   dependencies:
     fast-glob: "npm:^3.3.2"
-    minimatch: "npm:^9.0.3"
+    minimatch: "npm:^9.0.4"
     mkdirp: "npm:^3.0.1"
     path-browserify: "npm:^1.0.1"
-  checksum: 10/05eabbab5a63d71a7dac17202519d23d4d4ec30780364d4dc3096ca86291e19f0284d0592a6ee89ec257204075a985d00f4788d816a89c41d0c1e0c8d281c480
+  checksum: 10/5b732789868e92689c86a902c8f4528d998ac2e183a02cfeff6cf7731075d254cf3dd1e7bb73f2943ec1fcde6f2fb1caa19ee47a17a4289be08c224d68a902d4
   languageName: node
   linkType: hard
 
@@ -7820,7 +7826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-styles@npm:^3.2.0, ansi-styles@npm:^3.2.1":
+"ansi-styles@npm:^3.0.0, ansi-styles@npm:^3.2.0, ansi-styles@npm:^3.2.1":
   version: 3.2.1
   resolution: "ansi-styles@npm:3.2.1"
   dependencies:
@@ -8130,6 +8136,16 @@ __metadata:
   version: 5.0.0
   resolution: "ast-module-types@npm:5.0.0"
   checksum: 10/188a0c331929962c7ea0d9174b31393d31b0f9d5cc3bb3ad1dcb6f94c611eddfff10194104f247f1cba03f0bb9a2b5c757e619f5a5940333f60b8a12a7db244d
+  languageName: node
+  linkType: hard
+
+"ast-pretty-print@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "ast-pretty-print@npm:2.0.1"
+  dependencies:
+    pretty-format-ast: "npm:^1.0.1"
+    pretty-format2: "npm:^2.0.3"
+  checksum: 10/341d6a9dece7ba7054fa7544353b48dc6750c0d40c989b7344023622c23f45b9b023c5563f2760284e17c3d67903c4c40d84bedf04065e54cdc8b27553460b9e
   languageName: node
   linkType: hard
 
@@ -16007,6 +16023,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^7.5.0"
     "@welldone-software/why-did-you-render": "npm:^8.0.3"
     chai: "npm:4.3.7"
+    chalk: "npm:^5.3.0"
     concurrently: "npm:^7.6.0"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"
@@ -16159,6 +16176,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nice-napi@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "nice-napi@npm:1.0.2"
+  dependencies:
+    node-addon-api: "npm:^3.0.0"
+    node-gyp: "npm:latest"
+    node-gyp-build: "npm:^4.2.2"
+  conditions: "!os=win32"
+  languageName: node
+  linkType: hard
+
 "nice-try@npm:^1.0.4":
   version: 1.0.5
   resolution: "nice-try@npm:1.0.5"
@@ -16186,6 +16214,15 @@ __metadata:
   version: 3.1.1
   resolution: "node-abort-controller@npm:3.1.1"
   checksum: 10/0a2cdb7ec0aeaf3cb31e1ca0e192f5add48f1c5c9c9ed822129f9dddbd9432f69b7425982f94ce803c56a2104884530aa67cd57696e5774b2e5b8ec2f58de042
+  languageName: node
+  linkType: hard
+
+"node-addon-api@npm:^3.0.0":
+  version: 3.2.1
+  resolution: "node-addon-api@npm:3.2.1"
+  dependencies:
+    node-gyp: "npm:latest"
+  checksum: 10/681b52dfa3e15b0a8e5cf283cc0d8cd5fd2a57c559ae670fcfd20544cbb32f75de7648674110defcd17ab2c76ebef630aa7d2d2f930bc7a8cc439b20fe233518
   languageName: node
   linkType: hard
 
@@ -16262,6 +16299,17 @@ __metadata:
   version: 1.3.1
   resolution: "node-forge@npm:1.3.1"
   checksum: 10/05bab6868633bf9ad4c3b1dd50ec501c22ffd69f556cdf169a00998ca1d03e8107a6032ba013852f202035372021b845603aeccd7dfcb58cdb7430013b3daa8d
+  languageName: node
+  linkType: hard
+
+"node-gyp-build@npm:^4.2.2":
+  version: 4.8.1
+  resolution: "node-gyp-build@npm:4.8.1"
+  bin:
+    node-gyp-build: bin.js
+    node-gyp-build-optional: optional.js
+    node-gyp-build-test: build-test.js
+  checksum: 10/b9297770f96a92e5f2b854f3fd5e4bd418df81d7785a81ab60cec5cf2e5e72dc2c3319808978adc572cfa3885e6b12338cb5f4034bed2cab35f0d76a4b75ccdf
   languageName: node
   linkType: hard
 
@@ -17191,6 +17239,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"piscina@npm:^4.6.1":
+  version: 4.6.1
+  resolution: "piscina@npm:4.6.1"
+  dependencies:
+    nice-napi: "npm:^1.0.2"
+  dependenciesMeta:
+    nice-napi:
+      optional: true
+  checksum: 10/2fa88a92c030667a85c793253b57faf17ef043f0a1fa14011a80c5784bd8773876f0b12da11fd41da8f9974fe3bc84987c2f016c406c58c92fcb6164b63ad971
+  languageName: node
+  linkType: hard
+
 "pkg-dir@npm:^3.0.0":
   version: 3.0.0
   resolution: "pkg-dir@npm:3.0.0"
@@ -17396,6 +17456,24 @@ __metadata:
   version: 5.6.0
   resolution: "pretty-bytes@npm:5.6.0"
   checksum: 10/9c082500d1e93434b5b291bd651662936b8bd6204ec9fa17d563116a192d6d86b98f6d328526b4e8d783c07d5499e2614a807520249692da9ec81564b2f439cd
+  languageName: node
+  linkType: hard
+
+"pretty-format-ast@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "pretty-format-ast@npm:1.0.1"
+  dependencies:
+    pretty-format2: "npm:^2.0.3"
+  checksum: 10/29746ae504674a6a973a36fae66e5ec8b99b73fad82ae0dd39c30f0673a394a51ffe17e11226e47d363858505ac331fd129bbcf0dcaa1feee9ff7fe65f65601c
+  languageName: node
+  linkType: hard
+
+"pretty-format2@npm:^2.0.3":
+  version: 2.0.4
+  resolution: "pretty-format2@npm:2.0.4"
+  dependencies:
+    ansi-styles: "npm:^3.0.0"
+  checksum: 10/063992fe7f84fb11817cfa600693c5f19e087f115bfe607f10f793beff3e42d5c90c219ee7c16b098ce6e2879c9ff4eedbf62576f70afd79a174dde775a25678
   languageName: node
   linkType: hard
 
@@ -20185,13 +20263,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-morph@npm:^22.0.0":
-  version: 22.0.0
-  resolution: "ts-morph@npm:22.0.0"
+"ts-morph@npm:^23.0.0":
+  version: 23.0.0
+  resolution: "ts-morph@npm:23.0.0"
   dependencies:
-    "@ts-morph/common": "npm:~0.23.0"
+    "@ts-morph/common": "npm:~0.24.0"
     code-block-writer: "npm:^13.0.1"
-  checksum: 10/e5d81d0d8d990fa9f86e285bd4052bcfa462e2f798f7eda86e11afc7d884dfdb053998dcbf79942942e8032070f8b266745e017771674a169731494fe035e192
+  checksum: 10/2ac0e615021b9d4115df60be02fce0b9b80cb0db173b7836ac70f60f987d9f055ec6a4b2233cf6ed9bdd7f1d8854e8266f5af2d4d40ca738cd7374246e163da3
   languageName: node
   linkType: hard
 

@@ -1,9 +1,9 @@
-import { GetTransformOptions } from 'metro-config';
+import type { GetTransformOptions } from 'metro-config';
 import fs from 'node:fs';
 import path from 'node:path';
 import { decorateMetroServer } from './server/server.decorator';
-import { ComposableIntermediateConfigT } from './types/metro.types';
-import { MetroWithNativeWindOptions } from './types/metro.types';
+import type { ComposableIntermediateConfigT } from './types/metro.types';
+import type { MetroWithNativeWindOptions } from './types/metro.types';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from './utils/constants';
 import { getUserNativeWindConfig } from './utils/load-config';
 
@@ -16,7 +16,6 @@ export function withNativeTwin(
   }: MetroWithNativeWindOptions = {},
 ): ComposableIntermediateConfigT {
   const twinFilePath = path.join(projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
-  console.log('START_METRO');
   if (fs.existsSync(twinFilePath)) {
     fs.writeFileSync(twinFilePath, '');
   }
@@ -33,23 +32,12 @@ export function withNativeTwin(
 
   return {
     ...metroConfig,
-    resetCache: true,
-    // resetCache: true,
-    reporter: {
-      update(event) {
-        if (event.type === 'worker_stdout_chunk') {
-          console.log('REPORTER: ', `${event.chunk}`);
-        }
-      },
-    },
     transformerPath: require.resolve('./transformer/metro.transformer'),
     transformer: {
       ...metroConfig.transformer,
       tailwindConfigPath: twinConfigPath,
       outputDir: output,
       allowedFiles: twConfig.content,
-      // transformerPath: require.resolve('./metro.transformer'),
-      // babelTransformerPath: require.resolve('./transformer/metro.babel-transformer'),
       getTransformOptions,
     },
   };

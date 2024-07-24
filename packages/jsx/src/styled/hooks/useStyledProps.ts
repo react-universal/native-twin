@@ -5,12 +5,12 @@ import { StyleSheet } from '../../sheet/StyleSheet';
 import { tw } from '../../sheet/native-tw';
 import { RegisteredComponent } from '../../sheet/sheet.types';
 import { styledContext, twinConfigObservable } from '../../store/observables';
-// import { BabelStyledProps } from '../../types/jsx.types';
+import { BabelStyledProps } from '../../types/jsx.types';
 import { DEFAULT_INTERACTIONS, INTERNAL_RESET } from '../../utils/constants';
 
 export const useStyledProps = (
   id: string,
-  // styledProps: BabelStyledProps[],
+  styledEntries: BabelStyledProps[],
   compiledSheet: RegisteredComponent | null = null,
   debug: boolean,
 ) => {
@@ -19,23 +19,17 @@ export const useStyledProps = (
     console.debug('RENDER_COUNTER: ', id, ++renderCount.current);
   }
   const context = useContext(groupContext);
-  useAtomValue(styledContext);
+  const styledCtx = useAtomValue(styledContext);
 
   const componentStyles = useMemo(() => {
-    if (compiledSheet) {
-      // console.log('USING_COMPILED: ', id);
-      return compiledSheet;
-    }
-    // console.log('NOT_COMPILED');
-    return StyleSheet.getComponentByID(id);
-  }, [id]);
+    return StyleSheet.registerComponent(id, styledEntries, styledCtx);
+  }, [compiledSheet, styledCtx, id]);
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 
   const parentState = useAtomValue(
     atom((get) => {
-      // console.log('PARENT_STATE');
-      if (!context || !componentStyles?.metadata.hasGroupEvents) {
+      if (!context || !componentStyles.metadata.hasGroupEvents) {
         return DEFAULT_INTERACTIONS;
       }
       return get(StyleSheet.getComponentState(context));
@@ -45,8 +39,8 @@ export const useStyledProps = (
   const onChange = useCallback(
     (active: boolean) => {
       if (
-        componentStyles?.metadata.hasPointerEvents ||
-        componentStyles?.metadata.isGroupParent
+        componentStyles.metadata.hasPointerEvents ||
+        componentStyles.metadata.isGroupParent
       ) {
         setState({
           isLocalActive: active,
@@ -54,11 +48,10 @@ export const useStyledProps = (
         });
       }
     },
-    [id],
+    [id, componentStyles],
   );
 
   useEffect(() => {
-    // remObs.set(tw.config?.root?.rem ?? 16);
     if (StyleSheet.getFlag('STARTED') === 'NO') {
       StyleSheet[INTERNAL_RESET](tw.config);
     }

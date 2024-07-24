@@ -50,7 +50,7 @@
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       ".turbo": false,
-      "**/CHANGELOG.md": true,
+      "**/CHANGELOG.md": false,
       "**/jest.config.js": false,
       "**/LICENSE": true,
       "**/babel.config.js": false,
@@ -76,7 +76,6 @@
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/native-twin",
-      "📦 @lib/metro",
       "📦 @lib/jsx",
       "📦 @lib/language-server",
       "@apps/expo-app"

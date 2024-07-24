@@ -2,7 +2,8 @@
   "extends": "../../.eslintrc.json",
   "ignorePatterns": [
     "!**/*",
-    "build"
+    "build",
+    "bck"
   ],
   "overrides": [
     {
@@ -19,6 +20,7 @@
         "@typescript-eslint/no-empty-interface": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/consistent-type-imports": "error",
         "no-empty": "off",
         "require-yield": "off"
       }

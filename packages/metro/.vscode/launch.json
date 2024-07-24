@@ -3,6 +3,7 @@
     {
       "type": "node",
       "request": "launch",
+      "internalConsoleOptions": "neverOpen",
       "name": "Jest",
       "program": "../../node_modules/jest/bin/jest",
       "args": [
@@ -11,7 +12,7 @@
         "--watch"
       ],
       "autoAttachChildProcesses": true,
-      "console": "integratedTerminal",
+      "console": "internalConsole",
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",
         "!**/node_modules/**"

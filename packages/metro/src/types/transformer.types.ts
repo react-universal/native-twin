@@ -26,16 +26,3 @@ export interface TransformWorkerArgs {
   data: Buffer | string;
   options: JsTransformOptions;
 }
-
-export interface TwinTransformerOptions {
-  src: string;
-  filename: string;
-  options: {
-    projectRoot: string;
-    platform: string;
-    dev: boolean;
-    hot: boolean;
-    type: string;
-    cache: number;
-  };
-}
