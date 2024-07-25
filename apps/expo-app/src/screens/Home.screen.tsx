@@ -18,7 +18,6 @@ function HomeScreen() {
           md:(m-10)
           bg-red-500
         `}
-        debug
       >
         <Button size='large' />
         <View className='bg-white shadow-md rounded-xl p-2'>
@@ -71,7 +70,6 @@ function HomeScreen() {
             mb-2 rounded-lg bg-gray-300 p-2
             group-hover:bg-pink-800
           `}
-          debug
         >
           <Text
             suppressHighlighting

@@ -53,11 +53,13 @@ const baseTransformOptions: JsTransformOptions = {
 const jsxCodeOutputPath = path.join(__dirname, 'fixtures', 'jsx', 'ts-out.tsx');
 const metroCodeOutputPath = path.join(__dirname, 'fixtures', 'jsx', 'out.jsx');
 const twinFilePath = path.join(__dirname, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
+
 beforeAll(() => {
   console.log('ROOT: ', path.join(__dirname));
   createCacheDir(__dirname);
   fs.writeFileSync(twinFilePath, '');
 });
+
 describe('Metro transformer', () => {
   it('metro', async () => {
     const result = await transform(
