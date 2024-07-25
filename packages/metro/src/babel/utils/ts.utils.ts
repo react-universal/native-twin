@@ -165,6 +165,8 @@ export const splitClasses = (classes: string) => classes.split(/\s+/g);
 
 export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) => {
   const writer = new CodeBlock();
+  const templateEntries = new CodeBlock().write('{[');
+  
   writer
     .write(`{require('@native-twin/jsx').StyleSheet.registerComponent(`)
     .write(`"${id}",`);
@@ -175,9 +177,22 @@ export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) =>
       prev.writeLine(`metadata: ${JSON.stringify(current.metadata)},`);
       prev.writeLine(`prop: "${current.prop}",`);
       prev.writeLine(`target: "${current.target}",`);
-      const literal = current.templateLiteral;
-      if (literal) {
+      const templateLiteral = current.templateLiteral;
+      if (templateLiteral) {
         prev.writeLine(`templateLiteral: \`${current.templateLiteral}\`,`);
+        prev.writeLine(
+          `templateEntries: require('@native-twin/core').tw(\`${current.templateLiteral}\`)`,
+        );
+        templateEntries
+          .block(() => {
+            templateEntries.writeLine(
+              `entries: require('@native-twin/core').tw(\`${current.templateLiteral}\`),`,
+            );
+            templateEntries.writeLine(`id: "${id}",`);
+            templateEntries.writeLine(`target: "${current.target}",`);
+            templateEntries.writeLine(`prop: "${current.prop}",`);
+          })
+          .write(',');
       } else {
         prev.writeLine(`templateLiteral: null,`);
       }
@@ -185,7 +200,8 @@ export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) =>
     prev.write(',');
     return prev;
   }, writer.writeLine(''));
+  templateEntries.write(']}');
   records.write(']');
   records.writeLine(')}');
-  return records.toString();
+  return { styledProp: records.toString(), templateEntries: templateEntries.toString() };
 };

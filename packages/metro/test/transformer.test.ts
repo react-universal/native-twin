@@ -4,7 +4,7 @@ import type {
   JsOutput,
 } from 'metro-transform-worker';
 import fs from 'node:fs';
-import path from 'path';
+import path from 'node:path';
 import { createTailwind } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { twinShift } from '../src/babel/twin.shift';

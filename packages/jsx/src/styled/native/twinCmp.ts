@@ -1,10 +1,17 @@
 import { ComponentType, createElement, forwardRef, useId } from 'react';
+import { SheetEntry } from '@native-twin/css';
 import { groupContext } from '../../context';
 import { colorScheme } from '../../store/observables';
 import type { ComponentConfig } from '../../types/styled.types';
 import { getComponentType } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';
 
+type TemplateEntry = {
+  id: string;
+  prop: string;
+  target: string;
+  entries: SheetEntry[];
+};
 export function twinComponent(
   baseComponent: ComponentType<any>,
   configs: ComponentConfig[],
@@ -22,16 +29,33 @@ export function twinComponent(
   );
 
   props = Object.assign({ ref }, props);
+  const entriesFinalSheet = (
+    (props?.['_twinComponentTemplateEntries'] as TemplateEntry[]) ?? []
+  ).reduce(
+    (prev, current) => {
+      if (prev[current.target]) {
+        prev[current.target]?.push(...current.entries);
+      }
+      if (!prev[current.target]) {
+        prev[current.target] = current.entries;
+      }
+      return prev;
+    },
+    {} as Record<string, SheetEntry[]>,
+  );
 
   if (componentStyles.sheets.length > 0) {
     for (const style of componentStyles.sheets) {
       const oldProps = props[style.prop] ? { ...props[style.prop] } : {};
       props[style.prop] = Object.assign(
-        style.getStyles({
-          isParentActive: parentState.isGroupActive,
-          isPointerActive: state.isLocalActive,
-          dark: colorScheme.get() === 'dark',
-        }),
+        style.getStyles(
+          {
+            isParentActive: parentState.isGroupActive,
+            isPointerActive: state.isLocalActive,
+            dark: colorScheme.get() === 'dark',
+          },
+          entriesFinalSheet[style.prop] ?? [],
+        ),
         oldProps,
       );
     }

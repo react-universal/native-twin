@@ -18,6 +18,7 @@ function HomeScreen() {
           md:(m-10)
           bg-red-500
         `}
+        debug
       >
         <Button size='large' />
         <View className='bg-white shadow-md rounded-xl p-2'>
@@ -40,7 +41,7 @@ function HomeScreen() {
       >
         <Text
           className={`
-            font-inter-bold text-2xl capitalize
+            font-inter-bold text-5xl capitalize
             ${active ? 'text-red-800' : 'text-primary'}
           `}
         >

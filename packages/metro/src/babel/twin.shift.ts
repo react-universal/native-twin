@@ -9,9 +9,8 @@ const project = new Project({
 });
 
 export const twinShift = async (filename: string, code: string, twin: RuntimeTW) => {
-  project.enableLogging(true);
   const ast = project.createSourceFile(filename, code, {
-    overwrite: false,
+    overwrite: true,
   });
 
   const elements: JSXElementNode[] = [];
@@ -30,7 +29,16 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
 
         if (childElement) {
           const styledAttribute = tsUtils.entriesToObject(jsxNode.metadata.id, entries);
-          tsUtils.addAttributeToJSXElement(node, '_twinComponentSheet', styledAttribute);
+          tsUtils.addAttributeToJSXElement(
+            node,
+            '_twinComponentSheet',
+            styledAttribute.styledProp,
+          );
+          tsUtils.addAttributeToJSXElement(
+            node,
+            '_twinComponentTemplateEntries',
+            `${styledAttribute.templateEntries}`,
+          );
         }
         elements.push(jsxNode);
       }

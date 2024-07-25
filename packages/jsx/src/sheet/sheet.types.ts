@@ -49,7 +49,7 @@ export interface ComponentSheet {
   prop: string;
   sheet: FinalSheet;
   getChildStyles(input: Partial<GetChildStylesArgs>): AnyStyle;
-  getStyles: (input: Partial<SheetInteractionState>) => AnyStyle;
+  getStyles: (input: Partial<SheetInteractionState>, templateEntries?: SheetEntry[]) => AnyStyle;
   metadata: {
     isGroupParent: boolean;
     hasGroupEvents: boolean;

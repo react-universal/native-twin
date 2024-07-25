@@ -62,5 +62,5 @@ export const useStyledProps = (
     });
     return () => obs();
   }, []);
-  return { state, onChange, parentState, componentStyles };
+  return { state, onChange, parentState, componentStyles, styledCtx };
 };

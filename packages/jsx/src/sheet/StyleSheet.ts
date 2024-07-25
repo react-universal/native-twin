@@ -121,11 +121,17 @@ export function createComponentSheet(
     },
   };
 
-  function getStyles(input: Partial<SheetInteractionState>) {
-    const styles: AnyStyle = { ...sheet.base };
-    if (input.dark) Object.assign(styles, { ...sheet.dark });
-    if (input.isPointerActive) Object.assign(styles, { ...sheet.pointer });
-    if (input.isParentActive) Object.assign(styles, { ...sheet.group });
+  function getStyles(
+    input: Partial<SheetInteractionState>,
+    templateEntries: SheetEntry[] = [],
+  ) {
+    const templateFinal = StyleSheet.entriesToFinalSheet(templateEntries);
+    const styles: AnyStyle = { ...sheet.base, ...templateFinal.base };
+    if (input.dark) Object.assign(styles, { ...sheet.dark, ...templateFinal.dark });
+    if (input.isPointerActive)
+      Object.assign(styles, { ...sheet.pointer, ...templateFinal.pointer });
+    if (input.isParentActive)
+      Object.assign(styles, { ...sheet.group, ...templateFinal.group });
 
     return styles;
   }

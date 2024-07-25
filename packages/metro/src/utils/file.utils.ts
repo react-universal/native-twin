@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 export function ensureBuffer(file: Buffer | string): Buffer {
-  return Buffer.isBuffer(file) ? file : Buffer.from(file, 'utf8');
+  return Buffer.isBuffer(file) ? file : Buffer.from(file);
 }
 
 export function matchCss(filePath: string): boolean {

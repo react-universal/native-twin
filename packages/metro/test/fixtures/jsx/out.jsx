@@ -53,6 +53,7 @@
         target: "style",
         templateLiteral: null
       }]),
+      _twinComponentTemplateEntries: [],
       children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
         className: `
           flex-1 items-center justify-center md:border-2
@@ -65,8 +66,8 @@
         debug: true,
         isFirstChild: true,
         ord: 0,
-        _twinComponentID: "fixtures/out.tsx-1166-1928-View",
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-1166-1928-View", [{
+        _twinComponentID: "fixtures/out.tsx-1201-1963-View",
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-1201-1963-View", [{
           entries: [{
             "className": "flex-1",
             "declarations": [{
@@ -258,6 +259,7 @@
           target: "style",
           templateLiteral: null
         }]),
+        _twinComponentTemplateEntries: [],
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Button.Button, {
           size: "large",
           isFirstChild: true,
@@ -265,8 +267,8 @@
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: "bg-white shadow-md rounded-xl p-2",
           ord: 1,
-          _twinComponentID: "fixtures/out.tsx-5502-5804-View",
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-5502-5804-View", [{
+          _twinComponentID: "fixtures/out.tsx-5572-5874-View",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-5572-5874-View", [{
             entries: [{
               "className": "bg-white",
               "declarations": [{
@@ -327,6 +329,7 @@
             target: "style",
             templateLiteral: null
           }]),
+          _twinComponentTemplateEntries: [],
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: `
               text(center xl primary)
@@ -334,8 +337,8 @@
             `,
             isFirstChild: true,
             ord: 0,
-            _twinComponentID: "fixtures/out.tsx-6847-7062-Text",
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-6847-7062-Text", [{
+            _twinComponentID: "fixtures/out.tsx-6952-7167-Text",
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-6952-7167-Text", [{
               entries: [{
                 "className": "text-center",
                 "declarations": [{
@@ -397,6 +400,7 @@
               target: "style",
               templateLiteral: null
             }]),
+            _twinComponentTemplateEntries: [],
             children: "Hello World"
           })
         })]
@@ -407,8 +411,8 @@
           bg-gray-800 hover:bg-pink-600
         `,
         ord: 1,
-        _twinComponentID: "fixtures/out.tsx-8475-9853-View",
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-8475-9853-View", [{
+        _twinComponentID: "fixtures/out.tsx-8615-9993-View",
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-8615-9993-View", [{
           entries: [{
             "className": "group",
             "declarations": [],
@@ -477,6 +481,7 @@
           target: "style",
           templateLiteral: null
         }]),
+        _twinComponentTemplateEntries: [],
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
           className: `
             font-inter-bold text-2xl capitalize
@@ -484,8 +489,8 @@
           `,
           isFirstChild: true,
           ord: 0,
-          _twinComponentID: "fixtures/out.tsx-10077-10304-Text",
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-10077-10304-Text", [{
+          _twinComponentID: "fixtures/out.tsx-10252-10479-Text",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-10252-10479-Text", [{
             entries: [{
               "className": "font-inter-bold",
               "declarations": [{
@@ -525,8 +530,15 @@
             },
             prop: "className",
             target: "style",
-            templateLiteral: `${active ? 'text-red-800' : 'text-primary'}`
+            templateLiteral: `${active ? 'text-red-800' : 'text-primary'}`,
+            templateEntries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`)
           }]),
+          _twinComponentTemplateEntries: [{
+            entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
+            id: "fixtures/out.tsx-10252-10479-Text",
+            target: "style",
+            prop: "className"
+          }],
           children: "Nested Hover22222"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Pressable, {
           onPressIn: function onPressIn() {
@@ -535,14 +547,15 @@
             });
           },
           ord: 1,
-          _twinComponentID: "fixtures/out.tsx-11370-11607-Pressable",
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-11370-11607-Pressable", []),
+          _twinComponentID: "fixtures/out.tsx-11994-12231-Pressable",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-11994-12231-Pressable", []),
+          _twinComponentTemplateEntries: [],
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: "text-gray-200  text-3xl",
             isFirstChild: true,
             ord: 0,
-            _twinComponentID: "fixtures/out.tsx-11723-11808-Text",
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-11723-11808-Text", [{
+            _twinComponentID: "fixtures/out.tsx-12382-12467-Text",
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-12382-12467-Text", [{
               entries: [{
                 "className": "text-gray-200",
                 "declarations": [{
@@ -574,6 +587,7 @@
               target: "style",
               templateLiteral: null
             }]),
+            _twinComponentTemplateEntries: [],
             children: "Activate"
           })
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Image, {
@@ -587,8 +601,8 @@
           },
           ord: 2,
           isLastChild: true,
-          _twinComponentID: "fixtures/out.tsx-12732-13021-Image",
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-12732-13021-Image", [{
+          _twinComponentID: "fixtures/out.tsx-13426-13715-Image",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-13426-13715-Image", [{
             entries: [{
               "className": "-translate-x-[10vw]",
               "declarations": [{
@@ -652,7 +666,8 @@
             prop: "className",
             target: "style",
             templateLiteral: null
-          }])
+          }]),
+          _twinComponentTemplateEntries: []
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TextField.TextField, {
           ord: 3
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
@@ -663,8 +678,8 @@
           `,
           debug: true,
           ord: 4,
-          _twinComponentID: "fixtures/out.tsx-14394-14839-View",
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-14394-14839-View", [{
+          _twinComponentID: "fixtures/out.tsx-15123-15568-View",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-15123-15568-View", [{
             entries: [{
               "className": "-top-1",
               "declarations": [{
@@ -749,13 +764,14 @@
             target: "style",
             templateLiteral: null
           }]),
+          _twinComponentTemplateEntries: [],
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             suppressHighlighting: true,
             className: "font-inter-bold rotate-6 text-2xl text-gray-800 group-hover:text-white -mt-2",
             isFirstChild: true,
             ord: 0,
-            _twinComponentID: "fixtures/out.tsx-16310-16539-Text",
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-16310-16539-Text", [{
+            _twinComponentID: "fixtures/out.tsx-17074-17303-Text",
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-17074-17303-Text", [{
               entries: [{
                 "className": "font-inter-bold",
                 "declarations": [{
@@ -830,6 +846,7 @@
               target: "style",
               templateLiteral: null
             }]),
+            _twinComponentTemplateEntries: [],
             children: "Deeply nested hover"
           })
         })]
@@ -869,7 +886,7 @@
         "important": false,
         "animations": []
       }]
-    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-1166-1928-View", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-1166-1928-View", [{
+    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-1201-1963-View", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-1201-1963-View", [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1060,7 +1077,7 @@
         "important": false,
         "animations": []
       }]
-    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-5502-5804-View", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-5502-5804-View", [{
+    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-5572-5874-View", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-5572-5874-View", [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1120,7 +1137,7 @@
         "important": false,
         "animations": []
       }]
-    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-6847-7062-Text", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-6847-7062-Text", [{
+    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-6952-7167-Text", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-6952-7167-Text", [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1181,7 +1198,7 @@
         "important": false,
         "animations": []
       }]
-    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-8475-9853-View", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-8475-9853-View", [{
+    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-8615-9993-View", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-8615-9993-View", [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1249,7 +1266,7 @@
         "important": false,
         "animations": []
       }]
-    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-10077-10304-Text", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-10077-10304-Text", [{
+    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-10252-10479-Text", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-10252-10479-Text", [{
       "prop": "className",
       "target": "style",
       "templateLiteral": "${active ? 'text-red-800' : 'text-primary'}",
@@ -1290,7 +1307,7 @@
         "important": false,
         "animations": []
       }]
-    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-11370-11607-Pressable", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-11370-11607-Pressable", [])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-11723-11808-Text", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-11723-11808-Text", [{
+    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-11994-12231-Pressable", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-11994-12231-Pressable", [])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-12382-12467-Text", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-12382-12467-Text", [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1321,7 +1338,7 @@
         "important": false,
         "animations": []
       }]
-    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-12732-13021-Image", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-12732-13021-Image", [{
+    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-13426-13715-Image", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-13426-13715-Image", [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1385,7 +1402,7 @@
         "important": false,
         "animations": []
       }]
-    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-14394-14839-View", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-14394-14839-View", [{
+    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-15123-15568-View", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-15123-15568-View", [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1469,7 +1486,7 @@
         "important": false,
         "animations": []
       }]
-    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-16310-16539-Text", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-16310-16539-Text", [{
+    }])), (0, _defineProperty2.default)(_ref, "fixtures/out.tsx-17074-17303-Text", require("@native-twin/jsx").StyleSheet.registerComponent("fixtures/out.tsx-17074-17303-Text", [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1579,7 +1596,7 @@
         "animations": []
       }]
     }],
-    "fixtures/out.tsx-1166-1928-View": [{
+    "fixtures/out.tsx-1201-1963-View": [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1771,7 +1788,7 @@
         "animations": []
       }]
     }],
-    "fixtures/out.tsx-5502-5804-View": [{
+    "fixtures/out.tsx-5572-5874-View": [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1832,7 +1849,7 @@
         "animations": []
       }]
     }],
-    "fixtures/out.tsx-6847-7062-Text": [{
+    "fixtures/out.tsx-6952-7167-Text": [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1894,7 +1911,7 @@
         "animations": []
       }]
     }],
-    "fixtures/out.tsx-8475-9853-View": [{
+    "fixtures/out.tsx-8615-9993-View": [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -1963,7 +1980,7 @@
         "animations": []
       }]
     }],
-    "fixtures/out.tsx-10077-10304-Text": [{
+    "fixtures/out.tsx-10252-10479-Text": [{
       "prop": "className",
       "target": "style",
       "templateLiteral": "${active ? 'text-red-800' : 'text-primary'}",
@@ -2005,8 +2022,8 @@
         "animations": []
       }]
     }],
-    "fixtures/out.tsx-11370-11607-Pressable": [],
-    "fixtures/out.tsx-11723-11808-Text": [{
+    "fixtures/out.tsx-11994-12231-Pressable": [],
+    "fixtures/out.tsx-12382-12467-Text": [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -2038,7 +2055,7 @@
         "animations": []
       }]
     }],
-    "fixtures/out.tsx-12732-13021-Image": [{
+    "fixtures/out.tsx-13426-13715-Image": [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -2103,7 +2120,7 @@
         "animations": []
       }]
     }],
-    "fixtures/out.tsx-14394-14839-View": [{
+    "fixtures/out.tsx-15123-15568-View": [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
@@ -2188,7 +2205,7 @@
         "animations": []
       }]
     }],
-    "fixtures/out.tsx-16310-16539-Text": [{
+    "fixtures/out.tsx-17074-17303-Text": [{
       "prop": "className",
       "target": "style",
       "templateLiteral": null,
