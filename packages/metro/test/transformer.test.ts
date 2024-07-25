@@ -1,58 +1,19 @@
-import type {
-  JsTransformOptions,
-  JsTransformerConfig,
-  JsOutput,
-} from 'metro-transform-worker';
+import type { JsOutput } from 'metro-transform-worker';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createTailwind } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { twinShift } from '../src/babel/twin.shift';
 import { transform } from '../src/transformer/metro.transformer';
-import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../src/utils/constants';
 import { createCacheDir } from '../src/utils/file.utils';
 import twConfig from './tailwind.config';
-
-const babelTransformerPath = require.resolve('@react-native/metro-babel-transformer');
-
-const baseConfig: JsTransformerConfig = {
-  unstable_collectDependenciesPath: '',
-  allowOptionalDependencies: false,
-  assetPlugins: [],
-  assetRegistryPath: '',
-  asyncRequireModulePath: 'asyncRequire',
-  babelTransformerPath,
-  dynamicDepsInPackages: 'reject',
-  enableBabelRCLookup: false,
-  enableBabelRuntime: true,
-  globalPrefix: '',
-  hermesParser: false,
-  minifierConfig: { output: { comments: false } },
-  minifierPath: 'minifyModulePath',
-  optimizationSizeLimit: 100000,
-  publicPath: '/assets',
-  unstable_dependencyMapReservedName: undefined,
-  unstable_compactOutput: false,
-  unstable_disableModuleWrapping: false,
-  unstable_disableNormalizePseudoGlobals: false,
-  unstable_allowRequireContext: false,
-};
-
-const baseTransformOptions: JsTransformOptions = {
-  dev: true,
-  hot: false,
-  inlinePlatform: false,
-  inlineRequires: false,
-  minify: false,
-  platform: 'ios',
-  type: 'module',
-
-  unstable_transformProfile: 'default',
-};
-
-const jsxCodeOutputPath = path.join(__dirname, 'fixtures', 'jsx', 'ts-out.tsx');
-const metroCodeOutputPath = path.join(__dirname, 'fixtures', 'jsx', 'out.jsx');
-const twinFilePath = path.join(__dirname, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
+import {
+  jsxCodeOutputPath,
+  metroCodeOutputPath,
+  metroTestBaseConfig,
+  testBaseTransformOptions,
+  twinFilePath,
+} from './test.utils';
 
 beforeAll(() => {
   console.log('ROOT: ', path.join(__dirname));
@@ -61,13 +22,24 @@ beforeAll(() => {
 });
 
 describe('Metro transformer', () => {
-  it('metro', async () => {
+  it('typescript parser', async () => {
+    const twin = createTailwind(twConfig, createVirtualSheet());
+    const result = await twinShift(
+      'fixtures/code.tsx',
+      fs.readFileSync(path.join(__dirname, 'fixtures/jsx', 'code.tsx'), 'utf-8'),
+      twin,
+    );
+    fs.writeFileSync(jsxCodeOutputPath, result.full ?? 'ERROR');
+    expect(result.code).toBeDefined();
+  });
+
+  it('metro transformer', async () => {
     const result = await transform(
-      { ...baseConfig, projectRoot: path.join(__dirname) } as any,
+      { ...metroTestBaseConfig, projectRoot: path.join(__dirname) } as any,
       path.join(__dirname),
       'fixtures/out.tsx',
       fs.readFileSync(path.join(__dirname, 'fixtures/jsx', 'code.tsx')),
-      { ...baseTransformOptions, type: 'script' },
+      { ...testBaseTransformOptions, type: 'script' },
     );
 
     const code =
@@ -77,16 +49,5 @@ describe('Metro transformer', () => {
 
     fs.writeFileSync(metroCodeOutputPath, code);
     expect(code).toBeDefined();
-  });
-
-  it('typescript', async () => {
-    const twin = createTailwind(twConfig, createVirtualSheet());
-    const result = await twinShift(
-      'fixtures/code.tsx',
-      fs.readFileSync(path.join(__dirname, 'fixtures/jsx', 'code.tsx'), 'utf-8'),
-      twin,
-    );
-    fs.writeFileSync(jsxCodeOutputPath, result.full ?? 'ERROR');
-    expect(result.code).toBeDefined();
   });
 });

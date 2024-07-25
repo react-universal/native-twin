@@ -41,7 +41,7 @@ function HomeScreen() {
       >
         <Text
           className={`
-            font-inter-bold text-5xl capitalize
+            font-inter-bold text-2xl capitalize
             ${active ? 'text-red-800' : 'text-primary'}
           `}
         >
