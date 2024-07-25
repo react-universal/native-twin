@@ -20,7 +20,7 @@ export interface JSXElementHandler {
 }
 
 export interface JSXOpeningElementHandler {
-  openingElement: t.JSXOpeningElement,
+  openingElement: t.JSXOpeningElement;
   getElementName: () => Option.Option<string>;
   getElementConfig: () => Option.Option<MappedComponent>;
   mutateAttributes: (fn: MapAttributeFn) => void;
@@ -41,13 +41,13 @@ export interface StyledPropEntries {
   entries: SheetEntry[];
   prop: string;
   target: string;
-  expression: t.TemplateLiteral | null;
+  expression: string | null;
   classNames: string;
 }
 export interface RuntimeComponentEntry {
   prop: string;
   target: string;
   entries: SheetEntry[];
-  templateLiteral: string;
+  templateLiteral: string | null;
   metadata: ComponentSheet['metadata'];
 }

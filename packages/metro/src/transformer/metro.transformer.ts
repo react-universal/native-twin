@@ -1,9 +1,14 @@
+import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import path from 'node:path';
+import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
+import { splitClasses } from '../babel/utils/ts.utils';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
-// import { sendUpdate } from '../server/poll-updates-server';
+import { sendUpdate } from '../server/poll-updates-server';
+import { BabelSheetEntry } from '../sheet/Sheet.model';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
 import type { TwinTransformFn } from '../types/transformer.types';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE, twinHMRString } from '../utils/constants';
@@ -64,14 +69,38 @@ const program = Effect.gen(function* () {
 
   const compiled = yield* Effect.promise(() => transformFile.compileFile(twin.tw));
 
-  if (compiled && compiled.classNames.length > 0) {
-    // const registered = sheet.registerEntries(compiled.entries, context.platform);
-    // const runtimeStyles = Array.from(compiled.twinComponentStyles.entries());
-    // const styledFn = sheet.getComponentFunction(Array.from(runtimeStyles));
-    // const code = `${compiled.code}\n`;
-    // if (registered) {
-    //   sendUpdate(sheet.getSheetDocumentText(), file.version);
-    // }
+  const classNames = pipe(
+    compiled.components,
+    RA.map((x) => {
+      return {
+        ...x,
+        entries: x.getComponentEntries(twin.tw),
+        componentClasses: RA.flatMap(x.mappedAttributes, (x) =>
+          splitClasses(x.value.literal),
+        ),
+      };
+    }),
+  );
+
+  const babelEntries = pipe(
+    classNames,
+    RA.flatMap((x) => x.entries.flatMap((x) => x.entries)),
+    RA.map((x) => new BabelSheetEntry(x)),
+  );
+  const runtimeStyles: [string, RuntimeComponentEntry[]][] = pipe(
+    classNames,
+    RA.map((x) => [x.metadata.id, x.entries]),
+  );
+
+  if (compiled && classNames.length > 0) {
+    const registered = sheet.registerEntries(babelEntries, context.platform);
+
+    const styledFn = sheet.getComponentFunction(runtimeStyles);
+    compiled.full = `${compiled.full}\n${styledFn}`;
+    compiled.full = `${compiled.full}\nvar __twinComponentStyles = ${JSON.stringify(Object.fromEntries(runtimeStyles))}`;
+    if (registered) {
+      sendUpdate(sheet.getSheetDocumentText(), transformFile.version);
+    }
   }
 
   return transformer.transform(compiled.full, false);

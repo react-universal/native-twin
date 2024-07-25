@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 export function ensureBuffer(file: Buffer | string): Buffer {
   return Buffer.isBuffer(file) ? file : Buffer.from(file, 'utf8');
 }
@@ -17,4 +20,19 @@ export const createObjectExpression = (values: [string, any][]) => {
 };
 const createKeyValuePair = (value: [string, any]) => {
   return `["${value[0]}"]: ${value[1]}`;
+};
+
+export const createCacheDir = (rootPath: string) => {
+  const nodeModulesDir = path.join(rootPath, 'node_modules');
+  const cacheDir = path.join(nodeModulesDir, '.cache');
+  const twinDir = path.join(cacheDir, 'native-twin');
+  if (!fs.existsSync(nodeModulesDir)) {
+    fs.mkdirSync(nodeModulesDir);
+  }
+  if (!fs.existsSync(cacheDir)) {
+    fs.mkdirSync(cacheDir);
+  }
+  if (!fs.existsSync(twinDir)) {
+    fs.mkdirSync(twinDir);
+  }
 };

@@ -89,7 +89,7 @@ const compileMappedAttribute = (classNameValue: JSXMappedAttribute, twin: Runtim
     const cooked = templateLiteralToStringLike(classNameValue.value);
     classProp.classNames = cooked.strings;
     classProp.entries = twin(`${cooked.strings}`);
-    classProp.expression = cooked.expressions;
+    // classProp.expression = cooked.expressions;
   }
 
   return classProp;

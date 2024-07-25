@@ -1,61 +1,50 @@
-import type { JsxElement } from 'ts-morph';
-import { Project, SyntaxKind } from 'ts-morph';
-import { JSXElementNode } from './models/tsx.models';
+import type { JsxOpeningElement, JsxSelfClosingElement } from 'ts-morph';
+import { Node, Project } from 'ts-morph';
+import type { RuntimeTW } from '@native-twin/core';
+import { type JSXElementNode, createJSXElementNode } from './models/tsx.models';
 import * as tsUtils from './utils/ts.utils';
 
 const project = new Project({
   useInMemoryFileSystem: true,
 });
 
-export const twinShift = async (filename: string, code: string) => {
+export const twinShift = async (filename: string, code: string, twin: RuntimeTW) => {
+  project.enableLogging(true);
   const ast = project.createSourceFile(filename, code, {
     overwrite: false,
   });
 
-  const jsxElements = ast.getDescendantsOfKind(SyntaxKind.JsxElement);
-
   const elements: JSXElementNode[] = [];
-  for (const element of jsxElements) {
-    const node = getJSXElementNode(element, filename);
-    if (!node) continue;
-    elements.push(node);
-  }
+  ast.forEachDescendant((node, _traversal) => {
+    if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
+      const jsxNode = createJSXElementNode(node, filename);
+      if (jsxNode) {
+        const entries = jsxNode.getComponentEntries(twin);
+        let childElement: JsxOpeningElement | JsxSelfClosingElement | null = null;
 
-  ast.saveSync();
+        if (Node.isJsxElement(node)) {
+          childElement = node.getOpeningElement();
+        } else if (Node.isJsxSelfClosingElement(node)) {
+          childElement = node;
+        }
+
+        if (childElement) {
+          const styledAttribute = tsUtils.entriesToObject(jsxNode.metadata.id, entries);
+          tsUtils.addAttributeToJSXElement(node, '_twinComponentSheet', styledAttribute);
+        }
+        elements.push(jsxNode);
+      }
+    }
+  });
+
+  await ast.save();
 
   const result = {
     code: ast.getText(),
     full: ast.getFullText(),
     compilerNode: ast.compilerNode.text,
-    elements,
-    classNames: elements.map((x) => x.classNamesString),
+    components: elements,
   };
 
   return result;
-};
-
-const getJSXElementNode = (element: JsxElement, filename: string, order = 0) => {
-  const jsxAttributes = tsUtils.getJSXElementAttributes(element);
-  if (!jsxAttributes) return null;
-
-  const childs = element.getDescendants();
-  const childsCount = element.getChildCount();
-  for (const child of childs) {
-    if (!tsUtils.isValidJSXElement(child)) continue;
-
-    if (order === 0) {
-      tsUtils.addAttributeToJSXElement(child, 'isFirstChild', `{true}`);
-    }
-    tsUtils.addAttributeToJSXElement(child, 'ord', `{${order++}}`);
-    if (order === childsCount) {
-      tsUtils.addAttributeToJSXElement(child, 'isLastChild', `{true}`);
-    }
-  }
-
-  return new JSXElementNode({
-    element,
-    ...jsxAttributes,
-    filename,
-    order,
-  });
 };

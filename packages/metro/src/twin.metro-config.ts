@@ -5,6 +5,7 @@ import { decorateMetroServer } from './server/server.decorator';
 import type { ComposableIntermediateConfigT } from './types/metro.types';
 import type { MetroWithNativeWindOptions } from './types/metro.types';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from './utils/constants';
+import { createCacheDir } from './utils/file.utils';
 import { getUserNativeWindConfig } from './utils/load-config';
 
 export function withNativeTwin(
@@ -15,10 +16,9 @@ export function withNativeTwin(
     configPath: twinConfigPath = 'tailwind.config.ts',
   }: MetroWithNativeWindOptions = {},
 ): ComposableIntermediateConfigT {
+  createCacheDir(projectRoot);
   const twinFilePath = path.join(projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
-  if (fs.existsSync(twinFilePath)) {
-    fs.writeFileSync(twinFilePath, '');
-  }
+  fs.writeFileSync(twinFilePath, '');
   const getTransformOptions = async (...args: Parameters<GetTransformOptions>) => {
     return metroConfig.transformer?.getTransformOptions(...args);
   };

@@ -91,7 +91,6 @@ export const StyleSheetServiceLive = Layer.scoped(
     }
 
     function registerEntries(entries: BabelSheetEntry[], platform: string): string {
-      console.log('BEFORE_JSON: ', MHS.size(entriesSet));
       entries = entries.filter((x) => {
         if (x.selectors.length === 0) return true;
         const hasWeb = x.selectors.some((x) => x.includes('web'));
@@ -112,8 +111,6 @@ export const StyleSheetServiceLive = Layer.scoped(
         const exists = pipe(entriesSet, MHS.has(entry));
         if (!exists) {
           entriesSet.pipe(MHS.add(entry), MHS.size);
-        } else {
-          console.log('ALREADY_EXISTS', entry.className, MHS.size(entriesSet));
         }
 
         if (sheetEntries.some((x) => x.className === entry.className)) {
@@ -121,7 +118,6 @@ export const StyleSheetServiceLive = Layer.scoped(
         }
         sheetEntries.push(entry);
       }
-      console.log('AFTER_JSON: ', MHS.size(entriesSet));
 
       return refreshSheet();
     }

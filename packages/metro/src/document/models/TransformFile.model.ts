@@ -48,7 +48,7 @@ export class TransformFile implements Equal.Equal {
   }
 
   compileFile(tw: RuntimeTW) {
-    return twinShift(this.filename, this.getText());
+    return twinShift(this.filename, this.getText(), tw);
   }
 
   getTwinComponentStyles(compiled: [string, RuntimeComponentEntry[]][]) {

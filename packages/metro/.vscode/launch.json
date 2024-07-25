@@ -3,8 +3,7 @@
     {
       "type": "node",
       "request": "launch",
-      "internalConsoleOptions": "neverOpen",
-      "name": "Jest",
+      "name": "Test Metro plugin",
       "program": "../../node_modules/jest/bin/jest",
       "args": [
         "--runInBand",
@@ -12,7 +11,7 @@
         "--watch"
       ],
       "autoAttachChildProcesses": true,
-      "console": "internalConsole",
+      "console": "integratedTerminal",
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",
         "!**/node_modules/**"

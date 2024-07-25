@@ -1,4 +1,3 @@
-import generator from '@babel/generator';
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as Option from 'effect/Option';
@@ -74,7 +73,7 @@ export const createJSXOpeningElementHandler = (
     if (classProps.expression) {
       const template = t.jsxAttribute(
         t.jsxIdentifier('__classNameExpression'),
-        t.jsxExpressionContainer(classProps.expression),
+        // t.jsxExpressionContainer(classProps.expression),
       );
       openingElement.attributes.push(template);
     }
@@ -101,7 +100,7 @@ export const createJSXOpeningElementHandler = (
       target: classProps.target,
       entries: classProps.entries,
       metadata,
-      templateLiteral: classProps.expression ? generator(classProps.expression).code : ``,
+      templateLiteral: classProps.expression ? classProps.expression : ``,
     };
     return [classProps.classNames, data];
   }
