@@ -2,6 +2,7 @@ import CodeBlock from 'code-block-writer';
 import * as Array from 'effect/Array';
 import { pipe } from 'effect/Function';
 import type {
+  Identifier,
   JsxElement,
   JsxOpeningElement,
   JsxSelfClosingElement,
@@ -15,6 +16,30 @@ import { cx } from '@native-twin/core';
 import type { JSXMappedAttribute } from '../../document/models/tsx.models';
 import { type MappedComponent, mappedComponents } from '../../utils';
 
+export const getImportDeclaration = (ident: Identifier) => {
+  const symbol = ident.getSymbol();
+  if (!symbol) return null;
+
+  const declarations = symbol.getDeclarations().map((x) => x.compilerNode);
+  const foundImport = declarations.find((x) => ts.isImportSpecifier(x));
+
+  if (!foundImport) return null;
+
+  const importDeclaration = foundImport.parent.parent.parent;
+  if (!ts.isImportDeclaration(importDeclaration)) return null;
+
+  return importDeclaration;
+};
+
+export const getJSXElementTagName = (element: JsxElement | JsxSelfClosingElement) => {
+  const openingElement = Node.isJsxSelfClosingElement(element)
+    ? element
+    : element.getOpeningElement();
+
+  const tagNameNode = openingElement.getTagNameNode();
+  if (!Node.isIdentifier(tagNameNode)) return null;
+  return tagNameNode;
+};
 /** @domain TypeScript Transform */
 export const getJSXElementAttributes = (element: JsxElement | JsxSelfClosingElement) => {
   const openingElement = Node.isJsxSelfClosingElement(element)
@@ -23,9 +48,11 @@ export const getJSXElementAttributes = (element: JsxElement | JsxSelfClosingElem
 
   const tagNameNode = openingElement.getTagNameNode();
   if (!Node.isIdentifier(tagNameNode)) return null;
-  const tagName = tagNameNode.compilerNode.text;
+  const tagName = tagNameNode;
 
-  const componentConfig = mappedComponents.find((x) => x.name === tagName);
+  const componentConfig = mappedComponents.find(
+    (x) => x.name === tagName.compilerNode.text,
+  );
   if (!componentConfig) return null;
 
   const classNames: JSXMappedAttribute[] = pipe(

@@ -14,7 +14,7 @@ function HomeScreen() {
         // debug
       >
         <Button size='large' />
-        <View className='bg-purple-200 shadow-xl rounded-2xl p-2'>
+        <View className='bg-red-200 shadow-xl rounded-2xl p-2'>
           <Text
             className={`
               text(center red-500)
@@ -29,13 +29,13 @@ function HomeScreen() {
         className={`
           group
           flex-[2] items-center justify-center
-          bg-gray-800 hover:bg-pink-600
+          bg-gray-800 hover:bg-red-600
         `}
       >
         <Text
           className={`
-            font-inter-bold text-2xl capitalize
-            ${active ? 'text-green-800' : 'text-red-400'}
+            font-inter-bold text-5xl capitalize
+            ${active ? 'text-purple-800' : 'text-red-400'}
           `}
         >
           Nested Hover22222
@@ -45,7 +45,7 @@ function HomeScreen() {
             setActive((prevState) => !prevState);
           }}
         >
-          <Text className='text-gray-200 text-xl'>Activate</Text>
+          <Text className='text-gray-200 text-sm'>Activate</Text>
         </Pressable>
         <Image
           source={testImage}

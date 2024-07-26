@@ -1,3 +1,4 @@
+import * as NodeFileSystem from '@effect/platform-node-shared/NodeFileSystem';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -20,8 +21,9 @@ import {
 import type { TwinTransformFn } from './transformer.types';
 
 const MainLayer = Layer.mergeAll(
-  DocumentServiceLive,
-  StyleSheetServiceLive,
+  Layer.merge(DocumentServiceLive, StyleSheetServiceLive).pipe(
+    Layer.provide(NodeFileSystem.layer),
+  ),
   MetroTransformerServiceLive,
 );
 
@@ -69,12 +71,13 @@ const program = Effect.gen(function* () {
   const compiled = yield* Effect.promise(() => transformFile.compileFile(twin.tw));
 
   const classNames = pipe(
-    compiled.components,
+    compiled.componentsList,
+    RA.getSomes,
     RA.map((x) => {
       return {
         ...x,
-        entries: x.getComponentEntries(twin.tw),
-        componentClasses: RA.flatMap(x.mappedAttributes, (x) =>
+        entries: x.styles.entries,
+        componentClasses: RA.flatMap(x.elementNode.attributes.classNames, (x) =>
           splitClasses(x.value.literal),
         ),
       };
@@ -93,11 +96,12 @@ const program = Effect.gen(function* () {
     // const styledFn = sheet.getComponentFunction(runtimeStyles);
     // compiled.full = `${compiled.full}\n${styledFn}`;
     // compiled.full = `${compiled.full}\nvar __twinComponentStyles = ${JSON.stringify(Object.fromEntries(runtimeStyles))}`;
+    compiled.full = `${compiled.full}\n${twinHMRString}`;
     if (registered) {
       transformFile.version = transformFile.version + 1;
       sendUpdate(
         sheet.getSheetDocumentText(transformFile.version),
-        transformFile.version + 1,
+        transformFile.version,
       );
     }
   }
@@ -128,6 +132,7 @@ export const transform: TwinTransformFn = async (
       platform: options.platform ?? 'ios',
       sourceCode: ensureBuffer(data),
     }),
+    Effect.scoped,
     Effect.runPromise,
   );
 };

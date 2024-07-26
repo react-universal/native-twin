@@ -11,6 +11,7 @@ export const createMetroResolver = (
 ): ResolverConfigT => {
   return {
     ...metroConfig,
+    sourceExts: [...metroConfig.sourceExts, "css"],
     resolveRequest(context, moduleName, platform) {
       platform = platform || 'native';
 

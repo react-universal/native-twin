@@ -24,6 +24,6 @@ export const debugServerMiddleware = (...args: any[]) => {
 
 export const getMetroURLVersion = (url?: string) => {
   const extractedVersion = url?.split('?version=')[1];
-  debugServerMiddleware('extracted url version', url, extractedVersion);
+  // debugServerMiddleware('extracted url version', url, extractedVersion);
   return parseInt(extractedVersion ?? '0');
 };

@@ -66,7 +66,7 @@ export const StyleSheetServiceLive = Layer.scoped(
 
     function getSheetDocumentText(version: number) {
       const twinStyles = fs.readFileSync(cssOutput, 'utf-8');
-      if (!twinStyles) return `{"version": ${version}}`;
+      if (!twinStyles) return `{"version": ${version},"cssOutput": "${cssOutput}"}`;
 
       let code = `${twinStyles.replace(new RegExp(twinModuleExportString, 'g'), ' ')}`;
       code = code.replace(
@@ -76,15 +76,15 @@ export const StyleSheetServiceLive = Layer.scoped(
       code = `${code.replace(/\n/g, ' ')}`;
 
       if (code === '') {
-        code = `{"version": ${version}}`;
+        code = `{"version": ${version},"cssOutput": "${cssOutput}}"`;
       }
       try {
         const current: object = JSON.parse(code) ?? {};
         const entries = entriesToObject(Object.values(current));
-        return JSON.stringify({ version, ...entries });
+        return JSON.stringify({ version, cssOutput, entries });
       } catch (e: any) {
         console.log('PARSER_ERROR: ', code);
-        return `{"version": ${version}}`;
+        return `{"version": ${version},"cssOutput": "${cssOutput}"}`;
       }
     }
 

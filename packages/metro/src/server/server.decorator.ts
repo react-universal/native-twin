@@ -8,7 +8,7 @@ import { hasOwnProperty } from '@native-twin/helpers';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import type { ComposableIntermediateConfigT, TwinServerDataBuffer } from '../metro.types';
 import { ensureBuffer, setupNativeTwin } from '../utils';
-import { debugServerMiddleware, getMetroURLVersion } from './server.utils';
+import { getMetroURLVersion } from './server.utils';
 
 const connections = new Set<ServerResponse<IncomingMessage>>();
 let haste: any;
@@ -50,21 +50,21 @@ export const decorateMetroServer = (
       });
 
       server.use('/__native_twin_update_endpoint', (req, res) => {
-        debugServerMiddleware('currentState: ', currentState);
+        // debugServerMiddleware('currentState: ', currentState.version);
         const version = getMetroURLVersion(req.url);
         const buffer = fs.readFileSync(cssOut);
         if (!buffer.equals(ensureBuffer(currentState.data))) {
-          debugServerMiddleware('NOT_EQUAL');
+          // debugServerMiddleware('NOT_EQUAL');
           currentState.version++;
           currentState.data = buffer;
         }
-        debugServerMiddleware('METRO_VERSION: ', version);
+        // debugServerMiddleware('METRO_VERSION: ', version);
         if (tw && hasOwnProperty.call(tw, 'theme')) {
-          console.log('TW: EXISTS!!');
+          // console.log('TW: EXISTS!!');
         }
 
         if (version && version < currentState.version) {
-          debugServerMiddleware('WRITE_NEW_DATA', JSON.stringify(currentState.data));
+          // debugServerMiddleware('WRITE_NEW_DATA', JSON.stringify(currentState.data));
           res.write(
             `data: {"version":${currentState.version},"data":${JSON.stringify(currentState.data)}}\n\n`,
           );
@@ -79,16 +79,16 @@ export const decorateMetroServer = (
           'Cache-Control': 'no-cache',
           Connection: 'keep-alive',
         });
-        console.log('SSR_CONN_SIZE: ', connections.size);
+        // console.log('SSR_CONN_SIZE: ', connections.size);
 
         setTimeout(() => {
           res.end();
-          console.debug('MIDDLEWARE: timeout');
+          // console.debug('MIDDLEWARE: timeout');
           connections.delete(res);
         }, 30000);
 
         req.on('close', () => {
-          console.log('REQ_CLOSED');
+          // console.log('REQ_CLOSED');
           connections.delete(res);
         });
       });

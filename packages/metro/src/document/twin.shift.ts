@@ -1,8 +1,10 @@
-import type { JsxOpeningElement, JsxSelfClosingElement } from 'ts-morph';
-import { Node, Project } from 'ts-morph';
+import { Option } from 'effect';
+import { Project } from 'ts-morph';
 import type { RuntimeTW } from '@native-twin/core';
-import { type JSXElementNode, createJSXElementNode } from '../document/models/tsx.models';
+import { type ResultComponent } from './models/tsx.models';
+import { getComponentEntries, getJSXElementNode } from './utils/document.maps';
 import * as tsUtils from './utils/ts.utils';
+import { addOrderToChilds } from './utils/tsx.utils';
 
 const project = new Project({
   useInMemoryFileSystem: true,
@@ -13,36 +15,71 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
     overwrite: true,
   });
 
-  const elements: JSXElementNode[] = [];
+  const componentsList: Option.Option<ResultComponent>[] = [];
   ast.forEachDescendant((node, _traversal) => {
-    if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
-      const jsxNode = createJSXElementNode(node, filename);
-      if (jsxNode) {
-        const entries = jsxNode.getComponentEntries(twin);
-        let childElement: JsxOpeningElement | JsxSelfClosingElement | null = null;
+    const elementNode = getJSXElementNode(node);
 
-        if (Node.isJsxElement(node)) {
-          childElement = node.getOpeningElement();
-        } else if (Node.isJsxSelfClosingElement(node)) {
-          childElement = node;
-        }
+    Option.map(elementNode, (x) => addOrderToChilds(x.jsxElement, 0));
 
-        if (childElement) {
-          const styledAttribute = tsUtils.entriesToObject(jsxNode.metadata.id, entries);
-          tsUtils.addAttributeToJSXElement(
-            node,
-            '_twinComponentSheet',
-            styledAttribute.styledProp,
-          );
-          tsUtils.addAttributeToJSXElement(
-            node,
-            '_twinComponentTemplateEntries',
-            `${styledAttribute.templateEntries}`,
-          );
-        }
-        elements.push(jsxNode);
-      }
-    }
+    const componentStyles = Option.map(elementNode, ({ componentID, attributes }) => {
+      const entries = getComponentEntries(twin, attributes.classNames);
+      return { rawEntries: tsUtils.entriesToObject(componentID, entries), entries };
+    });
+
+    const result: Option.Option<ResultComponent> = Option.zipWith(
+      elementNode,
+      componentStyles,
+      (elementNode, styles) => {
+        tsUtils.addAttributeToJSXElement(
+          elementNode.jsxElement,
+          '_twinComponentSheet',
+          styles.rawEntries.styledProp,
+        );
+        tsUtils.addAttributeToJSXElement(
+          elementNode.jsxElement,
+          '_twinComponentTemplateEntries',
+          `${styles.rawEntries.templateEntries}`,
+        );
+        return {
+          elementNode,
+          styles,
+        };
+      },
+    );
+    componentsList.push(result);
+
+    // if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
+    //   const tagName = tsUtils.getJSXElementTagName(node);
+    //   if (tagName && !maybeReactNativeImport(tagName)) {
+    //     return undefined;
+    //   }
+    //   const jsxNode = createJSXElementNode(node, filename);
+    //   if (jsxNode) {
+    //     const entries = jsxNode.getComponentEntries(twin);
+    //     let childElement: JsxOpeningElement | JsxSelfClosingElement | null = null;
+
+    //     if (Node.isJsxElement(node)) {
+    //       childElement = node.getOpeningElement();
+    //     } else if (Node.isJsxSelfClosingElement(node)) {
+    //       childElement = node;
+    //     }
+
+    //     if (childElement) {
+    //       const styledAttribute = tsUtils.entriesToObject(jsxNode.metadata.id, entries);
+    //       tsUtils.addAttributeToJSXElement(
+    //         node,
+    //         '_twinComponentSheet',
+    //         styledAttribute.styledProp,
+    //       );
+    //       tsUtils.addAttributeToJSXElement(
+    //         node,
+    //         '_twinComponentTemplateEntries',
+    //         `${styledAttribute.templateEntries}`,
+    //       );
+    //     }
+    //     elements.push(jsxNode);
+    //   }
+    // }
   });
 
   await ast.save();
@@ -51,7 +88,7 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
     code: ast.getText(),
     full: ast.getFullText(),
     compilerNode: ast.compilerNode.text,
-    components: elements,
+    componentsList,
   };
 
   return result;

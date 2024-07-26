@@ -19,7 +19,8 @@
       setActive = _useState2[1];
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "flex-1 bg-red",
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-352-2399-View", [{
+      _twinComponentID: "fixtures/out.tsx-352-2435-View",
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-352-2435-View", [{
         entries: [{
           "className": "flex-1",
           "declarations": [{
@@ -64,7 +65,8 @@
         debug: true,
         isFirstChild: true,
         ord: 0,
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1152-1878-View", [{
+        _twinComponentID: "fixtures/out.tsx-1201-1963-View",
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-1201-1963-View", [{
           entries: [{
             "className": "flex-1",
             "declarations": [{
@@ -264,7 +266,8 @@
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: "bg-white shadow-md rounded-xl p-2",
           ord: 1,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-5473-5747-View", [{
+          _twinComponentID: "fixtures/out.tsx-5572-5874-View",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-5572-5874-View", [{
             entries: [{
               "className": "bg-white",
               "declarations": [{
@@ -333,7 +336,8 @@
             `,
             isFirstChild: true,
             ord: 0,
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-6803-7018-Text", [{
+            _twinComponentID: "fixtures/out.tsx-6952-7167-Text",
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-6952-7167-Text", [{
               entries: [{
                 "className": "text-center",
                 "declarations": [{
@@ -406,7 +410,8 @@
           bg-gray-800 hover:bg-pink-600
         `,
         ord: 1,
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-8416-9715-View", [{
+        _twinComponentID: "fixtures/out.tsx-8615-9993-View",
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-8615-9993-View", [{
           entries: [{
             "className": "group",
             "declarations": [],
@@ -483,7 +488,8 @@
           `,
           isFirstChild: true,
           ord: 0,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-10003-10230-Text", [{
+          _twinComponentID: "fixtures/out.tsx-10252-10479-Text",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-10252-10479-Text", [{
             entries: [{
               "className": "font-inter-bold",
               "declarations": [{
@@ -528,7 +534,7 @@
           }]),
           _twinComponentTemplateEntries: [{
             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
-            id: "/fixtures/out.tsx-10003-10230-Text",
+            id: "fixtures/out.tsx-10252-10479-Text",
             target: "style",
             prop: "className"
           }],
@@ -540,13 +546,15 @@
             });
           },
           ord: 1,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-11694-11903-Pressable", []),
+          _twinComponentID: "fixtures/out.tsx-11994-12231-Pressable",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-11994-12231-Pressable", []),
           _twinComponentTemplateEntries: [],
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: "text-gray-200  text-3xl",
             isFirstChild: true,
             ord: 0,
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-12025-12110-Text", [{
+            _twinComponentID: "fixtures/out.tsx-12382-12467-Text",
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-12382-12467-Text", [{
               entries: [{
                 "className": "text-gray-200",
                 "declarations": [{
@@ -592,7 +600,8 @@
           },
           ord: 2,
           isLastChild: true,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-13017-13306-Image", [{
+          _twinComponentID: "fixtures/out.tsx-13426-13715-Image",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-13426-13715-Image", [{
             entries: [{
               "className": "-translate-x-[10vw]",
               "declarations": [{
@@ -668,7 +677,8 @@
           `,
           debug: true,
           ord: 4,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-14661-15078-View", [{
+          _twinComponentID: "fixtures/out.tsx-15123-15568-View",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-15123-15568-View", [{
             entries: [{
               "className": "-top-1",
               "declarations": [{
@@ -759,7 +769,8 @@
             className: "font-inter-bold rotate-6 text-2xl text-gray-800 group-hover:text-white -mt-2",
             isFirstChild: true,
             ord: 0,
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-16560-16789-Text", [{
+            _twinComponentID: "fixtures/out.tsx-17074-17303-Text",
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("fixtures/out.tsx-17074-17303-Text", [{
               entries: [{
                 "className": "font-inter-bold",
                 "declarations": [{

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Text, Pressable, PressableProps } from 'react-native';
 import { VariantProps, createVariants } from '@native-twin/styled';
 

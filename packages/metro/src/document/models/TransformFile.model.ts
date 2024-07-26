@@ -27,14 +27,6 @@ export class TransformFile implements Equal.Equal {
     return path.join(this.projectRoot, this.filename);
   }
 
-  readFile() {
-    return fs.readFileSync(this.uri, 'utf-8');
-  }
-
-  getText(): string {
-    return Buffer.from(this.textDocument).toString('utf-8');
-  }
-
   get fileExists(): boolean {
     return fs.existsSync(this.uri);
   }
@@ -44,7 +36,7 @@ export class TransformFile implements Equal.Equal {
   }
 
   compileFile(tw: RuntimeTW) {
-    return twinShift(this.filename, this.getText(), tw);
+    return twinShift(this.filename, this.textDocument.toString('utf-8'), tw);
   }
 
   getTwinComponentStyles(compiled: [string, RuntimeComponentEntry[]][]) {

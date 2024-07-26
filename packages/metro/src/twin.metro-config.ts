@@ -56,6 +56,7 @@ export function withNativeTwin(
       tailwindConfigPath: twinConfigPath,
       outputDir: output,
       allowedFiles: twConfig.content,
+      transformerPath: metroConfig.transformerPath,
       getTransformOptions,
     },
   };

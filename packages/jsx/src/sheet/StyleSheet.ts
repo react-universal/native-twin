@@ -62,8 +62,14 @@ const internalSheet: TwinStyleSheet = {
       if (style?.templateLiteral) {
         style.entries.push(...tw(`${style.templateLiteral}`));
       }
+
       sheets.push(
-        createComponentSheet(style.target, style.entries, context ?? styledContext.get()),
+        createComponentSheet(
+          style.target,
+          style.target,
+          style.entries,
+          context ?? styledContext.get(),
+        ),
       );
     }
 
@@ -95,6 +101,7 @@ export const StyleSheet = Object.assign({}, internalSheet, NativeSheet);
 
 export function createComponentSheet(
   prop: string,
+  target: string,
   entries: SheetEntry[] = [],
   ctx?: StyledContext,
 ): ComponentSheet {
@@ -106,11 +113,12 @@ export function createComponentSheet(
   }
   return {
     prop,
+    target,
     getStyles,
     sheet,
     getChildStyles,
     recompute: () => {
-      return createComponentSheet(prop, entries, styledContext.get());
+      return createComponentSheet(prop, target, entries, styledContext.get());
     },
     metadata: {
       isGroupParent: entries.some((x) => x.className == 'group'),
