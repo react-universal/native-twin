@@ -9,11 +9,11 @@ import { ensureBuffer, matchCss } from '../../utils';
 import { twinShift } from '../twin.shift';
 
 export class TransformFile implements Equal.Equal {
-  private readonly textDocument: Buffer;
-  private readonly filename: string;
-  private readonly projectRoot: string;
-  private readonly type: string;
-  readonly version: number;
+  private textDocument: Buffer;
+  private filename: string;
+  private projectRoot: string;
+  private type: string;
+  version: number;
 
   constructor(document: TwinFileHandlerArgs, version: number) {
     this.textDocument = ensureBuffer(document.data);
@@ -33,10 +33,6 @@ export class TransformFile implements Equal.Equal {
 
   getText(): string {
     return Buffer.from(this.textDocument).toString('utf-8');
-  }
-
-  setFileContent(contents: string) {
-    return fs.writeFileSync(this.uri, contents);
   }
 
   get fileExists(): boolean {
@@ -59,16 +55,21 @@ export class TransformFile implements Equal.Equal {
     return this.textDocument.equals(buffer);
   }
 
+  refreshDocument(file: TwinFileHandlerArgs) {
+    this.filename = file.filename;
+    this.textDocument = ensureBuffer(file.data);
+    this.version = this.version + 1;
+  }
+
   [Equal.symbol](that: unknown) {
     return (
       that instanceof TransformFile &&
       this.uri === that.uri &&
-      this.textDocument.equals(that.textDocument) &&
-      that.getText() === this.getText()
+      this.textDocument.equals(that.textDocument)
     );
   }
 
   [Hash.symbol](): number {
-    return Hash.hash(Buffer.from(this.textDocument).toString('utf-8'));
+    return Hash.hash(this.filename);
   }
 }

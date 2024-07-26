@@ -1,4 +1,4 @@
-import { forwardRef, memo } from 'react';
+import { forwardRef, ComponentType, ElementType } from 'react';
 import type { JSXFunction } from '../../types/jsx.types';
 import type {
   StylableComponentConfigOptions,
@@ -40,14 +40,18 @@ export const createStylableComponent = <
     });
   }
 
-  const name = baseComponent.displayName ?? baseComponent.name ?? 'unknown';
-  component.displayName = `Twin.${name}`;
-  component.defaultProps = {
-    configs,
-  };
-  // @ts-expect-error
-  component.whyDidYouRender = true;
+  baseComponent.displayName ?? baseComponent.name ?? 'Component';
+  component.displayName = `Twin.${getComponentDisplayName(baseComponent)}`;
   stylizedComponents.set(baseComponent, component);
 
-  return memo(component);
+  return component;
 };
+
+export function getComponentDisplayName(
+  primitive: ComponentType<any> | ElementType,
+): string {
+  if (typeof primitive == 'string') {
+    return primitive;
+  }
+  return primitive.displayName ?? primitive.name ?? 'NoName';
+}

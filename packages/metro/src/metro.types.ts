@@ -28,7 +28,6 @@ export interface ComposableIntermediateConfigT extends IntermediateConfigT {
 
 /** @domain Metro server decorator */
 export interface TwinServerDataBuffer {
-  rem: number;
   version: number;
   data: string | Buffer;
 }

@@ -8,23 +8,16 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1 bg-red'>
+    <View className='flex-1 bg-purple'>
       <View
-        className={`
-          flex-1 items-center justify-center md:border-2
-          hover:(web:(bg-blue-600) ios:(bg-green-600) android:(bg-green))
-          ios:(p-16 border-black border-2 dark:(bg-blue-500))
-          android:(p-14 border-green-200 border-2 bg-gray-800 dark:(bg-purple-500))
-          md:(m-10)
-          bg-red-500
-        `}
-        debug
+        className={`flex-1 items-center justify-center bg-cyan-500`}
+        // debug
       >
         <Button size='large' />
-        <View className='bg-white shadow-md rounded-xl p-2'>
+        <View className='bg-purple-200 shadow-xl rounded-2xl p-2'>
           <Text
             className={`
-              text(center xl primary)
+              text(center red-500)
               font-inter-bold hover:text-gray-700
             `}
           >
@@ -42,7 +35,7 @@ function HomeScreen() {
         <Text
           className={`
             font-inter-bold text-2xl capitalize
-            ${active ? 'text-red-800' : 'text-primary'}
+            ${active ? 'text-green-800' : 'text-red-400'}
           `}
         >
           Nested Hover22222
@@ -52,17 +45,13 @@ function HomeScreen() {
             setActive((prevState) => !prevState);
           }}
         >
-          <Text className='text-gray-200  text-3xl'>Activate</Text>
+          <Text className='text-gray-200 text-xl'>Activate</Text>
         </Pressable>
         <Image
           source={testImage}
           resizeMode='contain'
           resizeMethod='resize'
           className='-translate-x-[10vw] rounded-full border-1 w-5 h-5'
-          style={{
-            width: 100,
-            height: 100,
-          }}
         />
         <TextField />
         <View

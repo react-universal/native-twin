@@ -1,6 +1,6 @@
 import type { SheetEntry } from '@native-twin/css';
 
-export const entriesToServerUpdateString = (data: SheetEntry, version: number) => {
+export const entriesToServerUpdateString = (data: SheetEntry[], version: number) => {
   const raw = {
     data,
     version,
@@ -16,4 +16,14 @@ export const serverUpdateStringToObject = (data: string) => {
   }
 
   return JSON.parse(toParse);
+};
+
+export const debugServerMiddleware = (...args: any[]) => {
+  console.debug('MIDDLEWARE: ', ...args, '\n');
+};
+
+export const getMetroURLVersion = (url?: string) => {
+  const extractedVersion = url?.split('?version=')[1];
+  debugServerMiddleware('extracted url version', url, extractedVersion);
+  return parseInt(extractedVersion ?? '0');
 };

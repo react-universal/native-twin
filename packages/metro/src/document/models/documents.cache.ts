@@ -43,18 +43,14 @@ export const getDocument = (file: TwinFileHandlerArgs) => {
   );
 };
 
-const removeTwinDocument = (filename: string) => {
+export const removeTwinDocument = (filename: string) => {
   pipe(cache, HM.remove(getDocumentCacheKey(filename)));
 };
 
-const refreshDocument = (
-  cachedDocument: TransformFile,
-  file: TwinFileHandlerArgs,
-) => {
+const refreshDocument = (cachedDocument: TransformFile, file: TwinFileHandlerArgs) => {
   if (!cachedDocument.isEqual(ensureBuffer(file.data))) {
-    const newVersion = cachedDocument.version + 1;
-    removeTwinDocument(file.filename);
-    return createTwinDocument(file, newVersion);
+    cachedDocument.refreshDocument(file);
+    return Option.some(cachedDocument);
   }
   return Option.some(cachedDocument);
 };

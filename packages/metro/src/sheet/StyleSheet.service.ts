@@ -14,7 +14,7 @@ export class StyleSheetService extends Context.Tag('files/StyleSheetService')<
   StyleSheetService,
   {
     cssOutput: string;
-    getSheetDocumentText(): string;
+    getSheetDocumentText(version: number): string;
     refreshSheet(): string;
     registerEntries(entries: BabelSheetEntry[], platform: string): string;
     entriesToObject(newEntries: BabelSheetEntry[]): object;
@@ -64,22 +64,28 @@ export const StyleSheetServiceLive = Layer.scoped(
       return fn;
     }
 
-    function getSheetDocumentText() {
-      const twinStyles = fs.readFileSync(cssOutput);
-      if (!twinStyles) return '';
+    function getSheetDocumentText(version: number) {
+      const twinStyles = fs.readFileSync(cssOutput, 'utf-8');
+      if (!twinStyles) return `{"version": ${version}}`;
 
-      let code = Buffer.from(twinStyles)
-        .toString('utf-8')
-        .replace(twinModuleExportString, '');
-      code = code.replace(twinHMRString, '');
+      let code = `${twinStyles.replace(new RegExp(twinModuleExportString, 'g'), ' ')}`;
+      code = code.replace(
+        "require('@native-twin/metro/build/server/poll-update-client')",
+        ' ',
+      );
+      code = `${code.replace(/\n/g, ' ')}`;
 
       if (code === '') {
-        code = '{}';
+        code = `{"version": ${version}}`;
       }
-
-      const current: BabelSheetEntry[] = JSON.parse(code) ?? {};
-      const entries = entriesToObject(Object.values(current));
-      return JSON.stringify(entries);
+      try {
+        const current: object = JSON.parse(code) ?? {};
+        const entries = entriesToObject(Object.values(current));
+        return JSON.stringify({ version, ...entries });
+      } catch (e: any) {
+        console.log('PARSER_ERROR: ', code);
+        return `{"version": ${version}}`;
+      }
     }
 
     function entriesToObject(newEntries: BabelSheetEntry[]) {
@@ -123,9 +129,10 @@ export const StyleSheetServiceLive = Layer.scoped(
     }
 
     function refreshSheet(): string {
-      let code = getSheetDocumentText();
+      let code = getSheetDocumentText(1);
 
       code = `${twinModuleExportString}${code}`;
+      code = `${code}\n${twinHMRString}`;
 
       fs.writeFileSync(cssOutput, code);
       return fs.readFileSync(cssOutput, 'utf-8');

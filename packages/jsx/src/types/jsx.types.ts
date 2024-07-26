@@ -1,8 +1,11 @@
 import type React from 'react';
 import { SheetEntry } from '@native-twin/css';
+import { RegisteredComponent } from '../sheet/sheet.types';
 
 export interface JSXInternalProps extends Record<string, any> {
   twEnabled?: boolean;
+  _twinComponentID?: string;
+  _twinComponentSheet: RegisteredComponent;
 }
 
 export type JSXFunction = (

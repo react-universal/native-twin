@@ -33,7 +33,6 @@ const internalSheet: TwinStyleSheet = {
     STARTED: 'NO',
   },
   [INTERNAL_RESET](twConfig) {
-    console.log('INTERNAL_RESET');
     globalStyles.clear();
     const config = twConfig ?? tw.config;
     twinConfigObservable.set(config);

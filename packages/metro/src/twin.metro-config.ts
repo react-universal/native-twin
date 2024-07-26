@@ -5,6 +5,7 @@ import type {
   MetroWithNativeWindOptions,
   ComposableIntermediateConfigT,
 } from './metro.types';
+import { createMetroResolver } from './modules/metro.resolver';
 import { decorateMetroServer } from './server/server.decorator';
 import {
   getUserNativeWindConfig,
@@ -33,7 +34,19 @@ export function withNativeTwin(
   }
 
   const twConfig = getUserNativeWindConfig(twinConfigPath, output);
-  metroConfig.server = decorateMetroServer(metroConfig.server, twConfig);
+  metroConfig.server = decorateMetroServer(
+    metroConfig,
+    twConfig,
+    path.join(output, TWIN_STYLES_FILE),
+  );
+  metroConfig.resolver = createMetroResolver(
+    metroConfig.resolver,
+    {
+      configPath: twinConfigPath,
+      projectRoot,
+    },
+    twConfig.content,
+  );
 
   return {
     ...metroConfig,

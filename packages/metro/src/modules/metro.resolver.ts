@@ -1,43 +1,59 @@
 import esbuild from 'esbuild';
 import type { ResolverConfigT } from 'metro-config';
+import micromatch from 'micromatch';
 import path from 'path';
 import type { MetroConfigInternal } from '../metro.types';
 
 export const createMetroResolver = (
-  metroConfig: MetroConfigInternal,
-): ResolverConfigT['resolveRequest'] => {
-  return function resolver(context, moduleName, platform) {
-    const resolvedModule = context.resolveRequest(context, moduleName, platform);
-    if (resolvedModule.type === 'sourceFile' && moduleName.includes('tailwind.config')) {
-      esbuild.buildSync({
-        bundle: true,
-        entryPoints: [resolvedModule.filePath],
-        outdir: path.join(metroConfig.projectRoot, '.twin-cache'),
-        external: ['react'],
-        platform: 'node',
-        target: 'es6',
-        keepNames: true,
-      });
-      const modulePath = path.resolve(
-        metroConfig.projectRoot,
-        '.twin-cache',
-        'tailwind.config.js',
-      );
+  metroConfig: ResolverConfigT,
+  config: MetroConfigInternal,
+  allowedPaths: string[],
+): ResolverConfigT => {
+  return {
+    ...metroConfig,
+    resolveRequest(context, moduleName, platform) {
+      platform = platform || 'native';
 
-      if (context.doesFileExist(modulePath)) {
-        const resolved = context.resolveRequest(context, modulePath, platform);
-        if (resolved.type === 'sourceFile') {
-          return resolved;
+      const resolvedModule = context.resolveRequest(context, moduleName, platform);
+
+      if (
+        resolvedModule.type === 'sourceFile' &&
+        !micromatch.isMatch(path.resolve(resolvedModule.filePath), allowedPaths)
+      ) {
+        return resolvedModule;
+      }
+      if (
+        resolvedModule.type === 'sourceFile' &&
+        moduleName.includes('tailwind.config')
+      ) {
+        esbuild.buildSync({
+          bundle: true,
+          entryPoints: [resolvedModule.filePath],
+          outdir: path.join(config.projectRoot, '.twin-cache'),
+          external: ['react'],
+          platform: 'node',
+          target: 'es6',
+          keepNames: true,
+        });
+        const modulePath = path.resolve(
+          config.projectRoot,
+          '.twin-cache',
+          'tailwind.config.js',
+        );
+
+        if (context.doesFileExist(modulePath)) {
+          const resolved = context.resolveRequest(context, modulePath, platform);
+          if (resolved.type === 'sourceFile') {
+            return resolved;
+          }
         }
       }
-    }
-    const transformedFile = path.resolve(metroConfig.projectRoot, '.twin-cache', moduleName);
-    if (context.doesFileExist(transformedFile)) {
-      console.log('RESOLVE: ', resolvedModule);
-      return context.resolveRequest(context, transformedFile, platform);
-    }
+      const transformedFile = path.resolve(config.projectRoot, '.twin-cache', moduleName);
+      if (context.doesFileExist(transformedFile)) {
+        return context.resolveRequest(context, transformedFile, platform);
+      }
 
-
-    return context.resolveRequest(context, moduleName, platform);
+      return context.resolveRequest(context, moduleName, platform);
+    },
   };
 };

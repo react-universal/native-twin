@@ -47,6 +47,7 @@ export interface RegisteredComponent {
 
 export interface ComponentSheet {
   prop: string;
+  target: string;
   sheet: FinalSheet;
   getChildStyles(input: Partial<GetChildStylesArgs>): AnyStyle;
   getStyles: (input: Partial<SheetInteractionState>, templateEntries?: SheetEntry[]) => AnyStyle;

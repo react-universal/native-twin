@@ -1,3 +1,5 @@
+import { inspect } from 'util';
+
 export { MappedComponent, mappedComponents } from './component.maps';
 export {
   METRO_ENDPOINT,
@@ -35,3 +37,6 @@ export {
   getUtf8Char,
   getCharacterLength,
 } from './unicode.utils';
+
+export const debugInspect = (m: string, x: object) =>
+  console.log(m, inspect(x, true, null, true));

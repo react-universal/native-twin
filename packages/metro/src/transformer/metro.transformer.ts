@@ -4,7 +4,6 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import path from 'node:path';
-import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { sendUpdate } from '../server/poll-updates-server';
 import { BabelSheetEntry } from '../sheet/Sheet.model';
@@ -87,19 +86,19 @@ const program = Effect.gen(function* () {
     RA.flatMap((x) => x.entries.flatMap((x) => x.entries)),
     RA.map((x) => new BabelSheetEntry(x)),
   );
-  const runtimeStyles: [string, RuntimeComponentEntry[]][] = pipe(
-    classNames,
-    RA.map((x) => [x.metadata.id, x.entries]),
-  );
 
   if (compiled && classNames.length > 0) {
     const registered = sheet.registerEntries(babelEntries, context.platform);
 
-    const styledFn = sheet.getComponentFunction(runtimeStyles);
-    compiled.full = `${compiled.full}\n${styledFn}`;
-    compiled.full = `${compiled.full}\nvar __twinComponentStyles = ${JSON.stringify(Object.fromEntries(runtimeStyles))}`;
+    // const styledFn = sheet.getComponentFunction(runtimeStyles);
+    // compiled.full = `${compiled.full}\n${styledFn}`;
+    // compiled.full = `${compiled.full}\nvar __twinComponentStyles = ${JSON.stringify(Object.fromEntries(runtimeStyles))}`;
     if (registered) {
-      sendUpdate(sheet.getSheetDocumentText(), transformFile.version);
+      transformFile.version = transformFile.version + 1;
+      sendUpdate(
+        sheet.getSheetDocumentText(transformFile.version),
+        transformFile.version + 1,
+      );
     }
   }
 
@@ -117,17 +116,6 @@ export const transform: TwinTransformFn = async (
 ) => {
   const cssOutput = path.join(projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
 
-  console.log('CONTEXT: ', {
-    config,
-    filename,
-    options,
-    projectRoot,
-    cssOutput,
-    fileType: options.type,
-    isDev: options.dev,
-    platform: options.platform ?? 'ios',
-    sourceCode: ensureBuffer(data),
-  });
   return runnable.pipe(
     Effect.provideService(MetroTransformerContext, {
       config,
