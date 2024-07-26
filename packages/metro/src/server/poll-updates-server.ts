@@ -1,7 +1,7 @@
 import type { IncomingMessage } from 'connect';
 import type createServer from 'connect';
 import type { ServerResponse } from 'http';
-import type { TwinServerDataBuffer } from '../types/metro.types';
+import type { TwinServerDataBuffer } from '../metro.types';
 import { METRO_ENDPOINT } from '../utils/constants';
 
 const connections = new Set<ServerResponse<IncomingMessage>>();

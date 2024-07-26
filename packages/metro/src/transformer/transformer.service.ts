@@ -6,12 +6,11 @@ import micromatch from 'micromatch';
 import path from 'node:path';
 import type { __Theme__, TailwindConfig } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import type { TransformWorkerArgs, TwinTransformFn } from '../types/transformer.types';
 import { ensureBuffer } from '../utils/file.utils';
 import { getTwinConfig } from '../utils/load-config';
-import { TransformerConfig } from './transformer.config';
+import type { TransformWorkerArgs, TwinTransformFn } from './transformer.types';
 
-export class MetroTransformerContext extends Context.Tag('MetroTransformerService')<
+export class MetroTransformerContext extends Context.Tag('MetroTransformerContext')<
   MetroTransformerContext,
   TransformWorkerArgs
 >() {}
@@ -31,9 +30,9 @@ export class MetroTransformerService extends Context.Tag('MetroTransformerServic
 export const MetroTransformerServiceLive = Layer.effect(
   MetroTransformerService,
   Effect.gen(function* () {
-    const { filename, projectRoot, workerArgs } = yield* TransformerConfig;
-    const transformer: TwinTransformFn = workerArgs.config.transformerPath
-      ? require(workerArgs.config.transformerPath).transform
+    const { filename, projectRoot, config, options } = yield* MetroTransformerContext;
+    const transformer: TwinTransformFn = config.transformerPath
+      ? require(config.transformerPath).transform
       : worker.transform;
 
     const { allowedPaths, twinConfig } = getTwinConfig(projectRoot);
@@ -46,20 +45,14 @@ export const MetroTransformerServiceLive = Layer.effect(
       },
       transform: (code: Buffer | string, useDefaultTransformer) => {
         if (useDefaultTransformer) {
-          return transformer(
-            workerArgs.config,
-            projectRoot,
-            filename,
-            ensureBuffer(code),
-            workerArgs.options,
-          );
+          return transformer(config, projectRoot, filename, ensureBuffer(code), options);
         }
         return worker.transform(
-          workerArgs.config,
+          config,
           projectRoot,
           filename,
           ensureBuffer(code),
-          workerArgs.options,
+          options,
         );
       },
     };

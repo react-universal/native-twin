@@ -2,6 +2,7 @@ import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
 
 export interface CssToReactNativeRuntimeOptions {}
 
+/** @domain NativeTwin config options */
 export interface MetroWithNativeWindOptions extends CssToReactNativeRuntimeOptions {
   projectRoot?: string;
   outputDir?: string;
@@ -10,30 +11,29 @@ export interface MetroWithNativeWindOptions extends CssToReactNativeRuntimeOptio
   browserslistEnv?: string | null;
 }
 
+/** @domain MetroResolver */
 export interface MetroConfigInternal {
   projectRoot: string;
   configPath: string;
 }
 
-export type ComposableTransformerConfigT = TransformerConfigT & {
+type ComposableTransformerConfigT = TransformerConfigT & {
   transformerPath?: string;
-  // cssToReactNativeRuntime?: CssToReactNativeRuntimeOptions;
 } & Record<string, unknown>;
 
+/** @domain Metro config options */
 export interface ComposableIntermediateConfigT extends IntermediateConfigT {
   transformer: ComposableTransformerConfigT;
 }
 
+/** @domain Metro server decorator */
 export interface TwinServerDataBuffer {
   rem: number;
   version: number;
   data: string | Buffer;
 }
 
-export interface TwinFileWriteOptions {
-  overwrite: boolean;
-}
-
+/** @domain DocumentService  */
 export interface TwinFileHandlerArgs {
   projectRoot: string;
   filename: string;

@@ -49,7 +49,7 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
-      ".turbo": false,
+      ".turbo": true,
       "**/CHANGELOG.md": false,
       "**/jest.config.js": false,
       "**/LICENSE": true,

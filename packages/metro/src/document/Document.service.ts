@@ -4,7 +4,7 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as HM from 'effect/MutableHashMap';
 import * as Option from 'effect/Option';
-import type { TwinFileHandlerArgs } from '../types/metro.types';
+import type { TwinFileHandlerArgs } from '../metro.types';
 import { ensureBuffer } from '../utils/file.utils';
 import type { DocumentCacheKey } from './documents.cache';
 import { getDocumentCacheKey } from './documents.cache';

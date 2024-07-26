@@ -10,15 +10,15 @@ import { DocumentService, DocumentServiceLive } from '../document/Document.servi
 import { sendUpdate } from '../server/poll-updates-server';
 import { BabelSheetEntry } from '../sheet/Sheet.model';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
-import type { TwinTransformFn } from '../types/transformer.types';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE, twinHMRString } from '../utils/constants';
 import { ensureBuffer } from '../utils/file.utils';
 import { setupNativeTwin } from '../utils/load-config';
-import { TransformerConfig } from './transformer.config';
 import {
   MetroTransformerService,
+  MetroTransformerContext,
   MetroTransformerServiceLive,
 } from './transformer.service';
+import type { TwinTransformFn } from './transformer.types';
 
 const MainLayer = Layer.mergeAll(
   DocumentServiceLive,
@@ -27,7 +27,7 @@ const MainLayer = Layer.mergeAll(
 );
 
 const program = Effect.gen(function* () {
-  const context = yield* TransformerConfig;
+  const context = yield* MetroTransformerContext;
   const documents = yield* DocumentService;
   const transformer = yield* MetroTransformerService;
   const sheet = yield* StyleSheetService;
@@ -117,21 +117,27 @@ export const transform: TwinTransformFn = async (
 ) => {
   const cssOutput = path.join(projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
 
+  console.log('CONTEXT: ', {
+    config,
+    filename,
+    options,
+    projectRoot,
+    cssOutput,
+    fileType: options.type,
+    isDev: options.dev,
+    platform: options.platform ?? 'ios',
+    sourceCode: ensureBuffer(data),
+  });
   return runnable.pipe(
-    Effect.provideService(TransformerConfig, {
-      workerArgs: {
-        config,
-        data,
-        filename,
-        options,
-        projectRoot,
-      },
-      cssOutput,
+    Effect.provideService(MetroTransformerContext, {
+      config,
       filename,
+      options,
+      projectRoot,
+      cssOutput,
       fileType: options.type,
       isDev: options.dev,
       platform: options.platform ?? 'ios',
-      projectRoot,
       sourceCode: ensureBuffer(data),
     }),
     Effect.runPromise,

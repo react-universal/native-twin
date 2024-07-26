@@ -22,7 +22,11 @@ export type TwinTransformFn = (
 export interface TransformWorkerArgs {
   config: NativeTwinTransformerOpts;
   projectRoot: string;
-  filename: string;
-  data: Buffer | string;
   options: JsTransformOptions;
+  cssOutput: string;
+  sourceCode: Buffer;
+  isDev: boolean;
+  filename: string;
+  fileType: string;
+  platform: string;
 }

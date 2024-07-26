@@ -5,7 +5,7 @@ import * as Layer from 'effect/Layer';
 import * as MHS from 'effect/MutableHashSet';
 import fs from 'node:fs';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
-import { TransformerConfig } from '../transformer/transformer.config';
+import { MetroTransformerContext } from '../transformer/transformer.service';
 import { twinHMRString, twinModuleExportString } from '../utils/constants';
 import { createObjectExpression, createRuntimeFunction } from '../utils/file.utils';
 import type { BabelSheetEntry } from './Sheet.model';
@@ -37,7 +37,7 @@ const getCSSOutput = (cssOutput: string) => {
 export const StyleSheetServiceLive = Layer.scoped(
   StyleSheetService,
   Effect.gen(function* () {
-    const { cssOutput } = yield* TransformerConfig;
+    const { cssOutput } = yield* MetroTransformerContext;
     const latestCSS = getCSSOutput(cssOutput);
 
     return {

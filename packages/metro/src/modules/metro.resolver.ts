@@ -1,7 +1,7 @@
 import esbuild from 'esbuild';
 import type { ResolverConfigT } from 'metro-config';
 import path from 'path';
-import type { MetroConfigInternal } from '../types/metro.types';
+import type { MetroConfigInternal } from '../metro.types';
 
 export const createMetroResolver = (
   metroConfig: MetroConfigInternal,

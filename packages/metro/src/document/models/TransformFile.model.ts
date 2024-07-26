@@ -5,7 +5,7 @@ import path from 'node:path';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { RuntimeTW } from '@native-twin/core';
 import { twinShift } from '../../babel/twin.shift';
-import type { TwinFileHandlerArgs } from '../../types/metro.types';
+import type { TwinFileHandlerArgs } from '../../metro.types';
 import { ensureBuffer, matchCss } from '../../utils/file.utils';
 
 export class TransformFile implements Equal.Equal {
