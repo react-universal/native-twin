@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createTailwind } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
-import { twinShift } from '../src/babel/twin.shift';
+import { twinShift } from '../src/document/twin.shift';
 import { transform } from '../src/transformer/metro.transformer';
 import { createCacheDir } from '../src/utils/file.utils';
 import twConfig from './tailwind.config';
@@ -16,7 +16,6 @@ import {
 } from './test.utils';
 
 beforeAll(() => {
-  console.log('ROOT: ', path.join(__dirname));
   createCacheDir(__dirname);
   fs.writeFileSync(twinFilePath, '');
 });

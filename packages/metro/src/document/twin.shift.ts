@@ -1,7 +1,7 @@
 import type { JsxOpeningElement, JsxSelfClosingElement } from 'ts-morph';
 import { Node, Project } from 'ts-morph';
 import type { RuntimeTW } from '@native-twin/core';
-import { type JSXElementNode, createJSXElementNode } from './models/tsx.models';
+import { type JSXElementNode, createJSXElementNode } from '../document/models/tsx.models';
 import * as tsUtils from './utils/ts.utils';
 
 const project = new Project({

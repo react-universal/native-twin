@@ -6,9 +6,12 @@ import type {
   ComposableIntermediateConfigT,
 } from './metro.types';
 import { decorateMetroServer } from './server/server.decorator';
-import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from './utils/constants';
-import { createCacheDir } from './utils/file.utils';
-import { getUserNativeWindConfig } from './utils/load-config';
+import {
+  getUserNativeWindConfig,
+  createCacheDir,
+  TWIN_CACHE_DIR,
+  TWIN_STYLES_FILE,
+} from './utils';
 
 export function withNativeTwin(
   metroConfig: ComposableIntermediateConfigT,

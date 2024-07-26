@@ -11,8 +11,8 @@ import type {
 } from '@native-twin/babel/build/jsx';
 import type { RuntimeTW } from '@native-twin/core';
 import { getRuleSelectorGroup } from '@native-twin/css';
-import type { MappedComponent } from '../../utils/component.maps';
 import * as tsUtils from '../utils/ts.utils';
+import type { MappedComponent } from '../../utils/component.maps';
 
 /** @domain TypeScript Transform */
 export interface JSXMappedAttribute {

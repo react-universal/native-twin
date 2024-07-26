@@ -5,7 +5,6 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import path from 'node:path';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
-import { splitClasses } from '../babel/utils/ts.utils';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { sendUpdate } from '../server/poll-updates-server';
 import { BabelSheetEntry } from '../sheet/Sheet.model';
@@ -13,6 +12,7 @@ import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.se
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE, twinHMRString } from '../utils/constants';
 import { ensureBuffer } from '../utils/file.utils';
 import { setupNativeTwin } from '../utils/load-config';
+import { splitClasses } from '../utils/twin.utils';
 import {
   MetroTransformerService,
   MetroTransformerContext,

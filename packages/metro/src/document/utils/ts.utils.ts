@@ -12,9 +12,8 @@ import type {
 import { Node, StructureKind, ts } from 'ts-morph';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import { cx } from '@native-twin/core';
-import type { MappedComponent } from '../../utils/component.maps';
-import { mappedComponents } from '../../utils/component.maps';
-import type { JSXMappedAttribute } from '../models/tsx.models';
+import type { JSXMappedAttribute } from '../../document/models/tsx.models';
+import { type MappedComponent, mappedComponents } from '../../utils';
 
 /** @domain TypeScript Transform */
 export const getJSXElementAttributes = (element: JsxElement | JsxSelfClosingElement) => {
@@ -161,12 +160,10 @@ export const addAttributeToJSXElement = (element: Node, name: string, value: str
   }
 };
 
-export const splitClasses = (classes: string) => classes.split(/\s+/g);
-
 export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) => {
   const writer = new CodeBlock();
   const templateEntries = new CodeBlock().write('{[');
-  
+
   writer
     .write(`{require('@native-twin/jsx').StyleSheet.registerComponent(`)
     .write(`"${id}",`);
