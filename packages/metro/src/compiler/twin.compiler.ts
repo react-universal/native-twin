@@ -1,7 +1,7 @@
 import * as Option from 'effect/Option';
 import { Project } from 'ts-morph';
 import type { RuntimeTW } from '@native-twin/core';
-import { type ResultComponent } from './compiler.types';
+import { type ResultComponent } from './twin.types';
 import * as compilerMaps from './twin.maps';
 import * as tsUtils from './utils/ts.utils';
 

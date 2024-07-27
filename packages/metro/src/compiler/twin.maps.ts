@@ -9,7 +9,7 @@ import { Node, ts } from 'ts-morph';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { RuntimeTW } from '@native-twin/core';
 import { getEntryGroups } from '../sheet/utils/styles.utils';
-import type { JSXMappedAttribute } from './compiler.types';
+import type { JSXMappedAttribute } from './twin.types';
 import * as tsUtils from './utils/ts.utils';
 
 export const maybeValidElementNode = (

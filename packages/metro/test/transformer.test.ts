@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createTailwind } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
-import { twinShift } from '../src/compiler/twin.shift';
+import { twinShift } from '../src/compiler/twin.compiler';
 import { transform } from '../src/transformer/metro.transformer';
 import { createCacheDir } from '../src/utils/file.utils';
 import twConfig from './tailwind.config';

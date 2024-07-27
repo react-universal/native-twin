@@ -14,7 +14,7 @@ import { Node, StructureKind, ts } from 'ts-morph';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import { cx } from '@native-twin/core';
 import { type MappedComponent, mappedComponents } from '../../utils';
-import type { JSXMappedAttribute } from '../compiler.types';
+import type { JSXMappedAttribute } from '../twin.types';
 
 export const getImportDeclaration = (ident: Identifier) => {
   const symbol = ident.getSymbol();

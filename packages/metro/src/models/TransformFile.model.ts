@@ -4,9 +4,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { RuntimeTW } from '@native-twin/core';
+import { twinShift } from '../compiler/twin.compiler';
 import type { TwinFileHandlerArgs } from '../metro.types';
 import { ensureBuffer, matchCss } from '../utils';
-import { twinShift } from '../compiler/twin.shift';
 
 export class TransformFile implements Equal.Equal {
   private textDocument: Buffer;
