@@ -6,7 +6,7 @@ import type {
   JsxSelfClosingElement,
 } from 'ts-morph';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
-import type { MappedComponent } from '../../utils';
+import type { MappedComponent } from '../utils';
 
 /** @domain TypeScript Transform */
 export interface JSXMappedAttribute {
@@ -46,4 +46,3 @@ export interface ResultComponent {
     };
   };
 }
-

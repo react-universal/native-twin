@@ -6,10 +6,10 @@ import * as Layer from 'effect/Layer';
 import type * as Option from 'effect/Option';
 import type * as Scope from 'effect/Scope';
 import type { TwinFileHandlerArgs } from '../metro.types';
+import { type TransformFile } from '../models/TransformFile.model';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import { ensureBuffer } from '../utils';
-import { type TransformFile } from './models/TransformFile.model';
-import { createTwinDocument, getDocument } from './models/documents.cache';
+import { createTwinDocument, getDocument } from './utils/documents.cache';
 
 interface DocumentServiceShape {
   getDocument(file: TwinFileHandlerArgs): Option.Option<TransformFile>;
@@ -38,8 +38,6 @@ export const DocumentServiceLive = Layer.scoped(
 
         const newSize = yield* file.write(content);
         yield* Effect.log(`WRITE_SIZE ${newSize}`);
-        yield* file.seek(FS.Size(0), 'start');
-        yield* file.write(new TextEncoder().encode('asdasdas'));
         const text = yield* fs.readFileString(path);
         console.log('FINAL_TEXT: ', text);
         return file;

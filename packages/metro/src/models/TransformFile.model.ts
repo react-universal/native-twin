@@ -4,9 +4,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { RuntimeTW } from '@native-twin/core';
-import type { TwinFileHandlerArgs } from '../../metro.types';
-import { ensureBuffer, matchCss } from '../../utils';
-import { twinShift } from '../twin.shift';
+import type { TwinFileHandlerArgs } from '../metro.types';
+import { ensureBuffer, matchCss } from '../utils';
+import { twinShift } from '../compiler/twin.shift';
 
 export class TransformFile implements Equal.Equal {
   private textDocument: Buffer;
@@ -63,5 +63,17 @@ export class TransformFile implements Equal.Equal {
 
   [Hash.symbol](): number {
     return Hash.hash(this.filename);
+  }
+}
+
+export class DocumentCacheKey implements Equal.Equal {
+  constructor(readonly n: string) {}
+
+  [Hash.symbol](): number {
+    return Hash.hash(this.n);
+  }
+
+  [Equal.symbol](u: unknown): boolean {
+    return u instanceof DocumentCacheKey && this.n === u.n;
   }
 }

@@ -6,8 +6,7 @@ import micromatch from 'micromatch';
 import path from 'node:path';
 import type { __Theme__, TailwindConfig } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import { ensureBuffer } from '../utils/file.utils';
-import { getTwinConfig } from '../utils/load-config';
+import { ensureBuffer, getTwinConfig } from '../utils';
 import type { TransformWorkerArgs, TwinTransformFn } from './transformer.types';
 
 export class MetroTransformerContext extends Context.Tag('MetroTransformerContext')<

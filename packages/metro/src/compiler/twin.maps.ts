@@ -8,9 +8,9 @@ import type {
 import { Node, ts } from 'ts-morph';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { RuntimeTW } from '@native-twin/core';
-import { getEntryGroups } from '../../sheet/utils/styles.utils';
-import type { JSXMappedAttribute } from '../models/tsx.models';
-import * as tsUtils from './ts.utils';
+import { getEntryGroups } from '../sheet/utils/styles.utils';
+import type { JSXMappedAttribute } from './compiler.types';
+import * as tsUtils from './utils/ts.utils';
 
 export const maybeValidElementNode = (
   node: Node,
@@ -94,4 +94,30 @@ export const getComponentEntries = (
     };
   });
   return component;
+};
+
+export const addOrderToChilds = (
+  element: JsxElement | JsxSelfClosingElement,
+  order: number,
+) => {
+  const childsCount = element.getChildCount();
+  element.forEachChild((node) => {
+    if (tsUtils.isValidJSXElement(node)) {
+      const tagName = tsUtils.getJSXElementTagName(node);
+      if (tagName && !maybeReactNativeImport(tagName)) {
+        return undefined;
+      }
+      if (order === 0) {
+        tsUtils.addAttributeToJSXElement(node, 'isFirstChild', `{true}`);
+      }
+      tsUtils.addAttributeToJSXElement(node, 'ord', `{${order++}}`);
+      if (order === childsCount) {
+        tsUtils.addAttributeToJSXElement(node, 'isLastChild', `{true}`);
+      }
+    }
+  });
+  return {
+    childsCount,
+    finalOrder: order,
+  };
 };

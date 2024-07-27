@@ -1,10 +1,9 @@
 import * as Option from 'effect/Option';
 import { Project } from 'ts-morph';
 import type { RuntimeTW } from '@native-twin/core';
-import { type ResultComponent } from './models/tsx.models';
-import { getComponentEntries, getJSXElementNode } from './utils/document.maps';
+import { type ResultComponent } from './compiler.types';
+import * as compilerMaps from './twin.maps';
 import * as tsUtils from './utils/ts.utils';
-import { addOrderToChilds } from './utils/tsx.utils';
 
 const project = new Project({
   useInMemoryFileSystem: true,
@@ -17,12 +16,12 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
 
   const componentsList: Option.Option<ResultComponent>[] = [];
   ast.forEachDescendant((node, _traversal) => {
-    const elementNode = getJSXElementNode(node);
+    const elementNode = compilerMaps.getJSXElementNode(node);
 
-    Option.map(elementNode, (x) => addOrderToChilds(x.jsxElement, 0));
+    Option.map(elementNode, (x) => compilerMaps.addOrderToChilds(x.jsxElement, 0));
 
     const componentStyles = Option.map(elementNode, ({ componentID, attributes }) => {
-      const entries = getComponentEntries(twin, attributes.classNames);
+      const entries = compilerMaps.getComponentEntries(twin, attributes.classNames);
       return { rawEntries: tsUtils.entriesToObject(componentID, entries), entries };
     });
 

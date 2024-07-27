@@ -9,10 +9,8 @@ import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { BabelSheetEntry } from '../sheet/Sheet.model';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
+import { splitClasses, setupNativeTwin, ensureBuffer } from '../utils';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE, twinHMRString } from '../utils/constants';
-import { ensureBuffer } from '../utils/file.utils';
-import { setupNativeTwin } from '../utils/load-config';
-import { splitClasses } from '../utils/twin.utils';
 import {
   MetroTransformerService,
   MetroTransformerContext,
