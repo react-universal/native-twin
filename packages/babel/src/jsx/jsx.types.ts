@@ -1,6 +1,6 @@
 import type { Binding } from '@babel/traverse';
-import * as t from '@babel/types';
-import type { Option } from 'effect';
+import type * as t from '@babel/types';
+import type * as Option from 'effect/Option';
 import type { SheetEntry } from '@native-twin/css';
 import { ComponentSheet } from '@native-twin/jsx/build/sheet/sheet.types';
 import type { MappedComponent } from '../utils/component.maps';

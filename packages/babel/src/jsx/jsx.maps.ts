@@ -32,8 +32,10 @@ export const addOrderToJSXChilds = (element: JSXElementHandler) => {
 export const extractElementClassNames = (
   attributes: t.JSXAttribute[],
   config: MappedComponent,
-) => {
-  return attributes.map((x) => extractClassNameProp(x, config)).filter((x) => x !== null);
+): JSXMappedAttribute[] => {
+  return attributes
+    .map((x) => extractClassNameProp(x, config))
+    .filter((x) => x !== null) as JSXMappedAttribute[];
 };
 
 export const extractClassNameProp = (

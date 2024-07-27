@@ -258,13 +258,12 @@
         }]),
         _twinComponentTemplateEntries: [],
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Button.Button, {
-          size: "large",
-          isFirstChild: true,
-          ord: 0
+          size: "large"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: "bg-white shadow-md rounded-xl p-2",
-          ord: 1,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-5473-5747-View", [{
+          isFirstChild: true,
+          ord: 0,
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-5445-5739-View", [{
             entries: [{
               "className": "bg-white",
               "declarations": [{
@@ -333,7 +332,7 @@
             `,
             isFirstChild: true,
             ord: 0,
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-6803-7018-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-6795-7010-Text", [{
               entries: [{
                 "className": "text-center",
                 "declarations": [{
@@ -406,7 +405,7 @@
           bg-gray-800 hover:bg-pink-600
         `,
         ord: 1,
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-8416-9715-View", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-8408-9707-View", [{
           entries: [{
             "className": "group",
             "declarations": [],
@@ -483,7 +482,7 @@
           `,
           isFirstChild: true,
           ord: 0,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-10003-10230-Text", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-9995-10222-Text", [{
             entries: [{
               "className": "font-inter-bold",
               "declarations": [{
@@ -528,7 +527,7 @@
           }]),
           _twinComponentTemplateEntries: [{
             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
-            id: "/fixtures/out.tsx-10003-10230-Text",
+            id: "/fixtures/out.tsx-9995-10222-Text",
             target: "style",
             prop: "className"
           }],
@@ -540,13 +539,13 @@
             });
           },
           ord: 1,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-11694-11903-Pressable", []),
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-11684-11893-Pressable", []),
           _twinComponentTemplateEntries: [],
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: "text-gray-200  text-3xl",
             isFirstChild: true,
             ord: 0,
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-12025-12110-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-12015-12100-Text", [{
               entries: [{
                 "className": "text-gray-200",
                 "declarations": [{
@@ -592,7 +591,7 @@
           },
           ord: 2,
           isLastChild: true,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-13017-13306-Image", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-13007-13296-Image", [{
             entries: [{
               "className": "-translate-x-[10vw]",
               "declarations": [{
@@ -658,17 +657,15 @@
             templateLiteral: null
           }]),
           _twinComponentTemplateEntries: []
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TextField.TextField, {
-          ord: 3
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TextField.TextField, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: `
             -top-1 -translate-x-2
             mb-2 rounded-lg bg-gray-300 p-2
             group-hover:bg-pink-800
           `,
           debug: true,
-          ord: 4,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-14661-15078-View", [{
+          ord: 3,
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-14643-15060-View", [{
             entries: [{
               "className": "-top-1",
               "declarations": [{
@@ -759,7 +756,7 @@
             className: "font-inter-bold rotate-6 text-2xl text-gray-800 group-hover:text-white -mt-2",
             isFirstChild: true,
             ord: 0,
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-16560-16789-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-16542-16771-Text", [{
               entries: [{
                 "className": "font-inter-bold",
                 "declarations": [{

@@ -9,5 +9,6 @@
     "noEmit": false,
     "noEmitOnError": false
   },
-  "exclude": ["./test/"]
+  "include": ["src"],
+  "exclude": ["./test", "bck"]
 }

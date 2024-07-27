@@ -43,8 +43,8 @@ function HomeScreen() {
               )} _twinComponentTemplateEntries={[]}
 
       >
-        <Button size='large' isFirstChild={true} ord={0} />
-        <View className='bg-white shadow-md rounded-xl p-2' ord={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-5475-5749-View",[
+        <Button size='large' />
+        <View className='bg-white shadow-md rounded-xl p-2' isFirstChild={true} ord={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-5447-5741-View",[
 
                   {
                       entries: [{"className":"bg-white","declarations":[{"prop":"backgroundColor","value":"rgba(255,255,255,1)"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"shadow-md","declarations":[{"prop":"shadowRadius","value":{"shadowOffset":{"width":0,"height":4},"shadowColor":"rgb(0,0,0)","shadowRadius":6,"shadowOpacity":0.3,"elevation":3}}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"rounded-xl","declarations":[{"prop":"borderRadius","value":"0.75rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"p-2","declarations":[{"prop":"padding","value":"0.5rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]}],
@@ -60,7 +60,7 @@ function HomeScreen() {
             className={`
               text(center xl primary)
               font-inter-bold hover:text-gray-700
-            `} isFirstChild={true} ord={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-6806-7021-Text",[
+            `} isFirstChild={true} ord={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-6798-7013-Text",[
 
                       {
                           entries: [{"className":"text-center","declarations":[{"prop":"textAlign","value":"center"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"text-xl","declarations":[{"prop":"fontSize","value":"1.25rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"text-primary","declarations":[{"prop":"color","value":"blue"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"font-inter-bold","declarations":[{"prop":"fontFamily","value":"Inter-Bold"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"hover:text-gray-700","declarations":[{"prop":"color","value":"rgba(55,65,81,1)"}],"selectors":["hover","&:hover"],"precedence":805307392,"important":false,"animations":[]}],
@@ -82,7 +82,7 @@ function HomeScreen() {
           group
           flex-[2] items-center justify-center
           bg-gray-800 hover:bg-pink-600
-        `} ord={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-8420-9719-View",[
+        `} ord={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-8412-9711-View",[
 
               {
                   entries: [{"className":"group","declarations":[],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"flex-[2]","declarations":[{"prop":"flex","value":"2"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"items-center","declarations":[{"prop":"alignItems","value":"center"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"justify-center","declarations":[{"prop":"justifyContent","value":"center"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"bg-gray-800","declarations":[{"prop":"backgroundColor","value":"rgba(31,41,55,1)"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"hover:bg-pink-600","declarations":[{"prop":"backgroundColor","value":"rgba(219,39,119,1)"}],"selectors":["hover","&:hover"],"precedence":805307392,"important":false,"animations":[]}],
@@ -99,7 +99,7 @@ function HomeScreen() {
           className={`
             font-inter-bold text-2xl capitalize
             ${active ? 'text-red-800' : 'text-primary'}
-          `} isFirstChild={true} ord={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-10008-10235-Text",[
+          `} isFirstChild={true} ord={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-10000-10227-Text",[
 
                   {
                       entries: [{"className":"font-inter-bold","declarations":[{"prop":"fontFamily","value":"Inter-Bold"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"text-2xl","declarations":[{"prop":"fontSize","value":"1.5rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"capitalize","declarations":[{"prop":"textTransform","value":"capitalize"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]}],
@@ -112,7 +112,7 @@ function HomeScreen() {
                   ,]
                   )} _twinComponentTemplateEntries={[ {
                       entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
-                      id: "/fixtures/code.tsx-10008-10235-Text",
+                      id: "/fixtures/code.tsx-10000-10227-Text",
                       target: "style",
                       prop: "className",
                   }
@@ -124,13 +124,13 @@ function HomeScreen() {
         <Pressable
           onPressIn={() => {
             setActive((prevState) => !prevState);
-          }} ord={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-11701-11910-Pressable",[
+          }} ord={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-11693-11902-Pressable",[
 
                   ]
                   )} _twinComponentTemplateEntries={[]}
 
         >
-          <Text className='text-gray-200  text-3xl' isFirstChild={true} ord={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-12033-12118-Text",[
+          <Text className='text-gray-200  text-3xl' isFirstChild={true} ord={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-12025-12110-Text",[
 
                       {
                           entries: [{"className":"text-gray-200","declarations":[{"prop":"color","value":"rgba(229,231,235,1)"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"text-3xl","declarations":[{"prop":"fontSize","value":"1.875rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]}],
@@ -151,7 +151,7 @@ function HomeScreen() {
           style={{
             width: 100,
             height: 100,
-          }} ord={2} isLastChild={true} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-13026-13315-Image",[
+          }} ord={2} isLastChild={true} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-13018-13307-Image",[
 
                   {
                       entries: [{"className":"-translate-x-[10vw]","declarations":[{"prop":"transform","value":[{"prop":"translateX","value":"-10vw"}]}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"rounded-full","declarations":[{"prop":"borderRadius","value":"9999px"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"border-1","declarations":[{"prop":"borderWidth","value":"1px"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"w-5","declarations":[{"prop":"width","value":"1.25rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"h-5","declarations":[{"prop":"height","value":"1.25rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]}],
@@ -164,14 +164,14 @@ function HomeScreen() {
                   )} _twinComponentTemplateEntries={[]}
 
         />
-        <TextField ord={3} />
+        <TextField />
         <View
           className={`
             -top-1 -translate-x-2
             mb-2 rounded-lg bg-gray-300 p-2
             group-hover:bg-pink-800
           `}
-          debug ord={4} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-14671-15088-View",[
+          debug ord={3} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-14655-15072-View",[
 
                   {
                       entries: [{"className":"-top-1","declarations":[{"prop":"top","value":"-0.25rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"-translate-x-2","declarations":[{"prop":"transform","value":[{"prop":"translateX","value":"-0.5rem"}]}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"mb-2","declarations":[{"prop":"marginBottom","value":"0.5rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"rounded-lg","declarations":[{"prop":"borderRadius","value":"0.5rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"bg-gray-300","declarations":[{"prop":"backgroundColor","value":"rgba(209,213,219,1)"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"p-2","declarations":[{"prop":"padding","value":"0.5rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"group-hover:bg-pink-800","declarations":[{"prop":"backgroundColor","value":"rgba(157,23,77,1)"}],"selectors":["group-hover",".group:hover &"],"precedence":805307392,"important":false,"animations":[]}],
@@ -186,7 +186,7 @@ function HomeScreen() {
         >
           <Text
             suppressHighlighting
-            className='font-inter-bold rotate-6 text-2xl text-gray-800 group-hover:text-white -mt-2' isFirstChild={true} ord={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-16571-16800-Text",[
+            className='font-inter-bold rotate-6 text-2xl text-gray-800 group-hover:text-white -mt-2' isFirstChild={true} ord={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/code.tsx-16555-16784-Text",[
 
                       {
                           entries: [{"className":"font-inter-bold","declarations":[{"prop":"fontFamily","value":"Inter-Bold"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"rotate-6","declarations":[{"prop":"transform","value":[{"prop":"rotate","value":"6deg"}]}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"text-2xl","declarations":[{"prop":"fontSize","value":"1.5rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"text-gray-800","declarations":[{"prop":"color","value":"rgba(31,41,55,1)"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]},{"className":"group-hover:text-white","declarations":[{"prop":"color","value":"rgba(255,255,255,1)"}],"selectors":["group-hover",".group:hover &"],"precedence":805307392,"important":false,"animations":[]},{"className":"-mt-2","declarations":[{"prop":"marginTop","value":"-0.5rem"}],"selectors":[],"precedence":805306368,"important":false,"animations":[]}],

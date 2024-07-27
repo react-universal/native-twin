@@ -10,7 +10,12 @@ import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { RuntimeTW } from '@native-twin/core';
 import { getEntryGroups } from '../sheet/utils/styles.utils';
 import type { JSXMappedAttribute } from './twin.types';
-import * as tsUtils from './utils/ts.utils';
+import {
+  addAttributeToJSXElement,
+  getImportDeclaration,
+  getJSXElementAttributes,
+  getJSXElementTagName,
+} from './utils/ts.utils';
 
 export const maybeValidElementNode = (
   node: Node,
@@ -23,7 +28,7 @@ export const maybeValidElementNode = (
 export const maybeReactNativeImport = (
   ident: Identifier,
 ): Option.Option<ts.ImportDeclaration> => {
-  return Option.fromNullable(tsUtils.getImportDeclaration(ident)).pipe(
+  return Option.fromNullable(getImportDeclaration(ident)).pipe(
     Option.flatMap((x) => {
       const moduleSpecifier = x.moduleSpecifier;
       if (!ts.isStringLiteral(moduleSpecifier)) return Option.none();
@@ -54,11 +59,11 @@ export const getJSXElementNode = (node: Node) => {
   return Option.Do.pipe(
     Option.bind('jsxElement', () => maybeValidElementNode(node)),
     Option.bind('tagName', ({ jsxElement }) =>
-      Option.fromNullable(tsUtils.getJSXElementTagName(jsxElement)),
+      Option.fromNullable(getJSXElementTagName(jsxElement)),
     ),
     Option.bind('importDeclaration', ({ tagName }) => maybeReactNativeImport(tagName)),
     Option.bind('attributes', ({ jsxElement }) =>
-      Option.fromNullable(tsUtils.getJSXElementAttributes(jsxElement)),
+      Option.fromNullable(getJSXElementAttributes(jsxElement)),
     ),
     Option.let('componentID', ({ tagName, jsxElement }) =>
       getComponentID(
@@ -102,17 +107,19 @@ export const addOrderToChilds = (
 ) => {
   const childsCount = element.getChildCount();
   element.forEachChild((node) => {
-    if (tsUtils.isValidJSXElement(node)) {
-      const tagName = tsUtils.getJSXElementTagName(node);
-      if (tagName && !maybeReactNativeImport(tagName)) {
+    if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
+      const tagName = Option.fromNullable(getJSXElementTagName(node)).pipe(
+        Option.getOrNull,
+      );
+      if (tagName && Option.isNone(maybeReactNativeImport(tagName))) {
         return undefined;
       }
       if (order === 0) {
-        tsUtils.addAttributeToJSXElement(node, 'isFirstChild', `{true}`);
+        addAttributeToJSXElement(node, 'isFirstChild', `{true}`);
       }
-      tsUtils.addAttributeToJSXElement(node, 'ord', `{${order++}}`);
+      addAttributeToJSXElement(node, 'ord', `{${order++}}`);
       if (order === childsCount) {
-        tsUtils.addAttributeToJSXElement(node, 'isLastChild', `{true}`);
+        addAttributeToJSXElement(node, 'isLastChild', `{true}`);
       }
     }
   });

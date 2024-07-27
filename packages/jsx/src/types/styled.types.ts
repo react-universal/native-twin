@@ -6,11 +6,24 @@ import type {
   FunctionComponent,
   JSXElementConstructor,
 } from 'react';
-import type { AnyStyle, CompleteStyle } from '@native-twin/css';
+import type {
+  AnyStyle,
+  CompleteStyle,
+  ValidGroupPseudoSelector,
+  ValidInteractionPseudoSelector,
+} from '@native-twin/css';
 import { Atom } from '@native-twin/helpers';
-import type { RegisteredComponent } from '@native-twin/styled';
 import { createComponentSheet } from '../sheet/StyleSheet';
 import { createPropState } from '../utils/styled.utils';
+
+export interface RegisteredComponent {
+  id: string;
+  groupID: string;
+  interactionState: Record<
+    ValidInteractionPseudoSelector | ValidGroupPseudoSelector,
+    boolean
+  >;
+}
 
 type InteractionState = RegisteredComponent['interactionState'];
 

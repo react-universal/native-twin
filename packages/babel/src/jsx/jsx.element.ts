@@ -145,7 +145,7 @@ export const createJSXOpeningElementHandler = (
     );
   }
 
-  function extractClassNames() {
+  function extractClassNames(): JSXMappedAttribute[] {
     return getElementConfig().pipe(
       Option.flatMap((x) =>
         Option.fromNullable(extractElementClassNames(getAttributes(), x)),
@@ -168,7 +168,9 @@ export const createJSXOpeningElementHandler = (
     });
   }
 
-  function getAttributes() {
-    return openingElement.attributes.filter((x) => t.isJSXAttribute(x));
+  function getAttributes(): t.JSXAttribute[] {
+    return (openingElement.attributes as t.JSXAttribute[]).filter((x) =>
+      t.isJSXAttribute(x),
+    );
   }
 };
