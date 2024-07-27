@@ -841,5 +841,5 @@
       })]
     });
   }
-  require('@native-twin/metro/build/server/poll-update-client');
+  require('@native-twin/metro/build/metro/server/poll-update-client');
 })(typeof globalThis !== 'undefined' ? globalThis : typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : this);

@@ -1,12 +1,13 @@
 import type { GetTransformOptions } from 'metro-config';
 import fs from 'node:fs';
 import path from 'node:path';
+import { createWatcher } from './cli';
+import { createMetroResolver } from './config/resolver/metro.resolver';
+import { decorateMetroServer } from './config/server/server.decorator';
 import type {
   MetroWithNativeWindOptions,
   ComposableIntermediateConfigT,
 } from './metro.types';
-import { createMetroResolver } from './modules/metro.resolver';
-import { decorateMetroServer } from './server/server.decorator';
 import {
   getUserNativeWindConfig,
   createCacheDir,
@@ -25,6 +26,7 @@ export function withNativeTwin(
   createCacheDir(projectRoot);
   const twinFilePath = path.join(projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
   fs.writeFileSync(twinFilePath, '');
+
   const getTransformOptions = async (...args: Parameters<GetTransformOptions>) => {
     return metroConfig.transformer?.getTransformOptions(...args);
   };
@@ -34,22 +36,51 @@ export function withNativeTwin(
   }
 
   const twConfig = getUserNativeWindConfig(twinConfigPath, output);
-  metroConfig.server = decorateMetroServer(
-    metroConfig,
-    twConfig,
-    path.join(output, TWIN_STYLES_FILE),
-  );
-  metroConfig.resolver = createMetroResolver(
-    metroConfig.resolver,
+
+  const { watcher, processFiles } = createWatcher(
     {
+      configPath: 'asd',
+      projectRoot: projectRoot,
+    },
+    twConfig,
+  );
+
+  const deferred: string[] = [];
+
+  watcher.on('add', (path) => {
+    console.log('ADD: ', path);
+    deferred.push(path);
+  });
+  watcher.on('ready', () => {
+    console.log('READY');
+    processFiles(deferred, {
       configPath: twinConfigPath,
       projectRoot,
-    },
-    twConfig.content,
-  );
+    }).then((x) => {
+      console.log('FILES: ', x);
+    });
+  });
+  watcher.on('change', (path, stats) => {
+    console.log('CHANGED_PATH: ', path);
+    console.log('STATS: ', stats);
+  });
 
   return {
     ...metroConfig,
+    resetCache: true,
+    server: decorateMetroServer(
+      metroConfig,
+      twConfig,
+      path.join(output, TWIN_STYLES_FILE),
+    ),
+    resolver: createMetroResolver(
+      metroConfig.resolver,
+      {
+        configPath: twinConfigPath,
+        projectRoot,
+      },
+      twConfig.content,
+    ),
     transformerPath: require.resolve('./transformer/metro.transformer'),
     transformer: {
       ...metroConfig.transformer,

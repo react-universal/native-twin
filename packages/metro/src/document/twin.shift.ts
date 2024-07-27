@@ -1,4 +1,4 @@
-import { Option } from 'effect';
+import * as Option from 'effect/Option';
 import { Project } from 'ts-morph';
 import type { RuntimeTW } from '@native-twin/core';
 import { type ResultComponent } from './models/tsx.models';

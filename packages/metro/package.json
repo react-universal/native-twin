@@ -28,31 +28,29 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@babel/traverse": "^7.24.0",
-    "@babel/types": "^7.24.0",
     "@native-twin/babel": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
-    "@native-twin/preset-tailwind": "workspace:*",
-    "@native-twin/styled": "workspace:*",
-    "@ts-morph/common": "^0.24.0",
     "code-block-writer": "^13.0.1",
     "effect": "^3.5.5",
     "jiti": "1.21.0",
-    "micromatch": "4.0.5",
     "sucrase": "^3.35.0",
     "ts-morph": "^23.0.0"
   },
   "devDependencies": {
     "@babel/helper-module-imports": "^7.22.15",
+    "@babel/traverse": "^7.24.0",
+    "@babel/types": "^7.24.0",
+    "@native-twin/preset-tailwind": "workspace:*",
+    "@native-twin/styled": "workspace:*",
     "@types/connect": "3.4.38",
     "@types/micromatch": "^4.0.4",
     "@types/shelljs": "^0",
     "ast-pretty-print": "^2.0.1",
+    "chokidar": "^3.6.0",
     "metro-react-native-babel-preset": "^0.77.0",
-    "proxy-polyfill": "^0.3.2",
-    "shelljs": "^0.8.5"
+    "micromatch": "4.0.5"
   },
   "peerDependencies": {
     "react": ">=18",

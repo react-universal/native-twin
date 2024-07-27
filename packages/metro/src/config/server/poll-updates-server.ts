@@ -1,7 +1,7 @@
 import type { IncomingMessage } from 'connect';
 import type { ServerResponse } from 'http';
-import type { TwinServerDataBuffer } from '../metro.types';
-import { ensureBuffer } from '../utils';
+import type { TwinServerDataBuffer } from '../../metro.types';
+import { ensureBuffer } from '../../utils';
 
 // import { debugServerMiddleware } from './server.utils';
 

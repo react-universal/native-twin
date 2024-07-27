@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { TWIN_CACHE_DIR } from '../utils/constants';
+import { TWIN_CACHE_DIR } from '../../utils/constants';
 
 export const cache = new Map<string, string>();
 

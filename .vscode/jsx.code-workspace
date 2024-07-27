@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
       "name": "📦 @lib/metro",
       "path": "../packages/metro"
     },
@@ -17,16 +21,16 @@
       "path": "../packages/jsx"
     },
     {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
     },
     {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
     },
     {
-      "name": "📦 @lib/language-server",
-      "path": "../packages/language-server"
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
     },
     {
       "name": "@apps/expo",
@@ -78,9 +82,7 @@
     "jest.enable": true,
     "jest.disabledWorkspaceFolders": [
       "root",
-      "📦 @lib/native-twin",
       "📦 @lib/jsx",
-      "📦 @lib/language-server",
       "@apps/expo-app"
     ]
   }

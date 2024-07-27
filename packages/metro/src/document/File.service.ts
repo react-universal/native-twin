@@ -1,6 +1,5 @@
 import * as FS from '@effect/platform/FileSystem';
 import * as Effect from 'effect/Effect';
-// import * as Stream from 'effect/Stream';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 
 export const getFile = Effect.gen(function* () {

@@ -1,8 +1,7 @@
-import esbuild from 'esbuild';
 import type { ResolverConfigT } from 'metro-config';
 import micromatch from 'micromatch';
 import path from 'path';
-import type { MetroConfigInternal } from '../metro.types';
+import type { MetroConfigInternal } from '../../metro.types';
 
 export const createMetroResolver = (
   metroConfig: ResolverConfigT,
@@ -11,7 +10,7 @@ export const createMetroResolver = (
 ): ResolverConfigT => {
   return {
     ...metroConfig,
-    sourceExts: [...metroConfig.sourceExts, "css"],
+    sourceExts: [...metroConfig.sourceExts, 'css'],
     resolveRequest(context, moduleName, platform) {
       platform = platform || 'native';
 
@@ -27,15 +26,6 @@ export const createMetroResolver = (
         resolvedModule.type === 'sourceFile' &&
         moduleName.includes('tailwind.config')
       ) {
-        esbuild.buildSync({
-          bundle: true,
-          entryPoints: [resolvedModule.filePath],
-          outdir: path.join(config.projectRoot, '.twin-cache'),
-          external: ['react'],
-          platform: 'node',
-          target: 'es6',
-          keepNames: true,
-        });
         const modulePath = path.resolve(
           config.projectRoot,
           '.twin-cache',

@@ -6,8 +6,11 @@ import type { ServerConfigT } from 'metro-config';
 import { type RuntimeTW, type TailwindConfig, type __Theme__ } from '@native-twin/core';
 import { hasOwnProperty } from '@native-twin/helpers';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import type { ComposableIntermediateConfigT, TwinServerDataBuffer } from '../metro.types';
-import { ensureBuffer, setupNativeTwin } from '../utils';
+import type {
+  ComposableIntermediateConfigT,
+  TwinServerDataBuffer,
+} from '../../metro.types';
+import { ensureBuffer, setupNativeTwin } from '../../utils';
 import { getMetroURLVersion } from './server.utils';
 
 const connections = new Set<ServerResponse<IncomingMessage>>();
