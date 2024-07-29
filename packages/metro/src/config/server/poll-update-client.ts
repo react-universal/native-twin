@@ -7,7 +7,7 @@ export const debugPoolServer = (...args: (string | number)[]) => {
 async function pollServer(version = 1) {
   try {
     const twinURL = `${url}__native_twin_update_endpoint?version=${version}`;
-    // debugPoolServer('URL', twinURL);
+    debugPoolServer('URL', twinURL);
     const response = await fetch(twinURL);
 
     if (!response.ok) {
@@ -17,15 +17,15 @@ async function pollServer(version = 1) {
       );
     }
 
-    const body = await response.text();
+    // const body = await response.text();
     // debugPoolServer('RESPONSE_TEXT', body);
 
-    if (body.startsWith('data: ')) {
-      // debugPoolServer('BODY_START_WITH: data: ');
-      const data = JSON.parse(body.replace('data: ', ''));
-      // debugPoolServer('WRITE_INCOMING_VERSION', data.version);
-      version = data.version;
-    }
+    // if (body.startsWith('data: ')) {
+    //   // debugPoolServer('BODY_START_WITH: data: ');
+    //   const data = JSON.parse(body.replace('data: ', ''));
+    //   // debugPoolServer('WRITE_INCOMING_VERSION', data.version);
+    //   version = data.version;
+    // }
 
     // debugPoolServer('NEXT_VERSION: ', version);
 

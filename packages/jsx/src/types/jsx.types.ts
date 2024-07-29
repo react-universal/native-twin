@@ -23,3 +23,10 @@ export interface BabelStyledProps {
   entries: SheetEntry[];
   templateLiteral?: string;
 }
+
+export interface ComponentTemplateEntryProp {
+  id: string;
+  prop: string;
+  target: string;
+  entries: SheetEntry[];
+}

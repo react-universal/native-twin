@@ -40,3 +40,10 @@ export interface TwinFileHandlerArgs {
   type: string;
   platform: string;
 }
+
+export interface MetroContextConfig extends MetroConfigInternal {
+  dev: boolean;
+  hot: boolean;
+  outputDir: string;
+  twinCacheFile: string;
+}

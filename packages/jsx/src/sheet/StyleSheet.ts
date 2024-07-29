@@ -59,16 +59,12 @@ const internalSheet: TwinStyleSheet = {
     }
     const sheets: ComponentSheet[] = [];
     for (const style of props) {
-      if (style?.templateLiteral) {
-        style.entries.push(...tw(`${style.templateLiteral}`));
-      }
-
       sheets.push(
         createComponentSheet(
           style.target,
-          style.target,
           style.entries,
           context ?? styledContext.get(),
+          style.prop,
         ),
       );
     }
@@ -101,9 +97,9 @@ export const StyleSheet = Object.assign({}, internalSheet, NativeSheet);
 
 export function createComponentSheet(
   prop: string,
-  target: string,
   entries: SheetEntry[] = [],
   ctx?: StyledContext,
+  target?: string,
 ): ComponentSheet {
   const context = ctx ?? styledContext.get();
   const sheet = StyleSheet.create(getSheetEntryStyles(entries, context));
@@ -113,17 +109,17 @@ export function createComponentSheet(
   }
   return {
     prop,
-    target,
+    target: target ?? prop,
     getStyles,
     sheet,
     getChildStyles,
     recompute: () => {
-      return createComponentSheet(prop, target, entries, styledContext.get());
+      return createComponentSheet(prop, entries, styledContext.get(), target ?? prop);
     },
     metadata: {
       isGroupParent: entries.some((x) => x.className == 'group'),
-      hasGroupEvents: Object.keys(sheet.group).length > 0,
-      hasPointerEvents: Object.keys(sheet.pointer).length > 0,
+      hasGroupEvents: Object.keys(sheet.group)?.length > 0,
+      hasPointerEvents: Object.keys(sheet.pointer)?.length > 0,
       hasAnimations: entries.some((x) => x.animations.length > 0),
     },
   };

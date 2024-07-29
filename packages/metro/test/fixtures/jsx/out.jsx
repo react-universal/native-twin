@@ -19,6 +19,7 @@
       setActive = _useState2[1];
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "flex-1 bg-red",
+      _twinComponentID: "/fixtures/out.tsx-352-2399-View",
       _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-352-2399-View", [{
         entries: [{
           "className": "flex-1",
@@ -62,9 +63,10 @@
           bg-red-500
         `,
         debug: true,
-        isFirstChild: true,
-        ord: 0,
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1152-1878-View", [{
+        isFirstChild: "{true}",
+        ord: "{0}",
+        _twinComponentID: "/fixtures/out.tsx-1203-1933-View",
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1203-1933-View", [{
           entries: [{
             "className": "flex-1",
             "declarations": [{
@@ -258,12 +260,14 @@
         }]),
         _twinComponentTemplateEntries: [],
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Button.Button, {
-          size: "large"
+          size: "large",
+          isFirstChild: "{true}",
+          ord: "{0}"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: "bg-white shadow-md rounded-xl p-2",
-          isFirstChild: true,
-          ord: 0,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-5445-5739-View", [{
+          ord: "{1}",
+          _twinComponentID: "/fixtures/out.tsx-5584-5860-View",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-5584-5860-View", [{
             entries: [{
               "className": "bg-white",
               "declarations": [{
@@ -330,9 +334,10 @@
               text(center xl primary)
               font-inter-bold hover:text-gray-700
             `,
-            isFirstChild: true,
-            ord: 0,
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-6795-7010-Text", [{
+            isFirstChild: "{true}",
+            ord: "{0}",
+            _twinComponentID: "/fixtures/out.tsx-6968-7187-Text",
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-6968-7187-Text", [{
               entries: [{
                 "className": "text-center",
                 "declarations": [{
@@ -404,8 +409,9 @@
           flex-[2] items-center justify-center
           bg-gray-800 hover:bg-pink-600
         `,
-        ord: 1,
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-8408-9707-View", [{
+        ord: "{1}",
+        _twinComponentID: "/fixtures/out.tsx-8637-9938-View",
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-8637-9938-View", [{
           entries: [{
             "className": "group",
             "declarations": [],
@@ -480,9 +486,10 @@
             font-inter-bold text-2xl capitalize
             ${active ? 'text-red-800' : 'text-primary'}
           `,
-          isFirstChild: true,
-          ord: 0,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-9995-10222-Text", [{
+          isFirstChild: "{true}",
+          ord: "{0}",
+          _twinComponentID: "/fixtures/out.tsx-10278-10509-Text",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-10278-10509-Text", [{
             entries: [{
               "className": "font-inter-bold",
               "declarations": [{
@@ -527,7 +534,7 @@
           }]),
           _twinComponentTemplateEntries: [{
             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
-            id: "/fixtures/out.tsx-9995-10222-Text",
+            id: "/fixtures/out.tsx-10278-10509-Text",
             target: "style",
             prop: "className"
           }],
@@ -538,14 +545,16 @@
               return !prevState;
             });
           },
-          ord: 1,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-11684-11893-Pressable", []),
+          ord: "{1}",
+          _twinComponentID: "/fixtures/out.tsx-12027-12238-Pressable",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-12027-12238-Pressable", []),
           _twinComponentTemplateEntries: [],
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: "text-gray-200  text-3xl",
-            isFirstChild: true,
-            ord: 0,
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-12015-12100-Text", [{
+            isFirstChild: "{true}",
+            ord: "{0}",
+            _twinComponentID: "/fixtures/out.tsx-12419-12508-Text",
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-12419-12508-Text", [{
               entries: [{
                 "className": "text-gray-200",
                 "declarations": [{
@@ -589,9 +598,10 @@
             width: 100,
             height: 100
           },
-          ord: 2,
-          isLastChild: true,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-13007-13296-Image", [{
+          ord: "{2}",
+          isLastChild: "{true}",
+          _twinComponentID: "/fixtures/out.tsx-13469-13762-Image",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-13469-13762-Image", [{
             entries: [{
               "className": "-translate-x-[10vw]",
               "declarations": [{
@@ -657,15 +667,18 @@
             templateLiteral: null
           }]),
           _twinComponentTemplateEntries: []
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TextField.TextField, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TextField.TextField, {
+          ord: "{3}"
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: `
             -top-1 -translate-x-2
             mb-2 rounded-lg bg-gray-300 p-2
             group-hover:bg-pink-800
           `,
           debug: true,
-          ord: 3,
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-14643-15060-View", [{
+          ord: "{4}",
+          _twinComponentID: "/fixtures/out.tsx-15174-15593-View",
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-15174-15593-View", [{
             entries: [{
               "className": "-top-1",
               "declarations": [{
@@ -754,9 +767,10 @@
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             suppressHighlighting: true,
             className: "font-inter-bold rotate-6 text-2xl text-gray-800 group-hover:text-white -mt-2",
-            isFirstChild: true,
-            ord: 0,
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-16542-16771-Text", [{
+            isFirstChild: "{true}",
+            ord: "{0}",
+            _twinComponentID: "/fixtures/out.tsx-17129-17362-Text",
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-17129-17362-Text", [{
               entries: [{
                 "className": "font-inter-bold",
                 "declarations": [{
@@ -838,5 +852,4 @@
       })]
     });
   }
-  require('@native-twin/metro/build/metro/server/poll-update-client');
 })(typeof globalThis !== 'undefined' ? globalThis : typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : this);

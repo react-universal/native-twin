@@ -1,8 +1,8 @@
 import * as Option from 'effect/Option';
 import { Project } from 'ts-morph';
 import type { RuntimeTW } from '@native-twin/core';
-import { type ResultComponent } from './twin.types';
 import * as compilerMaps from './twin.maps';
+import { type ResultComponent } from './twin.types';
 import * as tsUtils from './utils/ts.utils';
 
 const project = new Project({
@@ -29,16 +29,25 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
       elementNode,
       componentStyles,
       (elementNode, styles) => {
-        tsUtils.addAttributeToJSXElement(
-          elementNode.jsxElement,
-          '_twinComponentSheet',
-          styles.rawEntries.styledProp,
+        const openingElement = tsUtils.getJSXOpeningElement(elementNode.jsxElement);
+        openingElement.addAttribute(
+          tsUtils.createJSXAttribute('_twinComponentID', `"${elementNode.componentID}"`),
         );
-        tsUtils.addAttributeToJSXElement(
-          elementNode.jsxElement,
-          '_twinComponentTemplateEntries',
-          `${styles.rawEntries.templateEntries}`,
+        openingElement.addAttribute(
+          tsUtils.createJSXAttribute('_twinComponentSheet', styles.rawEntries.styledProp),
         );
+
+        openingElement.addAttribute(
+          tsUtils.createJSXAttribute(
+            '_twinComponentTemplateEntries',
+            `${styles.rawEntries.templateEntries}`,
+          ),
+        );
+        // tsUtils.addAttributeToJSXElement(
+        //   elementNode.jsxElement,
+        //   '_twinComponentTemplateEntries',
+        //   `${styles.rawEntries.templateEntries}`,
+        // );
         return {
           elementNode,
           styles,

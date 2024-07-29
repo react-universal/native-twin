@@ -19,7 +19,7 @@ export async function sendUpdate(nextData: string | Buffer, _version: number) {
   currentState = {
     ...currentState,
     version: newData.version,
-    data: JSON.stringify(newData.data),
+    // data: JSON.stringify(newData.data),
   };
   // debugServerMiddleware('CONNECTIONS: ', connections.size);
   // debugServerMiddleware('SEND_UPDATE_VERSION: ', currentState.version);

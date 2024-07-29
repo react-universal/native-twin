@@ -70,25 +70,27 @@ export const StyleSheetServiceLive = Layer.scoped(
 
     function getSheetDocumentText(version: number) {
       const twinStyles = fs.readFileSync(cssOutput, 'utf-8');
-      if (!twinStyles) return `{"version": ${version},"cssOutput": "${cssOutput}"}`;
+      if (!twinStyles)
+        return `{"version": ${version},"cssOutput": "${cssOutput}", "entries": {}}`;
 
       let code = `${twinStyles.replace(new RegExp(twinModuleExportString, 'g'), ' ')}`;
       code = code.replace(
-        "require('@native-twin/metro/build/server/poll-update-client')",
+        "require('@native-twin/metro/build/metro/server/poll-update-client')",
         ' ',
       );
       code = `${code.replace(/\n/g, ' ')}`;
 
       if (code === '') {
-        code = `{"version": ${version},"cssOutput": "${cssOutput}}"`;
+        code = `{"version": ${version},"cssOutput": "${cssOutput}", "entries": {}}`;
       }
+      console.log('CODE: ', code);
       try {
-        const current: object = JSON.parse(code) ?? {};
-        const entries = entriesToObject(Object.values(current));
+        const current: Record<string, any> = JSON.parse(code) ?? {};
+        const entries = entriesToObject(Object.values(current?.['entries'] ?? {}));
         return JSON.stringify({ version, cssOutput, entries });
       } catch (e: any) {
-        console.log('PARSER_ERROR: ', code);
-        return `{"version": ${version},"cssOutput": "${cssOutput}"}`;
+        console.log('EE: ', e);
+        return `{"version": ${version},"cssOutput": "${cssOutput}", "entries": {}}`;
       }
     }
 

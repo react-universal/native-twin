@@ -9,12 +9,13 @@ import type {
   NoSubstitutionTemplateLiteral,
   StringLiteral,
   TemplateExpression,
+  JsxAttributeStructure,
 } from 'ts-morph';
 import { Node, StructureKind, ts } from 'ts-morph';
-import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
+import type { AnyPrimitive, RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import { cx } from '@native-twin/core';
 import { type MappedComponent, mappedComponents } from '../../utils';
-import type { JSXMappedAttribute } from '../twin.types';
+import type { JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
 
 export const getImportDeclaration = (ident: Identifier) => {
   const symbol = ident.getSymbol();
@@ -146,6 +147,34 @@ export const getClassNames = (
   });
 };
 
+export const createJSXAttribute = (
+  name: string,
+  value: AnyPrimitive,
+): JsxAttributeStructure => {
+  if (typeof value === 'string') {
+    return {
+      kind: StructureKind.JsxAttribute,
+      name,
+      initializer: value,
+    };
+  }
+  return {
+    kind: StructureKind.JsxAttribute,
+    name,
+    initializer: `[${value}]`,
+  }
+};
+
+export const getJSXElementAttributesNode = (node: ValidJSXElementNode) => {
+  if (Node.isJsxSelfClosingElement(node)) return node.getAttributes();
+  return node.getOpeningElement().getAttributes();
+};
+
+export const getJSXOpeningElement = (node: ValidJSXElementNode) => {
+  if (Node.isJsxSelfClosingElement(node)) return node;
+  return node.getOpeningElement();
+};
+
 /** @domain TypeScript Transform */
 export const isValidJSXElement = (element: Node) => {
   return Node.isJsxElement(element) || Node.isJsxSelfClosingElement(element);
@@ -167,13 +196,16 @@ export const addAttributeToJSXElement = (element: Node, name: string, value: str
   if (attribute) {
     attribute.transform((traversal) => {
       const node = traversal.visitChildren();
+      let jsxValue: ts.StringLiteral | ts.NumericLiteral;
+      if (!isNaN(Number(value))) {
+        jsxValue = traversal.factory.createNumericLiteral(value.replace(/[{,}]/g, ''));
+      } else {
+        jsxValue = traversal.factory.createStringLiteral(value);
+      }
       if (ts.isJsxAttribute(node)) {
         return traversal.factory.createJsxAttribute(
           traversal.factory.createIdentifier(name),
-          traversal.factory.createJsxExpression(
-            undefined,
-            traversal.factory.createNumericLiteral(value.replace(/[{,}]/g, '')),
-          ),
+          traversal.factory.createJsxExpression(undefined, jsxValue),
         );
       }
       return node;
@@ -182,7 +214,7 @@ export const addAttributeToJSXElement = (element: Node, name: string, value: str
     childElement.addAttribute({
       kind: StructureKind.JsxAttribute,
       name: name,
-      initializer: value,
+      initializer: `"${value}"`,
     });
   }
 };

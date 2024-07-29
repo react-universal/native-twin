@@ -108,12 +108,12 @@ export const addOrderToChilds = (
   const childsCount = element.getChildCount();
   element.forEachChild((node) => {
     if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
-      const tagName = Option.fromNullable(getJSXElementTagName(node)).pipe(
-        Option.getOrNull,
-      );
-      if (tagName && Option.isNone(maybeReactNativeImport(tagName))) {
-        return undefined;
-      }
+      // const tagName = Option.fromNullable(getJSXElementTagName(node)).pipe(
+      //   Option.getOrNull,
+      // );
+      // if (tagName && Option.isNone(maybeReactNativeImport(tagName))) {
+      //   return undefined;
+      // }
       if (order === 0) {
         addAttributeToJSXElement(node, 'isFirstChild', `{true}`);
       }

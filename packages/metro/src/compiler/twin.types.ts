@@ -8,6 +8,8 @@ import type {
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { MappedComponent } from '../utils';
 
+export type ValidJSXElementNode = JsxElement | JsxSelfClosingElement;
+
 /** @domain TypeScript Transform */
 export interface JSXMappedAttribute {
   prop: string;

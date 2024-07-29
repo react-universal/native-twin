@@ -23,7 +23,7 @@ export const useStyledProps = (
 
   const componentStyles = useMemo(() => {
     return StyleSheet.registerComponent(id, styledEntries, styledCtx);
-  }, [compiledSheet, styledCtx, id]);
+  }, [compiledSheet, styledEntries, styledCtx, id]);
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 

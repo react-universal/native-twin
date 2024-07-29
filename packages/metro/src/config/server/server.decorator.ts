@@ -11,19 +11,16 @@ import type {
   TwinServerDataBuffer,
 } from '../../metro.types';
 import { ensureBuffer, setupNativeTwin } from '../../utils';
-import { getMetroURLVersion } from './server.utils';
+import { debugServerMiddleware, getMetroURLVersion } from './server.utils';
 
 const connections = new Set<ServerResponse<IncomingMessage>>();
-let haste: any;
-let fileSystem: any;
-const virtualModules = new Map<string, Promise<Buffer>>();
-virtualModules;
-haste;
-fileSystem;
+// let haste: any;
+// let fileSystem: any;
+// const virtualModules = new Map<string, Promise<Buffer>>();
 
 const currentState: TwinServerDataBuffer = {
   version: 0,
-  data: '',
+  data: '{}',
 };
 let tw: RuntimeTW | null = null;
 
@@ -40,20 +37,14 @@ export const decorateMetroServer = (
     enhanceMiddleware(middleware, metroServer) {
       let server = connect();
 
-      const bundler = metroServer.getBundler().getBundler();
-      const initPromise = bundler.getDependencyGraph().then(async (graph: any) => {
-        haste = graph._haste;
-        fileSystem = graph._fileSystem;
-      });
-
-      server.use(async (_, __, next) => {
-        await initPromise;
-        // debugInspect('HASTE: ', fileSystem);
-        next();
-      });
+      // const bundler = metroServer.getBundler().getBundler();
+      // const initPromise = bundler.getDependencyGraph().then(async (_graph: any) => {
+      //   // haste = graph._haste;
+      //   // fileSystem = graph._fileSystem;
+      // });
 
       server.use('/__native_twin_update_endpoint', (req, res) => {
-        // debugServerMiddleware('currentState: ', currentState.version);
+        debugServerMiddleware('currentState: ', currentState);
         const version = getMetroURLVersion(req.url);
         const buffer = fs.readFileSync(cssOut);
         if (!buffer.equals(ensureBuffer(currentState.data))) {
@@ -61,13 +52,13 @@ export const decorateMetroServer = (
           currentState.version++;
           currentState.data = buffer;
         }
-        // debugServerMiddleware('METRO_VERSION: ', version);
+        debugServerMiddleware('METRO_VERSION: ', version);
         if (tw && hasOwnProperty.call(tw, 'theme')) {
           // console.log('TW: EXISTS!!');
         }
 
         if (version && version < currentState.version) {
-          // debugServerMiddleware('WRITE_NEW_DATA', JSON.stringify(currentState.data));
+          debugServerMiddleware('WRITE_NEW_DATA', JSON.stringify(currentState.data));
           res.write(
             `data: {"version":${currentState.version},"data":${JSON.stringify(currentState.data)}}\n\n`,
           );

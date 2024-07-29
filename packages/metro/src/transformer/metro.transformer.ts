@@ -94,7 +94,7 @@ const program = Effect.gen(function* () {
     // const styledFn = sheet.getComponentFunction(runtimeStyles);
     // compiled.full = `${compiled.full}\n${styledFn}`;
     // compiled.full = `${compiled.full}\nvar __twinComponentStyles = ${JSON.stringify(Object.fromEntries(runtimeStyles))}`;
-    compiled.full = `${compiled.full}\n${twinHMRString}`;
+    // compiled.full = `${compiled.full}\n${twinHMRString}`;
     if (registered) {
       transformFile.version = transformFile.version + 1;
       sendUpdate(

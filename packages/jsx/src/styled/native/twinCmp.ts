@@ -1,17 +1,12 @@
 import { ComponentType, createElement, forwardRef, useId } from 'react';
-import { SheetEntry } from '@native-twin/css';
 import { groupContext } from '../../context';
 import { colorScheme } from '../../store/observables';
+import type { ComponentTemplateEntryProp } from '../../types/jsx.types';
 import type { ComponentConfig } from '../../types/styled.types';
 import { getComponentType } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';
+import { templatePropsToSheetEntriesObject } from './utils/native.maps';
 
-type TemplateEntry = {
-  id: string;
-  prop: string;
-  target: string;
-  entries: SheetEntry[];
-};
 export function twinComponent(
   baseComponent: ComponentType<any>,
   configs: ComponentConfig[],
@@ -29,19 +24,8 @@ export function twinComponent(
   );
 
   props = Object.assign({ ref }, props);
-  const entriesFinalSheet = (
-    (props?.['_twinComponentTemplateEntries'] as TemplateEntry[]) ?? []
-  ).reduce(
-    (prev, current) => {
-      if (prev[current.target]) {
-        prev[current.target]?.push(...current.entries);
-      }
-      if (!prev[current.target]) {
-        prev[current.target] = current.entries;
-      }
-      return prev;
-    },
-    {} as Record<string, SheetEntry[]>,
+  const entriesFinalSheet = templatePropsToSheetEntriesObject(
+    (props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[]) ?? [],
   );
 
   if (componentStyles.sheets.length > 0) {
