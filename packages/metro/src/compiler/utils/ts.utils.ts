@@ -1,22 +1,24 @@
 import CodeBlock from 'code-block-writer';
 import * as Array from 'effect/Array';
 import { pipe } from 'effect/Function';
-import type {
-  Identifier,
-  JsxElement,
-  JsxOpeningElement,
-  JsxSelfClosingElement,
-  NoSubstitutionTemplateLiteral,
-  StringLiteral,
-  TemplateExpression,
-  JsxAttributeStructure,
-} from 'ts-morph';
+import type { Identifier, JsxAttributeStructure } from 'ts-morph';
 import { Node, StructureKind, ts } from 'ts-morph';
 import type { AnyPrimitive, RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import { cx } from '@native-twin/core';
 import { type MappedComponent, mappedComponents } from '../../utils';
-import type { JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
+import type {
+  JSXClassnameStrings,
+  JSXMappedAttribute,
+  ValidJSXClassnameNodeString,
+  ValidJSXElementNode,
+  ValidOpeningElementNode,
+} from '../twin.types';
+import { isValidClassNameString, isValidTemplateLiteral } from './ts.guards';
 
+/**
+ * @domain TypeScript Transform
+ * @description Get the {@link ts.ImportDeclaration} for a specified identifier
+ * */
 export const getImportDeclaration = (ident: Identifier) => {
   const symbol = ident.getSymbol();
   if (!symbol) return null;
@@ -32,7 +34,11 @@ export const getImportDeclaration = (ident: Identifier) => {
   return importDeclaration;
 };
 
-export const getJSXElementTagName = (element: JsxElement | JsxSelfClosingElement) => {
+/**
+ * @domain TypeScript Transform
+ * @description Extract the JSXOpeningElement from any {@link ValidJSXElementNode}
+ * */
+export const getJSXElementTagName = (element: ValidJSXElementNode) => {
   const openingElement = Node.isJsxSelfClosingElement(element)
     ? element
     : element.getOpeningElement();
@@ -41,38 +47,42 @@ export const getJSXElementTagName = (element: JsxElement | JsxSelfClosingElement
   if (!Node.isIdentifier(tagNameNode)) return null;
   return tagNameNode;
 };
-/** @domain TypeScript Transform */
-export const getJSXElementAttributes = (element: JsxElement | JsxSelfClosingElement) => {
-  const openingElement = Node.isJsxSelfClosingElement(element)
-    ? element
-    : element.getOpeningElement();
 
-  const tagNameNode = openingElement.getTagNameNode();
-  if (!Node.isIdentifier(tagNameNode)) return null;
-  const tagName = tagNameNode;
+/**
+ * @domain TypeScript Transform
+ * @description Extract the {@link MappedComponent} from any {@link ValidJSXElementNode}
+ * */
+export const getJSXElementConfig = (tagName: Identifier) => {
+  if (!Node.isIdentifier(tagName)) return null;
 
   const componentConfig = mappedComponents.find(
     (x) => x.name === tagName.compilerNode.text,
   );
   if (!componentConfig) return null;
 
-  const classNames: JSXMappedAttribute[] = pipe(
+  return componentConfig;
+};
+
+/**
+ * @domain TypeScript Transform
+ * @description Extract the {@link JSXMappedAttribute[]} from any {@link ValidOpeningElementNode}
+ * */
+export const getComponentStyledEntries = (
+  openingElement: ValidOpeningElementNode,
+  componentConfig: MappedComponent,
+): JSXMappedAttribute[] => {
+  return pipe(
     getClassNames(openingElement, componentConfig),
     Array.map((x) => ({
       ...x,
       value: getClassNameNodeString(x.value as any),
     })),
   );
-  return {
-    classNames,
-    tagName,
-    componentConfig,
-  };
 };
 
 const getClassNameNodeString = (
-  value: StringLiteral | TemplateExpression | NoSubstitutionTemplateLiteral,
-) => {
+  value: ValidJSXClassnameNodeString,
+): JSXClassnameStrings => {
   if (Node.isStringLiteral(value)) {
     return {
       literal: value.compilerNode.text,
@@ -97,19 +107,8 @@ const getClassNameNodeString = (
 };
 
 /** @domain TypeScript Transform */
-export const isValidClassNameString = (
-  node: Node,
-): node is TemplateExpression | NoSubstitutionTemplateLiteral | StringLiteral => {
-  return (
-    Node.isStringLiteral(node) ||
-    Node.isTemplateExpression(node) ||
-    Node.isNoSubstitutionTemplateLiteral(node)
-  );
-};
-
-/** @domain TypeScript Transform */
 export const getClassNames = (
-  openingElement: JsxOpeningElement | JsxSelfClosingElement,
+  openingElement: ValidOpeningElementNode,
   config: MappedComponent,
 ) => {
   return openingElement.getAttributes().flatMap((attribute) => {
@@ -127,13 +126,11 @@ export const getClassNames = (
 
     if (Node.isJsxExpression(value)) {
       const expression = value.getExpression();
-      if (
-        Node.isTemplateExpression(expression) ||
-        Node.isNoSubstitutionTemplateLiteral(expression)
-      ) {
+      if (isValidTemplateLiteral(value)) {
         value = expression;
       }
     }
+
     if (isValidClassNameString(value)) {
       return [
         {
@@ -161,8 +158,8 @@ export const createJSXAttribute = (
   return {
     kind: StructureKind.JsxAttribute,
     name,
-    initializer: `[${value}]`,
-  }
+    initializer: `{${value}}`,
+  };
 };
 
 export const getJSXElementAttributesNode = (node: ValidJSXElementNode) => {
@@ -176,13 +173,8 @@ export const getJSXOpeningElement = (node: ValidJSXElementNode) => {
 };
 
 /** @domain TypeScript Transform */
-export const isValidJSXElement = (element: Node) => {
-  return Node.isJsxElement(element) || Node.isJsxSelfClosingElement(element);
-};
-
-/** @domain TypeScript Transform */
 export const addAttributeToJSXElement = (element: Node, name: string, value: string) => {
-  let childElement: JsxOpeningElement | JsxSelfClosingElement | null = null;
+  let childElement: ValidOpeningElementNode | null = null;
 
   if (Node.isJsxElement(element)) {
     childElement = element.getOpeningElement();
@@ -214,7 +206,7 @@ export const addAttributeToJSXElement = (element: Node, name: string, value: str
     childElement.addAttribute({
       kind: StructureKind.JsxAttribute,
       name: name,
-      initializer: `"${value}"`,
+      initializer: value,
     });
   }
 };

@@ -35,7 +35,7 @@ function HomeScreen() {
         <Text
           className={`
             font-inter-bold text-5xl capitalize
-            ${active ? 'text-purple-800' : 'text-red-400'}
+            ${active ? 'text-green-800' : 'text-yellow-400'}
           `}
         >
           Nested Hover22222

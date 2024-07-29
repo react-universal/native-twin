@@ -20,8 +20,8 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
 
     Option.map(elementNode, (x) => compilerMaps.addOrderToChilds(x.jsxElement, 0));
 
-    const componentStyles = Option.map(elementNode, ({ componentID, attributes }) => {
-      const entries = compilerMaps.getComponentEntries(twin, attributes.classNames);
+    const componentStyles = Option.map(elementNode, ({ componentID, componentEntries }) => {
+      const entries = compilerMaps.getComponentEntries(twin, componentEntries);
       return { rawEntries: tsUtils.entriesToObject(componentID, entries), entries };
     });
 
@@ -43,11 +43,6 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
             `${styles.rawEntries.templateEntries}`,
           ),
         );
-        // tsUtils.addAttributeToJSXElement(
-        //   elementNode.jsxElement,
-        //   '_twinComponentTemplateEntries',
-        //   `${styles.rawEntries.templateEntries}`,
-        // );
         return {
           elementNode,
           styles,
@@ -55,39 +50,6 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
       },
     );
     componentsList.push(result);
-
-    // if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
-    //   const tagName = tsUtils.getJSXElementTagName(node);
-    //   if (tagName && !maybeReactNativeImport(tagName)) {
-    //     return undefined;
-    //   }
-    //   const jsxNode = createJSXElementNode(node, filename);
-    //   if (jsxNode) {
-    //     const entries = jsxNode.getComponentEntries(twin);
-    //     let childElement: JsxOpeningElement | JsxSelfClosingElement | null = null;
-
-    //     if (Node.isJsxElement(node)) {
-    //       childElement = node.getOpeningElement();
-    //     } else if (Node.isJsxSelfClosingElement(node)) {
-    //       childElement = node;
-    //     }
-
-    //     if (childElement) {
-    //       const styledAttribute = tsUtils.entriesToObject(jsxNode.metadata.id, entries);
-    //       tsUtils.addAttributeToJSXElement(
-    //         node,
-    //         '_twinComponentSheet',
-    //         styledAttribute.styledProp,
-    //       );
-    //       tsUtils.addAttributeToJSXElement(
-    //         node,
-    //         '_twinComponentTemplateEntries',
-    //         `${styledAttribute.templateEntries}`,
-    //       );
-    //     }
-    //     elements.push(jsxNode);
-    //   }
-    // }
   });
 
   await ast.save();

@@ -4,11 +4,26 @@ import type {
   ts,
   JsxElement,
   JsxSelfClosingElement,
+  NoSubstitutionTemplateLiteral,
+  StringLiteral,
+  TemplateExpression,
 } from 'ts-morph';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { MappedComponent } from '../utils';
 
 export type ValidJSXElementNode = JsxElement | JsxSelfClosingElement;
+export type ValidOpeningElementNode = JsxOpeningElement | JsxSelfClosingElement;
+
+export type ValidJSXClassnameTemplate =
+  | TemplateExpression
+  | NoSubstitutionTemplateLiteral;
+
+export type ValidJSXClassnameNodeString = StringLiteral | ValidJSXClassnameTemplate;
+
+export interface JSXClassnameStrings {
+  templates: string | null;
+  literal: string;
+}
 
 /** @domain TypeScript Transform */
 export interface JSXMappedAttribute {
@@ -38,13 +53,10 @@ export interface ResultComponent {
   styles: ComponentStyles;
   elementNode: {
     jsxElement: JsxElement | JsxSelfClosingElement;
-    tagName: Identifier;
     importDeclaration: ts.ImportDeclaration;
     openingElement: JsxSelfClosingElement | JsxOpeningElement;
-    attributes: {
-      classNames: JSXMappedAttribute[];
-      tagName: Identifier;
-      componentConfig: MappedComponent;
-    };
+    componentEntries: JSXMappedAttribute[];
+    tagName: Identifier;
+    styledConfig: MappedComponent;
   };
 }

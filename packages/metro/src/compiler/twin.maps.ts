@@ -1,28 +1,49 @@
 import * as Option from 'effect/Option';
-import type {
-  Identifier,
-  JsxElement,
-  JsxOpeningElement,
-  JsxSelfClosingElement,
-} from 'ts-morph';
+import type { Identifier } from 'ts-morph';
 import { Node, ts } from 'ts-morph';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { RuntimeTW } from '@native-twin/core';
 import { getEntryGroups } from '../sheet/utils/styles.utils';
-import type { JSXMappedAttribute } from './twin.types';
+import type {
+  JSXMappedAttribute,
+  ValidJSXElementNode,
+  ValidOpeningElementNode,
+} from './twin.types';
+import { isValidJSXElement } from './utils/ts.guards';
 import {
   addAttributeToJSXElement,
+  getComponentStyledEntries,
   getImportDeclaration,
-  getJSXElementAttributes,
+  getJSXElementConfig,
   getJSXElementTagName,
 } from './utils/ts.utils';
 
-export const maybeValidElementNode = (
-  node: Node,
-): Option.Option<JsxElement | JsxSelfClosingElement> => {
-  return Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)
-    ? Option.some(node)
-    : Option.none();
+export const getJSXElementNode = (node: Node) => {
+  return Option.Do.pipe(
+    Option.bind('jsxElement', () => maybeValidElementNode(node)),
+    Option.bind('tagName', ({ jsxElement }) =>
+      Option.fromNullable(getJSXElementTagName(jsxElement)),
+    ),
+    Option.bind('importDeclaration', ({ tagName }) => maybeReactNativeImport(tagName)),
+    Option.bind('styledConfig', ({ tagName }) =>
+      Option.fromNullable(getJSXElementConfig(tagName)),
+    ),
+    Option.bind('openingElement', ({ jsxElement }) => getOpeningElement(jsxElement)),
+    Option.let('componentEntries', ({ styledConfig, openingElement }) =>
+      getComponentStyledEntries(openingElement, styledConfig),
+    ),
+    Option.let('componentID', ({ tagName, jsxElement }) =>
+      getComponentID(
+        jsxElement,
+        jsxElement.getSourceFile().getFilePath(),
+        getIdentifierText(tagName),
+      ),
+    ),
+  );
+};
+
+export const maybeValidElementNode = (node: Node): Option.Option<ValidJSXElementNode> => {
+  return isValidJSXElement(node) ? Option.some(node) : Option.none();
 };
 
 export const maybeReactNativeImport = (
@@ -42,9 +63,7 @@ export const maybeReactNativeImport = (
 export const getComponentID = (node: Node, filename: string, tagName: string) => {
   return `${filename}-${node.getStart()}-${node.getEnd()}-${tagName}`;
 };
-export const getOpeningElement = (
-  node: Node,
-): Option.Option<JsxOpeningElement | JsxSelfClosingElement> => {
+export const getOpeningElement = (node: Node): Option.Option<ValidOpeningElementNode> => {
   if (Node.isJsxElement(node)) {
     return Option.some(node.getOpeningElement());
   } else if (Node.isJsxSelfClosingElement(node)) {
@@ -54,27 +73,6 @@ export const getOpeningElement = (
 };
 
 export const getIdentifierText = (node: Identifier) => node.compilerNode.text;
-
-export const getJSXElementNode = (node: Node) => {
-  return Option.Do.pipe(
-    Option.bind('jsxElement', () => maybeValidElementNode(node)),
-    Option.bind('tagName', ({ jsxElement }) =>
-      Option.fromNullable(getJSXElementTagName(jsxElement)),
-    ),
-    Option.bind('importDeclaration', ({ tagName }) => maybeReactNativeImport(tagName)),
-    Option.bind('attributes', ({ jsxElement }) =>
-      Option.fromNullable(getJSXElementAttributes(jsxElement)),
-    ),
-    Option.let('componentID', ({ tagName, jsxElement }) =>
-      getComponentID(
-        jsxElement,
-        jsxElement.getSourceFile().getFilePath(),
-        getIdentifierText(tagName),
-      ),
-    ),
-    Option.bind('openingElement', ({ jsxElement }) => getOpeningElement(jsxElement)),
-  );
-};
 
 export const getComponentEntries = (
   twin: RuntimeTW,
@@ -101,19 +99,10 @@ export const getComponentEntries = (
   return component;
 };
 
-export const addOrderToChilds = (
-  element: JsxElement | JsxSelfClosingElement,
-  order: number,
-) => {
+export const addOrderToChilds = (element: ValidJSXElementNode, order: number) => {
   const childsCount = element.getChildCount();
   element.forEachChild((node) => {
-    if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
-      // const tagName = Option.fromNullable(getJSXElementTagName(node)).pipe(
-      //   Option.getOrNull,
-      // );
-      // if (tagName && Option.isNone(maybeReactNativeImport(tagName))) {
-      //   return undefined;
-      // }
+    if (isValidJSXElement(node)) {
       if (order === 0) {
         addAttributeToJSXElement(node, 'isFirstChild', `{true}`);
       }

@@ -75,7 +75,7 @@ const program = Effect.gen(function* () {
       return {
         ...x,
         entries: x.styles.entries,
-        componentClasses: RA.flatMap(x.elementNode.attributes.classNames, (x) =>
+        componentClasses: RA.flatMap(x.elementNode.componentEntries, (x) =>
           splitClasses(x.value.literal),
         ),
       };

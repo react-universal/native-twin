@@ -43,7 +43,7 @@ export function withNativeTwin(
 
   const { watcher, processFiles } = createWatcher(
     {
-      configPath: 'asd',
+      configPath: twinConfigPath,
       projectRoot: projectRoot,
     },
     twConfig,
@@ -62,8 +62,8 @@ export function withNativeTwin(
       projectRoot,
     });
   });
-  watcher.on('change', (path, stats) => {
-    console.log('CHANGED_PATH: ', path);
+  watcher.on('change', (_path, _stats) => {
+    // console.log('CHANGED_PATH: ', path);
     // console.log('STATS: ', stats);
   });
 

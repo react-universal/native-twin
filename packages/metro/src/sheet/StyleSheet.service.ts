@@ -83,13 +83,13 @@ export const StyleSheetServiceLive = Layer.scoped(
       if (code === '') {
         code = `{"version": ${version},"cssOutput": "${cssOutput}", "entries": {}}`;
       }
-      console.log('CODE: ', code);
+      // console.log('CODE: ', code);
       try {
         const current: Record<string, any> = JSON.parse(code) ?? {};
         const entries = entriesToObject(Object.values(current?.['entries'] ?? {}));
         return JSON.stringify({ version, cssOutput, entries });
       } catch (e: any) {
-        console.log('EE: ', e);
+        console.log('PARSER_ERROR: ', e);
         return `{"version": ${version},"cssOutput": "${cssOutput}", "entries": {}}`;
       }
     }
