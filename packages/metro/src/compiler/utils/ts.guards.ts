@@ -9,7 +9,11 @@ import type {
 export const isValidClassNameString = (
   node?: Node,
 ): node is ValidJSXClassnameNodeString => {
-  return Node.isStringLiteral(node) || isValidTemplateLiteral(node);
+  return (
+    Node.isStringLiteral(node) ||
+    Node.isTemplateExpression(node) ||
+    Node.isNoSubstitutionTemplateLiteral(node)
+  );
 };
 
 export const isValidTemplateLiteral = (

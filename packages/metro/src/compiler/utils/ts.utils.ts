@@ -126,7 +126,7 @@ export const getClassNames = (
 
     if (Node.isJsxExpression(value)) {
       const expression = value.getExpression();
-      if (isValidTemplateLiteral(value)) {
+      if (isValidTemplateLiteral(expression)) {
         value = expression;
       }
     }
