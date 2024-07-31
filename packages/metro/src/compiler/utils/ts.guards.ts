@@ -12,7 +12,9 @@ export const isValidClassNameString = (
   return (
     Node.isStringLiteral(node) ||
     Node.isTemplateExpression(node) ||
-    Node.isNoSubstitutionTemplateLiteral(node)
+    Node.isNoSubstitutionTemplateLiteral(node) ||
+    Node.isIdentifier(node) ||
+    Node.isCallExpression(node)
   );
 };
 

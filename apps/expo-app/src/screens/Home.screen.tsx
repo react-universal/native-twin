@@ -10,20 +10,21 @@ function HomeScreen() {
   return (
     <View className='flex-1 bg-red'>
       <View
-        className={`flex-1 items-center justify-center bg-cyan-500`}
+        className={`flex-1 items-center justify-center bg-cyan-500 group`}
         // debug
       >
-        <Button size='large' />
-        <View className='bg-red-200 shadow-xl rounded-2xl p-2'>
+        <View className='bg-gray-600 shadow-xl rounded-2xl p-2 group-hover:bg-red-500'>
           <Text
             className={`
+              group-hover:(text-green-800)
               text(center red-500)
               font-inter-bold hover:text-gray-700
-            `}
+              `}
           >
             Hello World
           </Text>
         </View>
+        <Button size='large' />
       </View>
       <View
         className={`
@@ -74,3 +75,7 @@ function HomeScreen() {
 }
 
 export { HomeScreen };
+
+if (typeof window !== 'undefined') {
+  console.log('WINDOW: ', window);
+}

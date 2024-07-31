@@ -1,16 +1,20 @@
 import type {
   Identifier,
   JsxOpeningElement,
-  ts,
   JsxElement,
   JsxSelfClosingElement,
   NoSubstitutionTemplateLiteral,
   StringLiteral,
   TemplateExpression,
+  CallExpression,
 } from 'ts-morph';
-import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
+import type {
+  RuntimeComponentEntry,
+  SheetGroupEntries,
+} from '../sheet/sheet.types';
 import type { MappedComponent } from '../utils';
 
+export type AnyPrimitive = string | number | boolean;
 export type ValidJSXElementNode = JsxElement | JsxSelfClosingElement;
 export type ValidOpeningElementNode = JsxOpeningElement | JsxSelfClosingElement;
 
@@ -18,7 +22,11 @@ export type ValidJSXClassnameTemplate =
   | TemplateExpression
   | NoSubstitutionTemplateLiteral;
 
-export type ValidJSXClassnameNodeString = StringLiteral | ValidJSXClassnameTemplate;
+export type ValidJSXClassnameNodeString =
+  | StringLiteral
+  | ValidJSXClassnameTemplate
+  | Identifier
+  | CallExpression;
 
 export interface JSXClassnameStrings {
   templates: string | null;
@@ -36,27 +44,27 @@ export interface JSXMappedAttribute {
 }
 
 interface ComponentStyles {
-  rawEntries: {
-    styledProp: string;
-    templateEntries: string;
-  };
-  entries: RuntimeComponentEntry[];
+  styledProp: string;
+  templateEntries: string;
 }
 export const componentStylesZero: ComponentStyles = {
-  rawEntries: {
-    styledProp: '',
-    templateEntries: '',
-  },
-  entries: [],
+  styledProp: '',
+  templateEntries: '',
 };
+
 export interface ResultComponent {
-  styles: ComponentStyles;
-  elementNode: {
-    jsxElement: JsxElement | JsxSelfClosingElement;
-    importDeclaration: ts.ImportDeclaration;
-    openingElement: JsxSelfClosingElement | JsxOpeningElement;
-    componentEntries: JSXMappedAttribute[];
-    tagName: Identifier;
-    styledConfig: MappedComponent;
-  };
+  // styles: ComponentStyles;
+  mappedClassNames: JSXMappedAttribute[];
+  jsxElement: JsxElement | JsxSelfClosingElement;
+  // importDeclaration: ts.ImportDeclaration;
+  openingElement: JsxSelfClosingElement | JsxOpeningElement;
+  tagName: Identifier;
+  order: number;
+  childComponents: ResultComponent[];
+  childRuntimeEntries: SheetGroupEntries;
+  runtimeEntries: RuntimeComponentEntry[];
+  styledConfig: MappedComponent;
+  childsCount: number;
+  componentID: string;
+  parentID: string | undefined;
 }

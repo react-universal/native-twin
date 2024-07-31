@@ -3,10 +3,11 @@ import * as Array from 'effect/Array';
 import { pipe } from 'effect/Function';
 import type { Identifier, JsxAttributeStructure } from 'ts-morph';
 import { Node, StructureKind, ts } from 'ts-morph';
-import type { AnyPrimitive, RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import { cx } from '@native-twin/core';
+import type { RuntimeComponentEntry } from '../../sheet/sheet.types';
 import { type MappedComponent, mappedComponents } from '../../utils';
 import type {
+  AnyPrimitive,
   JSXClassnameStrings,
   JSXMappedAttribute,
   ValidJSXClassnameNodeString,
@@ -80,6 +81,12 @@ export const getComponentStyledEntries = (
   );
 };
 
+export const getComponentID = (node: Node, filename: string, tagName: string) => {
+  return `${filename}-${node.getStart()}-${node.getEnd()}-${tagName}`;
+};
+
+export const getIdentifierText = (node: Identifier) => node.compilerNode.text;
+
 const getClassNameNodeString = (
   value: ValidJSXClassnameNodeString,
 ): JSXClassnameStrings => {
@@ -87,6 +94,18 @@ const getClassNameNodeString = (
     return {
       literal: value.compilerNode.text,
       templates: null,
+    };
+  }
+  if (Node.isIdentifier(value)) {
+    return {
+      literal: '',
+      templates: `\${${value.compilerNode.text}}`,
+    };
+  }
+  if (Node.isCallExpression(value)) {
+    return {
+      literal: '',
+      templates: `\${${value.compilerNode.getText()}}`,
     };
   }
   if (Node.isNoSubstitutionTemplateLiteral(value)) {
@@ -120,13 +139,14 @@ export const getClassNames = (
     let value: Node | undefined = attribute.getInitializer();
     const validClassNames = Object.entries(config.config);
     const className = validClassNames.find((x) => name.compilerNode.text === x[0]);
-    if (!value || !className) {
-      return [];
-    }
+    if (!value || !className) return [];
 
     if (Node.isJsxExpression(value)) {
       const expression = value.getExpression();
       if (isValidTemplateLiteral(expression)) {
+        value = expression;
+      }
+      if (Node.isIdentifier(expression) || Node.isCallExpression(expression)) {
         value = expression;
       }
     }

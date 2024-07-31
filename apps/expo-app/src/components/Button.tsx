@@ -5,7 +5,7 @@ import { VariantProps, createVariants } from '@native-twin/styled';
 // styled('')``
 
 const buttonVariants = createVariants({
-  base: 'py-5 m-1 rounded-md items-center justify-center',
+  base: 'py-5 m-1 rounded-md items-center justify-center hover:bg-red-400',
   variants: {
     variant: {
       primary: 'bg-blue-200',
@@ -29,9 +29,8 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 type ButtonProps = ButtonVariantProps & PressableProps;
 
 export const Button = (props: ButtonProps) => {
-  const className = buttonVariants(props);
   return (
-    <Pressable className={className}>
+    <Pressable className={buttonVariants(props)}>
       <Text>asd</Text>
     </Pressable>
   );

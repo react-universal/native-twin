@@ -6,6 +6,7 @@ export interface JSXInternalProps extends Record<string, any> {
   twEnabled?: boolean;
   _twinComponentID?: string;
   _twinComponentSheet: RegisteredComponent;
+  _twinComponentTemplateEntries: ComponentTemplateEntryProp[];
 }
 
 export type JSXFunction = (

@@ -7,7 +7,6 @@ import * as Option from 'effect/Option';
 import path from 'node:path';
 import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
-import { BabelSheetEntry } from '../sheet/Sheet.model';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
 import { splitClasses, setupNativeTwin, ensureBuffer } from '../utils';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE, twinHMRString } from '../utils/constants';
@@ -70,12 +69,11 @@ const program = Effect.gen(function* () {
 
   const classNames = pipe(
     compiled.componentsList,
-    RA.getSomes,
     RA.map((x) => {
       return {
         ...x,
-        entries: x.styles.entries,
-        componentClasses: RA.flatMap(x.elementNode.componentEntries, (x) =>
+        entries: x.runtimeEntries,
+        componentClasses: RA.flatMap(x.mappedClassNames, (x) =>
           splitClasses(x.value.literal),
         ),
       };
@@ -85,7 +83,6 @@ const program = Effect.gen(function* () {
   const babelEntries = pipe(
     classNames,
     RA.flatMap((x) => x.entries.flatMap((x) => x.entries)),
-    RA.map((x) => new BabelSheetEntry(x)),
   );
 
   if (compiled && classNames.length > 0) {

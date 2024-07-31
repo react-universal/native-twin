@@ -5,6 +5,7 @@ import * as Layer from 'effect/Layer';
 import * as MHS from 'effect/MutableHashSet';
 import fs from 'node:fs';
 import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
+import type { SheetEntry } from '@native-twin/css';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import {
   createObjectExpression,
@@ -12,7 +13,6 @@ import {
   twinHMRString,
   twinModuleExportString,
 } from '../utils';
-import type { BabelSheetEntry } from './Sheet.model';
 
 export class StyleSheetService extends Context.Tag('files/StyleSheetService')<
   StyleSheetService,
@@ -20,15 +20,15 @@ export class StyleSheetService extends Context.Tag('files/StyleSheetService')<
     cssOutput: string;
     getSheetDocumentText(version: number): string;
     refreshSheet(): string;
-    registerEntries(entries: BabelSheetEntry[], platform: string): string;
-    entriesToObject(newEntries: BabelSheetEntry[]): object;
+    registerEntries(entries: SheetEntry[], platform: string): string;
+    entriesToObject(newEntries: SheetEntry[]): object;
     readSheet(): string;
     getComponentFunction(componentStyles: [string, RuntimeComponentEntry[]][]): string;
   }
 >() {}
 
-const sheetEntries: BabelSheetEntry[] = [];
-const entriesSet = MHS.make<BabelSheetEntry[]>();
+const sheetEntries: SheetEntry[] = [];
+const entriesSet = MHS.make<SheetEntry[]>();
 const currentBuffer = Buffer.from('');
 
 const getCSSOutput = (cssOutput: string) => {
@@ -94,7 +94,7 @@ export const StyleSheetServiceLive = Layer.scoped(
       }
     }
 
-    function entriesToObject(newEntries: BabelSheetEntry[]) {
+    function entriesToObject(newEntries: SheetEntry[]) {
       return [...sheetEntries, ...newEntries].reduce((p, c) => {
         return Object.assign(p, {
           [c.className]: c,
@@ -102,7 +102,7 @@ export const StyleSheetServiceLive = Layer.scoped(
       }, {});
     }
 
-    function registerEntries(entries: BabelSheetEntry[], platform: string): string {
+    function registerEntries(entries: SheetEntry[], platform: string): string {
       entries = entries.filter((x) => {
         if (x.selectors.length === 0) return true;
         const hasWeb = x.selectors.some((x) => x.includes('web'));

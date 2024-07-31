@@ -50,38 +50,37 @@ const Button = (props: ButtonProps) => {
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1 bg-red last:bg-yellow-600'>
+    <View className='flex-1 bg-red'>
       <View
         className={`
-          flex-1
-          bg-red-500
+          flex-1 items-center justify-center md:border-2
+          hover:bg-green-600 bg-red-500
           first:bg-purple-600
         `}
         debug
       >
-        <View className='p-2 !bg-green-800'>
+        <View className='shadow-md rounded-xl p-2'>
           <Text
             className={`
               text(center xl primary)
-              hover:text-gray-700
+              font-inter-bold hover:text-gray-700
               `}
           >
             Hello World
           </Text>
         </View>
+        <Button size='large' />
       </View>
       <View
         className={`
           group
-          flex-[2]
-          !bg-green-800
-          bg-gray-500
-          hover:bg-pink-600
+          flex-[2] items-center justify-center
+          bg-gray-800 hover:bg-pink-600
         `}
       >
         <Text
           className={`
-            text-2xl
+            font-inter-bold text-2xl capitalize
             ${active ? 'text-red-800' : 'text-primary'}
           `}
         >
@@ -92,18 +91,30 @@ function HomeScreen() {
             setActive((prevState) => !prevState);
           }}
         >
-          <Text className='text-gray-200'>Activate</Text>
+          <Text className='text-gray-200  text-3xl'>Activate</Text>
         </Pressable>
+        <Image
+          source={testImage}
+          resizeMode='contain'
+          resizeMethod='resize'
+          className='-translate-x-[10vw] rounded-full border-1 w-5 h-5'
+          style={{
+            width: 100,
+            height: 100,
+          }}
+        />
+        <TextField />
         <View
           className={`
-            -top-1
+            -top-1 -translate-x-2
+            mb-2 rounded-lg bg-gray-300 p-2
             group-hover:bg-pink-800
           `}
           debug
         >
           <Text
             suppressHighlighting
-            className='text-gray-800 group-hover:text-white'
+            className='font-inter-bold rotate-6 text-2xl text-gray-800 group-hover:text-white -mt-2'
           >
             Deeply nested hover
           </Text>

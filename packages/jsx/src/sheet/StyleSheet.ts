@@ -107,6 +107,13 @@ export function createComponentSheet(
   if (context.colorScheme === 'dark') {
     Object.assign({ ...base }, { ...sheet.dark });
   }
+
+  let metadata = {
+    isGroupParent: entries.some((x) => x.className == 'group'),
+    hasGroupEvents: Object.keys(sheet.group)?.length > 0,
+    hasPointerEvents: Object.keys(sheet.pointer)?.length > 0,
+    hasAnimations: entries.some((x) => x.animations.length > 0),
+  };
   return {
     prop,
     target: target ?? prop,
@@ -116,12 +123,7 @@ export function createComponentSheet(
     recompute: () => {
       return createComponentSheet(prop, entries, styledContext.get(), target ?? prop);
     },
-    metadata: {
-      isGroupParent: entries.some((x) => x.className == 'group'),
-      hasGroupEvents: Object.keys(sheet.group)?.length > 0,
-      hasPointerEvents: Object.keys(sheet.pointer)?.length > 0,
-      hasAnimations: entries.some((x) => x.animations.length > 0),
-    },
+    metadata,
   };
 
   function getStyles(

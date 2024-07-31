@@ -5,7 +5,6 @@ import type { ComponentTemplateEntryProp } from '../../types/jsx.types';
 import type { ComponentConfig } from '../../types/styled.types';
 import { getComponentType } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';
-import { templatePropsToSheetEntriesObject } from './utils/native.maps';
 
 export function twinComponent(
   baseComponent: ComponentType<any>,
@@ -16,17 +15,16 @@ export function twinComponent(
   let component = baseComponent;
   const id = useId();
   const componentID = props?.['_twinComponentID'];
-  const { state, componentStyles, parentState, onChange } = useStyledProps(
-    componentID ?? id,
-    props?.['componentEntries'] ?? [],
-    props?.['_twinComponentSheet'],
-    props?.['debug'] ?? false,
-  );
+  const { state, componentStyles, parentState, templateEntriesObj, onChange } =
+    useStyledProps(
+      componentID ?? id,
+      props?.['componentEntries'] ?? [],
+      props?.['_twinComponentSheet'],
+      props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[],
+      props?.['debug'] ?? false,
+    );
 
   props = Object.assign({ ref }, props);
-  const entriesFinalSheet = templatePropsToSheetEntriesObject(
-    (props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[]) ?? [],
-  );
 
   if (componentStyles.sheets.length > 0) {
     for (const style of componentStyles.sheets) {
@@ -38,7 +36,7 @@ export function twinComponent(
             isPointerActive: state.isLocalActive,
             dark: colorScheme.get() === 'dark',
           },
-          entriesFinalSheet[style.prop] ?? [],
+          templateEntriesObj[style.prop] ?? [],
         ),
         oldProps,
       );
@@ -53,7 +51,8 @@ export function twinComponent(
 
   if (
     componentStyles.metadata.hasPointerEvents ||
-    componentStyles.metadata.hasGroupEvents
+    componentStyles.metadata.hasGroupEvents ||
+    componentStyles.metadata.isGroupParent
   ) {
     if (!props['onTouchStart']) {
       props['onTouchStart'] = (event: unknown) => {
