@@ -8,5 +8,5 @@
     "noEmit": false,
     "sourceMap": true
   },
-  "exclude": ["./src/__tests__/", "build"]
+  "exclude": ["./src/__tests__/", "build", "test"]
 }

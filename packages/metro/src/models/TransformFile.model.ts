@@ -2,9 +2,6 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import fs from 'node:fs';
 import path from 'node:path';
-import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
-import type { RuntimeTW } from '@native-twin/core';
-import { twinShift } from '../compiler/twin.compiler';
 import type { TwinFileHandlerArgs } from '../metro.types';
 import { ensureBuffer, matchCss } from '../utils';
 
@@ -33,14 +30,6 @@ export class TransformFile implements Equal.Equal {
 
   get isCss(): boolean {
     return this.type !== 'asset' && matchCss(this.filename);
-  }
-
-  compileFile(tw: RuntimeTW) {
-    return twinShift(this.filename, this.textDocument.toString('utf-8'), tw);
-  }
-
-  getTwinComponentStyles(compiled: [string, RuntimeComponentEntry[]][]) {
-    return `\nvar __twinComponentStyles = ${JSON.stringify(Object.fromEntries(compiled))}`;
   }
 
   isEqual(buffer: Buffer) {

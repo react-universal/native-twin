@@ -87,8 +87,14 @@
     "jest.enable": true,
     "jest.disabledWorkspaceFolders": [
       "root",
-      "📦 @lib/jsx",
+      "📦 @lib/native-twin",
+      "📦 @lib/babel",
+      "📦 @lib/css",
+      "📦 @lib/helpers",
+      "📦 @lib/dev-tools",
+      "📦 @lib/styled",
       "@apps/expo-app"
-    ]
+    ],
+    "findUnusedExports.detectCircularImports": true
   }
 }

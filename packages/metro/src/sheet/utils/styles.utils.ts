@@ -37,25 +37,25 @@ export function getEntryGroups(
     );
 }
 
-export const getChildRuntimeEntries = (runtimeEntries: RuntimeComponentEntry[]) => {
-  return pipe(
-    runtimeEntries,
-    RA.flatMap((runtimeEntry) =>
-      runtimeEntry.entries.filter((entry) => {
-        const group = getRuleSelectorGroup(entry.selectors);
-        return (
-          group === 'first' || group === 'last' || group === 'even' || group === 'odd'
-        );
-      }),
-    ),
-    // RA.map(runtimeEntry => {
-    //   const entries = runtimeEntries.filter(x => x.)
-    //   return {
+// export const getChildRuntimeEntries = (runtimeEntries: RuntimeComponentEntry[]) => {
+//   return pipe(
+//     runtimeEntries,
+//     RA.flatMap((runtimeEntry) =>
+//       runtimeEntry.entries.filter((entry) => {
+//         const group = getRuleSelectorGroup(entry.selectors);
+//         return (
+//           group === 'first' || group === 'last' || group === 'even' || group === 'odd'
+//         );
+//       }),
+//     ),
+//     // RA.map(runtimeEntry => {
+//     //   const entries = runtimeEntries.filter(x => x.)
+//     //   return {
 
-    //   }
-    // })
-  );
-};
+//     //   }
+//     // })
+//   );
+// };
 
 export const getEntriesObject = (runtime: SheetEntry[]): SheetGroupEntries => {
   return runtime.reduce<SheetGroupEntries>(

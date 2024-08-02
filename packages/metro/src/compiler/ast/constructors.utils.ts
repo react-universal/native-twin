@@ -1,11 +1,11 @@
 import CodeBlock from 'code-block-writer';
-import * as Array from 'effect/Array';
+import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import type { Identifier, JsxAttributeStructure } from 'ts-morph';
 import { Node, StructureKind, ts } from 'ts-morph';
 import { cx } from '@native-twin/core';
 import type { RuntimeComponentEntry } from '../../sheet/sheet.types';
-import { type MappedComponent, mappedComponents } from '../../utils';
+import { mappedComponents, type MappedComponent } from '../../utils';
 import type {
   AnyPrimitive,
   JSXClassnameStrings,
@@ -14,7 +14,7 @@ import type {
   ValidJSXElementNode,
   ValidOpeningElementNode,
 } from '../twin.types';
-import { isValidClassNameString, isValidTemplateLiteral } from './ts.guards';
+import { isValidClassNameString, isValidTemplateLiteral } from './ast.guards';
 
 /**
  * @domain TypeScript Transform
@@ -65,31 +65,27 @@ export const getJSXElementConfig = (tagName: Identifier) => {
 };
 
 /**
- * @domain TypeScript Transform
- * @description Extract the {@link JSXMappedAttribute[]} from any {@link ValidOpeningElementNode}
- * */
+//  * @domain TypeScript Transform
+//  * @description Extract the {@link JSXMappedAttribute[]} from any {@link ValidOpeningElementNode}
+//  * */
 export const getComponentStyledEntries = (
   openingElement: ValidOpeningElementNode,
   componentConfig: MappedComponent,
 ): JSXMappedAttribute[] => {
   return pipe(
     getClassNames(openingElement, componentConfig),
-    Array.map((x) => ({
+    RA.map((x) => ({
       ...x,
       value: getClassNameNodeString(x.value as any),
     })),
   );
 };
 
-export const getComponentID = (
-  node: Node,
-  filename: string,
-  tagName = 'AnyTag',
-) => {
+export const getComponentID = (node: Node, filename: string, tagName = 'AnyTag') => {
   return `${filename}-${node.getStart()}-${node.getEnd()}-${tagName}`;
 };
 
-export const getIdentifierText = (node: Identifier) => node.compilerNode.text;
+// export const getIdentifierText = (node: Identifier) => node.compilerNode.text;
 
 const getClassNameNodeString = (
   value: ValidJSXClassnameNodeString,
@@ -130,7 +126,7 @@ const getClassNameNodeString = (
 };
 
 /** @domain TypeScript Transform */
-export const getClassNames = (
+const getClassNames = (
   openingElement: ValidOpeningElementNode,
   config: MappedComponent,
 ) => {
@@ -184,55 +180,6 @@ export const createJSXAttribute = (
     name,
     initializer: `{${value}}`,
   };
-};
-
-export const getJSXElementAttributesNode = (node: ValidJSXElementNode) => {
-  if (Node.isJsxSelfClosingElement(node)) return node.getAttributes();
-  return node.getOpeningElement().getAttributes();
-};
-
-export const getJSXOpeningElement = (node: ValidJSXElementNode) => {
-  if (Node.isJsxSelfClosingElement(node)) return node;
-  return node.getOpeningElement();
-};
-
-/** @domain TypeScript Transform */
-export const addAttributeToJSXElement = (element: Node, name: string, value: string) => {
-  let childElement: ValidOpeningElementNode | null = null;
-
-  if (Node.isJsxElement(element)) {
-    childElement = element.getOpeningElement();
-  } else if (Node.isJsxSelfClosingElement(element)) {
-    childElement = element;
-  }
-
-  if (!childElement) return;
-
-  const attribute = childElement.getAttribute(name);
-  if (attribute) {
-    attribute.transform((traversal) => {
-      const node = traversal.visitChildren();
-      let jsxValue: ts.StringLiteral | ts.NumericLiteral;
-      if (!isNaN(Number(value))) {
-        jsxValue = traversal.factory.createNumericLiteral(value.replace(/[{,}]/g, ''));
-      } else {
-        jsxValue = traversal.factory.createStringLiteral(value);
-      }
-      if (ts.isJsxAttribute(node)) {
-        return traversal.factory.createJsxAttribute(
-          traversal.factory.createIdentifier(name),
-          traversal.factory.createJsxExpression(undefined, jsxValue),
-        );
-      }
-      return node;
-    });
-  } else {
-    childElement.addAttribute({
-      kind: StructureKind.JsxAttribute,
-      name: name,
-      initializer: value,
-    });
-  }
 };
 
 export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) => {

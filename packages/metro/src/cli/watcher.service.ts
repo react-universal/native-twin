@@ -23,6 +23,7 @@ export const createWatcher = (
   return {
     watcher: chokidar.watch(watchPaths),
     processFiles,
+    getFile,
   };
 };
 

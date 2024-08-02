@@ -1,13 +1,14 @@
 import * as NodeFileSystem from '@effect/platform-node-shared/NodeFileSystem';
-import { HashSet } from 'effect';
+import { Logger, LogLevel, Supervisor } from 'effect';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
+import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import path from 'node:path';
 import { Project } from 'ts-morph';
-import * as Compiler from '../compiler';
+import * as Compiler from '../compiler/twin.compiler';
 import { TwinCompilerServiceLive } from '../compiler/models/compiler.model';
 import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
@@ -34,6 +35,7 @@ const program = Effect.gen(function* () {
   const documents = yield* DocumentService;
   const transformer = yield* MetroTransformerService;
   const sheet = yield* StyleSheetService;
+  const supervisor = yield* Supervisor.track
 
   const transformFile = documents
     .getDocument({
@@ -86,11 +88,6 @@ const program = Effect.gen(function* () {
 
   if (compiled && HashSet.size(classNames) > 0) {
     const registered = sheet.registerEntries(babelEntries, context.platform);
-
-    // const styledFn = sheet.getComponentFunction(runtimeStyles);
-    // compiled.full = `${compiled.full}\n${styledFn}`;
-    // compiled.full = `${compiled.full}\nvar __twinComponentStyles = ${JSON.stringify(Object.fromEntries(runtimeStyles))}`;
-    // compiled.full = `${compiled.full}\n${twinHMRString}`;
     if (registered) {
       transformFile.version = transformFile.version + 1;
       sendUpdate(
@@ -103,7 +100,12 @@ const program = Effect.gen(function* () {
   return transformer.transform(compiled.full, false);
 });
 
-const runnable = Effect.provide(program, MainLayer);
+const runnable = program.pipe(
+  
+  Logger.withMinimumLogLevel(LogLevel.All),
+  Effect.provide(Logger.pretty),
+  Effect.provide(MainLayer),
+);
 
 const tsCompiler = new Project({
   useInMemoryFileSystem: true,

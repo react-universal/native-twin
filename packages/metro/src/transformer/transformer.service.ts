@@ -24,7 +24,6 @@ export class MetroTransformerService extends Context.Tag('MetroTransformerServic
   MetroTransformerService,
   {
     isNotAllowedPath(): boolean;
-    getTwinConfig(): TailwindConfig<__Theme__ & TailwindPresetTheme>;
     transform(
       code: Buffer | string,
       useDefaultTransformer: boolean,
@@ -35,16 +34,13 @@ export class MetroTransformerService extends Context.Tag('MetroTransformerServic
 export const MetroTransformerServiceLive = Layer.effect(
   MetroTransformerService,
   Effect.gen(function* () {
-    const { filename, projectRoot, config, options, twinConfig, allowedPaths } =
+    const { filename, projectRoot, config, options, allowedPaths } =
       yield* MetroTransformerContext;
     const transformer: TwinTransformFn = config.transformerPath
       ? require(config.transformerPath).transform
       : worker.transform;
 
     return {
-      getTwinConfig: () => {
-        return twinConfig;
-      },
       isNotAllowedPath: () => {
         return !micromatch.isMatch(path.resolve(projectRoot, filename), allowedPaths);
       },

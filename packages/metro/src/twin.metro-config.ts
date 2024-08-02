@@ -1,8 +1,6 @@
 import type { GetTransformOptions } from 'metro-config';
 import path from 'node:path';
 import { createWatcher } from './cli';
-// import { makeMetroConfigLayer } from './config/metro.service';
-// import { createMetroResolver } from './config/resolver/metro.resolver';
 import { decorateMetroServer } from './config/server/server.decorator';
 import type {
   MetroWithNativeWindOptions,

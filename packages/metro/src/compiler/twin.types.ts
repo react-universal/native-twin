@@ -8,11 +8,6 @@ import type {
   TemplateExpression,
   CallExpression,
 } from 'ts-morph';
-import type {
-  RuntimeComponentEntry,
-  SheetGroupEntries,
-} from '../sheet/sheet.types';
-import type { MappedComponent } from '../utils';
 
 export type AnyPrimitive = string | number | boolean;
 export type ValidJSXElementNode = JsxElement | JsxSelfClosingElement;
@@ -41,30 +36,4 @@ export interface JSXMappedAttribute {
     templates: string | null;
   };
   target: string;
-}
-
-interface ComponentStyles {
-  styledProp: string;
-  templateEntries: string;
-}
-export const componentStylesZero: ComponentStyles = {
-  styledProp: '',
-  templateEntries: '',
-};
-
-export interface ResultComponent {
-  // styles: ComponentStyles;
-  mappedClassNames: JSXMappedAttribute[];
-  jsxElement: JsxElement | JsxSelfClosingElement;
-  // importDeclaration: ts.ImportDeclaration;
-  openingElement: JsxSelfClosingElement | JsxOpeningElement;
-  tagName: Identifier;
-  order: number;
-  childComponents: ResultComponent[];
-  childRuntimeEntries: SheetGroupEntries;
-  runtimeEntries: RuntimeComponentEntry[];
-  styledConfig: MappedComponent;
-  childsCount: number;
-  componentID: string;
-  parentID: string | undefined;
 }

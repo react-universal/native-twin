@@ -1,13 +1,10 @@
 import type { JsOutput } from 'metro-transform-worker';
 import fs from 'node:fs';
 import path from 'node:path';
-import { createTailwind } from '@native-twin/core';
-import { createVirtualSheet } from '@native-twin/css';
-import { twinShift } from '../src/compiler/twin.compiler';
 import { transform } from '../src/transformer/metro.transformer';
 import { createCacheDir } from '../src/utils/file.utils';
-import twConfig from './tailwind.config';
 import {
+  createTestCompilerProgram,
   jsxCodeOutputPath,
   metroCodeOutputPath,
   metroTestBaseConfig,
@@ -15,18 +12,15 @@ import {
   twinFilePath,
 } from './test.utils';
 
-beforeAll(() => {
-  createCacheDir(__dirname);
-  fs.writeFileSync(twinFilePath, '');
-});
-
 describe('Metro transformer', () => {
+  beforeAll(() => {
+    createCacheDir(__dirname);
+    fs.writeFileSync(twinFilePath, '');
+  });
+
   it('typescript parser', async () => {
-    const twin = createTailwind(twConfig, createVirtualSheet());
-    const result = await twinShift(
-      'fixtures/code.tsx',
-      fs.readFileSync(path.join(__dirname, 'fixtures/jsx', 'code.tsx'), 'utf-8'),
-      twin,
+    const result = await createTestCompilerProgram(
+      path.join(__dirname, 'fixtures/jsx', 'code.tsx'),
     );
     fs.writeFileSync(jsxCodeOutputPath, result.full ?? 'ERROR');
     expect(result.code).toBeDefined();

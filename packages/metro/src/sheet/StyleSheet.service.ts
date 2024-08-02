@@ -4,15 +4,9 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as MHS from 'effect/MutableHashSet';
 import fs from 'node:fs';
-import type { RuntimeComponentEntry } from '@native-twin/babel/build/jsx';
 import type { SheetEntry } from '@native-twin/css';
 import { MetroTransformerContext } from '../transformer/transformer.service';
-import {
-  createObjectExpression,
-  createRuntimeFunction,
-  twinHMRString,
-  twinModuleExportString,
-} from '../utils';
+import { twinHMRString, twinModuleExportString } from '../utils';
 
 export class StyleSheetService extends Context.Tag('files/StyleSheetService')<
   StyleSheetService,
@@ -23,7 +17,7 @@ export class StyleSheetService extends Context.Tag('files/StyleSheetService')<
     registerEntries(entries: SheetEntry[], platform: string): string;
     entriesToObject(newEntries: SheetEntry[]): object;
     readSheet(): string;
-    getComponentFunction(componentStyles: [string, RuntimeComponentEntry[]][]): string;
+    // getComponentFunction(componentStyles: [string, RuntimeComponentEntry[]][]): string;
   }
 >() {}
 
@@ -52,21 +46,7 @@ export const StyleSheetServiceLive = Layer.scoped(
       registerEntries,
       entriesToObject,
       readSheet: () => fs.readFileSync(cssOutput, 'utf8'),
-      getComponentFunction,
     };
-
-    function getComponentFunction(componentStyles: [string, RuntimeComponentEntry[]][]) {
-      const componentsContent = componentStyles.map(([key, value]): [string, any] => {
-        const objValue = `require("@native-twin/jsx").StyleSheet.registerComponent("${key}", ${JSON.stringify(value)})`;
-
-        return [key, objValue];
-      });
-      const fn = createRuntimeFunction(
-        'get_compiled____styles___',
-        createObjectExpression(componentsContent),
-      );
-      return fn;
-    }
 
     function getSheetDocumentText(version: number) {
       const twinStyles = fs.readFileSync(cssOutput, 'utf-8');

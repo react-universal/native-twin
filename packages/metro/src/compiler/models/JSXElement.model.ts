@@ -7,15 +7,16 @@ import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import { JsxElement, JsxSelfClosingElement, Node } from 'ts-morph';
 import { RuntimeTW } from '@native-twin/core';
-import { getOpeningElement } from '../twin.maps';
+import { RuntimeComponentEntry } from '../../sheet/sheet.types';
+import { getOpeningElement } from '../ast/visitors';
 import { JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
-import { isValidJSXElement } from '../utils/ts.guards';
+import { isValidJSXElement } from '../ast/ast.guards';
 import {
   getComponentID,
   getComponentStyledEntries,
   getJSXElementConfig,
   getJSXElementTagName,
-} from '../utils/ts.utils';
+} from '../ast/constructors.utils';
 import { getElementEntries } from './compiler.model';
 
 type JSXElementNodePath = Data.TaggedEnum<{
@@ -25,12 +26,12 @@ type JSXElementNodePath = Data.TaggedEnum<{
 
 const taggedJSXElement = Data.taggedEnum<JSXElementNodePath>();
 
-export const jsxElementNodeKey = (node: ValidJSXElementNode) =>
-  new JSXElementCacheKey(getComponentID(node, node.getSourceFile().getFilePath()));
+const jsxElementNodeKey = (node: ValidJSXElementNode) =>
+  new JSXElementNodeKey(getComponentID(node, node.getSourceFile().getFilePath()));
 
 export class JSXElementNode implements Equal.Equal {
   readonly path: JSXElementNodePath;
-  readonly id: JSXElementCacheKey;
+  readonly id: JSXElementNodeKey;
   readonly parent: JSXElementNode | null;
 
   constructor(path: ValidJSXElementNode, parentKey: JSXElementNode | null = null) {
@@ -56,7 +57,7 @@ export class JSXElementNode implements Equal.Equal {
     }).pipe(Option.getOrElse(() => []));
   }
 
-  getTwinSheet(twin: RuntimeTW): ReturnType<typeof getElementEntries> {
+  getTwinSheet(twin: RuntimeTW): RuntimeComponentEntry[] {
     return getElementEntries(this.runtimeData, twin);
   }
 
@@ -84,7 +85,7 @@ export class JSXElementNode implements Equal.Equal {
   }
 }
 
-export class JSXElementCacheKey implements Equal.Equal {
+export class JSXElementNodeKey implements Equal.Equal {
   constructor(readonly id: string) {}
 
   [Hash.symbol](): number {
@@ -92,6 +93,6 @@ export class JSXElementCacheKey implements Equal.Equal {
   }
 
   [Equal.symbol](u: unknown): boolean {
-    return u instanceof JSXElementCacheKey && this.id === u.id;
+    return u instanceof JSXElementNodeKey && this.id === u.id;
   }
 }
