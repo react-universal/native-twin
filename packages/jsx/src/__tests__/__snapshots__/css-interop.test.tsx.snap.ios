@@ -2,29 +2,11 @@
 
 exports[`dark mode 1`] = `
 <View
-  configs={
-    [
-      {
-        "nativeStyleToProp": undefined,
-        "source": "className",
-        "target": "style",
-      },
-    ]
-  }
   testID="native-twin-element"
 >
   <RCTText
     accessible={true}
     allowFontScaling={true}
-    configs={
-      [
-        {
-          "nativeStyleToProp": undefined,
-          "source": "className",
-          "target": "style",
-        },
-      ]
-    }
     ellipsizeMode="tail"
     isHighlighted={false}
     selectionColor={null}
@@ -36,29 +18,11 @@ exports[`dark mode 1`] = `
 
 exports[`normal component 1`] = `
 <View
-  configs={
-    [
-      {
-        "nativeStyleToProp": undefined,
-        "source": "className",
-        "target": "style",
-      },
-    ]
-  }
   testID="native-twin-element"
 >
   <RCTText
     accessible={true}
     allowFontScaling={true}
-    configs={
-      [
-        {
-          "nativeStyleToProp": undefined,
-          "source": "className",
-          "target": "style",
-        },
-      ]
-    }
     ellipsizeMode="tail"
     isHighlighted={false}
     selectionColor={null}
