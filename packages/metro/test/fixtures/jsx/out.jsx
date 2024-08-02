@@ -15,9 +15,9 @@
   var ChildProp = function ChildProp() {
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "bg-black last:text-lg",
-      _twinComponentID: "/fixtures/out.tsx-345-490-View",
+      _twinComponentID: "/fixtures/out.tsx-345-490-AnyTag",
       _twinComponentTemplateEntries: [],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-345-490-View", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-345-490-AnyTag", [{
         entries: [{
           "className": "bg-black",
           "declarations": [{
@@ -26,6 +26,16 @@
           }],
           "selectors": [],
           "precedence": 805306368,
+          "important": false,
+          "animations": []
+        }, {
+          "className": "last:text-lg",
+          "declarations": [{
+            "prop": "fontSize",
+            "value": "1.125rem"
+          }],
+          "selectors": ["last", "&:last"],
+          "precedence": 805437440,
           "important": false,
           "animations": []
         }],
@@ -39,12 +49,11 @@
         target: "style",
         templateLiteral: null
       }]),
-      ord: 0,
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         className: "text-blue",
-        _twinComponentID: "/fixtures/out.tsx-392-432-Text",
+        _twinComponentID: "/fixtures/out.tsx-392-432-AnyTag",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-392-432-Text", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-392-432-AnyTag", [{
           entries: [{
             "className": "text-blue",
             "declarations": [{
@@ -66,13 +75,12 @@
           target: "style",
           templateLiteral: null
         }]),
-        ord: 0,
         children: "Text1"
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         className: "text-red",
-        _twinComponentID: "/fixtures/out.tsx-439-478-Text",
+        _twinComponentID: "/fixtures/out.tsx-439-478-AnyTag",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-439-478-Text", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-439-478-AnyTag", [{
           entries: [{
             "className": "text-red",
             "declarations": [{
@@ -81,16 +89,6 @@
             }],
             "selectors": [],
             "precedence": 805306368,
-            "important": false,
-            "animations": []
-          }, {
-            "className": "last:text-lg",
-            "declarations": [{
-              "prop": "fontSize",
-              "value": "1.125rem"
-            }],
-            "selectors": [],
-            "precedence": 805437440,
             "important": false,
             "animations": []
           }],
@@ -104,7 +102,6 @@
           target: "style",
           templateLiteral: null
         }]),
-        ord: 1,
         children: "Text2"
       })]
     });
@@ -132,14 +129,14 @@
   var Button = function Button(props) {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Pressable, {
       className: buttonVariants(props),
-      _twinComponentID: "/fixtures/out.tsx-1055-1140-Pressable",
+      _twinComponentID: "/fixtures/out.tsx-1055-1140-AnyTag",
       _twinComponentTemplateEntries: [{
         entries: require('@native-twin/core').tw(`${buttonVariants(props)}`),
-        id: "/fixtures/out.tsx-1055-1140-Pressable",
+        id: "/fixtures/out.tsx-1055-1140-AnyTag",
         target: "style",
         prop: "className"
       }],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1055-1140-Pressable", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1055-1140-AnyTag", [{
         entries: [],
         metadata: {
           "hasAnimations": false,
@@ -152,12 +149,10 @@
         templateLiteral: `${buttonVariants(props)}`,
         templateEntries: require('@native-twin/core').tw(`${buttonVariants(props)}`)
       }]),
-      ord: 0,
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
-        _twinComponentID: "/fixtures/out.tsx-1107-1123-Text",
+        _twinComponentID: "/fixtures/out.tsx-1107-1123-AnyTag",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1107-1123-Text", []),
-        ord: 0,
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1107-1123-AnyTag", []),
         children: "asd"
       })
     });
@@ -169,9 +164,9 @@
       setActive = _useState2[1];
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "flex-1 bg-red last:bg-yellow-600",
-      _twinComponentID: "/fixtures/out.tsx-1235-2566-View",
+      _twinComponentID: "/fixtures/out.tsx-1235-2566-AnyTag",
       _twinComponentTemplateEntries: [],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1235-2566-View", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1235-2566-AnyTag", [{
         entries: [{
           "className": "flex-1",
           "declarations": [{
@@ -192,6 +187,16 @@
           "precedence": 805306368,
           "important": false,
           "animations": []
+        }, {
+          "className": "last:bg-yellow-600",
+          "declarations": [{
+            "prop": "backgroundColor",
+            "value": "rgba(202,138,4,1)"
+          }],
+          "selectors": ["last", "&:last"],
+          "precedence": 805437440,
+          "important": false,
+          "animations": []
         }],
         metadata: {
           "hasAnimations": false,
@@ -203,7 +208,6 @@
         target: "style",
         templateLiteral: null
       }]),
-      ord: 0,
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
         className: `
           flex-1
@@ -211,9 +215,9 @@
           first:bg-purple-600
         `,
         debug: true,
-        _twinComponentID: "/fixtures/out.tsx-1293-1679-View",
+        _twinComponentID: "/fixtures/out.tsx-1293-1679-AnyTag",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1293-1679-View", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1293-1679-AnyTag", [{
           entries: [{
             "className": "flex-1",
             "declarations": [{
@@ -255,12 +259,11 @@
           target: "style",
           templateLiteral: null
         }]),
-        ord: 0,
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: "p-2 !bg-green-800",
-          _twinComponentID: "/fixtures/out.tsx-1429-1665-View",
+          _twinComponentID: "/fixtures/out.tsx-1429-1665-AnyTag",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1429-1665-View", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1429-1665-AnyTag", [{
             entries: [{
               "className": "p-2",
               "declarations": [{
@@ -269,16 +272,6 @@
               }],
               "selectors": [],
               "precedence": 805306368,
-              "important": false,
-              "animations": []
-            }, {
-              "className": "first:bg-purple-600",
-              "declarations": [{
-                "prop": "backgroundColor",
-                "value": "rgba(147,51,234,1)"
-              }],
-              "selectors": [],
-              "precedence": 805437440,
               "important": false,
               "animations": []
             }, {
@@ -302,15 +295,14 @@
             target: "style",
             templateLiteral: null
           }]),
-          ord: 0,
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: `
               text(center xl primary)
               hover:text-gray-700
               `,
-            _twinComponentID: "/fixtures/out.tsx-1476-1649-Text",
+            _twinComponentID: "/fixtures/out.tsx-1476-1649-AnyTag",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1476-1649-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1476-1649-AnyTag", [{
               entries: [{
                 "className": "text-center",
                 "declarations": [{
@@ -362,7 +354,6 @@
               target: "style",
               templateLiteral: null
             }]),
-            ord: 0,
             children: "Hello World"
           })
         })
@@ -374,9 +365,9 @@
           bg-gray-500
           hover:bg-pink-600
         `,
-        _twinComponentID: "/fixtures/out.tsx-1686-2554-View",
+        _twinComponentID: "/fixtures/out.tsx-1686-2554-AnyTag",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1686-2554-View", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1686-2554-AnyTag", [{
           entries: [{
             "className": "group",
             "declarations": [],
@@ -415,16 +406,6 @@
             "important": false,
             "animations": []
           }, {
-            "className": "last:bg-yellow-600",
-            "declarations": [{
-              "prop": "backgroundColor",
-              "value": "rgba(202,138,4,1)"
-            }],
-            "selectors": [],
-            "precedence": 805437440,
-            "important": false,
-            "animations": []
-          }, {
             "className": "!bg-green-800",
             "declarations": [{
               "prop": "backgroundColor",
@@ -445,20 +426,19 @@
           target: "style",
           templateLiteral: null
         }]),
-        ord: 1,
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
           className: `
             text-2xl
             ${active ? 'text-red-800' : 'text-primary'}
           `,
-          _twinComponentID: "/fixtures/out.tsx-1849-2021-Text",
+          _twinComponentID: "/fixtures/out.tsx-1849-2021-AnyTag",
           _twinComponentTemplateEntries: [{
             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
-            id: "/fixtures/out.tsx-1849-2021-Text",
+            id: "/fixtures/out.tsx-1849-2021-AnyTag",
             target: "style",
             prop: "className"
           }],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1849-2021-Text", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1849-2021-AnyTag", [{
             entries: [{
               "className": "text-2xl",
               "declarations": [{
@@ -481,7 +461,6 @@
             templateLiteral: `${active ? 'text-red-800' : 'text-primary'}`,
             templateEntries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`)
           }]),
-          ord: 0,
           children: "Nested Hover22222"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Pressable, {
           onPressIn: function onPressIn() {
@@ -489,15 +468,14 @@
               return !prevState;
             });
           },
-          _twinComponentID: "/fixtures/out.tsx-2030-2221-Pressable",
+          _twinComponentID: "/fixtures/out.tsx-2030-2221-AnyTag",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2030-2221-Pressable", []),
-          ord: 1,
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2030-2221-AnyTag", []),
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: "text-gray-200",
-            _twinComponentID: "/fixtures/out.tsx-2153-2200-Text",
+            _twinComponentID: "/fixtures/out.tsx-2153-2200-AnyTag",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2153-2200-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2153-2200-AnyTag", [{
               entries: [{
                 "className": "text-gray-200",
                 "declarations": [{
@@ -519,7 +497,6 @@
               target: "style",
               templateLiteral: null
             }]),
-            ord: 0,
             children: "Activate"
           })
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
@@ -528,9 +505,9 @@
             group-hover:bg-pink-800
           `,
           debug: true,
-          _twinComponentID: "/fixtures/out.tsx-2230-2540-View",
+          _twinComponentID: "/fixtures/out.tsx-2230-2540-AnyTag",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2230-2540-View", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2230-2540-AnyTag", [{
             entries: [{
               "className": "-top-1",
               "declarations": [{
@@ -562,13 +539,12 @@
             target: "style",
             templateLiteral: null
           }]),
-          ord: 2,
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             suppressHighlighting: true,
             className: "text-gray-800 group-hover:text-white",
-            _twinComponentID: "/fixtures/out.tsx-2363-2524-Text",
+            _twinComponentID: "/fixtures/out.tsx-2363-2524-AnyTag",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2363-2524-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2363-2524-AnyTag", [{
               entries: [{
                 "className": "text-gray-800",
                 "declarations": [{
@@ -600,7 +576,6 @@
               target: "style",
               templateLiteral: null
             }]),
-            ord: 0,
             children: "Deeply nested hover"
           })
         })]

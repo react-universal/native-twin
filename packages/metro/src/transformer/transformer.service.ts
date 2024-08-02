@@ -4,14 +4,20 @@ import * as Layer from 'effect/Layer';
 import worker from 'metro-transform-worker';
 import micromatch from 'micromatch';
 import path from 'node:path';
-import type { __Theme__, TailwindConfig } from '@native-twin/core';
+import { Project } from 'ts-morph';
+import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import { ensureBuffer, getTwinConfig } from '../utils';
+import { ensureBuffer } from '../utils';
 import type { TransformWorkerArgs, TwinTransformFn } from './transformer.types';
 
 export class MetroTransformerContext extends Context.Tag('MetroTransformerContext')<
   MetroTransformerContext,
-  TransformWorkerArgs
+  TransformWorkerArgs & {
+    tsCompiler: Project;
+    twin: RuntimeTW;
+    twinConfig: TailwindConfig<__Theme__ & TailwindPresetTheme>;
+    allowedPaths: string[];
+  }
 >() {}
 
 export class MetroTransformerService extends Context.Tag('MetroTransformerService')<
@@ -29,12 +35,12 @@ export class MetroTransformerService extends Context.Tag('MetroTransformerServic
 export const MetroTransformerServiceLive = Layer.effect(
   MetroTransformerService,
   Effect.gen(function* () {
-    const { filename, projectRoot, config, options } = yield* MetroTransformerContext;
+    const { filename, projectRoot, config, options, twinConfig, allowedPaths } =
+      yield* MetroTransformerContext;
     const transformer: TwinTransformFn = config.transformerPath
       ? require(config.transformerPath).transform
       : worker.transform;
 
-    const { allowedPaths, twinConfig } = getTwinConfig(projectRoot);
     return {
       getTwinConfig: () => {
         return twinConfig;

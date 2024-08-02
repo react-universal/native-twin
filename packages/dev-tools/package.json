@@ -1,0 +1,35 @@
+{
+  "name": "@native-twin/dev-tools",
+  "version": "0.0.1",
+  "description": "A new DevTools plugin created by create-dev-plugin",
+  "keywords": [
+    "expo",
+    "devtools"
+  ],
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "dist",
+    "expo-module.config.json"
+  ],
+  "scripts": {
+    "build": "expo-module build",
+    "build:all": "expo-module prepare && cd webui && npx expo export -p web --output-dir ../dist",
+    "build:watch": "expo-module build --watch",
+    "clean": "expo-module clean",
+    "postinstall": "cd webui && yarn && cd ..",
+    "prepare": "expo-module prepare",
+    "prepublishOnly": "expo-module prepare && expo-module prepublishOnly && cd webui && npx expo export -p web --output-dir ../dist",
+    "web:dev": "cd webui && npx expo start -w",
+    "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
+  },
+  "devDependencies": {
+    "expo-module-scripts": "^3.1.0"
+  },
+  "peerDependencies": {
+    "expo": "*"
+  }
+}

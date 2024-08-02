@@ -33,6 +33,10 @@
       "path": "../packages/helpers"
     },
     {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
       "name": "@apps/expo",
       "path": "../apps/expo-app"
     }
@@ -77,6 +81,7 @@
     "cSpell.words": [
       "sastan",
       "TRBL",
+      "webui",
       "xytrbl"
     ],
     "jest.enable": true,

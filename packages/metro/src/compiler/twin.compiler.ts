@@ -62,57 +62,9 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
     RA.dedupeWith((a, b) => a.componentID === b.componentID),
   );
 
-  // for (const element of jsxElements) {
-  //   const elementNode = Option.getOrNull(compilerMaps.getJSXElementNode(element, twin));
-  //   if (!elementNode) continue;
-  //   RA.forEach(elementNode.childComponents, (x) => {
-  //     const result: SheetRegistry = {
-  //       id: x.componentID,
-  //       parentID: elementNode.componentID,
-  //       sheet: x.runtimeEntries,
-  //       order: x.order,
-  //       childEntries: x.childRuntimeEntries,
-  //       childsCount: x.childsCount,
-  //     };
-  //     if (elementNode.childRuntimeEntries.first && x.order === 0) {
-  //       result.sheet = mergeChildEntries(
-  //         result.sheet,
-  //         elementNode.childRuntimeEntries.first,
-  //       );
-  //     }
-  //     if (
-  //       elementNode.childRuntimeEntries.first &&
-  //       x.order === elementNode.childsCount - 1
-  //     ) {
-  //       result.sheet = mergeChildEntries(
-  //         result.sheet,
-  //         elementNode.childRuntimeEntries.last,
-  //       );
-  //     }
-  //     sheetRegistry.set(x.componentID, result);
-  //   });
-  // }
-
   for (const element of jsxElements) {
     componentsList.push(visitElementNode(element));
   }
-
-  // ast.forEachDescendant((node, traversal) => {
-  //   const elementNode = Option.getOrNull(compilerMaps.getJSXElementNode(node, twin));
-  //   if (!elementNode) return undefined;
-
-  //   let order = elementNode.order;
-  //   if (sheetRegistry.has(elementNode.componentID)) {
-  //     const elementSheet = sheetRegistry.get(elementNode.componentID)!;
-  //     order = elementSheet.order;
-  //     elementNode.runtimeEntries = elementSheet.sheet;
-  //   }
-
-  //   const result = visitElementNode(elementNode, order);
-  //   // registerSheet(result);
-  //   componentsList.push(...result);
-  //   traversal.skip();
-  // });
 
   console.log(inspect(sheetRegistry, false, null, true));
 
@@ -131,13 +83,6 @@ export const twinShift = async (filename: string, code: string, twin: RuntimeTW)
 
 function visitElementNode(node: ResultComponent) {
   const runtimeEntries: RuntimeComponentEntry[] = node.runtimeEntries;
-  // const results = [node];
-
-  // if (sheetRegistry.has(node.componentID)) {
-  //   const sheet = sheetRegistry.get(node.componentID)!;
-  //   runtimeEntries = sheet.sheet;
-  //   order = sheet.order;
-  // }
   const componentEntries = tsUtils.entriesToObject(node.componentID, runtimeEntries);
 
   if (!node.openingElement.getAttribute('_twinComponentID')) {
@@ -164,42 +109,6 @@ function visitElementNode(node: ResultComponent) {
     );
   }
 
-  // for (const child of node.childComponents) {
-  //   // let order = newOrder;
-  //   if (sheetRegistry.has(child.componentID)) {
-  //     const elementSheet = sheetRegistry.get(child.componentID)!;
-  //     order = elementSheet.order;
-  //     child.runtimeEntries = elementSheet.sheet;
-  //   }
-  //   results.push(...visitElementNode(child, child.order));
-  // }
-
-  // const childs = visitElementChilds(node, twin);
-  // const childs: ResultComponent[] = [];
-  // const childs = pipe(
-  //   node.childComponents,
-  //   RA.map((x) => {
-  //     const parentEntries = parent
-  //       ? parent.childRuntimeEntries
-  //       : node.childRuntimeEntries;
-  //     const mergedEntries = compilerMaps.mergeSheetEntries(
-  //       x.runtimeEntries,
-  //       parentEntries,
-  //       x.order,
-  //       parent?.childsCount ?? x.childsCount,
-  //     );
-  //     const entry = {
-  //       ...x,
-  //       runtimeEntries: mergedEntries,
-  //     };
-  //     return entry;
-  //   }),
-  //   RA.flatMap((x) => visitElementNode(x, twin, x.order, parent).childs),
-  // );
-  // for (const child of elementChilds) {
-  //   visitElementNode(child, twin, order++, parent);
-  // }
-  // childs.push
   return node;
 }
 
@@ -216,3 +125,90 @@ const visitNodeChilds = (
   visitElementNode(next);
   return visitNodeChilds(twin, parent, rest, results);
 };
+
+// for (const child of node.childComponents) {
+//   // let order = newOrder;
+//   if (sheetRegistry.has(child.componentID)) {
+//     const elementSheet = sheetRegistry.get(child.componentID)!;
+//     order = elementSheet.order;
+//     child.runtimeEntries = elementSheet.sheet;
+//   }
+//   results.push(...visitElementNode(child, child.order));
+// }
+
+// const childs = visitElementChilds(node, twin);
+// const childs: ResultComponent[] = [];
+// const childs = pipe(
+//   node.childComponents,
+//   RA.map((x) => {
+//     const parentEntries = parent
+//       ? parent.childRuntimeEntries
+//       : node.childRuntimeEntries;
+//     const mergedEntries = compilerMaps.mergeSheetEntries(
+//       x.runtimeEntries,
+//       parentEntries,
+//       x.order,
+//       parent?.childsCount ?? x.childsCount,
+//     );
+//     const entry = {
+//       ...x,
+//       runtimeEntries: mergedEntries,
+//     };
+//     return entry;
+//   }),
+//   RA.flatMap((x) => visitElementNode(x, twin, x.order, parent).childs),
+// );
+// for (const child of elementChilds) {
+//   visitElementNode(child, twin, order++, parent);
+// }
+// childs.push
+
+/* 
+  for (const element of jsxElements) {
+    const elementNode = Option.getOrNull(compilerMaps.getJSXElementNode(element, twin));
+    if (!elementNode) continue;
+    RA.forEach(elementNode.childComponents, (x) => {
+      const result: SheetRegistry = {
+        id: x.componentID,
+        parentID: elementNode.componentID,
+        sheet: x.runtimeEntries,
+        order: x.order,
+        childEntries: x.childRuntimeEntries,
+        childsCount: x.childsCount,
+      };
+      if (elementNode.childRuntimeEntries.first && x.order === 0) {
+        result.sheet = mergeChildEntries(
+          result.sheet,
+          elementNode.childRuntimeEntries.first,
+        );
+      }
+      if (
+        elementNode.childRuntimeEntries.first &&
+        x.order === elementNode.childsCount - 1
+      ) {
+        result.sheet = mergeChildEntries(
+          result.sheet,
+          elementNode.childRuntimeEntries.last,
+        );
+      }
+      sheetRegistry.set(x.componentID, result);
+    });
+  }
+ */
+
+// ast.forEachDescendant((node, traversal) => {
+//   const elementNode = Option.getOrNull(compilerMaps.getJSXElementNode(node, twin));
+//   if (!elementNode) return undefined;
+
+//   let order = elementNode.order;
+//   if (sheetRegistry.has(elementNode.componentID)) {
+//     const elementSheet = sheetRegistry.get(elementNode.componentID)!;
+//     order = elementSheet.order;
+//     elementNode.runtimeEntries = elementSheet.sheet;
+//   }
+
+//   const result = visitElementNode(elementNode, order);
+//   // registerSheet(result);
+//   componentsList.push(...result);
+//   traversal.skip();
+// });

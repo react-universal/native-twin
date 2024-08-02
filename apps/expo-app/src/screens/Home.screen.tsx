@@ -8,10 +8,9 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1 bg-red'>
+    <View className='flex-1'>
       <View
         className={`flex-1 items-center justify-center bg-cyan-500 group`}
-        // debug
       >
         <View className='bg-gray-600 shadow-xl rounded-2xl p-2 group-hover:bg-red-500'>
           <Text
@@ -75,7 +74,3 @@ function HomeScreen() {
 }
 
 export { HomeScreen };
-
-if (typeof window !== 'undefined') {
-  console.log('WINDOW: ', window);
-}

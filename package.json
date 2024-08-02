@@ -15,7 +15,7 @@
   "scripts": {
     "build": "turbo run build",
     "build:release": "yarn build && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
-    "build:watch": "turbo run build:watch --concurrency 13",
+    "build:watch": "turbo run build:watch --concurrency 14",
     "clean": "rimraf -g packages/*/build",
     "docs:build": "turbo run docs:build",
     "example:expo": "yarn workspace expo-app run start",
@@ -64,7 +64,7 @@
     "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
-    "turbo": "^2.0.9",
+    "turbo": "^2.0.11",
     "typescript": "^5.5.4"
   },
   "packageManager": "yarn@4.2.2",

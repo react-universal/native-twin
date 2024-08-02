@@ -1,14 +1,18 @@
 import * as NodeFileSystem from '@effect/platform-node-shared/NodeFileSystem';
+import { HashSet } from 'effect';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import path from 'node:path';
+import { Project } from 'ts-morph';
+import * as Compiler from '../compiler';
+import { TwinCompilerServiceLive } from '../compiler/models/compiler.model';
 import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
-import { splitClasses, setupNativeTwin, ensureBuffer } from '../utils';
+import { splitClasses, setupNativeTwin, ensureBuffer, getTwinConfig } from '../utils';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE, twinHMRString } from '../utils/constants';
 import {
   MetroTransformerService,
@@ -22,6 +26,7 @@ const MainLayer = Layer.mergeAll(
     Layer.provide(NodeFileSystem.layer),
   ),
   MetroTransformerServiceLive,
+  TwinCompilerServiceLive,
 );
 
 const program = Effect.gen(function* () {
@@ -50,7 +55,6 @@ const program = Effect.gen(function* () {
     return transformer.transform(css, true);
   }
 
-  const twinConfig = transformer.getTwinConfig();
   if (transformer.isNotAllowedPath()) {
     return transformer.transform(context.sourceCode, true);
   }
@@ -59,21 +63,15 @@ const program = Effect.gen(function* () {
     return transformer.transform(context.sourceCode, true);
   }
 
-  const twin = setupNativeTwin(twinConfig, {
-    dev: context.isDev,
-    hot: context.isDev,
-    platform: context.platform,
-  });
-
-  const compiled = yield* Effect.promise(() => transformFile.compileFile(twin.tw));
+  const compiled = yield* Compiler.compileFile;
 
   const classNames = pipe(
-    compiled.componentsList,
-    RA.map((x) => {
+    compiled.elements,
+    HashSet.map((x) => {
       return {
         ...x,
-        entries: x.runtimeEntries,
-        componentClasses: RA.flatMap(x.mappedClassNames, (x) =>
+        entries: x.entries,
+        componentClasses: RA.flatMap(x.node.runtimeData, (x) =>
           splitClasses(x.value.literal),
         ),
       };
@@ -82,10 +80,11 @@ const program = Effect.gen(function* () {
 
   const babelEntries = pipe(
     classNames,
-    RA.flatMap((x) => x.entries.flatMap((x) => x.entries)),
+    RA.fromIterable,
+    RA.flatMap((x) => x.entries),
   );
 
-  if (compiled && classNames.length > 0) {
+  if (compiled && HashSet.size(classNames) > 0) {
     const registered = sheet.registerEntries(babelEntries, context.platform);
 
     // const styledFn = sheet.getComponentFunction(runtimeStyles);
@@ -106,6 +105,10 @@ const program = Effect.gen(function* () {
 
 const runnable = Effect.provide(program, MainLayer);
 
+const tsCompiler = new Project({
+  useInMemoryFileSystem: true,
+});
+
 export const transform: TwinTransformFn = async (
   config,
   projectRoot,
@@ -114,9 +117,17 @@ export const transform: TwinTransformFn = async (
   options,
 ) => {
   const cssOutput = path.join(projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
+  const platform = options.platform ?? 'ios';
+  const twinConfig = getTwinConfig(projectRoot);
+  const twin = setupNativeTwin(twinConfig.twinConfig, {
+    dev: options.dev,
+    hot: options.dev,
+    platform,
+  });
 
   return runnable.pipe(
     Effect.provideService(MetroTransformerContext, {
+      tsCompiler,
       config,
       filename,
       options,
@@ -124,8 +135,11 @@ export const transform: TwinTransformFn = async (
       cssOutput,
       fileType: options.type,
       isDev: options.dev,
-      platform: options.platform ?? 'ios',
+      platform,
       sourceCode: ensureBuffer(data),
+      twin: twin.tw,
+      twinConfig: twinConfig.twinConfig,
+      allowedPaths: twinConfig.allowedPaths,
     }),
     Effect.scoped,
     Effect.runPromise,

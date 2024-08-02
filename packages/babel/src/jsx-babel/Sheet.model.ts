@@ -5,8 +5,8 @@ import * as Equivalence from 'effect/Equivalence';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as Order from 'effect/Order';
-import { createObjectExpressionAST } from '@native-twin/babel/build/babel';
 import type { SheetEntry } from '@native-twin/css';
+import { createObjectExpressionAST } from '../babel';
 
 export class BabelSheetEntry extends Data.Class<SheetEntry> implements Equal.Equal {
   get entryObject() {

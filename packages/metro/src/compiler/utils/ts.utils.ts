@@ -81,7 +81,11 @@ export const getComponentStyledEntries = (
   );
 };
 
-export const getComponentID = (node: Node, filename: string, tagName: string) => {
+export const getComponentID = (
+  node: Node,
+  filename: string,
+  tagName = 'AnyTag',
+) => {
   return `${filename}-${node.getStart()}-${node.getEnd()}-${tagName}`;
 };
 

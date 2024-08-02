@@ -61,9 +61,9 @@ export const getEntriesObject = (runtime: SheetEntry[]): SheetGroupEntries => {
   return runtime.reduce<SheetGroupEntries>(
     (prev, current) => {
       const group = getRuleSelectorGroup(current.selectors);
-      const selectors = pipe(
-        current.selectors,
-        RA.filter((group) => {
+      prev[group].push({
+        ...current,
+        selectors: RA.filter(current.selectors, (group) => {
           return (
             !group.includes('first') &&
             !group.includes('last') &&
@@ -71,10 +71,6 @@ export const getEntriesObject = (runtime: SheetEntry[]): SheetGroupEntries => {
             !group.includes('odd')
           );
         }),
-      );
-      prev[group].push({
-        ...current,
-        selectors,
       });
 
       return prev;

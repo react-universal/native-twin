@@ -13,6 +13,7 @@
   "dependencies": {
     "@native-twin/babel": "workspace:*",
     "@native-twin/core": "workspace:*",
+    "@native-twin/dev-tools": "workspace:*",
     "@native-twin/jsx": "workspace:*",
     "@native-twin/metro": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
