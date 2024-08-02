@@ -7,9 +7,8 @@ import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import { JsxElement, JsxSelfClosingElement, Node } from 'ts-morph';
 import { RuntimeTW } from '@native-twin/core';
-import { RuntimeComponentEntry } from '../../sheet/sheet.types';
-import { getOpeningElement } from '../ast/visitors';
-import { JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
+import { getChildRuntimeEntries, type JSXElementSheet } from '@native-twin/css/jsx';
+import { getElementEntries } from '../../sheet/utils/styles.utils';
 import { isValidJSXElement } from '../ast/ast.guards';
 import {
   getComponentID,
@@ -17,7 +16,8 @@ import {
   getJSXElementConfig,
   getJSXElementTagName,
 } from '../ast/constructors.utils';
-import { getElementEntries } from './compiler.model';
+import { getOpeningElement } from '../ast/visitors';
+import { JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
 
 type JSXElementNodePath = Data.TaggedEnum<{
   JSXelement: { node: JsxElement };
@@ -57,8 +57,12 @@ export class JSXElementNode implements Equal.Equal {
     }).pipe(Option.getOrElse(() => []));
   }
 
-  getTwinSheet(twin: RuntimeTW): RuntimeComponentEntry[] {
-    return getElementEntries(this.runtimeData, twin);
+  getTwinSheet(twin: RuntimeTW): JSXElementSheet {
+    const propEntries = getElementEntries(this.runtimeData, twin);
+    return {
+      propEntries,
+      childEntries: pipe(propEntries, getChildRuntimeEntries),
+    };
   }
 
   get childs(): HashSet.HashSet<JSXElementNode> {

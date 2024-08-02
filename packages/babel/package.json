@@ -33,7 +33,7 @@
     "@babel/types": "^7.24.0",
     "@effect/schema": "^0.66.10",
     "@native-twin/core": "workspace:*",
-    "@native-twin/jsx": "workspace:*",
+    "@native-twin/css": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "babel-plugin-tester": "^11.0.4",
     "effect": "^3.5.5"

@@ -6016,7 +6016,7 @@ __metadata:
     "@babel/types": "npm:^7.24.0"
     "@effect/schema": "npm:^0.66.10"
     "@native-twin/core": "workspace:*"
-    "@native-twin/jsx": "workspace:*"
+    "@native-twin/css": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
     babel-plugin-tester: "npm:^11.0.4"

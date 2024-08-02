@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
+import { ComponentSheet } from '@native-twin/css/jsx';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
 import { groupContext } from '../../context';
-import { ComponentSheet } from '../../sheet/sheet.types';
 import { getTwinComponent } from '../../store/components.store';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants';
 

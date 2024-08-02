@@ -1,6 +1,6 @@
 import type React from 'react';
 import { SheetEntry } from '@native-twin/css';
-import { RegisteredComponent } from '../sheet/sheet.types';
+import { RegisteredComponent } from '@native-twin/css/jsx';
 
 export interface JSXInternalProps extends Record<string, any> {
   twEnabled?: boolean;

@@ -4,7 +4,7 @@ import { pipe } from 'effect/Function';
 import type { Identifier, JsxAttributeStructure } from 'ts-morph';
 import { Node, StructureKind, ts } from 'ts-morph';
 import { cx } from '@native-twin/core';
-import type { RuntimeComponentEntry } from '../../sheet/sheet.types';
+import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { mappedComponents, type MappedComponent } from '../../utils';
 import type {
   AnyPrimitive,

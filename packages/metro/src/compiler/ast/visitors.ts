@@ -2,7 +2,7 @@ import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import { Identifier, Node, ts } from 'ts-morph';
-import { RuntimeComponentEntry } from '../../sheet/sheet.types';
+import { JSXElementSheet } from '@native-twin/css/jsx';
 import { JSXElementNode } from '../models/JSXElement.model';
 import { ValidOpeningElementNode } from '../twin.types';
 import {
@@ -11,8 +11,8 @@ import {
   getImportDeclaration,
 } from './constructors.utils';
 
-export function visitElementNode(node: JSXElementNode, sheet: RuntimeComponentEntry[]) {
-  const componentEntries = entriesToObject(node.id.id, sheet);
+export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
+  const componentEntries = entriesToObject(node.id.id, sheet.propEntries);
 
   pipe(
     getOpeningElement(node.path.node),
@@ -36,7 +36,7 @@ export function visitElementNode(node: JSXElementNode, sheet: RuntimeComponentEn
     }),
   );
 
-  return { node, sheet, entries: RA.flatMap(sheet, (x) => x.entries) };
+  return { node, sheet, entries: RA.flatMap(sheet.propEntries, (x) => x.entries) };
 }
 
 export const maybeReactNativeImport = (

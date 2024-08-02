@@ -168,20 +168,20 @@
       _twinComponentTemplateEntries: [],
       _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1235-2566-AnyTag", [{
         entries: [{
-          "className": "flex-1",
+          "className": "bg-red",
           "declarations": [{
-            "prop": "flex",
-            "value": "1 1 0%"
+            "prop": "backgroundColor",
+            "value": "rgba(248,113,113,1)"
           }],
           "selectors": [],
           "precedence": 805306368,
           "important": false,
           "animations": []
         }, {
-          "className": "bg-red",
+          "className": "flex-1",
           "declarations": [{
-            "prop": "backgroundColor",
-            "value": "rgba(248,113,113,1)"
+            "prop": "flex",
+            "value": "1 1 0%"
           }],
           "selectors": [],
           "precedence": 805306368,
@@ -219,20 +219,20 @@
         _twinComponentTemplateEntries: [],
         _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1293-1679-AnyTag", [{
           entries: [{
-            "className": "flex-1",
+            "className": "bg-red-500",
             "declarations": [{
-              "prop": "flex",
-              "value": "1 1 0%"
+              "prop": "backgroundColor",
+              "value": "rgba(239,68,68,1)"
             }],
             "selectors": [],
             "precedence": 805306368,
             "important": false,
             "animations": []
           }, {
-            "className": "bg-red-500",
+            "className": "flex-1",
             "declarations": [{
-              "prop": "backgroundColor",
-              "value": "rgba(239,68,68,1)"
+              "prop": "flex",
+              "value": "1 1 0%"
             }],
             "selectors": [],
             "precedence": 805306368,
@@ -304,10 +304,10 @@
             _twinComponentTemplateEntries: [],
             _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1476-1649-AnyTag", [{
               entries: [{
-                "className": "text-center",
+                "className": "text-primary",
                 "declarations": [{
-                  "prop": "textAlign",
-                  "value": "center"
+                  "prop": "color",
+                  "value": "blue"
                 }],
                 "selectors": [],
                 "precedence": 805306368,
@@ -324,10 +324,10 @@
                 "important": false,
                 "animations": []
               }, {
-                "className": "text-primary",
+                "className": "text-center",
                 "declarations": [{
-                  "prop": "color",
-                  "value": "blue"
+                  "prop": "textAlign",
+                  "value": "center"
                 }],
                 "selectors": [],
                 "precedence": 805306368,
@@ -369,8 +369,11 @@
         _twinComponentTemplateEntries: [],
         _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1686-2554-AnyTag", [{
           entries: [{
-            "className": "group",
-            "declarations": [],
+            "className": "bg-gray-500",
+            "declarations": [{
+              "prop": "backgroundColor",
+              "value": "rgba(107,114,128,1)"
+            }],
             "selectors": [],
             "precedence": 805306368,
             "important": false,
@@ -386,23 +389,10 @@
             "important": false,
             "animations": []
           }, {
-            "className": "bg-gray-500",
-            "declarations": [{
-              "prop": "backgroundColor",
-              "value": "rgba(107,114,128,1)"
-            }],
+            "className": "group",
+            "declarations": [],
             "selectors": [],
             "precedence": 805306368,
-            "important": false,
-            "animations": []
-          }, {
-            "className": "hover:bg-pink-600",
-            "declarations": [{
-              "prop": "backgroundColor",
-              "value": "rgba(219,39,119,1)"
-            }],
-            "selectors": ["hover", "&:hover"],
-            "precedence": 805307392,
             "important": false,
             "animations": []
           }, {
@@ -414,6 +404,16 @@
             "selectors": [],
             "precedence": 805306368,
             "important": true,
+            "animations": []
+          }, {
+            "className": "hover:bg-pink-600",
+            "declarations": [{
+              "prop": "backgroundColor",
+              "value": "rgba(219,39,119,1)"
+            }],
+            "selectors": ["hover", "&:hover"],
+            "precedence": 805307392,
+            "important": false,
             "animations": []
           }],
           metadata: {

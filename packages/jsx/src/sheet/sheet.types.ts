@@ -1,13 +1,7 @@
 import { TailwindConfig, __Theme__ } from '@native-twin/core';
-import {
-  AnyStyle,
-  FinalSheet,
-  GetChildStylesArgs,
-  SheetEntry,
-  SheetInteractionState,
-} from '@native-twin/css';
+import { FinalSheet, SheetEntry } from '@native-twin/css';
+import { RegisteredComponent } from '@native-twin/css/jsx';
 import { Atom } from '@native-twin/helpers';
-import { JSXStyledProps } from '../jsx/jsx-custom-props';
 import { StyledContext } from '../store/observables/styles.obs';
 import { BabelStyledProps } from '../types/jsx.types';
 import { ComponentConfig } from '../types/styled.types';
@@ -31,33 +25,6 @@ export interface TwinStyleSheet {
 export interface ComponentState {
   isGroupActive: boolean;
   isLocalActive: boolean;
-}
-
-export interface RegisteredComponent {
-  id: string;
-  prevProps: JSXStyledProps;
-  sheets: ComponentSheet[];
-  metadata: {
-    isGroupParent: boolean;
-    hasGroupEvents: boolean;
-    hasPointerEvents: boolean;
-    hasAnimations: boolean;
-  };
-}
-
-export interface ComponentSheet {
-  prop: string;
-  target: string;
-  sheet: FinalSheet;
-  getChildStyles(input: Partial<GetChildStylesArgs>): AnyStyle;
-  getStyles: (input: Partial<SheetInteractionState>, templateEntries?: SheetEntry[]) => AnyStyle;
-  metadata: {
-    isGroupParent: boolean;
-    hasGroupEvents: boolean;
-    hasPointerEvents: boolean;
-    hasAnimations: boolean;
-  };
-  recompute(): ComponentSheet;
 }
 
 export interface ComponentConfigProps extends ComponentConfig {

@@ -46,6 +46,12 @@ export {
   ValidGroupPseudoSelector,
   CssFeature,
   SelectorGroup,
+  ValidChildPseudoSelector,
+  ValidAppearancePseudoSelector,
+  ValidPlatformInteractionPseudoSelector,
+  ValidPlatformPseudoSelector,
+  CSSUnit,
+  SimplePseudos,
 } from './css/css.types';
 
 // React Native

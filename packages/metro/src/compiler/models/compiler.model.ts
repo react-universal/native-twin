@@ -5,15 +5,8 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import { Node, SourceFile, SyntaxKind } from 'ts-morph';
-import { RuntimeTW } from '@native-twin/core';
-import { RuntimeComponentEntry } from '../../sheet/sheet.types';
-import {
-  getEntriesObject,
-  getEntryGroups,
-  sheetEntriesOrder,
-} from '../../sheet/utils/styles.utils';
 import { MetroTransformerContext } from '../../transformer/transformer.service';
-import type { JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
+import type { ValidJSXElementNode } from '../twin.types';
 import { JSXElementNode } from './JSXElement.model';
 
 export class TwinCompilerService extends Context.Tag('compiler/file-state')<
@@ -55,35 +48,6 @@ const getNodeJSXElementParents = (path: Node) => {
     traversal.skip();
   });
   return pipe(parentsMap, HashSet.fromIterable);
-};
-
-export const getElementEntries = (
-  props: JSXMappedAttribute[],
-  twin: RuntimeTW,
-): RuntimeComponentEntry[] => {
-  return pipe(
-    props,
-    RA.map(({ value, prop, target }) => {
-      const classNames = value.literal;
-
-      const entries = pipe(twin(classNames), RA.sort(sheetEntriesOrder));
-      const metadata = getEntryGroups({
-        classNames: classNames,
-        entries,
-        expression: value.templates,
-        prop: prop,
-        target: target,
-      });
-      return {
-        prop,
-        target,
-        templateLiteral: value.templates,
-        metadata,
-        entries,
-        groupedEntries: getEntriesObject([...entries]),
-      };
-    }),
-  );
 };
 
 const extractJSXElementsFromNode = (path: Node): ValidJSXElementNode[] => {

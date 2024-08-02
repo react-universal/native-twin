@@ -2,7 +2,7 @@ import type { Binding } from '@babel/traverse';
 import type * as t from '@babel/types';
 import type * as Option from 'effect/Option';
 import type { SheetEntry } from '@native-twin/css';
-import { ComponentSheet } from '@native-twin/jsx/build/sheet/sheet.types';
+import { ComponentSheet } from '@native-twin/css/jsx';
 import type { MappedComponent } from '../utils/component.maps';
 
 export type JSXChildElement = t.JSXElement['children'][number];

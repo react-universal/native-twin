@@ -9,6 +9,10 @@
       "path": "../packages/native-twin"
     },
     {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
       "name": "📦 @lib/metro",
       "path": "../packages/metro"
     },
@@ -23,10 +27,6 @@
     {
       "name": "📦 @lib/styled",
       "path": "../packages/styled"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
     },
     {
       "name": "📦 @lib/helpers",
@@ -93,8 +93,13 @@
       "📦 @lib/helpers",
       "📦 @lib/dev-tools",
       "📦 @lib/styled",
-      "@apps/expo-app"
+      "@apps/expo"
     ],
+    "jest.outputConfig": {
+      "revealOn": "demand",
+      "revealWithFocus": "none",
+      "clearOnRun": "test-results"
+    },
     "findUnusedExports.detectCircularImports": true
   }
 }

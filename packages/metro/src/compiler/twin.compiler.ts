@@ -19,6 +19,12 @@ export const compileFile = Effect.gen(function* () {
     }),
   );
 
+  // const asd = pipe(
+  //   elements,
+  //   RA.fromIterable,
+  //   RA.map((x) => x.sheet.childEntries.group),
+  // );
+
   yield* Effect.promise(() => compiler.ast.save());
 
   const result = {

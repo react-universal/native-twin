@@ -35,7 +35,7 @@ const program = Effect.gen(function* () {
   const documents = yield* DocumentService;
   const transformer = yield* MetroTransformerService;
   const sheet = yield* StyleSheetService;
-  const supervisor = yield* Supervisor.track
+  yield* Supervisor.track
 
   const transformFile = documents
     .getDocument({

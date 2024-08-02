@@ -5,6 +5,7 @@ import {
   SheetEntry,
   SheetInteractionState,
 } from '@native-twin/css';
+import { ComponentSheet, RegisteredComponent } from '@native-twin/css/jsx';
 import { Atom, atom } from '@native-twin/helpers';
 import {
   StyledContext,
@@ -17,13 +18,7 @@ import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 import { getSheetEntryStyles } from '../utils/sheet.utils';
 import { tw } from './native-tw';
-import {
-  ComponentConfigProps,
-  ComponentSheet,
-  RegisteredComponent,
-  TwinStyleSheet,
-  ComponentState,
-} from './sheet.types';
+import type { ComponentConfigProps, TwinStyleSheet, ComponentState } from './sheet.types';
 
 const componentsRegistry: Map<string, RegisteredComponent> = new Map();
 const componentsState: Map<string, Atom<ComponentState>> = new Map();
