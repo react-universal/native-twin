@@ -26,7 +26,8 @@
           className: "bg-black",
           declarations: [{
             prop: "backgroundColor",
-            value: "rgba(0,0,0,1)"
+            value: "rgba(0,0,0,1)",
+            _tag: "COMPILED"
           }],
           selectors: [],
           precedence: 805306368,
@@ -36,7 +37,8 @@
           className: "last:text-lg",
           declarations: [{
             prop: "fontSize",
-            value: "1.125rem"
+            value: 18,
+            _tag: "COMPILED"
           }],
           selectors: ["last", "&:last"],
           precedence: 805437440,
@@ -48,7 +50,8 @@
             className: "bg-black",
             declarations: [{
               prop: "backgroundColor",
-              value: "rgba(0,0,0,1)"
+              value: "rgba(0,0,0,1)",
+              _tag: "COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
@@ -83,7 +86,8 @@
             className: "text-blue",
             declarations: [{
               prop: "color",
-              value: "rgba(96,165,250,1)"
+              value: "rgba(96,165,250,1)",
+              _tag: "COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
@@ -95,7 +99,8 @@
               className: "text-blue",
               declarations: [{
                 prop: "color",
-                value: "rgba(96,165,250,1)"
+                value: "rgba(96,165,250,1)",
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -131,7 +136,8 @@
             className: "text-red",
             declarations: [{
               prop: "color",
-              value: "rgba(248,113,113,1)"
+              value: "rgba(248,113,113,1)",
+              _tag: "COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
@@ -143,7 +149,8 @@
               className: "text-red",
               declarations: [{
                 prop: "color",
-                value: "rgba(248,113,113,1)"
+                value: "rgba(248,113,113,1)",
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -238,11 +245,11 @@
       active = _useState2[0],
       setActive = _useState2[1];
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
-      className: "flex-1 bg-red last:bg-yellow-600",
+      className: "flex-1 -translate-x-2 w-[10vw]",
       _twinOrd: 0,
-      _twinComponentID: "/fixtures/out.tsx-1235-2566-View",
+      _twinComponentID: "/fixtures/out.tsx-1235-2564-View",
       _twinComponentTemplateEntries: [],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1235-2566-View", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1235-2564-View", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
@@ -250,30 +257,41 @@
           className: "flex-1",
           declarations: [{
             prop: "flex",
-            value: "1 1 0%"
+            value: {
+              flexGrow: 1,
+              flexShrink: 1,
+              flexBasis: "0%"
+            },
+            _tag: "COMPILED"
           }],
           selectors: [],
           precedence: 805306368,
           important: false,
           animations: []
         }, {
-          className: "bg-red",
+          className: "-translate-x-2",
           declarations: [{
-            prop: "backgroundColor",
-            value: "rgba(248,113,113,1)"
+            prop: "transform",
+            value: [{
+              prop: "translateX",
+              value: -8,
+              _tag: "COMPILED"
+            }],
+            _tag: "COMPILED"
           }],
           selectors: [],
           precedence: 805306368,
           important: false,
           animations: []
         }, {
-          className: "last:bg-yellow-600",
+          className: "w-[10vw]",
           declarations: [{
-            prop: "backgroundColor",
-            value: "rgba(202,138,4,1)"
+            prop: "width",
+            value: "10vw",
+            _tag: "NOT_COMPILED"
           }],
-          selectors: ["last", "&:last"],
-          precedence: 805437440,
+          selectors: [],
+          precedence: 805306368,
           important: false,
           animations: []
         }],
@@ -282,17 +300,38 @@
             className: "flex-1",
             declarations: [{
               prop: "flex",
-              value: "1 1 0%"
+              value: {
+                flexGrow: 1,
+                flexShrink: 1,
+                flexBasis: "0%"
+              },
+              _tag: "COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
             important: false,
             animations: []
           }, {
-            className: "bg-red",
+            className: "-translate-x-2",
             declarations: [{
-              prop: "backgroundColor",
-              value: "rgba(248,113,113,1)"
+              prop: "transform",
+              value: [{
+                prop: "translateX",
+                value: -8,
+                _tag: "COMPILED"
+              }],
+              _tag: "COMPILED"
+            }],
+            selectors: [],
+            precedence: 805306368,
+            important: false,
+            animations: []
+          }, {
+            className: "w-[10vw]",
+            declarations: [{
+              prop: "width",
+              value: "10vw",
+              _tag: "NOT_COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
@@ -322,9 +361,9 @@
         `,
         debug: true,
         _twinOrd: 0,
-        _twinComponentID: "/fixtures/out.tsx-1293-1679-View",
+        _twinComponentID: "/fixtures/out.tsx-1291-1677-View",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1293-1679-View", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1291-1677-View", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
@@ -332,7 +371,12 @@
             className: "flex-1",
             declarations: [{
               prop: "flex",
-              value: "1 1 0%"
+              value: {
+                flexGrow: 1,
+                flexShrink: 1,
+                flexBasis: "0%"
+              },
+              _tag: "COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
@@ -342,7 +386,8 @@
             className: "bg-red-500",
             declarations: [{
               prop: "backgroundColor",
-              value: "rgba(239,68,68,1)"
+              value: "rgba(239,68,68,1)",
+              _tag: "COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
@@ -352,7 +397,8 @@
             className: "first:bg-purple-600",
             declarations: [{
               prop: "backgroundColor",
-              value: "rgba(147,51,234,1)"
+              value: "rgba(147,51,234,1)",
+              _tag: "COMPILED"
             }],
             selectors: ["first", "&:first"],
             precedence: 805437440,
@@ -364,7 +410,12 @@
               className: "flex-1",
               declarations: [{
                 prop: "flex",
-                value: "1 1 0%"
+                value: {
+                  flexGrow: 1,
+                  flexShrink: 1,
+                  flexBasis: "0%"
+                },
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -374,20 +425,11 @@
               className: "bg-red-500",
               declarations: [{
                 prop: "backgroundColor",
-                value: "rgba(239,68,68,1)"
+                value: "rgba(239,68,68,1)",
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
-              important: false,
-              animations: []
-            }, {
-              className: "last:bg-yellow-600",
-              declarations: [{
-                prop: "backgroundColor",
-                value: "rgba(202,138,4,1)"
-              }],
-              selectors: ["last", "&:last"],
-              precedence: 805437440,
               important: false,
               animations: []
             }],
@@ -409,9 +451,9 @@
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: "p-2 !bg-green-800",
           _twinOrd: 0,
-          _twinComponentID: "/fixtures/out.tsx-1429-1665-View",
+          _twinComponentID: "/fixtures/out.tsx-1427-1663-View",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1429-1665-View", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1427-1663-View", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
@@ -419,7 +461,8 @@
               className: "p-2",
               declarations: [{
                 prop: "padding",
-                value: "0.5rem"
+                value: 8,
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -429,7 +472,8 @@
               className: "!bg-green-800",
               declarations: [{
                 prop: "backgroundColor",
-                value: "rgba(22,101,52,1)"
+                value: "rgba(22,101,52,1)",
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -441,7 +485,8 @@
                 className: "p-2",
                 declarations: [{
                   prop: "padding",
-                  value: "0.5rem"
+                  value: 8,
+                  _tag: "COMPILED"
                 }],
                 selectors: [],
                 precedence: 805306368,
@@ -451,7 +496,8 @@
                 className: "!bg-green-800",
                 declarations: [{
                   prop: "backgroundColor",
-                  value: "rgba(22,101,52,1)"
+                  value: "rgba(22,101,52,1)",
+                  _tag: "COMPILED"
                 }],
                 selectors: [],
                 precedence: 805306368,
@@ -461,7 +507,8 @@
                 className: "first:bg-purple-600",
                 declarations: [{
                   prop: "backgroundColor",
-                  value: "rgba(147,51,234,1)"
+                  value: "rgba(147,51,234,1)",
+                  _tag: "COMPILED"
                 }],
                 selectors: ["first", "&:first"],
                 precedence: 805437440,
@@ -489,9 +536,9 @@
               hover:text-gray-700
               `,
             _twinOrd: 0,
-            _twinComponentID: "/fixtures/out.tsx-1476-1649-Text",
+            _twinComponentID: "/fixtures/out.tsx-1474-1647-Text",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1476-1649-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1474-1647-Text", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
@@ -499,7 +546,8 @@
                 className: "text-center",
                 declarations: [{
                   prop: "textAlign",
-                  value: "center"
+                  value: "center",
+                  _tag: "COMPILED"
                 }],
                 selectors: [],
                 precedence: 805306368,
@@ -509,7 +557,8 @@
                 className: "text-xl",
                 declarations: [{
                   prop: "fontSize",
-                  value: "1.25rem"
+                  value: 20,
+                  _tag: "COMPILED"
                 }],
                 selectors: [],
                 precedence: 805306368,
@@ -519,7 +568,8 @@
                 className: "text-primary",
                 declarations: [{
                   prop: "color",
-                  value: "blue"
+                  value: "blue",
+                  _tag: "COMPILED"
                 }],
                 selectors: [],
                 precedence: 805306368,
@@ -529,7 +579,8 @@
                 className: "hover:text-gray-700",
                 declarations: [{
                   prop: "color",
-                  value: "rgba(55,65,81,1)"
+                  value: "rgba(55,65,81,1)",
+                  _tag: "COMPILED"
                 }],
                 selectors: ["hover", "&:hover"],
                 precedence: 805307392,
@@ -541,7 +592,8 @@
                   className: "text-center",
                   declarations: [{
                     prop: "textAlign",
-                    value: "center"
+                    value: "center",
+                    _tag: "COMPILED"
                   }],
                   selectors: [],
                   precedence: 805306368,
@@ -551,7 +603,8 @@
                   className: "text-xl",
                   declarations: [{
                     prop: "fontSize",
-                    value: "1.25rem"
+                    value: 20,
+                    _tag: "COMPILED"
                   }],
                   selectors: [],
                   precedence: 805306368,
@@ -561,7 +614,8 @@
                   className: "text-primary",
                   declarations: [{
                     prop: "color",
-                    value: "blue"
+                    value: "blue",
+                    _tag: "COMPILED"
                   }],
                   selectors: [],
                   precedence: 805306368,
@@ -573,7 +627,8 @@
                   className: "hover:text-gray-700",
                   declarations: [{
                     prop: "color",
-                    value: "rgba(55,65,81,1)"
+                    value: "rgba(55,65,81,1)",
+                    _tag: "COMPILED"
                   }],
                   selectors: ["hover", "&:hover"],
                   precedence: 805307392,
@@ -605,9 +660,9 @@
           hover:bg-pink-600
         `,
         _twinOrd: 1,
-        _twinComponentID: "/fixtures/out.tsx-1686-2554-View",
+        _twinComponentID: "/fixtures/out.tsx-1684-2552-View",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1686-2554-View", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1684-2552-View", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
@@ -622,7 +677,12 @@
             className: "flex-[2]",
             declarations: [{
               prop: "flex",
-              value: "2"
+              value: {
+                flexGrow: 2,
+                flexShrink: 2,
+                flexBasis: "0%"
+              },
+              _tag: "COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
@@ -632,7 +692,8 @@
             className: "bg-gray-500",
             declarations: [{
               prop: "backgroundColor",
-              value: "rgba(107,114,128,1)"
+              value: "rgba(107,114,128,1)",
+              _tag: "COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
@@ -642,7 +703,8 @@
             className: "!bg-green-800",
             declarations: [{
               prop: "backgroundColor",
-              value: "rgba(22,101,52,1)"
+              value: "rgba(22,101,52,1)",
+              _tag: "COMPILED"
             }],
             selectors: [],
             precedence: 805306368,
@@ -652,7 +714,8 @@
             className: "hover:bg-pink-600",
             declarations: [{
               prop: "backgroundColor",
-              value: "rgba(219,39,119,1)"
+              value: "rgba(219,39,119,1)",
+              _tag: "COMPILED"
             }],
             selectors: ["hover", "&:hover"],
             precedence: 805307392,
@@ -671,7 +734,12 @@
               className: "flex-[2]",
               declarations: [{
                 prop: "flex",
-                value: "2"
+                value: {
+                  flexGrow: 2,
+                  flexShrink: 2,
+                  flexBasis: "0%"
+                },
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -681,7 +749,8 @@
               className: "bg-gray-500",
               declarations: [{
                 prop: "backgroundColor",
-                value: "rgba(107,114,128,1)"
+                value: "rgba(107,114,128,1)",
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -691,7 +760,8 @@
               className: "!bg-green-800",
               declarations: [{
                 prop: "backgroundColor",
-                value: "rgba(22,101,52,1)"
+                value: "rgba(22,101,52,1)",
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -703,7 +773,8 @@
               className: "hover:bg-pink-600",
               declarations: [{
                 prop: "backgroundColor",
-                value: "rgba(219,39,119,1)"
+                value: "rgba(219,39,119,1)",
+                _tag: "COMPILED"
               }],
               selectors: ["hover", "&:hover"],
               precedence: 805307392,
@@ -729,15 +800,15 @@
             ${active ? 'text-red-800' : 'text-primary'}
           `,
           _twinOrd: 0,
-          _twinComponentID: "/fixtures/out.tsx-1849-2021-Text",
+          _twinComponentID: "/fixtures/out.tsx-1847-2019-Text",
           _twinComponentTemplateEntries: [{
-            id: "/fixtures/out.tsx-1849-2021-Text",
+            id: "/fixtures/out.tsx-1847-2019-Text",
             target: "style",
             prop: "className",
             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
             templateLiteral: `${active ? 'text-red-800' : 'text-primary'}`
           }],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1849-2021-Text", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1847-2019-Text", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
@@ -745,7 +816,8 @@
               className: "text-2xl",
               declarations: [{
                 prop: "fontSize",
-                value: "1.5rem"
+                value: 24,
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -757,7 +829,8 @@
                 className: "text-2xl",
                 declarations: [{
                   prop: "fontSize",
-                  value: "1.5rem"
+                  value: 24,
+                  _tag: "COMPILED"
                 }],
                 selectors: [],
                 precedence: 805306368,
@@ -787,15 +860,15 @@
             });
           },
           _twinOrd: 1,
-          _twinComponentID: "/fixtures/out.tsx-2030-2221-Pressable",
+          _twinComponentID: "/fixtures/out.tsx-2028-2219-Pressable",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2030-2221-Pressable", []),
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2028-2219-Pressable", []),
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: "text-gray-200",
             _twinOrd: 0,
-            _twinComponentID: "/fixtures/out.tsx-2153-2200-Text",
+            _twinComponentID: "/fixtures/out.tsx-2151-2198-Text",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2153-2200-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2151-2198-Text", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
@@ -803,7 +876,8 @@
                 className: "text-gray-200",
                 declarations: [{
                   prop: "color",
-                  value: "rgba(229,231,235,1)"
+                  value: "rgba(229,231,235,1)",
+                  _tag: "COMPILED"
                 }],
                 selectors: [],
                 precedence: 805306368,
@@ -815,7 +889,8 @@
                   className: "text-gray-200",
                   declarations: [{
                     prop: "color",
-                    value: "rgba(229,231,235,1)"
+                    value: "rgba(229,231,235,1)",
+                    _tag: "COMPILED"
                   }],
                   selectors: [],
                   precedence: 805306368,
@@ -846,9 +921,9 @@
           `,
           debug: true,
           _twinOrd: 2,
-          _twinComponentID: "/fixtures/out.tsx-2230-2540-View",
+          _twinComponentID: "/fixtures/out.tsx-2228-2538-View",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2230-2540-View", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2228-2538-View", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
@@ -856,7 +931,8 @@
               className: "-top-1",
               declarations: [{
                 prop: "top",
-                value: "-0.25rem"
+                value: -4,
+                _tag: "COMPILED"
               }],
               selectors: [],
               precedence: 805306368,
@@ -866,7 +942,8 @@
               className: "group-hover:bg-pink-800",
               declarations: [{
                 prop: "backgroundColor",
-                value: "rgba(157,23,77,1)"
+                value: "rgba(157,23,77,1)",
+                _tag: "COMPILED"
               }],
               selectors: ["group-hover", ".group:hover &"],
               precedence: 805307392,
@@ -878,7 +955,8 @@
                 className: "-top-1",
                 declarations: [{
                   prop: "top",
-                  value: "-0.25rem"
+                  value: -4,
+                  _tag: "COMPILED"
                 }],
                 selectors: [],
                 precedence: 805306368,
@@ -891,7 +969,8 @@
                 className: "group-hover:bg-pink-800",
                 declarations: [{
                   prop: "backgroundColor",
-                  value: "rgba(157,23,77,1)"
+                  value: "rgba(157,23,77,1)",
+                  _tag: "COMPILED"
                 }],
                 selectors: ["group-hover", ".group:hover &"],
                 precedence: 805307392,
@@ -914,9 +993,9 @@
             suppressHighlighting: true,
             className: "text-gray-800 group-hover:text-white",
             _twinOrd: 0,
-            _twinComponentID: "/fixtures/out.tsx-2363-2524-Text",
+            _twinComponentID: "/fixtures/out.tsx-2361-2522-Text",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2363-2524-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2361-2522-Text", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
@@ -924,7 +1003,8 @@
                 className: "text-gray-800",
                 declarations: [{
                   prop: "color",
-                  value: "rgba(31,41,55,1)"
+                  value: "rgba(31,41,55,1)",
+                  _tag: "COMPILED"
                 }],
                 selectors: [],
                 precedence: 805306368,
@@ -934,7 +1014,8 @@
                 className: "group-hover:text-white",
                 declarations: [{
                   prop: "color",
-                  value: "rgba(255,255,255,1)"
+                  value: "rgba(255,255,255,1)",
+                  _tag: "COMPILED"
                 }],
                 selectors: ["group-hover", ".group:hover &"],
                 precedence: 805307392,
@@ -946,7 +1027,8 @@
                   className: "text-gray-800",
                   declarations: [{
                     prop: "color",
-                    value: "rgba(31,41,55,1)"
+                    value: "rgba(31,41,55,1)",
+                    _tag: "COMPILED"
                   }],
                   selectors: [],
                   precedence: 805306368,
@@ -959,7 +1041,8 @@
                   className: "group-hover:text-white",
                   declarations: [{
                     prop: "color",
-                    value: "rgba(255,255,255,1)"
+                    value: "rgba(255,255,255,1)",
+                    _tag: "COMPILED"
                   }],
                   selectors: ["group-hover", ".group:hover &"],
                   precedence: 805307392,

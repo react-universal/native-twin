@@ -1,30 +1,22 @@
 import * as RA from 'effect/Array';
-import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import * as Order from 'effect/Order';
 import * as Predicate from 'effect/Predicate';
 import * as Record from 'effect/Record';
 import { OwnSheetSelectors } from '../css/css.constants';
 import type { SelectorGroup, ValidChildPseudoSelector } from '../css/css.types';
-import type { AnyStyle } from '../react-native/rn.types';
 import type { SheetEntry } from '../sheets/sheet.types';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
+import { compileEntryDeclaration, RuntimeSheetDeclaration } from './SheetEntryDeclaration';
 import { defaultSheetMetadata } from './constants';
 import { SheetChildEntries } from './jsx.runtime';
 import type { RuntimeComponentEntry } from './react.runtime';
 
 export type { SheetEntry };
-export interface RawSheetEntry {
-  _tag: 'RawSheetEntry';
-  value: SheetEntry;
-}
-export interface CompiledSheetEntry {
-  _tag: 'CompiledSheet';
-  raw: SheetEntry;
-  value: AnyStyle;
-}
 
-export type RuntimeSheetEntry = RawSheetEntry | CompiledSheetEntry;
+export interface RuntimeSheetEntry extends Omit<SheetEntry, 'declarations'> {
+  declarations: RuntimeSheetDeclaration[];
+}
 
 interface ChildSelectorBrand {
   readonly ChildSelector: unique symbol;
@@ -36,14 +28,22 @@ interface OwnSelectorBrand {
 }
 type OwnSelector = (typeof OwnSheetSelectors)[number] & OwnSelectorBrand;
 
-export type SheetGroupEntries = Record<SelectorGroup, SheetEntry[]>;
+export type SheetGroupEntries = Record<SelectorGroup, RuntimeSheetEntry[]>;
 
-/** @category Tagged */
-export const CompiledSheetEntry = Data.tagged<CompiledSheetEntry>('CompiledSheet');
+export const compileSheetEntry = (sheetEntry: SheetEntry): RuntimeSheetEntry => {
+  const declarations = pipe(
+    sheetEntry.declarations,
+    RA.map((x) => compileEntryDeclaration(x)),
+  );
+  return {
+    ...sheetEntry,
+    declarations,
+  };
+};
 
 export const groupEntriesBySelectorGroup = (
-  x: SheetEntry[],
-): Record<SelectorGroup, SheetEntry[]> =>
+  x: RuntimeSheetEntry[],
+): Record<SelectorGroup, RuntimeSheetEntry[]> =>
   RA.groupBy(x, (entry) => getRuleSelectorGroup(entry.selectors));
 
 export const getChildRuntimeEntries = (
@@ -70,7 +70,7 @@ export const getChildRuntimeEntries = (
   );
 };
 
-export const getGroupedEntries = (runtime: SheetEntry[]): SheetGroupEntries => {
+export const getGroupedEntries = (runtime: RuntimeSheetEntry[]): SheetGroupEntries => {
   return pipe(runtime, sortSheetEntries, groupEntriesBySelectorGroup, (entry) => {
     return {
       base: entry.base ?? [],
@@ -110,10 +110,10 @@ export const applyParentEntries = (
 
 /** @category Filters */
 export function getSheetMetadata(
-  selectors: SheetEntry[],
+  entries: RuntimeSheetEntry[],
 ): RuntimeComponentEntry['metadata'] {
   return pipe(
-    selectors,
+    entries,
     RA.reduce(defaultSheetMetadata, (prev, current) => {
       const group = getRuleSelectorGroup(current.selectors);
       if (!prev.isGroupParent && current.className === 'group') {
@@ -134,20 +134,23 @@ export function getSheetMetadata(
 const orders = {
   sheetEntriesOrderByPrecedence: Order.mapInput(
     Order.number,
-    (a: SheetEntry) => a.precedence,
+    (a: RuntimeSheetEntry) => a.precedence,
   ),
-  sheetEntriesByImportant: Order.mapInput(Order.boolean, (a: SheetEntry) => a.important),
+  sheetEntriesByImportant: Order.mapInput(
+    Order.boolean,
+    (a: RuntimeSheetEntry) => a.important,
+  ),
 };
 
 /** @category Orders */
-export const sortSheetEntries = (x: SheetEntry[]) =>
+export const sortSheetEntries = (x: RuntimeSheetEntry[]) =>
   RA.sort(
     x,
     Order.combine(orders.sheetEntriesOrderByPrecedence, orders.sheetEntriesByImportant),
   );
 
 /** @category Predicates */
-export const isChildEntry: Predicate.Predicate<SheetEntry> = (entry) =>
+export const isChildEntry: Predicate.Predicate<RuntimeSheetEntry> = (entry) =>
   pipe(entry.selectors, getRuleSelectorGroup, isChildSelector);
 
 /** @category Predicates */
@@ -162,13 +165,13 @@ export const isOwnSelector: Predicate.Refinement<string, OwnSelector> = (
 ): group is OwnSelector => OwnSheetSelectors.includes(group as OwnSelector);
 
 /** @category Predicates */
-export const isPointerEntry: Predicate.Predicate<SheetEntry> = (entry) =>
+export const isPointerEntry: Predicate.Predicate<RuntimeSheetEntry> = (entry) =>
   pipe(entry.selectors, getRuleSelectorGroup, (x) => x === 'group' || x === 'pointer');
 
 /** @category Predicates */
-export const isGroupEventEntry: Predicate.Predicate<SheetEntry> = (entry) =>
+export const isGroupEventEntry: Predicate.Predicate<RuntimeSheetEntry> = (entry) =>
   pipe(entry.selectors, getRuleSelectorGroup, (x) => x === 'group');
 
 /** @category Predicates */
-export const isGroupParent: Predicate.Predicate<SheetEntry> = (entry) =>
+export const isGroupParent: Predicate.Predicate<RuntimeSheetEntry> = (entry) =>
   pipe(entry.selectors, RA.contains('group'));

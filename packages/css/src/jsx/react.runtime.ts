@@ -1,6 +1,6 @@
 import type { AnyStyle, FinalSheet, GetChildStylesArgs } from '../react-native/rn.types';
 import type { SheetEntry, SheetInteractionState } from '../sheets/sheet.types';
-import type { SheetGroupEntries } from './SheetEntry';
+import type { RuntimeSheetEntry, SheetGroupEntries } from './SheetEntry';
 
 export interface RegisteredComponent {
   id: string;
@@ -37,5 +37,5 @@ export interface RuntimeComponentEntry {
   templateLiteral: string | null;
   metadata: ComponentSheet['metadata'];
   entries: SheetGroupEntries;
-  rawEntries: SheetEntry[];
+  rawEntries: RuntimeSheetEntry[];
 }

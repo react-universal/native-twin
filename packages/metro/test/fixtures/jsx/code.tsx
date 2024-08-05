@@ -50,7 +50,7 @@ const Button = (props: ButtonProps) => {
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1 bg-red last:bg-yellow-600'>
+    <View className='flex-1 -translate-x-2 w-[10vw]'>
       <View
         className={`
           flex-1

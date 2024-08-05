@@ -17,7 +17,6 @@ export class StyleSheetService extends Context.Tag('files/StyleSheetService')<
     registerEntries(entries: SheetEntry[], platform: string): string;
     entriesToObject(newEntries: SheetEntry[]): object;
     readSheet(): string;
-    // getComponentFunction(componentStyles: [string, RuntimeComponentEntry[]][]): string;
   }
 >() {}
 
@@ -63,7 +62,6 @@ export const StyleSheetServiceLive = Layer.scoped(
       if (code === '') {
         code = `{"version": ${version},"cssOutput": "${cssOutput}", "entries": {}}`;
       }
-      // console.log('CODE: ', code);
       try {
         const current: Record<string, any> = JSON.parse(code) ?? {};
         const entries = entriesToObject(Object.values(current?.['entries'] ?? {}));

@@ -34,7 +34,7 @@ export interface SheetEntry {
 
 export type SheetEntryDeclaration = {
   prop: string;
-  value: string | AnyStyle | SheetEntryDeclaration[];
+  value: number | string | AnyStyle | SheetEntryDeclaration[];
 };
 
 export interface SheetEntryCss extends Omit<SheetEntry, 'declarations'> {

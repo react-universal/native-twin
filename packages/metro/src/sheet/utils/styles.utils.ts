@@ -6,6 +6,7 @@ import {
   getSheetMetadata,
   sortSheetEntries,
   RuntimeComponentEntry,
+  compileSheetEntry,
 } from '@native-twin/css/jsx';
 import { JSXMappedAttribute } from '../../compiler/twin.types';
 
@@ -18,7 +19,12 @@ export const getElementEntries = (
     RA.map(({ value, prop, target }) => {
       const classNames = value.literal;
 
-      const entries = pipe(twin(classNames), sortSheetEntries);
+      const entries = pipe(
+        twin(classNames),
+        RA.map((x) => compileSheetEntry(x)),
+        sortSheetEntries,
+      );
+
       return {
         prop,
         target,

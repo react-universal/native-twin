@@ -1,8 +1,6 @@
 export {
   type SheetEntry,
   type SheetGroupEntries,
-  type CompiledSheetEntry,
-  type RawSheetEntry,
   type RuntimeSheetEntry,
   isGroupEventEntry,
   isGroupParent,
@@ -16,7 +14,15 @@ export {
   getGroupedEntries,
   applyParentEntries,
   getSheetMetadata,
+  compileSheetEntry,
 } from './SheetEntry';
+
+export {
+  type RuntimeSheetDeclaration,
+  compileEntryDeclaration,
+  declarationValueConvertParser,
+  matchUnitConvert,
+} from './SheetEntryDeclaration';
 
 export type { JSXElementSheet } from './jsx.runtime';
 

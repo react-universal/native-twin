@@ -6073,7 +6073,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/css@workspace:packages/css"
   dependencies:
-    "@effect/typeclass": "npm:^0.25.0"
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     effect: "npm:^3.6.0"
