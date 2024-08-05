@@ -11,8 +11,13 @@
       ],
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
+      "outFiles": [
+        "${workspaceRoot}/build/**/*.js",
+        "${workspaceRoot:}/build/**/*.js"
+      ],
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",
+        "${workspaceFolder}/../**",
         "!**/node_modules/**"
       ],
       "sourceMaps": true,

@@ -9,14 +9,12 @@ function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
     <View className='flex-1'>
-      <View
-        className={`flex-1 items-center justify-center bg-cyan-500 group`}
-      >
-        <View className='bg-gray-600 shadow-xl rounded-2xl p-2 group-hover:bg-red-500'>
+      <View className={`flex-1 items-center justify-center bg-cyan-500 group`}>
+        <View className='bg-gray-600 shadow-xl rounded-2xl p-2 group-focus:bg-purple-500'>
           <Text
             className={`
-              group-hover:(text-green-800)
-              text(center red-500)
+              group-hover:(text-black)
+              text(center white)
               font-inter-bold hover:text-gray-700
               `}
           >
@@ -49,9 +47,13 @@ function HomeScreen() {
         </Pressable>
         <Image
           source={testImage}
-          resizeMode='contain'
-          resizeMethod='resize'
-          className='-translate-x-[10vw] rounded-full border-1 w-5 h-5'
+          src={testImage}
+          resizeMode='cover'
+          style={{
+            width: 100,
+            height: 100,
+          }}
+          className='rounded-full border-1'
         />
         <TextField />
         <View

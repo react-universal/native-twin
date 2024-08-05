@@ -1,46 +1,44 @@
 import { FinalSheet } from '@native-twin/css';
-import { StyleSheet } from '../sheet/StyleSheet';
+import { componentsRegistry, StyleSheet } from '../sheet/StyleSheet';
 import { templatePropsToSheetEntriesObject } from '../styled/native/utils/native.maps';
 import { JSXInternalProps } from '../types/jsx.types';
 
 export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
-  const twinSheet = props?.['_twinComponentSheet'];
+  props?.['_twinComponentSheet'];
   const templateEntries = props?.['_twinComponentTemplateEntries'];
-  if (templateEntries && templateEntries.length > 0) {
-    if (twinSheet) {
+  const componentID = props?.['_twinComponentID'];
+  if (componentID) {
+    const component = StyleSheet.getComponentByID(componentID);
+
+    if (component) {
       const sheet = templatePropsToSheetEntriesObject(templateEntries ?? []);
       for (const [prop, entries] of Object.entries(sheet)) {
         const styles = StyleSheet.entriesToFinalSheet(entries);
-        twinSheet.sheets = twinSheet.sheets.map((x) => {
+        component.sheets = component.sheets.map((x) => {
           if (x.prop === prop) {
+            const newSheet = mergeSheets(x.sheet, styles);
             return {
               ...x,
-              sheet: mergeSheets(x.sheet, styles),
+              sheet: newSheet,
               metadata: {
                 isGroupParent: entries.some((x) => x.className == 'group'),
-                hasGroupEvents: Object.keys(x.sheet.group)?.length > 0,
-                hasPointerEvents: Object.keys(x.sheet.pointer)?.length > 0,
+                hasGroupEvents: Object.keys(newSheet.group)?.length > 0,
+                hasPointerEvents: Object.keys(newSheet.pointer)?.length > 0,
                 hasAnimations: entries.some((x) => x.animations.length > 0),
               },
             };
           }
           return x;
         });
+        component.metadata = {
+          isGroupParent: component.sheets.some((x) => x.metadata.isGroupParent),
+          hasGroupEvents: component.sheets.some((x) => x.metadata.hasGroupEvents),
+          hasPointerEvents: component.sheets.some((x) => x.metadata.hasPointerEvents),
+          hasAnimations: component.sheets.some((x) => x.metadata.hasAnimations),
+        };
       }
-      twinSheet.metadata = {
-        hasAnimations:
-          twinSheet.metadata.hasAnimations ||
-          twinSheet.sheets.some((x) => x.metadata.hasAnimations),
-        hasGroupEvents:
-          twinSheet.metadata.hasGroupEvents ||
-          twinSheet.sheets.some((x) => x.metadata.hasGroupEvents),
-        hasPointerEvents:
-          twinSheet.metadata.hasPointerEvents ||
-          twinSheet.sheets.some((x) => x.metadata.hasPointerEvents),
-        isGroupParent:
-          twinSheet.metadata.isGroupParent ||
-          twinSheet.sheets.some((x) => x.metadata.isGroupParent),
-      };
+
+      componentsRegistry.set(componentID, { ...component });
     }
   }
 }

@@ -1,4 +1,4 @@
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native';
 import { useState } from 'react';
 
 export const TextField = () => {
@@ -7,7 +7,7 @@ export const TextField = () => {
     <TextInput
       value={text}
       onChangeText={(data) => setText(data)}
-      className='bg-pink-400 w-full focus:bg-white text(base black 5xl md:6xl)'
+      className='bg-pink-400 w-full min-w-20 focus:bg-white text(base black 5xl md:6xl)'
     />
   );
 };

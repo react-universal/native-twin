@@ -15,6 +15,7 @@ import type {
   ValidOpeningElementNode,
 } from '../twin.types';
 import { isValidClassNameString, isValidTemplateLiteral } from './ast.guards';
+import { expressionFactory } from './writer.factory';
 
 /**
  * @domain TypeScript Transform
@@ -81,8 +82,9 @@ export const getComponentStyledEntries = (
   );
 };
 
-export const getComponentID = (node: Node, filename: string, tagName = 'AnyTag') => {
-  return `${filename}-${node.getStart()}-${node.getEnd()}-${tagName}`;
+export const getComponentID = (node: ValidJSXElementNode, filename: string) => {
+  const tagName = getJSXElementTagName(node)?.compilerNode.text;
+  return `${filename}-${node.getStart()}-${node.getEnd()}-${tagName ?? 'Unknown'}`;
 };
 
 // export const getIdentifierText = (node: Identifier) => node.compilerNode.text;
@@ -183,44 +185,47 @@ export const createJSXAttribute = (
 };
 
 export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) => {
-  const writer = new CodeBlock();
-  const templateEntries = new CodeBlock().write('{[');
-
-  writer
-    .write(`{require('@native-twin/jsx').StyleSheet.registerComponent(`)
-    .write(`"${id}",`);
-  writer.write('[');
-  const records = entries.reduce((prev, current) => {
-    prev.block(() => {
-      prev.writeLine(`entries: ${JSON.stringify(current.entries)},`);
-      prev.writeLine(`metadata: ${JSON.stringify(current.metadata)},`);
-      prev.writeLine(`prop: "${current.prop}",`);
-      prev.writeLine(`target: "${current.target}",`);
-      const templateLiteral = current.templateLiteral;
-      if (templateLiteral) {
-        prev.writeLine(`templateLiteral: \`${current.templateLiteral}\`,`);
-        prev.writeLine(
-          `templateEntries: require('@native-twin/core').tw(\`${current.templateLiteral}\`)`,
-        );
-        templateEntries
-          .block(() => {
-            templateEntries.writeLine(
-              `entries: require('@native-twin/core').tw(\`${current.templateLiteral}\`),`,
+  const { writer, array, identifier } = expressionFactory(new CodeBlock());
+  const templateEntries = expressionFactory(new CodeBlock());
+  templateEntries.writer.block(() => {
+    templateEntries.writer.write('[');
+    entries
+      .filter((x) => x.templateLiteral)
+      .forEach((x) => {
+        if (x.templateLiteral) {
+          templateEntries.writer.block(() => {
+            templateEntries.writer.writeLine(`id: "${id}",`);
+            templateEntries.writer.writeLine(`target: "${x.target}",`);
+            templateEntries.writer.writeLine(`prop: "${x.prop}",`);
+            templateEntries.writer.writeLine(
+              `entries: require('@native-twin/core').tw(\`${x.templateLiteral}\`),`,
             );
-            templateEntries.writeLine(`id: "${id}",`);
-            templateEntries.writeLine(`target: "${current.target}",`);
-            templateEntries.writeLine(`prop: "${current.prop}",`);
-          })
-          .write(',');
-      } else {
-        prev.writeLine(`templateLiteral: null,`);
-      }
-    });
-    prev.write(',');
-    return prev;
-  }, writer.writeLine(''));
-  templateEntries.write(']}');
-  records.write(']');
-  records.writeLine(')}');
-  return { styledProp: records.toString(), templateEntries: templateEntries.toString() };
+            templateEntries.writer.write(`templateLiteral: \`${x.templateLiteral}\`,`);
+          });
+        }
+      });
+    templateEntries.writer.write(']');
+  });
+  const styledProp = writer
+    .block(() => {
+      identifier(`require('@native-twin/jsx').StyleSheet.registerComponent("${id}", `);
+      array(
+        entries.map((x) => {
+          return {
+            templateLiteral: null,
+            prop: x.prop,
+            target: x.target,
+            rawEntries: x.rawEntries,
+            entries: x.entries,
+            metadata: x.metadata,
+          };
+        }),
+      );
+      identifier(`)`);
+    })
+    .toString();
+  return {
+    styledProp,
+    templateEntries: templateEntries.writer.toString(),
+  };
 };

@@ -1,9 +1,8 @@
 import { TailwindConfig, __Theme__ } from '@native-twin/core';
 import { FinalSheet, SheetEntry } from '@native-twin/css';
-import { RegisteredComponent } from '@native-twin/css/jsx';
+import { RegisteredComponent, RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { Atom } from '@native-twin/helpers';
 import { StyledContext } from '../store/observables/styles.obs';
-import { BabelStyledProps } from '../types/jsx.types';
 import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 
@@ -16,7 +15,7 @@ export interface TwinStyleSheet {
   getComponentByID(id: string): RegisteredComponent | undefined;
   registerComponent(
     id: string,
-    props: BabelStyledProps[],
+    props: RuntimeComponentEntry[],
     context: StyledContext,
   ): RegisteredComponent;
   getComponentState(id: string): Atom<ComponentState>;

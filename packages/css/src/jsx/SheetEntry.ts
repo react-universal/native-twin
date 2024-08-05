@@ -1,230 +1,174 @@
 import * as RA from 'effect/Array';
+import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
-import type { TypeLambda } from 'effect/HKT';
 import * as Order from 'effect/Order';
 import * as Predicate from 'effect/Predicate';
-import type { SelectorGroup } from '../css/css.types';
+import * as Record from 'effect/Record';
+import { OwnSheetSelectors } from '../css/css.constants';
+import type { SelectorGroup, ValidChildPseudoSelector } from '../css/css.types';
+import type { AnyStyle } from '../react-native/rn.types';
 import type { SheetEntry } from '../sheets/sheet.types';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
-import type { StyledPropEntries } from './metro.runtime';
+import { defaultSheetMetadata } from './constants';
+import { SheetChildEntries } from './jsx.runtime';
 import type { RuntimeComponentEntry } from './react.runtime';
 
 export type { SheetEntry };
-
-type SheetEntryW<A> = CompiledEntry<A> | RawEntry;
-
-interface CompiledEntry<A> {
-  _tag: 'CompiledEntry';
-  prop: string;
-  value: A;
-}
-interface RawEntry {
-  _tag: 'RawEntry';
+export interface RawSheetEntry {
+  _tag: 'RawSheetEntry';
   value: SheetEntry;
 }
-
-/** @category symbols */
-export const TypeId: unique symbol = Symbol.for('effect/SheetEntry');
-/** @category symbols */
-export type TypeId = typeof TypeId;
-
-export interface SheetEntryTypeLambda extends TypeLambda {
-  readonly type: SheetEntryW<this['Target']>;
+export interface CompiledSheetEntry {
+  _tag: 'CompiledSheet';
+  raw: SheetEntry;
+  value: AnyStyle;
 }
 
-export const identity = <A extends SheetEntry>(x: A) => x;
+export type RuntimeSheetEntry = RawSheetEntry | CompiledSheetEntry;
+
+interface ChildSelectorBrand {
+  readonly ChildSelector: unique symbol;
+}
+type ChildSelector = ValidChildPseudoSelector & ChildSelectorBrand;
+
+interface OwnSelectorBrand {
+  readonly OwnSelector: unique symbol;
+}
+type OwnSelector = (typeof OwnSheetSelectors)[number] & OwnSelectorBrand;
 
 export type SheetGroupEntries = Record<SelectorGroup, SheetEntry[]>;
 
-export const createComponentSheet = (propEntries: RuntimeComponentEntry[]) => {
-  const allEntries = pipe(
-    propEntries,
-    RA.flatMap((x) => x.entries),
-    sortSheetEntries,
-  );
-  const childsSheet = pipe(
-    allEntries,
-    RA.filter((x) => isChildEntry(x)),
-    groupEntriesBySelectorGroup,
-  );
-  return { childsSheet };
-};
-
-const sheetEntriesOrderByPrecedence = Order.make((a: SheetEntry, b: SheetEntry) => {
-  if (a.precedence > b.precedence) return 1;
-  if (a.precedence === b.precedence) return 0;
-  return -1;
-});
-
-const sheetEntriesByImportant = Order.make((a: SheetEntry, b: SheetEntry) => {
-  if (a.important && !b.important) return 1;
-  if (a.important && b.important) return 0;
-  return -1;
-});
-
-export const sortSheetEntries = (x: SheetEntry[]) =>
-  RA.sort(x, Order.combine(sheetEntriesOrderByPrecedence, sheetEntriesByImportant));
+/** @category Tagged */
+export const CompiledSheetEntry = Data.tagged<CompiledSheetEntry>('CompiledSheet');
 
 export const groupEntriesBySelectorGroup = (
   x: SheetEntry[],
 ): Record<SelectorGroup, SheetEntry[]> =>
   RA.groupBy(x, (entry) => getRuleSelectorGroup(entry.selectors));
 
-export const isChildEntry: Predicate.Predicate<SheetEntry> = (x: SheetEntry) => {
-  const group = getRuleSelectorGroup(x.selectors);
-  return group === 'first' || group === 'last' || group === 'even' || group === 'odd';
-};
-
 export const getChildRuntimeEntries = (
   runtimeEntries: RuntimeComponentEntry[],
-): Record<SelectorGroup, SheetEntry[]> => {
+): SheetChildEntries => {
   return pipe(
     runtimeEntries,
-    RA.flatMap((runtimeEntry) =>
-      runtimeEntry.entries.filter((entry) => {
-        const group = getRuleSelectorGroup(entry.selectors);
-        return (
-          group === 'first' || group === 'last' || group === 'even' || group === 'odd'
-        );
-      }),
+    RA.map((runtimeEntry) => runtimeEntry.entries),
+    RA.reduce(
+      {
+        first: [],
+        last: [],
+        even: [],
+        odd: [],
+      } as SheetChildEntries,
+      (prev, current) => {
+        prev.first.push(...current.first);
+        prev.last.push(...current.last);
+        prev.even.push(...current.even);
+        prev.odd.push(...current.odd);
+        return prev;
+      },
     ),
-    sortSheetEntries,
-    RA.groupBy((x) => getRuleSelectorGroup(x.selectors)),
   );
 };
 
-export const getEntriesObject = (runtime: SheetEntry[]): SheetGroupEntries => {
-  return runtime.reduce<SheetGroupEntries>(
-    (prev, current) => {
-      const group = getRuleSelectorGroup(current.selectors);
-      prev[group].push({
-        ...current,
-        selectors: RA.filter(current.selectors, (group) => {
-          return (
-            !group.includes('first') &&
-            !group.includes('last') &&
-            !group.includes('even') &&
-            !group.includes('odd')
-          );
-        }),
-      });
-
-      return prev;
-    },
-    {
-      base: [],
-      dark: [],
-      even: [],
-      first: [],
-      group: [],
-      last: [],
-      odd: [],
-      pointer: [],
-    },
-  );
+export const getGroupedEntries = (runtime: SheetEntry[]): SheetGroupEntries => {
+  return pipe(runtime, sortSheetEntries, groupEntriesBySelectorGroup, (entry) => {
+    return {
+      base: entry.base ?? [],
+      dark: entry.dark ?? [],
+      pointer: entry.pointer ?? [],
+      group: entry.group ?? [],
+      even: entry.even ?? [],
+      first: entry.first ?? [],
+      last: entry.last ?? [],
+      odd: entry.odd ?? [],
+    };
+  });
 };
 
-export const excludeChildEntries = (entries: RuntimeComponentEntry[]) => {
-  return pipe(
-    entries,
-    RA.map((entry) => {
-      entry.entries = entry.entries.filter((x) => {
-        const group = getRuleSelectorGroup(x.selectors);
-        if (group === 'first') return false;
-        if (group === 'last') return false;
-        if (group === 'even') return false;
-        if (group === 'odd') return false;
-        return true;
-      });
-      return entry;
-    }),
-  );
-};
-
-export const mergeChildEntries = (
-  original: RuntimeComponentEntry[],
-  entries: SheetEntry[],
-) => {
-  return pipe(
-    original,
-    RA.map((runEntry) => {
-      const nextEntries = pipe(RA.appendAll(runEntry.entries, entries), sortSheetEntries);
-      return {
-        ...runEntry,
-        entries: nextEntries,
-      };
-    }),
-  );
-};
-
-export const mergeSheetEntries = (
+/** @category Filters */
+export const applyParentEntries = (
   currentEntries: RuntimeComponentEntry[],
-  parentEntries: SheetEntry[],
+  parentEntries: SheetChildEntries,
   order: number,
   parentChildsNumber: number,
 ): RuntimeComponentEntry[] => {
-  const entriesToPush: SheetEntry[] = pipe(
-    parentEntries,
-    RA.filter((x) => {
-      const group = getRuleSelectorGroup(x.selectors);
-      if (group === 'first' && order === 0) return true;
-      if (group === 'last' && order === parentChildsNumber - 1) return true;
-      if (group === 'even' && order % 2 === 0) return true;
-      if (group === 'odd' && order % 2 !== 0) return true;
-      return false;
-    }),
-    RA.map((x) => ({
-      ...x,
-      selectors: x.selectors.filter(
-        (y) =>
-          !y.includes('first') ||
-          !y.includes('last') ||
-          !y.includes('even') ||
-          !y.includes('odd'),
-      ),
-    })),
-  );
-
   return pipe(
     currentEntries,
-    RA.map((runEntry) => {
-      const nextEntries = pipe(
-        RA.appendAll(runEntry.entries, entriesToPush),
-        sortSheetEntries,
-      );
+    RA.map((entry) => {
+      const newEntries = entry.entries;
+      if (order === 0) newEntries.base.push(...parentEntries.first);
+      if (order === parentChildsNumber - 1) newEntries.base.push(...parentEntries.last);
+      if (order % 2 === 0) newEntries.base.push(...parentEntries.even);
+      if (order % 2 !== 0) newEntries.base.push(...parentEntries.odd);
       return {
-        ...runEntry,
-        entries: nextEntries,
+        ...entry,
+        entries: newEntries,
       };
     }),
   );
 };
 
-export function getEntryGroups(
-  classProps: StyledPropEntries,
+/** @category Filters */
+export function getSheetMetadata(
+  selectors: SheetEntry[],
 ): RuntimeComponentEntry['metadata'] {
-  return classProps.entries
-    .map((x) => [x.className, ...x.selectors])
-    .reduce(
-      (prev, current): RuntimeComponentEntry['metadata'] => {
-        const selector = getRuleSelectorGroup(current);
-        if (current.includes('group')) {
-          prev.isGroupParent = true;
-        }
-        if (selector === 'group') {
-          prev.hasGroupEvents = true;
-        }
-        if (selector === 'pointer') {
-          prev.hasPointerEvents = true;
-        }
-
-        return prev;
-      },
-      {
-        hasAnimations: false,
-        hasGroupEvents: false,
-        hasPointerEvents: false,
-        isGroupParent: false,
-      } as RuntimeComponentEntry['metadata'],
-    );
+  return pipe(
+    selectors,
+    RA.reduce(defaultSheetMetadata, (prev, current) => {
+      const group = getRuleSelectorGroup(current.selectors);
+      if (!prev.isGroupParent && current.className === 'group') {
+        prev.isGroupParent = true;
+      }
+      if (!prev.hasPointerEvents && group === 'pointer') {
+        prev.hasPointerEvents = true;
+      }
+      if (!prev.hasGroupEvents && group === 'group') {
+        prev.hasGroupEvents = true;
+      }
+      return prev;
+    }),
+  );
 }
+
+/** @category Orders */
+const orders = {
+  sheetEntriesOrderByPrecedence: Order.mapInput(
+    Order.number,
+    (a: SheetEntry) => a.precedence,
+  ),
+  sheetEntriesByImportant: Order.mapInput(Order.boolean, (a: SheetEntry) => a.important),
+};
+
+/** @category Orders */
+export const sortSheetEntries = (x: SheetEntry[]) =>
+  RA.sort(
+    x,
+    Order.combine(orders.sheetEntriesOrderByPrecedence, orders.sheetEntriesByImportant),
+  );
+
+/** @category Predicates */
+export const isChildEntry: Predicate.Predicate<SheetEntry> = (entry) =>
+  pipe(entry.selectors, getRuleSelectorGroup, isChildSelector);
+
+/** @category Predicates */
+export const isChildSelector: Predicate.Refinement<string, ChildSelector> = (
+  group,
+): group is ChildSelector =>
+  group === 'first' || group === 'last' || group === 'even' || group === 'odd';
+
+/** @category Predicates */
+export const isOwnSelector: Predicate.Refinement<string, OwnSelector> = (
+  group,
+): group is OwnSelector => OwnSheetSelectors.includes(group as OwnSelector);
+
+/** @category Predicates */
+export const isPointerEntry: Predicate.Predicate<SheetEntry> = (entry) =>
+  pipe(entry.selectors, getRuleSelectorGroup, (x) => x === 'group' || x === 'pointer');
+
+/** @category Predicates */
+export const isGroupEventEntry: Predicate.Predicate<SheetEntry> = (entry) =>
+  pipe(entry.selectors, getRuleSelectorGroup, (x) => x === 'group');
+
+/** @category Predicates */
+export const isGroupParent: Predicate.Predicate<SheetEntry> = (entry) =>
+  pipe(entry.selectors, RA.contains('group'));

@@ -1,6 +1,7 @@
 import { parseCssValue, tw } from '@native-twin/core';
 import {
   AnyStyle,
+  CompleteStyle,
   FinalSheet,
   getRuleSelectorGroup,
   SheetEntry,
@@ -8,12 +9,39 @@ import {
 } from '@native-twin/css';
 import type { StyledContext } from '../store/observables';
 
+export const sheetEntryToStyle = (
+  entry: SheetEntry,
+  context: StyledContext,
+): CompleteStyle | null => {
+  const validRule = isApplicativeRule(entry.selectors, context);
+  if (!validRule) return null;
+  const nextDecl = composeDeclarations(entry.declarations, context);
+  return nextDecl;
+};
+
+export const sheetEntriesToStyles = (
+  entries: SheetEntry[],
+  context: StyledContext,
+): CompleteStyle => {
+  return entries.reduce((prev, current) => {
+    const style = sheetEntryToStyle(current, context);
+    if (!style) return prev;
+
+    if (style && style.transform) {
+      style.transform = [...(style.transform as any), ...style.transform];
+    }
+    return {
+      ...prev,
+      ...style,
+    };
+  }, {} as AnyStyle);
+};
 export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
   return entries.reduce(
     (prev, current) => {
-      const validRule = isApplicativeRule(current.selectors, context);
-      if (!validRule) return prev;
-      const nextDecl = composeDeclarations(current.declarations, context);
+      const nextDecl = sheetEntryToStyle(current, context);
+      if (!nextDecl) return prev;
+
       const group = getRuleSelectorGroup(current.selectors);
       if (nextDecl.transform && prev[group].transform) {
         nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];

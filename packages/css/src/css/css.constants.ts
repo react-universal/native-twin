@@ -214,12 +214,14 @@ const ChildPseudoSelectors = ['last', 'first', 'even', 'odd'] as const;
 
 const PlatformPseudoSelectors = [':native', ':ios', ':android', ':web'] as const;
 
+const OwnSheetSelectors = ['base', 'pointer', 'group', 'dark'] as const;
 export {
   InteractionPseudoSelectors,
   AppearancePseudoSelectors,
   PlatformPseudoSelectors,
   ChildPseudoSelectors,
   GroupInteractionPseudoSelectors,
+  OwnSheetSelectors,
 };
 
 export const simplePseudoMap = {

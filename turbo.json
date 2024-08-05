@@ -6,6 +6,7 @@
       "dependsOn": [
         "^build"
       ],
+      "inputs": ["$TURBO_DEFAULT$","!**/test","!**/tests"],
       "outputs": [
         "build/**"
       ]
@@ -54,20 +55,6 @@
     "test": {
       "dependsOn": [
         "^build"
-      ]
-    },
-    "twin-run:dev": {
-      "cache": false,
-      "interactive": true,
-      "outputLogs": "full",
-      "persistent": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "build/**"
       ]
     }
   }

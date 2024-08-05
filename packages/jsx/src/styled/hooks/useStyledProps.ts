@@ -1,18 +1,18 @@
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import 'react-native';
-import { RegisteredComponent } from '@native-twin/css/jsx';
+import { RegisteredComponent, RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
 import { groupContext } from '../../context';
 import { StyleSheet } from '../../sheet/StyleSheet';
 import { tw } from '../../sheet/native-tw';
 import { styledContext, twinConfigObservable } from '../../store/observables';
-import { BabelStyledProps, ComponentTemplateEntryProp } from '../../types/jsx.types';
+import { ComponentTemplateEntryProp } from '../../types/jsx.types';
 import { DEFAULT_INTERACTIONS, INTERNAL_RESET } from '../../utils/constants';
 import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps';
 
 export const useStyledProps = (
   id: string,
-  styledEntries: BabelStyledProps[],
+  styledEntries: RuntimeComponentEntry[],
   compiledSheet: RegisteredComponent | null = null,
   templateEntries: ComponentTemplateEntryProp[],
   debug: boolean,

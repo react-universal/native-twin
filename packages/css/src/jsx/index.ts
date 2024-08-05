@@ -1,20 +1,23 @@
 export {
-  type SheetEntryTypeLambda,
   type SheetEntry,
   type SheetGroupEntries,
-  TypeId,
-  identity,
-  createComponentSheet,
+  type CompiledSheetEntry,
+  type RawSheetEntry,
+  type RuntimeSheetEntry,
+  isGroupEventEntry,
+  isGroupParent,
+  isPointerEntry,
   sortSheetEntries,
   groupEntriesBySelectorGroup,
   isChildEntry,
+  isChildSelector,
+  isOwnSelector,
   getChildRuntimeEntries,
-  getEntriesObject,
-  excludeChildEntries,
-  mergeChildEntries,
-  mergeSheetEntries,
-  getEntryGroups,
+  getGroupedEntries,
+  applyParentEntries,
+  getSheetMetadata,
 } from './SheetEntry';
+
 export type { JSXElementSheet } from './jsx.runtime';
 
 export type {
@@ -22,4 +25,5 @@ export type {
   RegisteredComponent,
   ComponentSheet,
 } from './react.runtime';
+
 export type { StyledPropEntries } from './metro.runtime';

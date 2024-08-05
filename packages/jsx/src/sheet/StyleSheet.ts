@@ -1,11 +1,17 @@
 import { StyleSheet as NativeSheet } from 'react-native';
 import {
   AnyStyle,
+  FinalSheet,
   GetChildStylesArgs,
+  SelectorGroup,
   SheetEntry,
   SheetInteractionState,
 } from '@native-twin/css';
-import { ComponentSheet, RegisteredComponent } from '@native-twin/css/jsx';
+import {
+  ComponentSheet,
+  RegisteredComponent,
+  RuntimeComponentEntry,
+} from '@native-twin/css/jsx';
 import { Atom, atom } from '@native-twin/helpers';
 import {
   StyledContext,
@@ -16,11 +22,11 @@ import {
 import { globalStyles } from '../store/styles.store';
 import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
-import { getSheetEntryStyles } from '../utils/sheet.utils';
+import { getSheetEntryStyles, sheetEntriesToStyles } from '../utils/sheet.utils';
 import { tw } from './native-tw';
 import type { ComponentConfigProps, TwinStyleSheet, ComponentState } from './sheet.types';
 
-const componentsRegistry: Map<string, RegisteredComponent> = new Map();
+export const componentsRegistry: Map<string, RegisteredComponent> = new Map();
 const componentsState: Map<string, Atom<ComponentState>> = new Map();
 
 const internalSheet: TwinStyleSheet = {
@@ -57,7 +63,7 @@ const internalSheet: TwinStyleSheet = {
       sheets.push(
         createComponentSheet(
           style.target,
-          style.entries,
+          style,
           context ?? styledContext.get(),
           style.prop,
         ),
@@ -92,22 +98,28 @@ export const StyleSheet = Object.assign({}, internalSheet, NativeSheet);
 
 export function createComponentSheet(
   prop: string,
-  entries: SheetEntry[] = [],
+  rawSheet: RuntimeComponentEntry,
   ctx?: StyledContext,
   target?: string,
 ): ComponentSheet {
+  const rawEntries = rawSheet.rawEntries ?? [];
   const context = ctx ?? styledContext.get();
-  const sheet = StyleSheet.create(getSheetEntryStyles(entries, context));
+  const tuples = Object.entries(rawSheet.entries).map(
+    ([group, entry]) =>
+      [group as SelectorGroup, sheetEntriesToStyles(entry, context)] as const,
+  );
+  const tuplesObject = Object.fromEntries(tuples) as FinalSheet;
+  const sheet = StyleSheet.create(tuplesObject);
   const base = sheet.base;
   if (context.colorScheme === 'dark') {
     Object.assign({ ...base }, { ...sheet.dark });
   }
 
   let metadata = {
-    isGroupParent: entries.some((x) => x.className == 'group'),
+    isGroupParent: rawSheet.rawEntries.some((x) => x.className === 'group'),
     hasGroupEvents: Object.keys(sheet.group)?.length > 0,
     hasPointerEvents: Object.keys(sheet.pointer)?.length > 0,
-    hasAnimations: entries.some((x) => x.animations.length > 0),
+    hasAnimations: rawEntries.some((x) => x.animations.length > 0),
   };
   return {
     prop,
@@ -116,7 +128,7 @@ export function createComponentSheet(
     sheet,
     getChildStyles,
     recompute: () => {
-      return createComponentSheet(prop, entries, styledContext.get(), target ?? prop);
+      return createComponentSheet(prop, rawSheet, styledContext.get(), target ?? prop);
     },
     metadata,
   };

@@ -18,13 +18,6 @@ export type JSXFunction = (
   __self?: unknown,
 ) => React.ElementType;
 
-export interface BabelStyledProps {
-  prop: string;
-  target: string;
-  entries: SheetEntry[];
-  templateLiteral?: string;
-}
-
 export interface ComponentTemplateEntryProp {
   id: string;
   prop: string;

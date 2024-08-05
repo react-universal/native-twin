@@ -74,16 +74,14 @@
     "search.exclude": {
       "**/node_modules": true,
       "**/*.code-search": true,
-      "**/*build/*": true
+      "**/.yarn": true,
+      "**/.nx": true,
+      "**/.turbo": true,
+      "**/yarn.lock": true,
+      "**/build/*": true
     },
     "editor.fontSize": 16,
     "typescript.tsdk": "root/node_modules/typescript/lib",
-    "cSpell.words": [
-      "sastan",
-      "TRBL",
-      "webui",
-      "xytrbl"
-    ],
     "jest.enable": true,
     "jest.disabledWorkspaceFolders": [
       "root",

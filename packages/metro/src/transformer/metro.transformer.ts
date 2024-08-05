@@ -72,7 +72,7 @@ const program = Effect.gen(function* () {
     HashSet.map((x) => {
       return {
         ...x,
-        entries: x.entries,
+        entries: x.rawEntries,
         componentClasses: RA.flatMap(x.node.runtimeData, (x) =>
           splitClasses(x.value.literal),
         ),
@@ -83,7 +83,7 @@ const program = Effect.gen(function* () {
   const babelEntries = pipe(
     classNames,
     RA.fromIterable,
-    RA.flatMap((x) => x.entries),
+    RA.flatMap((x) => x.rawEntries),
   );
 
   if (compiled && HashSet.size(classNames) > 0) {

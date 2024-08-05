@@ -6,7 +6,7 @@ import * as Hash from 'effect/Hash';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import { JsxElement, JsxSelfClosingElement, Node } from 'ts-morph';
-import { RuntimeTW } from '@native-twin/core';
+import { __Theme__, RuntimeTW } from '@native-twin/core';
 import { getChildRuntimeEntries, type JSXElementSheet } from '@native-twin/css/jsx';
 import { getElementEntries } from '../../sheet/utils/styles.utils';
 import { isValidJSXElement } from '../ast/ast.guards';
@@ -17,7 +17,7 @@ import {
   getJSXElementTagName,
 } from '../ast/constructors.utils';
 import { getOpeningElement } from '../ast/visitors';
-import { JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
+import { CompilerContext, JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
 
 type JSXElementNodePath = Data.TaggedEnum<{
   JSXelement: { node: JsxElement };
@@ -33,9 +33,16 @@ export class JSXElementNode implements Equal.Equal {
   readonly path: JSXElementNodePath;
   readonly id: JSXElementNodeKey;
   readonly parent: JSXElementNode | null;
+  readonly order: number;
+  _runtimeSheet: JSXElementSheet | null = null;
 
-  constructor(path: ValidJSXElementNode, parentKey: JSXElementNode | null = null) {
+  constructor(
+    path: ValidJSXElementNode,
+    order: number,
+    parentKey: JSXElementNode | null = null,
+  ) {
     this.id = jsxElementNodeKey(path);
+    this.order = order;
     this.parent = parentKey;
     if (Node.isJsxElement(path)) {
       this.path = taggedJSXElement.JSXelement({ node: path });
@@ -57,12 +64,16 @@ export class JSXElementNode implements Equal.Equal {
     }).pipe(Option.getOrElse(() => []));
   }
 
-  getTwinSheet(twin: RuntimeTW): JSXElementSheet {
+  getTwinSheet(twin: RuntimeTW, ctx: CompilerContext): JSXElementSheet {
+    if (this._runtimeSheet) {
+      return this._runtimeSheet;
+    }
     const propEntries = getElementEntries(this.runtimeData, twin);
-    return {
+    this._runtimeSheet = {
       propEntries,
       childEntries: pipe(propEntries, getChildRuntimeEntries),
     };
+    return this._runtimeSheet;
   }
 
   get childs(): HashSet.HashSet<JSXElementNode> {
@@ -72,7 +83,7 @@ export class JSXElementNode implements Equal.Equal {
         return pipe(
           element.node.getJsxChildren(),
           RA.filterMap((x) => pipe(x, Option.liftPredicate(isValidJSXElement))),
-          RA.map((x) => new JSXElementNode(x, current)),
+          RA.map((x, i) => new JSXElementNode(x, i, current)),
           HashSet.fromIterable,
         );
       },

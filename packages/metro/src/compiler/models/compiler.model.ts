@@ -15,9 +15,6 @@ export class TwinCompilerService extends Context.Tag('compiler/file-state')<
     ast: SourceFile;
     getJSXElements: Effect.Effect<ValidJSXElementNode[]>;
     getParentNodes: (from: Node) => Effect.Effect<HashSet.HashSet<JSXElementNode>>;
-    // getElementEntries: (
-    //   node: JSXElementNodeModel,
-    // ) => Effect.Effect<RuntimeComponentEntry[]>;
   }
 >() {}
 
@@ -41,7 +38,7 @@ const getNodeJSXElementParents = (path: Node) => {
   const parentsMap = new Set<JSXElementNode>();
   path.forEachDescendant((descendant, traversal) => {
     if (!Node.isJsxElement(descendant)) return undefined;
-    const node = new JSXElementNode(descendant);
+    const node = new JSXElementNode(descendant, 0);
 
     parentsMap.add(node);
 
@@ -50,9 +47,8 @@ const getNodeJSXElementParents = (path: Node) => {
   return pipe(parentsMap, HashSet.fromIterable);
 };
 
-const extractJSXElementsFromNode = (path: Node): ValidJSXElementNode[] => {
-  return pipe(
+const extractJSXElementsFromNode = (path: Node): ValidJSXElementNode[] =>
+  pipe(
     path.getDescendantsOfKind(SyntaxKind.JsxElement),
     RA.appendAll(path.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement)),
   );
-};

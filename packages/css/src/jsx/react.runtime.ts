@@ -2,15 +2,6 @@ import type { AnyStyle, FinalSheet, GetChildStylesArgs } from '../react-native/r
 import type { SheetEntry, SheetInteractionState } from '../sheets/sheet.types';
 import type { SheetGroupEntries } from './SheetEntry';
 
-export interface RuntimeComponentEntry {
-  prop: string;
-  target: string;
-  entries: SheetEntry[];
-  templateLiteral: string | null;
-  metadata: ComponentSheet['metadata'];
-  groupedEntries: SheetGroupEntries;
-}
-
 export interface RegisteredComponent {
   id: string;
   sheets: ComponentSheet[];
@@ -43,8 +34,8 @@ export interface ComponentSheet {
 export interface RuntimeComponentEntry {
   prop: string;
   target: string;
-  entries: SheetEntry[];
   templateLiteral: string | null;
   metadata: ComponentSheet['metadata'];
-  groupedEntries: SheetGroupEntries;
+  entries: SheetGroupEntries;
+  rawEntries: SheetEntry[];
 }

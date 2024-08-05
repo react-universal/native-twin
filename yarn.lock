@@ -4770,12 +4770,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/typeclass@npm:0.23.16":
-  version: 0.23.16
-  resolution: "@effect/typeclass@npm:0.23.16"
+"@effect/typeclass@npm:^0.25.0":
+  version: 0.25.0
+  resolution: "@effect/typeclass@npm:0.25.0"
   peerDependencies:
-    effect: ^2.4.16
-  checksum: 10/f85466128bb14dbe452e84a43e384b55634bdf99acf33d63f23fdcb7e3b51c0bc52cc98d28eafc14c035f26f9e9464912e1325f3e82458de055b0e38c342cace
+    effect: ^3.6.0
+  checksum: 10/d2b25a0be3ae1a99c43c8e68c837abb30e6d22f2620c55d8056e152837a7509dbfe0c72a7182dde1ab9b74b59e38b30b992cc843db3bed2329599c13900abe08
   languageName: node
   linkType: hard
 
@@ -6020,7 +6020,7 @@ __metadata:
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
     babel-plugin-tester: "npm:^11.0.4"
-    effect: "npm:^3.5.5"
+    effect: "npm:^3.6.0"
     jest: "npm:*"
     metro-react-native-babel-preset: "npm:^0.77.0"
   peerDependencies:
@@ -6041,9 +6041,9 @@ __metadata:
     "@effect/printer": "npm:0.32.1"
     "@effect/printer-ansi": "npm:0.32.25"
     "@effect/schema": "npm:^0.66.10"
-    "@effect/typeclass": "npm:0.23.16"
+    "@effect/typeclass": "npm:^0.25.0"
     "@types/fs-extra": "npm:11.0.4"
-    effect: "npm:^3.5.5"
+    effect: "npm:^3.6.0"
     esbuild: "npm:^0.20.2"
     fs-extra: "npm:11.2.0"
     minimist: "npm:^1.2.8"
@@ -6073,8 +6073,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/css@workspace:packages/css"
   dependencies:
+    "@effect/typeclass": "npm:^0.25.0"
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/helpers": "workspace:*"
+    effect: "npm:^3.6.0"
     jest: "npm:*"
   dependenciesMeta:
     jest:
@@ -6133,7 +6135,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.5.5"
+    effect: "npm:^3.6.0"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6163,7 +6165,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.5.5"
+    effect: "npm:^3.6.0"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6195,11 +6197,12 @@ __metadata:
     ast-pretty-print: "npm:^2.0.1"
     chokidar: "npm:^3.6.0"
     code-block-writer: "npm:^13.0.1"
-    effect: "npm:^3.5.5"
+    effect: "npm:^3.6.0"
     jest: "npm:*"
     jiti: "npm:1.21.0"
     metro-react-native-babel-preset: "npm:^0.77.0"
     micromatch: "npm:4.0.5"
+    recast: "npm:^0.23.9"
     sucrase: "npm:^3.35.0"
     ts-morph: "npm:^23.0.0"
   peerDependencies:
@@ -6274,7 +6277,7 @@ __metadata:
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
-    effect: "npm:^3.5.5"
+    effect: "npm:^3.6.0"
     jest: "npm:*"
     madge: "npm:7.0.0"
     typescript-template-language-service-decorator: "npm:2.3.2"
@@ -9430,6 +9433,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ast-types@npm:^0.16.1":
+  version: 0.16.1
+  resolution: "ast-types@npm:0.16.1"
+  dependencies:
+    tslib: "npm:^2.0.1"
+  checksum: 10/f569b475eb1c8cb93888cb6e7b7e36dc43fa19a77e4eb132cbff6e3eb1598ca60f850db6e60b070e5a0ee8c1559fca921dac0916e576f2f104e198793b0bdd8d
+  languageName: node
+  linkType: hard
+
 "astral-regex@npm:^1.0.0":
   version: 1.0.0
   resolution: "astral-regex@npm:1.0.0"
@@ -11806,10 +11818,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"effect@npm:^3.5.5":
-  version: 3.5.5
-  resolution: "effect@npm:3.5.5"
-  checksum: 10/1b5d25c656946fa6c10f2db7adc61bc165a75099220fc39d0d8df5f743a5e4b35fbee5925f2d3ab975d0e8cd229db2433f6ee59bb15efb226ceb5ea6ea631b1b
+"effect@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "effect@npm:3.6.0"
+  checksum: 10/93ed4c9c29982b5f66d6ff94e01aaed66a8fa93a2e9d3329543dd5e89b0d3ac6fc29b89566b35c54ef7923cb2f3843d0032f6a5e855a0b36f804441e1593468d
   languageName: node
   linkType: hard
 
@@ -17613,7 +17625,7 @@ __metadata:
     "@types/vscode": "npm:^1.89.0"
     "@vscode/test-cli": "npm:^0.0.9"
     "@vscode/test-electron": "npm:^2.4.0"
-    effect: "npm:^3.5.5"
+    effect: "npm:^3.6.0"
     vscode-languageclient: "npm:^9.0.1"
     vscode-test: "npm:^1.6.1"
   languageName: unknown
@@ -19778,6 +19790,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"recast@npm:^0.23.9":
+  version: 0.23.9
+  resolution: "recast@npm:0.23.9"
+  dependencies:
+    ast-types: "npm:^0.16.1"
+    esprima: "npm:~4.0.0"
+    source-map: "npm:~0.6.1"
+    tiny-invariant: "npm:^1.3.3"
+    tslib: "npm:^2.0.1"
+  checksum: 10/d60584be179d81a82fbe58b5bbe009aa42831ee114a21a3e3a22bda91334e0b8a1a4610dca8ecb7f9ea1426da4febc08134d3003085ad6ecee478d1808eb8796
+  languageName: node
+  linkType: hard
+
 "redent@npm:^3.0.0":
   version: 3.0.0
   resolution: "redent@npm:3.0.0"
@@ -21831,6 +21856,13 @@ __metadata:
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: 10/5da78346f70139a7d213b65a0106f3c398d6bc5301f9248b5275f420abc2c4b1e77c2abc72d218dedc28c41efb2e7c312cb76a7730d04f9c2d37d247da3f4198
+  languageName: node
+  linkType: hard
+
+"tiny-invariant@npm:^1.3.3":
+  version: 1.3.3
+  resolution: "tiny-invariant@npm:1.3.3"
+  checksum: 10/5e185c8cc2266967984ce3b352a4e57cb89dad5a8abb0dea21468a6ecaa67cd5bb47a3b7a85d08041008644af4f667fb8b6575ba38ba5fb00b3b5068306e59fe
   languageName: node
   linkType: hard
 

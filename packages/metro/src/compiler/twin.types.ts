@@ -37,3 +37,8 @@ export interface JSXMappedAttribute {
   };
   target: string;
 }
+
+export interface CompilerContext {
+  baseRem: number;
+  platform: string;
+}

@@ -12,11 +12,31 @@ import {
 } from './constructors.utils';
 
 export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
-  const componentEntries = entriesToObject(node.id.id, sheet.propEntries);
+  const componentEntries = entriesToObject(
+    node.id.id,
+    pipe(
+      sheet.propEntries,
+      RA.map((prop) => {
+        return {
+          ...prop,
+          entries: {
+            ...prop.entries,
+            even: [],
+            first: [],
+            last: [],
+            odd: [],
+          },
+        };
+      }),
+    ),
+  );
 
   pipe(
     getOpeningElement(node.path.node),
     Option.map((element) => {
+      if (!element.getAttribute('_twinOrd')) {
+        element.addAttribute(createJSXAttribute('_twinOrd', `{${node.order}}`));
+      }
       if (!element.getAttribute('_twinComponentID')) {
         element.addAttribute(createJSXAttribute('_twinComponentID', `"${node.id.id}"`));
       }
@@ -36,7 +56,7 @@ export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
     }),
   );
 
-  return { node, sheet, entries: RA.flatMap(sheet.propEntries, (x) => x.entries) };
+  return { node, sheet, rawEntries: RA.flatMap(sheet.propEntries, (x) => x.rawEntries) };
 }
 
 export const maybeReactNativeImport = (
