@@ -8,14 +8,14 @@ const testImage = require('../../assets/favicon.png');
 
 const ChildProp = () => {
     return (
-        <View className='bg-black last:text-lg' _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-345-490-View" _twinComponentTemplateEntries={
+        <View className='bg-black last:text-lg' _twinOrd={0} _twinComponentID="a-660560371" _twinComponentTemplateEntries={
             []
         } _twinComponentSheet={
-            require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-345-490-View", [{
+            require('@native-twin/jsx').StyleSheet.registerComponent("a-660560371", [{
                 templateLiteral: null,
                 prop: "className",
                 target: "style",
-                rawEntries: [{
+                entries: [{
                     className: "bg-black",
                     declarations: [{
                         prop: "backgroundColor",
@@ -42,7 +42,7 @@ const ChildProp = () => {
                     animations: []
                 }
                 ],
-                entries: {
+                rawSheet: {
                     base: [{
                         className: "bg-black",
                         declarations: [{
@@ -62,40 +62,20 @@ const ChildProp = () => {
                     group: [],
                     even: [],
                     first: [],
-                    last: [{
-                        className: "last:text-lg",
-                        declarations: [{
-                            prop: "fontSize",
-                            value: 18,
-                            _tag: "COMPILED"
-                        }
-                        ],
-                        selectors: ["last", "&:last"],
-                        precedence: 805437440,
-                        important: false,
-                        animations: []
-                    }
-                    ],
+                    last: [],
                     odd: []
-                }
-                ,
-                metadata: {
-                    hasAnimations: false,
-                    hasGroupEvents: true,
-                    hasPointerEvents: true,
-                    isGroupParent: true
                 }
             }
             ])
         }>
-            <Text className='text-blue' _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-392-432-Text" _twinComponentTemplateEntries={
+            <Text className='text-blue' _twinOrd={0} _twinComponentID="a:a-1160712654" _twinComponentTemplateEntries={
                 []
             } _twinComponentSheet={
-                require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-392-432-Text", [{
+                require('@native-twin/jsx').StyleSheet.registerComponent("a:a-1160712654", [{
                     templateLiteral: null,
                     prop: "className",
                     target: "style",
-                    rawEntries: [{
+                    entries: [{
                         className: "text-blue",
                         declarations: [{
                             prop: "color",
@@ -109,7 +89,7 @@ const ChildProp = () => {
                         animations: []
                     }
                     ],
-                    entries: {
+                    rawSheet: {
                         base: [{
                             className: "text-blue",
                             declarations: [{
@@ -123,6 +103,19 @@ const ChildProp = () => {
                             important: false,
                             animations: []
                         }
+                            , {
+                            className: "first:bg-purple-600",
+                            declarations: [{
+                                prop: "backgroundColor",
+                                value: "rgba(147,51,234,1)",
+                                _tag: "COMPILED"
+                            }
+                            ],
+                            selectors: ["first", "&:first"],
+                            precedence: 805437440,
+                            important: false,
+                            animations: []
+                        }
                         ],
                         dark: [],
                         pointer: [],
@@ -132,24 +125,17 @@ const ChildProp = () => {
                         last: [],
                         odd: []
                     }
-                    ,
-                    metadata: {
-                        hasAnimations: false,
-                        hasGroupEvents: false,
-                        hasPointerEvents: false,
-                        isGroupParent: false
-                    }
                 }
                 ])
             }>Text1</Text>
-            <Text className='text-red' _twinOrd={1} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-439-478-Text" _twinComponentTemplateEntries={
+            <Text className='text-red' _twinOrd={1} _twinComponentID="a:b-1154500572" _twinComponentTemplateEntries={
                 []
             } _twinComponentSheet={
-                require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-439-478-Text", [{
+                require('@native-twin/jsx').StyleSheet.registerComponent("a:b-1154500572", [{
                     templateLiteral: null,
                     prop: "className",
                     target: "style",
-                    rawEntries: [{
+                    entries: [{
                         className: "text-red",
                         declarations: [{
                             prop: "color",
@@ -163,7 +149,7 @@ const ChildProp = () => {
                         animations: []
                     }
                     ],
-                    entries: {
+                    rawSheet: {
                         base: [{
                             className: "text-red",
                             declarations: [{
@@ -199,13 +185,6 @@ const ChildProp = () => {
                         last: [],
                         odd: []
                     }
-                    ,
-                    metadata: {
-                        hasAnimations: false,
-                        hasGroupEvents: true,
-                        hasPointerEvents: true,
-                        isGroupParent: true
-                    }
                 }
                 ])
             }>Text2</Text>
@@ -239,9 +218,9 @@ type ButtonProps = ButtonVariantProps & PressableProps;
 
 const Button = (props: ButtonProps) => {
     return (
-        <Pressable className={buttonVariants(props)} _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1055-1140-Pressable" _twinComponentTemplateEntries={
+        <Pressable className={buttonVariants(props)} _twinOrd={0} _twinComponentID="b-660560470" _twinComponentTemplateEntries={
             [{
-                id: "/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1055-1140-Pressable",
+                id: "b-660560470",
                 target: "style",
                 prop: "className",
                 entries: require('@native-twin/core').tw(`${buttonVariants(props)}`),
@@ -249,12 +228,12 @@ const Button = (props: ButtonProps) => {
             }
             ]
         } _twinComponentSheet={
-            require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1055-1140-Pressable", [{
+            require('@native-twin/jsx').StyleSheet.registerComponent("b-660560470", [{
                 templateLiteral: null,
                 prop: "className",
                 target: "style",
-                rawEntries: [],
-                entries: {
+                entries: [],
+                rawSheet: {
                     base: [],
                     dark: [],
                     pointer: [],
@@ -264,20 +243,13 @@ const Button = (props: ButtonProps) => {
                     last: [],
                     odd: []
                 }
-                ,
-                metadata: {
-                    hasAnimations: false,
-                    hasGroupEvents: true,
-                    hasPointerEvents: true,
-                    isGroupParent: true
-                }
             }
             ])
         }>
-            <Text _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1107-1123-Text" _twinComponentTemplateEntries={
+            <Text _twinOrd={0} _twinComponentID="b:a-1160712555" _twinComponentTemplateEntries={
                 []
             } _twinComponentSheet={
-                require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1107-1123-Text", [])
+                require('@native-twin/jsx').StyleSheet.registerComponent("b:a-1160712555", [])
             }>asd</Text>
         </Pressable>
     );
@@ -286,14 +258,14 @@ const Button = (props: ButtonProps) => {
 function HomeScreen() {
     const [active, setActive] = useState(true);
     return (
-        <View className='flex-1 -translate-x-2 w-[10vw]' _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1235-2564-View" _twinComponentTemplateEntries={
+        <View className='flex-1 -translate-x-2 w-[10vw]' _twinOrd={0} _twinComponentID="c-660560281" _twinComponentTemplateEntries={
             []
         } _twinComponentSheet={
-            require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1235-2564-View", [{
+            require('@native-twin/jsx').StyleSheet.registerComponent("c-660560281", [{
                 templateLiteral: null,
                 prop: "className",
                 target: "style",
-                rawEntries: [{
+                entries: [{
                     className: "flex-1",
                     declarations: [{
                         prop: "flex",
@@ -343,7 +315,7 @@ function HomeScreen() {
                     animations: []
                 }
                 ],
-                entries: {
+                rawSheet: {
                     base: [{
                         className: "flex-1",
                         declarations: [{
@@ -402,13 +374,6 @@ function HomeScreen() {
                     last: [],
                     odd: []
                 }
-                ,
-                metadata: {
-                    hasAnimations: false,
-                    hasGroupEvents: true,
-                    hasPointerEvents: true,
-                    isGroupParent: true
-                }
             }
             ])
         }>
@@ -418,14 +383,14 @@ function HomeScreen() {
           bg-red-500
           first:bg-purple-600
         `}
-                debug _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1291-1677-View" _twinComponentTemplateEntries={
+                debug _twinOrd={0} _twinComponentID="c:a-1160712488" _twinComponentTemplateEntries={
                     []
                 } _twinComponentSheet={
-                    require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1291-1677-View", [{
+                    require('@native-twin/jsx').StyleSheet.registerComponent("c:a-1160712488", [{
                         templateLiteral: null,
                         prop: "className",
                         target: "style",
-                        rawEntries: [{
+                        entries: [{
                             className: "flex-1",
                             declarations: [{
                                 prop: "flex",
@@ -470,7 +435,7 @@ function HomeScreen() {
                             animations: []
                         }
                         ],
-                        entries: {
+                        rawSheet: {
                             base: [{
                                 className: "flex-1",
                                 declarations: [{
@@ -502,12 +467,7 @@ function HomeScreen() {
                                 important: false,
                                 animations: []
                             }
-                            ],
-                            dark: [],
-                            pointer: [],
-                            group: [],
-                            even: [],
-                            first: [{
+                                , {
                                 className: "first:bg-purple-600",
                                 declarations: [{
                                     prop: "backgroundColor",
@@ -521,28 +481,26 @@ function HomeScreen() {
                                 animations: []
                             }
                             ],
+                            dark: [],
+                            pointer: [],
+                            group: [],
+                            even: [],
+                            first: [],
                             last: [],
                             odd: []
-                        }
-                        ,
-                        metadata: {
-                            hasAnimations: false,
-                            hasGroupEvents: true,
-                            hasPointerEvents: true,
-                            isGroupParent: true
                         }
                     }
                     ])
                 }
             >
-                <View className='p-2 !bg-green-800' _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1427-1663-View" _twinComponentTemplateEntries={
+                <View className='p-2 !bg-green-800' _twinOrd={0} _twinComponentID="c:a:a-89096857" _twinComponentTemplateEntries={
                     []
                 } _twinComponentSheet={
-                    require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1427-1663-View", [{
+                    require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a-89096857", [{
                         templateLiteral: null,
                         prop: "className",
                         target: "style",
-                        rawEntries: [{
+                        entries: [{
                             className: "p-2",
                             declarations: [{
                                 prop: "padding",
@@ -569,7 +527,7 @@ function HomeScreen() {
                             animations: []
                         }
                         ],
-                        entries: {
+                        rawSheet: {
                             base: [{
                                 className: "p-2",
                                 declarations: [{
@@ -609,6 +567,19 @@ function HomeScreen() {
                                 important: false,
                                 animations: []
                             }
+                                , {
+                                className: "last:text-lg",
+                                declarations: [{
+                                    prop: "fontSize",
+                                    value: 18,
+                                    _tag: "COMPILED"
+                                }
+                                ],
+                                selectors: ["last", "&:last"],
+                                precedence: 805437440,
+                                important: false,
+                                animations: []
+                            }
                             ],
                             dark: [],
                             pointer: [],
@@ -618,13 +589,6 @@ function HomeScreen() {
                             last: [],
                             odd: []
                         }
-                        ,
-                        metadata: {
-                            hasAnimations: false,
-                            hasGroupEvents: true,
-                            hasPointerEvents: true,
-                            isGroupParent: true
-                        }
                     }
                     ])
                 }>
@@ -632,14 +596,14 @@ function HomeScreen() {
                         className={`
               text(center xl primary)
               hover:text-gray-700
-              `} _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1474-1647-Text" _twinComponentTemplateEntries={
+              `} _twinOrd={0} _twinComponentID="c:a:a:a-1874524712" _twinComponentTemplateEntries={
                             []
                         } _twinComponentSheet={
-                            require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1474-1647-Text", [{
+                            require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a:a-1874524712", [{
                                 templateLiteral: null,
                                 prop: "className",
                                 target: "style",
-                                rawEntries: [{
+                                entries: [{
                                     className: "text-center",
                                     declarations: [{
                                         prop: "textAlign",
@@ -692,7 +656,7 @@ function HomeScreen() {
                                     animations: []
                                 }
                                 ],
-                                entries: {
+                                rawSheet: {
                                     base: [{
                                         className: "text-center",
                                         declarations: [{
@@ -732,6 +696,32 @@ function HomeScreen() {
                                         important: false,
                                         animations: []
                                     }
+                                        , {
+                                        className: "first:bg-purple-600",
+                                        declarations: [{
+                                            prop: "backgroundColor",
+                                            value: "rgba(147,51,234,1)",
+                                            _tag: "COMPILED"
+                                        }
+                                        ],
+                                        selectors: ["first", "&:first"],
+                                        precedence: 805437440,
+                                        important: false,
+                                        animations: []
+                                    }
+                                        , {
+                                        className: "last:text-lg",
+                                        declarations: [{
+                                            prop: "fontSize",
+                                            value: 18,
+                                            _tag: "COMPILED"
+                                        }
+                                        ],
+                                        selectors: ["last", "&:last"],
+                                        precedence: 805437440,
+                                        important: false,
+                                        animations: []
+                                    }
                                     ],
                                     dark: [],
                                     pointer: [{
@@ -754,13 +744,6 @@ function HomeScreen() {
                                     last: [],
                                     odd: []
                                 }
-                                ,
-                                metadata: {
-                                    hasAnimations: false,
-                                    hasGroupEvents: false,
-                                    hasPointerEvents: true,
-                                    isGroupParent: false
-                                }
                             }
                             ])
                         }
@@ -776,14 +759,14 @@ function HomeScreen() {
           !bg-green-800
           bg-gray-500
           hover:bg-pink-600
-        `} _twinOrd={1} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1684-2552-View" _twinComponentTemplateEntries={
+        `} _twinOrd={1} _twinComponentID="c:b-1154496578" _twinComponentTemplateEntries={
                     []
                 } _twinComponentSheet={
-                    require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1684-2552-View", [{
+                    require('@native-twin/jsx').StyleSheet.registerComponent("c:b-1154496578", [{
                         templateLiteral: null,
                         prop: "className",
                         target: "style",
-                        rawEntries: [{
+                        entries: [{
                             className: "group",
                             declarations: [],
                             selectors: [],
@@ -849,16 +832,8 @@ function HomeScreen() {
                             animations: []
                         }
                         ],
-                        entries: {
+                        rawSheet: {
                             base: [{
-                                className: "group",
-                                declarations: [],
-                                selectors: [],
-                                precedence: 805306368,
-                                important: false,
-                                animations: []
-                            }
-                                , {
                                 className: "flex-[2]",
                                 declarations: [{
                                     prop: "flex",
@@ -924,13 +899,6 @@ function HomeScreen() {
                             last: [],
                             odd: []
                         }
-                        ,
-                        metadata: {
-                            hasAnimations: false,
-                            hasGroupEvents: true,
-                            hasPointerEvents: true,
-                            isGroupParent: true
-                        }
                     }
                     ])
                 }
@@ -939,9 +907,9 @@ function HomeScreen() {
                     className={`
             text-2xl
             ${active ? 'text-red-800' : 'text-primary'}
-          `} _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1847-2019-Text" _twinComponentTemplateEntries={
+          `} _twinOrd={0} _twinComponentID="c:b:a-89022128" _twinComponentTemplateEntries={
                         [{
-                            id: "/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1847-2019-Text",
+                            id: "c:b:a-89022128",
                             target: "style",
                             prop: "className",
                             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
@@ -949,11 +917,11 @@ function HomeScreen() {
                         }
                         ]
                     } _twinComponentSheet={
-                        require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-1847-2019-Text", [{
+                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:a-89022128", [{
                             templateLiteral: null,
                             prop: "className",
                             target: "style",
-                            rawEntries: [{
+                            entries: [{
                                 className: "text-2xl",
                                 declarations: [{
                                     prop: "fontSize",
@@ -967,7 +935,7 @@ function HomeScreen() {
                                 animations: []
                             }
                             ],
-                            entries: {
+                            rawSheet: {
                                 base: [{
                                     className: "text-2xl",
                                     declarations: [{
@@ -990,13 +958,6 @@ function HomeScreen() {
                                 last: [],
                                 odd: []
                             }
-                            ,
-                            metadata: {
-                                hasAnimations: false,
-                                hasGroupEvents: true,
-                                hasPointerEvents: true,
-                                isGroupParent: true
-                            }
                         }
                         ])
                     }
@@ -1006,20 +967,20 @@ function HomeScreen() {
                 <Pressable
                     onPressIn={() => {
                         setActive((prevState) => !prevState);
-                    }} _twinOrd={1} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-2028-2219-Pressable" _twinComponentTemplateEntries={
+                    }} _twinOrd={1} _twinComponentID="c:b:b-32874538" _twinComponentTemplateEntries={
                         []
                     } _twinComponentSheet={
-                        require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-2028-2219-Pressable", [])
+                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b-32874538", [])
                     }
                 >
-                    <Text className='text-gray-200' _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-2151-2198-Text" _twinComponentTemplateEntries={
+                    <Text className='text-gray-200' _twinOrd={0} _twinComponentID="c:b:b:a-1664407080" _twinComponentTemplateEntries={
                         []
                     } _twinComponentSheet={
-                        require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-2151-2198-Text", [{
+                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b:a-1664407080", [{
                             templateLiteral: null,
                             prop: "className",
                             target: "style",
-                            rawEntries: [{
+                            entries: [{
                                 className: "text-gray-200",
                                 declarations: [{
                                     prop: "color",
@@ -1033,7 +994,7 @@ function HomeScreen() {
                                 animations: []
                             }
                             ],
-                            entries: {
+                            rawSheet: {
                                 base: [{
                                     className: "text-gray-200",
                                     declarations: [{
@@ -1047,6 +1008,32 @@ function HomeScreen() {
                                     important: false,
                                     animations: []
                                 }
+                                    , {
+                                    className: "first:bg-purple-600",
+                                    declarations: [{
+                                        prop: "backgroundColor",
+                                        value: "rgba(147,51,234,1)",
+                                        _tag: "COMPILED"
+                                    }
+                                    ],
+                                    selectors: ["first", "&:first"],
+                                    precedence: 805437440,
+                                    important: false,
+                                    animations: []
+                                }
+                                    , {
+                                    className: "last:text-lg",
+                                    declarations: [{
+                                        prop: "fontSize",
+                                        value: 18,
+                                        _tag: "COMPILED"
+                                    }
+                                    ],
+                                    selectors: ["last", "&:last"],
+                                    precedence: 805437440,
+                                    important: false,
+                                    animations: []
+                                }
                                 ],
                                 dark: [],
                                 pointer: [],
@@ -1055,13 +1042,6 @@ function HomeScreen() {
                                 first: [],
                                 last: [],
                                 odd: []
-                            }
-                            ,
-                            metadata: {
-                                hasAnimations: false,
-                                hasGroupEvents: true,
-                                hasPointerEvents: true,
-                                isGroupParent: true
                             }
                         }
                         ])
@@ -1072,14 +1052,14 @@ function HomeScreen() {
             -top-1
             group-hover:bg-pink-800
           `}
-                    debug _twinOrd={2} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-2228-2538-View" _twinComponentTemplateEntries={
+                    debug _twinOrd={2} _twinComponentID="c:b:c-242944440" _twinComponentTemplateEntries={
                         []
                     } _twinComponentSheet={
-                        require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-2228-2538-View", [{
+                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c-242944440", [{
                             templateLiteral: null,
                             prop: "className",
                             target: "style",
-                            rawEntries: [{
+                            entries: [{
                                 className: "-top-1",
                                 declarations: [{
                                     prop: "top",
@@ -1106,7 +1086,7 @@ function HomeScreen() {
                                 animations: []
                             }
                             ],
-                            entries: {
+                            rawSheet: {
                                 base: [{
                                     className: "-top-1",
                                     declarations: [{
@@ -1117,6 +1097,19 @@ function HomeScreen() {
                                     ],
                                     selectors: [],
                                     precedence: 805306368,
+                                    important: false,
+                                    animations: []
+                                }
+                                    , {
+                                    className: "last:text-lg",
+                                    declarations: [{
+                                        prop: "fontSize",
+                                        value: 18,
+                                        _tag: "COMPILED"
+                                    }
+                                    ],
+                                    selectors: ["last", "&:last"],
+                                    precedence: 805437440,
                                     important: false,
                                     animations: []
                                 }
@@ -1142,27 +1135,20 @@ function HomeScreen() {
                                 last: [],
                                 odd: []
                             }
-                            ,
-                            metadata: {
-                                hasAnimations: false,
-                                hasGroupEvents: true,
-                                hasPointerEvents: true,
-                                isGroupParent: true
-                            }
                         }
                         ])
                     }
                 >
                     <Text
                         suppressHighlighting
-                        className='text-gray-800 group-hover:text-white' _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-2361-2522-Text" _twinComponentTemplateEntries={
+                        className='text-gray-800 group-hover:text-white' _twinOrd={0} _twinComponentID="c:b:c:a-1720548971" _twinComponentTemplateEntries={
                             []
                         } _twinComponentSheet={
-                            require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/jsx/code.tsx-2361-2522-Text", [{
+                            require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c:a-1720548971", [{
                                 templateLiteral: null,
                                 prop: "className",
                                 target: "style",
-                                rawEntries: [{
+                                entries: [{
                                     className: "text-gray-800",
                                     declarations: [{
                                         prop: "color",
@@ -1189,7 +1175,7 @@ function HomeScreen() {
                                     animations: []
                                 }
                                 ],
-                                entries: {
+                                rawSheet: {
                                     base: [{
                                         className: "text-gray-800",
                                         declarations: [{
@@ -1200,6 +1186,32 @@ function HomeScreen() {
                                         ],
                                         selectors: [],
                                         precedence: 805306368,
+                                        important: false,
+                                        animations: []
+                                    }
+                                        , {
+                                        className: "first:bg-purple-600",
+                                        declarations: [{
+                                            prop: "backgroundColor",
+                                            value: "rgba(147,51,234,1)",
+                                            _tag: "COMPILED"
+                                        }
+                                        ],
+                                        selectors: ["first", "&:first"],
+                                        precedence: 805437440,
+                                        important: false,
+                                        animations: []
+                                    }
+                                        , {
+                                        className: "last:text-lg",
+                                        declarations: [{
+                                            prop: "fontSize",
+                                            value: 18,
+                                            _tag: "COMPILED"
+                                        }
+                                        ],
+                                        selectors: ["last", "&:last"],
+                                        precedence: 805437440,
                                         important: false,
                                         animations: []
                                     }
@@ -1224,13 +1236,6 @@ function HomeScreen() {
                                     first: [],
                                     last: [],
                                     odd: []
-                                }
-                                ,
-                                metadata: {
-                                    hasAnimations: false,
-                                    hasGroupEvents: true,
-                                    hasPointerEvents: true,
-                                    isGroupParent: true
                                 }
                             }
                             ])

@@ -5,6 +5,7 @@ import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
+import nodePath from 'node:path';
 import { JsxElement, JsxSelfClosingElement, Node } from 'ts-morph';
 import { __Theme__, RuntimeTW } from '@native-twin/core';
 import {
@@ -14,9 +15,9 @@ import {
   applyParentEntries,
 } from '@native-twin/css/jsx';
 import { getElementEntries } from '../../sheet/utils/styles.utils';
+import { getJSXElementLevel } from '../../utils/jsx.utils';
 import { isValidJSXElement } from '../ast/ast.guards';
 import {
-  getComponentID,
   getComponentStyledEntries,
   getJSXElementConfig,
   getJSXElementTagName,
@@ -31,24 +32,34 @@ type JSXElementNodePath = Data.TaggedEnum<{
 
 const taggedJSXElement = Data.taggedEnum<JSXElementNodePath>();
 
-const jsxElementNodeKey = (node: ValidJSXElementNode) =>
-  new JSXElementNodeKey(getComponentID(node, node.getSourceFile().getFilePath()));
+const jsxHash = (level: string, order: number, path: string) =>
+  pipe(
+    Hash.number(order),
+    Hash.combine(Hash.string(level)),
+    Hash.combine(Hash.string(nodePath.basename(path))),
+  );
 
 export class JSXElementNode implements Equal.Equal {
   readonly path: JSXElementNodePath;
-  readonly id: JSXElementNodeKey;
+  readonly id: string;
   readonly parent: JSXElementNode | null;
   readonly order: number;
+  readonly level: string;
   _runtimeSheet: JSXElementSheet | null = null;
 
   constructor(
     path: ValidJSXElementNode,
     order: number,
+    level: string,
     parentKey: JSXElementNode | null = null,
   ) {
-    this.id = jsxElementNodeKey(path);
     this.order = order;
     this.parent = parentKey;
+    this.level = level;
+
+    const levelHash = jsxHash(level, order, path.getSourceFile().getFilePath());
+    this.id = `${level}${levelHash}`;
+
     if (Node.isJsxElement(path)) {
       this.path = taggedJSXElement.JSXelement({ node: path });
     } else {
@@ -110,7 +121,10 @@ export class JSXElementNode implements Equal.Equal {
         return pipe(
           element.node.getJsxChildren(),
           RA.filterMap((x) => pipe(x, Option.liftPredicate(isValidJSXElement))),
-          RA.map((x, i) => new JSXElementNode(x, i, current)),
+          RA.map(
+            (x, i) =>
+              new JSXElementNode(x, i, getJSXElementLevel(i, current.level), current),
+          ),
           HashSet.fromIterable,
         );
       },
@@ -124,17 +138,5 @@ export class JSXElementNode implements Equal.Equal {
 
   [Equal.symbol](that: unknown): boolean {
     return that instanceof JSXElementNode && this.id === that.id;
-  }
-}
-
-export class JSXElementNodeKey implements Equal.Equal {
-  constructor(readonly id: string) {}
-
-  [Hash.symbol](): number {
-    return Hash.hash(this.id);
-  }
-
-  [Equal.symbol](u: unknown): boolean {
-    return u instanceof JSXElementNodeKey && this.id === u.id;
   }
 }

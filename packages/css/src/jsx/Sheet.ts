@@ -1,10 +1,12 @@
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import { SelectorGroup } from '../css/css.types';
+import { AnyStyle, CompleteStyle, FinalSheet } from '../react-native/rn.types';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
-import { RuntimeComponentEntry } from './Component';
+import { ComponentSheet, RuntimeComponentEntry } from './Component';
 import { RuntimeSheetEntry, sortSheetEntries } from './SheetEntry';
-import { defaultSheetMetadata, emptyChildsSheet } from './constants';
+import { RuntimeSheetDeclaration } from './SheetEntryDeclaration';
+import { defaultFinalSheet, defaultSheetMetadata, emptyChildsSheet } from './constants';
 
 /** @category MetroBundler */
 export type ChildsSheet = Pick<RuntimeGroupSheet, 'first' | 'last' | 'even' | 'odd'>;
@@ -35,22 +37,34 @@ export const getChildRuntimeEntries = (
       prev.odd.push(...current.odd);
       return prev;
     }),
+    // Record.map((entries) =>
+    //   RA.map(entries, (entry) => ({
+    //     ...entry,
+    //     selectors: entry.selectors.filter((x) => !isChildSelector(x)),
+    //   })),
+    // ),
   );
 };
 
 export const getGroupedEntries = (runtime: RuntimeSheetEntry[]): RuntimeGroupSheet => {
-  return pipe(runtime, sortSheetEntries, groupEntriesBySelectorGroup, (entry) => {
-    return {
-      base: entry.base ?? [],
-      dark: entry.dark ?? [],
-      pointer: entry.pointer ?? [],
-      group: entry.group ?? [],
-      even: entry.even ?? [],
-      first: entry.first ?? [],
-      last: entry.last ?? [],
-      odd: entry.odd ?? [],
-    };
-  });
+  return pipe(
+    runtime,
+    sortSheetEntries,
+    RA.filter((entry) => entry.declarations.length > 0),
+    groupEntriesBySelectorGroup,
+    (entry) => {
+      return {
+        base: entry.base ?? [],
+        dark: entry.dark ?? [],
+        pointer: entry.pointer ?? [],
+        group: entry.group ?? [],
+        even: entry.even ?? [],
+        first: entry.first ?? [],
+        last: entry.last ?? [],
+        odd: entry.odd ?? [],
+      };
+    },
+  );
 };
 
 /** @category Filters */
@@ -79,7 +93,7 @@ export const applyParentEntries = (
 /** @category Filters */
 export function getSheetMetadata(
   entries: RuntimeSheetEntry[],
-): RuntimeComponentEntry['metadata'] {
+): ComponentSheet['metadata'] {
   return pipe(
     entries,
     RA.reduce(defaultSheetMetadata, (prev, current) => {
@@ -97,3 +111,73 @@ export function getSheetMetadata(
     }),
   );
 }
+
+export function composeDeclarations(declarations: RuntimeSheetDeclaration[]) {
+  return declarations.reduce((prev, current) => {
+    if (RuntimeSheetDeclaration.$is('NOT_COMPILED')(current)) {
+      return prev;
+    }
+    let value: any = current.value;
+    if (Array.isArray(current.value)) {
+      value = [];
+      for (const t of current.value) {
+        if (typeof t.value == 'string') {
+          if (t.value) {
+            value.push({
+              [t.prop]: t.value,
+            });
+          }
+        }
+      }
+      Object.assign(prev, {
+        transform: [...(prev['transform'] ?? []), ...value],
+      });
+      return prev;
+    }
+    if (typeof value == 'object') {
+      Object.assign(prev, value);
+    } else {
+      Object.assign(prev, {
+        [current.prop]: value,
+      });
+    }
+
+    return prev;
+  }, {} as AnyStyle);
+}
+
+export const sheetEntryToStyle = (entry: RuntimeSheetEntry): CompleteStyle | null => {
+  const nextDecl = composeDeclarations(entry.declarations);
+  return nextDecl;
+};
+
+export const sheetEntriesToStyles = (entries: RuntimeSheetEntry[]): CompleteStyle => {
+  return entries.reduce((prev, current) => {
+    const style = sheetEntryToStyle(current);
+    if (!style) return prev;
+
+    if (style && style.transform) {
+      style.transform = [...(style.transform as any), ...style.transform];
+    }
+    return {
+      ...prev,
+      ...style,
+    };
+  }, {} as AnyStyle);
+};
+
+export const runtimeEntriesToFinalSheet = (entries: RuntimeSheetEntry[]): FinalSheet =>
+  pipe(
+    entries,
+    RA.reduce(defaultFinalSheet, (prev, current) => {
+      const nextDecl = sheetEntryToStyle(current);
+      if (!nextDecl) return prev;
+
+      const group = getRuleSelectorGroup(current.selectors);
+      if (nextDecl.transform && prev[group].transform) {
+        nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
+      }
+      Object.assign(prev[group], nextDecl);
+      return prev;
+    }),
+  );

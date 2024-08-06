@@ -215,9 +215,8 @@ export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) =>
             templateLiteral: null,
             prop: x.prop,
             target: x.target,
-            rawEntries: x.rawEntries,
-            entries: x.rawSheet,
-            metadata: x.metadata,
+            entries: x.entries,
+            rawSheet: x.rawSheet,
           };
         }),
       );

@@ -38,7 +38,7 @@ export const compileSheetEntry = (
   );
   return {
     ...sheetEntry,
-    declarations,
+    declarations: declarations,
   };
 };
 

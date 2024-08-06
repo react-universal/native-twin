@@ -1,3 +1,4 @@
+import { FinalSheet } from '../react-native/rn.types';
 import { ChildsSheet } from './Sheet';
 
 export const defaultSheetMetadata = {
@@ -12,4 +13,15 @@ export const emptyChildsSheet: ChildsSheet = {
   last: [],
   even: [],
   odd: [],
+};
+
+export const defaultFinalSheet: FinalSheet = {
+  base: {},
+  even: {},
+  first: {},
+  group: {},
+  last: {},
+  odd: {},
+  pointer: {},
+  dark: {},
 };

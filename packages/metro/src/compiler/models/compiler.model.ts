@@ -6,6 +6,7 @@ import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import { Node, SourceFile, SyntaxKind } from 'ts-morph';
 import { MetroTransformerContext } from '../../transformer/transformer.service';
+import { getJSXElementLevel } from '../../utils/jsx.utils';
 import type { ValidJSXElementNode } from '../twin.types';
 import { JSXElementNode } from './JSXElement.model';
 
@@ -26,19 +27,26 @@ export const TwinCompilerServiceLive = Layer.scoped(
     const ast = ctx.tsCompiler.createSourceFile(ctx.filename, code, {
       overwrite: true,
     });
+
     return {
       ast,
       getJSXElements: Effect.sync(() => extractJSXElementsFromNode(ast)),
-      getParentNodes: (from) => Effect.sync(() => getNodeJSXElementParents(from)),
+      getParentNodes: (from) =>
+        Effect.sync(() => {
+          return getNodeJSXElementParents(from);
+        }),
     };
   }),
 );
 
 const getNodeJSXElementParents = (path: Node) => {
+  let level = 0;
   const parentsMap = new Set<JSXElementNode>();
   path.forEachDescendant((descendant, traversal) => {
-    if (!Node.isJsxElement(descendant)) return undefined;
-    const node = new JSXElementNode(descendant, 0);
+    if (!Node.isJsxElement(descendant) && !Node.isJsxSelfClosingElement(descendant)) {
+      return undefined;
+    }
+    const node = new JSXElementNode(descendant, 0, getJSXElementLevel(level++));
 
     parentsMap.add(node);
 

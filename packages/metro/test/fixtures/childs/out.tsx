@@ -4,14 +4,14 @@ import { Text, View } from 'react-native';
 
 const ChildProp = () => {
     return (
-        <View className='bg-black last:text-lg' _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/childs/code.tsx-134-279-View" _twinComponentTemplateEntries={
+        <View className='bg-black last:text-lg' _twinOrd={0} _twinComponentID="a-660560371" _twinComponentTemplateEntries={
             []
         } _twinComponentSheet={
-            require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/childs/code.tsx-134-279-View", [{
+            require('@native-twin/jsx').StyleSheet.registerComponent("a-660560371", [{
                 templateLiteral: null,
                 prop: "className",
                 target: "style",
-                rawEntries: [{
+                entries: [{
                     className: "bg-black",
                     declarations: [{
                         prop: "backgroundColor",
@@ -38,7 +38,7 @@ const ChildProp = () => {
                     animations: []
                 }
                 ],
-                entries: {
+                rawSheet: {
                     base: [{
                         className: "bg-black",
                         declarations: [{
@@ -58,40 +58,20 @@ const ChildProp = () => {
                     group: [],
                     even: [],
                     first: [],
-                    last: [{
-                        className: "last:text-lg",
-                        declarations: [{
-                            prop: "fontSize",
-                            value: 18,
-                            _tag: "COMPILED"
-                        }
-                        ],
-                        selectors: ["last", "&:last"],
-                        precedence: 805437440,
-                        important: false,
-                        animations: []
-                    }
-                    ],
+                    last: [],
                     odd: []
-                }
-                ,
-                metadata: {
-                    hasAnimations: false,
-                    hasGroupEvents: false,
-                    hasPointerEvents: false,
-                    isGroupParent: false
                 }
             }
             ])
         }>
-            <Text className='text-blue' _twinOrd={0} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/childs/code.tsx-181-221-Text" _twinComponentTemplateEntries={
+            <Text className='text-blue' _twinOrd={0} _twinComponentID="a:a-1160712654" _twinComponentTemplateEntries={
                 []
             } _twinComponentSheet={
-                require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/childs/code.tsx-181-221-Text", [{
+                require('@native-twin/jsx').StyleSheet.registerComponent("a:a-1160712654", [{
                     templateLiteral: null,
                     prop: "className",
                     target: "style",
-                    rawEntries: [{
+                    entries: [{
                         className: "text-blue",
                         declarations: [{
                             prop: "color",
@@ -105,7 +85,7 @@ const ChildProp = () => {
                         animations: []
                     }
                     ],
-                    entries: {
+                    rawSheet: {
                         base: [{
                             className: "text-blue",
                             declarations: [{
@@ -128,24 +108,17 @@ const ChildProp = () => {
                         last: [],
                         odd: []
                     }
-                    ,
-                    metadata: {
-                        hasAnimations: false,
-                        hasGroupEvents: false,
-                        hasPointerEvents: false,
-                        isGroupParent: false
-                    }
                 }
                 ])
             }>Text1</Text>
-            <Text className='text-red' _twinOrd={1} _twinComponentID="/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/childs/code.tsx-228-267-Text" _twinComponentTemplateEntries={
+            <Text className='text-red' _twinOrd={1} _twinComponentID="a:b-1154500572" _twinComponentTemplateEntries={
                 []
             } _twinComponentSheet={
-                require('@native-twin/jsx').StyleSheet.registerComponent("/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/childs/code.tsx-228-267-Text", [{
+                require('@native-twin/jsx').StyleSheet.registerComponent("a:b-1154500572", [{
                     templateLiteral: null,
                     prop: "className",
                     target: "style",
-                    rawEntries: [{
+                    entries: [{
                         className: "text-red",
                         declarations: [{
                             prop: "color",
@@ -159,7 +132,7 @@ const ChildProp = () => {
                         animations: []
                     }
                     ],
-                    entries: {
+                    rawSheet: {
                         base: [{
                             className: "text-red",
                             declarations: [{
@@ -194,13 +167,6 @@ const ChildProp = () => {
                         first: [],
                         last: [],
                         odd: []
-                    }
-                    ,
-                    metadata: {
-                        hasAnimations: false,
-                        hasGroupEvents: false,
-                        hasPointerEvents: false,
-                        isGroupParent: false
                     }
                 }
                 ])

@@ -12,14 +12,21 @@ import {
 } from './constructors.utils';
 
 export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
+  // if (sheet.propEntries.length === 0) {
+  //   return {
+  //     node,
+  //     sheet,
+  //     rawEntries: RA.flatMap(sheet.propEntries, (x) => x.entries),
+  //   };
+  // }
   const componentEntries = entriesToObject(
-    node.id.id,
+    node.id,
     pipe(
       sheet.propEntries,
       RA.map((prop) => {
         return {
           ...prop,
-          entries: {
+          rawSheet: {
             ...prop.rawSheet,
             even: [],
             first: [],
@@ -38,7 +45,7 @@ export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
         element.addAttribute(createJSXAttribute('_twinOrd', `{${node.order}}`));
       }
       if (!element.getAttribute('_twinComponentID')) {
-        element.addAttribute(createJSXAttribute('_twinComponentID', `"${node.id.id}"`));
+        element.addAttribute(createJSXAttribute('_twinComponentID', `"${node.id}"`));
       }
       if (!element.getAttribute('_twinComponentTemplateEntries')) {
         element.addAttribute(
@@ -56,7 +63,7 @@ export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
     }),
   );
 
-  return { node, sheet, rawEntries: RA.flatMap(sheet.propEntries, (x) => x.rawEntries) };
+  return { node, sheet, rawEntries: RA.flatMap(sheet.propEntries, (x) => x.entries) };
 }
 
 export const maybeReactNativeImport = (

@@ -40,7 +40,7 @@ createStylableComponent(ScrollView, {
   indicatorClassName: 'indicatorStyle',
 });
 createStylableComponent(TextInput, {
-  className: { target: 'style', nativeStyleToProp: { textAlign: true } },
+  className: 'style',
 });
 
 withMappedProps(FlatList, {

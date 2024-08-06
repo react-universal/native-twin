@@ -17,6 +17,11 @@ export {
   applyParentEntries,
   getChildRuntimeEntries,
   getGroupedEntries,
+  runtimeEntriesToFinalSheet,
+  ChildsSheet,
+  composeDeclarations,
+  sheetEntriesToStyles,
+  sheetEntryToStyle,
   groupEntriesBySelectorGroup,
   getSheetMetadata,
 } from './Sheet';

@@ -102,7 +102,7 @@ export function createComponentSheet(
   ctx?: StyledContext,
   target?: string,
 ): ComponentSheet {
-  const rawEntries = compiledSheet.rawEntries ?? [];
+  const rawEntries = compiledSheet.entries ?? [];
   const context = ctx ?? styledContext.get();
   const tuples = Object.entries(compiledSheet.rawSheet).map(
     ([group, entry]) =>
@@ -116,7 +116,7 @@ export function createComponentSheet(
   }
 
   let metadata = {
-    isGroupParent: compiledSheet.rawEntries.some((x) => x.className === 'group'),
+    isGroupParent: compiledSheet.entries.some((x) => x.className === 'group'),
     hasGroupEvents: Object.keys(sheet.group)?.length > 0,
     hasPointerEvents: Object.keys(sheet.pointer)?.length > 0,
     hasAnimations: rawEntries.some((x) => x.animations.length > 0),

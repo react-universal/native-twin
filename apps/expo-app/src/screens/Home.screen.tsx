@@ -58,7 +58,7 @@ function HomeScreen() {
         <TextField />
         <View
           className={`
-            -top-1 -translate-x-2
+            -top-1 -translate-x-1
             mb-2 rounded-lg bg-gray-300 p-2
             group-hover:bg-pink-800
           `}

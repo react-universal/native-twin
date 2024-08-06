@@ -16,13 +16,13 @@
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "bg-black last:text-lg",
       _twinOrd: 0,
-      _twinComponentID: "/fixtures/out.tsx-345-490-View",
+      _twinComponentID: "a-694217970",
       _twinComponentTemplateEntries: [],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-345-490-View", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a-694217970", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
-        rawEntries: [{
+        entries: [{
           className: "bg-black",
           declarations: [{
             prop: "backgroundColor",
@@ -45,7 +45,7 @@
           important: false,
           animations: []
         }],
-        entries: {
+        rawSheet: {
           base: [{
             className: "bg-black",
             declarations: [{
@@ -63,37 +63,20 @@
           group: [],
           even: [],
           first: [],
-          last: [{
-            className: "last:text-lg",
-            declarations: [{
-              prop: "fontSize",
-              value: 18,
-              _tag: "COMPILED"
-            }],
-            selectors: ["last", "&:last"],
-            precedence: 805437440,
-            important: false,
-            animations: []
-          }],
+          last: [],
           odd: []
-        },
-        metadata: {
-          hasAnimations: false,
-          hasGroupEvents: true,
-          hasPointerEvents: true,
-          isGroupParent: true
         }
       }]),
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         className: "text-blue",
         _twinOrd: 0,
-        _twinComponentID: "/fixtures/out.tsx-392-432-Text",
+        _twinComponentID: "a:a-1259381967",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-392-432-Text", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a:a-1259381967", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
-          rawEntries: [{
+          entries: [{
             className: "text-blue",
             declarations: [{
               prop: "color",
@@ -105,7 +88,7 @@
             important: false,
             animations: []
           }],
-          entries: {
+          rawSheet: {
             base: [{
               className: "text-blue",
               declarations: [{
@@ -117,6 +100,28 @@
               precedence: 805306368,
               important: false,
               animations: []
+            }, {
+              className: "first:bg-purple-600",
+              declarations: [{
+                prop: "backgroundColor",
+                value: "rgba(147,51,234,1)",
+                _tag: "COMPILED"
+              }],
+              selectors: ["first", "&:first"],
+              precedence: 805437440,
+              important: false,
+              animations: []
+            }, {
+              className: "first:bg-purple-600",
+              declarations: [{
+                prop: "backgroundColor",
+                value: "rgba(147,51,234,1)",
+                _tag: "COMPILED"
+              }],
+              selectors: ["first", "&:first"],
+              precedence: 805437440,
+              important: false,
+              animations: []
             }],
             dark: [],
             pointer: [],
@@ -125,25 +130,19 @@
             first: [],
             last: [],
             odd: []
-          },
-          metadata: {
-            hasAnimations: false,
-            hasGroupEvents: true,
-            hasPointerEvents: true,
-            isGroupParent: true
           }
         }]),
         children: "Text1"
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         className: "text-red",
         _twinOrd: 1,
-        _twinComponentID: "/fixtures/out.tsx-439-478-Text",
+        _twinComponentID: "a:b-1257239257",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-439-478-Text", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a:b-1257239257", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
-          rawEntries: [{
+          entries: [{
             className: "text-red",
             declarations: [{
               prop: "color",
@@ -155,7 +154,7 @@
             important: false,
             animations: []
           }],
-          entries: {
+          rawSheet: {
             base: [{
               className: "text-red",
               declarations: [{
@@ -178,6 +177,17 @@
               precedence: 805437440,
               important: false,
               animations: []
+            }, {
+              className: "last:text-lg",
+              declarations: [{
+                prop: "fontSize",
+                value: 18,
+                _tag: "COMPILED"
+              }],
+              selectors: ["last", "&:last"],
+              precedence: 805437440,
+              important: false,
+              animations: []
             }],
             dark: [],
             pointer: [],
@@ -186,12 +196,6 @@
             first: [],
             last: [],
             odd: []
-          },
-          metadata: {
-            hasAnimations: false,
-            hasGroupEvents: true,
-            hasPointerEvents: true,
-            isGroupParent: true
           }
         }]),
         children: "Text2"
@@ -222,20 +226,20 @@
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Pressable, {
       className: buttonVariants(props),
       _twinOrd: 0,
-      _twinComponentID: "/fixtures/out.tsx-1055-1140-Pressable",
+      _twinComponentID: "b-694218583",
       _twinComponentTemplateEntries: [{
-        id: "/fixtures/out.tsx-1055-1140-Pressable",
+        id: "b-694218583",
         target: "style",
         prop: "className",
         entries: require('@native-twin/core').tw(`${buttonVariants(props)}`),
         templateLiteral: `${buttonVariants(props)}`
       }],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1055-1140-Pressable", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("b-694218583", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
-        rawEntries: [],
-        entries: {
+        entries: [],
+        rawSheet: {
           base: [],
           dark: [],
           pointer: [],
@@ -244,19 +248,13 @@
           first: [],
           last: [],
           odd: []
-        },
-        metadata: {
-          hasAnimations: false,
-          hasGroupEvents: true,
-          hasPointerEvents: true,
-          isGroupParent: true
         }
       }]),
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         _twinOrd: 0,
-        _twinComponentID: "/fixtures/out.tsx-1107-1123-Text",
+        _twinComponentID: "b:a-1259381866",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1107-1123-Text", []),
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("b:a-1259381866", []),
         children: "asd"
       })
     });
@@ -269,13 +267,13 @@
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "flex-1 -translate-x-2 w-[10vw]",
       _twinOrd: 0,
-      _twinComponentID: "/fixtures/out.tsx-1235-2564-View",
+      _twinComponentID: "c-694217884",
       _twinComponentTemplateEntries: [],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1235-2564-View", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c-694217884", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
-        rawEntries: [{
+        entries: [{
           className: "flex-1",
           declarations: [{
             prop: "flex",
@@ -317,7 +315,7 @@
           important: false,
           animations: []
         }],
-        entries: {
+        rawSheet: {
           base: [{
             className: "flex-1",
             declarations: [{
@@ -367,12 +365,6 @@
           first: [],
           last: [],
           odd: []
-        },
-        metadata: {
-          hasAnimations: false,
-          hasGroupEvents: true,
-          hasPointerEvents: true,
-          isGroupParent: true
         }
       }]),
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
@@ -383,13 +375,13 @@
         `,
         debug: true,
         _twinOrd: 0,
-        _twinComponentID: "/fixtures/out.tsx-1291-1677-View",
+        _twinComponentID: "c:a-1259381797",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1291-1677-View", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a-1259381797", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
-          rawEntries: [{
+          entries: [{
             className: "flex-1",
             declarations: [{
               prop: "flex",
@@ -427,7 +419,7 @@
             important: false,
             animations: []
           }],
-          entries: {
+          rawSheet: {
             base: [{
               className: "flex-1",
               declarations: [{
@@ -454,12 +446,18 @@
               precedence: 805306368,
               important: false,
               animations: []
-            }],
-            dark: [],
-            pointer: [],
-            group: [],
-            even: [],
-            first: [{
+            }, {
+              className: "first:bg-purple-600",
+              declarations: [{
+                prop: "backgroundColor",
+                value: "rgba(147,51,234,1)",
+                _tag: "COMPILED"
+              }],
+              selectors: ["first", "&:first"],
+              precedence: 805437440,
+              important: false,
+              animations: []
+            }, {
               className: "first:bg-purple-600",
               declarations: [{
                 prop: "backgroundColor",
@@ -471,26 +469,25 @@
               important: false,
               animations: []
             }],
+            dark: [],
+            pointer: [],
+            group: [],
+            even: [],
+            first: [],
             last: [],
             odd: []
-          },
-          metadata: {
-            hasAnimations: false,
-            hasGroupEvents: true,
-            hasPointerEvents: true,
-            isGroupParent: true
           }
         }]),
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: "p-2 !bg-green-800",
           _twinOrd: 0,
-          _twinComponentID: "/fixtures/out.tsx-1427-1663-View",
+          _twinComponentID: "c:a:a-191903644",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1427-1663-View", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a-191903644", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
-            rawEntries: [{
+            entries: [{
               className: "p-2",
               declarations: [{
                 prop: "padding",
@@ -513,7 +510,7 @@
               important: true,
               animations: []
             }],
-            entries: {
+            rawSheet: {
               base: [{
                 className: "p-2",
                 declarations: [{
@@ -547,6 +544,28 @@
                 precedence: 805437440,
                 important: false,
                 animations: []
+              }, {
+                className: "first:bg-purple-600",
+                declarations: [{
+                  prop: "backgroundColor",
+                  value: "rgba(147,51,234,1)",
+                  _tag: "COMPILED"
+                }],
+                selectors: ["first", "&:first"],
+                precedence: 805437440,
+                important: false,
+                animations: []
+              }, {
+                className: "last:text-lg",
+                declarations: [{
+                  prop: "fontSize",
+                  value: 18,
+                  _tag: "COMPILED"
+                }],
+                selectors: ["last", "&:last"],
+                precedence: 805437440,
+                important: false,
+                animations: []
               }],
               dark: [],
               pointer: [],
@@ -555,12 +574,6 @@
               first: [],
               last: [],
               odd: []
-            },
-            metadata: {
-              hasAnimations: false,
-              hasGroupEvents: true,
-              hasPointerEvents: true,
-              isGroupParent: true
             }
           }]),
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
@@ -569,13 +582,13 @@
               hover:text-gray-700
               `,
             _twinOrd: 0,
-            _twinComponentID: "/fixtures/out.tsx-1474-1647-Text",
+            _twinComponentID: "c:a:a:a-1636126501",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1474-1647-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a:a-1636126501", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
-              rawEntries: [{
+              entries: [{
                 className: "text-center",
                 declarations: [{
                   prop: "textAlign",
@@ -620,7 +633,7 @@
                 important: false,
                 animations: []
               }],
-              entries: {
+              rawSheet: {
                 base: [{
                   className: "text-center",
                   declarations: [{
@@ -654,6 +667,39 @@
                   precedence: 805306368,
                   important: false,
                   animations: []
+                }, {
+                  className: "first:bg-purple-600",
+                  declarations: [{
+                    prop: "backgroundColor",
+                    value: "rgba(147,51,234,1)",
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["first", "&:first"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
+                }, {
+                  className: "first:bg-purple-600",
+                  declarations: [{
+                    prop: "backgroundColor",
+                    value: "rgba(147,51,234,1)",
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["first", "&:first"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
+                }, {
+                  className: "last:text-lg",
+                  declarations: [{
+                    prop: "fontSize",
+                    value: 18,
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["last", "&:last"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
                 }],
                 dark: [],
                 pointer: [{
@@ -673,12 +719,6 @@
                 first: [],
                 last: [],
                 odd: []
-              },
-              metadata: {
-                hasAnimations: false,
-                hasGroupEvents: true,
-                hasPointerEvents: true,
-                isGroupParent: true
               }
             }]),
             children: "Hello World"
@@ -693,13 +733,13 @@
           hover:bg-pink-600
         `,
         _twinOrd: 1,
-        _twinComponentID: "/fixtures/out.tsx-1684-2552-View",
+        _twinComponentID: "c:b-1257213251",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1684-2552-View", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b-1257213251", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
-          rawEntries: [{
+          entries: [{
             className: "group",
             declarations: [],
             selectors: [],
@@ -755,15 +795,8 @@
             important: false,
             animations: []
           }],
-          entries: {
+          rawSheet: {
             base: [{
-              className: "group",
-              declarations: [],
-              selectors: [],
-              precedence: 805306368,
-              important: false,
-              animations: []
-            }, {
               className: "flex-[2]",
               declarations: [{
                 prop: "flex",
@@ -800,6 +833,17 @@
               precedence: 805306368,
               important: true,
               animations: []
+            }, {
+              className: "last:text-lg",
+              declarations: [{
+                prop: "fontSize",
+                value: 18,
+                _tag: "COMPILED"
+              }],
+              selectors: ["last", "&:last"],
+              precedence: 805437440,
+              important: false,
+              animations: []
             }],
             dark: [],
             pointer: [{
@@ -819,12 +863,6 @@
             first: [],
             last: [],
             odd: []
-          },
-          metadata: {
-            hasAnimations: false,
-            hasGroupEvents: true,
-            hasPointerEvents: true,
-            isGroupParent: true
           }
         }]),
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
@@ -833,19 +871,19 @@
             ${active ? 'text-red-800' : 'text-primary'}
           `,
           _twinOrd: 0,
-          _twinComponentID: "/fixtures/out.tsx-1847-2019-Text",
+          _twinComponentID: "c:b:a-192015277",
           _twinComponentTemplateEntries: [{
-            id: "/fixtures/out.tsx-1847-2019-Text",
+            id: "c:b:a-192015277",
             target: "style",
             prop: "className",
             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
             templateLiteral: `${active ? 'text-red-800' : 'text-primary'}`
           }],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-1847-2019-Text", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:a-192015277", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
-            rawEntries: [{
+            entries: [{
               className: "text-2xl",
               declarations: [{
                 prop: "fontSize",
@@ -857,7 +895,7 @@
               important: false,
               animations: []
             }],
-            entries: {
+            rawSheet: {
               base: [{
                 className: "text-2xl",
                 declarations: [{
@@ -869,6 +907,28 @@
                 precedence: 805306368,
                 important: false,
                 animations: []
+              }, {
+                className: "first:bg-purple-600",
+                declarations: [{
+                  prop: "backgroundColor",
+                  value: "rgba(147,51,234,1)",
+                  _tag: "COMPILED"
+                }],
+                selectors: ["first", "&:first"],
+                precedence: 805437440,
+                important: false,
+                animations: []
+              }, {
+                className: "first:bg-purple-600",
+                declarations: [{
+                  prop: "backgroundColor",
+                  value: "rgba(147,51,234,1)",
+                  _tag: "COMPILED"
+                }],
+                selectors: ["first", "&:first"],
+                precedence: 805437440,
+                important: false,
+                animations: []
               }],
               dark: [],
               pointer: [],
@@ -877,12 +937,6 @@
               first: [],
               last: [],
               odd: []
-            },
-            metadata: {
-              hasAnimations: false,
-              hasGroupEvents: true,
-              hasPointerEvents: true,
-              isGroupParent: true
             }
           }]),
           children: "Nested Hover22222"
@@ -893,19 +947,19 @@
             });
           },
           _twinOrd: 1,
-          _twinComponentID: "/fixtures/out.tsx-2028-2219-Pressable",
+          _twinComponentID: "c:b:b-264901931",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2028-2219-Pressable", []),
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b-264901931", []),
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: "text-gray-200",
             _twinOrd: 0,
-            _twinComponentID: "/fixtures/out.tsx-2151-2198-Text",
+            _twinComponentID: "c:b:b:a-1829462821",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2151-2198-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b:a-1829462821", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
-              rawEntries: [{
+              entries: [{
                 className: "text-gray-200",
                 declarations: [{
                   prop: "color",
@@ -917,7 +971,7 @@
                 important: false,
                 animations: []
               }],
-              entries: {
+              rawSheet: {
                 base: [{
                   className: "text-gray-200",
                   declarations: [{
@@ -929,6 +983,50 @@
                   precedence: 805306368,
                   important: false,
                   animations: []
+                }, {
+                  className: "first:bg-purple-600",
+                  declarations: [{
+                    prop: "backgroundColor",
+                    value: "rgba(147,51,234,1)",
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["first", "&:first"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
+                }, {
+                  className: "first:bg-purple-600",
+                  declarations: [{
+                    prop: "backgroundColor",
+                    value: "rgba(147,51,234,1)",
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["first", "&:first"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
+                }, {
+                  className: "last:text-lg",
+                  declarations: [{
+                    prop: "fontSize",
+                    value: 18,
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["last", "&:last"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
+                }, {
+                  className: "last:text-lg",
+                  declarations: [{
+                    prop: "fontSize",
+                    value: 18,
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["last", "&:last"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
                 }],
                 dark: [],
                 pointer: [],
@@ -937,12 +1035,6 @@
                 first: [],
                 last: [],
                 odd: []
-              },
-              metadata: {
-                hasAnimations: false,
-                hasGroupEvents: true,
-                hasPointerEvents: true,
-                isGroupParent: true
               }
             }]),
             children: "Activate"
@@ -954,13 +1046,13 @@
           `,
           debug: true,
           _twinOrd: 2,
-          _twinComponentID: "/fixtures/out.tsx-2228-2538-View",
+          _twinComponentID: "c:b:c-4504757",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2228-2538-View", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c-4504757", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
-            rawEntries: [{
+            entries: [{
               className: "-top-1",
               declarations: [{
                 prop: "top",
@@ -983,7 +1075,7 @@
               important: false,
               animations: []
             }],
-            entries: {
+            rawSheet: {
               base: [{
                 className: "-top-1",
                 declarations: [{
@@ -993,6 +1085,17 @@
                 }],
                 selectors: [],
                 precedence: 805306368,
+                important: false,
+                animations: []
+              }, {
+                className: "last:text-lg",
+                declarations: [{
+                  prop: "fontSize",
+                  value: 18,
+                  _tag: "COMPILED"
+                }],
+                selectors: ["last", "&:last"],
+                precedence: 805437440,
                 important: false,
                 animations: []
               }],
@@ -1014,25 +1117,19 @@
               first: [],
               last: [],
               odd: []
-            },
-            metadata: {
-              hasAnimations: false,
-              hasGroupEvents: true,
-              hasPointerEvents: true,
-              isGroupParent: true
             }
           }]),
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             suppressHighlighting: true,
             className: "text-gray-800 group-hover:text-white",
             _twinOrd: 0,
-            _twinComponentID: "/fixtures/out.tsx-2361-2522-Text",
+            _twinComponentID: "c:b:c:a-1756547946",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("/fixtures/out.tsx-2361-2522-Text", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c:a-1756547946", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
-              rawEntries: [{
+              entries: [{
                 className: "text-gray-800",
                 declarations: [{
                   prop: "color",
@@ -1055,7 +1152,7 @@
                 important: false,
                 animations: []
               }],
-              entries: {
+              rawSheet: {
                 base: [{
                   className: "text-gray-800",
                   declarations: [{
@@ -1065,6 +1162,50 @@
                   }],
                   selectors: [],
                   precedence: 805306368,
+                  important: false,
+                  animations: []
+                }, {
+                  className: "first:bg-purple-600",
+                  declarations: [{
+                    prop: "backgroundColor",
+                    value: "rgba(147,51,234,1)",
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["first", "&:first"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
+                }, {
+                  className: "first:bg-purple-600",
+                  declarations: [{
+                    prop: "backgroundColor",
+                    value: "rgba(147,51,234,1)",
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["first", "&:first"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
+                }, {
+                  className: "last:text-lg",
+                  declarations: [{
+                    prop: "fontSize",
+                    value: 18,
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["last", "&:last"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
+                }, {
+                  className: "last:text-lg",
+                  declarations: [{
+                    prop: "fontSize",
+                    value: 18,
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["last", "&:last"],
+                  precedence: 805437440,
                   important: false,
                   animations: []
                 }],
@@ -1086,12 +1227,6 @@
                 first: [],
                 last: [],
                 odd: []
-              },
-              metadata: {
-                hasAnimations: false,
-                hasGroupEvents: true,
-                hasPointerEvents: true,
-                isGroupParent: true
               }
             }]),
             children: "Deeply nested hover"
