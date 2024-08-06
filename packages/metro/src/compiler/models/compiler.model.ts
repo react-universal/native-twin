@@ -7,7 +7,7 @@ import * as Layer from 'effect/Layer';
 import { Node, SourceFile, SyntaxKind } from 'ts-morph';
 import { MetroTransformerContext } from '../../transformer/transformer.service';
 import { getJSXElementLevel } from '../../utils/jsx.utils';
-import type { ValidJSXElementNode } from '../ast/tsCompiler.types';
+import type { ValidJSXElementNode } from '../types/tsCompiler.types';
 import { JSXElementNode } from './JSXElement.model';
 
 export class TwinCompilerService extends Context.Tag('compiler/file-state')<

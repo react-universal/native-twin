@@ -14,7 +14,7 @@ import type {
   ValidJSXClassnameNodeString,
   ValidJSXElementNode,
   ValidOpeningElementNode,
-} from './tsCompiler.types';
+} from '../types/tsCompiler.types';
 import { expressionFactory } from './writer.factory';
 
 /**

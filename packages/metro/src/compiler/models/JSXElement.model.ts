@@ -19,19 +19,19 @@ import {
 import { getElementEntries } from '../../sheet/utils/styles.utils';
 import { getJSXElementLevel } from '../../utils/jsx.utils';
 import { isValidJSXElement } from '../ast/ast.guards';
+import { getJSXMappedAttributes } from '../ast/babel.constructors';
 import {
   createJSXAttribute,
   getComponentStyledEntries,
   getJSXElementConfig,
   getJSXElementTagName,
 } from '../ast/constructors.utils';
-import { getJSXMappedAttributes } from '../ast/babel.constructors';
 import {
   AnyPrimitive,
   JSXMappedAttribute,
   ValidJSXElementNode,
   ValidOpeningElementNode,
-} from '../ast/tsCompiler.types';
+} from '../types/tsCompiler.types';
 
 type JSXElementNodePath = Data.TaggedEnum<{
   JSXelement: { node: JsxElement };

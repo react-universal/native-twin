@@ -2,7 +2,7 @@ import generate from '@babel/generator';
 import * as t from '@babel/types';
 import { cx } from '@native-twin/core';
 import { MappedComponent } from '../../utils';
-import { JSXMappedAttribute } from './tsCompiler.types';
+import { JSXMappedAttribute } from '../types/tsCompiler.types';
 
 export const extractClassNameProp = (
   attribute: t.JSXAttribute,
