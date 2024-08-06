@@ -7,7 +7,12 @@ import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import { JsxElement, JsxSelfClosingElement, Node } from 'ts-morph';
 import { __Theme__, RuntimeTW } from '@native-twin/core';
-import { getChildRuntimeEntries, type JSXElementSheet } from '@native-twin/css/jsx';
+import {
+  getChildRuntimeEntries,
+  type JSXElementSheet,
+  type CompilerContext,
+  applyParentEntries,
+} from '@native-twin/css/jsx';
 import { getElementEntries } from '../../sheet/utils/styles.utils';
 import { isValidJSXElement } from '../ast/ast.guards';
 import {
@@ -17,7 +22,7 @@ import {
   getJSXElementTagName,
 } from '../ast/constructors.utils';
 import { getOpeningElement } from '../ast/visitors';
-import { CompilerContext, JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
+import { JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
 
 type JSXElementNodePath = Data.TaggedEnum<{
   JSXelement: { node: JsxElement };
@@ -68,11 +73,33 @@ export class JSXElementNode implements Equal.Equal {
     if (this._runtimeSheet) {
       return this._runtimeSheet;
     }
-    const propEntries = getElementEntries(this.runtimeData, twin);
-    this._runtimeSheet = {
+    const propEntries = getElementEntries(this.runtimeData, twin, ctx);
+    const runtimeSheet = {
       propEntries,
       childEntries: pipe(propEntries, getChildRuntimeEntries),
     };
+    this._runtimeSheet = pipe(
+      Option.fromNullable(this.parent),
+      Option.map((x) => ({
+        entries: x.getTwinSheet(twin, ctx).childEntries,
+        childsNumber: HashSet.size(x.childs),
+      })),
+      Option.match({
+        onNone: () => runtimeSheet,
+        onSome: (parent) => {
+          const entries = applyParentEntries(
+            runtimeSheet.propEntries,
+            parent.entries,
+            this.order,
+            parent.childsNumber,
+          );
+          return {
+            propEntries: entries,
+            childEntries: runtimeSheet.childEntries,
+          };
+        },
+      }),
+    );
     return this._runtimeSheet;
   }
 

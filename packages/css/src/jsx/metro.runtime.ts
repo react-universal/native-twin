@@ -1,4 +1,4 @@
-import type { SheetEntry } from "./SheetEntry";
+import type { SheetEntry } from './SheetEntry';
 
 export interface StyledPropEntries {
   entries: SheetEntry[];
@@ -6,4 +6,10 @@ export interface StyledPropEntries {
   target: string;
   expression: string | null;
   classNames: string;
+}
+
+/** @category MetroBundler */
+export interface CompilerContext {
+  baseRem: number;
+  platform: string;
 }

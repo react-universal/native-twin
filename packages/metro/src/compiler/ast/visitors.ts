@@ -20,7 +20,7 @@ export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
         return {
           ...prop,
           entries: {
-            ...prop.entries,
+            ...prop.rawSheet,
             even: [],
             first: [],
             last: [],

@@ -1,5 +1,6 @@
-import { Exit, Fiber } from 'effect';
 import * as Effect from 'effect/Effect';
+import * as Exit from 'effect/Exit';
+import * as Fiber from 'effect/Fiber';
 import * as Layer from 'effect/Layer';
 import * as vscode from 'vscode';
 import { activateExtension, ExtensionContext } from './extension/extension.service';

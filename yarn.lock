@@ -4770,12 +4770,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/typeclass@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "@effect/typeclass@npm:0.25.0"
+"@effect/typeclass@npm:^0.25.1":
+  version: 0.25.1
+  resolution: "@effect/typeclass@npm:0.25.1"
   peerDependencies:
-    effect: ^3.6.0
-  checksum: 10/d2b25a0be3ae1a99c43c8e68c837abb30e6d22f2620c55d8056e152837a7509dbfe0c72a7182dde1ab9b74b59e38b30b992cc843db3bed2329599c13900abe08
+    effect: ^3.6.1
+  checksum: 10/292379e7d7e396bc23cda56fd6049c419e739ad81fe80de312caa14157d41bfe1cf4a0cd177d76511a73c9c77af75d2dda0ecdea5f55b18f39b8bbe9f6a0d718
   languageName: node
   linkType: hard
 
@@ -6041,7 +6041,7 @@ __metadata:
     "@effect/printer": "npm:0.32.1"
     "@effect/printer-ansi": "npm:0.32.25"
     "@effect/schema": "npm:^0.66.10"
-    "@effect/typeclass": "npm:^0.25.0"
+    "@effect/typeclass": "npm:^0.25.1"
     "@types/fs-extra": "npm:11.0.4"
     effect: "npm:^3.6.0"
     esbuild: "npm:^0.20.2"
@@ -6073,6 +6073,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/css@workspace:packages/css"
   dependencies:
+    "@effect/typeclass": "npm:^0.25.1"
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     effect: "npm:^3.6.0"

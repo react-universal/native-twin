@@ -1,7 +1,6 @@
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
-import { applyParentEntries } from '@native-twin/css/build/jsx';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import { visitElementNode } from './ast/visitors';
 import { JSXElementNode } from './models/JSXElement.model';
@@ -12,6 +11,7 @@ export const compileFile = Effect.gen(function* () {
   const ctx = yield* MetroTransformerContext;
 
   const parents = yield* compiler.getParentNodes(compiler.ast);
+
   const elements = pipe(
     createElementStyleSheet(parents),
     HashSet.map((node) => {
@@ -20,20 +20,6 @@ export const compileFile = Effect.gen(function* () {
         platform: ctx.options.platform ?? 'ios',
       };
       const sheet = node.getTwinSheet(ctx.twin, context);
-      if (node.parent) {
-        const entries = pipe(node.parent.getTwinSheet(ctx.twin, context), (x) =>
-          applyParentEntries(
-            sheet.propEntries,
-            x.childEntries,
-            node.order,
-            HashSet.size(node.childs),
-          ),
-        );
-        return visitElementNode(node, {
-          childEntries: sheet.childEntries,
-          propEntries: entries,
-        });
-      }
       return visitElementNode(node, sheet);
     }),
   );
@@ -44,6 +30,7 @@ export const compileFile = Effect.gen(function* () {
   //   RA.map((x) => x.sheet.childEntries.group),
   // );
 
+  yield* Effect.sync(() => compiler.ast.formatText());
   yield* Effect.promise(() => compiler.ast.save());
 
   const result = {

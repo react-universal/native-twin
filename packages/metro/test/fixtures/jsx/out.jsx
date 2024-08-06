@@ -63,7 +63,18 @@
           group: [],
           even: [],
           first: [],
-          last: [],
+          last: [{
+            className: "last:text-lg",
+            declarations: [{
+              prop: "fontSize",
+              value: 18,
+              _tag: "COMPILED"
+            }],
+            selectors: ["last", "&:last"],
+            precedence: 805437440,
+            important: false,
+            animations: []
+          }],
           odd: []
         },
         metadata: {
@@ -154,6 +165,17 @@
               }],
               selectors: [],
               precedence: 805306368,
+              important: false,
+              animations: []
+            }, {
+              className: "last:text-lg",
+              declarations: [{
+                prop: "fontSize",
+                value: 18,
+                _tag: "COMPILED"
+              }],
+              selectors: ["last", "&:last"],
+              precedence: 805437440,
               important: false,
               animations: []
             }],
@@ -437,7 +459,18 @@
             pointer: [],
             group: [],
             even: [],
-            first: [],
+            first: [{
+              className: "first:bg-purple-600",
+              declarations: [{
+                prop: "backgroundColor",
+                value: "rgba(147,51,234,1)",
+                _tag: "COMPILED"
+              }],
+              selectors: ["first", "&:first"],
+              precedence: 805437440,
+              important: false,
+              animations: []
+            }],
             last: [],
             odd: []
           },

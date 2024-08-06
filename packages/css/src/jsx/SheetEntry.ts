@@ -2,15 +2,15 @@ import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Order from 'effect/Order';
 import * as Predicate from 'effect/Predicate';
-import * as Record from 'effect/Record';
 import { OwnSheetSelectors } from '../css/css.constants';
-import type { SelectorGroup, ValidChildPseudoSelector } from '../css/css.types';
+import type { ValidChildPseudoSelector } from '../css/css.types';
 import type { SheetEntry } from '../sheets/sheet.types';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
-import { compileEntryDeclaration, RuntimeSheetDeclaration } from './SheetEntryDeclaration';
-import { defaultSheetMetadata } from './constants';
-import { SheetChildEntries } from './jsx.runtime';
-import type { RuntimeComponentEntry } from './react.runtime';
+import {
+  compileEntryDeclaration,
+  RuntimeSheetDeclaration,
+} from './SheetEntryDeclaration';
+import { CompilerContext } from './metro.runtime';
 
 export type { SheetEntry };
 
@@ -28,107 +28,19 @@ interface OwnSelectorBrand {
 }
 type OwnSelector = (typeof OwnSheetSelectors)[number] & OwnSelectorBrand;
 
-export type SheetGroupEntries = Record<SelectorGroup, RuntimeSheetEntry[]>;
-
-export const compileSheetEntry = (sheetEntry: SheetEntry): RuntimeSheetEntry => {
+export const compileSheetEntry = (
+  sheetEntry: SheetEntry,
+  ctx: CompilerContext,
+): RuntimeSheetEntry => {
   const declarations = pipe(
     sheetEntry.declarations,
-    RA.map((x) => compileEntryDeclaration(x)),
+    RA.map((x) => compileEntryDeclaration(x, ctx)),
   );
   return {
     ...sheetEntry,
     declarations,
   };
 };
-
-export const groupEntriesBySelectorGroup = (
-  x: RuntimeSheetEntry[],
-): Record<SelectorGroup, RuntimeSheetEntry[]> =>
-  RA.groupBy(x, (entry) => getRuleSelectorGroup(entry.selectors));
-
-export const getChildRuntimeEntries = (
-  runtimeEntries: RuntimeComponentEntry[],
-): SheetChildEntries => {
-  return pipe(
-    runtimeEntries,
-    RA.map((runtimeEntry) => runtimeEntry.entries),
-    RA.reduce(
-      {
-        first: [],
-        last: [],
-        even: [],
-        odd: [],
-      } as SheetChildEntries,
-      (prev, current) => {
-        prev.first.push(...current.first);
-        prev.last.push(...current.last);
-        prev.even.push(...current.even);
-        prev.odd.push(...current.odd);
-        return prev;
-      },
-    ),
-  );
-};
-
-export const getGroupedEntries = (runtime: RuntimeSheetEntry[]): SheetGroupEntries => {
-  return pipe(runtime, sortSheetEntries, groupEntriesBySelectorGroup, (entry) => {
-    return {
-      base: entry.base ?? [],
-      dark: entry.dark ?? [],
-      pointer: entry.pointer ?? [],
-      group: entry.group ?? [],
-      even: entry.even ?? [],
-      first: entry.first ?? [],
-      last: entry.last ?? [],
-      odd: entry.odd ?? [],
-    };
-  });
-};
-
-/** @category Filters */
-export const applyParentEntries = (
-  currentEntries: RuntimeComponentEntry[],
-  parentEntries: SheetChildEntries,
-  order: number,
-  parentChildsNumber: number,
-): RuntimeComponentEntry[] => {
-  return pipe(
-    currentEntries,
-    RA.map((entry) => {
-      const newEntries = entry.entries;
-      if (order === 0) newEntries.base.push(...parentEntries.first);
-      if (order === parentChildsNumber - 1) newEntries.base.push(...parentEntries.last);
-      if (order % 2 === 0) newEntries.base.push(...parentEntries.even);
-      if (order % 2 !== 0) newEntries.base.push(...parentEntries.odd);
-      return {
-        ...entry,
-        entries: newEntries,
-      };
-    }),
-  );
-};
-
-/** @category Filters */
-export function getSheetMetadata(
-  entries: RuntimeSheetEntry[],
-): RuntimeComponentEntry['metadata'] {
-  return pipe(
-    entries,
-    RA.reduce(defaultSheetMetadata, (prev, current) => {
-      const group = getRuleSelectorGroup(current.selectors);
-      if (!prev.isGroupParent && current.className === 'group') {
-        prev.isGroupParent = true;
-      }
-      if (!prev.hasPointerEvents && group === 'pointer') {
-        prev.hasPointerEvents = true;
-      }
-      if (!prev.hasGroupEvents && group === 'group') {
-        prev.hasGroupEvents = true;
-      }
-      return prev;
-    }),
-  );
-}
 
 /** @category Orders */
 const orders = {

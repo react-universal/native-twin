@@ -7,12 +7,14 @@ import {
   sortSheetEntries,
   RuntimeComponentEntry,
   compileSheetEntry,
+  CompilerContext,
 } from '@native-twin/css/jsx';
 import { JSXMappedAttribute } from '../../compiler/twin.types';
 
 export const getElementEntries = (
   props: JSXMappedAttribute[],
   twin: RuntimeTW,
+  ctx: CompilerContext,
 ): RuntimeComponentEntry[] => {
   return pipe(
     props,
@@ -21,7 +23,7 @@ export const getElementEntries = (
 
       const entries = pipe(
         twin(classNames),
-        RA.map((x) => compileSheetEntry(x)),
+        RA.map((x) => compileSheetEntry(x, ctx)),
         sortSheetEntries,
       );
 
@@ -31,7 +33,7 @@ export const getElementEntries = (
         templateLiteral: value.templates,
         metadata: getSheetMetadata(entries),
         rawEntries: entries,
-        entries: getGroupedEntries(entries),
+        rawSheet: getGroupedEntries(entries),
       };
     }),
   );

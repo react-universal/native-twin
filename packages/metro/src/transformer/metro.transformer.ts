@@ -8,8 +8,8 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import path from 'node:path';
 import { Project } from 'ts-morph';
-import * as Compiler from '../compiler/twin.compiler';
 import { TwinCompilerServiceLive } from '../compiler/models/compiler.model';
+import * as Compiler from '../compiler/twin.compiler';
 import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
@@ -35,7 +35,7 @@ const program = Effect.gen(function* () {
   const documents = yield* DocumentService;
   const transformer = yield* MetroTransformerService;
   const sheet = yield* StyleSheetService;
-  yield* Supervisor.track
+  yield* Supervisor.track;
 
   const transformFile = documents
     .getDocument({
@@ -101,7 +101,6 @@ const program = Effect.gen(function* () {
 });
 
 const runnable = program.pipe(
-  
   Logger.withMinimumLogLevel(LogLevel.All),
   Effect.provide(Logger.pretty),
   Effect.provide(MainLayer),
