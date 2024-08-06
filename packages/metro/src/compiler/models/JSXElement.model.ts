@@ -1,3 +1,5 @@
+import template from '@babel/template';
+import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import * as Equal from 'effect/Equal';
@@ -18,16 +20,23 @@ import { getElementEntries } from '../../sheet/utils/styles.utils';
 import { getJSXElementLevel } from '../../utils/jsx.utils';
 import { isValidJSXElement } from '../ast/ast.guards';
 import {
+  createJSXAttribute,
   getComponentStyledEntries,
   getJSXElementConfig,
   getJSXElementTagName,
 } from '../ast/constructors.utils';
-import { getOpeningElement } from '../ast/visitors';
-import { JSXMappedAttribute, ValidJSXElementNode } from '../twin.types';
+import { getJSXMappedAttributes } from '../ast/babel.constructors';
+import {
+  AnyPrimitive,
+  JSXMappedAttribute,
+  ValidJSXElementNode,
+  ValidOpeningElementNode,
+} from '../ast/tsCompiler.types';
 
 type JSXElementNodePath = Data.TaggedEnum<{
   JSXelement: { node: JsxElement };
   JSXSelfClosingElement: { node: JsxSelfClosingElement };
+  BabelJSXElement: { node: t.JSXElement };
 }>;
 
 const taggedJSXElement = Data.taggedEnum<JSXElementNodePath>();
@@ -48,7 +57,7 @@ export class JSXElementNode implements Equal.Equal {
   _runtimeSheet: JSXElementSheet | null = null;
 
   constructor(
-    path: ValidJSXElementNode,
+    path: ValidJSXElementNode | t.JSXElement,
     order: number,
     level: string,
     parentKey: JSXElementNode | null = null,
@@ -57,10 +66,12 @@ export class JSXElementNode implements Equal.Equal {
     this.parent = parentKey;
     this.level = level;
 
-    const levelHash = jsxHash(level, order, path.getSourceFile().getFilePath());
+    const levelHash = jsxHash(level, order, 'asd');
     this.id = `${level}${levelHash}`;
 
-    if (Node.isJsxElement(path)) {
+    if (t.isNode(path)) {
+      this.path = taggedJSXElement.BabelJSXElement({ node: path });
+    } else if (Node.isJsxElement(path)) {
       this.path = taggedJSXElement.JSXelement({ node: path });
     } else {
       this.path = taggedJSXElement.JSXSelfClosingElement({ node: path });
@@ -68,15 +79,33 @@ export class JSXElementNode implements Equal.Equal {
   }
 
   get runtimeData(): JSXMappedAttribute[] {
+    if (taggedJSXElement.$is('BabelJSXElement')(this.path)) {
+      const openingElement = this.path.node.openingElement;
+      if (t.isJSXIdentifier(openingElement.name)) {
+        return pipe(
+          Option.fromNullable(getJSXElementConfig(openingElement.name.name)),
+          Option.map((mapped) =>
+            getJSXMappedAttributes(
+              openingElement.attributes.filter((x) => t.isJSXAttribute(x)),
+              mapped,
+            ),
+          ),
+          Option.getOrElse(() => []),
+        );
+      }
+      return [];
+    }
     const styledConfig = pipe(
       this.path.node,
       getJSXElementTagName,
       Option.fromNullable,
-      Option.flatMap((x) => Option.fromNullable(getJSXElementConfig(x))),
+      Option.flatMap((x) =>
+        Option.fromNullable(getJSXElementConfig(x.compilerNode.text)),
+      ),
     );
-    const openTag = getOpeningElement(this.path.node);
+    const openTag = this.openingElement;
     return Option.zipWith(openTag, styledConfig, (tag, config) => {
-      return getComponentStyledEntries(tag, config);
+      return getComponentStyledEntries(tag as ValidOpeningElementNode, config);
     }).pipe(Option.getOrElse(() => []));
   }
 
@@ -114,6 +143,46 @@ export class JSXElementNode implements Equal.Equal {
     return this._runtimeSheet;
   }
 
+  addAttribute(name: string, value: AnyPrimitive) {
+    taggedJSXElement.$match({
+      BabelJSXElement({ node }) {
+        pipe(
+          node.openingElement.attributes,
+          RA.filter((x) => t.isJSXAttribute(x)),
+          RA.findFirst((x) => t.isJSXIdentifier(x.name) && x.name.name === name),
+          Option.getOrElse(() => {
+            node.openingElement.attributes.push(
+              t.jsxAttribute(
+                t.jsxIdentifier(name),
+                t.jsxExpressionContainer(template.expression(`${value}`)()),
+              ),
+            );
+          }),
+        );
+      },
+      JSXelement({ node }) {
+        node.getOpeningElement().addAttribute(createJSXAttribute(name, value));
+      },
+      JSXSelfClosingElement({ node }) {
+        node.addAttribute(createJSXAttribute(name, value));
+      },
+    });
+  }
+
+  get openingElement() {
+    return taggedJSXElement.$match({
+      JSXelement: ({ node }) => {
+        return Option.some(node.getOpeningElement());
+      },
+      JSXSelfClosingElement: ({ node }) => {
+        return Option.some(node);
+      },
+      BabelJSXElement: ({ node }) => {
+        return Option.some(node.openingElement);
+      },
+    })(this.path);
+  }
+
   get childs(): HashSet.HashSet<JSXElementNode> {
     const current = this;
     return taggedJSXElement.$match({
@@ -129,6 +198,18 @@ export class JSXElementNode implements Equal.Equal {
         );
       },
       JSXSelfClosingElement: () => HashSet.empty(),
+      BabelJSXElement: ({ node }) => {
+        if (node.selfClosing) return HashSet.empty();
+        return pipe(
+          node.children,
+          RA.filterMap((x) => pipe(x, Option.liftPredicate(t.isJSXElement))),
+          RA.map(
+            (x, i) =>
+              new JSXElementNode(x, i, getJSXElementLevel(i, current.level), current),
+          ),
+          HashSet.fromIterable,
+        );
+      },
     })(this.path);
   }
 

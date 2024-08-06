@@ -2,7 +2,7 @@ import CodeBlockWriter from 'code-block-writer';
 import * as RA from 'effect/Array';
 import { apply, flip, pipe } from 'effect/Function';
 import * as Predicate from 'effect/Predicate';
-import { AnyPrimitive } from '../../compiler/twin.types';
+import { AnyPrimitive } from './tsCompiler.types';
 
 
 export function expressionFactory(writer: CodeBlockWriter) {

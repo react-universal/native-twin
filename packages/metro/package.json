@@ -39,6 +39,8 @@
     "ts-morph": "^23.0.0"
   },
   "devDependencies": {
+    "@babel/traverse": "^7.24.0",
+    "@babel/types": "^7.24.0",
     "@native-twin/preset-tailwind": "workspace:*",
     "@native-twin/styled": "workspace:*",
     "@types/connect": "3.4.38",

@@ -1,19 +1,20 @@
+import type { ParseResult } from '@babel/parser';
+import { parse } from '@babel/parser';
+import traverse from '@babel/traverse';
+import * as t from '@babel/types';
+import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
+import { getJSXElementLevel } from '../utils/jsx.utils';
 import { visitElementNode } from './ast/visitors';
-import { compileFileWithBabel } from './babel.compiler';
 import { JSXElementNode } from './models/JSXElement.model';
-import { TwinCompilerService } from './models/compiler.model';
 
-export const compileFile = Effect.gen(function* () {
-  const compiler = yield* TwinCompilerService;
+export const compileFileWithBabel = Effect.gen(function* () {
   const ctx = yield* MetroTransformerContext;
-  yield* compileFileWithBabel;
-
-  const parents = yield* compiler.getParentNodes(compiler.ast);
-
+  const ast = yield* Effect.sync(() => parseCode(ctx.sourceCode.toString('utf-8')));
+  const parents = getParents(ast);
   const elements = pipe(
     createElementStyleSheet(parents),
     HashSet.map((node) => {
@@ -25,14 +26,10 @@ export const compileFile = Effect.gen(function* () {
       return visitElementNode(node, sheet);
     }),
   );
-
-  yield* Effect.sync(() => compiler.ast.formatText());
-  yield* Effect.promise(() => compiler.ast.save());
-
+  const arr = pipe(RA.fromIterable(elements));
   const result = {
-    code: compiler.ast.getText(),
-    full: compiler.ast.getFullText(),
-    compilerNode: compiler.ast.compilerNode.text,
+    code: '',
+    full: '',
     elements,
   };
 
@@ -53,3 +50,22 @@ export const compileFile = Effect.gen(function* () {
     );
   }
 });
+
+const getParents = (ast: ParseResult<t.File>) => {
+  let level = 0;
+  const parents = new Set<JSXElementNode>();
+  traverse(ast, {
+    JSXElement(path) {
+      parents.add(new JSXElementNode(path.node, 0, getJSXElementLevel(level++)));
+      path.skip();
+    },
+  });
+  return HashSet.fromIterable(parents);
+};
+
+const parseCode = (code: string) =>
+  parse(code, {
+    plugins: ['jsx', 'typescript'],
+    sourceType: 'module',
+    errorRecovery: true,
+  });

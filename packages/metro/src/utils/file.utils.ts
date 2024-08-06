@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { TWIN_STYLES_FILE } from './constants';
+import { TWIN_STYLES_FILE, twinModuleExportString } from './constants';
 
 export function ensureBuffer(file: Buffer | string): Buffer {
   return Buffer.isBuffer(file) ? file : Buffer.from(file);
@@ -27,7 +27,7 @@ export const createCacheDir = (outputDir: string) => {
   if (!fs.existsSync(path.resolve(outputDir))) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
-  fs.writeFileSync(path.join(outputDir, TWIN_STYLES_FILE), '');
+  fs.writeFileSync(path.join(outputDir, TWIN_STYLES_FILE), twinModuleExportString);
   // const nodeModulesDir = path.join(outputDir, 'node_modules');
   // const cacheDir = path.join(nodeModulesDir, '.cache');
   // const twinDir = path.join(cacheDir, 'native-twin');

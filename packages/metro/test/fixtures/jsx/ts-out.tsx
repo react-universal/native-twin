@@ -8,10 +8,10 @@ const testImage = require('../../assets/favicon.png');
 
 const ChildProp = () => {
     return (
-        <View className='bg-black last:text-lg' _twinOrd={0} _twinComponentID="a-660560371" _twinComponentTemplateEntries={
+        <View className='bg-black last:text-lg' _twinOrd={0} _twinComponentID="a185122343" _twinComponentTemplateEntries={
             []
         } _twinComponentSheet={
-            require('@native-twin/jsx').StyleSheet.registerComponent("a-660560371", [{
+            require('@native-twin/jsx').StyleSheet.registerComponent("a185122343", [{
                 templateLiteral: null,
                 prop: "className",
                 target: "style",
@@ -68,10 +68,10 @@ const ChildProp = () => {
             }
             ])
         }>
-            <Text className='text-blue' _twinOrd={0} _twinComponentID="a:a-1160712654" _twinComponentTemplateEntries={
+            <Text className='text-blue' _twinOrd={0} _twinComponentID="a:a1769535000" _twinComponentTemplateEntries={
                 []
             } _twinComponentSheet={
-                require('@native-twin/jsx').StyleSheet.registerComponent("a:a-1160712654", [{
+                require('@native-twin/jsx').StyleSheet.registerComponent("a:a1769535000", [{
                     templateLiteral: null,
                     prop: "className",
                     target: "style",
@@ -128,10 +128,10 @@ const ChildProp = () => {
                 }
                 ])
             }>Text1</Text>
-            <Text className='text-red' _twinOrd={1} _twinComponentID="a:b-1154500572" _twinComponentTemplateEntries={
+            <Text className='text-red' _twinOrd={1} _twinComponentID="a:b1753718798" _twinComponentTemplateEntries={
                 []
             } _twinComponentSheet={
-                require('@native-twin/jsx').StyleSheet.registerComponent("a:b-1154500572", [{
+                require('@native-twin/jsx').StyleSheet.registerComponent("a:b1753718798", [{
                     templateLiteral: null,
                     prop: "className",
                     target: "style",
@@ -218,9 +218,9 @@ type ButtonProps = ButtonVariantProps & PressableProps;
 
 const Button = (props: ButtonProps) => {
     return (
-        <Pressable className={buttonVariants(props)} _twinOrd={0} _twinComponentID="b-660560470" _twinComponentTemplateEntries={
+        <Pressable className={buttonVariants(props)} _twinOrd={0} _twinComponentID="b185122176" _twinComponentTemplateEntries={
             [{
-                id: "b-660560470",
+                id: "b185122176",
                 target: "style",
                 prop: "className",
                 entries: require('@native-twin/core').tw(`${buttonVariants(props)}`),
@@ -228,7 +228,7 @@ const Button = (props: ButtonProps) => {
             }
             ]
         } _twinComponentSheet={
-            require('@native-twin/jsx').StyleSheet.registerComponent("b-660560470", [{
+            require('@native-twin/jsx').StyleSheet.registerComponent("b185122176", [{
                 templateLiteral: null,
                 prop: "className",
                 target: "style",
@@ -246,10 +246,10 @@ const Button = (props: ButtonProps) => {
             }
             ])
         }>
-            <Text _twinOrd={0} _twinComponentID="b:a-1160712555" _twinComponentTemplateEntries={
+            <Text _twinOrd={0} _twinComponentID="b:a1769535167" _twinComponentTemplateEntries={
                 []
             } _twinComponentSheet={
-                require('@native-twin/jsx').StyleSheet.registerComponent("b:a-1160712555", [])
+                require('@native-twin/jsx').StyleSheet.registerComponent("b:a1769535167", [])
             }>asd</Text>
         </Pressable>
     );
@@ -258,10 +258,10 @@ const Button = (props: ButtonProps) => {
 function HomeScreen() {
     const [active, setActive] = useState(true);
     return (
-        <View className='flex-1 -translate-x-2 w-[10vw]' _twinOrd={0} _twinComponentID="c-660560281" _twinComponentTemplateEntries={
+        <View className='flex-1 -translate-x-2 w-[10vw]' _twinOrd={0} _twinComponentID="c185122381" _twinComponentTemplateEntries={
             []
         } _twinComponentSheet={
-            require('@native-twin/jsx').StyleSheet.registerComponent("c-660560281", [{
+            require('@native-twin/jsx').StyleSheet.registerComponent("c185122381", [{
                 templateLiteral: null,
                 prop: "className",
                 target: "style",
@@ -383,10 +383,10 @@ function HomeScreen() {
           bg-red-500
           first:bg-purple-600
         `}
-                debug _twinOrd={0} _twinComponentID="c:a-1160712488" _twinComponentTemplateEntries={
+                debug _twinOrd={0} _twinComponentID="c:a1769535218" _twinComponentTemplateEntries={
                     []
                 } _twinComponentSheet={
-                    require('@native-twin/jsx').StyleSheet.registerComponent("c:a-1160712488", [{
+                    require('@native-twin/jsx').StyleSheet.registerComponent("c:a1769535218", [{
                         templateLiteral: null,
                         prop: "className",
                         target: "style",
@@ -493,10 +493,10 @@ function HomeScreen() {
                     ])
                 }
             >
-                <View className='p-2 !bg-green-800' _twinOrd={0} _twinComponentID="c:a:a-89096857" _twinComponentTemplateEntries={
+                <View className='p-2 !bg-green-800' _twinOrd={0} _twinComponentID="c:a:a689464653" _twinComponentTemplateEntries={
                     []
                 } _twinComponentSheet={
-                    require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a-89096857", [{
+                    require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a689464653", [{
                         templateLiteral: null,
                         prop: "className",
                         target: "style",
@@ -596,10 +596,10 @@ function HomeScreen() {
                         className={`
               text(center xl primary)
               hover:text-gray-700
-              `} _twinOrd={0} _twinComponentID="c:a:a:a-1874524712" _twinComponentTemplateEntries={
+              `} _twinOrd={0} _twinComponentID="c:a:a:a1139613170" _twinComponentTemplateEntries={
                             []
                         } _twinComponentSheet={
-                            require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a:a-1874524712", [{
+                            require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a:a1139613170", [{
                                 templateLiteral: null,
                                 prop: "className",
                                 target: "style",
@@ -759,10 +759,10 @@ function HomeScreen() {
           !bg-green-800
           bg-gray-500
           hover:bg-pink-600
-        `} _twinOrd={1} _twinComponentID="c:b-1154496578" _twinComponentTemplateEntries={
+        `} _twinOrd={1} _twinComponentID="c:b1753735060" _twinComponentTemplateEntries={
                     []
                 } _twinComponentSheet={
-                    require('@native-twin/jsx').StyleSheet.registerComponent("c:b-1154496578", [{
+                    require('@native-twin/jsx').StyleSheet.registerComponent("c:b1753735060", [{
                         templateLiteral: null,
                         prop: "className",
                         target: "style",
@@ -907,9 +907,9 @@ function HomeScreen() {
                     className={`
             text-2xl
             ${active ? 'text-red-800' : 'text-primary'}
-          `} _twinOrd={0} _twinComponentID="c:b:a-89022128" _twinComponentTemplateEntries={
+          `} _twinOrd={0} _twinComponentID="c:b:a689551738" _twinComponentTemplateEntries={
                         [{
-                            id: "c:b:a-89022128",
+                            id: "c:b:a689551738",
                             target: "style",
                             prop: "className",
                             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
@@ -917,7 +917,7 @@ function HomeScreen() {
                         }
                         ]
                     } _twinComponentSheet={
-                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:a-89022128", [{
+                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:a689551738", [{
                             templateLiteral: null,
                             prop: "className",
                             target: "style",
@@ -949,6 +949,19 @@ function HomeScreen() {
                                     important: false,
                                     animations: []
                                 }
+                                    , {
+                                    className: "first:bg-purple-600",
+                                    declarations: [{
+                                        prop: "backgroundColor",
+                                        value: "rgba(147,51,234,1)",
+                                        _tag: "COMPILED"
+                                    }
+                                    ],
+                                    selectors: ["first", "&:first"],
+                                    precedence: 805437440,
+                                    important: false,
+                                    animations: []
+                                }
                                 ],
                                 dark: [],
                                 pointer: [],
@@ -967,16 +980,16 @@ function HomeScreen() {
                 <Pressable
                     onPressIn={() => {
                         setActive((prevState) => !prevState);
-                    }} _twinOrd={1} _twinComponentID="c:b:b-32874538" _twinComponentTemplateEntries={
+                    }} _twinOrd={1} _twinComponentID="c:b:b765609980" _twinComponentTemplateEntries={
                         []
                     } _twinComponentSheet={
-                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b-32874538", [])
+                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b765609980", [])
                     }
                 >
-                    <Text className='text-gray-200' _twinOrd={0} _twinComponentID="c:b:b:a-1664407080" _twinComponentTemplateEntries={
+                    <Text className='text-gray-200' _twinOrd={0} _twinComponentID="c:b:b:a1331900914" _twinComponentTemplateEntries={
                         []
                     } _twinComponentSheet={
-                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b:a-1664407080", [{
+                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b:a1331900914", [{
                             templateLiteral: null,
                             prop: "className",
                             target: "style",
@@ -1052,10 +1065,10 @@ function HomeScreen() {
             -top-1
             group-hover:bg-pink-800
           `}
-                    debug _twinOrd={2} _twinComponentID="c:b:c-242944440" _twinComponentTemplateEntries={
+                    debug _twinOrd={2} _twinComponentID="c:b:c573369954" _twinComponentTemplateEntries={
                         []
                     } _twinComponentSheet={
-                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c-242944440", [{
+                        require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c573369954", [{
                             templateLiteral: null,
                             prop: "className",
                             target: "style",
@@ -1100,19 +1113,6 @@ function HomeScreen() {
                                     important: false,
                                     animations: []
                                 }
-                                    , {
-                                    className: "last:text-lg",
-                                    declarations: [{
-                                        prop: "fontSize",
-                                        value: 18,
-                                        _tag: "COMPILED"
-                                    }
-                                    ],
-                                    selectors: ["last", "&:last"],
-                                    precedence: 805437440,
-                                    important: false,
-                                    animations: []
-                                }
                                 ],
                                 dark: [],
                                 pointer: [],
@@ -1141,10 +1141,10 @@ function HomeScreen() {
                 >
                     <Text
                         suppressHighlighting
-                        className='text-gray-800 group-hover:text-white' _twinOrd={0} _twinComponentID="c:b:c:a-1720548971" _twinComponentTemplateEntries={
+                        className='text-gray-800 group-hover:text-white' _twinOrd={0} _twinComponentID="c:b:c:a1255840191" _twinComponentTemplateEntries={
                             []
                         } _twinComponentSheet={
-                            require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c:a-1720548971", [{
+                            require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c:a1255840191", [{
                                 templateLiteral: null,
                                 prop: "className",
                                 target: "style",

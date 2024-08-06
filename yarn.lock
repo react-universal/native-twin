@@ -6186,6 +6186,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/metro@workspace:packages/metro"
   dependencies:
+    "@babel/traverse": "npm:^7.24.0"
+    "@babel/types": "npm:^7.24.0"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"

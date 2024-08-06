@@ -93,6 +93,7 @@
       "📦 @lib/styled",
       "@apps/expo"
     ],
+    "jest.runMode": "on-demand",
     "jest.outputConfig": {
       "revealOn": "demand",
       "revealWithFocus": "none",

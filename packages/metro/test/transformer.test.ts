@@ -2,6 +2,7 @@ import type { JsOutput } from 'metro-transform-worker';
 import fs from 'node:fs';
 import path from 'node:path';
 import { transform } from '../src/transformer/metro.transformer';
+import { TWIN_CACHE_DIR } from '../src/utils';
 import { createCacheDir } from '../src/utils/file.utils';
 import {
   createTestCompilerProgram,
@@ -9,13 +10,12 @@ import {
   metroCodeOutputPath,
   metroTestBaseConfig,
   testBaseTransformOptions,
-  twinFilePath,
 } from './test.utils';
 
 describe('Metro transformer', () => {
   beforeAll(() => {
-    createCacheDir(__dirname);
-    fs.writeFileSync(twinFilePath, '');
+    const cssOutput = path.join(__dirname, TWIN_CACHE_DIR);
+    createCacheDir(cssOutput);
   });
 
   it('typescript parser', async () => {

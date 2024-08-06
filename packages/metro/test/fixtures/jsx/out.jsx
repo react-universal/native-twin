@@ -16,9 +16,9 @@
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "bg-black last:text-lg",
       _twinOrd: 0,
-      _twinComponentID: "a-694217970",
+      _twinComponentID: "a185122343",
       _twinComponentTemplateEntries: [],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a-694217970", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a185122343", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
@@ -70,9 +70,9 @@
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         className: "text-blue",
         _twinOrd: 0,
-        _twinComponentID: "a:a-1259381967",
+        _twinComponentID: "a:a1769535000",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a:a-1259381967", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a:a1769535000", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
@@ -136,9 +136,9 @@
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         className: "text-red",
         _twinOrd: 1,
-        _twinComponentID: "a:b-1257239257",
+        _twinComponentID: "a:b1753718798",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a:b-1257239257", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a:b1753718798", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
@@ -226,15 +226,15 @@
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Pressable, {
       className: buttonVariants(props),
       _twinOrd: 0,
-      _twinComponentID: "b-694218583",
+      _twinComponentID: "b185122176",
       _twinComponentTemplateEntries: [{
-        id: "b-694218583",
+        id: "b185122176",
         target: "style",
         prop: "className",
         entries: require('@native-twin/core').tw(`${buttonVariants(props)}`),
         templateLiteral: `${buttonVariants(props)}`
       }],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("b-694218583", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("b185122176", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
@@ -252,9 +252,9 @@
       }]),
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         _twinOrd: 0,
-        _twinComponentID: "b:a-1259381866",
+        _twinComponentID: "b:a1769535167",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("b:a-1259381866", []),
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("b:a1769535167", []),
         children: "asd"
       })
     });
@@ -267,9 +267,9 @@
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "flex-1 -translate-x-2 w-[10vw]",
       _twinOrd: 0,
-      _twinComponentID: "c-694217884",
+      _twinComponentID: "c185122381",
       _twinComponentTemplateEntries: [],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c-694217884", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c185122381", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
@@ -375,9 +375,9 @@
         `,
         debug: true,
         _twinOrd: 0,
-        _twinComponentID: "c:a-1259381797",
+        _twinComponentID: "c:a1769535218",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a-1259381797", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a1769535218", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
@@ -481,9 +481,9 @@
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: "p-2 !bg-green-800",
           _twinOrd: 0,
-          _twinComponentID: "c:a:a-191903644",
+          _twinComponentID: "c:a:a689464653",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a-191903644", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a689464653", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
@@ -566,6 +566,17 @@
                 precedence: 805437440,
                 important: false,
                 animations: []
+              }, {
+                className: "last:text-lg",
+                declarations: [{
+                  prop: "fontSize",
+                  value: 18,
+                  _tag: "COMPILED"
+                }],
+                selectors: ["last", "&:last"],
+                precedence: 805437440,
+                important: false,
+                animations: []
               }],
               dark: [],
               pointer: [],
@@ -582,9 +593,9 @@
               hover:text-gray-700
               `,
             _twinOrd: 0,
-            _twinComponentID: "c:a:a:a-1636126501",
+            _twinComponentID: "c:a:a:a1139613170",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a:a-1636126501", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a:a1139613170", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
@@ -700,6 +711,17 @@
                   precedence: 805437440,
                   important: false,
                   animations: []
+                }, {
+                  className: "last:text-lg",
+                  declarations: [{
+                    prop: "fontSize",
+                    value: 18,
+                    _tag: "COMPILED"
+                  }],
+                  selectors: ["last", "&:last"],
+                  precedence: 805437440,
+                  important: false,
+                  animations: []
                 }],
                 dark: [],
                 pointer: [{
@@ -733,9 +755,9 @@
           hover:bg-pink-600
         `,
         _twinOrd: 1,
-        _twinComponentID: "c:b-1257213251",
+        _twinComponentID: "c:b1753735060",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b-1257213251", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b1753735060", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
@@ -871,15 +893,15 @@
             ${active ? 'text-red-800' : 'text-primary'}
           `,
           _twinOrd: 0,
-          _twinComponentID: "c:b:a-192015277",
+          _twinComponentID: "c:b:a689551738",
           _twinComponentTemplateEntries: [{
-            id: "c:b:a-192015277",
+            id: "c:b:a689551738",
             target: "style",
             prop: "className",
             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
             templateLiteral: `${active ? 'text-red-800' : 'text-primary'}`
           }],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:a-192015277", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:a689551738", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
@@ -947,15 +969,15 @@
             });
           },
           _twinOrd: 1,
-          _twinComponentID: "c:b:b-264901931",
+          _twinComponentID: "c:b:b765609980",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b-264901931", []),
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b765609980", []),
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: "text-gray-200",
             _twinOrd: 0,
-            _twinComponentID: "c:b:b:a-1829462821",
+            _twinComponentID: "c:b:b:a1331900914",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b:a-1829462821", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b:a1331900914", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
@@ -1046,9 +1068,9 @@
           `,
           debug: true,
           _twinOrd: 2,
-          _twinComponentID: "c:b:c-4504757",
+          _twinComponentID: "c:b:c573369954",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c-4504757", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c573369954", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
@@ -1123,9 +1145,9 @@
             suppressHighlighting: true,
             className: "text-gray-800 group-hover:text-white",
             _twinOrd: 0,
-            _twinComponentID: "c:b:c:a-1756547946",
+            _twinComponentID: "c:b:c:a1255840191",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c:a-1756547946", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c:a1255840191", [{
               templateLiteral: null,
               prop: "className",
               target: "style",

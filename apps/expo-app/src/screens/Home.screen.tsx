@@ -13,7 +13,6 @@ function HomeScreen() {
         <View className='bg-gray-600 shadow-xl rounded-2xl p-2 group-focus:bg-purple-500'>
           <Text
             className={`
-              group-hover:(text-black)
               text(center white)
               font-inter-bold hover:text-gray-700
               `}

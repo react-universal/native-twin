@@ -14,7 +14,7 @@ import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
 import { splitClasses, setupNativeTwin, ensureBuffer, getTwinConfig } from '../utils';
-import { TWIN_CACHE_DIR, TWIN_STYLES_FILE, twinHMRString } from '../utils/constants';
+import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../utils/constants';
 import {
   MetroTransformerService,
   MetroTransformerContext,
@@ -52,8 +52,8 @@ const program = Effect.gen(function* () {
   }
 
   if (transformFile.isCss) {
-    let css = sheet.refreshSheet();
-    css = `${css}\n${twinHMRString}`;
+    const css = sheet.refreshSheet();
+    // css = `${css}\n${twinHMRString}`;
     return transformer.transform(css, true);
   }
 

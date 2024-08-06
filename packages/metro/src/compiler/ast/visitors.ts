@@ -1,15 +1,10 @@
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import { Identifier, Node, ts } from 'ts-morph';
+import { Identifier, ts } from 'ts-morph';
 import { JSXElementSheet } from '@native-twin/css/jsx';
 import { JSXElementNode } from '../models/JSXElement.model';
-import { ValidOpeningElementNode } from '../twin.types';
-import {
-  createJSXAttribute,
-  entriesToObject,
-  getImportDeclaration,
-} from './constructors.utils';
+import { entriesToObject, getImportDeclaration } from './constructors.utils';
 
 export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
   // if (sheet.propEntries.length === 0) {
@@ -39,27 +34,34 @@ export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
   );
 
   pipe(
-    getOpeningElement(node.path.node),
+    node.openingElement,
     Option.map((element) => {
-      if (!element.getAttribute('_twinOrd')) {
-        element.addAttribute(createJSXAttribute('_twinOrd', `{${node.order}}`));
-      }
-      if (!element.getAttribute('_twinComponentID')) {
-        element.addAttribute(createJSXAttribute('_twinComponentID', `"${node.id}"`));
-      }
-      if (!element.getAttribute('_twinComponentTemplateEntries')) {
-        element.addAttribute(
-          createJSXAttribute(
-            '_twinComponentTemplateEntries',
-            `${componentEntries.templateEntries}`,
-          ),
-        );
-      }
-      if (!element.getAttribute('_twinComponentSheet')) {
-        element.addAttribute(
-          createJSXAttribute('_twinComponentSheet', componentEntries.styledProp),
-        );
-      }
+      node.addAttribute('_twinOrd', `{${node.order}}`);
+      node.addAttribute('_twinComponentID', `{${node.id}}`);
+      node.addAttribute(
+        '_twinComponentTemplateEntries',
+        `${componentEntries.templateEntries}`,
+      );
+      node.addAttribute('_twinComponentSheet', componentEntries.styledProp);
+      // if (!element.getAttribute('_twinOrd')) {
+      //   element.addAttribute(createJSXAttribute('_twinOrd', `{${node.order}}`));
+      // }
+      // if (!element.getAttribute('_twinComponentID')) {
+      //   element.addAttribute(createJSXAttribute('_twinComponentID', `"${node.id}"`));
+      // }
+      // if (!element.getAttribute('_twinComponentTemplateEntries')) {
+      //   element.addAttribute(
+      //     createJSXAttribute(
+      //       '_twinComponentTemplateEntries',
+      //       `${componentEntries.templateEntries}`,
+      //     ),
+      //   );
+      // }
+      // if (!element.getAttribute('_twinComponentSheet')) {
+      //   element.addAttribute(
+      //     createJSXAttribute('_twinComponentSheet', componentEntries.styledProp),
+      //   );
+      // }
     }),
   );
 
@@ -78,13 +80,4 @@ export const maybeReactNativeImport = (
       return Option.some(x);
     }),
   );
-};
-
-export const getOpeningElement = (node: Node): Option.Option<ValidOpeningElementNode> => {
-  if (Node.isJsxElement(node)) {
-    return Option.some(node.getOpeningElement());
-  } else if (Node.isJsxSelfClosingElement(node)) {
-    return Option.some(node);
-  }
-  return Option.none();
 };

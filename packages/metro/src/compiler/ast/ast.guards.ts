@@ -3,7 +3,7 @@ import type {
   ValidJSXClassnameNodeString,
   ValidJSXClassnameTemplate,
   ValidJSXElementNode,
-} from '../twin.types';
+} from './tsCompiler.types';
 
 /** @domain TypeScript Transform */
 export const isValidClassNameString = (

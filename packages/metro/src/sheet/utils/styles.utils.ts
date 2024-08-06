@@ -9,7 +9,7 @@ import {
   CompilerContext,
   isChildEntry,
 } from '@native-twin/css/jsx';
-import { JSXMappedAttribute } from '../../compiler/twin.types';
+import { JSXMappedAttribute } from '../../compiler/ast/tsCompiler.types';
 
 export const getElementEntries = (
   props: JSXMappedAttribute[],

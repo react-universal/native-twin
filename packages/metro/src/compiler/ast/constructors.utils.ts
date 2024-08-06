@@ -6,6 +6,7 @@ import { Node, StructureKind, ts } from 'ts-morph';
 import { cx } from '@native-twin/core';
 import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { mappedComponents, type MappedComponent } from '../../utils';
+import { isValidClassNameString, isValidTemplateLiteral } from './ast.guards';
 import type {
   AnyPrimitive,
   JSXClassnameStrings,
@@ -13,8 +14,7 @@ import type {
   ValidJSXClassnameNodeString,
   ValidJSXElementNode,
   ValidOpeningElementNode,
-} from '../twin.types';
-import { isValidClassNameString, isValidTemplateLiteral } from './ast.guards';
+} from './tsCompiler.types';
 import { expressionFactory } from './writer.factory';
 
 /**
@@ -54,12 +54,8 @@ export const getJSXElementTagName = (element: ValidJSXElementNode) => {
  * @domain TypeScript Transform
  * @description Extract the {@link MappedComponent} from any {@link ValidJSXElementNode}
  * */
-export const getJSXElementConfig = (tagName: Identifier) => {
-  if (!Node.isIdentifier(tagName)) return null;
-
-  const componentConfig = mappedComponents.find(
-    (x) => x.name === tagName.compilerNode.text,
-  );
+export const getJSXElementConfig = (tagName: string) => {
+  const componentConfig = mappedComponents.find((x) => x.name === tagName);
   if (!componentConfig) return null;
 
   return componentConfig;
