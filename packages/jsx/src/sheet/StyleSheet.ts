@@ -4,13 +4,13 @@ import {
   FinalSheet,
   GetChildStylesArgs,
   SelectorGroup,
-  SheetEntry,
   SheetInteractionState,
 } from '@native-twin/css';
 import {
   ComponentSheet,
   RegisteredComponent,
   RuntimeComponentEntry,
+  RuntimeSheetEntry,
 } from '@native-twin/css/jsx';
 import { Atom, atom } from '@native-twin/helpers';
 import {
@@ -98,13 +98,13 @@ export const StyleSheet = Object.assign({}, internalSheet, NativeSheet);
 
 export function createComponentSheet(
   prop: string,
-  rawSheet: RuntimeComponentEntry,
+  compiledSheet: RuntimeComponentEntry,
   ctx?: StyledContext,
   target?: string,
 ): ComponentSheet {
-  const rawEntries = rawSheet.rawEntries ?? [];
+  const rawEntries = compiledSheet.rawEntries ?? [];
   const context = ctx ?? styledContext.get();
-  const tuples = Object.entries(rawSheet.entries).map(
+  const tuples = Object.entries(compiledSheet.rawSheet).map(
     ([group, entry]) =>
       [group as SelectorGroup, sheetEntriesToStyles(entry, context)] as const,
   );
@@ -116,7 +116,7 @@ export function createComponentSheet(
   }
 
   let metadata = {
-    isGroupParent: rawSheet.rawEntries.some((x) => x.className === 'group'),
+    isGroupParent: compiledSheet.rawEntries.some((x) => x.className === 'group'),
     hasGroupEvents: Object.keys(sheet.group)?.length > 0,
     hasPointerEvents: Object.keys(sheet.pointer)?.length > 0,
     hasAnimations: rawEntries.some((x) => x.animations.length > 0),
@@ -128,14 +128,19 @@ export function createComponentSheet(
     sheet,
     getChildStyles,
     recompute: () => {
-      return createComponentSheet(prop, rawSheet, styledContext.get(), target ?? prop);
+      return createComponentSheet(
+        prop,
+        compiledSheet,
+        styledContext.get(),
+        target ?? prop,
+      );
     },
     metadata,
   };
 
   function getStyles(
     input: Partial<SheetInteractionState>,
-    templateEntries: SheetEntry[] = [],
+    templateEntries: RuntimeSheetEntry[] = [],
   ) {
     const templateFinal = StyleSheet.entriesToFinalSheet(templateEntries);
     const styles: AnyStyle = { ...sheet.base, ...templateFinal.base };

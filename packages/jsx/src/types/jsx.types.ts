@@ -1,6 +1,5 @@
 import type React from 'react';
-import { SheetEntry } from '@native-twin/css';
-import { RegisteredComponent } from '@native-twin/css/jsx';
+import type { RegisteredComponent, RuntimeSheetEntry } from '@native-twin/css/jsx';
 
 export interface JSXInternalProps extends Record<string, any> {
   twEnabled?: boolean;
@@ -22,5 +21,5 @@ export interface ComponentTemplateEntryProp {
   id: string;
   prop: string;
   target: string;
-  entries: SheetEntry[];
+  entries: RuntimeSheetEntry[];
 }

@@ -4,13 +4,13 @@ import {
   CompleteStyle,
   FinalSheet,
   getRuleSelectorGroup,
-  SheetEntry,
   SheetEntryDeclaration,
 } from '@native-twin/css';
 import type { StyledContext } from '../store/observables';
+import { RuntimeSheetEntry } from '@native-twin/css/jsx';
 
 export const sheetEntryToStyle = (
-  entry: SheetEntry,
+  entry: RuntimeSheetEntry,
   context: StyledContext,
 ): CompleteStyle | null => {
   const validRule = isApplicativeRule(entry.selectors, context);
@@ -20,7 +20,7 @@ export const sheetEntryToStyle = (
 };
 
 export const sheetEntriesToStyles = (
-  entries: SheetEntry[],
+  entries: RuntimeSheetEntry[],
   context: StyledContext,
 ): CompleteStyle => {
   return entries.reduce((prev, current) => {
@@ -36,7 +36,7 @@ export const sheetEntriesToStyles = (
     };
   }, {} as AnyStyle);
 };
-export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
+export function getSheetEntryStyles(entries: RuntimeSheetEntry[] = [], context: StyledContext) {
   return entries.reduce(
     (prev, current) => {
       const nextDecl = sheetEntryToStyle(current, context);

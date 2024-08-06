@@ -1,4 +1,4 @@
-import { SheetEntry } from '@native-twin/css';
+import type { RuntimeSheetEntry } from '@native-twin/css/jsx';
 import { ComponentTemplateEntryProp } from '../../../types/jsx.types';
 
 export const templatePropsToSheetEntriesObject = (
@@ -14,6 +14,6 @@ export const templatePropsToSheetEntriesObject = (
       }
       return prev;
     },
-    {} as Record<string, SheetEntry[]>,
+    {} as Record<string, RuntimeSheetEntry[]>,
   );
 };
