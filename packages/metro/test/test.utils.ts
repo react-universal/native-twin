@@ -8,7 +8,7 @@ import { Project } from 'ts-morph';
 import { createTailwind } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { TwinCompilerServiceLive } from '../src/compiler/models/compiler.model';
-import { compileFile } from '../src/compiler/twin.compiler';
+import { compileFile } from '../src/compiler/ts.compiler';
 import { DocumentServiceLive } from '../src/document/Document.service';
 import { StyleSheetServiceLive } from '../src/sheet/StyleSheet.service';
 import {

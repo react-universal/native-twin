@@ -9,7 +9,7 @@ import * as Option from 'effect/Option';
 import path from 'node:path';
 import { Project } from 'ts-morph';
 import { TwinCompilerServiceLive } from '../compiler/models/compiler.model';
-import * as Compiler from '../compiler/twin.compiler';
+import * as Compiler from '../compiler/ts.compiler';
 import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
