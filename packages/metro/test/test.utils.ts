@@ -7,6 +7,7 @@ import path from 'path';
 import { Project } from 'ts-morph';
 import { createTailwind } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
+import { compileFileWithBabel } from '../src/compiler/babel.compiler';
 import { TwinCompilerServiceLive } from '../src/compiler/models/compiler.model';
 import { compileFile } from '../src/compiler/ts.compiler';
 import { DocumentServiceLive } from '../src/document/Document.service';
@@ -59,6 +60,39 @@ export const createTestCompilerProgram = (filePath: string) => {
       allowedPaths,
     }),
     Effect.scoped,
+    Effect.runPromise,
+  );
+};
+
+const babelRunnable = Effect.provide(compileFileWithBabel, MainLayer);
+
+export const createBabelTestCompilerProgram = (filePath: string) => {
+  const cssOutput = path.join(__dirname, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
+  const platform = 'ios';
+  const twinConfig = twConfig;
+  const twin = createTailwind(twConfig, createVirtualSheet());
+  const allowedPaths = twinConfig.content.map((x) => path.join(__dirname, x));
+  return babelRunnable.pipe(
+    Effect.provideService(MetroTransformerContext, {
+      tsCompiler,
+      config: {
+        ...metroTestBaseConfig,
+        allowedFiles: allowedPaths,
+        outputDir: cssOutput,
+        tailwindConfigPath: __dirname,
+      },
+      filename: filePath,
+      options: testBaseTransformOptions,
+      projectRoot: __dirname,
+      cssOutput,
+      fileType: 'script',
+      isDev: true,
+      platform,
+      sourceCode: fs.readFileSync(filePath),
+      twin: twin,
+      twinConfig: twinConfig,
+      allowedPaths,
+    }),
     Effect.runPromise,
   );
 };

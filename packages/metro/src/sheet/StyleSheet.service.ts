@@ -157,8 +157,6 @@ export const StyleSheetServiceLive = Layer.scoped(
           );
         }
       }
-
-      console.log('MAP: ', cssAST.print({ removeComments: true }));
       cssAST.saveSync();
       fs.writeFileSync(cssOutput, cssAST.compilerNode.getText());
       return '';

@@ -6,8 +6,8 @@ import {
   getRuleSelectorGroup,
   SheetEntryDeclaration,
 } from '@native-twin/css';
-import type { StyledContext } from '../store/observables';
 import { RuntimeSheetEntry } from '@native-twin/css/jsx';
+import type { StyledContext } from '../store/observables';
 
 export const sheetEntryToStyle = (
   entry: RuntimeSheetEntry,
@@ -36,7 +36,10 @@ export const sheetEntriesToStyles = (
     };
   }, {} as AnyStyle);
 };
-export function getSheetEntryStyles(entries: RuntimeSheetEntry[] = [], context: StyledContext) {
+export function getSheetEntryStyles(
+  entries: RuntimeSheetEntry[] = [],
+  context: StyledContext,
+) {
   return entries.reduce(
     (prev, current) => {
       const nextDecl = sheetEntryToStyle(current, context);

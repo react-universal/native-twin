@@ -57,7 +57,11 @@ export const getJSXElementPath = (
   return taggedJSXElement.JSXSelfClosingElement({ node });
 };
 
-export const addAttributeToNode = (path: JSXElementNodePath, name: string, value: AnyPrimitive) => {
+export const addAttributeToNode = (
+  path: JSXElementNodePath,
+  name: string,
+  value: AnyPrimitive,
+) => {
   taggedJSXElement.$match({
     BabelJSXElement({ node }) {
       pipe(
@@ -71,10 +75,15 @@ export const addAttributeToNode = (path: JSXElementNodePath, name: string, value
       );
     },
     JSXelement({ node }) {
-      node.getOpeningElement().addAttribute(createJSXAttribute(name, value));
+      const openingElement = node.getOpeningElement();
+      if (!openingElement.getAttribute(name)) {
+        openingElement.addAttribute(createJSXAttribute(name, value));
+      }
     },
     JSXSelfClosingElement({ node }) {
-      node.addAttribute(createJSXAttribute(name, value));
+      if (!node.getAttribute(name)) {
+        node.addAttribute(createJSXAttribute(name, value));
+      }
     },
   })(path);
 };

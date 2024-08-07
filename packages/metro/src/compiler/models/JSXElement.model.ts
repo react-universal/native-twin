@@ -41,13 +41,14 @@ export class JSXElementNode implements Equal.Equal {
     path: ValidJSXElementNode | t.JSXElement,
     order: number,
     level: string,
+    filename: string,
     parentKey: JSXElementNode | null = null,
   ) {
     this.order = order;
     this.parent = parentKey;
     this.level = level;
 
-    const levelHash = jsxHash(level, order, 'asd');
+    const levelHash = jsxHash(level, order, filename);
     this.id = `${level}${levelHash}`;
     this.path = getJSXElementPath(path);
   }

@@ -131,10 +131,33 @@ export const addAttributesToElement = (
   node: t.JSXElement,
   attribute: { name: string; value: AnyPrimitive },
 ) => {
-  node.openingElement.attributes.push(
-    t.jsxAttribute(
-      t.jsxIdentifier(attribute.name),
-      t.jsxExpressionContainer(template.expression(`${attribute.value}`)()),
-    ),
-  );
+  const ast = template.ast(`${attribute.value}`);
+  let value: t.Expression | undefined;
+  if (Array.isArray(ast)) return;
+
+  if (t.isExpressionStatement(ast)) {
+    value = ast.expression;
+  }
+
+  if (t.isBlockStatement(ast)) {
+    const firstBlock = ast.body[0];
+    if (t.isExpression(firstBlock)) {
+      value = firstBlock;
+    }
+    if (t.isExpressionStatement(firstBlock)) {
+      value = firstBlock.expression;
+    }
+  }
+
+  if (!value) {
+    return;
+  }
+
+  try {
+    node.openingElement.attributes.push(
+      t.jsxAttribute(t.jsxIdentifier(attribute.name), t.jsxExpressionContainer(value)),
+    );
+  } catch {
+    console.log('ASD', ast);
+  }
 };

@@ -72,7 +72,12 @@ const getNodeJSXElementParents = (path: Node) => {
     if (!Node.isJsxElement(descendant) && !Node.isJsxSelfClosingElement(descendant)) {
       return undefined;
     }
-    const node = new JSXElementNode(descendant, 0, getJSXElementLevel(level++));
+    const node = new JSXElementNode(
+      descendant,
+      0,
+      getJSXElementLevel(level++),
+      path.getSourceFile().getBaseName(),
+    );
 
     parentsMap.add(node);
 
@@ -86,7 +91,14 @@ const getBabelJSXElementParents = (ast: ParseResult<t.File>) => {
   const parents = new Set<JSXElementNode>();
   traverse(ast, {
     JSXElement(path) {
-      parents.add(new JSXElementNode(path.node, 0, getJSXElementLevel(level++)));
+      parents.add(
+        new JSXElementNode(
+          path.node,
+          0,
+          getJSXElementLevel(level++),
+          ast.loc?.filename ?? ast.type,
+        ),
+      );
       path.skip();
     },
   });
@@ -107,7 +119,12 @@ export const getJSXElementChilds = (current: JSXElementNode) => {
         RA.filterMap((x) => pipe(x, Option.liftPredicate(isValidJSXElement))),
         RA.map(
           (x, i) =>
-            new JSXElementNode(x, i, getJSXElementLevel(i, current.level), current),
+            new JSXElementNode(
+              x,
+              i,
+              getJSXElementLevel(i, current.level),
+              element.node.getSourceFile().getBaseName(),
+            ),
         ),
         HashSet.fromIterable,
       );
@@ -120,7 +137,13 @@ export const getJSXElementChilds = (current: JSXElementNode) => {
         RA.filterMap((x) => pipe(x, Option.liftPredicate(t.isJSXElement))),
         RA.map(
           (x, i) =>
-            new JSXElementNode(x, i, getJSXElementLevel(i, current.level), current),
+            new JSXElementNode(
+              x,
+              i,
+              getJSXElementLevel(i, current.level),
+              node.loc?.filename ?? node.type,
+              current,
+            ),
         ),
         HashSet.fromIterable,
       );

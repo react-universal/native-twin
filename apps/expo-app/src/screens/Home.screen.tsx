@@ -8,9 +8,9 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1'>
-      <View className={`flex-1 items-center justify-center bg-cyan-500 group`}>
-        <View className='bg-gray-600 shadow-xl rounded-2xl p-2 group-focus:bg-purple-500'>
+    <View className='flex-1 first:bg-purple-500'>
+      <View className={`flex-1 items-center justify-center group`}>
+        <View className='shadow-xl rounded-2xl p-2 group-focus:bg-purple-500'>
           <Text
             className={`
               text(center white)
