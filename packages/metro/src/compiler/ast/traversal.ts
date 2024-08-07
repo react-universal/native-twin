@@ -4,6 +4,7 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Queue from 'effect/Queue';
 import { JSXElementNode } from '../models/JSXElement.model';
+import { getJSXElementChilds } from '../models/compiler.model';
 
 export const traverseASTQueue = (nodeSet: HashSet.HashSet<JSXElementNode>) => {
   return Effect.gen(function* () {
@@ -25,7 +26,10 @@ export const traverseASTQueue = (nodeSet: HashSet.HashSet<JSXElementNode>) => {
         elements,
         RA.fromIterable,
         RA.flatMap((x): Effect.Effect<boolean>[] => {
-          return [sendElement(queue, x), ...flatElements(RA.fromIterable(x.childs))];
+          return [
+            sendElement(queue, x),
+            ...flatElements(RA.fromIterable(getJSXElementChilds(x))),
+          ];
         }),
       );
     }

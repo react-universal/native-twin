@@ -1,12 +1,12 @@
 import CodeBlock from 'code-block-writer';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
+import * as Option from 'effect/Option';
 import type { Identifier, JsxAttributeStructure } from 'ts-morph';
 import { Node, StructureKind, ts } from 'ts-morph';
 import { cx } from '@native-twin/core';
 import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
-import { mappedComponents, type MappedComponent } from '../../utils';
-import { isValidClassNameString, isValidTemplateLiteral } from './ast.guards';
+import { type MappedComponent } from '../../utils';
 import type {
   AnyPrimitive,
   JSXClassnameStrings,
@@ -15,6 +15,8 @@ import type {
   ValidJSXElementNode,
   ValidOpeningElementNode,
 } from '../types/tsCompiler.types';
+import { isValidClassNameString, isValidTemplateLiteral } from './ast.guards';
+import { getJSXElementConfig } from './shared.utils';
 import { expressionFactory } from './writer.factory';
 
 /**
@@ -50,15 +52,16 @@ export const getJSXElementTagName = (element: ValidJSXElementNode) => {
   return tagNameNode;
 };
 
-/**
- * @domain TypeScript Transform
- * @description Extract the {@link MappedComponent} from any {@link ValidJSXElementNode}
- * */
-export const getJSXElementConfig = (tagName: string) => {
-  const componentConfig = mappedComponents.find((x) => x.name === tagName);
-  if (!componentConfig) return null;
-
-  return componentConfig;
+export const getJSXRuntimeData = (node: ValidJSXElementNode, openingElement: ValidOpeningElementNode): JSXMappedAttribute[] => {
+  const styledConfig = pipe(
+    node,
+    getJSXElementTagName,
+    Option.fromNullable,
+    Option.flatMap((x) => Option.fromNullable(getJSXElementConfig(x.compilerNode.text))),
+  );
+  return Option.map(styledConfig, (config) => {
+    return getComponentStyledEntries(openingElement, config);
+  }).pipe(Option.getOrElse(() => []));
 };
 
 /**

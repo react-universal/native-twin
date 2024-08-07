@@ -1,20 +1,17 @@
-import type { ParseResult } from '@babel/parser';
-import { parse } from '@babel/parser';
-import traverse from '@babel/traverse';
-import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
-import { getJSXElementLevel } from '../utils/jsx.utils';
 import { visitElementNode } from './ast/visitors';
 import { JSXElementNode } from './models/JSXElement.model';
+import { TwinCompilerService } from './models/compiler.model';
 
 export const compileFileWithBabel = Effect.gen(function* () {
   const ctx = yield* MetroTransformerContext;
-  const ast = yield* Effect.sync(() => parseCode(ctx.sourceCode.toString('utf-8')));
-  const parents = getParents(ast);
+  const compiler = yield* TwinCompilerService;
+  const ast = yield* compiler.getBabelAST;
+  const parents = yield* compiler.getBabelParentNodes(ast);
   const elements = pipe(
     createElementStyleSheet(parents),
     HashSet.map((node) => {
@@ -22,7 +19,8 @@ export const compileFileWithBabel = Effect.gen(function* () {
         baseRem: ctx.twinConfig.root.rem,
         platform: ctx.options.platform ?? 'ios',
       };
-      const sheet = node.getTwinSheet(ctx.twin, context);
+      const childs = compiler.getJSXElementChilds(node);
+      const sheet = node.getTwinSheet(ctx.twin, context, HashSet.size(childs));
       return visitElementNode(node, sheet);
     }),
   );
@@ -32,6 +30,7 @@ export const compileFileWithBabel = Effect.gen(function* () {
     full: '',
     elements,
   };
+  console.log(arr);
 
   return result;
 
@@ -42,7 +41,8 @@ export const compileFileWithBabel = Effect.gen(function* () {
       value,
       HashSet.reduce(HashSet.empty<JSXElementNode>(), (prev, current) => {
         return pipe(
-          createElementStyleSheet(current.childs),
+          compiler.getJSXElementChilds(current),
+          createElementStyleSheet,
           HashSet.add(current),
           HashSet.union(prev),
         );
@@ -50,22 +50,3 @@ export const compileFileWithBabel = Effect.gen(function* () {
     );
   }
 });
-
-const getParents = (ast: ParseResult<t.File>) => {
-  let level = 0;
-  const parents = new Set<JSXElementNode>();
-  traverse(ast, {
-    JSXElement(path) {
-      parents.add(new JSXElementNode(path.node, 0, getJSXElementLevel(level++)));
-      path.skip();
-    },
-  });
-  return HashSet.fromIterable(parents);
-};
-
-const parseCode = (code: string) =>
-  parse(code, {
-    plugins: ['jsx', 'typescript'],
-    sourceType: 'module',
-    errorRecovery: true,
-  });

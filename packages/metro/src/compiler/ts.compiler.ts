@@ -3,16 +3,15 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import { visitElementNode } from './ast/visitors';
-import { compileFileWithBabel } from './babel.compiler';
 import { JSXElementNode } from './models/JSXElement.model';
-import { TwinCompilerService } from './models/compiler.model';
+import { getJSXElementChilds, TwinCompilerService } from './models/compiler.model';
 
 export const compileFile = Effect.gen(function* () {
   const compiler = yield* TwinCompilerService;
   const ctx = yield* MetroTransformerContext;
-  yield* compileFileWithBabel;
 
-  const parents = yield* compiler.getParentNodes(compiler.ast);
+  const ast = yield* compiler.getTSast;
+  const parents = yield* compiler.getTsParentNodes(ast);
 
   const elements = pipe(
     createElementStyleSheet(parents),
@@ -21,18 +20,19 @@ export const compileFile = Effect.gen(function* () {
         baseRem: ctx.twinConfig.root.rem,
         platform: ctx.options.platform ?? 'ios',
       };
-      const sheet = node.getTwinSheet(ctx.twin, context);
+      const childs = getJSXElementChilds(node);
+      const sheet = node.getTwinSheet(ctx.twin, context, HashSet.size(childs));
       return visitElementNode(node, sheet);
     }),
   );
 
-  yield* Effect.sync(() => compiler.ast.formatText());
-  yield* Effect.promise(() => compiler.ast.save());
+  yield* Effect.sync(() => ast.formatText());
+  yield* Effect.promise(() => ast.save());
 
   const result = {
-    code: compiler.ast.getText(),
-    full: compiler.ast.getFullText(),
-    compilerNode: compiler.ast.compilerNode.text,
+    code: ast.getText(),
+    full: ast.getFullText(),
+    compilerNode: ast.compilerNode.text,
     elements,
   };
 
@@ -45,7 +45,8 @@ export const compileFile = Effect.gen(function* () {
       value,
       HashSet.reduce(HashSet.empty<JSXElementNode>(), (prev, current) => {
         return pipe(
-          createElementStyleSheet(current.childs),
+          getJSXElementChilds(current),
+          createElementStyleSheet,
           HashSet.add(current),
           HashSet.union(prev),
         );
