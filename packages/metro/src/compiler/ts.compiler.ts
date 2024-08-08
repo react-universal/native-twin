@@ -4,7 +4,7 @@ import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import { visitElementNode } from './ast/visitors';
 import { JSXElementNode } from './models/JSXElement.model';
-import { getJSXElementChilds, TwinCompilerService } from './models/compiler.model';
+import { getJSXElementChilds, TwinCompilerService } from './compiler.service';
 
 export const compileFile = Effect.gen(function* () {
   const compiler = yield* TwinCompilerService;

@@ -1,14 +1,15 @@
 import * as NodeFileSystem from '@effect/platform-node-shared/NodeFileSystem';
-import { Logger, LogLevel, Supervisor } from 'effect';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
+import * as LogLevel from 'effect/LogLevel';
+import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
 import path from 'node:path';
 import { Project } from 'ts-morph';
-import { TwinCompilerServiceLive } from '../compiler/models/compiler.model';
+import { TwinCompilerServiceLive } from '../compiler/compiler.service';
 import * as Compiler from '../compiler/ts.compiler';
 import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
@@ -35,7 +36,6 @@ const program = Effect.gen(function* () {
   const documents = yield* DocumentService;
   const transformer = yield* MetroTransformerService;
   const sheet = yield* StyleSheetService;
-  yield* Supervisor.track;
 
   const transformFile = documents
     .getDocument({

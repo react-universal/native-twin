@@ -9,12 +9,12 @@ import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import { Node, SourceFile, SyntaxKind } from 'ts-morph';
-import { MetroTransformerContext } from '../../transformer/transformer.service';
-import { getJSXElementLevel } from '../../utils/jsx.utils';
-import { isValidJSXElement } from '../ast/ast.guards';
-import { taggedJSXElement } from '../ast/shared.utils';
-import type { ValidJSXElementNode } from '../types/tsCompiler.types';
-import { JSXElementNode } from './JSXElement.model';
+import { MetroTransformerContext } from '../transformer/transformer.service';
+import { getJSXElementLevel } from '../utils/jsx.utils';
+import { isValidJSXElement } from './ast/ast.guards';
+import { taggedJSXElement } from './ast/shared.utils';
+import { JSXElementNode } from './models/JSXElement.model';
+import type { ValidJSXElementNode } from './types/tsCompiler.types';
 
 export class TwinCompilerService extends Context.Tag('compiler/file-state')<
   TwinCompilerService,

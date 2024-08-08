@@ -185,7 +185,7 @@ export const createJSXAttribute = (
 };
 
 export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) => {
-  const { writer, array, identifier, object } = expressionFactory(new CodeBlock());
+  const { writer, identifier, object } = expressionFactory(new CodeBlock());
   const templateEntries = expressionFactory(new CodeBlock());
   templateEntries.writer.block(() => {
     templateEntries.writer.write('[');
