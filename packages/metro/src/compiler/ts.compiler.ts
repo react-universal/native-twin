@@ -20,7 +20,7 @@ export const compileFile = Effect.gen(function* () {
         baseRem: ctx.twinConfig.root.rem,
         platform: ctx.options.platform ?? 'ios',
       };
-      const childs = getJSXElementChilds(node);
+      const childs = getJSXElementChilds(node, ctx.filename);
       const sheet = node.getTwinSheet(ctx.twin, context, HashSet.size(childs));
       return visitElementNode(node, sheet);
     }),
@@ -45,7 +45,7 @@ export const compileFile = Effect.gen(function* () {
       value,
       HashSet.reduce(HashSet.empty<JSXElementNode>(), (prev, current) => {
         return pipe(
-          getJSXElementChilds(current),
+          getJSXElementChilds(current, ctx.filename),
           createElementStyleSheet,
           HashSet.add(current),
           HashSet.union(prev),

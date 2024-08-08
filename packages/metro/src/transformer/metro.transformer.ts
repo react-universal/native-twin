@@ -52,8 +52,7 @@ const program = Effect.gen(function* () {
   }
 
   if (transformFile.isCss) {
-    const css = sheet.refreshSheet();
-    // css = `${css}\n${twinHMRString}`;
+    const css = yield* Effect.promise(() => sheet.refreshSheet());
     return transformer.transform(css, true);
   }
 
@@ -87,7 +86,11 @@ const program = Effect.gen(function* () {
   );
 
   if (compiled && HashSet.size(classNames) > 0) {
-    const registered = sheet.registerEntries(babelEntries, context.platform);
+    const requireGlobal = `const globalStyles = require('.cache/native-twin/twin.styles');`;
+    compiled.full = `${requireGlobal}\n${compiled.full}`;
+    const registered = yield* Effect.promise(() =>
+      sheet.registerEntries(babelEntries, context.platform),
+    );
     if (registered) {
       transformFile.version = transformFile.version + 1;
       sendUpdate(

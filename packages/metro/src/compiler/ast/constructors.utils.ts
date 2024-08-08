@@ -52,7 +52,10 @@ export const getJSXElementTagName = (element: ValidJSXElementNode) => {
   return tagNameNode;
 };
 
-export const getJSXRuntimeData = (node: ValidJSXElementNode, openingElement: ValidOpeningElementNode): JSXMappedAttribute[] => {
+export const getJSXRuntimeData = (
+  node: ValidJSXElementNode,
+  openingElement: ValidOpeningElementNode,
+): JSXMappedAttribute[] => {
   const styledConfig = pipe(
     node,
     getJSXElementTagName,
@@ -85,8 +88,6 @@ export const getComponentID = (node: ValidJSXElementNode, filename: string) => {
   const tagName = getJSXElementTagName(node)?.compilerNode.text;
   return `${filename}-${node.getStart()}-${node.getEnd()}-${tagName ?? 'Unknown'}`;
 };
-
-// export const getIdentifierText = (node: Identifier) => node.compilerNode.text;
 
 const getClassNameNodeString = (
   value: ValidJSXClassnameNodeString,
@@ -184,7 +185,7 @@ export const createJSXAttribute = (
 };
 
 export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) => {
-  const { writer, array, identifier } = expressionFactory(new CodeBlock());
+  const { writer, array, identifier, object } = expressionFactory(new CodeBlock());
   const templateEntries = expressionFactory(new CodeBlock());
   templateEntries.writer.block(() => {
     templateEntries.writer.write('[');
@@ -208,17 +209,22 @@ export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) =>
   const styledProp = writer
     .block(() => {
       identifier(`require('@native-twin/jsx').StyleSheet.registerComponent("${id}", `);
-      array(
-        entries.map((x) => {
-          return {
-            templateLiteral: null,
-            prop: x.prop,
-            target: x.target,
-            entries: x.entries,
-            rawSheet: x.rawSheet,
-          };
-        }),
-      );
+      entries.forEach((x) => {
+        writer.write('[');
+        writer.block(() => {
+          writer.write('templateLiteral: ');
+          identifier('null,');
+          writer.write('prop: ').write(`"${x.prop}",`);
+          writer.write('target: ').write(`"${x.target}",`);
+          writer.write('entries: ');
+          writer.write('[');
+          x.entries.forEach((x) => identifier(`globalStyles.get("${x.className}"),`));
+          identifier('].filter(Boolean),');
+          writer.write('rawSheet: ');
+          object(x.rawSheet).write(',');
+        });
+        identifier(']');
+      });
       identifier(`)`);
     })
     .toString();

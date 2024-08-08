@@ -9,6 +9,7 @@ import { Node, Project, SyntaxKind } from 'ts-morph';
 import { RuntimeSheetEntry } from '@native-twin/css/jsx';
 import { expressionFactory } from '../compiler/ast/writer.factory';
 import { MetroTransformerContext } from '../transformer/transformer.service';
+import { requireJS } from '../utils';
 
 // import { twinHMRString, twinModuleExportString } from '../utils';
 
@@ -17,8 +18,8 @@ export class StyleSheetService extends Context.Tag('files/StyleSheetService')<
   {
     cssOutput: string;
     getSheetDocumentText(version: number): string;
-    refreshSheet(): string;
-    registerEntries(entries: RuntimeSheetEntry[], platform: string): string;
+    refreshSheet(): Promise<string>;
+    registerEntries(entries: RuntimeSheetEntry[], platform: string): Promise<string>;
     entriesToObject(newEntries: RuntimeSheetEntry[]): object;
     readSheet(): string;
   }
@@ -54,29 +55,8 @@ export const StyleSheetServiceLive = Layer.scoped(
     };
 
     function getSheetDocumentText(version: number) {
-      // const twinStyles = fs.readFileSync(cssOutput, 'utf-8');
-      // if (!twinStyles)
-      //   return `{"version": ${version},"cssOutput": "${cssOutput}", "entries": {}}`;
-
-      // let code = `${twinStyles.replace(new RegExp(twinModuleExportString, 'g'), ' ')}`;
-      // code = code.replace(
-      //   "require('@native-twin/metro/build/metro/server/poll-update-client')",
-      //   ' ',
-      // );
-      // code = `${code.replace(/\n/g, ' ')}`;
-
-      // if (code === '') {
-      //   code = `{"version": ${version},"cssOutput": "${cssOutput}", "entries": {}}`;
-      // }
-      // try {
-      //   const current: Record<string, any> = JSON.parse(code) ?? {};
-      //   const entries = entriesToObject(Object.values(current?.['entries'] ?? {}));
-      //   return JSON.stringify({ version, cssOutput, entries });
-      // } catch (e: any) {
-      //   console.log('PARSER_ERROR: ', e);
-      //   return `{"version": ${version},"cssOutput": "${cssOutput}", "entries": {}}`;
-      // }
-      return '';
+      const refreshedFile: Map<string, RuntimeSheetEntry> = requireJS(cssOutput);
+      return JSON.stringify(Object.fromEntries(Object.entries(refreshedFile.entries())));
     }
 
     function entriesToObject(newEntries: RuntimeSheetEntry[]) {
@@ -87,7 +67,10 @@ export const StyleSheetServiceLive = Layer.scoped(
       }, {});
     }
 
-    function registerEntries(entries: RuntimeSheetEntry[], platform: string): string {
+    async function registerEntries(
+      entries: RuntimeSheetEntry[],
+      platform: string,
+    ): Promise<string> {
       entries = entries.filter((x) => {
         if (x.selectors.length === 0) return true;
         const hasWeb = x.selectors.some((x) => x.includes('web'));
@@ -119,15 +102,11 @@ export const StyleSheetServiceLive = Layer.scoped(
       return refreshSheet();
     }
 
-    function refreshSheet(): string {
+    async function refreshSheet(): Promise<string> {
       const twinStyles = fs.readFileSync(cssOutput, 'utf-8');
       const cssAST = tsCompiler.createSourceFile(cssOutput, twinStyles, {
         overwrite: true,
       });
-      // let code = getSheetDocumentText(1);
-
-      // code = `${twinModuleExportString}${code}`;
-      // code = `${code}\n${twinHMRString}`;
 
       const newMap = cssAST.getFirstDescendantByKind(SyntaxKind.NewExpression);
       if (newMap) {
@@ -137,13 +116,15 @@ export const StyleSheetServiceLive = Layer.scoped(
           pipe(
             entriesSet,
             RA.fromIterable,
-            RA.filter(
-              (entry) =>
-                !!first.getElements().find((record) => {
-                  const token = record.getFirstDescendantByKind(SyntaxKind.StringLiteral);
-                  return token && token.compilerNode.text === entry.className;
-                }),
-            ),
+            // RA.dedupe,
+            // RA.filter(
+            //   (entry) =>
+            //     first.getElements().length === 0 ||
+            //     first.getElements().filter((record) => {
+            //       const token = record.getFirstDescendantByKind(SyntaxKind.StringLiteral);
+            //       return token && token.compilerNode.text === entry.className;
+            //     }).length > 0,
+            // ),
             (entries) => {
               const mapEntries = RA.map(entries, (x) => [x.className, x] as const);
               mapEntries.forEach((x) => {
@@ -158,8 +139,10 @@ export const StyleSheetServiceLive = Layer.scoped(
         }
       }
       cssAST.saveSync();
-      fs.writeFileSync(cssOutput, cssAST.compilerNode.getText());
-      return '';
+      const text = cssAST.compilerNode.getText();
+
+      await new Promise((r) => r(fs.writeFileSync(cssOutput, text)));
+      return fs.readFileSync(cssOutput, 'utf-8');
     }
   }),
 );

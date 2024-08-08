@@ -3,7 +3,6 @@ import * as Equal from 'effect/Equal';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import nodePath from 'node:path';
 import { __Theme__, RuntimeTW } from '@native-twin/core';
 import {
   getChildRuntimeEntries,
@@ -15,19 +14,13 @@ import { getElementEntries } from '../../sheet/utils/styles.utils';
 import { getBabelElementMappedAttributes } from '../ast/babel.constructors';
 import { getJSXRuntimeData } from '../ast/constructors.utils';
 import {
+  createJSXElementNodeHash,
   getJSXElementPath,
   getJSXNodeOpenElement,
   JSXElementNodePath,
   taggedJSXElement,
 } from '../ast/shared.utils';
 import { JSXMappedAttribute, ValidJSXElementNode } from '../types/tsCompiler.types';
-
-const jsxHash = (level: string, order: number, path: string) =>
-  pipe(
-    Hash.number(order),
-    Hash.combine(Hash.string(level)),
-    Hash.combine(Hash.string(nodePath.basename(path))),
-  );
 
 export class JSXElementNode implements Equal.Equal {
   readonly path: JSXElementNodePath;
@@ -48,7 +41,7 @@ export class JSXElementNode implements Equal.Equal {
     this.parent = parentKey;
     this.level = level;
 
-    const levelHash = jsxHash(level, order, filename);
+    const levelHash = createJSXElementNodeHash(level, order, filename);
     this.id = `${level}${levelHash}`;
     this.path = getJSXElementPath(path);
   }
@@ -76,8 +69,8 @@ export class JSXElementNode implements Equal.Equal {
     };
     this._runtimeSheet = pipe(
       Option.fromNullable(this.parent),
-      Option.map((x) => ({
-        entries: x.getTwinSheet(twin, ctx, childsNumber).childEntries,
+      Option.map((parentNode) => ({
+        entries: parentNode.getTwinSheet(twin, ctx, childsNumber).childEntries,
         childsNumber: childsNumber,
       })),
       Option.match({

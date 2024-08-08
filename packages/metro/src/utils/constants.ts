@@ -40,4 +40,4 @@ export const platformVariants = ['web', 'native', 'ios', 'android'];
 export const twinModuleExportString = 'module.exports = new Map([])';
 export const TWIN_GLOBAL_SHEET_IMPORT_NAME = '__twinGlobal__sheet';
 export const twinHMRString =
-  "require('@native-twin/metro/build/metro/server/poll-update-client')";
+  "require('@native-twin/metro/build/config/server/poll-update-client')";

@@ -8,8 +8,9 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1 first:bg-purple-500'>
-      <View className={`flex-1 items-center justify-center group`}>
+    <View className='flex-1'>
+      <View className={`flex-1 items-center justify-center group bg-yellow-800`}>
+        <Button size='large' />
         <View className='shadow-xl rounded-2xl p-2 group-focus:bg-purple-500'>
           <Text
             className={`
@@ -20,13 +21,12 @@ function HomeScreen() {
             Hello World
           </Text>
         </View>
-        <Button size='large' />
       </View>
       <View
         className={`
           group
           flex-[2] items-center justify-center
-          bg-gray-800 hover:bg-red-600
+          bg-blue-800 hover:bg-red-600
         `}
       >
         <Text
@@ -42,7 +42,7 @@ function HomeScreen() {
             setActive((prevState) => !prevState);
           }}
         >
-          <Text className='text-gray-200 text-sm'>Activate</Text>
+          <Text className='text-red-200 text-sm'>Activate</Text>
         </Pressable>
         <Image
           source={testImage}

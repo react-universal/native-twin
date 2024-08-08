@@ -51,33 +51,28 @@ export const TwinCompilerServiceLive = Layer.scoped(
         }),
       ),
       getTsJSXElements: (node: Node) =>
-        Effect.sync(() => extractJSXElementsFromNode(node)),
+        Effect.sync(() => extractJSXElementsFromNode(node, ctx.filename)),
       getTsParentNodes: (from) =>
         Effect.sync(() => {
-          return getNodeJSXElementParents(from);
+          return getNodeJSXElementParents(from, ctx.filename);
         }),
       getBabelParentNodes: (from) =>
         Effect.sync(() => {
-          return getBabelJSXElementParents(from);
+          return getBabelJSXElementParents(from, ctx.filename);
         }),
-      getJSXElementChilds: (from) => getJSXElementChilds(from),
+      getJSXElementChilds: (from) => getJSXElementChilds(from, ctx.filename),
     };
   }),
 );
 
-const getNodeJSXElementParents = (path: Node) => {
+const getNodeJSXElementParents = (path: Node, filePath: string) => {
   let level = 0;
   const parentsMap = new Set<JSXElementNode>();
   path.forEachDescendant((descendant, traversal) => {
     if (!Node.isJsxElement(descendant) && !Node.isJsxSelfClosingElement(descendant)) {
       return undefined;
     }
-    const node = new JSXElementNode(
-      descendant,
-      0,
-      getJSXElementLevel(level++),
-      path.getSourceFile().getBaseName(),
-    );
+    const node = new JSXElementNode(descendant, 0, getJSXElementLevel(level++), filePath);
 
     parentsMap.add(node);
 
@@ -86,18 +81,13 @@ const getNodeJSXElementParents = (path: Node) => {
   return pipe(parentsMap, HashSet.fromIterable);
 };
 
-const getBabelJSXElementParents = (ast: ParseResult<t.File>) => {
+const getBabelJSXElementParents = (ast: ParseResult<t.File>, filePath: string) => {
   let level = 0;
   const parents = new Set<JSXElementNode>();
   traverse(ast, {
     JSXElement(path) {
       parents.add(
-        new JSXElementNode(
-          path.node,
-          0,
-          getJSXElementLevel(level++),
-          ast.loc?.filename ?? ast.type,
-        ),
+        new JSXElementNode(path.node, 0, getJSXElementLevel(level++), filePath),
       );
       path.skip();
     },
@@ -105,13 +95,16 @@ const getBabelJSXElementParents = (ast: ParseResult<t.File>) => {
   return HashSet.fromIterable(parents);
 };
 
-const extractJSXElementsFromNode = (path: Node): ValidJSXElementNode[] =>
+const extractJSXElementsFromNode = (
+  path: Node,
+  filePath: string,
+): ValidJSXElementNode[] =>
   pipe(
     path.getDescendantsOfKind(SyntaxKind.JsxElement),
     RA.appendAll(path.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement)),
   );
 
-export const getJSXElementChilds = (current: JSXElementNode) => {
+export const getJSXElementChilds = (current: JSXElementNode, filePath: string) => {
   return taggedJSXElement.$match({
     JSXelement: (element) => {
       return pipe(
@@ -123,7 +116,8 @@ export const getJSXElementChilds = (current: JSXElementNode) => {
               x,
               i,
               getJSXElementLevel(i, current.level),
-              element.node.getSourceFile().getBaseName(),
+              filePath,
+              current,
             ),
         ),
         HashSet.fromIterable,
@@ -141,7 +135,7 @@ export const getJSXElementChilds = (current: JSXElementNode) => {
               x,
               i,
               getJSXElementLevel(i, current.level),
-              node.loc?.filename ?? node.type,
+              filePath,
               current,
             ),
         ),

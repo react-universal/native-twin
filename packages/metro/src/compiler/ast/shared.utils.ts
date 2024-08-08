@@ -1,7 +1,9 @@
 import * as t from '@babel/types';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
+import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
+import nodePath from 'node:path';
 import { JsxElement, JsxSelfClosingElement, Node } from 'ts-morph';
 import { mappedComponents } from '../../utils';
 import { AnyPrimitive, ValidJSXElementNode } from '../types/tsCompiler.types';
@@ -87,3 +89,14 @@ export const addAttributeToNode = (
     },
   })(path);
 };
+
+/**
+ * @domain Shared Transform
+ * @description Create the {@link JSXElementNode} Hash id
+ * */
+export const createJSXElementNodeHash = (level: string, order: number, path: string) =>
+  pipe(
+    Hash.number(order),
+    Hash.combine(Hash.string(level)),
+    Hash.combine(Hash.string(nodePath.basename(path))),
+  );

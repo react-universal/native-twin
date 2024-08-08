@@ -1,6 +1,6 @@
+import generate from '@babel/generator';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
-import generate from '@babel/generator';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
@@ -30,8 +30,8 @@ export const compileFileWithBabel = Effect.gen(function* () {
     code: generate(ast).code,
     full: generate(ast).code,
     elements,
+    arr,
   };
-  console.log(arr);
 
   return result;
 

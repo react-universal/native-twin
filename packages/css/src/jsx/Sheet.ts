@@ -79,9 +79,9 @@ export const applyParentEntries = (
     RA.map((entry): RuntimeComponentEntry => {
       const newSheet = entry.rawSheet;
       if (order === 0) newSheet.base.push(...parentEntries.first);
-      if (order === parentChildsNumber - 1) newSheet.base.push(...parentEntries.last);
-      if (order % 2 === 0) newSheet.base.push(...parentEntries.even);
-      if (order % 2 !== 0) newSheet.base.push(...parentEntries.odd);
+      if ((order + 1) === parentChildsNumber) newSheet.base.push(...parentEntries.last);
+      if ((order + 1) % 2 === 0) newSheet.base.push(...parentEntries.even);
+      if ((order + 1) % 2 !== 0) newSheet.base.push(...parentEntries.odd);
       return {
         ...entry,
         rawSheet: newSheet,
