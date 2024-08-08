@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Text, Image, Pressable, View } from 'react-native';
+import { useAssets } from 'expo-asset';
 import { Button } from '../components/Button';
 import { TextField } from '../components/TextField';
 
-const testImage = require('../../assets/favicon.png');
-
 function HomeScreen() {
   const [active, setActive] = useState(true);
+  const [testImage] = useAssets([require('../../assets/favicon.png')]);
+  console.log('ASSET: ', testImage);
   return (
     <View className='flex-1'>
       <View className={`flex-1 items-center justify-center group bg-yellow-800`}>
@@ -44,16 +45,17 @@ function HomeScreen() {
         >
           <Text className='text-red-200 text-sm'>Activate</Text>
         </Pressable>
-        <Image
-          source={testImage}
-          src={testImage}
-          resizeMode='cover'
-          style={{
-            width: 100,
-            height: 100,
-          }}
-          className='rounded-full border-1'
-        />
+        {testImage && !!testImage[0] && (
+          <Image
+            src={testImage[0] as any as string}
+            resizeMode='cover'
+            style={{
+              width: 100,
+              height: 100,
+            }}
+            className='rounded-full border-1'
+          />
+        )}
         <TextField />
         <View
           className={`

@@ -37,6 +37,10 @@ const program = Effect.gen(function* () {
   const transformer = yield* MetroTransformerService;
   const sheet = yield* StyleSheetService;
 
+  if (transformer.isNotAllowedPath()) {
+    return transformer.transform(context.sourceCode, true);
+  }
+
   const transformFile = documents
     .getDocument({
       data: context.sourceCode,
@@ -54,14 +58,6 @@ const program = Effect.gen(function* () {
   if (transformFile.isCss) {
     const css = yield* Effect.promise(() => sheet.refreshSheet());
     return transformer.transform(css, true);
-  }
-
-  if (transformer.isNotAllowedPath()) {
-    return transformer.transform(context.sourceCode, true);
-  }
-
-  if (!transformFile) {
-    return transformer.transform(context.sourceCode, true);
   }
 
   const compiled = yield* Compiler.compileFile;
