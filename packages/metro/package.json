@@ -28,6 +28,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@effect/platform": "^0.61.5",
+    "@effect/platform-node": "^0.56.6",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",

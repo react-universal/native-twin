@@ -10,7 +10,7 @@ function HomeScreen() {
   console.log('ASSET: ', testImage);
   return (
     <View className='flex-1'>
-      <View className={`flex-1 items-center justify-center group bg-yellow-800`}>
+      <View className={`flex-1 items-center justify-center group bg-yellow-200`}>
         <Button size='large' />
         <View className='shadow-xl rounded-2xl p-2 group-focus:bg-purple-500'>
           <Text

@@ -3,7 +3,7 @@ import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
 export interface CssToReactNativeRuntimeOptions {}
 
 /** @domain NativeTwin config options */
-export interface MetroWithNativeWindOptions extends CssToReactNativeRuntimeOptions {
+export interface MetroWithNativeTwindOptions extends CssToReactNativeRuntimeOptions {
   projectRoot?: string;
   outputDir?: string;
   configPath?: string;

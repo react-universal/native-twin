@@ -4695,46 +4695,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/platform-node-shared@npm:^0.3.23":
-  version: 0.3.23
-  resolution: "@effect/platform-node-shared@npm:0.3.23"
+"@effect/platform-node-shared@npm:^0.11.5":
+  version: 0.11.5
+  resolution: "@effect/platform-node-shared@npm:0.11.5"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
-    multipasta: "npm:^0.2.0"
+    multipasta: "npm:^0.2.2"
   peerDependencies:
-    "@effect/platform": ^0.48.23
-    effect: ^2.4.16
-  checksum: 10/132a447999b7160382fa41773ea1ec8370de0f2defd62e300c29cd1ffca27b601410f55134911d93b4178213a025d5dac585136ae67ef1c9c6f72773950c3436
+    "@effect/platform": ^0.61.5
+    effect: ^3.6.1
+  checksum: 10/01bb529c4485a0a18f6ed4eb65c1ed6c64ae0a5e075036d595b67e9838193ca2aa22de60dc8deda8c883e3fe946b51954d3853726d34de0280ca28db8a464e0d
   languageName: node
   linkType: hard
 
-"@effect/platform-node@npm:0.45.25":
-  version: 0.45.25
-  resolution: "@effect/platform-node@npm:0.45.25"
+"@effect/platform-node@npm:^0.56.6":
+  version: 0.56.6
+  resolution: "@effect/platform-node@npm:0.56.6"
   dependencies:
-    "@effect/platform-node-shared": "npm:^0.3.23"
+    "@effect/platform-node-shared": "npm:^0.11.5"
     mime: "npm:^3.0.0"
-    undici: "npm:^6.10.1"
-    ws: "npm:^8.16.0"
+    undici: "npm:^6.19.2"
+    ws: "npm:^8.18.0"
   peerDependencies:
-    "@effect/platform": ^0.48.23
-    effect: ^2.4.16
-  checksum: 10/3fcdf09076679cfa613af32c8fa192fe0fe403c89ebfff14a5fa195e57f7d4e10ff6d3b8a94b56e25b8c7a38413d6e5b94f97ce20d9fbb6d211ae7a007fbbda5
+    "@effect/platform": ^0.61.5
+    effect: ^3.6.1
+  checksum: 10/249c04f55444159370a71e9301668a5e39da260f045a21011f863274fbe57043f6eb7701920bd61a0771f14567f350620c685d4a38c5c0922a14441db0899a22
   languageName: node
   linkType: hard
 
-"@effect/platform@npm:0.48.23":
-  version: 0.48.23
-  resolution: "@effect/platform@npm:0.48.23"
+"@effect/platform@npm:^0.61.5":
+  version: 0.61.5
+  resolution: "@effect/platform@npm:0.61.5"
   dependencies:
-    find-my-way-ts: "npm:^0.1.1"
-    isomorphic-ws: "npm:^5.0.0"
-    multipasta: "npm:^0.2.0"
-    path-browserify: "npm:^1.0.1"
+    find-my-way-ts: "npm:^0.1.5"
+    multipasta: "npm:^0.2.2"
   peerDependencies:
-    "@effect/schema": ^0.64.17
-    effect: ^2.4.16
-  checksum: 10/cea8de6555fdb5f493f09038d0087ff1683f4e934c0e729f0a269b857aa7a7aab5cf5579fd77696aa96d8fc87814772696c787c8783efa2fd64c3f82ad0bd7a8
+    "@effect/schema": ^0.70.2
+    effect: ^3.6.1
+  checksum: 10/e6e3a0d9f85d0ef928af8a965294cc262bb40d2cf14afbc938effff4912d76d77b1f7afcb5e02e53368790abda0efc5a8970b933641c283836064e2589b14eca
   languageName: node
   linkType: hard
 
@@ -6036,8 +6034,8 @@ __metadata:
   resolution: "@native-twin/builder@workspace:packages/builder"
   dependencies:
     "@effect/cli": "npm:0.35.25"
-    "@effect/platform": "npm:0.48.23"
-    "@effect/platform-node": "npm:0.45.25"
+    "@effect/platform": "npm:^0.61.5"
+    "@effect/platform-node": "npm:^0.56.6"
     "@effect/printer": "npm:0.32.1"
     "@effect/printer-ansi": "npm:0.32.25"
     "@effect/schema": "npm:^0.66.10"
@@ -6188,6 +6186,8 @@ __metadata:
   dependencies:
     "@babel/traverse": "npm:^7.24.0"
     "@babel/types": "npm:^7.24.0"
+    "@effect/platform": "npm:^0.61.5"
+    "@effect/platform-node": "npm:^0.56.6"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
@@ -13153,13 +13153,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-decode-uri-component@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "fast-decode-uri-component@npm:1.0.1"
-  checksum: 10/4b6ed26974414f688be4a15eab6afa997bad4a7c8605cb1deb928b28514817b4523a1af0fa06621c6cbfedb7e5615144c2c3e7512860e3a333a31a28d537dca7
-  languageName: node
-  linkType: hard
-
 "fast-deep-equal@npm:^3.1.1, fast-deep-equal@npm:^3.1.3":
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
@@ -13231,15 +13224,6 @@ __metadata:
   version: 1.1.3
   resolution: "fast-loops@npm:1.1.3"
   checksum: 10/1bf9f102d8ed48a8c8304e2b27fd32afa65d370498db9b49d5762696ac4aa8c55593d505c142c2b7e25ca79f45207c4b25f778afd80f35df98cb2caaaf9609b7
-  languageName: node
-  linkType: hard
-
-"fast-querystring@npm:^1.0.0":
-  version: 1.1.2
-  resolution: "fast-querystring@npm:1.1.2"
-  dependencies:
-    fast-decode-uri-component: "npm:^1.0.1"
-  checksum: 10/981da9b914f2b639dc915bdfa4f34ab028b967d428f02fbd293d99258593fde69c48eea73dfa03ced088268e0a8045c642e8debcd9b4821ebd125e130a0430c7
   languageName: node
   linkType: hard
 
@@ -13415,12 +13399,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-my-way-ts@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "find-my-way-ts@npm:0.1.1"
-  dependencies:
-    fast-querystring: "npm:^1.0.0"
-  checksum: 10/3d512a05da7fb12fa07f22cc2e9812ac1b8f8b1f993c512684d9dde31cbf0bf5bcdc99511cbc1739df161c3c7738f006f7183c01522e5f7d0b065712039b0853
+"find-my-way-ts@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "find-my-way-ts@npm:0.1.5"
+  checksum: 10/307bc2a40fce048d45bf64888ac04cde350d266edc9001b956da1ba39a36405a05cd33658f1b9e6278f0f450db1842a3a06f66cbb0aa75b15b1c3fa1fbd721e2
   languageName: node
   linkType: hard
 
@@ -15274,15 +15256,6 @@ __metadata:
   version: 3.0.1
   resolution: "isobject@npm:3.0.1"
   checksum: 10/db85c4c970ce30693676487cca0e61da2ca34e8d4967c2e1309143ff910c207133a969f9e4ddb2dc6aba670aabce4e0e307146c310350b298e74a31f7d464703
-  languageName: node
-  linkType: hard
-
-"isomorphic-ws@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "isomorphic-ws@npm:5.0.0"
-  peerDependencies:
-    ws: "*"
-  checksum: 10/e20eb2aee09ba96247465fda40c6d22c1153394c0144fa34fe6609f341af4c8c564f60ea3ba762335a7a9c306809349f9b863c8beedf2beea09b299834ad5398
   languageName: node
   linkType: hard
 
@@ -17527,10 +17500,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multipasta@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "multipasta@npm:0.2.0"
-  checksum: 10/6dc377bcc884d4759a54a011ad9dedbbe8be1959256ab1962b5a02105e27d9984d3290b61eb0de68dc689a908a6895194b3f0af76cdc43bd24a0f42fd8cb3f56
+"multipasta@npm:^0.2.2":
+  version: 0.2.5
+  resolution: "multipasta@npm:0.2.5"
+  checksum: 10/0461ecc73cbd20080bcc2a0194e677a1af5e973ff33eeee89d3e1f6e19edd596b0d663090f81698e23ac4b5f72824dd4ece2d6ed98152927d42f5181180fedbd
   languageName: node
   linkType: hard
 
@@ -22529,10 +22502,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^6.10.1":
-  version: 6.11.1
-  resolution: "undici@npm:6.11.1"
-  checksum: 10/129480684630e5723b7f4a946c1d9f8120f9b5697cb2032d791d1e3d2898a90eed0ed63c6ef5641502569dca0112759948564354a932c8172fc96845aaf2dd28
+"undici@npm:^6.19.2":
+  version: 6.19.5
+  resolution: "undici@npm:6.19.5"
+  checksum: 10/ea7752b1f989095d940d89c7b4f17ae64f4619c946621d065ca1a49549af7d50bd461f1e1090aa8a766f6b86a092ae63587eac2bf6c7aefd3e8571b245e89f2d
   languageName: node
   linkType: hard
 
@@ -23354,9 +23327,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.16.0":
-  version: 8.16.0
-  resolution: "ws@npm:8.16.0"
+"ws@npm:^8.18.0":
+  version: 8.18.0
+  resolution: "ws@npm:8.18.0"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ">=5.0.2"
@@ -23365,7 +23338,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 10/7c511c59e979bd37b63c3aea4a8e4d4163204f00bd5633c053b05ed67835481995f61a523b0ad2b603566f9a89b34cb4965cb9fab9649fbfebd8f740cea57f17
+  checksum: 10/70dfe53f23ff4368d46e4c0b1d4ca734db2c4149c6f68bc62cb16fc21f753c47b35fcc6e582f3bdfba0eaeb1c488cddab3c2255755a5c3eecb251431e42b3ff6
   languageName: node
   linkType: hard
 

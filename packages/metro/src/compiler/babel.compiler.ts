@@ -11,7 +11,7 @@ import { TwinCompilerService } from './compiler.service';
 export const compileFileWithBabel = Effect.gen(function* () {
   const ctx = yield* MetroTransformerContext;
   const compiler = yield* TwinCompilerService;
-  const ast = yield* compiler.getBabelAST;
+  const ast = yield* compiler.getBabelAST(ctx.filename, ctx.sourceCode.toString('utf-8'));
   const parents = yield* compiler.getBabelParentNodes(ast);
   const elements = pipe(
     createElementStyleSheet(parents),

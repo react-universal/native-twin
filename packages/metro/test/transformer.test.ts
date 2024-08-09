@@ -12,12 +12,12 @@ import {
   testBaseTransformOptions,
 } from './test.utils';
 
-describe('Metro transformer', () => {
-  beforeAll(() => {
-    const cssOutput = path.join(__dirname, TWIN_CACHE_DIR);
-    createCacheDir(cssOutput);
-  });
+const cssOutput = path.join(__dirname, TWIN_CACHE_DIR);
+beforeAll(() => {
+  createCacheDir(cssOutput);
+});
 
+describe('Metro transformer', () => {
   it('typescript parser', async () => {
     const result = await createTestCompilerProgram(
       path.join(__dirname, 'fixtures/jsx', 'code.tsx'),

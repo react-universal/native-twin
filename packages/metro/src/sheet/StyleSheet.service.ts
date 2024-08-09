@@ -139,10 +139,55 @@ export const StyleSheetServiceLive = Layer.scoped(
         }
       }
       cssAST.saveSync();
-      const text = cssAST.compilerNode.getText();
+      // const text = cssAST.compilerNode.getText();
 
-      await new Promise((r) => r(fs.writeFileSync(cssOutput, text)));
+      // await new Promise((r) => r(fs.writeFileSync(cssOutput, text)));
       return fs.readFileSync(cssOutput, 'utf-8');
     }
   }),
 );
+
+export async function refreshTwinFile(
+  cssOutput: string,
+  entries: RuntimeSheetEntry[],
+): Promise<string> {
+  const twinStyles = fs.readFileSync(cssOutput, 'utf-8');
+  const cssAST = tsCompiler.createSourceFile(cssOutput, twinStyles, {
+    overwrite: true,
+  });
+
+  const newMap = cssAST.getFirstDescendantByKind(SyntaxKind.NewExpression);
+  if (newMap) {
+    const EArguments = newMap.getArguments();
+
+    newMap.removeArgument(EArguments[0]);
+    const first = newMap.insertArgument(0, '[]');
+    if (first && Node.isArrayLiteralExpression(first)) {
+      pipe(
+        entries,
+
+        RA.filter(
+          (entry) =>
+            first.getElements().length === 0 ||
+            first.getElements().filter((record) => {
+              const token = record.getFirstDescendantByKind(SyntaxKind.StringLiteral);
+              return token && token.compilerNode.text === entry.className;
+            }).length > 0,
+        ),
+        RA.dedupeWith((a, b) => a.className === b.className),
+        RA.forEach((x) => {
+          first.addElement((w) => {
+            const { writer, array } = expressionFactory(w);
+            array([x.className, x]);
+            return writer;
+          });
+        }),
+      );
+    }
+  }
+  await cssAST.save();
+  const text = cssAST.compilerNode.getText();
+
+  await new Promise((r) => r(fs.writeFileSync(cssOutput, text)));
+  return text;
+}

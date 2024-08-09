@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@effect/cli": "0.35.25",
-    "@effect/platform": "0.48.23",
-    "@effect/platform-node": "0.45.25",
+    "@effect/platform": "^0.61.5",
+    "@effect/platform-node": "^0.56.6",
     "@effect/printer": "0.32.1",
     "@effect/printer-ansi": "0.32.25",
     "@effect/schema": "^0.66.10",

@@ -1,8 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
+    "lib": ["ESNext", "DOM","DOM.Iterable"],
     "jsx": "react-native",
+    "target": "ES2022",
+    "moduleDetection": "force",
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
     "noEmit": true,
     "noUncheckedIndexedAccess": false,
     "noPropertyAccessFromIndexSignature": false

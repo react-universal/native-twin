@@ -2,8 +2,8 @@
 npx metro build index.js \
 -c=metro.config.js \
 --minify=false \
---source-map=false \
+--source-map=true \
 --platform=ios \
 --out=metro-test/bundled \
---dev=false \
+--dev=true \
 --reset-cache=true

@@ -19,8 +19,8 @@ import type { ValidJSXElementNode } from './types/tsCompiler.types';
 export class TwinCompilerService extends Context.Tag('compiler/file-state')<
   TwinCompilerService,
   {
-    getTSast: Effect.Effect<SourceFile>;
-    getBabelAST: Effect.Effect<ParseResult<t.File>>;
+    getTSast: (filename: string, code: string) => Effect.Effect<SourceFile>;
+    getBabelAST: (filename: string, code: string) => Effect.Effect<ParseResult<t.File>>;
     getTsJSXElements: (node: Node) => Effect.Effect<ValidJSXElementNode[]>;
     getTsParentNodes: (from: Node) => Effect.Effect<HashSet.HashSet<JSXElementNode>>;
     getBabelParentNodes: (
@@ -34,22 +34,23 @@ export const TwinCompilerServiceLive = Layer.scoped(
   TwinCompilerService,
   Effect.gen(function* () {
     const ctx = yield* MetroTransformerContext;
-    const code = Buffer.from(ctx.sourceCode).toString('utf-8');
 
     return {
-      getTSast: Effect.sync(() =>
-        ctx.tsCompiler.createSourceFile(ctx.filename, code, {
-          overwrite: true,
-        }),
-      ),
-      getBabelAST: Effect.sync(() =>
-        parse(code, {
-          plugins: ['jsx', 'typescript'],
-          sourceType: 'module',
-          errorRecovery: true,
-          tokens: true,
-        }),
-      ),
+      getTSast: (filename, code) =>
+        Effect.sync(() =>
+          ctx.tsCompiler.createSourceFile(filename, code, {
+            overwrite: true,
+          }),
+        ),
+      getBabelAST: (filename, code) =>
+        Effect.sync(() =>
+          parse(code, {
+            plugins: ['jsx', 'typescript'],
+            sourceType: 'module',
+            errorRecovery: true,
+            tokens: true,
+          }),
+        ),
       getTsJSXElements: (node: Node) =>
         Effect.sync(() => extractJSXElementsFromNode(node, ctx.filename)),
       getTsParentNodes: (from) =>
@@ -81,7 +82,7 @@ const getNodeJSXElementParents = (path: Node, filePath: string) => {
   return pipe(parentsMap, HashSet.fromIterable);
 };
 
-const getBabelJSXElementParents = (ast: ParseResult<t.File>, filePath: string) => {
+export const getBabelJSXElementParents = (ast: ParseResult<t.File>, filePath: string) => {
   let level = 0;
   const parents = new Set<JSXElementNode>();
   traverse(ast, {

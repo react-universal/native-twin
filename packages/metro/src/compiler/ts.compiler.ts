@@ -3,14 +3,14 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import { visitElementNode } from './ast/visitors';
-import { JSXElementNode } from './models/JSXElement.model';
 import { getJSXElementChilds, TwinCompilerService } from './compiler.service';
+import { JSXElementNode } from './models/JSXElement.model';
 
 export const compileFile = Effect.gen(function* () {
   const compiler = yield* TwinCompilerService;
   const ctx = yield* MetroTransformerContext;
 
-  const ast = yield* compiler.getTSast;
+  const ast = yield* compiler.getTSast(ctx.filename, ctx.sourceCode.toString('utf-8'));
   const parents = yield* compiler.getTsParentNodes(ast);
 
   const elements = pipe(
@@ -54,3 +54,20 @@ export const compileFile = Effect.gen(function* () {
     );
   }
 });
+
+export function createElementStyleSheet(
+  value: HashSet.HashSet<JSXElementNode>,
+  filePath: string,
+): HashSet.HashSet<JSXElementNode> {
+  return pipe(
+    value,
+    HashSet.reduce(HashSet.empty<JSXElementNode>(), (prev, current) => {
+      return pipe(
+        getJSXElementChilds(current, filePath),
+        (x) => createElementStyleSheet(x, filePath),
+        HashSet.add(current),
+        HashSet.union(prev),
+      );
+    }),
+  );
+}

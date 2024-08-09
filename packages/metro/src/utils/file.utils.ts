@@ -28,16 +28,10 @@ export const createCacheDir = (outputDir: string) => {
     fs.mkdirSync(outputDir, { recursive: true });
   }
   fs.writeFileSync(path.join(outputDir, TWIN_STYLES_FILE), twinModuleExportString);
-  // const nodeModulesDir = path.join(outputDir, 'node_modules');
-  // const cacheDir = path.join(nodeModulesDir, '.cache');
-  // const twinDir = path.join(cacheDir, 'native-twin');
-  // if (!fs.existsSync(nodeModulesDir)) {
-  //   fs.mkdirSync(nodeModulesDir);
-  // }
-  // if (!fs.existsSync(cacheDir)) {
-  //   fs.mkdirSync(cacheDir);
-  // }
-  // if (!fs.existsSync(twinDir)) {
-  //   fs.mkdirSync(twinDir);
-  // }
+};
+
+export const deleteCacheDir = (outputDir: string) => {
+  if (!fs.existsSync(path.resolve(outputDir))) {
+    fs.rmdirSync(outputDir, { recursive: true });
+  }
 };

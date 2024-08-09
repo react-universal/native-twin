@@ -1,15 +1,18 @@
+import * as Effect from 'effect/Effect';
 import type { GetTransformOptions } from 'metro-config';
 import path from 'node:path';
-import { createWatcher } from './cli';
+import { compilerRunnable } from './cli';
+import { makeLive } from './cli/MetroCli.service';
 import { decorateMetroServer } from './config/server/server.decorator';
 import type {
-  MetroWithNativeWindOptions,
+  MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
   MetroContextConfig,
 } from './metro.types';
 import {
   createCacheDir,
   getUserNativeWindConfig,
+  setupNativeTwin,
   TWIN_CACHE_DIR,
   TWIN_STYLES_FILE,
 } from './utils';
@@ -20,7 +23,7 @@ export function withNativeTwin(
     outputDir = ['node_modules', '.cache', 'native-twin'].join(path.sep),
     projectRoot = process.cwd(),
     configPath: twinConfigPath = 'tailwind.config.ts',
-  }: MetroWithNativeWindOptions = {},
+  }: MetroWithNativeTwindOptions = {},
 ): ComposableIntermediateConfigT {
   const metroContext: MetroContextConfig = {
     configPath: twinConfigPath,
@@ -33,37 +36,29 @@ export function withNativeTwin(
 
   createCacheDir(metroContext.outputDir);
 
+  const twConfig = getUserNativeWindConfig(twinConfigPath, metroContext.outputDir);
+
   const getTransformOptions = async (...args: Parameters<GetTransformOptions>) => {
     return metroConfig.transformer?.getTransformOptions(...args);
   };
 
-  const twConfig = getUserNativeWindConfig(twinConfigPath, metroContext.outputDir);
-
-  const { watcher, processFiles } = createWatcher(
-    {
-      configPath: twinConfigPath,
-      projectRoot: projectRoot,
-    },
-    twConfig,
+  const twin = setupNativeTwin(twConfig, {
+    dev: metroContext.dev,
+    hot: metroContext.hot,
+    platform: 'ios',
+  });
+  const runResult = compilerRunnable.pipe(
+    Effect.provide(
+      makeLive({
+        ...metroContext,
+        twConfig,
+        platform: 'ios',
+        twin: twin.tw,
+      }),
+    ),
+    Effect.runFork,
   );
-
-  const deferred: string[] = [];
-
-  watcher.on('add', (path) => {
-    // console.log('ADD: ', path);
-    deferred.push(path);
-  });
-  watcher.on('ready', () => {
-    // console.log('READY');
-    processFiles(deferred, {
-      configPath: twinConfigPath,
-      projectRoot,
-    });
-  });
-  watcher.on('change', (_path, _stats) => {
-    // console.log('CHANGED_PATH: ', path);
-    // console.log('STATS: ', stats);
-  });
+  runResult;
 
   return {
     ...metroConfig,
@@ -73,6 +68,7 @@ export function withNativeTwin(
       twConfig,
       path.join(metroContext.outputDir, TWIN_STYLES_FILE),
     ),
+
     // resolver: createMetroResolver(
     //   metroConfig.resolver,
     //   {
