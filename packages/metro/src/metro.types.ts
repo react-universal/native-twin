@@ -1,4 +1,6 @@
 import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
+import type { RuntimeTW, TailwindConfig, __Theme__ } from '@native-twin/core';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 
 export interface CssToReactNativeRuntimeOptions {}
 
@@ -46,4 +48,7 @@ export interface MetroContextConfig extends MetroConfigInternal {
   hot: boolean;
   outputDir: string;
   twinCacheFile: string;
+  twConfig: TailwindConfig<__Theme__ & TailwindPresetTheme>;
+  platform: string;
+  twin: RuntimeTW;
 }

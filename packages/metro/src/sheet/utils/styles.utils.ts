@@ -24,6 +24,8 @@ export const getElementEntries = (
       const entries = twin(classNames);
       const runtimeEntries = pipe(
         entries,
+        RA.dedupeWith((a, b) => a.className === b.className),
+        
         RA.map((x) => compileSheetEntry(x, ctx)),
         sortSheetEntries,
       );

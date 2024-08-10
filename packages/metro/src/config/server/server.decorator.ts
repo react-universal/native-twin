@@ -96,7 +96,7 @@ export const decorateMetroServer = (
                 platform,
                 dev: url.searchParams.get('dev') !== 'false',
                 hot: url.searchParams.get('hot') !== 'true',
-              }).tw;
+              });
             }
           } catch (error) {
             return next(error);

@@ -4678,102 +4678,107 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/cli@npm:0.35.25":
-  version: 0.35.25
-  resolution: "@effect/cli@npm:0.35.25"
+"@effect/cli@npm:^0.40.6":
+  version: 0.40.6
+  resolution: "@effect/cli@npm:0.40.6"
   dependencies:
-    ini: "npm:^4.1.2"
+    ini: "npm:^4.1.3"
     toml: "npm:^3.0.0"
-    yaml: "npm:^2.4.1"
+    yaml: "npm:^2.4.5"
   peerDependencies:
-    "@effect/platform": ^0.48.23
-    "@effect/printer": ^0.32.1
-    "@effect/printer-ansi": ^0.32.25
-    "@effect/schema": ^0.64.17
-    effect: ^2.4.16
-  checksum: 10/a778ca557351eedc3f8ff728088acbeff432c405024a510ff56996526e1e85d16de8a47586ea12d5b748af932ea0e69094e12ad2bd748c9d1e84f79d0612d9be
+    "@effect/platform": ^0.61.6
+    "@effect/printer": ^0.34.2
+    "@effect/printer-ansi": ^0.34.2
+    "@effect/schema": ^0.70.3
+    effect: ^3.6.2
+  checksum: 10/1c18f05b75c70851a80891f2fb77e83806e16ce8d4b0130c422a47068d87f3702c167145ef3576fd7325bd8d776033597a9fca5489c8bf357260156681abd304
   languageName: node
   linkType: hard
 
-"@effect/platform-node-shared@npm:^0.11.5":
-  version: 0.11.5
-  resolution: "@effect/platform-node-shared@npm:0.11.5"
+"@effect/experimental@npm:^0.22.4":
+  version: 0.22.4
+  resolution: "@effect/experimental@npm:0.22.4"
+  dependencies:
+    msgpackr: "npm:^1.10.2"
+  peerDependencies:
+    "@effect/platform": ^0.61.6
+    "@effect/platform-node": ^0.56.7
+    "@effect/schema": ^0.70.3
+    effect: ^3.6.2
+    ioredis: ^5
+    lmdb: ^3
+    ws: ^8
+  peerDependenciesMeta:
+    "@effect/platform-node":
+      optional: true
+    ioredis:
+      optional: true
+    lmdb:
+      optional: true
+    ws:
+      optional: true
+  checksum: 10/f13c1ddaf4d9fe8476c0189cbbee6b6a73a4b3c72e8ab94bcb80b0a67285c84b7a9ff577410bc6589a08840c396ae5672d00402730c021f1b02d72453c534115
+  languageName: node
+  linkType: hard
+
+"@effect/platform-node-shared@npm:^0.11.6":
+  version: 0.11.6
+  resolution: "@effect/platform-node-shared@npm:0.11.6"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     multipasta: "npm:^0.2.2"
   peerDependencies:
-    "@effect/platform": ^0.61.5
-    effect: ^3.6.1
-  checksum: 10/01bb529c4485a0a18f6ed4eb65c1ed6c64ae0a5e075036d595b67e9838193ca2aa22de60dc8deda8c883e3fe946b51954d3853726d34de0280ca28db8a464e0d
+    "@effect/platform": ^0.61.6
+    effect: ^3.6.2
+  checksum: 10/56ee5e34fbee129cb87fdc075d992fb280127bd4de5fb088cdc38a9d82627dd7afb4e09036000c6d7ba570a72b51db69fabc45ada39aeb780d3382b2cab14d1a
   languageName: node
   linkType: hard
 
-"@effect/platform-node@npm:^0.56.6":
-  version: 0.56.6
-  resolution: "@effect/platform-node@npm:0.56.6"
+"@effect/platform-node@npm:^0.56.7":
+  version: 0.56.7
+  resolution: "@effect/platform-node@npm:0.56.7"
   dependencies:
-    "@effect/platform-node-shared": "npm:^0.11.5"
+    "@effect/platform-node-shared": "npm:^0.11.6"
     mime: "npm:^3.0.0"
     undici: "npm:^6.19.2"
     ws: "npm:^8.18.0"
   peerDependencies:
-    "@effect/platform": ^0.61.5
-    effect: ^3.6.1
-  checksum: 10/249c04f55444159370a71e9301668a5e39da260f045a21011f863274fbe57043f6eb7701920bd61a0771f14567f350620c685d4a38c5c0922a14441db0899a22
+    "@effect/platform": ^0.61.6
+    effect: ^3.6.2
+  checksum: 10/6de0e2e77fc42df24cc737ed40c472a8074d0062f9fde24d7904a2896a0be39af5790b8ccb75e39f540145b4a32b3bb72571b6bb836802108eb837f7b637a3af
   languageName: node
   linkType: hard
 
-"@effect/platform@npm:^0.61.5":
-  version: 0.61.5
-  resolution: "@effect/platform@npm:0.61.5"
+"@effect/platform@npm:^0.61.6":
+  version: 0.61.6
+  resolution: "@effect/platform@npm:0.61.6"
   dependencies:
     find-my-way-ts: "npm:^0.1.5"
     multipasta: "npm:^0.2.2"
   peerDependencies:
-    "@effect/schema": ^0.70.2
-    effect: ^3.6.1
-  checksum: 10/e6e3a0d9f85d0ef928af8a965294cc262bb40d2cf14afbc938effff4912d76d77b1f7afcb5e02e53368790abda0efc5a8970b933641c283836064e2589b14eca
+    "@effect/schema": ^0.70.3
+    effect: ^3.6.2
+  checksum: 10/34f215dd7895a1b70b4a48a7bb829018376374aaf64487492207222522bad28b8b0bb524738fd5425a02ed05c2cfbb3e87a9fa4654a0d6cf1a1baca5fe7488d4
   languageName: node
   linkType: hard
 
-"@effect/printer-ansi@npm:0.32.25":
-  version: 0.32.25
-  resolution: "@effect/printer-ansi@npm:0.32.25"
+"@effect/schema@npm:^0.70.3":
+  version: 0.70.3
+  resolution: "@effect/schema@npm:0.70.3"
   dependencies:
-    "@effect/printer": "npm:^0.32.1"
+    fast-check: "npm:^3.20.0"
   peerDependencies:
-    "@effect/typeclass": ^0.23.16
-    effect: ^2.4.16
-  checksum: 10/f6aee26259c26a702099d04e1e88731326abfa059ce5ef8c5d8c7aec6032ae1d57ed90f03e3d3d66694f5e1222c04dec148957a642f46a2fb4a826b522ceee15
+    effect: ^3.6.2
+  checksum: 10/b18395448ef984cc837c2ee74d7a653614eb98e6ad119ce90b2eae636f3a1c80d660dc01fcdffe49772b2ebde7ab48749608735f470965f27a66bca69f3ce769
   languageName: node
   linkType: hard
 
-"@effect/printer@npm:0.32.1, @effect/printer@npm:^0.32.1":
-  version: 0.32.1
-  resolution: "@effect/printer@npm:0.32.1"
+"@effect/typeclass@npm:^0.25.2":
+  version: 0.25.2
+  resolution: "@effect/typeclass@npm:0.25.2"
   peerDependencies:
-    "@effect/typeclass": ^0.23.16
-    effect: ^2.4.16
-  checksum: 10/a06eaa00325b8d6dcd4cbabd55d2741b7d74540e2298b76be6540ad0570cde72dab39ef16139c4d84d29b8590c71ffba0938e826decae4a49a87a0932e241cdd
-  languageName: node
-  linkType: hard
-
-"@effect/schema@npm:^0.66.10":
-  version: 0.66.10
-  resolution: "@effect/schema@npm:0.66.10"
-  peerDependencies:
-    effect: ^3.0.7
-    fast-check: ^3.13.2
-  checksum: 10/4ebb7a5cbab5a21f6b3730fbab65c70c8c615e663ed5c4c3614d018fc4bd542bf0a6b01456c74357fd76489cbced5891efb4e58e1228328dbf48d2bd412cc0b8
-  languageName: node
-  linkType: hard
-
-"@effect/typeclass@npm:^0.25.1":
-  version: 0.25.1
-  resolution: "@effect/typeclass@npm:0.25.1"
-  peerDependencies:
-    effect: ^3.6.1
-  checksum: 10/292379e7d7e396bc23cda56fd6049c419e739ad81fe80de312caa14157d41bfe1cf4a0cd177d76511a73c9c77af75d2dda0ecdea5f55b18f39b8bbe9f6a0d718
+    effect: ^3.6.2
+  checksum: 10/99e98955cf6709193cb0cab55a4ec1ae26fa2fb382f4ce1d7ae64c0cc5fd034093d3bd9febd1c6ee7aa065a972ee6ede8bc42e7d5f60698807cd5ccda4d0f90c
   languageName: node
   linkType: hard
 
@@ -5992,6 +5997,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.3"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.3"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.3"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.3"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.3"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.3"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@native-twin/arc-parser@workspace:*, @native-twin/arc-parser@workspace:packages/arc-parser":
   version: 0.0.0-use.local
   resolution: "@native-twin/arc-parser@workspace:packages/arc-parser"
@@ -6012,13 +6059,13 @@ __metadata:
     "@babel/preset-typescript": "npm:7.23.3"
     "@babel/traverse": "npm:^7.24.0"
     "@babel/types": "npm:^7.24.0"
-    "@effect/schema": "npm:^0.66.10"
+    "@effect/schema": "npm:^0.70.3"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
     babel-plugin-tester: "npm:^11.0.4"
-    effect: "npm:^3.6.0"
+    effect: "npm:^3.6.2"
     jest: "npm:*"
     metro-react-native-babel-preset: "npm:^0.77.0"
   peerDependencies:
@@ -6033,15 +6080,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/builder@workspace:packages/builder"
   dependencies:
-    "@effect/cli": "npm:0.35.25"
-    "@effect/platform": "npm:^0.61.5"
-    "@effect/platform-node": "npm:^0.56.6"
-    "@effect/printer": "npm:0.32.1"
-    "@effect/printer-ansi": "npm:0.32.25"
-    "@effect/schema": "npm:^0.66.10"
-    "@effect/typeclass": "npm:^0.25.1"
+    "@effect/cli": "npm:^0.40.6"
+    "@effect/platform": "npm:^0.61.6"
+    "@effect/platform-node": "npm:^0.56.7"
+    "@effect/schema": "npm:^0.70.3"
     "@types/fs-extra": "npm:11.0.4"
-    effect: "npm:^3.6.0"
+    effect: "npm:^3.6.2"
     esbuild: "npm:^0.20.2"
     fs-extra: "npm:11.2.0"
     minimist: "npm:^1.2.8"
@@ -6071,10 +6115,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/css@workspace:packages/css"
   dependencies:
-    "@effect/typeclass": "npm:^0.25.1"
+    "@effect/typeclass": "npm:^0.25.2"
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/helpers": "workspace:*"
-    effect: "npm:^3.6.0"
+    effect: "npm:^3.6.2"
     jest: "npm:*"
   dependenciesMeta:
     jest:
@@ -6133,7 +6177,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.6.0"
+    effect: "npm:^3.6.2"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6163,7 +6207,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.6.0"
+    effect: "npm:^3.6.2"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6186,8 +6230,9 @@ __metadata:
   dependencies:
     "@babel/traverse": "npm:^7.24.0"
     "@babel/types": "npm:^7.24.0"
-    "@effect/platform": "npm:^0.61.5"
-    "@effect/platform-node": "npm:^0.56.6"
+    "@effect/experimental": "npm:^0.22.4"
+    "@effect/platform": "npm:^0.61.6"
+    "@effect/platform-node": "npm:^0.56.7"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
@@ -6199,7 +6244,8 @@ __metadata:
     ast-pretty-print: "npm:^2.0.1"
     chokidar: "npm:^3.6.0"
     code-block-writer: "npm:^13.0.1"
-    effect: "npm:^3.6.0"
+    effect: "npm:^3.6.2"
+    fast-check: "npm:^3.21.0"
     jest: "npm:*"
     jiti: "npm:1.21.0"
     metro-react-native-babel-preset: "npm:^0.77.0"
@@ -6279,7 +6325,7 @@ __metadata:
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
-    effect: "npm:^3.6.0"
+    effect: "npm:^3.6.2"
     jest: "npm:*"
     madge: "npm:7.0.0"
     typescript-template-language-service-decorator: "npm:2.3.2"
@@ -11820,10 +11866,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"effect@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "effect@npm:3.6.0"
-  checksum: 10/93ed4c9c29982b5f66d6ff94e01aaed66a8fa93a2e9d3329543dd5e89b0d3ac6fc29b89566b35c54ef7923cb2f3843d0032f6a5e855a0b36f804441e1593468d
+"effect@npm:^3.6.2":
+  version: 3.6.2
+  resolution: "effect@npm:3.6.2"
+  checksum: 10/5aeb9f97bcd86c474abc56c67298c009ad94fa84090906609abf043c45d87bec67a5d546890cce8abab5b45123c0ab5ae96d71036097a76eda33795051783230
   languageName: node
   linkType: hard
 
@@ -13150,6 +13196,15 @@ __metadata:
     iconv-lite: "npm:^0.4.24"
     tmp: "npm:^0.0.33"
   checksum: 10/776dff1d64a1d28f77ff93e9e75421a81c062983fd1544279d0a32f563c0b18c52abbb211f31262e2827e48edef5c9dc8f960d06dd2d42d1654443b88568056b
+  languageName: node
+  linkType: hard
+
+"fast-check@npm:^3.20.0, fast-check@npm:^3.21.0":
+  version: 3.21.0
+  resolution: "fast-check@npm:3.21.0"
+  dependencies:
+    pure-rand: "npm:^6.1.0"
+  checksum: 10/64e221858d5d98c6ea10c81e6a1a66760565bca41883466891974197a5439c7f0fe1dc293b8d887eaf959d0ff85197cc9d76813ae6215b018cde313254db7d53
   languageName: node
   linkType: hard
 
@@ -14597,10 +14652,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ini@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "ini@npm:4.1.2"
-  checksum: 10/383396e45965bdd32ac18d405db1726d51e43e5c792325b4247736c4a402cdc0b448cc9e85960f0c13f1ab603a14a11ed4c9c796a385aced6d9045756a19a469
+"ini@npm:^4.1.3":
+  version: 4.1.3
+  resolution: "ini@npm:4.1.3"
+  checksum: 10/f536b414d1442e5b233429e2b56efcdb354109b2d65ddd489e5939d8f0f5ad23c88aa2b19c92987249d0dd63ba8192e9aeb1a02b0459549c5a9ff31acd729a5d
   languageName: node
   linkType: hard
 
@@ -17500,6 +17555,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"msgpackr-extract@npm:^3.0.2":
+  version: 3.0.3
+  resolution: "msgpackr-extract@npm:3.0.3"
+  dependencies:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-darwin-x64": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-linux-arm": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-linux-arm64": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-linux-x64": "npm:3.0.3"
+    "@msgpackr-extract/msgpackr-extract-win32-x64": "npm:3.0.3"
+    node-gyp: "npm:latest"
+    node-gyp-build-optional-packages: "npm:5.2.2"
+  dependenciesMeta:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-darwin-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-win32-x64":
+      optional: true
+  bin:
+    download-msgpackr-prebuilds: bin/download-prebuilds.js
+  checksum: 10/4bfe45cf6968310570765951691f1b8e85b6a837e5197b8232fc9285eef4b457992e73118d9d07c92a52cc23f9e837897b135e17ea0f73e3604540434051b62f
+  languageName: node
+  linkType: hard
+
+"msgpackr@npm:^1.10.2":
+  version: 1.11.0
+  resolution: "msgpackr@npm:1.11.0"
+  dependencies:
+    msgpackr-extract: "npm:^3.0.2"
+  dependenciesMeta:
+    msgpackr-extract:
+      optional: true
+  checksum: 10/e95edf511ab269b34e312a7bd058c203e1ef4dc0656df8ccf1a10e9cdb40fac4c4b62b42ea0b2d199f85a1a53704f7f47e28ed5af5311f66097c591eafbbf8f3
+  languageName: node
+  linkType: hard
+
 "multipasta@npm:^0.2.2":
   version: 0.2.5
   resolution: "multipasta@npm:0.2.5"
@@ -17595,12 +17693,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "native-twin-vscode@workspace:packages/vscode-extension"
   dependencies:
-    "@effect/schema": "npm:^0.66.10"
+    "@effect/schema": "npm:^0.70.3"
     "@native-twin/language-server": "workspace:*"
     "@types/vscode": "npm:^1.89.0"
     "@vscode/test-cli": "npm:^0.0.9"
     "@vscode/test-electron": "npm:^2.4.0"
-    effect: "npm:^3.6.0"
+    effect: "npm:^3.6.2"
     vscode-languageclient: "npm:^9.0.1"
     vscode-test: "npm:^1.6.1"
   languageName: unknown
@@ -17883,6 +17981,19 @@ __metadata:
   version: 1.3.1
   resolution: "node-forge@npm:1.3.1"
   checksum: 10/05bab6868633bf9ad4c3b1dd50ec501c22ffd69f556cdf169a00998ca1d03e8107a6032ba013852f202035372021b845603aeccd7dfcb58cdb7430013b3daa8d
+  languageName: node
+  linkType: hard
+
+"node-gyp-build-optional-packages@npm:5.2.2":
+  version: 5.2.2
+  resolution: "node-gyp-build-optional-packages@npm:5.2.2"
+  dependencies:
+    detect-libc: "npm:^2.0.1"
+  bin:
+    node-gyp-build-optional-packages: bin.js
+    node-gyp-build-optional-packages-optional: optional.js
+    node-gyp-build-optional-packages-test: build-test.js
+  checksum: 10/f448a328cf608071dc8cc4426ac5be0daec4788e4e1759e9f7ffcd286822cc799384edce17a8c79e610c4bbfc8e3aff788f3681f1d88290e0ca7aaa5342a090f
   languageName: node
   linkType: hard
 
@@ -19244,6 +19355,13 @@ __metadata:
   version: 6.0.4
   resolution: "pure-rand@npm:6.0.4"
   checksum: 10/34fed0abe99d3db7ddc459c12e1eda6bff05db6a17f2017a1ae12202271ccf276fb223b442653518c719671c1b339bbf97f27ba9276dba0997c89e45c4e6a3bf
+  languageName: node
+  linkType: hard
+
+"pure-rand@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "pure-rand@npm:6.1.0"
+  checksum: 10/256aa4bcaf9297256f552914e03cbdb0039c8fe1db11fa1e6d3f80790e16e563eb0a859a1e61082a95e224fc0c608661839439f8ecc6a3db4e48d46d99216ee4
   languageName: node
   linkType: hard
 
@@ -23453,12 +23571,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "yaml@npm:2.4.1"
+"yaml@npm:^2.4.5":
+  version: 2.5.0
+  resolution: "yaml@npm:2.5.0"
   bin:
     yaml: bin.mjs
-  checksum: 10/2c54fd69ef59126758ae710f9756405a7d41abcbb61aca894250d0e81e76057c14dc9bb00a9528f72f99b8f24077f694a6f7fd09cdd6711fcec2eebfbb5df409
+  checksum: 10/72e903fdbe3742058885205db4a6c9ff38e5f497f4e05e631264f7756083c05e7d10dfb5e4ce9d7a95de95338f9b20d19dd0b91c60c65f7d7608b6b3929820ad
   languageName: node
   linkType: hard
 

@@ -48,13 +48,13 @@ export function setupNativeTwin(
   _options: { platform: string; hot: boolean; dev: boolean },
 ) {
   if (tw) {
-    return { tw, created: false };
+    return tw;
   }
   const nativeWind = loadNativeTwin();
   tw = loadNativeTwinConfig(nativeWind, config);
   // console.log('TW: ', tw);
 
-  return { tw, created: true };
+  return tw;
 }
 
 export const getTwinConfig = (projectRoot: string) => {

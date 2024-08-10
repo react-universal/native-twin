@@ -7,7 +7,9 @@
       "program": "../../node_modules/jest/bin/jest",
       "args": [
         "--runInBand",
-        "--silent=false"
+        "--silent=false",
+        "--watchAll=false",
+        "--detectOpenHandles=true"
       ],
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",

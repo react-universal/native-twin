@@ -137,7 +137,7 @@ export const transform: TwinTransformFn = async (
       isDev: options.dev,
       platform,
       sourceCode: ensureBuffer(data),
-      twin: twin.tw,
+      twin: twin,
       twinConfig: twinConfig.twinConfig,
       allowedPaths: twinConfig.allowedPaths,
     }),

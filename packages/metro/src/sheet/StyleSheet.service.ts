@@ -185,9 +185,9 @@ export async function refreshTwinFile(
       );
     }
   }
-  await cssAST.save();
-  const text = cssAST.compilerNode.getText();
+  // await cssAST.save();
+  // const text = cssAST.compilerNode.getText();
 
-  await new Promise((r) => r(fs.writeFileSync(cssOutput, text)));
-  return text;
+  // await new Promise((r) => r(fs.writeFileSync(cssOutput, text)));
+  return '';
 }
