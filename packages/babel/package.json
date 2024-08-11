@@ -35,15 +35,13 @@
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "babel-plugin-macros": "^3.1.0",
-    "babel-plugin-tester": "^11.0.4",
     "effect": "^3.6.2"
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",
     "@babel/preset-typescript": "7.23.3",
-    "@types/babel-plugin-macros": "^3.1.3",
     "@types/babel__helper-module-imports": "^7.18.3",
+    "babel-plugin-tester": "^11.0.4",
     "metro-react-native-babel-preset": "^0.77.0"
   },
   "peerDependencies": {
