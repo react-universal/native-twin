@@ -1,21 +1,15 @@
 import * as t from '@babel/types';
-import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import nodePath from 'node:path';
 import { JsxElement, JsxSelfClosingElement, Node } from 'ts-morph';
-import { RuntimeTW } from '@native-twin/core';
-import { mappedComponents } from '../../utils';
+import { AnyPrimitive } from '../ast.types';
+import { addAttributeToBabelJSXElement } from '../babel/babel.utils';
 import { JSXElementNode } from '../models/JSXElement.model';
-import { AnyPrimitive, ValidJSXElementNode } from '../types/tsCompiler.types';
-import {
-  addAttributesToElement,
-  getBabelJSXElementAttrByName,
-  getBabelJSXElementAttrs,
-} from './babel.constructors';
-import { createJSXAttribute } from './ts.constructors';
+import { createJSXAttribute } from '../ts/ts.constructors';
+import { ValidJSXElementNode } from '../ts/ts.types';
 
 export type JSXElementNodePath = Data.TaggedEnum<{
   JSXelement: { node: JsxElement };
@@ -24,17 +18,6 @@ export type JSXElementNodePath = Data.TaggedEnum<{
 }>;
 
 export const taggedJSXElement = Data.taggedEnum<JSXElementNodePath>();
-
-/**
- * @domain Shared Transform
- * @description Extract the {@link MappedComponent} from any {@link ValidJSXElementNode}
- * */
-export const getJSXElementConfig = (tagName: string) => {
-  const componentConfig = mappedComponents.find((x) => x.name === tagName);
-  if (!componentConfig) return null;
-
-  return componentConfig;
-};
 
 export const getJSXNodeOpenElement = (path: JSXElementNodePath) => {
   return taggedJSXElement.$match({
@@ -76,17 +59,7 @@ export const addAttributeToJSXElement = (
   value: AnyPrimitive,
 ) => {
   taggedJSXElement.$match({
-    BabelJSXElement({ node }) {
-      pipe(
-        node,
-        (x) => getBabelJSXElementAttrs(x),
-        (attrs) => getBabelJSXElementAttrByName(attrs, name),
-        Option.match({
-          onSome: () => void {},
-          onNone: () => addAttributesToElement(node, { name, value }),
-        }),
-      );
-    },
+    BabelJSXElement: ({ node }) => addAttributeToBabelJSXElement(node, name, value),
     JSXelement({ node }) {
       const openingElement = node.getOpeningElement();
       if (!openingElement.getAttribute(name)) {
@@ -110,20 +83,4 @@ export const createJSXElementNodeHash = (level: string, order: number, path: str
     Hash.number(order),
     Hash.combine(Hash.string(level)),
     Hash.combine(Hash.string(nodePath.basename(path))),
-  );
-
-/**
- * @domain Shared Transform
- * @description Extract entries from {@link JSXElementNode}
- */
-export const extractEntriesFromNode = (node: JSXElementNode, twin: RuntimeTW) =>
-  pipe(
-    node.runtimeData,
-    RA.map((x) => {
-      const entries = twin(x.value.literal);
-      return {
-        ...x,
-        entries,
-      };
-    }),
   );

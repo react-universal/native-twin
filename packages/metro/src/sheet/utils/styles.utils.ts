@@ -9,7 +9,8 @@ import {
   CompilerContext,
   isChildEntry,
 } from '@native-twin/css/jsx';
-import { JSXMappedAttribute } from '../../compiler/types/tsCompiler.types';
+import { JSXMappedAttribute } from '../../compiler/ast.types';
+import { JSXElementNode } from '../../compiler/models/JSXElement.model';
 
 export const getElementEntries = (
   props: JSXMappedAttribute[],
@@ -25,7 +26,7 @@ export const getElementEntries = (
       const runtimeEntries = pipe(
         entries,
         RA.dedupeWith((a, b) => a.className === b.className),
-        
+
         RA.map((x) => compileSheetEntry(x, ctx)),
         sortSheetEntries,
       );
@@ -58,3 +59,19 @@ export const getElementEntries = (
     }),
   );
 };
+
+/**
+ * @domain Shared Transform
+ * @description Extract entries from {@link JSXElementNode}
+ */
+export const extractEntriesFromNode = (node: JSXElementNode, twin: RuntimeTW) =>
+  pipe(
+    node.runtimeData,
+    RA.map((x) => {
+      const entries = twin(x.value.literal);
+      return {
+        ...x,
+        entries,
+      };
+    }),
+  );

@@ -7,8 +7,8 @@ import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import { cx } from '@native-twin/core';
 import { MappedComponent } from '../../utils';
-import { AnyPrimitive, JSXMappedAttribute } from '../types/tsCompiler.types';
-import { getJSXElementConfig } from './shared.utils';
+import { AnyPrimitive, JSXMappedAttribute } from '../ast.types';
+import { getJSXElementConfig } from '../ast/ast.utils';
 
 /**
  * @category Transformer

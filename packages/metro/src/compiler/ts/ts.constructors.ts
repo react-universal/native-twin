@@ -7,17 +7,15 @@ import { Node, StructureKind, ts } from 'ts-morph';
 import { cx } from '@native-twin/core';
 import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { type MappedComponent } from '../../utils';
+import type { AnyPrimitive, JSXClassnameStrings, JSXMappedAttribute } from '../ast.types';
+import { getJSXElementConfig } from '../ast/ast.utils';
+import { expressionFactory } from '../ast/writer.factory';
 import type {
-  AnyPrimitive,
-  JSXClassnameStrings,
-  JSXMappedAttribute,
   ValidJSXClassnameNodeString,
   ValidJSXClassnameTemplate,
   ValidJSXElementNode,
   ValidOpeningElementNode,
-} from '../types/tsCompiler.types';
-import { getJSXElementConfig } from './shared.utils';
-import { expressionFactory } from './writer.factory';
+} from './ts.types';
 
 /**
  * @domain TypeScript Transform

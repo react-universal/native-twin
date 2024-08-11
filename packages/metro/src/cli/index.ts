@@ -26,7 +26,7 @@ import micromatch from 'micromatch';
 import path from 'path';
 // import { Transform } from 'stream';
 import { RuntimeSheetEntry } from '@native-twin/css/jsx';
-import { getBabelJSXElementParents } from '../compiler/Compiler.service';
+import { visitBabelJSXElementParents } from '../compiler/babel';
 import { createElementStyleSheet } from '../compiler/ts.compiler';
 import { refreshTwinFile } from '../sheet/StyleSheet.service';
 import { getElementEntries } from '../sheet/utils/styles.utils';
@@ -78,7 +78,7 @@ const onFSFileEvent = (
               sourceFilename: x.path,
             }),
           ),
-          Effect.map((ast) => getBabelJSXElementParents(ast, x.path)),
+          Effect.map((ast) => visitBabelJSXElementParents(ast, x.path)),
           Effect.map((parents) =>
             pipe(
               createElementStyleSheet(parents, x.path),
@@ -189,7 +189,7 @@ export const makeWatcher = Effect.scoped(
             attachComment: true,
             sourceFilename: x.path,
           });
-          const parents = getBabelJSXElementParents(parsed, x.path);
+          const parents = visitBabelJSXElementParents(parsed, x.path);
           const sheet = pipe(
             createElementStyleSheet(parents, x.path),
             HashSet.flatMap((node) => {

@@ -4,8 +4,8 @@ import * as Option from 'effect/Option';
 import { Identifier, ts } from 'ts-morph';
 import { JSXElementSheet } from '@native-twin/css/jsx';
 import { JSXElementNode } from '../models/JSXElement.model';
-import { entriesToObject, getImportDeclaration } from './ts.constructors';
-import { addAttributeToJSXElement } from './shared.utils';
+import { entriesToObject, getImportDeclaration } from '../ts/ts.constructors';
+import { addAttributeToJSXElement } from './ast.matchers';
 
 export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
   const componentEntries = entriesToObject(

@@ -11,38 +11,32 @@ import {
   applyParentEntries,
 } from '@native-twin/css/jsx';
 import { getElementEntries } from '../../sheet/utils/styles.utils';
-import { getBabelElementMappedAttributes } from '../ast/babel.constructors';
-import { getJSXRuntimeData } from '../ast/ts.constructors';
+import { JSXMappedAttribute } from '../ast.types';
 import {
-  createJSXElementNodeHash,
   getJSXElementPath,
   getJSXNodeOpenElement,
   JSXElementNodePath,
   taggedJSXElement,
-} from '../ast/shared.utils';
-import { JSXMappedAttribute, ValidJSXElementNode } from '../types/tsCompiler.types';
+} from '../ast/ast.matchers';
+import { getBabelElementMappedAttributes } from '../babel/babel.constructors';
+import { getJSXRuntimeData } from '../ts/ts.constructors';
+import { ValidJSXElementNode } from '../ts/ts.types';
 
 export class JSXElementNode implements Equal.Equal {
   readonly path: JSXElementNodePath;
   readonly id: string;
   readonly parent: JSXElementNode | null;
   readonly order: number;
-  readonly level: string;
   _runtimeSheet: JSXElementSheet | null = null;
 
   constructor(
     path: ValidJSXElementNode | t.JSXElement,
     order: number,
-    level: string,
-    filename: string,
-    parentKey: JSXElementNode | null = null,
+    parentNode: JSXElementNode | null = null,
   ) {
     this.order = order;
-    this.parent = parentKey;
-    this.level = level;
-
-    const levelHash = createJSXElementNodeHash(level, order, filename);
-    this.id = `${level}${levelHash}`;
+    this.parent = parentNode;
+    this.id = '';
     this.path = getJSXElementPath(path);
   }
 
