@@ -1,13 +1,10 @@
 // @ts-noCheck
 import { View, Text } from 'react-native';
-import jsxMacro, { JSXMacro } from '../../../build/macro/native-twin.macro';
 
 export function App() {
   return (
-    <View className={jsxMacro`flex-1`}>
-      <JSXMacro>
-        <Text className='text-lg'>Hello World</Text>
-      </JSXMacro>
+    <View className='flex-1'>
+      <Text className='text-lg'>Hello World</Text>
       <Text
         className={`
         flex-1 items-center justify-center md:border-3
