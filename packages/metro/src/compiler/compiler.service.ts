@@ -11,8 +11,8 @@ import * as Option from 'effect/Option';
 import { Node, SourceFile, SyntaxKind } from 'ts-morph';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import { getJSXElementLevel } from '../utils/jsx.utils';
-import { isValidJSXElement } from './ast/ast.guards';
 import { taggedJSXElement } from './ast/shared.utils';
+import { isValidJSXElement } from './ast/ts.constructors';
 import { JSXElementNode } from './models/JSXElement.model';
 import type { ValidJSXElementNode } from './types/tsCompiler.types';
 
@@ -83,13 +83,11 @@ const getNodeJSXElementParents = (path: Node, filePath: string) => {
 };
 
 export const getBabelJSXElementParents = (ast: ParseResult<t.File>, filePath: string) => {
-  let level = 0;
   const parents = new Set<JSXElementNode>();
   traverse(ast, {
     JSXElement(path) {
-      parents.add(
-        new JSXElementNode(path.node, 0, getJSXElementLevel(level++), filePath),
-      );
+      const uid = path.scope.generateUidIdentifier(filePath);
+      parents.add(new JSXElementNode(path.node, 0, uid.name, filePath));
       path.skip();
     },
   });

@@ -12,10 +12,10 @@ import type {
   JSXClassnameStrings,
   JSXMappedAttribute,
   ValidJSXClassnameNodeString,
+  ValidJSXClassnameTemplate,
   ValidJSXElementNode,
   ValidOpeningElementNode,
 } from '../types/tsCompiler.types';
-import { isValidClassNameString, isValidTemplateLiteral } from './ast.guards';
 import { getJSXElementConfig } from './shared.utils';
 import { expressionFactory } from './writer.factory';
 
@@ -185,7 +185,7 @@ export const createJSXAttribute = (
 };
 
 export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) => {
-  const { writer, identifier, object } = expressionFactory(new CodeBlock());
+  const { writer, identifier, array } = expressionFactory(new CodeBlock());
   const templateEntries = expressionFactory(new CodeBlock());
   templateEntries.writer.block(() => {
     templateEntries.writer.write('[');
@@ -198,9 +198,9 @@ export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) =>
             templateEntries.writer.writeLine(`target: "${x.target}",`);
             templateEntries.writer.writeLine(`prop: "${x.prop}",`);
             templateEntries.writer.writeLine(
-              `entries: require('@native-twin/core').tw(\`${x.templateLiteral}\`),`,
+              `entries: require('@native-twin/core').tw(${x.templateLiteral}),`,
             );
-            templateEntries.writer.write(`templateLiteral: \`${x.templateLiteral}\`,`);
+            templateEntries.writer.write(`templateLiteral: ${x.templateLiteral},`);
           });
         }
       });
@@ -209,22 +209,34 @@ export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) =>
   const styledProp = writer
     .block(() => {
       identifier(`require('@native-twin/jsx').StyleSheet.registerComponent("${id}", `);
-      entries.forEach((x) => {
-        writer.write('[');
-        writer.block(() => {
-          writer.write('templateLiteral: ');
-          identifier('null,');
-          writer.write('prop: ').write(`"${x.prop}",`);
-          writer.write('target: ').write(`"${x.target}",`);
-          writer.write('entries: ');
-          writer.write('[');
-          x.entries.forEach((x) => identifier(`globalStyles.get("${x.className}"),`));
-          identifier('].filter(Boolean),');
-          writer.write('rawSheet: ');
-          object(x.rawSheet).write(',');
-        });
-        identifier(']');
-      });
+      array(
+        entries.map((x) => {
+          return {
+            templateLiteral: null,
+            prop: x.prop,
+            target: x.target,
+            entries: x.entries,
+            rawSheet: x.rawSheet,
+          };
+        }),
+      );
+      // entries.forEach((x) => {
+      //   writer.write('[');
+      //   writer.block(() => {
+      //     writer.write('templateLiteral: ');
+      //     identifier('null,');
+      //     writer.write('prop: ').write(`"${x.prop}",`);
+      //     writer.write('target: ').write(`"${x.target}",`);
+      //     writer.write('entries: ');
+      //     writer.write('[');
+      //     // x.entries.forEach((x) => identifier(`globalStyles.get("${x.className}"),`));
+
+      //     identifier('].filter(Boolean),');
+      //     writer.write('rawSheet: ');
+      //     object(x.rawSheet).write(',');
+      //   });
+      //   identifier(']');
+      // });
       identifier(`)`);
     })
     .toString();
@@ -232,4 +244,30 @@ export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) =>
     styledProp,
     templateEntries: templateEntries.writer.toString(),
   };
+};
+
+/** @domain TypeScript Transform */
+export const isValidClassNameString = (
+  node?: Node,
+): node is ValidJSXClassnameNodeString => {
+  return (
+    Node.isStringLiteral(node) ||
+    Node.isTemplateExpression(node) ||
+    Node.isNoSubstitutionTemplateLiteral(node) ||
+    Node.isIdentifier(node) ||
+    Node.isCallExpression(node)
+  );
+};
+
+export const isValidTemplateLiteral = (
+  node?: Node,
+): node is ValidJSXClassnameTemplate => {
+  return Node.isTemplateExpression(node) || Node.isNoSubstitutionTemplateLiteral(node);
+};
+
+/**
+ * @domain TypeScript Transform
+ * */
+export const isValidJSXElement = (element: Node): element is ValidJSXElementNode => {
+  return Node.isJsxElement(element) || Node.isJsxSelfClosingElement(element);
 };

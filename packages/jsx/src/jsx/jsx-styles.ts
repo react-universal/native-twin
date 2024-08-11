@@ -1,5 +1,5 @@
 import { FinalSheet } from '@native-twin/css';
-import { componentsRegistry, StyleSheet } from '../sheet/StyleSheet';
+import { StyleSheet } from '../sheet/StyleSheet';
 import { templatePropsToSheetEntriesObject } from '../styled/native/utils/native.maps';
 import { JSXInternalProps } from '../types/jsx.types';
 
@@ -38,7 +38,11 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
         };
       }
 
-      componentsRegistry.set(componentID, { ...component });
+      component.sheets = component.sheets.map((x) => x.recompute());
+      // componentsRegistry.set(componentID, {
+      //   ...component,
+      //   sheets: [...component.sheets],
+      // });
     }
   }
 }

@@ -1,10 +1,9 @@
-import { Effect } from 'effect';
+// import { Effect } from 'effect';
 import type { GetTransformOptions } from 'metro-config';
 import path from 'node:path';
-import { makeWatcher } from './cli';
-import { makeLive } from './cli/MetroCli.service';
-import { createMetroResolver } from './config/resolver/metro.resolver';
-import { decorateMetroServer } from './config/server/server.decorator';
+// import { makeWatcher } from './cli';
+// import { makeLive } from './cli/MetroCli.service';
+// import { decorateMetroServer } from './config/server/server.decorator';
 import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
@@ -22,7 +21,7 @@ export function withNativeTwin(
   metroConfig: ComposableIntermediateConfigT,
   {
     outputDir = ['node_modules', '.cache', 'native-twin'].join(path.sep),
-    projectRoot = metroConfig.projectRoot ?? process.cwd(),
+    projectRoot = process.cwd(),
     configPath: twinConfigPath = 'tailwind.config.ts',
   }: MetroWithNativeTwindOptions = {},
 ): ComposableIntermediateConfigT {
@@ -39,6 +38,10 @@ export function withNativeTwin(
     platform: 'ios',
   });
 
+  const allowedPaths = twConfig.content.map((x) => path.join(projectRoot, x));
+  allowedPaths.push(
+    path.join(projectRoot, './node_modules/.cache/native-twin/**/*.{js,jsx,tsx,ts}'),
+  );
   const metroContext: MetroContextConfig = {
     configPath: twinConfigPath,
     dev: isDev,
@@ -49,6 +52,7 @@ export function withNativeTwin(
     twin,
     twConfig,
     platform: 'ios',
+    allowedPaths,
   };
 
   const getTransformOptions = async (...args: Parameters<GetTransformOptions>) => {
@@ -59,7 +63,7 @@ export function withNativeTwin(
   //   Effect.provide(makeLive(metroContext)),
   //   NodeRuntime.runMain,
   // );
-  makeWatcher.pipe(Effect.provide(makeLive(metroContext)), Effect.runPromise);
+  // makeWatcher.pipe(Effect.provide(makeLive(metroContext)), Effect.runPromise);
 
   // const child = spawn(
   //   'node',
@@ -89,23 +93,13 @@ export function withNativeTwin(
   //   console.log('ERROR: ', chunk);
   // });
 
+  // const server = decorateMetroServer(metroConfig, twConfig, metroContext);
+
   return {
     ...metroConfig,
     resetCache: true,
-    server: decorateMetroServer(
-      metroConfig,
-      twConfig,
-      path.join(metroContext.outputDir, TWIN_STYLES_FILE),
-    ),
-
-    resolver: createMetroResolver(
-      metroConfig.resolver,
-      {
-        configPath: twinConfigPath,
-        projectRoot,
-      },
-      twConfig.content,
-    ),
+    // server: server.server,
+    // resolver: server.resolver,
     transformerPath: require.resolve('./transformer/metro.transformer'),
     transformer: {
       ...metroConfig.transformer,

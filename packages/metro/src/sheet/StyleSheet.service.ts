@@ -139,9 +139,9 @@ export const StyleSheetServiceLive = Layer.scoped(
         }
       }
       cssAST.saveSync();
-      // const text = cssAST.compilerNode.getText();
+      const text = cssAST.compilerNode.getText();
 
-      // await new Promise((r) => r(fs.writeFileSync(cssOutput, text)));
+      await new Promise((r) => r(fs.writeFileSync(cssOutput, text)));
       return fs.readFileSync(cssOutput, 'utf-8');
     }
   }),

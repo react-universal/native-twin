@@ -12,7 +12,7 @@ import {
 } from '@native-twin/css/jsx';
 import { getElementEntries } from '../../sheet/utils/styles.utils';
 import { getBabelElementMappedAttributes } from '../ast/babel.constructors';
-import { getJSXRuntimeData } from '../ast/constructors.utils';
+import { getJSXRuntimeData } from '../ast/ts.constructors';
 import {
   createJSXElementNodeHash,
   getJSXElementPath,

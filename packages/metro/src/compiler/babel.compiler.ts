@@ -6,7 +6,7 @@ import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import { visitElementNode } from './ast/visitors';
 import { JSXElementNode } from './models/JSXElement.model';
-import { TwinCompilerService } from './compiler.service';
+import { TwinCompilerService } from './Compiler.service';
 
 export const compileFileWithBabel = Effect.gen(function* () {
   const ctx = yield* MetroTransformerContext;

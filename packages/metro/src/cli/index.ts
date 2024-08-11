@@ -26,7 +26,7 @@ import micromatch from 'micromatch';
 import path from 'path';
 // import { Transform } from 'stream';
 import { RuntimeSheetEntry } from '@native-twin/css/jsx';
-import { getBabelJSXElementParents } from '../compiler/compiler.service';
+import { getBabelJSXElementParents } from '../compiler/Compiler.service';
 import { createElementStyleSheet } from '../compiler/ts.compiler';
 import { refreshTwinFile } from '../sheet/StyleSheet.service';
 import { getElementEntries } from '../sheet/utils/styles.utils';

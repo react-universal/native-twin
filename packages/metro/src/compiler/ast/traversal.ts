@@ -4,7 +4,7 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Queue from 'effect/Queue';
 import { JSXElementNode } from '../models/JSXElement.model';
-import { getJSXElementChilds } from '../compiler.service';
+import { getJSXElementChilds } from '../Compiler.service';
 
 export const traverseASTQueue = (
   nodeSet: HashSet.HashSet<JSXElementNode>,

@@ -4,8 +4,8 @@ import * as Option from 'effect/Option';
 import { Identifier, ts } from 'ts-morph';
 import { JSXElementSheet } from '@native-twin/css/jsx';
 import { JSXElementNode } from '../models/JSXElement.model';
-import { entriesToObject, getImportDeclaration } from './constructors.utils';
-import { addAttributeToNode } from './shared.utils';
+import { entriesToObject, getImportDeclaration } from './ts.constructors';
+import { addAttributeToJSXElement } from './shared.utils';
 
 export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
   const componentEntries = entriesToObject(
@@ -27,14 +27,14 @@ export function visitElementNode(node: JSXElementNode, sheet: JSXElementSheet) {
     ),
   );
 
-  addAttributeToNode(node.path, '_twinOrd', node.order);
-  addAttributeToNode(node.path, '_twinComponentID', `"${node.id}"`);
-  addAttributeToNode(
+  addAttributeToJSXElement(node.path, '_twinOrd', node.order);
+  addAttributeToJSXElement(node.path, '_twinComponentID', `"${node.id}"`);
+  addAttributeToJSXElement(
     node.path,
     '_twinComponentTemplateEntries',
     `${componentEntries.templateEntries}`,
   );
-  addAttributeToNode(node.path, '_twinComponentSheet', componentEntries.styledProp);
+  addAttributeToJSXElement(node.path, '_twinComponentSheet', componentEntries.styledProp);
 
   return { node, sheet, rawEntries: RA.flatMap(sheet.propEntries, (x) => x.entries) };
 }

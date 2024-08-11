@@ -3,7 +3,7 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import { visitElementNode } from './ast/visitors';
-import { getJSXElementChilds, TwinCompilerService } from './compiler.service';
+import { getJSXElementChilds, TwinCompilerService } from './Compiler.service';
 import { JSXElementNode } from './models/JSXElement.model';
 
 export const compileFile = Effect.gen(function* () {

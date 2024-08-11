@@ -9,8 +9,8 @@ import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
 import path from 'node:path';
 import { Project } from 'ts-morph';
-import { TwinCompilerServiceLive } from '../compiler/compiler.service';
-import * as Compiler from '../compiler/ts.compiler';
+import { TwinCompilerServiceLive } from '../compiler/Compiler.service';
+import * as Compiler from '../compiler/babel.compiler';
 import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
@@ -60,7 +60,7 @@ const program = Effect.gen(function* () {
     return transformer.transform(css, true);
   }
 
-  const compiled = yield* Compiler.compileFile;
+  const compiled = yield* Compiler.compileFileWithBabel;
 
   const classNames = pipe(
     compiled.elements,
@@ -82,8 +82,8 @@ const program = Effect.gen(function* () {
   );
 
   if (compiled && HashSet.size(classNames) > 0) {
-    const requireGlobal = `const globalStyles = require('.cache/native-twin/twin.styles');`;
-    compiled.full = `${requireGlobal}\n${compiled.full}`;
+    // const requireGlobal = `const globalStyles = require('.cache/native-twin/twin.styles');`;
+    // compiled.full = `${compiled.full}`;
     const registered = yield* Effect.promise(() =>
       sheet.registerEntries(babelEntries, context.platform),
     );

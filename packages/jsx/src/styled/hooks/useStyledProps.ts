@@ -17,6 +17,7 @@ export const useStyledProps = (
   templateEntries: ComponentTemplateEntryProp[],
   debug: boolean,
 ) => {
+  console.log(id, { id, styledEntries, compiledSheet, templateEntries, debug });
   const templateEntriesObj = templatePropsToSheetEntriesObject(templateEntries ?? []);
   const renderCount = useRef(0);
   if (debug) {
@@ -27,7 +28,7 @@ export const useStyledProps = (
 
   const componentStyles = useMemo(() => {
     return StyleSheet.registerComponent(id, styledEntries, styledCtx);
-  }, [compiledSheet, styledEntries, styledCtx, id]);
+  }, [styledEntries, styledCtx, id]);
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 

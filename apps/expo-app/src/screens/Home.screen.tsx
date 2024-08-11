@@ -3,14 +3,13 @@ import { Text, Image, Pressable, View } from 'react-native';
 import { useAssets } from 'expo-asset';
 import { Button } from '../components/Button';
 import { TextField } from '../components/TextField';
-
+ 
 function HomeScreen() {
   const [active, setActive] = useState(true);
   const [testImage] = useAssets([require('../../assets/favicon.png')]);
-  console.log('ASSET: ', testImage);
   return (
     <View className='flex-1'>
-      <View className={`flex-1 items-center justify-center group bg-yellow-200`}>
+      <View className={`bg-yellow-200 flex-1 items-center justify-center group`}>
         <Button size='large' />
         <View className='shadow-xl rounded-2xl p-2 group-focus:bg-purple-500'>
           <Text
@@ -43,7 +42,7 @@ function HomeScreen() {
             setActive((prevState) => !prevState);
           }}
         >
-          <Text className='text-red-200 text-sm'>Activate</Text>
+          <Text className='text-blue-200 text-sm'>Activate</Text>
         </Pressable>
         {testImage && !!testImage[0] && (
           <Image

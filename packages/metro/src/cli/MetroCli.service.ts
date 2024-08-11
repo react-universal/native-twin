@@ -13,6 +13,7 @@ export interface MetroConfigContextShape extends MetroConfigInternal {
   twConfig: TailwindConfig<__Theme__ & TailwindPresetTheme>;
   platform: string;
   twin: RuntimeTW;
+  allowedPaths: string[];
 }
 
 export class MetroConfigContext extends Context.Tag('config/MetroConfigContext')<

@@ -51,4 +51,5 @@ export interface MetroContextConfig extends MetroConfigInternal {
   twConfig: TailwindConfig<__Theme__ & TailwindPresetTheme>;
   platform: string;
   twin: RuntimeTW;
+  allowedPaths: string[];
 }

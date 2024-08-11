@@ -10,7 +10,12 @@ import { MappedComponent } from '../../utils';
 import { AnyPrimitive, JSXMappedAttribute } from '../types/tsCompiler.types';
 import { getJSXElementConfig } from './shared.utils';
 
-export const extractClassNameProp = (
+/**
+ * @category Transformer
+ * @domain Babel
+ * Extract {@link JSXMappedAttribute} from a jsx Attribute
+ * */
+export const getMappedAttribute = (
   attribute: t.JSXAttribute,
   config: MappedComponent,
 ): JSXMappedAttribute | null => {
@@ -63,12 +68,17 @@ export const extractClassNameProp = (
   return null;
 };
 
-export const extractElementClassNames = (
+/**
+ * @category Transformer
+ * @domain Babel
+ * Extract {@link JSXMappedAttribute[]} list from a jsx Attribute
+ * */
+export const getMappedAttributes = (
   attributes: t.JSXAttribute[],
   config: MappedComponent,
 ): JSXMappedAttribute[] => {
   return attributes
-    .map((x) => extractClassNameProp(x, config))
+    .map((x) => getMappedAttribute(x, config))
     .filter((x) => x !== null) as JSXMappedAttribute[];
 };
 
@@ -77,7 +87,7 @@ export const getJSXMappedAttributes = (
   config: MappedComponent,
 ): JSXMappedAttribute[] => {
   return attributes
-    .map((x) => extractClassNameProp(x, config))
+    .map((x) => getMappedAttribute(x, config))
     .filter((x) => x !== null) as JSXMappedAttribute[];
 };
 
@@ -107,14 +117,6 @@ export const getBabelJSXElementName = (node: t.JSXElement) => {
   return null;
 };
 
-export const isBabelJSXAttribute: Predicate.Refinement<t.Node, t.JSXAttribute> = (
-  x,
-): x is t.JSXAttribute => t.isJSXAttribute(x);
-
-export const isBabelJSXIdentifier: Predicate.Refinement<t.Node, t.JSXIdentifier> = (
-  x,
-): x is t.JSXIdentifier => t.isJSXIdentifier(x);
-
 export const getBabelElementMappedAttributes = (
   node: t.JSXElement,
 ): JSXMappedAttribute[] => {
@@ -131,29 +133,32 @@ export const addAttributesToElement = (
   node: t.JSXElement,
   attribute: { name: string; value: AnyPrimitive },
 ) => {
+  // if (typeof attribute.value === 'string') {
+  //   attribute.value = attribute.value.replace()
+  // }
   const ast = template.ast(`${attribute.value}`);
-  let value: t.Expression | undefined;
-  if (Array.isArray(ast)) return;
-
-  if (t.isExpressionStatement(ast)) {
-    value = ast.expression;
-  }
-
-  if (t.isBlockStatement(ast)) {
-    const firstBlock = ast.body[0];
-    if (t.isExpression(firstBlock)) {
-      value = firstBlock;
-    }
-    if (t.isExpressionStatement(firstBlock)) {
-      value = firstBlock.expression;
-    }
-  }
-
-  if (!value) {
-    return;
-  }
-
   try {
+    let value: t.Expression | undefined;
+    if (Array.isArray(ast)) return;
+
+    if (t.isExpressionStatement(ast)) {
+      value = ast.expression;
+    }
+
+    if (t.isBlockStatement(ast)) {
+      const firstBlock = ast.body[0];
+      if (t.isExpression(firstBlock)) {
+        value = firstBlock;
+      }
+      if (t.isExpressionStatement(firstBlock)) {
+        value = firstBlock.expression;
+      }
+    }
+
+    if (!value) {
+      return;
+    }
+
     node.openingElement.attributes.push(
       t.jsxAttribute(t.jsxIdentifier(attribute.name), t.jsxExpressionContainer(value)),
     );
@@ -161,3 +166,11 @@ export const addAttributesToElement = (
     console.log('ASD', ast);
   }
 };
+
+export const isBabelJSXAttribute: Predicate.Refinement<t.Node, t.JSXAttribute> = (
+  x,
+): x is t.JSXAttribute => t.isJSXAttribute(x);
+
+export const isBabelJSXIdentifier: Predicate.Refinement<t.Node, t.JSXIdentifier> = (
+  x,
+): x is t.JSXIdentifier => t.isJSXIdentifier(x);
