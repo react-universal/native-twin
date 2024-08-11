@@ -39,9 +39,9 @@ export function withNativeTwin(
   });
 
   const allowedPaths = twConfig.content.map((x) => path.join(projectRoot, x));
-  allowedPaths.push(
-    path.join(projectRoot, './node_modules/.cache/native-twin/**/*.{js,jsx,tsx,ts}'),
-  );
+  // allowedPaths.push(
+  //   path.join(projectRoot, './node_modules/.cache/native-twin/**/*.{js,jsx,tsx,ts}'),
+  // );
   const metroContext: MetroContextConfig = {
     configPath: twinConfigPath,
     dev: isDev,

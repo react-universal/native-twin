@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { Text, Image, Pressable, View } from 'react-native';
-import { useAssets } from 'expo-asset';
 import { Button } from '../components/Button';
 import { TextField } from '../components/TextField';
- 
+
+const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
-  const [testImage] = useAssets([require('../../assets/favicon.png')]);
   return (
     <View className='flex-1'>
       <View className={`bg-yellow-200 flex-1 items-center justify-center group`}>
-        <Button size='large' />
-        <View className='shadow-xl rounded-2xl p-2 group-focus:bg-purple-500'>
+        <View className='shadow-xl bg-green-300 rounded-2xl p-2 group-focus:bg-purple-500'>
+          <Button size='large' />
           <Text
             className={`
               text(center white)
@@ -46,7 +45,7 @@ function HomeScreen() {
         </Pressable>
         {testImage && !!testImage[0] && (
           <Image
-            src={testImage[0] as any as string}
+            src={testImage}
             resizeMode='cover'
             style={{
               width: 100,

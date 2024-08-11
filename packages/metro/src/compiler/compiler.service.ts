@@ -1,5 +1,4 @@
-import { parse, ParseResult } from '@babel/parser';
-import traverse from '@babel/traverse';
+import { ParseResult } from '@babel/parser';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
@@ -10,17 +9,21 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import { Node, SourceFile, SyntaxKind } from 'ts-morph';
 import { MetroTransformerContext } from '../transformer/transformer.service';
-import { getJSXElementLevel } from '../utils/jsx.utils';
-import { taggedJSXElement } from './ast/shared.utils';
-import { isValidJSXElement } from './ast/ts.constructors';
+import { taggedJSXElement } from './ast/ast.matchers';
+import {
+  createBabelAST,
+  getBabelJSXElementChilds,
+  visitBabelJSXElementParents,
+} from './babel';
 import { JSXElementNode } from './models/JSXElement.model';
-import type { ValidJSXElementNode } from './types/tsCompiler.types';
+import { isValidJSXElement } from './ts/ts.constructors';
+import type { ValidJSXElementNode } from './ts/ts.types';
 
 export class TwinCompilerService extends Context.Tag('compiler/file-state')<
   TwinCompilerService,
   {
-    getTSast: (filename: string, code: string) => Effect.Effect<SourceFile>;
-    getBabelAST: (filename: string, code: string) => Effect.Effect<ParseResult<t.File>>;
+    getTSast: (code: string, filename: string, ) => Effect.Effect<SourceFile>;
+    getBabelAST: (code: string, filename: string) => Effect.Effect<ParseResult<t.File>>;
     getTsJSXElements: (node: Node) => Effect.Effect<ValidJSXElementNode[]>;
     getTsParentNodes: (from: Node) => Effect.Effect<HashSet.HashSet<JSXElementNode>>;
     getBabelParentNodes: (
@@ -36,21 +39,13 @@ export const TwinCompilerServiceLive = Layer.scoped(
     const ctx = yield* MetroTransformerContext;
 
     return {
-      getTSast: (filename, code) =>
+      getTSast: (code, filename) =>
         Effect.sync(() =>
           ctx.tsCompiler.createSourceFile(filename, code, {
             overwrite: true,
           }),
         ),
-      getBabelAST: (filename, code) =>
-        Effect.sync(() =>
-          parse(code, {
-            plugins: ['jsx', 'typescript'],
-            sourceType: 'module',
-            errorRecovery: true,
-            tokens: true,
-          }),
-        ),
+      getBabelAST: (code) => Effect.sync(() => createBabelAST(code)),
       getTsJSXElements: (node: Node) =>
         Effect.sync(() => extractJSXElementsFromNode(node, ctx.filename)),
       getTsParentNodes: (from) =>
@@ -58,88 +53,45 @@ export const TwinCompilerServiceLive = Layer.scoped(
           return getNodeJSXElementParents(from, ctx.filename);
         }),
       getBabelParentNodes: (from) =>
-        Effect.sync(() => {
-          return getBabelJSXElementParents(from, ctx.filename);
-        }),
+        Effect.sync(() => visitBabelJSXElementParents(from, ctx.filename)),
       getJSXElementChilds: (from) => getJSXElementChilds(from, ctx.filename),
     };
   }),
 );
 
-const getNodeJSXElementParents = (path: Node, filePath: string) => {
-  let level = 0;
+const getNodeJSXElementParents = (path: Node, _filePath: string) => {
   const parentsMap = new Set<JSXElementNode>();
   path.forEachDescendant((descendant, traversal) => {
     if (!Node.isJsxElement(descendant) && !Node.isJsxSelfClosingElement(descendant)) {
       return undefined;
     }
-    const node = new JSXElementNode(descendant, 0, getJSXElementLevel(level++), filePath);
-
+    const node = new JSXElementNode(descendant, 0);
     parentsMap.add(node);
-
     traversal.skip();
   });
   return pipe(parentsMap, HashSet.fromIterable);
 };
 
-export const getBabelJSXElementParents = (ast: ParseResult<t.File>, filePath: string) => {
-  const parents = new Set<JSXElementNode>();
-  traverse(ast, {
-    JSXElement(path) {
-      const uid = path.scope.generateUidIdentifier(filePath);
-      parents.add(new JSXElementNode(path.node, 0, uid.name, filePath));
-      path.skip();
-    },
-  });
-  return HashSet.fromIterable(parents);
-};
-
 const extractJSXElementsFromNode = (
   path: Node,
-  filePath: string,
+  _filePath: string,
 ): ValidJSXElementNode[] =>
   pipe(
     path.getDescendantsOfKind(SyntaxKind.JsxElement),
     RA.appendAll(path.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement)),
   );
 
-export const getJSXElementChilds = (current: JSXElementNode, filePath: string) => {
+export const getJSXElementChilds = (current: JSXElementNode, _filePath: string) => {
   return taggedJSXElement.$match({
     JSXelement: (element) => {
       return pipe(
         element.node.getJsxChildren(),
         RA.filterMap((x) => pipe(x, Option.liftPredicate(isValidJSXElement))),
-        RA.map(
-          (x, i) =>
-            new JSXElementNode(
-              x,
-              i,
-              getJSXElementLevel(i, current.level),
-              filePath,
-              current,
-            ),
-        ),
+        RA.map((x, i) => new JSXElementNode(x, i, current)),
         HashSet.fromIterable,
       );
     },
     JSXSelfClosingElement: () => HashSet.empty(),
-    BabelJSXElement: ({ node }) => {
-      if (node.selfClosing) return HashSet.empty();
-      return pipe(
-        node.children,
-        RA.filterMap((x) => pipe(x, Option.liftPredicate(t.isJSXElement))),
-        RA.map(
-          (x, i) =>
-            new JSXElementNode(
-              x,
-              i,
-              getJSXElementLevel(i, current.level),
-              filePath,
-              current,
-            ),
-        ),
-        HashSet.fromIterable,
-      );
-    },
+    BabelJSXElement: ({ node }) => getBabelJSXElementChilds(node, current),
   })(current.path);
 };

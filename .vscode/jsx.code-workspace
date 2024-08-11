@@ -86,7 +86,7 @@
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/native-twin",
-      "📦 @lib/babel",
+      // "📦 @lib/babel",
       "📦 @lib/css",
       "📦 @lib/helpers",
       "📦 @lib/dev-tools",

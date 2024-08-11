@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 const ChildProp = () => {
-  return <View className='bg-black last:text-lg odd:text-gray-200 even:text-yellow-200' _twinOrd={0} _twinComponentID={"_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx-1156904878"} _twinComponentTemplateEntries={[]} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx-1156904878", [{
+  return <View className='bg-black last:text-lg odd:text-gray-200 even:text-yellow-200' _twinOrd={0} _twinComponentID={"_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx"} _twinComponentTemplateEntries={[]} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx", [{
     templateLiteral: null,
     prop: "className",
     target: "style",
@@ -73,7 +73,7 @@ const ChildProp = () => {
       odd: []
     }
   }])}>
-      <Text className='font-medium' _twinOrd={0} _twinComponentID={"_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx:a-1553964083"} _twinComponentTemplateEntries={[]} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx:a-1553964083", [{
+      <Text className='font-medium' _twinOrd={0} _twinComponentID={"_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx0"} _twinComponentTemplateEntries={[]} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx0", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -122,7 +122,7 @@ const ChildProp = () => {
         odd: []
       }
     }])}>Text1</Text>
-      <Text className='font-bold' _twinOrd={1} _twinComponentID={"_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx:b-819568541"} _twinComponentTemplateEntries={[]} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx:b-819568541", [{
+      <Text className='font-bold' _twinOrd={1} _twinComponentID={"_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx1"} _twinComponentTemplateEntries={[]} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx1", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -171,13 +171,13 @@ const ChildProp = () => {
         odd: []
       }
     }])}>Text2</Text>
-      <Text className={`${true ? 'text-medium' : 'text-bold'}`} _twinOrd={2} _twinComponentID={"_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx:c111523077"} _twinComponentTemplateEntries={[{
-      id: "_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx:c111523077",
+      <Text className={`${true ? 'text-medium' : 'text-bold'}`} _twinOrd={2} _twinComponentID={"_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx2"} _twinComponentTemplateEntries={[{
+      id: "_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx2",
       target: "style",
       prop: "className",
-      entries: require('@native-twin/core').tw(`true ? 'text-medium' : 'text-bold'`),
-      templateLiteral: `true ? 'text-medium' : 'text-bold'`
-    }]} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx:c111523077", [{
+      entries: require('@native-twin/core').tw(`${true ? 'text-medium' : 'text-bold'}`),
+      templateLiteral: `${true ? 'text-medium' : 'text-bold'}`
+    }]} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("_UsersChristiangutierrezWorkNativeTwinPackagesMetroTestFixturesChildsCodeTsx2", [{
       templateLiteral: null,
       prop: "className",
       target: "style",

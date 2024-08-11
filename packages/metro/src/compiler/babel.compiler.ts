@@ -4,14 +4,14 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
+import { TwinCompilerService } from './Compiler.service';
 import { visitElementNode } from './ast/visitors';
 import { JSXElementNode } from './models/JSXElement.model';
-import { TwinCompilerService } from './Compiler.service';
 
 export const compileFileWithBabel = Effect.gen(function* () {
   const ctx = yield* MetroTransformerContext;
   const compiler = yield* TwinCompilerService;
-  const ast = yield* compiler.getBabelAST(ctx.filename, ctx.sourceCode.toString('utf-8'));
+  const ast = yield* compiler.getBabelAST(ctx.sourceCode.toString('utf-8'), ctx.filename);
   const parents = yield* compiler.getBabelParentNodes(ast);
   const elements = pipe(
     createElementStyleSheet(parents),
@@ -26,9 +26,12 @@ export const compileFileWithBabel = Effect.gen(function* () {
     }),
   );
   const arr = pipe(RA.fromIterable(elements));
+  const code = generate(ast, {
+    sourceMaps: false,
+  }).code;
   const result = {
-    code: generate(ast).code,
-    full: generate(ast).code,
+    code,
+    full: code,
     elements,
     arr,
   };

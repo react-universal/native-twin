@@ -12,19 +12,19 @@ export const createBabelAST = (code: string) => {
     plugins: ['jsx', 'typescript'],
     sourceType: 'module',
     errorRecovery: true,
-    tokens: true,
+    tokens: false,
   });
 };
 
 export const visitBabelJSXElementParents = (
   ast: ParseResult<t.File>,
-  _filePath: string,
+  filePath: string,
 ) => {
   const parents = new Set<JSXElementNode>();
   traverse(ast, {
     JSXElement(path) {
-      // const uid = path.scope.generateUidIdentifier(filePath);
-      parents.add(new JSXElementNode(path.node, 0, null));
+      const uid = path.scope.generateUidIdentifier(filePath);
+      parents.add(new JSXElementNode(path.node, 0, null, uid.name));
       path.skip();
     },
   });

@@ -44,11 +44,19 @@ export const getMappedAttribute = (
       literal = cx`${expression.quasis.map((x) => x.value.raw).join(' ')}`;
 
       if (expression.expressions.length > 0) {
-        templates = expression.expressions
-          .filter((x) => t.isExpression(x))
-          .map((x) => generate(x).code)
-          .join(' ');
-        templates = `\`${templates}\``;
+        const quasis = expression.expressions.map(() =>
+          t.templateElement({
+            raw: '',
+            cooked: '',
+          }),
+        );
+        quasis.push(t.templateElement({ raw: '', cooked: '' }));
+        const newTemplate = t.templateLiteral(
+          quasis,
+          expression.expressions.map((x) => x),
+        );
+        templates = generate(newTemplate).code;
+        // templates = `\`\``;
       }
     }
 

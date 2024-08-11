@@ -33,10 +33,15 @@ export class JSXElementNode implements Equal.Equal {
     path: ValidJSXElementNode | t.JSXElement,
     order: number,
     parentNode: JSXElementNode | null = null,
+    id?: string,
   ) {
     this.order = order;
     this.parent = parentNode;
-    this.id = '';
+    if (parentNode) {
+      this.id = `${parentNode.id + order}`;
+    } else {
+      this.id = id ?? 'Undefined';
+    }
     this.path = getJSXElementPath(path);
   }
 

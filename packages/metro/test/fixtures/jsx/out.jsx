@@ -10,22 +10,41 @@
   var _styled = require("@native-twin/styled");
   var _jsxRuntime = require("react/jsx-runtime");
   var _this = this,
-    _jsxFileName = "/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/out.tsx";
-  var globalStyles = require('.cache/native-twin/twin.styles');
-  // @ts-noCheck
-
+    _jsxFileName = "/Users/christiangutierrez/work/native-twin/packages/metro/test/fixtures/out.tsx"; // @ts-noCheck
   var testImage = require('../../assets/favicon.png');
   var ChildProp = function ChildProp() {
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "bg-black last:text-lg",
       _twinOrd: 0,
-      _twinComponentID: "a-694217970",
+      _twinComponentID: "_fixturesOutTsx",
       _twinComponentTemplateEntries: [],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a-694217970", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
-        entries: [globalStyles.get("bg-black"), globalStyles.get("last:text-lg")].filter(Boolean),
+        entries: [{
+          className: "bg-black",
+          declarations: [{
+            prop: "backgroundColor",
+            value: "rgba(0,0,0,1)",
+            _tag: "COMPILED"
+          }],
+          selectors: [],
+          precedence: 805306368,
+          important: false,
+          animations: []
+        }, {
+          className: "last:text-lg",
+          declarations: [{
+            prop: "fontSize",
+            value: 18,
+            _tag: "COMPILED"
+          }],
+          selectors: ["last", "&:last"],
+          precedence: 805437440,
+          important: false,
+          animations: []
+        }],
         rawSheet: {
           base: [{
             className: "bg-black",
@@ -51,13 +70,24 @@
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         className: "text-blue",
         _twinOrd: 0,
-        _twinComponentID: "a:a-1259381967",
+        _twinComponentID: "_fixturesOutTsx0",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a:a-1259381967", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx0", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
-          entries: [globalStyles.get("text-blue")].filter(Boolean),
+          entries: [{
+            className: "text-blue",
+            declarations: [{
+              prop: "color",
+              value: "rgba(96,165,250,1)",
+              _tag: "COMPILED"
+            }],
+            selectors: [],
+            precedence: 805306368,
+            important: false,
+            animations: []
+          }],
           rawSheet: {
             base: [{
               className: "text-blue",
@@ -68,17 +98,6 @@
               }],
               selectors: [],
               precedence: 805306368,
-              important: false,
-              animations: []
-            }, {
-              className: "first:bg-purple-600",
-              declarations: [{
-                prop: "backgroundColor",
-                value: "rgba(147,51,234,1)",
-                _tag: "COMPILED"
-              }],
-              selectors: ["first", "&:first"],
-              precedence: 805437440,
               important: false,
               animations: []
             }, {
@@ -106,13 +125,24 @@
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         className: "text-red",
         _twinOrd: 1,
-        _twinComponentID: "a:b-1257239257",
+        _twinComponentID: "_fixturesOutTsx1",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("a:b-1257239257", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx1", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
-          entries: [globalStyles.get("text-red")].filter(Boolean),
+          entries: [{
+            className: "text-red",
+            declarations: [{
+              prop: "color",
+              value: "rgba(248,113,113,1)",
+              _tag: "COMPILED"
+            }],
+            selectors: [],
+            precedence: 805306368,
+            important: false,
+            animations: []
+          }],
           rawSheet: {
             base: [{
               className: "text-red",
@@ -163,19 +193,19 @@
     return /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Pressable, {
       className: buttonVariants(props),
       _twinOrd: 0,
-      _twinComponentID: "b-694218583",
+      _twinComponentID: "_fixturesOutTsx2",
       _twinComponentTemplateEntries: [{
-        id: "b-694218583",
+        id: "_fixturesOutTsx2",
         target: "style",
         prop: "className",
-        entries: require('@native-twin/core').tw(`${buttonVariants(props)}`),
-        templateLiteral: `${buttonVariants(props)}`
+        entries: require('@native-twin/core').tw(buttonVariants(props)),
+        templateLiteral: buttonVariants(props)
       }],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("b-694218583", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx2", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
-        entries: [].filter(Boolean),
+        entries: [],
         rawSheet: {
           base: [],
           dark: [],
@@ -189,9 +219,9 @@
       }]),
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
         _twinOrd: 0,
-        _twinComponentID: "b:a-1259381866",
+        _twinComponentID: "_fixturesOutTsx20",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("b:a-1259381866"),
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx20", []),
         children: "asd"
       })
     });
@@ -204,13 +234,54 @@
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactNative.View, {
       className: "flex-1 -translate-x-2 w-[10vw]",
       _twinOrd: 0,
-      _twinComponentID: "c-694217884",
+      _twinComponentID: "_fixturesOutTsx3",
       _twinComponentTemplateEntries: [],
-      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c-694217884", [{
+      _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx3", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
-        entries: [globalStyles.get("flex-1"), globalStyles.get("-translate-x-2"), globalStyles.get("w-[10vw]")].filter(Boolean),
+        entries: [{
+          className: "flex-1",
+          declarations: [{
+            prop: "flex",
+            value: {
+              flexGrow: 1,
+              flexShrink: 1,
+              flexBasis: "0%"
+            },
+            _tag: "COMPILED"
+          }],
+          selectors: [],
+          precedence: 805306368,
+          important: false,
+          animations: []
+        }, {
+          className: "-translate-x-2",
+          declarations: [{
+            prop: "transform",
+            value: [{
+              prop: "translateX",
+              value: -8,
+              _tag: "COMPILED"
+            }],
+            _tag: "COMPILED"
+          }],
+          selectors: [],
+          precedence: 805306368,
+          important: false,
+          animations: []
+        }, {
+          className: "w-[10vw]",
+          declarations: [{
+            prop: "width",
+            value: "10vw",
+            _tag: "NOT_COMPILED"
+          }],
+          selectors: [],
+          precedence: 805306368,
+          important: false,
+          animations: []
+        }],
         rawSheet: {
           base: [{
             className: "flex-1",
@@ -271,13 +342,50 @@
         `,
         debug: true,
         _twinOrd: 0,
-        _twinComponentID: "c:a-1259381797",
+        _twinComponentID: "_fixturesOutTsx30",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a-1259381797", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx30", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
-          entries: [globalStyles.get("flex-1"), globalStyles.get("bg-red-500"), globalStyles.get("first:bg-purple-600")].filter(Boolean),
+          entries: [{
+            className: "flex-1",
+            declarations: [{
+              prop: "flex",
+              value: {
+                flexGrow: 1,
+                flexShrink: 1,
+                flexBasis: "0%"
+              },
+              _tag: "COMPILED"
+            }],
+            selectors: [],
+            precedence: 805306368,
+            important: false,
+            animations: []
+          }, {
+            className: "bg-red-500",
+            declarations: [{
+              prop: "backgroundColor",
+              value: "rgba(239,68,68,1)",
+              _tag: "COMPILED"
+            }],
+            selectors: [],
+            precedence: 805306368,
+            important: false,
+            animations: []
+          }, {
+            className: "first:bg-purple-600",
+            declarations: [{
+              prop: "backgroundColor",
+              value: "rgba(147,51,234,1)",
+              _tag: "COMPILED"
+            }],
+            selectors: ["first", "&:first"],
+            precedence: 805437440,
+            important: false,
+            animations: []
+          }],
           rawSheet: {
             base: [{
               className: "flex-1",
@@ -316,17 +424,6 @@
               precedence: 805437440,
               important: false,
               animations: []
-            }, {
-              className: "first:bg-purple-600",
-              declarations: [{
-                prop: "backgroundColor",
-                value: "rgba(147,51,234,1)",
-                _tag: "COMPILED"
-              }],
-              selectors: ["first", "&:first"],
-              precedence: 805437440,
-              important: false,
-              animations: []
             }],
             dark: [],
             pointer: [],
@@ -340,13 +437,35 @@
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.View, {
           className: "p-2 !bg-green-800",
           _twinOrd: 0,
-          _twinComponentID: "c:a:a-191903644",
+          _twinComponentID: "_fixturesOutTsx300",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a-191903644", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx300", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
-            entries: [globalStyles.get("p-2"), globalStyles.get("!bg-green-800")].filter(Boolean),
+            entries: [{
+              className: "p-2",
+              declarations: [{
+                prop: "padding",
+                value: 8,
+                _tag: "COMPILED"
+              }],
+              selectors: [],
+              precedence: 805306368,
+              important: false,
+              animations: []
+            }, {
+              className: "!bg-green-800",
+              declarations: [{
+                prop: "backgroundColor",
+                value: "rgba(22,101,52,1)",
+                _tag: "COMPILED"
+              }],
+              selectors: [],
+              precedence: 805306368,
+              important: true,
+              animations: []
+            }],
             rawSheet: {
               base: [{
                 className: "p-2",
@@ -381,17 +500,6 @@
                 precedence: 805437440,
                 important: false,
                 animations: []
-              }, {
-                className: "first:bg-purple-600",
-                declarations: [{
-                  prop: "backgroundColor",
-                  value: "rgba(147,51,234,1)",
-                  _tag: "COMPILED"
-                }],
-                selectors: ["first", "&:first"],
-                precedence: 805437440,
-                important: false,
-                animations: []
               }],
               dark: [],
               pointer: [],
@@ -408,13 +516,57 @@
               hover:text-gray-700
               `,
             _twinOrd: 0,
-            _twinComponentID: "c:a:a:a-1636126501",
+            _twinComponentID: "_fixturesOutTsx3000",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:a:a:a-1636126501", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx3000", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
-              entries: [globalStyles.get("text-center"), globalStyles.get("text-xl"), globalStyles.get("text-primary"), globalStyles.get("hover:text-gray-700")].filter(Boolean),
+              entries: [{
+                className: "text-center",
+                declarations: [{
+                  prop: "textAlign",
+                  value: "center",
+                  _tag: "COMPILED"
+                }],
+                selectors: [],
+                precedence: 805306368,
+                important: false,
+                animations: []
+              }, {
+                className: "text-xl",
+                declarations: [{
+                  prop: "fontSize",
+                  value: 20,
+                  _tag: "COMPILED"
+                }],
+                selectors: [],
+                precedence: 805306368,
+                important: false,
+                animations: []
+              }, {
+                className: "text-primary",
+                declarations: [{
+                  prop: "color",
+                  value: "blue",
+                  _tag: "COMPILED"
+                }],
+                selectors: [],
+                precedence: 805306368,
+                important: false,
+                animations: []
+              }, {
+                className: "hover:text-gray-700",
+                declarations: [{
+                  prop: "color",
+                  value: "rgba(55,65,81,1)",
+                  _tag: "COMPILED"
+                }],
+                selectors: ["hover", "&:hover"],
+                precedence: 805307392,
+                important: false,
+                animations: []
+              }],
               rawSheet: {
                 base: [{
                   className: "text-center",
@@ -447,17 +599,6 @@
                   }],
                   selectors: [],
                   precedence: 805306368,
-                  important: false,
-                  animations: []
-                }, {
-                  className: "first:bg-purple-600",
-                  declarations: [{
-                    prop: "backgroundColor",
-                    value: "rgba(147,51,234,1)",
-                    _tag: "COMPILED"
-                  }],
-                  selectors: ["first", "&:first"],
-                  precedence: 805437440,
                   important: false,
                   animations: []
                 }, {
@@ -504,13 +645,68 @@
           hover:bg-pink-600
         `,
         _twinOrd: 1,
-        _twinComponentID: "c:b-1257213251",
+        _twinComponentID: "_fixturesOutTsx31",
         _twinComponentTemplateEntries: [],
-        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b-1257213251", [{
+        _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx31", [{
           templateLiteral: null,
           prop: "className",
           target: "style",
-          entries: [globalStyles.get("group"), globalStyles.get("flex-[2]"), globalStyles.get("bg-gray-500"), globalStyles.get("!bg-green-800"), globalStyles.get("hover:bg-pink-600")].filter(Boolean),
+          entries: [{
+            className: "group",
+            declarations: [],
+            selectors: [],
+            precedence: 805306368,
+            important: false,
+            animations: []
+          }, {
+            className: "flex-[2]",
+            declarations: [{
+              prop: "flex",
+              value: {
+                flexGrow: 2,
+                flexShrink: 2,
+                flexBasis: "0%"
+              },
+              _tag: "COMPILED"
+            }],
+            selectors: [],
+            precedence: 805306368,
+            important: false,
+            animations: []
+          }, {
+            className: "bg-gray-500",
+            declarations: [{
+              prop: "backgroundColor",
+              value: "rgba(107,114,128,1)",
+              _tag: "COMPILED"
+            }],
+            selectors: [],
+            precedence: 805306368,
+            important: false,
+            animations: []
+          }, {
+            className: "!bg-green-800",
+            declarations: [{
+              prop: "backgroundColor",
+              value: "rgba(22,101,52,1)",
+              _tag: "COMPILED"
+            }],
+            selectors: [],
+            precedence: 805306368,
+            important: true,
+            animations: []
+          }, {
+            className: "hover:bg-pink-600",
+            declarations: [{
+              prop: "backgroundColor",
+              value: "rgba(219,39,119,1)",
+              _tag: "COMPILED"
+            }],
+            selectors: ["hover", "&:hover"],
+            precedence: 805307392,
+            important: false,
+            animations: []
+          }],
           rawSheet: {
             base: [{
               className: "flex-[2]",
@@ -576,19 +772,30 @@
             ${active ? 'text-red-800' : 'text-primary'}
           `,
           _twinOrd: 0,
-          _twinComponentID: "c:b:a-192015277",
+          _twinComponentID: "_fixturesOutTsx310",
           _twinComponentTemplateEntries: [{
-            id: "c:b:a-192015277",
+            id: "_fixturesOutTsx310",
             target: "style",
             prop: "className",
             entries: require('@native-twin/core').tw(`${active ? 'text-red-800' : 'text-primary'}`),
             templateLiteral: `${active ? 'text-red-800' : 'text-primary'}`
           }],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:a-192015277", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx310", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
-            entries: [globalStyles.get("text-2xl")].filter(Boolean),
+            entries: [{
+              className: "text-2xl",
+              declarations: [{
+                prop: "fontSize",
+                value: 24,
+                _tag: "COMPILED"
+              }],
+              selectors: [],
+              precedence: 805306368,
+              important: false,
+              animations: []
+            }],
             rawSheet: {
               base: [{
                 className: "text-2xl",
@@ -599,17 +806,6 @@
                 }],
                 selectors: [],
                 precedence: 805306368,
-                important: false,
-                animations: []
-              }, {
-                className: "first:bg-purple-600",
-                declarations: [{
-                  prop: "backgroundColor",
-                  value: "rgba(147,51,234,1)",
-                  _tag: "COMPILED"
-                }],
-                selectors: ["first", "&:first"],
-                precedence: 805437440,
                 important: false,
                 animations: []
               }, {
@@ -641,19 +837,30 @@
             });
           },
           _twinOrd: 1,
-          _twinComponentID: "c:b:b-264901931",
+          _twinComponentID: "_fixturesOutTsx311",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b-264901931"),
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx311", []),
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactNative.Text, {
             className: "text-gray-200",
             _twinOrd: 0,
-            _twinComponentID: "c:b:b:a-1829462821",
+            _twinComponentID: "_fixturesOutTsx3110",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:b:a-1829462821", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx3110", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
-              entries: [globalStyles.get("text-gray-200")].filter(Boolean),
+              entries: [{
+                className: "text-gray-200",
+                declarations: [{
+                  prop: "color",
+                  value: "rgba(229,231,235,1)",
+                  _tag: "COMPILED"
+                }],
+                selectors: [],
+                precedence: 805306368,
+                important: false,
+                animations: []
+              }],
               rawSheet: {
                 base: [{
                   className: "text-gray-200",
@@ -664,17 +871,6 @@
                   }],
                   selectors: [],
                   precedence: 805306368,
-                  important: false,
-                  animations: []
-                }, {
-                  className: "first:bg-purple-600",
-                  declarations: [{
-                    prop: "backgroundColor",
-                    value: "rgba(147,51,234,1)",
-                    _tag: "COMPILED"
-                  }],
-                  selectors: ["first", "&:first"],
-                  precedence: 805437440,
                   important: false,
                   animations: []
                 }, {
@@ -707,13 +903,35 @@
           `,
           debug: true,
           _twinOrd: 2,
-          _twinComponentID: "c:b:c-4504757",
+          _twinComponentID: "_fixturesOutTsx312",
           _twinComponentTemplateEntries: [],
-          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c-4504757", [{
+          _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx312", [{
             templateLiteral: null,
             prop: "className",
             target: "style",
-            entries: [globalStyles.get("-top-1"), globalStyles.get("group-hover:bg-pink-800")].filter(Boolean),
+            entries: [{
+              className: "-top-1",
+              declarations: [{
+                prop: "top",
+                value: -4,
+                _tag: "COMPILED"
+              }],
+              selectors: [],
+              precedence: 805306368,
+              important: false,
+              animations: []
+            }, {
+              className: "group-hover:bg-pink-800",
+              declarations: [{
+                prop: "backgroundColor",
+                value: "rgba(157,23,77,1)",
+                _tag: "COMPILED"
+              }],
+              selectors: ["group-hover", ".group:hover &"],
+              precedence: 805307392,
+              important: false,
+              animations: []
+            }],
             rawSheet: {
               base: [{
                 className: "-top-1",
@@ -751,13 +969,35 @@
             suppressHighlighting: true,
             className: "text-gray-800 group-hover:text-white",
             _twinOrd: 0,
-            _twinComponentID: "c:b:c:a-1756547946",
+            _twinComponentID: "_fixturesOutTsx3120",
             _twinComponentTemplateEntries: [],
-            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("c:b:c:a-1756547946", [{
+            _twinComponentSheet: require('@native-twin/jsx').StyleSheet.registerComponent("_fixturesOutTsx3120", [{
               templateLiteral: null,
               prop: "className",
               target: "style",
-              entries: [globalStyles.get("text-gray-800"), globalStyles.get("group-hover:text-white")].filter(Boolean),
+              entries: [{
+                className: "text-gray-800",
+                declarations: [{
+                  prop: "color",
+                  value: "rgba(31,41,55,1)",
+                  _tag: "COMPILED"
+                }],
+                selectors: [],
+                precedence: 805306368,
+                important: false,
+                animations: []
+              }, {
+                className: "group-hover:text-white",
+                declarations: [{
+                  prop: "color",
+                  value: "rgba(255,255,255,1)",
+                  _tag: "COMPILED"
+                }],
+                selectors: ["group-hover", ".group:hover &"],
+                precedence: 805307392,
+                important: false,
+                animations: []
+              }],
               rawSheet: {
                 base: [{
                   className: "text-gray-800",
@@ -768,17 +1008,6 @@
                   }],
                   selectors: [],
                   precedence: 805306368,
-                  important: false,
-                  animations: []
-                }, {
-                  className: "first:bg-purple-600",
-                  declarations: [{
-                    prop: "backgroundColor",
-                    value: "rgba(147,51,234,1)",
-                    _tag: "COMPILED"
-                  }],
-                  selectors: ["first", "&:first"],
-                  precedence: 805437440,
                   important: false,
                   animations: []
                 }, {
