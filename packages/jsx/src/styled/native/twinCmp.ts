@@ -1,6 +1,5 @@
 import { ComponentType, createElement, forwardRef, useId } from 'react';
 import { groupContext } from '../../context';
-import { colorScheme } from '../../store/observables';
 import type { ComponentTemplateEntryProp } from '../../types/jsx.types';
 import type { ComponentConfig } from '../../types/styled.types';
 import { getComponentType } from '../../utils/react.utils';
@@ -13,35 +12,35 @@ export function twinComponent(
   ref: any,
 ) {
   let component = baseComponent;
-  const id = useId();
+  const reactID = useId();
   const componentID = props?.['_twinComponentID'];
-  const { state, componentStyles, parentState, templateEntriesObj, onChange } =
-    useStyledProps(
-      componentID ?? id,
-      props?.['_twinComponentSheet'],
-      props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[],
-      props?.['debug'] ?? false,
-    );
+  const id = componentID ?? reactID;
+  const { componentStyles } = useStyledProps(
+    id,
+    props?.['_twinComponentSheet'],
+    props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[],
+    props?.['debug'] ?? false,
+  );
 
   props = Object.assign({ ref }, props);
 
-  if (componentStyles.sheets.length > 0) {
-    // componentStyles.sheets = componentStyles.sheets.map((x) => x.recompute());
-    for (const style of componentStyles.sheets) {
-      const oldProps = props[style.prop] ? { ...props[style.prop] } : {};
-      props[style.prop] = Object.assign(
-        style.getStyles(
-          {
-            isParentActive: parentState.isGroupActive,
-            isPointerActive: state.isLocalActive,
-            dark: colorScheme.get() === 'dark',
-          },
-          templateEntriesObj[style.prop] ?? [],
-        ),
-        oldProps,
-      );
-    }
-  }
+  // if (componentStyles.sheets.length > 0) {
+  //   // componentStyles.sheets = componentStyles.sheets.map((x) => x.recompute());
+  //   for (const style of componentStyles.sheets) {
+  //     const oldProps = props[style.prop] ? { ...props[style.prop] } : {};
+  //     props[style.prop] = Object.assign(
+  //       style.getStyles(
+  //         {
+  //           isParentActive: parentState.isGroupActive,
+  //           isPointerActive: state.isLocalActive,
+  //           dark: colorScheme.get() === 'dark',
+  //         },
+  //         templateEntriesObj[style.prop] ?? [],
+  //       ),
+  //       oldProps,
+  //     );
+  //   }
+  // }
 
   for (const x of configs) {
     if (x.target !== x.source) {
@@ -49,24 +48,24 @@ export function twinComponent(
     }
   }
 
-  if (
-    componentStyles.metadata.hasPointerEvents ||
-    componentStyles.metadata.hasGroupEvents ||
-    componentStyles.metadata.isGroupParent
-  ) {
-    if (!props['onTouchStart']) {
-      props['onTouchStart'] = (event: unknown) => {
-        ref?.['onTouchStart']?.(event);
-        onChange(true);
-      };
-    }
-    if (!props['onTouchEnd']) {
-      props['onTouchEnd'] = (event: unknown) => {
-        ref?.['onTouchEnd']?.(event);
-        onChange(false);
-      };
-    }
-  }
+  // if (
+  //   componentStyles.metadata.hasPointerEvents ||
+  //   componentStyles.metadata.hasGroupEvents ||
+  //   componentStyles.metadata.isGroupParent
+  // ) {
+  //   if (!props['onTouchStart']) {
+  //     props['onTouchStart'] = (event: unknown) => {
+  //       ref?.['onTouchStart']?.(event);
+  //       onChange(true);
+  //     };
+  //   }
+  //   if (!props['onTouchEnd']) {
+  //     props['onTouchEnd'] = (event: unknown) => {
+  //       ref?.['onTouchEnd']?.(event);
+  //       onChange(false);
+  //     };
+  //   }
+  // }
 
   if (componentStyles.metadata.hasAnimations && 1 === Number(2)) {
     component = createAnimatedComponent(component);

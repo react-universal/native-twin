@@ -1,12 +1,11 @@
-import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { RegisteredComponent } from '@native-twin/css/jsx';
-import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
-import { groupContext } from '../../context';
+import { useAtomValue } from '@native-twin/helpers';
 import { StyleSheet } from '../../sheet/StyleSheet';
 import { tw } from '../../sheet/native-tw';
 import { styledContext, twinConfigObservable } from '../../store/observables';
 import { ComponentTemplateEntryProp } from '../../types/jsx.types';
-import { DEFAULT_INTERACTIONS, INTERNAL_RESET } from '../../utils/constants';
+import { INTERNAL_RESET } from '../../utils/constants';
 import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps';
 
 export const useStyledProps = (
@@ -15,11 +14,8 @@ export const useStyledProps = (
   templateEntries: ComponentTemplateEntryProp[],
   debug: boolean,
 ) => {
-  if (compiledSheet) {
-    console.debug('COMPILED_SHEET: ', compiledSheet);
-  }
   const templateEntriesObj = templatePropsToSheetEntriesObject(templateEntries ?? []);
-  const context = useContext(groupContext);
+
   const styledCtx = useAtomValue(styledContext);
 
   const componentStyles = useMemo(() => {
@@ -33,32 +29,6 @@ export const useStyledProps = (
     return StyleSheet.registerComponent(id, [], styledCtx);
   }, [compiledSheet, styledCtx, id]);
 
-  const [state, setState] = useAtom(StyleSheet.getComponentState(id));
-
-  const parentState = useAtomValue(
-    atom((get) => {
-      if (!context || !componentStyles.metadata.hasGroupEvents) {
-        return DEFAULT_INTERACTIONS;
-      }
-      return get(StyleSheet.getComponentState(context));
-    }),
-  );
-
-  const onChange = useCallback(
-    (active: boolean) => {
-      if (
-        componentStyles.metadata.hasPointerEvents ||
-        componentStyles.metadata.isGroupParent
-      ) {
-        setState({
-          isLocalActive: active,
-          isGroupActive: active,
-        });
-      }
-    },
-    [id, componentStyles],
-  );
-
   useEffect(() => {
     if (StyleSheet.getFlag('STARTED') === 'NO') {
       StyleSheet[INTERNAL_RESET](tw.config);
@@ -70,5 +40,5 @@ export const useStyledProps = (
     });
     return () => obs();
   }, []);
-  return { state, onChange, parentState, componentStyles, styledCtx, templateEntriesObj };
+  return { componentStyles, styledCtx, templateEntriesObj };
 };

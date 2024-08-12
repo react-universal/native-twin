@@ -1,10 +1,4 @@
-import { forwardRef, createElement, useId, useRef } from 'react';
-import {
-  NativeSyntheticEvent,
-  PressableProps,
-  TextInputFocusEventData,
-  Touchable,
-} from 'react-native';
+import { forwardRef, createElement, useId } from 'react';
 import { groupContext } from '../../context';
 import { colorScheme } from '../../store/observables';
 import type { ComponentTemplateEntryProp, JSXFunction } from '../../types/jsx.types';
@@ -13,6 +7,7 @@ import type {
   ReactComponent,
 } from '../../types/styled.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
+import { useInteractions } from '../hooks/useInteractions';
 // import { getComponentDisplayName } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';
 
@@ -33,48 +28,24 @@ export const NativeTwinHOC = <
 ) => {
   let component = Component;
   const configs = getNormalizeConfig(mapping);
-  // const type = getComponentType(baseComponent);
 
   const TwinComponent = forwardRef(function TwinComponent(props: any, ref) {
-    const id = useId();
-    const interactionsRef = useRef<
-      Touchable &
-        PressableProps & {
-          onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-          onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-        }
-    >(props);
-    const componentID = props?.['_twinComponentID'];
-    const { state, componentStyles, parentState, templateEntriesObj, onChange } =
-      useStyledProps(
-        componentID ?? id,
-        props?.['_twinComponentSheet'],
-        props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[],
-        props?.['debug'] ?? false,
-      );
-
     // props = Object.assign({ ref }, props);
+    const reactID = useId();
+    const componentID = props?.['_twinComponentID'];
+    const id = componentID ?? reactID;
+    const { componentStyles, templateEntriesObj } = useStyledProps(
+      id,
+      props?.['_twinComponentSheet'],
+      props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[],
+      props?.['debug'] ?? false,
+    );
 
-    const handlers: Touchable & PressableProps = {};
-
-    if (
-      componentStyles.metadata.hasPointerEvents ||
-      componentStyles.metadata.hasGroupEvents ||
-      componentStyles.metadata.isGroupParent
-    ) {
-      handlers.onTouchStart = function (event) {
-        if (interactionsRef.current.onTouchStart) {
-          interactionsRef.current.onTouchStart(event);
-        }
-        onChange(true);
-      };
-      handlers.onTouchEnd = function (event) {
-        if (interactionsRef.current.onTouchEnd) {
-          interactionsRef.current.onTouchEnd(event);
-        }
-        onChange(false);
-      };
-    }
+    const { handlers, parentState, state } = useInteractions(
+      id,
+      componentStyles.metadata,
+      props,
+    );
 
     let newProps = {
       ...props,
