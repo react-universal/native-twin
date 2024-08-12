@@ -27,8 +27,8 @@ export function twinComponent(
   props = Object.assign({ ref }, props);
 
   if (componentStyles.sheets.length > 0) {
+    componentStyles.sheets = componentStyles.sheets.map((x) => x.recompute());
     for (const style of componentStyles.sheets) {
-      style.recompute();
       const oldProps = props[style.prop] ? { ...props[style.prop] } : {};
       props[style.prop] = Object.assign(
         style.getStyles(

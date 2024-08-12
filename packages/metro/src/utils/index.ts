@@ -26,7 +26,7 @@ export {
   createObjectExpression,
   createCacheDir,
 } from './file.utils';
-export { getUserNativeWindConfig, setupNativeTwin, getTwinConfig } from './load-config';
+export { getUsernativeTwinConfig, setupNativeTwin, getTwinConfig } from './load-config';
 export { requireJS } from './load-js';
 export { splitClasses } from './twin.utils';
 export {

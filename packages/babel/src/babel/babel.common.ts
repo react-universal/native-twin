@@ -6,7 +6,7 @@ import type { RuntimeTW } from '@native-twin/core';
 import { getUserTwinConfig, setupNativeTwin } from '../runtime/twin.setup';
 import type { TwinBabelOptions } from '../types/plugin.types';
 
-let twin: Option.Option<RuntimeTW> = Option.none();
+let twin: RuntimeTW | undefined = undefined;
 
 const allowedFileRegex =
   /^(?!.*[/\\](react|react-native|react-native-web|@native-twin\/*)[/\\]).*$/;

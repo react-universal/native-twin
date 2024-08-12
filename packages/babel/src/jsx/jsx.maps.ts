@@ -1,16 +1,22 @@
+import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
+import { Option } from 'effect';
+import * as RA from 'effect/Array';
+import { pipe } from 'effect/Function';
 import type { RuntimeTW } from '@native-twin/core';
 import {
   createPrimitiveExpression,
   templateLiteralToStringLike,
 } from '../babel/babel.constructors';
 import { hasJsxAttribute } from '../babel/babel.validators';
-import type { MappedComponent } from '../utils/component.maps';
+import { mappedComponents, type MappedComponent } from '../utils/component.maps';
+import * as jsxPredicates from './jsx.predicates';
 import type {
   AnyPrimitive,
   JSXChildElement,
   JSXElementHandler,
   JSXMappedAttribute,
+  MapAttributeFn,
   StyledPropEntries,
 } from './jsx.types';
 
@@ -115,4 +121,67 @@ export const addJsxAttribute = (
 
 export const createRequireExpression = (path: string) => {
   return t.callExpression(t.identifier('require'), [t.stringLiteral(path)]);
+};
+
+export const getJSXAttributePaths = (path: NodePath<t.JSXElement>) =>
+  pipe(
+    RA.ensure(path.get('openingElement.attributes')),
+    RA.filter(jsxPredicates.isJSXAttributePath),
+  );
+
+export const getJSXAttributeName = (id: t.JSXAttribute) =>
+  pipe(
+    id,
+    Option.liftPredicate((x) => t.isJSXIdentifier(x.name)),
+    Option.flatMap((x) => {
+      if (!t.isJSXIdentifier(x.name)) return Option.none();
+
+      return Option.some(x.name);
+    }),
+  );
+
+export const findMapJSXAttributeByName = (paths: t.JSXAttribute[], name: string) =>
+  pipe(
+    paths,
+    RA.findFirst((x) =>
+      Option.Do.pipe(
+        () => Option.some({ path: x }),
+        Option.bind('name', ({ path }) => getJSXAttributeName(path)),
+        Option.flatMap((x) => (x.name.name === name ? Option.some(x) : Option.none())),
+      ),
+    ),
+  );
+
+export const traverseJSXElementChilds = (
+  path: NodePath<t.JSXElement>,
+  onChild: (child: NodePath<t.JSXElement>, index: number) => void,
+) => {
+  pipe(
+    RA.ensure(path.get('children')),
+    RA.filter(jsxPredicates.isJSXElementPath),
+    RA.forEach(onChild),
+  );
+};
+
+export const mapJSXElementAttributes =
+  (openingElement: t.JSXOpeningElement) => (fn: MapAttributeFn) => {
+    openingElement.attributes = openingElement.attributes.map((x) => {
+      if (!t.isJSXAttribute(x)) return x;
+      return fn(x);
+    });
+  };
+
+const getElementName = (openingElement: t.JSXOpeningElement) => {
+  if (t.isJSXIdentifier(openingElement.name)) {
+    return Option.some(openingElement.name.name);
+  }
+  return Option.none();
+};
+
+export const getElementConfig = (openingElement: t.JSXOpeningElement) => {
+  return getElementName(openingElement).pipe(
+    Option.flatMap((name) =>
+      Option.fromNullable(mappedComponents.find((x) => x.name === name)),
+    ),
+  );
 };

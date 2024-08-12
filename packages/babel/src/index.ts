@@ -4,6 +4,8 @@ import { createVisitorContext } from './babel/babel.common';
 import { PLUGIN_IMPORT_META } from './constants/plugin.constants';
 import { isReactImport, isReactRequire } from './effects/path.effects';
 import { createMemberExpressionProgram } from './effects/programs';
+import jsxVisitors from './jsx/jsx.visitors';
+import { getUserTwinConfig, setupNativeTwin } from './runtime';
 // import { addOrderToJSXChilds, compileMappedAttributes } from './jsx/jsx.maps';
 import { BabelAPI, TwinBabelOptions } from './types/plugin.types';
 
@@ -13,7 +15,8 @@ export default function nativeTwinBabelPlugin(
   cwd: string,
 ): PluginObj {
   const createContext = createVisitorContext(cwd, options);
-
+  const twConfig = getUserTwinConfig(cwd, options);
+  const twin = setupNativeTwin(twConfig, options);
   return {
     name: '@native-twin/babel-plugin',
     visitor: {
@@ -40,18 +43,11 @@ export default function nativeTwinBabelPlugin(
         }
       },
       JSXElement: (path, state) => {
-        // const context = createContext(path, state);
-        // if (!context.stateContext.isValidPath) {
-        //   return;
-        // }
-        // const handler = createJSXElementHandler(path);
-        // addOrderToJSXChilds(handler);
-        // if (context.twin._tag === 'None') return;
-        // const classNames = handler.openingElement.extractClassNames();
-        // const attributes = compileMappedAttributes([...classNames], context.twin.value);
-        // for (const prop of attributes) {
-        //   handler.openingElement.addStyledProp(prop);
-        // }
+        const context = createContext(path, state);
+
+        if (!context.stateContext.isValidPath) return;
+        jsxVisitors.visitJSXElement(path, twin, state);
+        // path.traverse(jsxVisitors.jsxElementVisitor, { order: 0 });
       },
     },
   };

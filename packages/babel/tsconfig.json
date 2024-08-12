@@ -2,8 +2,6 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "resolveJsonModule": false,
     "strict": true
   },
   "include": ["src", "test"],

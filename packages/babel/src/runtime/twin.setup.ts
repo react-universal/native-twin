@@ -55,14 +55,18 @@ export function setupNativeTwin(
   _options: TwinBabelOptions,
 ) {
   if (tw) {
-    return Option.some(tw);
+    return tw;
   }
   return config.pipe(
     Option.map((x) => {
-      const nativeWind = loadNativeTwin();
-      tw = loadNativeTwinConfig(nativeWind, x);
+      const nativeTwin = loadNativeTwin();
+      tw = loadNativeTwinConfig(nativeTwin, x);
 
       return tw;
+    }),
+    Option.getOrElse(() => {
+      const nativeTwin = loadNativeTwin();
+      return loadNativeTwinConfig(nativeTwin, nativeTwin.defineConfig({ content: [] }));
     }),
   );
 }

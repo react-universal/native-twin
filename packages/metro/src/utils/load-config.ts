@@ -23,7 +23,7 @@ function loadNativeTwinConfig(
   return mod.createTailwind(config, loadVirtualSheet());
 }
 
-export function getUserNativeWindConfig(
+export function getUsernativeTwinConfig(
   tailwindConfigPath: string,
   output: string,
 ): NativeTwin.TailwindConfig<NativeTwin.__Theme__ & TailwindPresetTheme> {
@@ -50,15 +50,15 @@ export function setupNativeTwin(
   if (tw) {
     return tw;
   }
-  const nativeWind = loadNativeTwin();
-  tw = loadNativeTwinConfig(nativeWind, config);
+  const nativeTwin = loadNativeTwin();
+  tw = loadNativeTwinConfig(nativeTwin, config);
   // console.log('TW: ', tw);
 
   return tw;
 }
 
 export const getTwinConfig = (projectRoot: string) => {
-  const twinConfig = getUserNativeWindConfig(
+  const twinConfig = getUsernativeTwinConfig(
     path.resolve(projectRoot, 'tailwind.config.ts'),
     path.join(projectRoot, '.twin-cache'),
   );

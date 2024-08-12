@@ -10,7 +10,15 @@ describe('Babel exec test', () => {
     // console.log('CODE: ', code);
 
     const output = babel.transform(code, {
-      presets: [require('../babel')],
+      presets: [
+        [
+          require('../babel'),
+          {
+            twinConfigPath: './tailwind.config.ts',
+          },
+        ],
+      ],
+      // plugins: ['@babel/plugin-syntax-jsx', require('../plugin')],
       filename: path.join(__dirname, 'fixtures', 'jsx', 'code.tsx'),
       cwd: path.join(__dirname),
       envName: 'development',

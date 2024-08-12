@@ -11,7 +11,7 @@ import type {
 } from './metro.types';
 import {
   createCacheDir,
-  getUserNativeWindConfig,
+  getUsernativeTwinConfig,
   setupNativeTwin,
   TWIN_CACHE_DIR,
   TWIN_STYLES_FILE,
@@ -30,7 +30,7 @@ export function withNativeTwin(
   outputDir = path.join(projectRoot, outputDir);
   createCacheDir(outputDir);
   const twinCacheFile = path.join(projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
-  const twConfig = getUserNativeWindConfig(twinConfigPath, outputDir);
+  const twConfig = getUsernativeTwinConfig(twinConfigPath, outputDir);
 
   const twin = setupNativeTwin(twConfig, {
     dev: isDev,
@@ -100,7 +100,7 @@ export function withNativeTwin(
     resetCache: true,
     // server: server.server,
     // resolver: server.resolver,
-    transformerPath: require.resolve('./transformer/metro.transformer'),
+    // transformerPath: require.resolve('./transformer/metro.transformer'),
     transformer: {
       ...metroConfig.transformer,
       tailwindConfigPath: twinConfigPath,

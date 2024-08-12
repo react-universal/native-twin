@@ -7,10 +7,10 @@ const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
   return (
-    <View className='flex-1'>
-      <View className={`bg-yellow-200 flex-1 items-center justify-center group`}>
+    <View className='flex-1 rounded-xl'>
+      <View className={`bg-red-200 flex-1 items-center justify-center group`}>
         <View className='shadow-xl bg-green-300 rounded-2xl p-2 group-focus:bg-purple-500'>
-          <Button size='large' />
+          <Button size='small' />
           <Text
             className={`
               text(center white)
@@ -58,7 +58,7 @@ function HomeScreen() {
         <View
           className={`
             -top-1 -translate-x-1
-            mb-2 rounded-lg bg-gray-300 p-2
+            mb-2 rounded-lg bg-gray-300 p-3
             group-hover:bg-pink-800
           `}
         >
