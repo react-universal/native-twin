@@ -1,4 +1,5 @@
 import { StyleSheet as NativeSheet } from 'react-native';
+import { __Theme__, TailwindConfig } from '@native-twin/core';
 import {
   AnyStyle,
   FinalSheet,
@@ -24,10 +25,33 @@ import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 import { getSheetEntryStyles, sheetEntriesToStyles } from '../utils/sheet.utils';
 import { tw } from './native-tw';
-import type { ComponentConfigProps, TwinStyleSheet, ComponentState } from './sheet.types';
 
 export const componentsRegistry: Map<string, RegisteredComponent> = new Map();
 const componentsState: Map<string, Atom<ComponentState>> = new Map();
+
+export interface TwinStyleSheet {
+  [INTERNAL_RESET](tw?: TailwindConfig<__Theme__>): void;
+  [INTERNAL_FLAGS]: Record<string, string>;
+  getFlag(name: string): string | undefined;
+  getGlobalStyle(name: string): Atom<RuntimeSheetEntry> | undefined;
+  entriesToFinalSheet(entries: RuntimeSheetEntry[]): FinalSheet;
+  getComponentByID(id: string): RegisteredComponent | undefined;
+  registerComponent(
+    id: string,
+    props: RuntimeComponentEntry[],
+    context: StyledContext,
+  ): RegisteredComponent;
+  getComponentState(id: string): Atom<ComponentState>;
+}
+
+export interface ComponentState {
+  isGroupActive: boolean;
+  isLocalActive: boolean;
+}
+
+export interface ComponentConfigProps extends ComponentConfig {
+  className: string;
+}
 
 const internalSheet: TwinStyleSheet = {
   [INTERNAL_FLAGS]: {
@@ -54,10 +78,7 @@ const internalSheet: TwinStyleSheet = {
   },
   registerComponent(id, props, context) {
     const component = componentsRegistry.get(id);
-    if (component) {
-      component.sheets = component.sheets.map((x) => x.recompute());
-      return component;
-    }
+
     const sheets: ComponentSheet[] = [];
     for (const style of props ?? []) {
       sheets.push(
@@ -68,6 +89,11 @@ const internalSheet: TwinStyleSheet = {
           style.prop,
         ),
       );
+    }
+
+    if (component) {
+      component.sheets = sheets;
+      return component;
     }
 
     const registerComponent: RegisteredComponent = {
@@ -126,8 +152,10 @@ export function createComponentSheet(
     target: target ?? prop,
     getStyles,
     sheet,
+    compiledSheet,
     getChildStyles,
-    recompute: () => {
+    recompute: (compiledSheet$) => {
+      compiledSheet = compiledSheet$;
       return createComponentSheet(
         prop,
         compiledSheet,

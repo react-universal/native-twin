@@ -18,7 +18,6 @@ export function twinComponent(
   const { state, componentStyles, parentState, templateEntriesObj, onChange } =
     useStyledProps(
       componentID ?? id,
-      props?.['componentEntries'] ?? [],
       props?.['_twinComponentSheet'],
       props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[],
       props?.['debug'] ?? false,
@@ -27,7 +26,7 @@ export function twinComponent(
   props = Object.assign({ ref }, props);
 
   if (componentStyles.sheets.length > 0) {
-    componentStyles.sheets = componentStyles.sheets.map((x) => x.recompute());
+    // componentStyles.sheets = componentStyles.sheets.map((x) => x.recompute());
     for (const style of componentStyles.sheets) {
       const oldProps = props[style.prop] ? { ...props[style.prop] } : {};
       props[style.prop] = Object.assign(

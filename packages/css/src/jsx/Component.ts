@@ -25,13 +25,14 @@ export interface ComponentSheet {
     input: Partial<SheetInteractionState>,
     templateEntries?: RuntimeSheetEntry[],
   ) => AnyStyle;
+  compiledSheet: RuntimeComponentEntry;
   metadata: {
     isGroupParent: boolean;
     hasGroupEvents: boolean;
     hasPointerEvents: boolean;
     hasAnimations: boolean;
   };
-  recompute(): ComponentSheet;
+  recompute(compiledSheet: RuntimeComponentEntry): ComponentSheet;
 }
 
 /** @category jsxComponent */

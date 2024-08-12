@@ -1,12 +1,10 @@
 export {
   StyleSheet,
   createComponentSheet,
-  ComponentSheetHandler,
   intersectConfigProps,
+  type ComponentSheetHandler,
+  type TwinStyleSheet,
+  type ComponentState,
+  type ComponentConfigProps,
 } from './StyleSheet';
 export { tw } from './native-tw';
-export {
-  TwinStyleSheet,
-  ComponentState,
-  ComponentConfigProps,
-} from './sheet.types';

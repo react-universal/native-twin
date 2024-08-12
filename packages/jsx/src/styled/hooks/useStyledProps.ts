@@ -1,6 +1,5 @@
-import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
-import 'react-native';
-import { RegisteredComponent, RuntimeComponentEntry } from '@native-twin/css/jsx';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { RegisteredComponent } from '@native-twin/css/jsx';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
 import { groupContext } from '../../context';
 import { StyleSheet } from '../../sheet/StyleSheet';
@@ -12,23 +11,27 @@ import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps';
 
 export const useStyledProps = (
   id: string,
-  styledEntries: RuntimeComponentEntry[],
   compiledSheet: RegisteredComponent | null = null,
   templateEntries: ComponentTemplateEntryProp[],
   debug: boolean,
 ) => {
-  console.log(id, { id, styledEntries, compiledSheet, templateEntries, debug });
-  const templateEntriesObj = templatePropsToSheetEntriesObject(templateEntries ?? []);
-  const renderCount = useRef(0);
-  if (debug) {
-    console.debug('RENDER_COUNTER: ', id, ++renderCount.current);
+  if (compiledSheet) {
+    console.debug('COMPILED_SHEET: ', compiledSheet);
   }
+  const templateEntriesObj = templatePropsToSheetEntriesObject(templateEntries ?? []);
   const context = useContext(groupContext);
   const styledCtx = useAtomValue(styledContext);
 
   const componentStyles = useMemo(() => {
-    return StyleSheet.registerComponent(id, styledEntries, styledCtx);
-  }, [styledEntries, styledCtx, id]);
+    if (compiledSheet) {
+      return StyleSheet.registerComponent(
+        id,
+        compiledSheet.sheets.map((x) => x.compiledSheet),
+        styledCtx,
+      );
+    }
+    return StyleSheet.registerComponent(id, [], styledCtx);
+  }, [compiledSheet, styledCtx, id]);
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
 

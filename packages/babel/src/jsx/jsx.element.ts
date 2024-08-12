@@ -2,7 +2,6 @@ import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as Option from 'effect/Option';
 import { getRuleSelectorGroup } from '@native-twin/css';
-// import { templateLiteralToStringLike } from '../babel';
 import { isReactNativeImport } from '../babel/babel.validators';
 import { mappedComponents } from '../utils/component.maps';
 import { extractElementClassNames } from './jsx.maps';

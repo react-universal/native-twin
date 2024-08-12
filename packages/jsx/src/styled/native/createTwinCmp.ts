@@ -1,57 +1,137 @@
-import { forwardRef, ComponentType, ElementType } from 'react';
-import type { JSXFunction } from '../../types/jsx.types';
+import { forwardRef, createElement, useId, useRef } from 'react';
+import {
+  NativeSyntheticEvent,
+  PressableProps,
+  TextInputFocusEventData,
+  Touchable,
+} from 'react-native';
+import { groupContext } from '../../context';
+import { colorScheme } from '../../store/observables';
+import type { ComponentTemplateEntryProp, JSXFunction } from '../../types/jsx.types';
 import type {
   StylableComponentConfigOptions,
   ReactComponent,
 } from '../../types/styled.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
-import { getComponentType } from '../../utils/react.utils';
-import { twinComponent } from './twinCmp';
+// import { getComponentDisplayName } from '../../utils/react.utils';
+import { useStyledProps } from '../hooks/useStyledProps';
 
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 
-/**
- * Generates a new Higher-Order component the wraps the base component and applies the styles.
- * This is added to the `stylizedComponents` map so that it can be used in the `wrapJSX` function
- * @param baseComponent
- * @param mapping
- */
-export const createStylableComponent = <
+const twinProps = [
+  '_twinComponentID',
+  '_twinComponentSheet',
+  '_twinComponentTemplateEntries',
+];
+
+export const NativeTwinHOC = <
   const T extends ReactComponent<any>,
   const M extends StylableComponentConfigOptions<any>,
 >(
-  baseComponent: T,
+  Component: Parameters<JSXFunction>[0],
   mapping: StylableComponentConfigOptions<T> & M,
 ) => {
-  let component: Parameters<JSXFunction>[0];
+  let component = Component;
   const configs = getNormalizeConfig(mapping);
-  const type = getComponentType(baseComponent);
-  /**
-   * This is a work-in-progress. We should be generating a new component that matches the
-   * type of the previous component. E.g ForwardRef should be a ForwardRef, Memo should be Memo
-   */
-  if (type === 'function') {
-    component = (props: Record<string, any>): any => {
-      return twinComponent(baseComponent, configs, props, undefined);
+  // const type = getComponentType(baseComponent);
+
+  const TwinComponent = forwardRef(function TwinComponent(props: any, ref) {
+    const id = useId();
+    const interactionsRef = useRef<
+      Touchable &
+        PressableProps & {
+          onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+          onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+        }
+    >(props);
+    const componentID = props?.['_twinComponentID'];
+    const { state, componentStyles, parentState, templateEntriesObj, onChange } =
+      useStyledProps(
+        componentID ?? id,
+        props?.['_twinComponentSheet'],
+        props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[],
+        props?.['debug'] ?? false,
+      );
+
+    // props = Object.assign({ ref }, props);
+
+    const handlers: Touchable & PressableProps = {};
+
+    if (
+      componentStyles.metadata.hasPointerEvents ||
+      componentStyles.metadata.hasGroupEvents ||
+      componentStyles.metadata.isGroupParent
+    ) {
+      handlers.onTouchStart = function (event) {
+        if (interactionsRef.current.onTouchStart) {
+          interactionsRef.current.onTouchStart(event);
+        }
+        onChange(true);
+      };
+      handlers.onTouchEnd = function (event) {
+        if (interactionsRef.current.onTouchEnd) {
+          interactionsRef.current.onTouchEnd(event);
+        }
+        onChange(false);
+      };
+    }
+
+    let newProps = {
+      ...props,
+      ...handlers,
     };
-  } else {
-    component = forwardRef<unknown, Record<string, any>>((props, ref): any => {
-      return twinComponent(baseComponent, configs, props, ref);
-    });
-  }
 
-  baseComponent.displayName ?? baseComponent.name ?? 'Component';
-  component.displayName = `Twin.${getComponentDisplayName(baseComponent)}`;
-  stylizedComponents.set(baseComponent, component);
+    if (componentStyles.sheets.length > 0) {
+      for (const style of componentStyles.sheets) {
+        const oldProps = newProps[style.prop] ? { ...newProps[style.prop] } : {};
+        newProps[style.prop] = Object.assign(
+          style.getStyles(
+            {
+              isParentActive: parentState.isGroupActive,
+              isPointerActive: state.isLocalActive,
+              dark: colorScheme.get() === 'dark',
+            },
+            templateEntriesObj[style.prop] ?? [],
+          ),
+          oldProps,
+        );
+      }
+    }
 
-  return component;
+    for (const x of configs) {
+      if (x.target !== x.source) {
+        if (x.source in newProps) {
+          Reflect.deleteProperty(newProps, x.source);
+        }
+      }
+    }
+
+    for (const x of twinProps) {
+      if (x in newProps) {
+        Reflect.deleteProperty(newProps, x);
+      }
+    }
+
+    if (componentStyles.metadata.isGroupParent) {
+      newProps = {
+        value: componentID ?? id,
+        children: createElement(Component, { ...newProps, ref }),
+      };
+      // @ts-expect-error
+      component = groupContext.Provider;
+    }
+    if (Component !== component) {
+      return createElement(component, newProps);
+    }
+    return createElement(component, { ...newProps, ref });
+  });
+  // if (__DEV__) {
+  //   TwinComponent.displayName = `NativeTwin(${getComponentDisplayName(Component)})`;
+  // }
+
+  stylizedComponents.set(Component, TwinComponent);
+
+  return TwinComponent;
 };
 
-export function getComponentDisplayName(
-  primitive: ComponentType<any> | ElementType,
-): string {
-  if (typeof primitive == 'string') {
-    return primitive;
-  }
-  return primitive.displayName ?? primitive.name ?? 'NoName';
-}
+export const createStylableComponent = NativeTwinHOC;
