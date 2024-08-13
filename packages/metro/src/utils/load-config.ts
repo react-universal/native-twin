@@ -23,7 +23,7 @@ function loadNativeTwinConfig(
   return mod.createTailwind(config, loadVirtualSheet());
 }
 
-export function getUsernativeTwinConfig(
+export function getUserNativeTwinConfig(
   tailwindConfigPath: string,
   output: string,
 ): NativeTwin.TailwindConfig<NativeTwin.__Theme__ & TailwindPresetTheme> {
@@ -58,7 +58,7 @@ export function setupNativeTwin(
 }
 
 export const getTwinConfig = (projectRoot: string) => {
-  const twinConfig = getUsernativeTwinConfig(
+  const twinConfig = getUserNativeTwinConfig(
     path.resolve(projectRoot, 'tailwind.config.ts'),
     path.join(projectRoot, '.twin-cache'),
   );

@@ -7,8 +7,8 @@ import type {
   ReactComponent,
 } from '../../types/styled.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
+import { getComponentDisplayName } from '../../utils/react.utils';
 import { useInteractions } from '../hooks/useInteractions';
-// import { getComponentDisplayName } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';
 
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
@@ -29,8 +29,8 @@ export const NativeTwinHOC = <
   let component = Component;
   const configs = getNormalizeConfig(mapping);
 
-  const TwinComponent = forwardRef(function TwinComponent(props: any, ref) {
-    // props = Object.assign({ ref }, props);
+  const TwinComponent = forwardRef((props: any, ref) => {
+    props = Object.assign({ ref }, props);
     const reactID = useId();
     const componentID = props?.['_twinComponentID'];
     const id = componentID ?? reactID;
@@ -84,23 +84,22 @@ export const NativeTwinHOC = <
     }
 
     if (componentStyles.metadata.isGroupParent) {
-      newProps = {
-        value: componentID ?? id,
-        children: createElement(Component, { ...newProps, ref }),
-      };
-      // @ts-expect-error
-      component = groupContext.Provider;
+      return createElement(
+        groupContext.Provider,
+        {
+          value: id,
+        },
+        createElement(component, { ...newProps, ref }),
+      );
     }
-    if (Component !== component) {
-      return createElement(component, newProps);
-    }
+
     return createElement(component, { ...newProps, ref });
   });
-  // if (__DEV__) {
-  //   TwinComponent.displayName = `NativeTwin(${getComponentDisplayName(Component)})`;
-  // }
-
   stylizedComponents.set(Component, TwinComponent);
+  
+  if (__DEV__) {
+    TwinComponent.displayName = `Twin(${getComponentDisplayName(Component)})`;
+  }
 
   return TwinComponent;
 };

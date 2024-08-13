@@ -11,8 +11,8 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
     const component = StyleSheet.getComponentByID(componentID);
 
     if (component) {
-      const sheet = templatePropsToSheetEntriesObject(templateEntries ?? []);
-      for (const [prop, entries] of Object.entries(sheet)) {
+      const templateSheet = templatePropsToSheetEntriesObject(templateEntries ?? []);
+      for (const [prop, entries] of Object.entries(templateSheet)) {
         const styles = StyleSheet.entriesToFinalSheet(entries);
         component.sheets = component.sheets.map((x) => {
           if (x.prop === prop) {
@@ -30,13 +30,15 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
           }
           return x;
         });
-        component.metadata = {
-          isGroupParent: component.sheets.some((x) => x.metadata.isGroupParent),
-          hasGroupEvents: component.sheets.some((x) => x.metadata.hasGroupEvents),
-          hasPointerEvents: component.sheets.some((x) => x.metadata.hasPointerEvents),
-          hasAnimations: component.sheets.some((x) => x.metadata.hasAnimations),
-        };
       }
+
+      // component.metadata = {
+      //   ...component.metadata,
+      //   isGroupParent: component.sheets.some((x) => x.metadata.isGroupParent),
+      //   hasGroupEvents: component.sheets.some((x) => x.metadata.hasGroupEvents),
+      //   hasPointerEvents: component.sheets.some((x) => x.metadata.hasPointerEvents),
+      //   hasAnimations: component.sheets.some((x) => x.metadata.hasAnimations),
+      // };
 
       // component.sheets = component.sheets.map((x) => x.recompute());
       componentsRegistry.set(componentID, {

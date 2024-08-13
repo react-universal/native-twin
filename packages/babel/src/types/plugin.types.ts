@@ -1,4 +1,7 @@
+import { PluginPass } from '@babel/core';
 import * as BabelTypes from '@babel/types';
+import { HashMap } from 'effect/HashMap';
+import { JSXElementNode, JSXElementNodeKey } from '../jsx/models/JSXElement.model';
 
 export type BabelCallValue = BabelTypes.CallExpression['arguments'][0];
 
@@ -16,4 +19,8 @@ export interface BabelAPI {
 
 export interface TwinBabelOptions extends APICallerOptions {
   twinConfigPath?: string;
+}
+
+export interface TwinVisitorsState extends PluginPass {
+  visited: HashMap<JSXElementNodeKey, JSXElementNode>;
 }

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 export default function App() {
   return (
-    <View className='flex-1 first:bg-red-200'>
+    <View className='group flex-1 first:bg-red-200'>
       <Text className='text-lg'>Hello World</Text>
       <Text>Hello World</Text>
       <View className='flex-1'>

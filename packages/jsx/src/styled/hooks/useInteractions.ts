@@ -45,9 +45,10 @@ export const useInteractions = (
         });
       }
     },
-    [id, metadata],
+    [metadata],
   );
 
+  // TODO: Create the focus handler
   if (metadata.hasPointerEvents || metadata.hasGroupEvents || metadata.isGroupParent) {
     handlers.onTouchStart = function (event) {
       if (interactionsRef.current.onTouchStart) {

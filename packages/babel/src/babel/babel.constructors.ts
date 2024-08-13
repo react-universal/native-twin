@@ -2,7 +2,7 @@ import template from '@babel/template';
 import * as t from '@babel/types';
 import { isObject } from '@native-twin/helpers';
 import type { AnyPrimitive } from '../jsx/jsx.types';
-import { valueIsPrimitive } from './babel.validators';
+import { valueIsPrimitive } from './babel.predicates';
 
 export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {
   if (typeof value === 'string') return t.stringLiteral(value);

@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import * as Layer from 'effect/Layer';
-import { makeBabelService, BabelService } from './Babel.service';
+import { makeBabelService, BabelService } from '../babel/Babel.service';
 import { BindingServiceLive, NodeBindingSvc } from './NodeBinding.service';
 import { ReactLive, ReactService } from './React.service';
 

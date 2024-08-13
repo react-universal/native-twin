@@ -4,7 +4,7 @@ import * as Context from 'effect/Context';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 
-export class BabelService extends Context.Tag('CallExpressionSvc')<
+export class BabelService extends Context.Tag('babel/context')<
   BabelService,
   {
     readonly path: NodePath;

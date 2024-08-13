@@ -79,6 +79,11 @@ const internalSheet: TwinStyleSheet = {
   registerComponent(id, props, context) {
     const component = componentsRegistry.get(id);
 
+    if (component) {
+      component.sheets = component.sheets.map((x) => x.recompute(x.compiledSheet));
+      return component;
+    }
+
     const sheets: ComponentSheet[] = [];
     for (const style of props ?? []) {
       sheets.push(
@@ -89,11 +94,6 @@ const internalSheet: TwinStyleSheet = {
           style.prop,
         ),
       );
-    }
-
-    if (component) {
-      component.sheets = sheets;
-      return component;
     }
 
     const registerComponent: RegisteredComponent = {
@@ -158,12 +158,12 @@ export function createComponentSheet(
       compiledSheet = compiledSheet$;
       return createComponentSheet(
         prop,
-        compiledSheet,
+        compiledSheet$,
         styledContext.get(),
         target ?? prop,
       );
     },
-    metadata,
+    metadata: { ...metadata },
   };
 
   function getStyles(

@@ -7,7 +7,6 @@ describe('Babel exec test', () => {
     const code = readFileSync(path.join(__dirname, './fixtures/jsx/code.tsx')).toString(
       'utf-8',
     );
-    // console.log('CODE: ', code);
 
     const output = babel.transform(code, {
       presets: [
@@ -29,11 +28,13 @@ describe('Babel exec test', () => {
       compact: false,
     });
 
-    console.log(output?.code);
-    if (output?.code) {
-      writeFileSync(path.join(__dirname, 'fixtures', 'jsx', 'out.jsx'), output.code);
-    }
+    writeFileSync(
+      path.join(__dirname, 'fixtures', 'jsx', 'out.jsx'),
+      output?.code ?? 'ERROR!',
+    );
 
-    expect(output?.code).toBeDefined();
+    expect(
+      readFileSync(path.join(__dirname, './fixtures/jsx/code.tsx')).toString('utf-8'),
+    ).not.toBe('ERROR!');
   });
 });

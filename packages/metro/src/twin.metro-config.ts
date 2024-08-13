@@ -11,7 +11,7 @@ import type {
 } from './metro.types';
 import {
   createCacheDir,
-  getUsernativeTwinConfig,
+  getUserNativeTwinConfig,
   setupNativeTwin,
   TWIN_CACHE_DIR,
   TWIN_STYLES_FILE,
@@ -30,7 +30,7 @@ export function withNativeTwin(
   outputDir = path.join(projectRoot, outputDir);
   createCacheDir(outputDir);
   const twinCacheFile = path.join(projectRoot, TWIN_CACHE_DIR, TWIN_STYLES_FILE);
-  const twConfig = getUsernativeTwinConfig(twinConfigPath, outputDir);
+  const twConfig = getUserNativeTwinConfig(twinConfigPath, outputDir);
 
   const twin = setupNativeTwin(twConfig, {
     dev: isDev,
