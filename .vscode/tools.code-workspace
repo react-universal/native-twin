@@ -5,6 +5,14 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
@@ -13,24 +21,8 @@
       "path": "../packages/jsx"
     },
     {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/language-service",
-      "path": "../packages/language-service"
-    },
-    {
-      "name": "📦 @lib/language-server",
-      "path": "../packages/language-server"
-    },
-    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
     },
     {
       "name": "@apps/expo",
@@ -74,6 +66,7 @@
       "xytrbl"
     ],
     "jest.enable": true,
+    "jest.runMode": "on-demand",
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/builder",

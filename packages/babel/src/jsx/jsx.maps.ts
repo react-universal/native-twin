@@ -12,7 +12,7 @@ import type { JSXMappedAttribute, MapAttributeFn, StyledPropEntries } from './js
 export const extractMappedAttributes = (node: t.JSXElement): JSXMappedAttribute[] => {
   const attributes = getJSXElementAttrs(node);
   return pipe(
-    getElementName(node.openingElement),
+    getJSXElementName(node.openingElement),
     Option.flatMap((x) => Option.fromNullable(getJSXElementConfig(x))),
     Option.map((mapped) => getJSXMappedAttributes(attributes, mapped)),
     Option.getOrElse(() => []),
@@ -153,7 +153,7 @@ export const mapJSXElementAttributes =
     });
   };
 
-const getElementName = (openingElement: t.JSXOpeningElement): Option.Option<string> => {
+export const getJSXElementName = (openingElement: t.JSXOpeningElement): Option.Option<string> => {
   if (t.isJSXIdentifier(openingElement.name)) {
     return Option.some(openingElement.name.name);
   }
@@ -161,7 +161,7 @@ const getElementName = (openingElement: t.JSXOpeningElement): Option.Option<stri
 };
 
 export const getElementConfig = (openingElement: t.JSXOpeningElement) => {
-  return getElementName(openingElement).pipe(
+  return getJSXElementName(openingElement).pipe(
     Option.flatMap((name) =>
       Option.fromNullable(mappedComponents.find((x) => x.name === name)),
     ),

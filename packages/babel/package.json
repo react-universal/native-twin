@@ -35,7 +35,7 @@
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "effect": "^3.6.2"
+    "effect": "^3.6.3"
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",

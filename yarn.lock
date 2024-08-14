@@ -6065,7 +6065,7 @@ __metadata:
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
     babel-plugin-tester: "npm:^11.0.4"
-    effect: "npm:^3.6.2"
+    effect: "npm:^3.6.3"
     jest: "npm:*"
     metro-react-native-babel-preset: "npm:^0.77.0"
   peerDependencies:
@@ -6085,7 +6085,7 @@ __metadata:
     "@effect/platform-node": "npm:^0.56.7"
     "@effect/schema": "npm:^0.70.3"
     "@types/fs-extra": "npm:11.0.4"
-    effect: "npm:^3.6.2"
+    effect: "npm:^3.6.3"
     esbuild: "npm:^0.20.2"
     fs-extra: "npm:11.2.0"
     minimist: "npm:^1.2.8"
@@ -6118,7 +6118,7 @@ __metadata:
     "@effect/typeclass": "npm:^0.25.2"
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/helpers": "workspace:*"
-    effect: "npm:^3.6.2"
+    effect: "npm:^3.6.3"
     jest: "npm:*"
   dependenciesMeta:
     jest:
@@ -6130,9 +6130,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/dev-tools@workspace:packages/dev-tools"
   dependencies:
+    effect: "npm:^3.6.3"
     expo-module-scripts: "npm:^3.1.0"
+    react-native-reanimated: "npm:~3.10.1"
   peerDependencies:
     expo: "*"
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -6154,6 +6157,7 @@ __metadata:
     "@babel/plugin-transform-private-methods": "npm:^7.24.7"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
+    "@native-twin/dev-tools": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
     jest: "npm:*"
@@ -6177,7 +6181,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.6.2"
+    effect: "npm:^3.6.3"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6207,7 +6211,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.6.2"
+    effect: "npm:^3.6.3"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6244,7 +6248,7 @@ __metadata:
     ast-pretty-print: "npm:^2.0.1"
     chokidar: "npm:^3.6.0"
     code-block-writer: "npm:^13.0.1"
-    effect: "npm:^3.6.2"
+    effect: "npm:^3.6.3"
     fast-check: "npm:^3.21.0"
     jest: "npm:*"
     jiti: "npm:1.21.0"
@@ -6325,7 +6329,7 @@ __metadata:
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
-    effect: "npm:^3.6.2"
+    effect: "npm:^3.6.3"
     jest: "npm:*"
     madge: "npm:7.0.0"
     typescript-template-language-service-decorator: "npm:2.3.2"
@@ -11866,10 +11870,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"effect@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "effect@npm:3.6.2"
-  checksum: 10/5aeb9f97bcd86c474abc56c67298c009ad94fa84090906609abf043c45d87bec67a5d546890cce8abab5b45123c0ab5ae96d71036097a76eda33795051783230
+"effect@npm:^3.6.3":
+  version: 3.6.3
+  resolution: "effect@npm:3.6.3"
+  checksum: 10/7065926698d6dfa6586e2f180ce32aac477846a03a2a09384931cc5fbf0460a3a04f733a3f32fb098dfc388156f21d440b17144f73c381be0b13c765b308a97e
   languageName: node
   linkType: hard
 
@@ -17698,7 +17702,7 @@ __metadata:
     "@types/vscode": "npm:^1.89.0"
     "@vscode/test-cli": "npm:^0.0.9"
     "@vscode/test-electron": "npm:^2.4.0"
-    effect: "npm:^3.6.2"
+    effect: "npm:^3.6.3"
     vscode-languageclient: "npm:^9.0.1"
     vscode-test: "npm:^1.6.1"
   languageName: unknown

@@ -8,6 +8,7 @@ import type {
 } from '../../types/styled.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
 import { getComponentDisplayName } from '../../utils/react.utils';
+import { useTwinDevTools } from '../hooks/useDevTools';
 import { useInteractions } from '../hooks/useInteractions';
 import { useStyledProps } from '../hooks/useStyledProps';
 
@@ -31,9 +32,13 @@ export const NativeTwinHOC = <
 
   const TwinComponent = forwardRef((props: any, ref) => {
     props = Object.assign({ ref }, props);
+
+    useTwinDevTools(props?.['_twinComponentTree']);
     const reactID = useId();
+
     const componentID = props?.['_twinComponentID'];
     const id = componentID ?? reactID;
+
     const { componentStyles, templateEntriesObj } = useStyledProps(
       id,
       props?.['_twinComponentSheet'],
@@ -96,7 +101,7 @@ export const NativeTwinHOC = <
     return createElement(component, { ...newProps, ref });
   });
   stylizedComponents.set(Component, TwinComponent);
-  
+
   if (__DEV__) {
     TwinComponent.displayName = `Twin(${getComponentDisplayName(Component)})`;
   }

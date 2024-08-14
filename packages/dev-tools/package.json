@@ -36,10 +36,14 @@
     "web:dev": "cd webui && npx expo start -w",
     "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
   },
+  "dependencies": {
+    "effect": "^3.6.3"
+  },
   "devDependencies": {
     "expo-module-scripts": "^3.1.0"
   },
   "peerDependencies": {
-    "expo": "*"
+    "expo": "*",
+    "react": "*"
   }
 }
