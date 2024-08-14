@@ -26,7 +26,7 @@
     "expo-module.config.json"
   ],
   "scripts": {
-    "build": "expo-module build",
+    "build": "tsc -p tsconfig.json",
     "build:all": "expo-module prepare && cd webui && npx expo export -p web --output-dir ../dist",
     "build:watch": "expo-module build --watch",
     "clean": "expo-module clean",

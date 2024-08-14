@@ -1,5 +1,5 @@
 import { Circle, Group } from '@shopify/react-native-skia';
-import { TreeNode } from '../../models/ComponentTress';
+import { TreeNode } from '../../models/ComponentTrees';
 
 export const RootNodesNode = ({ node }: { node: TreeNode }) => {
   return (

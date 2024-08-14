@@ -9,6 +9,10 @@
       "path": "../packages/dev-tools"
     },
     {
+      "name": "📦 @lib/dev-tools-web",
+      "path": "../packages/dev-tools/webui"
+    },
+    {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
     },

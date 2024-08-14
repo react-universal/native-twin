@@ -1,6 +1,6 @@
-import { vec, Vector } from '@shopify/react-native-skia';
+import { vec } from '@shopify/react-native-skia';
 import * as d3 from 'd3';
-import { D3TreeParams, TreeNode } from '../models/ComponentTress';
+import { D3TreeParams, TreeNode } from '../models/ComponentTrees';
 import { JSXElementNode } from '../models/JSXElement.model';
 
 export const createComponentsTree = (
