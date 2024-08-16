@@ -1,5 +1,10 @@
+import { useEffect } from 'react';
 import { useNativeTwinDevTools } from '@native-twin/dev-tools';
 
 export const useTwinDevTools = (tree: any) => {
-  useNativeTwinDevTools(tree);
+  const plugin = useNativeTwinDevTools();
+
+  useEffect(() => {
+    plugin.registerTree(tree);
+  }, [tree]);
 };

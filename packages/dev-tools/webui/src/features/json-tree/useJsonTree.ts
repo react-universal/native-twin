@@ -1,30 +1,29 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { useDevToolsPluginClient } from 'expo/devtools';
-import { useClientSubscription } from '../hooks/useDevToolsClient';
-import { JSXElementNode } from '../models/JSXElement.model';
-import { createComponentsTree } from '../utils/d3';
+import { PLUGIN_EVENTS } from '../../constants/event.constants';
+import { useClientSubscription } from '../../hooks/useDevToolsClient';
+import { JSXElementNode } from '../../models/JSXElement.model';
+import { createComponentsTree } from '../../utils/d3';
 
 export const useComponentsTree = () => {
-  const client = useDevToolsPluginClient('@native-twin/dev-tools');
   const [state, setState] = useState<JSXElementNode | null>(null);
   const { width, height } = useWindowDimensions();
   const center = useScreenCenter();
 
-  const componentsTree = useCallback(
-    createComponentsTree({ height, width, nodeSize: 50 }),
+  const componentsTree = useMemo(
+    () => createComponentsTree({ height, width, nodeSize: 50 }),
     [width, height],
   );
   const treeStruct = useMemo(() => {
     if (!state) return null;
 
     return componentsTree(state);
-  }, [state, center, width, height]);
+  }, [state, componentsTree]);
 
-  useClientSubscription<JSXElementNode>('tree', (data) => {
+  useClientSubscription<JSXElementNode>('tree', (client, data) => {
     if (data && data.childs.length >= 2) {
       setState(() => data);
-      client?.sendMessage('tree', data);
+      client.sendMessage(PLUGIN_EVENTS.receiveTree, data);
     }
   });
 

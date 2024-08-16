@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font';
-import { JsonTreeSvgView } from './src/json-svg/JsonSvg';
+import { JsonTreeSvgView } from './src/features/json-tree/JsonTree.view';
 
 export default function App() {
   const [loaded] = useFonts({

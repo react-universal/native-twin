@@ -2,9 +2,13 @@ import { useEffect } from 'react';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import { useDevToolsPluginClient, type EventSubscription } from 'expo/devtools';
+import {
+  useDevToolsPluginClient,
+  DevToolsPluginClient,
+  type EventSubscription,
+} from 'expo/devtools';
 
-type EventSubscriptionFn<T> = (data: T) => void;
+type EventSubscriptionFn<T> = (client: DevToolsPluginClient, data: T) => void;
 
 export const useDevToolsClient = () => {
   const clientI = useDevToolsPluginClient('@native-twin/dev-tools');
@@ -21,7 +25,9 @@ export const useClientSubscription = <T>(event: string, cb: EventSubscriptionFn<
     subscriptions.push(
       pipe(
         client,
-        Option.map((x) => x.addMessageListener(event, cb)),
+        Option.map((pluginClient) =>
+          pluginClient.addMessageListener(event, (data) => cb(pluginClient, data)),
+        ),
       ),
     );
     return () => {

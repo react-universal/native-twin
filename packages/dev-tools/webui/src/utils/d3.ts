@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
-import { SvgPoint } from '../json-svg/json.types';
+import { SvgPoint } from '../features/json-tree/json.types';
 import { JSXElementNode } from '../models/JSXElement.model';
 
 export const createComponentsTree = (layout: {

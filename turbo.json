@@ -12,6 +12,16 @@
         "dist/**"
       ]
     },
+    "dev-tools:dev": {
+      "cache": false,
+      "persistent": true,
+      "interactive": true,
+      "inputs": ["$TURBO_DEFAULT$","!**/test", "!**/tests", "**/webui/**/*"],
+      "outputs": [
+        "build/**",
+        "dist/**"
+      ]
+    },
     "mobile:dev": {
       "cache": false,
       "dependsOn": ["^build"],

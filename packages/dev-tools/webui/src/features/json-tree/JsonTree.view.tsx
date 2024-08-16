@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { View } from 'react-native';
 import * as d3 from 'd3';
 import { Circle, G, Path, Svg, Text } from 'react-native-svg';
-import { useComponentsTree } from '../hooks/useTwinCmpTree';
-import { JSXElementNode } from '../models/JSXElement.model';
+import { useComponentsTree } from './useJsonTree';
+import { JSXElementNode } from '../../models/JSXElement.model';
 import { SvgPoint } from './json.types';
 
 export const JsonTreeSvgView = () => {
@@ -27,20 +27,15 @@ export const JsonTreeSvgView = () => {
       const domEl = d3.select(domRef.current);
       const svg = domEl.select('#tree_view_svg');
       const content = domEl.select('#tree_view_content');
+      svg.call(d3.zoom().transform, d3.zoomIdentity.translate(0, 0).scale(1));
       svg.call(
-        // @ts-expect-error
-        d3.zoom().transform,
-        d3.zoomIdentity.translate(0, 0).scale(1),
-      );
-      svg.call(
-        // @ts-expect-error
         d3
           .zoom()
           .scaleExtent([0.1, 2])
           .filter((event) => {
             return (
-              event.target.id == 'tree_view_svg' ||
-              event.target.id == 'tree_view_content' ||
+              event.target.id === 'tree_view_svg' ||
+              event.target.id === 'tree_view_content' ||
               event.shiftKey
             );
           })

@@ -11,6 +11,8 @@ export {
   compileSheetEntry,
 } from './SheetEntry';
 
+export { type RawJSXElementTreeNode } from './metro.runtime';
+
 export {
   type RuntimeGroupSheet,
   type JSXElementSheet,

@@ -4,20 +4,15 @@
   "private": true,
   "main": "index",
   "scripts": {
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "start": "expo start",
-    "web": "expo start --web"
+    "dev-tools:dev": "expo start --clear --web"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
-    "@shopify/react-native-skia": "1.2.3",
     "d3": "^7.9.0",
     "effect": "^3.6.3",
     "expo": "^51.0.28",
     "expo-font": "~12.0.9",
     "react": "18.2.0",
-    "react-d3-tree": "^3.6.2",
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
     "react-native-reanimated": "~3.10.1",
@@ -29,7 +24,6 @@
     "@babel/core": "^7.20.0",
     "@types/d3": "^7.4.3",
     "@types/react": "~18.2.45",
-    "@types/uuid": "^10.0.0",
-    "typescript": "~5.3.3"
+    "@types/uuid": "^10.0.0"
   }
 }

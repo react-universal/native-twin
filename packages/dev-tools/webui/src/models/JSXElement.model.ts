@@ -1,24 +1,16 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import { type JSXElementSheet } from '@native-twin/css/jsx';
-
-export interface RawJSXElementNode {
-  node: string;
-  order: number;
-  parentNode: JSXElementNode | null;
-  childs: JSXElementNode[];
-  id: string;
-}
+import { type JSXElementSheet, type RawJSXElementTreeNode } from '@native-twin/css/jsx';
 
 export class JSXElementNode implements Equal.Equal {
   readonly node: string;
   readonly id: string;
-  readonly parent: JSXElementNode | null;
+  readonly parent: RawJSXElementTreeNode | null;
   readonly order: number;
-  readonly childs: JSXElementNode[];
+  readonly childs: RawJSXElementTreeNode[];
   _runtimeSheet: JSXElementSheet | null = null;
 
-  constructor(params: RawJSXElementNode) {
+  constructor(params: RawJSXElementTreeNode) {
     this.childs = params.childs;
     this.order = params.order;
     this.parent = params.parentNode;

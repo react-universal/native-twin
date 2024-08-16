@@ -30,9 +30,7 @@
     "build:all": "cd webui && npx expo export -p web --output-dir ../dist",
     "build:watch": "tsc -p tsconfig.build.json --watch",
     "clean": "expo-module clean",
-    "postinstall": "cd webui && yarn && cd ..",
     "prepublishOnly": "expo-module prepublishOnly && cd webui && npx expo export -p web --output-dir ../dist",
-    "web:dev": "cd webui && npx expo start -w",
     "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
   },
   "dependencies": {

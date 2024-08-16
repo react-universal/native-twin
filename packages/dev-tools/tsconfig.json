@@ -10,6 +10,7 @@
   "exclude": [
     "**/__mocks__/*",
     "**/__tests__/*",
+    "**/webui/**",
     "build",
     "dist"
   ]

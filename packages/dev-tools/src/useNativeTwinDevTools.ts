@@ -1,13 +1,20 @@
-import { useEffect } from 'react';
-import { useDevToolsPluginClient, setEnableLogging } from 'expo/devtools';
+import * as Option from 'effect/Option';
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import { PLUGIN_EVENTS } from './constants/event.constants';
+import { useDevToolsClient } from './hooks/useDevToolsClient';
 
-setEnableLogging(true);
-export function useNativeTwinDevTools(tree?: any) {
-  const client = useDevToolsPluginClient('@native-twin/dev-tools');
+export function useNativeTwinDevTools() {
+  const client = useDevToolsClient();
 
-  useEffect(() => {
-    if (tree) {
-      client?.sendMessage('tree', tree);
-    }
-  }, [client, tree]);
+  return {
+    registerTree: (tree: RawJSXElementTreeNode) => {
+      Option.tap(client, (data) => {
+        console.log('DATA: ', data);
+        return Option.some(data);
+      });
+      Option.map(client, (pluginClient) =>
+        pluginClient.sendMessage(PLUGIN_EVENTS.receiveTree, tree),
+      );
+    },
+  };
 }
