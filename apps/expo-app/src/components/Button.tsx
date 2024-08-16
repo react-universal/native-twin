@@ -13,7 +13,7 @@ const buttonVariants = createVariants({
     },
     size: {
       large: 'w-40',
-      small: 'w-4',
+      small: 'w-20',
     },
     isDisable: {
       true: 'opacity-30',
@@ -31,7 +31,7 @@ type ButtonProps = ButtonVariantProps & PressableProps;
 export const Button = (props: ButtonProps) => {
   return (
     <Pressable className={buttonVariants(props)}>
-      <Text className='group-hover:text-white'>asd</Text>
+      <Text className='group-hover:text-white font-medium'>asd</Text>
     </Pressable>
   );
 };

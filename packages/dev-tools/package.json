@@ -26,13 +26,12 @@
     "expo-module.config.json"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "build:all": "expo-module prepare && cd webui && npx expo export -p web --output-dir ../dist",
-    "build:watch": "expo-module build --watch",
+    "build": "tsc -p tsconfig.build.json",
+    "build:all": "cd webui && npx expo export -p web --output-dir ../dist",
+    "build:watch": "tsc -p tsconfig.build.json --watch",
     "clean": "expo-module clean",
     "postinstall": "cd webui && yarn && cd ..",
-    "prepare": "expo-module prepare",
-    "prepublishOnly": "expo-module prepare && expo-module prepublishOnly && cd webui && npx expo export -p web --output-dir ../dist",
+    "prepublishOnly": "expo-module prepublishOnly && cd webui && npx expo export -p web --output-dir ../dist",
     "web:dev": "cd webui && npx expo start -w",
     "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
   },

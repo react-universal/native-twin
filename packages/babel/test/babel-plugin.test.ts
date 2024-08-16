@@ -5,6 +5,9 @@ import plugin from '../src';
 describe('TESTS', () => {
   pluginTester({
     plugin,
+    pluginOptions: {
+      twinConfigPath: './tailwind.config.ts',
+    },
     title: 'Native Twin babel plugin',
     babelOptions: {
       plugins: ['@babel/plugin-syntax-jsx'],
@@ -16,7 +19,9 @@ describe('TESTS', () => {
         // only: true,
         codeFixture: path.join('./fixtures/namespace-require/code.js'),
         outputFixture: path.join('./fixtures/namespace-require/output.js'),
-        babelOptions: { filename: path.join('./fixtures/namespace-require/someFile.jsx') },
+        babelOptions: {
+          filename: path.join('./fixtures/namespace-require/someFile.jsx'),
+        },
       },
       'createElement with interopRequire': {
         // skip: true,
@@ -52,21 +57,27 @@ describe('TESTS', () => {
         // skip: true,
         codeFixture: path.join('./fixtures/namespace-require/code.js'),
         outputFixture: path.join('./fixtures/namespace-require/output.js'),
-        babelOptions: { filename: path.join('./fixtures/namespace-require/someFile.jsx') },
+        babelOptions: {
+          filename: path.join('./fixtures/namespace-require/someFile.jsx'),
+        },
       },
 
       'createElement by namespace require (lowercase)': {
         // skip: true,
         codeFixture: path.join('./fixtures/namespace-require-lowercase/code.js'),
         outputFixture: path.join('./fixtures/namespace-require-lowercase/output.js'),
-        babelOptions: { filename: path.join('./fixtures/namespace-require-lowercase/someFile.jsx') },
+        babelOptions: {
+          filename: path.join('./fixtures/namespace-require-lowercase/someFile.jsx'),
+        },
       },
 
       'createELement from 3rd party': {
         // skip: true,
         codeFixture: path.join('./fixtures/create-third-party/code.js'),
         outputFixture: path.join('./fixtures/create-third-party/output.js'),
-        babelOptions: { filename: path.join('./fixtures/create-third-party/someFile.jsx') },
+        babelOptions: {
+          filename: path.join('./fixtures/create-third-party/someFile.jsx'),
+        },
       },
 
       'compiled babel expo': {

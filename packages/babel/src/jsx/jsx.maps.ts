@@ -64,15 +64,27 @@ export const extractStyledProp = (
       value: attribute.value,
     };
   }
-  if (
-    t.isJSXExpressionContainer(attribute.value) &&
-    t.isTemplateLiteral(attribute.value.expression)
-  ) {
-    return {
-      prop: className[0],
-      target: className[1],
-      value: attribute.value.expression,
-    };
+  if (t.isJSXExpressionContainer(attribute.value)) {
+    if (t.isTemplateLiteral(attribute.value.expression)) {
+      return {
+        prop: className[0],
+        target: className[1],
+        value: attribute.value.expression,
+      };
+    }
+    if (t.isCallExpression(attribute.value.expression)) {
+      return {
+        prop: className[0],
+        target: className[1],
+        value: t.templateLiteral(
+          [
+            t.templateElement({ raw: '', cooked: '' }),
+            t.templateElement({ raw: '', cooked: '' }),
+          ],
+          [attribute.value.expression],
+        ),
+      };
+    }
   }
   return null;
 };
@@ -153,7 +165,9 @@ export const mapJSXElementAttributes =
     });
   };
 
-export const getJSXElementName = (openingElement: t.JSXOpeningElement): Option.Option<string> => {
+export const getJSXElementName = (
+  openingElement: t.JSXOpeningElement,
+): Option.Option<string> => {
   if (t.isJSXIdentifier(openingElement.name)) {
     return Option.some(openingElement.name.name);
   }

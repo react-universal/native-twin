@@ -5,6 +5,9 @@
     },
     "experiments": {
       "baseUrl": "/_expo/plugins/@native-twin/dev-tools"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

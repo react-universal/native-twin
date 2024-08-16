@@ -1,5 +1,6 @@
 import generate from '@babel/generator';
 import * as RA from 'effect/Array';
+import * as t from '@babel/types'
 import { pipe } from 'effect/Function';
 import { RuntimeTW } from '@native-twin/core';
 import {
@@ -23,7 +24,7 @@ export const getElementEntries = (
     RA.map(({ value, prop, target }): RuntimeComponentEntry => {
       let classNames = '';
       let templateExpression: null | string = null;
-      if (value.type === 'StringLiteral') {
+      if (t.isStringLiteral(value)) {
         classNames = value.value;
       } else {
         const cooked = templateLiteralToStringLike(value);

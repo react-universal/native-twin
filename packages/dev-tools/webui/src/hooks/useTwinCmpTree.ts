@@ -1,10 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { vec } from '@shopify/react-native-skia';
 import { useDevToolsPluginClient } from 'expo/devtools';
 import { useClientSubscription } from '../hooks/useDevToolsClient';
 import { JSXElementNode } from '../models/JSXElement.model';
-import { createComponentsTree, createTreeStructure } from '../utils/d3';
+import { createComponentsTree } from '../utils/d3';
 
 export const useComponentsTree = () => {
   const client = useDevToolsPluginClient('@native-twin/dev-tools');
@@ -12,14 +11,14 @@ export const useComponentsTree = () => {
   const { width, height } = useWindowDimensions();
   const center = useScreenCenter();
 
+  const componentsTree = useCallback(
+    createComponentsTree({ height, width, nodeSize: 50 }),
+    [width, height],
+  );
   const treeStruct = useMemo(() => {
     if (!state) return null;
-    const { instance, tree } = createComponentsTree(state, { height, width });
-    return createTreeStructure({
-      layout: instance,
-      node: tree,
-      screenCenter: center,
-    });
+
+    return componentsTree(state);
   }, [state, center, width, height]);
 
   useClientSubscription<JSXElementNode>('tree', (data) => {
@@ -29,13 +28,16 @@ export const useComponentsTree = () => {
     }
   });
 
-  return { treeStruct, center };
+  return { treeStruct, center, width, height };
 };
 
 export const useScreenCenter = () => {
   const { width, height } = useWindowDimensions();
 
   return useMemo(() => {
-    return vec(width / 2, height / 2);
+    return {
+      x: width / 2,
+      y: height / 2,
+    };
   }, [height, width]);
 };

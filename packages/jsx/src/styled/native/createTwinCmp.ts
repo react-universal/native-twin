@@ -18,6 +18,8 @@ const twinProps = [
   '_twinComponentID',
   '_twinComponentSheet',
   '_twinComponentTemplateEntries',
+  '_twinComponentTree',
+  '_twinOrd',
 ];
 
 export const NativeTwinHOC = <
@@ -31,7 +33,7 @@ export const NativeTwinHOC = <
   const configs = getNormalizeConfig(mapping);
 
   const TwinComponent = forwardRef((props: any, ref) => {
-    props = Object.assign({ ref }, props);
+    // props = Object.assign({ ref }, props);
 
     useTwinDevTools(props?.['_twinComponentTree']);
     const reactID = useId();
