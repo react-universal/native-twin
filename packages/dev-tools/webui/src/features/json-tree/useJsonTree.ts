@@ -28,7 +28,17 @@ export const useComponentsTree = () => {
     return componentsTree(state);
   }, [state, componentsTree]);
 
-  return { treeStruct, center, width, height };
+  const linkComponents = useMemo(() => {
+    if (!treeStruct) return [];
+    return treeStruct.getLinks(treeStruct.treeLayout);
+  }, [treeStruct]);
+
+  const nodes = useMemo(() => {
+    if (!treeStruct) return [];
+    return treeStruct.treeLayout.descendants();
+  }, [treeStruct]);
+
+  return { treeStruct, center, width, height, linkComponents, nodes };
 };
 
 export const useScreenCenter = () => {

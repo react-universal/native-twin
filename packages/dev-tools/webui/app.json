@@ -1,13 +1,22 @@
 {
   "expo": {
+    "name": "Twin Dev Plugin",
+    "slug": "TwinDevPlugin",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
     },
     "experiments": {
-      "baseUrl": "/_expo/plugins/@native-twin/dev-tools"
+      "baseUrl": "/_expo/plugins/@native-twin/dev-tools",
+      "typedRoutes": true
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-router"
     ]
   }
 }

@@ -2,7 +2,12 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "module": "ESNext",
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
   "exclude": [".expo"]
 }
