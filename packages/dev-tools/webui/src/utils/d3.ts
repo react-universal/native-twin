@@ -1,38 +1,92 @@
 import * as d3 from 'd3';
 import * as RA from 'effect/Array';
-import { pipe } from 'effect/Function';
+import { apply, flip, identity, pipe } from 'effect/Function';
+import * as Record from 'effect/Record';
+import * as Tuple from 'effect/Tuple';
+import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 import { SvgPoint } from '../features/json-tree/json.types';
-import { JSXElementNode } from '../models/JSXElement.model';
 
-export const createComponentsTree = (layout: {
+interface TreeLayoutParams {
   width: number;
   height: number;
   nodeSize: number;
-}) => {
+}
+const verticalConfig = (layout: TreeLayoutParams) => {
+  const treeSize = Tuple.make<[width: number, height: number]>(
+    layout.width / 2,
+    layout.height / 2,
+  );
+  const nodeSize = Tuple.make<[width: number, height: number]>(
+    layout.nodeSize,
+    layout.nodeSize,
+  );
+
+  const svgCenter = Tuple.make<[x: number, y: number]>(
+    layout.width / 2,
+    layout.height / 2,
+  );
+
+  return {
+    treeSize,
+    nodeSize,
+    svgCenter,
+  };
+};
+
+const swapTupleIf = flip(
+  <A>(tuple: [a: A, b: A]) =>
+    (swap: boolean): [a: A, b: A] | [b: A, a: A] => {
+      return pipe(Tuple.make(...tuple), (x) => (!swap ? identity(x) : Tuple.swap(x)));
+    },
+);
+
+export const createComponentsTree = (
+  layout: TreeLayoutParams,
+  orientation: 'row' | 'col' = 'row',
+) => {
+  const vertical = verticalConfig(layout);
+  const horizontal: typeof vertical = pipe(
+    vertical,
+    Record.set('nodeSize', Tuple.swap(...[vertical.nodeSize])),
+    Record.set('treeSize', Tuple.swap(...[vertical.treeSize])),
+    Record.set('svgCenter', Tuple.swap(...[vertical.svgCenter])),
+  );
+
+  const treeConfig = orientation === 'col' ? vertical : horizontal;
+
   const tree = d3
-    .tree<JSXElementNode>()
-    .size([layout.width / 2, layout.height / 2])
-    .nodeSize([layout.nodeSize, layout.nodeSize]);
+    .tree<RawJSXElementTreeNode>()
+    .size(treeConfig.treeSize)
+    .nodeSize(treeConfig.nodeSize);
 
-  const nodeSize = {
-    width: tree.nodeSize()?.[0] ?? 50,
-    height: tree.nodeSize()?.[1] ?? 50,
-  };
+  const nodeSize = { width: treeConfig.nodeSize[0], height: treeConfig.nodeSize[1] };
+  const centerX = pipe(
+    Tuple.make(treeConfig.svgCenter[0], treeConfig.svgCenter[1]),
+    swapTupleIf(orientation === 'row'),
+  );
   const svgCenter: SvgPoint = {
-    x: layout.width / 2,
-    y: layout.height / 2,
+    x: centerX[0],
+    y: centerX[1],
   };
 
-  const radius = nodeSize.width;
+  const radius = treeConfig.nodeSize[0];
 
   const calcNodeOrigin = (from: SvgPoint): SvgPoint => {
+    const xy = pipe(
+      Tuple.make<[x: number, y: number]>(
+        svgCenter.x + from.x * 3,
+        nodeSize.height + from.y * 3,
+      ),
+      swapTupleIf(orientation === 'row'),
+    );
+
     return {
-      x: svgCenter.x + from.x * 3,
-      y: nodeSize.height + from.y * 3,
+      x: xy[0],
+      y: xy[1],
     };
   };
 
-  const getLinks = (rootNode: d3.HierarchyPointNode<JSXElementNode>) => {
+  const getLinks = (rootNode: d3.HierarchyPointNode<RawJSXElementTreeNode>) => {
     return pipe(
       rootNode.links(),
       RA.flatMap((link) => {
@@ -40,19 +94,28 @@ export const createComponentsTree = (layout: {
         const sourceY = link.source.y * 3 + nodeSize.height * 2;
         const targetX = svgCenter.x + link.target.x * 3;
         const targetY = link.target.y * 3;
-
-        const line = d3.linkVertical()({
-          source: [sourceX, sourceY],
-          target: [targetX, targetY],
-        });
+        const fn = orientation === 'col' ? d3.linkVertical() : d3.linkHorizontal();
+        const line = pipe(
+          (x: d3.DefaultLinkObject) => fn(x),
+          apply({
+            source: pipe(
+              Tuple.make(sourceX, sourceY),
+              swapTupleIf(orientation === 'row'),
+            ),
+            target: pipe(
+              Tuple.make(targetX, targetY),
+              swapTupleIf(orientation === 'row'),
+            ),
+          }),
+        );
         if (!line) return [];
         return [line];
       }),
     );
   };
 
-  return (jsxElement: JSXElementNode) => {
-    const rootNode = d3.hierarchy<JSXElementNode>(jsxElement, (d) => {
+  return (jsxElement: RawJSXElementTreeNode) => {
+    const rootNode = d3.hierarchy<RawJSXElementTreeNode>(jsxElement, (d) => {
       return d.childs;
     });
 
@@ -65,6 +128,7 @@ export const createComponentsTree = (layout: {
       radius,
       getLinks,
       calcNodeOrigin,
+      orientation,
     };
   };
 };

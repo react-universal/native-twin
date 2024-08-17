@@ -7,6 +7,6 @@ if (process.env.NODE_ENV !== 'production') {
   useNativeTwinDevTools = require('./useNativeTwinDevTools').useNativeTwinDevTools;
 } else {
   useNativeTwinDevTools = () => {
-    return { registerTree: noop };
+    return { registerTree: noop, addListener: () => noop };
   };
 }

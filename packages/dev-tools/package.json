@@ -34,7 +34,8 @@
     "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
   },
   "dependencies": {
-    "effect": "^3.6.3"
+    "effect": "^3.6.3",
+    "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
     "expo-module-scripts": "^3.1.0"

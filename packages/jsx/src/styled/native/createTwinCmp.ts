@@ -35,11 +35,11 @@ export const NativeTwinHOC = <
   const TwinComponent = forwardRef((props: any, ref) => {
     // props = Object.assign({ ref }, props);
 
-    useTwinDevTools(props?.['_twinComponentTree']);
     const reactID = useId();
 
     const componentID = props?.['_twinComponentID'];
     const id = componentID ?? reactID;
+    const { isSelected } = useTwinDevTools(id, props?.['_twinComponentTree']);
 
     const { componentStyles, templateEntriesObj } = useStyledProps(
       id,
@@ -72,6 +72,12 @@ export const NativeTwinHOC = <
             templateEntriesObj[style.prop] ?? [],
           ),
           oldProps,
+          isSelected
+            ? {
+                borderColor: 'green',
+                borderWidth: 10,
+              }
+            : {},
         );
       }
     }

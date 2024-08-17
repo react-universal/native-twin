@@ -1,41 +1,43 @@
-import { useEffect } from 'react';
-import * as RA from 'effect/Array';
+import { useEffect, useMemo } from 'react';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import {
-  useDevToolsPluginClient,
-  DevToolsPluginClient,
-  type EventSubscription,
-} from 'expo/devtools';
+import { useDevToolsPluginClient, type EventSubscription } from 'expo/devtools';
+import { TwinEventEmitter } from '../models/TwinEventEmitter.model';
 
-type EventSubscriptionFn<T> = (client: DevToolsPluginClient, data: T) => void;
+type EventSubscriptionFn<T> = (data: T) => void;
 
 export const useDevToolsClient = () => {
   const clientI = useDevToolsPluginClient('@native-twin/dev-tools');
 
-  return Option.fromNullable(clientI);
+  return useMemo(() => Option.fromNullable(clientI), [clientI]);
 };
 
-export const useClientSubscription = <T>(event: string, cb: EventSubscriptionFn<T>) => {
+export const useDevToolsClientEvents = () => {
+  const clientI = useDevToolsPluginClient('@native-twin/dev-tools');
+
+  return useMemo(
+    () =>
+      pipe(
+        Option.fromNullable(clientI),
+        Option.map((x) => new TwinEventEmitter(x)),
+      ),
+    [clientI],
+  );
+};
+
+export const useClientSubscription = <Shape>(
+  event: string,
+  cb: EventSubscriptionFn<Shape>,
+) => {
   const client = useDevToolsClient();
 
   useEffect(() => {
-    const subscriptions: Option.Option<EventSubscription>[] = [];
-
-    subscriptions.push(
-      pipe(
-        client,
-        Option.map((pluginClient) =>
-          pluginClient.addMessageListener(event, (data) => cb(pluginClient, data)),
-        ),
-      ),
+    const sb: Option.Option<EventSubscription> = pipe(
+      client,
+      Option.map((x) => x.addMessageListener(event, cb)),
     );
     return () => {
-      pipe(
-        subscriptions,
-        RA.getSomes,
-        RA.forEach((x) => x?.remove()),
-      );
+      Option.map(sb, (x) => x.remove());
     };
   }, [event, cb, client]);
 };

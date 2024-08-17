@@ -1,6 +1,8 @@
 import { useFonts } from 'expo-font';
 import { JsonTreeSvgView } from './src/features/json-tree/JsonTree.view';
 
+// export default pipe(AppEntry, WithRuntime(AppRuntime));
+
 export default function App() {
   const [loaded] = useFonts({
     'Inter-Black': require('./assets/fonts/Inter-Black.ttf'),

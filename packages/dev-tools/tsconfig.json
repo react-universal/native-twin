@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "../../tsconfig.base.json",
-    "expo-module-scripts/tsconfig.base"
-  ],
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {},
   "include": [
     "./src"
