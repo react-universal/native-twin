@@ -6,10 +6,11 @@
   "overrides": [
     {
       "files": [
-        "*.ts"
+        "*.ts", "*.tsx"
       ],
       "extends": [
-        "plugin:@nx/typescript"
+        "plugin:@nx/typescript",
+        "plugin:@nx/react"
       ],
       "rules": {
         "prefer-const": "off",
@@ -24,7 +25,7 @@
         "no-unsafe-optional-chaining": "off",
         "no-empty": "off",
         "react/jsx-key": "off",
-        "react-hooks/exhaustive-deps": "off",
+        "react-hooks/exhaustive-deps": "warn",
         "react/display-name": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-non-null-assertion": "off",

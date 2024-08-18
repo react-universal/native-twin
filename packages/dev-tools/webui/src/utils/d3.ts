@@ -1,4 +1,5 @@
-import * as d3 from 'd3';
+import { tree as d3Tree, hierarchy, HierarchyPointNode } from 'd3-hierarchy';
+import { DefaultLinkObject, linkHorizontal, linkVertical } from 'd3-shape';
 import * as RA from 'effect/Array';
 import { apply, flip, identity, pipe } from 'effect/Function';
 import * as Record from 'effect/Record';
@@ -54,8 +55,7 @@ export const createComponentsTree = (
 
   const treeConfig = orientation === 'col' ? vertical : horizontal;
 
-  const tree = d3
-    .tree<RawJSXElementTreeNode>()
+  const tree = d3Tree<RawJSXElementTreeNode>()
     .size(treeConfig.treeSize)
     .nodeSize(treeConfig.nodeSize);
 
@@ -86,7 +86,7 @@ export const createComponentsTree = (
     };
   };
 
-  const getLinks = (rootNode: d3.HierarchyPointNode<RawJSXElementTreeNode>) => {
+  const getLinks = (rootNode: HierarchyPointNode<RawJSXElementTreeNode>) => {
     return pipe(
       rootNode.links(),
       RA.flatMap((link) => {
@@ -94,9 +94,9 @@ export const createComponentsTree = (
         const sourceY = link.source.y * 3 + nodeSize.height * 2;
         const targetX = svgCenter.x + link.target.x * 3;
         const targetY = link.target.y * 3;
-        const fn = orientation === 'col' ? d3.linkVertical() : d3.linkHorizontal();
+        const fn = orientation === 'col' ? linkVertical() : linkHorizontal();
         const line = pipe(
-          (x: d3.DefaultLinkObject) => fn(x),
+          (x: DefaultLinkObject) => fn(x),
           apply({
             source: pipe(
               Tuple.make(sourceX, sourceY),
@@ -115,7 +115,7 @@ export const createComponentsTree = (
   };
 
   return (jsxElement: RawJSXElementTreeNode) => {
-    const rootNode = d3.hierarchy<RawJSXElementTreeNode>(jsxElement, (d) => {
+    const rootNode = hierarchy<RawJSXElementTreeNode>(jsxElement, (d) => {
       return d.childs;
     });
 

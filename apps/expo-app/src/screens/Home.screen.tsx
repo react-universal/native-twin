@@ -43,17 +43,15 @@ function HomeScreen() {
         >
           <Text className='text-blue-200 text-sm'>Activate</Text>
         </Pressable>
-        {testImage && !!testImage[0] && (
-          <Image
-            src={testImage}
-            resizeMode='cover'
-            style={{
-              width: 100,
-              height: 100,
-            }}
-            className='rounded-full border-1'
-          />
-        )}
+        <Image
+          src={testImage}
+          resizeMode='cover'
+          style={{
+            width: 100,
+            height: 100,
+          }}
+          className='rounded-full border-1'
+        />
         <TextField />
         <View
           className={`

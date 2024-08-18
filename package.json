@@ -72,5 +72,9 @@
   "overrides": {
     "@babel/types": "7.23.9",
     "@babel/core": "7.23.9"
+  },
+  "resolutions": {
+    "metro-runtime@npm:^0.80.3": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch",
+    "metro-runtime@npm:0.80.6": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch"
   }
 }

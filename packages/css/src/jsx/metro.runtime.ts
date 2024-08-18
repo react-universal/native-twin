@@ -20,4 +20,5 @@ export interface RawJSXElementTreeNode {
   parentNode: RawJSXElementTreeNode | null;
   childs: RawJSXElementTreeNode[];
   id: string;
+  fileName: string;
 }

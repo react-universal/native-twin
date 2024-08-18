@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
-import * as d3 from 'd3';
+import { HierarchyPointNode } from 'd3-hierarchy';
+import { select as d3Select } from 'd3-selection';
 import { Circle, G, Text } from 'react-native-svg';
 import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 import { SvgPoint } from './json.types';
@@ -9,7 +10,7 @@ interface TreeNodeViewProps {
   index: number;
   radius: number;
   origin: SvgPoint;
-  node: d3.HierarchyPointNode<RawJSXElementTreeNode>;
+  node: HierarchyPointNode<RawJSXElementTreeNode>;
   onClick: (node: RawJSXElementTreeNode) => void;
 }
 
@@ -21,7 +22,7 @@ export const TreeNodeView = ({
   index,
 }: TreeNodeViewProps) => {
   useEffect(() => {
-    const element = d3.select(`#node-circle-${index}`);
+    const element = d3Select(`#node-circle-${index}`);
     element.on('click', () => {
       onClick(node.data);
     });

@@ -4,7 +4,9 @@ import { useNativeTwinDevTools } from '@native-twin/dev-tools';
 import { asArray } from '@native-twin/helpers';
 
 const flattenChilds = (tree: RawJSXElementTreeNode): RawJSXElementTreeNode[] => {
-  return asArray(tree).flatMap((x) => [x, ...x.childs.map((y) => flattenChilds(y))]).flat();
+  return asArray(tree)
+    .flatMap((x) => [x, ...x.childs.map((y) => flattenChilds(y))])
+    .flat();
 };
 export const useTwinDevTools = (id: string, tree: RawJSXElementTreeNode) => {
   const [isSelected, setIsSelected] = useState(false);
@@ -13,12 +15,11 @@ export const useTwinDevTools = (id: string, tree: RawJSXElementTreeNode) => {
 
   useEffect(() => {
     const sb = plugin.addListener('tree/node/selected', (data: any) => {
-      if (!tree) return;
       const childs = flattenChilds(tree);
-      console.log('CHILDS: ', childs);
       const node = childs.find((x) => x.id === data.id);
       if (node) {
-        console.log(data, id);
+        console.debug('CHILDS: ', childs);
+        console.debug(data, id);
         setIsSelected(true);
       }
     });

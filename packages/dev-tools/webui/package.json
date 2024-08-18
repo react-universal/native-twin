@@ -4,7 +4,7 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
-    "dev-tools:dev": "expo start -c"
+    "dev-tools:dev": "expo start -c --port 8082"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
@@ -12,7 +12,10 @@
     "@native-twin/core": "workspace:*",
     "@native-twin/jsx": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "d3": "^7.9.0",
+    "d3-hierarchy": "^3.1.2",
+    "d3-selection": "^3.0.0",
+    "d3-shape": "^3.2.0",
+    "d3-zoom": "^3.0.0",
     "effect": "^3.6.3",
     "expo": "^51.0.28",
     "expo-constants": "~16.0.2",

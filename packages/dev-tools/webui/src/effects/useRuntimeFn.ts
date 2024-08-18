@@ -2,7 +2,7 @@
 import { useContext, useEffect, useMemo } from 'react';
 import { Effect, Fiber, FiberId, Layer, pipe, Stream } from 'effect';
 import { v4 as uuidv4 } from 'uuid';
-import { RuntimeContext } from '../context/runtime.context';
+import { RuntimeContext } from '../effects/context/runtime.context';
 
 /*
 This hook returns a function that can be called to trigger an effect.

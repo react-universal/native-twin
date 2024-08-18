@@ -17,6 +17,10 @@
       "path": "../packages/babel"
     },
     {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
@@ -74,7 +78,6 @@
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/builder",
-      "📦 @lib/metro",
       "📦 @lib/with-nextjs",
       "📦 @lib/vscode",
       "📦 @lib/language-service",

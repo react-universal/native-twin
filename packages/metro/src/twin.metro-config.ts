@@ -1,9 +1,11 @@
 // import { Effect } from 'effect';
 import type { GetTransformOptions } from 'metro-config';
+import micromatch from 'micromatch';
 import path from 'node:path';
+import { inspect } from 'node:util';
 // import { makeWatcher } from './cli';
 // import { makeLive } from './cli/MetroCli.service';
-// import { decorateMetroServer } from './config/server/server.decorator';
+import { decorateMetroServer } from './config/server/server.decorator';
 import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
@@ -65,42 +67,36 @@ export function withNativeTwin(
   // );
   // makeWatcher.pipe(Effect.provide(makeLive(metroContext)), Effect.runPromise);
 
-  // const child = spawn(
-  //   'node',
-  //   [path.join(__dirname, 'cli/worker.js'), '--verbose', '--watch'],
-  //   {
-  //     stdio: 'pipe',
-  //     detached: false,
-  //   },
-  // );
-  // // childP.
-  // // const child = fork(path.join(__dirname, 'cli/worker.js'), {
-  // //   stdio: 'pipe',
-  // //   execArgv: ['--verbose'],
-  // // });
-  // console.log('ARGS: ', child.spawnargs);
-  // child.on('spawn', () => {
-  //   console.log('CHILD_SPAWN: ');
-  // });
+  const server = decorateMetroServer(metroConfig, twConfig, metroContext);
 
-  // child.on('message', (message) => {
-  //   console.log('CHILD_MESSAGE: ', message);
-  // });
-  // child.stdout?.on('data', (chunk) => {
-  //   console.log('DATA: ', chunk);
-  // });
-  // child.stdout?.on('error', (chunk) => {
-  //   console.log('ERROR: ', chunk);
-  // });
-
-  // const server = decorateMetroServer(metroConfig, twConfig, metroContext);
-
+  const originalModuleFilter = metroConfig.serializer.processModuleFilter;
   return {
     ...metroConfig,
     resetCache: true,
-    // server: server.server,
+    server: server.server,
     // resolver: server.resolver,
     // transformerPath: require.resolve('./transformer/metro.transformer'),
+    serializer: {
+      ...metroConfig.serializer,
+      processModuleFilter: (module) => {
+        if (micromatch.isMatch(path.resolve(module.path), metroContext.allowedPaths)) {
+          console.log(
+            'MODULE: ',
+            inspect(
+              {
+                name: module.path,
+                buff: module.getSource().toString('utf-8'),
+                code: module.output,
+              },
+              false,
+              null,
+              true,
+            ),
+          );
+        }
+        return originalModuleFilter(module);
+      },
+    },
     transformer: {
       ...metroConfig.transformer,
       tailwindConfigPath: twinConfigPath,

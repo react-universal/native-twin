@@ -8,9 +8,9 @@ import { RuntimeTW } from '@native-twin/core';
 import { CompilerContext } from '@native-twin/css/jsx';
 import { TwinVisitorsState } from '../types/plugin.types';
 import { addJsxAttribute } from './jsx.builder';
+import { elementNodeToTree } from './jsx.debug';
 import { JSXElementNode, jsxElementNodeKey } from './models/JSXElement.model';
 import { entriesToObject, runtimeEntriesToAst } from './twin.maps';
-import { elementNodeToTree } from './jsx.debug';
 
 const visitJSXElement = (
   path: NodePath<t.JSXElement>,
@@ -36,6 +36,7 @@ const visitJSXElement = (
   const astProps = runtimeEntriesToAst(stringEntries.styledProp);
 
   if (!elementNode.parent) {
+    // console.log('STATE: ', state);
     const treeProp = elementNodeToTree(elementNode, state.filename ?? 'Unknown_file');
     if (treeProp.properties.length > 0) {
       elementNode.openingElement.attributes.push(

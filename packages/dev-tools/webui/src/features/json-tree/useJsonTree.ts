@@ -1,44 +1,40 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useWindowDimensions } from 'react-native';
+import { PLUGIN_EVENTS } from '@/constants/event.constants';
+import { HierarchyPointNode } from 'd3-hierarchy';
+import * as Option from 'effect/Option';
 import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { PLUGIN_EVENTS } from '../../constants/event.constants';
-import { useClientSubscription } from '../../hooks/useDevToolsClient';
+import { useDevToolsClient } from '../../hooks/useDevToolsClient';
 import { createComponentsTree } from '../../utils/d3';
 
-export const useComponentsTree = () => {
-  const [state, setState] = useState<RawJSXElementTreeNode | null>(null);
+export const useComponentsTree = (rawNode: RawJSXElementTreeNode) => {
+  const client = useDevToolsClient();
+
   const { width, height } = useWindowDimensions();
-  const center = useScreenCenter();
   const componentsTree = useMemo(
     () => createComponentsTree({ height, width, nodeSize: 50 }),
     [width, height],
   );
 
-  useClientSubscription<RawJSXElementTreeNode>(PLUGIN_EVENTS.receiveTree, (_, data) => {
-    if (data && data.childs.length >= 2) {
-      console.log('DATA: ', data);
-      setState(() => data);
-    }
-  });
+  const treeStruct = useMemo(() => componentsTree(rawNode), [rawNode, componentsTree]);
 
-  const treeStruct = useMemo(() => {
-    if (!state) return null;
-
-    return componentsTree(state);
-  }, [state, componentsTree]);
-
-  const linkComponents = useMemo(() => {
-    if (!treeStruct) return [];
+  const linkComponents: string[] = useMemo(() => {
     return treeStruct.getLinks(treeStruct.treeLayout);
   }, [treeStruct]);
 
-  const nodes = useMemo(() => {
-    if (!treeStruct) return [];
-    return treeStruct.treeLayout.descendants();
-  }, [treeStruct]);
+  const nodes: HierarchyPointNode<RawJSXElementTreeNode>[] = useMemo(
+    () => treeStruct.treeLayout.descendants(),
+    [treeStruct],
+  );
 
-  return { treeStruct, center, width, height, linkComponents, nodes };
+  const onPressNode = (node: RawJSXElementTreeNode) => {
+    Option.map(client, (plugin) => {
+      plugin.sendMessage(PLUGIN_EVENTS.selectedNodeTree, { id: node.id });
+    });
+  };
+
+  return { treeStruct, width, height, linkComponents, nodes, onPressNode };
 };
 
 export const useScreenCenter = () => {
