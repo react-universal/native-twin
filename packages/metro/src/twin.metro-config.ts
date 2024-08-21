@@ -34,7 +34,7 @@ export function withNativeTwin(
     // transformerPath: require.resolve('./transformer/metro.transformer'),
     transformer: {
       ...metroConfig.transformer,
-      // babelTransformerPath: require.resolve('./transformer/babel/babel.transformer'),
+      babelTransformerPath: require.resolve('./transformer/babel.transformer'),
       tailwindConfigPath: twinConfigPath,
       outputDir: outputDir,
       allowedFiles: twConfig.content,

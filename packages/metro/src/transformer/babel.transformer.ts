@@ -20,7 +20,7 @@ import {
   BabelTransformerServiceLive,
   BabelTransformerFn,
   babelTraverseCode,
-} from '.';
+} from './babel';
 
 const mainProgram = (memoCache: Layer.Layer<CacheService, never, never>) =>
   Effect.gen(function* () {
