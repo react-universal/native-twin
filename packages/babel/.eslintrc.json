@@ -12,6 +12,7 @@
         "plugin:@nx/typescript"
       ],
       "rules": {
+        "@typescript-eslint/no-this-alias": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "prefer-const": "off",
         "@typescript-eslint/no-non-null-assertion": "off",

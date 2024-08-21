@@ -1,8 +1,5 @@
 // @ts-noCheck
 import { View, Text } from 'react-native';
-import { Button as Button2 } from './code-i';
-
-const { Button: Button3 } = require('./code-i');
 
 const buttonVariants = createVariants({
   base: 'py-5 m-1 rounded-md items-center justify-center group-hover:bg-red-400',
@@ -32,19 +29,3 @@ export const Button = (props) => {
     </Pressable>
   );
 };
-
-export default function App() {
-  return (
-    <View className={`group flex-1 first:bg-red-200`}>
-      {/* <Text className={`${true && 'text-lg'} text-md`}>Hello World</Text>
-      <Text>Hello World</Text> */}
-      <Button size='small' />
-      <Button2 size='small' />
-      <Button3 size='large' />
-      {/* <View className='flex-1'>
-        <Text className='text-lg'>Test Text</Text>
-        <Text className='text-lg'>Test Text2</Text>
-      </View> */}
-    </View>
-  );
-}

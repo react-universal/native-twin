@@ -1,14 +1,74 @@
-import { NodePath } from '@babel/traverse';
+import { Binding } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import type { RuntimeTW } from '@native-twin/core';
-import { templateLiteralToStringLike } from '../babel/babel.constructors';
 import { mappedComponents, type MappedComponent } from '../utils/component.maps';
 import * as jsxPredicates from './jsx.predicates';
-import type { JSXMappedAttribute, MapAttributeFn, StyledPropEntries } from './jsx.types';
+import type { JSXMappedAttribute } from './jsx.types';
 
+const getBindingImportDeclaration = (binding: Binding) =>
+  pipe(
+    binding.path,
+    Option.liftPredicate(jsxPredicates.isImportSpecifier),
+    Option.bindTo('importSpecifier'),
+    Option.bind('importDeclaration', ({ importSpecifier }) =>
+      Option.liftPredicate(importSpecifier.parentPath, jsxPredicates.isImportDeclaration),
+    ),
+    Option.map((source) => ({
+      kind: 'import',
+      source: source.importDeclaration.node.source.value,
+    })),
+  );
+
+const getBindingRequireDeclaration = (binding: Binding) =>
+  pipe(
+    binding.path,
+    Option.liftPredicate(jsxPredicates.isVariableDeclaratorPath),
+    Option.bindTo('importSpecifier'),
+    Option.bind('requireExpression', ({ importSpecifier }) =>
+      pipe(
+        Option.fromNullable(importSpecifier.node.init),
+        Option.flatMap((init) =>
+          Option.liftPredicate(init, jsxPredicates.isCallExpression),
+        ),
+        Option.flatMap((x) => RA.head(x.arguments)),
+        Option.flatMap((x) => Option.liftPredicate(x, t.isStringLiteral)),
+      ),
+    ),
+    Option.map((source) => {
+      return {
+        kind: 'require',
+        source: source.requireExpression.value,
+      };
+    }),
+  );
+export const getBingingImportSource = (binding: Binding) =>
+  pipe(
+    [getBindingImportDeclaration(binding), getBindingRequireDeclaration(binding)],
+    Option.firstSomeOf,
+  );
+
+/**
+ * @internal
+ * @category Transformer
+ * @domain Babel
+ * Extract {@link JSXMappedAttribute[]} list from a jsx Attribute
+ * */
+const getJSXMappedAttributes = (
+  attributes: t.JSXAttribute[],
+  config: MappedComponent,
+): JSXMappedAttribute[] => {
+  return attributes
+    .map((x) => extractStyledProp(x, config))
+    .filter((x) => x !== null) as JSXMappedAttribute[];
+};
+
+/**
+ * @category Transformer
+ * @domain Babel
+ * Extract {@link JSXMappedAttribute[]} list from a jsx Attribute
+ * */
 export const extractMappedAttributes = (node: t.JSXElement): JSXMappedAttribute[] => {
   const attributes = getJSXElementAttrs(node);
   return pipe(
@@ -20,33 +80,28 @@ export const extractMappedAttributes = (node: t.JSXElement): JSXMappedAttribute[
 };
 
 /**
- * @category Transformer
+ * * @internal
  * @domain Babel
- * Extract {@link JSXMappedAttribute[]} list from a jsx Attribute
- * */
-export const getJSXMappedAttributes = (
-  attributes: t.JSXAttribute[],
-  config: MappedComponent,
-): JSXMappedAttribute[] => {
-  return attributes
-    .map((x) => extractStyledProp(x, config))
-    .filter((x) => x !== null) as JSXMappedAttribute[];
-};
-
-/**
- * @domain Shared Transform
  * @description Extract the {@link MappedComponent} from any {@link ValidJSXElementNode}
  * */
-export const getJSXElementConfig = (tagName: string) => {
+const getJSXElementConfig = (tagName: string) => {
   const componentConfig = mappedComponents.find((x) => x.name === tagName);
   if (!componentConfig) return null;
 
   return componentConfig;
 };
 
+/**
+ * @domain Babel
+ * @description Extract the {@link t.JSXAttribute[]} from any {@link t.JSXElement}
+ * */
 export const getJSXElementAttrs = (element: t.JSXElement): t.JSXAttribute[] =>
   pipe(element.openingElement.attributes, RA.filter(jsxPredicates.isJSXAttribute));
 
+/**
+ * @domain Babel
+ * @description Extract the {@link JSXMappedAttribute} from any {@link t.JSXAttribute}
+ * */
 export const extractStyledProp = (
   attribute: t.JSXAttribute,
   config: MappedComponent,
@@ -89,82 +144,6 @@ export const extractStyledProp = (
   return null;
 };
 
-export const compileMappedAttributes = (mapped: JSXMappedAttribute[], twin: RuntimeTW) =>
-  pipe(
-    mapped,
-    RA.map((x) => compileMappedAttribute(x, twin)),
-  );
-
-const compileMappedAttribute = (classNameValue: JSXMappedAttribute, twin: RuntimeTW) => {
-  const classProp: StyledPropEntries = {
-    entries: [],
-    prop: classNameValue.prop,
-    target: classNameValue.target,
-    expression: null,
-    classNames: '',
-  };
-  if (t.isStringLiteral(classNameValue.value)) {
-    classProp.classNames = classNameValue.value.value;
-    classProp.entries = twin(classNameValue.value.value);
-  }
-  if (t.isTemplateLiteral(classNameValue.value)) {
-    const cooked = templateLiteralToStringLike(classNameValue.value);
-    classProp.classNames = cooked.strings;
-    classProp.entries = twin(`${cooked.strings}`);
-    // classProp.expression = cooked.expressions;
-  }
-
-  return classProp;
-};
-
-export const getJSXAttributePaths = (path: NodePath<t.JSXElement>) =>
-  pipe(
-    RA.ensure(path.get('openingElement.attributes')),
-    RA.filter(jsxPredicates.isJSXAttributePath),
-  );
-
-export const getJSXAttributeName = (id: t.JSXAttribute) =>
-  pipe(
-    id,
-    Option.liftPredicate((x) => t.isJSXIdentifier(x.name)),
-    Option.flatMap((x) => {
-      if (!t.isJSXIdentifier(x.name)) return Option.none();
-
-      return Option.some(x.name);
-    }),
-  );
-
-export const findMapJSXAttributeByName = (paths: t.JSXAttribute[], name: string) =>
-  pipe(
-    paths,
-    RA.findFirst((x) =>
-      Option.Do.pipe(
-        () => Option.some({ path: x }),
-        Option.bind('name', ({ path }) => getJSXAttributeName(path)),
-        Option.flatMap((x) => (x.name.name === name ? Option.some(x) : Option.none())),
-      ),
-    ),
-  );
-
-export const traverseJSXElementChilds = (
-  path: NodePath<t.JSXElement>,
-  onChild: (child: NodePath<t.JSXElement>, index: number) => void,
-) => {
-  pipe(
-    RA.ensure(path.get('children')),
-    RA.filter(jsxPredicates.isJSXElementPath),
-    RA.forEach(onChild),
-  );
-};
-
-export const mapJSXElementAttributes =
-  (openingElement: t.JSXOpeningElement) => (fn: MapAttributeFn) => {
-    openingElement.attributes = openingElement.attributes.map((x) => {
-      if (!t.isJSXAttribute(x)) return x;
-      return fn(x);
-    });
-  };
-
 export const getJSXElementName = (
   openingElement: t.JSXOpeningElement,
 ): Option.Option<string> => {
@@ -172,12 +151,4 @@ export const getJSXElementName = (
     return Option.some(openingElement.name.name);
   }
   return Option.none();
-};
-
-export const getElementConfig = (openingElement: t.JSXOpeningElement) => {
-  return getJSXElementName(openingElement).pipe(
-    Option.flatMap((name) =>
-      Option.fromNullable(mappedComponents.find((x) => x.name === name)),
-    ),
-  );
 };

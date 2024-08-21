@@ -13,26 +13,30 @@ import {
   type CompilerContext,
   applyParentEntries,
 } from '@native-twin/css/jsx';
-import { TwinVisitorsState } from '../../types/plugin.types';
-import { extractMappedAttributes, getJSXElementAttrs } from '../jsx.maps';
+import {
+  extractMappedAttributes,
+  getBingingImportSource,
+  getJSXElementAttrs,
+  getJSXElementName,
+} from '../jsx.maps';
 import * as jsxPredicates from '../jsx.predicates';
 import { JSXMappedAttribute } from '../jsx.types';
 import { getElementEntries } from '../twin/twin.entries';
 
-const jsxElementHash = (path: NodePath<t.JSXElement>, state: TwinVisitorsState) => {
-  const filename = Hash.string(`${state.filename}`);
-  const loc = Hash.structure(path.node.loc ?? { key: state.key });
-  return pipe(loc, Hash.combine(filename));
+const jsxElementHash = (path: NodePath<t.JSXElement>, filename: string) => {
+  const filenameHash = Hash.string(`${filename}`);
+  const loc = Hash.structure(path.node.loc ?? { key: filenameHash });
+  return pipe(loc, Hash.combine(filenameHash));
 };
 
 export class JSXElementNodeKey implements Equal.Equal {
   constructor(
     readonly path: NodePath<t.JSXElement>,
-    readonly state: TwinVisitorsState,
+    readonly filename: string,
   ) {}
 
   [Hash.symbol](): number {
-    return jsxElementHash(this.path, this.state);
+    return jsxElementHash(this.path, this.filename);
   }
 
   [Equal.symbol](that: unknown): boolean {
@@ -46,31 +50,44 @@ export class JSXElementNodeKey implements Equal.Equal {
   }
 }
 
-export const jsxElementNodeKey = (
-  path: NodePath<t.JSXElement>,
-  state: TwinVisitorsState,
-) => new JSXElementNodeKey(path, state);
+export const jsxElementNodeKey = (path: NodePath<t.JSXElement>, state: string) =>
+  new JSXElementNodeKey(path, state);
 
 export class JSXElementNode implements Equal.Equal {
   readonly path: NodePath<t.JSXElement>;
   readonly id: string;
   readonly parent: JSXElementNode | null;
   readonly order: number;
-  readonly state: TwinVisitorsState;
+  readonly filename: string;
   _runtimeSheet: JSXElementSheet | null = null;
 
   constructor(
     path: NodePath<t.JSXElement>,
     order: number,
-    state: TwinVisitorsState,
+    filename: string,
     parentNode: JSXElementNode | null = null,
   ) {
-    this.state = state;
+    this.filename = filename;
     this.order = order;
     this.parent = parentNode;
 
-    this.id = `${jsxElementHash(path, state)}`;
+    this.id = `${jsxElementHash(path, filename)}`;
     this.path = path;
+  }
+
+  get importSource() {
+    return this.binding().pipe(
+      Option.map((x) => x.source),
+      Option.getOrElse(() => 'Local'),
+    );
+  }
+
+  private binding() {
+    return pipe(
+      getJSXElementName(this.openingElement),
+      Option.flatMapNullable((x) => this.path.scope.getBinding(x)),
+      Option.flatMap(getBingingImportSource),
+    );
   }
 
   get attributes() {
@@ -85,7 +102,7 @@ export class JSXElementNode implements Equal.Equal {
     return pipe(
       RA.ensure(this.path.get('children')),
       RA.filter(jsxPredicates.isJSXElementPath),
-      RA.map((x, i) => new JSXElementNode(x, i, this.state, this)),
+      RA.map((x, i) => new JSXElementNode(x, i, this.filename, this)),
       HashSet.fromIterable,
     );
   }

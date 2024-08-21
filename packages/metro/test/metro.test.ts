@@ -28,7 +28,7 @@ describe('Metro bundler test', () => {
         config: exampleProjectFixture.configPath,
       },
       {
-        transformerPath: require.resolve('../src/transformer/metro.transformer'),
+        // transformerPath: require.resolve('../src/transformer/metro.transformer'),
         projectRoot: exampleProjectFixture.cwd,
         resetCache: true,
       },

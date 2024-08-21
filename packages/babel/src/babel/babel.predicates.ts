@@ -24,7 +24,7 @@ export const isReactRequire = (
   node: Option.Option<readonly [t.VariableDeclarator, t.CallExpression]>,
 ) => {
   return node.pipe(
-    Option.flatMap(([, node]) =>
+    Option.filterMap(([, node]) =>
       t.isIdentifier(node.callee, { name: 'require' }) &&
       t.isStringLiteral(node.arguments[0], { value: 'react' })
         ? Option.some(true)
@@ -33,7 +33,7 @@ export const isReactRequire = (
   );
 };
 
-export const isInteropRequire = (
+export const isReactInteropRequire = (
   node: Option.Option<readonly [t.VariableDeclarator, t.CallExpression]>,
 ) => {
   return node.pipe(

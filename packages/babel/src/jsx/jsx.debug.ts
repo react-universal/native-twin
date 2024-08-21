@@ -25,7 +25,8 @@ export const elementNodeToTree = (
     t.objectProperty(t.identifier('parentNode'), t.nullLiteral()),
     t.objectProperty(t.identifier('childs'), t.arrayExpression(childs)),
     t.objectProperty(t.identifier('id'), t.stringLiteral(node.id)),
-    t.objectProperty(t.identifier('fileName'), t.stringLiteral(filename)),
+    t.objectProperty(t.identifier('filename'), t.stringLiteral(filename)),
+    t.objectProperty(t.identifier('source'), t.stringLiteral(node.importSource)),
   ];
 
   return t.objectExpression(props);

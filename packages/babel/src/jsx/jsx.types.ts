@@ -5,7 +5,6 @@ export type JSXChildElement = t.JSXElement['children'][number];
 export type AnyPrimitive = string | number | boolean;
 
 export type MapChildFn = (child: t.JSXElement) => t.JSXElement;
-export type MapAttributeFn = (attribute: t.JSXAttribute) => t.JSXAttribute;
 
 export interface JSXMappedAttribute {
   prop: string;
