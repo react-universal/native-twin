@@ -12,25 +12,18 @@ import {
 } from '@native-twin/css/jsx';
 import { getElementEntries } from '../../sheet/utils/styles.utils';
 import { JSXMappedAttribute } from '../ast.types';
-import {
-  getJSXElementPath,
-  getJSXNodeOpenElement,
-  JSXElementNodePath,
-  taggedJSXElement,
-} from '../ast/ast.matchers';
+import { getJSXNodeOpenElement } from '../ast/ast.matchers';
 import { getBabelElementMappedAttributes } from '../babel/babel.constructors';
-import { getJSXRuntimeData } from '../ts/ts.constructors';
-import { ValidJSXElementNode } from '../ts/ts.types';
 
 export class JSXElementNode implements Equal.Equal {
-  readonly path: JSXElementNodePath;
+  readonly path: t.JSXElement;
   readonly id: string;
   readonly parent: JSXElementNode | null;
   readonly order: number;
   _runtimeSheet: JSXElementSheet | null = null;
 
   constructor(
-    path: ValidJSXElementNode | t.JSXElement,
+    path: t.JSXElement,
     order: number,
     parentNode: JSXElementNode | null = null,
     id?: string,
@@ -42,15 +35,11 @@ export class JSXElementNode implements Equal.Equal {
     } else {
       this.id = id ?? 'Undefined';
     }
-    this.path = getJSXElementPath(path);
+    this.path = path;
   }
 
   get runtimeData(): JSXMappedAttribute[] {
-    return taggedJSXElement.$match({
-      BabelJSXElement: ({ node }) => getBabelElementMappedAttributes(node),
-      JSXelement: ({ node }) => getJSXRuntimeData(node, node.getOpeningElement()),
-      JSXSelfClosingElement: ({ node }) => getJSXRuntimeData(node, node),
-    })(this.path);
+    return getBabelElementMappedAttributes(this.path);
   }
 
   getTwinSheet(

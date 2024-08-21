@@ -39,8 +39,7 @@
     "fast-check": "^3.21.0",
     "jiti": "1.21.0",
     "recast": "^0.23.9",
-    "sucrase": "^3.35.0",
-    "ts-morph": "^23.0.0"
+    "sucrase": "^3.35.0"
   },
   "devDependencies": {
     "@babel/traverse": "^7.24.0",

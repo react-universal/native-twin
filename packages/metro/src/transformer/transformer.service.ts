@@ -4,7 +4,6 @@ import * as Layer from 'effect/Layer';
 import worker from 'metro-transform-worker';
 import micromatch from 'micromatch';
 import path from 'node:path';
-import { Project } from 'ts-morph';
 import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { ensureBuffer } from '../utils';
@@ -13,7 +12,6 @@ import type { TransformWorkerArgs, TwinTransformFn } from './transformer.types';
 export class MetroTransformerContext extends Context.Tag('MetroTransformerContext')<
   MetroTransformerContext,
   TransformWorkerArgs & {
-    tsCompiler: Project;
     twin: RuntimeTW;
     twinConfig: TailwindConfig<__Theme__ & TailwindPresetTheme>;
     allowedPaths: string[];

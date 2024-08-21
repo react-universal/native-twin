@@ -1,3 +1,4 @@
+import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -19,7 +20,7 @@ import {
   BabelTransformerServiceLive,
   BabelTransformerFn,
   babelTraverseCode,
-} from './babel';
+} from '.';
 
 const mainProgram = (memoCache: Layer.Layer<CacheService, never, never>) =>
   Effect.gen(function* () {
@@ -59,7 +60,7 @@ const mainProgram = (memoCache: Layer.Layer<CacheService, never, never>) =>
       yield* Effect.logDebug({ fileEntries });
     }
 
-    return transformer.transform(compiled.generated.code);
+    return compiled.generated.code;
   });
 
 const MainLayer = Layer.merge(
@@ -67,7 +68,7 @@ const MainLayer = Layer.merge(
   Logger.replace(Logger.defaultLogger, BabelLogger),
 );
 
-const runnable = Effect.scoped(
+export const babelRunnable = Effect.scoped(
   Layer.memoize(CacheLayerLive).pipe(
     Effect.andThen(mainProgram),
     Logger.withMinimumLogLevel(LogLevel.All),
@@ -76,8 +77,14 @@ const runnable = Effect.scoped(
 );
 
 export const transform: BabelTransformerFn = async (params) => {
-  return runnable.pipe(
-    Effect.provide(BabelTransformerContext.make(params)),
-    Effect.runPromise,
-  );
+  return babelRunnable
+    .pipe(Effect.provide(BabelTransformerContext.make(params)), Effect.runPromise)
+    .then((src) => {
+      // @ts-expect-error
+      return upstreamTransformer.transform({
+        src,
+        options: params.options,
+        filename: params.filename,
+      });
+    });
 };

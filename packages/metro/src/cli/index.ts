@@ -27,7 +27,7 @@ import path from 'path';
 // import { Transform } from 'stream';
 import { RuntimeSheetEntry } from '@native-twin/css/jsx';
 import { visitBabelJSXElementParents } from '../compiler/babel';
-import { createElementStyleSheet } from '../compiler/ts.compiler';
+import { createElementStyleSheet } from '../compiler/babel/babel.visitors';
 import { refreshTwinFile } from '../sheet/StyleSheet.service';
 import { getElementEntries } from '../sheet/utils/styles.utils';
 import { MetroConfigContext } from './MetroCli.service';
@@ -81,7 +81,7 @@ const onFSFileEvent = (
           Effect.map((ast) => visitBabelJSXElementParents(ast, x.path)),
           Effect.map((parents) =>
             pipe(
-              createElementStyleSheet(parents, x.path),
+              createElementStyleSheet(parents),
               HashSet.flatMap((node) => {
                 return pipe(node.runtimeData, (data) => {
                   const context = {
@@ -191,7 +191,7 @@ export const makeWatcher = Effect.scoped(
           });
           const parents = visitBabelJSXElementParents(parsed, x.path);
           const sheet = pipe(
-            createElementStyleSheet(parents, x.path),
+            createElementStyleSheet(parents),
             HashSet.flatMap((node) => {
               return pipe(node.runtimeData, (data) => {
                 const context = {

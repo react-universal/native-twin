@@ -3,8 +3,8 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Queue from 'effect/Queue';
+import { getBabelJSXElementChilds } from '../babel';
 import { JSXElementNode } from '../models/JSXElement.model';
-import { getJSXElementChilds } from '../Compiler.service';
 
 export const traverseASTQueue = (
   nodeSet: HashSet.HashSet<JSXElementNode>,
@@ -31,7 +31,7 @@ export const traverseASTQueue = (
         RA.flatMap((x): Effect.Effect<boolean>[] => {
           return [
             sendElement(queue, x),
-            ...flatElements(RA.fromIterable(getJSXElementChilds(x, filePath))),
+            ...flatElements(RA.fromIterable(getBabelJSXElementChilds(x.path, x))),
           ];
         }),
       );

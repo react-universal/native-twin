@@ -6383,7 +6383,6 @@ __metadata:
     micromatch: "npm:4.0.5"
     recast: "npm:^0.23.9"
     sucrase: "npm:^3.35.0"
-    ts-morph: "npm:^23.0.0"
   peerDependencies:
     react: ">=18"
     react-native: "*"

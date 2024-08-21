@@ -8,7 +8,6 @@ import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
 import path from 'node:path';
-import { Project } from 'ts-morph';
 import { TwinCompilerServiceLive } from '../compiler/Compiler.service';
 import * as Compiler from '../compiler/babel.compiler';
 import { sendUpdate } from '../config/server/poll-updates-server';
@@ -61,6 +60,7 @@ const program = Effect.gen(function* () {
   }
 
   const compiled = yield* Compiler.compileFileWithBabel;
+  yield* Effect.log(compiled);
 
   const classNames = pipe(
     compiled.elements,
@@ -105,10 +105,6 @@ const runnable = program.pipe(
   Effect.provide(MainLayer),
 );
 
-const tsCompiler = new Project({
-  useInMemoryFileSystem: true,
-});
-
 export const transform: TwinTransformFn = async (
   config,
   projectRoot,
@@ -127,7 +123,6 @@ export const transform: TwinTransformFn = async (
 
   return runnable.pipe(
     Effect.provideService(MetroTransformerContext, {
-      tsCompiler,
       config,
       filename,
       options,

@@ -9,27 +9,27 @@ export type BabelTransformerFn = (params: {
 }) => Promise<any>;
 
 export interface BabelTransformerOptions {
-  customTransformOptions: {
-    engine: string;
-    bytecode: boolean;
-    routerRoot: string;
-  };
+  // customTransformOptions: {
+  //   engine: string;
+  //   bytecode: boolean;
+  //   routerRoot: string;
+  // };
   dev: boolean;
   hot: boolean;
-  inlinePlatform: boolean;
-  minify: boolean;
+  // inlinePlatform: boolean;
+  // minify: boolean;
   platform: string;
-  unstable_transformProfile: string;
-  experimentalImportSupport: boolean;
-  unstable_disableES6Transforms: boolean;
-  nonInlinedRequires: string[];
+  // unstable_transformProfile: string;
+  // experimentalImportSupport: boolean;
+  // unstable_disableES6Transforms: boolean;
+  // nonInlinedRequires: string[];
   type: string;
-  enableBabelRCLookup: boolean;
-  enableBabelRuntime: boolean;
-  globalPrefix: string;
-  hermesParser: boolean;
+  // enableBabelRCLookup: boolean;
+  // enableBabelRuntime: boolean;
+  // globalPrefix: string;
+  // hermesParser: boolean;
   projectRoot: string;
-  publicPath: string;
+  // publicPath: string;
 }
 
 export interface BabelTransformerConfig {

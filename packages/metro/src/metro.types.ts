@@ -2,15 +2,11 @@ import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
 import type { RuntimeTW, TailwindConfig, __Theme__ } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 
-export interface CssToReactNativeRuntimeOptions {}
-
 /** @domain NativeTwin config options */
-export interface MetroWithNativeTwindOptions extends CssToReactNativeRuntimeOptions {
+export interface MetroWithNativeTwindOptions {
   projectRoot?: string;
   outputDir?: string;
   configPath?: string;
-  browserslist?: string | null;
-  browserslistEnv?: string | null;
 }
 
 /** @domain MetroResolver */

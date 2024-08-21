@@ -43,3 +43,19 @@ export const getBabelJSXElementChilds = (
     HashSet.fromIterable,
   );
 };
+
+export function createElementStyleSheet(
+  value: HashSet.HashSet<JSXElementNode>,
+): HashSet.HashSet<JSXElementNode> {
+  return pipe(
+    value,
+    HashSet.reduce(HashSet.empty<JSXElementNode>(), (prev, current) => {
+      return pipe(
+        getBabelJSXElementChilds(current.path, current),
+        createElementStyleSheet,
+        HashSet.add(current),
+        HashSet.union(prev),
+      );
+    }),
+  );
+}
