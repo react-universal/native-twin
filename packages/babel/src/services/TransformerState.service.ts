@@ -1,4 +1,8 @@
-import { Context, Effect, pipe, Ref, Scope } from 'effect';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import * as Ref from 'effect/Ref';
+import * as Scope from 'effect/Scope';
 import { JSXElementNode } from '../jsx/models/JSXElement.model';
 
 interface State {

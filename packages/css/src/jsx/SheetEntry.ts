@@ -69,7 +69,14 @@ export const isChildEntry: Predicate.Predicate<RuntimeSheetEntry> = (entry) =>
 export const isChildSelector: Predicate.Refinement<string, ChildSelector> = (
   group,
 ): group is ChildSelector =>
-  group === 'first' || group === 'last' || group === 'even' || group === 'odd';
+  group === 'first' ||
+  group === 'last' ||
+  group === 'even' ||
+  group === 'odd' ||
+  group.includes('first', 0) ||
+  group.includes('last', 0) ||
+  group.includes('even', 0) ||
+  group.includes('odd', 0);
 
 /** @category Predicates */
 export const isOwnSelector: Predicate.Refinement<string, OwnSelector> = (

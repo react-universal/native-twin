@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { pipe } from 'effect';
+import { pipe } from 'effect/Function';
 import * as Predicate from 'effect/Predicate';
 
 export const isJSXElement: Predicate.Predicate<t.JSXElement> = pipe(

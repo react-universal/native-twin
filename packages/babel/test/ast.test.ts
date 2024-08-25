@@ -1,4 +1,5 @@
-import { Effect, pipe } from 'effect';
+import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import fs from 'fs';
 import path from 'path';
 import { createBabelAST } from '../src/babel';
@@ -10,8 +11,8 @@ describe('test ast trees', () => {
     const code = fs.readFileSync(filePath);
     const ast = createBabelAST(code.toString('utf-8'));
     const result = await pipe(getAstTrees(ast, filePath), Effect.runPromise);
-    expect(result.length).toBeGreaterThan(0);
-  }, 8000);
+    expect(result.parents.length).toBeGreaterThan(0);
+  });
 });
 
 // const traverseFile = (ast: any) =>

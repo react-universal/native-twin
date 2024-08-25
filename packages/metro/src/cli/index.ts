@@ -6,22 +6,20 @@ import * as t from '@babel/types';
 // import { NodeStream } from '@effect/platform-node';
 import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
 import * as FS from '@effect/platform/FileSystem';
-import {
-  Chunk,
-  Console,
-  MutableHashMap,
-  MutableRef,
-  Option,
-  Queue,
-  SubscriptionRef,
-  Tuple,
-} from 'effect';
 import * as RA from 'effect/Array';
+import * as Chunk from 'effect/Chunk';
+import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
+import * as MutableHashMap from 'effect/MutableHashMap';
+import * as MutableRef from 'effect/MutableRef';
+import * as Option from 'effect/Option';
+import * as Queue from 'effect/Queue';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
+import * as SubscriptionRef from 'effect/SubscriptionRef';
+import * as Tuple from 'effect/Tuple';
 import micromatch from 'micromatch';
 import path from 'path';
 // import { Transform } from 'stream';

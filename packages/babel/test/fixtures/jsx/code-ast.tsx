@@ -8,8 +8,8 @@
   </View>
 </View>;
 
-<View id='root_s'>
+{/* <View id='root_s'>
   <Pressable id='root_s:0'>
     <Text id='root_s:0:0'>asd</Text>
   </Pressable>
-</View>
+</View> */}

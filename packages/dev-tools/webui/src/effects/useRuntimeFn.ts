@@ -1,6 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useMemo } from 'react';
-import { Effect, Fiber, FiberId, Layer, pipe, Stream } from 'effect';
+import * as Effect from 'effect/Effect';
+import * as Fiber from 'effect/Fiber';
+import * as FiberId from 'effect/FiberId';
+import { pipe } from 'effect/Function';
+import * as Layer from 'effect/Layer';
+import * as Stream from 'effect/Stream';
 import { v4 as uuidv4 } from 'uuid';
 import { RuntimeContext } from '../effects/context/runtime.context';
 

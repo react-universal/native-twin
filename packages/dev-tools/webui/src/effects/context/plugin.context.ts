@@ -1,4 +1,9 @@
-import { Context, Effect, Layer, pipe, PubSub, Queue } from 'effect';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import * as Layer from 'effect/Layer';
+import * as PubSub from 'effect/PubSub';
+import * as Queue from 'effect/Queue';
 import { createRuntimeContext } from './runtime.context';
 
 export type Message<T = object> = {

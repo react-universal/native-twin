@@ -1,6 +1,8 @@
 import { DevTools } from '@effect/experimental';
 import { NodeSocket } from '@effect/platform-node';
-import { Effect, Layer, Logger } from 'effect';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as Logger from 'effect/Logger';
 
 export const DevToolsLive = Layer.effectDiscard(Effect.sleep(100)).pipe(
   Layer.provideMerge(DevTools.layerSocket),

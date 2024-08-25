@@ -1,5 +1,6 @@
 import { FC, memo, useContext, useEffect, useRef, useState } from 'react';
-import { Layer, ManagedRuntime } from 'effect';
+import * as Layer from 'effect/Layer';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { RuntimeContext } from '../context/runtime.context';
 
 export function WithRuntime<T>(Context: RuntimeContext<T>) {

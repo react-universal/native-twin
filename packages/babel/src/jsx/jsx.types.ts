@@ -1,6 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
 import type { SheetEntry } from '@native-twin/css';
+import { Tree } from '../utils/Tree';
 
 export type JSXChildElement = t.JSXElement['children'][number];
 export type AnyPrimitive = string | number | boolean;
@@ -23,11 +24,13 @@ export interface StyledPropEntries {
 
 export interface JSXFileTree {
   filePath: string;
-  parents: JSXElementTree[];
+  // parents: JSXElementTree[];
+  parents: Tree<JSXElementTree>[];
 }
 
 export interface JSXElementTree {
   path: NodePath<t.JSXElement>;
+  /** @deprecated DONT USE THIS ONE */
   childs: JSXElementTree[];
 }
 

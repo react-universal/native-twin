@@ -5,7 +5,7 @@ import * as RA from 'effect/Array';
 // import * as t from '@babel/types';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as HashMap from 'effect/HashMap';
+// import * as HashMap from 'effect/HashMap';
 // import * as HashSet from 'effect/HashSet';
 // import * as MutableHashMap from 'effect/MutableHashMap';
 import * as Option from 'effect/Option';
@@ -13,7 +13,6 @@ import * as Tuple from 'effect/Tuple';
 // import { jsxElementNodeKey } from '@native-twin/babel/build/jsx/models/JSXElement.model';
 import {
   BabelJSXElementNode,
-  BabelJSXElementNodeKey,
   getAstTrees,
   JSXElementTree,
   createBabelAST,
@@ -30,17 +29,11 @@ import {
 import { BabelTransformerContext } from './babel.service';
 
 interface CompiledTree {
-  elementNode: BabelJSXElementNode;
+  node: BabelJSXElementNode;
   entries: RuntimeComponentEntry[];
-  childs: CompiledTree[];
-  parent: {
-    compiled: BabelJSXElementNode;
-    tree: JSXElementTree;
-    childEntries: ChildsSheet;
-  } | null;
+  childEntries: ChildsSheet;
 }
 
-export const visited = HashMap.empty<BabelJSXElementNodeKey, BabelJSXElementNode>();
 // const getVisitedNodes = () => visited;
 
 export const babelTraverseCode = (code: string) => {
@@ -51,27 +44,52 @@ export const babelTraverseCode = (code: string) => {
 
     const ast = createBabelAST(code);
 
-    const tree = yield* getAstTrees(ast, ctx.filename);
+    const trees = yield* getAstTrees(ast, ctx.filename);
 
     const dfs = pipe(
-      tree,
-      RA.map((x) => compileNode(x)),
-      RA.map((compiledTree) => {
-        const { elementNode, entries, parent } = compiledTree;
-        const propEntries = pipe(
-          Option.fromNullable(parent),
-          Option.map((x) =>
-            applyParentEntries(
-              entries,
-              x.childEntries,
-              elementNode.order,
-              x.tree.childs.length,
-            ),
-          ),
-          Option.getOrElse(() => entries),
+      trees.parents,
+      RA.map((tree) => {
+        const mapped = tree.map<CompiledTree>((leave) => {
+          const node = leave.value.path.node;
+
+          const current = new BabelJSXElementNode(node, -1, ctx.filename, null);
+          const entries = getElementEntries(current.runtimeData, ctx.twin, ctx.twinCtx);
+          const childEntries = pipe([...entries], getChildRuntimeEntries);
+          leave.value = {
+            // @ts-expect-error
+            node: current,
+            // entries: pipe(entries,RA.filter(x => x)),
+            entries,
+            childEntries,
+          };
+          return leave as any;
+        });
+
+        pipe(
+          mapped.all(),
+          RA.forEach((currentNode) => {
+            const {
+              value: { entries, node },
+              parent,
+            } = currentNode;
+            const runtimeEntries = pipe(
+              Option.fromNullable(parent),
+              Option.map((parentNode) => {
+                const order = parentNode.children.indexOf(currentNode);
+                return applyParentEntries(
+                  entries,
+                  parentNode.value.childEntries,
+                  order,
+                  parentNode.childrenCount,
+                );
+              }),
+              Option.getOrElse(() => entries),
+            );
+            addTwinPropsToElement(node, runtimeEntries, ctx.generate);
+          }),
         );
-        addTwinPropsToElement(compiledTree.elementNode, propEntries, ctx.generate);
-        return compiledTree;
+
+        return mapped;
       }),
     );
     return {
@@ -80,31 +98,22 @@ export const babelTraverseCode = (code: string) => {
         Option.map((x) => x.code),
         Option.getOrElse(() => code),
       ),
-      tree,
-      nodes: HashMap.fromIterable(visited),
+      trees,
     };
 
-    function compileNode(
-      node: JSXElementTree,
-      order = 0,
-      parent: CompiledTree['parent'] | null = null,
-    ): CompiledTree {
-      const elementNode = new BabelJSXElementNode(node.path.node, order, ctx.filename);
-      const entries = getElementEntries(elementNode.runtimeData, ctx.twin, ctx.twinCtx);
-      const childEntries = pipe(entries, getChildRuntimeEntries);
-      const childs = pipe(
-        node.childs,
-        RA.map((x, i) =>
-          compileNode(x, i, { compiled: elementNode, tree: node, childEntries }),
-        ),
-      );
-      return {
-        elementNode,
-        entries,
-        childs,
-        parent,
-      };
-    }
+    // function compileNode(
+    //   node: JSXElementTree,
+    //   order = 0,
+    //   parent: CompiledTree['parent'] | null = null,
+    // ): CompiledTree {
+
+    //   return {
+    //     elementNode,
+    //     entries,
+    //     childs,
+    //     parent,
+    //   };
+    // }
   });
 };
 

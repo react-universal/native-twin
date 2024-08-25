@@ -1,4 +1,4 @@
-import { FiberId } from 'effect';
+import * as FiberId from 'effect/FiberId';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import { inspect } from 'util';

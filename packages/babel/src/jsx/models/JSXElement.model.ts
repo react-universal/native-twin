@@ -58,7 +58,7 @@ export class JSXElementNode implements Equal.Equal {
   readonly path: t.JSXElement;
   readonly id: string;
   readonly parent: JSXElementNode | null;
-  readonly order: number;
+  order: number;
   readonly filename: string;
   _runtimeSheet: JSXElementSheet | null = null;
 

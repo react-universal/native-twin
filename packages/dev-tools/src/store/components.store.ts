@@ -1,4 +1,5 @@
-import { Option, pipe } from 'effect';
+import * as Option from 'effect/Option';
+import { pipe } from 'effect/Function';
 import * as MutMap from 'effect/MutableHashMap';
 import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 import { createStore } from '@native-twin/helpers';

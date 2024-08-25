@@ -1,4 +1,4 @@
-import { Effect } from 'effect';
+import * as Effect from 'effect/Effect';
 import type { JsTransformOptions, JsTransformerConfig } from 'metro-transform-worker';
 import fs from 'node:fs';
 import path from 'path';

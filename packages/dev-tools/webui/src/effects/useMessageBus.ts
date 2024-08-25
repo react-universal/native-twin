@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback } from 'react';
-import { Effect } from 'effect';
+import * as Effect from 'effect/Effect';
 import { AppRuntime, Message, MessageBus } from '../effects/context/plugin.context';
 import { useRuntimeFn } from './useRuntimeFn';
 import { useStable } from './useStable';

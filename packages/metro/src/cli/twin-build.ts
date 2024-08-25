@@ -4,8 +4,10 @@ import * as Command from '@effect/cli/Command';
 import * as Options from '@effect/cli/Options';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 // import * as Path from '@effect/platform/Path';
-import { Context, Effect, Layer } from 'effect';
 import * as Config from 'effect/Config';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 
 // const config = CliConfig.make({
 //   showTypes: true,

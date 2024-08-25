@@ -1,5 +1,5 @@
 import * as t from '@babel/types';
-import { RuntimeComponentEntry } from '@native-twin/css/jsx';
+import { getRawSheet, RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { createPrimitiveExpression, hasJsxAttribute } from '../babel';
 import { AnyPrimitive, JSXChildElement } from './jsx.types';
 import { JSXElementNode } from './models/JSXElement.model';
@@ -48,7 +48,7 @@ export function addTwinPropsToElement(
     templateStyles: boolean;
   },
 ) {
-  const stringEntries = entriesToObject(elementNode.id, entries);
+  const stringEntries = entriesToObject(elementNode.id, getRawSheet(entries));
   const astProps = runtimeEntriesToAst(stringEntries.styledProp);
   // const treeProp = elementNodeToTree(elementNode, filename, elementNode.);
   const astTemplate = runtimeEntriesToAst(stringEntries.templateEntries);

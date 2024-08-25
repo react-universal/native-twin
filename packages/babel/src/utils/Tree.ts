@@ -66,4 +66,12 @@ export class Tree<T> {
     }
     return nodes;
   }
+
+  map<B>(f: (a: TreeNode<T>) => TreeNode<B>): Tree<B> {
+    const current = this;
+    this.traverse((node) => {
+      node = f(node) as any;
+    }, 'depthFirst');
+    return current as any;
+  }
 }

@@ -1,7 +1,7 @@
 import * as Equal from 'effect/Equal';
+import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { pipe } from 'effect';
 
 export class ComponentTreeNodeKey implements Equal.Equal {
   readonly id: string;
@@ -24,11 +24,7 @@ export class ComponentTreeNodeKey implements Equal.Equal {
     );
   }
   [Hash.symbol](): number {
-    return pipe(
-      this.id,
-      Hash.string,
-      Hash.combine(this.order),
-    )
+    return pipe(this.id, Hash.string, Hash.combine(this.order));
   }
 }
 

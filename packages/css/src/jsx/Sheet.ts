@@ -1,6 +1,6 @@
-import { Record } from 'effect';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
+import * as Record from 'effect/Record';
 import { SelectorGroup } from '../css/css.types';
 import { AnyStyle, CompleteStyle, FinalSheet } from '../react-native/rn.types';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
@@ -85,7 +85,7 @@ export const applyParentEntries = (
       if ((order + 1) % 2 !== 0) newSheet.base.push(...parentEntries.odd);
       return {
         ...entry,
-        rawSheet: newSheet,
+        rawSheet: { ...newSheet },
       };
     }),
   );
