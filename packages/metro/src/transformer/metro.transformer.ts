@@ -1,8 +1,5 @@
 import * as NodeFileSystem from '@effect/platform-node-shared/NodeFileSystem';
-import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
-import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
@@ -13,7 +10,7 @@ import * as Compiler from '../compiler/babel.compiler';
 import { sendUpdate } from '../config/server/poll-updates-server';
 import { DocumentService, DocumentServiceLive } from '../document/Document.service';
 import { StyleSheetService, StyleSheetServiceLive } from '../sheet/StyleSheet.service';
-import { splitClasses, setupNativeTwin, ensureBuffer, getTwinConfig } from '../utils';
+import { setupNativeTwin, ensureBuffer, getTwinConfig } from '../utils';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../utils/constants';
 import {
   MetroTransformerService,
@@ -62,32 +59,32 @@ const program = Effect.gen(function* () {
   const compiled = yield* Compiler.compileFileWithBabel;
   yield* Effect.log(compiled);
 
-  const classNames = pipe(
-    compiled.elements,
-    HashSet.map((x) => {
-      return {
-        ...x,
-        entries: x.rawEntries,
-        componentClasses: RA.flatMap(x.node.runtimeData, (x) =>
-          splitClasses(x.value.literal),
-        ),
-      };
-    }),
-  );
+  // const classNames = pipe(
+  //   compiled.elements,
+  //   HashSet.map((x) => {
+  //     return {
+  //       ...x,
+  //       entries: x.rawEntries,
+  //       componentClasses: RA.flatMap(x.node.runtimeData, (x) =>
+  //         splitClasses(x.value.literal),
+  //       ),
+  //     };
+  //   }),
+  // );
 
-  const babelEntries = pipe(
-    classNames,
-    RA.fromIterable,
-    RA.flatMap((x) => x.rawEntries),
-  );
+  // const babelEntries = pipe(
+  //   classNames,
+  //   RA.fromIterable,
+  //   RA.flatMap((x) => x.rawEntries),
+  // );
 
-  if (compiled && HashSet.size(classNames) > 0) {
+  if (compiled) {
     // const requireGlobal = `const globalStyles = require('.cache/native-twin/twin.styles');`;
     // compiled.full = `${compiled.full}`;
-    const registered = yield* Effect.promise(() =>
-      sheet.registerEntries(babelEntries, context.platform),
-    );
-    if (registered) {
+    // const registered = yield* Effect.promise(() =>
+    //   sheet.registerEntries(babelEntries, context.platform),
+    // );
+    if (compiled) {
       transformFile.version = transformFile.version + 1;
       sendUpdate(
         sheet.getSheetDocumentText(transformFile.version),

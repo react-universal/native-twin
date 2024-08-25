@@ -4,6 +4,20 @@ type Pipe<Input, Output> = {
   build: () => Fn<Input, Output>;
 };
 
+const Box = <A>(x: A) => {
+  return {
+    map: <B>(fnx: (x: A) => B) => Box(fnx(x)),
+    fold: () => x,
+    toString: () => `Box(${x})`,
+    flatMap: <B>(fnx: (x: A) => B) => fnx(x),
+  };
+};
+
+Box(1) //?
+  .map((x) => x + 2)
+  .flatMap((x) => Box(`${x * 3}`)).toString(); // ?
+// .fold(); //?
+
 export function pipeBuilder<Input, Output>(fn: Fn<Input, Output>): Pipe<Input, Output> {
   const fns: Fn<any, any>[] = [fn];
   const p: Pipe<any, any> = {

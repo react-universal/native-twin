@@ -26,6 +26,7 @@ export {
   sheetEntryToStyle,
   groupEntriesBySelectorGroup,
   getSheetMetadata,
+  getRawSheet,
 } from './Sheet';
 
 export {

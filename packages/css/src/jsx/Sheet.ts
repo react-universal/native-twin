@@ -1,3 +1,4 @@
+import { Record } from 'effect';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import { SelectorGroup } from '../css/css.types';
@@ -79,7 +80,7 @@ export const applyParentEntries = (
     RA.map((entry): RuntimeComponentEntry => {
       const newSheet = entry.rawSheet;
       if (order === 0) newSheet.base.push(...parentEntries.first);
-      if ((order + 1) === parentChildsNumber) newSheet.base.push(...parentEntries.last);
+      if (order + 1 === parentChildsNumber) newSheet.base.push(...parentEntries.last);
       if ((order + 1) % 2 === 0) newSheet.base.push(...parentEntries.even);
       if ((order + 1) % 2 !== 0) newSheet.base.push(...parentEntries.odd);
       return {
@@ -179,5 +180,24 @@ export const runtimeEntriesToFinalSheet = (entries: RuntimeSheetEntry[]): FinalS
       }
       Object.assign(prev[group], nextDecl);
       return prev;
+    }),
+  );
+
+export const getRawSheet = (sheets: RuntimeComponentEntry[]) =>
+  pipe(
+    sheets,
+    RA.map((prop) => {
+      return {
+        ...prop,
+        childEntries: [],
+        entries: prop.rawSheet.base,
+        rawSheet: {
+          ...prop.rawSheet,
+          even: [],
+          first: [],
+          last: [],
+          odd: [],
+        },
+      };
     }),
   );

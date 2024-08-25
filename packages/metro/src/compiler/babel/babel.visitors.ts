@@ -1,4 +1,4 @@
-import { parse, ParseResult } from '@babel/parser';
+import { ParseResult } from '@babel/parser';
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
@@ -6,15 +6,6 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import { JSXElementNode } from '../models/JSXElement.model';
-
-export const createBabelAST = (code: string) => {
-  return parse(code, {
-    plugins: ['jsx', 'typescript'],
-    sourceType: 'module',
-    errorRecovery: true,
-    tokens: false,
-  });
-};
 
 export const visitBabelJSXElementParents = (
   ast: ParseResult<t.File>,

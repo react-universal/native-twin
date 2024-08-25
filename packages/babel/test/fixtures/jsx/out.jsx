@@ -31,14 +31,12 @@ export const Button = props => {
 };
 export default function App() {
   return <View className={`group flex-1 first:bg-red-200`}>
-      {/* <Text className={`${true && 'text-lg'} text-md`}>Hello World</Text>
-       <Text>Hello World</Text> */}
+      <Text className={`${true && 'text-lg'} text-md`}>Hello World</Text>
+      <Text>Hello World</Text>
       <Button size='small' />
-      <Button2 size='small' />
-      <Button3 size='large' />
-      {/* <View className='flex-1'>
+      <View className='flex-1'>
         <Text className='text-lg'>Test Text</Text>
         <Text className='text-lg'>Test Text2</Text>
-       </View> */}
+      </View>
     </View>;
 }

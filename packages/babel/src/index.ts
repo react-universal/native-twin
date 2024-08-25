@@ -1,17 +1,12 @@
 import { PluginObj } from '@babel/core';
 import { addNamed } from '@babel/helper-module-imports';
-// import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-// import * as LogLevel from 'effect/LogLevel';
-// import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
 import { PLUGIN_IMPORT_META } from './constants/plugin.constants';
 import { isReactImport, isReactRequire } from './effects/path.effects';
 import { importProgram } from './effects/programs';
-// import { visitJSXElement } from './jsx/jsx.visitors';
 import { TransformerContext, CacheLayerLive } from './services';
-// import { BabelLogger } from './services/Logger.service';
 import { BabelAPI, TwinBabelOptions } from './types/plugin.types';
 
 const program = Effect.scoped(
@@ -19,8 +14,6 @@ const program = Effect.scoped(
     Effect.andThen((_memoCache) =>
       Effect.gen(function* () {
         const ctx = yield* TransformerContext;
-        // const cache = yield* Effect.provide(CacheService, memoCache);
-        // yield* Effect.logDebug({ cacheSize: cache.getSize(), babel: true });
         return {
           name: '@native-twin/babel-plugin',
           visitor: {

@@ -42,4 +42,11 @@ export interface BabelTransformerConfig {
   allowedPaths: string[];
   twinCtx: CompilerContext;
   platform: string;
+  generate: {
+    tree: boolean;
+    componentID: boolean;
+    styledProps: boolean;
+    templateStyles: boolean;
+    order: boolean;
+  };
 }

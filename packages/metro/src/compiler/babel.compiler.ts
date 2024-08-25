@@ -5,7 +5,6 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import { MetroTransformerContext } from '../transformer/transformer.service';
 import { TwinCompilerService } from './Compiler.service';
-import { visitElementNode } from './ast/visitors';
 import { JSXElementNode } from './models/JSXElement.model';
 
 export const compileFileWithBabel = Effect.gen(function* () {
@@ -22,7 +21,7 @@ export const compileFileWithBabel = Effect.gen(function* () {
       };
       const childs = compiler.getJSXElementChilds(node);
       const sheet = node.getTwinSheet(ctx.twin, context, HashSet.size(childs));
-      return visitElementNode(node, sheet);
+      return { sheet, childs };
     }),
   );
   const arr = pipe(RA.fromIterable(elements));

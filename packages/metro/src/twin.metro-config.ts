@@ -1,5 +1,6 @@
 import type { GetTransformOptions, ExtraTransformOptions } from 'metro-config';
 import path from 'node:path';
+import { decorateMetroServer } from './config/server/server.decorator';
 import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
@@ -29,9 +30,12 @@ export function withNativeTwin(
     return originalGerTransformOptions(filename, config, getDeps);
   };
 
+  const { server } = decorateMetroServer(metroConfig, twConfig);
+
   return {
     ...metroConfig,
     // transformerPath: require.resolve('./transformer/metro.transformer'),
+    server,
     transformer: {
       ...metroConfig.transformer,
       babelTransformerPath: require.resolve('./transformer/babel.transformer'),

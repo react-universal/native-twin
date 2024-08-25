@@ -12,7 +12,6 @@ export {
 } from './babel.constructors';
 export { addAttributeToBabelJSXElement } from './babel.utils';
 export {
-  createBabelAST,
   visitBabelJSXElementParents,
   getBabelJSXElementChilds,
 } from './babel.visitors';

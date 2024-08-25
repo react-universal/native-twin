@@ -75,6 +75,7 @@
     ],
     "jest.enable": true,
     "jest.runMode": "on-demand",
+    "jest.debugMode": true,
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/builder",

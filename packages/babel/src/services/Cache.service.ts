@@ -7,6 +7,7 @@ import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Record from 'effect/Record';
 import * as Tuple from 'effect/Tuple';
+import { getBabelJSXElementChilds } from '../jsx';
 import {
   JSXElementNode,
   jsxElementNodeKey,
@@ -69,7 +70,7 @@ const mutateCache = (key: JSXElementNodeKey, node: JSXElementNode, filename: str
     HM.set(key, node),
     HM.union(
       HM.fromIterable(
-        HashSet.map(node.childs, (x) =>
+        HashSet.map(getBabelJSXElementChilds(node.path, null, filename), (x) =>
           Tuple.make(jsxElementNodeKey(x.path, filename), x),
         ),
       ),

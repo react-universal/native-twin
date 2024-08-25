@@ -20,6 +20,7 @@
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",
         "${workspaceFolder}/../**",
+        "${workspaceFolder}/../babel/**/*",
         "!**/node_modules/**"
       ],
       "sourceMaps": true,

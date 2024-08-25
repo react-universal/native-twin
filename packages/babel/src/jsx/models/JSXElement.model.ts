@@ -1,10 +1,10 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import * as RA from 'effect/Array';
+// import * as RA from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
-import * as HashSet from 'effect/HashSet';
+// import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import { __Theme__, RuntimeTW } from '@native-twin/core';
 import {
@@ -19,19 +19,21 @@ import {
   getJSXElementAttrs,
   getJSXElementName,
 } from '../jsx.maps';
-import * as jsxPredicates from '../jsx.predicates';
+// import * as jsxPredicates from '../jsx.predicates';
 import { JSXMappedAttribute } from '../jsx.types';
 import { getElementEntries } from '../twin/twin.entries';
 
-const jsxElementHash = (path: NodePath<t.JSXElement>, filename: string) => {
+const jsxElementHash = (path: t.JSXElement, filename: string) => {
   const filenameHash = Hash.string(`${filename}`);
-  const loc = Hash.structure(path.node.loc ?? { key: filenameHash });
+  const loc = Hash.structure(
+    path.loc ?? { key: `${filenameHash}-${path.start}-${path.end}` },
+  );
   return pipe(loc, Hash.combine(filenameHash));
 };
 
 export class JSXElementNodeKey implements Equal.Equal {
   constructor(
-    readonly path: NodePath<t.JSXElement>,
+    readonly path: t.JSXElement,
     readonly filename: string,
   ) {}
 
@@ -42,19 +44,18 @@ export class JSXElementNodeKey implements Equal.Equal {
   [Equal.symbol](that: unknown): boolean {
     return (
       that instanceof JSXElementNodeKey &&
-      this.path.node.loc === that.path.node.loc &&
-      this.path.scope.uid === that.path.scope.uid &&
-      this.path.parentKey === that.path.parentKey &&
-      this.path.key === that.path.key
+      this.path.loc === that.path.loc &&
+      this.path.type === that.path.type &&
+      this.path.start == that.path.start
     );
   }
 }
 
-export const jsxElementNodeKey = (path: NodePath<t.JSXElement>, state: string) =>
-  new JSXElementNodeKey(path, state);
+export const jsxElementNodeKey = (path: t.JSXElement, filename: string) =>
+  new JSXElementNodeKey(path, filename);
 
 export class JSXElementNode implements Equal.Equal {
-  readonly path: NodePath<t.JSXElement>;
+  readonly path: t.JSXElement;
   readonly id: string;
   readonly parent: JSXElementNode | null;
   readonly order: number;
@@ -62,7 +63,7 @@ export class JSXElementNode implements Equal.Equal {
   _runtimeSheet: JSXElementSheet | null = null;
 
   constructor(
-    path: NodePath<t.JSXElement>,
+    path: t.JSXElement,
     order: number,
     filename: string,
     parentNode: JSXElementNode | null = null,
@@ -75,37 +76,43 @@ export class JSXElementNode implements Equal.Equal {
     this.path = path;
   }
 
-  get importSource() {
-    return this.binding().pipe(
+  getImportSource(
+    binding: Option.Option<{
+      kind: string;
+      source: string;
+    }>,
+  ) {
+    return binding.pipe(
       Option.map((x) => x.source),
       Option.getOrElse(() => 'Local'),
     );
   }
 
-  private binding() {
+  binding(path: NodePath<t.JSXElement>) {
     return pipe(
       getJSXElementName(this.openingElement),
-      Option.flatMapNullable((x) => this.path.scope.getBinding(x)),
+      Option.flatMapNullable((x) => path.scope.getBinding(x)),
       Option.flatMap(getBingingImportSource),
     );
   }
 
   get attributes() {
-    return getJSXElementAttrs(this.path.node);
+    return getJSXElementAttrs(this.path);
   }
 
   get runtimeData(): JSXMappedAttribute[] {
-    return extractMappedAttributes(this.path.node);
+    return extractMappedAttributes(this.path);
   }
 
-  get childs(): HashSet.HashSet<JSXElementNode> {
-    return pipe(
-      RA.ensure(this.path.get('children')),
-      RA.filter(jsxPredicates.isJSXElementPath),
-      RA.map((x, i) => new JSXElementNode(x, i, this.filename, this)),
-      HashSet.fromIterable,
-    );
-  }
+  // get childs(): HashSet.HashSet<JSXElementNode> {
+  //   const parent = this;
+  //   return pipe(
+  //     this.path.children,
+  //     RA.filterMap(Option.liftPredicate(jsxPredicates.isJSXElementNode)),
+  //     RA.map((x, i) => new JSXElementNode(x, i, parent.filename, parent)),
+  //     HashSet.fromIterable,
+  //   );
+  // }
 
   getTwinSheet(
     twin: RuntimeTW,
@@ -129,6 +136,7 @@ export class JSXElementNode implements Equal.Equal {
       Option.match({
         onNone: () => runtimeSheet,
         onSome: (parent) => {
+          console.log('this_order', this.order);
           const entries = applyParentEntries(
             runtimeSheet.propEntries,
             parent.entries,
@@ -146,7 +154,7 @@ export class JSXElementNode implements Equal.Equal {
   }
 
   get openingElement() {
-    return this.path.node.openingElement;
+    return this.path.openingElement;
   }
 
   [Hash.symbol](): number {
@@ -154,11 +162,6 @@ export class JSXElementNode implements Equal.Equal {
   }
 
   [Equal.symbol](that: unknown): boolean {
-    return (
-      that instanceof JSXElementNode &&
-      this.id === that.id &&
-      this.path.scope.uid === that.path.scope.uid &&
-      this.path.key === that.path.key
-    );
+    return that instanceof JSXElementNode && this.id === that.id;
   }
 }

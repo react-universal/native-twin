@@ -1,4 +1,5 @@
 import type { PluginPass, NodePath } from '@babel/core';
+import { parse } from '@babel/parser';
 import * as Option from 'effect/Option';
 import micromatch from 'micromatch';
 import nodePath from 'node:path';
@@ -45,4 +46,13 @@ export const createVisitorContext = (rootPath: string, options: TwinBabelOptions
       options: options,
     };
   };
+};
+
+export const createBabelAST = (code: string) => {
+  return parse(code, {
+    plugins: ['jsx', 'typescript'],
+    sourceType: 'module',
+    errorRecovery: true,
+    tokens: false,
+  });
 };
