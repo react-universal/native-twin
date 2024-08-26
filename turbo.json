@@ -35,6 +35,9 @@
     "lint": {
       "cache": true
     },
+    "clean": {
+      "cache": false
+    },
     "next:app:dev": {
       "cache": false,
       "interactive": true,
