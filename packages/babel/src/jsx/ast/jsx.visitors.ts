@@ -4,15 +4,6 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { identity, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import {
-  getAstTrees,
-  createBabelAST,
-  addTwinPropsToElement,
-  CompiledTree,
-  getElementEntries,
-  BabelJSXElementNode,
-  JSXElementTree,
-} from '@native-twin/babel/jsx-babel';
 import type { __Theme__ } from '@native-twin/core';
 import {
   applyParentEntries,
@@ -21,11 +12,12 @@ import {
 } from '@native-twin/css/build/jsx';
 // import { applyParentEntries } from '@native-twin/css/jsx';
 import { TreeNode } from '@native-twin/helpers/tree';
-import { BabelTransformerContext, BabelTransformerService } from './babel.service';
+import { BabelTransformerService, MetroCompilerContext } from '../services';
+import { addTwinPropsToElement, BabelJSXElementNode, CompiledTree, createBabelAST, getAstTrees, getElementEntries, JSXElementTree } from '../../jsx-babel';
 
 export const babelTraverseCode = (code: string) => {
   return Effect.gen(function* () {
-    const ctx = yield* BabelTransformerContext;
+    const ctx = yield* MetroCompilerContext;
     const transformer = yield* BabelTransformerService;
     const ast = createBabelAST(code);
     const trees = yield* getAstTrees(ast);
@@ -108,25 +100,13 @@ export const babelTraverseCode = (code: string) => {
         Option.getOrElse(() => code),
       ),
     };
-
-    function transformCompiledNode(currentNode: TreeNode<CompiledTree>) {
-      const {
-        value: { entries, node },
-        parent,
-      } = currentNode;
-      console.log('COMPILED: ', {
-        parent: parent?.value.uid,
-        current: currentNode.value.uid,
-      });
-      addTwinPropsToElement(node, entries, ctx.generate);
-    }
   });
 };
 
 function extractSheetsFromTree(tree: TreeNode<JSXElementTree>) {
   return Effect.gen(function* () {
     const fileSheet = MutableHashMap.empty<string, CompiledTree>();
-    const ctx = yield* BabelTransformerContext;
+    const ctx = yield* MetroCompilerContext;
 
     tree.traverse(({ value, children, childrenCount }) => {
       const model = new BabelJSXElementNode(value.path.node, value.order, ctx.filename);

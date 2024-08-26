@@ -6,14 +6,15 @@ import * as Option from 'effect/Option';
 import { PLUGIN_IMPORT_META } from './constants/plugin.constants';
 import { isReactImport, isReactRequire } from './effects/path.effects';
 import { importProgram } from './effects/programs';
-import { TransformerContext, CacheLayerLive } from './services';
+import { CacheLayerLive } from './services';
 import { BabelAPI, TwinBabelOptions } from './types/plugin.types';
+import { BabelPluginContext } from './services/TransformerContext.service';
 
 const program = Effect.scoped(
   Layer.memoize(CacheLayerLive).pipe(
     Effect.andThen((_memoCache) =>
       Effect.gen(function* () {
-        const ctx = yield* TransformerContext;
+        const ctx = yield* BabelPluginContext;
         return {
           name: '@native-twin/babel-plugin',
           visitor: {
@@ -58,7 +59,7 @@ export default function nativeTwinBabelPlugin(
   return program.pipe(
     // Logger.withMinimumLogLevel(LogLevel.All),
     // Effect.provide(layer),
-    Effect.provide(TransformerContext.make(options, cwd)),
+    Effect.provide(BabelPluginContext.make(options, cwd)),
     Effect.runSync,
   );
 }

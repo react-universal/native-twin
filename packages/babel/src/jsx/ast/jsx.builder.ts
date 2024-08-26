@@ -1,9 +1,9 @@
 import * as t from '@babel/types';
 import { getRawSheet, RuntimeComponentEntry } from '@native-twin/css/jsx';
-import { createPrimitiveExpression, hasJsxAttribute } from '../babel';
-import { AnyPrimitive, JSXChildElement } from './jsx.types';
-import { JSXElementNode } from './models/JSXElement.model';
-import { entriesToObject, runtimeEntriesToAst } from './twin.maps';
+import { createPrimitiveExpression, hasJsxAttribute } from '../../babel';
+import { AnyPrimitive, JSXChildElement } from '../jsx.types';
+import { JSXElementNode } from '../models/JSXElement.model';
+import { entriesToObject, runtimeEntriesToAst } from '../twin';
 
 export const createRequireExpression = (path: string) => {
   return t.callExpression(t.identifier('require'), [t.stringLiteral(path)]);

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 const ChildProp = () => {
-  return <View className='first:bg-blue-600' _twinComponentID={"1550963389"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("1550963389", [{
+  return <View className='first:bg-blue-600' _twinComponentID={"-2145855776"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-2145855776", [{
     templateLiteral: null,
     prop: "className",
     target: "style",
@@ -29,7 +29,7 @@ const ChildProp = () => {
       odd: []
     }
   }])}>
-      <View className='' _twinComponentID={"1432191815"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("1432191815", [{
+      <View className='' _twinComponentID={"-1657290095"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1657290095", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -67,7 +67,7 @@ const ChildProp = () => {
         odd: []
       }
     }])}>
-        <Text className='' _twinComponentID={"-1580066222"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1580066222", [{
+        <Text className='' _twinComponentID={"-165488229"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-165488229", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
@@ -106,7 +106,7 @@ const ChildProp = () => {
         }
       }])}>Text1</Text>
       </View>
-      <View className='' _twinComponentID={"-370294675"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-370294675", [{
+      <View className='' _twinComponentID={"-1317907517"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1317907517", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -122,7 +122,7 @@ const ChildProp = () => {
         odd: []
       }
     }])}>
-        <Text className='' _twinComponentID={"-1453761762"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1453761762", [{
+        <Text className='' _twinComponentID={"435409299"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("435409299", [{
         templateLiteral: null,
         prop: "className",
         target: "style",

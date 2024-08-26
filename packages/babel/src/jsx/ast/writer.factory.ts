@@ -2,7 +2,7 @@ import CodeBlockWriter from 'code-block-writer';
 import * as RA from 'effect/Array';
 import { apply, flip, pipe } from 'effect/Function';
 import * as Predicate from 'effect/Predicate';
-import { AnyPrimitive } from './jsx.types';
+import { AnyPrimitive } from '../jsx.types';
 
 export function expressionFactory(writer: CodeBlockWriter) {
   const curried = {

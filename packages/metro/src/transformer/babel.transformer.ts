@@ -3,20 +3,18 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import { BabelLogger } from '@native-twin/babel/jsx-babel';
+import { BabelLogger, babelTraverseCode } from '@native-twin/babel/jsx-babel';
+import { BabelTransformerFn } from '@native-twin/babel/jsx-babel/models';
 import {
-  BabelTransformerContext,
   BabelTransformerService,
+  MetroCompilerContext,
   BabelTransformerServiceLive,
-  BabelTransformerFn,
-  babelTraverseCode,
-} from './babel';
+} from '@native-twin/babel/jsx-babel/services';
 import { BabelCacheContext } from './babel/babel.cache';
 
 const mainProgram = Effect.gen(function* () {
-  const ctx = yield* BabelTransformerContext;
+  const ctx = yield* MetroCompilerContext;
   const transformer = yield* BabelTransformerService;
-  yield* BabelCacheContext;
 
   if (transformer.isNotAllowedPath(ctx.filename)) return ctx.code;
 
@@ -36,7 +34,7 @@ export const babelRunnable = Effect.scoped(
 export const transform: BabelTransformerFn = async (params) => {
   return babelRunnable.pipe(
     Effect.provide(
-      BabelTransformerContext.make(params, {
+      MetroCompilerContext.make(params, {
         componentID: true,
         styledProps: true,
         templateStyles: true,

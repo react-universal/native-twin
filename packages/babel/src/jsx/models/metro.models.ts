@@ -1,5 +1,10 @@
+import type {
+  JsTransformerConfig,
+  JsTransformOptions,
+  TransformResponse,
+} from 'metro-transform-worker';
 import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
-import { CompilerContext } from '@native-twin/css/jsx';
+import type { CompilerContext } from '@native-twin/css/jsx';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 
 export type BabelTransformerFn = (params: {
@@ -7,6 +12,21 @@ export type BabelTransformerFn = (params: {
   filename: string;
   options: BabelTransformerOptions;
 }) => Promise<any>;
+
+export interface NativeTwinTransformerOpts extends JsTransformerConfig {
+  transformerPath?: string;
+  allowedFiles: string[];
+  tailwindConfigPath: string;
+  outputDir: string;
+}
+
+export type TwinTransformFn = (
+  config: NativeTwinTransformerOpts,
+  projectRoot: string,
+  filename: string,
+  data: Buffer | string,
+  options: JsTransformOptions,
+) => Promise<TransformResponse>;
 
 export interface BabelTransformerOptions {
   // customTransformOptions: {
@@ -49,4 +69,16 @@ export interface BabelTransformerConfig {
     templateStyles: boolean;
     order: boolean;
   };
+}
+
+export interface TransformWorkerArgs {
+  config: NativeTwinTransformerOpts;
+  projectRoot: string;
+  options: JsTransformOptions;
+  cssOutput: string;
+  sourceCode: Buffer;
+  isDev: boolean;
+  filename: string;
+  fileType: string;
+  platform: string;
 }

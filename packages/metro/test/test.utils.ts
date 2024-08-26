@@ -2,7 +2,7 @@ import * as Effect from 'effect/Effect';
 import type { JsTransformOptions, JsTransformerConfig } from 'metro-transform-worker';
 import fs from 'node:fs';
 import path from 'path';
-import { BabelTransformerContext } from '../src/transformer/babel';
+import { MetroCompilerContext } from '@native-twin/babel/jsx-babel/services';
 import { babelRunnable } from '../src/transformer/babel.transformer';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../src/utils/constants';
 
@@ -20,7 +20,7 @@ export const createBabelTestCompilerProgram = (filePath: string) => {
   };
   return babelRunnable.pipe(
     Effect.provide(
-      BabelTransformerContext.make(params, {
+      MetroCompilerContext.make(params, {
         componentID: true,
         order: true,
         styledProps: true,

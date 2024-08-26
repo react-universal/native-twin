@@ -7,25 +7,18 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import micromatch from 'micromatch';
 import nodePath from 'node:path';
-import {
-  BabelJSXElementNode,
-  CompiledTree,
-  getElementEntries,
-  JSXElementTree,
-} from '@native-twin/babel/jsx-babel';
+import path from 'node:path';
 import type { __Theme__ } from '@native-twin/core';
 import { ChildsSheet, getChildRuntimeEntries } from '@native-twin/css/jsx';
 import { TreeNode } from '@native-twin/helpers/tree';
-import {
-  getTwinConfig,
-  setupNativeTwin,
-  TWIN_CACHE_DIR,
-  TWIN_STYLES_FILE,
-} from '../../utils';
-import { BabelTransformerConfig, BabelTransformerFn } from './babel.types';
+import { CompiledTree, JSXElementTree } from '..';
+import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../../constants/twin.constants';
+import { JSXElementNode } from '../models/JSXElement.model';
+import { BabelTransformerConfig, BabelTransformerFn } from '../models/metro.models';
+import { getElementEntries, getUserTwinConfig, setupNativeTwin } from '../twin';
 
-export class BabelTransformerContext extends Context.Tag('babel/transformer-context')<
-  BabelTransformerContext,
+export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-context')<
+  MetroCompilerContext,
   BabelTransformerConfig
 >() {
   static make = (
@@ -33,7 +26,7 @@ export class BabelTransformerContext extends Context.Tag('babel/transformer-cont
     generate: BabelTransformerConfig['generate'],
   ) =>
     Layer.effect(
-      BabelTransformerContext,
+      MetroCompilerContext,
       Effect.sync(() => {
         const cssOutput = nodePath.join(
           options.projectRoot,
@@ -41,11 +34,17 @@ export class BabelTransformerContext extends Context.Tag('babel/transformer-cont
           TWIN_STYLES_FILE,
         );
         const platform = options.platform;
-        const twinConfig = getTwinConfig(options.projectRoot);
-        const twin = setupNativeTwin(twinConfig.twinConfig, {
-          dev: options.dev,
-          hot: options.dev,
-          platform,
+        const twinConfig = getUserTwinConfig(options.projectRoot, {
+          engine: 'hermes',
+          isDev: options.dev,
+          isServer: options.platform === 'web',
+          platform: options.platform,
+        });
+        const twin = setupNativeTwin(twinConfig, {
+          engine: 'hermes',
+          isDev: options.dev,
+          isServer: options.platform === 'web',
+          platform: options.platform,
         });
 
         return {
@@ -59,8 +58,10 @@ export class BabelTransformerContext extends Context.Tag('babel/transformer-cont
             platform,
           },
           twin,
-          twinConfig: twinConfig.twinConfig,
-          allowedPaths: twinConfig.allowedPaths,
+          twinConfig: twinConfig,
+          allowedPaths: twinConfig.content.map((x) =>
+            path.resolve(options.projectRoot, path.join(x)),
+          ),
           platform,
         };
       }),
@@ -79,7 +80,7 @@ export class BabelTransformerService extends Context.Tag('babel/TransformerServi
 export const BabelTransformerServiceLive = Layer.effect(
   BabelTransformerService,
   Effect.gen(function* () {
-    const ctx = yield* BabelTransformerContext;
+    const ctx = yield* MetroCompilerContext;
 
     return {
       // compileCode: (code) => twinBabelPluginTransform(code),
@@ -96,16 +97,7 @@ export const BabelTransformerServiceLive = Layer.effect(
           | JSXElementTree;
         const node = { ...leaveValue.path.node };
 
-        console.log('VISITED: ', {
-          parent: parentNode.uid,
-          current: leaveValue.uid,
-        });
-        const current = new BabelJSXElementNode(
-          node,
-          leaveValue.order,
-          ctx.filename,
-          null,
-        );
+        const current = new JSXElementNode(node, leaveValue.order, ctx.filename, null);
         const entries = getElementEntries(current.runtimeData, ctx.twin, ctx.twinCtx);
         const childEntries = pipe(entries, getChildRuntimeEntries);
         // entries = pipe(entries, getRawSheet);
@@ -113,7 +105,7 @@ export const BabelTransformerServiceLive = Layer.effect(
         if (
           parentNode &&
           'node' in parentNode &&
-          parentNode.node instanceof BabelJSXElementNode
+          parentNode.node instanceof JSXElementNode
         ) {
           inheritedEntries = null;
           // entries = pipe(

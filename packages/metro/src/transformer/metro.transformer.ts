@@ -17,7 +17,7 @@ import {
   MetroTransformerContext,
   MetroTransformerServiceLive,
 } from './transformer.service';
-import type { TwinTransformFn } from './transformer.types';
+import type { TwinTransformFn } from '@native-twin/babel/jsx-babel/models';
 
 const MainLayer = Layer.mergeAll(
   Layer.merge(DocumentServiceLive, StyleSheetServiceLive).pipe(

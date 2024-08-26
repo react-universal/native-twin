@@ -5,20 +5,20 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/dev-tools",
-      "path": "../packages/dev-tools"
-    },
-    {
-      "name": "📦 @lib/dev-tools-web",
-      "path": "../packages/dev-tools/webui"
-    },
-    {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
     },
     {
       "name": "📦 @lib/metro",
       "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
+      "name": "📦 @lib/dev-tools-web",
+      "path": "../packages/dev-tools/webui"
     },
     {
       "name": "📦 @lib/native-twin",
