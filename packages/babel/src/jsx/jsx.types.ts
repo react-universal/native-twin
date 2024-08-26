@@ -42,6 +42,7 @@ export interface CompiledTree {
   node: BabelJSXElementNode;
   entries: RuntimeComponentEntry[];
   childEntries: ChildsSheet;
+  parentSize: number;
   inheritedEntries: ChildsSheet | null;
   order: number;
   uid: string;

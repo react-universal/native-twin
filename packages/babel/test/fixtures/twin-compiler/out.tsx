@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 const ChildProp = () => {
-  return <View className='first:bg-blue-600' _twinComponentID={"1195259553"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("1195259553", [{
+  return <View className='first:bg-blue-600' _twinComponentID={"783992619"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("783992619", [{
     templateLiteral: null,
     prop: "className",
     target: "style",
@@ -29,24 +29,13 @@ const ChildProp = () => {
       odd: []
     }
   }])}>
-      <View className='' _twinComponentID={"-245161762"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-245161762", [{
+      <View className='' _twinComponentID={"-354944063"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-354944063", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
       entries: [],
       rawSheet: {
         base: [{
-          className: "first:bg-blue-600",
-          declarations: [{
-            prop: "backgroundColor",
-            value: "rgba(37,99,235,1)",
-            _tag: "COMPILED"
-          }],
-          selectors: [],
-          precedence: 805437440,
-          important: false,
-          animations: []
-        }, {
           className: "first:bg-blue-600",
           declarations: [{
             prop: "backgroundColor",
@@ -67,35 +56,13 @@ const ChildProp = () => {
         odd: []
       }
     }])}>
-        <Text className='' _twinComponentID={"-1767100362"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1767100362", [{
+        <Text className='' _twinComponentID={"-1883852828"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1883852828", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
         entries: [],
         rawSheet: {
-          base: [{
-            className: "first:bg-blue-600",
-            declarations: [{
-              prop: "backgroundColor",
-              value: "rgba(37,99,235,1)",
-              _tag: "COMPILED"
-            }],
-            selectors: [],
-            precedence: 805437440,
-            important: false,
-            animations: []
-          }, {
-            className: "first:bg-blue-600",
-            declarations: [{
-              prop: "backgroundColor",
-              value: "rgba(37,99,235,1)",
-              _tag: "COMPILED"
-            }],
-            selectors: [],
-            precedence: 805437440,
-            important: false,
-            animations: []
-          }],
+          base: [],
           dark: [],
           pointer: [],
           group: [],
@@ -106,7 +73,7 @@ const ChildProp = () => {
         }
       }])}>Text1</Text>
       </View>
-      <View className='' _twinComponentID={"339884942"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("339884942", [{
+      <View className='' _twinComponentID={"1557055760"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("1557055760", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -122,35 +89,13 @@ const ChildProp = () => {
         odd: []
       }
     }])}>
-        <Text className='' _twinComponentID={"261984509"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("261984509", [{
+        <Text className='' _twinComponentID={"751565110"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("751565110", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
         entries: [],
         rawSheet: {
-          base: [{
-            className: "first:bg-blue-600",
-            declarations: [{
-              prop: "backgroundColor",
-              value: "rgba(37,99,235,1)",
-              _tag: "COMPILED"
-            }],
-            selectors: [],
-            precedence: 805437440,
-            important: false,
-            animations: []
-          }, {
-            className: "first:bg-blue-600",
-            declarations: [{
-              prop: "backgroundColor",
-              value: "rgba(37,99,235,1)",
-              _tag: "COMPILED"
-            }],
-            selectors: [],
-            precedence: 805437440,
-            important: false,
-            animations: []
-          }],
+          base: [],
           dark: [],
           pointer: [],
           group: [],

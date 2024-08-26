@@ -227,7 +227,7 @@ export const getAstTrees = (ast: ParseResult<t.File>) => {
         JSXElement(path) {
           const uid = path.scope.generateUid('__twin_root');
           const parentTree = new Tree({
-            order: 0,
+            order: -1,
             path,
             uid,
           });

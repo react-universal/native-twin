@@ -29,7 +29,6 @@ export const runtimeEntriesToAst = (entries: string) => {
     }
     return value;
   } catch {
-    console.log('ASD', ast);
     return null;
   }
 };

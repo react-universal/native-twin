@@ -8,6 +8,7 @@ import type { __Theme__ } from '@native-twin/core';
 import {
   applyParentEntries,
   getChildRuntimeEntries,
+  getRawSheet,
   RuntimeComponentEntry,
 } from '@native-twin/css/jsx';
 import { TreeNode } from '@native-twin/helpers/tree';
@@ -117,16 +118,17 @@ function extractSheetsFromTree(tree: TreeNode<JSXElementTree>) {
     const ctx = yield* MetroCompilerContext;
     const twin = yield* NativeTwinService;
 
-    tree.traverse(({ value, children, childrenCount }) => {
+    tree.traverse(({ value,parent }) => {
       const model = new BabelJSXElementNode(value.path.node, value.order, ctx.filename);
-      const entries = getElementEntries(model.runtimeData, twin.tw, twin.context);
+      const entries = pipe(getElementEntries(model.runtimeData, twin.tw, twin.context));
       const childEntries = pipe(entries, getChildRuntimeEntries);
 
       const compiled: CompiledTree = {
         childEntries,
-        entries,
+        entries: pipe(entries, getRawSheet),
         inheritedEntries: null,
         node: model,
+        parentSize: parent?.childrenCount ?? -1,
         order: value.order,
         uid: value.uid,
       };

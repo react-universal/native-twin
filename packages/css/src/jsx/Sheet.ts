@@ -17,7 +17,7 @@ import { RuntimeSheetDeclaration } from './SheetEntryDeclaration';
 import { defaultFinalSheet, defaultSheetMetadata, emptyChildsSheet } from './constants';
 
 /** @category MetroBundler */
-export type ChildsSheet = Pick<RuntimeGroupSheet, 'first' | 'last' | 'even' | 'odd'>;
+export type ChildsSheet = Record<'first' | 'last' | 'even' | 'odd', RuntimeSheetEntry[]>;
 
 /** @category MetroBundler */
 export interface JSXElementSheet {
@@ -35,25 +35,16 @@ export const groupEntriesBySelectorGroup = (
 export const getChildRuntimeEntries = (
   runtimeEntries: RuntimeComponentEntry[],
 ): ChildsSheet => {
+  const combine = (
+    a: RuntimeSheetEntry[],
+    b: RuntimeSheetEntry[],
+  ): RuntimeSheetEntry[] => {
+    return RA.union([...a], [...b]);
+  };
   return pipe(
     runtimeEntries,
     RA.map((runtimeEntry) => runtimeEntry.rawSheet),
-    RA.reduce(emptyChildsSheet, (prev, current) => {
-      prev.first.push(...current.first);
-      prev.last.push(...current.last);
-      prev.even.push(...current.even);
-      prev.odd.push(...current.odd);
-      return prev;
-    }),
-    // Record.map((entries) =>
-    //   pipe(
-    //     entries,
-    //     RA.map((entry) => ({
-    //       ...entry,
-    //       selectors: entry.selectors.filter((x) => !isChildSelector(x)),
-    //     })),
-    //   ),
-    // ),
+    RA.reduce(emptyChildsSheet, (prev, current) => Record.union(prev, current, combine)),
   );
 };
 

@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 
 const ChildProp = () => {
   return (
-    <View className='first:bg-blue-600'>
+    <View className='first:bg-blue-600 last:bg-red-500 flex-1'>
       <View className=''>
         <Text className=''>Text1</Text>
       </View>
