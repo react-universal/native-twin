@@ -1,7 +1,8 @@
 import type { Binding } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as Option from 'effect/Option';
-import type { AnyPrimitive, JSXChildElement } from '../jsx/jsx.types';
+import type { AnyPrimitive } from '@native-twin/helpers';
+import type { JSXChildElement } from '../jsx/jsx.types';
 import { createPrimitiveExpression } from './babel.constructors';
 
 export const isReactNativeImport = (binding: Binding) => {

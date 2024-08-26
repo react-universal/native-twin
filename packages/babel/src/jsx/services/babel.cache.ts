@@ -4,7 +4,7 @@ import * as Layer from 'effect/Layer';
 import * as MutableHashMap from 'effect/MutableHashMap';
 import * as Option from 'effect/Option';
 import { RawJSXElementTreeNode } from '@native-twin/css/build/jsx';
-import { TwinBabelFile } from '../../models/BabelFile.model';
+import { TwinBabelFile } from '../models/BabelFile.model';
 
 export const babelCache = MutableHashMap.empty<string, TwinBabelFile>();
 

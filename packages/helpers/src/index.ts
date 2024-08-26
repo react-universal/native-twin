@@ -33,6 +33,7 @@ export type {
   StringLike,
   UnionToIntersection,
   ColorsRecord,
+  AnyPrimitive,
 } from './utility.types';
 
 export { warn, WarningEventMap } from './warn';

@@ -6,7 +6,6 @@ import type { Tree } from '@native-twin/helpers/tree';
 import { BabelJSXElementNode } from '../jsx-babel';
 
 export type JSXChildElement = t.JSXElement['children'][number];
-export type AnyPrimitive = string | number | boolean;
 
 export type JSXElementNodePath = NodePath<t.JSXElement>;
 

@@ -1,7 +1,7 @@
 import template from '@babel/template';
 import * as t from '@babel/types';
 import { isObject } from '@native-twin/helpers';
-import type { AnyPrimitive } from '../jsx/jsx.types';
+import type { AnyPrimitive } from '@native-twin/helpers';
 import { valueIsPrimitive } from './babel.predicates';
 
 export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {

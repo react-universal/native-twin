@@ -1,7 +1,8 @@
 import * as t from '@babel/types';
 import { getRawSheet, RuntimeComponentEntry } from '@native-twin/css/jsx';
+import type { AnyPrimitive } from '@native-twin/helpers';
 import { createPrimitiveExpression, hasJsxAttribute } from '../../babel';
-import { AnyPrimitive, JSXChildElement } from '../jsx.types';
+import { JSXChildElement } from '../jsx.types';
 import { JSXElementNode } from '../models/JSXElement.model';
 import { entriesToObject, runtimeEntriesToAst } from '../twin';
 

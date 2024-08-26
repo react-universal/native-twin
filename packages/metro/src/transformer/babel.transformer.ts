@@ -11,20 +11,17 @@ import {
   BabelTransformerServiceLive,
   NativeTwinService,
 } from '@native-twin/babel/jsx-babel/services';
-import { BabelCacheContext } from './babel/babel.cache';
 
 const mainProgram = Effect.gen(function* () {
   const ctx = yield* MetroCompilerContext;
   const transformer = yield* BabelTransformerService;
-
   if (transformer.isNotAllowedPath(ctx.filename)) return ctx.code;
-
   const compiled = yield* babelTraverseCode(ctx.code);
 
   return compiled.generated;
 });
 
-const MainLayer = Layer.merge(BabelTransformerServiceLive, BabelCacheContext.Live).pipe(
+const MainLayer = BabelTransformerServiceLive.pipe(
   Layer.merge(Logger.replace(Logger.defaultLogger, BabelLogger)),
 );
 
