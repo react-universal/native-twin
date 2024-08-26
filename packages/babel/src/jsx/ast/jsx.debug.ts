@@ -4,7 +4,7 @@ import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import { getBabelJSXElementChilds, getJSXElementName } from './jsx.maps';
-import { JSXElementNode } from './models/JSXElement.model';
+import { JSXElementNode } from '../models/JSXElement.model';
 
 export const elementNodeToTree = (
   node: JSXElementNode,

@@ -7,14 +7,14 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
-import { mappedComponents, type MappedComponent } from '../utils/component.maps';
+import { mappedComponents, type MappedComponent } from '../../utils/component.maps';
 import * as jsxPredicates from './jsx.predicates';
 import {
   JSXElementNodePath,
   type JSXElementTree,
   type JSXMappedAttribute,
-} from './jsx.types';
-import { JSXElementNode } from './models/JSXElement.model';
+} from '../jsx.types';
+import { JSXElementNode } from '../models/JSXElement.model';
 
 const getBindingImportDeclaration = (binding: Binding) =>
   pipe(

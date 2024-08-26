@@ -18,7 +18,7 @@ import {
   getBingingImportSource,
   getJSXElementAttrs,
   getJSXElementName,
-} from '../jsx.maps';
+} from '../ast/jsx.maps';
 // import * as jsxPredicates from '../jsx.predicates';
 import { JSXMappedAttribute } from '../jsx.types';
 import { getElementEntries } from '../twin/twin.entries';
