@@ -34,7 +34,10 @@ export interface JSXElementTree {
   path: JSXElementNodePath;
   order: number;
   uid: string;
-  // childsCount: number;
+  source: {
+    kind: string;
+    source: string;
+  };
 }
 
 export interface CompiledTree {

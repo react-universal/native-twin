@@ -8,11 +8,9 @@ import {
   compileSheetEntry,
   CompilerContext,
 } from '@native-twin/css/jsx';
-import { JSXMappedAttribute } from '../../compiler/ast.types';
-import { JSXElementNode } from '../../compiler/models/JSXElement.model';
 
 export const getElementEntries = (
-  props: JSXMappedAttribute[],
+  props: any[],
   twin: RuntimeTW,
   ctx: CompilerContext,
 ): RuntimeComponentEntry[] => {
@@ -63,12 +61,14 @@ export const getElementEntries = (
  * @domain Shared Transform
  * @description Extract entries from {@link JSXElementNode}
  */
-export const extractEntriesFromNode = (node: JSXElementNode, twin: RuntimeTW) =>
+export const extractEntriesFromNode = (node: any, twin: RuntimeTW) =>
   pipe(
     node.runtimeData,
     RA.map((x) => {
+      // @ts-expect-error
       const entries = twin(x.value.literal);
       return {
+        // @ts-expect-error
         ...x,
         entries,
       };

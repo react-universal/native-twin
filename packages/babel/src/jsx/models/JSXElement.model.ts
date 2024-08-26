@@ -15,7 +15,7 @@ import {
 } from '@native-twin/css/jsx';
 import {
   extractMappedAttributes,
-  getBingingImportSource,
+  getBindingImportSource,
   getJSXElementAttrs,
   getJSXElementName,
 } from '../ast/jsx.maps';
@@ -92,7 +92,7 @@ export class JSXElementNode implements Equal.Equal {
     return pipe(
       getJSXElementName(this.openingElement),
       Option.flatMapNullable((x) => path.scope.getBinding(x)),
-      Option.flatMap(getBingingImportSource),
+      Option.flatMap(getBindingImportSource),
     );
   }
 

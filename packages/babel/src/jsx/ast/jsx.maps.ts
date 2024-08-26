@@ -8,13 +8,21 @@ import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
 import { mappedComponents, type MappedComponent } from '../../utils/component.maps';
-import * as jsxPredicates from './jsx.predicates';
 import {
   JSXElementNodePath,
   type JSXElementTree,
   type JSXMappedAttribute,
 } from '../jsx.types';
 import { JSXElementNode } from '../models/JSXElement.model';
+import * as jsxPredicates from './jsx.predicates';
+
+const getJSXElementSource = (path: JSXElementNodePath) =>
+  pipe(
+    getJSXElementName(path.node.openingElement),
+    Option.flatMap((x) => Option.fromNullable(path.scope.getBinding(x))),
+    Option.flatMap((binding) => getBindingImportSource(binding)),
+    Option.getOrElse(() => ({ kind: 'local', source: 'unknown' })),
+  );
 
 const getBindingImportDeclaration = (binding: Binding) =>
   pipe(
@@ -52,7 +60,7 @@ const getBindingRequireDeclaration = (binding: Binding) =>
       };
     }),
   );
-export const getBingingImportSource = (binding: Binding) =>
+export const getBindingImportSource = (binding: Binding) =>
   pipe(
     [getBindingImportDeclaration(binding), getBindingRequireDeclaration(binding)],
     Option.firstSomeOf,
@@ -226,10 +234,11 @@ export const getAstTrees = (ast: ParseResult<t.File>) => {
         },
         JSXElement(path) {
           const uid = path.scope.generateUid('__twin_root');
-          const parentTree = new Tree({
+          const parentTree = new Tree<JSXElementTree>({
             order: -1,
             path,
             uid,
+            source: getJSXElementSource(path),
           });
           getChilds(path, parentTree.root);
           this.trees.push(parentTree);
@@ -256,6 +265,7 @@ const getChilds = (path: JSXElementNodePath, parent: TreeNode<JSXElementTree>) =
       order,
       path: child,
       uid: `${parent.value.uid}:${order}`,
+      source: getJSXElementSource(child),
     });
     childLeave.parent = parent;
     getChilds(childLeave.value.path, childLeave);
