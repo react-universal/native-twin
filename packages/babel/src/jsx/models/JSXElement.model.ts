@@ -104,16 +104,6 @@ export class JSXElementNode implements Equal.Equal {
     return extractMappedAttributes(this.path);
   }
 
-  // get childs(): HashSet.HashSet<JSXElementNode> {
-  //   const parent = this;
-  //   return pipe(
-  //     this.path.children,
-  //     RA.filterMap(Option.liftPredicate(jsxPredicates.isJSXElementNode)),
-  //     RA.map((x, i) => new JSXElementNode(x, i, parent.filename, parent)),
-  //     HashSet.fromIterable,
-  //   );
-  // }
-
   getTwinSheet(
     twin: RuntimeTW,
     ctx: CompilerContext,

@@ -17,7 +17,11 @@ export {
 } from './css/precedence';
 
 // TAILWIND
-export { parseTWTokens, tailwindClassNamesParser } from './tailwind/tailwind-rule.parser';
+export {
+  parseTWTokens,
+  parseApplyClassName,
+  tailwindClassNamesParser,
+} from './tailwind/tailwind-rule.parser';
 export {
   globalKeywords,
   cornerMap,

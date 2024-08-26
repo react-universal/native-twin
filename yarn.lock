@@ -6338,6 +6338,7 @@ __metadata:
     "@babel/types": "npm:^7.24.0"
     "@effect/platform": "npm:^0.61.6"
     "@effect/platform-node": "npm:^0.56.7"
+    "@native-twin/babel": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"

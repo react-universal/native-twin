@@ -26,11 +26,18 @@ export const mapVariant = mapResult('VARIANT');
 export const mapVariantClass = mapResult('VARIANT_CLASS');
 export const mapGroup = mapResult('GROUP');
 export const mapColorModifier = mapResult('COLOR_MODIFIER');
+export const mapAlias = mapResult('ALIAS_CLASSNAME');
 
 export const parseValidTokenRecursive = P.recursiveParser(
   (): P.Parser<GroupToken | VariantClassToken | ClassNameToken> =>
     P.choice([parseRuleGroup, parseVariantClass, parseClassName]),
 );
+
+/** Match apply classname */
+export const parseApplyClassName = P.sequenceOf([
+  P.char('@'),
+  parseValidTokenRecursive,
+]).map((x) => mapAlias({ symbol: x[0], token: x[1] }));
 
 // CLASSNAMES
 

@@ -15,7 +15,8 @@ import { CompiledTree, JSXElementTree } from '..';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../../constants/twin.constants';
 import { JSXElementNode } from '../models/JSXElement.model';
 import { BabelTransformerConfig, BabelTransformerFn } from '../models/metro.models';
-import { getElementEntries, getUserTwinConfig, setupNativeTwin } from '../twin';
+import { getElementEntries } from '../twin';
+import { NativeTwinService } from './NativeTwin.service';
 
 export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-context')<
   MetroCompilerContext,
@@ -27,25 +28,14 @@ export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-c
   ) =>
     Layer.effect(
       MetroCompilerContext,
-      Effect.sync(() => {
+      Effect.gen(function* () {
+        const twin = yield* NativeTwinService;
         const cssOutput = nodePath.join(
           options.projectRoot,
           TWIN_CACHE_DIR,
           TWIN_STYLES_FILE,
         );
         const platform = options.platform;
-        const twinConfig = getUserTwinConfig(options.projectRoot, {
-          engine: 'hermes',
-          isDev: options.dev,
-          isServer: options.platform === 'web',
-          platform: options.platform,
-        });
-        const twin = setupNativeTwin(twinConfig, {
-          engine: 'hermes',
-          isDev: options.dev,
-          isServer: options.platform === 'web',
-          platform: options.platform,
-        });
 
         return {
           generate,
@@ -53,13 +43,7 @@ export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-c
           cssOutput,
           code: src,
           filename: filename,
-          twinCtx: {
-            baseRem: twin.config.root.rem ?? 16,
-            platform,
-          },
-          twin,
-          twinConfig: twinConfig,
-          allowedPaths: twinConfig.content.map((x) =>
+          allowedPaths: twin.config.content.map((x) =>
             path.resolve(options.projectRoot, path.join(x)),
           ),
           platform,
@@ -81,7 +65,7 @@ export const BabelTransformerServiceLive = Layer.effect(
   BabelTransformerService,
   Effect.gen(function* () {
     const ctx = yield* MetroCompilerContext;
-
+    const twin = yield* NativeTwinService;
     return {
       // compileCode: (code) => twinBabelPluginTransform(code),
       isNotAllowedPath: (file) => {
@@ -98,7 +82,7 @@ export const BabelTransformerServiceLive = Layer.effect(
         const node = { ...leaveValue.path.node };
 
         const current = new JSXElementNode(node, leaveValue.order, ctx.filename, null);
-        const entries = getElementEntries(current.runtimeData, ctx.twin, ctx.twinCtx);
+        const entries = getElementEntries(current.runtimeData, twin.tw, twin.context);
         const childEntries = pipe(entries, getChildRuntimeEntries);
         // entries = pipe(entries, getRawSheet);
         let inheritedEntries: ChildsSheet | null = null;
@@ -108,16 +92,6 @@ export const BabelTransformerServiceLive = Layer.effect(
           parentNode.node instanceof JSXElementNode
         ) {
           inheritedEntries = null;
-          // entries = pipe(
-          //   applyParentEntries(
-          //     entries,
-          //     parentNode.childEntries,
-          //     leaveValue.order,
-          //     leave.parent!.childrenCount,
-          //   ),
-          //   getRawSheet,
-          // );
-          // console.log('ENTRIES: ', entries);
         }
         leave.value = {
           // @ts-expect-error

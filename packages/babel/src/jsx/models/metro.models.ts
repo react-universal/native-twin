@@ -3,9 +3,6 @@ import type {
   JsTransformOptions,
   TransformResponse,
 } from 'metro-transform-worker';
-import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
-import type { CompilerContext } from '@native-twin/css/jsx';
-import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 
 export type BabelTransformerFn = (params: {
   src: string;
@@ -57,10 +54,9 @@ export interface BabelTransformerConfig {
   filename: string;
   cssOutput: string;
   code: string;
-  twin: RuntimeTW;
-  twinConfig: TailwindConfig<__Theme__ & TailwindPresetTheme>;
+  
   allowedPaths: string[];
-  twinCtx: CompilerContext;
+  
   platform: string;
   generate: {
     tree: boolean;

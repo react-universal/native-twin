@@ -21,6 +21,7 @@ import {
   JSXElementTree,
 } from '../../jsx-babel';
 import { BabelTransformerService, MetroCompilerContext } from '../services';
+import { NativeTwinService } from '../services/NativeTwin.service';
 
 export const babelTraverseCode = (code: string) => {
   return Effect.gen(function* () {
@@ -114,10 +115,11 @@ function extractSheetsFromTree(tree: TreeNode<JSXElementTree>) {
   return Effect.gen(function* () {
     const fileSheet = MutableHashMap.empty<string, CompiledTree>();
     const ctx = yield* MetroCompilerContext;
+    const twin = yield* NativeTwinService;
 
     tree.traverse(({ value, children, childrenCount }) => {
       const model = new BabelJSXElementNode(value.path.node, value.order, ctx.filename);
-      const entries = getElementEntries(model.runtimeData, ctx.twin, ctx.twinCtx);
+      const entries = getElementEntries(model.runtimeData, twin.tw, twin.context);
       const childEntries = pipe(entries, getChildRuntimeEntries);
 
       const compiled: CompiledTree = {

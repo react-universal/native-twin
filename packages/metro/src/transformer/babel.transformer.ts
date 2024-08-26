@@ -9,6 +9,7 @@ import {
   BabelTransformerService,
   MetroCompilerContext,
   BabelTransformerServiceLive,
+  NativeTwinService,
 } from '@native-twin/babel/jsx-babel/services';
 import { BabelCacheContext } from './babel/babel.cache';
 
@@ -42,6 +43,7 @@ export const transform: BabelTransformerFn = async (params) => {
         order: true,
       }),
     ),
+    Effect.provide(NativeTwinService.make(params.options)),
     Effect.map((code) =>
       // @ts-expect-error
       upstreamTransformer.transform({

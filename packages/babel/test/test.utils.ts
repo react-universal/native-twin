@@ -4,6 +4,7 @@ import path from 'path';
 import { MetroCompilerContext } from '@native-twin/babel/jsx-babel/services';
 import { babelRunnable } from '../../metro/src/transformer/babel.transformer';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../../metro/src/utils/constants';
+import { NativeTwinService } from '../src/jsx/services';
 
 export const createBabelTestCompilerProgram = (filePath: string) => {
   const params = {
@@ -27,6 +28,7 @@ export const createBabelTestCompilerProgram = (filePath: string) => {
         tree: false,
       }),
     ),
+    Effect.provide(NativeTwinService.make(params.options)),
     Effect.runPromise,
   );
 };
