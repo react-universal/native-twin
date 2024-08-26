@@ -74,7 +74,7 @@ export const withMappedProps = createStylableComponent;
 
 export const useUnstableNativeVariable = (name: string) => {
   if (process.env['NODE_ENV'] !== 'production') {
-    console.log('useUnstableNativeVariable is not supported on web.');
+    console.warn('useUnstableNativeVariable is not supported on web.');
   }
   return undefined;
 };

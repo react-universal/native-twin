@@ -25,7 +25,11 @@
         "no-unsafe-optional-chaining": "off",
         "no-empty": "off",
         "react/jsx-key": "off",
-        "react-hooks/exhaustive-deps": "warn",
+        "react-hooks/exhaustive-deps": [
+          "warn", {
+            "additionalHooks": "(!useAtom)"
+          }
+        ],
         "react/display-name": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-non-null-assertion": "off",

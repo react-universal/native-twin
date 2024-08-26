@@ -79,7 +79,7 @@ export function composeDeclarations(
     if (Array.isArray(current.value)) {
       value = [];
       for (const t of current.value) {
-        if (typeof t.value == 'string') {
+        if (typeof t.value === 'string') {
           if (t.value) {
             value.push({
               [t.prop]: parseCssValue(t.prop, t.value, styledCtx),
@@ -92,10 +92,10 @@ export function composeDeclarations(
       });
       return prev;
     }
-    if (typeof value == 'string') {
+    if (typeof value === 'string') {
       value = parseCssValue(current.prop, value, styledCtx);
     }
-    if (typeof value == 'object') {
+    if (typeof value === 'object') {
       Object.assign(prev, value);
     } else {
       Object.assign(prev, {
@@ -109,24 +109,24 @@ export function composeDeclarations(
 
 const platformVariants = ['web', 'native', 'ios', 'android'];
 export function isApplicativeRule(variants: string[], context: StyledContext) {
-  if (variants.length == 0) return true;
+  if (variants.length === 0) return true;
   const screens = tw.theme('screens');
 
   for (let v of variants) {
     v = v.replace('&:', '');
     if (platformVariants.includes(v)) {
-      if (v == 'web' && context.platform != 'web') return false;
-      if (v == 'native' && context.platform == 'web') return false;
-      if (v == 'ios' && context.platform != 'ios') return false;
-      if (v == 'android' && context.platform != 'android') return false;
-      // if (v == 'web' && Platform.OS != 'web') return false;
-      // if (v == 'native' && Platform.OS == 'web') return false;
-      // if (v == 'ios' && Platform.OS != 'ios') return false;
-      // if (v == 'android' && Platform.OS != 'android') return false;
+      if (v === 'web' && context.platform !== 'web') return false;
+      if (v === 'native' && context.platform === 'web') return false;
+      if (v === 'ios' && context.platform !== 'ios') return false;
+      if (v === 'android' && context.platform !== 'android') return false;
+      // if (v === 'web' && Platform.OS !== 'web') return false;
+      // if (v === 'native' && Platform.OS === 'web') return false;
+      // if (v === 'ios' && Platform.OS !== 'ios') return false;
+      // if (v === 'android' && Platform.OS !== 'android') return false;
     }
     // if (
-    //   (v === 'dark' && context.colorScheme === 'light') ||
-    //   (v === 'light' && context.colorScheme === 'dark')
+    //   (v ==== 'dark' && context.colorScheme ==== 'light') ||
+    //   (v ==== 'light' && context.colorScheme ==== 'dark')
     // ) {
     //   return false;
     // }
@@ -144,7 +144,7 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
         }
       }
 
-      if (typeof variant == 'object') {
+      if (typeof variant === 'object') {
         let min: null | number = null;
         let max: null | number = null;
         // if ('raw' in variant && !(width >= Number(variant.raw))) {

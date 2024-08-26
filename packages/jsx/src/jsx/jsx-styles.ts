@@ -4,7 +4,6 @@ import { templatePropsToSheetEntriesObject } from '../styled/native/utils/native
 import { JSXInternalProps } from '../types/jsx.types';
 
 export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
-  props?.['_twinComponentSheet'];
   const templateEntries = props?.['_twinComponentTemplateEntries'];
   const componentID = props?.['_twinComponentID'];
   if (componentID) {
@@ -21,7 +20,7 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
               ...x,
               sheet: newSheet,
               metadata: {
-                isGroupParent: entries.some((x) => x.className == 'group'),
+                isGroupParent: entries.some((x) => x.className === 'group'),
                 hasGroupEvents: Object.keys(newSheet.group)?.length > 0,
                 hasPointerEvents: Object.keys(newSheet.pointer)?.length > 0,
                 hasAnimations: entries.some((x) => x.animations.length > 0),

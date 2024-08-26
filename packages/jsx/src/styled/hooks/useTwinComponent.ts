@@ -32,6 +32,7 @@ export const useTwinComponent = (
         setState({ ...state });
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [id],
   );
 
