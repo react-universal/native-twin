@@ -1,12 +1,8 @@
-// import generate from '@babel/generator';
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Effect from 'effect/Effect';
-// import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-// import * as Option from 'effect/Option';
-// import * as MutableHashMap from 'effect/MutableHashMap';
 import { BabelLogger } from '@native-twin/babel/jsx-babel';
 import {
   BabelTransformerContext,
@@ -24,16 +20,8 @@ const mainProgram = Effect.gen(function* () {
 
   if (transformer.isNotAllowedPath(ctx.filename)) return ctx.code;
 
-  // const compiled = yield* transformer.compileCode(ctx.code);
   const compiled = yield* babelTraverseCode(ctx.code);
-  // console.log('RESLT: ', result);
 
-  // return pipe(
-  //   compiled.generated,
-  //   Option.map((x) => generate(x)),
-  //   Option.map((x) => x.code),
-  //   Option.getOrElse(() => ctx.code),
-  // );
   return compiled.generated;
 });
 

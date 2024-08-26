@@ -1,10 +1,14 @@
 import { NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
 import type { SheetEntry } from '@native-twin/css';
-import { Tree } from '../utils/Tree';
+import { ChildsSheet, RuntimeComponentEntry } from '@native-twin/css/jsx';
+import type { Tree } from '@native-twin/helpers/tree';
+import { BabelJSXElementNode } from '../jsx-babel';
 
 export type JSXChildElement = t.JSXElement['children'][number];
 export type AnyPrimitive = string | number | boolean;
+
+export type JSXElementNodePath = NodePath<t.JSXElement>;
 
 export type MapChildFn = (child: t.JSXElement) => t.JSXElement;
 
@@ -24,14 +28,23 @@ export interface StyledPropEntries {
 
 export interface JSXFileTree {
   filePath: string;
-  // parents: JSXElementTree[];
   parents: Tree<JSXElementTree>[];
 }
 
 export interface JSXElementTree {
-  path: NodePath<t.JSXElement>;
-  /** @deprecated DONT USE THIS ONE */
-  childs: JSXElementTree[];
+  path: JSXElementNodePath;
+  order: number;
+  uid: string;
+  // childsCount: number;
+}
+
+export interface CompiledTree {
+  node: BabelJSXElementNode;
+  entries: RuntimeComponentEntry[];
+  childEntries: ChildsSheet;
+  inheritedEntries: ChildsSheet | null;
+  order: number;
+  uid: string;
 }
 
 export interface JSXElementTreeMinimal {

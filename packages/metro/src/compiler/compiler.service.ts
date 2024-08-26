@@ -4,12 +4,9 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
+import { createBabelAST } from '@native-twin/babel/jsx-babel';
 import { MetroTransformerContext } from '../transformer/transformer.service';
-import {
-  createBabelAST,
-  getBabelJSXElementChilds,
-  visitBabelJSXElementParents,
-} from './babel';
+import { getBabelJSXElementChilds, visitBabelJSXElementParents } from './babel';
 import { JSXElementNode } from './models/JSXElement.model';
 
 export class TwinCompilerService extends Context.Tag('compiler/file-state')<

@@ -41,7 +41,7 @@ export interface RuntimeComponentEntry {
   target: string;
   templateLiteral: string | null;
   rawSheet: RuntimeGroupSheet;
-  childEntries: RuntimeSheetEntry[];
+  // childEntries: RuntimeSheetEntry[];
   entries: RuntimeSheetEntry[];
   // precompiled: FinalSheet;
 }

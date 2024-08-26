@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as Array from 'effect/Array';
 import { pipe } from 'effect/Function';
 

@@ -1,16 +1,19 @@
 import { ParseResult } from '@babel/parser';
-import traverse, { Binding, NodePath } from '@babel/traverse';
+import traverse, { Binding } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
-import { Tree } from '../utils/Tree';
-import { TreeNode } from '../utils/TreeNode';
+import { Tree, TreeNode } from '@native-twin/helpers/tree';
 import { mappedComponents, type MappedComponent } from '../utils/component.maps';
 import * as jsxPredicates from './jsx.predicates';
-import { JSXFileTree, type JSXElementTree, type JSXMappedAttribute } from './jsx.types';
+import {
+  JSXElementNodePath,
+  type JSXElementTree,
+  type JSXMappedAttribute,
+} from './jsx.types';
 import { JSXElementNode } from './models/JSXElement.model';
 
 const getBindingImportDeclaration = (binding: Binding) =>
@@ -211,149 +214,50 @@ export function createJSXElementChilds(
   );
 }
 
-export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
-  return Effect.gen(function* () {
-    const parentPaths = yield* getParentPaths(ast, filename);
-    // const fileTrees = yield* pipe(
-    //   parentPaths.parents,
-    //   RA.map((node) =>
-    //     Effect.async<Tree<JSXElementTree>>((resume) => {
-    //       return traverseJSXRootNode(node.path).pipe(
-    //         Effect.andThen(
-    //           resume,
-    //           // Effect.map((childs) =>
-    //           //   pipe(
-    //           //     childs,
-    //           //     RA.forEach((x) => tree.root.addChild(x)),
-    //           //     () => tree,
-    //           //   ),
-    //           // ),
-    //         ),
-    //       );
-    //     }),
-    //   ),
-    //   Effect.allSuccesses,
-    // );
-    return parentPaths;
-    //   return pipe(
-    //     parentPaths,
-    //     Stream.fromIterable,
-    //     // Stream.mapEffect((node) => {
-    //     //   return Effect.async<JSXElementTree[]>((resume) => {
-    //     //     return traverseJSXRootNode(node.parent.value).pipe(Effect.andThen(resume));
-    //     //   });
-    //     // }),
-    //     Stream.runCollect,
-    //     Effect.map(Chunk.toArray),
-    //   );
+export const getAstTrees = (ast: ParseResult<t.File>) => {
+  return Effect.async<Tree<JSXElementTree>[]>((resolve) => {
+    traverse(
+      ast,
+      {
+        Program: {
+          exit() {
+            resolve(Effect.succeed(this.trees));
+          },
+        },
+        JSXElement(path) {
+          const uid = path.scope.generateUid('__twin_root');
+          const parentTree = new Tree({
+            order: 0,
+            path,
+            uid,
+          });
+          getChilds(path, parentTree.root);
+          this.trees.push(parentTree);
+          path.skip();
+        },
+      },
+      undefined,
+      {
+        trees: [] as Tree<JSXElementTree>[],
+      },
+    );
   });
 };
 
-export const getParentPaths = (ast: ParseResult<t.File>, filePath: string) => {
-  return Effect.promise(
-    () =>
-      new Promise<JSXFileTree>((resolve) => {
-        traverse(
-          ast,
-          {
-            Program: {
-              exit() {
-                resolve(this.tree);
-              },
-            },
-            JSXElement(path) {
-              const node = getJSXElementNode(path);
-              // this.tree.parents.push(node);
-              const parentTree = new Tree(node);
-              getChilds(path, parentTree.root);
-              this.tree.parents.push(parentTree);
-              path.skip();
-            },
-          },
-          undefined,
-          {
-            tree: {
-              filePath,
-              parents: [],
-            } as JSXFileTree,
-          },
-        );
-      }),
+const getChilds = (path: JSXElementNodePath, parent: TreeNode<JSXElementTree>) => {
+  const childs = pipe(
+    path.get('children'),
+    RA.filterMap(Option.liftPredicate(jsxPredicates.isJSXElementPath)),
   );
-};
 
-function getJSXElementNode(path: NodePath<t.JSXElement>): JSXElementTree {
-  return {
-    path,
-    childs: [],
-  };
-}
-
-const getChilds = (path: NodePath<t.JSXElement>, parent: TreeNode<JSXElementTree>) => {
-  if (path.node.children.filter((x) => t.isJSXElement(x)).length === 0) {
-    return;
-  }
-  const childs = path
-    .get(
-      'children',
-      //   , {
-      //   parentPath: path,
-      //   opts: {
-      //     JSXElement(childPath) {
-      //       childPath.skip();
-      //     },
-      //   },
-      //   scope: path.scope,
-      //   state: {},
-      // }
-    )
-    .filter((x) => x.isJSXElement());
   for (const child of childs) {
-    if (!child.isJSXElement()) continue;
-    const childNode = getJSXElementNode(child);
-    const childLeave = parent.addChild(childNode);
+    const order = parent.childrenCount;
+    const childLeave = parent.addChild({
+      order,
+      path: child,
+      uid: `${parent.value.uid}:${order}`,
+    });
     childLeave.parent = parent;
     getChilds(childLeave.value.path, childLeave);
   }
-  return parent;
 };
-
-export const traverseJSXRootNode = (parentNode: NodePath<t.JSXElement>) =>
-  Effect.promise(() => {
-    // return Promise.resolve(Effect.succeed(tree));
-    return new Promise<Effect.Effect<Tree<JSXElementTree>>>((resume) => {
-      const tree = new Tree(getJSXElementNode(parentNode));
-      traverse(
-        parentNode.node,
-        {
-          exit() {
-            resume(Effect.succeed(tree));
-          },
-          JSXElement(path) {
-            // const newTree: JSXElementTree[] = [];
-            const childTree = new TreeNode(getJSXElementNode(path));
-            const parent = getChilds(path, childTree);
-            parent;
-            path.skip();
-          },
-          // JSXElement: {
-          //   enter(path) {
-          //     newTree.push(getJSXElementNode(path));
-          //   },
-          //   exit() {
-          //     if (newTree.length > 1) {
-          //       const child = newTree.pop();
-          //       const parent = newTree[newTree.length - 1];
-          //       if (child && parent) {
-          //         parent.childs.push(child);
-          //       }
-          //     }
-          //   },
-          // },
-        },
-        // {
-        //   tree: [] as JSXElementTree[],
-        // },
-      );
-    });
-  });

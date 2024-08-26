@@ -34,6 +34,7 @@
     "@effect/schema": "^0.70.3",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "effect": "^3.6.3"
   },

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { TreeNode } from './TreeNode';
 
 export class Tree<T> {
@@ -70,7 +71,7 @@ export class Tree<T> {
   map<B>(f: (a: TreeNode<T>) => TreeNode<B>): Tree<B> {
     const current = this;
     this.traverse((node) => {
-      node = f(node) as any;
+      return f(node) as any;
     }, 'depthFirst');
     return current as any;
   }

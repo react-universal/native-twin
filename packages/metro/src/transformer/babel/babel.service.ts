@@ -1,28 +1,21 @@
-// import { PluginObj, transformSync } from '@babel/core';
 // @ts-expect-error
 import babelJSX from '@babel/plugin-syntax-jsx';
-// import { File } from '@babel/types';
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
-// import { pipe } from 'effect/Function';
-// import * as HashMap from 'effect/HashMap';
-// import * as HashSet from 'effect/HashSet';
+import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
-// import * as Option from 'effect/Option';
-// import * as Tuple from 'effect/Tuple';
 import micromatch from 'micromatch';
 import nodePath from 'node:path';
-// import {
-//   BabelJSXElementNode,
-//   babelJsxElementNodeKey,
-//   addTwinPropsToElement,
-//   BabelAPI,
-//   TwinBabelOptions,
-//   TwinVisitorsState,
-//   getJSXElementName,
-// } from '@native-twin/babel/jsx-babel';
+import {
+  BabelJSXElementNode,
+  CompiledTree,
+  getElementEntries,
+  JSXElementTree,
+} from '@native-twin/babel/jsx-babel';
 import type { __Theme__ } from '@native-twin/core';
+import { ChildsSheet, getChildRuntimeEntries } from '@native-twin/css/jsx';
+import { TreeNode } from '@native-twin/helpers/tree';
 import {
   getTwinConfig,
   setupNativeTwin,
@@ -79,9 +72,7 @@ export class BabelTransformerService extends Context.Tag('babel/TransformerServi
   {
     isNotAllowedPath(path: string): boolean;
     transform(code: string): Promise<any>;
-    // compileCode: (
-    //   code: string,
-    // ) => Effect.Effect<Option.Option<File>, never, BabelTransformerContext>;
+    compileTreeNode(leave: TreeNode<JSXElementTree>): TreeNode<CompiledTree>;
   }
 >() {}
 
@@ -97,6 +88,55 @@ export const BabelTransformerServiceLive = Layer.effect(
           nodePath.resolve(ctx.options.projectRoot, file),
           ctx.allowedPaths,
         );
+      },
+      compileTreeNode(leave: TreeNode<JSXElementTree>): TreeNode<CompiledTree> {
+        const leaveValue = { ...leave.value };
+        const parentNode = { ...leave.parent?.value } as unknown as
+          | CompiledTree
+          | JSXElementTree;
+        const node = { ...leaveValue.path.node };
+
+        console.log('VISITED: ', {
+          parent: parentNode.uid,
+          current: leaveValue.uid,
+        });
+        const current = new BabelJSXElementNode(
+          node,
+          leaveValue.order,
+          ctx.filename,
+          null,
+        );
+        const entries = getElementEntries(current.runtimeData, ctx.twin, ctx.twinCtx);
+        const childEntries = pipe(entries, getChildRuntimeEntries);
+        // entries = pipe(entries, getRawSheet);
+        let inheritedEntries: ChildsSheet | null = null;
+        if (
+          parentNode &&
+          'node' in parentNode &&
+          parentNode.node instanceof BabelJSXElementNode
+        ) {
+          inheritedEntries = null;
+          // entries = pipe(
+          //   applyParentEntries(
+          //     entries,
+          //     parentNode.childEntries,
+          //     leaveValue.order,
+          //     leave.parent!.childrenCount,
+          //   ),
+          //   getRawSheet,
+          // );
+          // console.log('ENTRIES: ', entries);
+        }
+        leave.value = {
+          // @ts-expect-error
+          node: current,
+          order: leaveValue.order,
+          uid: leaveValue.uid,
+          inheritedEntries,
+          entries,
+          childEntries,
+        };
+        return leave as any;
       },
       transform: (code) => {
         // @ts-expect-error

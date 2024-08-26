@@ -2,23 +2,38 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 const ChildProp = () => {
-  return <View className='first:bg-blue-600'>
-      <View className='' _twinComponentID={"476328572"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("476328572", [{
+  return <View className='first:bg-blue-600' _twinComponentID={"1550963389"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("1550963389", [{
+    templateLiteral: null,
+    prop: "className",
+    target: "style",
+    entries: [{
+      className: "first:bg-blue-600",
+      declarations: [{
+        prop: "backgroundColor",
+        value: "rgba(37,99,235,1)",
+        _tag: "COMPILED"
+      }],
+      selectors: ["first", "&:first"],
+      precedence: 805437440,
+      important: false,
+      animations: []
+    }],
+    rawSheet: {
+      base: [],
+      dark: [],
+      pointer: [],
+      group: [],
+      even: [],
+      first: [],
+      last: [],
+      odd: []
+    }
+  }])}>
+      <View className='' _twinComponentID={"1432191815"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("1432191815", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
-      entries: [{
-        className: "first:bg-blue-600",
-        declarations: [{
-          prop: "backgroundColor",
-          value: "rgba(37,99,235,1)",
-          _tag: "COMPILED"
-        }],
-        selectors: ["first", "&:first"],
-        precedence: 805437440,
-        important: false,
-        animations: []
-      }],
+      entries: [],
       rawSheet: {
         base: [{
           className: "first:bg-blue-600",
@@ -27,7 +42,18 @@ const ChildProp = () => {
             value: "rgba(37,99,235,1)",
             _tag: "COMPILED"
           }],
-          selectors: ["first", "&:first"],
+          selectors: [],
+          precedence: 805437440,
+          important: false,
+          animations: []
+        }, {
+          className: "first:bg-blue-600",
+          declarations: [{
+            prop: "backgroundColor",
+            value: "rgba(37,99,235,1)",
+            _tag: "COMPILED"
+          }],
+          selectors: [],
           precedence: 805437440,
           important: false,
           animations: []
@@ -41,22 +67,11 @@ const ChildProp = () => {
         odd: []
       }
     }])}>
-        <Text className='' _twinComponentID={"-1396581947"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1396581947", [{
+        <Text className='' _twinComponentID={"-1580066222"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1580066222", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
-        entries: [{
-          className: "first:bg-blue-600",
-          declarations: [{
-            prop: "backgroundColor",
-            value: "rgba(37,99,235,1)",
-            _tag: "COMPILED"
-          }],
-          selectors: ["first", "&:first"],
-          precedence: 805437440,
-          important: false,
-          animations: []
-        }],
+        entries: [],
         rawSheet: {
           base: [{
             className: "first:bg-blue-600",
@@ -65,7 +80,18 @@ const ChildProp = () => {
               value: "rgba(37,99,235,1)",
               _tag: "COMPILED"
             }],
-            selectors: ["first", "&:first"],
+            selectors: [],
+            precedence: 805437440,
+            important: false,
+            animations: []
+          }, {
+            className: "first:bg-blue-600",
+            declarations: [{
+              prop: "backgroundColor",
+              value: "rgba(37,99,235,1)",
+              _tag: "COMPILED"
+            }],
+            selectors: [],
             precedence: 805437440,
             important: false,
             animations: []
@@ -80,7 +106,7 @@ const ChildProp = () => {
         }
       }])}>Text1</Text>
       </View>
-      <View className='' _twinComponentID={"152704226"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("152704226", [{
+      <View className='' _twinComponentID={"-370294675"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-370294675", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -96,22 +122,11 @@ const ChildProp = () => {
         odd: []
       }
     }])}>
-        <Text className='' _twinComponentID={"-1511357200"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1511357200", [{
+        <Text className='' _twinComponentID={"-1453761762"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1453761762", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
-        entries: [{
-          className: "first:bg-blue-600",
-          declarations: [{
-            prop: "backgroundColor",
-            value: "rgba(37,99,235,1)",
-            _tag: "COMPILED"
-          }],
-          selectors: ["first", "&:first"],
-          precedence: 805437440,
-          important: false,
-          animations: []
-        }],
+        entries: [],
         rawSheet: {
           base: [{
             className: "first:bg-blue-600",
@@ -120,7 +135,18 @@ const ChildProp = () => {
               value: "rgba(37,99,235,1)",
               _tag: "COMPILED"
             }],
-            selectors: ["first", "&:first"],
+            selectors: [],
+            precedence: 805437440,
+            important: false,
+            animations: []
+          }, {
+            className: "first:bg-blue-600",
+            declarations: [{
+              prop: "backgroundColor",
+              value: "rgba(37,99,235,1)",
+              _tag: "COMPILED"
+            }],
+            selectors: [],
             precedence: 805437440,
             important: false,
             animations: []

@@ -1,126 +1,149 @@
 import generate from '@babel/generator';
-// import { parse } from '@babel/parser';
+import { HashMap, MutableHashMap, Record } from 'effect';
 import * as RA from 'effect/Array';
-// import traverse from '@babel/traverse';
-// import * as t from '@babel/types';
 import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
-// import * as HashMap from 'effect/HashMap';
-// import * as HashSet from 'effect/HashSet';
-// import * as MutableHashMap from 'effect/MutableHashMap';
+import { identity, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import * as Tuple from 'effect/Tuple';
-// import { jsxElementNodeKey } from '@native-twin/babel/build/jsx/models/JSXElement.model';
 import {
-  BabelJSXElementNode,
   getAstTrees,
-  JSXElementTree,
   createBabelAST,
   addTwinPropsToElement,
+  CompiledTree,
   getElementEntries,
+  BabelJSXElementNode,
+  JSXElementTree,
 } from '@native-twin/babel/jsx-babel';
 import type { __Theme__ } from '@native-twin/core';
 import {
   applyParentEntries,
-  ChildsSheet,
   getChildRuntimeEntries,
   RuntimeComponentEntry,
-} from '@native-twin/css/jsx';
-import { BabelTransformerContext } from './babel.service';
-
-interface CompiledTree {
-  node: BabelJSXElementNode;
-  entries: RuntimeComponentEntry[];
-  childEntries: ChildsSheet;
-}
-
-// const getVisitedNodes = () => visited;
+} from '@native-twin/css/build/jsx';
+// import { applyParentEntries } from '@native-twin/css/jsx';
+import { TreeNode } from '@native-twin/helpers/tree';
+import { BabelTransformerContext, BabelTransformerService } from './babel.service';
 
 export const babelTraverseCode = (code: string) => {
   return Effect.gen(function* () {
-    // const transformer = yield* BabelTransformerService;
     const ctx = yield* BabelTransformerContext;
-    // const generatedCode = yield* transformer.compileCode(ctx.code);
-
+    const transformer = yield* BabelTransformerService;
     const ast = createBabelAST(code);
+    const trees = yield* getAstTrees(ast);
 
-    const trees = yield* getAstTrees(ast, ctx.filename);
+    const sheet = pipe(
+      yield* pipe(
+        trees,
+        RA.map((tree) => extractSheetsFromTree(tree.root)),
+        Effect.all,
+      ),
+      RA.reduce(HashMap.empty<string, CompiledTree>(), (prev, current) =>
+        pipe(prev, HashMap.union(current)),
+      ),
+    );
 
-    const dfs = pipe(
-      trees.parents,
+    const compiledTrees = pipe(
+      trees,
       RA.map((tree) => {
-        const mapped = tree.map<CompiledTree>((leave) => {
-          const node = leave.value.path.node;
-
-          const current = new BabelJSXElementNode(node, -1, ctx.filename, null);
-          const entries = getElementEntries(current.runtimeData, ctx.twin, ctx.twinCtx);
-          const childEntries = pipe([...entries], getChildRuntimeEntries);
-          leave.value = {
-            // @ts-expect-error
-            node: current,
-            // entries: pipe(entries,RA.filter(x => x)),
-            entries,
-            childEntries,
-          };
-          return leave as any;
-        });
-
-        pipe(
-          mapped.all(),
-          RA.forEach((currentNode) => {
-            const {
-              value: { entries, node },
-              parent,
-            } = currentNode;
-            const runtimeEntries = pipe(
-              Option.fromNullable(parent),
-              Option.map((parentNode) => {
-                const order = parentNode.children.indexOf(currentNode);
-                return applyParentEntries(
-                  entries,
-                  parentNode.value.childEntries,
-                  order,
-                  parentNode.childrenCount,
-                );
-              }),
-              Option.getOrElse(() => entries),
-            );
-            addTwinPropsToElement(node, runtimeEntries, ctx.generate);
-          }),
-        );
-
+        const mapped = tree.map<CompiledTree>(transformer.compileTreeNode);
+        // pipe(mapped.traverse(transformCompiledNode, 'breadthFirst'));
         return mapped;
       }),
+      RA.map((tree) => {
+        tree.traverse((leave) => {
+          const runtimeSheet = pipe(
+            Option.fromNullable(leave.parent),
+            Option.flatMap((parent) =>
+              pipe(
+                HashMap.get(sheet, parent.value.uid),
+                Option.map((sheet) => ({
+                  leave: parent,
+                  sheet,
+                })),
+              ),
+            ),
+            Option.zipWith(
+              HashMap.get(sheet, leave.value.uid),
+              (parent, currentSheet) => {
+                return pipe(currentSheet.entries, RA.map(identity), (x) =>
+                  applyParentEntries(
+                    x,
+                    pipe({ ...parent.sheet.childEntries }, Record.map(identity)),
+                    currentSheet.order,
+                    parent.leave.childrenCount,
+                  ),
+                );
+              },
+            ),
+            Option.getOrElse(() =>
+              pipe(
+                sheet,
+                HashMap.get(leave.value.uid),
+                Option.map((x) => x.entries),
+                Option.getOrElse((): RuntimeComponentEntry[] => []),
+              ),
+            ),
+          );
+          addTwinPropsToElement(leave.value.node, runtimeSheet, ctx.generate);
+        }, 'breadthFirst');
+        return tree;
+      }),
     );
+
+    // pipe(
+    //   sheet,
+    //   HashMap.forEach((leave) => {
+    //     const runtimeSheet = pipe(
+    //       Option.fromNullable(leave.)
+    //     )
+    //     addTwinPropsToElement(leave.node, leave.entries, ctx.generate);
+    //   }),
+    // );
+
     return {
-      dfs,
-      generated: Option.fromNullable(generate(ast)).pipe(
+      sheet,
+      compiledTrees,
+      generated: pipe(
+        Option.fromNullable(generate(ast)),
         Option.map((x) => x.code),
         Option.getOrElse(() => code),
       ),
-      trees,
     };
 
-    // function compileNode(
-    //   node: JSXElementTree,
-    //   order = 0,
-    //   parent: CompiledTree['parent'] | null = null,
-    // ): CompiledTree {
-
-    //   return {
-    //     elementNode,
-    //     entries,
-    //     childs,
-    //     parent,
-    //   };
-    // }
+    function transformCompiledNode(currentNode: TreeNode<CompiledTree>) {
+      const {
+        value: { entries, node },
+        parent,
+      } = currentNode;
+      console.log('COMPILED: ', {
+        parent: parent?.value.uid,
+        current: currentNode.value.uid,
+      });
+      addTwinPropsToElement(node, entries, ctx.generate);
+    }
   });
 };
 
-export const adjacencyMaker = (tree: JSXElementTree[]) => {
-  return pipe(
-    tree,
-    RA.map((x) => Tuple.make(x, x.childs)),
-    (x) => new WeakMap<JSXElementTree, JSXElementTree[]>(x),
-  );
-};
+function extractSheetsFromTree(tree: TreeNode<JSXElementTree>) {
+  return Effect.gen(function* () {
+    const fileSheet = MutableHashMap.empty<string, CompiledTree>();
+    const ctx = yield* BabelTransformerContext;
+
+    tree.traverse(({ value, children, childrenCount }) => {
+      const model = new BabelJSXElementNode(value.path.node, value.order, ctx.filename);
+      const entries = getElementEntries(model.runtimeData, ctx.twin, ctx.twinCtx);
+      const childEntries = pipe(entries, getChildRuntimeEntries);
+
+      const compiled: CompiledTree = {
+        childEntries,
+        entries,
+        inheritedEntries: null,
+        node: model,
+        order: value.order,
+        uid: value.uid,
+      };
+      pipe(fileSheet, MutableHashMap.set(value.uid, compiled));
+    }, 'breadthFirst');
+
+    return HashMap.fromIterable(fileSheet);
+  });
+}

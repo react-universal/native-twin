@@ -1,13 +1,12 @@
 import generate from '@babel/generator';
+import * as t from '@babel/types';
 import * as RA from 'effect/Array';
-import * as t from '@babel/types'
 import { pipe } from 'effect/Function';
 import { RuntimeTW } from '@native-twin/core';
 import {
   CompilerContext,
   compileSheetEntry,
   getGroupedEntries,
-  isChildEntry,
   RuntimeComponentEntry,
   sortSheetEntries,
 } from '@native-twin/css/jsx';
@@ -46,10 +45,10 @@ export const getElementEntries = (
         target,
         templateLiteral: templateExpression,
         entries: runtimeEntries,
-        childEntries: pipe(
-          runtimeEntries,
-          RA.filter((x) => isChildEntry(x)),
-        ),
+        // childEntries: pipe(
+        //   runtimeEntries,
+        //   RA.filter((x) => isChildEntry(x)),
+        // ),
         rawSheet: getGroupedEntries(runtimeEntries),
       };
     }),

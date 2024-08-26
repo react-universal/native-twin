@@ -4,6 +4,7 @@ import * as Layer from 'effect/Layer';
 import worker from 'metro-transform-worker';
 import micromatch from 'micromatch';
 import path from 'node:path';
+import '@native-twin/babel/jsx-babel';
 import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { ensureBuffer } from '../utils';

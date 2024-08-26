@@ -1,11 +1,18 @@
+import { Option } from 'effect';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
+// import * as Option from 'effect/Option';
 import * as Record from 'effect/Record';
 import { SelectorGroup } from '../css/css.types';
 import { AnyStyle, CompleteStyle, FinalSheet } from '../react-native/rn.types';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
 import { ComponentSheet, RuntimeComponentEntry } from './Component';
-import { RuntimeSheetEntry, sortSheetEntries } from './SheetEntry';
+import {
+  isChildEntry,
+  isChildSelector,
+  RuntimeSheetEntry,
+  sortSheetEntries,
+} from './SheetEntry';
 import { RuntimeSheetDeclaration } from './SheetEntryDeclaration';
 import { defaultFinalSheet, defaultSheetMetadata, emptyChildsSheet } from './constants';
 
@@ -39,10 +46,13 @@ export const getChildRuntimeEntries = (
       return prev;
     }),
     // Record.map((entries) =>
-    //   RA.map(entries, (entry) => ({
-    //     ...entry,
-    //     selectors: entry.selectors.filter((x) => !isChildSelector(x)),
-    //   })),
+    //   pipe(
+    //     entries,
+    //     RA.map((entry) => ({
+    //       ...entry,
+    //       selectors: entry.selectors.filter((x) => !isChildSelector(x)),
+    //     })),
+    //   ),
     // ),
   );
 };
@@ -79,12 +89,26 @@ export const applyParentEntries = (
     currentEntries,
     RA.map((entry): RuntimeComponentEntry => {
       const newSheet = entry.rawSheet;
-      if (order === 0) newSheet.base.push(...parentEntries.first);
+      if (order === 0) {
+        newSheet.base.push(...parentEntries.first);
+      }
       if (order + 1 === parentChildsNumber) newSheet.base.push(...parentEntries.last);
       if ((order + 1) % 2 === 0) newSheet.base.push(...parentEntries.even);
       if ((order + 1) % 2 !== 0) newSheet.base.push(...parentEntries.odd);
+      newSheet.base = pipe(
+        newSheet.base,
+        RA.filterMap(Option.liftPredicate(isChildEntry)),
+        RA.map((x) => ({
+          ...x,
+          selectors: RA.filterMap(
+            x.selectors,
+            Option.liftPredicate((s) => !isChildSelector(s)),
+          ),
+        })),
+      );
       return {
         ...entry,
+        // entries: [...entry.entries],
         rawSheet: { ...newSheet },
       };
     }),
@@ -189,8 +213,6 @@ export const getRawSheet = (sheets: RuntimeComponentEntry[]) =>
     RA.map((prop) => {
       return {
         ...prop,
-        childEntries: [],
-        entries: prop.rawSheet.base,
         rawSheet: {
           ...prop.rawSheet,
           even: [],

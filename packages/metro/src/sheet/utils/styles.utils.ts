@@ -7,7 +7,6 @@ import {
   RuntimeComponentEntry,
   compileSheetEntry,
   CompilerContext,
-  isChildEntry,
 } from '@native-twin/css/jsx';
 import { JSXMappedAttribute } from '../../compiler/ast.types';
 import { JSXElementNode } from '../../compiler/models/JSXElement.model';
@@ -45,14 +44,14 @@ export const getElementEntries = (
         target,
         templateLiteral: value.templates,
         entries: runtimeEntries,
-        childEntries: pipe(
-          runtimeEntries,
-          RA.filter((x) => isChildEntry(x)),
-          // RA.map((entry) => ({
-          //   ...entry,
-          //   selectors: entry.selectors.filter((x) => !isChildSelector(x)),
-          // })),
-        ),
+        // childEntries: pipe(
+        //   runtimeEntries,
+        //   RA.filter((x) => isChildEntry(x)),
+        //   // RA.map((entry) => ({
+        //   //   ...entry,
+        //   //   selectors: entry.selectors.filter((x) => !isChildSelector(x)),
+        //   // })),
+        // ),
         rawSheet: getGroupedEntries(runtimeEntries),
         // precompiled,
       };
