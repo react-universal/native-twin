@@ -18,24 +18,6 @@ export function twinComponent(
 
   props = Object.assign({ ref }, props);
 
-  // if (componentStyles.sheets.length > 0) {
-  //   // componentStyles.sheets = componentStyles.sheets.map((x) => x.recompute());
-  //   for (const style of componentStyles.sheets) {
-  //     const oldProps = props[style.prop] ? { ...props[style.prop] } : {};
-  //     props[style.prop] = Object.assign(
-  //       style.getStyles(
-  //         {
-  //           isParentActive: parentState.isGroupActive,
-  //           isPointerActive: state.isLocalActive,
-  //           dark: colorScheme.get() === 'dark',
-  //         },
-  //         templateEntriesObj[style.prop] ?? [],
-  //       ),
-  //       oldProps,
-  //     );
-  //   }
-  // }
-
   for (const x of configs) {
     if (x.target !== x.source) {
       delete props[x.source];

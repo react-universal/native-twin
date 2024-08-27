@@ -18,6 +18,9 @@ const exampleProjectFixture = {
 };
 describe('Metro bundler test', () => {
   it('test load index.js', async () => {
+    const outDir = path.dirname(exampleProjectFixture.bundleOut);
+    await fs.mkdir(outDir, { recursive: true });
+    await fs.writeFile(exampleProjectFixture.bundleOut, '');
     const config = await Metro.loadConfig(
       {
         verbose: true,
