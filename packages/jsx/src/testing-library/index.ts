@@ -5,13 +5,15 @@ import type { CompleteStyle } from '@native-twin/css';
 import '../components';
 import wrapJSX from '../jsx-wrapper';
 import { StyleSheet } from '../sheet/StyleSheet';
-import { stylizedComponents, createStylableComponent } from '../styled';
+import { stylizedComponents } from '../styled';
 import type {
   StylableComponentConfigOptions,
   ReactComponent,
+  NativeTwinGeneratedProps,
 } from '../types/styled.types';
 import { INTERNAL_RESET } from '../utils/constants';
 import tailwindConfig from './tailwind.config';
+import { ComponentProps, ComponentType, forwardRef } from 'react';
 
 setup(tailwindConfig);
 
@@ -43,16 +45,16 @@ export const createMockComponent = <
     className: 'style',
   } as unknown as M,
 ) => {
-  return createStylableComponent(Component, mapping);
+  // return createStylableComponent(Component, mapping);
 
-  // const mock: any = jest.fn(({ ...props }, ref) => {
-  //   props.ref = ref;
-  //   return renderJSX(Component, props, '', false, undefined, undefined);
-  // });
+  const mock: any = jest.fn(({ ...props }, ref) => {
+    props.ref = ref;
+    return renderJSX(Component, props, '', false, undefined, undefined);
+  });
 
-  // return Object.assign(forwardRef(mock), { mock }) as unknown as ComponentType<
-  //   ComponentProps<T> & NativeTwinGeneratedProps<M>
-  // > & { mock: typeof mock };
+  return Object.assign(forwardRef(mock), { mock }) as unknown as ComponentType<
+    ComponentProps<T> & NativeTwinGeneratedProps<M>
+  > & { mock: typeof mock };
 };
 
 // export const createRemappedComponent = <

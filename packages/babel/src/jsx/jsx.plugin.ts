@@ -20,7 +20,7 @@ const program = Effect.scoped(
   Effect.gen(function* () {
     const ctx = yield* JSXImportPluginContext;
     return {
-      name: '@native-twin/babel-plugin',
+      name: '@native-twin/twin-babel-plugin-jsx',
       pre() {
         this.trees = [];
       },
@@ -54,6 +54,8 @@ const program = Effect.scoped(
           },
         },
         JSXElement(path, state) {
+          if (!ctx.isValidFile(state.filename)) return;
+          
           const hash = Hash.string(state.filename ?? 'Unknown');
           const uid = path.scope.generateUid('__twin_root');
           const parentTree = new Tree<JSXElementTree>({
@@ -97,7 +99,7 @@ const program = Effect.scoped(
 
 // const layer = Logger.replace(Logger.defaultLogger, BabelLogger);
 
-export default function nativeTwinBabelPlugin(
+export default function nativeTwinBabelPluginJSX(
   _: BabelAPI,
   options: TwinBabelOptions,
   cwd: string,

@@ -1,6 +1,5 @@
 import { ComponentType, createElement, forwardRef, useId } from 'react';
 import { groupContext } from '../../context';
-import type { ComponentTemplateEntryProp } from '../../types/jsx.types';
 import type { ComponentConfig } from '../../types/styled.types';
 import { getComponentType } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';
@@ -15,12 +14,7 @@ export function twinComponent(
   const reactID = useId();
   const componentID = props?.['_twinComponentID'];
   const id = componentID ?? reactID;
-  const { componentStyles } = useStyledProps(
-    id,
-    props?.['_twinComponentSheet'],
-    props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[],
-    props?.['debug'] ?? false,
-  );
+  const { componentStyles } = useStyledProps(id, props ?? {}, configs);
 
   props = Object.assign({ ref }, props);
 

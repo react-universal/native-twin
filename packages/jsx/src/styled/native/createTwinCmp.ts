@@ -1,7 +1,7 @@
 import { forwardRef, createElement, useId } from 'react';
 import { groupContext } from '../../context';
 import { colorScheme } from '../../store/observables';
-import type { ComponentTemplateEntryProp, JSXFunction } from '../../types/jsx.types';
+import type { JSXFunction } from '../../types/jsx.types';
 import type {
   StylableComponentConfigOptions,
   ReactComponent,
@@ -41,12 +41,7 @@ export const NativeTwinHOC = <
     const id = componentID ?? reactID;
     const { isSelected } = useTwinDevTools(id, props?.['_twinComponentTree']);
 
-    const { componentStyles, templateEntriesObj } = useStyledProps(
-      id,
-      props?.['_twinComponentSheet'],
-      props?.['_twinComponentTemplateEntries'] as ComponentTemplateEntryProp[],
-      props?.['debug'] ?? false,
-    );
+    const { componentStyles, templateEntriesObj } = useStyledProps(id, props, configs);
 
     const { handlers, parentState, state } = useInteractions(
       id,

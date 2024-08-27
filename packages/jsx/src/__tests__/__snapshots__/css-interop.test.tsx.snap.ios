@@ -2,11 +2,22 @@
 
 exports[`dark mode 1`] = `
 <View
-  className="bg-black hover:bg-white dark:bg-red"
+  onTouchEnd={[Function]}
+  onTouchStart={[Function]}
+  style={
+    {
+      "backgroundColor": "rgba(248,113,113,1)",
+    }
+  }
   testID="native-twin-element"
 >
   <Text
-    className="text(white lg)"
+    style={
+      {
+        "color": "rgba(255,255,255,1)",
+        "fontSize": 18,
+      }
+    }
   >
     Sample Text
   </Text>
@@ -15,11 +26,22 @@ exports[`dark mode 1`] = `
 
 exports[`normal component 1`] = `
 <View
-  className="bg-black hover:bg-white"
+  onTouchEnd={[Function]}
+  onTouchStart={[Function]}
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,1)",
+    }
+  }
   testID="native-twin-element"
 >
   <Text
-    className="text(white lg)"
+    style={
+      {
+        "color": "rgba(255,255,255,1)",
+        "fontSize": 18,
+      }
+    }
   >
     Sample Text
   </Text>
