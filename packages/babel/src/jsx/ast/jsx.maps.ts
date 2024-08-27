@@ -18,7 +18,7 @@ import { JSXElementNode } from '../models';
 // import { JSXElementNode } from '../models/JSXElement.model';
 import * as jsxPredicates from './jsx.predicates';
 
-const getJSXElementSource = (path: JSXElementNodePath) =>
+export const getJSXElementSource = (path: JSXElementNodePath) =>
   pipe(
     getJSXElementName(path.node.openingElement),
     Option.flatMap((x) => Option.fromNullable(path.scope.getBinding(x))),
@@ -244,7 +244,7 @@ export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
             source: getJSXElementSource(path),
             parentID: null,
           });
-          getChilds(path, parentTree.root);
+          gelBabelJSXElementChildLeaves(path, parentTree.root);
           this.trees.push(parentTree);
           path.skip();
         },
@@ -257,7 +257,7 @@ export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
   });
 };
 
-const getChilds = (path: JSXElementNodePath, parent: TreeNode<JSXElementTree>) => {
+export const gelBabelJSXElementChildLeaves = (path: JSXElementNodePath, parent: TreeNode<JSXElementTree>) => {
   const childs = pipe(
     path.get('children'),
     RA.filterMap(Option.liftPredicate(jsxPredicates.isJSXElementPath)),
@@ -273,7 +273,7 @@ const getChilds = (path: JSXElementNodePath, parent: TreeNode<JSXElementTree>) =
       parentID: parent.value.uid,
     });
     childLeave.parent = parent;
-    getChilds(childPath, childLeave);
+    gelBabelJSXElementChildLeaves(childPath, childLeave);
   }
 };
 

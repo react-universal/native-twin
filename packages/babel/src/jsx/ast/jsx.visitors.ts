@@ -7,16 +7,14 @@ import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import type { __Theme__ } from '@native-twin/core';
 import { TreeNode } from '@native-twin/helpers/tree';
-import {
-  BabelJSXElementNode,
-  createBabelAST,
-  extractMappedAttributes,
-  getAstTrees,
-  JSXElementTree,
-} from '../../jsx-babel';
+import { createBabelAST } from '../../babel';
+import { JSXElementTree } from '../jsx.types';
 import { JSXElementNode } from '../models';
 import { BabelTransformerService, MetroCompilerContext } from '../services';
 import { NativeTwinService } from '../services/NativeTwin.service';
+import { extractMappedAttributes, getAstTrees } from './jsx.maps';
+
+export const getBabelTreesStream = () => {};
 
 export const babelTraverseCode = (code: string) => {
   return Effect.gen(function* () {
@@ -25,7 +23,6 @@ export const babelTraverseCode = (code: string) => {
     const ast = createBabelAST(code);
     const trees = yield* pipe(
       Stream.fromIterableEffect(getAstTrees(ast, ctx.filename)),
-      Stream.tap((x) => Effect.succeed(x)),
       Stream.mapEffect((x) => extractSheetsFromTree(x.root)),
       Stream.map(HashMap.fromIterable),
       Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) => {
@@ -55,7 +52,7 @@ function extractSheetsFromTree(tree: TreeNode<JSXElementTree>) {
     tree.traverse((leave) => {
       const { value } = leave;
       const runtimeData = extractMappedAttributes(leave.value.babelNode);
-      const model = new BabelJSXElementNode({
+      const model = new JSXElementNode({
         leave,
         order: value.order,
         filename: ctx.filename,

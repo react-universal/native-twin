@@ -5,6 +5,45 @@ import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
 describe('Babel exec test', () => {
+  it('Test jsx plugin', () => {
+    const code = readFileSync(
+      path.join(__dirname, './fixtures/jsx-plugin/code.tsx'),
+    ).toString('utf-8');
+    const output = babel.transform(code, {
+      parserOpts: {
+        plugins: ['jsx', 'typescript'],
+      },
+      plugins: [
+        [
+          require('../src/jsx/jsx.plugin'),
+          {
+            twinConfigPath: './tailwind.config.ts',
+          },
+        ],
+      ],
+      filename: path.join(__dirname, 'fixtures', 'jsx-plugin', 'code.tsx'),
+      ast: true,
+      cwd: path.join(__dirname),
+      envName: 'development',
+      minified: false,
+      generatorOpts: {
+        minified: false,
+      },
+      compact: false,
+    });
+
+    writeFileSync(
+      path.join(__dirname, 'fixtures', 'jsx-plugin', 'out.jsx'),
+      output?.code ?? 'ERROR!',
+    );
+
+    expect(
+      readFileSync(path.join(__dirname, './fixtures/jsx-plugin/code.tsx')).toString(
+        'utf-8',
+      ),
+    ).not.toBe('ERROR!');
+  });
+
   it('Test exec code', () => {
     const code = readFileSync(path.join(__dirname, './fixtures/jsx/code.tsx')).toString(
       'utf-8',

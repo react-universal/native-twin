@@ -86,10 +86,6 @@ export const resetComponents = () => {
   stylizedComponents.clear();
 };
 
-export function registerCSS(css: string, options?: any) {
-  // StyleSheet.registerCompiled(cssToReactNativeRuntime(css, options));
-}
-
 export function revealStyles(obj: any): any {
   switch (typeof obj) {
     case 'string':

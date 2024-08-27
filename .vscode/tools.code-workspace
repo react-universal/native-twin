@@ -29,6 +29,10 @@
       "path": "../packages/jsx"
     },
     {
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
+    },
+    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },

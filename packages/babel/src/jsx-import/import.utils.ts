@@ -4,6 +4,12 @@ import * as t from '@babel/types';
 import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
+import {
+  isReactInteropRequire,
+  isReactRequire,
+  maybeCallExpression,
+  maybeVariableDeclarator,
+} from '../babel';
 
 export const debugEffect = <T>(x: Effect.Effect<T>) => Console.log(x);
 
@@ -29,7 +35,7 @@ export const getReactIdent = (x: NodePath<MemberExpression>) => {
   return null;
 };
 
-export const isReactRequire = (x: Binding) => {
+export const isReactRequireBinding = (x: Binding) => {
   if (x.path.isVariableDeclarator() && t.isCallExpression(x.path.node.init)) {
     if (
       t.isIdentifier(x.path.node.init.callee, { name: 'require' }) &&
@@ -73,7 +79,15 @@ export const pipeMemberExpression = (self: NodePath<MemberExpression>) => {
     () => (isCreateElementIdent(self.node) ? Option.some(self) : Option.none()),
     Option.flatMapNullable(getReactIdent),
     Option.flatMapNullable((x) => self.scope.getBinding(x)),
-    Option.map((x) => isReactRequire(x) || isReactImport(x)),
+    Option.map((x) => isReactRequireBinding(x) || isReactImport(x)),
     Option.getOrElse(() => false),
   );
 };
+
+export const maybeBindingIsReactImport = (x: Option.Option<Binding>) =>
+  x.pipe(
+    maybeVariableDeclarator,
+    maybeCallExpression,
+    (node) => [isReactRequire(node), isReactInteropRequire(node)] as const,
+    Option.firstSomeOf,
+  );

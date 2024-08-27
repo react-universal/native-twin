@@ -6,3 +6,4 @@ export * from './ast/jsx.debug';
 export * from './ast/jsx.builder';
 export * from '../types/plugin.types';
 export * from '../jsx/twin/twin.entries';
+export * from '../services/Logger.service';

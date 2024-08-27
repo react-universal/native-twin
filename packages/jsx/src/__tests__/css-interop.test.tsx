@@ -1,14 +1,21 @@
 import { Text, View } from 'react-native';
 import { render } from '@testing-library/react-native';
+import { defineConfig, setup } from '@native-twin/core';
+import { presetTailwind } from '@native-twin/preset-tailwind';
 import { colorScheme } from '../store/observables/colorScheme.obs';
 import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
 
 const testID = 'native-twin-element';
 
+beforeAll(() => {
+  setup(defineConfig({ content: [], presets: [presetTailwind()] }));
+});
+
 beforeEach(() => {
   resetStyles();
   resetComponents();
 });
+
 const TwinView = createMockComponent(View, { className: 'style' });
 const TwinText = createMockComponent(Text, { className: 'style' });
 const TwinPressable = createMockComponent(View, { className: 'style' });
