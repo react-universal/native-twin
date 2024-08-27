@@ -121,7 +121,6 @@
     "onStartupFinished"
   ],
   "dependencies": {
-    "@effect/schema": "^0.70.3",
     "@native-twin/language-server": "workspace:*",
     "effect": "^3.6.3",
     "vscode-languageclient": "^9.0.1"

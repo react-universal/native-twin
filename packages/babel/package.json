@@ -31,7 +31,6 @@
     "@babel/helper-module-imports": "^7.22.15",
     "@babel/traverse": "^7.24.0",
     "@babel/types": "^7.24.0",
-    "@effect/schema": "^0.70.3",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",

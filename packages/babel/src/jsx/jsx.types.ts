@@ -1,9 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
 import type { SheetEntry } from '@native-twin/css';
-import { ChildsSheet, RuntimeComponentEntry } from '@native-twin/css/jsx';
 import type { Tree } from '@native-twin/helpers/tree';
-import { BabelJSXElementNode } from '../jsx-babel';
 
 export type JSXChildElement = t.JSXElement['children'][number];
 
@@ -31,22 +29,13 @@ export interface JSXFileTree {
 }
 
 export interface JSXElementTree {
-  path: JSXElementNodePath;
+  babelNode: JSXElementNodePath['node'];
   order: number;
   uid: string;
   parentID: string | null;
   source: {
     kind: string;
     source: string;
-  };
-}
-
-export interface CompiledTree extends JSXElementTree {
-  parentSize: number;
-  compiled: {
-    node: BabelJSXElementNode;
-    entries: RuntimeComponentEntry[];
-    childEntries: ChildsSheet;
   };
 }
 

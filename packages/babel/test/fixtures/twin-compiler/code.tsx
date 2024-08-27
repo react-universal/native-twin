@@ -5,7 +5,13 @@ import { Text, View } from 'react-native';
 const ChildProp = () => {
   return (
     <View className='first:bg-blue-600'>
-      <View className=''>
+      <View
+        className={`
+          group
+          flex-[2] items-center justify-center
+          bg-blue-800 hover:bg-red-600
+        `}
+      >
         <Text className=''>Text1</Text>
       </View>
       <View className=''>

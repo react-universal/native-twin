@@ -4,18 +4,18 @@ import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as HashSet from 'effect/HashSet';
+import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import { applyParentEntries } from '@native-twin/css/jsx';
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
 import { mappedComponents, type MappedComponent } from '../../utils/component.maps';
 import {
-  CompiledTree,
   JSXElementNodePath,
   type JSXElementTree,
   type JSXMappedAttribute,
 } from '../jsx.types';
-import { JSXElementNode } from '../models/JSXElement.model';
+import { JSXElementNode } from '../models';
+// import { JSXElementNode } from '../models/JSXElement.model';
 import * as jsxPredicates from './jsx.predicates';
 
 const getJSXElementSource = (path: JSXElementNodePath) =>
@@ -172,34 +172,34 @@ export const getJSXElementName = (
   return Option.none();
 };
 
-export const visitBabelJSXElementParents = (
-  ast: ParseResult<t.File>,
-  filePath: string,
-) => {
-  const parents = new Set<JSXElementNode>();
-  traverse(ast, {
-    JSXElement(path) {
-      // const uid = path.scope.generateUidIdentifier(filePath);
-      parents.add(new JSXElementNode(path.node, 0, filePath, null));
-      path.skip();
-    },
-  });
-  return HashSet.fromIterable(parents);
-};
+// export const visitBabelJSXElementParents = (
+//   ast: ParseResult<t.File>,
+//   filePath: string,
+// ) => {
+//   const parents = new Set<JSXElementNode>();
+//   traverse(ast, {
+//     JSXElement(path) {
+//       // const uid = path.scope.generateUidIdentifier(filePath);
+//       parents.add(new JSXElementNode(path.node, 0, filePath));
+//       path.skip();
+//     },
+//   });
+//   return HashSet.fromIterable(parents);
+// };
 
-export const getBabelJSXElementChilds = (
-  node: t.JSXElement,
-  parent: JSXElementNode | null,
-  filename: string,
-) => {
-  if (node.selfClosing) return HashSet.empty();
-  return pipe(
-    node.children,
-    RA.filterMap((x) => pipe(x, Option.liftPredicate(t.isJSXElement))),
-    RA.map((x, i) => new JSXElementNode(x, i, filename, parent)),
-    HashSet.fromIterable,
-  );
-};
+// export const getBabelJSXElementChilds = (
+//   node: t.JSXElement,
+//   parent: JSXElementNode | null,
+//   filename: string,
+// ) => {
+//   if (node.selfClosing) return HashSet.empty();
+//   return pipe(
+//     node.children,
+//     RA.filterMap((x) => pipe(x, Option.liftPredicate(t.isJSXElement))),
+//     RA.map((x, i) => new JSXElementNode(x, i, filename)),
+//     HashSet.fromIterable,
+//   );
+// };
 
 export const getBabelJSXElementChildsCount = (node: t.JSXElement) =>
   pipe(
@@ -208,23 +208,23 @@ export const getBabelJSXElementChildsCount = (node: t.JSXElement) =>
     RA.length,
   );
 
-export function createJSXElementChilds(
-  value: HashSet.HashSet<JSXElementNode>,
-): HashSet.HashSet<JSXElementNode> {
-  return pipe(
-    value,
-    HashSet.reduce(HashSet.empty<JSXElementNode>(), (prev, current) => {
-      return pipe(
-        getBabelJSXElementChilds(current.path, current, current.filename),
-        // createJSXElementChilds,
-        HashSet.add(current),
-        HashSet.union(prev),
-      );
-    }),
-  );
-}
+// export function createJSXElementChilds(
+//   value: HashSet.HashSet<JSXElementNode>,
+// ): HashSet.HashSet<JSXElementNode> {
+//   return pipe(
+//     value,
+//     HashSet.reduce(HashSet.empty<JSXElementNode>(), (prev, current) => {
+//       return pipe(
+//         getBabelJSXElementChilds(current.path, current, current.filename),
+//         // createJSXElementChilds,
+//         HashSet.add(current),
+//         HashSet.union(prev),
+//       );
+//     }),
+//   );
+// }
 
-export const getAstTrees = (ast: ParseResult<t.File>) => {
+export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
   return Effect.async<Tree<JSXElementTree>[]>((resolve) => {
     traverse(
       ast,
@@ -235,11 +235,12 @@ export const getAstTrees = (ast: ParseResult<t.File>) => {
           },
         },
         JSXElement(path) {
+          const hash = Hash.string(filename);
           const uid = path.scope.generateUid('__twin_root');
           const parentTree = new Tree<JSXElementTree>({
             order: -1,
-            path,
-            uid,
+            babelNode: path.node,
+            uid: `${hash}#${uid}`,
             source: getJSXElementSource(path),
             parentID: null,
           });
@@ -262,35 +263,35 @@ const getChilds = (path: JSXElementNodePath, parent: TreeNode<JSXElementTree>) =
     RA.filterMap(Option.liftPredicate(jsxPredicates.isJSXElementPath)),
   );
 
-  for (const child of childs) {
+  for (const childPath of childs) {
     const order = parent.childrenCount;
     const childLeave = parent.addChild({
       order,
-      path: child,
+      babelNode: childPath.node,
       uid: `${parent.value.uid}:${order}`,
-      source: getJSXElementSource(child),
+      source: getJSXElementSource(childPath),
       parentID: parent.value.uid,
     });
     childLeave.parent = parent;
-    getChilds(childLeave.value.path, childLeave);
+    getChilds(childPath, childLeave);
   }
 };
 
 export const getJSXCompiledTreeRuntime = (
-  leave: CompiledTree,
-  parentLeave: Option.Option<CompiledTree>,
+  leave: JSXElementNode,
+  parentLeave: Option.Option<JSXElementNode>,
 ) => {
   const runtimeSheet = pipe(
     parentLeave,
     Option.map((parent) =>
       applyParentEntries(
-        leave.compiled.entries,
-        parent.compiled.childEntries,
+        leave.entries,
+        parent.childEntries,
         leave.order,
         leave.parentSize,
       ),
     ),
-    Option.getOrElse(() => leave.compiled.entries),
+    Option.getOrElse(() => leave.entries),
   );
 
   return {

@@ -39,7 +39,7 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
       //   hasAnimations: component.sheets.some((x) => x.metadata.hasAnimations),
       // };
 
-      // component.sheets = component.sheets.map((x) => x.recompute());
+      component.sheets = component.sheets.map((x) => x.recompute(x.compiledSheet));
       componentsRegistry.set(componentID, {
         ...component,
         sheets: [...component.sheets],

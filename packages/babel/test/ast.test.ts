@@ -10,7 +10,7 @@ describe('test ast trees', () => {
     const filePath = path.join(__dirname, 'fixtures', 'jsx', 'code-ast.tsx');
     const code = fs.readFileSync(filePath);
     const ast = createBabelAST(code.toString('utf-8'));
-    const result = await pipe(getAstTrees(ast), Effect.runPromise);
+    const result = await pipe(getAstTrees(ast, filePath), Effect.runPromise);
     expect(result.length).toBeGreaterThan(0);
   });
 });

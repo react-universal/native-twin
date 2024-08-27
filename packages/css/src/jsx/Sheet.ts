@@ -1,18 +1,11 @@
-import { Option } from 'effect';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
-// import * as Option from 'effect/Option';
 import * as Record from 'effect/Record';
 import { SelectorGroup } from '../css/css.types';
 import { AnyStyle, CompleteStyle, FinalSheet } from '../react-native/rn.types';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
 import { ComponentSheet, RuntimeComponentEntry } from './Component';
-import {
-  isChildEntry,
-  isChildSelector,
-  RuntimeSheetEntry,
-  sortSheetEntries,
-} from './SheetEntry';
+import { RuntimeSheetEntry, sortSheetEntries } from './SheetEntry';
 import { RuntimeSheetDeclaration } from './SheetEntryDeclaration';
 import { defaultFinalSheet, defaultSheetMetadata, emptyChildsSheet } from './constants';
 
@@ -32,19 +25,22 @@ export const groupEntriesBySelectorGroup = (
 ): Record<SelectorGroup, RuntimeSheetEntry[]> =>
   RA.groupBy(x, (entry) => getRuleSelectorGroup(entry.selectors));
 
+const combineRuntimeSheetEntries = (
+  a: RuntimeSheetEntry[],
+  b: RuntimeSheetEntry[],
+): RuntimeSheetEntry[] => {
+  return RA.union([...a], [...b]);
+};
+
 export const getChildRuntimeEntries = (
   runtimeEntries: RuntimeComponentEntry[],
 ): ChildsSheet => {
-  const combine = (
-    a: RuntimeSheetEntry[],
-    b: RuntimeSheetEntry[],
-  ): RuntimeSheetEntry[] => {
-    return RA.union([...a], [...b]);
-  };
   return pipe(
     runtimeEntries,
     RA.map((runtimeEntry) => runtimeEntry.rawSheet),
-    RA.reduce(emptyChildsSheet, (prev, current) => Record.union(prev, current, combine)),
+    RA.reduce(emptyChildsSheet, (prev, current) =>
+      Record.union(prev, current, combineRuntimeSheetEntries),
+    ),
   );
 };
 
@@ -86,20 +82,8 @@ export const applyParentEntries = (
       if (order + 1 === parentChildsNumber) newSheet.base.push(...parentEntries.last);
       if ((order + 1) % 2 === 0) newSheet.base.push(...parentEntries.even);
       if ((order + 1) % 2 !== 0) newSheet.base.push(...parentEntries.odd);
-      newSheet.base = pipe(
-        newSheet.base,
-        RA.filterMap(Option.liftPredicate(isChildEntry)),
-        RA.map((x) => ({
-          ...x,
-          selectors: RA.filterMap(
-            x.selectors,
-            Option.liftPredicate((s) => !isChildSelector(s)),
-          ),
-        })),
-      );
       return {
         ...entry,
-        // entries: [...entry.entries],
         rawSheet: { ...newSheet },
       };
     }),

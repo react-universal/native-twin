@@ -4,90 +4,35 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
-// import * as Record from 'effect/Record';
-// import * as Sink from 'effect/Sink';
 import * as Stream from 'effect/Stream';
 import type { __Theme__ } from '@native-twin/core';
-import {
-  applyParentEntries,
-  getChildRuntimeEntries,
-  getRawSheet,
-} from '@native-twin/css/jsx';
 import { TreeNode } from '@native-twin/helpers/tree';
 import {
-  addTwinPropsToElement,
   BabelJSXElementNode,
-  CompiledTree,
   createBabelAST,
+  extractMappedAttributes,
   getAstTrees,
-  getElementEntries,
   JSXElementTree,
 } from '../../jsx-babel';
+import { JSXElementNode } from '../models';
 import { BabelTransformerService, MetroCompilerContext } from '../services';
 import { NativeTwinService } from '../services/NativeTwin.service';
 
 export const babelTraverseCode = (code: string) => {
   return Effect.gen(function* () {
+    const transformer = yield* BabelTransformerService;
     const ctx = yield* MetroCompilerContext;
-    yield* BabelTransformerService;
     const ast = createBabelAST(code);
     const trees = yield* pipe(
-      Stream.fromIterableEffect(getAstTrees(ast)),
+      Stream.fromIterableEffect(getAstTrees(ast, ctx.filename)),
+      Stream.tap((x) => Effect.succeed(x)),
       Stream.mapEffect((x) => extractSheetsFromTree(x.root)),
       Stream.map(HashMap.fromIterable),
-      // Stream.runCollect,
-      Stream.runFold(HashMap.empty<string, CompiledTree>(), (prev, current) => {
+      Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) => {
         return pipe(prev, HashMap.union(current));
       }),
-      Effect.map((sheet) => {
-        return pipe(
-          sheet,
-          HashMap.map((leave) => {
-            const parentLeave = pipe(
-              Option.fromNullable(leave.parentID),
-              Option.flatMap((x) => HashMap.get(sheet, x)),
-            );
-            const runtimeSheet = pipe(
-              parentLeave,
-              Option.map((parent) =>
-                applyParentEntries(
-                  leave.compiled.entries,
-                  parent.compiled.childEntries,
-                  leave.order,
-                  leave.parentSize,
-                ),
-              ),
-              Option.getOrElse(() => leave.compiled.entries),
-            );
-            addTwinPropsToElement(leave.compiled.node, runtimeSheet, ctx.generate);
-            return {
-              leave,
-              runtimeSheet,
-            };
-          }),
-        );
-      }),
+      Effect.map(transformer.transformLeave),
     );
-    // pipe(
-    //   yield* pipe(
-    //     trees,
-    //     RA.map((tree) => extractSheetsFromTree(tree.root)),
-    //     Effect.all,
-    //   ),
-    //   RA.reduce(HashMap.empty<string, CompiledTree>(), (prev, current) =>
-    //     pipe(prev, HashMap.union(current)),
-    //   ),
-    // );
-
-    // pipe(
-    //   sheet,
-    //   HashMap.forEach((leave) => {
-    //     const runtimeSheet = pipe(
-    //       Option.fromNullable(leave.)
-    //     )
-    //     addTwinPropsToElement(leave.node, leave.entries, ctx.generate);
-    //   }),
-    // );
 
     return {
       trees,
@@ -105,31 +50,37 @@ function extractSheetsFromTree(tree: TreeNode<JSXElementTree>) {
     // const fileSheet = MutableHashMap.empty<string, CompiledTree>();
     const ctx = yield* MetroCompilerContext;
     const twin = yield* NativeTwinService;
-    const fileSheet = RA.empty<[string, CompiledTree]>();
+    const fileSheet = RA.empty<[string, JSXElementNode]>();
 
-    tree.traverse(({ value, parent }) => {
-      const model = new BabelJSXElementNode(value.path.node, value.order, ctx.filename);
-      const entries = pipe(getElementEntries(model.runtimeData, twin.tw, twin.context));
-      const childEntries = pipe(entries, getChildRuntimeEntries);
-
-      const compiled: CompiledTree = {
-        compiled: {
-          childEntries,
-          entries: pipe(entries, getRawSheet),
-          node: model,
-        },
-        parentID: value.parentID,
-        path: value.path,
-        source: value.source,
-        parentSize: parent?.childrenCount ?? -1,
+    tree.traverse((leave) => {
+      const { value } = leave;
+      const runtimeData = extractMappedAttributes(leave.value.babelNode);
+      const model = new BabelJSXElementNode({
+        leave,
         order: value.order,
-        uid: value.uid,
-      };
-      fileSheet.push([compiled.uid, compiled]);
-      // pipe(fileSheet, MutableHashMap.set(value.uid, compiled));
+        filename: ctx.filename,
+        runtimeData,
+        twin,
+      });
+      // const entries = getElementEntries(model.runtimeData, twin.tw, twin.context);
+      // const entries = {
+      //   model,
+      // };
+      // const childEntries = pipe(entries, getChildRuntimeEntries);
+
+      // const compiled: CompiledTree = {
+      //   childEntries,
+      //   entries: entries,
+      //   node: model,
+      //   parentID: value.parentID,
+      //   source: value.source,
+      //   parentSize: parent?.childrenCount ?? -1,
+      //   order: value.order,
+      //   uid: value.uid,
+      // };
+      fileSheet.push([model.id, model]);
     }, 'breadthFirst');
 
-    // return HashMap.fromIterable(fileSheet);
     return fileSheet;
   });
 }

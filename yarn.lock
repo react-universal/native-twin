@@ -4762,17 +4762,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/schema@npm:^0.70.3":
-  version: 0.70.3
-  resolution: "@effect/schema@npm:0.70.3"
-  dependencies:
-    fast-check: "npm:^3.20.0"
-  peerDependencies:
-    effect: ^3.6.2
-  checksum: 10/b18395448ef984cc837c2ee74d7a653614eb98e6ad119ce90b2eae636f3a1c80d660dc01fcdffe49772b2ebde7ab48749608735f470965f27a66bca69f3ce769
-  languageName: node
-  linkType: hard
-
 "@effect/typeclass@npm:^0.25.2":
   version: 0.25.2
   resolution: "@effect/typeclass@npm:0.25.2"
@@ -6124,7 +6113,6 @@ __metadata:
     "@babel/preset-typescript": "npm:7.23.3"
     "@babel/traverse": "npm:^7.24.0"
     "@babel/types": "npm:^7.24.0"
-    "@effect/schema": "npm:^0.70.3"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
@@ -6149,7 +6137,6 @@ __metadata:
     "@effect/cli": "npm:^0.40.6"
     "@effect/platform": "npm:^0.61.6"
     "@effect/platform-node": "npm:^0.56.7"
-    "@effect/schema": "npm:^0.70.3"
     "@types/fs-extra": "npm:11.0.4"
     effect: "npm:^3.6.3"
     esbuild: "npm:^0.20.2"
@@ -14098,7 +14085,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-check@npm:^3.20.0, fast-check@npm:^3.21.0":
+"fast-check@npm:^3.21.0":
   version: 3.21.0
   resolution: "fast-check@npm:3.21.0"
   dependencies:
@@ -18625,7 +18612,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "native-twin-vscode@workspace:packages/vscode-extension"
   dependencies:
-    "@effect/schema": "npm:^0.70.3"
     "@native-twin/language-server": "workspace:*"
     "@types/vscode": "npm:^1.89.0"
     "@vscode/test-cli": "npm:^0.0.9"

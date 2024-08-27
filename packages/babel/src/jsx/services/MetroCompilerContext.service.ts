@@ -11,19 +11,12 @@ import micromatch from 'micromatch';
 import nodePath from 'node:path';
 import path from 'node:path';
 import type { __Theme__ } from '@native-twin/core';
-import {
-  ChildsSheet,
-  getChildRuntimeEntries,
-  RuntimeComponentEntry,
-} from '@native-twin/css/jsx';
-import { TreeNode } from '@native-twin/helpers/tree';
+import { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../../constants/twin.constants';
 import { addTwinPropsToElement } from '../ast/jsx.builder';
 import { getJSXCompiledTreeRuntime } from '../ast/jsx.maps';
-import { CompiledTree, JSXElementTree } from '../jsx.types';
-import { JSXElementNode } from '../models/JSXElement.model';
+import { JSXElementNode } from '../models';
 import { BabelTransformerConfig, BabelTransformerFn } from '../models/metro.models';
-import { getElementEntries } from '../twin';
 import { NativeTwinService } from './NativeTwin.service';
 
 export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-context')<
@@ -50,7 +43,7 @@ export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-c
           options,
           cssOutput,
           code: src,
-          filename: filename,
+          filename,
           allowedPaths: twin.config.content.map((x) =>
             path.resolve(options.projectRoot, path.join(x)),
           ),
@@ -65,11 +58,10 @@ export class BabelTransformerService extends Context.Tag('babel/TransformerServi
   {
     isNotAllowedPath(path: string): boolean;
     transform(code: string): Promise<any>;
-    compileTreeNode(leave: TreeNode<JSXElementTree>): TreeNode<CompiledTree>;
-    transformLeave: (trees: HashMap.HashMap<string, CompiledTree>) => HashMap.HashMap<
+    transformLeave: (trees: HashMap.HashMap<string, JSXElementNode>) => HashMap.HashMap<
       string,
       {
-        leave: CompiledTree;
+        leave: JSXElementNode;
         runtimeSheet: RuntimeComponentEntry[];
       }
     >;
@@ -80,7 +72,6 @@ export const BabelTransformerServiceLive = Layer.effect(
   BabelTransformerService,
   Effect.gen(function* () {
     const ctx = yield* MetroCompilerContext;
-    const twin = yield* NativeTwinService;
     return {
       // compileCode: (code) => twinBabelPluginTransform(code),
       isNotAllowedPath: (file) => {
@@ -94,44 +85,15 @@ export const BabelTransformerServiceLive = Layer.effect(
           const { leave, runtimeSheet } = getJSXCompiledTreeRuntime(
             node,
             pipe(
-              Option.fromNullable(node.parentID),
+              node.parentID,
               Option.flatMap((x) => HashMap.get(trees, x)),
             ),
           );
-          addTwinPropsToElement(leave.compiled.node, runtimeSheet, ctx.generate);
+          addTwinPropsToElement(leave, runtimeSheet, ctx.generate);
           return { leave, runtimeSheet };
         });
       },
-      compileTreeNode(leave: TreeNode<JSXElementTree>): TreeNode<CompiledTree> {
-        const leaveValue = { ...leave.value };
-        const parentNode = { ...leave.parent?.value } as unknown as
-          | CompiledTree
-          | JSXElementTree;
-        const node = { ...leaveValue.path.node };
 
-        const current = new JSXElementNode(node, leaveValue.order, ctx.filename, null);
-        const entries = getElementEntries(current.runtimeData, twin.tw, twin.context);
-        const childEntries = pipe(entries, getChildRuntimeEntries);
-        // entries = pipe(entries, getRawSheet);
-        let inheritedEntries: ChildsSheet | null = null;
-        if (
-          parentNode &&
-          'node' in parentNode &&
-          parentNode.node instanceof JSXElementNode
-        ) {
-          inheritedEntries = null;
-        }
-        leave.value = {
-          // @ts-expect-error
-          node: current,
-          order: leaveValue.order,
-          uid: leaveValue.uid,
-          inheritedEntries,
-          entries,
-          childEntries,
-        };
-        return leave as any;
-      },
       transform: (code) => {
         // @ts-expect-error
         return upstreamTransformer.transform({

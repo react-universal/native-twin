@@ -33,6 +33,10 @@
       "path": "../packages/vscode-extension"
     },
     {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
+    },
+    {
       "name": "@apps/expo",
       "path": "../apps/expo-app"
     }
