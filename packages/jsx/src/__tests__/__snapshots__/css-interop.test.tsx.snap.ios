@@ -2,32 +2,26 @@
 
 exports[`dark mode 1`] = `
 <View
+  className="bg-black hover:bg-white dark:bg-red"
   testID="native-twin-element"
 >
-  <RCTText
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
-    isHighlighted={false}
-    selectionColor={null}
+  <Text
+    className="text(white lg)"
   >
     Sample Text
-  </RCTText>
+  </Text>
 </View>
 `;
 
 exports[`normal component 1`] = `
 <View
+  className="bg-black hover:bg-white"
   testID="native-twin-element"
 >
-  <RCTText
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
-    isHighlighted={false}
-    selectionColor={null}
+  <Text
+    className="text(white lg)"
   >
     Sample Text
-  </RCTText>
+  </Text>
 </View>
 `;

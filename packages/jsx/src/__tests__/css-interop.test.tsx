@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import { render, act, fireEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import { colorScheme } from '../store/observables/colorScheme.obs';
 import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
 
@@ -9,11 +9,11 @@ beforeEach(() => {
   resetStyles();
   resetComponents();
 });
+const TwinView = createMockComponent(View, { className: 'style' });
+const TwinText = createMockComponent(Text, { className: 'style' });
+const TwinPressable = createMockComponent(View, { className: 'style' });
 
 test('normal component', () => {
-  const TwinView = createMockComponent(View, { className: 'style' });
-  const TwinText = createMockComponent(Text, { className: 'style' });
-
   const tree = render(
     <TwinView testID={testID} className='bg-black hover:bg-white'>
       <TwinText className='text(white lg)'>Sample Text</TwinText>
@@ -23,10 +23,7 @@ test('normal component', () => {
 });
 
 test('dark mode', () => {
-  const TwinView = createMockComponent(View, { className: 'style' });
-  const TwinText = createMockComponent(Text, { className: 'style' });
-
-  act(() => colorScheme.set('dark'));
+  // act(() => colorScheme.set('dark'));
 
   const tree = render(
     <TwinView testID={testID} className='bg-black hover:bg-white dark:bg-red'>
@@ -38,8 +35,6 @@ test('dark mode', () => {
 });
 
 test('Interactions', async () => {
-  const TwinPressable = createMockComponent(View, { className: 'style' });
-
   colorScheme.set('dark');
   const tree = render(
     <TwinPressable testID={testID} className='bg-black hover:(bg-gray-200)' />,

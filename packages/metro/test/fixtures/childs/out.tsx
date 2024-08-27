@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 const ChildProp = () => {
-  return <View className='first:bg-blue-600 last:bg-red-500 flex-1' _twinComponentID={"166365887"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("166365887", [{
+  return <View className='first:bg-blue-600 last:bg-red-500 flex-1' _twinComponentID={"-863532285#_twin_root"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-863532285#_twin_root", [{
     templateLiteral: null,
     prop: "className",
     target: "style",
@@ -70,7 +70,7 @@ const ChildProp = () => {
       odd: []
     }
   }])}>
-      <View className='flex-[2]' _twinComponentID={"-1891088991"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1891088991", [{
+      <View className='flex-[2]' _twinComponentID={"-863532285#_twin_root:0"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-863532285#_twin_root:0", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -92,13 +92,28 @@ const ChildProp = () => {
       }],
       rawSheet: {
         base: [{
+          className: "flex-[2]",
+          declarations: [{
+            prop: "flex",
+            value: {
+              flexGrow: 2,
+              flexShrink: 2,
+              flexBasis: "0%"
+            },
+            _tag: "COMPILED"
+          }],
+          selectors: [],
+          precedence: 805306368,
+          important: false,
+          animations: []
+        }, {
           className: "first:bg-blue-600",
           declarations: [{
             prop: "backgroundColor",
             value: "rgba(37,99,235,1)",
             _tag: "COMPILED"
           }],
-          selectors: [],
+          selectors: ["first", "&:first"],
           precedence: 805437440,
           important: false,
           animations: []
@@ -112,7 +127,7 @@ const ChildProp = () => {
         odd: []
       }
     }])}>
-        <Text className='' _twinComponentID={"-2016715571"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-2016715571", [{
+        <Text className='' _twinComponentID={"-863532285#_twin_root:0:0"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-863532285#_twin_root:0:0", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
@@ -129,7 +144,7 @@ const ChildProp = () => {
         }
       }])}>Text1</Text>
       </View>
-      <View className='' _twinComponentID={"1435510337"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("1435510337", [{
+      <View className='' _twinComponentID={"-863532285#_twin_root:1"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-863532285#_twin_root:1", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -142,7 +157,7 @@ const ChildProp = () => {
             value: "rgba(239,68,68,1)",
             _tag: "COMPILED"
           }],
-          selectors: [],
+          selectors: ["last", "&:last"],
           precedence: 805437440,
           important: false,
           animations: []
@@ -156,7 +171,7 @@ const ChildProp = () => {
         odd: []
       }
     }])}>
-        <Text className='' _twinComponentID={"-1868848116"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-1868848116", [{
+        <Text className='' _twinComponentID={"-863532285#_twin_root:1:0"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-863532285#_twin_root:1:0", [{
         templateLiteral: null,
         prop: "className",
         target: "style",

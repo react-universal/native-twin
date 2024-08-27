@@ -9,6 +9,7 @@ exports[`@native-twin/styled CustomView render 1`] = `
       "flexBasis": "0%",
       "flexGrow": 1,
       "flexShrink": 1,
+      "padding": 40,
       "shadowColor": "rgb(0,0,0)",
       "shadowOffset": {
         "height": 1,
