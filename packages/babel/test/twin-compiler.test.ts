@@ -14,6 +14,6 @@ const createBabelCompilerText = async (fixturePath: string) => {
   const outputPath = path.join(__dirname, 'fixtures', fixturePath, 'out.tsx');
   fs.writeFileSync(outputPath, '');
   const result = await createBabelTestCompilerProgram(codePath);
-  fs.writeFileSync(outputPath, result ?? 'ERROR');
+  fs.writeFileSync(outputPath, result.generated ?? 'ERROR');
   return { result, file: fs.readFileSync(outputPath) };
 };
