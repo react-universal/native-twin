@@ -34,20 +34,20 @@ export interface JSXElementTree {
   path: JSXElementNodePath;
   order: number;
   uid: string;
+  parentID: string | null;
   source: {
     kind: string;
     source: string;
   };
 }
 
-export interface CompiledTree {
-  node: BabelJSXElementNode;
-  entries: RuntimeComponentEntry[];
-  childEntries: ChildsSheet;
+export interface CompiledTree extends JSXElementTree {
   parentSize: number;
-  inheritedEntries: ChildsSheet | null;
-  order: number;
-  uid: string;
+  compiled: {
+    node: BabelJSXElementNode;
+    entries: RuntimeComponentEntry[];
+    childEntries: ChildsSheet;
+  };
 }
 
 export interface JSXElementTreeMinimal {

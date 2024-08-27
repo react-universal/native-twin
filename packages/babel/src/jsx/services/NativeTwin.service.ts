@@ -4,7 +4,7 @@ import * as Layer from 'effect/Layer';
 import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import type { CompilerContext } from '@native-twin/css/jsx';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import { BabelTransformerOptions } from '../models';
+import { BabelTransformerOptions } from '../models/metro.models';
 import { getUserTwinConfig, setupNativeTwin } from '../twin';
 
 export class NativeTwinService extends Context.Tag('babel/twin-service')<

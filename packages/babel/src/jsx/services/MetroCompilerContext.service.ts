@@ -4,15 +4,23 @@ import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
+import * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
 import micromatch from 'micromatch';
 import nodePath from 'node:path';
 import path from 'node:path';
 import type { __Theme__ } from '@native-twin/core';
-import { ChildsSheet, getChildRuntimeEntries } from '@native-twin/css/jsx';
+import {
+  ChildsSheet,
+  getChildRuntimeEntries,
+  RuntimeComponentEntry,
+} from '@native-twin/css/jsx';
 import { TreeNode } from '@native-twin/helpers/tree';
-import { CompiledTree, JSXElementTree } from '..';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../../constants/twin.constants';
+import { addTwinPropsToElement } from '../ast/jsx.builder';
+import { getJSXCompiledTreeRuntime } from '../ast/jsx.maps';
+import { CompiledTree, JSXElementTree } from '../jsx.types';
 import { JSXElementNode } from '../models/JSXElement.model';
 import { BabelTransformerConfig, BabelTransformerFn } from '../models/metro.models';
 import { getElementEntries } from '../twin';
@@ -58,6 +66,13 @@ export class BabelTransformerService extends Context.Tag('babel/TransformerServi
     isNotAllowedPath(path: string): boolean;
     transform(code: string): Promise<any>;
     compileTreeNode(leave: TreeNode<JSXElementTree>): TreeNode<CompiledTree>;
+    transformLeave: (trees: HashMap.HashMap<string, CompiledTree>) => HashMap.HashMap<
+      string,
+      {
+        leave: CompiledTree;
+        runtimeSheet: RuntimeComponentEntry[];
+      }
+    >;
   }
 >() {}
 
@@ -73,6 +88,19 @@ export const BabelTransformerServiceLive = Layer.effect(
           nodePath.resolve(ctx.options.projectRoot, file),
           ctx.allowedPaths,
         );
+      },
+      transformLeave: (trees) => {
+        return HashMap.map(trees, (node) => {
+          const { leave, runtimeSheet } = getJSXCompiledTreeRuntime(
+            node,
+            pipe(
+              Option.fromNullable(node.parentID),
+              Option.flatMap((x) => HashMap.get(trees, x)),
+            ),
+          );
+          addTwinPropsToElement(leave.compiled.node, runtimeSheet, ctx.generate);
+          return { leave, runtimeSheet };
+        });
       },
       compileTreeNode(leave: TreeNode<JSXElementTree>): TreeNode<CompiledTree> {
         const leaveValue = { ...leave.value };

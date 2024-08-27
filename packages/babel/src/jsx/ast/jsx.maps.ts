@@ -6,9 +6,11 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
+import { applyParentEntries } from '@native-twin/css/jsx';
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
 import { mappedComponents, type MappedComponent } from '../../utils/component.maps';
 import {
+  CompiledTree,
   JSXElementNodePath,
   type JSXElementTree,
   type JSXMappedAttribute,
@@ -239,6 +241,7 @@ export const getAstTrees = (ast: ParseResult<t.File>) => {
             path,
             uid,
             source: getJSXElementSource(path),
+            parentID: null,
           });
           getChilds(path, parentTree.root);
           this.trees.push(parentTree);
@@ -266,8 +269,32 @@ const getChilds = (path: JSXElementNodePath, parent: TreeNode<JSXElementTree>) =
       path: child,
       uid: `${parent.value.uid}:${order}`,
       source: getJSXElementSource(child),
+      parentID: parent.value.uid,
     });
     childLeave.parent = parent;
     getChilds(childLeave.value.path, childLeave);
   }
+};
+
+export const getJSXCompiledTreeRuntime = (
+  leave: CompiledTree,
+  parentLeave: Option.Option<CompiledTree>,
+) => {
+  const runtimeSheet = pipe(
+    parentLeave,
+    Option.map((parent) =>
+      applyParentEntries(
+        leave.compiled.entries,
+        parent.compiled.childEntries,
+        leave.order,
+        leave.parentSize,
+      ),
+    ),
+    Option.getOrElse(() => leave.compiled.entries),
+  );
+
+  return {
+    leave,
+    runtimeSheet,
+  };
 };
