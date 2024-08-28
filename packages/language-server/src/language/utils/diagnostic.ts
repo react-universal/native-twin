@@ -2,10 +2,12 @@ import * as ReadOnlyArray from 'effect/Array';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
+import {
+  TwinSheetEntry,
+  TemplateTokenWithText,
+  NativeTwinManagerService,
+} from '@native-twin/language-service';
 import { TwinDocument } from '../../documents/models/twin-document.model';
-import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
-import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
-import { TemplateTokenWithText } from '../../template/models/template-token.model';
 import { isSameRange } from '../../utils/vscode.utils';
 import { DIAGNOSTIC_ERROR_KIND, VscodeDiagnosticItem } from '../models/diagnostic.model';
 

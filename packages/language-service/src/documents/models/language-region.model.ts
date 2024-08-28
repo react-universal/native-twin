@@ -10,7 +10,7 @@ import { parseTemplate } from '../../native-twin/native-twin.parser';
 
 export class DocumentLanguageRegion implements Equal.Equal {
   private constructor(
-    readonly range: vscode.Range,
+    readonly range: VSCDocument.Range,
     readonly offset: {
       start: number;
       end: number;

@@ -1,9 +1,9 @@
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
-import { NativeTwinManagerService } from '../../native-twin/native-twin.service';
-import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
-import { TemplateTokenData } from '../../template/models/template-token-data.model';
-import { TemplateTokenWithText } from '../../template/models/template-token.model';
+import { NativeTwinManagerService } from '@native-twin/language-service';
+import { TwinRuleCompletion } from '@native-twin/language-service';
+import { TemplateTokenData } from '@native-twin/language-service';
+import { TemplateTokenWithText } from '@native-twin/language-service';
 import { getFlattenTemplateToken } from './language.utils';
 
 export const getCompletionsForTokens = (

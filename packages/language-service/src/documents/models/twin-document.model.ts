@@ -2,43 +2,63 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
-import { Position, Range } from 'vscode-languageserver-types';
-import type { TemplateTokenWithText } from '../../template/models/template-token.model';
+import type { TemplateTokenWithText } from '../../native-twin/models/template-token.model';
 import { getDocumentLanguageLocations } from '../utils/document.ast';
 import { DocumentLanguageRegion } from './language-region.model';
 
-export class TwinDocument implements Equal.Equal {
-  private readonly textDocument: VSCDocument.TextDocument;
-  readonly config: { tags: string[]; attributes: string[] };
-
-  constructor(document: VSCDocument.TextDocument, config: { tags: string[]; attributes: string[] }) {
-    this.textDocument = document;
-    this.config = config;
-  }
+export abstract class DocumentClass implements Equal.Equal {
+  constructor(
+    readonly textDocument: VSCDocument.TextDocument,
+    readonly config: { tags: string[]; attributes: string[] },
+  ) {}
+  abstract offsetToPosition(offset: number): VSCDocument.Position;
+  abstract positionToOffset(position: VSCDocument.Position): number;
+  abstract getText(range: VSCDocument.Range | undefined): string;
 
   get uri() {
     return this.textDocument.uri;
+  }
+
+  [Equal.symbol](that: unknown) {
+    return (
+      that instanceof DocumentClass &&
+      that.textDocument.getText() === this.textDocument.getText() &&
+      this.textDocument.uri === that.textDocument.uri
+    );
+  }
+
+  [Hash.symbol](): number {
+    return Hash.hash(this.textDocument.getText());
+  }
+}
+
+export class TwinDocument extends DocumentClass {
+  constructor(
+    document: VSCDocument.TextDocument,
+    config: { tags: string[]; attributes: string[] },
+  ) {
+    super(document, config);
   }
 
   offsetToPosition(offset: number) {
     return this.textDocument.positionAt(offset);
   }
 
-  positionToOffset(position: Position) {
+  positionToOffset(position: VSCDocument.Position) {
     return this.textDocument.offsetAt(position);
   }
 
-  getText(range: Range | undefined = undefined) {
+  getText(range: VSCDocument.Range | undefined = undefined) {
     return this.textDocument.getText(range);
   }
 
   getLanguageRegions() {
-    return getDocumentLanguageLocations(this.textDocument.getText(), this.config).map(
-      (x) => DocumentLanguageRegion.create(this.textDocument, x),
+    return getDocumentLanguageLocations(this.getText(undefined), this.config).map((x) =>
+      DocumentLanguageRegion.create(this.textDocument, x),
     );
   }
 
-  getTemplateAtPosition(position: Position) {
+  getTemplateAtPosition(position: VSCDocument.Position) {
     const positionOffset = this.positionToOffset(position);
     return Option.fromNullable(
       this.getLanguageRegions().find(
@@ -49,8 +69,8 @@ export class TwinDocument implements Equal.Equal {
 
   getRangeAtPosition(
     part: Pick<TemplateTokenWithText, 'loc' | 'text'>,
-    templateRange: Range,
-  ) {
+    templateRange: VSCDocument.Range,
+  ): VSCDocument.Range {
     const realStart = this.textDocument.positionAt(
       part.loc.start + templateRange.start.character,
     );
@@ -58,18 +78,9 @@ export class TwinDocument implements Equal.Equal {
       ...realStart,
       character: realStart.character + part.text.length,
     };
-    return Range.create(realStart, realEnd);
-  }
-
-  [Equal.symbol](that: unknown) {
-    return (
-      that instanceof TwinDocument &&
-      that.textDocument.getText() === this.textDocument.getText() &&
-      this.textDocument.uri === that.textDocument.uri
-    );
-  }
-
-  [Hash.symbol](): number {
-    return Hash.hash(this.textDocument.getText());
+    return {
+      start: realStart,
+      end: realEnd,
+    };
   }
 }

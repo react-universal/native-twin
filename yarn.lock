@@ -6267,6 +6267,7 @@ __metadata:
   dependencies:
     "@ctrl/tinycolor": "npm:^4.1.0"
     "@native-twin/core": "workspace:*"
+    "@native-twin/language-service": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/cssbeautify": "npm:^0.3.5"
     "@types/showdown": "npm:^2.0.6"
@@ -6291,7 +6292,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@native-twin/language-service@workspace:packages/language-service":
+"@native-twin/language-service@workspace:*, @native-twin/language-service@workspace:packages/language-service":
   version: 0.0.0-use.local
   resolution: "@native-twin/language-service@workspace:packages/language-service"
   dependencies:

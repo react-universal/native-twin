@@ -1,6 +1,6 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import { TemplateTokenData } from '../../template/models/template-token-data.model';
+import { TemplateTokenData } from '@native-twin/language-service';
 
 export class ClassNameToken implements Equal.Equal {
   readonly token: TemplateTokenData;

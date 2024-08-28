@@ -1,7 +1,7 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
-import { NativeTwinManagerService } from '../native-twin/native-twin.service';
+import { NativeTwinManagerService }from '@native-twin/language-service';
 import { ConfigManagerService } from './client.config';
 
 export const initializeConnection = (

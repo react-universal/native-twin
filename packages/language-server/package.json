@@ -30,6 +30,7 @@
   "dependencies": {
     "@ctrl/tinycolor": "^4.1.0",
     "@native-twin/core": "workspace:*",
+    "@native-twin/language-service": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "^2.9.3",
     "cssbeautify": "0.3.1",

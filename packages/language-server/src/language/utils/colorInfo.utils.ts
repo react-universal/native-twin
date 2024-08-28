@@ -3,10 +3,12 @@ import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
+import {
+  TemplateTokenData,
+  NativeTwinManager,
+  TwinRuleCompletion,
+} from '@native-twin/language-service';
 import { TwinDocument } from '../../documents/models/twin-document.model';
-import { NativeTwinManager } from '../../native-twin/native-twin.service';
-import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
-import { TemplateTokenData } from '../../template/models/template-token-data.model';
 
 export const getDocumentTemplatesColors = (
   twinService: NativeTwinManager,
@@ -46,10 +48,7 @@ const templateTokenToColorInfo = (
 };
 
 /** File private */
-const completionRuleToColorInfo = (
-  rule: TwinRuleCompletion,
-  range: vscode.Range,
-) => ({
+const completionRuleToColorInfo = (rule: TwinRuleCompletion, range: vscode.Range) => ({
   range: range,
   color: toVsCodeColor(new TinyColor(rule.completion.declarationValue).toRgb()),
 });

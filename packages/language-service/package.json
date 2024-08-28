@@ -16,9 +16,9 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "build:esbuild:watch": "node esbuild.mjs --watch",
     "build:tsc": "tsc -p tsconfig.build.json",
-    "build:tsc:watch": "tsc -p tsconfig.build.json --watch",
-    "build:watch": "node esbuild.mjs --watch",
+    "build:watch": "tsc -p tsconfig.build.json --watch",
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "jest --passWithNoTests --testTimeout 100000",

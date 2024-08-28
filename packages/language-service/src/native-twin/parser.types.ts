@@ -36,6 +36,13 @@ export interface LocatedSheetEntry extends SheetEntry {
   };
 }
 
+export interface LocatedSheetEntry extends SheetEntry {
+  loc: {
+    start: number;
+    end: number;
+  };
+}
+
 export interface LocatedGroupTokenWithText {
   type: 'GROUP';
   start: number;

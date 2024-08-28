@@ -1,9 +1,64 @@
+import * as ReadonlyArray from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import * as vscode from 'vscode-languageserver-types';
+import type { Range } from 'vscode-languageserver-textdocument';
 import { RuntimeTW } from '@native-twin/core';
 import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
-import { TemplateTokenWithText } from './template-token.model';
+import {
+  LocatedGroupToken,
+  LocatedGroupTokenWithText,
+  TemplateToken,
+} from '../parser.types';
+import { getFlattenTemplateToken } from '../utils/native-twin.utils';
+
+export class TemplateTokenWithText implements Equal.Equal {
+  readonly token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText;
+  loc: {
+    readonly start: number;
+    readonly end: number;
+  };
+  bodyLoc: {
+    readonly start: number;
+    readonly end: number;
+  };
+  text: string;
+  templateStarts: number;
+
+  get flattenToken(): TemplateTokenData[] {
+    return ReadonlyArray.dedupe(getFlattenTemplateToken(this));
+  }
+
+  constructor(
+    token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText,
+    text: string,
+    templateStarts: number,
+  ) {
+    this.templateStarts = templateStarts;
+    this.loc = {
+      end: token.end,
+      start: token.start,
+    };
+    this.bodyLoc = {
+      end: token.end + templateStarts,
+      start: token.start + templateStarts,
+    };
+    this.text = text;
+    this.token = token;
+  }
+
+  [Equal.symbol](that: unknown): boolean {
+    return (
+      that instanceof TemplateTokenWithText &&
+      this.text === that.text &&
+      this.bodyLoc.start === that.bodyLoc.start &&
+      this.bodyLoc.end === that.bodyLoc.end
+    );
+  }
+
+  [Hash.symbol]() {
+    return Hash.array([this.text, this.bodyLoc.start, this.bodyLoc.end]);
+  }
+}
 
 export class TemplateTokenData implements Equal.Equal {
   private _entries: TwinSheetEntry[] | undefined = undefined;
@@ -50,7 +105,7 @@ export class TemplateTokenData implements Equal.Equal {
     return this.token.text;
   }
 
-  adjustTextInsert(insertText: string, range: vscode.Range) {
+  adjustTextInsert(insertText: string, range: Range) {
     if (this.base) {
       if (this.base.token.type === 'CLASS_NAME') {
         insertText = insertText.replace(`${this.base.token.value.n}-`, '');
@@ -67,7 +122,7 @@ export class TemplateTokenData implements Equal.Equal {
     return { insertText, range };
   }
 
-  adjustColorInfo(range: vscode.Range) {
+  adjustColorInfo(range: Range) {
     let className = this.token.text;
 
     if (this.base) {

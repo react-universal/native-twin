@@ -4,7 +4,7 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { DocumentsService } from '../documents/documents.service';
-import { NativeTwinManagerService } from '../native-twin/native-twin.service';
+import { NativeTwinManagerService }from '@native-twin/language-service';
 import { VscodeDiagnosticItem } from './models/diagnostic.model';
 import { diagnosticTokensToDiagnosticItems } from './utils/diagnostic';
 

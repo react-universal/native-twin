@@ -1,7 +1,7 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
-import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
+import { TwinSheetEntry } from '@native-twin/language-service';
 import { isSameRange } from '../../utils/vscode.utils';
 
 export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {

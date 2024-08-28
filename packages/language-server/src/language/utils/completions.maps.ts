@@ -4,10 +4,10 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import { FinalSheet } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
+import { TwinStore } from '@native-twin/language-service';
+import { TwinRuleCompletion } from '@native-twin/language-service';
+import { TemplateTokenData } from '@native-twin/language-service';
 import { TwinDocument } from '../../documents/models/twin-document.model';
-import { TwinStore } from '../../native-twin/native-twin.types';
-import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
-import { TemplateTokenData } from '../../template/models/template-token-data.model';
 import { VscodeCompletionItem } from '../models/completion.model';
 import { compareTwinRuleWithClassName } from './completion.ap';
 import { getDocumentationMarkdown } from './language.utils';
@@ -62,7 +62,7 @@ export const completionRulesToEntries = (
     //   match;
     //   if (token.value.m) {
     //     if (token.value.m.value === 'NONE') {
-          
+
     //     }
     //   }
     // }

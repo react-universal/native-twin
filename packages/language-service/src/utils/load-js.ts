@@ -1,3 +1,4 @@
+import * as Option from 'effect/Option';
 import jitiFactory from 'jiti';
 import { transform } from 'sucrase';
 
@@ -17,7 +18,7 @@ function lazyJiti() {
   );
 }
 
-export function requireJS(path: string): any {
+function requireJSThrowable(path: string): any {
   const config = (function () {
     try {
       return path ? require(path) : {};
@@ -28,3 +29,5 @@ export function requireJS(path: string): any {
 
   return config.default ?? config;
 }
+
+export const requireJS = Option.liftThrowable(requireJSThrowable);

@@ -7,7 +7,7 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver/node';
 import { sheetEntriesToCss } from '@native-twin/css';
 import { DocumentsService } from '../documents/documents.service';
-import { NativeTwinManagerService } from '../native-twin/native-twin.service';
+import { NativeTwinManagerService }from '@native-twin/language-service';
 import { createStyledContext, getSheetEntryStyles } from '../utils/sheet.utils';
 import { VscodeCompletionItem } from './models/completion.model';
 import { getCompletionsForTokens } from './utils/completion.pipes';

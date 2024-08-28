@@ -25,16 +25,16 @@
       "path": "../packages/native-twin"
     },
     {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/styled",
-      "path": "../packages/styled"
-    },
-    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/language-service",
+      "path": "../packages/language-service"
+    },
+    {
+      "name": "📦 @lib/language-server",
+      "path": "../packages/language-server"
     },
     {
       "name": "📦 @lib/builder",

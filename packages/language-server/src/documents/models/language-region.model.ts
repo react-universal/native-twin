@@ -6,7 +6,7 @@ import * as Hash from 'effect/Hash';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver/node';
 import { RuntimeTW } from '@native-twin/core';
-import { parseTemplate } from '../../native-twin/native-twin.parser';
+import { parseTemplate } from '@native-twin/language-service';
 
 export class DocumentLanguageRegion implements Equal.Equal {
   private constructor(

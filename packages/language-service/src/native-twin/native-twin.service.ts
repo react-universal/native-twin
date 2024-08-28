@@ -1,4 +1,8 @@
+import * as Context from 'effect/Context';
+import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
+import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
 import {
   createTailwind,
   createThemeContext,
@@ -8,9 +12,10 @@ import {
   tx,
 } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
+import { presetTailwind } from '@native-twin/preset-tailwind';
 import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
 import { requireJS } from '../utils/load-js';
-import type {
+import {
   InternalTwFn,
   InternalTwinConfig,
   InternalTwinThemeContext,
@@ -20,7 +25,7 @@ import type {
 } from './native-twin.types';
 import { createTwinStore } from './utils/native-twin.utils';
 
-export class NativeTwinManagerService {
+export class NativeTwinManager {
   tw: InternalTwFn;
   context: InternalTwinThemeContext;
   userConfig: InternalTwinConfig = DEFAULT_TWIN_CONFIG;
@@ -65,15 +70,23 @@ export class NativeTwinManagerService {
   }
 
   private getUserConfig(filePath: string) {
-    try {
-      const file = requireJS(filePath);
-      if (!file) {
-        throw new Error('Cant resolve user config at path ' + filePath);
-      }
-
-      return defineConfig(file);
-    } catch {
-      throw new Error('Cant resolve user config');
-    }
+    return pipe(
+      Option.fromNullable(filePath),
+      Option.flatMap(requireJS),
+      Option.map(defineConfig),
+      Option.getOrElse(() =>
+        defineConfig({
+          content: [''],
+          presets: [presetTailwind()],
+        }),
+      ),
+    );
   }
+}
+
+export class NativeTwinManagerService extends Context.Tag('NativeTwinManager')<
+  NativeTwinManagerService,
+  NativeTwinManager
+>() {
+  static Live = Layer.succeed(NativeTwinManagerService, new NativeTwinManager());
 }

@@ -5,7 +5,7 @@ import { initializeConnection } from './connection/connection.handlers';
 import { ConnectionService } from './connection/connection.service';
 import { DocumentsService } from './documents/documents.service';
 import { LanguageServiceLive, createLanguageService } from './language';
-import { NativeTwinManagerService } from './native-twin/native-twin.service';
+import { NativeTwinManagerService } from '@native-twin/language-service';
 import { sendDebugLog } from './services/logger.service';
 
 const MainLive = Layer.mergeAll(ConnectionService.Live, LanguageServiceLive).pipe(
