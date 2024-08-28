@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dark mode 1`] = `
+<View
+  onTouchEnd={[Function]}
+  onTouchStart={[Function]}
+  style={
+    {
+      "backgroundColor": "rgba(248,113,113,1)",
+    }
+  }
+  testID="native-twin-element"
+>
+  <Text
+    style={
+      {
+        "color": "rgba(255,255,255,1)",
+        "fontSize": 18,
+      }
+    }
+  >
+    Sample Text
+  </Text>
+</View>
+`;
+
+exports[`normal component 1`] = `
+<View
+  onTouchEnd={[Function]}
+  onTouchStart={[Function]}
+  style={
+    {
+      "backgroundColor": "rgba(0,0,0,1)",
+    }
+  }
+  testID="native-twin-element"
+>
+  <Text
+    style={
+      {
+        "color": "rgba(255,255,255,1)",
+        "fontSize": 18,
+      }
+    }
+  >
+    Sample Text
+  </Text>
+</View>
+`;

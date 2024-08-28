@@ -1,6 +1,6 @@
 /** @type {import("jest").Config} */
 module.exports = {
-  preset: 'jest-expo/ios',
+  preset: 'jest-expo',
   setupFilesAfterEnv: [
     './src/testing-library/setup.ts',
     './src/testing-library/setupAfterEnv.ts',

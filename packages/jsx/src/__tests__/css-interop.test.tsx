@@ -4,8 +4,7 @@ import { act } from 'react-test-renderer';
 import { defineConfig, setup } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 import { colorScheme } from '../store/observables/colorScheme.obs';
-import { createStylableComponent } from '../styled';
-import { resetComponents, resetStyles } from '../testing-library';
+import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
 
 const testID = 'native-twin-element';
 
@@ -19,8 +18,8 @@ beforeEach(() => {
 });
 
 test('normal component', () => {
-  const TwinView = createStylableComponent(View, { className: 'style' });
-  const TwinText = createStylableComponent(Text, { className: 'style' });
+  const TwinView = createMockComponent(View, { className: 'style' });
+  const TwinText = createMockComponent(Text, { className: 'style' });
   const tree = render(
     <TwinView testID={testID} className='bg-black hover:bg-white'>
       <TwinText className='text(white lg)'>Sample Text</TwinText>
@@ -30,8 +29,8 @@ test('normal component', () => {
 });
 
 test('dark mode', () => {
-  const TwinView = createStylableComponent(View, { className: 'style' });
-  const TwinText = createStylableComponent(Text, { className: 'style' });
+  const TwinView = createMockComponent(View, { className: 'style' });
+  const TwinText = createMockComponent(Text, { className: 'style' });
   act(() => colorScheme.set('dark'));
 
   const tree = render(
@@ -44,7 +43,7 @@ test('dark mode', () => {
 });
 
 test('Interactions', async () => {
-  const TwinPressable = createStylableComponent(View, { className: 'style' });
+  const TwinPressable = createMockComponent(View, { className: 'style' });
 
   const tree = render(
     <TwinPressable testID={testID} className='bg-black hover:(bg-gray-200)' />,
@@ -78,7 +77,7 @@ test('Interactions', async () => {
 // });
 
 test('multiple mapping', () => {
-  const A = createStylableComponent(View, { a: 'styleA', b: 'styleB' });
+  const A = createMockComponent(View, { a: 'styleA', b: 'styleB' });
 
   render(<A testID={testID} a='bg-black' b='text-white' />);
 

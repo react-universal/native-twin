@@ -1,3 +1,4 @@
+import { ComponentProps, ComponentType, forwardRef } from 'react';
 import { render as tlRender } from '@testing-library/react-native';
 import * as JSX from 'react/jsx-runtime';
 import { setup } from '@native-twin/core';
@@ -5,7 +6,7 @@ import type { CompleteStyle } from '@native-twin/css';
 import '../components';
 import wrapJSX from '../jsx-wrapper';
 import { StyleSheet } from '../sheet/StyleSheet';
-import { stylizedComponents } from '../styled';
+import { createStylableComponent, stylizedComponents } from '../styled';
 import type {
   StylableComponentConfigOptions,
   ReactComponent,
@@ -13,7 +14,6 @@ import type {
 } from '../types/styled.types';
 import { INTERNAL_RESET } from '../utils/constants';
 import tailwindConfig from './tailwind.config';
-import { ComponentProps, ComponentType, forwardRef } from 'react';
 
 setup(tailwindConfig);
 
@@ -52,9 +52,11 @@ export const createMockComponent = <
     return renderJSX(Component, props, '', false, undefined, undefined);
   });
 
-  return Object.assign(forwardRef(mock), { mock }) as unknown as ComponentType<
-    ComponentProps<T> & NativeTwinGeneratedProps<M>
-  > & { mock: typeof mock };
+  return Object.assign(createStylableComponent(forwardRef(mock), mapping), {
+    mock,
+  }) as unknown as ComponentType<ComponentProps<T> & NativeTwinGeneratedProps<M>> & {
+    mock: typeof mock;
+  };
 };
 
 // export const createRemappedComponent = <
