@@ -53,7 +53,7 @@ export const TreeNodeView = ({
         fontSize={10}
         className='font-inter-medium'
       >
-        {`${node.data.node} #${index}`}
+        {`${node.data.jsxElementName} #${index}`}
       </Text>
       {showDetails && (
         <G fontFamily='serif'>

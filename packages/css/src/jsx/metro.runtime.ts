@@ -15,11 +15,12 @@ export interface CompilerContext {
 }
 
 export interface RawJSXElementTreeNode {
-  node: string;
+  jsxElementName: string;
   order: number;
-  parentNode: RawJSXElementTreeNode | null;
-  childs: RawJSXElementTreeNode[];
+  parentNode: null;
   id: string;
   filename: string;
-  source: string
+  childs: RawJSXElementTreeNode[];
+  source: string;
+  importKind: string;
 }

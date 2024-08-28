@@ -15,7 +15,6 @@ import {
   type JSXMappedAttribute,
 } from '../jsx.types';
 import { JSXElementNode } from '../models';
-// import { JSXElementNode } from '../models/JSXElement.model';
 import * as jsxPredicates from './jsx.predicates';
 
 export const getJSXElementSource = (path: JSXElementNodePath) =>
@@ -172,57 +171,12 @@ export const getJSXElementName = (
   return Option.none();
 };
 
-// export const visitBabelJSXElementParents = (
-//   ast: ParseResult<t.File>,
-//   filePath: string,
-// ) => {
-//   const parents = new Set<JSXElementNode>();
-//   traverse(ast, {
-//     JSXElement(path) {
-//       // const uid = path.scope.generateUidIdentifier(filePath);
-//       parents.add(new JSXElementNode(path.node, 0, filePath));
-//       path.skip();
-//     },
-//   });
-//   return HashSet.fromIterable(parents);
-// };
-
-// export const getBabelJSXElementChilds = (
-//   node: t.JSXElement,
-//   parent: JSXElementNode | null,
-//   filename: string,
-// ) => {
-//   if (node.selfClosing) return HashSet.empty();
-//   return pipe(
-//     node.children,
-//     RA.filterMap((x) => pipe(x, Option.liftPredicate(t.isJSXElement))),
-//     RA.map((x, i) => new JSXElementNode(x, i, filename)),
-//     HashSet.fromIterable,
-//   );
-// };
-
 export const getBabelJSXElementChildsCount = (node: t.JSXElement) =>
   pipe(
     node.children,
     RA.filterMap((x) => pipe(x, Option.liftPredicate(t.isJSXElement))),
     RA.length,
   );
-
-// export function createJSXElementChilds(
-//   value: HashSet.HashSet<JSXElementNode>,
-// ): HashSet.HashSet<JSXElementNode> {
-//   return pipe(
-//     value,
-//     HashSet.reduce(HashSet.empty<JSXElementNode>(), (prev, current) => {
-//       return pipe(
-//         getBabelJSXElementChilds(current.path, current, current.filename),
-//         // createJSXElementChilds,
-//         HashSet.add(current),
-//         HashSet.union(prev),
-//       );
-//     }),
-//   );
-// }
 
 export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
   return Effect.async<Tree<JSXElementTree>[]>((resolve) => {
@@ -240,7 +194,7 @@ export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
           const parentTree = new Tree<JSXElementTree>({
             order: -1,
             babelNode: path.node,
-            uid: `${hash}#${uid}`,
+            uid: `${hash}__:${uid}`,
             source: getJSXElementSource(path),
             parentID: null,
           });

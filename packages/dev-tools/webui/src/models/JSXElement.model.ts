@@ -16,7 +16,7 @@ export class JSXElementNode implements Equal.Equal {
     this.parent = params.parentNode;
 
     this.id = params.id;
-    this.node = params.node;
+    this.node = params.jsxElementName;
   }
 
   [Hash.symbol](): number {

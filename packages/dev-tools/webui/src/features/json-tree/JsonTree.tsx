@@ -59,7 +59,7 @@ export default function JsonTreeSvgView({ node }: JsonTreeSvgViewProps) {
           ))}
           {nodes.map((node, i) => (
             <TreeNodeView
-              key={`node-${node.data.node}-${i}`}
+              key={`node-${node.data.jsxElementName}-${i}`}
               index={i}
               node={node}
               origin={treeStruct.calcNodeOrigin(node)}

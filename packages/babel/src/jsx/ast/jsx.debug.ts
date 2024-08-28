@@ -1,31 +1,32 @@
-import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
-import { TreeNode } from '@native-twin/helpers/build/tree';
-import { JSXElementNode } from '../models';
+import { RuntimeTreeNode } from '../jsx.types';
 
 export const elementNodeToTree = (
-  leave: TreeNode<JSXElementNode>,
+  treeNode: RuntimeTreeNode,
   filename: string,
-  path: NodePath<t.JSXElement>,
 ): t.ObjectExpression => {
-  const { value, children } = leave;
-
   const childs = pipe(
-    children,
+    treeNode.childs,
     RA.fromIterable,
-    RA.map((x) => elementNodeToTree(x, filename, path)),
+    RA.map((x) => elementNodeToTree(x, filename)),
   );
   const props = [
-    t.objectProperty(t.identifier('node'), t.stringLiteral(value.elementName)),
-    t.objectProperty(t.identifier('order'), t.numericLiteral(value.order)),
+    t.objectProperty(t.identifier('jsxElementName'), t.stringLiteral(treeNode.leave.elementName)),
+    t.objectProperty(t.identifier('order'), t.numericLiteral(treeNode.leave.order)),
     t.objectProperty(t.identifier('parentNode'), t.nullLiteral()),
     t.objectProperty(t.identifier('childs'), t.arrayExpression(childs)),
-    t.objectProperty(t.identifier('id'), t.stringLiteral(value.id)),
+    t.objectProperty(t.identifier('id'), t.stringLiteral(treeNode.leave.id)),
     t.objectProperty(t.identifier('filename'), t.stringLiteral(filename)),
-    t.objectProperty(t.identifier('source'), t.stringLiteral(value.source.source)),
-    t.objectProperty(t.identifier('importKind'), t.stringLiteral(value.source.kind)),
+    t.objectProperty(
+      t.identifier('source'),
+      t.stringLiteral(treeNode.leave.source.source),
+    ),
+    t.objectProperty(
+      t.identifier('importKind'),
+      t.stringLiteral(treeNode.leave.source.kind),
+    ),
   ];
 
   return t.objectExpression(props);
