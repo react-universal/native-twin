@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { useLoadFonts } from '@/features/app/useLoadFonts';
+import { useLoadFonts } from '../hooks/useLoadFonts';
 import { Slot } from 'expo-router';
 
 import { install } from '@native-twin/core';

@@ -44,6 +44,7 @@ export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-c
           cssOutput,
           code: src,
           filename,
+          inputCss: options.customTransformOptions.inputCss,
           allowedPaths: twin.config.content.map((x) =>
             path.resolve(options.projectRoot, path.join(x)),
           ),
@@ -57,6 +58,7 @@ export class BabelTransformerService extends Context.Tag('babel/TransformerServi
   BabelTransformerService,
   {
     isNotAllowedPath(path: string): boolean;
+    isCssFile: (filePath: string) => boolean;
     transform(code: string): Promise<any>;
     transformLeave: (trees: HashMap.HashMap<string, JSXElementNode>) => HashMap.HashMap<
       string,
@@ -79,6 +81,9 @@ export const BabelTransformerServiceLive = Layer.effect(
           nodePath.resolve(ctx.options.projectRoot, file),
           ctx.allowedPaths,
         );
+      },
+      isCssFile: (filePath) => {
+        return /\.css$/.test(filePath);
       },
       transformLeave: (trees) => {
         return HashMap.map(trees, (node) => {

@@ -43,12 +43,10 @@ export const babelTraverseCode = (code: string) => {
       {
         onFalse: () =>
           Effect.sync(() => {
-            console.log('WEB_PLATFORM_AVOID_TRANSFORM');
             return HashMap.empty<string, Omit<RuntimeTreeNode, 'childs'>>();
           }),
         onTrue: () =>
           Effect.sync(() => {
-            console.log('TRANSFORM_COMPONENTS');
             return transformer.transformLeave(registry);
           }),
       },

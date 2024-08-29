@@ -12,6 +12,7 @@ module.exports = function (api) {
         '@native-twin/babel/babel',
         {
           twinConfigPath: './tailwind.config.ts',
+          inputCss: './src/app/twin.css',
         },
       ],
     ],

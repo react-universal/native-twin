@@ -13857,6 +13857,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-app-web@workspace:apps/expo-router":
+  version: 0.0.0-use.local
+  resolution: "expo-app-web@workspace:apps/expo-router"
+  dependencies:
+    "@native-twin/babel": "workspace:*"
+    "@native-twin/core": "workspace:*"
+    "@native-twin/dev-tools": "workspace:*"
+    "@native-twin/jsx": "workspace:*"
+    "@native-twin/metro": "workspace:*"
+    "@native-twin/preset-tailwind": "workspace:*"
+    "@native-twin/styled": "workspace:*"
+    "@types/react": "npm:~18.2.79"
+    "@types/react-dom": "npm:~18.2.25"
+    expo: "npm:^51.0.28"
+    expo-build-properties: "npm:~0.12.5"
+    expo-font: "npm:~12.0.9"
+    expo-image: "npm:~1.12.13"
+    expo-status-bar: "npm:~1.12.1"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-native: "npm:0.74.5"
+    react-native-gesture-handler: "npm:~2.16.1"
+    react-native-pager-view: "npm:6.3.0"
+    react-native-reanimated: "npm:~3.10.1"
+    react-native-svg: "npm:15.2.0"
+    react-native-tab-view: "npm:^3.5.2"
+    react-native-uuid: "npm:^2.0.1"
+    react-native-view-shot: "npm:3.8.0"
+    react-native-web: "npm:~0.19.10"
+    sharp-cli: "npm:2.1.0"
+  languageName: unknown
+  linkType: soft
+
 "expo-app@workspace:apps/expo-app":
   version: 0.0.0-use.local
   resolution: "expo-app@workspace:apps/expo-app"

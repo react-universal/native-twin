@@ -1,13 +1,13 @@
 import { useMemo, useSyncExternalStore } from 'react';
 import { View } from 'react-native';
 import { PLUGIN_EVENTS } from '@/constants/event.constants';
-import { useClientSubscription } from '@/features/app/useDevToolsClient';
-import { useLoadFonts } from '@/features/app/useLoadFonts';
 import {
   componentsStore,
   getComponentsSize,
   setTreeComponent,
 } from '@/features/app/store/components.store';
+import { useClientSubscription } from '@/features/app/useDevToolsClient';
+import { useLoadFonts } from '@/features/app/useLoadFonts';
 import {
   createColumnHelper,
   useReactTable,
@@ -28,7 +28,10 @@ export function HomeScreen() {
   const columnHelper = createColumnHelper<RawJSXElementTreeNode>();
   const componentsSize = useSyncExternalStore(
     componentsStore.subscribe,
-    () => getComponentsSize(),
+    () => {
+      console.log('SIZE: ', getComponentsSize());
+      return getComponentsSize();
+    },
     () => getComponentsSize(),
   );
   const componentsData = useMemo(
@@ -70,7 +73,7 @@ export function HomeScreen() {
   });
 
   useClientSubscription<RawJSXElementTreeNode>(PLUGIN_EVENTS.receiveTree, (_, tree) => {
-    // console.log('TREE_RECEIVED');
+    console.log('TREE_RECEIVED', tree);
     setTreeComponent(tree);
   });
   if (!loaded) return null;
@@ -135,7 +138,7 @@ const TableLink = ({
   >
     <Link
       href={{
-        pathname: `/file-tree/${cell.getValue()}`,
+        pathname: `/file-tree/${cell.row.original.id}`,
         params: {
           id: cell.row.original.id,
           order: cell.row.original.order,

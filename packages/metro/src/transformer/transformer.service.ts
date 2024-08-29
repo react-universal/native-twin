@@ -18,6 +18,7 @@ export class MetroTransformerContext extends Context.Tag('MetroTransformerContex
     twin: RuntimeTW;
     twinConfig: TailwindConfig<__Theme__ & TailwindPresetTheme>;
     allowedPaths: string[];
+    cssInput: string;
   }
 >() {}
 

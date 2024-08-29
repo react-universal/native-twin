@@ -15,6 +15,7 @@ export interface NativeTwinTransformerOpts extends JsTransformerConfig {
   allowedFiles: string[];
   tailwindConfigPath: string;
   outputDir: string;
+  inputCss: string;
 }
 
 export type TwinTransformFn = (
@@ -26,11 +27,13 @@ export type TwinTransformFn = (
 ) => Promise<TransformResponse>;
 
 export interface BabelTransformerOptions {
-  // customTransformOptions: {
-  //   engine: string;
-  //   bytecode: boolean;
-  //   routerRoot: string;
-  // };
+  customTransformOptions: {
+    engine: string;
+    bytecode: boolean;
+    routerRoot: string;
+    inputCss: string;
+  };
+  inputCss: string;
   dev: boolean;
   hot: boolean;
   // inlinePlatform: boolean;
@@ -53,6 +56,7 @@ export interface BabelTransformerConfig {
   options: BabelTransformerOptions;
   filename: string;
   cssOutput: string;
+  inputCss: string;
   code: string;
   
   allowedPaths: string[];

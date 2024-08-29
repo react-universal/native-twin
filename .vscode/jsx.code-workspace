@@ -39,6 +39,10 @@
     {
       "name": "@apps/expo",
       "path": "../apps/expo-app"
+    },
+    {
+      "name": "@apps/expo-router",
+      "path": "../apps/expo-router"
     }
   ],
   "settings": {
