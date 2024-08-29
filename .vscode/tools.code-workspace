@@ -9,8 +9,8 @@
       "path": "../packages/babel"
     },
     {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
     },
     {
       "name": "📦 @lib/dev-tools-web",
@@ -43,6 +43,10 @@
     {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
+    },
+    {
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
     },
     {
       "name": "@apps/expo",

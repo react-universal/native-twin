@@ -208,11 +208,12 @@ const GroupInteractionPseudoSelectors = [
   'group-active',
 ] as const;
 
-const AppearancePseudoSelectors = ['dark'] as const;
+const AppearancePseudoSelectors = ['dark', 'light'] as const;
 
 const ChildPseudoSelectors = ['last', 'first', 'even', 'odd'] as const;
+const CssChildPseudoSelectors = ['last-child', 'first-child', 'even', 'odd'] as const;
 
-const PlatformPseudoSelectors = [':native', ':ios', ':android', ':web'] as const;
+const PlatformPseudoSelectors = ['native', 'ios', 'android', 'web'] as const;
 
 const OwnSheetSelectors = ['base', 'pointer', 'group', 'dark'] as const;
 export {
@@ -222,6 +223,7 @@ export {
   ChildPseudoSelectors,
   GroupInteractionPseudoSelectors,
   OwnSheetSelectors,
+  CssChildPseudoSelectors,
 };
 
 export const simplePseudoMap = {

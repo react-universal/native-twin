@@ -8,6 +8,12 @@ module.exports = function (api) {
           jsxImportSource: '@native-twin/jsx',
         },
       ],
+      [
+        '@native-twin/babel/babel',
+        {
+          twinConfigPath: './tailwind.config.ts',
+        },
+      ],
     ],
     plugins: ['react-native-reanimated/plugin'],
   };

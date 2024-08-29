@@ -23,24 +23,45 @@ export const babelTraverseCode = (code: string) => {
   return Effect.gen(function* () {
     const transformer = yield* BabelTransformerService;
     const ctx = yield* MetroCompilerContext;
+
     const ast = createBabelAST(code);
     const babelTrees = yield* getAstTrees(ast, ctx.filename);
-    const trees = yield* pipe(
+    const registry = yield* pipe(
       Stream.fromIterable(babelTrees),
       Stream.mapEffect(extractSheetsFromTree),
       Stream.map(HashMap.fromIterable),
       Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) => {
         return pipe(prev, HashMap.union(current));
       }),
-      Effect.map(transformer.transformLeave),
+    );
+
+    const trees: HashMap.HashMap<
+      string,
+      Omit<RuntimeTreeNode, 'childs'>
+    > = yield* Effect.if(
+      Effect.sync(() => ctx.platform !== 'web'),
+      {
+        onFalse: () =>
+          Effect.sync(() => {
+            console.log('WEB_PLATFORM_AVOID_TRANSFORM');
+            return HashMap.empty<string, Omit<RuntimeTreeNode, 'childs'>>();
+          }),
+        onTrue: () =>
+          Effect.sync(() => {
+            console.log('TRANSFORM_COMPONENTS');
+            return transformer.transformLeave(registry);
+          }),
+      },
     );
 
     const devToolsTree = pipe(
       createDevToolsTree(trees, babelTrees),
       RA.fromIterable,
       RA.map((x) => {
-        const elementTree = elementNodeToTree(x, x.leave.filename);
-        addJsxExpressionAttribute(x.leave.path, '_twinComponentTree', elementTree);
+        if (ctx.platform !== 'web') {
+          const elementTree = elementNodeToTree(x, x.leave.filename);
+          addJsxExpressionAttribute(x.leave.path, '_twinComponentTree', elementTree);
+        }
         return x;
       }),
     );

@@ -12,7 +12,8 @@
     },
     "experiments": {
       "baseUrl": "/_expo/plugins/@native-twin/dev-tools",
-      "typedRoutes": true
+      "typedRoutes": true,
+      "tsconfigPaths": true
     },
     "plugins": [
       "expo-font",

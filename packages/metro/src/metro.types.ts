@@ -7,6 +7,7 @@ export interface MetroWithNativeTwindOptions {
   projectRoot?: string;
   outputDir?: string;
   configPath?: string;
+  inputCSS?: string;
 }
 
 /** @domain MetroResolver */

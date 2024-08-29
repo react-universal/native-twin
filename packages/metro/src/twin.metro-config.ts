@@ -5,7 +5,8 @@ import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
 } from './metro.types';
-import { createCacheDir, getUserNativeTwinConfig } from './utils';
+import { getUserNativeTwinConfig } from './utils';
+import { createTwinCSSFiles } from './utils/file.utils';
 
 export function withNativeTwin(
   metroConfig: ComposableIntermediateConfigT,
@@ -17,7 +18,11 @@ export function withNativeTwin(
     ['node_modules', '.cache', 'native-twin'].join(path.sep);
   const twinConfigPath = nativeTwinConfig.configPath ?? 'tailwind.config.ts';
   const outputDir = path.join(projectRoot, outputDirConfig);
-  createCacheDir(outputDir);
+  const { inputCss, outputCss } = createTwinCSSFiles(
+    outputDir,
+    nativeTwinConfig.inputCSS,
+  );
+  // createCacheDir(outputDir);
 
   const twConfig = getUserNativeTwinConfig(twinConfigPath, outputDir);
 
@@ -43,6 +48,8 @@ export function withNativeTwin(
       outputDir: outputDir,
       allowedFiles: twConfig.content,
       transformerPath: metroConfig.transformerPath,
+      inputCss,
+      outputCss,
       getTransformOptions,
     },
   };

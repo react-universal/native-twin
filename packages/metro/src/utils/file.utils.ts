@@ -1,6 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { TWIN_STYLES_FILE, twinModuleExportString } from './constants';
+import {
+  TWIN_INPUT_CSS_FILE,
+  TWIN_OUT_CSS_FILE,
+  TWIN_STYLES_FILE,
+  twinModuleExportString,
+} from './constants';
 
 export function ensureBuffer(file: Buffer | string): Buffer {
   return Buffer.isBuffer(file) ? file : Buffer.from(file);
@@ -28,6 +33,22 @@ export const createCacheDir = (outputDir: string) => {
     fs.mkdirSync(outputDir, { recursive: true });
   }
   fs.writeFileSync(path.join(outputDir, TWIN_STYLES_FILE), twinModuleExportString);
+};
+
+export const createTwinCSSFiles = (outputDir: string, inputCss?: string) => {
+  if (!fs.existsSync(path.resolve(outputDir))) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+  if (!inputCss) {
+    inputCss = path.join(outputDir, TWIN_INPUT_CSS_FILE);
+    fs.writeFileSync(inputCss, '');
+  }
+  const outputCss = path.join(outputDir, TWIN_OUT_CSS_FILE);
+  fs.writeFileSync(outputCss, '');
+  return {
+    inputCss: `${inputCss}`,
+    outputCss,
+  };
 };
 
 export const deleteCacheDir = (outputDir: string) => {

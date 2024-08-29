@@ -3,6 +3,7 @@ import type { Falsey, StringLike } from '@native-twin/helpers';
 import type {
   AppearancePseudoSelectors,
   ChildPseudoSelectors,
+  CssChildPseudoSelectors,
   GroupInteractionPseudoSelectors,
   InteractionPseudoSelectors,
   PlatformPseudoSelectors,
@@ -13,6 +14,7 @@ export type ValidInteractionPseudoSelector = (typeof InteractionPseudoSelectors)
 export type ValidAppearancePseudoSelector = (typeof AppearancePseudoSelectors)[number];
 export type ValidChildPseudoSelector = (typeof ChildPseudoSelectors)[number];
 export type ValidPlatformPseudoSelector = (typeof PlatformPseudoSelectors)[number];
+export type ValidCssChildPseudoSelector = (typeof CssChildPseudoSelectors)[number];
 export type ValidGroupPseudoSelector = (typeof GroupInteractionPseudoSelectors)[number];
 export type SimplePseudos = keyof typeof simplePseudoMap;
 export type ValidPlatformInteractionPseudoSelector = `${
