@@ -42,7 +42,7 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
       }
 
       if (newStyles.length > 0) {
-        props[config.target] = newStyles;
+        props[config.target] = Object.assign(props[config.target], newStyles);
       }
     }
 

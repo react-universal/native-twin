@@ -5,7 +5,7 @@ import { apply, flip, identity, pipe } from 'effect/Function';
 import * as Record from 'effect/Record';
 import * as Tuple from 'effect/Tuple';
 import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { SvgPoint } from '../features/json-tree/json.types';
+import { SvgPoint } from './json.types';
 
 interface TreeLayoutParams {
   width: number;

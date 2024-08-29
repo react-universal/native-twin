@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import { View } from 'react-native';
 import JsonTreeSvgView from '@/features/json-tree/JsonTree';
-import { componentsStore, getTreeComponentByKey } from '@/store/components.store';
+import { componentsStore, unsafeGetTreeComponentByKey } from '@/features/app/store/components.store';
 import { useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
 
 export default function TreeScreen() {
@@ -11,8 +11,8 @@ export default function TreeScreen() {
   }>();
   const node = useSyncExternalStore(
     componentsStore.subscribe,
-    () => getTreeComponentByKey({ id, order: Number(order) }),
-    () => getTreeComponentByKey({ id, order: Number(order) }),
+    () => unsafeGetTreeComponentByKey(id),
+    () => unsafeGetTreeComponentByKey(id),
   );
   console.log('BY_KET: ', node, { id, order });
 

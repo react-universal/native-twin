@@ -5,8 +5,8 @@ import { PLUGIN_EVENTS } from '@/constants/event.constants';
 import { HierarchyPointNode } from 'd3-hierarchy';
 import * as Option from 'effect/Option';
 import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { useDevToolsClient } from '../../hooks/useDevToolsClient';
-import { createComponentsTree } from '../../utils/d3';
+import { useDevToolsClient } from '@/features/app/useDevToolsClient';
+import { createComponentsTree } from './d3';
 
 export const useComponentsTree = (rawNode: RawJSXElementTreeNode) => {
   const client = useDevToolsClient();

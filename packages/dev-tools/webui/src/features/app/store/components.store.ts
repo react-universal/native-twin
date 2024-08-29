@@ -11,11 +11,13 @@ export const setTreeComponent = (node: RawJSXElementTreeNode) =>
     getStoredComponentTree(node),
   );
 
-export const getTreeComponentByKey = (key: string) =>
-  pipe(componentsStore.getState(), KeyMap.get(key));
+export const getTreeComponentByKey = (key: string) => {
+  return pipe(componentsStore.getState(), KeyMap.get(key));
+};
 
-export const unsafeGetTreeComponentByKey = (key: string) =>
-  pipe(componentsStore.getState(), KeyMap.unsafeGet(key));
+export const unsafeGetTreeComponentByKey = (key: string) => {
+  return pipe(componentsStore.getState(), KeyMap.unsafeGet(key));
+};
 
 export const getStoredComponentTree = (node: RawJSXElementTreeNode) =>
   getTreeComponentByKey(node.id);
@@ -24,8 +26,11 @@ export const getOrSetTreeComponent = (node: RawJSXElementTreeNode) => {
   return pipe(
     getStoredComponentTree(node),
     Option.getOrElse(() =>
-      pipe(componentsStore.setState, apply(KeyMap.set(node.id, node)), () =>
-        unsafeGetTreeComponentByKey(node.id),
+      pipe(
+        componentsStore.setState,
+        apply(KeyMap.set(node.id, node)),
+        componentsStore.getState,
+        KeyMap.unsafeGet(node.id),
       ),
     ),
   );

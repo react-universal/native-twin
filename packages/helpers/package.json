@@ -31,6 +31,9 @@
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest"
   },
+  "dependencies": {
+    "effect": "^3.6.7"
+  },
   "optionalDependencies": {
     "jest": "*"
   },

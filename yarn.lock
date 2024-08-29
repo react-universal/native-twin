@@ -6119,7 +6119,7 @@ __metadata:
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
     babel-plugin-tester: "npm:^11.0.4"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     jest: "npm:*"
     metro-react-native-babel-preset: "npm:^0.77.0"
   peerDependencies:
@@ -6138,7 +6138,7 @@ __metadata:
     "@effect/platform": "npm:^0.61.6"
     "@effect/platform-node": "npm:^0.56.7"
     "@types/fs-extra": "npm:11.0.4"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     esbuild: "npm:^0.20.2"
     fs-extra: "npm:11.2.0"
     minimist: "npm:^1.2.8"
@@ -6171,7 +6171,7 @@ __metadata:
     "@effect/typeclass": "npm:^0.25.2"
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/helpers": "workspace:*"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     jest: "npm:*"
   dependenciesMeta:
     jest:
@@ -6189,6 +6189,7 @@ __metadata:
     "@native-twin/core": "workspace:*"
     "@native-twin/jsx": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
+    "@tanstack/react-table": "npm:^8.20.5"
     "@types/d3": "npm:^7.4.3"
     "@types/react": "npm:~18.2.45"
     "@types/uuid": "npm:^10.0.0"
@@ -6196,7 +6197,7 @@ __metadata:
     d3-selection: "npm:^3.0.0"
     d3-shape: "npm:^3.2.0"
     d3-zoom: "npm:^3.0.0"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     expo: "npm:^51.0.28"
     expo-constants: "npm:~16.0.2"
     expo-font: "npm:~12.0.9"
@@ -6221,7 +6222,7 @@ __metadata:
   dependencies:
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     eventemitter3: "npm:^5.0.1"
     expo-module-scripts: "npm:^3.1.0"
   peerDependencies:
@@ -6234,6 +6235,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/helpers@workspace:packages/helpers"
   dependencies:
+    effect: "npm:^3.6.7"
     jest: "npm:*"
   dependenciesMeta:
     jest:
@@ -6273,7 +6275,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6303,7 +6305,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6340,7 +6342,7 @@ __metadata:
     ast-pretty-print: "npm:^2.0.1"
     chokidar: "npm:^3.6.0"
     code-block-writer: "npm:^13.0.1"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     fast-check: "npm:^3.21.0"
     jest: "npm:*"
     jiti: "npm:1.21.0"
@@ -6421,7 +6423,7 @@ __metadata:
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     jest: "npm:*"
     madge: "npm:7.0.0"
     typescript-template-language-service-decorator: "npm:2.3.2"
@@ -8122,6 +8124,25 @@ __metadata:
     "@swc/counter": "npm:^0.1.3"
     tslib: "npm:^2.4.0"
   checksum: 10/1c5ef04f642542212df28c669438f3e0f459dcde7b448a5b1fcafb2e9e4f13e76d8428535a270e91ed123dd2a21189dbed34086b88a8cf68baf84984d6d0e39b
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-table@npm:^8.20.5":
+  version: 8.20.5
+  resolution: "@tanstack/react-table@npm:8.20.5"
+  dependencies:
+    "@tanstack/table-core": "npm:8.20.5"
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 10/df67094795a0b7e4b34f73abe346443c2e806c572fea31b58759aa8ec5274f613e5e6941090eb16f861bda10d3088731bc6e7f15e5f90326db273bc55b9141ce
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:8.20.5":
+  version: 8.20.5
+  resolution: "@tanstack/table-core@npm:8.20.5"
+  checksum: 10/5408237920d5796951e925278edbbe76f71006627a4e3da248a810970256f75d973538fe7ae75a32155d4a25a95abc4fffaea337b5120f7940d7e664dc9da87f
   languageName: node
   linkType: hard
 
@@ -10530,6 +10551,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"base64-arraybuffer@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "base64-arraybuffer@npm:1.0.2"
+  checksum: 10/15e6400d2d028bf18be4ed97702b11418f8f8779fb8c743251c863b726638d52f69571d4cc1843224da7838abef0949c670bde46936663c45ad078e89fee5c62
+  languageName: node
+  linkType: hard
+
 "base64-js@npm:^1.2.3, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
@@ -11811,6 +11839,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"css-line-break@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "css-line-break@npm:2.1.0"
+  dependencies:
+    utrie: "npm:^1.0.2"
+  checksum: 10/e75cae40de511026228d4fa69e8d464895714f8899880b8268a446b57f0faa84b490ba1bdda5ed9e7f38f99ab947c6bc941bb505d8119c49072db079c1cacea5
+  languageName: node
+  linkType: hard
+
 "css-select@npm:^5.1.0":
   version: 5.1.0
   resolution: "css-select@npm:5.1.0"
@@ -12671,10 +12708,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"effect@npm:^3.6.3":
-  version: 3.6.3
-  resolution: "effect@npm:3.6.3"
-  checksum: 10/7065926698d6dfa6586e2f180ce32aac477846a03a2a09384931cc5fbf0460a3a04f733a3f32fb098dfc388156f21d440b17144f73c381be0b13c765b308a97e
+"effect@npm:^3.6.7":
+  version: 3.6.7
+  resolution: "effect@npm:3.6.7"
+  checksum: 10/149f29b5c22de01e2e06aa4f45579c0321bcc0f189c9fae20f202f8a846913b8e56dc7f5f4a213a2f3c1c586a90617ddb8b8d006e5ba923fa59680f947711364
   languageName: node
   linkType: hard
 
@@ -13847,6 +13884,7 @@ __metadata:
     react-native-svg: "npm:15.2.0"
     react-native-tab-view: "npm:^3.5.2"
     react-native-uuid: "npm:^2.0.1"
+    react-native-view-shot: "npm:3.8.0"
     react-native-web: "npm:~0.19.10"
     sharp-cli: "npm:2.1.0"
   languageName: unknown
@@ -15314,6 +15352,16 @@ __metadata:
   version: 2.0.2
   resolution: "html-escaper@npm:2.0.2"
   checksum: 10/034d74029dcca544a34fb6135e98d427acd73019796ffc17383eaa3ec2fe1c0471dcbbc8f8ed39e46e86d43ccd753a160631615e4048285e313569609b66d5b7
+  languageName: node
+  linkType: hard
+
+"html2canvas@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "html2canvas@npm:1.4.1"
+  dependencies:
+    css-line-break: "npm:^2.1.0"
+    text-segmentation: "npm:^1.0.3"
+  checksum: 10/595790810557a1d4287f07b6ead49aed4f169f08eb00e20c1f030b93344003e84797d28cd8a220e8ec1b78641d460ca6add11b8531960725526f11a7b9fa9900
   languageName: node
   linkType: hard
 
@@ -18617,7 +18665,7 @@ __metadata:
     "@types/vscode": "npm:^1.89.0"
     "@vscode/test-cli": "npm:^0.0.9"
     "@vscode/test-electron": "npm:^2.4.0"
-    effect: "npm:^3.6.3"
+    effect: "npm:^3.6.7"
     vscode-languageclient: "npm:^9.0.1"
     vscode-test: "npm:^1.6.1"
   languageName: unknown
@@ -20572,6 +20620,18 @@ __metadata:
   version: 2.0.1
   resolution: "react-native-uuid@npm:2.0.1"
   checksum: 10/05158a8e24fd3f8cb35d16dcef1eea1bf3b68b8196e58ffd6b89bfe6378141438380c5d4857496f30debf9e10e7cc13caf5943e8604d1b5e903a575a0326dc35
+  languageName: node
+  linkType: hard
+
+"react-native-view-shot@npm:3.8.0":
+  version: 3.8.0
+  resolution: "react-native-view-shot@npm:3.8.0"
+  dependencies:
+    html2canvas: "npm:^1.4.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/abcde94525a0c25061af404d344e7aff015fb5d839ee8fde50c9e718db6f68f709b17f5e25498412e8b8a386e4094843205d938111f79595d6f9b8eacc0fee46
   languageName: node
   linkType: hard
 
@@ -22944,6 +23004,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"text-segmentation@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "text-segmentation@npm:1.0.3"
+  dependencies:
+    utrie: "npm:^1.0.2"
+  checksum: 10/86191de83f09b96f356628c3dbaf6d281eda46a4dd4c94c3827495428871b9dd44ead4ef4cdf06a188b08a3b83e3943c5911841422b55286b121ba9e04c846dd
+  languageName: node
+  linkType: hard
+
 "text-table@npm:^0.2.0":
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
@@ -23930,6 +23999,15 @@ __metadata:
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: 10/5d6949693d58cb2e636a84f3ee1c6e7b2f9c16cb1d42d0ecb386d8c025c69e327205aa1c69e2868cc06a01e5e20681fbba55a4e0ed0cce913d60334024eae798
+  languageName: node
+  linkType: hard
+
+"utrie@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "utrie@npm:1.0.2"
+  dependencies:
+    base64-arraybuffer: "npm:^1.0.2"
+  checksum: 10/0c9458380bf3113f425a268e3d605aef163bfbaea62bf24de517b62b6e6744394d8ef1cdd9b07423359aec5ed402baab4bb2c5beec64f674ec635dc2f8dbd4bf
   languageName: node
   linkType: hard
 

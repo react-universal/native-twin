@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 export function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;
 
@@ -15,11 +16,9 @@ export function createStore<StoreShape>(initialState: StoreShape) {
     return () => listeners.delete(listener);
   }
 
-  function setState(fn: (state: StoreShape) => StoreShape, publish = true) {
+  function setState(fn: (state: StoreShape) => StoreShape) {
     currentState = fn(currentState);
-    if (publish) {
-      listeners.forEach((listener) => listener(currentState));
-    }
+    listeners.forEach((listener) => listener(currentState));
   }
 
   function getState() {
