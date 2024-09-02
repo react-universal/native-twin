@@ -2,36 +2,52 @@ import * as Effect from 'effect/Effect';
 import type { JsTransformOptions, JsTransformerConfig } from 'metro-transform-worker';
 import fs from 'node:fs';
 import path from 'path';
+import { BabelTransformerOptions } from '@native-twin/babel/build/jsx/models';
+import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '@native-twin/babel/jsx-babel';
 import {
   MetroCompilerContext,
   NativeTwinService,
 } from '@native-twin/babel/jsx-babel/services';
 import { babelRunnable } from '../src/transformer/babel.transformer';
-import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../src/utils/constants';
 
 export const createBabelTestCompilerProgram = (filePath: string) => {
-  const params = {
-    filename: filePath,
-    src: fs.readFileSync(filePath).toString('utf-8'),
-    options: {
-      dev: true,
-      hot: true,
-      platform: 'ios',
-      projectRoot: __dirname,
-      type: 'source',
+  const params: BabelTransformerOptions = {
+    projectRoot: __dirname,
+    dev: false,
+    hot: false,
+    platform: 'ios',
+    type: 'source',
+    customTransformOptions: {
+      baseUrl: process.cwd(),
+      environment: 'hermes',
+      inputCss: '',
+      routerRoot: '',
     },
   };
   return babelRunnable.pipe(
     Effect.provide(
-      MetroCompilerContext.make(params, {
-        componentID: true,
-        order: true,
-        styledProps: true,
-        templateStyles: false,
-        tree: false,
+      MetroCompilerContext.make(
+        {
+          filename: filePath,
+          options: params,
+          src: fs.readFileSync(filePath).toString('utf-8'),
+        },
+        {
+          componentID: true,
+          order: true,
+          styledProps: true,
+          templateStyles: false,
+          tree: false,
+        },
+      ),
+    ),
+    Effect.provide(
+      NativeTwinService.make({
+        dev: false,
+        platform: 'ios',
+        projectRoot: __dirname,
       }),
     ),
-    Effect.provide(NativeTwinService.make(params.options)),
     Effect.runPromise,
   );
 };

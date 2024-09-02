@@ -4,6 +4,7 @@ import type {
   GetTransformOptionsOpts,
 } from 'metro-config';
 import path from 'node:path';
+import { decorateMetroServer } from './config/server/server.decorator';
 // import { decorateMetroServer } from './config/server/server.decorator';
 import type {
   MetroWithNativeTwindOptions,
@@ -58,21 +59,26 @@ export function withNativeTwin(
     };
   };
 
-  // const { server } = decorateMetroServer(metroConfig, twConfig);
-
+  const { resolver } = decorateMetroServer(metroConfig, twConfig, {
+    cssInput: inputCss,
+    outputFile: outputCss,
+  });
+  // console.log('CONFIG: ser', inspect(metroConfig));
   return {
     ...metroConfig,
     transformerPath: require.resolve('./transformer/metro.transformer'),
     // server,
+    resolver,
     transformer: {
       ...metroConfig.transformer,
+      unstable_allowRequireContext: true,
       babelTransformerPath: require.resolve('./transformer/babel.transformer'),
       tailwindConfigPath: twinConfigPath,
       outputDir: outputDir,
       allowedFiles: twConfig.content,
-      transformerPath: metroConfig.transformerPath,
       inputCss,
       outputCss,
+      // serverURL: `${server.unstable_serverRoot}:${metroConfig.server.port}`,
       getTransformOptions,
     },
   };

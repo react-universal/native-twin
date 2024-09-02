@@ -41,6 +41,7 @@ export const getElementEntries = (
       );
 
       return {
+        classNames,
         prop,
         target,
         templateLiteral: templateExpression,

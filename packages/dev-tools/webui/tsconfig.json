@@ -2,8 +2,10 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "module": "ESNext",
+    "lib": ["DOM", "ESNext", "DOM.Iterable"],
     "strict": true,
     "baseUrl": ".",
+    "declarationMap": true,
     "paths": {
       "@/*": ["./src/*"]
     }

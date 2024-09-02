@@ -11,9 +11,11 @@ export const TableHeaderCell = (header: Header<RawJSXElementTreeNode, unknown>) 
       width: header.getSize(),
     }}
   >
-    {header.isPlaceholder
-      ? null
-      : flexRender(header.column.columnDef.header, header.getContext())}
+    <Text className='font-inter-bold'>
+      {header.isPlaceholder
+        ? null
+        : flexRender(header.column.columnDef.header, header.getContext())}
+    </Text>
 
     <Text className='font-inter-bold'>
       {{

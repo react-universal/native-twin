@@ -15,6 +15,7 @@ module.exports = {
     'jsx',
   ],
   importOrder: [
+    '^(.*)\.css$',
     'expo/build/Expo.fx',
     'react-native-gesture-handler',
     '^(react|react-native)$',

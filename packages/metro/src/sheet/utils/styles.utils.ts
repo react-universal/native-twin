@@ -38,6 +38,7 @@ export const getElementEntries = (
       // );
 
       return {
+        classNames: value,
         prop,
         target,
         templateLiteral: value.templates,

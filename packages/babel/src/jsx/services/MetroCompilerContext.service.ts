@@ -12,7 +12,8 @@ import nodePath from 'node:path';
 import path from 'node:path';
 import type { __Theme__ } from '@native-twin/core';
 import { RuntimeComponentEntry } from '@native-twin/css/jsx';
-import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../../constants/twin.constants';
+import { TWIN_OUT_CSS_FILE } from '../../constants/twin.constants';
+import { TWIN_CACHE_DIR } from '../../constants/twin.constants';
 import { addTwinPropsToElement } from '../ast/jsx.builder';
 import { getJSXCompiledTreeRuntime } from '../ast/jsx.maps';
 import { JSXElementNode } from '../models';
@@ -34,7 +35,7 @@ export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-c
         const cssOutput = nodePath.join(
           options.projectRoot,
           TWIN_CACHE_DIR,
-          TWIN_STYLES_FILE,
+          TWIN_OUT_CSS_FILE,
         );
         const platform = options.platform;
 

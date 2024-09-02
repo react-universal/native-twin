@@ -2,11 +2,11 @@ import * as Option from 'effect/Option';
 import fs from 'node:fs';
 import path from 'node:path';
 import * as NativeTwin from '@native-twin/core';
-import type { SheetEntry, createVirtualSheet } from '@native-twin/css';
+import type { createVirtualSheet } from '@native-twin/css';
 import type * as NativeTwinCss from '@native-twin/css';
-import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import { TWIN_DEFAULT_FILES } from '../../constants/plugin.constants';
 import type { TwinBabelOptions } from '../../types/plugin.types';
+import { InternalTwFn, InternalTwinConfig } from '../../types/twin.types';
 import { requireJS } from '../../utils/load-js';
 
 let tw: ReturnType<typeof loadNativeTwinConfig> | null = null;
@@ -21,19 +21,33 @@ function loadVirtualSheet(): ReturnType<typeof createVirtualSheet> {
 
 function loadNativeTwinConfig(
   mod: typeof NativeTwin,
-  config: any,
-): NativeTwin.RuntimeTW<NativeTwin.__Theme__ & TailwindPresetTheme, SheetEntry[]> {
+  config: NativeTwin.TailwindConfig<InternalTwinConfig>,
+  options: TwinBabelOptions,
+): InternalTwFn {
   return mod.createTailwind(config, loadVirtualSheet());
 }
 
 export function getUserTwinConfig(
   rootDir: string,
   options: TwinBabelOptions,
-): NativeTwin.TailwindConfig<NativeTwin.__Theme__ & TailwindPresetTheme> {
+): NativeTwin.TailwindConfig<InternalTwinConfig> {
   const twinConfigPath = getTwinConfigPath(rootDir, options);
   return twinConfigPath.pipe(
-    Option.map((x) => requireJS(x)),
-    Option.getOrElse(() => NativeTwin.defineConfig({ content: [], root: { rem: 16 } })),
+    Option.map((x) => requireJS(x) as NativeTwin.TailwindConfig<InternalTwinConfig>),
+    Option.map((x) =>
+      NativeTwin.defineConfig({
+        ...x,
+        mode: options.platform === 'web' ? 'web' : 'native',
+        root: { rem: 16 },
+      }),
+    ),
+    Option.getOrElse(() =>
+      NativeTwin.defineConfig({
+        content: [],
+        mode: options.platform === 'web' ? 'web' : 'native',
+        root: { rem: 16 },
+      }),
+    ),
   );
 }
 
@@ -52,14 +66,14 @@ const getTwinConfigPath = (rootDir: string, options: TwinBabelOptions) => {
 };
 
 export function setupNativeTwin(
-  config: NativeTwin.TailwindConfig<NativeTwin.__Theme__ & TailwindPresetTheme>,
-  _options: TwinBabelOptions,
+  config: NativeTwin.TailwindConfig<InternalTwinConfig>,
+  options: TwinBabelOptions,
 ) {
   if (tw) {
     return tw;
   }
   const nativeTwin = loadNativeTwin();
-  tw = loadNativeTwinConfig(nativeTwin, config);
+  tw = loadNativeTwinConfig(nativeTwin, config, options);
 
   return tw;
 }

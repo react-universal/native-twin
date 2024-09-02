@@ -5,6 +5,26 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
@@ -13,28 +33,12 @@
       "path": "../packages/css"
     },
     {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
       "name": "📦 @lib/styled",
       "path": "../packages/styled"
     },
     {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/dev-tools",
-      "path": "../packages/dev-tools"
     },
     {
       "name": "@apps/expo",
@@ -47,8 +51,12 @@
   ],
   "settings": {
     "export-typescript.exportStar": false,
-    "export-typescript.excludes":["**/*.{spec.ts,spec.tsx}"],
-    "export-typescript.includes":["**/*.{ts,tsx}"],
+    "export-typescript.excludes": [
+      "**/*.{spec.ts,spec.tsx}"
+    ],
+    "export-typescript.includes": [
+      "**/*.{ts,tsx}"
+    ],
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,

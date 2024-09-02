@@ -1,21 +1,22 @@
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
+import type { __Theme__, TailwindConfig } from '@native-twin/core';
+import { Preflight } from '@native-twin/css';
 import type { CompilerContext } from '@native-twin/css/jsx';
-import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import { BabelTransformerOptions } from '../models/metro.models';
+import { InternalTwFn, InternalTwinConfig } from '../../types/twin.types';
 import { getUserTwinConfig, setupNativeTwin } from '../twin';
 
 export class NativeTwinService extends Context.Tag('babel/twin-service')<
   NativeTwinService,
   {
-    tw: RuntimeTW;
-    config: TailwindConfig<__Theme__ & TailwindPresetTheme>;
+    tw: InternalTwFn;
+    config: TailwindConfig<InternalTwinConfig>;
     context: CompilerContext;
+    preflight: Preflight;
   }
 >() {
-  static make = (options: BabelTransformerOptions) =>
+  static make = (options: { platform: string; projectRoot: string; dev: boolean }) =>
     Layer.scoped(
       NativeTwinService,
       Effect.gen(function* () {
@@ -26,6 +27,12 @@ export class NativeTwinService extends Context.Tag('babel/twin-service')<
           isServer: options.platform === 'web',
           platform: options.platform,
         });
+        // console.log('DEFINED_PREFLIGHT: ', twinConfig.preflight);
+        const preflight = structuredClone(twinConfig.preflight);
+        if (options.platform === 'web') {
+          twinConfig.mode = 'web';
+        }
+        // twinConfig.preflight = {};
         const twin = setupNativeTwin(twinConfig, {
           engine: 'hermes',
           isDev: options.dev,
@@ -36,6 +43,7 @@ export class NativeTwinService extends Context.Tag('babel/twin-service')<
         return {
           tw: twin,
           config: twinConfig,
+          preflight,
           context: {
             baseRem: twin.config.root.rem ?? 16,
             platform,

@@ -180,6 +180,7 @@ export const getBabelJSXElementChildsCount = (node: t.JSXElement) =>
 
 export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
   return Effect.async<Tree<JSXElementTree>[]>((resolve) => {
+    const cssImports: string[] = [];
     traverse(
       ast,
       {
@@ -187,6 +188,11 @@ export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
           exit() {
             resolve(Effect.succeed(this.trees));
           },
+        },
+        ImportDeclaration(path) {
+          if (path.node.source.value.endsWith('.css')) {
+            cssImports.push(path.node.source.value);
+          }
         },
         JSXElement(path) {
           const hash = Hash.string(filename);
@@ -196,6 +202,7 @@ export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
             babelNode: path.node,
             uid: `${hash}__:${uid}`,
             source: getJSXElementSource(path),
+            cssImports: cssImports,
             parentID: null,
           });
           gelBabelJSXElementChildLeaves(path, parentTree.root);
@@ -211,7 +218,10 @@ export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
   });
 };
 
-export const gelBabelJSXElementChildLeaves = (path: JSXElementNodePath, parent: TreeNode<JSXElementTree>) => {
+export const gelBabelJSXElementChildLeaves = (
+  path: JSXElementNodePath,
+  parent: TreeNode<JSXElementTree>,
+) => {
   const childs = pipe(
     path.get('children'),
     RA.filterMap(Option.liftPredicate(jsxPredicates.isJSXElementPath)),
@@ -224,6 +234,7 @@ export const gelBabelJSXElementChildLeaves = (path: JSXElementNodePath, parent: 
       babelNode: childPath.node,
       uid: `${parent.value.uid}:${order}`,
       source: getJSXElementSource(childPath),
+      cssImports: [],
       parentID: parent.value.uid,
     });
     childLeave.parent = parent;

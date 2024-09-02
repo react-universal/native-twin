@@ -37,6 +37,7 @@ export interface ComponentSheet {
 
 /** @category jsxComponent */
 export interface RuntimeComponentEntry {
+  classNames: string;
   prop: string;
   target: string;
   templateLiteral: string | null;

@@ -76,7 +76,7 @@ export function HomeScreen() {
     console.log('TREE_RECEIVED', tree);
     setTreeComponent(tree);
   });
-  if (!loaded) return null;
+  // if (!loaded) return null;
   return (
     <View className='w-full p-2 overflow-scroll'>
       <View

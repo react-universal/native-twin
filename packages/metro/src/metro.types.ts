@@ -1,5 +1,6 @@
 import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
-import type { RuntimeTW, TailwindConfig, __Theme__ } from '@native-twin/core';
+import { InternalTwFn } from '@native-twin/babel/jsx-babel';
+import type { TailwindConfig, __Theme__ } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 
 /** @domain NativeTwin config options */
@@ -47,6 +48,6 @@ export interface MetroContextConfig extends MetroConfigInternal {
   twinCacheFile: string;
   twConfig: TailwindConfig<__Theme__ & TailwindPresetTheme>;
   platform: string;
-  twin: RuntimeTW;
+  twin: InternalTwFn;
   allowedPaths: string[];
 }

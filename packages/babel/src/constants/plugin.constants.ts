@@ -6,7 +6,7 @@ export const TWIN_DEFAULT_FILES = [
   'twin.config.ts',
   'twin.config.js',
   'native-twin.config.ts',
-  'native-twin.config.js'
+  'native-twin.config.js',
 ];
 
 export const GET_STYLES_META = ['getSheetEntryStyles', '@native-twin/jsx'] as const;

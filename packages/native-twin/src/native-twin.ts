@@ -102,6 +102,7 @@ export function createTailwind(
           subscriptions.delete(cb);
         };
       },
+      insertPreflight,
       subscriptions,
     } as RuntimeTW),
   );

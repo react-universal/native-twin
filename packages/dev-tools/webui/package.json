@@ -4,7 +4,7 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
-    "dev-tools:dev": "expo start -c --port 8082"
+    "dev-tools:dev": "expo start -c"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",

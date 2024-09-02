@@ -28,12 +28,11 @@ export type TwinTransformFn = (
 
 export interface BabelTransformerOptions {
   customTransformOptions: {
-    engine: string;
-    bytecode: boolean;
     routerRoot: string;
     inputCss: string;
+    environment: string;
+    baseUrl: string;
   };
-  inputCss: string;
   dev: boolean;
   hot: boolean;
   // inlinePlatform: boolean;
@@ -58,9 +57,9 @@ export interface BabelTransformerConfig {
   cssOutput: string;
   inputCss: string;
   code: string;
-  
+
   allowedPaths: string[];
-  
+
   platform: string;
   generate: {
     tree: boolean;
@@ -69,16 +68,4 @@ export interface BabelTransformerConfig {
     templateStyles: boolean;
     order: boolean;
   };
-}
-
-export interface TransformWorkerArgs {
-  config: NativeTwinTransformerOpts;
-  projectRoot: string;
-  options: JsTransformOptions;
-  cssOutput: string;
-  sourceCode: Buffer;
-  isDev: boolean;
-  filename: string;
-  fileType: string;
-  platform: string;
 }

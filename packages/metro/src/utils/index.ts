@@ -9,14 +9,6 @@ export {
   DEFAULT_CONTAINER_NAME,
   STYLE_SCOPES,
   transformKeys,
-  TWIN_MODULES_CACHE_DIR,
-  TWIN_CACHE_DIR,
-  TWIN_CACHE_DIR_RUNTIME,
-  TWIN_STYLES_FILE,
-  platformVariants,
-  twinModuleExportString,
-  TWIN_GLOBAL_SHEET_IMPORT_NAME,
-  twinHMRString,
 } from './constants';
 export { expoColorSchemeWarning } from './expo';
 export {

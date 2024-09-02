@@ -5,7 +5,7 @@ import {
   TWIN_OUT_CSS_FILE,
   TWIN_STYLES_FILE,
   twinModuleExportString,
-} from './constants';
+} from '@native-twin/babel/jsx-babel';
 
 export function ensureBuffer(file: Buffer | string): Buffer {
   return Buffer.isBuffer(file) ? file : Buffer.from(file);

@@ -35,6 +35,7 @@ export interface JSXElementTree {
   order: number;
   uid: string;
   parentID: string | null;
+  cssImports: string[];
   source: {
     kind: string;
     source: string;

@@ -7,7 +7,7 @@ const projectRoot = __dirname;
 const workspaceRoot = path.resolve(projectRoot, '../../..');
 
 /** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname);
+const config = getDefaultConfig(__dirname, { isCSSEnabled: true });
 
 config.watchFolders = [workspaceRoot];
 config.resolver.nodeModulesPaths = [
@@ -16,5 +16,5 @@ config.resolver.nodeModulesPaths = [
 ];
 module.exports = withNativeTwin(config, {
   configPath: path.join(__dirname, 'tailwind.config.ts'),
-  inputCSS: './app/twin.css',
+  inputCSS: './twin.css',
 });

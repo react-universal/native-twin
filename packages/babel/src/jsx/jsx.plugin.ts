@@ -55,13 +55,14 @@ const program = Effect.scoped(
         },
         JSXElement(path, state) {
           if (!ctx.isValidFile(state.filename)) return;
-          
+
           const hash = Hash.string(state.filename ?? 'Unknown');
           const uid = path.scope.generateUid('__twin_root');
           const parentTree = new Tree<JSXElementTree>({
             order: -1,
             babelNode: path.node,
             uid: `${hash}#${uid}`,
+            cssImports: [],
             source: getJSXElementSource(path),
             parentID: null,
           });
@@ -85,6 +86,7 @@ const program = Effect.scoped(
           runtimeData,
           twin: {
             config: ctx.twin.config,
+            preflight: {},
             context: ctx.twCtx,
             tw: ctx.twin,
           },

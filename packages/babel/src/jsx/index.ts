@@ -5,5 +5,7 @@ export * from './ast/jsx.visitors';
 export * from './ast/jsx.debug';
 export * from './ast/jsx.builder';
 export * from '../types/plugin.types';
+export * from '../types/twin.types';
 export * from '../jsx/twin/twin.entries';
 export * from '../services/Logger.service';
+export * from '../constants';

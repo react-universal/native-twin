@@ -1,6 +1,7 @@
 // @ts-noCheck
 import { useState } from 'react';
 import { Text, View } from 'react-native';
+import 'globals.css';
 
 const ChildProp = () => {
   return (
