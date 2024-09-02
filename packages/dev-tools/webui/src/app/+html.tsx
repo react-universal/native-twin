@@ -1,28 +1,27 @@
-import './twin.css';
-import { sheetEntriesToCss } from '@native-twin/css';
 import { useEffect, useState, type PropsWithChildren } from 'react';
 // import { getRootComponent } from 'expo-router/build/static/getRootComponent';
 import { ScrollViewStyleReset } from 'expo-router/html';
-import twinConfig from 'tailwind.config';
-import { install, TailwindUserConfig, tw } from '@native-twin/core';
 
-if (typeof window !== 'undefined') {
-  console.log('+HTML_CLIENT');
-}
-let config = twinConfig as TailwindUserConfig;
-if (twinConfig.mode !== 'web') {
-  config = Object.assign({ mode: 'web' }, twinConfig) as TailwindUserConfig;
-}
-const _____twin = install(config, !__DEV__);
+// import twinConfig from 'tailwind.config';
+// import { install, TailwindUserConfig, tw } from '@native-twin/core';
 
-console.log('__TWIN: ', (_____twin.target as any[]).length);
+// if (typeof window !== 'undefined') {
+//   console.log('+HTML_CLIENT');
+// }
+// let config = twinConfig as TailwindUserConfig;
+// if (twinConfig.mode !== 'web') {
+//   config = Object.assign({ mode: 'web' }, twinConfig) as TailwindUserConfig;
+// }
+// const _____twin = install(config, !__DEV__);
+
+// console.log('__TWIN: ', (_____twin.target as any[]).length);
 
 // This file is web-only and used to configure the root HTML for every
 // web page during static rendering.
 // The contents of this function only run in Node.js environments and
 // do not have access to the DOM or browser APIs.
 export default function Root({ children }: PropsWithChildren) {
-  console.log('+HTML_TWIN_LENGTH: ', ((tw.target as any[]) ?? []).length);
+  // console.log('+HTML_TWIN_LENGTH: ', ((tw.target as any[]) ?? []).length);
   useState(() => {
     if (typeof window === 'undefined') {
       console.log('+HTML_SERVER_useState: ');
@@ -53,15 +52,10 @@ export default function Root({ children }: PropsWithChildren) {
         */}
         <ScrollViewStyleReset />
         {/* Add any additional <head> elements that you want globally available on web... */}
-        <style
-          rel='stylesheet'
-          data-native-twin-asdasdasd=''
-          dangerouslySetInnerHTML={{
-            __html: `${sheetEntriesToCss((tw.target as any[]) ?? [], true)}`,
-          }}
-        />
       </head>
       <body>{children}</body>
     </html>
   );
 }
+
+console.log(this['res']);

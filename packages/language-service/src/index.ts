@@ -1,4 +1,5 @@
 export * from './documents/documents.service';
+export * from './documents/utils/document.ast';
 export * from './native-twin/native-twin.service';
 export * from './utils/constants.utils';
 export * from './utils/load-js';

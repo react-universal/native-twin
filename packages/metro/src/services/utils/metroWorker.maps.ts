@@ -1,15 +1,5 @@
-import fs from 'fs';
-import path from 'path';
-import { TWIN_CACHE_DIR } from '@native-twin/babel/jsx-babel';
 import { ensureBuffer } from '@native-twin/helpers/server';
-import { MetroWorkerInput } from '../models/metro.models';
-
-export const setupCssOutput = (filename: string) => {
-  if (!fs.existsSync(filename)) {
-    fs.mkdirSync(path.resolve(TWIN_CACHE_DIR), { recursive: true });
-    fs.writeFileSync(filename, '');
-  }
-};
+import { MetroWorkerInput } from '../../transformer/models/metro.models';
 
 export const metroWorkerInputToCompilerCtx = ({
   config,

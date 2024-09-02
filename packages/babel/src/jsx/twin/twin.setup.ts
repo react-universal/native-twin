@@ -9,9 +9,9 @@ import {
   TWIN_INPUT_CSS_FILE,
   TWIN_OUT_CSS_FILE,
   TWIN_STYLES_FILE,
+  TWIN_DEFAULT_FILES,
   twinModuleExportString,
 } from '../../constants';
-import { TWIN_DEFAULT_FILES } from '../../constants/plugin.constants';
 import type { TwinBabelOptions } from '../../types/plugin.types';
 import { InternalTwFn, InternalTwinConfig } from '../../types/twin.types';
 import { requireJS } from '../../utils/load-js';
@@ -87,7 +87,7 @@ export function setupNativeTwin(
 
 export const createTwinCSSFiles = ({
   outputDir,
-  inputCSS: inputCss,
+  inputCSS,
   twConfig,
 }: {
   outputDir: string;
@@ -97,22 +97,15 @@ export const createTwinCSSFiles = ({
   if (!fs.existsSync(path.resolve(outputDir))) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
-  if (!inputCss) {
-    inputCss = path.join(outputDir, TWIN_INPUT_CSS_FILE);
-    fs.writeFileSync(inputCss, '');
+  if (!inputCSS) {
+    inputCSS = path.join(outputDir, TWIN_INPUT_CSS_FILE);
+    fs.writeFileSync(inputCSS, '');
   }
-  const outputCss = path.join(outputDir, TWIN_OUT_CSS_FILE);
-  fs.writeFileSync(
-    outputCss,
-    `
-:root {
-  --twin-rem: ${twConfig.root.rem}px;
-}  
-  `,
-  );
+  const outputCSS = path.join(outputDir, TWIN_OUT_CSS_FILE);
+  fs.writeFileSync(outputCSS, '.tt_root { font-size: 16px }', 'utf-8');
   return {
-    inputCss: `${inputCss}`,
-    outputCss,
+    inputCSS: inputCSS,
+    outputCSS,
   };
 };
 

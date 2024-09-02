@@ -4721,44 +4721,55 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/platform-node-shared@npm:^0.11.6":
-  version: 0.11.6
-  resolution: "@effect/platform-node-shared@npm:0.11.6"
+"@effect/platform-node-shared@npm:^0.13.0":
+  version: 0.13.0
+  resolution: "@effect/platform-node-shared@npm:0.13.0"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
-    multipasta: "npm:^0.2.2"
+    multipasta: "npm:^0.2.5"
   peerDependencies:
-    "@effect/platform": ^0.61.6
-    effect: ^3.6.2
-  checksum: 10/56ee5e34fbee129cb87fdc075d992fb280127bd4de5fb088cdc38a9d82627dd7afb4e09036000c6d7ba570a72b51db69fabc45ada39aeb780d3382b2cab14d1a
+    "@effect/platform": ^0.63.0
+    effect: ^3.7.0
+  checksum: 10/456e3cde1a77b071857f348288b547ef38b7047e434d47a0768abcd4c227366d416f7b4537b70d93e8dcd70b58d4f625aae52913974c575ef960b0b5d6b8749e
   languageName: node
   linkType: hard
 
-"@effect/platform-node@npm:^0.56.7":
-  version: 0.56.7
-  resolution: "@effect/platform-node@npm:0.56.7"
+"@effect/platform-node@npm:^0.58.0":
+  version: 0.58.0
+  resolution: "@effect/platform-node@npm:0.58.0"
   dependencies:
-    "@effect/platform-node-shared": "npm:^0.11.6"
+    "@effect/platform-node-shared": "npm:^0.13.0"
     mime: "npm:^3.0.0"
-    undici: "npm:^6.19.2"
+    undici: "npm:^6.19.7"
     ws: "npm:^8.18.0"
   peerDependencies:
-    "@effect/platform": ^0.61.6
-    effect: ^3.6.2
-  checksum: 10/6de0e2e77fc42df24cc737ed40c472a8074d0062f9fde24d7904a2896a0be39af5790b8ccb75e39f540145b4a32b3bb72571b6bb836802108eb837f7b637a3af
+    "@effect/platform": ^0.63.0
+    effect: ^3.7.0
+  checksum: 10/9b09405a15985f3fde66980f4d033d9b0e1f56911f7bcf5cf1e919394f2065d871497524bf730ee6b60cb4b4a672cf26cf6bf3f21eea3cd51f0b604407a93817
   languageName: node
   linkType: hard
 
-"@effect/platform@npm:^0.61.6":
-  version: 0.61.6
-  resolution: "@effect/platform@npm:0.61.6"
+"@effect/platform@npm:^0.63.0":
+  version: 0.63.0
+  resolution: "@effect/platform@npm:0.63.0"
   dependencies:
     find-my-way-ts: "npm:^0.1.5"
-    multipasta: "npm:^0.2.2"
+    multipasta: "npm:^0.2.5"
   peerDependencies:
-    "@effect/schema": ^0.70.3
-    effect: ^3.6.2
-  checksum: 10/34f215dd7895a1b70b4a48a7bb829018376374aaf64487492207222522bad28b8b0bb524738fd5425a02ed05c2cfbb3e87a9fa4654a0d6cf1a1baca5fe7488d4
+    "@effect/schema": ^0.72.0
+    effect: ^3.7.0
+  checksum: 10/5522f55d309e5da6c43ac3f6910009dd7eec6d0c7ebd949c282e6885812bace63e93c356503045c8d139d08053c49f890766ba5389348a665393dc0988fdc62c
+  languageName: node
+  linkType: hard
+
+"@effect/schema@npm:^0.72.0":
+  version: 0.72.0
+  resolution: "@effect/schema@npm:0.72.0"
+  dependencies:
+    fast-check: "npm:^3.21.0"
+  peerDependencies:
+    effect: ^3.7.0
+  checksum: 10/7e5a0be257ed5064f3f7bd7d329b3b242c12710ca563eb5faf2bd0ae7f6ce4742f1f9eecf324ebc743f6a11066920d091cfc69dfc1aaa15b11dd183f3bb872b3
   languageName: node
   linkType: hard
 
@@ -6119,7 +6130,7 @@ __metadata:
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/babel__helper-module-imports": "npm:^7.18.3"
     babel-plugin-tester: "npm:^11.0.4"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     jest: "npm:*"
     metro-react-native-babel-preset: "npm:^0.77.0"
   peerDependencies:
@@ -6135,10 +6146,10 @@ __metadata:
   resolution: "@native-twin/builder@workspace:packages/builder"
   dependencies:
     "@effect/cli": "npm:^0.40.6"
-    "@effect/platform": "npm:^0.61.6"
-    "@effect/platform-node": "npm:^0.56.7"
+    "@effect/platform": "npm:^0.63.0"
+    "@effect/platform-node": "npm:^0.58.0"
     "@types/fs-extra": "npm:11.0.4"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     esbuild: "npm:^0.20.2"
     fs-extra: "npm:11.2.0"
     minimist: "npm:^1.2.8"
@@ -6171,7 +6182,7 @@ __metadata:
     "@effect/typeclass": "npm:^0.25.2"
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/helpers": "workspace:*"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     jest: "npm:*"
   dependenciesMeta:
     jest:
@@ -6197,7 +6208,7 @@ __metadata:
     d3-selection: "npm:^3.0.0"
     d3-shape: "npm:^3.2.0"
     d3-zoom: "npm:^3.0.0"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     expo: "npm:^51.0.28"
     expo-constants: "npm:~16.0.2"
     expo-font: "npm:~12.0.9"
@@ -6222,7 +6233,7 @@ __metadata:
   dependencies:
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     eventemitter3: "npm:^5.0.1"
     expo-module-scripts: "npm:^3.1.0"
   peerDependencies:
@@ -6235,7 +6246,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/helpers@workspace:packages/helpers"
   dependencies:
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     jest: "npm:*"
   dependenciesMeta:
     jest:
@@ -6275,7 +6286,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6305,7 +6316,7 @@ __metadata:
     "@types/showdown": "npm:^2.0.6"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     jest: "npm:*"
     madge: "npm:7.0.0"
     match-sorter: "npm:6.3.4"
@@ -6328,8 +6339,10 @@ __metadata:
   dependencies:
     "@babel/traverse": "npm:^7.24.0"
     "@babel/types": "npm:^7.24.0"
-    "@effect/platform": "npm:^0.61.6"
-    "@effect/platform-node": "npm:^0.56.7"
+    "@effect/platform": "npm:^0.63.0"
+    "@effect/platform-node": "npm:^0.58.0"
+    "@effect/platform-node-shared": "npm:^0.13.0"
+    "@effect/schema": "npm:^0.72.0"
     "@native-twin/babel": "workspace:*"
     "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
@@ -6344,7 +6357,7 @@ __metadata:
     chokidar: "npm:^3.6.0"
     code-block-writer: "npm:^13.0.1"
     css-tree: "npm:^2.3.1"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     fast-check: "npm:^3.21.0"
     jest: "npm:*"
     jiti: "npm:1.21.0"
@@ -6425,7 +6438,7 @@ __metadata:
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     jest: "npm:*"
     madge: "npm:7.0.0"
     typescript-template-language-service-decorator: "npm:2.3.2"
@@ -12727,10 +12740,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"effect@npm:^3.6.7":
-  version: 3.6.7
-  resolution: "effect@npm:3.6.7"
-  checksum: 10/149f29b5c22de01e2e06aa4f45579c0321bcc0f189c9fae20f202f8a846913b8e56dc7f5f4a213a2f3c1c586a90617ddb8b8d006e5ba923fa59680f947711364
+"effect@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "effect@npm:3.7.0"
+  checksum: 10/96094486b922e2d0197c71b4af9585694de92704402fa42aa385aa86264252cdcc77564f117d22380eacc87f4ad3f240322da485b4a349706d0c3c208ca18224
   languageName: node
   linkType: hard
 
@@ -18625,7 +18638,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multipasta@npm:^0.2.2":
+"multipasta@npm:^0.2.5":
   version: 0.2.5
   resolution: "multipasta@npm:0.2.5"
   checksum: 10/0461ecc73cbd20080bcc2a0194e677a1af5e973ff33eeee89d3e1f6e19edd596b0d663090f81698e23ac4b5f72824dd4ece2d6ed98152927d42f5181180fedbd
@@ -18724,7 +18737,7 @@ __metadata:
     "@types/vscode": "npm:^1.89.0"
     "@vscode/test-cli": "npm:^0.0.9"
     "@vscode/test-electron": "npm:^2.4.0"
-    effect: "npm:^3.6.7"
+    effect: "npm:^3.7.0"
     vscode-languageclient: "npm:^9.0.1"
     vscode-test: "npm:^1.6.1"
   languageName: unknown
@@ -23803,10 +23816,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^6.19.2":
-  version: 6.19.5
-  resolution: "undici@npm:6.19.5"
-  checksum: 10/ea7752b1f989095d940d89c7b4f17ae64f4619c946621d065ca1a49549af7d50bd461f1e1090aa8a766f6b86a092ae63587eac2bf6c7aefd3e8571b245e89f2d
+"undici@npm:^6.19.7":
+  version: 6.19.8
+  resolution: "undici@npm:6.19.8"
+  checksum: 10/19ae4ba38b029a664d99fd330935ef59136cf99edb04ed821042f27b5a9e84777265fb744c8a7abc83f2059afb019446c69a4ebef07bbc0ed6b2de8d67ef4090
   languageName: node
   linkType: hard
 

@@ -1,5 +1,5 @@
 // import './wdyr';
-import './globals.css';
+// import './globals.css';
 import { registerRootComponent } from 'expo';
 import App from './App';
 

@@ -2,7 +2,7 @@
   "name": "@native-twin/dev-tools-webui",
   "version": "0.0.1-private",
   "private": true,
-  "main": "expo-router/entry",
+  "main": "index.ts",
   "scripts": {
     "dev-tools:dev": "expo start -c"
   },
@@ -17,7 +17,7 @@
     "d3-selection": "^3.0.0",
     "d3-shape": "^3.2.0",
     "d3-zoom": "^3.0.0",
-    "effect": "^3.6.7",
+    "effect": "^3.7.0",
     "expo": "^51.0.28",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.9",

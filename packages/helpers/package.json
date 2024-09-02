@@ -32,7 +32,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "effect": "^3.6.7"
+    "effect": "^3.7.0"
   },
   "optionalDependencies": {
     "jest": "*"

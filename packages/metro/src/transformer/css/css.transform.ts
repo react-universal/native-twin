@@ -10,7 +10,7 @@ import worker, { TransformResponse } from 'metro-transform-worker';
 import countLines from 'metro/src/lib/countLines';
 // import postcss from 'postcss';
 // import { sheetEntriesToCss } from '@native-twin/css';
-import { MetroWorkerService } from '../services/MetroWorker.service';
+import { MetroWorkerService } from '../../services/MetroWorker.service';
 
 export const transformCSS = Effect.gen(function* () {
   const { config, input, readCSSOutput } = yield* MetroWorkerService;

@@ -1,3 +1,4 @@
+// import { sheetEntriesToCss } from '@native-twin/css';
 import { sheetEntriesToCss } from '@native-twin/css';
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Effect from 'effect/Effect';
@@ -24,46 +25,43 @@ const mainProgram = Effect.gen(function* () {
     return ctx.code;
   }
 
-  const restore = twin.tw.snapshot();
   const compiled = yield* transformJSXFile(ctx.code);
 
   if (ctx.platform === 'web' && compiled.classNames !== '') {
-    // const entries = `require('@native-twin/core').tw(\`${compiled.classNames}\`);`;
     const runtime = `
-    (() => {
-      
-      if (typeof window === 'undefined') {
-        const __inject_1 = require("@native-twin/core");
-        if (!__inject_1.tw.config) {
-          console.log("NO_CONFIG: ", ${JSON.stringify(ctx.filename)});
-        } else {
-         console.log("TARGET_LENGTH: ", __inject_1.tw.target?.length);
-        __inject_1.tw(\`${compiled.classNames}\`);
-        }
-        return
-      }
+  (() => {
+
+    if (typeof window === 'undefined') {
       const __inject_1 = require("@native-twin/core");
       if (!__inject_1.tw.config) {
         console.log("NO_CONFIG: ", ${JSON.stringify(ctx.filename)});
       } else {
-        console.log("TARGET_LENGTH: ", __inject_1.tw.target?.length);
-        __inject_1.tw(\`${compiled.classNames}\`);
+       console.log("TARGET_LENGTH: ", __inject_1.tw.target?.length);
+      __inject_1.tw(\`${compiled.classNames}\`);
       }
+      return
+    }
+    const __inject_1 = require("@native-twin/core");
+    if (!__inject_1.tw.config) {
+      console.log("NO_CONFIG: ", ${JSON.stringify(ctx.filename)});
+    } else {
+      console.log("TARGET_LENGTH: ", __inject_1.tw.target?.length);
+      __inject_1.tw(\`${compiled.classNames}\`);
+    }
 
-      const previousStyle = document.querySelector('[data-native-twin=""]') ?? 
-                            document.querySelector('[data-native-twin="claimed"]');
-        if (previousStyle) {
-          previousStyle.appendChild(
-            document.createTextNode(
-              ${JSON.stringify(sheetEntriesToCss(twin.tw.target, true))}
-            )
-          );
-        }
-    })();
-    `;
-    // console.log('RESULT: ', runtime);
+    const previousStyle = document.querySelector('[data-native-twin=""]') ??
+                          document.querySelector('[data-native-twin="claimed"]');
+      if (previousStyle) {
+        previousStyle.appendChild(
+          document.createTextNode(
+            ${JSON.stringify(sheetEntriesToCss(twin.tw.target, true))}
+          )
+        );
+      }
+  })();
+  `;
 
-    compiled.generated = `${compiled.generated}\n${runtime}`;
+    compiled.generated = `${runtime}\n${compiled.generated}\n`;
   } else {
     console.log('NO_WEB', {
       emptyClasses: compiled.classNames === '',
@@ -74,14 +72,9 @@ const mainProgram = Effect.gen(function* () {
   // if (twin.tw.target.length > 0) {
   //   fs.writeFileSync(ctx.cssOutput, compiled.cssResult.outString);
   // }
-  restore();
 
   return compiled.generated;
 });
-
-export function pathToHtmlSafeName(path: string) {
-  return path.replace(/[^a-zA-Z0-9_]/g, '_');
-}
 
 const MainLayer = BabelTransformerServiceLive.pipe(
   Layer.merge(Logger.replace(Logger.defaultLogger, BabelLogger)),

@@ -4,7 +4,7 @@ import { presetTailwind } from '@native-twin/preset-tailwind';
 
 export const twinConfig = defineConfig({
   content: [
-    'index.js',
+    'index.ts',
     './App.tsx',
     './app/**/*.{js,jsx,ts,tsx}',
     './src/**/*.{js,jsx,ts,tsx}',
