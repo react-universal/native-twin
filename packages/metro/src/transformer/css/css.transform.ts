@@ -16,7 +16,6 @@ export const transformCSS = Effect.gen(function* () {
   const { config, input, readCSSOutput } = yield* MetroWorkerService;
 
   if (!config.isWeb) {
-    console.log('NOT_WEB', config);
     return Option.none() as Option.Option<TransformResponse>;
   }
 

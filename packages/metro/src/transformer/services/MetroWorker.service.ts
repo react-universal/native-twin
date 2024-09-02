@@ -15,7 +15,7 @@ import {
   MetroCompilerContext,
   NativeTwinService,
 } from '@native-twin/babel/jsx-babel/services';
-import { ensureBuffer } from '../../utils';
+import { ensureBuffer } from '@native-twin/helpers/server';
 import { MetroWorkerInput } from '../models/metro.models';
 import { metroWorkerInputToCompilerCtx } from '../utils/common.utils';
 

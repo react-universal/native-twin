@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { TWIN_CACHE_DIR } from '@native-twin/babel/jsx-babel';
-import { ensureBuffer } from '../../utils';
+import { ensureBuffer } from '@native-twin/helpers/server';
 import { MetroWorkerInput } from '../models/metro.models';
 
 export const setupCssOutput = (filename: string) => {

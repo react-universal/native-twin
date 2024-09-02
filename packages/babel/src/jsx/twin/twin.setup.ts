@@ -1,9 +1,16 @@
+import type { createVirtualSheet } from '@native-twin/css';
+import type * as NativeTwinCss from '@native-twin/css';
 import * as Option from 'effect/Option';
 import fs from 'node:fs';
 import path from 'node:path';
 import * as NativeTwin from '@native-twin/core';
-import type { createVirtualSheet } from '@native-twin/css';
-import type * as NativeTwinCss from '@native-twin/css';
+import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
+import {
+  TWIN_INPUT_CSS_FILE,
+  TWIN_OUT_CSS_FILE,
+  TWIN_STYLES_FILE,
+  twinModuleExportString,
+} from '../../constants';
 import { TWIN_DEFAULT_FILES } from '../../constants/plugin.constants';
 import type { TwinBabelOptions } from '../../types/plugin.types';
 import { InternalTwFn, InternalTwinConfig } from '../../types/twin.types';
@@ -37,8 +44,8 @@ export function getUserTwinConfig(
     Option.map((x) =>
       NativeTwin.defineConfig({
         ...x,
-        mode: options.platform === 'web' ? 'web' : 'native',
-        root: { rem: 16 },
+        mode: options.platform === 'web' ? 'web' : x.mode ?? 'native',
+        root: { rem: x.root.rem ?? 16 },
       }),
     ),
     Option.getOrElse(() =>
@@ -77,3 +84,47 @@ export function setupNativeTwin(
 
   return tw;
 }
+
+export const createTwinCSSFiles = ({
+  outputDir,
+  inputCSS: inputCss,
+  twConfig,
+}: {
+  outputDir: string;
+  inputCSS?: string;
+  twConfig: NativeTwin.TailwindConfig<NativeTwin.__Theme__ & TailwindPresetTheme>;
+}) => {
+  if (!fs.existsSync(path.resolve(outputDir))) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+  if (!inputCss) {
+    inputCss = path.join(outputDir, TWIN_INPUT_CSS_FILE);
+    fs.writeFileSync(inputCss, '');
+  }
+  const outputCss = path.join(outputDir, TWIN_OUT_CSS_FILE);
+  fs.writeFileSync(
+    outputCss,
+    `
+:root {
+  --twin-rem: ${twConfig.root.rem}px;
+}  
+  `,
+  );
+  return {
+    inputCss: `${inputCss}`,
+    outputCss,
+  };
+};
+
+export const createCacheDir = (outputDir: string) => {
+  if (!fs.existsSync(path.resolve(outputDir))) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+  fs.writeFileSync(path.join(outputDir, TWIN_STYLES_FILE), twinModuleExportString);
+};
+
+export const deleteCacheDir = (outputDir: string) => {
+  if (!fs.existsSync(path.resolve(outputDir))) {
+    fs.rmdirSync(outputDir, { recursive: true });
+  }
+};

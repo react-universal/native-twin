@@ -92,7 +92,6 @@ export const babelRunnable = Effect.scoped(
 );
 
 export const transform: BabelTransformerFn = async (params) => {
-  console.log('CUSTOM: ', params.options.customTransformOptions);
   // console.log(inspect(params.options, false, null, true));
   return babelRunnable.pipe(
     Effect.provide(

@@ -4,14 +4,12 @@ import type {
   GetTransformOptionsOpts,
 } from 'metro-config';
 import path from 'node:path';
+import { createTwinCSSFiles, getUserTwinConfig } from '@native-twin/babel/jsx-babel';
 import { decorateMetroServer } from './config/server/server.decorator';
-// import { decorateMetroServer } from './config/server/server.decorator';
 import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
 } from './metro.types';
-import { getUserNativeTwinConfig } from './utils';
-import { createTwinCSSFiles } from './utils/file.utils';
 
 export function withNativeTwin(
   metroConfig: ComposableIntermediateConfigT,
@@ -23,15 +21,22 @@ export function withNativeTwin(
     ['node_modules', '.cache', 'native-twin'].join(path.sep);
   const twinConfigPath = nativeTwinConfig.configPath ?? 'tailwind.config.ts';
   const outputDir = path.join(projectRoot, outputDirConfig);
-  const { inputCss, outputCss } = createTwinCSSFiles(
-    outputDir,
-    nativeTwinConfig.inputCSS,
-  );
-  // createCacheDir(outputDir);
 
-  const twConfig = getUserNativeTwinConfig(twinConfigPath, outputDir);
+  const twConfig = getUserTwinConfig('', {
+    engine: 'hermes',
+    isDev: process.env?.['NODE_ENV'] !== 'production',
+    isServer: false,
+    platform: 'ios',
+    twinConfigPath: twinConfigPath,
+  });
 
-  const originalGerTransformOptions = metroConfig.transformer.getTransformOptions;
+  const originalGetTransformOptions = metroConfig.transformer.getTransformOptions;
+
+  const { inputCss, outputCss } = createTwinCSSFiles({
+    outputDir: outputDir,
+    inputCSS: nativeTwinConfig.inputCSS,
+    twConfig,
+  });
 
   const getTransformOptions = async (
     ...args: Parameters<GetTransformOptions>
@@ -47,7 +52,7 @@ export function withNativeTwin(
       inputCss,
       outputCss,
     };
-    const original = await originalGerTransformOptions(filename, newConfig, getDeps);
+    const original = await originalGetTransformOptions(filename, newConfig, getDeps);
     return {
       ...original,
       transform: {
@@ -62,6 +67,7 @@ export function withNativeTwin(
   const { resolver } = decorateMetroServer(metroConfig, twConfig, {
     cssInput: inputCss,
     outputFile: outputCss,
+    twinConfigPath,
   });
   // console.log('CONFIG: ser', inspect(metroConfig));
   return {

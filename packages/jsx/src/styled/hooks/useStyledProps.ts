@@ -60,6 +60,7 @@ export const useStyledProps = (
         }),
       );
       return {
+        classNames: props?.[source] ?? '',
         entries,
         prop: config.target,
         rawSheet: getGroupedEntries(entries),

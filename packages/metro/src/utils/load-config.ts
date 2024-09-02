@@ -1,67 +1,67 @@
-import micromatch from 'micromatch';
-import path from 'node:path';
-import type * as NativeTwin from '@native-twin/core';
-import type { SheetEntry, createVirtualSheet } from '@native-twin/css';
-import type * as NativeTwinCss from '@native-twin/css';
-import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import { requireJS } from './load-js';
+// import micromatch from 'micromatch';
+// import path from 'node:path';
+// import type * as NativeTwin from '@native-twin/core';
+// import type { SheetEntry, createVirtualSheet } from '@native-twin/css';
+// import type * as NativeTwinCss from '@native-twin/css';
+// import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
+// import { requireJS } from './load-js';
 
-let tw: ReturnType<typeof loadNativeTwinConfig> | null = null;
+// let tw: ReturnType<typeof loadNativeTwinConfig> | null = null;
 
-function loadNativeTwin(): typeof NativeTwin {
-  return requireJS('@native-twin/core');
-}
+// function loadNativeTwin(): typeof NativeTwin {
+//   return requireJS('@native-twin/core');
+// }
 
-function loadVirtualSheet(): ReturnType<typeof createVirtualSheet> {
-  return (requireJS('@native-twin/css') as typeof NativeTwinCss).createVirtualSheet();
-}
+// function loadVirtualSheet(): ReturnType<typeof createVirtualSheet> {
+//   return (requireJS('@native-twin/css') as typeof NativeTwinCss).createVirtualSheet();
+// }
 
-function loadNativeTwinConfig(
-  mod: typeof NativeTwin,
-  config: any,
-): NativeTwin.RuntimeTW<NativeTwin.__Theme__ & TailwindPresetTheme, SheetEntry[]> {
-  return mod.createTailwind(config, loadVirtualSheet());
-}
+// function loadNativeTwinConfig(
+//   mod: typeof NativeTwin,
+//   config: any,
+// ): NativeTwin.RuntimeTW<NativeTwin.__Theme__ & TailwindPresetTheme, SheetEntry[]> {
+//   return mod.createTailwind(config, loadVirtualSheet());
+// }
 
-export function getUserNativeTwinConfig(
-  tailwindConfigPath: string,
-  output: string,
-): NativeTwin.TailwindConfig<NativeTwin.__Theme__ & TailwindPresetTheme> {
-  const config = requireJS(path.resolve(tailwindConfigPath));
-  const content = config.content;
-  const contentArray = content;
-  const matchesOutputDir = contentArray.some((pattern: string) => {
-    if (typeof pattern !== 'string') return false;
-    return micromatch.isMatch(output, pattern);
-  });
+// export function getUserNativeTwinConfig(
+//   tailwindConfigPath: string,
+//   output: string,
+// ): NativeTwin.TailwindConfig<NativeTwin.__Theme__ & TailwindPresetTheme> {
+//   const config = requireJS(path.resolve(tailwindConfigPath));
+//   const content = config.content;
+//   const contentArray = content;
+//   const matchesOutputDir = contentArray.some((pattern: string) => {
+//     if (typeof pattern !== 'string') return false;
+//     return micromatch.isMatch(output, pattern);
+//   });
 
-  if (matchesOutputDir) {
-    throw new Error(
-      `NativeTwin: Your '${tailwindConfigPath}#content' includes the output file ${output} which will cause an infinite loop. Please read https://tailwindcss.com/docs/content-configuration#styles-rebuild-in-an-infinite-loop`,
-    );
-  }
-  return config;
-}
+//   if (matchesOutputDir) {
+//     throw new Error(
+//       `NativeTwin: Your '${tailwindConfigPath}#content' includes the output file ${output} which will cause an infinite loop. Please read https://tailwindcss.com/docs/content-configuration#styles-rebuild-in-an-infinite-loop`,
+//     );
+//   }
+//   return config;
+// }
 
-export function setupNativeTwin(
-  config: any,
-  _options: { platform: string; hot: boolean; dev: boolean },
-) {
-  if (tw) {
-    return tw;
-  }
-  const nativeTwin = loadNativeTwin();
-  tw = loadNativeTwinConfig(nativeTwin, config);
-  // console.log('TW: ', tw);
+// export function setupNativeTwin(
+//   config: any,
+//   _options: { platform: string; hot: boolean; dev: boolean },
+// ) {
+//   if (tw) {
+//     return tw;
+//   }
+//   const nativeTwin = loadNativeTwin();
+//   tw = loadNativeTwinConfig(nativeTwin, config);
+//   // console.log('TW: ', tw);
 
-  return tw;
-}
+//   return tw;
+// }
 
-export const getTwinConfig = (projectRoot: string) => {
-  const twinConfig = getUserNativeTwinConfig(
-    path.resolve(projectRoot, 'tailwind.config.ts'),
-    path.join(projectRoot, '.twin-cache'),
-  );
-  const allowedPaths = twinConfig.content.map((x) => path.resolve(projectRoot, x));
-  return { twinConfig, allowedPaths };
-};
+// export const getTwinConfig = (projectRoot: string) => {
+//   const twinConfig = getUserNativeTwinConfig(
+//     path.resolve(projectRoot, 'tailwind.config.ts'),
+//     path.join(projectRoot, '.twin-cache'),
+//   );
+//   const allowedPaths = twinConfig.content.map((x) => path.resolve(projectRoot, x));
+//   return { twinConfig, allowedPaths };
+// };
