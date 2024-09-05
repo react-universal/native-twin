@@ -10,8 +10,10 @@ import {
   createTwinCSSFiles,
   getUserTwinConfig,
   InternalTwinConfig,
+  setupNativeTwin,
 } from '@native-twin/babel/jsx-babel';
 import { TailwindConfig } from '@native-twin/core';
+import { InternalTwFn } from '@native-twin/language-service';
 import {
   ComposableIntermediateConfigT,
   MetroWithNativeTwindOptions,
@@ -26,10 +28,11 @@ export class MetroConfigService extends Context.Tag('metro/config/context')<
       ...args: Parameters<GetTransformOptions>
     ) => Effect.Effect<Partial<ExtraTransformOptions>, never>;
     isAllowedPath: (filePath: string) => boolean;
+    twinConfig: TailwindConfig<InternalTwinConfig>;
+    twin: InternalTwFn;
     userConfig: {
       allowedPaths: string[];
       allowedPathsGlob: string[];
-      twinConfig: TailwindConfig<InternalTwinConfig>;
       projectRoot: string;
       outputDir: string;
       twinConfigPath: string;
@@ -58,8 +61,14 @@ export class MetroConfigService extends Context.Tag('metro/config/context')<
           engine: 'hermes',
           isDev: process.env?.['NODE_ENV'] !== 'production',
           isServer: false,
-          platform: 'ios',
+          platform: 'web',
           twinConfigPath: twinConfigPath,
+        });
+        const twin = setupNativeTwin(twinConfig, {
+          engine: 'hermes',
+          isDev: process.env?.['NODE_ENV'] !== 'production',
+          isServer: false,
+          platform: 'web',
         });
         const { inputCSS, outputCSS } = createTwinCSSFiles({
           outputDir: outputDir,
@@ -68,7 +77,7 @@ export class MetroConfigService extends Context.Tag('metro/config/context')<
         });
         const allowedPathsGlob = pipe(
           twinConfig.content,
-          RA.map((x) => path.resolve(metroConfig.projectRoot, x)),
+          RA.map((x) => path.join(metroConfig.projectRoot, x)),
         );
 
         const allowedPaths = pipe(
@@ -82,12 +91,12 @@ export class MetroConfigService extends Context.Tag('metro/config/context')<
           allowedPathsGlob,
           outputDir,
           projectRoot,
-          twinConfig,
           twinConfigPath,
           inputCSS,
           outputCSS,
         };
 
+        console.log('ALLOWED: ', allowedPathsGlob);
         const isAllowedPath = (filePath: string) =>
           micromatch.isMatch(filePath, allowedPathsGlob);
 
@@ -98,6 +107,8 @@ export class MetroConfigService extends Context.Tag('metro/config/context')<
           ),
           isAllowedPath,
           metroConfig,
+          twinConfig,
+          twin,
           userConfig,
         };
       }),

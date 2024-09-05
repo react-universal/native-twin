@@ -7,7 +7,7 @@ import {
 import { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types';
 
 export function sheetEntriesToCss(
-  entries: SheetEntry[] | SheetEntry,
+  entries: SheetEntry[] | SheetEntry = [],
   forMetro = false,
 ): string {
   return asArray(entries)

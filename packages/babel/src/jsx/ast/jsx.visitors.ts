@@ -17,8 +17,6 @@ import { addJsxExpressionAttribute } from './jsx.builder';
 import { createDevToolsTree, elementNodeToTree } from './jsx.debug';
 import { extractMappedAttributes, getAstTrees } from './jsx.maps';
 
-export const getBabelTreesStream = () => {};
-
 export const transformJSXFile = (code: string) => {
   return Effect.gen(function* () {
     const transformer = yield* BabelTransformerService;

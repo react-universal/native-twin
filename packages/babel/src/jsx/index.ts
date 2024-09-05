@@ -10,3 +10,5 @@ export * from '../jsx/twin/twin.entries';
 export * from '../services/Logger.service';
 export * from '../constants';
 export * from './twin';
+export * from '../babel/babel.common';
+export * from '../babel/babel.constructors';

@@ -1,3 +1,4 @@
+/* eslint-disable no-control-regex */
 /**
  * @description Returns the given value converted to camel-case.
  * @example toCamelCase('padding-top') => 'paddingTop'
@@ -58,4 +59,16 @@ export function generateAlphabeticName(code: number) {
   }
 
   return (getAlphabeticChar(x % charsLength) + name).replace(AD_REPLACER_R, '$1-$2');
+}
+
+/** Taken from expo */
+export function escapeBackticksAndOctals(str: string) {
+  if (typeof str !== 'string') {
+    return '';
+  }
+
+  return str
+    .replace(/\\/g, '\\\\')
+    .replace(/`/g, '\\`')
+    .replace(/[\0-\x07]/g, (match) => `\\0${match.charCodeAt(0).toString(8)}`);
 }

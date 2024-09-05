@@ -44,7 +44,8 @@
     "jiti": "1.21.0",
     "recast": "^0.23.9",
     "socket.io-client": "^4.7.5",
-    "sucrase": "^3.35.0"
+    "sucrase": "^3.35.0",
+    "vscode-languageserver-textdocument": "^1.0.11"
   },
   "devDependencies": {
     "@babel/traverse": "^7.24.0",

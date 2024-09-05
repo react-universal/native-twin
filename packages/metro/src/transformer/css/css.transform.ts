@@ -8,6 +8,7 @@ import worker, { TransformResponse } from 'metro-transform-worker';
 // import { pipe } from 'effect/Function';
 // @ts-expect-error
 import countLines from 'metro/src/lib/countLines';
+import { pathToHtmlSafeName } from '@native-twin/helpers/server';
 // import postcss from 'postcss';
 // import { sheetEntriesToCss } from '@native-twin/css';
 import { MetroWorkerService } from '../../services/MetroWorker.service';
@@ -84,10 +85,6 @@ export const transformCSS = Effect.gen(function* () {
   }) as Option.Option<TransformResponse>;
 });
 
-export function pathToHtmlSafeName(path: string) {
-  return path.replace(/[^a-zA-Z0-9_]/g, '_');
-}
-
 export function getHotReplaceTemplate(id: string) {
   // In dev mode, we need to replace the style tag instead of appending it
   // use the path as the expo-css-hmr attribute to find the style tag
@@ -125,16 +122,7 @@ if (style.styleSheet){
   if (props.reactServer) {
     const injectStyle = `
     (()=>{${injectClientStyle}})();`;
-    return `(() => {
-if (typeof __expo_rsc_inject_module === 'function') {
-  __expo_rsc_inject_module({
-    id: ${JSON.stringify(props.filename)},
-    code: ${JSON.stringify(injectStyle)},
-  });
-} else {
-  throw new Error('RSC SSR CSS injection function is not found (__expo_rsc_inject_module)');
-}
-})();`;
+    return injectStyle;
   }
 
   const injectStyle = `(() => {

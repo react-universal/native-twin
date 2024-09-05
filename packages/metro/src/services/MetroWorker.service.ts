@@ -16,7 +16,7 @@ import {
   NativeTwinService,
 } from '@native-twin/babel/jsx-babel/services';
 import { ensureBuffer } from '@native-twin/helpers/server';
-import { MetroWorkerInput } from '../transformer/models/metro.models';
+import { MetroWorkerInput } from './models/metro.models';
 import { metroWorkerInputToCompilerCtx } from './utils/metroWorker.maps';
 
 export class MetroWorkerService extends Context.Tag('metro/worker/context')<

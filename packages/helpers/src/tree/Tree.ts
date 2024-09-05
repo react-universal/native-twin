@@ -60,6 +60,7 @@ export class Tree<T> {
   all(): TreeNode<T>[] {
     const nodes: TreeNode<T>[] = [];
     if (this.root) {
+      nodes.push(this.root);
       for (const value of this.root.children) {
         nodes.push(value);
         value.children && nodes.push(...value.all());

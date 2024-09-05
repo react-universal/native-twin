@@ -2,7 +2,7 @@
   "name": "@native-twin/dev-tools-webui",
   "version": "0.0.1-private",
   "private": true,
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "scripts": {
     "dev-tools:dev": "expo start -c"
   },

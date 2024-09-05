@@ -1,8 +1,10 @@
 import connect from 'connect';
 import type { ConfigT } from 'metro-config';
+import path from 'path';
 // import path from 'path';
-import { setupNativeTwin } from '@native-twin/babel/jsx-babel';
-import { type RuntimeTW, type __Theme__ } from '@native-twin/core';
+import { InternalTwinConfig, setupNativeTwin } from '@native-twin/babel/jsx-babel';
+import { TailwindConfig, type RuntimeTW, type __Theme__ } from '@native-twin/core';
+import { matchCss } from '@native-twin/helpers/build/server';
 // import { matchCss } from '@native-twin/helpers/server';
 import type { ComposableIntermediateConfigT } from '../../metro.types';
 import { MetroConfigService } from '../../services/MetroConfig.service';
@@ -11,12 +13,8 @@ let tw: RuntimeTW | null = null;
 
 export const decorateMetroServer = (
   metroConfig: ComposableIntermediateConfigT,
-  {
-    twinConfig,
-    outputCSS,
-    twinConfigPath,
-    projectRoot,
-  }: MetroConfigService['Type']['userConfig'],
+  twinConfig: TailwindConfig<InternalTwinConfig>,
+  { outputCSS, twinConfigPath, projectRoot }: MetroConfigService['Type']['userConfig'],
 ): Pick<ConfigT, 'server' | 'resolver'> => {
   const metroServer = metroConfig.server;
   const originalMiddleware = metroServer.enhanceMiddleware;
@@ -24,19 +22,19 @@ export const decorateMetroServer = (
   return {
     resolver: {
       ...metroConfig.resolver,
-      sourceExts: [...metroConfig.resolver.sourceExts, 'css'],
+      // sourceExts: [...metroConfig.resolver.sourceExts, 'css'],
       resolveRequest(context, moduleName, platform) {
         const resolver = originalResolver ?? context.resolveRequest;
         const resolved = resolver(context, moduleName, platform);
 
-        // if (platform === 'web' && 'filePath' in resolved && matchCss(resolved.filePath)) {
-        //   console.log('RESOLVED_CSS: ', resolved);
-        //   return {
-        //     ...resolved,
-        //     filePath: path.resolve(outputCSS),
-        //   };
-        // }
-        
+        if (platform === 'web' && 'filePath' in resolved && matchCss(resolved.filePath)) {
+          console.log('RESOLVED_CSS: ', resolved);
+          return {
+            ...resolved,
+            filePath: path.resolve(outputCSS),
+          };
+        }
+
         return resolved;
       },
     },

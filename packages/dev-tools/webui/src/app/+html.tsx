@@ -1,4 +1,4 @@
-import { useEffect, useState, type PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 // import { getRootComponent } from 'expo-router/build/static/getRootComponent';
 import { ScrollViewStyleReset } from 'expo-router/html';
 
@@ -22,20 +22,20 @@ import { ScrollViewStyleReset } from 'expo-router/html';
 // do not have access to the DOM or browser APIs.
 export default function Root({ children }: PropsWithChildren) {
   // console.log('+HTML_TWIN_LENGTH: ', ((tw.target as any[]) ?? []).length);
-  useState(() => {
-    if (typeof window === 'undefined') {
-      console.log('+HTML_SERVER_useState: ');
-    } else {
-      console.log('+HTML_CLIENT_useState: ');
-    }
-  });
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      console.log('+HTML_SERVER_useEffect: ');
-    } else {
-      console.log('+HTML_CLIENT_useEffect: ');
-    }
-  }, []);
+  // useState(() => {
+  //   if (typeof window === 'undefined') {
+  //     console.log('+HTML_SERVER_useState: ');
+  //   } else {
+  //     console.log('+HTML_CLIENT_useState: ');
+  //   }
+  // });
+  // useEffect(() => {
+  //   if (typeof window === 'undefined') {
+  //     console.log('+HTML_SERVER_useEffect: ');
+  //   } else {
+  //     console.log('+HTML_CLIENT_useEffect: ');
+  //   }
+  // }, []);
   return (
     <html>
       <head>
@@ -58,4 +58,3 @@ export default function Root({ children }: PropsWithChildren) {
   );
 }
 
-console.log(this['res']);

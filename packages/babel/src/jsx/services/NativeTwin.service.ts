@@ -28,7 +28,7 @@ export class NativeTwinService extends Context.Tag('babel/twin-service')<
           platform: options.platform,
         });
         // console.log('DEFINED_PREFLIGHT: ', twinConfig.preflight);
-        const preflight = structuredClone(twinConfig.preflight);
+        const preflight = {};
         if (options.platform === 'web') {
           twinConfig.mode = 'web';
         }

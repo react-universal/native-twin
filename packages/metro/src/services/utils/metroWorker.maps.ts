@@ -1,5 +1,5 @@
-import { ensureBuffer } from '@native-twin/helpers/server';
-import { MetroWorkerInput } from '../../transformer/models/metro.models';
+import { toBufferThenString } from '@native-twin/helpers/server';
+import { MetroWorkerInput } from '../models/metro.models';
 
 export const metroWorkerInputToCompilerCtx = ({
   config,
@@ -16,13 +16,13 @@ export const metroWorkerInputToCompilerCtx = ({
   return {
     options: {
       filename,
-      src: ensureBuffer(data).toString('utf-8'),
+      src: toBufferThenString(data),
       options: {
         customTransformOptions: {
           ...options.customTransformOptions,
           baseUrl,
           environment,
-          inputCss: config.inputCss,
+          inputCSS: config.inputCSS,
           routerRoot,
         },
         dev: options.dev,

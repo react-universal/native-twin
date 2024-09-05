@@ -41,6 +41,10 @@
       "path": "../packages/helpers"
     },
     {
+      "name": "📦 @lib/language-service",
+      "path": "../packages/language-service"
+    },
+    {
       "name": "@apps/expo",
       "path": "../apps/expo-app"
     },

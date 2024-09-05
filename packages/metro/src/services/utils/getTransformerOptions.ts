@@ -4,7 +4,7 @@ import type {
   ExtraTransformOptions,
   GetTransformOptionsOpts,
 } from 'metro-config';
-import type { MetroConfigService } from '../../services/MetroConfig.service';
+import type { MetroConfigService } from '../MetroConfig.service';
 
 export const metroConfigGetTransformerOptions =
   (

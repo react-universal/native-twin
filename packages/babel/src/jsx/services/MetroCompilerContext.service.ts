@@ -32,7 +32,7 @@ export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-c
       MetroCompilerContext,
       Effect.gen(function* () {
         const twin = yield* NativeTwinService;
-        const cssOutput = nodePath.join(
+        const outputCSS = nodePath.join(
           options.projectRoot,
           TWIN_CACHE_DIR,
           TWIN_OUT_CSS_FILE,
@@ -42,10 +42,10 @@ export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-c
         return {
           generate,
           options,
-          cssOutput,
+          outputCSS,
           code: src,
           filename,
-          inputCss: options.customTransformOptions.inputCss,
+          inputCSS: options.customTransformOptions.inputCSS,
           allowedPaths: twin.config.content.map((x) =>
             path.resolve(options.projectRoot, path.join(x)),
           ),

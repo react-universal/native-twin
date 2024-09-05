@@ -102,7 +102,7 @@ export const createTwinCSSFiles = ({
     fs.writeFileSync(inputCSS, '');
   }
   const outputCSS = path.join(outputDir, TWIN_OUT_CSS_FILE);
-  fs.writeFileSync(outputCSS, '.tt_root { font-size: 16px }', 'utf-8');
+  // fs.writeFileSync(outputCSS, '.tt_root { font-size: 16px }', 'utf-8');
   return {
     inputCSS: inputCSS,
     outputCSS,
