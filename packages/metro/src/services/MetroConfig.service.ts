@@ -1,9 +1,6 @@
-import { pipe } from 'effect';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
-// import * as Effect from 'effect/Effect';
-// import * as Layer from 'effect/Layer';
-// import type { GetTransformOptions, ExtraTransformOptions } from 'metro-config';
+import { pipe } from 'effect/Function';
 import micromatch from 'micromatch';
 import path from 'path';
 import {
@@ -18,7 +15,6 @@ import {
   ComposableIntermediateConfigT,
   MetroWithNativeTwindOptions,
 } from '../metro.types';
-// import { metroConfigGetTransformerOptions } from './utils/getTransformerOptions';
 
 export class MetroConfigService extends Context.Tag('metro/config/context')<
   MetroConfigService,

@@ -1,6 +1,6 @@
 import * as Effect from 'effect/Effect';
 import type { GetTransformOptions } from 'metro-config';
-import { MetroConfigService } from './MetroConfig.service';
+import { MetroConfigService } from '../MetroConfig.service';
 import { setupPlatform } from './TwinFileSystem';
 
 /** @category Programs */

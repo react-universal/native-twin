@@ -11,7 +11,7 @@ import type {
   ComposableIntermediateConfigT,
 } from './metro.types';
 import { makeTwinConfig, MetroConfigService } from './services/MetroConfig.service';
-import { getTransformerOptions } from './services/metro.programs';
+import { getTransformerOptions } from './services/programs/metro.programs';
 
 const FSLive = Layer.mergeAll(
   DevToolsLive,
