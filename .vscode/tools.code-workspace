@@ -29,6 +29,10 @@
       "path": "../packages/native-twin"
     },
     {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },

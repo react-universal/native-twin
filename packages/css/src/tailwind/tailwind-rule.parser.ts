@@ -68,6 +68,25 @@ export const parseVariant = P.many1(
     ),
 );
 
+// flex-row border-1 [:nth-of-type(2)&]:bg-blue
+export const parsePseudoArbitrary = P.many(
+  P.sequenceOf([parseMaybeImportant, parseArbitraryValue, P.char(':')]),
+)
+  .map(
+    (x): VariantToken =>
+      // mapArbitrary(x.replace(`[`, '').replace(']', '')),
+      mapVariant(
+        x.map((y) => ({
+          i: y[0],
+          n: y[1],
+        })),
+      ),
+  )
+  .errorMap((x) => {
+    console.log('ERROR: ', x);
+    return x.error ?? '';
+  });
+
 /** Match classnames with important prefix arbitrary and color modifiers */
 export const parseClassName = P.sequenceOf([
   parseMaybeImportant,
@@ -103,7 +122,7 @@ export const parseGroupContent = matchBetweenParens(
  * Match className groups like `md:(...)` or stacked like `hover:md:(...)` or feature prefix `text(...)`
  * */
 export const parseRuleGroup = P.sequenceOf([
-  P.choice([parseVariant, parseClassName]),
+  P.choice([parseVariant, parseClassName, parsePseudoArbitrary]),
   parseGroupContent,
 ]).map(
   (x): GroupToken =>

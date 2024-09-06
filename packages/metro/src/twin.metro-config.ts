@@ -1,27 +1,42 @@
+import { Path } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
+import { Console } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import path from 'path';
 import { matchCss } from '@native-twin/helpers/build/server';
-// import { pipe } from 'effect/Function';
+import { DevToolsLive } from './DevTools';
 import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
 } from './metro.types';
-import { MetroConfigService } from './services/MetroConfig.service';
-import { TwinWatcherService } from './services/TwinWatcher.service';
+import { makeTwinConfig, MetroConfigService } from './services/MetroConfig.service';
+import { getTransformerOptions } from './services/metro.programs';
 
-const program = Effect.gen(function* () {
-  const { metroConfig, userConfig } = yield* MetroConfigService;
-  const { startFileWatcher } = yield* TwinWatcherService;
+const FSLive = Layer.mergeAll(
+  DevToolsLive,
+  NodeFileSystem.layer,
+  NodePath.layer,
+  Path.layer,
+);
 
-  yield* Effect.forkDaemon(startFileWatcher);
-  const originalResolver = metroConfig.resolver.resolveRequest;
+export function withNativeTwin(
+  metroConfig: ComposableIntermediateConfigT,
+  nativeTwinConfig: MetroWithNativeTwindOptions = {},
+): ComposableIntermediateConfigT {
+  const twinConfig = makeTwinConfig(metroConfig, nativeTwinConfig);
+
+  const mainLayer = FSLive.pipe(
+    Layer.provideMerge(Layer.succeed(MetroConfigService, twinConfig)),
+  );
+
+  const originalResolver = twinConfig.metroConfig.resolver.resolveRequest;
+
   return {
-    ...metroConfig,
+    ...twinConfig.metroConfig,
     transformerPath: require.resolve('./transformer/metro.transformer'),
     resolver: {
-      ...metroConfig.resolver,
+      ...twinConfig.metroConfig.resolver,
       resolveRequest(context, moduleName, platform) {
         const resolver = originalResolver ?? context.resolveRequest;
         const resolved = resolver(context, moduleName, platform);
@@ -29,7 +44,7 @@ const program = Effect.gen(function* () {
         if (platform === 'web' && 'filePath' in resolved && matchCss(resolved.filePath)) {
           return {
             ...resolved,
-            filePath: path.resolve(userConfig.outputCSS),
+            filePath: path.resolve(twinConfig.userConfig.outputCSS),
           };
         }
 
@@ -38,25 +53,15 @@ const program = Effect.gen(function* () {
     },
     transformer: {
       ...metroConfig.transformer,
-      ...userConfig,
+      ...twinConfig.userConfig,
       babelTransformerPath: require.resolve('./transformer/babel.transformer'),
-      // transformerPath: require.resolve('./transformer/metro.transformer'),
-      // getTransformOptions: (...args) =>
-      //   pipe(getTransformerOptions(...args), Effect.runPromise),
+      getTransformOptions: (...args) => {
+        return getTransformerOptions(...args).pipe(
+          Effect.provide(mainLayer),
+          Effect.tap((x) => Console.log('resuslts', x)),
+          Effect.runPromise,
+        );
+      },
     },
   } as ComposableIntermediateConfigT;
-});
-
-const MainLive = NodeFileSystem.layer.pipe(
-  Layer.merge(NodePath.layer),
-  Layer.provideMerge(TwinWatcherService.Live),
-);
-
-export function withNativeTwin(
-  metroConfig: ComposableIntermediateConfigT,
-  nativeTwinConfig: MetroWithNativeTwindOptions = {},
-): ComposableIntermediateConfigT {
-  const layer = MetroConfigService.make(metroConfig, nativeTwinConfig);
-  const runnable = Effect.provide(program, layer).pipe(Effect.provide(MainLive));
-  return Effect.runSync(runnable);
 }

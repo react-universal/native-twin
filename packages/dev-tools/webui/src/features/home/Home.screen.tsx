@@ -29,7 +29,7 @@ export function HomeScreen() {
   const componentsSize = useSyncExternalStore(
     componentsStore.subscribe,
     () => {
-      console.log('SIZE: ', getComponentsSize());
+      // console.log('SIZE: ', getComponentsSize());
       return getComponentsSize();
     },
     () => getComponentsSize(),
@@ -69,14 +69,14 @@ export function HomeScreen() {
     data: componentsData,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    debugTable: true,
+    debugTable: false,
   });
 
   useClientSubscription<RawJSXElementTreeNode>(PLUGIN_EVENTS.receiveTree, (_, tree) => {
-    console.log('TREE_RECEIVED', tree);
     setTreeComponent(tree);
   });
-  // if (!loaded) return null;
+
+  if (!loaded) return null;
   return (
     <View className='w-full p-2 overflow-scroll'>
       <View
@@ -88,7 +88,10 @@ export function HomeScreen() {
         <View className='w-full'>
           {table.getHeaderGroups().map((headerGroups) => {
             return (
-              <View key={headerGroups.id} className='flex-row border-1'>
+              <View
+                key={headerGroups.id}
+                className='flex-row border-1'
+              >
                 {headerGroups.headers.map((header) => (
                   <TableHeaderCell key={header.id} {...header} />
                 ))}
@@ -96,12 +99,11 @@ export function HomeScreen() {
             );
           })}
         </View>
-        <View className='w-full'>
+        <View className='w-full hover:bg-black'>
           {table.getRowModel().rows.map((row) => {
             return (
               <View key={row.id} className='flex-row'>
                 {row.getVisibleCells().map((cell) => {
-                  console.log('CELL: ', cell);
                   return (
                     <View
                       key={cell.id}

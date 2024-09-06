@@ -1,4 +1,3 @@
-// import { wrapDevelopmentCSS } from '@expo/metro-config/build/transform-worker/css';
 import { transformPostCssModule } from '@expo/metro-config/build/transform-worker/postcss';
 import { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
 import CodeBlockWriter from 'code-block-writer';
@@ -18,9 +17,6 @@ export const transformCSSExpo = async (
   options: worker.JsTransformOptions,
 ) => {
   const reactServer = options.customTransformOptions?.environment === 'react-server';
-
-  // const environment = options.customTransformOptions?.environment;
-  // const isServer = environment === 'node' || environment === 'react-server';
 
   // eslint-disable-next-line prefer-const
   let code = data.toString('utf8');

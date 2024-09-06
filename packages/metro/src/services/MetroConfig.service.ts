@@ -1,9 +1,9 @@
 import { pipe } from 'effect';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import type { GetTransformOptions, ExtraTransformOptions } from 'metro-config';
+// import * as Effect from 'effect/Effect';
+// import * as Layer from 'effect/Layer';
+// import type { GetTransformOptions, ExtraTransformOptions } from 'metro-config';
 import micromatch from 'micromatch';
 import path from 'path';
 import {
@@ -18,15 +18,12 @@ import {
   ComposableIntermediateConfigT,
   MetroWithNativeTwindOptions,
 } from '../metro.types';
-import { metroConfigGetTransformerOptions } from './utils/getTransformerOptions';
+// import { metroConfigGetTransformerOptions } from './utils/getTransformerOptions';
 
 export class MetroConfigService extends Context.Tag('metro/config/context')<
   MetroConfigService,
   {
     metroConfig: ComposableIntermediateConfigT;
-    getTransformerOptions: (
-      ...args: Parameters<GetTransformOptions>
-    ) => Effect.Effect<Partial<ExtraTransformOptions>, never>;
     isAllowedPath: (filePath: string) => boolean;
     twinConfig: TailwindConfig<InternalTwinConfig>;
     twin: InternalTwFn;
@@ -40,77 +37,68 @@ export class MetroConfigService extends Context.Tag('metro/config/context')<
       outputCSS: string;
     };
   }
->() {
-  static make = (
-    metroConfig: ComposableIntermediateConfigT,
-    nativeTwinConfig: MetroWithNativeTwindOptions = {},
-  ) =>
-    Layer.scoped(
-      MetroConfigService,
-      Effect.gen(function* () {
-        const projectRoot = nativeTwinConfig.projectRoot ?? process.cwd();
-        const outputDir = path.join(
-          projectRoot,
-          nativeTwinConfig.outputDir ??
-            ['node_modules', '.cache', 'native-twin'].join(path.sep),
-        );
+>() {}
 
-        const twinConfigPath = nativeTwinConfig.configPath ?? 'tailwind.config.ts';
+export const makeTwinConfig = (
+  metroConfig: ComposableIntermediateConfigT,
+  nativeTwinConfig: MetroWithNativeTwindOptions = {},
+) => {
+  const projectRoot = nativeTwinConfig.projectRoot ?? process.cwd();
+  const outputDir = path.join(
+    projectRoot,
+    nativeTwinConfig.outputDir ??
+      ['node_modules', '.cache', 'native-twin'].join(path.sep),
+  );
 
-        const twinConfig = getUserTwinConfig('', {
-          engine: 'hermes',
-          isDev: process.env?.['NODE_ENV'] !== 'production',
-          isServer: false,
-          platform: 'web',
-          twinConfigPath: twinConfigPath,
-        });
-        const twin = setupNativeTwin(twinConfig, {
-          engine: 'hermes',
-          isDev: process.env?.['NODE_ENV'] !== 'production',
-          isServer: false,
-          platform: 'web',
-        });
-        const { inputCSS, outputCSS } = createTwinCSSFiles({
-          outputDir: outputDir,
-          inputCSS: nativeTwinConfig.inputCSS,
-          twConfig: twinConfig,
-        });
-        const allowedPathsGlob = pipe(
-          twinConfig.content,
-          RA.map((x) => path.join(metroConfig.projectRoot, x)),
-        );
+  const twinConfigPath = nativeTwinConfig.configPath ?? 'tailwind.config.ts';
 
-        const allowedPaths = pipe(
-          allowedPathsGlob,
-          RA.map((x) => micromatch.scan(x)),
-          RA.map((x) => x.base),
-        );
+  const twinConfig = getUserTwinConfig('', {
+    engine: 'hermes',
+    isDev: process.env?.['NODE_ENV'] !== 'production',
+    isServer: false,
+    platform: 'web',
+    twinConfigPath: twinConfigPath,
+  });
+  const twin = setupNativeTwin(twinConfig, {
+    engine: 'hermes',
+    isDev: process.env?.['NODE_ENV'] !== 'production',
+    isServer: false,
+    platform: 'web',
+  });
+  const { inputCSS, outputCSS } = createTwinCSSFiles({
+    outputDir: outputDir,
+    inputCSS: nativeTwinConfig.inputCSS,
+    twConfig: twinConfig,
+  });
+  const allowedPathsGlob = pipe(
+    twinConfig.content,
+    RA.map((x) => path.join(metroConfig.projectRoot, x)),
+  );
 
-        const userConfig = {
-          allowedPaths,
-          allowedPathsGlob,
-          outputDir,
-          projectRoot,
-          twinConfigPath,
-          inputCSS,
-          outputCSS,
-        };
+  const allowedPaths = pipe(
+    allowedPathsGlob,
+    RA.map((x) => micromatch.scan(x)),
+    RA.map((x) => x.base),
+  );
 
-        console.log('ALLOWED: ', allowedPathsGlob);
-        const isAllowedPath = (filePath: string) =>
-          micromatch.isMatch(filePath, allowedPathsGlob);
+  const userConfig = {
+    allowedPaths,
+    allowedPathsGlob,
+    outputDir,
+    projectRoot,
+    twinConfigPath,
+    inputCSS,
+    outputCSS,
+  };
 
-        return {
-          getTransformerOptions: metroConfigGetTransformerOptions(
-            metroConfig.transformer.getTransformOptions,
-            userConfig,
-          ),
-          isAllowedPath,
-          metroConfig,
-          twinConfig,
-          twin,
-          userConfig,
-        };
-      }),
-    );
-}
+  const isAllowedPath = (filePath: string) =>
+    micromatch.isMatch(filePath, allowedPathsGlob);
+
+  return {
+    isAllowedPath,
+    metroConfig,
+    twinConfig,
+    twin,
+    userConfig,
+  };
+};

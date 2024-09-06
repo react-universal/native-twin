@@ -160,3 +160,38 @@ export function escapeBackticksAndOctals(str: string) {
 //     }),
 //   );
 // }
+
+/** For web */
+export const getRuntimeCSS = () => {
+  //   const runtime = `
+  // (() => {
+  //   if (typeof window === 'undefined') {
+  //     const __inject_1 = require("@native-twin/core");
+  //     if (!__inject_1.tw.config) {
+  //       console.log("NO_CONFIG: ", ${JSON.stringify(ctx.filename)});
+  //     } else {
+  //      console.log("TARGET_LENGTH: ", __inject_1.tw.target?.length);
+  //     __inject_1.tw(\`${compiled.classNames}\`);
+  //     }
+  //     return
+  //   }
+  //   const __inject_1 = require("@native-twin/core");
+  //   if (!__inject_1.tw.config) {
+  //     console.log("NO_CONFIG: ", ${JSON.stringify(ctx.filename)});
+  //   } else {
+  //     console.log("TARGET_LENGTH: ", __inject_1.tw.target?.length);
+  //     __inject_1.tw(\`${compiled.classNames}\`);
+  //   }
+  //   const previousStyle = document.querySelector('[data-native-twin=""]') ??
+  //                         document.querySelector('[data-native-twin="claimed"]');
+  //     if (previousStyle) {
+  //       previousStyle.appendChild(
+  //         document.createTextNode(
+  //           ${JSON.stringify(sheetEntriesToCss(twin.tw.target, true))}
+  //         )
+  //       );
+  //     }
+  // })();
+  // `;
+  // compiled.generated = `${compiled.generated}`;
+};

@@ -1,17 +1,14 @@
-// import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
-// import worker from 'metro-transform-worker';
 import { BabelLogger } from '@native-twin/babel/jsx-babel';
 import {
   BabelTransformerService,
   BabelTransformerServiceLive,
 } from '@native-twin/babel/jsx-babel/services';
-// import { ensureBuffer, matchCss } from '@native-twin/helpers/server';
 import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.service';
 import { TransformWorkerFn } from '../services/models/metro.models';
 import { transformCSS } from './css/css.transform';
@@ -23,7 +20,6 @@ const metroMainProgram = Effect.gen(function* () {
   if (config.isCSS) {
     const result = yield* transformCSS;
     if (Option.isSome(result)) {
-      console.log('RESULT: ', result);
       return result.value;
     }
   }

@@ -1,9 +1,17 @@
+import * as t from '@babel/types';
 import { FileSystem, Path } from '@effect/platform';
 import { PlatformError } from '@effect/platform/Error';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
+import {
+  createBabelAST,
+  extractMappedAttributes,
+  getAstTrees,
+  templateLiteralToStringLike,
+} from '@native-twin/babel/jsx-babel';
+import { cx } from '@native-twin/core';
 import { getDocumentLanguageLocations } from '@native-twin/language-service';
 
 const languageDefaultTags = [
@@ -17,6 +25,8 @@ const languageDefaultTags = [
   'createVariants',
 ];
 
+
+
 export function readDirectoryRecursive(
   currentPath: string,
 ): Effect.Effect<string[], PlatformError, FileSystem.FileSystem | Path.Path> {
@@ -24,9 +34,9 @@ export function readDirectoryRecursive(
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
 
-    if (fs.exists(currentPath)) {
-      return [];
-    }
+    // if (!fs.exists(currentPath)) {
+    //   return [];
+    // }
 
     if (path.extname(currentPath) !== '') {
       return [currentPath];
@@ -67,17 +77,12 @@ export function readDirectoryRecursive(
     );
 
     const entries = yield* pipe(
-      Effect.all(recursiveListings, { concurrency: 10 }),
+      Effect.allSuccesses(recursiveListings, { concurrency: 10 }),
       Effect.map(RA.flatten),
     );
 
     return entries;
-  }).pipe(
-    Effect.catchAllCause((x) => {
-      console.log('ERROR: ', x.toJSON());
-      return Effect.succeed([]);
-    }),
-  );
+  });
 }
 
 export const extractDocumentLanguageRegions = (
@@ -107,3 +112,67 @@ export const extractDocumentLanguageRegions = (
     ),
   );
 };
+
+// export const getFirstStyles = () =>
+//   Effect.gen(function* () {
+//     const { userConfig, twin } = yield* MetroConfigService;
+//     const { allFiles } = yield* TwinFSService;
+//     const fs = yield* FileSystem.FileSystem;
+
+//     const mapped = yield* pipe(
+//       allFiles,
+//       RA.filter((x) => x !== ''),
+//       RA.map((filename) =>
+//         getFileClasses(filename).pipe(
+//           Effect.map((contents) => ({
+//             filename,
+//             contents,
+//           })),
+//         ),
+//       ),
+//       Effect.allSuccesses,
+//     );
+
+//     pipe(
+//       mapped,
+//       RA.filter((x) => x.contents !== ''),
+//       RA.forEach((x) => twin(`${x.contents}`)),
+//     );
+//     mapped.filter((x) => x.contents !== '');
+
+//     yield* fs.writeFile(
+//       userConfig.outputCSS,
+//       new TextEncoder().encode(sheetEntriesToCss(twin.target, true)),
+//     );
+//   });
+
+export const getFileClasses = (filename: string) =>
+  Effect.gen(function* () {
+    const fs = yield* FileSystem.FileSystem;
+    const exists = yield* fs.exists(filename);
+
+    if (!exists) return '';
+
+    const contents = yield* fs.readFileString(filename);
+
+    if (contents === '') return '';
+    const ast = createBabelAST(contents);
+    const trees = yield* getAstTrees(ast, filename);
+
+    return pipe(
+      trees,
+      RA.flatMap((x) => x.all()),
+      RA.flatMap((leave) => extractMappedAttributes(leave.value.babelNode)),
+      RA.map(({ value }) => {
+        let classNames = '';
+        if (t.isStringLiteral(value)) {
+          classNames = value.value;
+        } else {
+          const cooked = templateLiteralToStringLike(value);
+          classNames = cooked.strings.replace('\n', ' ');
+        }
+        return cx(`${classNames.trim()}`);
+      }),
+      RA.join(' '),
+    );
+  });

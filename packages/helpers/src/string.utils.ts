@@ -72,3 +72,5 @@ export function escapeBackticksAndOctals(str: string) {
     .replace(/`/g, '\\`')
     .replace(/[\0-\x07]/g, (match) => `\\0${match.charCodeAt(0).toString(8)}`);
 }
+
+export const splitBySpace = (classes: string) => classes.split(/\s+/g);

@@ -1,17 +1,14 @@
 import { sheetEntriesToCss } from '@native-twin/css';
-// import generate from '@babel/generator';
 import * as t from '@babel/types';
 import { FileSystem, Path } from '@effect/platform';
 import { PlatformError } from '@effect/platform/Error';
 import * as RA from 'effect/Array';
-import * as Console from 'effect/Console';
-// import * as Chunk from 'effect/Chunk';
+// import * as Console from 'effect/Console';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-// import { inspect } from 'util';
 import {
   createBabelAST,
   extractMappedAttributes,
@@ -19,7 +16,6 @@ import {
   templateLiteralToStringLike,
 } from '@native-twin/babel/jsx-babel';
 import { cx } from '@native-twin/core';
-// import { mappedComponents } from '../utils';
 import { MetroConfigService } from './MetroConfig.service';
 import { readDirectoryRecursive } from './utils/file.utils';
 
@@ -48,12 +44,6 @@ export const startFileWatcher = Effect.gen(function* ($) {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
 
-  // const attributes = pipe(
-  //   mappedComponents,
-  //   RA.flatMap((x) => Object.keys(x.config)),
-  //   RA.dedupe,
-  // );
-
   const watchPaths = pipe(
     userConfig.allowedPaths,
     RA.map((x) => path.dirname(x)),
@@ -63,10 +53,8 @@ export const startFileWatcher = Effect.gen(function* ($) {
   const allPaths = yield* pipe(
     userConfig.allowedPaths,
     RA.map((filename) => readDirectoryRecursive(filename)),
-    Effect.all,
+    Effect.allSuccesses,
   );
-
-  // console.log('ALL_PATHS: ', allPaths);
 
   const mapped = yield* pipe(
     allPaths,
@@ -80,13 +68,15 @@ export const startFileWatcher = Effect.gen(function* ($) {
         })),
       ),
     ),
-    Effect.all,
+    Effect.allSuccesses,
   );
-  const collected = mapped.filter((x) => x.contents !== '');
 
-  yield* Console.log('COLLECTED: ', collected);
-  collected.forEach((x) => twin(`${x.contents}`));
-  console.log('asdasdasd', sheetEntriesToCss(twin.target, true));
+  pipe(
+    mapped,
+    RA.filter((x) => x.contents !== ''),
+    RA.forEach((x) => twin(`${x.contents}`)),
+  );
+  mapped.filter((x) => x.contents !== '');
 
   yield* fs.writeFile(
     userConfig.outputCSS,
@@ -106,23 +96,7 @@ export const startFileWatcher = Effect.gen(function* ($) {
     Stream.mapError(() => ''),
 
     Stream.runForEach((watcher) => transformFile(watcher.path)),
-  ).pipe();
-
-  // yield* $(
-  //   Effect.gen(function* () {
-  //     const file = yield* fs.open(userConfig.outputCSS, { flag: 'w+' });
-  //     console.log('asdasdasd', sheetEntriesToCss(twin.target, true));
-  //     yield* file.write(
-  //       new TextEncoder().encode(JSON.stringify(sheetEntriesToCss(twin.target, true))),
-  //     );
-  //   }),
-  //   Effect.scoped,
-  //   Effect.catchAllCause((x) => Console.log(x)),
-  // );
-
-  // return {
-  //   collectedClasses: pipe(collectedClasses, Chunk.toArray, RA.flatten),
-  // };
+  );
 }).pipe(Effect.forever);
 
 const transformFile = (filename: string) =>

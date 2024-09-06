@@ -1,4 +1,3 @@
-// import { sheetEntriesToCss } from '@native-twin/css';
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -13,12 +12,9 @@ import {
   NativeTwinService,
 } from '@native-twin/babel/jsx-babel/services';
 
-// import { formatCSS } from '../utils/formatCSS';
-
 const mainProgram = Effect.gen(function* () {
   const ctx = yield* MetroCompilerContext;
   const transformer = yield* BabelTransformerService;
-  // const twin = 
   yield* NativeTwinService;
 
   if (transformer.isNotAllowedPath(ctx.filename)) {
@@ -26,47 +22,6 @@ const mainProgram = Effect.gen(function* () {
   }
 
   const compiled = yield* transformJSXFile(ctx.code);
-
-  if (ctx.platform === 'web' && compiled.classNames !== '') {
-  //   const runtime = `
-  // (() => {
-
-  //   if (typeof window === 'undefined') {
-  //     const __inject_1 = require("@native-twin/core");
-  //     if (!__inject_1.tw.config) {
-  //       console.log("NO_CONFIG: ", ${JSON.stringify(ctx.filename)});
-  //     } else {
-  //      console.log("TARGET_LENGTH: ", __inject_1.tw.target?.length);
-  //     __inject_1.tw(\`${compiled.classNames}\`);
-  //     }
-  //     return
-  //   }
-  //   const __inject_1 = require("@native-twin/core");
-  //   if (!__inject_1.tw.config) {
-  //     console.log("NO_CONFIG: ", ${JSON.stringify(ctx.filename)});
-  //   } else {
-  //     console.log("TARGET_LENGTH: ", __inject_1.tw.target?.length);
-  //     __inject_1.tw(\`${compiled.classNames}\`);
-  //   }
-
-  //   const previousStyle = document.querySelector('[data-native-twin=""]') ??
-  //                         document.querySelector('[data-native-twin="claimed"]');
-  //     if (previousStyle) {
-  //       previousStyle.appendChild(
-  //         document.createTextNode(
-  //           ${JSON.stringify(sheetEntriesToCss(twin.tw.target, true))}
-  //         )
-  //       );
-  //     }
-  // })();
-  // `;
-
-    // compiled.generated = `${compiled.generated}`;
-  }
-
-  // if (twin.tw.target.length > 0) {
-  //   fs.writeFileSync(ctx.cssOutput, compiled.cssResult.outString);
-  // }
 
   return compiled.generated;
 });
