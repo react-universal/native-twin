@@ -15,16 +15,12 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         cache: yarn
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     
     - name: Setup .yarnrc.yml
       shell: bash
       run: |
         yarn config set npmAuthToken $NPM_TOKEN -H
         yarn config set npmAlwaysAuth true -H
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Install deps with yarn
       shell: bash
