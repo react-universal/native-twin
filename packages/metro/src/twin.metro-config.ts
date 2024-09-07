@@ -4,7 +4,6 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import path from 'path';
 import { matchCss } from '@native-twin/helpers/build/server';
-import { DevToolsLive } from './DevTools';
 import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
@@ -12,12 +11,7 @@ import type {
 import { makeTwinConfig, MetroConfigService } from './services/MetroConfig.service';
 import { getTransformerOptions } from './services/programs/metro.programs';
 
-const FSLive = Layer.mergeAll(
-  DevToolsLive,
-  NodeFileSystem.layer,
-  NodePath.layer,
-  Path.layer,
-);
+const FSLive = Layer.mergeAll(NodeFileSystem.layer, NodePath.layer, Path.layer);
 
 export function withNativeTwin(
   metroConfig: ComposableIntermediateConfigT,
