@@ -6,7 +6,6 @@
     "lib": [
       "ES2021"
     ],
-    "importsNotUsedAsValues": "error",
     "ignoreDeprecations": "5.0",
     "sourceMap": true,
     "resolveJsonModule": true,

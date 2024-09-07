@@ -6,22 +6,30 @@
   "overrides": [
     {
       "files": [
-        "*.ts"
+        "*.ts", "*.tsx"
       ],
       "extends": [
-        "plugin:@nx/typescript"
+        "plugin:@nx/typescript",
+        "plugin:@nx/react"
       ],
       "rules": {
+        "prefer-const": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "unused-imports/no-unused-vars": "off",
         "no-fallthrough": "off",
         "react-hooks/rules-of-hooks": "off",
         "no-case-declarations": "off",
-        "no-console": "off",
+        "no-console": ["error", {
+          "allow": ["warn", "debug"]
+        }],
         "no-unsafe-optional-chaining": "off",
         "no-empty": "off",
         "react/jsx-key": "off",
-        "react-hooks/exhaustive-deps": "off",
+        "react-hooks/exhaustive-deps": [
+          "warn", {
+            "additionalHooks": "(!useAtom)"
+          }
+        ],
         "react/display-name": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-non-null-assertion": "off",

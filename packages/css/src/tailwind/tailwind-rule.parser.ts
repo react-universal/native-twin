@@ -26,11 +26,18 @@ export const mapVariant = mapResult('VARIANT');
 export const mapVariantClass = mapResult('VARIANT_CLASS');
 export const mapGroup = mapResult('GROUP');
 export const mapColorModifier = mapResult('COLOR_MODIFIER');
+export const mapAlias = mapResult('ALIAS_CLASSNAME');
 
 export const parseValidTokenRecursive = P.recursiveParser(
   (): P.Parser<GroupToken | VariantClassToken | ClassNameToken> =>
     P.choice([parseRuleGroup, parseVariantClass, parseClassName]),
 );
+
+/** Match apply classname */
+export const parseApplyClassName = P.sequenceOf([
+  P.char('@'),
+  parseValidTokenRecursive,
+]).map((x) => mapAlias({ symbol: x[0], token: x[1] }));
 
 // CLASSNAMES
 
@@ -60,6 +67,25 @@ export const parseVariant = P.many1(
       })),
     ),
 );
+
+// flex-row border-1 [:nth-of-type(2)&]:bg-blue
+export const parsePseudoArbitrary = P.many(
+  P.sequenceOf([parseMaybeImportant, parseArbitraryValue, P.char(':')]),
+)
+  .map(
+    (x): VariantToken =>
+      // mapArbitrary(x.replace(`[`, '').replace(']', '')),
+      mapVariant(
+        x.map((y) => ({
+          i: y[0],
+          n: y[1],
+        })),
+      ),
+  )
+  .errorMap((x) => {
+    console.log('ERROR: ', x);
+    return x.error ?? '';
+  });
 
 /** Match classnames with important prefix arbitrary and color modifiers */
 export const parseClassName = P.sequenceOf([
@@ -96,7 +122,7 @@ export const parseGroupContent = matchBetweenParens(
  * Match className groups like `md:(...)` or stacked like `hover:md:(...)` or feature prefix `text(...)`
  * */
 export const parseRuleGroup = P.sequenceOf([
-  P.choice([parseVariant, parseClassName]),
+  P.choice([parseVariant, parseClassName, parsePseudoArbitrary]),
   parseGroupContent,
 ]).map(
   (x): GroupToken =>

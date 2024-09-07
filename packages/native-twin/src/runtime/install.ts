@@ -2,6 +2,7 @@ import { getSheet } from '@native-twin/css';
 import { defineConfig } from '../config/define-config';
 import type { TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { RuntimeTW, __Theme__ } from '../types/theme.types';
+import { isDevEnvironment } from './runtime.utils';
 import { setup } from './tw';
 
 /**
@@ -21,7 +22,7 @@ export function install<Theme = __Theme__>(
 
 export function install(
   config: TailwindConfig | TailwindUserConfig,
-  isProduction = !__DEV__,
+  isProduction = !isDevEnvironment(),
 ): RuntimeTW {
   const config$ = defineConfig(config as TailwindUserConfig);
 

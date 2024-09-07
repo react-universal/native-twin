@@ -1,21 +1,50 @@
-import { PixelRatio, Platform } from 'react-native';
 import { parseCssValue, tw } from '@native-twin/core';
 import {
   AnyStyle,
+  CompleteStyle,
   FinalSheet,
   getRuleSelectorGroup,
-  SheetEntry,
   SheetEntryDeclaration,
 } from '@native-twin/css';
-import { StyledContext } from '@native-twin/styled';
-import { colorScheme, rem, vh, vw } from '../observables';
+import { RuntimeSheetEntry } from '@native-twin/css/jsx';
+import type { StyledContext } from '../store/observables';
 
-export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
+export const sheetEntryToStyle = (
+  entry: RuntimeSheetEntry,
+  context: StyledContext,
+): CompleteStyle | null => {
+  const validRule = isApplicativeRule(entry.selectors, context);
+  if (!validRule) return null;
+  const nextDecl = composeDeclarations(entry.declarations, context);
+  return nextDecl;
+};
+
+export const sheetEntriesToStyles = (
+  entries: RuntimeSheetEntry[],
+  context: StyledContext,
+): CompleteStyle => {
+  return entries.reduce((prev, current) => {
+    const style = sheetEntryToStyle(current, context);
+    if (!style) return prev;
+
+    if (style && style.transform) {
+      style.transform = [...(style.transform as any), ...style.transform];
+    }
+    return {
+      ...prev,
+      ...style,
+    };
+  }, {} as AnyStyle);
+};
+export function getSheetEntryStyles(
+  entries: RuntimeSheetEntry[] = [],
+  context: StyledContext,
+) {
   return entries.reduce(
     (prev, current) => {
-      const validRule = isApplicativeRule(current.selectors, context);
-      if (!validRule) return prev;
-      const nextDecl = composeDeclarations(current.declarations, context);
+      const nextDecl = sheetEntryToStyle(current, context);
+      if (!nextDecl) return prev;
+
       const group = getRuleSelectorGroup(current.selectors);
       if (nextDecl.transform && prev[group].transform) {
         nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
@@ -40,19 +69,22 @@ export function composeDeclarations(
   declarations: SheetEntryDeclaration[],
   context: StyledContext,
 ) {
+  const styledCtx = {
+    rem: context.units.rem,
+    deviceHeight: context.deviceHeight,
+    deviceWidth: context.deviceWidth,
+  };
   return declarations.reduce((prev, current) => {
     let value: any = current.value;
     if (Array.isArray(current.value)) {
       value = [];
       for (const t of current.value) {
-        if (typeof t.value == 'string') {
-          value.push({
-            [t.prop]: parseCssValue(t.prop, t.value, {
-              rem: tw.config.root?.rem ?? context.units.rem,
-              deviceHeight: context.deviceHeight,
-              deviceWidth: context.deviceWidth,
-            }),
-          });
+        if (typeof t.value === 'string') {
+          if (t.value) {
+            value.push({
+              [t.prop]: parseCssValue(t.prop, t.value, styledCtx),
+            });
+          }
         }
       }
       Object.assign(prev, {
@@ -60,14 +92,10 @@ export function composeDeclarations(
       });
       return prev;
     }
-    if (typeof value == 'string') {
-      value = parseCssValue(current.prop, value, {
-        rem: tw.config.root?.rem ?? context.units.rem,
-        deviceHeight: context.deviceHeight,
-        deviceWidth: context.deviceWidth,
-      });
+    if (typeof value === 'string') {
+      value = parseCssValue(current.prop, value, styledCtx);
     }
-    if (typeof value == 'object') {
+    if (typeof value === 'object') {
       Object.assign(prev, value);
     } else {
       Object.assign(prev, {
@@ -81,20 +109,24 @@ export function composeDeclarations(
 
 const platformVariants = ['web', 'native', 'ios', 'android'];
 export function isApplicativeRule(variants: string[], context: StyledContext) {
-  if (variants.length == 0) return true;
+  if (variants.length === 0) return true;
   const screens = tw.theme('screens');
 
   for (let v of variants) {
     v = v.replace('&:', '');
     if (platformVariants.includes(v)) {
-      if (v == 'web' && Platform.OS != 'web') return false;
-      if (v == 'native' && Platform.OS == 'web') return false;
-      if (v == 'ios' && Platform.OS != 'ios') return false;
-      if (v == 'android' && Platform.OS != 'android') return false;
+      if (v === 'web' && context.platform !== 'web') return false;
+      if (v === 'native' && context.platform === 'web') return false;
+      if (v === 'ios' && context.platform !== 'ios') return false;
+      if (v === 'android' && context.platform !== 'android') return false;
+      // if (v === 'web' && Platform.OS !== 'web') return false;
+      // if (v === 'native' && Platform.OS === 'web') return false;
+      // if (v === 'ios' && Platform.OS !== 'ios') return false;
+      // if (v === 'android' && Platform.OS !== 'android') return false;
     }
     // if (
-    //   (v === 'dark' && context.colorScheme === 'light') ||
-    //   (v === 'light' && context.colorScheme === 'dark')
+    //   (v ==== 'dark' && context.colorScheme ==== 'light') ||
+    //   (v ==== 'light' && context.colorScheme ==== 'dark')
     // ) {
     //   return false;
     // }
@@ -112,7 +144,7 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
         }
       }
 
-      if (typeof variant == 'object') {
+      if (typeof variant === 'object') {
         let min: null | number = null;
         let max: null | number = null;
         // if ('raw' in variant && !(width >= Number(variant.raw))) {
@@ -137,7 +169,6 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
             rem: context.units.rem,
           }) as number;
         }
-        console.log('MAX_MIN', max, min);
         if (max && min && !(width <= max && width >= min)) {
           return false;
         }
@@ -147,33 +178,4 @@ export function isApplicativeRule(variants: string[], context: StyledContext) {
     }
   }
   return true;
-}
-
-export function createStyledContext(): StyledContext {
-  const vh$ = vh.get();
-  const vw$ = vw.get();
-  return {
-    colorScheme: colorScheme.get()!,
-    deviceAspectRatio: vw$ / vh$,
-    deviceHeight: vh$,
-    deviceWidth: vw$,
-    orientation: vw$ > vh$ ? 'landscape' : 'portrait',
-    resolution: PixelRatio.getPixelSizeForLayoutSize(vw$),
-    fontScale: PixelRatio.getFontScale(),
-    platform: Platform.OS,
-    units: {
-      rem: rem.get(),
-      em: rem.get(),
-      cm: 37.8,
-      mm: 3.78,
-      in: 96,
-      pt: 1.33,
-      pc: 16,
-      px: 1,
-      vmin: vw$ < vh$ ? vw$ : vh$,
-      vmax: vw$ > vh$ ? vw$ : vh$,
-      vw: vw$,
-      vh: vh$,
-    },
-  };
 }

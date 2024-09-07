@@ -41,8 +41,10 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@effect/typeclass": "^0.26.2",
     "@native-twin/arc-parser": "workspace:*",
-    "@native-twin/helpers": "workspace:*"
+    "@native-twin/helpers": "workspace:*",
+    "effect": "^3.7.2"
   },
   "optionalDependencies": {
     "jest": "*"

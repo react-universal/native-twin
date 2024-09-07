@@ -1,19 +1,18 @@
-import type { ComponentProps, ComponentType } from 'react';
-import { forwardRef } from 'react';
+import { ComponentProps, ComponentType, forwardRef } from 'react';
 import { render as tlRender } from '@testing-library/react-native';
 import * as JSX from 'react/jsx-runtime';
 import { setup } from '@native-twin/core';
 import type { CompleteStyle } from '@native-twin/css';
 import '../components';
-import { INTERNAL_RESET } from '../constants';
 import wrapJSX from '../jsx-wrapper';
 import { StyleSheet } from '../sheet/StyleSheet';
-import { stylizedComponents, createStylableComponent } from '../styled/createTwinCmp';
+import { createStylableComponent, stylizedComponents } from '../styled';
 import type {
   StylableComponentConfigOptions,
   ReactComponent,
   NativeTwinGeneratedProps,
 } from '../types/styled.types';
+import { INTERNAL_RESET } from '../utils/constants';
 import tailwindConfig from './tailwind.config';
 
 setup(tailwindConfig);
@@ -46,16 +45,18 @@ export const createMockComponent = <
     className: 'style',
   } as unknown as M,
 ) => {
-  createStylableComponent(Component, mapping);
+  // return createStylableComponent(Component, mapping);
 
   const mock: any = jest.fn(({ ...props }, ref) => {
     props.ref = ref;
     return renderJSX(Component, props, '', false, undefined, undefined);
   });
 
-  return Object.assign(forwardRef(mock), { mock }) as unknown as ComponentType<
-    ComponentProps<T> & NativeTwinGeneratedProps<M>
-  > & { mock: typeof mock };
+  return Object.assign(createStylableComponent(forwardRef(mock), mapping), {
+    mock,
+  }) as unknown as ComponentType<ComponentProps<T> & NativeTwinGeneratedProps<M>> & {
+    mock: typeof mock;
+  };
 };
 
 // export const createRemappedComponent = <
@@ -88,10 +89,6 @@ export const resetStyles = () => {
 export const resetComponents = () => {
   stylizedComponents.clear();
 };
-
-export function registerCSS(css: string, options?: any) {
-  // StyleSheet.registerCompiled(cssToReactNativeRuntime(css, options));
-}
 
 export function revealStyles(obj: any): any {
   switch (typeof obj) {

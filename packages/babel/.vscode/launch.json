@@ -1,20 +1,27 @@
 {
-  "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Jest Tests",
       "type": "node",
       "request": "launch",
-      "presentation": {
-        "hidden": false,
-        "group": "tools",
-        "order": 10
-      },
-      "runtimeArgs": [
-        "--inspect-brk",
-        "../../node_modules/.bin/jest",
+      "name": "Jest @lib/babel",
+      "program": "../../node_modules/jest/bin/jest",
+      "args": [
+        "--runInBand",
+        "--silent=false",
+        "--watch"
       ],
-      "console": "integratedTerminal"
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "sourceMaps": true,
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**/*.js",
+        "node_modules",
+      ]
     }
   ]
 }

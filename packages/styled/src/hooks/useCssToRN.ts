@@ -9,8 +9,8 @@ import {
   SheetEntry,
   SheetEntryDeclaration,
   getRuleSelectorGroup,
+  RuntimeContext,
 } from '@native-twin/css';
-import { StyledContext } from '../types/css.types';
 import { useStyledContext } from './useStyledContext';
 
 export function useCssToRN(className: string) {
@@ -23,7 +23,7 @@ export function useCssToRN(className: string) {
   return { stylesheet, componentID };
 }
 
-export function createComponentSheet(entries: SheetEntry[], context: StyledContext) {
+export function createComponentSheet(entries: SheetEntry[], context: RuntimeContext) {
   const sheet = getSheetEntryStyles(entries, context);
   return {
     getChildStyles,
@@ -60,7 +60,7 @@ export function createComponentSheet(entries: SheetEntry[], context: StyledConte
   }
 }
 
-function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
+function getSheetEntryStyles(entries: SheetEntry[], context: RuntimeContext) {
   return entries.reduce(
     (prev, current) => {
       const validRule = isApplicativeRule(current.selectors, context);
@@ -85,7 +85,10 @@ function getSheetEntryStyles(entries: SheetEntry[], context: StyledContext) {
   );
 }
 
-function composeDeclarations(declarations: SheetEntryDeclaration[], context: StyledContext) {
+function composeDeclarations(
+  declarations: SheetEntryDeclaration[],
+  context: RuntimeContext,
+) {
   return declarations.reduce((prev, current) => {
     let value: any = current.value;
     if (Array.isArray(current.value)) {
@@ -126,7 +129,7 @@ function composeDeclarations(declarations: SheetEntryDeclaration[], context: Sty
 }
 
 const platformVariants = ['web', 'native', 'ios', 'android'];
-function isApplicativeRule(variants: string[], context: StyledContext) {
+function isApplicativeRule(variants: string[], context: RuntimeContext) {
   if (variants.length == 0) return true;
   const screens = tw.theme('screens');
   for (let v of variants) {
@@ -164,7 +167,7 @@ function isApplicativeRule(variants: string[], context: StyledContext) {
             return false;
           }
         }
-  
+
         if (typeof variant == 'object') {
           let min: null | number = null;
           let max: null | number = null;

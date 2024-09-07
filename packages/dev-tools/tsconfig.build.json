@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "../../tsconfig.base.json",
+    "expo-module-scripts/tsconfig.base"
+  ],
+  "compilerOptions": {
+    "outDir": "./build",
+    "noEmit": false
+  },
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "**/__mocks__/*",
+    "**/__tests__/*",
+    "webui",
+    "build",
+    "dist"
+  ]
+}

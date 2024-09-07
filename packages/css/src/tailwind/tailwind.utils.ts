@@ -1,6 +1,6 @@
-import { MaybeArray, asArray } from '@native-twin/helpers';
-import { SelectorGroup } from '../css/css.types';
-import { TWScreenValueConfig } from './tailwind.types';
+import { type MaybeArray, asArray } from '@native-twin/helpers';
+import type { SelectorGroup } from '../css/css.types';
+import type { TWScreenValueConfig } from './tailwind.types';
 
 export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   if (variants.length == 0) return 'base';

@@ -34,7 +34,7 @@
     },
     {
       "name": "expo-app",
-      "path": "../examples/expo-app"
+      "path": "../apps/expo-app"
     }
   ],
   "settings": {
@@ -87,7 +87,7 @@
     ],
     "testing.openTesting": "neverOpen",
     "[typescript]": {
-      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "editor.fontSize": 16
   },

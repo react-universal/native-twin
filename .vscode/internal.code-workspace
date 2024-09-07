@@ -102,16 +102,17 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
-      ".turbo": false,
-      "**/CHANGELOG.md": false,
+      ".turbo": true,
+      ".nx": true,
+      "**/CHANGELOG.md": true,
       "**/jest.config.js": false,
-      "**/LICENSE": false,
+      "**/LICENSE": true,
       "**/babel.config.js": false,
       "**/build": false,
       "**/turbo.json": false,
       "**/.eslintrc.json": false,
-      "**/.eslintignore": false,
-      "**/README.md": false
+      "**/.eslintignore": true,
+      "**/README.md": true
     },
     "search.exclude": {
       "**/node_modules": true,
@@ -126,6 +127,19 @@
       "TRBL",
       "xytrbl"
     ],
-    "testing.openTesting": "neverOpen"
+    "jest.enable": true,
+    "jest.disabledWorkspaceFolders": [
+      "root",
+      "📦 @lib/builder",
+      "📦 @lib/metro",
+      "📦 @lib/with-nextjs",
+      "📦 @lib/vscode",
+      "📦 @lib/language-service",
+      "📦 @lib/language-server",
+      "expo-app",
+      "next-pages-example",
+      "next-app-dir",
+      "docs-site"
+    ]
   }
 }

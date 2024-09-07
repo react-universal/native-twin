@@ -1,51 +1,51 @@
-import { createStylableComponent } from './styled/createTwinCmp';
-import { withMappedProps } from './styled/twinMappedCmp';
+import { withMappedProps, createStylableComponent } from './styled';
+
+const {
+  ActivityIndicator: RNActivityIndicator,
+  Pressable: RNPressable,
+  ScrollView: RNScrollView,
+  StatusBar: RNStatusBar,
+  Switch: RNSwitch,
+  Text: RNText,
+  TextInput: RNTextInput,
+  SafeAreaView: RNSafeAreaView,
+  TouchableOpacity: RNTouchableOpacity,
+  View: RNView,
+  Image: RNImage,
+  TouchableHighlight: RNTouchableHighlight,
+  TouchableWithoutFeedback: RNTouchableWithoutFeedback,
+  FlatList: RNFlatList,
+  ImageBackground: RNImageBackground,
+  KeyboardAvoidingView: RNKeyboardAvoidingView,
+  VirtualizedList: RNVirtualizedList,
+} = require('react-native');
 
 if (typeof window !== 'undefined') {
-  const {
-    ActivityIndicator,
-    Pressable,
-    ScrollView,
-    StatusBar,
-    Switch,
-    Text,
-    TextInput,
-    SafeAreaView,
-    TouchableOpacity,
-    View,
-    Image,
-    TouchableHighlight,
-    TouchableWithoutFeedback,
-    FlatList,
-    ImageBackground,
-    KeyboardAvoidingView,
-    VirtualizedList,
-  } = require('react-native');
-  createStylableComponent(Image, { className: 'style' });
-  createStylableComponent(Pressable, { className: 'style' });
-  createStylableComponent(SafeAreaView, { className: 'style' });
-  createStylableComponent(Switch, { className: 'style' });
-  createStylableComponent(Text, { className: 'style' });
-  createStylableComponent(TouchableHighlight, { className: 'style' });
-  createStylableComponent(TouchableOpacity, { className: 'style' });
-  createStylableComponent(TouchableWithoutFeedback, { className: 'style' });
-  createStylableComponent(View, { className: 'style' });
-  createStylableComponent(ActivityIndicator, {
+  createStylableComponent(RNImage, { className: 'style' });
+  createStylableComponent(RNPressable, { className: 'style' });
+  createStylableComponent(RNSafeAreaView, { className: 'style' });
+  createStylableComponent(RNSwitch, { className: 'style' });
+  createStylableComponent(RNText, { className: 'style' });
+  createStylableComponent(RNTouchableHighlight, { className: 'style' });
+  createStylableComponent(RNTouchableOpacity, { className: 'style' });
+  createStylableComponent(RNTouchableWithoutFeedback, { className: 'style' });
+  createStylableComponent(RNView, { className: 'style' });
+  createStylableComponent(RNActivityIndicator, {
     className: { target: 'style', nativeStyleToProp: { color: true } },
   });
-  createStylableComponent(StatusBar, {
+  createStylableComponent(RNStatusBar, {
     className: { target: false, nativeStyleToProp: { backgroundColor: true } },
   });
-  createStylableComponent(ScrollView, {
+  createStylableComponent(RNScrollView, {
     className: 'style',
     contentContainerClassName: 'contentContainerStyle',
     indicatorClassName: 'indicatorStyle',
   });
-  createStylableComponent(TextInput, {
+  createStylableComponent(RNTextInput, {
     className: { target: 'style', nativeStyleToProp: { textAlign: true } },
   });
 
-  withMappedProps(FlatList, {
+  withMappedProps(RNFlatList, {
     className: 'style',
     ListFooterComponentClassName: 'ListFooterComponentStyle',
     ListHeaderComponentClassName: 'ListHeaderComponentStyle',
@@ -53,15 +53,15 @@ if (typeof window !== 'undefined') {
     contentContainerClassName: 'contentContainerStyle',
     indicatorClassName: 'indicatorStyle',
   });
-  withMappedProps(ImageBackground, {
+  withMappedProps(RNImageBackground, {
     className: 'style',
     imageClassName: 'imageStyle',
   });
-  withMappedProps(KeyboardAvoidingView, {
+  withMappedProps(RNKeyboardAvoidingView, {
     className: 'style',
     contentContainerClassName: 'contentContainerStyle',
   });
-  withMappedProps(VirtualizedList, {
+  withMappedProps(RNVirtualizedList, {
     className: 'style',
     ListFooterComponentClassName: 'ListFooterComponentStyle',
     ListHeaderComponentClassName: 'ListHeaderComponentStyle',

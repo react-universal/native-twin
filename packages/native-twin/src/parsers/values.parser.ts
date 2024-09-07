@@ -4,7 +4,7 @@ import {
   declarationValueWithUnitParser,
   getPropertyValueType,
   unitlessCssProps,
-  type RuntimeContext,
+  type ParserRuntimeContext,
 } from '@native-twin/css';
 import { hasOwnProperty } from '@native-twin/helpers';
 
@@ -17,13 +17,16 @@ export const parseCssValue = (
     deviceWidth: number;
   },
 ) => {
-  const isUnitLess = !prop.includes('flex') && hasOwnProperty.call(unitlessCssProps, prop);
+  const isUnitLess =
+    !prop.includes('flex') && hasOwnProperty.call(unitlessCssProps, prop);
   if (isUnitLess) {
     const data = parseUnitlessValue.run(value);
     if (!data.isError) return data.result;
     return value;
   }
-  const type = getPropertyValueType(prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
+  const type = getPropertyValueType(
+    prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
+  );
   if (type == 'DIMENSION') {
     const data = ParseDimensionWithUnits(context).run(value);
     if (!data.isError) return data.result;
@@ -45,7 +48,7 @@ const ParseCssDimensions = (context: {
   deviceWidth: number;
 }) => P.choice([P.whitespaceSurrounded(ParseDimensionWithUnits(context))]);
 
-export const ParseFlexValue = (context: RuntimeContext) =>
+export const ParseFlexValue = (context: ParserRuntimeContext) =>
   P.choice([
     P.sequenceOf([
       ParseCssDimensions(context),
@@ -68,39 +71,53 @@ export const ParseDimensionWithUnits = (context: {
   deviceHeight: number;
   deviceWidth: number;
 }) =>
-  declarationValueWithUnitParser.map((result) => {
-    const value = parseFloat(result[0]);
-    switch (result[1]?.value) {
-      case 'px':
-        return value;
-      case 'rem':
-      case 'em':
-        return value * context.rem;
-      case '%':
-        return `${value}%` as unknown as number;
-      case 'vh':
-        return context.deviceHeight * (value / 100);
-      case 'vw':
-        return context.deviceWidth * (value / 100);
-      case 'turn':
-        return `${360 * value}deg` as unknown as number;
-      case 'deg':
-        return `${value}deg` as unknown as number;
-      case 'rad':
-        return `${value}rad` as unknown as number;
-      case 'in':
-        return value * 96;
-      case 'pc':
-        return value * (96 / 6);
-      case 'pt':
-        return value * (96 / 72);
-      case 'cm':
-        return value * 97.8;
-      case 'mm':
-        return value * (97.8 / 10);
-      case 'Q':
-        return value * (97.8 / 40);
-      default:
-        return value;
-    }
-  });
+  declarationValueWithUnitParser
+    // .chain((result) => {
+    //   if (result[1]) {
+    //     if (
+    //       result[1].value === 'vh' ||
+    //       result[1].value === 'vw' ||
+    //       result[1].value === 'vmin' ||
+    //       result[1].value === 'vmax'
+    //     ) {
+    //       return P.fail('Dimensions not provided');
+    //     }
+    //   }
+    //   return P.succeedWith(result);
+    // })
+    .map((result) => {
+      const value = parseFloat(result[0]);
+      switch (result[1]?.value) {
+        case 'px':
+          return value;
+        case 'rem':
+        case 'em':
+          return value * context.rem;
+        case '%':
+          return `${value}%` as unknown as number;
+        case 'vh':
+          return context.deviceHeight * (value / 100);
+        case 'vw':
+          return context.deviceWidth * (value / 100);
+        case 'turn':
+          return `${360 * value}deg` as unknown as number;
+        case 'deg':
+          return `${value}deg` as unknown as number;
+        case 'rad':
+          return `${value}rad` as unknown as number;
+        case 'in':
+          return value * 96;
+        case 'pc':
+          return value * (96 / 6);
+        case 'pt':
+          return value * (96 / 72);
+        case 'cm':
+          return value * 97.8;
+        case 'mm':
+          return value * (97.8 / 10);
+        case 'Q':
+          return value * (97.8 / 40);
+        default:
+          return value;
+      }
+    });

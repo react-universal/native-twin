@@ -17,7 +17,12 @@ export { defineConfig } from './config/define-config';
 /** THEME */
 export { createThemeContext } from './theme/theme.context';
 export { createThemeFunction } from './theme/theme.function';
-export { matchCssObject, matchThemeColor, matchThemeValue } from './theme/theme.match';
+export {
+  matchCssObject,
+  matchThemeColor,
+  matchThemeValue,
+  matchAnimation,
+} from './theme/theme.match';
 
 // PARSERS
 export { parseCssValue } from './parsers/values.parser';

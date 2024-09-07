@@ -1,32 +1,64 @@
-import { escapeSelector, asArray, toColorValue, toHyphenCase } from '@native-twin/helpers';
+import {
+  escapeSelector,
+  asArray,
+  toColorValue,
+  toHyphenCase,
+} from '@native-twin/helpers';
 import { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types';
 
-export function sheetEntriesToCss(entries: SheetEntry[] | SheetEntry): string {
+export function sheetEntriesToCss(
+  entries: SheetEntry[] | SheetEntry = [],
+  forMetro = false,
+): string {
   return asArray(entries)
     .filter(Boolean)
     .map((x) => {
-      return getEntryRuleBlock(x);
+      return getEntryRuleBlock(x, forMetro);
     })
     .join('\n');
 }
 
-function getEntryRuleBlock(entry: SheetEntry) {
-  let className = `.${escapeSelector(entry.className)}`;
+function getEntryRuleBlock(entry: SheetEntry, forMetro = false) {
+  let className = `.${forMetro ? entry.className : escapeSelector(entry.className)}`;
+  if (
+    entry.className.startsWith('*') ||
+    entry.className.startsWith(':') ||
+    entry.className.startsWith('[')
+  ) {
+    className = entry.className.replace(/^[.|,]/, '');
+  }
+  // if (forMetro) {
+  //   className = className.replaceAll(/\\,/g, ',');
+  //   className = className.replaceAll(/\\\[/g, '[');
+  //   className = className.replaceAll(/\\]/g, ']');
+  //   className = className.replaceAll(/\\\(/g, '(');
+  //   className = className.replaceAll(/\\\)/g, ')');
+  //   className = className.replaceAll(/\\=/g, '=');
+  //   className = className.replaceAll(/=\\/g, '=');
+  //   className = className.replaceAll(/\\:where/g, ':where');
+  //   className = className.replaceAll(/'\\/g, '"');
+  //   className = className.replaceAll(/\\'/g, '"');
+  //   className = className.replaceAll(/'/g, '"');
+  //   className = className.replaceAll(/\\"/g, '"');
+  // }
+
   const atRules: string[] = [];
   const declarations = sheetEntryDeclarationsToCss(entry.declarations, entry.important);
+
   for (const condition of entry.selectors) {
     // Media query
     if (condition.startsWith('@') && condition[1] == 'm') {
       atRules.push(condition);
       continue;
     }
+
+    if (condition.endsWith('&')) {
+      className = `${condition.replace('&', '\\')}${className}`;
+    }
+
     // Pseudo
     if (condition.startsWith('&')) {
       className += condition.replace('&', '');
-    }
-
-    if (condition.endsWith('&')) {
-      className = `${condition.replace('&', '')}${className}`;
     }
   }
   return atRules.reduce((prev, current) => {

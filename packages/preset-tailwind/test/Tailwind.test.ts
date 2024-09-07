@@ -17,6 +17,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
     const result = tailwind('px-2 p-10 mx-2.5 text(center 2xl) bg-blue-200 justify-center');
     expect(result).toStrictEqual([
       {
+        animations: [],
         className: 'px-2',
         declarations: [
           {
@@ -33,6 +34,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         selectors: [],
       },
       {
+        animations: [],
         className: 'p-10',
         declarations: [
           {
@@ -45,6 +47,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         selectors: [],
       },
       {
+        animations: [],
         className: 'mx-2.5',
         declarations: [
           {
@@ -61,6 +64,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         selectors: [],
       },
       {
+        animations: [],
         className: 'text-center',
         declarations: [
           {
@@ -73,6 +77,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         selectors: [],
       },
       {
+        animations: [],
         className: 'text-2xl',
         declarations: [
           {
@@ -85,6 +90,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         selectors: [],
       },
       {
+        animations: [],
         className: 'bg-blue-200',
         important: false,
         precedence: 805306368,
@@ -97,6 +103,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         ],
       },
       {
+        animations: [],
         className: 'justify-center',
         declarations: [
           {

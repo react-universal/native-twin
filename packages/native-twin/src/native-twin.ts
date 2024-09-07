@@ -9,6 +9,7 @@ import { parseTWTokens, sortedInsertionIndex, interpolate } from '@native-twin/c
 import { asArray } from '@native-twin/helpers';
 import { defineConfig } from './config/define-config';
 import { parsedRuleToEntry } from './convert/ruleToEntry';
+import { isDevEnvironment } from './runtime/runtime.utils';
 import { createThemeContext } from './theme/theme.context';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from './types/theme.types';
@@ -36,6 +37,7 @@ export function createTailwind(
   let cache = new Map<string, SheetEntry[]>();
   const insertedRules = new Set<string>();
   let sortedPrecedences: SheetEntry[] = [];
+  const subscriptions = new Set<(cb: TailwindConfig<any>) => void>();
 
   const runtime = Object.defineProperties(
     function tw(tokens) {
@@ -78,12 +80,31 @@ export function createTailwind(
         cache = new Map();
         insertedRules.clear();
         sortedPrecedences = [];
+        subscriptions.clear();
       },
-      destroy() {
+      destroy(nextConfig) {
+        if (isDevEnvironment()) {
+          if (nextConfig) {
+            subscriptions.forEach((cb) => {
+              cb && cb(nextConfig as any);
+            });
+          }
+        }
         this.clear();
         sheet.destroy();
       },
-    }),
+      observeConfig(cb) {
+        if (!isDevEnvironment()) {
+          return () => void {};
+        }
+        subscriptions.add(cb);
+        return () => {
+          subscriptions.delete(cb);
+        };
+      },
+      insertPreflight,
+      subscriptions,
+    } as RuntimeTW),
   );
   return runtime;
 
@@ -114,6 +135,7 @@ export function createTailwind(
               declarations: Object.entries(p[1]) as any,
               important: false,
               precedence: Layer.b,
+              animations: [],
             };
             sortedPrecedences.push(entry);
             cache.set(entry.className, [entry]);

@@ -3,14 +3,17 @@ import toCssFormat from 'cssbeautify';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as vscode from 'vscode-languageserver/node';
-import { FinalSheet, VariantClassToken } from '@native-twin/css';
+import { FinalSheet } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
+import {
+  TemplateTokenWithText,
+  TemplateTokenData,
+  TwinRuleParts,
+  TwinRuleCompletion,
+  variantTokenToString,
+} from '@native-twin/language-service';
 import { DocumentLanguageRegion } from '../../documents/models/language-region.model';
 import { TwinDocument } from '../../documents/models/twin-document.model';
-import { TwinRuleParts, TwinRuleCompletion } from '../../native-twin/native-twin.types';
-import { TemplateTokenData } from '../../template/models/template-token-data.model';
-import { TemplateTokenWithText } from '../../template/models/template-token.model';
-import { LocatedParser } from '../../template/template.types';
 
 export const getCompletionTokenKind = ({
   rule,
@@ -104,9 +107,6 @@ export const getFlattenTemplateToken = (
 
   return [];
 };
-
-const variantTokenToString = (token: LocatedParser<VariantClassToken>) =>
-  `${token.value[0].value.map((x) => x.n).join(':')}:`;
 
 export const getRangeFromTokensAtPosition = (
   document: TwinDocument,

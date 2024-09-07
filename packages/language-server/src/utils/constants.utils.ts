@@ -1,7 +1,7 @@
 import type { DocumentSelector } from 'vscode-languageserver-protocol';
 import { RuleMeta } from '@native-twin/core';
+import { InternalTwinConfig } from '@native-twin/language-service';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { InternalTwinConfig } from '../native-twin/native-twin.types';
 import { NativeTwinPluginConfiguration } from '../types/extension.types';
 
 export const DOCUMENT_SELECTORS: DocumentSelector = [
@@ -46,6 +46,7 @@ export const DEFAULT_TWIN_CONFIG = {
   rules: [],
   variants: [],
   presets: [presetTailwind()],
+  animations: [],
 } as InternalTwinConfig;
 
 export const DEFAULT_PLUGIN_CONFIG: NativeTwinPluginConfiguration = {

@@ -1,5 +1,5 @@
 import { Layer } from '../css/precedence';
-import { SheetEntry } from '../sheets/sheet.types';
+import type { SheetEntry } from '../sheets/sheet.types';
 
 const collator = new Intl.Collator('en', { numeric: true });
 

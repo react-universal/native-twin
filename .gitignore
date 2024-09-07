@@ -46,3 +46,8 @@ out
 *.vsix
 # Turborepo
 .turbo
+
+metro-test/
+bck
+.expo/
+docs/

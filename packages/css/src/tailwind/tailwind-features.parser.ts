@@ -1,13 +1,13 @@
 import * as P from '@native-twin/arc-parser';
 import { asArray, keysOf } from '@native-twin/helpers';
-import { CssFeature } from '../css/css.types';
+import type { CssFeature } from '../css/css.types';
 import {
   maybeNegativeParser,
   twArbitraryParser,
   twSegmentParser,
 } from './tailwind-common.parser';
 import { cornerMap, directionMap } from './tailwind.constants';
-import { RuleHandlerToken } from './tailwind.types';
+import type { RuleHandlerToken } from './tailwind.types';
 
 export const edgesParser = P.sequenceOf([
   P.choice([

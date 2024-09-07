@@ -1,9 +1,16 @@
 import { Text, View } from 'react-native';
-import { render, act, fireEvent } from '@testing-library/react-native';
-import { colorScheme } from '../observables';
+import { fireEvent, render, screen } from '@testing-library/react-native';
+import { act } from 'react-test-renderer';
+import { defineConfig, setup } from '@native-twin/core';
+import { presetTailwind } from '@native-twin/preset-tailwind';
+import { colorScheme } from '../store/observables/colorScheme.obs';
 import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
 
 const testID = 'native-twin-element';
+
+beforeAll(() => {
+  setup(defineConfig({ content: [], presets: [presetTailwind()] }));
+});
 
 beforeEach(() => {
   resetStyles();
@@ -13,7 +20,6 @@ beforeEach(() => {
 test('normal component', () => {
   const TwinView = createMockComponent(View, { className: 'style' });
   const TwinText = createMockComponent(Text, { className: 'style' });
-
   const tree = render(
     <TwinView testID={testID} className='bg-black hover:bg-white'>
       <TwinText className='text(white lg)'>Sample Text</TwinText>
@@ -25,7 +31,6 @@ test('normal component', () => {
 test('dark mode', () => {
   const TwinView = createMockComponent(View, { className: 'style' });
   const TwinText = createMockComponent(Text, { className: 'style' });
-
   act(() => colorScheme.set('dark'));
 
   const tree = render(
@@ -40,7 +45,6 @@ test('dark mode', () => {
 test('Interactions', async () => {
   const TwinPressable = createMockComponent(View, { className: 'style' });
 
-  colorScheme.set('dark');
   const tree = render(
     <TwinPressable testID={testID} className='bg-black hover:(bg-gray-200)' />,
   );
@@ -72,20 +76,20 @@ test('Interactions', async () => {
 //   // });
 // });
 
-// test('multiple mapping', () => {
-//   const A = createMockComponent(View, { a: 'styleA', b: 'styleB' });
+test('multiple mapping', () => {
+  const A = createMockComponent(View, { a: 'styleA', b: 'styleB' });
 
-//   render(<A testID={testID} a='bg-black' b='text-white' />);
+  render(<A testID={testID} a='bg-black' b='text-white' />);
 
-//   const component = screen.getByTestId(testID);
+  const component = screen.getByTestId(testID);
 
-//   expect(component.props).toEqual({
-//     testID,
-//     styleA: {
-//       backgroundColor: 'rgba(0,0,0,1)',
-//     },
-//     styleB: {
-//       color: 'rgba(255,255,255,1)',
-//     },
-//   });
-// });
+  expect(component.props).toEqual({
+    testID,
+    styleA: {
+      backgroundColor: 'rgba(0,0,0,1)',
+    },
+    styleB: {
+      color: 'rgba(255,255,255,1)',
+    },
+  });
+});

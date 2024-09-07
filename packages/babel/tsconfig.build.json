@@ -3,8 +3,12 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "build",
+    "importHelpers": false,
+    "sourceMap": true,
+    "declarationMap": true,
     "noEmit": false,
     "noEmitOnError": false
   },
-  "exclude": ["./test/", "./src/bck"]
+  "include": ["src"],
+  "exclude": ["./test", "bck", "build"]
 }

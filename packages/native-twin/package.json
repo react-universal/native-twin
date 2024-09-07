@@ -50,8 +50,8 @@
     "@native-twin/helpers": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=18.0",
-    "react-native": ">=0.71.0"
+    "react": "*",
+    "react-native": "*"
   },
   "optionalDependencies": {
     "jest": "*"
@@ -59,16 +59,5 @@
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
-  },
-  "nx": {
-    "includedScripts": [
-      "build",
-      "build:watch",
-      "clean",
-      "dev",
-      "lint",
-      "test:debug",
-      "test:watch"
-    ]
   }
 }

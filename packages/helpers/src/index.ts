@@ -1,4 +1,4 @@
-export { hash } from './hash.utils';
+export { hash, createHash, getBitMask, getHashMask } from './hash.utils';
 
 export { createStore, createValueStore } from './store.utils';
 
@@ -22,7 +22,12 @@ export { toColorValue } from './color.utils';
 
 export { hasOwnProperty, isObject, isString, noop, uniq } from './function.utils';
 
-export { toCamelCase, toHyphenCase, toTailDashed } from './string.utils';
+export {
+  toCamelCase,
+  toHyphenCase,
+  toTailDashed,
+  generateAlphabeticName,
+} from './string.utils';
 
 export type {
   ArrayType,
@@ -33,6 +38,7 @@ export type {
   StringLike,
   UnionToIntersection,
   ColorsRecord,
+  AnyPrimitive,
 } from './utility.types';
 
 export { warn, WarningEventMap } from './warn';
@@ -44,3 +50,12 @@ export {
 } from './create-value.utils';
 
 export { flattenObjectByPath, flattenColorPalette } from './object.utils';
+
+export {
+  Atom,
+  AtomGetter,
+  atom,
+  atomStateMap,
+  useAtom,
+  useAtomValue,
+} from './atom.store';

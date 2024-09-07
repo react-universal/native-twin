@@ -1,8 +1,9 @@
 import type { StyleProp } from 'react-native';
-import { Falsey, StringLike } from '@native-twin/helpers';
-import {
+import type { Falsey, StringLike } from '@native-twin/helpers';
+import type {
   AppearancePseudoSelectors,
   ChildPseudoSelectors,
+  CssChildPseudoSelectors,
   GroupInteractionPseudoSelectors,
   InteractionPseudoSelectors,
   PlatformPseudoSelectors,
@@ -13,6 +14,7 @@ export type ValidInteractionPseudoSelector = (typeof InteractionPseudoSelectors)
 export type ValidAppearancePseudoSelector = (typeof AppearancePseudoSelectors)[number];
 export type ValidChildPseudoSelector = (typeof ChildPseudoSelectors)[number];
 export type ValidPlatformPseudoSelector = (typeof PlatformPseudoSelectors)[number];
+export type ValidCssChildPseudoSelector = (typeof CssChildPseudoSelectors)[number];
 export type ValidGroupPseudoSelector = (typeof GroupInteractionPseudoSelectors)[number];
 export type SimplePseudos = keyof typeof simplePseudoMap;
 export type ValidPlatformInteractionPseudoSelector = `${
@@ -48,13 +50,14 @@ export type SelectorGroup =
   | 'dark';
 
 export type CSSLengthUnit = {
-  [U in CSSUnits]: {
-    value: number;
-    units: U;
-  };
-}[CSSUnits];
+  [U in CSSUnit]: number;
+}[CSSUnit];
 
-export type CSSUnits =
+export type CssUnits = {
+  [U in CSSUnit]: number;
+}[CSSUnit];
+
+export type CSSUnit =
   | 'px'
   | '%'
   | 'em'
@@ -71,7 +74,9 @@ export type CSSUnits =
   | 'pt'
   | 'cm'
   | 'mm'
-  | 'Q';
+  | 'Q'
+  | 'vmin'
+  | 'vmax';
 
 export interface ParserToken<T, U> {
   type: T;

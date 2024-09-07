@@ -49,3 +49,5 @@ export type KebabCase<S> = S extends `${infer C}${infer T}`
 export interface ColorsRecord {
   [key: string]: (ColorsRecord & { DEFAULT?: string }) | string;
 }
+
+export type AnyPrimitive = string | number | boolean;

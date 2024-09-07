@@ -62,6 +62,7 @@ export const getDocumentLanguageLocations = (
       plugins: ['jsx', 'typescript'],
       sourceType: 'module',
       errorRecovery: true,
+      ranges: true,
     });
     if (parsed) {
       traverse(parsed, {

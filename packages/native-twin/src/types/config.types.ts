@@ -1,4 +1,5 @@
 import type { PlatformOSType } from 'react-native';
+import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type {
   CompleteStyle,
   CssFeature,
@@ -24,6 +25,7 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   root: {
     rem: number;
   };
+  animations: [className: string, keyframe: ReanimatedKeyframe][];
 }
 
 export interface TailwindUserConfig<
@@ -42,6 +44,7 @@ export interface TailwindUserConfig<
     rem: number;
   };
   presets?: Presets;
+  animations?: [className: string, keyframe: ReanimatedKeyframe][];
 }
 
 /** PRESETS CONFIG */
@@ -64,6 +67,7 @@ export interface TailwindPresetConfig<Theme = __Theme__> {
 
   variants?: Variant<Theme & __Theme__>[];
   ignorelist?: MaybeArray<string | RegExp>;
+  animations?: [className: string, keyframe: ReanimatedKeyframe][];
 
   // darkColor?: DarkColor<Theme & __Theme__>;
   // hash?: boolean | undefined | HashFunction;
@@ -128,6 +132,7 @@ export interface ThemeContext<Theme extends __Theme__ = __Theme__> {
   colors: Record<string, string>;
   breakpoints: Exclude<__Theme__['screens'], undefined>;
   mode: TailwindConfig['mode'];
+  animations: TailwindConfig['animations'];
   /** resolves a rule */
   r: (value: TWParsedRule) => RuleResult;
   v: (value: string) => VariantResult;
@@ -137,7 +142,9 @@ export interface ThemeContext<Theme extends __Theme__ = __Theme__> {
 }
 
 export interface ThemeFunction<Theme extends __Theme__ = __Theme__> {
-  <Section extends keyof Theme>(section: Section): ThemeConfig<Theme>[Section] | undefined;
+  <Section extends keyof Theme>(
+    section: Section,
+  ): ThemeConfig<Theme>[Section] | undefined;
   (section: keyof Theme | (string & {}), segment: string): string | undefined;
 }
 

@@ -1,5 +1,5 @@
 import { jsxStyles } from './jsx/jsx-styles';
-import { stylizedComponents } from './styled/createTwinCmp';
+import { stylizedComponents } from './styled';
 import type { JSXFunction } from './types/jsx.types';
 
 /**

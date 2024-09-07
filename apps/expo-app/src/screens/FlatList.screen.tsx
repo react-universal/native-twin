@@ -29,6 +29,8 @@ const FlatListScreen = () => {
         <FlatList
           data={items}
           className='bg-gray-600 hover:bg-white p-10'
+          // className -> contentContainerStyle
+          // indicatorClassName -> indicatorStyle
           renderItem={({ item }) => {
             return (
               <View className='hover:bg-pink-500'>

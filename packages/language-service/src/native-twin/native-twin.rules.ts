@@ -1,9 +1,11 @@
+import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
-import type { RuleMeta } from '@native-twin/core';
+import { pipe } from 'effect/Function';
+import { RuleMeta } from '@native-twin/core';
 import { cornerMap, directionMap, TWScreenValueConfig } from '@native-twin/css';
 import { ColorsRecord, asArray } from '@native-twin/helpers';
 import { DEFAULT_RULE_META } from '../utils/constants.utils';
-import type {
+import {
   InternalNativeTwinRule,
   TwinRuleParts,
   TwinRuleCompletion,
@@ -73,15 +75,18 @@ export const createRuleComposer = (ruleInfo: {
 
   return {
     suffixes,
-    expansions: suffixes.map((x) => {
-      const classNameExpansion = composeExpansion(x.classNameSuffix).replace('--', '-');
-      // const declarationExpansions = x.declarationSuffixes.map((y) => ``);
-      const composed = composer(classNameExpansion);
-      return Data.struct({
-        classNameExpansion,
-        composed,
-      });
-    }),
+    expansions: pipe(
+      suffixes,
+      RA.map((x) => {
+        const classNameExpansion = composeExpansion(x.classNameSuffix).replace('--', '-');
+        // const declarationExpansions = x.declarationSuffixes.map((y) => ``);
+        const composed = composer(classNameExpansion);
+        return Data.struct({
+          classNameExpansion,
+          composed,
+        });
+      }),
+    ),
   };
 };
 

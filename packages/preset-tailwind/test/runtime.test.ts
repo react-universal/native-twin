@@ -24,6 +24,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
   `;
     expect(result).toStrictEqual([
       {
+        animations: [],
         className: 'px-2',
         declarations: [
           { prop: 'paddingLeft', value: '0.5rem' },
@@ -34,6 +35,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         selectors: [],
       },
       {
+        animations: [],
         className: 'm-10',
         declarations: [
           {
@@ -46,6 +48,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         selectors: [],
       },
       {
+        animations: [],
         className: 'text-2xl',
         declarations: [
           {
@@ -58,6 +61,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         selectors: [],
       },
       {
+        animations: [],
         className: 'text-indigo-200',
         declarations: [
           {

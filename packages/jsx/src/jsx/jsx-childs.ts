@@ -14,7 +14,7 @@ export function stylizeJSXChilds(props: JSXInternalProps | null | undefined) {
 
     if (totalChilds === 1) {
       if (!isValidElement<any>(children)) {
-        props['children'] = children;
+        return;
       } else {
         props['children'] = cloneElement(children, {
           ord: 0,
@@ -22,6 +22,13 @@ export function stylizeJSXChilds(props: JSXInternalProps | null | undefined) {
         } as Record<string, unknown>);
       }
     } else {
+      if (
+        Children.toArray(children)
+          .filter(Boolean)
+          .every((x) => !isValidElement<any>(x))
+      ) {
+        return;
+      }
       props['children'] = Children.toArray(children)
         .filter(Boolean)
         .flatMap((child, index) => {

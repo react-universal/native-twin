@@ -6,5 +6,5 @@
     "noEmit": false,
     "noEmitOnError": false
   },
-  "exclude": ["./tests/", "./src/bck"]
+  "exclude": ["./tests/", "build"]
 }

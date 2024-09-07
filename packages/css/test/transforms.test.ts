@@ -39,10 +39,35 @@ describe('@native-twin/core - Raw rules parser', () => {
       },
     ]);
   });
+
+  it('Parse arbitrary pseudo', () => {
+    const result = parseTWTokens('flex-row [nth-of-type(2)&]:(bg-blue)');
+    expect(result).toStrictEqual([
+      {
+        n: 'flex-row',
+        v: [],
+        i: false,
+        m: null,
+        p: 0,
+      },
+      {
+        n: 'bg-blue',
+        v: ['[nth-of-type(2)&]'],
+        i: false,
+        m: null,
+        p: 0,
+      },
+    ]);
+  });
+
   it('Parse nested grouped rules', () => {
     const result = parseTWTokens('md:(!bg-black !sm:(bg-blue-200 h-24))');
     const classNames = result.map(parsedRuleToClassName);
-    expect(classNames).toStrictEqual(['md:!bg-black', 'sm:md:!bg-blue-200', 'sm:md:!h-24']);
+    expect(classNames).toStrictEqual([
+      'md:!bg-black',
+      'sm:md:!bg-blue-200',
+      'sm:md:!h-24',
+    ]);
     expect(result).toStrictEqual([
       { n: 'bg-black', v: ['md'], i: true, m: null, p: 0 },
       { n: 'bg-blue-200', v: ['sm', 'md'], i: true, m: null, p: 0 },

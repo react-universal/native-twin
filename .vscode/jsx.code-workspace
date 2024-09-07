@@ -1,0 +1,120 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": ".."
+    },
+    {
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @lib/language-service",
+      "path": "../packages/language-service"
+    },
+    {
+      "name": "@apps/expo",
+      "path": "../apps/expo-app"
+    },
+    {
+      "name": "@apps/expo-router",
+      "path": "../apps/expo-router"
+    }
+  ],
+  "settings": {
+    "export-typescript.exportStar": false,
+    "export-typescript.excludes": [
+      "**/*.{spec.ts,spec.tsx}"
+    ],
+    "export-typescript.includes": [
+      "**/*.{ts,tsx}"
+    ],
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    },
+    "vsc-lfs.fileFilters": [
+      ".js"
+    ],
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      ".turbo": true,
+      "**/CHANGELOG.md": false,
+      "**/jest.config.js": false,
+      "**/LICENSE": true,
+      "**/babel.config.js": false,
+      "**/build": false,
+      "**/turbo.json": false,
+      "**/.eslintrc.json": false,
+      "**/.eslintignore": true,
+      "**/README.md": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/*.code-search": true,
+      "**/.yarn": true,
+      "**/.nx": true,
+      "**/.turbo": true,
+      "**/yarn.lock": true,
+      "**/build/*": true
+    },
+    "editor.fontSize": 16,
+    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "jest.enable": true,
+    "jest.disabledWorkspaceFolders": [
+      "root",
+      "📦 @lib/native-twin",
+      // "📦 @lib/babel",
+      "📦 @lib/css",
+      "📦 @lib/helpers",
+      "📦 @lib/dev-tools",
+      "📦 @lib/styled",
+      "@apps/expo"
+    ],
+    "jest.runMode": "on-demand",
+    "jest.outputConfig": {
+      "revealOn": "demand",
+      "revealWithFocus": "none",
+      "clearOnRun": "test-results"
+    },
+    "findUnusedExports.detectCircularImports": true
+  }
+}

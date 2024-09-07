@@ -5,16 +5,36 @@
       "path": ".."
     },
     {
-      "name": "📦 twin.run",
-      "path": "../sites/twin.run"
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/dev-tools-web",
+      "path": "../packages/dev-tools/webui"
+    },
+    {
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
     },
     {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
     },
     {
       "name": "📦 @lib/language-service",
@@ -25,23 +45,19 @@
       "path": "../packages/language-server"
     },
     {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
+    },
+    {
+      "name": "📦 @lib/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "@apps/expo",
+      "path": "../apps/expo-app"
     }
   ],
   "settings": {
-    "cSpell.ignorePaths": [
-      "yarn.lock",
-      "node_modules",
-      "vscode-extension",
-      ".git/objects",
-      "css.colors.ts",
-      ".vscode",
-      ".vscode-insiders",
-      "**/colors.ts",
-      "**/*.snap",
-      "**/*.json"
-    ],
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
@@ -55,31 +71,42 @@
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       ".turbo": false,
-      "**/CHANGELOG.md": false,
+      "**/CHANGELOG.md": true,
       "**/jest.config.js": false,
-      "**/LICENSE": false,
+      "**/LICENSE": true,
       "**/babel.config.js": false,
       "**/build": false,
       "**/turbo.json": false,
       "**/.eslintrc.json": false,
-      "**/.eslintignore": false,
-      "**/README.md": false
+      "**/.eslintignore": true,
+      "**/README.md": true
     },
     "search.exclude": {
       "**/node_modules": true,
-      "**/bower_components": true,
       "**/*.code-search": true,
       "**/build": true
     },
-    "editor.fontSize": 15,
+    "editor.fontSize": 16,
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [
       "sastan",
       "TRBL",
       "xytrbl"
     ],
-    "testing.openTesting": "neverOpen",
-    "jestrunner.jestCommand": "yarn test --",
-    "jestrunner.jestPath": "${workspaceFolder}/../../node_modules/.bin/jest",
+    "jest.enable": true,
+    "jest.runMode": "on-demand",
+    "jest.debugMode": true,
+    "jest.disabledWorkspaceFolders": [
+      "root",
+      "📦 @lib/builder",
+      "📦 @lib/with-nextjs",
+      "📦 @lib/vscode",
+      "📦 @lib/language-service",
+      "📦 @lib/language-server",
+      "expo-app",
+      "next-pages-example",
+      "next-app-dir",
+      "docs-site"
+    ]
   }
 }

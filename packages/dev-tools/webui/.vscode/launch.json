@@ -1,0 +1,32 @@
+{
+  "configurations": [
+    {
+      "name": "Launch dev-tools ui",
+      "type": "chrome",
+      "request": "launch",
+      "presentation": {
+        "hidden": false,
+        "group": "",
+        "order": 3
+      },
+      "url": "http://localhost:8081",
+      "enableDWARF": true,
+      "webRoot": "${workspaceFolder}",
+      "outFiles": [
+        "${workspaceRoot}/../dist/**/*.js",
+        "${workspaceRoot}../**/*.js",
+        "${workspaceRoot}/dist/**/*.js",
+        "${workspaceRoot:}/../build/**/*.js"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/../../**",
+        "${workspaceFolder}/../../babel/**",
+        "${workspaceFolder}/../../metro/**",
+        "!**/node_modules/**"
+      ],
+      "sourceMaps": true,
+      "smartStep": true
+    }
+  ]
+}

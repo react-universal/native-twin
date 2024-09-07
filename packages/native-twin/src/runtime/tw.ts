@@ -1,14 +1,17 @@
+/* eslint-disable prefer-spread */
 import { getSheet, type Sheet } from '@native-twin/css';
 import { noop } from '@native-twin/helpers';
 import { createTailwind } from '../native-twin';
 import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
 import { mutationObserver } from './mutation-observer';
+import { isDevEnvironment } from './runtime.utils';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
+// const subscriptions = new Set<(cb: TailwindConfig<any>) => void>();
 
 function assertActive() {
-  if (__DEV__ && !tw) {
+  if (isDevEnvironment() && !tw) {
     throw new Error(
       `No active instance found. Make sure to call setup or install before accessing tw.`,
     );
@@ -22,12 +25,12 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
   noop as unknown as RuntimeTW<any>,
   {
     apply(_target, _thisArg, args) {
-      if (__DEV__) assertActive();
+      if (isDevEnvironment()) assertActive();
       return active.apply(_thisArg, args);
     },
 
     get(target, property) {
-      if (__DEV__) {
+      if (isDevEnvironment()) {
         // Workaround webpack accessing the prototype in dev mode
         if (!active && property in target) {
           return (target as any)[property];
@@ -36,18 +39,36 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
         assertActive();
       }
 
+      // if (property === 'observeConfig') {
+      //   // @ts-expect-error
+      //   subscriptions.add.apply(subscriptions, arguments);
+      //   return function () {
+      //     return () => {
+      //       // @ts-expect-error
+      //       subscriptions.delete.apply(subscriptions, arguments);
+      //     };
+      //   };
+      // }
+
       // const value = active[property as keyof RuntimeTW];
       if (property === 'theme') {
         const value = active[property];
         return function () {
-          if (__DEV__) assertActive();
+          if (isDevEnvironment()) assertActive();
           return value.apply(active, arguments as unknown as [string, string]);
+        };
+      }
+      if (property === 'observeConfig') {
+        const value = active[property];
+        return function () {
+          if (isDevEnvironment()) assertActive();
+          return value.apply(active, arguments as unknown as any);
         };
       }
       const value = active[property as Exclude<keyof RuntimeTW, 'theme'>];
       if (typeof value == 'function') {
         return function () {
-          if (__DEV__) assertActive();
+          if (isDevEnvironment()) assertActive();
           return value.apply(active);
         };
       }
@@ -81,7 +102,7 @@ export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
   target?: HTMLElement,
 ): RuntimeTW<Theme> {
   if ('destroy' in active) {
-    active?.destroy();
+    active?.destroy(config as any);
   }
   // active = tw$ as RuntimeTW;
   const instance = createTailwind(

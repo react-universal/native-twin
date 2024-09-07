@@ -6,5 +6,5 @@
     "noEmit": false,
     "declarationMap": true
   },
-  "exclude": ["./test/"]
+  "exclude": ["./test/", "build"]
 }

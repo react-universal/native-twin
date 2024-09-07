@@ -2,6 +2,7 @@
   "name": "native-twin",
   "version": "0.0.0-development",
   "private": true,
+  "homepage": "https://github.com/react-universal/native-twin#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/react-universal/native-twin.git"
@@ -10,13 +11,14 @@
   "author": "Cristhian Gutierrez",
   "workspaces": [
     "packages/*",
+    "packages/dev-tools/webui",
     "apps/*"
   ],
   "scripts": {
     "build": "turbo run build",
     "build:release": "yarn build && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
-    "build:watch": "turbo run build:watch",
-    "clean": "rimraf -g packages/*/build",
+    "build:watch": "turbo run build:watch --concurrency 14",
+    "docgen": "yarn libs:foreach run docgen && node ./scripts/docs.mjs",
     "docs:build": "turbo run docs:build",
     "example:expo": "yarn workspace expo-app run start",
     "extension:dev": "turbo run vscode:dev",
@@ -27,9 +29,15 @@
     "release": "yarn build:release && changeset publish",
     "test": "turbo run test"
   },
+  "resolutions": {
+    "metro-runtime@npm:0.80.6": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch",
+    "metro-runtime@npm:^0.80.3": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch"
+  },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
+    "@effect/docgen": "^0.4.4",
+    "@effect/experimental": "^0.23.3",
     "@nx/eslint": "18.2.2",
     "@nx/eslint-plugin": "18.2.2",
     "@testing-library/react-native": "^12.0.1",
@@ -39,12 +47,13 @@
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.1",
     "@types/mocha": "^10.0.1",
-    "@types/node": "20.2.5",
+    "@types/node": "^20.14.10",
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
-    "@welldone-software/why-did-you-render": "^8.0.1",
+    "@welldone-software/why-did-you-render": "^8.0.3",
     "chai": "4.3.7",
+    "chalk": "^5.3.0",
     "concurrently": "^7.6.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -61,11 +70,12 @@
     "prettier": "^3.2.5",
     "react-test-renderer": "18.2.0",
     "rimraf": "^5.0.7",
+    "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
-    "turbo": "^2.0.6",
-    "typescript": "~5.3.3"
+    "turbo": "^2.1.1",
+    "typescript": "^5.5.4"
   },
-  "packageManager": "yarn@4.2.2",
+  "packageManager": "yarn@4.4.1",
   "overrides": {
     "@babel/types": "7.23.9",
     "@babel/core": "7.23.9"

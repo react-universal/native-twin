@@ -1,0 +1,49 @@
+{
+  "name": "@native-twin/dev-tools",
+  "version": "0.0.1",
+  "description": "Native Twin Expo dev tools",
+  "keywords": [
+    "expo",
+    "devtools",
+    "native-twin"
+  ],
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/dev-tools"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "dist",
+    "expo-module.config.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:all": "cd webui && npx expo export -p web --output-dir ../dist",
+    "build:watch": "tsc -p tsconfig.build.json --watch",
+    "clean": "expo-module clean",
+    "prepublishOnly": "expo-module prepublishOnly && cd webui && npx expo export -p web --output-dir ../dist",
+    "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
+  },
+  "dependencies": {
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
+    "effect": "^3.7.2",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "expo-module-scripts": "^3.1.0"
+  },
+  "peerDependencies": {
+    "expo": "*",
+    "react": "*"
+  }
+}

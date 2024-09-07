@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/@effect/docgen/schema.json",
+  "exclude": [],
+  "enforceDescriptions": false,
+  "enforceExamples": false,
+  "enforceVersion": false,
+  "outDir": "docs",
+  "srcDir": "src",
+  "examplesCompilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "CommonJS",
+    "moduleResolution": "node"
+  }
+}

@@ -23,11 +23,14 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
       selectors: [],
       precedence: Layer.u,
       important: rule.i,
+      animations: [],
     };
   }
   if (context.mode === 'web') {
     if (
-      (rule.v.includes('ios') || rule.v.includes('android') || rule.v.includes('native')) &&
+      (rule.v.includes('ios') ||
+        rule.v.includes('android') ||
+        rule.v.includes('native')) &&
       !rule.v.includes('web')
     ) {
       return {
@@ -36,6 +39,7 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
         selectors: [],
         precedence: Layer.u,
         important: rule.i,
+        animations: [],
       };
     }
   }
@@ -48,10 +52,12 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
       selectors: [],
       precedence: Layer.u,
       important: rule.i,
+      animations: [],
     };
   }
-  const newRule = context.mode === 'web' ? convert(rule, context, Layer.u) : rule;
+  // const newRule = context.mode === 'web' ? convert(rule, context, Layer.u) : rule;
+  const newRule = convert(rule, context, Layer.u);
   result.selectors = newRule.v;
-  result.precedence = context.mode === 'web' ? moveToLayer(Layer.u, newRule.p) : rule.p;
+  result.precedence = moveToLayer(Layer.u, newRule.p);
   return result;
 }

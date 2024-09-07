@@ -1,2 +1,6 @@
-export { createStylableComponent } from './createTwinCmp';
-export { withMappedProps } from './twinMappedCmp';
+export {
+  createStylableComponent,
+  withMappedProps,
+  twinComponent,
+  stylizedComponents,
+} from './native';

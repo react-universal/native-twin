@@ -1,3 +1,4 @@
+/** @category — CSS Constants */
 export const CSS_COLORS = [
   'black',
   'silver',
@@ -148,6 +149,7 @@ export const CSS_COLORS = [
   'transparent',
 ] as const;
 
+/** @category — CSS Constants */
 export const unitlessCssProps: { [key: string]: 1 } = {
   animationIterationCount: 1,
   aspectRatio: 1,
@@ -208,20 +210,33 @@ const GroupInteractionPseudoSelectors = [
   'group-active',
 ] as const;
 
-const AppearancePseudoSelectors = ['dark'] as const;
+const AppearancePseudoSelectors = ['dark', 'light'] as const;
 
 const ChildPseudoSelectors = ['last', 'first', 'even', 'odd'] as const;
+const CssChildPseudoSelectors = ['last-child', 'first-child', 'even', 'odd'] as const;
 
-const PlatformPseudoSelectors = [':native', ':ios', ':android', ':web'] as const;
+const PlatformPseudoSelectors = ['native', 'ios', 'android', 'web'] as const;
+
+const OwnSheetSelectors = ['base', 'pointer', 'group', 'dark'] as const;
 
 export {
+  /** @category — CSS Constants */
   InteractionPseudoSelectors,
+  /** @category — CSS Constants */
   AppearancePseudoSelectors,
+  /** @category — CSS Constants */
   PlatformPseudoSelectors,
+  /** @category — CSS Constants */
   ChildPseudoSelectors,
+  /** @category — CSS Constants */
   GroupInteractionPseudoSelectors,
+  /** @category — CSS Constants */
+  OwnSheetSelectors,
+  /** @category — CSS Constants */
+  CssChildPseudoSelectors,
 };
 
+/** @category — CSS Constants */
 export const simplePseudoMap = {
   ':-moz-any-link': true,
   ':-moz-full-screen': true,
@@ -320,8 +335,10 @@ export const simplePseudoMap = {
   ':visited': true,
 } as const;
 
+/** @category — CSS Constants */
 export const simplePseudos = Object.keys(simplePseudoMap) as Array<
   keyof typeof simplePseudoMap
 >;
 
+/** @category — CSS Constants */
 export const simplePseudoLookup = simplePseudoMap as Record<string, boolean>;

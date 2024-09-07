@@ -1,17 +1,22 @@
 import { noop } from '@native-twin/helpers';
 import { Layer } from '../css/precedence';
-import { Sheet, SheetEntry, SheetEntryDeclaration } from './sheet.types';
+import type {
+  Sheet,
+  SheetEntry,
+  SheetEntryDeclaration,
+  SheetEntryRegistry,
+} from './sheet.types';
 
 export function createVirtualSheet(): Sheet<SheetEntry[]> {
-  // const utilities = new Set<string>();
-  // const mediaRules = new Set<string>();
   const target: SheetEntry[] = [];
+  const registry = new Map<string, SheetEntryRegistry>();
 
   return {
     target,
-
+    registry,
     clear() {
       target.length = 0;
+      registry.clear();
     },
 
     destroy() {
@@ -20,10 +25,10 @@ export function createVirtualSheet(): Sheet<SheetEntry[]> {
 
     insert(entry, index) {
       target.splice(index, 0, entry);
+      // registry.set(entry.className, Object.assign(entry, { index }));
     },
 
     snapshot() {
-      // collect current rules
       const rules = [...target];
 
       return () => {
@@ -47,6 +52,7 @@ export function createVirtualSheet(): Sheet<SheetEntry[]> {
           important: false,
           precedence: Layer.b,
           selectors: [],
+          animations: [],
         });
       }
 

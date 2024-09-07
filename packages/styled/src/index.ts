@@ -11,7 +11,4 @@ export type {
   RegisteredComponent,
   ComponentStylesheet,
 } from './types/styled.types';
-export type { StyledContext, Units } from './types/css.types';
 
-// CUSTOM
-export { createStyledContext } from './utils/createStyledContext';

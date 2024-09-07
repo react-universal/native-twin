@@ -16,6 +16,7 @@ export const flexRules: Rule<TailwindPresetTheme>[] = [
     important: rule.i,
     precedence: rule.p,
     selectors: [],
+    animations: [],
   })),
   matchThemeValue('flex-', 'flex', 'flex'),
   matchThemeValue('flex-', 'flexDirection', 'flexDirection'),

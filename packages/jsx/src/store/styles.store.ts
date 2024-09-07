@@ -1,15 +1,14 @@
-import type { SheetEntry } from '@native-twin/css';
-import type { Observable } from '../utils/observable';
-import { observable } from '../utils/observable';
+import type { RuntimeSheetEntry } from '@native-twin/css/jsx';
+import { Atom, atom } from '@native-twin/helpers';
 
-export const globalStyles = new Map<string, Observable<SheetEntry>>();
-export const opaqueStyles = new WeakMap<object, SheetEntry>();
+export const globalStyles = new Map<string, Atom<RuntimeSheetEntry>>();
+export const opaqueStyles = new WeakMap<object, RuntimeSheetEntry>();
 
-export function upsertGlobalStyle(name: string, ruleSet: SheetEntry) {
+export function upsertGlobalStyle(name: string, ruleSet: RuntimeSheetEntry) {
   let styleObservable = globalStyles.get(name);
 
   if (!styleObservable) {
-    styleObservable = observable(ruleSet, { name });
+    styleObservable = atom(ruleSet);
     globalStyles.set(name, styleObservable);
     if (process.env['NODE_ENV'] !== 'production') {
       const originalGet = styleObservable.get;

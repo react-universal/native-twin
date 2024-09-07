@@ -23,6 +23,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
   it('paddings', () => {
     expect(tailwind('p-2')).toStrictEqual([
       {
+        animations: [],
         className: 'p-2',
         declarations: [
           {
@@ -37,6 +38,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
     ]);
     expect(tailwind('px-2')).toStrictEqual([
       {
+        animations: [],
         className: 'px-2',
         declarations: [
           { prop: 'paddingLeft', value: '0.5rem' },
@@ -49,6 +51,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
     ]);
     expect(tailwind('absolute')).toStrictEqual([
       {
+        animations: [],
         className: 'absolute',
         declarations: [{ prop: 'position', value: 'absolute' }],
         important: false,
@@ -58,6 +61,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
     ]);
     expect(tailwind('py-2')).toStrictEqual([
       {
+        animations: [],
         className: 'py-2',
         declarations: [
           { prop: 'paddingTop', value: '0.5rem' },
@@ -72,6 +76,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
   it('margins', () => {
     expect(tailwind('m-2')).toStrictEqual([
       {
+        animations: [],
         className: 'm-2',
         declarations: [
           {
@@ -86,6 +91,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
     ]);
     expect(tailwind('-m-2')).toStrictEqual([
       {
+        animations: [],
         className: '-m-2',
         declarations: [
           {
@@ -100,6 +106,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
     ]);
     expect(tailwind('mx-2')).toStrictEqual([
       {
+        animations: [],
         className: 'mx-2',
         declarations: [
           { prop: 'marginLeft', value: '0.5rem' },
@@ -112,6 +119,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
     ]);
     expect(tailwind('my-2')).toStrictEqual([
       {
+        animations: [],
         className: 'my-2',
         declarations: [
           {
@@ -132,6 +140,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
   it('arbitrary', () => {
     expect(tailwind('m-[20px]')).toStrictEqual([
       {
+        animations: [],
         className: 'm-[20px]',
         declarations: [
           {
@@ -146,6 +155,7 @@ describe('@native-twin/preset-tailwind - Spacing Utilities', () => {
     ]);
     expect(tailwind('-mx-[20px]')).toStrictEqual([
       {
+        animations: [],
         className: '-mx-[20px]',
         declarations: [
           {
@@ -169,6 +179,7 @@ describe('@native-twin/core - Color Utilities', () => {
   it('Basic color', () => {
     expect(tailwind('bg-black')).toStrictEqual([
       {
+        animations: [],
         className: 'bg-black',
         declarations: [
           {
@@ -185,6 +196,7 @@ describe('@native-twin/core - Color Utilities', () => {
   it('Custom color', () => {
     expect(tailwind('bg-primary')).toStrictEqual([
       {
+        animations: [],
         className: 'bg-primary',
         declarations: [
           {
@@ -201,6 +213,7 @@ describe('@native-twin/core - Color Utilities', () => {
   it('Opacity', () => {
     expect(tailwind('opacity-10')).toStrictEqual([
       {
+        animations: [],
         className: 'opacity-10',
         declarations: [
           {
@@ -217,6 +230,7 @@ describe('@native-twin/core - Color Utilities', () => {
   it('Color modifier', () => {
     expect(tailwind('bg-blue-200/[0.5]')).toStrictEqual([
       {
+        animations: [],
         className: 'bg-blue-200/[0.5]',
         declarations: [
           {
@@ -236,6 +250,7 @@ describe('@native-twin/preset-tailwind - Position Utilities', () => {
   it('top|right|bottom|left', () => {
     expect(tailwind('top-2')).toStrictEqual([
       {
+        animations: [],
         className: 'top-2',
         declarations: [
           {
@@ -255,6 +270,7 @@ describe('@native-twin/preset-tailwind - Border Utilities', () => {
   it('t|r|b|l', () => {
     expect(tailwind('border-x-1')).toStrictEqual([
       {
+        animations: [],
         className: 'border-x-1',
         declarations: [
           { prop: 'borderLeftWidth', value: '1px' },

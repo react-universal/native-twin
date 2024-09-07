@@ -1,0 +1,27 @@
+name: Setup Node
+description: Installs node and setup dependencies using yarn.
+
+inputs:
+  node-version:
+    description: The version of Node.js to install
+    required: true
+    default: 20.14.0
+
+runs:
+  using: composite
+  steps:
+    - name: Install yarn
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: yarn
+    
+    - name: Setup .yarnrc.yml
+      shell: bash
+      run: |
+        yarn config set npmAuthToken $NPM_TOKEN -H
+        yarn config set npmAlwaysAuth true -H
+
+    - name: Install deps with yarn
+      shell: bash
+      run: yarn --immutable

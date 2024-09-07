@@ -1,8 +1,5 @@
 'use strict';
 
-import { createTwinElement as _createTwinElement2 } from '@native-twin/jsx';
-import { createTwinElement as _createTwinElement } from '@native-twin/jsx';
-
 Object.defineProperty(exports, '__esModule', {
   value: true,
 });
@@ -77,7 +74,7 @@ const BottomSheetHandleComponent = ({
     [_indicatorStyle],
   ); // render
 
-  return /*#__PURE__*/ _createTwinElement(
+  return /*#__PURE__*/ _react.default.createElement(
     _reactNativeReanimated.default.View,
     {
       style: containerStyle,
@@ -95,7 +92,7 @@ const BottomSheetHandleComponent = ({
           ? accessibilityHint
           : undefined,
     },
-    /*#__PURE__*/ _createTwinElement2(_reactNativeReanimated.default.View, {
+    /*#__PURE__*/ _react.default.createElement(_reactNativeReanimated.default.View, {
       style: indicatorStyle,
     }),
     children,

@@ -29,6 +29,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   rules,
   mode,
   variants = [],
+  animations
 }: TailwindConfig<Theme>): ThemeContext<Theme> {
   const variantCache = new Map<string, MaybeArray<string>>();
   const variantsHandlers = new Map<Variant<Theme>, VariantHandlerFn<Theme>>();
@@ -42,10 +43,13 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   const ctx: ThemeContext = {
     get colors() {
       return flattenColorPalette(
-        Object.assign(themeConfig['colors'] ?? {}, themeConfig['extend']?.['colors'] ?? {}) ??
-          {},
+        Object.assign(
+          themeConfig['colors'] ?? {},
+          themeConfig['extend']?.['colors'] ?? {},
+        ) ?? {},
       );
     },
+    animations,
 
     theme: createThemeFunction(themeConfig),
 

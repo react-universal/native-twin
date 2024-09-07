@@ -1,13 +1,32 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
   "tasks": {
     "build": {
       "dependsOn": [
         "^build"
       ],
+      "inputs": ["$TURBO_DEFAULT$","!**/test","!**/tests"],
       "outputs": [
-        "build/**"
+        "build/**",
+        "dist/**"
       ]
+    },
+    "dev-tools:dev": {
+      "cache": false,
+      "persistent": true,
+      "interactive": true,
+      "inputs": ["$TURBO_DEFAULT$","!**/test", "!**/tests", "**/webui/**/*"],
+      "outputs": [
+        "build/**",
+        "dist/**"
+      ]
+    },
+    "mobile:dev": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "interactive": true
     },
     "build:watch": {
       "persistent": true,
@@ -15,6 +34,9 @@
     },
     "lint": {
       "cache": true
+    },
+    "clean": {
+      "cache": false
     },
     "next:app:dev": {
       "cache": false,
@@ -47,20 +69,6 @@
     "test": {
       "dependsOn": [
         "^build"
-      ]
-    },
-    "twin-run:dev": {
-      "cache": false,
-      "interactive": true,
-      "outputLogs": "full",
-      "persistent": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "build/**"
       ]
     }
   }
