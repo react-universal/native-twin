@@ -16,7 +16,7 @@ export const getAllFilesInProject = Effect.gen(function* () {
 
   return yield* pipe(
     ctx.userConfig.allowedPaths,
-    RA.map((filename) => readDirectoryRecursive(filename)),
+    RA.map(readDirectoryRecursive),
     Effect.allSuccesses,
   ).pipe(Effect.map((x) => pipe(x, RA.flatten, RA.dedupe)));
 });
@@ -26,9 +26,9 @@ const refreshCSSOutput = (filepath: string) => {
     const ctx = yield* MetroConfigService;
     const fs = yield* FileSystem.FileSystem;
 
-    fs.writeFile(
+    yield* fs.writeFile(
       filepath,
-      new TextEncoder().encode(sheetEntriesToCss(ctx.twin.target, true)),
+      new TextEncoder().encode(sheetEntriesToCss(ctx.twin.target, false)),
     );
   });
 };
@@ -37,63 +37,89 @@ const runTwinForFiles = (files: string[], platform: string) => {
   return Effect.gen(function* () {
     const ctx = yield* MetroConfigService;
 
-    yield* Console.log('Building project for ', platform, '...');
+    yield* Console.log(`[${platform.toUpperCase()}]:`, 'Building project...\n');
+
     const classes = yield* pipe(
       files,
       RA.map((x) => getFileClasses(x)),
       Effect.allSuccesses,
     );
     RA.forEach(classes, (x) => ctx.twin(`${x}`));
+
     yield* refreshCSSOutput(ctx.userConfig.outputCSS);
-    yield* Console.log('Build success with', ctx.twin.target.length, 'classes');
+    yield* Effect.log(`[${platform.toUpperCase()}]: Build success!`);
+    yield* Effect.log(
+      `[${platform.toUpperCase()}]: Added ${ctx.twin.target.length} classes. \n`,
+    );
   });
 };
 
-export function setupPlatform(platform: string) {
-  return Effect.gen(function* () {
+export const setupPlatform = Effect.scoped(
+  Effect.gen(function* () {
     const allFiles = yield* getAllFilesInProject;
+    const ctx = yield* MetroConfigService;
+    const platform = 'web';
 
+    yield* Effect.log(
+      `[${platform.toUpperCase()}]: Current target: ${ctx.twin.target.length} \n`,
+    );
+
+    const hasPlatform = initialized.has(platform);
     const currentSize = initialized.size;
-    if (!initialized.has(platform)) {
-      yield* Console.log('Initializing', platform, 'project');
-      yield* runTwinForFiles(allFiles, platform);
-
+    if (!hasPlatform) {
       initialized.add(platform);
-
       if (currentSize === 0) {
-        yield* Console.log('Starting file watcher');
-        yield* startWatcher(platform).pipe(Effect.forkDaemon);
+        yield* Effect.log(`[${platform.toUpperCase()}]: Initializing project \n`);
+      }
+      yield* runTwinForFiles(allFiles, platform);
+      if (currentSize === 0) {
+        yield* startWatcher.pipe(Effect.forkDaemon);
+        yield* Effect.yieldNow();
+        yield* Effect.log(`[${platform.toUpperCase()}]: Watcher started`);
       }
     }
-  });
-}
+  }),
+);
 
-function startWatcher(platform: string) {
+export const startWatcher = Effect.gen(function* () {
+  const path = yield* Path.Path;
+  const allFiles = yield* getAllFilesInProject;
+  const platform = 'web';
+
+  const watchFiles = pipe(
+    allFiles,
+    RA.map((x) => path.dirname(x)),
+    RA.dedupe,
+  );
+
+  const allWatchers = yield* Effect.all(RA.map(watchFiles, createWatcherFor));
+
+  yield* pipe(
+    allWatchers,
+    Stream.mergeAll({
+      concurrency: watchFiles.length,
+    }),
+
+    Stream.runForEach((watcher) => {
+      return runTwinForFiles(asArray(watcher.path), platform);
+    }),
+  );
+}).pipe(Effect.forkDaemon);
+
+const createWatcherFor = (basePath: string) => {
   return Effect.gen(function* () {
     const ctx = yield* MetroConfigService;
     const path = yield* Path.Path;
     const fs = yield* FileSystem.FileSystem;
-    const watchPaths = pipe(
-      ctx.userConfig.allowedPaths,
-      RA.map((x) => path.dirname(x)),
-      RA.dedupe,
-    );
 
-    yield* pipe(
-      Stream.fromIterable(watchPaths),
-      Stream.flatMap(fs.watch),
+    return pipe(
+      fs.watch(basePath),
       Stream.map((watchEvent) => ({
         ...watchEvent,
-        path: path.resolve(ctx.userConfig.projectRoot, watchEvent.path),
+        path: path.resolve(basePath, watchEvent.path),
       })),
-      Stream.filter((watchEvent) => {
-        return ctx.isAllowedPath(watchEvent.path);
-      }),
-      Stream.tap((x) => Console.log('File change detected: ', x)),
-
-      Stream.runForEach((watcher) => {
-        return runTwinForFiles(asArray(watcher.path), platform);
-      }),
+      Stream.filter((watchEvent) => ctx.isAllowedPath(watchEvent.path)),
+      Stream.tap((x) => Effect.log(`[WEB]: File change detected: ${x.path} \n`)),
     );
   });
-}
+};

@@ -1,6 +1,5 @@
 import { Path } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
-import { Console } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import path from 'path';
@@ -58,7 +57,6 @@ export function withNativeTwin(
       getTransformOptions: (...args) => {
         return getTransformerOptions(...args).pipe(
           Effect.provide(mainLayer),
-          Effect.tap((x) => Console.log('resuslts', x)),
           Effect.runPromise,
         );
       },

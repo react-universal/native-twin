@@ -1,4 +1,3 @@
-import { sheetEntriesToCss } from '@native-twin/css';
 import * as t from '@babel/types';
 import { FileSystem, Path } from '@effect/platform';
 import { PlatformError } from '@effect/platform/Error';
@@ -17,7 +16,6 @@ import {
 } from '@native-twin/babel/jsx-babel';
 import { cx } from '@native-twin/core';
 import { MetroConfigService } from './MetroConfig.service';
-import { readDirectoryRecursive } from './utils/file.utils';
 
 export class TwinWatcherService extends Context.Tag('metro/files/watcher')<
   TwinWatcherService,
@@ -40,7 +38,7 @@ export class TwinWatcherService extends Context.Tag('metro/files/watcher')<
 }
 
 export const startFileWatcher = Effect.gen(function* ($) {
-  const { userConfig, isAllowedPath, twin } = yield* MetroConfigService;
+  const { userConfig, isAllowedPath } = yield* MetroConfigService;
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
 
@@ -48,39 +46,6 @@ export const startFileWatcher = Effect.gen(function* ($) {
     userConfig.allowedPaths,
     RA.map((x) => path.dirname(x)),
     RA.dedupe,
-  );
-
-  const allPaths = yield* pipe(
-    userConfig.allowedPaths,
-    RA.map((filename) => readDirectoryRecursive(filename)),
-    Effect.allSuccesses,
-  );
-
-  const mapped = yield* pipe(
-    allPaths,
-    RA.flatten,
-    RA.filter((x) => x !== ''),
-    RA.map((filename) =>
-      transformFile(filename).pipe(
-        Effect.map((contents) => ({
-          filename,
-          contents,
-        })),
-      ),
-    ),
-    Effect.allSuccesses,
-  );
-
-  pipe(
-    mapped,
-    RA.filter((x) => x.contents !== ''),
-    RA.forEach((x) => twin(`${x.contents}`)),
-  );
-  mapped.filter((x) => x.contents !== '');
-
-  yield* fs.writeFile(
-    userConfig.outputCSS,
-    new TextEncoder().encode(sheetEntriesToCss(twin.target, true)),
   );
 
   yield* pipe(

@@ -18,7 +18,7 @@ export const getTransformerOptions = (
     );
 
     if (options.platform) {
-      yield* setupPlatform(options.platform).pipe(Effect.forkDaemon);
+      yield* setupPlatform;
     }
 
     return result;
