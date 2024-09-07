@@ -11,14 +11,15 @@ runs:
   using: composite
   steps:
     - name: Install yarn
-    - uses: actions/setup-node@v4
+      uses: actions/setup-node@v4
       with:
-        node-version: 20.x
+        node-version: ${{ inputs.node-version }}
         cache: yarn
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     
     - name: Setup .yarnrc.yml
+      shell: bash
       run: |
         yarn config set npmAuthToken $NPM_TOKEN -H
         yarn config set npmAlwaysAuth true -H
@@ -26,4 +27,5 @@ runs:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Install deps with yarn
+      shell: bash
       run: yarn --immutable
