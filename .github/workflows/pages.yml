@@ -25,17 +25,14 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn docgen
       - name: Build pages Jekyll
-        if: github.repository_owner == 'native-twin' && github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./docs
           destination: ./_site
       - name: Upload pages artifact
-        if: github.repository_owner == 'native-twin' && github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v2
 
   deploy:
-    if: github.repository_owner == 'native-twin' && github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 10
