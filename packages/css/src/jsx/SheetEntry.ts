@@ -12,8 +12,12 @@ import {
 } from './SheetEntryDeclaration';
 import { CompilerContext } from './metro.runtime';
 
-export type { SheetEntry };
+export type {
+  /** @category — CSS Parsers */
+  SheetEntry,
+};
 
+/** @category — CSS Parsers */
 export interface RuntimeSheetEntry extends Omit<SheetEntry, 'declarations'> {
   declarations: RuntimeSheetDeclaration[];
 }
@@ -28,6 +32,7 @@ interface OwnSelectorBrand {
 }
 type OwnSelector = (typeof OwnSheetSelectors)[number] & OwnSelectorBrand;
 
+/** @category — CSS Parsers */
 export const compileSheetEntry = (
   sheetEntry: SheetEntry,
   ctx: CompilerContext,
