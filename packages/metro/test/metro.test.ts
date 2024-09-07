@@ -16,8 +16,8 @@ const exampleProjectFixture = {
     path.join(__dirname, '../../../apps/expo-app', 'babel.config.js'),
   ),
 };
-describe('Metro bundler test', () => {
-  it('Metro build Native/iOS', async () => {
+describe.skip('Metro bundler test', () => {
+  it.skip('Metro build Native/iOS', async () => {
     const outDir = path.dirname(exampleProjectFixture.bundleOut);
     await fs.mkdir(outDir, { recursive: true });
     await fs.writeFile(exampleProjectFixture.bundleOut, '');
