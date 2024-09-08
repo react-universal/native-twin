@@ -47,6 +47,7 @@ export const useStyledProps = (
         (entry): RuntimeSheetEntry => ({
           animations: [],
           className: entry.className,
+          preflight: false,
           declarations: entry.declarations.map(
             (decl): RuntimeSheetDeclaration => ({
               _tag: 'NOT_COMPILED',

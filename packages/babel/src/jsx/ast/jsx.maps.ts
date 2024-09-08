@@ -8,7 +8,11 @@ import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import { applyParentEntries } from '@native-twin/css/jsx';
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
-import { mappedComponents, type MappedComponent } from '../../utils/component.maps';
+import {
+  createCommonMappedAttribute,
+  mappedComponents,
+  type MappedComponent,
+} from '../../utils/component.maps';
 import {
   JSXElementNodePath,
   type JSXElementTree,
@@ -104,7 +108,7 @@ export const extractMappedAttributes = (node: t.JSXElement): JSXMappedAttribute[
  * */
 const getJSXElementConfig = (tagName: string) => {
   const componentConfig = mappedComponents.find((x) => x.name === tagName);
-  if (!componentConfig) return null;
+  if (!componentConfig) return createCommonMappedAttribute(tagName);
 
   return componentConfig;
 };

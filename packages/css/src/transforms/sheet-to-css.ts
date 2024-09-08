@@ -19,27 +19,22 @@ export function sheetEntriesToCss(
 }
 
 function getEntryRuleBlock(entry: SheetEntry, forMetro = false) {
-  let className = `.${forMetro ? entry.className : escapeSelector(entry.className)}`;
-  if (
-    entry.className.startsWith('*') ||
-    entry.className.startsWith(':') ||
-    entry.className.startsWith('[')
-  ) {
-    className = entry.className.replace(/^[.|,]/, '');
+  let className = '';
+  if (!entry.preflight) {
+    className = '.';
   }
-  // if (forMetro) {
-  //   className = className.replaceAll(/\\,/g, ',');
-  //   className = className.replaceAll(/\\\[/g, '[');
-  //   className = className.replaceAll(/\\]/g, ']');
-  //   className = className.replaceAll(/\\\(/g, '(');
-  //   className = className.replaceAll(/\\\)/g, ')');
-  //   className = className.replaceAll(/\\=/g, '=');
-  //   className = className.replaceAll(/=\\/g, '=');
-  //   className = className.replaceAll(/\\:where/g, ':where');
-  //   className = className.replaceAll(/'\\/g, '"');
-  //   className = className.replaceAll(/\\'/g, '"');
-  //   className = className.replaceAll(/'/g, '"');
-  //   className = className.replaceAll(/\\"/g, '"');
+  if (!forMetro) {
+    className += escapeSelector(entry.className);
+  } else {
+    className += entry.className;
+  }
+  
+  // if (
+  //   entry.className.startsWith('*') ||
+  //   entry.className.startsWith(':') ||
+  //   entry.className.startsWith('[')
+  // ) {
+  //   className = entry.className.replace(/^[.|,]/, '');
   // }
 
   const atRules: string[] = [];

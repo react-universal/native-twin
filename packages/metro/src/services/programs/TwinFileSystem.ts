@@ -1,7 +1,6 @@
 import { sheetEntriesToCss } from '@native-twin/css';
 import { FileSystem, Path } from '@effect/platform';
 import * as RA from 'effect/Array';
-import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Stream from 'effect/Stream';
@@ -37,7 +36,7 @@ const runTwinForFiles = (files: string[], platform: string) => {
   return Effect.gen(function* () {
     const ctx = yield* MetroConfigService;
 
-    yield* Console.log(`[${platform.toUpperCase()}]:`, 'Building project...\n');
+    yield* Effect.log('Building project...');
 
     const classes = yield* pipe(
       files,
@@ -47,9 +46,9 @@ const runTwinForFiles = (files: string[], platform: string) => {
     RA.forEach(classes, (x) => ctx.twin(`${x}`));
 
     yield* refreshCSSOutput(ctx.userConfig.outputCSS);
-    yield* Effect.log(`[${platform.toUpperCase()}]: Build success!`);
+    yield* Effect.log(`Build success!`);
     yield* Effect.log(
-      `[${platform.toUpperCase()}]: Added ${ctx.twin.target.length} classes. \n`,
+      `Added ${ctx.twin.target.length} classes`,
     );
   });
 };
@@ -57,25 +56,20 @@ const runTwinForFiles = (files: string[], platform: string) => {
 export const setupPlatform = Effect.scoped(
   Effect.gen(function* () {
     const allFiles = yield* getAllFilesInProject;
-    const ctx = yield* MetroConfigService;
     const platform = 'web';
-
-    yield* Effect.log(
-      `[${platform.toUpperCase()}]: Current target: ${ctx.twin.target.length} \n`,
-    );
 
     const hasPlatform = initialized.has(platform);
     const currentSize = initialized.size;
     if (!hasPlatform) {
       initialized.add(platform);
       if (currentSize === 0) {
-        yield* Effect.log(`[${platform.toUpperCase()}]: Initializing project \n`);
+        yield* Effect.log(`Initializing project \n`);
       }
       yield* runTwinForFiles(allFiles, platform);
       if (currentSize === 0) {
         yield* startWatcher.pipe(Effect.forkDaemon);
         yield* Effect.yieldNow();
-        yield* Effect.log(`[${platform.toUpperCase()}]: Watcher started`);
+        yield* Effect.log(`Watcher started`);
       }
     }
   }),
@@ -119,7 +113,7 @@ const createWatcherFor = (basePath: string) => {
         path: path.resolve(basePath, watchEvent.path),
       })),
       Stream.filter((watchEvent) => ctx.isAllowedPath(watchEvent.path)),
-      Stream.tap((x) => Effect.log(`[WEB]: File change detected: ${x.path} \n`)),
+      Stream.tap((x) => Effect.log(`File change detected: ${x.path} \n`)),
     );
   });
 };

@@ -2,12 +2,15 @@ import { Path } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import * as LogLevel from 'effect/LogLevel';
+import * as Logger from 'effect/Logger';
 import path from 'path';
 import { matchCss } from '@native-twin/helpers/build/server';
 import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
 } from './metro.types';
+import { TwinLoggerLive } from './services/Logger.service';
 import { makeTwinConfig, MetroConfigService } from './services/MetroConfig.service';
 import { getTransformerOptions } from './services/programs/metro.programs';
 
@@ -21,7 +24,7 @@ export function withNativeTwin(
 
   const mainLayer = FSLive.pipe(
     Layer.provideMerge(Layer.succeed(MetroConfigService, twinConfig)),
-  );
+  ).pipe(Layer.provide(TwinLoggerLive));
 
   const originalResolver = twinConfig.metroConfig.resolver.resolveRequest;
 
@@ -51,6 +54,8 @@ export function withNativeTwin(
       getTransformOptions: (...args) => {
         return getTransformerOptions(...args).pipe(
           Effect.provide(mainLayer),
+          Effect.annotateLogs('platform', args[1].platform ?? 'server'),
+          Logger.withMinimumLogLevel(LogLevel.All),
           Effect.runPromise,
         );
       },

@@ -29,6 +29,10 @@
       "path": "../packages/native-twin"
     },
     {
+      "name": "📦 @lib/preset-tailwind",
+      "path": "../packages/preset-tailwind"
+    },
+    {
       "name": "📦 @lib/css",
       "path": "../packages/css"
     },

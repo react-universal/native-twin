@@ -8,6 +8,12 @@ import { REACT_FORWARD_REF_SYMBOL } from '../../utils/constants';
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 
 export const createStylableComponent = (baseComponent: any, mapping: any): any => {
+  if (!mapping) {
+    mapping = {
+      source: 'className',
+      target: 'style',
+    };
+  }
   const configs = getNormalizeConfig(mapping);
 
   /**
@@ -42,7 +48,7 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
       }
 
       if (newStyles.length > 0) {
-        props[config.target] = Object.assign(props[config.target], newStyles);
+        props[config.target] = [props[config.target], newStyles];
       }
     }
 

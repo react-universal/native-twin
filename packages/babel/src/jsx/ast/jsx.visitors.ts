@@ -1,6 +1,5 @@
 import generate from '@babel/generator';
 import * as RA from 'effect/Array';
-// import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
@@ -41,8 +40,6 @@ export const transformJSXFile = (code: string) => {
       {
         onFalse: () =>
           Effect.sync(() => {
-            // return transformer.transformLeave(registry);
-            // console.log('WEB: ', ctx.options.customTransformOptions);
             return HashMap.empty<string, Omit<RuntimeTreeNode, 'childs'>>();
           }),
         onTrue: () =>
@@ -77,15 +74,6 @@ export const transformJSXFile = (code: string) => {
       RA.map((x) => x.classNames),
       RA.join('\n'),
     );
-
-    // if (ctx.platform === 'web' && classNames !== '') {
-    //   console.log('CLASS_NAMES: ', classNames);
-    //   const entries = `require('@native-twin/core').tw(\`${classNames}\`);`;
-    //   generatedCode = `${entries}\n${generatedCode}`;
-    //   console.log('FINAL: ', generatedCode);
-    // } else {
-    //   console.log('NO_WEB: ', classNames === '', ctx.platform);
-    // }
 
     return {
       trees,

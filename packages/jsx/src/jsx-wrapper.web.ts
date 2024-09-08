@@ -1,4 +1,3 @@
-import { jsxStyles } from './jsx/jsx-styles';
 import { stylizedComponents } from './styled';
 import type { JSXFunction } from './types/jsx.types';
 
@@ -27,7 +26,7 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
       // Swap the component type with styled if it exists
       type = stylizedComponents.get(type) ?? type;
     }
-    jsxStyles(props, type);
+    // jsxStyles(props, type);
     // console.log('WRAPPER: ', type, props);
 
     // Call the original jsx function with the new type

@@ -7,7 +7,7 @@ const exampleProjectFixture = {
   configPath: require.resolve(
     path.join(__dirname, '../../../apps/expo-app', 'metro.config.js'),
   ),
-  rootEntry: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'index.js')),
+  rootEntry: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'src/screens/index.js')),
   screenComponentPath: path.resolve(
     path.join(__dirname, '../../../apps/expo-app', 'src/screens/Home.screen.tsx'),
   ),
@@ -16,8 +16,8 @@ const exampleProjectFixture = {
     path.join(__dirname, '../../../apps/expo-app', 'babel.config.js'),
   ),
 };
-describe.skip('Metro bundler test', () => {
-  it.skip('Metro build Native/iOS', async () => {
+describe('Metro bundler test', () => {
+  it('Metro build Native/iOS', async () => {
     const outDir = path.dirname(exampleProjectFixture.bundleOut);
     await fs.mkdir(outDir, { recursive: true });
     await fs.writeFile(exampleProjectFixture.bundleOut, '');
@@ -42,7 +42,7 @@ describe.skip('Metro bundler test', () => {
       dev: true,
       minify: false,
       sourceMap: false,
-      platform: 'ios',
+      platform: 'web',
       output: {
         async save(entry, options, postSave) {
           return fs.writeFile(exampleProjectFixture.bundleOut, entry.code, {
