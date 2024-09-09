@@ -13,8 +13,8 @@ export function HomeScreen() {
       <View className='flex-row gap-10'>
         <ComponentsTable params={params} table={table} />
         <View className=''>
-          <Pressable className='border(1 green-600) p-2 rounded-xl'>
-            <Text className='hover:text-red'>Show generated CSS</Text>
+          <Pressable className='transition-all duration-1000 hover:rounded-sm border(1 green-600) p-2 rounded-xl'>
+            <Text className='hover:text-red transition-colors'>Show generated CSS</Text>
           </Pressable>
         </View>
       </View>

@@ -31,6 +31,7 @@ export const outlineRules: Rule<TailwindPresetTheme>[] = [
       conditions: rule.v,
       important: rule.i,
       precedence: rule.p,
+      preflight: false,
     };
   }),
 ];
@@ -49,5 +50,6 @@ export const appearanceRules: Rule[] = [
     important: rule.i,
     precedence: rule.p,
     animations: [],
+    preflight: false,
   })),
 ];

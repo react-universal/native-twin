@@ -12,11 +12,13 @@ import { boxShadowRules } from './shadows';
 import { sizeRules } from './size';
 import { spacingRules } from './spacing';
 import { translateRules } from './transform';
+import { transitionRules, durationRules } from './transition';
 import { fontThemeRules } from './typography';
 
 export const themeRules: Rule<TailwindPresetTheme>[] = [
   backgroundRules,
   flexRules,
+
   spacingRules,
   sizeRules,
   fontThemeRules,
@@ -29,5 +31,7 @@ export const themeRules: Rule<TailwindPresetTheme>[] = [
   verticalAlignsRules,
   appearanceRules,
   boxShadowRules,
+  transitionRules,
+  durationRules,
   translateRules,
 ].flat(1) as Rule[];

@@ -5,28 +5,20 @@
       "path": ".."
     },
     {
-      "name": "📦 @native-twin/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @native-twin/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @native-twin/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @native-twin/css",
-      "path": "../packages/css"
-    },
-    {
       "name": "📦 @native-twin/core",
       "path": "../packages/native-twin"
     },
     {
-      "name": "📦 @native-twin/styled",
-      "path": "../packages/styled"
+      "name": "📦 @lib/preset-tailwind",
+      "path": "../packages/preset-tailwind"
+    },
+    {
+      "name": "📦 @native-twin/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
     },
     {
       "name": "📦 @native-twin/helpers",
@@ -90,10 +82,5 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "editor.fontSize": 16
-  },
-  "launch": {
-    "version": "0.2.0",
-    "configurations": [],
-    "compounds": []
   }
 }
