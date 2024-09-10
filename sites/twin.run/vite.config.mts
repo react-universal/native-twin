@@ -4,23 +4,39 @@ import fs from 'fs';
 import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 import vsixPlugin from '@codingame/monaco-vscode-rollup-vsix-plugin';
 import assetsJSON from '@entur/vite-plugin-assets-json';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import prebundleWorkers from 'vite-plugin-prebundle-workers';
 
 export default defineConfig({
   assetsInclude: ['**/*.json', '**/*.wasm'],
   optimizeDeps: {
-    exclude: ['@rollup/browser'],
+    exclude: ['@rollup/browser', '@native-twin/language-service/build/documents'],
     esbuildOptions: {
-      sourcemap: 'inline',
-      plugins: [importMetaUrlPlugin],
+      define: {
+        global: 'globalThis',
+        __DEV__: 'true',
+      },
+      sourcemap: false,
+      plugins: [
+        importMetaUrlPlugin,
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,
+          process: true,
+        }),
+      ],
     },
   },
   publicDir: 'public',
-  worker: {
-    format: 'es',
-  },
+
+  // worker: {
+  //   format: 'es',
+  // },
   plugins: [
     vsixPlugin(),
     assetsJSON(),
+    prebundleWorkers({
+      include: './src/store/typings.worker.ts',
+    }),
     {
       // For the *-language-features extensions which use SharedArrayBuffer
       name: 'configure-response-headers',
@@ -77,9 +93,10 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      // plugins: [vsixPlugin()],
       logLevel: 'debug',
+      shimMissingExports: true,
       external: ['@rollup/browser'],
+      makeAbsoluteExternalsRelative: 'ifRelativeSource',
     },
   },
   resolve: {

@@ -4,14 +4,12 @@ import getTextmateServiceOverride from '@codingame/monaco-vscode-textmate-servic
 import getConfigurationServiceOverride from '@codingame/monaco-vscode-configuration-service-override';
 import { rollup } from '@rollup/browser';
 import getEditorServiceOverride from '@codingame/monaco-vscode-editor-service-override';
-// import getEditorViewsOverride from '@codingame/monaco-vscode-views-service-override';
-// import getOutputServiceOverride from '@codingame/monaco-vscode-output-service-override';
+import getEditorViewsOverride from '@codingame/monaco-vscode-views-service-override';
 import getLifecycleServiceOverride from '@codingame/monaco-vscode-lifecycle-service-override';
 import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
 import getFilesServiceOverride from '@codingame/monaco-vscode-files-service-override';
-// import getExplorerServiceOverride from '@codingame/monaco-vscode-explorer-service-override';
+import getExplorerServiceOverride from '@codingame/monaco-vscode-explorer-service-override';
 import getExtensionServiceOverride from '@codingame/monaco-vscode-extensions-service-override';
-// import getViewsServiceOverride from '@codingame/monaco-vscode-views-service-override';
 import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
 import { createConverter as createCodeConverter } from 'vscode-languageclient/lib/common/codeConverter.js';
 import { createConverter as createProtocolConverter } from 'vscode-languageclient/lib/common/protocolConverter.js';
@@ -21,11 +19,11 @@ import {
   UserConfig,
   WrapperConfig,
 } from 'monaco-editor-wrapper';
-import * as Constants from '@native-twin/language-service/src/utils/constants.utils';
+import { Constants } from '@native-twin/language-service/browser';
 import { FileManager } from './file.manager';
-import { MonacoLanguageClient } from 'monaco-languageclient';
 import { workerConfig } from '../workers/extensions.worker';
 import twinConfigRaw from '../content/tailwind.config?raw';
+import workerUrl from '../workers/twin.worker?worker&url';
 
 export class ClientManager {
   readonly codeConverter = createCodeConverter();
@@ -118,28 +116,11 @@ export class ClientManager {
       },
       name: 'Twin language client',
       options: {
-        $type: 'WebSocket',
-        host: 'localhost',
-        port: 30001,
-        path: 'twin',
-        extraParams: {
-          authorization: 'UserAuth',
-        },
-        secured: false,
-        startOptions: {
-          onCall: (languageClient?: MonacoLanguageClient) => {
-            setTimeout(() => {
-              // console.log('LS: ', languageClient);
-              if (languageClient) {
-                languageClient.onRequest('nativeTwinInitialized', (x) => {
-                  console.log('REQUEST: ', x);
-                  return { t: true };
-                });
-              }
-            }, 250);
-          },
-          reportStatus: true,
-        },
+        $type: 'WorkerDirect',
+        worker: new Worker(workerUrl, {
+          type: 'module',
+          name: 'twin.worker',
+        }),
       },
     };
   }
@@ -170,11 +151,10 @@ export class ClientManager {
           ...getConfigurationServiceOverride(),
           ...getTextmateServiceOverride(),
           ...getThemeServiceOverride(),
-          // ...getExplorerServiceOverride(),
+          ...getExplorerServiceOverride(),
           ...getLanguagesServiceOverride(),
           // ...getStorageServiceOverride(),
-          // ...getEditorViewsOverride(),
-          // ...getViewsServiceOverride(),
+          ...getEditorViewsOverride(),
         },
         enableExtHostWorker: true,
         debugLogging: true,
@@ -190,6 +170,7 @@ export class ClientManager {
             text: twinConfigRaw,
             uri: '/workspace/tailwind.config.ts',
             enforceLanguageId: 'typescript',
+            fileExt: '.ts',
           },
         },
         useDiffEditor: false,

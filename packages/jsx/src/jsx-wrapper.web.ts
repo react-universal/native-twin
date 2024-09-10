@@ -15,8 +15,8 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
     // Load the core React Native components and create the interop versions
     // We avoid this in the test environment as we want more fine-grained control
     // This call also need to be inside the JSX transform to avoid circular dependencies
-    if (process.env['NODE_ENV'] !== 'test' || typeof window !== 'undefined') {
-      require('./components');
+    if (process.env['NODE_ENV'] !== 'test') {
+      require('./components.web');
     }
 
     // You can disable the native twin jsx by setting `twEnabled` to false

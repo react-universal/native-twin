@@ -57,6 +57,10 @@
       "path": "../packages/helpers"
     },
     {
+      "name": "📦 @apps/editor",
+      "path": "../sites/twin.run"
+    },
+    {
       "name": "@apps/expo",
       "path": "../apps/expo-app"
     }

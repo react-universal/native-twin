@@ -3,7 +3,7 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import * as Option from 'effect/Option';
+// import * as Option from 'effect/Option';
 import { BabelLogger } from '@native-twin/babel/jsx-babel';
 import {
   BabelTransformerService,
@@ -11,18 +11,18 @@ import {
 } from '@native-twin/babel/jsx-babel/services';
 import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.service';
 import { TransformWorkerFn } from '../services/models/metro.models';
-import { transformCSS } from './css/css.transform';
+// import { transformCSS } from './css/css.transform';
 
 const metroMainProgram = Effect.gen(function* () {
-  const { runWorker, input, config } = yield* MetroWorkerService;
+  const { runWorker, input } = yield* MetroWorkerService;
   yield* BabelTransformerService;
 
-  if (config.isCSS) {
-    const result = yield* transformCSS;
-    if (Option.isSome(result)) {
-      return result.value;
-    }
-  }
+  // if (config.isCSS) {
+  //   const result = yield* transformCSS;
+  //   if (Option.isSome(result)) {
+  //     return result.value;
+  //   }
+  // }
 
   return yield* runWorker(input);
 });

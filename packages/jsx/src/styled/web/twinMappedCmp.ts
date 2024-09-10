@@ -11,6 +11,13 @@ export const withMappedProps = <
   component: any,
   mapping: StylableComponentConfigOptions<T> & M,
 ): any => {
+  if (!mapping) {
+    // @ts-expect-error
+    mapping = {
+      source: 'className',
+      target: 'style',
+    };
+  }
   const configs = getNormalizeConfig(mapping);
 
   const twinComponent = forwardRef(function RemapPropsComponent(

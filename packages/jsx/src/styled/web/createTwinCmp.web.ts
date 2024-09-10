@@ -7,14 +7,13 @@ import { REACT_FORWARD_REF_SYMBOL } from '../../utils/constants';
 // TODO: Check this on every react web fmw
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 
+type JSXTarget = Record<string, any> | Record<string, any>[];
 export const createStylableComponent = (baseComponent: any, mapping: any): any => {
-  if (!mapping) {
-    mapping = {
-      source: 'className',
-      target: 'style',
-    };
-  }
   const configs = getNormalizeConfig(mapping);
+
+  if (configs.length === 0) {
+    configs.push({ source: 'className', target: 'style' });
+  }
 
   /**
    * Turns this:
@@ -32,23 +31,30 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
 
     props = { ...props, ref };
     for (const config of configs) {
-      const newStyles: any = [];
+      const originalTarget: JSXTarget = props[config.target] ?? {};
+      let target: JSXTarget = Array.isArray(originalTarget)
+        ? [...originalTarget]
+        : { ...originalTarget, $$css: true };
       let source = props[config.source];
 
       // Ensure we only add non-empty strings
-      if (typeof source === 'string' && source) {
+      if (source && typeof source === 'string' && source.length > 0) {
         source = cx`${source}`;
-        tw(`${source}`);
-        newStyles.push({
-          $$css: true,
-          [source]: source,
-        } as any);
-      } else if (source) {
-        newStyles.push(source);
-      }
-
-      if (newStyles.length > 0) {
-        props[config.target] = [props[config.target], newStyles];
+        const injected = tw(`${source}`);
+        if (injected.length > 0) {
+          if (Array.isArray(target)) {
+            target.push({
+              $$css: true,
+              [source]: source,
+            });
+          } else {
+            target = {
+              ...target,
+              [source]: source,
+            };
+          }
+        }
+        props[config.target] = target;
       }
     }
 

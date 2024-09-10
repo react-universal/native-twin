@@ -385,7 +385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.24.7":
+"@babel/traverse@npm:7.24.7":
   version: 7.24.7
   resolution: "@babel/traverse@npm:7.24.7"
   dependencies:
@@ -400,6 +400,24 @@ __metadata:
     debug: "npm:^4.3.1"
     globals: "npm:^11.1.0"
   checksum: 10/785cf26383a992740e492efba7016de964cd06c05c9d7146fa1b5ead409e054c444f50b36dc37856884a56e32cf9d3105ddf1543486b6df68300bffb117a245a
+  languageName: node
+  linkType: hard
+
+"@babel/traverse@patch:@babel/traverse@npm%3A7.24.7#~/.yarn/patches/@babel-traverse-npm-7.24.7-b26422bd59.patch":
+  version: 7.24.7
+  resolution: "@babel/traverse@patch:@babel/traverse@npm%3A7.24.7#~/.yarn/patches/@babel-traverse-npm-7.24.7-b26422bd59.patch::version=7.24.7&hash=131cfa"
+  dependencies:
+    "@babel/code-frame": "npm:^7.24.7"
+    "@babel/generator": "npm:^7.24.7"
+    "@babel/helper-environment-visitor": "npm:^7.24.7"
+    "@babel/helper-function-name": "npm:^7.24.7"
+    "@babel/helper-hoist-variables": "npm:^7.24.7"
+    "@babel/helper-split-export-declaration": "npm:^7.24.7"
+    "@babel/parser": "npm:^7.24.7"
+    "@babel/types": "npm:^7.24.7"
+    debug: "npm:^4.3.1"
+    globals: "npm:^11.1.0"
+  checksum: 10/5ada546dcd79ab86193942c83b5b781f551b9ba8877b7c243958595aa98c800abddc733ddbee2c31f2b1043429ed3ada562fa923d09266a6a79f53ee0be6483c
   languageName: node
   linkType: hard
 
@@ -468,6 +486,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codingame/eslint-config@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@codingame/eslint-config@npm:1.2.1"
+  peerDependencies:
+    "@typescript-eslint/eslint-plugin": ">=5.x"
+    "@typescript-eslint/parser": ">=5.x"
+    eslint: 8.x
+    eslint-config-standard: 17.x
+    eslint-plugin-import: 2.x
+    eslint-plugin-unused-imports: ">=2.x"
+    typescript: 5.x
+  checksum: 10/ec48d8c09d813870ddeb93dbb810d9eb680de4638262579fd3720ccd098f487a4667c8f952b40893a6d7f4f53b4d92edfb7171472061f1cd7afa9189d3abe016
+  languageName: node
+  linkType: hard
+
 "@codingame/monaco-vscode-api@npm:5.2.0, vscode@npm:@codingame/monaco-vscode-api@5.2.0, vscode@npm:@codingame/monaco-vscode-api@~5.2.0":
   version: 5.2.0
   resolution: "@codingame/monaco-vscode-api@npm:5.2.0"
@@ -500,6 +533,15 @@ __metadata:
   dependencies:
     vscode: "npm:@codingame/monaco-vscode-api@6.0.1"
   checksum: 10/fba04a7ba38c9290c373addbb81532f5e8609599bdeb957f36ad6c0a29faf80880d0dd42554e0d6d74e2f61517c5221ee138c8b05c47fe4db9cb679e2e7cea82
+  languageName: node
+  linkType: hard
+
+"@codingame/monaco-vscode-bulk-edit-service-override@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@codingame/monaco-vscode-bulk-edit-service-override@npm:5.2.0"
+  dependencies:
+    vscode: "npm:@codingame/monaco-vscode-api@5.2.0"
+  checksum: 10/1a5d929b93e891031b0b736a51c560209e89af20deae3f88763bcc4c6adde691345fc9fe27a8b2a1299acd1b6823e381a1d35fa47f8a40149b584dec9b0467ac
   languageName: node
   linkType: hard
 
@@ -546,6 +588,15 @@ __metadata:
   dependencies:
     vscode: "npm:@codingame/monaco-vscode-api@6.0.1"
   checksum: 10/c36ee6065944c99df8a572b5f356951d91be6b5979700257bd2e25da60b527f6ecfe57bb31d3d9999f2cdfbf1e6533159e0fd254ad69e150a831b372d714dcf1
+  languageName: node
+  linkType: hard
+
+"@codingame/monaco-vscode-explorer-service-override@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@codingame/monaco-vscode-explorer-service-override@npm:5.2.0"
+  dependencies:
+    vscode: "npm:@codingame/monaco-vscode-api@5.2.0"
+  checksum: 10/d87ef1cb38558a0499e65d30700a23951103592a6e2e892087bdc086cdb623ab6e4cfccedfdaa3f44f2050124c3bef9923213acb04456eee1bd58000197f5d81
   languageName: node
   linkType: hard
 
@@ -602,6 +653,16 @@ __metadata:
   dependencies:
     vscode: "npm:@codingame/monaco-vscode-api@6.0.1"
   checksum: 10/22448ce9864592b9b6bfa5559f9a4ef77f8b5d3ebba655adb749f7c9f383265a0888bc48e2b3e67abe23d601907c5c033de3618becd1b2f269cce18b94b0ed25
+  languageName: node
+  linkType: hard
+
+"@codingame/monaco-vscode-keybindings-service-override@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@codingame/monaco-vscode-keybindings-service-override@npm:5.2.0"
+  dependencies:
+    "@codingame/monaco-vscode-files-service-override": "npm:5.2.0"
+    vscode: "npm:@codingame/monaco-vscode-api@5.2.0"
+  checksum: 10/b638783610bf83b930f169956a3a25452fb3ccb0a419f9584187710abe8ae27d8263e0e437f3642e6d91278403893045d9821927d3e4d9bda4d351999da62b1b
   languageName: node
   linkType: hard
 
@@ -902,6 +963,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codingame/monaco-vscode-view-common-service-override@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@codingame/monaco-vscode-view-common-service-override@npm:5.2.0"
+  dependencies:
+    "@codingame/monaco-vscode-bulk-edit-service-override": "npm:5.2.0"
+    vscode: "npm:@codingame/monaco-vscode-api@5.2.0"
+  checksum: 10/f2d35d9677084fc5938b94d3a5cb6224dc7ed14098f43ed13eb04f7f1013a43986494989ed17f8f00b71beca7afcfc23e1cacd5c6b3ef190358d3ec037457439
+  languageName: node
+  linkType: hard
+
+"@codingame/monaco-vscode-views-service-override@npm:5.2.0":
+  version: 5.2.0
+  resolution: "@codingame/monaco-vscode-views-service-override@npm:5.2.0"
+  dependencies:
+    "@codingame/monaco-vscode-keybindings-service-override": "npm:5.2.0"
+    "@codingame/monaco-vscode-quickaccess-service-override": "npm:5.2.0"
+    "@codingame/monaco-vscode-view-common-service-override": "npm:5.2.0"
+    vscode: "npm:@codingame/monaco-vscode-api@5.2.0"
+  checksum: 10/10e2c9a7be6eac789d53cdbb6b82a20a13ea24c01b12239604cf65f5ea6bf1ac96e9f34af192215ad259971153bd1bed0d88c46b28bf438666dec85dfd7b2ca2
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -947,6 +1030,15 @@ __metadata:
   version: 0.0.9
   resolution: "@entur/vite-plugin-assets-json@npm:0.0.9"
   checksum: 10/fe278260f3a8d28fd8b26afd94648934258e5cb3e7a2e3d72a4c2a71dade1ba9028b14fe12a1141a68ca11294163960e1ee0df3e8b007e54031279a8e5d86436
+  languageName: node
+  linkType: hard
+
+"@esbuild-plugins/node-globals-polyfill@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@esbuild-plugins/node-globals-polyfill@npm:0.2.3"
+  peerDependencies:
+    esbuild: "*"
+  checksum: 10/6452637b55da3d577b03bb6e9e9c5b88ec153a2c260a71d4f237fac1b46577e3536059030524b7088c9af7bc8da2afd926a5ebb72653876ce83621cc63d57efc
   languageName: node
   linkType: hard
 
@@ -1603,7 +1695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/gen-mapping@npm:^0.3.2, @jridgewell/gen-mapping@npm:^0.3.5":
+"@jridgewell/gen-mapping@npm:^0.3.5":
   version: 0.3.5
   resolution: "@jridgewell/gen-mapping@npm:0.3.5"
   dependencies:
@@ -1687,20 +1779,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@native-twin/arc-parser@npm:6.1.0":
-  version: 6.1.0
-  resolution: "@native-twin/arc-parser@npm:6.1.0"
-  checksum: 10/83bc40be9afeb4fb3d115bb0c529031a36158a35a64ed868038ca79f02610762564c9d13f172602b0db58a3b351a23e5e74d1f380bfdc9fb9468751bff12065d
+"@native-twin/arc-parser@npm:6.4.0":
+  version: 6.4.0
+  resolution: "@native-twin/arc-parser@npm:6.4.0"
+  dependencies:
+    jest: "npm:*"
+  dependenciesMeta:
+    jest:
+      optional: true
+  checksum: 10/6cc722339f057bf2619b4c63292be86b1cf30f7b3bdff7cfc00563150d5477df3dac848f6948f7f6d5378a3e03a192351c14e7302fb18b854869521beec3bf3a
   languageName: node
   linkType: hard
 
-"@native-twin/core@npm:6.1.0, @native-twin/core@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@native-twin/core@npm:6.1.0"
+"@native-twin/core@npm:6.4.0, @native-twin/core@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "@native-twin/core@npm:6.4.0"
   dependencies:
-    "@native-twin/arc-parser": "npm:6.1.0"
-    "@native-twin/css": "npm:6.1.0"
-    "@native-twin/helpers": "npm:6.1.0"
+    "@native-twin/arc-parser": "npm:6.4.0"
+    "@native-twin/css": "npm:6.4.0"
+    "@native-twin/helpers": "npm:6.4.0"
     jest: "npm:*"
   peerDependencies:
     react: ">=18.0"
@@ -1708,43 +1805,56 @@ __metadata:
   dependenciesMeta:
     jest:
       optional: true
-  checksum: 10/d011357c3ce0edd850159ac836229f20880c2bdc159c447e97486690817e8d5097394d4309e3bfc004de5547c4a57be7a7e9e812547cca90a49dc14a544aea91
+  checksum: 10/abe8aa912efba157117a06ba1b60bb269a9805a20a6b7faa46244ed753f5c1df8abd14e8c99be1451d120d430140bafabd278808ad6b1b440ccc55aad2b8f062
   languageName: node
   linkType: hard
 
-"@native-twin/css@npm:6.1.0, @native-twin/css@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@native-twin/css@npm:6.1.0"
+"@native-twin/css@npm:6.4.0, @native-twin/css@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "@native-twin/css@npm:6.4.0"
   dependencies:
-    "@native-twin/arc-parser": "npm:6.1.0"
-    "@native-twin/helpers": "npm:6.1.0"
+    "@native-twin/arc-parser": "npm:6.4.0"
+    "@native-twin/helpers": "npm:6.4.0"
     jest: "npm:*"
   dependenciesMeta:
     jest:
       optional: true
-  checksum: 10/e3d5d604a736512c0f9537e15367f5893f3a9ceb78e4b81d566cdd665e21746aadda0f93f4cd172e7129b01f0a2febeecc48b118065b20efc22677a747029785
+  checksum: 10/7b4fc944510a65c2a707300a538e7928b8948a0349915cf28a162902541017ef7c4906994c0e32ae5df6f144da445c31572e3859c68c7bd42cda7c274e2dfe8b
   languageName: node
   linkType: hard
 
-"@native-twin/helpers@npm:6.1.0":
-  version: 6.1.0
-  resolution: "@native-twin/helpers@npm:6.1.0"
-  checksum: 10/d59e72a4bf7cb57102b51e315fb0b3566b5da056a258a3997df9c2e9842b276602f5313dd6d732fd5305c5f1c04ddda8791fc3c7deef51e41419b495f02beb5a
+"@native-twin/helpers@file:../../packages/helpers::locator=twin-run%40workspace%3A.":
+  version: 6.4.0
+  resolution: "@native-twin/helpers@file:../../packages/helpers#../../packages/helpers::hash=db7236&locator=twin-run%40workspace%3A."
+  dependencies:
+    effect: "npm:^3.7.2"
+    jest: "npm:*"
+  dependenciesMeta:
+    jest:
+      optional: true
+  checksum: 10/58d45945afc68866f6686be89f39cf232bd126e8653d7fa677cda15537f299e95c450c4f622a5951af585b4882ff6c64c57aa1b23210d98cfa382a744ce7d7e7
+  languageName: node
+  linkType: hard
+
+"@native-twin/helpers@npm:6.4.0":
+  version: 6.4.0
+  resolution: "@native-twin/helpers@npm:6.4.0"
+  checksum: 10/ae3f399647bf62ebc203404bdd27ff684060c06c651bc367e30bad85f8c523b2facf5316e462af58708b756e41e814e9b8117bcec3a4b9b57cb0f7c814f20fa3
   languageName: node
   linkType: hard
 
 "@native-twin/language-service@file:../../packages/language-service::locator=twin-run%40workspace%3A.":
-  version: 6.0.1
-  resolution: "@native-twin/language-service@file:../../packages/language-service#../../packages/language-service::hash=861668&locator=twin-run%40workspace%3A."
+  version: 6.4.0
+  resolution: "@native-twin/language-service@file:../../packages/language-service#../../packages/language-service::hash=cbff9a&locator=twin-run%40workspace%3A."
   dependencies:
     "@ctrl/tinycolor": "npm:^4.1.0"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.0.7"
+    effect: "npm:^3.7.2"
     jest: "npm:*"
     match-sorter: "npm:6.3.4"
     showdown: "npm:2.1.0"
-    ts-morph: "npm:^22.0.0"
+    ts-morph: "npm:^23.0.0"
     vscode-css-languageservice: "npm:^6.2.14"
     vscode-languageserver: "npm:^9.0.1"
     vscode-languageserver-protocol: "npm:^3.17.5"
@@ -1753,15 +1863,15 @@ __metadata:
   dependenciesMeta:
     jest:
       optional: true
-  checksum: 10/0ddae1a2fa89937bad1dce19182b551f37fb574441c2515503818c6190cda4ff8599d306a637b3faa8e7a788a3b7c07a5654b1a83ce841afc5368691b74a8314
+  checksum: 10/ccc3795f0bc10d854af115bce3931370341d80d40bd5385657560a10d9cda164f4b028b73ef9e2204a46d4d989161e9a60de84efe693e45a777e68a60cf42f12
   languageName: node
   linkType: hard
 
-"@native-twin/preset-tailwind@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@native-twin/preset-tailwind@npm:6.1.0"
+"@native-twin/preset-tailwind@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "@native-twin/preset-tailwind@npm:6.4.0"
   dependencies:
-    "@native-twin/core": "npm:6.1.0"
+    "@native-twin/core": "npm:6.4.0"
     jest: "npm:*"
   peerDependencies:
     react: ">=18.0"
@@ -1769,7 +1879,7 @@ __metadata:
   dependenciesMeta:
     jest:
       optional: true
-  checksum: 10/65bbecb2ceac81d58c7a0f51768b5317728afc6141e399da1d454b276b76c4f02111fa0aa20b318b18dafe51e3718693995c063dec5082939716d1c29b5fdeab
+  checksum: 10/9e4346f57d5dd013fdc88c1572b34a311d54db4a99e5703d58c20bf44ab4521e0cd23cbaf6ddb95b47ec52f3c90676345335a7a59da7d246ee9b692ea4929f84
   languageName: node
   linkType: hard
 
@@ -2000,15 +2110,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/common@npm:~0.23.0":
-  version: 0.23.0
-  resolution: "@ts-morph/common@npm:0.23.0"
+"@ts-morph/common@npm:~0.24.0":
+  version: 0.24.0
+  resolution: "@ts-morph/common@npm:0.24.0"
   dependencies:
     fast-glob: "npm:^3.3.2"
-    minimatch: "npm:^9.0.3"
+    minimatch: "npm:^9.0.4"
     mkdirp: "npm:^3.0.1"
     path-browserify: "npm:^1.0.1"
-  checksum: 10/05eabbab5a63d71a7dac17202519d23d4d4ec30780364d4dc3096ca86291e19f0284d0592a6ee89ec257204075a985d00f4788d816a89c41d0c1e0c8d281c480
+  checksum: 10/5b732789868e92689c86a902c8f4528d998ac2e183a02cfeff6cf7731075d254cf3dd1e7bb73f2943ec1fcde6f2fb1caa19ee47a17a4289be08c224d68a902d4
   languageName: node
   linkType: hard
 
@@ -2461,13 +2571,6 @@ __metadata:
   version: 6.2.1
   resolution: "ansi-styles@npm:6.2.1"
   checksum: 10/70fdf883b704d17a5dfc9cde206e698c16bcd74e7f196ab821511651aee4f9f76c9514bdfa6ca3a27b5e49138b89cb222a28caf3afe4567570139577f991df32
-  languageName: node
-  linkType: hard
-
-"any-promise@npm:^1.0.0":
-  version: 1.3.0
-  resolution: "any-promise@npm:1.3.0"
-  checksum: 10/6737469ba353b5becf29e4dc3680736b9caa06d300bda6548812a8fee63ae7d336d756f88572fa6b5219aed36698d808fa55f62af3e7e6845c7a1dc77d240edb
   languageName: node
   linkType: hard
 
@@ -2954,13 +3057,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^4.0.0":
-  version: 4.1.1
-  resolution: "commander@npm:4.1.1"
-  checksum: 10/3b2dc4125f387dab73b3294dbcb0ab2a862f9c0ad748ee2b27e3544d25325b7a8cdfbcc228d103a98a716960b14478114a5206b5415bd48cdafa38797891562c
-  languageName: node
-  linkType: hard
-
 "commander@npm:^9.0.0":
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
@@ -3257,10 +3353,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"effect@npm:^3.0.7, effect@npm:~3.3.0":
-  version: 3.3.0
-  resolution: "effect@npm:3.3.0"
-  checksum: 10/922068abaf6876602ce4af732c0a134f315dd6c1de0fd01620736c40b7726cccd34ce28eae1ab6137752ad807e708c9c383f7ba365f71f89e7c8d36b36faa833
+"effect@npm:^3.7.2":
+  version: 3.7.2
+  resolution: "effect@npm:3.7.2"
+  checksum: 10/122a836761e004f789886d4511d58f5a7efc7179dcda6360d06b87a1cc28e6d02c4b92b58ab9842fe0306424326af156511d803dbd9d6f72101b8424bb72f63c
   languageName: node
   linkType: hard
 
@@ -5376,15 +5472,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:^1.21.3":
-  version: 1.21.3
-  resolution: "jiti@npm:1.21.3"
-  bin:
-    jiti: bin/jiti.js
-  checksum: 10/5a9f36c610f8a5f750ebdea9295d7966dbf77129e8daaa8fc6ea2e60f38019a61bd79fced4e917023305ffdd66f4fc5bddcbdd6be450881393121a55d02b2241
-  languageName: node
-  linkType: hard
-
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -5754,7 +5841,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^9.0.0, minimatch@npm:^9.0.3, minimatch@npm:^9.0.4":
+"minimatch@npm:^9.0.0, minimatch@npm:^9.0.4":
   version: 9.0.4
   resolution: "minimatch@npm:9.0.4"
   dependencies:
@@ -5960,17 +6047,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mz@npm:^2.7.0":
-  version: 2.7.0
-  resolution: "mz@npm:2.7.0"
-  dependencies:
-    any-promise: "npm:^1.0.0"
-    object-assign: "npm:^4.0.1"
-    thenify-all: "npm:^1.0.0"
-  checksum: 10/8427de0ece99a07e9faed3c0c6778820d7543e3776f9a84d22cf0ec0a8eb65f6e9aee9c9d353ff9a105ff62d33a9463c6ca638974cc652ee8140cd1e35951c87
-  languageName: node
-  linkType: hard
-
 "nanoid@npm:^3.3.7":
   version: 3.3.7
   resolution: "nanoid@npm:3.3.7"
@@ -6052,13 +6128,6 @@ __metadata:
   dependencies:
     path-key: "npm:^3.0.0"
   checksum: 10/5374c0cea4b0bbfdfae62da7bbdf1e1558d338335f4cacf2515c282ff358ff27b2ecb91ffa5330a8b14390ac66a1e146e10700440c1ab868208430f56b5f4d23
-  languageName: node
-  linkType: hard
-
-"object-assign@npm:^4.0.1":
-  version: 4.1.1
-  resolution: "object-assign@npm:4.1.1"
-  checksum: 10/fcc6e4ea8c7fe48abfbb552578b1c53e0d194086e2e6bbbf59e0a536381a292f39943c6e9628af05b5528aa5e3318bb30d6b2e53cadaf5b8fe9e12c4b69af23f
   languageName: node
   linkType: hard
 
@@ -6316,7 +6385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pirates@npm:^4.0.1, pirates@npm:^4.0.4":
+"pirates@npm:^4.0.4":
   version: 4.0.6
   resolution: "pirates@npm:4.0.6"
   checksum: 10/d02dda76f4fec1cbdf395c36c11cf26f76a644f9f9a1bfa84d3167d0d3154d5289aacc72677aa20d599bb4a6937a471de1b65c995e2aea2d8687cbcd7e43ea5f
@@ -7109,24 +7178,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sucrase@npm:^3.35.0":
-  version: 3.35.0
-  resolution: "sucrase@npm:3.35.0"
-  dependencies:
-    "@jridgewell/gen-mapping": "npm:^0.3.2"
-    commander: "npm:^4.0.0"
-    glob: "npm:^10.3.10"
-    lines-and-columns: "npm:^1.1.6"
-    mz: "npm:^2.7.0"
-    pirates: "npm:^4.0.1"
-    ts-interface-checker: "npm:^0.1.9"
-  bin:
-    sucrase: bin/sucrase
-    sucrase-node: bin/sucrase-node
-  checksum: 10/bc601558a62826f1c32287d4fdfa4f2c09fe0fec4c4d39d0e257fd9116d7d6227a18309721d4185ec84c9dc1af0d5ec0e05a42a337fbb74fc293e068549aacbe
-  languageName: node
-  linkType: hard
-
 "supports-color@npm:^5.3.0":
   version: 5.5.0
   resolution: "supports-color@npm:5.5.0"
@@ -7158,13 +7209,6 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 10/a9dc19ae2220c952bd2231d08ddeecb1b0328b61e72071ff4000c8384e145cc07c1c0bdb3b5a1cb06e186a7b2790f1dee793418b332f6ddf320de25d9125be7e
-  languageName: node
-  linkType: hard
-
-"systemjs@npm:^6.15.1":
-  version: 6.15.1
-  resolution: "systemjs@npm:6.15.1"
-  checksum: 10/9454c32515cdf7b033cac547233b161d6154abc020a1a97afc8654a01d63cf2bc51101869807aa7f8529aae98475a2cb4522c1e31da6d33832c8e12f00ee4e18
   languageName: node
   linkType: hard
 
@@ -7204,24 +7248,6 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: 10/4383b5baaeffa9bb4cda2ac33a4aa2e6d1f8aaf811848bf73513a9b88fd76372dc461f6fd6d2e9cb5100f48b473be32c6f95bd983509b7d92bb4d92c10747452
-  languageName: node
-  linkType: hard
-
-"thenify-all@npm:^1.0.0":
-  version: 1.6.0
-  resolution: "thenify-all@npm:1.6.0"
-  dependencies:
-    thenify: "npm:>= 3.1.0 < 4"
-  checksum: 10/dba7cc8a23a154cdcb6acb7f51d61511c37a6b077ec5ab5da6e8b874272015937788402fd271fdfc5f187f8cb0948e38d0a42dcc89d554d731652ab458f5343e
-  languageName: node
-  linkType: hard
-
-"thenify@npm:>= 3.1.0 < 4":
-  version: 3.3.1
-  resolution: "thenify@npm:3.3.1"
-  dependencies:
-    any-promise: "npm:^1.0.0"
-  checksum: 10/486e1283a867440a904e36741ff1a177faa827cf94d69506f7e3ae4187b9afdf9ec368b3d8da225c192bfe2eb943f3f0080594156bf39f21b57cd1411e2e7f6d
   languageName: node
   linkType: hard
 
@@ -7273,20 +7299,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-interface-checker@npm:^0.1.9":
-  version: 0.1.13
-  resolution: "ts-interface-checker@npm:0.1.13"
-  checksum: 10/9f7346b9e25bade7a1050c001ec5a4f7023909c0e1644c5a96ae20703a131627f081479e6622a4ecee2177283d0069e651e507bedadd3904fc4010ab28ffce00
-  languageName: node
-  linkType: hard
-
-"ts-morph@npm:^22.0.0":
-  version: 22.0.0
-  resolution: "ts-morph@npm:22.0.0"
+"ts-morph@npm:^23.0.0":
+  version: 23.0.0
+  resolution: "ts-morph@npm:23.0.0"
   dependencies:
-    "@ts-morph/common": "npm:~0.23.0"
+    "@ts-morph/common": "npm:~0.24.0"
     code-block-writer: "npm:^13.0.1"
-  checksum: 10/e5d81d0d8d990fa9f86e285bd4052bcfa462e2f798f7eda86e11afc7d884dfdb053998dcbf79942942e8032070f8b266745e017771674a169731494fe035e192
+  checksum: 10/2ac0e615021b9d4115df60be02fce0b9b80cb0db173b7836ac70f60f987d9f055ec6a4b2233cf6ed9bdd7f1d8854e8266f5af2d4d40ca738cd7374246e163da3
   languageName: node
   linkType: hard
 
@@ -7353,8 +7372,10 @@ __metadata:
   dependencies:
     "@chialab/esbuild-plugin-meta-url": "npm:^0.18.2"
     "@codingame/esbuild-import-meta-url-plugin": "npm:^1.0.2"
+    "@codingame/eslint-config": "npm:^1.2.1"
     "@codingame/monaco-vscode-api": "npm:5.2.0"
     "@codingame/monaco-vscode-editor-api": "npm:5.2.0"
+    "@codingame/monaco-vscode-explorer-service-override": "npm:5.2.0"
     "@codingame/monaco-vscode-lifecycle-service-override": "npm:5.2.0"
     "@codingame/monaco-vscode-npm-default-extension": "npm:5.2.0"
     "@codingame/monaco-vscode-rollup-vsix-plugin": "npm:^6.0.1"
@@ -7362,11 +7383,14 @@ __metadata:
     "@codingame/monaco-vscode-standalone-typescript-language-features": "npm:5.2.0"
     "@codingame/monaco-vscode-typescript-basics-default-extension": "npm:5.2.0"
     "@codingame/monaco-vscode-typescript-language-features-default-extension": "npm:5.2.0"
+    "@codingame/monaco-vscode-views-service-override": "npm:5.2.0"
     "@entur/vite-plugin-assets-json": "npm:^0.0.9"
-    "@native-twin/core": "npm:^6.1.0"
-    "@native-twin/css": "npm:^6.1.0"
+    "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
+    "@native-twin/core": "npm:^6.4.0"
+    "@native-twin/css": "npm:^6.4.0"
+    "@native-twin/helpers": "file:../../packages/helpers"
     "@native-twin/language-service": "file:../../packages/language-service"
-    "@native-twin/preset-tailwind": "npm:^6.1.0"
+    "@native-twin/preset-tailwind": "npm:^6.4.0"
     "@rollup/browser": "npm:^4.18.0"
     "@rollup/pluginutils": "npm:^5.1.0"
     "@types/express": "npm:^4"
@@ -7375,7 +7399,7 @@ __metadata:
     "@types/systemjs": "npm:^6"
     "@types/vscode": "npm:^1.89.0"
     "@types/ws": "npm:^8"
-    effect: "npm:~3.3.0"
+    effect: "npm:^3.7.2"
     esbuild-plugin-wasm: "npm:^1.1.0"
     eslint: "npm:^8.57.0"
     eslint-config-standard: "npm:^17.1.0"
@@ -7384,7 +7408,6 @@ __metadata:
     eslint-plugin-promise: "npm:^6.2.0"
     eslint-plugin-unused-imports: "npm:^3.2.0"
     express: "npm:^4.19.2"
-    jiti: "npm:^1.21.3"
     monaco-editor: "npm:@codingame/monaco-vscode-editor-api@~5.2.0"
     monaco-editor-wrapper: "npm:5.2.0"
     monaco-languageclient: "npm:^8.5.0"
@@ -7392,12 +7415,11 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     request-light: "npm:^0.7.0"
-    sucrase: "npm:^3.35.0"
-    systemjs: "npm:^6.15.1"
     ts-node: "npm:^10.9.2"
     tslib: "npm:^2.6.3"
-    typescript: "npm:^5.4.2"
+    typescript: "npm:^5.5.4"
     vite: "npm:^5.3.1"
+    vite-plugin-prebundle-workers: "npm:^0.2.0"
     vscode: "npm:@codingame/monaco-vscode-api@~5.2.0"
     vscode-json-languageservice: "npm:^5.3.11"
     vscode-languageclient: "npm:~9.0.1"
@@ -7502,23 +7524,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.4.2":
-  version: 5.4.5
-  resolution: "typescript@npm:5.4.5"
+"typescript@npm:^5.5.4":
+  version: 5.6.2
+  resolution: "typescript@npm:5.6.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/d04a9e27e6d83861f2126665aa8d84847e8ebabcea9125b9ebc30370b98cb38b5dff2508d74e2326a744938191a83a69aa9fddab41f193ffa43eabfdf3f190a5
+  checksum: 10/f95365d4898f357823e93d334ecda9fcade54f009b397c7d05b7621cd9e865981033cf89ccde0f3e3a7b73b1fdbae18e92bc77db237b43e912f053fef0f9a53b
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.4.2#optional!builtin<compat/typescript>":
-  version: 5.4.5
-  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"
+"typescript@patch:typescript@npm%3A^5.5.4#optional!builtin<compat/typescript>":
+  version: 5.6.2
+  resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/760f7d92fb383dbf7dee2443bf902f4365db2117f96f875cf809167f6103d55064de973db9f78fe8f31ec08fff52b2c969aee0d310939c0a3798ec75d0bca2e1
+  checksum: 10/8bfc7ca0d9feca4c3fcbd6c70741abfcd714197d6448e68225ae71e462447d904d3bfba49759a8fbe4956d87f054e2d346833c8349c222daa594a2626d4e1be8
   languageName: node
   linkType: hard
 
@@ -7618,6 +7640,13 @@ __metadata:
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
   checksum: 10/31389debef15a480849b8331b220782230b9815a8e0dbb7b9a8369559aed2e9a7800cd904d4371ea74f4c3527db456dc8e7ac5befce5f0d289014dbdf47b2242
+  languageName: node
+  linkType: hard
+
+"vite-plugin-prebundle-workers@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "vite-plugin-prebundle-workers@npm:0.2.0"
+  checksum: 10/c6fc63fb5d00907dd9d03b2ebce1e1137ec092a93dc42eb04af93b61e303b0a1a54baea0c8341caf7dbf97abd7b67a3b1772fe2ff8c0a639aa6cea967b39c96d
   languageName: node
   linkType: hard
 

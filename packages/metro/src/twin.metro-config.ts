@@ -30,7 +30,7 @@ export function withNativeTwin(
 
   return {
     ...twinConfig.metroConfig,
-    transformerPath: require.resolve('./transformer/metro.transformer'),
+    // transformerPath: require.resolve('./transformer/metro.transformer'),
     resolver: {
       ...twinConfig.metroConfig.resolver,
       resolveRequest(context, moduleName, platform) {
@@ -40,6 +40,7 @@ export function withNativeTwin(
         if (platform === 'web' && 'filePath' in resolved && matchCss(resolved.filePath)) {
           return {
             ...resolved,
+            type: 'sourceFile',
             filePath: path.resolve(twinConfig.userConfig.outputCSS),
           };
         }

@@ -1,33 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Editor from '@codingame/monaco-editor-react';
-import { initialize } from '@codingame/monaco-editor-wrapper';
-import { useEffect, useState } from 'react';
-// import '@codingame/monaco-editor-wrapper/features/extensionHostWorker';
-// import '@codingame/monaco-editor-wrapper/features/workbench';
-// import '@codingame/monaco-editor-wrapper/features/viewPanels';
+import { useEffect } from 'react';
+import twinConfig from '../tailwind.config';
+import { install } from '@native-twin/core';
+import { startEditor, useEditorStore } from './store/editor.store';
+
+install(twinConfig);
 
 export default function VSCode() {
-  const [isReady, setIsReady] = useState(false);
-  const [value, setValue] = useState('// some comment');
+  const isReady = useEditorStore((x) => x.isReady);
   // const themeColor = useThemeColor('vs-dark');
   // console.log('COLOR: ', themeColor);
 
   useEffect(() => {
-    console.log('asdasd');
-    initialize().then(() => setIsReady(true));
+    const init = async () => {
+      await startEditor();
+    };
+    init();
   }, []);
-  console.log('sad', isReady);
 
-  return isReady ? (
-    <Editor
-      height='auto'
-      programmingLanguage='typescript'
-      value={value}
-      onChange={setValue}
-    />
-  ) : (
-    <p>Loading...</p>
+  return (
+    <div className='flex flex-1 bg-black'>
+      {!isReady && (
+        <div
+          className={`
+          flex flex-1 items-center justify-center absolute
+          bg-black w-full h-full
+        `}
+        >
+          <h2 className='text(xl white)'>Loading...</h2>
+        </div>
+      )}
+      <div className='flex flex-1' id='monaco-editor-root'></div>
+    </div>
   );
 }
 

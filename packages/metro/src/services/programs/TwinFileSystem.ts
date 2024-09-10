@@ -27,7 +27,7 @@ const refreshCSSOutput = (filepath: string) => {
 
     yield* fs.writeFile(
       filepath,
-      new TextEncoder().encode(sheetEntriesToCss(ctx.twin.target, false)),
+      new TextEncoder().encode(sheetEntriesToCss(ctx.twin.target, true)),
     );
   });
 };

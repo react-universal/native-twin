@@ -5,12 +5,12 @@
       "path": ".."
     },
     {
-      "name": "docs-site",
-      "path": "../apps/docs-site"
+      "name": "twin-run",
+      "path": "../sites/twin.run"
     },
     {
-      "name": "twin-run",
-      "path": "../apps/twin-run"
+      "name": "📦 @lib/language-service",
+      "path": "../packages/language-service"
     },
     {
       "name": "📦 @lib/jsx",
@@ -87,7 +87,7 @@
       "**/*.code-search": true,
       "**/build": true
     },
-    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "typescript.tsdk": "twin-run/node_modules/typescript/lib",
     "typescript.tsserver.log": "verbose",
     "cSpell.words": [
       "sastan",

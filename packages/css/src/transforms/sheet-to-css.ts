@@ -23,12 +23,12 @@ function getEntryRuleBlock(entry: SheetEntry, forMetro = false) {
   if (!entry.preflight) {
     className = '.';
   }
-  if (!forMetro) {
+  if (!forMetro || entry.selectors.filter((x) => x.startsWith('&')).length > 0) {
     className += escapeSelector(entry.className);
   } else {
     className += entry.className;
   }
-  
+
   // if (
   //   entry.className.startsWith('*') ||
   //   entry.className.startsWith(':') ||
