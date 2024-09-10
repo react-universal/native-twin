@@ -8,7 +8,7 @@ import { startEditor, useEditorStore } from './store/editor.store';
 install(twinConfig);
 
 export default function VSCode() {
-  const isReady = useEditorStore((x) => x.isReady);
+  const { isReady, editor } = useEditorStore((x) => x);
   // const themeColor = useThemeColor('vs-dark');
   // console.log('COLOR: ', themeColor);
 
@@ -21,6 +21,16 @@ export default function VSCode() {
 
   return (
     <div className='flex flex-1 bg-black'>
+      <button
+        onClick={async () => {
+          if (editor) {
+            const model = await editor.fileManager.createFile('css.ts', 'css``');
+            editor.fileManager.openFile(model);
+          }
+        }}
+      >
+        Open editor
+      </button>
       {!isReady && (
         <div
           className={`

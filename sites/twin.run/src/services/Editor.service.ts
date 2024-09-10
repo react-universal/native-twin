@@ -8,7 +8,7 @@ export const createEditorService = () => {
   const domElement = document.getElementById('monaco-editor-root')!;
   const editorConfig = createEditorConfig();
 
-  const fileManager = new FileManager();
+  const fileManager = new FileManager(wrapper);
   return {
     editorApi: () => monaco.editor,
     languagesApi: () => monaco.languages,
@@ -21,7 +21,6 @@ export const createEditorService = () => {
 
   async function setup() {
     await wrapper.initAndStart(editorConfig.userConfig, domElement);
-    fileManager.setup();
   }
 
   function registerLanguages() {

@@ -12,11 +12,13 @@ export const startEditor = async () => {
   editorStore.setState((x) => ({
     ...x,
     isReady: true,
+    editor: editorService,
   }));
 };
 
 export const editorStore = createStore({
   isReady: false,
+  editor: null as null | ReturnType<typeof createEditorService>,
 });
 
 export const useEditorStore = <T>(

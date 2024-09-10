@@ -7,6 +7,8 @@ import {
   RegisteredFileSystemProvider,
 } from '@codingame/monaco-vscode-files-service-override';
 import type { IStoredWorkspace } from '@codingame/monaco-vscode-configuration-service-override';
+import { IReference, ITextFileEditorModel } from 'vscode/monaco';
+import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
 
 export class FileManager {
   focusDocument: vscode.TextDocument | undefined;
@@ -14,34 +16,9 @@ export class FileManager {
   readonly rootPath = '/workspace';
   readonly fileSystemProvider = new RegisteredFileSystemProvider(false);
   readonly languageId = 'typescript';
+  readonly fileSystemOverlay: monaco.IDisposable;
 
-  createFile(name: string, content: string) {
-    const file = new RegisteredMemoryFile(
-      vscode.Uri.file(`${this.rootPath}/${name}`).with({ scheme: 'typescript' }),
-      content,
-    );
-    this.fileSystemProvider.registerFile(file);
-    return file;
-  }
-
-  fileToURI(name: string) {
-    return vscode.Uri.file(`${this.rootPath}/${name}`);
-  }
-
-  createModel(fileContents: string, fileName: string) {
-    monaco.editor.createModel(fileContents, this.languageId, this.fileToURI(fileName));
-  }
-
-  createDocument(vscodeDocument: vscode.TextDocument) {
-    return TextDocument.create(
-      vscodeDocument.uri.toString(),
-      vscodeDocument.languageId,
-      vscodeDocument.version,
-      vscodeDocument.getText(),
-    );
-  }
-
-  setup() {
+  constructor(readonly editor: MonacoEditorLanguageClientWrapper) {
     this.fileSystemProvider.registerFile(
       new RegisteredMemoryFile(
         this.workspaceFile,
@@ -55,10 +32,34 @@ export class FileManager {
       ),
     );
 
-    registerFileSystemOverlay(1, this.fileSystemProvider);
+    this.fileSystemOverlay = registerFileSystemOverlay(1, this.fileSystemProvider);
+  }
 
-    vscode.workspace.onDidOpenTextDocument((_event) => {
-      this.focusDocument = _event;
-    });
+  async createFile(name: string, content: string) {
+    const file = new RegisteredMemoryFile(
+      vscode.Uri.file(`${this.rootPath}/${name}`),
+      content,
+    );
+    this.fileSystemProvider.registerFile(file);
+    const modelRef = await monaco.editor.createModelReference(file.uri);
+    modelRef.object.setLanguageId('typescript');
+    return modelRef;
+  }
+
+  openFile(model: IReference<ITextFileEditorModel>) {
+    this.editor.getEditor()?.setModel(model.object.textEditorModel);
+  }
+
+  fileToURI(name: string) {
+    return vscode.Uri.file(`${this.rootPath}/${name}`);
+  }
+
+  createDocument(vscodeDocument: vscode.TextDocument) {
+    return TextDocument.create(
+      vscodeDocument.uri.toString(),
+      vscodeDocument.languageId,
+      vscodeDocument.version,
+      vscodeDocument.getText(),
+    );
   }
 }
