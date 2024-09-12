@@ -1,4 +1,4 @@
-import tailwindClasses, { TailwindClass, tailwindGlossary } from "../../data";
+import TAILWIND_CLASSES, { TailwindClass, TAILWIND_GLOSSARY } from "../../data";
 
 export interface TailwindClassResult {
   class: string;
@@ -11,8 +11,8 @@ export function searchTailwindClasses(query: string): TailwindClassResult[] {
   const results: TailwindClassResult[] = [];
 
 
-  Object.entries(tailwindClasses).forEach(([categoryKey, category]) => {
-    const glossaryCategory = tailwindGlossary[categoryKey as keyof typeof tailwindGlossary]; // Verificamos que exista en el glosario
+  Object.entries(TAILWIND_CLASSES).forEach(([categoryKey, category]) => {
+    const glossaryCategory = TAILWIND_GLOSSARY[categoryKey as keyof typeof TAILWIND_GLOSSARY]; // Verificamos que exista en el glosario
 
     if (glossaryCategory) {
    

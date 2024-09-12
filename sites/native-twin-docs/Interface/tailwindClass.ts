@@ -49,7 +49,7 @@ export interface TailwindClasses {
   };
 }
 
-export interface classRenderer {
+export interface ClassRenderer {
   title: string;
   code: string;
   text: string;

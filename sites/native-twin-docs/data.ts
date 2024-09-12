@@ -3,7 +3,7 @@ export interface TailwindClass {
   web: boolean;
   native: boolean;
 }
-export const tailwindClasses = {
+export const TAILWIND_CLASSES = {
   flexbox: {
     flexProperties: [
       { class: "flex", web: true, native: true },
@@ -124,7 +124,7 @@ export const tailwindClasses = {
     ],
   },
 };
-export const tailwindGlossary = {
+export const TAILWIND_GLOSSARY = {
   flexbox: {
     title: "Flexbox",
     categories: [
@@ -188,4 +188,4 @@ export const tailwindGlossary = {
   },
 };
 
-export default tailwindClasses;
+export default TAILWIND_CLASSES;

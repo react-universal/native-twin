@@ -14,11 +14,9 @@ export const Navbar = () => {
         </div> </Link>
         <nav className="w-full ">
           <ul className="flex flex-row gap-4 items-center justify-end">
-            <li><Link href={"/"}>Home</Link></li>
-            <li ><Link href={'/docs'}>Docs</Link></li>
-            
-            <li><Link  href={"https://github.com/react-universal/native-twin"}><IoLogoGithub  className="w-5 h-5 object-contain"/></Link></li>
-            {/* <li>Theme button</li> preguntar chrispio */}
+              <li><Link href="/">Home</Link></li>
+              <li><Link href="/docs">Docs</Link></li>
+              <li><Link  href={"https://github.com/react-universal/native-twin"}><IoLogoGithub  className="w-5 h-5 object-contain"/></Link></li>
           </ul>
         </nav>
       </div>
