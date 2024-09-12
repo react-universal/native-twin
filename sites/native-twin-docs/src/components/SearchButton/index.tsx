@@ -42,15 +42,9 @@ const handlerGoUrl = (search:string)=>()=>  router.push("/docs/"+search)
           <input onChange={handlerChangeSearch} className="p-2" type="text" />
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          {list.map((item) => (
-      <button
-        onClick={() => handlerGoUrl(item.route)}
-        className="bg-[#1a1a0a] p-2 text-start"
-        key={item.route}
-      >
-        {item.class}
-      </button>
-    ))}
+          {list.map((item,index)=>{
+            return <button onClick={handlerGoUrl(item.route)} className="bg-[#1a1a0a] p-2 text-start" key={index+item.class}>{item.class}</button>
+          })}
         </div>
     
       </DialogContent>
