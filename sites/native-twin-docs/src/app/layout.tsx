@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
+import { ThemeProvider } from "./theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +23,15 @@ export default function RootLayout({
           inter.className + "  bg-gradient-to-r from-[#030712] to-[#1D1B20] "
         }
       >
+       <ThemeProvider
+       attribute="class"
+       defaultTheme="dark"
+       >
         <Navbar></Navbar>
         <div className="min-h-[100vh] py-[80px] text-white max-w-[1400px] w-[95%] m-auto">
           {children}
-        </div>
+        </div></ThemeProvider>
+       
       </body>
     </html>
   );

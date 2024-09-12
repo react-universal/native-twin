@@ -6,12 +6,12 @@ export const Navbar = () => {
   return (
     <header className="z-50 w-full flex flex-row justify-around  absolute text-white bg-[rgba(0,0,0,0.4)] backdrop-blur-lg">
       <div className="w-full flex flex-row max-w-[1400px] p-5 m-auto">
-        <div className="w-full flex flex-row gap-5 items-center">
+       <Link className="w-full " href={"/"}> <div className="w-full flex flex-row gap-5 items-center">
           <picture className="w-5 h-5 bg-white flex ">
             <Image src={""} alt=""></Image>
           </picture>
           <h3>  Native-Twin </h3>
-        </div> 
+        </div> </Link>
         <nav className="w-full ">
           <ul className="flex flex-row gap-4 items-center justify-end">
             <li><Link href={"/"}>Home</Link></li>
