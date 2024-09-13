@@ -20,8 +20,8 @@ import {
   WrapperConfig,
 } from 'monaco-editor-wrapper';
 import { Constants } from '@native-twin/language-service/browser';
-import { FileManager } from './file.manager';
-import { workerConfig } from '../workers/extensions.worker';
+import { FileManager } from '../lsp/FileManager';
+import { workerConfig } from '../lsp/workers/extensions.worker';
 import twinConfigRaw from '../content/tailwind.config?raw';
 import workerUrl from '../workers/twin.worker?worker&url';
 
@@ -29,13 +29,10 @@ export class ClientManager {
   readonly codeConverter = createCodeConverter();
   readonly protocolConverter = createProtocolConverter(undefined, true, true);
   readonly wrapper = new MonacoEditorLanguageClientWrapper();
-  readonly fileManager = new FileManager();
-
-  constructor() {}
+  readonly fileManager = new FileManager(this.wrapper);
 
   async setup() {
     await this.wrapper.initAndStart(this.userConfig, this.HTMLElement);
-    this.fileManager.setup();
   }
 
   async compileCode(_code: string) {

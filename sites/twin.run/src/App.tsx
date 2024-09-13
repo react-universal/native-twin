@@ -1,10 +1,10 @@
+import * as monaco from 'monaco-editor';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { useEffect } from 'react';
 import twinConfig from '../tailwind.config';
 import { install } from '@native-twin/core';
-import { startEditor, useEditorStore } from './store/editor.store';
-
+import { startEditor, useEditorStore } from './lsp/store/editor.store';
 install(twinConfig);
 
 export default function VSCode() {
@@ -16,8 +16,14 @@ export default function VSCode() {
     const init = async () => {
       await startEditor();
     };
-    init();
-  }, []);
+    if (!isReady) {
+      init();
+    }
+
+    return () => {
+      editor?.wrapper.dispose(true);
+    };
+  }, [editor, isReady]);
 
   return (
     <div className='flex flex-1 bg-black'>
@@ -26,6 +32,7 @@ export default function VSCode() {
           if (editor) {
             const model = await editor.fileManager.createFile('css.ts', 'css``');
             editor.fileManager.openFile(model);
+            console.log('MON: ', monaco);
           }
         }}
       >

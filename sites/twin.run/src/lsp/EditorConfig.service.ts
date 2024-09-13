@@ -1,23 +1,19 @@
 import * as monaco from 'monaco-editor';
-import { UserConfig, WrapperConfig } from 'monaco-editor-wrapper';
 import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
-import getTextmateServiceOverride from '@codingame/monaco-vscode-textmate-service-override';
-import getConfigurationServiceOverride from '@codingame/monaco-vscode-configuration-service-override';
+import getConfigurationServiceOverride, {
+  updateUserConfiguration,
+} from '@codingame/monaco-vscode-configuration-service-override';
 import getEditorServiceOverride from '@codingame/monaco-vscode-editor-service-override';
-import getEditorViewsOverride from '@codingame/monaco-vscode-views-service-override';
-import getLifecycleServiceOverride from '@codingame/monaco-vscode-lifecycle-service-override';
+import getLanguageDetectionOverride from '@codingame/monaco-vscode-language-detection-worker-service-override';
 import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
-import getFilesServiceOverride from '@codingame/monaco-vscode-files-service-override';
-import getExplorerServiceOverride from '@codingame/monaco-vscode-explorer-service-override';
-import getExtensionServiceOverride from '@codingame/monaco-vscode-extensions-service-override';
 import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
-import { LanguageClientConfig } from 'monaco-editor-wrapper';
+import { LanguageClientConfig, UserConfig, WrapperConfig } from 'monaco-editor-wrapper';
 import { Constants } from '@native-twin/language-service/browser';
-import { workerConfig } from '../workers/extensions.worker';
 import twinConfigRaw from '../content/tailwind.config?raw';
-import workerUrl from '../workers/twin.worker?worker&url';
+import userConfig from '../config/user/configuration.json?raw';
+import workerUrl from './workers/twin.worker?worker&url';
 
-export const createEditorConfig = () => {
+export const createMonacoEditorConfig = () => {
   const monacoEditorConfig: monaco.editor.IStandaloneEditorConstructionOptions = {
     glyphMargin: true,
     guides: {
@@ -26,51 +22,37 @@ export const createEditorConfig = () => {
     lightbulb: {
       enabled: monaco.editor.ShowLightbulbIconMode.On,
     },
-    theme: 'vs-dark',
-  };
-  const monacoDiffEditorConfig = {
-    ...monacoEditorConfig,
-    renderSideBySide: false,
+    automaticLayout: true,
+    'semanticHighlighting.enabled': 'configuredByTheme',
+    minimap: { enabled: false },
+    // theme: 'vs-dark',
   };
   const wrapperConfig: WrapperConfig = {
     serviceConfig: {
       userServices: {
-        ...getExtensionServiceOverride(workerConfig),
-        // ...getOutputServiceOverride(),
         ...getEditorServiceOverride(useOpenEditorStub),
-        ...getLifecycleServiceOverride(),
-        ...getFilesServiceOverride(),
-        ...getConfigurationServiceOverride(),
-        ...getTextmateServiceOverride(),
-        ...getThemeServiceOverride(),
-        ...getExplorerServiceOverride(),
         ...getLanguagesServiceOverride(),
-        // ...getStorageServiceOverride(),
-        ...getEditorViewsOverride(),
+        ...getThemeServiceOverride(),
+        ...getConfigurationServiceOverride(),
+        ...getLanguageDetectionOverride(),
       },
       enableExtHostWorker: true,
       debugLogging: true,
     },
     editorAppConfig: {
       $type: 'extended',
-      diffEditorOptions: monacoDiffEditorConfig,
-      editorOptions: {
-        ...monacoEditorConfig,
-      },
+      editorOptions: monacoEditorConfig,
       codeResources: {
         main: {
           text: twinConfigRaw,
           uri: '/workspace/tailwind.config.ts',
-          enforceLanguageId: 'typescript',
+          fileExt: 'ts',
         },
       },
       useDiffEditor: false,
-      overrideAutomaticLayout: true,
-
+      overrideAutomaticLayout: false,
       userConfiguration: {
-        json: JSON.stringify({
-          'workbench.colorTheme': 'Default Dark Modern',
-        }),
+        json: userConfig,
       },
     },
   };
@@ -99,7 +81,7 @@ export const createEditorConfig = () => {
       }),
     },
   };
-  const userConfig: UserConfig = {
+  const monacoEditorUserConfig: UserConfig = {
     wrapperConfig: wrapperConfig,
     languageClientConfig: languageClientConfig,
     loggerConfig: {
@@ -107,8 +89,6 @@ export const createEditorConfig = () => {
       debugEnabled: true,
     },
   };
-
-  return {
-    userConfig,
-  };
+  updateUserConfiguration(userConfig);
+  return monacoEditorUserConfig;
 };

@@ -26,6 +26,8 @@ export class FileManager {
           folders: [
             {
               path: '/workspace',
+              uri: '/workspace',
+              name: 'workspace',
             },
           ],
         }),
