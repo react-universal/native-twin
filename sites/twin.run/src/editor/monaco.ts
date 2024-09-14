@@ -7,12 +7,14 @@ import '@codingame/monaco-vscode-standalone-typescript-language-features';
 import '@codingame/monaco-vscode-typescript-basics-default-extension';
 import '@codingame/monaco-vscode-typescript-language-features-default-extension';
 import '@codingame/monaco-vscode-npm-default-extension';
-import { useWorkerFactory } from 'monaco-editor-wrapper/workerFactory';
+// import { useWorkerFactory } from 'monaco-editor-wrapper/workerFactory';
 import editorWorker from 'monaco-editor-wrapper/workers/module/editor?worker';
-import jsonWorker from 'monaco-editor-wrapper/workers/module/editor?worker';
-import cssWorker from 'monaco-editor-wrapper/workers/module/css?worker?worker';
-import htmlWorker from 'monaco-editor-wrapper/workers/module/html?worker?worker';
-import tsWorker from 'monaco-editor-wrapper/workers/module/ts?worker?worker';
+import jsonWorker from 'monaco-editor-wrapper/workers/module/json?worker';
+import cssWorker from 'monaco-editor-wrapper/workers/module/css?worker';
+import htmlWorker from 'monaco-editor-wrapper/workers/module/html?worker';
+import tsWorker from 'monaco-editor-wrapper/workers/module/ts?worker';
+
+export * from 'monaco-editor';
 
 self.MonacoEnvironment = {
   getWorker: function (_, label) {
@@ -39,23 +41,20 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
   isolatedModules: true,
   allowJs: true,
-  strict: true,
+  strict: false,
   skipLibCheck: true,
+  allowSyntheticDefaultImports: true,
+  disableSourceOfProjectReferenceRedirect: true,
+  esModuleInterop: true,
+  declarationMap: false,
+  skipDefaultLibCheck: true,
 });
 
 monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
   noSuggestionDiagnostics: true,
+  // noSemanticValidation: true,
 });
 
-if (import.meta.hot) {
-  const disposables = (import.meta.hot.data.disposables ??= new Set());
-
-  for (const disposable of disposables) {
-    disposable.dispose();
-  }
-
-  disposables.clear();
-}
 
 // export const configureMonacoWorkers = () => {
 //   useWorkerFactory({

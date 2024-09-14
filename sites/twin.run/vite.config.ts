@@ -5,6 +5,8 @@ import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 import vsixPlugin from '@codingame/monaco-vscode-rollup-vsix-plugin';
 import assetsJSON from '@entur/vite-plugin-assets-json';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   assetsInclude: ['**/*.json', '**/*.wasm'],
@@ -31,6 +33,8 @@ export default defineConfig({
   //   format: 'es',
   // },
   plugins: [
+    tsconfigPaths(),
+    react(),
     vsixPlugin(),
     assetsJSON(),
     {

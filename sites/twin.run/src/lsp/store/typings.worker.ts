@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 /// <reference lib="WebWorker" />
 /**
  * Worker to fetch typescript definitions for dependencies.

@@ -19,7 +19,10 @@
     "noImplicitReturns": true,
     "baseUrl": ".",
     "experimentalDecorators": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "exclude": ["src/content"],
   "include": ["src"]

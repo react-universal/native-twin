@@ -1,12 +1,17 @@
 {
   "root": true,
-  "plugins": ["@nx"],
+  "plugins": [
+    "@nx"
+  ],
   "extends": [
     "plugin:@nx/typescript",
     "plugin:@nx/react"
   ],
   "rules": {
     "@typescript-eslint/no-non-null-assertion": "off",
-    "no-restricted-globals": "off"
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-restricted-globals": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "require-yield": "off"
   }
 }

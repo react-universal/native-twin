@@ -9,23 +9,23 @@ import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-serv
 import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
 import { LanguageClientConfig, UserConfig, WrapperConfig } from 'monaco-editor-wrapper';
 import { Constants } from '@native-twin/language-service/browser';
-import twinConfigRaw from '../content/tailwind.config?raw';
-import userConfig from '../config/user/configuration.json?raw';
-import workerUrl from './workers/twin.worker?worker&url';
+import twinConfigRaw from './content/tailwind.config?raw';
+import userConfig from './config/user/configuration.json?raw';
+import workerUrl from '@/lsp/workers/twin.worker?worker&url';
 
-export const createMonacoEditorConfig = () => {
+const createMonacoEditorConfig = () => {
   const monacoEditorConfig: monaco.editor.IStandaloneEditorConstructionOptions = {
-    glyphMargin: true,
+    glyphMargin: false,
     guides: {
       bracketPairs: true,
     },
-    lightbulb: {
-      enabled: monaco.editor.ShowLightbulbIconMode.On,
-    },
-    automaticLayout: true,
-    'semanticHighlighting.enabled': 'configuredByTheme',
+    cursorBlinking: 'smooth',
+    automaticLayout: false,
     minimap: { enabled: false },
-    // theme: 'vs-dark',
+    disableMonospaceOptimizations: true,
+    fontFamily: 'Fira Code',
+    fontWeight: '450',
+    fontLigatures: true,
   };
   const wrapperConfig: WrapperConfig = {
     serviceConfig: {
@@ -45,7 +45,7 @@ export const createMonacoEditorConfig = () => {
       codeResources: {
         main: {
           text: twinConfigRaw,
-          uri: '/workspace/tailwind.config.ts',
+          uri: '/tailwind.config.ts',
           fileExt: 'ts',
         },
       },
@@ -86,9 +86,11 @@ export const createMonacoEditorConfig = () => {
     languageClientConfig: languageClientConfig,
     loggerConfig: {
       enabled: true,
-      debugEnabled: true,
+      debugEnabled: false,
     },
   };
   updateUserConfiguration(userConfig);
   return monacoEditorUserConfig;
 };
+
+export const globalEditorConfig = createMonacoEditorConfig();

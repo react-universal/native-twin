@@ -1,57 +1,17 @@
-import * as monaco from 'monaco-editor';
-import React from 'react';
+import './editor/monaco';
 import ReactDOM from 'react-dom/client';
-import { useEffect } from 'react';
 import twinConfig from '../tailwind.config';
 import { install } from '@native-twin/core';
-import { startEditor, useEditorStore } from './lsp/store/editor.store';
+import { TwinEditor } from './react/Editor';
+
 install(twinConfig);
 
-export default function VSCode() {
-  const { isReady, editor } = useEditorStore((x) => x);
-  // const themeColor = useThemeColor('vs-dark');
-  // console.log('COLOR: ', themeColor);
-
-  useEffect(() => {
-    const init = async () => {
-      await startEditor();
-    };
-    if (!isReady) {
-      init();
-    }
-
-    return () => {
-      editor?.wrapper.dispose(true);
-    };
-  }, [editor, isReady]);
-
+export default function App() {
   return (
     <div className='flex flex-1 bg-black'>
-      <button
-        onClick={async () => {
-          if (editor) {
-            const model = await editor.fileManager.createFile('css.ts', 'css``');
-            editor.fileManager.openFile(model);
-            console.log('MON: ', monaco);
-          }
-        }}
-      >
-        Open editor
-      </button>
-      {!isReady && (
-        <div
-          className={`
-          flex flex-1 items-center justify-center absolute
-          bg-black w-full h-full
-        `}
-        >
-          <h2 className='text(xl white)'>Loading...</h2>
-        </div>
-      )}
-      <div className='flex flex-1' id='monaco-editor-root'></div>
+      <TwinEditor />
     </div>
   );
 }
-
 const rootElement = document.getElementById('root');
-ReactDOM.createRoot(rootElement!).render(<VSCode />);
+ReactDOM.createRoot(rootElement!).render(<App />);

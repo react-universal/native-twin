@@ -2,7 +2,7 @@ import * as monaco from 'monaco-editor';
 import '@codingame/monaco-vscode-standalone-typescript-language-features';
 import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
 import { FileManager } from './FileManager';
-import { monacoEditorUserConfig } from './EditorConfig.service';
+import { globalEditorConfig } from './EditorConfig.service';
 
 export const createEditorService = () => {
   const wrapper = new MonacoEditorLanguageClientWrapper();
@@ -16,13 +16,12 @@ export const createEditorService = () => {
     domElement,
     wrapper,
     fileManager,
-    monacoEditorUserConfig,
     registerLanguages,
     setup,
   };
 
   async function setup() {
-    await wrapper.initAndStart(monacoEditorUserConfig, domElement);
+    await wrapper.initAndStart(globalEditorConfig, domElement);
   }
 
   function registerLanguages() {
