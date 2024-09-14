@@ -1,4 +1,3 @@
-import './editor/monaco';
 import ReactDOM from 'react-dom/client';
 import twinConfig from '../tailwind.config';
 import { install } from '@native-twin/core';
@@ -8,7 +7,7 @@ install(twinConfig);
 
 export default function App() {
   return (
-    <div className='flex flex-1 bg-black'>
+    <div className='flex flex-1 flex-col bg-black'>
       <TwinEditor />
     </div>
   );
