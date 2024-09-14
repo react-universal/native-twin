@@ -1623,6 +1623,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codingame/monaco-vscode-html-language-features-default-extension@npm:~8.0.4":
+  version: 8.0.4
+  resolution: "@codingame/monaco-vscode-html-language-features-default-extension@npm:8.0.4"
+  dependencies:
+    vscode: "npm:@codingame/monaco-vscode-api@8.0.4"
+  checksum: 10/d1e0710e1d03d3a177082da5483c097645e7ab68d6b79da79973f0902e3edfec98519a6e0d3fbf7bdf4bacf5c90d1810bc209f36f264673897bfc7b3417293bc
+  languageName: node
+  linkType: hard
+
+"@codingame/monaco-vscode-json-default-extension@npm:~8.0.4":
+  version: 8.0.4
+  resolution: "@codingame/monaco-vscode-json-default-extension@npm:8.0.4"
+  dependencies:
+    vscode: "npm:@codingame/monaco-vscode-api@8.0.4"
+  checksum: 10/5b605ab905f32a6d118893eea35638129942549acecfb7bc78c496e78c4a3a501750086ca180510398258e8f76bdf88c806f431b40df2c9df3846d78feeb2688
+  languageName: node
+  linkType: hard
+
 "@codingame/monaco-vscode-keybindings-service-override@npm:8.0.4":
   version: 8.0.4
   resolution: "@codingame/monaco-vscode-keybindings-service-override@npm:8.0.4"
@@ -1806,6 +1824,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codingame/monaco-vscode-markdown-language-features-default-extension@npm:~8.0.4":
+  version: 8.0.4
+  resolution: "@codingame/monaco-vscode-markdown-language-features-default-extension@npm:8.0.4"
+  dependencies:
+    vscode: "npm:@codingame/monaco-vscode-api@8.0.4"
+  checksum: 10/52ca26dbe9fb517d3011ef97aa4440dcd72cf89330427f0629cafa260b9be135b9fd996084b478dd2482807ae5ce6bc2734178382fba5faa3169a51566201c7b
+  languageName: node
+  linkType: hard
+
 "@codingame/monaco-vscode-model-service-override@npm:~8.0.4":
   version: 8.0.4
   resolution: "@codingame/monaco-vscode-model-service-override@npm:8.0.4"
@@ -1852,6 +1879,24 @@ __metadata:
     mime-types: "npm:^2.1.35"
     yauzl: "npm:^3.0.0"
   checksum: 10/4890b44fa6451f1335e4c35b20a5611ccc529ba5613eeac69762165a376ab78c60da07feaaecb3cd48e974f225ef2b8073a84b57485568a545faf147cd5cc95e
+  languageName: node
+  linkType: hard
+
+"@codingame/monaco-vscode-standalone-html-language-features@npm:~8.0.4":
+  version: 8.0.4
+  resolution: "@codingame/monaco-vscode-standalone-html-language-features@npm:8.0.4"
+  dependencies:
+    monaco-editor: "npm:@codingame/monaco-vscode-editor-api@8.0.4"
+  checksum: 10/8b08068b17fd0db993d84952a179ddcc1b8fd9c67ba0d36423fabb42b06842e8a75fd204166d4402a2088ddd51749fe7b882a8d4f9785b7268dfe4fe5de5d0a8
+  languageName: node
+  linkType: hard
+
+"@codingame/monaco-vscode-standalone-json-language-features@npm:~8.0.4":
+  version: 8.0.4
+  resolution: "@codingame/monaco-vscode-standalone-json-language-features@npm:8.0.4"
+  dependencies:
+    monaco-editor: "npm:@codingame/monaco-vscode-editor-api@8.0.4"
+  checksum: 10/8fc3899911d490879b1e8dd53017450bb642b1a6e76caa63604ec11e712b0650f1c51df0b517c6bc3f9582f6b1bd6c8174eb4e964996500314a94f3692bdcbd8
   languageName: node
   linkType: hard
 
@@ -2666,14 +2711,14 @@ __metadata:
 
 "@native-twin/helpers@file:../../packages/helpers::locator=twin-run%40workspace%3A.":
   version: 6.4.0
-  resolution: "@native-twin/helpers@file:../../packages/helpers#../../packages/helpers::hash=db7236&locator=twin-run%40workspace%3A."
+  resolution: "@native-twin/helpers@file:../../packages/helpers#../../packages/helpers::hash=c0e81d&locator=twin-run%40workspace%3A."
   dependencies:
-    effect: "npm:^3.7.2"
+    effect: "npm:^3.7.3"
     jest: "npm:*"
   dependenciesMeta:
     jest:
       optional: true
-  checksum: 10/58d45945afc68866f6686be89f39cf232bd126e8653d7fa677cda15537f299e95c450c4f622a5951af585b4882ff6c64c57aa1b23210d98cfa382a744ce7d7e7
+  checksum: 10/0fdee30f550c725d375c479e89a0f91c762d5584ef2d6802733bbe67f5cc5132f2ba9087f176cdaab7bd82ef32c753e61d88c503d9a53f1ca18abbcb9470d64d
   languageName: node
   linkType: hard
 
@@ -2686,12 +2731,12 @@ __metadata:
 
 "@native-twin/language-service@file:../../packages/language-service::locator=twin-run%40workspace%3A.":
   version: 6.4.0
-  resolution: "@native-twin/language-service@file:../../packages/language-service#../../packages/language-service::hash=cbff9a&locator=twin-run%40workspace%3A."
+  resolution: "@native-twin/language-service@file:../../packages/language-service#../../packages/language-service::hash=43950d&locator=twin-run%40workspace%3A."
   dependencies:
     "@ctrl/tinycolor": "npm:^4.1.0"
     "@vscode/emmet-helper": "npm:^2.9.3"
     cssbeautify: "npm:0.3.1"
-    effect: "npm:^3.7.2"
+    effect: "npm:^3.7.3"
     jest: "npm:*"
     match-sorter: "npm:6.3.4"
     showdown: "npm:2.1.0"
@@ -2704,7 +2749,7 @@ __metadata:
   dependenciesMeta:
     jest:
       optional: true
-  checksum: 10/ccc3795f0bc10d854af115bce3931370341d80d40bd5385657560a10d9cda164f4b028b73ef9e2204a46d4d989161e9a60de84efe693e45a777e68a60cf42f12
+  checksum: 10/188336f80a328daa2d891abd5a13ddff75750e4212a81628c6744a8b282f693ff60019c44677444591a1ecd562f3b71346045dd04a9ac69531ccae51f5092d09
   languageName: node
   linkType: hard
 
@@ -4853,13 +4898,6 @@ __metadata:
   version: 0.2.0
   resolution: "eastasianwidth@npm:0.2.0"
   checksum: 10/9b1d3e1baefeaf7d70799db8774149cef33b97183a6addceeba0cf6b85ba23ee2686f302f14482006df32df75d32b17c509c143a3689627929e4a8efaf483952
-  languageName: node
-  linkType: hard
-
-"effect@npm:^3.7.2":
-  version: 3.7.2
-  resolution: "effect@npm:3.7.2"
-  checksum: 10/122a836761e004f789886d4511d58f5a7efc7179dcda6360d06b87a1cc28e6d02c4b92b58ab9842fe0306424326af156511d803dbd9d6f72101b8424bb72f63c
   languageName: node
   linkType: hard
 
@@ -9575,10 +9613,15 @@ __metadata:
     "@codingame/monaco-vscode-api": "npm:~8.0.4"
     "@codingame/monaco-vscode-editor-api": "npm:~8.0.4"
     "@codingame/monaco-vscode-explorer-service-override": "npm:~8.0.4"
+    "@codingame/monaco-vscode-html-language-features-default-extension": "npm:~8.0.4"
+    "@codingame/monaco-vscode-json-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-language-detection-worker-service-override": "npm:~8.0.4"
     "@codingame/monaco-vscode-lifecycle-service-override": "npm:~8.0.4"
+    "@codingame/monaco-vscode-markdown-language-features-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-npm-default-extension": "npm:~8.0.4"
     "@codingame/monaco-vscode-rollup-vsix-plugin": "npm:^6.0.1"
+    "@codingame/monaco-vscode-standalone-html-language-features": "npm:~8.0.4"
+    "@codingame/monaco-vscode-standalone-json-language-features": "npm:~8.0.4"
     "@codingame/monaco-vscode-standalone-languages": "npm:~8.0.4"
     "@codingame/monaco-vscode-standalone-typescript-language-features": "npm:~8.0.4"
     "@codingame/monaco-vscode-typescript-basics-default-extension": "npm:~8.0.4"

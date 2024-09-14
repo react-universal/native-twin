@@ -28,7 +28,7 @@
     "@ctrl/tinycolor": "^4.1.0",
     "@vscode/emmet-helper": "^2.9.3",
     "cssbeautify": "0.3.1",
-    "effect": "^3.7.2",
+    "effect": "^3.7.3",
     "match-sorter": "6.3.4",
     "showdown": "2.1.0",
     "ts-morph": "^23.0.0",

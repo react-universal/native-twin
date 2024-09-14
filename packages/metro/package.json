@@ -42,7 +42,7 @@
     "chalk": "^4.1.2",
     "code-block-writer": "^13.0.1",
     "css-tree": "^2.3.1",
-    "effect": "^3.7.2",
+    "effect": "^3.7.3",
     "fast-check": "^3.21.0",
     "jiti": "1.21.0",
     "recast": "^0.23.9",

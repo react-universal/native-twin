@@ -3,6 +3,9 @@ import 'vscode';
 import * as monaco from 'monaco-editor';
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
 import '@codingame/monaco-vscode-standalone-languages';
+import '@codingame/monaco-vscode-standalone-html-language-features';
+import '@codingame/monaco-vscode-html-language-features-default-extension';
+import '@codingame/monaco-vscode-markdown-language-features-default-extension';
 import '@codingame/monaco-vscode-standalone-typescript-language-features';
 import '@codingame/monaco-vscode-typescript-basics-default-extension';
 import '@codingame/monaco-vscode-typescript-language-features-default-extension';
@@ -13,8 +16,6 @@ import jsonWorker from 'monaco-editor-wrapper/workers/module/json?worker';
 import cssWorker from 'monaco-editor-wrapper/workers/module/css?worker';
 import htmlWorker from 'monaco-editor-wrapper/workers/module/html?worker';
 import tsWorker from 'monaco-editor-wrapper/workers/module/ts?worker';
-
-export * from 'monaco-editor';
 
 self.MonacoEnvironment = {
   getWorker: function (_, label) {
@@ -81,24 +82,3 @@ monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
 //     monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
 //   })();
 // };
-
-export const workspacePrefix = 'file:///';
-
-export function detectLanguage(path: string) {
-  const ext = path.replace(/^.+\.([^.]+)$/, '$1');
-
-  if (/^[cm]?[jt]sx?$/.test(ext)) {
-    return 'typescript';
-  }
-
-  return ext;
-}
-
-export function getOrCreateModel(path: string, defaultValue = '') {
-  const uri = monaco.Uri.parse(new URL(path, workspacePrefix).href);
-
-  return (
-    monaco.editor.getModel(uri) ||
-    monaco.editor.createModel(defaultValue, detectLanguage(path) ?? 'typescript', uri)
-  );
-}

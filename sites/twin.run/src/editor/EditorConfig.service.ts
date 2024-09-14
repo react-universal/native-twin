@@ -19,13 +19,14 @@ const createMonacoEditorConfig = () => {
     guides: {
       bracketPairs: true,
     },
-    cursorBlinking: 'smooth',
     automaticLayout: false,
     minimap: { enabled: false },
-    disableMonospaceOptimizations: true,
+    disableMonospaceOptimizations: false,
     fontFamily: 'Fira Code',
     fontWeight: '450',
-    fontLigatures: true,
+    fontLigatures: false,
+    colorDecorators: true,
+    defaultColorDecorators: true,
   };
   const wrapperConfig: WrapperConfig = {
     serviceConfig: {
@@ -58,10 +59,17 @@ const createMonacoEditorConfig = () => {
   };
 
   const languageClientConfig: LanguageClientConfig = {
-    languageId: 'typescript',
+    languageId: 'native.twin',
     clientOptions: {
       documentSelector: Constants.DOCUMENT_SELECTORS,
+      markdown: {
+        isTrusted: true,
+        supportHtml: true,
+      },
       initializationOptions: {
+        twinConfigFile: {
+          path: 'file:///tailwind.config.ts',
+        },
         capabilities: {
           completion: {
             dynamicRegistration: false,

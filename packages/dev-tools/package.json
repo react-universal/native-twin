@@ -36,7 +36,7 @@
   "dependencies": {
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
-    "effect": "^3.7.2",
+    "effect": "^3.7.3",
     "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
