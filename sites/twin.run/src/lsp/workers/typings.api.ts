@@ -4,6 +4,7 @@ import * as Stream from 'effect/Stream';
 import * as RA from 'effect/Array';
 import * as EffectWorker from '@effect/platform/Worker';
 import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
+import {} from '@effect/platform-browser';
 import { pipe } from 'effect/Function';
 import { GetPackageTypings } from './shared.schemas';
 import typingsWorker from '@/lsp/workers/typings.worker?worker&url';

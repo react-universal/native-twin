@@ -36,9 +36,6 @@ export default defineConfig({
   },
   publicDir: 'public',
 
-  // worker: {
-  //   format: 'es',
-  // },
   plugins: [
     tsconfigPaths(),
     react(),
