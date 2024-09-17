@@ -41,6 +41,10 @@
       "path": "../packages/css"
     },
     {
+      "name": "expo-app",
+      "path": "../apps/expo-app"
+    },
+    {
       "name": "next-pages-example",
       "path": "../apps/next-app"
     },

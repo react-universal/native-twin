@@ -1,27 +1,26 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /// <reference lib="WebWorker" />
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   BrowserMessageReader,
   BrowserMessageWriter,
   createConnection,
   TextDocuments,
 } from 'vscode-languageserver/browser.js';
-import * as Layer from 'effect/Layer';
-import * as Effect from 'effect/Effect';
-import { TextDocument } from 'vscode-languageserver-textdocument';
-import { NativeTwinManagerService } from '@native-twin/language-service/browser';
+import {
+  NativeTwinManagerService,
+  createDocumentsLayer,
+  DocumentsService,
+  createLanguageService,
+  LanguageServiceLive,
+} from '@native-twin/language-service/browser';
 import {
   ConnectionService,
   ConfigManagerService,
   initializeConnection,
 } from '@native-twin/language-service/connection';
-import {
-  createDocumentsLayer,
-  DocumentsService,
-} from '@native-twin/language-service/documents';
-import {
-  createLanguageService,
-  LanguageServiceLive,
-} from '@native-twin/language-service/language';
 
 const pluginConfig = {
   attributes: [],
@@ -49,13 +48,14 @@ const program = Effect.gen(function* () {
   const connectionService = yield* ConnectionService;
   const Connection = connectionService;
   const configService = yield* ConfigManagerService;
-  const documentService = yield* DocumentsService;
+  yield* DocumentsService;
   const nativeTwinManager = yield* NativeTwinManagerService;
   const languageService = yield* createLanguageService;
 
   Connection.onInitialize(async (...args) => {
     const init = initializeConnection(...args, nativeTwinManager, configService);
     console.log('INIT: ', init);
+    console.log('USER_CONFIG: ', nativeTwinManager.userConfig);
     return init;
   });
 

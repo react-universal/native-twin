@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "twin.run",
+      "path": "../sites/twin.run"
+    },
+    {
       "name": "📦 @lib/babel",
       "path": "../packages/babel"
     },
@@ -25,18 +29,6 @@
       "path": "../packages/dev-tools"
     },
     {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/preset-tailwind",
-      "path": "../packages/preset-tailwind"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },
@@ -53,8 +45,20 @@
       "path": "../packages/builder"
     },
     {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @lib/preset-tailwind",
+      "path": "../packages/preset-tailwind"
     },
     {
       "name": "📦 @apps/editor",
@@ -78,13 +82,13 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
-      ".turbo": false,
+      ".turbo": true,
       "**/CHANGELOG.md": true,
       "**/jest.config.js": false,
       "**/LICENSE": true,
       "**/babel.config.js": false,
       "**/build": false,
-      "**/turbo.json": false,
+      "**/turbo.json": true,
       "**/.eslintrc.json": false,
       "**/.eslintignore": true,
       "**/README.md": true

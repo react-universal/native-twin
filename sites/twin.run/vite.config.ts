@@ -1,17 +1,24 @@
-import { defineConfig } from 'vite';
-import path from 'path';
-import fs from 'fs';
 import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin';
 import vsixPlugin from '@codingame/monaco-vscode-rollup-vsix-plugin';
 import assetsJSON from '@entur/vite-plugin-assets-json';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react';
+import fs from 'fs';
+import path from 'path';
+import { defineConfig } from 'vite';
+import viteWasm from 'vite-plugin-wasm';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   assetsInclude: ['**/*.json', '**/*.wasm'],
   optimizeDeps: {
-    exclude: ['@rollup/browser', '@native-twin/language-service/build/documents'],
+    exclude: [
+      '@rollup/browser',
+      '@swc/wasm-web',
+      '@native-twin/language-service/build/documents',
+      '@native-twin/language-service/documents',
+      '@native-twin/language-service/browser',
+    ],
     esbuildOptions: {
       define: {
         global: 'globalThis',
@@ -37,6 +44,7 @@ export default defineConfig({
     react(),
     vsixPlugin(),
     assetsJSON(),
+    viteWasm(),
     {
       // For the *-language-features extensions which use SharedArrayBuffer
       name: 'configure-response-headers',
@@ -61,6 +69,9 @@ export default defineConfig({
               const pathname = new URL(req.originalUrl, import.meta.url).pathname;
               if (pathname.endsWith('.html')) {
                 res.setHeader('Content-Type', 'text/html');
+                res.setHeader('Cross-Origin-Embedder-Policy', 'credentialless');
+                res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+                res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
                 res.writeHead(200);
                 res.write(fs.readFileSync(path.join(__dirname, pathname)));
                 res.end();
@@ -101,5 +112,8 @@ export default defineConfig({
   },
   resolve: {
     dedupe: ['vscode', '@rollup/browser'],
+    alias: {
+      globals: path.resolve(__dirname, 'src/internal/globals'),
+    },
   },
 });

@@ -3,6 +3,8 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "build",
+    "module": "ESNext",
+    "target": "ESNext",
     "noEmit": false,
     "noEmitOnError": false
   },

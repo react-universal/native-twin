@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { MonacoEditorReactComp } from '@typefox/monaco-editor-react';
 import { globalEditorConfig } from '@/editor/EditorConfig.service';
 import { GetPackageTypings } from '@/lsp/workers/shared.schemas';
 import { addPackageTypings } from '@/lsp/workers/typings.api';
+import { MonacoEditorReactComp } from '@typefox/monaco-editor-react';
 
 export const useEditor = () => {
   const config = useRef(globalEditorConfig);
@@ -14,6 +14,7 @@ export const useEditor = () => {
 
     addPackageTypings(twinTypings);
     return () => {
+      editor.getEditorWrapper().dispose(true);
       console.log('DISPOSE');
     };
   }, []);

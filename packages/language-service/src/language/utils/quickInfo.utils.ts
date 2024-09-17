@@ -2,6 +2,7 @@ import { FinalSheet } from '@native-twin/css';
 import * as ReadonlyArray from 'effect/Array';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
+import md from 'markdown-it';
 import * as vscode from 'vscode-languageserver-types';
 import { TwinRuleCompletion } from '../../native-twin/native-twin.types';
 import { getDocumentationMarkdown } from './language.utils';
@@ -16,6 +17,12 @@ export const completionRulesToQuickInfo = (
     return completionRuleToQuickInfo(sheetEntry, css, range);
   }).pipe(HashSet.values, (x) => ReadonlyArray.fromIterable(x), ReadonlyArray.head);
 
+const makeMD = md({
+  breaks: true,
+  html: true,
+  typographer: true,
+  xhtmlOut: true,
+});
 export const completionRuleToQuickInfo = (
   sheetEntry: FinalSheet,
   css: string,
@@ -24,6 +31,6 @@ export const completionRuleToQuickInfo = (
   range,
   contents: {
     kind: vscode.MarkupKind.PlainText,
-    value: getDocumentationMarkdown(sheetEntry, css),
+    value: makeMD.render(getDocumentationMarkdown(sheetEntry, css)),
   },
 });

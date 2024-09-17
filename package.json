@@ -12,12 +12,13 @@
   "workspaces": [
     "packages/*",
     "packages/dev-tools/webui",
+    "sites/twin.run",
     "apps/*"
   ],
   "scripts": {
     "build": "turbo run build",
     "build:release": "yarn build && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
-    "build:watch": "turbo run build:watch --concurrency 14",
+    "build:watch": "turbo run build:watch --concurrency 15",
     "docgen": "yarn libs:foreach exec npx docgen && node ./scripts/docs.mjs",
     "docs:build": "turbo run docs:build",
     "example:expo": "yarn workspace expo-app run start",
@@ -30,6 +31,7 @@
     "test": "turbo run test"
   },
   "resolutions": {
+    "esbuild": "0.23.1",
     "metro-runtime@npm:0.80.6": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch",
     "metro-runtime@npm:^0.80.3": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch"
   },

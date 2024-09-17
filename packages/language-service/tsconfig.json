@@ -6,10 +6,10 @@
     "lib": [
       "ES2021"
     ],
-    "ignoreDeprecations": "5.0",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "allowUmdGlobalAccess": true,
     "strict": true,
     "noEmit": true
   },
