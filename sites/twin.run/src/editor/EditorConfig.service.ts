@@ -1,16 +1,17 @@
-import * as monaco from 'monaco-editor';
-import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
 import getConfigurationServiceOverride, {
   updateUserConfiguration,
 } from '@codingame/monaco-vscode-configuration-service-override';
 import getEditorServiceOverride from '@codingame/monaco-vscode-editor-service-override';
+import '@codingame/monaco-vscode-html-language-features-default-extension';
 import getLanguageDetectionOverride from '@codingame/monaco-vscode-language-detection-worker-service-override';
 import getLanguagesServiceOverride from '@codingame/monaco-vscode-languages-service-override';
-import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
+import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
+import * as monaco from 'monaco-editor';
 import { LanguageClientConfig, UserConfig, WrapperConfig } from 'monaco-editor-wrapper';
+import { useOpenEditorStub } from 'monaco-editor-wrapper/vscode/services';
 import { Constants } from '@native-twin/language-service/browser';
-import twinConfigRaw from './content/tailwind.config?raw';
 import userConfig from './config/user/configuration.json?raw';
+import twinConfigRaw from './content/tailwind.config?raw';
 import workerUrl from '@/lsp/workers/twin.worker?worker&url';
 
 const createMonacoEditorConfig = () => {

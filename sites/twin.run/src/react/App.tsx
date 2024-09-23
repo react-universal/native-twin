@@ -1,8 +1,8 @@
-import './editor/monaco';
+import '../editor/monaco';
 import ReactDOM from 'react-dom/client';
-import twinConfig from '../tailwind.config';
+import twinConfig from '../../tailwind.config';
 import { install } from '@native-twin/core';
-import { TwinEditor } from './react/Editor';
+import { TwinEditor } from './Editor';
 
 install(twinConfig);
 

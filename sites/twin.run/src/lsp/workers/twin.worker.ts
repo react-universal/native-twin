@@ -15,25 +15,17 @@ import {
   DocumentsService,
   createLanguageService,
   LanguageServiceLive,
-} from '@native-twin/language-service/browser';
-import {
+  Constants,
   ConnectionService,
   ConfigManagerService,
   initializeConnection,
-} from '@native-twin/language-service/connection';
+} from '@native-twin/language-service/browser';
 
-const pluginConfig = {
-  attributes: [],
-  tags: ['css'],
-};
+const pluginConfig = Constants.DEFAULT_PLUGIN_CONFIG;
 
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
 const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScope);
-
-// Inject the shared services and language-specific services
 const connection = createConnection(messageReader, messageWriter);
-// Start the language server with the shared services
-
 export const documentsHandler = new TextDocuments(TextDocument);
 
 const ConnectionLayer = ConnectionService.make(connection);
@@ -54,8 +46,6 @@ const program = Effect.gen(function* () {
 
   Connection.onInitialize(async (...args) => {
     const init = initializeConnection(...args, nativeTwinManager, configService);
-    console.log('INIT: ', init);
-    console.log('USER_CONFIG: ', nativeTwinManager.userConfig);
     return init;
   });
 
@@ -63,19 +53,16 @@ const program = Effect.gen(function* () {
     const completions = await Effect.runPromise(
       languageService.completions.getCompletionsAtPosition(...args),
     );
-
+    console.log('COMPLETIONS: ', completions);
+    
     return {
-      isIncomplete: true,
+      isIncomplete: completions.length > 0,
       items: completions,
     };
   });
 
   Connection.onCompletionResolve(async (...args) =>
-    Effect.runPromise(
-      languageService.completions
-        .getCompletionEntryDetails(...args)
-        .pipe(Effect.tap((x) => Effect.log(x))),
-    ),
+    Effect.runPromise(languageService.completions.getCompletionEntryDetails(...args)),
   );
 
   Connection.onHover(async (...args) =>
@@ -90,78 +77,10 @@ const program = Effect.gen(function* () {
     Effect.runPromise(languageService.diagnostics.getDocumentDiagnostics(...args)),
   );
 
-  // documentService.handler.listen(Connection);
+  documentsHandler.listen(connection);
+  connection.listen();
 });
 
 const runnable = Effect.provide(program, MainLive);
 
 Effect.runFork(runnable);
-
-// connection.onInitialize(() => {
-//   return {
-//     capabilities: {
-//       textDocumentSync: TextDocumentSyncKind.Incremental,
-
-//       completionProvider: {
-//         resolveProvider: true,
-//         completionItem: {
-//           labelDetailsSupport: true,
-//         },
-//         triggerCharacters: ['`'],
-//       },
-//       workspace: {
-//         workspaceFolders: {
-//           supported: true,
-//         },
-//       },
-//       documentHighlightProvider: false,
-//       workspaceSymbolProvider: {
-//         resolveProvider: true,
-//       },
-//       // colorProvider: true,
-//     },
-//   };
-// });
-
-// connection.onInitialized((x) => {
-//   console.log('WORKER_connection.onInitialized', x);
-// });
-// console.log('SELF: ', self);
-// connection.onCompletion(async (x) => {
-//   // console.log('PATH: ', new URL(x.textDocument.uri, import.meta.url));
-//   const document__ = documentsHandler.get(x.textDocument.uri);
-//   console.log('DOC: ', document__);
-//   if (document__) {
-//     const locs = getDocumentLanguageLocations(document__.getText(), {
-//       attributes: [],
-//       tags: ['css'],
-//     });
-//     console.log('LOCS: ', locs);
-//   }
-//   // const document = documentsHandler.getDocument(x.textDocument);
-//   // const regions = document.pipe(
-//   //   Option.map((x) => x.getLanguageRegions()),
-//   //   Option.getOrElse(() => []),
-//   // );
-
-//   // console.log(
-//   //   'DOC: ',
-//   //   document.pipe(
-//   //     Option.map((x) => x.getText()),
-//   //     Option.getOrElse(() => ''),
-//   //   ),
-//   // );
-//   // console.log('REGIONS: ', regions);
-//   return [
-//     {
-//       label: 'asd',
-//       kind: CompletionItemKind.Color,
-//     },
-//   ];
-// });
-// connection.onCompletionResolve((x) => {
-//   return x;
-// });
-// documentsHandler.setupConnection(connection);
-documentsHandler.listen(connection);
-connection.listen();
