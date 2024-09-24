@@ -200,3 +200,5 @@ export {
   /** @category — CSS Parsers */
   normalize,
 } from './transforms/interleave';
+
+export { CSS_COLORS } from './css/css.constants';

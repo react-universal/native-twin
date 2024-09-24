@@ -37,7 +37,7 @@ export class TwinWatcherService extends Context.Tag('metro/files/watcher')<
   );
 }
 
-export const startFileWatcher = Effect.gen(function* ($) {
+export const startFileWatcher = Effect.gen(function* () {
   const { userConfig, isAllowedPath } = yield* MetroConfigService;
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;

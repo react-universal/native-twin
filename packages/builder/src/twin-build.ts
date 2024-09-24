@@ -1,7 +1,6 @@
 import esbuild from 'esbuild';
 import minimist from 'minimist';
 import path from 'path';
-
 const args = minimist(process.argv.slice(2), {
   boolean: ['watch', 'minify'],
 });
@@ -13,7 +12,7 @@ const ctx = await esbuild.context({
   entryPoints: [path.join(process.cwd(), 'src/index.ts')],
   external: ['react-native', 'react-native-web', 'react', 'react-is', '@native-twin/*'],
   bundle: true,
-  
+
   splitting: true,
   entryNames: '[dir]/[name]',
   mainFields: ['module', 'main'],
@@ -27,7 +26,6 @@ const ctx = await esbuild.context({
     '.tsx',
     '.jsx',
   ],
-
 });
 
 console.log('- Building');

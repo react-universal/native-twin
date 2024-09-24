@@ -39,7 +39,7 @@ export class LanguageCompletions extends Context.Tag('lsp/completions')<
           return Effect.gen(function* () {
             const extracted = Option.Do.pipe(
               Option.bind('document', () =>
-                documentsHandler.getDocument(params.textDocument),
+                documentsHandler.getDocument(params.textDocument.uri),
               ),
               Option.let('cursorOffset', ({ document }) =>
                 document.positionToOffset(params.position),

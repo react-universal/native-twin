@@ -32,7 +32,7 @@ export class LanguageDiagnostics extends Context.Tag('lsp/diagnostics')<
       return {
         getDocumentDiagnostics(params) {
           return Effect.gen(function* () {
-            const document = documentsHandler.getDocument(params.textDocument);
+            const document = documentsHandler.getDocument(params.textDocument.uri);
 
             const diagnosticItems = Option.map(document, (doc) =>
               diagnosticTokensToDiagnosticItems(doc, twinService),

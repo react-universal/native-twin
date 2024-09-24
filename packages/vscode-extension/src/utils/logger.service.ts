@@ -11,19 +11,16 @@ import { extensionChannelName } from '../extension/extension.constants';
  */
 export const ClientCustomLogger = Logger.replaceScoped(
   Logger.defaultLogger,
-  Effect.gen(function* ($) {
-    const channel = yield* $(
-      Effect.acquireRelease(
-        Effect.sync(() =>
-          vscode.window.createOutputChannel(extensionChannelName, { log: true }),
-        ),
-        (channel) => {
-          return Effect.sync(() => {
-            channel.clear();
-            return channel.dispose();
-          });
-        },
+  Effect.gen(function* () {
+    const channel = yield* Effect.acquireRelease(
+      Effect.sync(() =>
+        vscode.window.createOutputChannel(extensionChannelName, { log: true }),
       ),
+      (channel) =>
+        Effect.sync(() => {
+          channel.clear();
+          return channel.dispose();
+        }),
     );
 
     return Logger.make((options) => {
@@ -31,21 +28,17 @@ export const ClientCustomLogger = Logger.replaceScoped(
 
       switch (options.logLevel) {
         case LogLevel.Trace:
-          channel.trace(message);
-          return;
+          return channel.trace(message);
         case LogLevel.Debug:
-          channel.debug(message);
-          return;
+          return channel.debug(message);
         case LogLevel.Warning:
-          channel.warn(message);
-          return;
+          return channel.warn(message);
         case LogLevel.Error:
         case LogLevel.Fatal:
-          channel.error(message);
-          return;
+          return channel.error(message);
         default:
-          channel.info(message);
-          return;
+          return channel.info(message);
+        // return channel.info(message);
       }
     });
   }),

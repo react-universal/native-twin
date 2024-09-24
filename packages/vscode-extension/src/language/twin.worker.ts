@@ -12,6 +12,7 @@ import {
 import {
   NativeTwinManagerService,
   createDocumentsLayer,
+  DocumentsService,
   createLanguageService,
   LanguageServiceLive,
   Constants,
@@ -39,6 +40,7 @@ const program = Effect.gen(function* () {
   const connectionService = yield* ConnectionService;
   const Connection = connectionService;
   const configService = yield* ConfigManagerService;
+  yield* DocumentsService;
   const nativeTwinManager = yield* NativeTwinManagerService;
   const languageService = yield* createLanguageService;
 
@@ -75,10 +77,13 @@ const program = Effect.gen(function* () {
     Effect.runPromise(languageService.diagnostics.getDocumentDiagnostics(...args)),
   );
 
-  documentsHandler.listen(connection);
-  connection.listen();
+  // documentsHandler.listen(connection);
+  // connection.listen();
 });
 
 const runnable = Effect.provide(program, MainLive);
 
 Effect.runFork(runnable);
+
+documentsHandler.listen(connection);
+connection.listen();

@@ -15,6 +15,7 @@ export interface TailwindPresetTheme extends __Theme__ {
   maxWidth?: Record<string, string>;
   flexBasis?: Record<string, string>;
   flexGrow?: Record<string, string>;
+  textDecorationLine?: Record<string, string>;
   maxHeight?: Record<string, string>;
   minWidth?: Record<string, string>;
   minHeight?: Record<string, string>;

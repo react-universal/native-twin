@@ -48,7 +48,7 @@ const doFetch = (url: string) => {
 
 const fetchFromDefinitelyTyped = (
   dependency: string,
-  version: string,
+  _version: string,
   fetchedPaths: Record<string, any>,
 ) =>
   doFetch(
@@ -280,7 +280,7 @@ self.addEventListener('message', (event) => {
         typings: result,
       }),
     (error: any) => {
-      if (process.env.NODE_ENV !== 'production') {
+      if (process.env['NODE_ENV'] !== 'production') {
         console.error(error);
       }
     },

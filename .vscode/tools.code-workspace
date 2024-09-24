@@ -5,30 +5,6 @@
       "path": ".."
     },
     {
-      "name": "twin.run",
-      "path": "../sites/twin.run"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/dev-tools-web",
-      "path": "../packages/dev-tools/webui"
-    },
-    {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/dev-tools",
-      "path": "../packages/dev-tools"
-    },
-    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },
@@ -41,12 +17,28 @@
       "path": "../packages/language-server"
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
+      "name": "twin.run",
+      "path": "../sites/twin.run"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
     },
     {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/dev-tools-web",
+      "path": "../packages/dev-tools/webui"
     },
     {
       "name": "📦 @lib/css",
@@ -59,10 +51,6 @@
     {
       "name": "📦 @lib/preset-tailwind",
       "path": "../packages/preset-tailwind"
-    },
-    {
-      "name": "📦 @apps/editor",
-      "path": "../sites/twin.run"
     },
     {
       "name": "@apps/expo",
@@ -88,7 +76,7 @@
       "**/LICENSE": true,
       "**/babel.config.js": false,
       "**/build": false,
-      "**/turbo.json": true,
+      "**/turbo.json": false,
       "**/.eslintrc.json": false,
       "**/.eslintignore": true,
       "**/README.md": true

@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build",
     "build:tsc": "tsc -p tsconfig.build.json",
     "dev": "vite",
     "preview": "vite preview",
-    "server": "node --loader ts-node/esm src/server/direct.ts"
+    "server": "node --loader ts-node/esm src/server/direct.ts",
+    "twin.run:build": "tsc && vite build"
   },
   "dependencies": {
     "@codingame/monaco-vscode-api": "~8.0.4",

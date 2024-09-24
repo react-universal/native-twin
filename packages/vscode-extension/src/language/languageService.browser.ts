@@ -1,16 +1,9 @@
-import { pipe } from 'effect/Function';
-import * as Stream from 'effect/Stream';
 import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import path from 'path';
+import * as Stream from 'effect/Stream';
 import * as vscode from 'vscode';
-import {
-  TransportKind,
-  LanguageClient,
-  LanguageClientOptions,
-  ServerOptions,
-} from 'vscode-languageclient/node';
+import { LanguageClient, LanguageClientOptions } from 'vscode-languageclient/browser';
 import { DEFAULT_PLUGIN_CONFIG } from '@native-twin/language-service';
 import {
   configurationSection,
@@ -30,6 +23,8 @@ import {
 } from './language.fn';
 import { createFileWatchers, getColorDecoration, getConfigFiles } from './language.utils';
 
+// import TwinWorker from './twin.worker.js';
+
 export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext')<
   LanguageClientContext,
   LanguageClient
@@ -46,16 +41,16 @@ export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext
 
       const fileEvents = yield* createFileWatchers;
 
-      const serverConfig: ServerOptions = {
-        run: {
-          module: path.resolve(__dirname, './native-twin.server'),
-          transport: TransportKind.ipc,
-        },
-        debug: {
-          module: path.resolve(__dirname, './native-twin.server'),
-          transport: TransportKind.ipc,
-        },
-      };
+      // const serverConfig: ServerOptions = {
+      //   run: {
+      //     module: path.resolve(__dirname, './native-twin.server'),
+      //     transport: TransportKind.ipc,
+      //   },
+      //   debug: {
+      //     module: path.resolve(__dirname, './native-twin.server'),
+      //     transport: TransportKind.ipc,
+      //   },
+      // };
 
       const configFiles = yield* getConfigFiles;
       const colorDecorationType = yield* getColorDecoration;
@@ -80,10 +75,20 @@ export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext
             onProvideDocumentColors(document, token, next, colorDecorationType),
         },
       };
+
       const client = yield* Effect.acquireRelease(
         Effect.sync(
           () =>
-            new LanguageClient(extensionServerChannelName, serverConfig, clientConfig),
+            new LanguageClient(
+              'native-twin-vscode',
+              extensionServerChannelName,
+              clientConfig,
+              new Worker(
+                vscode.Uri.joinPath(extensionCtx.extensionUri, 'twin.worker.js').toString(
+                  true,
+                ),
+              ),
+            ),
         ),
         (x) =>
           Effect.promise(() => x.dispose()).pipe(
@@ -101,23 +106,30 @@ export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext
 
       yield* registerCommand(`${configurationSection}.restart`, () =>
         Effect.gen(function* () {
-          yield* Effect.promise(() => client.restart());
+          yield* Effect.promise(() => client.stop());
+          yield* Effect.promise(() => client.start());
           yield* Effect.logInfo('Client restarted');
         }),
       );
 
-      const tagsConfig = yield* pipe(
-        extensionConfigValue('nativeTwin', 'tags', DEFAULT_PLUGIN_CONFIG.tags),
-        Effect.map((x) => x.changes),
+      const tagsConfig = yield* extensionConfigValue(
+        'nativeTwin',
+        'tags',
+        DEFAULT_PLUGIN_CONFIG.tags,
       );
-      const debugConfig = yield* pipe(
-        extensionConfigValue('nativeTwin', 'debug', DEFAULT_PLUGIN_CONFIG.debug),
-        Effect.map((x) => x.changes),
+      const debugConfig = yield* extensionConfigValue(
+        'nativeTwin',
+        'debug',
+        DEFAULT_PLUGIN_CONFIG.debug,
       );
 
-      yield* pipe(
-        Stream.merge(tagsConfig, debugConfig),
-        Stream.runForEach((x) => Effect.log(x)),
+      yield* tagsConfig.changes.pipe(
+        Stream.runForEach((x) => Effect.log('TAGS: ', x)),
+        Effect.fork,
+      );
+      yield* debugConfig.changes.pipe(
+        Stream.runForEach((x) => Effect.log('DEBUG: ', x)),
+        Effect.fork,
       );
 
       return client;

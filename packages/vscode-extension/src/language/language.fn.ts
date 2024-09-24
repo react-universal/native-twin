@@ -6,7 +6,7 @@ import {
   LanguageClientOptions,
   ProvideDocumentColorsSignature,
 } from 'vscode-languageclient';
-import { CSS_COLORS } from '@native-twin/css/build/css/css.constants';
+import { CSS_COLORS } from '@native-twin/css';
 import {
   DOCUMENT_SELECTORS,
   configurationSection,

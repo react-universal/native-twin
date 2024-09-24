@@ -40,7 +40,7 @@ export class LanguageDocumentation extends Context.Tag('lsp/documentation')<
         getHover(params, _cancelToken, _progress, _resultProgress) {
           return Effect.gen(function* () {
             const context = createStyledContext(twinService.userConfig.root.rem);
-            const extracted = documentsHandler.getDocument(params.textDocument);
+            const extracted = documentsHandler.getDocument(params.textDocument.uri);
 
             const hoverEntry = Option.Do.pipe(
               Option.bind('document', () => extracted),
@@ -117,7 +117,7 @@ export class LanguageDocumentation extends Context.Tag('lsp/documentation')<
         },
         getDocumentColors(params) {
           return Effect.gen(function* () {
-            return Option.map(documentsHandler.getDocument(params.textDocument), (x) =>
+            return Option.map(documentsHandler.getDocument(params.textDocument.uri), (x) =>
               getDocumentTemplatesColors(twinService, x),
             ).pipe(
               Option.match({

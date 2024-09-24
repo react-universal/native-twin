@@ -6,7 +6,6 @@
     "lib": [
       "ES2021"
     ],
-    "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowUmdGlobalAccess": true,
