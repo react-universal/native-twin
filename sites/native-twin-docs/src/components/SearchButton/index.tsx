@@ -26,7 +26,7 @@ const router = useRouter()
 
   }
 
-const handlerGoUrl = (search:string)=>()=>  router.push("/docs/"+search)
+const handlerGoUrl = (search:string)=>()=>  router.push("/documentation/"+search)
 
 
   return (
