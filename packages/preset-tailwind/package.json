@@ -21,10 +21,24 @@
     "directory": "packages/preset-tailwind"
   },
   "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./build/cjs/index.cjs",
+      "import": "./build/esm/index.mjs",
+      "types": "./build/types/index.d.ts"
+    },
+    "./colors": {
+      "require": "./build/cjs/tailwind-theme/colors.cjs",
+      "import": "./build/esm/tailwind-theme/colors.mjs",
+      "types": "./build/types/tailwind-theme/colors.d.ts"
+    }
+  },
+  "main": "./build/cjs/index.cjs",
+  "module": "./build/esm/index.mjs",
+  "types": "./build/types/index.d.ts",
   "files": [
     "build",
+    "colors",
     "index.d.ts",
     "tailwind",
     "tailwind.d.ts",
@@ -34,7 +48,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn twin build",
     "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -45,6 +59,9 @@
   },
   "dependencies": {
     "@native-twin/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@native-twin/cli": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18.0",

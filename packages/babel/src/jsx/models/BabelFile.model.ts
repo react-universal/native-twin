@@ -1,7 +1,7 @@
 import * as Equal from 'effect/Equal';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
-import { RawJSXElementTreeNode } from '@native-twin/css/build/jsx';
+import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 
 export class TwinBabelFile implements Equal.Equal {
   constructor(

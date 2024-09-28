@@ -1,0 +1,20 @@
+{
+  "platform": "browser",
+  "reactNative": true,
+  "minify": false,
+  "types": true,
+  "vscode": false,
+  "external": [
+    "./components.web.ts",
+    "./components.ts"
+  ],
+  "entries": [
+    "./src/index.ts",
+    "./src/jsx-dev-runtime.ts",
+    "./src/jsx-runtime.ts",
+    "./src/sheet/index.ts",
+    "./src/testing-library/index.ts",
+    "./src/testing-library/setup.ts",
+    "./src/testing-library/setupAfterEnv.ts"
+  ]
+}

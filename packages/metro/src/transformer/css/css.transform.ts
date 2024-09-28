@@ -1,5 +1,4 @@
 /* eslint-disable no-control-regex */
-import { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
 // import * as Console from 'effect/Console';
 // import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
@@ -12,6 +11,7 @@ import { pathToHtmlSafeName } from '@native-twin/helpers/server';
 // import postcss from 'postcss';
 // import { sheetEntriesToCss } from '@native-twin/css';
 import { MetroWorkerService } from '../../services/MetroWorker.service';
+import { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
 
 export const transformCSS = Effect.gen(function* () {
   const { config, input, readCSSOutput } = yield* MetroWorkerService;
@@ -21,6 +21,7 @@ export const transformCSS = Effect.gen(function* () {
   }
 
   const { transform: lightningcssTransform } =
+    // @ts-expect-error
     require('lightningcss') as typeof import('lightningcss');
 
   const output = yield* readCSSOutput;

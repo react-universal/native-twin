@@ -27,6 +27,8 @@ export {
   toHyphenCase,
   toTailDashed,
   generateAlphabeticName,
+  escapeBackticksAndOctals,
+  splitBySpace,
 } from './string.utils';
 
 export type {

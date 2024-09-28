@@ -1,3 +1,5 @@
 {
-  "main": "../build/tailwind/tailwind-rule.parser.js"
+  "main": "../build/cjs/tailwind/tailwind-rule.parser",
+  "module": "../build/esm/tailwind/tailwind-rule.parser",
+  "types": "../build/types/tailwind/tailwind-rule.parser.d.ts"
 }

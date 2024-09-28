@@ -1,3 +1,4 @@
 {
-  "main": "../build/KeyMap"
+  "main": "../build/cjs/KeyMap",
+  "module": "../build/esm/KeyMap"
 }

@@ -21,9 +21,10 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index",
-  "browser": "./build/index",
-  "types": "./build/index.d.ts",
+  "main": "./build/cjs/index",
+  "module": "./build/esm/index",
+  "browser": "./build/cjs/index",
+  "types": "./build/types/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -31,7 +32,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn twin build",
     "build:watch": "tsc -p tsconfig.build.json -w",
     "bundle": "yarn clean && yarn twin-build",
     "clean": "rm -rf build",
@@ -49,7 +50,7 @@
     "stable-hash": "0.0.3"
   },
   "devDependencies": {
-    "@native-twin/builder": "workspace:*",
+    "@native-twin/cli": "workspace:*",
     "@types/react-is": "^17.0.3"
   },
   "peerDependencies": {

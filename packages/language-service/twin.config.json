@@ -1,0 +1,11 @@
+{
+  "platform": "node",
+  "reactNative": false,
+  "minify": false,
+  "types": true,
+  "vscode": false,
+  "entries": [
+    "./src/index.ts",
+    "./src/browser.ts"
+  ]
+}

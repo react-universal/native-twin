@@ -2,8 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "build",
+    "outDir": "build/types",
     "noEmit": false,
+    "emitDeclarationOnly": true,
     "noEmitOnError": false
   },
   "exclude": ["./test/", "./src/bck"]

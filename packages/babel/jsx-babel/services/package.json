@@ -1,3 +1,5 @@
 {
-  "main": "../../build/jsx/services"
+  "main": "../../build/cjs/jsx/services",
+  "module": "../../build/esm/jsx/services",
+  "types": "../../build/types/jsx/services/index.d.ts"
 }

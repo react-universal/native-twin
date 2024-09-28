@@ -1,3 +1,4 @@
 {
-  "main": "../build/server"
+  "main": "../build/cjs/server/index.cjs",
+  "module": "../build/esm/server/index.mjs"
 }

@@ -21,8 +21,32 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./build/cjs/index.cjs",
+      "import": "./build/esm/index.mjs",
+      "types": "./build/types/index.d.ts"
+    },
+    "./jsx": {
+      "require": "./build/cjs/jsx/index.cjs",
+      "import": "./build/esm/jsx/index.mjs",
+      "types": "./build/types/jsx/index.d.ts"
+    },
+    "./parser": {
+      "require": "./build/cjs/css/parser/index.cjs",
+      "import": "./build/esm/css/parser/index.mjs",
+      "types": "./build/types/css/parser/index.d.ts"
+    },
+    "./tailwind-parser": {
+      "require": "./build/cjs/tailwind/tailwind-rule.parser.cjs",
+      "import": "./build/esm/tailwind/tailwind-rule.parser.mjs",
+      "types": "./build/types/tailwind/tailwind-rule.parser.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/cjs/index.cjs",
+  "module": "./build/esm/index.mjs",
+  "types": "./build/types/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -31,7 +55,7 @@
     "tailwind-parser"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn twin build",
     "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -42,10 +66,9 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@effect/typeclass": "^0.26.2",
     "@native-twin/arc-parser": "workspace:*",
-    "@native-twin/helpers": "workspace:*",
-    "effect": "^3.7.3"
+    "@native-twin/cli": "workspace:*",
+    "@native-twin/helpers": "workspace:*"
   },
   "optionalDependencies": {
     "jest": "*"

@@ -1,0 +1,15 @@
+{
+  "platform": "node",
+  "reactNative": false,
+  "minify": false,
+  "types": true,
+  "vscode": false,
+  "entries": [
+    "./src/index.ts",
+    "./src/jsx/index.ts",
+    "./src/constants/index.ts",
+    "./src/jsx/models/index.ts",
+    "./src/jsx/services/index.ts",
+    "./src/jsx/twin/index.ts"
+  ]
+}

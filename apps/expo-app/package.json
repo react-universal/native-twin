@@ -36,6 +36,7 @@
     "react-native-web": "~0.19.10"
   },
   "devDependencies": {
+    "@types/babel__generator": "^7",
     "@types/react": "~18.2.79",
     "@types/react-dom": "~18.2.25",
     "sharp-cli": "2.1.0"

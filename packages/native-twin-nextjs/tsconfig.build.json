@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "build",
+    "emitDeclarationOnly": true,
+    "outDir": "build/types",
     "noEmit": false
   },
   "exclude": ["./test/"]

@@ -14,11 +14,58 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.cjs.js",
-  "module": "build/index.es.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/types/index.d.ts",
+      "require": "./build/cjs/index.cjs",
+      "import": "./build/esm/index.mjs"
+    },
+    "./babel": {
+      "require": "./babel.js",
+      "import": "./babel.js",
+      "default": "./babel.js"
+    },
+    "./plugin": {
+      "require": "./plugin.js",
+      "import": "./plugin.js",
+      "default": "./plugin.js"
+    },
+    "./jsx-babel": {
+      "types": "./build/types/jsx/index.d.ts",
+      "require": "./build/cjs/jsx/index.cjs",
+      "import": "./build/esm/jsx/index.mjs"
+    },
+    "./jsx-babel/constants": {
+      "types": "./build/types/constants/index.d.ts",
+      "require": "./build/cjs/constants/index.cjs",
+      "import": "./build/esm/constants/index.mjs"
+    },
+    "./jsx-babel/models": {
+      "types": "./build/types/jsx/models/index.d.ts",
+      "require": "./build/cjs/jsx/models/index.cjs",
+      "import": "./build/esm/jsx/models/index.mjs"
+    },
+    "./jsx-babel/plugin": {
+      "types": "./build/types/jsx/plugin/index.d.ts",
+      "require": "./build/cjs/jsx/plugin/index.cjs",
+      "import": "./build/esm/jsx/plugin/index.mjs"
+    },
+    "./jsx-babel/services": {
+      "types": "./build/types/jsx/services/index.d.ts",
+      "require": "./build/cjs/jsx/services/index.cjs",
+      "import": "./build/esm/jsx/services/index.mjs"
+    },
+    "./jsx-babel/twin": {
+      "types": "./build/types/jsx/twin/index.d.ts",
+      "require": "./build/cjs/jsx/twin/index.cjs",
+      "import": "./build/esm/jsx/twin/index.mjs"
+    }
+  },
+  "main": "./build/cjs/index",
+  "module": "./build/esm/index",
+  "types": "./build/types/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn twin build",
     "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -40,6 +87,7 @@
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",
     "@babel/preset-typescript": "7.23.3",
+    "@native-twin/cli": "workspace:*",
     "@types/babel__helper-module-imports": "^7.18.3",
     "babel-plugin-tester": "^11.0.4",
     "metro-react-native-babel-preset": "^0.77.0"

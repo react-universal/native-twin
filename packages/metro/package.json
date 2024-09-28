@@ -14,10 +14,19 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/types/index.d.ts",
+      "require": "./build/cjs/index.cjs",
+      "import": "./build/esm/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/cjs/index.cjs",
+  "module": "./build/esm/index.mjs",
+  "types": "./build/types/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn twin build",
     "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
@@ -52,6 +61,7 @@
   "devDependencies": {
     "@babel/traverse": "^7.24.0",
     "@babel/types": "^7.24.0",
+    "@native-twin/cli": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@native-twin/styled": "workspace:*",
     "@types/connect": "3.4.38",

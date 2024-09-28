@@ -2,6 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
+    "module": "ESNext",
+    "declarationMap": true,
     "outDir": "build",
     "importHelpers": false,
     "noEmit": false,

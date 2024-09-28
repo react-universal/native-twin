@@ -5,7 +5,7 @@ import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import path from 'path';
-import { matchCss } from '@native-twin/helpers/build/server';
+import { matchCss } from '@native-twin/helpers/server';
 import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
@@ -33,6 +33,7 @@ export function withNativeTwin(
     // transformerPath: require.resolve('./transformer/metro.transformer'),
     resolver: {
       ...twinConfig.metroConfig.resolver,
+      sourceExts: [...twinConfig.metroConfig.resolver.sourceExts, '.cjs', '.mjs'],
       resolveRequest(context, moduleName, platform) {
         const resolver = originalResolver ?? context.resolveRequest;
         const resolved = resolver(context, moduleName, platform);

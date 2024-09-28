@@ -6,7 +6,7 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "WebWorker"],
     "jsx": "react-jsx",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,

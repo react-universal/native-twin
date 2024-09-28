@@ -1,4 +1,5 @@
 {
-  "main": "../build/_app",
-  "types": "../build/app.d.ts"
+  "main": "../build/cjs/app.cjs",
+  "module": "../build/esm/app.mjs",
+  "types": "../build/types/app.d.ts"
 }

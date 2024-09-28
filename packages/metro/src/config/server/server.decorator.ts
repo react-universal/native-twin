@@ -4,7 +4,7 @@ import path from 'path';
 // import path from 'path';
 import { InternalTwinConfig, setupNativeTwin } from '@native-twin/babel/jsx-babel';
 import { TailwindConfig, type RuntimeTW, type __Theme__ } from '@native-twin/core';
-import { matchCss } from '@native-twin/helpers/build/server';
+import { matchCss } from '@native-twin/helpers/server';
 // import { matchCss } from '@native-twin/helpers/server';
 import type { ComposableIntermediateConfigT } from '../../metro.types';
 import { MetroConfigService } from '../../services/MetroConfig.service';

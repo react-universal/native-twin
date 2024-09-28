@@ -14,15 +14,19 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "./build/cjs/index.cjs",
+  "module": "./build/esm/index.mjs",
+  "types": "./build/types/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn twin build",
     "build:watch": "tsc -p tsconfig.build.json --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest"
+  },
+  "devDependencies": {
+    "@native-twin/cli": "workspace:*"
   },
   "optionalDependencies": {
     "jest": "*"
@@ -30,5 +34,6 @@
   "publishConfig": {
     "access": "public",
     "directory": "_release/package"
-  }
+  },
+  "modules": "./build/esm/index.js"
 }

@@ -20,7 +20,7 @@ module.exports = function (api, options) {
   api.cache(false);
   return {
     plugins: [
-      [require('./build').default, { ...options, platform, engine, isServer, isDev }],
+      [require('./build/cjs/index.cjs').default, { ...options, platform, engine, isServer, isDev }],
       [
         '@babel/plugin-transform-react-jsx',
         {

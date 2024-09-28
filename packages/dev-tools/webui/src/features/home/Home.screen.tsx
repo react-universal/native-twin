@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from 'react-native';
 import { Table } from '@tanstack/react-table';
 import { UnknownOutputParams } from 'expo-router';
-import { RawJSXElementTreeNode } from '@native-twin/css/build/jsx';
+import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 import { TableCell } from './components/TableCell';
 import { TableHeaderCell } from './components/TableHeaderCell';
 import { useHomeScreen } from './useHomeScreen';
@@ -47,7 +47,7 @@ const ComponentsTable = ({
           );
         })}
       </thead>
-      <tbody className='w-full hover:bg-black'>
+      <tbody className='w-full'>
         {table.getRowModel().rows.map((row) => {
           return (
             <tr key={row.id} className='flex-row'>

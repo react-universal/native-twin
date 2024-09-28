@@ -13,9 +13,24 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "main": "build/index.js",
+  "exports": {
+    ".": {
+      "require": "./build/cjs/index.cjs",
+      "import": "./build/esm/index.mjs",
+      "types": "./build/types/index.d.ts"
+    },
+    "./browser": {
+      "require": "./build/cjs/browser.cjs",
+      "import": "./build/esm/browser.mjs",
+      "types": "./build/types/browser.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/cjs/index.cjs",
+  "module": "./build/esm/index.mjs",
+  "types": "./build/types/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn twin build",
     "build:esbuild:watch": "node esbuild.mjs --watch",
     "build:tsc:watch": "tsc -p tsconfig.build.json --watch",
     "build:watch": "tsc -p tsconfig.build.json --watch",
@@ -43,6 +58,7 @@
     "vscode-languageserver-types": "^3.17.5"
   },
   "devDependencies": {
+    "@native-twin/cli": "workspace:*",
     "@types/cssbeautify": "^0.3.5",
     "@types/markdown-it": "^14.1.2",
     "@types/showdown": "^2.0.6",

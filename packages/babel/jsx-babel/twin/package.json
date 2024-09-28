@@ -1,3 +1,5 @@
 {
-  "main": "../../build/jsx/twin"
+  "main": "../../build/cjs/jsx/twin",
+  "module": "../build/esm/jsx/twin/index",
+  "types": "../../build/types/jsx/twin/index.d.ts"
 }

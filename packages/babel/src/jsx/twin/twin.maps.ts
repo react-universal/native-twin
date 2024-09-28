@@ -1,7 +1,7 @@
 import template from '@babel/template';
 import * as t from '@babel/types';
 import CodeBlockWriter from 'code-block-writer';
-import { RuntimeComponentEntry } from '@native-twin/css/build/jsx';
+import { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { expressionFactory } from '../ast/writer.factory';
 
 export const runtimeEntriesToAst = (entries: string) => {

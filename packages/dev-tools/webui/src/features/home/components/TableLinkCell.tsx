@@ -1,20 +1,14 @@
 import { View } from 'react-native';
-import { Cell } from '@tanstack/react-table';
 import { Link, UnknownOutputParams } from 'expo-router';
 import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import { Cell } from '@tanstack/react-table';
 
 interface CellProps {
   cell: Cell<RawJSXElementTreeNode, unknown>;
   params: UnknownOutputParams;
 }
 export const TableLink = ({ cell, params }: CellProps) => (
-  <View
-    key={cell.id}
-    className='border-l-1'
-    style={{
-      width: cell.column.getSize(),
-    }}
-  >
+  <View key={cell.id} className={`border-l-1 w-[${cell.column.getSize()}px]`}>
     <Link
       href={{
         pathname: `/file-tree/${cell.row.original.id}`,

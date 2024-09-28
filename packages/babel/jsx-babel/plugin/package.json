@@ -1,3 +1,5 @@
 {
-  "main": "../../build/jsx/jsx.plugin.js"
+  "main": "../../build/cjs/jsx/jsx.plugin",
+  "module": "../../build/esm/jsx/jsx.plugin",
+  "types": "../../build/types/jsx/jsx.plugin.d.ts"
 }

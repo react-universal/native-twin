@@ -5,7 +5,7 @@ import {
   TextInputFocusEventData,
   Touchable,
 } from 'react-native';
-import { RegisteredComponent } from '@native-twin/css/build/jsx';
+import { RegisteredComponent } from '@native-twin/css/jsx';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
 import { groupContext } from '../../context';
 import { StyleSheet } from '../../sheet';

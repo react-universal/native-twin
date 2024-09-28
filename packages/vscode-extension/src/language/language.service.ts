@@ -52,7 +52,7 @@ export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext
           transport: TransportKind.ipc,
         },
         debug: {
-          module: path.resolve(__dirname, './native-twin.server'),
+          module: path.resolve(__dirname, '../servers/native-twin.server'),
           transport: TransportKind.ipc,
         },
       };

@@ -1,12 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "build",
+    "outDir": "build/types",
     "declarationMap": true,
     "verbatimModuleSyntax": false,
     "module": "ESNext",
     "target": "ESNext",
     "noEmit": false,
+    "emitDeclarationOnly": true,
     "importHelpers": true
   },
   "exclude": ["./test/", "build"]

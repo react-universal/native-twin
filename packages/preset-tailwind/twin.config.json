@@ -1,0 +1,11 @@
+{
+  "platform": "browser",
+  "reactNative": false,
+  "minify": false,
+  "types": true,
+  "vscode": false,
+  "entries": [
+    "./src/index.ts",
+    "./src/tailwind-theme/colors.ts"
+  ]
+}

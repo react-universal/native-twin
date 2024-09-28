@@ -5,7 +5,7 @@ import {
   ErrorHandler,
   ProvideDocumentColorsSignature,
 } from 'vscode-languageclient';
-import { CSS_COLORS } from '@native-twin/css/build/css/css.constants';
+import { CSS_COLORS } from '@native-twin/css';
 
 export const onProvideDocumentColors = async (
   document: vscode.TextDocument,

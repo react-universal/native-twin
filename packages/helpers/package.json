@@ -14,8 +14,32 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/esm/index.mjs",
+      "require": "./build/cjs/index.cjs",
+      "types": "./build/types/index.d.ts"
+    },
+    "./KeyMap": {
+      "import": "./build/esm/KeyMap/index.mjs",
+      "require": "./build/cjs/KeyMap/index.cjs",
+      "types": "./build/types/KeyMap/index.d.ts"
+    },
+    "./tree": {
+      "import": "./build/esm/tree/index.mjs",
+      "require": "./build/cjs/tree/index.cjs",
+      "types": "./build/types/tree/index.d.ts"
+    },
+    "./server": {
+      "import": "./build/esm/server/index.mjs",
+      "require": "./build/cjs/server/index.cjs",
+      "types": "./build/types/server/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/cjs/index.cjs",
+  "module": "./build/esm/index.mjs",
+  "types": "./build/types/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -23,16 +47,17 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn twin build",
     "build:twin": "twin-build",
+    "build:types": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest"
   },
-  "dependencies": {
-    "effect": "^3.7.3"
+  "devDependencies": {
+    "@native-twin/cli": "workspace:*"
   },
   "optionalDependencies": {
     "jest": "*"

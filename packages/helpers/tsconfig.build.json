@@ -2,11 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "build",
+    "outDir": "build/types",
     "module": "ESNext",
     "target": "ESNext",
     "noEmit": false,
-    "declarationMap": true
+    "declarationMap": true,
+    "emitDeclarationOnly": true
   },
   "exclude": ["./test/"]
 }

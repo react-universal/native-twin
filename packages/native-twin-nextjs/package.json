@@ -23,12 +23,23 @@
   },
   "sideEffects": false,
   "exports": {
-    "./_app": "./build/_app.js",
-    "./_document": "./build/_document.js",
-    "./app": "./build/app.js",
+    "./_app": {
+      "types": "./build/types/_app.d.ts",
+      "import": "./build/esm/_app.mjs",
+      "require": "./build/cjs/_app.cjs"
+    },
+    "./_document": {
+      "types": "./build/types/_document.d.ts",
+      "import": "./build/esm/_document.mjs",
+      "require": "./build/cjs/_document.cjs"
+    },
+    "./app": {
+      "types": "./build/types/app.d.ts",
+      "import": "./build/esm/app.mjs",
+      "require": "./build/cjs/app.cjs"
+    },
     "./package.json": "./package.json"
   },
-  "types": "./build/index.d.ts",
   "files": [
     "build",
     "index.d.ts",
@@ -40,7 +51,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn twin build",
     "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -48,6 +59,9 @@
   },
   "dependencies": {
     "@native-twin/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@native-twin/cli": "workspace:*"
   },
   "peerDependencies": {
     "next": ">=14.0",

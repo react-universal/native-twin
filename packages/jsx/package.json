@@ -14,8 +14,51 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "require": "./build/index.js",
+      "import": "./build/index.js"
+    },
+    "./jsx-runtime": {
+      "types": "./build/jsx-runtime.d.ts",
+      "require": "./build/jsx-runtime",
+      "import": "./build/jsx-runtime"
+    },
+    "./jsx-dev-runtime": {
+      "types": "./build/jsx-dev-runtime.d.ts",
+      "require": "./build/jsx-dev-runtime",
+      "import": "./build/jsx-dev-runtime"
+    },
+    "./sheet": {
+      "types": "./build/sheet/index.d.ts",
+      "require": "./build/sheet",
+      "import": "./build/sheet"
+    },
+    "./testing-library": {
+      "types": "./build/testing-library/index.d.ts",
+      "require": "./build/testing-library",
+      "import": "./build/testing-library"
+    },
+    "./testing-library/setup": {
+      "types": "./build/testing-library/setup.d.ts",
+      "require": "./build/testing-library/setup",
+      "import": "./build/testing-library/setup"
+    },
+    "./testing-library/setupAfterEnv": {
+      "types": "./build/testing-library/setupAfterEnv.d.ts",
+      "require": "./build/testing-library/setupAfterEnv",
+      "import": "./build/testing-library/setupAfterEnv"
+    },
+    "./types": {
+      "types": "./types.d.ts"
+    },
+    "./rn-svg": {
+      "types": "./rn-svg.d.ts"
+    }
+  },
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
@@ -34,7 +77,8 @@
     "@native-twin/preset-tailwind": "workspace:*"
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-methods": "^7.24.7"
+    "@babel/plugin-transform-private-methods": "^7.24.7",
+    "@native-twin/cli": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18",

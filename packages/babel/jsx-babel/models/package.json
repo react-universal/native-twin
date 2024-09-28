@@ -1,3 +1,5 @@
 {
-  "main": "../../build/jsx/models"
+  "main": "../../build/cjs/jsx/models",
+  "module": "../../build/esm/jsx/models",
+  "types": "../../build/types/jsx/models/index.d.ts"
 }

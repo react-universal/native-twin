@@ -77,6 +77,9 @@ export {
   VariantClassToken,
   /** @category — CSS parsers */
   VariantToken,
+  ArbitrarySegmentToken,
+  ColorModifierToken,
+  SegmentToken
 } from './tailwind/tailwind.types';
 
 // CSS FEATURES
