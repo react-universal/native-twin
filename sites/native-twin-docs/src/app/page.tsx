@@ -3,7 +3,9 @@ import { SearchButton } from '@/components/SearchButton';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import srcTest from '../../public/test-image.jpg';
+import img1 from '../../public/img1.jpg';
+import img2 from '../../public/img2.jpeg';
+import img3 from '../../public/img3.jpeg';
 
 const features = [
   {
@@ -37,11 +39,11 @@ export default function Home() {
     <div className='relative'>
       <header className='grid lg:grid-cols-2 gap-5'>
         <div className='flex flex-col'>
-          <h1 className='text-3xl m-0 flex'>
+          <h1 className='text-3xl lg:text-[57px] lg:leading-tight  m-0 '>
             Effortlessly style your React and React Native applications with the familiar
             utility-first syntax of Tailwind CSS.
           </h1>
-          <p className='text-2xl m-0'>
+          <p className='text-xl m-0'>
             Native Twin allows developers to apply Tailwind CSS styling across both React
             Native (for mobile) and React (for web) applications. With an intuitive
             syntax, you can leverage your existing knowledge of Tailwind CSS for seamless
@@ -58,7 +60,7 @@ export default function Home() {
         <picture className='w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
           <Image
             className='w-full h-full object-fill'
-            src={srcTest}
+            src={img1}
             alt='Image of Native Twin'
           />
         </picture>
@@ -79,17 +81,17 @@ export default function Home() {
           </Link>
         </div>
         <div className='grid grid-cols-2 gap-[20px]'>
-          <picture className='w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
+          <picture className='flex w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
             <Image
               className='w-full h-full object-fill'
-              src={srcTest}
+              src={img2}
               alt='Image of Native Twin'
             />
           </picture>
           <picture className='w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
             <Image
               className='w-full h-full object-fill'
-              src={srcTest}
+              src={img3}
               alt='Image of Native Twin'
             />
           </picture>
