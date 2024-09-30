@@ -1,89 +1,116 @@
-"use client";
-import { ButtonVariable } from "@/components/ButtonVariable";
-import Image from "next/image";
-import srcTest from "../../public/test-image.jpg";
-import { SearchButton } from "@/components/SearchButton";
+import { ButtonVariable } from '@/components/ButtonVariable';
+import { SearchButton } from '@/components/SearchButton';
+import { Card } from '@/components/ui/card';
+import Image from 'next/image';
+import Link from 'next/link';
+import srcTest from '../../public/test-image.jpg';
 
+const features = [
+  {
+    title: 'Use of Tailwind CSS',
+    description:
+      'Leverage the popularity and flexibility of Tailwind CSS for rapid prototyping and responsive design.',
+  },
+  {
+    title: 'Compatibility with React Native',
+    description:
+      'Ideal for developers looking to build mobile applications using React Native while maintaining a smooth user experience.',
+  },
+  {
+    title: 'Dynamic Styles',
+    description:
+      'Apply and modify styles dynamically based on component properties or application state.',
+  },
+  {
+    title: 'Performance Optimization',
+    description:
+      'Designed to minimize bundle size, ensuring your application remains fast and efficient.',
+  },
+  {
+    title: 'Extensible Customization',
+    description:
+      "Offers options to customize themes and styles, adapting to your project's specific needs.",
+  },
+];
 export default function Home() {
   return (
-    <div className=" relative ">
-      <header className="grid grid-cols-2 gap-[20px]">
-        <div>
-          <h1 className=" text-[57px]">
-            Rapidly build modern websites without ever leaving your HTML.
+    <div className='relative'>
+      <header className='grid lg:grid-cols-2 gap-5'>
+        <div className='flex flex-col'>
+          <h1 className='text-3xl m-0 flex'>
+            Effortlessly style your React and React Native applications with the familiar
+            utility-first syntax of Tailwind CSS.
           </h1>
-          <p className=" text-[24px]">
-            A utility-first CSS framework packed with classes
-            like flex, pt-4, text-center and rotate-90 that can be composed to
-            build any design, directly in your markup.
+          <p className='text-2xl m-0'>
+            Native Twin allows developers to apply Tailwind CSS styling across both React
+            Native (for mobile) and React (for web) applications. With an intuitive
+            syntax, you can leverage your existing knowledge of Tailwind CSS for seamless
+            application styling. Built with performance in mind, Native Twin ensures
+            efficient rendering and a smooth user experience.
           </p>
-          <div className="flex flex-row items-center justify-center gap-5 ">
-            <ButtonVariable color="#7C3AED">Get Started</ButtonVariable>
-            <SearchButton></SearchButton>
+          <div className='mt-auto flex flex-col lg:flex-row items-center justify-center gap-5'>
+            <Link href={'/documentation'}>
+              <ButtonVariable color='#7C3AED'>Get Started</ButtonVariable>
+            </Link>
+            <SearchButton />
           </div>
         </div>
-        <picture className="w-full h-full bg-gray-200 rounded-lg overflow-hidden">
+        <picture className='w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
           <Image
-            className="w-full h-full object-fill"
+            className='w-full h-full object-fill'
             src={srcTest}
-            alt="image of native twin"
-          ></Image>
+            alt='Image of Native Twin'
+          />
         </picture>
       </header>
 
-      <section className="py-[50px] flex flex-col items-center gap-5">
-        <div className=" gap-4 flex flex-col items-center justify-center my-[20px]">
-          <h2 className="flex flex-col  text-center text-[36px]">
-            Trabaja en native como en web
+      <section className='py-[50px] flex flex-col items-center gap-5'>
+        <div className='gap-4 flex flex-col items-center justify-center my-[20px]'>
+          <h2 className='flex flex-col text-center text-[36px]'>
+            Work in Native Like in Web
           </h2>
-          <p className=" text-center max-w-[900px]">
-            I’ve written a few thousand words on why traditional “semantic class
-            names” are the reason CSS is hard to maintain, but the truth is
-            you’re never going to believe me until you actually try it. If you
-            can suppress the urge to retch long enough to give it a chance, I
-            really think you’ll wonder how you ever worked with CSS any other
-            way.
-          </p>{" "}
-          <ButtonVariable color="#7C3AED">Get Started</ButtonVariable>
-        </div>
-        <div className="grid grid-cols-2 gap-[20px] ">
-          <picture className="w-full h-full bg-gray-200 rounded-lg overflow-hidden">
-            <Image
-              className="w-full h-full object-fill"
-              src={srcTest}
-              alt="image of native twin"
-            ></Image>
-          </picture>
-          <picture className="w-full h-full bg-gray-200 rounded-lg overflow-hidden">
-            <Image
-              className="w-full h-full object-fill"
-              src={srcTest}
-              alt="image of native twin"
-            ></Image>
-          </picture>
-        </div>
-      </section>
-      <section className="grid grid-cols-5">
-        <picture className=" col-span-3 w-full h-full bg-gray-200 rounded-lg overflow-hidden">
-          <Image
-            className="w-full h-full object-fill"
-            src={srcTest}
-            alt="image of native twin"
-          ></Image>
-        </picture>
-        <div className=" col-span-2 flex flex-col items-center justify-center my-[20px]">
-          <h2 className="flex flex-col max-w-[500px] text-center text-[36px]">
-            Trabaja en native <span> como en web</span>
-          </h2>{" "}
-          <p className=" text-center max-w-[900px]">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
-            provident nam laborum error eum doloremque deserunt, dolorum atque?
-            Repellat nulla nesciunt optio voluptatem animi esse hic repellendus
-            dolores laudantium minima!
+          <p className='text-center max-w-[900px]'>
+            Discover how Native Twin transforms development by allowing you to use
+            Tailwind CSS classes in both environments. The simplicity and efficiency it
+            offers will change the way you build your applications.
           </p>
-          <ButtonVariable color="#7C3AED">Get Started</ButtonVariable>
+          <Link href='/documentation'>
+            <ButtonVariable color='#7C3AED'>Explore More</ButtonVariable>
+          </Link>
+        </div>
+        <div className='grid grid-cols-2 gap-[20px]'>
+          <picture className='w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
+            <Image
+              className='w-full h-full object-fill'
+              src={srcTest}
+              alt='Image of Native Twin'
+            />
+          </picture>
+          <picture className='w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
+            <Image
+              className='w-full h-full object-fill'
+              src={srcTest}
+              alt='Image of Native Twin'
+            />
+          </picture>
         </div>
       </section>
+
+      <section className='py-[50px] flex flex-col  gap-5'>
+        <h2 className='text-center text-[36px]'>Key Features</h2>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+          {features.map((feature, index) => (
+            <Card key={index} className='p-5 bg-gray-800 text-white shadow-md rounded-lg'>
+              <h3 className='font-bold text-lg'>{feature.title}</h3>
+              <p className='mt-2 text-gray-300'>{feature.description}</p>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <footer className='py-[50px] text-center'>
+        <p>Follow us on GitHub to stay updated on the latest releases!</p>
+      </footer>
     </div>
   );
 }

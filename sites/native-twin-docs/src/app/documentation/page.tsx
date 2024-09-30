@@ -1,97 +1,95 @@
+import { Code } from '@/feactures/docs/components/Code';
+import { SubTitle } from '@/feactures/docs/components/SubTitle';
+import { Text } from '@/feactures/docs/components/Text';
+import { Title } from '@/feactures/docs/components/Title';
+
 export default function DocsPage() {
   return (
-    <section>
-      <h1>Quick Starter</h1>
-      
-      <section>
-        <h2>Introducción rápida</h2>
-        <p>
-          Breve descripción de la herramienta/producto/servicio. Esta herramienta permite a los desarrolladores 
-          configurar un entorno de desarrollo rápidamente y comenzar a usar la aplicación con facilidad.
-        </p>
-        <p>
-          Explicación del propósito o beneficio clave: optimiza el tiempo de configuración inicial 
-          y proporciona herramientas esenciales para el desarrollo.
-        </p>
-      </section>
+    <div className='flex flex-col gap-5'>
+      <Title>
+        Effortlessly style your React Native and React applications with the familiar
+        utility-first syntax of Tailwind CSS.
+      </Title>
 
-      <section>
-        <h2>Requisitos previos</h2>
-        <ul>
-          <li>Software o hardware necesario: Procesador de 64 bits, 4GB RAM mínimo.</li>
-          <li>Dependencias: Node.js  14, npm o yarn, Git.</li>
-          <li>Instalaciones previas (si aplica): Docker (opcional), CLI de Node.js.</li>
-        </ul>
-      </section>
+      <SubTitle>Introduction to native-twin</SubTitle>
+      <Text>
+        native-twin allows developers to apply Tailwind CSS styling across both React
+        Native (for mobile) and React (for web) applications. With a familiar syntax,
+        developers can leverage their existing knowledge of Tailwind CSS for seamless
+        application styling. Built with performance in mind, native-twin ensures efficient
+        rendering and a smooth user experience.
+      </Text>
 
-      <section>
-        <h2>Instalación</h2>
-        <p>Pasos básicos para instalar el producto o configurar el entorno:</p>
-        <ul>
-          <li>
-            Windows/macOS/Linux: Instalar Node.js desde <a href="https://nodejs.org">nodejs.org</a>.
-          </li>
-          <li>
-            Clonar el repositorio:
-            <pre><code>git clone https://github.com/proyecto/quickstarter.git</code></pre>
-          </li>
-          <li>
-            Instalar dependencias:
-            <pre><code>npm install</code></pre>
-          </li>
-        </ul>
-      </section>
+      <SubTitle>Key Features</SubTitle>
+      <ul className='flex flex-col gap-5'>
+        <li>
+          <strong>Unified Styling:</strong> Write a single set of Tailwind CSS classes
+          that translate effectively to platform-specific styles for both web and mobile.
+        </li>
+        <li>
+          <strong>Component-Based Approach:</strong> Encourages a modular design system by
+          enabling the creation of reusable, styled components.
+        </li>
+        <li>
+          <strong>Theme Customization:</strong> Extend and customize the default Tailwind
+          CSS theme to match your brand or application's design language.
+        </li>
+      </ul>
 
-      <section>
-        <h2>Configuración mínima</h2>
-        <p>Configuraciones iniciales obligatorias para que el producto funcione:</p>
-        <ul>
-          <li>Crear un archivo <code>.env</code> basado en <code>.env.example</code>.</li>
-          <li>Definir las variables de entorno necesarias, como <code>DATABASE_URL</code>, <code>API_KEY</code>, etc.</li>
-          <li>
-            Ejemplo de configuración rápida:
-            <pre><code>{`DATABASE_URL=postgres://user:password@localhost:5432/mydb`}</code></pre>
-          </li>
-        </ul>
-      </section>
+      <SubTitle>Getting Started</SubTitle>
+      <Text>Follow these steps to integrate native-twin into your project:</Text>
 
-      <section>
-        <h2>Primer uso</h2>
-        <p>Comando básico o primer paso para ejecutar la herramienta:</p>
-        <pre><code>npm run start</code></pre>
-        <p>
-          Este comando inicia la aplicación y puedes acceder a ella en el navegador en <code>http://localhost:3000</code>.
-        </p>
-      </section>
+      <SubTitle>1. Installation (npm or Yarn)</SubTitle>
+      <Text>Choose either npm or Yarn for this step:</Text>
+      <Code
+        codeString={`Using npm:
+npm install @native-twin/core @native-twin/babel @native-twin/dev-tools @native-twin/jsx @native-twin/metro @native-twin/preset-tailwind @native-twin/styled tailwindcss @tailwindcss/forms`}
+      />
+      <Code
+        codeString={`Using Yarn:
+yarn add @native-twin/core @native-twin/babel @native-twin/dev-tools @native-twin/jsx @native-twin/metro @native-twin/preset-tailwind @native-twin/styled tailwindcss @tailwindcss/forms`}
+      />
 
-      <section>
-        <h2>Problemas comunes y soluciones rápidas (FAQ)</h2>
-        <p>Errores comunes que los usuarios pueden encontrar al empezar:</p>
-        <ul>
-          <li>
-            <strong>Error:</strong> "Cannot find module 'X'".
-            <br />
-            <strong>Solución:</strong> Asegúrate de haber ejecutado <code>npm install</code> para instalar todas las dependencias.
-          </li>
-          <li>
-            <strong>Error:</strong> "Port 3000 already in use".
-            <br />
-            <strong>Solución:</strong> Cambia el puerto en el archivo de configuración o libera el puerto ocupado.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Recursos adicionales</h2>
-        <ul>
-          <li>
-            Documentación completa: <a href="https://docs.proyecto.com">docs.proyecto.com</a>
-          </li>
-          <li>
-            Foros de soporte: <a href="https://forum.proyecto.com">forum.proyecto.com</a>
-          </li>
-        </ul>
-      </section>
-    </section>
+      <SubTitle>2. Package Breakdown</SubTitle>
+      <ul className=' flex flex-col gap-5'>
+        <li>
+          <strong>@native-twin/core:</strong> The heart of native-twin that processes
+          Tailwind CSS classes into platform-specific styles.
+        </li>
+        <li>
+          <strong>@native-twin/babel:</strong> Contains the Babel plugin essential for
+          transforming Tailwind CSS classes during the build process.
+        </li>
+        <li>
+          <strong>@native-twin/dev-tools:</strong> Provides developer tools and utilities
+          to streamline the styling workflow.
+        </li>
+        <li>
+          <strong>@native-twin/jsx:</strong> Enables the use of native-twin's styling
+          approach directly within JSX code.
+        </li>
+        <li>
+          <strong>@native-twin/metro:</strong> Ensures compatibility and smooth
+          integration if using Metro bundler in React Native projects.
+        </li>
+        <li>
+          <strong>@native-twin/preset-tailwind:</strong> Includes predefined Tailwind CSS
+          configurations tailored for use with native-twin.
+        </li>
+        <li>
+          <strong>@native-twin/styled:</strong> Provides a way to create styled components
+          using native-twin, combining Tailwind CSS benefits with a component-based
+          architecture.
+        </li>
+        <li>
+          <strong>tailwindcss:</strong> The core Tailwind CSS package providing all
+          utility classes.
+        </li>
+        <li>
+          <strong>@tailwindcss/forms:</strong> Extends Tailwind CSS with additional
+          utility classes specifically designed for styling form elements.
+        </li>
+      </ul>
+    </div>
   );
 }
