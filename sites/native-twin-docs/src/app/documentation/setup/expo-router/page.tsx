@@ -21,7 +21,7 @@ yarn add @native-twin/core @native-twin/babel @native-twin/dev-tools @native-twi
       <SubTitle>2. Configuring Tailwind CSS (tailwind.config.ts)</SubTitle>
       <Text>This file configures Tailwind CSS for your project.</Text>
       <Code
-        codeString={`// Archivo: /home/marcial/Desktop/project/native-twin/apps/expo-router/tailwind.config.ts
+        codeString={`// /tailwind.config.ts
 import { defineConfig } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 
@@ -63,7 +63,7 @@ export default twinConfig;`}
         Babel preset that allows Babel to process your native-twin code properly.
       </Text>
       <Code
-        codeString={`// Archivo: /home/marcial/Desktop/project/native-twin/apps/expo-router/babel.config.js
+        codeString={`// /babel.config.js
 module.exports = function (api) {
   api.cache(true);
 
@@ -95,7 +95,7 @@ module.exports = function (api) {
         typically handled behind the scenes.
       </Text>
       <Code
-        codeString={`// Archivo: /home/marcial/Desktop/project/native-twin/apps/expo-router/metro.config.js
+        codeString={`// /metro.config.js
 const { getDefaultConfig } = require('expo/metro-config');
 const { withNativeTwin } = require('@native-twin/metro');
 const path = require('path');

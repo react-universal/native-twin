@@ -21,7 +21,7 @@ yarn add @native-twin/core @native-twin/jsx @native-twin/nextjs @native-twin/pre
       <SubTitle>2. Configuring Tailwind CSS (tailwind.config.js)</SubTitle>
       <Text>This file configures Tailwind CSS for your project.</Text>
       <Code
-        codeString={`// Archivo: /home/marcial/Desktop/project/native-twin/apps/next-app/tailwind.config.js
+        codeString={`// /tailwind.config.js
 import { defineConfig } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 
@@ -54,7 +54,7 @@ export default defineConfig({
         TypeScript files.
       </Text>
       <Code
-        codeString={`// Archivo: /home/marcial/Desktop/project/native-twin/apps/next-app/tsconfig.json
+        codeString={`// /tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
@@ -89,7 +89,7 @@ export default defineConfig({
         correctly in your Next.js application.
       </Text>
       <Code
-        codeString={`// Archivo: /home/marcial/Desktop/project/native-twin/apps/next-app/pages/_app.tsx
+        codeString={`// /_app.tsx
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { installApp } from '@native-twin/nextjs/_app';
@@ -115,7 +115,7 @@ export default installApp(twConfig, MyApp);`}
         rendering.
       </Text>
       <Code
-        codeString={`// Archivo: /home/marcial/Desktop/project/native-twin/apps/next-app/pages/_document.tsx
+        codeString={`// /_document.tsx
 import { AppRegistry } from 'react-native';
 import Document, {
   Html,
