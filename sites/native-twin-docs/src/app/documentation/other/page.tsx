@@ -1,24 +1,23 @@
-import { HeaderDocsTop } from "@/feactures/docs/layout/HeaderDocsTop";
-import tailwindClasses from "../../../../data";
-import { ClassToRenderer } from "@/feactures/docs/layout/ClassToRederer";
-import { dataVisibility, ObjectProperties } from "./dataOther";
+import { ClassToRenderer } from '@/feactures/docs/layout/ClassToRederer';
+import { HeaderDocsTop } from '@/feactures/docs/layout/HeaderDocsTop';
+import tailwindClasses from '../../../../data';
+import { dataVisibility, ObjectProperties } from './dataOther';
 
 export default function OtherPage() {
   return (
-    <div className="flex flex-col gap-5">
+    <div className='flex flex-col gap-10'>
       <HeaderDocsTop
-        title="Visibility"
+        title='Visibility'
         Data={tailwindClasses.others.visibility}
-        id="visibility"
+        id='visibility'
       ></HeaderDocsTop>
       <ClassToRenderer list={dataVisibility}></ClassToRenderer>
       <HeaderDocsTop
-        title="Object Properties"
+        title='Object Properties'
         Data={tailwindClasses.others.objectProperties}
-        id="objectProperties"
+        id='objectProperties'
       ></HeaderDocsTop>
       <ClassToRenderer list={ObjectProperties}></ClassToRenderer>
-
     </div>
   );
 }

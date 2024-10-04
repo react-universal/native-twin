@@ -1,10 +1,114 @@
-import { classRenderer } from "@/feactures/docs/layout/ClassToRederer";
+import { classRenderer } from '@/feactures/docs/layout/ClassToRederer';
 
+export const alignmentData = [
+  {
+    title: 'Align-baseline',
+    text: "Use items-baseline to align items along the container's cross axis such that all of their baselines align: 01",
+    code: `<div class="flex items-baseline ...">
+  <div class="pt-2 pb-6">01</div>
+  <div class="pt-8 pb-12">02</div>
+  <div class="pt-12 pb-4">03</div>
+</div>`,
+  },
+  {
+    title: 'Align-top',
+    text: 'Use align-top to align the top of an element and its descendants with the top of the entire line.',
+    code: `<span class="inline-block align-top ...">...</span>`,
+  },
+  {
+    title: 'Align middle',
+    text: 'Use align-middle to align the middle of an element with the baseline plus half the x-height of the parent.',
+    code: `<span class="inline-block align-middle ...">...</span>`,
+  },
+  {
+    title: 'Align bottom',
+    text: 'Use align-bottom to align the bottom of an element and its descendants with the bottom of the entire line.',
+    code: `<span class="inline-block align-bottom ...">...</span>`,
+  },
+  {
+    title: 'Align text top',
+    text: "Use align-text-top to align the top of an element with the top of the parent element's font.",
+    code: `<span class="inline-block align-text-top ...">...</span>`,
+  },
+  {
+    title: 'Align text bottom',
+    text: "Use align-text-bottom to align the bottom of an element with the bottom of the parent element's font.",
+    code: `<span class="inline-block align-text-bottom ...">...</span>`,
+  },
+  {
+    title: 'Justify Content (justify-{alignment})',
+    text: "Utilities for controlling how flex and grid items are positioned along a container's main axis.",
+    code: '',
+  },
+  {
+    title: 'Start',
+    text: "Use justify-start to justify items against the start of the container's main axis:",
+    code: `<div class="flex justify-start ...">
+  <div>01</div>
+  <div>02</div>
+  <div>03</div>
+</div>`,
+  },
+  {
+    title: 'Center',
+    text: "Use justify-center to justify items along the center of the container's main axis:",
+    code: `<div class="flex justify-center ...">
+  <div>01</div>
+  <div>02</div>
+  <div>03</div>
+</div>`,
+  },
+  {
+    title: 'End',
+    text: "Use justify-end to justify items against the end of the container's main axis:",
+    code: `<div class="flex justify-end ...">
+  <div>01</div>
+  <div>02</div>
+  <div>03</div>
+</div>`,
+  },
+  {
+    title: 'Space between',
+    text: "Use justify-between to justify items along the container's main axis such that there is an equal amount of space between each item:",
+    code: `<div class="flex justify-between ...">
+  <div>01</div>
+  <div>02</div>
+  <div>03</div>
+</div>`,
+  },
+  {
+    title: 'Space around',
+    text: "Use justify-around to justify items along the container's main axis such that there is an equal amount of space on each side of each item:",
+    code: `<div class="flex justify-around ...">
+  <div>01</div>
+  <div>02</div>
+  <div>03</div>
+</div>`,
+  },
+  {
+    title: 'Space evenly',
+    text: "Use justify-evenly to justify items along the container's main axis such that there is an equal amount of space around each item, but also accounting for the doubling of space you would normally see between each item when using justify-around:",
+    code: `<div class="flex justify-evenly ...">
+  <div>01</div>
+  <div>02</div>
+  <div>03</div>
+</div>`,
+  },
+  {
+    title: 'Stretch',
+    text: "Use justify-stretch to allow content items to fill the available space along the container's main axis:",
+    code: `<div class="grid grid-flow-col justify-stretch ...">
+  <div>01</div>
+  <div>02</div>
+  <div>03</div>
+</div>`,
+  },
+];
 
 export const justifyItems: classRenderer[] = [
   {
-    title: "Start",
-    text: "Use justify-items-start to justify grid items against the start of their inline axis:",
+    title: 'Start',
+    text: 'Use justify-items-start to justify grid items against the start of their inline axis:',
     code: `<div class="grid justify-items-start ...">
   <div>01</div>
   <div>02</div>
@@ -15,8 +119,8 @@ export const justifyItems: classRenderer[] = [
 </div>`,
   },
   {
-    title: "End",
-    text: "Use justify-items-end to justify grid items against the end of their inline axis:",
+    title: 'End',
+    text: 'Use justify-items-end to justify grid items against the end of their inline axis:',
     code: `<div class="grid justify-items-end ...">
   <div>01</div>
   <div>02</div>
@@ -27,8 +131,8 @@ export const justifyItems: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Center",
-    text: "Use justify-items-center to justify grid items along their inline axis:",
+    title: 'Center',
+    text: 'Use justify-items-center to justify grid items along their inline axis:',
     code: `<div class="grid justify-items-center ...">
   <div>01</div>
   <div>02</div>
@@ -39,8 +143,8 @@ export const justifyItems: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Stretch",
-    text: "Use justify-items-stretch to stretch items along their inline axis:",
+    title: 'Stretch',
+    text: 'Use justify-items-stretch to stretch items along their inline axis:',
     code: `<div class="grid justify-items-stretch ...">
   <div>01</div>
   <div>02</div>
@@ -53,8 +157,8 @@ export const justifyItems: classRenderer[] = [
 ];
 export const justifySelf: classRenderer[] = [
   {
-    title: "Auto",
-    text: "Use justify-self-auto to align an item based on the value of the grid’s justify-items property:",
+    title: 'Auto',
+    text: 'Use justify-self-auto to align an item based on the value of the grid’s justify-items property:',
     code: `<div class="grid justify-items-stretch ...">
   <!-- ... -->
   <div class="justify-self-auto ...">02</div>
@@ -65,8 +169,8 @@ export const justifySelf: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Start",
-    text: "Use justify-self-start to align a grid item to the start of its inline axis:",
+    title: 'Start',
+    text: 'Use justify-self-start to align a grid item to the start of its inline axis:',
     code: `<div class="grid justify-items-stretch ...">
   <!-- ... -->
   <div class="justify-self-start ...">02</div>
@@ -77,8 +181,8 @@ export const justifySelf: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Center",
-    text: "Use justify-self-center to align a grid item along the center of its inline axis:",
+    title: 'Center',
+    text: 'Use justify-self-center to align a grid item along the center of its inline axis:',
     code: `<div class="grid justify-items-stretch ...">
   <!-- ... -->
   <div class="justify-self-center ...">02</div>
@@ -89,8 +193,8 @@ export const justifySelf: classRenderer[] = [
 </div>`,
   },
   {
-    title: "End",
-    text: "Use justify-self-end to align a grid item to the end of its inline axis:",
+    title: 'End',
+    text: 'Use justify-self-end to align a grid item to the end of its inline axis:',
     code: `<div class="grid justify-items-stretch ...">
   <!-- ... -->
   <div class="justify-self-end ...">02</div>
@@ -101,8 +205,8 @@ export const justifySelf: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Stretch",
-    text: "Use justify-self-stretch to stretch a grid item to fill the grid area on its inline axis:",
+    title: 'Stretch',
+    text: 'Use justify-self-stretch to stretch a grid item to fill the grid area on its inline axis:',
     code: `<div class="grid justify-items-start ...">
   <!-- ... -->
   <div class="justify-self-stretch ...">02</div>
@@ -116,8 +220,8 @@ export const justifySelf: classRenderer[] = [
 
 export const alignItems: classRenderer[] = [
   {
-    title: "Stretch",
-    text: "Use items-stretch to stretch items to fill the container’s cross axis:",
+    title: 'Stretch',
+    text: 'Use items-stretch to stretch items to fill the container’s cross axis:',
     code: `<div class="flex items-stretch ...">
   <div class="py-4">01</div>
   <div class="py-12">02</div>
@@ -125,8 +229,8 @@ export const alignItems: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Start",
-    text: "Use items-start to align items to the start of the container’s cross axis:",
+    title: 'Start',
+    text: 'Use items-start to align items to the start of the container’s cross axis:',
     code: `<div class="flex items-start ...">
   <div class="py-4">01</div>
   <div class="py-12">02</div>
@@ -134,8 +238,8 @@ export const alignItems: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Center",
-    text: "Use items-center to align items along the center of the container’s cross axis:",
+    title: 'Center',
+    text: 'Use items-center to align items along the center of the container’s cross axis:',
     code: `<div class="flex items-center ...">
   <div class="py-4">01</div>
   <div class="py-12">02</div>
@@ -143,8 +247,8 @@ export const alignItems: classRenderer[] = [
 </div>`,
   },
   {
-    title: "End",
-    text: "Use items-end to align items to the end of the container’s cross axis:",
+    title: 'End',
+    text: 'Use items-end to align items to the end of the container’s cross axis:',
     code: `<div class="flex items-end ...">
   <div class="py-4">01</div>
   <div class="py-12">02</div>
@@ -152,8 +256,8 @@ export const alignItems: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Baseline",
-    text: "Use items-baseline to align items along the container’s cross axis such that all of their baselines align:",
+    title: 'Baseline',
+    text: 'Use items-baseline to align items along the container’s cross axis such that all of their baselines align:',
     code: `<div class="flex items-baseline ...">
   <div class="pt-2 pb-6">01</div>
   <div class="pt-8 pb-12">02</div>
@@ -163,8 +267,8 @@ export const alignItems: classRenderer[] = [
 ];
 export const alignSelf: classRenderer[] = [
   {
-    title: "Auto",
-    text: "Use self-auto to align an item based on the value of the container’s align-items property:",
+    title: 'Auto',
+    text: 'Use self-auto to align an item based on the value of the container’s align-items property:',
     code: `<div class="flex items-stretch ...">
   <div>01</div>
   <div class="self-auto ...">02</div>
@@ -172,8 +276,8 @@ export const alignSelf: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Start",
-    text: "Use self-start to align an item to the start of the container’s cross axis, despite the container’s align-items value:",
+    title: 'Start',
+    text: 'Use self-start to align an item to the start of the container’s cross axis, despite the container’s align-items value:',
     code: `<div class="flex items-stretch ...">
   <div>01</div>
   <div class="self-start ...">02</div>
@@ -181,8 +285,8 @@ export const alignSelf: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Center",
-    text: "Use self-center to align an item along the center of the container’s cross axis, despite the container’s align-items value:",
+    title: 'Center',
+    text: 'Use self-center to align an item along the center of the container’s cross axis, despite the container’s align-items value:',
     code: `<div class="flex items-stretch ...">
   <div>01</div>
   <div class="self-center ...">02</div>
@@ -190,8 +294,8 @@ export const alignSelf: classRenderer[] = [
 </div>`,
   },
   {
-    title: "End",
-    text: "Use self-end to align an item to the end of the container’s cross axis, despite the container’s align-items value:",
+    title: 'End',
+    text: 'Use self-end to align an item to the end of the container’s cross axis, despite the container’s align-items value:',
     code: `<div class="flex items-stretch ...">
   <div>01</div>
   <div class="self-end ...">02</div>
@@ -199,8 +303,8 @@ export const alignSelf: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Stretch",
-    text: "Use self-stretch to stretch an item to fill the container’s cross axis, despite the container’s align-items value:",
+    title: 'Stretch',
+    text: 'Use self-stretch to stretch an item to fill the container’s cross axis, despite the container’s align-items value:',
     code: `<div class="flex items-stretch ...">
   <div>01</div>
   <div class="self-stretch ...">02</div>
@@ -211,8 +315,8 @@ export const alignSelf: classRenderer[] = [
 
 export const alignContent: classRenderer[] = [
   {
-    title: "Start",
-    text: "Use content-start to pack rows in a container against the start of the cross axis:",
+    title: 'Start',
+    text: 'Use content-start to pack rows in a container against the start of the cross axis:',
     code: `<div class="h-56 grid grid-cols-3 gap-4 content-start ...">
   <div>01</div>
   <div>02</div>
@@ -222,8 +326,8 @@ export const alignContent: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Center",
-    text: "Use content-center to pack rows in a container in the center of the cross axis:",
+    title: 'Center',
+    text: 'Use content-center to pack rows in a container in the center of the cross axis:',
     code: `<div class="h-56 grid grid-cols-3 gap-4 content-center ...">
   <div>01</div>
   <div>02</div>
@@ -234,8 +338,8 @@ export const alignContent: classRenderer[] = [
 `,
   },
   {
-    title: "End",
-    text: "Use content-end to pack rows in a container against the end of the cross axis:",
+    title: 'End',
+    text: 'Use content-end to pack rows in a container against the end of the cross axis:',
     code: `<div class="h-56 grid grid-cols-3 gap-4 content-end ...">
   <div>01</div>
   <div>02</div>
@@ -245,8 +349,8 @@ export const alignContent: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Space between",
-    text: "Use content-between to distribute rows in a container such that there is an equal amount of space between each line:",
+    title: 'Space between',
+    text: 'Use content-between to distribute rows in a container such that there is an equal amount of space between each line:',
     code: `<div class="h-56 grid grid-cols-3 gap-4 content-between ...">
   <div>01</div>
   <div>02</div>
@@ -256,8 +360,8 @@ export const alignContent: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Space around",
-    text: "Use content-around to distribute rows in a container such that there is an equal amount of space around each line:",
+    title: 'Space around',
+    text: 'Use content-around to distribute rows in a container such that there is an equal amount of space around each line:',
     code: `<div class="h-56 grid grid-cols-3 gap-4 content-around ...">
   <div>01</div>
   <div>02</div>
@@ -267,8 +371,8 @@ export const alignContent: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Space evenly",
-    text: "Use content-evenly to distribute rows in a container such that there is an equal amount of space around each item, but also accounting for the doubling of space you would normally see between each item when using content-around:",
+    title: 'Space evenly',
+    text: 'Use content-evenly to distribute rows in a container such that there is an equal amount of space around each item, but also accounting for the doubling of space you would normally see between each item when using content-around:',
     code: `<div class="h-56 grid grid-cols-3 gap-4 content-evenly ...">
   <div>01</div>
   <div>02</div>
@@ -278,8 +382,8 @@ export const alignContent: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Stretch",
-    text: "Use content-stretch to allow content items to fill the available space along the container’s cross axis:",
+    title: 'Stretch',
+    text: 'Use content-stretch to allow content items to fill the available space along the container’s cross axis:',
     code: `<div class="h-56 grid grid-cols-3 gap-4 content-stretch ...">
   <div>01</div>
   <div>02</div>
@@ -289,8 +393,8 @@ export const alignContent: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Normal",
-    text: "Use content-normal to pack content items in their default position as if no align-content value was set:",
+    title: 'Normal',
+    text: 'Use content-normal to pack content items in their default position as if no align-content value was set:',
     code: `<div class="h-56 grid grid-cols-3 gap-4 content-normal ...">
   <div>01</div>
   <div>02</div>
@@ -303,7 +407,7 @@ export const alignContent: classRenderer[] = [
 
 export const position: classRenderer[] = [
   {
-    title: "Statically positioning elements",
+    title: 'Statically positioning elements',
     text: `Use the static utility to position an element according to the normal flow of the document.
 
 Any offsets will be ignored and the element will not act as a position reference for absolutely positioned children.`,
@@ -315,7 +419,7 @@ Any offsets will be ignored and the element will not act as a position reference
 </div>`,
   },
   {
-    title: "Relatively positioning elements",
+    title: 'Relatively positioning elements',
     text: `Use the relative utility to position an element according to the normal flow of the document.
 
 Any offsets are calculated relative to the element’s normal position and the element will act as a position reference for absolutely positioned children.
@@ -329,7 +433,7 @@ Any offsets are calculated relative to the element’s normal position and the e
 </div>`,
   },
   {
-    title: "Absolutely positioning elements",
+    title: 'Absolutely positioning elements',
     text: `Use the absolute utility to position an element outside of the normal flow of the document, causing neighboring elements to act as if the element doesn’t exist.
 
 Any offsets are calculated relative to the nearest parent that has a position other than static, and the element will act as a position reference for other absolutely positioned children.`,
@@ -343,7 +447,7 @@ Any offsets are calculated relative to the nearest parent that has a position ot
 </div>`,
   },
   {
-    title: "Fixed positioning elements",
+    title: 'Fixed positioning elements',
     text: `Use the fixed utility to position an element relative to the browser window.
 
 Any offsets are calculated relative to the viewport and the element will act as a position reference for absolutely positioned children.`,
@@ -363,7 +467,7 @@ Any offsets are calculated relative to the viewport and the element will act as 
 </div>`,
   },
   {
-    title: "Sticky positioning elements",
+    title: 'Sticky positioning elements',
     text: `Use the sticky utility to position an element as relative until it crosses a specified threshold, then treat it as fixed until its parent is off screen.
 
 Any offsets are calculated relative to the element’s normal position and the element will act as a position reference for absolutely positioned children.`,
@@ -399,7 +503,7 @@ Any offsets are calculated relative to the element’s normal position and the e
 
 export const positionLaterals: classRenderer[] = [
   {
-    title: "Placing a positioned element",
+    title: 'Placing a positioned element',
     text: `Use the top-*, right-*, bottom-*, left-*, and inset-* utilities to set the horizontal or vertical position of a positioned element.`,
     code: `<!-- Pin to top left corner -->
 <div class="relative h-32 w-32 ...">
@@ -447,7 +551,7 @@ export const positionLaterals: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Using negative values",
+    title: 'Using negative values',
     text: `To use a negative top/right/bottom/left value, prefix the class name with a dash to convert it to a negative value.
 
 `,
@@ -456,7 +560,7 @@ export const positionLaterals: classRenderer[] = [
 </div>`,
   },
   {
-    title: "Using logical properties",
+    title: 'Using logical properties',
     text: `Use the start-* and end-* utilities to set the inset-inline-start and inset-inline-end logical properties, which map to either the left or right side based on the text direction.
 
 `,

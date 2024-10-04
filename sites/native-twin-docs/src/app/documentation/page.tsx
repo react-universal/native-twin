@@ -1,3 +1,4 @@
+import { normalText } from '@/constants/colors';
 import { Code } from '@/feactures/docs/components/Code';
 import { SubTitle } from '@/feactures/docs/components/SubTitle';
 import { Text } from '@/feactures/docs/components/Text';
@@ -5,7 +6,7 @@ import { Title } from '@/feactures/docs/components/Title';
 
 export default function DocsPage() {
   return (
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-10'>
       <Title>
         Effortlessly style your React Native and React applications with the familiar
         utility-first syntax of Tailwind CSS.
@@ -21,18 +22,21 @@ export default function DocsPage() {
       </Text>
 
       <SubTitle>Key Features</SubTitle>
-      <ul className='flex flex-col gap-5'>
+      <ul style={{ color: normalText }} className='flex flex-col gap-5'>
         <li>
-          <strong>Unified Styling:</strong> Write a single set of Tailwind CSS classes
-          that translate effectively to platform-specific styles for both web and mobile.
+          <strong style={{ color: 'whitesmoke' }}> Unified Styling:</strong> Write a
+          single set of Tailwind CSS classes that translate effectively to
+          platform-specific styles for both web and mobile.
         </li>
         <li>
-          <strong>Component-Based Approach:</strong> Encourages a modular design system by
-          enabling the creation of reusable, styled components.
+          <strong style={{ color: 'whitesmoke' }}> Component-Based Approach:</strong>{' '}
+          Encourages a modular design system by enabling the creation of reusable, styled
+          components.
         </li>
         <li>
-          <strong>Theme Customization:</strong> Extend and customize the default Tailwind
-          CSS theme to match your brand or application's design language.
+          <strong style={{ color: 'whitesmoke' }}>Theme Customization:</strong> Extend and
+          customize the default Tailwind CSS theme to match your brand or application's
+          design language.
         </li>
       </ul>
 
@@ -51,43 +55,47 @@ yarn add @native-twin/core @native-twin/babel @native-twin/dev-tools @native-twi
       />
 
       <SubTitle>2. Package Breakdown</SubTitle>
-      <ul className=' flex flex-col gap-5'>
+      <ul style={{ color: normalText }} className=' flex flex-col gap-5'>
         <li>
-          <strong>@native-twin/core:</strong> The heart of native-twin that processes
-          Tailwind CSS classes into platform-specific styles.
+          <strong style={{ color: 'whitesmoke' }}>@native-twin/core:</strong> The heart of
+          native-twin that processes Tailwind CSS classes into platform-specific styles.
         </li>
         <li>
-          <strong>@native-twin/babel:</strong> Contains the Babel plugin essential for
-          transforming Tailwind CSS classes during the build process.
+          <strong style={{ color: 'whitesmoke' }}>@native-twin/babel:</strong> Contains
+          the Babel plugin essential for transforming Tailwind CSS classes during the
+          build process.
         </li>
         <li>
-          <strong>@native-twin/dev-tools:</strong> Provides developer tools and utilities
-          to streamline the styling workflow.
+          <strong style={{ color: 'whitesmoke' }}>@native-twin/dev-tools:</strong>{' '}
+          Provides developer tools and utilities to streamline the styling workflow.
         </li>
         <li>
-          <strong>@native-twin/jsx:</strong> Enables the use of native-twin's styling
-          approach directly within JSX code.
+          <strong style={{ color: 'whitesmoke' }}>@native-twin/jsx:</strong> Enables the
+          use of native-twin's styling approach directly within JSX code.
         </li>
         <li>
-          <strong>@native-twin/metro:</strong> Ensures compatibility and smooth
-          integration if using Metro bundler in React Native projects.
+          <strong style={{ color: 'whitesmoke' }}>@native-twin/metro:</strong> Ensures
+          compatibility and smooth integration if using Metro bundler in React Native
+          projects.
         </li>
         <li>
-          <strong>@native-twin/preset-tailwind:</strong> Includes predefined Tailwind CSS
-          configurations tailored for use with native-twin.
+          <strong style={{ color: 'whitesmoke' }}>@native-twin/preset-tailwind:</strong>{' '}
+          Includes predefined Tailwind CSS configurations tailored for use with
+          native-twin.
         </li>
         <li>
-          <strong>@native-twin/styled:</strong> Provides a way to create styled components
-          using native-twin, combining Tailwind CSS benefits with a component-based
-          architecture.
+          <strong style={{ color: 'whitesmoke' }}>@native-twin/styled:</strong> Provides a
+          way to create styled components using native-twin, combining Tailwind CSS
+          benefits with a component-based architecture.
         </li>
         <li>
-          <strong>tailwindcss:</strong> The core Tailwind CSS package providing all
-          utility classes.
+          <strong style={{ color: 'whitesmoke' }}>tailwindcss:</strong> The core Tailwind
+          CSS package providing all utility classes.
         </li>
         <li>
-          <strong>@tailwindcss/forms:</strong> Extends Tailwind CSS with additional
-          utility classes specifically designed for styling form elements.
+          <strong style={{ color: 'whitesmoke' }}>@tailwindcss/forms:</strong> Extends
+          Tailwind CSS with additional utility classes specifically designed for styling
+          form elements.
         </li>
       </ul>
     </div>

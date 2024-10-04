@@ -5,7 +5,7 @@ import { Title } from '@/feactures/docs/components/Title';
 
 const NextAppDir = () => {
   return (
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-10'>
       <Title>Setting up native-twin (next-app)</Title>
 
       <SubTitle>1. Installing Dependencies</SubTitle>

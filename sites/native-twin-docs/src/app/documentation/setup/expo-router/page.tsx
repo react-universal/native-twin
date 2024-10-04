@@ -5,7 +5,7 @@ import { Title } from '@/feactures/docs/components/Title';
 
 export default function NativeTwinExpoRouter() {
   return (
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-10'>
       <Title>Setting up native-twin (expo-router)</Title>
 
       <SubTitle>1. Installing Dependencies</SubTitle>

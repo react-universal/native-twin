@@ -1,24 +1,23 @@
-import { HeaderDocsTop } from "@/feactures/docs/layout/HeaderDocsTop";
-import tailwindClasses from "../../../../data";
-import { ClassToRenderer } from "@/feactures/docs/layout/ClassToRederer";
-import { dataDecoration, dataText } from "./dataText";
+import { ClassToRenderer } from '@/feactures/docs/layout/ClassToRederer';
+import { HeaderDocsTop } from '@/feactures/docs/layout/HeaderDocsTop';
+import tailwindClasses from '../../../../data';
+import { dataDecoration, dataText } from './dataText';
 
 export default function TextTypographyPage() {
   return (
-    <div className="flex flex-col gap-5">
+    <div className='flex flex-col gap-10'>
       <HeaderDocsTop
-        title="Text Styles"
-        id="textStyles"
+        title='Text Styles'
+        id='textStyles'
         Data={tailwindClasses.textTypography.textStyles}
       ></HeaderDocsTop>
-      <ClassToRenderer list={dataText}/>
+      <ClassToRenderer list={dataText} />
       <HeaderDocsTop
-        title="Decoration And Color"
-        id="decorationAndColor"
+        title='Decoration And Color'
+        id='decorationAndColor'
         Data={tailwindClasses.textTypography.decorationAndColor}
       ></HeaderDocsTop>
-      <ClassToRenderer list={dataDecoration}/>
-
+      <ClassToRenderer list={dataDecoration} />
     </div>
   );
 }

@@ -3,9 +3,9 @@ import { SearchButton } from '@/components/SearchButton';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import img1 from '../../public/img1.jpg';
-import img2 from '../../public/img2.jpeg';
-import img3 from '../../public/img3.jpeg';
+import img2 from '../../public/devices.png';
+import img3 from '../../public/dissection.png';
+import img1 from '../../public/editor-router.png';
 
 const features = [
   {
@@ -36,9 +36,9 @@ const features = [
 ];
 export default function Home() {
   return (
-    <div className='relative'>
+    <div className='relative flex flex-col gap-8'>
       <header className='grid lg:grid-cols-2 gap-5'>
-        <div className='flex flex-col'>
+        <div className='flex flex-col gap-5'>
           <h1 className='text-3xl lg:text-[57px] lg:leading-tight  m-0 '>
             Effortlessly style your React and React Native applications with the familiar
             utility-first syntax of Tailwind CSS.
@@ -80,7 +80,7 @@ export default function Home() {
             <ButtonVariable color='#7C3AED'>Explore More</ButtonVariable>
           </Link>
         </div>
-        <div className='grid grid-cols-2 gap-[20px]'>
+        <div className='grid lg:grid-cols-2 gap-[20px] w-full'>
           <picture className='flex w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
             <Image
               className='w-full h-full object-fill'

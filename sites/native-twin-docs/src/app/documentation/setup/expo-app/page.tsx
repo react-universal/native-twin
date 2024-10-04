@@ -5,7 +5,7 @@ import { Title } from '@/feactures/docs/components/Title';
 
 export default function NativeTwinSetupGuide() {
   return (
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-10'>
       <Title>Setting up native-twin (expo app)</Title>
       <Text>This tutorial assumes you already have a React Native project set up.</Text>
 
@@ -22,7 +22,7 @@ export default function NativeTwinSetupGuide() {
       <SubTitle>Using Yarn:</SubTitle>
       <Code
         codeString={
-          '        yarn add @native-twin/core @native-twin/babel @native-twin/dev-tools @native-twin/jsx @native-twin/metro @native-twin/preset-tailwind @native-twin/styled tailwindcss @tailwindcss/forms'
+          'yarn add @native-twin/core @native-twin/babel @native-twin/dev-tools @native-twin/jsx @native-twin/metro @native-twin/preset-tailwind @native-twin/styled tailwindcss @tailwindcss/forms'
         }
       ></Code>
 
