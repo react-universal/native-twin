@@ -3,9 +3,9 @@ import { SearchButton } from '@/components/SearchButton';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import img2 from '../../public/devices.png';
-import img3 from '../../public/dissection.png';
-import img1 from '../../public/editor-router.png';
+import img2 from '../../public/1.webp';
+import img3 from '../../public/2.webp';
+import img1 from '../../public/3.webp';
 
 const features = [
   {
@@ -40,8 +40,7 @@ export default function Home() {
       <header className='grid lg:grid-cols-2 gap-5'>
         <div className='flex flex-col gap-5'>
           <h1 className='text-3xl lg:text-[57px] lg:leading-tight  m-0 '>
-            Effortlessly style your React and React Native applications with the familiar
-            utility-first syntax of Tailwind CSS.
+            Tailwind CSS in React Native
           </h1>
           <p className='text-xl m-0'>
             Native Twin allows developers to apply Tailwind CSS styling across both React

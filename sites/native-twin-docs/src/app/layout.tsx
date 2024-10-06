@@ -39,7 +39,7 @@ export default function RootLayout({
     <html lang='en'>
       <body
         className={
-          inter.className + '  bg-gradient-to-r from-[#030712] to-[#1D1B20] bg-fixed '
+          inter.className + ' bg-gradient-to-r from-slate-900 to-slate-800 bg-fixed '
         }
       >
         <ThemeProvider attribute='class' defaultTheme='dark'>

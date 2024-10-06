@@ -20,20 +20,18 @@ export default function DocsPage({
   const handlerToggle = () => setShowDrawer(!showDrawer);
   return (
     <section className='relative py-[0px]  lg:grid gap-5 lg:grid-cols-4'>
-      <div className=' hidden lg:flex relative left-0 top-0   flex-col lg:col-span-1 gap-5 overflow-scroll'>
+      <div className=' hidden lg:flex relative left-0 top-0   flex-col lg:col-span-1 gap-5 '>
         {Object.entries(TAILWIND_GLOSSARY).map(([key, item]) => {
           return (
             <div className='mb-2' key={key}>
               {/* Título principal de cada tema */}
-              <h3 className=' flex flex-col text-[24px] text-white'>
-                {item.title.split(' ').map((item, index) => {
-                  return <span key={index}> {item} </span>;
-                })}
-              </h3>
+              <h3 className=' flex flex-col text-[24px] text-white'>{item.title}</h3>
               <ul>
                 {item.categories.map((category, index) => (
-                  <li key={index} className='text-gray-300'>
-                    {/* Nombre de la categoría con la ruta correspondiente */}
+                  <li
+                    key={index}
+                    className='text-gray-300 hover:text-white transition-all'
+                  >
                     <Link href={'/documentation/' + category.route}>{category.name}</Link>
                   </li>
                 ))}
@@ -53,15 +51,13 @@ export default function DocsPage({
                 Exit
               </DrawerClose>
               <SearchButton></SearchButton>
-              <div className='h-full grid grid-cols-2 overflow-scroll lg:grid-cols-4'>
+              <div className='h-full grid grid-cols-2 overflow-x lg:grid-cols-4'>
                 {Object.entries(TAILWIND_GLOSSARY).map(([key, item]) => {
                   return (
                     <div className='mb-2' key={key}>
                       {/* Título principal de cada tema */}
                       <h3 className=' flex text-[18px] flex-col lg:text-[24px] text-white'>
-                        {item.title.split(' ').map((item) => {
-                          return <span> {item} </span>;
-                        })}
+                        {item.title}
                       </h3>
                       <ul>
                         {item.categories.map((category, index) => (
