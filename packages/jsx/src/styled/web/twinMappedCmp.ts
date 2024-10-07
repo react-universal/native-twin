@@ -1,5 +1,5 @@
 import { createElement, forwardRef } from 'react';
-import { globalStyles, opaqueStyles } from '../../store/styles.store';
+// import { globalStyles, opaqueStyles } from '../../store/styles.store';
 import { ReactComponent, StylableComponentConfigOptions } from '../../types/styled.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
 import { stylizedComponents } from './createTwinCmp.web';
@@ -34,16 +34,15 @@ export const withMappedProps = <
 
       delete props[config.source];
 
-      for (const className of source.split(/\s+/)) {
-        const signal = globalStyles.get(className);
-
-        if (signal !== undefined) {
-          const style = {};
-          const styleRuleSet = signal.get();
-          opaqueStyles.set(style, styleRuleSet);
-          rawStyles.push(style);
-        }
-      }
+      // for (const className of source.split(/\s+/)) {
+      // const signal = globalStyles.get(className);
+      // if (signal !== undefined) {
+      //   const style = {};
+      //   const styleRuleSet = signal.get();
+      //   opaqueStyles.set(style, styleRuleSet);
+      //   rawStyles.push(style);
+      // }
+      // }
 
       if (rawStyles.length !== 0) {
         const existingStyle = props[config.target];

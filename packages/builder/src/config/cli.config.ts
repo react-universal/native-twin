@@ -2,21 +2,10 @@ import * as Array from 'effect/Array';
 import * as Config from 'effect/Config';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as esbuild from 'esbuild';
 import * as ConfigFile from '@effect/cli/ConfigFile';
 import * as Options from '@effect/cli/Options';
 import * as Path from '@effect/platform/Path';
 
-export interface CliConfigFile {
-  reactNative: boolean;
-  minify: boolean;
-  vscode: boolean;
-  platform: esbuild.Platform;
-  entries: esbuild.BuildOptions['entryPoints'];
-  logs: boolean;
-  types: boolean;
-  external: string[];
-}
 export const loadConfigFile = (searchPath: string) =>
   Effect.gen(function* () {
     const path = yield* Path.Path;
@@ -67,6 +56,18 @@ const platform = Options.choice('platform', ['neutral', 'node', 'browser']).pipe
 );
 
 export const CommandConfig = {
-  config: Options.keyValueMap('c').pipe(Options.optional),
+  configFile: Options.file('config').pipe(
+    Options.withDefault('twin.config.json'),
+    Options.withAlias('c'),
+  ),
+  watch: Options.boolean('watch').pipe(
+    Options.withDefault(false),
+    Options.withAlias('w'),
+  ),
 };
-export const BuildConfig = { rn, minify, vscode, platform };
+const watch = Options.boolean('watch').pipe(
+  Options.withDefault(false),
+  Options.withAlias('w'),
+);
+
+export const BuildConfig = { rn, minify, watch, vscode, platform };

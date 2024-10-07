@@ -1,14 +1,12 @@
 {
+  "$schema": "../../node_modules/@native-twin/cli/twin.schema.json",
   "platform": "node",
   "reactNative": false,
   "minify": false,
-  "logs": false,
+  "logs": true,
   "types": true,
   "vscode": false,
   "entries": [
-    "./src/index.ts",
-    "./src/KeyMap/index.ts",
-    "./src/tree/index.ts",
-    "./src/server/index.ts"
+    "./src"
   ]
 }

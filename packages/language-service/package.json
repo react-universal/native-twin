@@ -15,25 +15,25 @@
   "author": "Cristhian Gutierrez",
   "exports": {
     ".": {
-      "require": "./build/cjs/index.cjs",
-      "import": "./build/esm/index.mjs",
-      "types": "./build/types/index.d.ts"
+      "types": "./build/index.d.ts",
+      "require": "./build/index.js",
+      "import": "./build/esm/index.js"
     },
     "./browser": {
-      "require": "./build/cjs/browser.cjs",
-      "import": "./build/esm/browser.mjs",
-      "types": "./build/types/browser.d.ts"
+      "types": "./build/browser.d.ts",
+      "require": "./build/browser.js",
+      "import": "./build/esm/browser.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/cjs/index.cjs",
-  "module": "./build/esm/index.mjs",
-  "types": "./build/types/index.d.ts",
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
-    "build": "yarn twin build",
+    "build": "twin build",
     "build:esbuild:watch": "node esbuild.mjs --watch",
     "build:tsc:watch": "tsc -p tsconfig.build.json --watch",
-    "build:watch": "tsc -p tsconfig.build.json --watch",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "jest --passWithNoTests --testTimeout 100000",
@@ -46,7 +46,7 @@
     "@native-twin/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "^2.9.3",
     "cssbeautify": "0.3.1",
-    "effect": "^3.7.3",
+    "effect": "^3.8.4",
     "markdown-it": "^14.1.0",
     "match-sorter": "6.3.4",
     "showdown": "2.1.0",

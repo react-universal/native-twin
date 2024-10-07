@@ -6,8 +6,10 @@
     "declarationMap": true,
     "outDir": "build",
     "importHelpers": false,
+    "declaration": true,
+    "emitDeclarationOnly": false,
     "noEmit": false,
     "sourceMap": true
   },
-  "exclude": ["./src/__tests__/", "build"]
+  "exclude": ["./src/__tests__", "build"]
 }

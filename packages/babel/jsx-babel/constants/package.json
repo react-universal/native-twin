@@ -1,5 +1,5 @@
 {
-  "main": "../../build/cjs/constants",
+  "main": "../../build/constants",
   "module": "../../build/esm/constants",
-  "types": "../../build/types/constants/index.d.ts"
+  "types": "../../build/constants/index.d.ts"
 }

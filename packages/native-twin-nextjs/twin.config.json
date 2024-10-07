@@ -5,8 +5,6 @@
   "types": true,
   "vscode": false,
   "entries": [
-    "./src/_app.ts",
-    "./src/app.tsx",
-    "./src/_document.ts"
+    "./src"
   ]
 }

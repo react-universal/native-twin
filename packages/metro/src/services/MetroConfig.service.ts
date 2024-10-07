@@ -9,9 +9,9 @@ import {
   InternalTwinConfig,
   setupNativeTwin,
 } from '@native-twin/babel/jsx-babel';
-import { TailwindConfig } from '@native-twin/core';
-import { InternalTwFn } from '@native-twin/language-service';
-import {
+import type { TailwindConfig } from '@native-twin/core';
+import type { InternalTwFn } from '@native-twin/language-service';
+import type {
   ComposableIntermediateConfigT,
   MetroWithNativeTwindOptions,
 } from '../metro.types';

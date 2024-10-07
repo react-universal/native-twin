@@ -1,4 +1,4 @@
-import { Component, createElement, forwardRef } from 'react';
+import { createElement, forwardRef } from 'react';
 import { cx, tw } from '@native-twin/core';
 import type { JSXFunction, JSXInternalProps } from '../../types/jsx.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
@@ -32,6 +32,7 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
     props = { ...props, ref };
     for (const config of configs) {
       const originalTarget: JSXTarget = props[config.target] ?? {};
+
       let target: JSXTarget = Array.isArray(originalTarget)
         ? [...originalTarget]
         : { ...originalTarget, $$css: true };
@@ -65,10 +66,7 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
     ) {
       delete props?.['twEnabled'];
       return (baseComponent as any).render(props, props['ref']);
-    } else if (
-      typeof baseComponent === 'function' &&
-      !(baseComponent.prototype instanceof Component)
-    ) {
+    } else if (typeof baseComponent === 'function') {
       delete props?.['twEnabled'];
       return (baseComponent as any)(props);
     } else {

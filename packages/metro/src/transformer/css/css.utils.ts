@@ -1,13 +1,13 @@
 import { transformPostCssModule } from '@expo/metro-config/build/transform-worker/postcss';
-import { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
 import CodeBlockWriter from 'code-block-writer';
-import { pipe } from 'effect';
+import { pipe } from 'effect/Function';
 import worker from 'metro-transform-worker';
 // @ts-expect-error
 import countLines from 'metro/src/lib/countLines';
-import { NativeTwinTransformerOpts } from '@native-twin/babel/jsx-babel/models';
+import type { NativeTwinTransformerOpts } from '@native-twin/babel/jsx-babel/models';
 import { escapeBackticksAndOctals } from '@native-twin/helpers';
 import { pathToHtmlSafeName } from '@native-twin/helpers/server';
+import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
 
 export const transformCSSExpo = async (
   config: NativeTwinTransformerOpts,

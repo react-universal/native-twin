@@ -1,4 +1,5 @@
 {
-  "main": "../build/cjs/server/index.cjs",
-  "module": "../build/esm/server/index.mjs"
+  "main": "../build/server/index.js",
+  "module": "../build/esm/server/index.js",
+  "types": "../build/server/index.d.ts"
 }

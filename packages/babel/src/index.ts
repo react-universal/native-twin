@@ -1,5 +1,3 @@
-import { PluginObj } from '@babel/core';
-import { addNamed } from '@babel/helper-module-imports';
 import * as Effect from 'effect/Effect';
 import { PLUGIN_IMPORT_META } from './constants/plugin.constants';
 import {
@@ -7,6 +5,8 @@ import {
   JSXImportPluginContext,
 } from './jsx-import/JSXImport.service';
 import { BabelAPI, TwinBabelOptions } from './types/plugin.types';
+import { PluginObj } from '@babel/core';
+import { addNamed } from '@babel/helper-module-imports';
 
 const program = Effect.scoped(
   Effect.gen(function* () {
@@ -35,7 +35,7 @@ const program = Effect.scoped(
 
 // const layer = Logger.replace(Logger.defaultLogger, BabelLogger);
 
-export default function nativeTwinBabelPlugin(
+function nativeTwinBabelPlugin(
   _: BabelAPI,
   options: TwinBabelOptions,
   cwd: string,
@@ -48,3 +48,5 @@ export default function nativeTwinBabelPlugin(
     Effect.runSync,
   );
 }
+
+export default nativeTwinBabelPlugin;

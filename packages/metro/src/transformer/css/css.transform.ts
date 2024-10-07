@@ -3,7 +3,7 @@
 // import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import worker, { TransformResponse } from 'metro-transform-worker';
+import worker, { type TransformResponse } from 'metro-transform-worker';
 // import { pipe } from 'effect/Function';
 // @ts-expect-error
 import countLines from 'metro/src/lib/countLines';
@@ -11,7 +11,7 @@ import { pathToHtmlSafeName } from '@native-twin/helpers/server';
 // import postcss from 'postcss';
 // import { sheetEntriesToCss } from '@native-twin/css';
 import { MetroWorkerService } from '../../services/MetroWorker.service';
-import { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
+import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
 
 export const transformCSS = Effect.gen(function* () {
   const { config, input, readCSSOutput } = yield* MetroWorkerService;

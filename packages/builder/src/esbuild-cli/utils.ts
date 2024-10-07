@@ -3,10 +3,10 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import esbuild from 'esbuild';
 import path from 'path';
-import { CliConfigFile } from './esbuild.config';
-import { requireResolvePlugin } from './plugins/requireResolve.plugin';
+import { CliConfigFile } from './cli.types';
+import { requireResolvePlugin } from './requireResolve.plugin';
 
-const externals = [
+export const externals = [
   // VSCODE
   'vscode',
   'monaco-editor',

@@ -1,5 +1,3 @@
-import { Path } from '@effect/platform';
-import { NodeFileSystem, NodePath } from '@effect/platform-node';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
@@ -13,6 +11,9 @@ import type {
 import { TwinLoggerLive } from './services/Logger.service';
 import { makeTwinConfig, MetroConfigService } from './services/MetroConfig.service';
 import { getTransformerOptions } from './services/programs/metro.programs';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as NodePath from '@effect/platform-node/NodePath';
+import * as Path from '@effect/platform/Path';
 
 const FSLive = Layer.mergeAll(NodeFileSystem.layer, NodePath.layer, Path.layer);
 

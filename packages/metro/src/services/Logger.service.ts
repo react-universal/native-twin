@@ -1,6 +1,4 @@
-import * as Ansi from '@effect/printer-ansi/Ansi';
-import * as Doc from '@effect/printer-ansi/AnsiDoc';
-import { FiberId } from 'effect';
+import * as FiberId from 'effect/FiberId';
 // import * as Color from '@effect/printer-ansi/Color';
 import { apply, pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
@@ -9,6 +7,8 @@ import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
 import * as String from 'effect/String';
+import * as Ansi from '@effect/printer-ansi/Ansi';
+import * as Doc from '@effect/printer-ansi/AnsiDoc';
 
 const WEB_COLOR = pipe(
   Ansi.combine(Ansi.bgBlue),

@@ -23,20 +23,20 @@
   },
   "sideEffects": false,
   "exports": {
+    "./app": {
+      "types": "./build/app/index.d.ts",
+      "import": "./build/esm/app/index.js",
+      "require": "./build/app/index.js"
+    },
     "./_app": {
-      "types": "./build/types/_app.d.ts",
-      "import": "./build/esm/_app.mjs",
-      "require": "./build/cjs/_app.cjs"
+      "types": "./build/_app.d.ts",
+      "import": "./build/esm/_app.js",
+      "require": "./build/_app.js"
     },
     "./_document": {
-      "types": "./build/types/_document.d.ts",
-      "import": "./build/esm/_document.mjs",
-      "require": "./build/cjs/_document.cjs"
-    },
-    "./app": {
-      "types": "./build/types/app.d.ts",
-      "import": "./build/esm/app.mjs",
-      "require": "./build/cjs/app.cjs"
+      "types": "./build/_document.d.ts",
+      "import": "./build/esm/_document.js",
+      "require": "./build/_document.js"
     },
     "./package.json": "./package.json"
   },
@@ -51,8 +51,8 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "yarn twin build",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\""

@@ -6,7 +6,7 @@ import {
   Touchable,
 } from 'react-native';
 import { RegisteredComponent } from '@native-twin/css/jsx';
-import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
+import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
 import { groupContext } from '../../context';
 import { StyleSheet } from '../../sheet';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants';

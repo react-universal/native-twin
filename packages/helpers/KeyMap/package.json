@@ -1,4 +1,5 @@
 {
   "main": "../build/cjs/KeyMap",
-  "module": "../build/esm/KeyMap"
+  "module": "../build/esm/KeyMap",
+  "types": "../build/KeyMap/index.d.ts"
 }

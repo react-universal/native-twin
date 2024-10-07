@@ -1,12 +1,17 @@
 import esbuild from 'esbuild';
+import minimist from 'minimist';
 import path from 'path';
 
+const args = minimist(process.argv.slice(2), {
+  boolean: ['watch', 'minify'],
+});
+
 esbuild
-  .build({
-    entryPoints: [path.join(process.cwd(), './src/twin-cli.ts')],
-    // outExtension: {
-    //   '.js': '.cjs',
-    // },
+  .context({
+    entryPoints: [
+      path.join(process.cwd(), './src/twin-cli.ts'),
+      path.join(process.cwd(), './src/config/twin.schema.ts'),
+    ],
     outdir: 'build',
     sourcemap: true,
     platform: 'node',
@@ -14,7 +19,13 @@ esbuild
     logLevel: 'info',
     packages: 'external',
     bundle: true,
-    external: ['esbuild', '@babel/*', 'effect', '@effect/*'],
+    external: ['esbuild', 'tsup', '@babel/*', 'effect', '@effect/*'],
     minify: false,
   })
-  .catch(console.error);
+  .then(async (x) => {
+    await x.rebuild();
+    if (args.watch) {
+      return x.watch();
+    }
+    x.dispose();
+  });

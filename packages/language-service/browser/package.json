@@ -1,5 +1,5 @@
 {
-  "main": "../build/cjs/browser.js",
+  "main": "../build/browser.js",
   "module": "../build/esm/browser.js",
-  "types": "../build/types/browser.d.ts"
+  "types": "../build/browser.d.ts"
 }

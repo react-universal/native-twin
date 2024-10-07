@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "android": "expo start --android -c",
+    "clean": "rm -rf .expo && rm -rf node_modules",
     "ios": "expo start --ios -c",
     "lint": "echo $HOME",
     "mobile:dev": "expo start --clear",

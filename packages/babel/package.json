@@ -16,57 +16,55 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./build/types/index.d.ts",
-      "require": "./build/cjs/index.cjs",
-      "import": "./build/esm/index.mjs"
+      "types": "./build/index.d.ts",
+      "import": "./build/esm/index.js",
+      "require": "./build/index.js"
     },
     "./babel": {
-      "require": "./babel.js",
       "import": "./babel.js",
-      "default": "./babel.js"
+      "require": "./babel.js"
     },
     "./plugin": {
-      "require": "./plugin.js",
       "import": "./plugin.js",
-      "default": "./plugin.js"
+      "require": "./plugin.js"
     },
     "./jsx-babel": {
-      "types": "./build/types/jsx/index.d.ts",
-      "require": "./build/cjs/jsx/index.cjs",
-      "import": "./build/esm/jsx/index.mjs"
+      "types": "./build/jsx/index.d.ts",
+      "import": "./build/esm/jsx/index.js",
+      "require": "./build/jsx/index.js"
     },
     "./jsx-babel/constants": {
-      "types": "./build/types/constants/index.d.ts",
-      "require": "./build/cjs/constants/index.cjs",
-      "import": "./build/esm/constants/index.mjs"
+      "types": "./build/constants/index.d.ts",
+      "import": "./build/esm/constants/index.js",
+      "require": "./build/constants/index.js"
     },
     "./jsx-babel/models": {
-      "types": "./build/types/jsx/models/index.d.ts",
-      "require": "./build/cjs/jsx/models/index.cjs",
-      "import": "./build/esm/jsx/models/index.mjs"
+      "types": "./build/jsx/models/index.d.ts",
+      "import": "./build/esm/jsx/models/index.js",
+      "require": "./build/jsx/models/index.js"
     },
     "./jsx-babel/plugin": {
-      "types": "./build/types/jsx/plugin/index.d.ts",
-      "require": "./build/cjs/jsx/plugin/index.cjs",
-      "import": "./build/esm/jsx/plugin/index.mjs"
+      "types": "./build/jsx/plugin/index.d.ts",
+      "import": "./build/esm/jsx/plugin/index.js",
+      "require": "./build/jsx/plugin/index.js"
     },
     "./jsx-babel/services": {
-      "types": "./build/types/jsx/services/index.d.ts",
-      "require": "./build/cjs/jsx/services/index.cjs",
-      "import": "./build/esm/jsx/services/index.mjs"
+      "types": "./build/jsx/services/index.d.ts",
+      "import": "./build/esm/jsx/services/index.js",
+      "require": "./build/jsx/services/index.js"
     },
     "./jsx-babel/twin": {
-      "types": "./build/types/jsx/twin/index.d.ts",
-      "require": "./build/cjs/jsx/twin/index.cjs",
-      "import": "./build/esm/jsx/twin/index.mjs"
+      "types": "./build/jsx/twin/index.d.ts",
+      "import": "./build/esm/jsx/twin/index.js",
+      "require": "./build/jsx/twin/index.js"
     }
   },
-  "main": "./build/cjs/index",
+  "main": "./build/index",
   "module": "./build/esm/index",
-  "types": "./build/types/index.d.ts",
+  "types": "./build/index.d.ts",
   "scripts": {
-    "build": "yarn twin build",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
@@ -82,7 +80,7 @@
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "effect": "^3.7.3"
+    "effect": "^3.8.4"
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",

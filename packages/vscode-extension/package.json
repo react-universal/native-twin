@@ -148,7 +148,7 @@
   ],
   "dependencies": {
     "@native-twin/language-server": "workspace:*",
-    "effect": "^3.7.3",
+    "effect": "^3.8.4",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {

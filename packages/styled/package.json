@@ -21,10 +21,10 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "./build/cjs/index",
+  "main": "./build/index",
   "module": "./build/esm/index",
-  "browser": "./build/cjs/index",
-  "types": "./build/types/index.d.ts",
+  "browser": "./build/index",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -32,8 +32,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "yarn twin build",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:watch": "twin build -w",
     "bundle": "yarn clean && yarn twin-build",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",

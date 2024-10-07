@@ -16,30 +16,35 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./build/esm/index.mjs",
-      "require": "./build/cjs/index.cjs",
-      "types": "./build/types/index.d.ts"
+      "types": "./build/index.d.ts",
+      "import": "./build/esm/index.js",
+      "require": "./build/index.js"
+    },
+    "./react": {
+      "types": "./build/react.d.ts",
+      "import": "./build/esm/react.js",
+      "require": "./build/react.js"
     },
     "./KeyMap": {
-      "import": "./build/esm/KeyMap/index.mjs",
-      "require": "./build/cjs/KeyMap/index.cjs",
-      "types": "./build/types/KeyMap/index.d.ts"
+      "types": "./build/KeyMap/index.d.ts",
+      "import": "./build/esm/KeyMap/index.js",
+      "require": "./build/KeyMap/index.js"
     },
     "./tree": {
-      "import": "./build/esm/tree/index.mjs",
-      "require": "./build/cjs/tree/index.cjs",
-      "types": "./build/types/tree/index.d.ts"
+      "types": "./build/tree/index.d.ts",
+      "import": "./build/esm/tree/index.js",
+      "require": "./build/tree/index.js"
     },
     "./server": {
-      "import": "./build/esm/server/index.mjs",
-      "require": "./build/cjs/server/index.cjs",
-      "types": "./build/types/server/index.d.ts"
+      "types": "./build/server/index.d.ts",
+      "import": "./build/esm/server/index.js",
+      "require": "./build/server/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/cjs/index.cjs",
-  "module": "./build/esm/index.mjs",
-  "types": "./build/types/index.d.ts",
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -47,10 +52,9 @@
     "README.md"
   ],
   "scripts": {
-    "build": "yarn twin build",
-    "build:twin": "twin-build",
+    "build": "twin build",
     "build:types": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",

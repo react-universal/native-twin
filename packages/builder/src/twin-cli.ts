@@ -1,100 +1,79 @@
-import * as Array from 'effect/Array';
-import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';
+import * as Fiber from 'effect/Fiber';
 import { pipe } from 'effect/Function';
-import * as Option from 'effect/Option';
+import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import * as Tuple from 'effect/Tuple';
-import esbuild from 'esbuild';
 import pkg from '../package.json';
-import * as Configs from './esbuild.config';
-import { createEsbuildContext, getEsbuildConfig } from './utils';
-import * as Command from '@effect/cli/Command';
+import * as CliConfigs from './config/cli.config';
+import { TypescriptService } from './ts/twin.types';
+import { TSUpBuild } from './tsup/twin.tsup';
+import * as CliCommand from '@effect/cli/Command';
+import * as NodeCommandExecutor from '@effect/platform-node/NodeCommandExecutor';
 import * as NodeContext from '@effect/platform-node/NodeContext';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as NodePath from '@effect/platform-node/NodePath';
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
-import * as CreateCommand from '@effect/platform/Command';
-import * as CommandExecutor from '@effect/platform/CommandExecutor';
 
-const twinCli = Command.make('twin-cli', Configs.CommandConfig, (commandConfigs) =>
-  Option.match(commandConfigs.config, {
-    onNone: () => Console.log("Running 'twinCli'"),
-    onSome: (configs) => {
-      const keyValuePairs = Array.fromIterable(configs)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(', ');
-      return Console.log(
-        `Running 'TwinCli' with the following configs: ${keyValuePairs}`,
-      );
-    },
+const MainNodeContext = NodeCommandExecutor.layer.pipe(
+  Layer.provideMerge(NodeFileSystem.layer),
+  Layer.merge(NodePath.layer),
+  Layer.merge(NodeContext.layer),
+);
+
+const TwinContext = TypescriptService.Live.pipe(Layer.provideMerge(TSUpBuild.Live));
+
+const MainLive = TwinContext.pipe(Layer.provideMerge(MainNodeContext));
+
+const twinCli = CliCommand.make('twin-cli', CliConfigs.CommandConfig).pipe(
+  CliCommand.withDescription('Twin Cli'),
+);
+
+const twinBuild = CliCommand.make('build', CliConfigs.BuildConfig, (buildConfig) =>
+  Effect.gen(function* () {
+    const mainCli = yield* twinCli;
+    const bundler = yield* TSUpBuild;
+    const mainConfig = yield* CliConfigs.loadConfigFile(process.cwd());
+    const shouldWatch = buildConfig.watch || mainCli.watch;
+
+    const buildStream = yield* pipe(
+      Effect.if(Effect.succeed(shouldWatch), {
+        onTrue: () => bundler.watch(mainConfig, shouldWatch),
+        onFalse: () => bundler.build(mainConfig, shouldWatch),
+      }),
+    );
+
+    const buildRunner = pipe(
+      buildStream,
+      Stream.mapEffect((x) => Effect.log(x)),
+      Stream.runDrain,
+    );
+
+    if (!shouldWatch) {
+      yield* bundler.addFinalizer;
+      yield* buildRunner;
+      yield* Effect.interrupt;
+    } else {
+      const latch = yield* pipe(buildRunner, Effect.fork);
+      yield* pipe(latch, Fiber.await);
+    }
   }),
 );
 
-const generateTypesCommand = pipe(
-  CreateCommand.make('npx', 'tsc', '-p tsconfig.build.json'),
-  CreateCommand.workingDirectory(process.cwd()),
-  CreateCommand.runInShell(true),
+const run = twinCli.pipe(
+  CliCommand.withSubcommands([twinBuild]),
+  CliCommand.run({
+    name: 'Twin Cli',
+    version: `v${pkg.version}`,
+  }),
 );
 
-const twinBuild = Command.make('build', Configs.BuildConfig, (_buildConfig) =>
-  Effect.flatMap(twinCli, (_parentConfig) =>
-    Effect.gen(function* () {
-      const executor = yield* CommandExecutor.CommandExecutor;
-      const ConfigFile = yield* Configs.loadConfigFile(process.cwd());
-      const esmConfig = getEsbuildConfig('esm', ConfigFile);
-      const commonJSConfig = getEsbuildConfig('cjs', ConfigFile);
-      if (ConfigFile.logs) {
-        yield* Console.log('CONFIG: ', ConfigFile);
-      }
-
-      if (ConfigFile.types) {
-        yield* Console.info('Generating types...');
-        const typings = yield* pipe(generateTypesCommand, executor.string);
-        yield* Console.info('Types Generated! ', typings);
-      }
-
-      const contexts = yield* pipe(
-        createEsbuildContext(...esmConfig, ...commonJSConfig),
-        Effect.all,
-      );
-
-      yield* pipe(
-        Stream.fromIterable(contexts),
-        Stream.mapEffect((x) =>
-          Effect.promise(() => x.rebuild()).pipe(Effect.map((y) => Tuple.make(x, y))),
-        ),
-        Stream.mapEffect(([context, result]) =>
-          pipe(
-            Effect.promise(() => context.dispose()),
-            Effect.flatMap(() =>
-              Effect.promise(() =>
-                esbuild.analyzeMetafile(result.metafile ?? 'metafile.json'),
-              ),
-            ),
-          ),
-        ),
-        Stream.runForEach((x) =>
-          Effect.if(Effect.succeed(ConfigFile.logs), {
-            onFalse: () => Effect.void,
-            onTrue: () => Console.info(x),
-          }),
-        ),
-      );
-    }),
-  ),
-);
-
-const command = twinCli.pipe(Command.withSubcommands([twinBuild]));
-const cli = Command.run(command, {
-  name: 'Twin build',
-  version: `v${pkg.version}`,
-});
-
-Effect.suspend(() => cli(process.argv)).pipe(
-  Effect.provide(NodeContext.layer),
+Effect.suspend(() => run(process.argv)).pipe(
+  Effect.provide(MainLive),
   Effect.tapErrorCause(Effect.logError),
+  Effect.scoped,
   NodeRuntime.runMain,
+  // Effect.runFork,
+  // Fiber.await,
+  // Effect.map((x) => x),
+  // Effect.runPromise,
 );
-
-// cli(process.argv)
-//   .pipe(Effect.provide(NodeContext.layer), Effect.runPromiseExit)
-//   .catch(console.error);

@@ -73,3 +73,27 @@ export function addTwinPropsToElement(
     );
   }
 }
+
+export function compileCssForElement(
+  elementNode: JSXElementNode,
+  entries: RuntimeComponentEntry[],
+  options: {
+    componentID: boolean;
+    order: boolean;
+    styledProps: boolean;
+    templateStyles: boolean;
+  },
+) {
+  // const stringEntries = entriesToObject(elementNode.id, getRawSheet(entries));
+  // const astProps = runtimeEntriesToAst(stringEntries.styledProp);
+  // const treeProp = elementNodeToTree(elementNode, filename, elementNode.);
+  // const astTemplate = runtimeEntriesToAst(stringEntries.templateEntries);
+// 
+  // if (options.componentID) {
+  //   addJsxAttribute(elementNode.path, '_twinComponentID', elementNode.id);
+  // }
+
+  // if (options.order) {
+  //   addJsxAttribute(elementNode.path, '_twinOrd', elementNode.order);
+  // }
+}

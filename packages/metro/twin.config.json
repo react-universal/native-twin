@@ -9,6 +9,6 @@
   ],
   "logs": false,
   "entries": [
-    "./src/index.ts"
+    "./src"
   ]
 }

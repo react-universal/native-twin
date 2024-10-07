@@ -6,9 +6,6 @@
   "vscode": false,
   "logs": false,
   "entries": [
-    "./src/index.ts",
-    "./src/css/parser/index.ts",
-    "./src/jsx/index.ts",
-    "./src/tailwind/tailwind-rule.parser.ts"
+    "./src"
   ]
 }

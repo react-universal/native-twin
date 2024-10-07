@@ -41,9 +41,13 @@ export type {
   UnionToIntersection,
   ColorsRecord,
   AnyPrimitive,
+  PropsFrom,
+  OmitUndefined,
+  ClassNameProps,
+  StyledComponentProps,
 } from './utility.types';
 
-export { warn, WarningEventMap } from './warn';
+export { warn, type WarningEventMap } from './warn';
 
 export {
   createExponentialUnits,
@@ -52,12 +56,3 @@ export {
 } from './create-value.utils';
 
 export { flattenObjectByPath, flattenColorPalette } from './object.utils';
-
-export {
-  Atom,
-  AtomGetter,
-  atom,
-  atomStateMap,
-  useAtom,
-  useAtomValue,
-} from './atom.store';

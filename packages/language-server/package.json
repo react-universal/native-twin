@@ -13,14 +13,14 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "main": "build/cjs/index.cjs",
-  "module": "build/esm/index.mjs",
-  "types": "build/types/index.d.ts",
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/index.d.ts",
   "bin": {
     "native-twin-language-server": "./bin/native-twin-language-server"
   },
   "scripts": {
-    "build": "yarn twin build",
+    "build": "twin build",
     "build:tsc": "tsc -p tsconfig.build.json",
     "build:tsc:watch": "tsc -p tsconfig.build.json --watch",
     "build:watch": "node esbuild.mjs --watch",
@@ -36,7 +36,7 @@
     "@native-twin/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "^2.9.3",
     "cssbeautify": "0.3.1",
-    "effect": "^3.7.3",
+    "effect": "^3.8.4",
     "match-sorter": "6.3.4",
     "showdown": "2.1.0",
     "ts-morph": "^23.0.0",

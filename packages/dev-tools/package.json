@@ -18,8 +18,8 @@
   },
   "license": "MIT",
   "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "dist",
@@ -29,14 +29,14 @@
     "build": "tsc -p tsconfig.build.json",
     "build:all": "cd webui && npx expo export -p web --output-dir ../dist",
     "build:watch": "tsc -p tsconfig.build.json --watch",
-    "clean": "expo-module clean",
+    "clean": "expo-module clean && rm -rf dist && rm -rf .expo",
     "prepublishOnly": "expo-module prepublishOnly && cd webui && npx expo export -p web --output-dir ../dist",
     "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
   },
   "dependencies": {
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
-    "effect": "^3.7.3",
+    "effect": "^3.8.4",
     "eventemitter3": "^5.0.1"
   },
   "devDependencies": {

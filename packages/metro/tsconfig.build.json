@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "moduleResolution": "Bundler",
-    "outDir": "build/types",
+    "outDir": "build",
     "module": "ESNext",
     "declarationMap": true,
     "noEmit": false,

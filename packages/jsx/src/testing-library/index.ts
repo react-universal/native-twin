@@ -1,8 +1,7 @@
+import type { CompleteStyle } from '@native-twin/css';
 import { ComponentProps, ComponentType, forwardRef } from 'react';
-import { render as tlRender } from '@testing-library/react-native';
 import * as JSX from 'react/jsx-runtime';
 import { setup } from '@native-twin/core';
-import type { CompleteStyle } from '@native-twin/css';
 import '../components';
 import wrapJSX from '../jsx-wrapper';
 import { StyleSheet } from '../sheet/StyleSheet';
@@ -13,9 +12,35 @@ import type {
   NativeTwinGeneratedProps,
 } from '../types/styled.types';
 import { INTERNAL_RESET } from '../utils/constants';
-import tailwindConfig from './tailwind.config';
+import { render as tlRender } from '@testing-library/react-native';
 
-setup(tailwindConfig);
+import { defineConfig } from '@native-twin/core';
+import { presetTailwind } from '@native-twin/preset-tailwind';
+
+const testingConfig = defineConfig({
+  content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
+  root: {
+    rem: 16,
+  },
+  theme: {
+    extend: {
+      colors: {
+        primary: 'blue',
+      },
+      fontFamily: {
+        DEFAULT: 'Inter-Regular',
+        inter: 'Inter-Regular',
+        'inter-bold': 'Inter-Bold',
+        'inter-medium': 'Inter-Medium',
+        sans: 'Inter-Regular',
+      },
+    },
+  },
+  presets: [presetTailwind()],
+});
+
+
+setup(testingConfig);
 
 declare global {
   namespace jest {

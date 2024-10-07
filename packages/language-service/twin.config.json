@@ -5,7 +5,6 @@
   "types": true,
   "vscode": false,
   "entries": [
-    "./src/index.ts",
-    "./src/browser.ts"
+    "./src"
   ]
 }

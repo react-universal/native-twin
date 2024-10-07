@@ -1,6 +1,6 @@
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
-import { RuntimeTW } from '@native-twin/core';
+import type { RuntimeTW } from '@native-twin/core';
 import {
   getGroupedEntries,
   sortSheetEntries,

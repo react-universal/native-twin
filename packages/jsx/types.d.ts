@@ -4,6 +4,8 @@ import {
   ScrollViewPropsIOS,
   Touchable,
   VirtualizedListProps,
+  StyleSheetProperties,
+  StyleSheet,
 } from 'react-native';
 
 declare module '@react-native/virtualized-lists' {
@@ -23,6 +25,14 @@ declare module 'react-native' {
     contentContainerClassName?: string;
     indicatorClassName?: string;
   }
+
+  namespace StyleSheet {
+    function getSheet(): {
+      textContent: string;
+      id: string;
+    };
+  }
+
   interface FlatListProps<ItemT> extends VirtualizedListProps<ItemT> {
     debug?: boolean;
     columnWrapperClassName?: string;

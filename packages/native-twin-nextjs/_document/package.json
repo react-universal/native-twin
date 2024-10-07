@@ -1,5 +1,5 @@
 {
-  "main": "../build/cjs/_document.cjs",
-  "module": "../build/esm/_document.mjs",
-  "types": "../build/types/_document.d.ts"
+  "main": "../build/_document.js",
+  "module": "../build/esm/_document.js",
+  "types": "../build/_document.d.ts"
 }

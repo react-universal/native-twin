@@ -12,7 +12,7 @@ import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
 } from '@native-twin/css';
-import { Atom } from '@native-twin/helpers';
+import { Atom } from '@native-twin/helpers/react';
 import { createComponentSheet } from '../sheet/StyleSheet';
 import { createPropState } from '../utils/styled.utils';
 

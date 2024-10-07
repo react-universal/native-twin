@@ -16,18 +16,18 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./build/types/index.d.ts",
-      "require": "./build/cjs/index.cjs",
-      "import": "./build/esm/index.mjs"
+      "types": "./build/index.d.ts",
+      "require": "./build/index.js",
+      "import": "./build/esm/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./build/cjs/index.cjs",
-  "module": "./build/esm/index.mjs",
-  "types": "./build/types/index.d.ts",
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
-    "build": "yarn twin build",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -37,12 +37,12 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@effect/cli": "^0.42.3",
-    "@effect/platform": "^0.64.1",
-    "@effect/platform-node": "^0.59.1",
+    "@effect/cli": "^0.45.2",
+    "@effect/platform": "^0.66.2",
+    "@effect/platform-node": "^0.61.3",
     "@effect/platform-node-shared": "^0.13.3",
     "@effect/printer-ansi": "^0.35.2",
-    "@effect/schema": "^0.72.4",
+    "@effect/schema": "^0.74.1",
     "@native-twin/babel": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
@@ -50,7 +50,7 @@
     "@native-twin/language-service": "workspace:*",
     "code-block-writer": "^13.0.1",
     "css-tree": "^2.3.1",
-    "effect": "^3.7.3",
+    "effect": "^3.8.4",
     "fast-check": "^3.21.0",
     "jiti": "1.21.0",
     "recast": "^0.23.9",

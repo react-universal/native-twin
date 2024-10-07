@@ -9,14 +9,6 @@
       "path": "../sites/twin.run"
     },
     {
-      "name": "📦 @lib/language-service",
-      "path": "../packages/language-service"
-    },
-    {
-      "name": "📦 @lib/language-server",
-      "path": "../packages/language-server"
-    },
-    {
       "name": "📦 @lib/jsx",
       "path": "../packages/jsx"
     },
@@ -95,7 +87,7 @@
       "**/*.code-search": true,
       "**/build": true
     },
-    "typescript.tsdk": "twin-run/node_modules/typescript/lib",
+    "typescript.tsdk": "root/node_modules/typescript/lib",
     "typescript.tsserver.log": "verbose",
     "cSpell.words": [
       "sastan",

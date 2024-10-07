@@ -10,7 +10,7 @@ import {
   BabelTransformerServiceLive,
 } from '@native-twin/babel/jsx-babel/services';
 import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.service';
-import { TransformWorkerFn } from '../services/models/metro.models';
+import type { TransformWorkerFn } from '../services/models/metro.models';
 // import { transformCSS } from './css/css.transform';
 
 const metroMainProgram = Effect.gen(function* () {
