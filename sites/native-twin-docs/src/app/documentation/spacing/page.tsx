@@ -1,5 +1,5 @@
-import { ClassToRenderer } from '@/feactures/docs/layout/ClassToRederer';
-import { HeaderDocsTop } from '@/feactures/docs/layout/HeaderDocsTop';
+import { ClassToRenderer } from '@/feactures/documentation/layout/ClassToRederer';
+import { HeaderDocsTop } from '@/feactures/documentation/layout/HeaderDocsTop';
 import tailwindClasses from '../../../../data';
 import { gapData, paddingData } from './dataSpacing';
 

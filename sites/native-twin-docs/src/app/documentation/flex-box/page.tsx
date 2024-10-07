@@ -1,7 +1,7 @@
-import { SubTitle } from '@/feactures/docs/components/SubTitle';
-import { Text } from '@/feactures/docs/components/Text';
-import { ClassToRenderer } from '@/feactures/docs/layout/ClassToRederer';
-import { HeaderDocsTop } from '@/feactures/docs/layout/HeaderDocsTop';
+import { SubTitle } from '@/feactures/documentation/components/SubTitle';
+import { Text } from '@/feactures/documentation/components/Text';
+import { ClassToRenderer } from '@/feactures/documentation/layout/ClassToRederer';
+import { HeaderDocsTop } from '@/feactures/documentation/layout/HeaderDocsTop';
 import tailwindClasses from '../../../../data';
 import { dataFlex } from './flexData';
 

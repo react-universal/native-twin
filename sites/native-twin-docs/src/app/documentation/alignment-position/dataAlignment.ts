@@ -1,4 +1,4 @@
-import { classRenderer } from '@/feactures/docs/layout/ClassToRederer';
+import { classRenderer } from '@/feactures/documentation/layout/ClassToRederer';
 
 export const alignmentData = [
   {

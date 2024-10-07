@@ -1,17 +1,19 @@
-import { classRenderer } from "@/feactures/docs/layout/ClassToRederer";
+import { classRenderer } from '@/feactures/documentation/layout/ClassToRederer';
 
- export const dataText: classRenderer[] = [{
-    title: "Text-{size}	",
-    text: "Use the text-* utilities to control the font size of an element.",
+export const dataText: classRenderer[] = [
+  {
+    title: 'Text-{size}	',
+    text: 'Use the text-* utilities to control the font size of an element.',
     code: `<p class="text-sm ...">The quick brown fox ...</p>
 <p class="text-base ...">The quick brown fox ...</p>
 <p class="text-lg ...">The quick brown fox ...</p>
 <p class="text-xl ...">The quick brown fox ...</p>
 <p class="text-2xl ...">The quick brown fox ...</p>
 `,
-  },{
-    title: "Top / Right / Bottom / Left",
-    text: "Utilities for controlling the placement of positioned elements.",
+  },
+  {
+    title: 'Top / Right / Bottom / Left',
+    text: 'Utilities for controlling the placement of positioned elements.',
     code: `<!-- Pin to top left corner -->
 <div class="relative h-32 w-32 ...">
   <div class="absolute left-0 top-0 h-16 w-16 ...">01</div>
@@ -57,46 +59,51 @@ import { classRenderer } from "@/feactures/docs/layout/ClassToRederer";
   <div class="absolute bottom-0 right-0 h-16 w-16 ...">09</div>
 </div>
 `,
-  },{
-    title: "Font Weight",
-    text: "Utilities for controlling the font weight of an element.",
+  },
+  {
+    title: 'Font Weight',
+    text: 'Utilities for controlling the font weight of an element.',
     code: `<p class="font-light ...">The quick brown fox ...</p>
 <p class="font-normal ...">The quick brown fox ...</p>
 <p class="font-medium ...">The quick brown fox ...</p>
 <p class="font-semibold ...">The quick brown fox ...</p>
 <p class="font-bold ...">The quick brown fox ...</p>
 `,
-  },{
-    title: "Text Transform",
-    text: "Utilities for controlling the transformation of text.",
+  },
+  {
+    title: 'Text Transform',
+    text: 'Utilities for controlling the transformation of text.',
     code: `<p class="normal-case ...">The quick brown fox ...</p>
 <p class="uppercase ...">The quick brown fox ...</p>
 <p class="lowercase ...">The quick brown fox ...</p>
 <p class="capitalize ...">The quick brown fox ...</p>
 `,
-  },{
-    title: "Text Decoration",
-    text: "Control how text is decorated with the underline, no-underline, and line-through utilities.",
+  },
+  {
+    title: 'Text Decoration',
+    text: 'Control how text is decorated with the underline, no-underline, and line-through utilities.',
     code: `<p class="underline ...">The quick brown fox ...</p>
 <p class="overline ...">The quick brown fox ...</p>
 <p class="line-through ...">The quick brown fox ...</p>
 <p class="no-underline ...">The quick brown fox ...</p>
 `,
-  },]
+  },
+];
 
-
-  export const dataDecoration: classRenderer[]=[{
-    title: "Text Decoration Style",
-    text: "Utilities for controlling the style of text decorations.",
+export const dataDecoration: classRenderer[] = [
+  {
+    title: 'Text Decoration Style',
+    text: 'Utilities for controlling the style of text decorations.',
     code: `<p class="underline decoration-solid ...">The quick brown fox...</p>
 <p class="underline decoration-double ...">The quick brown fox...</p>
 <p class="underline decoration-dotted ...">The quick brown fox...</p>
 <p class="underline decoration-dashed ...">The quick brown fox...</p>
 <p class="underline decoration-wavy ...">The quick brown fox...</p>
 `,
-  },{
-    title: "Text Decoration Color",
-    text: "Utilities for controlling the color of text decorations.",
+  },
+  {
+    title: 'Text Decoration Color',
+    text: 'Utilities for controlling the color of text decorations.',
     code: `<div>
   <p>
     I’m Derek, an astro-engineer based in Tattooine. I like to build X-Wings at
@@ -106,13 +113,15 @@ import { classRenderer } from "@/feactures/docs/layout/ClassToRederer";
   </p>
 </div>
 `,
-  },{
-    title: "Text Color",
-    text: "Utilities for controlling the text color of an element.",
+  },
+  {
+    title: 'Text Color',
+    text: 'Utilities for controlling the text color of an element.',
     code: `<p class="text-sky-400/100">The quick brown fox...</p>
 <p class="text-sky-400/75">The quick brown fox...</p>
 <p class="text-sky-400/50">The quick brown fox...</p>
 <p class="text-sky-400/25">The quick brown fox...</p>
 <p class="text-sky-400/0">The quick brown fox...</p>
 `,
-  },]
+  },
+];

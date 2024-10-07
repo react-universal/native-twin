@@ -1,7 +1,7 @@
-import { Code } from '@/feactures/docs/components/Code';
-import { SubTitle } from '@/feactures/docs/components/SubTitle';
-import { Text } from '@/feactures/docs/components/Text';
-import { Title } from '@/feactures/docs/components/Title';
+import { Code } from '@/feactures/documentation/components/Code';
+import { SubTitle } from '@/feactures/documentation/components/SubTitle';
+import { Text } from '@/feactures/documentation/components/Text';
+import { Title } from '@/feactures/documentation/components/Title';
 
 const NextAppDir = () => {
   return (
