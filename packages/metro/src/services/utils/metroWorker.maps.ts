@@ -1,5 +1,5 @@
 import { toBufferThenString } from '@native-twin/helpers/server';
-import { MetroWorkerInput } from '../models/metro.models';
+import type { MetroWorkerInput } from '../models/metro.models';
 
 export const metroWorkerInputToCompilerCtx = ({
   config,

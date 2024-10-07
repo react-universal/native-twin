@@ -1,10 +1,11 @@
-import {
-  parsedRuleToClassName,
-  type CompleteStyle,
-  type SheetEntryDeclaration,
-} from '@native-twin/css';
+import { parsedRuleToClassName, type SheetEntryDeclaration } from '@native-twin/css';
 import { asArray, toColorValue } from '@native-twin/helpers';
-import type { Rule, RuleMeta, RuleResolver } from '../types/config.types';
+import type {
+  CompleteStyleKeys,
+  Rule,
+  RuleMeta,
+  RuleResolver,
+} from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
 
 export function matchCssObject(
@@ -24,7 +25,7 @@ export function matchCssObject(
 
 export function matchThemeColor(
   pattern: string,
-  property: keyof CompleteStyle,
+  property: CompleteStyleKeys,
   meta: RuleMeta = {
     feature: 'default',
     styleProperty: property,
@@ -77,6 +78,7 @@ export function matchThemeColor(
           precedence: 0,
           important: rule.i,
           animations: [],
+          preflight: false,
         };
       }
     },
@@ -96,9 +98,10 @@ export function matchAnimation<Theme extends __Theme__ = __Theme__>(
         className: animation?.[0] ?? 'NONCE',
         declarations: [] as any,
         animations: asArray(animation?.[1]),
-        important: false,
-        precedence: 0,
-        selectors: [],
+        important: parsed.i,
+        precedence: parsed.p,
+        selectors: parsed.v,
+        preflight: false,
       };
     },
   ];
@@ -107,7 +110,7 @@ export function matchAnimation<Theme extends __Theme__ = __Theme__>(
 export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
   themeSection: keyof Theme,
-  property: keyof CompleteStyle,
+  property: CompleteStyleKeys,
   meta: RuleMeta = {
     canBeNegative: false,
     feature: 'default',
@@ -162,6 +165,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
         precedence: 0,
         important: parsedRule.i,
         animations: [],
+        preflight: false,
       };
 
       function getProperties() {

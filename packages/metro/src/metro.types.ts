@@ -1,5 +1,5 @@
 import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
-import { InternalTwFn } from '@native-twin/babel/jsx-babel';
+import type { InternalTwFn } from '@native-twin/babel/jsx-babel';
 import type { TailwindConfig, __Theme__ } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 
@@ -9,6 +9,7 @@ export interface MetroWithNativeTwindOptions {
   outputDir?: string;
   configPath?: string;
   inputCSS?: string;
+  debug?: boolean;
 }
 
 /** @domain MetroResolver */

@@ -16,11 +16,12 @@ module.exports = {
   ],
   importOrder: [
     '^(.*)\.css$',
+    "@codingame/(.*)$",
     'expo/build/Expo.fx',
     'react-native-gesture-handler',
     '^(react|react-native)$',
     '<THIRD_PARTY_MODULES>',
     '^@native-twin/(.*)$',
-    '^[./]',
+    '^[./|@/]'
   ],
 };

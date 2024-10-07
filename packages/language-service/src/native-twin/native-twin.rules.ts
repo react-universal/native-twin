@@ -1,7 +1,7 @@
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
-import { RuleMeta } from '@native-twin/core';
+import type { RuleMeta } from '@native-twin/core';
 import { cornerMap, directionMap, TWScreenValueConfig } from '@native-twin/css';
 import { ColorsRecord, asArray } from '@native-twin/helpers';
 import { DEFAULT_RULE_META } from '../utils/constants.utils';

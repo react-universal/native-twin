@@ -1,3 +1,5 @@
 {
-  "main": "../build/jsx/index.js"
+  "main": "../build/jsx/index",
+  "module": "../build/esm/jsx/index",
+  "types": "../../build/jsx/index.d.ts"
 }

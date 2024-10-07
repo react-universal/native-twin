@@ -5,12 +5,8 @@
       "path": ".."
     },
     {
-      "name": "docs-site",
-      "path": "../apps/docs-site"
-    },
-    {
       "name": "twin-run",
-      "path": "../apps/twin-run"
+      "path": "../sites/twin.run"
     },
     {
       "name": "📦 @lib/jsx",
@@ -35,6 +31,10 @@
     {
       "name": "📦 @lib/css",
       "path": "../packages/css"
+    },
+    {
+      "name": "expo-app",
+      "path": "../apps/expo-app"
     },
     {
       "name": "next-pages-example",

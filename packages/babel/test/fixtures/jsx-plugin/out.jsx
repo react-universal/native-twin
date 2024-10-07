@@ -11,7 +11,8 @@ export default function App() {
       selectors: [],
       precedence: 805306368,
       important: false,
-      animations: []
+      animations: [],
+      preflight: false
     }, {
       className: "flex-1",
       declarations: [{
@@ -26,7 +27,8 @@ export default function App() {
       selectors: [],
       precedence: 805306368,
       important: false,
-      animations: []
+      animations: [],
+      preflight: false
     }, {
       className: "first:bg-red-200",
       declarations: [{
@@ -34,10 +36,11 @@ export default function App() {
         value: "rgba(254,202,202,1)",
         _tag: "COMPILED"
       }],
-      selectors: ["first", "&:first"],
+      selectors: ["&:first"],
       precedence: 805437440,
       important: false,
-      animations: []
+      animations: [],
+      preflight: false
     }],
     rawSheet: {
       base: [{
@@ -54,7 +57,20 @@ export default function App() {
         selectors: [],
         precedence: 805306368,
         important: false,
-        animations: []
+        animations: [],
+        preflight: false
+      }, {
+        className: "first:bg-red-200",
+        declarations: [{
+          prop: "backgroundColor",
+          value: "rgba(254,202,202,1)",
+          _tag: "COMPILED"
+        }],
+        selectors: ["&:first"],
+        precedence: 805437440,
+        important: false,
+        animations: [],
+        preflight: false
       }],
       dark: [],
       pointer: [],
@@ -81,21 +97,11 @@ export default function App() {
         selectors: [],
         precedence: 805306368,
         important: false,
-        animations: []
+        animations: [],
+        preflight: false
       }],
       rawSheet: {
-        base: [{
-          className: "first:bg-red-200",
-          declarations: [{
-            prop: "backgroundColor",
-            value: "rgba(254,202,202,1)",
-            _tag: "COMPILED"
-          }],
-          selectors: ["first", "&:first"],
-          precedence: 805437440,
-          important: false,
-          animations: []
-        }],
+        base: [],
         dark: [],
         pointer: [],
         group: [],
@@ -130,7 +136,8 @@ export default function App() {
         selectors: [],
         precedence: 805306368,
         important: false,
-        animations: []
+        animations: [],
+        preflight: false
       }],
       rawSheet: {
         base: [{
@@ -147,7 +154,8 @@ export default function App() {
           selectors: [],
           precedence: 805306368,
           important: false,
-          animations: []
+          animations: [],
+          preflight: false
         }],
         dark: [],
         pointer: [],
@@ -172,7 +180,8 @@ export default function App() {
           selectors: [],
           precedence: 805306368,
           important: false,
-          animations: []
+          animations: [],
+          preflight: false
         }],
         rawSheet: {
           base: [{
@@ -185,7 +194,8 @@ export default function App() {
             selectors: [],
             precedence: 805306368,
             important: false,
-            animations: []
+            animations: [],
+            preflight: false
           }],
           dark: [],
           pointer: [],
@@ -210,7 +220,8 @@ export default function App() {
           selectors: [],
           precedence: 805306368,
           important: false,
-          animations: []
+          animations: [],
+          preflight: false
         }],
         rawSheet: {
           base: [{
@@ -223,7 +234,8 @@ export default function App() {
             selectors: [],
             precedence: 805306368,
             important: false,
-            animations: []
+            animations: [],
+            preflight: false
           }],
           dark: [],
           pointer: [],

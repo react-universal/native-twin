@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/$defs/twin",
+  "$defs": {
+    "twin": {
+      "type": "object",
+      "required": [
+        "$schema",
+        "logs",
+        "minify",
+        "reactNative",
+        "platform",
+        "types",
+        "entries",
+        "vscode"
+      ],
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "logs": {
+          "$ref": "#/$defs/log"
+        },
+        "minify": {
+          "type": "boolean",
+          "default": false
+        },
+        "reactNative": {
+          "type": "boolean",
+          "default": false
+        },
+        "platform": {
+          "enum": [
+            "browser",
+            "node"
+          ]
+        },
+        "types": {
+          "type": "boolean",
+          "default": true
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "./src/index.ts"
+          ]
+        },
+        "vscode": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "description": "Twin JSON Schema",
+      "title": "Twin Schema"
+    },
+    "log": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "enum": [
+            "info",
+            "debug",
+            "verbose"
+          ]
+        }
+      ],
+      "description": "Log config",
+      "title": "build logs",
+      "default": false
+    }
+  }
+}

@@ -1,10 +1,7 @@
-import * as t from '@babel/types';
-import { FileSystem, Path } from '@effect/platform';
-import { PlatformError } from '@effect/platform/Error';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as VSCDocument from 'vscode-languageserver-textdocument';
+// import * as VSCDocument from 'vscode-languageserver-textdocument';
 import {
   createBabelAST,
   extractMappedAttributes,
@@ -12,20 +9,22 @@ import {
   templateLiteralToStringLike,
 } from '@native-twin/babel/jsx-babel';
 import { cx } from '@native-twin/core';
-import { getDocumentLanguageLocations } from '@native-twin/language-service';
+// import { getDocumentLanguageLocations } from '@native-twin/language-service';
+import * as t from '@babel/types';
+import { PlatformError } from '@effect/platform/Error';
+import * as FileSystem from '@effect/platform/FileSystem';
+import * as Path from '@effect/platform/Path';
 
-const languageDefaultTags = [
-  'tw',
-  'apply',
-  'css',
-  'variants',
-  'styled',
-  'tx',
-  'style',
-  'createVariants',
-];
-
-
+// const languageDefaultTags = [
+//   'tw',
+//   'apply',
+//   'css',
+//   'variants',
+//   'styled',
+//   'tx',
+//   'style',
+//   'createVariants',
+// ];
 
 export function readDirectoryRecursive(
   currentPath: string,
@@ -85,33 +84,33 @@ export function readDirectoryRecursive(
   });
 }
 
-export const extractDocumentLanguageRegions = (
-  filename: string,
-  text: string,
-  attributes: string[],
-) => {
-  const document = VSCDocument.TextDocument.create(filename, 'typescriptreact', 1, text);
-  const regions = getDocumentLanguageLocations(text, {
-    attributes,
-    tags: languageDefaultTags,
-  });
+// const extractDocumentLanguageRegions = (
+//   filename: string,
+//   text: string,
+//   attributes: string[],
+// ) => {
+//   const document = VSCDocument.TextDocument.create(filename, 'typescriptreact', 1, text);
+//   const regions = getDocumentLanguageLocations(text, {
+//     attributes,
+//     tags: languageDefaultTags,
+//   });
 
-  return pipe(
-    regions,
-    RA.map((x) =>
-      document.getText({
-        start: {
-          character: x.start.column,
-          line: x.start.line,
-        },
-        end: {
-          character: x.end.column,
-          line: x.end.line,
-        },
-      }),
-    ),
-  );
-};
+//   return pipe(
+//     regions,
+//     RA.map((x) =>
+//       document.getText({
+//         start: {
+//           character: x.start.column,
+//           line: x.start.line,
+//         },
+//         end: {
+//           character: x.end.column,
+//           line: x.end.line,
+//         },
+//       }),
+//     ),
+//   );
+// };
 
 // export const getFirstStyles = () =>
 //   Effect.gen(function* () {

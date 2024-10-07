@@ -2,7 +2,7 @@ import * as ReadonlyArray from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type { Range } from 'vscode-languageserver-textdocument';
-import { RuntimeTW } from '@native-twin/core';
+import type { RuntimeTW } from '@native-twin/core';
 import { TwinSheetEntry } from '../../native-twin/models/TwinSheetEntry.model';
 import {
   LocatedGroupToken,

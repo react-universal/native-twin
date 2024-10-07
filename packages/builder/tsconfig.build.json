@@ -5,6 +5,7 @@
     "outDir": "build",
     "noEmit": false,
     "module": "ESNext",
+    "emitDeclarationOnly": true,
     "declarationMap": true
   }
 }

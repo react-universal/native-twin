@@ -3,23 +3,11 @@
   "version": "0.2.0",
   "compounds": [
     {
-      "name": "Lanuch extension + TS Plugin",
-      "configurations": [
-        "Launch Extension",
-        "Launch Extension Server"
-      ],
-      "presentation": {
-        "hidden": false,
-        "group": "tools",
-        "order": 2
-      },
-      "preLaunchTask": "npm: build:tsc:watch"
-    },
-    {
       "name": "Lanuch extension Client + Server",
       "configurations": [
         "Launch Extension",
-        "Launch Extension Server"
+        "Launch Extension Server",
+        "Build language service"
       ],
       "presentation": {
         "hidden": false,

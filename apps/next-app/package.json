@@ -3,6 +3,7 @@
   "version": "1.4.10",
   "private": true,
   "scripts": {
+    "clean": "rm -rf .next",
     "lint": "next lint",
     "next:build": "next build",
     "nextjs:dev": "next dev",

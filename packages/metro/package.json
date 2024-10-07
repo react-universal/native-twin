@@ -14,11 +14,20 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "require": "./build/index.js",
+      "import": "./build/esm/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -28,12 +37,12 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@effect/cli": "^0.42.3",
-    "@effect/platform": "^0.63.3",
-    "@effect/platform-node": "^0.58.3",
+    "@effect/cli": "^0.45.2",
+    "@effect/platform": "^0.66.2",
+    "@effect/platform-node": "^0.61.3",
     "@effect/platform-node-shared": "^0.13.3",
     "@effect/printer-ansi": "^0.35.2",
-    "@effect/schema": "^0.72.2",
+    "@effect/schema": "^0.74.1",
     "@native-twin/babel": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
@@ -41,7 +50,7 @@
     "@native-twin/language-service": "workspace:*",
     "code-block-writer": "^13.0.1",
     "css-tree": "^2.3.1",
-    "effect": "^3.7.2",
+    "effect": "^3.8.4",
     "fast-check": "^3.21.0",
     "jiti": "1.21.0",
     "recast": "^0.23.9",
@@ -52,6 +61,7 @@
   "devDependencies": {
     "@babel/traverse": "^7.24.0",
     "@babel/types": "^7.24.0",
+    "@native-twin/cli": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@native-twin/styled": "workspace:*",
     "@types/connect": "3.4.38",

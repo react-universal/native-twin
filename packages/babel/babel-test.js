@@ -21,7 +21,7 @@ module.exports = function (api, options) {
   return {
     plugins: [
       [
-        require('./build/jsx/jsx.plugin').default,
+        require('./build/cjs/jsx/jsx.plugin').default,
         { ...options, platform, engine, isServer, isDev },
       ],
     ],

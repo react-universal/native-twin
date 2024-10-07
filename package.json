@@ -12,12 +12,13 @@
   "workspaces": [
     "packages/*",
     "packages/dev-tools/webui",
+    "sites/twin.run",
     "apps/*"
   ],
   "scripts": {
     "build": "turbo run build",
     "build:release": "yarn build && yarn libs:foreach pack && yarn libs:foreach exec \"mkdir _release && tar zxvf package.tgz --directory _release && rm package.tgz\"",
-    "build:watch": "turbo run build:watch --concurrency 14",
+    "build:watch": "turbo run build:watch --concurrency 15",
     "docgen": "yarn libs:foreach exec npx docgen && node ./scripts/docs.mjs",
     "docs:build": "turbo run docs:build",
     "example:expo": "yarn workspace expo-app run start",
@@ -30,14 +31,21 @@
     "test": "turbo run test"
   },
   "resolutions": {
+    "esbuild": "0.23.1",
     "metro-runtime@npm:0.80.6": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch",
     "metro-runtime@npm:^0.80.3": "patch:metro-runtime@npm%3A0.80.6#~/.yarn/patches/metro-runtime-npm-0.80.6-782603c97d.patch"
+  },
+  "dependencies": {
+    "@effect/typeclass": "^0.26.2",
+    "effect": "^3.8.4"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
     "@effect/docgen": "^0.4.4",
     "@effect/experimental": "^0.23.3",
+    "@microsoft/api-extractor": "^7.47.9",
+    "@native-twin/cli": "workspace:*",
     "@nx/eslint": "18.2.2",
     "@nx/eslint-plugin": "18.2.2",
     "@testing-library/react-native": "^12.0.1",
@@ -72,6 +80,7 @@
     "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
+    "tsup": "^8.3.0",
     "turbo": "^2.1.1",
     "typescript": "^5.5.4"
   },

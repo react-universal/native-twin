@@ -33,6 +33,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
       {
         animations: [],
@@ -46,6 +47,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
       {
         animations: [],
@@ -59,6 +61,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
       {
         animations: [],
@@ -72,6 +75,7 @@ describe('@native-twin/preset-tailwind - TW call', () => {
         important: false,
         precedence: 805306368,
         selectors: [],
+        preflight: false,
       },
     ]);
   });

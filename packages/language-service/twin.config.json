@@ -1,0 +1,10 @@
+{
+  "platform": "node",
+  "reactNative": false,
+  "minify": false,
+  "types": true,
+  "vscode": false,
+  "entries": [
+    "./src"
+  ]
+}

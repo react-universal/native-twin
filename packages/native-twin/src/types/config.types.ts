@@ -1,5 +1,3 @@
-import type { PlatformOSType } from 'react-native';
-import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type {
   CompleteStyle,
   CssFeature,
@@ -8,6 +6,8 @@ import type {
   Preflight,
   SheetEntry,
 } from '@native-twin/css';
+import type { PlatformOSType } from 'react-native';
+import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type { Falsey, MaybeArray } from '@native-twin/helpers';
 import type { ExtractThemes, ThemeConfig, __Theme__ } from './theme.types';
 
@@ -99,12 +99,15 @@ export type Rule<Theme extends __Theme__ = __Theme__> = [
   meta?: RuleMeta,
 ];
 
+export type HTMLCssKeys = 'transition' | 'transitionDuration';
+export type CompleteStyleKeys = HTMLCssKeys | keyof CompleteStyle;
+
 export interface RuleMeta {
   canBeNegative: boolean;
   feature: CssFeature;
   prefix: string | undefined;
   suffix: string | undefined;
-  styleProperty: keyof CompleteStyle | undefined;
+  styleProperty: CompleteStyleKeys | undefined;
   support: PlatformOSType[];
 }
 

@@ -3,7 +3,7 @@ import { pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
-import { JSXElementSheet } from '@native-twin/css/build/jsx';
+import { JSXElementSheet } from '@native-twin/css/jsx';
 
 export class StyleSheetModel {
   constructor(private value: Ref.Ref<HashMap.HashMap<string, JSXElementSheet>>) {}

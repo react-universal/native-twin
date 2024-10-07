@@ -1,0 +1,12 @@
+{
+  "workbench.colorTheme": "Default Dark Modern",
+  "editor.scrollBeyondLastLine": true,
+  "editor.mouseWheelZoom": true,
+  "editor.wordBasedSuggestions": "on",
+  "editor.acceptSuggestionOnEnter": "on",
+  "files.autoSave": "off",
+  "workbench.sideBar.location": "left",
+  "diffEditor.renderSideBySide": false,
+  "editor.lightbulb.enabled": "on",
+  "editor.glyphMargin": true
+}

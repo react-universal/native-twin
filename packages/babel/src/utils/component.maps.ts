@@ -4,17 +4,21 @@ export interface MappedComponent {
   name: string;
   config: Record<Prop, Target>;
 }
-const createHandler = () => {
-  const mappedComponents: MappedComponent[] = [];
-  const createStylableComponent = <T extends Record<Prop, Target>>(
-    component: string,
-    styles: T,
-  ) => {
-    mappedComponents.push({
-      name: component,
-      config: styles,
-    });
+const globalMappedComponents: MappedComponent[] = [];
+
+const createStylableComponent = <T extends Record<Prop, Target>>(
+  component: string,
+  styles: T,
+) => {
+  const mapped = {
+    name: component,
+    config: styles,
   };
+  globalMappedComponents.push(mapped);
+  return mapped;
+};
+
+const createHandler = () => {
   createStylableComponent('Image', { className: 'style' });
   createStylableComponent('Pressable', { className: 'style' });
   createStylableComponent('SafeAreaView', { className: 'style' });
@@ -62,7 +66,12 @@ const createHandler = () => {
     contentContainerClassName: 'contentContainerStyle',
     indicatorClassName: 'indicatorStyle',
   });
-  return mappedComponents;
+  return globalMappedComponents;
 };
 
 export const mappedComponents = createHandler();
+export const commonMappedAttribute = { className: 'style' };
+
+export const createCommonMappedAttribute = (tagName: string) => {
+  return createStylableComponent(tagName, commonMappedAttribute);
+};

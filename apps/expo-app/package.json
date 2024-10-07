@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "android": "expo start --android -c",
+    "clean": "rm -rf .expo && rm -rf node_modules",
     "ios": "expo start --ios -c",
     "lint": "echo $HOME",
     "mobile:dev": "expo start --clear",
@@ -36,6 +37,7 @@
     "react-native-web": "~0.19.10"
   },
   "devDependencies": {
+    "@types/babel__generator": "^7",
     "@types/react": "~18.2.79",
     "@types/react-dom": "~18.2.25",
     "sharp-cli": "2.1.0"

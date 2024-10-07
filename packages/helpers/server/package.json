@@ -1,3 +1,5 @@
 {
-  "main": "../build/server"
+  "main": "../build/server/index.js",
+  "module": "../build/esm/server/index.js",
+  "types": "../build/server/index.d.ts"
 }

@@ -3,6 +3,7 @@
   "version": "1.7.1",
   "private": true,
   "scripts": {
+    "clean": "rm -rf .next",
     "docs:build": "next build",
     "docs:dev": "next dev",
     "lint": "next lint",

@@ -1,7 +1,5 @@
 export * from './styled';
 
-export * from './styled/variants';
-
 export type {
   PropsFrom,
   StyledComponentProps,

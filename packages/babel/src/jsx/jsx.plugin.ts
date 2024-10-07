@@ -1,8 +1,9 @@
-import { PluginObj, PluginPass } from '@babel/core';
-import { HashMap, Option, pipe } from 'effect';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
+import * as HashMap from 'effect/HashMap';
+import * as Option from 'effect/Option';
 import { Tree } from '@native-twin/helpers/tree';
 import { JSXImportPluginContext } from '../jsx-import/JSXImport.service';
 import { BabelAPI, TwinBabelOptions } from '../types/plugin.types';
@@ -15,6 +16,7 @@ import {
 } from './ast/jsx.maps';
 import { JSXElementTree } from './jsx.types';
 import { JSXElementNode } from './models';
+import { PluginObj, PluginPass } from '@babel/core';
 
 const program = Effect.scoped(
   Effect.gen(function* () {

@@ -23,12 +23,23 @@
   },
   "sideEffects": false,
   "exports": {
-    "./_app": "./build/_app.js",
-    "./_document": "./build/_document.js",
-    "./app": "./build/app.js",
+    "./app": {
+      "types": "./build/app/index.d.ts",
+      "import": "./build/esm/app/index.js",
+      "require": "./build/app/index.js"
+    },
+    "./_app": {
+      "types": "./build/_app.d.ts",
+      "import": "./build/esm/_app.js",
+      "require": "./build/_app.js"
+    },
+    "./_document": {
+      "types": "./build/_document.d.ts",
+      "import": "./build/esm/_document.js",
+      "require": "./build/_document.js"
+    },
     "./package.json": "./package.json"
   },
-  "types": "./build/index.d.ts",
   "files": [
     "build",
     "index.d.ts",
@@ -40,14 +51,17 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@native-twin/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@native-twin/cli": "workspace:*"
   },
   "peerDependencies": {
     "next": ">=14.0",

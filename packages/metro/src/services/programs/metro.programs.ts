@@ -3,6 +3,7 @@ import type { GetTransformOptions } from 'metro-config';
 import { MetroConfigService } from '../MetroConfig.service';
 import { setupPlatform } from './TwinFileSystem';
 
+const alreadySetup: Set<string> = new Set();
 /** @category Programs */
 export const getTransformerOptions = (
   ...[entryPoints, options, getDeps]: Parameters<GetTransformOptions>
@@ -17,7 +18,12 @@ export const getTransformerOptions = (
       originalGetTransformOptions(entryPoints, options, getDeps),
     );
 
-    if (options.platform) {
+    if (
+      options.platform &&
+      !alreadySetup.has(options.platform) &&
+      options.platform === 'web'
+    ) {
+      alreadySetup.add(options.platform);
       yield* setupPlatform;
     }
 

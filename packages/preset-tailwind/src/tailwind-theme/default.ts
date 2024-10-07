@@ -2,7 +2,14 @@ import { TailwindPresetTheme } from '../types/theme.types';
 import { textAlign, verticalAlign } from './aligns';
 import { colors } from './colors';
 import { blur, dropShadow } from './filters';
-import { flex, flexBasis, flexDirection, flexGrow, flexWrap, justifyContent } from './flex';
+import {
+  flex,
+  flexBasis,
+  flexDirection,
+  flexGrow,
+  flexWrap,
+  justifyContent,
+} from './flex';
 import {
   fontFamily,
   fontSize,
@@ -32,6 +39,7 @@ import {
 } from './mixed';
 import { aspectRatio, containers, height, maxHeight, maxWidth, width } from './size';
 import { rotate, scale, skew, translate } from './transform';
+import { transition } from './transition';
 
 export const theme = {
   blockSize: height,
@@ -83,6 +91,7 @@ export const theme = {
   textShadow,
   resizeMode,
   textStrokeWidth,
+  transition,
   verticalBreakpoints,
   width,
   wordSpacing,

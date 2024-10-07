@@ -4,7 +4,7 @@ import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import { BabelLogger, transformJSXFile } from '@native-twin/babel/jsx-babel';
-import { BabelTransformerFn } from '@native-twin/babel/jsx-babel/models';
+import type { BabelTransformerFn } from '@native-twin/babel/jsx-babel/models';
 import {
   BabelTransformerService,
   MetroCompilerContext,

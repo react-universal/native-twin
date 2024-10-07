@@ -22,13 +22,13 @@ export abstract class DocumentClass implements Equal.Equal {
   [Equal.symbol](that: unknown) {
     return (
       that instanceof DocumentClass &&
-      that.textDocument.getText() === this.textDocument.getText() &&
+      this.textDocument.version === that.textDocument.version &&
       this.textDocument.uri === that.textDocument.uri
     );
   }
 
   [Hash.symbol](): number {
-    return Hash.hash(this.textDocument.getText());
+    return Hash.combine(Hash.hash(this.textDocument.uri))(this.textDocument.version);
   }
 }
 

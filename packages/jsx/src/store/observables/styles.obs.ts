@@ -1,5 +1,5 @@
 import { PixelRatio, Platform, PlatformOSType } from 'react-native';
-import { atom } from '@native-twin/helpers';
+import { atom } from '@native-twin/helpers/react';
 import { colorScheme } from './colorScheme.obs';
 import { viewport } from './viewport.obs';
 

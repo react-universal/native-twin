@@ -10,7 +10,9 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
     if (typeof className === 'string' && twinClassName === '') {
       twinClassName = className;
     }
-    tw(`${className}`);
+    const classes = tw(`${className}`);
+    // if (!classes) return;
+    // if (classes.length === 0) return;
     props['className'] = twinClassName;
     props['style'] = [
       {
@@ -19,21 +21,20 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
       },
       props?.['style'] ?? '',
     ];
-  }
+    if (props && configs) {
+      for (const config of configs) {
+        const source = props?.[config.source];
+        // const sheet = props[`_${config.target}`];
+        if (!source) continue;
 
-  if (props && configs) {
-    for (const config of configs) {
-      const source = props?.[config.source];
-      // const sheet = props[`_${config.target}`];
-      if (!source) continue;
-
-      if (source) {
-        tw(`${source}`);
-        props[config.target] = cx`${source}`;
-        // props[config.target] = finalSheet.getStyles({
-        //   isParentActive: false,
-        //   isPointerActive: false,
-        // });
+        if (source) {
+          tw(`${source}`);
+          props[config.target] = cx`${source}`;
+          // props[config.target] = finalSheet.getStyles({
+          //   isParentActive: false,
+          //   isPointerActive: false,
+          // });
+        }
       }
     }
   }

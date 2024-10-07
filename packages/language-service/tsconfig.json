@@ -1,15 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "ES2020",
-    "lib": [
-      "ES2021"
-    ],
-    "ignoreDeprecations": "5.0",
-    "sourceMap": true,
+    "target": "ESNext",
+    "lib": ["ESNext"],
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "allowUmdGlobalAccess": true,
     "strict": true,
     "noEmit": true
   },

@@ -30,6 +30,7 @@ export interface SheetEntry {
   selectors: string[];
   precedence: number;
   important: boolean;
+  preflight: boolean;
 }
 
 export type SheetEntryDeclaration = {

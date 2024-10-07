@@ -1,5 +1,5 @@
 import { AppState, Appearance, NativeEventSubscription } from 'react-native';
-import { atom } from '@native-twin/helpers';
+import { atom } from '@native-twin/helpers/react';
 
 export const colorScheme = atom(Appearance.getColorScheme() ?? 'light');
 

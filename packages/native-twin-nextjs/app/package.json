@@ -1,4 +1,5 @@
 {
-  "main": "../build/_app",
+  "main": "../build/app.js",
+  "module": "../build/esm/app.js",
   "types": "../build/app.d.ts"
 }

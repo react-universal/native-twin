@@ -17,8 +17,8 @@ export const sendDebugLog = <T extends object>(message: string, payload: T) =>
  */
 export const LoggerLive = Logger.replaceEffect(
   Logger.jsonLogger,
-  Effect.gen(function* ($) {
-    const Connection = yield* $(ConnectionService);
+  Effect.gen(function* () {
+    const Connection = yield* ConnectionService;
     return Logger.make((options) => {
       const logService = Connection.console;
       const message = Logger.logfmtLogger.log(options);

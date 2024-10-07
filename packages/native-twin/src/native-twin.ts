@@ -136,6 +136,7 @@ export function createTailwind(
               important: false,
               precedence: Layer.b,
               animations: [],
+              preflight: true,
             };
             sortedPrecedences.push(entry);
             cache.set(entry.className, [entry]);

@@ -5,12 +5,12 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
-    },
-    {
       "name": "📦 @lib/metro",
       "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
     },
     {
       "name": "📦 @lib/babel",
@@ -59,6 +59,14 @@
     {
       "name": "📦 @lib/language-server",
       "path": "../packages/language-server"
+    },
+    {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
+      "name": "twin.run",
+      "path": "../sites/twin.run"
     },
     {
       "name": "expo-app",
@@ -140,6 +148,61 @@
       "next-pages-example",
       "next-app-dir",
       "docs-site"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Build any lib",
+        "type": "node",
+        "request": "attach",
+        "sourceMaps": true,
+        "presentation": {
+          "hidden": false,
+          "group": "",
+          "order": 1
+        },
+        "preLaunchTask": {
+          "type": "npm",
+          "script": "build"
+        },
+        "outFiles": [
+          "./**/build/**/*.js"
+        ]
+      }
+    ],
+    "compounds": []
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build",
+        "type": "npm",
+        "script": "build",
+        "problemMatcher": [
+          "$esbuild",
+          "$tsc"
+        ],
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "build"
+      },
+      {
+        "label": "build",
+        "type": "npm",
+        "script": "build",
+        "problemMatcher": [
+          "$esbuild",
+          "$tsc"
+        ],
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "build"
+      }
     ]
   }
 }

@@ -3,6 +3,7 @@
   "version": "0.4.1",
   "private": true,
   "scripts": {
+    "clean": "rm -rf .next",
     "lint": "echo $HOME",
     "next:app:dev": "next dev",
     "next:build": "next build",
@@ -10,6 +11,7 @@
   },
   "dependencies": {
     "@native-twin/core": "workspace:*",
+    "@native-twin/jsx": "workspace:*",
     "@native-twin/nextjs": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@native-twin/styled": "workspace:*",

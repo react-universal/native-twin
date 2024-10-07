@@ -15,6 +15,7 @@ export interface TailwindPresetTheme extends __Theme__ {
   maxWidth?: Record<string, string>;
   flexBasis?: Record<string, string>;
   flexGrow?: Record<string, string>;
+  textDecorationLine?: Record<string, string>;
   maxHeight?: Record<string, string>;
   minWidth?: Record<string, string>;
   minHeight?: Record<string, string>;
@@ -50,7 +51,6 @@ export interface TailwindPresetTheme extends __Theme__ {
   ringWidth?: Record<string, string>;
   lineWidth?: Record<string, string>;
   spacing?: Record<string, string>;
-  duration?: Record<string, string>;
   translate?: Record<string, string>;
   rotate?: Record<string, string>;
   scale?: Record<string, string>;
@@ -78,11 +78,14 @@ export interface TailwindPresetTheme extends __Theme__ {
   gridTemplateColumn?: Record<string, string>;
   gridTemplateRow?: Record<string, string>;
   // container
+  zIndex?: Record<string, string>;
   container?: {
     center?: boolean;
     padding?: string | Record<string, string>;
     maxWidth?: Record<string, string>;
   };
   // vars
-  zIndex?: Record<string, string>;
+  // animations
+  duration?: Record<string, string>;
+  transition?: Record<string, Record<string, string>>;
 }

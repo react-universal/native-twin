@@ -10,6 +10,10 @@ export const fontThemeRules: Rule<TailwindPresetTheme>[] = [
   matchThemeValue('leading-', 'lineHeight', 'lineHeight'),
   matchThemeColor('decoration-', 'textDecorationColor'),
   matchThemeValue('decoration-', 'textDecorationStyle', 'textDecorationStyle'),
-  matchThemeValue('capitalize|uppercase|lowercase', 'textTransform', 'textTransform'),
-  matchThemeValue('italic|normal', 'fontStyle', 'fontStyle'),
+  matchThemeValue('decoration-', 'textDecorationLine', 'textDecorationLine'),
+  matchThemeValue('capitalize', 'textTransform', 'textTransform'),
+  matchThemeValue('uppercase', 'textTransform', 'textTransform'),
+  matchThemeValue('lowercase', 'textTransform', 'textTransform'),
+  matchThemeValue('normal', 'fontStyle', 'fontStyle'),
+  matchThemeValue('italic', 'fontStyle', 'fontStyle'),
 ];
