@@ -51,7 +51,7 @@ export default function Home() {
           </p>
           <div className='mt-auto flex flex-col lg:flex-row items-center justify-center gap-5'>
             <Link href={'/documentation'}>
-              <ButtonVariable color='#7C3AED'>Get Started</ButtonVariable>
+              <ButtonVariable color='#26C6DA'>Get Started</ButtonVariable>
             </Link>
             <SearchButton />
           </div>
@@ -76,7 +76,7 @@ export default function Home() {
             offers will change the way you build your applications.
           </p>
           <Link href='/documentation'>
-            <ButtonVariable color='#7C3AED'>Explore More</ButtonVariable>
+            <ButtonVariable color='#26C6DA'>Explore More</ButtonVariable>
           </Link>
         </div>
         <div className='grid lg:grid-cols-2 gap-[20px] w-full'>
