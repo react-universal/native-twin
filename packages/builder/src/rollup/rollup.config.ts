@@ -1,13 +1,12 @@
+import tsPlugin from '@rollup/plugin-typescript';
 import * as Array from 'effect/Array';
 import { pipe } from 'effect/Function';
 import glob from 'glob';
 import fs from 'node:fs';
 import path, { join } from 'node:path';
 import * as rollup from 'rollup';
-import dtsPlugin from 'rollup-plugin-dts';
 import preserveDirectives from 'rollup-plugin-preserve-directives';
 import { CliConfigFile } from '../esbuild-cli/cli.types';
-import tsPlugin from '@rollup/plugin-typescript';
 
 const testPatterns = ['**/*.spec.ts', '**/*.test.ts'];
 
@@ -23,40 +22,25 @@ export const createRollupConfig = (_configFile: CliConfigFile) => {
     }),
   );
 
-  const options: rollup.RollupOptions[] = [
-    libBuildOptions({
-      format: 'esm',
-      extension: 'js',
-      entrypoints,
-      outDir: 'build/esm',
-      sourcemap: true,
-    }),
-    libBuildOptions({
-      format: 'cjs',
-      extension: 'js',
-      entrypoints,
-      outDir: 'build',
-      sourcemap: true,
-    }),
-    declarationOptions({
-      entrypoints,
-      outDir: 'build',
-    }),
-  ];
-
-  // if (configFile.platform === 'browser') {
-  //   const browserLib: rollup.RollupOptions = browserBuildConfig({
-  //     entrypoints,
-  //     extension: 'js',
-  //     format: 'cjs',
-  //     outDir: 'build',
-  //     sourcemap: true,
-  //   });
-  //   options.push(browserLib);
-  // }
-
   const configs: rollup.RollupOptions[] = pipe(
-    options,
+    Array.make(
+      libBuildOptions({
+        format: 'esm',
+        extension: 'js',
+        entrypoints,
+        outDir: 'build/esm',
+        sourcemap: true,
+      }),
+    ),
+    Array.append(
+      libBuildOptions({
+        format: 'cjs',
+        extension: 'js',
+        entrypoints,
+        outDir: 'build',
+        sourcemap: true,
+      }),
+    ),
     Array.map((x) => ({
       ...x,
       external: (id, _, isResolved) => {
@@ -67,7 +51,6 @@ export const createRollupConfig = (_configFile: CliConfigFile) => {
         if (id.startsWith('.')) {
           return true;
         }
-        console.log('NON_EXTERNAL: ', id, isResolved);
         return false;
       },
     })),
@@ -101,13 +84,11 @@ function libBuildOptions({
         tsconfig: 'tsconfig.build.json',
         compilerOptions: {
           sourceMap: sourcemap,
-          declarationMap: false,
-          inlineSources: sourcemap || undefined,
-          removeComments: !sourcemap,
-          declaration: false,
-          outDir: undefined,
-          esModuleInterop: true,
-          allowSyntheticDefaultImports: true,
+          declarationDir: format === 'esm' ? 'build/esm' : 'build',
+          declarationMap: true,
+          removeComments: false,
+          declaration: true,
+          outDir: format === 'esm' ? 'build/esm' : 'build',
         },
       }),
     ],
@@ -120,51 +101,13 @@ function libBuildOptions({
       esModule: 'if-default-prop',
       interop: 'compat',
       sourcemap,
-      // changed
       generatedCode: 'es5',
       // Hoisting transitive imports adds bare imports in modules,
       // which can make imports by JS runtimes slightly faster,
       // but makes the generated code harder to follow.
       hoistTransitiveImports: false,
+      preserveModulesRoot: 'src',
     },
-  };
-}
-
-function declarationOptions({
-  entrypoints,
-  outDir,
-}: {
-  entrypoints: Record<string, string>;
-  outDir: string;
-}): rollup.RollupOptions {
-  return {
-    plugins: [dtsPlugin()],
-    input: entrypoints,
-    output: [
-      {
-        format: 'esm',
-        dir: outDir,
-        generatedCode: 'es2015',
-        ...fileNames('d.mts'),
-        preserveModules: true,
-        preserveModulesRoot: 'src',
-      },
-      {
-        format: 'cjs',
-        dir: outDir,
-        generatedCode: 'es2015',
-        ...fileNames('d.ts'),
-        preserveModules: true,
-        preserveModulesRoot: 'src',
-      },
-    ],
-  };
-}
-
-function fileNames(extension = 'js') {
-  return {
-    entryFileNames: `[name].${extension}`,
-    chunkFileNames: `_chunk/[name]-[hash:6].${extension}`,
   };
 }
 
