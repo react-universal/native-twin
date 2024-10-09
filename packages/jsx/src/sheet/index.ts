@@ -7,4 +7,3 @@ export {
   type ComponentState,
   type ComponentConfigProps,
 } from './StyleSheet';
-export { tw } from './native-tw';

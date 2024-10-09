@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 import 'globals.css';
 const ChildProp = () => {
-  return <View className='first:bg-blue-600' _twinComponentID={"-527438375__:_twin_root"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-527438375__:_twin_root", [{
+  return <View className='first:bg-blue-600' _twinComponentID={"2144153598__:_twin_root_"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("2144153598__:_twin_root_", [{
     templateLiteral: null,
     prop: "className",
     target: "style",
@@ -42,7 +42,7 @@ const ChildProp = () => {
       last: [],
       odd: []
     }
-  }])} _twinComponentTemplateEntries={[]} _twinComponentTree={{
+  }])} _twinComponentTree={{
     jsxElementName: "View",
     order: -1,
     parentNode: null,
@@ -55,12 +55,12 @@ const ChildProp = () => {
         order: 0,
         parentNode: null,
         childs: [],
-        id: "-527438375__:_twin_root:0:0",
+        id: "2144153598__:_twin_root_:0_____temp2:0_____temp3",
         filename: "/Users/christiangutierrez/work/native-twin/packages/babel/test/fixtures/twin-compiler/code.tsx",
         source: "react-native",
         importKind: "import"
       }],
-      id: "-527438375__:_twin_root:0",
+      id: "2144153598__:_twin_root_:0_____temp2",
       filename: "/Users/christiangutierrez/work/native-twin/packages/babel/test/fixtures/twin-compiler/code.tsx",
       source: "react-native",
       importKind: "import"
@@ -73,17 +73,17 @@ const ChildProp = () => {
         order: 0,
         parentNode: null,
         childs: [],
-        id: "-527438375__:_twin_root:1:0",
+        id: "2144153598__:_twin_root_:1_____temp4:0_____temp5",
         filename: "/Users/christiangutierrez/work/native-twin/packages/babel/test/fixtures/twin-compiler/code.tsx",
         source: "react-native",
         importKind: "import"
       }],
-      id: "-527438375__:_twin_root:1",
+      id: "2144153598__:_twin_root_:1_____temp4",
       filename: "/Users/christiangutierrez/work/native-twin/packages/babel/test/fixtures/twin-compiler/code.tsx",
       source: "react-native",
       importKind: "import"
     }],
-    id: "-527438375__:_twin_root",
+    id: "2144153598__:_twin_root_",
     filename: "/Users/christiangutierrez/work/native-twin/packages/babel/test/fixtures/twin-compiler/code.tsx",
     source: "react-native",
     importKind: "import"
@@ -92,7 +92,7 @@ const ChildProp = () => {
           group
           flex-[2] items-center justify-center
           bg-blue-800 hover:bg-red-600
-        `} _twinComponentID={"-527438375__:_twin_root:0"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-527438375__:_twin_root:0", [{
+        `} _twinComponentID={"2144153598__:_twin_root_:0_____temp2"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("2144153598__:_twin_root_:0_____temp2", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -244,13 +244,13 @@ const ChildProp = () => {
         odd: []
       }
     }])} _twinComponentTemplateEntries={[{
-      id: "-527438375__:_twin_root:0",
+      id: "2144153598__:_twin_root_:0_____temp2",
       target: "style",
       prop: "className",
       entries: require('@native-twin/core').tw(``),
       templateLiteral: ``
     }]}>
-        <Text className='' _twinComponentID={"-527438375__:_twin_root:0:0"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-527438375__:_twin_root:0:0", [{
+        <Text className='' _twinComponentID={"2144153598__:_twin_root_:0_____temp2:0_____temp3"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("2144153598__:_twin_root_:0_____temp2:0_____temp3", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
@@ -265,9 +265,9 @@ const ChildProp = () => {
           last: [],
           odd: []
         }
-      }])} _twinComponentTemplateEntries={[]}>Text1</Text>
+      }])}>Text1</Text>
       </View>
-      <View className='' _twinComponentID={"-527438375__:_twin_root:1"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-527438375__:_twin_root:1", [{
+      <View className='' _twinComponentID={"2144153598__:_twin_root_:1_____temp4"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("2144153598__:_twin_root_:1_____temp4", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -282,8 +282,8 @@ const ChildProp = () => {
         last: [],
         odd: []
       }
-    }])} _twinComponentTemplateEntries={[]}>
-        <Text className='' _twinComponentID={"-527438375__:_twin_root:1:0"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-527438375__:_twin_root:1:0", [{
+    }])}>
+        <Text className='' _twinComponentID={"2144153598__:_twin_root_:1_____temp4:0_____temp5"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("2144153598__:_twin_root_:1_____temp4:0_____temp5", [{
         templateLiteral: null,
         prop: "className",
         target: "style",
@@ -298,12 +298,12 @@ const ChildProp = () => {
           last: [],
           odd: []
         }
-      }])} _twinComponentTemplateEntries={[]}>Text2</Text>
+      }])}>Text2</Text>
       </View>
     </View>;
 };
 const Button = () => {
-  return <View className='bg-black last:text-lg odd:text-gray-200 even:text-yellow-200' _twinComponentID={"-527438375__:_twin_root2"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-527438375__:_twin_root2", [{
+  return <View className='bg-black last:text-lg odd:text-gray-200 even:text-yellow-200' _twinComponentID={"33194242__:_twin_root_2"} _twinOrd={-1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("33194242__:_twin_root_2", [{
     templateLiteral: null,
     prop: "className",
     target: "style",
@@ -414,7 +414,7 @@ const Button = () => {
       last: [],
       odd: []
     }
-  }])} _twinComponentTemplateEntries={[]} _twinComponentTree={{
+  }])} _twinComponentTree={{
     jsxElementName: "View",
     order: -1,
     parentNode: null,
@@ -423,7 +423,7 @@ const Button = () => {
       order: 0,
       parentNode: null,
       childs: [],
-      id: "-527438375__:_twin_root2:0",
+      id: "33194242__:_twin_root_2:0_____temp7",
       filename: "/Users/christiangutierrez/work/native-twin/packages/babel/test/fixtures/twin-compiler/code.tsx",
       source: "react-native",
       importKind: "import"
@@ -432,7 +432,7 @@ const Button = () => {
       order: 1,
       parentNode: null,
       childs: [],
-      id: "-527438375__:_twin_root2:1",
+      id: "33194242__:_twin_root_2:1_____temp8",
       filename: "/Users/christiangutierrez/work/native-twin/packages/babel/test/fixtures/twin-compiler/code.tsx",
       source: "react-native",
       importKind: "import"
@@ -441,17 +441,17 @@ const Button = () => {
       order: 2,
       parentNode: null,
       childs: [],
-      id: "-527438375__:_twin_root2:2",
+      id: "33194242__:_twin_root_2:2_____temp9",
       filename: "/Users/christiangutierrez/work/native-twin/packages/babel/test/fixtures/twin-compiler/code.tsx",
       source: "react-native",
       importKind: "import"
     }],
-    id: "-527438375__:_twin_root2",
+    id: "33194242__:_twin_root_2",
     filename: "/Users/christiangutierrez/work/native-twin/packages/babel/test/fixtures/twin-compiler/code.tsx",
     source: "react-native",
     importKind: "import"
   }}>
-      <Text className='font-medium' _twinComponentID={"-527438375__:_twin_root2:0"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-527438375__:_twin_root2:0", [{
+      <Text className='font-medium' _twinComponentID={"33194242__:_twin_root_2:0_____temp7"} _twinOrd={0} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("33194242__:_twin_root_2:0_____temp7", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -490,8 +490,8 @@ const Button = () => {
         last: [],
         odd: []
       }
-    }])} _twinComponentTemplateEntries={[]}>Text1</Text>
-      <Text className='font-bold' _twinComponentID={"-527438375__:_twin_root2:1"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-527438375__:_twin_root2:1", [{
+    }])}>Text1</Text>
+      <Text className='font-bold' _twinComponentID={"33194242__:_twin_root_2:1_____temp8"} _twinOrd={1} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("33194242__:_twin_root_2:1_____temp8", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -530,8 +530,8 @@ const Button = () => {
         last: [],
         odd: []
       }
-    }])} _twinComponentTemplateEntries={[]}>Text2</Text>
-      <Text className={`${true ? 'text-medium' : 'text-bold'}`} _twinComponentID={"-527438375__:_twin_root2:2"} _twinOrd={2} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("-527438375__:_twin_root2:2", [{
+    }])}>Text2</Text>
+      <Text className={`${true ? 'text-medium' : 'text-bold'}`} _twinComponentID={"33194242__:_twin_root_2:2_____temp9"} _twinOrd={2} _twinComponentSheet={require('@native-twin/jsx').StyleSheet.registerComponent("33194242__:_twin_root_2:2_____temp9", [{
       templateLiteral: null,
       prop: "className",
       target: "style",
@@ -547,7 +547,7 @@ const Button = () => {
         odd: []
       }
     }])} _twinComponentTemplateEntries={[{
-      id: "-527438375__:_twin_root2:2",
+      id: "33194242__:_twin_root_2:2_____temp9",
       target: "style",
       prop: "className",
       entries: require('@native-twin/core').tw(`${true ? 'text-medium' : 'text-bold'}`),

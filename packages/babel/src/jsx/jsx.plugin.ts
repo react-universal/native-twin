@@ -1,3 +1,4 @@
+import type { PluginObj, PluginPass } from '@babel/core';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -6,7 +7,8 @@ import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
 import { Tree } from '@native-twin/helpers/tree';
 import { JSXImportPluginContext } from '../jsx-import/JSXImport.service';
-import { BabelAPI, TwinBabelOptions } from '../types/plugin.types';
+import { JSXElementNode } from '../models';
+import type { BabelAPI, TwinBabelOptions } from '../types/plugin.types';
 import { addTwinPropsToElement } from './ast/jsx.builder';
 import {
   extractMappedAttributes,
@@ -14,9 +16,7 @@ import {
   getJSXCompiledTreeRuntime,
   getJSXElementSource,
 } from './ast/jsx.maps';
-import { JSXElementTree } from './jsx.types';
-import { JSXElementNode } from './models';
-import { PluginObj, PluginPass } from '@babel/core';
+import type { JSXElementTree } from './jsx.types';
 
 const program = Effect.scoped(
   Effect.gen(function* () {
@@ -59,11 +59,11 @@ const program = Effect.scoped(
           if (!ctx.isValidFile(state.filename)) return;
 
           const hash = Hash.string(state.filename ?? 'Unknown');
-          const uid = path.scope.generateUid('__twin_root');
+          const uid = path.scope.generateUid();
           const parentTree = new Tree<JSXElementTree>({
             order: -1,
             babelNode: path.node,
-            uid: `${hash}#${uid}`,
+            uid: `${hash}_${uid}`,
             cssImports: [],
             source: getJSXElementSource(path),
             parentID: null,

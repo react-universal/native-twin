@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { tw } from '@native-twin/core';
 import {
   getGroupedEntries,
   RegisteredComponent,
@@ -8,7 +9,6 @@ import {
 } from '@native-twin/css/jsx';
 import { useAtomValue } from '@native-twin/helpers/react';
 import { StyleSheet } from '../../sheet/StyleSheet';
-import { tw } from '../../sheet/native-tw';
 import { styledContext, twinConfigObservable } from '../../store/observables';
 import { ComponentTemplateEntryProp } from '../../types/jsx.types';
 import { ComponentConfig } from '../../types/styled.types';

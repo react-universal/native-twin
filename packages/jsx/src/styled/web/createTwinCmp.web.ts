@@ -29,6 +29,10 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
       return createElement(baseComponent, props);
     }
 
+    // if (typeof baseComponent === 'string') {
+    //   return createElement(baseComponent, props);
+    // }
+
     props = { ...props, ref };
     for (const config of configs) {
       const originalTarget: JSXTarget = props[config.target] ?? {};
@@ -42,7 +46,7 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
       if (source && typeof source === 'string' && source.length > 0) {
         source = cx`${source}`;
         const injected = tw(`${source}`);
-        if (injected.length > 0) {
+        if (injected && injected.length > 0) {
           if (Array.isArray(target)) {
             target.push({
               $$css: true,
@@ -73,9 +77,12 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
       return createElement(baseComponent, props);
     }
   });
+  // if (typeof window !== 'undefined') {
   twinComponent.displayName = `Twin.${
     baseComponent.displayName ?? baseComponent.name ?? 'unknown'
   }`;
+  // }
+
   stylizedComponents.set(baseComponent, twinComponent);
   return twinComponent;
 };

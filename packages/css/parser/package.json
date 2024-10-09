@@ -1,5 +1,5 @@
 {
   "main": "../build/cjs/css/parser",
   "module": "../build/esm/css/parser",
-  "types": "../build/esm/css/parser/index.d.ts"
+  "types": "../build/css/parser/index.d.ts"
 }

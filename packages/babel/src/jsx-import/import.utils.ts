@@ -1,5 +1,5 @@
-import { NodePath, Binding } from '@babel/traverse';
-import { MemberExpression } from '@babel/types';
+import type { NodePath, Binding } from '@babel/traverse';
+import type { MemberExpression } from '@babel/types';
 import * as t from '@babel/types';
 import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';

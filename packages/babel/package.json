@@ -28,6 +28,11 @@
       "import": "./plugin.js",
       "require": "./plugin.js"
     },
+    "./babel.transformer": {
+      "types": "./build/jsx/babel.transformer.d.ts",
+      "import": "./build/esm/jsx/babel.transformer.js",
+      "require": "./build/jsx/babel.transformer.js"
+    },
     "./jsx-babel": {
       "types": "./build/jsx/index.d.ts",
       "import": "./build/esm/jsx/index.js",
@@ -38,20 +43,20 @@
       "import": "./build/esm/constants/index.js",
       "require": "./build/constants/index.js"
     },
-    "./jsx-babel/models": {
-      "types": "./build/jsx/models/index.d.ts",
-      "import": "./build/esm/jsx/models/index.js",
-      "require": "./build/jsx/models/index.js"
+    "./models": {
+      "types": "./build/models/index.d.ts",
+      "import": "./build/esm/models/index.js",
+      "require": "./build/models/index.js"
     },
     "./jsx-babel/plugin": {
-      "types": "./build/jsx/plugin/index.d.ts",
-      "import": "./build/esm/jsx/plugin/index.js",
-      "require": "./build/jsx/plugin/index.js"
+      "types": "./build/jsx/jsx.plugin.d.ts",
+      "import": "./build/esm/jsx/jsx.plugin.js",
+      "require": "./build/jsx/jsx.plugin.js"
     },
-    "./jsx-babel/services": {
-      "types": "./build/jsx/services/index.d.ts",
-      "import": "./build/esm/jsx/services/index.js",
-      "require": "./build/jsx/services/index.js"
+    "./services": {
+      "types": "./build/services/index.d.ts",
+      "import": "./build/esm/services/index.js",
+      "require": "./build/services/index.js"
     },
     "./jsx-babel/twin": {
       "types": "./build/jsx/twin/index.d.ts",

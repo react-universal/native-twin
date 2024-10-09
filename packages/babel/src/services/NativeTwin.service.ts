@@ -1,11 +1,11 @@
+import { Preflight } from '@native-twin/css';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import type { __Theme__, TailwindConfig } from '@native-twin/core';
-import { Preflight } from '@native-twin/css';
 import type { CompilerContext } from '@native-twin/css/jsx';
-import { InternalTwFn, InternalTwinConfig } from '../../types/twin.types';
-import { getUserTwinConfig, setupNativeTwin } from '../twin';
+import { getUserTwinConfig, setupNativeTwin } from '../jsx/twin';
+import { InternalTwFn, InternalTwinConfig } from '../types/twin.types';
 
 export class NativeTwinService extends Context.Tag('babel/twin-service')<
   NativeTwinService,

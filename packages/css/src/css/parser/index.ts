@@ -1,4 +1,4 @@
-export {
+export type {
   /** @category — CSS Parsers */
   CssParserData,
   /** @category — CSS Parsers */

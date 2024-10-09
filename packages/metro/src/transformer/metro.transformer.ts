@@ -4,13 +4,14 @@ import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 // import * as Option from 'effect/Option';
-import { BabelLogger } from '@native-twin/babel/jsx-babel';
 import {
+  BabelLogger,
   BabelTransformerService,
   BabelTransformerServiceLive,
-} from '@native-twin/babel/jsx-babel/services';
+} from '@native-twin/babel/services';
 import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.service';
 import type { TransformWorkerFn } from '../services/models/metro.models';
+
 // import { transformCSS } from './css/css.transform';
 
 const metroMainProgram = Effect.gen(function* () {

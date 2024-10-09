@@ -11,7 +11,7 @@ import {
 import { cx } from '@native-twin/core';
 // import { getDocumentLanguageLocations } from '@native-twin/language-service';
 import * as t from '@babel/types';
-import { PlatformError } from '@effect/platform/Error';
+import type { PlatformError } from '@effect/platform/Error';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
 

@@ -7,7 +7,7 @@
     "module": "ESNext",
     "target": "ESNext",
     "noEmit": false,
-    "emitDeclarationOnly": false,
+    "emitDeclarationOnly": true,
     "importHelpers": true
   },
   "exclude": ["./test/", "build"]

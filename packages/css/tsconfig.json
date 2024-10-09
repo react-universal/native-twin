@@ -3,6 +3,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declarationMap": false,
+    "emitDeclarationOnly": true,
     "strictFunctionTypes": false,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",

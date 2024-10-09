@@ -1,5 +1,7 @@
-import { jsxStyles } from './jsx/jsx-styles';
-import { stylizedComponents } from './styled';
+// import { createElement } from 'react';
+import { jsxStyles } from './jsx/jsx-styles.web';
+import { stylizedComponents } from './styled/index.web';
+// import { createStylableComponent } from './styled/web';
 import type { JSXFunction } from './types/jsx.types';
 
 /**
@@ -27,12 +29,17 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
       delete props.twEnabled;
     } else {
       // Swap the component type with styled if it exists
-      type = stylizedComponents.get(type) ?? type;
+      const cachedComponent = stylizedComponents.get(type);
+      type = cachedComponent ?? type;
+      // if (!cachedComponent) {
+      //   type = createStylableComponent(type, {});
+      // } else {
+      //   type = cachedComponent;
+      // }
     }
 
-    // console.log('WRAPPER: ', type, props);
-
     jsxStyles(props, type);
+    // console.log('WRAPPER: ', type, props);
     // Call the original jsx function with the new type
     return jsx.call(jsx, type, props, ...rest);
   };

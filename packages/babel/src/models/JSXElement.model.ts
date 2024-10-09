@@ -10,10 +10,10 @@ import {
   RuntimeComponentEntry,
 } from '@native-twin/css/jsx';
 import { TreeNode } from '@native-twin/helpers/tree';
-import { getJSXElementAttrs, getJSXElementName } from '../ast/jsx.maps';
-import { JSXElementTree, JSXMappedAttribute } from '../jsx.types';
+import { getJSXElementAttrs, getJSXElementName } from '../jsx/ast/jsx.maps';
+import { JSXElementTree, JSXMappedAttribute } from '../jsx/jsx.types';
 import { NativeTwinService } from '../services';
-import { getElementEntries } from '../twin';
+import { getElementEntries } from '../jsx/twin';
 
 const jsxElementHash = (path: t.JSXElement, filename: string): number => {
   const filenameHash = Hash.string(`${filename}`);

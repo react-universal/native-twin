@@ -7,9 +7,10 @@
     "outDir": "build",
     "importHelpers": false,
     "declaration": true,
-    "emitDeclarationOnly": false,
+    "emitDeclarationOnly": true,
     "noEmit": false,
     "sourceMap": true
   },
+  "include": ["src"],
   "exclude": ["./src/__tests__", "build"]
 }

@@ -1,6 +1,3 @@
-import { ParseResult } from '@babel/parser';
-import traverse, { Binding } from '@babel/traverse';
-import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -8,6 +5,7 @@ import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import { applyParentEntries } from '@native-twin/css/jsx';
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
+import { JSXElementNode } from '../../models';
 import {
   createCommonMappedAttribute,
   mappedComponents,
@@ -18,8 +16,10 @@ import {
   type JSXElementTree,
   type JSXMappedAttribute,
 } from '../jsx.types';
-import { JSXElementNode } from '../models';
 import * as jsxPredicates from './jsx.predicates';
+import { ParseResult } from '@babel/parser';
+import traverse, { Binding } from '@babel/traverse';
+import * as t from '@babel/types';
 
 export const getJSXElementSource = (path: JSXElementNodePath) =>
   pipe(
@@ -184,6 +184,7 @@ export const getBabelJSXElementChildsCount = (node: t.JSXElement) =>
 
 export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
   return Effect.async<Tree<JSXElementTree>[]>((resolve) => {
+    let counter = 0;
     const cssImports: string[] = [];
     traverse(
       ast,
@@ -199,12 +200,16 @@ export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
           }
         },
         JSXElement(path) {
-          const hash = Hash.string(filename);
-          const uid = path.scope.generateUid('__twin_root');
+          const uid = path.scope.generateUidIdentifier(`__twin_root_${counter++}`);
+          const uidUnNamed = path.scope.generateUidIdentifier();
+          console.log('UID: ', uid.name, uidUnNamed.name);
+          const hash = Hash.combine(Hash.string(filename))(
+            Hash.string(uid.name + uidUnNamed.name),
+          );
           const parentTree = new Tree<JSXElementTree>({
             order: -1,
             babelNode: path.node,
-            uid: `${hash}__:${uid}`,
+            uid: `${hash}__:${uid.name}`,
             source: getJSXElementSource(path),
             cssImports: cssImports,
             parentID: null,
@@ -233,12 +238,14 @@ export const gelBabelJSXElementChildLeaves = (
 
   for (const childPath of childs) {
     const order = parent.childrenCount;
+    const childUid = path.scope.generateUid();
+    console.log('CHILD_UID: ', childUid);
     const childLeave = parent.addChild({
       order,
       babelNode: childPath.node,
-      uid: `${parent.value.uid}:${order}`,
+      uid: `${parent.value.uid}:${order}____${childUid}`,
       source: getJSXElementSource(childPath),
-      cssImports: [],
+      cssImports: parent.value.cssImports,
       parentID: parent.value.uid,
     });
     childLeave.parent = parent;

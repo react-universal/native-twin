@@ -1,8 +1,11 @@
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as NodePath from '@effect/platform-node/NodePath';
+import * as Path from '@effect/platform/Path';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import path from 'path';
+import path from 'node:path';
 import { matchCss } from '@native-twin/helpers/server';
 import type {
   MetroWithNativeTwindOptions,
@@ -11,9 +14,6 @@ import type {
 import { TwinLoggerLive } from './services/Logger.service';
 import { makeTwinConfig, MetroConfigService } from './services/MetroConfig.service';
 import { getTransformerOptions } from './services/programs/metro.programs';
-import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
-import * as NodePath from '@effect/platform-node/NodePath';
-import * as Path from '@effect/platform/Path';
 
 const FSLive = Layer.mergeAll(NodeFileSystem.layer, NodePath.layer, Path.layer);
 
@@ -27,14 +27,20 @@ export function withNativeTwin(
     Layer.provideMerge(Layer.succeed(MetroConfigService, twinConfig)),
   ).pipe(Layer.provide(TwinLoggerLive));
 
-  const originalResolver = twinConfig.metroConfig.resolver.resolveRequest;
+  const originalResolver = metroConfig.resolver.resolveRequest;
+
+  // const originalGetTransformOptions = metroConfig.transformer.getTransformOptions;
 
   return {
-    ...twinConfig.metroConfig,
+    ...metroConfig,
     // transformerPath: require.resolve('./transformer/metro.transformer'),
     resolver: {
-      ...twinConfig.metroConfig.resolver,
-      sourceExts: [...twinConfig.metroConfig.resolver.sourceExts, '.cjs', '.mjs'],
+      ...metroConfig.resolver,
+      sourceExts: [...metroConfig.resolver.sourceExts],
+      // unstable_conditionNames: ['react-native', 'import', 'require'],
+      mainFields: ['react-native', 'module', 'main'],
+      // unstable_enablePackageExports: true,
+      // unstable_enableSymlinks: true,
       resolveRequest(context, moduleName, platform) {
         const resolver = originalResolver ?? context.resolveRequest;
         const resolved = resolver(context, moduleName, platform);
@@ -53,8 +59,10 @@ export function withNativeTwin(
     transformer: {
       ...metroConfig.transformer,
       ...twinConfig.userConfig,
+      transformerPath: require.resolve('./transformer/metro.transformer'),
       babelTransformerPath: require.resolve('./transformer/babel.transformer'),
       getTransformOptions: (...args) => {
+        // return originalGetTransformOptions(...args);
         return getTransformerOptions(...args).pipe(
           Effect.provide(mainLayer),
           Effect.annotateLogs('platform', args[1].platform ?? 'server'),

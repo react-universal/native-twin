@@ -4,7 +4,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "sourceMap": true,
-    "module": "ESNext",
+    "module": "ES2020",
     "strictFunctionTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,

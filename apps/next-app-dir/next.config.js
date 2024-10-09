@@ -57,30 +57,11 @@ const nextConfig = {
         {
           loader: 'babel-loader',
           options: {
-            presets: [
-              '@babel/preset-typescript',
-              '@native-twin/babel/babel',
-            ],
+            presets: ['@babel/preset-typescript', '@native-twin/babel/babel'],
           },
         },
       ],
     });
-    // config.module.rules.push({
-    //   test: /\.+(ts|tsx)$/,
-    //   // exclude: /(layout)\.+(js|jsx|mjs|ts|tsx)$/,
-    //   use: [
-    //     context.defaultLoaders.babel,
-    //     {
-    //       loader: 'babel-loader',
-    //       options: {
-    //         presets: [
-    //           '@babel/preset-typescript',
-    //           '@native-twin/babel/next',
-    //         ],
-    //       },
-    //     },
-    //   ],
-    // });
 
     return config;
   },

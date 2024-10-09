@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "build",
-    "emitDeclarationOnly": false,
+    "emitDeclarationOnly": true,
     "module": "ESNext",
     "target": "ESNext",
     "noEmit": false,

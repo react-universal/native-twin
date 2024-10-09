@@ -1,11 +1,15 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "react-universal/native-twin" }],
+  "$schema": "https://unpkg.com/@changesets/config@3.0.3/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "react-universal/native-twin"
+    }
+  ],
   "commit": false,
   "fixed": [
     [
       "@native-twin/helpers",
-      "@native-twin/styled",
       "@native-twin/css",
       "@native-twin/core",
       "@native-twin/nextjs",
@@ -22,7 +26,12 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-pages-example", "expo-app", "native-twin-vscode"],
+  "ignore": [
+    "next-pages-example",
+    "expo-app",
+    "native-twin-vscode",
+    "@native-twin/styled"
+  ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }

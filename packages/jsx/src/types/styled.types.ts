@@ -14,7 +14,6 @@ import type {
 } from '@native-twin/css';
 import { Atom } from '@native-twin/helpers/react';
 import { createComponentSheet } from '../sheet/StyleSheet';
-import { createPropState } from '../utils/styled.utils';
 
 export interface RegisteredComponent {
   id: string;
@@ -48,7 +47,7 @@ export interface StyledComponentState {
   //   pressable?: number;
   //   canWarn?: boolean;
   // };
-  propStates: ReturnType<typeof createPropState>[];
+  // propStates: ReturnType<typeof createPropState>[];
 }
 
 export type StyledSubscription = 'vh' | 'vw' | 'rem' | 'em' | 'appearance';

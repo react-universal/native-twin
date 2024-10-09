@@ -6,7 +6,7 @@
     "module": "ESNext",
     "target": "ESNext",
     "noEmit": false,
-    "emitDeclarationOnly": false,
+    "emitDeclarationOnly": true,
     "declarationMap": true,
     "declaration": true
   },

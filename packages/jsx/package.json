@@ -17,13 +17,13 @@
   "exports": {
     ".": {
       "types": "./build/index.d.ts",
-      "import": "./build/esm/index.js",
-      "require": "./build/index.js"
+      "import": "./build/esm",
+      "require": "./build"
     },
     "./jsx-dev-runtime": {
       "types": "./build/jsx-dev-runtime.d.ts",
-      "import": "./build/esm/jsx-dev-runtime.js",
-      "require": "./build/jsx-dev-runtime.js"
+      "import": "./build/esm/jsx-dev-runtime",
+      "require": "./build/jsx-dev-runtime"
     },
     "./jsx-runtime": {
       "types": "./build/jsx-runtime.d.ts",
@@ -42,13 +42,13 @@
     },
     "./testing-library/setup": {
       "types": "./build/testing-library/setup.d.ts",
-      "import": "./build/esm/testing-library/setup",
-      "require": "./build/testing-library/setup"
+      "import": "./build/esm/testing-library/setup.js",
+      "require": "./build/testing-library/setup.js"
     },
     "./testing-library/setupAfterEnv": {
       "types": "./build/testing-library/setupAfterEnv.d.ts",
-      "import": "./build/esm/testing-library/setupAfterEnv",
-      "require": "./build/testing-library/setupAfterEnv"
+      "import": "./build/esm/testing-library/setupAfterEnv.js",
+      "require": "./build/testing-library/setupAfterEnv.js"
     },
     "./types": {
       "types": "./types.d.ts"
@@ -57,8 +57,8 @@
       "types": "./rn-svg.d.ts"
     }
   },
-  "main": "./build/index.js",
-  "module": "./build/esm/index.js",
+  "main": "./build",
+  "module": "./build/esm",
   "types": "./build/index.d.ts",
   "scripts": {
     "build": "twin build",

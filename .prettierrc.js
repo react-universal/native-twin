@@ -22,6 +22,6 @@ module.exports = {
     '^(react|react-native)$',
     '<THIRD_PARTY_MODULES>',
     '^@native-twin/(.*)$',
-    '^[./|@/]'
+    '^[./]'
   ],
 };

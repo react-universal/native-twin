@@ -1,11 +1,14 @@
 import * as Effect from 'effect/Effect';
 import fs from 'node:fs';
 import path from 'path';
-import { MetroCompilerContext } from '@native-twin/babel/jsx-babel/services';
+import {
+  MetroCompilerContext,
+  BabelTransformerServiceLive,
+  NativeTwinService,
+} from '../services';
 import { TWIN_CACHE_DIR, TWIN_STYLES_FILE } from '../src/constants';
 import { transformJSXFile } from '../src/jsx/ast/jsx.visitors';
-import { BabelTransformerFn } from '../src/jsx/models';
-import { BabelTransformerServiceLive, NativeTwinService } from '../src/jsx/services';
+import { BabelTransformerFn } from '../src/models';
 
 export const runFixture = async (fixturePath: string, platform: string) => {
   const codePath = path.join(__dirname, 'fixtures', fixturePath, 'code.tsx');
@@ -24,7 +27,7 @@ export const createBabelTestCompilerProgram = (filePath: string, platform: strin
       customTransformOptions: {
         baseUrl: '',
         environment: '',
-        inputCss: '',
+        inputCSS: '',
         routerRoot: '',
       },
       dev: true,

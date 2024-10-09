@@ -5,6 +5,7 @@ import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import pkg from '../package.json';
 import * as CliConfigs from './config/cli.config';
+import { RollupBuild } from './rollup/twin.rollup';
 import { TypescriptService } from './ts/twin.types';
 import { TSUpBuild } from './tsup/twin.tsup';
 import * as CliCommand from '@effect/cli/Command';
@@ -20,7 +21,10 @@ const MainNodeContext = NodeCommandExecutor.layer.pipe(
   Layer.merge(NodeContext.layer),
 );
 
-const TwinContext = TypescriptService.Live.pipe(Layer.provideMerge(TSUpBuild.Live));
+const TwinContext = TypescriptService.Live.pipe(
+  Layer.provideMerge(TSUpBuild.Live),
+  Layer.provideMerge(RollupBuild.Live),
+);
 
 const MainLive = TwinContext.pipe(Layer.provideMerge(MainNodeContext));
 
@@ -31,7 +35,7 @@ const twinCli = CliCommand.make('twin-cli', CliConfigs.CommandConfig).pipe(
 const twinBuild = CliCommand.make('build', CliConfigs.BuildConfig, (buildConfig) =>
   Effect.gen(function* () {
     const mainCli = yield* twinCli;
-    const bundler = yield* TSUpBuild;
+    const bundler = yield* RollupBuild;
     const mainConfig = yield* CliConfigs.loadConfigFile(process.cwd());
     const shouldWatch = buildConfig.watch || mainCli.watch;
 

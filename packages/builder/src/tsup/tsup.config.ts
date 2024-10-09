@@ -1,35 +1,61 @@
+import { Effect } from 'effect';
+import * as Layer from 'effect/Layer';
 import { defineConfig, Options } from 'tsup';
 import { tsupExternals } from '../config/constants';
 import { CliConfigFile } from '../esbuild-cli/cli.types';
-
+import { TypescriptService } from '../ts/twin.types';
 // import { requireResolvePlugin } from '../esbuild-cli/requireResolve.plugin';
+import * as NodeCommandExecutor from '@effect/platform-node/NodeCommandExecutor';
+import * as NodeContext from '@effect/platform-node/NodeContext';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as NodePath from '@effect/platform-node/NodePath';
+
+const MainNodeContext = NodeCommandExecutor.layer.pipe(
+  Layer.provideMerge(NodeFileSystem.layer),
+  Layer.merge(NodePath.layer),
+  Layer.merge(NodeContext.layer),
+);
 
 export const getTsUpConfig = (configFile: CliConfigFile, watch: boolean): Options =>
   defineConfig({
     // esbuildPlugins: [requireResolvePlugin()],
     entry: configFile.entries,
     format: ['cjs', 'esm'],
-    experimentalDts: true,
+    experimentalDts: false,
+    dts: false,
     external: [...tsupExternals, ...configFile.external],
     legacyOutput: true,
     clean: false,
-    metafile: true,
+    metafile: false,
     name: 'Native Twin',
     globalName: 'native_twin',
     platform: configFile.platform,
     esbuildOptions: (opt) => {
       opt.logLevel = 'info';
     },
-    cjsInterop: false,
+    onSuccess: async () => {
+      return Effect.gen(function* () {
+        const ts = yield* TypescriptService;
+        yield* ts.generate();
+      })
+        .pipe(
+          Effect.provide(MainNodeContext),
+          Effect.provide(TypescriptService.Live),
+          Effect.catchAllCause(Effect.log),
+          Effect.runPromise,
+        )
+        .then(() => console.warn('finish dts'));
+    },
+    cjsInterop: true,
     minify: !watch,
     loader: {
       '.snap': 'copy',
       '.ios': 'copy',
       '.android': 'copy',
     },
-    shims: configFile.platform === 'browser',
+    shims: true,
     bundle: false,
-    treeshake: 'safest',
+    treeshake: 'recommended',
     tsconfig: 'tsconfig.build.json',
     splitting: false,
     outDir: './build',

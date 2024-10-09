@@ -1,17 +1,17 @@
+import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import { transformJSXFile } from '@native-twin/babel/jsx-babel';
-import type { BabelTransformerFn } from '@native-twin/babel/models';
+import type { BabelTransformerFn } from '../models';
+import { BabelLogger } from '../services';
 import {
   BabelTransformerService,
   MetroCompilerContext,
   BabelTransformerServiceLive,
   NativeTwinService,
-  BabelLogger,
-} from '@native-twin/babel/services';
-import upstreamTransformer from '@expo/metro-config/babel-transformer';
+} from '../services';
+import { transformJSXFile } from './ast/jsx.visitors';
 
 const mainProgram = Effect.gen(function* () {
   const ctx = yield* MetroCompilerContext;
@@ -24,7 +24,6 @@ const mainProgram = Effect.gen(function* () {
 
   const compiled = yield* transformJSXFile(ctx.code);
 
-  // console.log('GEN: ', compiled.generated);
   return compiled.generated;
 });
 

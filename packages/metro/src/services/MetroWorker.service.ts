@@ -7,14 +7,8 @@ import fsAsync from 'fs/promises';
 import worker from 'metro-transform-worker';
 import nodePath from 'path';
 import { TWIN_CACHE_DIR, TWIN_OUT_CSS_FILE } from '@native-twin/babel/jsx-babel';
-import {
-  NativeTwinTransformerOpts,
-  TwinTransformFn,
-} from '@native-twin/babel/jsx-babel/models';
-import {
-  MetroCompilerContext,
-  NativeTwinService,
-} from '@native-twin/babel/jsx-babel/services';
+import type { NativeTwinTransformerOpts, TwinTransformFn } from '@native-twin/babel/models';
+import { MetroCompilerContext, NativeTwinService } from '@native-twin/babel/services';
 import { ensureBuffer } from '@native-twin/helpers/server';
 import type { MetroWorkerInput } from './models/metro.models';
 import { metroWorkerInputToCompilerCtx } from './utils/metroWorker.maps';

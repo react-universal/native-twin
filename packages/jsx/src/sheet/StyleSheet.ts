@@ -1,5 +1,3 @@
-import { StyleSheet as NativeSheet } from 'react-native';
-import { __Theme__, TailwindConfig } from '@native-twin/core';
 import {
   AnyStyle,
   FinalSheet,
@@ -7,6 +5,8 @@ import {
   SelectorGroup,
   SheetInteractionState,
 } from '@native-twin/css';
+import { StyleSheet as NativeSheet } from 'react-native';
+import { __Theme__, TailwindConfig, tw } from '@native-twin/core';
 import {
   ComponentSheet,
   RegisteredComponent,
@@ -24,7 +24,6 @@ import { globalStyles } from '../store/styles.store';
 import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 import { getSheetEntryStyles, sheetEntriesToStyles } from '../utils/sheet.utils';
-import { tw } from './native-tw';
 
 export const componentsRegistry: Map<string, RegisteredComponent> = new Map();
 const componentsState: Map<string, Atom<ComponentState>> = new Map();
@@ -155,7 +154,7 @@ export function createComponentSheet(
     compiledSheet,
     getChildStyles,
     recompute: (compiledSheet$) => {
-      compiledSheet = compiledSheet$;
+      compiledSheet = { ...compiledSheet$ };
       return createComponentSheet(
         prop,
         compiledSheet$,

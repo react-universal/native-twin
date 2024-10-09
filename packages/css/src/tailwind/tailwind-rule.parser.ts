@@ -8,7 +8,7 @@ import type {
   VariantToken,
 } from './tailwind.types';
 
-export const classNameIdent = /^[a-z0-9A-Z-.]+/;
+export const classNameIdent = /^[a-z0-9A-Z-._]+/;
 
 export const parseClassNameIdent = P.regex(classNameIdent);
 

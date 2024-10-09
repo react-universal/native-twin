@@ -1,10 +1,10 @@
-import * as t from '@babel/types';
 import { getRawSheet, RuntimeComponentEntry } from '@native-twin/css/jsx';
 import type { AnyPrimitive } from '@native-twin/helpers';
 import { createPrimitiveExpression, hasJsxAttribute } from '../../babel';
+import { JSXElementNode } from '../../models/JSXElement.model';
 import { JSXChildElement } from '../jsx.types';
-import { JSXElementNode } from '../models/JSXElement.model';
 import { entriesToObject, runtimeEntriesToAst } from '../twin';
+import * as t from '@babel/types';
 
 export const createRequireExpression = (path: string) => {
   return t.callExpression(t.identifier('require'), [t.stringLiteral(path)]);
@@ -52,7 +52,6 @@ export function addTwinPropsToElement(
   const stringEntries = entriesToObject(elementNode.id, getRawSheet(entries));
   const astProps = runtimeEntriesToAst(stringEntries.styledProp);
   // const treeProp = elementNodeToTree(elementNode, filename, elementNode.);
-  const astTemplate = runtimeEntriesToAst(stringEntries.templateEntries);
 
   if (options.componentID) {
     addJsxAttribute(elementNode.path, '_twinComponentID', elementNode.id);
@@ -65,12 +64,16 @@ export function addTwinPropsToElement(
   if (options.styledProps && astProps) {
     addJsxExpressionAttribute(elementNode.path, '_twinComponentSheet', astProps);
   }
-  if (options.templateStyles && astTemplate) {
-    addJsxExpressionAttribute(
-      elementNode.path,
-      '_twinComponentTemplateEntries',
-      astTemplate,
-    );
+
+  if (options.templateStyles && stringEntries.templateEntries) {
+    const astTemplate = runtimeEntriesToAst(stringEntries.templateEntries);
+    if (astTemplate) {
+      addJsxExpressionAttribute(
+        elementNode.path,
+        '_twinComponentTemplateEntries',
+        astTemplate,
+      );
+    }
   }
 }
 
@@ -88,11 +91,10 @@ export function compileCssForElement(
   // const astProps = runtimeEntriesToAst(stringEntries.styledProp);
   // const treeProp = elementNodeToTree(elementNode, filename, elementNode.);
   // const astTemplate = runtimeEntriesToAst(stringEntries.templateEntries);
-// 
+  //
   // if (options.componentID) {
   //   addJsxAttribute(elementNode.path, '_twinComponentID', elementNode.id);
   // }
-
   // if (options.order) {
   //   addJsxAttribute(elementNode.path, '_twinOrd', elementNode.order);
   // }

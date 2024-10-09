@@ -4,7 +4,7 @@ import { pipe } from 'effect/Function';
 import worker from 'metro-transform-worker';
 // @ts-expect-error
 import countLines from 'metro/src/lib/countLines';
-import type { NativeTwinTransformerOpts } from '@native-twin/babel/jsx-babel/models';
+import type { NativeTwinTransformerOpts } from '@native-twin/babel/models';
 import { escapeBackticksAndOctals } from '@native-twin/helpers';
 import { pathToHtmlSafeName } from '@native-twin/helpers/server';
 import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';

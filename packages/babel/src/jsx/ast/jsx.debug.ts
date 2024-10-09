@@ -6,7 +6,7 @@ import * as Option from 'effect/Option';
 import { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
 import { JSXElementTree, RuntimeTreeNode } from '../jsx.types';
-import { JSXElementNode } from '../models';
+import { JSXElementNode } from '../../models';
 
 export const elementNodeToTree = (
   treeNode: RuntimeTreeNode,

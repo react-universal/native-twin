@@ -6,7 +6,7 @@ import * as Layer from 'effect/Layer';
 import { CommandExecutor, Command } from '@effect/platform';
 import { PlatformError } from '@effect/platform/Error';
 
-const defaultArgs = Array.make('npx', 'tsc', '-p', 'tsconfig.build.json');
+const defaultArgs = Array.make('npx', 'tsc', '-p', 'tsconfig.build.json', '--emitDeclarationOnly');
 const watchArgs = Array.append(defaultArgs, '-w');
 const command = pipe(
   Command.make(...defaultArgs),

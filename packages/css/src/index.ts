@@ -60,7 +60,7 @@ export {
   /** @category — CSS parsers */
   mql,
 } from './tailwind/tailwind.utils';
-export {
+export type {
   /** @category — CSS parsers */
   TWParsedRule,
   /** @category — CSS parsers */
@@ -87,7 +87,7 @@ export {
   /** @category — CSS parsers */
   unitlessCssProps,
 } from './css/css.constants';
-export {
+export type {
   /** @category — CSS parsers */
   CSSValue,
   /** @category — CSS parsers */

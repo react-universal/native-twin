@@ -61,7 +61,12 @@
     "@native-twin/core": "workspace:*"
   },
   "devDependencies": {
-    "@native-twin/cli": "workspace:*"
+    "@native-twin/cli": "workspace:*",
+    "@types/loader-utils": "^2.0.6",
+    "@types/webpack": "^5.28.5",
+    "@vanilla-extract/integration": "^7.1.10",
+    "debug": "^4.3.1",
+    "loader-utils": "^2.0.0"
   },
   "peerDependencies": {
     "next": ">=14.0",

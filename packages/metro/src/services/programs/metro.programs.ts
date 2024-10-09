@@ -24,7 +24,7 @@ export const getTransformerOptions = (
       options.platform === 'web'
     ) {
       alreadySetup.add(options.platform);
-      yield* setupPlatform;
+      yield* setupPlatform(options.platform ?? 'native');
     }
 
     return result;

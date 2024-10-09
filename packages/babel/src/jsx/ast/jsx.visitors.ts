@@ -1,4 +1,3 @@
-import generate from '@babel/generator';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -8,13 +7,14 @@ import * as Stream from 'effect/Stream';
 import type { __Theme__ } from '@native-twin/core';
 import { Tree } from '@native-twin/helpers/tree';
 import { createBabelAST } from '../../babel';
+import { JSXElementNode } from '../../models';
+import { BabelTransformerService, MetroCompilerContext } from '../../services';
+import { NativeTwinService } from '../../services/NativeTwin.service';
 import { JSXElementTree, RuntimeTreeNode } from '../jsx.types';
-import { JSXElementNode } from '../models';
-import { BabelTransformerService, MetroCompilerContext } from '../services';
-import { NativeTwinService } from '../services/NativeTwin.service';
 import { addJsxExpressionAttribute } from './jsx.builder';
 import { createDevToolsTree, elementNodeToTree } from './jsx.debug';
 import { extractMappedAttributes, getAstTrees } from './jsx.maps';
+import generate from '@babel/generator';
 
 export const transformJSXFile = (code: string) => {
   return Effect.gen(function* () {

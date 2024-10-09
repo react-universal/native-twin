@@ -1,4 +1,6 @@
 import { sheetEntriesToCss } from '@native-twin/css';
+import * as FileSystem from '@effect/platform/FileSystem';
+import * as Path from '@effect/platform/Path';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -6,8 +8,6 @@ import * as Stream from 'effect/Stream';
 import { asArray } from '@native-twin/helpers';
 import { MetroConfigService } from '../MetroConfig.service';
 import { readDirectoryRecursive, getFileClasses } from '../utils/file.utils';
-import * as FileSystem from '@effect/platform/FileSystem';
-import * as Path from '@effect/platform/Path';
 
 const initialized: Set<string> = new Set();
 
@@ -52,27 +52,29 @@ const runTwinForFiles = (files: string[], platform: string) => {
   });
 };
 
-export const setupPlatform = Effect.scoped(
-  Effect.gen(function* () {
-    const allFiles = yield* getAllFilesInProject;
-    const platform = 'web';
+export const setupPlatform = (targetPlatform: string) =>
+  Effect.scoped(
+    Effect.gen(function* () {
+      const { twinConfig } = yield* MetroConfigService;
+      const allFiles = yield* getAllFilesInProject;
+      const platform = twinConfig.mode === 'web' ? 'web' : targetPlatform;
 
-    const hasPlatform = initialized.has(platform);
-    const currentSize = initialized.size;
-    if (!hasPlatform) {
-      initialized.add(platform);
-      if (currentSize === 0) {
-        yield* Effect.log(`Initializing project \n`);
+      const hasPlatform = initialized.has(platform);
+      const currentSize = initialized.size;
+      if (!hasPlatform) {
+        initialized.add(platform);
+        if (currentSize === 0) {
+          yield* Effect.log(`Initializing project \n`);
+        }
+        yield* runTwinForFiles(allFiles, platform);
+        if (currentSize === 0) {
+          yield* startWatcher.pipe(Effect.forkDaemon);
+          yield* Effect.yieldNow();
+          yield* Effect.log(`Watcher started`);
+        }
       }
-      yield* runTwinForFiles(allFiles, platform);
-      if (currentSize === 0) {
-        yield* startWatcher.pipe(Effect.forkDaemon);
-        yield* Effect.yieldNow();
-        yield* Effect.log(`Watcher started`);
-      }
-    }
-  }),
-);
+    }),
+  );
 
 export const startWatcher = Effect.gen(function* () {
   const path = yield* Path.Path;

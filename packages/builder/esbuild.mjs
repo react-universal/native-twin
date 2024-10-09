@@ -19,7 +19,18 @@ esbuild
     logLevel: 'info',
     packages: 'external',
     bundle: true,
-    external: ['esbuild', 'tsup', '@babel/*', 'effect', '@effect/*'],
+    external: [
+      'esbuild',
+      'tsup',
+      '@babel/*',
+      'effect',
+      '@effect/*',
+      'rollup',
+      'rollup-plugin-dts',
+      '@rollup/plugin-terser',
+      '@rollup/plugin-typescript',
+      'glob',
+    ],
     minify: false,
   })
   .then(async (x) => {

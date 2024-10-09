@@ -32,8 +32,7 @@ export const useTwinComponent = (
         setState({ ...state });
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [id],
+    [state, setState],
   );
 
   // console.log('Render_Count', ++useRef(0).current);

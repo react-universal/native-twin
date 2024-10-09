@@ -45,7 +45,7 @@ export const useInteractions = (
         });
       }
     },
-    [metadata],
+    [metadata.hasPointerEvents, metadata.isGroupParent, setState],
   );
 
   // TODO: Create the focus handler
