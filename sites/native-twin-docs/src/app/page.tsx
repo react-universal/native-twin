@@ -37,7 +37,7 @@ const features = [
 export default function Home() {
   return (
     <div className='relative flex flex-col gap-8'>
-      <header className='grid lg:grid-cols-2 gap-5'>
+      <header className='grid  gap-5'>
         <div className='flex flex-col gap-5'>
           <h1 className='text-3xl lg:text-[57px] lg:leading-tight  m-0 '>
             Tailwind CSS in React Native
@@ -56,13 +56,6 @@ export default function Home() {
             <SearchButton />
           </div>
         </div>
-        <picture className='w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
-          <Image
-            className='w-full h-full object-fill'
-            src={img1}
-            alt='Image of Native Twin'
-          />
-        </picture>
       </header>
 
       <section className='py-[50px] flex flex-col items-center gap-5'>
@@ -79,21 +72,10 @@ export default function Home() {
             <ButtonVariable color='#26C6DA'>Explore More</ButtonVariable>
           </Link>
         </div>
-        <div className='grid lg:grid-cols-2 gap-[20px] w-full'>
-          <picture className='flex w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
-            <Image
-              className='w-full h-full object-fill'
-              src={img2}
-              alt='Image of Native Twin'
-            />
-          </picture>
-          <picture className='w-full h-full bg-gray-200 rounded-lg overflow-hidden'>
-            <Image
-              className='w-full h-full object-fill'
-              src={img3}
-              alt='Image of Native Twin'
-            />
-          </picture>
+        <div className='grid  gap-[20px] w-full'>
+          {
+            // Addd here the editor
+          }
         </div>
       </section>
 
