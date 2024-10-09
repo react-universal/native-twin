@@ -1,21 +1,39 @@
 {
   "expo": {
-    "name": "Twin Dev Plugin",
-    "slug": "TwinDevPlugin",
+    "name": "universal-expo",
+    "slug": "universal-expo",
+    "version": "1.0.0",
+    "jsEngine": "hermes",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "expo.universal.css"
     },
-    "experiments": {
-      "baseUrl": "/_expo/plugins/@native-twin/dev-tools",
-      "typedRoutes": true,
-      "tsconfigPaths": true
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      [
+        "expo-build-properties"
+      ],
       "expo-font",
       "expo-router"
     ]

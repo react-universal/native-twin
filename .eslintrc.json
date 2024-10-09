@@ -6,6 +6,7 @@
   "plugins": [
     "@nx"
   ],
+  "extends": ["turbo"],
   "overrides": [
     {
       "files": [

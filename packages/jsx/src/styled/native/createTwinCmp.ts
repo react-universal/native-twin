@@ -8,7 +8,7 @@ import type {
 } from '../../types/styled.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
 import { getComponentDisplayName } from '../../utils/react.utils';
-import { useTwinDevTools } from '../hooks/useDevTools';
+// import { useTwinDevTools } from '../hooks/useDevTools';
 import { useInteractions } from '../hooks/useInteractions';
 import { useStyledProps } from '../hooks/useStyledProps';
 
@@ -39,7 +39,7 @@ export const NativeTwinHOC = <
 
     const componentID = props?.['_twinComponentID'];
     const id = componentID ?? reactID;
-    const { isSelected } = useTwinDevTools(id, props?.['_twinComponentTree']);
+    // const { isSelected } = useTwinDevTools(id, props?.['_twinComponentTree']);
 
     const { componentStyles, templateEntriesObj } = useStyledProps(id, props, configs);
 
@@ -67,12 +67,6 @@ export const NativeTwinHOC = <
             templateEntriesObj[style.prop] ?? [],
           ),
           oldProps,
-          isSelected
-            ? {
-                borderColor: 'green',
-                borderWidth: 10,
-              }
-            : {},
         );
       }
     }
