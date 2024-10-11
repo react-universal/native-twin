@@ -5,9 +5,11 @@ import micromatch from 'micromatch';
 import path from 'path';
 import {
   createTwinCSSFiles,
+  getTwinCacheDir,
   getUserTwinConfig,
   InternalTwinConfig,
   setupNativeTwin,
+  TWIN_CSS_FILES,
 } from '@native-twin/babel/jsx-babel';
 import type { TailwindConfig } from '@native-twin/core';
 import type { InternalTwFn } from '@native-twin/language-service';
@@ -22,6 +24,9 @@ export class MetroConfigService extends Context.Tag('metro/config/context')<
     metroConfig: ComposableIntermediateConfigT;
     isAllowedPath: (filePath: string) => boolean;
     twinConfig: TailwindConfig<InternalTwinConfig>;
+    getPlatformOutput: (platform: string) => string;
+    getPlatformInput: (platform: string) => string;
+    getTwinConfigPath: () => string;
     twin: InternalTwFn;
     userConfig: {
       allowedPaths: string[];
@@ -31,6 +36,7 @@ export class MetroConfigService extends Context.Tag('metro/config/context')<
       twinConfigPath: string;
       inputCSS: string;
       outputCSS: string;
+      platformOutputs: string[];
     };
   }
 >() {}
@@ -40,11 +46,7 @@ export const makeTwinConfig = (
   nativeTwinConfig: MetroWithNativeTwindOptions = {},
 ) => {
   const projectRoot = nativeTwinConfig.projectRoot ?? process.cwd();
-  const outputDir = path.join(
-    projectRoot,
-    nativeTwinConfig.outputDir ??
-      ['node_modules', '.cache', 'native-twin'].join(path.sep),
-  );
+  const outputDir = getTwinCacheDir();
 
   const twinConfigPath = nativeTwinConfig.configPath ?? 'tailwind.config.ts';
 
@@ -61,10 +63,9 @@ export const makeTwinConfig = (
     isServer: false,
     platform: 'web',
   });
-  const { inputCSS, outputCSS } = createTwinCSSFiles({
+  const { inputCSS } = createTwinCSSFiles({
     outputDir: outputDir,
     inputCSS: nativeTwinConfig.inputCSS,
-    twConfig: twinConfig,
   });
   const allowedPathsGlob = pipe(
     twinConfig.content,
@@ -77,6 +78,8 @@ export const makeTwinConfig = (
     RA.map((x) => x.base),
   );
 
+  const platformOutputs = TWIN_CSS_FILES.map((x) => path.join(outputDir, x));
+
   const userConfig = {
     allowedPaths,
     allowedPathsGlob,
@@ -84,7 +87,8 @@ export const makeTwinConfig = (
     projectRoot,
     twinConfigPath,
     inputCSS,
-    outputCSS,
+    outputCSS: 'twin.css.native.js',
+    platformOutputs,
   };
 
   const isAllowedPath = (filePath: string) =>
@@ -92,6 +96,13 @@ export const makeTwinConfig = (
 
   return {
     isAllowedPath,
+    getPlatformOutput: (platform: string) => {
+      return (
+        platformOutputs.find((x) => x.includes(`${platform}.`)) ?? 'twin.css.native.js'
+      );
+    },
+    getPlatformInput: () => path.join(projectRoot, inputCSS),
+    getTwinConfigPath: () => path.resolve(twinConfigPath),
     metroConfig,
     twinConfig,
     twin,

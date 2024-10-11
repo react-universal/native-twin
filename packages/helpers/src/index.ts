@@ -1,4 +1,4 @@
-export { hash, createHash, getBitMask, getHashMask } from './hash.utils';
+export { hash, createHash, getBitMask, getHashMask, simpleHash } from './hash.utils';
 
 export { createStore, createValueStore } from './store.utils';
 

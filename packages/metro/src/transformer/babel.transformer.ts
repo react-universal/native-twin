@@ -1,3 +1,4 @@
+import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
@@ -11,7 +12,6 @@ import {
   NativeTwinService,
   BabelLogger,
 } from '@native-twin/babel/services';
-import upstreamTransformer from '@expo/metro-config/babel-transformer';
 
 const mainProgram = Effect.gen(function* () {
   const ctx = yield* MetroCompilerContext;
@@ -37,7 +37,7 @@ export const babelRunnable = Effect.scoped(
 );
 
 export const transform: BabelTransformerFn = async (params) => {
-  // console.log(inspect(params.options, false, null, true));
+  console.log('RUNNING_BABEL');
   return babelRunnable.pipe(
     Effect.provide(
       MetroCompilerContext.make(params, {

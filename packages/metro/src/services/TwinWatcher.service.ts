@@ -1,5 +1,4 @@
 import * as t from '@babel/types';
-import type { PlatformError } from '@effect/platform/Error';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
 import * as RA from 'effect/Array';
@@ -17,28 +16,19 @@ import {
 } from '@native-twin/babel/jsx-babel';
 import { cx } from '@native-twin/core';
 import { MetroConfigService } from './MetroConfig.service';
+import { makeFileSystemLayer } from './programs/TwinFileSystem';
 
 export class TwinWatcherService extends Context.Tag('metro/files/watcher')<
   TwinWatcherService,
-  {
-    startFileWatcher: Effect.Effect<
-      void,
-      string | PlatformError,
-      MetroConfigService | Path.Path | FileSystem.FileSystem
-    >;
-  }
+  typeof makeFileSystemLayer
 >() {
-  static Live = Layer.scoped(
+  static Live = Layer.succeed(
     TwinWatcherService,
-    Effect.gen(function* () {
-      return {
-        startFileWatcher,
-      };
-    }),
+    TwinWatcherService.of(makeFileSystemLayer),
   );
 }
 
-export const startFileWatcher = Effect.gen(function* () {
+export const _____startFileWatcher = Effect.gen(function* () {
   const { userConfig, isAllowedPath } = yield* MetroConfigService;
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;

@@ -23,6 +23,10 @@ export const metroWorkerInputToCompilerCtx = ({
           baseUrl,
           environment,
           inputCSS: config.inputCSS,
+          outputCSS:
+            config.platformOutputs.find((x) =>
+              x.includes(`${options.platform ?? 'native'}.`),
+            ) ?? config.outputCSS,
           routerRoot,
         },
         dev: options.dev,

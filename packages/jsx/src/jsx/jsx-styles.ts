@@ -5,15 +5,19 @@ import { JSXInternalProps } from '../types/jsx.types';
 
 export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
   const templateEntries = props?.['_twinComponentTemplateEntries'];
-  const componentID = props?.['_twinComponentID'];
+  const componentSheet = props?.['_twinComponentSheet'];
+  const componentID = componentSheet?.id;
   if (componentID) {
     const component = StyleSheet.getComponentByID(componentID);
 
     if (component) {
+      if (componentSheet === component) {
+        console.log('SAME_SHEET: ', component);
+      }
       const templateSheet = templatePropsToSheetEntriesObject(templateEntries ?? []);
       for (const [prop, entries] of Object.entries(templateSheet)) {
         const styles = StyleSheet.entriesToFinalSheet(entries);
-        component.sheets = component.sheets.map((x) => {
+        component.sheets = (componentSheet.sheets ?? component.sheets).map((x) => {
           if (x.prop === prop) {
             const newSheet = mergeSheets(x.sheet, styles);
             return {
@@ -39,11 +43,13 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
       //   hasAnimations: component.sheets.some((x) => x.metadata.hasAnimations),
       // };
 
-      component.sheets = component.sheets.map((x) => x.recompute(x.compiledSheet));
+      // component.sheets = component.sheets.map((x) => x.recompute(x.compiledSheet));
       componentsRegistry.set(componentID, {
         ...component,
         sheets: [...component.sheets],
       });
+    } else {
+      console.log('COMPONENT_SHEET_UNREGISTER: ', type);
     }
   }
 }

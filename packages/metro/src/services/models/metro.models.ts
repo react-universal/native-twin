@@ -19,6 +19,7 @@ export interface MetroWorkerInput {
   filename: string;
   data: Buffer;
   options: JsTransformOptions;
+  
 }
 
 export type TransformWorkerFn = (

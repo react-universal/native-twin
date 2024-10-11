@@ -1,4 +1,4 @@
 {
-  "main": "../build/cjs/tree",
+  "main": "../build/tree",
   "module": "../build/esm/tree"
 }

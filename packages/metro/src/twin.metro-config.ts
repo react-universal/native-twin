@@ -5,69 +5,74 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import path from 'node:path';
-import { matchCss } from '@native-twin/helpers/server';
+import * as ManagedRuntime from 'effect/ManagedRuntime';
+import {
+  decorateMetroServer,
+  getTransformerOptions,
+} from './config/server/server.decorator';
 import type {
   MetroWithNativeTwindOptions,
   ComposableIntermediateConfigT,
 } from './metro.types';
 import { TwinLoggerLive } from './services/Logger.service';
 import { makeTwinConfig, MetroConfigService } from './services/MetroConfig.service';
-import { getTransformerOptions } from './services/programs/metro.programs';
+import { TwinWatcherService } from './services/TwinWatcher.service';
 
-const FSLive = Layer.mergeAll(NodeFileSystem.layer, NodePath.layer, Path.layer);
+const FSLive = Layer.mergeAll(
+  NodeFileSystem.layer,
+  NodePath.layer,
+  Path.layer,
+  TwinWatcherService.Live,
+);
 
 export function withNativeTwin(
   metroConfig: ComposableIntermediateConfigT,
   nativeTwinConfig: MetroWithNativeTwindOptions = {},
 ): ComposableIntermediateConfigT {
+  console.log('METRO_TWIN_CONFIG', nativeTwinConfig);
   const twinConfig = makeTwinConfig(metroConfig, nativeTwinConfig);
 
   const mainLayer = FSLive.pipe(
     Layer.provideMerge(Layer.succeed(MetroConfigService, twinConfig)),
-  ).pipe(Layer.provide(TwinLoggerLive));
+  )
+    .pipe(Layer.provide(TwinLoggerLive))
+    .pipe(ManagedRuntime.make);
 
-  const originalResolver = metroConfig.resolver.resolveRequest;
+  // const originalResolver = metroConfig.resolver.resolveRequest;
+
+  const { resolver: metroResolver, server: metroServer } = decorateMetroServer(
+    metroConfig,
+    twinConfig,
+  );
 
   // const originalGetTransformOptions = metroConfig.transformer.getTransformOptions;
 
   return {
     ...metroConfig,
-    // transformerPath: require.resolve('./transformer/metro.transformer'),
+    transformerPath: require.resolve('./transformer/metro.transformer'),
     resolver: {
       ...metroConfig.resolver,
-      sourceExts: [...metroConfig.resolver.sourceExts],
+      ...metroResolver,
+      // sourceExts: [...metroConfig.resolver.sourceExts],
       // unstable_conditionNames: ['react-native', 'import', 'require'],
-      mainFields: ['react-native', 'module', 'main'],
+      // mainFields: ['react-native', 'module', 'main'],
       // unstable_enablePackageExports: true,
       // unstable_enableSymlinks: true,
-      resolveRequest(context, moduleName, platform) {
-        const resolver = originalResolver ?? context.resolveRequest;
-        const resolved = resolver(context, moduleName, platform);
-
-        if (platform === 'web' && 'filePath' in resolved && matchCss(resolved.filePath)) {
-          return {
-            ...resolved,
-            type: 'sourceFile',
-            filePath: path.resolve(twinConfig.userConfig.outputCSS),
-          };
-        }
-
-        return resolved;
-      },
+    },
+    server: {
+      ...metroServer,
     },
     transformer: {
       ...metroConfig.transformer,
       ...twinConfig.userConfig,
-      transformerPath: require.resolve('./transformer/metro.transformer'),
-      babelTransformerPath: require.resolve('./transformer/babel.transformer'),
+      // babelTransformerPath: require.xresolve('./transformer/babel.transformer'),
+      originalTransformerPath: metroConfig.transformerPath,
       getTransformOptions: (...args) => {
         // return originalGetTransformOptions(...args);
-        return getTransformerOptions(...args).pipe(
-          Effect.provide(mainLayer),
+        return getTransformerOptions(twinConfig.userConfig.projectRoot, ...args).pipe(
           Effect.annotateLogs('platform', args[1].platform ?? 'server'),
           Logger.withMinimumLogLevel(LogLevel.All),
-          Effect.runPromise,
+          mainLayer.runPromise,
         );
       },
     },

@@ -1,15 +1,18 @@
 import * as Effect from 'effect/Effect';
 import type { GetTransformOptions } from 'metro-config';
+import { NativeTwinService } from '@native-twin/babel/services';
 import { MetroConfigService } from '../MetroConfig.service';
-import { setupPlatform } from './TwinFileSystem';
+import { TwinWatcherService } from '../TwinWatcher.service';
 
 const alreadySetup: Set<string> = new Set();
 /** @category Programs */
 export const getTransformerOptions = (
+  projectRoot: string,
   ...[entryPoints, options, getDeps]: Parameters<GetTransformOptions>
 ) =>
   Effect.gen(function* () {
     const ctx = yield* MetroConfigService;
+    const watcher = yield* TwinWatcherService;
 
     const { metroConfig } = ctx;
     const originalGetTransformOptions = metroConfig.transformer.getTransformOptions;
@@ -18,14 +21,21 @@ export const getTransformerOptions = (
       originalGetTransformOptions(entryPoints, options, getDeps),
     );
 
-    if (
-      options.platform &&
-      !alreadySetup.has(options.platform) &&
-      options.platform === 'web'
-    ) {
+    if (options.platform && !alreadySetup.has(options.platform)) {
       alreadySetup.add(options.platform);
-      yield* setupPlatform(options.platform ?? 'native');
+      yield* watcher.setupPlatform({
+        projectRoot: ctx.userConfig.projectRoot,
+        targetPlatform: options.platform ?? 'native',
+      });
     }
 
     return result;
-  });
+  }).pipe(
+    Effect.provide(
+      NativeTwinService.make({
+        dev: options.dev,
+        platform: options.platform ?? 'native',
+        projectRoot,
+      }),
+    ),
+  );

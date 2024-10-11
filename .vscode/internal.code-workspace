@@ -5,20 +5,24 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
+      "name": "📦 @lib/css-to-rn",
+      "path": "../packages/css-to-rn"
     },
     {
       "name": "📦 @lib/jsx",
       "path": "../packages/jsx"
     },
     {
-      "name": "📦 @lib/styled",
-      "path": "../packages/styled"
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
     },
     {
       "name": "📦 @lib/helpers",
@@ -29,40 +33,36 @@
       "path": "../packages/css"
     },
     {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/preset-tw",
-      "path": "../packages/preset-tailwind"
-    },
-    {
       "name": "📦 @lib/with-nextjs",
       "path": "../packages/native-twin-nextjs"
-    },
-    {
-      "name": "📦 @lib/arc-parser",
-      "path": "../packages/arc-parser"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @lib/language-service",
-      "path": "../packages/language-service"
-    },
-    {
-      "name": "📦 @lib/language-server",
-      "path": "../packages/language-server"
     },
     {
       "name": "📦 @lib/dev-tools",
       "path": "../packages/dev-tools"
     },
     {
+      "name": "📦 @lib/language-service",
+      "path": "../packages/language-service"
+    },
+    {
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
+      "name": "📦 @lib/preset-tw",
+      "path": "../packages/preset-tailwind"
+    },
+    {
       "name": "📦 @lib/builder",
       "path": "../packages/builder"
+    },
+    {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @lib/language-server",
+      "path": "../packages/language-server"
     },
     {
       "name": "twin.run",
@@ -83,6 +83,10 @@
     {
       "name": "docs-site",
       "path": "../apps/docs-site"
+    },
+    {
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
     }
   ],
   "settings": {

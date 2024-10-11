@@ -1,0 +1,32 @@
+{
+  "name": "@native-twin/compiler",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/esm/index.js",
+      "require": "./build/index.js",
+      "default": "./build/esm/index.js"
+    },
+    "./runtime": {
+      "types": "./build/runtime/index.d.ts",
+      "import": "./build/esm/runtime/index.js",
+      "require": "./build/runtime/index.js",
+      "default": "./build/esm/runtime/index.js"
+    },
+    "./node": {
+      "types": "./build/node/index.d.ts",
+      "import": "./build/esm/node/index.js",
+      "require": "./build/node/index.js",
+      "default": "./build/esm/node/index.js"
+    }
+  },
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/index.d.ts",
+  "dependencies": {
+    "@native-twin/cli": "workspace:*"
+  },
+  "devDependencies": {
+    "@native-twin/cli": "workspace:*"
+  }
+}

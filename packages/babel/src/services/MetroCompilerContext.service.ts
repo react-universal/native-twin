@@ -1,5 +1,6 @@
 // @ts-expect-error
 import babelJSX from '@babel/plugin-syntax-jsx';
+import * as t from '@babel/types';
 import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -12,8 +13,6 @@ import nodePath from 'node:path';
 import path from 'node:path';
 import type { __Theme__ } from '@native-twin/core';
 import { RuntimeComponentEntry } from '@native-twin/css/jsx';
-import { TWIN_OUT_CSS_FILE } from '../constants/twin.constants';
-import { TWIN_CACHE_DIR } from '../constants/twin.constants';
 import { addTwinPropsToElement } from '../jsx/ast/jsx.builder';
 import { getJSXCompiledTreeRuntime } from '../jsx/ast/jsx.maps';
 import { JSXElementNode } from '../models';
@@ -32,11 +31,7 @@ export class MetroCompilerContext extends Context.Tag('metro/babel/transformer-c
       MetroCompilerContext,
       Effect.gen(function* () {
         const twin = yield* NativeTwinService;
-        const outputCSS = nodePath.join(
-          options.projectRoot,
-          TWIN_CACHE_DIR,
-          TWIN_OUT_CSS_FILE,
-        );
+        const outputCSS = options.customTransformOptions.outputCSS;
         const platform = options.platform;
 
         return {
@@ -66,6 +61,7 @@ export class BabelTransformerService extends Context.Tag('babel/TransformerServi
       {
         leave: JSXElementNode;
         runtimeSheet: RuntimeComponentEntry[];
+        runtimeAST: t.Expression | null | undefined;
       }
     >;
   }
@@ -95,8 +91,8 @@ export const BabelTransformerServiceLive = Layer.effect(
               Option.flatMap((x) => HashMap.get(trees, x)),
             ),
           );
-          addTwinPropsToElement(leave, runtimeSheet, ctx.generate);
-          return { leave, runtimeSheet };
+          const runtimeAST = addTwinPropsToElement(leave, runtimeSheet, ctx.generate);
+          return { leave, runtimeSheet, runtimeAST };
         });
       },
 

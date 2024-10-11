@@ -1,19 +1,25 @@
-import * as RA from 'effect/Array';
-import * as Effect from 'effect/Effect';
-import { pipe } from 'effect/Function';
-// import * as VSCDocument from 'vscode-languageserver-textdocument';
-import {
-  createBabelAST,
-  extractMappedAttributes,
-  getAstTrees,
-  templateLiteralToStringLike,
-} from '@native-twin/babel/jsx-babel';
-import { cx } from '@native-twin/core';
 // import { getDocumentLanguageLocations } from '@native-twin/language-service';
 import * as t from '@babel/types';
 import type { PlatformError } from '@effect/platform/Error';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
+import * as RA from 'effect/Array';
+import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import * as HashMap from 'effect/HashMap';
+import * as Stream from 'effect/Stream';
+import path from 'path';
+// import * as VSCDocument from 'vscode-languageserver-textdocument';
+import {
+  createBabelAST,
+  extractMappedAttributes,
+  extractSheetsFromTree,
+  getAstTrees,
+  templateLiteralToStringLike,
+} from '@native-twin/babel/jsx-babel';
+import { JSXElementNode } from '@native-twin/babel/models';
+import { cx } from '@native-twin/core';
+import { MetroConfigService } from '../MetroConfig.service';
 
 // const languageDefaultTags = [
 //   'tw',
@@ -32,10 +38,6 @@ export function readDirectoryRecursive(
   return Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-
-    // if (!fs.exists(currentPath)) {
-    //   return [];
-    // }
 
     if (path.extname(currentPath) !== '') {
       return [currentPath];
@@ -84,82 +86,47 @@ export function readDirectoryRecursive(
   });
 }
 
-// const extractDocumentLanguageRegions = (
-//   filename: string,
-//   text: string,
-//   attributes: string[],
-// ) => {
-//   const document = VSCDocument.TextDocument.create(filename, 'typescriptreact', 1, text);
-//   const regions = getDocumentLanguageLocations(text, {
-//     attributes,
-//     tags: languageDefaultTags,
-//   });
-
-//   return pipe(
-//     regions,
-//     RA.map((x) =>
-//       document.getText({
-//         start: {
-//           character: x.start.column,
-//           line: x.start.line,
-//         },
-//         end: {
-//           character: x.end.column,
-//           line: x.end.line,
-//         },
-//       }),
-//     ),
-//   );
-// };
-
-// export const getFirstStyles = () =>
-//   Effect.gen(function* () {
-//     const { userConfig, twin } = yield* MetroConfigService;
-//     const { allFiles } = yield* TwinFSService;
-//     const fs = yield* FileSystem.FileSystem;
-
-//     const mapped = yield* pipe(
-//       allFiles,
-//       RA.filter((x) => x !== ''),
-//       RA.map((filename) =>
-//         getFileClasses(filename).pipe(
-//           Effect.map((contents) => ({
-//             filename,
-//             contents,
-//           })),
-//         ),
-//       ),
-//       Effect.allSuccesses,
-//     );
-
-//     pipe(
-//       mapped,
-//       RA.filter((x) => x.contents !== ''),
-//       RA.forEach((x) => twin(`${x.contents}`)),
-//     );
-//     mapped.filter((x) => x.contents !== '');
-
-//     yield* fs.writeFile(
-//       userConfig.outputCSS,
-//       new TextEncoder().encode(sheetEntriesToCss(twin.target, true)),
-//     );
-//   });
-
 export const getFileClasses = (filename: string) =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const exists = yield* fs.exists(filename);
+    const ctx = yield* MetroConfigService;
 
-    if (!exists) return '';
+    if (!exists) {
+      return {
+        fileClasses: '',
+        registry: HashMap.empty<string, JSXElementNode>(),
+      };
+    }
 
     const contents = yield* fs.readFileString(filename);
 
-    if (contents === '') return '';
+    if (contents === '') {
+      return {
+        fileClasses: '',
+        registry: HashMap.empty<string, JSXElementNode>(),
+      };
+    }
     const ast = createBabelAST(contents);
-    const trees = yield* getAstTrees(ast, filename);
+    const babelTrees = yield* getAstTrees(
+      ast,
+      path.relative(ctx.userConfig.projectRoot, filename),
+    );
 
-    return pipe(
-      trees,
+    const registry = yield* pipe(
+      Stream.fromIterable(babelTrees),
+      Stream.mapEffect((x) =>
+        extractSheetsFromTree(x, path.relative(ctx.userConfig.projectRoot, filename)),
+      ),
+      Stream.map(HashMap.fromIterable),
+
+      Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) => {
+        return pipe(prev, HashMap.union(current));
+      }),
+    );
+
+    const fileClasses = pipe(
+      babelTrees,
       RA.flatMap((x) => x.all()),
       RA.flatMap((leave) => extractMappedAttributes(leave.value.babelNode)),
       RA.map(({ value }) => {
@@ -174,4 +141,6 @@ export const getFileClasses = (filename: string) =>
       }),
       RA.join(' '),
     );
+
+    return { fileClasses, registry };
   });

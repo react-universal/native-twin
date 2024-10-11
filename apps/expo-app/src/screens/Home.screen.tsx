@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Text, Image, Pressable, View } from 'react-native';
+import { View, Text, Image, Pressable } from 'react-native';
 import { Button } from '../components/Button';
 import { TextField } from '../components/TextField';
 
 const testImage = require('../../assets/favicon.png');
 function HomeScreen() {
   const [active, setActive] = useState(true);
+  // return <View className='bg-red-300 flex-1' />;
+
   return (
     <View className='flex-1 first:bg-yellow-600'>
       <View className={`flex-1 items-center justify-center group`}>
@@ -44,7 +46,7 @@ function HomeScreen() {
           <Text className='text-blue-200 text-sm'>Activate</Text>
         </Pressable>
         <Image
-          src={testImage}
+          source={testImage}
           resizeMode='cover'
           style={{
             width: 100,

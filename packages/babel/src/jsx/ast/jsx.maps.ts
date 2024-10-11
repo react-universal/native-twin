@@ -1,3 +1,6 @@
+import { ParseResult } from '@babel/parser';
+import traverse, { Binding } from '@babel/traverse';
+import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -17,9 +20,6 @@ import {
   type JSXMappedAttribute,
 } from '../jsx.types';
 import * as jsxPredicates from './jsx.predicates';
-import { ParseResult } from '@babel/parser';
-import traverse, { Binding } from '@babel/traverse';
-import * as t from '@babel/types';
 
 export const getJSXElementSource = (path: JSXElementNodePath) =>
   pipe(
@@ -184,7 +184,6 @@ export const getBabelJSXElementChildsCount = (node: t.JSXElement) =>
 
 export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
   return Effect.async<Tree<JSXElementTree>[]>((resolve) => {
-    let counter = 0;
     const cssImports: string[] = [];
     traverse(
       ast,
@@ -200,16 +199,13 @@ export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
           }
         },
         JSXElement(path) {
-          const uid = path.scope.generateUidIdentifier(`__twin_root_${counter++}`);
-          const uidUnNamed = path.scope.generateUidIdentifier();
-          console.log('UID: ', uid.name, uidUnNamed.name);
-          const hash = Hash.combine(Hash.string(filename))(
-            Hash.string(uid.name + uidUnNamed.name),
-          );
+          const uid = path.scope.generateUidIdentifier();
+          // console.log('UID: ', uid.name, uidUnNamed.name);
+          const hash = Hash.string(filename + uid.name);
           const parentTree = new Tree<JSXElementTree>({
             order: -1,
             babelNode: path.node,
-            uid: `${hash}__:${uid.name}`,
+            uid: `${hash}__${uid.name}:__1`,
             source: getJSXElementSource(path),
             cssImports: cssImports,
             parentID: null,
@@ -239,7 +235,7 @@ export const gelBabelJSXElementChildLeaves = (
   for (const childPath of childs) {
     const order = parent.childrenCount;
     const childUid = path.scope.generateUid();
-    console.log('CHILD_UID: ', childUid);
+    // console.log('CHILD_UID: ', childUid);
     const childLeave = parent.addChild({
       order,
       babelNode: childPath.node,

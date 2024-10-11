@@ -12,11 +12,13 @@ export type BabelTransformerFn = (params: {
 
 export interface NativeTwinTransformerOpts extends JsTransformerConfig {
   transformerPath?: string;
+  originalTransformerPath?: string;
   allowedFiles: string[];
   tailwindConfigPath: string;
   outputDir: string;
   inputCSS: string;
   outputCSS: string;
+  platformOutputs: string[];
 }
 
 export type TwinTransformFn = (
@@ -31,6 +33,7 @@ export interface BabelTransformerOptions {
   customTransformOptions: {
     routerRoot: string;
     inputCSS: string;
+    outputCSS: string;
     environment: string;
     baseUrl: string;
   };

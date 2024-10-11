@@ -1,3 +1,4 @@
+import generate from '@babel/generator';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -14,7 +15,6 @@ import { JSXElementTree, RuntimeTreeNode } from '../jsx.types';
 import { addJsxExpressionAttribute } from './jsx.builder';
 import { createDevToolsTree, elementNodeToTree } from './jsx.debug';
 import { extractMappedAttributes, getAstTrees } from './jsx.maps';
-import generate from '@babel/generator';
 
 export const transformJSXFile = (code: string) => {
   return Effect.gen(function* () {
@@ -25,7 +25,7 @@ export const transformJSXFile = (code: string) => {
     const babelTrees = yield* getAstTrees(ast, ctx.filename);
     const registry = yield* pipe(
       Stream.fromIterable(babelTrees),
-      Stream.mapEffect(extractSheetsFromTree),
+      Stream.mapEffect((x) => extractSheetsFromTree(x, ctx.filename)),
       Stream.map(HashMap.fromIterable),
       Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) => {
         return pipe(prev, HashMap.union(current));
@@ -91,11 +91,11 @@ export const transformJSXFile = (code: string) => {
   });
 };
 
-const extractSheetsFromTree = (tree: Tree<JSXElementTree>) =>
+export const extractSheetsFromTree = (tree: Tree<JSXElementTree>, fileName: string) =>
   Effect.gen(function* () {
     // const fileSheet = MutableHashMap.empty<string, CompiledTree>();
-    const ctx = yield* MetroCompilerContext;
     const twin = yield* NativeTwinService;
+    console.groupEnd();
     const fileSheet = RA.empty<[string, JSXElementNode]>();
 
     tree.traverse((leave) => {
@@ -104,7 +104,7 @@ const extractSheetsFromTree = (tree: Tree<JSXElementTree>) =>
       const model = new JSXElementNode({
         leave,
         order: value.order,
-        filename: ctx.filename,
+        filename: fileName,
         runtimeData,
         twin,
       });

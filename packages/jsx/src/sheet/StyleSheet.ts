@@ -6,7 +6,7 @@ import {
   SheetInteractionState,
 } from '@native-twin/css';
 import { StyleSheet as NativeSheet } from 'react-native';
-import { __Theme__, TailwindConfig, tw } from '@native-twin/core';
+import { __Theme__, TailwindConfig } from '@native-twin/core';
 import {
   ComponentSheet,
   RegisteredComponent,
@@ -24,6 +24,7 @@ import { globalStyles } from '../store/styles.store';
 import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 import { getSheetEntryStyles, sheetEntriesToStyles } from '../utils/sheet.utils';
+import { tw } from './native-tw';
 
 export const componentsRegistry: Map<string, RegisteredComponent> = new Map();
 const componentsState: Map<string, Atom<ComponentState>> = new Map();
@@ -39,6 +40,7 @@ export interface TwinStyleSheet {
     id: string,
     props: RuntimeComponentEntry[],
     context: StyledContext,
+    sameClasses?: boolean,
   ): RegisteredComponent;
   getComponentState(id: string): Atom<ComponentState>;
 }
@@ -59,8 +61,14 @@ const internalSheet: TwinStyleSheet = {
   [INTERNAL_RESET](twConfig) {
     globalStyles.clear();
     const config = twConfig ?? tw.config;
-    twinConfigObservable.set(config);
-    remObs.set(config.root.rem);
+    // twinConfigObservable.set(config);
+    const rootConfig = config.root ?? tw.config.root;
+    if (rootConfig) {
+      console.log('CONFIG: ', rootConfig);
+      remObs.set(rootConfig.rem ?? 16);
+    } else {
+      console.log('SETTT: ', remObs.get());
+    }
     this[INTERNAL_FLAGS]['STARTED'] = 'YES';
   },
   getFlag(name: string) {
@@ -75,10 +83,10 @@ const internalSheet: TwinStyleSheet = {
   getComponentByID(id: string) {
     return componentsRegistry.get(id);
   },
-  registerComponent(id, props, context) {
+  registerComponent(id, props, context, sameClasses = true) {
     const component = componentsRegistry.get(id);
 
-    if (component) {
+    if (component && sameClasses) {
       component.sheets = component.sheets.map((x) => x.recompute(x.compiledSheet));
       return component;
     }
@@ -134,7 +142,7 @@ export function createComponentSheet(
       [group as SelectorGroup, sheetEntriesToStyles(entry, context)] as const,
   );
   const tuplesObject = Object.fromEntries(tuples) as FinalSheet;
-  const sheet = StyleSheet.create(tuplesObject);
+  const sheet = { ...tuplesObject };
   const base = sheet.base;
   if (context.colorScheme === 'dark') {
     Object.assign({ ...base }, { ...sheet.dark });
@@ -170,12 +178,21 @@ export function createComponentSheet(
     templateEntries: RuntimeSheetEntry[] = [],
   ) {
     const templateFinal = StyleSheet.entriesToFinalSheet(templateEntries);
-    const styles: AnyStyle = { ...sheet.base, ...templateFinal.base };
+    const styles: AnyStyle = StyleSheet.flatten([
+      { ...sheet.base },
+      { ...templateFinal.base },
+    ]);
     if (input.dark) Object.assign(styles, { ...sheet.dark, ...templateFinal.dark });
     if (input.isPointerActive)
-      Object.assign(styles, { ...sheet.pointer, ...templateFinal.pointer });
+      Object.assign(
+        styles,
+        StyleSheet.flatten([{ ...sheet.pointer, ...templateFinal.pointer }]),
+      );
     if (input.isParentActive)
-      Object.assign(styles, { ...sheet.group, ...templateFinal.group });
+      Object.assign(
+        styles,
+        StyleSheet.flatten([{ ...sheet.group }, { ...templateFinal.group }]),
+      );
 
     return styles;
   }
