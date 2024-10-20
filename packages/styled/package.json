@@ -33,7 +33,6 @@
   ],
   "scripts": {
     "build": "twin build",
-    "build:watch": "twin build -w",
     "bundle": "yarn clean && yarn twin-build",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -50,7 +49,6 @@
     "stable-hash": "0.0.3"
   },
   "devDependencies": {
-    "@native-twin/cli": "workspace:*",
     "@types/react-is": "^17.0.3"
   },
   "peerDependencies": {
@@ -61,6 +59,7 @@
     "react-native-web": "*"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

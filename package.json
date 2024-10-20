@@ -63,6 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
     "@welldone-software/why-did-you-render": "^8.0.3",
+    "better-docs": "^2.7.3",
     "chai": "4.3.7",
     "chalk": "^5.3.0",
     "concurrently": "^7.6.0",

@@ -18,15 +18,66 @@
       "import": "./build/esm/node/index.js",
       "require": "./build/node/index.js",
       "default": "./build/esm/node/index.js"
+    },
+    "./babel": {
+      "types": "./build/babel/index.d.ts",
+      "import": "./build/esm/babel/index.js",
+      "require": "./build/babel/index.js",
+      "default": "./build/esm/babel/index.js"
+    },
+    "./metro.babel.transformer": {
+      "types": "./build/metro/metro.babel.transformer.js",
+      "import": "./build/esm/metro/metro.babel.transformer.js",
+      "require": "./build/metro/metro.babel.transformer.js",
+      "default": "./build/esm/metro/metro.babel.transformer.js"
+    },
+    "./metro.transformer": {
+      "types": "./build/metro/metro.transformer.js",
+      "import": "./build/esm/metro/metro.transformer.js",
+      "require": "./build/metro/metro.transformer.js",
+      "default": "./build/esm/metro/metro.transformer.js"
+    },
+    "./native-twin": {
+      "types": "./build/node/native-twin/index.d.ts",
+      "import": "./build/esm/node/native-twin/index.js",
+      "require": "./build/node/native-twin/index.js",
+      "default": "./build/esm/node/native-twin/index.js"
+    },
+    "./metro": {
+      "types": "./build/metro/index.d.ts",
+      "import": "./build/esm/metro/index.js",
+      "require": "./build/metro/index.js",
+      "default": "./build/esm/metro/index.js"
     }
   },
   "main": "./build/index.js",
   "module": "./build/esm/index.js",
   "types": "./build/index.d.ts",
+  "scripts": {
+    "build": "twin build",
+    "build:watch": "twin build -w",
+    "clean": "rm -rf build",
+    "gen:jsdocs": "jsdoc -c jsdoc.json",
+    "test": "jest",
+    "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand",
+    "test:watch": "jest --watch"
+  },
   "dependencies": {
-    "@native-twin/cli": "workspace:*"
+    "@babel/traverse": "^7.24.0",
+    "@babel/types": "^7.24.0",
+    "@native-twin/css": "workspace:*"
   },
   "devDependencies": {
-    "@native-twin/cli": "workspace:*"
+    "@babel/plugin-syntax-jsx": "^7.23.3",
+    "@babel/preset-typescript": "7.23.3",
+    "@effect/language-service": "^0.2.0",
+    "@native-twin/cli": "workspace:*",
+    "@types/babel__helper-module-imports": "^7.18.3",
+    "babel-plugin-tester": "^11.0.4",
+    "metro-react-native-babel-preset": "^0.77.0"
+  },
+  "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
+    "better-docs": "*"
   }
 }

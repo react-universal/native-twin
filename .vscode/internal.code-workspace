@@ -5,7 +5,15 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/css-to-rn",
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/compiler",
       "path": "../packages/css-to-rn"
     },
     {
@@ -15,14 +23,6 @@
     {
       "name": "📦 @lib/native-twin",
       "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
     },
     {
       "name": "📦 @lib/helpers",

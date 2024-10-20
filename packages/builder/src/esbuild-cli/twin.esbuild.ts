@@ -1,4 +1,4 @@
-import { Tuple } from 'effect';
+import * as Tuple from 'effect/Tuple';
 import * as Context from 'effect/Context';
 import * as Data from 'effect/Data';
 import * as Effect from 'effect/Effect';
@@ -6,7 +6,7 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import esbuild from 'esbuild';
-import { TwinCliMainConfig } from './cli.types';
+import type { TwinCliMainConfig } from '../config/config.types';
 import { createEsbuildContext, getEsbuildConfig } from './utils';
 
 export interface EsbuildSuccess extends esbuild.BuildResult {}

@@ -1,80 +1,42 @@
-import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
-import * as NodePath from '@effect/platform-node/NodePath';
-import * as Path from '@effect/platform/Path';
 import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import * as ManagedRuntime from 'effect/ManagedRuntime';
-import {
-  decorateMetroServer,
-  getTransformerOptions,
-} from './config/server/server.decorator';
-import type {
-  MetroWithNativeTwindOptions,
-  ComposableIntermediateConfigT,
-} from './metro.types';
-import { TwinLoggerLive } from './services/Logger.service';
-import { makeTwinConfig, MetroConfigService } from './services/MetroConfig.service';
-import { TwinWatcherService } from './services/TwinWatcher.service';
-
-const FSLive = Layer.mergeAll(
-  NodeFileSystem.layer,
-  NodePath.layer,
-  Path.layer,
-  TwinWatcherService.Live,
-);
+import { makeBabelLayer } from '@native-twin/compiler/babel';
+import * as TwinMetro from '@native-twin/compiler/metro';
 
 export function withNativeTwin(
-  metroConfig: ComposableIntermediateConfigT,
-  nativeTwinConfig: MetroWithNativeTwindOptions = {},
-): ComposableIntermediateConfigT {
+  metroConfig: TwinMetro.TwinMetroConfig,
+  nativeTwinConfig: TwinMetro.MetroWithNativeTwindOptions = {},
+): TwinMetro.TwinMetroConfig {
   console.log('METRO_TWIN_CONFIG', nativeTwinConfig);
-  const twinConfig = makeTwinConfig(metroConfig, nativeTwinConfig);
+  const twinMetroConfig = TwinMetro.createMetroConfig(metroConfig, nativeTwinConfig);
 
-  const mainLayer = FSLive.pipe(
-    Layer.provideMerge(Layer.succeed(MetroConfigService, twinConfig)),
-  )
-    .pipe(Layer.provide(TwinLoggerLive))
-    .pipe(ManagedRuntime.make);
+  const mainLayer = TwinMetro.make(twinMetroConfig);
+
+  const runtime = TwinMetro.toRuntime(mainLayer);
 
   // const originalResolver = metroConfig.resolver.resolveRequest;
 
-  const { resolver: metroResolver, server: metroServer } = decorateMetroServer(
-    metroConfig,
-    twinConfig,
-  );
-
   // const originalGetTransformOptions = metroConfig.transformer.getTransformOptions;
-
   return {
-    ...metroConfig,
-    transformerPath: require.resolve('./transformer/metro.transformer'),
-    resolver: {
-      ...metroConfig.resolver,
-      ...metroResolver,
-      // sourceExts: [...metroConfig.resolver.sourceExts],
-      // unstable_conditionNames: ['react-native', 'import', 'require'],
-      // mainFields: ['react-native', 'module', 'main'],
-      // unstable_enablePackageExports: true,
-      // unstable_enableSymlinks: true,
-    },
-    server: {
-      ...metroServer,
-    },
+    ...twinMetroConfig.metroConfig,
+    transformerPath: require.resolve('@native-twin/compiler/metro.transformer'),
     transformer: {
       ...metroConfig.transformer,
-      ...twinConfig.userConfig,
-      // babelTransformerPath: require.xresolve('./transformer/babel.transformer'),
+      ...twinMetroConfig.metroConfig.transformer,
+      ...twinMetroConfig.userConfig,
+      // babelTransformerPath: require.resolve('@native-twin/compiler/metro.babel.transformer'),
       originalTransformerPath: metroConfig.transformerPath,
       getTransformOptions: (...args) => {
         // return originalGetTransformOptions(...args);
-        return getTransformerOptions(twinConfig.userConfig.projectRoot, ...args).pipe(
+        return TwinMetro.getTransformerOptions(...args).pipe(
+          Effect.provide(mainLayer),
+          Effect.provide(makeBabelLayer),
           Effect.annotateLogs('platform', args[1].platform ?? 'server'),
           Logger.withMinimumLogLevel(LogLevel.All),
-          mainLayer.runPromise,
+          runtime.runPromise,
         );
       },
     },
-  } as ComposableIntermediateConfigT;
+  };
 }

@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
   "tasks": {
     "build": {
       "dependsOn": [
@@ -80,6 +81,17 @@
       "dependsOn": [
         "^build"
       ]
+    },
+    "gen:jsdocs": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests",
+        "**/webui/**/*",
+        "**/src",
+        "jsdoc.json"
+      ],
+      "cache": true
     }
   }
 }

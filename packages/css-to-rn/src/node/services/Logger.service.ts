@@ -1,14 +1,12 @@
+import * as Ansi from '@effect/printer-ansi/Ansi';
+import * as Doc from '@effect/printer-ansi/AnsiDoc';
 import * as FiberId from 'effect/FiberId';
-// import * as Color from '@effect/printer-ansi/Color';
 import { apply, pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
-// import * as List from 'effect/List';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
 import * as String from 'effect/String';
-import * as Ansi from '@effect/printer-ansi/Ansi';
-import * as Doc from '@effect/printer-ansi/AnsiDoc';
 
 const WEB_COLOR = pipe(
   Ansi.combine(Ansi.bgBlue),
@@ -32,6 +30,7 @@ const METRO_COLOR = pipe(
 );
 
 const render = (doc: Doc.AnsiDoc): string => Doc.render(doc, { style: 'pretty' });
+
 const getPlatformColor = (platform: string) => {
   if (platform === 'WEB') return WEB_COLOR;
   if (platform === 'IOS') return IOS_COLOR;
@@ -52,7 +51,7 @@ const getMessageColor = (logLevel: LogLevel.LogLevel) => {
   }
 };
 
-const TwinLogger = Logger.make((options) => {
+const TwinCustomLogger = Logger.make((options) => {
   const platform: string = pipe(
     options.annotations,
     HashMap.get('platform'),
@@ -108,4 +107,4 @@ const TwinLogger = Logger.make((options) => {
   }
 });
 
-export const TwinLoggerLive = Logger.replace(Logger.defaultLogger, TwinLogger);
+export const layer = Logger.replace(Logger.defaultLogger, TwinCustomLogger);

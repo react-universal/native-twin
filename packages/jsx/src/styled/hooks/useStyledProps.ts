@@ -11,7 +11,7 @@ import { asArray } from '@native-twin/helpers';
 import { useAtomValue } from '@native-twin/helpers/react';
 import { StyleSheet } from '../../sheet/StyleSheet';
 import { tw } from '../../sheet/native-tw';
-import { styledContext, twinConfigObservable } from '../../store/observables';
+import { styledContext } from '../../store/observables';
 import { ComponentTemplateEntryProp } from '../../types/jsx.types';
 import { ComponentConfig } from '../../types/styled.types';
 import { INTERNAL_RESET } from '../../utils/constants';
@@ -97,7 +97,6 @@ export const useStyledProps = (
         StyleSheet[INTERNAL_RESET](tw.config);
       }
       const obs = tw.observeConfig((c) => {
-        console.log('SSSS_CHANGE: ', c);
         if (!c?.root) return;
         StyleSheet[INTERNAL_RESET](c);
       });

@@ -1,6 +1,6 @@
 import type { ResolverConfigT } from 'metro-config';
 import path from 'path';
-import { MetroConfigService } from '../../services/MetroConfig.service';
+import { MetroConfigService } from '@native-twin/compiler/metro';
 
 let haste: any;
 const virtualModules = new Map<string, Promise<Buffer>>();
@@ -25,7 +25,7 @@ export const createMetroResolver = (
         return {
           ...resolved,
           type: 'sourceFile',
-          filePath: path.resolve(twinConfig.getPlatformOutput(platform ?? 'native')),
+          filePath: path.resolve(twinConfig.userConfig.outputCSS),
         };
       }
 

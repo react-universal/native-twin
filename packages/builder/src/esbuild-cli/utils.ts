@@ -3,7 +3,7 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import esbuild from 'esbuild';
 import path from 'path';
-import { CliConfigFile } from './cli.types';
+import type { CliConfigFile } from '../config/config.types';
 import { requireResolvePlugin } from './requireResolve.plugin';
 
 export const externals = [

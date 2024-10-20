@@ -67,10 +67,10 @@
   },
   "dependencies": {
     "@native-twin/arc-parser": "workspace:*",
-    "@native-twin/cli": "workspace:*",
     "@native-twin/helpers": "workspace:*"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

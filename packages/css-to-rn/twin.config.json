@@ -9,7 +9,6 @@
   ],
   "logs": false,
   "entries": [
-    "./src",
-    "./src/transformer/babel.transformer.ts"
+    "./src"
   ]
 }

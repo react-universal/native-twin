@@ -1,14 +1,13 @@
-import { Effect } from 'effect';
-import * as Layer from 'effect/Layer';
-import { defineConfig, Options } from 'tsup';
-import { tsupExternals } from '../config/constants';
-import { CliConfigFile } from '../esbuild-cli/cli.types';
-import { TypescriptService } from '../ts/twin.types';
-// import { requireResolvePlugin } from '../esbuild-cli/requireResolve.plugin';
 import * as NodeCommandExecutor from '@effect/platform-node/NodeCommandExecutor';
 import * as NodeContext from '@effect/platform-node/NodeContext';
 import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
 import * as NodePath from '@effect/platform-node/NodePath';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import { defineConfig, Options } from 'tsup';
+import { CliConfigFile } from '../config/config.types';
+import { tsupExternals } from '../config/constants';
+import { TypescriptService } from '../ts/twin.types';
 
 const MainNodeContext = NodeCommandExecutor.layer.pipe(
   Layer.provideMerge(NodeFileSystem.layer),

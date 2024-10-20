@@ -91,7 +91,7 @@ export const transformJSXFile = (code: string) => {
   });
 };
 
-export const extractSheetsFromTree = (tree: Tree<JSXElementTree>, fileName: string) =>
+const extractSheetsFromTree = (tree: Tree<JSXElementTree>, fileName: string) =>
   Effect.gen(function* () {
     // const fileSheet = MutableHashMap.empty<string, CompiledTree>();
     const twin = yield* NativeTwinService;

@@ -44,6 +44,7 @@
     "@effect/printer-ansi": "^0.35.2",
     "@effect/schema": "^0.74.1",
     "@native-twin/babel": "workspace:*",
+    "@native-twin/compiler": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",

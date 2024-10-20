@@ -5,7 +5,6 @@ import {
   getRuleSelectorGroup,
   SheetEntryDeclaration,
 } from '@native-twin/css';
-import { StyleSheet } from 'react-native';
 import { parseCssValue, tw } from '@native-twin/core';
 import { RuntimeSheetEntry } from '@native-twin/css/jsx';
 import type { StyledContext } from '../store/observables';
@@ -50,18 +49,18 @@ export function getSheetEntryStyles(
       if (nextDecl.transform && prev[group].transform) {
         nextDecl.transform = [...(prev[group].transform as any), ...nextDecl.transform];
       }
-      Object.assign(prev[group], StyleSheet.flatten([prev[group], nextDecl]));
+      Object.assign(prev[group], nextDecl);
       return prev;
     },
     {
-      base: StyleSheet.create({}),
-      even: StyleSheet.create({}),
-      first: StyleSheet.create({}),
-      group: StyleSheet.create({}),
-      last: StyleSheet.create({}),
-      odd: StyleSheet.create({}),
-      pointer: StyleSheet.create({}),
-      dark: StyleSheet.create({}),
+      base: {},
+      even: {},
+      first: {},
+      group: {},
+      last: {},
+      odd: {},
+      pointer: {},
+      dark: {},
     } as FinalSheet,
   );
 }

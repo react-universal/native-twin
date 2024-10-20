@@ -27,6 +27,18 @@
       "require": "./build/index.js",
       "import": "./build/esm/index.js"
     },
+    "./build/.cache/twin.css.native.js": {
+      "require": "./.cache/twin.css.native.js",
+      "import": "./.cache/twin.css.native.js"
+    },
+    "./build/.cache/twin.css.ios.js": {
+      "require": "./.cache/twin.css.ios.js",
+      "import": "./.cache/twin.css.ios.js"
+    },
+    "./build/.cache/twin.css.android.js": {
+      "require": "./.cache/twin.css.android.js",
+      "import": "./.cache/twin.css.android.js"
+    },
     "./package.json": "./package.json"
   },
   "main": "./build/index.js",
@@ -58,14 +70,12 @@
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*"
   },
-  "devDependencies": {
-    "@native-twin/cli": "workspace:*"
-  },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

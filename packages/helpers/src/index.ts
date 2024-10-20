@@ -45,6 +45,7 @@ export type {
   OmitUndefined,
   ClassNameProps,
   StyledComponentProps,
+  Prettify,
 } from './utility.types';
 
 export { warn, type WarningEventMap } from './warn';

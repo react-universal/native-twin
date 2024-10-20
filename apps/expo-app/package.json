@@ -40,6 +40,7 @@
     "@types/babel__generator": "^7",
     "@types/react": "~18.2.79",
     "@types/react-dom": "~18.2.25",
+    "expo-atlas": "^0.3.0",
     "sharp-cli": "2.1.0"
   }
 }

@@ -85,6 +85,8 @@ test('multiple mapping', () => {
 
   expect(component.props).toEqual({
     testID,
+    a: 'bg-black',
+    b: 'text-white',
     styleA: {
       backgroundColor: 'rgba(0,0,0,1)',
     },

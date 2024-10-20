@@ -9,7 +9,7 @@ import * as Option from 'effect/Option';
 import * as Scope from 'effect/Scope';
 import * as Stream from 'effect/Stream';
 import { build } from 'tsup';
-import { TwinCliMainConfig } from '../esbuild-cli/cli.types';
+import type { TwinCliMainConfig } from '../config/config.types';
 import { getTsUpConfig } from './tsup.config';
 
 export class TSUpBuild extends Context.Tag('tsUp/context')<

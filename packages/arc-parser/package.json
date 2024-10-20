@@ -25,10 +25,8 @@
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest"
   },
-  "devDependencies": {
-    "@native-twin/cli": "workspace:*"
-  },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

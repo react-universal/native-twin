@@ -78,14 +78,14 @@
     "@native-twin/preset-tailwind": "workspace:*"
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-methods": "^7.24.7",
-    "@native-twin/cli": "workspace:*"
+    "@babel/plugin-transform-private-methods": "^7.24.7"
   },
   "peerDependencies": {
     "react": ">=18",
     "react-native": "*"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

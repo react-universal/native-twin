@@ -9,13 +9,13 @@ function HomeScreen() {
   // return <View className='bg-red-300 flex-1' />;
 
   return (
-    <View className='flex-1 first:bg-yellow-600'>
-      <View className={`flex-1 items-center justify-center group`}>
+    <View className='flex-1 first:bg-red-200'>
+      <View className={`flex-1 items-center justify-center group first:bg-red-100`}>
         <View className='shadow-xl bg-red-300 rounded-2xl p-2 group-focus:bg-green-500 first:bg-purple-200'>
           <Text
             className={`
-              text(center white xl)
-              font-inter-bold hover:text-gray-700
+              text(center white xl hover:gray-700)
+              font-inter-bold
               `}
           >
             Hello World
@@ -28,6 +28,7 @@ function HomeScreen() {
           group
           flex-[2] items-center justify-center
           bg-blue-800 hover:bg-pink-600
+          first:bg-red-100
         `}
       >
         <Text

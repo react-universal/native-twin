@@ -157,6 +157,9 @@
     "@vscode/test-electron": "^2.4.0",
     "vscode-test": "^1.6.1"
   },
+  "optionalDependencies": {
+    "@native-twin/cli": "workspace:*"
+  },
   "engines": {
     "vscode": "^1.89.0"
   },

@@ -14,12 +14,7 @@ import {
   RuntimeSheetEntry,
 } from '@native-twin/css/jsx';
 import { Atom, atom } from '@native-twin/helpers/react';
-import {
-  StyledContext,
-  remObs,
-  styledContext,
-  twinConfigObservable,
-} from '../store/observables';
+import { StyledContext, remObs, styledContext } from '../store/observables';
 import { globalStyles } from '../store/styles.store';
 import { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
@@ -64,10 +59,7 @@ const internalSheet: TwinStyleSheet = {
     // twinConfigObservable.set(config);
     const rootConfig = config.root ?? tw.config.root;
     if (rootConfig) {
-      console.log('CONFIG: ', rootConfig);
       remObs.set(rootConfig.rem ?? 16);
-    } else {
-      console.log('SETTT: ', remObs.get());
     }
     this[INTERNAL_FLAGS]['STARTED'] = 'YES';
   },
@@ -178,21 +170,16 @@ export function createComponentSheet(
     templateEntries: RuntimeSheetEntry[] = [],
   ) {
     const templateFinal = StyleSheet.entriesToFinalSheet(templateEntries);
-    const styles: AnyStyle = StyleSheet.flatten([
-      { ...sheet.base },
-      { ...templateFinal.base },
-    ]);
-    if (input.dark) Object.assign(styles, { ...sheet.dark, ...templateFinal.dark });
-    if (input.isPointerActive)
-      Object.assign(
-        styles,
-        StyleSheet.flatten([{ ...sheet.pointer, ...templateFinal.pointer }]),
-      );
-    if (input.isParentActive)
-      Object.assign(
-        styles,
-        StyleSheet.flatten([{ ...sheet.group }, { ...templateFinal.group }]),
-      );
+    const styles: AnyStyle = { ...sheet.base, ...templateFinal.base };
+    if (input.dark) {
+      Object.assign(styles, { ...sheet.dark, ...templateFinal.dark });
+    }
+    if (input.isPointerActive) {
+      Object.assign(styles, { ...sheet.pointer, ...templateFinal.pointer });
+    }
+    if (input.isParentActive) {
+      Object.assign(styles, { ...sheet.group, ...templateFinal.group });
+    }
 
     return styles;
   }
