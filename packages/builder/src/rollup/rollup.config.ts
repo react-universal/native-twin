@@ -69,6 +69,7 @@ export const createRollupConfig = (
         ...rollupSharedOptions,
         input: entrypoints,
         plugins: [
+          plugins,
           preserveDirectives({ exclude: ['**/*.tsx'] }),
           tsPlugin({
             exclude: [...testPatterns],
@@ -82,7 +83,6 @@ export const createRollupConfig = (
               outDir: outDir,
             },
           }),
-          ...plugins,
         ],
         output: {
           format,

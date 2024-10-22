@@ -27,11 +27,10 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@effect/cli": "^0.45.2",
-    "@effect/platform": "^0.66.2",
-    "@effect/platform-node": "^0.61.3",
-    "@effect/schema": "^0.74.1",
-    "effect": "^3.8.4",
+    "@effect/cli": "^0.48.3",
+    "@effect/platform": "^0.69.3",
+    "@effect/platform-node": "^0.64.4",
+    "effect": "^3.10.0",
     "fs-extra": "11.2.0",
     "gzip-size": "^7.0.0"
   },

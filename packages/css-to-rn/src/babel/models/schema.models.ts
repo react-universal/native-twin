@@ -1,5 +1,5 @@
-// import * as ParseResult from '@effect/schema/ParseResult';
-// import * as Schema from '@effect/schema/Schema';
+// import * as ParseResult from 'effect/Schema/ParseResult';
+// import * as Schema from 'effect/Schema/Schema';
 // import { Effect } from 'effect';
 // import { RuntimeComponentEntry } from '@native-twin/css/jsx';
 // import { entriesToComponentData, runtimeEntryToCode } from '../utils/code.utils';

@@ -4,7 +4,7 @@ import { NativeTwinPluginConfiguration } from '../../types/extension.types';
 import { parse } from '@babel/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import * as S from '@effect/schema';
+import * as S from 'effect/Schema';
 
 // const isObjectProperty: Predicate.Refinement<t.Node, t.ObjectProperty> = (
 //   node: t.Node,
@@ -13,11 +13,11 @@ import * as S from '@effect/schema';
 //   node: t.Node,
 // ): node is t.StringLiteral => t.isStringLiteral(node);
 
-const StringLiteral = S.Schema.Struct({
-  type: S.Schema.Literal('StringLiteral'),
+const StringLiteral = S.Struct({
+  type: S.Literal('StringLiteral'),
 });
-const TwinObjectProperty = S.Schema.Struct({
-  type: S.Schema.Literal('ObjectProperty'),
+const TwinObjectProperty = S.Struct({
+  type: S.Literal('ObjectProperty'),
   value: StringLiteral,
 });
 
@@ -28,7 +28,7 @@ const matchVariantsObject = (
   const nextProperty = properties.shift();
   if (!nextProperty) return results;
 
-  const decoded = S.Schema.decodeUnknownOption(TwinObjectProperty, {
+  const decoded = S.decodeUnknownOption(TwinObjectProperty, {
     onExcessProperty: 'preserve',
   })(nextProperty);
   console.log('DECODED: ', decoded);

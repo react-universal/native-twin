@@ -13,7 +13,7 @@ import { GetPackageTypings } from '@/utils/twin.schemas';
 import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
 import * as EffectWorker from '@effect/platform/Worker';
 import { WorkerError } from '@effect/platform/WorkerError';
-import { ParseError } from '@effect/schema/ParseResult';
+import { ParseError } from 'effect/Schema/ParseResult';
 
 const typingsWorkerLayer = BrowserWorker.layer(
   () => new globalThis.Worker(typingsWorker, { type: 'module' }),

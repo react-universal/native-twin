@@ -7,12 +7,6 @@
       "require": "./build/index.js",
       "default": "./build/esm/index.js"
     },
-    "./runtime": {
-      "types": "./build/runtime/index.d.ts",
-      "import": "./build/esm/runtime/index.js",
-      "require": "./build/runtime/index.js",
-      "default": "./build/esm/runtime/index.js"
-    },
     "./node": {
       "types": "./build/node/index.d.ts",
       "import": "./build/esm/node/index.js",

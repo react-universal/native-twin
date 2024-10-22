@@ -18,7 +18,7 @@ export const rollupBuild = Effect.gen(function* () {
 
   if (config.watch) {
     const buildRunner = Queue.take(bundler.results).pipe(
-      Effect.map(Console.log),
+      Effect.map((x) => Console.log(x, '\n')),
       Effect.flatten,
       Effect.forever,
     );

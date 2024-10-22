@@ -13,6 +13,7 @@
         "require-yield": "off",
         "no-case-declarations": "off",
         "@typescript-eslint/no-empty-interface": "off",
+        "no-self-assign": "off",
         "@typescript-eslint/no-unused-vars": [
           "error",
           {

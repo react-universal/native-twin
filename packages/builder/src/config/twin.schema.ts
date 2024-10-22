@@ -1,5 +1,5 @@
-import * as JSONSchema from '@effect/schema/JSONSchema';
-import * as Schema from '@effect/schema/Schema';
+import * as JSONSchema from 'effect/JSONSchema';
+import * as Schema from 'effect/Schema';
 
 const logs = Schema.Union(
   Schema.Boolean,

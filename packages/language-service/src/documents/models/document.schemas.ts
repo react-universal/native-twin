@@ -1,4 +1,4 @@
-import { Schema } from '@effect/schema';
+import * as Schema from 'effect/Schema';
 
 export const VsCodePosition = Schema.Struct({
   character: Schema.Int,

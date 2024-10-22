@@ -6,17 +6,17 @@ import {
   SheetInteractionState,
 } from '@native-twin/css';
 import { StyleSheet as NativeSheet } from 'react-native';
-import { __Theme__, TailwindConfig } from '@native-twin/core';
-import {
+import type { __Theme__, TailwindConfig } from '@native-twin/core';
+import type {
   ComponentSheet,
   RegisteredComponent,
   RuntimeComponentEntry,
   RuntimeSheetEntry,
 } from '@native-twin/css/jsx';
 import { Atom, atom } from '@native-twin/helpers/react';
-import { StyledContext, remObs, styledContext } from '../store/observables';
+import { type StyledContext, remObs, styledContext } from '../store/observables';
 import { globalStyles } from '../store/styles.store';
-import { ComponentConfig } from '../types/styled.types';
+import type { ComponentConfig } from '../types/styled.types';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
 import { getSheetEntryStyles, sheetEntriesToStyles } from '../utils/sheet.utils';
 import { tw } from './native-tw';
