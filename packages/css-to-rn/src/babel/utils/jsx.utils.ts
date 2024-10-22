@@ -2,8 +2,8 @@ import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import { AnyPrimitive } from '@native-twin/helpers';
-import { JSXChildElement } from '../models/jsx.models';
+import type { AnyPrimitive } from '@native-twin/helpers';
+import type { JSXChildElement } from '../models/jsx.models';
 import { isJSXAttribute } from './babel.predicates';
 import { createPrimitiveExpression } from './babel.utils';
 

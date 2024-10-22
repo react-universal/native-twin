@@ -41,7 +41,7 @@ export const NativeTwinHOC = <
     const id = componentID ?? reactID;
     // const { isSelected } = useTwinDevTools(id, props?.['_twinComponentTree']);
 
-    const { componentStyles, templateEntriesObj } = useStyledProps(id, props, configs);
+    const { componentStyles } = useStyledProps(id, props, configs);
 
     const { handlers, parentState, state } = useInteractions(
       id,
@@ -64,7 +64,7 @@ export const NativeTwinHOC = <
               isPointerActive: state.isLocalActive,
               dark: colorScheme.get() === 'dark',
             },
-            templateEntriesObj[style.prop] ?? [],
+            // templateEntriesObj[style.prop] ?? [],
           ),
           oldProps,
         );

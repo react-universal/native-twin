@@ -48,7 +48,7 @@ export const compileSheetEntry = (
 };
 
 /** @category Orders */
-const orders = {
+export const orders = {
   sheetEntriesOrderByPrecedence: Order.mapInput(
     Order.number,
     (a: RuntimeSheetEntry) => a.precedence,
@@ -58,6 +58,11 @@ const orders = {
     (a: RuntimeSheetEntry) => a.important,
   ),
 };
+
+export const sortSheetEntriesByPrecedence = Order.mapInput(
+  Order.combine(orders.sheetEntriesOrderByPrecedence, orders.sheetEntriesByImportant),
+  (a: RuntimeSheetEntry) => a,
+);
 
 /** @category Orders */
 export const sortSheetEntries = (x: RuntimeSheetEntry[]) =>
@@ -70,18 +75,24 @@ export const sortSheetEntries = (x: RuntimeSheetEntry[]) =>
 export const isChildEntry: Predicate.Predicate<RuntimeSheetEntry> = (entry) =>
   pipe(entry.selectors, getRuleSelectorGroup, isChildSelector);
 
+const childTest = new RegExp(/^(&:)?(first|last|odd|even).*/g);
+
 /** @category Predicates */
 export const isChildSelector: Predicate.Refinement<string, ChildSelector> = (
   group,
-): group is ChildSelector =>
-  group === 'first' ||
-  group === 'last' ||
-  group === 'even' ||
-  group === 'odd' ||
-  group.includes('first', 0) ||
-  group.includes('last', 0) ||
-  group.includes('even', 0) ||
-  group.includes('odd', 0);
+): group is ChildSelector => {
+  return (
+    group === 'first' ||
+    group === 'last' ||
+    group === 'even' ||
+    group === 'odd' ||
+    group.includes('first') ||
+    group.includes('last') ||
+    group.includes('even') ||
+    group.includes('odd') ||
+    childTest.exec(group) !== null
+  );
+};
 
 /** @category Predicates */
 export const isOwnSelector: Predicate.Refinement<string, OwnSelector> = (

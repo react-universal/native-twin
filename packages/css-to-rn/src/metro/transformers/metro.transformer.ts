@@ -6,12 +6,12 @@ import * as Logger from 'effect/Logger';
 import path from 'path';
 // import * as Option from 'effect/Option';
 import { BabelLogger, BabelTransformerServiceLive } from '@native-twin/babel/services';
-import * as BabelCompiler from '../babel';
-import { compileReactCode } from '../babel/programs/react.program';
-import * as Twin from '../node/native-twin';
-import { assertString } from '../shared';
-import type { TwinMetroTransformFn } from './models';
-import { makeWorkerLayers, MetroWorkerService } from './services/MetroWorker.service';
+import * as BabelCompiler from '../../babel';
+import { compileReactCode } from '../../babel/programs/react.program';
+import * as Twin from '../../node/native-twin';
+import { assertString } from '../../shared';
+import type { TwinMetroTransformFn } from '../models';
+import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.service';
 
 // import { transformCSS } from './css/css.transform';
 
@@ -19,6 +19,7 @@ const metroMainProgram = Effect.gen(function* () {
   const { runWorker, input } = yield* MetroWorkerService;
   const twin = yield* Twin.NativeTwinServiceNode;
   const babelInput = yield* BabelCompiler.BabelInput;
+  const babel = yield* BabelCompiler.BabelCompiler;
 
   if (input.filename.match(/\.css\..+?\.js$/)) {
     console.log('[METRO_TRANSFORMER]: Inside generated style file');
@@ -83,18 +84,13 @@ const metroMainProgram = Effect.gen(function* () {
       projectRoot: input.projectRoot,
       twinConfigPath: twin.twinConfigPath,
     },
-  });
+  }).pipe(Effect.flatMap((x) => babel.buildFile(x.ast)));
 
   if (!compiled) return yield* runWorker(input);
 
   const writer = new CodeBlockWriter();
 
-  // const outputImportPath = twin
-  //   .getPlatformOutput(babelInput.options.platform)
-  //   .replace(/.*(node_modules)\//g, '')
-  //   .replace('.js', '');
-
-  // writer.writeLine(`import { globalStyles } from '${outputImportPath}';`);
+  writer.writeLine('import { tw as runtimeTW } from "@native-twin/core";');
   writer.writeLine(compiled);
 
   const result = yield* runWorker({

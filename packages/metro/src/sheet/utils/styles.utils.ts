@@ -43,6 +43,7 @@ export const getElementEntries = (
         target,
         templateLiteral: value.templates,
         entries: runtimeEntries,
+        templateEntries: [],
         // childEntries: pipe(
         //   runtimeEntries,
         //   RA.filter((x) => isChildEntry(x)),

@@ -6,7 +6,8 @@
     "project-fixture",
     ".vscode-test.mjs",
     ".vscode-test",
-    "esbuild.mjs"
+    "esbuild.mjs",
+    "build"
   ],
   "overrides": [
     {
@@ -17,6 +18,7 @@
         "plugin:@nx/typescript"
       ],
       "rules": {
+        "@typescript-eslint/no-empty-object-type": "off",
         "require-yield": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-empty-interface": "off",

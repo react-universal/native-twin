@@ -1,8 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import { cx } from '@native-twin/core';
 import {
   getGroupedEntries,
-  RegisteredComponent,
   RuntimeComponentEntry,
   RuntimeSheetDeclaration,
   RuntimeSheetEntry,
@@ -12,46 +10,41 @@ import { useAtomValue } from '@native-twin/helpers/react';
 import { StyleSheet } from '../../sheet/StyleSheet';
 import { tw } from '../../sheet/native-tw';
 import { styledContext } from '../../store/observables';
-import { ComponentTemplateEntryProp } from '../../types/jsx.types';
+// import { ComponentTemplateEntryProp } from '../../types/jsx.types';
 import { ComponentConfig } from '../../types/styled.types';
 import { INTERNAL_RESET } from '../../utils/constants';
 import { composeDeclarations } from '../../utils/sheet.utils';
-import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps';
+
+// import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps';
 
 export const useStyledProps = (
   id: string,
   props: Record<string, any>,
   configs: ComponentConfig[],
 ) => {
-  const compiledSheet: RegisteredComponent | null =
+  const compiledSheet: RuntimeComponentEntry[] | null =
     props?.['_twinComponentSheet'] ?? null;
 
-  const templateEntries: ComponentTemplateEntryProp[] = props?.[
-    '_twinComponentTemplateEntries'
-  ] as ComponentTemplateEntryProp[];
+  // const templateEntries: ComponentTemplateEntryProp[] = props?.[
+  //   '_twinComponentTemplateEntries'
+  // ] as ComponentTemplateEntryProp[];
   // const _debug: boolean = props?.['debug'] ?? false;
 
-  const templateEntriesObj = templatePropsToSheetEntriesObject(templateEntries ?? []);
+  // const templateEntriesObj = templatePropsToSheetEntriesObject(templateEntries ?? []);
 
   const styledCtx = useAtomValue(styledContext);
 
   const componentStyles = useMemo(() => {
     if (compiledSheet) {
-      const classNames = compiledSheet.sheets
-        .flatMap((x) => x.compiledSheet.entries.map((x) => x.className))
-        .map((x) => cx`${x}`)
-        .join('-');
-      const propClasses = configs
-        .map((x): string | undefined => props[x.source])
-        .filter((x) => typeof x !== 'undefined')
-        .map((x) => cx`${x}`)
-        .join('-');
-      if (classNames === propClasses) {
-        return StyleSheet.registerComponent(
-          id,
-          compiledSheet.sheets.map((x) => x.compiledSheet),
-          styledCtx,
-        );
+      const registered = StyleSheet.registerComponent(
+        id,
+        compiledSheet,
+        styledCtx,
+        false,
+      );
+
+      if (registered) {
+        return registered;
       }
     }
     const entries = configs.flatMap((config): RuntimeComponentEntry[] => {
@@ -82,6 +75,7 @@ export const useStyledProps = (
         entries: compiledEntries,
         prop: config.source,
         rawSheet: getGroupedEntries(compiledEntries),
+        templateEntries: [],
         target: config.target,
         templateLiteral: null,
       });
@@ -105,5 +99,5 @@ export const useStyledProps = (
     return () => {};
   }, []);
 
-  return { componentStyles, styledCtx, templateEntriesObj };
+  return { componentStyles, styledCtx };
 };

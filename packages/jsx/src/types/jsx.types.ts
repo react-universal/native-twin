@@ -1,10 +1,10 @@
 import type React from 'react';
-import type { RegisteredComponent, RuntimeSheetEntry } from '@native-twin/css/jsx';
+import type { RuntimeComponentEntry, RuntimeSheetEntry } from '@native-twin/css/jsx';
 
 export interface JSXInternalProps extends Record<string, any> {
   twEnabled?: boolean;
   _twinComponentID?: string;
-  _twinComponentSheet: RegisteredComponent;
+  _twinComponentSheet: RuntimeComponentEntry[];
   _twinComponentTemplateEntries: ComponentTemplateEntryProp[];
 }
 

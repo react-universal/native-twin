@@ -81,6 +81,28 @@
     "[typescript]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "editor.fontSize": 16
+    "editor.fontSize": 16,
+    "jest.disabledWorkspaceFolders": [
+      "root",
+      "📦 @lib/builder",
+      "📦 @lib/jsx",
+      "📦 @lib/babel",
+      "📦 @lib/compiler",
+      "📦 @lib/helpers",
+      "📦 @lib/css",
+      "📦 @lib/arc-parser",
+      "📦 @lib/preset-tw",
+      "📦 @lib/dev-tools",
+      "📦 @lib/styled",
+      "📦 @lib/native-twin",
+      "📦 @lib/with-nextjs",
+      "📦 @lib/vscode",
+      "📦 @lib/language-service",
+      "📦 @lib/language-server",
+      "expo-app",
+      "next-pages-example",
+      "next-app-dir",
+      "docs-site"
+    ]
   }
 }

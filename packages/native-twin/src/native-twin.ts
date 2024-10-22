@@ -14,6 +14,8 @@ import { createThemeContext } from './theme/theme.context';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from './types/theme.types';
 
+let version = 0;
+
 export function createTailwind<Theme extends __Theme__ = __Theme__, Target = unknown>(
   config: TailwindConfig<Theme>,
   sheet: Sheet<Target>,
@@ -66,6 +68,9 @@ export function createTailwind(
       get config() {
         return config;
       },
+      get version() {
+        return version;
+      },
       snapshot() {
         const restoreSheet = sheet.snapshot();
         const cache$ = new Map(cache);
@@ -92,6 +97,7 @@ export function createTailwind(
         }
         this.clear();
         sheet.destroy();
+        version++;
       },
       observeConfig(cb) {
         if (!isDevEnvironment()) {

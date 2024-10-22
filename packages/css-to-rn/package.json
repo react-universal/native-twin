@@ -26,16 +26,16 @@
       "default": "./build/esm/babel/index.js"
     },
     "./metro.babel.transformer": {
-      "types": "./build/metro/metro.babel.transformer.js",
-      "import": "./build/esm/metro/metro.babel.transformer.js",
-      "require": "./build/metro/metro.babel.transformer.js",
-      "default": "./build/esm/metro/metro.babel.transformer.js"
+      "types": "./build/metro/transformers/metro.babel.transformer.js",
+      "import": "./build/esm/metro/transformers/metro.babel.transformer.js",
+      "require": "./build/metro/transformers/metro.babel.transformer.js",
+      "default": "./build/esm/metro/transformers/metro.babel.transformer.js"
     },
     "./metro.transformer": {
-      "types": "./build/metro/metro.transformer.js",
-      "import": "./build/esm/metro/metro.transformer.js",
-      "require": "./build/metro/metro.transformer.js",
-      "default": "./build/esm/metro/metro.transformer.js"
+      "types": "./build/metro/transformers/metro.transformer.js",
+      "import": "./build/esm/metro/transformers/metro.transformer.js",
+      "require": "./build/metro/transformers/metro.transformer.js",
+      "default": "./build/esm/metro/transformers/metro.transformer.js"
     },
     "./native-twin": {
       "types": "./build/node/native-twin/index.d.ts",
@@ -78,6 +78,7 @@
   },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*",
-    "better-docs": "*"
+    "better-docs": "*",
+    "jest": "*"
   }
 }

@@ -23,7 +23,7 @@ async function main() {
         './project-fixture',
       ],
     });
-  } catch (err) {
+  } catch {
     console.error('Failed to run tests');
     process.exit(1);
   }

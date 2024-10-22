@@ -4,14 +4,14 @@ import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import {
-  ChildsSheet,
   getChildRuntimeEntries,
-  RuntimeComponentEntry,
+  type ChildsSheet,
+  type RuntimeComponentEntry,
 } from '@native-twin/css/jsx';
-import { TreeNode } from '@native-twin/helpers/tree';
+import type { TreeNode } from '@native-twin/helpers/tree';
 import { getElementEntries, NativeTwinServiceNode } from '../../node/native-twin';
 import { getJSXElementAttrs, getJSXElementName } from '../utils/jsx.utils';
-import { JSXElementTree, JSXMappedAttribute } from './jsx.models';
+import type { JSXElementTree, JSXMappedAttribute } from './jsx.models';
 
 const jsxElementHash = (path: t.JSXElement, filename: string): number => {
   const filenameHash = Hash.string(`${filename}`);

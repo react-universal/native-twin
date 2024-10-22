@@ -1,4 +1,4 @@
-export interface CompilerInput {
+export interface CompilerConfig {
   code: string;
   filename: string;
   options: {

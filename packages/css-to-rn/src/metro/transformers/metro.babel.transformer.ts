@@ -2,10 +2,10 @@ import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import * as BabelCompiler from '../babel';
-import { compileReactCode } from '../babel/programs/react.program';
-import * as Twin from '../node/native-twin';
-import type { BabelTransformerFn } from './models/metro.models';
+import * as BabelCompiler from '../../babel';
+import { compileReactCode } from '../../babel/programs/react.program';
+import * as Twin from '../../node/native-twin';
+import type { BabelTransformerFn } from '../models/metro.models';
 
 const mainProgram = Effect.gen(function* () {
   const twin = yield* Twin.NativeTwinServiceNode;

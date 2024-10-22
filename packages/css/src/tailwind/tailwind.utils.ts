@@ -2,6 +2,9 @@ import { type MaybeArray, asArray } from '@native-twin/helpers';
 import type { SelectorGroup } from '../css/css.types';
 import type { TWScreenValueConfig } from './tailwind.types';
 
+const matchGroup = (variants: string[], group: SelectorGroup) => {
+  return variants.some((x) => x === 'group' || new RegExp(`(&)?(:?)?(${group})`).test(x));
+};
 export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   if (variants.length == 0) return 'base';
   if (
@@ -13,10 +16,10 @@ export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
     return 'group';
 
   if (variants.includes('dark')) return 'dark';
-  if (variants.includes('odd')) return 'odd';
-  if (variants.includes('even')) return 'even';
-  if (variants.includes('first')) return 'first';
-  if (variants.includes('last')) return 'last';
+  if (matchGroup(variants, 'odd') || variants.includes('odd')) return 'odd';
+  if (matchGroup(variants, 'even') || variants.includes('even')) return 'even';
+  if (matchGroup(variants, 'first') || variants.includes('first')) return 'first';
+  if (matchGroup(variants, 'last') || variants.includes('last')) return 'last';
   if (
     variants.includes('hover') ||
     variants.includes('focus') ||

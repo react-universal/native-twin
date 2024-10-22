@@ -28,9 +28,7 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
     }
 
     // stylizeJSXChilds(props);
-    if (process.env['NODE_ENV'] === 'test') {
-      jsxStyles(props, type);
-    }
+    jsxStyles(props, type);
 
     // Call the original jsx function with the new type
     return jsx.call(jsx, type, props, ...rest);

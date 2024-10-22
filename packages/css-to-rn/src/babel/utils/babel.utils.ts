@@ -1,15 +1,15 @@
 import { parse } from '@babel/parser';
-import { ParseResult } from '@babel/parser';
-import traverse, { Binding } from '@babel/traverse';
+import type { ParseResult } from '@babel/parser';
+import traverse, { type Binding } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
-  import * as Effect from 'effect/Effect';
+import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import { AnyPrimitive } from '@native-twin/helpers';
+import type { AnyPrimitive } from '@native-twin/helpers';
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
-import { JSXElementNodePath, type JSXElementTree } from '../models/jsx.models';
+import type { JSXElementNodePath, JSXElementTree } from '../models/jsx.models';
 import * as babelPredicates from '../utils/babel.predicates';
 
 export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {

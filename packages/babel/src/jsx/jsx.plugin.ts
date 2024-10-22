@@ -51,8 +51,10 @@ const program = Effect.scoped(
       },
       visitor: {
         Program: {
-          exit() {
-            this.trees;
+          exit(_, state) {
+            if (state.trees !== this.trees) {
+              state.trees = this.trees;
+            }
           },
         },
         JSXElement(path, state) {

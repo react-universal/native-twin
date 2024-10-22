@@ -1,45 +1,28 @@
-import { Array, Layer } from 'effect';
-import * as Effect from 'effect/Effect';
-import fs from 'fs';
 import path from 'path';
-import * as BabelCompiler from '../src/babel';
-import { NativeTwinServiceNode } from '../src/node';
+import { runFixture, writeFixtureOutput } from './test.utils';
 
-const MainLive = BabelCompiler.makeBabelLayer;
-const createTestLayer = (input: BabelCompiler.CompilerInput) =>
-  MainLive.pipe(
-    Layer.provideMerge(BabelCompiler.makeBabelInput(input)),
-    Layer.provideMerge(
-      NativeTwinServiceNode.Live(
-        input.options.twinConfigPath,
-        input.options.projectRoot,
-        input.options.platform,
-      ),
-    ),
-  );
-
-describe('test ast trees', () => {
+describe('run react compiler', () => {
   it('Create JSX tree', async () => {
-    const filePath = path.join(__dirname, 'fixtures', 'jsx', 'code-ast.tsx');
-    const code = fs.readFileSync(filePath);
-    const layer = createTestLayer({
-      code: code.toString(),
-      filename: filePath,
-      options: {
-        inputCSS: '',
-        outputCSS: '',
-        platform: 'ios',
-        projectRoot: process.cwd(),
-        twinConfigPath: path.join(__dirname, './tailwind.config.ts'),
-      },
+    const result = await runFixture(path.join('jsx', 'code-ast.tsx'));
+
+    expect(result).not.toBeNull();
+  });
+});
+
+describe('Compiler output', () => {
+  it('Create JSX tree', async () => {
+    const fixturePath = path.join('jsx', 'code.tsx');
+    const result = await runFixture(fixturePath);
+
+    if (!result) {
+      expect(result).not.toBeNull();
+      return;
+    }
+
+    writeFixtureOutput(result, {
+      fixturePath: path.dirname(fixturePath),
+      outputFile: 'out.jsx',
     });
-    const ast = Effect.flatMap(BabelCompiler.ReactCompilerService, (x) =>
-      x.getTrees(code.toString(), filePath),
-    ).pipe(
-      Effect.map((x) => Array.fromIterable(x)),
-      Effect.provide(layer),
-      Effect.runSync,
-    );
-    expect(ast.length).toBeGreaterThan(0);
+    expect(result).not.toBeNull();
   });
 });

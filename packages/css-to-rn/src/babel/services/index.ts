@@ -1,3 +1,3 @@
-export * from './Babel.service';
+export * from './BabelCompiler.service';
 export * from './ReactBabel.service';
-export * from './BabelInput.service';
+export * from './BuildConfig.service';

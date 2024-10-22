@@ -19,6 +19,7 @@ export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown
   observeConfig: (cb: (config: TailwindConfig<Theme>) => void) => () => void;
   insertPreflight(): void;
   subscriptions: Set<(cb: TailwindConfig<any>) => void>;
+  version: number;
 }
 
 /* THEME CONFIG */

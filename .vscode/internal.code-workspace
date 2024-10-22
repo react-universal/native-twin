@@ -143,70 +143,27 @@
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/builder",
-      "📦 @lib/metro",
+      "📦 @lib/jsx",
+      "📦 @lib/babel",
+      "📦 @lib/compiler",
+      "📦 @lib/helpers",
+      "📦 @lib/css",
+      "📦 @lib/arc-parser",
+      "📦 @lib/preset-tw",
+      "📦 @lib/dev-tools",
+      "📦 @lib/styled",
+      "📦 @lib/native-twin",
       "📦 @lib/with-nextjs",
       "📦 @lib/vscode",
       "📦 @lib/language-service",
       "📦 @lib/language-server",
+      "📦 @lib/metro",
+      "📦 @lib/with-nextjs",
       "expo-app",
       "next-pages-example",
       "next-app-dir",
+      "twin.run",
       "docs-site"
-    ]
-  },
-  "launch": {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Build any lib",
-        "type": "node",
-        "request": "attach",
-        "sourceMaps": true,
-        "presentation": {
-          "hidden": false,
-          "group": "",
-          "order": 1
-        },
-        "preLaunchTask": {
-          "type": "npm",
-          "script": "build"
-        },
-        "outFiles": [
-          "./**/build/**/*.js"
-        ]
-      }
-    ],
-    "compounds": []
-  },
-  "tasks": {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "build",
-        "type": "npm",
-        "script": "build",
-        "problemMatcher": [
-          "$esbuild",
-          "$tsc"
-        ],
-        "presentation": {
-          "reveal": "always"
-        },
-        "group": "build"
-      },
-      {
-        "label": "build",
-        "type": "npm",
-        "script": "build",
-        "problemMatcher": [
-          "$esbuild",
-          "$tsc"
-        ],
-        "presentation": {
-          "reveal": "always"
-        },
-        "group": "build"
-      }
     ]
   }
 }

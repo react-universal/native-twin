@@ -19,6 +19,8 @@ export {
   isOwnSelector,
   /** @category — Runner */
   compileSheetEntry,
+  /** @category — Ord */
+  sortSheetEntriesByPrecedence,
 } from './SheetEntry';
 
 export {

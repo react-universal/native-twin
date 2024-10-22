@@ -1,8 +1,8 @@
 import * as Layer from 'effect/Layer';
-import type { CompilerInput } from './babel.types';
+import type { CompilerConfig } from './babel.types';
 import { JSXElementNode } from './models';
-import { BabelCompiler } from './services/Babel.service';
-import { BabelInput, makeBabelInput } from './services/BabelInput.service';
+import { BabelCompiler } from './services/BabelCompiler.service';
+import { BuildConfig, makeBabelConfig } from './services/BuildConfig.service';
 import {
   ReactCompilerService,
   layer as babelReactLayer,
@@ -13,9 +13,9 @@ const makeBabelLayer = babelReactLayer.pipe(Layer.provideMerge(BabelCompiler.Liv
 export {
   BabelCompiler,
   ReactCompilerService,
-  BabelInput,
+  BuildConfig as BabelInput,
   JSXElementNode,
   makeBabelLayer,
-  makeBabelInput,
+  makeBabelConfig as makeBabelInput,
 };
-export type { CompilerInput };
+export type { CompilerConfig as CompilerInput };

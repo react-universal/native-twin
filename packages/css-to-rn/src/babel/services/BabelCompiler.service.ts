@@ -1,5 +1,5 @@
 import generate from '@babel/generator';
-import { ParseResult } from '@babel/parser';
+import type { ParseResult } from '@babel/parser';
 import * as t from '@babel/types';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
