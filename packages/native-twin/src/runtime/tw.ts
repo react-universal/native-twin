@@ -1,4 +1,3 @@
-/* eslint-disable prefer-spread */
 import { getSheet, type Sheet } from '@native-twin/css';
 import { noop } from '@native-twin/helpers';
 import { createTailwind } from '../native-twin';

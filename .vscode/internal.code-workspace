@@ -73,6 +73,10 @@
       "path": "../apps/expo-app"
     },
     {
+      "name": "expo-router",
+      "path": "../apps/expo-router"
+    },
+    {
       "name": "next-pages-example",
       "path": "../apps/next-app"
     },

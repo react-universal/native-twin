@@ -25,9 +25,9 @@ const ctxServer = await esbuild.context({
   outdir: 'build',
   external: ['vscode'],
   format: 'cjs',
-  logLevel: 'info',
+  logLevel: 'silent',
   platform: 'node',
-  sourcemap: 'both',
+  sourcemap: true,
   minify: true,
 });
 

@@ -9,7 +9,7 @@ const exampleProjectFixture = {
   ),
   rootEntry: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'src/screens/index.js')),
   screenComponentPath: path.resolve(
-    path.join(__dirname, '../../../apps/expo-app', 'src/screens/Home.screen.tsx'),
+    path.join(__dirname, '../../../apps/expo-app', 'App.tsx'),
   ),
   bundleOut: path.join(__dirname, '../../../apps/expo-app', 'metro-test/bundled.js'),
   babelConfig: require.resolve(
@@ -30,11 +30,11 @@ describe('Metro bundler test', () => {
         cwd: exampleProjectFixture.cwd,
         config: exampleProjectFixture.configPath,
       },
-      {
-        // transformerPath: require.resolve('../src/transformer/metro.transformer'),
-        projectRoot: exampleProjectFixture.cwd,
-        resetCache: true,
-      },
+      // {
+      //   // transformerPath: require.resolve('../src/transformer/metro.transformer'),
+      //   projectRoot: exampleProjectFixture.cwd,
+      //   resetCache: true,
+      // },
     );
     await Metro.runBuild(config, {
       entry: exampleProjectFixture.screenComponentPath,
@@ -42,7 +42,7 @@ describe('Metro bundler test', () => {
       dev: true,
       minify: false,
       sourceMap: false,
-      platform: 'web',
+      platform: 'ios',
       output: {
         async save(entry, options, postSave) {
           return fs.writeFile(exampleProjectFixture.bundleOut, entry.code, {

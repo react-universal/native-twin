@@ -34,8 +34,8 @@
 // };
 
 export default function App() {
-  return <View className={`group flex-1 first:bg-red-200`} _twinComponentID={"683983469___temp:__1"} _twinOrd={-1} _twinComponentSheet={[{
-    id: "683983469___temp:__1",
+  return <View className={`group flex-1 first:bg-red-200`} _twinComponentID={"-1401126235:0"} _twinOrd={-1} _twinComponentSheet={[{
+    id: "-1401126235:0",
     target: "style",
     prop: "className",
     entries: [{
@@ -116,7 +116,36 @@ export default function App() {
       odd: []
     }
   }]}>
-      <Text _twinComponentID={"683983469___temp:__1:0_____temp2"} _twinOrd={0} _twinComponentSheet={[]}>Hello World</Text>
+      <Text _twinComponentID={"-1401126235:0:0"} _twinOrd={0} _twinComponentSheet={[{
+      id: "-1401126235:0:0",
+      target: "style",
+      prop: "className",
+      entries: [],
+      templateLiteral: null,
+      templateEntries: null,
+      rawSheet: {
+        base: [{
+          className: "first:bg-red-200",
+          declarations: [{
+            prop: "backgroundColor",
+            value: "rgba(254,202,202,1)",
+            _tag: "COMPILED"
+          }],
+          selectors: ["&:first"],
+          precedence: 805437440,
+          important: false,
+          animations: [],
+          preflight: false
+        }],
+        dark: [],
+        pointer: [],
+        group: [],
+        even: [],
+        first: [],
+        last: [],
+        odd: []
+      }
+    }]}>Hello World</Text>
       {/* <Text>Hello World</Text> */}
       {/* <Button size='small' /> */}
       {/* <View className='flex-1 first:bg-blue-200'>

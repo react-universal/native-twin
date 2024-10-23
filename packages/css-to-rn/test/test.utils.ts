@@ -7,9 +7,8 @@ import { compileReactCode } from '../src/babel/programs/react.program';
 import * as TwinNode from '../src/node';
 
 const reactProgram = Effect.gen(function* () {
-  const input = yield* TwinBabel.BabelInput;
   const babel = yield* TwinBabel.BabelCompiler;
-  const result = yield* compileReactCode(input).pipe(
+  const result = yield* compileReactCode.pipe(
     Effect.flatMap((x) => babel.buildFile(x.ast)),
   );
 
@@ -20,12 +19,12 @@ const MainLive = TwinBabel.makeBabelLayer;
 
 export const createTestLayer = (input: TwinBabel.CompilerInput) => {
   return MainLive.pipe(
-    Layer.provideMerge(TwinBabel.makeBabelInput(input)),
+    Layer.provideMerge(TwinBabel.makeBabelConfig(input)),
     Layer.provideMerge(
       TwinNode.NativeTwinServiceNode.Live(
-        input.options.twinConfigPath,
-        input.options.projectRoot,
-        input.options.platform,
+        input.twinConfigPath,
+        input.projectRoot,
+        input.platform,
       ),
     ),
   );
@@ -37,13 +36,11 @@ export const runFixture = (fixturePath: string) => {
   const layer = createTestLayer({
     code: code.toString(),
     filename: filePath,
-    options: {
-      inputCSS: '',
-      outputCSS: '',
-      platform: 'ios',
-      projectRoot: process.cwd(),
-      twinConfigPath: path.join(__dirname, './tailwind.config.ts'),
-    },
+    inputCSS: '',
+    outputCSS: '',
+    platform: 'ios',
+    projectRoot: process.cwd(),
+    twinConfigPath: path.join(__dirname, './tailwind.config.ts'),
   });
 
   return reactProgram.pipe(Effect.provide(layer), Effect.runPromise);

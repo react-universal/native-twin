@@ -26,6 +26,11 @@
     "noImplicitOverride": true,
     "noUnusedLocals": true,
     "isolatedModules": false,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "plugins": [
+      {
+        "name": "@effect/language-service"
+      }
+    ]
   }
 }

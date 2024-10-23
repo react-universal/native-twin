@@ -7,10 +7,8 @@ describe('run react compiler', () => {
 
     expect(result).not.toBeNull();
   });
-});
 
-describe('Compiler output', () => {
-  it('Create JSX tree', async () => {
+  it('Compile JSX', async () => {
     const fixturePath = path.join('jsx', 'code.tsx');
     const result = await runFixture(fixturePath);
 

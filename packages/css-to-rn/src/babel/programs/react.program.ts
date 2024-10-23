@@ -1,14 +1,13 @@
+import traverse from '@babel/traverse';
 import * as Effect from 'effect/Effect';
-import * as Exit from 'effect/Exit';
 import { pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import type { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import type { Tree } from '@native-twin/helpers/tree';
-import type { CompilerConfig } from '../babel.types';
 import type { JSXElementNode, JSXElementTree, RuntimeTreeNode } from '../models';
-import { BabelCompiler } from '../services';
+import { BabelCompiler, BuildConfig } from '../services';
 import { entriesToComponentData } from '../utils/code.utils';
 import { addJsxAttribute, addJsxExpressionAttribute } from '../utils/jsx.utils';
 import {
@@ -17,39 +16,32 @@ import {
   runtimeEntriesToAst,
 } from '../utils/twin-jsx.utils';
 
-export const getReactStylesRegistry = (input: CompilerConfig) => {
-  return Effect.gen(function* () {
-    const babel = yield* BabelCompiler;
+export const compileReactCode = Effect.gen(function* () {
+  const babel = yield* BabelCompiler;
+  const input = yield* BuildConfig;
 
-    return yield* Effect.acquireRelease(
-      babel.getAST(input.code, input.filename).pipe(
-        Effect.flatMap((x) => babel.getJSXElementTrees(x, input.filename)),
-        Effect.flatMap((x) => getJSXElementRegistry(x, input.filename)),
-      ),
-      (trees, exit) =>
-        Exit.isFailure(exit) ? Effect.succeed(null) : Effect.succeed(trees),
-    );
-  });
-};
-
-export const compileReactCode = (input: CompilerConfig) => {
-  return Effect.gen(function* () {
-    const babel = yield* BabelCompiler;
-    return yield* Effect.Do.pipe(
-      Effect.let('input', () => input),
-      Effect.bind('ast', ({ input }) => babel.getAST(input.code, input.filename)),
-      Effect.bind('trees', ({ ast, input }) =>
-        babel.getJSXElementTrees(ast, input.filename),
-      ),
-      Effect.bind('registry', ({ trees, input }) =>
-        getJSXElementRegistry(trees, input.filename),
-      ),
-      Effect.bind('output', ({ registry, input }) =>
-        transformTrees(registry, input.options.platform),
-      ),
-    );
-  });
-};
+  return yield* Effect.Do.pipe(
+    Effect.let('input', () => input),
+    Effect.bind('ast', ({ input }) => babel.getAST(input.code, input.filename)),
+    Effect.bind('trees', ({ ast, input }) =>
+      babel.getJSXElementTrees(ast, input.filename),
+    ),
+    Effect.bind('registry', ({ trees, input }) =>
+      getJSXElementRegistry(trees, input.filename),
+    ),
+    Effect.bind('output', ({ registry, input }) =>
+      transformTrees(registry, input.platform),
+    ),
+    Effect.map((result) => {
+      traverse(result.ast, {
+        Program(p) {
+          p.scope.crawl();
+        },
+      });
+      return result;
+    }),
+  );
+});
 
 function addTwinPropsToElement(
   elementNode: JSXElementNode,
@@ -83,7 +75,7 @@ const transformTrees = (
   registry: HashMap.HashMap<string, JSXElementNode>,
   platform: string,
 ) =>
-  Effect.gen(function* () {
+  Effect.sync(() => {
     if (platform === 'web') {
       return HashMap.empty<string, RuntimeTreeNode>();
     }
@@ -106,7 +98,10 @@ const transformJSXElementTree = (trees: HashMap.HashMap<string, JSXElementNode>)
   });
 };
 
-const getJSXElementRegistry = (babelTrees: Tree<JSXElementTree>[], filename: string) =>
+export const getJSXElementRegistry = (
+  babelTrees: Tree<JSXElementTree>[],
+  filename: string,
+) =>
   pipe(
     Stream.fromIterable(babelTrees),
     Stream.mapEffect((x) => extractSheetsFromTree(x, filename)),

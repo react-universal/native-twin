@@ -20,6 +20,8 @@ export class NativeTwinManager {
   readonly tw: InternalTwFn;
   readonly config: TailwindConfig<InternalTwinConfig>;
   readonly preflight: Preflight;
+  readonly platformOutputs: string[];
+  readonly outputDir: string;
   constructor(
     readonly twinConfigPath: string,
     readonly projectRoot: string,
@@ -29,6 +31,8 @@ export class NativeTwinManager {
     this.config = this.getUserTwinConfig({ platform, twinConfigPath });
     this.tw = setup(this.config, createVirtualSheet());
     this.preflight = {};
+    this.outputDir = getTwinCacheDir();
+    this.platformOutputs = TWIN_CSS_FILES.map((x) => path.join(this.outputDir, x));
   }
 
   get sheetTarget() {
@@ -56,15 +60,6 @@ export class NativeTwinManager {
       RA.map((x) => micromatch.scan(x)),
       RA.map((x) => x.base),
     );
-  }
-
-  get outputDir() {
-    return getTwinCacheDir();
-  }
-
-  get platformOutputs() {
-    const outputDir = this.outputDir;
-    return TWIN_CSS_FILES.map((x) => path.join(outputDir, x));
   }
 
   createCSSInput() {

@@ -8,12 +8,7 @@
     "moduleDetection": "force",
     "noEmit": true,
     "noUncheckedIndexedAccess": false,
-    "noPropertyAccessFromIndexSignature": false,
-    "plugins": [
-      {
-        "name": "@effect/language-service"
-      }
-    ]
+    "noPropertyAccessFromIndexSignature": false
   },
   "include": ["src", "types.d.ts", "test"],
   "exclude": ["build", "babel.config.js", "metro.config.js", "jest.config.js", "bck"]

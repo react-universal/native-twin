@@ -13,9 +13,9 @@ const makeBabelLayer = babelReactLayer.pipe(Layer.provideMerge(BabelCompiler.Liv
 export {
   BabelCompiler,
   ReactCompilerService,
-  BuildConfig as BabelInput,
+  BuildConfig,
   JSXElementNode,
   makeBabelLayer,
-  makeBabelConfig as makeBabelInput,
+  makeBabelConfig,
 };
 export type { CompilerConfig as CompilerInput };

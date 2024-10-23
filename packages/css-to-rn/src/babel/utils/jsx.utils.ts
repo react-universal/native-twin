@@ -5,7 +5,8 @@ import * as Option from 'effect/Option';
 import type { AnyPrimitive } from '@native-twin/helpers';
 import type { JSXChildElement } from '../models/jsx.models';
 import { isJSXAttribute } from './babel.predicates';
-import { createPrimitiveExpression } from './babel.utils';
+import { createPrimitiveExpression, getBindingImportSource } from './babel.utils';
+import type { JSXElementNodePath } from '../models/jsx.models';
 
 const createJsxAttribute = (name: string, value: AnyPrimitive) => {
   const expression = createPrimitiveExpression(value);
@@ -92,3 +93,11 @@ export const getJSXElementName = (
  * */
 export const getJSXElementAttrs = (element: t.JSXElement): t.JSXAttribute[] =>
   pipe(element.openingElement.attributes, RA.filter(isJSXAttribute));
+
+export const getJSXElementSource = (path: JSXElementNodePath) =>
+  pipe(
+    getJSXElementName(path.node.openingElement),
+    Option.flatMap((x) => Option.fromNullable(path.scope.getBinding(x))),
+    Option.flatMap((binding) => getBindingImportSource(binding)),
+    Option.getOrElse(() => ({ kind: 'local', source: 'unknown' })),
+  );

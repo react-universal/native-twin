@@ -30,6 +30,7 @@ export class MetroConfigService extends Context.Tag('metro/config/service')<
   MetroConfigService,
   {
     metroConfig: TwinMetroConfig;
+    twin: NativeTwinManager;
     userConfig: {
       allowedPaths: string[];
       allowedPathsGlob: string[];
@@ -76,6 +77,7 @@ export const createMetroConfig = (
 
   return {
     userConfig,
+    twin,
     metroConfig: {
       ...metroConfig,
       resolver: {

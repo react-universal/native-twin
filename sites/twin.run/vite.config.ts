@@ -49,6 +49,7 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     react(),
+    // @ts-expect-error
     vsixPlugin(),
     assetsJSON(),
     // {

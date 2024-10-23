@@ -3,7 +3,7 @@ import type { SelectorGroup } from '../css/css.types';
 import type { TWScreenValueConfig } from './tailwind.types';
 
 const matchGroup = (variants: string[], group: SelectorGroup) => {
-  return variants.some((x) => x === 'group' || new RegExp(`(&)?(:?)?(${group})`).test(x));
+  return variants.some((x) => x === group || new RegExp(`(&)?(:?)?(${group})`).test(x));
 };
 export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   if (variants.length == 0) return 'base';

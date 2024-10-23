@@ -27,6 +27,7 @@ export function withNativeTwin(
       ...twinMetroConfig.userConfig,
       // babelTransformerPath: require.resolve('@native-twin/compiler/metro.babel.transformer'),
       originalTransformerPath: metroConfig.transformerPath,
+      unstable_allowRequireContext: true,
       getTransformOptions: (...args) => {
         // return originalGetTransformOptions(...args);
         return TwinMetro.getTransformerOptions(...args).pipe(

@@ -2,7 +2,7 @@ import * as Chunk from 'effect/Chunk';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Stream from 'effect/Stream';
-import type { GetTransformOptions } from 'metro-config';
+import type { GetTransformOptions, ExtraTransformOptions } from 'metro-config';
 import type { CustomResolver } from 'metro-resolver';
 import path from 'node:path';
 import { TwinWatcherService, NativeTwinServiceNode } from '../node';
@@ -22,19 +22,7 @@ export const twinMetroRequestResolver = (
     const platformOutput = twinConfig.getPlatformOutput(platform);
     const platformInput = twinConfig.getPlatformInput();
 
-    // const twinConfigOutput = twinConfig.getTwinConfigPath();
-    // if ('filePath' in resolved && resolved.filePath === twinConfigOutput) {
-    //   if (isWatching) {
-    //     startCSSProcessor(twinConfigOutput, twinConfigOutput);
-    //   }
-    //   return {
-    //     ...resolved,
-    //   };
-    // }
     if ('filePath' in resolved && resolved.filePath === platformInput) {
-      // if (isWatching) {
-      //   startCSSProcessor(platformInput, platformOutput);
-      // }
       return {
         ...resolved,
         filePath: path.resolve(platformOutput),
@@ -51,7 +39,7 @@ export const getTransformerOptions = (
 ) => {
   return Effect.gen(function* () {
     const ctx = yield* MetroConfigService;
-    const { getPlatformOutput } = yield* NativeTwinServiceNode;
+    const twin = yield* NativeTwinServiceNode;
     const watcher = yield* TwinWatcherService;
 
     const { metroConfig } = ctx;
@@ -64,30 +52,16 @@ export const getTransformerOptions = (
     // We can skip writing to the filesystem if this instance patched Metro
     if (writeStylesToFS) {
       const platform = options.platform || 'native';
-      const outputPath = getPlatformOutput(platform);
+      const outputPath = twin.getPlatformOutput(platform);
 
       console.debug(`getTransformOptions.platform ${platform}`);
       console.debug(`getTransformOptions.output ${outputPath}`);
 
-      // const allFiles = yield* watcher.getAllFilesInProject;
-      // const compiledFilles = yield* watcher.compileFiles(allFiles);
-
-      // const cssOutput = yield* watcher
-      //   .getTwinCssOutput({
-      //     filepath: ctx.getPlatformOutput(platform),
-      //     trees: RA.map(compiledFilles, (x) => x.trees),
-      //     platform,
-      //   })
-      //   .pipe(
-      //     Effect.map((x) => {
-      //       return getNativeJS(x, options.dev);
-      //     }),
-      //   );
-
-      // yield* Effect.promise(() => fsPromises.writeFile(outputPath, cssOutput));
+      const allFiles = yield* watcher.getAllFilesInProject;
+      yield* watcher.runTwinForFiles(allFiles, platform);
     }
 
-    if (options.platform && !setupPlatforms.has(options.platform)) {
+    if (!writeStylesToFS && options.platform && !setupPlatforms.has(options.platform)) {
       // setupPlatforms.add(options.platform);
       // yield* watcher.setupPlatform({
       //   projectRoot: ctx.userConfig.projectRoot,
@@ -123,10 +97,21 @@ export const getTransformerOptions = (
       }
     }
 
-    const result = yield* Effect.promise(() =>
+    const result: Partial<ExtraTransformOptions> = yield* Effect.promise(() =>
       originalGetTransformOptions(entryPoints, options, getDeps),
     );
 
+    // 30146
+    // return {
+    //   ...result,
+    //   transform: {
+    //     ...result.transform,
+    //     experimentalImportSupport: true,
+    //     inlineRequires: true,
+    //     unstable_disableES6Transforms: true,
+    //   },
+    // } as Partial<ExtraTransformOptions>;
+    // 32159
     return result;
   });
 };

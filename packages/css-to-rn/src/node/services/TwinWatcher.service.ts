@@ -50,7 +50,7 @@ const buildWatcher = Effect.gen(function* () {
       console.log('[getTwinCssOutput]: ', params.filepath);
 
       if (params.filepath.endsWith('.css')) {
-        return sheetEntriesToCss(twin.sheetTarget, true);
+        return sheetEntriesToCss(twin.sheetTarget, false);
       } else {
         const registry = yield* createCompilerRegistry(params.trees);
         const jsOutput = pipe(
@@ -232,6 +232,7 @@ const buildWatcher = Effect.gen(function* () {
     setupPlatform,
     getAllFilesInProject,
     runTwinForFiles,
+    getTwinCssOutput,
   };
 });
 

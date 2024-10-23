@@ -18,7 +18,7 @@ import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.se
 const metroMainProgram = Effect.gen(function* () {
   const { runWorker, input } = yield* MetroWorkerService;
   const twin = yield* Twin.NativeTwinServiceNode;
-  const babelInput = yield* BabelCompiler.BabelInput;
+  const babelInput = yield* BabelCompiler.BuildConfig;
   const babel = yield* BabelCompiler.BabelCompiler;
 
   if (input.filename.match(/\.css\..+?\.js$/)) {
@@ -30,7 +30,7 @@ const metroMainProgram = Effect.gen(function* () {
     // writer.newLine();
     const twinConfigPath = input.config.tailwindConfigPath;
     const importTwinPath = path.relative(
-      path.dirname(twin.getPlatformOutput(babelInput.options.platform)),
+      path.dirname(twin.getPlatformOutput(babelInput.platform)),
       twinConfigPath,
     );
     // if (!importTwinPath.startsWith('.')) {
@@ -74,17 +74,18 @@ const metroMainProgram = Effect.gen(function* () {
     return yield* runWorker(input);
   }
 
-  const compiled = yield* compileReactCode({
-    code: babelInput.code,
-    filename: input.filename,
-    options: {
-      inputCSS: twin.getPlatformInput(),
-      outputCSS: twin.getPlatformOutput(babelInput.options.platform),
-      platform: babelInput.options.platform,
-      projectRoot: input.projectRoot,
-      twinConfigPath: twin.twinConfigPath,
-    },
-  }).pipe(Effect.flatMap((x) => babel.buildFile(x.ast)));
+  // {
+  //   code: babelInput.code,
+  //   filename: input.filename,
+  //   inputCSS: twin.getPlatformInput(),
+  //   outputCSS: twin.getPlatformOutput(babelInput.platform),
+  //   platform: babelInput.platform,
+  //   projectRoot: input.projectRoot,
+  //   twinConfigPath: twin.twinConfigPath,
+  // }
+  const compiled = yield* compileReactCode.pipe(
+    Effect.flatMap((x) => babel.buildFile(x.ast)),
+  );
 
   if (!compiled) return yield* runWorker(input);
 
@@ -136,16 +137,14 @@ export const transform: TwinMetroTransformFn = async (
   const layer = makeWorkerLayers(config, projectRoot, filename, data, options).pipe(
     Layer.provideMerge(BabelCompiler.makeBabelLayer),
     Layer.provideMerge(
-      BabelCompiler.makeBabelInput({
+      BabelCompiler.makeBabelConfig({
         code: data.toString(),
         filename: filename,
-        options: {
-          inputCSS: config.inputCSS,
-          outputCSS: outputCSS,
-          platform: platform,
-          projectRoot: projectRoot,
-          twinConfigPath: config.tailwindConfigPath,
-        },
+        inputCSS: config.inputCSS,
+        outputCSS: outputCSS,
+        platform: platform,
+        projectRoot: projectRoot,
+        twinConfigPath: config.tailwindConfigPath,
       }),
     ),
   );

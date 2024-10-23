@@ -55,7 +55,7 @@
   "devDependencies": {
     "@chialab/esbuild-plugin-meta-url": "^0.18.2",
     "@codingame/esbuild-import-meta-url-plugin": "^1.0.2",
-    "@codingame/monaco-vscode-rollup-vsix-plugin": "^6.0.1",
+    "@codingame/monaco-vscode-rollup-vsix-plugin": "~8.0.4",
     "@entur/vite-plugin-assets-json": "^0.0.9",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@rollup/pluginutils": "^5.1.0",

@@ -6,10 +6,11 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import { getAstTrees, getBabelAST } from '../utils/babel.utils';
+import { getAstTrees, getBabelAST } from '../utils/compiler.utils';
 
 const make = {
-  getAST: getBabelAST,
+  getAST: (code: string, filename: string) =>
+    Effect.sync(() => getBabelAST(code, filename)),
   getJSXElementTrees: getAstTrees,
   buildFile: (ast: ParseResult<t.File>) =>
     Effect.sync(() =>

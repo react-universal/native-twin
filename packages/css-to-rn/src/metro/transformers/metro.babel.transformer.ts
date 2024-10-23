@@ -9,13 +9,13 @@ import type { BabelTransformerFn } from '../models/metro.models';
 
 const mainProgram = Effect.gen(function* () {
   const twin = yield* Twin.NativeTwinServiceNode;
-  const input = yield* BabelCompiler.BabelInput;
+  const input = yield* BabelCompiler.BuildConfig;
 
   if (!twin.isAllowedPath(input.filename)) {
     return input.filename;
   }
 
-  const compiled = yield* compileReactCode(input);
+  const compiled = yield* compileReactCode;
 
   return compiled ?? input.code;
 });
@@ -29,16 +29,14 @@ export const transform: BabelTransformerFn = async (params) => {
   return babelRunnable.pipe(
     Effect.provide(BabelCompiler.makeBabelLayer),
     Effect.provide(
-      BabelCompiler.makeBabelInput({
+      BabelCompiler.makeBabelConfig({
         code: params.src,
         filename: params.filename,
-        options: {
-          inputCSS: params.options.customTransformOptions.inputCSS,
-          outputCSS: params.options.customTransformOptions.outputCSS,
-          platform: params.options.platform,
-          projectRoot: params.options.projectRoot,
-          twinConfigPath: params.options.customTransformOptions.twinConfigPath,
-        },
+        inputCSS: params.options.customTransformOptions.inputCSS,
+        outputCSS: params.options.customTransformOptions.outputCSS,
+        platform: params.options.platform,
+        projectRoot: params.options.projectRoot,
+        twinConfigPath: params.options.customTransformOptions.twinConfigPath,
       }),
     ),
     Effect.provide(
