@@ -9,7 +9,8 @@ import {
   type RuntimeComponentEntry,
 } from '@native-twin/css/jsx';
 import type { TreeNode } from '@native-twin/helpers/tree';
-import { getElementEntries, NativeTwinServiceNode } from '../../node/native-twin';
+import * as TwinNode from '../../native-twin';
+import { getElementEntries } from '../../native-twin/twin.utils.node';
 import { getJSXElementAttrs, getJSXElementName } from '../utils/jsx.utils';
 import type { JSXElementTree, JSXMappedAttribute } from './jsx.models';
 
@@ -50,7 +51,7 @@ interface JSXElementNodeInit {
   order: number;
   filename: string;
   runtimeData: JSXMappedAttribute[];
-  twin: NativeTwinServiceNode['Type'];
+  twin: TwinNode.NativeTwinServiceNode['Type'];
 }
 export class JSXElementNode implements Equal.Equal {
   readonly leave: TreeNode<JSXElementTree>;

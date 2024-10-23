@@ -13,35 +13,17 @@
       "require": "./build/node/index.js",
       "default": "./build/esm/node/index.js"
     },
-    "./babel": {
-      "types": "./build/babel/index.d.ts",
-      "import": "./build/esm/babel/index.js",
-      "require": "./build/babel/index.js",
-      "default": "./build/esm/babel/index.js"
-    },
     "./metro.babel.transformer": {
-      "types": "./build/metro/transformers/metro.babel.transformer.js",
-      "import": "./build/esm/metro/transformers/metro.babel.transformer.js",
-      "require": "./build/metro/transformers/metro.babel.transformer.js",
-      "default": "./build/esm/metro/transformers/metro.babel.transformer.js"
+      "types": "./build/node/metro/transformers/metro.babel.transformer.js",
+      "import": "./build/esm/node/metro/transformers/metro.babel.transformer.js",
+      "require": "./build/node/metro/transformers/metro.babel.transformer.js",
+      "default": "./build/esm/node/metro/transformers/metro.babel.transformer.js"
     },
     "./metro.transformer": {
-      "types": "./build/metro/transformers/metro.transformer.js",
-      "import": "./build/esm/metro/transformers/metro.transformer.js",
-      "require": "./build/metro/transformers/metro.transformer.js",
-      "default": "./build/esm/metro/transformers/metro.transformer.js"
-    },
-    "./native-twin": {
-      "types": "./build/node/native-twin/index.d.ts",
-      "import": "./build/esm/node/native-twin/index.js",
-      "require": "./build/node/native-twin/index.js",
-      "default": "./build/esm/node/native-twin/index.js"
-    },
-    "./metro": {
-      "types": "./build/metro/index.d.ts",
-      "import": "./build/esm/metro/index.js",
-      "require": "./build/metro/index.js",
-      "default": "./build/esm/metro/index.js"
+      "types": "./build/node/metro/transformers/metro.transformer.js",
+      "import": "./build/esm/node/metro/transformers/metro.transformer.js",
+      "require": "./build/node/metro/transformers/metro.transformer.js",
+      "default": "./build/esm/node/metro/transformers/metro.transformer.js"
     }
   },
   "main": "./build/index.js",

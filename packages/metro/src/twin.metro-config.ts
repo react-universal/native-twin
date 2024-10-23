@@ -1,19 +1,25 @@
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import { makeBabelLayer } from '@native-twin/compiler/babel';
-import * as TwinMetro from '@native-twin/compiler/metro';
+import {
+  createMetroConfig,
+  MetroWithNativeTwindOptions,
+  TwinMetroConfig,
+  makeMetroLayer,
+  metroLayerToRuntime,
+  getTransformerOptions,
+  makeBabelLayer,
+} from '@native-twin/compiler/node';
 
 export function withNativeTwin(
-  metroConfig: TwinMetro.TwinMetroConfig,
-  nativeTwinConfig: TwinMetro.MetroWithNativeTwindOptions = {},
-): TwinMetro.TwinMetroConfig {
-  console.log('METRO_TWIN_CONFIG', nativeTwinConfig);
-  const twinMetroConfig = TwinMetro.createMetroConfig(metroConfig, nativeTwinConfig);
+  metroConfig: TwinMetroConfig,
+  nativeTwinConfig: MetroWithNativeTwindOptions = {},
+): TwinMetroConfig {
+  const twinMetroConfig = createMetroConfig(metroConfig, nativeTwinConfig);
 
-  const mainLayer = TwinMetro.make(twinMetroConfig);
+  const mainLayer = makeMetroLayer(twinMetroConfig);
 
-  const runtime = TwinMetro.toRuntime(mainLayer);
+  const runtime = metroLayerToRuntime(mainLayer);
 
   // const originalResolver = metroConfig.resolver.resolveRequest;
 
@@ -30,7 +36,7 @@ export function withNativeTwin(
       unstable_allowRequireContext: true,
       getTransformOptions: (...args) => {
         // return originalGetTransformOptions(...args);
-        return TwinMetro.getTransformerOptions(...args).pipe(
+        return getTransformerOptions(...args).pipe(
           Effect.provide(mainLayer),
           Effect.provide(makeBabelLayer),
           Effect.annotateLogs('platform', args[1].platform ?? 'server'),

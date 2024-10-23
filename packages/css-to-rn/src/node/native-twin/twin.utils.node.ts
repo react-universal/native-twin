@@ -24,10 +24,10 @@ import {
   RuntimeComponentEntry,
   sortSheetEntries,
 } from '@native-twin/css/jsx';
-import { JSXElementNode, ReactCompilerService } from '../../babel';
-import { JSXMappedAttribute } from '../../babel/models/jsx.models';
-import { extractSheetsFromTree } from '../../babel/utils/twin-jsx.utils';
-import { MetroConfigService } from '../../metro';
+import { JSXElementNode, ReactCompilerService } from '../babel';
+import { JSXMappedAttribute } from '../babel/models/jsx.models';
+import { extractSheetsFromTree } from '../babel/utils/twin-jsx.utils';
+import { MetroConfigService } from '../metro';
 import { DEFAULT_TWIN_INPUT_CSS_FILE, TWIN_DEFAULT_FILES } from '../../shared';
 
 /**

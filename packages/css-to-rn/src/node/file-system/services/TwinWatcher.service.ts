@@ -1,6 +1,4 @@
 import { sheetEntriesToCss } from '@native-twin/css';
-import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
-import * as NodePath from '@effect/platform-node/NodePath';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
 import CodeBlockWriter from 'code-block-writer';
@@ -9,7 +7,6 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
-import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import {
@@ -20,12 +17,13 @@ import {
 import { getRawSheet } from '@native-twin/css/jsx';
 import { JSXElementNode } from '../../babel/models';
 import { MetroConfigService } from '../../metro';
-import { getFileClasses, NativeTwinServiceNode } from '../native-twin';
-import { readDirectoryRecursive } from '../utils';
+import { NativeTwinServiceNode } from '../../native-twin';
+import { getFileClasses } from '../../native-twin/twin.utils.node';
+import { readDirectoryRecursive } from '../../utils';
 
 const initialized: Set<string> = new Set();
 
-const buildWatcher = Effect.gen(function* () {
+export const makeFileSystem = Effect.gen(function* () {
   const twin = yield* NativeTwinServiceNode;
   const ctx = yield* MetroConfigService;
   const path = yield* Path.Path;
@@ -244,13 +242,7 @@ const createCompilerRegistry = (trees: HashMap.HashMap<string, JSXElementNode>[]
     }),
   );
 
-export class TwinWatcherService extends Context.Tag('metro/files/watcher')<
-  TwinWatcherService,
-  Effect.Effect.Success<typeof buildWatcher>
+export class TwinFSService extends Context.Tag('metro/fs/service')<
+  TwinFSService,
+  Effect.Effect.Success<typeof makeFileSystem>
 >() {}
-
-const rawLayer = Layer.scoped(TwinWatcherService, buildWatcher);
-
-const FSLive = Layer.mergeAll(NodeFileSystem.layer, NodePath.layer, Path.layer);
-
-export const twinFileSystemLayer = rawLayer.pipe(Layer.provideMerge(FSLive));

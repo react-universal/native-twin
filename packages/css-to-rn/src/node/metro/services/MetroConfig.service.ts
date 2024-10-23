@@ -2,7 +2,8 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
-import { createTwinCSSFiles, getTwinCacheDir, NativeTwinManager } from '../../node';
+import { NativeTwinManager } from '../../native-twin';
+import { createTwinCSSFiles, getTwinCacheDir } from '../../native-twin/twin.utils.node';
 import { twinMetroRequestResolver } from '../metro.resolver';
 
 // MARK: Metro config types

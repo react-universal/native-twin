@@ -6,10 +6,10 @@ import * as Logger from 'effect/Logger';
 import path from 'path';
 // import * as Option from 'effect/Option';
 import { BabelLogger, BabelTransformerServiceLive } from '@native-twin/babel/services';
-import * as BabelCompiler from '../../babel';
+import { assertString } from '../../../shared';
+import { BabelCompiler, BuildConfig, makeBabelConfig, makeBabelLayer } from '../../babel';
 import { compileReactCode } from '../../babel/programs/react.program';
-import * as Twin from '../../node/native-twin';
-import { assertString } from '../../shared';
+import { NativeTwinServiceNode, NativeTwinManager } from '../../native-twin';
 import type { TwinMetroTransformFn } from '../models';
 import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.service';
 
@@ -17,9 +17,9 @@ import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.se
 
 const metroMainProgram = Effect.gen(function* () {
   const { runWorker, input } = yield* MetroWorkerService;
-  const twin = yield* Twin.NativeTwinServiceNode;
-  const babelInput = yield* BabelCompiler.BuildConfig;
-  const babel = yield* BabelCompiler.BabelCompiler;
+  const twin = yield* NativeTwinServiceNode;
+  const babelInput = yield* BuildConfig;
+  const babel = yield* BabelCompiler;
 
   if (input.filename.match(/\.css\..+?\.js$/)) {
     console.log('[METRO_TRANSFORMER]: Inside generated style file');
@@ -128,16 +128,16 @@ export const transform: TwinMetroTransformFn = async (
 
   assertString(outputCSS);
 
-  const twinManager = new Twin.NativeTwinManager(
+  const twinManager = new NativeTwinManager(
     config.tailwindConfigPath,
     projectRoot,
     platform,
   );
 
   const layer = makeWorkerLayers(config, projectRoot, filename, data, options).pipe(
-    Layer.provideMerge(BabelCompiler.makeBabelLayer),
+    Layer.provideMerge(makeBabelLayer),
     Layer.provideMerge(
-      BabelCompiler.makeBabelConfig({
+      makeBabelConfig({
         code: data.toString(),
         filename: filename,
         inputCSS: config.inputCSS,
@@ -151,7 +151,7 @@ export const transform: TwinMetroTransformFn = async (
 
   return metroMainProgram.pipe(
     Effect.provide(layer),
-    Effect.provideService(Twin.NativeTwinServiceNode, twinManager),
+    Effect.provideService(NativeTwinServiceNode, twinManager),
     Effect.runPromise,
   );
 };

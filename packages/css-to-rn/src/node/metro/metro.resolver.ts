@@ -5,8 +5,9 @@ import * as Stream from 'effect/Stream';
 import type { GetTransformOptions, ExtraTransformOptions } from 'metro-config';
 import type { CustomResolver } from 'metro-resolver';
 import path from 'node:path';
-import { TwinWatcherService, NativeTwinServiceNode } from '../node';
-import { MetroConfigService } from './services';
+import { TwinFSService } from '../file-system';
+import { NativeTwinServiceNode } from '../native-twin';
+import { MetroConfigService } from './services/MetroConfig.service';
 
 const setupPlatforms: Set<string> = new Set();
 
@@ -40,7 +41,7 @@ export const getTransformerOptions = (
   return Effect.gen(function* () {
     const ctx = yield* MetroConfigService;
     const twin = yield* NativeTwinServiceNode;
-    const watcher = yield* TwinWatcherService;
+    const watcher = yield* TwinFSService;
 
     const { metroConfig } = ctx;
     const writeStylesToFS = !options.dev;

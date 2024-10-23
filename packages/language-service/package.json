@@ -16,13 +16,13 @@
   "exports": {
     ".": {
       "types": "./build/index.d.ts",
-      "require": "./build/index.js",
-      "import": "./build/esm/index.js"
+      "import": "./build/esm/index.js",
+      "require": "./build/index.js"
     },
     "./browser": {
       "types": "./build/browser.d.ts",
-      "require": "./build/browser.js",
-      "import": "./build/esm/browser.js"
+      "import": "./build/esm/browser.js",
+      "require": "./build/browser.js"
     },
     "./package.json": "./package.json"
   },

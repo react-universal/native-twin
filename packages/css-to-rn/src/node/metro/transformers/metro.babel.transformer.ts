@@ -2,14 +2,14 @@ import upstreamTransformer from '@expo/metro-config/babel-transformer';
 import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import * as BabelCompiler from '../../babel';
+import { BuildConfig, makeBabelConfig, makeBabelLayer } from '../../babel';
 import { compileReactCode } from '../../babel/programs/react.program';
-import * as Twin from '../../node/native-twin';
+import { NativeTwinServiceNode } from '../../native-twin';
 import type { BabelTransformerFn } from '../models/metro.models';
 
 const mainProgram = Effect.gen(function* () {
-  const twin = yield* Twin.NativeTwinServiceNode;
-  const input = yield* BabelCompiler.BuildConfig;
+  const twin = yield* NativeTwinServiceNode;
+  const input = yield* BuildConfig;
 
   if (!twin.isAllowedPath(input.filename)) {
     return input.filename;
@@ -27,9 +27,9 @@ export const babelRunnable = Effect.scoped(
 export const transform: BabelTransformerFn = async (params) => {
   // console.log('[transform]: PARAMS: ', params);
   return babelRunnable.pipe(
-    Effect.provide(BabelCompiler.makeBabelLayer),
+    Effect.provide(makeBabelLayer),
     Effect.provide(
-      BabelCompiler.makeBabelConfig({
+      makeBabelConfig({
         code: params.src,
         filename: params.filename,
         inputCSS: params.options.customTransformOptions.inputCSS,
@@ -40,7 +40,7 @@ export const transform: BabelTransformerFn = async (params) => {
       }),
     ),
     Effect.provide(
-      Twin.NativeTwinServiceNode.Live(
+      NativeTwinServiceNode.Live(
         params.options.customTransformOptions.twinConfigPath,
         params.options.projectRoot,
         params.options.platform,

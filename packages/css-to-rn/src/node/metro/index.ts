@@ -1,6 +1,8 @@
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import { twinFileSystemLayer, TwinLogger, NativeTwinServiceNode } from '../node';
+import { twinFileSystemLayer } from '../file-system';
+import { NativeTwinServiceNode } from '../native-twin';
+import { twinLoggerLayer } from '../services/Logger.service';
 import { getTransformerOptions, twinMetroRequestResolver } from './metro.resolver';
 import type {
   BabelTransformerConfig,
@@ -17,7 +19,7 @@ import {
   createMetroConfig,
 } from './services/MetroConfig.service';
 
-const make = (config: ReturnType<typeof createMetroConfig>) => {
+const makeMetroLayer = (config: ReturnType<typeof createMetroConfig>) => {
   return twinFileSystemLayer.pipe(
     Layer.provideMerge(makeMetroConfig(config)),
     Layer.provideMerge(
@@ -26,15 +28,16 @@ const make = (config: ReturnType<typeof createMetroConfig>) => {
         config.userConfig.projectRoot,
       ),
     ),
-    Layer.provideMerge(TwinLogger.layer),
+    Layer.provideMerge(twinLoggerLayer),
   );
 };
 
-const toRuntime = (layer: ReturnType<typeof make>) => ManagedRuntime.make(layer);
+const metroLayerToRuntime = (layer: ReturnType<typeof makeMetroLayer>) =>
+  ManagedRuntime.make(layer);
 
 export {
-  make,
-  toRuntime,
+  makeMetroLayer,
+  metroLayerToRuntime,
   MetroConfigService,
   getTransformerOptions,
   twinMetroRequestResolver,

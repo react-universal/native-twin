@@ -33,6 +33,7 @@ export default defineConfig({
         __DEV__: 'true',
       },
       plugins: [
+        // @ts-expect-error
         importMetaUrlPlugin,
         NodeGlobalsPolyfillPlugin({
           buffer: true,
@@ -49,7 +50,6 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     react(),
-    // @ts-expect-error
     vsixPlugin(),
     assetsJSON(),
     // {

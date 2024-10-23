@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import 'vscode';
 import * as monaco from 'monaco-editor';
 import '@codingame/monaco-vscode-theme-defaults-default-extension';

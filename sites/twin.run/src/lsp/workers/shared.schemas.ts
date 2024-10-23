@@ -1,4 +1,4 @@
-import * as Schema from 'effect/Schema/Schema';
+import * as Schema from 'effect/Schema';
 
 export class TwinTyping extends Schema.Class<TwinTyping>('TwinTyping')({
   filePath: Schema.String,

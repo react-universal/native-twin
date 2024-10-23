@@ -4,7 +4,7 @@ import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import type { AnyPrimitive } from '@native-twin/helpers';
-import * as babelPredicates from '../utils/babel.predicates';
+import * as babelPredicates from './babel.predicates';
 
 export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {
   if (typeof value === 'string') return t.stringLiteral(value);

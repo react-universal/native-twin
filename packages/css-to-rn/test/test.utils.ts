@@ -2,8 +2,8 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import fs from 'fs';
 import path from 'path';
-import * as TwinBabel from '../src/babel';
-import { compileReactCode } from '../src/babel/programs/react.program';
+import * as TwinBabel from '../src/node/babel';
+import { compileReactCode } from '../src/node/babel/programs/react.program';
 import * as TwinNode from '../src/node';
 
 const reactProgram = Effect.gen(function* () {
