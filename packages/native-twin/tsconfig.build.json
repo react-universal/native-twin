@@ -4,8 +4,10 @@
     "outDir": "build",
     "declarationMap": true,
     "verbatimModuleSyntax": false,
-    "module": "CommonJS",
+    "module": "ESNext",
+    "target": "ESNext",
     "noEmit": false,
+    "emitDeclarationOnly": true,
     "importHelpers": true
   },
   "exclude": ["./test/", "build"]

@@ -1,4 +1,3 @@
-import { parseCssValue, tw } from '@native-twin/core';
 import {
   AnyStyle,
   CompleteStyle,
@@ -6,6 +5,7 @@ import {
   getRuleSelectorGroup,
   SheetEntryDeclaration,
 } from '@native-twin/css';
+import { parseCssValue, tw } from '@native-twin/core';
 import { RuntimeSheetEntry } from '@native-twin/css/jsx';
 import type { StyledContext } from '../store/observables';
 

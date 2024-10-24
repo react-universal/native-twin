@@ -1,0 +1,11 @@
+{
+  "platform": "browser",
+  "reactNative": false,
+  "minify": false,
+  "types": true,
+  "vscode": false,
+  "logs": false,
+  "entries": [
+    "./src"
+  ]
+}

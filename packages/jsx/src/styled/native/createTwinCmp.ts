@@ -8,19 +8,19 @@ import type {
 } from '../../types/styled.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
 import { getComponentDisplayName } from '../../utils/react.utils';
-import { useTwinDevTools } from '../hooks/useDevTools';
+// import { useTwinDevTools } from '../hooks/useDevTools';
 import { useInteractions } from '../hooks/useInteractions';
 import { useStyledProps } from '../hooks/useStyledProps';
 
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 
-const twinProps = [
-  '_twinComponentID',
-  '_twinComponentSheet',
-  '_twinComponentTemplateEntries',
-  '_twinComponentTree',
-  '_twinOrd',
-];
+// const twinProps = [
+//   '_twinComponentID',
+//   '_twinComponentSheet',
+//   '_twinComponentTemplateEntries',
+//   '_twinComponentTree',
+//   '_twinOrd',
+// ];
 
 export const NativeTwinHOC = <
   const T extends ReactComponent<any>,
@@ -39,9 +39,9 @@ export const NativeTwinHOC = <
 
     const componentID = props?.['_twinComponentID'];
     const id = componentID ?? reactID;
-    const { isSelected } = useTwinDevTools(id, props?.['_twinComponentTree']);
+    // const { isSelected } = useTwinDevTools(id, props?.['_twinComponentTree']);
 
-    const { componentStyles, templateEntriesObj } = useStyledProps(id, props, configs);
+    const { componentStyles } = useStyledProps(id, props, configs);
 
     const { handlers, parentState, state } = useInteractions(
       id,
@@ -64,32 +64,26 @@ export const NativeTwinHOC = <
               isPointerActive: state.isLocalActive,
               dark: colorScheme.get() === 'dark',
             },
-            templateEntriesObj[style.prop] ?? [],
+            // templateEntriesObj[style.prop] ?? [],
           ),
           oldProps,
-          isSelected
-            ? {
-                borderColor: 'green',
-                borderWidth: 10,
-              }
-            : {},
         );
       }
     }
 
-    for (const x of configs) {
-      if (x.target !== x.source) {
-        if (x.source in newProps) {
-          Reflect.deleteProperty(newProps, x.source);
-        }
-      }
-    }
+    // for (const x of configs) {
+    //   if (x.target !== x.source) {
+    //     if (x.source in newProps) {
+    //       Reflect.deleteProperty(newProps, x.source);
+    //     }
+    //   }
+    // }
 
-    for (const x of twinProps) {
-      if (x in newProps) {
-        Reflect.deleteProperty(newProps, x);
-      }
-    }
+    // for (const x of twinProps) {
+    //   if (x in newProps) {
+    //     Reflect.deleteProperty(newProps, x);
+    //   }
+    // }
 
     if (componentStyles.metadata.isGroupParent) {
       return createElement(

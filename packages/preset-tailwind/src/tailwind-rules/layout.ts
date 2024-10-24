@@ -17,6 +17,7 @@ export const layoutThemeRules: Rule<TailwindPresetTheme>[] = [
     precedence: rule.p,
     selectors: [],
     animations: [],
+    preflight: false,
   })),
   matchThemeValue('overflow-', 'overflow', 'overflow'),
   matchThemeValue('object-', 'objectFit', 'objectFit'),

@@ -1,6 +1,5 @@
 import generate from '@babel/generator';
 import * as RA from 'effect/Array';
-// import * as Console from 'effect/Console';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
@@ -9,10 +8,10 @@ import * as Stream from 'effect/Stream';
 import type { __Theme__ } from '@native-twin/core';
 import { Tree } from '@native-twin/helpers/tree';
 import { createBabelAST } from '../../babel';
+import { JSXElementNode } from '../../models';
+import { BabelTransformerService, MetroCompilerContext } from '../../services';
+import { NativeTwinService } from '../../services/NativeTwin.service';
 import { JSXElementTree, RuntimeTreeNode } from '../jsx.types';
-import { JSXElementNode } from '../models';
-import { BabelTransformerService, MetroCompilerContext } from '../services';
-import { NativeTwinService } from '../services/NativeTwin.service';
 import { addJsxExpressionAttribute } from './jsx.builder';
 import { createDevToolsTree, elementNodeToTree } from './jsx.debug';
 import { extractMappedAttributes, getAstTrees } from './jsx.maps';
@@ -26,7 +25,7 @@ export const transformJSXFile = (code: string) => {
     const babelTrees = yield* getAstTrees(ast, ctx.filename);
     const registry = yield* pipe(
       Stream.fromIterable(babelTrees),
-      Stream.mapEffect(extractSheetsFromTree),
+      Stream.mapEffect((x) => extractSheetsFromTree(x, ctx.filename)),
       Stream.map(HashMap.fromIterable),
       Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) => {
         return pipe(prev, HashMap.union(current));
@@ -41,8 +40,6 @@ export const transformJSXFile = (code: string) => {
       {
         onFalse: () =>
           Effect.sync(() => {
-            // return transformer.transformLeave(registry);
-            // console.log('WEB: ', ctx.options.customTransformOptions);
             return HashMap.empty<string, Omit<RuntimeTreeNode, 'childs'>>();
           }),
         onTrue: () =>
@@ -78,15 +75,6 @@ export const transformJSXFile = (code: string) => {
       RA.join('\n'),
     );
 
-    // if (ctx.platform === 'web' && classNames !== '') {
-    //   console.log('CLASS_NAMES: ', classNames);
-    //   const entries = `require('@native-twin/core').tw(\`${classNames}\`);`;
-    //   generatedCode = `${entries}\n${generatedCode}`;
-    //   console.log('FINAL: ', generatedCode);
-    // } else {
-    //   console.log('NO_WEB: ', classNames === '', ctx.platform);
-    // }
-
     return {
       trees,
       devToolsTree,
@@ -103,11 +91,11 @@ export const transformJSXFile = (code: string) => {
   });
 };
 
-const extractSheetsFromTree = (tree: Tree<JSXElementTree>) =>
+const extractSheetsFromTree = (tree: Tree<JSXElementTree>, fileName: string) =>
   Effect.gen(function* () {
     // const fileSheet = MutableHashMap.empty<string, CompiledTree>();
-    const ctx = yield* MetroCompilerContext;
     const twin = yield* NativeTwinService;
+    console.groupEnd();
     const fileSheet = RA.empty<[string, JSXElementNode]>();
 
     tree.traverse((leave) => {
@@ -116,7 +104,7 @@ const extractSheetsFromTree = (tree: Tree<JSXElementTree>) =>
       const model = new JSXElementNode({
         leave,
         order: value.order,
-        filename: ctx.filename,
+        filename: fileName,
         runtimeData,
         twin,
       });

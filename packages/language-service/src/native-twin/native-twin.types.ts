@@ -1,5 +1,5 @@
 import * as HashSet from 'effect/HashSet';
-import {
+import type {
   __Theme__,
   RuntimeTW,
   TailwindConfig,
@@ -7,7 +7,7 @@ import {
   Rule,
   RuleMeta,
 } from '@native-twin/core';
-import { SheetEntry, CompleteStyle } from '@native-twin/css';
+import type { SheetEntry, CompleteStyle } from '@native-twin/css';
 import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 
 export type InternalTwinConfig = TailwindConfig<__Theme__ & TailwindPresetTheme>;

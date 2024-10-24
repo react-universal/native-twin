@@ -3,7 +3,9 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "build",
-    "module": "CommonJS",
+    "module": "ESNext",
+    "target": "ESNext",
+    "declaration": true,
     "noEmit": false,
     "declarationMap": true
   },

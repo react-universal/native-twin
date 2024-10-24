@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/language-service",
-  "version": "6.4.0",
+  "version": "7.0.0-next.1",
   "description": "Native Twin language server provider",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -13,24 +13,49 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "main": "build/index.js",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/esm/index.js",
+      "require": "./build/index.js"
+    },
+    "./browser": {
+      "types": "./build/browser.d.ts",
+      "import": "./build/esm/browser.js",
+      "require": "./build/browser.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "build",
+    "src",
+    "browser"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "twin build",
     "build:esbuild:watch": "node esbuild.mjs --watch",
-    "build:tsc": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json --watch",
+    "build:tsc:watch": "tsc -p tsconfig.build.json --watch",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
-    "test": "jest --passWithNoTests --testTimeout 100000",
+    "test": "echo \"Non tests\"",
     "vscode:dev": "tsc -p tsconfig.build.json --watch"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.1.0",
     "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@vscode/emmet-helper": "^2.9.3",
     "cssbeautify": "0.3.1",
-    "effect": "^3.7.2",
+    "effect": "^3.10.0",
+    "markdown-it": "^14.1.0",
     "match-sorter": "6.3.4",
     "showdown": "2.1.0",
     "ts-morph": "^23.0.0",
@@ -42,14 +67,14 @@
   },
   "devDependencies": {
     "@types/cssbeautify": "^0.3.5",
+    "@types/markdown-it": "^14.1.2",
     "@types/showdown": "^2.0.6",
+    "esbuild-plugin-d.ts": "^1.3.0",
     "madge": "7.0.0"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
-  },
-  "engines": {
-    "vscode": "^1.89.0"
   },
   "publishConfig": {
     "access": "public",

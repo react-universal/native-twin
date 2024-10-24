@@ -1,6 +1,6 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import { SheetEntry } from '@native-twin/css';
+import type { SheetEntry } from '@native-twin/css';
 import { TemplateTokenWithText } from './template-token.model';
 
 export class TwinSheetEntry implements Equal.Equal {

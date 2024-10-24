@@ -1,5 +1,5 @@
 import type { AnyStyle, FinalSheet, GetChildStylesArgs } from '../react-native/rn.types';
-import type { SheetInteractionState } from '../sheets/sheet.types';
+import type { SheetEntry, SheetInteractionState } from '../sheets/sheet.types';
 import { RuntimeGroupSheet } from './Sheet';
 import type { RuntimeSheetEntry } from './SheetEntry';
 
@@ -41,6 +41,7 @@ export interface RuntimeComponentEntry {
   prop: string;
   target: string;
   templateLiteral: string | null;
+  templateEntries: SheetEntry[];
   rawSheet: RuntimeGroupSheet;
   // childEntries: RuntimeSheetEntry[];
   entries: RuntimeSheetEntry[];

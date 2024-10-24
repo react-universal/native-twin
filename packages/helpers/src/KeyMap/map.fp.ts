@@ -11,8 +11,8 @@ export const get = dual<
   <K, V, K1 extends K>(self: KeyMap<K, V>, key: K1) => Option.Option<V>
 >(2, (self, key) => Option.fromNullable(self.get(key)));
 
-/** 
- * Unsafe unwrap the return value 
+/**
+ * Unsafe unwrap the return value
  * @throws an exception in case the key is not present
  * */
 export const unsafeGet = dual<

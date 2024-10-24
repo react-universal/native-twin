@@ -6,6 +6,7 @@
   "plugins": [
     "@nx"
   ],
+  "extends": ["turbo"],
   "overrides": [
     {
       "files": [
@@ -14,7 +15,9 @@
         "*.js",
         "*.jsx"
       ],
-      "rules": {}
+      "rules": {
+        "turbo/no-undeclared-env-vars": "off"
+      }
     },
     {
       "files": [

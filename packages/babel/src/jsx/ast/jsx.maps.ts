@@ -8,13 +8,17 @@ import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import { applyParentEntries } from '@native-twin/css/jsx';
 import { Tree, TreeNode } from '@native-twin/helpers/tree';
-import { mappedComponents, type MappedComponent } from '../../utils/component.maps';
+import { JSXElementNode } from '../../models';
+import {
+  createCommonMappedAttribute,
+  mappedComponents,
+  type MappedComponent,
+} from '../../utils/component.maps';
 import {
   JSXElementNodePath,
   type JSXElementTree,
   type JSXMappedAttribute,
 } from '../jsx.types';
-import { JSXElementNode } from '../models';
 import * as jsxPredicates from './jsx.predicates';
 
 export const getJSXElementSource = (path: JSXElementNodePath) =>
@@ -104,7 +108,7 @@ export const extractMappedAttributes = (node: t.JSXElement): JSXMappedAttribute[
  * */
 const getJSXElementConfig = (tagName: string) => {
   const componentConfig = mappedComponents.find((x) => x.name === tagName);
-  if (!componentConfig) return null;
+  if (!componentConfig) return createCommonMappedAttribute(tagName);
 
   return componentConfig;
 };
@@ -195,12 +199,13 @@ export const getAstTrees = (ast: ParseResult<t.File>, filename: string) => {
           }
         },
         JSXElement(path) {
-          const hash = Hash.string(filename);
-          const uid = path.scope.generateUid('__twin_root');
+          const uid = path.scope.generateUidIdentifier();
+          // console.log('UID: ', uid.name, uidUnNamed.name);
+          const hash = Hash.string(filename + uid.name);
           const parentTree = new Tree<JSXElementTree>({
             order: -1,
             babelNode: path.node,
-            uid: `${hash}__:${uid}`,
+            uid: `${hash}__${uid.name}:__1`,
             source: getJSXElementSource(path),
             cssImports: cssImports,
             parentID: null,
@@ -229,12 +234,14 @@ export const gelBabelJSXElementChildLeaves = (
 
   for (const childPath of childs) {
     const order = parent.childrenCount;
+    const childUid = path.scope.generateUid();
+    // console.log('CHILD_UID: ', childUid);
     const childLeave = parent.addChild({
       order,
       babelNode: childPath.node,
-      uid: `${parent.value.uid}:${order}`,
+      uid: `${parent.value.uid}:${order}____${childUid}`,
       source: getJSXElementSource(childPath),
-      cssImports: [],
+      cssImports: parent.value.cssImports,
       parentID: parent.value.uid,
     });
     childLeave.parent = parent;

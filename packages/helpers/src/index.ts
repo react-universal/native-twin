@@ -1,4 +1,4 @@
-export { hash, createHash, getBitMask, getHashMask } from './hash.utils';
+export { hash, createHash, getBitMask, getHashMask, simpleHash } from './hash.utils';
 
 export { createStore, createValueStore } from './store.utils';
 
@@ -27,6 +27,8 @@ export {
   toHyphenCase,
   toTailDashed,
   generateAlphabeticName,
+  escapeBackticksAndOctals,
+  splitBySpace,
 } from './string.utils';
 
 export type {
@@ -39,9 +41,14 @@ export type {
   UnionToIntersection,
   ColorsRecord,
   AnyPrimitive,
+  PropsFrom,
+  OmitUndefined,
+  ClassNameProps,
+  StyledComponentProps,
+  Prettify,
 } from './utility.types';
 
-export { warn, WarningEventMap } from './warn';
+export { warn, type WarningEventMap } from './warn';
 
 export {
   createExponentialUnits,
@@ -50,12 +57,3 @@ export {
 } from './create-value.utils';
 
 export { flattenObjectByPath, flattenColorPalette } from './object.utils';
-
-export {
-  Atom,
-  AtomGetter,
-  atom,
-  atomStateMap,
-  useAtom,
-  useAtomValue,
-} from './atom.store';

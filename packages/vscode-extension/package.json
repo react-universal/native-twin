@@ -115,6 +115,32 @@
           }
         }
       }
+    ],
+    "grammars": [
+      {
+        "language": "Log",
+        "scopeName": "code.log",
+        "path": "./src/syntaxes/log.tmLanguage"
+      }
+    ],
+    "languages": [
+      {
+        "id": "log",
+        "aliases": [
+          "log"
+        ],
+        "extensions": [
+          ".log"
+        ],
+        "configuration": "./log.configuration.json",
+        "mimetypes": [
+          "log",
+          "text/log",
+          "text/x-log",
+          "text/x-code-output",
+          "x-code-output"
+        ]
+      }
     ]
   },
   "activationEvents": [
@@ -122,7 +148,7 @@
   ],
   "dependencies": {
     "@native-twin/language-server": "workspace:*",
-    "effect": "^3.7.2",
+    "effect": "^3.10.0",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
@@ -130,6 +156,9 @@
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.4.0",
     "vscode-test": "^1.6.1"
+  },
+  "optionalDependencies": {
+    "@native-twin/cli": "workspace:*"
   },
   "engines": {
     "vscode": "^1.89.0"

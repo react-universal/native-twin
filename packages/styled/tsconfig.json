@@ -3,7 +3,7 @@
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
-    "outDir": "build",
+    "outDir": "build/types",
     "sourceMap": true,
     "module": "ES2020",
     "exactOptionalPropertyTypes": false,

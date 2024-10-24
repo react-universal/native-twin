@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from 'react';
 import { ScrollViewStyleReset } from 'expo-router/html';
-import twinConfig from 'tailwind.config';
+import twinConfig from '../../tailwind.config';
 import { install, TailwindUserConfig } from '@native-twin/core';
 import { sheetEntriesToCss, SheetEntry } from '@native-twin/css';
 import './twin.css';

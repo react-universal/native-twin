@@ -5,34 +5,6 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/dev-tools-web",
-      "path": "../packages/dev-tools/webui"
-    },
-    {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/dev-tools",
-      "path": "../packages/dev-tools"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
       "name": "📦 @lib/vscode",
       "path": "../packages/vscode-extension"
     },
@@ -45,12 +17,40 @@
       "path": "../packages/language-server"
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
+      "name": "twin.run",
+      "path": "../sites/twin.run"
+    },
+    {
+      "name": "📦 @lib/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @lib/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
+      "name": "📦 @lib/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/dev-tools-web",
+      "path": "../packages/dev-tools/webui"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
     },
     {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @lib/preset-tailwind",
+      "path": "../packages/preset-tailwind"
     },
     {
       "name": "@apps/expo",
@@ -70,7 +70,7 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
-      ".turbo": false,
+      ".turbo": true,
       "**/CHANGELOG.md": true,
       "**/jest.config.js": false,
       "**/LICENSE": true,

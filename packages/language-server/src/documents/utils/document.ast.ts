@@ -1,7 +1,25 @@
+// import { Option } from 'effect';
+// import Predicate from 'effect/Predicate';
+import { NativeTwinPluginConfiguration } from '../../types/extension.types';
 import { parse } from '@babel/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { NativeTwinPluginConfiguration } from '../../types/extension.types';
+import * as S from 'effect/Schema';
+
+// const isObjectProperty: Predicate.Refinement<t.Node, t.ObjectProperty> = (
+//   node: t.Node,
+// ): node is t.ObjectProperty => t.isObjectProperty(node);
+// const isStringLiteral: Predicate.Refinement<t.Node, t.StringLiteral> = (
+//   node: t.Node,
+// ): node is t.StringLiteral => t.isStringLiteral(node);
+
+const StringLiteral = S.Struct({
+  type: S.Literal('StringLiteral'),
+});
+const TwinObjectProperty = S.Struct({
+  type: S.Literal('ObjectProperty'),
+  value: StringLiteral,
+});
 
 const matchVariantsObject = (
   properties: t.ObjectExpression['properties'],
@@ -10,8 +28,13 @@ const matchVariantsObject = (
   const nextProperty = properties.shift();
   if (!nextProperty) return results;
 
+  const decoded = S.decodeUnknownOption(TwinObjectProperty, {
+    onExcessProperty: 'preserve',
+  })(nextProperty);
+  console.log('DECODED: ', decoded);
   if (t.isObjectProperty(nextProperty)) {
     if (t.isStringLiteral(nextProperty.value)) {
+      nextProperty.value.type;
       nextProperty.value.loc && results.push(nextProperty.value.loc);
     }
     if (t.isTemplateLiteral(nextProperty.value)) {

@@ -1,6 +1,6 @@
 {
   "extends": "../../.eslintrc.json",
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": ["!**/*", "**/esbuild.mjs"],
   "overrides": [
     {
       "files": [
@@ -9,7 +9,25 @@
       "extends": [
         "plugin:@nx/typescript"
       ],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-empty-object-type": "off",
+        "require-yield": "off",
+        "no-case-declarations": "off",
+        "@typescript-eslint/no-empty-interface": "off",
+        "no-self-assign": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "args": "all",
+            "argsIgnorePattern": "^_",
+            "caughtErrors": "all",
+            "caughtErrorsIgnorePattern": "^_",
+            "destructuredArrayIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "ignoreRestSiblings": true
+          }
+        ]
+      }
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react';
 import { ComponentSheet } from '@native-twin/css/jsx';
-import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
+import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
 import { groupContext } from '../../context';
 import { getTwinComponent } from '../../store/components.store';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants';
@@ -32,8 +32,7 @@ export const useTwinComponent = (
         setState({ ...state });
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [id],
+    [state, setState],
   );
 
   // console.log('Render_Count', ++useRef(0).current);

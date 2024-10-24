@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/preset-tailwind",
-  "version": "6.4.0",
+  "version": "7.0.0-next.1",
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
     "tailwind",
@@ -21,21 +21,32 @@
     "directory": "packages/preset-tailwind"
   },
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "require": "./build/index.js",
+      "import": "./build/esm/index.js"
+    },
+    "./colors": {
+      "types": "./build/tailwind-theme/colors.d.ts",
+      "require": "./build/tailwind-theme/colors.js",
+      "import": "./build/esm/tailwind-theme/colors.js"
+    }
+  },
   "main": "./build/index.js",
+  "module": "./build/esm/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
-    "index.d.ts",
-    "tailwind",
-    "tailwind.d.ts",
-    "types.d.ts",
+    "colors",
+    "src",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
@@ -51,6 +62,7 @@
     "react-native": ">=0.71.0"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

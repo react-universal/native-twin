@@ -11,8 +11,8 @@ import { installDocument } from '@native-twin/nextjs/_document';
 
 export async function getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
   AppRegistry.registerComponent('Main', () => Main);
-  // @ts-expect-error
-  const { getStyleElement } = AppRegistry.getApplication('Main');
+  // @ts-expect-error untyped
+  AppRegistry.getApplication('Main');
   const page = await ctx.renderPage();
   return { ...page };
 }

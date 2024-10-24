@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/nextjs",
-  "version": "6.4.0",
+  "version": "7.0.0-next.1",
   "description": "React Native Web Tailwindcss for nextjs",
   "keywords": [
     "tailwind",
@@ -23,31 +23,49 @@
   },
   "sideEffects": false,
   "exports": {
-    "./_app": "./build/_app.js",
-    "./_document": "./build/_document.js",
-    "./app": "./build/app.js",
+    "./app": {
+      "types": "./build/app/index.d.ts",
+      "import": "./build/esm/app/index.js",
+      "require": "./build/app/index.js"
+    },
+    "./_app": {
+      "types": "./build/_app.d.ts",
+      "import": "./build/esm/_app.js",
+      "require": "./build/_app.js"
+    },
+    "./_document": {
+      "types": "./build/_document.d.ts",
+      "import": "./build/esm/_document.js",
+      "require": "./build/_document.js"
+    },
     "./package.json": "./package.json"
   },
-  "types": "./build/index.d.ts",
   "files": [
     "build",
-    "index.d.ts",
-    "tailwind",
-    "tailwind.d.ts",
-    "types.d.ts",
+    "src",
+    "app",
+    "_app",
+    "_document",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@native-twin/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/loader-utils": "^2.0.6",
+    "@types/webpack": "^5.28.5",
+    "@vanilla-extract/integration": "^7.1.10",
+    "debug": "^4.3.1",
+    "loader-utils": "^2.0.0"
   },
   "peerDependencies": {
     "next": ">=14.0",
@@ -57,6 +75,9 @@
     "next": {
       "optional": true
     }
+  },
+  "optionalDependencies": {
+    "@native-twin/cli": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

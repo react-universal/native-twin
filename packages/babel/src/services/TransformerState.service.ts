@@ -3,7 +3,7 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Ref from 'effect/Ref';
 import * as Scope from 'effect/Scope';
-import { JSXElementNode } from '../jsx/models/JSXElement.model';
+import { JSXElementNode } from '../models/JSXElement.model';
 
 interface State {
   acquire(): Effect.Effect<JSXElementNode[], never, Scope.Scope>;

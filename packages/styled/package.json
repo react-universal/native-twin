@@ -1,7 +1,7 @@
 {
   "name": "@native-twin/styled",
-  "version": "6.4.0",
-  "description": "Styled components for css in react native",
+  "version": "7.0.0-next.1",
+  "description": "[DEPRECATED] Styled components for css in react native",
   "keywords": [
     "react-native",
     "tailwindcss",
@@ -22,17 +22,19 @@
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
   "main": "./build/index",
+  "module": "./build/esm/index",
   "browser": "./build/index",
   "types": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
     "CHANGELOG.md",
-    "README.md"
+    "README.md",
+    "src",
+    "styled"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
     "bundle": "yarn clean && yarn twin-build",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -49,7 +51,6 @@
     "stable-hash": "0.0.3"
   },
   "devDependencies": {
-    "@native-twin/builder": "workspace:*",
     "@types/react-is": "^17.0.3"
   },
   "peerDependencies": {
@@ -60,6 +61,7 @@
     "react-native-web": "*"
   },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

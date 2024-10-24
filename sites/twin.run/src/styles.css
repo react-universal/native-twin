@@ -9,6 +9,72 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+}
+
+.twin-editor {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.editor {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  flex: 1;
+}
+
+#monaco-editor-root {
+  display: flex;
+  flex: 1;
+}
+
+#editorPreview {
+  display: flex;
+  flex: 1;
+  background-color: white;
+}
+
+.loading-player {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(28, 26, 26);
+}
+
+.loading-player>video {
+  display: flex;
+  background-color: transparent;
+  width: 100px;
+  height: 100px;
+}
+
+video {
+  pointer-events: none;
+}
+
+video::-webkit-media-controls {
+  display: none;
+}
+
+video::-ms-media-controls {
+  display: none;
+}
+
+video::-moz-media-controls {
+  display: none;
+}
+
+video::-o-media-controls {
+  display: none;
 }
 
 body {
@@ -18,9 +84,16 @@ body {
   width: 100%;
   height: 100%;
 }
+
 html {
   width: 100%;
   height: 100%;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
 
 #editors {

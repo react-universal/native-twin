@@ -1,6 +1,6 @@
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
-import { RuntimeTW } from '@native-twin/core';
+import type { RuntimeTW } from '@native-twin/core';
 import {
   getGroupedEntries,
   sortSheetEntries,
@@ -43,6 +43,7 @@ export const getElementEntries = (
         target,
         templateLiteral: value.templates,
         entries: runtimeEntries,
+        templateEntries: [],
         // childEntries: pipe(
         //   runtimeEntries,
         //   RA.filter((x) => isChildEntry(x)),

@@ -1,9 +1,9 @@
+import type { SheetEntry } from '@native-twin/css';
 import { NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
-import type { SheetEntry } from '@native-twin/css';
 import { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import type { Tree } from '@native-twin/helpers/tree';
-import { JSXElementNode } from './models';
+import { JSXElementNode } from '../models';
 
 export type JSXChildElement = t.JSXElement['children'][number];
 

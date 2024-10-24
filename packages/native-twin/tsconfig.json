@@ -14,6 +14,6 @@
     "stripInternal": true,
     "noImplicitAny": true
   },
-  "include": ["src", "test"],
+  "include": ["src", "test","types.d.ts"],
   "exclude": ["build"]
 }

@@ -4,6 +4,7 @@
     "expo-module-scripts/tsconfig.base"
   ],
   "compilerOptions": {
+    "moduleResolution": "Bundler",
     "outDir": "./build",
     "noEmit": false
   },

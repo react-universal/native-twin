@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/helpers",
-  "version": "6.4.0",
+  "version": "7.0.0-next.1",
   "description": "Helpers for common utilities",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -14,27 +14,59 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/esm/index.js",
+      "require": "./build/index.js"
+    },
+    "./react": {
+      "types": "./build/react.d.ts",
+      "import": "./build/esm/react.js",
+      "require": "./build/react.js"
+    },
+    "./KeyMap": {
+      "types": "./build/KeyMap/index.d.ts",
+      "import": "./build/esm/KeyMap/index.js",
+      "require": "./build/KeyMap/index.js"
+    },
+    "./tree": {
+      "types": "./build/tree/index.d.ts",
+      "import": "./build/esm/tree/index.js",
+      "require": "./build/tree/index.js"
+    },
+    "./server": {
+      "types": "./build/server/index.d.ts",
+      "import": "./build/esm/server/index.js",
+      "require": "./build/server/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "main": "./build/index.js",
+  "module": "./build/esm/index.js",
   "types": "./build/index.d.ts",
   "files": [
     "build",
+    "src",
+    "KeyMap",
+    "react",
+    "server",
+    "tree",
     "LICENSE",
     "CHANGELOG.md",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:twin": "twin-build",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:types": "tsc -p tsconfig.build.json",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "test": "jest"
   },
-  "dependencies": {
-    "effect": "^3.7.2"
-  },
   "optionalDependencies": {
+    "@native-twin/cli": "workspace:*",
     "jest": "*"
   },
   "publishConfig": {

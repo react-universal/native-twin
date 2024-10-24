@@ -6,7 +6,11 @@
       "dependsOn": [
         "^build"
       ],
-      "inputs": ["$TURBO_DEFAULT$","!**/test","!**/tests"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests"
+      ],
       "outputs": [
         "build/**",
         "dist/**"
@@ -16,7 +20,12 @@
       "cache": false,
       "persistent": true,
       "interactive": true,
-      "inputs": ["$TURBO_DEFAULT$","!**/test", "!**/tests", "**/webui/**/*"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests",
+        "**/webui/**/*"
+      ],
       "outputs": [
         "build/**",
         "dist/**"
@@ -24,7 +33,9 @@
     },
     "mobile:dev": {
       "cache": false,
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "persistent": true,
       "interactive": true
     },
@@ -70,6 +81,17 @@
       "dependsOn": [
         "^build"
       ]
+    },
+    "gen:jsdocs": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests",
+        "**/webui/**/*",
+        "**/src",
+        "jsdoc.json"
+      ],
+      "cache": true
     }
   }
 }

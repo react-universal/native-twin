@@ -1,5 +1,4 @@
-import { NodePath } from '@babel/traverse';
-import * as t from '@babel/types';
+import { SheetEntry } from '@native-twin/css';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -9,7 +8,6 @@ import * as Option from 'effect/Option';
 import micromatch from 'micromatch';
 import path from 'node:path';
 import { __Theme__, RuntimeTW } from '@native-twin/core';
-import { SheetEntry } from '@native-twin/css';
 import { CompilerContext } from '@native-twin/css/jsx';
 import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import {
@@ -18,14 +16,16 @@ import {
   maybeImportDeclaration,
   maybeReactIdent,
 } from '../babel';
-import { JSXElementNode, JSXElementNodeKey } from '../jsx/models/JSXElement.model';
 import { getUserTwinConfig, setupNativeTwin } from '../jsx/twin';
+import { JSXElementNode, JSXElementNodeKey } from '../models/JSXElement.model';
 import { TwinBabelOptions } from '../types/plugin.types';
 import {
   isReactImport,
   isReactRequireBinding,
   maybeBindingIsReactImport,
 } from './import.utils';
+import { NodePath } from '@babel/traverse';
+import * as t from '@babel/types';
 
 export class JSXImportPluginContext extends Context.Tag('babel/plugin/context')<
   JSXImportPluginContext,

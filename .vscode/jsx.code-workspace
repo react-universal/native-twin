@@ -37,6 +37,10 @@
       "path": "../packages/styled"
     },
     {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
+    },
+    {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
     },

@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "lib": ["DOM", "DOM.Iterable"],
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
     "noUnusedLocals": false,
     "strictFunctionTypes": false,
     "strictNullChecks": true,

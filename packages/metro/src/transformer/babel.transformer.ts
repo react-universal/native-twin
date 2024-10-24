@@ -3,14 +3,15 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import { BabelLogger, transformJSXFile } from '@native-twin/babel/jsx-babel';
-import { BabelTransformerFn } from '@native-twin/babel/jsx-babel/models';
+import { transformJSXFile } from '@native-twin/babel/jsx-babel';
+import type { BabelTransformerFn } from '@native-twin/babel/models';
 import {
   BabelTransformerService,
   MetroCompilerContext,
   BabelTransformerServiceLive,
   NativeTwinService,
-} from '@native-twin/babel/jsx-babel/services';
+  BabelLogger,
+} from '@native-twin/babel/services';
 
 const mainProgram = Effect.gen(function* () {
   const ctx = yield* MetroCompilerContext;
@@ -23,6 +24,7 @@ const mainProgram = Effect.gen(function* () {
 
   const compiled = yield* transformJSXFile(ctx.code);
 
+  // console.log('GEN: ', compiled.generated);
   return compiled.generated;
 });
 
@@ -35,7 +37,7 @@ export const babelRunnable = Effect.scoped(
 );
 
 export const transform: BabelTransformerFn = async (params) => {
-  // console.log(inspect(params.options, false, null, true));
+  console.log('RUNNING_BABEL');
   return babelRunnable.pipe(
     Effect.provide(
       MetroCompilerContext.make(params, {

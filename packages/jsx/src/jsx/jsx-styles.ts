@@ -1,45 +1,58 @@
-import { FinalSheet } from '@native-twin/css';
+import { Platform } from 'react-native';
+import {
+  compileSheetEntry,
+  getGroupedEntries,
+  sortSheetEntriesByPrecedence,
+  type RuntimeGroupSheet,
+} from '@native-twin/css/jsx';
 import { componentsRegistry, StyleSheet } from '../sheet/StyleSheet';
-import { templatePropsToSheetEntriesObject } from '../styled/native/utils/native.maps';
-import { JSXInternalProps } from '../types/jsx.types';
+import { remObs, styledContext } from '../store/observables';
+import type { JSXInternalProps } from '../types/jsx.types';
 
 export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
-  const templateEntries = props?.['_twinComponentTemplateEntries'];
+  const componentSheet = props?.['_twinComponentSheet'];
   const componentID = props?.['_twinComponentID'];
-  if (componentID) {
-    const component = StyleSheet.getComponentByID(componentID);
+  if (componentID && componentSheet) {
+    let finalEntries = componentSheet;
+    if (
+      finalEntries.some(
+        (x) => Array.isArray(x.templateEntries) && x.templateEntries.length > 0,
+      )
+    ) {
+      finalEntries = componentSheet.map((componentEntry) => {
+        if (componentEntry.templateEntries) {
+          const compiledTemplates = componentEntry.templateEntries.map((y) =>
+            compileSheetEntry(y, {
+              baseRem: remObs.get(),
+              platform: Platform.OS,
+            }),
+          );
+
+          const mergedEntries = [...componentEntry.entries, ...compiledTemplates];
+          const templateRawSheet = getGroupedEntries(compiledTemplates);
+          const rawSheet = mergeSheets(componentEntry.rawSheet, templateRawSheet);
+          return {
+            ...componentEntry,
+            entries: mergedEntries,
+            rawSheet: rawSheet,
+          };
+        }
+
+        return componentEntry;
+      });
+      // console.log('BEFORE: ', props['_twinComponentSheet'].map(x => x.entries));
+
+      props['_twinComponentSheet'] = finalEntries;
+    }
+    // console.log('AFTER: ', props['_twinComponentSheet'].map(x => x.entries));
+
+    const component = StyleSheet.registerComponent(
+      componentID,
+      props['_twinComponentSheet'],
+      styledContext.get(),
+    );
 
     if (component) {
-      const templateSheet = templatePropsToSheetEntriesObject(templateEntries ?? []);
-      for (const [prop, entries] of Object.entries(templateSheet)) {
-        const styles = StyleSheet.entriesToFinalSheet(entries);
-        component.sheets = component.sheets.map((x) => {
-          if (x.prop === prop) {
-            const newSheet = mergeSheets(x.sheet, styles);
-            return {
-              ...x,
-              sheet: newSheet,
-              metadata: {
-                isGroupParent: entries.some((x) => x.className === 'group'),
-                hasGroupEvents: Object.keys(newSheet.group)?.length > 0,
-                hasPointerEvents: Object.keys(newSheet.pointer)?.length > 0,
-                hasAnimations: entries.some((x) => x.animations.length > 0),
-              },
-            };
-          }
-          return x;
-        });
-      }
-
-      // component.metadata = {
-      //   ...component.metadata,
-      //   isGroupParent: component.sheets.some((x) => x.metadata.isGroupParent),
-      //   hasGroupEvents: component.sheets.some((x) => x.metadata.hasGroupEvents),
-      //   hasPointerEvents: component.sheets.some((x) => x.metadata.hasPointerEvents),
-      //   hasAnimations: component.sheets.some((x) => x.metadata.hasAnimations),
-      // };
-
-      component.sheets = component.sheets.map((x) => x.recompute(x.compiledSheet));
       componentsRegistry.set(componentID, {
         ...component,
         sheets: [...component.sheets],
@@ -48,15 +61,15 @@ export function jsxStyles(props: JSXInternalProps | null | undefined, type: any)
   }
 }
 
-const mergeSheets = (a: FinalSheet, b: FinalSheet): FinalSheet => {
+const mergeSheets = (a: RuntimeGroupSheet, b: RuntimeGroupSheet): RuntimeGroupSheet => {
   return {
-    base: { ...a.base, ...b.base },
-    dark: { ...a.dark, ...b.dark },
-    group: { ...a.group, ...b.group },
-    pointer: { ...a.pointer, ...b.pointer },
-    first: { ...a.first, ...b.first },
-    last: { ...a.last, ...b.last },
-    even: { ...a.even, ...b.even },
-    odd: { ...a.odd, ...b.odd },
+    base: [...a.base, ...b.base].sort(sortSheetEntriesByPrecedence),
+    pointer: [...a.pointer, ...b.pointer].sort(sortSheetEntriesByPrecedence),
+    dark: [...a.dark, ...b.dark].sort(sortSheetEntriesByPrecedence),
+    group: [...a.group, ...b.group].sort(sortSheetEntriesByPrecedence),
+    first: [...a.first, ...b.first].sort(sortSheetEntriesByPrecedence),
+    last: [...a.last, ...b.last].sort(sortSheetEntriesByPrecedence),
+    even: [...a.even, ...b.even].sort(sortSheetEntriesByPrecedence),
+    odd: [...a.odd, ...b.odd].sort(sortSheetEntriesByPrecedence),
   };
 };

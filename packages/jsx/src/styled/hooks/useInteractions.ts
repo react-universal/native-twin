@@ -5,8 +5,8 @@ import {
   TextInputFocusEventData,
   Touchable,
 } from 'react-native';
-import { RegisteredComponent } from '@native-twin/css/build/jsx';
-import { atom, useAtom, useAtomValue } from '@native-twin/helpers';
+import { RegisteredComponent } from '@native-twin/css/jsx';
+import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
 import { groupContext } from '../../context';
 import { StyleSheet } from '../../sheet';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants';
@@ -45,7 +45,7 @@ export const useInteractions = (
         });
       }
     },
-    [metadata],
+    [metadata.hasPointerEvents, metadata.isGroupParent, setState],
   );
 
   // TODO: Create the focus handler

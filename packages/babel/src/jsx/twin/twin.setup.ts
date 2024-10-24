@@ -4,14 +4,7 @@ import * as Option from 'effect/Option';
 import fs from 'node:fs';
 import path from 'node:path';
 import * as NativeTwin from '@native-twin/core';
-import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import {
-  TWIN_INPUT_CSS_FILE,
-  TWIN_OUT_CSS_FILE,
-  TWIN_STYLES_FILE,
-  TWIN_DEFAULT_FILES,
-  twinModuleExportString,
-} from '../../constants';
+import { TWIN_INPUT_CSS_FILE, TWIN_DEFAULT_FILES } from '../../constants';
 import type { TwinBabelOptions } from '../../types/plugin.types';
 import { InternalTwFn, InternalTwinConfig } from '../../types/twin.types';
 import { requireJS } from '../../utils/load-js';
@@ -88,11 +81,9 @@ export function setupNativeTwin(
 export const createTwinCSSFiles = ({
   outputDir,
   inputCSS,
-  twConfig,
 }: {
   outputDir: string;
   inputCSS?: string;
-  twConfig: NativeTwin.TailwindConfig<NativeTwin.__Theme__ & TailwindPresetTheme>;
 }) => {
   if (!fs.existsSync(path.resolve(outputDir))) {
     fs.mkdirSync(outputDir, { recursive: true });
@@ -101,23 +92,25 @@ export const createTwinCSSFiles = ({
     inputCSS = path.join(outputDir, TWIN_INPUT_CSS_FILE);
     fs.writeFileSync(inputCSS, '');
   }
-  const outputCSS = path.join(outputDir, TWIN_OUT_CSS_FILE);
+
   // fs.writeFileSync(outputCSS, '.tt_root { font-size: 16px }', 'utf-8');
   return {
-    inputCSS: inputCSS,
-    outputCSS,
+    inputCSS,
   };
 };
 
-export const createCacheDir = (outputDir: string) => {
-  if (!fs.existsSync(path.resolve(outputDir))) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
-  fs.writeFileSync(path.join(outputDir, TWIN_STYLES_FILE), twinModuleExportString);
-};
+// export const createCacheDir = (outputDir: string) => {
+//   if (!fs.existsSync(path.resolve(outputDir))) {
+//     fs.mkdirSync(outputDir, { recursive: true });
+//   }
+//   fs.writeFileSync(path.join(outputDir, TWIN_STYLES_FILE), twinModuleExportString);
+// };
 
 export const deleteCacheDir = (outputDir: string) => {
   if (!fs.existsSync(path.resolve(outputDir))) {
     fs.rmdirSync(outputDir, { recursive: true });
   }
 };
+
+export const getTwinCacheDir = () =>
+  path.join(path.dirname(require.resolve('@native-twin/core')), '.cache');

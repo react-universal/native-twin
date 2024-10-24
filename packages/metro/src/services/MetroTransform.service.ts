@@ -4,14 +4,14 @@ import { apply, identity, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import worker from 'metro-transform-worker';
 import { transformJSXFile } from '@native-twin/babel/jsx-babel';
-import { BabelTransformerFn, TwinTransformFn } from '@native-twin/babel/jsx-babel/models';
+import type { BabelTransformerFn, TwinTransformFn } from '@native-twin/babel/models';
 import {
   BabelTransformerService,
   MetroCompilerContext,
   NativeTwinService,
-} from '@native-twin/babel/jsx-babel/services';
-import { MetroWorkerInput } from './models/metro.models';
+} from '@native-twin/babel/services';
 import { MetroWorkerService } from './MetroWorker.service';
+import type { MetroWorkerInput } from './models/metro.models';
 
 export class MetroTransformerRunners extends Context.Tag('metro/transformer/runners')<
   MetroTransformerRunners,

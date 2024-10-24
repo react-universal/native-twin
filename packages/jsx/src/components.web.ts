@@ -20,8 +20,7 @@ const {
   VirtualizedList: RNVirtualizedList,
 } = require('react-native');
 
-if (typeof window !== 'undefined') {
-  createStylableComponent(RNImage, { className: 'style' });
+createStylableComponent(RNImage, { className: 'style' });
   createStylableComponent(RNPressable, { className: 'style' });
   createStylableComponent(RNSafeAreaView, { className: 'style' });
   createStylableComponent(RNSwitch, { className: 'style' });
@@ -68,4 +67,3 @@ if (typeof window !== 'undefined') {
     contentContainerClassName: 'contentContainerStyle',
     indicatorClassName: 'indicatorStyle',
   });
-}

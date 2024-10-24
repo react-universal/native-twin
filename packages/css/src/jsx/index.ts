@@ -19,6 +19,8 @@ export {
   isOwnSelector,
   /** @category — Runner */
   compileSheetEntry,
+  /** @category — Ord */
+  sortSheetEntriesByPrecedence,
 } from './SheetEntry';
 
 export {
@@ -40,7 +42,7 @@ export {
   /** @category — Runner */
   runtimeEntriesToFinalSheet,
   /** @category — CSS Parsers */
-  ChildsSheet,
+  type ChildsSheet,
   /** @category — Composition */
   composeDeclarations,
   /** @category — Mappers */
@@ -57,7 +59,7 @@ export {
 
 export {
   /** @category — CSS Parsers */
-  RuntimeSheetDeclaration,
+  type RuntimeSheetDeclaration,
   /** @category — Mappers */
   compileEntryDeclaration,
   /** @category — Mappers */

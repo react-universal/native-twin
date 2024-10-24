@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/@native-twin/cli/twin.schema.json",
+  "platform": "node",
+  "reactNative": false,
+  "minify": false,
+  "logs": true,
+  "types": true,
+  "vscode": false,
+  "entries": [
+    "./src"
+  ]
+}

@@ -1,7 +1,7 @@
 import template from '@babel/template';
 import * as t from '@babel/types';
 import CodeBlockWriter from 'code-block-writer';
-import { RuntimeComponentEntry } from '@native-twin/css/build/jsx';
+import { RuntimeComponentEntry } from '@native-twin/css/jsx';
 import { expressionFactory } from '../ast/writer.factory';
 
 export const runtimeEntriesToAst = (entries: string) => {
@@ -32,8 +32,8 @@ export const runtimeEntriesToAst = (entries: string) => {
     return null;
   }
 };
-
-export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) => {
+/*
+export const entriesToComponentData = (id: string, entries: RuntimeComponentEntry[]) => {
   const { writer, identifier, array } = expressionFactory(new CodeBlockWriter());
   const templateEntries = expressionFactory(new CodeBlockWriter());
   templateEntries.writer.block(() => {
@@ -75,5 +75,76 @@ export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) =>
   return {
     styledProp,
     templateEntries: templateEntries.writer.toString(),
+  };
+};
+*/
+
+export const entriesToComponentData = (id: string, entries: RuntimeComponentEntry[]) => {
+  const { writer, identifier } = expressionFactory(new CodeBlockWriter());
+
+  const styledProp = writer
+    .block(() => {
+      // identifier(`require('@native-twin/jsx').StyleSheet.registerComponent("${id}", `);
+      identifier(`globalStyles?.["${id}"]`);
+    })
+    .toString();
+
+  return {
+    styledProp,
+    templateEntries: null,
+  };
+};
+
+export const entriesToObject = (id: string, entries: RuntimeComponentEntry[]) => {
+  const { writer, identifier, array } = expressionFactory(new CodeBlockWriter());
+
+  const styledProp = writer
+    .block(() => {
+      // identifier(`require('@native-twin/jsx').StyleSheet.registerComponent("${id}", `);
+      identifier(`StyleSheet.registerComponent("${id}", `);
+      array(
+        entries.map((x) => {
+          return {
+            templateLiteral: null,
+            prop: x.prop,
+            target: x.target,
+            entries: x.entries,
+            rawSheet: x.rawSheet,
+          };
+        }),
+      );
+      identifier(`)`);
+    })
+    .toString();
+
+  const templateEntries = entries.filter((x) => x.templateLiteral);
+  // console.log('TEMPLATE_ENTRIES: ', templateEntries.length);
+  if (templateEntries.length > 0) {
+    const templateEntriesWriter = expressionFactory(new CodeBlockWriter());
+    templateEntriesWriter.writer.block(() => {
+      templateEntriesWriter.writer.write('[');
+      templateEntries.forEach((x) => {
+        if (x.templateLiteral) {
+          templateEntriesWriter.writer.block(() => {
+            templateEntriesWriter.writer.writeLine(`id: "${id}",`);
+            templateEntriesWriter.writer.writeLine(`target: "${x.target}",`);
+            templateEntriesWriter.writer.writeLine(`prop: "${x.prop}",`);
+            templateEntriesWriter.writer.writeLine(
+              `entries: require('@native-twin/core').tw(${x.templateLiteral}),`,
+            );
+            templateEntriesWriter.writer.write(`templateLiteral: ${x.templateLiteral},`);
+          });
+        }
+      });
+      templateEntriesWriter.writer.write(']');
+    });
+    return {
+      styledProp,
+      templateEntries: templateEntriesWriter.writer.toString(),
+    };
+  }
+  return {
+    styledProp,
+    templateEntries: null,
   };
 };

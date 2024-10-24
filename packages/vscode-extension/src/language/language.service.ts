@@ -1,8 +1,8 @@
+import { pipe } from 'effect/Function';
+import * as Stream from 'effect/Stream';
 import * as Ctx from 'effect/Context';
-import * as Data from 'effect/Data';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as SubscriptionRef from 'effect/SubscriptionRef';
 import path from 'path';
 import * as vscode from 'vscode';
 import {
@@ -11,12 +11,17 @@ import {
   LanguageClientOptions,
   ServerOptions,
 } from 'vscode-languageclient/node';
+import { DEFAULT_PLUGIN_CONFIG } from '@native-twin/language-service';
 import {
   configurationSection,
   extensionServerChannelName,
 } from '../extension/extension.constants';
 import { ExtensionContext } from '../extension/extension.service';
-import { registerCommand, thenable } from '../extension/extension.utils';
+import {
+  extensionConfigValue,
+  registerCommand,
+  thenable,
+} from '../extension/extension.utils';
 import {
   getDefaultLanguageClientOptions,
   onLanguageClientClosed,
@@ -25,23 +30,18 @@ import {
 } from './language.fn';
 import { createFileWatchers, getColorDecoration, getConfigFiles } from './language.utils';
 
-export class LanguageOptionsState extends Data.TaggedClass('LanguageClientOptions')<{
-  client: SubscriptionRef.SubscriptionRef<LanguageClientOptions>;
-  server: SubscriptionRef.SubscriptionRef<ServerOptions>;
-}> {}
-
 export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext')<
   LanguageClientContext,
   LanguageClient
 >() {
   static Live = Layer.scoped(
     LanguageClientContext,
-    Effect.gen(function* ($) {
+    Effect.gen(function* () {
       const extensionCtx = yield* ExtensionContext;
       const workspace = vscode.workspace.workspaceFolders;
 
-      const tsconfigFiles = yield* $(
-        thenable(() => vscode.workspace.findFiles('**tsconfig.json', '', 1)),
+      const tsconfigFiles = yield* thenable(() =>
+        vscode.workspace.findFiles('**tsconfig.json', '', 1),
       );
 
       const fileEvents = yield* createFileWatchers;
@@ -85,11 +85,15 @@ export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext
           () =>
             new LanguageClient(extensionServerChannelName, serverConfig, clientConfig),
         ),
-        (x) => Effect.promise(() => x.dispose()),
+        (x) =>
+          Effect.promise(() => x.dispose()).pipe(
+            Effect.flatMap(() => Effect.logDebug('Language Client Disposed')),
+          ),
       );
 
-      yield* $(Effect.promise(() => client.start()));
-      yield* $(Effect.log('Language client started!'));
+      yield* Effect.promise(() => client.start()).pipe(
+        Effect.andThen(Effect.log('Language client started!')),
+      );
 
       client.onRequest('nativeTwinInitialized', () => {
         return { t: true };
@@ -100,6 +104,20 @@ export class LanguageClientContext extends Ctx.Tag('vscode/LanguageClientContext
           yield* Effect.promise(() => client.restart());
           yield* Effect.logInfo('Client restarted');
         }),
+      );
+
+      const tagsConfig = yield* pipe(
+        extensionConfigValue('nativeTwin', 'tags', DEFAULT_PLUGIN_CONFIG.tags),
+        Effect.map((x) => x.changes),
+      );
+      const debugConfig = yield* pipe(
+        extensionConfigValue('nativeTwin', 'debug', DEFAULT_PLUGIN_CONFIG.debug),
+        Effect.map((x) => x.changes),
+      );
+
+      yield* pipe(
+        Stream.merge(tagsConfig, debugConfig),
+        Stream.runForEach((x) => Effect.log(x)),
       );
 
       return client;

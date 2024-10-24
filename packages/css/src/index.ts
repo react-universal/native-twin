@@ -60,7 +60,7 @@ export {
   /** @category — CSS parsers */
   mql,
 } from './tailwind/tailwind.utils';
-export {
+export type {
   /** @category — CSS parsers */
   TWParsedRule,
   /** @category — CSS parsers */
@@ -77,6 +77,9 @@ export {
   VariantClassToken,
   /** @category — CSS parsers */
   VariantToken,
+  ArbitrarySegmentToken,
+  ColorModifierToken,
+  SegmentToken
 } from './tailwind/tailwind.types';
 
 // CSS FEATURES
@@ -84,7 +87,7 @@ export {
   /** @category — CSS parsers */
   unitlessCssProps,
 } from './css/css.constants';
-export {
+export type {
   /** @category — CSS parsers */
   CSSValue,
   /** @category — CSS parsers */
@@ -200,3 +203,5 @@ export {
   /** @category — CSS Parsers */
   normalize,
 } from './transforms/interleave';
+
+export { CSS_COLORS } from './css/css.constants';

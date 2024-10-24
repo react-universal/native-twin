@@ -4,6 +4,7 @@
     "rootDir": "src",
     "outDir": "build",
     "noEmit": false,
+    "emitDeclarationOnly": true,
     "noEmitOnError": false
   },
   "exclude": ["./test/", "./src/bck"]

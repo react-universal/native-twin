@@ -1,5 +1,5 @@
 import type { JsTransformOptions, TransformResponse } from 'metro-transform-worker';
-import { NativeTwinTransformerOpts } from '@native-twin/babel/build/jsx/models';
+import type { NativeTwinTransformerOpts } from '@native-twin/babel/models';
 
 export interface TransformWorkerArgs {
   config: NativeTwinTransformerOpts;
@@ -19,6 +19,7 @@ export interface MetroWorkerInput {
   filename: string;
   data: Buffer;
   options: JsTransformOptions;
+  
 }
 
 export type TransformWorkerFn = (

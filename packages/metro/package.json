@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/metro",
-  "version": "6.4.0",
+  "version": "7.0.0-next.1",
   "description": "Native Twin metro transformer",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -14,11 +14,29 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "sideEffects": false,
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "require": "./build/index.js",
+      "import": "./build/esm/index.js",
+      "default": "./build/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/index.js",
+  "module": "./build/esm/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "LICENSE",
+    "src",
+    "native-twin.d.ts",
+    "CHANGELOG.md",
+    "README.md"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "twin build",
+    "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -28,30 +46,27 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@effect/cli": "^0.42.3",
-    "@effect/platform": "^0.63.3",
-    "@effect/platform-node": "^0.58.3",
-    "@effect/platform-node-shared": "^0.13.3",
-    "@effect/printer-ansi": "^0.35.2",
-    "@effect/schema": "^0.72.2",
+    "@effect/cli": "^0.48.3",
+    "@effect/platform": "^0.69.3",
+    "@effect/platform-node": "^0.64.4",
+    "@effect/platform-node-shared": "^0.19.3",
+    "@effect/printer-ansi": "^0.38.0",
     "@native-twin/babel": "workspace:*",
+    "@native-twin/compiler": "workspace:*",
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/language-service": "workspace:*",
     "code-block-writer": "^13.0.1",
-    "css-tree": "^2.3.1",
-    "effect": "^3.7.2",
+    "effect": "^3.10.0",
     "fast-check": "^3.21.0",
     "jiti": "1.21.0",
-    "recast": "^0.23.9",
-    "socket.io-client": "^4.7.5",
-    "sucrase": "^3.35.0",
-    "vscode-languageserver-textdocument": "^1.0.11"
+    "js-beautify": "^1.15.1"
   },
   "devDependencies": {
     "@babel/traverse": "^7.24.0",
     "@babel/types": "^7.24.0",
+    "@native-twin/cli": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@native-twin/styled": "workspace:*",
     "@types/connect": "3.4.38",
