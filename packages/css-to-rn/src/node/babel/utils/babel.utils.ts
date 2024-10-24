@@ -1,4 +1,4 @@
-import type { Binding } from '@babel/traverse';
+import type { Binding, NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
@@ -74,3 +74,34 @@ const getBindingRequireDeclaration = (binding: Binding) =>
       };
     }),
   );
+
+export const maybeBinding = (
+  node: Option.Option<t.Identifier>,
+  path: NodePath<t.MemberExpression>,
+) => {
+  return node.pipe(
+    Option.flatMap((a) => Option.fromNullable(path.scope.getBinding(a.name))),
+  );
+};
+
+export const maybeImportDeclaration = (binding: Option.Option<Binding>) => {
+  return Option.flatMap(binding, (x) =>
+    x.path.parentPath &&
+    t.isImportDeclaration(x.path.parentPath.node) &&
+    x.path.parentPath.node.source.value.toLowerCase() === 'react'
+      ? Option.some(true)
+      : Option.none(),
+  );
+};
+
+export const maybeCallExpression = (node: Option.Option<t.VariableDeclarator>) => {
+  return Option.flatMap(node, (x) =>
+    t.isCallExpression(x.init) ? Option.some([x, x.init] as const) : Option.none(),
+  );
+};
+
+export const maybeVariableDeclarator = (binding: Option.Option<Binding>) => {
+  return Option.flatMap(binding, (x) =>
+    x.path.isVariableDeclarator() ? Option.some(x.path.node) : Option.none(),
+  );
+};

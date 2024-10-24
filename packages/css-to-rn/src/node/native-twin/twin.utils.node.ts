@@ -1,6 +1,7 @@
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 import * as FileSystem from '@effect/platform/FileSystem';
+import * as Path from '@effect/platform/Path';
 import * as Array from 'effect/Array';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
@@ -12,11 +13,7 @@ import * as Stream from 'effect/Stream';
 import * as String from 'effect/String';
 import fs from 'node:fs';
 import path from 'node:path';
-import {
-  extractMappedAttributes,
-  templateLiteralToStringLike,
-} from '@native-twin/babel/jsx-babel';
-import { cx, RuntimeTW } from '@native-twin/core';
+import { cx, defineConfig, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import {
   CompilerContext,
   compileSheetEntry,
@@ -24,53 +21,54 @@ import {
   RuntimeComponentEntry,
   sortSheetEntries,
 } from '@native-twin/css/jsx';
+import { DEFAULT_TWIN_INPUT_CSS_FILE, TWIN_DEFAULT_FILES } from '../../shared';
 import { JSXElementNode, ReactCompilerService } from '../babel';
 import { JSXMappedAttribute } from '../babel/models/jsx.models';
-import { extractSheetsFromTree } from '../babel/utils/twin-jsx.utils';
-import { MetroConfigService } from '../metro';
-import { DEFAULT_TWIN_INPUT_CSS_FILE, TWIN_DEFAULT_FILES } from '../../shared';
+import { templateLiteralToStringLike } from '../babel/utils/babel.utils';
+import {
+  extractMappedAttributes,
+  extractSheetsFromTree,
+} from '../babel/utils/twin-jsx.utils';
+import { maybeLoadJS } from '../utils';
+import { NativeTwinServiceNode } from './NativeTwin.node';
+import { InternalTwinConfig } from './twin.types';
 
-/**
- * Retrieves the path to the twin configuration file.
- *
- * This function checks if a provided `twinConfigPath` is a non-empty string. 
- * If it is, that path is returned. If not, it searches for default twin configuration files 
- * in the specified `rootDir`. The first existing file found will be returned.
- *
- * @param rootDir - The root directory where the twin configuration files are located.
- * @param twinConfigPath - An optional path to a specific twin configuration file. 
- * 
- * returns An `Option<string>` containing the resolved path to the twin configuration file, 
- * or None if no valid path is found.
- * 
- * @runtime `node`
- * 
- * @category `NativeTwin`
- *
- * @example
- ```ts
-  const configPath = getTwinConfigPath('/path/to/root', 'customConfig.js');
-  // Returns the path to 'customConfig.js' if it exists, otherwise checks for default files.
- ```
- *
- * @example ```ts
-  const defaultConfigPath = getTwinConfigPath('/path/to/root');
-  // Returns the path to the first existing default configuration file in the root directory.
-  ```
- */
-export const getTwinConfigPath = (rootDir: string, twinConfigPath = '') =>
-  pipe(
-    twinConfigPath,
-    Option.liftPredicate(Predicate.compose(Predicate.isString, String.isNonEmpty)),
-    Option.orElse(() =>
-      pipe(
-        TWIN_DEFAULT_FILES,
-        Array.map((x) => path.join(rootDir, x)),
-        Array.map((x) => Option.liftPredicate(x, fs.existsSync)),
-        Option.firstSomeOf,
+const checkDefaultTwinConfigFiles = (rootDir: string) =>
+  Effect.flatMap(FileSystem.FileSystem, (fs) =>
+    Effect.firstSuccessOf(
+      Array.map(TWIN_DEFAULT_FILES, (x) =>
+        fs.exists(path.join(rootDir, x)).pipe(Effect.map(() => x)),
       ),
     ),
-    Option.map((x) => path.resolve(x)),
+  );
+export const resolveTwinConfigPath = (rootDir: string, twinConfigPath?: string) =>
+  Effect.gen(function* () {
+    const fs = yield* FileSystem.FileSystem;
+    const path = yield* Path.Path;
+    const resolvedFile = yield* Effect.fromNullable(twinConfigPath).pipe(
+      Effect.flatMap((x) => fs.exists(x).pipe(Effect.andThen(() => x))),
+      Effect.catchAll(() => checkDefaultTwinConfigFiles(rootDir)),
+      Effect.map((x) => path.resolve(x)),
+    );
+    return resolvedFile;
+  });
+  
+export const getTwinConfigPath = (rootDir: string, twinConfigPath = '') =>
+  Option.map(
+    Option.orElse(
+      Option.liftPredicate(
+        twinConfigPath,
+        Predicate.compose(Predicate.isString, String.isNonEmpty),
+      ),
+      () =>
+        pipe(
+          Array.map(TWIN_DEFAULT_FILES, (x) =>
+            Option.liftPredicate(path.join(rootDir, x), fs.existsSync),
+          ),
+          Option.firstSomeOf,
+        ),
+    ),
+    (x) => path.resolve(x),
   );
 
 export const getTwinCacheDir = () =>
@@ -100,13 +98,13 @@ export const createTwinCSSFiles = ({
 export const getFileClasses = (filename: string) =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
+    const twin = yield* NativeTwinServiceNode;
     const exists = yield* fs.exists(filename).pipe(
       Effect.mapError((x) => {
         console.log('getFileClasses_ERROR: ', x);
         return false;
       }),
     );
-    const ctx = yield* MetroConfigService;
     const reactCompiler = yield* ReactCompilerService;
 
     if (!exists) {
@@ -124,13 +122,13 @@ export const getFileClasses = (filename: string) =>
         registry: HashMap.empty<string, JSXElementNode>(),
       };
     }
-    const filePath = path.relative(ctx.userConfig.projectRoot, filename);
+    const filePath = path.relative(twin.projectRoot, filename);
     const babelTrees = yield* reactCompiler.getTrees(contents, filePath);
 
     const registry = yield* pipe(
       Stream.fromIterable(babelTrees),
       Stream.mapEffect((x) =>
-        extractSheetsFromTree(x, path.relative(ctx.userConfig.projectRoot, filename)),
+        extractSheetsFromTree(x, path.relative(twin.projectRoot, filename)),
       ),
       Stream.map(HashMap.fromIterable),
 
@@ -200,5 +198,22 @@ export const getElementEntries = (
         rawSheet: getGroupedEntries(runtimeEntries),
       };
     }),
+  );
+};
+
+export const loadUserTwinConfigFile = (
+  projectRoot: string,
+  twinConfigPath: string,
+  mode: 'web' | 'native' = 'web',
+) => {
+  return getTwinConfigPath(projectRoot, twinConfigPath).pipe(
+    Option.flatMap((x) => maybeLoadJS<TailwindConfig<InternalTwinConfig>>(x)),
+    Option.getOrElse(() =>
+      defineConfig({
+        content: [],
+        mode,
+        root: { rem: 16 },
+      }),
+    ),
   );
 };

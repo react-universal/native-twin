@@ -2,48 +2,91 @@ import * as Effect from 'effect/Effect';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import {
-  createMetroConfig,
-  MetroWithNativeTwindOptions,
+  twinMetroRequestResolver,
+  twinGetTransformerOptions,
   TwinMetroConfig,
-  makeMetroLayer,
-  metroLayerToRuntime,
-  getTransformerOptions,
-  makeBabelLayer,
+  MetroWithNativeTwindOptions,
+} from '@native-twin/compiler/metro';
+import {
+  createTwinCSSFiles,
+  getTwinCacheDir,
+  NativeTwinManager,
 } from '@native-twin/compiler/node';
 
 export function withNativeTwin(
   metroConfig: TwinMetroConfig,
   nativeTwinConfig: MetroWithNativeTwindOptions = {},
 ): TwinMetroConfig {
-  const twinMetroConfig = createMetroConfig(metroConfig, nativeTwinConfig);
+  const { twinMetroConfig, originalGetTransformerOptions, transformerOptions } =
+    getDefaultConfig(metroConfig, nativeTwinConfig);
 
-  const mainLayer = makeMetroLayer(twinMetroConfig);
-
-  const runtime = metroLayerToRuntime(mainLayer);
-
-  // const originalResolver = metroConfig.resolver.resolveRequest;
-
-  // const originalGetTransformOptions = metroConfig.transformer.getTransformOptions;
+  const getTransformerOptions = twinGetTransformerOptions({
+    originalGetTransformerOptions,
+    projectRoot: transformerOptions.projectRoot,
+    twinConfigPath: transformerOptions.twinConfigPath,
+  });
   return {
-    ...twinMetroConfig.metroConfig,
-    transformerPath: require.resolve('@native-twin/compiler/metro.transformer'),
+    ...twinMetroConfig,
     transformer: {
-      ...metroConfig.transformer,
-      ...twinMetroConfig.metroConfig.transformer,
-      ...twinMetroConfig.userConfig,
-      // babelTransformerPath: require.resolve('@native-twin/compiler/metro.babel.transformer'),
-      originalTransformerPath: metroConfig.transformerPath,
-      unstable_allowRequireContext: true,
+      ...twinMetroConfig.transformer,
       getTransformOptions: (...args) => {
-        // return originalGetTransformOptions(...args);
         return getTransformerOptions(...args).pipe(
-          Effect.provide(mainLayer),
-          Effect.provide(makeBabelLayer),
           Effect.annotateLogs('platform', args[1].platform ?? 'server'),
           Logger.withMinimumLogLevel(LogLevel.All),
-          runtime.runPromise,
+          Effect.runPromise,
         );
       },
     },
   };
 }
+
+const getDefaultConfig = (
+  metroConfig: TwinMetroConfig,
+  nativeTwinConfig: MetroWithNativeTwindOptions = {},
+) => {
+  const projectRoot = nativeTwinConfig.projectRoot ?? process.cwd();
+  const outputDir = getTwinCacheDir();
+  const { inputCSS } = createTwinCSSFiles({
+    outputDir: outputDir,
+    inputCSS: nativeTwinConfig.inputCSS,
+  });
+  const twin = new NativeTwinManager(
+    nativeTwinConfig.configPath ?? 'tailwind.config.ts',
+    projectRoot,
+    inputCSS,
+    'native',
+  );
+
+  const originalResolver = metroConfig.resolver.resolveRequest;
+  const metroResolver = twinMetroRequestResolver(originalResolver, twin);
+
+  const transformerOptions = {
+    allowedPaths: twin.allowedPaths,
+    allowedPathsGlob: twin.allowedPathsGlob,
+    outputDir,
+    projectRoot,
+    inputCSS,
+    platformOutputs: twin.platformOutputs,
+    twinConfigPath: twin.twinConfigPath,
+  };
+  return {
+    twinMetroConfig: {
+      ...metroConfig,
+      transformerPath: require.resolve('@native-twin/compiler/metro.transformer'),
+      resolver: {
+        ...metroConfig.resolver,
+        resolveRequest: metroResolver,
+      },
+      transformer: {
+        ...metroConfig.transformer,
+        ...transformerOptions,
+        // babelTransformerPath: require.resolve('@native-twin/compiler/metro.babel.transformer'),
+        originalTransformerPath: metroConfig.transformerPath,
+        unstable_allowRequireContext: true,
+      },
+    },
+    originalGetTransformerOptions: metroConfig.transformer.getTransformOptions,
+    originalResolver,
+    transformerOptions,
+  };
+};

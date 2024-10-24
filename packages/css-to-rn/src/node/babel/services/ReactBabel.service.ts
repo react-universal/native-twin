@@ -10,7 +10,12 @@ import type { Tree } from '@native-twin/helpers/tree';
 import type { JSXElementNode } from '../models/JSXElement.model';
 import type { JSXElementTree, RuntimeTreeNode } from '../models/jsx.models';
 import { entriesToComponentData } from '../utils/code.utils';
-import { addJsxAttribute, addJsxExpressionAttribute } from '../utils/jsx.utils';
+import {
+  addJsxAttribute,
+  addJsxExpressionAttribute,
+  memberExpressionIsReactImport,
+  identifierIsReactImport,
+} from '../utils/jsx.utils';
 import {
   extractSheetsFromTree,
   getJSXCompiledTreeRuntime,
@@ -42,17 +47,6 @@ function addTwinPropsToElement(
   if (options.styledProps && astProps) {
     addJsxExpressionAttribute(elementNode.path, '_twinComponentSheet', astProps);
   }
-
-  // if (options.templateStyles && stringEntries) {
-  //   const astTemplate = runtimeEntriesToAst(stringEntries);
-  //   if (astTemplate) {
-  //     addJsxExpressionAttribute(
-  //       elementNode.path,
-  //       '_twinComponentTemplateEntries',
-  //       astTemplate,
-  //     );
-  //   }
-  // }
   return astProps;
 }
 
@@ -87,8 +81,7 @@ const transformJSXElementTree = (trees: HashMap.HashMap<string, JSXElementNode>)
 };
 
 const getJSXElementRegistry = (babelTrees: Tree<JSXElementTree>[], filename: string) =>
-  pipe(
-    Stream.fromIterable(babelTrees),
+  Stream.fromIterable(babelTrees).pipe(
     Stream.mapEffect((x) => extractSheetsFromTree(x, filename)),
     Stream.map(HashMap.fromIterable),
     Stream.runFold(HashMap.empty<string, JSXElementNode>(), (prev, current) =>
@@ -99,37 +92,39 @@ const getJSXElementRegistry = (babelTrees: Tree<JSXElementTree>[], filename: str
 const make = Effect.gen(function* () {
   const babel = yield* BabelCompiler;
 
-  const getTrees = (params: { code: string; filename: string; platform: string }) => {
-    return Stream.Do.pipe(
-      Stream.let('input', () => params),
-      Stream.bind('ast', ({ input }) => babel.getAST(input.code, input.filename)),
-      Stream.bind('trees', ({ ast, input }) =>
-        babel.getJSXElementTrees(ast, input.filename),
-      ),
-      Stream.bind('registry', ({ trees, input }) =>
-        getJSXElementRegistry(trees, input.filename),
-      ),
-      Stream.bind('output', ({ registry, input }) =>
-        transformTrees(registry, input.platform),
-      ),
-    );
-  };
+  // const getTrees = (params: { code: string; filename: string; platform: string }) => {
+  //   return Stream.Do.pipe(
+  //     Stream.let('input', () => params),
+  //     Stream.bind('ast', ({ input }) => babel.getAST(input.code, input.filename)),
+  //     Stream.bind('trees', ({ ast, input }) =>
+  //       babel.getJSXElementTrees(ast, input.filename),
+  //     ),
+  //     Stream.bind('registry', ({ trees, input }) =>
+  //       getJSXElementRegistry(trees, input.filename),
+  //     ),
+  //     Stream.bind('output', ({ registry, input }) =>
+  //       transformTrees(registry, input.platform),
+  //     ),
+  //   );
+  // };
 
   return {
-    getTrees2: getTrees,
+    // getTrees2: getTrees,
     getTrees: (code: string, filename: string) =>
-      babel
-        .getAST(code, filename)
-        .pipe(Effect.flatMap((x) => babel.getJSXElementTrees(x, filename))),
+      Effect.flatMap(babel.getAST(code, filename), (x) =>
+        babel.getJSXElementTrees(x, filename),
+      ),
     getRegistry: (trees: Tree<JSXElementTree>[], filename: string) =>
       getJSXElementRegistry(trees, filename),
     transformTress: transformTrees,
+    memberExpressionIsReactImport,
+    identifierIsReactImport,
   };
 });
 
 export class ReactCompilerService extends Context.Tag('babel/react/compiler')<
   ReactCompilerService,
   Effect.Effect.Success<typeof make>
->() {}
-
-export const layer = Layer.scoped(ReactCompilerService, make);
+>() {
+  static Live = Layer.scoped(ReactCompilerService, make);
+}

@@ -27,9 +27,10 @@ interface CliConfigFile {
   entries: string[];
 }
 
-interface MakeLayersParams {
+interface CliBuildConfigInput {
   configFile: string;
   watch: boolean;
 }
 
-export type { BuildConfigOptions, TwinCliMainConfig, CliConfigFile, MakeLayersParams };
+
+export type { BuildConfigOptions, TwinCliMainConfig, CliConfigFile, CliBuildConfigInput };

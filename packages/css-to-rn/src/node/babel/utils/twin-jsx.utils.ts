@@ -6,12 +6,12 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import { applyParentEntries } from '@native-twin/css/jsx';
 import type { Tree } from '@native-twin/helpers/tree';
-import * as TwinNode from '../../native-twin';
 import {
   createCommonMappedAttribute,
   mappedComponents,
   type MappedComponent,
 } from '../../../shared';
+import { NativeTwinServiceNode } from '../../native-twin';
 import { JSXElementNode, JSXElementTree, type JSXMappedAttribute } from '../models';
 import { getJSXElementAttrs, getJSXElementName } from './jsx.utils';
 
@@ -148,7 +148,7 @@ export const runtimeEntriesToAst = (entries: string) => {
 
 export const extractSheetsFromTree = (tree: Tree<JSXElementTree>, fileName: string) =>
   Effect.gen(function* () {
-    const twin = yield* TwinNode.NativeTwinServiceNode;
+    const twin = yield* NativeTwinServiceNode;
     const fileSheet = RA.empty<[string, JSXElementNode]>();
 
     tree.traverse((leave) => {

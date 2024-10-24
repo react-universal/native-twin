@@ -1,3 +1,4 @@
+import * as Option from 'effect/Option';
 import jitiFactory from 'jiti';
 import { transform } from 'sucrase';
 
@@ -28,3 +29,5 @@ export function nodeRequireJS<T = unknown>(path: string): T {
 
   return config.default ?? config;
 }
+
+export const maybeLoadJS = Option.liftThrowable(nodeRequireJS);

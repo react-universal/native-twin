@@ -1,6 +1,5 @@
 import { createVirtualSheet, Preflight } from '@native-twin/css';
 import * as RA from 'effect/Array';
-import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import micromatch from 'micromatch';
 import path from 'node:path';
@@ -8,7 +7,7 @@ import type { TailwindConfig } from '@native-twin/core';
 import { defineConfig, setup } from '@native-twin/core';
 import { CompilerContext } from '@native-twin/css/jsx';
 import { TWIN_CSS_FILES } from '../../shared';
-import { nodeRequireJS } from '../utils';
+import { maybeLoadJS } from '../utils';
 import type { InternalTwFn, InternalTwinConfig } from './twin.types';
 import {
   createTwinCSSFiles,
@@ -55,10 +54,9 @@ export class NativeTwinManager {
   }
 
   get allowedPaths() {
-    return pipe(
-      this.allowedPathsGlob,
-      RA.map((x) => micromatch.scan(x)),
-      RA.map((x) => x.base),
+    return RA.map(
+      RA.map(this.allowedPathsGlob, (x) => micromatch.scan(x)),
+      (x) => x.base,
     );
   }
 
@@ -92,34 +90,24 @@ export class NativeTwinManager {
     twinConfigPath: string;
     platform: string;
   }): TailwindConfig<InternalTwinConfig> {
-    return pipe(
-      getTwinConfigPath(this.projectRoot, params.twinConfigPath),
-      Option.map((x) => {
-        try {
-          return nodeRequireJS<TailwindConfig<InternalTwinConfig>>(x);
-        } catch (e) {
-          console.log('ERROR_REQUIRE: ', x, e);
-          return {
-            content: [],
-            root: { rem: 15 },
-            mode: params.platform === 'web' ? 'web' : ('native' as 'web' | 'native'),
-          };
-        }
-      }),
-      Option.map((x) =>
-        defineConfig({
-          ...x,
-          mode: params.platform === 'web' ? 'web' : x.mode ?? 'native',
-          root: { rem: x.root.rem ?? 16 },
-        }),
+    return Option.getOrElse(
+      Option.map(
+        Option.flatMap(getTwinConfigPath(this.projectRoot, params.twinConfigPath), (x) =>
+          maybeLoadJS<TailwindConfig<InternalTwinConfig>>(x),
+        ),
+        (x) =>
+          defineConfig({
+            ...x,
+            mode: params.platform === 'web' ? 'web' : x.mode,
+            root: { rem: x.root.rem ?? 16 },
+          }),
       ),
-      Option.getOrElse(() =>
+      () =>
         defineConfig({
           content: [],
           mode: params.platform === 'web' ? 'web' : 'native',
           root: { rem: 16 },
         }),
-      ),
     );
   }
 }

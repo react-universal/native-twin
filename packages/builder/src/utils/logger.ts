@@ -73,4 +73,4 @@ const TwinCustomLogger = Logger.make((options) => {
   }
 });
 
-export const layer = Logger.replace(Logger.defaultLogger, TwinCustomLogger);
+export const TwinLogger = Logger.replace(Logger.defaultLogger, TwinCustomLogger);

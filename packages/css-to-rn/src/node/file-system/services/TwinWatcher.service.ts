@@ -1,43 +1,36 @@
 import { sheetEntriesToCss } from '@native-twin/css';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as NodePath from '@effect/platform-node/NodePath';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as Path from '@effect/platform/Path';
-import CodeBlockWriter from 'code-block-writer';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
-import * as Option from 'effect/Option';
+import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import {
-  entriesToObject,
-  getJSXCompiledTreeRuntime,
-  runtimeEntriesToAst,
-} from '@native-twin/babel/jsx-babel';
-import { getRawSheet } from '@native-twin/css/jsx';
-import { JSXElementNode } from '../../babel/models';
-import { MetroConfigService } from '../../metro';
+import type { JSXElementNode } from '../../babel/models';
 import { NativeTwinServiceNode } from '../../native-twin';
 import { getFileClasses } from '../../native-twin/twin.utils.node';
 import { readDirectoryRecursive } from '../../utils';
+import { getNativeStylesJSOutput } from '../utils/native.utils';
 
 const initialized: Set<string> = new Set();
 
+const getAllFilesInProject = Effect.gen(function* () {
+  const { allowedPaths } = yield* NativeTwinServiceNode;
+
+  return yield* pipe(
+    allowedPaths,
+    RA.map(readDirectoryRecursive),
+    Effect.allSuccesses,
+  ).pipe(Effect.map((x) => pipe(x, RA.flatten, RA.dedupe)));
+});
+
 export const makeFileSystem = Effect.gen(function* () {
   const twin = yield* NativeTwinServiceNode;
-  const ctx = yield* MetroConfigService;
-  const path = yield* Path.Path;
   const fs = yield* FileSystem.FileSystem;
-
-  const getAllFilesInProject = Effect.gen(function* () {
-    const { allowedPaths } = yield* NativeTwinServiceNode;
-
-    return yield* pipe(
-      allowedPaths,
-      RA.map(readDirectoryRecursive),
-      Effect.allSuccesses,
-    ).pipe(Effect.map((x) => pipe(x, RA.flatten, RA.dedupe)));
-  });
 
   const getTwinCssOutput = (params: {
     filepath: string;
@@ -45,79 +38,79 @@ export const makeFileSystem = Effect.gen(function* () {
     trees: HashMap.HashMap<string, JSXElementNode>[];
   }) => {
     return Effect.gen(function* () {
-      console.log('[getTwinCssOutput]: ', params.filepath);
+      yield* Effect.log('[getTwinCssOutput]: ', params.filepath);
 
       if (params.filepath.endsWith('.css')) {
         return sheetEntriesToCss(twin.sheetTarget, false);
-      } else {
-        const registry = yield* createCompilerRegistry(params.trees);
-        const jsOutput = pipe(
-          HashMap.values(registry),
-          RA.fromIterable,
-          RA.map((node) => {
-            const { leave } = getJSXCompiledTreeRuntime(
-              node,
-              pipe(
-                node.parentID,
-                Option.flatMap((x) => HashMap.get(registry, x)),
-              ),
-            );
-            const stringEntries = entriesToObject(node.id, getRawSheet(leave.entries));
-            const astProps = runtimeEntriesToAst(stringEntries.styledProp);
-            return {
-              stringEntries,
-              astProps,
-              node,
-            };
-          }),
-          RA.map((x) => {
-            const writer = new CodeBlockWriter();
-            writer.newLine().indent(1).write(`['${x.node.id}']: `);
-            return writer
-              .indent(2)
-              .block(() => {
-                writer.writeLine(`_twinComponentID: '${x.node.id}',`);
-                writer.writeLine(`_twinOrd: ${x.node.order},`);
-                writer.writeLine(
-                  `_twinComponentSheet: ${x.stringEntries.styledProp.slice(1, -1)}`,
-                );
-              })
-              .toString();
-          }),
-          (x) => {
-            const writer = new CodeBlockWriter();
-            return writer
-              .write(`export const globalSheets = `)
-              .block(() => {
-                writer.writeLine(`${x.join()}`);
-              })
-              .toString();
-          },
-          (stringStyles) => {
-            const writer = new CodeBlockWriter();
-
-            writer.write(`const StyleSheet = require('@native-twin/jsx').StyleSheet;`);
-            writer.writeLine(`const setup = require('@native-twin/core').setup;`);
-            writer.newLine();
-            const { twinConfigPath } = ctx.userConfig;
-            let importTwinPath = path.relative(
-              path.dirname(twin.getPlatformOutput(params.platform)),
-              twinConfigPath,
-            );
-            if (!importTwinPath.startsWith('.')) {
-              importTwinPath = `./${importTwinPath}`;
-            }
-            writer.writeLine(`const twinConfig = require('${importTwinPath}');`);
-
-            writer.writeLine(`setup(twinConfig);`);
-            writer.write(stringStyles);
-            // writer.write(stringStyles.replaceAll("require('@native-twin/jsx').", ''));
-            return writer.toString();
-          },
-        );
-
-        return jsOutput;
       }
+
+      const registry = yield* createCompilerRegistry(params.trees);
+      return yield* getNativeStylesJSOutput(registry, params.platform);
+
+      // const registry = yield* createCompilerRegistry(params.trees);
+      // const jsOutput = pipe(
+      //   HashMap.values(registry),
+      //   RA.fromIterable,
+      //   RA.map((node) => {
+      //     const { leave } = getJSXCompiledTreeRuntime(
+      //       node,
+      //       pipe(
+      //         node.parentID,
+      //         Option.flatMap((x) => HashMap.get(registry, x)),
+      //       ),
+      //     );
+      //     const stringEntries = entriesToComponentData(
+      //       node.id,
+      //       getRawSheet(leave.entries),
+      //     );
+      //     const astProps = runtimeEntriesToAst(stringEntries);
+      //     return {
+      //       stringEntries,
+      //       astProps,
+      //       node,
+      //     };
+      //   }),
+      //   RA.map((x) => {
+      //     const writer = new CodeBlockWriter();
+      //     return writer
+      //       .newLine()
+      //       .indent(1)
+      //       .write(`['${x.node.id}']: `)
+      //       .writeLine(x.stringEntries)
+      //       .toString();
+      //   }),
+      //   (x) => {
+      //     const writer = new CodeBlockWriter();
+      //     return writer
+      //       .write(`export const globalSheets = `)
+      //       .block(() => {
+      //         writer.writeLine(`${x.join()}`);
+      //       })
+      //       .toString();
+      //   },
+      //   (stringStyles) => {
+      //     const writer = new CodeBlockWriter();
+
+      //     writer.write(`const StyleSheet = require('@native-twin/jsx').StyleSheet;`);
+      //     writer.writeLine(`const setup = require('@native-twin/core').setup;`);
+      //     writer.newLine();
+      //     let importTwinPath = path.relative(
+      //       path.dirname(twin.getPlatformOutput(params.platform)),
+      //       twin.twinConfigPath,
+      //     );
+      //     if (!importTwinPath.startsWith('.')) {
+      //       importTwinPath = `./${importTwinPath}`;
+      //     }
+      //     writer.writeLine(`const twinConfig = require('${importTwinPath}');`);
+
+      //     writer.writeLine(`setup(twinConfig);`);
+      //     writer.write(stringStyles);
+      //     // writer.write(stringStyles.replaceAll("require('@native-twin/jsx').", ''));
+      //     return writer.toString();
+      //   },
+      // );
+
+      // return jsOutput;
     });
   };
 
@@ -129,7 +122,6 @@ export const makeFileSystem = Effect.gen(function* () {
     return Effect.gen(function* () {
       const jsOutput = yield* getTwinCssOutput(params);
       const output = new TextEncoder().encode(jsOutput);
-      console.log('CSS_OUTPUT: ', params.filepath);
       yield* fs.writeFile(params.filepath, output);
     });
   };
@@ -242,7 +234,13 @@ const createCompilerRegistry = (trees: HashMap.HashMap<string, JSXElementNode>[]
     }),
   );
 
+const FSLive = Layer.mergeAll(NodeFileSystem.layer, NodePath.layer, Path.layer);
+
 export class TwinFSService extends Context.Tag('metro/fs/service')<
   TwinFSService,
   Effect.Effect.Success<typeof makeFileSystem>
->() {}
+>() {
+  static Live = Layer.scoped(TwinFSService, makeFileSystem).pipe(
+    Layer.provideMerge(FSLive),
+  );
+}

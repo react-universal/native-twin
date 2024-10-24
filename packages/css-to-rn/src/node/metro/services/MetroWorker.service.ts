@@ -3,6 +3,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import worker from 'metro-transform-worker';
 import { ensureBuffer } from '@native-twin/helpers/server';
+import { NativeTwinServiceNode } from '../../native-twin';
 import type { MetroWorkerInput, NativeTwinTransformerOpts } from '../models/metro.models';
 
 export class MetroWorkerService extends Context.Tag('metro/worker/context')<
@@ -19,6 +20,7 @@ export class MetroWorkerService extends Context.Tag('metro/worker/context')<
 type MetroTransformFn = typeof worker.transform;
 export const createWorkerService = (input: MetroWorkerInput) => {
   return Effect.gen(function* () {
+    const twin = yield* NativeTwinServiceNode;
     const transform: MetroTransformFn = input.config.originalTransformerPath
       ? require(input.config.originalTransformerPath).transform
       : worker.transform;
@@ -27,15 +29,27 @@ export const createWorkerService = (input: MetroWorkerInput) => {
       input,
       runWorker: (config) =>
         Effect.promise(() =>
-          transform({
-            ...config.config,
-          }, config.projectRoot, config.filename, config.data, {
-            ...config.options,
-            customTransformOptions: {
-              ...config.options.customTransformOptions,
-              outputCSS: input.config.outputCSS,
+          transform(
+            {
+              ...config.config,
+              // @ts-expect-error asd
+              custommmmConfig: 'asdasdasd',
             },
-          }),
+            config.projectRoot,
+            config.filename,
+            config.data,
+            {
+              ...config.options,
+              custommmm: 'asdasdasd',
+              'twin.outputDir': twin.outputDir,
+              customTransformOptions: {
+                ...config.options.customTransformOptions,
+                custommmm2: 'asdasdasd',
+                'twin.outputDirCustom': twin.outputDir,
+                outputCSS: input.config.outputCSS,
+              },
+            },
+          ),
         ),
     } as MetroWorkerService['Type'];
   });

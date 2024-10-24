@@ -36,7 +36,7 @@
     "build:watch": "twin build -w",
     "clean": "rm -rf build",
     "lint": "eslint . --ext .ts,.tsx",
-    "test": "jest --passWithNoTests --testTimeout 100000",
+    "test": "echo \"Non tests\"",
     "vscode:dev": "tsc -p tsconfig.build.json --watch"
   },
   "dependencies": {

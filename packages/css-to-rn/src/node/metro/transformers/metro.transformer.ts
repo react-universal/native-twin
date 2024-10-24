@@ -3,17 +3,15 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import path from 'path';
-// import * as Option from 'effect/Option';
-import { BabelLogger, BabelTransformerServiceLive } from '@native-twin/babel/services';
+import type { TransformResponse } from 'metro-transform-worker';
+import path from 'node:path';
 import { assertString } from '../../../shared';
 import { BabelCompiler, BuildConfig, makeBabelConfig, makeBabelLayer } from '../../babel';
 import { compileReactCode } from '../../babel/programs/react.program';
 import { NativeTwinServiceNode, NativeTwinManager } from '../../native-twin';
+import { twinLoggerLayer } from '../../services/Logger.service';
 import type { TwinMetroTransformFn } from '../models';
 import { makeWorkerLayers, MetroWorkerService } from '../services/MetroWorker.service';
-
-// import { transformCSS } from './css/css.transform';
 
 const metroMainProgram = Effect.gen(function* () {
   const { runWorker, input } = yield* MetroWorkerService;
@@ -25,17 +23,11 @@ const metroMainProgram = Effect.gen(function* () {
     console.log('[METRO_TRANSFORMER]: Inside generated style file');
     const writer = new CodeBlockWriter();
 
-    // writer.write(`import { StyleSheet } from '@native-twin/jsx';`);
-    // writer.writeLine(`import { setup } from '@native-twin/core';`);
-    // writer.newLine();
     const twinConfigPath = input.config.tailwindConfigPath;
     const importTwinPath = path.relative(
       path.dirname(twin.getPlatformOutput(babelInput.platform)),
       twinConfigPath,
     );
-    // if (!importTwinPath.startsWith('.')) {
-    //   importTwinPath = `./${importTwinPath}`;
-    // }
     writer.write(`const StyleSheet = require('@native-twin/jsx').StyleSheet;`);
     writer.writeLine(`const setup = require('@native-twin/core').setup;`);
     writer.writeLine(`const twinConfig = require('${importTwinPath}');`);
@@ -52,7 +44,7 @@ const metroMainProgram = Effect.gen(function* () {
       data: Buffer.from(writer.toString()),
     });
 
-    return {
+    const response: TransformResponse = {
       dependencies: result.dependencies,
       output: [
         {
@@ -68,6 +60,7 @@ const metroMainProgram = Effect.gen(function* () {
         },
       ],
     };
+    return response;
   }
 
   if (!twin.isAllowedPath(input.filename)) {
@@ -102,10 +95,7 @@ const metroMainProgram = Effect.gen(function* () {
   return result;
 }).pipe(Effect.scoped);
 
-const MainLayer = BabelTransformerServiceLive.pipe(
-  Layer.merge(BabelTransformerServiceLive),
-  Layer.merge(Logger.replace(Logger.defaultLogger, BabelLogger)),
-);
+const MainLayer = makeBabelLayer.pipe(Layer.merge(twinLoggerLayer));
 
 export const metroRunnable = Effect.scoped(
   metroMainProgram.pipe(

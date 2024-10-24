@@ -2,7 +2,6 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { compose, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import * as Queue from 'effect/Queue';
 import * as Stream from 'effect/Stream';
 import * as Tuple from 'effect/Tuple';
 import * as rollup from 'rollup';
@@ -18,40 +17,38 @@ type UniqueOutput = Exclude<
   Array<rollup.RollupOptions['output']> | undefined
 >;
 
-export const createRollupBuilder = (queue: Queue.Queue<string>) =>
-  Effect.gen(function* () {
-    const offerResult = (message: string) => {
-      Queue.unsafeOffer(queue, `${message}\n`);
-    };
+export const rollupBuild = Effect.gen(function* () {
+  const offerResult = (_message: string) => {
+    console.log(`${_message}\n`);
+  };
 
-    const plugin: rollup.Plugin = {
-      name: 'twin-builder',
-      writeBundle(outputConfig) {
-        return offerResult(`[twin-builder] Build Generated (${outputConfig.format}):`);
-      },
-      buildEnd(error) {
-        if (error) {
-          return offerResult(`[twin-builder] Build finish with errors: ${error.message}`);
-        }
-      },
-      closeBundle() {
-        return offerResult(`[twin-builder] Bundle closed`);
-      },
-      generateBundle() {
-        return offerResult(`[twin-builder] Generated Bundle`);
-      },
-    };
+  const plugin: rollup.Plugin = {
+    name: 'twin-builder',
+    writeBundle(outputConfig) {
+      return offerResult(`[twin-builder] Build Generated (${outputConfig.format}):`);
+    },
+    buildEnd(error) {
+      if (error) {
+        return offerResult(`[twin-builder] Build finish with errors: ${error.message}`);
+      }
+    },
+    closeBundle() {
+      return offerResult(`[twin-builder] Bundle closed`);
+    },
+    generateBundle() {
+      return offerResult(`[twin-builder] Generated Bundle`);
+    },
+  };
 
-    const rollupConfigs = yield* Effect.sync(() =>
-      createRollupConfig(rollupDefaultConfigs, [plugin]),
-    );
+  const rollupConfigs = yield* Effect.sync(() =>
+    createRollupConfig(rollupDefaultConfigs, [plugin]),
+  );
 
-    return yield* Stream.fromIterable(rollupConfigs).pipe(
-      Stream.mapEffect((options) => execRollup(options)),
-      Stream.flatMap((x) => generateRollupBuild(x)),
-      Stream.runCollect,
-    );
-  });
+  return Stream.fromIterable(rollupConfigs).pipe(
+    Stream.mapEffect((options) => execRollup(options)),
+    Stream.flatMap((x) => generateRollupBuild(x)),
+  );
+});
 
 const execRollup = (options: rollup.RollupOptions) =>
   Effect.promise<[config: UniqueOutput, result: rollup.RollupBuild]>(() =>
@@ -62,7 +59,7 @@ const execRollup = (options: rollup.RollupOptions) =>
     ),
   );
 
-const generateRollupBuild = (
+export const generateRollupBuild = (
   build: [config: UniqueOutput, result: rollup.RollupBuild],
 ) => {
   const [config, result] = build;

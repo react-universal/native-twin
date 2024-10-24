@@ -1,13 +1,15 @@
 import * as Chunk from 'effect/Chunk';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
+import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import type { GetTransformOptions, ExtraTransformOptions } from 'metro-config';
 import type { CustomResolver } from 'metro-resolver';
 import path from 'node:path';
+import { makeBabelLayer } from '../babel';
 import { TwinFSService } from '../file-system';
 import { NativeTwinServiceNode } from '../native-twin';
-import { MetroConfigService } from './services/MetroConfig.service';
+import { twinLoggerLayer } from '../services/Logger.service';
 
 const setupPlatforms: Set<string> = new Set();
 
@@ -35,84 +37,93 @@ export const twinMetroRequestResolver = (
 };
 
 /** @category Programs */
-export const getTransformerOptions = (
-  ...[entryPoints, options, getDeps]: Parameters<GetTransformOptions>
-) => {
-  return Effect.gen(function* () {
-    const ctx = yield* MetroConfigService;
-    const twin = yield* NativeTwinServiceNode;
-    const watcher = yield* TwinFSService;
+export const twinGetTransformerOptions =
+  (config: {
+    originalGetTransformerOptions: GetTransformOptions;
+    twinConfigPath: string;
+    projectRoot: string;
+  }) =>
+  (...[entryPoints, options, getDeps]: Parameters<GetTransformOptions>) => {
+    const platform = options.platform ?? 'native';
+    console.debug('Not platform specified on getTransformerOptions');
 
-    const { metroConfig } = ctx;
-    const writeStylesToFS = !options.dev;
-    const originalGetTransformOptions = metroConfig.transformer.getTransformOptions;
-
-    console.debug(`getTransformOptions.dev ${options.dev}`);
-    console.debug(`getTransformOptions.writeStylesToFS ${writeStylesToFS}`);
-
-    // We can skip writing to the filesystem if this instance patched Metro
-    if (writeStylesToFS) {
-      const platform = options.platform || 'native';
-      const outputPath = twin.getPlatformOutput(platform);
-
-      console.debug(`getTransformOptions.platform ${platform}`);
-      console.debug(`getTransformOptions.output ${outputPath}`);
-
-      const allFiles = yield* watcher.getAllFilesInProject;
-      yield* watcher.runTwinForFiles(allFiles, platform);
-    }
-
-    if (!writeStylesToFS && options.platform && !setupPlatforms.has(options.platform)) {
-      // setupPlatforms.add(options.platform);
-      // yield* watcher.setupPlatform({
-      //   projectRoot: ctx.userConfig.projectRoot,
-      //   targetPlatform: options.platform ?? 'native',
-      // });
-
-      const allFiles = yield* watcher.getAllFilesInProject;
-      const platform = options.platform;
-
-      const hasPlatform = setupPlatforms.has(platform);
-      const currentSize = setupPlatforms.size;
-      if (!hasPlatform) {
-        if (currentSize === 0) {
-          yield* Effect.log(`Initializing project \n`);
-          yield* watcher.runTwinForFiles(allFiles, platform);
-          yield* pipe(
-            yield* watcher.startWatcher,
-            Stream.take(allFiles.length),
-            Stream.chunks,
-            Stream.runForEach((fs) =>
-              watcher.runTwinForFiles(
-                Chunk.toArray(fs).map((x) => x.path),
-                platform,
-              ),
-            ),
-            Effect.scoped,
-            Effect.forkDaemon,
-          );
-          yield* Effect.yieldNow();
-          yield* Effect.log(`Watcher started`);
-          setupPlatforms.add(platform);
-        }
-      }
-    }
-
-    const result: Partial<ExtraTransformOptions> = yield* Effect.promise(() =>
-      originalGetTransformOptions(entryPoints, options, getDeps),
+    const mainLayer = makeBabelLayer.pipe(
+      Layer.provideMerge(TwinFSService.Live),
+      Layer.provideMerge(
+        NativeTwinServiceNode.Live(config.twinConfigPath, config.projectRoot, platform),
+      ),
+      Layer.provideMerge(twinLoggerLayer),
     );
 
-    // 30146
-    // return {
-    //   ...result,
-    //   transform: {
-    //     ...result.transform,
-    //     experimentalImportSupport: true,
-    //     inlineRequires: true,
-    //     unstable_disableES6Transforms: true,
-    //   },
-    // } as Partial<ExtraTransformOptions>;
-    // 32159
-    return result;
+    return Effect.gen(function* () {
+      const twin = yield* NativeTwinServiceNode;
+      const watcher = yield* TwinFSService;
+
+      const writeStylesToFS = !options.dev;
+
+      console.debug(`getTransformOptions.dev ${options.dev}`);
+      console.debug(`getTransformOptions.writeStylesToFS ${writeStylesToFS}`);
+
+      // We can skip writing to the filesystem if this instance patched Metro
+      if (writeStylesToFS) {
+        const outputPath = twin.getPlatformOutput(platform);
+
+        console.debug(`getTransformOptions.platform ${platform}`);
+        console.debug(`getTransformOptions.output ${outputPath}`);
+
+        const allFiles = yield* watcher.getAllFilesInProject;
+        yield* watcher.runTwinForFiles(allFiles, platform);
+      }
+
+      if (!writeStylesToFS && options.platform && !setupPlatforms.has(options.platform)) {
+        const allFiles = yield* watcher.getAllFilesInProject;
+        yield* startTwinCompilerWatcher(platform, allFiles).pipe(
+          Effect.scoped,
+          Effect.forkDaemon,
+        );
+        yield* Effect.yieldNow();
+        yield* Effect.log(`Watcher started for [${platform}]`);
+      }
+
+      const result: Partial<ExtraTransformOptions> = yield* Effect.promise(() =>
+        config.originalGetTransformerOptions(entryPoints, options, getDeps),
+      );
+
+      // 32159
+      return result;
+
+      // 30146
+      // return {
+      //   ...result,
+      //   transform: {
+      //     ...result.transform,
+      //     experimentalImportSupport: true,
+      //     inlineRequires: true,
+      //     unstable_disableES6Transforms: true,
+      //   },
+      // } as Partial<ExtraTransformOptions>;
+    }).pipe(Effect.provide(mainLayer));
+  };
+
+const startTwinCompilerWatcher = (platform: string, allFiles: string[]) =>
+  Effect.gen(function* () {
+    const twinFS = yield* TwinFSService;
+    const hasPlatform = setupPlatforms.has(platform);
+    if (hasPlatform) return;
+
+    // const currentSize = setupPlatforms.size;
+    yield* Effect.log(`Initializing project \n`);
+    yield* twinFS.runTwinForFiles(allFiles, platform);
+
+    return yield* pipe(
+      yield* twinFS.startWatcher,
+      Stream.take(allFiles.length),
+      Stream.chunks,
+      Stream.runForEach((fs) =>
+        twinFS.runTwinForFiles(
+          Chunk.toArray(fs).map((x) => x.path),
+          platform,
+        ),
+      ),
+    );
   });
-};
