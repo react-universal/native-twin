@@ -1,6 +1,18 @@
 {
   "name": "@native-twin/compiler",
   "version": "6.4.0",
+  "description": "Common compilers for native twin",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/css-to-rn"
+  },
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
   "exports": {
     ".": {
       "types": "./build/index.d.ts",

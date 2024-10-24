@@ -16,4 +16,4 @@
 '@native-twin/jsx': major
 ---
 
-COmpilers for native twin
+Compilers for native twin
