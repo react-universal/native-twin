@@ -39,10 +39,7 @@
   "files": [
     "build",
     "colors",
-    "index.d.ts",
-    "tailwind",
-    "tailwind.d.ts",
-    "types.d.ts",
+    "src",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"

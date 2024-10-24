@@ -1,5 +1,6 @@
 {
   "name": "@native-twin/compiler",
+  "version": "6.4.0",
   "exports": {
     ".": {
       "types": "./build/index.d.ts",
@@ -41,6 +42,13 @@
   "main": "./build/index.js",
   "module": "./build/esm/index.js",
   "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "LICENSE",
+    "src",
+    "CHANGELOG.md",
+    "README.md"
+  ],
   "scripts": {
     "build": "twin build",
     "build:watch": "twin build -w",
@@ -70,5 +78,9 @@
     "@native-twin/cli": "workspace:*",
     "better-docs": "*",
     "jest": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
   }
 }

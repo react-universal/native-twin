@@ -60,6 +60,20 @@
   "main": "./build",
   "module": "./build/esm",
   "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "jsx-dev-runtime",
+    "jsx-runtime",
+    "LICENSE",
+    "sheet",
+    "src",
+    "testing-library",
+    "rn-svg.d.ts",
+    "third-party-declarations.d.ts",
+    "types.d.ts",
+    "CHANGELOG.md",
+    "README.md"
+  ],
   "scripts": {
     "build": "twin build",
     "build:watch": "twin build -w",

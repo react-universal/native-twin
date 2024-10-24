@@ -17,6 +17,13 @@
   "main": "./build/index.js",
   "module": "./build/esm/index.js",
   "types": "./build/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "build",
+    "src"
+  ],
   "scripts": {
     "build": "twin build",
     "build:watch": "twin build -w",

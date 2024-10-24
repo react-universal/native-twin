@@ -9,18 +9,21 @@
   "commit": false,
   "fixed": [
     [
-      "@native-twin/helpers",
+      "@native-twin/arc-parser",
+      "@native-twin/babel",
+      "@native-twin/cli",
       "@native-twin/css",
+      "@native-twin/compiler",
+      "@native-twin/dev-tools",
+      "@native-twin/helpers",
+      "@native-twin/jsx",
+      "@native-twin/language-server",
+      "@native-twin/language-service",
+      "@native-twin/metro",
       "@native-twin/core",
       "@native-twin/nextjs",
       "@native-twin/preset-tailwind",
-      "@native-twin/arc-parser",
-      "@native-twin/jsx",
-      "@native-twin/babel",
-      "@native-twin/metro",
-      "@native-twin/dev-tools",
-      "@native-twin/language-server",
-      "@native-twin/language-service"
+      "@native-twin/styled"
     ]
   ],
   "access": "public",
@@ -28,6 +31,12 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "next-pages-example",
+    "@native-twin/ts-plugin",
+    "twin-run",
+    "native-twin-docs",
+    "@native-twin/dev-tools-webui",
+    "expo-app-web",
+    "next-app-dir",
     "expo-app",
     "native-twin-vscode"
   ],

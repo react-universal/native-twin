@@ -19,6 +19,13 @@
   "bin": {
     "twin": "./build/twin-cli.js"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "build",
+    "src"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json && node esbuild.mjs",
     "build:watch": "node esbuild.mjs --watch",

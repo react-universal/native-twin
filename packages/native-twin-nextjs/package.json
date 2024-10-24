@@ -42,10 +42,10 @@
   },
   "files": [
     "build",
-    "index.d.ts",
-    "tailwind",
-    "tailwind.d.ts",
-    "types.d.ts",
+    "src",
+    "app",
+    "_app",
+    "_document",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"

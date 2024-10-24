@@ -67,6 +67,18 @@
   "main": "./build/index",
   "module": "./build/esm/index",
   "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "LICENSE",
+    "jsx-babel",
+    "services",
+    "src",
+    "babel.js",
+    "native-twin.d.ts",
+    "plugin.json",
+    "CHANGELOG.md",
+    "README.md"
+  ],
   "scripts": {
     "build": "twin build",
     "build:watch": "twin build -w",

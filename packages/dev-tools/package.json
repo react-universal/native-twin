@@ -23,6 +23,10 @@
   "files": [
     "build",
     "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
     "expo-module.config.json"
   ],
   "scripts": {
@@ -45,5 +49,9 @@
   "peerDependencies": {
     "expo": "*",
     "react": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "_release/package"
   }
 }

@@ -51,6 +51,9 @@
     "build",
     "LICENSE",
     "CHANGELOG.md",
+    "parser",
+    "src",
+    "jsx",
     "README.md",
     "tailwind-parser"
   ],

@@ -31,7 +31,6 @@ const metroMainProgram = Effect.gen(function* () {
 
   if (config.isCSS) {
     const result = yield* runWorker(input);
-    console.log('IS_CSS: ');
     return result;
   }
 

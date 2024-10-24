@@ -29,7 +29,9 @@
     "build",
     "LICENSE",
     "CHANGELOG.md",
-    "README.md"
+    "README.md",
+    "src",
+    "styled"
   ],
   "scripts": {
     "build": "twin build",

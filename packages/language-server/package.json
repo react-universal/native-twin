@@ -19,6 +19,15 @@
   "bin": {
     "native-twin-language-server": "./bin/native-twin-language-server"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "build",
+    "src",
+    "bin",
+    "plugin-parser"
+  ],
   "scripts": {
     "build": "twin build",
     "build:tsc": "tsc -p tsconfig.build.json",
