@@ -27,5 +27,7 @@
     "native-twin-vscode": "1.0.0",
     "twin-run": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "stupid-jobs-return"
+  ]
 }
