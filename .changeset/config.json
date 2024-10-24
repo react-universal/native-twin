@@ -29,8 +29,7 @@
   "ignore": [
     "next-pages-example",
     "expo-app",
-    "native-twin-vscode",
-    "@native-twin/styled"
+    "native-twin-vscode"
   ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
