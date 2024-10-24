@@ -87,7 +87,6 @@
   "dependencies": {
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
-    "@native-twin/dev-tools": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*"
   },
