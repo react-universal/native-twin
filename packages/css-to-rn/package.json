@@ -73,7 +73,11 @@
   "dependencies": {
     "@babel/traverse": "^7.24.0",
     "@babel/types": "^7.24.0",
-    "@native-twin/css": "workspace:*"
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
+    "@native-twin/jsx": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*"
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.23.3",
