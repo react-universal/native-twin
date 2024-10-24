@@ -41,8 +41,12 @@
     "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
   },
   "dependencies": {
+    "@native-twin/babel": "workspace:*",
+    "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
+    "@native-twin/jsx": "workspace:*",
+    "@native-twin/metro": "workspace:*",
     "effect": "^3.10.0",
     "eventemitter3": "^5.0.1"
   },

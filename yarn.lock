@@ -7760,8 +7760,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@native-twin/dev-tools@workspace:packages/dev-tools"
   dependencies:
+    "@native-twin/babel": "workspace:*"
+    "@native-twin/core": "workspace:*"
     "@native-twin/css": "workspace:*"
     "@native-twin/helpers": "workspace:*"
+    "@native-twin/jsx": "workspace:*"
+    "@native-twin/metro": "workspace:*"
     effect: "npm:^3.10.0"
     eventemitter3: "npm:^5.0.1"
     expo-module-scripts: "npm:^3.1.0"
