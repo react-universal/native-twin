@@ -22070,6 +22070,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "native-twin@workspace:."
   dependencies:
+    "@changesets/changelog-git": "npm:^0.2.0"
     "@changesets/changelog-github": "npm:^0.5.0"
     "@changesets/cli": "npm:^2.27.9"
     "@effect/docgen": "npm:^0.4.5"
