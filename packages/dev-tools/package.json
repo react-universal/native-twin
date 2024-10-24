@@ -24,17 +24,20 @@
     "build",
     "dist",
     "src",
+    "webui",
+    "tsconfig.build.json",
+    "tsconfig.json",
+    "babel.config.js",
     "LICENSE",
     "README.md",
     "CHANGELOG.md",
     "expo-module.config.json"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn build:all",
     "build:all": "cd webui && npx expo export -p web --output-dir ../dist",
     "build:watch": "tsc -p tsconfig.build.json --watch",
     "clean": "expo-module clean && rm -rf dist && rm -rf .expo",
-    "prepublishOnly": "expo-module prepublishOnly && cd webui && npx expo export -p web --output-dir ../dist",
     "web:export": "cd webui && npx expo export -p web --output-dir ../dist"
   },
   "dependencies": {
