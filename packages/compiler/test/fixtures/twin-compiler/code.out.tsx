@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import 'globals.css';
-import { StyleSheet222 as _Twin___StyleSheet } from "@native-twin/jsx/sheet";
+import { StyleSheet as _Twin___StyleSheet } from "@native-twin/jsx/sheet";
 const Button = () => {
   return <View _twinInjected={{
-    id: "-950912315",
+    id: "#e8bfnd",
     index: -1,
-    parentID: "NO_PARENT",
+    parentID: "null",
     parentSize: -1,
     metadata: {
       isGroupParent: false,
@@ -17,9 +17,9 @@ const Button = () => {
     templateEntries: []
   }}>
       <Text _twinInjected={{
-      id: "657433807",
+      id: "#1hv7jxv",
       index: 0,
-      parentID: "-950912315",
+      parentID: "#e8bfnd",
       parentSize: 3,
       metadata: {
         isGroupParent: false,
@@ -29,9 +29,9 @@ const Button = () => {
       templateEntries: []
     }}>Text1</Text>
       <Text _twinInjected={{
-      id: "-367340754",
+      id: "#1pcytdw",
       index: 1,
-      parentID: "-950912315",
+      parentID: "#e8bfnd",
       parentSize: 3,
       metadata: {
         isGroupParent: false,
@@ -45,9 +45,9 @@ const Button = () => {
       }]
     }}>Text3</Text>
       <View _twinInjected={{
-      id: "322996843",
+      id: "#7rx9mp",
       index: 2,
-      parentID: "-950912315",
+      parentID: "#e8bfnd",
       parentSize: 3,
       metadata: {
         isGroupParent: false,
@@ -57,9 +57,9 @@ const Button = () => {
       templateEntries: []
     }}>
         <Span _twinInjected={{
-        id: "322901193",
+        id: "#1xvgwoc",
         index: 0,
-        parentID: "322996843",
+        parentID: "#7rx9mp",
         parentSize: 1,
         metadata: {
           isGroupParent: false,
@@ -71,11 +71,36 @@ const Button = () => {
       </View>
     </View>;
 };
+const AnyOther = () => <View _twinInjected={{
+  id: "#1fmu02a",
+  index: -1,
+  parentID: "null",
+  parentSize: -1,
+  metadata: {
+    isGroupParent: false,
+    hasGroupEvents: false,
+    hasPointerEvents: false
+  },
+  templateEntries: []
+}}>
+    <Text _twinInjected={{
+    id: "#1g7tm4h",
+    index: 0,
+    parentID: "#1fmu02a",
+    parentSize: 1,
+    metadata: {
+      isGroupParent: false,
+      hasGroupEvents: false,
+      hasPointerEvents: false
+    },
+    templateEntries: []
+  }}>asd</Text>
+  </View>;
 export { ChildProp };
 __Twin___StyleSheet.inject([{
-  id: "-950912315",
+  id: "#e8bfnd",
   index: -1,
-  parentID: "NO_PARENT",
+  parentID: "null",
   parentSize: -1,
   metadata: {
     isGroupParent: false,
@@ -144,9 +169,9 @@ __Twin___StyleSheet.inject([{
     precedence: 805437440
   }]
 }, {
-  id: "657433807",
+  id: "#1hv7jxv",
   index: 0,
-  parentID: "-950912315",
+  parentID: "#e8bfnd",
   parentSize: 3,
   metadata: {
     isGroupParent: false,
@@ -182,9 +207,9 @@ __Twin___StyleSheet.inject([{
   }],
   childStyles: []
 }, {
-  id: "-367340754",
+  id: "#1pcytdw",
   index: 1,
-  parentID: "-950912315",
+  parentID: "#e8bfnd",
   parentSize: 3,
   metadata: {
     isGroupParent: false,
@@ -209,9 +234,9 @@ __Twin___StyleSheet.inject([{
   }],
   childStyles: []
 }, {
-  id: "322996843",
+  id: "#7rx9mp",
   index: 2,
-  parentID: "-950912315",
+  parentID: "#e8bfnd",
   parentSize: 3,
   metadata: {
     isGroupParent: false,
@@ -247,9 +272,52 @@ __Twin___StyleSheet.inject([{
   }],
   childStyles: []
 }, {
-  id: "322901193",
+  id: "#1xvgwoc",
   index: 0,
-  parentID: "322996843",
+  parentID: "#7rx9mp",
+  parentSize: 1,
+  metadata: {
+    isGroupParent: false,
+    hasGroupEvents: false,
+    hasPointerEvents: false
+  },
+  props: [],
+  childStyles: []
+}, {
+  id: "#1fmu02a",
+  index: -1,
+  parentID: "null",
+  parentSize: -1,
+  metadata: {
+    isGroupParent: false,
+    hasGroupEvents: false,
+    hasPointerEvents: false
+  },
+  props: [{
+    target: "style",
+    prop: "className",
+    entries: [{
+      className: "flex-1",
+      declarations: [{
+        _tag: "COMPILED",
+        prop: "flex",
+        value: {
+          flexGrow: 1,
+          flexShrink: 1,
+          flexBasis: "0%"
+        }
+      }],
+      group: "base",
+      important: false,
+      inherited: false,
+      precedence: 805306368
+    }]
+  }],
+  childStyles: []
+}, {
+  id: "#1g7tm4h",
+  index: 0,
+  parentID: "#1fmu02a",
   parentSize: 1,
   metadata: {
     isGroupParent: false,
@@ -259,7 +327,22 @@ __Twin___StyleSheet.inject([{
   props: [{
     target: "style",
     prop: "className",
-    entries: []
+    entries: [{
+      className: "flex-1",
+      declarations: [{
+        _tag: "COMPILED",
+        prop: "flex",
+        value: {
+          flexGrow: 1,
+          flexShrink: 1,
+          flexBasis: "0%"
+        }
+      }],
+      group: "base",
+      important: false,
+      inherited: false,
+      precedence: 805306368
+    }]
   }],
   childStyles: []
 }]);

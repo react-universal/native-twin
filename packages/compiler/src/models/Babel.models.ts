@@ -1,9 +1,7 @@
 import type { NodePath } from '@babel/traverse';
 import type * as BabelTypes from '@babel/types';
 import type * as t from '@babel/types';
-import type { SheetEntryHandler } from '@native-twin/css/jsx';
 import * as Data from 'effect/Data';
-import type * as Option from 'effect/Option';
 
 export interface CompilerInput {
   code: string;
@@ -42,25 +40,16 @@ export interface TwinBabelPluginOptions extends APICallerOptions {
 
 export type JSXElementNodePath = NodePath<t.JSXElement>;
 
-export interface JSXMappedAttributeWithText extends Omit<JSXMappedAttribute, 'value'> {
-  templateExpression: Option.Option<string>;
-  value: string;
-}
-
-export interface CompiledMappedProp extends JSXMappedAttributeWithText {
-  templateExpression: Option.Option<string>;
-  value: string;
-  entries: Iterable<SheetEntryHandler>;
-  childEntries: Iterable<SheetEntryHandler>;
-}
+// export interface CompiledMappedProp extends JSXMappedAttributeWithText {
+//   templateExpression: Option.Option<string>;
+//   value: string;
+//   entries: Iterable<SheetEntryHandler>;
+//   childEntries: Iterable<SheetEntryHandler>;
+// }
 
 export class TwinBabelError extends Data.TaggedError('TwinBabelError')<{
   cause: Error;
   message: string;
 }> {}
 
-export interface JSXMappedAttribute {
-  prop: string;
-  value: t.StringLiteral | t.TemplateLiteral;
-  target: string;
-}
+

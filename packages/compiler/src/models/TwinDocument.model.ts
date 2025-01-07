@@ -18,7 +18,7 @@ export interface TwinBaseDocument {
   positionAt: (offset: number) => Position;
 }
 
-export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
+export abstract class __BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
   textDocument: TextDocument;
   private _ast: ParseResult<t.File>;
 
@@ -103,7 +103,7 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   // MARK: Equality protocol
   [Equal.symbol](that: unknown) {
     return (
-      that instanceof BaseTwinTextDocument &&
+      that instanceof __BaseTwinTextDocument &&
       this.textDocument.version === that.textDocument.version &&
       this.textDocument.uri === that.textDocument.uri
     );

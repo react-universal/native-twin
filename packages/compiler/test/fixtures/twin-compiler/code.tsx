@@ -15,4 +15,10 @@ const Button = () => {
   );
 };
 
+const AnyOther = () => (
+  <View className='flex-1'>
+    <Text className='flex-1'>asd</Text>
+  </View>
+)
+
 export { ChildProp };

@@ -48,7 +48,6 @@ const program = Effect.gen(function* () {
     const completions = await Runtime.runPromise(
       languagePrograms.getCompletionsAtPosition(...args),
     );
-    console.log('COMPLETIONS: ', completions);
 
     return {
       isIncomplete: completions.length > 0,
@@ -71,9 +70,6 @@ const program = Effect.gen(function* () {
   Connection.languages.diagnostics.on(async (...args) =>
     Runtime.runPromise(languagePrograms.getDocumentDiagnosticsProgram(...args)),
   );
-
-  // documentsHandler.listen(connection);
-  // connection.listen();
 });
 
 const runnable = Effect.provide(program, MainLive);

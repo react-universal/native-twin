@@ -1,10 +1,10 @@
 import * as path from 'node:path';
 import {
+  BabelCompilerContext,
   CompilerConfigContext,
-  TwinFileContext,
-  TwinFileContextLive,
+  TWIN_DEFAULT_PLUGIN_CONFIG,
   TwinNodeContext,
-  TwinPath,
+  getBabelAST,
 } from '@native-twin/compiler';
 import { matchCss } from '@native-twin/helpers/server';
 import * as Effect from 'effect/Effect';
@@ -12,6 +12,7 @@ import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
+import * as Stream from 'effect/Stream';
 import type { TransformResponse } from 'metro-transform-worker';
 import * as worker from 'metro-transform-worker';
 import type { TwinMetroTransformFn } from '../models/Metro.models.js';
@@ -31,9 +32,9 @@ export const transform: TwinMetroTransformFn = async (
   const platform = options.platform ?? 'native';
 
   return Effect.gen(function* () {
-    const { getTwinFile, transformFile } = yield* TwinFileContext;
+    const { extractJSXElementTrees, jsxElementTreeToSheets, transformAstWithSheets } =
+      yield* BabelCompilerContext;
     const ctx = yield* TwinNodeContext;
-    const twinPath = yield* TwinPath.TwinPath;
 
     const platformOutput = ctx.getOutputCSSPath(platform);
 
@@ -50,7 +51,6 @@ export const transform: TwinMetroTransformFn = async (
       const result: TransformResponse = yield* Effect.promise(() =>
         transformCSSExpo(config, projectRoot, filename, data, options),
       );
-      // console.log('RESULT: ', result);
       return result;
     }
 
@@ -61,20 +61,21 @@ export const transform: TwinMetroTransformFn = async (
     }
 
     let code = data.toString('utf-8');
-    const document = yield* getTwinFile(
-      twinPath.make.absoluteFromString(filename),
-      Option.some(code),
+    const ast = yield* Effect.sync(() => getBabelAST(code, filename));
+
+    const documentSheets = yield* extractJSXElementTrees(
+      ast,
+      TWIN_DEFAULT_PLUGIN_CONFIG,
+    ).pipe(
+      Stream.mapEffect((tree) => jsxElementTreeToSheets(tree, platform)),
+      Stream.flatMap((tree) => Stream.fromIterable(tree.all().map((x) => x.value))),
+      Stream.runCollect,
     );
 
-    const { output } = yield* transformFile(document, platform);
+    const output = yield* Effect.sync(() => transformAstWithSheets(ast, documentSheets));
 
-    // yield* Effect.log('MUTATE: ');
-
-    if (Option.isSome(output)) {
-      // console.log('OPTIONS: ', params.options);
-      code = `const __Twin___StyleSheet = require('@native-twin/jsx/sheet').StyleSheet;
-              \n\n${output.value.code}`;
-    }
+    code = `const __Twin___StyleSheet = require('@native-twin/jsx/sheet').StyleSheet;
+              \n\n${output}`;
 
     const transformed = yield* Effect.promise(() =>
       transform(config, projectRoot, filename, Buffer.from(code, 'utf-8'), options),
@@ -83,7 +84,6 @@ export const transform: TwinMetroTransformFn = async (
     return transformed;
   }).pipe(
     Effect.provide(MetroLayerWithTwinFS),
-    Effect.provide(TwinFileContextLive),
     Effect.provide(
       Layer.succeed(CompilerConfigContext, {
         inputCSS: config.twinConfig.inputCSS,

@@ -250,3 +250,23 @@ export class TreeNode<T> {
     };
   }
 }
+
+export const mapTree = <A, B>(
+  tree: Tree<A>,
+  cb: (a: TreeNode<A>, parent?: TreeNode<B>) => B,
+): Tree<B> => {
+  const newValue = mapTreeNode(tree.root);
+  const node = new Tree<B>(newValue.value);
+  node.root = newValue;
+  return node;
+
+  function mapTreeNode(node: TreeNode<A>, parent?: TreeNode<B>): TreeNode<B> {
+    const newValue = cb(node, parent);
+    const newNode = parent?.addChild(newValue, parent) ?? new TreeNode(newValue, parent);
+
+    for (const child of node.children) {
+      mapTreeNode(child, newNode);
+    }
+    return newNode;
+  }
+};

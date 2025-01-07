@@ -10,6 +10,10 @@ export {
 
 export { TwinFSContext, TwinFSContextLive } from './services/TwinFileSystem.service.js';
 
+export { TWIN_DEFAULT_PLUGIN_CONFIG } from './shared/compiler.constants.js';
+
+export { getBabelAST } from './utils/babel/babel.utils.js';
+
 export {
   TwinNodeContext,
   TwinNodeContextLive,
@@ -18,8 +22,6 @@ export {
 export * as TwinPath from './internal/fs/fs.path.js';
 
 export * as FSUtils from './internal/fs/fs.utils.js';
-
-export {transformTwinDocument} from './programs/document.programs.js'
 
 export { listenForkedStreamChanges } from './utils/effect.utils.js';
 
@@ -31,11 +33,7 @@ export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from './shared/twin.constants.js';
 
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
 
-export { TwinFileContext, TwinFileContextLive } from './services/TwinFile.service.js';
-
 export { TwinWatcherContextLive } from './services/TwinWatcher.service.js';
-
-export { BaseTwinTextDocument } from './models/TwinDocument.model.js';
 
 export type {
   AbsoluteFilePath,

@@ -9,7 +9,7 @@ const globalMappedComponents: MappedComponent[] = [];
 const createStylableComponent = <T extends Record<Prop, Target>>(
   component: string,
   styles: T,
-) => {
+): MappedComponent => {
   const mapped = {
     name: component,
     config: styles,
@@ -19,6 +19,7 @@ const createStylableComponent = <T extends Record<Prop, Target>>(
 };
 
 const createHandler = () => {
+  createStylableComponent('Twin_UnknownElement', { className: 'style' });
   createStylableComponent('Image', { className: 'style' });
   createStylableComponent('Pressable', { className: 'style' });
   createStylableComponent('SafeAreaView', { className: 'style' });

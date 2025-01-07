@@ -5,13 +5,12 @@ import * as Option from 'effect/Option';
 import * as Record from 'effect/Record';
 import * as Stream from 'effect/Stream';
 import { FSUtils, FSWatcher, TwinPath } from '../internal/fs';
-import { CompilerConfigContext } from '../services/CompilerConfig.service.js';
-import { TwinFSContext, TwinFSContextLive } from '../services/TwinFileSystem.service.js';
+import { CompilerConfigContext } from './CompilerConfig.service.js';
+import { TwinFSContext, TwinFSContextLive } from './TwinFileSystem.service.js';
 import {
   TwinNodeContext,
   TwinNodeContextLive,
-} from '../services/TwinNodeContext.service.js';
-import { TwinFileContextLive } from './TwinFile.service';
+} from './TwinNodeContext.service.js';
 
 export const TwinWatcherContextLive = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
@@ -58,6 +57,5 @@ export const TwinWatcherContextLive = Effect.gen(function* () {
   Layer.provide(FSUtils.FsUtilsLive),
   Layer.provide(TwinPath.TwinPathLive),
   Layer.provide(FSWatcher.FSWatcherContextLive),
-  Layer.provide(TwinFileContextLive),
   Layer.provide(TwinNodeContextLive),
 );

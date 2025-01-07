@@ -12,7 +12,6 @@ import {
   createCompilerConfig,
   twinLoggerLayer,
 } from '../src';
-import { TwinFileContext } from '../src/services/TwinFile.service';
 
 const outputDir = path.join(__dirname, '.cache');
 const compilerContext = Layer.succeed(

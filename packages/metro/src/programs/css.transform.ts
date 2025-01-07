@@ -14,7 +14,7 @@ export const transformCSS = Effect.gen(function* () {
   const outputPath = twin.getOutputCSSPath('web');
 
   if (platform !== 'web') {
-    return Option.none() as Option.Option<worker.TransformResponse>;
+    return Option.none<worker.TransformResponse>();
   }
 
   const { transform: lightningcssTransform } = require('lightningcss') as Awaited<
