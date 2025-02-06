@@ -18,3 +18,5 @@ export const identity = <A>(a: A): A => a;
 export function keysOf<Obj extends object>(obj: Obj): (keyof Obj)[] {
   return Object.keys(obj) as (keyof Obj)[];
 }
+
+export const removeReadonly = <T extends {}>(arr: T[] | readonly T[]): T[] => arr as T[];

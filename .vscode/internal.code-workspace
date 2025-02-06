@@ -5,12 +5,16 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
     },
     {
-      "name": "📦 @lib/arc-parser",
-      "path": "../packages/arc-parser"
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
     },
     {
       "name": "📦 @lib/helpers",
@@ -21,24 +25,12 @@
       "path": "../packages/compiler"
     },
     {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
       "name": "📦 @lib/metro",
       "path": "../packages/metro"
     },
     {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
       "name": "📦 @lib/dev-tools",
       "path": "../packages/dev-tools"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
     },
     {
       "name": "📦 @lib/language-service",
@@ -57,12 +49,20 @@
       "path": "../packages/preset-tailwind"
     },
     {
+      "name": "📦 @lib/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
       "name": "📦 @lib/vite-plugin",
       "path": "../packages/vite-plugin"
     },
     {
       "name": "📦 @lib/adapters",
       "path": "../packages/adapters"
+    },
+    {
+      "name": "📦 @lib/builder",
+      "path": "../packages/builder"
     },
     {
       "name": "📦 @lib/babel",

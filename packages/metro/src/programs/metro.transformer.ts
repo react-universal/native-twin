@@ -27,11 +27,10 @@ export const transform: TwinMetroTransformFn = async (
   filename,
   data,
   options,
-) => {
-  const twinConfig = config.twinConfig;
-  const platform = options.platform ?? 'native';
-
-  return Effect.gen(function* () {
+) =>
+  Effect.gen(function* () {
+    const twinConfig = config.twinConfig;
+    const platform = options.platform ?? 'native';
     const { extractJSXElementTrees, jsxElementTreeToSheets, transformAstWithSheets } =
       yield* BabelCompilerContext;
     const ctx = yield* TwinNodeContext;
@@ -75,7 +74,7 @@ export const transform: TwinMetroTransformFn = async (
     const output = yield* Effect.sync(() => transformAstWithSheets(ast, documentSheets));
 
     code = `const __Twin___StyleSheet = require('@native-twin/jsx/sheet').StyleSheet;
-              \n\n${output}`;
+            \n\n${output}`;
 
     const transformed = yield* Effect.promise(() =>
       transform(config, projectRoot, filename, Buffer.from(code, 'utf-8'), options),
@@ -97,4 +96,3 @@ export const transform: TwinMetroTransformFn = async (
     Logger.withMinimumLogLevel(LogLevel.fromLiteral(config.twinConfig.logLevel)),
     Effect.runPromise,
   );
-};

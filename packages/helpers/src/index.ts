@@ -15,6 +15,7 @@ export {
   asString,
   asArray,
   identity,
+  removeReadonly,
   keysOf,
 } from './identity.utils.js';
 

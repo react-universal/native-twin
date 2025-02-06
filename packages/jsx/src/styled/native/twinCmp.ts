@@ -1,6 +1,5 @@
 import { type ComponentType, createElement, forwardRef, useId } from 'react';
 import { groupContext } from '../../context/styled.context.js';
-// import { groupContext } from '../../context/index.js';
 import type { ComponentConfig } from '../../types/styled.types.js';
 import { getComponentType } from '../../utils/react.utils.js';
 import { useStyledProps } from '../hooks/useStyledProps.js';
@@ -13,10 +12,18 @@ export function twinComponent(
 ) {
   let component = baseComponent;
   const reactID = useId();
-  const componentID = props?.['_twinComponentID'];
+  const componentID = props?.['_twinInjected']?.id;
   const id = componentID ?? reactID;
   // TODO: USE COMPONENT STYLES
-  const { componentHandler } = useStyledProps(props ?? {}, configs);
+  const { componentHandler, handlers, compiledProps } = useStyledProps(
+    props ?? ({} as unknown as any),
+    configs,
+  );
+
+  // const newProps: any = {
+  //   ...props,
+  //   ...handlers,
+  // };
 
   props = Object.assign({ ref }, props);
 
@@ -25,6 +32,29 @@ export function twinComponent(
       delete props[x.source];
     }
   }
+
+  if (compiledProps.length > 0) {
+    for (const style of compiledProps) {
+      const oldProps = props[style.target] ? { ...props[style.target] } : {};
+      props[style.target] = Object.assign(style.styles, oldProps);
+    }
+  }
+  console.log('REF: ', ref, props);
+
+  if (componentHandler.metadata.isGroupParent) {
+    return createElement(
+      groupContext.Provider,
+      {
+        value: componentHandler.id,
+      },
+      createElement(component, { ...props, ref }),
+    );
+  }
+
+  props = {
+    ...props,
+    ...handlers,
+  };
 
   // if (
   //   componentHandler?.metadata.hasPointerEvents ||

@@ -1,9 +1,28 @@
-import type { Parser } from './Parser.js';
+import { createErrorMsg, endOfInputErrorMsg } from '../utils/parser.utils.js';
+import { getNextCharWidth, getUtf8Char } from '../utils/unicode.utils.js';
+import { Parser, updateParserError, updateParserState } from './Parser.js';
 import { choice } from './choice.parser.js';
 import { many1 } from './many.parser.js';
 import { char, letters, regex, whitespace } from './string.parser.js';
 
 const regexDigits = /^[0-9]+/;
+
+export const digit = new Parser((state) => {
+  if (state.isError) return state;
+
+  const { cursor, target } = state;
+  if (target.byteLength > cursor) {
+    const charWidth = getNextCharWidth(cursor, target);
+    if (cursor + charWidth <= target.byteLength) {
+      const char = getUtf8Char(cursor, charWidth, target);
+      return target.byteLength && char && regexDigits.test(char)
+        ? updateParserState(state, char, cursor + charWidth)
+        : updateParserError(state, createErrorMsg('digit', cursor, `got: '${char}'`));
+    }
+  }
+
+  return updateParserError(state, endOfInputErrorMsg('digit', cursor));
+});
 
 export const digits: Parser<string> = regex(regexDigits);
 export const plusOrMinus = choice([char('+'), char('-')]);

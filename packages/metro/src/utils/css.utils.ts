@@ -68,6 +68,7 @@ export const transformCSSExpo = async (
         ...(jsModuleResults.output[0] as ExpoJsOutput).data,
         // Append additional css metadata for static extraction.
         css: {
+          externalImports: [],
           code: cssCode,
           lineCount: countLines(cssCode),
           map: [],

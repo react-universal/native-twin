@@ -17,6 +17,22 @@ import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
 
 export const useStyledProps = (props: JSXInternalProps, configs: ComponentConfig[]) => {
   const injectedProps: TwinInjectedProp | undefined = props?.['_twinInjected'];
+  // if (injectedProps) {
+  //   console.log(
+  //     'INJECTED: ',
+  //     JSON.stringify(
+  //       {
+  //         unabled: props['unabled'],
+  //         twin: props._twinInjected,
+  //         parent: props.__parentProps ?? null,
+  //         ord: props['ord'] ?? null,
+  //       },
+  //       null,
+  //       2,
+  //     ),
+  //   );
+  //   console.log('\n\n');
+  // }
   const reactID = useId();
   const id = injectedProps?.id ?? reactID;
   const styledCtx = useAtomValue(styledContext);

@@ -1,4 +1,4 @@
-import type { ParserState } from '../types.js';
+import { InputTypes, type ParserState } from '../types.js';
 import { Parser, updateParserError, updateParserResult } from './Parser.js';
 
 export const fail = (errorData: string) => {
@@ -21,9 +21,15 @@ export const succeedWith = Parser.of;
 
 export const endOfInput = new Parser<null>((state) => {
   if (state.isError) return state;
-  const { cursor, target } = state;
-  if (cursor !== target.length) {
-    return updateParserError(state, `Expected end of input but got '${target[cursor]}'`);
+  const { cursor, target, inputType } = state;
+
+  if (cursor !== target.byteLength) {
+    const errorByte =
+      inputType === InputTypes.STRING
+        ? String.fromCharCode(target.getUint8(cursor))
+        : `0x${target.getUint8(cursor).toString(16).padStart(2, '0')}`;
+
+    return updateParserError(state, `Expected end of input but got '${errorByte}'`);
   }
 
   return updateParserResult(state, null);

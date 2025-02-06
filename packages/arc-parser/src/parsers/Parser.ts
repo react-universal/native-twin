@@ -1,18 +1,22 @@
-import type {
-  ParserError,
-  ParserState,
-  ParserSuccess,
-  ResultType,
-  StateTransformerFunction,
+import {
+  type InputType,
+  InputTypes,
+  type ParserError,
+  type ParserState,
+  type ParserSuccess,
+  type ResultType,
+  type StateTransformerFunction,
+  isTypedArray,
 } from '../types.js';
+import { encoder } from '../utils/unicode.utils.js';
 
-export class Parser<Result, Data = any> {
-  transform: StateTransformerFunction<Result, Data>;
-  constructor(transform: StateTransformerFunction<Result, Data>) {
+export class Parser<Target, Data = any> {
+  transform: StateTransformerFunction<Target, Data>;
+  constructor(transform: StateTransformerFunction<Target, Data>) {
     this.transform = transform;
   }
 
-  run(target: string): ResultType<Result, Data> {
+  run(target: string): ResultType<Target, Data> {
     const state = createParserState(target);
 
     const resultState = this.transform(state);
@@ -34,7 +38,7 @@ export class Parser<Result, Data = any> {
     };
   }
 
-  map<Result2>(fn: (x: Result) => Result2): Parser<Result2, Data> {
+  map<Result2>(fn: (x: Target) => Result2): Parser<Result2, Data> {
     const parser = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
       const newState = parser(state);
@@ -44,7 +48,7 @@ export class Parser<Result, Data = any> {
   }
 
   mapFromState<Result2>(
-    fn: (x: ParserState<Result, Data>, initialIndex: number) => Result2,
+    fn: (x: ParserState<Target, Data>, initialIndex: number) => Result2,
   ): Parser<Result2, Data> {
     const parser = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
@@ -54,7 +58,7 @@ export class Parser<Result, Data = any> {
     });
   }
 
-  chain<Result2>(fn: (x: Result) => Parser<Result2>): Parser<Result2, Data> {
+  chain<Result2>(fn: (x: Target) => Parser<Result2>): Parser<Result2, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
       const newState = p(state);
@@ -63,11 +67,11 @@ export class Parser<Result, Data = any> {
     });
   }
 
-  errorMap(fn: (error: ParserError<Data>) => string): Parser<Result, Data> {
+  errorMap(fn: (error: ParserError<Data>) => string): Parser<Target, Data> {
     const p = this.transform;
-    return new Parser((state): ParserState<Result, Data> => {
+    return new Parser((state): ParserState<Target, Data> => {
       const nextState = p(state);
-      if (!nextState.isError) return nextState as unknown as ParserState<Result, Data>;
+      if (!nextState.isError) return nextState as unknown as ParserState<Target, Data>;
 
       return updateParserError(
         nextState,
@@ -97,7 +101,7 @@ export class Parser<Result, Data = any> {
   }
 
   mapFromData<Result2>(
-    fn: (data: ParserSuccess<Result, Data>) => Result2,
+    fn: (data: ParserSuccess<Target, Data>) => Result2,
   ): Parser<Result2, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
@@ -117,7 +121,7 @@ export class Parser<Result, Data = any> {
   }
 
   chainFromData<Result2>(
-    fn: (data: { result: Result; data: Data }) => Parser<Result2, Data>,
+    fn: (data: { result: Target; data: Data }) => Parser<Result2, Data>,
   ): Parser<Result2, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
@@ -128,7 +132,7 @@ export class Parser<Result, Data = any> {
     });
   }
 
-  mapData<Data2>(fn: (data: Data) => Data2): Parser<Result, Data2> {
+  mapData<Data2>(fn: (data: Data) => Data2): Parser<Target, Data2> {
     const p = this.transform;
     return new Parser((state) => {
       const newState = p(state);
@@ -139,8 +143,8 @@ export class Parser<Result, Data = any> {
   fork<F>(
     target: string,
     data: Data,
-    errorFn: (errorMsg: string | null, parserState: ParserState<Result, Data>) => F,
-    successFn: (result: Result, parserState: ParserState<Result, Data>) => F,
+    errorFn: (errorMsg: string | null, parserState: ParserState<Target, Data>) => F,
+    successFn: (result: Target, parserState: ParserState<Target, Data>) => F,
   ) {
     const state = createParserState(target, data);
     const newState = this.transform(state);
@@ -149,7 +153,7 @@ export class Parser<Result, Data = any> {
     return successFn(newState.result, newState);
   }
 
-  apply<Result2>(fn: (x?: Result) => Parser<Result2, Data>): Parser<Result2, Data> {
+  apply<Result2>(fn: (x?: Target) => Parser<Result2, Data>): Parser<Result2, Data> {
     const transform = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
       const newState = transform(state);
@@ -180,11 +184,34 @@ export const updateParserState = <Result, Result2, Data>(
   cursor,
 });
 export const createParserState = <Data>(
-  target: string,
+  target: InputType,
   data: Data | null = null,
 ): ParserState<null, Data | null> => {
+  let dataView: DataView;
+
+  let inputType: InputTypes;
+  if (typeof target === 'string') {
+    const bytes = encoder.encode(target);
+    dataView = new DataView(bytes.buffer);
+    inputType = InputTypes.STRING;
+  } else if (target instanceof ArrayBuffer) {
+    dataView = new DataView(target);
+    inputType = InputTypes.ARRAY_BUFFER;
+  } else if (isTypedArray(target)) {
+    dataView = new DataView(target.buffer);
+    inputType = InputTypes.TYPED_ARRAY;
+  } else if (target instanceof DataView) {
+    dataView = target;
+    inputType = InputTypes.DATA_VIEW;
+  } else {
+    throw new Error(
+      `Cannot process input. Must be a string, ArrayBuffer, TypedArray, or DataView. but got ${typeof target}`,
+    );
+  }
+
   return {
-    target,
+    target: dataView,
+    inputType,
     isError: false,
     error: null,
     result: null,

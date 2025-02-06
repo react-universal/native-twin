@@ -24,6 +24,7 @@ const make = Effect.gen(function* () {
       yield* getProjectFilesFromConfig(yield* Ref.get(twinConfigRef), 'sync'),
     ),
   );
+  
   const runningPlatformsRef = yield* SubscriptionRef.make(HashSet.empty<string>());
   const twRunnersRef = yield* Ref.get(twinConfigRef).pipe(
     Effect.flatMap((config) =>

@@ -63,10 +63,10 @@
     "test": "npx vitest"
   },
   "devDependencies": {
-    "@types/react": "~18.2.79"
+    "@types/react": "~18.3.12"
   },
   "peerDependencies": {
-    "react": "~18.2.0"
+    "react": "18.3.1"
   },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*",

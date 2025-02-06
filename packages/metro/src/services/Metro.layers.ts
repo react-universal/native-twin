@@ -24,9 +24,10 @@ export const MetroLayerWithTwinFS = TwinFSContextLive.pipe(
   Layer.provideMerge(FSUtils.FsUtilsLive),
   Layer.provideMerge(TwinPath.TwinPathLive),
 );
-export const MetroLayerWithTwinWatcher = TwinWatcherContextLive.pipe(
+export const MetroLayerWithTwinWatcher = MetroLayerWithTwinFS.pipe(
   Layer.provideMerge(TwinFSContextLive),
   Layer.provideMerge(MetroMainLayer),
+  Layer.provideMerge(TwinWatcherContextLive),
 );
 
 export const createMetroInnerLayer = (nativeTwinConfig: NodeWithNativeTwinOptions) =>

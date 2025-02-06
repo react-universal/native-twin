@@ -3,6 +3,7 @@ import type React from 'react';
 
 export interface JSXInternalProps extends Record<string, any>, RuntimeTwinComponentProps {
   twEnabled?: boolean;
+  __parentProps: RuntimeTwinComponentProps['_twinInjected'];
   // _twinComponentID?: string;
   // _twinComponentSheet: RuntimeComponentEntry[];
   // _twinComponentTemplateEntries: ComponentTemplateEntryProp[];

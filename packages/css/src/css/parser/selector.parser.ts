@@ -125,7 +125,7 @@ export const ParseSelectorStrict = P.coroutine((run) => {
  ************ SELECTOR WEAK ***********
  */
 
-export const ParseCssSelectorWeak = P.sequenceOf([P.char('.'), P.everyCharUntil('{')])
+export const ParseCssSelectorWeak = P.sequenceOf([P.char('.'), P.everyCharUntil(P.char('{'))])
   .map((x) => x[0] + x[1])
   .map((selector: string) => ({
     group: getSelectorGroup(selector),

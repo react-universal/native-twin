@@ -11,7 +11,10 @@ export const GetAtRuleConditionToken = P.sequenceOf([
   parseDeclarationProperty,
   ParseCssDimensions,
 ]);
-export const SkipRules = P.sequenceOf([P.skip(P.everyCharUntil('}')), P.char('}')]);
+export const SkipRules = P.sequenceOf([
+  P.skip(P.everyCharUntil(P.char('}'))),
+  P.char('}'),
+]);
 
 export const ParseCssRuleBlock = P.coroutine((run) => {
   const selector = run(ParseSelectorStrict);

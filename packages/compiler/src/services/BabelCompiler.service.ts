@@ -87,8 +87,26 @@ const transformAstWithSheets = (
         if (!RA.contains(propNames, name.node.name)) continue;
         attr.remove();
       }
+      const props = twinSheet.toObject();
       twinAstInject.push(twinInjectAst);
       addJsxExpressionAttribute(twinSheet.element.ast.node, '_twinInjected', twinJsxAst);
+      addJsxExpressionAttribute(
+        twinSheet.element.ast.node,
+        '_twinElementID',
+        t.stringLiteral(props.id),
+      );
+      if (twinSheet.parentSheet) {
+        addJsxExpressionAttribute(
+          twinSheet.element.ast.node,
+          '_twinElementParentID',
+          t.stringLiteral(props.parentID),
+        );
+      }
+      addJsxExpressionAttribute(
+        twinSheet.element.ast.node,
+        '_twinElementOrder',
+        t.numericLiteral(props.index),
+      );
     }
   }
 

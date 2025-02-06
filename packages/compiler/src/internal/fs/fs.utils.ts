@@ -81,6 +81,7 @@ const make = Effect.gen(function* () {
     getFileMD5,
     mkdirCached,
     readFile,
+    exists: fs.exists,
   } as const;
 });
 

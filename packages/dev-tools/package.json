@@ -48,9 +48,12 @@
     "eventemitter3": "^5.0.1"
   },
   "peerDependencies": {
-    "expo": "~51.0.39",
-    "react": "~18.2.0",
-    "react-dom": "~18.2.0"
+    "expo": "^52.0.30",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "volta": {
+    "node": "20.18.2"
   },
   "publishConfig": {
     "access": "public",

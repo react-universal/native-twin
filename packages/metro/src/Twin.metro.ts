@@ -1,8 +1,8 @@
 import path from 'node:path';
 import {
+  FSUtils,
   type NodeWithNativeTwinOptions,
   TwinNodeContext,
-  TwinWatcherContextLive,
   twinLoggerLayer,
 } from '@native-twin/compiler';
 import * as Effect from 'effect/Effect';
@@ -15,7 +15,10 @@ import type { GetTransformOptions } from 'metro-config';
 import type { CustomResolver } from 'metro-resolver';
 import type { TwinMetroConfig } from './models/Metro.models.js';
 import { getMetroSettings } from './programs/getMetroSettings.js';
-import { createMetroInnerLayer } from './services/Metro.layers.js';
+import {
+  MetroLayerWithTwinWatcher,
+  createMetroInnerLayer,
+} from './services/Metro.layers.js';
 
 export function withNativeTwin(
   metroConfig: TwinMetroConfig,
@@ -25,7 +28,7 @@ export function withNativeTwin(
   const runtimeSync = ManagedRuntime.make(MetroLive);
 
   const runtimeAsync = ManagedRuntime.make(
-    TwinWatcherContextLive.pipe(
+    MetroLayerWithTwinWatcher.pipe(
       Layer.provideMerge(MetroLive),
       Layer.provide(twinLoggerLayer),
     ),
@@ -85,8 +88,17 @@ export function withNativeTwin(
       if (!options.platform) return result;
 
       const platform = options.platform;
+      const fs = yield* FSUtils.FsUtils;
       const ctx = yield* TwinNodeContext;
       yield* Ref.update(ctx.state.runningPlatforms.ref, (x) => HashSet.add(x, platform));
+
+      const platformOutput = ctx.getOutputCSSPath(platform);
+      if (!(yield* fs.exists(platformOutput))) {
+        yield* fs
+          .mkdirCached(fs.path_.make.absoluteFromString(path.dirname(platformOutput)))
+          .pipe(Effect.tapError(() => Effect.logError('cant create twin output')));
+        yield* fs.writeFileCached({ path: platformOutput });
+      }
 
       yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
 

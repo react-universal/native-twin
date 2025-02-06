@@ -43,7 +43,7 @@ export const parseApplyClassName = P.sequenceOf([
 
 /** Match value inside [...] */
 export const parseArbitraryValue = P.between(P.char('['))(P.char(']'))(
-  P.everyCharUntil(']'),
+  P.everyCharUntil(P.char(']')),
 ).map((x) => `[${x}]`);
 
 /** Match color modifiers like: `.../10` or `.../[...]` */

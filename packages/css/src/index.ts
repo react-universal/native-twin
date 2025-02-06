@@ -121,6 +121,7 @@ export type {
   AnyStyle,
   /** @category — RN Types */
   CompleteStyle,
+  NamedStyles,
 } from './react-native/rn.types.js';
 
 // HTML

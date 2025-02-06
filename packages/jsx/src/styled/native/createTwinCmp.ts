@@ -11,17 +11,15 @@ import { useStyledProps } from '../hooks/useStyledProps.js';
 
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 
-export const NativeTwinHOC = <
+export function NativeTwinHOC<
   const T extends ReactComponent<any>,
   const M extends StylableComponentConfigOptions<any>,
->(
-  Component: Parameters<JSXFunction>[0],
-  mapping: StylableComponentConfigOptions<T> & M,
-) => {
+>(Component: Parameters<JSXFunction>[0], mapping: StylableComponentConfigOptions<T> & M) {
   const component = Component;
   const configs = getNormalizeConfig(mapping);
+  console.log('HOC');
 
-  const TwinComponent = forwardRef((props: any, ref: any) => {
+  const TwinComponent = forwardRef(function NativeTwinHOC(props: any, ref: any) {
     const { componentHandler, compiledProps, handlers } = useStyledProps(props, configs);
 
     const newProps = {
@@ -29,6 +27,7 @@ export const NativeTwinHOC = <
       ...handlers,
     };
 
+    console.log('PROPS: ', newProps?._twinInjected?.id);
     if (compiledProps.length > 0) {
       for (const style of compiledProps) {
         const oldProps = newProps[style.target] ? { ...newProps[style.target] } : {};
@@ -45,16 +44,19 @@ export const NativeTwinHOC = <
         createElement(component, { ...newProps, ref }),
       );
     }
+    if (newProps?._twinInjected) {
+      delete newProps._twinInjected;
+    }
 
     return createElement(component, { ...newProps, ref });
   });
   stylizedComponents.set(Component, TwinComponent);
 
   if (__DEV__) {
-    TwinComponent.displayName = `Twin(${getComponentDisplayName(Component)})`;
+    TwinComponent.displayName = `Twin.${getComponentDisplayName(Component)}`;
   }
 
   return TwinComponent;
-};
+}
 
 export const createStylableComponent = NativeTwinHOC;

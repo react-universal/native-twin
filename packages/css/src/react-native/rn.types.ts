@@ -1,5 +1,11 @@
-import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import type {
+  ImageStyle,
+  StyleSheet,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 
+export type NamedStyles<T> = StyleSheet.NamedStyles<T>;
 export type AnyStyle = ImageStyle | TextStyle | ViewStyle;
 
 export interface CompleteStyle

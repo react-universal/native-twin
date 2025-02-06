@@ -1,6 +1,6 @@
 import { cx, tw } from '@native-twin/core';
 import { createElement, forwardRef } from 'react';
-import type { JSXFunction, JSXInternalProps } from '../../types/jsx.types.js';
+import type { JSXFunction } from '../../types/jsx.types.js';
 import { getNormalizeConfig } from '../../utils/config.utils.js';
 import { REACT_FORWARD_REF_SYMBOL } from '../../utils/constants.js';
 
@@ -8,7 +8,7 @@ import { REACT_FORWARD_REF_SYMBOL } from '../../utils/constants.js';
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 
 type JSXTarget = Record<string, any> | Record<string, any>[];
-export const createStylableComponent = (baseComponent: any, mapping: any): any => {
+export const createStylableComponent = (baseComponent: any, mapping: any) => {
   const configs = getNormalizeConfig(mapping);
 
   if (configs.length === 0) {
@@ -21,10 +21,7 @@ export const createStylableComponent = (baseComponent: any, mapping: any): any =
    * Into this:
    *   <View style={{ $$css: true, "text-red-500": "text-red-500"}} />
    */
-  const twinComponent = forwardRef(function TwinComponent(
-    { ...props }: JSXInternalProps,
-    ref: any,
-  ) {
+  const twinComponent = forwardRef(function TwinComponent({ ...props }: any, ref: any) {
     if (props['twEnabled'] === false) {
       return createElement(baseComponent, props);
     }

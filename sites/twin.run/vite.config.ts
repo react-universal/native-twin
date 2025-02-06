@@ -59,6 +59,7 @@ export default defineConfig((): UserConfig => {
     define: {
       rootDirectory: JSON.stringify(__dirname),
     },
+    builder: {},
     optimizeDeps: {
       include: [
         // prevent vite from reloading the whole page when starting a worker (so 2 times in a row after cleaning the vite cache - for the editor then the textmate workers)

@@ -3,6 +3,6 @@
   "compilerOptions": {
     "outDir": "build/esm",
     "declarationDir": "build/dts",
-    "stripInternal": true
+    "stripInternal": false
   }
 }

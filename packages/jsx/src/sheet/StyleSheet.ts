@@ -1,5 +1,5 @@
 import type { __Theme__ } from '@native-twin/core';
-import { StyleSheetAdapter } from '@native-twin/core';
+import { StyleSheetAdapter, sheetEntryToStyle } from '@native-twin/core';
 import { type AnyStyle, type SheetEntry, getRuleSelectorGroup } from '@native-twin/css';
 import {
   type RuntimeJSXStyle,
@@ -12,6 +12,7 @@ import {
 import { type Atom, atom } from '@native-twin/helpers/react';
 import { StyleSheet as NativeSheet, Platform } from 'react-native';
 import type { ComponentState } from '../store/components.store.js';
+import { styledContext } from '../store/observables/styles.obs.js';
 import { tw } from './native-tw.js';
 
 export const componentsState: Map<string, Atom<ComponentState>> = new Map();
@@ -30,11 +31,40 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
   }
 
   toNativeStyles(entries: SheetEntry[]): AnyStyle {
-    return {};
+    const config = this.twinFn.config;
+    const styles = entries
+      .map((x) =>
+        sheetEntryToStyle(
+          {
+            className: x.className,
+            declarations: x.declarations.map((decl) =>
+              compileEntryDeclaration(decl, {
+                baseRem: config.root.rem,
+                platform: Platform.OS,
+              }),
+            ),
+            group: getRuleSelectorGroup(x.selectors),
+            important: x.important,
+            inherited: false,
+            precedence: x.precedence,
+          },
+          styledContext.get(),
+        ),
+      )
+      .filter((x) => x !== null);
+    return this.flatten(styles);
   }
 
   toRuntimeDecls(entries: SheetEntry[]): RuntimeSheetDeclaration[] {
-    return [];
+    const config = this.twinFn.config;
+    return entries
+      .flatMap((entry) => entry.declarations)
+      .map((decl) =>
+        compileEntryDeclaration(decl, {
+          baseRem: config.root.rem,
+          platform: Platform.OS,
+        }),
+      );
   }
 
   getComponentByID(id: string, templates: TwinInjectedProp['templateEntries'] = []) {

@@ -1,5 +1,4 @@
-// import './wdyr';
-// import './globals.css';
+import './polyfills.js'
 import { registerRootComponent } from 'expo';
 import App from './App';
 import twinConfig from './tailwind.config';

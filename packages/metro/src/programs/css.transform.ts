@@ -71,6 +71,7 @@ export const transformCSS = Effect.gen(function* () {
 
         // Append additional css metadata for static extraction.
         css: {
+          externalImports: [],
           code: cssCode,
           lineCount: countLines(cssCode),
           map: [],
