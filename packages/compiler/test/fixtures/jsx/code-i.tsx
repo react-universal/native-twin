@@ -1,5 +1,5 @@
 // @ts-noCheck
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 
 const buttonVariants = createVariants({
   base: 'py-5 m-1 rounded-md items-center justify-center group-hover:bg-red-400',

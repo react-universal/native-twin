@@ -20,7 +20,7 @@ import { JSXElementSheet } from '../models/CompilerStyleSheet.js';
 import type { TwinJSXElement } from '../models/JSXElement.model.js';
 import type { NativeTwinPluginConfiguration } from '../shared/compiler.constants.js';
 import * as babelPredicates from '../utils/babel/babel.predicates.js';
-import { addJsxExpressionAttribute } from '../utils/babel/babel.utils.js';
+import { addJsxExpressionAttribute, getBabelBindingImportSource } from '../utils/babel/babel.utils.js';
 import { TwinNodeContext, TwinNodeContextLive } from './TwinNodeContext.service.js';
 
 export interface JSXElementTree<T> {
@@ -42,6 +42,9 @@ const make = Effect.gen(function* () {
     memberExpressionIsReactImport,
     identifierIsReactImport,
     extractJSXElementTrees,
+    extractJSXRootElements,
+    resolveJSXBinding,
+    resolveJSXElementTree,
     jsxElementTreeToSheets: (tree: Tree.Tree<TwinJSXElement>, platform: string) =>
       Effect.map(getTwForPlatform(platform), (sheet) =>
         Tree.mapTree<TwinJSXElement, JSXElementSheet>(tree, ({ value }, parent) =>
@@ -62,6 +65,17 @@ export const BabelCompilerContext = Context.GenericTag<BabelCompilerContext>(
 export const BabelCompilerContextLive = Layer.effect(BabelCompilerContext, make).pipe(
   Layer.provide(TwinNodeContextLive),
 );
+
+const resolveJSXBinding = (ast: NodePath<t.JSXElement>) =>
+  Option.Do.pipe(
+    Option.bind('elementName', () =>
+      Option.liftPredicate(ast.node.openingElement.name, (x) => t.isJSXIdentifier(x)),
+    ),
+    Option.bind('binding', ({ elementName }) =>
+      Option.fromNullable(ast.scope.getBinding(elementName.name)),
+    ),
+    Option.bind('importSource', ({ binding }) => getBabelBindingImportSource(binding)),
+  );
 
 const transformAstWithSheets = (
   ast: ParseResult<t.File>,
@@ -151,6 +165,44 @@ const mapTwinEntriesToSheetHandler = (entries: SheetEntry[], ctx: CompilerContex
   };
 };
 
+export const extractJSXRootElements = (ast: ParseResult<t.File>) => {
+  return Stream.async<NodePath<t.JSXElement>>((emit) => {
+    traverse(
+      ast,
+      Transforms.TwinVisitors.createBabelVisitors(
+        Transforms.TwinVisitors.AddRootJSXElementPathToState,
+        {
+          Program: {
+            exit() {
+              emit.chunk(Chunk.fromIterable(this.extracted)).then(() => emit.end());
+            },
+          },
+        },
+      ),
+      undefined,
+      {
+        extracted: [],
+        dependencies: [],
+      },
+    );
+  });
+};
+
+const resolveJSXElementTree = (
+  element: NodePath<t.JSXElement>,
+): Tree.Tree<NodePath<t.JSXElement>> => {
+  const tree = new Tree.Tree(element);
+  getJSXElementChilds(tree.root);
+
+  return tree;
+  function getJSXElementChilds(parent: Tree.TreeNode<NodePath<t.JSXElement>>) {
+    for (const child of parent.value.get('children').filter((x) => x.isJSXElement())) {
+      const childLeave = parent.addChild(child, parent);
+      getJSXElementChilds(childLeave);
+    }
+  }
+};
+
 const extractJSXElementTrees = (
   ast: ParseResult<t.File>,
   config: NativeTwinPluginConfiguration,
@@ -173,6 +225,7 @@ const extractJSXElementTrees = (
       {
         extracted: [],
         config,
+        dependencies: [],
       },
     );
   }).pipe(Stream.map((x) => Transforms.getJSXElementTree(x)));

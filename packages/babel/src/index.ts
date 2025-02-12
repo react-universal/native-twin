@@ -20,6 +20,7 @@ const NodeMainLayerSync = Layer.empty.pipe(
 );
 
 const allowed = new Set<string>();
+const visited = new Set<string>();
 const program = Effect.scoped(
   Effect.gen(function* () {
     const ctx = yield* JSXImportPluginContext;
@@ -28,28 +29,40 @@ const program = Effect.scoped(
       name: '@native-twin/babel-plugin',
       manipulateOptions(opts, parserOpts) {
         if (ctx.isValidFile(opts.filename)) {
-          console.log('\n\n');
-          console.log('parser_options: ', parserOpts);
-          if (opts.plugins) {
-            (opts.plugins as (PluginObj & { key: string; options: object })[])
-              .flatMap((x) => {
-                if (x.options && Object.keys(x.options).length > 0) {
-                  return [
-                    {
-                      name: x.key,
-                      options: x.options,
-                    },
-                  ];
-                }
-                return [];
-              })
-              .forEach((x) => {
-                console.log(x);
-              });
-          }
+          // console.log('\n\n');
+          // console.log('parser_options: ', parserOpts);
+          // if (opts.plugins) {
+          //   (opts.plugins as (PluginObj & { key: string; options: object })[]).flatMap(
+          //     (x) => {
+          //       if (x.options && Object.keys(x.options).length > 0) {
+          //         return [
+          //           {
+          //             name: x.key,
+          //             options: x.options,
+          //           },
+          //         ];
+          //       }
+          //       return [];
+          //     },
+          //   );
+          // }
         }
       },
       visitor: {
+        Program: {
+          enter(_, state) {
+            if (state.filename) {
+              visited.add(state.filename);
+
+              if (visited.size > 1 && state.filename.endsWith('.tsx')) {
+                console.group('LOG_VISITS');
+                console.log('VISITED: ', Array.from(visited.values()));
+                console.log('ALLOWED: ', allowed.size);
+                console.groupEnd();
+              }
+            }
+          },
+        },
         MemberExpression(path, state) {
           if (!state.filename || !ctx.isValidFile(state.filename)) return;
           if (!allowed.has(state.filename)) {
@@ -78,6 +91,7 @@ function nativeTwinBabelPlugin(
   options: TwinBabelPluginOptions,
   cwd: string,
 ): PluginObj {
+  // console.log('OPTIONS: ', options);
   return program.pipe(
     Effect.provide(JSXImportPluginContext.make(options, cwd)),
     Effect.provide(NodeMainLayerSync),

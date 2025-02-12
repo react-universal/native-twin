@@ -52,7 +52,7 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
         ),
       )
       .filter((x) => x !== null);
-    return this.flatten(styles);
+    return styles as any;
   }
 
   toRuntimeDecls(entries: SheetEntry[]): RuntimeSheetDeclaration[] {

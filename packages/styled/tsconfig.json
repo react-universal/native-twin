@@ -3,9 +3,8 @@
   "compilerOptions": {
     "module": "NodeNext",
     "jsx": "react-native",
-    "moduleResolution": "nodenext",
-    "rootDir": "src"
+    "moduleResolution": "nodenext"
   },
-  "include": ["src"],
+  "include": ["src", "test"],
   "exclude": ["build"]
 }

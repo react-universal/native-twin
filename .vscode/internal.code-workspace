@@ -13,16 +13,20 @@
       "path": "../packages/native-twin"
     },
     {
+      "name": "📦 @lib/styled",
+      "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @lib/compiler",
+      "path": "../packages/compiler"
+    },
+    {
       "name": "📦 @lib/css",
       "path": "../packages/css"
     },
     {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/compiler",
-      "path": "../packages/compiler"
     },
     {
       "name": "📦 @lib/metro",
@@ -91,10 +95,6 @@
     {
       "name": "docs-site",
       "path": "../apps/docs-site"
-    },
-    {
-      "name": "📦 @lib/styled",
-      "path": "../packages/styled"
     }
   ],
   "settings": {

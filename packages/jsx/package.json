@@ -91,7 +91,8 @@
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
-    "@native-twin/preset-tailwind": "workspace:*"
+    "@native-twin/preset-tailwind": "workspace:*",
+    "its-fine": "^1.2.5"
   },
   "devDependencies": {
     "@types/react": "~18.3.12"

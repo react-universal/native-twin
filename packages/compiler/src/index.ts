@@ -15,6 +15,11 @@ export { TWIN_DEFAULT_PLUGIN_CONFIG } from './shared/compiler.constants.js';
 export { getBabelAST } from './utils/babel/babel.utils.js';
 
 export {
+  TwinResolverContext,
+  TwinResolverContextLive,
+} from './services/TwinResolver.service.js';
+
+export {
   TwinNodeContext,
   TwinNodeContextLive,
 } from './services/TwinNodeContext.service.js';

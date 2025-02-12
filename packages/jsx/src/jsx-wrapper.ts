@@ -1,6 +1,6 @@
 // import { jsxStyles } from './jsx/jsx-styles.js';
-// import { stylizeJSXChilds } from './jsx/jsx-childs.js';
-import { stylizedComponents } from './styled/index.js';
+import { stylizeJSXChilds } from './jsx/jsx-childs.js';
+import { createStylableComponent, stylizedComponents } from './styled/index.js';
 import type { JSXFunction } from './types/jsx.types.js';
 
 /**
@@ -19,36 +19,41 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
     // This call also need to be inside the JSX transform to avoid circular dependencies
     if (process.env['NODE_ENV'] !== 'test') require('./components');
 
-    if (props?._twinInjected) {
-      console.log('___________________');
-      console.log('COMPONENT: ', type);
-      console.log('___________________');
-      console.log(
-        'FOUND: ',
-        {
-          id: props._twinInjected.id,
-          parentID: props._twinInjected.parentID,
-          isCached: stylizedComponents.has(type),
-          childs: props['children'],
-          key: rest[0],
-          isStaticChildren: rest[1],
-          __source: rest[2],
-        },
-        '\n\n',
-      );
-      console.log('___________________');
-      console.log('   ');
-    }
+    // if (props?._twinInjected) {
+    //   console.log('___________________');
+    //   console.log('COMPONENT: ', type);
+    //   console.log('___________________');
+    //   console.log(
+    //     'FOUND: ',
+    //     {
+    //       id: props._twinInjected.id,
+    //       parentID: props._twinInjected.parentID,
+    //       isCached: stylizedComponents.has(type),
+    //       childs: props['children'],
+    //       key: rest[0],
+    //       isStaticChildren: rest[1],
+    //       __source: rest[2],
+    //     },
+    //     '\n\n',
+    //   );
+    //   console.log('___________________');
+    //   console.log('   ');
+    // }
 
     // You can disable the native twin jsx by setting `twEnabled` to false
     if (props && props.twEnabled === false) {
       delete props.twEnabled;
+    } else if (stylizedComponents.has(type)) {
+      type = stylizedComponents.get(type)!;
     } else {
-      // Swap the component type with styled if it exists
-      type = stylizedComponents.get(type) ?? type;
+      if (props?._twinInjected) {
+        type = createStylableComponent(type, {});
+      }
     }
+    // Swap the component type with styled if it exists
 
-    // stylizeJSXChilds(props);
+    // console.log(props);
+    stylizeJSXChilds(props);
     // jsxStyles(props, type);
 
     // Call the original jsx function with the new type

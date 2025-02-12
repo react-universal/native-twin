@@ -47,6 +47,7 @@ export class JSXElementSheet {
         x.applyChildEntry(this.element.index, parent.element.childsSize),
       ),
     );
+
     if (parentEntries.length === 0) return this.styledProps;
 
     if (this.styledProps.length === 0) {

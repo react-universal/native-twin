@@ -86,6 +86,8 @@ const make = Effect.gen(function* () {
     isPosixFilePathString,
     getExt: path.extname,
     dirname: path.dirname,
+    extname: path.extname,
+    resolve: path.resolve,
   };
 
   function glob(

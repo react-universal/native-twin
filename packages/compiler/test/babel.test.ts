@@ -1,4 +1,4 @@
-import { Array, Effect, Stream } from 'effect';
+import { Effect, Stream } from 'effect';
 import { describe, it } from 'vitest';
 import { BabelCompilerContext, FSUtils } from '../src';
 import { TWIN_DEFAULT_PLUGIN_CONFIG } from '../src/shared/compiler.constants';
@@ -20,7 +20,10 @@ describe.only('Babel Compiler', () => {
         TWIN_DEFAULT_PLUGIN_CONFIG,
       ).pipe(
         Stream.mapEffect((tree) => jsxElementTreeToSheets(tree, 'ios')),
-        Stream.flatMap((tree) => Stream.fromIterable(tree.all().map((x) => x.value))),
+        Stream.flatMap((tree) =>
+          Stream.fromIterable(tree.all().map((x) => x.value)).pipe(
+          ),
+        ),
         Stream.tap((value) =>
           Effect.log('NODE: ', {
             index: value.element.index,

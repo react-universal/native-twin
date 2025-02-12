@@ -10,6 +10,7 @@ import * as Match from 'effect/Match';
 import * as Option from 'effect/Option';
 import * as Constants from '../shared/compiler.constants.js';
 import * as BabelUtils from '../utils/babel/babel.utils.js';
+import type { ComponentRef, ImportKind } from './TwinResolver.models.js';
 
 export interface JSXMappedAttribute {
   value: {
@@ -30,6 +31,7 @@ export class TwinJSXElement {
   ) {
     this.index = parent?.childs.indexOf(ast) ?? -1;
     const uid = this.ast.scope.getProgramParent().generateUid();
+
     const index = Hash.string(`${this.index}-${this.parent?.childsSize ?? -1}`);
     const name = Hash.string(this.name);
     const filename = Hash.string(this.filename);
@@ -39,6 +41,14 @@ export class TwinJSXElement {
 
   get childsSize(): -1 | (number & {}) {
     return this.childs.length;
+  }
+
+  get declarator() {
+    return Option.fromNullable(BabelUtils.funcJSXElementFunction(this.ast));
+  }
+
+  get ref() {
+    return getComponentRef(this.ast);
   }
 
   get filename() {
@@ -92,6 +102,10 @@ export class TwinJSXElement {
       Option.flatMap((binding) => BabelUtils.getBabelBindingImportSource(binding)),
       Option.getOrElse(() => ({ kind: 'local', source: 'unknown' })),
     );
+  }
+
+  get containerFunction() {
+    return Option.fromNullable(BabelUtils.funcJSXElementFunction(this.ast));
   }
 
   toObject() {
@@ -177,3 +191,31 @@ const getPropValueString = Match.type<t.StringLiteral | t.TemplateLiteral>().pip
   }),
   Match.exhaustive,
 );
+
+const getComponentRef = (
+  babelPath: NodePath<t.JSXElement>,
+): Option.Option<ComponentRef> =>
+  Option.Do.pipe(
+    Option.bind('elementName', () =>
+      Option.liftPredicate(babelPath.node.openingElement.name, (x) =>
+        t.isJSXIdentifier(x),
+      ),
+    ),
+    Option.bind('binding', ({ elementName }) =>
+      Option.fromNullable(babelPath.scope.getBinding(elementName.name)),
+    ),
+    Option.bind('origin', ({ binding }) =>
+      BabelUtils.getBabelBindingImportSource(binding),
+    ),
+    Option.bind('mapped', ({ elementName }) =>
+      RA.findFirst(Constants.mappedComponents, (x) => x.name === elementName.name),
+    ),
+    Option.map(
+      ({ elementName, mapped, origin }): ComponentRef => ({
+        elementName,
+        mapped,
+        importKind: origin.kind as any as ImportKind,
+        importSource: origin.source,
+      }),
+    ),
+  );

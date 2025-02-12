@@ -8,6 +8,7 @@ module.exports = function (api) {
           jsxImportSource: '@native-twin/jsx',
         },
       ],
+      '@native-twin/babel/babel',
     ],
 
     plugins: ['react-native-reanimated/plugin'],

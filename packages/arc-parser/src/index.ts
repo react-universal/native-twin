@@ -20,6 +20,7 @@ export * from './parsers/util.parsers.js';
 export * from './parsers/functional.parsers.js';
 export * from './parsers/anything.parser.js';
 export * from './parsers/everything.parser.js';
+export * from './parsers/exactly.parser.js';
 
 export type {
   InternalResultType,

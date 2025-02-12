@@ -17,14 +17,20 @@
     ]
   },
   "organizeImports": {
-    "ignore": [
-      "*/twin.run/**/*"
-    ]
+    "ignore": ["*/twin.run/**/*"]
   },
   "linter": {
     "rules": {
       "recommended": true,
       "correctness": {
+        "useExhaustiveDependencies": {
+          "level": "error",
+          "options": {
+            "hooks": [
+              {"name": "useNearestChild", "stableResult": true}
+            ]
+          }
+        },
         "noSwitchDeclarations": "off",
         "noEmptyCharacterClassInRegex": "off",
         "noChildrenProp": "off",
@@ -85,12 +91,7 @@
     "lineWidth": 90,
     "attributePosition": "multiline",
     "bracketSpacing": true,
-    "ignore": [
-      "**/.eslintrc.json",
-      "**/*.json",
-      "./.nx/cache",
-      "./.nx/workspace-data"
-    ]
+    "ignore": ["**/.eslintrc.json", "**/*.json", "./.nx/cache", "./.nx/workspace-data"]
   },
   "javascript": {
     "formatter": {

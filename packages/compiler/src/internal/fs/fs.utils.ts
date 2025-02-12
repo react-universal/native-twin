@@ -1,5 +1,7 @@
+import path from 'node:path';
 import { FileSystem } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
+import { Array, Option } from 'effect';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Hash from 'effect/Hash';
@@ -37,7 +39,7 @@ const make = Effect.gen(function* () {
     (data: { path: string; contents?: string; override?: boolean }) =>
       Effect.if(fs.exists(data.path), {
         onFalse: () =>
-          fs.writeFileString(data.path, data.contents ?? '').pipe(
+          fs.writeFileString(data.path, data.contents ?? '', { flag: 'a+' }).pipe(
             Effect.catchAllCause(() => Effect.void),
             Effect.withSpan('FsUtils.writeFileCached', { attributes: { data } }),
           ),
@@ -81,8 +83,22 @@ const make = Effect.gen(function* () {
     getFileMD5,
     mkdirCached,
     readFile,
+    findFileExtension,
     exists: fs.exists,
   } as const;
+
+  function findFileExtension(filename: string) {
+    const dirname = twinPath.dirname(filename);
+    return Effect.gen(function* () {
+      const dirFiles = yield* fs
+        .readDirectory(dirname, {
+          recursive: false,
+        })
+        .pipe(Effect.map(Array.map((x) => path.join(dirname, x))));
+
+      return Option.fromNullable(dirFiles.find((x) => x.startsWith(filename)));
+    });
+  }
 });
 
 export interface FsUtils extends Effect.Effect.Success<typeof make> {}

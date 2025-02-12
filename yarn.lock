@@ -4536,6 +4536,7 @@ __metadata:
     "@native-twin/helpers": "workspace:*"
     "@native-twin/preset-tailwind": "workspace:*"
     "@types/react": "npm:~18.3.12"
+    its-fine: "npm:^1.2.5"
     jest: "npm:*"
   peerDependencies:
     react: 18.3.1
@@ -6461,6 +6462,15 @@ __metadata:
   dependencies:
     "@types/react": "npm:^17"
   checksum: 10/a8f11067795dbcf54a54d5fdc1977816be155fd04051e850f7c85dbbad83897f846dd3e474d56bd12a7055e0ae1825185f41c6f56342fd5cd31a08df3b3fbfff
+  languageName: node
+  linkType: hard
+
+"@types/react-reconciler@npm:^0.28.0":
+  version: 0.28.9
+  resolution: "@types/react-reconciler@npm:0.28.9"
+  peerDependencies:
+    "@types/react": "*"
+  checksum: 10/2450e3df6169fb887591f2a949ca8f08439ac76c756124feeee7370f1a79b5060ba8e5f612302dc70169433e043da7f617dd7ea3b14a3c2bb39559d66b7a0986
   languageName: node
   linkType: hard
 
@@ -12153,6 +12163,17 @@ __metadata:
     html-escaper: "npm:^2.0.0"
     istanbul-lib-report: "npm:^3.0.0"
   checksum: 10/f1faaa4684efaf57d64087776018d7426312a59aa6eeb4e0e3a777347d23cd286ad18f427e98f0e3dee666103d7404c9d7abc5f240406a912fa16bd6695437fa
+  languageName: node
+  linkType: hard
+
+"its-fine@npm:^1.2.5":
+  version: 1.2.5
+  resolution: "its-fine@npm:1.2.5"
+  dependencies:
+    "@types/react-reconciler": "npm:^0.28.0"
+  peerDependencies:
+    react: ">=18.0"
+  checksum: 10/a4f1e3dd5e271e4f78df626cb56279bbddaa5f065d53bb94d266396e1d8d773c8c9ba4ed268c11e15a1879814e7c8ca1601c08759a8d666bdcfee8f4737c54fa
   languageName: node
   linkType: hard
 

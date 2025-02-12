@@ -34,6 +34,11 @@
       "import": "./build/esm/fp/index.js",
       "default": "./build/cjs/fp/index.js"
     },
+    "./KeyMap": {
+      "types": "./build/dts/fp/index.d.ts",
+      "import": "./build/esm/fp/index.js",
+      "default": "./build/cjs/fp/index.js"
+    },
     "./react": {
       "types": "./build/dts/react.d.ts",
       "import": "./build/esm/react.js",

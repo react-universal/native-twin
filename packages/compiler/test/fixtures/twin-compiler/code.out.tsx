@@ -15,7 +15,7 @@ const Button = () => {
       hasPointerEvents: true
     },
     templateEntries: []
-  }}>
+  }} _twinElementID={"#e8bfnd"} _twinElementOrder={-1}>
       <Text _twinInjected={{
       id: "#1hv7jxv",
       index: 0,
@@ -27,7 +27,7 @@ const Button = () => {
         hasPointerEvents: false
       },
       templateEntries: []
-    }}>Text1</Text>
+    }} _twinElementID={"#1hv7jxv"} _twinElementParentID={"#e8bfnd"} _twinElementOrder={0}>Text1</Text>
       <Text _twinInjected={{
       id: "#1pcytdw",
       index: 1,
@@ -43,7 +43,7 @@ const Button = () => {
         target: "style",
         value: `${true ? 'text-medium' : 'text-bold'}`
       }]
-    }}>Text3</Text>
+    }} _twinElementID={"#1pcytdw"} _twinElementParentID={"#e8bfnd"} _twinElementOrder={1}>Text3</Text>
       <View _twinInjected={{
       id: "#7rx9mp",
       index: 2,
@@ -55,7 +55,7 @@ const Button = () => {
         hasPointerEvents: false
       },
       templateEntries: []
-    }}>
+    }} _twinElementID={"#7rx9mp"} _twinElementParentID={"#e8bfnd"} _twinElementOrder={2}>
         <Span _twinInjected={{
         id: "#1xvgwoc",
         index: 0,
@@ -67,7 +67,7 @@ const Button = () => {
           hasPointerEvents: false
         },
         templateEntries: []
-      }}>Hallo</Span>
+      }} _twinElementID={"#1xvgwoc"} _twinElementParentID={"#7rx9mp"} _twinElementOrder={0}>Hallo</Span>
       </View>
     </View>;
 };
@@ -82,7 +82,7 @@ const AnyOther = () => <View _twinInjected={{
     hasPointerEvents: false
   },
   templateEntries: []
-}}>
+}} _twinElementID={"#1fmu02a"} _twinElementOrder={-1}>
     <Text _twinInjected={{
     id: "#1g7tm4h",
     index: 0,
@@ -94,7 +94,7 @@ const AnyOther = () => <View _twinInjected={{
       hasPointerEvents: false
     },
     templateEntries: []
-  }}>asd</Text>
+  }} _twinElementID={"#1g7tm4h"} _twinElementParentID={"#1fmu02a"} _twinElementOrder={0}>asd</Text>
   </View>;
 export { ChildProp };
 __Twin___StyleSheet.inject([{

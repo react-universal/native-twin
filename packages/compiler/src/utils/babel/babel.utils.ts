@@ -1,10 +1,113 @@
 import { parse } from '@babel/parser';
-import type { Binding } from '@babel/traverse';
+import type { Binding, NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import type { AnyPrimitive } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
 import * as babelPredicates from './babel.predicates.js';
+
+export const literalValueToAst = (value: any): t.Expression => {
+  if (value === null) return t.nullLiteral();
+
+  switch (typeof value) {
+    case 'function':
+      throw new Error('Unsupported value to ast');
+    case 'string':
+      return t.stringLiteral(value);
+    case 'number':
+      return t.numericLiteral(value);
+    case 'bigint':
+      return t.bigIntLiteral(value.toString());
+    case 'boolean':
+      return t.booleanLiteral(value);
+    case 'undefined':
+      return t.unaryExpression('void', t.numericLiteral(0), true);
+    default:
+      if (Array.isArray(value)) {
+        return t.arrayExpression(value.map(literalValueToAst));
+      }
+      return t.objectExpression(
+        Object.keys(value)
+          .filter((key) => typeof value[key] !== 'undefined')
+          .map((key) =>
+            t.objectProperty(t.stringLiteral(key), literalValueToAst(value[key])),
+          ),
+      );
+  }
+};
+
+const valueTypes = ['BooleanLiteral', 'StringLiteral', 'NumericLiteral'];
+
+export const astToLiteralValue = (node: any): any => {
+  if (!node) return;
+  if (valueTypes.includes(node.type)) {
+    return node.value;
+  }
+  if (node.name === 'undefined' && !node.value) {
+    return undefined;
+  }
+  if (t.isNullLiteral(node)) {
+    return null;
+  }
+  if (t.isObjectExpression(node)) {
+    return computeProps(node);
+  }
+  if (t.isArrayExpression(node)) {
+    return node.elements.reduce(
+      // @ts-ignore
+      (acc, element) => [
+        ...acc,
+        ...(element?.type === 'SpreadElement'
+          ? astToLiteralValue(element.argument)
+          : [astToLiteralValue(element)]),
+      ],
+      [],
+    );
+  }
+};
+
+function computeProps(props: any) {
+  return props.reduce((acc: any, prop: any) => {
+    if (prop.type === 'SpreadElement') {
+      return {
+        ...acc,
+        ...astToLiteralValue(prop.argument),
+      };
+    }
+    if (prop.type !== 'ObjectMethod') {
+      const val = astToLiteralValue(prop.value);
+      if (val !== undefined) {
+        return {
+          ...acc,
+          [prop.key.name]: val,
+        };
+      }
+    }
+    return acc;
+  }, {});
+}
+
+export const funcJSXElementFunction = (jsxPath: NodePath<t.JSXElement>) => {
+  const isFunction = (path: NodePath<any>) =>
+    path.isArrowFunctionExpression() ||
+    path.isFunctionDeclaration() ||
+    path.isFunctionExpression();
+
+  let compFn: NodePath<any> | null = jsxPath.findParent(isFunction);
+  while (compFn) {
+    const parent = compFn.findParent(isFunction);
+    if (parent) {
+      compFn = parent;
+    } else {
+      break;
+    }
+  }
+  if (!compFn) {
+    console.error('Cant find the component top most function');
+    return null;
+  }
+  return compFn;
+};
 
 export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {
   if (typeof value === 'string') return t.stringLiteral(value);

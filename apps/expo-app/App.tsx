@@ -11,7 +11,7 @@ const ForeignComponent = () => {
 
 export default function App() { 
   return (  
-    <View className='bg-gray-900 flex-1 items-center justify-center first:bg-green even:text-white'>
+    <View className='bg-gray-900 group flex-1 items-center justify-center first:bg-green even:text-white'>
      <ForeignComponent />
      <Text>sadasd</Text>
     </View>

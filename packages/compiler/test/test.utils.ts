@@ -9,6 +9,7 @@ import {
   TwinFSContextLive,
   TwinNodeContextLive,
   TwinPath,
+  TwinResolverContextLive,
   createCompilerConfig,
   twinLoggerLayer,
 } from '../src';
@@ -29,6 +30,7 @@ export const TestMainLive = Layer.empty.pipe(
   Layer.provideMerge(BabelCompilerContextLive),
   Layer.provideMerge(FSUtils.FsUtilsLive),
   Layer.provideMerge(TwinPath.TwinPathLive),
+  Layer.provideMerge(TwinResolverContextLive),
   Layer.provideMerge(compilerContext),
   Layer.provide(twinLoggerLayer),
 );

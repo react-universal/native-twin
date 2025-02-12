@@ -8,7 +8,7 @@ import type {
   TextInputFocusEventData,
   Touchable,
 } from 'react-native';
-import { groupContext } from '../../context/styled.context.js';
+import { ContainersContext, groupContext } from '../../context/styled.context.js';
 import { StyleSheet } from '../../sheet/StyleSheet.js';
 import { styledContext } from '../../store/observables';
 import type { JSXInternalProps } from '../../types/jsx.types.js';
@@ -17,27 +17,16 @@ import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
 
 export const useStyledProps = (props: JSXInternalProps, configs: ComponentConfig[]) => {
   const injectedProps: TwinInjectedProp | undefined = props?.['_twinInjected'];
-  // if (injectedProps) {
-  //   console.log(
-  //     'INJECTED: ',
-  //     JSON.stringify(
-  //       {
-  //         unabled: props['unabled'],
-  //         twin: props._twinInjected,
-  //         parent: props.__parentProps ?? null,
-  //         ord: props['ord'] ?? null,
-  //       },
-  //       null,
-  //       2,
-  //     ),
-  //   );
-  //   console.log('\n\n');
-  // }
+  const container = useContext(ContainersContext);
   const reactID = useId();
   const id = injectedProps?.id ?? reactID;
   const styledCtx = useAtomValue(styledContext);
   const handlers: Touchable & PressableProps = {};
   const [state, setState] = useAtom(StyleSheet.getComponentState(id));
+
+  if (container) {
+    console.log('CONTAINER: ', container);
+  }
 
   const componentHandler = useMemo(() => {
     return StyleSheet.getComponentByID(id, injectedProps?.templateEntries);
