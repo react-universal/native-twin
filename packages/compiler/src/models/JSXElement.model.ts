@@ -8,9 +8,9 @@ import * as RA from 'effect/Array';
 import * as Hash from 'effect/Hash';
 import * as Match from 'effect/Match';
 import * as Option from 'effect/Option';
+import type { ComponentRef } from '../Resolver/Models.js';
 import * as Constants from '../shared/compiler.constants.js';
 import * as BabelUtils from '../utils/babel/babel.utils.js';
-import type { ComponentRef, ImportKind } from './TwinResolver.models.js';
 
 export interface JSXMappedAttribute {
   value: {
@@ -212,10 +212,9 @@ const getComponentRef = (
     ),
     Option.map(
       ({ elementName, mapped, origin }): ComponentRef => ({
-        elementName,
+        elementName: elementName.name,
         mapped,
-        importKind: origin.kind as any as ImportKind,
-        importSource: origin.source,
+        origin,
       }),
     ),
   );

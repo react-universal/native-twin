@@ -16,10 +16,11 @@ const plugins: babelParser.ParserPlugin[] = [
   'nullishCoalescingOperator',
 ];
 
-export const parserOptions: babelParser.ParserOptions = Object.freeze({
+export const parserOptions: babelParser.ParserOptions = {
   plugins,
   sourceType: 'module',
-});
+  errorRecovery: true,
+};
 
 const parser = babelParser.parse.bind(babelParser);
 

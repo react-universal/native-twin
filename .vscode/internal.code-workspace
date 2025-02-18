@@ -122,12 +122,19 @@
       "**/build": true
     },
     "typescript.tsdk": "root/node_modules/typescript/lib",
-    "typescript.tsserver.log": "verbose",
+    "typescript.tsserver.log": "off",
     "cSpell.words": [
       "sastan",
       "TRBL",
       "xytrbl"
     ],
+    "[javascript]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "editor.codeActionsOnSave": {
+      "source.fixAll.biome": "explicit",
+      "source.organizeImports.biome": "explicit"
+    },
     "jest.enable": true,
     "jest.disabledWorkspaceFolders": [
       "root",

@@ -1,6 +1,6 @@
 import { CodeGenerator } from '@babel/generator';
 import { type ParseResult, parseExpression } from '@babel/parser';
-import type { Binding, NodePath } from '@babel/traverse';
+import type { NodePath } from '@babel/traverse';
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
 import type { SheetEntry } from '@native-twin/css';
@@ -19,8 +19,10 @@ import type { CompilerStyleSheet } from '../models/CompilerSheet.js';
 import { JSXElementSheet } from '../models/CompilerStyleSheet.js';
 import type { TwinJSXElement } from '../models/JSXElement.model.js';
 import type { NativeTwinPluginConfiguration } from '../shared/compiler.constants.js';
-import * as babelPredicates from '../utils/babel/babel.predicates.js';
-import { addJsxExpressionAttribute, getBabelBindingImportSource } from '../utils/babel/babel.utils.js';
+import {
+  addJsxExpressionAttribute,
+  getBabelBindingImportSource,
+} from '../utils/babel/babel.utils.js';
 import { TwinNodeContext, TwinNodeContextLive } from './TwinNodeContext.service.js';
 
 export interface JSXElementTree<T> {
@@ -39,8 +41,6 @@ const make = Effect.gen(function* () {
   const { getTwForPlatform } = yield* TwinNodeContext;
 
   return {
-    memberExpressionIsReactImport,
-    identifierIsReactImport,
     extractJSXElementTrees,
     extractJSXRootElements,
     resolveJSXBinding,
@@ -229,116 +229,3 @@ const extractJSXElementTrees = (
       },
     );
   }).pipe(Stream.map((x) => Transforms.getJSXElementTree(x)));
-
-const identifierIsReactImport = (path: NodePath<t.Identifier>) => {
-  if (path.node.name === 'createElement' && path.parentPath.isCallExpression()) {
-    return Option.fromNullable(path.scope.getBinding(path.node.name)).pipe(
-      Option.map((x) => isReactRequireBinding(x) || isReactImport(x)),
-      Option.getOrElse(() => false),
-    );
-  }
-  return false;
-};
-
-const memberExpressionIsReactImport = (path: NodePath<t.MemberExpression>) =>
-  maybeReactCreateElementExpression(path).pipe(
-    Option.filterMap((x) => {
-      if (
-        t.isIdentifier(x.object, { name: 'react' }) ||
-        t.isIdentifier(x.object, { name: 'React' })
-      ) {
-        return Option.some(x.object);
-      }
-      if (
-        t.isMemberExpression(x.object) &&
-        t.isIdentifier(x.object.object, { name: '_react' }) &&
-        t.isIdentifier(x.object.property, { name: 'default' })
-      ) {
-        return Option.some(x.object.object);
-      }
-      return Option.none();
-    }),
-    Option.flatMap((ident) => Option.fromNullable(path.scope.getBinding(ident.name))),
-    (x) => [maybeBindingIsReactImport(x), maybeImportDeclaration(x)] as const,
-    Option.firstSomeOf,
-    Option.getOrElse(() => false),
-  );
-
-const maybeReactCreateElementExpression = (
-  path: NodePath<t.MemberExpression>,
-): Option.Option<t.MemberExpression> =>
-  Option.liftPredicate(path.node, (node) =>
-    t.isIdentifier(node.property, { name: 'createElement' }),
-  );
-
-const maybeCallExpression = (node: Option.Option<t.VariableDeclarator>) =>
-  Option.flatMap(node, (x) =>
-    t.isCallExpression(x.init) ? Option.some([x, x.init] as const) : Option.none(),
-  );
-
-const maybeVariableDeclarator = (binding: Option.Option<Binding>) =>
-  Option.flatMap(binding, (x) =>
-    x.path.isVariableDeclarator() ? Option.some(x.path.node) : Option.none(),
-  );
-
-const maybeImportDeclaration = (binding: Option.Option<Binding>) =>
-  Option.flatMap(binding, (x) =>
-    x.path.parentPath &&
-    t.isImportDeclaration(x.path.parentPath.node) &&
-    x.path.parentPath.node.source.value.toLowerCase() === 'react'
-      ? Option.some(true)
-      : Option.none(),
-  );
-
-const maybeBindingIsReactImport = (x: Option.Option<Binding>) =>
-  x.pipe(
-    maybeVariableDeclarator,
-    maybeCallExpression,
-    (node) =>
-      [
-        babelPredicates.isReactRequire(node),
-        babelPredicates.isReactInteropRequire(node),
-      ] as const,
-    Option.firstSomeOf,
-  );
-
-const isReactImport = (x: Binding) => {
-  if (
-    x.path.isImportSpecifier() ||
-    x.path.isImportDefaultSpecifier() ||
-    x.path.isImportDeclaration() ||
-    x.path.isImportNamespaceSpecifier()
-  ) {
-    return (
-      t.isImportDeclaration(x.path.parentPath.node) &&
-      x.path.parentPath.node.source.value.toLowerCase() === 'react'
-    );
-  }
-
-  return false;
-};
-
-const isReactRequireBinding = (x: Binding) => {
-  if (x.path.isVariableDeclarator() && t.isCallExpression(x.path.node.init)) {
-    if (
-      t.isIdentifier(x.path.node.init.callee, { name: 'require' }) &&
-      t.isStringLiteral(x.path.node.init.arguments[0], { value: 'react' })
-    ) {
-      return true;
-    }
-
-    if (
-      // const <name> = _interopRequireDefault(require("react"))
-      t.isIdentifier(x.path.node.init.callee, { name: '_interopRequireDefault' }) &&
-      t.isCallExpression(x.path.node.init.arguments[0]) &&
-      t.isIdentifier(x.path.node.init.arguments[0].callee, { name: 'require' }) &&
-      t.isStringLiteral(x.path.node.init.arguments[0].arguments[0], {
-        value: 'react',
-      })
-    ) {
-      return true;
-    }
-  }
-
-  return false;
-};

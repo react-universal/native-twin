@@ -1,7 +1,5 @@
-import path from 'node:path';
 import { FileSystem } from '@effect/platform';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
-import { Array, Option } from 'effect';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Hash from 'effect/Hash';
@@ -83,22 +81,9 @@ const make = Effect.gen(function* () {
     getFileMD5,
     mkdirCached,
     readFile,
-    findFileExtension,
+    readDir: fs.readDirectory,
     exists: fs.exists,
   } as const;
-
-  function findFileExtension(filename: string) {
-    const dirname = twinPath.dirname(filename);
-    return Effect.gen(function* () {
-      const dirFiles = yield* fs
-        .readDirectory(dirname, {
-          recursive: false,
-        })
-        .pipe(Effect.map(Array.map((x) => path.join(dirname, x))));
-
-      return Option.fromNullable(dirFiles.find((x) => x.startsWith(filename)));
-    });
-  }
 });
 
 export interface FsUtils extends Effect.Effect.Success<typeof make> {}

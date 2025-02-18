@@ -35,7 +35,7 @@
     "vscode-languageserver-textdocument": "^1.0.11"
   },
   "devDependencies": {
-    "madge": "7.0.0"
+    "madge": "^8.0.0"
   },
   "optionalDependencies": {
     "jest": "*"

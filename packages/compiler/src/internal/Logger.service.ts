@@ -18,9 +18,7 @@ export const TwinCustomLogger = Logger.make((options) => {
     Option.map((x) => `${x}`),
     Option.getOrElse(() => 'METRO'),
     Str.toUpperCase,
-    (x) => {
-      return Utils.renderDoc(Doc.annotate(Doc.text(`[${x}]`), Utils.getPlatformColor(x)));
-    },
+    (x) => Utils.renderDoc(Doc.annotate(Doc.text(`[${x}]`), Utils.getPlatformColor(x))),
   );
 
   const fiberId = FiberId.threadName(options.fiberId);
@@ -59,7 +57,6 @@ export const TwinCustomLogger = Logger.make((options) => {
   }
 
   const message = msgFactory.join(' ');
-  // console.log('OPTIONS: ', inspect(options, false, null, true));
 
   switch (options.logLevel) {
     case LogLevel.Trace:

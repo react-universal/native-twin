@@ -53,6 +53,7 @@
     "fast-check": "^3.21.0",
     "jiti": "^2.4.0",
     "js-beautify": "^1.15.1",
+    "madge": "^8.0.0",
     "micromatch": "4.0.5",
     "sucrase": "^3.35.0",
     "vscode-languageserver-textdocument": "^1.0.12"
@@ -63,6 +64,7 @@
     "@effect/typeclass": "^0.29.19",
     "@types/connect": "3.4.38",
     "@types/js-beautify": "^1",
+    "@types/madge": "^5.0.3",
     "@types/micromatch": "^4.0.4",
     "babel-plugin-tester": "^11.0.4"
   },

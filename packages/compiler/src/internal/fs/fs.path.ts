@@ -16,6 +16,9 @@ export type TSXFilePath = Branded.Branded<string, 'paths/TSXFilePath'>;
 export type GlobPath = Branded.Branded<string, 'paths/GlobPath'>;
 export type UnknownFilePath = Branded.Branded<string, 'paths/UnknownFilePath'>;
 export const unknownFilePath = Branded.nominal<UnknownFilePath>();
+export type FilePathWithExt = Branded.Branded<string, 'paths/FilePathWithExt'>;
+export type FullFilePath = string &
+  Branded.Brand.Brands<FilePathWithExt & AbsoluteFilePath>;
 
 export class TwinPathError extends Data.TaggedError('paths/TwinPathError')<{
   path: string;
@@ -66,6 +69,12 @@ const make = Effect.gen(function* () {
     (path_) => path.extname(path_).endsWith('.tsx'),
     (path_) => Branded.error(`expecting a .tsx file but got ${path_}`),
   );
+  const filePathWithExt = Branded.refined<FilePathWithExt>(
+    (path_) => path.extname(path_) !== '',
+    (path_) => Branded.error(`expecting filename to contains extension but got ${path_}`),
+  );
+  const fullFilePath = Branded.all(absolutePath, filePathWithExt);
+
   const globPath = Branded.nominal<GlobPath>();
   const cwd = absoluteFromString(env.projectRoot);
 
@@ -80,7 +89,9 @@ const make = Effect.gen(function* () {
       relativeFromString,
       absoluteFromString,
     },
+    fullFilePathFromString,
     glob,
+    join: path.join,
     relative,
     filePathJoin,
     isPosixFilePathString,
@@ -128,6 +139,11 @@ const make = Effect.gen(function* () {
     }
 
     return absolutePath(path_.split(posixSep).join(path.sep));
+  }
+
+  function fullFilePathFromString(path_: string): FullFilePath {
+    const abs = absoluteFromString(path_);
+    return fullFilePath(abs);
   }
 
   function relativeFromString(path_: string): RelativeFilePath {

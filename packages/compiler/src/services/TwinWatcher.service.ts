@@ -6,11 +6,8 @@ import * as Record from 'effect/Record';
 import * as Stream from 'effect/Stream';
 import { FSUtils, FSWatcher, TwinPath } from '../internal/fs';
 import { CompilerConfigContext } from './CompilerConfig.service.js';
-import { TwinFSContext, TwinFSContextLive } from './TwinFileSystem.service.js';
-import {
-  TwinNodeContext,
-  TwinNodeContextLive,
-} from './TwinNodeContext.service.js';
+import { TwinFSContext, TwinFSContextLive } from '../FileSystem/Service';
+import { TwinNodeContext, TwinNodeContextLive } from './TwinNodeContext.service.js';
 
 export const TwinWatcherContextLive = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;

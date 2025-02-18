@@ -5,6 +5,7 @@ import type { AnyPrimitive } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
 import * as babelPredicates from './babel.predicates.js';
+import type { ImportSource } from '../../Resolver/Models.js';
 
 export const literalValueToAst = (value: any): t.Expression => {
   if (value === null) return t.nullLiteral();
@@ -147,10 +148,12 @@ const getBindingImportDeclaration = (binding: Binding) =>
         babelPredicates.isImportDeclaration,
       ),
     ),
-    Option.map((source) => ({
-      kind: 'import',
-      source: source.importDeclaration.node.source.value,
-    })),
+    Option.map(
+      (source): ImportSource => ({
+        kind: 'import',
+        source: source.importDeclaration.node.source.value,
+      }),
+    ),
   );
 
 const getBindingRequireDeclaration = (binding: Binding) =>
@@ -165,7 +168,7 @@ const getBindingRequireDeclaration = (binding: Binding) =>
         Option.flatMap((x) => Option.liftPredicate(x, t.isStringLiteral)),
       ),
     ),
-    Option.map((source) => {
+    Option.map((source): ImportSource => {
       return {
         kind: 'require',
         source: source.requireExpression.value,

@@ -3,7 +3,7 @@ import { defineConfig, matchAnimation } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 
 export const twinConfig = defineConfig({
-  content: ['./fixtures/**/*.{js,jsx,ts,tsx}'],
+  content: ['./fixtures/jsx/**/*.{js,jsx,ts,tsx}'],
   root: {
     rem: 16,
   },

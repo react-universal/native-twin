@@ -35,9 +35,9 @@ export const Button = (props) => {
 export default function App() {
   return (
     <View className={`group flex-1 first:bg-red-200`}>
+      <Button componentID='#546546546' size='small' />
       <Text>Hello World</Text>
       <Text>Hello World</Text>
-      <Button size='small' />
       <Button2 />
       <Button3 />
       <View className='flex-1 first:bg-blue-200'>

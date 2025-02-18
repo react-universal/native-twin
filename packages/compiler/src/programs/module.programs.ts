@@ -4,9 +4,10 @@ import { Array, identity } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
+import { TwinFSContext } from '../FileSystem/Service';
+import { TwinResolverContext } from '../Resolver/Service';
 import { FSUtils, TwinPath } from '../internal/fs';
 import { TwinNodeContext } from '../services/TwinNodeContext.service';
-import { TwinResolverContext } from '../services/TwinResolver.service';
 import {
   funcJSXElementFunction,
   getBabelBindingImportSource,
@@ -16,7 +17,7 @@ export const evaluateFile = (filename: string, content?: string) =>
   Effect.gen(function* () {
     const resolver = yield* TwinResolverContext;
 
-    const result = yield* resolver.loadFile({ filename, content });
+    const result = yield* resolver.resolveFile(filename, content);
 
     return result;
   });
@@ -43,13 +44,14 @@ export const getScopeStaticBindings = (
     const ctx = yield* TwinNodeContext;
     const path = yield* TwinPath.TwinPath;
     const fs = yield* FSUtils.FsUtils;
+    const twinFS = yield* TwinFSContext;
     const program = scope.getProgramParent().block as t.Program;
 
     const dependenciesStream = yield* Stream.fromIterable(program.body).pipe(
       Stream.filterMap(Option.liftPredicate((node) => t.isImportDeclaration(node))),
       Stream.filter((node) => isLocalImport(node.source.value)),
       Stream.map((node) => resolveImportPath(sourcePath, node.source.value)),
-      Stream.mapEffect((depPath) => fs.findFileExtension(depPath)),
+      Stream.mapEffect((depPath) => twinFS.findFileExtension(depPath)),
       Stream.filterMap(identity),
       Stream.filterEffect((depPath) => ctx.isAllowedPath(depPath)),
       Stream.runCollect,
