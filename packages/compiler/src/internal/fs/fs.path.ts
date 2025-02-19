@@ -11,8 +11,6 @@ import { CompilerConfigContext } from '../../services/CompilerConfig.service.js'
 
 export type AbsoluteFilePath = Branded.Branded<string, 'paths/AbsoluteFilePath'>;
 export type RelativeFilePath = Branded.Branded<string, 'paths/RelativeFilePath'>;
-export type TSFilePath = Branded.Branded<string, 'paths/TSFilePath'>;
-export type TSXFilePath = Branded.Branded<string, 'paths/TSXFilePath'>;
 export type GlobPath = Branded.Branded<string, 'paths/GlobPath'>;
 export type UnknownFilePath = Branded.Branded<string, 'paths/UnknownFilePath'>;
 export const unknownFilePath = Branded.nominal<UnknownFilePath>();
@@ -32,8 +30,6 @@ export class TwinGlobsError extends Data.TaggedError('paths/TwinGlobsError')<{
 export type AnyTwinPath =
   | AbsoluteFilePath
   | RelativeFilePath
-  | TSFilePath
-  | TSXFilePath
   | GlobPath
   | UnknownFilePath;
 
@@ -61,14 +57,6 @@ const make = Effect.gen(function* () {
     (path_) => !path.isAbsolute(path_),
     (path_) => Branded.error(`Expected a Posix file path, got ${path_}`),
   );
-  const tsFilePath = Branded.refined<TSFilePath>(
-    (path_) => path.extname(path_).endsWith('.ts'),
-    (path_) => Branded.error(`expecting a .ts file but got ${path_}`),
-  );
-  const tsxFilePath = Branded.refined<TSXFilePath>(
-    (path_) => path.extname(path_).endsWith('.tsx'),
-    (path_) => Branded.error(`expecting a .tsx file but got ${path_}`),
-  );
   const filePathWithExt = Branded.refined<FilePathWithExt>(
     (path_) => path.extname(path_) !== '',
     (path_) => Branded.error(`expecting filename to contains extension but got ${path_}`),
@@ -84,8 +72,6 @@ const make = Effect.gen(function* () {
       relative: relativePath,
       unknown: unknownFilePath,
       glob: globPath,
-      ts: tsFilePath,
-      tsx: tsxFilePath,
       relativeFromString,
       absoluteFromString,
     },

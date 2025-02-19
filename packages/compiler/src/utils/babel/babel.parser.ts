@@ -24,6 +24,7 @@ export const parserOptions: babelParser.ParserOptions = {
 
 const parser = babelParser.parse.bind(babelParser);
 
+export type BabelParseResult = babelParser.ParseResult<t.File>;
 export function babelParse(
   code: string | Buffer,
   fileName?: string,

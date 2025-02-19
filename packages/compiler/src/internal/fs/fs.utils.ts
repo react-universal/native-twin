@@ -4,6 +4,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Hash from 'effect/Hash';
 import * as Layer from 'effect/Layer';
+import type { FilePath } from '../../FileSystem/Path.model.js';
 import * as TwinPath from './fs.path.js';
 
 const make = Effect.gen(function* () {
@@ -45,7 +46,7 @@ const make = Effect.gen(function* () {
       }),
   );
 
-  const readFile = (path: TwinPath.AbsoluteFilePath) =>
+  const readFile = (path: TwinPath.AbsoluteFilePath | FilePath) =>
     fs
       .readFileString(path)
       .pipe(Effect.tapError(() => Effect.logError(`Cannot read file at: ${path}`)));

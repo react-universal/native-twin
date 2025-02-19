@@ -1,5 +1,4 @@
 import { CodeGenerator } from '@babel/generator';
-import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { cx } from '@native-twin/core';
 import { type SheetEntry, parseTWTokens } from '@native-twin/css';
@@ -12,38 +11,6 @@ import { JSXElementSheet } from '../models/CompilerStyleSheet';
 import type { JSXMappedAttribute, TwinJSXElement } from '../models/JSXElement.model';
 import type { MappedComponent } from '../shared/compiler.constants';
 import { templateLiteralToStringLike } from '../utils/babel/babel.utils';
-
-export const resolveDeclarator = (node: NodePath<t.Node>) => {
-  let name = 'Unknown';
-  let isExported = false;
-  if (node.isArrowFunctionExpression()) {
-    const parent = node.parentPath;
-    if (parent.isVariableDeclarator()) {
-      const ident = parent.node.id;
-      if (t.isIdentifier(ident)) {
-        name = ident.name;
-      }
-
-      const fnParent = parent.parentPath;
-      isExported =
-        fnParent.isExportDeclaration() || fnParent.isExportDefaultDeclaration();
-      const upperParent = fnParent.parentPath;
-      if (!isExported && upperParent) {
-        isExported =
-          upperParent.isExportDeclaration() || upperParent.isExportDefaultDeclaration();
-      }
-    }
-    return { name, isExported };
-  }
-
-  if (node.isFunctionDeclaration() && node.node.id) {
-    const fnParent = node.parentPath;
-    isExported = fnParent.isExportDeclaration() || fnParent.isExportDefaultDeclaration();
-    return { name: node.node.id.name, isExported };
-  }
-
-  return { name, isExported };
-};
 
 export const compileTwinElement = (
   element: TwinJSXElement,

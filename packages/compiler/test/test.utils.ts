@@ -15,6 +15,7 @@ import {
   createCompilerConfig,
   twinLoggerLayer,
 } from '../src';
+import { TwinProjectContextLive } from '../src/Project/Service';
 
 const outputDir = path.join(__dirname, '.cache');
 const compilerContext = Layer.succeed(
@@ -35,6 +36,7 @@ export const TestMainLive = Layer.empty.pipe(
   Layer.provideMerge(TwinPath.TwinPathLive),
   Layer.provideMerge(TwinBuilderContextLive),
   Layer.provideMerge(TwinFSContextLive),
+  Layer.provideMerge(TwinProjectContextLive),
   Layer.provideMerge(compilerContext),
   Layer.provide(twinLoggerLayer),
 );

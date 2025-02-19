@@ -1,4 +1,3 @@
-import type { ParseResult } from '@babel/parser';
 import traverse from '@babel/traverse';
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
@@ -8,13 +7,14 @@ import * as Chunk from 'effect/Chunk';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import { type MappedComponent, mappedComponents } from '../shared/compiler.constants';
+import type { BabelParseResult } from '../utils/babel/babel.parser';
 import { getBabelBindingImportSource } from '../utils/babel/babel.utils';
 import type { ComponentRef, ImportSource, LoadedComponent } from './Models';
 
 export const isLocalImport = (path: string) =>
   path.startsWith('.') || path.startsWith('/');
 
-export const getRootJSXElements = (ast: ParseResult<t.File>) =>
+export const getRootJSXElements = (ast: BabelParseResult) =>
   Stream.async<NodePath<t.JSXElement>>((emit) => {
     traverse(
       ast,
@@ -98,4 +98,36 @@ export const getComponentRef = (babelPath: NodePath<t.JSXElement>): ComponentRef
       source: importSource.source,
     },
   };
+};
+
+export const resolveDeclarator = (node: NodePath<t.Node>) => {
+  let name = 'Unknown';
+  let isExported = false;
+  if (node.isArrowFunctionExpression()) {
+    const parent = node.parentPath;
+    if (parent.isVariableDeclarator()) {
+      const ident = parent.node.id;
+      if (t.isIdentifier(ident)) {
+        name = ident.name;
+      }
+
+      const fnParent = parent.parentPath;
+      isExported =
+        fnParent.isExportDeclaration() || fnParent.isExportDefaultDeclaration();
+      const upperParent = fnParent.parentPath;
+      if (!isExported && upperParent) {
+        isExported =
+          upperParent.isExportDeclaration() || upperParent.isExportDefaultDeclaration();
+      }
+    }
+    return { name, isExported };
+  }
+
+  if (node.isFunctionDeclaration() && node.node.id) {
+    const fnParent = node.parentPath;
+    isExported = fnParent.isExportDeclaration() || fnParent.isExportDefaultDeclaration();
+    return { name: node.node.id.name, isExported };
+  }
+
+  return { name, isExported };
 };

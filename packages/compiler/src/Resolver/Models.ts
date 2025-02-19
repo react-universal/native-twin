@@ -7,6 +7,13 @@ import { TwinFileResult } from '../FileSystem/Models';
 import type { TwinPath } from '../internal/fs';
 import type { MappedComponent } from '../shared/compiler.constants';
 
+// export const ImportKind = Schema.Union(
+//   Schema.Literal('require'),
+//   Schema.Literal('import'),
+//   Schema.Literal('local'),
+//   Schema.Literal('unknown'),
+// );
+
 export type ImportKind = 'require' | 'import' | 'local' | 'unknown';
 export interface ImportSource {
   kind: ImportKind;

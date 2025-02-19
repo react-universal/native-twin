@@ -9,11 +9,10 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
-import madge from 'madge';
-import { resolveDeclarator } from '../Compiler/Utils';
 import type { TwinFileResult } from '../FileSystem/Models';
 import { TwinFSContext, TwinFSContextLive } from '../FileSystem/Service';
 import { FSUtils, TwinPath } from '../internal/fs';
+// import { CompilerConfigContext } from '../services/CompilerConfig.service';
 import {
   TwinNodeContext,
   TwinNodeContextLive,
@@ -21,9 +20,15 @@ import {
 import { babelParse } from '../utils/babel/babel.parser';
 import { funcJSXElementFunction } from '../utils/babel/babel.utils';
 import { ModuleComponent, ResolvedModule } from './Models';
-import { getJSXTree, getRootJSXElements, isLocalImport } from './Utils';
+import {
+  getJSXTree,
+  getRootJSXElements,
+  isLocalImport,
+  resolveDeclarator,
+} from './Utils';
 
 const make = Effect.gen(function* () {
+  // const env = yield* CompilerConfigContext;
   const path = yield* TwinPath.TwinPath;
   const ctx = yield* TwinNodeContext;
   const twinFS = yield* TwinFSContext;
@@ -35,8 +40,6 @@ const make = Effect.gen(function* () {
   const setCachedFile = (input: TwinFileResult, resolved: ResolvedModule) =>
     Ref.update(cachedModules, (cache) => HashMap.set(cache, input, resolved));
 
-  const madgeObj = yield* getProjectDependencyGraph();
-  console.log('DEPS: ', madgeObj);
   return {
     resolveFile,
     resolveProjectModules,
@@ -73,30 +76,27 @@ const make = Effect.gen(function* () {
   }
 
   function resolveProjectModules() {
-    return ctx.state.projectFiles.get.pipe(
-      Effect.andThen((files) =>
-        Effect.all(HashSet.map(files, (filename) => resolveFile(filename))),
-      ),
+    return Effect.andThen(ctx.state.projectFiles.get, (files) =>
+      Effect.all(HashSet.map(files, (filename) => resolveFile(filename))),
     );
   }
 
-  function getProjectDependencyGraph() {
-    return ctx.state.projectFiles.get.pipe(
-      Effect.andThen((files) =>
-        Effect.promise(() =>
-          madge(RA.fromIterable(files), {
-            // baseDir: env.projectRoot,
-
-            detectiveOptions: {
-              ts: {
-                skipTypeImports: true,
-              },
-            },
-          }),
-        ),
-      ),
-    );
-  }
+  // function getProjectDependencyGraph() {
+  //   return ctx.state.projectFiles.get.pipe(
+  //     Effect.andThen((files) =>
+  //       Effect.promise(() =>
+  //         madge(RA.fromIterable(files), {
+  //           baseDir: env.projectRoot,
+  //           detectiveOptions: {
+  //             ts: {
+  //               skipTypeImports: true,
+  //             },
+  //           },
+  //         }),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   function resolveBindingsForScope(
     scope: NodePath<t.JSXElement>['scope'],

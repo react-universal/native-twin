@@ -4,8 +4,8 @@ import * as t from '@babel/types';
 import type { AnyPrimitive } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
-import * as babelPredicates from './babel.predicates.js';
 import type { ImportSource } from '../../Resolver/Models.js';
+import * as babelPredicates from './babel.predicates.js';
 
 export const literalValueToAst = (value: any): t.Expression => {
   if (value === null) return t.nullLiteral();
@@ -88,7 +88,14 @@ function computeProps(props: any) {
   }, {});
 }
 
-export const funcJSXElementFunction = (jsxPath: NodePath<t.JSXElement>) => {
+export type JSXElementFunction =
+  | NodePath<t.ArrowFunctionExpression>
+  | NodePath<t.FunctionDeclaration>
+  | NodePath<t.FunctionExpression>;
+
+export const funcJSXElementFunction = (
+  jsxPath: NodePath<t.JSXElement>,
+): JSXElementFunction | null => {
   const isFunction = (path: NodePath<any>) =>
     path.isArrowFunctionExpression() ||
     path.isFunctionDeclaration() ||

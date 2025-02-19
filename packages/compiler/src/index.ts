@@ -45,8 +45,6 @@ export type {
   AnyTwinPath,
   GlobPath,
   RelativeFilePath,
-  TSFilePath,
-  TSXFilePath,
   TwinGlobsError,
   UnknownFilePath,
 } from './internal/fs/fs.path.js';
