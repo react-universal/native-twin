@@ -14,10 +14,6 @@ export { TWIN_DEFAULT_PLUGIN_CONFIG } from './shared/compiler.constants.js';
 
 export { getBabelAST } from './utils/babel/babel.utils.js';
 
-export { TwinResolverContext, TwinResolverContextLive } from './Resolver/Service.js';
-
-export { TwinCompilerContext, TwinCompilerContextLive } from './Compiler/Service.js';
-
 export {
   TwinNodeContext,
   TwinNodeContextLive,
@@ -38,7 +34,8 @@ export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from './shared/twin.constants.js';
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
 
 export { TwinWatcherContextLive } from './services/TwinWatcher.service.js';
-export { TwinBuilderContext, TwinBuilderContextLive } from './Builder/Service.js';
+
+export { TwinProjectContext, TwinProjectContextLive } from './Project/Service.js';
 
 export type {
   AbsoluteFilePath,

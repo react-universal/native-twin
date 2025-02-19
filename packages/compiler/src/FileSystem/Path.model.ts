@@ -1,6 +1,10 @@
 import * as NodePath from 'node:path';
+import * as RA from 'effect/Array';
 import * as Branded from 'effect/Brand';
+import * as Data from 'effect/Data';
+import * as Effect from 'effect/Effect';
 import * as Schema from 'effect/Schema';
+import * as Glob from 'glob';
 
 export declare namespace TwinNodePath {
   export type AbsolutePath = Branded.Branded<string, 'paths/AbsolutePath'>;
@@ -23,6 +27,12 @@ const filePath = Branded.refined<TwinNodePath.FilePath>(
   (path_) => Branded.error(`expecting filename to contains extension but got ${path_}`),
 );
 
+const globPath = Branded.nominal<TwinNodePath.GlobPath>();
+
+export const GlobPath = Schema.String.pipe(Schema.fromBrand(globPath));
+export type GlobPath = typeof GlobPath.Type;
+export const globPathFromString = (path_: string) => GlobPath.make(path_);
+
 export const AbsolutePath = Schema.String.pipe(Schema.fromBrand(absolutePath));
 export type AbsolutePath = typeof AbsolutePath.Type;
 export const absolutePathFromString = (
@@ -44,3 +54,59 @@ export const filePathFromString = (path_: string, cwd = process.cwd()): FilePath
   FilePath.make(absolutePathFromString(path_, cwd));
 
 export { NodePath };
+
+export class TwinGlobsError extends Data.TaggedError('paths/TwinGlobsError')<{
+  globs: GlobPath[];
+  cause: Error;
+}> {}
+
+const globOptions: Glob.GlobOptionsWithFileTypesFalse = {
+  absolute: true,
+  withFileTypes: false,
+};
+
+export function glob(
+  pattern: Iterable<GlobPath>,
+): Effect.Effect<AbsolutePath[], TwinGlobsError>;
+export function glob(
+  pattern: Iterable<GlobPath>,
+  mode: 'sync' | 'async',
+): Effect.Effect<AbsolutePath[], TwinGlobsError>;
+export function glob(
+  pattern: Iterable<GlobPath>,
+  mode: 'sync' | 'async',
+  options: Glob.GlobOptionsWithFileTypesFalse,
+): Effect.Effect<AbsolutePath[], TwinGlobsError>;
+export function glob(
+  pattern: Iterable<GlobPath>,
+  mode: 'sync' | 'async' = 'async',
+  options: Glob.GlobOptionsWithFileTypesFalse = globOptions,
+): Effect.Effect<AbsolutePath[], TwinGlobsError> {
+  return Effect.if(mode === 'sync', {
+    onTrue: () =>
+      Effect.try(() =>
+        Glob.globSync(RA.fromIterable(pattern), { ...globOptions, ...options }),
+      ),
+    onFalse: () =>
+      Effect.tryPromise(() =>
+        Glob.glob(RA.fromIterable(pattern), { ...globOptions, ...options }),
+      ),
+  }).pipe(
+    Effect.map((paths) =>
+      RA.map(paths, (x) =>
+        absolutePathFromString(
+          x,
+          typeof options.cwd === 'string' ? options.cwd : undefined,
+        ),
+      ),
+    ),
+    Effect.mapError(
+      (error) =>
+        new TwinGlobsError({
+          globs: RA.fromIterable(pattern),
+          cause: new Error(`glob failed: ${error.message}`),
+        }),
+    ),
+    Effect.withSpan('fs/path/glob'),
+  );
+}

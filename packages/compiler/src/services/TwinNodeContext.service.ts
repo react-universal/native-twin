@@ -6,7 +6,7 @@ import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import { TwinPath } from '../internal/fs';
+import * as TwinPath from '../FileSystem/Path.model';
 import { CompilerStyleSheet } from '../models/CompilerSheet';
 import type { ImportedTwinConfig } from '../models/Twin.models.js';
 import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
@@ -14,7 +14,6 @@ import { CompilerConfigContext } from './CompilerConfig.service.js';
 
 const make = Effect.gen(function* () {
   const env = yield* CompilerConfigContext;
-  const twinPath = yield* TwinPath.TwinPath;
 
   const twinConfigRef = yield* SubscriptionRef.make(
     extractTwinConfig(env.twinConfigPath),
@@ -24,7 +23,7 @@ const make = Effect.gen(function* () {
       yield* getProjectFilesFromConfig(yield* Ref.get(twinConfigRef), 'sync'),
     ),
   );
-  
+
   const runningPlatformsRef = yield* SubscriptionRef.make(HashSet.empty<string>());
   const twRunnersRef = yield* Ref.get(twinConfigRef).pipe(
     Effect.flatMap((config) =>
@@ -92,10 +91,16 @@ const make = Effect.gen(function* () {
     mode: 'sync' | 'async' = 'async',
   ) {
     return Stream.fromIterable(config.content).pipe(
-      Stream.map(twinPath.make.glob),
+      Stream.map(TwinPath.globPathFromString),
       Stream.runCollect,
-      Effect.flatMap((globs) => twinPath.glob(globs, mode)),
-      Effect.map(RA.map(twinPath.make.absoluteFromString)),
+      Effect.flatMap((globs) =>
+        TwinPath.glob(globs, mode, {
+          absolute: true,
+          withFileTypes: false,
+          cwd: env.projectRoot,
+        }),
+      ),
+      Effect.map(RA.map((x) => TwinPath.absolutePathFromString(x, env.projectRoot))),
     );
   }
 
@@ -124,11 +129,8 @@ const make = Effect.gen(function* () {
   }
 
   function isAllowedPath(filePath: string) {
-    return Ref.get(projectFilesRef).pipe(
-      Effect.map((projectFiles) => {
-        const absPath = twinPath.make.absoluteFromString(filePath);
-        return HashSet.has(projectFiles, absPath);
-      }),
+    return Effect.map(Ref.get(projectFilesRef), (projectFiles) =>
+      HashSet.has(projectFiles, TwinPath.absolutePathFromString(filePath)),
     );
   }
 
@@ -144,6 +146,4 @@ const make = Effect.gen(function* () {
 export interface TwinNodeContext extends Effect.Effect.Success<typeof make> {}
 export const TwinNodeContext = Context.GenericTag<TwinNodeContext>('node/shared/context');
 
-export const TwinNodeContextLive = Layer.effect(TwinNodeContext, make).pipe(
-  Layer.provide(TwinPath.TwinPathLive),
-);
+export const TwinNodeContextLive = Layer.effect(TwinNodeContext, make);

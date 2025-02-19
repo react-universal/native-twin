@@ -1,50 +1,74 @@
-import { Stream } from 'effect';
+import * as Tree from '@native-twin/helpers/tree';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import { identity } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
-import madge from 'madge';
-import type * as TwinPath from '../FileSystem/Path.model';
+import * as Sink from 'effect/Sink';
+import * as Stream from 'effect/Stream';
+import { type BabelModule, makeBabelModule } from '../Babel';
+import * as TwinPath from '../FileSystem/Path.model';
 import { FSUtils } from '../internal/fs';
 import { CompilerConfigContext } from '../services/CompilerConfig.service';
-import * as Models from './Models';
+import {
+  TwinNodeContext,
+  TwinNodeContextLive,
+} from '../services/TwinNodeContext.service';
+import { TwinDomElementSheet, TwinModuleSheet, TwinProjectRunner } from './Model';
 
 const make = Effect.gen(function* () {
   const env = yield* CompilerConfigContext;
+  const ctx = yield* TwinNodeContext;
   const fs = yield* FSUtils.FsUtils;
-  const projectModules = yield* Ref.make(
-    HashMap.empty<TwinPath.FilePath, Models.ProjectModule>(),
+  const twinRunners = yield* ctx.state.twRunners.get;
+  const nativeRunner = yield* Ref.make(new TwinProjectRunner(twinRunners.native));
+  const webRunner = yield* Ref.make(new TwinProjectRunner(twinRunners.web));
+  const projectModules = yield* Ref.make(HashMap.empty<TwinPath.FilePath, BabelModule>());
+
+  const _getProjectModules = Stream.fromIterableEffect(ctx.state.projectFiles.get).pipe(
+    Stream.map((path_) => TwinPath.filePathFromString(path_, env.projectRoot)),
+    Stream.mapEffect(moduleFromFilePath),
+    Stream.run(Sink.collectAllToMap((module) => module.filepath, identity)),
+    // Effect.tap((mods) => Ref.set(projectModules, mods)),
   );
+  yield* refreshModules();
 
   const getProjectModules = Ref.get(projectModules);
-  const getModule = (filename: TwinPath.FilePath) =>
-    Effect.map(getProjectModules, (mods) => HashMap.get(mods, filename));
-  const addModule = (module: Models.ProjectModule) =>
-    Ref.update(projectModules, (mods) => HashMap.set(mods, module.filepath, module));
-
-  const getDependencyGraph = Effect.andThen(getProjectModules, (files) =>
-    getGraphFrom(HashMap.keys(files), env.projectRoot),
-  );
 
   return {
     getProjectModules,
-    getDependencyGraph,
-    getModule,
-    addModule,
+    nativeRunner,
+    webRunner,
     moduleFromFilePath,
-    createProjectModules,
+    refreshModules,
+    runTransform,
   };
 
   function moduleFromFilePath(path_: TwinPath.FilePath) {
-    return Effect.map(
-      fs.readFile(path_),
-      (code) => new Models.ProjectModule(path_, code),
+    return Effect.map(fs.readFile(path_), (code) => makeBabelModule(path_, code));
+  }
+
+  function refreshModules() {
+    return _getProjectModules.pipe(
+      Effect.andThen((mods) => Ref.set(projectModules, mods)),
     );
   }
 
-  function createProjectModules(paths_: Iterable<TwinPath.FilePath>) {
-    return Stream.fromIterable(paths_).pipe(Stream.mapEffect(moduleFromFilePath));
+  function runTransform(module: BabelModule, runner: TwinProjectRunner) {
+    return Effect.gen(function* () {
+      const sheet = new TwinModuleSheet(module);
+      yield* Stream.runForEach(module.domElements, (domNode) =>
+        Effect.sync(() => {
+          const sheetTree = Tree.mapTree(
+            domNode.tree,
+            (domElement) => new TwinDomElementSheet(domElement, runner),
+          );
+          return sheet.registerDomTree(domNode.name, sheetTree);
+        }),
+      );
+      return sheet;
+    });
   }
 });
 
@@ -54,16 +78,5 @@ export const TwinProjectContext =
 
 export const TwinProjectContextLive = Layer.effect(TwinProjectContext, make).pipe(
   Layer.provide(FSUtils.FsUtilsLive),
+  Layer.provide(TwinNodeContextLive),
 );
-
-const getGraphFrom = (files: Iterable<TwinPath.FilePath>, rootDir: string) =>
-  Effect.promise(() =>
-    madge(files, {
-      baseDir: rootDir,
-      detectiveOptions: {
-        ts: {
-          skipTypeImports: true,
-        },
-      },
-    }),
-  );

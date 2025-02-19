@@ -1,46 +1,15 @@
 import { CodeGenerator } from '@babel/generator';
 import * as t from '@babel/types';
 import { cx } from '@native-twin/core';
-import { type SheetEntry, parseTWTokens } from '@native-twin/css';
-import { type CompilerContext, SheetEntryHandler } from '@native-twin/css/jsx';
-import * as RA from 'effect/Array';
+import { parseTWTokens } from '@native-twin/css';
 import * as Match from 'effect/Match';
 import * as Option from 'effect/Option';
-import type { CompilerStyleSheet } from '../models/CompilerSheet';
-import { JSXElementSheet } from '../models/CompilerStyleSheet';
-import type { JSXMappedAttribute, TwinJSXElement } from '../models/JSXElement.model';
+import type { JSXMappedAttribute } from '../models/JSXElement.model';
 import type { MappedComponent } from '../shared/compiler.constants';
 import { templateLiteralToStringLike } from '../utils/babel/babel.utils';
 
-export const compileTwinElement = (
-  element: TwinJSXElement,
-  sheet: CompilerStyleSheet,
-  parentSheet?: JSXElementSheet,
-) => {
-  const compiledProps = element.mappedProps.map((prop) => {
-    const { childEntries, entries } = mapTwinEntriesToSheetHandler(
-      sheet.twinFn(prop.value.text),
-      sheet.ctx,
-    );
-    return {
-      ...prop,
-      entries,
-      childEntries,
-    };
-  });
-  return new JSXElementSheet(element, compiledProps, parentSheet);
-};
-
-export const mapTwinEntriesToSheetHandler = (entries: SheetEntry[], ctx: CompilerContext) => {
-  const handlers = RA.partition(
-    entries.map((x) => new SheetEntryHandler(x, ctx)),
-    (x) => x.isChildEntry(),
-  );
-  return {
-    entries: handlers[0],
-    childEntries: handlers[1],
-  };
-};
+export const isLocalImport = (path: string) =>
+  path.startsWith('.') || path.startsWith('/');
 
 /**
  * @domain Babel

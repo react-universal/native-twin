@@ -5,7 +5,7 @@
       "request": "launch",
       "name": "Test @lib/compiler",
       "program": "../../node_modules/.bin/vitest",
-      "args": ["--watch", "watcher"],
+      "args": ["--watch", "project"],
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
       "resolveSourceMapLocations": [

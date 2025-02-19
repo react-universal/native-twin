@@ -2,18 +2,25 @@ import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as Tree from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
+import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import type { ImportSource } from '../Resolver/Models';
-import { isLocalImport } from '../Resolver/Utils';
 import { type MappedComponent, mappedComponents } from '../shared/compiler.constants';
-import { getBabelBindingImportSource } from '../utils/babel/babel.utils';
-import type { JSXElementDeclaration } from './Models';
+import {
+  getBabelBindingImportSource,
+  getJSXElementAttrs,
+} from '../utils/babel/babel.utils';
+import type { ImportSource, JSXElementDeclaration } from './Models';
+import { extractStyledProp, isLocalImport } from './Utils';
 
 export class TwinCompilerDom {
   readonly tree: Tree.Tree<TwinDomElement>;
 
   private get rootElement() {
     return this.declarator.rootJSXElement;
+  }
+
+  get name() {
+    return this.declarator.name;
   }
 
   constructor(private readonly declarator: JSXElementDeclaration) {
@@ -53,6 +60,13 @@ export class TwinDomElement {
     return (
       (this.importSource.kind === 'import' || this.importSource.kind === 'require') &&
       isLocalImport(this.importSource.source)
+    );
+  }
+  get styledProps() {
+    return pipe(
+      getJSXElementAttrs(this.jsxPath.node),
+      RA.map((x) => Option.fromNullable(extractStyledProp(x, this.mappedProps))),
+      RA.getSomes,
     );
   }
   constructor(

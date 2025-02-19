@@ -6,12 +6,9 @@ import {
   BabelCompilerContextLive,
   CompilerConfigContext,
   FSUtils,
-  TwinBuilderContextLive,
-  TwinCompilerContextLive,
   TwinFSContextLive,
   TwinNodeContextLive,
   TwinPath,
-  TwinResolverContextLive,
   createCompilerConfig,
   twinLoggerLayer,
 } from '../src';
@@ -29,12 +26,9 @@ const compilerContext = Layer.succeed(
 // const tw = createTailwind(tailwindConfig, createVirtualSheet());
 export const TestMainLive = Layer.empty.pipe(
   Layer.provideMerge(TwinNodeContextLive),
-  Layer.provideMerge(TwinCompilerContextLive),
-  Layer.provideMerge(TwinResolverContextLive),
   Layer.provideMerge(BabelCompilerContextLive),
   Layer.provideMerge(FSUtils.FsUtilsLive),
   Layer.provideMerge(TwinPath.TwinPathLive),
-  Layer.provideMerge(TwinBuilderContextLive),
   Layer.provideMerge(TwinFSContextLive),
   Layer.provideMerge(TwinProjectContextLive),
   Layer.provideMerge(compilerContext),

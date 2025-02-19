@@ -8,7 +8,6 @@ import * as RA from 'effect/Array';
 import * as Hash from 'effect/Hash';
 import * as Match from 'effect/Match';
 import * as Option from 'effect/Option';
-import type { ComponentRef } from '../Resolver/Models.js';
 import * as Constants from '../shared/compiler.constants.js';
 import * as BabelUtils from '../utils/babel/babel.utils.js';
 
@@ -45,10 +44,6 @@ export class TwinJSXElement {
 
   get declarator() {
     return Option.fromNullable(BabelUtils.funcJSXElementFunction(this.ast));
-  }
-
-  get ref() {
-    return getComponentRef(this.ast);
   }
 
   get filename() {
@@ -191,30 +186,3 @@ const getPropValueString = Match.type<t.StringLiteral | t.TemplateLiteral>().pip
   }),
   Match.exhaustive,
 );
-
-const getComponentRef = (
-  babelPath: NodePath<t.JSXElement>,
-): Option.Option<ComponentRef> =>
-  Option.Do.pipe(
-    Option.bind('elementName', () =>
-      Option.liftPredicate(babelPath.node.openingElement.name, (x) =>
-        t.isJSXIdentifier(x),
-      ),
-    ),
-    Option.bind('binding', ({ elementName }) =>
-      Option.fromNullable(babelPath.scope.getBinding(elementName.name)),
-    ),
-    Option.bind('origin', ({ binding }) =>
-      BabelUtils.getBabelBindingImportSource(binding),
-    ),
-    Option.bind('mapped', ({ elementName }) =>
-      RA.findFirst(Constants.mappedComponents, (x) => x.name === elementName.name),
-    ),
-    Option.map(
-      ({ elementName, mapped, origin }): ComponentRef => ({
-        elementName: elementName.name,
-        mapped,
-        origin,
-      }),
-    ),
-  );
