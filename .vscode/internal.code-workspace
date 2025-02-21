@@ -121,6 +121,9 @@
       "**/*.code-search": true,
       "**/build": true
     },
+    "files.exclude": {
+      ".turbo": true
+    },
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "typescript.tsserver.log": "off",
     "cSpell.words": [

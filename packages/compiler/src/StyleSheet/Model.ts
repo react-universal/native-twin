@@ -1,4 +1,5 @@
 import { StyleSheetAdapter } from '@native-twin/core';
+import type { RuntimeTW, TailwindConfig, __Theme__ } from '@native-twin/core';
 import type { SheetEntry } from '@native-twin/css';
 import {
   type CompilerContext,
@@ -6,7 +7,8 @@ import {
   compileEntryDeclaration,
   mergeCompiledDeclarations,
 } from '@native-twin/css/jsx';
-import type { InternalTwFn, InternalTwinConfig } from './Twin.models';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
+import type { FilePath } from '../FileSystem/Path.model';
 
 export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
   constructor(
@@ -28,3 +30,10 @@ export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
     return mergeCompiledDeclarations(declarations);
   }
 }
+
+export type InternalTwinConfig = __Theme__ & TailwindPresetTheme;
+export type InternalTwFn = RuntimeTW<InternalTwinConfig, SheetEntry[]>;
+export interface ExtractedTwinConfig extends TailwindConfig<InternalTwinConfig> {
+  content: FilePath[];
+}
+export type ImportedTwinConfig = TailwindConfig<InternalTwinConfig>;

@@ -11,11 +11,11 @@ import * as Option from 'effect/Option';
 import * as PubSub from 'effect/PubSub';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
-import { CompilerConfigContext } from '../../services/CompilerConfig.service.js';
-import * as TwinPath from './fs.path.js';
+import { CompilerConfigContext } from '../../Config';
+import { TwinPath } from '../../FileSystem';
 
 export interface FSFileEvent {
-  readonly path: TwinPath.UnknownFilePath;
+  readonly path: TwinPath.FilePath;
   readonly stats: Option.Option<fs.Stats>;
 }
 
@@ -23,7 +23,7 @@ const createFileEvent = (
   path: string,
   stats: fs.Stats | undefined = undefined,
 ): FSFileEvent => ({
-  path: TwinPath.unknownFilePath(path),
+  path: TwinPath.filePathFromString(path),
   stats: Option.fromNullable(stats),
 });
 

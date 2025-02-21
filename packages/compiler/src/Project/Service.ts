@@ -4,17 +4,14 @@ import * as Effect from 'effect/Effect';
 import { identity } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
 import * as Sink from 'effect/Sink';
 import * as Stream from 'effect/Stream';
-import { type BabelModule, makeBabelModule } from '../Babel';
-import * as TwinPath from '../FileSystem/Path.model';
+import { type BabelModule, type ModuleDependency, makeBabelModule } from '../Babel';
+import { CompilerConfigContext, TwinNodeContext, TwinNodeContextLive } from '../Config';
+import { TwinPath } from '../FileSystem';
 import { FSUtils } from '../internal/fs';
-import { CompilerConfigContext } from '../services/CompilerConfig.service';
-import {
-  TwinNodeContext,
-  TwinNodeContextLive,
-} from '../services/TwinNodeContext.service';
 import { TwinDomElementSheet, TwinModuleSheet, TwinProjectRunner } from './Model';
 
 const make = Effect.gen(function* () {
@@ -30,7 +27,6 @@ const make = Effect.gen(function* () {
     Stream.map((path_) => TwinPath.filePathFromString(path_, env.projectRoot)),
     Stream.mapEffect(moduleFromFilePath),
     Stream.run(Sink.collectAllToMap((module) => module.filepath, identity)),
-    // Effect.tap((mods) => Ref.set(projectModules, mods)),
   );
   yield* refreshModules();
 
@@ -55,17 +51,47 @@ const make = Effect.gen(function* () {
     );
   }
 
+  function findModuleByDependency(dependency: ModuleDependency) {
+    return Effect.gen(function* () {
+      const dependencyPath = dependency.filepath;
+      const modules = yield* getProjectModules;
+      const maybeModule = HashMap.findFirst(modules, (mod, key) =>
+        key.startsWith(dependencyPath),
+      ).pipe(Option.getOrNull);
+
+      if (!maybeModule) return null;
+
+      const [_, module] = maybeModule;
+      const maybeDomElement = yield* module.domElements.pipe(
+        Stream.find((x) => x.name === dependency.exportName),
+        Stream.runHead,
+        Effect.map(Option.getOrNull),
+      );
+      return maybeDomElement;
+    });
+  }
+
   function runTransform(module: BabelModule, runner: TwinProjectRunner) {
     return Effect.gen(function* () {
       const sheet = new TwinModuleSheet(module);
-      yield* Stream.runForEach(module.domElements, (domNode) =>
-        Effect.sync(() => {
-          const sheetTree = Tree.mapTree(
-            domNode.tree,
-            (domElement) => new TwinDomElementSheet(domElement, runner),
-          );
-          return sheet.registerDomTree(domNode.name, sheetTree);
+      yield* module.domElements.pipe(
+        Stream.map((x) => {
+          return x;
         }),
+        Stream.runForEach((domNode) =>
+          Effect.gen(function* () {
+            const sheetTree = Tree.mapTree(
+              domNode.tree,
+              (domElement) =>
+                new TwinDomElementSheet(
+                  domElement,
+                  module.findDomElementDependency(domElement.value),
+                  runner,
+                ),
+            );
+            return sheet.registerDomTree(domNode.name, sheetTree);
+          }),
+        ),
       );
       return sheet;
     });

@@ -3,16 +3,15 @@ import path from 'path';
 import { Effect, ManagedRuntime } from 'effect';
 import * as Layer from 'effect/Layer';
 import {
-  BabelCompilerContextLive,
   CompilerConfigContext,
   FSUtils,
   TwinFSContextLive,
   TwinNodeContextLive,
   TwinPath,
+  TwinProjectContextLive,
   createCompilerConfig,
   twinLoggerLayer,
 } from '../src';
-import { TwinProjectContextLive } from '../src/Project/Service';
 
 const outputDir = path.join(__dirname, '.cache');
 const compilerContext = Layer.succeed(
@@ -26,9 +25,7 @@ const compilerContext = Layer.succeed(
 // const tw = createTailwind(tailwindConfig, createVirtualSheet());
 export const TestMainLive = Layer.empty.pipe(
   Layer.provideMerge(TwinNodeContextLive),
-  Layer.provideMerge(BabelCompilerContextLive),
   Layer.provideMerge(FSUtils.FsUtilsLive),
-  Layer.provideMerge(TwinPath.TwinPathLive),
   Layer.provideMerge(TwinFSContextLive),
   Layer.provideMerge(TwinProjectContextLive),
   Layer.provideMerge(compilerContext),
@@ -48,10 +45,9 @@ export const writeFixtureOutput = (
 
 export const getFixture = (name: string) =>
   Effect.gen(function* () {
-    const twinPath = yield* TwinPath.TwinPath;
     const fs = yield* FSUtils.FsUtils;
-    const inputFile = twinPath.make.absoluteFromString(`fixtures/${name}/code.tsx`);
-    const outputFile = twinPath.make.absoluteFromString(`fixtures/${name}/code.out.tsx`);
+    const inputFile = TwinPath.filePathFromString(`fixtures/${name}/code.tsx`);
+    const outputFile = TwinPath.filePathFromString(`fixtures/${name}/code.out.tsx`);
     const writeOutput = (content: string) => fs.writeFile(outputFile, content);
 
     return {
@@ -59,8 +55,4 @@ export const getFixture = (name: string) =>
       outputFile,
       writeOutput,
     };
-  }).pipe(
-    Effect.provide(TwinPath.TwinPathLive),
-    Effect.provide(FSUtils.FsUtilsLive),
-    Effect.withLogSpan('FIXTURE_FILES'),
-  );
+  }).pipe(Effect.provide(FSUtils.FsUtilsLive), Effect.withLogSpan('FIXTURE_FILES'));

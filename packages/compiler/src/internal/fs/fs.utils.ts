@@ -4,12 +4,10 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Hash from 'effect/Hash';
 import * as Layer from 'effect/Layer';
-import type { FilePath } from '../../FileSystem/Path.model.js';
-import * as TwinPath from './fs.path.js';
+import type { TwinPath } from '../../FileSystem';
 
 const make = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
-  const twinPath = yield* TwinPath.TwinPath;
 
   const modifyFile = (path: string, f: (s: string, path: string) => string) =>
     fs.readFileString(path).pipe(
@@ -30,7 +28,7 @@ const make = Effect.gen(function* () {
     ),
   );
 
-  const mkdirCached = (path: TwinPath.AbsoluteFilePath) => mkdirCached_(path);
+  const mkdirCached = (path: TwinPath.AbsolutePath) => mkdirCached_(path);
 
   const createTempFile = () => fs.makeTempFile();
 
@@ -46,7 +44,7 @@ const make = Effect.gen(function* () {
       }),
   );
 
-  const readFile = (path: TwinPath.AbsoluteFilePath | FilePath) =>
+  const readFile = (path: TwinPath.FilePath) =>
     fs
       .readFileString(path)
       .pipe(Effect.tapError(() => Effect.logError(`Cannot read file at: ${path}`)));
@@ -60,7 +58,7 @@ const make = Effect.gen(function* () {
   const writeFileSource = (file: { path: string; content: string }) =>
     fs.writeFileString(file.path, file.content);
 
-  const writeFile = (path: TwinPath.AbsoluteFilePath, content: string) =>
+  const writeFile = (path: TwinPath.FilePath, content: string) =>
     fs.writeFile(path, Buffer.from(content, 'utf-8'));
 
   const getFileMD5 = (filePath: string) =>
@@ -68,11 +66,10 @@ const make = Effect.gen(function* () {
       .readFile(filePath)
       .pipe(Effect.map((x) => `${Hash.string(new TextDecoder().decode(x))}`));
 
-  const mkEmptyFileCached = (path: TwinPath.AbsoluteFilePath) =>
+  const mkEmptyFileCached = (path: TwinPath.FilePath) =>
     Effect.cached(fs.writeFile(path, new TextEncoder().encode('')));
 
   return {
-    path_: twinPath,
     writeFile,
     mkEmptyFileCached,
     createTempFile,
@@ -92,5 +89,4 @@ export const FsUtils = Context.GenericTag<FsUtils>('twin/FsUtils');
 export const FsUtilsLive = Layer.effect(FsUtils, make).pipe(
   Layer.provide(NodeFileSystem.layer),
   Layer.provide(NodePath.layerPosix),
-  Layer.provide(TwinPath.TwinPathLive),
 );

@@ -1,10 +1,10 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import type { TwinPath } from '../internal/fs';
+import type * as TwinPath from './Path.model';
 
 export class TwinFileResult implements Equal.Equal {
   constructor(
-    readonly filename: TwinPath.FullFilePath,
+    readonly filename: TwinPath.FilePath,
     readonly content: string,
   ) {}
 

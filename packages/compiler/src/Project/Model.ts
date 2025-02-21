@@ -1,11 +1,16 @@
 import { SheetEntryHandler } from '@native-twin/css/jsx';
 import type * as Tree from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
-import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
-import { type BabelModule, ComponentStyledProp, type TwinDomElement } from '../Babel';
-import type * as TwinPath from '../FileSystem/Path.model';
-import type { CompilerStyleSheet } from '../models/CompilerSheet';
+import type * as Option from 'effect/Option';
+import {
+  type BabelModule,
+  ComponentStyledProp,
+  type ModuleDependency,
+  type TwinDomElement,
+} from '../Babel';
+import type { TwinPath } from '../FileSystem';
+import type { CompilerStyleSheet } from '../StyleSheet';
 
 export class TwinProjectRunner {
   readonly sheet = new Map<TwinPath.FilePath, TwinModuleSheet>();
@@ -18,15 +23,13 @@ export class TwinProjectRunner {
   constructor(private readonly twin: CompilerStyleSheet) {}
 
   domElementEntries(element: TwinDomElement): ComponentStyledProp[] {
-    return pipe(
+    return RA.map(
       element.styledProps,
-      RA.map((prop) => {
-        const entries = this.twinFn(prop.value.text);
-        return new ComponentStyledProp(
+      (prop) =>
+        new ComponentStyledProp(
           prop,
-          RA.map(entries, (x) => new SheetEntryHandler(x, this.ctx)),
-        );
-      }),
+          RA.map(this.twinFn(prop.value.text), (x) => new SheetEntryHandler(x, this.ctx)),
+        ),
     );
   }
 }
@@ -41,6 +44,7 @@ export class TwinDomElementSheet {
   }
   constructor(
     private readonly _domElement: Tree.TreeNode<TwinDomElement>,
+    readonly originalDomElement: Option.Option<ModuleDependency>,
     runner: TwinProjectRunner,
   ) {
     this._compiledProps = runner.domElementEntries(_domElement.value);

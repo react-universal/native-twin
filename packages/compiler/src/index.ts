@@ -1,25 +1,15 @@
-export {
-  CompilerConfigContext,
-  createCompilerConfig,
-} from './services/CompilerConfig.service.js';
-
-export {
-  BabelCompilerContext,
-  BabelCompilerContextLive,
-} from './services/BabelCompiler.service.js';
-
-export { TwinFSContext, TwinFSContextLive } from './FileSystem/Service.js';
+export { TwinFSContext, TwinFSContextLive, TwinFileResult, TwinPath } from './FileSystem';
 
 export { TWIN_DEFAULT_PLUGIN_CONFIG } from './shared/compiler.constants.js';
 
-export { getBabelAST } from './utils/babel/babel.utils.js';
+export { babelParse } from './Babel';
 
 export {
   TwinNodeContext,
   TwinNodeContextLive,
-} from './services/TwinNodeContext.service.js';
-
-export * as TwinPath from './internal/fs/fs.path.js';
+  CompilerConfigContext,
+  createCompilerConfig,
+} from './Config';
 
 export * as FSUtils from './internal/fs/fs.utils.js';
 
@@ -33,22 +23,12 @@ export { BABEL_JSX_PLUGIN_IMPORT_RUNTIME } from './shared/twin.constants.js';
 
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
 
-export { TwinWatcherContextLive } from './services/TwinWatcher.service.js';
-
 export { TwinProjectContext, TwinProjectContextLive } from './Project/Service.js';
 
-export type {
-  AbsoluteFilePath,
-  AnyTwinPath,
-  GlobPath,
-  RelativeFilePath,
-  TwinGlobsError,
-  UnknownFilePath,
-} from './internal/fs/fs.path.js';
 export type { BabelAPI, TwinBabelPluginOptions } from './models/Babel.models.js';
 export type { NodeWithNativeTwinOptions } from './models/Compiler.models.js';
 export type {
   InternalTwFn,
   InternalTwinConfig,
   ExtractedTwinConfig,
-} from './models/Twin.models.js';
+} from './StyleSheet';

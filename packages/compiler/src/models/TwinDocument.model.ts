@@ -7,7 +7,7 @@ import {
   type Range,
   TextDocument,
 } from 'vscode-languageserver-textdocument';
-import type { TwinPath } from '../internal/fs';
+import type { TwinPath } from '../FileSystem';
 import { getBabelAST } from '../utils/babel/babel.utils.js';
 
 const quotesRegex = /^['"`].*['"`]$/g;
@@ -23,7 +23,7 @@ export abstract class __BaseTwinTextDocument implements Equal.Equal, TwinBaseDoc
   private _ast: ParseResult<t.File>;
 
   constructor(
-    readonly uri: TwinPath.AbsoluteFilePath,
+    readonly uri: TwinPath.AbsolutePath,
     content: string,
   ) {
     this.textDocument = TextDocument.create(uri, 'twin', 1, content);

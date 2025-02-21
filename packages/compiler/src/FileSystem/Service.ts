@@ -3,19 +3,15 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import { FSUtils, TwinPath } from '../internal/fs';
-import { CompilerConfigContext } from '../services/CompilerConfig.service';
-import {
-  TwinNodeContext,
-  TwinNodeContextLive,
-} from '../services/TwinNodeContext.service';
+import { CompilerConfigContext, TwinNodeContext, TwinNodeContextLive } from '../Config';
+import { FSUtils } from '../internal/fs';
 import { TwinFileResult } from './Models';
+import * as TwinPath from './Path.model';
 
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const env = yield* CompilerConfigContext;
   const fs = yield* FSUtils.FsUtils;
-  const twinPath = yield* TwinPath.TwinPath;
 
   return {
     readPlatformCSSFile,
@@ -27,8 +23,8 @@ const make = Effect.gen(function* () {
   function getFile(filepath: string, text?: string) {
     return Effect.gen(function* () {
       const realPath =
-        twinPath.extname(filepath) !== ''
-          ? twinPath.fullFilePathFromString(filepath)
+        TwinPath.NodePath.extname(filepath) !== ''
+          ? TwinPath.filePathFromString(filepath)
           : yield* getFullFilePathFromStr(filepath);
       let contents = text;
       if (!contents) contents = yield* fs.readFile(realPath);
@@ -38,29 +34,29 @@ const make = Effect.gen(function* () {
   }
 
   function getFullFilePathFromStr(filename: string) {
-    const dirname = twinPath.dirname(filename);
+    const dirname = TwinPath.NodePath.dirname(filename);
     return Effect.gen(function* () {
       const dirFiles = yield* fs
         .readDir(dirname, {
           recursive: false,
         })
-        .pipe(Effect.map(RA.map((x) => twinPath.join(dirname, x))));
+        .pipe(Effect.map(RA.map((x) => TwinPath.NodePath.join(dirname, x))));
 
       return RA.findFirst(dirFiles, (x) => x.startsWith(filename)).pipe(
-        Option.map((path) => twinPath.fullFilePathFromString(path)),
+        Option.map((path) => TwinPath.filePathFromString(path)),
         Option.getOrThrow,
       );
     });
   }
 
   function readPlatformCSSFile(platform: string) {
-    return fs.readFile(twinPath.make.absoluteFromString(ctx.getOutputCSSPath(platform)));
+    return fs.readFile(TwinPath.filePathFromString(ctx.getOutputCSSPath(platform)));
   }
 
   function createTwinFiles() {
     return Effect.gen(function* () {
       yield* fs
-        .mkdirCached(twinPath.make.absoluteFromString(env.outputDir))
+        .mkdirCached(TwinPath.absolutePathFromString(env.outputDir))
         .pipe(Effect.tapError(() => Effect.logError('cant create twin output')));
 
       yield* fs.writeFileCached({ path: env.platformPaths.ios, override: false });
@@ -85,5 +81,4 @@ export const TwinFSContext = Context.GenericTag<TwinFSContext>('metro/fs/service
 export const TwinFSContextLive = Layer.scoped(TwinFSContext, make).pipe(
   Layer.provide(FSUtils.FsUtilsLive),
   Layer.provide(TwinNodeContextLive),
-  Layer.provide(TwinPath.TwinPathLive),
 );

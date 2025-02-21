@@ -1,6 +1,12 @@
 export type { BabelFileAst, JSXElementNode, JSXElementPath } from './Models';
 
-export { ModuleDependency, ComponentStyledProp, BabelModule } from './Models';
-export { TwinCompilerDom, TwinDomElement } from './BabelDom';
-export { babelParse } from './Parser';
+export {
+  TwinCompilerDom,
+  TwinDomElement,
+  ModuleDependency,
+  ComponentStyledProp,
+  BabelModule,
+} from './Models';
+
+export { babelParse } from './Utils';
 export { makeBabelModule } from './Extractor';

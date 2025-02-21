@@ -1,12 +1,22 @@
 import { CodeGenerator } from '@babel/generator';
+import * as _babelParser from '@babel/parser';
+import type { Binding } from '@babel/traverse';
 import * as t from '@babel/types';
 import { cx } from '@native-twin/core';
 import { parseTWTokens } from '@native-twin/css';
+import * as RA from 'effect/Array';
 import * as Match from 'effect/Match';
 import * as Option from 'effect/Option';
 import type { JSXMappedAttribute } from '../models/JSXElement.model';
 import type { MappedComponent } from '../shared/compiler.constants';
-import { templateLiteralToStringLike } from '../utils/babel/babel.utils';
+import type { BabelFileAst, ImportSource } from './Models';
+import {
+  isCallExpression,
+  isImportDeclaration,
+  isImportSpecifier,
+  isJSXAttribute,
+  isVariableDeclaratorPath,
+} from './Predicates';
 
 export const isLocalImport = (path: string) =>
   path.startsWith('.') || path.startsWith('/');
@@ -84,3 +94,97 @@ const getPropValueString = Match.type<t.StringLiteral | t.TemplateLiteral>().pip
   }),
   Match.exhaustive,
 );
+
+/**
+ * @domain Babel
+ * @description Extract the {@link t.JSXAttribute[]} from any {@link t.JSXElement}
+ * */
+export const getJSXElementAttrs = (element: t.JSXElement): t.JSXAttribute[] =>
+  RA.filter(element.openingElement.attributes, isJSXAttribute);
+
+export const getBabelBindingImportSource = (binding: Binding) =>
+  Option.firstSomeOf([
+    getBindingImportDeclaration(binding),
+    getBindingRequireDeclaration(binding),
+  ]);
+
+const getBindingImportDeclaration = (binding: Binding) =>
+  Option.liftPredicate(binding.path, isImportSpecifier).pipe(
+    Option.bindTo('importSpecifier'),
+    Option.bind('importDeclaration', ({ importSpecifier }) =>
+      Option.liftPredicate(importSpecifier.parentPath, isImportDeclaration),
+    ),
+    Option.map(
+      (source): ImportSource => ({
+        kind: 'import',
+        source: source.importDeclaration.node.source.value,
+      }),
+    ),
+  );
+
+const getBindingRequireDeclaration = (binding: Binding) =>
+  Option.liftPredicate(binding.path, isVariableDeclaratorPath).pipe(
+    Option.bindTo('importSpecifier'),
+    Option.bind('requireExpression', ({ importSpecifier }) =>
+      Option.fromNullable(importSpecifier.node.init).pipe(
+        Option.flatMap((init) => Option.liftPredicate(init, isCallExpression)),
+        Option.flatMap((x) => RA.head(x.arguments)),
+        Option.flatMap((x) => Option.liftPredicate(x, t.isStringLiteral)),
+      ),
+    ),
+    Option.map((source): ImportSource => {
+      return {
+        kind: 'require',
+        source: source.requireExpression.value,
+      };
+    }),
+  );
+
+const templateLiteralToStringLike = (literal: t.TemplateLiteral) => {
+  const strings = literal.quasis
+    .map((x) => (x.value.cooked ? x.value.cooked : x.value.raw))
+    .map((x) => x.trim().replace(/\n/g, '').trim().replace(/\s+/g, ' '))
+    .filter((x) => x.length > 0)
+    .join('');
+  const expressions = t.templateLiteral(
+    literal.quasis.map(() => t.templateElement({ raw: '', cooked: '' })),
+    literal.expressions,
+  );
+  return { strings, expressions: expressions };
+};
+
+const plugins: _babelParser.ParserPlugin[] = [
+  'asyncGenerators',
+  'classProperties',
+  'dynamicImport',
+  'functionBind',
+  'jsx',
+  'numericSeparator',
+  'objectRestSpread',
+  'optionalCatchBinding',
+  'decorators-legacy',
+  'typescript',
+  'optionalChaining',
+  'nullishCoalescingOperator',
+];
+
+export const babelParserOptions: _babelParser.ParserOptions = {
+  plugins,
+  sourceType: 'module',
+  errorRecovery: true,
+};
+
+const parser = _babelParser.parse.bind(_babelParser);
+
+export function babelParse(code: string | Buffer, fileName?: string): BabelFileAst {
+  const codeString = code.toString();
+  try {
+    return parser(codeString, babelParserOptions);
+  } catch (err) {
+    throw new Error(
+      `Error parsing babel: ${err} in ${fileName}, code:\n${codeString}\n ${
+        (err as any).stack
+      }`,
+    );
+  }
+}

@@ -48,6 +48,15 @@ export const absolutePathFromString = (
     : AbsolutePath.make(path_.split(posixSep).join(posixSep));
 };
 
+export const NpmModulePath = Schema.String;
+export type NpmModulePath = typeof NpmModulePath.Type;
+export const ImportPath = Schema.Union(AbsolutePath, NpmModulePath);
+export type ImportPath = typeof ImportPath.Type;
+
+export const npmModulePathFromString = (path_: string): NpmModulePath => {
+  return Schema.encodeSync(NpmModulePath)(path_);
+};
+
 export const FilePath = Schema.String.pipe(Schema.fromBrand(filePath));
 export type FilePath = typeof FilePath.Type;
 export const filePathFromString = (path_: string, cwd = process.cwd()): FilePath =>

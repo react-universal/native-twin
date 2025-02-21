@@ -3,7 +3,7 @@ import * as t from '@babel/types';
 import * as Chunk from 'effect/Chunk';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import * as TwinPath from '../FileSystem/Path.model';
+import { TwinPath } from '../FileSystem';
 import {
   type AnyNodePath,
   type BabelFileAst,
@@ -13,8 +13,7 @@ import {
   type JSXElementPath,
   ModuleDependency,
 } from './Models';
-import { babelParse } from './Parser';
-import { isLocalImport } from './Utils';
+import { babelParse, isLocalImport } from './Utils';
 
 export const makeBabelModule = (filename: TwinPath.FilePath, code: string) => {
   const ast = babelParse(code, filename);
@@ -31,11 +30,13 @@ const getModuleDependencies = (ast: BabelFileAst, filename: TwinPath.FilePath) =
     if (!t.isImportDeclaration(statement)) continue;
     const importPath = statement.source.value;
     const isLocal = isLocalImport(importPath);
-    const fullPath = TwinPath.absolutePathFromString(
-      isLocal
-        ? importPath
-        : TwinPath.NodePath.resolve(TwinPath.NodePath.dirname(filename), importPath),
-    );
+
+    const fullPath = isLocal
+      ? TwinPath.AbsolutePath.make(
+          TwinPath.NodePath.resolve(TwinPath.NodePath.dirname(filename), importPath),
+        )
+      : TwinPath.npmModulePathFromString(importPath);
+
     for (const specifier of statement.specifiers) {
       if (!t.isImportSpecifier(specifier)) continue;
       if (!t.isIdentifier(specifier.imported)) continue;
