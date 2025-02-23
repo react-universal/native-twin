@@ -7,8 +7,8 @@ import { parseTWTokens } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Match from 'effect/Match';
 import * as Option from 'effect/Option';
-import type { JSXMappedAttribute } from '../models/JSXElement.model';
-import type { MappedComponent } from '../shared/compiler.constants';
+import type { MappedComponent } from '../utils/constants';
+import type { JSXMappedAttribute } from './JSXModels';
 import type { BabelFileAst, ImportSource } from './Models';
 import {
   isCallExpression,

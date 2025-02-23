@@ -23,13 +23,13 @@
     "README.md"
   ],
   "dependencies": {
-    "@effect/cli": "^0.48.3",
-    "@effect/platform": "^0.69.3",
-    "@effect/platform-node": "^0.64.4",
-    "@effect/platform-node-shared": "^0.19.3",
-    "@effect/printer-ansi": "^0.38.0",
+    "@effect/cli": "^0.56.2",
+    "@effect/platform": "^0.77.2",
+    "@effect/platform-node": "^0.73.2",
+    "@effect/platform-node-shared": "^0.27.2",
+    "@effect/printer-ansi": "^0.41.2",
     "@native-twin/compiler": "workspace:*",
-    "effect": "^3.10.0"
+    "effect": "^3.13.2"
   },
   "devDependencies": {
     "@babel/parser": "^7.26.2"

@@ -33,6 +33,9 @@ export const GlobPath = Schema.String.pipe(Schema.fromBrand(globPath));
 export type GlobPath = typeof GlobPath.Type;
 export const globPathFromString = (path_: string) => GlobPath.make(path_);
 
+export const UnknownPath = Schema.String.pipe(Schema.brand('UnknownPath'));
+export const unknownPathFromString = (x: string) => UnknownPath.make(x);
+
 export const AbsolutePath = Schema.String.pipe(Schema.fromBrand(absolutePath));
 export type AbsolutePath = typeof AbsolutePath.Type;
 export const absolutePathFromString = (
@@ -59,8 +62,7 @@ export const npmModulePathFromString = (path_: string): NpmModulePath => {
 
 export const FilePath = Schema.String.pipe(Schema.fromBrand(filePath));
 export type FilePath = typeof FilePath.Type;
-export const filePathFromString = (path_: string, cwd = process.cwd()): FilePath =>
-  FilePath.make(absolutePathFromString(path_, cwd));
+export const filePathFromString = (path_: string): FilePath => FilePath.make(path_);
 
 export { NodePath };
 

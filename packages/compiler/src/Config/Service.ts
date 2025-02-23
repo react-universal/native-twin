@@ -10,9 +10,9 @@ import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as TwinPath from '../FileSystem/Path.model';
-import { CompilerStyleSheet } from '../StyleSheet/Model';
-import type { ImportedTwinConfig } from '../StyleSheet/Model';
+import { CompilerStyleSheet } from '../StyleSheet';
 import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
+import type { ImportedTwinConfig } from './Models';
 
 const make = Effect.gen(function* () {
   const env = yield* CompilerConfigContext;
@@ -55,7 +55,7 @@ const make = Effect.gen(function* () {
       projectFiles: {
         ref: projectFilesRef,
         get: SubscriptionRef.get(projectFilesRef),
-        changes: Stream.changes(projectFilesRef.changes),
+        changes: projectFilesRef.changes,
       },
       twinConfig: {
         ref: twinConfigRef,
@@ -192,6 +192,6 @@ export const CompilerConfigContext = Context.GenericTag<CompilerConfigContext>(
 );
 
 export interface TwinNodeContext extends Effect.Effect.Success<typeof make> {}
-export const TwinNodeContext = Context.GenericTag<TwinNodeContext>('node/shared/context');
+export const TwinNodeContext = Context.GenericTag<TwinNodeContext>('TwinNodeContext');
 
 export const TwinNodeContextLive = Layer.effect(TwinNodeContext, make);

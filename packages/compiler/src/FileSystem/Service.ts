@@ -1,23 +1,67 @@
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as FileSystem from '@effect/platform/FileSystem';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import { CompilerConfigContext, TwinNodeContext, TwinNodeContextLive } from '../Config';
-import { FSUtils } from '../internal/fs';
-import { TwinFileResult } from './Models';
+import { TwinFile } from './Models';
 import * as TwinPath from './Path.model';
 
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const env = yield* CompilerConfigContext;
-  const fs = yield* FSUtils.FsUtils;
+  const fs = yield* FileSystem.FileSystem;
+
+  const mkdirCached_ = yield* Effect.cachedFunction((path: string) =>
+    fs.makeDirectory(path).pipe(
+      Effect.catchAllCause(() => Effect.void),
+      Effect.withSpan('FsUtils.mkdirCached', { attributes: { path } }),
+    ),
+  );
+
+  const mkdirCached = (path: TwinPath.AbsolutePath) => mkdirCached_(path);
+
+  const readFile = (path: TwinPath.FilePath) =>
+    fs
+      .readFileString(path)
+      .pipe(Effect.tapError(() => Effect.logError(`Cannot read file at: ${path}`)));
+
+  const writeFile = (path: TwinPath.FilePath, content: string) =>
+    fs.writeFile(path, Buffer.from(content, 'utf-8'));
+
+  const writeFileCached_ = yield* Effect.cachedFunction(
+    (data: { path: string; contents?: string; override?: boolean }) =>
+      Effect.if(fs.exists(data.path), {
+        onFalse: () =>
+          fs.writeFileString(data.path, data.contents ?? '', { flag: 'a+' }).pipe(
+            Effect.catchAllCause(() => Effect.void),
+            Effect.withSpan('FsUtils.writeFileCached', { attributes: { data } }),
+          ),
+        onTrue: () => Effect.void,
+      }),
+  );
+
+  const writeFileCached = (data: {
+    path: string;
+    contents?: string;
+    override?: boolean;
+  }) => writeFileCached_(data);
 
   return {
     readPlatformCSSFile,
+    writeFile,
+    readFile,
+    mkdirCached,
     getFile,
     createTwinFiles,
     getFullFilePathFromStr,
+    makeTempFile: (file: string, platform: string) =>
+      fs.makeTempFile({
+        directory: TwinPath.NodePath.dirname(file),
+        prefix: `${TwinPath.NodePath.basename(file)}_${platform}_`,
+      }),
   };
 
   function getFile(filepath: string, text?: string) {
@@ -27,9 +71,9 @@ const make = Effect.gen(function* () {
           ? TwinPath.filePathFromString(filepath)
           : yield* getFullFilePathFromStr(filepath);
       let contents = text;
-      if (!contents) contents = yield* fs.readFile(realPath);
+      if (!contents) contents = yield* readFile(realPath);
 
-      return new TwinFileResult(realPath, contents);
+      return new TwinFile({ code: contents, path: realPath });
     });
   }
 
@@ -37,7 +81,7 @@ const make = Effect.gen(function* () {
     const dirname = TwinPath.NodePath.dirname(filename);
     return Effect.gen(function* () {
       const dirFiles = yield* fs
-        .readDir(dirname, {
+        .readDirectory(dirname, {
           recursive: false,
         })
         .pipe(Effect.map(RA.map((x) => TwinPath.NodePath.join(dirname, x))));
@@ -55,21 +99,22 @@ const make = Effect.gen(function* () {
 
   function createTwinFiles() {
     return Effect.gen(function* () {
-      yield* fs
-        .mkdirCached(TwinPath.absolutePathFromString(env.outputDir))
-        .pipe(Effect.tapError(() => Effect.logError('cant create twin output')));
+      yield* Effect.tapError(
+        mkdirCached(TwinPath.absolutePathFromString(env.outputDir)),
+        () => Effect.logError('cant create twin output'),
+      );
 
-      yield* fs.writeFileCached({ path: env.platformPaths.ios, override: false });
-      yield* fs.writeFileCached({
+      yield* writeFileCached({ path: env.platformPaths.ios, override: false });
+      yield* writeFileCached({
         path: env.platformPaths.android,
         override: false,
       });
-      yield* fs.writeFileCached({
+      yield* writeFileCached({
         path: env.platformPaths.defaultFile,
         override: false,
       });
-      yield* fs.writeFileCached({ path: env.platformPaths.native, override: false });
-      yield* fs.writeFileCached({ path: env.platformPaths.web, override: false });
+      yield* writeFileCached({ path: env.platformPaths.native, override: false });
+      yield* writeFileCached({ path: env.platformPaths.web, override: false });
     });
   }
 });
@@ -79,6 +124,6 @@ export interface TwinFSContext extends Effect.Effect.Success<typeof make> {}
 export const TwinFSContext = Context.GenericTag<TwinFSContext>('metro/fs/service');
 
 export const TwinFSContextLive = Layer.scoped(TwinFSContext, make).pipe(
-  Layer.provide(FSUtils.FsUtilsLive),
+  Layer.provide(NodeFileSystem.layer),
   Layer.provide(TwinNodeContextLive),
 );

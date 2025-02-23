@@ -1,3 +1,15 @@
+import type { RuntimeTW, TailwindConfig, __Theme__ } from '@native-twin/core';
+import type { SheetEntry } from '@native-twin/css';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
+import type { TwinPath } from '../FileSystem';
+
+export type InternalTwinConfig = __Theme__ & TailwindPresetTheme;
+export type InternalTwFn = RuntimeTW<InternalTwinConfig, SheetEntry[]>;
+export interface ExtractedTwinConfig extends TailwindConfig<InternalTwinConfig> {
+  content: TwinPath.FilePath[];
+}
+export type ImportedTwinConfig = TailwindConfig<InternalTwinConfig>;
+
 import type * as LogLevel from 'effect/LogLevel';
 
 /**

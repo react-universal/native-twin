@@ -1,19 +1,21 @@
 import { SheetEntryHandler } from '@native-twin/css/jsx';
-import type * as Tree from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
-import * as Hash from 'effect/Hash';
+import type * as Effect from 'effect/Effect';
 import type * as Option from 'effect/Option';
 import {
-  type BabelModule,
   ComponentStyledProp,
-  type ModuleDependency,
-  type TwinDomElement,
+  type JSXMappedAttribute,
+  type TwinBabelModule,
+  type TwinJSXElement,
+  type TwinJSXElementNode,
 } from '../Babel';
 import type { TwinPath } from '../FileSystem';
 import type { CompilerStyleSheet } from '../StyleSheet';
 
+export type TwinRunnerPlatform = 'web' | 'native';
+
 export class TwinProjectRunner {
-  readonly sheet = new Map<TwinPath.FilePath, TwinModuleSheet>();
+  readonly sheet = new Map<TwinPath.FilePath, any>();
   private get ctx() {
     return this.twin.ctx;
   }
@@ -22,7 +24,7 @@ export class TwinProjectRunner {
   }
   constructor(private readonly twin: CompilerStyleSheet) {}
 
-  domElementEntries(element: TwinDomElement): ComponentStyledProp[] {
+  domElementEntries(element: TwinJSXElementNode): ComponentStyledProp[] {
     return RA.map(
       element.styledProps,
       (prop) =>
@@ -34,31 +36,26 @@ export class TwinProjectRunner {
   }
 }
 
-export class TwinDomElementSheet {
-  private readonly _compiledProps: ComponentStyledProp[];
-  get compiledProps() {
-    return this._compiledProps;
-  }
-  get domElementName() {
-    return this._domElement.value.name;
-  }
+export class TwinJSXElementSheet {
   constructor(
-    private readonly _domElement: Tree.TreeNode<TwinDomElement>,
-    readonly originalDomElement: Option.Option<ModuleDependency>,
-    runner: TwinProjectRunner,
+    readonly jsxElement: TwinJSXElement,
+    readonly sheets: Iterable<JSXElementNodeSheet>,
+  ) {}
+}
+
+export class JSXElementNodeSheet {
+  readonly childEntries: ComponentStyledProp['childEntries'];
+  constructor(
+    readonly styledProps: ComponentStyledProp[],
+    readonly originalElement: Option.Option<TwinJSXElement>,
+    readonly treeIDPaths: string[],
   ) {
-    this._compiledProps = runner.domElementEntries(_domElement.value);
+    this.childEntries = styledProps.flatMap((x) => x.childEntries);
   }
 }
 
-export class TwinModuleSheet {
-  readonly _moduleSheet = new Map<string, Tree.Tree<TwinDomElementSheet>>();
-  get sheetID() {
-    return `${this.module.name}:${Hash.string(this.module.filepath)}`;
-  }
-  constructor(readonly module: BabelModule) {}
-
-  registerDomTree(nodeName: string, tree: Tree.Tree<TwinDomElementSheet>) {
-    this._moduleSheet.set(nodeName, tree);
-  }
-}
+export type TwinTransformFn = (
+  module: TwinBabelModule,
+) => Effect.Effect<TwinJSXElementSheet[]>;
+export type TwinExtractorFn = (props: JSXMappedAttribute[]) => ComponentStyledProp[];
+export type TransformedModule = [TwinPath.FilePath, TwinJSXElementSheet[]];

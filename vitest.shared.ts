@@ -21,6 +21,9 @@ const config: ViteUserConfig = {
     fakeTimers: {
       toFake: undefined,
     },
+    onConsoleLog: (input,type) => {
+      console.debug('ON_CONSOLE',type,input)
+    },
     sequence: {
       concurrent: true,
     },

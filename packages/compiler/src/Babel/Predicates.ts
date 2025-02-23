@@ -3,6 +3,7 @@ import * as t from '@babel/types';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
+import type { AnyNodePath } from './Models';
 
 export const isJSXElement: Predicate.Predicate<t.JSXElement> = pipe(
   (node: t.Node): node is t.JSXElement => t.isJSXElement(node),
@@ -83,3 +84,8 @@ export const isReactInteropRequire = (
     }
     return Option.none();
   });
+
+export const isFunction = (path: AnyNodePath) =>
+  path.isArrowFunctionExpression() ||
+  path.isFunctionDeclaration() ||
+  path.isFunctionExpression();

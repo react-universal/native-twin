@@ -1,22 +1,14 @@
-import * as Equal from 'effect/Equal';
-import * as Hash from 'effect/Hash';
-import type * as TwinPath from './Path.model';
+import * as Data from 'effect/Data';
+import * as TwinPath from './Path.model';
 
-export class TwinFileResult implements Equal.Equal {
-  constructor(
-    readonly filename: TwinPath.FilePath,
-    readonly content: string,
-  ) {}
-
-  [Equal.symbol](that: unknown): boolean {
-    return (
-      that instanceof TwinFileResult &&
-      that.filename === this.filename &&
-      that[Hash.symbol]() === this[Hash.symbol]()
-    );
+export class TwinFile extends Data.Class<{
+  path: TwinPath.FilePath;
+  code: string;
+}> {
+  get dirname() {
+    return TwinPath.NodePath.dirname(this.path);
   }
-
-  [Hash.symbol](): number {
-    return Hash.combine(Hash.string(this.filename))(Hash.string(this.content));
+  get basename() {
+    return TwinPath.NodePath.basename(this.path);
   }
 }

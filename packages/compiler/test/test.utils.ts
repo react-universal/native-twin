@@ -4,17 +4,18 @@ import { Effect, ManagedRuntime } from 'effect';
 import * as Layer from 'effect/Layer';
 import {
   CompilerConfigContext,
-  FSUtils,
+  TwinFSContext,
   TwinFSContextLive,
   TwinNodeContextLive,
   TwinPath,
   TwinProjectContextLive,
+  TwinProjectRunnerContextLive,
   createCompilerConfig,
   twinLoggerLayer,
 } from '../src';
 
 const outputDir = path.join(__dirname, '.cache');
-const compilerContext = Layer.succeed(
+export const compilerContext = Layer.succeed(
   CompilerConfigContext,
   createCompilerConfig({
     outDir: outputDir,
@@ -25,8 +26,8 @@ const compilerContext = Layer.succeed(
 // const tw = createTailwind(tailwindConfig, createVirtualSheet());
 export const TestMainLive = Layer.empty.pipe(
   Layer.provideMerge(TwinNodeContextLive),
-  Layer.provideMerge(FSUtils.FsUtilsLive),
   Layer.provideMerge(TwinFSContextLive),
+  Layer.provideMerge(TwinProjectRunnerContextLive),
   Layer.provideMerge(TwinProjectContextLive),
   Layer.provideMerge(compilerContext),
   Layer.provide(twinLoggerLayer),
@@ -45,7 +46,7 @@ export const writeFixtureOutput = (
 
 export const getFixture = (name: string) =>
   Effect.gen(function* () {
-    const fs = yield* FSUtils.FsUtils;
+    const fs = yield* TwinFSContext;
     const inputFile = TwinPath.filePathFromString(`fixtures/${name}/code.tsx`);
     const outputFile = TwinPath.filePathFromString(`fixtures/${name}/code.out.tsx`);
     const writeOutput = (content: string) => fs.writeFile(outputFile, content);
@@ -55,4 +56,4 @@ export const getFixture = (name: string) =>
       outputFile,
       writeOutput,
     };
-  }).pipe(Effect.provide(FSUtils.FsUtilsLive), Effect.withLogSpan('FIXTURE_FILES'));
+  }).pipe(Effect.provide(TestMainLive), Effect.withLogSpan('FIXTURE_FILES'));

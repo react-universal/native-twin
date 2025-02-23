@@ -1,100 +1,61 @@
-import * as Tree from '@native-twin/helpers/tree';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
-import { identity } from 'effect/Function';
-import * as HashMap from 'effect/HashMap';
+import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
-import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
-import * as Sink from 'effect/Sink';
 import * as Stream from 'effect/Stream';
-import { type BabelModule, type ModuleDependency, makeBabelModule } from '../Babel';
-import { CompilerConfigContext, TwinNodeContext, TwinNodeContextLive } from '../Config';
-import { TwinPath } from '../FileSystem';
-import { FSUtils } from '../internal/fs';
-import { TwinDomElementSheet, TwinModuleSheet, TwinProjectRunner } from './Model';
+import * as SubscriptionRef from 'effect/SubscriptionRef';
+import { BabelContext, BabelContextLive, type TwinBabelModule } from '../Babel';
+import { TwinNodeContext, TwinNodeContextLive } from '../Config';
+import { TwinFSContext, TwinFSContextLive, TwinPath } from '../FileSystem';
 
 const make = Effect.gen(function* () {
-  const env = yield* CompilerConfigContext;
   const ctx = yield* TwinNodeContext;
-  const fs = yield* FSUtils.FsUtils;
-  const twinRunners = yield* ctx.state.twRunners.get;
-  const nativeRunner = yield* Ref.make(new TwinProjectRunner(twinRunners.native));
-  const webRunner = yield* Ref.make(new TwinProjectRunner(twinRunners.web));
-  const projectModules = yield* Ref.make(HashMap.empty<TwinPath.FilePath, BabelModule>());
+  const fs = yield* TwinFSContext;
+  const babel = yield* BabelContext;
+  const modulesRef = yield* SubscriptionRef.make(HashSet.empty<TwinBabelModule>());
 
-  const _getProjectModules = Stream.fromIterableEffect(ctx.state.projectFiles.get).pipe(
-    Stream.map((path_) => TwinPath.filePathFromString(path_, env.projectRoot)),
-    Stream.mapEffect(moduleFromFilePath),
-    Stream.run(Sink.collectAllToMap((module) => module.filepath, identity)),
+  const updateModules = Effect.gen(function* () {
+    const filePaths = yield* ctx.state.projectFiles.get.pipe(
+      Effect.map(HashSet.map((x) => TwinPath.filePathFromString(x))),
+    );
+    yield* Effect.all(HashSet.map(filePaths, moduleFromFilePath), {
+      concurrency: 'unbounded',
+    }).pipe(
+      Effect.map(HashSet.fromIterable),
+      Effect.andThen((x) => SubscriptionRef.set(modulesRef, x)),
+      Effect.catchAll((error) => Effect.log('ERROR_MODULES: ', error._tag)),
+    );
+  });
+
+  const watchModules = ctx.state.projectFiles.changes.pipe(
+    Stream.tap(() => updateModules),
+    Stream.mapEffect(() => getCurrentModules()),
   );
-  yield* refreshModules();
-
-  const getProjectModules = Ref.get(projectModules);
 
   return {
-    getProjectModules,
-    nativeRunner,
-    webRunner,
+    modulesRef,
     moduleFromFilePath,
-    refreshModules,
-    runTransform,
+    getCurrentModules,
+    watchModules,
   };
 
-  function moduleFromFilePath(path_: TwinPath.FilePath) {
-    return Effect.map(fs.readFile(path_), (code) => makeBabelModule(path_, code));
-  }
-
-  function refreshModules() {
-    return _getProjectModules.pipe(
-      Effect.andThen((mods) => Ref.set(projectModules, mods)),
+  function getCurrentModules() {
+    return Ref.get(modulesRef).pipe(
+      Effect.andThen((currentMods) =>
+        Effect.if(HashSet.size(currentMods) > 0, {
+          onTrue: () => Effect.succeed(currentMods),
+          onFalse: () => updateModules.pipe(Effect.andThen(() => Ref.get(modulesRef))),
+        }),
+      ),
     );
   }
 
-  function findModuleByDependency(dependency: ModuleDependency) {
-    return Effect.gen(function* () {
-      const dependencyPath = dependency.filepath;
-      const modules = yield* getProjectModules;
-      const maybeModule = HashMap.findFirst(modules, (mod, key) =>
-        key.startsWith(dependencyPath),
-      ).pipe(Option.getOrNull);
-
-      if (!maybeModule) return null;
-
-      const [_, module] = maybeModule;
-      const maybeDomElement = yield* module.domElements.pipe(
-        Stream.find((x) => x.name === dependency.exportName),
-        Stream.runHead,
-        Effect.map(Option.getOrNull),
-      );
-      return maybeDomElement;
-    });
-  }
-
-  function runTransform(module: BabelModule, runner: TwinProjectRunner) {
-    return Effect.gen(function* () {
-      const sheet = new TwinModuleSheet(module);
-      yield* module.domElements.pipe(
-        Stream.map((x) => {
-          return x;
-        }),
-        Stream.runForEach((domNode) =>
-          Effect.gen(function* () {
-            const sheetTree = Tree.mapTree(
-              domNode.tree,
-              (domElement) =>
-                new TwinDomElementSheet(
-                  domElement,
-                  module.findDomElementDependency(domElement.value),
-                  runner,
-                ),
-            );
-            return sheet.registerDomTree(domNode.name, sheetTree);
-          }),
-        ),
-      );
-      return sheet;
-    });
+  function moduleFromFilePath(path_: TwinPath.FilePath) {
+    return fs.getFile(path_).pipe(
+      Effect.andThen((file) => babel.getBabelModule(file)),
+      Effect.tapError((error) => Effect.log('ERROR_GETTING_MODULE: ', error._tag)),
+    );
   }
 });
 
@@ -103,6 +64,7 @@ export const TwinProjectContext =
   Context.GenericTag<TwinProjectContext>('TwinProjectContext');
 
 export const TwinProjectContextLive = Layer.effect(TwinProjectContext, make).pipe(
-  Layer.provide(FSUtils.FsUtilsLive),
+  Layer.provide(TwinFSContextLive),
+  Layer.provide(BabelContextLive),
   Layer.provide(TwinNodeContextLive),
 );

@@ -1,24 +1,23 @@
-import { Array, Effect, Stream } from 'effect';
-import { describe, expect, it } from 'vitest';
-import { TwinProjectContext } from '../src';
-import { TestRuntime } from './test.utils';
+import { describe, expect, it } from '@effect/vitest';
+import { Effect } from 'effect';
+import { TwinProjectRunnerContext } from '../src';
+import { TestMainLive } from './test.utils';
 
 describe('Project runner', () => {
-  it('compile all project files', async () => {
-    const result = await Effect.gen(function* () {
-      const project = yield* TwinProjectContext;
-      const nativeRunner = yield* project.nativeRunner;
-      const projectModules = yield* Stream.fromIterableEffect(
-        project.getProjectModules,
-      ).pipe(
-        Stream.mapEffect(([_, x]) => project.runTransform(x, nativeRunner)),
-        Stream.runCollect,
-        Effect.map(Array.fromIterable),
-      );
+  it.effect(
+    'run native project runner',
+    () =>
+      Effect.gen(function* () {
+        const { runNative } = yield* TwinProjectRunnerContext;
+        const transformedModules = yield* runNative;
 
-      expect(projectModules).toBeDefined();
-    }).pipe(TestRuntime.runPromiseExit);
-
-    expect(result._tag).toBe('Success');
-  }, 10000);
+        expect(transformedModules).toBeDefined();
+      }).pipe(
+        Effect.onError((cause) => Effect.log('ON_ERROR: ', cause._tag)),
+        Effect.provide(TestMainLive),
+      ),
+    {
+      timeout: 10000,
+    },
+  );
 });

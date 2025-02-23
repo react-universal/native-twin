@@ -5,7 +5,15 @@
       "request": "launch",
       "name": "Test @lib/compiler",
       "program": "../../node_modules/.bin/vitest",
-      "args": ["--watch", "project"],
+      "args": [
+        "--inspect-brk",
+        "--no-file-parallelism",
+        "--watch",
+        "project"
+      ],
+      "env": {
+        "VITE_CJS_IGNORE_WARNING": "true"
+      },
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
       "resolveSourceMapLocations": [

@@ -5,7 +5,7 @@ import { Button } from './code-i';
 export default function App() {
   return (
     <View className={`group flex-1 first:bg-red-200`}>
-      <Button componentID='#546546546' size='small' />
+      <Button size='small' />
       {/* <Text>Hello World</Text>
       <Text>Hello World</Text>
       <View className='flex-1 first:bg-blue-200'>
