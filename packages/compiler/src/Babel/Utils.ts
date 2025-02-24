@@ -8,8 +8,8 @@ import * as RA from 'effect/Array';
 import * as Match from 'effect/Match';
 import * as Option from 'effect/Option';
 import type { MappedComponent } from '../utils/constants';
-import type { JSXMappedAttribute } from './JSXModels';
-import type { BabelFileAst, ImportSource } from './Models';
+import type { JSXMappedAttribute, TwinJSXElement, TwinJSXElementNode } from './JSXModels';
+import type { BabelFileAst, ImportSource, TwinBabelModule } from './Models';
 import {
   isCallExpression,
   isImportDeclaration,
@@ -17,6 +17,14 @@ import {
   isJSXAttribute,
   isVariableDeclaratorPath,
 } from './Predicates';
+
+export type TwinDependenciesLookup = (
+  modules: TwinBabelModule[],
+) => (key: TwinJSXElementNode) => Option.Option<TwinJSXElement>;
+
+export const makeDependenciesLookup: TwinDependenciesLookup =
+  (modules: TwinBabelModule[]) => (key: TwinJSXElementNode) =>
+    RA.head(RA.filterMap(modules, (external) => external.getJSXElementFromNode(key)));
 
 export const isLocalImport = (path: string) =>
   path.startsWith('.') || path.startsWith('/');

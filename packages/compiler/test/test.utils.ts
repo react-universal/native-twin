@@ -11,7 +11,7 @@ import {
   TwinProjectContextLive,
   TwinProjectRunnerContextLive,
   createCompilerConfig,
-  twinLoggerLayer,
+  withCompilerLoggerLayer,
 } from '../src';
 
 const outputDir = path.join(__dirname, '.cache');
@@ -24,16 +24,16 @@ export const compilerContext = Layer.succeed(
   }),
 );
 // const tw = createTailwind(tailwindConfig, createVirtualSheet());
-export const TestMainLive = Layer.empty.pipe(
-  Layer.provideMerge(TwinNodeContextLive),
-  Layer.provideMerge(TwinFSContextLive),
-  Layer.provideMerge(TwinProjectRunnerContextLive),
-  Layer.provideMerge(TwinProjectContextLive),
-  Layer.provideMerge(compilerContext),
-  Layer.provide(twinLoggerLayer),
-);
+// export const TestMainLive = Layer.empty.pipe(
+//   Layer.provideMerge(TwinNodeContextLive),
+//   Layer.provideMerge(TwinFSContextLive),
+//   Layer.provideMerge(TwinProjectRunnerContextLive),
+//   Layer.provideMerge(TwinProjectContextLive),
+//   Layer.provideMerge(compilerContext),
+//   withCompilerLoggerLayer
+// );
 
-export const TestRuntime = ManagedRuntime.make(TestMainLive);
+// export const TestRuntime = ManagedRuntime.make(TestMainLive);
 
 export const writeFixtureOutput = (
   code: string,
@@ -44,16 +44,16 @@ export const writeFixtureOutput = (
   return code;
 };
 
-export const getFixture = (name: string) =>
-  Effect.gen(function* () {
-    const fs = yield* TwinFSContext;
-    const inputFile = TwinPath.filePathFromString(`fixtures/${name}/code.tsx`);
-    const outputFile = TwinPath.filePathFromString(`fixtures/${name}/code.out.tsx`);
-    const writeOutput = (content: string) => fs.writeFile(outputFile, content);
+// export const getFixture = (name: string) =>
+//   Effect.gen(function* () {
+//     const fs = yield* TwinFSContext;
+//     const inputFile = TwinPath.filePathFromString(`fixtures/${name}/code.tsx`);
+//     const outputFile = TwinPath.filePathFromString(`fixtures/${name}/code.out.tsx`);
+//     const writeOutput = (content: string) => fs.writeFile(outputFile, content);
 
-    return {
-      inputFile,
-      outputFile,
-      writeOutput,
-    };
-  }).pipe(Effect.provide(TestMainLive), Effect.withLogSpan('FIXTURE_FILES'));
+//     return {
+//       inputFile,
+//       outputFile,
+//       writeOutput,
+//     };
+//   }).pipe(Effect.provide(TestMainLive), Effect.withLogSpan('FIXTURE_FILES'));

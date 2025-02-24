@@ -17,32 +17,23 @@ import {
 import { TwinNodeContext, TwinNodeContextLive } from '../Config';
 import type { TwinPath } from '../FileSystem';
 import {
-  type CompilerStyleSheet,
   ComponentStyledProp,
   JSXElementNodeSheet,
-  type TwinExtractorFn,
   TwinJSXElementSheet,
-} from '../StyleSheet';
-import { TwinProjectContext, TwinProjectContextLive } from './Service';
+} from './JSXStyleSheet';
+import type { CompilerStyleSheet, TwinExtractorFn } from './Model';
 
 const make = Effect.gen(function* () {
-  const project = yield* TwinProjectContext;
   const ctx = yield* TwinNodeContext;
+
   const nativeModuleExtractor = createModulesExtractor(createExtractor('native'));
   const webModuleExtractor = createModulesExtractor(createExtractor('web'));
 
-  const getProjectNativeSheets = Effect.andThen(
-    project.getCurrentModules(),
-    nativeModuleExtractor,
-  );
-  const getProjectWebSheets = Effect.andThen(
-    project.getCurrentModules(),
-    webModuleExtractor,
-  );
-
   return {
-    getProjectNativeSheets,
-    getProjectWebSheets,
+    extractors: {
+      native: nativeModuleExtractor,
+      web: webModuleExtractor,
+    },
   };
 
   function createModulesExtractor(getExtractor: Effect.Effect<TwinExtractorFn>) {
@@ -127,29 +118,10 @@ const make = Effect.gen(function* () {
   }
 });
 
-export interface TwinProjectRunnerContext extends Effect.Effect.Success<typeof make> {}
-export const TwinProjectRunnerContext = Context.GenericTag<TwinProjectRunnerContext>(
-  'TwinProjectRunnerContext',
+export interface StyleSheetContext extends Effect.Effect.Success<typeof make> {}
+export const StyleSheetContext =
+  Context.GenericTag<StyleSheetContext>('StyleSheetContext');
+
+export const StyleSheetContextLive = Layer.effect(StyleSheetContext, make).pipe(
+  Layer.provide(TwinNodeContextLive),
 );
-export const TwinProjectRunnerContextLive = Layer.effect(
-  TwinProjectRunnerContext,
-  make,
-).pipe(Layer.provide(TwinNodeContextLive), Layer.provide(TwinProjectContextLive));
-
-// const makeModulesHandler = Effect.gen(function* () {
-//   const twinModules = yield* Ref.make(
-//     HashMap.empty<TwinPath.FilePath, TwinBabelModule>(),
-//   );
-//   const getModules = Ref.get(twinModules);
-//   const addModule = (babelModule: TwinBabelModule) =>
-//     Ref.update(twinModules, HashMap.set(babelModule.file.path, babelModule));
-//   const findModule = (filepath: TwinPath.FilePath) =>
-//     Effect.map(getModules, HashMap.get(filepath));
-
-//   return {
-//     ref: twinModules,
-//     get: getModules,
-//     add: addModule,
-//     find: findModule,
-//   };
-// });

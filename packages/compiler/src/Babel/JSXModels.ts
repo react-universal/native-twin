@@ -64,17 +64,9 @@ export class TwinJSXElementNode implements Equal.Equal {
 
   [Equal.symbol](that: unknown): boolean {
     return (
-      that instanceof TwinJSXElementNode &&
-      (TwinJSXElementNode.equals(this, that) ||
-        this[Hash.symbol]() === that[Hash.symbol]())
+      that instanceof TwinJSXElementNode && this[Hash.symbol]() === that[Hash.symbol]()
     );
   }
-  static equals = (a: TwinJSXElementNode, b: TwinJSXElementNode): boolean => {
-    if (a.babelPath === b.babelPath) {
-      return true;
-    }
-    return Equal.equals(a, b);
-  };
 }
 
 export interface JSXMappedAttribute {

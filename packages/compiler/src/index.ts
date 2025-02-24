@@ -9,19 +9,17 @@ export {
   TwinNodeContextLive,
   CompilerConfigContext,
   createCompilerConfig,
+  withCompilerLogger,
+  withCompilerLoggerLayer,
+  TwinCompilerLogger
 } from './Config';
 
 export { listenForkedStreamChanges } from './utils/effect.utils.js';
-
-export { TwinCustomLogger, twinLoggerLayer } from './internal/Logger.service.js';
-
-export { JSXImportPluginContext } from './internal/TwinBabelPlugin.service.js';
 
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
 
 export { TwinProjectContext, TwinProjectContextLive } from './Project/Service.js';
 export { TwinProjectRunnerContext, TwinProjectRunnerContextLive } from './Project/Runner';
-
 
 export type {
   InternalTwFn,

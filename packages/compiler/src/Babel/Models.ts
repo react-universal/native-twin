@@ -1,13 +1,11 @@
 import type { ParseResult } from '@babel/parser';
 import type { NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
-import type { SheetEntryHandler } from '@native-twin/css/jsx';
-import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import * as Iterable from 'effect/Iterable';
 import * as Option from 'effect/Option';
 import type { TwinFile, TwinPath } from '../FileSystem';
-import type { JSXMappedAttribute, TwinJSXElement, TwinJSXElementNode } from './JSXModels';
+import type { TwinJSXElement, TwinJSXElementNode } from './JSXModels';
 
 export class TwinBabelModule extends Data.Class<{
   readonly ast: BabelFileAst;
@@ -19,11 +17,18 @@ export class TwinBabelModule extends Data.Class<{
     return Option.andThen(node.dependency, (dependency) =>
       Iterable.findFirst(
         this.jsxElements,
-        (x) => this.file.path === node.file.path && dependency.exportName === x.meta.name,
+        (x) =>
+          this.file.path.startsWith(dependency.filepath) &&
+          dependency.exportName === x.meta.name,
       ),
     );
   }
 }
+
+export class TwinBabelError extends Data.TaggedError('TwinBabelError')<{
+  cause: Error;
+  message: string;
+}> {}
 
 export class ModuleDependency extends Data.Class<{
   originalSource: string;
@@ -36,18 +41,6 @@ export class ModuleDependency extends Data.Class<{
     return this.originalSource === 'react-native';
   }
 }
-
-export class ComponentStyledProp {
-  readonly entries: SheetEntryHandler[];
-  readonly childEntries: SheetEntryHandler[];
-  constructor(
-    readonly prop: JSXMappedAttribute,
-    entries: SheetEntryHandler[],
-  ) {
-    [this.entries, this.childEntries] = RA.partition(entries, (x) => x.isChildEntry());
-  }
-}
-
 export type JSXElementNode = t.JSXElement;
 export type JSXElementPath = NodePath<JSXElementNode>;
 export type BabelFileAst = ParseResult<t.File>;
@@ -101,8 +94,3 @@ export interface TwinBabelPluginOptions extends APICallerOptions {
   inputCSS?: string;
   outputDir?: string;
 }
-
-export class TwinBabelError extends Data.TaggedError('TwinBabelError')<{
-  cause: Error;
-  message: string;
-}> {}

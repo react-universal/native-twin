@@ -9,7 +9,7 @@ import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import * as TwinPath from '../FileSystem/Path.model';
+import { TwinPath } from '../FileSystem';
 import { CompilerStyleSheet } from '../StyleSheet';
 import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
 import type { ImportedTwinConfig } from './Models';

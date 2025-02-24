@@ -1,8 +1,8 @@
-export { TwinBabelModule, ModuleDependency, ComponentStyledProp } from './Models';
+export { TwinBabelModule, ModuleDependency } from './Models';
 
 export { TwinJSXElement, TwinJSXElementNode, type JSXMappedAttribute } from './JSXModels';
 
-export { babelParse } from './Utils';
+export { babelParse, makeDependenciesLookup, type TwinDependenciesLookup } from './Utils';
 
 export { BabelContext, BabelContextLive } from './Service';
 
@@ -14,3 +14,5 @@ export type {
   APICallerOptions,
   TwinBabelPluginOptions,
 } from './Models';
+
+export { JSXImportPluginContext } from './TwinBabelPlugin.service';

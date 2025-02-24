@@ -1,5 +1,7 @@
 import { inspect } from 'node:util';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
+import { Layer } from 'effect';
+import * as Effect from 'effect/Effect';
 import * as FiberId from 'effect/FiberId';
 import { pipe } from 'effect/Function';
 import * as HashMap from 'effect/HashMap';
@@ -9,9 +11,9 @@ import * as LogSpan from 'effect/LogSpan';
 import * as Logger from 'effect/Logger';
 import * as Option from 'effect/Option';
 import * as Str from 'effect/String';
-import * as Utils from './ansi.utils.js';
+import * as Utils from '../utils/ansi.utils.js';
 
-export const TwinCustomLogger = Logger.make((options) => {
+export const TwinCompilerLogger = Logger.make((options) => {
   const platform: string = pipe(
     options.annotations,
     HashMap.get('platform'),
@@ -78,4 +80,9 @@ export const TwinCustomLogger = Logger.make((options) => {
   }
 });
 
-export const twinLoggerLayer = Logger.replace(Logger.defaultLogger, TwinCustomLogger);
+const twinLoggerLayer = Logger.replace(Logger.defaultLogger, TwinCompilerLogger);
+export const withCompilerLogger = <A, E = never, R = never>(
+  effect: Effect.Effect<A, E, R>,
+): Effect.Effect<A, E, R> => Effect.provide(effect, twinLoggerLayer);
+
+export const withCompilerLoggerLayer = Layer.provide(twinLoggerLayer);

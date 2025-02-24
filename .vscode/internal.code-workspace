@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/compiler",
+      "path": "../packages/compiler"
+    },
+    {
       "name": "📦 @lib/jsx",
       "path": "../packages/jsx"
     },
@@ -15,10 +19,6 @@
     {
       "name": "📦 @lib/styled",
       "path": "../packages/styled"
-    },
-    {
-      "name": "📦 @lib/compiler",
-      "path": "../packages/compiler"
     },
     {
       "name": "📦 @lib/css",

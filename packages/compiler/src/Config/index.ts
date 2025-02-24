@@ -12,3 +12,9 @@ export type {
   InternalTwinConfig,
   NodeWithNativeTwinOptions,
 } from './Models';
+
+export {
+  withCompilerLogger,
+  withCompilerLoggerLayer,
+  TwinCompilerLogger,
+} from './Logger.service';

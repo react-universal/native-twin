@@ -1,6 +1,26 @@
 {
   "configurations": [
     {
+      "name": "Test @lib/compiler external",
+      "type": "node",
+      "port": 9229,
+      "continueOnAttach": true,
+      "showAsyncStacks": true,
+      "attachExistingChildren": true,
+      "autoAttachChildProcesses": true,
+      "request": "attach",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "sourceMaps": true,
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**",
+        "node_modules",
+      ]
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Test @lib/compiler",

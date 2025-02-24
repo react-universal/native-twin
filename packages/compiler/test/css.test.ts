@@ -1,22 +1,24 @@
-// import { Array, HashMap, pipe } from 'effect';
-// import { describe, expect, it } from 'vitest';
-// import { TwinCSSExtractor } from '../src/programs/css.extractor';
-// import { TestRuntime } from './test.utils';
+import { Array, Effect, HashMap, pipe } from 'effect';
+import { describe, expect, it } from 'vitest';
+import { TwinProjectRunnerContext } from '../src';
 
-// describe('TwinCSSExtractor program', () => {
-//   it('TwinCSSExtractor', async () => {
-//     const result = await TestRuntime.runPromise(
-//       TwinCSSExtractor(`() => <div className='flex-1' />`, 'test.tsx'),
-//     );
+describe('TwinCSSExtractor program', () => {
+  it('TwinCSSExtractor', async () => {
+    Effect.gen(function* () {
+      const { native } = yield* TwinProjectRunnerContext;
 
-//     const treeNodes = pipe(
-//       HashMap.values(result.treeNodes),
-//       Array.fromIterable,
-//       Array.flatMap((x) => x.entries),
-//     );
+      const result = yield* native.runProject;
+      // TwinCSSExtractor(`() => <div className='flex-1' />`, 'test.tsx'),
 
-//     console.log('TREE_NODES: ', treeNodes);
+      const treeNodes = pipe(
+        HashMap.fromIterable(result),
+        Array.fromIterable,
+        Array.flatMap((x) => Array.fromIterable(x[1])),
+      );
 
-//     expect(result.cssOutput).toBe('');
-//   });
-// });
+      console.log('TREE_NODES: ', treeNodes);
+
+      expect(treeNodes.length).toBeGreaterThan(0);
+    });
+  });
+});

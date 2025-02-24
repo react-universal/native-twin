@@ -7,7 +7,6 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import { TwinNodeContext, TwinNodeContextLive } from '../Config';
 import { type TwinFile, TwinPath } from '../FileSystem';
 import { makeTreeFrom } from '../utils/tree.utils';
 import { TwinJSXElement, TwinJSXElementNode } from './JSXModels';
@@ -22,9 +21,7 @@ import {
 import { isFunction } from './Predicates';
 import { babelParse, getBabelBindingImportSource, isLocalImport } from './Utils';
 
-const make = Effect.gen(function* () {
-  yield* TwinNodeContext;
-
+const make = Effect.sync(() => {
   return {
     getBabelModule,
     getJSXElementChilds,
@@ -34,9 +31,7 @@ const make = Effect.gen(function* () {
 export interface BabelContext extends Effect.Effect.Success<typeof make> {}
 export const BabelContext = Context.GenericTag<BabelContext>('BabelContext');
 
-export const BabelContextLive = Layer.effect(BabelContext, make).pipe(
-  Layer.provide(TwinNodeContextLive),
-);
+export const BabelContextLive = Layer.effect(BabelContext, make);
 
 const getBabelModule = (file: TwinFile): Effect.Effect<TwinBabelModule> => {
   const ast = babelParse(file.code, file.path);

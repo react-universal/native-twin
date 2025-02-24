@@ -33,6 +33,8 @@ const make = Effect.gen(function* () {
     Stream.mapEffect(() => getCurrentModules()),
   );
 
+  yield* updateModules;
+
   return {
     modulesRef,
     moduleFromFilePath,
@@ -64,7 +66,7 @@ export const TwinProjectContext =
   Context.GenericTag<TwinProjectContext>('TwinProjectContext');
 
 export const TwinProjectContextLive = Layer.effect(TwinProjectContext, make).pipe(
+  Layer.provide(TwinNodeContextLive),
   Layer.provide(TwinFSContextLive),
   Layer.provide(BabelContextLive),
-  Layer.provide(TwinNodeContextLive),
 );

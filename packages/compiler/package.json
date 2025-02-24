@@ -36,7 +36,7 @@
     "clean": "rm -rf build",
     "gen:jsdocs": "jsdoc -c jsdoc.json",
     "lint": "biome lint",
-    "test": "npx vitest"
+    "test": "VITE_CJS_IGNORE_WARNING=true npx vitest"
   },
   "dependencies": {
     "@effect/platform": "^0.77.2",
