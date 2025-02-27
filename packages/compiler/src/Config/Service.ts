@@ -69,6 +69,7 @@ const make = Effect.gen(function* () {
       },
       twRunners: {
         get: Ref.get(twRunnersRef),
+        ref: twRunnersRef,
       },
     },
     subscribeToConfigScoped,

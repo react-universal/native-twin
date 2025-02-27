@@ -1,4 +1,4 @@
-import { Effect } from 'effect';
+import { Array, Effect, HashMap } from 'effect';
 import { describe, expect, it } from 'vitest';
 import {
   TwinNodeContext,
@@ -31,8 +31,17 @@ describe('Project runner', () => {
 
   it('run native project runner', async () => {
     const program = Effect.gen(function* () {
-      const { getProjectNativeSheets } = yield* TwinProjectRunnerContext;
-      const transformedModules = yield* getProjectNativeSheets;
+      const { projectRunner } = yield* TwinProjectRunnerContext;
+      const transformedModules = yield* projectRunner.pipe(
+        Effect.andThen((p) =>
+          Effect.all(
+            HashMap.toValues(p).map((x) =>
+              x.toPlatform('native').pipe(Effect.map(Array.fromIterable)),
+            ),
+          ),
+        ),
+        Effect.map(Array.flatten),
+      );
 
       expect(transformedModules).toBeDefined();
     }).pipe(

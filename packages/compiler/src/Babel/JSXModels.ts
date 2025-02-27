@@ -27,6 +27,10 @@ export class TwinJSXElement {
         `_JSXElement:${Hash.string(`${_}${file.path}${this.meta.isExported}${this.meta.name}`)}`,
     );
   }
+
+  get allNodes() {
+    return this.tree.all();
+  }
 }
 
 export class TwinJSXElementNode implements Equal.Equal {

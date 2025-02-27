@@ -253,8 +253,8 @@ export class TreeNode<T> {
 
 export const mapTree = <A, B>(
   tree: Tree<A>,
-  cb: (a: TreeNode<A>, parent?: TreeNode<B>) => B,
-): Tree<B> => {
+  cb: (a: TreeNode<A>, parent?: TreeNode<NoInfer<B>>) => B,
+): Tree<NoInfer<B>> => {
   const newValue = mapTreeNode(tree.root);
   const node = new Tree<B>(newValue.value);
   node.root = newValue;

@@ -1,130 +1,98 @@
-import { inspect } from 'util';
-import type { SheetEntry } from '@native-twin/css';
-import { SheetEntryHandler } from '@native-twin/css/jsx';
-import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as Option from 'effect/Option';
-import * as Stream from 'effect/Stream';
-import {
-  type JSXMappedAttribute,
-  type TwinBabelModule,
-  type TwinDependenciesLookup,
-  type TwinJSXElement,
-  makeDependenciesLookup,
-} from '../Babel';
 import { TwinNodeContext, TwinNodeContextLive } from '../Config';
-import type { TwinPath } from '../FileSystem';
-import {
-  type CompilerStyleSheet,
-  ComponentStyledProp,
-  JSXElementNodeSheet,
-  type TwinExtractorFn,
-  TwinJSXElementSheet,
-} from '../StyleSheet';
+import { ModulesHandler, TwinExtractor } from './Model';
 import { TwinProjectContext, TwinProjectContextLive } from './Service';
 
 const make = Effect.gen(function* () {
   const project = yield* TwinProjectContext;
   const ctx = yield* TwinNodeContext;
-  const nativeModuleExtractor = createModulesExtractor(createExtractor('native'));
-  const webModuleExtractor = createModulesExtractor(createExtractor('web'));
+  const twinExtractor = new TwinExtractor(ctx.state.twRunners.ref);
+  const modulesHandler = new ModulesHandler(project.modulesRef);
 
-  const getProjectNativeSheets = Effect.andThen(
-    project.getCurrentModules(),
-    nativeModuleExtractor,
-  );
-  const getProjectWebSheets = Effect.andThen(
-    project.getCurrentModules(),
-    webModuleExtractor,
-  );
+  const projectRunner = modulesHandler.run(twinExtractor);
 
   return {
-    getProjectNativeSheets,
-    getProjectWebSheets,
+    twinExtractor,
+    modulesHandler,
+    projectRunner,
   };
 
-  function createModulesExtractor(getExtractor: Effect.Effect<TwinExtractorFn>) {
-    return (modules: Iterable<TwinBabelModule>) => {
-      const lookup = makeDependenciesLookup(RA.fromIterable(modules));
-      return Effect.andThen(getExtractor, (extractor) =>
-        Stream.fromIterable(modules).pipe(
-          Stream.runFold(
-            new Map<TwinPath.FilePath, TwinJSXElementSheet[]>(),
-            (acc, item) =>
-              acc.set(item.file.path, extractModuleSheets(item, extractor, lookup)),
-          ),
-        ),
-      );
-    };
-  }
+  // function createModulesExtractor(getExtractor: Effect.Effect<TwinExtractorFn>) {
+  //   return (modules: Iterable<TwinBabelModule>) => {
+  //     const lookup = makeDependenciesLookup(RA.fromIterable(modules));
+  //     return Effect.andThen(getExtractor, (extractor) =>
+  //       Stream.fromIterable(modules).pipe(
+  //         Stream.runFold(
+  //           new Map<TwinPath.FilePath, TwinJSXElementSheet[]>(),
+  //           (acc, item) =>
+  //             acc.set(item.file.path, extractModuleSheets(item, extractor, lookup)),
+  //         ),
+  //       ),
+  //     );
+  //   };
+  // }
 
-  function extractModuleSheets(
-    module: TwinBabelModule,
-    extractor: TwinExtractorFn,
-    lookup?: ReturnType<TwinDependenciesLookup>,
-  ) {
-    return RA.map(
-      RA.fromIterable(module.jsxElements),
-      (jsxElement) =>
-        new TwinJSXElementSheet(
-          jsxElement,
-          getJSXElementSheet(jsxElement, extractor, lookup),
-        ),
-    );
-  }
+  // function extractModuleSheets(
+  //   module: TwinBabelModule,
+  //   extractor: TwinExtractorFn,
+  //   lookup?: ReturnType<TwinDependenciesLookup>,
+  // ) {
+  //   return RA.map(
+  //     RA.fromIterable(module.jsxElements),
+  //     (jsxElement) =>
+  //       new TwinJSXElementSheet(
+  //         jsxElement,
+  //         getJSXElementSheet(jsxElement, extractor, lookup),
+  //       ),
+  //   );
+  // }
 
-  function getJSXElementSheet(
-    jsxElement: TwinJSXElement,
-    extractor: TwinExtractorFn,
-    lookup?: ReturnType<TwinDependenciesLookup>,
-  ) {
-    return RA.map(jsxElement.tree.all(), (treeNode) => {
-      const breadcrumb = treeNode.getPath().map((x) => `${x.value.id}`);
-      const styledProps = extractor(treeNode.value.styledProps);
+  // function getJSXElementSheet(
+  //   jsxElement: TwinJSXElement,
+  //   extractor: TwinExtractorFn,
+  //   lookup?: ReturnType<TwinDependenciesLookup>,
+  // ) {
+  //   return RA.map(jsxElement.tree.all(), (treeNode) => {
+  //     const breadcrumb = treeNode.getPath().map((x) => `${x.value.id}`);
+  //     const styledProps = extractor(treeNode.value.styledProps);
 
-      if (!lookup || Option.isNone(treeNode.value.dependency)) {
-        return new JSXElementNodeSheet(styledProps, Option.none(), breadcrumb);
-      }
-      const found = lookup(treeNode.value);
-      console.log('FOUND: ', inspect(found, false, 2, true));
+  //     if (!lookup || Option.isNone(treeNode.value.dependency)) {
+  //       return new JSXElementNodeSheet(styledProps, Option.none(), breadcrumb);
+  //     }
+  //     const found = lookup(treeNode.value);
+  //     console.log('FOUND: ', inspect(found, false, 2, true));
 
-      if (Option.isSome(found)) {
-        breadcrumb.pop();
-        breadcrumb.push(found.value.id);
-      }
+  //     if (Option.isSome(found)) {
+  //       breadcrumb.pop();
+  //       breadcrumb.push(found.value.id);
+  //     }
 
-      return new JSXElementNodeSheet(styledProps, found, breadcrumb);
-    });
-  }
+  //     return new JSXElementNodeSheet(styledProps, found, breadcrumb);
+  //   });
+  // }
 
-  function createStylesProcessor(f: (prop: JSXMappedAttribute) => SheetEntryHandler[]) {
-    return (props: JSXMappedAttribute[]) =>
-      props.map((prop) => new ComponentStyledProp(prop, f(prop)));
-  }
+  // function createStylesProcessor(f: (prop: JSXMappedAttribute) => SheetEntryHandler[]) {
+  //   return (props: JSXMappedAttribute[]) =>
+  //     props.map((prop) => new ComponentStyledProp(prop, f(prop)));
+  // }
 
-  function createExtractor(platform: 'web' | 'native'): Effect.Effect<TwinExtractorFn> {
-    return getPlatformRunner(platform).pipe(
-      Effect.andThen((runner) =>
-        createStylesProcessor(createSheetEntriesExtractor(runner.ctx, runner.twinFn)),
-      ),
-    );
-  }
+  // function createExtractor(platform: 'web' | 'native'): Effect.Effect<TwinExtractorFn> {
+  //   return getPlatformRunner(platform).pipe(
+  //     Effect.andThen((runner) =>
+  //       createStylesProcessor(createSheetEntriesExtractor(runner.ctx, runner.twinFn)),
+  //     ),
+  //   );
+  // }
 
-  function createSheetEntriesExtractor(
-    ctx: CompilerStyleSheet['ctx'],
-    getEntries: (from: string) => SheetEntry[],
-  ) {
-    return (prop: JSXMappedAttribute) =>
-      RA.map(getEntries(prop.value.text), (x) => new SheetEntryHandler(x, ctx));
-  }
-
-  function getPlatformRunner(platform: 'web' | 'native') {
-    return Effect.map(ctx.state.twRunners.get, ({ native, web }) =>
-      platform === 'native' ? native : web,
-    );
-  }
+  // function createSheetEntriesExtractor(
+  //   ctx: CompilerStyleSheet['ctx'],
+  //   getEntries: (from: string) => SheetEntry[],
+  // ) {
+  //   return (prop: JSXMappedAttribute) =>
+  //     RA.map(getEntries(prop.value.text), (x) => new SheetEntryHandler(x, ctx));
+  // }
 });
 
 export interface TwinProjectRunnerContext extends Effect.Effect.Success<typeof make> {}
@@ -135,21 +103,3 @@ export const TwinProjectRunnerContextLive = Layer.effect(
   TwinProjectRunnerContext,
   make,
 ).pipe(Layer.provide(TwinNodeContextLive), Layer.provide(TwinProjectContextLive));
-
-// const makeModulesHandler = Effect.gen(function* () {
-//   const twinModules = yield* Ref.make(
-//     HashMap.empty<TwinPath.FilePath, TwinBabelModule>(),
-//   );
-//   const getModules = Ref.get(twinModules);
-//   const addModule = (babelModule: TwinBabelModule) =>
-//     Ref.update(twinModules, HashMap.set(babelModule.file.path, babelModule));
-//   const findModule = (filepath: TwinPath.FilePath) =>
-//     Effect.map(getModules, HashMap.get(filepath));
-
-//   return {
-//     ref: twinModules,
-//     get: getModules,
-//     add: addModule,
-//     find: findModule,
-//   };
-// });

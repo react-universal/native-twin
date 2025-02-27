@@ -1,38 +1,48 @@
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import * as HashMap from 'effect/HashMap';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
-import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import { BabelContext, BabelContextLive, type TwinBabelModule } from '../Babel';
 import { TwinNodeContext, TwinNodeContextLive } from '../Config';
 import { TwinFSContext, TwinFSContextLive, TwinPath } from '../FileSystem';
+import { listenForkedStreamChanges } from '../utils/effect.utils';
 
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const fs = yield* TwinFSContext;
   const babel = yield* BabelContext;
-  const modulesRef = yield* SubscriptionRef.make(HashSet.empty<TwinBabelModule>());
+  const modulesRef = yield* SubscriptionRef.make(
+    HashMap.empty<TwinPath.FilePath, TwinBabelModule>(),
+  );
 
   const updateModules = Effect.gen(function* () {
     const filePaths = yield* ctx.state.projectFiles.get.pipe(
       Effect.map(HashSet.map((x) => TwinPath.filePathFromString(x))),
     );
-    yield* Effect.all(HashSet.map(filePaths, moduleFromFilePath), {
-      concurrency: 'unbounded',
-    }).pipe(
+    yield* Effect.all(
+      HashSet.map(filePaths, (_path) =>
+        Effect.all([Effect.succeed(_path), moduleFromFilePath(_path)]),
+      ),
+      {
+        concurrency: 'unbounded',
+      },
+    ).pipe(
       Effect.map(HashSet.fromIterable),
-      Effect.andThen((x) => SubscriptionRef.set(modulesRef, x)),
+      Effect.andThen((x) => SubscriptionRef.set(modulesRef, HashMap.fromIterable(x))),
       Effect.catchAll((error) => Effect.log('ERROR_MODULES: ', error._tag)),
     );
   });
 
-  const watchModules = ctx.state.projectFiles.changes.pipe(
-    Stream.tap(() => updateModules),
-    Stream.mapEffect(() => getCurrentModules()),
-  );
+  const watchModules = (
+    onChange: (
+      modules: HashMap.HashMap<TwinPath.FilePath, TwinBabelModule>,
+    ) => Effect.Effect<void>,
+  ) => listenForkedStreamChanges(modulesRef.changes, onChange);
 
+  const getCurrentModules = Ref.get(modulesRef);
   yield* updateModules;
 
   return {
@@ -41,17 +51,6 @@ const make = Effect.gen(function* () {
     getCurrentModules,
     watchModules,
   };
-
-  function getCurrentModules() {
-    return Ref.get(modulesRef).pipe(
-      Effect.andThen((currentMods) =>
-        Effect.if(HashSet.size(currentMods) > 0, {
-          onTrue: () => Effect.succeed(currentMods),
-          onFalse: () => updateModules.pipe(Effect.andThen(() => Ref.get(modulesRef))),
-        }),
-      ),
-    );
-  }
 
   function moduleFromFilePath(path_: TwinPath.FilePath) {
     return fs.getFile(path_).pipe(
