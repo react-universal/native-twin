@@ -1,21 +1,15 @@
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import { TwinNodeContext, TwinNodeContextLive } from '../Config';
-import { ModulesHandler, TwinExtractor } from './Model';
+import { TwinNodeContextLive } from '../Config';
 import { TwinProjectContext, TwinProjectContextLive } from './Service';
 
 const make = Effect.gen(function* () {
   const project = yield* TwinProjectContext;
-  const ctx = yield* TwinNodeContext;
-  const twinExtractor = new TwinExtractor(ctx.state.twRunners.ref);
-  const modulesHandler = new ModulesHandler(project.modulesRef);
 
-  const projectRunner = modulesHandler.run(twinExtractor);
+  const projectRunner = project.modulesHandler.run(project.twinExtractor);
 
   return {
-    twinExtractor,
-    modulesHandler,
     projectRunner,
   };
 

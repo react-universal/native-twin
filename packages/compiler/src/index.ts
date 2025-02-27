@@ -19,7 +19,6 @@ export { listenForkedStreamChanges } from './utils/effect.utils.js';
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
 
 export { TwinProjectContext, TwinProjectContextLive } from './Project/Service.js';
-export { TwinProjectRunnerContext, TwinProjectRunnerContextLive } from './Project/Runner';
 
 export type {
   InternalTwFn,
