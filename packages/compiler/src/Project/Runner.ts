@@ -7,11 +7,7 @@ import { TwinProjectContext, TwinProjectContextLive } from './Service';
 const make = Effect.gen(function* () {
   const project = yield* TwinProjectContext;
 
-  const projectRunner = project.modulesHandler.run(project.twinExtractor);
-
-  return {
-    projectRunner,
-  };
+  return { project };
 
   // function createModulesExtractor(getExtractor: Effect.Effect<TwinExtractorFn>) {
   //   return (modules: Iterable<TwinBabelModule>) => {

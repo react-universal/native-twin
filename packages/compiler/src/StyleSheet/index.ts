@@ -4,11 +4,13 @@ export {
   ComponentStyledProp,
   JSXElementNodeSheet,
   TwinJSXElementSheet,
+  BabelModuleSheet,
 } from './JSXStyleSheet';
-export { StyleSheetContext, StyleSheetContextLive } from './Service';
+export { TwinStyleSheetContext, TwinStyleSheetContextLive } from './Service';
 
 export type {
   SheetsRegistry,
   TwinExtractorFn,
   TwinTransformFn,
+  TwinRunnerPlatform,
 } from './Model';

@@ -1,10 +1,11 @@
 import { describe, expect, it } from '@effect/vitest';
-import { Array, Effect, HashMap } from 'effect';
+import { Effect, HashMap } from 'effect';
 import {
   TwinNodeContext,
   TwinNodeContextLive,
   TwinProjectContext,
   TwinProjectContextLive,
+  withCompilerLogger,
 } from '../src';
 import { compilerContext } from './test.utils';
 
@@ -26,23 +27,15 @@ describe('Project runner', () => {
 
   it.effect('run native project runner', () =>
     Effect.gen(function* () {
-      const { projectRunner } = yield* TwinProjectContext;
-      const transformedModules = yield* projectRunner.pipe(
-        Effect.andThen((p) =>
-          Effect.all(
-            HashMap.toValues(p).map((x) =>
-              x.toPlatform('native').pipe(Effect.map(Array.fromIterable)),
-            ),
-          ),
-        ),
-        Effect.map(Array.flatten),
-      );
+      const { transformProject } = yield* TwinProjectContext;
+      const transformedModules = yield* transformProject('native');
 
-      expect(transformedModules).toBeDefined();
+      expect(transformedModules.modulesMap.size).toBeGreaterThan(0);
     }).pipe(
       Effect.onError((cause) => Effect.log('ON_ERROR: ', cause._tag)),
       Effect.provide(TwinProjectContextLive),
       Effect.provide(compilerContext),
+      withCompilerLogger,
     ),
   );
 });

@@ -3,6 +3,7 @@ import { createTailwind, defineConfig } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import * as Option from 'effect/Option';
 import type { ImportedTwinConfig, InternalTwFn } from '../Config/Models.js';
+import type { TwinRunnerPlatform } from '../StyleSheet/Model.js';
 import { maybeLoadJS } from './modules.utils.js';
 
 // TODO: Remove once implements state
@@ -16,7 +17,7 @@ export const extractTwinConfig = (
 };
 
 export const createTwinProcessor = (
-  platform: 'web' | 'native',
+  platform: TwinRunnerPlatform,
   twConfig: ImportedTwinConfig,
 ): InternalTwFn => {
   const context = vm.createContext({

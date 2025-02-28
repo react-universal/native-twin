@@ -1,5 +1,5 @@
 import * as Tree from '@native-twin/helpers/tree';
-import { Effect, Option, Stream } from 'effect';
+import { Array, Effect, Option, Stream } from 'effect';
 
 interface MakeTreeInput<Input, Out> {
   input: Input;
@@ -100,3 +100,26 @@ export const mapTreeEffect = <A, B>(
       });
     }
   });
+
+const traverseTreeNode = <T>(
+  treeNode: Tree.TreeNode<T>,
+  callback: (node: Tree.TreeNode<T>) => Effect.Effect<void>,
+): Effect.Effect<void> =>
+  Stream.fromIterable(Array.reverse(treeNode.children)).pipe(
+    Stream.runForEach((leaf) =>
+      Effect.zipRight(callback(treeNode), traverseTreeNode(leaf, callback)),
+    ),
+    Stream.runDrain,
+  );
+
+/**
+ * Traverses the tree using the specified traversal method,
+ * calling the provided callback function on each visited node.
+ * @param callback A function to call on each visited node.
+ * @param traversal The traversal method to use. Can be one of:
+ * 'breadthFirst', 'depthFirst', 'preOrder', 'postOrder'.
+ */
+export const traverseTreeEffect = <T>(
+  tree: Tree.Tree<T>,
+  callback: (node: Tree.TreeNode<T>) => Effect.Effect<void>,
+) => traverseTreeNode(tree.root, callback);

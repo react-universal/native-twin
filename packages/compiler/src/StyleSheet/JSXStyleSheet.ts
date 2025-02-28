@@ -1,21 +1,47 @@
 import type { SheetEntryHandler } from '@native-twin/css/jsx';
+import type * as Tree from '@native-twin/helpers//tree';
 import * as RA from 'effect/Array';
-import type * as Option from 'effect/Option';
-import type { JSXMappedAttribute, TwinJSXElement } from '../Babel';
+import type {
+  JSXMappedAttribute,
+  TwinBabelModule,
+  TwinJSXElement,
+  TwinJSXElementNode,
+} from '../Babel';
+import type { TwinRunnerPlatform } from './Model';
+
+export class ProjectStyleSheet {
+  constructor(readonly modules: Iterable<BabelModuleSheet>) {}
+
+  get modulesMap() {
+    return new Map(
+      RA.fromIterable(this.modules).map((module) => [
+        module.module.file.path,
+        RA.fromIterable(module.jsxElementSheets),
+      ]),
+    );
+  }
+}
+
+export class BabelModuleSheet {
+  constructor(
+    readonly platform: TwinRunnerPlatform,
+    readonly module: TwinBabelModule,
+    readonly jsxElementSheets: TwinJSXElementSheet[],
+  ) {}
+}
 
 export class TwinJSXElementSheet {
   constructor(
     readonly jsxElement: TwinJSXElement,
-    readonly sheets: Iterable<JSXElementNodeSheet>,
+    readonly sheetsTree: Tree.Tree<JSXElementNodeSheet>,
   ) {}
 }
 
 export class JSXElementNodeSheet {
   readonly childEntries: ComponentStyledProp['childEntries'];
   constructor(
+    readonly jsxElementNode: TwinJSXElementNode,
     readonly styledProps: ComponentStyledProp[],
-    readonly originalElement: Option.Option<TwinJSXElement>,
-    readonly treeIDPaths: string[],
   ) {
     this.childEntries = styledProps.flatMap((x) => x.childEntries);
   }

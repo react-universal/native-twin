@@ -20,12 +20,7 @@ export class TwinBabelModule extends Data.Class<{
 
   getJSXElementFromNode(node: TwinJSXElementNode) {
     return Option.andThen(node.dependency, (dependency) =>
-      Iterable.findFirst(
-        this.jsxElements,
-        (x) =>
-          this.file.path.startsWith(dependency.filepath) &&
-          dependency.exportName === x.meta.name,
-      ),
+      this.findDependency(dependency),
     );
   }
 }
