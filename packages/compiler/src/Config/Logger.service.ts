@@ -1,6 +1,6 @@
 import { inspect } from 'node:util';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
-import { Layer } from 'effect';
+import * as Layer from 'effect/Layer';
 import * as Effect from 'effect/Effect';
 import * as FiberId from 'effect/FiberId';
 import { pipe } from 'effect/Function';

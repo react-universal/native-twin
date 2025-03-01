@@ -5,7 +5,8 @@ import * as Data from 'effect/Data';
 import * as Iterable from 'effect/Iterable';
 import * as Option from 'effect/Option';
 import type { TwinFile, TwinPath } from '../FileSystem';
-import type { TwinJSXElement, TwinJSXElementNode } from './JSXModels';
+import type { TwinJSXElementNode } from './models/TwinJSXElementNode';
+import type { TwinJSXElement } from './models/TwinJSXElement';
 
 export class TwinBabelModule extends Data.Class<{
   readonly ast: BabelFileAst;

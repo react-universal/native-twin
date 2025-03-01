@@ -1,6 +1,8 @@
 export { TwinBabelModule, ModuleDependency } from './Models';
 
-export { TwinJSXElement, TwinJSXElementNode, type JSXMappedAttribute } from './JSXModels';
+export { TwinJSXElement } from './models/TwinJSXElement';
+export { TwinJSXElementNode } from './models/TwinJSXElementNode';
+export { TwinJSXStyledProp } from './models/JSXStyledProp';
 
 export { babelParse, makeDependenciesLookup, type TwinDependenciesLookup } from './Utils';
 

@@ -3,6 +3,8 @@ import type { SheetEntry } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import type { TwinPath } from '../FileSystem';
 
+export type TwinRunnerPlatform = 'web' | 'native';
+
 export type InternalTwinConfig = __Theme__ & TailwindPresetTheme;
 export type InternalTwFn = RuntimeTW<InternalTwinConfig, SheetEntry[]>;
 export interface ExtractedTwinConfig extends TailwindConfig<InternalTwinConfig> {

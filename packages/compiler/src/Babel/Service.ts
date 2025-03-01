@@ -9,7 +9,6 @@ import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import { type TwinFile, TwinPath } from '../FileSystem';
 import { makeTreeFrom } from '../utils/tree.utils';
-import { TwinJSXElement, TwinJSXElementNode } from './JSXModels';
 import {
   type AnyNodePath,
   type BabelFileAst,
@@ -20,6 +19,8 @@ import {
 } from './Models';
 import { isFunction } from './Predicates';
 import { babelParse, getBabelBindingImportSource, isLocalImport } from './Utils';
+import { TwinJSXElementNode } from './models/TwinJSXElementNode';
+import { TwinJSXElement } from './models/TwinJSXElement';
 
 const make = Effect.sync(() => {
   return {

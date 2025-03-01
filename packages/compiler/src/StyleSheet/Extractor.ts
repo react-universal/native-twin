@@ -2,20 +2,15 @@ import { SheetEntryHandler } from '@native-twin/css/jsx';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Ref from 'effect/Ref';
-import type { JSXMappedAttribute } from '../Babel';
-import { ComponentStyledProp } from './JSXStyleSheet';
-import type { CompilerStyleSheet, TwinRunnerPlatform } from './Model';
-
-export interface TwinPlatformExtractors {
-  native: CompilerStyleSheet;
-  web: CompilerStyleSheet;
-}
+import type { TwinJSXStyledProp } from '../Babel';
+import { type CompilerStyleSheet, ComponentStyledProp } from './Model';
+import type { TwinRunnerPlatform } from '../Config';
 
 export class TwinExtractor {
   get: Effect.Effect<TwinPlatformExtractors>;
   getExtractor: (platform: TwinRunnerPlatform) => Effect.Effect<CompilerStyleSheet>;
   getStyledProps: (
-    props: JSXMappedAttribute[],
+    props: TwinJSXStyledProp[],
     platform: TwinRunnerPlatform,
   ) => Effect.Effect<ComponentStyledProp[]>;
 
@@ -30,11 +25,16 @@ export class TwinExtractor {
       Effect.andThen(this.getExtractor(platform), (compiler) =>
         props.map((prop) => {
           const handlers = RA.map(
-            compiler.twinFn(prop.value.text),
+            compiler.twinFn(prop.text),
             (x) => new SheetEntryHandler(x, compiler.ctx),
           );
           return new ComponentStyledProp(prop, handlers);
         }),
       );
   }
+}
+
+export interface TwinPlatformExtractors {
+  native: CompilerStyleSheet;
+  web: CompilerStyleSheet;
 }

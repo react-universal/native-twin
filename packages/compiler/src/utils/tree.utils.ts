@@ -1,5 +1,8 @@
 import * as Tree from '@native-twin/helpers/tree';
-import { Array, Effect, Option, Stream } from 'effect';
+import * as RA from 'effect/Array';
+import * as Option from 'effect/Option';
+import * as Stream from 'effect/Stream';
+import * as Effect from 'effect/Effect';
 
 interface MakeTreeInput<Input, Out> {
   input: Input;
@@ -105,7 +108,7 @@ const traverseTreeNode = <T>(
   treeNode: Tree.TreeNode<T>,
   callback: (node: Tree.TreeNode<T>) => Effect.Effect<void>,
 ): Effect.Effect<void> =>
-  Stream.fromIterable(Array.reverse(treeNode.children)).pipe(
+  Stream.fromIterable(RA.reverse(treeNode.children)).pipe(
     Stream.runForEach((leaf) =>
       Effect.zipRight(callback(treeNode), traverseTreeNode(leaf, callback)),
     ),

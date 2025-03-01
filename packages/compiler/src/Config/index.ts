@@ -11,6 +11,7 @@ export type {
   InternalTwFn,
   InternalTwinConfig,
   NodeWithNativeTwinOptions,
+  TwinRunnerPlatform,
 } from './Models';
 
 export {

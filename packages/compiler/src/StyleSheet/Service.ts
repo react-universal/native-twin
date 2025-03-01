@@ -4,7 +4,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import type { TwinBabelModule } from '../Babel';
-import { TwinNodeContext } from '../Config';
+import { type TwinRunnerPlatform, TwinNodeContext } from '../Config';
 import type { TwinPath } from '../FileSystem';
 import { mapTreeEffect } from '../utils/tree.utils';
 import { TwinExtractor } from './Extractor';
@@ -13,8 +13,7 @@ import {
   JSXElementNodeSheet,
   ProjectStyleSheet,
   TwinJSXElementSheet,
-} from './JSXStyleSheet';
-import type { TwinRunnerPlatform } from './Model';
+} from './Model';
 
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@effect/vitest';
-import { Effect, HashMap } from 'effect';
+import { Array, Effect, HashMap, Stream } from 'effect';
 import {
   TwinNodeContext,
   TwinNodeContextLive,
@@ -28,9 +28,12 @@ describe('Project runner', () => {
   it.effect('run native project runner', () =>
     Effect.gen(function* () {
       const { transformProject } = yield* TwinProjectContext;
-      const transformedModules = yield* transformProject('native');
+      const transformedModules = yield* transformProject('native').pipe(
+        Effect.andThen((sheet) => sheet.getProjectSheets().pipe(Stream.runCollect)),
+        Effect.map(Array.fromIterable),
+      );
 
-      expect(transformedModules.modulesMap.size).toBeGreaterThan(0);
+      expect(transformedModules.length).toBeGreaterThan(0);
     }).pipe(
       Effect.onError((cause) => Effect.log('ON_ERROR: ', cause._tag)),
       Effect.provide(TwinProjectContextLive),

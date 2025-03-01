@@ -2,8 +2,7 @@ import * as vm from 'node:vm';
 import { createTailwind, defineConfig } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import * as Option from 'effect/Option';
-import type { ImportedTwinConfig, InternalTwFn } from '../Config/Models.js';
-import type { TwinRunnerPlatform } from '../StyleSheet/Model.js';
+import type { TwinRunnerPlatform, ImportedTwinConfig, InternalTwFn } from '../Config';
 import { maybeLoadJS } from './modules.utils.js';
 
 // TODO: Remove once implements state

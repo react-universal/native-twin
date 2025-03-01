@@ -5,12 +5,12 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
+    },
+    {
+      "name": "📦 @lib/jsx",
+      "path": "../packages/jsx"
     },
     {
       "name": "📦 @lib/metro",

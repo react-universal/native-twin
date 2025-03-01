@@ -11,14 +11,14 @@ export {
   createCompilerConfig,
   withCompilerLogger,
   withCompilerLoggerLayer,
-  TwinCompilerLogger
+  TwinCompilerLogger,
 } from './Config';
 
 export { listenForkedStreamChanges } from './utils/effect.utils.js';
 
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
 
-export { TwinProjectContext, TwinProjectContextLive } from './Project/Service.js';
+export { TwinProjectContext, TwinProjectContextLive } from './Project';
 
 export type {
   InternalTwFn,
