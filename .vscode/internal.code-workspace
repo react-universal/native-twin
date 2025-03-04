@@ -131,13 +131,6 @@
       "TRBL",
       "xytrbl"
     ],
-    "[javascript]": {
-      "editor.defaultFormatter": "biomejs.biome"
-    },
-    "editor.codeActionsOnSave": {
-      "source.fixAll.biome": "explicit",
-      "source.organizeImports.biome": "explicit"
-    },
     "jest.enable": true,
     "jest.disabledWorkspaceFolders": [
       "root",

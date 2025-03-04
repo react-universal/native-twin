@@ -2,11 +2,12 @@ import * as RA from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import { type MappedComponent, mappedComponents } from '../../utils/constants';
-import { fromJSXAttribute, type TwinJSXStyledProp } from './JSXStyledProp';
 import type { TwinFile } from '../../FileSystem';
-import type { JSXElementPath, ModuleDependency } from '../Models';
+import { type MappedComponent, mappedComponents } from '../../utils/constants';
+import type { JSXElementPath } from '../Models';
 import { getJSXElementAttrs } from '../Utils';
+import { type TwinJSXStyledProp, fromJSXAttribute } from './JSXStyledProp';
+import type { ModuleDependency } from './TwinBabelModule';
 
 export class TwinJSXElementNode implements Equal.Equal {
   readonly mappedProps: MappedComponent;

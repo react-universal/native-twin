@@ -2,46 +2,12 @@ import type { ParseResult } from '@babel/parser';
 import type { NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
 import * as Data from 'effect/Data';
-import * as Iterable from 'effect/Iterable';
-import * as Option from 'effect/Option';
-import type { TwinFile, TwinPath } from '../FileSystem';
-import type { TwinJSXElementNode } from './models/TwinJSXElementNode';
-import type { TwinJSXElement } from './models/TwinJSXElement';
-
-export class TwinBabelModule extends Data.Class<{
-  readonly ast: BabelFileAst;
-  readonly file: TwinFile;
-  readonly jsxElements: Iterable<TwinJSXElement>;
-  readonly dependencies: Iterable<ModuleDependency>;
-}> {
-  findDependency(dep: ModuleDependency) {
-    if (!this.file.path.startsWith(dep.filepath)) return Option.none();
-    return Iterable.findFirst(this.jsxElements, (x) => dep.exportName === x.meta.name);
-  }
-
-  getJSXElementFromNode(node: TwinJSXElementNode) {
-    return Option.andThen(node.dependency, (dependency) =>
-      this.findDependency(dependency),
-    );
-  }
-}
 
 export class TwinBabelError extends Data.TaggedError('TwinBabelError')<{
   cause: Error;
   message: string;
 }> {}
 
-export class ModuleDependency extends Data.Class<{
-  originalSource: string;
-  filepath: TwinPath.ImportPath;
-  isLocal: boolean;
-  localName: string;
-  exportName: string;
-}> {
-  get fromReactNative() {
-    return this.originalSource === 'react-native';
-  }
-}
 export type JSXElementNode = t.JSXElement;
 export type JSXElementPath = NodePath<JSXElementNode>;
 export type BabelFileAst = ParseResult<t.File>;

@@ -1,4 +1,4 @@
-export { TwinBabelModule, ModuleDependency } from './Models';
+export { TwinBabelModule, ModuleDependency } from './models/TwinBabelModule';
 
 export { TwinJSXElement } from './models/TwinJSXElement';
 export { TwinJSXElementNode } from './models/TwinJSXElementNode';
