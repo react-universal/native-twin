@@ -1,10 +1,10 @@
 import * as _babelParser from '@babel/parser';
+import template from '@babel/template';
 import type { Binding } from '@babel/traverse';
 import * as t from '@babel/types';
-import {} from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
-import type { BabelFileAst, ImportSource, TwinBabelModule } from './Models';
+import type { BabelFileAst, ImportSource } from './Models';
 import {
   isCallExpression,
   isImportDeclaration,
@@ -12,8 +12,9 @@ import {
   isJSXAttribute,
   isVariableDeclaratorPath,
 } from './Predicates';
-import type { TwinJSXElementNode } from './models/TwinJSXElementNode';
+import type { TwinBabelModule } from './models/TwinBabelModule';
 import type { TwinJSXElement } from './models/TwinJSXElement';
+import type { TwinJSXElementNode } from './models/TwinJSXElementNode';
 
 export type TwinDependenciesLookup = (
   modules: TwinBabelModule[],
@@ -106,3 +107,22 @@ export function babelParse(code: string | Buffer, fileName?: string): BabelFileA
     );
   }
 }
+
+const importNativeView = template(`
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+`);
+
+const importStyleSheet = template(`
+const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+`);
+
+const importReactUseMemo = template(`
+const __ReactUseMemo = require('react').useMemo;
+`);
+
+export const babelTemplates = {
+  importRNView: importNativeView,
+  importRNStyleSheet: importStyleSheet,
+  importReactUseMemo,
+};

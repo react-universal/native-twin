@@ -17,7 +17,7 @@ const make = Effect.gen(function* () {
     Effect.gen(function* () {
       const runner = yield* extractor.getExtractor(platform);
       const selectorPath = treeNode.getPath();
-      const compiledProps = treeNode.value.styledProps.map((prop) => {
+      const compiledProps = treeNode.value.classnameProps.map((prop) => {
         return {
           prop,
         };

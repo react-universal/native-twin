@@ -21,6 +21,7 @@ esbuild
       'esbuild',
       'tsup',
       '@babel/*',
+      "@effect/*",
       'rollup',
       "ts-morph",
       'chokidar',

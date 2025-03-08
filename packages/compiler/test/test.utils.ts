@@ -1,17 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { Effect, ManagedRuntime } from 'effect';
+import { Effect } from 'effect';
 import * as Layer from 'effect/Layer';
 import {
   CompilerConfigContext,
   TwinFSContext,
-  TwinFSContextLive,
-  TwinNodeContextLive,
   TwinPath,
-  TwinProjectContextLive,
-  TwinProjectRunnerContextLive,
   createCompilerConfig,
-  withCompilerLoggerLayer,
 } from '../src';
 
 const outputDir = path.join(__dirname, '.cache');
@@ -44,16 +39,20 @@ export const writeFixtureOutput = (
   return code;
 };
 
-// export const getFixture = (name: string) =>
-//   Effect.gen(function* () {
-//     const fs = yield* TwinFSContext;
-//     const inputFile = TwinPath.filePathFromString(`fixtures/${name}/code.tsx`);
-//     const outputFile = TwinPath.filePathFromString(`fixtures/${name}/code.out.tsx`);
-//     const writeOutput = (content: string) => fs.writeFile(outputFile, content);
+export const getFixture = (name: string) =>
+  Effect.gen(function* () {
+    const fs = yield* TwinFSContext;
+    const inputFile = TwinPath.filePathFromString(
+      path.join(__dirname, `fixtures/${name}/code.tsx`),
+    );
+    const outputFile = TwinPath.filePathFromString(
+      path.join(__dirname, `fixtures/${name}/code.out.tsx`),
+    );
+    const writeOutput = (content: string) => fs.writeFile(outputFile, content);
 
-//     return {
-//       inputFile,
-//       outputFile,
-//       writeOutput,
-//     };
-//   }).pipe(Effect.provide(TestMainLive), Effect.withLogSpan('FIXTURE_FILES'));
+    return {
+      inputFile,
+      outputFile,
+      writeOutput,
+    };
+  }).pipe(Effect.withLogSpan('FIXTURE_FILES'));

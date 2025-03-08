@@ -1,11 +1,12 @@
-import * as t from '@babel/types';
 import { CodeGenerator } from '@babel/generator';
+import * as t from '@babel/types';
 import { cx } from '@native-twin/core';
-import * as Match from 'effect/Match';
 import type { TWParsedRule } from '@native-twin/css';
 import { parseTWTokens } from '@native-twin/css';
-import * as Option from 'effect/Option';
+import type { SheetEntryHandler } from '@native-twin/css/jsx';
 import * as Data from 'effect/Data';
+import * as Match from 'effect/Match';
+import * as Option from 'effect/Option';
 import type { MappedComponent } from '../../utils/constants';
 
 export class TwinJSXStyledProp extends Data.Class<{
@@ -19,6 +20,14 @@ export class TwinJSXStyledProp extends Data.Class<{
     return Option.isSome(this.expression);
   }
 }
+
+export class TwinJSXNodeStyledProp extends Data.Class<{
+  text: string;
+  entries: SheetEntryHandler[];
+  expression: Option.Option<string>;
+  target: string;
+  prop: string;
+}> {}
 
 /**
  * @domain Babel

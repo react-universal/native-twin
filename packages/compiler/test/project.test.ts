@@ -1,13 +1,14 @@
 import { describe, expect, it } from '@effect/vitest';
 import { Array, Effect } from 'effect';
 import {
+  TwinFSContextLive,
   TwinNodeContext,
   TwinNodeContextLive,
   TwinProjectContext,
   TwinProjectContextLive,
   withCompilerLogger,
 } from '../src';
-import { compilerContext } from './test.utils';
+import { compilerContext, getFixture } from './test.utils';
 
 describe('Project runner', () => {
   it.effect('get project files successfully', () =>
@@ -19,16 +20,18 @@ describe('Project runner', () => {
 
   it.effect('run native project runner', () =>
     Effect.gen(function* () {
-      const { modules } = yield* TwinProjectContext;
-      const transformedModules = yield* modules.get.pipe(
-        // Effect.andThen((sheet) => sheet.getProjectSheets().pipe(Stream.runCollect)),
-        Effect.map(Array.fromIterable),
-      );
+      const { getModule, compileModule } = yield* TwinProjectContext;
+      const modulePath = yield* getFixture('jsx');
+      const module = yield* getModule(modulePath.inputFile);
 
-      expect(transformedModules.length).toBeGreaterThan(0);
+      const compiled = yield* compileModule(module, 'native');
+      const jsxElements = Array.fromIterable(compiled.jsxElements);
+      expect(jsxElements.length).toBeGreaterThan(0);
     }).pipe(
+      Effect.scoped,
       Effect.onError((cause) => Effect.log('ON_ERROR: ', cause._tag)),
       Effect.provide(TwinProjectContextLive),
+      Effect.provide(TwinFSContextLive),
       Effect.provide(compilerContext),
       withCompilerLogger,
     ),
