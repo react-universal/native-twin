@@ -15,30 +15,30 @@ export const ParseCssDeclarationLine = P.coroutine((run) => {
   const getValue = () => {
     const property = run(parseDeclarationProperty);
     const meta = getPropertyValueType(property);
-    if (meta === 'DIMENSION') {
+    if (meta === 'dimension') {
       return {
         [kebab2camel(property)]: run(ParseCssDimensions),
       };
     }
-    if (meta === 'FLEX') {
+    if (meta === 'flex') {
       return run(ParseFlexValue);
     }
 
-    if (meta === 'SHADOW') {
+    if (meta === 'shadow') {
       return run(ParseShadowValue);
     }
 
-    if (meta === 'MATH') {
+    if (meta === 'unitless') {
       return run(ParseAspectRatio);
     }
 
-    if (meta === 'TRANSFORM') {
+    if (meta === 'transform') {
       return {
         transform: run(P.choice([ParseTranslateValue, ParseRotateValue, ParseSkewValue])),
       };
     }
 
-    if (meta === 'COLOR') {
+    if (meta === 'color') {
       const value = run(ParseCssColor);
       return {
         [kebab2camel(property)]: value,
@@ -47,7 +47,7 @@ export const ParseCssDeclarationLine = P.coroutine((run) => {
 
     //CSS:  .font-sans{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"}
 
-    if (meta === 'FIRST-COMMA-IDENT') {
+    if (meta === 'unknown') {
       const value = P.separatedByComma(
         P.many(P.choice([ident, P.whitespace, P.char('"')])),
       ).map((x) => {

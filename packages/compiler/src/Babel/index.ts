@@ -1,9 +1,3 @@
-export { TwinBabelModule, ModuleDependency } from './models/TwinBabelModule';
-
-export { TwinJSXElement } from './models/TwinJSXElement';
-export { TwinJSXElementNode } from './models/TwinJSXElementNode';
-export { TwinJSXStyledProp, TwinJSXNodeStyledProp } from './models/JSXStyledProp';
-
 export {
   babelParse,
   makeDependenciesLookup,
@@ -17,6 +11,8 @@ export type {
   BabelFileAst,
   JSXElementNode,
   JSXElementPath,
+  JSXAttributePath,
+  JSXAttributeNode,
   BabelAPI,
   APICallerOptions,
   TwinBabelPluginOptions,

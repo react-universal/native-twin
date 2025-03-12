@@ -1,8 +1,8 @@
 import type * as t from '@babel/types';
-import { extractLanguageRegions } from '@native-twin/compiler';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
+import { extractLanguageRegions } from '../../browser.js';
 import type { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
 import { BaseTwinTextDocument } from './BaseTwinDocument.js';
 import { DocumentLanguageRegion } from './LanguageRegion.model.js';

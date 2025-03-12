@@ -4,6 +4,9 @@ import type { Binding } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
+import type { TwinBabelModule } from '../Domain/TwinBabelModule';
+import type { TwinJSXElement } from '../Domain/TwinJSXElement';
+import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 import type { BabelFileAst, ImportSource } from './Models';
 import {
   isCallExpression,
@@ -12,9 +15,6 @@ import {
   isJSXAttribute,
   isVariableDeclaratorPath,
 } from './Predicates';
-import type { TwinBabelModule } from './models/TwinBabelModule';
-import type { TwinJSXElement } from './models/TwinJSXElement';
-import type { TwinJSXElementNode } from './models/TwinJSXElementNode';
 
 export type TwinDependenciesLookup = (
   modules: TwinBabelModule[],

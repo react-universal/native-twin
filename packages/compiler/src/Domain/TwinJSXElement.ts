@@ -1,8 +1,8 @@
 import type * as Tree from '@native-twin/helpers/tree';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import type { TwinFile } from '../../FileSystem';
-import type { JSXElementFunction } from '../Models';
+import type { JSXElementFunction } from '../Babel';
+import type { TwinFile } from '../FileSystem';
 import type { TwinJSXElementNode } from './TwinJSXElementNode';
 
 export class TwinJSXElement {

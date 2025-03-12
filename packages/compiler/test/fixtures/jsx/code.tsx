@@ -4,7 +4,7 @@ import { Button } from './code-i';
 
 export default function App() {
   return (
-    <View className={`group flex-1 first:bg-red-200`}>
+    <View className={`group flex-1 shadow-md border-1 translate-x-2 first:bg-red-200`}>
       <Button size='small' />
       {/* <Text>Hello World</Text>
       <Text>Hello World</Text>

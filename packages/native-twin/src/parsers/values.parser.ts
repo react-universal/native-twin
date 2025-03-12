@@ -32,12 +32,12 @@ export const parseCssValue = (
   const type = getPropertyValueType(
     prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
   );
-  if (type === 'DIMENSION') {
+  if (type === 'dimension') {
     const data = ParseDimensionWithUnits(context).run(value);
     if (!data.isError) return data.result;
     return value;
   }
-  if (type === 'FLEX') {
+  if (type === 'flex') {
     const data = ParseFlexValue(context).run(value);
     if (!data.isError) return data.result;
     return value;

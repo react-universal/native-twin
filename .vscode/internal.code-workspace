@@ -5,6 +5,14 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @lib/css",
+      "path": "../packages/css"
+    },
+    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
     },
@@ -13,16 +21,8 @@
       "path": "../packages/jsx"
     },
     {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
       "name": "📦 @lib/styled",
       "path": "../packages/styled"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
     },
     {
       "name": "📦 @lib/helpers",

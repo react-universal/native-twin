@@ -15,6 +15,7 @@ export type CompilationError = 'Unknown' | 'PARSER' | (string & {});
 
 export interface CompiledDeclaration extends SheetEntryDeclaration {
   readonly _tag: 'COMPILED';
+  isUnitLess: boolean;
 }
 export interface NotCompiledDeclaration extends SheetEntryDeclaration {
   readonly _tag: 'NOT_COMPILED';
@@ -29,7 +30,7 @@ export type RuntimeSheetDeclaration = CompiledDeclaration | NotCompiledDeclarati
 export const RuntimeSheetDeclaration = {
   $is: (tag: RuntimeSheetDeclaration['_tag']) => (x: RuntimeSheetDeclaration) =>
     x._tag === tag,
-  COMPILED: (declaration: SheetEntryDeclaration): CompiledDeclaration => ({
+  COMPILED: (declaration: Omit<CompiledDeclaration, '_tag'>): CompiledDeclaration => ({
     _tag: 'COMPILED',
     ...declaration,
   }),
@@ -55,12 +56,13 @@ export const compileEntryDeclaration = (
       return RuntimeSheetDeclaration.COMPILED({
         ...decl,
         value: compiled,
+        isUnitLess,
       });
     }
     return RuntimeSheetDeclaration.NOT_COMPILED({
       ...decl,
       isUnitLess,
-      valueType: 'TRANSFORM',
+      valueType: 'transform',
       reason: 'Unknown',
     });
   }
@@ -69,12 +71,12 @@ export const compileEntryDeclaration = (
     return RuntimeSheetDeclaration.NOT_COMPILED({
       ...decl,
       isUnitLess,
-      valueType: 'RAW',
+      valueType: 'unknown',
       reason: 'Unknown',
     });
   }
   if (typeof decl.value === 'number') {
-    return RuntimeSheetDeclaration.COMPILED(decl);
+    return RuntimeSheetDeclaration.COMPILED({ ...decl, isUnitLess });
   }
 
   if (isUnitLess) {
@@ -83,12 +85,13 @@ export const compileEntryDeclaration = (
       return RuntimeSheetDeclaration.COMPILED({
         ...decl,
         value: data.result,
+        isUnitLess,
       });
     }
     return RuntimeSheetDeclaration.NOT_COMPILED({
       ...decl,
       isUnitLess,
-      valueType: 'RAW',
+      valueType: 'unknown',
       reason: data.error ?? 'PARSER',
     });
   }
@@ -97,43 +100,45 @@ export const compileEntryDeclaration = (
     decl.prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
   );
 
-  if (type === 'DIMENSION') {
+  if (type === 'dimension') {
     const data = declarationValueConvertParser(ctx).run(decl.value);
     if (!data.isError && data.result) {
       return RuntimeSheetDeclaration.COMPILED({
         ...decl,
         value: data.result,
+        isUnitLess,
       });
     }
     if (data.isError) {
       return RuntimeSheetDeclaration.NOT_COMPILED({
         ...decl,
         isUnitLess,
-        valueType: 'DIMENSION',
+        valueType: 'dimension',
         reason: data.error ?? 'PARSER',
       });
     }
   }
 
-  if (type === 'FLEX') {
+  if (type === 'flex') {
     const data = ParseFlexValue(ctx).run(decl.value);
     if (!data.isError && data.result) {
       return RuntimeSheetDeclaration.COMPILED({
         ...decl,
         value: data.result,
+        isUnitLess,
       });
     }
     if (data.isError) {
       return RuntimeSheetDeclaration.NOT_COMPILED({
         ...decl,
         isUnitLess,
-        valueType: 'FLEX',
+        valueType: 'flex',
         reason: data.error ?? 'PARSER',
       });
     }
   }
 
-  return RuntimeSheetDeclaration.COMPILED(decl);
+  return RuntimeSheetDeclaration.COMPILED({ ...decl, isUnitLess });
 };
 
 /** @category Parsers */

@@ -30,3 +30,5 @@ export type {
   ResultType,
   StateTransformerFunction,
 } from './types.js';
+
+export { encoder, decoder } from './utils/unicode.utils.js';

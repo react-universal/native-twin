@@ -10,9 +10,28 @@ export * as SheetOrders from './sheet.order.js';
 
 export {
   RuntimeStyleSheet,
-  type TwinCompilerSheet as SheetHandler,
+  type TwinCompilerSheet,
   createSheetHandler,
 } from './Sheet.js';
+
+export {
+  TaggedTwinDeclaration,
+  fromSheetEntryDecl,
+  parseDeclarationValue,
+} from './declarations/StyleDeclaration.model.js';
+
+export * as DeclValue from './declarations/DeclarationValue.js';
+
+export type {
+  AnyDeclaration,
+  ColorDeclaration,
+  DimensionDeclaration,
+  FlexDeclaration,
+  TransformDeclaration,
+  TwinDeclaration,
+  UnitlessDeclaration,
+  UnknownDeclaration,
+} from './declarations/StyleDeclaration.model.js';
 
 export type {
   /** @category — CSS Parsers */

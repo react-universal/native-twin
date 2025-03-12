@@ -25,7 +25,7 @@
       "runtimeExecutable": "${execPath}",
       "autoAttachChildProcesses": true,
       "presentation": {
-        "hidden": true,
+        "hidden": false,
         "group": "",
         "order": 1
       },

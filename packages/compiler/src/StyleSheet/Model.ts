@@ -1,17 +1,20 @@
+import * as t from '@babel/types';
 import { StyleSheetAdapter } from '@native-twin/core';
-import type { SheetEntry } from '@native-twin/css';
+import type { SheetEntry, SheetEntryDeclaration } from '@native-twin/css';
 import {
+  type AnyDeclaration,
   type CompilerContext,
   type RuntimeSheetDeclaration,
   compileEntryDeclaration,
+  fromSheetEntryDecl,
   mergeCompiledDeclarations,
+  parseDeclarationValue,
 } from '@native-twin/css/jsx';
-import type { SheetEntryHandler } from '@native-twin/css/jsx';
-import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
-import * as Option from 'effect/Option';
-import type { TwinJSXElementNode, TwinJSXStyledProp } from '../Babel';
+import type * as Option from 'effect/Option';
+import type { JSXAttributePath } from '../Babel';
 import type { InternalTwFn, InternalTwinConfig } from '../Config';
+import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 
 export class TwinJSXInjectInfo extends Data.Class<{
   sheetID: string;
@@ -20,84 +23,6 @@ export class TwinJSXInjectInfo extends Data.Class<{
   node: TwinJSXElementNode;
   isNative: boolean;
 }> {}
-
-
-
-// export class ProjectStyleSheet {
-//   constructor(readonly modules: Iterable<BabelModuleSheet>) {}
-
-//   get modulesMap() {
-//     return new Map(
-//       RA.fromIterable(this.modules).map((module) => [
-//         module.module.file.path,
-//         RA.fromIterable(module.jsxElementSheets),
-//       ]),
-//     );
-//   }
-
-//   getProjectSheets() {
-//     return Stream.fromIterable(this.modules).pipe(
-//       Stream.mapEffect((moduleSheet) =>
-//         Effect.andThen(moduleSheet.getTwinSheet(), (data) => [moduleSheet, data]),
-//       ),
-//     );
-//   }
-// }
-
-// export class BabelModuleSheet {
-//   constructor(
-//     readonly platform: TwinRunnerPlatform,
-//     readonly module: TwinBabelModule,
-//     readonly jsxElementSheets: TwinJSXElementSheet[],
-//   ) {}
-
-//   get moduleID() {
-//     const fileID = Hash.string(this.module.file.path);
-
-//     return Hash.combine(fileID)(
-//       Hash.array(this.jsxElementSheets.map((x) => x.jsxElement.id)),
-//     );
-//   }
-
-//   getTwinSheet() {
-//     return Effect.gen(this, function* () {
-//       const sheetRef = yield* Ref.make(new Map<string, TwinJSXInjectInfo>());
-//       const sheetID = `${Hash.string(this.module.file.path)}/${this.moduleID}`;
-//       yield* Stream.fromIterable(this.jsxElementSheets).pipe(
-//         Stream.mapEffect((jsxElement) =>
-//           traverseTreeEffect(jsxElement.sheetsTree, (treeNode) => {
-//             const info = this.getJSXNodeInfo(treeNode);
-//             return Ref.update(sheetRef, (x) =>
-//               x.set(treeNode.value.jsxElementNode.id, info),
-//             );
-//           }),
-//         ),
-//         Stream.runDrain,
-//       );
-//       return {
-//         sheetID,
-//         sheets: yield* sheetRef,
-//       };
-//     });
-//   }
-// }
-
-// export class TwinJSXElementSheet {
-//   constructor(
-//     readonly jsxElement: TwinJSXElement,
-//     readonly sheetsTree: Tree.Tree<JSXElementNodeSheet>,
-//   ) {}
-// }
-
-// export class JSXElementNodeSheet {
-//   readonly childEntries: ComponentStyledProp['childEntries'];
-//   constructor(
-//     readonly jsxElementNode: TwinJSXElementNode,
-//     readonly styledProps: ComponentStyledProp[],
-//   ) {
-//     this.childEntries = styledProps.flatMap((x) => x.childEntries);
-//   }
-// }
 
 export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
   constructor(
@@ -118,19 +43,97 @@ export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
     const declarations = this.toRuntimeDecls(entries);
     return mergeCompiledDeclarations(declarations);
   }
+
+  getStyledProps(node: TwinJSXElementNode) {
+    return node.classNameProps.map((prop) => {
+      const entries = this.twinFn(prop.text);
+      return new TwinJSXNodeStyledProp({
+        ast: prop.ast,
+        entries: entries.map((x) => new CompilerSheetEntry(x)),
+        expression: prop.expression,
+        prop: prop.prop,
+        target: prop.target,
+        text: prop.text,
+      });
+    });
+  }
 }
 
-export class ComponentStyledProp {
-  readonly entries: SheetEntryHandler[];
-  readonly childEntries: SheetEntryHandler[];
-  constructor(
-    readonly prop: TwinJSXStyledProp,
-    entries: SheetEntryHandler[],
-  ) {
-    [this.entries, this.childEntries] = RA.partition(entries, (x) => x.isChildEntry());
-  }
-
-  get hasExpression() {
-    return Option.isSome(this.prop.expression);
+export class TwinJSXNodeStyledProp extends Data.Class<{
+  ast: JSXAttributePath;
+  text: string;
+  entries: CompilerSheetEntry[];
+  expression: Option.Option<string>;
+  target: string;
+  prop: string;
+}> {
+  get jsxAttributeName() {
+    return t.jsxIdentifier(this.target);
   }
 }
+
+export class CompilerSheetEntry {
+  constructor(readonly entry: SheetEntry) {}
+
+  get declarations() {
+    return this.entry.declarations.map((decl) => new CompilerRuleDeclaration(decl));
+  }
+
+  get eval() {
+    return this.declarations.map((x) => evalRuleDeclaration(x));
+  }
+}
+
+export class CompilerRuleDeclaration {
+  private readonly parsed: AnyDeclaration;
+  private readonly _parsedValue: ReturnType<typeof parseDeclarationValue>;
+  get kind() {
+    return this.parsed._tag;
+  }
+  get hyphenized() {
+    return this.parsed.hyphenized;
+  }
+  get declValue() {
+    if (this._parsedValue.isError) {
+      return {
+        _tag: 'raw',
+        value: this.parsed.value,
+      } as const;
+    }
+    return this._parsedValue.result;
+  }
+  constructor(raw: SheetEntryDeclaration) {
+    this.parsed = fromSheetEntryDecl(raw);
+    this._parsedValue = parseDeclarationValue(this.parsed);
+  }
+}
+
+export const evalRuleDeclaration = (decl: CompilerRuleDeclaration) => {
+  const { declValue } = decl;
+  if (declValue._tag === 'raw') {
+    console.debug('UN_COMPILED: ', declValue.value);
+    return;
+  }
+  if (declValue._tag === 'flex') {
+    if (declValue.value._tag === 'StyleStringValue') {
+      return declValue.value.value;
+    }
+    return declValue.value.value;
+  }
+  if (declValue._tag === 'dimension') {
+    return [declValue.value, declValue.unit];
+  }
+  if (declValue._tag === 'unitless') {
+    return declValue.value;
+  }
+  if (declValue._tag === 'color') {
+    return declValue.value;
+  }
+  if (declValue._tag === 'literal') {
+    return declValue.raw;
+  }
+  if (declValue._tag === 'transform') {
+    console.log('TRANSFORM: ', declValue);
+    return declValue.value;
+  }
+};

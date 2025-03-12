@@ -1,3 +1,8 @@
-export { CompilerStyleSheet, ComponentStyledProp } from './Model';
+export {
+  CompilerStyleSheet,
+  TwinJSXNodeStyledProp,
+  CompilerSheetEntry,
+  CompilerRuleDeclaration,
+} from './Model';
 
 export { TwinStyleSheetContext, TwinStyleSheetContextLive } from './Service';

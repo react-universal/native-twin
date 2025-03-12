@@ -26,6 +26,8 @@ export interface ImportSource {
   kind: ImportKind;
   source: 'none' | (string & {});
 }
+export type JSXAttributeNode = t.JSXAttribute;
+export type JSXAttributePath = NodePath<JSXAttributeNode>;
 
 export interface CompilerInput {
   code: string;
