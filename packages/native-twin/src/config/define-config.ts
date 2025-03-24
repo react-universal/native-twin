@@ -20,7 +20,6 @@ export function defineConfig<
   let config: TailwindConfig<__Theme__ & ExtractThemes<Theme, Presets>> = {
     content: userConfig.content,
     darkMode: undefined,
-    mode: userConfig.mode ?? 'native',
     preflight: userConfig.preflight !== false && [],
     ignorelist: asArray(userConfig.ignorelist),
     rules: asArray(userConfig.rules),
@@ -53,7 +52,7 @@ export function defineConfig<
       preflight: config.preflight !== false &&
         preflight !== false && [...asArray(config.preflight), ...asArray(preflight)],
       root: config.root,
-      mode: config.mode,
+      // mode: config.mode,
       darkMode,
       theme: {
         ...config.theme,

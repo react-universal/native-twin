@@ -49,7 +49,17 @@ export type AnyDeclarationValue =
   | ColorValue
   | TransformValue
   | FlexValue
-  | LiteralValue;
+  | LiteralValue
+  | StyleAutoValue
+  | StyleNoneValue;
+
+export type FlatDeclValues =
+  | DimensionValue
+  | UnitlessValue
+  | ColorValue
+  | LiteralValue
+  | StyleAutoValue
+  | StyleNoneValue;
 
 const dimension = (value: Omit<DimensionValue, '_tag'>): DimensionValue => ({
   ...value,
@@ -100,10 +110,7 @@ const fullFlexParser = P.sequenceOf([
   dimensionsParser,
   P.maybe(dimensionsParser),
   P.maybe(
-    P.choice([
-      dimensionsParser,
-      P.literal('auto').map((x) => TaggedDeclValue.stringValue(x)),
-    ]),
+    P.choice([dimensionsParser, P.literal('auto').map((x) => TaggedDeclValue.stringValue(x))]),
   ),
 ]).map(
   ([flexGrow, flexShrink, flexBasis]): FullFlexValue => ({
@@ -111,8 +118,7 @@ const fullFlexParser = P.sequenceOf([
     value: {
       flexGrow,
       flexShrink: flexShrink ?? TaggedDeclValue.unitless({ raw: '0', value: 0 }),
-      flexBasis:
-        flexBasis ?? TaggedDeclValue.dimension({ raw: '0%', value: 0, unit: '%' }),
+      flexBasis: flexBasis ?? TaggedDeclValue.dimension({ raw: '0%', value: 0, unit: '%' }),
     },
   }),
 );

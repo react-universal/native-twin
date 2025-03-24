@@ -47,19 +47,14 @@ export const gapParser = P.sequenceOf([
   P.choice([P.literal('x'), P.literal('y')]),
   P.char('-'),
 ]).map((x) => {
-  return asArray(
-    {
-      x: 'column',
-      y: 'row',
-    }[x[0]],
-  );
+  return asArray({ x: 'column', y: 'row' }[x[0]]);
 });
 
 export const getTWFeatureParser = (
   pattern: string,
   patternParser: P.Parser<string>,
   feature: CssFeature = 'default',
-) => {
+): P.Parser<RuleHandlerToken> => {
   switch (feature) {
     case 'edges':
       return resolveEdges(pattern, patternParser);
@@ -88,22 +83,14 @@ const resolveEdges = (pattern: string, patternParser: P.Parser<string>) => {
     P.maybe(edgesParser),
     P.choice([twArbitraryParser, twSegmentParser]),
     P.endOfInput,
-  ]).map((x) => ({
-    segment: x[3],
-    base: x[1],
-    negative: x[0],
-    suffixes: x[2] ?? [],
-  }));
+  ]).map((x) => ({ segment: x[3], base: x[1], negative: x[0], suffixes: x[2] ?? [] }));
 };
 
 const defaultResolver = (pattern: string, patternParser: P.Parser<string>) => {
   if (!pattern.endsWith('-') || pattern.includes('|')) {
     return P.sequenceOf([maybeNegativeParser, patternParser, P.endOfInput]).map(
       (x): RuleHandlerToken => ({
-        segment: {
-          type: 'segment',
-          value: x[1],
-        },
+        segment: { type: 'segment', value: x[1] },
         base: x[1],
         suffixes: [],
         negative: x[0],
@@ -115,12 +102,7 @@ const defaultResolver = (pattern: string, patternParser: P.Parser<string>) => {
     patternParser,
     P.choice([twArbitraryParser, twSegmentParser]),
     P.endOfInput,
-  ]).map((x) => ({
-    segment: x[2],
-    base: x[1],
-    suffixes: [],
-    negative: x[0],
-  }));
+  ]).map((x) => ({ segment: x[2], base: x[1], suffixes: [], negative: x[0] }));
 };
 
 const resolveCorners = (pattern: string, patternParser: P.Parser<string>) => {
@@ -133,12 +115,7 @@ const resolveCorners = (pattern: string, patternParser: P.Parser<string>) => {
     P.maybe(cornersParser),
     P.choice([twArbitraryParser, twSegmentParser]),
     P.endOfInput,
-  ]).map((x) => ({
-    segment: x[3],
-    base: x[1],
-    negative: x[0],
-    suffixes: x[2] ?? [],
-  }));
+  ]).map((x) => ({ segment: x[3], base: x[1], negative: x[0], suffixes: x[2] ?? [] }));
 };
 
 const resolveTransform2d = (pattern: string, patternParser: P.Parser<string>) => {
@@ -151,12 +128,7 @@ const resolveTransform2d = (pattern: string, patternParser: P.Parser<string>) =>
     P.maybe(transform2dParser),
     P.choice([twArbitraryParser, twSegmentParser]),
     P.endOfInput,
-  ]).map((x) => ({
-    segment: x[3],
-    base: x[1],
-    negative: x[0],
-    suffixes: x[2] ?? [],
-  }));
+  ]).map((x) => ({ segment: x[3], base: x[1], negative: x[0], suffixes: x[2] ?? [] }));
 };
 
 const resolveTransform3d = (pattern: string, patternParser: P.Parser<string>) => {
@@ -169,12 +141,7 @@ const resolveTransform3d = (pattern: string, patternParser: P.Parser<string>) =>
     P.maybe(transform3dParser),
     P.choice([twArbitraryParser, twSegmentParser]),
     P.endOfInput,
-  ]).map((x) => ({
-    segment: x[3],
-    base: x[1],
-    negative: x[0],
-    suffixes: x[2] ?? [],
-  }));
+  ]).map((x) => ({ segment: x[3], base: x[1], negative: x[0], suffixes: x[2] ?? [] }));
 };
 
 const resolveGap = (patternParser: P.Parser<string>) => {
@@ -184,10 +151,5 @@ const resolveGap = (patternParser: P.Parser<string>) => {
     P.maybe(gapParser),
     P.choice([twArbitraryParser, twSegmentParser]),
     P.endOfInput,
-  ]).map((x) => ({
-    segment: x[3],
-    base: x[1],
-    negative: x[0],
-    suffixes: x[2] ?? [],
-  }));
+  ]).map((x) => ({ segment: x[3], base: x[1], negative: x[0], suffixes: x[2] ?? [] }));
 };

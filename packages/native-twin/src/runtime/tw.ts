@@ -7,8 +7,8 @@ import type {
   TailwindUserConfig,
 } from '../types/config.types.js';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types.js';
-import { mutationObserver } from './mutation-observer.js';
 import { isDevEnvironment } from './runtime.utils.js';
+import { mutationObserver } from './web/mutation-observer.js';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
 // const subscriptions = new Set<(cb: TailwindConfig<any>) => void>();

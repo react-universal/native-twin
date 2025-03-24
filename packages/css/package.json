@@ -66,6 +66,9 @@
     "@native-twin/arc-parser": "workspace:*",
     "@native-twin/helpers": "workspace:*"
   },
+  "devDependencies": {
+    "fp-ts": "^2.16.9"
+  },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*",
     "jest": "*"
@@ -73,20 +76,6 @@
   "publishConfig": {
     "access": "public",
     "directory": "dist"
-  },
-  "effect": {
-    "generateExports": {
-      "include": [
-        "**/*.ts",
-        "jsx/*.ts"
-      ]
-    },
-    "generateIndex": {
-      "include": [
-        "**/*.ts",
-        "jsx/*.ts"
-      ]
-    }
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
 }

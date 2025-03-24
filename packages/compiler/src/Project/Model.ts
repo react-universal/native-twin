@@ -1,5 +1,6 @@
 import type { Tree } from '@native-twin/helpers/tree';
 import type * as Option from 'effect/Option';
+import type { TwinRunnerPlatform } from '../Config';
 import type { TwinBabelModule } from '../Domain/TwinBabelModule';
 import type { TwinJSXElement } from '../Domain/TwinJSXElement';
 import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
@@ -26,4 +27,8 @@ export class CompiledTwinBabelModule {
     readonly module: TwinBabelModule,
     readonly jsxElements: CompiledTwinJSXElement[],
   ) {}
+}
+
+export interface TwinTransformOptions {
+  platform: TwinRunnerPlatform;
 }

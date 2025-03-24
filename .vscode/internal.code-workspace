@@ -5,12 +5,12 @@
       "path": ".."
     },
     {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
       "name": "📦 @lib/css",
       "path": "../packages/css"
+    },
+    {
+      "name": "📦 @lib/native-twin",
+      "path": "../packages/native-twin"
     },
     {
       "name": "📦 @lib/compiler",
@@ -137,7 +137,7 @@
     "[typescript]": {
       "editor.defaultFormatter": "biomejs.biome"
     },
-    "jest.enable": true,
+    "jest.enable": false,
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/builder",

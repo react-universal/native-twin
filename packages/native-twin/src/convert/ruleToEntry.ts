@@ -27,24 +27,25 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
       preflight: false,
     };
   }
-  if (context.mode === 'web') {
-    if (
-      (rule.v.includes('ios') ||
-        rule.v.includes('android') ||
-        rule.v.includes('native')) &&
-      !rule.v.includes('web')
-    ) {
-      return {
-        className: parsedRuleToClassName(rule),
-        declarations: [],
-        selectors: [],
-        precedence: Layer.u,
-        important: rule.i,
-        animations: [],
-        preflight: false,
-      };
-    }
-  }
+  // TODO: Resolve with no mode
+  // if (context.mode === 'web') {
+  //   if (
+  //     (rule.v.includes('ios') ||
+  //       rule.v.includes('android') ||
+  //       rule.v.includes('native')) &&
+  //     !rule.v.includes('web')
+  //   ) {
+  //     return {
+  //       className: parsedRuleToClassName(rule),
+  //       declarations: [],
+  //       selectors: [],
+  //       precedence: Layer.u,
+  //       important: rule.i,
+  //       animations: [],
+  //       preflight: false,
+  //     };
+  //   }
+  // }
   const result = context.r(rule);
   if (!result) {
     // propagate className as is

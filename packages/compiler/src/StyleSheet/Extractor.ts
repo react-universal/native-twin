@@ -10,9 +10,7 @@ export class TwinExtractor {
   constructor(private value: Ref.Ref<TwinPlatformExtractors>) {
     this.get = Ref.get(this.value);
     this.getExtractor = (platform: TwinRunnerPlatform) =>
-      Effect.andThen(this.get, ({ native, web }) =>
-        platform === 'native' ? native : web,
-      );
+      Effect.map(this.get, ({ native, web }) => (platform === 'native' ? native : web));
   }
 }
 

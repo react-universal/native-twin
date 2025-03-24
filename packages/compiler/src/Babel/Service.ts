@@ -21,7 +21,7 @@ const make = Effect.gen(function* () {
   const fs = yield* TwinFSContext;
 
   return {
-    getBabelModule: (file: TwinFile) => fromTwinFile(file),
+    moduleFromFile: (file: TwinFile) => fromTwinFile(file),
     moduleFromFilePath,
   };
 
@@ -60,6 +60,7 @@ export const fromTwinFile = (file: TwinFile): Effect.Effect<TwinBabelModule> => 
       return new TwinJSXElement(file, jsxFunction, meta, tree);
     }),
     Stream.runCollect,
+    Effect.map(RA.fromIterable),
     Effect.map(
       (jsxElements) => new TwinBabelModule({ ast, file, jsxElements, dependencies }),
     ),

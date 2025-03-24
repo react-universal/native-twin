@@ -14,7 +14,7 @@
     "module": "NodeNext",
     "target": "ESNext",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022", "ESNext", "DOM", "DOM.Iterable"],
     "moduleDetection": "force",
     "esModuleInterop": false,
     "types": ["node", "react-native", "jest", "vite/client"],

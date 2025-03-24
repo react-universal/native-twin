@@ -1,9 +1,4 @@
-import {
-  asArray,
-  escapeSelector,
-  toColorValue,
-  toHyphenCase,
-} from '@native-twin/helpers';
+import { asArray, escapeSelector, toColorValue, toHyphenCase } from '@native-twin/helpers';
 import type { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types.js';
 
 export function sheetEntriesToCss(
@@ -12,9 +7,7 @@ export function sheetEntriesToCss(
 ): string {
   return asArray(entries)
     .filter(Boolean)
-    .map((x) => {
-      return getEntryRuleBlock(x, forMetro);
-    })
+    .map((x) => getEntryRuleBlock(x, forMetro))
     .join('\n');
 }
 

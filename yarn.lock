@@ -4555,6 +4555,7 @@ __metadata:
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/cli": "workspace:*"
     "@native-twin/helpers": "workspace:*"
+    fp-ts: "npm:^2.16.9"
     jest: "npm:*"
   dependenciesMeta:
     "@native-twin/cli":
@@ -11364,6 +11365,13 @@ __metadata:
     combined-stream: "npm:^1.0.8"
     mime-types: "npm:^2.1.12"
   checksum: 10/6adb1cff557328bc6eb8a68da205f9ae44ab0e88d4d9237aaf91eed591ffc64f77411efb9016af7d87f23d0a038c45a788aa1c6634e51175c4efa36c2bc53774
+  languageName: node
+  linkType: hard
+
+"fp-ts@npm:^2.16.9":
+  version: 2.16.9
+  resolution: "fp-ts@npm:2.16.9"
+  checksum: 10/af5c3fa829456da60ed63b5288907868f0df01a7215acfc5697f621a21f76b0a0f7b7c08ac81f2bcf7ecae13a6c6d41047e739a79cf239db19cd49afd7e8e015
   languageName: node
   linkType: hard
 

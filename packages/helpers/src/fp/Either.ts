@@ -58,10 +58,3 @@ export const bifunctor: Bifunctor2<'Either'> = {
       (b) => right(g(b)),
     ),
 };
-
-// const leftV: Either<string, string> = left('Left_Error');
-// const rightV: Either<string, string> = right('Right_Value');
-
-// const mapL = map((x: string): Number => Number(x));
-// const mapLV = functor.map(mapL)(leftV); // ?
-// const mapRV = functor.map(mapL)(rightV); // ?

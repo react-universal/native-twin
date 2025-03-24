@@ -10,8 +10,8 @@ import {
   compareClassNames,
   fixHTMLTagClassNamesList,
 } from '@native-twin/helpers';
-import type { RuntimeTW } from '../types/theme.types.js';
-import { tw as tw$ } from './tw.js';
+import type { RuntimeTW } from '../../types/theme.types.js';
+import { tw as tw$ } from '../tw.js';
 
 export interface ExtractResult {
   /** The possibly modified HTML */

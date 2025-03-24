@@ -14,24 +14,8 @@ export {
   createSheetHandler,
 } from './Sheet.js';
 
-export {
-  TaggedTwinDeclaration,
-  fromSheetEntryDecl,
-  parseDeclarationValue,
-} from './declarations/StyleDeclaration.model.js';
-
-export * as DeclValue from './declarations/DeclarationValue.js';
-
-export type {
-  AnyDeclaration,
-  ColorDeclaration,
-  DimensionDeclaration,
-  FlexDeclaration,
-  TransformDeclaration,
-  TwinDeclaration,
-  UnitlessDeclaration,
-  UnknownDeclaration,
-} from './declarations/StyleDeclaration.model.js';
+export * as Predicates from './sheet.predicates.js';
+export { SheetEntryParser, DeclarationParser } from './SheetEntryParser.js';
 
 export type {
   /** @category — CSS Parsers */

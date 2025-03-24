@@ -14,6 +14,7 @@ import { createThemeContext } from './theme/theme.context.js';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types.js';
 import type { ExtractThemes, RuntimeTW, __Theme__ } from './types/theme.types.js';
 
+const isWeb = typeof window !== 'undefined';
 let version = 0;
 
 export function createTailwind<Theme extends __Theme__ = __Theme__, Target = unknown>(
@@ -125,7 +126,7 @@ export function createTailwind(
   }
 
   function insertPreflight(manual?: boolean) {
-    if (manual || (!cache.size && config.mode === 'web' && config.preflight)) {
+    if (manual || (!cache.size && isWeb && config.preflight)) {
       if (!cache.size) {
         sheet.clear();
       }

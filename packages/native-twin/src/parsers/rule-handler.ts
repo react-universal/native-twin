@@ -1,11 +1,9 @@
 import * as P from '@native-twin/arc-parser';
-import { type TWParsedRule, getTWFeatureParser } from '@native-twin/css';
+import { type RuleHandlerToken, type TWParsedRule, getTWFeatureParser } from '@native-twin/css';
 import type { Rule, ThemeContext } from '../types/config.types.js';
 import type { __Theme__ } from '../types/theme.types.js';
 
-export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(
-  rule: Rule<Theme>,
-) => {
+export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(rule: Rule<Theme>) => {
   const [_, __, resolver] = rule;
   const parser = createRuleMatcher(rule);
   return (token: TWParsedRule, context: ThemeContext<Theme>) => {
@@ -19,7 +17,7 @@ export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(
 
 export const createRuleMatcher = <Theme extends __Theme__ = __Theme__>(
   rule: Rule<Theme>,
-) => {
+): P.Parser<RuleHandlerToken> => {
   const [rawPattern, _, __, meta] = rule;
   let patternParser = P.literal(rawPattern);
   if (rawPattern.includes('|')) {

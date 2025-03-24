@@ -88,7 +88,7 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineEnding": "lf",
-    "lineWidth": 90,
+    "lineWidth": 100,
     "attributePosition": "multiline",
     "bracketSpacing": true,
     "ignore": ["**/.eslintrc.json", "**/*.json", "./.nx/cache", "./.nx/workspace-data"]

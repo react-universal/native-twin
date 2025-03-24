@@ -1,5 +1,5 @@
 import { compareClassNames } from '@native-twin/helpers';
-import type { RuntimeTW, __Theme__ } from '../types/theme.types.js';
+import type { RuntimeTW, __Theme__ } from '../../types/theme.types.js';
 
 export interface TailwindMutationObserver {
   observe: (target: Node) => void;

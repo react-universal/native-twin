@@ -10,16 +10,10 @@ export const maybeNegativeParser = P.maybe(P.char('-')).map((x) => !!x);
 export const twClassNameIdent = /^[a-z0-9A-Z-.]+/;
 export const twArbitraryIdent = /^[a-z0-9A-Z-.#]+/;
 export const twSegmentParser = P.regex(twClassNameIdent).map(
-  (x): SegmentToken => ({
-    type: 'segment',
-    value: x,
-  }),
+  (x): SegmentToken => ({ type: 'segment', value: x }),
 );
 
 const betweenSquareBrackets = P.between(P.char('['))(P.char(']'));
 export const twArbitraryParser = betweenSquareBrackets(P.regex(twArbitraryIdent)).map(
-  (x): ArbitrarySegmentToken => ({
-    type: 'arbitrary',
-    value: x,
-  }),
+  (x): ArbitrarySegmentToken => ({ type: 'arbitrary', value: x }),
 );

@@ -18,7 +18,7 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   content: string[];
   darkMode: DarkModeConfig;
   theme: ThemeConfig<Theme>;
-  mode: 'web' | 'native';
+  // mode: 'web' | 'native';
   rules: Rule<Theme>[];
   variants: Variant<Theme>[];
   preflight: Preflight | undefined;
@@ -134,7 +134,7 @@ export interface ThemeContext<Theme extends __Theme__ = __Theme__> {
   /** Allows to resolve theme values */
   colors: Record<string, string>;
   breakpoints: Exclude<__Theme__['screens'], undefined>;
-  mode: TailwindConfig['mode'];
+  // mode: TailwindConfig['mode'];
   animations: TailwindConfig['animations'];
   /** resolves a rule */
   r: (value: TWParsedRule) => RuleResult;

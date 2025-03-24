@@ -1,5 +1,5 @@
 /* spellchecker: disable */
-// 
+//
 /** @category — CSS Constants */
 export const CSS_COLORS = [
   'black',
@@ -338,9 +338,16 @@ export const simplePseudoMap = {
 } as const;
 
 /** @category — CSS Constants */
-export const simplePseudos = Object.keys(simplePseudoMap) as Array<
-  keyof typeof simplePseudoMap
->;
+export const simplePseudos = Object.keys(simplePseudoMap) as Array<keyof typeof simplePseudoMap>;
 
 /** @category — CSS Constants */
 export const simplePseudoLookup = simplePseudoMap as Record<string, boolean>;
+
+export const defaultCssUnits = {
+  cm: 37.8,
+  mm: 3.78,
+  in: 96,
+  pt: 1.33,
+  pc: 16,
+  px: 1,
+};

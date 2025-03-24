@@ -53,14 +53,15 @@ export function convert<Theme extends __Theme__ = __Theme__>(
 
   for (const variant of variants) {
     const screen = context.theme('screens', variant);
-    if (context.mode === 'native') {
-      if (screen) {
-        conditions.push(screen);
-      } else {
-        conditions.push(variant);
-      }
-      // continue;
-    }
+    // TODO: Add native conditions with no mode resolved
+    // if (context.mode === 'native') {
+    //   if (screen) {
+    //     conditions.push(screen);
+    //   } else {
+    //     conditions.push(variant);
+    //   }
+    //   // continue;
+    // }
     for (const condition of asArray((screen && mql(screen)) || context.v(variant))) {
       if (!condition) continue;
       conditions.push(condition);

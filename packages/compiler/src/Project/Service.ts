@@ -1,8 +1,6 @@
 import type { TreeNode } from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
-import * as Cache from 'effect/Cache';
 import * as Context from 'effect/Context';
-import * as Duration from 'effect/Duration';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
@@ -28,16 +26,8 @@ import {
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const fs = yield* TwinFSContext;
-  const { moduleFromFilePath } = yield* BabelContext;
+  const { moduleFromFilePath, moduleFromFile } = yield* BabelContext;
   const sheet = yield* TwinStyleSheetContext;
-
-  const modulesCache = yield* Cache.make({
-    lookup: (key: TwinPath.FilePath) => moduleFromFilePath(key),
-    timeToLive: Duration.hours(1),
-    capacity: Number.MAX_SAFE_INTEGER,
-  });
-
-  const getModule = (filePath: TwinPath.FilePath) => modulesCache.get(filePath);
 
   const compileModule = (module: TwinBabelModule, platform: TwinRunnerPlatform) =>
     Effect.gen(function* () {
@@ -50,36 +40,41 @@ const make = Effect.gen(function* () {
       return new CompiledTwinBabelModule(module, compiledJSXElements);
     });
 
+  const getModule = (filename: string, code: string) =>
+    Effect.andThen(fs.getFile(filename, code), moduleFromFile);
+
   const getProjectModules = Stream.fromIterableEffect(ctx.state.projectFiles.get).pipe(
-    Stream.mapEffect((x) => getModule(TwinPath.filePathFromString(x))),
+    Stream.mapEffect((x) => moduleFromFilePath(TwinPath.filePathFromString(x))),
   );
 
   return {
     sheet,
     getProjectModules,
     compileModule,
+    moduleFromFilePath,
     getModule,
+    getTreeNodeDep,
   };
 
   function getCompiledJSXElement(
     jsxElement: TwinJSXElement,
     compiler: CompilerStyleSheet,
   ) {
-    return Effect.gen(function* () {
-      const compiledTree = yield* mapTreeEffect(jsxElement.tree, (treeNode) =>
-        Effect.gen(function* () {
-          const original = yield* getTreeNodeDep(treeNode);
-          const styledProps = compiler.getStyledProps(treeNode.value);
-          return new CompiledTwinJSXElementNode(
-            treeNode.value,
-            styledProps,
-            compiler,
-            original,
-          );
-        }),
-      );
-      return new CompiledTwinJSXElement(jsxElement, compiledTree);
-    });
+    return Effect.map(
+      mapTreeEffect(jsxElement.tree, (treeNode) =>
+        Effect.map(
+          getTreeNodeDep(treeNode),
+          (original) =>
+            new CompiledTwinJSXElementNode(
+              treeNode.value,
+              compiler.getStyledProps(treeNode.value),
+              compiler,
+              original,
+            ),
+        ),
+      ),
+      (tree) => new CompiledTwinJSXElement(jsxElement, tree),
+    );
   }
 
   function getTreeNodeDep(treeNode: TreeNode<TwinJSXElementNode>) {
@@ -89,7 +84,7 @@ const make = Effect.gen(function* () {
 
     return Effect.andThen(
       fs.getFullFilePathFromStr(dependency.value.filepath),
-      (dependencyPath) => getModule(dependencyPath),
+      (dependencyPath) => moduleFromFilePath(dependencyPath),
     ).pipe(
       Effect.map((module) =>
         dependency.pipe(Option.flatMap((dep) => module.findDependency(dep))),

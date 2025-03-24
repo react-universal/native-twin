@@ -3,7 +3,7 @@ import { hasOwnProperty } from '@native-twin/helpers';
 import { unitlessCssProps } from '../../css/css.constants';
 import type { SheetEntryDeclaration } from '../../sheets/sheet.types';
 import { getPropertyValueType } from '../../utils.parser';
-import * as DeclValue from './DeclarationValue';
+import * as DeclValue from './declaration.value';
 
 export interface TwinDeclaration<Tag extends string, Value>
   extends Omit<SheetEntryDeclaration, 'value'> {
@@ -19,8 +19,7 @@ export interface DimensionDeclaration extends TwinDeclaration<'dimension', strin
 export interface UnitlessDeclaration extends TwinDeclaration<'unitless', string> {}
 export interface UnknownDeclaration
   extends TwinDeclaration<'unknown', SheetEntryDeclaration['value']> {}
-export interface TransformDeclaration
-  extends TwinDeclaration<'transform', AnyDeclaration[]> {}
+export interface TransformDeclaration extends TwinDeclaration<'transform', AnyDeclaration[]> {}
 
 export type AnyDeclaration =
   | FlexDeclaration
@@ -115,7 +114,6 @@ export const parseDeclarationValue = (
     case 'unitless':
       return DeclValue.unitlessParser.run(decl.value);
     case 'transform':
-      return DeclValue.unitlessParser.run(decl.value.join(''));
     case 'unknown':
       if (typeof decl.value !== 'string') {
         return P.fail(`unknown decl value: ${JSON.stringify(decl.value)}`).run('');
@@ -127,8 +125,8 @@ export const parseDeclarationValue = (
         DeclValue.flexParser(decl.value),
         DeclValue.parseColor(decl.value),
       ];
-      return P.choice(
-        parsers.map((x) => P.sequenceOf([x, P.endOfInput]).map((x) => x[0])),
-      ).run(decl.value);
+      return P.choice(parsers.map((x) => P.sequenceOf([x, P.endOfInput]).map((x) => x[0]))).run(
+        decl.value,
+      );
   }
 };

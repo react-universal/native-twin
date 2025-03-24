@@ -29,7 +29,7 @@ type VariantHandlerFn<Theme extends __Theme__ = __Theme__> = (
 export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
-  mode,
+  // mode,
   variants = [],
   animations,
 }: TailwindConfig<Theme>): ThemeContext<Theme> {
@@ -59,9 +59,9 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
       return Object.assign(themeConfig.screens ?? {}, themeConfig.extend?.screens);
     },
 
-    get mode() {
-      return mode;
-    },
+    // get mode() {
+    //   return mode;
+    // },
 
     v(value) {
       if (variantCache.has(value)) {

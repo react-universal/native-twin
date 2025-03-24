@@ -11,8 +11,8 @@ import type { TwinJSXElementNode } from './TwinJSXElementNode';
 export class TwinBabelModule extends Data.Class<{
   readonly ast: BabelFileAst;
   readonly file: TwinFile;
-  readonly jsxElements: Iterable<TwinJSXElement>;
-  readonly dependencies: Iterable<ModuleDependency>;
+  readonly jsxElements: TwinJSXElement[];
+  readonly dependencies: ModuleDependency[];
 }> {
   get id() {
     const { path, basename } = this.file;
@@ -43,7 +43,15 @@ export class ModuleDependency extends Data.Class<{
   originalSource: string;
   filepath: TwinPath.ImportPath;
   isLocal: boolean;
+  /** 
+   @description Variable name on the current module  
+   @example ```
+    import { Comp as LocalName } from '...'
+   ```
+   where LocalName is the value of this prop
+   **/
   localName: string;
+  /** Original name on the imported file */
   exportName: string;
 }> {
   get fromReactNative() {
