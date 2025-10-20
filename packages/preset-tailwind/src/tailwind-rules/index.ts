@@ -1,3 +1,3 @@
-export * from './transform.js';
-export * from './shadows.js';
-export * from './default.js';
+export * from './transform';
+export * from './shadows';
+export * from './default';

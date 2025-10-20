@@ -1,15 +1,5 @@
 import { Path } from '@effect/platform';
-import {
-  Context,
-  Effect,
-  Layer,
-  Option,
-  Queue,
-  Array as RA,
-  Stream,
-  Tuple,
-  pipe,
-} from 'effect';
+import { Context, Effect, Layer, Option, pipe, Queue, Array as RA, Stream, Tuple } from 'effect';
 import { type Diagnostic, type OutputFile, Project, type SourceFile } from 'ts-morph';
 import type { BuildOutputFiles } from '../models/Compiler.models';
 import { TSCompilerOptions } from '../models/TSCompiler.model';
@@ -52,9 +42,7 @@ const make = Effect.gen(function* () {
     ),
     Stream.filterMap((x) => getFileAt(x.path)),
     Stream.mapEffect(getSourceOutputs),
-    Stream.filterMap((x) =>
-      Option.flatMap(x[1], (files) => Option.some(Tuple.make(x[0], files))),
-    ),
+    Stream.filterMap((x) => Option.flatMap(x[1], (files) => Option.some(Tuple.make(x[0], files)))),
   );
 
   yield* Queue.take(diagnostics).pipe(
@@ -124,21 +112,15 @@ const make = Effect.gen(function* () {
 
   function mapToCompilerOutput(files: OutputFile[]): Option.Option<BuildOutputFiles> {
     return Option.Do.pipe(
-      Option.bind('esm', () =>
-        RA.findFirst(files, (x) => x.getFilePath().endsWith('.js')),
-      ),
-      Option.let('sourcePath', ({ esm }) =>
-        fsUtils.getOriginalSourceForESM(esm.getFilePath()),
-      ),
+      Option.bind('esm', () => RA.findFirst(files, (x) => x.getFilePath().endsWith('.js'))),
+      Option.let('sourcePath', ({ esm }) => fsUtils.getOriginalSourceForESM(esm.getFilePath())),
       Option.let('relativeSourcePath', ({ esm, sourcePath }) =>
         path_.relative(path_.dirname(esm.getFilePath()), sourcePath),
       ),
       Option.bind('sourcemaps', () =>
         RA.findFirst(files, (x) => x.getFilePath().endsWith('.js.map')),
       ),
-      Option.bind('dts', () =>
-        RA.findFirst(files, (x) => x.getFilePath().endsWith('.d.ts')),
-      ),
+      Option.bind('dts', () => RA.findFirst(files, (x) => x.getFilePath().endsWith('.d.ts'))),
       Option.bind('dtsMap', () =>
         RA.findFirst(files, (x) => x.getFilePath().endsWith('.d.ts.map')),
       ),
@@ -147,8 +129,7 @@ const make = Effect.gen(function* () {
 });
 
 export interface TypescriptContext extends Effect.Effect.Success<typeof make> {}
-export const TypescriptContext =
-  Context.GenericTag<TypescriptContext>('TypescriptContext');
+export const TypescriptContext = Context.GenericTag<TypescriptContext>('TypescriptContext');
 export const TypescriptContextLive = Layer.effect(TypescriptContext, make).pipe(
   Layer.provide(FsUtilsLive),
 );

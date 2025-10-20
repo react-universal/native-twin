@@ -46,7 +46,7 @@
     "clean": "rm -rf build .cache",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",
-    "test": "jest",
+    "test": "vitest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },
@@ -65,19 +65,5 @@
   "publishConfig": {
     "access": "public",
     "directory": "dist"
-  },
-  "effect": {
-    "generateExports": {
-      "include": [
-        "*.ts",
-        "config/*.ts",
-        "convert/*.ts",
-        "runtime/*.ts",
-        "theme/*.ts",
-        "types/*.ts",
-        "parsers/*.ts",
-        "theme/*.ts"
-      ]
-    }
   }
 }

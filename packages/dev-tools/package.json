@@ -44,7 +44,7 @@
     "@native-twin/helpers": "workspace:*",
     "@native-twin/jsx": "workspace:*",
     "@native-twin/metro": "workspace:*",
-    "effect": "^3.13.2",
+    "effect": "^3.18.4",
     "eventemitter3": "^5.0.1"
   },
   "peerDependencies": {

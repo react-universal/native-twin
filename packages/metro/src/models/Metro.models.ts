@@ -1,7 +1,7 @@
 import type { CompilerConfigContext } from '@native-twin/compiler';
 import type { SheetEntry } from '@native-twin/css';
 import type * as LogLevel from 'effect/LogLevel';
-import type { IntermediateConfigT, TransformerConfigT } from 'metro-config';
+import type { ConfigT, TransformerConfigT } from 'metro-config';
 import type {
   JsTransformOptions,
   JsTransformerConfig,
@@ -15,7 +15,7 @@ type TwinTransformerConfig = TransformerConfigT & {
 } & Record<string, unknown>;
 
 /** @domain Metro config options */
-export interface TwinMetroConfig extends IntermediateConfigT {
+export interface TwinMetroConfig extends ConfigT {
   transformer: TwinTransformerConfig;
 }
 

@@ -2,8 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
-    "moduleResolution": "node",
-    "module": "ESNext",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
     "jsx": "react-native"
   },
   "include": ["src"],

@@ -14,6 +14,11 @@ function lazyJiti() {
       cache: false,
       debug: false,
       requireCache: false,
+      transformOptions: {
+        async: false,
+        interopDefault: true,
+        ts: true
+      },
       transform: (opts) => {
         return transform(opts.source, {
           transforms: ['typescript', 'imports'],
@@ -24,12 +29,11 @@ function lazyJiti() {
 }
 
 export function nodeRequireJS<T = unknown>(path: string): T {
-  // biome-ignore lint/complexity/useArrowFunction: <explanation>
+  // biome-ignore lint/complexity/useArrowFunction: must use function as this requires binding
   const config = (function () {
     try {
       return path ? require(path) : {};
     } catch {
-      // const resolved = lazyJiti().esmResolve(path);
       // console.log('JJJJ', lazyJiti());
       const code = fs.readFileSync(path, 'utf-8');
       // lazyJiti().import(path, { default: true });
@@ -45,7 +49,7 @@ export function nodeRequireJS<T = unknown>(path: string): T {
 }
 
 export function requireResolveUtil(path: string): string {
-  // biome-ignore lint/complexity/useArrowFunction: <explanation>
+  // biome-ignore lint/complexity/useArrowFunction: must be using function object
   const result = (function () {
     try {
       return require.resolve(path);

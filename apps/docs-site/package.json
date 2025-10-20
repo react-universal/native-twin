@@ -16,10 +16,10 @@
     "@native-twin/jsx": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "next": "^15.1.6",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-native": "0.76.6",
-    "react-native-web": "~0.19.13"
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "0.81.4",
+    "react-native-web": "^0.21.0"
   },
   "nx": {
     "targets": "nextjs:pages:dev",

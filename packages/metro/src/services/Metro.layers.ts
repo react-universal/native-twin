@@ -1,14 +1,11 @@
 import { Path } from '@effect/platform';
 import { NodePath } from '@effect/platform-node';
 import {
-  BabelCompilerContextLive,
   CompilerConfigContext,
-  FSUtils,
   type NodeWithNativeTwinOptions,
   TwinFSContextLive,
   TwinNodeContextLive,
   TwinPath,
-  TwinWatcherContextLive,
   createCompilerConfig,
 } from '@native-twin/compiler';
 import * as Effect from 'effect/Effect';
@@ -16,18 +13,18 @@ import * as Layer from 'effect/Layer';
 
 export const MetroMainLayer = Layer.empty.pipe(
   Layer.provideMerge(TwinNodeContextLive),
-  Layer.provideMerge(BabelCompilerContextLive),
+  // Layer.provideMerge(BabelCompilerContextLive),
 );
 export const MetroLayerWithTwinFS = TwinFSContextLive.pipe(
   Layer.provideMerge(MetroMainLayer),
-  Layer.provideMerge(TwinPath.TwinPathLive),
-  Layer.provideMerge(FSUtils.FsUtilsLive),
-  Layer.provideMerge(TwinPath.TwinPathLive),
+  // Layer.provideMerge(TwinPath.),
+  // Layer.provideMerge(FSUtils.FsUtilsLive),
+  // Layer.provideMerge(TwinPath.),
 );
 export const MetroLayerWithTwinWatcher = MetroLayerWithTwinFS.pipe(
   Layer.provideMerge(TwinFSContextLive),
   Layer.provideMerge(MetroMainLayer),
-  Layer.provideMerge(TwinWatcherContextLive),
+  // Layer.provideMerge(TwinWatcherContextLive),
 );
 
 export const createMetroInnerLayer = (nativeTwinConfig: NodeWithNativeTwinOptions) =>

@@ -4,15 +4,21 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
-import { Layer, type Sheet, type SheetEntry } from '@native-twin/css';
-import { interpolate, parseTWTokens, sortedInsertionIndex } from '@native-twin/css';
+import {
+  interpolate,
+  Layer,
+  parseTWTokens,
+  type Sheet,
+  type SheetEntry,
+  sortedInsertionIndex,
+} from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import { defineConfig } from './config/define-config.js';
 import { parsedRuleToEntry } from './convert/ruleToEntry.js';
 import { isDevEnvironment } from './runtime/runtime.utils.js';
 import { createThemeContext } from './theme/theme.context.js';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types.js';
-import type { ExtractThemes, RuntimeTW, __Theme__ } from './types/theme.types.js';
+import type { __Theme__, ExtractThemes, RuntimeTW } from './types/theme.types.js';
 
 const isWeb = typeof window !== 'undefined';
 let version = 0;

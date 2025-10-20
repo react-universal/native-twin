@@ -6,6 +6,4 @@ yarn up effect \
 @effect/platform-browser \
 @effect/cli \
 @effect/typeclass \
-@effect/experimental \
-@effect/language-service \
-@effect/docgen
+@effect/experimental

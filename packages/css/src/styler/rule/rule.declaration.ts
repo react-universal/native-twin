@@ -1,14 +1,14 @@
-export interface GenericStyleValue<Type extends string, Value> {
-  readonly type: Type;
-  value: Value;
-}
+// export interface GenericStyleValue<Type extends string, Value> {
+//   readonly type: Type;
+//   value: Value;
+// }
 
-const declValueIdent =
-  <Type extends string>(type: Type) =>
-  <Value>(value: Value): GenericStyleValue<Type, Value> => ({ type, value });
+// const declValueIdent =
+//   <Type extends string>(type: Type) =>
+//   <Value>(value: Value): GenericStyleValue<Type, Value> => ({ type, value });
 
-const dimension = declValueIdent('dimension');
-const color = declValueIdent('color');
-const unknown = declValueIdent('unknown');
+// const dimension = declValueIdent('dimension');
+// const color = declValueIdent('color');
+// const unknown = declValueIdent('unknown');
 
-const valueTypeFromProp = (prop: string) => {};
+// const valueTypeFromProp = (prop: string) => {};

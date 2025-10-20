@@ -237,6 +237,6 @@ export const stylePropsText = {
 };
 
 /** Prop must be camel cased */
-const getStylePropType = (prop: string) => {};
+export const getStylePropType = (prop: string) => {};
 
-const isDimensionProp = (prop: string) => {};
+export const isDimensionProp = (prop: string) => {};

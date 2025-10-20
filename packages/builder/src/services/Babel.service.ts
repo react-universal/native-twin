@@ -176,7 +176,7 @@ const make = Effect.gen(function* () {
         Effect.logWarning('[BABEL] error adding annotations to ESM ', x, '\n'),
       ),
       Effect.withLogSpan('BABEL/ESM-annotations'),
-      Effect.catchAllCause((x) => {
+      Effect.catchAllCause((_x) => {
         return Effect.sync(() => {
           const result: CompilerOutput['cjsFile'] = {
             content: esmFile.getText(),

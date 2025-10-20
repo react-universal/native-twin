@@ -3,11 +3,11 @@
   "compilerOptions": {
     "types": ["node", "react-native"],
     "exactOptionalPropertyTypes": false,
-    "module": "ESNext",
+    "module": "nodenext",
     "noImplicitAny": false,
     "alwaysStrict": false,
+    "moduleResolution": "nodenext",
     "strict": true,
-    "moduleResolution": "node",
     "rootDir": "src"
   },
   "include": ["src"],

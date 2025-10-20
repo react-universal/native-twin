@@ -1,7 +1,3 @@
-import * as Array from 'effect/Array';
-
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 export class Tree<T> {
   root: TreeNode<T>;
   constructor(value: T) {
@@ -17,21 +13,23 @@ export class Tree<T> {
    */
   traverse(
     callback: (node: TreeNode<T>) => void,
-    traversal: 'breadthFirst' | 'depthFirst' | 'preOrder' | 'postOrder',
+    traversal: "breadthFirst" | "depthFirst" | "preOrder" | "postOrder"
   ) {
     if (!this.root) return;
 
-    if (traversal === 'preOrder') {
+    if (traversal === "preOrder") {
       // Pre-order traversal: visit the current node, then traverse the left subtree, then traverse the right subtree
       callback(this.root);
       return Promise.all(
-        this.root.children.map((child) => child.traverse(callback, traversal)),
+        this.root.children.map((child) => child.traverse(callback, traversal))
       );
     }
 
-    if (traversal === 'postOrder') {
+    if (traversal === "postOrder") {
       // Post-order traversal: traverse the left subtree, then traverse the right subtree, then visit the current node
-      Promise.all(this.root.children.map((child) => child.traverse(callback, traversal)));
+      Promise.all(
+        this.root.children.map((child) => child.traverse(callback, traversal))
+      );
       callback(this.root);
       return;
     }
@@ -41,11 +39,11 @@ export class Tree<T> {
 
     while (collection.length > 0) {
       let current: TreeNode<T>;
-      if (traversal === 'depthFirst') current = collection.pop()!;
+      if (traversal === "depthFirst") current = collection.pop()!;
       else current = collection.shift()!;
 
       callback(current);
-      if (traversal === 'depthFirst') {
+      if (traversal === "depthFirst") {
         for (let i = current.children.length - 1; i >= 0; i--)
           collection.push(current.children[i]!);
       } else {
@@ -73,7 +71,7 @@ export class Tree<T> {
   map<B>(f: (a: TreeNode<T>) => TreeNode<B>): Tree<B> {
     this.traverse((node) => {
       return f(node) as any;
-    }, 'depthFirst');
+    }, "depthFirst");
     return this as any;
   }
 }
@@ -82,7 +80,7 @@ export class TreeNode<T> {
   // MARK: Properties
 
   value: T;
-  children = Array.empty<TreeNode<T>>();
+  children: TreeNode<T>[] = [];
   parent: TreeNode<T> | null = null;
   id = Math.floor(Math.random() * Date.now());
 
@@ -111,8 +109,10 @@ export class TreeNode<T> {
   getTreeString(node: TreeNode<T>, space = 0): string {
     return node.children.reduce(
       (prev, current) =>
-        `${prev}${' '.repeat(space)}${JSON.stringify(current.value)}${this.getTreeString(current, space + 2)}`,
-      '\n',
+        `${prev}${" ".repeat(space)}${JSON.stringify(
+          current.value
+        )}${this.getTreeString(current, space + 2)}`,
+      "\n"
     );
   }
 
@@ -164,6 +164,20 @@ export class TreeNode<T> {
     return this.children.length > 0;
   }
 
+  get nodeIndex() {
+    if (this.parent) {
+      const index = this.parent.children.indexOf(this);
+      if (index >= 0) return index;
+    }
+    return 0;
+  }
+
+  getChildIndex(node: TreeNode<T>) {
+    const index = this.children.indexOf(node);
+    if (index >= 0) return index;
+    return 0;
+  }
+
   /**
    * Checks if the current node has any siblings.
    * @returns `true` if the node has siblings, `false` otherwise.
@@ -204,20 +218,24 @@ export class TreeNode<T> {
    */
   traverse(
     callback: (node: TreeNode<T>) => void,
-    traversal: 'breadthFirst' | 'depthFirst' | 'preOrder' | 'postOrder',
+    traversal: "breadthFirst" | "depthFirst" | "preOrder" | "postOrder"
   ) {
     if (!this) return;
 
-    if (traversal === 'preOrder') {
+    if (traversal === "preOrder") {
       // Pre-order traversal: visit the current node, then traverse the left subtree, then traverse the right subtree
       callback(this);
-      this.children.forEach((child) => child.traverse(callback, traversal));
+      this.children.forEach(
+        (child) => void child.traverse(callback, traversal)
+      );
       return;
     }
 
-    if (traversal === 'postOrder') {
+    if (traversal === "postOrder") {
       // Post-order traversal: traverse the left subtree, then traverse the right subtree, then visit the current node
-      this.children.forEach((child) => child.traverse(callback, traversal));
+      this.children.forEach(
+        (child) => void child.traverse(callback, traversal)
+      );
       callback(this);
       return;
     }
@@ -227,11 +245,11 @@ export class TreeNode<T> {
 
     while (collection.length > 0) {
       let current: TreeNode<T>;
-      if (traversal === 'depthFirst') current = collection.pop()!;
+      if (traversal === "depthFirst") current = collection.pop()!;
       else current = collection.shift()!;
 
       callback(current);
-      if (traversal === 'depthFirst') {
+      if (traversal === "depthFirst") {
         for (let i = current.children.length - 1; i >= 0; i--)
           collection.push(current.children[i]!);
       } else {
@@ -253,7 +271,7 @@ export class TreeNode<T> {
 
 export const mapTree = <A, B>(
   tree: Tree<A>,
-  cb: (a: TreeNode<A>, parent?: TreeNode<NoInfer<B>>) => B,
+  cb: (a: TreeNode<A>, parent?: TreeNode<NoInfer<B>>) => B
 ): Tree<NoInfer<B>> => {
   const newValue = mapTreeNode(tree.root);
   const node = new Tree<B>(newValue.value);
@@ -262,7 +280,8 @@ export const mapTree = <A, B>(
 
   function mapTreeNode(node: TreeNode<A>, parent?: TreeNode<B>): TreeNode<B> {
     const newValue = cb(node, parent);
-    const newNode = parent?.addChild(newValue, parent) ?? new TreeNode(newValue, parent);
+    const newNode =
+      parent?.addChild(newValue, parent) ?? new TreeNode(newValue, parent);
 
     for (const child of node.children) {
       mapTreeNode(child, newNode);

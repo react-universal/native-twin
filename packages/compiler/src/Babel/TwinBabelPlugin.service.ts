@@ -3,8 +3,8 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as HashMap from 'effect/HashMap';
 import * as Layer from 'effect/Layer';
-import type { TwinBabelPluginOptions } from '.'; 
 import { TwinNodeContext } from '../Config/Service';
+import type { TwinBabelPluginOptions } from './Models';
 
 export class JSXImportPluginContext extends Context.Tag('babel/plugin/context')<
   JSXImportPluginContext,

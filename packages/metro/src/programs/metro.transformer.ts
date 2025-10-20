@@ -1,16 +1,13 @@
 import * as path from 'node:path';
 import {
-  BabelCompilerContext,
   CompilerConfigContext,
-  TWIN_DEFAULT_PLUGIN_CONFIG,
   TwinNodeContext,
-  getBabelAST,
 } from '@native-twin/compiler';
 import { matchCss } from '@native-twin/helpers/server';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
+import * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import type { TransformResponse } from 'metro-transform-worker';
@@ -41,11 +38,7 @@ export const transform: TwinMetroTransformFn = async (
       ? require(twinConfig.originalTransformerPath).transform
       : worker.transform;
 
-    if (
-      platformOutput &&
-      matchCss(filename) &&
-      filename.includes(path.basename(platformOutput))
-    ) {
+    if (platformOutput && matchCss(filename) && filename.includes(path.basename(platformOutput))) {
       console.log('[METRO_TRANSFORMER]: Detect css file', filename);
       const result: TransformResponse = yield* Effect.promise(() =>
         transformCSSExpo(config, projectRoot, filename, data, options),
@@ -54,18 +47,13 @@ export const transform: TwinMetroTransformFn = async (
     }
 
     if (!(yield* ctx.isAllowedPath(filename))) {
-      return yield* Effect.promise(() =>
-        transform(config, projectRoot, filename, data, options),
-      );
+      return yield* Effect.promise(() => transform(config, projectRoot, filename, data, options));
     }
 
     let code = data.toString('utf-8');
     const ast = yield* Effect.sync(() => getBabelAST(code, filename));
 
-    const documentSheets = yield* extractJSXElementTrees(
-      ast,
-      TWIN_DEFAULT_PLUGIN_CONFIG,
-    ).pipe(
+    const documentSheets = yield* extractJSXElementTrees(ast, TWIN_DEFAULT_PLUGIN_CONFIG).pipe(
       Stream.mapEffect((tree) => jsxElementTreeToSheets(tree, platform)),
       Stream.flatMap((tree) => Stream.fromIterable(tree.all().map((x) => x.value))),
       Stream.runCollect,

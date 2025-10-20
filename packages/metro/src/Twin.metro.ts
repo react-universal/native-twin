@@ -1,9 +1,9 @@
-import path from 'node:path';
 import {
-  FSUtils,
   type NodeWithNativeTwinOptions,
+  TwinFSContext,
   TwinNodeContext,
-  twinLoggerLayer,
+  TwinPath,
+  withCompilerLogger,
 } from '@native-twin/compiler';
 import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
@@ -15,10 +15,7 @@ import type { GetTransformOptions } from 'metro-config';
 import type { CustomResolver } from 'metro-resolver';
 import type { TwinMetroConfig } from './models/Metro.models.js';
 import { getMetroSettings } from './programs/getMetroSettings.js';
-import {
-  MetroLayerWithTwinWatcher,
-  createMetroInnerLayer,
-} from './services/Metro.layers.js';
+import { createMetroInnerLayer, MetroLayerWithTwinWatcher } from './services/Metro.layers.js';
 
 export function withNativeTwin(
   metroConfig: TwinMetroConfig,
@@ -28,10 +25,7 @@ export function withNativeTwin(
   const runtimeSync = ManagedRuntime.make(MetroLive);
 
   const runtimeAsync = ManagedRuntime.make(
-    MetroLayerWithTwinWatcher.pipe(
-      Layer.provideMerge(MetroLive),
-      Layer.provide(twinLoggerLayer),
-    ),
+    MetroLayerWithTwinWatcher.pipe(Layer.provideMerge(MetroLive)),
   );
 
   const originalResolver = metroConfig.resolver.resolveRequest;
@@ -54,9 +48,7 @@ export function withNativeTwin(
     },
   };
 
-  function resolveMetroRequest(
-    ...[context, moduleName, platform]: Parameters<CustomResolver>
-  ) {
+  function resolveMetroRequest(...[context, moduleName, platform]: Parameters<CustomResolver>) {
     return Effect.gen(function* () {
       const metroSettings = yield* getMetroSettings;
       const resolver = originalResolver ?? context.resolveRequest;
@@ -69,7 +61,7 @@ export function withNativeTwin(
       if ('filePath' in resolved && resolved.filePath === platformInput) {
         return {
           ...resolved,
-          filePath: path.resolve(platformOutput),
+          filePath: TwinPath.NodePath.resolve(platformOutput),
         };
       }
 
@@ -88,16 +80,17 @@ export function withNativeTwin(
       if (!options.platform) return result;
 
       const platform = options.platform;
-      const fs = yield* FSUtils.FsUtils;
+      const fs = TwinFSContext.Service;
       const ctx = yield* TwinNodeContext;
       yield* Ref.update(ctx.state.runningPlatforms.ref, (x) => HashSet.add(x, platform));
+      yield* fs.createTwinFiles();
 
       const platformOutput = ctx.getOutputCSSPath(platform);
       if (!(yield* fs.exists(platformOutput))) {
         yield* fs
-          .mkdirCached(fs.path_.make.absoluteFromString(path.dirname(platformOutput)))
+          .mkdirCached(TwinPath.absolutePathFromString(TwinPath.NodePath.dirname(platformOutput)))
           .pipe(Effect.tapError(() => Effect.logError('cant create twin output')));
-        yield* fs.writeFileCached({ path: platformOutput });
+        // yield* fs.writeFileCached({ path: platformOutput });
       }
 
       yield* Effect.logTrace(`Watcher started for [${options.platform}]`);
@@ -107,7 +100,7 @@ export function withNativeTwin(
       Effect.annotateLogs('platform', options.platform),
       Effect.withSpan('Transformer', { attributes: { ...options } }),
       Logger.withMinimumLogLevel(metroSettings.env.logLevel),
-      Effect.provide(twinLoggerLayer),
+      withCompilerLogger,
       runtimeAsync.runPromise,
     );
   }

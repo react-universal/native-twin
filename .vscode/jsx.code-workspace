@@ -1,44 +1,48 @@
 {
   "folders": [
     {
-      "name": "root",
+      "name": "✨ native-twin",
       "path": ".."
     },
     {
-      "name": "📦 @lib/compiler",
-      "path": "../packages/compiler"
-    },
-    {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/adapters",
-      "path": "../packages/adapters"
-    },
-    {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "@apps/expo",
+      "name": "🚀 expo-app",
       "path": "../apps/expo-app"
     },
     {
-      "name": "@apps/expo-router",
+      "name": "🚀 expo-app-web",
       "path": "../apps/expo-router"
+    },
+    {
+      "name": "📦 @native-twin/adapters",
+      "path": "../packages/adapters"
+    },
+    {
+      "name": "📦 @native-twin/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @native-twin/compiler",
+      "path": "../packages/compiler"
+    },
+    {
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @native-twin/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @native-twin/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @native-twin/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @native-twin/core",
+      "path": "../packages/native-twin"
     }
   ],
   "settings": {

@@ -42,7 +42,7 @@
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",
-    "test": "jest"
+    "test": "vitest"
   },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*",

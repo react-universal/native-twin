@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
   "vcs": {
     "enabled": false,
     "clientKind": "git",
@@ -8,17 +8,17 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "include": ["*/src/**/*.ts", "*/src/**/*.tsx", "*/test/**/*"],
-    "ignore": [
-      "packages/*/build/**/*",
-      "*/test/fixtures/**/*",
-      "*/test/project-fixture/**/*",
-      "*/test/server-fixture/**/*"
+    "includes": [
+      "**/*/src/**/*.ts",
+      "**/*/src/**/*.tsx",
+      "**/*/test/**/*",
+      "!**/packages/**/*/build/**/*",
+      "!**/*/test/fixtures/**/*",
+      "!**/*/test/project-fixture/**/*",
+      "!**/*/test/server-fixture/**/*"
     ]
   },
-  "organizeImports": {
-    "ignore": ["*/twin.run/**/*"]
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "rules": {
       "recommended": true,
@@ -26,9 +26,7 @@
         "useExhaustiveDependencies": {
           "level": "error",
           "options": {
-            "hooks": [
-              {"name": "useNearestChild", "stableResult": true}
-            ]
+            "hooks": [{ "name": "useNearestChild", "stableResult": true }]
           }
         },
         "noSwitchDeclarations": "off",
@@ -44,8 +42,6 @@
         "useSelfClosingElements": "off",
         "noUselessElse": "off",
         "useNodejsImportProtocol": "off",
-        "noVar": "off",
-        "noArguments": "off",
         "noParameterAssign": "off",
         "useDefaultParameterLast": "off",
         "noNonNullAssertion": "off"
@@ -62,7 +58,8 @@
         "noFocusedTests": "off",
         "noControlCharactersInRegex": "off",
         "noShadowRestrictedNames": "off",
-        "noFunctionAssign": "off"
+        "noFunctionAssign": "off",
+        "noVar": "off"
       },
       "performance": {
         "noDelete": "off",
@@ -77,7 +74,8 @@
         "noUselessConstructor": "off",
         "noForEach": "off",
         "noUselessSwitchCase": "off",
-        "useLiteralKeys": "off"
+        "useLiteralKeys": "off",
+        "noArguments": "off"
       }
     }
   },
@@ -91,7 +89,7 @@
     "lineWidth": 100,
     "attributePosition": "multiline",
     "bracketSpacing": true,
-    "ignore": ["**/.eslintrc.json", "**/*.json", "./.nx/cache", "./.nx/workspace-data"]
+    "includes": ["**", "!**/.eslintrc.json", "!**/*.json", "!.nx/cache", "!.nx/workspace-data"]
   },
   "javascript": {
     "formatter": {

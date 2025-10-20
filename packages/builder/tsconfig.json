@@ -3,9 +3,9 @@
   "include": ["src"],
   "compilerOptions": {
     "exactOptionalPropertyTypes": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolvePackageJsonExports": false,
-    "module": "ES2022",
+    "module": "es2022",
     "rootDir": "src",
     "declarationDir": "build/dts",
     "outDir": "build/esm"

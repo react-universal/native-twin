@@ -1,5 +1,5 @@
 // import { Keyframe } from 'react-native-reanimated';
-import { defineConfig, matchAnimation } from '@native-twin/core';
+import { defineConfig } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 
 export const twinConfig = defineConfig({
@@ -28,7 +28,7 @@ export const twinConfig = defineConfig({
       },
     },
   },
-  rules: [matchAnimation('slideIn')],
+  // rules: [matchAnimation('slideIn')],
   presets: [presetTailwind()],
   // animations: [
   //   [

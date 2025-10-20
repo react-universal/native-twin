@@ -1,5 +1,5 @@
-import path from 'path';
 import { Deferred, Effect, Option, Queue, Stream, Tuple } from 'effect';
+import path from 'path';
 import { CompilerContext } from './services/Compiler.service.js';
 import { FsUtils } from './services/FsUtils.service.js';
 import { TypescriptContext } from './services/Typescript.service.js';
@@ -18,9 +18,7 @@ export const CompilerRun = (config: { watch: boolean; verbose: boolean }) =>
       Effect.bind('esm', ({ emitted, source }) =>
         compiler.annotateESMFile(emitted.esm, emitted.sourcemaps, source.getFilePath()),
       ),
-      Effect.bind('cjs', ({ esm, source }) =>
-        compiler.esmToCJS(esm, source.getFilePath()),
-      ),
+      Effect.bind('cjs', ({ esm, source }) => compiler.esmToCJS(esm, source.getFilePath())),
       // Effect.tap(() => Effect.logDebug('Compiled ESM and CJS')),
       Effect.tap(({ esm, emitted, cjs }) => {
         return Effect.all(

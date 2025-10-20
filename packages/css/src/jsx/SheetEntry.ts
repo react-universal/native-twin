@@ -2,12 +2,9 @@ import type { SelectorGroup } from '../css/css.types.js';
 import type { AnyStyle, CompleteStyle } from '../react-native/rn.types.js';
 import type { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types.js';
 import { getRuleSelectorGroup } from '../tailwind/tailwind.utils.js';
-import {
-  RuntimeSheetDeclaration,
-  compileEntryDeclaration,
-} from './SheetEntryDeclaration.js';
 import type { CompilerContext } from './metro.runtime.js';
-import *  as Predicates from './sheet.predicates.js';
+import { compileEntryDeclaration, RuntimeSheetDeclaration } from './SheetEntryDeclaration.js';
+import * as Predicates from './sheet.predicates.js';
 
 // const OwnSelectorSymbol = Symbol('css/OwnSelector');
 // const InheritedSymbol = Symbol('css/InheritedSymbol');
@@ -121,7 +118,7 @@ export const mergeCompiledDeclarations = (entries: RuntimeSheetDeclaration[]) =>
     if (Array.isArray(current.value)) {
       value = [];
       for (const t of current.value) {
-        if (typeof t.value === 'string') {
+        if (typeof t.value === 'string' || typeof t.value === 'number') {
           if (t.value) {
             value.push({
               [t.prop]: t.value,

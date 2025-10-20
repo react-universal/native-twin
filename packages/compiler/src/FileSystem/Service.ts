@@ -1,11 +1,11 @@
-import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
 import * as FileSystem from '@effect/platform/FileSystem';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import { CompilerConfigContext, TwinNodeContext, TwinNodeContextLive } from '../Config';
+import { CompilerConfigContext, TwinNodeContext } from '../Config';
 import { TwinFile } from './Models';
 import * as TwinPath from './Path.model';
 
@@ -43,19 +43,22 @@ const make = Effect.gen(function* () {
       }),
   );
 
-  const writeFileCached = (data: {
-    path: string;
-    contents?: string;
-    override?: boolean;
-  }) => writeFileCached_(data);
+  const exists = (path: string) =>
+    fs.exists(path).pipe(Effect.catchAll(() => Effect.succeed(false)));
+
+  const writeFileCached = (data: { path: string; contents?: string; override?: boolean }) =>
+    writeFileCached_(data);
 
   return {
     readPlatformCSSFile,
     writeFile,
     readFile,
+    openFile: fs.open,
     mkdirCached,
     getFile,
     createTwinFiles,
+    createTempFile: fs.makeTempFile,
+    exists,
     getFullFilePathFromStr,
     makeTempFile: (file: string, platform: string) =>
       fs.makeTempFile({
@@ -99,9 +102,8 @@ const make = Effect.gen(function* () {
 
   function createTwinFiles() {
     return Effect.gen(function* () {
-      yield* Effect.tapError(
-        mkdirCached(TwinPath.absolutePathFromString(env.outputDir)),
-        () => Effect.logError('cant create twin output'),
+      yield* Effect.tapError(mkdirCached(TwinPath.absolutePathFromString(env.outputDir)), () =>
+        Effect.logError('cant create twin output'),
       );
 
       yield* writeFileCached({ path: env.platformPaths.ios, override: false });
@@ -125,5 +127,4 @@ export const TwinFSContext = Context.GenericTag<TwinFSContext>('metro/fs/service
 
 export const TwinFSContextLive = Layer.scoped(TwinFSContext, make).pipe(
   Layer.provide(NodeFileSystem.layer),
-  Layer.provide(TwinNodeContextLive),
 );

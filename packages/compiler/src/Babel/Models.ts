@@ -1,20 +1,14 @@
 import type { ParseResult } from '@babel/parser';
 import type { NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
-import * as Data from 'effect/Data';
-
-export class TwinBabelError extends Data.TaggedError('TwinBabelError')<{
-  cause: Error;
-  message: string;
-}> {}
 
 export type JSXElementNode = t.JSXElement;
 export type JSXElementPath = NodePath<JSXElementNode>;
 export type BabelFileAst = ParseResult<t.File>;
-export type AnyNode = t.Node;
+type AnyNode = t.Node;
 export type AnyNodePath = NodePath<AnyNode>;
-export type FileProgram = t.Program;
-export type FileProgramPath = NodePath<FileProgram>;
+// type FileProgram = t.Program;
+// export type FileProgramPath = NodePath<FileProgram>;
 
 export type JSXElementFunction =
   | NodePath<t.ArrowFunctionExpression>

@@ -1,5 +1,5 @@
-import { NodePath } from '@effect/platform-node';
 import { Path } from '@effect/platform/Path';
+import { NodePath } from '@effect/platform-node';
 import * as Doc from '@effect/printer/Doc';
 import * as RA from 'effect/Array';
 import * as Chunk from 'effect/Chunk';
@@ -9,7 +9,7 @@ import * as GroupBy from 'effect/GroupBy';
 import * as Order from 'effect/Order';
 import * as Stream from 'effect/Stream';
 
-export const createFilesTree = (files: string[], rootDir: string) => {
+export const createFilesTree = (files: string[], _rootDir: string) => {
   return Effect.gen(function* () {
     const path = yield* Path;
     if (!RA.isNonEmptyArray(files)) return '';
@@ -37,16 +37,12 @@ export const createFilesTree = (files: string[], rootDir: string) => {
       RA.map((info) => {
         const indexNesting = info.nesting - 1;
         const parentSymbol =
-          indexNesting === 0 || indexNesting + 1 >= data.length
-            ? Doc.empty
-            : Doc.char('\u{251C}');
+          indexNesting === 0 || indexNesting + 1 >= data.length ? Doc.empty : Doc.char('\u{251C}');
         // const titleNesting = indexNesting;
 
         const title = Doc.hsep([parentSymbol, Doc.text(info.dirname)]);
         const childs = info.files.map((x, i) => {
-          const listSymbol = Doc.char(
-            i + 1 === info.files.length ? '\u{2514}' : '\u{251C}',
-          );
+          const listSymbol = Doc.char(i + 1 === info.files.length ? '\u{2514}' : '\u{251C}');
           return Doc.hsep([
             Doc.char('\u{239F}'),
             listSymbol,

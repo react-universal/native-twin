@@ -1,4 +1,4 @@
-import { type MaybeArray, asArray } from '@native-twin/helpers';
+import { asArray, type MaybeArray } from '@native-twin/helpers';
 import type { SelectorGroup } from '../css/css.types.js';
 import type { TWScreenValueConfig } from './tailwind.types.js';
 
@@ -20,17 +20,13 @@ export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   if (matchGroup(variants, 'even') || variants.includes('even')) return 'even';
   if (matchGroup(variants, 'first') || variants.includes('first')) return 'first';
   if (matchGroup(variants, 'last') || variants.includes('last')) return 'last';
-  if (
-    variants.includes('hover') ||
-    variants.includes('focus') ||
-    variants.includes('active')
-  )
+  if (variants.includes('hover') || variants.includes('focus') || variants.includes('active'))
     return 'pointer';
   return 'base';
 }
 
 export const getRuleSelectorGroups = (variants: string[]): SelectorGroup[] =>
-  variants.map((x) => getRuleSelectorGroup(asArray(x)));
+  variants.length > 0 ? variants.map((x) => getRuleSelectorGroup(asArray(x))) : asArray('base');
 
 export function mql(screen: MaybeArray<TWScreenValueConfig>, prefix = '@media '): string {
   // if (!screen) return '';
@@ -45,10 +41,7 @@ export function mql(screen: MaybeArray<TWScreenValueConfig>, prefix = '@media ')
         return (
           (screen as { raw?: string }).raw ||
           Object.keys(screen)
-            .map(
-              (feature) =>
-                `(${feature}-width:${(screen as Record<string, string>)[feature]})`,
-            )
+            .map((feature) => `(${feature}-width:${(screen as Record<string, string>)[feature]})`)
             .join(' and ')
         );
       })

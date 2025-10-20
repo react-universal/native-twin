@@ -2,16 +2,9 @@ import * as Ansi from '@effect/printer-ansi/Ansi';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
 import { apply, pipe } from 'effect/Function';
 import * as LogLevel from 'effect/LogLevel';
-const WEB_COLOR = pipe(
-  Ansi.combine(Ansi.bgBlue),
-  apply(Ansi.blueBright),
-  Ansi.combine(Ansi.bold),
-);
-const IOS_COLOR = pipe(
-  Ansi.combine(Ansi.bgCyan),
-  apply(Ansi.cyanBright),
-  Ansi.combine(Ansi.bold),
-);
+
+const WEB_COLOR = pipe(Ansi.combine(Ansi.bgBlue), apply(Ansi.blueBright), Ansi.combine(Ansi.bold));
+const IOS_COLOR = pipe(Ansi.combine(Ansi.bgCyan), apply(Ansi.cyanBright), Ansi.combine(Ansi.bold));
 const ANDROID_COLOR = pipe(
   Ansi.combine(Ansi.bgGreen),
   apply(Ansi.greenBright),

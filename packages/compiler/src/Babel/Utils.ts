@@ -4,7 +4,7 @@ import type { Binding } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
-import type { TwinBabelModule } from '../Domain/TwinBabelModule';
+import type { TwinModuleAst } from '../Domain/TwinAst';
 import type { TwinJSXElement } from '../Domain/TwinJSXElement';
 import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 import type { BabelFileAst, ImportSource } from './Models';
@@ -17,11 +17,11 @@ import {
 } from './Predicates';
 
 export type TwinDependenciesLookup = (
-  modules: TwinBabelModule[],
+  modules: TwinModuleAst[],
 ) => (key: TwinJSXElementNode) => Option.Option<TwinJSXElement>;
 
 export const makeDependenciesLookup: TwinDependenciesLookup =
-  (modules: TwinBabelModule[]) => (key: TwinJSXElementNode) =>
+  (modules: TwinModuleAst[]) => (key: TwinJSXElementNode) =>
     RA.head(RA.filterMap(modules, (external) => external.getJSXElementFromNode(key)));
 
 export const isLocalImport = (path: string) =>

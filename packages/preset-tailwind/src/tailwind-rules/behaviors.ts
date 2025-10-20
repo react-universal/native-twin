@@ -11,9 +11,9 @@ export const outlineRules: Rule<TailwindPresetTheme>[] = [
   //   customValues: Object.fromEntries(outlineStyles),
   // }),
   matchCssObject('outline-none', (match, ctx, rule) => {
-    if (ctx.mode === 'native') {
-      return null;
-    }
+    // if (ctx.mode === 'native') {
+    //   return null;
+    // }
     return {
       className: parsedRuleToClassName(rule),
       declarations: [

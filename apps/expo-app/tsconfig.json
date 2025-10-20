@@ -6,10 +6,10 @@
     "exactOptionalPropertyTypes": false,
     "allowJs": true,
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "target": "ESNext",
     "noEmit": true
   },
-  "exclude": ["node_modules", ".expo"],
+  "exclude": ["node_modules", ".expo", "@native-twin/player", "../src"],
   "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json", "wdyr.js"]
 }

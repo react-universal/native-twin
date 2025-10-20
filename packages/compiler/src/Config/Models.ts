@@ -1,4 +1,4 @@
-import type { RuntimeTW, TailwindConfig, __Theme__ } from '@native-twin/core';
+import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import type { SheetEntry } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import type { TwinPath } from '../FileSystem';

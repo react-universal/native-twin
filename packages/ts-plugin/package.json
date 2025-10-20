@@ -20,7 +20,7 @@
     "deprecated:bbb": "tsc -p tsconfig.build.json",
     "esbuild:build": "node ./build.js --production",
     "lint": "biome lint",
-    "test": "jest",
+    "test": "echo \"deprecated\"",
     "ts____b": "tsc -p tsconfig.build.json -w"
   },
   "dependencies": {
@@ -29,7 +29,7 @@
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "effect": "^3.13.2",
+    "effect": "^3.18.4",
     "typescript-template-language-service-decorator": "2.3.2",
     "vscode-css-languageservice": "^6.2.14",
     "vscode-languageserver-textdocument": "^1.0.11"

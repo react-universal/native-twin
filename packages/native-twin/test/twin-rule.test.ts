@@ -6,6 +6,7 @@ import {
   matchThemeValue,
   setup,
 } from '../src/index.js';
+import { Processor } from '../src/twin/processor.twin.js';
 import { TwinRule } from '../src/twin/rule.model.js';
 
 const tw = setup(
@@ -45,10 +46,17 @@ describe('test twin rule model', () => {
   it('test classname', () => {
     const result = twinRules.flatMap((rule) => {
       const parsed = rule.parse('bg-primary');
+      console.log('PARSED: ', parsed);
       if (parsed.isError) return [];
       const themeValue = tw.theme(rule.themeSection ?? '', parsed.result.segment.value);
       return { parsed, themeValue };
     });
     expect(result).toBeDefined();
+  });
+
+  it('processor test', () => {
+    const handler = new Processor(tw.config as any);
+    const result = handler.run('bg-primary');
+    console.log('RESULT: ', result);
   });
 });

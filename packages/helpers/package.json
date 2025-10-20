@@ -68,7 +68,7 @@
     "test": "npx vitest"
   },
   "devDependencies": {
-    "@types/react": "~18.3.12"
+    "@types/react": "18.3.18"
   },
   "peerDependencies": {
     "react": "18.3.1"

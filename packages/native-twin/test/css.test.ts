@@ -1,4 +1,5 @@
 import { sheetEntriesToCss } from '@native-twin/css';
+import { describe, expect, it } from 'vitest';
 import { defineConfig, matchThemeColor, matchThemeValue, setup, tx } from '../src/index.js';
 
 setup(

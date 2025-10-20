@@ -1,16 +1,17 @@
-import fs from 'fs';
-import path from 'path';
 import { Effect } from 'effect';
 import * as Layer from 'effect/Layer';
+import fs from 'fs';
+import path from 'path';
 import {
   CompilerConfigContext,
+  createCompilerConfig,
+  MainLayer,
   TwinFSContext,
   TwinPath,
-  createCompilerConfig,
 } from '../src';
 
 const outputDir = path.join(__dirname, '.cache');
-export const compilerContext = Layer.succeed(
+const compilerContext = Layer.succeed(
   CompilerConfigContext,
   createCompilerConfig({
     outDir: outputDir,
@@ -18,6 +19,8 @@ export const compilerContext = Layer.succeed(
     twinConfigPath: path.join(__dirname, 'tailwind.config.ts'),
   }),
 );
+
+export const TwinTestContextLive = MainLayer.pipe(Layer.provideMerge(compilerContext));
 // const tw = createTailwind(tailwindConfig, createVirtualSheet());
 // export const TestMainLive = Layer.empty.pipe(
 //   Layer.provideMerge(TwinNodeContextLive),

@@ -1,14 +1,11 @@
 import * as P from '@native-twin/arc-parser';
 import { hasOwnProperty } from '@native-twin/helpers';
-import { declarationValueWithUnitParser } from '../css/css-common.parser.js';
 import { unitlessCssProps } from '../css/css.constants.js';
 import type { CSSUnit } from '../css/css.types.js';
+import { declarationValueWithUnitParser } from '../css/css-common.parser.js';
 import type { AnyStyle } from '../react-native/rn.types.js';
 import type { SheetEntryDeclaration } from '../sheets/sheet.types.js';
-import {
-  type DeclarationPropertyValueType,
-  getPropertyValueType,
-} from '../utils.parser.js';
+import { type DeclarationPropertyValueType, getPropertyValueType } from '../utils.parser.js';
 import type { CompilerContext } from './metro.runtime.js';
 
 export type CompilationError = 'Unknown' | 'PARSER' | (string & {});
@@ -28,15 +25,12 @@ export type RuntimeSheetDeclaration = CompiledDeclaration | NotCompiledDeclarati
 
 /** @category Tagged Types */
 export const RuntimeSheetDeclaration = {
-  $is: (tag: RuntimeSheetDeclaration['_tag']) => (x: RuntimeSheetDeclaration) =>
-    x._tag === tag,
+  $is: (tag: RuntimeSheetDeclaration['_tag']) => (x: RuntimeSheetDeclaration) => x._tag === tag,
   COMPILED: (declaration: Omit<CompiledDeclaration, '_tag'>): CompiledDeclaration => ({
     _tag: 'COMPILED',
     ...declaration,
   }),
-  NOT_COMPILED: (
-    declaration: Omit<NotCompiledDeclaration, '_tag'>,
-  ): NotCompiledDeclaration => ({
+  NOT_COMPILED: (declaration: Omit<NotCompiledDeclaration, '_tag'>): NotCompiledDeclaration => ({
     _tag: 'NOT_COMPILED',
     ...declaration,
   }),
@@ -96,9 +90,7 @@ export const compileEntryDeclaration = (
     });
   }
 
-  const type = getPropertyValueType(
-    decl.prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
-  );
+  const type = getPropertyValueType(decl.prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
 
   if (type === 'dimension') {
     const data = declarationValueConvertParser(ctx).run(decl.value);

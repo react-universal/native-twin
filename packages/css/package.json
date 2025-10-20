@@ -32,6 +32,11 @@
       "import": "./build/esm/jsx.js",
       "default": "./build/cjs/jsx.js"
     },
+    "./react-native": {
+      "types": "./build/dts/react-native/index.d.ts",
+      "import": "./build/esm/react-native/index.js",
+      "default": "./build/cjs/react-native/index.js"
+    },
     "./tailwind-parser": {
       "types": "./build/dts/tailwind-parser.d.ts",
       "import": "./build/esm/tailwind-parser.js",
@@ -58,7 +63,7 @@
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "docgen": "docgen",
     "lint": "biome lint",
-    "test": "jest",
+    "test": "vitest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },

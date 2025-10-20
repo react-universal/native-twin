@@ -16,6 +16,7 @@ type OwnSelector = (typeof OwnSheetSelectors)[number] & OwnSelectorBrand;
 const childTest = new RegExp(/^(&:)?(first|last|odd|even).*/g);
 const pointerEntriesTest = new RegExp(/^(&:)?(hover|focus|active|group).*/g);
 const groupEntriesTest = new RegExp(/^(&:)?(group-).*/g);
+const darkEntriesTest = new RegExp(/^(&:)?(dark).*/g);
 
 /** @category Predicates */
 export const isChildEntry = (entry: SheetEntryHandler) =>
@@ -40,6 +41,11 @@ export const isGroupSelector = (group: string): group is ChildSelector => {
     group === 'group-focus' ||
     groupEntriesTest.exec(group) !== null
   );
+};
+
+/** @category Predicates */
+export const isDarkSelector = (group: string): group is ChildSelector => {
+  return group === 'dark' || darkEntriesTest.exec(group) !== null;
 };
 
 /** @category Predicates */
@@ -72,5 +78,4 @@ export const isGroupEventEntry = (entry: SheetEntryHandler) =>
   getRuleSelectorGroup(entry.selectors) === 'group';
 
 /** @category Predicates */
-export const isGroupParent = (entry: SheetEntryHandler) =>
-  entry.selectors.includes('group');
+export const isGroupParent = (entry: SheetEntryHandler) => entry.selectors.includes('group');

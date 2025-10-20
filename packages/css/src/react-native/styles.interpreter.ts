@@ -13,6 +13,7 @@ export class StylesInterpreter {
 
   evalSheetEntry(sheetEntry: SheetEntry) {
     const declarations = sheetEntry.declarations.map(Decl.fromSheetEntryDecl);
+    return declarations;
   }
 
   evalDecl(decl: Decl.AnyDeclaration) {

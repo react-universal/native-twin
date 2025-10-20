@@ -1,8 +1,8 @@
 import * as Tree from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
+import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import * as Effect from 'effect/Effect';
 
 interface MakeTreeInput<Input, Out> {
   input: Input;
@@ -77,6 +77,7 @@ export const makeTreeFromEffect = <Data, R>({
     }
   });
 
+
 export const mapTreeEffect = <A, B>(
   tree: Tree.Tree<A>,
   cb: (a: Tree.TreeNode<A>, parent?: Tree.TreeNode<NoInfer<B>>) => Effect.Effect<B>,
@@ -85,7 +86,7 @@ export const mapTreeEffect = <A, B>(
     const newValue = yield* mapTreeNodeEffect(tree.root);
     const node = new Tree.Tree<B>(newValue.value);
     node.root = newValue;
-    return node;
+    return node as Tree.Tree<B>;
 
     function mapTreeNodeEffect(
       node: Tree.TreeNode<A>,
@@ -93,13 +94,12 @@ export const mapTreeEffect = <A, B>(
     ): Effect.Effect<Tree.TreeNode<B>> {
       return Effect.gen(function* () {
         const newValue = yield* cb(node, parent);
-        const newNode =
-          parent?.addChild(newValue, parent) ?? new Tree.TreeNode(newValue, parent);
+        const newNode = parent?.addChild(newValue, parent) ?? new Tree.TreeNode<B>(newValue, parent);
 
         for (const child of node.children) {
           yield* mapTreeNodeEffect(child, newNode);
         }
-        return newNode;
+        return newNode as Tree.TreeNode<B>;
       });
     }
   });

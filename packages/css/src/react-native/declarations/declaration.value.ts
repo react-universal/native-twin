@@ -1,6 +1,6 @@
 import * as P from '@native-twin/arc-parser';
-import { declarationValueWithUnitParser } from '../../css/css-common.parser';
 import type { CSSUnit } from '../../css/css.types';
+import { declarationValueWithUnitParser } from '../../css/css-common.parser';
 export interface DeclarationValue<Tag extends string> {
   readonly _tag: Tag;
   readonly raw: string;
@@ -12,8 +12,8 @@ export interface StyleStringValue<T extends string> {
 }
 export interface StyleNoneValue extends StyleStringValue<'none'> {}
 export interface StyleAutoValue extends StyleStringValue<'auto'> {}
-export interface NullValue<A> extends DeclarationValue<'null'> {}
-export interface LiteralValue<A = unknown> extends DeclarationValue<'literal'> {}
+export interface NullValue<_> extends DeclarationValue<'null'> {}
+export interface LiteralValue<_ = unknown> extends DeclarationValue<'literal'> {}
 export interface DimensionValue extends DeclarationValue<'dimension'> {
   value: number;
   unit: CSSUnit;

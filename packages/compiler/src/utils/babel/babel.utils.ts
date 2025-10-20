@@ -1,7 +1,7 @@
 import { parse } from '@babel/parser';
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import type { AnyPrimitive } from '@native-twin/helpers';
+import { type AnyPrimitive, asArray } from '@native-twin/helpers';
 
 export const literalValueToAst = (value: any): t.Expression => {
   if (value === null) return t.nullLiteral();
@@ -26,9 +26,7 @@ export const literalValueToAst = (value: any): t.Expression => {
       return t.objectExpression(
         Object.keys(value)
           .filter((key) => typeof value[key] !== 'undefined')
-          .map((key) =>
-            t.objectProperty(t.stringLiteral(key), literalValueToAst(value[key])),
-          ),
+          .map((key) => t.objectProperty(t.stringLiteral(key), literalValueToAst(value[key]))),
       );
   }
 };
@@ -51,7 +49,7 @@ export const astToLiteralValue = (node: any): any => {
   }
   if (t.isArrayExpression(node)) {
     return node.elements.reduce(
-      // @ts-ignore
+      // @ts-expect-error
       (acc, element) => [
         ...acc,
         ...(element?.type === 'SpreadElement'
@@ -93,9 +91,7 @@ export const funcJSXElementFunction = (
   jsxPath: NodePath<t.JSXElement>,
 ): JSXElementFunction | null => {
   const isFunction = (path: NodePath<any>) =>
-    path.isArrowFunctionExpression() ||
-    path.isFunctionDeclaration() ||
-    path.isFunctionExpression();
+    path.isArrowFunctionExpression() || path.isFunctionDeclaration() || path.isFunctionExpression();
 
   let compFn: NodePath<any> | null = jsxPath.findParent(isFunction);
   while (compFn) {
@@ -157,18 +153,11 @@ const createJsxAttribute = (name: string, value: AnyPrimitive) => {
 
 const JSXElementHasAttribute = (element: t.JSXElement, name: string) => {
   return element.openingElement.attributes.some(
-    (x) =>
-      x.type === 'JSXAttribute' &&
-      x.name.type === 'JSXIdentifier' &&
-      x.name.name === name,
+    (x) => x.type === 'JSXAttribute' && x.name.type === 'JSXIdentifier' && x.name.name === name,
   );
 };
 
-export const addJsxAttribute = (
-  element: t.JSXElement,
-  name: string,
-  value: AnyPrimitive,
-) => {
+export const addJsxAttribute = (element: t.JSXElement, name: string, value: AnyPrimitive) => {
   if (!t.isJSXElement(element)) return;
   const newAttribute = createJsxAttribute(name, value);
   if (!JSXElementHasAttribute(element, name)) {
@@ -177,11 +166,7 @@ export const addJsxAttribute = (
 
   element.openingElement.attributes = element.openingElement.attributes.map((x) => {
     if (x.type === 'JSXSpreadAttribute') return x;
-    if (
-      x.type === 'JSXAttribute' &&
-      x.name.type === 'JSXIdentifier' &&
-      x.name.name === name
-    ) {
+    if (x.type === 'JSXAttribute' && x.name.type === 'JSXIdentifier' && x.name.name === name) {
       return newAttribute;
     }
     return x;
@@ -196,19 +181,12 @@ export const addJsxExpressionAttribute = (
   value: t.Expression,
 ) => {
   if (!t.isJSXElement(element)) return;
-  const newAttribute = t.jsxAttribute(
-    t.jsxIdentifier(name),
-    t.jsxExpressionContainer(value),
-  );
+  const newAttribute = t.jsxAttribute(t.jsxIdentifier(name), t.jsxExpressionContainer(value));
 
   if (JSXElementHasAttribute(element, name)) {
     element.openingElement.attributes = element.openingElement.attributes.map((x) => {
       if (x.type === 'JSXSpreadAttribute') return x;
-      if (
-        x.type === 'JSXAttribute' &&
-        x.name.type === 'JSXIdentifier' &&
-        x.name.name === name
-      ) {
+      if (x.type === 'JSXAttribute' && x.name.type === 'JSXIdentifier' && x.name.name === name) {
         return newAttribute;
       }
       return x;
@@ -218,3 +196,6 @@ export const addJsxExpressionAttribute = (
 
   element.openingElement.attributes.push(newAttribute);
 };
+
+export const createBabelVariable = (name: string, expression: t.Expression) =>
+  t.variableDeclaration('const', asArray(t.variableDeclarator(t.identifier(name), expression)));

@@ -31,8 +31,7 @@ export interface IDisposable {
 }
 
 export interface Event<T> {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  // biome-ignore lint/style/useShorthandFunctionType: <explanation>
+  // biome-ignore lint/style/useShorthandFunctionType: kind of HKT
   (listener: (e: T) => any, thisArgs?: any, disposables?: IDisposable[]): IDisposable;
 }
 

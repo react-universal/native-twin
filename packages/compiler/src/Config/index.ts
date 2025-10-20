@@ -1,9 +1,8 @@
 export {
-  CompilerConfigContext,
-  TwinNodeContext,
-  TwinNodeContextLive,
-  createCompilerConfig,
-} from './Service';
+  TwinCompilerLogger,
+  withCompilerLogger,
+  withCompilerLoggerLayer,
+} from './Logger.service';
 
 export type {
   ExtractedTwinConfig,
@@ -13,9 +12,9 @@ export type {
   NodeWithNativeTwinOptions,
   TwinRunnerPlatform,
 } from './Models';
-
 export {
-  withCompilerLogger,
-  withCompilerLoggerLayer,
-  TwinCompilerLogger,
-} from './Logger.service';
+  CompilerConfigContext,
+  createCompilerConfig,
+  TwinNodeContext,
+  TwinNodeContextLive,
+} from './Service';
