@@ -11,7 +11,7 @@ import {
   type CompiledStyledProp,
   getEmptyEvaluatedEntry,
   type TwinEvaluatedEntryDecls,
-} from '../StyleSheet/Model';
+} from '../StyleSheet';
 
 export interface TwinTransformOptions {
   platform: TwinRunnerPlatform;

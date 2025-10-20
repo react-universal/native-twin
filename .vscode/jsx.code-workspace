@@ -67,7 +67,7 @@
       "**/.expo": true
     },
     "editor.fontSize": 16,
-    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "typescript.tsdk": "✨ native-twin/node_modules/typescript/lib",
     "jest.enable": true,
     "jest.disabledWorkspaceFolders": [
       "root",

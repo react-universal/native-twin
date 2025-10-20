@@ -1,19 +1,19 @@
-import * as t from '@babel/types';
-import * as Data from 'effect/Data';
-import * as Hash from 'effect/Hash';
-import * as Iterable from 'effect/Iterable';
-import * as Option from 'effect/Option';
-import * as Stream from 'effect/Stream';
-import type { BabelFileAst } from '../Babel';
-import type { TwinFile, TwinPath } from '../FileSystem';
-import type { TwinEvaluatedSheetEntry } from '../StyleSheet/Model';
+import * as t from "@babel/types";
+import * as Data from "effect/Data";
+import * as Hash from "effect/Hash";
+import * as Iterable from "effect/Iterable";
+import * as Option from "effect/Option";
+import * as Stream from "effect/Stream";
+import type { BabelFileAst } from "../Babel";
+import type { TwinFile, TwinPath } from "../FileSystem";
+import type { TwinEvaluatedSheetEntry } from "../StyleSheet";
 import {
   createBabelVariable,
   createRequireExpression,
   literalValueToAst,
-} from '../utils/babel/babel.utils';
-import type { TwinJSXElement } from './TwinJSXElement';
-import type { TwinJSXElementNode } from './TwinJSXElementNode';
+} from "../utils/babel/babel.utils";
+import type { TwinJSXElement } from "./TwinJSXElement";
+import type { TwinJSXElementNode } from "./TwinJSXElementNode";
 
 export class TwinModuleAst extends Data.Class<{
   readonly ast: BabelFileAst;
@@ -31,13 +31,16 @@ export class TwinModuleAst extends Data.Class<{
   }) {
     super(data);
     this.styleObject = t.objectExpression([]);
-    this.stylesVariable = createBabelVariable('_____Twin__Module__Styles', this.styleObject);
+    this.stylesVariable = createBabelVariable(
+      "_____Twin__Module__Styles",
+      this.styleObject
+    );
     if (this.jsxElements.length > 0) {
       this.ast.program.body.push(
         createBabelVariable(
-          '__Twin_StyleSheet_Handler',
-          createRequireExpression('@native-twin/jsx'),
-        ),
+          "__Twin_StyleSheet_Handler",
+          createRequireExpression("@native-twin/jsx")
+        )
       );
       this.ast.program.body.push(this.stylesVariable);
     }
@@ -57,16 +60,24 @@ export class TwinModuleAst extends Data.Class<{
 
   findDependency(dep: ModuleDependency) {
     if (!this.file.path.startsWith(dep.filepath)) return Option.none();
-    return Iterable.findFirst(this.jsxElements, (x) => dep.exportName === x.meta.name);
+    return Iterable.findFirst(
+      this.jsxElements,
+      (x) => dep.exportName === x.meta.name
+    );
   }
 
   getJSXElementFromNode(node: TwinJSXElementNode) {
-    return Option.andThen(node.dependency, (dependency) => this.findDependency(dependency));
+    return Option.andThen(node.dependency, (dependency) =>
+      this.findDependency(dependency)
+    );
   }
 
   registerStyle(node: TwinJSXElementNode, styles: TwinEvaluatedSheetEntry) {
     this.styleObject.properties.push(
-      t.objectProperty(t.stringLiteral(node.jsxStylesIdent), literalValueToAst(styles)),
+      t.objectProperty(
+        t.stringLiteral(node.jsxStylesIdent),
+        literalValueToAst(styles)
+      )
     );
   }
 }
@@ -87,6 +98,6 @@ export class ModuleDependency extends Data.Class<{
   exportName: string;
 }> {
   get fromReactNative() {
-    return this.originalSource === 'react-native';
+    return this.originalSource === "react-native";
   }
 }

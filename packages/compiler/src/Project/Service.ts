@@ -1,9 +1,9 @@
 import type { TreeNode } from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
+import * as Chunk from 'effect/Chunk';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as HashMap from 'effect/HashMap';
-import { Chunk } from 'effect/index';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
@@ -14,8 +14,11 @@ import type { TwinModuleAst } from '../Domain/TwinAst';
 import type { TwinJSXElement } from '../Domain/TwinJSXElement';
 import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 import { TwinFSContext } from '../FileSystem';
-import { type CompilerStyleSheet, TwinStyleSheetContext } from '../StyleSheet';
-import type { CompiledSheetEntry } from '../StyleSheet/Model';
+import {
+  type CompiledSheetEntry,
+  type CompilerStyleSheet,
+  TwinStyleSheetContext,
+} from '../StyleSheet';
 import { mapTreeEffect } from '../utils/tree.utils';
 import { TransformedJSXNode } from './Model';
 

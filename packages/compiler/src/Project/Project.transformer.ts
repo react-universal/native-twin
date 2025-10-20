@@ -1,5 +1,5 @@
 import type { TwinModuleAst } from '../Domain/TwinAst';
-import type { TwinExtractor } from '../StyleSheet/Extractor';
+import type { TwinExtractor } from '../StyleSheet';
 
 export class ProjectTransformer {
   module: TwinModuleAst;
