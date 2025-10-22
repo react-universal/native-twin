@@ -95,7 +95,7 @@
     "its-fine": "^1.2.5"
   },
   "devDependencies": {
-    "@types/react": "18.3.18"
+    "@types/react": "~19.1.10"
   },
   "peerDependencies": {
     "react": "18.3.1",
@@ -104,7 +104,7 @@
   "optionalDependencies": {
     "@jest/globals": "*",
     "@native-twin/cli": "workspace:*",
-    "jest": "*"
+    "jest": "~29.7.0"
   },
   "publishConfig": {
     "access": "public",

@@ -1,7 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src"
+    "rootDir": "src",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "resolvePackageJsonExports": false,
+    "noImplicitOverride": false,
+    "esModuleInterop": true
   },
   "include": ["src"],
   "exclude": ["build"]

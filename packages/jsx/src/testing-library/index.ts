@@ -1,5 +1,4 @@
-import { setup } from '@native-twin/core';
-import { defineConfig } from '@native-twin/core';
+import { defineConfig, setup } from '@native-twin/core';
 import type { CompleteStyle } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 import { render as tlRender } from '@testing-library/react-native';
@@ -106,7 +105,6 @@ export const createMockComponent = <
 // };
 
 export const resetStyles = () => {
-  // @ts-expect-error
   StyleSheet[INTERNAL_RESET]();
 };
 

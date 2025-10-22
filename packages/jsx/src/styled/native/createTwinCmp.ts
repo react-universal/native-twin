@@ -1,11 +1,8 @@
 import { FiberProvider } from 'its-fine';
 import { createElement, forwardRef, useContext } from 'react';
-import { TwinRootContext, groupContext } from '../../context/styled.context.js';
+import { groupContext, TwinRootContext } from '../../context/styled.context.js';
 import type { JSXFunction } from '../../types/jsx.types.js';
-import type {
-  ReactComponent,
-  StylableComponentConfigOptions,
-} from '../../types/styled.types.js';
+import type { ReactComponent, StylableComponentConfigOptions } from '../../types/styled.types.js';
 import { getNormalizeConfig } from '../../utils/config.utils.js';
 import { getComponentDisplayName, getComponentType } from '../../utils/react.utils.js';
 import { useStyledProps } from '../hooks/useStyledProps.js';

@@ -2,6 +2,8 @@ import * as path from 'node:path';
 import {
   CompilerConfigContext,
   TwinNodeContext,
+  TwinProjectContext,
+  twinTransformProgram,
 } from '@native-twin/compiler';
 import { matchCss } from '@native-twin/helpers/server';
 import * as Effect from 'effect/Effect';
@@ -9,7 +11,6 @@ import * as Layer from 'effect/Layer';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
-import * as Stream from 'effect/Stream';
 import type { TransformResponse } from 'metro-transform-worker';
 import * as worker from 'metro-transform-worker';
 import type { TwinMetroTransformFn } from '../models/Metro.models.js';
@@ -28,8 +29,7 @@ export const transform: TwinMetroTransformFn = async (
   Effect.gen(function* () {
     const twinConfig = config.twinConfig;
     const platform = options.platform ?? 'native';
-    const { extractJSXElementTrees, jsxElementTreeToSheets, transformAstWithSheets } =
-      yield* BabelCompilerContext;
+    const { getAst } = yield* TwinProjectContext;
     const ctx = yield* TwinNodeContext;
 
     const platformOutput = ctx.getOutputCSSPath(platform);
@@ -51,18 +51,20 @@ export const transform: TwinMetroTransformFn = async (
     }
 
     let code = data.toString('utf-8');
-    const ast = yield* Effect.sync(() => getBabelAST(code, filename));
+    const ast = yield* getAst(filename, code);
+    const output = yield* twinTransformProgram(ast, platform as any);
+    // yield* Effect.sync(() => getBabelAST(code, filename));
 
-    const documentSheets = yield* extractJSXElementTrees(ast, TWIN_DEFAULT_PLUGIN_CONFIG).pipe(
-      Stream.mapEffect((tree) => jsxElementTreeToSheets(tree, platform)),
-      Stream.flatMap((tree) => Stream.fromIterable(tree.all().map((x) => x.value))),
-      Stream.runCollect,
-    );
+    // const documentSheets = yield* extractJSXElementTrees(ast, TWIN_DEFAULT_PLUGIN_CONFIG).pipe(
+    //   Stream.mapEffect((tree) => jsxElementTreeToSheets(tree, platform)),
+    //   Stream.flatMap((tree) => Stream.fromIterable(tree.all().map((x) => x.value))),
+    //   Stream.runCollect,
+    // );
 
-    const output = yield* Effect.sync(() => transformAstWithSheets(ast, documentSheets));
+    // const output = yield* Effect.sync(() => transformAstWithSheets(ast, documentSheets));
 
     code = `const __Twin___StyleSheet = require('@native-twin/jsx/sheet').StyleSheet;
-            \n\n${output}`;
+            \n\n${output.code}`;
 
     const transformed = yield* Effect.promise(() =>
       transform(config, projectRoot, filename, Buffer.from(code, 'utf-8'), options),

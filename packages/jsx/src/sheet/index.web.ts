@@ -1,1 +1,1 @@
-export { StyleSheet, createComponentSheet } from './StyleSheet.web.js';
+export { createComponentSheet, StyleSheet } from './StyleSheet.web.js';

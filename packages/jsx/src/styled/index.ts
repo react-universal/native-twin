@@ -1,6 +1,6 @@
 export {
   createStylableComponent,
-  withMappedProps,
-  twinComponent,
   stylizedComponents,
+  twinComponent,
+  withMappedProps,
 } from './native/index.js';

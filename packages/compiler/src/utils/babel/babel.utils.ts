@@ -157,11 +157,11 @@ const JSXElementHasAttribute = (element: t.JSXElement, name: string) => {
   );
 };
 
-export const addJsxAttribute = (element: t.JSXElement, name: string, value: AnyPrimitive) => {
+export const addJsxAttribute = (element: t.JSXElement, name: string, value: AnyPrimitive): void => {
   if (!t.isJSXElement(element)) return;
   const newAttribute = createJsxAttribute(name, value);
   if (!JSXElementHasAttribute(element, name)) {
-    return element.openingElement.attributes.push(newAttribute);
+    return void element.openingElement.attributes.push(newAttribute);
   }
 
   element.openingElement.attributes = element.openingElement.attributes.map((x) => {

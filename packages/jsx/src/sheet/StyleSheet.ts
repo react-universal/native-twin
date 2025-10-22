@@ -1,13 +1,18 @@
 import type { __Theme__ } from '@native-twin/core';
 import { StyleSheetAdapter, sheetEntryToStyle } from '@native-twin/core';
-import { type AnyStyle, type SheetEntry, getRuleSelectorGroup } from '@native-twin/css';
 import {
+  type AnyStyle,
+  getRuleSelectorGroup,
+  getRuleSelectorGroups,
+  type SheetEntry,
+} from '@native-twin/css';
+import {
+  compileEntryDeclaration,
   type RuntimeJSXStyle,
   type RuntimeSheetDeclaration,
   SheetOrders,
   type TwinInjectedObject,
   type TwinInjectedProp,
-  compileEntryDeclaration,
 } from '@native-twin/css/jsx';
 import { type Atom, atom } from '@native-twin/helpers/react';
 import { StyleSheet as NativeSheet, Platform } from 'react-native';
@@ -30,6 +35,10 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
     super(debug);
   }
 
+  registerBuildSheet() {
+    return {};
+  }
+
   toNativeStyles(entries: SheetEntry[]): AnyStyle {
     const config = this.twinFn.config;
     const styles = entries
@@ -37,6 +46,7 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
         sheetEntryToStyle(
           {
             className: x.className,
+            groups: getRuleSelectorGroups(x.selectors),
             declarations: x.declarations.map((decl) =>
               compileEntryDeclaration(decl, {
                 baseRem: config.root.rem,
@@ -78,6 +88,7 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
         .map(
           (x): RuntimeJSXStyle => ({
             className: x.className,
+            groups: getRuleSelectorGroups(x.selectors),
             declarations: x.declarations.map((decl) =>
               compileEntryDeclaration(decl, {
                 baseRem: config.root.rem,
@@ -95,15 +106,9 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
         SheetOrders.sortSheetEntries(a as any, b as any),
       );
       const declarations = {
-        base: finalEntries
-          .filter((x) => x.group === 'base')
-          .flatMap((x) => x.declarations),
-        pointer: finalEntries
-          .filter((x) => x.group === 'pointer')
-          .flatMap((x) => x.declarations),
-        group: finalEntries
-          .filter((x) => x.group === 'group')
-          .flatMap((x) => x.declarations),
+        base: finalEntries.filter((x) => x.group === 'base').flatMap((x) => x.declarations),
+        pointer: finalEntries.filter((x) => x.group === 'pointer').flatMap((x) => x.declarations),
+        group: finalEntries.filter((x) => x.group === 'group').flatMap((x) => x.declarations),
       };
 
       return {

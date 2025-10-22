@@ -1,1 +1,1 @@
-export { StyleSheet } from './StyleSheet.js';
+export { StyleSheet } from './StyleSheet';

@@ -1,16 +1,14 @@
-import * as path from 'path';
 import type * as FileSystem from '@effect/platform/FileSystem';
 import type { FSWatcher } from 'chokidar';
 import * as Effect from 'effect/Effect';
 import * as Fiber from 'effect/Fiber';
 import * as Runtime from 'effect/Runtime';
 import * as Stream from 'effect/Stream';
+import * as path from 'path';
 
 export const createChokidarWatcher = (projectRoot: string, watcher: FSWatcher) => {
   return Stream.acquireRelease(Effect.succeed(watcher), (x) =>
-    Effect.promise(() => x.close()).pipe(
-      Effect.tap(() => Effect.log('WATCHER_RELEASED')),
-    ),
+    Effect.promise(() => x.close()).pipe(Effect.tap(() => Effect.log('WATCHER_RELEASED'))),
   ).pipe(
     Stream.flatMap((watcher) => {
       return Stream.async<FileSystem.WatchEvent>((emit) => {

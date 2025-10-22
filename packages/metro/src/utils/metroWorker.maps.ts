@@ -30,7 +30,7 @@ export const metroWorkerInputToCompilerCtx = ({
           routerRoot,
         },
         dev: options.dev,
-        hot: options.hot,
+        hot: options.dev,
         platform: options.platform ?? 'native',
         projectRoot,
         type: options.type,

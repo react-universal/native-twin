@@ -18,6 +18,8 @@ config.resolver.nodeModulesPaths = [
  * @type {import('expo/metro-config')}
  */
 
+config.resolver.unstable_enablePackageExports = false;
+
 module.exports = withNativeTwin(config, {
   projectRoot,
   twinConfigPath: path.join(__dirname, 'tailwind.config.ts'),

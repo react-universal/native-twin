@@ -4,7 +4,7 @@ import { getComponentType } from '../../utils/react.utils.js';
 
 export function twinComponent(
   baseComponent: ComponentType<any>,
-  configs: ComponentConfig[],
+  _configs: ComponentConfig[],
   props: Record<string, any> | null,
   ref: any,
 ) {

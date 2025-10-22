@@ -62,6 +62,13 @@ export const compileEntryDeclaration = (
   }
 
   if (typeof decl.value === 'object') {
+    const type = getPropertyValueType(decl.prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
+    if (type === 'shadow') {
+      return RuntimeSheetDeclaration.COMPILED({
+      ...decl,
+      isUnitLess,
+    });
+    }
     return RuntimeSheetDeclaration.NOT_COMPILED({
       ...decl,
       isUnitLess,

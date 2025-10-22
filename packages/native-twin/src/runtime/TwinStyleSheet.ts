@@ -1,7 +1,7 @@
 import type { AnyStyle, SheetEntry } from '@native-twin/css';
 import type { RuntimeSheetDeclaration, TwinInjectedObject } from '@native-twin/css/jsx';
 import { hash } from '@native-twin/helpers';
-import type { RuntimeTW, __Theme__ } from '../types/theme.types';
+import type { __Theme__, RuntimeTW } from '../types/theme.types';
 
 export type StyleSheetProcessor = (entries: SheetEntry[]) => RuntimeSheetDeclaration[];
 

@@ -1,6 +1,7 @@
 import type { TwinRuntimeContext } from '@native-twin/core';
 import type { SheetEntry } from '@native-twin/css';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants.js';
+import type { TwinStyleSheet } from './StyleSheet.types.js';
 
 // TODO: Check this on every react web fmw
 const internalSheet = {
@@ -25,11 +26,8 @@ const internalSheet = {
   },
 };
 
-export const StyleSheet = Object.assign({}, internalSheet);
+export const StyleSheet = Object.assign({}, internalSheet) as any as TwinStyleSheet;
 
-export function createComponentSheet(
-  entries: SheetEntry[] = [],
-  context: TwinRuntimeContext,
-) {}
+export function createComponentSheet(_entries: SheetEntry[] = [], _context: TwinRuntimeContext) {}
 
 export type ComponentSheet = ReturnType<typeof createComponentSheet>;

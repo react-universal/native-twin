@@ -15,6 +15,7 @@ export {
   withCompilerLoggerLayer,
 } from './Config';
 export { TwinFile, TwinFSContext, TwinFSContextLive, TwinPath } from './FileSystem';
+export { twinTransformProgram } from './Programs/twinTransform.program';
 export { TwinProjectContext, TwinProjectContextLive } from './Project';
 export { MainLayer } from './Runtime/Main.layer';
 export { extractLanguageRegions } from './utils/babel/babel.extractors.js';

@@ -73,6 +73,7 @@ export const getPropertyValueType = (property: string) => {
       return 'flex';
 
     case 'box-shadow':
+    case 'shadow-radius':
       return 'shadow';
 
     case 'transform':

@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
+    "allowArbitraryExtensions": false,
     "moduleResolution": "nodenext",
     "module": "nodenext",
     "jsx": "react-native"

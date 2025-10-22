@@ -4,17 +4,11 @@ import path from 'path';
 
 const exampleProjectFixture = {
   cwd: path.join(__dirname, '../../../apps/expo-app'),
-  configPath: require.resolve(
-    path.join(__dirname, '../../../apps/expo-app', 'metro.config.js'),
-  ),
+  configPath: require.resolve(path.join(__dirname, '../../../apps/expo-app', 'metro.config.js')),
   rootEntry: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'src/screens/index.js')),
-  screenComponentPath: path.resolve(
-    path.join(__dirname, '../../../apps/expo-app', 'App.tsx'),
-  ),
+  screenComponentPath: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'App.tsx')),
   bundleOut: path.join(__dirname, '../../../apps/expo-app', 'metro-test/bundled.js'),
-  babelConfig: require.resolve(
-    path.join(__dirname, '../../../apps/expo-app', 'babel.config.js'),
-  ),
+  babelConfig: require.resolve(path.join(__dirname, '../../../apps/expo-app', 'babel.config.js')),
 };
 describe('Metro bundler test', () => {
   it('Metro build Native/iOS', async () => {
@@ -44,20 +38,21 @@ describe('Metro bundler test', () => {
       sourceMap: false,
       platform: 'ios',
       output: {
-        async save(entry, options, postSave) {
+        async save(entry, options, _postSave) {
           return fs.writeFile(exampleProjectFixture.bundleOut, entry.code, {
             encoding: options.bundleEncoding,
           });
         },
         async build(server, options) {
           const result = await server.build({
-            bundleType: 'delta',
-            customResolverOptions: config.resolver,
+            // bundleType: 'delta',
+            // customResolverOptions: config.resolver,
+            customResolverOptions: { __proto__: null },
             customTransformOptions: config.transformer,
             dev: false,
             entryFile: options.entryFile,
             excludeSource: true,
-            hot: false,
+            // hot: false,
             inlineSourceMap: false,
             lazy: false,
             minify: false,
@@ -73,7 +68,7 @@ describe('Metro bundler test', () => {
         },
       },
     });
-  }, 800000);
+  });
 
   // it('Metro build Web', async () => {
   //   const outDir = path.dirname(exampleProjectFixture.bundleOut);

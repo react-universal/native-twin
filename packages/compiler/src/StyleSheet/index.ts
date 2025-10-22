@@ -6,5 +6,6 @@ export {
   getEmptyEvaluatedEntry,
   type TwinEvaluatedEntryDecls,
   type TwinEvaluatedSheetEntry,
+  type TwinEvaluatedStyle,
 } from './Model';
 export { TwinStyleSheetContext, TwinStyleSheetContextLive } from './Service';

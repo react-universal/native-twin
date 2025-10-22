@@ -20,6 +20,7 @@ export interface RuntimeComponentEntry {
  */
 export interface RuntimeJSXStyle {
   group: SelectorGroup;
+  groups: SelectorGroup[];
   className: string;
   important: boolean;
   inherited: boolean;
@@ -34,8 +35,12 @@ export interface RuntimeTwinMappedProp {
   prop: string;
   // templateEntries: string | null;
   entries: RuntimeJSXStyle[];
+  metadata: {
+    isGroupParent: boolean;
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
+  };
 }
-
 export interface TwinInjectedProp {
   id: string;
   index: number;
@@ -50,6 +55,7 @@ export interface TwinInjectedProp {
 
 /**
  * @version 7.0.0
+ * @deprecated please use @type {TwinRuntimeComponent}
  */
 export interface TwinInjectedObject {
   id: string;
@@ -64,6 +70,21 @@ export interface TwinInjectedObject {
   props: RuntimeTwinMappedProp[];
   childStyles: RuntimeJSXStyle[];
 }
+
+export interface TwinRuntimeComponent {
+  id: string;
+  index: number;
+  parentSize: number;
+  parentID: string | null;
+  metadata: {
+    isGroupParent: boolean;
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
+  };
+  props: RuntimeTwinMappedProp[];
+  childStyles: RuntimeJSXStyle[];
+}
+
 /**
  * @version 7.0.0
  */

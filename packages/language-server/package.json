@@ -59,7 +59,7 @@
   },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*",
-    "jest": "*"
+    "jest": "~29.7.0"
   },
   "engines": {
     "vscode": "^1.89.0"

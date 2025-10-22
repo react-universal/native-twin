@@ -15,7 +15,7 @@ import type { JSXInternalProps } from '../../types/jsx.types.js';
 import type { ComponentConfig } from '../../types/styled.types.js';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
 
-export const useStyledProps = (props: JSXInternalProps, configs: ComponentConfig[]) => {
+export const useStyledProps = (props: JSXInternalProps, _configs: ComponentConfig[]) => {
   const injectedProps: TwinInjectedProp | undefined = props?.['_twinInjected'];
   const container = useContext(ContainersContext);
   const reactID = useId();
@@ -52,10 +52,7 @@ export const useStyledProps = (props: JSXInternalProps, configs: ComponentConfig
 
   const onChange = useCallback(
     (active: boolean) => {
-      if (
-        componentHandler.metadata.hasPointerEvents ||
-        componentHandler.metadata.isGroupParent
-      ) {
+      if (componentHandler.metadata.hasPointerEvents || componentHandler.metadata.isGroupParent) {
         setState({
           interactions: {
             isLocalActive: active,

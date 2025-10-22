@@ -8,5 +8,5 @@
     "esModuleInterop": true
   },
   "include": ["src", "test"],
-  "exclude": ["build"]
+  "exclude": ["build", "test/fixtures"]
 }

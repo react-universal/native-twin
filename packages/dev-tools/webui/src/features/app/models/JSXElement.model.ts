@@ -1,4 +1,4 @@
-import type { JSXElementSheet, RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 

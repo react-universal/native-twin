@@ -6,7 +6,7 @@ import { getComponentType } from '../../utils/react.utils';
 export const renderComponent = (
   baseComponent: ComponentType<any>,
   props: JSXInternalProps,
-  ref: any,
+  _ref: any,
 ) => {
   const component = baseComponent;
   const childFiber = useNearestChild();

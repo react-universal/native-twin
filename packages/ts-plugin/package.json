@@ -38,7 +38,7 @@
     "madge": "^8.0.0"
   },
   "optionalDependencies": {
-    "jest": "*"
+    "jest": "~29.7.0"
   },
   "publishConfig": {
     "access": "public",

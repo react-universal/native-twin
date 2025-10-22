@@ -3,8 +3,8 @@ import type { SheetEntry } from '@native-twin/css';
 import type * as LogLevel from 'effect/LogLevel';
 import type { ConfigT, TransformerConfigT } from 'metro-config';
 import type {
-  JsTransformOptions,
   JsTransformerConfig,
+  JsTransformOptions,
   TransformResponse,
 } from 'metro-transform-worker';
 

@@ -1,10 +1,12 @@
 // @ts-noCheck
+const __ReactNativeStyleSheet = require('@native-twin/jsx').StyleSheet;
+// @ts-noCheck
 import { View } from 'react-native';
 import { Button } from './code-i';
 export default function App() {
-  return <View className={`group flex-1 shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200`}>
+  return <View className={`group flex-1 shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200`} style={__ReactNativeStyleSheet.get("286613378")}>
       <Button size='small' />
-       <Text className='px-2'>Hello World</Text>
+       <Text className='px-2' style={__ReactNativeStyleSheet.get("766331662")}>Hello World</Text>
       {/*<Text>Hello World</Text>
        <View className='flex-1 first:bg-blue-200'>
         <Text className='text-lg'>Test Text</Text>
@@ -12,12 +14,52 @@ export default function App() {
        </View> */}
     </View>;
 }
-const __Twin_StyleSheet_Handler = require("@native-twin/jsx");
-const _____Twin__Module__Styles = {
-  "__JSXElementNode_998016606_187520085_View": {
-    "base": {
-      "rawDecls": [{
-        "_tag": "NOT_COMPILED",
+const _____Twin__Module__Styles = {};
+__ReactNativeStyleSheet.registerBuildSheet({
+  "id": "286613378",
+  "index": 0,
+  "metadata": {
+    "hasGroupEvents": false,
+    "hasPointerEvents": false,
+    "isGroupParent": true
+  },
+  "parentID": null,
+  "parentSize": -1,
+  "props": [{
+    "entries": [{
+      "className": "group",
+      "important": false,
+      "inherited": false,
+      "precedence": 805306368,
+      "group": "base",
+      "groups": ["base"],
+      "declarations": []
+    }, {
+      "className": "flex-1",
+      "important": false,
+      "inherited": false,
+      "precedence": 805306368,
+      "group": "base",
+      "groups": ["base"],
+      "declarations": [{
+        "_tag": "COMPILED",
+        "prop": "flex",
+        "value": {
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "flexBasis": "0%"
+        },
+        "isUnitLess": false
+      }]
+    }, {
+      "className": "shadow-md",
+      "important": false,
+      "inherited": false,
+      "precedence": 805306368,
+      "group": "base",
+      "groups": ["base"],
+      "declarations": [{
+        "_tag": "COMPILED",
         "prop": "shadowRadius",
         "value": {
           "shadowOffset": {
@@ -29,131 +71,157 @@ const _____Twin__Module__Styles = {
           "shadowOpacity": 0.3,
           "elevation": 3
         },
-        "isUnitLess": false,
-        "valueType": "unknown",
-        "reason": "Unknown"
-      }],
-      "styles": {
-        "flexGrow": 1,
-        "flexShrink": 1,
-        "flexBasis": "0%",
-        "borderWidth": 1,
-        "transform": [{
-          "rotate": "1deg"
-        }]
-      }
-    },
-    "child": {
-      "even": {
-        "rawDecls": [],
-        "styles": {}
-      },
-      "first": {
-        "rawDecls": [],
-        "styles": {}
-      },
-      "last": {
-        "rawDecls": [],
-        "styles": {}
-      },
-      "odd": {
-        "rawDecls": [],
-        "styles": {}
-      }
-    },
-    "dark": {
-      "rawDecls": [],
-      "styles": {}
-    },
-    "group": {
-      "rawDecls": [],
-      "styles": {}
-    },
-    "pointer": {
-      "rawDecls": [],
-      "styles": {}
-    },
+        "isUnitLess": false
+      }]
+    }, {
+      "className": "border-1",
+      "important": false,
+      "inherited": false,
+      "precedence": 805306368,
+      "group": "base",
+      "groups": ["base"],
+      "declarations": [{
+        "_tag": "COMPILED",
+        "prop": "borderWidth",
+        "value": 1,
+        "isUnitLess": false
+      }]
+    }, {
+      "className": "translate-x-2",
+      "important": false,
+      "inherited": false,
+      "precedence": 805306368,
+      "group": "base",
+      "groups": ["base"],
+      "declarations": [{
+        "_tag": "COMPILED",
+        "prop": "transform",
+        "value": [{
+          "_tag": "COMPILED",
+          "prop": "translateX",
+          "value": 8,
+          "isUnitLess": false
+        }],
+        "isUnitLess": false
+      }]
+    }, {
+      "className": "rotate-1",
+      "important": false,
+      "inherited": false,
+      "precedence": 805306368,
+      "group": "base",
+      "groups": ["base"],
+      "declarations": [{
+        "_tag": "COMPILED",
+        "prop": "transform",
+        "value": [{
+          "_tag": "COMPILED",
+          "prop": "rotate",
+          "value": "1deg",
+          "isUnitLess": false
+        }],
+        "isUnitLess": false
+      }]
+    }],
+    "prop": "className",
+    "target": "style",
+    "metadata": {
+      "hasGroupEvents": false,
+      "hasPointerEvents": false,
+      "isGroupParent": true
+    }
+  }],
+  "childStyles": [{
+    "className": "first:bg-red-200",
+    "important": false,
+    "inherited": false,
+    "precedence": 805437440,
+    "group": "first",
+    "groups": ["first"],
+    "declarations": [{
+      "_tag": "COMPILED",
+      "prop": "backgroundColor",
+      "value": "rgba(254,202,202,1)",
+      "isUnitLess": false
+    }]
+  }, {
+    "className": "last:bg-blue-200",
+    "important": false,
+    "inherited": false,
+    "precedence": 805437440,
+    "group": "last",
+    "groups": ["last"],
+    "declarations": [{
+      "_tag": "COMPILED",
+      "prop": "backgroundColor",
+      "value": "rgba(191,219,254,1)",
+      "isUnitLess": false
+    }]
+  }]
+});
+__ReactNativeStyleSheet.registerBuildSheet({
+  "id": "450999280",
+  "index": 0,
+  "metadata": {
+    "hasGroupEvents": false,
+    "hasPointerEvents": false,
     "isGroupParent": false
   },
-  "__JSXElementNode_998016606_-888906948_Button": {
-    "base": {
-      "rawDecls": [],
-      "styles": {}
-    },
-    "child": {
-      "even": {
-        "rawDecls": [],
-        "styles": {}
-      },
-      "first": {
-        "rawDecls": [],
-        "styles": {
-          "backgroundColor": "rgba(254,202,202,1)"
-        }
-      },
-      "last": {
-        "rawDecls": [],
-        "styles": {}
-      },
-      "odd": {
-        "rawDecls": [],
-        "styles": {}
-      }
-    },
-    "dark": {
-      "rawDecls": [],
-      "styles": {}
-    },
-    "group": {
-      "rawDecls": [],
-      "styles": {}
-    },
-    "pointer": {
-      "rawDecls": [],
-      "styles": {}
-    },
+  "parentID": "286613378",
+  "parentSize": 2,
+  "props": [],
+  "childStyles": []
+});
+__ReactNativeStyleSheet.registerBuildSheet({
+  "id": "766331662",
+  "index": 1,
+  "metadata": {
+    "hasGroupEvents": false,
+    "hasPointerEvents": false,
     "isGroupParent": false
   },
-  "__JSXElementNode_998016606_187520085_Text": {
-    "base": {
-      "rawDecls": [],
-      "styles": {
-        "paddingLeft": 8,
-        "paddingRight": 8
-      }
-    },
-    "child": {
-      "even": {
-        "rawDecls": [],
-        "styles": {}
-      },
-      "first": {
-        "rawDecls": [],
-        "styles": {}
-      },
-      "last": {
-        "rawDecls": [],
-        "styles": {
-          "backgroundColor": "rgba(191,219,254,1)"
-        }
-      },
-      "odd": {
-        "rawDecls": [],
-        "styles": {}
-      }
-    },
-    "dark": {
-      "rawDecls": [],
-      "styles": {}
-    },
-    "group": {
-      "rawDecls": [],
-      "styles": {}
-    },
-    "pointer": {
-      "rawDecls": [],
-      "styles": {}
-    },
-    "isGroupParent": false
-  }
-};
+  "parentID": "286613378",
+  "parentSize": 2,
+  "props": [{
+    "entries": [{
+      "className": "px-2",
+      "important": false,
+      "inherited": false,
+      "precedence": 805306368,
+      "group": "base",
+      "groups": ["base"],
+      "declarations": [{
+        "_tag": "COMPILED",
+        "prop": "paddingLeft",
+        "value": 8,
+        "isUnitLess": false
+      }, {
+        "_tag": "COMPILED",
+        "prop": "paddingRight",
+        "value": 8,
+        "isUnitLess": false
+      }]
+    }, {
+      "className": "last:bg-blue-200",
+      "important": false,
+      "inherited": true,
+      "precedence": 805437440,
+      "group": "last",
+      "groups": ["last"],
+      "declarations": [{
+        "_tag": "COMPILED",
+        "prop": "backgroundColor",
+        "value": "rgba(191,219,254,1)",
+        "isUnitLess": false
+      }]
+    }],
+    "prop": "className",
+    "target": "style",
+    "metadata": {
+      "hasGroupEvents": false,
+      "hasPointerEvents": false,
+      "isGroupParent": false
+    }
+  }],
+  "childStyles": []
+});

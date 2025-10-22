@@ -24,8 +24,7 @@ export const makeDependenciesLookup: TwinDependenciesLookup =
   (modules: TwinModuleAst[]) => (key: TwinJSXElementNode) =>
     RA.head(RA.filterMap(modules, (external) => external.getJSXElementFromNode(key)));
 
-export const isLocalImport = (path: string) =>
-  path.startsWith('.') || path.startsWith('/');
+export const isLocalImport = (path: string) => path.startsWith('.') || path.startsWith('/');
 
 /**
  * @domain Babel
@@ -35,10 +34,7 @@ export const getJSXElementAttrs = (element: t.JSXElement): t.JSXAttribute[] =>
   RA.filter(element.openingElement.attributes, isJSXAttribute);
 
 export const getBabelBindingImportSource = (binding: Binding) =>
-  Option.firstSomeOf([
-    getBindingImportDeclaration(binding),
-    getBindingRequireDeclaration(binding),
-  ]);
+  Option.firstSomeOf([getBindingImportDeclaration(binding), getBindingRequireDeclaration(binding)]);
 
 const getBindingImportDeclaration = (binding: Binding) =>
   Option.liftPredicate(binding.path, isImportSpecifier).pipe(
@@ -101,9 +97,7 @@ export function babelParse(code: string | Buffer, fileName?: string): BabelFileA
     return parser(codeString, babelParserOptions);
   } catch (err) {
     throw new Error(
-      `Error parsing babel: ${err} in ${fileName}, code:\n${codeString}\n ${
-        (err as any).stack
-      }`,
+      `Error parsing babel: ${err} in ${fileName}, code:\n${codeString}\n ${(err as any).stack}`,
     );
   }
 }
@@ -114,15 +108,24 @@ const __ReactNativeText = require('react-native').Text;
 `);
 
 const importStyleSheet = template(`
-const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const __ReactNativeStyleSheet = require('@native-twin/jsx').StyleSheet;
 `);
 
 const importReactUseMemo = template(`
 const __ReactUseMemo = require('react').useMemo;
 `);
 
+const styledPropCall = template.expression(`
+  STYLESHEET_VAR_NAME.get(ELEMENT_KEY)
+  `);
+
+const styleSheetRegisterJSX = template(`
+  STYLESHEET_VAR_NAME.registerBuildSheet(JSX_NODE_SHEET)
+  `);
 export const babelTemplates = {
   importRNView: importNativeView,
   importRNStyleSheet: importStyleSheet,
   importReactUseMemo,
+  styledPropCall,
+  styleSheetRegisterJSX,
 };

@@ -4,10 +4,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as worker from 'metro-transform-worker';
-import type {
-  MetroWorkerInput,
-  NativeTwinTransformerOpts,
-} from '../models/Metro.models.js';
+import type { MetroWorkerInput, NativeTwinTransformerOpts } from '../models/Metro.models';
 
 export class MetroWorkerService extends Context.Tag('metro/worker/context')<
   MetroWorkerService,
@@ -15,10 +12,7 @@ export class MetroWorkerService extends Context.Tag('metro/worker/context')<
     input: MetroWorkerInput;
     runWorker: (config: MetroWorkerInput) => Effect.Effect<worker.TransformResponse>;
   }
->() {
-  static make = (input: MetroWorkerInput) =>
-    Layer.scoped(MetroWorkerService, createWorkerService(input));
-}
+>() {}
 
 type MetroTransformFn = typeof worker.transform;
 export const createWorkerService = (input: MetroWorkerInput) => {
@@ -63,12 +57,14 @@ export const makeWorkerLayers = (
   filename: string,
   data: Buffer | string,
   options: worker.JsTransformOptions,
-) => {
-  return MetroWorkerService.make({
-    config,
-    data: ensureBuffer(data),
-    filename,
-    options,
-    projectRoot,
-  });
-};
+) =>
+  Layer.scoped(
+    MetroWorkerService,
+    createWorkerService({
+      config,
+      data: ensureBuffer(data),
+      filename,
+      options,
+      projectRoot,
+    }),
+  );

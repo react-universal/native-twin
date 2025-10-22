@@ -3,18 +3,23 @@ import { transformPostCssModule } from '@expo/metro-config/build/transform-worke
 import { escapeBackticksAndOctals } from '@native-twin/helpers';
 import { pathToHtmlSafeName } from '@native-twin/helpers/server';
 import * as CodeBlockWriter from 'code-block-writer';
-import worker from 'metro-transform-worker';
-// @ts-expect-error untyped
-import countLines from 'metro/src/lib/countLines';
+import type { TransformResultDependency } from 'metro';
+import { type JsTransformOptions, transform as workerTransform } from 'metro-transform-worker';
 import type { NativeTwinTransformerOpts } from '../models/Metro.models.js';
+
+const newline = /\r\n?|\n|\u2028|\u2029/g;
+const countLines = (x: string) => (x.match(newline) || []).length + 1;
 
 export const transformCSSExpo = async (
   config: NativeTwinTransformerOpts,
   projectRoot: string,
   filename: string,
   data: Buffer | string,
-  options: worker.JsTransformOptions,
-) => {
+  options: JsTransformOptions,
+): Promise<{
+  dependencies: readonly TransformResultDependency[];
+  output: ExpoJsOutput[];
+}> => {
   const reactServer = options.customTransformOptions?.['environment'] === 'react-server';
 
   // eslint-disable-next-line prefer-const
@@ -48,7 +53,7 @@ export const transformCSSExpo = async (
   // console.log('CODE: ', styles);
   // Create a mock JS module that exports an empty object,
   // this ensures Metro dependency graph is correct.
-  const jsModuleResults = await worker.transform(
+  const jsModuleResults = await workerTransform(
     config,
     projectRoot,
     filename,
@@ -95,9 +100,7 @@ export function getHotReplaceTemplate(id: string) {
   const writer = new CodeBlockWriter.default();
   writer.writeLine(`style.setAttribute('data-expo-css-hmr', ${attr});`);
   writer.writeLine(`style.setAttribute('data-native-twin', "");`);
-  writer.writeLine(
-    `const previousStyle = document.querySelector('[data-expo-css-hmr=${attr}]');`,
-  );
+  writer.writeLine(`const previousStyle = document.querySelector('[data-expo-css-hmr=${attr}]');`);
 
   writer.newLine();
 
@@ -112,9 +115,7 @@ export function getHotReplaceTemplate(id: string) {
 const getDomStyleInjector = (filename: string, code: string) => {
   const writer = new CodeBlockWriter.default();
   const withBackTicksEscaped = escapeBackticksAndOctals(code);
-  writer.writeLine(
-    `const head = document.head || document.getElementsByTagName('head')[0];`,
-  );
+  writer.writeLine(`const head = document.head || document.getElementsByTagName('head')[0];`);
   writer.writeLine(`const style = document.createElement('style');`);
   writer.writeLine(`${getHotReplaceTemplate(filename)}`);
   writer.writeLine(`style.setAttribute('data-expo-loader', 'css');`);
@@ -142,7 +143,7 @@ const getServerStylesInjector = (styles: string) => {
   return writer.toString();
 };
 
-export const getClientRuntimeInjector = (filename: string, styles: string) => {
+export const getClientRuntimeInjector = (_filename: string, styles: string) => {
   const writer = new CodeBlockWriter.default();
   writer
     .write('(() => ')
@@ -176,11 +177,7 @@ export const getClientRuntimeInjector = (filename: string, styles: string) => {
   return writer.toString();
 };
 
-export function wrapDevelopmentCSS(props: {
-  src: string;
-  filename: string;
-  reactServer: boolean;
-}) {
+export function wrapDevelopmentCSS(props: { src: string; filename: string; reactServer: boolean }) {
   const injectClientStyle = getDomStyleInjector(props.filename, props.src);
   // When bundling React Server Components, add an iife which will broadcast the client JS script to the root client bundle.
   // This will ensure the global CSS is available in the browser in development.

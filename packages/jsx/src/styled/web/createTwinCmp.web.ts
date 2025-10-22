@@ -86,7 +86,7 @@ export const createStylableComponent = (baseComponent: any, mapping: any) => {
 
 export const withMappedProps = createStylableComponent;
 
-export const useUnstableNativeVariable = (name: string) => {
+export const useUnstableNativeVariable = (_name: string) => {
   if (process.env['NODE_ENV'] !== 'production') {
     console.warn('useUnstableNativeVariable is not supported on web.');
   }

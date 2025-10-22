@@ -1,43 +1,41 @@
-import { Effect } from 'effect';
-import * as Layer from 'effect/Layer';
-import fs from 'fs';
-import path from 'path';
+import { Effect } from "effect";
+import * as Layer from "effect/Layer";
+import fs from "fs";
+import path from "path";
 import {
   CompilerConfigContext,
   createCompilerConfig,
   MainLayer,
   TwinFSContext,
   TwinPath,
-} from '../src';
+  withCompilerLoggerLayer,
+} from "../src";
 
-const outputDir = path.join(__dirname, '.cache');
+const outputDir = path.join(__dirname, ".cache");
 const compilerContext = Layer.succeed(
   CompilerConfigContext,
   createCompilerConfig({
     outDir: outputDir,
     rootDir: __dirname,
-    twinConfigPath: path.join(__dirname, 'tailwind.config.ts'),
-  }),
+    twinConfigPath: path.join(__dirname, "tailwind.config.ts"),
+  })
 );
 
-export const TwinTestContextLive = MainLayer.pipe(Layer.provideMerge(compilerContext));
-// const tw = createTailwind(tailwindConfig, createVirtualSheet());
-// export const TestMainLive = Layer.empty.pipe(
-//   Layer.provideMerge(TwinNodeContextLive),
-//   Layer.provideMerge(TwinFSContextLive),
-//   Layer.provideMerge(TwinProjectRunnerContextLive),
-//   Layer.provideMerge(TwinProjectContextLive),
-//   Layer.provideMerge(compilerContext),
-//   withCompilerLoggerLayer
-// );
-
-// export const TestRuntime = ManagedRuntime.make(TestMainLive);
+export const TwinTestContextLive = MainLayer.pipe(
+  Layer.provideMerge(compilerContext),
+  withCompilerLoggerLayer
+);
 
 export const writeFixtureOutput = (
   code: string,
-  paths: { fixturePath: string; outputFile: string },
+  paths: { fixturePath: string; outputFile: string }
 ) => {
-  const filePath = path.join(__dirname, 'fixtures', paths.fixturePath, paths.outputFile);
+  const filePath = path.join(
+    __dirname,
+    "fixtures",
+    paths.fixturePath,
+    paths.outputFile
+  );
   fs.writeFileSync(filePath, code);
   return code;
 };
@@ -46,10 +44,10 @@ export const getFixture = (name: string) =>
   Effect.gen(function* () {
     const fs = yield* TwinFSContext;
     const inputFile = TwinPath.filePathFromString(
-      path.join(__dirname, `fixtures/${name}/code.tsx`),
+      path.join(__dirname, `fixtures/${name}/code.tsx`)
     );
     const outputFile = TwinPath.filePathFromString(
-      path.join(__dirname, `fixtures/${name}/code.out.tsx`),
+      path.join(__dirname, `fixtures/${name}/code.out.tsx`)
     );
     const writeOutput = (content: string) => fs.writeFile(outputFile, content);
 
@@ -58,4 +56,4 @@ export const getFixture = (name: string) =>
       outputFile,
       writeOutput,
     };
-  }).pipe(Effect.withLogSpan('FIXTURE_FILES'));
+  }).pipe(Effect.withLogSpan("FIXTURE_FILES"));

@@ -3,7 +3,7 @@ import type { AnyStyle } from './rn.types';
 
 export class TwinStyleSheet {
   _twinStyles = new Map<string, TwinStyle>();
-  constructor(platform: 'native' | 'web') {}
+  constructor(_platform: 'native' | 'web') {}
 }
 
 class TwinStyle {

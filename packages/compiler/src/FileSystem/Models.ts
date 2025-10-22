@@ -1,14 +1,14 @@
 import * as Data from 'effect/Data';
-import * as TwinPath from './Path.model';
+import { type FilePath, NodePath } from './Path.model';
 
 export class TwinFile extends Data.Class<{
-  path: TwinPath.FilePath;
+  path: FilePath;
   code: string;
 }> {
   get dirname() {
-    return TwinPath.NodePath.dirname(this.path);
+    return NodePath.dirname(this.path);
   }
   get basename() {
-    return TwinPath.NodePath.basename(this.path);
+    return NodePath.basename(this.path);
   }
 }

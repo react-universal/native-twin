@@ -2,9 +2,9 @@ import { createElement } from 'react';
 import jsxWrapper from './jsx-wrapper.web.js';
 
 export {
-  withMappedProps,
   createStylableComponent,
   stylizedComponents,
+  withMappedProps,
 } from './styled/index.web.js';
 export { getSheetEntryStyles } from './utils/sheet.utils.js';
 

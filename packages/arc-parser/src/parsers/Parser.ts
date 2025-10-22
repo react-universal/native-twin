@@ -1,12 +1,12 @@
 import {
   type InputType,
   InputTypes,
+  isTypedArray,
   type ParserError,
   type ParserState,
   type ParserSuccess,
   type ResultType,
   type StateTransformerFunction,
-  isTypedArray,
 } from '../types.js';
 import { encoder } from '../utils/unicode.utils.js';
 
@@ -100,9 +100,7 @@ export class Parser<Target, Data = any> {
     });
   }
 
-  mapFromData<Result2>(
-    fn: (data: ParserSuccess<Target, Data>) => Result2,
-  ): Parser<Result2, Data> {
+  mapFromData<Result2>(fn: (data: ParserSuccess<Target, Data>) => Result2): Parser<Result2, Data> {
     const p = this.transform;
     return new Parser((state): ParserState<Result2, Data> => {
       const newState = p(state);

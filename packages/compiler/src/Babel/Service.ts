@@ -87,7 +87,7 @@ const astFromTwinFile = (file: TwinFile): Effect.Effect<TwinModuleAst> => {
 
 const jSXElementToTwinNode = (
   path: JSXElementPath,
-  options: { dependencies: ModuleDependency[]; file: TwinFile }
+  options: { dependencies: ModuleDependency[]; file: TwinFile; }
 ) => {
   const ident = path.node.openingElement.name;
   if (!t.isJSXIdentifier(ident)) return null;
@@ -330,6 +330,7 @@ const getPropValueString = (node: t.StringLiteral | t.TemplateLiteral) => {
     };
   }
   const cooked = templateLiteralToStringLike(node);
+
   const text = cx`${cooked.strings}`;
   return {
     text,

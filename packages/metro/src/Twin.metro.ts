@@ -80,7 +80,7 @@ export function withNativeTwin(
       if (!options.platform) return result;
 
       const platform = options.platform;
-      const fs = TwinFSContext.Service;
+      const fs = yield* TwinFSContext;
       const ctx = yield* TwinNodeContext;
       yield* Ref.update(ctx.state.runningPlatforms.ref, (x) => HashSet.add(x, platform));
       yield* fs.createTwinFiles();

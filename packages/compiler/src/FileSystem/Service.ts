@@ -7,7 +7,13 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import { CompilerConfigContext, TwinNodeContext } from '../Config';
 import { TwinFile } from './Models';
-import * as TwinPath from './Path.model';
+import {
+  type AbsolutePath,
+  absolutePathFromString,
+  type FilePath,
+  filePathFromString,
+  NodePath,
+} from './Path.model';
 
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
@@ -21,14 +27,14 @@ const make = Effect.gen(function* () {
     ),
   );
 
-  const mkdirCached = (path: TwinPath.AbsolutePath) => mkdirCached_(path);
+  const mkdirCached = (path: AbsolutePath) => mkdirCached_(path);
 
-  const readFile = (path: TwinPath.FilePath) =>
+  const readFile = (path: FilePath) =>
     fs
       .readFileString(path)
       .pipe(Effect.tapError(() => Effect.logError(`Cannot read file at: ${path}`)));
 
-  const writeFile = (path: TwinPath.FilePath, content: string) =>
+  const writeFile = (path: FilePath, content: string) =>
     fs.writeFile(path, Buffer.from(content, 'utf-8'));
 
   const writeFileCached_ = yield* Effect.cachedFunction(
@@ -62,16 +68,16 @@ const make = Effect.gen(function* () {
     getFullFilePathFromStr,
     makeTempFile: (file: string, platform: string) =>
       fs.makeTempFile({
-        directory: TwinPath.NodePath.dirname(file),
-        prefix: `${TwinPath.NodePath.basename(file)}_${platform}_`,
+        directory: NodePath.dirname(file),
+        prefix: `${NodePath.basename(file)}_${platform}_`,
       }),
   };
 
   function getFile(filepath: string, text?: string) {
     return Effect.gen(function* () {
       const realPath =
-        TwinPath.NodePath.extname(filepath) !== ''
-          ? TwinPath.filePathFromString(filepath)
+        NodePath.extname(filepath) !== ''
+          ? filePathFromString(filepath)
           : yield* getFullFilePathFromStr(filepath);
       let contents = text;
       if (!contents) contents = yield* readFile(realPath);
@@ -81,28 +87,28 @@ const make = Effect.gen(function* () {
   }
 
   function getFullFilePathFromStr(filename: string) {
-    const dirname = TwinPath.NodePath.dirname(filename);
+    const dirname = NodePath.dirname(filename);
     return Effect.gen(function* () {
       const dirFiles = yield* fs
         .readDirectory(dirname, {
           recursive: false,
         })
-        .pipe(Effect.map(RA.map((x) => TwinPath.NodePath.join(dirname, x))));
+        .pipe(Effect.map(RA.map((x) => NodePath.join(dirname, x))));
 
       return RA.findFirst(dirFiles, (x) => x.startsWith(filename)).pipe(
-        Option.map((path) => TwinPath.filePathFromString(path)),
+        Option.map((path) => filePathFromString(path)),
         Option.getOrThrow,
       );
     });
   }
 
   function readPlatformCSSFile(platform: string) {
-    return fs.readFile(TwinPath.filePathFromString(ctx.getOutputCSSPath(platform)));
+    return fs.readFile(filePathFromString(ctx.getOutputCSSPath(platform)));
   }
 
   function createTwinFiles() {
     return Effect.gen(function* () {
-      yield* Effect.tapError(mkdirCached(TwinPath.absolutePathFromString(env.outputDir)), () =>
+      yield* Effect.tapError(mkdirCached(absolutePathFromString(env.outputDir)), () =>
         Effect.logError('cant create twin output'),
       );
 

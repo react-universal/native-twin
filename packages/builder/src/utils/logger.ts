@@ -4,15 +4,11 @@ import * as AnsiColor from '@effect/printer-ansi/Color';
 import * as FiberId from 'effect/FiberId';
 import { apply, pipe } from 'effect/Function';
 import * as List from 'effect/List';
+import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import * as LogSpan from 'effect/LogSpan';
-import * as Logger from 'effect/Logger';
 
-const scopeText = pipe(
-  Ansi.combine(Ansi.bgBlue),
-  apply(Ansi.blackBright),
-  Ansi.combine(Ansi.bold),
-);
+const scopeText = pipe(Ansi.combine(Ansi.bgBlue), apply(Ansi.blackBright), Ansi.combine(Ansi.bold));
 const fiberText = Ansi.combine(Ansi.white)(Ansi.bgWhiteBright);
 const messageConfig = Ansi.color(AnsiColor.white);
 const dashes = Doc.text(Array.from({ length: 32 - 2 }, () => '-').join(''));
@@ -59,14 +55,10 @@ const TwinCustomLogger = Logger.make((options) => {
     msgFactory.push(Doc.text(options.message).pipe(Doc.annotate(messageConfig)));
   }
   if (Array.isArray(options.message)) {
-    msgFactory.push(
-      Doc.text(options.message.join(' ')).pipe(Doc.annotate(messageConfig)),
-    );
+    msgFactory.push(Doc.text(options.message.join(' ')).pipe(Doc.annotate(messageConfig)));
   }
 
-  const spans = options.spans
-    .pipe(List.toArray)
-    .map((x) => pipe(x, LogSpan.render(x.startTime)));
+  const spans = options.spans.pipe(List.toArray).map((x) => pipe(x, LogSpan.render(x.startTime)));
   if (spans.length > 0) {
     msgFactory.push(Doc.text(spans.join(' ')));
   }

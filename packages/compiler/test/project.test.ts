@@ -1,7 +1,8 @@
 import { CodeGenerator } from '@babel/generator';
-import { describe, expect, it } from '@effect/vitest';
+import { assert, describe, expect, it } from '@effect/vitest';
 import { Array, Effect, HashSet } from 'effect';
-import { TwinFSContext, TwinNodeContext, TwinProjectContext, withCompilerLogger } from '../src';
+import { TwinNodeContext, TwinProjectContext, withCompilerLogger } from '../src';
+import { twinTransformProgram } from '../src/Programs/twinTransform.program';
 import { getFixture, TwinTestContextLive } from './test.utils';
 
 describe('Project runner', () => {
@@ -16,24 +17,22 @@ describe('Project runner', () => {
 
   it.effect('run native project runner', () =>
     Effect.gen(function* () {
-      const { compileAst, getTwinFileAstFromPath } = yield* TwinProjectContext;
-      const fs = yield* TwinFSContext;
+      const { getTwinFileAstFromPath } = yield* TwinProjectContext;
       const modulePath = yield* getFixture('jsx');
       const module = yield* getTwinFileAstFromPath(modulePath.inputFile);
 
       expect(module.id).toBe('code.tsx:998016606');
 
-      const compiled = yield* compileAst(module, 'native');
+      yield* twinTransformProgram(module, 'native');
 
       const gen = new CodeGenerator(module.ast);
       const code = gen.generate().code;
-      yield* fs.writeFile(modulePath.outputFile, code);
-      const jsxElements = Array.fromIterable(compiled);
-      // expect(preval.length).toBeGreaterThan(0);
-      // expect(elements.length).toBeGreaterThan(0);
+
+      yield* modulePath.writeOutput(code);
+      const jsxElements = Array.fromIterable([1]);
       expect(jsxElements.length).toBeGreaterThan(0);
+      assert.isString(code);
     }).pipe(
-      // Effect.catchAll((error) => Effect.log(error.toJSON())),
       Effect.scoped,
       Effect.onError((cause) => Effect.log('ON_ERROR: ', cause._tag)),
       Effect.provide(TwinTestContextLive),

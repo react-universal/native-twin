@@ -1,9 +1,9 @@
-import { type TwinRuntimeContext, parseCssValue, tw } from '@native-twin/core';
+import { parseCssValue, type TwinRuntimeContext, tw } from '@native-twin/core';
 import {
   type AnyStyle,
   type CompleteStyle,
-  type SheetEntryDeclaration,
   getRuleSelectorGroup,
+  type SheetEntryDeclaration,
 } from '@native-twin/css';
 
 // TODO: PLACE THIS INTO GLOBAL SHEET
@@ -34,10 +34,7 @@ export const sheetEntriesToStyles = (
     };
   }, {} as AnyStyle);
 };
-export function getSheetEntryStyles(
-  entries: any[] = [],
-  context: TwinRuntimeContext,
-) {
+export function getSheetEntryStyles(entries: any[] = [], context: TwinRuntimeContext) {
   return entries.reduce(
     (prev, current) => {
       const nextDecl = sheetEntryToStyle(current, context);
@@ -52,13 +49,13 @@ export function getSheetEntryStyles(
     },
     {
       base: {} as AnyStyle,
-      even: {}  as AnyStyle,
-      first: {}  as AnyStyle,
-      group: {}  as AnyStyle,
-      last: {}  as AnyStyle,
-      odd: {}  as AnyStyle,
-      pointer: {}  as AnyStyle,
-      dark: {}  as AnyStyle,
+      even: {} as AnyStyle,
+      first: {} as AnyStyle,
+      group: {} as AnyStyle,
+      last: {} as AnyStyle,
+      odd: {} as AnyStyle,
+      pointer: {} as AnyStyle,
+      dark: {} as AnyStyle,
     },
   );
 }

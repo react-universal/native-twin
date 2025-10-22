@@ -2,11 +2,11 @@ import { Path } from '@effect/platform';
 import { NodePath } from '@effect/platform-node';
 import {
   CompilerConfigContext,
+  createCompilerConfig,
+  MainLayer,
   type NodeWithNativeTwinOptions,
   TwinFSContextLive,
   TwinNodeContextLive,
-  TwinPath,
-  createCompilerConfig,
 } from '@native-twin/compiler';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -15,7 +15,7 @@ export const MetroMainLayer = Layer.empty.pipe(
   Layer.provideMerge(TwinNodeContextLive),
   // Layer.provideMerge(BabelCompilerContextLive),
 );
-export const MetroLayerWithTwinFS = TwinFSContextLive.pipe(
+export const MetroLayerWithTwinFS = MainLayer.pipe(
   Layer.provideMerge(MetroMainLayer),
   // Layer.provideMerge(TwinPath.),
   // Layer.provideMerge(FSUtils.FsUtilsLive),

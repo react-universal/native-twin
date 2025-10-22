@@ -68,6 +68,12 @@
     },
     "editor.fontSize": 16,
     "typescript.tsdk": "✨ native-twin/node_modules/typescript/lib",
+    "[javascript]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
     "jest.enable": true,
     "jest.disabledWorkspaceFolders": [
       "root",
