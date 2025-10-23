@@ -17,7 +17,7 @@ import {
   View,
   VirtualizedList,
 } from 'react-native';
-import { createStylableComponent, withMappedProps } from './styled/index.js';
+import { createStylableComponent, withMappedProps } from './styled';
 
 createStylableComponent(Image, { className: 'style' });
 createStylableComponent(Pressable, { className: 'style' });

@@ -1,5 +1,6 @@
 {
   "main": "../build/cjs/sheet",
+  "react-native": "../build/esm/sheet",
   "module": "../build/esm/sheet",
   "types": "../../build/dts/sheet/index.d.ts"
 }

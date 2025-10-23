@@ -16,9 +16,10 @@ import {
 } from '@native-twin/css/jsx';
 import { type Atom, atom } from '@native-twin/helpers/react';
 import { StyleSheet as NativeSheet, Platform } from 'react-native';
-import type { ComponentState } from '../store/components.store.js';
-import { styledContext } from '../store/observables/styles.obs.js';
-import { tw } from './native-tw.js';
+import type { ComponentState } from '../store/components.store';
+import { styledContext } from '../store/observables/styles.obs';
+import { INTERNAL_RESET } from '../utils/constants';
+import { tw } from './native-tw';
 
 export const componentsState: Map<string, Atom<ComponentState>> = new Map();
 
@@ -30,6 +31,7 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
   flatten = NativeSheet.flatten;
   hairlineWidth = NativeSheet.hairlineWidth;
   twinFn = tw;
+  [INTERNAL_RESET]() {}
 
   constructor(debug: boolean) {
     super(debug);

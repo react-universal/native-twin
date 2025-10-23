@@ -8,11 +8,3 @@ export interface CompleteStyle extends ViewStyle, TextStyle, Omit<ImageStyle, 'o
 export type AnyStyleValue = {
   [U in keyof AnyStyle]: AnyStyle[U];
 }[keyof AnyStyle];
-
-// export interface ParserRuntimeContext {
-//   rem: number;
-//   deviceHeight: number;
-//   deviceWidth: number;
-// }
-
-// export type FinalSheet = Record<SelectorGroup, CompleteStyle>;

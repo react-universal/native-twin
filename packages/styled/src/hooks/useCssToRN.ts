@@ -1,15 +1,15 @@
 import { parseCssValue, tw } from '@native-twin/core';
 import {
   type AnyStyle,
+  getRuleSelectorGroup,
   type RuntimeContext,
   type SheetEntry,
   type SheetEntryDeclaration,
   type SheetInteractionState,
-  getRuleSelectorGroup,
 } from '@native-twin/css';
 import { useId, useMemo } from 'react';
 import { Platform } from 'react-native';
-import { useStyledContext } from './useStyledContext.js';
+import { useStyledContext } from './useStyledContext';
 
 export function useCssToRN(className: string) {
   const componentID = useId();
@@ -83,10 +83,7 @@ function getSheetEntryStyles(entries: SheetEntry[], context: RuntimeContext) {
   );
 }
 
-function composeDeclarations(
-  declarations: SheetEntryDeclaration[],
-  context: RuntimeContext,
-) {
+function composeDeclarations(declarations: SheetEntryDeclaration[], context: RuntimeContext) {
   return declarations.reduce((prev, current) => {
     let value: any = current.value;
     if (Array.isArray(current.value)) {

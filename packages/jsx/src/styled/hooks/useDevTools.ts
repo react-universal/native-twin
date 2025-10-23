@@ -1,5 +1,5 @@
 // import { useEffect, useState } from 'react';
-// import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+// import { RawJSXElementTreeNode } from '@native-twin/cssx';
 // import { useNativeTwinDevTools } from '@native-twin/dev-tools';
 // import { asArray } from '@native-twin/helpers';
 

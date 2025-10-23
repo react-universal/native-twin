@@ -108,7 +108,7 @@ const __ReactNativeText = require('react-native').Text;
 `);
 
 const importStyleSheet = template(`
-const __ReactNativeStyleSheet = require('@native-twin/jsx').StyleSheet;
+const __ReactNativeStyleSheet = require('@native-twin/styled').TwinStyleSheet;
 `);
 
 const importReactUseMemo = template(`
@@ -116,11 +116,11 @@ const __ReactUseMemo = require('react').useMemo;
 `);
 
 const styledPropCall = template.expression(`
-  STYLESHEET_VAR_NAME.get(ELEMENT_KEY)
+  STYLESHEET_VAR_NAME.getComponentStyles(ELEMENT_KEY, PROP, false)
   `);
 
 const styleSheetRegisterJSX = template(`
-  STYLESHEET_VAR_NAME.registerBuildSheet(JSX_NODE_SHEET)
+  STYLESHEET_VAR_NAME.registerComponent(JSX_NODE_SHEET)
   `);
 export const babelTemplates = {
   importRNView: importNativeView,

@@ -8,12 +8,12 @@ import type {
   TextInputFocusEventData,
   Touchable,
 } from 'react-native';
-import { ContainersContext, groupContext } from '../../context/styled.context.js';
-import { StyleSheet } from '../../sheet/StyleSheet.js';
+import { ContainersContext, groupContext } from '../../context/styled.context';
+import { StyleSheet } from '../../sheet/StyleSheet';
 import { styledContext } from '../../store/observables';
-import type { JSXInternalProps } from '../../types/jsx.types.js';
-import type { ComponentConfig } from '../../types/styled.types.js';
-import { DEFAULT_INTERACTIONS } from '../../utils/constants.js';
+import type { JSXInternalProps } from '../../types/jsx.types';
+import type { ComponentConfig } from '../../types/styled.types';
+import { DEFAULT_INTERACTIONS } from '../../utils/constants';
 
 export const useStyledProps = (props: JSXInternalProps, _configs: ComponentConfig[]) => {
   const injectedProps: TwinInjectedProp | undefined = props?.['_twinInjected'];

@@ -16,31 +16,37 @@
   "exports": {
     ".": {
       "types": "./build/dts/index.d.ts",
+      "react-native": "./build/esm/index.js",
       "import": "./build/esm/index.js",
       "default": "./build/cjs/index.js"
     },
     "./tree": {
       "types": "./build/dts/tree.d.ts",
+      "react-native": "./build/esm/tree.js",
       "import": "./build/esm/tree.js",
       "default": "./build/cjs/tree.js"
     },
     "./server": {
       "types": "./build/dts/server.d.ts",
+      "react-native": "./build/esm/server.js",
       "import": "./build/esm/server.js",
       "default": "./build/cjs/server.js"
     },
     "./fp": {
       "types": "./build/dts/fp/index.d.ts",
+      "react-native": "./build/esm/fp/index.js",
       "import": "./build/esm/fp/index.js",
       "default": "./build/cjs/fp/index.js"
     },
     "./KeyMap": {
       "types": "./build/dts/KeyMap/index.d.ts",
+      "react-native": "./build/esm/KeyMap/index.js",
       "import": "./build/esm/KeyMap/index.js",
       "default": "./build/cjs/KeyMap/index.js"
     },
     "./react": {
       "types": "./build/dts/react.d.ts",
+      "react-native": "./build/esm/react.js",
       "import": "./build/esm/react.js",
       "default": "./build/cjs/react.js"
     }
@@ -48,6 +54,7 @@
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
   "types": "./build/dts/index.d.ts",
+  "react-native": "./build/esm/index.js",
   "files": [
     "build",
     "src",

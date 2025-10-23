@@ -1,99 +1,107 @@
 {
   "folders": [
     {
-      "name": "root",
+      "name": "✨ native-twin",
       "path": ".."
     },
     {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/compiler",
+      "name": "📦 @native-twin/compiler",
       "path": "../packages/compiler"
     },
     {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/styled",
+      "name": "📦 @native-twin/styled",
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/dev-tools",
-      "path": "../packages/dev-tools"
-    },
-    {
-      "name": "📦 @lib/language-service",
-      "path": "../packages/language-service"
-    },
-    {
-      "name": "📦 @lib/language-server",
-      "path": "../packages/language-server"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @lib/preset-tw",
-      "path": "../packages/preset-tailwind"
-    },
-    {
-      "name": "📦 @lib/arc-parser",
-      "path": "../packages/arc-parser"
-    },
-    {
-      "name": "📦 @lib/vite-plugin",
-      "path": "../packages/vite-plugin"
-    },
-    {
-      "name": "📦 @lib/adapters",
+      "name": "📦 @native-twin/adapters",
       "path": "../packages/adapters"
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
+      "name": "📦 @native-twin/arc-parser",
+      "path": "../packages/arc-parser"
     },
     {
-      "name": "📦 @lib/babel",
+      "name": "📦 @native-twin/babel",
       "path": "../packages/babel"
     },
     {
-      "name": "expo-app",
-      "path": "../apps/expo-app"
+      "name": "📦 @native-twin/cli",
+      "path": "../packages/builder"
     },
     {
-      "name": "expo-router",
-      "path": "../apps/expo-router"
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
     },
     {
-      "name": "twin.run",
+      "name": "📦 @native-twin/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
+      "name": "🚀 @native-twin/dev-tools-webui",
+      "path": "../packages/dev-tools/webui"
+    },
+    {
+      "name": "📦 @native-twin/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @native-twin/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @native-twin/language-server",
+      "path": "../packages/language-server"
+    },
+    {
+      "name": "📦 @native-twin/language-service",
+      "path": "../packages/language-service"
+    },
+    {
+      "name": "📦 @native-twin/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @native-twin/core",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @native-twin/preset-tailwind",
+      "path": "../packages/preset-tailwind"
+    },
+    {
+      "name": "📦 @native-twin/ts-plugin",
+      "path": "../packages/ts-plugin"
+    },
+    {
+      "name": "📦 @native-twin/vite-plugin",
+      "path": "../packages/vite-plugin"
+    },
+    {
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "twin-run",
       "path": "../sites/twin.run"
     },
     {
-      "name": "next-pages-example",
-      "path": "../apps/next-app"
-    },
-    {
-      "name": "next-app-dir",
+      "name": "🚀 next-app-dir",
       "path": "../apps/next-app-dir"
     },
     {
-      "name": "docs-site",
+      "name": "🚀 next-pages-example",
+      "path": "../apps/next-app"
+    },
+    {
+      "name": "🚀 expo-app-web",
+      "path": "../apps/expo-router"
+    },
+    {
+      "name": "🚀 expo-app",
+      "path": "../apps/expo-app"
+    },
+    {
+      "name": "🚀 native-twin-docs",
       "path": "../apps/docs-site"
     }
   ],

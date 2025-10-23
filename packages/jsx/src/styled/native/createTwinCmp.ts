@@ -1,12 +1,12 @@
 import { FiberProvider } from 'its-fine';
 import { createElement, forwardRef, useContext } from 'react';
-import { groupContext, TwinRootContext } from '../../context/styled.context.js';
-import type { JSXFunction } from '../../types/jsx.types.js';
-import type { ReactComponent, StylableComponentConfigOptions } from '../../types/styled.types.js';
-import { getNormalizeConfig } from '../../utils/config.utils.js';
-import { getComponentDisplayName, getComponentType } from '../../utils/react.utils.js';
-import { useStyledProps } from '../hooks/useStyledProps.js';
-import { renderComponent } from './renderComponent.js';
+import { groupContext, TwinRootContext } from '../../context/styled.context';
+import type { JSXFunction } from '../../types/jsx.types';
+import type { ReactComponent, StylableComponentConfigOptions } from '../../types/styled.types';
+import { getNormalizeConfig } from '../../utils/config.utils';
+import { getComponentDisplayName, getComponentType } from '../../utils/react.utils';
+import { useStyledProps } from '../hooks/useStyledProps';
+import { renderComponent } from './renderComponent';
 
 export const stylizedComponents = new Map<object | string, Parameters<JSXFunction>[0]>();
 

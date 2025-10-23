@@ -1,8 +1,8 @@
-import { type ComponentType, type ReactHTML, forwardRef } from 'react';
+import { type ComponentType, forwardRef, type HTMLElementType } from 'react';
 import { Platform, type TextProps } from 'react-native';
-import Text from './Text.primitive.js';
+import Text from './Text.primitive';
 
-function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
+function createTextComponent(tag: HTMLElementType): ComponentType<TextProps> {
   const nativeProps: any = Platform.select({
     web: {
       role: 'text',
@@ -14,7 +14,7 @@ function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
     return <Text {...nativeProps} {...props} ref={ref} />;
   }) as ComponentType<TextProps>;
 
-  Element.displayName = tag.toLocaleUpperCase();
+  Element.displayName = String(tag).toLocaleUpperCase();
 
   return Element;
 }

@@ -1,27 +1,35 @@
-import type { SheetEntryHandler } from './SheetEntry';
+export type OrderableSheetEntry<T = object> = T & { precedence: number; important: boolean };
 
 /**
  * @description internal
  * @category Orders
  * */
-const sheetEntriesOrderByPrecedence = (a: SheetEntryHandler, b: SheetEntryHandler) =>
-  a.precedence === b.precedence ? 0 : a.precedence < b.precedence ? -1 : 1;
+const sheetEntriesOrderByPrecedence = <T>(
+  a: OrderableSheetEntry<T>,
+  b: OrderableSheetEntry<T>,
+): number => (a.precedence === b.precedence ? 0 : a.precedence < b.precedence ? -1 : 1);
 
 /**
  * @description internal
  * @category Orders
  * */
 /** @category Orders */
-const sheetEntriesByImportant = (a: SheetEntryHandler, b: SheetEntryHandler) =>
-  a.important === b.important ? 0 : a.important < b.important ? -1 : 1;
+const sheetEntriesByImportant = <T>(
+  a: OrderableSheetEntry<T>,
+  b: OrderableSheetEntry<T>,
+): number => (a.important === b.important ? 0 : a.important < b.important ? -1 : 1);
 
 /** @category Orders */
-export const sortSheetEntries = (a: SheetEntryHandler, b: SheetEntryHandler) => {
+export const sortSheetEntries = <T>(
+  a: OrderableSheetEntry<T>,
+  b: OrderableSheetEntry<T>,
+): number => {
   const first = sheetEntriesByImportant(a, b);
   if (first !== 0) return first;
   return sheetEntriesOrderByPrecedence(a, b);
 };
 
 /** @category Orders */
-export const sortSheetEntriesArray = (entries: SheetEntryHandler[]) =>
-  entries.sort(sortSheetEntries);
+export const sortSheetEntriesArray = <T>(
+  entries: OrderableSheetEntry<T>[],
+): OrderableSheetEntry<T>[] => entries.sort(sortSheetEntries);

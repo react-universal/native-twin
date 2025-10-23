@@ -18,7 +18,19 @@
     "url": "https://github.com/react-universal/native-twin",
     "directory": "packages/styled"
   },
+  "exports": {
+    ".": {
+      "types": "./build/dts/index.d.ts",
+      "react-native": "./src/index.ts",
+      "module": "./build/esm/index.js",
+      "default": "./build/cjs/index.js"
+    }
+  },
   "license": "MIT",
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "react-native": "./src/index.ts",
+  "types": "./build/dts/index.d.ts",
   "author": "Cristhian Gutierrez",
   "files": [
     "build",
@@ -30,6 +42,7 @@
   ],
   "scripts": {
     "build": "npx twin pack-dev",
+    "build:watch": "npx twin pack-dev -w",
     "bundle": "yarn clean && yarn twin-build",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -42,10 +55,15 @@
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
+    "d3-hierarchy": "^3.1.2",
+    "d3-selection": "^3.0.0",
+    "d3-shape": "^3.2.0",
+    "d3-zoom": "^3.0.0",
     "react-is": "^18.2.0",
     "stable-hash": "0.0.3"
   },
   "devDependencies": {
+    "@types/d3": "^7.4.3",
     "@types/react-is": "^17.0.3"
   },
   "peerDependencies": {

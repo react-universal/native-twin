@@ -1,14 +1,10 @@
 import { defineConfig, setup } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, screen } from '@testing-library/react-native';
 import { Text, View } from 'react-native';
 import { act } from 'react-test-renderer';
-import { colorScheme } from '../store/observables/colorScheme.obs.js';
-import {
-  createMockComponent,
-  resetComponents,
-  resetStyles,
-} from '../testing-library/index.js';
+import { colorScheme } from '../store/observables/colorScheme.obs';
+import { createMockComponent, render, resetComponents, resetStyles } from '../testing-library';
 
 const testID = 'native-twin-element';
 
@@ -49,9 +45,7 @@ test('dark mode', () => {
 test('Interactions', async () => {
   const TwinPressable = createMockComponent(View, { className: 'style' });
 
-  const tree = render(
-    <TwinPressable testID={testID} className='bg-black hover:(bg-gray-200)' />,
-  );
+  const tree = render(<TwinPressable testID={testID} className='bg-black hover:(bg-gray-200)' />);
   const button = tree.getByTestId(testID);
 
   await act(() => fireEvent(button, 'touchStart'));

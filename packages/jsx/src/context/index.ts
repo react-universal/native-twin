@@ -1,1 +1,1 @@
-export { groupContext } from './styled.context.js';
+export { groupContext } from './styled.context';

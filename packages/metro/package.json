@@ -57,8 +57,7 @@
     }
   },
   "optionalDependencies": {
-    "@native-twin/cli": "workspace:*",
-    "jest": "*"
+    "@native-twin/cli": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

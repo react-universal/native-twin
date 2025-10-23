@@ -1,7 +1,7 @@
-import { type SheetEntry, getRuleSelectorGroup } from '@native-twin/css';
+import { getRuleSelectorGroup, type SheetEntry } from '@native-twin/css';
 import { SheetEntryHandler, SheetOrders } from '@native-twin/css/jsx';
 import { Platform } from 'react-native';
-import { remObs } from '../../../store/observables/index.js';
+import { remObs } from '../../../store/observables';
 
 export const composeTemplateSheets = (entries: SheetEntry[]): any => {
   return entries

@@ -1,9 +1,9 @@
-import { type ComponentType, type ReactHTML, forwardRef } from 'react';
+import { type ComponentType, forwardRef, type HTMLElementType } from 'react';
 import { Platform, type TextProps } from 'react-native';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
 
-function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
+function createTextComponent(tag: HTMLElementType): ComponentType<TextProps> {
   const nativeProps: any = Platform.select({
     web: {
       role: 'text',
@@ -19,7 +19,7 @@ function createTextComponent(tag: keyof ReactHTML): ComponentType<TextProps> {
     });
   }) as ComponentType<TextProps>;
 
-  Element.displayName = tag.toLocaleUpperCase();
+  Element.displayName = String(tag).toLocaleUpperCase();
 
   return Element;
 }

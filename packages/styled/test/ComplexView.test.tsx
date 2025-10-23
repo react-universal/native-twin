@@ -1,7 +1,7 @@
-import { ScrollView as RNScrollView, View as RNView, Text as RNText } from 'react-native';
-import renderer from 'react-test-renderer';
 import { defineConfig, setup } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
+import { ScrollView as RNScrollView, Text as RNText, View as RNView } from 'react-native';
+import renderer from 'react-test-renderer';
 import { createStyledComponent } from '../src';
 import { createVariants } from '../src/styled/variants';
 

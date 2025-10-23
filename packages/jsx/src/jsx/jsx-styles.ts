@@ -1,5 +1,5 @@
 // import { Platform } from 'react-native';
-import type { JSXInternalProps } from '../types/jsx.types.js';
+import type { JSXInternalProps } from '../types/jsx.types';
 
 export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
   const componentSheet = props?.['_twinInjected'] as any[] | undefined;

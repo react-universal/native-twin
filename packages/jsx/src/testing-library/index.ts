@@ -3,17 +3,17 @@ import type { CompleteStyle } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 import { render as tlRender } from '@testing-library/react-native';
 import { type ComponentProps, type ComponentType, forwardRef } from 'react';
-import * as JSX from 'react/jsx-runtime';
+import { jsxDEV } from 'react/jsx-dev-runtime';
 import '../components';
-import wrapJSX from '../jsx-wrapper.js';
-import { StyleSheet } from '../sheet/StyleSheet.js';
-import { createStylableComponent, stylizedComponents } from '../styled/index.js';
+import wrapJSX from '../jsx-wrapper';
+import { StyleSheet } from '../sheet';
+import { createStylableComponent, stylizedComponents } from '../styled';
 import type {
   NativeTwinGeneratedProps,
   ReactComponent,
   StylableComponentConfigOptions,
-} from '../types/styled.types.js';
-import { INTERNAL_RESET } from '../utils/constants.js';
+} from '../types/styled.types';
+import { INTERNAL_RESET } from '../utils/constants';
 
 const testingConfig = defineConfig({
   content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
@@ -48,7 +48,7 @@ declare global {
   }
 }
 
-export const renderJSX = wrapJSX((JSX as any).jsx);
+export const renderJSX = wrapJSX((jsxDEV as any).jsxDev as any);
 export const render: typeof tlRender = (component: any, options?: any) =>
   tlRender(renderJSX(component.type, component.props, component.key) as any, options);
 

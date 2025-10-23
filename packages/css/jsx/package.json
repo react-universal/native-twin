@@ -1,5 +1,6 @@
 {
   "main": "../build/cjs/jsx.js",
   "module": "../build/esm/jsx.js",
+  "react-native": "../build/esm/jsx.js",
   "types": "../build/dts/jsx.d.ts"
 }

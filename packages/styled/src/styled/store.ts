@@ -1,12 +1,12 @@
 import {
-  type ValidGroupPseudoSelector,
-  type ValidInteractionPseudoSelector,
   createStyledContext,
   defaultGroupState,
+  type ValidGroupPseudoSelector,
+  type ValidInteractionPseudoSelector,
 } from '@native-twin/css';
 import { createStore } from '@native-twin/helpers';
 import { Appearance, Dimensions, PixelRatio, Platform } from 'react-native';
-import type { RegisteredComponent } from '../types/styled.types.js';
+import type { RegisteredComponent } from '../types/styled.types';
 
 const createComponent = (id: string, groupID: string) => {
   return new Proxy<RegisteredComponent>(

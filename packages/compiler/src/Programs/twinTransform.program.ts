@@ -14,33 +14,35 @@ export const twinTransformProgram = Effect.fn(function* (
 ) {
   const compiler = yield* TwinProjectContext;
 
-  yield* Stream.fromIterableEffect(compiler.compileAst(twinModule, platform)).pipe(
-    Stream.tap((treeNode) => {
-      return Effect.sync(() => {
-        const runtimeNode = treeNode.value.toRuntimeJSX();
-        const babelJsxElementStyles = literalValueToAst(runtimeNode);
+  const runtimeStyles = yield* Stream.fromIterableEffect(
+    compiler.compileAst(twinModule, platform),
+  ).pipe(
+    Stream.map((treeNode) => {
+      const runtimeNode = treeNode.value.toRuntimeJSX();
+      const babelJsxElementStyles = literalValueToAst(runtimeNode);
+
+      for (const prop of runtimeNode.props) {
         const babelStyledProp = babelTemplates.styledPropCall({
           STYLESHEET_VAR_NAME: t.identifier(TWIN_STYLESHEET_IMPORT),
           ELEMENT_KEY: t.stringLiteral(treeNode.value.node.id),
+          PROP: t.stringLiteral(prop.prop),
         });
-        for (const prop of runtimeNode.props) {
-          addJsxExpressionAttribute(
-            treeNode.value.node.babelPath.node,
-            prop.target,
-            babelStyledProp,
-          );
-        }
-        const registerJSXNodeAST = babelTemplates.styleSheetRegisterJSX({
-          STYLESHEET_VAR_NAME: TWIN_STYLESHEET_IMPORT,
-          JSX_NODE_SHEET: babelJsxElementStyles,
-        }) as t.Statement;
-        twinModule.addStyleRegistryExp(registerJSXNodeAST);
-      });
+        addJsxExpressionAttribute(treeNode.value.node.babelPath.node, prop.target, babelStyledProp);
+      }
+      const registerJSXNodeAST = babelTemplates.styleSheetRegisterJSX({
+        STYLESHEET_VAR_NAME: TWIN_STYLESHEET_IMPORT,
+        JSX_NODE_SHEET: babelJsxElementStyles,
+      }) as t.Statement;
+      twinModule.addStyleRegistryExp(registerJSXNodeAST);
+      return runtimeNode;
     }),
-    Stream.runDrain,
+    Stream.runCollect,
   );
 
-  return new CodeGenerator(twinModule.ast).generate();
+  return {
+    generated: new CodeGenerator(twinModule.ast).generate(),
+    runtimeStyles: runtimeStyles,
+  };
 
   // yield* Stream.fromIterableEffect(compiler.compileAst(twinModule, platform)).pipe(
   //   Stream.flatMap((node) => node.value.evaluatedStyledProps()),

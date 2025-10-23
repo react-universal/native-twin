@@ -1,9 +1,10 @@
 // @ts-nocheck
+
+import { createVirtualSheet, type Sheet, type SheetEntry } from '@native-twin/core';
+import { getNonce } from '@native-twin/helpers';
 import type * as streamInternal from 'stream';
 import type { Readable } from 'stream';
-import { type Sheet, type SheetEntry, createVirtualSheet } from '@native-twin/core';
-import { getNonce } from '@native-twin/helpers';
-import { IS_BROWSER, SC_ATTR, SC_ATTR_VERSION, SC_VERSION } from '../constants/ssr.js';
+import { IS_BROWSER, SC_ATTR, SC_ATTR_VERSION, SC_VERSION } from '../constants/ssr';
 
 declare const __SERVER__: boolean;
 

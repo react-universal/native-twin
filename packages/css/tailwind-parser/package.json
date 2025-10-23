@@ -1,5 +1,6 @@
 {
   "main": "../build/cjs/tailwind-parser.js",
   "module": "../build/esm/tailwind-parser.js",
+  "react-native": "../build/esm/tailwind-parser.js",
   "types": "../build/dts/tailwind-parser.d.ts"
 }

@@ -18,7 +18,7 @@ export function stylizeJSXChilds(props: JSXInternalProps | null | undefined) {
         const children = props['children'];
 
         props['children'] = cloneElement(children, {
-          __parentProps: props._twinInjected,
+          __parentProps: props['_twinInjected'],
           ord: 0,
           lastOrd: 0,
         } as Record<string, unknown>);
@@ -40,7 +40,7 @@ export function stylizeJSXChilds(props: JSXInternalProps | null | undefined) {
           }
 
           return cloneElement(child, {
-            __parentProps: props._twinInjected,
+            __parentProps: props['_twinInjected'],
             ord: index,
             lastOrd: totalChilds - 1,
           } as Record<string, unknown>);

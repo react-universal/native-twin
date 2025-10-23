@@ -1,6 +1,6 @@
 import type { ComponentType, ElementType } from 'react';
-import type { ComponentConfig } from '../types/styled.types.js';
-import { REACT_FORWARD_REF_SYMBOL } from './constants.js';
+import type { ComponentConfig } from '../types/styled.types';
+import { REACT_FORWARD_REF_SYMBOL } from './constants';
 
 export function getComponentType(component: any) {
   switch (typeof component) {

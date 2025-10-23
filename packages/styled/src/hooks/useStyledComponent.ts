@@ -1,11 +1,11 @@
 import type { AnyStyle } from '@native-twin/css';
 import { useMemo } from 'react';
 import { StyleSheet, type Touchable } from 'react-native';
-import type { StyledComponentProps } from '../types/styled.types.js';
-import { useChildren } from './useChildren.js';
-import { useComponentInteractions } from './useComponentInteractions.js';
-import { useComponentRegistry } from './useComponentRegistry.js';
-import { useCssToRN } from './useCssToRN.js';
+import type { StyledComponentProps } from '../types/styled.types';
+import { useChildren } from './useChildren';
+import { useComponentInteractions } from './useComponentInteractions';
+import { useComponentRegistry } from './useComponentRegistry';
+import { useCssToRN } from './useCssToRN';
 
 function useBuildStyledComponent({
   className,

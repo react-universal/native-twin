@@ -1,8 +1,8 @@
-export { createStyledComponent, styled } from './styled/index.js';
+export { createStyledComponent, styled } from './styled';
 
 export type {
-  PropsFrom,
-  StyledComponentProps,
-  RegisteredComponent,
   ComponentStylesheet,
-} from './types/styled.types.js';
+  PropsFrom,
+  RegisteredComponent,
+  StyledComponentProps,
+} from './types/styled.types';

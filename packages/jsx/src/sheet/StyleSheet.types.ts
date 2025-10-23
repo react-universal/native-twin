@@ -8,6 +8,7 @@ import type {
 import type { Atom } from '@native-twin/helpers/react';
 import type { StyleSheet } from 'react-native';
 import type { ComponentState } from '../store/components.store';
+import { INTERNAL_RESET } from '../utils/constants';
 
 export interface TwinStyleSheet extends StyleSheetAdapter<__Theme__> {
   create: typeof StyleSheet.create;
@@ -17,6 +18,7 @@ export interface TwinStyleSheet extends StyleSheetAdapter<__Theme__> {
   flatten: typeof StyleSheet.flatten;
   hairlineWidth: typeof StyleSheet.hairlineWidth;
   tw: RuntimeTW<__Theme__, Sheet<SheetEntry[]>>;
+  [INTERNAL_RESET]: () => {};
 
   getComponentState(id: string): Atom<ComponentState>;
   getComponentByID(

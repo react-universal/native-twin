@@ -1,6 +1,6 @@
 import { createElement as originalCreateElement } from 'react';
 import ReactJSXRuntime from 'react/jsx-runtime';
-import jsxWrapper from './jsx-wrapper.js';
+import jsxWrapper from './jsx-wrapper';
 
 /**
  * This the entry point for the @native-twin/jsx runtime.

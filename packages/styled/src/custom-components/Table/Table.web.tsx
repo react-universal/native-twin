@@ -1,14 +1,14 @@
-import { type ComponentType, type ReactHTML, forwardRef } from 'react';
+import { type ComponentType, forwardRef, type HTMLElementType } from 'react';
 import type { ViewProps } from 'react-native';
 // @ts-expect-error
 import { unstable_createElement } from 'react-native-web';
 
-function createView(tag: keyof ReactHTML): ComponentType<ViewProps> {
+function createView(tag: HTMLElementType): ComponentType<ViewProps> {
   const Element = forwardRef((props: ViewProps, ref) => {
     return unstable_createElement(tag, { ...props, ref });
   }) as ComponentType<ViewProps>;
 
-  Element.displayName = tag.toLocaleUpperCase();
+  Element.displayName = String(tag).toLocaleUpperCase();
   return Element;
 }
 

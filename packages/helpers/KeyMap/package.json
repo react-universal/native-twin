@@ -1,5 +1,6 @@
 {
   "main": "../build/cjs/KeyMap.js",
   "module": "../build/esm/KeyMap.js",
+  "react-native": "../build/esm/KeyMap.js",
   "types": "../build/dts/KeyMap.d.ts"
 }

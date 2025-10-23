@@ -1,12 +1,12 @@
 import {
+  Table as ExpoTable,
   TBody as ExpoTBody,
   TD as ExpoTD,
   TFoot as ExpoTFoot,
   TH as ExpoTH,
   THead as ExpoTHead,
   TR as ExpoTR,
-  Table as ExpoTable,
-} from './Table.js';
+} from './Table';
 
 const Table = ExpoTable;
 const THead = ExpoTHead;

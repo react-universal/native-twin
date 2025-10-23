@@ -24,27 +24,32 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./build/dts/index.d.ts",
+      "react-native": "./build/esm/index.js",
       "import": "./build/esm/index.js",
       "default": "./build/cjs/index.js"
     },
     "./jsx": {
       "types": "./build/dts/jsx.d.ts",
+      "react-native": "./build/esm/jsx.js",
       "import": "./build/esm/jsx.js",
       "default": "./build/cjs/jsx.js"
     },
     "./react-native": {
       "types": "./build/dts/react-native/index.d.ts",
+      "react-native": "./build/esm/react-native/index.js",
       "import": "./build/esm/react-native/index.js",
       "default": "./build/cjs/react-native/index.js"
     },
     "./tailwind-parser": {
       "types": "./build/dts/tailwind-parser.d.ts",
+      "react-native": "./build/esm/tailwind-parser.js",
       "import": "./build/esm/tailwind-parser.js",
       "default": "./build/cjs/tailwind-parser.js"
     }
   },
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
+  "react-native": "./build/esm/index.js",
   "types": "./build/dts/index.d.ts",
   "files": [
     "build",

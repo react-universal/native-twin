@@ -1,7 +1,7 @@
 import type { TwinRuntimeContext } from '@native-twin/core';
 import type { SheetEntry } from '@native-twin/css';
-import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants.js';
-import type { TwinStyleSheet } from './StyleSheet.types.js';
+import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
+import type { TwinStyleSheet } from './StyleSheet.types';
 
 // TODO: Check this on every react web fmw
 const internalSheet = {
@@ -12,7 +12,6 @@ const internalSheet = {
     // colorScheme[INTERNAL_RESET](appearance);
   },
   getFlag(name: string) {
-    // @ts-expect-error
     return this[INTERNAL_FLAGS][name];
   },
   getGlobalStyle(_name: string) {
@@ -24,7 +23,7 @@ const internalSheet = {
   create(a: any) {
     return a;
   },
-};
+} as any as TwinStyleSheet;
 
 export const StyleSheet = Object.assign({}, internalSheet) as any as TwinStyleSheet;
 

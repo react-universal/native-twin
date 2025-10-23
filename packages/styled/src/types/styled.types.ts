@@ -1,5 +1,5 @@
-import type { CompleteStyle } from '@native-twin/css';
 import type {
+  CompleteStyle,
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
 } from '@native-twin/css';
@@ -8,10 +8,7 @@ import type { ReactNode } from 'react';
 export interface RegisteredComponent {
   id: string;
   groupID: string;
-  interactionState: Record<
-    ValidInteractionPseudoSelector | ValidGroupPseudoSelector,
-    boolean
-  >;
+  interactionState: Record<ValidInteractionPseudoSelector | ValidGroupPseudoSelector, boolean>;
 }
 
 export interface ClassNameProps {
@@ -46,13 +43,7 @@ export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
 
 export type DefaultTheme = {};
 
-export type Primitive =
-  | number
-  | (string & {})
-  | null
-  | undefined
-  | boolean
-  | CompleteStyle;
+export type Primitive = number | (string & {}) | null | undefined | boolean | CompleteStyle;
 
 export type TemplateFunctions<T> = (
   arg: T & { theme?: DefaultTheme } & StyledComponentProps,

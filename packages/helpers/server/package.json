@@ -1,5 +1,6 @@
 {
   "main": "../build/cjs/server.js",
   "module": "../build/esm/server.js",
+  "react-native": "../build/esm/server.js",
   "types": "../build/dts/server.d.ts"
 }

@@ -3,7 +3,7 @@ import type {
   ClassNameProps,
   Primitive,
   TemplateFunctions,
-} from '../types/styled.types.js';
+} from '../types/styled.types';
 
 /** Converts the tagged template string into a css string */
 export function buildCSSString<T>(

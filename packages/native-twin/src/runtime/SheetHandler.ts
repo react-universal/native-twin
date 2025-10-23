@@ -102,7 +102,9 @@ export const sheetEntryToStyle = (
 
 const isApplicativeRule = (variants: string[], context: TwinRuntimeContext) => {
   if (variants.length === 0) return true;
+  console.log('TW: ', tw);
   const screens = tw?.theme('screens');
+  if (!screens) return true;
 
   for (let v of variants) {
     v = v.replace('&:', '');
@@ -116,12 +118,6 @@ const isApplicativeRule = (variants: string[], context: TwinRuntimeContext) => {
       // if (v === 'ios' && Platform.OS !== 'ios') return false;
       // if (v === 'android' && Platform.OS !== 'android') return false;
     }
-    // if (
-    //   (v ==== 'dark' && context.colorScheme ==== 'light') ||
-    //   (v ==== 'light' && context.colorScheme ==== 'dark')
-    // ) {
-    //   return false;
-    // }
     if (screens && v in screens) {
       const variant = screens[v];
       const width = context.deviceWidth;

@@ -1,8 +1,8 @@
 import { type ComponentType, forwardRef } from 'react';
-import { useComponentInteractions } from '../hooks/useComponentInteractions.js';
-import { useComponentRegistry } from '../hooks/useComponentRegistry.js';
-import { useCssToRN } from '../hooks/useCssToRN.js';
-import type { StyledComponentProps } from '../types/styled.types.js';
+import { useComponentInteractions } from '../hooks/useComponentInteractions';
+import { useComponentRegistry } from '../hooks/useComponentRegistry';
+import { useCssToRN } from '../hooks/useCssToRN';
+import type { StyledComponentProps } from '../types/styled.types';
 
 export type { StyledComponentProps };
 export { useCssToRN, useComponentRegistry, useComponentInteractions };

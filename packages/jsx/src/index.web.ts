@@ -1,12 +1,12 @@
 import { createElement } from 'react';
-import jsxWrapper from './jsx-wrapper.web.js';
+import jsxWrapper from './jsx-wrapper.web';
 
 export {
   createStylableComponent,
   stylizedComponents,
   withMappedProps,
-} from './styled/index.web.js';
-export { getSheetEntryStyles } from './utils/sheet.utils.js';
+} from './styled/index.web';
+export { getSheetEntryStyles } from './utils/sheet.utils';
 
 // export const createTwinElement = jsxWrapper(createElement as any);
 

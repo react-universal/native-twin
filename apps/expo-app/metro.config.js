@@ -18,7 +18,7 @@ config.resolver.nodeModulesPaths = [
  * @type {import('expo/metro-config')}
  */
 
-config.resolver.unstable_enablePackageExports = false;
+config.resolver.unstable_enablePackageExports = true;
 
 module.exports = withNativeTwin(config, {
   projectRoot,

@@ -1,12 +1,12 @@
 // @ts-noCheck
-const __ReactNativeStyleSheet = require('@native-twin/jsx').StyleSheet;
+const __ReactNativeStyleSheet = require('@native-twin/styled').TwinStyleSheet;
 // @ts-noCheck
 import { View } from 'react-native';
 import { Button } from './code-i';
 export default function App() {
-  return <View className={`group flex-1 shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200`} style={__ReactNativeStyleSheet.get("286613378")}>
+  return <View className={`group flex-1 shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200`} style={__ReactNativeStyleSheet.getComponentStyles("286613378", "className", false)}>
       <Button size='small' />
-       <Text className='px-2' style={__ReactNativeStyleSheet.get("766331662")}>Hello World</Text>
+       <Text className='px-2' style={__ReactNativeStyleSheet.getComponentStyles("766331662", "className", false)}>Hello World</Text>
       {/*<Text>Hello World</Text>
        <View className='flex-1 first:bg-blue-200'>
         <Text className='text-lg'>Test Text</Text>
@@ -15,7 +15,7 @@ export default function App() {
     </View>;
 }
 const _____Twin__Module__Styles = {};
-__ReactNativeStyleSheet.registerBuildSheet({
+__ReactNativeStyleSheet.registerComponent({
   "id": "286613378",
   "index": 0,
   "metadata": {
@@ -159,7 +159,7 @@ __ReactNativeStyleSheet.registerBuildSheet({
     }]
   }]
 });
-__ReactNativeStyleSheet.registerBuildSheet({
+__ReactNativeStyleSheet.registerComponent({
   "id": "450999280",
   "index": 0,
   "metadata": {
@@ -172,7 +172,7 @@ __ReactNativeStyleSheet.registerBuildSheet({
   "props": [],
   "childStyles": []
 });
-__ReactNativeStyleSheet.registerBuildSheet({
+__ReactNativeStyleSheet.registerComponent({
   "id": "766331662",
   "index": 1,
   "metadata": {

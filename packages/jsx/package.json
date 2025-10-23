@@ -16,11 +16,13 @@
   "exports": {
     ".": {
       "types": "./build/dts/index.d.ts",
+      "react-native": "./build/esm/index.js",
       "import": "./build/esm/index.js",
       "default": "./build/cjs/index.js"
     },
     "./components": {
       "types": "./build/dts/components.d.ts",
+      "react-native": "./build/esm/components.js",
       "import": "./build/esm/components.js",
       "default": "./build/cjs/components.js"
     },
@@ -58,6 +60,9 @@
       "types": "./build/dts/third-party-declarations.d.d.ts",
       "import": "./build/esm/third-party-declarations.d.js",
       "default": "./build/cjs/third-party-declarations.d.js"
+    },
+    "./types": {
+      "types": "./types.d.ts"
     }
   },
   "main": "./build/cjs/index.js",

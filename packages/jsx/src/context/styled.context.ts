@@ -1,4 +1,4 @@
-import type { RuntimeTwinComponentProps } from '@native-twin/css/build/dts/jsx';
+import type { RuntimeTwinComponentProps } from '@native-twin/css/jsx';
 import { createContext } from 'react';
 
 export type ChildStylesContextFn = (ord: number, lastOrd: number) => Record<string, any>;

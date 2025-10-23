@@ -1,12 +1,8 @@
-import { type Sheet, getSheet } from '@native-twin/css';
+import { getSheet, type Sheet } from '@native-twin/css';
 import { noop } from '@native-twin/helpers';
 import { createTailwind } from '../native-twin.js';
-import type {
-  Preset,
-  TailwindConfig,
-  TailwindUserConfig,
-} from '../types/config.types.js';
-import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types.js';
+import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types.js';
+import type { __Theme__, ExtractThemes, RuntimeTW } from '../types/theme.types.js';
 import { isDevEnvironment } from './runtime.utils.js';
 import { mutationObserver } from './web/mutation-observer.js';
 
@@ -42,20 +38,13 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
         assertActive();
       }
 
-      // if (property === 'observeConfig') {
-      //   // @ts-expect-error
-      //   subscriptions.add.apply(subscriptions, arguments);
-      //   return function () {
-      //     return () => {
-      //       // @ts-expect-error
-      //       subscriptions.delete.apply(subscriptions, arguments);
-      //     };
-      //   };
-      // }
-
       // const value = active[property as keyof RuntimeTW];
       if (property === 'theme') {
         const value = active[property];
+        // console.log('VALUE: ', value, active, property);
+        console.log('ACTIVE: ', active);
+        if (!value) return () => null;
+
         return () => {
           if (isDevEnvironment()) assertActive();
           return value.apply(active, arguments as unknown as [string, string]);

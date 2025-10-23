@@ -5,7 +5,7 @@
     "allowArbitraryExtensions": false,
     "moduleResolution": "nodenext",
     "module": "nodenext",
-    "jsx": "react-native"
+    "jsx": "preserve"
   },
   "include": ["src"],
   "exclude": ["build"]

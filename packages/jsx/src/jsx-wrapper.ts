@@ -1,7 +1,7 @@
-// import { jsxStyles } from './jsx/jsx-styles.js';
-import { stylizeJSXChilds } from './jsx/jsx-childs.js';
-import { createStylableComponent, stylizedComponents } from './styled/index.js';
-import type { JSXFunction } from './types/jsx.types.js';
+// import { jsxStyles } from './jsx/jsx-styles';
+// import { stylizeJSXChilds } from './jsx/jsx-childs';
+import { createStylableComponent, stylizedComponents } from './styled';
+import type { JSXFunction } from './types/jsx.types';
 
 /**
  * Create a new JSX function that swaps the component type being rendered with
@@ -46,14 +46,14 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
     } else if (stylizedComponents.has(type)) {
       type = stylizedComponents.get(type)!;
     } else {
-      if (props?._twinInjected) {
+      if (props?.['_twinInjected']) {
         type = createStylableComponent(type, {});
       }
     }
     // Swap the component type with styled if it exists
 
     // console.log(props);
-    stylizeJSXChilds(props);
+    // stylizeJSXChilds(props);
     // jsxStyles(props, type);
 
     // Call the original jsx function with the new type

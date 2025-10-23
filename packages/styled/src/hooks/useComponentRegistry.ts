@@ -3,7 +3,7 @@ import {
   getParentComponentState,
   globalStore,
   registerComponent,
-} from '../styled/store.js';
+} from '../styled/store';
 
 interface RegisterComponent {
   parentID: string | undefined;

@@ -74,7 +74,7 @@
     "metro-react-native-babel-preset": "^0.77.0",
     "mocha": "^10.2.0",
     "react-native-worklets": "0.6.1",
-    "react-test-renderer": "^19.2.0",
+    "react-test-renderer": "19.1.0",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "ts-unused-exports": "^11.0.1",

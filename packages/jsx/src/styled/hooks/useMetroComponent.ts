@@ -1,8 +1,8 @@
-// import type { RuntimeJSXStyle } from '@native-twin/css/jsx';
+// import type { RuntimeJSXStyle } from '@native-twin/cssx';
 // import { useAtomValue } from '@native-twin/helpers/react';
 // import { useMemo } from 'react';
 // import { type StyledContext, styledContext } from '../../store/observables';
-// import type { JSXInternalProps } from '../../types/jsx.types';
+// import type { JSXInternalProps } from '../../typesx.types';
 
 // export const useMetroComponent = (originalProps: JSXInternalProps) => {
 //   const styledCtx = useAtomValue(styledContext);

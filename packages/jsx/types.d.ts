@@ -4,8 +4,6 @@ import {
   ScrollViewPropsIOS,
   Touchable,
   VirtualizedListProps,
-  StyleSheetProperties,
-  StyleSheet,
 } from 'react-native';
 
 declare module '@react-native/virtualized-lists' {

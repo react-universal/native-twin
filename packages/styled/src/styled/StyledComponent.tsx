@@ -1,22 +1,15 @@
-import type { AnyStyle } from '@native-twin/css';
 import {
   type ComponentType,
-  type ForwardRefExoticComponent,
-  type Ref,
   createElement,
+  type ForwardRefExoticComponent,
   forwardRef,
-  useMemo,
+  type Ref,
 } from 'react';
-import { type StyleProp, StyleSheet, type Touchable } from 'react-native';
-import { useChildren } from '../hooks/useChildren.js';
-import { useComponentInteractions } from '../hooks/useComponentInteractions.js';
-import { useComponentRegistry } from '../hooks/useComponentRegistry.js';
-import { useCssToRN } from '../hooks/useCssToRN.js';
-import type { StyledComponentProps } from '../types/styled.types.js';
-import { getComponentDisplayName } from '../utils/getComponentDisplayName.js';
+import type { StyleProp } from 'react-native';
+import type { StyledComponentProps } from '../types/styled.types';
+import { getComponentDisplayName } from '../utils/getComponentDisplayName';
 
 export type { StyledComponentProps };
-export { useCssToRN, useComponentRegistry, useComponentInteractions };
 
 function styledComponentsFactory<
   StyleType,
@@ -24,50 +17,49 @@ function styledComponentsFactory<
   Props extends InitialProps = InitialProps,
 >(
   Component: ComponentType<InitialProps>,
-  styledProp = 'style',
+  _styledProp = 'style',
 ): ForwardRefExoticComponent<Props & StyledComponentProps & { ref?: Ref<any> }> {
   const ForwardRefComponent = forwardRef((props: any, ref) => {
-    const classNames = props.className ?? props.tw ?? '';
-    const { stylesheet, componentID } = useCssToRN(classNames);
+    // const classNames = props.className ?? props.tw ?? '';
+    // const { stylesheet, componentID } = useCssToRN(classNames);
 
-    const { component, parentComponent, currentGroupID } = useComponentRegistry({
-      componentID,
-      groupID: props.groupID,
-      isGroupParent: stylesheet.metadata.isGroupParent,
-      parentID: props.parentID,
-    });
+    // const { component, parentComponent, currentGroupID } = useComponentRegistry({
+    //   componentID,
+    //   groupID: props.groupID,
+    //   isGroupParent: stylesheet.metadata.isGroupParent,
+    //   parentID: props.parentID,
+    // });
 
-    const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({
-      props: props as Touchable,
-      hasGroupInteractions: stylesheet.metadata.hasGroupEvents,
-      hasPointerInteractions: stylesheet.metadata.hasPointerEvents,
-      isGroupParent: stylesheet.metadata.isGroupParent,
-      id: componentID,
-    });
+    // const { componentInteractionHandlers, focusHandlers } = useComponentInteractions({
+    //   props: props as Touchable,
+    //   hasGroupInteractions: stylesheet.metadata.hasGroupEvents,
+    //   hasPointerInteractions: stylesheet.metadata.hasPointerEvents,
+    //   isGroupParent: stylesheet.metadata.isGroupParent,
+    //   id: componentID,
+    // });
 
-    const componentChilds = useChildren(
-      props.children,
-      componentID,
-      stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
-      stylesheet.getChildStyles,
-    );
+    // const componentChilds = useChildren(
+    //   props.children,
+    //   componentID,
+    //   stylesheet.metadata.isGroupParent ? componentID : currentGroupID,
+    //   stylesheet.getChildStyles,
+    // );
 
-    const componentStyles = useMemo(() => {
-      const styles: AnyStyle = stylesheet.getStyles({
-        isParentActive:
-          parentComponent.active || parentComponent.focus || parentComponent.hover,
-        isPointerActive:
-          component.interactionState.active ||
-          component.interactionState.focus ||
-          component.interactionState.hover,
-      });
-      return StyleSheet.create({
-        generated: {
-          ...styles,
-          ...(props?.style as unknown as AnyStyle),
-        },
-      }).generated;
-    }, [component.interactionState, stylesheet, parentComponent, props.style]);
+    // const componentStyles = useMemo(() => {
+    //   const styles: AnyStyle = stylesheet.getStyles({
+    //     isParentActive: parentComponent.active || parentComponent.focus || parentComponent.hover,
+    //     isPointerActive:
+    //       component.interactionState.active ||
+    //       component.interactionState.focus ||
+    //       component.interactionState.hover,
+    //   });
+    //   return StyleSheet.create({
+    //     generated: {
+    //       ...styles,
+    //       ...(props?.style as unknown as AnyStyle),
+    //     },
+    //   }).generated;
+    // }, [component.interactionState, stylesheet, parentComponent, props.style]);
 
     // const start = performance.now();
     const newProps = {
@@ -78,12 +70,12 @@ function styledComponentsFactory<
     // console.log('TOOK: ', performance.now() - start);
     return createElement(Component, {
       ...newProps,
-      [styledProp]: componentStyles,
+      // [styledProp]: componentStyles,
       ref,
-      children: componentChilds,
-      groupID: currentGroupID,
-      ...focusHandlers,
-      ...componentInteractionHandlers,
+      // children: componentChilds,
+      // groupID: currentGroupID,
+      // ...focusHandlers,
+      // ...componentInteractionHandlers,
     });
   });
   if (__DEV__) {

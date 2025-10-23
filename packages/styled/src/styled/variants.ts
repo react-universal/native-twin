@@ -1,4 +1,4 @@
-import type { OmitUndefined, StyledComponentProps } from '../types/styled.types.js';
+import type { OmitUndefined, StyledComponentProps } from '../types/styled.types';
 
 type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
 
