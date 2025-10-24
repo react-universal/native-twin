@@ -5,12 +5,16 @@
       "path": ".."
     },
     {
+      "name": "📦 @native-twin/styled",
+      "path": "../packages/styled"
+    },
+    {
       "name": "📦 @native-twin/compiler",
       "path": "../packages/compiler"
     },
     {
-      "name": "📦 @native-twin/styled",
-      "path": "../packages/styled"
+      "name": "📦 @native-twin/jsx",
+      "path": "../packages/jsx"
     },
     {
       "name": "📦 @native-twin/adapters",
@@ -43,10 +47,6 @@
     {
       "name": "📦 @native-twin/helpers",
       "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @native-twin/jsx",
-      "path": "../packages/jsx"
     },
     {
       "name": "📦 @native-twin/language-server",

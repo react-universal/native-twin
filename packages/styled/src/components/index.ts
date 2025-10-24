@@ -1,3 +1,4 @@
+export { useStyledComponent } from '../styled/useStyledComponent';
 export { ActivityIndicator } from './ActivityIndicator';
 export { Button } from './Button';
 export { FlatList } from './FlatList';
@@ -12,6 +13,5 @@ export { TextInput } from './TextInput';
 export { TouchableHighlight } from './TouchableHighlight';
 export { TouchableOpacity } from './TouchableOpacity';
 export { TouchableWithoutFeedback } from './TouchableWithoutFeedback';
-export { useStyledComponent } from './useStyledComponent';
 export { View } from './View';
 export { VirtualizedList } from './VirtualizedList';
