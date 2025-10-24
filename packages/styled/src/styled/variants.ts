@@ -1,4 +1,4 @@
-import type { OmitUndefined, StyledComponentProps } from '../types/styled.types';
+import type { OmitUndefined } from '@native-twin/helpers';
 
 type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
 
@@ -24,8 +24,8 @@ export type ConfigVariants<T> = T extends ConfigSchema
   : unknown;
 
 type VariantsFnProps<T> = T extends ConfigSchema
-  ? ConfigVariants<T> & StyledComponentProps
-  : StyledComponentProps;
+  ? ConfigVariants<T> & { className?: string }
+  : { className?: string };
 
 export const createVariants = <T>(config: VariantsConfig<T>) => {
   return (props?: VariantsFnProps<T>) => {
@@ -33,9 +33,6 @@ export const createVariants = <T>(config: VariantsConfig<T>) => {
       let composed = config.base ?? '';
       if (props?.className) {
         composed += `${composed === '' ? '' : ' '}${props.className}`;
-      }
-      if (props?.tw) {
-        composed += `${composed === '' ? '' : ' '}${props.tw}`;
       }
       return composed.trim();
     }
@@ -56,9 +53,6 @@ export const createVariants = <T>(config: VariantsConfig<T>) => {
 
     if (props?.className) {
       variantClassNames += `${variantClassNames === '' ? '' : ' '}${props.className}`;
-    }
-    if (props?.tw) {
-      variantClassNames += `${variantClassNames === '' ? '' : ' '}${props.tw}`;
     }
     return variantClassNames.trim();
   };

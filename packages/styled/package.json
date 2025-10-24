@@ -24,6 +24,29 @@
       "react-native": "./src/index.ts",
       "module": "./build/esm/index.js",
       "default": "./build/cjs/index.js"
+    },
+    "./components": {
+      "source": "./src/components/index.ts",
+      "import": {
+        "default": "./build/cjs/components/index.js",
+        "types": "./build/dts/components/index.d.ts"
+      },
+      "require": {
+        "default": "./build/cjs/components/index.js",
+        "types": "./build/dts/components/index.d.ts"
+      }
+    },
+    "./components/*": {
+      "source": "./src/components/*.tsx",
+      "react-native": "./src/components/*.tsx",
+      "import": {
+        "types": "./build/dts/components/*.d.ts",
+        "default": "./build/cjs/components/*.js"
+      },
+      "require": {
+        "types": "./build/dts/components/*.d.ts",
+        "default": "./build/cjs/components/*.js"
+      }
     }
   },
   "license": "MIT",

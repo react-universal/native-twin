@@ -1,10 +1,4 @@
-import type {
-  AnyStyle,
-  CompleteStyle,
-  ValidGroupPseudoSelector,
-  ValidInteractionPseudoSelector,
-} from '@native-twin/css';
-import type { Atom } from '@native-twin/helpers/react';
+import type { CompleteStyle } from '@native-twin/css';
 import type {
   ClassicComponentClass,
   ComponentClass,
@@ -12,36 +6,7 @@ import type {
   ForwardRefExoticComponent,
   FunctionComponent,
   JSXElementConstructor,
-  ReactNode,
 } from 'react';
-
-export interface RegisteredComponent {
-  id: string;
-  groupID: string;
-  interactionState: Record<ValidInteractionPseudoSelector | ValidGroupPseudoSelector, boolean>;
-}
-
-export interface ClassNameProps {
-  className?: string;
-  tw?: string;
-}
-
-export interface StyledComponentProps extends ClassNameProps {
-  nthChild?: number;
-  isFirstChild?: boolean;
-  isLastChild?: boolean;
-  parentID?: string;
-  children?: ReactNode;
-  groupID?: string;
-}
-
-export type ComponentStylesheet = {
-  styles: any;
-  hash: string;
-  isGroupParent: boolean;
-  hasPointerEvents: boolean;
-  hasGroupEvents: boolean;
-};
 
 export type PropsFrom<TComponent> = TComponent extends React.FC<infer Props>
   ? Props
@@ -55,43 +20,7 @@ export type DefaultTheme = {};
 
 export type Primitive = number | (string & {}) | null | undefined | boolean | CompleteStyle;
 
-export type TemplateFunctions<T> = (
-  arg: T & { theme?: DefaultTheme } & StyledComponentProps,
-) => Primitive;
-
-export type OmitUndefined<T> = T extends undefined ? never : T;
-
-export interface RegisteredComponent {
-  id: string;
-  groupID: string;
-  interactionState: Record<ValidInteractionPseudoSelector | ValidGroupPseudoSelector, boolean>;
-}
-
-type InteractionState = RegisteredComponent['interactionState'];
-
-export type ComponentInteractionState = {
-  [K in keyof InteractionState]: Atom<InteractionState[K]>;
-};
-
 // export type StyledComponentSheet = ReturnType<typeof createComponentSheet>;
-
-//** Used */
-export interface StyledComponentState {
-  refs: {
-    props: Record<string, any> | null;
-    // variables: Record<string, any>;
-  };
-  interaction: Partial<ComponentInteractionState>;
-  rerender(): void;
-  // upgrades: {
-  //   animated?: number;
-  //   variables?: number;
-  //   parents?: number;
-  //   pressable?: number;
-  //   canWarn?: boolean;
-  // };
-  // propStates: ReturnType<typeof createPropState>[];
-}
 
 export type StyledSubscription = 'vh' | 'vw' | 'rem' | 'em' | 'appearance';
 
@@ -124,39 +53,5 @@ export type ComponentClassNamePropConfig<P> =
 export type NativeStyleToProp<P> = {
   [K in keyof CompleteStyle & string]?: K extends keyof P
     ? (keyof P & string) | true
-    : keyof P & string;
-};
-
-export type PropState = ComponentConfig & {
-  // upgrades: StyledComponentState['upgrades'];
-  refs: StyledComponentState['refs'];
-  interaction: StyledComponentState['interaction'];
-  testID?: string;
-
-  props?: Record<string, any>;
-
-  classNames?: string;
-
-  // sheet: StyledComponentSheet | null;
-  currentStyles: AnyStyle;
-
-  // declarationEffect: Effect;
-  // styleEffect: Effect;
-};
-
-
-export type NativeTwinGeneratedProps<T extends StylableComponentConfigOptions<any>> = {
-  [K in keyof T as K extends string
-    ? T[K] extends undefined | false
-      ? never
-      : T[K] extends true | string
-        ? K
-        : T extends {
-              target: string | boolean;
-            }
-          ? T['target'] extends true | string
-            ? K
-            : never
-          : never
-    : never]?: string;
+    : (keyof P & string) | true;
 };
