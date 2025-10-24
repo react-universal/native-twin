@@ -102,7 +102,6 @@ export const sheetEntryToStyle = (
 
 const isApplicativeRule = (variants: string[], context: TwinRuntimeContext) => {
   if (variants.length === 0) return true;
-  console.log('TW: ', tw);
   const screens = tw?.theme('screens');
   if (!screens) return true;
 

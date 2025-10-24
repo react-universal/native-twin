@@ -4,9 +4,9 @@ const __ReactNativeStyleSheet = require('@native-twin/styled').TwinStyleSheet;
 import { View } from 'react-native';
 import { Button } from './code-i';
 export default function App() {
-  return <View className={`group flex-1 shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200`} style={__ReactNativeStyleSheet.getComponentStyles("286613378", "className", false)}>
+  return <View className={`group flex-1 shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200`} style={__ReactNativeStyleSheet.getComponentStyles("286613378", "className", false)} __twinID={"286613378"}>
       <Button size='small' />
-       <Text className='px-2' style={__ReactNativeStyleSheet.getComponentStyles("766331662", "className", false)}>Hello World</Text>
+       <Text className='px-2' style={__ReactNativeStyleSheet.getComponentStyles("766331662", "className", false)} __twinID={"766331662"}>Hello World</Text>
       {/*<Text>Hello World</Text>
        <View className='flex-1 first:bg-blue-200'>
         <Text className='text-lg'>Test Text</Text>

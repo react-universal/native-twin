@@ -2,7 +2,7 @@ import { sheetEntryToStyle, type TwinRuntimeContext } from "@native-twin/core";
 import type { AnyStyle } from "@native-twin/css";
 import type { TwinRuntimeComponent } from "@native-twin/css/jsx";
 import { type Atom, atom } from "@native-twin/helpers/react";
-import { StyleSheet } from "react-native";
+import { type ComponentStyleRegistry, TwinStyleSheet } from "./TwinStyledSheet";
 
 const EMPTY_STYLES = Object.freeze({});
 
@@ -23,6 +23,7 @@ export class StoredTwinComponent {
   private _currentStyles: {
     [prop: string]: Atom<AnyStyle>;
   };
+  private _sheet: ComponentStyleRegistry;
   private _parentSubscription: (() => void) | null = null;
 
   get interactionState() {
@@ -48,9 +49,10 @@ export class StoredTwinComponent {
       const styles = prop.entries.flatMap(
         (x) => sheetEntryToStyle(x, this.runtimeContext) ?? []
       );
-      return [prop.target, atom(StyleSheet.flatten(styles))] as const;
+      return [prop.target, atom(TwinStyleSheet.flatten(styles))] as const;
     });
     this._currentStyles = Object.fromEntries(styles);
+    this._sheet = TwinStyleSheet.registerComponent(twinComp);
   }
 
   getPropStyles(prop: string) {
@@ -58,6 +60,26 @@ export class StoredTwinComponent {
     if (!style) return EMPTY_STYLES;
 
     return this._currentStyles[prop].get();
+  }
+
+  getStyledProps() {
+    return this._sheet.props.reduce((prev, current) => {
+      return Object.assign(
+        { ...prev },
+        {
+          [current.target]: TwinStyleSheet.getComponentStyles(
+            this.twinComp.id,
+            current.prop,
+            false
+          ),
+        }
+      );
+    }, {});
+    // const result: Record<string, unknown> = {};
+    // for (const prop in this._currentStyles) {
+    //   result[prop] = this._currentStyles[prop].get();
+    // }
+    // return result;
   }
 
   subscribeToParentInteractions(parent: StoredTwinComponent) {

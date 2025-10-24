@@ -33,7 +33,7 @@ export const atom = <T>(initialValue: T | AtomGetter<T>): Atom<T> => {
         : currentValue;
     currentValue = null as T;
     currentValue = newValue;
-    subscribers.forEach((x) => x(currentValue));
+    subscribers.forEach((x) => void x(currentValue));
   }
 
   computeValue();

@@ -1,0 +1,15 @@
+import type { PropsFrom } from '@native-twin/helpers';
+import { View as RNView } from 'react-native';
+import type { StylableComponentConfigOptions } from '../types/styled.types';
+import { getNormalizeConfig } from '../utils/component.config';
+import { copyComponentProperties } from './_hoistComponentProps';
+import { useStyledComponent } from './useStyledComponent';
+
+const mapping = {
+  className: 'style',
+} satisfies StylableComponentConfigOptions<typeof RNView>;
+
+export const View = copyComponentProperties(RNView, (props: PropsFrom<typeof RNView>) => {
+  const config = getNormalizeConfig(mapping);
+  return useStyledComponent(RNView, props, config);
+});

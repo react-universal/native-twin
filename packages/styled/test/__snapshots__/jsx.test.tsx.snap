@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render component Render single styled 1`] = `
+<View
+  __twinID="1"
+  className="flex-1"
+  styles={
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
+  }
+/>
+`;

@@ -1,67 +1,56 @@
-export { hash, createHash, getBitMask, getHashMask, simpleHash } from './hash.utils.js';
-
-export { createStore, createValueStore } from './store.utils.js';
-
+export * as Base64Utils from './base64.js';
 export {
-  getNonce,
+  compareClassNames,
   escapeSelector,
   fixHTMLTagClassNamesList,
-  compareClassNames,
+  getNonce,
 } from './browser.utils.js';
-
-export {
-  asRegExp,
-  asNumber,
-  asString,
-  asArray,
-  identity,
-  removeReadonly,
-  keysOf,
-} from './identity.utils.js';
-
 export { toColorValue } from './color.utils.js';
-
-export { hasOwnProperty, isObject, isString, noop, uniq } from './function.utils.js';
-
-export {
-  toCamelCase,
-  toHyphenCase,
-  toTailDashed,
-  generateAlphabeticName,
-  escapeBackticksAndOctals,
-  splitBySpace,
-  assertString,
-} from './string.utils.js';
-
-export { warn, type WarningEventMap } from './warn.js';
-
 export {
   createExponentialUnits,
   createLinearUnits,
   createPercentRatios,
 } from './create-value.utils.js';
-
-export { flattenObjectByPath, flattenColorPalette } from './object.utils.js';
-
-export { isUndefined, isNotUndefined } from './guards.utils.js';
-
-export * as Base64Utils from './base64.js';
-
+export { hasOwnProperty, isObject, isString, noop, uniq } from './function.utils.js';
+export { isNotUndefined, isUndefined } from './guards.utils.js';
+export { createHash, getBitMask, getHashMask, hash, simpleHash } from './hash.utils.js';
+export {
+  asArray,
+  asNumber,
+  asRegExp,
+  asString,
+  identity,
+  keysOf,
+  removeReadonly,
+} from './identity.utils.js';
+export { memoize } from './memoize.js';
+export { flattenColorPalette, flattenObjectByPath } from './object.utils.js';
+export { createStore, createValueStore } from './store.utils.js';
+export {
+  assertString,
+  escapeBackticksAndOctals,
+  generateAlphabeticName,
+  splitBySpace,
+  toCamelCase,
+  toHyphenCase,
+  toTailDashed,
+} from './string.utils.js';
 export type {
+  AnyPrimitive,
   ArrayType,
+  ClassNameProps,
+  ColorsRecord,
   DeepPartial,
   Falsey,
   KebabCase,
   MaybeArray,
-  StringLike,
-  UnionToIntersection,
-  ColorsRecord,
-  AnyPrimitive,
-  PropsFrom,
-  OmitUndefined,
-  ClassNameProps,
-  StyledComponentProps,
-  Prettify,
   NegativeInteger,
+  OmitUndefined,
   PositiveInteger,
+  Prettify,
+  PropsFrom,
+  StringLike,
+  StyledComponentProps,
+  UnionToIntersection,
 } from './utility.types.js';
+export { type WarningEventMap, warn } from './warn.js';

@@ -42,7 +42,6 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
       if (property === 'theme') {
         const value = active[property];
         // console.log('VALUE: ', value, active, property);
-        console.log('ACTIVE: ', active);
         if (!value) return () => null;
 
         return () => {

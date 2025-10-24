@@ -13,6 +13,8 @@ import styledComponentsFactory from './StyledComponent';
 
 const RN = require('react-native');
 
+import { View as StyledView } from '../components/View';
+
 const styled = <StyleType, InitialProps extends { style?: StyleProp<StyleType> }>(
   Component: React.ComponentType<InitialProps>,
 ) => styledComponentsFactory<StyleType, InitialProps>(Component);
@@ -33,7 +35,7 @@ styled.TouchableNativeFeedback = styled(RN.TouchableNativeFeedback);
 styled.TouchableOpacity = styled(RN.TouchableOpacity);
 styled.Pressable = styled(RN.Pressable);
 styled.TouchableWithoutFeedback = styled(RN.TouchableWithoutFeedback);
-styled.View = styled(RN.View);
+styled.View = StyledView;
 styled.FlatList = styledFlatList;
 styled.SectionList = styledSectionList;
 styled.VirtualizedList = styledVirtualizedList;

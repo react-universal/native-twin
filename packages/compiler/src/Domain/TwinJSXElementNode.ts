@@ -32,12 +32,14 @@ export class TwinJSXElementNode extends JSXElementNodeConstructor {
 }
 
 const getJSXElementNodeID = (
-  node: Pick<TwinJSXElementNode, 'dependency' | 'name' | 'file'>,
+  node: Pick<TwinJSXElementNode, 'dependency' | 'name' | 'file' | 'classNameProps'>,
 ): string => {
+  const data = node.classNameProps.map((x) => x.text).join(',');
   return node.dependency.pipe(
     Option.map((dep) => `${dep.filepath}_${dep.localName}_${dep.originalSource}_${dep.exportName}`),
     Option.getOrElse(() => 'NoDep'),
-    (dep) => `__JSXElementNode:${Hash.string(node.file.path)}:${dep}:${node.name}`,
+    (dep) =>
+      `__JSXElementNode:${Hash.string(node.file.path)}:${dep}:${node.name}:${Hash.string(data)}`,
     Hash.string,
     (id) => Math.abs(id).toString(),
   );

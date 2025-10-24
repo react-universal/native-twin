@@ -1,5 +1,5 @@
 #env bin/zsh
-npx metro build $(pwd)/index.js \
+npx metro build $(pwd)/App.tsx \
 -c=metro.config.js \
 --minify=false \
 --source-map=true \

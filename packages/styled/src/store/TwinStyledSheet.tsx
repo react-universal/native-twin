@@ -1,10 +1,14 @@
 import * as SemiGroup from "@effect/typeclass/Semigroup";
-import type {
-  AnyStyle,
-  CompleteStyle,
-  SheetEntryDeclaration,
+import {
+  type AnyStyle,
+  type CompleteStyle,
+  getRuleSelectorGroup,
+  getRuleSelectorGroups,
+  type SheetEntry,
+  type SheetEntryDeclaration,
 } from "@native-twin/css";
 import {
+  compileEntryDeclaration,
   Predicates,
   type RuntimeJSXStyle,
   type RuntimeSheetDeclaration,
@@ -13,7 +17,11 @@ import {
   type TwinRuntimeComponent,
 } from "@native-twin/css/jsx";
 import { keysOf } from "@native-twin/helpers";
-import { StyleSheet as NativeSheet, type StyleProp } from "react-native";
+import {
+  StyleSheet as NativeSheet,
+  Platform,
+  type StyleProp,
+} from "react-native";
 import { INTERNAL_RESET } from "../utils/constants";
 import { styledContext } from "./observables";
 
@@ -61,6 +69,19 @@ export class TwinStyledSheetManager {
     return registry;
   }
 
+  getComponentStyledProps(id: string): StyleProp<CompleteStyle> {
+    const component = this._registry.get(id);
+    if (!component) return {};
+    return component.props.reduce((prev, current) => {
+      return Object.assign(
+        { ...prev },
+        {
+          [current.target]: current.styles.base,
+        }
+      );
+    }, {});
+  }
+
   getComponentStyles(
     id: string,
     prop: string,
@@ -68,8 +89,11 @@ export class TwinStyledSheetManager {
   ): StyleProp<CompleteStyle> {
     const component = this._registry.get(id);
     if (!component) return {};
+
     const styledProp = component.props.find((x) => x.prop === prop);
+
     if (!styledProp) return {};
+
     const base = stylesSemiGroup.combine(
       styledProp.styles.base,
       this.readStyledContext.colorScheme === "dark"
@@ -78,6 +102,23 @@ export class TwinStyledSheetManager {
     );
     if (withPointer) return this.flatten([base, styledProp.styles.pointer]);
     return base;
+  }
+
+  evaluateSheetEntry(entry: SheetEntry): RuntimeJSXStyle {
+    return {
+      className: entry.className,
+      group: getRuleSelectorGroup(entry.selectors),
+      groups: getRuleSelectorGroups(entry.selectors),
+      important: entry.important,
+      inherited: false,
+      precedence: entry.precedence,
+      declarations: entry.declarations.map((x) =>
+        compileEntryDeclaration(x, {
+          baseRem: this.readStyledContext.units.rem,
+          platform: Platform.OS,
+        })
+      ),
+    };
   }
 
   [INTERNAL_RESET]() {
@@ -168,7 +209,8 @@ const stylesSemiGroup = SemiGroup.make<CompleteStyle>((self, that) => {
     }
   }
 
-  return Object.assign({}, { ...self }, that);
+  const result = Object.assign({}, { ...self }, { ...that });
+  return result;
 });
 
 function composeDeclarations(decls: RuntimeSheetDeclaration[]) {

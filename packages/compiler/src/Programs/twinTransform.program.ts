@@ -1,12 +1,12 @@
 import { CodeGenerator } from '@babel/generator';
-import * as t from '@babel/types';
+import type * as t from '@babel/types';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
 import { babelTemplates } from '../Babel';
 import type { TwinRunnerPlatform } from '../Config';
 import { TWIN_STYLESHEET_IMPORT, type TwinModuleAst } from '../Domain/TwinAst';
 import { TwinProjectContext } from '../Project';
-import { addJsxExpressionAttribute, literalValueToAst } from '../utils/babel/babel.utils';
+import { addJsxAttribute, literalValueToAst } from '../utils/babel/babel.utils';
 
 export const twinTransformProgram = Effect.fn(function* (
   twinModule: TwinModuleAst,
@@ -20,15 +20,16 @@ export const twinTransformProgram = Effect.fn(function* (
     Stream.map((treeNode) => {
       const runtimeNode = treeNode.value.toRuntimeJSX();
       const babelJsxElementStyles = literalValueToAst(runtimeNode);
+      addJsxAttribute(treeNode.value.node.babelPath.node, '__twinID', treeNode.value.node.id);
 
-      for (const prop of runtimeNode.props) {
-        const babelStyledProp = babelTemplates.styledPropCall({
-          STYLESHEET_VAR_NAME: t.identifier(TWIN_STYLESHEET_IMPORT),
-          ELEMENT_KEY: t.stringLiteral(treeNode.value.node.id),
-          PROP: t.stringLiteral(prop.prop),
-        });
-        addJsxExpressionAttribute(treeNode.value.node.babelPath.node, prop.target, babelStyledProp);
-      }
+      // for (const prop of runtimeNode.props) {
+      //   const babelStyledProp = babelTemplates.styledPropCall({
+      //     STYLESHEET_VAR_NAME: t.identifier(TWIN_STYLESHEET_IMPORT),
+      //     ELEMENT_KEY: t.stringLiteral(treeNode.value.node.id),
+      //     PROP: t.stringLiteral(prop.prop),
+      //   });
+      //   addJsxExpressionAttribute(treeNode.value.node.babelPath.node, prop.target, babelStyledProp);
+      // }
       const registerJSXNodeAST = babelTemplates.styleSheetRegisterJSX({
         STYLESHEET_VAR_NAME: TWIN_STYLESHEET_IMPORT,
         JSX_NODE_SHEET: babelJsxElementStyles,
