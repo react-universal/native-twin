@@ -106,6 +106,9 @@ export function createTailwind(
         sheet.destroy();
         version++;
       },
+      get context() {
+        return context;
+      },
       observeConfig(cb) {
         if (!isDevEnvironment()) {
           return () => void {};

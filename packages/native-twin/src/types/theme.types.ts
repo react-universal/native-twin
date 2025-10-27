@@ -6,13 +6,14 @@ import type {
   StringLike,
   UnionToIntersection,
 } from '@native-twin/helpers';
-import type { Preset, TailwindConfig, ThemeFunction } from './config.types.js';
+import type { Preset, TailwindConfig, ThemeContext, ThemeFunction } from './config.types.js';
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];
   readonly theme: ThemeFunction<Theme>;
   readonly config: TailwindConfig<Theme>;
   readonly target: Target;
+  context: ThemeContext<__Theme__>;
   destroy: (nextConfig?: TailwindConfig<Theme>) => void;
   snapshot: () => () => void;
   clear: () => void;
