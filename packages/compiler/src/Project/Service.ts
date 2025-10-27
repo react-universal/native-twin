@@ -1,3 +1,4 @@
+import type { CompiledSheetEntry } from '@native-twin/core';
 import type { TreeNode } from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
@@ -8,14 +9,9 @@ import * as Stream from 'effect/Stream';
 import { BabelContext } from '../Babel';
 import { TwinNodeContext, type TwinRunnerPlatform } from '../Config';
 import type { TwinModuleAst } from '../Domain/TwinAst';
-import type { TwinJSXElement } from '../Domain/TwinJSXElement';
-import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
+import type { TwinJSXElement, TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 import { TwinFSContext, TwinPath } from '../FileSystem';
-import {
-  type CompiledSheetEntry,
-  type CompilerStyleSheet,
-  TwinStyleSheetContext,
-} from '../StyleSheet';
+import { type CompilerStyleSheet, TwinStyleSheetContext } from '../StyleSheet';
 import { mapTreeEffect } from '../utils/tree.utils';
 import { TransformedJSXNode } from './Model';
 
@@ -25,12 +21,25 @@ const make = Effect.gen(function* () {
   const { getTwinModuleAstFromPath: getTwinFileAstFromPath, getTwinFileAst } = yield* BabelContext;
   const sheet = yield* TwinStyleSheetContext;
 
+  const getProjectModules = Stream.fromIterableEffect(ctx.state.projectFiles.get).pipe(
+    Stream.mapEffect((x) => getTwinFileAstFromPath(TwinPath.filePathFromString(x))),
+  );
+
   const compileAst = Effect.fn(function* (twinAst: TwinModuleAst, platform: TwinRunnerPlatform) {
     const extractor = yield* sheet.extractor.getExtractor(platform);
     const moduleTrees = yield* Stream.fromIterable(twinAst.jsxElements).pipe(
-      Stream.mapEffect((element) => transformJSXElement(element, extractor)),
+      Stream.mapEffect((element) => {
+        return Effect.gen(function* () {
+          const result = yield* Effect.all(
+            element.tree
+              .all()
+              .map((node) => sheet.getJSXElementNodeSheet(node.value, element, platform)),
+          );
+          console.log('RES: ', result);
+          return yield* transformJSXElement(element, extractor);
+        });
+      }),
       Stream.flatMap((tree) => Stream.fromIterable(tree.all())),
-      // Stream.mapEffect((treeNode) => treeNode.value.evaluatedStyledProps().pipe(Stream.runCollect)),
       Stream.runCollect,
       Effect.map(RA.fromIterable),
     );
@@ -56,6 +65,7 @@ const make = Effect.gen(function* () {
             );
           }
           const transform = new TransformedJSXNode({
+            jsxDeclarator: jsxElement,
             parentID: treeNode.parent?.value.id ?? null,
             node: treeNode.value,
             styledProps,
@@ -72,10 +82,6 @@ const make = Effect.gen(function* () {
 
   const getAst = (filename: string, code: string) =>
     Effect.andThen(fs.getFile(filename, code), getTwinFileAst);
-
-  const getProjectModules = Stream.fromIterableEffect(ctx.state.projectFiles.get).pipe(
-    Stream.mapEffect((x) => getTwinFileAstFromPath(TwinPath.filePathFromString(x))),
-  );
 
   const getFiles = ctx.state.projectFiles.get;
 

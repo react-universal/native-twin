@@ -1,4 +1,10 @@
-import { StyleSheetAdapter } from '@native-twin/core';
+import {
+  CompiledSheetEntry,
+  createThemeContext,
+  parsedRuleToEntry,
+  StyleSheetAdapter,
+  type ThemeContext,
+} from '@native-twin/core';
 import {
   type AnyStyle,
   getRuleSelectorGroup,
@@ -13,11 +19,8 @@ import {
   type RuntimeJSXStyle,
   type RuntimeSheetDeclaration,
   type RuntimeTwinMappedProp,
-  type TwinRuntimeComponent,
 } from '@native-twin/css/jsx';
-import type { TreeNode } from '@native-twin/helpers/tree';
 import * as RA from 'effect/Array';
-// import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import type * as Option from 'effect/Option';
@@ -26,38 +29,15 @@ import type { InternalTwFn, InternalTwinConfig } from '../Config';
 import type { TwinJSXClassnameProp } from '../Domain/JSXStyledProp';
 import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 
-export interface TwinEvaluatedEntryDecls {
-  styles: AnyStyle;
-  rawDecls: RuntimeSheetDeclaration[];
-}
-export interface TwinEvaluatedSheetEntry {
-  base: TwinEvaluatedEntryDecls;
-  child: {
-    first: TwinEvaluatedEntryDecls;
-    last: TwinEvaluatedEntryDecls;
-    even: TwinEvaluatedEntryDecls;
-    odd: TwinEvaluatedEntryDecls;
-  };
-  pointer: TwinEvaluatedEntryDecls;
-  group: TwinEvaluatedEntryDecls;
-  dark: TwinEvaluatedEntryDecls;
-  isGroupParent: boolean;
-}
-
-export interface TwinEvaluatedStyle {
-  styles: TwinEvaluatedSheetEntry;
-  prop: CompiledStyledProp | null;
-  node: TwinJSXElementNode;
-}
-
 export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
+  _twinCtx: ThemeContext;
   constructor(
     readonly ctx: CompilerContext,
     readonly twinFn: InternalTwFn,
     debug: boolean,
   ) {
     super(debug);
-    
+    this._twinCtx = createThemeContext(twinFn.config);
   }
 
   toRuntimeDecls(entries: SheetEntry[]): RuntimeSheetDeclaration[] {
@@ -90,7 +70,12 @@ export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
     });
 
     return {
-      entries: runtimeStyles,
+      entries: {
+        base: runtimeStyles.filter((x) => x.group === 'base'),
+        child: runtimeStyles.filter((x) => x.groups.some(Predicates.isChildSelector)),
+        pointer: runtimeStyles.filter((x) => x.groups.some((y) => Predicates.isPointerSelector(y))),
+        group: runtimeStyles.filter((x) => x.groups.some((y) => Predicates.isGroupSelector(y))),
+      },
       prop: classProp.prop,
       target: classProp.target,
       metadata: {
@@ -101,35 +86,14 @@ export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
     };
   }
 
-  getRuntimeComponent(node: TreeNode<TwinJSXElementNode>): TwinRuntimeComponent {
-    const styledProps = node.value.classNameProps.map((prop) => this.getCompiledClassProp(prop));
-    const childStyles = styledProps
-      .flatMap((x) => x.entries)
-      .filter((x) => x.groups.some(Predicates.isChildSelector));
-    return {
-      childStyles,
-      id: node.value.id,
-      index: node.nodeIndex,
-      parentSize: node.parent?.childrenCount ?? -1,
-      props: styledProps,
-      parentID: node.parent?.value.id ?? null,
-      metadata: {
-        hasGroupEvents: styledProps.some((x) => x.metadata.hasGroupEvents),
-        hasPointerEvents: styledProps.some((x) => x.metadata.hasPointerEvents),
-        isGroupParent: styledProps.some((x) => x.metadata.isGroupParent),
-      },
-    };
-  }
   getStyledProps(node: TwinJSXElementNode): CompiledStyledProp[] {
     return node.classNameProps.map((prop) => {
-      const entries = this.twinFn(prop.text);
-      const compiledEntries = entries.map(
-        (entry) =>
-          new CompiledSheetEntry({
-            decls: entry.declarations.map((decl) => compileEntryDeclaration(decl, this.ctx)),
-            raw: entry,
-          }),
-      );
+      const compiledEntries = prop.twinRules.map((x) => {
+        const entry = parsedRuleToEntry(x, this._twinCtx);
+        const decls = entry.declarations.map((x) => compileEntryDeclaration(x, this.ctx));
+        return new CompiledSheetEntry({ decls, raw: entry, parsed: x });
+      });
+
       return new CompiledStyledProp({
         ast: prop.ast,
         compiledEntries,
@@ -142,83 +106,47 @@ export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
     });
   }
 }
-export class CompiledSheetEntry extends Data.Class<{
-  raw: SheetEntry;
-  decls: RuntimeSheetDeclaration[];
-}> {
-  toRuntime(inherited: boolean): RuntimeJSXStyle {
-    return {
-      className: this.raw.className,
-      important: this.raw.important,
-      inherited,
-      precedence: this.raw.precedence,
-      group: this.mainSelectorGroup,
-      groups: this.selectorGroups,
-      declarations: this.decls,
-    };
-  }
-  get selectorGroups() {
-    return getRuleSelectorGroups(this.raw.selectors);
-  }
-  get mainSelectorGroup() {
-    return getRuleSelectorGroup(this.selectorGroups);
-  }
-  get isChildEntry() {
-    return this.selectorGroups.some(Predicates.isChildSelector);
-  }
-  get isPointerEntry() {
-    return this.selectorGroups.some(Predicates.isPointerSelector);
-  }
-  get isGroupSelector() {
-    return this.selectorGroups.some(Predicates.isGroupSelector);
-  }
-  get isGroupParent() {
-    return this.raw.className === 'group';
-  }
-  get isBaseEntry() {
-    return this.mainSelectorGroup === 'base' || this.selectorGroups.length === 0;
-  }
-
-  get isDarkEntry() {
-    return this.selectorGroups.some(Predicates.isDarkSelector);
-  }
-
-  get styles() {
-    return mergeCompiledDeclarations(this.decls);
-  }
-}
-
-export const getEmptyEvaluatedEntry = (): TwinEvaluatedSheetEntry => ({
-  base: { rawDecls: [], styles: {} },
-  child: {
-    even: { rawDecls: [], styles: {} },
-    first: { rawDecls: [], styles: {} },
-    last: { rawDecls: [], styles: {} },
-    odd: { rawDecls: [], styles: {} },
-  },
-  dark: { rawDecls: [], styles: {} },
-  group: { rawDecls: [], styles: {} },
-  pointer: { rawDecls: [], styles: {} },
-  isGroupParent: false,
-});
 
 export class CompiledStyledProp extends Data.Class<{
   ast: JSXAttributePath;
   text: string;
-  // compilerEntries: CompilerSheetEntry[];
   expression: Option.Option<string>;
   target: string;
   prop: string;
   compiledEntries: CompiledSheetEntry[];
 }> {
   toRuntime(inherited: boolean): RuntimeTwinMappedProp {
+    const entries: RuntimeTwinMappedProp['entries'] = this.compiledEntries.reduce(
+      (prev, current) => {
+        if (current.isChildEntry) {
+          prev.child.push(current.toRuntime(inherited));
+          return prev;
+        }
+        if (current.isGroupSelector) {
+          prev.group.push(current.toRuntime(false));
+          return prev;
+        }
+        if (current.isPointerEntry) {
+          prev.pointer.push(current.toRuntime(false));
+          return prev;
+        }
+        prev.base.push(current.toRuntime(false));
+        return prev;
+      },
+      {
+        base: [],
+        child: [],
+        pointer: [],
+        group: [],
+      } as RuntimeTwinMappedProp['entries'],
+    );
     return {
-      entries: this.compiledEntries.map((entry) => entry.toRuntime(inherited)),
+      entries,
       prop: this.prop,
       target: this.target,
       metadata: {
-        hasGroupEvents: this.groupStyles.length > 0,
-        hasPointerEvents: this.pointerStyles.length > 0,
+        hasGroupEvents: entries.group.length > 0,
+        hasPointerEvents: entries.pointer.length > 0,
         isGroupParent: this.compiledEntries.some((x) => x.raw.className === 'group'),
       },
     };

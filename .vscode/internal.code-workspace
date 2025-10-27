@@ -5,16 +5,24 @@
       "path": ".."
     },
     {
-      "name": "📦 @native-twin/styled",
-      "path": "../packages/styled"
-    },
-    {
-      "name": "📦 @native-twin/compiler",
-      "path": "../packages/compiler"
+      "name": "📦 @native-twin/core",
+      "path": "../packages/native-twin"
     },
     {
       "name": "📦 @native-twin/jsx",
       "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @native-twin/styled",
+      "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @native-twin/compiler",
+      "path": "../packages/compiler"
     },
     {
       "name": "📦 @native-twin/adapters",
@@ -29,20 +37,16 @@
       "path": "../packages/babel"
     },
     {
-      "name": "📦 @native-twin/cli",
-      "path": "../packages/builder"
-    },
-    {
-      "name": "📦 @native-twin/css",
-      "path": "../packages/css"
-    },
-    {
       "name": "📦 @native-twin/dev-tools",
       "path": "../packages/dev-tools"
     },
     {
       "name": "🚀 @native-twin/dev-tools-webui",
       "path": "../packages/dev-tools/webui"
+    },
+    {
+      "name": "📦 @native-twin/cli",
+      "path": "../packages/builder"
     },
     {
       "name": "📦 @native-twin/helpers",
@@ -59,10 +63,6 @@
     {
       "name": "📦 @native-twin/metro",
       "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @native-twin/core",
-      "path": "../packages/native-twin"
     },
     {
       "name": "📦 @native-twin/preset-tailwind",

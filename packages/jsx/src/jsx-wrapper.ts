@@ -19,42 +19,22 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
     // This call also need to be inside the JSX transform to avoid circular dependencies
     if (process.env['NODE_ENV'] !== 'test') require('./components');
 
-    // if (props?._twinInjected) {
-    //   console.log('___________________');
-    //   console.log('COMPONENT: ', type);
-    //   console.log('___________________');
-    //   console.log(
-    //     'FOUND: ',
-    //     {
-    //       id: props._twinInjected.id,
-    //       parentID: props._twinInjected.parentID,
-    //       isCached: stylizedComponents.has(type),
-    //       childs: props['children'],
-    //       key: rest[0],
-    //       isStaticChildren: rest[1],
-    //       __source: rest[2],
-    //     },
-    //     '\n\n',
-    //   );
-    //   console.log('___________________');
-    //   console.log('   ');
-    // }
-
-    // You can disable the native twin jsx by setting `twEnabled` to false
+    // Swap the component type with styled if it exists
     if (props && props.twEnabled === false) {
       delete props.twEnabled;
     } else if (stylizedComponents.has(type)) {
       type = stylizedComponents.get(type)!;
     } else {
-      if (props?.['_twinInjected']) {
+      if (props?.['__twinID']) {
         type = createStylableComponent(type, {});
       }
     }
-    // Swap the component type with styled if it exists
-
-    // console.log(props);
-    // stylizeJSXChilds(props);
-    // jsxStyles(props, type);
+    // if (rest[1] && props?.['__twinID']) {
+    //   console.log('IS:STATIC: ', {
+    //     type,
+    //     props,
+    //   });
+    // }
 
     // Call the original jsx function with the new type
     return jsx.call(jsx, type, props, ...rest);

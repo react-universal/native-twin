@@ -35,7 +35,7 @@
         "VITE_CJS_IGNORE_WARNING": "true"
       },
       "autoAttachChildProcesses": true,
-      "console": "integratedTerminal",
+      "console": "externalTerminal",
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",
         "!**/node_modules/**"

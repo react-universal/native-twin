@@ -1,9 +1,9 @@
-import type { RuntimeTwinComponentProps } from '@native-twin/css/jsx';
 import type React from 'react';
 
-export interface JSXInternalProps extends Record<string, any>, RuntimeTwinComponentProps {
+export interface JSXInternalProps extends Record<string, any> {
   twEnabled?: boolean;
-  __parentProps: RuntimeTwinComponentProps['_twinInjected'];
+  __twinID: string;
+  __parentID: string;
   // _twinComponentID?: string;
   // _twinComponentSheet: RuntimeComponentEntry[];
   // _twinComponentTemplateEntries: ComponentTemplateEntryProp[];

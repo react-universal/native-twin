@@ -5,7 +5,7 @@ import type {
   TailwindPresetConfig,
   TailwindUserConfig,
 } from '../types/config.types.js';
-import type { ExtractThemes, __Theme__ } from '../types/theme.types.js';
+import type { __Theme__, ExtractThemes } from '../types/theme.types.js';
 import { defaultVariants } from './defaults/variants.js';
 
 export function defineConfig<
@@ -14,9 +14,7 @@ export function defineConfig<
 >({
   presets = [] as unknown as Presets,
   ...userConfig
-}: TailwindUserConfig<Theme, Presets>): TailwindConfig<
-  __Theme__ & ExtractThemes<Theme, Presets>
-> {
+}: TailwindUserConfig<Theme, Presets>): TailwindConfig<__Theme__ & ExtractThemes<Theme, Presets>> {
   let config: TailwindConfig<__Theme__ & ExtractThemes<Theme, Presets>> = {
     content: userConfig.content,
     darkMode: undefined,
@@ -43,9 +41,7 @@ export function defineConfig<
     },
   ])) {
     const { ignorelist, preflight, rules, theme, variants, darkMode, animations } =
-      typeof preset === 'function'
-        ? preset(config)
-        : (preset as TailwindPresetConfig<Theme>);
+      typeof preset === 'function' ? preset(config) : (preset as TailwindPresetConfig<Theme>);
     config = {
       animations: [...asArray(config.animations), ...asArray(animations)],
       content: userConfig.content,

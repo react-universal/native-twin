@@ -110,7 +110,12 @@ export const funcJSXElementFunction = (
 };
 
 export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {
-  if (typeof value === 'string') return t.stringLiteral(value);
+  if (typeof value === 'string') {
+    if (value === 'NULL') {
+      return t.nullLiteral();
+    }
+    return t.stringLiteral(value)
+  };
   if (typeof value === 'number') return t.numericLiteral(value);
   return t.booleanLiteral(value);
 };

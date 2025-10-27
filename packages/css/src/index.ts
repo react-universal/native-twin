@@ -4,7 +4,7 @@ export {
   CSS_COLORS,
   /** @category — CSS parsers */
   unitlessCssProps,
-} from './css/css.constants.js';
+} from './css/css.constants';
 export type {
   /** @category — CSS parsers */
   CSSUnit,
@@ -28,13 +28,13 @@ export type {
   ValidPlatformInteractionPseudoSelector,
   /** @category — CSS parsers */
   ValidPlatformPseudoSelector,
-} from './css/css.types.js';
+} from './css/css.types';
 export {
   /** @category — CSS parsers */
   cssValueUnitParser as declarationUnitParser,
   /** @category — CSS parsers */
   declarationValueWithUnitParser,
-} from './css/css-common.parser.js';
+} from './css/css-common.parser';
 export {
   /** @category — CSS */
   atRulePrecedence,
@@ -50,16 +50,16 @@ export {
   pseudoPrecedence,
   /** @category — CSS */
   separatorPrecedence,
-} from './css/precedence.js';
+} from './css/precedence';
 // HTML
 export {
   /** @category — HTML Parsers */
   getStyleElement,
-} from './html/get-style-element.js';
+} from './html/get-style-element';
 export {
   /** @category — HTML Parsers */
   parseHTML,
-} from './html/parse-html.js';
+} from './html/parse-html';
 // React Native
 export type {
   /** @category — RN Types */
@@ -67,30 +67,30 @@ export type {
   /** @category — RN Types */
   CompleteStyle,
   NamedStyles,
-} from './react-native/rn.types.js';
+} from './react-native/rn.types';
 export type {
   /** @category — CSS parsers */
   CssUnitsContext,
   /** @category — CSS parsers */
   RuntimeContext,
-} from './react-native/styles.context.js';
+} from './react-native/styles.context';
 export {
   /** @category — CSS parsers */
   createStyledContext,
-} from './react-native/styles.context.js';
-export { StylesInterpreter } from './react-native/styles.interpreter.js';
+} from './react-native/styles.context';
+export { StylesInterpreter } from './react-native/styles.interpreter';
 export {
   /** @category — CSS Sheets */
   createCssomSheet,
-} from './sheets/cssom.sheet.js';
+} from './sheets/cssom.sheet';
 export {
   /** @category — CSS Sheets */
   createDomSheet,
-} from './sheets/dom.sheet.js';
+} from './sheets/dom.sheet';
 export {
   /** @category — CSS Sheets */
   getSheet,
-} from './sheets/get-sheet.js';
+} from './sheets/get-sheet';
 // SHEETS
 export type {
   /** @category — CSS parsers */
@@ -108,19 +108,16 @@ export type {
   /** @category — CSS parsers */
   SheetInteractionState,
   SortableEntry,
-} from './sheets/sheet.types.js';
-export {
-  /** @category — CSS parsers */
-  defaultGroupState,
-} from './sheets/sheets.constants.js';
+} from './sheets/sheet.types';
+
 export {
   /** @category — CSS Sheets */
   createVirtualSheet,
-} from './sheets/virtual.sheet.js';
+} from './sheets/virtual.sheet';
 export {
   /** @category — CSS parsers */
   sortedInsertionIndex,
-} from './tailwind/sorted-insertion-index.js';
+} from './tailwind/sorted-insertion-index';
 export {
   /** @category — CSS parsers */
   commonCssProps,
@@ -130,7 +127,7 @@ export {
   directionMap,
   /** @category — CSS parsers */
   globalKeywords,
-} from './tailwind/tailwind.constants.js';
+} from './tailwind/tailwind.constants';
 export type {
   /** @category — CSS parsers */
   ArbitrarySegmentToken,
@@ -154,18 +151,18 @@ export type {
   VariantClassToken,
   /** @category — CSS parsers */
   VariantToken,
-} from './tailwind/tailwind.types.js';
+} from './tailwind/tailwind.types';
 export {
   /** @category — CSS parsers */
   getRuleSelectorGroup,
   getRuleSelectorGroups,
   /** @category — CSS parsers */
   mql,
-} from './tailwind/tailwind.utils.js';
+} from './tailwind/tailwind.utils';
 export {
   /** @category — CSS parsers */
   getTWFeatureParser,
-} from './tailwind/tailwind-features.parser.js';
+} from './tailwind/tailwind-features.parser';
 // TAILWIND
 export {
   /** @category — CSS parsers */
@@ -174,25 +171,25 @@ export {
   parseTWTokens,
   /** @category — CSS parsers */
   tailwindClassNamesParser,
-} from './tailwind/tailwind-rule.parser.js';
+} from './tailwind/tailwind-rule.parser';
 export {
   /** @category — CSS Parsers */
   interpolate,
   /** @category — CSS Parsers */
   normalize,
-} from './transforms/interleave.js';
+} from './transforms/interleave';
 export {
   /** @category — CSS Parsers */
   parsedRuleSetToClassNames,
   /** @category — CSS Parsers */
   parsedRuleToClassName,
-} from './transforms/rule-to-css.js';
+} from './transforms/rule-to-css';
 // TRANSFORMS
 export {
   /** @category — CSS Sheets */
   sheetEntriesToCss,
-} from './transforms/sheet-to-css.js';
+} from './transforms/sheet-to-css';
 export {
   /** @category — CSS utils */
   getPropertyValueType,
-} from './utils.parser.js';
+} from './utils.parser';

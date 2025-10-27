@@ -1,5 +1,5 @@
 import { createElement as originalCreateElement } from 'react';
-import ReactJSXRuntime from 'react/jsx-runtime';
+import * as ReactJSXRuntime from 'react/jsx-runtime';
 import jsxWrapper from './jsx-wrapper';
 
 /**
@@ -9,7 +9,7 @@ import jsxWrapper from './jsx-wrapper';
  * @see https://babeljs.io/docs/babel-plugin-transform-react-jsx
  * @see https://github.com/reactjs/rfcs/blob/createlement-rfc/text/0000-create-element-changes.md#summary
  */
-export { Fragment } from 'react';
+// export const Fragment = ReactJSXRuntime.Fragment;
 export const jsxs = jsxWrapper((ReactJSXRuntime as any).jsxs);
 export const jsx = jsxWrapper((ReactJSXRuntime as any).jsx);
 export const jsxDEV = jsxWrapper((ReactJSXRuntime as any).jsxDEV);

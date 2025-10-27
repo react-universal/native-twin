@@ -59,7 +59,7 @@ export abstract class StyleSheetAdapter<Theme extends __Theme__ = __Theme__> {
   getTwinObjectKey(data: TwinInjectedObject) {
     const classnames = data.props.map((x) => x.target).join(' ');
     const entries = data.props
-      .flatMap((x) => x.entries)
+      .flatMap((x) => x.entries.base)
       .map((x) => x.className)
       .join(' ');
     return hash(`${data.id}-${data.index}-${data.parentSize}-${classnames}-${entries}`);

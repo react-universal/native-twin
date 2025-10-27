@@ -12,8 +12,7 @@ import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import { TwinJSXClassnameProp } from '../Domain/JSXStyledProp';
 import { ModuleDependency, TwinModuleAst } from '../Domain/TwinAst';
-import { TwinJSXElement } from '../Domain/TwinJSXElement';
-import { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
+import { TwinJSXElement, TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 import { type TwinFile, TwinFSContext, TwinPath } from '../FileSystem';
 import { type MappedComponent, mappedComponents } from '../utils/constants';
 import { makeTreeFrom } from '../utils/tree.utils';
@@ -96,17 +95,20 @@ const jSXElementToTwinNode = (
     Option.getOrElse(
       (): MappedComponent => ({
         name: ident.name,
-        config: {},
+        config: {
+          className: 'style'
+        },
         kind: 'unknown',
       }),
     ),
   );
+  const classNameProps = getClassNamePropsFromJSX(path, mappedProps);
   return new TwinJSXElementNode({
     file: options.file,
     dependency,
     babelPath: path,
     name: ident.name,
-    classNameProps: getClassNamePropsFromJSX(path, mappedProps),
+    classNameProps,
     mappedProps,
   });
 };
@@ -168,6 +170,7 @@ const getModuleDependencies = (ast: BabelFileAst, filename: TwinPath.FilePath) =
   return dependencies;
 };
 
+// TODO: delete me
 const getJSXElementFunction = (jsxPath: JSXElementPath): Option.Option<JSXElementFunction> => {
   let compFn: AnyNodePath | null = jsxPath.findParent(isFunction);
   while (compFn) {

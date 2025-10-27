@@ -1,12 +1,10 @@
 import * as P from '@native-twin/arc-parser';
 import { hasOwnProperty } from '@native-twin/helpers';
-import { unitlessCssProps } from '../css/css.constants.js';
-import type { CSSUnit } from '../css/css.types.js';
-import { declarationValueWithUnitParser } from '../css/css-common.parser.js';
-import type { AnyStyle } from '../react-native/rn.types.js';
-import type { SheetEntryDeclaration } from '../sheets/sheet.types.js';
-import { type DeclarationPropertyValueType, getPropertyValueType } from '../utils.parser.js';
-import type { CompilerContext } from './metro.runtime.js';
+import { type CSSUnit, declarationValueWithUnitParser, unitlessCssProps } from '../css';
+import type { AnyStyle } from '../react-native';
+import type { SheetEntryDeclaration } from '../sheets';
+import { type DeclarationPropertyValueType, getPropertyValueType } from '../utils.parser';
+import type { CompilerContext } from './metro.runtime';
 
 export type CompilationError = 'Unknown' | 'PARSER' | (string & {});
 
@@ -65,9 +63,9 @@ export const compileEntryDeclaration = (
     const type = getPropertyValueType(decl.prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
     if (type === 'shadow') {
       return RuntimeSheetDeclaration.COMPILED({
-      ...decl,
-      isUnitLess,
-    });
+        ...decl,
+        isUnitLess,
+      });
     }
     return RuntimeSheetDeclaration.NOT_COMPILED({
       ...decl,

@@ -29,10 +29,10 @@
       "default": "./build/cjs/index.js"
     },
     "./jsx": {
-      "types": "./build/dts/jsx.d.ts",
-      "react-native": "./build/esm/jsx.js",
-      "import": "./build/esm/jsx.js",
-      "default": "./build/cjs/jsx.js"
+      "types": "./build/dts/jsx/index.d.ts",
+      "react-native": "./build/esm/jsx/index.js",
+      "import": "./build/esm/jsx/index.js",
+      "default": "./build/cjs/jsx/index.js"
     },
     "./react-native": {
       "types": "./build/dts/react-native/index.d.ts",

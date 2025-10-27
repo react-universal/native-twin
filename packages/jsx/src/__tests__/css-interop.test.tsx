@@ -1,10 +1,10 @@
 import { defineConfig, setup } from '@native-twin/core';
 import { presetTailwind } from '@native-twin/preset-tailwind';
-import { fireEvent, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 import { Text, View } from 'react-native';
 import { act } from 'react-test-renderer';
 import { colorScheme } from '../store/observables/colorScheme.obs';
-import { createMockComponent, render, resetComponents, resetStyles } from '../testing-library';
+import { createMockComponent, resetComponents, resetStyles } from '../testing-library';
 
 const testID = 'native-twin-element';
 

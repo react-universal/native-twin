@@ -32,4 +32,4 @@ export const sortSheetEntries = <T>(
 /** @category Orders */
 export const sortSheetEntriesArray = <T>(
   entries: OrderableSheetEntry<T>[],
-): OrderableSheetEntry<T>[] => entries.toSorted(sortSheetEntries);
+): OrderableSheetEntry<T>[] => entries.sort(sortSheetEntries);

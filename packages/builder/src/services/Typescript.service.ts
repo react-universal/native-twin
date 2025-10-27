@@ -1,8 +1,14 @@
 import { Path } from '@effect/platform';
 import { Context, Effect, Layer, Option, pipe, Queue, Array as RA, Stream, Tuple } from 'effect';
-import { type Diagnostic, type OutputFile, Project, type SourceFile } from 'ts-morph';
+import {
+  type Diagnostic,
+  getCompilerOptionsFromTsConfig,
+  type OutputFile,
+  Project,
+  type SourceFile,
+} from 'ts-morph';
 import type { BuildOutputFiles } from '../models/Compiler.models';
-import { TSCompilerOptions } from '../models/TSCompiler.model';
+// import { TSCompilerOptions } from '../models/TSCompiler.model';
 import { FsUtils, FsUtilsLive } from './FsUtils.service';
 
 const make = Effect.gen(function* () {
@@ -11,9 +17,13 @@ const make = Effect.gen(function* () {
     yield* Queue.unbounded<[sourceFile: SourceFile, outputFiles: BuildOutputFiles]>();
   const path_ = yield* Path.Path;
   const fsUtils = yield* FsUtils;
+
+  const compilerOptions = getCompilerOptionsFromTsConfig(
+    path_.join(process.cwd(), 'tsconfig.build.json')
+  );
   const compiler = new Project({
     tsConfigFilePath: path_.join(process.cwd(), 'tsconfig.build.json'),
-    compilerOptions: TSCompilerOptions,
+    compilerOptions: compilerOptions.options,
   });
   const fs = compiler.getFileSystem();
 

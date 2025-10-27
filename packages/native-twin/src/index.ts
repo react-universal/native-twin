@@ -19,13 +19,14 @@ import {
   matchThemeValue,
 } from './theme/theme.match.js';
 
-/** TYPES */
-export type { ExtractResult } from './runtime/web/ssr.js';
+export type { PropsFrom } from '@native-twin/helpers';
 export type { TxFunction } from './runtime/tx.js';
 export type { ConfigVariants, VariantProps, VariantsConfig } from './runtime/variants.js';
+/** TYPES */
+export type { ExtractResult } from './runtime/web/ssr.js';
+export { CompiledSheetEntry, type CompiledSheetEntryInput } from './twin/compiler.models.js';
 export type * from './types/config.types.js';
 export type * from './types/theme.types.js';
-export type { PropsFrom } from '@native-twin/helpers';
 
 export {
   tw,
@@ -51,14 +52,13 @@ export {
   defineConfig,
 };
 
+export type { TwinRuntimeContext, Units } from './runtime/runtime.context.js';
 export {
-  type TwinRuntimeProp,
+  composeDeclarations,
   getSheetEntryStyles,
   sheetEntryToStyle,
-  composeDeclarations,
+  type TwinRuntimeProp,
 } from './runtime/SheetHandler.js';
-
-export type { TwinRuntimeContext, Units } from './runtime/runtime.context.js';
 
 export {
   StyleSheetAdapter,

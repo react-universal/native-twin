@@ -1,17 +1,17 @@
-import { hasOwnProperty } from "@native-twin/helpers";
-import { forwardRef } from "react";
-import type { JSXInternalProps } from "../types/jsx.types";
+import { hasOwnProperty } from '@native-twin/helpers';
+import { forwardRef } from 'react';
+import type { ReactComponent } from '../types/styled.types';
 
-const typePropName = "__NATIVE_TWIN_TYPE_PLEASE_DO_NOT_USE__";
+const typePropName = '__NATIVE_TWIN_TYPE_PLEASE_DO_NOT_USE__';
 
-interface TwinProps extends JSXInternalProps {
+interface TwinProps {
   [typePropName]: React.ElementType;
   [key: string]: unknown;
 }
 
-export const createTwinProps = (
-  type: React.ElementType,
-  props: JSXInternalProps
+export const createTwinProps = <T extends ReactComponent = ReactComponent>(
+  type: React.ElementType<T>,
+  props: Record<string, unknown>,
 ): TwinProps => {
   const newProps = {} as TwinProps;
 
@@ -27,15 +27,10 @@ export const createTwinProps = (
 };
 
 let withTwinProperties = function withTwinProperties<Props, RefType = any>(
-  func: (
-    props: React.PropsWithoutRef<Props>,
-    ref?: React.ForwardedRef<RefType>
-  ) => React.ReactNode
+  func: (props: React.PropsWithoutRef<Props>, ref?: React.ForwardedRef<RefType>) => React.ReactNode,
 ):
   | React.FC<React.PropsWithoutRef<Props> & React.RefAttributes<RefType>>
-  | React.ForwardRefExoticComponent<
-      React.PropsWithoutRef<Props> & React.RefAttributes<RefType>
-    > {
+  | React.ForwardRefExoticComponent<React.PropsWithoutRef<Props> & React.RefAttributes<RefType>> {
   return forwardRef<RefType, Props>((props, ref) => {
     return func(props as React.PropsWithoutRef<Props>, ref);
   });
@@ -51,7 +46,7 @@ export default function memoize<V>(fn: (arg: string) => V): (arg: string) => V {
 }
 
 let cache: null | Record<string, string> = null;
-if (typeof window === "undefined") {
+if (typeof window === 'undefined') {
   withTwinProperties = function withTwinProperties(func) {
     return (props: Parameters<typeof func>[0]) => {
       if (cache === null) {
@@ -74,24 +69,20 @@ if (typeof window === "undefined") {
   };
 }
 
-export const TwinElement = /* #__PURE__ */ withTwinProperties<TwinProps>(
-  (props, ref) => {
-    const WrappedComponent = props[
-      typePropName
-    ] as TwinProps[typeof typePropName];
+export const TwinElement = /* #__PURE__ */ withTwinProperties<TwinProps>((props, ref) => {
+  const WrappedComponent = props[typePropName] as TwinProps[typeof typePropName];
 
-    const newProps: Record<string, unknown> = {};
-    for (const key in props) {
-      if (hasOwnProperty.call(props, key) && key !== typePropName) {
-        newProps[key] = props[key];
-      }
+  const newProps: Record<string, unknown> = {};
+  for (const key in props) {
+    if (hasOwnProperty.call(props, key) && key !== 'css' && key !== typePropName) {
+      newProps[key] = props[key];
     }
-    if (ref) {
-      newProps["ref"] = ref;
-    }
-
-    return <WrappedComponent {...newProps} />;
   }
-);
+  if (ref) {
+    newProps['ref'] = ref;
+  }
 
-TwinElement.displayName = "NativeTwinPropInternal";
+  return <WrappedComponent {...newProps} />;
+});
+
+TwinElement.displayName = 'NativeTwinPropInternal';

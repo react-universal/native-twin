@@ -1,8 +1,8 @@
 export { TwinStyledSheetManager, TwinStyleSheet } from './store/TwinStyledSheet';
-export { createStyledComponent, styled } from './styled';
+export { styledJSXStore } from './store/twinStore';
+export { createStyled } from './styled/createStyledComponent';
+// export { createStyledComponent, styled } from './styled';
 export type {
-  ComponentStylesheet,
   PropsFrom,
-  RegisteredComponent,
-  StyledComponentProps,
+  StylableComponentConfigOptions,
 } from './types/styled.types';

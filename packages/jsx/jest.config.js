@@ -7,6 +7,9 @@ module.exports = {
     './src/testing-library/setupAfterEnv.ts',
   ],
   testMatch: ['**/src/__tests__/*.test.{ts,tsx}'],
+  moduleNameMapper: {
+    // '^react/jsx-dev-runtime$': '@native-twin/jsx',
+  },
   watchPathIgnorePatterns: ['test/fixtures/*', 'test/node_modules/*', 'build/*/*.js'],
   transformIgnorePatterns: [
     'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)',

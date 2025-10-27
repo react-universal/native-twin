@@ -1,11 +1,50 @@
+import type * as Tree from '@native-twin/helpers/tree';
 import * as Data from 'effect/Data';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
-import type { JSXElementPath } from '../Babel';
+import type { JSXElementFunction, JSXElementPath } from '../Babel';
 import type { TwinFile } from '../FileSystem';
 import type { MappedComponent } from '../utils/constants';
 import type { TwinJSXClassnameProp } from './JSXStyledProp';
 import type { ModuleDependency } from './TwinAst';
+
+export class TwinJSXElement {
+  /** Describe the function that returns a JSXElement */
+  private _id: string | null = null;
+  private readonly _tree: Tree.Tree<TwinJSXElementNode> | null = null;
+
+  constructor(
+    private readonly file: TwinFile,
+    readonly jsxFunction: Option.Option<JSXElementFunction>,
+    readonly meta: { isExported: boolean; name: '__Unknown' | (string & {}) },
+    readonly tree: Tree.Tree<TwinJSXElementNode>,
+  ) {}
+
+  get id() {
+    if (this._id) return this._id;
+    this._id = this.jsxFunction.pipe(
+      Option.map((x) => [x.node.start, x.node.end].join('/')),
+      Option.getOrElse(() => ''),
+      (_) =>
+        `_JSXElement:${Hash.string(`${_}${this.file.path}${this.meta.isExported}${this.meta.name}`)}`,
+    );
+    return this._id;
+  }
+
+  get jsxTree() {
+    if (this._tree) return this._tree;
+
+    return this._tree;
+  }
+
+  get childIDS() {
+    return this._tree?.root.children.map((x) => x.value.id) ?? [];
+  }
+
+  get allNodes() {
+    return this.tree.all();
+  }
+}
 
 const JSXElementNodeConstructor = Data.Class<{
   readonly mappedProps: MappedComponent;

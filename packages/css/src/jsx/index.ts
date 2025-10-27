@@ -1,13 +1,10 @@
 export type {
   /** @category — CSS Parsers */
-  RuntimeComponentEntry,
   RuntimeJSXStyle,
-  RuntimeTwinComponentProps,
   RuntimeTwinMappedProp,
   TwinInjectedObject,
-  TwinInjectedProp,
   TwinRuntimeComponent,
-} from './Component.js';
+} from './Component';
 export type {
   /** @category — CSS Parsers */
   CompilerContext,
@@ -15,19 +12,9 @@ export type {
   RawJSXElementTreeNode,
   /** @category — CSS Parsers */
   StyledPropEntries,
-} from './metro.runtime.js';
+} from './metro.runtime';
 
-export {
-  createSheetHandler,
-  RuntimeStyleSheet,
-  type TwinCompilerSheet,
-} from './Sheet.js';
-export {
-  mergeCompiledDeclarations,
-  /** @category — CSS Parsers */
-  SheetEntryHandler,
-  sheetEntriesToStyles,
-} from './SheetEntry.js';
+export { mergeCompiledDeclarations } from './SheetEntry';
 export {
   /** @category — Mappers */
   compileEntryDeclaration,
@@ -37,8 +24,8 @@ export {
   matchUnitConvert,
   /** @category — CSS Parsers */
   type RuntimeSheetDeclaration,
-} from './SheetEntryDeclaration.js';
-export { DeclarationParser, SheetEntryParser } from './SheetEntryParser.js';
-export * as SheetOrders from './sheet.order.js';
-export * as SheetPredicates from './sheet.predicates.js';
-export * as Predicates from './sheet.predicates.js';
+} from './SheetEntryDeclaration';
+export { DeclarationParser, SheetEntryParser } from './SheetEntryParser';
+export * as SheetOrders from './sheet.order';
+export * as SheetPredicates from './sheet.predicates';
+export * as Predicates from './sheet.predicates';

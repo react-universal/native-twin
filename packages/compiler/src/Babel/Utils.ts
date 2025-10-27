@@ -5,8 +5,7 @@ import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
 import type { TwinModuleAst } from '../Domain/TwinAst';
-import type { TwinJSXElement } from '../Domain/TwinJSXElement';
-import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
+import type { TwinJSXElement, TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 import type { BabelFileAst, ImportSource } from './Models';
 import {
   isCallExpression,
@@ -117,16 +116,26 @@ const __ReactUseMemo = require('react').useMemo;
 `);
 
 const styledPropCall = template.expression(`
-  STYLESHEET_VAR_NAME.getComponentStyles(ELEMENT_KEY, PROP, false)
+  STYLESHEET_VAR_NAME.getComponentStyles(ELEMENT_KEY, PROP, false);
   `);
 
-const styleSheetRegisterJSX = template(`
-  STYLESHEET_VAR_NAME.registerComponent(JSX_NODE_SHEET)
+const styleSheetRegisterJSX = template.expression(`
+  STYLESHEET_VAR_NAME.registerComponent(JSX_NODE_SHEET);
+  `);
+
+const importTwinStore = template(`
+  import { styledJSXStore as TWIN_STORE_HANDLER_VAR } from '@native-twin/styled';
+  `);
+
+const twinStoreRegisterJSX = template(`
+  TWIN_STORE_HANDLER_VAR.registerComponent(JSX_NODE_SHEET);
   `);
 export const babelTemplates = {
   importRNView: importNativeView,
   importRNStyleSheet: importStyleSheet,
   importReactUseMemo,
+  importTwinStore,
+  twinStoreRegisterJSX,
   styledPropCall,
   styleSheetRegisterJSX,
 };

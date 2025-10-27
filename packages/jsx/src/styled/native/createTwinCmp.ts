@@ -1,4 +1,3 @@
-import { FiberProvider } from 'its-fine';
 import { createElement, forwardRef, useContext } from 'react';
 import { groupContext, TwinRootContext } from '../../context/styled.context';
 import type { JSXFunction } from '../../types/jsx.types';
@@ -18,39 +17,30 @@ export function NativeTwinHOC<
   const configs = getNormalizeConfig(mapping);
 
   const TwinComponent = forwardRef(function NativeTwinHOC(props: any, ref: any) {
-    const { componentHandler, compiledProps, handlers } = useStyledProps(props, configs);
+    const { compiledProps, state, registry, handlers } = useStyledProps(props, configs);
     const twinRoot = useContext(TwinRootContext);
     const newProps = {
       ...props,
       ...handlers,
     };
 
-    if (compiledProps.length > 0) {
-      for (const style of compiledProps) {
-        const oldProps = newProps[style.target] ? { ...newProps[style.target] } : {};
-        newProps[style.target] = Object.assign({}, style.styles, oldProps);
-      }
+    for (const propKey in compiledProps) {
+      // console.log('llll',propKey)
+      const oldProps = newProps[propKey] ? { ...newProps[propKey] } : {};
+      newProps[propKey] = Object.assign({}, compiledProps[propKey], oldProps);
     }
 
-    if (!twinRoot) {
-      return createElement(
-        FiberProvider,
-        null,
-        createElement(
-          TwinRootContext.Provider,
-          { value: true },
-          createElement(component, newProps),
-        ),
-      );
-    }
-
-    if (componentHandler.metadata.isGroupParent) {
+    if (state.meta.isGroupParent) {
       return createElement(
         groupContext.Provider,
-        { value: componentHandler.id },
+        { value: registry.id },
         createElement(component, newProps),
       );
     }
+
+    // if (props?.['__twinID']) {
+    //   console.log('ID: ', { props, ref });
+    // }
 
     if (twinRoot) {
       return renderComponent(component, newProps, ref);
@@ -78,7 +68,7 @@ export function NativeTwinHOC<
   stylizedComponents.set(Component, TwinComponent);
 
   if (__DEV__) {
-    TwinComponent.displayName = `Twin(${getComponentDisplayName(Component)})`;
+    TwinComponent.displayName = `Twin.${getComponentDisplayName(Component)}`;
   }
 
   return TwinComponent;

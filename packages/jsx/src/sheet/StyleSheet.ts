@@ -6,14 +6,7 @@ import {
   getRuleSelectorGroups,
   type SheetEntry,
 } from '@native-twin/css';
-import {
-  compileEntryDeclaration,
-  type RuntimeJSXStyle,
-  type RuntimeSheetDeclaration,
-  SheetOrders,
-  type TwinInjectedObject,
-  type TwinInjectedProp,
-} from '@native-twin/css/jsx';
+import { compileEntryDeclaration, type RuntimeSheetDeclaration } from '@native-twin/css/jsx';
 import { type Atom, atom } from '@native-twin/helpers/react';
 import { StyleSheet as NativeSheet, Platform } from 'react-native';
 import type { ComponentState } from '../store/components.store';
@@ -79,54 +72,54 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
       );
   }
 
-  getComponentByID(id: string, templates: TwinInjectedProp['templateEntries'] = []) {
-    const component = this.get(id) ?? getGenericComponent(id);
+  // getComponentByID(id: string, templates: string[] = []) {
+  //   const component = this.get(id) ?? getGenericComponent(id);
 
-    const props = component.props.map(({ prop, entries, target }) => {
-      const config = this.twinFn.config;
-      const twinFn = this.twinFn;
-      const composedEntries = templates
-        .flatMap((x) => (x.prop === prop ? twinFn(x.value) : []))
-        .map(
-          (x): RuntimeJSXStyle => ({
-            className: x.className,
-            groups: getRuleSelectorGroups(x.selectors),
-            declarations: x.declarations.map((decl) =>
-              compileEntryDeclaration(decl, {
-                baseRem: config.root.rem,
-                platform: Platform.OS,
-              }),
-            ),
-            group: getRuleSelectorGroup(x.selectors),
-            important: x.important,
-            inherited: false,
-            precedence: x.precedence,
-          }),
-        );
+  //   const props = component.props.map(({ prop, entries, target }) => {
+  //     const config = this.twinFn.config;
+  //     const twinFn = this.twinFn;
+  //     const composedEntries = templates
+  //       .flatMap((x) => (x.prop === prop ? twinFn(x.value) : []))
+  //       .map(
+  //         (x): RuntimeJSXStyle => ({
+  //           className: x.className,
+  //           groups: getRuleSelectorGroups(x.selectors),
+  //           declarations: x.declarations.map((decl) =>
+  //             compileEntryDeclaration(decl, {
+  //               baseRem: config.root.rem,
+  //               platform: Platform.OS,
+  //             }),
+  //           ),
+  //           group: getRuleSelectorGroup(x.selectors),
+  //           important: x.important,
+  //           inherited: false,
+  //           precedence: x.precedence,
+  //         }),
+  //       );
 
-      const finalEntries = [...entries, ...composedEntries].sort((a, b) =>
-        SheetOrders.sortSheetEntries(a as any, b as any),
-      );
-      const declarations = {
-        base: finalEntries.filter((x) => x.group === 'base').flatMap((x) => x.declarations),
-        pointer: finalEntries.filter((x) => x.group === 'pointer').flatMap((x) => x.declarations),
-        group: finalEntries.filter((x) => x.group === 'group').flatMap((x) => x.declarations),
-      };
+  //     const finalEntries = [...entries, ...composedEntries].sort((a, b) =>
+  //       SheetOrders.sortSheetEntries(a as any, b as any),
+  //     );
+  //     const declarations = {
+  //       base: finalEntries.filter((x) => x.group === 'base').flatMap((x) => x.declarations),
+  //       pointer: finalEntries.filter((x) => x.group === 'pointer').flatMap((x) => x.declarations),
+  //       group: finalEntries.filter((x) => x.group === 'group').flatMap((x) => x.declarations),
+  //     };
 
-      return {
-        prop,
-        target,
-        entries: finalEntries,
-        declarations,
-      };
-    });
+  //     return {
+  //       prop,
+  //       target,
+  //       entries: finalEntries,
+  //       declarations,
+  //     };
+  //   });
 
-    return {
-      id,
-      props,
-      metadata: component.metadata,
-    };
-  }
+  //   return {
+  //     id,
+  //     props,
+  //     metadata: component.metadata,
+  //   };
+  // }
 
   getComponentState(id: string) {
     const state = componentsState.get(id);
@@ -150,16 +143,16 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
 
 export const StyleSheet = new JSXStyleSheet(true);
 
-const getGenericComponent = (id: string): TwinInjectedObject => ({
-  childStyles: [],
-  id,
-  index: -1,
-  metadata: {
-    hasGroupEvents: false,
-    hasPointerEvents: false,
-    isGroupParent: false,
-  },
-  parentID: 'NO_PARENT',
-  parentSize: -1,
-  props: [],
-});
+// const getGenericComponent = (id: string): TwinInjectedObject => ({
+//   childStyles: [],
+//   id,
+//   index: -1,
+//   metadata: {
+//     hasGroupEvents: false,
+//     hasPointerEvents: false,
+//     isGroupParent: false,
+//   },
+//   parentID: 'NO_PARENT',
+//   parentSize: -1,
+//   props: [],
+// });

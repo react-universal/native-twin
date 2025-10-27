@@ -1,5 +1,5 @@
 import * as P from '@native-twin/arc-parser';
-import { mapAsType } from '../utils.parser.js';
+import { mapAsType } from '../utils.parser';
 
 const mapToAttributeSelector = mapAsType('ATTRIBUTE_SELECTOR');
 const mapToElementSelector = mapAsType('ELEMENT_SELECTOR');

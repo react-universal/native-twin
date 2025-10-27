@@ -1,9 +1,9 @@
 import {
   Layer,
-  type SheetEntry,
-  type TWParsedRule,
   moveToLayer,
   parsedRuleToClassName,
+  type SheetEntry,
+  type TWParsedRule,
 } from '@native-twin/css';
 import type { ThemeContext } from '../types/config.types.js';
 import { convert } from './convertRule.js';

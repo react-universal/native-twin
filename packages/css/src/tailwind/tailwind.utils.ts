@@ -2,7 +2,7 @@ import { asArray, type MaybeArray } from '@native-twin/helpers';
 import type { SelectorGroup } from '../css/css.types.js';
 import type { TWScreenValueConfig } from './tailwind.types.js';
 
-const matchGroup = (variants: string[], group: SelectorGroup) => {
+const matchGroup = (variants: string[], group: SelectorGroup | (string & {})) => {
   return variants.some((x) => x === group || new RegExp(`(&)?(:?)?(${group})`).test(x));
 };
 export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
@@ -20,8 +20,16 @@ export function getRuleSelectorGroup(variants: string[]): SelectorGroup {
   if (matchGroup(variants, 'even') || variants.includes('even')) return 'even';
   if (matchGroup(variants, 'first') || variants.includes('first')) return 'first';
   if (matchGroup(variants, 'last') || variants.includes('last')) return 'last';
-  if (variants.includes('hover') || variants.includes('focus') || variants.includes('active'))
+  if (
+    variants.includes('hover') ||
+    variants.includes('focus') ||
+    variants.includes('active') ||
+    matchGroup(variants, 'hover') ||
+    matchGroup(variants, 'focus') ||
+    matchGroup(variants, 'active')
+  ) {
     return 'pointer';
+  }
   return 'base';
 }
 

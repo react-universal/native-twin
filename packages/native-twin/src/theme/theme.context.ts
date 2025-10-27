@@ -1,9 +1,5 @@
-import {
-  type SheetEntry,
-  type TWParsedRule,
-  parsedRuleToClassName,
-} from '@native-twin/css';
-import { type MaybeArray, flattenColorPalette } from '@native-twin/helpers';
+import { parsedRuleToClassName, type SheetEntry, type TWParsedRule } from '@native-twin/css';
+import { flattenColorPalette, type MaybeArray } from '@native-twin/helpers';
 import { createRuleResolver } from '../parsers/rule-handler.js';
 import { createVariantResolver } from '../parsers/variant-handler.js';
 import type {
@@ -45,10 +41,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   const ctx: ThemeContext<Theme> = {
     get colors() {
       return flattenColorPalette(
-        Object.assign(
-          themeConfig['colors'] ?? {},
-          themeConfig['extend']?.['colors'] ?? {},
-        ) ?? {},
+        Object.assign(themeConfig['colors'] ?? {}, themeConfig['extend']?.['colors'] ?? {}) ?? {},
       );
     },
     animations,

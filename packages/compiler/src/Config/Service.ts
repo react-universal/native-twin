@@ -1,4 +1,5 @@
 import * as path from 'node:path';
+import { createThemeContext } from '@native-twin/core';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -17,16 +18,15 @@ import type { ImportedTwinConfig } from './Models';
 const make = Effect.gen(function* () {
   const env = yield* CompilerConfigContext;
 
-  const twinConfigRef = yield* SubscriptionRef.make(
-    extractTwinConfig(env.twinConfigPath),
-  );
+  const twinConfigRef = yield* SubscriptionRef.make(extractTwinConfig(env.twinConfigPath));
   const projectFilesRef = yield* SubscriptionRef.make(
-    HashSet.fromIterable(
-      yield* getProjectFilesFromConfig(yield* Ref.get(twinConfigRef), 'sync'),
-    ),
+    HashSet.fromIterable(yield* getProjectFilesFromConfig(yield* Ref.get(twinConfigRef), 'sync')),
   );
 
   const runningPlatformsRef = yield* SubscriptionRef.make(HashSet.empty<string>());
+  const twThemeContext = yield* twinConfigRef.get.pipe(
+    Effect.flatMap((twinConfig) => Ref.make(createThemeContext(twinConfig))),
+  );
   const twRunnersRef = yield* Ref.get(twinConfigRef).pipe(
     Effect.flatMap((config) =>
       Ref.make({
@@ -52,6 +52,7 @@ const make = Effect.gen(function* () {
 
   return {
     state: {
+      twThemeContext,
       projectFiles: {
         ref: projectFilesRef,
         get: SubscriptionRef.get(projectFilesRef),
@@ -89,10 +90,7 @@ const make = Effect.gen(function* () {
     );
   }
 
-  function getProjectFilesFromConfig(
-    config: ImportedTwinConfig,
-    mode: 'sync' | 'async' = 'async',
-  ) {
+  function getProjectFilesFromConfig(config: ImportedTwinConfig, mode: 'sync' | 'async' = 'async') {
     return Stream.fromIterable(config.content).pipe(
       Stream.map(TwinPath.globPathFromString),
       Stream.runCollect,
@@ -137,12 +135,8 @@ const make = Effect.gen(function* () {
     );
   }
 
-  function subscribeToConfigScoped(
-    onChange: (config: ImportedTwinConfig) => Effect.Effect<void>,
-  ) {
-    return twinConfigRef.changes
-      .pipe(Stream.runForEach(onChange))
-      .pipe(Effect.forkScoped);
+  function subscribeToConfigScoped(onChange: (config: ImportedTwinConfig) => Effect.Effect<void>) {
+    return twinConfigRef.changes.pipe(Stream.runForEach(onChange)).pipe(Effect.forkScoped);
   }
 });
 

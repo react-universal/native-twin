@@ -1,10 +1,6 @@
 import type { __Theme__, RuntimeTW, StyleSheetAdapter } from '@native-twin/core';
 import type { Sheet, SheetEntry } from '@native-twin/css';
-import type {
-  RuntimeJSXStyle,
-  RuntimeSheetDeclaration,
-  TwinInjectedProp,
-} from '@native-twin/css/jsx';
+import type { RuntimeJSXStyle, RuntimeSheetDeclaration } from '@native-twin/css/jsx';
 import type { Atom } from '@native-twin/helpers/react';
 import type { StyleSheet } from 'react-native';
 import type { ComponentState } from '../store/components.store';
@@ -23,7 +19,7 @@ export interface TwinStyleSheet extends StyleSheetAdapter<__Theme__> {
   getComponentState(id: string): Atom<ComponentState>;
   getComponentByID(
     id: string,
-    templateEntries: TwinInjectedProp['templateEntries'] | undefined,
+    templateEntries: string | undefined,
   ): {
     id: string;
     props: {

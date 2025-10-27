@@ -27,6 +27,7 @@
     },
     "./components": {
       "source": "./src/components/index.ts",
+      "react-native": "./src/components/index.tsx",
       "import": {
         "default": "./build/cjs/components/index.js",
         "types": "./build/dts/components/index.d.ts"

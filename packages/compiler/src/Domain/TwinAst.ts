@@ -6,21 +6,17 @@ import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import { type BabelFileAst, babelTemplates } from '../Babel';
 import type { TwinFile, TwinPath } from '../FileSystem';
-import type { TwinEvaluatedSheetEntry } from '../StyleSheet';
-import { createBabelVariable, literalValueToAst } from '../utils/babel/babel.utils';
-import type { TwinJSXElement } from './TwinJSXElement';
-import type { TwinJSXElementNode } from './TwinJSXElementNode';
+import type { TwinJSXElement, TwinJSXElementNode } from './TwinJSXElementNode';
 
 export const TWIN_MODULE_STYLES_OBJECT_VAR_NAME = '_____Twin__Module__Styles';
-export const TWIN_STYLESHEET_IMPORT = '__ReactNativeStyleSheet';
+// export const TWIN_STYLESHEET_IMPORT = '__ReactNativeStyleSheet';
+export const TWIN_STORE_IMPORT = '__TwinStoreHandler';
 export class TwinModuleAst extends Data.Class<{
   readonly ast: BabelFileAst;
   readonly file: TwinFile;
   readonly jsxElements: TwinJSXElement[];
   readonly dependencies: ModuleDependency[];
 }> {
-  private styleObject: t.ObjectExpression;
-  private stylesVariable: t.VariableDeclaration;
 
   constructor(data: {
     ast: BabelFileAst;
@@ -29,8 +25,6 @@ export class TwinModuleAst extends Data.Class<{
     dependencies: ModuleDependency[];
   }) {
     super(data);
-    this.styleObject = t.objectExpression([]);
-    this.stylesVariable = createBabelVariable(TWIN_MODULE_STYLES_OBJECT_VAR_NAME, this.styleObject);
     if (this.jsxElements.length > 0) {
       this.ast.program = t.removeComments(this.ast.program);
       t.addComment(this.ast.program, 'inner', ' @ts-noCheck', true);
@@ -38,7 +32,11 @@ export class TwinModuleAst extends Data.Class<{
         babelTemplates.importRNStyleSheet() as t.Statement,
         // createBabelVariable(TWIN_STYLESHEET_IMPORT, createRequireExpression('@native-twin/jsx')),
       );
-      this.ast.program.body.push(this.stylesVariable);
+      this.ast.program.body.unshift(
+        babelTemplates.importTwinStore({
+          TWIN_STORE_HANDLER_VAR: t.identifier(TWIN_STORE_IMPORT),
+        }) as t.Statement,
+      );
     }
   }
   get id() {
@@ -46,7 +44,7 @@ export class TwinModuleAst extends Data.Class<{
     return `${basename}:${Hash.string(path)}`;
   }
 
-  toJSXElementStream() {
+  toDependenciesStream() {
     return Stream.fromIterable(this.dependencies);
   }
 
@@ -63,18 +61,8 @@ export class TwinModuleAst extends Data.Class<{
     return Option.andThen(node.dependency, (dependency) => this.findDependency(dependency));
   }
 
-  appendToStyleObject(property: t.ObjectProperty) {
-    this.styleObject.properties.push(property);
-  }
-
   addStyleRegistryExp(exp: t.Statement) {
     this.ast.program.body.push(exp);
-  }
-
-  registerStyle(node: TwinJSXElementNode, styles: TwinEvaluatedSheetEntry) {
-    this.styleObject.properties.push(
-      t.objectProperty(t.stringLiteral(node.id), literalValueToAst(styles)),
-    );
   }
 }
 

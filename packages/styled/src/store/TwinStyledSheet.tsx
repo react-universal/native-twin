@@ -29,6 +29,7 @@ export interface ClassnameStyles {
   base: CompleteStyle;
   pointer: CompleteStyle;
   dark: CompleteStyle;
+  group: CompleteStyle;
 }
 
 export interface ComponentStyleRegistry {
@@ -40,6 +41,8 @@ export interface ComponentStyleRegistry {
     styles: ClassnameStyles;
   }[];
 }
+
+const EMPTY_STYLES = Object.freeze({});
 
 export class TwinStyledSheetManager {
   private _registry = new Map<string, ComponentStyleRegistry>();
@@ -69,14 +72,36 @@ export class TwinStyledSheetManager {
     return registry;
   }
 
-  getComponentStyledProps(id: string): StyleProp<CompleteStyle> {
+  getComponentStyledProps(
+    id: string,
+    withPointer: boolean,
+    withGroup: boolean
+  ): {
+    [key: string]: StyleProp<CompleteStyle>;
+  } {
     const component = this._registry.get(id);
-    if (!component) return {};
+    if (!component) return EMPTY_STYLES;
+    if (withGroup) {
+      console.log("withGroup: ", {
+        id,
+        withPointer,
+        withGroup,
+        component,
+      });
+    }
     return component.props.reduce((prev, current) => {
+      const final = { ...current.styles.base };
+      if (withPointer) {
+        Object.assign(final, current.styles.pointer);
+      }
+      if (withGroup) {
+        Object.assign(final, current.styles.group);
+        console.log("asdasdasd", withPointer, current);
+      }
       return Object.assign(
         { ...prev },
         {
-          [current.target]: current.styles.base,
+          [current.target]: final,
         }
       );
     }, {});
@@ -88,17 +113,17 @@ export class TwinStyledSheetManager {
     withPointer: boolean
   ): StyleProp<CompleteStyle> {
     const component = this._registry.get(id);
-    if (!component) return {};
+    if (!component) return EMPTY_STYLES;
 
     const styledProp = component.props.find((x) => x.prop === prop);
 
-    if (!styledProp) return {};
+    if (!styledProp) return EMPTY_STYLES;
 
     const base = stylesSemiGroup.combine(
       styledProp.styles.base,
       this.readStyledContext.colorScheme === "dark"
         ? styledProp.styles.dark
-        : {}
+        : EMPTY_STYLES
     );
     if (withPointer) return this.flatten([base, styledProp.styles.pointer]);
     return base;
@@ -131,8 +156,11 @@ export class TwinStyledSheetManager {
   private getComponentStylesProp(
     prop: RuntimeTwinMappedProp
   ): ComponentStyleRegistry["props"][number] {
-    const classNames = prop.entries.map((x) => x.className).join(" ");
-    const styles = this.fromEntries(prop.entries, classNames);
+    const classNames = prop.entries.base.map((x) => x.className).join(" ");
+    const styles = this.fromEntries(
+      [...prop.entries.base, ...prop.entries.pointer, ...prop.entries.group],
+      classNames
+    );
     return {
       classname: classNames,
       prop: prop.prop,
@@ -153,13 +181,12 @@ export class TwinStyledSheetManager {
       (prev, current) => {
         const completeStyle = this.registerEntry(current);
         if (!completeStyle) return prev;
-        if (
-          current.groups.some(
-            (x) =>
-              Predicates.isPointerSelector(x) || Predicates.isGroupSelector(x)
-          )
-        ) {
+        if (current.groups.some((x) => x === "pointer")) {
           prev.pointer = stylesSemiGroup.combine(prev.pointer, completeStyle);
+          return prev;
+        }
+        if (current.groups.some((x) => x === "group")) {
+          prev.group = stylesSemiGroup.combine(prev.group, completeStyle);
           return prev;
         }
         if (current.groups.some(Predicates.isDarkSelector)) {
@@ -171,7 +198,7 @@ export class TwinStyledSheetManager {
 
         return prev;
       },
-      { base: {}, pointer: {}, dark: {} } as ClassnameStyles
+      { base: {}, pointer: {}, dark: {}, group: {} } as ClassnameStyles
     );
   }
 

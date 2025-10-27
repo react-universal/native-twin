@@ -236,7 +236,7 @@ export const stylePropsText = {
   ...stylePropsTextOnly,
 };
 
-/** Prop must be camel cased */
-export const getStylePropType = (prop: string) => {};
+// /** Prop must be camel cased */
+// export const getStylePropType = (prop: string) => {};
 
-export const isDimensionProp = (prop: string) => {};
+// export const isDimensionProp = (prop: string) => {};

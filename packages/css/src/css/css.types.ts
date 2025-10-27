@@ -8,7 +8,7 @@ import type {
   InteractionPseudoSelectors,
   PlatformPseudoSelectors,
   simplePseudoMap,
-} from './css.constants.js';
+} from './css.constants';
 
 export type ValidInteractionPseudoSelector = (typeof InteractionPseudoSelectors)[number];
 export type ValidAppearancePseudoSelector = (typeof AppearancePseudoSelectors)[number];

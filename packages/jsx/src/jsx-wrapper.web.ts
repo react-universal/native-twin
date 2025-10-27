@@ -1,7 +1,4 @@
-// import { createElement } from 'react';
-import { jsxStyles } from './jsx/jsx-styles.web';
 import { stylizedComponents } from './styled/index.web';
-// import { createStylableComponent } from './styled/web';
 import type { JSXFunction } from './types/jsx.types';
 
 /**
@@ -38,7 +35,6 @@ export default function jsxWrapper(jsx: JSXFunction): JSXFunction {
       // }
     }
 
-    jsxStyles(props, type);
     // console.log('WRAPPER: ', type, props);
     // Call the original jsx function with the new type
     return jsx.call(jsx, type, props, ...rest);

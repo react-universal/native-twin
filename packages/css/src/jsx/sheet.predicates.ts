@@ -1,7 +1,4 @@
-import { OwnSheetSelectors } from '../css/css.constants';
-import type { ValidChildPseudoSelector } from '../css/css.types';
-import { getRuleSelectorGroup } from '../tailwind/tailwind.utils';
-import type { SheetEntryHandler } from './SheetEntry';
+import { OwnSheetSelectors, type ValidChildPseudoSelector } from '../css';
 
 interface ChildSelectorBrand {
   readonly ChildSelector: unique symbol;
@@ -15,12 +12,12 @@ type OwnSelector = (typeof OwnSheetSelectors)[number] & OwnSelectorBrand;
 
 const childTest = new RegExp(/^(&:)?(first|last|odd|even).*/g);
 const pointerEntriesTest = new RegExp(/^(&:)?(hover|focus|active|group).*/g);
-const groupEntriesTest = new RegExp(/^(&:)?(group-).*/g);
+const groupEntriesTest = new RegExp(/^(&:|.)?(group)(-|:).*/g);
 const darkEntriesTest = new RegExp(/^(&:)?(dark).*/g);
 
 /** @category Predicates */
-export const isChildEntry = (entry: SheetEntryHandler) =>
-  isChildSelector(getRuleSelectorGroup(entry.selectors));
+// export const isChildEntry = (entry: SheetEntryHandler) =>
+//   isChildSelector(getRuleSelectorGroup(entry.selectors));
 
 /** @category Predicates */
 export const isPointerSelector = (group: string): group is ChildSelector => {
@@ -68,14 +65,14 @@ export const isOwnSelector = (group: string): group is OwnSelector =>
   OwnSheetSelectors.includes(group as OwnSelector);
 
 /** @category Predicates */
-export const isPointerEntry = (entry: SheetEntryHandler) => {
-  const group = getRuleSelectorGroup(entry.selectors);
-  return group === 'group' || group === 'pointer';
-};
+// export const isPointerEntry = (entry: SheetEntryHandler) => {
+//   const group = getRuleSelectorGroup(entry.selectors);
+//   return group === 'group' || group === 'pointer';
+// };
 
 /** @category Predicates */
-export const isGroupEventEntry = (entry: SheetEntryHandler) =>
-  getRuleSelectorGroup(entry.selectors) === 'group';
+// export const isGroupEventEntry = (entry: SheetEntryHandler) =>
+//   getRuleSelectorGroup(entry.selectors) === 'group';
 
 /** @category Predicates */
-export const isGroupParent = (entry: SheetEntryHandler) => entry.selectors.includes('group');
+// export const isGroupParent = (entry: SheetEntryHandler) => entry.selectors.includes('group');

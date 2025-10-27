@@ -3,7 +3,7 @@ import type { CompleteStyle } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 import { render as tlRender } from '@testing-library/react-native';
 import { type ComponentProps, type ComponentType, forwardRef } from 'react';
-import { jsxDEV } from 'react/jsx-dev-runtime';
+import JSXDevRuntime from 'react/jsx-dev-runtime';
 import '../components';
 import wrapJSX from '../jsx-wrapper';
 import { StyleSheet } from '../sheet';
@@ -15,6 +15,7 @@ import type {
 } from '../types/styled.types';
 import { INTERNAL_RESET } from '../utils/constants';
 
+console.log(JSXDevRuntime);
 const testingConfig = defineConfig({
   content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
   root: {
@@ -48,9 +49,13 @@ declare global {
   }
 }
 
-export const renderJSX = wrapJSX((jsxDEV as any).jsxDev as any);
-export const render: typeof tlRender = (component: any, options?: any) =>
-  tlRender(renderJSX(component.type, component.props, component.key) as any, options);
+export const renderJSX = wrapJSX((JSXDevRuntime as any).jsxDEV as any);
+export const render: typeof tlRender = (component: any, options?: any) => {
+  return tlRender(
+    JSXDevRuntime.jsxDEV(component.type, component.props, component.key, false) as any,
+    options,
+  );
+};
 
 /*
  * Creates a mocked component that renders with the defaultCSSInterop WITHOUT needing

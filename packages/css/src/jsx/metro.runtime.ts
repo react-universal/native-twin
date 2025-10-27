@@ -1,4 +1,4 @@
-import type { SheetEntry } from '../sheets/sheet.types.js';
+import type { SheetEntry } from '../sheets';
 
 export interface StyledPropEntries {
   entries: SheetEntry[];

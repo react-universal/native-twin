@@ -15,7 +15,7 @@ export function twinComponent(
   const componentID = props?.['_twinInjected']?.id;
   const id = componentID ?? reactID;
   // TODO: USE COMPONENT STYLES
-  const { componentHandler, handlers, compiledProps } = useStyledProps(
+  const { registry, state, handlers, compiledProps } = useStyledProps(
     props ?? ({} as unknown as any),
     configs,
   );
@@ -33,19 +33,24 @@ export function twinComponent(
     }
   }
 
-  if (compiledProps.length > 0) {
-    for (const style of compiledProps) {
-      const oldProps = props[style.target] ? { ...props[style.target] } : {};
-      props[style.target] = Object.assign(style.styles, oldProps);
-    }
+  // if (compiledProps.length > 0) {
+  //   for (const style of compiledProps) {
+  //     const oldProps = props[style.target] ? { ...props[style.target] } : {};
+  //     props[style.target] = Object.assign(style.styles, oldProps);
+  //   }
+  // }
+  for (const propKey in compiledProps) {
+    // console.log('llll',propKey)
+    const oldProps = props[propKey] ? { ...props[propKey] } : {};
+    props[propKey] = Object.assign(compiledProps[propKey] ?? {}, oldProps);
   }
   console.log('REF: ', ref, props);
 
-  if (componentHandler.metadata.isGroupParent) {
+  if (state.meta.isGroupParent) {
     return createElement(
       groupContext.Provider,
       {
-        value: componentHandler.id,
+        value: registry.id,
       },
       createElement(component, { ...props, ref }),
     );
@@ -79,7 +84,7 @@ export function twinComponent(
   //   component = createAnimatedComponent(component);
   // }
 
-  if (componentHandler?.metadata.isGroupParent) {
+  if (state.meta.isGroupParent) {
     props = {
       value: componentID ?? id,
       children: createElement(component, props),
@@ -130,9 +135,7 @@ export function createAnimatedComponent(Component: ComponentType<any>): any {
   const { default: Animated, useAnimatedStyle } =
     require('react-native-reanimated') as typeof import('react-native-reanimated');
 
-  const AnimatedComponent = Animated.createAnimatedComponent(
-    Component as React.ComponentClass,
-  );
+  const AnimatedComponent = Animated.createAnimatedComponent(Component as React.ComponentClass);
 
   /**
    * TODO: This wrapper shouldn't be needed, as we should just run the hook in the

@@ -1,5 +1,5 @@
-import type { CompleteStyle } from '../react-native/rn.types.js';
-import type { Primitive, TemplateFunctions } from './transforms.types.js';
+import type { CompleteStyle } from '../react-native/rn.types';
+import type { Primitive, TemplateFunctions } from './transforms.types';
 
 /** Converts the tagged template string into a css string */
 export function buildCSSString<T extends Record<string, string>>(

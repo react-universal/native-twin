@@ -1,6 +1,6 @@
 import * as P from '@native-twin/arc-parser';
-import { ident } from '../css-common.parser.js';
 import type { SelectorGroup } from '../css.types.js';
+import { ident } from '../css-common.parser.js';
 import type { SelectorPayload } from './css-parser.types.js';
 
 /*
@@ -140,11 +140,7 @@ const getSelectorGroup = (selector: string): SelectorGroup => {
   ) {
     return 'group';
   }
-  if (
-    selector.includes(':hover') ||
-    selector.includes(':active') ||
-    selector.includes(':focus')
-  ) {
+  if (selector.includes(':hover') || selector.includes(':active') || selector.includes(':focus')) {
     return 'pointer';
   }
   if (selector.includes('.first')) return 'first';

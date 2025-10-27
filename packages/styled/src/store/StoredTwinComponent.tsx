@@ -1,10 +1,6 @@
-import { sheetEntryToStyle, type TwinRuntimeContext } from "@native-twin/core";
-import type { AnyStyle } from "@native-twin/css";
 import type { TwinRuntimeComponent } from "@native-twin/css/jsx";
 import { type Atom, atom } from "@native-twin/helpers/react";
 import { type ComponentStyleRegistry, TwinStyleSheet } from "./TwinStyledSheet";
-
-const EMPTY_STYLES = Object.freeze({});
 
 export interface ComponentState {
   meta: {
@@ -20,66 +16,54 @@ export interface ComponentState {
 
 export class StoredTwinComponent {
   private _interactionState: Atom<ComponentState>;
-  private _currentStyles: {
-    [prop: string]: Atom<AnyStyle>;
-  };
-  private _sheet: ComponentStyleRegistry;
+  _sheet: ComponentStyleRegistry;
   private _parentSubscription: (() => void) | null = null;
 
   get interactionState() {
-    return this._interactionState.get();
+    return this._interactionState;
+  }
+  get id() {
+    return this.twinComp.id;
+  }
+  get parentID() {
+    return this.twinComp.parentID;
   }
 
-  constructor(
-    private twinComp: TwinRuntimeComponent,
-    private runtimeContext: TwinRuntimeContext
-  ) {
-    this._interactionState = atom({
-      meta: {
-        hasGroupEvents: this.twinComp.metadata.hasGroupEvents,
-        hasPointerEvents: this.twinComp.metadata.hasPointerEvents,
-        isGroupParent: this.twinComp.metadata.isGroupParent,
-      },
-      interactions: {
-        isGroupActive: false,
-        isLocalActive: false,
-      },
-    });
-    const styles = this.twinComp.props.map((prop) => {
-      const styles = prop.entries.flatMap(
-        (x) => sheetEntryToStyle(x, this.runtimeContext) ?? []
-      );
-      return [prop.target, atom(TwinStyleSheet.flatten(styles))] as const;
-    });
-    this._currentStyles = Object.fromEntries(styles);
+  constructor(private twinComp: TwinRuntimeComponent) {
+    this._interactionState = atom(getComponentInteractionState(twinComp));
     this._sheet = TwinStyleSheet.registerComponent(twinComp);
   }
 
-  getPropStyles(prop: string) {
-    const style = this._currentStyles[prop];
-    if (!style) return EMPTY_STYLES;
+  getPropStyles(prop: string, interaction = false) {
+    const styles = TwinStyleSheet.getComponentStyles(
+      this.id,
+      prop,
+      interaction
+    );
 
-    return this._currentStyles[prop].get();
+    return styles;
   }
 
-  getStyledProps() {
-    return this._sheet.props.reduce((prev, current) => {
-      return Object.assign(
-        { ...prev },
-        {
-          [current.target]: TwinStyleSheet.getComponentStyles(
-            this.twinComp.id,
-            current.prop,
-            false
-          ),
-        }
-      );
-    }, {});
-    // const result: Record<string, unknown> = {};
-    // for (const prop in this._currentStyles) {
-    //   result[prop] = this._currentStyles[prop].get();
-    // }
-    // return result;
+  getStyledProps(withPointer: boolean, withGroup: boolean) {
+    return TwinStyleSheet.getComponentStyledProps(this.id, withPointer, withGroup);
+    // const styledProps
+    // return this._sheet.props.reduce((prev, current) => {
+    //   return Object.assign(
+    //     { ...prev },
+    //     {
+    //       [current.target]: TwinStyleSheet.getComponentStyles(
+    //         this.twinComp.id,
+    //         current.prop,
+    //         false
+    //       ),
+    //     }
+    //   );
+    // }, {});
+    // // const result: Record<string, unknown> = {};
+    // // for (const prop in this._currentStyles) {
+    // //   result[prop] = this._currentStyles[prop].get();
+    // // }
+    // // return result;
   }
 
   subscribeToParentInteractions(parent: StoredTwinComponent) {
@@ -90,7 +74,7 @@ export class StoredTwinComponent {
           isGroupActive: next.interactions.isGroupActive,
           isLocalActive: next.interactions.isLocalActive,
         },
-        meta: this.interactionState.meta,
+        meta: this.interactionState.get().meta,
       });
     });
     return this._parentSubscription;
@@ -103,3 +87,17 @@ export class StoredTwinComponent {
     }
   }
 }
+
+const getComponentInteractionState = (
+  twinComp: TwinRuntimeComponent
+): ComponentState => ({
+  meta: {
+    hasGroupEvents: twinComp.metadata.hasGroupEvents,
+    hasPointerEvents: twinComp.metadata.hasPointerEvents,
+    isGroupParent: twinComp.metadata.isGroupParent,
+  },
+  interactions: {
+    isGroupActive: false,
+    isLocalActive: false,
+  },
+});
