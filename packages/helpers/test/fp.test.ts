@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { stableHash } from '../src';
 import * as E from '../src/fp/Either';
 import * as Predicate from '../src/fp/Predicate';
 
@@ -33,5 +34,10 @@ describe('FP test', () => {
     expect(isStringEven('1234')).toBe(true);
     // Expect to be off
     expect(isStringEven('123')).toBe(false);
+  });
+  it('asdasd', () => {
+    const s: any = { a: 1, b: 2  }
+    s.x = s;
+    console.log(stableHash(s));
   });
 });

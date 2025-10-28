@@ -1,29 +1,39 @@
 // @ts-noCheck
-import { styledJSXStore as __TwinStoreHandler } from '@native-twin/styled';
-const __ReactNativeStyleSheet = require('@native-twin/styled').TwinStyleSheet;
+const __TwinStoreHandler = require('@native-twin/styled');
+const __ReactNativeStyleSheet = require('@native-twin/jsx').StyleSheet;
 // @ts-noCheck
-import { View } from 'react-native';
-import { Button } from './code-i';
+import { FlatList, View } from "react-native";
+import { Button } from "./code-i";
 export default function App() {
-  return <View className={`group flex-1 hover:bg-red shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200`} __twinID={"872629236"} __parentID={null}>
-      <Button size='small' __twinID={"103451141"} __parentID={"872629236"} />
-       <Text className='px-2 group-hover:bg-green' __twinID={"411454715"} __parentID={"872629236"}>Hello World</Text>
+  return <View className={`group ${x ? 'asd' : 'x'} h-[20vh] flex-1 hover:bg-red shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200`} __twinID={"617922210"} __parentID={null} __twinExpressions={{
+    prop: "className",
+    target: "style",
+    expression: `${x ? 'asd' : 'x'}`
+  }}>
+      <Button size="small" __twinID={"103451141"} __parentID={"617922210"} />
+      <FlatList data={[1, 2]} renderItem={({
+      item
+    }) => <View className="bg-gray-200" __twinID={"519118255"} __parentID={"101357255"}>
+            <Text className="text-lg white" __twinID={"101711716"} __parentID={"519118255"}>Count {item}</Text>
+          </View>} __twinID={"101357255"} __parentID={"617922210"} />
+      <Text className="px-2 group-hover:bg-green" __twinID={"411454715"} __parentID={"617922210"}>Hello World</Text>
     </View>;
 }
-__TwinStoreHandler.registerComponent({
-  "id": "872629236",
+__ReactNativeStyleSheet.registerComponent([{
+  "id": "617922210",
   "index": 0,
   "metadata": {
     "hasGroupEvents": false,
     "hasPointerEvents": true,
-    "isGroupParent": true
+    "isGroupParent": false
   },
+  "childIds": ["103451141", "101357255", "411454715"],
   "parentID": null,
   "parentSize": -1,
   "props": [{
     "entries": {
       "base": [{
-        "className": "group",
+        "className": "grouph-[20vh]",
         "important": false,
         "inherited": false,
         "precedence": 805306368,
@@ -164,10 +174,12 @@ __TwinStoreHandler.registerComponent({
     },
     "prop": "className",
     "target": "style",
+    "classNames": "grouph-[20vh] flex-1 hover:bg-red shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200",
+    "templateEntries": "`${x ? 'asd' : 'x'}`",
     "metadata": {
       "hasGroupEvents": false,
       "hasPointerEvents": true,
-      "isGroupParent": true
+      "isGroupParent": false
     }
   }],
   "childStyles": [{
@@ -197,8 +209,7 @@ __TwinStoreHandler.registerComponent({
       "isUnitLess": false
     }]
   }]
-});
-__TwinStoreHandler.registerComponent({
+}, {
   "id": "103451141",
   "index": 0,
   "metadata": {
@@ -206,21 +217,127 @@ __TwinStoreHandler.registerComponent({
     "hasPointerEvents": false,
     "isGroupParent": false
   },
-  "parentID": "872629236",
-  "parentSize": 2,
+  "childIds": [],
+  "parentID": "617922210",
+  "parentSize": 3,
   "props": [],
   "childStyles": []
-});
-__TwinStoreHandler.registerComponent({
-  "id": "411454715",
+}, {
+  "id": "101357255",
   "index": 1,
+  "metadata": {
+    "hasGroupEvents": false,
+    "hasPointerEvents": false,
+    "isGroupParent": false
+  },
+  "childIds": ["519118255"],
+  "parentID": "617922210",
+  "parentSize": 3,
+  "props": [],
+  "childStyles": []
+}, {
+  "id": "519118255",
+  "index": 0,
+  "metadata": {
+    "hasGroupEvents": false,
+    "hasPointerEvents": false,
+    "isGroupParent": false
+  },
+  "childIds": ["101711716"],
+  "parentID": "101357255",
+  "parentSize": 1,
+  "props": [{
+    "entries": {
+      "base": [{
+        "className": "bg-gray-200",
+        "important": false,
+        "inherited": false,
+        "precedence": 805306368,
+        "group": "base",
+        "groups": ["base"],
+        "declarations": [{
+          "_tag": "COMPILED",
+          "prop": "backgroundColor",
+          "value": "rgba(229,231,235,1)",
+          "isUnitLess": false
+        }]
+      }],
+      "child": [],
+      "pointer": [],
+      "group": []
+    },
+    "prop": "className",
+    "target": "style",
+    "classNames": "bg-gray-200",
+    "templateEntries": "",
+    "metadata": {
+      "hasGroupEvents": false,
+      "hasPointerEvents": false,
+      "isGroupParent": false
+    }
+  }],
+  "childStyles": []
+}, {
+  "id": "101711716",
+  "index": 0,
+  "metadata": {
+    "hasGroupEvents": false,
+    "hasPointerEvents": false,
+    "isGroupParent": false
+  },
+  "childIds": [],
+  "parentID": "519118255",
+  "parentSize": 1,
+  "props": [{
+    "entries": {
+      "base": [{
+        "className": "text-lg",
+        "important": false,
+        "inherited": false,
+        "precedence": 805306368,
+        "group": "base",
+        "groups": ["base"],
+        "declarations": [{
+          "_tag": "COMPILED",
+          "prop": "fontSize",
+          "value": 18,
+          "isUnitLess": false
+        }]
+      }, {
+        "className": "white",
+        "important": false,
+        "inherited": false,
+        "precedence": 805306368,
+        "group": "base",
+        "groups": ["base"],
+        "declarations": []
+      }],
+      "child": [],
+      "pointer": [],
+      "group": []
+    },
+    "prop": "className",
+    "target": "style",
+    "classNames": "text-lg white",
+    "templateEntries": "",
+    "metadata": {
+      "hasGroupEvents": false,
+      "hasPointerEvents": false,
+      "isGroupParent": false
+    }
+  }],
+  "childStyles": []
+}, {
+  "id": "411454715",
+  "index": 2,
   "metadata": {
     "hasGroupEvents": true,
     "hasPointerEvents": false,
     "isGroupParent": false
   },
-  "parentID": "872629236",
-  "parentSize": 2,
+  "childIds": [],
+  "parentID": "617922210",
+  "parentSize": 3,
   "props": [{
     "entries": {
       "base": [{
@@ -261,6 +378,8 @@ __TwinStoreHandler.registerComponent({
     },
     "prop": "className",
     "target": "style",
+    "classNames": "px-2 group-hover:bg-green",
+    "templateEntries": "",
     "metadata": {
       "hasGroupEvents": true,
       "hasPointerEvents": false,
@@ -268,4 +387,4 @@ __TwinStoreHandler.registerComponent({
     }
   }],
   "childStyles": []
-});
+}]);

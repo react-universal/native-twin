@@ -1,7 +1,35 @@
 import { parse } from '@babel/parser';
+import babelTemplate from '@babel/template';
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { type AnyPrimitive, asArray } from '@native-twin/helpers';
+
+export const templateLiteralsToInject = (value: string) => {
+  if (value.startsWith('`') && value.endsWith('`')) {
+    const ast = babelTemplate.ast(value) as t.ExpressionStatement;
+    if (t.isTemplateLiteral(ast.expression)) {
+      const template = ast.expression;
+      // template.expressions.map((x) => {});
+      // traverse.node
+      // traverse.node(ast, {
+      //   TemplateElement: (path) => {},
+      //   Identifier: (path) => {
+      //     path.replaceWith(
+      //       t.arrowFunctionExpression(
+      //         asArray(t.identifier(path.node.name)),
+      //         t.identifier(path.node.name),
+      //         false,
+      //       ),
+      //     );
+      //   },
+      // });
+      // template.expression.expressions.map((x) => {});
+      return template;
+    }
+    // t.arrowFunctionExpression(asArray(t.identifier('x')), template);
+    // console.log('TEMPLATE: ', template);
+  }
+};
 
 export const literalValueToAst = (value: any): t.Expression => {
   if (value === null) return t.nullLiteral();
@@ -10,6 +38,10 @@ export const literalValueToAst = (value: any): t.Expression => {
     case 'function':
       throw new Error('Unsupported value to ast');
     case 'string':
+      // if (value.includes('$')) {
+      //   const r = convertStringLiteral(value);
+      //   if (r) return r;
+      // }
       return t.stringLiteral(value);
     case 'number':
       return t.numericLiteral(value);
@@ -114,8 +146,8 @@ export const createPrimitiveExpression = <T extends AnyPrimitive>(value: T) => {
     if (value === 'NULL') {
       return t.nullLiteral();
     }
-    return t.stringLiteral(value)
-  };
+    return t.stringLiteral(value);
+  }
   if (typeof value === 'number') return t.numericLiteral(value);
   return t.booleanLiteral(value);
 };

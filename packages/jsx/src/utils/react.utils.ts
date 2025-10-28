@@ -37,9 +37,10 @@ export function nativeStyleToProp(props: Record<string, any>, config: ComponentC
   }
 }
 
-export function getComponentDisplayName(
-  primitive: ComponentType<any> | ElementType,
-): string {
+export function getComponentDisplayName(primitive: ComponentType<any> | ElementType): string {
+  // if (typeof primitive !== 'string' && hasOwnProperty.call(primitive, 'displayName')) {
+  //   return primitive.displayName ?? primitive.name ?? 'NoName';
+  // }
   if (typeof primitive === 'string') {
     return primitive;
   }

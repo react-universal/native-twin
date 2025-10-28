@@ -1,12 +1,7 @@
-import {TinyColor} from '@ctrl/tinycolor';
-import { type SheetEntryDeclaration, parsedRuleToClassName } from '@native-twin/css';
+import { TinyColor } from '@ctrl/tinycolor';
+import { parsedRuleToClassName, type SheetEntryDeclaration } from '@native-twin/css';
 import { asArray, toColorValue } from '@native-twin/helpers';
-import type {
-  CompleteStyleKeys,
-  Rule,
-  RuleMeta,
-  RuleResolver,
-} from '../types/config.types.js';
+import type { CompleteStyleKeys, Rule, RuleMeta, RuleResolver } from '../types/config.types.js';
 import type { __Theme__ } from '../types/theme.types.js';
 
 export function matchCssObject(
@@ -50,9 +45,7 @@ export function matchThemeColor(
         }
       }
       if (!color) {
-        color =
-          context.colors[match.segment.value] ??
-          context.theme('colors', match.segment.value);
+        color = context.colors[match.segment.value] ?? context.theme('colors', match.segment.value);
       }
       if (color) {
         const opacity = context.theme('opacity', rule.m?.value ?? '100');
@@ -91,9 +84,7 @@ export function matchThemeColor(
   ];
 }
 
-export function matchAnimation<Theme extends __Theme__ = __Theme__>(
-  pattern: string,
-): Rule<Theme> {
+export function matchAnimation<Theme extends __Theme__ = __Theme__>(pattern: string): Rule<Theme> {
   return [
     pattern,
     null,
@@ -214,10 +205,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   ];
 }
 
-function getPropertiesForEdges(
-  property: { prefix: string; suffix: string },
-  edges: string[],
-) {
+function getPropertiesForEdges(property: { prefix: string; suffix: string }, edges: string[]) {
   if (edges.length === 0) return [`${property.prefix}${property.suffix}`];
   return edges.map((x) => {
     return `${property.prefix}${x}${property.suffix}`;
@@ -231,10 +219,7 @@ function getPropertiesForTransform2d(property: string, sides: string[]) {
   });
 }
 
-function getPropertiesForGap(
-  property: { prefix: string; suffix: string },
-  edges: string[],
-) {
+function getPropertiesForGap(property: { prefix: string; suffix: string }, edges: string[]) {
   if (edges.length === 0) return [`${property.prefix}${property.suffix}`];
   return edges.map((x) => {
     return `${property.prefix}${x}${property.suffix.replace(
@@ -244,10 +229,7 @@ function getPropertiesForGap(
   });
 }
 
-function getPropertiesForCorners(
-  property: { prefix: string; suffix: string },
-  corners: string[],
-) {
+function getPropertiesForCorners(property: { prefix: string; suffix: string }, corners: string[]) {
   if (corners.length === 0) return [`${property.prefix}${property.suffix}`];
   return corners.map((x) => {
     return `${property.prefix}${x}${property.suffix}`;

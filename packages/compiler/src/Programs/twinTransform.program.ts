@@ -1,12 +1,12 @@
 import { CodeGenerator } from '@babel/generator';
 import * as t from '@babel/types';
+import { asArray } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
-import { babelTemplates } from '../Babel';
 import type { TwinRunnerPlatform } from '../Config';
-import { TWIN_STORE_IMPORT, type TwinModuleAst } from '../Domain/TwinAst';
+import type { TwinModuleAst } from '../Domain/TwinAst';
 import { TwinProjectContext } from '../Project';
-import { addJsxAttribute, literalValueToAst } from '../utils/babel/babel.utils';
+import { addJsxAttribute, templateLiteralsToInject } from '../utils/babel/babel.utils';
 
 export const twinTransformProgram = Effect.fn(function* (
   twinModule: TwinModuleAst,
@@ -19,20 +19,46 @@ export const twinTransformProgram = Effect.fn(function* (
   ).pipe(
     Stream.map((treeNode) => {
       const runtimeNode = treeNode.value.toRuntimeJSX();
-      const babelJsxElementStyles = literalValueToAst(runtimeNode);
+      // const babelJsxElementStyles = literalValueToAst(runtimeNode);
 
-      addJsxAttribute(treeNode.value.node.babelPath.node, '__twinID', treeNode.value.node.id);
       addJsxAttribute(
-        treeNode.value.node.babelPath.node,
+        treeNode.value.node.value.babelPath.node,
+        '__twinID',
+        treeNode.value.node.value.id,
+      );
+      addJsxAttribute(
+        treeNode.value.node.value.babelPath.node,
         '__parentID',
         treeNode.value.parentID ?? 'NULL',
       );
 
-      const registerNodeStore = babelTemplates.twinStoreRegisterJSX({
-        TWIN_STORE_HANDLER_VAR: t.identifier(TWIN_STORE_IMPORT),
-        JSX_NODE_SHEET: babelJsxElementStyles,
-      }) as t.Statement;
-      twinModule.addStyleRegistryExp(registerNodeStore);
+      const templateProps = runtimeNode.props.flatMap((x) => {
+        if (!x.templateEntries) return [];
+        const ast = templateLiteralsToInject(x.templateEntries);
+        if (!ast) return [];
+        return asArray({ expression: ast, prop: x, target: x.target });
+      });
+
+      for (const template of templateProps) {
+        const attribute = t.jsxAttribute(
+          t.jsxIdentifier('__twinExpressions'),
+          t.jsxExpressionContainer(
+            t.objectExpression([
+              t.objectProperty(t.identifier('prop'), t.stringLiteral(template.prop.prop)),
+              t.objectProperty(t.identifier('target'), t.stringLiteral(template.target)),
+              t.objectProperty(t.identifier('expression'), template.expression),
+            ]),
+          ),
+        );
+        treeNode.value.node.value.babelPath.node.openingElement.attributes.push(attribute);
+      }
+
+      // const registerNodeStore = babelTemplates.twinStoreRegisterJSX({
+      //   TWIN_STORE_HANDLER_VAR: t.identifier(TWIN_STORE_IMPORT),
+      //   JSX_NODE_SHEET: babelJsxElementStyles,
+      // }) as t.Statement;
+      // twinModule.addStyleRegistryExp(registerNodeStore);
+      twinModule.registerComponent(runtimeNode);
       return runtimeNode;
     }),
     Stream.runCollect,

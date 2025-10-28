@@ -106,12 +106,12 @@ export const compileEntryDeclaration = (
         isUnitLess,
       });
     }
-    if (data.isError) {
+    if (data.isError || !data.result) {
       return RuntimeSheetDeclaration.NOT_COMPILED({
         ...decl,
         isUnitLess,
         valueType: 'dimension',
-        reason: data.error ?? 'PARSER',
+        reason: data.isError && data.error ? data.error : 'PARSER',
       });
     }
   }

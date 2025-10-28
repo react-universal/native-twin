@@ -8,15 +8,13 @@ import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import { TwinNodeContext } from '../Config';
 import type { TwinJSXElement, TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
-import { TwinExtractor } from './Extractor';
 
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
-  const extractor = new TwinExtractor(ctx.state.twRunners.ref);
   const themeContext = yield* ctx.state.twThemeContext;
   const twinConfig = yield* ctx.state.twinConfig.get;
 
-  return { extractor, getJSXElementNodeSheet };
+  return { getJSXElementNodeSheet };
 
   function getJSXElementNodeSheet(
     node: TwinJSXElementNode,

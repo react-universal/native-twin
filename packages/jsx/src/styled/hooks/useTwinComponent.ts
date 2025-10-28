@@ -1,24 +1,20 @@
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
 import { useCallback, useContext } from 'react';
-import { groupContext } from '../../context';
+import { GroupContext } from '../../context';
 import { getTwinComponent } from '../../store/components.store';
 import { DEFAULT_INTERACTIONS } from '../../utils/constants';
 
-export const useTwinComponent = (
-  id: string,
-  // @ts-expect-error
-  styledProps: [string, ComponentSheet][] = [],
-) => {
-  const context = useContext(groupContext);
+export const useTwinComponent = (id: string) => {
+  const context = useContext(GroupContext);
 
-  const [state, setState] = useAtom(getTwinComponent(id, styledProps));
+  const [state, setState] = useAtom(getTwinComponent(id as any));
 
   const parentState = useAtomValue(
     atom((get) => {
       if (!context || !state.meta.hasGroupEvents) {
         return DEFAULT_INTERACTIONS;
       }
-      return get(getTwinComponent(context)).interactions;
+      return get(getTwinComponent(context as any)).interactions;
     }),
   );
 
@@ -34,8 +30,6 @@ export const useTwinComponent = (
     },
     [state, setState],
   );
-
-  // console.log('Render_Count', ++useRef(0).current);
 
   return {
     state,

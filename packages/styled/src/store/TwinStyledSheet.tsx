@@ -1,4 +1,4 @@
-import * as SemiGroup from "@effect/typeclass/Semigroup";
+import { parseCssValue, type TwinRuntimeContext } from "@native-twin/core";
 import {
   type AnyStyle,
   type CompleteStyle,
@@ -76,19 +76,9 @@ export class TwinStyledSheetManager {
     id: string,
     withPointer: boolean,
     withGroup: boolean
-  ): {
-    [key: string]: StyleProp<CompleteStyle>;
-  } {
+  ): { [key: string]: StyleProp<CompleteStyle> } {
     const component = this._registry.get(id);
     if (!component) return EMPTY_STYLES;
-    if (withGroup) {
-      console.log("withGroup: ", {
-        id,
-        withPointer,
-        withGroup,
-        component,
-      });
-    }
     return component.props.reduce((prev, current) => {
       const final = { ...current.styles.base };
       if (withPointer) {
@@ -96,7 +86,7 @@ export class TwinStyledSheetManager {
       }
       if (withGroup) {
         Object.assign(final, current.styles.group);
-        console.log("asdasdasd", withPointer, current);
+        // console.log("asdasdasd", withPointer, current);
       }
       return Object.assign(
         { ...prev },
@@ -119,7 +109,7 @@ export class TwinStyledSheetManager {
 
     if (!styledProp) return EMPTY_STYLES;
 
-    const base = stylesSemiGroup.combine(
+    const base = mergeStyles(
       styledProp.styles.base,
       this.readStyledContext.colorScheme === "dark"
         ? styledProp.styles.dark
@@ -182,19 +172,19 @@ export class TwinStyledSheetManager {
         const completeStyle = this.registerEntry(current);
         if (!completeStyle) return prev;
         if (current.groups.some((x) => x === "pointer")) {
-          prev.pointer = stylesSemiGroup.combine(prev.pointer, completeStyle);
+          prev.pointer = mergeStyles(prev.pointer, completeStyle);
           return prev;
         }
         if (current.groups.some((x) => x === "group")) {
-          prev.group = stylesSemiGroup.combine(prev.group, completeStyle);
+          prev.group = mergeStyles(prev.group, completeStyle);
           return prev;
         }
         if (current.groups.some(Predicates.isDarkSelector)) {
-          prev.dark = stylesSemiGroup.combine(prev.dark, completeStyle);
+          prev.dark = mergeStyles(prev.dark, completeStyle);
           return prev;
         }
 
-        prev.base = stylesSemiGroup.combine(prev.base, completeStyle);
+        prev.base = mergeStyles(prev.base, completeStyle);
 
         return prev;
       },
@@ -209,7 +199,10 @@ export class TwinStyledSheetManager {
       return this._runtimeStyles.get(entry.className) ?? null;
     }
 
-    const styles = composeDeclarations(entry.declarations);
+    const styles = composeDeclarations(
+      entry.declarations,
+      this.readStyledContext
+    );
 
     if (!styles) {
       this._blackListEntries.add(entry.className);
@@ -223,7 +216,10 @@ export class TwinStyledSheetManager {
 
 export const TwinStyleSheet = new TwinStyledSheetManager();
 
-const stylesSemiGroup = SemiGroup.make<CompleteStyle>((self, that) => {
+const mergeStyles = (
+  self: CompleteStyle,
+  that: CompleteStyle
+): CompleteStyle => {
   for (const key of keysOf(that)) {
     if (key === "transform") {
       const current = self[key];
@@ -238,9 +234,17 @@ const stylesSemiGroup = SemiGroup.make<CompleteStyle>((self, that) => {
 
   const result = Object.assign({}, { ...self }, { ...that });
   return result;
-});
+};
 
-function composeDeclarations(decls: RuntimeSheetDeclaration[]) {
+function composeDeclarations(
+  decls: RuntimeSheetDeclaration[],
+  ctx: TwinRuntimeContext
+) {
+  const styledCtx = {
+    rem: ctx.units.rem,
+    deviceHeight: ctx.deviceHeight,
+    deviceWidth: ctx.deviceWidth,
+  };
   return decls.reduce((prev, current) => {
     if (current._tag === "COMPILED") {
       if (
@@ -260,6 +264,35 @@ function composeDeclarations(decls: RuntimeSheetDeclaration[]) {
       Object.assign(prev, current.value);
       return prev;
     }
+
+    let value: any = current.value;
+    if (Array.isArray(current.value)) {
+      value = [];
+      for (const t of current.value) {
+        if (typeof t.value === "string") {
+          if (t.value) {
+            value.push({
+              [t.prop]: parseCssValue(t.prop, t.value, styledCtx),
+            });
+          }
+        }
+      }
+      Object.assign(prev, {
+        transform: [...(prev["transform"] ?? []), ...value],
+      });
+      return prev;
+    }
+    if (typeof value === "string") {
+      value = parseCssValue(current.prop, value, styledCtx);
+    }
+    if (typeof value === "object") {
+      Object.assign(prev, value);
+    } else {
+      Object.assign(prev, {
+        [current.prop]: value,
+      });
+    }
+
     return prev;
   }, {} as AnyStyle);
 }
@@ -279,3 +312,45 @@ function composeDeclValueArray(
 
   return value;
 }
+
+// export function getDeclarationStyles(
+//   declarations: RuntimeSheetDeclaration[],
+//   context: TwinRuntimeContext
+// ) {
+//   const styledCtx = {
+//     rem: context.units.rem,
+//     deviceHeight: context.deviceHeight,
+//     deviceWidth: context.deviceWidth,
+//   };
+//   return declarations.reduce((prev, current) => {
+//     let value: any = current.value;
+//     if (Array.isArray(current.value)) {
+//       value = [];
+//       for (const t of current.value) {
+//         if (typeof t.value === "string") {
+//           if (t.value) {
+//             value.push({
+//               [t.prop]: parseCssValue(t.prop, t.value, styledCtx),
+//             });
+//           }
+//         }
+//       }
+//       Object.assign(prev, {
+//         transform: [...(prev["transform"] ?? []), ...value],
+//       });
+//       return prev;
+//     }
+//     if (typeof value === "string") {
+//       value = parseCssValue(current.prop, value, styledCtx);
+//     }
+//     if (typeof value === "object") {
+//       Object.assign(prev, value);
+//     } else {
+//       Object.assign(prev, {
+//         [current.prop]: value,
+//       });
+//     }
+
+//     return prev;
+//   }, {} as AnyStyle);
+// }

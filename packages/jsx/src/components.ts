@@ -5,7 +5,7 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   Pressable,
-  SafeAreaView,
+  // SafeAreaView,
   ScrollView,
   StatusBar,
   Switch,
@@ -21,8 +21,11 @@ import { createStylableComponent, withMappedProps } from './styled';
 
 createStylableComponent(Image, { className: 'style' });
 createStylableComponent(Pressable, { className: 'style' });
-createStylableComponent(SafeAreaView, { className: 'style' });
+// createStylableComponent(SafeAreaView, { className: 'style' });
 createStylableComponent(Switch, { className: 'style' });
+createStylableComponent(TextInput, {
+  className: 'style',
+});
 createStylableComponent(Text, { className: 'style' });
 createStylableComponent(TouchableHighlight, { className: 'style' });
 createStylableComponent(TouchableOpacity, { className: 'style' });
@@ -38,9 +41,6 @@ createStylableComponent(ScrollView, {
   className: 'style',
   contentContainerClassName: 'contentContainerStyle',
   indicatorClassName: 'indicatorStyle',
-});
-createStylableComponent(TextInput, {
-  className: 'style',
 });
 
 withMappedProps(FlatList, {

@@ -108,7 +108,7 @@ const __ReactNativeText = require('react-native').Text;
 `);
 
 const importStyleSheet = template(`
-const __ReactNativeStyleSheet = require('@native-twin/styled').TwinStyleSheet;
+const __ReactNativeStyleSheet = require('@native-twin/jsx').StyleSheet;
 `);
 
 const importReactUseMemo = template(`
@@ -124,11 +124,11 @@ const styleSheetRegisterJSX = template.expression(`
   `);
 
 const importTwinStore = template(`
-  import { styledJSXStore as TWIN_STORE_HANDLER_VAR } from '@native-twin/styled';
+  const TWIN_STORE_HANDLER_VAR = require('@native-twin/styled');
   `);
 
 const twinStoreRegisterJSX = template(`
-  TWIN_STORE_HANDLER_VAR.registerComponent(JSX_NODE_SHEET);
+  STYLESHEET_VAR_NAME.registerComponent(RUNTIME_COMPONENTS);
   `);
 export const babelTemplates = {
   importRNView: importNativeView,

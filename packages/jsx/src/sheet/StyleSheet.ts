@@ -1,18 +1,25 @@
-import type { __Theme__ } from '@native-twin/core';
+import type { __Theme__, TwinRuntimeContext } from '@native-twin/core';
 import { StyleSheetAdapter, sheetEntryToStyle } from '@native-twin/core';
-import {
-  type AnyStyle,
-  getRuleSelectorGroup,
-  getRuleSelectorGroups,
-  type SheetEntry,
-} from '@native-twin/css';
+import { getRuleSelectorGroup, getRuleSelectorGroups, type SheetEntry } from '@native-twin/css';
 import { compileEntryDeclaration, type RuntimeSheetDeclaration } from '@native-twin/css/jsx';
+import { asArray } from '@native-twin/helpers';
 import { type Atom, atom } from '@native-twin/helpers/react';
 import { StyleSheet as NativeSheet, Platform } from 'react-native';
-import type { ComponentState } from '../store/components.store';
 import { styledContext } from '../store/observables/styles.obs';
 import { INTERNAL_RESET } from '../utils/constants';
 import { tw } from './native-tw';
+
+export interface ComponentState {
+  meta: {
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
+    isGroupParent: boolean;
+  };
+  interactions: {
+    isLocalActive: boolean;
+    isGroupActive: boolean;
+  };
+}
 
 export const componentsState: Map<string, Atom<ComponentState>> = new Map();
 
@@ -23,31 +30,29 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
   compose = NativeSheet.compose;
   flatten = NativeSheet.flatten;
   hairlineWidth = NativeSheet.hairlineWidth;
-  twinFn = tw;
+  // componentStates = new Map<string, Atom<ComponentState>>();
+
+  get twinFn() {
+    return tw;
+  }
+  get runtimeContext(): TwinRuntimeContext {
+    return styledContext.get();
+  }
+
   [INTERNAL_RESET]() {}
 
   constructor(debug: boolean) {
     super(debug);
   }
 
-  registerBuildSheet() {
-    return {};
-  }
-
-  toNativeStyles(entries: SheetEntry[]): AnyStyle {
-    const config = this.twinFn.config;
-    const styles = entries
+  toNativeStyles(entries: SheetEntry[]) {
+    return entries
       .map((x) =>
         sheetEntryToStyle(
           {
             className: x.className,
             groups: getRuleSelectorGroups(x.selectors),
-            declarations: x.declarations.map((decl) =>
-              compileEntryDeclaration(decl, {
-                baseRem: config.root.rem,
-                platform: Platform.OS,
-              }),
-            ),
+            declarations: this.toRuntimeDecls(asArray(x)),
             group: getRuleSelectorGroup(x.selectors),
             important: x.important,
             inherited: false,
@@ -57,7 +62,6 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
         ),
       )
       .filter((x) => x !== null);
-    return styles as any;
   }
 
   toRuntimeDecls(entries: SheetEntry[]): RuntimeSheetDeclaration[] {
@@ -123,36 +127,23 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
 
   getComponentState(id: string) {
     const state = componentsState.get(id);
-    if (!state) {
-      componentsState.set(
-        id,
-        atom({
-          interactions: { isGroupActive: false, isLocalActive: false },
-          meta: {
-            hasGroupEvents: false,
-            hasPointerEvents: false,
-            isGroupParent: false,
-          },
-        }),
-      );
-      return componentsState.get(id)!;
-    }
-    return state;
+    if (state) return state;
+    
+    const twinCmp = this.getComponent(id);
+
+    componentsState.set(
+      id,
+      atom({
+        interactions: { isGroupActive: false, isLocalActive: false },
+        meta: twinCmp?.metadata ?? {
+          hasGroupEvents: false,
+          hasPointerEvents: false,
+          isGroupParent: false,
+        },
+      }),
+    );
+    return componentsState.get(id)!;
   }
 }
 
 export const StyleSheet = new JSXStyleSheet(true);
-
-// const getGenericComponent = (id: string): TwinInjectedObject => ({
-//   childStyles: [],
-//   id,
-//   index: -1,
-//   metadata: {
-//     hasGroupEvents: false,
-//     hasPointerEvents: false,
-//     isGroupParent: false,
-//   },
-//   parentID: 'NO_PARENT',
-//   parentSize: -1,
-//   props: [],
-// });

@@ -4,17 +4,21 @@ import { TwinNodeContext } from '@native-twin/compiler';
 import { countLines, pathToHtmlSafeName } from '@native-twin/helpers/server';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import * as worker from 'metro-transform-worker';
+import { type TransformResponse, transform } from 'metro-transform-worker';
 import { MetroWorkerService } from '../services/MetroWorker.service.js';
 
-export const transformCSS = Effect.gen(function* () {
+export const transformCSS: Effect.Effect<
+  Option.Option<Readonly<TransformResponse>>,
+  never,
+  MetroWorkerService | TwinNodeContext
+> = Effect.gen(function* () {
   const { input } = yield* MetroWorkerService;
   const twin = yield* TwinNodeContext;
   const platform = input.options.platform ?? 'native';
   const outputPath = twin.getOutputCSSPath('web');
 
   if (platform !== 'web') {
-    return Option.none<worker.TransformResponse>();
+    return Option.none<TransformResponse>();
   }
 
   const { transform: lightningcssTransform } = require('lightningcss') as Awaited<
@@ -28,7 +32,7 @@ export const transformCSS = Effect.gen(function* () {
   // const twinCSS = sheetEntriesToCss(twin.sheetTarget, true);
 
   if (output.length === 0) {
-    return Option.none();
+    return Option.none<TransformResponse>();
   }
 
   const cssResult = lightningcssTransform({
@@ -39,7 +43,7 @@ export const transformCSS = Effect.gen(function* () {
   });
 
   const jsModuleResults = yield* Effect.promise(() => {
-    return worker.transform(
+    return transform(
       input.config,
       input.projectRoot,
       input.filename,
@@ -48,8 +52,7 @@ export const transformCSS = Effect.gen(function* () {
             wrapDevelopmentCSS({
               src: input.data.toString('utf-8'),
               filename: input.filename,
-              reactServer:
-                input.options.customTransformOptions?.['environment'] === 'react-server',
+              reactServer: input.options.customTransformOptions?.['environment'] === 'react-server',
             }),
           )
         : Buffer.from(''),
@@ -87,14 +90,10 @@ export const transformCSS = Effect.gen(function* () {
   return Option.some({
     dependencies: jsModuleResults.dependencies,
     output: outputCode,
-  }) as Option.Option<worker.TransformResponse>;
+  }) as Option.Option<TransformResponse>;
 });
 
-export function wrapDevelopmentCSS(props: {
-  src: string;
-  filename: string;
-  reactServer: boolean;
-}) {
+export function wrapDevelopmentCSS(props: { src: string; filename: string; reactServer: boolean }) {
   const withBackTicksEscaped = escapeBackticksAndOctals(props.src);
 
   const injectClientStyle = `const head = document.head || document.getElementsByTagName('head')[0];

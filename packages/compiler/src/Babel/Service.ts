@@ -1,5 +1,5 @@
 import { CodeGenerator } from '@babel/generator';
-import traverse from '@babel/traverse';
+import traverse, { type NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { cx } from '@native-twin/core';
 import { parseTWTokens } from '@native-twin/css';
@@ -19,9 +19,11 @@ import { makeTreeFrom } from '../utils/tree.utils';
 import type {
   AnyNodePath,
   BabelFileAst,
-  JSXAttributeNode,
+  JSXAttributePath,
+  JSXClassPropExpression,
   JSXElementFunction,
   JSXElementPath,
+  JSXOpeningElementPath,
 } from './Models';
 import { isFunction } from './Predicates';
 import { babelParse, getBabelBindingImportSource, isLocalImport } from './Utils';
@@ -96,7 +98,7 @@ const jSXElementToTwinNode = (
       (): MappedComponent => ({
         name: ident.name,
         config: {
-          className: 'style'
+          className: 'style',
         },
         kind: 'unknown',
       }),
@@ -113,8 +115,26 @@ const jSXElementToTwinNode = (
   });
 };
 
-const getJSXElementChilds = (jsxElement: JSXElementPath) =>
-  jsxElement.get('children').filter((x) => x.isJSXElement());
+const getJSXElementChilds = (jsxElement: JSXElementPath): JSXElementPath[] => {
+  const childAttrs = pathJSXAttributeChilds(jsxElement.get('openingElement'));
+  return jsxElement
+    .get('children')
+    .filter((x) => x.isJSXElement())
+    .concat(childAttrs);
+};
+
+const pathJSXAttributeChilds = (openingElement: JSXOpeningElementPath) => {
+  const jsxAttrs: JSXElementPath[] = [];
+  for (const attr of openingElement.get('attributes')) {
+    attr.traverse({
+      JSXElement: (path) => {
+        jsxAttrs.push(path);
+        path.skip();
+      },
+    });
+  }
+  return jsxAttrs;
+};
 
 const getRootJSXElements = (ast: BabelFileAst) =>
   Stream.async<JSXElementPath>((emit) => {
@@ -235,7 +255,7 @@ const getClassNamePropsFromJSX = (jsxElement: JSXElementPath, mappedConfig: Mapp
     if (!className) continue;
 
     const [prop, target] = className;
-    const ast = getJSXAttributeValue(attribute.node);
+    const ast = getJSXAttributeValue(attribute);
     if (!ast) continue;
 
     const value = getPropValueString(ast);
@@ -258,24 +278,29 @@ const getClassNamePropsFromJSX = (jsxElement: JSXElementPath, mappedConfig: Mapp
  * @domain Babel
  * @description Extract the {@link TwinJSXClassnameProp} from any {@link t.JSXAttribute}
  * */
-const getJSXAttributeValue = (attribute: JSXAttributeNode) => {
-  if (!t.isJSXIdentifier(attribute.name)) return null;
+const getJSXAttributeValue = (attribute: JSXAttributePath) => {
+  if (!t.isJSXIdentifier(attribute.node.name)) return null;
 
-  let ast: t.TemplateLiteral | t.StringLiteral | undefined;
+  let ast: NodePath<t.TemplateLiteral | t.StringLiteral> | undefined;
 
-  if (t.isStringLiteral(attribute.value)) {
-    ast = attribute.value;
+  const value = attribute.get('value');
+  if (value.isStringLiteral()) {
+    ast = value;
   }
 
-  if (t.isJSXExpressionContainer(attribute.value)) {
-    if (t.isTemplateLiteral(attribute.value.expression)) {
-      ast = attribute.value.expression;
+  if (value.isJSXExpressionContainer()) {
+    const expression = value.get('expression');
+    if (expression.isTemplateLiteral()) {
+      ast = expression;
     }
-    if (t.isCallExpression(attribute.value.expression)) {
-      ast = t.templateLiteral(
-        [t.templateElement({ raw: '', cooked: '' }), t.templateElement({ raw: '', cooked: '' })],
-        [attribute.value.expression],
+    if (expression.isCallExpression()) {
+      expression.replaceWith(
+        t.templateLiteral(
+          [t.templateElement({ raw: '', cooked: '' }), t.templateElement({ raw: '', cooked: '' })],
+          [expression.node],
+        ),
       );
+      ast = expression as any;
     }
   }
   if (!ast) return null;
@@ -283,23 +308,28 @@ const getJSXAttributeValue = (attribute: JSXAttributeNode) => {
   return ast;
 };
 
-const getPropValueString = (node: t.StringLiteral | t.TemplateLiteral) => {
-  if (t.isStringLiteral(node)) {
-    const text = cx`${node.value}`;
+const getPropValueString = (path: NodePath<t.StringLiteral | t.TemplateLiteral>) => {
+  if (t.isStringLiteral(path.node)) {
+    const text = cx`${path.node.value}`;
     return {
       text,
       twinRules: parseTWTokens(text),
-      templateExpression: Option.none<string>(),
+      templateExpression: Option.none<JSXClassPropExpression>(),
     };
   }
-  const cooked = templateLiteralToStringLike(node);
+  const cooked = templateLiteralToStringLike(path.node);
 
   const text = cx`${cooked.strings}`;
   return {
     text,
     twinRules: parseTWTokens(text),
-    templateExpression: Option.liftPredicate(node.expressions, (x) => x.length > 0).pipe(
-      Option.map((_) => new CodeGenerator(cooked.expressions).generate().code),
+    templateExpression: Option.liftPredicate(path, (x) => x.isTemplateLiteral()).pipe(
+      Option.map(
+        (_): JSXClassPropExpression => ({
+          expression: _,
+          text: new CodeGenerator(cooked.expressions).generate().code,
+        }),
+      ),
     ),
   };
 };
@@ -316,3 +346,4 @@ const templateLiteralToStringLike = (literal: t.TemplateLiteral) => {
   );
   return { strings, expressions: expressions };
 };
+

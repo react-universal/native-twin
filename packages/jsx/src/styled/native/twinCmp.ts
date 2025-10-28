@@ -1,5 +1,5 @@
 import { type ComponentType, createElement, forwardRef, useId } from 'react';
-import { groupContext } from '../../context/styled.context';
+import { GroupContext } from '../../context';
 import type { ComponentConfig } from '../../types/styled.types';
 import { getComponentType } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';
@@ -48,7 +48,7 @@ export function twinComponent(
 
   if (state.meta.isGroupParent) {
     return createElement(
-      groupContext.Provider,
+      GroupContext.Provider,
       {
         value: registry.id,
       },
@@ -89,7 +89,7 @@ export function twinComponent(
       value: componentID ?? id,
       children: createElement(component, props),
     };
-    component = groupContext.Provider;
+    component = GroupContext.Provider;
   }
 
   if (component === baseComponent) {

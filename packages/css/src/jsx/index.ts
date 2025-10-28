@@ -2,7 +2,6 @@ export type {
   /** @category — CSS Parsers */
   RuntimeJSXStyle,
   RuntimeTwinMappedProp,
-  TwinInjectedObject,
   TwinRuntimeComponent,
 } from './Component';
 export type {

@@ -1,3 +1,4 @@
+import type { TwinRuntimeComponent } from '@native-twin/css/jsx';
 import { type Atom, atom } from '@native-twin/helpers/react';
 
 export interface ComponentState {
@@ -14,19 +15,10 @@ export interface ComponentState {
 
 const componentsCache = new Map<string, Atom<ComponentState>>();
 
-export function getTwinComponent(
-  id: string,
-  styledProps: [string, any][] = [],
-): Atom<ComponentState> {
-  const component = componentsCache.get(id);
-  if (component) {
-    return component;
-  }
-  const meta = {
-    hasGroupEvents: styledProps.some((x) => x[1].metadata.hasGroupEvents),
-    hasPointerEvents: styledProps.some((x) => x[1].metadata.hasPointerEvents),
-    isGroupParent: styledProps.some((x) => x[1].metadata.isGroupParent),
-  };
+export function getTwinComponent(twinCmp: TwinRuntimeComponent): Atom<any> {
+  const component = componentsCache.get(twinCmp.id);
+  if (component) component;
+  const meta = twinCmp.metadata;
   const values = {
     interactions: {
       isGroupActive: false,
@@ -35,6 +27,6 @@ export function getTwinComponent(
     meta,
   };
   const value = atom(values);
-  componentsCache.set(id, value);
-  return componentsCache.get(id)!;
+  componentsCache.set(twinCmp.id, value);
+  return componentsCache.get(twinCmp.id)!;
 }

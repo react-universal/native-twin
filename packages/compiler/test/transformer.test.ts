@@ -17,7 +17,7 @@ describe('Twin JSX transformer', () => {
       const gen = new CodeGenerator(module.ast);
       const code = gen.generate().code;
 
-      yield* modulePath.writeOutput(code);
+      // yield* modulePath.writeOutput(code);
       const jsxElements = Array.fromIterable([1]);
       expect(jsxElements.length).toBeGreaterThan(0);
       assert.isString(code);

@@ -1,9 +1,6 @@
 import { createElement, forwardRef } from 'react';
 import { globalStyles, opaqueStyles } from '../../store/styles.store';
-import type {
-  ReactComponent,
-  StylableComponentConfigOptions,
-} from '../../types/styled.types';
+import type { ReactComponent, StylableComponentConfigOptions } from '../../types/styled.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
 import { stylizedComponents } from './createTwinCmp';
 
@@ -59,5 +56,6 @@ export const withMappedProps = <
   });
 
   stylizedComponents.set(component as any, twinComponent);
+  // twinComponent.whyDidYouRender = true;
   return twinComponent;
 };

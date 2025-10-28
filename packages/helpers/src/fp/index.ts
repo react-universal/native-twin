@@ -1,9 +1,8 @@
-export * as Option from './Option';
+export type * as Bifunctor from './Bifunctor';
+export type * as Contravariant from './Contravariant';
+export * from './compose';
 export * as Either from './Either';
 export * as List from './List';
-export * as Predicate from './Predicate';
-export * from './compose';
-
 export type * as Monoid from './Monoid';
-export type * as Contravariant from './Contravariant';
-export type * as Bifunctor from './Bifunctor';
+export * as Option from './Option';
+export * as Predicate from './Predicate';

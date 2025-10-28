@@ -26,19 +26,11 @@ const make = Effect.gen(function* () {
   );
 
   const compileAst = Effect.fn(function* (twinAst: TwinModuleAst, platform: TwinRunnerPlatform) {
-    const extractor = yield* sheet.extractor.getExtractor(platform);
+    const extractor = yield* ctx.state.twRunners.get.pipe(
+      Effect.map(({ native, web }) => (platform === 'web' ? web : native)),
+    );
     const moduleTrees = yield* Stream.fromIterable(twinAst.jsxElements).pipe(
-      Stream.mapEffect((element) => {
-        return Effect.gen(function* () {
-          const result = yield* Effect.all(
-            element.tree
-              .all()
-              .map((node) => sheet.getJSXElementNodeSheet(node.value, element, platform)),
-          );
-          console.log('RES: ', result);
-          return yield* transformJSXElement(element, extractor);
-        });
-      }),
+      Stream.mapEffect((element) => transformJSXElement(element, extractor)),
       Stream.flatMap((tree) => Stream.fromIterable(tree.all())),
       Stream.runCollect,
       Effect.map(RA.fromIterable),
@@ -67,7 +59,7 @@ const make = Effect.gen(function* () {
           const transform = new TransformedJSXNode({
             jsxDeclarator: jsxElement,
             parentID: treeNode.parent?.value.id ?? null,
-            node: treeNode.value,
+            node: treeNode,
             styledProps,
             parentStyles,
             index: treeNode.nodeIndex,

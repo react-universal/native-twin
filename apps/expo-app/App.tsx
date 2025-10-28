@@ -1,18 +1,42 @@
+import { useState } from "react";
 import "./global.css";
-import { View, Text } from "react-native";
+import { View, Text, FlatList, Pressable } from "react-native";
 
-const ForeignComponent = () => (
-  <View className="group-hover:bg-gray-500 h-5">
-    <Text className="text(lg white)">asdsad2</Text>
-  </View>
-);
-
+const ForeignComponent = () => {
+  // console.log("Render_Count_ForeignComponent: ", ++useRef(0).current);
+  return (
+    <View className="h-[20vh]">
+      <Text className="text(lg white)">asdsad2</Text>
+    </View>
+  );
+};
 
 export default function App() {
+  const [active, setActive] = useState(false);
+  // console.log("Render_Count_APP: ", ++useRef(0).current);
+  // const ref = useRef<View>(null);
+  // useEffect(() => {
+  //   console.log(ref.current);
+  // }, []);
   return (
     <View className="hover:bg-red bg-gray-900 group flex-1 items-center justify-center first:bg-green even:text-white">
       <ForeignComponent />
-      <Text>sadasd</Text>
+      <Pressable
+        onPressIn={() => {
+          setActive((p) => !p);
+        }}
+      >
+        <Text className={`text(md white) ${active ? 'text-red' : ''}`}>sadasd</Text>
+      </Pressable>
+      <Text className="text-lg text-white">Count</Text>
+      <FlatList
+        data={[1, 2]}
+        renderItem={({ item }) => (
+          <View className="bg-gray-200">
+            <Text className="text-lg white">Count {item}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 }

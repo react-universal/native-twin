@@ -1,37 +1,58 @@
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
-import { type ComponentState, styledJSXStore } from '@native-twin/styled';
-import { useCallback, useContext, useDebugValue, useId, useMemo, useRef } from 'react';
+import { useCallback, useContext, useId, useMemo, useRef } from 'react';
 import type {
   NativeSyntheticEvent,
   PressableProps,
   TextInputFocusEventData,
   Touchable,
 } from 'react-native';
-import { ContainersContext, groupContext } from '../../context/styled.context';
-import { styledContext } from '../../store/observables';
-import type { JSXInternalProps } from '../../types/jsx.types';
+import { ContainersContext, GroupContext } from '../../context';
+import { StyleSheet } from '../../sheet';
+import type { ComponentState } from '../../store/components.store';
 import type { ComponentConfig } from '../../types/styled.types';
+import type { NativeTwinProps } from '../../utils/constants';
 
-const DEFAULT_STATE: ComponentState['interactions'] = {
+const DEFAULT_STATE: ComponentState['interactions'] = Object.freeze({
   isGroupActive: false,
   isLocalActive: false,
-};
+});
 
-export const useStyledProps = (props: JSXInternalProps, _configs: ComponentConfig[]) => {
+export const useStyledProps = (
+  props: Pick<NativeTwinProps, '__twinID' | '__twinExpressions'>,
+  _configs: ComponentConfig[],
+) => {
   const reactID = useId();
+  console.log('EXP: ', props.__twinExpressions);
+
   const twinID = props['__twinID'] ?? reactID;
-  const registry = useMemo(() => styledJSXStore.getComponent(twinID), [twinID]);
-  useDebugValue(registry);
+
   const container = useContext(ContainersContext);
-  const styledCtx = useAtomValue(styledContext);
   const handlers: Touchable & PressableProps = {};
-  const [state, setState] = useAtom(registry.interactionState);
-  const context = useContext(groupContext);
-  const parentState = useAtomValue(
+  const context = useContext(GroupContext);
+  const registry = useMemo(
+    () => StyleSheet.getTwinStyle(twinID, props.__twinExpressions),
+    [props, twinID],
+  );
+
+  const [state, setState] = useAtom(StyleSheet.getComponentState(twinID));
+  const { parentState, compiledProps } = useAtomValue(
     atom((get) => {
-      if (!context || !registry.interactionState.get().meta.hasGroupEvents) return DEFAULT_STATE;
-      const parentStore = styledJSXStore.getComponent(context);
-      return get(parentStore.interactionState).interactions;
+      let parentState = DEFAULT_STATE;
+      if (context && state.meta.hasGroupEvents) {
+        parentState = get(StyleSheet.getComponentState(context))?.interactions;
+      }
+
+      const compiledProps = StyleSheet.getComponentStyledProps(
+        twinID,
+        state.interactions.isLocalActive,
+        parentState.isGroupActive,
+      );
+
+      return {
+        registry,
+        parentState,
+        compiledProps,
+      };
     }),
   );
 
@@ -77,24 +98,5 @@ export const useStyledProps = (props: JSXInternalProps, _configs: ComponentConfi
     };
   }
 
-  console.log('PARENT: ', parentState, twinID);
-
-  const compiledProps = useMemo(() => {
-    return registry.getStyledProps(state.interactions.isLocalActive, parentState.isGroupActive);
-    // .map(({ prop, target, declarations }) => {
-    //   const compileDecls = [...declarations.base];
-
-    //   if (state.interactions.isLocalActive) compileDecls.push(...declarations.pointer);
-    //   if (state.interactions.isGroupActive) compileDecls.push(...declarations.group);
-
-    //   const styles = composeDeclarations(compileDecls, styledCtx);
-    //   return {
-    //     prop,
-    //     target,
-    //     styles,
-    //   };
-    // });
-  }, [registry, state.interactions.isLocalActive, parentState.isGroupActive]);
-
-  return { compiledProps, state, handlers, registry, styledCtx, parentState };
+  return { compiledProps, state, handlers, registry, parentState };
 };

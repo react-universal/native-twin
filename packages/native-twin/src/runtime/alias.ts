@@ -1,8 +1,8 @@
 import {
   type CSSValue,
   interpolate,
-  parseTWTokens,
   parsedRuleSetToClassNames,
+  parseTWTokens,
 } from '@native-twin/css';
 
 export type NestedFunction = (

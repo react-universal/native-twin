@@ -16,13 +16,13 @@
   "exports": {
     ".": {
       "types": "./build/dts/index.d.ts",
-      "react-native": "./build/esm/index.js",
+      "react-native": "./build/cjs/index.js",
       "import": "./build/esm/index.js",
       "default": "./build/cjs/index.js"
     },
     "./components": {
       "types": "./build/dts/components.d.ts",
-      "react-native": "./build/esm/components.js",
+      "react-native": "./build/cjs/components.js",
       "import": "./build/esm/components.js",
       "default": "./build/cjs/components.js"
     },
@@ -38,16 +38,19 @@
     },
     "./jsx-dev-runtime": {
       "types": "./build/dts/jsx-dev-runtime.d.ts",
+      "react-native": "./build/cjs/jsx-dev-runtime.js",
       "import": "./build/esm/jsx-dev-runtime.js",
       "default": "./build/cjs/jsx-dev-runtime.js"
     },
     "./jsx-runtime": {
       "types": "./build/dts/jsx-runtime.d.ts",
+      "react-native": "./build/cjs/jsx-runtime.js",
       "import": "./build/esm/jsx-runtime.js",
       "default": "./build/cjs/jsx-runtime.js"
     },
     "./jsx-wrapper": {
       "types": "./build/dts/jsx-wrapper.d.ts",
+      "react-native": "./build/cjs/jsx-wrapper.js",
       "import": "./build/esm/jsx-wrapper.js",
       "default": "./build/cjs/jsx-wrapper.js"
     },
@@ -65,6 +68,7 @@
       "types": "./types.d.ts"
     }
   },
+  "react-native": "./build/cjs/index.js",
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
   "types": "./build/dts/index.d.ts",

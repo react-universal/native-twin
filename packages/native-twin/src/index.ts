@@ -61,6 +61,7 @@ export {
 } from './runtime/SheetHandler.js';
 
 export {
+  type ComponentStyleRegistry,
   StyleSheetAdapter,
   type StyleSheetProcessor,
 } from './runtime/TwinStyleSheet.js';

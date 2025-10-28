@@ -23,7 +23,7 @@ export {
   keysOf,
   removeReadonly,
 } from './identity.utils.js';
-export { memoize } from './memoize.js';
+export { memoize, weakMemoize } from './memoize.js';
 export { flattenColorPalette, flattenObjectByPath } from './object.utils.js';
 export { createStore, createValueStore } from './store.utils.js';
 export {
@@ -35,6 +35,7 @@ export {
   toHyphenCase,
   toTailDashed,
 } from './string.utils.js';
+export { stableHash } from './toHash.js';
 export type {
   AnyPrimitive,
   ArrayType,

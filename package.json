@@ -62,7 +62,7 @@
     "@types/react-test-renderer": "^18.0.0",
     "@types/webpack": "^5.28.5",
     "@vitest/browser": "^3.0.6",
-    "@welldone-software/why-did-you-render": "^8.0.3",
+    "@welldone-software/why-did-you-render": "^10.0.1",
     "babel-plugin-annotate-pure-calls": "^0.4.0",
     "chai": "4.3.7",
     "concurrently": "^7.6.0",

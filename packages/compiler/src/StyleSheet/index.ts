@@ -1,4 +1,3 @@
-export { TwinExtractor, type TwinPlatformExtractors } from './Extractor';
 export {
   type CompiledStyledProp,
   CompilerStyleSheet,

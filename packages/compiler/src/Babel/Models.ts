@@ -4,6 +4,7 @@ import type * as t from '@babel/types';
 
 export type JSXElementNode = t.JSXElement;
 export type JSXElementPath = NodePath<JSXElementNode>;
+export type JSXOpeningElementPath = NodePath<t.JSXOpeningElement>;
 export type BabelFileAst = ParseResult<t.File>;
 type AnyNode = t.Node;
 export type AnyNodePath = NodePath<AnyNode>;
@@ -56,4 +57,9 @@ export interface TwinBabelPluginOptions extends APICallerOptions {
   twinConfigPath?: string;
   inputCSS?: string;
   outputDir?: string;
+}
+
+export interface JSXClassPropExpression {
+  expression: NodePath<t.TemplateLiteral>;
+  text: string;
 }

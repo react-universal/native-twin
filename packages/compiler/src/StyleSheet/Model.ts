@@ -1,9 +1,9 @@
 import {
-  CompiledSheetEntry,
+  type CompiledSheetEntry,
   createThemeContext,
-  parsedRuleToEntry,
   StyleSheetAdapter,
   type ThemeContext,
+  type TwinRuntimeContext,
 } from '@native-twin/core';
 import {
   type AnyStyle,
@@ -23,14 +23,26 @@ import {
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
-import type * as Option from 'effect/Option';
+import * as Option from 'effect/Option';
 import type { JSXAttributePath } from '../Babel';
+import type { JSXClassPropExpression } from '../Babel/Models';
 import type { InternalTwFn, InternalTwinConfig } from '../Config';
 import type { TwinJSXClassnameProp } from '../Domain/JSXStyledProp';
 import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 
+export interface TwinPlatformExtractors {
+  native: CompilerStyleSheet;
+  web: CompilerStyleSheet;
+}
+
 export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
   _twinCtx: ThemeContext;
+  // runtimeContext: TwinRuntimeContext;
+
+  get runtimeContext(): TwinRuntimeContext {
+    return {} as any;
+  }
+
   constructor(
     readonly ctx: CompilerContext,
     readonly twinFn: InternalTwFn,
@@ -70,6 +82,8 @@ export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
     });
 
     return {
+      classNames: classProp.text,
+      templateEntries: Option.getOrNull(classProp.expression)?.text ?? null,
       entries: {
         base: runtimeStyles.filter((x) => x.group === 'base'),
         child: runtimeStyles.filter((x) => x.groups.some(Predicates.isChildSelector)),
@@ -88,11 +102,7 @@ export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
 
   getStyledProps(node: TwinJSXElementNode): CompiledStyledProp[] {
     return node.classNameProps.map((prop) => {
-      const compiledEntries = prop.twinRules.map((x) => {
-        const entry = parsedRuleToEntry(x, this._twinCtx);
-        const decls = entry.declarations.map((x) => compileEntryDeclaration(x, this.ctx));
-        return new CompiledSheetEntry({ decls, raw: entry, parsed: x });
-      });
+      const compiledEntries = prop.twinRules.map((x) => this.compileParsedRule(x));
 
       return new CompiledStyledProp({
         ast: prop.ast,
@@ -110,7 +120,7 @@ export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
 export class CompiledStyledProp extends Data.Class<{
   ast: JSXAttributePath;
   text: string;
-  expression: Option.Option<string>;
+  expression: Option.Option<JSXClassPropExpression>;
   target: string;
   prop: string;
   compiledEntries: CompiledSheetEntry[];
@@ -144,6 +154,8 @@ export class CompiledStyledProp extends Data.Class<{
       entries,
       prop: this.prop,
       target: this.target,
+      classNames: this.text,
+      templateEntries: Option.map(this.expression, (x) => x.text).pipe(Option.getOrElse(() => '')),
       metadata: {
         hasGroupEvents: entries.group.length > 0,
         hasPointerEvents: entries.pointer.length > 0,

@@ -8,7 +8,6 @@ export const renderComponent = (
   _ref: any
 ) => {
   const component = baseComponent;
-  const twinProps = props?.["_twinInjected"];
 
   // useEffect(() => {
   //   const child = childFiber.current;
@@ -19,12 +18,12 @@ export const renderComponent = (
   //     }
   //   }
   // }, [twinProps]);
-  if (props?.["children"] && twinProps) {
-    console.log("HAS_CHILD: ", twinProps.id);
-  }
-  if (props?.["__twinID"]) {
-    console.log("ID: ", props);
-  }
+  // if (props?.["children"] && twinProps) {
+  //   console.log("HAS_CHILD: ", twinProps.id);
+  // }
+  // if (props?.["__twinID"]) {
+  //   console.log("ID: ", props);
+  // }
 
   switch (getComponentType(component)) {
     case "forwardRef": {
@@ -38,6 +37,6 @@ export const renderComponent = (
     case "object":
     case "class":
     case "unknown":
-      return createElement(component, props);
+      return createElement(component, props, props?.["children"]);
   }
 };
