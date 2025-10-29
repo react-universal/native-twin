@@ -61,5 +61,6 @@ export interface TwinBabelPluginOptions extends APICallerOptions {
 
 export interface JSXClassPropExpression {
   expression: NodePath<t.TemplateLiteral>;
+  cookedExp: t.TemplateLiteral,
   text: string;
 }

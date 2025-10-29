@@ -128,7 +128,7 @@ class JSXStyleSheet extends StyleSheetAdapter<__Theme__> {
   getComponentState(id: string) {
     const state = componentsState.get(id);
     if (state) return state;
-    
+
     const twinCmp = this.getComponent(id);
 
     componentsState.set(

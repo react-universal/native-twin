@@ -63,8 +63,7 @@ export const transform: TwinMetroTransformFn = async (
 
     // const output = yield* Effect.sync(() => transformAstWithSheets(ast, documentSheets));
 
-    code = `const __Twin___StyleSheet = require('@native-twin/jsx/sheet').StyleSheet;
-            \n\n${output.generated.code}`;
+    code = `${output.generated.code}`;
 
     const transformed = yield* Effect.promise(() =>
       transform(config, projectRoot, filename, Buffer.from(code, 'utf-8'), options),

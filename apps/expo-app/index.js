@@ -1,4 +1,3 @@
-import './wdyr.js';
 import './polyfills.js'
 import { registerRootComponent } from 'expo';
 import App from './App';

@@ -39,15 +39,23 @@ export const twinTransformProgram = Effect.fn(function* (
         return asArray({ expression: ast, prop: x, target: x.target });
       });
 
-      for (const template of templateProps) {
+      for (const prop of treeNode.value.node.value.classNameProps) {
+        prop.compileAttribute();
+      }
+
+      if (templateProps.length > 0) {
         const attribute = t.jsxAttribute(
           t.jsxIdentifier('__twinExpressions'),
           t.jsxExpressionContainer(
-            t.objectExpression([
-              t.objectProperty(t.identifier('prop'), t.stringLiteral(template.prop.prop)),
-              t.objectProperty(t.identifier('target'), t.stringLiteral(template.target)),
-              t.objectProperty(t.identifier('expression'), template.expression),
-            ]),
+            t.arrayExpression(
+              templateProps.map((template) =>
+                t.objectExpression([
+                  t.objectProperty(t.identifier('prop'), t.stringLiteral(template.prop.prop)),
+                  t.objectProperty(t.identifier('target'), t.stringLiteral(template.target)),
+                  t.objectProperty(t.identifier('expression'), template.expression),
+                ]),
+              ),
+            ),
           ),
         );
         treeNode.value.node.value.babelPath.node.openingElement.attributes.push(attribute);

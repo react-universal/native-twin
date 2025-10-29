@@ -13,7 +13,7 @@ import type { TwinJSXElement, TwinJSXElementNode } from './TwinJSXElementNode';
 
 export const TWIN_MODULE_STYLES_OBJECT_VAR_NAME = '_____Twin__Module__Styles';
 export const TWIN_STYLESHEET_IMPORT = '__ReactNativeStyleSheet';
-export const TWIN_STORE_IMPORT = '__TwinStoreHandler';
+// export const TWIN_STORE_IMPORT = '__TwinStoreHandler';
 export class TwinModuleAst extends Data.Class<{
   readonly ast: BabelFileAst;
   readonly file: TwinFile;
@@ -37,11 +37,11 @@ export class TwinModuleAst extends Data.Class<{
         babelTemplates.importRNStyleSheet() as t.Statement,
         // createBabelVariable(TWIN_STYLESHEET_IMPORT, createRequireExpression('@native-twin/jsx')),
       );
-      this.ast.program.body.unshift(
-        babelTemplates.importTwinStore({
-          TWIN_STORE_HANDLER_VAR: t.identifier(TWIN_STORE_IMPORT),
-        }) as t.Statement,
-      );
+      // this.ast.program.body.unshift(
+      //   babelTemplates.importTwinStore({
+      //     TWIN_STORE_HANDLER_VAR: t.identifier(TWIN_STORE_IMPORT),
+      //   }) as t.Statement,
+      // );
       this.ast.program.body.push(
         ...asArray(
           babelTemplates.twinStoreRegisterJSX({

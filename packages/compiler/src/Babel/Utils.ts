@@ -108,7 +108,7 @@ const __ReactNativeText = require('react-native').Text;
 `);
 
 const importStyleSheet = template(`
-const __ReactNativeStyleSheet = require('@native-twin/jsx').StyleSheet;
+const __ReactNativeStyleSheet = require('@native-twin/jsx/sheet').StyleSheet;
 `);
 
 const importReactUseMemo = template(`

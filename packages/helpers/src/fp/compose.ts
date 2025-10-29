@@ -15,6 +15,25 @@
  * console.log(composedFunction(5)); // Output: 16
  * ```
  */
-export type Compose = <A, B, C>(f: (x: B) => C, g: (x: A) => B) => (x: A) => C;
+export type Compose = <A extends any[], B, C>(
+  // B => C
+  f: (x: B) => C,
+  // A => B
+  g: (...x: A) => B,
+  // A => C
+) => (...x: A) => C;
 
-export const compose: Compose = (f, g) => (x) => f(g(x));
+export const compose: Compose = (f, g) => (...x) => f(g(...x));
+
+/**
+ * @description same as @type {Compose} but composing from right to left
+ */
+export type ComposeR = <A extends any[], B, C>(
+  // A => B
+  f: (...x: A) => B,
+  // B => C
+  g: (x: B) => C,
+  // A => C
+) => (...x: A) => C;
+
+export const composeR: ComposeR = (f, g) => (...x) => g(f(...x));

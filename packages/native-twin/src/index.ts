@@ -60,8 +60,11 @@ export {
   type TwinRuntimeProp,
 } from './runtime/SheetHandler.js';
 
-export {
-  type ComponentStyleRegistry,
-  StyleSheetAdapter,
-  type StyleSheetProcessor,
-} from './runtime/TwinStyleSheet.js';
+export type {
+  ClassnameStyles,
+  ComponentStyleRegistry,
+  ReadClassNameProp,
+  TwinComponentStyleProp,
+} from './runtime/sheet/Models.js';
+
+export { StyleSheetAdapter } from './runtime/TwinStyleSheet.js';

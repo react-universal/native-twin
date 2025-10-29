@@ -1,3 +1,9 @@
-type IO<A> = () => A;
+import { compose } from './compose';
+import type { Functor1 } from './Functor';
 
-const a: IO<number> = () => 1;
+export type IO<A> = () => A;
+
+export const functor: Functor1<'IO'> = {
+  URI: 'IO',
+  map: (f) => (ioA) => compose(f, ioA),
+};

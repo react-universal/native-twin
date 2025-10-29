@@ -18,11 +18,11 @@ const DEFAULT_STATE: ComponentState['interactions'] = Object.freeze({
 });
 
 export const useStyledProps = (
-  props: Pick<NativeTwinProps, '__twinID' | '__twinExpressions'>,
+  props: Pick<NativeTwinProps, '__twinID' | '__twinExpressions'> & Record<string, any>,
   _configs: ComponentConfig[],
 ) => {
   const reactID = useId();
-  console.log('EXP: ', props.__twinExpressions);
+  // console.log('EXP: ', props.__twinExpressions);
 
   const twinID = props['__twinID'] ?? reactID;
 
@@ -35,25 +35,25 @@ export const useStyledProps = (
   );
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(twinID));
-  const { parentState, compiledProps } = useAtomValue(
+  // console.log('STATE: ', state.meta);
+  const parentState = useAtomValue(
     atom((get) => {
       let parentState = DEFAULT_STATE;
       if (context && state.meta.hasGroupEvents) {
         parentState = get(StyleSheet.getComponentState(context))?.interactions;
       }
-
-      const compiledProps = StyleSheet.getComponentStyledProps(
-        twinID,
-        state.interactions.isLocalActive,
-        parentState.isGroupActive,
-      );
-
-      return {
-        registry,
-        parentState,
-        compiledProps,
-      };
+      return parentState;
     }),
+  );
+
+  const compiledProps = useMemo(
+    () =>
+      StyleSheet.getComponentStyledProps(twinID, {
+        withGroup: parentState.isGroupActive,
+        withPointer: state.interactions.isLocalActive,
+        getProp: (key: string) => props[key] ?? null,
+      }),
+    [parentState.isGroupActive, state.interactions.isLocalActive, twinID, props],
   );
 
   if (container) {

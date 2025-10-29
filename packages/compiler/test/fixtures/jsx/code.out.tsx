@@ -1,22 +1,21 @@
 // @ts-noCheck
-const __TwinStoreHandler = require('@native-twin/styled');
-const __ReactNativeStyleSheet = require('@native-twin/jsx').StyleSheet;
+const __ReactNativeStyleSheet = require('@native-twin/jsx/sheet').StyleSheet;
 // @ts-noCheck
 import { FlatList, View } from "react-native";
 import { Button } from "./code-i";
 export default function App() {
-  return <View className={`group ${x ? 'asd' : 'x'} h-[20vh] flex-1 hover:bg-red shadow-md border-1 translate-x-2 rotate-1 first:bg-red-200 last:bg-blue-200`} __twinID={"617922210"} __parentID={null} __twinExpressions={{
+  return <View className={`${x ? 'asd' : 'x'}`} __twinID={"617922210"} __parentID={null} __twinExpressions={[{
     prop: "className",
     target: "style",
     expression: `${x ? 'asd' : 'x'}`
-  }}>
+  }]}>
       <Button size="small" __twinID={"103451141"} __parentID={"617922210"} />
       <FlatList data={[1, 2]} renderItem={({
       item
-    }) => <View className="bg-gray-200" __twinID={"519118255"} __parentID={"101357255"}>
-            <Text className="text-lg white" __twinID={"101711716"} __parentID={"519118255"}>Count {item}</Text>
+    }) => <View __twinID={"519118255"} __parentID={"101357255"}>
+            <Text __twinID={"101711716"} __parentID={"519118255"}>Count {item}</Text>
           </View>} __twinID={"101357255"} __parentID={"617922210"} />
-      <Text className="px-2 group-hover:bg-green" __twinID={"411454715"} __parentID={"617922210"}>Hello World</Text>
+      <Text __twinID={"411454715"} __parentID={"617922210"}>Hello World</Text>
     </View>;
 }
 __ReactNativeStyleSheet.registerComponent([{

@@ -28,14 +28,20 @@ export class TwinJSXClassnameProp extends Constructor {
 
   compileAttribute() {
     const value = this.ast.get('value');
-    if (value.isStringLiteral()) return this.ast.remove();
+    if (value.isStringLiteral()) {
+      this.ast.remove();
+    }
     if (value.isJSXExpressionContainer()) {
       const expression = value.get('expression');
       if (expression.isStringLiteral()) return this.ast.remove();
-
       if (expression.isTemplateLiteral()) {
+        Option.tap(this.expression, (x) => {
+          expression.replaceWith(x.cookedExp);
+          return Option.void;
+        });
       }
     }
+    value.scope.crawl();
   }
 
   // get ownRules() {

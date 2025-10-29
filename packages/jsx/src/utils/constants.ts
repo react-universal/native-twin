@@ -145,7 +145,13 @@ export const labelPropName = '__TWIN_LABEL_PLEASE_DO_NOT_USE__';
 export interface NativeTwinProps {
   __twinID: string;
   __parentID: string | null;
-  __twinExpressions?: any | undefined;
+  __twinExpressions?:
+    | {
+        prop: string;
+        target: string;
+        expression: string;
+      }[]
+    | undefined;
   mappings: { [key: string]: string };
   [typePropName]: React.ElementType;
   [labelPropName]?: string;

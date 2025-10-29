@@ -327,6 +327,7 @@ const getPropValueString = (path: NodePath<t.StringLiteral | t.TemplateLiteral>)
       Option.map(
         (_): JSXClassPropExpression => ({
           expression: _,
+          cookedExp: cooked.expressions,
           text: new CodeGenerator(cooked.expressions).generate().code,
         }),
       ),
