@@ -20,6 +20,7 @@ export const Fragment = ReactJSXRuntimeDev.Fragment;
 export const jsxDEV: typeof ReactJSXRuntimeDev.jsxDEV = (
   type,
   props,
+  key,
   isStaticChildren,
   source,
   self,
@@ -32,8 +33,9 @@ export const jsxDEV: typeof ReactJSXRuntimeDev.jsxDEV = (
   //   type,
   // });
 
+  
   if (!hasTwinID) {
-    return ReactJSXRuntimeDev.jsxDEV(type, props, isStaticChildren, source, self);
+    return ReactJSXRuntimeDev.jsxDEV(type, props, key, isStaticChildren, source, self);
   }
   if ((type as any) === 'react-native-twin-jsx-pragma-check') {
     // This is invalid react code. Its used by the doctor to check if the JSX pragma is set correctly
@@ -70,6 +72,7 @@ export const jsxDEV: typeof ReactJSXRuntimeDev.jsxDEV = (
       props as any,
       mappedComponentsConfig.get(type) ?? { className: 'style' },
     ) as any,
+    key,
     isStaticChildren,
     source,
     self,

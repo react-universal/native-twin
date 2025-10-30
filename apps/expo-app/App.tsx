@@ -5,7 +5,7 @@ import { View, Text, FlatList, Pressable } from "react-native";
 const ForeignComponent = () => {
   // console.log("Render_Count_ForeignComponent: ", ++useRef(0).current);
   return (
-    <View className="h-[20vh]">
+    <View className="h-[20vh] hover:bg-gray">
       <Text className="text(lg white)">asdsad2</Text>
     </View>
   );
@@ -13,11 +13,6 @@ const ForeignComponent = () => {
 
 export default function App() {
   const [active, setActive] = useState(false);
-  // console.log("Render_Count_APP: ", ++useRef(0).current);
-  // const ref = useRef<View>(null);
-  // useEffect(() => {
-  //   console.log(ref.current);
-  // }, []);
   return (
     <View className="hover:bg-red bg-gray-900 group flex-1 items-center justify-center first:bg-green even:text-white">
       <ForeignComponent />
@@ -25,8 +20,13 @@ export default function App() {
         onPressIn={() => {
           setActive((p) => !p);
         }}
+        onPressOut={() => {
+          setActive((p) => !p);
+        }}
       >
-        <Text className={`text(md white) ${active ? 'text-red' : ''}`}>sadasd</Text>
+        <Text className={`text(md white) ${active && "text-red"}`}>
+          sadasd
+        </Text>
       </Pressable>
       <Text className="text-lg text-white">Count</Text>
       <FlatList

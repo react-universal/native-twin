@@ -17,7 +17,6 @@ export function twinComponent(
   // TODO: USE COMPONENT STYLES
   const { registry, state, handlers, compiledProps } = useStyledProps(
     props ?? ({} as unknown as any),
-    configs,
   );
 
   // const newProps: any = {

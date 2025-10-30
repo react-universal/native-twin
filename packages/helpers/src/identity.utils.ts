@@ -1,3 +1,5 @@
+import type { MaybeArray } from './utility.types';
+
 export const asNumber = (x: string) => Number(x);
 
 export const asString = <T>(x: T) => String(x);
@@ -8,9 +10,10 @@ export function asRegExp(value: string | RegExp): RegExp {
     : value;
 }
 
-export function asArray<T>(value: T | T[] = []): T[] {
-  if (value == null) return [];
-  return Array.isArray(value) ? value : [value];
+export function asArray<T>(value: MaybeArray<T> = []): NonNullable<T>[] {
+  if (value === null || value === undefined) return [];
+  if (!Array.isArray(value)) return [value];
+  return value.filter((x) => x !== null && x !== undefined);
 }
 
 export const identity = <A>(a: A): A => a;

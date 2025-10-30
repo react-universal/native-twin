@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import matchers from 'expect/build/matchers';
 
-// require('react-native-reanimated').setUpTests();
+require('react-native-reanimated').setUpTests();
 
 matchers.customTesters = [];
 

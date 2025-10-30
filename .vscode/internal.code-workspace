@@ -145,7 +145,50 @@
     "[typescript]": {
       "editor.defaultFormatter": "biomejs.biome"
     },
-    "jest.enable": false,
+    "vitest.ignoreWorkspace": false,
+    "jestrunner.include": [
+      "packages/jsx/*",
+      "📦 @lib/jsx"
+    ],
+    "jestrunner.exclude": [
+      "root",
+      "📦 @lib/builder",
+      "📦 @lib/babel",
+      "📦 @lib/compiler",
+      "📦 @lib/helpers",
+      "📦 @lib/css",
+      "📦 @lib/arc-parser",
+      "📦 @lib/preset-tw",
+      "📦 @lib/dev-tools",
+      "📦 @lib/styled",
+      "📦 @lib/native-twin",
+      "📦 @lib/adapters",
+      "📦 @lib/vscode",
+      "📦 @lib/language-service",
+      "📦 @lib/language-server",
+      "📦 @lib/metro",
+      "📦 @lib/vite-plugin",
+      "expo-app",
+      "expo-router",
+      "next-pages-example",
+      "next-app-dir",
+      "twin.run",
+      "docs-site"
+    ],
+    "jestrunner.useNearestConfig": true,
+    "jestrunner.debugOptions": {
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/jest",
+      "runtimeArgs": [
+        "test",
+        "${fileBasename}",
+        "--runInBand",
+        "--no-cache",
+        "--watchAll=false",
+        "--color"
+      ]
+    },
+    "jest.enable": true,
+    "jest.runMode": "on-demand",
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/builder",
@@ -171,6 +214,26 @@
       "next-app-dir",
       "twin.run",
       "docs-site"
+    ]
+  },
+  "launch": {
+    "configurations": [
+      {
+        "name": "Launch expo-app",
+        "type": "radon-ide",
+        "request": "launch",
+        "appRoot": "./apps/expo-app",
+        "metroConfigPath": "./apps/expo-app/metro.config.js",
+        "env": {},
+        "ios": {
+          "configuration": "Debug"
+        },
+        "isExpo": true,
+        "android": {
+          "buildType": "debug"
+        },
+        "usePrebuild": false
+      }
     ]
   }
 }

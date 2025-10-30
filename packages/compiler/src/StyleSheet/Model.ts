@@ -9,6 +9,8 @@ import {
   type AnyStyle,
   getRuleSelectorGroup,
   getRuleSelectorGroups,
+  parsedRuleSetToClassNames,
+  parsedRuleToClassName,
   type SheetEntry,
 } from '@native-twin/css';
 import {
@@ -20,6 +22,7 @@ import {
   type RuntimeSheetDeclaration,
   type RuntimeTwinMappedProp,
 } from '@native-twin/css/jsx';
+import { asArray } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
@@ -65,24 +68,27 @@ export class CompilerStyleSheet extends StyleSheetAdapter<InternalTwinConfig> {
     const runtimeStyles = classProp.twinRules.flatMap((x) => {
       const groups = getRuleSelectorGroups(x.v);
       const mainGroup = getRuleSelectorGroup(groups);
-      const sheetEntries = this.twinFn(x.n);
-      return sheetEntries.map((entry): RuntimeJSXStyle => {
+      return classProp.twinRules.flatMap((rule): RuntimeJSXStyle[] => {
+        const entry = this._twinCtx.r(rule);
+
+        if (!entry) return [];
+
         const compiledDecls = entry.declarations.map((x) => compileEntryDeclaration(x, this.ctx));
 
-        return {
-          className: entry.className,
+        return asArray({
+          className: parsedRuleToClassName(rule),
           declarations: compiledDecls,
           groups,
           group: mainGroup,
           important: entry.important,
           inherited: false,
           precedence: entry.precedence,
-        };
+        });
       });
     });
 
     return {
-      classNames: classProp.text,
+      classNames: parsedRuleSetToClassNames(classProp.twinRules),
       templateEntries: Option.getOrNull(classProp.expression)?.text ?? null,
       entries: {
         base: runtimeStyles.filter((x) => x.group === 'base'),

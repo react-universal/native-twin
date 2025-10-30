@@ -19,6 +19,6 @@ module.exports = function (api, options) {
 
   api.cache(false);
   return {
-    plugins: [require('./build/cjs')],
+    plugins: [[require('./build/cjs'), options]],
   };
 };

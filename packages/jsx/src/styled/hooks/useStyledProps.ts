@@ -1,27 +1,20 @@
+import { hasOwnProperty } from '@native-twin/helpers';
 import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
-import { useCallback, useContext, useId, useMemo, useRef } from 'react';
-import type {
-  NativeSyntheticEvent,
-  PressableProps,
-  TextInputFocusEventData,
-  Touchable,
-} from 'react-native';
+import { useCallback, useContext, useDebugValue, useId, useMemo, useRef } from 'react';
+import type { PressableProps, Touchable } from 'react-native';
 import { ContainersContext, GroupContext } from '../../context';
 import { StyleSheet } from '../../sheet';
-import type { ComponentState } from '../../store/components.store';
-import type { ComponentConfig } from '../../types/styled.types';
-import type { NativeTwinProps } from '../../utils/constants';
-
-const DEFAULT_STATE: ComponentState['interactions'] = Object.freeze({
-  isGroupActive: false,
-  isLocalActive: false,
-});
+import type { TwinComponentInteractionProps } from '../../types/jsx.types';
+import { DEFAULT_STATE, type NativeTwinProps } from '../../utils/constants';
 
 export const useStyledProps = (
   props: Pick<NativeTwinProps, '__twinID' | '__twinExpressions'> & Record<string, any>,
-  _configs: ComponentConfig[],
 ) => {
+  // const configs = getNormalizeConfig(
+  //   props["mappings"] as NativeTwinProps["mappings"]
+  // );
   const reactID = useId();
+  const interactionsRef = useRef<TwinComponentInteractionProps>(props as any);
   // console.log('EXP: ', props.__twinExpressions);
 
   const twinID = props['__twinID'] ?? reactID;
@@ -29,13 +22,10 @@ export const useStyledProps = (
   const container = useContext(ContainersContext);
   const handlers: Touchable & PressableProps = {};
   const context = useContext(GroupContext);
-  const registry = useMemo(
-    () => StyleSheet.getTwinStyle(twinID, props.__twinExpressions),
-    [props, twinID],
-  );
+  const registry = StyleSheet.getTwinStyle(twinID);
 
   const [state, setState] = useAtom(StyleSheet.getComponentState(twinID));
-  // console.log('STATE: ', state.meta);
+
   const parentState = useAtomValue(
     atom((get) => {
       let parentState = DEFAULT_STATE;
@@ -51,7 +41,7 @@ export const useStyledProps = (
       StyleSheet.getComponentStyledProps(twinID, {
         withGroup: parentState.isGroupActive,
         withPointer: state.interactions.isLocalActive,
-        getProp: (key: string) => props[key] ?? null,
+        getProp: (key: string) => getComponentProp(key, props),
       }),
     [parentState.isGroupActive, state.interactions.isLocalActive, twinID, props],
   );
@@ -59,14 +49,6 @@ export const useStyledProps = (
   if (container) {
     console.log('CONTAINER: ', container);
   }
-
-  const interactionsRef = useRef<
-    Touchable &
-      PressableProps & {
-        onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-        onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-      }
-  >(props as any);
 
   const onChange = useCallback(
     (active: boolean) => {
@@ -98,5 +80,14 @@ export const useStyledProps = (
     };
   }
 
+  useDebugValue(compiledProps);
+  useDebugValue(parentState);
+
   return { compiledProps, state, handlers, registry, parentState };
+};
+
+const getComponentProp = (key: string, props: Record<string, any>) => {
+  if (!hasOwnProperty.call(props, key)) return null;
+  const value = props[key];
+  return typeof value === 'string' ? value : null;
 };

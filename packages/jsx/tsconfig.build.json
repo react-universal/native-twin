@@ -4,5 +4,6 @@
     "outDir": "build/esm",
     "declarationDir": "build/dts",
     "stripInternal": false
-  }
+  },
+  "exclude": ["__tests__"]
 }

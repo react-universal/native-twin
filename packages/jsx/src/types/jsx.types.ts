@@ -1,4 +1,10 @@
 import type React from 'react';
+import type {
+  NativeSyntheticEvent,
+  PressableProps,
+  TextInputFocusEventData,
+  Touchable,
+} from 'react-native';
 
 export interface JSXInternalProps extends Record<string, any> {
   twEnabled?: boolean;
@@ -24,3 +30,9 @@ export type JSXFunction = (
 //   target: string;
 //   entries: RuntimeSheetEntry[];
 // }
+
+export type TwinComponentInteractionProps = Touchable &
+  PressableProps & {
+    onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+    onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  };

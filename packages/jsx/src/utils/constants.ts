@@ -1,3 +1,5 @@
+import type { ComponentState } from '../store/components.store';
+
 export const REACT_FORWARD_REF_SYMBOL = Symbol.for('react.forward_ref');
 
 export const INTERNAL_RESET = Symbol();
@@ -157,3 +159,8 @@ export interface NativeTwinProps {
   [labelPropName]?: string;
   [key: string]: unknown;
 }
+
+export const DEFAULT_STATE: ComponentState['interactions'] = Object.freeze({
+  isGroupActive: false,
+  isLocalActive: false,
+});

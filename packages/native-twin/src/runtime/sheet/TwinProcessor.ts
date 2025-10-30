@@ -9,6 +9,7 @@ import {
 } from '@native-twin/css/jsx';
 import { asArray } from '@native-twin/helpers';
 import { parseCssValue } from '../../parsers/values.parser';
+import type { CompiledSheetEntry } from '../../twin/compiler.models';
 import type { TwinRuntimeContext } from '../runtime.context';
 import type { ClassnameStyles, ComponentStyleRegistry, TwinComponentStyleProp } from './Models';
 import { composeDeclValueArray, createMapRegistry, mergeStyles } from './utils';
@@ -19,11 +20,11 @@ export class NativeTwinProcessor {
   classnameStyles = createMapRegistry<ClassnameStyles>();
   blackListEntries = new Set<string>();
 
-  getStyleRegistry(id: string) {
-    return this._componentStyles.get(id);
+  getStyleRegistry(id: string): ComponentStyleRegistry | null {
+    return this._componentStyles.get(id) ?? null;
   }
 
-  runtimeDeclToNative(runtimeDecl: RuntimeSheetDeclaration, ctx: TwinRuntimeContext) {
+  runtimeDeclToNative(runtimeDecl: RuntimeSheetDeclaration, ctx: TwinRuntimeContext): AnyStyle {
     return this.getSheetDeclStyles(runtimeDecl, ctx);
   }
 
@@ -41,6 +42,20 @@ export class NativeTwinProcessor {
     };
   }
 
+  compiledSheetEntriesToClassNameStyles(entries: CompiledSheetEntry[], ctx: TwinRuntimeContext) {
+    return SheetOrders.sortSheetEntriesArray(entries.flatMap((x) => x.toRuntime(false))).reduce(
+      (prev, current) => {
+        const cached = this.runtimeStyles.get(current.className);
+        const completeStyle = cached ?? this.runtimeStyleToNative(current, ctx);
+        if (!cached) this.runtimeStyles.add(current.className, completeStyle);
+
+        const result = mergeClassnameStylesWithRNStyle(prev, current, completeStyle);
+        return result;
+      },
+      { base: {}, pointer: {}, dark: {}, group: {} } as ClassnameStyles,
+    );
+  }
+
   runtimeMappedPropToClassStyles(
     prop: RuntimeTwinMappedProp,
     ctx: TwinRuntimeContext,
@@ -48,39 +63,23 @@ export class NativeTwinProcessor {
     const entries = Object.values(prop.entries).flat();
     return SheetOrders.sortSheetEntriesArray(entries).reduce(
       (prev, current) => {
-        const completeStyle = this.runtimeStyleToNative(current, ctx);
-        if (!completeStyle) return prev;
+        const cached = this.runtimeStyles.get(current.className);
+        const completeStyle = cached ?? this.runtimeStyleToNative(current, ctx);
 
-        if (current.groups.some((x) => x === 'pointer')) {
-          // console.log('POINTWR: ', completeStyle);
-          prev.pointer = mergeStyles(prev.pointer, completeStyle);
-          return prev;
-        }
-        if (current.groups.some((x) => x === 'group')) {
-          prev.group = mergeStyles(prev.group, completeStyle);
-          return prev;
-        }
-        if (current.groups.some(Predicates.isDarkSelector)) {
-          prev.dark = mergeStyles(prev.dark, completeStyle);
-          return prev;
-        }
+        if (!cached) this.runtimeStyles.add(current.className, completeStyle);
 
-        if (current.groups.some(Predicates.isChildSelector)) {
-          return prev;
-        }
-
-        prev.base = mergeStyles(prev.base, completeStyle);
-
-        return prev;
+        const result = mergeClassnameStylesWithRNStyle(prev, current, completeStyle);
+        return result;
       },
       { base: {}, pointer: {}, dark: {}, group: {} } as ClassnameStyles,
     );
   }
 
-  runtimeStyleToNative(runtimeStyle: RuntimeJSXStyle, ctx: TwinRuntimeContext) {
-    return runtimeStyle.declarations.reduce((prev, current) => {
-      return mergeStyles(prev, this.getSheetDeclStyles(current, ctx));
-    }, {} as AnyStyle);
+  runtimeStyleToNative(runtimeStyle: RuntimeJSXStyle, ctx: TwinRuntimeContext): AnyStyle {
+    return runtimeStyle.declarations.reduce(
+      (prev, current) => mergeStyles(prev, this.getSheetDeclStyles(current, ctx)),
+      {} as AnyStyle,
+    );
   }
 
   runtimeComponentToRegistry(
@@ -89,6 +88,7 @@ export class NativeTwinProcessor {
   ): ComponentStyleRegistry {
     const cached = this._componentStyles.get(comp.id);
     if (cached) return cached;
+
     const styleRegistry = {
       id: comp.id,
       readClassProp: () => null,
@@ -133,3 +133,32 @@ export class NativeTwinProcessor {
     return compiled.value;
   }
 }
+
+const mergeClassnameStylesWithRNStyle = (
+  prev: ClassnameStyles,
+  jsxStyle: RuntimeJSXStyle,
+  completeStyle: AnyStyle,
+): ClassnameStyles => {
+  if (!completeStyle) return prev;
+
+  if (jsxStyle.groups.some((x) => x === 'pointer')) {
+    prev.pointer = mergeStyles(prev.pointer, completeStyle);
+    return prev;
+  }
+  if (jsxStyle.groups.some((x) => x === 'group')) {
+    prev.group = mergeStyles(prev.group, completeStyle);
+    return prev;
+  }
+  if (jsxStyle.groups.some(Predicates.isDarkSelector)) {
+    prev.dark = mergeStyles(prev.dark, completeStyle);
+    return prev;
+  }
+
+  if (jsxStyle.groups.some(Predicates.isChildSelector)) {
+    return prev;
+  }
+
+  prev.base = mergeStyles(prev.base, completeStyle);
+
+  return prev;
+};

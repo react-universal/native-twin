@@ -9,13 +9,15 @@
       "request": "launch",
       "name": "Application name",
       "appRoot": "./",
-      "env": {},
-      "ios": {
-        "configuration": "Debug"
+      "isExpo": true,
+      "metroConfigPath": "./metro.config.js",
+      "usePrebuild": false,
+      "customBuild": {
+        "ios": {
+          "buildCommand": "expo start --ios -c"
+        }
       },
-      "android": {
-        "buildType": "debug"
-      }
+      "env": {}
     }
   ]
 }

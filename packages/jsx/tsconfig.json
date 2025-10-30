@@ -5,8 +5,8 @@
     "allowArbitraryExtensions": false,
     "moduleResolution": "nodenext",
     "module": "nodenext",
-    "jsx": "react-jsxdev"
+    "jsx": "preserve"
   },
-  "include": ["src"],
+  "include": ["src", "types.d.ts"],
   "exclude": ["build"]
 }

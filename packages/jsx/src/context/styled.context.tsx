@@ -12,25 +12,15 @@ export const ContainersContext = React.createContext<string | null>(null);
 export const TwinRootContext = React.createContext<boolean>(false);
 
 export const withParentContext = function withParentContext<
-  Props extends NativeTwinProps,
-  RefType = any
+  Props extends NativeTwinProps
 >(
-  func: (
-    props: React.PropsWithoutRef<Props>,
-    ref?: React.ForwardedRef<RefType>
-  ) => React.ReactNode
-):
-  | React.FC<React.PropsWithoutRef<Props> & React.RefAttributes<RefType>>
-  | React.ForwardRefExoticComponent<
-      React.PropsWithoutRef<Props> & React.RefAttributes<RefType>
-    > {
+  func: (props: Props) => React.ReactNode
+): React.FC<Props> {
+  //   > //     React.PropsWithoutRef<Props> & React.RefAttributes<RefType> // | React.ForwardRefExoticComponent<
   // return React.forwardRef<RefType, Props>(function TwinWrapper(props, ref) {
 
   // });
-  return (
-    props: Parameters<typeof func>[0]
-    // ref: Parameters<typeof func>[0]
-  ): React.ReactNode => {
+  return (props: Parameters<typeof func>[0]): React.ReactNode => {
     const refProps = props as NativeTwinProps;
     const state = StyleSheet.getComponentState(refProps.__twinID).get();
     if (state.meta.isGroupParent) {
@@ -40,25 +30,6 @@ export const withParentContext = function withParentContext<
         </GroupContext.Provider>
       );
     }
-    // the cache will never be null in the browser
-
     return func(props);
   };
 };
-
-// if (Platform.OS !== "web") {
-//   withParentContext = function withParentContext(func) {
-//     return (props: Parameters<typeof func>[0]) => {
-//       const refProps = props as NativeTwinProps;
-//       const state = StyleSheet.getComponentState(refProps.__twinID).get();
-//       if (state.meta.isGroupParent) {
-//         return (
-//           <GroupContext.Provider value={refProps.__twinID}>
-//             {func(props)}
-//           </GroupContext.Provider>
-//         );
-//       }
-//       return func(props);
-//     };
-//   };
-// }

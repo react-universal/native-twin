@@ -1,7 +1,11 @@
-import type { AnyStyle, CompleteStyle, SheetEntryDeclaration } from '@native-twin/css';
+import type {
+  AnyStyle,
+  CompleteStyle,
+  SheetEntryDeclaration,
+} from '@native-twin/css';
 import { keysOf } from '@native-twin/helpers';
 import type { StyleProp } from 'react-native';
-import type { ComponentStyleRegistry } from './Models';
+import type { ClassnameStyles, ComponentStyleRegistry } from './Models';
 
 export function composeDeclValueArray(
   value: SheetEntryDeclaration['value'],
@@ -69,3 +73,16 @@ export const mergeComponentStyledProps = (
       },
     );
   }, {});
+
+export const mergeCLassNameStyle = (
+  self: ClassnameStyles,
+  that: ClassnameStyles,
+): ClassnameStyles => {
+  return {
+    ...self,
+    base: mergeStyles(self.base, that.base),
+    dark: mergeStyles(self.dark, that.dark),
+    group: mergeStyles(self.group, that.group),
+    pointer: mergeStyles(self.pointer, that.pointer),
+  };
+};

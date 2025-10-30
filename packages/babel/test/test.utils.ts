@@ -11,17 +11,17 @@ export const runPluginForFixture = (inputFile: string, outputFile: string) => {
     },
     presets: [
       [
-        'babel-preset-expo',
-        {
-          jsxImportSource: '@native-twin/jsx',
-        },
-      ],
-      [
         require('../babel'),
         {
-          twinConfigPath: './tailwind.config.ts',
+          twinConfigPath: path.join(__dirname, './tailwind.config.ts'),
         },
       ],
+      // [
+      //   'babel-preset-expo',
+      //   {
+      //     jsxImportSource: '@native-twin/jsx',
+      //   },
+      // ],
     ],
     filename: inputFile,
     ast: true,
