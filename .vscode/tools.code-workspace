@@ -1,60 +1,64 @@
 {
   "folders": [
     {
-      "name": "root",
+      "name": "✨ native-twin",
       "path": ".."
     },
     {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
+      "name": "📦 @native-twin/data-types",
+      "path": "../packages/data-types"
     },
     {
-      "name": "📦 @lib/compiler",
-      "path": "../packages/compiler"
-    },
-    {
-      "name": "📦 @lib/language-service",
-      "path": "../packages/language-service"
-    },
-    {
-      "name": "📦 @lib/language-server",
-      "path": "../packages/language-server"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/adapters",
+      "name": "📦 @native-twin/adapters",
       "path": "../packages/adapters"
     },
     {
-      "name": "📦 @lib/builder",
+      "name": "📦 @native-twin/cli",
       "path": "../packages/builder"
     },
     {
-      "name": "📦 @lib/core",
+      "name": "📦 @native-twin/compiler",
+      "path": "../packages/compiler"
+    },
+    {
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @native-twin/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @native-twin/language-server",
+      "path": "../packages/language-server"
+    },
+    {
+      "name": "📦 @native-twin/language-service",
+      "path": "../packages/language-service"
+    },
+    {
+      "name": "📦 @native-twin/metro",
+      "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @native-twin/core",
       "path": "../packages/native-twin"
     },
     {
-      "name": "📦 @lib/vite-plugin",
+      "name": "📦 @native-twin/vite-plugin",
       "path": "../packages/vite-plugin"
     },
     {
-      "name": "expo-app",
-      "path": "../apps/expo-app"
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
     },
     {
-      "name": "twin.run",
+      "name": "twin-run",
       "path": "../sites/twin.run"
+    },
+    {
+      "name": "🚀 expo-app",
+      "path": "../apps/expo-app"
     }
   ],
   "settings": {

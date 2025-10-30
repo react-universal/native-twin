@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "ES2022",
+    "outDir": "build/esm",
+    "declarationDir": "build/dts"
+  }
+}

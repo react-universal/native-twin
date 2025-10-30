@@ -4518,6 +4518,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@native-twin/data-types@workspace:packages/data-types":
+  version: 0.0.0-use.local
+  resolution: "@native-twin/data-types@workspace:packages/data-types"
+  dependencies:
+    "@native-twin/cli": "workspace:*"
+  dependenciesMeta:
+    "@native-twin/cli":
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "@native-twin/dev-tools-webui@workspace:packages/dev-tools/webui":
   version: 0.0.0-use.local
   resolution: "@native-twin/dev-tools-webui@workspace:packages/dev-tools/webui"
