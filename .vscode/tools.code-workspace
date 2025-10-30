@@ -9,20 +9,20 @@
       "path": "../packages/data-types"
     },
     {
-      "name": "📦 @native-twin/adapters",
-      "path": "../packages/adapters"
-    },
-    {
-      "name": "📦 @native-twin/cli",
-      "path": "../packages/builder"
-    },
-    {
       "name": "📦 @native-twin/compiler",
       "path": "../packages/compiler"
     },
     {
       "name": "📦 @native-twin/css",
       "path": "../packages/css"
+    },
+    {
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @native-twin/adapters",
+      "path": "../packages/adapters"
     },
     {
       "name": "📦 @native-twin/helpers",
@@ -49,8 +49,8 @@
       "path": "../packages/vite-plugin"
     },
     {
-      "name": "📦 native-twin-vscode",
-      "path": "../packages/vscode-extension"
+      "name": "📦 @native-twin/cli",
+      "path": "../packages/builder"
     },
     {
       "name": "twin-run",
