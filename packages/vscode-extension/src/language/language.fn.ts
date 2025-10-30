@@ -1,6 +1,6 @@
+import * as vscode from 'vscode';
 import { CSS_COLORS } from '@native-twin/css';
 import { Constants } from '@native-twin/language-service';
-import * as vscode from 'vscode';
 import {
   CloseAction,
   ErrorAction,
@@ -11,11 +11,7 @@ import {
 
 const colorNames = Object.keys(CSS_COLORS);
 
-export const onLanguageClientError: ErrorHandler['error'] = async (
-  _error,
-  message,
-  count,
-) => {
+export const onLanguageClientError: ErrorHandler['error'] = async (_error, message, count) => {
   return {
     action: ErrorAction.Shutdown,
     handled: true,
@@ -42,19 +38,15 @@ export const onProvideDocumentColors = async (
 
   const editableColors = colors.filter((color) => {
     const text =
-      vscode.workspace.textDocuments
-        .find((doc) => doc === document)
-        ?.getText(color.range) ?? '';
-    return new RegExp(
-      `-\\[(${colorNames.join('|')}|((?:#|rgba?\\(|hsla?\\())[^\\]]+)\\]$`,
-    ).test(text);
+      vscode.workspace.textDocuments.find((doc) => doc === document)?.getText(color.range) ?? '';
+    return new RegExp(`-\\[(${colorNames.join('|')}|((?:#|rgba?\\(|hsla?\\())[^\\]]+)\\]$`).test(
+      text,
+    );
   });
 
   const nonEditableColors = colors.filter((color) => !editableColors.includes(color));
 
-  const editors = vscode.window.visibleTextEditors.filter(
-    (editor) => editor.document === document,
-  );
+  const editors = vscode.window.visibleTextEditors.filter((editor) => editor.document === document);
 
   for (const editor of editors) {
     editor.setDecorations(

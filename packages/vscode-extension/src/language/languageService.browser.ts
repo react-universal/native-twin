@@ -1,13 +1,10 @@
+import * as vscode from 'vscode';
 import { Constants } from '@native-twin/language-service';
 import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import * as vscode from 'vscode';
-import {
-  LanguageClient,
-  type LanguageClientOptions,
-} from 'vscode-languageclient/browser.js';
+import { LanguageClient, type LanguageClientOptions } from 'vscode-languageclient/browser.js';
 import { VscodeContext } from '../extension/extension.service.js';
 import { extensionConfigValue, registerCommand } from '../extension/extension.utils.js';
 import {
@@ -16,11 +13,7 @@ import {
   onLanguageClientError,
   onProvideDocumentColors,
 } from './language.fn.js';
-import {
-  createFileWatchers,
-  getColorDecoration,
-  getConfigFiles,
-} from './language.utils.js';
+import { createFileWatchers, getColorDecoration, getConfigFiles } from './language.utils.js';
 
 // import TwinWorker from './twin.worker.js.js';
 
@@ -72,9 +65,7 @@ const make = Effect.gen(function* () {
           Constants.extensionServerChannelName,
           clientConfig,
           new Worker(
-            vscode.Uri.joinPath(extensionCtx.extensionUri, 'twin.worker.js').toString(
-              true,
-            ),
+            vscode.Uri.joinPath(extensionCtx.extensionUri, 'twin.worker.js').toString(true),
           ),
         ),
     ),
@@ -104,10 +95,7 @@ const make = Effect.gen(function* () {
     'functions',
     Constants.DEFAULT_PLUGIN_CONFIG.functions,
   );
-  const debugConfig = yield* extensionConfigValue(
-    'debug',
-    Constants.DEFAULT_PLUGIN_CONFIG.debug,
-  );
+  const debugConfig = yield* extensionConfigValue('debug', Constants.DEFAULT_PLUGIN_CONFIG.debug);
 
   yield* functionsConfig.changes.pipe(
     Stream.runForEach((x) => Effect.log('FUNCTIONS: ', x)),

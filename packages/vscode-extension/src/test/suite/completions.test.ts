@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import { suiteTeardown } from 'mocha';
 import * as vscode from 'vscode';
 import { executeCompletionAtPosition } from '../commands.js';
-import { type Fixture, createFixture } from '../fixtures.js';
+import { createFixture, type Fixture } from '../fixtures.js';
 import { sleep, startTestFile } from '../helpers.js';
 
 suite('Should do completion', () => {
@@ -22,9 +22,7 @@ suite('Should do completion', () => {
     return testCompletion(fixture, (list) => [
       assert.equal(list.items.length, 1),
       assert.ok(
-        list.items.some(
-          (x) => typeof x.label !== 'string' && x.label.label === 'bg-red-200',
-        ),
+        list.items.some((x) => typeof x.label !== 'string' && x.label.label === 'bg-red-200'),
       ),
     ]);
   });
@@ -60,9 +58,6 @@ async function testCompletion(
   assertions: (list: vscode.CompletionList) => void[],
 ) {
   // Executing the command `vscode.executeCompletionItemProvider` to simulate triggering completion
-  const completionsList = await executeCompletionAtPosition(
-    fixture.document.uri,
-    fixture.position,
-  );
+  const completionsList = await executeCompletionAtPosition(fixture.document.uri, fixture.position);
   assertions(completionsList);
 }

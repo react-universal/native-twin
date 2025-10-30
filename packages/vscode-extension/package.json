@@ -23,11 +23,13 @@
   "author": "Cristhian Gutierrez",
   "publisher": "native-twin",
   "main": "./build/cjs/extension.js",
+  "module": "./build/esm/extension.js",
   "scripts": {
     "build": "npx twin pack-dev",
-    "build:tsc": "tsc -b",
-    "build:tsc:watch": "tsc -p tsconfig.cjs.json --watch",
-    "build:watch": "npx twin pack-dev -w",
+    "build:tsc": "npx tsc -b",
+    "build:tsc:watch": "npx tsc -p tsconfig.cjs.json --watch",
+    "build:watch": "tsc -p tsconfig.cjs.json --watch",
+    "esbuild:watch": "node ./esbuild.cjs --watch",
     "clean": "rm -rf build",
     "lint": "biome lint",
     "vsc-test": "vscode-test --watch",
@@ -132,6 +134,7 @@
     "views": {
       "nativeTwin": [
         {
+          "icon": "resources/icons/transparent/logo-alt-50.png",
           "id": "nativeTwin-files",
           "name": "Files"
         }
@@ -165,15 +168,15 @@
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
-    "@types/vscode": "^1.94.2",
-    "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.4.0"
+    "@types/vscode": "^1.105.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
   },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*"
   },
   "engines": {
-    "vscode": "^1.94.2"
+    "vscode": "^1.105.0"
   },
   "publishConfig": {
     "access": "public",

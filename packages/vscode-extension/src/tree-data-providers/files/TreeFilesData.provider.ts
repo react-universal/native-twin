@@ -1,20 +1,17 @@
-import {
-  Constants,
-  type NativeTwinPluginConfiguration,
-} from '@native-twin/language-service';
+import type { TwinTextDocument } from '../../language/index.js';
+import * as vscode from 'vscode';
+import { Constants, type NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { identity, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import * as vscode from 'vscode';
 import {
   extensionConfigState,
   listenForkEvent,
   registerCommand,
 } from '../../extension/extension.utils.js';
 import { getTwinTextDocumentByUri, getVscodeFS } from '../../file-system/index.js';
-import type { TwinTextDocument } from '../../language/index.js';
 import { TreeDataProvider } from '../models/index.js';
 import { getTwinDocumentID, makeTreeDataProvider } from '../tree.utils.js';
 import {
@@ -67,74 +64,71 @@ class FileNodesManager {
   }
 }
 
-export const TwinTreeDataFilesProvider = makeTreeDataProvider<AnyTreeDataNode>(
-  'nativeTwin-files',
-)((refresh) => {
-  return Effect.gen(function* () {
-    const settings = yield* extensionConfigState(Constants.DEFAULT_PLUGIN_CONFIG);
+export const TwinTreeDataFilesProvider = makeTreeDataProvider<AnyTreeDataNode>('nativeTwin-files')(
+  (refresh) => {
+    return Effect.gen(function* () {
+      const settings = yield* extensionConfigState(Constants.DEFAULT_PLUGIN_CONFIG);
 
-    const workspaceRoot = pipe(
-      RA.ensure(vscode.workspace.workspaceFolders),
-      RA.flatMapNullable(identity),
-      RA.head,
-      Option.getOrThrow,
-    );
+      const workspaceRoot: vscode.WorkspaceFolder = pipe(
+        RA.ensure(vscode.workspace.workspaceFolders),
+        RA.flatMapNullable(identity),
+        RA.head,
+        Option.getOrElse(
+          (): vscode.WorkspaceFolder => ({
+            index: 0,
+            name: 'asd',
+            uri: vscode.Uri.file(__dirname),
+          }),
+        ),
+      );
 
-    const manager = new FileNodesManager(workspaceRoot.uri);
+      const manager = new FileNodesManager(workspaceRoot.uri);
 
-    yield* registerCommand(
-      'nativeTwin.openTwinRegion',
-      (region: FileTwinRegionTreeNode) => {
+      yield* registerCommand('nativeTwin.openTwinRegion', (region: FileTwinRegionTreeNode) => {
         console.log('FIRE: ', region);
         return region.onClick();
-      },
-    );
-
-    const { watcher, validTextFiles } = yield* getVscodeFS;
-
-    yield* listenForkEvent(watcher.onDidChange, (uri) => addFile(uri));
-
-    yield* Stream.fromIterable(validTextFiles).pipe(
-      Stream.runForEach((x) => Effect.suspend(() => addFile(x))),
-    );
-
-    const addFile = (uri: vscode.Uri) =>
-      Effect.gen(function* () {
-        const config = yield* settings.get;
-        const { twinDocument } = getTwinTextDocumentByUri(uri, config);
-        manager.getOrSetStoredFile(twinDocument);
-
-        yield* refresh(Option.none());
       });
 
-    return TreeDataProvider<AnyTreeDataNode>({
-      children: Option.match({
-        onNone: () => Effect.succeedSome(manager.rootNodes),
-        onSome: (node) => {
-          return settings.get.pipe(Effect.map((x) => children(node, x)));
-        },
-      }),
-      treeItem: (element) => Effect.succeed(treeItem(element)),
+      const { watcher, validTextFiles } = yield* getVscodeFS;
+
+      yield* listenForkEvent(watcher.onDidChange, (uri) => addFile(uri));
+
+      yield* Stream.fromIterable(validTextFiles).pipe(
+        Stream.runForEach((x) => Effect.suspend(() => addFile(x))),
+      );
+
+      const addFile = (uri: vscode.Uri) =>
+        Effect.gen(function* () {
+          const config = yield* settings.get;
+          const { twinDocument } = getTwinTextDocumentByUri(uri, config);
+          manager.getOrSetStoredFile(twinDocument);
+
+          yield* refresh(Option.none());
+        });
+
+      return TreeDataProvider<AnyTreeDataNode>({
+        children: Option.match({
+          onNone: () => Effect.succeedSome(manager.rootNodes),
+          onSome: (node) => {
+            return settings.get.pipe(Effect.map((x) => children(node, x)));
+          },
+        }),
+        treeItem: (element) => Effect.succeed(treeItem(element)),
+      });
     });
-  });
-});
+  },
+);
 
 const treeItem = (node: AnyTreeDataNode) => {
   switch (node._tag) {
     case 'FileTreeNode':
-      const fileNode = new vscode.TreeItem(
-        node.label,
-        vscode.TreeItemCollapsibleState.Collapsed,
-      );
+      const fileNode = new vscode.TreeItem(node.label, vscode.TreeItemCollapsibleState.Collapsed);
       fileNode.resourceUri = node.document.uri;
       fileNode.iconPath = vscode.ThemeIcon.File;
       fileNode.id = node.id;
       return fileNode;
     case 'FileTwinRegionTreeNode':
-      const regionNode = new vscode.TreeItem(
-        'JSX Region',
-        vscode.TreeItemCollapsibleState.None,
-      );
+      const regionNode = new vscode.TreeItem('JSX Region', vscode.TreeItemCollapsibleState.None);
       regionNode.description = `from: ${node.region.offset.start} to: ${node.region.offset.end}`;
       regionNode.contextValue = 'twinRegion';
       regionNode.iconPath = 'public-ports-view-icon';

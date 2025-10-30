@@ -1,6 +1,6 @@
-import os from 'os';
-import * as path from 'path';
 import { runTests } from '@vscode/test-electron';
+import * as os from 'os';
+import * as path from 'path';
 
 async function main() {
   try {
@@ -16,6 +16,7 @@ async function main() {
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
+      reuseMachineInstall: true,
       launchArgs: [
         '--user-data-dir',
         `${os.tmpdir()}`,
@@ -23,8 +24,8 @@ async function main() {
         './project-fixture',
       ],
     });
-  } catch {
-    console.error('Failed to run tests');
+  } catch (e) {
+    console.error('Failed to run tests', e);
     process.exit(1);
   }
 }

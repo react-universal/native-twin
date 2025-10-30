@@ -29,11 +29,15 @@
         "group": "",
         "order": 1
       },
+      "preLaunchTask": "vscode tsc watch",
       "args": [
         "--extensionDevelopmentPath=${workspaceRoot}",
         "--disable-extensions",
-        "${workspaceRoot}/project-fixture"
+        "${workspaceFolder}/project-fixture"
       ],
+      "env": {
+        "NODE_NO_WARNINGS": "1"
+      },
       "outFiles": [
         "${workspaceRoot}/build/**/*.js",
         "${workspaceRoot:}/build/**/*.js"
@@ -53,14 +57,14 @@
       "args": [
         "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/build/test/run"
+        "--extensionTestsPath=${workspaceFolder}/build/cjs/test/index.js"
       ],
       "preLaunchTask": {
         "type": "npm",
-        "script": "build:tsc"
+        "script": "build:tsc:watch"
       },
       "outFiles": [
-        "${workspaceFolder}/build/test/**/*.js"
+        "${workspaceFolder}/build/cjs/test/**/*.js"
       ]
     }
   ],

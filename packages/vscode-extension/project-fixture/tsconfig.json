@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
-    "jsx": "react"
+    "jsx": "react",
+    "typeRoots": ["global.d.ts"]
   },
-  "include": ["**/*"]
+  "include": ["**/*.ts"]
 }

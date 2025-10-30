@@ -1,8 +1,8 @@
-import { inspect } from 'util';
 import { LSPConnectionService } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
-import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
+import * as LogLevel from 'effect/LogLevel';
+import { inspect } from 'util';
 
 // export const loggerLayer = (connection: Connection) =>
 //   Logger.replace(Logger.defaultLogger, createConnectionLogger(connection));

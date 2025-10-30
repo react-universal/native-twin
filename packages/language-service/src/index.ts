@@ -36,10 +36,10 @@ export {
 /** Connection Service */
 export { LSPConnectionService } from './services/LSPConnection.service.js';
 export type { NativeTwinPluginConfiguration } from './utils/constants.utils.js';
-
 export { DEFAULT_PLUGIN_CONFIG } from './utils/constants.utils.js';
 /** Logger */
 export { createLspLogger, loggerUtils } from './utils/lsp.logger.service.js';
+export { NativeTwinManager } from './utils/twin/twin.manager.js';
 
 export { Constants };
 export { ExtensionConfigSchema } from './schemas/index.js';

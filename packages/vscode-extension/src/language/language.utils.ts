@@ -1,5 +1,5 @@
-import * as Effect from 'effect/Effect';
 import * as vscode from 'vscode';
+import * as Effect from 'effect/Effect';
 import { thenable } from '../extension/extension.utils.js';
 
 export const createFileWatchers = Effect.gen(function* () {
@@ -17,11 +17,7 @@ export const createFileWatchers = Effect.gen(function* () {
 
 export const getConfigFiles = Effect.gen(function* () {
   const files = yield* thenable(() =>
-    vscode.workspace.findFiles(
-      '**/tailwind.config.{ts,js,mjs,cjs}',
-      '**/node_modules/**',
-      1,
-    ),
+    vscode.workspace.findFiles('**/tailwind.config.{ts,js,mjs,cjs}', '**/node_modules/**', 1),
   );
   if (files.length === 0) {
     yield* Effect.logWarning('Cant find a native-twin configuration file');

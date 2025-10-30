@@ -24,7 +24,24 @@
         "panel": "dedicated",
         "reveal": "never"
       },
-      "problemMatcher": ["$rollup-ts-watch"]
+      "problemMatcher": [
+        "$ts-esbuild-watch",
+        {
+          "pattern": [
+            {
+              "regexp": "^([^\\\\s].*)\\\\((\\\\d+,\\\\d+)\\\\):\\\\s*(.*)$",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "Compiler Starts",
+            "endsPattern": "Compiler finished"
+          }
+        }
+      ]
     }
   ]
 }

@@ -1,5 +1,5 @@
 import { glob } from 'glob';
-import Mocha from 'mocha';
+import * as Mocha from 'mocha';
 
 export function run(): Promise<void> {
   // Create the mocha test
@@ -11,7 +11,7 @@ export function run(): Promise<void> {
 
   const testsRoot = __dirname;
 
-  return new Promise((resolve, reject) => {
+  return new Promise((_resolve, _reject) => {
     glob('./**/*/**.test.js', { cwd: testsRoot });
   });
 }

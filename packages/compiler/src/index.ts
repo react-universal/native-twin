@@ -1,10 +1,3 @@
-export {
-  type BabelAPI,
-  BabelContext,
-  BabelContextLive,
-  babelParse,
-  JSXImportPluginContext,
-} from './Babel';
 export type { TwinBabelPluginOptions } from './Babel/Models';
 export type {
   ExtractedTwinConfig,
@@ -12,6 +5,13 @@ export type {
   InternalTwinConfig,
   NodeWithNativeTwinOptions,
 } from './Config';
+export {
+  type BabelAPI,
+  BabelContext,
+  BabelContextLive,
+  babelParse,
+  JSXImportPluginContext,
+} from './Babel';
 export {
   CompilerConfigContext,
   createCompilerConfig,

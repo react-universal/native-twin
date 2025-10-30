@@ -3,8 +3,9 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "nodenext",
-    "rootDir": "src"
+    "rootDir": "src",
+    "outDir": "build/cjs"
   },
-  "include": ["src"],
+  "include": ["src", "test"],
   "exclude": ["build"]
 }

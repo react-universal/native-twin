@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { createVariants } from '@native-twin/core';
   
 export const Component = () => {
@@ -20,4 +19,3 @@ createVariants({
   },
 });
 
-lol2`bg-gray-100`;

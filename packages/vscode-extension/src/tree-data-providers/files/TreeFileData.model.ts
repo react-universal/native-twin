@@ -1,11 +1,8 @@
-// import { pipe } from 'effect/Function';
-// import * as Option from 'effect/Option';
-import path from 'path';
-// import { JSXElementNode } from '@native-twin/compiler/babel';
+import * as vscode from 'vscode';
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import { pipe } from 'effect';
 import * as RA from 'effect/Array';
-import * as vscode from 'vscode';
+import path from 'path';
 import { thenable } from '../../extension/extension.utils.js';
 import type { TwinTextDocument } from '../../language/index.js';
 

@@ -1,4 +1,4 @@
-import type { ThemeContext, TxFunction, __Theme__, cx } from '@native-twin/core';
+import type { __Theme__, cx, ThemeContext, TxFunction } from '@native-twin/core';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Context from 'effect/Context';
 import type * as HashSet from 'effect/HashSet';

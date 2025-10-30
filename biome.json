@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.7/schema.json",
   "vcs": {
     "enabled": false,
     "clientKind": "git",
@@ -18,7 +18,24 @@
       "!**/*/test/server-fixture/**/*"
     ]
   },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              {
+                "source": "vscode",
+                "type": null
+              }
+            ],
+            "identifierOrder": "natural"
+          }
+        }
+      }
+    }
+  },
   "linter": {
     "rules": {
       "recommended": true,
@@ -26,7 +43,12 @@
         "useExhaustiveDependencies": {
           "level": "error",
           "options": {
-            "hooks": [{ "name": "useNearestChild", "stableResult": true }]
+            "hooks": [
+              {
+                "name": "useNearestChild",
+                "stableResult": true
+              }
+            ]
           }
         },
         "noSwitchDeclarations": "off",
@@ -89,7 +111,12 @@
     "lineWidth": 100,
     "attributePosition": "multiline",
     "bracketSpacing": true,
-    "includes": ["**", "!**/.eslintrc.json", "!**/*.json", "!.nx/cache", "!.nx/workspace-data"]
+    "includes": [
+      "**",
+      "!**/*.json",
+      "!.nx/cache",
+      "!.nx/workspace-data"
+    ]
   },
   "javascript": {
     "formatter": {

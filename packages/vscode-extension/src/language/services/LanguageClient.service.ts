@@ -1,9 +1,9 @@
-import path from 'node:path';
+import * as vscode from 'vscode';
+import * as path from 'node:path';
 import { Constants, NativeTwinManagerService } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import * as vscode from 'vscode';
 import {
   LanguageClient,
   type LanguageClientOptions,
@@ -18,11 +18,7 @@ import {
   onLanguageClientError,
   onProvideDocumentColors,
 } from '../language.fn.js';
-import {
-  createFileWatchers,
-  getColorDecoration,
-  getConfigFiles,
-} from '../language.utils.js';
+import { createFileWatchers, getColorDecoration, getConfigFiles } from '../language.utils.js';
 import { VscodeHightLightsProvider } from './DocumentHighLights.service.js';
 
 export const LanguageClientLive = Effect.gen(function* () {
@@ -49,15 +45,11 @@ export const LanguageClientLive = Effect.gen(function* () {
 
   const serverConfig: ServerOptions = {
     run: {
-      module: extensionCtx.asAbsolutePath(
-        path.join('build', 'cjs', 'servers', 'lsp.node.js'),
-      ),
+      module: extensionCtx.asAbsolutePath(path.join('build', 'cjs', 'servers', 'lsp.node.js')),
       transport: TransportKind.ipc,
     },
     debug: {
-      module: extensionCtx.asAbsolutePath(
-        path.join('build', 'cjs', 'servers', 'lsp.node.js'),
-      ),
+      module: extensionCtx.asAbsolutePath(path.join('build', 'cjs', 'servers', 'lsp.node.js')),
       transport: TransportKind.ipc,
       options: debugOptions,
     },
@@ -66,9 +58,7 @@ export const LanguageClientLive = Effect.gen(function* () {
   const configFiles = yield* getConfigFiles;
   const colorDecorationType = yield* getColorDecoration;
   extensionCtx.subscriptions.push(colorDecorationType);
-  Option.fromNullable(configFiles.at(0)).pipe(
-    Option.map((x) => twin.loadUserFile(x.path)),
-  );
+  Option.fromNullable(configFiles.at(0)).pipe(Option.map((x) => twin.loadUserFile(x.path)));
 
   const clientConfig: LanguageClientOptions = {
     ...getDefaultLanguageClientOptions({
@@ -96,27 +86,13 @@ export const LanguageClientLive = Effect.gen(function* () {
   };
   const languageClient = yield* Effect.acquireRelease(
     Effect.sync(
-      () =>
-        new LanguageClient(
-          Constants.extensionServerChannelName,
-          serverConfig,
-          clientConfig,
-        ),
+      () => new LanguageClient(Constants.extensionServerChannelName, serverConfig, clientConfig),
     ),
     (x) =>
       Effect.promise(() => x.dispose()).pipe(
         Effect.flatMap(() => Effect.logDebug('Language Client Disposed')),
       ),
   );
-
-  const response = yield* Effect.tryPromise({
-    try: () => languageClient.sendRequest<string>('hello', { params: 'hello_response' }),
-    catch(error) {
-      console.error('ERROR_sendRequest_hole', error);
-    },
-  });
-
-  console.log('SERVER_RESPONSE: ', response);
 
   yield* Effect.promise(() => languageClient.start()).pipe(
     Effect.andThen(Effect.log('Language client started!')),

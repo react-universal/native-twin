@@ -5,12 +5,20 @@
       "path": ".."
     },
     {
+      "name": "📦 @lib/vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
       "name": "📦 @lib/compiler",
       "path": "../packages/compiler"
     },
     {
-      "name": "twin.run",
-      "path": "../sites/twin.run"
+      "name": "📦 @lib/language-service",
+      "path": "../packages/language-service"
+    },
+    {
+      "name": "📦 @lib/language-server",
+      "path": "../packages/language-server"
     },
     {
       "name": "📦 @lib/metro",
@@ -23,18 +31,6 @@
     {
       "name": "📦 @lib/helpers",
       "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @lib/language-service",
-      "path": "../packages/language-service"
-    },
-    {
-      "name": "📦 @lib/language-server",
-      "path": "../packages/language-server"
     },
     {
       "name": "📦 @lib/adapters",
@@ -55,6 +51,10 @@
     {
       "name": "expo-app",
       "path": "../apps/expo-app"
+    },
+    {
+      "name": "twin.run",
+      "path": "../sites/twin.run"
     }
   ],
   "settings": {

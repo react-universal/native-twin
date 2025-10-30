@@ -2,27 +2,26 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "watch",
-      "dependsOn": [
-        "npm: build:tsc:watch"
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "type": "npm",
+      "label": "vscode esbuild watch",
+      "group": "build",
+      "script": "esbuild:watch",
+      "isBackground": true,
+      "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
+      // "isBackground": true,
       "presentation": {
         "reveal": "never"
       }
     },
     {
       "type": "npm",
-      "script": "build:tsc:watch",
+      "label": "vscode tsc watch",
       "group": "build",
-      "problemMatcher": "$tsc-watch",
+      "script": "build:tsc:watch",
       "isBackground": true,
-      "label": "npm: build:tsc:watch",
+      "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
+      // "isBackground": true,
       "presentation": {
-        "group": "watch",
         "reveal": "never"
       }
     }

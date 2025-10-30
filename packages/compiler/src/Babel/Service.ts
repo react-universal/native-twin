@@ -1,3 +1,12 @@
+import type {
+  AnyNodePath,
+  BabelFileAst,
+  JSXAttributePath,
+  JSXClassPropExpression,
+  JSXElementFunction,
+  JSXElementPath,
+  JSXOpeningElementPath,
+} from './Models';
 import { CodeGenerator } from '@babel/generator';
 import traverse, { type NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
@@ -16,15 +25,6 @@ import { TwinJSXElement, TwinJSXElementNode } from '../Domain/TwinJSXElementNode
 import { type TwinFile, TwinFSContext, TwinPath } from '../FileSystem';
 import { type MappedComponent, mappedComponents } from '../utils/constants';
 import { makeTreeFrom } from '../utils/tree.utils';
-import type {
-  AnyNodePath,
-  BabelFileAst,
-  JSXAttributePath,
-  JSXClassPropExpression,
-  JSXElementFunction,
-  JSXElementPath,
-  JSXOpeningElementPath,
-} from './Models';
 import { isFunction } from './Predicates';
 import { babelParse, getBabelBindingImportSource, isLocalImport } from './Utils';
 
@@ -347,4 +347,3 @@ const templateLiteralToStringLike = (literal: t.TemplateLiteral) => {
   );
   return { strings, expressions: expressions };
 };
-

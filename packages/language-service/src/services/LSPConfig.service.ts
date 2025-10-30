@@ -9,7 +9,6 @@ import {
   DEFAULT_PLUGIN_CONFIG,
   type NativeTwinPluginConfiguration,
 } from '../utils/constants.utils.js';
-import { loggerUtils } from '../utils/lsp.logger.service.js';
 import { LSPConnectionService } from './LSPConnection.service.js';
 import { NativeTwinManagerService } from './NativeTwinManager.service.js';
 
@@ -36,13 +35,13 @@ const make = Effect.gen(function* () {
     console.log('WATCHED_FILES_CHANGE: ', params);
   });
 
-  Connection.onRequest('hello', (params) => {
-    return Effect.runPromise(
-      Effect.tap(Effect.succeed('RESPONSE'), (x) => {
-        return Effect.log('Hello from LSP: ', x, params);
-      }),
-    );
-  });
+  // Connection.onRequest('hello', (params) => {
+  //   return Effect.runPromise(
+  //     Effect.tap(Effect.succeed('RESPONSE'), (x) => {
+  //       return Effect.log('Hello from LSP: ', x, params);
+  //     }),
+  //   );
+  // });
 
   const updateConfig = (changes: any) =>
     Effect.gen(function* () {
@@ -52,6 +51,7 @@ const make = Effect.gen(function* () {
       const pluginConfig = currentConfig.vscode;
 
       if ('nativeTwin' in changes && changes['nativeTwin']) {
+        Connection.client.connection.console.debug('Configuration changes received: ');
         Connection.console.debug('Configuration changes received: ');
 
         yield* SubscriptionRef.set(ref, {
@@ -61,9 +61,9 @@ const make = Effect.gen(function* () {
             ...changes['nativeTwin'],
           },
         });
-        loggerUtils.logFormat(yield* ref.pipe(SubscriptionRef.get)).forEach((x) => {
-          Connection.console.debug(x);
-        });
+        // loggerUtils.logFormat(yield* ref.pipe(SubscriptionRef.get)).forEach((x) => {
+        //   Connection.console.debug(x);
+        // });
       }
     });
 
