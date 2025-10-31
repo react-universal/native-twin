@@ -5,8 +5,12 @@
       "path": ".."
     },
     {
-      "name": "📦 @native-twin/data-types",
-      "path": "../packages/data-types"
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @native-twin/language-service",
+      "path": "../packages/language-service"
     },
     {
       "name": "📦 @native-twin/compiler",
@@ -15,10 +19,6 @@
     {
       "name": "📦 @native-twin/css",
       "path": "../packages/css"
-    },
-    {
-      "name": "📦 native-twin-vscode",
-      "path": "../packages/vscode-extension"
     },
     {
       "name": "📦 @native-twin/adapters",
@@ -31,10 +31,6 @@
     {
       "name": "📦 @native-twin/language-server",
       "path": "../packages/language-server"
-    },
-    {
-      "name": "📦 @native-twin/language-service",
-      "path": "../packages/language-service"
     },
     {
       "name": "📦 @native-twin/metro",
@@ -53,6 +49,10 @@
       "path": "../packages/builder"
     },
     {
+      "name": "📦 @native-twin/data-types",
+      "path": "../packages/data-types"
+    },
+    {
       "name": "twin-run",
       "path": "../sites/twin.run"
     },
@@ -67,6 +67,9 @@
       "comments": true,
       "strings": true
     },
+    "export-typescript.excludes": [
+      "**/*.{ts,tsx,spec.ts,spec.tsx}"
+    ],
     "files.exclude": {
       "**/.git": true,
       "**/.svn": true,

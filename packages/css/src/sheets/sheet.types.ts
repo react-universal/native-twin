@@ -24,11 +24,13 @@ export interface SheetEntryRegistry extends SheetEntry {
   index: number;
 }
 
-export type SortableEntry = {
+// TODO: rm
+export interface SortableEntry {
   precedence: number;
   important: boolean;
-};
+}
 
+// TODO: rm
 export interface SheetEntry extends SortableEntry {
   className: string;
   declarations: SheetEntryDeclaration[];

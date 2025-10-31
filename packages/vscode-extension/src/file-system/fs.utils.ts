@@ -1,4 +1,4 @@
-import path from 'path';
+import * as vscode from 'vscode';
 import {
   NativeTwinManagerService,
   type NativeTwinPluginConfiguration,
@@ -9,17 +9,17 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import * as vscode from 'vscode';
+import path from 'path';
 import { VscodeContext } from '../extension/extension.service.js';
 import { thenable } from '../extension/extension.utils.js';
 import { TwinTextDocument } from '../language/models/TwinTextDocument.model.js';
 import * as fsPredicates from './fs.predicates.js';
 import {
+  createVirtualEntryID,
   type VirtualEntryTreeNode,
   type VirtualEntryTreeRoot,
   type VirtualEntryType,
   type VirtualFile,
-  createVirtualEntryID,
 } from './models/FileSystem.models.js';
 
 export const findEntryByUri = (
@@ -28,9 +28,7 @@ export const findEntryByUri = (
 ): VirtualEntryTreeNode<VirtualEntryType> => {
   return pipe(
     root.all(),
-    RA.findFirst(({ value }) =>
-      fsPredicates.isSameEntryID(value.id, createVirtualEntryID(uri)),
-    ),
+    RA.findFirst(({ value }) => fsPredicates.isSameEntryID(value.id, createVirtualEntryID(uri))),
     Option.getOrThrowWith(() => vscode.FileSystemError.FileNotADirectory(uri)),
   );
 };
@@ -97,6 +95,7 @@ export const getVscodeFS = Effect.gen(function* () {
   const ctx = yield* VscodeContext;
   const validTextFiles = yield* getTwinObservedFiles;
   const watcher = vscode.workspace.createFileSystemWatcher('**/*');
+
   ctx.subscriptions.push(watcher);
 
   return {

@@ -1,18 +1,13 @@
-import { Constants } from '@native-twin/language-service';
+import * as vscode from 'vscode';
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import { Constants } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Runtime from 'effect/Runtime';
 import type * as Scope from 'effect/Scope';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import * as vscode from 'vscode';
-import type {
-  ConfigRef,
-  ConfigValue,
-  Emitter,
-  ExtensionConfigRef,
-} from './extension.models.js';
+import type { ConfigRef, ConfigValue, Emitter, ExtensionConfigRef } from './extension.models.js';
 import { VscodeContext } from './extension.service.js';
 
 export const executeCommand = (command: string, ...args: Array<any>) =>
@@ -29,6 +24,32 @@ export const registerCommand = <R, E, A>(
 
     context.subscriptions.push(
       vscode.commands.registerCommand(command, (...args) =>
+        f(...args).pipe(
+          Effect.catchAllCause(Effect.logError),
+          Effect.annotateLogs({ command }),
+          run,
+        ),
+      ),
+    );
+  });
+};
+
+export const registerEditorCommand = <R, E, A>(
+  command: string,
+  f: (
+    textEditor: vscode.TextEditor,
+    edit: vscode.TextEditorEdit,
+    ...args: any[]
+  ) => Effect.Effect<A, E, R>,
+) => {
+  return Effect.gen(function* () {
+    const context = yield* VscodeContext;
+    const runtime = yield* Effect.runtime<R>();
+
+    const run = Runtime.runFork(runtime);
+
+    context.subscriptions.push(
+      vscode.commands.registerTextEditorCommand(command, (...args) =>
         f(...args).pipe(
           Effect.catchAllCause(Effect.logError),
           Effect.annotateLogs({ command }),
@@ -60,9 +81,7 @@ const listenDisposableEvent = <A, R>(
       const run = Runtime.runFork(runtime);
       const d = event((data) =>
         run(
-          Effect.catchAllCause(f(data), (_) =>
-            Effect.log('unhandled defect in event listener', _),
-          ),
+          Effect.catchAllCause(f(data), (_) => Effect.log('unhandled defect in event listener', _)),
         ),
       );
       return Effect.sync(() => {
@@ -121,8 +140,7 @@ export const extensionConfigValue = <Section extends string, A>(
   defaultValue: A,
 ): Effect.Effect<ConfigRef<Section, A>, never, Scope.Scope> =>
   Effect.gen(function* () {
-    const get = () =>
-      vscode.workspace.getConfiguration(Constants.configurationSection).get<A>(key);
+    const get = () => vscode.workspace.getConfiguration(Constants.configurationSection).get<A>(key);
     const ref = yield* SubscriptionRef.make(get() ?? defaultValue);
 
     yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {

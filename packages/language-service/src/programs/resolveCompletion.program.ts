@@ -8,28 +8,27 @@ import { NativeTwinManagerService } from '../services/NativeTwinManager.service.
 import * as Completions from '../utils/language/completions.maps.js';
 import { getSheetEntryStyles } from '../utils/sheet.utils.js';
 
-export const getCompletionEntryDetails = (
+export const getCompletionEntryDetails = Effect.fn(function* (
   entry: vscode.CompletionItem,
   _cancelToken: vscode.CancellationToken,
-) =>
-  Effect.gen(function* () {
-    const twinService = yield* NativeTwinManagerService;
-    const context = twinService.getCompilerContext();
-    const completionRules = HashSet.filter(
-      twinService.getTwinRules(),
-      (x) => x.completion.className === entry.label,
-    );
-    const completionEntries = HashSet.map(completionRules, (x) => {
-      const sheet = twinService.tw(x.completion.className);
-      const finalSheet = getSheetEntryStyles(sheet, context);
-      const css = sheetEntriesToCss(sheet);
+) {
+  const twinService = yield* NativeTwinManagerService;
+  const context = twinService.getCompilerContext();
+  const completionRules = HashSet.filter(
+    twinService.getTwinRules(),
+    (x) => x.completion.className === entry.label,
+  );
+  const completionEntries = HashSet.map(completionRules, (x) => {
+    const sheet = twinService.tw(x.completion.className);
+    const finalSheet = getSheetEntryStyles(sheet, context);
+    const css = sheetEntriesToCss(sheet);
 
-      return Completions.createCompletionEntryDetails(entry, css, finalSheet);
-    });
-
-    return completionEntries.pipe(
-      RA.fromIterable,
-      RA.head,
-      Option.getOrElse(() => entry),
-    );
+    return Completions.createCompletionEntryDetails(entry, css, finalSheet);
   });
+
+  return completionEntries.pipe(
+    RA.fromIterable,
+    RA.head,
+    Option.getOrElse(() => entry),
+  );
+});

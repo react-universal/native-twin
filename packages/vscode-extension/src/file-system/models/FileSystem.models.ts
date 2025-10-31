@@ -1,16 +1,14 @@
+import * as vscode from 'vscode';
 import * as path from 'node:path';
 import type { Tree, TreeNode } from '@native-twin/helpers/tree';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import * as vscode from 'vscode';
 
 export class VirtualFSEntryID implements Equal.Equal {
   constructor(readonly uri: vscode.Uri) {}
 
   [Equal.symbol](that: unknown): boolean {
-    return (
-      that instanceof VirtualFSEntryID && this.uri.toString() === that.uri.toString()
-    );
+    return that instanceof VirtualFSEntryID && this.uri.toString() === that.uri.toString();
   }
   [Hash.symbol](): number {
     return Hash.string(this.uri.toString());
@@ -68,9 +66,7 @@ export class VirtualDirectory implements vscode.FileStat, Equal.Equal {
   }
 
   [Equal.symbol](that: unknown): boolean {
-    return (
-      that instanceof VirtualDirectory && this.uri.toString() === that.uri.toString()
-    );
+    return that instanceof VirtualDirectory && this.uri.toString() === that.uri.toString();
   }
 
   [Hash.symbol](): number {

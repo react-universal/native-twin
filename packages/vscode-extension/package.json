@@ -40,6 +40,12 @@
   "contributes": {
     "commands": [
       {
+        "command": "compile.file",
+        "title": "Compile File",
+        "icon": "$(refresh)",
+        "category": "Native Twin"
+      },
+      {
         "command": "nativeTwin.restart",
         "title": "Restart IntelliSense",
         "category": "Native Twin",

@@ -7,6 +7,7 @@ export interface Atom<T> {
 }
 export type AtomGetter<AtomValue> = (get: <T>(a: Atom<T>) => T) => AtomValue;
 
+
 export const atom = <T>(initialValue: T | AtomGetter<T>): Atom<T> => {
   let currentValue = typeof initialValue === 'function' ? (null as T) : initialValue;
 
@@ -28,9 +29,7 @@ export const atom = <T>(initialValue: T | AtomGetter<T>): Atom<T> => {
 
   function computeValue() {
     const newValue =
-      typeof initialValue === 'function'
-        ? (initialValue as AtomGetter<T>)(get)
-        : currentValue;
+      typeof initialValue === 'function' ? (initialValue as AtomGetter<T>)(get) : currentValue;
     currentValue = null as T;
     currentValue = newValue;
     subscribers.forEach((x) => void x(currentValue));

@@ -8,7 +8,7 @@ export function connect() {
   class TestStream extends Duplex {
     override _write(chunk: string, _encoding: string, done: () => void) {
       this.emit('data', chunk);
-      console.log('DATA: ', Buffer.from(chunk).toString('utf-8'));
+      // console.log('DATA: ', Buffer.from(chunk).toString('utf-8'));
       done();
     }
 
@@ -25,7 +25,7 @@ export function connect() {
   // client.onError((error) => {
   //   console.log('ERROR: ', error);
   // });
-  console.log('CLIENT: ', client);
+  // console.log('CLIENT: ', client);
 
   return {
     client,

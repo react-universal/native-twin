@@ -1,4 +1,5 @@
 import type * as vscode from 'vscode';
+import { DevTools } from '@effect/experimental';
 import { NativeTwinManager, NativeTwinManagerService } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -12,12 +13,13 @@ const MainLive = Layer.mergeAll(LanguageClientLive, TwinTreeDataFilesProvider).p
   Layer.provide(VscodeHightLightsProvider.Live),
   Layer.provide(Layer.succeed(NativeTwinManagerService, new NativeTwinManager())),
   Layer.provide(ClientCustomLogger),
+  Layer.provide(DevTools.layer()),
 );
 
 export function activate(context: vscode.ExtensionContext) {
   launchExtension(MainLive).pipe(
     Effect.provideService(VscodeContext, context),
-
+    Effect.withSpan('Launcher', { attributes: { executor: 'vscode' } }),
     Effect.runFork,
   );
 }

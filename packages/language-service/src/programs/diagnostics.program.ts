@@ -9,41 +9,35 @@ import { LSPDocumentsService } from '../services/LSPDocuments.service.js';
 import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
 import { isSameRange } from '../utils/vscode.utils.js';
 
-export const getDocumentDiagnosticsProgram = (
+export const getDocumentDiagnosticsProgram = Effect.fn(function* (
   params: vscode.DocumentDiagnosticParams,
   _token: vscode.CancellationToken,
   _workDoneProgress: vscode.WorkDoneProgressReporter,
   _resultProgress?:
     | vscode.ResultProgressReporter<vscode.DocumentDiagnosticReportPartialResult>
     | undefined,
-) => {
-  return Effect.gen(function* () {
-    const twinService = yield* NativeTwinManagerService;
-    const documentsHandler = yield* LSPDocumentsService;
-    const document = yield* documentsHandler
-      .getDocument(params.textDocument.uri)
-      .pipe(Effect.map(Option.getOrThrow));
+) {
+  const twinService = yield* NativeTwinManagerService;
+  const documentsHandler = yield* LSPDocumentsService;
+  const document = yield* documentsHandler
+    .getDocument(params.textDocument.uri)
+    .pipe(Effect.map(Option.getOrThrow));
 
-    const regions = document.getLanguageRegions();
+  const regions = document.getLanguageRegions();
 
-    const results = RA.map(
-      regions,
-      (region) =>
-        new TwinDiagnosticHandler(
-          region,
-          region.getFullSheetEntries(twinService.tw),
-          document,
-        ),
-    );
+  const results = RA.map(
+    regions,
+    (region) =>
+      new TwinDiagnosticHandler(region, region.getFullSheetEntries(twinService.tw), document),
+  );
 
-    const diagnosticItems = pipe(
-      results.flatMap((x) => x.diagnostics),
-      RA.dedupeWith((a, b) => isSameRange(a.range, b.range)),
-    );
+  const diagnosticItems = pipe(
+    results.flatMap((x) => x.diagnostics),
+    RA.dedupeWith((a, b) => isSameRange(a.range, b.range)),
+  );
 
-    return {
-      kind: 'full',
-      items: diagnosticItems.filter((x) => x.code !== TwinDiagnosticCodes.None),
-    } satisfies vscode.DocumentDiagnosticReport;
-  });
-};
+  return {
+    kind: 'full',
+    items: diagnosticItems.filter((x) => x.code !== TwinDiagnosticCodes.None),
+  } satisfies vscode.DocumentDiagnosticReport;
+});

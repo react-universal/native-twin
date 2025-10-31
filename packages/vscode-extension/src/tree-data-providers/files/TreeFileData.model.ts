@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
+import * as path from 'node:path';
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import { pipe } from 'effect';
 import * as RA from 'effect/Array';
-import path from 'path';
 import { thenable } from '../../extension/extension.utils.js';
 import type { TwinTextDocument } from '../../language/index.js';
 

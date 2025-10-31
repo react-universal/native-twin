@@ -43,11 +43,11 @@ export interface FixtureContext
   };
 }
 
-async function init(fixture: string | string[]): Promise<FixtureContext> {
+export function init(fixture: string | string[]): FixtureContext {
   let settings: Record<string, any> = {};
   const docSettings = new Map<string, Settings>();
 
-  const { client } = connect();
+  const { client, server } = connect();
 
   const capabilities: ClientCapabilities = {
     textDocument: {
@@ -127,7 +127,7 @@ async function init(fixture: string | string[]): Promise<FixtureContext> {
   const fixtures = Array.isArray(fixture) ? fixture : [fixture];
 
   function fixtureUri(fixture: string) {
-    return `file://${path.resolve('./tests/fixtures', fixture)}`;
+    return `file://${path.resolve('./fixtures', fixture)}`;
   }
 
   function resolveUri(...parts: string[]) {
@@ -146,7 +146,7 @@ async function init(fixture: string | string[]): Promise<FixtureContext> {
 
   const rootUri = fixtures.length > 1 ? null : workspaceFolders[0]!.uri;
 
-  await client.sendRequest(InitializeRequest.type, {
+  client.sendRequest(InitializeRequest.type, {
     processId: -1,
     rootUri,
     capabilities,
@@ -157,7 +157,9 @@ async function init(fixture: string | string[]): Promise<FixtureContext> {
     },
   } as InitializeParams);
 
-  await client.sendNotification(InitializedNotification.type);
+  client.onNotification
+
+  client.sendNotification(InitializedNotification.type);
 
   client.onRequest(ConfigurationRequest.type, (params) => {
     return params.items.map((item) => {
@@ -172,10 +174,13 @@ async function init(fixture: string | string[]): Promise<FixtureContext> {
     client.onRequest(RegistrationRequest.type, ({ registrations }) => {
       if (registrations.some((r) => r.method === CompletionRequest.method)) {
         resolve();
+      } else {
+        console.log('registration not', registrations)
       }
 
       return null;
     });
+    resolve()
   });
 
   interface PromiseWithResolvers<T> extends Promise<T> {
@@ -195,6 +200,16 @@ async function init(fixture: string | string[]): Promise<FixtureContext> {
     console.log('[TEST] Document ready', params.uri);
     openingDocuments.get(params.uri)?.resolve();
   });
+
+  client.onNotification(DidChangeConfigurationNotification.type, () => {
+        console.log('DID_OPEN')
+      });
+
+      // client.onDidOpenTextDocument((...args) => {
+      //   console.log("DID_OPEN_ARGS: ", args)
+      // })
+
+      console.log("CLIENT: ", client)
 
   let counter = 0;
 
@@ -235,6 +250,7 @@ async function init(fixture: string | string[]): Promise<FixtureContext> {
           resolve = _resolve;
           reject = _reject;
         });
+        
 
         return Object.assign(p, {
           resolve,
@@ -242,7 +258,10 @@ async function init(fixture: string | string[]): Promise<FixtureContext> {
         });
       });
 
-      await client.sendNotification(DidOpenTextDocumentNotification.type, {
+      client.onNotification(DidChangeConfigurationNotification.type, () => {
+        console.log('DID_OPEN')
+      })
+      client.sendNotification(DidOpenTextDocumentNotification.type, {
         textDocument: {
           uri,
           languageId: lang,
@@ -250,11 +269,13 @@ async function init(fixture: string | string[]): Promise<FixtureContext> {
           text,
         },
       } as DidOpenTextDocumentParams);
+      console.log('asdasdasdasd')
 
       // If opening a document stalls then it's probably because this promise is not being resolved
       // This can happen if a document is not covered by one of the selectors because of it's URI
       await initPromise;
-      await openPromise;
+      console.log('initPromise')
+      // await openPromise;
 
       return {
         uri,
@@ -288,13 +309,19 @@ export function withFixture(
   describe(fixture, () => {
     let c: FixtureContext = {} as any;
 
-    beforeAll(() => {
-      // Using the connection object as the prototype lets us access the connection
+    beforeAll(async () => {
+      try {
+        // Using the connection object as the prototype lets us access the connection
       // without defining getters for all the methods and also lets us add helpers
       // to the connection object without having to resort to using a Proxy
-      Object.setPrototypeOf(c, init(fixture));
+      const server = await init(fixture)
+      console.log("SERVER: ", server)
+      Object.setPrototypeOf(c, server);
 
-      return () => c.client.dispose();
+      // return () => c.client.dispose();
+      }catch (e) {
+        console.log("ERROR: ", e)
+      }
     });
 
     callback(c);

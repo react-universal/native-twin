@@ -1,14 +1,14 @@
+import type * as vscode from 'vscode';
 import type { TreeNode } from '@native-twin/helpers/tree';
 import * as Equal from 'effect/Equal';
 import * as Equivalence from 'effect/Equivalence';
 import { pipe } from 'effect/Function';
 import type * as Predicate from 'effect/Predicate';
-import type * as vscode from 'vscode';
 import type {
   VirtualDirectory,
   VirtualEntryType,
-  VirtualFSEntryID,
   VirtualFile,
+  VirtualFSEntryID,
 } from './models/FileSystem.models.js';
 
 export const isVirtualFile: Predicate.Refinement<VirtualEntryType, VirtualFile> = (
@@ -25,10 +25,9 @@ export const isVirtualDirectoryNode: Predicate.Refinement<
   TreeNode<VirtualDirectory>
 > = (x): x is TreeNode<VirtualDirectory> => isVirtualDirectory(x.value);
 
-export const isVirtualDirectory: Predicate.Refinement<
-  VirtualEntryType,
-  VirtualDirectory
-> = (x): x is VirtualDirectory => x._tag === 'VirtualDirectory';
+export const isVirtualDirectory: Predicate.Refinement<VirtualEntryType, VirtualDirectory> = (
+  x,
+): x is VirtualDirectory => x._tag === 'VirtualDirectory';
 
 export const isSameEntryID = Equal.equivalence<VirtualFSEntryID>();
 export const isSameEntry = pipe(
@@ -39,8 +38,6 @@ const virtualEntryEQ = Equal.equivalence<VirtualEntryType>();
 
 export const isSameVirtualFile = Equivalence.combine(virtualEntryEQ, isSameEntry);
 
-export const vscodePatternEquivalence = Equivalence.make<vscode.RelativePattern>(
-  (a, b) => {
-    return a.base === b.base && a.pattern === b.pattern;
-  },
-);
+export const vscodePatternEquivalence = Equivalence.make<vscode.RelativePattern>((a, b) => {
+  return a.base === b.base && a.pattern === b.pattern;
+});

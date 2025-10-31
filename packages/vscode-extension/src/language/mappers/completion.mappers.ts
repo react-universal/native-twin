@@ -1,11 +1,11 @@
+import * as vscode from 'vscode';
 import {
-  type TemplateTokenData,
-  type TwinRuleCompletion,
   filterTokensFromRules,
   getCompletionEntryDetailsDisplayParts,
+  type TemplateTokenData,
+  type TwinRuleCompletion,
 } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
-import * as vscode from 'vscode';
 import type { TwinTextDocument } from '../models/TwinTextDocument.model.js';
 
 export const completionRulesToVscodeCompletionItems = (

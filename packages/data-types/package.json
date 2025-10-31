@@ -51,5 +51,8 @@
     "access": "public",
     "directory": "dist",
     "provenance": true
+  },
+  "dependencies": {
+    "@native-twin/helpers": "workspace:*"
   }
 }

@@ -6,63 +6,55 @@ import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
 import type { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument.js';
 import type { DocumentLanguageRegion } from '../models/documents/LanguageRegion.model.js';
-import {
-  TwinDiagnosticCodes,
-  VscodeDiagnosticItem,
-} from '../models/language/diagnostic.model.js';
+import { TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/language/diagnostic.model.js';
 import { LSPDocumentsService } from '../services/LSPDocuments.service.js';
 import { diagnosticProviderSource } from '../utils/constants.utils.js';
 
-export const twinCodeActionsProgram = (params: vscodeLSP.CodeActionParams) => {
-  return Effect.gen(function* () {
-    const docHandler = yield* LSPDocumentsService;
-    if (params.context.diagnostics.length === 0) return undefined;
+export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.CodeActionParams) {
+  const docHandler = yield* LSPDocumentsService;
+  if (params.context.diagnostics.length === 0) return undefined;
 
-    const document = yield* docHandler
-      .getDocument(params.textDocument.uri)
-      .pipe(Effect.map(Option.getOrUndefined));
+  const document = yield* docHandler
+    .getDocument(params.textDocument.uri)
+    .pipe(Effect.map(Option.getOrUndefined));
 
-    if (!document) return undefined;
+  if (!document) return undefined;
 
-    const diagnostics = RA.filterMap(params.context.diagnostics, (x) => {
-      if (!x.code || !x.relatedInformation || !x.source || !x.severity) {
-        return Option.none();
-      }
+  const diagnostics = RA.filterMap(params.context.diagnostics, (x) => {
+    if (!x.code || !x.relatedInformation || !x.source || !x.severity) {
+      return Option.none();
+    }
 
-      if (x.source !== diagnosticProviderSource) return Option.none();
+    if (x.source !== diagnosticProviderSource) return Option.none();
 
-      return Option.some(
-        new VscodeDiagnosticItem({
-          code: x.code as TwinDiagnosticCodes,
-          relatedInfo: x.relatedInformation,
-          text: x.message,
-          message: x.message,
-          entries: [],
-          uri: document.uri,
-          range: x.range,
-        }),
-      );
-    });
-    // const startOffset = document.positionToOffset(params.range.start);
-    // const endOffset = document.positionToOffset(params.range.start);
-
-    const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
-      Option.map(document.getTemplateAtPosition(params.range.start), (region) =>
-        getDuplicatedDeclarationCodeAction(
-          document,
-          region,
-          RA.filter(
-            diagnostics,
-            (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration,
-          ),
-        ),
-      ),
-      Option.getOrElse(() => []),
+    return Option.some(
+      new VscodeDiagnosticItem({
+        code: x.code as TwinDiagnosticCodes,
+        relatedInfo: x.relatedInformation,
+        text: x.message,
+        message: x.message,
+        entries: [],
+        uri: document.uri,
+        range: x.range,
+      }),
     );
-
-    return [...editsForDuplicatedDeclarations];
   });
-};
+  // const startOffset = document.positionToOffset(params.range.start);
+  // const endOffset = document.positionToOffset(params.range.start);
+
+  const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
+    Option.map(document.getTemplateAtPosition(params.range.start), (region) =>
+      getDuplicatedDeclarationCodeAction(
+        document,
+        region,
+        RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
+      ),
+    ),
+    Option.getOrElse(() => []),
+  );
+
+  return [...editsForDuplicatedDeclarations];
+});
 
 const getDuplicatedDeclarationCodeAction = (
   twinDoc: BaseTwinTextDocument,
@@ -70,9 +62,7 @@ const getDuplicatedDeclarationCodeAction = (
   diagnostics: VscodeDiagnosticItem[],
 ) => {
   const textsToRemove = pipe(
-    RA.flatMap(diagnostics, (x) =>
-      RA.map(x.relatedInformation, diagnosticRelatedInfoToEdit),
-    ),
+    RA.flatMap(diagnostics, (x) => RA.map(x.relatedInformation, diagnosticRelatedInfoToEdit)),
     RA.map((info) => twinDoc.getText(info.textEdit.range)),
   );
 

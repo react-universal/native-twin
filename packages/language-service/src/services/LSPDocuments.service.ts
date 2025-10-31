@@ -1,11 +1,11 @@
-import type { Connection, TextDocuments } from 'vscode-languageserver';
-import type { TextDocument } from 'vscode-languageserver-textdocument';
-import type { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument.js';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
+import type { Connection, TextDocuments } from 'vscode-languageserver';
+import type { TextDocument } from 'vscode-languageserver-textdocument';
+import type { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument.js';
 import { LSPConfigService } from './LSPConfig.service.js';
 
 export interface DocumentsServiceShape {

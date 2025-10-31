@@ -61,6 +61,7 @@
         "useMediaCaption": "off"
       },
       "style": {
+        "useShorthandFunctionType": "off",
         "useSelfClosingElements": "off",
         "noUselessElse": "off",
         "useNodejsImportProtocol": "off",
@@ -72,6 +73,7 @@
         "noDangerouslySetInnerHtml": "off"
       },
       "suspicious": {
+        "noEmptyInterface": "off",
         "noExplicitAny": "off",
         "noImplicitAnyLet": "off",
         "noAssignInExpressions": "off",

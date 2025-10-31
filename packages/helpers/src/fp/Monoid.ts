@@ -1,6 +1,10 @@
 export interface Magma<A> {
   concat: (x: A, y: A) => A;
 }
+const a: Magma<number> = {
+  concat: (a, b) => a + b,
+};
+a.concat(0, 0);
 
 export interface SemiGroup<A> extends Magma<A> {}
 
