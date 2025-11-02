@@ -50,6 +50,7 @@ export const gapParser = P.sequenceOf([
   return asArray({ x: 'column', y: 'row' }[x[0]]);
 });
 
+/** @description get @type {RuleHandlerToken} from Rule and meta */
 export const getTWFeatureParser = (
   pattern: string,
   patternParser: P.Parser<string>,

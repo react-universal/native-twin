@@ -5,32 +5,40 @@
       "path": ".."
     },
     {
-      "name": "📦 native-twin-vscode",
-      "path": "../packages/vscode-extension"
+      "name": "📦 @native-twin/compiler",
+      "path": "../packages/compiler"
     },
     {
       "name": "📦 @native-twin/language-service",
       "path": "../packages/language-service"
     },
     {
-      "name": "📦 @native-twin/compiler",
-      "path": "../packages/compiler"
-    },
-    {
-      "name": "📦 @native-twin/css",
-      "path": "../packages/css"
+      "name": "📦 @native-twin/language-server",
+      "path": "../packages/language-server"
     },
     {
       "name": "📦 @native-twin/adapters",
       "path": "../packages/adapters"
     },
     {
+      "name": "📦 @native-twin/cli",
+      "path": "../packages/builder"
+    },
+    {
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @native-twin/data-types",
+      "path": "../packages/data-types"
+    },
+    {
       "name": "📦 @native-twin/helpers",
       "path": "../packages/helpers"
     },
     {
-      "name": "📦 @native-twin/language-server",
-      "path": "../packages/language-server"
+      "name": "ts-plugin",
+      "path": "../packages/ts-plugin"
     },
     {
       "name": "📦 @native-twin/metro",
@@ -41,16 +49,16 @@
       "path": "../packages/native-twin"
     },
     {
+      "name": "📦 @native-twin/preset-tailwind",
+      "path": "../packages/preset-tailwind"
+    },
+    {
       "name": "📦 @native-twin/vite-plugin",
       "path": "../packages/vite-plugin"
     },
     {
-      "name": "📦 @native-twin/cli",
-      "path": "../packages/builder"
-    },
-    {
-      "name": "📦 @native-twin/data-types",
-      "path": "../packages/data-types"
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
     },
     {
       "name": "twin-run",
@@ -95,7 +103,7 @@
       "**/dist": true
     },
     "editor.fontSize": 16,
-    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "typescript.tsdk": "📦 @native-twin/language-service/root/node_modules/typescript/lib",
     "cSpell.words": [
       "sastan",
       "TRBL",

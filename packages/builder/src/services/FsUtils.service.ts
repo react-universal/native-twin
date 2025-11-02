@@ -49,10 +49,12 @@ const make = Effect.gen(function* (_) {
       createChokidarWatcher(
         rootDir,
         chokidar.watch(sourceFiles, {
+          usePolling: false,
           cwd: rootDir,
           useFsEvents: true,
           followSymlinks: false,
           persistent: true,
+          
           ignoreInitial: true,
         }),
       ).pipe(

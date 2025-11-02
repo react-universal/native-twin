@@ -2,7 +2,7 @@
  * @module @twind/preset-tailwind/preflight
  */
 import type { Preflight } from '@native-twin/css';
-import { fontFamily } from './font.js';
+import { fontFamily } from './font';
 
 export const preflight: Preflight = {
   '*,::before,::after ': {

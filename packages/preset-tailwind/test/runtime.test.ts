@@ -1,5 +1,5 @@
-import { defineConfig, setup, tx } from '@native-twin/core';
-import { presetTailwind } from '../src/index.js';
+import { defineConfig, setup, tw, tx } from '@native-twin/core';
+import { presetTailwind } from '../src';
 
 setup(
   defineConfig({
@@ -18,10 +18,12 @@ setup(
 
 describe('@native-twin/preset-tailwind - TW call', () => {
   it('Insert rules', () => {
+    
     const result = tx`
     px-2 m-10 
     text(2xl indigo-200)
   `;
+  console.log(tw.theme('colors'));
     expect(result).toStrictEqual([
       {
         animations: [],

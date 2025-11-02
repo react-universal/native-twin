@@ -1,5 +1,5 @@
 import { createExponentialUnits, createLinearUnits } from '@native-twin/helpers';
-import type { TailwindPresetTheme } from '../types/theme.types.js';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 // keep in ASC order: container.ts and breakpoints.ts need that order
 export const screens = {

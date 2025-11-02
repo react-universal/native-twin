@@ -12,6 +12,7 @@
       "**/*/src/**/*.ts",
       "**/*/src/**/*.tsx",
       "**/*/test/**/*",
+      "**/*/tests/**/*",
       "!**/packages/**/*/build/**/*",
       "!**/*/test/fixtures/**/*",
       "!**/*/test/project-fixture/**/*",

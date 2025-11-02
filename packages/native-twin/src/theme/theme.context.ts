@@ -33,6 +33,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   const variantsHandlers = new Map<Variant<Theme>, VariantHandlerFn<Theme>>();
   const ruleHandlers = new Map<string, RuleHandlerFn<Theme>>();
   const rulesCache = new Map<string, SheetEntry>();
+  let colorsCache: Record<string, string> | null;
   // const ignoredRules = new Set<string>();
   // const isIgnoredRule = (rule: ParsedRule) => {
   //   if (ignoredRules.has(rule.n)) return true;
@@ -40,9 +41,11 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   // };
   const ctx: ThemeContext<Theme> = {
     get colors() {
-      return flattenColorPalette(
+      if (colorsCache) return colorsCache;
+      colorsCache = flattenColorPalette(
         Object.assign(themeConfig['colors'] ?? {}, themeConfig['extend']?.['colors'] ?? {}) ?? {},
       );
+      return colorsCache;
     },
     animations,
 

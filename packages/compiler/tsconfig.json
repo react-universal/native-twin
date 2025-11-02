@@ -7,6 +7,6 @@
     "noImplicitOverride": false,
     "esModuleInterop": true
   },
-  "include": ["src", "test"],
+  "include": ["src/**/*", "test"],
   "exclude": ["build", "test/fixtures"]
 }

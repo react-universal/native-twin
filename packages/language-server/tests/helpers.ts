@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { LanguageClientOptions } from 'vscode-languageclient';
-import { DOCUMENT_SELECTORS, configurationSection } from '../src/utils/constants.utils';
+import { DOCUMENT_SELECTORS,configurationSection } from '../../language-service/src/utils/constants.utils';
 
 export const createLanguageClient = () => {};
 

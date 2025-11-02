@@ -4,12 +4,12 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type { Range } from 'vscode-languageserver-textdocument';
 import { getFlattenTemplateToken } from '../../utils/twin/native-twin.utils.js';
-import { TwinSheetEntry } from './TwinSheetEntry.model.js';
 import type {
   LocatedGroupToken,
   LocatedGroupTokenWithText,
   TemplateToken,
 } from './parser.types.js';
+import { TwinSheetEntry } from './TwinSheetEntry.model.js';
 
 export class TemplateTokenWithText implements Equal.Equal {
   readonly token: Exclude<TemplateToken, LocatedGroupToken> | LocatedGroupTokenWithText;
@@ -70,9 +70,7 @@ export class TemplateTokenData implements Equal.Equal {
   getSheetEntries(tw: RuntimeTW) {
     if (this._entries) this._entries;
 
-    this._entries = tw(`${this.token.text}`).map(
-      (x) => new TwinSheetEntry(x, this.token),
-    );
+    this._entries = tw(`${this.token.text}`).map((x) => new TwinSheetEntry(x, this.token));
     return this._entries;
   }
 
@@ -156,10 +154,6 @@ export class TemplateTokenData implements Equal.Equal {
   }
 
   [Hash.symbol](): number {
-    return Hash.array([
-      this.token.text,
-      this.token.bodyLoc.start,
-      this.token.bodyLoc.end,
-    ]);
+    return Hash.array([this.token.text, this.token.bodyLoc.start, this.token.bodyLoc.end]);
   }
 }

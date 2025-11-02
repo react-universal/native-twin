@@ -1,5 +1,5 @@
 import { globalKeywords } from '@native-twin/css';
-import type { TailwindPresetTheme } from '../types/theme.types.js';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const verticalAlign = {
   mid: 'middle',

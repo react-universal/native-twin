@@ -24,7 +24,6 @@
     "resolveJsonModule": true,
     "allowJs": false,
     "checkJs": false,
-    "moduleSuffixes": [".native", ".web", ".android", ".ios", ""],
 
     // Lint
     "strict": true,

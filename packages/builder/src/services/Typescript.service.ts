@@ -19,7 +19,7 @@ const make = Effect.gen(function* () {
   const fsUtils = yield* FsUtils;
 
   const compilerOptions = getCompilerOptionsFromTsConfig(
-    path_.join(process.cwd(), 'tsconfig.build.json')
+    path_.join(process.cwd(), 'tsconfig.build.json'),
   );
   const compiler = new Project({
     tsConfigFilePath: path_.join(process.cwd(), 'tsconfig.build.json'),
@@ -42,6 +42,11 @@ const make = Effect.gen(function* () {
         `[watcher] Detected ${x._tag} change in: ${x.path.replace(process.cwd(), '')}`,
       ),
     ),
+    Stream.tap((x) => Effect.sync(() => {
+      if (x._tag === 'Remove') {
+        
+      }
+    })),
     Stream.filterEffect((event) =>
       Effect.gen(function* () {
         if (event._tag === 'Remove') return false;

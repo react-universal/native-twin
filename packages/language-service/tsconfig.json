@@ -3,9 +3,8 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "moduleSuffixes": [],
-    "rootDir": "src"
+    "jsx": "preserve"
   },
-  "include": ["src"],
-  "exclude": ["build"]
+  "include": ["src", "tests/*"],
+  "exclude": ["build", "tests/fixtures"]
 }

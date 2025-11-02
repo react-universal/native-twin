@@ -1,5 +1,5 @@
-import { ProtocolNotificationType0 } from "vscode-languageserver-protocol";
 import { init } from "./common"
+import { describe, test } from "vitest";
 
 describe('suite', () => {
   test('test a',async () => {

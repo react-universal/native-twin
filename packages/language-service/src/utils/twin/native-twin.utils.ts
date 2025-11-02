@@ -1,6 +1,6 @@
 import type { __Theme__ } from '@native-twin/core';
 import type { TWScreenValueConfig, VariantClassToken } from '@native-twin/css';
-import { type ColorsRecord, asArray, toColorValue } from '@native-twin/helpers';
+import { asArray, type ColorsRecord, toColorValue } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
@@ -27,6 +27,7 @@ export const createTwinStore = (nativeTwinHandler: {
   config: InternalTwinConfig;
 }): TwinStore => {
   const theme = { ...nativeTwinHandler.tw.config.theme };
+
   const themeSections = new Set(Object.keys({ ...theme, ...theme.extend }).sort());
   // const twinRules = HashSet.empty<TwinRuleWithCompletion>();
   themeSections.delete('theme');
@@ -69,9 +70,8 @@ export const createTwinStore = (nativeTwinHandler: {
             values = colorPalette;
           } else {
             values =
-              nativeTwinHandler.context.theme(
-                composition.parts.themeSection as keyof __Theme__,
-              ) ?? {};
+              nativeTwinHandler.context.theme(composition.parts.themeSection as keyof __Theme__) ??
+              {};
           }
           return pipe(
             createRuleClassNames(values, composition.composition, composition.parts),
@@ -89,12 +89,9 @@ export const createTwinStore = (nativeTwinHandler: {
                   const completion = {
                     ...insertRule.completion,
                     className: `${insertRule.completion.className}/${x[0]}`,
-                    declarationValue: toColorValue(
-                      insertRule.completion.declarationValue,
-                      {
-                        opacityValue: x[1],
-                      },
-                    ),
+                    declarationValue: toColorValue(insertRule.completion.declarationValue, {
+                      opacityValue: x[1],
+                    }),
                   };
                   return {
                     ...insertRule,
@@ -178,9 +175,7 @@ export const getFlattenTemplateToken = (
 
   if (item.token.type === 'GROUP') {
     const base = item.token.value.base;
-    const classNames = item.token.value.content.flatMap((x) =>
-      getFlattenTemplateToken(x, base),
-    );
+    const classNames = item.token.value.content.flatMap((x) => getFlattenTemplateToken(x, base));
     return classNames;
   }
 

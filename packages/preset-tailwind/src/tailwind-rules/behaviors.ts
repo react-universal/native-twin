@@ -1,7 +1,7 @@
 import type { Rule } from '@native-twin/core';
 import { matchCssObject } from '@native-twin/core';
 import { parsedRuleToClassName } from '@native-twin/css';
-import type { TailwindPresetTheme } from '../types/theme.types.js';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const outlineRules: Rule<TailwindPresetTheme>[] = [
   // matchThemeValue('outline-width-', 'lineWidth', 'outlineWidth'),

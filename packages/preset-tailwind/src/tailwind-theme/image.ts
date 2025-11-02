@@ -1,4 +1,4 @@
-import type { TailwindPresetTheme } from '../types/theme.types.js';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const resizeMode = {
   cover: 'cover',

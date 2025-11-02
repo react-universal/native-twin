@@ -1,5 +1,5 @@
 import { createLinearUnits } from '@native-twin/helpers';
-import type { TailwindPresetTheme } from '../types/theme.types.js';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const fontFamily = {
   sans: [

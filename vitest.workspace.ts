@@ -20,9 +20,10 @@ const project = (
 });
 
 export default defineWorkspace([
+  "packages/*"
   // Add specialized configuration for some packages.
   // project({ name: "effect|browser", environment: "happy-dom" }),
   // project({ name: "schema|browser", environment: "happy-dom" }),
   // Add the default configuration for all packages.
-  project({ name: 'core|browser', environment: 'node' })
+  // project({ name: 'core|browser', environment: 'node' })
 ]);

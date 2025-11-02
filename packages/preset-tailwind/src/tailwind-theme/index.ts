@@ -1,13 +1,13 @@
 /* @export-submodules */
 
-export * from './aligns.js';
-export * from './colors.js';
-export * from './default.js';
-export * from './filters.js';
-export * from './flex.js';
-export * from './font.js';
-export * from './image.js';
-export * from './mixed.js';
-export * from './preflight.js';
-export * from './size.js';
-export * from './transform.js';
+export * from './aligns';
+export * from './colors';
+export * from './default';
+export * from './filters';
+export * from './flex';
+export * from './font';
+export * from './image';
+export * from './mixed';
+export * from './preflight';
+export * from './size';
+export * from './transform';

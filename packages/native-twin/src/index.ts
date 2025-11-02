@@ -25,6 +25,7 @@ export type { ConfigVariants, VariantProps, VariantsConfig } from './runtime/var
 /** TYPES */
 export type { ExtractResult } from './runtime/web/ssr.js';
 export { CompiledSheetEntry, type CompiledSheetEntryInput } from './twin/compiler.models.js';
+export type { TWScreenValueConfig } from './twin/parser/twin.tokens.js';
 export type * from './types/config.types.js';
 export type * from './types/theme.types.js';
 
@@ -59,12 +60,10 @@ export {
   sheetEntryToStyle,
   type TwinRuntimeProp,
 } from './runtime/SheetHandler.js';
-
 export type {
   ClassnameStyles,
   ComponentStyleRegistry,
   ReadClassNameProp,
   TwinComponentStyleProp,
 } from './runtime/sheet/Models.js';
-
 export { StyleSheetAdapter } from './runtime/TwinStyleSheet.js';

@@ -27,13 +27,17 @@ export const createChokidarWatcher = (projectRoot: string, watcher: FSWatcher) =
               });
             case 'unlink':
             case 'unlinkDir':
-              return emit.single({
-                _tag: 'Remove',
-                path: path.posix.join(projectRoot, filePath),
-              });
+              return emit.fromEffect(
+                Effect.gen(function* () {
+                  return yield* Effect.succeed({
+                    _tag: 'Remove',
+                    path: path.posix.join(projectRoot, filePath),
+                  } as const);
+                }),
+              );
           }
         });
-        // return Effect.promise(() => watcher.close());
+        return Effect.promise(() => watcher.close());
       });
     }),
   );

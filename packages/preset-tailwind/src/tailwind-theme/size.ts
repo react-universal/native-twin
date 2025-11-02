@@ -1,6 +1,6 @@
 import { createPercentRatios } from '@native-twin/helpers';
-import type { TailwindPresetTheme } from '../types/theme.types.js';
-import { spacing } from './mixed.js';
+import type { TailwindPresetTheme } from '../types/theme.types';
+import { spacing } from './mixed';
 
 export const baseSize = {
   ...spacing,

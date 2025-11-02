@@ -4,7 +4,7 @@
 // and Windi CSS
 // https://github.com/windicss/windicss/blob/main/src/config/colors.ts
 import type { ColorsRecord } from '@native-twin/helpers';
-import type { TailwindPresetTheme } from '../types/theme.types.js';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const colors = {
   inherit: 'inherit',

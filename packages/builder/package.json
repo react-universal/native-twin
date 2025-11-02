@@ -42,7 +42,7 @@
     "@effect/sql": "^0.46.0",
     "effect": "^3.18.4",
     "lodash.merge": "4.6.2",
-    "ts-morph": "^24.0.0"
+    "ts-morph": "^27.0.2"
   },
   "devDependencies": {
     "@types/lodash.merge": "^4.6.9"
