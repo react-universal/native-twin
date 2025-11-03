@@ -1,5 +1,6 @@
-export { extractSourceFileGraph, type TwinGraph } from './typescript/models/SourceFile.graph';
 export { makeTwinGraph } from './typescript/models/TwinDSLDocument';
 export { TwinDslModels } from './typescript/models/TwinDsl.models';
+export { extractSourceFileGraph } from './typescript/SourceFile.graph';
 export { createTwinDSL } from './typescript/Twin.dsl';
-export { TypescriptApi, TypescriptApiLive, tsLayer } from './typescript/TypescriptApi';
+export { TypescriptApi, TypescriptApiLive } from './typescript/TypescriptApi';
+export { TypescriptUtils, TypescriptUtilsLive } from './typescript/TypescriptUtils.service';

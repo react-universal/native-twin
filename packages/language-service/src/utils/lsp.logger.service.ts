@@ -1,14 +1,15 @@
-import { inspect } from 'util';
 import * as Ansi from '@effect/printer-ansi/Ansi';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
 import * as AnsiColor from '@effect/printer-ansi/Color';
+import { Effect } from 'effect';
 import * as RA from 'effect/Array';
 import * as FiberId from 'effect/FiberId';
 import { apply, pipe } from 'effect/Function';
 import * as Iterable from 'effect/Iterable';
-import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
+import * as LogLevel from 'effect/LogLevel';
 import * as Str from 'effect/String';
+import { inspect } from 'util';
 
 const scopeTextConfig = pipe(
   Ansi.combine(Ansi.bgBlue),
@@ -43,9 +44,7 @@ export const createLspLogger = (scope: string) =>
       msgFactory.push(Doc.text(options.message).pipe(Doc.annotate(messageConfig)));
     }
     if (RA.isArray(options.message)) {
-      msgFactory.push(
-        Doc.text(options.message.join(' ')).pipe(Doc.annotate(messageConfig)),
-      );
+      msgFactory.push(Doc.text(options.message.join(' ')).pipe(Doc.annotate(messageConfig)));
     }
 
     const doc = Doc.hsep([
@@ -97,3 +96,5 @@ export const loggerUtils = {
   messageConfig,
   scopeTextConfig,
 };
+
+export const TwinLogger = Logger.replaceScoped(Logger.defaultLogger, Effect.succeed(createLspLogger('LSP')));

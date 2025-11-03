@@ -6,11 +6,11 @@ import {
   DidChangeConfigurationNotification,
   DidChangeTextDocumentNotification,
   DidOpenTextDocumentNotification,
-  InitializeRequest,
+  type DidOpenTextDocumentParams,
   InitializedNotification,
+  type InitializeParams,
+  InitializeRequest,
   RegistrationRequest,
-  InitializeParams,
-  DidOpenTextDocumentParams,
 } from 'vscode-languageserver-protocol';
 import { CacheMap } from '../src/utils/cache-map';
 import { connect } from './connection';
@@ -18,10 +18,7 @@ import { connect } from './connection';
 type Settings = any;
 
 export interface FixtureContext
-  extends Pick<
-    ProtocolConnection,
-    'sendRequest' | 'sendNotification' | 'onNotification'
-  > {
+  extends Pick<ProtocolConnection, 'sendRequest' | 'sendNotification' | 'onNotification'> {
   client: ProtocolConnection;
   openDocument: (params: {
     text: string;
@@ -62,8 +59,8 @@ export function init(fixture: string | string[]): FixtureContext {
         },
         completionItemKind: {
           valueSet: [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-            23, 24, 25,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25,
           ],
         },
         contextSupport: true,
@@ -76,8 +73,8 @@ export function init(fixture: string | string[]): FixtureContext {
         dynamicRegistration: true,
         symbolKind: {
           valueSet: [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-            23, 24, 25, 26,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26,
           ],
         },
       },
@@ -114,8 +111,8 @@ export function init(fixture: string | string[]): FixtureContext {
         dynamicRegistration: true,
         symbolKind: {
           valueSet: [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-            23, 24, 25, 26,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26,
           ],
         },
       },
@@ -157,7 +154,7 @@ export function init(fixture: string | string[]): FixtureContext {
     },
   } as InitializeParams);
 
-  client.onNotification
+  client.onNotification;
 
   client.sendNotification(InitializedNotification.type);
 
@@ -170,17 +167,17 @@ export function init(fixture: string | string[]): FixtureContext {
     });
   });
 
-  let initPromise = new Promise<void>((resolve) => {
+  const initPromise = new Promise<void>((resolve) => {
     client.onRequest(RegistrationRequest.type, ({ registrations }) => {
       if (registrations.some((r) => r.method === CompletionRequest.method)) {
         resolve();
       } else {
-        console.log('registration not', registrations)
+        console.log('registration not', registrations);
       }
 
       return null;
     });
-    resolve()
+    resolve();
   });
 
   interface PromiseWithResolvers<T> extends Promise<T> {
@@ -188,7 +185,7 @@ export function init(fixture: string | string[]): FixtureContext {
     reject: (reason?: any) => void;
   }
 
-  let openingDocuments = new CacheMap<string, PromiseWithResolvers<void>>();
+  const openingDocuments = new CacheMap<string, PromiseWithResolvers<void>>();
   let projectDetails: any = null;
 
   client.onNotification('@/tailwindCSS/projectDetails', (params) => {
@@ -202,14 +199,14 @@ export function init(fixture: string | string[]): FixtureContext {
   });
 
   client.onNotification(DidChangeConfigurationNotification.type, () => {
-        console.log('DID_OPEN')
-      });
+    console.log('DID_OPEN');
+  });
 
-      // client.onDidOpenTextDocument((...args) => {
-      //   console.log("DID_OPEN_ARGS: ", args)
-      // })
+  // client.onDidOpenTextDocument((...args) => {
+  //   console.log("DID_OPEN_ARGS: ", args)
+  // })
 
-      console.log("CLIENT: ", client)
+  // console.log("CLIENT: ", client)
 
   let counter = 0;
 
@@ -239,18 +236,17 @@ export function init(fixture: string | string[]): FixtureContext {
       dir?: string;
       settings?: Settings;
     }) {
-      let uri = resolveUri(dir, `file-${counter++}`);
+      const uri = resolveUri(dir, `file-${counter++}`);
       docSettings.set(uri, settings);
 
-      let openPromise = openingDocuments.remember(uri, () => {
+      const openPromise = openingDocuments.remember(uri, () => {
         let resolve = () => {};
         let reject = () => {};
 
-        let p = new Promise<void>((_resolve, _reject) => {
+        const p = new Promise<void>((_resolve, _reject) => {
           resolve = _resolve;
           reject = _reject;
         });
-        
 
         return Object.assign(p, {
           resolve,
@@ -259,8 +255,8 @@ export function init(fixture: string | string[]): FixtureContext {
       });
 
       client.onNotification(DidChangeConfigurationNotification.type, () => {
-        console.log('DID_OPEN')
-      })
+        console.log('DID_OPEN');
+      });
       client.sendNotification(DidOpenTextDocumentNotification.type, {
         textDocument: {
           uri,
@@ -269,12 +265,12 @@ export function init(fixture: string | string[]): FixtureContext {
           text,
         },
       } as DidOpenTextDocumentParams);
-      console.log('asdasdasdasd')
+      // console.log('asdasdasdasd');
 
       // If opening a document stalls then it's probably because this promise is not being resolved
       // This can happen if a document is not covered by one of the selectors because of it's URI
       await initPromise;
-      console.log('initPromise')
+      // console.log('initPromise');
       // await openPromise;
 
       return {
@@ -292,7 +288,7 @@ export function init(fixture: string | string[]): FixtureContext {
     },
 
     async updateFile(file: string, text: string) {
-      let uri = resolveUri(file);
+      const uri = resolveUri(file);
 
       await client.sendNotification(DidChangeTextDocumentNotification.type, {
         textDocument: { uri, version: counter++ },
@@ -307,20 +303,20 @@ export function withFixture(
   callback: (c: FixtureContext) => void | Promise<void>,
 ) {
   describe(fixture, () => {
-    let c: FixtureContext = {} as any;
+    const c: FixtureContext = {} as any;
 
     beforeAll(async () => {
       try {
         // Using the connection object as the prototype lets us access the connection
-      // without defining getters for all the methods and also lets us add helpers
-      // to the connection object without having to resort to using a Proxy
-      const server = await init(fixture)
-      console.log("SERVER: ", server)
-      Object.setPrototypeOf(c, server);
+        // without defining getters for all the methods and also lets us add helpers
+        // to the connection object without having to resort to using a Proxy
+        const server = await init(fixture);
+        console.log('SERVER: ', server);
+        Object.setPrototypeOf(c, server);
 
-      // return () => c.client.dispose();
-      }catch (e) {
-        console.log("ERROR: ", e)
+        // return () => c.client.dispose();
+      } catch (e) {
+        console.log('ERROR: ', e);
       }
     });
 
@@ -336,7 +332,7 @@ export function withWorkspace({
   run: (c: FixtureContext) => void;
 }) {
   describe(`workspace: ${fixtures.join(', ')}`, () => {
-    let c: FixtureContext = {} as any;
+    const c: FixtureContext = {} as any;
 
     beforeAll(async () => {
       // Using the connection object as the prototype lets us access the connection

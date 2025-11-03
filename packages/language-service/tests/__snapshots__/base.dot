@@ -1,0 +1,11 @@
+digraph SourceFile {
+  "0" [label="{ kind: 'JsxSelfClosingElement', node: 'Text' }"];
+  "1" [label="{ kind: 'JsxElement', node: 'View' }"];
+  "2" [label="{ kind: 'JsxSelfClosingElement', node: 'Text' }"];
+  "3" [label="{ kind: 'JsxElement', node: 'View' }"];
+  "4" [label="{ kind: 'Identifier', node: 'a' }"];
+  "1" -> "0" [label="'jsx'"];
+  "3" -> "2" [label="'jsx'"];
+  "3" -> "1" [label="'jsx'"];
+  "4" -> "3" [label="'declarator'"];
+}

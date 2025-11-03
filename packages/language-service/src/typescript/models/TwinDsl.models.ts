@@ -1,8 +1,35 @@
 import type { Rule, RuleResolver, Variant, VariantResolver } from '@native-twin/core';
 import * as Data from 'effect/Data';
+import type * as Graph from 'effect/Graph';
+import type ts from 'ts-morph';
 import type { InternalTwinConfig } from '../../models/twin/native-twin.types';
 
 export namespace TwinDslModels {
+  export interface TraversalContext {
+    visitedNodes: WeakSet<ts.Node>;
+    nodeNestedInJSXTree: WeakSet<ts.Node>;
+    nodeToGraph: WeakMap<ts.Node, Graph.NodeIndex>;
+    depthBudget: WeakMap<ts.Node, number>;
+  }
+
+  export interface ImportInfo {
+    from: string;
+    node: ts.Structures;
+  }
+  export interface NodeInfo {
+    node: ts.Node;
+    displayNode: ts.Node;
+    declarator: ts.Node | undefined;
+    // imported: ImportInfo | null;
+  }
+
+  export type EdgeInfo =
+    | { relationship: 'jsx'; index: number; isRoot: boolean }
+    | { relationship: 'declarator' };
+
+  export type Graph = Graph.Graph<NodeInfo, EdgeInfo, 'directed'>;
+  export type MutableGraph = Graph.MutableGraph<NodeInfo, EdgeInfo, 'directed'>;
+
   export type TwinVariantNode = Data.TaggedEnum<{
     Literal: { pattern: Variant[0]; value: string };
     Resolver: { pattern: Variant[0]; value: VariantResolver };

@@ -1,46 +1,119 @@
-import * as path_ from 'node:path';
-import * as Config from 'effect/Config';
+import { asArray } from '@native-twin/helpers';
+import * as Array from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
-import * as SubscriptionRef from 'effect/SubscriptionRef';
+import * as Option from 'effect/Option';
+import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
-import { TSCompilerDefaultOptions } from '../utils/constants.utils';
 
 const make = Effect.gen(function* () {
-  const configPath = yield* Config.string('').pipe(
-    Config.withDefault(path_.join(process.cwd(), 'tsconfig.json')),
-  );
-  const tsConfig = yield* Effect.sync(() => {
-    const userConfig = ts.getCompilerOptionsFromTsConfig(configPath);
-    return { ...userConfig, ...TSCompilerDefaultOptions };
-  }).pipe(Effect.flatMap(SubscriptionRef.make));
+  const getNodeSourceFile = (node: ts.Node) => node.getSourceFile();
+  const getNodeOffset = (node: ts.Node): number => node.getPos();
 
-  const updateTsConfig = Effect.fn(function* (newPath: string) {
-    return yield* SubscriptionRef.update(tsConfig, (x) => ({
-      ...x,
-      ...ts.getCompilerOptionsFromTsConfig(newPath).options,
-    }));
+  const findNodeAtOffset = (node: ts.Node, offset: number): Option.Option<ts.Node> =>
+    Option.fromNullable(node.getChildAtPos(offset));
+
+  const getJSXRoots = (node: ts.SourceFile) => node.getStructure();
+
+  const getFunctionReturn = (node: ts.Node) => {
+    if (ts.Node.isFunctionExpression(node) || ts.Node.isArrowFunction(node)) {
+      for (const child of node.getStatements()) {
+        if (ts.Node.isReturnStatement(child)) return child;
+      }
+    }
+  };
+
+  const getJSXElementStatement = (node: ts.Statement) => {
+    if (node.isKind(ts.SyntaxKind.JsxElement)) return { jsxElement: node };
+    if (ts.Node.isVariableStatement(node)) {
+      const declarations = node.getDeclarations();
+      for (const declaration of declarations) {
+        const initializer = declaration.getInitializer();
+        if (!initializer) continue;
+        const returnStat = getFunctionReturn(initializer);
+        if (!returnStat) continue;
+        const expression = returnStat.getExpression();
+        if (ts.Node.isParenthesizedExpression(expression)) {
+          const maybeJSX = expression.getExpression();
+          if (ts.Node.isJsxElement(maybeJSX)) {
+            return { jsxElement: maybeJSX, declarator: declaration.getNameNode() };
+          }
+        }
+      }
+    }
+    return null;
+  };
+
+  const getJSXElementStructure = (node: ts.Structure): ts.JsxElementStructure | null => {
+    if (!ts.Structure.isJsxElement(node)) return null;
+
+    return {
+      kind: node.kind,
+      name: node.name,
+      bodyText: node.bodyText,
+      attributes: asArray(node.attributes),
+      children: asArray(node.children),
+    };
+  };
+
+  const getJSXElementChilds = (node: ts.Node) =>
+    pipe(
+      node.asKind(ts.SyntaxKind.JsxElement) ?? node.asKind(ts.SyntaxKind.JsxSelfClosingElement),
+      Array.liftPredicate(Predicate.isNotNullable),
+      Array.flatMap((el) => (ts.Node.isJsxElement(el) ? el.getJsxChildren() : el.getChildren())),
+      Array.filter((el) => ts.Node.isJsxElement(el) || ts.Node.isJsxSelfClosingElement(el)),
+    );
+
+  const extractSourceInfo = (source: ts.SourceFile) => {
+    const exports = source.getExportDeclarations();
+    const declarations: ts.Node[] = [...source.getVariableDeclarations(), ...source.getFunctions()];
+    const functions = source.getFunctions();
+    const outsideNodes = source.getReferencingNodesInOtherSourceFiles();
+    return { exports, declarations, functions, outsideNodes };
+  };
+
+  const getNodeDebugDetails = (node: ts.Node) => {
+    let name = 'Unknown';
+    if (ts.Node.hasName(node)) {
+      name = node.getName();
+    }
+    if (ts.Node.isJsxSelfClosingElement(node)) {
+      name = node.compilerNode.tagName.getText();
+    }
+    return {
+      name,
+      kind: node.getKind(),
+      kindName: node.getKindName(),
+      index: node.getChildIndex(),
+    };
+  };
+
+  const getNodeDependencies = (node: ts.Node) => {
+    return node.getProject().getLanguageService().findReferences(node);
+  };
+
+  const getVariableNameExpression = (node: ts.Node) =>
+    ts.Node.isPropertyDeclaration(node) || ts.Node.isVariableDeclaration(node)
+      ? node.getInitializer()
+      : ts.Node.isExpression(node)
+        ? node
+        : undefined;
+
+  return yield* Effect.succeed({
+    getNodeDependencies,
+    getNodeDebugDetails,
+    getJSXElementStatement,
+    getVariableNameExpression,
+    getJSXElementChilds,
+    getJSXElementStructure,
+    extractSourceInfo,
+    getNodeSourceFile,
+    findNodeAtOffset,
+    getJSXRoots,
+    getNodeOffset,
   });
-
-  const tsProject = yield* tsConfig.pipe(
-    Effect.map(
-      (compilerOptions) =>
-        new ts.Project({
-          tsConfigFilePath: configPath,
-          compilerOptions: compilerOptions.options,
-          skipAddingFilesFromTsConfig: true,
-          manipulationSettings: {
-            indentationText: ts.IndentationText.TwoSpaces,
-            insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces: true,
-            newLineKind: ts.NewLineKind.LineFeed,
-            quoteKind: ts.QuoteKind.Double,
-            useTrailingCommas: true,
-          },
-        }),
-    ),
-  );
-  return { updateTsConfig, tsProject };
 });
 
 export interface TypescriptUtils extends Effect.Effect.Success<typeof make> {}
