@@ -1,3 +1,4 @@
+import { mappedComponents } from '@native-twin/compiler';
 import { asArray } from '@native-twin/helpers';
 import * as Array from 'effect/Array';
 import * as Context from 'effect/Context';
@@ -9,6 +10,9 @@ import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
 
 const make = Effect.gen(function* () {
+  const isFunction = (node: ts.Node) =>
+    Predicate.compose(ts.Node.isFunctionExpression, ts.Node.isArrowFunction)(node);
+
   const getNodeSourceFile = (node: ts.Node) => node.getSourceFile();
   const getNodeOffset = (node: ts.Node): number => node.getPos();
 
@@ -101,7 +105,45 @@ const make = Effect.gen(function* () {
         ? node
         : undefined;
 
+  const getJSXNodeTwinInfo = (node: ts.Node) => {
+    const tagName = getJSXNodeTagName(node);
+    const childs = getJSXElementChilds(node);
+    const dependencies = getNodeDependencies(node);
+
+    return { tagName, childs, dependencies };
+  };
+
+  const isJSXElementLike = (node: ts.Node) =>
+    Predicate.or(ts.Node.isJsxElement, ts.Node.isJsxSelfClosingElement)(node);
+
+  const getJSXNodeTagName = (node: ts.Node) => {
+    if (ts.Node.isJsxElement(node)) return node.getOpeningElement().getTagNameNode();
+    if (ts.Node.isJsxSelfClosingElement(node)) return node.getTagNameNode();
+    return null;
+  };
+
+  const getJSXElementAttributes = (node: ts.Node) => {
+    if (ts.Node.isJsxElement(node)) return node.getOpeningElement().getAttributes();
+    if (ts.Node.isJsxSelfClosingElement(node)) return node.getAttributes();
+    return [];
+  };
+
+  const getJSXMappedProps = (node: ts.Node) => {
+    const tagName = getJSXNodeTagName(node);
+    if (!tagName) return [];
+    const name = tagName.getText();
+    const jsxConfig = mappedComponents.find((x) => x.name === name);
+    const props = Object.entries(jsxConfig?.config ?? {});
+    const attributes = getJSXElementAttributes(node).filter((x) => ts.Node.isJsxAttribute(x));
+    return props.flatMap(([prop, target]) =>
+      attributes
+        .filter((attr) => attr.getNameNode().getText() === prop)
+        .map((attr) => ({ prop, target, value: attr })),
+    );
+  };
+
   return yield* Effect.succeed({
+    isFunction,
     getNodeDependencies,
     getNodeDebugDetails,
     getJSXElementStatement,
@@ -113,6 +155,10 @@ const make = Effect.gen(function* () {
     findNodeAtOffset,
     getJSXRoots,
     getNodeOffset,
+    getJSXNodeTwinInfo,
+    getJSXMappedProps,
+    isJSXElementLike,
+    getJSXNodeTagName,
   });
 });
 

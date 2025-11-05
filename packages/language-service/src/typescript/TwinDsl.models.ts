@@ -2,7 +2,7 @@ import type { Rule, RuleResolver, Variant, VariantResolver } from '@native-twin/
 import * as Data from 'effect/Data';
 import type * as Graph from 'effect/Graph';
 import type ts from 'ts-morph';
-import type { InternalTwinConfig } from '../../models/twin/native-twin.types';
+import type { InternalTwinConfig } from '../models/twin/native-twin.types';
 
 export namespace TwinDslModels {
   export interface TraversalContext {

@@ -3,7 +3,7 @@ import path from 'path';
 import ts from 'ts-morph';
 import { inspect } from 'util';
 import { describe, expect, test } from 'vitest';
-import { extractSourceFileGraph } from '../src/TS';
+import { extractSourceFileGraph, TypescriptUtils } from '../src/TS';
 import { TypescriptApi } from '../src/typescript/TypescriptApi';
 import { TwinLogger } from '../src/utils/lsp.logger.service';
 import { TestLayer } from './dsl';
@@ -15,8 +15,8 @@ const configProvider = ConfigProvider.fromJson({
 describe('twin graph extractor', () => {
   test('test extractor ', async () => {
     await Effect.gen(function* () {
-      // yield* Effect.sleep('5 seconds');
       const tsAPI = yield* TypescriptApi;
+      const tsUtils = yield* TypescriptUtils;
       const compiler = yield* tsAPI.tsProject;
       const outFile = compiler.createSourceFile(
         path.join('../src/out-file.tsx'),
@@ -52,11 +52,10 @@ describe('twin graph extractor', () => {
           inspect(x.relationship, { colors: false, depth: null, breakLength: Infinity }),
         graphName: 'SourceFile',
         nodeLabel: (x) => {
-          let name = 'Unknown';
-          if (ts.Node.isJsxSelfClosingElement(x.node)) {
-            name = x.node.getTagNameNode().getText();
-          } else if (ts.Node.isJsxElement(x.node)) {
-            name = x.node.getOpeningElement().getTagNameNode().getText();
+          let name: string | null;
+          const jsxTagName = tsUtils.getJSXNodeTagName(x.node);
+          if (jsxTagName) {
+            name = jsxTagName.getText();
           } else {
             name = x.node.print();
           }

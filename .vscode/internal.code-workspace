@@ -5,26 +5,6 @@
       "path": ".."
     },
     {
-      "name": "🚀 native-twin-docs",
-      "path": "../apps/docs-site"
-    },
-    {
-      "name": "🚀 expo-app",
-      "path": "../apps/expo-app"
-    },
-    {
-      "name": "🚀 expo-app-web",
-      "path": "../apps/expo-router"
-    },
-    {
-      "name": "🚀 next-pages-example",
-      "path": "../apps/next-app"
-    },
-    {
-      "name": "🚀 next-app-dir",
-      "path": "../apps/next-app-dir"
-    },
-    {
       "name": "📦 @native-twin/adapters",
       "path": "../packages/adapters"
     },
@@ -107,6 +87,26 @@
     {
       "name": "twin-run",
       "path": "../sites/twin.run"
+    },
+    {
+      "name": "🚀 next-app-dir",
+      "path": "../apps/next-app-dir"
+    },
+    {
+      "name": "🚀 expo-app-web",
+      "path": "../apps/expo-router"
+    },
+    {
+      "name": "🚀 expo-app",
+      "path": "../apps/expo-app"
+    },
+    {
+      "name": "🚀 next-pages-example",
+      "path": "../apps/next-app"
+    },
+    {
+      "name": "🚀 native-twin-docs",
+      "path": "../apps/docs-site"
     }
   ],
   "settings": {

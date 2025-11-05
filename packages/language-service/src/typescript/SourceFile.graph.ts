@@ -2,8 +2,18 @@ import * as Effect from 'effect/Effect';
 import * as Graph from 'effect/Graph';
 import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
-import type { TwinDslModels } from './models/TwinDsl.models';
+import type { TwinDslModels } from './TwinDsl.models';
 import { TypescriptUtils } from './TypescriptUtils.service';
+
+/**
+ * Represents a JSX expression in the source with its declarator and root element
+ */
+interface JSXExpressionStack {
+  binding: ts.Node | null;
+  declarator: ts.Node | undefined;
+  root: ts.Node;
+  childs: ts.Node[];
+}
 
 export const extractSourceFileGraph = Effect.fn(function* (
   source: ts.SourceFile,
@@ -15,145 +25,240 @@ export const extractSourceFileGraph = Effect.fn(function* (
   );
   const context = yield* createTraversalContext(source, mutableGraph, followSymbolsDepth);
 
-  const getCurrentNodeChilds = (node: ts.Node) => {
-    if (ts.Node.isJsxElement(node)) {
-      return tsUtils.getJSXElementChilds(node);
-    }
-    const binding = context.getJSXBinding(node);
-    if (binding) return [binding.jsxElement];
-    return [];
-  };
+  // Build lookup of JSX expressions with their children for quick reference
+  const jsxExpressionStacks = createJSXExpressionStacks(context, tsUtils);
 
-  const stacks = context.state.jsxExpressions.flatMap((expression) => {
-    const binding = expression.declarator;
-    const declarator = binding && tsUtils.getVariableNameExpression(binding);
-    return [
-      {
-        binding,
-        declarator,
-        root: expression.jsxElement,
-        childs: getCurrentNodeChilds(expression.jsxElement),
-      },
-    ];
-  });
-
+  // Process all nodes in the visitation queue
   while (context.state.nodeToVisit.length > 0) {
     const currentNode = yield* context.getNextNode();
     const currentDepthBudget = context.getDepthBudgetFor(currentNode)!;
 
+    // Handle identifier nodes that may reference JSX expressions
     if (ts.Node.isIdentifier(currentNode)) {
-      const stack = stacks.find((x) => x.binding === currentNode);
-
-      if (stack) {
-        if (!context.hasBeenVisited(currentNode)) {
-          context.appendNodeToVisit(currentNode, currentDepthBudget);
-          context.appendNodeToVisit(stack.root, currentDepthBudget);
-          context.addNodeInJSXRegistry(stack.root, currentDepthBudget + 1);
-          yield* context.markNodeAsVisited(currentNode);
-        } else {
-          const registeredIdent = context.getNodeGraph(currentNode);
-          const childNodes = [stack.root]
-            .map((_) => context.getNodeGraph(_))
-            .filter(Predicate.isNumber)
-            .filter((_) => Graph.hasNode(mutableGraph, _));
-
-          if (childNodes.length + 1 === stack.childs.length) {
-            // const lastNodeEdge = yield* addEdgesForJSXElement(currentNode, childNodes);
-            const graphNode = yield* context.addNode(currentNode);
-            yield* Effect.all(
-              childNodes.map((x) => context.addEdge(graphNode, x, { relationship: 'declarator' })),
-              { concurrency: 'inherit', mode: 'default', batching: 'inherit' },
-            );
-          } else {
-            // not every member is a graph node, remove the nodes
-            childNodes.forEach((_) => void Graph.removeNode(mutableGraph, _));
-            yield* Effect.log('DELETING_GRAPH_NODES: ', childNodes);
-            // and if I return a layer, add a node for it
-            const nodeInfo = context.extractNodeInfo(currentNode);
-            const nodeGraph = yield* context.addNode(currentNode, nodeInfo);
-            if (registeredIdent) {
-              yield* context.addEdge(nodeGraph, registeredIdent, {
-                relationship: 'declarator',
-              });
-            }
-          }
-        }
-      }
+      yield* processIdentifierNode(currentNode, currentDepthBudget, jsxExpressionStacks, context);
       continue;
     }
 
-    if (ts.Node.isJsxElement(currentNode) || ts.Node.isJsxSelfClosingElement(currentNode)) {
-      // yield* Effect.log('DEPS: ', inspect(debugable, false, null, true));
-      // yield* Effect.log('DEPS222: ', inspect(debugable2, false, null, true), '\n\n');
-      // const stacked = stacks.find((x) => x.root === currentNode);
-      // const backedNode = stacked?.root ?? currentNode;
-      const jsxChilds = getCurrentNodeChilds(currentNode);
-      if (!context.hasBeenVisited(currentNode)) {
-        context.appendNodeToVisit(currentNode, currentDepthBudget);
-        // context.addNodeInJSXRegistry(currentNode, currentDepthBudget);
-        jsxChilds.forEach((_) => void context.appendNodeToVisit(_, currentDepthBudget));
-        jsxChilds.forEach((_) => void context.addNodeInJSXRegistry(_, currentDepthBudget));
-        yield* context.markNodeAsVisited(currentNode);
-      } else {
-        const childNodes = jsxChilds
-          .map((_) => context.getNodeGraph(_))
-          .filter(Predicate.isNumber)
-          .filter((_) => Graph.hasNode(mutableGraph, _));
-
-        if (childNodes.length === jsxChilds.length) {
-          // All members candidates to edges
-          const graphNode = yield* context.addNode(currentNode);
-          yield* Effect.all(
-            childNodes.map((x) =>
-              context.addEdge(graphNode, x, {
-                relationship: 'jsx',
-                index: currentNode.getChildIndex(),
-                isRoot: false,
-              }),
-            ),
-            { concurrency: 'inherit', mode: 'default', batching: 'inherit' },
-          );
-          // const lastNodeEdge = yield* addEdgesForJSXElement(currentNode, childNodes);
-          // yield* Effect.log('LAST_EDGE_ADDED: ', lastNodeEdge);
-        } else {
-          // not every member is a graph node, remove the nodes
-          childNodes.forEach((_) => void Graph.removeNode(mutableGraph, _));
-          yield* Effect.log('DELETING_GRAPH_NODES: ', childNodes);
-          // // and if I return a layer, add a node for it
-          const nodeInfo = context.extractNodeInfo(currentNode);
-          yield* context.addNode(currentNode, nodeInfo);
-        }
-        // not every member is a graph node, remove the nodes
-        // jsxChilds.forEach((_) => void Graph.removeNode(mutableGraph, _));
-        // yield* Effect.log('DELETING_GRAPH_NODES: ', childNodes);
-        // and if I return a layer, add a node for it
-        // const nodeInfo = context.extractNodeInfo(currentNode);
-        // yield* context.addNode(currentNode, nodeInfo);
-      }
+    // Handle JSX element and self-closing element nodes
+    if (tsUtils.isJSXElementLike(currentNode)) {
+      yield* processJSXElementNode(currentNode, currentDepthBudget, context, tsUtils);
     }
   }
-  const sourceGraph = Graph.endMutation(mutableGraph);
 
+  const sourceGraph = Graph.endMutation(mutableGraph);
   return { sourceGraph };
 });
 
+/**
+ * Creates a lookup of JSX expressions keyed by their binding identifier
+ * This avoids repeated array searches during node visitation
+ */
+const createJSXExpressionStacks = (
+  context: any,
+  tsUtils: any,
+): Map<ts.Node, JSXExpressionStack> => {
+  const stackMap = new Map<ts.Node, JSXExpressionStack>();
+
+  for (const expression of context.state.jsxExpressions) {
+    const binding = expression.declarator;
+    const declarator = binding && tsUtils.getVariableNameExpression(binding);
+    const childNodes = getNodeChildren(expression.jsxElement, context, tsUtils);
+
+    const stack: JSXExpressionStack = {
+      binding,
+      declarator,
+      root: expression.jsxElement,
+      childs: childNodes,
+    };
+
+    if (binding) {
+      stackMap.set(binding, stack);
+    }
+  }
+
+  return stackMap;
+};
+
+/**
+ * Gets the child nodes of a given node, handling both JSX elements and bindings
+ */
+const getNodeChildren = (node: ts.Node, context: any, tsUtils: any): ts.Node[] => {
+  if (ts.Node.isJsxElement(node)) {
+    return tsUtils.getJSXElementChilds(node);
+  }
+  const binding = context.getJSXBinding(node);
+  if (binding) return [binding.jsxElement];
+  return [];
+};
+
+/**
+ * Processes an identifier node that may reference a JSX expression
+ * Handles both initial discovery and connection of graph nodes
+ */
+const processIdentifierNode = Effect.fn(function* (
+  currentNode: ts.Node,
+  currentDepthBudget: number,
+  jsxStacks: Map<ts.Node, JSXExpressionStack>,
+  context: any,
+) {
+  const stack = jsxStacks.get(currentNode);
+  if (!stack) return;
+
+  // First visit: mark as visited and queue the root element
+  if (!context.hasBeenVisited(currentNode)) {
+    context.appendNodeToVisit(currentNode, currentDepthBudget);
+    context.appendNodeToVisit(stack.root, currentDepthBudget);
+    context.addNodeInJSXRegistry(stack.root, currentDepthBudget + 1);
+    yield* context.markNodeAsVisited(currentNode);
+    return;
+  }
+
+  // Second visit: connect the identifier to its JSX element in the graph
+  yield* connectIdentifierToJSXElement(currentNode, stack, context);
+});
+
+/**
+ * Connects an identifier node to its JSX element children in the graph
+ * Validates that all expected children are present before creating connections
+ */
+const connectIdentifierToJSXElement = Effect.fn(function* (
+  identifierNode: ts.Node,
+  stack: JSXExpressionStack,
+  context: any,
+) {
+  const mutableGraph = context.state.mutableGraph;
+  const registeredIdent = context.getNodeGraph(identifierNode);
+
+  // Get all JSX children that have been added to the graph
+  const graphChildNodes = [stack.root]
+    .map((_) => context.getNodeGraph(_))
+    .filter(Predicate.isNumber)
+    .filter((_) => Graph.hasNode(mutableGraph, _));
+
+  // If all children are in the graph, create edges from identifier to children
+  if (graphChildNodes.length + 1 === stack.childs.length) {
+    const graphNode = yield* context.addNode(identifierNode);
+    yield* Effect.all(
+      graphChildNodes.map((childIndex) =>
+        context.addEdge(graphNode, childIndex, { relationship: 'declarator' }),
+      ),
+      { concurrency: 'inherit', mode: 'default', batching: 'inherit' },
+    );
+  } else {
+    // Not all children were added - clean up partial graph and create isolated node
+    graphChildNodes.forEach((_) => void Graph.removeNode(mutableGraph, _));
+    yield* Effect.log('DELETING_GRAPH_NODES: ', graphChildNodes);
+
+    const nodeInfo = context.extractNodeInfo(identifierNode);
+    const nodeGraph = yield* context.addNode(identifierNode, nodeInfo);
+    if (registeredIdent) {
+      yield* context.addEdge(nodeGraph, registeredIdent, { relationship: 'declarator' });
+    }
+  }
+});
+
+/**
+ * Processes a JSX element node, handling both initial discovery and connection
+ */
+const processJSXElementNode = Effect.fn(function* (
+  currentNode: ts.Node,
+  currentDepthBudget: number,
+  context: any,
+  tsUtils: any,
+) {
+  const jsxChilds = tsUtils.getJSXElementChilds(currentNode);
+
+  // First visit: mark as visited and queue child elements
+  if (!context.hasBeenVisited(currentNode)) {
+    context.appendNodeToVisit(currentNode, currentDepthBudget);
+    jsxChilds.forEach(
+      (child: ts.Node) => void context.appendNodeToVisit(child, currentDepthBudget),
+    );
+    jsxChilds.forEach(
+      (child: ts.Node) => void context.addNodeInJSXRegistry(child, currentDepthBudget),
+    );
+    yield* context.markNodeAsVisited(currentNode);
+    return;
+  }
+
+  // Second visit: connect the element to its children in the graph
+  yield* connectJSXElementToChildren(currentNode, jsxChilds, context);
+});
+
+/**
+ * Connects a JSX element to its child nodes in the graph
+ * Validates that all expected children are present before creating connections
+ */
+const connectJSXElementToChildren = Effect.fn(function* (
+  elementNode: ts.Node,
+  jsxChilds: ts.Node[],
+  context: any,
+) {
+  const mutableGraph = context.state.mutableGraph;
+
+  // Get all JSX children that have been added to the graph
+  const graphChildNodes = jsxChilds
+    .map((_) => context.getNodeGraph(_))
+    .filter(Predicate.isNumber)
+    .filter((_) => Graph.hasNode(mutableGraph, _));
+
+  // If all children are in the graph, create edges from element to children
+  if (graphChildNodes.length === jsxChilds.length) {
+    const graphNode = yield* context.addNode(elementNode);
+    yield* Effect.all(
+      graphChildNodes.map((childIndex) =>
+        context.addEdge(graphNode, childIndex, {
+          relationship: 'jsx',
+          index: elementNode.getChildIndex(),
+          isRoot: false,
+        }),
+      ),
+      { concurrency: 'inherit', mode: 'default', batching: 'inherit' },
+    );
+  } else {
+    // Not all children were added - clean up partial graph and create isolated node
+    graphChildNodes.forEach((_) => void Graph.removeNode(mutableGraph, _));
+    yield* Effect.log('DELETING_GRAPH_NODES: ', graphChildNodes);
+
+    const nodeInfo = context.extractNodeInfo(elementNode);
+    yield* context.addNode(elementNode, nodeInfo);
+  }
+});
+
+/**
+ * Creates a traversal context that maintains state during graph visitation
+ * Encapsulates node tracking, visitation queue, and graph mutations
+ */
 const createTraversalContext = Effect.fn(function* (
   source: ts.SourceFile,
   mutableGraph: TwinDslModels.MutableGraph,
   followSymbolsDepth: number,
 ) {
   const tsUtils = yield* TypescriptUtils;
+
+  // ==================== State Tracking ====================
+  // Track which nodes have been visited to avoid reprocessing
   const visitedNodes = new WeakSet<ts.Node>();
+  // Map nodes to their position in the JSX tree hierarchy
   const nodeInJSXTree = new WeakMap<ts.Node, Graph.NodeIndex>();
+  // Map nodes to their corresponding graph indices
   const nodeToGraph = new WeakMap<ts.Node, Graph.NodeIndex>();
+  // Track remaining depth budget for symbol following
   const depthBudget = new WeakMap<ts.Node, number>();
+  // Queue of nodes pending visitation
   const nodeToVisit: Array<ts.Node> = [];
 
+  // ==================== JSX Expression Discovery ====================
+  // Extract all JSX expressions from source statements
   const statements = source.getStatements();
   const jsxExpressions = statements
     .map((_) => tsUtils.getJSXElementStatement(_))
     .filter((x) => !!x);
 
+  const imports = source.getImportDeclarations();
+  console.log(imports.map((x) => x.compilerNode.kind));
+
+  // ==================== Debug & Introspection ====================
   const getNodeDetails = (node: ts.Node) => ({
     ...tsUtils.getNodeDebugDetails(node),
     nodeInJSXTree: nodeInJSXTree.get(node),
@@ -163,16 +268,32 @@ const createTraversalContext = Effect.fn(function* (
   });
 
   const debugStep = (stepName: string, node: ts.Node | undefined, data?: any) =>
-    Effect.logDebug(stepName, JSON.stringify(node ? getNodeDetails(node) : { step: stepName, data }));
+    Effect.logDebug(
+      stepName,
+      JSON.stringify(node ? getNodeDetails(node) : { step: stepName, data }),
+    );
 
+  // ==================== Node Enqueueing ====================
+  /**
+   * Adds a node to the visitation queue with the given depth budget
+   */
   const appendNodeToVisit = (node: ts.Node, nodeDepthBudget: number) => {
     depthBudget.set(node, nodeDepthBudget);
     nodeToVisit.push(node);
     return undefined;
   };
 
+  // ==================== JSX Expression Lookup ====================
+  /**
+   * Finds the JSX binding information for a given declarator node
+   */
   const getJSXBinding = (node: ts.Node) => jsxExpressions.find((x) => x.declarator === node);
 
+  // ==================== Node Information Extraction ====================
+  /**
+   * Extracts metadata from a node for graph representation
+   * Determines the display name based on parent context
+   */
   const extractNodeInfo = (node: ts.Node) => {
     let displayNode: ts.Node = node;
 
@@ -190,6 +311,10 @@ const createTraversalContext = Effect.fn(function* (
     return nodeGraph;
   };
 
+  // ==================== Graph Operations ====================
+  /**
+   * Adds a node to the graph and tracks its mapping
+   */
   const addNode = Effect.fn(function* (
     node: ts.Node,
     nodeInfo: TwinDslModels.NodeInfo | null = null,
@@ -203,14 +328,26 @@ const createTraversalContext = Effect.fn(function* (
     return graphNode;
   });
 
-  const markNodeAsVisited = (node: ts.Node) => {
-    visitedNodes.add(node);
-    return Effect.void;
-  };
+  /**
+   * Marks a node as visited to prevent reprocessing
+   */
+  const markNodeAsVisited = Effect.fn(function* (node: ts.Node) {
+    yield* Effect.sync(() => visitedNodes.add(node));
+  });
+
+  /**
+   * Checks if a node has already been visited
+   */
   const hasBeenVisited = (node: ts.Node) => visitedNodes.has(node);
+
+  /**
+   * Registers a node in the JSX hierarchy with its depth position
+   */
   const addNodeInJSXRegistry = (node: ts.Node, currentDepthBudget: number) =>
     nodeInJSXTree.set(node, currentDepthBudget);
 
+  // ==================== Initialization ====================
+  // Initialize the visitation queue with all JSX expression declarators
   const cached = yield* Effect.cached(
     Effect.sync(() =>
       jsxExpressions.forEach((_) => {
@@ -220,8 +357,21 @@ const createTraversalContext = Effect.fn(function* (
   );
   yield* cached;
 
+  // ==================== Queue Management ====================
+  /**
+   * Retrieves the depth budget allocated for a given node
+   */
   const getDepthBudgetFor = (node: ts.Node) => depthBudget.get(node)!;
+
+  /**
+   * Retrieves the graph index for a given node, if it exists
+   */
   const getNodeGraph = (node: ts.Node) => nodeToGraph.get(node);
+
+  /**
+   * Dequeues and returns the next node to process
+   * Logs the visitation event for debugging
+   */
   const getNextNode = () =>
     Effect.gen(function* () {
       const nextNode = nodeToVisit.pop()!;
@@ -235,6 +385,10 @@ const createTraversalContext = Effect.fn(function* (
       return nextNode;
     });
 
+  // ==================== Edge Creation ====================
+  /**
+   * Adds an edge between two graph nodes with relationship metadata
+   */
   const addEdge = Effect.fn(function* (from: number, to: number, data: TwinDslModels.EdgeInfo) {
     yield* debugStep('Adding Edge:', undefined, { from, to, data });
     return Graph.addEdge(mutableGraph, from, to, data);
@@ -245,8 +399,10 @@ const createTraversalContext = Effect.fn(function* (
     source.getImportDeclarations().map((x) => x.getText()),
   );
 
+  // ==================== Context Export ====================
+  // Return public API for node processing operations
   return {
-    state: { nodeToVisit, jsxExpressions },
+    state: { nodeToVisit, jsxExpressions, mutableGraph },
     addEdge,
     getNextNode,
     getNodeGraph,

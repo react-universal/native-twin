@@ -2491,6 +2491,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@effect/language-service@npm:^0.54.0":
+  version: 0.54.0
+  resolution: "@effect/language-service@npm:0.54.0"
+  bin:
+    effect-language-service: cli.js
+  checksum: 10/1f2f868a196440eb69caab21ab95602ca4f4e1f0b4d52dbafecc9eeeb7b3c03b46fa7a8d2d51cc40eb3b6f87e104923b79d22ff3561f3e4106bcc971e6469fa0
+  languageName: node
+  linkType: hard
+
 "@effect/platform-browser@npm:^0.72.0":
   version: 0.72.0
   resolution: "@effect/platform-browser@npm:0.72.0"
@@ -4667,6 +4676,7 @@ __metadata:
     "@babel/plugin-syntax-jsx": "npm:^7.23.3"
     "@babel/preset-typescript": "npm:7.23.3"
     "@ctrl/tinycolor": "npm:^4.1.0"
+    "@effect/language-service": "npm:^0.54.0"
     "@native-twin/arc-parser": "workspace:*"
     "@native-twin/cli": "workspace:*"
     "@native-twin/compiler": "workspace:*"
@@ -15782,6 +15792,7 @@ __metadata:
     "@changesets/cli": "npm:^2.27.9"
     "@effect/build-utils": "npm:^0.8.9"
     "@effect/experimental": "npm:^0.56.0"
+    "@effect/language-service": "npm:^0.54.0"
     "@effect/vitest": "npm:^0.26.0"
     "@rollup/plugin-typescript": "npm:^12.1.1"
     "@testing-library/react-native": "npm:^13.3.3"

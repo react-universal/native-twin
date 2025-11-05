@@ -3,7 +3,12 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "../../node_modules/@effect/language-service"
+      }
+    ]
   },
   "include": ["src", "tests/*"],
   "exclude": ["build", "tests/fixtures"]

@@ -9,22 +9,23 @@
     "noEmitOnError": false,
     "downlevelIteration": true,
     "removeComments": false,
-
     // Modules Config
     "module": "NodeNext",
-    "target": "ESNext",
+    "target": "ES2022",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2023", "ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "moduleDetection": "force",
     "esModuleInterop": false,
-    "types": ["node", "react-native", "jest", "vite/client"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": false,
     "checkJs": false,
-
     // Lint
     "strict": true,
     "strictFunctionTypes": true,
@@ -44,6 +45,5 @@
     "noUnusedParameters": false,
     "noUnusedLocals": true,
     "isolatedModules": true
-  },
-  "exclude": ["node_modules"]
+  }
 }

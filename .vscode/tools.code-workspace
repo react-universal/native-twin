@@ -103,7 +103,12 @@
       "**/dist": true
     },
     "editor.fontSize": 16,
-    "typescript.tsdk": "📦 @native-twin/language-service/root/node_modules/typescript/lib",
+    "typescript.tsdk": "../node_modules/typescript/lib",
+    "typescript.workspaceSymbols.scope": "allOpenProjects",
+    "typescript.check.npmIsInstalled": true,
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.suggest.includeAutomaticOptionalChainCompletions": true,
+    "typescript.suggest.classMemberSnippets.enabled": true,
     "cSpell.words": [
       "sastan",
       "TRBL",

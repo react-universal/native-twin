@@ -10,7 +10,7 @@ import * as Order from 'effect/Order';
 import * as SortedSet from 'effect/SortedSet';
 import type { InternalTwFn, InternalTwinConfig } from '../models/twin/native-twin.types';
 import { DEFAULT_RULE_META } from '../utils/constants.utils';
-import { TwinDslModels } from './models/TwinDsl.models';
+import { TwinDslModels } from './TwinDsl.models';
 
 const themeFlattenValuesCache = globalValue(
   Symbol.for('native-twin/stores/theme-values'),
