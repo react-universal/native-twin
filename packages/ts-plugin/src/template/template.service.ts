@@ -8,26 +8,20 @@ import StandardScriptSourceHelper from 'typescript-template-language-service-dec
 import { TSPluginService } from '../plugin/TSPlugin.service';
 import { getSourceMatchers, match } from '../utils/match';
 import { TemplateSourceHelperService } from './template.context';
-import { StandardTemplateContext, getValidTemplateNode } from './template.utils';
+import { getValidTemplateNode, StandardTemplateContext } from './template.utils';
 
 export const TemplateSourceHelperServiceLive = Layer.scoped(
   TemplateSourceHelperService,
   Effect.gen(function* ($) {
     const main = yield* $(TSPluginService);
     const sourceMatchers = getSourceMatchers(main.plugin.ts, main.plugin.config);
-    const helper = new StandardScriptSourceHelper(
-      main.plugin.ts,
-      main.plugin.info.project,
-    );
+    const helper = new StandardScriptSourceHelper(main.plugin.ts, main.plugin.info.project);
 
     return {
       helper,
       sourceMatchers,
       getRelativePosition(context, offset) {
-        const baseLC = helper.getLineAndChar(
-          context.fileName,
-          context.node.getStart() + 1,
-        );
+        const baseLC = helper.getLineAndChar(context.fileName, context.node.getStart() + 1);
         const cursorLC = helper.getLineAndChar(context.fileName, offset);
         return relative(baseLC, cursorLC);
       },

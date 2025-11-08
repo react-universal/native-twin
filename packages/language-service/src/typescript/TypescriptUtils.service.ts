@@ -83,6 +83,7 @@ const make = Effect.gen(function* () {
     if (ts.Node.hasName(node)) {
       name = node.getName();
     }
+    name = getJSXNodeTagName(node)?.getText() ?? node.print();
     if (ts.Node.isJsxSelfClosingElement(node)) {
       name = node.compilerNode.tagName.getText();
     }
@@ -135,11 +136,52 @@ const make = Effect.gen(function* () {
     const jsxConfig = mappedComponents.find((x) => x.name === name);
     const props = Object.entries(jsxConfig?.config ?? {});
     const attributes = getJSXElementAttributes(node).filter((x) => ts.Node.isJsxAttribute(x));
-    return props.flatMap(([prop, target]) =>
+    return props.flatMap(([classProp, styleProp]) =>
       attributes
-        .filter((attr) => attr.getNameNode().getText() === prop)
-        .map((attr) => ({ prop, target, value: attr })),
+        .filter((attr) => attr.getNameNode().getText() === classProp)
+        .map((attr) => {
+          return { classProp, styleProp, node: attr, value: getJSXAttributeValue(attr) };
+        }),
     );
+  };
+
+  const getJSXAttributeValue = (node: ts.JsxAttribute) => {
+    const initializer = node.getInitializer();
+    if (!initializer) return null;
+    if (ts.Node.isStringLiteral(initializer)) {
+      return { literal: initializer.getLiteralValue(), expressions: [] };
+    }
+    if (ts.Node.isJsxExpression(initializer)) {
+      const expression = initializer.getExpression();
+      if (!expression) return null;
+      if (ts.Node.isStringLiteral(expression)) {
+        return { literal: expression.getLiteralValue(), expressions: [] };
+      }
+      if (ts.Node.isNoSubstitutionTemplateLiteral(expression)) {
+        return { literal: expression.getLiteralText(), expressions: [] };
+      }
+      // if (ts.Node.istempla)
+      if (ts.Node.isTemplateExpression(expression)) {
+        const literals = [expression.getHead().getLiteralText()];
+        const expressions: ts.Expression[] = [];
+        for (const span of expression.getTemplateSpans()) {
+          const literal = span.getLiteral();
+          if (ts.Node.isTemplateMiddle(literal)) {
+            literals.push(literal.compilerNode.text);
+          } else {
+            literals.push(literal.compilerNode.text);
+          }
+          const expression = span.getExpression();
+          expressions.push(expression);
+        }
+        // const replacements = expression.getTemplateSpans().map((x) => {
+        //   const literal = x.getLiteral().getLiteralText();
+        //   return { replacement: x.getExpression().getText(), literal };
+        // });
+        return { literal: literals.map((x) => x.trim()).join(' '), expressions };
+      }
+    }
+    return null;
   };
 
   return yield* Effect.succeed({

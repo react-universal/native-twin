@@ -13,11 +13,7 @@
     "module": "NodeNext",
     "target": "ES2022",
     "moduleResolution": "NodeNext",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "moduleDetection": "force",
     "esModuleInterop": false,
     "skipLibCheck": true,
@@ -37,13 +33,38 @@
     "forceConsistentCasingInFileNames": true,
     "allowUnreachableCode": false,
     "noImplicitReturns": false,
-    "exactOptionalPropertyTypes": false,
+    "exactOptionalPropertyTypes": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noImplicitOverride": true,
     "noErrorTruncation": false,
     "noUnusedParameters": false,
     "noUnusedLocals": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "@effect/language-service",
+        "namespaceImportPackages": [
+          "@native-twin/adapters",
+          "@native-twin/arc-parser",
+          "@native-twin/babel",
+          "@native-twin/builder",
+          "@native-twin/compiler",
+          "@native-twin/css",
+          "@native-twin/dev-tools",
+          "@native-twin/helpers",
+          "@native-twin/jsx",
+          "@native-twin/language-server",
+          "@native-twin/language-service",
+          "@native-twin/metro",
+          "@native-twin/core",
+          "@native-twin/preset-tailwind",
+          "@native-twin/styled",
+          "@native-twin/ts-plugin",
+          "@native-twin/vite-plugin",
+          "@native-twin/vscode-extension",
+        ]
+      }
+    ]
   }
 }

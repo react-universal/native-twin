@@ -11,7 +11,7 @@ import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import type * as HashSet from 'effect/HashSet';
 
 export type InternalTwinConfig = TailwindConfig<__Theme__ & TailwindPresetTheme>;
-export type InternalTwFn = RuntimeTW<TailwindPresetTheme, SheetEntry[]>;
+export type InternalTwFn = RuntimeTW<InternalTwinConfig['theme'], SheetEntry[]>;
 export type InternalTwinThemeContext = ThemeContext<TailwindPresetTheme>;
 
 export interface TwinStore {

@@ -1,4 +1,7 @@
 import { Layer } from 'effect';
-import { TypescriptApiLive, TypescriptUtilsLive } from '../../src/TS';
+import { TwinGraphLive, TypescriptApiLive, TypescriptUtilsLive } from '../../src/TS';
 
-export const TestLayer = Layer.mergeAll(TypescriptApiLive, TypescriptUtilsLive);
+export const TestLayer = TypescriptApiLive.pipe(
+  Layer.provideMerge(TwinGraphLive),
+  Layer.provideMerge(TypescriptUtilsLive),
+);

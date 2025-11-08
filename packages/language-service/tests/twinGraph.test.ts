@@ -3,7 +3,7 @@ import path from 'path';
 import ts from 'ts-morph';
 import { inspect } from 'util';
 import { describe, expect, test } from 'vitest';
-import { extractSourceFileGraph, TypescriptUtils } from '../src/TS';
+import { TwinGraph, TypescriptUtils } from '../src/TS';
 import { TypescriptApi } from '../src/typescript/TypescriptApi';
 import { TwinLogger } from '../src/utils/lsp.logger.service';
 import { TestLayer } from './dsl';
@@ -17,7 +17,12 @@ describe('twin graph extractor', () => {
     await Effect.gen(function* () {
       const tsAPI = yield* TypescriptApi;
       const tsUtils = yield* TypescriptUtils;
-      const compiler = yield* tsAPI.tsProject;
+      const graph = yield* TwinGraph;
+      const compiler = tsAPI.tsProject;
+
+      // const fP = path.join(__dirname, 'fixtures/react', 'Component.tsx');
+      // const file1 = compiler.getSourceFile(fP);
+      // console.log(fP, file1);
       const outFile = compiler.createSourceFile(
         path.join('../src/out-file.tsx'),
         `
@@ -34,34 +39,36 @@ describe('twin graph extractor', () => {
             const a = () => {
             const [state,dispatch] = useState();
             return (
-              <View>
-              <Text className={'bg-rose-700 bg-blue bg-black text(sm md:gray)'} />
-              <View>
-              <Text className={'bg-rose-700 bg-blue bg-black text(sm md:gray)'} />
+              <View className="bg-gray">
+                <Text className={'bg-rose-700 bg-blue bg-black text(sm md:gray)'} />
+                <View className={\`bg-raw\`}>
+                <Text className={\`bg-raw2222 \${state} raw-3333\`} />
+                  <Text className={'bg-rose-700 bg-blue bg-black text(sm md:gray)'} />
+                </View>
               </View>
-            </View>
             )},
       `,
         { overwrite: true, scriptKind: ts.ScriptKind.TSX },
       );
       compiler.addSourceFileAtPath(source.getFilePath());
-      const { sourceGraph } = yield* extractSourceFileGraph(source, 0);
+      const { sourceGraph } = yield* graph.extractSourceFileGraph(source, 0);
 
       const graphViz = Graph.toGraphViz(sourceGraph, {
         edgeLabel: (x) =>
           inspect(x.relationship, { colors: false, depth: null, breakLength: Infinity }),
         graphName: 'SourceFile',
         nodeLabel: (x) => {
-          let name: string | null;
-          const jsxTagName = tsUtils.getJSXNodeTagName(x.node);
-          if (jsxTagName) {
-            name = jsxTagName.getText();
-          } else {
-            name = x.node.print();
-          }
           return inspect(
-            { kind: x.displayNode.getKindName(), node: name },
-            { colors: false, depth: null, breakLength: Infinity },
+            {
+              ...tsUtils.getNodeDebugDetails(x.node),
+              isRoot: x.isRoot,
+              props: x.mappedProps.map(({ classProp, styleProp, value }) => ({ classProp, styleProp, value })),
+            },
+            {
+              colors: false,
+              depth: null,
+              breakLength: Infinity,
+            },
           );
         },
       });

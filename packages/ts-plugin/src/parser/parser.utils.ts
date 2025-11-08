@@ -1,11 +1,11 @@
-import { type ThemeContext, convert } from '@native-twin/core';
+import { convert, type ThemeContext } from '@native-twin/core';
 import {
   type ArbitraryToken,
   type ClassNameToken,
   Layer as CssLayer,
-  type VariantClassToken,
   moveToLayer,
   parsedRuleToClassName,
+  type VariantClassToken,
 } from '@native-twin/css';
 import type {
   LocatedGroupTokenWithText,
@@ -15,9 +15,7 @@ import type {
   TemplateTokenWithText,
 } from '../template/template.types';
 
-export const classNameTokenToRule = (
-  token: LocatedParser<ClassNameToken>,
-): LocatedParsedRule => ({
+export const classNameTokenToRule = (token: LocatedParser<ClassNameToken>): LocatedParsedRule => ({
   n: token.value.n,
   v: [],
   i: token.value.i,
@@ -27,9 +25,7 @@ export const classNameTokenToRule = (
   type: token.type,
 });
 
-export const arbitraryTokenToRule = (
-  token: LocatedParser<ArbitraryToken>,
-): LocatedParsedRule => ({
+export const arbitraryTokenToRule = (token: LocatedParser<ArbitraryToken>): LocatedParsedRule => ({
   n: token.value,
   v: [],
   i: false,
@@ -169,11 +165,9 @@ export function locatedParsedRuleLocatedSheetEntry(
       animations: [],
     };
   }
-  if (context.mode === 'web') {
+  if (rule.v.includes('web')) {
     if (
-      (rule.v.includes('ios') ||
-        rule.v.includes('android') ||
-        rule.v.includes('native')) &&
+      (rule.v.includes('ios') || rule.v.includes('android') || rule.v.includes('native')) &&
       !rule.v.includes('web')
     ) {
       return {
@@ -202,7 +196,7 @@ export function locatedParsedRuleLocatedSheetEntry(
       animations: [],
     };
   }
-  const newRule = context.mode === 'web' ? convert(rule, context, CssLayer.u) : rule;
+  const newRule = rule.v.includes('web') ? convert(rule, context, CssLayer.u) : rule;
   result.selectors = newRule.v;
   result.precedence = moveToLayer(CssLayer.u, newRule.p);
   return { ...result, loc: rule.loc };

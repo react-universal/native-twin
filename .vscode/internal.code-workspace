@@ -136,7 +136,7 @@
     "files.exclude": {
       ".turbo": true
     },
-    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "typescript.tsdk": "../node_modules/typescript/lib",
     "typescript.tsserver.log": "off",
     "editor.defaultFormatter": "biomejs.biome",
     "editor.codeActionsOnSave": {
@@ -147,6 +147,8 @@
       "editor.defaultFormatter": "biomejs.biome"
     },
     "vitest.ignoreWorkspace": false,
+    "vitest.disableWorkspaceWarning": true,
+    "vitest.workspaceConfig": "./vitest.workspace.ts",
     "jestrunner.include": [
       "packages/jsx/*",
       "📦 @lib/jsx"
