@@ -8,7 +8,7 @@ import ts from 'ts-morph';
 import { TSCompilerDefaultOptions } from '../utils/constants.utils';
 
 const make = Effect.gen(function* () {
-  const configPath = yield* Config.string('config').pipe(
+  const configPath = yield* Config.string('tsConfigPath').pipe(
     Config.withDefault(path_.join(process.cwd(), 'tsconfig.json')),
   );
   const tsConfig = yield* Effect.sync(() => {

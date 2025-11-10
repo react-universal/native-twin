@@ -1,6 +1,6 @@
 import type { RuleMeta } from '@native-twin/core';
-import { type TWScreenValueConfig, cornerMap, directionMap } from '@native-twin/css';
-import { type ColorsRecord, asArray } from '@native-twin/helpers';
+import { cornerMap, directionMap, type TWScreenValueConfig } from '@native-twin/css';
+import { asArray, type ColorsRecord } from '@native-twin/helpers';
 import { DEFAULT_RULE_META } from '../utils/constants.utils';
 import type {
   InternalNativeTwinRule,
@@ -41,10 +41,7 @@ export const createRuleCompositions = (rule: InternalNativeTwinRule) => {
   return compositions.map((composition) => ({ composition, parts }));
 };
 
-export const createRuleComposer = (ruleInfo: {
-  pattern: string;
-  feature: RuleMeta['feature'];
-}) => {
+export const createRuleComposer = (ruleInfo: { pattern: string; feature: RuleMeta['feature'] }) => {
   const composer = composeClassName(ruleInfo.pattern);
   let mapper: Record<string, string[]> = {};
 

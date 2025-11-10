@@ -5,7 +5,6 @@ import { inspect } from 'util';
 import { describe, expect, test } from 'vitest';
 import { TwinGraph, TypescriptUtils } from '../src/TS';
 import { TypescriptApi } from '../src/typescript/TypescriptApi';
-import { TwinLogger } from '../src/utils/lsp.logger.service';
 import { TestLayer } from './dsl';
 
 const configProvider = ConfigProvider.fromJson({
@@ -20,9 +19,6 @@ describe('twin graph extractor', () => {
       const graph = yield* TwinGraph;
       const compiler = tsAPI.tsProject;
 
-      // const fP = path.join(__dirname, 'fixtures/react', 'Component.tsx');
-      // const file1 = compiler.getSourceFile(fP);
-      // console.log(fP, file1);
       const outFile = compiler.createSourceFile(
         path.join('../src/out-file.tsx'),
         `
@@ -62,7 +58,11 @@ describe('twin graph extractor', () => {
             {
               ...tsUtils.getNodeDebugDetails(x.node),
               isRoot: x.isRoot,
-              props: x.mappedProps.map(({ classProp, styleProp, value }) => ({ classProp, styleProp, value })),
+              props: x.mappedProps.map(({ classProp, styleProp, value }) => ({
+                classProp,
+                styleProp,
+                value: value?.literal,
+              })),
             },
             {
               colors: false,
@@ -72,7 +72,7 @@ describe('twin graph extractor', () => {
           );
         },
       });
-      console.debug('GRAPH_VIZ', graphViz);
+      // console.debug('GRAPH_VIZ', graphViz);
       yield* Effect.promise(() =>
         expect(graphViz).toMatchFileSnapshot(path.join(__dirname, '__snapshots__', 'base.dot')),
       );
@@ -82,7 +82,6 @@ describe('twin graph extractor', () => {
       Effect.provide(TestLayer),
       Effect.catchAll((error) => Effect.log(error)),
       Effect.withConfigProvider(configProvider),
-      Effect.provide(TwinLogger),
       Effect.runPromise,
     );
   }, 10000);

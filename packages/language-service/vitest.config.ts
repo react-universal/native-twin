@@ -4,6 +4,8 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     workspace: path.join(__dirname, '../../vitest.workspace.ts'),
-    root: __dirname
+    disableConsoleIntercept: true,
+    root: __dirname,
+    logHeapUsage: true
   },
 });

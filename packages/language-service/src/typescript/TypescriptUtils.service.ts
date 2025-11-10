@@ -1,5 +1,5 @@
 import { mappedComponents } from '@native-twin/compiler';
-import { asArray } from '@native-twin/helpers';
+import { cx } from '@native-twin/core';
 import * as Array from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -8,6 +8,7 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
+import type { TwinDslModels } from './TwinDsl.models';
 
 const make = Effect.gen(function* () {
   const isFunction = (node: ts.Node) =>
@@ -30,7 +31,6 @@ const make = Effect.gen(function* () {
   };
 
   const getJSXElementStatement = (node: ts.Statement) => {
-    if (node.isKind(ts.SyntaxKind.JsxElement)) return { jsxElement: node };
     if (ts.Node.isVariableStatement(node)) {
       const declarations = node.getDeclarations();
       for (const declaration of declarations) {
@@ -50,18 +50,6 @@ const make = Effect.gen(function* () {
     return null;
   };
 
-  const getJSXElementStructure = (node: ts.Structure): ts.JsxElementStructure | null => {
-    if (!ts.Structure.isJsxElement(node)) return null;
-
-    return {
-      kind: node.kind,
-      name: node.name,
-      bodyText: node.bodyText,
-      attributes: asArray(node.attributes),
-      children: asArray(node.children),
-    };
-  };
-
   const getJSXElementChilds = (node: ts.Node) =>
     pipe(
       node.asKind(ts.SyntaxKind.JsxElement) ?? node.asKind(ts.SyntaxKind.JsxSelfClosingElement),
@@ -69,6 +57,32 @@ const make = Effect.gen(function* () {
       Array.flatMap((el) => (ts.Node.isJsxElement(el) ? el.getJsxChildren() : el.getChildren())),
       Array.filter((el) => ts.Node.isJsxElement(el) || ts.Node.isJsxSelfClosingElement(el)),
     );
+
+  const getTwinJSXNode = (
+    node: TwinDslModels.AnyJSXElement,
+    jsxParent: TwinDslModels.JSXNode | null = null,
+  ): Effect.Effect<TwinDslModels.JSXNode> =>
+    Effect.gen(function* () {
+      const tagName = getJSXNodeTagName(node).getText();
+      const id = getJSXNodeTagName(node)
+        .getText()
+        .concat(jsxParent?.id ?? '');
+      const result: TwinDslModels.JSXNode = {
+        _tag: 'JSXNode',
+        id,
+        childs: [],
+        index: node.getChildIndex(),
+        node,
+        styledProps: getJSXMappedProps(node),
+        tagName,
+        parent: jsxParent,
+      };
+      result.childs = yield* Effect.suspend(() =>
+        Effect.all(getJSXElementChilds(node).map((_) => getTwinJSXNode(_, result))),
+      );
+
+      return result;
+    });
 
   const extractSourceInfo = (source: ts.SourceFile) => {
     const exports = source.getExportDeclarations();
@@ -83,7 +97,9 @@ const make = Effect.gen(function* () {
     if (ts.Node.hasName(node)) {
       name = node.getName();
     }
-    name = getJSXNodeTagName(node)?.getText() ?? node.print();
+    if (isJSXElementLike(node)) {
+      name = getJSXNodeTagName(node)?.getText() ?? node.print();
+    }
     if (ts.Node.isJsxSelfClosingElement(node)) {
       name = node.compilerNode.tagName.getText();
     }
@@ -106,7 +122,7 @@ const make = Effect.gen(function* () {
         ? node
         : undefined;
 
-  const getJSXNodeTwinInfo = (node: ts.Node) => {
+  const getJSXNodeTwinInfo = (node: TwinDslModels.AnyJSXElement) => {
     const tagName = getJSXNodeTagName(node);
     const childs = getJSXElementChilds(node);
     const dependencies = getNodeDependencies(node);
@@ -117,10 +133,9 @@ const make = Effect.gen(function* () {
   const isJSXElementLike = (node: ts.Node) =>
     Predicate.or(ts.Node.isJsxElement, ts.Node.isJsxSelfClosingElement)(node);
 
-  const getJSXNodeTagName = (node: ts.Node) => {
+  const getJSXNodeTagName = (node: TwinDslModels.AnyJSXElement) => {
     if (ts.Node.isJsxElement(node)) return node.getOpeningElement().getTagNameNode();
-    if (ts.Node.isJsxSelfClosingElement(node)) return node.getTagNameNode();
-    return null;
+    return node.getTagNameNode();
   };
 
   const getJSXElementAttributes = (node: ts.Node) => {
@@ -129,7 +144,7 @@ const make = Effect.gen(function* () {
     return [];
   };
 
-  const getJSXMappedProps = (node: ts.Node) => {
+  const getJSXMappedProps = (node: TwinDslModels.AnyJSXElement): TwinDslModels.NodeStyledProp[] => {
     const tagName = getJSXNodeTagName(node);
     if (!tagName) return [];
     const name = tagName.getText();
@@ -138,29 +153,34 @@ const make = Effect.gen(function* () {
     const attributes = getJSXElementAttributes(node).filter((x) => ts.Node.isJsxAttribute(x));
     return props.flatMap(([classProp, styleProp]) =>
       attributes
-        .filter((attr) => attr.getNameNode().getText() === classProp)
-        .map((attr) => {
-          return { classProp, styleProp, node: attr, value: getJSXAttributeValue(attr) };
-        }),
+        .filter((node) => node.getNameNode().getText() === classProp)
+        .map(
+          (node): TwinDslModels.NodeStyledProp => ({
+            _tag: 'NodeStyledProp',
+            classProp,
+            styleProp,
+            node,
+            value: getJSXAttributeValue(node),
+          }),
+        ),
     );
   };
 
-  const getJSXAttributeValue = (node: ts.JsxAttribute) => {
+  const getJSXAttributeValue = (node: ts.JsxAttribute): TwinDslModels.NodeStyledProp['value'] => {
     const initializer = node.getInitializer();
     if (!initializer) return null;
     if (ts.Node.isStringLiteral(initializer)) {
-      return { literal: initializer.getLiteralValue(), expressions: [] };
+      return { literal: cx`${initializer.getLiteralValue()}`, expression: null };
     }
     if (ts.Node.isJsxExpression(initializer)) {
       const expression = initializer.getExpression();
       if (!expression) return null;
       if (ts.Node.isStringLiteral(expression)) {
-        return { literal: expression.getLiteralValue(), expressions: [] };
+        return { literal: cx`${expression.getLiteralValue()}`, expression: null };
       }
       if (ts.Node.isNoSubstitutionTemplateLiteral(expression)) {
-        return { literal: expression.getLiteralText(), expressions: [] };
+        return { literal: cx`${expression.getLiteralText()}`, expression: null };
       }
-      // if (ts.Node.istempla)
       if (ts.Node.isTemplateExpression(expression)) {
         const literals = [expression.getHead().getLiteralText()];
         const expressions: ts.Expression[] = [];
@@ -174,11 +194,7 @@ const make = Effect.gen(function* () {
           const expression = span.getExpression();
           expressions.push(expression);
         }
-        // const replacements = expression.getTemplateSpans().map((x) => {
-        //   const literal = x.getLiteral().getLiteralText();
-        //   return { replacement: x.getExpression().getText(), literal };
-        // });
-        return { literal: literals.map((x) => x.trim()).join(' '), expressions };
+        return { literal: cx`${literals.map((x) => x.trim()).join(' ')}`, expression };
       }
     }
     return null;
@@ -189,9 +205,9 @@ const make = Effect.gen(function* () {
     getNodeDependencies,
     getNodeDebugDetails,
     getJSXElementStatement,
+    getTwinJSXNode,
     getVariableNameExpression,
     getJSXElementChilds,
-    getJSXElementStructure,
     extractSourceInfo,
     getNodeSourceFile,
     findNodeAtOffset,

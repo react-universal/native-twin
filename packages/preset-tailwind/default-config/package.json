@@ -1,0 +1,5 @@
+{
+  "main": "../build/cjs/defaultConfig.ts",
+  "module": "../build/esm/defaultConfig.ts",
+  "types": "../build/dts/defaultConfig.d.ts"
+}

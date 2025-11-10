@@ -32,6 +32,11 @@
       "types": "./build/dts/tailwind-theme/colors.d.ts",
       "import": "./build/esm/tailwind-theme/colors.js",
       "default": "./build/cjs/tailwind-theme/colors.js"
+    },
+    "./default-config": {
+      "types": "./build/dts/defaultConfig.d.ts",
+      "import": "./build/esm/defaultConfig.js",
+      "default": "./build/cjs/defaultConfig.js"
     }
   },
   "main": "./build/cjs/index.js",

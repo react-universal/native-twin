@@ -16,7 +16,7 @@ const scopeTextConfig = pipe(
   apply(Ansi.blackBright),
   Ansi.combine(Ansi.bold),
 );
-const fiberText = Ansi.combine(Ansi.white)(Ansi.bgWhiteBright);
+const fiberText = Ansi.combine(Ansi.black)(Ansi.bgWhiteBright);
 const messageConfig = Ansi.color(AnsiColor.white);
 
 const getMessageColor = (logLevel: LogLevel.LogLevel) => {
@@ -25,10 +25,8 @@ const getMessageColor = (logLevel: LogLevel.LogLevel) => {
       return Ansi.blue;
     case LogLevel.Error:
       return Ansi.redBright;
-    case LogLevel.Info:
-      return Ansi.whiteBright;
     default:
-      return Ansi.blackBright;
+      return Ansi.green;
   }
 };
 
@@ -97,4 +95,5 @@ export const loggerUtils = {
   scopeTextConfig,
 };
 
-export const TwinLogger = Logger.replaceScoped(Logger.defaultLogger, Effect.succeed(createLspLogger('LSP')));
+export const createTwinLoggerLayerFor = (scope: string) =>
+  Logger.replaceScoped(Logger.defaultLogger, Effect.succeed(createLspLogger(scope)));

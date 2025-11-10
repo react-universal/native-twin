@@ -44,7 +44,8 @@
     "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "lint": "biome lint",
-    "test": "npx vitest",
+    "test": "NODE_OPTIONS='--no-experimental-detect-module' VITE_CJS_IGNORE_WARNING=true npx vitest --no-isolate",
+    "bench": "NODE_OPTIONS='--no-experimental-detect-module' VITE_CJS_IGNORE_WARNING=true npx vitest bench --no-isolate",
     "vscode:dev": "tsc -p tsconfig.build.json --watch"
   },
   "dependencies": {

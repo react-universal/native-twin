@@ -13,7 +13,7 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
   readonly source: string;
   readonly severity: vscode.DiagnosticSeverity;
   readonly tags: vscode.DiagnosticTag[];
-  readonly codeDescription?: vscode.CodeDescription | undefined;
+  readonly codeDescription?: vscode.CodeDescription;
 
   constructor(data: {
     range: vscode.Range;

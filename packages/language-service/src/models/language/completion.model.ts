@@ -15,7 +15,7 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
   readonly kind: vscode.CompletionItemKind;
   readonly filterText: string;
   readonly sortText: string;
-  readonly detail: string | undefined;
+  readonly detail: string;
   readonly labelDetails: vscode.CompletionItemLabelDetails;
   insertText: string;
   readonly insertTextFormat: vscode.InsertTextFormat;
@@ -33,7 +33,7 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
       this.kind = getCompletionTokenKind(data);
       this.filterText = completion.className;
       this.sortText = order.toString().padStart(8, '0');
-      this.detail = getCompletionEntryDetailsDisplayParts(data)?.text;
+      this.detail = getCompletionEntryDetailsDisplayParts(data)?.text ?? '__';
       this.labelDetails = {
         description: completion.declarations.join(','),
       };
@@ -50,7 +50,7 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
       this.filterText = name;
       this.label = name;
       this.sortText = index.toString().padStart(8, '0');
-      this.detail = undefined;
+      this.detail = '__';
       this.labelDetails = {
         description: '',
       };

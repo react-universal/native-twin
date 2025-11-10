@@ -21,12 +21,11 @@ const config: ViteUserConfig = {
     fakeTimers: {
       toFake: undefined,
     },
-    onConsoleLog: (input,type) => {
-      console.debug('ON_CONSOLE',type,input)
-    },
-    sequence: {
-      concurrent: true,
-    },
+    logHeapUsage: true,
+    // printConsoleTrace: true,
+    // sequence: {
+    //   concurrent: true,
+    // },
     include: ['test/**/*.test.ts','tests/**/*.test.ts'],
   },
 };

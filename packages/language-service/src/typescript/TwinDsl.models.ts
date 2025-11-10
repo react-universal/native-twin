@@ -1,24 +1,46 @@
-import {
-  type __Theme__,
-  type Rule,
-  type RuleMeta,
-  type RuleResolver,
-  type RuntimeTW,
-  StyleSheetAdapter,
-  type TwinRuntimeContext,
-  tw,
-  type Variant,
-  type VariantResolver,
-} from '@native-twin/core';
-import type { CompleteStyle, SheetEntry } from '@native-twin/css';
-import type { RuntimeSheetDeclaration } from '@native-twin/css/jsx';
-import type { MaybeArray } from '@native-twin/helpers';
+import type { Rule, RuleMeta, RuleResolver, Variant, VariantResolver } from '@native-twin/core';
 import * as Data from 'effect/Data';
 import type * as Graph from 'effect/Graph';
 import type ts from 'ts-morph';
 import type { InternalTwinConfig } from '../models/twin/native-twin.types';
 
 export namespace TwinDslModels {
+  export interface TwinSourceFile {
+    readonly _tag: 'TwinSourceFile';
+    jsxDeclarators: NodeJSXDeclarator[];
+    node: ts.SourceFile;
+  }
+
+  export interface NodeStyledProp {
+    readonly _tag: 'NodeStyledProp';
+    node: ts.JsxAttribute;
+    classProp: string;
+    styleProp: string;
+    value: { literal: string; expression: ts.Expression | null } | null;
+  }
+
+  export interface JSXNode {
+    readonly _tag: 'JSXNode';
+    id: string;
+    tagName: string;
+    node: AnyJSXElement;
+    index: number;
+    styledProps: NodeStyledProp[];
+    childs: JSXNode[];
+    parent: JSXNode | null;
+  }
+
+  export interface NodeJSXDeclarator {
+    readonly _tag: 'NodeJSXDeclarator';
+    node: ts.Node;
+    identifier: string;
+    binding: ts.BindingName;
+    filename: string;
+    jsxElement: JSXNode;
+  }
+
+  export type TwinNode = NodeStyledProp | JSXNode | NodeJSXDeclarator;
+
   export type TwinVariantNode = Data.TaggedEnum<{
     Literal: { pattern: Variant[0]; value: string };
     Resolver: { pattern: Variant[0]; value: VariantResolver };
@@ -43,12 +65,15 @@ export namespace TwinDslModels {
   export interface ExpandedRule {
     className: string;
     meta: RuleMeta;
+    key: string;
     value: any;
   }
 
   export const TwinVariantNode = Data.taggedEnum<TwinDslModels.TwinVariantNode>();
 
   export const TwinRuleNode = Data.taggedEnum<TwinDslModels.TwinRuleNode>();
+
+  export type AnyJSXElement = ts.JsxElement | ts.JsxSelfClosingElement;
 }
 
 export namespace TwinGraphModel {
@@ -73,17 +98,13 @@ export namespace TwinGraphModel {
     from: string;
     node: ts.Structures;
   }
+
   export interface NodeInfo {
     node: ts.Node;
     identifier: string;
     isRoot: boolean;
     index: number;
-    mappedProps: {
-      classProp: string;
-      styleProp: string;
-      node: ts.JsxAttribute;
-      value: { literal: string; expressions: ts.Expression[] } | null;
-    }[];
+    mappedProps: TwinDslModels.JSXNode['styledProps'];
   }
 
   export type EdgeInfo =
@@ -94,13 +115,61 @@ export namespace TwinGraphModel {
   export type MutableGraph = Graph.MutableGraph<NodeInfo, EdgeInfo, 'directed'>;
 }
 
-export class TwinTSAdapter extends StyleSheetAdapter {
-  twinFn: RuntimeTW<__Theme__, unknown> = tw;
-  runtimeContext: TwinRuntimeContext = {} as TwinRuntimeContext;
-  toRuntimeDecls(_entries: SheetEntry[]): RuntimeSheetDeclaration[] {
-    return [];
-  }
-  toNativeStyles(_entries: SheetEntry[]): MaybeArray<CompleteStyle> {
-    return [];
-  }
-}
+// class TrieNode<SomeShit> {
+//   children = new Map<string, TrieNode<SomeShit>>();
+//   isEndWord: boolean;
+//   value: SomeShit | null;
+//   constructor(value: SomeShit | null = null) {
+//     this.isEndWord = false;
+//     this.value = value;
+//   }
+// }
+
+// export class Trie<SomeShit> {
+//   root: TrieNode<SomeShit>;
+//   constructor() {
+//     this.root = new TrieNode<SomeShit>();
+//   }
+
+//   insert(word: string, data: SomeShit) {
+//     let currentNode = this.root;
+//     for (const char of word) {
+//       if (!currentNode.children.has(char)) {
+//         currentNode.children.set(char, new TrieNode<SomeShit>(data));
+//       }
+//       currentNode = currentNode.children.get(char)!;
+//     }
+//     currentNode.isEndWord = true;
+//   }
+
+//   get(word: string) {
+//     let currentNode = this.root;
+//     for (const char of word) {
+//       if (!currentNode.children.has(char)) return false;
+//       currentNode = currentNode.children.get(char)!;
+//     }
+//     return currentNode.value;
+//   }
+
+//   search(word: string, isPrefix = false): boolean {
+//     let currentNode = this.root;
+//     for (const char of word) {
+//       if (!currentNode.children.has(char)) return false;
+//       currentNode = currentNode.children.get(char)!;
+//     }
+//     return isPrefix || currentNode.isEndWord;
+//   }
+
+//   startsWith(prefix: string) {
+//     return this.search(prefix, true);
+//   }
+// }
+
+// const trie = new Trie<string>();
+
+// trie.insert('a1', '1a');
+// trie.insert('a2', '2a');
+
+// trie.search('a1'); // ?
+
+// trie.get('a'); // ?
