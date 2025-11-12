@@ -1,8 +1,8 @@
+import { describe, expect, it } from '@effect/vitest';
 import { ConfigProvider, Effect, Graph } from 'effect';
 import path from 'path';
 import ts from 'ts-morph';
 import { inspect } from 'util';
-import { describe, expect, test } from 'vitest';
 import { TwinGraph, TypescriptUtils } from '../src/TS';
 import { TypescriptApi } from '../src/typescript/TypescriptApi';
 import { TestLayer } from './dsl';
@@ -12,8 +12,8 @@ const configProvider = ConfigProvider.fromJson({
 });
 
 describe('twin graph extractor', () => {
-  test('test extractor ', async () => {
-    await Effect.gen(function* () {
+  it.effect('test extractor ', () =>
+    Effect.gen(function* () {
       const tsAPI = yield* TypescriptApi;
       const tsUtils = yield* TypescriptUtils;
       const graph = yield* TwinGraph;
@@ -82,7 +82,6 @@ describe('twin graph extractor', () => {
       Effect.provide(TestLayer),
       Effect.catchAll((error) => Effect.log(error)),
       Effect.withConfigProvider(configProvider),
-      Effect.runPromise,
-    );
-  }, 10000);
+    ),
+  );
 });

@@ -98,11 +98,11 @@ export namespace TwinParserModel {
       meta: NonNullable<Rule[3]>;
     };
   }>;
+
+  export const TwinVariantNode = Data.taggedEnum<TwinParserModel.TwinVariantNode>();
+
+  export const TwinRuleNode = Data.taggedEnum<TwinParserModel.TwinRuleNode>();
 }
-
-export const TwinVariantNode = Data.taggedEnum<TwinParserModel.TwinVariantNode>();
-
-export const TwinRuleNode = Data.taggedEnum<TwinParserModel.TwinRuleNode>();
 
 export class TwinParseResultHandler {
   nodes: TwinParserModel.AnyTwinComposedClass[];

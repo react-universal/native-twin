@@ -1,6 +1,5 @@
 import { Layer } from 'effect';
 import path from 'path';
-import { TwinParserContextLive } from '../../src/parser/TwinParser.service';
 import {
   createTSConfigLayer,
   TwinDSLSvcLive,
@@ -8,6 +7,7 @@ import {
   TypescriptApiLive,
   TypescriptUtilsLive,
 } from '../../src/TS';
+import { TwinParserContextLive } from '../../src/twin/TwinParser.service';
 import { createTwinLoggerLayerFor } from '../../src/utils/lsp.logger.service';
 
 const testFolder = path.join(__dirname, '..');

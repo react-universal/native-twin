@@ -20,12 +20,7 @@ import type { InternalTwinConfig } from '../models/twin/native-twin.types';
 import { DEFAULT_RULE_META } from '../utils/constants.utils';
 import { requireJS } from '../utils/load-js';
 import { composeDeclarations, createStyledContext } from '../utils/sheet.utils';
-import {
-  TwinParseResultHandler,
-  type TwinParserModel,
-  TwinRuleNode,
-  TwinVariantNode,
-} from './TwinParser.models';
+import { TwinParseResultHandler, TwinParserModel } from './TwinParser.models';
 
 const make = Effect.gen(function* () {
   const twinConfigPath = yield* Config.string('twinConfigPath');
@@ -70,7 +65,7 @@ const make = Effect.gen(function* () {
   };
 
   function expandRule(rule: TwinParserModel.TwinRuleNode): TwinParserModel.ExpandedRule[] {
-    return TwinRuleNode.$match(rule, {
+    return TwinParserModel.TwinRuleNode.$match(rule, {
       ThemedKey: (themeRule): TwinParserModel.ExpandedRule[] => {
         const flattenSection = flattenObjectByPath(twin.theme(themeRule.themeSection as any));
         return Object.entries(flattenSection).flatMap(([key, value]) => {
@@ -123,7 +118,7 @@ const getThemeRules = (config: InternalTwinConfig): TwinParserModel.TwinRuleNode
         RA.map(
           (pattern): TwinParserModel.TwinRuleNode =>
             typeof rule[1] === 'string'
-              ? TwinRuleNode.ThemedKey({
+              ? TwinParserModel.TwinRuleNode.ThemedKey({
                   pattern,
                   meta: rule[3] ?? DEFAULT_RULE_META,
                   resolver: rule[2],
@@ -132,7 +127,7 @@ const getThemeRules = (config: InternalTwinConfig): TwinParserModel.TwinRuleNode
                     'ThemedKey'
                   >['themeSection'],
                 })
-              : TwinRuleNode.UnKeyed({
+              : TwinParserModel.TwinRuleNode.UnKeyed({
                   pattern,
                   meta: rule[3] ?? DEFAULT_RULE_META,
                   resolver: rule[2],
@@ -149,9 +144,9 @@ const getThemeVariants = (
   HashSet.fromIterable(config.variants).pipe(
     HashSet.map((variant): TwinParserModel.TwinVariantNode => {
       if (typeof variant[1] === 'function') {
-        return TwinVariantNode.Resolver({ pattern: variant[0], value: variant[1] });
+        return TwinParserModel.TwinVariantNode.Resolver({ pattern: variant[0], value: variant[1] });
       }
-      return TwinVariantNode.Literal({ pattern: variant[0], value: variant[1] });
+      return TwinParserModel.TwinVariantNode.Literal({ pattern: variant[0], value: variant[1] });
     }),
   );
 
