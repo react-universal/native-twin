@@ -22,11 +22,7 @@ function installApp<Props, Component>(
   AppComponent: React.JSXElementConstructor<Props> & Component = NativeTailwindApp as any,
   isProduction = process.env['NODE_ENV'] === 'production',
 ): Component {
-  if (config.mode !== 'web') {
-    install$(Object.assign({ mode: 'web' }, config) as TailwindUserConfig, isProduction);
-  } else {
-    install$(config as TailwindUserConfig, isProduction);
-  }
+  install$(Object.assign({ mode: 'web' }, config) as TailwindUserConfig, isProduction);
   return AppComponent;
 }
 

@@ -7,8 +7,8 @@ import * as Runtime from 'effect/Runtime';
 import type * as Scope from 'effect/Scope';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import type { ConfigRef, ConfigValue, Emitter, ExtensionConfigRef } from './extension.models.js';
-import { VscodeContext } from './extension.service.js';
+import type { ConfigRef, ConfigValue, Emitter, ExtensionConfigRef } from './extension.models';
+import { VscodeContext } from './extension.service';
 
 export const executeCommand = (command: string, ...args: Array<any>) =>
   thenable(() => vscode.commands.executeCommand(command, ...args));

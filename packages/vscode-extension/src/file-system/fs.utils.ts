@@ -10,10 +10,10 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import path from 'path';
-import { VscodeContext } from '../extension/extension.service.js';
-import { thenable } from '../extension/extension.utils.js';
-import { TwinTextDocument } from '../language/models/TwinTextDocument.model.js';
-import * as fsPredicates from './fs.predicates.js';
+import { VscodeContext } from '../extension/extension.service';
+import { thenable } from '../extension/extension.utils';
+import { TwinTextDocument } from '../language/models/TwinTextDocument.model';
+import * as fsPredicates from './fs.predicates';
 import {
   createVirtualEntryID,
   type VirtualEntryTreeNode,

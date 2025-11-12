@@ -1,4 +1,9 @@
-import { Deferred, Effect, Option, Queue, Stream, Tuple } from 'effect';
+import * as Deferred from 'effect/Deferred';
+import * as Effect from 'effect/Effect';
+import * as Option from 'effect/Option';
+import * as Queue from 'effect/Queue';
+import * as Stream from 'effect/Stream';
+import * as Tuple from 'effect/Tuple';
 import path from 'path';
 import { CompilerContext } from './services/Compiler.service.js';
 import { FsUtils } from './services/FsUtils.service.js';

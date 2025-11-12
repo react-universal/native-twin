@@ -1,8 +1,8 @@
-import path from 'path';
-import { Constants } from '@native-twin/language-service';
 import * as vscode from 'vscode';
-import type { LanguageClient } from 'vscode-languageclient/node.js';
-import { TestDocument } from './TestDocument.model.js';
+import { Constants } from '@native-twin/language-service';
+import path from 'path';
+import type { LanguageClient } from 'vscode-languageclient/node';
+import { TestDocument } from './TestDocument.model';
 
 class ExtensionTestHandler {
   readonly extensionName = Constants.extensionName;

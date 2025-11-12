@@ -6,7 +6,7 @@ import {
   type TwinRuleCompletion,
 } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
-import type { TwinTextDocument } from '../models/TwinTextDocument.model.js';
+import type { TwinTextDocument } from '../models/TwinTextDocument.model';
 
 export const completionRulesToVscodeCompletionItems = (
   flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,
@@ -30,7 +30,7 @@ export const completionRulesToVscodeCompletionItems = (
       documentation: rule.completion.declarations.join(','),
       filterText: rule.completion.className,
       sortText: rule.order.toString().padStart(8, '0'),
-      detail: getCompletionEntryDetailsDisplayParts(rule)?.text,
+      detail: getCompletionEntryDetailsDisplayParts(rule)?.text ?? 'No Details',
       kind: vscode.CompletionItemKind.Color,
       insertText: insertText,
       range: range,

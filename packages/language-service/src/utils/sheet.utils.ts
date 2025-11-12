@@ -1,9 +1,9 @@
 import { parseCssValue } from '@native-twin/core';
 import {
   type AnyStyle,
+  getRuleSelectorGroup,
   type SheetEntry,
   type SheetEntryDeclaration,
-  getRuleSelectorGroup,
 } from '@native-twin/css';
 import type { PlatformOSType } from 'react-native';
 
@@ -30,10 +30,7 @@ export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledC
   );
 }
 
-export function composeDeclarations(
-  declarations: SheetEntryDeclaration[],
-  context: StyledContext,
-) {
+export function composeDeclarations(declarations: SheetEntryDeclaration[], context: StyledContext) {
   return declarations.reduce((prev, current) => {
     let value: any = current.value;
     if (Array.isArray(current.value)) {

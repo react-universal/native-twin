@@ -12,9 +12,9 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import { extensionConfigState } from '../../extension/extension.utils.js';
-import { completionRulesToVscodeCompletionItems } from '../mappers/completion.mappers.js';
-import { TwinTextDocument } from '../models/TwinTextDocument.model.js';
+import { extensionConfigState } from '../../extension/extension.utils';
+import { completionRulesToVscodeCompletionItems } from '../mappers/completion.mappers';
+import { TwinTextDocument } from '../models/TwinTextDocument.model';
 
 const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) => {
   return RA.findFirst(nodes, (x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end);

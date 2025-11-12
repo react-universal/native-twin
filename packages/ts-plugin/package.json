@@ -18,9 +18,10 @@
     "clean": "rm -rf build",
     "deprecated": "tsc -p tsconfig.build.json -w",
     "deprecated:bbb": "tsc -p tsconfig.build.json",
-    "esbuild:build": "node ./build.js --production",
+    "build": "node ./build.js --production",
     "lint": "biome lint",
-    "test": "echo \"deprecated\"",
+    "code-debug": "TSS_DEBUG=5667 code . --user-data-dir ~/.vscode-debug/",
+    "test": "jest",
     "ts____b": "tsc -p tsconfig.build.json -w"
   },
   "dependencies": {
@@ -31,8 +32,8 @@
     "@native-twin/preset-tailwind": "workspace:*",
     "effect": "^3.18.4",
     "typescript-template-language-service-decorator": "2.3.2",
-    "vscode-css-languageservice": "^6.2.14",
-    "vscode-languageserver-textdocument": "^1.0.11"
+    "vscode-css-languageservice": "^6.3.8",
+    "vscode-languageserver-textdocument": "^1.0.12"
   },
   "devDependencies": {
     "madge": "^8.0.0"

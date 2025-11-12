@@ -16,7 +16,7 @@ import {
   BrowserMessageWriter,
   createConnection,
   TextDocuments,
-} from 'vscode-languageserver/browser.js';
+} from 'vscode-languageserver/browser';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);

@@ -1,7 +1,10 @@
 import * as Command from '@effect/cli/Command';
 import * as Options from '@effect/cli/Options';
 import { NodePath } from '@effect/platform-node';
-import { Config, ConfigProvider, Effect, Layer } from 'effect';
+import * as Config from 'effect/Config';
+import * as ConfigProvider from 'effect/ConfigProvider';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 import { CompilerRun } from './compiler.program.js';
 import { CompilerContextLive } from './services/Compiler.service.js';
 import { FsUtilsLive } from './services/FsUtils.service.js';

@@ -50,8 +50,9 @@ export const parseClassName = P.sequenceOf([
   .mapFromState(mapWithLocation);
 const parseVariantClass: P.Parser<LocatedParser<VariantClassToken>> =
   TwParser.parseVariantClass.mapFromState(mapWithLocation);
-const parseArbitraryValue: P.Parser<LocatedParser<ArbitraryToken>> =
-  TwParser.parseArbitraryValue.map(TwParser.mapArbitrary).mapFromState(mapWithLocation);
+const parseArbitraryValue: P.Parser<LocatedParser<ArbitraryToken>> = TwParser.parseArbitraryValue
+  .map(TwParser.mapArbitrary)
+  .mapFromState(mapWithLocation);
 
 const parseValidTokenRecursiveWeak: P.Parser<
   | LocatedParser<LocatedGroupToken>
@@ -65,14 +66,10 @@ const parseValidTokenRecursiveWeak: P.Parser<
 /** Match any valid TW ident or arbitrary separated by spaces */
 const parseGroupContentWeak: P.Parser<TemplateToken[]> = P.sequenceOf([
   P.char('('),
-  P.many1(
-    P.choice([parseValidTokenRecursiveWeak, parseArbitraryValue, P.skip(P.whitespace)]),
-  ),
+  P.many1(P.choice([parseValidTokenRecursiveWeak, parseArbitraryValue, P.skip(P.whitespace)])),
   P.maybe(P.char(')')),
 ]).map((x) => {
-  const newValue = x[1].filter(
-    (y): y is TemplateToken => typeof y !== 'string' && y !== null,
-  );
+  const newValue = x[1].filter((y): y is TemplateToken => typeof y !== 'string' && y !== null);
   return newValue;
 });
 

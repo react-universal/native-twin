@@ -8,8 +8,8 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import { extensionConfigState } from '../../extension/extension.utils.js';
-import { TwinTextDocument } from '../models/TwinTextDocument.model.js';
+import { extensionConfigState } from '../../extension/extension.utils';
+import { TwinTextDocument } from '../models/TwinTextDocument.model';
 
 // const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) =>
 //   RA.findFirst(nodes, (x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end);

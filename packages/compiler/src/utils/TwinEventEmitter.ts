@@ -31,12 +31,11 @@ export interface IDisposable {
 }
 
 export interface Event<T> {
-  // biome-ignore lint/style/useShorthandFunctionType: kind of HKT
   (listener: (e: T) => any, thisArgs?: any, disposables?: IDisposable[]): IDisposable;
 }
 
 export class DisposableEmitter<T> {
-  private listeners?: Array<(data: T) => void> | ((data: T) => void);
+  private listeners?: Array<(data: T) => void> | ((data: T) => void) | undefined;
 
   /**
    * Event<T> function.

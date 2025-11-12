@@ -7,7 +7,7 @@ import {
   TwinLSPDocument,
 } from '@native-twin/language-service';
 import * as Layer from 'effect/Layer';
-import * as vscode from 'vscode-languageserver/node.js';
+import * as vscode from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { LoggerLive } from './services/logger.service.js';
 

@@ -1,5 +1,5 @@
-import type { Parser } from './Parser.js';
 import { between } from './between.parser.js';
+import type { Parser } from './Parser.js';
 import { separatedBy } from './separated-by.parser.js';
 import { char, optionalWhitespace, whitespace } from './string.parser.js';
 

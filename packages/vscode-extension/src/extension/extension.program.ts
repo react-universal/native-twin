@@ -3,8 +3,8 @@ import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';
 import * as Layer from 'effect/Layer';
 import * as Scope from 'effect/Scope';
-import { VscodeContext } from './extension.service.js';
-import { registerEditorCommand } from './extension.utils.js';
+import { VscodeContext } from './extension.service';
+import { registerEditorCommand } from './extension.utils';
 
 export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext>) => {
   return Effect.gen(function* () {

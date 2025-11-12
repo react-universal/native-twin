@@ -35,5 +35,6 @@ const createEmptyStoredComponent = (id: string): TwinRuntimeComponent => ({
   metadata: { hasGroupEvents: false, hasPointerEvents: false, isGroupParent: false },
   parentID: null,
   parentSize: -1,
+  childIds: [],
   props: [],
 });

@@ -12,7 +12,7 @@ import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import { TwinPath } from '../FileSystem';
 import { CompilerStyleSheet } from '../StyleSheet';
-import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils.js';
+import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils';
 import type { ImportedTwinConfig } from './Models';
 
 const make = Effect.gen(function* () {
@@ -152,8 +152,8 @@ const getPlatformOutputs = (baseDir: string) => ({
 export const createCompilerConfig = (params: {
   rootDir: string;
   outDir: string;
-  twinConfigPath?: string;
-  inputCSS?: string;
+  twinConfigPath?: string | undefined;
+  inputCSS?: string | undefined;
 }): CompilerConfigContext => {
   return CompilerConfigContext.of({
     inputCSS: Option.fromNullable(params.inputCSS).pipe(

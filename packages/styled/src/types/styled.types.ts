@@ -27,7 +27,7 @@ export type StyledSubscription = 'vh' | 'vw' | 'rem' | 'em' | 'appearance';
 export type ComponentConfig = {
   target: string;
   source: string;
-  nativeStyleToProp?: NativeStyleToProp<any>;
+  nativeStyleToProp?: NativeStyleToProp<any> | undefined;
 };
 
 /** Used */

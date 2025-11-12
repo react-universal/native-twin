@@ -1,8 +1,5 @@
-import type { Rule, RuleMeta, RuleResolver, Variant, VariantResolver } from '@native-twin/core';
-import * as Data from 'effect/Data';
 import type * as Graph from 'effect/Graph';
 import type ts from 'ts-morph';
-import type { InternalTwinConfig } from '../models/twin/native-twin.types';
 
 export namespace TwinDslModels {
   export interface TwinSourceFile {
@@ -40,38 +37,6 @@ export namespace TwinDslModels {
   }
 
   export type TwinNode = NodeStyledProp | JSXNode | NodeJSXDeclarator;
-
-  export type TwinVariantNode = Data.TaggedEnum<{
-    Literal: { pattern: Variant[0]; value: string };
-    Resolver: { pattern: Variant[0]; value: VariantResolver };
-  }>;
-  export type TwinRuleNode = Data.TaggedEnum<{
-    ThemedKey: {
-      pattern: string;
-      themeSection: keyof Omit<
-        InternalTwinConfig['theme'] & InternalTwinConfig['theme']['extend'],
-        'screens'
-      >;
-      resolver: RuleResolver;
-      meta: NonNullable<Rule[3]>;
-    };
-    UnKeyed: {
-      pattern: string;
-      resolver: RuleResolver;
-      meta: NonNullable<Rule[3]>;
-    };
-  }>;
-
-  export interface ExpandedRule {
-    className: string;
-    meta: RuleMeta;
-    key: string;
-    value: any;
-  }
-
-  export const TwinVariantNode = Data.taggedEnum<TwinDslModels.TwinVariantNode>();
-
-  export const TwinRuleNode = Data.taggedEnum<TwinDslModels.TwinRuleNode>();
 
   export type AnyJSXElement = ts.JsxElement | ts.JsxSelfClosingElement;
 }
@@ -145,7 +110,7 @@ export namespace TwinGraphModel {
 //   get(word: string) {
 //     let currentNode = this.root;
 //     for (const char of word) {
-//       if (!currentNode.children.has(char)) return false;
+//       if (!currentNode.children.has(char)) return null;
 //       currentNode = currentNode.children.get(char)!;
 //     }
 //     return currentNode.value;
@@ -170,6 +135,6 @@ export namespace TwinGraphModel {
 // trie.insert('a1', '1a');
 // trie.insert('a2', '2a');
 
-// trie.search('a1'); // ?
+// trie.search('a1');
 
-// trie.get('a'); // ?
+// trie.get('a');

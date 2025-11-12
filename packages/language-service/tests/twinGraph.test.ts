@@ -25,7 +25,7 @@ describe('twin graph extractor', () => {
       export View = (...props) => <div {...props} />
       export Text = (...props) => <div {...props} />
     `,
-        { overwrite: true },
+        { overwrite: true, scriptKind: ts.ScriptKind.TSX },
       );
       compiler.addSourceFileAtPath(outFile.getFilePath());
       const source = compiler.createSourceFile(
@@ -42,7 +42,7 @@ describe('twin graph extractor', () => {
                   <Text className={'bg-rose-700 bg-blue bg-black text(sm md:gray)'} />
                 </View>
               </View>
-            )},
+            )};
       `,
         { overwrite: true, scriptKind: ts.ScriptKind.TSX },
       );
@@ -76,7 +76,7 @@ describe('twin graph extractor', () => {
       yield* Effect.promise(() =>
         expect(graphViz).toMatchFileSnapshot(path.join(__dirname, '__snapshots__', 'base.dot')),
       );
-      console.log('MEM: ', ts.ts.sys.getMemoryUsage?.());
+      // console.log('MEM: ', ts.ts.sys.getMemoryUsage?.());
       // yield* Effect.sync(() => ts.ts.sys.exit(0))
     }).pipe(
       Effect.provide(TestLayer),

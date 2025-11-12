@@ -1,12 +1,12 @@
+import * as vscode from 'vscode';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import type * as Scope from 'effect/Scope';
-import * as vscode from 'vscode';
-import { VscodeContext } from '../extension/extension.service.js';
-import { emitterOptional, runWithTokenDefault } from '../extension/extension.utils.js';
-import type { TwinTextDocument } from '../language/index.js';
-import type { TreeDataProvider } from './models/VscodeTree.models.js';
+import { VscodeContext } from '../extension/extension.service';
+import { emitterOptional, runWithTokenDefault } from '../extension/extension.utils';
+import type { TwinTextDocument } from '../language';
+import type { TreeDataProvider } from './models/VscodeTree.models';
 
 const uriToID = (uri: vscode.Uri) => uri.toString();
 
@@ -29,18 +29,13 @@ export const makeTreeDataProvider =
         },
         getChildren(element) {
           return Effect.runPromise(
-            Effect.map(
-              provider.children(Option.fromNullable(element)),
-              Option.getOrUndefined,
-            ),
+            Effect.map(provider.children(Option.fromNullable(element)), Option.getOrUndefined),
           );
         },
         getParent: provider.parent
           ? (element) =>
-              Effect.runPromise(
-                Effect.map(provider.parent!(element), Option.getOrUndefined),
-              )
-          : undefined,
+              Effect.runPromise(Effect.map(provider.parent!(element), Option.getOrUndefined))
+          : () => undefined,
         resolveTreeItem: (item, element, token) => {
           if (provider.resolve) {
             return runWithTokenDefault(

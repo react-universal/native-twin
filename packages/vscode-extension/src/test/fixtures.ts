@@ -1,6 +1,6 @@
 import type * as vscode from 'vscode';
-import { positionToLocation } from './helpers.js';
-import type { TestDocument } from './models/TestDocument.model.js';
+import { positionToLocation } from './helpers';
+import type { TestDocument } from './models/TestDocument.model';
 
 interface FixtureParams {
   document: TestDocument;

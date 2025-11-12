@@ -17,6 +17,10 @@
       "path": "../packages/language-server"
     },
     {
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
       "name": "📦 @native-twin/adapters",
       "path": "../packages/adapters"
     },
@@ -55,10 +59,6 @@
     {
       "name": "📦 @native-twin/vite-plugin",
       "path": "../packages/vite-plugin"
-    },
-    {
-      "name": "📦 native-twin-vscode",
-      "path": "../packages/vscode-extension"
     },
     {
       "name": "twin-run",

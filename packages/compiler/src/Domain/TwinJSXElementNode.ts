@@ -1,10 +1,10 @@
+import type { MappedComponent } from '@native-twin/core';
 import type * as Tree from '@native-twin/helpers/tree';
 import * as Data from 'effect/Data';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import type { JSXElementFunction, JSXElementPath } from '../Babel';
 import type { TwinFile } from '../FileSystem';
-import type { MappedComponent } from '../utils/constants';
 import type { TwinJSXClassnameProp } from './JSXStyledProp';
 import type { ModuleDependency } from './TwinAst';
 

@@ -7,9 +7,9 @@ import {
   getString,
   getUtf8Char,
 } from '../utils/unicode.utils.js';
-import { Parser, updateParserError, updateParserState } from './Parser.js';
 import { everythingUntil } from './everything.parser.js';
 import { maybe } from './maybe.parser.js';
+import { Parser, updateParserError, updateParserState } from './Parser.js';
 
 export const char = (cs: string): Parser<string> => {
   if (!cs || getCharacterLength(cs) !== 1) {
@@ -28,10 +28,7 @@ export const char = (cs: string): Parser<string> => {
         const char = getUtf8Char(cursor, charWidth, target);
         return char === cs
           ? updateParserState(state, cs, nextCursor)
-          : updateParserError(
-              state,
-              createErrorMsg('char', cursor, `char ${cs} but got ${char}`),
-            );
+          : updateParserError(state, createErrorMsg('char', cursor, `char ${cs} but got ${char}`));
       }
     }
 
@@ -41,9 +38,7 @@ export const char = (cs: string): Parser<string> => {
 
 export const literal = <A extends string>(cs: A): Parser<A> => {
   if (!cs || getCharacterLength(cs) < 1) {
-    throw new TypeError(
-      `input must be called with a string with length > 1, but got ${cs}`,
-    );
+    throw new TypeError(`input must be called with a string with length > 1, but got ${cs}`);
   }
 
   const encodedStr = encoder.encode(cs);
@@ -78,9 +73,7 @@ const regexAnyLetter = /^[a-zA-Z]/;
 export const regex = (re: RegExp): Parser<string> => {
   const typeofRe = Object.prototype.toString.call(re);
   if (typeofRe !== '[object RegExp]') {
-    throw new TypeError(
-      `regex must be called with a Regular Expression, but got ${typeofRe}`,
-    );
+    throw new TypeError(`regex must be called with a Regular Expression, but got ${typeofRe}`);
   }
 
   if (re.toString()[1] !== '^') {
@@ -99,10 +92,7 @@ export const regex = (re: RegExp): Parser<string> => {
         ? updateParserState(state, match[0], cursor + encoder.encode(match[0]).byteLength)
         : updateParserError(
             state,
-            `(position ${cursor}): Expecting string matching '${re}', got '${rest.slice(
-              0,
-              5,
-            )}...'`,
+            `(position ${cursor}): Expecting string matching '${re}', got '${rest.slice(0, 5)}...'`,
           );
     }
 
@@ -197,8 +187,5 @@ export const anyOfString = (cs: string) =>
           );
     }
 
-    return updateParserError(
-      state,
-      endOfInputErrorMsg('anyOfString', cursor, `any of "${cs}"`),
-    );
+    return updateParserError(state, endOfInputErrorMsg('anyOfString', cursor, `any of "${cs}"`));
   });

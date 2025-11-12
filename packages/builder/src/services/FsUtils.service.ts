@@ -1,7 +1,13 @@
-import { FileSystem, Path } from '@effect/platform';
-import { NodeFileSystem, NodePath } from '@effect/platform-node';
+import * as FileSystem from '@effect/platform/FileSystem';
+import * as Path from '@effect/platform/Path';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as NodePath from '@effect/platform-node/NodePath';
 import chokidar from 'chokidar';
-import { Config, Context, Effect, Layer, Stream } from 'effect';
+import * as Config from 'effect/Config';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as Stream from 'effect/Stream';
 import * as Glob from 'glob';
 import { createChokidarWatcher } from '../utils/effect.utils';
 

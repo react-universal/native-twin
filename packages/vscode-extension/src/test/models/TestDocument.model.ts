@@ -19,7 +19,7 @@ export class TestDocument {
     const doc = await this._getDoc();
     this._editor = await vscode.window.showTextDocument(doc, {
       preview: false,
-      selection: range,
+      selection: range!,
     });
     return this._editor;
   }

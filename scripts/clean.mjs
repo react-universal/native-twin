@@ -4,7 +4,7 @@ import path from 'node:path';
 import { inspect } from 'node:util';
 
 const dirs = ['.', ...Glob.sync('packages/*/'), ...Glob.sync('packages/dev-tools/*/')];
-
+const debug = !!process.argv[1];
 const filesToDelete = dirs.flatMap((pkg) => {
   const files = [
     '.tsbuildinfo',
@@ -12,7 +12,6 @@ const filesToDelete = dirs.flatMap((pkg) => {
     'build',
     'dist',
     '.turbo',
-    '.nx',
     '.expo',
     '.rollup.cache'
   ];
@@ -21,11 +20,9 @@ const filesToDelete = dirs.flatMap((pkg) => {
     if (pkg === '.' && file === 'docs') return [];
     const toDelete = path.join(pkg, file);
     if (!Fs.existsSync(toDelete)) {
-      console.warn('NOT_EXISTS: ', toDelete);
+      if (debug) console.warn('NOT_EXISTS: ', toDelete);
       return [];
     }
-    // Fs.rmSync(toDelete, { recursive: true, force: true }, () => {
-    // });
     return [toDelete];
   });
 });

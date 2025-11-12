@@ -1,9 +1,9 @@
+import * as vscode from 'vscode';
 import * as assert from 'assert';
 import { suiteTeardown } from 'mocha';
-import * as vscode from 'vscode';
-import { executeCompletionAtPosition } from '../commands.js';
-import { createFixture, type Fixture } from '../fixtures.js';
-import { sleep, startTestFile } from '../helpers.js';
+import { executeCompletionAtPosition } from '../commands';
+import { createFixture, type Fixture } from '../fixtures';
+import { sleep, startTestFile } from '../helpers';
 
 suite('Should do completion', () => {
   suiteTeardown((done) => {

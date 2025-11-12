@@ -3,8 +3,8 @@ import * as path from 'node:path';
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import { pipe } from 'effect';
 import * as RA from 'effect/Array';
-import { thenable } from '../../extension/extension.utils.js';
-import type { TwinTextDocument } from '../../language/index.js';
+import { thenable } from '../../extension/extension.utils';
+import type { TwinTextDocument } from '../../language';
 
 export class TwinFileTreeNode {
   readonly _tag = 'FileTreeNode';

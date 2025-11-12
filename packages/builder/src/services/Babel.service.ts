@@ -1,7 +1,12 @@
 import { transformAsync } from '@babel/core';
-import { Path } from '@effect/platform';
-import { NodeFileSystem, NodePath } from '@effect/platform-node';
-import { Cause, Context, Effect, Layer, Option } from 'effect';
+import * as Path from '@effect/platform/Path';
+import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
+import * as NodePath from '@effect/platform-node/NodePath';
+import * as Cause from 'effect/Cause';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
 import type { OutputFile } from 'ts-morph';
 import type {
   BabelSourceMapSchemaType,
@@ -27,10 +32,7 @@ const make = Effect.gen(function* () {
       plugins.push('annotate-pure-calls');
     }
     if (purpose === 'esm-to-cjs') {
-      plugins.push(
-        '@babel/transform-export-namespace-from',
-        '@babel/transform-modules-commonjs',
-      );
+      plugins.push('@babel/transform-export-namespace-from', '@babel/transform-modules-commonjs');
     }
 
     return plugins;
@@ -73,9 +75,7 @@ const make = Effect.gen(function* () {
           Effect.gen(function* () {
             if (!value) return Option.none<BabelTranspilerResult>();
 
-            const sourceMaps = yield* encodeSourceMapsFile(
-              Option.fromNullable(value.map),
-            );
+            const sourceMaps = yield* encodeSourceMapsFile(Option.fromNullable(value.map));
             return Option.some<BabelTranspilerResult>({
               ...value,
               code: value.code ?? file.content,
@@ -124,25 +124,16 @@ const make = Effect.gen(function* () {
       Effect.catchAllCause((x) => {
         return Effect.die(x).pipe(
           Effect.tap(() =>
-            Effect.logError(
-              () => '[BABEL] Cant emit CJS files, reason: ',
-              Cause.prettyErrors(x),
-            ),
+            Effect.logError(() => '[BABEL] Cant emit CJS files, reason: ', Cause.prettyErrors(x)),
           ),
         );
       }),
-      Effect.tapError((x) =>
-        Effect.logWarning('[BABEL] error transpiling to CJS ', x, '\n'),
-      ),
+      Effect.tapError((x) => Effect.logWarning('[BABEL] error transpiling to CJS ', x, '\n')),
       Effect.withLogSpan('BABEL/ESM-to-CJS'),
     );
   };
 
-  const addAnnotationsToESM = (
-    esmFile: OutputFile,
-    sourcemaps: OutputFile,
-    tsFilePath: string,
-  ) => {
+  const addAnnotationsToESM = (esmFile: OutputFile, sourcemaps: OutputFile, tsFilePath: string) => {
     return Effect.gen(function* () {
       const relativeSourceFile = path_.relative(
         path_.dirname(sourcemaps.getFilePath()),

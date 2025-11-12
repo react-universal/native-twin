@@ -1,4 +1,3 @@
-import type { TwinTextDocument } from '../../language/index.js';
 import * as vscode from 'vscode';
 import { Constants, type NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
@@ -11,9 +10,10 @@ import {
   listenForkEvent,
   registerCommand,
 } from '../../extension/extension.utils.js';
-import { getTwinTextDocumentByUri, getVscodeFS } from '../../file-system/index.js';
-import { TreeDataProvider } from '../models/index.js';
-import { getTwinDocumentID, makeTreeDataProvider } from '../tree.utils.js';
+import { getTwinTextDocumentByUri, getVscodeFS } from '../../file-system';
+import type { TwinTextDocument } from '../../language';
+import { TreeDataProvider } from '../models';
+import { getTwinDocumentID, makeTreeDataProvider } from '../tree.utils';
 import {
   type AnyTreeDataNode,
   type FileTwinRegionTreeNode,

@@ -175,7 +175,7 @@ export const extractLanguageRegions = (
     });
 
     return sourceLocations;
-  } catch (e) {
+  } catch (_e) {
     return sourceLocations;
   }
 };

@@ -1,6 +1,10 @@
-import { FileSystem, Path } from '@effect/platform';
+import * as FileSystem from '@effect/platform/FileSystem';
+import * as Path from '@effect/platform/Path';
 import { NodeFileSystem, NodePath } from '@effect/platform-node';
-import { Config, Context, Effect, Layer } from 'effect';
+import * as Config from 'effect/Config';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 import type { OutputFile } from 'ts-morph';
 import type { BuildSourceWithMaps } from '../models/Compiler.models';
 import { BabelContext, BabelContextLive } from './Babel.service';
@@ -44,10 +48,7 @@ const make = Effect.gen(function* () {
       return Effect.logWarning('Empty path cant emit this file for source: ', fromSource);
     }
     return Effect.all(
-      [
-        fsUtils.mkdirCached(path_.dirname(filePath)),
-        fs.writeFileString(filePath, content),
-      ],
+      [fsUtils.mkdirCached(path_.dirname(filePath)), fs.writeFileString(filePath, content)],
       {
         concurrency: 'unbounded',
       },

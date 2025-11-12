@@ -4,18 +4,18 @@ import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import { LanguageClient, type LanguageClientOptions } from 'vscode-languageclient/browser.js';
-import { VscodeContext } from '../extension/extension.service.js';
-import { extensionConfigValue, registerCommand } from '../extension/extension.utils.js';
+import { LanguageClient, type LanguageClientOptions } from 'vscode-languageclient/browser';
+import { VscodeContext } from '../extension/extension.service';
+import { extensionConfigValue, registerCommand } from '../extension/extension.utils';
 import {
   getDefaultLanguageClientOptions,
   onLanguageClientClosed,
   onLanguageClientError,
   onProvideDocumentColors,
 } from './language.fn.js';
-import { createFileWatchers, getColorDecoration, getConfigFiles } from './language.utils.js';
+import { createFileWatchers, getColorDecoration, getConfigFiles } from './language.utils';
 
-// import TwinWorker from './twin.worker.js.js';
+// import TwinWorker from './twin.worker.js';
 
 const make = Effect.gen(function* () {
   const extensionCtx = yield* VscodeContext;

@@ -1,5 +1,13 @@
 import { Path } from '@effect/platform';
-import { Context, Effect, Layer, Option, pipe, Queue, Array as RA, Stream, Tuple } from 'effect';
+import * as RA from 'effect/Array';
+import * as Context from 'effect/Context';
+import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
+import * as Queue from 'effect/Queue';
+import * as Stream from 'effect/Stream';
+import * as Tuple from 'effect/Tuple';
 import {
   type Diagnostic,
   getCompilerOptionsFromTsConfig,
@@ -42,11 +50,12 @@ const make = Effect.gen(function* () {
         `[watcher] Detected ${x._tag} change in: ${x.path.replace(process.cwd(), '')}`,
       ),
     ),
-    Stream.tap((x) => Effect.sync(() => {
-      if (x._tag === 'Remove') {
-        
-      }
-    })),
+    Stream.tap((x) =>
+      Effect.sync(() => {
+        if (x._tag === 'Remove') {
+        }
+      }),
+    ),
     Stream.filterEffect((event) =>
       Effect.gen(function* () {
         if (event._tag === 'Remove') return false;

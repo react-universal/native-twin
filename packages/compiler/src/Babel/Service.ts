@@ -1,16 +1,7 @@
-import type {
-  AnyNodePath,
-  BabelFileAst,
-  JSXAttributePath,
-  JSXClassPropExpression,
-  JSXElementFunction,
-  JSXElementPath,
-  JSXOpeningElementPath,
-} from './Models';
 import { CodeGenerator } from '@babel/generator';
 import traverse, { type NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { cx } from '@native-twin/core';
+import { cx,type MappedComponent, mappedComponents } from '@native-twin/core';
 import { parseTWTokens } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Chunk from 'effect/Chunk';
@@ -23,8 +14,16 @@ import { TwinJSXClassnameProp } from '../Domain/JSXStyledProp';
 import { ModuleDependency, TwinModuleAst } from '../Domain/TwinAst';
 import { TwinJSXElement, TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 import { type TwinFile, TwinFSContext, TwinPath } from '../FileSystem';
-import { type MappedComponent, mappedComponents } from '../utils/constants';
 import { makeTreeFrom } from '../utils/tree.utils';
+import type {
+  AnyNodePath,
+  BabelFileAst,
+  JSXAttributePath,
+  JSXClassPropExpression,
+  JSXElementFunction,
+  JSXElementPath,
+  JSXOpeningElementPath,
+} from './Models';
 import { isFunction } from './Predicates';
 import { babelParse, getBabelBindingImportSource, isLocalImport } from './Utils';
 

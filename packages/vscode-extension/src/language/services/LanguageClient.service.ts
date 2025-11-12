@@ -10,16 +10,16 @@ import {
   type ServerOptions,
   TransportKind,
 } from 'vscode-languageclient/node.js';
-import { VscodeContext } from '../../extension/extension.service.js';
-import { registerCommand } from '../../extension/extension.utils.js';
+import { VscodeContext } from '../../extension/extension.service';
+import { registerCommand } from '../../extension/extension.utils';
 import {
   getDefaultLanguageClientOptions,
   onLanguageClientClosed,
   onLanguageClientError,
   onProvideDocumentColors,
 } from '../language.fn.js';
-import { createFileWatchers, getColorDecoration, getConfigFiles } from '../language.utils.js';
-import { VscodeHightLightsProvider } from './DocumentHighLights.service.js';
+import { createFileWatchers, getColorDecoration, getConfigFiles } from '../language.utils';
+import { VscodeHightLightsProvider } from './DocumentHighLights.service';
 
 export const LanguageClientLive = Effect.gen(function* () {
   const twin = yield* NativeTwinManagerService;

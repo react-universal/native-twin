@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "NodeNext",
+    "exactOptionalPropertyTypes": false,
     "moduleResolution": "NodeNext",
     "jsx": "preserve"
   },

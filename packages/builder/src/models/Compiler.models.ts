@@ -1,5 +1,6 @@
 import type { BabelFile, BabelFileMetadata } from '@babel/core';
-import { type Option, Schema } from 'effect';
+import type * as Option from 'effect/Option';
+import * as Schema from 'effect/Schema';
 import { type OutputFile, ts } from 'ts-morph';
 
 type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> };
@@ -38,9 +39,7 @@ export const BabelSourceMapSchema = Schema.Struct({
   file: Schema.String,
 });
 
-export type BabelSourceMapSchemaType = DeepWriteable<
-  (typeof BabelSourceMapSchema)['Type']
->;
+export type BabelSourceMapSchemaType = DeepWriteable<(typeof BabelSourceMapSchema)['Type']>;
 
 export interface BabelTranspilerResult {
   code: string;

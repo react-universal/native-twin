@@ -70,7 +70,7 @@ export default defineConfig((): UserConfig => {
         '@effect/platform-browser/BrowserWorkerRunner',
         '@effect/platform/WorkerRunner',
         'vscode-languageserver-textdocument',
-        'vscode-languageserver/browser.js',
+        'vscode-languageserver/browser',
       ],
       esbuildOptions: {
         define: {

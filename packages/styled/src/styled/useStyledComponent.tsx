@@ -17,8 +17,8 @@ export const useStyledComponent = <C extends ReactComponent<any>>(
   const registry = styledJSXStore.getComponent(twinID);
 
   const interactions = useAtomValue(registry.interactionState);
-  const styles = TwinStyleSheet.getComponentStyledProps(twinID);
-  registry.getStyledProps()
+  const styles = TwinStyleSheet.getComponentStyledProps(twinID, true, true);
+  registry.getStyledProps(true, true);
 
   let newProps = props;
   if (Object.keys(styles).length > 0) {

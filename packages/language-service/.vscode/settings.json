@@ -1,0 +1,63 @@
+{
+  "debugVisualizer.js.customScriptPaths": [
+    "${workspaceFolder}/tests/runVisual.test.ts",
+  ],
+  "console-ninja.maxLogViewerEntries": 15000,
+  "console-ninja.logCaptureOptions": {
+    "resolveGetters": true,
+    "defaultLimits": {
+      "props": 500,
+      "elements": 500,
+      "strLength": 51200,
+      "totalStrLength": 51200,
+      "autoExpandLimit": 5000,
+      "autoExpandMaxDepth": 100
+    },
+    "reducedLimits": {
+      "props": 5,
+      "elements": 5,
+      "strLength": 256,
+      "totalStrLength": 768,
+      "autoExpandLimit": 30,
+      "autoExpandMaxDepth": 2
+    },
+    "reducePolicy": {
+      "perLogpoint": {
+        "reduceOnCount": 50,
+        "reduceOnAccumulatedProcessingTimeMs": 100,
+        "resetWhenQuietMs": 500,
+        "resetOnProcessingTimeAverageMs": 100
+      },
+      "global": {
+        "reduceOnCount": 1000,
+        "reduceOnAccumulatedProcessingTimeMs": 300,
+        "resetWhenQuietMs": 50,
+        "resetOnProcessingTimeAverageMs": 100
+      }
+    }
+  },
+  "console-ninja.captureFunctions": false,
+  "console-ninja.output.showNetworkRequests": false,
+  "console-ninja.toolsToEnableSupportAutomaticallyFor": {
+    "vite": true,
+    "angular": true,
+    "jest": true,
+    "webpack": true,
+    "next.js": true,
+    "nest.js": true,
+    "cypress": true,
+    "http-server": true,
+    "serve": true,
+    "live-server": true,
+    "nuxt": true,
+    "remix": true,
+    "vitest": true,
+    "qwik": true,
+    "hydrogen": true,
+    "serverless": true,
+    "astro": true,
+    "react-native": true,
+    "live-server-extension": false,
+    "live-preview-extension": false
+  }
+}

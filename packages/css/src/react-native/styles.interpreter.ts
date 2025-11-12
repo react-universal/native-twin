@@ -8,7 +8,7 @@ export class StylesInterpreter {
   readonly units = defaultCssUnits;
   private constructor(
     readonly platform: string,
-    readonly options: { rem: number; vh?: number; vw?: number },
+    readonly options: { rem: number; vh?: number | undefined; vw?: number | undefined },
   ) {}
 
   evalSheetEntry(sheetEntry: SheetEntry) {

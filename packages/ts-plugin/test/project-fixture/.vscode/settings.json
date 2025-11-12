@@ -1,5 +1,5 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.tsdk": "../../../../node_modules/typescript/lib",
     "nativeTwin.trace.server": "verbose",
     "nativeTwin.enable": true,
     "editor.suggest.showColors": true,

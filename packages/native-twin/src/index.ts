@@ -67,3 +67,13 @@ export type {
   TwinComponentStyleProp,
 } from './runtime/sheet/Models.js';
 export { StyleSheetAdapter } from './runtime/TwinStyleSheet.js';
+export {
+  BABEL_JSX_PLUGIN_IMPORT_RUNTIME,
+  commonMappedAttribute,
+  createCommonMappedAttribute,
+  type MappedComponent,
+  mappedComponents,
+  type NativeTwinPluginConfiguration,
+  TWIN_DEFAULT_FILES,
+  TWIN_DEFAULT_PLUGIN_CONFIG,
+} from './twin/reactNative.constants.js';

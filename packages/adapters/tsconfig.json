@@ -3,6 +3,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "node",
+    "jsx": "react-jsx",
     "rootDir": "src",
     "noImplicitOverride": false
   },

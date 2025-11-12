@@ -2,7 +2,6 @@ export {
   createTSConfigLayer,
   TwinDSLSvc,
   TwinDSLSvcLive,
-  TwinDslModels,
   TwinGraph,
   TwinGraphLive,
   TypescriptApi,

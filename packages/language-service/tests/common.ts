@@ -44,7 +44,7 @@ export function init(fixture: string | string[]): FixtureContext {
   let settings: Record<string, any> = {};
   const docSettings = new Map<string, Settings>();
 
-  const { client, server } = connect();
+  const { client } = connect();
 
   const capabilities: ClientCapabilities = {
     textDocument: {

@@ -40,7 +40,7 @@
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
     "react-native-web": "^0.21.0",
-    "vitest": "^2.1.8"
+    "vitest": "^3.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.8",

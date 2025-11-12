@@ -1,5 +1,4 @@
-import { mappedComponents } from '@native-twin/compiler';
-import { cx } from '@native-twin/core';
+import { cx, mappedComponents } from '@native-twin/core';
 import * as Array from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';

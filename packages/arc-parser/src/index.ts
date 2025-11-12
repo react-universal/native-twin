@@ -1,4 +1,4 @@
-export * from './parsers/Parser.js';
+export * from './parsers/anything.parser.js';
 export * from './parsers/between.parser.js';
 export * from './parsers/choice.parser.js';
 export * from './parsers/composed.parsers.js';
@@ -6,10 +6,14 @@ export * from './parsers/coroutine.parser.js';
 export * from './parsers/data.parser.js';
 export * from './parsers/debug.parser.js';
 export * from './parsers/either.parser.js';
+export * from './parsers/everything.parser.js';
+export * from './parsers/exactly.parser.js';
+export * from './parsers/functional.parsers.js';
 export * from './parsers/lookahead.js';
 export * from './parsers/many.parser.js';
 export * from './parsers/maybe.parser.js';
 export * from './parsers/number.parser.js';
+export * from './parsers/Parser.js';
 export * from './parsers/peek.parser.js';
 export * from './parsers/recursive.parser.js';
 export * from './parsers/separated-by.parser.js';
@@ -17,11 +21,6 @@ export * from './parsers/sequence-of.js';
 export * from './parsers/skip.parser.js';
 export * from './parsers/string.parser.js';
 export * from './parsers/util.parsers.js';
-export * from './parsers/functional.parsers.js';
-export * from './parsers/anything.parser.js';
-export * from './parsers/everything.parser.js';
-export * from './parsers/exactly.parser.js';
-
 export type {
   InternalResultType,
   ParserError,
@@ -30,5 +29,4 @@ export type {
   ResultType,
   StateTransformerFunction,
 } from './types.js';
-
-export { encoder, decoder } from './utils/unicode.utils.js';
+export { decoder, encoder } from './utils/unicode.utils.js';

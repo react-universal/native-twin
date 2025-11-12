@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { extensionContext } from './models/ExtensionTest.model.js';
+import { extensionContext } from './models/ExtensionTest.model';
 
 export async function startTestFile(path: string) {
   const api = await extensionContext.setup();
