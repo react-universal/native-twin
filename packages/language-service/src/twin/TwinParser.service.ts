@@ -9,35 +9,86 @@ import * as Context from 'effect/Context';
 import type * as Data from 'effect/Data';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import * as HashMap from 'effect/HashMap';
-import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import * as Order from 'effect/Order';
-import * as SortedSet from 'effect/SortedSet';
+import * as Stream from 'effect/Stream';
 import * as Trie from 'effect/Trie';
-import type { InternalTwinConfig } from '../models/twin/native-twin.types';
-import { DEFAULT_RULE_META } from '../utils/constants.utils';
+import type { InternalTwFn, InternalTwinConfig } from '../models/twin/native-twin.types';
 import { requireJS } from '../utils/load-js';
 import { composeDeclarations, createStyledContext } from '../utils/sheet.utils';
-import { TwinParseResultHandler, TwinParserModel } from './TwinParser.models';
+import * as TwinParserModel from './models/TwinParser.models';
+import * as TwinUtils from './TwinParser.utils';
 
 const make = Effect.gen(function* () {
   const twinConfigPath = yield* Config.string('twinConfigPath');
   const twinConfig = Option.getOrElse(requireJS(twinConfigPath), () => defaultConfig);
-  const twin = setup(twinConfig);
+  const twin: InternalTwFn = setup(twinConfig);
   const styledContext = createStyledContext(twinConfig.root.rem);
-  const themeRules = getThemeRules(twinConfig);
-  const themeVariants = getThemeVariants(twinConfig);
-
+  const themeRules = TwinUtils.getThemeRules(twinConfig);
+  const themeVariants = TwinUtils.getThemeVariants(twinConfig);
   const dictionary = yield* Effect.cached(
     Effect.sync(() =>
       pipe(
-        RA.flatMap(themeRules, expandRule),
+        RA.flatMap(themeRules, (_) => TwinUtils.getTwinRuleExpansions(_, twin, styledContext)),
         RA.map((x) => [x.className, x] as const),
         Trie.fromIterable,
       ),
     ),
+  );
+
+  const resolveThemeSection = yield* Effect.cachedFunction(
+    (section: keyof InternalTwinConfig['theme']) =>
+      Effect.sync(() => flattenObjectByPath(twin.theme(section))),
+  );
+
+  const themeRuless = Stream.fromIterable(twin.config.rules).pipe(
+    Stream.map((rule) => TwinUtils.getTaggedRule(rule)),
+    Stream.partition((x) => x._tag === 'ThemedKey'),
+    Stream.flatMap(([_unKeyedRule, _themeRules]): Stream.Stream<TwinParserModel.ExpandedRule> => {
+      const themeRules = _themeRules.pipe(
+        Stream.mapEffect((rule) =>
+          Effect.zip(Effect.succeed(rule), resolveThemeSection(rule.themeSection)),
+        ),
+        Stream.map(([themeRule, section]) => {
+          return Object.entries(section).flatMap(([key, value]) => {
+            const className = TwinUtils.sanitizeClassName(themeRule, key);
+            if (className.endsWith('-')) return [];
+            if (className === '') return [];
+            return { className, key, value, meta: themeRule.meta };
+          });
+        }),
+        Stream.flattenIterables,
+      );
+
+      const unKeyedRule = _unKeyedRule.pipe(
+        Stream.map((computedRule) => {
+          let value = twin.theme(computedRule.pattern as any);
+          if (typeof value === 'object') {
+            value = computedRule.resolver(
+              {
+                base: computedRule.pattern,
+                negative: computedRule.meta.canBeNegative,
+                segment: { type: 'segment', value: '' },
+                suffixes: [],
+              },
+              twin.context,
+              TwParser.parseTWTokens(computedRule.pattern)[0],
+            );
+            if (typeof value === 'object') {
+              value = composeDeclarations(value.declarations, styledContext);
+            }
+          }
+          return {
+            value,
+            className: computedRule.pattern,
+            key: computedRule.pattern,
+            meta: computedRule.meta,
+          };
+        }),
+      );
+
+      return Stream.merge(themeRules, unKeyedRule);
+    }),
   );
 
   const findRulesByKey = Effect.fn(function* (key: string) {
@@ -45,40 +96,25 @@ const make = Effect.gen(function* () {
     return Array.from(Trie.valuesWithPrefix(yield* dictionary, key));
   });
 
-  return {
-    data: { themeVariants, themeRules, styledContext, twin, dictionary },
-    findRulesByKey,
-    getThemeSectionKeys,
-    getThemeColorPalette,
-    getThemeOpacities,
-    getThemeScreenEntries,
-    runTwinParser: (rawText: string, startsAt: number) => {
-      const { text, position } = adjustParserInput(rawText, startsAt);
-      const parsed = P.many1(
-        P.whitespaceSurrounded(
-          P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
-        ),
-      ).run(text);
-
-      return new TwinParseResultHandler(parsed, { text, position });
-    },
-  };
-
-  function expandRule(rule: TwinParserModel.TwinRuleNode): TwinParserModel.ExpandedRule[] {
-    return TwinParserModel.TwinRuleNode.$match(rule, {
-      ThemedKey: (themeRule): TwinParserModel.ExpandedRule[] => {
-        const flattenSection = flattenObjectByPath(twin.theme(themeRule.themeSection as any));
-        return Object.entries(flattenSection).flatMap(([key, value]) => {
-          let className = themeRule.pattern.endsWith('-')
-            ? themeRule.pattern.concat(key)
-            : themeRule.pattern.concat('-').concat(key);
-          className = className.replace(/.*[-]?DEFAULT[-]?/, '');
-          if (className.endsWith('-')) return [];
-          if (className === '') return [];
-          return { className, key, value, meta: themeRule.meta };
-        });
-      },
-      UnKeyed: (computedRule): TwinParserModel.ExpandedRule[] => {
+  const composeThemedRule = yield* Effect.cachedFunction(
+    (rule: Data.TaggedEnum.Value<TwinParserModel.TwinRuleNode, 'ThemedKey'>) =>
+      Effect.gen(function* () {
+        const themeSection = yield* resolveThemeSection(rule.themeSection);
+        const compositions = new Set(
+          keysOf(themeSection).map(
+            (_) =>
+              [
+                TwinUtils.sanitizeClassName(rule, _),
+                { value: themeSection[_], resolver: rule.resolver },
+              ] as const,
+          ),
+        );
+        return compositions;
+      }),
+  );
+  const composUnKeyedRule = yield* Effect.cachedFunction(
+    (computedRule: Data.TaggedEnum.Value<TwinParserModel.TwinRuleNode, 'UnKeyed'>) =>
+      Effect.sync(() => {
         let value = twin.theme(computedRule.pattern as any);
         if (typeof value === 'object') {
           value = computedRule.resolver(
@@ -95,83 +131,35 @@ const make = Effect.gen(function* () {
             value = composeDeclarations(value.declarations, styledContext);
           }
         }
-        return [
-          {
-            value,
-            className: computedRule.pattern,
-            key: computedRule.pattern,
-            meta: computedRule.meta,
-          },
-        ];
-      },
-    });
-  }
+
+        return new Set([[computedRule.pattern, value]] as const);
+      }),
+  );
+
+  const createRuleHandler = Effect.fn(function* (rule: TwinParserModel.TwinRuleNode) {
+    if (rule._tag === 'ThemedKey') {
+      return yield* composeThemedRule(rule);
+    }
+    return yield* composUnKeyedRule(rule);
+  });
+
+  return {
+    data: { themeVariants, themeRules, styledContext, twin, dictionary },
+    findRulesByKey,
+    runTwinParser: (rawText: string, startsAt: number) => {
+      const { text, position } = adjustParserInput(rawText, startsAt);
+      const parsed = P.many1(
+        P.whitespaceSurrounded(
+          P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
+        ),
+      ).run(text);
+
+      return new TwinParserModel.TwinParseResultHandler(parsed, { text, position });
+    },
+  };
 });
 
 /** DSL */
-const getThemeRules = (config: InternalTwinConfig): TwinParserModel.TwinRuleNode[] => {
-  return pipe(
-    RA.fromIterable(config.rules),
-    RA.flatMap((rule): TwinParserModel.TwinRuleNode[] =>
-      pipe(
-        RA.fromIterable(rule[0].split('|')),
-        RA.map(
-          (pattern): TwinParserModel.TwinRuleNode =>
-            typeof rule[1] === 'string'
-              ? TwinParserModel.TwinRuleNode.ThemedKey({
-                  pattern,
-                  meta: rule[3] ?? DEFAULT_RULE_META,
-                  resolver: rule[2],
-                  themeSection: rule[1] as Data.TaggedEnum.Value<
-                    TwinParserModel.TwinRuleNode,
-                    'ThemedKey'
-                  >['themeSection'],
-                })
-              : TwinParserModel.TwinRuleNode.UnKeyed({
-                  pattern,
-                  meta: rule[3] ?? DEFAULT_RULE_META,
-                  resolver: rule[2],
-                }),
-        ),
-      ),
-    ),
-  );
-};
-
-const getThemeVariants = (
-  config: InternalTwinConfig,
-): HashSet.HashSet<TwinParserModel.TwinVariantNode> =>
-  HashSet.fromIterable(config.variants).pipe(
-    HashSet.map((variant): TwinParserModel.TwinVariantNode => {
-      if (typeof variant[1] === 'function') {
-        return TwinParserModel.TwinVariantNode.Resolver({ pattern: variant[0], value: variant[1] });
-      }
-      return TwinParserModel.TwinVariantNode.Literal({ pattern: variant[0], value: variant[1] });
-    }),
-  );
-
-const getThemeSectionKeys = (config: InternalTwinConfig) => {
-  const keys = [...keysOf(config.theme), ...keysOf(config.theme.extend ?? {})].filter(
-    (x) => x !== 'extend',
-  );
-  return SortedSet.fromIterable(keys, Order.string);
-};
-
-const getThemeColorPalette = (config: InternalTwinConfig) =>
-  HashMap.fromIterable(Object.entries(config.theme.colors ?? {})).pipe(
-    HashMap.union(HashMap.fromIterable(Object.entries(config.theme.extend?.colors ?? {}))),
-  );
-
-const getThemeOpacities = (config: InternalTwinConfig) =>
-  pipe(
-    RA.fromIterable(Object.entries(config.theme.opacity ?? {})),
-    RA.union(HashMap.fromIterable(Object.entries(config.theme.extend?.opacity ?? {}))),
-  );
-
-const getThemeScreenEntries = (config: InternalTwinConfig) =>
-  HashMap.fromIterable(Object.entries(config.theme.screens ?? {})).pipe(
-    HashMap.union(HashMap.fromIterable(Object.entries(config.theme.extend?.screens ?? {}))),
-  );
 
 /** PARSER */
 

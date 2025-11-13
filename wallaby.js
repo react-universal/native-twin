@@ -5,9 +5,9 @@ module.exports = (wallaby) => {
     trace: true,
     runMode: 'onsave',
     runAllTestsInAffectedTestFile: true,
-    runAllTestsWhenNoAffectedTests: false,
+    // runAllTestsWhenNoAffectedTests: false,
     resolveGetters: true,
-    ignoreFileLoadingDependencyTracking: true,
+    // ignoreFileLoadingDependencyTracking: true,
     mapConsoleMessagesStackTrace: true,
     logLimits: {
       inline: {

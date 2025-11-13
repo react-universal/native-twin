@@ -13,6 +13,7 @@ import type * as HashSet from 'effect/HashSet';
 export type InternalTwinConfig = TailwindConfig<__Theme__ & TailwindPresetTheme>;
 export type InternalTwFn = RuntimeTW<InternalTwinConfig['theme'], SheetEntry[]>;
 export type InternalTwinThemeContext = ThemeContext<TailwindPresetTheme>;
+export type AnyInternalTwinRule = InternalTwFn['config']['rules'][number];
 
 export interface TwinStore {
   twinVariants: HashSet.HashSet<TwinVariantCompletion>;

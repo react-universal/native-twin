@@ -122,6 +122,7 @@
       "**/*.snap",
       "**/*.json"
     ],
+    "js/ts.hover.maximumLength": 800,
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
@@ -218,7 +219,6 @@
       "twin.run",
       "docs-site"
     ],
-    "wallaby.codeLensFeature.profiler": true,
     "console-ninja.logCaptureOptions": {
     "resolveGetters": true,
     "defaultLimits": {
