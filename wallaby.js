@@ -2,13 +2,13 @@ module.exports = (wallaby) => {
   return {
     reportConsoleErrorAsError: true,
     autoDetect: ["vitest"],
-    trace: true,
+    trace: false,
     runMode: 'onsave',
     runAllTestsInAffectedTestFile: true,
     // runAllTestsWhenNoAffectedTests: false,
     resolveGetters: true,
-    // ignoreFileLoadingDependencyTracking: true,
-    mapConsoleMessagesStackTrace: true,
+    ignoreFileLoadingDependencyTracking: true,
+    // mapConsoleMessagesStackTrace: true,
     logLimits: {
       inline: {
         // The depth to log for values displayed inline beside your code

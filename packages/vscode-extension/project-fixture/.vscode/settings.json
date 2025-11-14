@@ -1,7 +1,12 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.tsdk": "../../../node_modules/typescript/lib",
     "nativeTwin.trace.server": "verbose",
     "nativeTwin.enable": true,
+    "outline.icons": true,
+    "workbench.editor.showIcons": true,
+    "workbench.productIconTheme": "Default",
+    "workbench.iconTheme": "vs-minimal",
+    "breadcrumbs.icons": true,
     "nativeTwin.functions": [
         "tw",
         "apply",
@@ -9,6 +14,7 @@
         "variants",
         "styled",
         "tx",
+        "custom",
         "style",
         "createVariants",
         "lol2",
@@ -17,6 +23,7 @@
     "editor.suggest.showColors": true,
     "markdown.trace.server": "verbose",
     "typescript.tsserver.log": "off",
+    "workbench.colorTheme": "Default Dark+",
     "nativeTwin.debug": true,
     "editor.quickSuggestions": {
         "other": "on",

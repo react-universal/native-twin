@@ -16,13 +16,10 @@ export const ClientCustomLogger = Logger.replaceScoped(
   Effect.gen(function* () {
     const channel = yield* Effect.acquireRelease(
       Effect.sync(() =>
-        vscode.window.createOutputChannel(Constants.extensionChannelName, {
-          log: true,
-        }),
+        vscode.window.createOutputChannel(Constants.extensionChannelName, { log: true }),
       ),
       (channel) => Effect.sync(() => channel.dispose()),
     );
-    channel.replace('');
 
     return Logger.make((options) => {
       let message = '';
@@ -38,21 +35,16 @@ export const ClientCustomLogger = Logger.replaceScoped(
 
       switch (options.logLevel) {
         case LogLevel.Trace:
-          channel.trace(`${message}`);
-          break;
+          return channel.trace(message, options);
         case LogLevel.Debug:
-          channel.debug(message);
-          break;
+          return channel.debug(message);
         case LogLevel.Warning:
-          channel.warn(message);
-          break;
+          return channel.warn(message);
         case LogLevel.Error:
         case LogLevel.Fatal:
-          channel.error(message);
-          break;
+          return channel.error(message);
         default:
-          channel.info(message);
-          break;
+          return channel.info(message);
       }
     });
   }),

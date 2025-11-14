@@ -6,7 +6,7 @@ import type {
   TWParsedRule,
   VariantClassToken,
   VariantToken,
-} from './tailwind.types.js';
+} from './twin.types.js';
 
 export const classNameIdent = /^[a-z0-9A-Z-._]+/;
 

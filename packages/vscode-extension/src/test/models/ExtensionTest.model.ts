@@ -10,7 +10,7 @@ class ExtensionTestHandler {
   running = false;
 
   constructor() {
-    const ext = vscode.extensions.getExtension(this.extensionName);
+    const ext = vscode.extensions.getExtension(Constants.extensionName);
     if (!ext) {
       throw new Error(`Extension ${this.extensionName} not found`);
     }

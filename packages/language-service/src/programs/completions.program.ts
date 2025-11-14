@@ -16,45 +16,29 @@ export const getCompletionsAtPosition = (
   Effect.gen(function* () {
     const documentsHandler = yield* LSPDocumentsService;
     const twinService = yield* NativeTwinManagerService;
-    const document = yield* documentsHandler.getDocument(params.textDocument.uri);
+    const document = yield* documentsHandler
+      .getDocument(params.textDocument.uri)
+      .pipe(Effect.map(Option.getOrElse(() => null)));
 
-    const extracted = Option.Do.pipe(
-      Option.bind('document', () => document),
-      Option.let('cursorOffset', ({ document }) => document.offsetAt(params.position)),
-      Option.bind('languageRegionAtPosition', ({ document }) =>
-        document.getTemplateAtPosition(params.position),
-      ),
-      Option.let(
-        'parsedText',
-        ({ languageRegionAtPosition }) => languageRegionAtPosition.regionNodes,
-      ),
+    if (!document) return [];
+    const cursorOffset = document.offsetAt(params.position);
+    const languageRegionAtPosition = document.getTemplateAtPosition(params.position);
+    const text = document.getText(
+      Range.create(document.positionAt(cursorOffset - 1), document.positionAt(cursorOffset + 1)),
     );
+    if (text === '``') {
+      return Completions.getAllCompletionRules(
+        twinService.completions,
+        Range.create(document.positionAt(cursorOffset), document.positionAt(cursorOffset + 1)),
+      );
+    }
 
-    const completionEntries = Option.flatMap(extracted, (meta) => {
-      const text = meta.document.getText(
-        Range.create(
-          meta.document.positionAt(meta.cursorOffset - 1),
-          meta.document.positionAt(meta.cursorOffset + 1),
-        ),
-      );
-      if (text === '``') {
-        return Option.some(
-          Completions.getAllCompletionRules(
-            twinService.completions,
-            Range.create(
-              meta.document.positionAt(meta.cursorOffset),
-              meta.document.positionAt(meta.cursorOffset + 1),
-            ),
-          ),
-        );
-      }
-      return Option.map(
-        meta.languageRegionAtPosition.getParsedNodeAtOffset(meta.cursorOffset),
-        (x) => {
-          const tokens = getCompletionsForTokens(x.flattenToken, twinService);
-          return Completions.completionRulesToEntries(x.flattenToken, tokens, meta.document);
-        },
-      );
-    });
-    return Option.getOrElse(completionEntries, (): vscode.CompletionItem[] => []);
+    return languageRegionAtPosition.pipe(
+      Option.flatMap((x) => x.getParsedNodeAtOffset(cursorOffset)),
+      Option.map((x) => {
+        const tokens = getCompletionsForTokens(x.flattenToken, twinService);
+        return Completions.completionRulesToEntries(x.flattenToken, tokens, document);
+      }),
+      Option.getOrElse((): vscode.CompletionItem[] => []),
+    );
   });

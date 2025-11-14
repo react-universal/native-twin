@@ -1,72 +1,14 @@
-import * as TwParser from '@native-twin/css/tailwind-parser';
-import { flattenObjectByPath } from '@native-twin/helpers';
-import * as RA from 'effect/Array';
-import type * as Data from 'effect/Data';
-import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
-import type {
-  AnyInternalTwinRule,
-  InternalTwFn,
-  InternalTwinConfig,
-} from '../models/twin/native-twin.types';
-import { DEFAULT_RULE_META } from '../utils/constants.utils';
-import { composeDeclarations, type StyledContext } from '../utils/sheet.utils';
+import type { InternalTwinConfig } from '../models/twin/native-twin.types';
 import * as TwinParserModel from './models/TwinParser.models';
+import type { TwinRuleComposer } from './models/TwinRuleHandler';
 import * as Predicates from './TwinParser.predicates';
-import * as TwinUtils from './TwinParser.utils';
 
-export const sanitizeClassName = (themeRule: TwinParserModel.TwinRuleNode, key: string) => {
+export const sanitizeClassName = (themeRule: TwinRuleComposer, key: string) => {
   const className = themeRule.pattern.endsWith('-')
     ? themeRule.pattern.concat(key)
     : themeRule.pattern.concat('-').concat(key);
   return className.replace(/.*[-]?DEFAULT[-]?/, '');
-};
-
-export const getTaggedRule = (rule: AnyInternalTwinRule): TwinParserModel.TwinRuleNode => {
-  return typeof rule[1] === 'string'
-    ? TwinParserModel.TwinRuleNode.ThemedKey({
-        pattern: rule[0],
-        meta: rule[3] ?? DEFAULT_RULE_META,
-        resolver: rule[2],
-        themeSection: rule[1] as Data.TaggedEnum.Value<
-          TwinParserModel.TwinRuleNode,
-          'ThemedKey'
-        >['themeSection'],
-      })
-    : TwinParserModel.TwinRuleNode.UnKeyed({
-        pattern: rule[0],
-        meta: rule[3] ?? DEFAULT_RULE_META,
-        resolver: rule[2],
-      });
-};
-
-export const getThemeRules = (config: InternalTwinConfig): TwinParserModel.TwinRuleNode[] => {
-  return pipe(
-    RA.fromIterable(config.rules),
-    RA.flatMap((rule): TwinParserModel.TwinRuleNode[] =>
-      pipe(
-        RA.fromIterable(rule[0].split('|')),
-        RA.map(
-          (pattern): TwinParserModel.TwinRuleNode =>
-            typeof rule[1] === 'string'
-              ? TwinParserModel.TwinRuleNode.ThemedKey({
-                  pattern,
-                  meta: rule[3] ?? DEFAULT_RULE_META,
-                  resolver: rule[2],
-                  themeSection: rule[1] as Data.TaggedEnum.Value<
-                    TwinParserModel.TwinRuleNode,
-                    'ThemedKey'
-                  >['themeSection'],
-                })
-              : TwinParserModel.TwinRuleNode.UnKeyed({
-                  pattern,
-                  meta: rule[3] ?? DEFAULT_RULE_META,
-                  resolver: rule[2],
-                }),
-        ),
-      ),
-    ),
-  );
 };
 
 export const getThemeVariants = (
@@ -103,50 +45,6 @@ export const getThemeVariants = (
 //   HashMap.fromIterable(Object.entries(config.theme.screens ?? {})).pipe(
 //     HashMap.union(HashMap.fromIterable(Object.entries(config.theme.extend?.screens ?? {}))),
 //   );
-
-export const getTwinRuleExpansions = (
-  rule: TwinParserModel.TwinRuleNode,
-  twin: InternalTwFn,
-  styledContext: StyledContext,
-): TwinParserModel.ExpandedRule[] => {
-  return TwinParserModel.TwinRuleNode.$match(rule, {
-    ThemedKey: (themeRule): TwinParserModel.ExpandedRule[] => {
-      const flattenSection = flattenObjectByPath(twin.theme(themeRule.themeSection as any));
-      return Object.entries(flattenSection).flatMap(([key, value]) => {
-        const className = TwinUtils.sanitizeClassName(themeRule, key);
-        if (className.endsWith('-')) return [];
-        if (className === '') return [];
-        return { className, key, value, meta: themeRule.meta };
-      });
-    },
-    UnKeyed: (computedRule): TwinParserModel.ExpandedRule[] => {
-      let value = twin.theme(computedRule.pattern as any);
-      if (typeof value === 'object') {
-        value = computedRule.resolver(
-          {
-            base: computedRule.pattern,
-            negative: computedRule.meta.canBeNegative,
-            segment: { type: 'segment', value: '' },
-            suffixes: [],
-          },
-          twin.context,
-          TwParser.parseTWTokens(computedRule.pattern)[0],
-        );
-        if (typeof value === 'object') {
-          value = composeDeclarations(value.declarations, styledContext);
-        }
-      }
-      return [
-        {
-          value,
-          className: computedRule.pattern,
-          key: computedRule.pattern,
-          meta: computedRule.meta,
-        },
-      ];
-    },
-  });
-};
 
 const createComposedClass = (
   token:

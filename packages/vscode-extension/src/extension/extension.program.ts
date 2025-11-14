@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';
 import * as Layer from 'effect/Layer';
@@ -9,13 +9,12 @@ import { registerEditorCommand } from './extension.utils';
 export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext>) => {
   return Effect.gen(function* () {
     const context = yield* VscodeContext;
-    // const docs = yield* LSPDocumentsService;
     const scope = yield* Scope.make();
 
-    yield* registerEditorCommand('compile.file', (textEditor, edit) =>
-      Effect.gen(function* () {
-        edit.insert(new vscode.Position(0, 0), 'asdasdasd');
-        yield* Effect.log(textEditor.document.uri);
+    yield* registerEditorCommand(
+      'compile.file',
+      Effect.fn(function* (textEditor, _edit) {
+        yield* Effect.log('URI: ', textEditor.document.uri);
 
         yield* Effect.void;
       }),
@@ -26,5 +25,5 @@ export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext>) 
     });
 
     yield* Layer.buildWithScope(layer, scope);
-  }).pipe(Effect.catchAllCause(Effect.logFatal));
+  }).pipe(Effect.catchAllCause((cause) => Effect.logFatal('FATAL: ', Cause.prettyErrors(cause))));
 };

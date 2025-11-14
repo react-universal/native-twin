@@ -52,11 +52,13 @@ export const DEFAULT_PLUGIN_CONFIG = {
   functions: ['tw', 'apply', 'css', 'variants', 'style', 'styled', 'createVariants'],
   debug: false,
   enable: true,
+  configPath: 'tailwind.config.ts',
   trace: {
     server: 'off',
   } as const,
 };
 
+export const twinCommonFiles = ['tailwind.config.ts', 'twin.config.ts'];
 
 /** @type {import('ts-morph').CompilerOptions} */
 export const TSCompilerDefaultOptions = {

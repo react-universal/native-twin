@@ -1,4 +1,6 @@
 /// <reference lib="WebWorker" />
+
+import { TwinParserContextLive } from '@native-twin/language-service';
 import {
   LSPConfigService,
   LSPConnectionService,
@@ -29,6 +31,7 @@ const DocumentsLayer = LSPDocumentsService.make(documentsHandler, TwinMonacoText
 
 const MainLive = Layer.empty.pipe(
   Layer.provideMerge(DocumentsLayer),
+  Layer.provideMerge(TwinParserContextLive),
   Layer.provideMerge(LSPConfigService.Live),
   Layer.provideMerge(Layer.succeed(NativeTwinManagerService, new MonacoNativeTwinManager())),
   Layer.provideMerge(ConnectionLayer),

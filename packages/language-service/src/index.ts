@@ -43,3 +43,4 @@ export { NativeTwinManager } from './utils/twin/twin.manager.js';
 
 export { Constants };
 export { ExtensionConfigSchema } from './schemas/index.js';
+export { TwinParserContext, TwinParserContextLive } from './twin/TwinParser.service.js';

@@ -1,12 +1,11 @@
 import { runTests } from '@vscode/test-electron';
-import * as os from 'os';
 import * as path from 'path';
 
 async function main() {
   try {
     // The folder containing the Extension Manifest package.json
     // Passed to `--extensionDevelopmentPath`
-    const extensionDevelopmentPath = path.resolve(__dirname, '../../');
+    const extensionDevelopmentPath = path.resolve(__dirname, '../../../');
 
     // The path to test runner
     // Passed to --extensionTestsPath
@@ -19,7 +18,7 @@ async function main() {
       reuseMachineInstall: true,
       launchArgs: [
         '--user-data-dir',
-        `${os.tmpdir()}`,
+        `${path.join(process.cwd(),'.vscode-user-data')}`,
         '--disable-extensions',
         './project-fixture',
       ],

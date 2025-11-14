@@ -1,6 +1,7 @@
 import type * as vscode from 'vscode';
 import { DevTools } from '@effect/experimental';
 import { NativeTwinManager, NativeTwinManagerService } from '@native-twin/language-service';
+import { Cause, Logger, LogLevel } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import { launchExtension } from './extension/extension.program';
@@ -19,7 +20,9 @@ const MainLive = Layer.mergeAll(LanguageClientLive, TwinTreeDataFilesProvider).p
 export function activate(context: vscode.ExtensionContext) {
   launchExtension(MainLive).pipe(
     Effect.provideService(VscodeContext, context),
+    Effect.onError((cause) => Effect.log('ERROR_ ', Cause.prettyErrors(cause))),
     Effect.withSpan('Launcher', { attributes: { executor: 'vscode' } }),
+    Logger.withMinimumLogLevel(LogLevel.All),
     Effect.runFork,
   );
 }

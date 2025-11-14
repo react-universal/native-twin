@@ -1,5 +1,3 @@
-import * as path_ from 'node:path';
-import * as Config from 'effect/Config';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -8,9 +6,10 @@ import ts from 'ts-morph';
 import { TSCompilerDefaultOptions } from '../utils/constants.utils';
 
 const make = Effect.gen(function* () {
-  const configPath = yield* Config.string('tsConfigPath').pipe(
-    Config.withDefault(path_.join(process.cwd(), 'tsconfig.json')),
-  );
+  const configPath = ''
+  // Config.string('tsConfigPath').pipe(
+  //   Config.withDefault(path_.join(process.cwd(), 'tsconfig.json')),
+  // );
   const tsConfig = yield* Effect.sync(() => {
     const userConfig = ts.getCompilerOptionsFromTsConfig(configPath);
     return { ...userConfig.options, ...TSCompilerDefaultOptions };

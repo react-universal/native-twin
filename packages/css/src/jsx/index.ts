@@ -12,7 +12,6 @@ export type {
   /** @category — CSS Parsers */
   StyledPropEntries,
 } from './metro.runtime';
-
 export { mergeCompiledDeclarations } from './SheetEntry';
 export {
   /** @category — Mappers */

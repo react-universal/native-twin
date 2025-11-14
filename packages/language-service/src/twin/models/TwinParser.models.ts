@@ -1,5 +1,11 @@
 import type * as P from '@native-twin/arc-parser';
-import type { Rule, RuleMeta, RuleResolver, Variant, VariantResolver } from '@native-twin/core';
+import type {
+  __Theme__,
+  RuleMeta,
+  RuleResolver,
+  Variant,
+  VariantResolver,
+} from '@native-twin/core';
 import type {
   ArbitraryToken,
   ClassNameToken,
@@ -7,8 +13,8 @@ import type {
   VariantClassToken,
   VariantToken,
 } from '@native-twin/css';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
-import type { InternalTwinConfig } from '../../models/twin/native-twin.types';
 import * as Predicates from '../TwinParser.predicates';
 import { createComposedClasses } from '../TwinParser.utils';
 
@@ -75,28 +81,18 @@ export interface ExpandedRule {
   meta: RuleMeta;
   key: string;
   value: any;
+  resolver: RuleResolver<__Theme__ & TailwindPresetTheme>;
+}
+
+export interface TwinRuleRegistry {
+  className: string;
+  declarations: string[];
+  declarationValue: string;
 }
 
 export type TwinVariantNode = Data.TaggedEnum<{
   Literal: { pattern: Variant[0]; value: string };
   Resolver: { pattern: Variant[0]; value: VariantResolver };
-}>;
-
-export type TwinRuleNode = Data.TaggedEnum<{
-  ThemedKey: {
-    pattern: string;
-    themeSection: keyof Omit<
-      InternalTwinConfig['theme'] & InternalTwinConfig['theme']['extend'],
-      'screens'
-    >;
-    resolver: RuleResolver;
-    meta: NonNullable<Rule[3]>;
-  };
-  UnKeyed: {
-    pattern: string;
-    resolver: RuleResolver;
-    meta: NonNullable<Rule[3]>;
-  };
 }>;
 
 export interface ComposedClassInfo {
@@ -106,9 +102,17 @@ export interface ComposedClassInfo {
   parentStarts: number;
 }
 
+/** @description Describes an the way to compose this className and get its value */
+export interface TwinRuleComposition {
+  composed: string;
+  classNameExpansion: string;
+  classNameSuffix: string;
+  declarationSuffixes: string[];
+}
+
 export const TwinVariantNode = Data.taggedEnum<TwinVariantNode>();
 
-export const TwinRuleNode = Data.taggedEnum<TwinRuleNode>();
+// export const TwinRuleNode = Data.taggedEnum<TwinRuleNode>();
 
 export class TwinParseResultHandler {
   nodes: AnyTwinComposedClass[];

@@ -26,7 +26,29 @@ describe.each([
       if (!foundNode) throw assert.isDefined(foundNode);
       const nextRulesGuess = yield* parser.findRulesByKey(foundNode.lookupText);
       expect(Array.from(nextRulesGuess).length).toBeGreaterThan(0);
-      expect(Array.from(nextRulesGuess)).toMatchSnapshot('Guess next rules');
+      yield* Effect.promise(() =>
+        expect(Array.from(nextRulesGuess)).toMatchFileSnapshot('__snapshots__/next_rules.snap'),
+      );
+    }).pipe(Effect.provide(TestLayer)),
+  );
+});
+
+describe('Twin Parser Service language', () => {
+  it.effect('Predict className with feature', () =>
+    Effect.gen(function* () {
+      const offset = 7;
+      const fixture = 'border-';
+      const parser = yield* TwinParserContext;
+      const result = parser.runTwinParser(fixture, offset);
+      const foundNode = result.findNodeAt(offset);
+      if (!foundNode) throw assert.isDefined(foundNode);
+      const nextRulesGuess = yield* parser.findRulesByKey(foundNode.lookupText);
+      expect(Array.from(nextRulesGuess).length).toBeGreaterThan(0);
+      yield* Effect.promise(() =>
+        expect(Array.from(nextRulesGuess)).toMatchFileSnapshot(
+          '__snapshots__/rule_dictionary.snap',
+        ),
+      );
     }).pipe(Effect.provide(TestLayer)),
   );
 });

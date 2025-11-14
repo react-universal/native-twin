@@ -86,7 +86,8 @@ export const createRuleComposer = (ruleInfo: { pattern: string; feature: RuleMet
     ),
   };
 };
-
+// TODO: remove this and related
+/** @deprecated please use twin parser */
 const composeClassName = (pattern: string) => (suffix: string) => {
   if (pattern.endsWith('-')) {
     return `${pattern}${suffix}`;

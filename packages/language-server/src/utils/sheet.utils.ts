@@ -1,4 +1,3 @@
-import type { PlatformOSType } from 'react-native';
 import { parseCssValue } from '@native-twin/core';
 import {
   type AnyStyle,
@@ -6,6 +5,7 @@ import {
   type SheetEntry,
   type SheetEntryDeclaration,
 } from '@native-twin/css';
+import type { PlatformOSType } from 'react-native';
 
 export function getSheetEntryStyles(entries: SheetEntry[] = [], context: StyledContext) {
   return entries.reduce(

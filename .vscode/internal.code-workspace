@@ -5,60 +5,32 @@
       "path": ".."
     },
     {
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
       "name": "📦 @native-twin/language-service",
       "path": "../packages/language-service"
-    },
-    {
-      "name": "📦 @native-twin/adapters",
-      "path": "../packages/adapters"
-    },
-    {
-      "name": "📦 @native-twin/arc-parser",
-      "path": "../packages/arc-parser"
-    },
-    {
-      "name": "📦 @native-twin/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @native-twin/cli",
-      "path": "../packages/builder"
-    },
-    {
-      "name": "📦 @native-twin/compiler",
-      "path": "../packages/compiler"
-    },
-    {
-      "name": "📦 @native-twin/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @native-twin/data-types",
-      "path": "../packages/data-types"
-    },
-    {
-      "name": "📦 @native-twin/dev-tools",
-      "path": "../packages/dev-tools"
-    },
-    {
-      "name": "🚀 @native-twin/dev-tools-webui",
-      "path": "../packages/dev-tools/webui"
-    },
-    {
-      "name": "📦 @native-twin/helpers",
-      "path": "../packages/helpers"
-    },
-    {
-      "name": "📦 @native-twin/jsx",
-      "path": "../packages/jsx"
     },
     {
       "name": "📦 @native-twin/language-server",
       "path": "../packages/language-server"
     },
     {
+      "name": "📦 @native-twin/compiler",
+      "path": "../packages/compiler"
+    },
+    {
       "name": "📦 @native-twin/metro",
       "path": "../packages/metro"
+    },
+    {
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @native-twin/jsx",
+      "path": "../packages/jsx"
     },
     {
       "name": "📦 @native-twin/core",
@@ -69,8 +41,28 @@
       "path": "../packages/preset-tailwind"
     },
     {
+      "name": "📦 @native-twin/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @native-twin/adapters",
+      "path": "../packages/adapters"
+    },
+    {
+      "name": "📦 @native-twin/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
+      "name": "📦 @native-twin/dev-tools",
+      "path": "../packages/dev-tools"
+    },
+    {
       "name": "📦 @native-twin/styled",
       "path": "../packages/styled"
+    },
+    {
+      "name": "📦 @native-twin/babel",
+      "path": "../packages/babel"
     },
     {
       "name": "📦 @native-twin/ts-plugin",
@@ -81,12 +73,20 @@
       "path": "../packages/vite-plugin"
     },
     {
-      "name": "📦 native-twin-vscode",
-      "path": "../packages/vscode-extension"
+      "name": "📦 @native-twin/cli",
+      "path": "../packages/builder"
+    },
+    {
+      "name": "📦 @native-twin/data-types",
+      "path": "../packages/data-types"
     },
     {
       "name": "twin-run",
       "path": "../sites/twin.run"
+    },
+    {
+      "name": "🚀 @native-twin/dev-tools-webui",
+      "path": "../packages/dev-tools/webui"
     },
     {
       "name": "🚀 next-app-dir",

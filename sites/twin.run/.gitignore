@@ -37,6 +37,7 @@ lint-results/
 
 #VSCODE
 .vscode-test
+**.vscode-user-data/*
 out
 
 # TypeScript cache

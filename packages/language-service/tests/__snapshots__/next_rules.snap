@@ -1,0 +1,4215 @@
+[
+  {
+    "className": "bg-amber",
+    "declarationValue": "amber",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber",
+      "#fbbf24",
+    ],
+  },
+  {
+    "className": "bg-amber-100",
+    "declarationValue": "amber-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-100",
+      "#fef3c7",
+    ],
+  },
+  {
+    "className": "bg-amber-200",
+    "declarationValue": "amber-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-200",
+      "#fde68a",
+    ],
+  },
+  {
+    "className": "bg-amber-300",
+    "declarationValue": "amber-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-300",
+      "#fcd34d",
+    ],
+  },
+  {
+    "className": "bg-amber-400",
+    "declarationValue": "amber-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-400",
+      "#fbbf24",
+    ],
+  },
+  {
+    "className": "bg-amber-50",
+    "declarationValue": "amber-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-50",
+      "#fffbeb",
+    ],
+  },
+  {
+    "className": "bg-amber-500",
+    "declarationValue": "amber-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-500",
+      "#f59e0b",
+    ],
+  },
+  {
+    "className": "bg-amber-600",
+    "declarationValue": "amber-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-600",
+      "#d97706",
+    ],
+  },
+  {
+    "className": "bg-amber-700",
+    "declarationValue": "amber-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-700",
+      "#b45309",
+    ],
+  },
+  {
+    "className": "bg-amber-800",
+    "declarationValue": "amber-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-800",
+      "#92400e",
+    ],
+  },
+  {
+    "className": "bg-amber-900",
+    "declarationValue": "amber-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-900",
+      "#78350f",
+    ],
+  },
+  {
+    "className": "bg-amber-950",
+    "declarationValue": "amber-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-950",
+      "#451a03",
+    ],
+  },
+  {
+    "className": "bg-amber-DEFAULT",
+    "declarationValue": "amber-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "amber-DEFAULT",
+      "#fbbf24",
+    ],
+  },
+  {
+    "className": "bg-black",
+    "declarationValue": "black",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "black",
+      "#000",
+    ],
+  },
+  {
+    "className": "bg-blue",
+    "declarationValue": "blue",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue",
+      "#60a5fa",
+    ],
+  },
+  {
+    "className": "bg-blue-100",
+    "declarationValue": "blue-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-100",
+      "#dbeafe",
+    ],
+  },
+  {
+    "className": "bg-blue-200",
+    "declarationValue": "blue-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-200",
+      "#bfdbfe",
+    ],
+  },
+  {
+    "className": "bg-blue-300",
+    "declarationValue": "blue-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-300",
+      "#93c5fd",
+    ],
+  },
+  {
+    "className": "bg-blue-400",
+    "declarationValue": "blue-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-400",
+      "#60a5fa",
+    ],
+  },
+  {
+    "className": "bg-blue-50",
+    "declarationValue": "blue-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-50",
+      "#eff6ff",
+    ],
+  },
+  {
+    "className": "bg-blue-500",
+    "declarationValue": "blue-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-500",
+      "#3b82f6",
+    ],
+  },
+  {
+    "className": "bg-blue-600",
+    "declarationValue": "blue-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-600",
+      "#2563eb",
+    ],
+  },
+  {
+    "className": "bg-blue-700",
+    "declarationValue": "blue-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-700",
+      "#1d4ed8",
+    ],
+  },
+  {
+    "className": "bg-blue-800",
+    "declarationValue": "blue-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-800",
+      "#1e40af",
+    ],
+  },
+  {
+    "className": "bg-blue-900",
+    "declarationValue": "blue-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-900",
+      "#1e3a8a",
+    ],
+  },
+  {
+    "className": "bg-blue-950",
+    "declarationValue": "blue-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-950",
+      "#172554",
+    ],
+  },
+  {
+    "className": "bg-blue-DEFAULT",
+    "declarationValue": "blue-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blue-DEFAULT",
+      "#60a5fa",
+    ],
+  },
+  {
+    "className": "bg-blueGray",
+    "declarationValue": "blueGray",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray",
+      "#94a3b8",
+    ],
+  },
+  {
+    "className": "bg-blueGray-100",
+    "declarationValue": "blueGray-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-100",
+      "#f1f5f9",
+    ],
+  },
+  {
+    "className": "bg-blueGray-200",
+    "declarationValue": "blueGray-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-200",
+      "#e2e8f0",
+    ],
+  },
+  {
+    "className": "bg-blueGray-300",
+    "declarationValue": "blueGray-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-300",
+      "#cbd5e1",
+    ],
+  },
+  {
+    "className": "bg-blueGray-400",
+    "declarationValue": "blueGray-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-400",
+      "#94a3b8",
+    ],
+  },
+  {
+    "className": "bg-blueGray-50",
+    "declarationValue": "blueGray-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-50",
+      "#f8fafc",
+    ],
+  },
+  {
+    "className": "bg-blueGray-500",
+    "declarationValue": "blueGray-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-500",
+      "#64748b",
+    ],
+  },
+  {
+    "className": "bg-blueGray-600",
+    "declarationValue": "blueGray-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-600",
+      "#475569",
+    ],
+  },
+  {
+    "className": "bg-blueGray-700",
+    "declarationValue": "blueGray-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-700",
+      "#334155",
+    ],
+  },
+  {
+    "className": "bg-blueGray-800",
+    "declarationValue": "blueGray-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-800",
+      "#1e293b",
+    ],
+  },
+  {
+    "className": "bg-blueGray-900",
+    "declarationValue": "blueGray-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-900",
+      "#0f172a",
+    ],
+  },
+  {
+    "className": "bg-blueGray-950",
+    "declarationValue": "blueGray-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-950",
+      "#020617",
+    ],
+  },
+  {
+    "className": "bg-blueGray-DEFAULT",
+    "declarationValue": "blueGray-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "blueGray-DEFAULT",
+      "#94a3b8",
+    ],
+  },
+  {
+    "className": "bg-coolGray",
+    "declarationValue": "coolGray",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray",
+      "#9ca3af",
+    ],
+  },
+  {
+    "className": "bg-coolGray-100",
+    "declarationValue": "coolGray-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-100",
+      "#f3f4f6",
+    ],
+  },
+  {
+    "className": "bg-coolGray-200",
+    "declarationValue": "coolGray-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-200",
+      "#e5e7eb",
+    ],
+  },
+  {
+    "className": "bg-coolGray-300",
+    "declarationValue": "coolGray-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-300",
+      "#d1d5db",
+    ],
+  },
+  {
+    "className": "bg-coolGray-400",
+    "declarationValue": "coolGray-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-400",
+      "#9ca3af",
+    ],
+  },
+  {
+    "className": "bg-coolGray-50",
+    "declarationValue": "coolGray-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-50",
+      "#f9fafb",
+    ],
+  },
+  {
+    "className": "bg-coolGray-500",
+    "declarationValue": "coolGray-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-500",
+      "#6b7280",
+    ],
+  },
+  {
+    "className": "bg-coolGray-600",
+    "declarationValue": "coolGray-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-600",
+      "#4b5563",
+    ],
+  },
+  {
+    "className": "bg-coolGray-700",
+    "declarationValue": "coolGray-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-700",
+      "#374151",
+    ],
+  },
+  {
+    "className": "bg-coolGray-800",
+    "declarationValue": "coolGray-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-800",
+      "#1f2937",
+    ],
+  },
+  {
+    "className": "bg-coolGray-900",
+    "declarationValue": "coolGray-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-900",
+      "#111827",
+    ],
+  },
+  {
+    "className": "bg-coolGray-950",
+    "declarationValue": "coolGray-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-950",
+      "#030712",
+    ],
+  },
+  {
+    "className": "bg-coolGray-DEFAULT",
+    "declarationValue": "coolGray-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "coolGray-DEFAULT",
+      "#9ca3af",
+    ],
+  },
+  {
+    "className": "bg-current",
+    "declarationValue": "current",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "current",
+      "currentColor",
+    ],
+  },
+  {
+    "className": "bg-cyan",
+    "declarationValue": "cyan",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan",
+      "#22d3ee",
+    ],
+  },
+  {
+    "className": "bg-cyan-100",
+    "declarationValue": "cyan-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-100",
+      "#cffafe",
+    ],
+  },
+  {
+    "className": "bg-cyan-200",
+    "declarationValue": "cyan-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-200",
+      "#a5f3fc",
+    ],
+  },
+  {
+    "className": "bg-cyan-300",
+    "declarationValue": "cyan-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-300",
+      "#67e8f9",
+    ],
+  },
+  {
+    "className": "bg-cyan-400",
+    "declarationValue": "cyan-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-400",
+      "#22d3ee",
+    ],
+  },
+  {
+    "className": "bg-cyan-50",
+    "declarationValue": "cyan-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-50",
+      "#ecfeff",
+    ],
+  },
+  {
+    "className": "bg-cyan-500",
+    "declarationValue": "cyan-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-500",
+      "#06b6d4",
+    ],
+  },
+  {
+    "className": "bg-cyan-600",
+    "declarationValue": "cyan-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-600",
+      "#0891b2",
+    ],
+  },
+  {
+    "className": "bg-cyan-700",
+    "declarationValue": "cyan-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-700",
+      "#0e7490",
+    ],
+  },
+  {
+    "className": "bg-cyan-800",
+    "declarationValue": "cyan-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-800",
+      "#155e75",
+    ],
+  },
+  {
+    "className": "bg-cyan-900",
+    "declarationValue": "cyan-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-900",
+      "#164e63",
+    ],
+  },
+  {
+    "className": "bg-cyan-950",
+    "declarationValue": "cyan-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-950",
+      "#083344",
+    ],
+  },
+  {
+    "className": "bg-cyan-DEFAULT",
+    "declarationValue": "cyan-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "cyan-DEFAULT",
+      "#22d3ee",
+    ],
+  },
+  {
+    "className": "bg-dark",
+    "declarationValue": "dark",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark",
+      "#222222",
+    ],
+  },
+  {
+    "className": "bg-dark-100",
+    "declarationValue": "dark-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-100",
+      "#3c3c3c",
+    ],
+  },
+  {
+    "className": "bg-dark-200",
+    "declarationValue": "dark-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-200",
+      "#323232",
+    ],
+  },
+  {
+    "className": "bg-dark-300",
+    "declarationValue": "dark-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-300",
+      "#2d2d2d",
+    ],
+  },
+  {
+    "className": "bg-dark-400",
+    "declarationValue": "dark-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-400",
+      "#222222",
+    ],
+  },
+  {
+    "className": "bg-dark-50",
+    "declarationValue": "dark-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-50",
+      "#4a4a4a",
+    ],
+  },
+  {
+    "className": "bg-dark-500",
+    "declarationValue": "dark-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-500",
+      "#1f1f1f",
+    ],
+  },
+  {
+    "className": "bg-dark-600",
+    "declarationValue": "dark-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-600",
+      "#1c1c1e",
+    ],
+  },
+  {
+    "className": "bg-dark-700",
+    "declarationValue": "dark-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-700",
+      "#1b1b1b",
+    ],
+  },
+  {
+    "className": "bg-dark-800",
+    "declarationValue": "dark-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-800",
+      "#181818",
+    ],
+  },
+  {
+    "className": "bg-dark-900",
+    "declarationValue": "dark-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-900",
+      "#0f0f0f",
+    ],
+  },
+  {
+    "className": "bg-dark-950",
+    "declarationValue": "dark-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-950",
+      "#080808",
+    ],
+  },
+  {
+    "className": "bg-dark-DEFAULT",
+    "declarationValue": "dark-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "dark-DEFAULT",
+      "#222222",
+    ],
+  },
+  {
+    "className": "bg-emerald",
+    "declarationValue": "emerald",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald",
+      "#34d399",
+    ],
+  },
+  {
+    "className": "bg-emerald-100",
+    "declarationValue": "emerald-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-100",
+      "#d1fae5",
+    ],
+  },
+  {
+    "className": "bg-emerald-200",
+    "declarationValue": "emerald-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-200",
+      "#a7f3d0",
+    ],
+  },
+  {
+    "className": "bg-emerald-300",
+    "declarationValue": "emerald-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-300",
+      "#6ee7b7",
+    ],
+  },
+  {
+    "className": "bg-emerald-400",
+    "declarationValue": "emerald-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-400",
+      "#34d399",
+    ],
+  },
+  {
+    "className": "bg-emerald-50",
+    "declarationValue": "emerald-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-50",
+      "#ecfdf5",
+    ],
+  },
+  {
+    "className": "bg-emerald-500",
+    "declarationValue": "emerald-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-500",
+      "#10b981",
+    ],
+  },
+  {
+    "className": "bg-emerald-600",
+    "declarationValue": "emerald-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-600",
+      "#059669",
+    ],
+  },
+  {
+    "className": "bg-emerald-700",
+    "declarationValue": "emerald-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-700",
+      "#047857",
+    ],
+  },
+  {
+    "className": "bg-emerald-800",
+    "declarationValue": "emerald-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-800",
+      "#065f46",
+    ],
+  },
+  {
+    "className": "bg-emerald-900",
+    "declarationValue": "emerald-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-900",
+      "#064e3b",
+    ],
+  },
+  {
+    "className": "bg-emerald-950",
+    "declarationValue": "emerald-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-950",
+      "#022c22",
+    ],
+  },
+  {
+    "className": "bg-emerald-DEFAULT",
+    "declarationValue": "emerald-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "emerald-DEFAULT",
+      "#34d399",
+    ],
+  },
+  {
+    "className": "bg-fuchsia",
+    "declarationValue": "fuchsia",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia",
+      "#e879f9",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-100",
+    "declarationValue": "fuchsia-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-100",
+      "#fae8ff",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-200",
+    "declarationValue": "fuchsia-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-200",
+      "#f5d0fe",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-300",
+    "declarationValue": "fuchsia-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-300",
+      "#f0abfc",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-400",
+    "declarationValue": "fuchsia-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-400",
+      "#e879f9",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-50",
+    "declarationValue": "fuchsia-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-50",
+      "#fdf4ff",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-500",
+    "declarationValue": "fuchsia-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-500",
+      "#d946ef",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-600",
+    "declarationValue": "fuchsia-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-600",
+      "#c026d3",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-700",
+    "declarationValue": "fuchsia-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-700",
+      "#a21caf",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-800",
+    "declarationValue": "fuchsia-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-800",
+      "#86198f",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-900",
+    "declarationValue": "fuchsia-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-900",
+      "#701a75",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-950",
+    "declarationValue": "fuchsia-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-950",
+      "#4a044e",
+    ],
+  },
+  {
+    "className": "bg-fuchsia-DEFAULT",
+    "declarationValue": "fuchsia-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "fuchsia-DEFAULT",
+      "#e879f9",
+    ],
+  },
+  {
+    "className": "bg-gray",
+    "declarationValue": "gray",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray",
+      "#9ca3af",
+    ],
+  },
+  {
+    "className": "bg-gray-100",
+    "declarationValue": "gray-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-100",
+      "#f3f4f6",
+    ],
+  },
+  {
+    "className": "bg-gray-200",
+    "declarationValue": "gray-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-200",
+      "#e5e7eb",
+    ],
+  },
+  {
+    "className": "bg-gray-300",
+    "declarationValue": "gray-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-300",
+      "#d1d5db",
+    ],
+  },
+  {
+    "className": "bg-gray-400",
+    "declarationValue": "gray-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-400",
+      "#9ca3af",
+    ],
+  },
+  {
+    "className": "bg-gray-50",
+    "declarationValue": "gray-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-50",
+      "#f9fafb",
+    ],
+  },
+  {
+    "className": "bg-gray-500",
+    "declarationValue": "gray-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-500",
+      "#6b7280",
+    ],
+  },
+  {
+    "className": "bg-gray-600",
+    "declarationValue": "gray-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-600",
+      "#4b5563",
+    ],
+  },
+  {
+    "className": "bg-gray-700",
+    "declarationValue": "gray-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-700",
+      "#374151",
+    ],
+  },
+  {
+    "className": "bg-gray-800",
+    "declarationValue": "gray-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-800",
+      "#1f2937",
+    ],
+  },
+  {
+    "className": "bg-gray-900",
+    "declarationValue": "gray-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-900",
+      "#111827",
+    ],
+  },
+  {
+    "className": "bg-gray-950",
+    "declarationValue": "gray-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-950",
+      "#030712",
+    ],
+  },
+  {
+    "className": "bg-gray-DEFAULT",
+    "declarationValue": "gray-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "gray-DEFAULT",
+      "#9ca3af",
+    ],
+  },
+  {
+    "className": "bg-green",
+    "declarationValue": "green",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green",
+      "#4ade80",
+    ],
+  },
+  {
+    "className": "bg-green-100",
+    "declarationValue": "green-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-100",
+      "#dcfce7",
+    ],
+  },
+  {
+    "className": "bg-green-200",
+    "declarationValue": "green-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-200",
+      "#bbf7d0",
+    ],
+  },
+  {
+    "className": "bg-green-300",
+    "declarationValue": "green-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-300",
+      "#86efac",
+    ],
+  },
+  {
+    "className": "bg-green-400",
+    "declarationValue": "green-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-400",
+      "#4ade80",
+    ],
+  },
+  {
+    "className": "bg-green-50",
+    "declarationValue": "green-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-50",
+      "#f0fdf4",
+    ],
+  },
+  {
+    "className": "bg-green-500",
+    "declarationValue": "green-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-500",
+      "#22c55e",
+    ],
+  },
+  {
+    "className": "bg-green-600",
+    "declarationValue": "green-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-600",
+      "#16a34a",
+    ],
+  },
+  {
+    "className": "bg-green-700",
+    "declarationValue": "green-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-700",
+      "#15803d",
+    ],
+  },
+  {
+    "className": "bg-green-800",
+    "declarationValue": "green-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-800",
+      "#166534",
+    ],
+  },
+  {
+    "className": "bg-green-900",
+    "declarationValue": "green-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-900",
+      "#14532d",
+    ],
+  },
+  {
+    "className": "bg-green-950",
+    "declarationValue": "green-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-950",
+      "#052e16",
+    ],
+  },
+  {
+    "className": "bg-green-DEFAULT",
+    "declarationValue": "green-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "green-DEFAULT",
+      "#4ade80",
+    ],
+  },
+  {
+    "className": "bg-indigo",
+    "declarationValue": "indigo",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo",
+      "#818cf8",
+    ],
+  },
+  {
+    "className": "bg-indigo-100",
+    "declarationValue": "indigo-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-100",
+      "#e0e7ff",
+    ],
+  },
+  {
+    "className": "bg-indigo-200",
+    "declarationValue": "indigo-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-200",
+      "#c7d2fe",
+    ],
+  },
+  {
+    "className": "bg-indigo-300",
+    "declarationValue": "indigo-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-300",
+      "#a5b4fc",
+    ],
+  },
+  {
+    "className": "bg-indigo-400",
+    "declarationValue": "indigo-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-400",
+      "#818cf8",
+    ],
+  },
+  {
+    "className": "bg-indigo-50",
+    "declarationValue": "indigo-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-50",
+      "#eef2ff",
+    ],
+  },
+  {
+    "className": "bg-indigo-500",
+    "declarationValue": "indigo-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-500",
+      "#6366f1",
+    ],
+  },
+  {
+    "className": "bg-indigo-600",
+    "declarationValue": "indigo-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-600",
+      "#4f46e5",
+    ],
+  },
+  {
+    "className": "bg-indigo-700",
+    "declarationValue": "indigo-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-700",
+      "#4338ca",
+    ],
+  },
+  {
+    "className": "bg-indigo-800",
+    "declarationValue": "indigo-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-800",
+      "#3730a3",
+    ],
+  },
+  {
+    "className": "bg-indigo-900",
+    "declarationValue": "indigo-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-900",
+      "#312e81",
+    ],
+  },
+  {
+    "className": "bg-indigo-950",
+    "declarationValue": "indigo-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-950",
+      "#1e1b4b",
+    ],
+  },
+  {
+    "className": "bg-indigo-DEFAULT",
+    "declarationValue": "indigo-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "indigo-DEFAULT",
+      "#818cf8",
+    ],
+  },
+  {
+    "className": "bg-inherit",
+    "declarationValue": "inherit",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "inherit",
+      "inherit",
+    ],
+  },
+  {
+    "className": "bg-light",
+    "declarationValue": "light",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light",
+      "#f6f6f6",
+    ],
+  },
+  {
+    "className": "bg-light-100",
+    "declarationValue": "light-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-100",
+      "#fcfcfc",
+    ],
+  },
+  {
+    "className": "bg-light-200",
+    "declarationValue": "light-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-200",
+      "#fafafa",
+    ],
+  },
+  {
+    "className": "bg-light-300",
+    "declarationValue": "light-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-300",
+      "#f8f9fa",
+    ],
+  },
+  {
+    "className": "bg-light-400",
+    "declarationValue": "light-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-400",
+      "#f6f6f6",
+    ],
+  },
+  {
+    "className": "bg-light-50",
+    "declarationValue": "light-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-50",
+      "#fdfdfd",
+    ],
+  },
+  {
+    "className": "bg-light-500",
+    "declarationValue": "light-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-500",
+      "#f2f2f2",
+    ],
+  },
+  {
+    "className": "bg-light-600",
+    "declarationValue": "light-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-600",
+      "#f1f3f5",
+    ],
+  },
+  {
+    "className": "bg-light-700",
+    "declarationValue": "light-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-700",
+      "#e9ecef",
+    ],
+  },
+  {
+    "className": "bg-light-800",
+    "declarationValue": "light-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-800",
+      "#dee2e6",
+    ],
+  },
+  {
+    "className": "bg-light-900",
+    "declarationValue": "light-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-900",
+      "#dde1e3",
+    ],
+  },
+  {
+    "className": "bg-light-950",
+    "declarationValue": "light-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-950",
+      "#d8dcdf",
+    ],
+  },
+  {
+    "className": "bg-light-DEFAULT",
+    "declarationValue": "light-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "light-DEFAULT",
+      "#f6f6f6",
+    ],
+  },
+  {
+    "className": "bg-lightBlue",
+    "declarationValue": "lightBlue",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue",
+      "#38bdf8",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-100",
+    "declarationValue": "lightBlue-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-100",
+      "#e0f2fe",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-200",
+    "declarationValue": "lightBlue-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-200",
+      "#bae6fd",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-300",
+    "declarationValue": "lightBlue-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-300",
+      "#7dd3fc",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-400",
+    "declarationValue": "lightBlue-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-400",
+      "#38bdf8",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-50",
+    "declarationValue": "lightBlue-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-50",
+      "#f0f9ff",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-500",
+    "declarationValue": "lightBlue-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-500",
+      "#0ea5e9",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-600",
+    "declarationValue": "lightBlue-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-600",
+      "#0284c7",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-700",
+    "declarationValue": "lightBlue-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-700",
+      "#0369a1",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-800",
+    "declarationValue": "lightBlue-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-800",
+      "#075985",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-900",
+    "declarationValue": "lightBlue-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-900",
+      "#0c4a6e",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-950",
+    "declarationValue": "lightBlue-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-950",
+      "#082f49",
+    ],
+  },
+  {
+    "className": "bg-lightBlue-DEFAULT",
+    "declarationValue": "lightBlue-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lightBlue-DEFAULT",
+      "#38bdf8",
+    ],
+  },
+  {
+    "className": "bg-lime",
+    "declarationValue": "lime",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime",
+      "#a3e635",
+    ],
+  },
+  {
+    "className": "bg-lime-100",
+    "declarationValue": "lime-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-100",
+      "#ecfccb",
+    ],
+  },
+  {
+    "className": "bg-lime-200",
+    "declarationValue": "lime-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-200",
+      "#d9f99d",
+    ],
+  },
+  {
+    "className": "bg-lime-300",
+    "declarationValue": "lime-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-300",
+      "#bef264",
+    ],
+  },
+  {
+    "className": "bg-lime-400",
+    "declarationValue": "lime-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-400",
+      "#a3e635",
+    ],
+  },
+  {
+    "className": "bg-lime-50",
+    "declarationValue": "lime-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-50",
+      "#f7fee7",
+    ],
+  },
+  {
+    "className": "bg-lime-500",
+    "declarationValue": "lime-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-500",
+      "#84cc16",
+    ],
+  },
+  {
+    "className": "bg-lime-600",
+    "declarationValue": "lime-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-600",
+      "#65a30d",
+    ],
+  },
+  {
+    "className": "bg-lime-700",
+    "declarationValue": "lime-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-700",
+      "#4d7c0f",
+    ],
+  },
+  {
+    "className": "bg-lime-800",
+    "declarationValue": "lime-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-800",
+      "#3f6212",
+    ],
+  },
+  {
+    "className": "bg-lime-900",
+    "declarationValue": "lime-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-900",
+      "#365314",
+    ],
+  },
+  {
+    "className": "bg-lime-950",
+    "declarationValue": "lime-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-950",
+      "#1a2e05",
+    ],
+  },
+  {
+    "className": "bg-lime-DEFAULT",
+    "declarationValue": "lime-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "lime-DEFAULT",
+      "#a3e635",
+    ],
+  },
+  {
+    "className": "bg-neutral",
+    "declarationValue": "neutral",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral",
+      "#a3a3a3",
+    ],
+  },
+  {
+    "className": "bg-neutral-100",
+    "declarationValue": "neutral-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-100",
+      "#f5f5f5",
+    ],
+  },
+  {
+    "className": "bg-neutral-200",
+    "declarationValue": "neutral-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-200",
+      "#e5e5e5",
+    ],
+  },
+  {
+    "className": "bg-neutral-300",
+    "declarationValue": "neutral-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-300",
+      "#d4d4d4",
+    ],
+  },
+  {
+    "className": "bg-neutral-400",
+    "declarationValue": "neutral-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-400",
+      "#a3a3a3",
+    ],
+  },
+  {
+    "className": "bg-neutral-50",
+    "declarationValue": "neutral-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-50",
+      "#fafafa",
+    ],
+  },
+  {
+    "className": "bg-neutral-500",
+    "declarationValue": "neutral-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-500",
+      "#737373",
+    ],
+  },
+  {
+    "className": "bg-neutral-600",
+    "declarationValue": "neutral-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-600",
+      "#525252",
+    ],
+  },
+  {
+    "className": "bg-neutral-700",
+    "declarationValue": "neutral-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-700",
+      "#404040",
+    ],
+  },
+  {
+    "className": "bg-neutral-800",
+    "declarationValue": "neutral-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-800",
+      "#262626",
+    ],
+  },
+  {
+    "className": "bg-neutral-900",
+    "declarationValue": "neutral-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-900",
+      "#171717",
+    ],
+  },
+  {
+    "className": "bg-neutral-950",
+    "declarationValue": "neutral-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-950",
+      "#0a0a0a",
+    ],
+  },
+  {
+    "className": "bg-neutral-DEFAULT",
+    "declarationValue": "neutral-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "neutral-DEFAULT",
+      "#a3a3a3",
+    ],
+  },
+  {
+    "className": "bg-orange",
+    "declarationValue": "orange",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange",
+      "#fb923c",
+    ],
+  },
+  {
+    "className": "bg-orange-100",
+    "declarationValue": "orange-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-100",
+      "#ffedd5",
+    ],
+  },
+  {
+    "className": "bg-orange-200",
+    "declarationValue": "orange-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-200",
+      "#fed7aa",
+    ],
+  },
+  {
+    "className": "bg-orange-300",
+    "declarationValue": "orange-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-300",
+      "#fdba74",
+    ],
+  },
+  {
+    "className": "bg-orange-400",
+    "declarationValue": "orange-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-400",
+      "#fb923c",
+    ],
+  },
+  {
+    "className": "bg-orange-50",
+    "declarationValue": "orange-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-50",
+      "#fff7ed",
+    ],
+  },
+  {
+    "className": "bg-orange-500",
+    "declarationValue": "orange-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-500",
+      "#f97316",
+    ],
+  },
+  {
+    "className": "bg-orange-600",
+    "declarationValue": "orange-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-600",
+      "#ea580c",
+    ],
+  },
+  {
+    "className": "bg-orange-700",
+    "declarationValue": "orange-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-700",
+      "#c2410c",
+    ],
+  },
+  {
+    "className": "bg-orange-800",
+    "declarationValue": "orange-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-800",
+      "#9a3412",
+    ],
+  },
+  {
+    "className": "bg-orange-900",
+    "declarationValue": "orange-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-900",
+      "#7c2d12",
+    ],
+  },
+  {
+    "className": "bg-orange-950",
+    "declarationValue": "orange-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-950",
+      "#431407",
+    ],
+  },
+  {
+    "className": "bg-orange-DEFAULT",
+    "declarationValue": "orange-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "orange-DEFAULT",
+      "#fb923c",
+    ],
+  },
+  {
+    "className": "bg-pink",
+    "declarationValue": "pink",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink",
+      "#f472b6",
+    ],
+  },
+  {
+    "className": "bg-pink-100",
+    "declarationValue": "pink-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-100",
+      "#fce7f3",
+    ],
+  },
+  {
+    "className": "bg-pink-200",
+    "declarationValue": "pink-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-200",
+      "#fbcfe8",
+    ],
+  },
+  {
+    "className": "bg-pink-300",
+    "declarationValue": "pink-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-300",
+      "#f9a8d4",
+    ],
+  },
+  {
+    "className": "bg-pink-400",
+    "declarationValue": "pink-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-400",
+      "#f472b6",
+    ],
+  },
+  {
+    "className": "bg-pink-50",
+    "declarationValue": "pink-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-50",
+      "#fdf2f8",
+    ],
+  },
+  {
+    "className": "bg-pink-500",
+    "declarationValue": "pink-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-500",
+      "#ec4899",
+    ],
+  },
+  {
+    "className": "bg-pink-600",
+    "declarationValue": "pink-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-600",
+      "#db2777",
+    ],
+  },
+  {
+    "className": "bg-pink-700",
+    "declarationValue": "pink-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-700",
+      "#be185d",
+    ],
+  },
+  {
+    "className": "bg-pink-800",
+    "declarationValue": "pink-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-800",
+      "#9d174d",
+    ],
+  },
+  {
+    "className": "bg-pink-900",
+    "declarationValue": "pink-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-900",
+      "#831843",
+    ],
+  },
+  {
+    "className": "bg-pink-950",
+    "declarationValue": "pink-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-950",
+      "#500724",
+    ],
+  },
+  {
+    "className": "bg-pink-DEFAULT",
+    "declarationValue": "pink-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "pink-DEFAULT",
+      "#f472b6",
+    ],
+  },
+  {
+    "className": "bg-primary",
+    "declarationValue": "primary",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "primary",
+      "blue",
+    ],
+  },
+  {
+    "className": "bg-purple",
+    "declarationValue": "purple",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple",
+      "#c084fc",
+    ],
+  },
+  {
+    "className": "bg-purple-100",
+    "declarationValue": "purple-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-100",
+      "#f3e8ff",
+    ],
+  },
+  {
+    "className": "bg-purple-200",
+    "declarationValue": "purple-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-200",
+      "#e9d5ff",
+    ],
+  },
+  {
+    "className": "bg-purple-300",
+    "declarationValue": "purple-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-300",
+      "#d8b4fe",
+    ],
+  },
+  {
+    "className": "bg-purple-400",
+    "declarationValue": "purple-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-400",
+      "#c084fc",
+    ],
+  },
+  {
+    "className": "bg-purple-50",
+    "declarationValue": "purple-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-50",
+      "#faf5ff",
+    ],
+  },
+  {
+    "className": "bg-purple-500",
+    "declarationValue": "purple-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-500",
+      "#a855f7",
+    ],
+  },
+  {
+    "className": "bg-purple-600",
+    "declarationValue": "purple-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-600",
+      "#9333ea",
+    ],
+  },
+  {
+    "className": "bg-purple-700",
+    "declarationValue": "purple-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-700",
+      "#7e22ce",
+    ],
+  },
+  {
+    "className": "bg-purple-800",
+    "declarationValue": "purple-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-800",
+      "#6b21a8",
+    ],
+  },
+  {
+    "className": "bg-purple-900",
+    "declarationValue": "purple-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-900",
+      "#581c87",
+    ],
+  },
+  {
+    "className": "bg-purple-950",
+    "declarationValue": "purple-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-950",
+      "#3b0764",
+    ],
+  },
+  {
+    "className": "bg-purple-DEFAULT",
+    "declarationValue": "purple-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "purple-DEFAULT",
+      "#c084fc",
+    ],
+  },
+  {
+    "className": "bg-red",
+    "declarationValue": "red",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red",
+      "#f87171",
+    ],
+  },
+  {
+    "className": "bg-red-100",
+    "declarationValue": "red-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-100",
+      "#fee2e2",
+    ],
+  },
+  {
+    "className": "bg-red-200",
+    "declarationValue": "red-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-200",
+      "#fecaca",
+    ],
+  },
+  {
+    "className": "bg-red-300",
+    "declarationValue": "red-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-300",
+      "#fca5a5",
+    ],
+  },
+  {
+    "className": "bg-red-400",
+    "declarationValue": "red-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-400",
+      "#f87171",
+    ],
+  },
+  {
+    "className": "bg-red-50",
+    "declarationValue": "red-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-50",
+      "#fef2f2",
+    ],
+  },
+  {
+    "className": "bg-red-500",
+    "declarationValue": "red-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-500",
+      "#ef4444",
+    ],
+  },
+  {
+    "className": "bg-red-600",
+    "declarationValue": "red-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-600",
+      "#dc2626",
+    ],
+  },
+  {
+    "className": "bg-red-700",
+    "declarationValue": "red-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-700",
+      "#b91c1c",
+    ],
+  },
+  {
+    "className": "bg-red-800",
+    "declarationValue": "red-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-800",
+      "#991b1b",
+    ],
+  },
+  {
+    "className": "bg-red-900",
+    "declarationValue": "red-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-900",
+      "#7f1d1d",
+    ],
+  },
+  {
+    "className": "bg-red-950",
+    "declarationValue": "red-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-950",
+      "#450a0a",
+    ],
+  },
+  {
+    "className": "bg-red-DEFAULT",
+    "declarationValue": "red-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "red-DEFAULT",
+      "#f87171",
+    ],
+  },
+  {
+    "className": "bg-rose",
+    "declarationValue": "rose",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose",
+      "#fb7185",
+    ],
+  },
+  {
+    "className": "bg-rose-100",
+    "declarationValue": "rose-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-100",
+      "#ffe4e6",
+    ],
+  },
+  {
+    "className": "bg-rose-200",
+    "declarationValue": "rose-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-200",
+      "#fecdd3",
+    ],
+  },
+  {
+    "className": "bg-rose-300",
+    "declarationValue": "rose-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-300",
+      "#fda4af",
+    ],
+  },
+  {
+    "className": "bg-rose-400",
+    "declarationValue": "rose-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-400",
+      "#fb7185",
+    ],
+  },
+  {
+    "className": "bg-rose-50",
+    "declarationValue": "rose-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-50",
+      "#fff1f2",
+    ],
+  },
+  {
+    "className": "bg-rose-500",
+    "declarationValue": "rose-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-500",
+      "#f43f5e",
+    ],
+  },
+  {
+    "className": "bg-rose-600",
+    "declarationValue": "rose-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-600",
+      "#e11d48",
+    ],
+  },
+  {
+    "className": "bg-rose-700",
+    "declarationValue": "rose-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-700",
+      "#be123c",
+    ],
+  },
+  {
+    "className": "bg-rose-800",
+    "declarationValue": "rose-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-800",
+      "#9f1239",
+    ],
+  },
+  {
+    "className": "bg-rose-900",
+    "declarationValue": "rose-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-900",
+      "#881337",
+    ],
+  },
+  {
+    "className": "bg-rose-950",
+    "declarationValue": "rose-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-950",
+      "#4c0519",
+    ],
+  },
+  {
+    "className": "bg-rose-DEFAULT",
+    "declarationValue": "rose-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "rose-DEFAULT",
+      "#fb7185",
+    ],
+  },
+  {
+    "className": "bg-sky",
+    "declarationValue": "sky",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky",
+      "#38bdf8",
+    ],
+  },
+  {
+    "className": "bg-sky-100",
+    "declarationValue": "sky-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-100",
+      "#e0f2fe",
+    ],
+  },
+  {
+    "className": "bg-sky-200",
+    "declarationValue": "sky-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-200",
+      "#bae6fd",
+    ],
+  },
+  {
+    "className": "bg-sky-300",
+    "declarationValue": "sky-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-300",
+      "#7dd3fc",
+    ],
+  },
+  {
+    "className": "bg-sky-400",
+    "declarationValue": "sky-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-400",
+      "#38bdf8",
+    ],
+  },
+  {
+    "className": "bg-sky-50",
+    "declarationValue": "sky-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-50",
+      "#f0f9ff",
+    ],
+  },
+  {
+    "className": "bg-sky-500",
+    "declarationValue": "sky-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-500",
+      "#0ea5e9",
+    ],
+  },
+  {
+    "className": "bg-sky-600",
+    "declarationValue": "sky-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-600",
+      "#0284c7",
+    ],
+  },
+  {
+    "className": "bg-sky-700",
+    "declarationValue": "sky-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-700",
+      "#0369a1",
+    ],
+  },
+  {
+    "className": "bg-sky-800",
+    "declarationValue": "sky-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-800",
+      "#075985",
+    ],
+  },
+  {
+    "className": "bg-sky-900",
+    "declarationValue": "sky-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-900",
+      "#0c4a6e",
+    ],
+  },
+  {
+    "className": "bg-sky-950",
+    "declarationValue": "sky-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-950",
+      "#082f49",
+    ],
+  },
+  {
+    "className": "bg-sky-DEFAULT",
+    "declarationValue": "sky-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "sky-DEFAULT",
+      "#38bdf8",
+    ],
+  },
+  {
+    "className": "bg-slate",
+    "declarationValue": "slate",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate",
+      "#94a3b8",
+    ],
+  },
+  {
+    "className": "bg-slate-100",
+    "declarationValue": "slate-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-100",
+      "#f1f5f9",
+    ],
+  },
+  {
+    "className": "bg-slate-200",
+    "declarationValue": "slate-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-200",
+      "#e2e8f0",
+    ],
+  },
+  {
+    "className": "bg-slate-300",
+    "declarationValue": "slate-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-300",
+      "#cbd5e1",
+    ],
+  },
+  {
+    "className": "bg-slate-400",
+    "declarationValue": "slate-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-400",
+      "#94a3b8",
+    ],
+  },
+  {
+    "className": "bg-slate-50",
+    "declarationValue": "slate-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-50",
+      "#f8fafc",
+    ],
+  },
+  {
+    "className": "bg-slate-500",
+    "declarationValue": "slate-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-500",
+      "#64748b",
+    ],
+  },
+  {
+    "className": "bg-slate-600",
+    "declarationValue": "slate-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-600",
+      "#475569",
+    ],
+  },
+  {
+    "className": "bg-slate-700",
+    "declarationValue": "slate-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-700",
+      "#334155",
+    ],
+  },
+  {
+    "className": "bg-slate-800",
+    "declarationValue": "slate-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-800",
+      "#1e293b",
+    ],
+  },
+  {
+    "className": "bg-slate-900",
+    "declarationValue": "slate-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-900",
+      "#0f172a",
+    ],
+  },
+  {
+    "className": "bg-slate-950",
+    "declarationValue": "slate-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-950",
+      "#020617",
+    ],
+  },
+  {
+    "className": "bg-slate-DEFAULT",
+    "declarationValue": "slate-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "slate-DEFAULT",
+      "#94a3b8",
+    ],
+  },
+  {
+    "className": "bg-stone",
+    "declarationValue": "stone",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone",
+      "#a8a29e",
+    ],
+  },
+  {
+    "className": "bg-stone-100",
+    "declarationValue": "stone-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-100",
+      "#f5f5f4",
+    ],
+  },
+  {
+    "className": "bg-stone-200",
+    "declarationValue": "stone-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-200",
+      "#e7e5e4",
+    ],
+  },
+  {
+    "className": "bg-stone-300",
+    "declarationValue": "stone-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-300",
+      "#d6d3d1",
+    ],
+  },
+  {
+    "className": "bg-stone-400",
+    "declarationValue": "stone-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-400",
+      "#a8a29e",
+    ],
+  },
+  {
+    "className": "bg-stone-50",
+    "declarationValue": "stone-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-50",
+      "#fafaf9",
+    ],
+  },
+  {
+    "className": "bg-stone-500",
+    "declarationValue": "stone-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-500",
+      "#78716c",
+    ],
+  },
+  {
+    "className": "bg-stone-600",
+    "declarationValue": "stone-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-600",
+      "#57534e",
+    ],
+  },
+  {
+    "className": "bg-stone-700",
+    "declarationValue": "stone-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-700",
+      "#44403c",
+    ],
+  },
+  {
+    "className": "bg-stone-800",
+    "declarationValue": "stone-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-800",
+      "#292524",
+    ],
+  },
+  {
+    "className": "bg-stone-900",
+    "declarationValue": "stone-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-900",
+      "#1c1917",
+    ],
+  },
+  {
+    "className": "bg-stone-950",
+    "declarationValue": "stone-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-950",
+      "#0c0a09",
+    ],
+  },
+  {
+    "className": "bg-stone-DEFAULT",
+    "declarationValue": "stone-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "stone-DEFAULT",
+      "#a8a29e",
+    ],
+  },
+  {
+    "className": "bg-teal",
+    "declarationValue": "teal",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal",
+      "#2dd4bf",
+    ],
+  },
+  {
+    "className": "bg-teal-100",
+    "declarationValue": "teal-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-100",
+      "#ccfbf1",
+    ],
+  },
+  {
+    "className": "bg-teal-200",
+    "declarationValue": "teal-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-200",
+      "#99f6e4",
+    ],
+  },
+  {
+    "className": "bg-teal-300",
+    "declarationValue": "teal-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-300",
+      "#5eead4",
+    ],
+  },
+  {
+    "className": "bg-teal-400",
+    "declarationValue": "teal-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-400",
+      "#2dd4bf",
+    ],
+  },
+  {
+    "className": "bg-teal-50",
+    "declarationValue": "teal-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-50",
+      "#f0fdfa",
+    ],
+  },
+  {
+    "className": "bg-teal-500",
+    "declarationValue": "teal-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-500",
+      "#14b8a6",
+    ],
+  },
+  {
+    "className": "bg-teal-600",
+    "declarationValue": "teal-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-600",
+      "#0d9488",
+    ],
+  },
+  {
+    "className": "bg-teal-700",
+    "declarationValue": "teal-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-700",
+      "#0f766e",
+    ],
+  },
+  {
+    "className": "bg-teal-800",
+    "declarationValue": "teal-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-800",
+      "#115e59",
+    ],
+  },
+  {
+    "className": "bg-teal-900",
+    "declarationValue": "teal-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-900",
+      "#134e4a",
+    ],
+  },
+  {
+    "className": "bg-teal-950",
+    "declarationValue": "teal-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-950",
+      "#042f2e",
+    ],
+  },
+  {
+    "className": "bg-teal-DEFAULT",
+    "declarationValue": "teal-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "teal-DEFAULT",
+      "#2dd4bf",
+    ],
+  },
+  {
+    "className": "bg-transparent",
+    "declarationValue": "transparent",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "transparent",
+      "transparent",
+    ],
+  },
+  {
+    "className": "bg-trueGray",
+    "declarationValue": "trueGray",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray",
+      "#a3a3a3",
+    ],
+  },
+  {
+    "className": "bg-trueGray-100",
+    "declarationValue": "trueGray-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-100",
+      "#f5f5f5",
+    ],
+  },
+  {
+    "className": "bg-trueGray-200",
+    "declarationValue": "trueGray-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-200",
+      "#e5e5e5",
+    ],
+  },
+  {
+    "className": "bg-trueGray-300",
+    "declarationValue": "trueGray-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-300",
+      "#d4d4d4",
+    ],
+  },
+  {
+    "className": "bg-trueGray-400",
+    "declarationValue": "trueGray-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-400",
+      "#a3a3a3",
+    ],
+  },
+  {
+    "className": "bg-trueGray-50",
+    "declarationValue": "trueGray-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-50",
+      "#fafafa",
+    ],
+  },
+  {
+    "className": "bg-trueGray-500",
+    "declarationValue": "trueGray-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-500",
+      "#737373",
+    ],
+  },
+  {
+    "className": "bg-trueGray-600",
+    "declarationValue": "trueGray-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-600",
+      "#525252",
+    ],
+  },
+  {
+    "className": "bg-trueGray-700",
+    "declarationValue": "trueGray-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-700",
+      "#404040",
+    ],
+  },
+  {
+    "className": "bg-trueGray-800",
+    "declarationValue": "trueGray-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-800",
+      "#262626",
+    ],
+  },
+  {
+    "className": "bg-trueGray-900",
+    "declarationValue": "trueGray-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-900",
+      "#171717",
+    ],
+  },
+  {
+    "className": "bg-trueGray-950",
+    "declarationValue": "trueGray-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-950",
+      "#0a0a0a",
+    ],
+  },
+  {
+    "className": "bg-trueGray-DEFAULT",
+    "declarationValue": "trueGray-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "trueGray-DEFAULT",
+      "#a3a3a3",
+    ],
+  },
+  {
+    "className": "bg-violet",
+    "declarationValue": "violet",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet",
+      "#a78bfa",
+    ],
+  },
+  {
+    "className": "bg-violet-100",
+    "declarationValue": "violet-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-100",
+      "#ede9fe",
+    ],
+  },
+  {
+    "className": "bg-violet-200",
+    "declarationValue": "violet-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-200",
+      "#ddd6fe",
+    ],
+  },
+  {
+    "className": "bg-violet-300",
+    "declarationValue": "violet-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-300",
+      "#c4b5fd",
+    ],
+  },
+  {
+    "className": "bg-violet-400",
+    "declarationValue": "violet-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-400",
+      "#a78bfa",
+    ],
+  },
+  {
+    "className": "bg-violet-50",
+    "declarationValue": "violet-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-50",
+      "#f5f3ff",
+    ],
+  },
+  {
+    "className": "bg-violet-500",
+    "declarationValue": "violet-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-500",
+      "#8b5cf6",
+    ],
+  },
+  {
+    "className": "bg-violet-600",
+    "declarationValue": "violet-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-600",
+      "#7c3aed",
+    ],
+  },
+  {
+    "className": "bg-violet-700",
+    "declarationValue": "violet-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-700",
+      "#6d28d9",
+    ],
+  },
+  {
+    "className": "bg-violet-800",
+    "declarationValue": "violet-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-800",
+      "#5b21b6",
+    ],
+  },
+  {
+    "className": "bg-violet-900",
+    "declarationValue": "violet-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-900",
+      "#4c1d95",
+    ],
+  },
+  {
+    "className": "bg-violet-950",
+    "declarationValue": "violet-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-950",
+      "#2e1065",
+    ],
+  },
+  {
+    "className": "bg-violet-DEFAULT",
+    "declarationValue": "violet-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "violet-DEFAULT",
+      "#a78bfa",
+    ],
+  },
+  {
+    "className": "bg-warmGray",
+    "declarationValue": "warmGray",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray",
+      "#a8a29e",
+    ],
+  },
+  {
+    "className": "bg-warmGray-100",
+    "declarationValue": "warmGray-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-100",
+      "#f5f5f4",
+    ],
+  },
+  {
+    "className": "bg-warmGray-200",
+    "declarationValue": "warmGray-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-200",
+      "#e7e5e4",
+    ],
+  },
+  {
+    "className": "bg-warmGray-300",
+    "declarationValue": "warmGray-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-300",
+      "#d6d3d1",
+    ],
+  },
+  {
+    "className": "bg-warmGray-400",
+    "declarationValue": "warmGray-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-400",
+      "#a8a29e",
+    ],
+  },
+  {
+    "className": "bg-warmGray-50",
+    "declarationValue": "warmGray-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-50",
+      "#fafaf9",
+    ],
+  },
+  {
+    "className": "bg-warmGray-500",
+    "declarationValue": "warmGray-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-500",
+      "#78716c",
+    ],
+  },
+  {
+    "className": "bg-warmGray-600",
+    "declarationValue": "warmGray-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-600",
+      "#57534e",
+    ],
+  },
+  {
+    "className": "bg-warmGray-700",
+    "declarationValue": "warmGray-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-700",
+      "#44403c",
+    ],
+  },
+  {
+    "className": "bg-warmGray-800",
+    "declarationValue": "warmGray-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-800",
+      "#292524",
+    ],
+  },
+  {
+    "className": "bg-warmGray-900",
+    "declarationValue": "warmGray-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-900",
+      "#1c1917",
+    ],
+  },
+  {
+    "className": "bg-warmGray-950",
+    "declarationValue": "warmGray-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-950",
+      "#0c0a09",
+    ],
+  },
+  {
+    "className": "bg-warmGray-DEFAULT",
+    "declarationValue": "warmGray-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "warmGray-DEFAULT",
+      "#a8a29e",
+    ],
+  },
+  {
+    "className": "bg-white",
+    "declarationValue": "white",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "white",
+      "#fff",
+    ],
+  },
+  {
+    "className": "bg-yellow",
+    "declarationValue": "yellow",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow",
+      "#facc15",
+    ],
+  },
+  {
+    "className": "bg-yellow-100",
+    "declarationValue": "yellow-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-100",
+      "#fef9c3",
+    ],
+  },
+  {
+    "className": "bg-yellow-200",
+    "declarationValue": "yellow-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-200",
+      "#fef08a",
+    ],
+  },
+  {
+    "className": "bg-yellow-300",
+    "declarationValue": "yellow-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-300",
+      "#fde047",
+    ],
+  },
+  {
+    "className": "bg-yellow-400",
+    "declarationValue": "yellow-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-400",
+      "#facc15",
+    ],
+  },
+  {
+    "className": "bg-yellow-50",
+    "declarationValue": "yellow-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-50",
+      "#fefce8",
+    ],
+  },
+  {
+    "className": "bg-yellow-500",
+    "declarationValue": "yellow-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-500",
+      "#eab308",
+    ],
+  },
+  {
+    "className": "bg-yellow-600",
+    "declarationValue": "yellow-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-600",
+      "#ca8a04",
+    ],
+  },
+  {
+    "className": "bg-yellow-700",
+    "declarationValue": "yellow-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-700",
+      "#a16207",
+    ],
+  },
+  {
+    "className": "bg-yellow-800",
+    "declarationValue": "yellow-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-800",
+      "#854d0e",
+    ],
+  },
+  {
+    "className": "bg-yellow-900",
+    "declarationValue": "yellow-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-900",
+      "#713f12",
+    ],
+  },
+  {
+    "className": "bg-yellow-950",
+    "declarationValue": "yellow-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-950",
+      "#422006",
+    ],
+  },
+  {
+    "className": "bg-yellow-DEFAULT",
+    "declarationValue": "yellow-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "yellow-DEFAULT",
+      "#facc15",
+    ],
+  },
+  {
+    "className": "bg-zinc",
+    "declarationValue": "zinc",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc",
+      "#a1a1aa",
+    ],
+  },
+  {
+    "className": "bg-zinc-100",
+    "declarationValue": "zinc-100",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-100",
+      "#f4f4f5",
+    ],
+  },
+  {
+    "className": "bg-zinc-200",
+    "declarationValue": "zinc-200",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-200",
+      "#e4e4e7",
+    ],
+  },
+  {
+    "className": "bg-zinc-300",
+    "declarationValue": "zinc-300",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-300",
+      "#d4d4d8",
+    ],
+  },
+  {
+    "className": "bg-zinc-400",
+    "declarationValue": "zinc-400",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-400",
+      "#a1a1aa",
+    ],
+  },
+  {
+    "className": "bg-zinc-50",
+    "declarationValue": "zinc-50",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-50",
+      "#fafafa",
+    ],
+  },
+  {
+    "className": "bg-zinc-500",
+    "declarationValue": "zinc-500",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-500",
+      "#71717a",
+    ],
+  },
+  {
+    "className": "bg-zinc-600",
+    "declarationValue": "zinc-600",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-600",
+      "#52525b",
+    ],
+  },
+  {
+    "className": "bg-zinc-700",
+    "declarationValue": "zinc-700",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-700",
+      "#3f3f46",
+    ],
+  },
+  {
+    "className": "bg-zinc-800",
+    "declarationValue": "zinc-800",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-800",
+      "#27272a",
+    ],
+  },
+  {
+    "className": "bg-zinc-900",
+    "declarationValue": "zinc-900",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-900",
+      "#18181b",
+    ],
+  },
+  {
+    "className": "bg-zinc-950",
+    "declarationValue": "zinc-950",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-950",
+      "#09090b",
+    ],
+  },
+  {
+    "className": "bg-zinc-DEFAULT",
+    "declarationValue": "zinc-DEFAULT",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "value": [
+      "zinc-DEFAULT",
+      "#a1a1aa",
+    ],
+  },
+]

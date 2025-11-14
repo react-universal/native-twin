@@ -176,7 +176,8 @@
   "devDependencies": {
     "@types/vscode": "^1.105.0",
     "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "vscode-test": "^1.6.1"
   },
   "optionalDependencies": {
     "@native-twin/cli": "workspace:*"

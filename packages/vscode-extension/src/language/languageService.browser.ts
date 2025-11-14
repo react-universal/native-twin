@@ -76,7 +76,7 @@ const make = Effect.gen(function* () {
   );
 
   yield* Effect.promise(() => client.start()).pipe(
-    Effect.andThen(Effect.log('Language client started!')),
+    Effect.andThen(Effect.logTrace('Language client started!')),
   );
 
   client.onRequest('nativeTwinInitialized', () => {

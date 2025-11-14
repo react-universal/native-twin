@@ -29,29 +29,20 @@ const make = Effect.gen(function* () {
     vscode: DEFAULT_PLUGIN_CONFIG,
   });
 
-  // const requestType = new RequestType1<string, string, string>('hello', ParameterStructures.auto);
-
   Connection.onDidChangeWatchedFiles(async (params) => {
+    Connection.console.info(`WATCHER: ${JSON.stringify(params)}`);
     console.log('WATCHED_FILES_CHANGE: ', params);
   });
 
-  // Connection.onRequest('hello', (params) => {
-  //   return Effect.runPromise(
-  //     Effect.tap(Effect.succeed('RESPONSE'), (x) => {
-  //       return Effect.log('Hello from LSP: ', x, params);
-  //     }),
-  //   );
-  // });
+  // Effect.addFinalizer(() => Effect.sync(() => watcher.dispose()));
 
   const updateConfig = (changes: any) =>
     Effect.gen(function* () {
       if (!Predicate.isRecord(changes)) return;
-
       const currentConfig = yield* SubscriptionRef.get(ref);
       const pluginConfig = currentConfig.vscode;
 
       if ('nativeTwin' in changes && changes['nativeTwin']) {
-        Connection.client.connection.console.debug('Configuration changes received: ');
         Connection.console.debug('Configuration changes received: ');
 
         yield* SubscriptionRef.set(ref, {
@@ -61,9 +52,6 @@ const make = Effect.gen(function* () {
             ...changes['nativeTwin'],
           },
         });
-        // loggerUtils.logFormat(yield* ref.pipe(SubscriptionRef.get)).forEach((x) => {
-        //   Connection.console.debug(x);
-        // });
       }
     });
 
@@ -96,10 +84,6 @@ const make = Effect.gen(function* () {
     }
 
     return capabilities;
-  });
-
-  Connection.onInitialized(() => {
-    // console.debug('onInitialized CALLED');
   });
 
   return {

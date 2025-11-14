@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'node:path';
 import { Constants, NativeTwinManagerService } from '@native-twin/language-service';
+import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
@@ -104,4 +105,8 @@ export const LanguageClientLive = Effect.gen(function* () {
       yield* Effect.log('Client restarted');
     }),
   );
-}).pipe(Layer.scopedDiscard);
+}).pipe(
+  Effect.withLogSpan('LanguageServiceClient'),
+  Effect.onError((error) => Effect.logError('ERROR: ', Cause.prettyErrors(error))),
+  Layer.scopedDiscard,
+);

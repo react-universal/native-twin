@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import { Constants } from '@native-twin/language-service';
+import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Runtime from 'effect/Runtime';
@@ -25,7 +26,7 @@ export const registerCommand = <R, E, A>(
     context.subscriptions.push(
       vscode.commands.registerCommand(command, (...args) =>
         f(...args).pipe(
-          Effect.catchAllCause(Effect.logError),
+          Effect.catchAllCause((cause) => Effect.logFatal('FATAL: ', Cause.prettyErrors(cause))),
           Effect.annotateLogs({ command }),
           run,
         ),
@@ -51,7 +52,7 @@ export const registerEditorCommand = <R, E, A>(
     context.subscriptions.push(
       vscode.commands.registerTextEditorCommand(command, (...args) =>
         f(...args).pipe(
-          Effect.catchAllCause(Effect.logError),
+          Effect.catchAllCause((cause) => Effect.logFatal('FATAL: ', Cause.prettyErrors(cause))),
           Effect.annotateLogs({ command }),
           run,
         ),

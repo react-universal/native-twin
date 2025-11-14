@@ -40,11 +40,11 @@
       "import": "./build/esm/react-native/index.js",
       "default": "./build/cjs/react-native/index.js"
     },
-    "./tailwind-parser": {
-      "types": "./build/dts/tailwind-parser.d.ts",
-      "react-native": "./build/esm/tailwind-parser.js",
-      "import": "./build/esm/tailwind-parser.js",
-      "default": "./build/cjs/tailwind-parser.js"
+    "./twin-parser": {
+      "types": "./build/dts/twin-parser.d.ts",
+      "react-native": "./build/esm/twin-parser.js",
+      "import": "./build/esm/twin-parser.js",
+      "default": "./build/cjs/twin-parser.js"
     }
   },
   "main": "./build/cjs/index.js",

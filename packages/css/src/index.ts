@@ -109,15 +109,31 @@ export type {
   SheetInteractionState,
   SortableEntry,
 } from './sheets/sheet.types';
-
 export {
   /** @category — CSS Sheets */
   createVirtualSheet,
 } from './sheets/virtual.sheet';
 export {
+  /** @category — CSS Parsers */
+  interpolate,
+  /** @category — CSS Parsers */
+  normalize,
+} from './transforms/interleave';
+export {
+  /** @category — CSS Parsers */
+  parsedRuleSetToClassNames,
+  /** @category — CSS Parsers */
+  parsedRuleToClassName,
+} from './transforms/rule-to-css';
+// TRANSFORMS
+export {
+  /** @category — CSS Sheets */
+  sheetEntriesToCss,
+} from './transforms/sheet-to-css';
+export {
   /** @category — CSS parsers */
   sortedInsertionIndex,
-} from './tailwind/sorted-insertion-index';
+} from './twin/sorted-insertion-index';
 export {
   /** @category — CSS parsers */
   commonCssProps,
@@ -127,7 +143,7 @@ export {
   directionMap,
   /** @category — CSS parsers */
   globalKeywords,
-} from './tailwind/tailwind.constants';
+} from './twin/twin.constants';
 export type {
   /** @category — CSS parsers */
   ArbitrarySegmentToken,
@@ -151,18 +167,18 @@ export type {
   VariantClassToken,
   /** @category — CSS parsers */
   VariantToken,
-} from './tailwind/tailwind.types';
+} from './twin/twin.types';
 export {
   /** @category — CSS parsers */
   getRuleSelectorGroup,
   getRuleSelectorGroups,
   /** @category — CSS parsers */
   mql,
-} from './tailwind/tailwind.utils';
+} from './twin/twin.utils';
 export {
   /** @category — CSS parsers */
   getTWFeatureParser,
-} from './tailwind/tailwind-features.parser';
+} from './twin/twin-features.parser';
 // TAILWIND
 export {
   /** @category — CSS parsers */
@@ -171,24 +187,7 @@ export {
   parseTWTokens,
   /** @category — CSS parsers */
   tailwindClassNamesParser,
-} from './tailwind/tailwind-rule.parser';
-export {
-  /** @category — CSS Parsers */
-  interpolate,
-  /** @category — CSS Parsers */
-  normalize,
-} from './transforms/interleave';
-export {
-  /** @category — CSS Parsers */
-  parsedRuleSetToClassNames,
-  /** @category — CSS Parsers */
-  parsedRuleToClassName,
-} from './transforms/rule-to-css';
-// TRANSFORMS
-export {
-  /** @category — CSS Sheets */
-  sheetEntriesToCss,
-} from './transforms/sheet-to-css';
+} from './twin/twin-rule.parser';
 export {
   /** @category — CSS utils */
   getPropertyValueType,

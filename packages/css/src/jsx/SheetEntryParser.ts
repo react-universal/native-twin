@@ -1,7 +1,7 @@
 import type { SelectorGroup } from '../css';
 import * as Decl from '../react-native/declarations/style.declaration';
 import type { SheetEntry } from '../sheets';
-import { getRuleSelectorGroups } from '../tailwind/tailwind.utils';
+import { getRuleSelectorGroups } from '../twin/twin.utils';
 import * as Predicates from './sheet.predicates';
 
 export class SheetEntryParser {

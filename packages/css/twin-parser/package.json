@@ -1,0 +1,6 @@
+{
+  "main": "../build/cjs/twin-parser.js",
+  "module": "../build/esm/twin-parser.js",
+  "react-native": "../build/esm/twin-parser.js",
+  "types": "../build/dts/twin-parser.d.ts"
+}
