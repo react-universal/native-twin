@@ -25,24 +25,11 @@ export interface TwinBaseDocument {
 }
 
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
-  // MARK: Protocol methods
-  // abstract getTemplateAtPosition(
-  //   position: VSCDocument.Position,
-  // ): Option.Option<DocumentLanguageRegion>;
-
-  // abstract getLanguageRegions(): DocumentLanguageRegion[];
-
-  // abstract findTokenLocationAt(
-  //   position: VSCDocument.Position,
-  //   config: NativeTwinPluginConfiguration,
-  // ): Option.Option<DocumentLanguageRegion>;
 
   constructor(
     private readonly textDocument: VSCDocument.TextDocument,
     readonly config: NativeTwinPluginConfiguration,
   ) {
-    // this.getLanguageRegions.bind(this);
-    // this.findTokenLocationAt.bind(this);
     this.isPositionAtOffset.bind(this);
   }
 
@@ -69,8 +56,6 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   isPositionAtOffset(bounds: TwinTokenLocation['offset'], offset: number) {
     return offset >= bounds.start && offset <= bounds.end;
   }
-
-  
 
   getRangeAtPosition(
     part: Pick<TemplateTokenWithText, 'loc' | 'text'>,

@@ -126,7 +126,7 @@ const make = Effect.fn(function* (
 });
 
 export const twinLSPDocumentLayer = (...args: Parameters<typeof make>) =>
-  Layer.scoped(TwinLSPDocumentContext, make(...args));
+  Layer.effect(TwinLSPDocumentContext, make(...args));
 
 // const traverseLanguageRegions = (
 //   code: string,

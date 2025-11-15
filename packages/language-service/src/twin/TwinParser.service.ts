@@ -2,7 +2,6 @@ import * as P from '@native-twin/arc-parser';
 import { setup } from '@native-twin/core';
 import * as TwParser from '@native-twin/css/twin-parser';
 import { flattenObjectByPath } from '@native-twin/helpers';
-import defaultConfig from '@native-twin/preset-tailwind/default-config';
 import * as RA from 'effect/Array';
 import * as Cause from 'effect/Cause';
 import * as Context from 'effect/Context';
@@ -13,7 +12,7 @@ import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as Trie from 'effect/Trie';
 import type { InternalTwFn, InternalTwinConfig } from '../models/twin/native-twin.types';
-import { LSPConfigService } from '../services/LSPConfig.service';
+import { LSPConfigService, type VscodeLSPConfig } from '../services/LSPConfig.service';
 import { requireJS } from '../utils/load-js';
 import { createStyledContext } from '../utils/sheet.utils';
 import * as TwinParserModel from './models/TwinParser.models';
@@ -26,27 +25,11 @@ const make = Effect.gen(function* () {
   const dictionaryRef = yield* Ref.make(Trie.empty<TwinParserModel.TwinRuleRegistry>());
 
   yield* lspConfig.changes.pipe(
-    Stream.mapEffect((_) =>
-      Effect.sync(() => {
-        return Option.flatMap(_.twinConfigFile, (configPath) => requireJS(configPath)).pipe(
-          Option.getOrElse(() => defaultConfig),
-        );
-      }).pipe(Effect.map((config) => ({ state: _, config }))),
-    ),
-    Stream.tap(({ config, state }) => {
-      return Effect.if(Effect.succeed(state.initialized), {
-        onTrue: () =>
-          Ref.set(twinRef, Option.some(setup(config))).pipe(
-            Effect.andThen(() => createRuleCompositions()),
-            Effect.tap(() => Effect.log('Rule compositions created')),
-          ),
-        onFalse: () => Effect.log('No config provided yet'),
-      });
-    }),
+    Stream.mapEffect((_) => onUpdateLSPConfig(_)),
+    Stream.forever,
     Stream.runDrain,
-    Effect.fork,
+    Effect.forkDaemon,
   );
-  // const twinConfigPath = yield* lspConfig.get.pipe(Effect.map((x) => x.initialized));
 
   const getTwin = <Y>(cb: (twin: InternalTwFn) => Y): Effect.Effect<Option.Option<Y>> => {
     return twinRef.get.pipe(Effect.map((twin) => Option.map(twin, cb)));
@@ -79,6 +62,17 @@ const make = Effect.gen(function* () {
     },
   };
 
+  function onUpdateLSPConfig(config: VscodeLSPConfig) {
+    if (Option.isNone(config.twinConfigFile)) return Effect.void;
+    const twinPath = config.twinConfigFile.value;
+    const twinConfig = requireJS(twinPath).pipe(Option.getOrNull);
+    if (!twinConfig) return Effect.void;
+    return Ref.set(twinRef, Option.some(setup(twinConfig))).pipe(
+      Effect.andThen(() => createRuleCompositions()),
+      Effect.andThen((trie) => Ref.set(dictionaryRef, trie)),
+    );
+  }
+
   function createRuleCompositions() {
     return Stream.fromEffect(twinRef.get).pipe(
       Stream.filterMap((x) => Option.map(x, (_) => _.config.rules)),
@@ -95,49 +89,19 @@ const make = Effect.gen(function* () {
   ): Stream.Stream<TwinParserModel.TwinRuleRegistry> {
     return Stream.fromIterable(composer.compositions).pipe(
       Stream.mapEffect((composition) =>
-        Effect.map(resolveThemeSection(composer.themeSection as any), (themeConfig) =>
-          composer.createClassNamesCollection(
-            composer.compositions.indexOf(composition),
-            themeConfig,
+        resolveThemeSection(composer.themeSection as any).pipe(
+          Effect.andThen(Option.getOrElse(() => ({}))),
+          Effect.andThen((themeConfig) =>
+            composer.createClassNamesCollection(
+              composer.compositions.indexOf(composition),
+              themeConfig,
+            ),
           ),
         ),
       ),
       Stream.flattenIterables,
     );
   }
-
-  // function _composeClassNamesForComposition(
-  //   composer: TwinRuleComposer,
-  //   composedRule: TwinRuleComposer['compositions'][number],
-  // ) {
-  //   return Effect.gen(function* () {
-  //     const values = yield* resolveThemeSection(composer.themeSection as any);
-  //     const result: {
-  //       className: string;
-  //       declarations: string[];
-  //       declarationValue: string;
-  //     }[] = [];
-  //     for (const key in values) {
-  //       if (key.includes('DEFAULT')) continue;
-  //       const parts = {
-  //         className: `${composedRule.composed}${key}`.replace('--', '-'),
-  //         declarations: composedRule.declarationSuffixes.map(
-  //           (x) => `${String(composer.styleProperty ?? '')}${x}${composer.suffix ?? ''}`,
-  //         ),
-  //         declarationValue: values[key] as string,
-  //       };
-  //       result.push(parts);
-  //       if (composer.meta.canBeNegative) {
-  //         result.push({
-  //           ...parts,
-  //           declarationValue: `-${values[key]}`,
-  //           className: `-${parts.className}`,
-  //         });
-  //       }
-  //     }
-  //     return result;
-  //   });
-  // }
 }).pipe(
   Effect.withSpan('TwinParserContext'),
   Effect.onError((error) => Effect.log('Error: ', Cause.prettyErrors(error))),

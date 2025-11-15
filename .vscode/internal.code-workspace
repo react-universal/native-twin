@@ -5,10 +5,6 @@
       "path": ".."
     },
     {
-      "name": "📦 @native-twin/data-types",
-      "path": "../packages/data-types"
-    },
-    {
       "name": "📦 native-twin-vscode",
       "path": "../packages/vscode-extension"
     },
@@ -79,6 +75,10 @@
     {
       "name": "📦 @native-twin/cli",
       "path": "../packages/builder"
+    },
+    {
+      "name": "📦 @native-twin/data-types",
+      "path": "../packages/data-types"
     },
     {
       "name": "twin-run",

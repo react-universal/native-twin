@@ -41,7 +41,7 @@ export class TwinRuleComposer {
     }
     this._compositions = Object.entries(this.featureMapper).flatMap((x) => {
       const classNameExpansion = composeExpansion(x[0]).replace('--', '-');
-      const composed = this.classNameComposer(classNameExpansion);
+      const composed = this.classNameComposer(classNameExpansion).replace('--', '-');
       if (composed.includes('--')) {
         console.debug('Found rare className: ', composed);
       }
@@ -84,7 +84,7 @@ export class TwinRuleComposer {
           (x) => `${String(this.styleProperty ?? '')}${x}${this.suffix ?? ''}`,
         ),
       ),
-      Array.let('declarationValue', ({ value: [value] }) => value as string),
+      Array.let('declarationValue', ({ value: [_, value] }) => value as string),
       Array.flatMap((data): TwinRuleRegistry[] => {
         if (!this.meta.canBeNegative) {
           return [data];

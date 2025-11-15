@@ -1,6 +1,16 @@
+import type { NodePath } from '@babel/core';
 import type * as t from '@babel/types';
 import * as Data from 'effect/Data';
+import type * as Option from 'effect/Option';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
+
+export interface BabelLanguageRegionData {
+  location: Option.Option<t.SourceLocation>;
+  path:
+    | NodePath<t.CallExpression>
+    | NodePath<t.TaggedTemplateExpression>
+    | NodePath<t.JSXAttribute>;
+}
 
 export interface BabelPosition {
   line: number;
@@ -18,10 +28,7 @@ interface MyResultDefinition extends Data.TaggedEnum.WithGenerics<2> {
 }
 const TwinRange = Data.taggedEnum<MyResultDefinition>();
 
-export const createVscodeRange = (
-  start: VSCDocument.Position,
-  end: VSCDocument.Position,
-) => {
+export const createVscodeRange = (start: VSCDocument.Position, end: VSCDocument.Position) => {
   return TwinRange.vscode({ start, end });
 };
 

@@ -12,7 +12,7 @@ import {
 import { LSPConnectionService } from './LSPConnection.service.js';
 import { NativeTwinManagerService } from './NativeTwinManager.service.js';
 
-interface VscodeLSPConfig {
+export interface VscodeLSPConfig {
   twinConfigFile: Option.Option<string>;
   workspaceRoot: Option.Option<string>;
   vscode: NativeTwinPluginConfiguration;
@@ -96,7 +96,7 @@ export class LSPConfigService extends Context.Tag('vscode/lsp/config')<
   LSPConfigService,
   Effect.Effect.Success<typeof make>
 >() {
-  static Live = Layer.scoped(
+  static Live = Layer.effect(
     LSPConfigService,
     make.pipe(Effect.tap(() => Effect.logDebug('[LAYERS] Initialized LSPConfig Layer'))),
   );

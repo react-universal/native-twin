@@ -2,7 +2,6 @@ import {
   LSPConnectionService,
   languagePrograms,
   TwinLSPDocumentContext,
-  TwinParserContextLive,
 } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
@@ -83,6 +82,6 @@ const program = Effect.gen(function* () {
     Connection.console.debug(`Closing reason: ${exit.toJSON()}`);
     return Effect.void;
   });
-}).pipe(Effect.provide(TwinParserContextLive));
+});
 
 Runtime.runFork(program);

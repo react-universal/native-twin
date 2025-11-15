@@ -27,7 +27,7 @@ export const LoggerLive = Logger.replaceEffect(
           Connection.tracer.log(message);
           return;
         case LogLevel.Debug:
-          logService.debug(`${message} DEBUG WORK`);
+          logService.debug(`${message}`);
           return;
         case LogLevel.Warning:
           logService.warn(message);
@@ -37,7 +37,7 @@ export const LoggerLive = Logger.replaceEffect(
           logService.error(message);
           return;
         default:
-          logService.info(`${message} INFO WORK`);
+          logService.info(`${message}`);
           return;
       }
     });
