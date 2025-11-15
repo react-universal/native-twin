@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "📦 @native-twin/data-types",
+      "path": "../packages/data-types"
+    },
+    {
       "name": "📦 native-twin-vscode",
       "path": "../packages/vscode-extension"
     },
@@ -77,10 +81,6 @@
       "path": "../packages/builder"
     },
     {
-      "name": "📦 @native-twin/data-types",
-      "path": "../packages/data-types"
-    },
-    {
       "name": "twin-run",
       "path": "../sites/twin.run"
     },
@@ -110,24 +110,13 @@
     }
   ],
   "settings": {
-    "cSpell.ignorePaths": [
-      "yarn.lock",
-      "node_modules",
-      "vscode-extension",
-      ".git/objects",
-      "css.colors.ts",
-      ".vscode",
-      ".vscode-insiders",
-      "**/colors.ts",
-      "**/*.snap",
-      "**/*.json"
-    ],
-    "js/ts.hover.maximumLength": 800,
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
-      "strings": true
+      "strings": false
     },
+    "editor.snippetSuggestions": "bottom",
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
     "search.exclude": {
       "**/node_modules": true,
       "**/bower_components": true,
@@ -150,6 +139,8 @@
     "vitest.ignoreWorkspace": false,
     "vitest.disableWorkspaceWarning": true,
     "vitest.workspaceConfig": "./vitest.workspace.ts",
+    "cSpell.ignoreRandomStrings": true,
+    "cSpell.unknownWords": "report-common-typos",
     "jestrunner.include": [
       "packages/jsx/*",
       "📦 @lib/jsx"

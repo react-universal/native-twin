@@ -45,7 +45,7 @@
     "@native-twin/compiler": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
-    "effect": "^3.18.4",
+    "effect": "^3.19.3",
     "portfinder": "^1.0.32"
   },
   "peerDependencies": {

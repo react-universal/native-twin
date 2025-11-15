@@ -4,14 +4,14 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
-import type { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument.js';
-import type { DocumentLanguageRegion } from '../models/documents/LanguageRegion.model.js';
+import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../documents/common/LanguageRegion.model.js';
+import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
 import { TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/language/diagnostic.model.js';
-import { LSPDocumentsService } from '../services/LSPDocuments.service.js';
 import { diagnosticProviderSource } from '../utils/constants.utils.js';
 
 export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.CodeActionParams) {
-  const docHandler = yield* LSPDocumentsService;
+  const docHandler = yield* TwinLSPDocumentContext;
   if (params.context.diagnostics.length === 0) return undefined;
 
   const document = yield* docHandler
@@ -42,8 +42,10 @@ export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.Cod
   // const startOffset = document.positionToOffset(params.range.start);
   // const endOffset = document.positionToOffset(params.range.start);
 
+  const region = yield* docHandler.findTokenAtPosition(document, params.range.start);
+
   const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
-    Option.map(document.getTemplateAtPosition(params.range.start), (region) =>
+    Option.map(region, (region) =>
       getDuplicatedDeclarationCodeAction(
         document,
         region,

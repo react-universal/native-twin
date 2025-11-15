@@ -1,7 +1,7 @@
 import {
   LSPConnectionService,
-  LSPDocumentsService,
   languagePrograms,
+  TwinLSPDocumentContext,
   TwinParserContextLive,
 } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
@@ -12,7 +12,7 @@ const Runtime = ManagedRuntime.make(LspMainLive);
 
 const program = Effect.gen(function* () {
   const Connection = yield* LSPConnectionService;
-  const documentService = yield* LSPDocumentsService;
+  const documentService = yield* TwinLSPDocumentContext;
 
   Connection.onCompletion(async (...args) =>
     languagePrograms

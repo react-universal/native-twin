@@ -4,21 +4,16 @@ import toCssFormat from 'cssbeautify';
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as vscode from 'vscode-languageserver-types';
-import type { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
-import type { DocumentLanguageRegion } from '../../models/documents/LanguageRegion.model.js';
-import type {
-  TwinRuleCompletion,
-  TwinRuleParts,
-} from '../../models/twin/native-twin.types.js';
+import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../../documents/common/LanguageRegion.model.js';
+import type { TwinRuleCompletion, TwinRuleParts } from '../../models/twin/native-twin.types.js';
 import {
   TemplateTokenData,
   TemplateTokenWithText,
 } from '../../models/twin/template-token.model.js';
 import { variantTokenToString } from '../twin/native-twin.utils.js';
 
-export const getCompletionTokenKind = ({
-  rule,
-}: TwinRuleCompletion): vscode.CompletionItemKind =>
+export const getCompletionTokenKind = ({ rule }: TwinRuleCompletion): vscode.CompletionItemKind =>
   rule.themeSection === 'colors'
     ? vscode.CompletionItemKind.Color
     : vscode.CompletionItemKind.Constant;
@@ -26,10 +21,7 @@ export const getCompletionTokenKind = ({
 export const getKindModifiers = (item: TwinRuleParts): string =>
   item.meta.feature === 'colors' || item.themeSection === 'colors' ? 'color' : '';
 
-export function getCompletionEntryDetailsDisplayParts({
-  rule,
-  completion,
-}: TwinRuleCompletion) {
+export function getCompletionEntryDetailsDisplayParts({ rule, completion }: TwinRuleCompletion) {
   if (rule.meta.feature === 'colors' || rule.themeSection === 'colors') {
     const hex = new TinyColor(completion.declarationValue);
     if (hex.isValid) {
@@ -100,9 +92,7 @@ export const getFlattenTemplateToken = (
 
   if (item.token.type === 'GROUP') {
     const base = item.token.value.base;
-    const classNames = item.token.value.content.flatMap((x) =>
-      getFlattenTemplateToken(x, base),
-    );
+    const classNames = item.token.value.content.flatMap((x) => getFlattenTemplateToken(x, base));
     return classNames;
   }
 
@@ -122,7 +112,7 @@ export const getRangeFromTokensAtPosition = (
   );
 };
 
-export function getDocumentationMarkdown(sheetEntry: Record<string,any>, css: string) {
+export function getDocumentationMarkdown(sheetEntry: Record<string, any>, css: string) {
   const result: string[] = [];
   result.push('***Css Rules*** \n\n');
   result.push(

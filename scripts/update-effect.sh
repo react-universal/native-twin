@@ -6,4 +6,9 @@ yarn up effect \
 @effect/platform-browser \
 @effect/cli \
 @effect/typeclass \
-@effect/experimental
+@effect/experimental \
+@effect/rpc \
+@effect/sql \
+@effect/cluster \
+@effect/platform \
+@effect/platform-node 

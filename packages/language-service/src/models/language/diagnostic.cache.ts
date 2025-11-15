@@ -4,6 +4,8 @@ import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver';
 import type { DiagnosticRelatedInformation } from 'vscode-languageserver-types';
+import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../../documents/common/LanguageRegion.model.js';
 import {
   bodyLocToRange,
   isSameTwinSheetEntryDeclaration,
@@ -11,8 +13,6 @@ import {
   twinSheetEntryGroupByDuplicates,
 } from '../../utils/language/diagnostic.js';
 import { isSameRange } from '../../utils/vscode.utils.js';
-import type { BaseTwinTextDocument } from '../documents/BaseTwinDocument.js';
-import type { DocumentLanguageRegion } from '../documents/LanguageRegion.model.js';
 import type { TwinSheetEntry } from '../twin/TwinSheetEntry.model.js';
 import { TwinDiagnosticCodes, VscodeDiagnosticItem } from './diagnostic.model.js';
 
@@ -40,8 +40,7 @@ export class TwinDiagnosticHandler implements Equal.Equal {
         }),
         RA.filter((x) => !isSameRange(range, x.location.range)),
         RA.dedupeWith(
-          (a, b) =>
-            a.message === b.message && isSameRange(a.location.range, b.location.range),
+          (a, b) => a.message === b.message && isSameRange(a.location.range, b.location.range),
         ),
       );
       return new VscodeDiagnosticItem({
@@ -95,11 +94,7 @@ export class TwinDiagnosticHandler implements Equal.Equal {
   }
 
   [Hash.symbol](): number {
-    return Hash.array([
-      this.count,
-      Hash.string(this.region.text),
-      Hash.string(this.document.uri),
-    ]);
+    return Hash.array([this.count, Hash.string(this.region.text), Hash.string(this.document.uri)]);
   }
 
   private getDuplicateDiagnostics() {

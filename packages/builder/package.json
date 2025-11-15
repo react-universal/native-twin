@@ -34,13 +34,13 @@
     "lint": "biome lint"
   },
   "dependencies": {
-    "@effect/cli": "^0.71.0",
-    "@effect/cluster": "^0.50.6",
-    "@effect/platform": "^0.92.1",
-    "@effect/platform-node": "^0.98.4",
-    "@effect/rpc": "^0.71.1",
-    "@effect/sql": "^0.46.0",
-    "effect": "^3.18.4",
+    "@effect/cli": "^0.72.1",
+    "@effect/cluster": "^0.52.9",
+    "@effect/platform": "^0.93.2",
+    "@effect/platform-node": "^0.100.0",
+    "@effect/rpc": "^0.72.1",
+    "@effect/sql": "^0.48.0",
+    "effect": "^3.19.3",
     "lodash.merge": "4.6.2",
     "ts-morph": "^27.0.2"
   },

@@ -4,11 +4,12 @@ import { TwinParserContextLive } from '@native-twin/language-service';
 import {
   LSPConfigService,
   LSPConnectionService,
-  LSPDocumentsService,
   languagePrograms,
   MonacoNativeTwinManager,
   NativeTwinManagerService,
+  TwinLSPDocumentContext,
   TwinMonacoTextDocument,
+  twinLSPDocumentLayer,
 } from '@native-twin/language-service/browser';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -27,7 +28,7 @@ const connection = createConnection(messageReader, messageWriter);
 const documentsHandler = new TextDocuments(TextDocument);
 
 const ConnectionLayer = LSPConnectionService.make(connection);
-const DocumentsLayer = LSPDocumentsService.make(documentsHandler, TwinMonacoTextDocument);
+const DocumentsLayer = twinLSPDocumentLayer(documentsHandler, TwinMonacoTextDocument);
 
 const MainLive = Layer.empty.pipe(
   Layer.provideMerge(DocumentsLayer),
@@ -41,7 +42,7 @@ const MainLive = Layer.empty.pipe(
 const program = Effect.gen(function* () {
   const connectionService = yield* LSPConnectionService;
   const Connection = connectionService;
-  yield* LSPDocumentsService;
+  yield* TwinLSPDocumentContext;
   yield* LSPConfigService;
   const Runtime = ManagedRuntime.make(MainLive);
 

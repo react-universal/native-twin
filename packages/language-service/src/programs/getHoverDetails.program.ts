@@ -4,7 +4,7 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { Range } from 'vscode-languageserver-types';
-import { LSPDocumentsService } from '../services/LSPDocuments.service.js';
+import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
 import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
 import { completionRuleToQuickInfo } from '../utils/language/quickInfo.utils.js';
 import { getSheetEntryStyles } from '../utils/sheet.utils.js';
@@ -16,22 +16,22 @@ export const getHoverDetails = Effect.fn(function* (
   _resultProgress: vscode.ResultProgressReporter<vscode.CompletionItem[]> | undefined,
 ) {
   const twinService = yield* NativeTwinManagerService;
-  const documentsHandler = yield* LSPDocumentsService;
+  const documentsHandler = yield* TwinLSPDocumentContext;
   const context = twinService.getCompilerContext();
   const extracted = yield* documentsHandler.getDocument(params.textDocument.uri);
+  const document = Option.getOrUndefined(extracted);
+
+  if (!document) return undefined;
+
+  const nodeAtPosition = yield* documentsHandler.findTokenAtPosition(document, params.position);
+  const cursorOffset = document.offsetAt(params.position);
+  const flattenCompletions = Option.flatMap(nodeAtPosition, (x) =>
+    x.getParsedNodeAtOffset(cursorOffset),
+  );
 
   const hoverEntry = Option.Do.pipe(
-    Option.bind('document', () => extracted),
-    Option.bind('nodeAdPosition', ({ document }) =>
-      document.getTemplateAtPosition(params.position),
-    ),
-    Option.let('cursorOffset', ({ document }) => document.offsetAt(params.position)),
-
-    Option.bind('flattenCompletions', ({ nodeAdPosition, cursorOffset }) => {
-      return nodeAdPosition.getParsedNodeAtOffset(cursorOffset);
-    }),
-
-    Option.bind('tokenAtPosition', ({ flattenCompletions, cursorOffset, document }) => {
+    Option.bind('flattenCompletions', () => flattenCompletions),
+    Option.bind('tokenAtPosition', ({ flattenCompletions }) => {
       return RA.findFirst(
         flattenCompletions.flattenToken,
         (x) => cursorOffset >= x.token.bodyLoc.start && cursorOffset <= x.token.bodyLoc.end,

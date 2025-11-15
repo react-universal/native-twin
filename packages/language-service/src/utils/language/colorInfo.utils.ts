@@ -4,7 +4,8 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { Color, Range } from 'vscode-languageserver-types';
-import type { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../../browser.js';
+import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
 import type { TwinRuleCompletion } from '../../models/twin/native-twin.types.js';
 import type { TemplateTokenData } from '../../models/twin/template-token.model.js';
 import type { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
@@ -12,9 +13,10 @@ import type { NativeTwinManagerService } from '../../services/NativeTwinManager.
 export const getDocumentTemplatesColors = (
   twinService: NativeTwinManagerService['Type'],
   twinDocument: BaseTwinTextDocument,
+  languageRegions: DocumentLanguageRegion[],
 ) =>
   pipe(
-    twinDocument.getLanguageRegions(),
+    languageRegions,
     ReadonlyArray.flatMap((template) => template.regionNodes),
     ReadonlyArray.flatMap((x) => x.flattenToken),
     ReadonlyArray.dedupe,
@@ -35,14 +37,10 @@ export const templateTokenToColorInfo = (
   return twinService.completions.twinRules.pipe(
     ReadonlyArray.fromIterable,
     ReadonlyArray.filterMap((y) =>
-      y.completion.className === templateFilter.className
-        ? Option.some(y)
-        : Option.none(),
+      y.completion.className === templateFilter.className ? Option.some(y) : Option.none(),
     ),
     ReadonlyArray.filter((x) => x.rule.themeSection === 'colors'),
-    ReadonlyArray.map(
-      (x): vscode.ColorInformation => completionRuleToColorInfo(x, range),
-    ),
+    ReadonlyArray.map((x): vscode.ColorInformation => completionRuleToColorInfo(x, range)),
   );
 };
 

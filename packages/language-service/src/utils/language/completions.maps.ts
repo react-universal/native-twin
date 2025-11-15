@@ -3,7 +3,7 @@ import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
-import type { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
+import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
 import { VscodeCompletionItem } from '../../models/language/completion.model.js';
 import type {
   TwinRuleCompletion,

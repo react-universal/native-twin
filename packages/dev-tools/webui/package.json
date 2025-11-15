@@ -17,7 +17,7 @@
     "d3-selection": "^3.0.0",
     "d3-shape": "^3.2.0",
     "d3-zoom": "^3.0.0",
-    "effect": "^3.18.4",
+    "effect": "^3.19.3",
     "expo-constants": "~18.0.10",
     "expo-font": "~14.0.9",
     "expo-linking": "~8.0.8",

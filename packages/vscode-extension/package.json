@@ -170,7 +170,7 @@
     "@native-twin/helpers": "workspace:*",
     "@native-twin/language-server": "workspace:*",
     "@native-twin/language-service": "workspace:*",
-    "effect": "^3.18.4",
+    "effect": "^3.19.3",
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {

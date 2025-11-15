@@ -1,25 +1,25 @@
 import * as Constants from './utils/constants.utils.js';
 
-export { DocumentLanguageRegion } from './models/documents/LanguageRegion.model.js';
 export {
   TwinMonacoTextDocument,
   TwinTokenLocation,
-} from './models/documents/MonacoTwinDocument.js';
+} from './documents/browser/MonacoTwinDocument.js';
+export { DocumentLanguageRegion } from './documents/common/LanguageRegion.model.js';
+/** Documents Service */
+export {
+  type DocumentsServiceShape,
+  extractLanguageRegions,
+  TwinLSPDocumentContext,
+  twinLSPDocumentLayer,
+} from './documents/LSPDocuments.service.js';
 export type { TwinRuleCompletion } from './models/twin/native-twin.types.js';
 export { TemplateTokenData } from './models/twin/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
 export { LSPConfigService } from './services/LSPConfig.service.js';
 /** Connection Service */
 export { LSPConnectionService } from './services/LSPConnection.service.js';
-/** Documents Service */
-export { LSPDocumentsService } from './services/LSPDocuments.service.js';
 /** Twin Services */
 export { NativeTwinManagerService } from './services/NativeTwinManager.service.js';
-export {
-  type BabelLanguageRegionData,
-  extractLanguageRegions,
-  traverseLanguageRegions,
-} from './utils/babel/extractLanguageRegions.web.js';
 export type { NativeTwinPluginConfiguration } from './utils/constants.utils.js';
 export { getCompletionsForTokens } from './utils/language/completion.pipes.js';
 /** Language Service */

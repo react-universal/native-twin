@@ -30,7 +30,7 @@
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "effect": "^3.18.4",
+    "effect": "^3.19.3",
     "typescript-template-language-service-decorator": "2.3.2",
     "vscode-css-languageservice": "^6.3.8",
     "vscode-languageserver-textdocument": "^1.0.12"

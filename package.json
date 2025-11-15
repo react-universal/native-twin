@@ -35,7 +35,7 @@
     "check-deps": "knip --config ./knip.json"
   },
   "dependencies": {
-    "effect": "^3.18.4",
+    "effect": "^3.19.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
@@ -50,7 +50,7 @@
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.9",
     "@effect/build-utils": "^0.8.9",
-    "@effect/experimental": "^0.56.0",
+    "@effect/experimental": "^0.57.1",
     "@effect/language-service": "^0.54.0",
     "@effect/vitest": "^0.26.0",
     "@rollup/plugin-typescript": "^12.1.1",

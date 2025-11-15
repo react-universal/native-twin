@@ -3,7 +3,8 @@ import * as Equivalence from 'effect/Equivalence';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
-import type { BaseTwinTextDocument } from '../../models/documents/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../../browser.js';
+import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
 import {
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
@@ -14,8 +15,7 @@ import type { NativeTwinManagerService } from '../../services/NativeTwinManager.
 import { isSameRange } from '../vscode.utils.js';
 
 const createRegionEntriesExtractor =
-  (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>
-  () => {
+  (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) => () => {
     return RA.filterMap((x: TwinSheetEntry): Option.Option<DiagnosticToken> => {
       if (isSameEntryClassName(entry, x)) {
         return Option.some({
@@ -40,10 +40,11 @@ const createRegionEntriesExtractor =
 export const diagnosticTokensToDiagnosticItems = (
   document: BaseTwinTextDocument,
   twinService: NativeTwinManagerService['Type'],
+  languageRegions: DocumentLanguageRegion[],
 ): VscodeDiagnosticItem[] => {
   const getRange = bodyLocToRange(document);
   return pipe(
-    document.getLanguageRegions(),
+    languageRegions,
     RA.flatMap((region) => {
       const regionEntries = region.getFullSheetEntries(twinService.tw);
       const generateExtractor = flip(createRegionEntriesExtractor)();
@@ -51,11 +52,7 @@ export const diagnosticTokensToDiagnosticItems = (
         regionEntries,
         RA.map((regionNode) => {
           const range = getRange(regionNode.token.bodyLoc);
-          const duplicates = generateExtractor(
-            regionNode,
-            getRange,
-            document.uri,
-          )(regionEntries);
+          const duplicates = generateExtractor(regionNode, getRange, document.uri)(regionEntries);
 
           if (duplicates.length < 1) return [];
           const relatedInfo = regionDescriptions(duplicates, document.uri);
@@ -119,10 +116,7 @@ export const regionDescriptions = (data: DiagnosticToken[], uri: string) => {
 
 export const bodyLocToRange =
   (document: BaseTwinTextDocument) => (bodyLoc: TemplateTokenWithText['bodyLoc']) =>
-    vscode.Range.create(
-      document.positionAt(bodyLoc.start),
-      document.positionAt(bodyLoc.end),
-    );
+    vscode.Range.create(document.positionAt(bodyLoc.start), document.positionAt(bodyLoc.end));
 
 export const twinSheetEntryGroupByDuplicates = (entries: TwinSheetEntry[]) => {
   if (!RA.isNonEmptyArray(entries)) return [];

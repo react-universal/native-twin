@@ -1,13 +1,18 @@
 import * as Constants from './utils/constants.utils.js';
 
-export { DocumentLanguageRegion } from './models/documents/LanguageRegion.model.js';
+export { DocumentLanguageRegion } from './documents/common/LanguageRegion.model.js';
+export {
+  type DocumentsServiceShape,
+  extractLanguageRegions,
+  TwinLSPDocumentContext,
+  twinLSPDocumentLayer,
+} from './documents/LSPDocuments.service.js';
 /** Documents Service */
-export { TwinLSPDocument } from './models/documents/TwinLSPDocument.model.js';
+export { TwinLSPDocument } from './documents/node/TwinLSPDocument.model.js';
 export type { TwinRuleCompletion } from './models/twin/native-twin.types.js';
 export { TemplateTokenData, TemplateTokenWithText } from './models/twin/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
 export { LSPConfigService } from './services/LSPConfig.service.js';
-export { LSPDocumentsService } from './services/LSPDocuments.service.js';
 /** Twin Services */
 export { NativeTwinManagerService } from './services/NativeTwinManager.service.js';
 /** Language Service */

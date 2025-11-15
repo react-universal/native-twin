@@ -1,6 +1,6 @@
 import * as vscode from 'vscode-languageserver-types';
-import type { BaseTwinTextDocument } from '../models/documents/BaseTwinDocument.js';
-import type { DocumentLanguageRegion } from '../models/documents/LanguageRegion.model.js';
+import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../documents/common/LanguageRegion.model.js';
 
 export const documentLanguageRegionToRange = (
   x: DocumentLanguageRegion,
