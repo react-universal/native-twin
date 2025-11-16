@@ -12,7 +12,7 @@ import * as Stream from 'effect/Stream';
 import path from 'path';
 import { VscodeContext } from '../extension/extension.service';
 import { thenable } from '../extension/extension.utils';
-import { TwinTextDocument } from '../language/models/TwinTextDocument.model';
+import { TwinTextDocument } from '../language/common/TwinTextDocument.model';
 import * as fsPredicates from './fs.predicates';
 import {
   createVirtualEntryID,

@@ -112,8 +112,6 @@ export interface TwinRuleComposition {
 
 export const TwinVariantNode = Data.taggedEnum<TwinVariantNode>();
 
-// export const TwinRuleNode = Data.taggedEnum<TwinRuleNode>();
-
 export class TwinParseResultHandler {
   nodes: AnyTwinComposedClass[];
   parserInput: { text: string; position: number };

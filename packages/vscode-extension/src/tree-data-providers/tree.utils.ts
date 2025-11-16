@@ -5,7 +5,7 @@ import * as Option from 'effect/Option';
 import type * as Scope from 'effect/Scope';
 import { VscodeContext } from '../extension/extension.service';
 import { emitterOptional, runWithTokenDefault } from '../extension/extension.utils';
-import type { TwinTextDocument } from '../language';
+import type { TwinTextDocument } from '../language/common/TwinTextDocument.model';
 import type { TreeDataProvider } from './models/VscodeTree.models';
 
 const uriToID = (uri: vscode.Uri) => uri.toString();

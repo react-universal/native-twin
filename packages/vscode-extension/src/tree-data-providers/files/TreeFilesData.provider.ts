@@ -11,7 +11,7 @@ import {
   registerCommand,
 } from '../../extension/extension.utils.js';
 import { getTwinTextDocumentByUri, getVscodeFS } from '../../file-system';
-import type { TwinTextDocument } from '../../language';
+import type { TwinTextDocument } from '../../language/common/TwinTextDocument.model';
 import { TreeDataProvider } from '../models';
 import { getTwinDocumentID, makeTreeDataProvider } from '../tree.utils';
 import {

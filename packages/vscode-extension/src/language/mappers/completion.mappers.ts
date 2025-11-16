@@ -6,7 +6,7 @@ import {
   type TwinRuleCompletion,
 } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
-import type { TwinTextDocument } from '../models/TwinTextDocument.model';
+import type { TwinTextDocument } from '../common/TwinTextDocument.model';
 
 export const completionRulesToVscodeCompletionItems = (
   flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,

@@ -12,7 +12,6 @@ import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as Trie from 'effect/Trie';
 import type { InternalTwFn, InternalTwinConfig } from '../models/twin/native-twin.types';
-import { LSPConfigService, type VscodeLSPConfig } from '../services/LSPConfig.service';
 import { requireJS } from '../utils/load-js';
 import { createStyledContext } from '../utils/sheet.utils';
 import * as TwinParserModel from './models/TwinParser.models';
@@ -20,16 +19,8 @@ import { TwinRuleComposer } from './models/TwinRuleHandler';
 import * as TwinUtils from './TwinParser.utils';
 
 const make = Effect.gen(function* () {
-  const lspConfig = yield* LSPConfigService;
   const twinRef = yield* Ref.make<Option.Option<InternalTwFn>>(Option.none());
   const dictionaryRef = yield* Ref.make(Trie.empty<TwinParserModel.TwinRuleRegistry>());
-
-  yield* lspConfig.changes.pipe(
-    Stream.mapEffect((_) => onUpdateLSPConfig(_)),
-    Stream.forever,
-    Stream.runDrain,
-    Effect.forkDaemon,
-  );
 
   const getTwin = <Y>(cb: (twin: InternalTwFn) => Y): Effect.Effect<Option.Option<Y>> => {
     return twinRef.get.pipe(Effect.map((twin) => Option.map(twin, cb)));
@@ -50,6 +41,7 @@ const make = Effect.gen(function* () {
   return {
     data: { themeVariants, styledContext, twinRef, dictionaryRef },
     findRulesByKey,
+    loadTwinConfig,
     runTwinParser: (rawText: string, startsAt: number) => {
       const { text, position } = adjustParserInput(rawText, startsAt);
       const parsed = P.many1(
@@ -62,9 +54,7 @@ const make = Effect.gen(function* () {
     },
   };
 
-  function onUpdateLSPConfig(config: VscodeLSPConfig) {
-    if (Option.isNone(config.twinConfigFile)) return Effect.void;
-    const twinPath = config.twinConfigFile.value;
+  function loadTwinConfig(twinPath: string) {
     const twinConfig = requireJS(twinPath).pipe(Option.getOrNull);
     if (!twinConfig) return Effect.void;
     return Ref.set(twinRef, Option.some(setup(twinConfig))).pipe(

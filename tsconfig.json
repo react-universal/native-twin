@@ -20,6 +20,5 @@
     { "path": "packages/ts-plugin" },
     { "path": "packages/vite-plugin" },
     { "path": "packages/vscode-extension" },
-
   ]
 }

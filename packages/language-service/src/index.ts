@@ -9,7 +9,13 @@ export {
 } from './documents/LSPDocuments.service.js';
 /** Documents Service */
 export { TwinLSPDocument } from './documents/node/TwinLSPDocument.model.js';
-export type { TwinRuleCompletion } from './models/twin/native-twin.types.js';
+export type {
+  AnyInternalTwinRule,
+  InternalTwFn,
+  InternalTwinConfig,
+  InternalTwinThemeContext,
+  TwinRuleCompletion,
+} from './models/twin/native-twin.types.js';
 export { TemplateTokenData, TemplateTokenWithText } from './models/twin/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
 export { LSPConfigService } from './services/LSPConfig.service.js';

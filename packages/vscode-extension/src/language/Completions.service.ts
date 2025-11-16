@@ -12,9 +12,9 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import { extensionConfigState } from '../../extension/extension.utils';
-import { completionRulesToVscodeCompletionItems } from '../mappers/completion.mappers';
-import { TwinTextDocument } from '../models/TwinTextDocument.model';
+import { extensionConfigState } from '../extension/extension.utils';
+import { TwinTextDocument } from './common/TwinTextDocument.model';
+import { completionRulesToVscodeCompletionItems } from './mappers/completion.mappers';
 
 const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) => {
   return RA.findFirst(nodes, (x) => offset >= x.bodyLoc.start && offset <= x.bodyLoc.end);
@@ -23,7 +23,7 @@ const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) =
 const make = Effect.gen(function* () {
   const twin = yield* NativeTwinManagerService;
 
-  const config = yield* Effect.flatMap(extensionConfigState(DEFAULT_PLUGIN_CONFIG), (x) => x.get)
+  const config = yield* Effect.flatMap(extensionConfigState(DEFAULT_PLUGIN_CONFIG), (x) => x.get);
 
   return {
     async provideCompletionItems(document, position, _token, _context) {
@@ -51,12 +51,13 @@ const make = Effect.gen(function* () {
         items: completions,
         isIncomplete: true,
       });
-    }
+    },
   } satisfies vscode.CompletionItemProvider;
-})
+});
 
-
-export interface VscodeCompletionsProvider extends vscode.CompletionItemProvider { }
-export const VscodeCompletionsProvider = Context.GenericTag<VscodeCompletionsProvider>('vscode/client/VscodeCompletionsProvider',);
+export interface VscodeCompletionsProvider extends vscode.CompletionItemProvider {}
+export const VscodeCompletionsProvider = Context.GenericTag<VscodeCompletionsProvider>(
+  'vscode/client/VscodeCompletionsProvider',
+);
 
 export const VscodeCompletionsProviderLive = Layer.effect(VscodeCompletionsProvider, make);

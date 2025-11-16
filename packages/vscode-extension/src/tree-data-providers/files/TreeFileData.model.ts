@@ -4,7 +4,7 @@ import type { NativeTwinPluginConfiguration } from '@native-twin/language-servic
 import { pipe } from 'effect';
 import * as RA from 'effect/Array';
 import { thenable } from '../../extension/extension.utils';
-import type { TwinTextDocument } from '../../language';
+import type { TwinTextDocument } from '../../language/common/TwinTextDocument.model';
 
 export class TwinFileTreeNode {
   readonly _tag = 'FileTreeNode';

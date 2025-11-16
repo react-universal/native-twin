@@ -32,8 +32,8 @@ const DocumentsLayer = twinLSPDocumentLayer(documentsHandler, TwinMonacoTextDocu
 
 const MainLive = Layer.empty.pipe(
   Layer.provideMerge(DocumentsLayer),
-  Layer.provideMerge(TwinParserContextLive),
   Layer.provideMerge(LSPConfigService.Live),
+  Layer.provideMerge(TwinParserContextLive),
   Layer.provideMerge(Layer.succeed(NativeTwinManagerService, new MonacoNativeTwinManager())),
   Layer.provideMerge(ConnectionLayer),
   // Layer.provideMerge(ConfigManagerService.Live),

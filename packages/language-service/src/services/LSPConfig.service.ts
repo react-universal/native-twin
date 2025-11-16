@@ -4,6 +4,7 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
+import { TwinParserContext } from '../twin/TwinParser.service.js';
 import { getClientCapabilities } from '../utils/connection.utils.js';
 import {
   DEFAULT_PLUGIN_CONFIG,
@@ -22,6 +23,7 @@ export interface VscodeLSPConfig {
 const make = Effect.gen(function* () {
   const Connection = yield* LSPConnectionService;
   const twin = yield* NativeTwinManagerService;
+  const parser = yield* TwinParserContext;
   const ref = yield* SubscriptionRef.make<VscodeLSPConfig>({
     workspaceRoot: Option.none(),
     twinConfigFile: Option.none(),
@@ -30,8 +32,7 @@ const make = Effect.gen(function* () {
   });
 
   Connection.onDidChangeWatchedFiles(async (params) => {
-    Connection.console.info(`WATCHER: ${JSON.stringify(params)}`);
-    console.log('WATCHED_FILES_CHANGE: ', params);
+    Connection.console.info(`WATCHER: ${JSON.stringify(params.changes)}`);
   });
 
   // Effect.addFinalizer(() => Effect.sync(() => watcher.dispose()));
@@ -77,6 +78,7 @@ const make = Effect.gen(function* () {
             initialized: Option.isSome(twinConfigFile),
           });
           if (Option.isSome(twinConfigFile)) {
+            yield* parser.loadTwinConfig(twinConfigFile.value);
             twin.loadUserFile(twinConfigFile.value);
           }
         }),

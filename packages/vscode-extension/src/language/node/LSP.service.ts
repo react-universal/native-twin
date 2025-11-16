@@ -14,31 +14,18 @@ import {
 import { VscodeContext } from '../../extension/extension.service';
 import { registerCommand } from '../../extension/extension.utils';
 import {
+  createFileWatchers,
+  getColorDecoration,
+  getConfigFiles,
   getDefaultLanguageClientOptions,
   onLanguageClientClosed,
   onLanguageClientError,
   onProvideDocumentColors,
-} from '../language.fn.js';
-import { createFileWatchers, getColorDecoration, getConfigFiles } from '../language.utils';
-import { VscodeHightLightsProvider } from './DocumentHighLights.service';
+} from '../common/language.utils';
 
 export const LanguageClientLive = Effect.gen(function* () {
   const twin = yield* NativeTwinManagerService;
   const extensionCtx = yield* VscodeContext;
-  const { provideDocumentHighlights } = yield* VscodeHightLightsProvider;
-
-  const highLightsProviders = Constants.DOCUMENT_SELECTORS.map((x) =>
-    vscode.languages.registerDocumentHighlightProvider(
-      {
-        language: x.language,
-        scheme: x.scheme,
-      },
-      {
-        provideDocumentHighlights,
-      },
-    ),
-  );
-  extensionCtx.subscriptions.push(...highLightsProviders);
 
   const fileEvents = yield* createFileWatchers;
 
@@ -74,6 +61,10 @@ export const LanguageClientLive = Effect.gen(function* () {
       error: onLanguageClientError,
       closed: onLanguageClientClosed,
     },
+    diagnosticCollectionName: Constants.diagnosticProviderSource,
+    outputChannel: vscode.window.createOutputChannel(Constants.extensionServerChannelName, {
+      log: true,
+    }),
     middleware: {
       workspace: {
         workspaceFolders: (token, next) => {
@@ -87,7 +78,13 @@ export const LanguageClientLive = Effect.gen(function* () {
   };
   const languageClient = yield* Effect.acquireRelease(
     Effect.sync(
-      () => new LanguageClient(Constants.extensionServerChannelName, serverConfig, clientConfig),
+      () =>
+        new LanguageClient(
+          Constants.configurationSection,
+          Constants.extensionServerChannelName,
+          serverConfig,
+          clientConfig,
+        ),
     ),
     (x) =>
       Effect.promise(() => x.dispose()).pipe(

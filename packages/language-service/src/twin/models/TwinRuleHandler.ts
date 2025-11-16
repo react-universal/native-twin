@@ -1,7 +1,8 @@
 import type { RuleMeta } from '@native-twin/core';
 import { type CompleteStyle, cornerMap, directionMap } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import { Array, pipe } from 'effect';
+import * as Array from 'effect/Array';
+import { pipe } from 'effect/Function';
 import type {
   AnyInternalTwinRule,
   InternalNativeTwinRule,

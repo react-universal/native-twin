@@ -12,7 +12,6 @@
       "stopAll": true,
       "presentation": {
         "hidden": false,
-        "group": "tools",
         "order": 1
       }
     }

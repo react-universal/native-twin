@@ -1,12 +1,10 @@
+import type * as vscode from 'vscode';
 import type * as Effect from 'effect/Effect';
 import type * as Option from 'effect/Option';
-import type * as vscode from 'vscode';
 
 export interface TreeDataProvider<A> {
   readonly treeItem: (element: A) => Effect.Effect<vscode.TreeItem>;
-  readonly children: (
-    element: Option.Option<A>,
-  ) => Effect.Effect<Option.Option<Array<A>>>;
+  readonly children: (element: Option.Option<A>) => Effect.Effect<Option.Option<Array<A>>>;
   readonly parent?: (element: A) => Effect.Effect<Option.Option<A>>;
   readonly resolve?: (
     item: vscode.TreeItem,

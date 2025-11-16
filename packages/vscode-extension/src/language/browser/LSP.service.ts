@@ -5,15 +5,17 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import { LanguageClient, type LanguageClientOptions } from 'vscode-languageclient/browser';
-import { VscodeContext } from '../extension/extension.service';
-import { extensionConfigValue, registerCommand } from '../extension/extension.utils';
+import { VscodeContext } from '../../extension/extension.service';
+import { extensionConfigValue, registerCommand } from '../../extension/extension.utils';
 import {
+  createFileWatchers,
+  getColorDecoration,
+  getConfigFiles,
   getDefaultLanguageClientOptions,
   onLanguageClientClosed,
   onLanguageClientError,
   onProvideDocumentColors,
-} from './language.fn.js';
-import { createFileWatchers, getColorDecoration, getConfigFiles } from './language.utils';
+} from '../common/language.utils';
 
 // import TwinWorker from './twin.worker.js';
 
@@ -115,3 +117,4 @@ export class LanguageClientContextBrowser extends Ctx.Tag('vscode/LanguageClient
 >() {
   static Live = Layer.scoped(LanguageClientContextBrowser, make);
 }
+
