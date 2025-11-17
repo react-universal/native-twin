@@ -9,7 +9,7 @@ import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import type * as lsp from 'vscode-languageserver';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
-import { LSPConfigService } from '../services/LSPConfig.service.js';
+import { LSPConfigService } from '../lsp/LSPConfig.service.js';
 import type { BaseTwinTextDocument } from './common/BaseTwinDocument.js';
 import type { BabelLanguageRegionData } from './common/Document.models.js';
 import { DocumentLanguageRegion } from './common/LanguageRegion.model.js';

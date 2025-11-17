@@ -13,11 +13,11 @@ export {
   traverseLanguageRegions,
   twinLSPDocumentLayer,
 } from './documents/LSPDocuments.service.js';
+export { LSPConfigService } from './lsp/LSPConfig.service.js';
+/** Connection Service */
+export { LSPConnectionService } from './lsp/LSPConnection.service.js';
 export { TemplateTokenData } from './lsp/twin/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
-export { LSPConfigService } from './services/LSPConfig.service.js';
-/** Connection Service */
-export { LSPConnectionService } from './services/LSPConnection.service.js';
 /** Twin Services */
 export { NativeTwinManagerService } from './services/NativeTwinManager.service.js';
 export type { TwinRuleCompletion } from './twin/models/native-twin.types.js';

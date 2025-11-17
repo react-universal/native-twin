@@ -4,6 +4,7 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
+import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
 import { TwinRuntimeContext } from '../twin/TwinRuntime.service.js';
 import { getClientCapabilities } from '../utils/connection.utils.js';
 import {
@@ -11,7 +12,6 @@ import {
   type NativeTwinPluginConfiguration,
 } from '../utils/constants.utils.js';
 import { LSPConnectionService } from './LSPConnection.service.js';
-import { NativeTwinManagerService } from './NativeTwinManager.service.js';
 
 export interface VscodeLSPConfig {
   twinConfigFile: Option.Option<string>;

@@ -9,9 +9,9 @@ export {
 } from './documents/LSPDocuments.service.js';
 /** Documents Service */
 export { TwinLSPDocument } from './documents/node/TwinLSPDocument.model.js';
+export { LSPConfigService } from './lsp/LSPConfig.service.js';
 export { TemplateTokenData, TemplateTokenWithText } from './lsp/twin/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
-export { LSPConfigService } from './services/LSPConfig.service.js';
 /** Twin Services */
 export { NativeTwinManagerService } from './services/NativeTwinManager.service.js';
 export type {
@@ -41,7 +41,7 @@ export { parseTemplate } from './utils/twin/native-twin.parser.js';
 /** Vscode Client */
 export { getDocumentLanguageLocations } from './extension/index.js';
 /** Connection Service */
-export { LSPConnectionService } from './services/LSPConnection.service.js';
+export { LSPConnectionService } from './lsp/LSPConnection.service.js';
 export type { NativeTwinPluginConfiguration } from './utils/constants.utils.js';
 export { DEFAULT_PLUGIN_CONFIG } from './utils/constants.utils.js';
 /** Logger */
