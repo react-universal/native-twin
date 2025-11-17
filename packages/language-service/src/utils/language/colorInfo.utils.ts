@@ -6,7 +6,7 @@ import type * as vscode from 'vscode-languageserver';
 import { Color, Range } from 'vscode-languageserver-types';
 import type { DocumentLanguageRegion } from '../../browser.js';
 import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
-import type { TemplateTokenData } from '../../lsp/twin/template-token.model.js';
+import type { TemplateTokenData } from '../../lsp/models/template-token.model.js';
 import type { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
 import type { TwinRuleCompletion } from '../../twin/models/native-twin.types.js';
 

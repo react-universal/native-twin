@@ -9,7 +9,7 @@ import type { DocumentLanguageRegion } from '../../documents/common/LanguageRegi
 import {
   TemplateTokenData,
   TemplateTokenWithText,
-} from '../../lsp/twin/template-token.model.js';
+} from '../../lsp/models/template-token.model.js';
 import type { TwinRuleCompletion, TwinRuleParts } from '../../twin/models/native-twin.types.js';
 import { variantTokenToString } from '../twin/native-twin.utils.js';
 

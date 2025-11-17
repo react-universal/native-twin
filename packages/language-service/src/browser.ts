@@ -16,7 +16,7 @@ export {
 export { LSPConfigService } from './lsp/LSPConfig.service.js';
 /** Connection Service */
 export { LSPConnectionService } from './lsp/LSPConnection.service.js';
-export { TemplateTokenData } from './lsp/twin/template-token.model.js';
+export { TemplateTokenData } from './lsp/models/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
 /** Twin Services */
 export { NativeTwinManagerService } from './services/NativeTwinManager.service.js';

@@ -10,7 +10,7 @@ export {
 /** Documents Service */
 export { TwinLSPDocument } from './documents/node/TwinLSPDocument.model.js';
 export { LSPConfigService } from './lsp/LSPConfig.service.js';
-export { TemplateTokenData, TemplateTokenWithText } from './lsp/twin/template-token.model.js';
+export { TemplateTokenData, TemplateTokenWithText } from './lsp/models/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
 /** Twin Services */
 export { NativeTwinManagerService } from './services/NativeTwinManager.service.js';

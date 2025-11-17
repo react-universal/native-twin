@@ -13,8 +13,8 @@ import {
   twinSheetEntryGroupByDuplicates,
 } from '../../utils/language/diagnostic.js';
 import { isSameRange } from '../../utils/vscode.utils.js';
-import type { TwinSheetEntry } from '../twin/TwinSheetEntry.model.js';
 import { TwinDiagnosticCodes, VscodeDiagnosticItem } from './diagnostic.model.js';
+import type { TwinSheetEntry } from './TwinSheetEntry.model.js';
 
 export class TwinDiagnosticHandler implements Equal.Equal {
   constructor(
