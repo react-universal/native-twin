@@ -8,7 +8,7 @@ import type {
   InternalNativeTwinRule,
   TwinRuleCompletion,
   TwinRuleParts,
-} from '../../models/twin/native-twin.types.js';
+} from '../../twin/models/native-twin.types.js';
 import { DEFAULT_RULE_META } from '../constants.utils.js';
 
 export function getRuleParts(rule: InternalNativeTwinRule): TwinRuleParts {

@@ -1,5 +1,5 @@
 import * as HashSet from 'effect/HashSet';
-import type { InternalTwinConfig } from '../models/twin/native-twin.types';
+import type { InternalTwinConfig } from './models/native-twin.types';
 import * as TwinParserModel from './models/TwinParser.models';
 import type { TwinRuleComposer } from './models/TwinRuleHandler';
 import * as Predicates from './TwinParser.predicates';

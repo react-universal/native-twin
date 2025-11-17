@@ -21,7 +21,7 @@ import type {
   TwinRuleCompletion,
   TwinStore,
   TwinVariantCompletion,
-} from '../../models/twin/native-twin.types.js';
+} from '../../twin/models/native-twin.types.js';
 import { DEFAULT_TWIN_CONFIG } from '../constants.utils.js';
 import { requireJS } from '../load-js.js';
 import { createStyledContext } from '../sheet.utils.js';

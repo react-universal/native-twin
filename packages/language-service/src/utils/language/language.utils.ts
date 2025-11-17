@@ -6,11 +6,11 @@ import { pipe } from 'effect/Function';
 import * as vscode from 'vscode-languageserver-types';
 import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
 import type { DocumentLanguageRegion } from '../../documents/common/LanguageRegion.model.js';
-import type { TwinRuleCompletion, TwinRuleParts } from '../../models/twin/native-twin.types.js';
 import {
   TemplateTokenData,
   TemplateTokenWithText,
-} from '../../models/twin/template-token.model.js';
+} from '../../lsp/twin/template-token.model.js';
+import type { TwinRuleCompletion, TwinRuleParts } from '../../twin/models/native-twin.types.js';
 import { variantTokenToString } from '../twin/native-twin.utils.js';
 
 export const getCompletionTokenKind = ({ rule }: TwinRuleCompletion): vscode.CompletionItemKind =>

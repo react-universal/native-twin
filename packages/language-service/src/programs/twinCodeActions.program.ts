@@ -7,7 +7,7 @@ import * as vscodeLSP from 'vscode-languageserver-protocol';
 import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument.js';
 import type { DocumentLanguageRegion } from '../documents/common/LanguageRegion.model.js';
 import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
-import { TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/language/diagnostic.model.js';
+import { TwinDiagnosticCodes, VscodeDiagnosticItem } from '../lsp/language/diagnostic.model.js';
 import { diagnosticProviderSource } from '../utils/constants.utils.js';
 
 export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.CodeActionParams) {

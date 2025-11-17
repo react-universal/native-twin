@@ -8,9 +8,9 @@ import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocume
 import {
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
-} from '../../models/language/diagnostic.model.js';
-import type { TwinSheetEntry } from '../../models/twin/TwinSheetEntry.model.js';
-import type { TemplateTokenWithText } from '../../models/twin/template-token.model.js';
+} from '../../lsp/language/diagnostic.model.js';
+import type { TwinSheetEntry } from '../../lsp/twin/TwinSheetEntry.model.js';
+import type { TemplateTokenWithText } from '../../lsp/twin/template-token.model.js';
 import type { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
 import { isSameRange } from '../vscode.utils.js';
 

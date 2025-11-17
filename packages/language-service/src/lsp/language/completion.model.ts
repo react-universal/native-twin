@@ -1,14 +1,14 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
+import type {
+  TwinRuleCompletion,
+  TwinVariantCompletion,
+} from '../../twin/models/native-twin.types.js';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
 } from '../../utils/language/language.utils.js';
-import type {
-  TwinRuleCompletion,
-  TwinVariantCompletion,
-} from '../twin/native-twin.types.js';
 
 export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal {
   label: string;

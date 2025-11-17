@@ -8,7 +8,7 @@ import type {
   InternalTwinThemeContext,
   TwinRuleCompletion,
   TwinStore,
-} from '../models/twin/native-twin.types.js';
+} from '../twin/models/native-twin.types.js';
 import type { StyledContext } from '../utils/sheet.utils.js';
 
 export class NativeTwinManagerService extends Context.Tag('NativeTwinManager')<

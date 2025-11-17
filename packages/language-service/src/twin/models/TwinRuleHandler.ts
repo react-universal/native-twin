@@ -3,11 +3,8 @@ import { type CompleteStyle, cornerMap, directionMap } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
-import type {
-  AnyInternalTwinRule,
-  InternalNativeTwinRule,
-} from '../../models/twin/native-twin.types';
 import { DEFAULT_RULE_META } from '../../utils/constants.utils';
+import type { AnyInternalTwinRule, InternalNativeTwinRule } from './native-twin.types';
 import type { TwinRuleComposition, TwinRuleRegistry } from './TwinParser.models';
 
 export class TwinRuleComposer {
@@ -77,9 +74,7 @@ export class TwinRuleComposer {
     return pipe(
       RA.Do,
       RA.bind('value', () => Object.entries(themeConfig)),
-      RA.let('className', ({ value: [key] }) =>
-        `${composition.composed}${key}`.replace('--', '-'),
-      ),
+      RA.let('className', ({ value: [key] }) => `${composition.composed}${key}`.replace('--', '-')),
       RA.let('declarations', () =>
         composition.declarationSuffixes.map(
           (x) => `${String(this.styleProperty ?? '')}${x}${this.suffix ?? ''}`,

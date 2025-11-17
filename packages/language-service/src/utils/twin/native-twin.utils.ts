@@ -6,6 +6,11 @@ import { pipe } from 'effect/Function';
 import * as HashSet from 'effect/HashSet';
 import * as Option from 'effect/Option';
 import * as Record from 'effect/Record';
+import type { LocatedParser, TemplateToken } from '../../lsp/twin/parser.types.js';
+import {
+  TemplateTokenData,
+  TemplateTokenWithText,
+} from '../../lsp/twin/template-token.model.js';
 import type {
   InternalTwFn,
   InternalTwinConfig,
@@ -13,12 +18,7 @@ import type {
   TwinRuleCompletion,
   TwinStore,
   TwinVariantCompletion,
-} from '../../models/twin/native-twin.types.js';
-import type { LocatedParser, TemplateToken } from '../../models/twin/parser.types.js';
-import {
-  TemplateTokenData,
-  TemplateTokenWithText,
-} from '../../models/twin/template-token.model.js';
+} from '../../twin/models/native-twin.types.js';
 import { createRuleClassNames, createRuleCompositions } from './native-twin.rules.js';
 
 export const createTwinStore = (nativeTwinHandler: {

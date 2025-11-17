@@ -4,7 +4,7 @@ import type * as vscode from 'vscode-languageserver';
 import type {
   TwinRuleCompletion,
   TwinVariantCompletion,
-} from '../../models/twin/native-twin.types.js';
+} from '../../twin/models/native-twin.types.js';
 
 export const orderCompletions = Order.mapInput(
   Order.number,

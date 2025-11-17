@@ -4,8 +4,8 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
-import { TwinDiagnosticHandler } from '../models/language/diagnostic.cache.js';
-import { TwinDiagnosticCodes } from '../models/language/diagnostic.model.js';
+import { TwinDiagnosticHandler } from '../lsp/language/diagnostic.cache.js';
+import { TwinDiagnosticCodes } from '../lsp/language/diagnostic.model.js';
 import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
 import { isSameRange } from '../utils/vscode.utils.js';
 
