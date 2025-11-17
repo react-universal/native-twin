@@ -3,6 +3,12 @@
   "compilerOptions": {
     "outDir": "build",
     "declarationDir": "build",
-    "stripInternal": true
-  }
+    "stripInternal": true,
+    "rootDir": "src",
+  },
+  "exclude": ["tests"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
 }

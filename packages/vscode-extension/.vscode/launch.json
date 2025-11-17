@@ -1,21 +1,6 @@
 // A launch configuration that compiles the extension and then opens it inside a new window
 {
   "version": "0.2.0",
-  "compounds": [
-    {
-      "name": "Lanuch extension Client + Server",
-      "configurations": [
-        "Launch Extension",
-        "Build language service",
-        "Build Extension Server"
-      ],
-      "stopAll": true,
-      "presentation": {
-        "hidden": false,
-        "order": 1
-      }
-    }
-  ],
   "configurations": [
     {
       "type": "extensionHost",

@@ -146,7 +146,6 @@ export const extensionConfigValue = <Section extends string, A>(
 
     yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {
       const affected = _.affectsConfiguration(`nativeTwin.${key}`);
-      console.log('AFFECTED: ', affected, key);
       if (affected) {
         return SubscriptionRef.set(ref, get() ?? defaultValue);
       }

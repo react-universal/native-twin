@@ -33,11 +33,11 @@ import '@codingame/monaco-vscode-typescript-language-features-default-extension'
 
 import textMateWorker from '@codingame/monaco-vscode-textmate-service-override/worker?worker';
 import * as monaco from 'monaco-editor';
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import cssWorker from 'monaco-editor-wrapper/workers/module/css?worker';
 import htmlWorker from 'monaco-editor-wrapper/workers/module/html?worker';
 import jsonWorker from 'monaco-editor-wrapper/workers/module/json?worker';
 import tsWorker from 'monaco-editor-wrapper/workers/module/ts?worker';
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 
 export const setup = () => {
   let editorWorkerCache: Worker | null = null;

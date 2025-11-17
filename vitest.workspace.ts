@@ -21,6 +21,7 @@ const project = (
 
 export default defineWorkspace([
   project({name: 'language-service|node'}),
+  project({name: 'builder|node'}),
   // Add specialized configuration for some packages.
   // project({ name: "effect|browser", environment: "happy-dom" }),
   // project({ name: "schema|browser", environment: "happy-dom" }),

@@ -1,5 +1,5 @@
-import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
 import * as EffectWorker from '@effect/platform/Worker';
+import * as BrowserWorker from '@effect/platform-browser/BrowserWorker';
 import * as Console from 'effect/Console';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -55,7 +55,6 @@ const make = Effect.gen(function* () {
       );
     }).pipe(Effect.scoped, Effect.provide(typingsInstallerWorkerLayer));
   }
-
 });
 
 export class AppWorkersService extends Context.Tag('app/workers')<

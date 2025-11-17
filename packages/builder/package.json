@@ -30,6 +30,7 @@
     "postbuild": "yarn",
     "build:compiler": "node esbuild.mjs",
     "clean": "rm -rf build",
+    "test": "npx vitest",
     "gen:schema": "node --loader ts-node/esm -r ts-node/register --no-warnings ./src/config/twin.schema",
     "lint": "biome lint"
   },

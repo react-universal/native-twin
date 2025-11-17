@@ -1,5 +1,6 @@
 import { Path } from '@effect/platform';
 import * as RA from 'effect/Array';
+import * as Config from 'effect/Config';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -16,10 +17,11 @@ import {
   type SourceFile,
 } from 'ts-morph';
 import type { BuildOutputFiles } from '../models/Compiler.models';
-// import { TSCompilerOptions } from '../models/TSCompiler.model';
+import { TSCompilerOptions } from '../models/TSCompiler.model';
 import { FsUtils, FsUtilsLive } from './FsUtils.service';
 
 const make = Effect.gen(function* () {
+  const rootDir = yield* Config.string('PROJECT_DIR').pipe(Config.withDefault(process.cwd()));
   const diagnostics = yield* Queue.unbounded<Diagnostic>();
   const fileEmitter =
     yield* Queue.unbounded<[sourceFile: SourceFile, outputFiles: BuildOutputFiles]>();
@@ -27,11 +29,13 @@ const make = Effect.gen(function* () {
   const fsUtils = yield* FsUtils;
 
   const compilerOptions = getCompilerOptionsFromTsConfig(
-    path_.join(process.cwd(), 'tsconfig.build.json'),
+    path_.join(rootDir, 'tsconfig.build.json'),
   );
   const compiler = new Project({
-    tsConfigFilePath: path_.join(process.cwd(), 'tsconfig.build.json'),
+    tsConfigFilePath: path_.join(rootDir, 'tsconfig.build.json'),
+    skipFileDependencyResolution: true,
     compilerOptions: compilerOptions.options,
+    defaultCompilerOptions: TSCompilerOptions,
   });
   const fs = compiler.getFileSystem();
 
@@ -46,9 +50,7 @@ const make = Effect.gen(function* () {
   const tsWatch = pipe(
     yield* fsUtils.createWatcher(RA.dedupe(sourceFiles.map((x) => path_.dirname(x)))),
     Stream.tap((x) =>
-      Effect.logDebug(
-        `[watcher] Detected ${x._tag} change in: ${x.path.replace(process.cwd(), '')}`,
-      ),
+      Effect.logDebug(`[watcher] Detected ${x._tag} change in: ${x.path.replace(rootDir, '')}`),
     ),
     Stream.tap((x) =>
       Effect.sync(() => {
@@ -121,7 +123,7 @@ const make = Effect.gen(function* () {
   }
 
   function getProjectFiles() {
-    return Effect.promise(() => fs.glob(['src/**/*.ts'])).pipe(
+    return Effect.promise(() => fs.glob([`${rootDir}/src/**/*.{ts,tsx}`])).pipe(
       Effect.map((path) => path.filter((x) => !x.endsWith('.d.ts'))),
     );
   }
@@ -136,13 +138,23 @@ const make = Effect.gen(function* () {
 
   function mapToCompilerOutput(files: OutputFile[]): Option.Option<BuildOutputFiles> {
     return Option.Do.pipe(
-      Option.bind('esm', () => RA.findFirst(files, (x) => x.getFilePath().endsWith('.js'))),
-      Option.let('sourcePath', ({ esm }) => fsUtils.getOriginalSourceForESM(esm.getFilePath())),
+      Option.bind('esm', () =>
+        RA.findFirst(
+          files,
+          (x) => x.getFilePath().endsWith('.js') || x.getFilePath().endsWith('.jsx'),
+        ),
+      ),
+      Option.let('sourcePath', ({ esm }) => {
+        return fsUtils.getOriginalSourceForESM(esm.getFilePath());
+      }),
       Option.let('relativeSourcePath', ({ esm, sourcePath }) =>
         path_.relative(path_.dirname(esm.getFilePath()), sourcePath),
       ),
       Option.bind('sourcemaps', () =>
-        RA.findFirst(files, (x) => x.getFilePath().endsWith('.js.map')),
+        RA.findFirst(
+          files,
+          (x) => x.getFilePath().endsWith('.js.map') || x.getFilePath().endsWith('.jsx.map'),
+        ),
       ),
       Option.bind('dts', () => RA.findFirst(files, (x) => x.getFilePath().endsWith('.d.ts'))),
       Option.bind('dtsMap', () =>

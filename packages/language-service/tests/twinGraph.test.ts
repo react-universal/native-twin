@@ -1,9 +1,10 @@
 import { describe, expect, it } from '@effect/vitest';
-import { ConfigProvider, Effect, Graph } from 'effect';
+import { ConfigProvider, Effect, Graph, Stream } from 'effect';
 import path from 'path';
 import ts from 'ts-morph';
 import { inspect } from 'util';
 import { TwinGraph, TypescriptUtils } from '../src/TS';
+import { TwinRuntimeContext } from '../src/twin/TwinRuntime.service';
 import { TypescriptApi } from '../src/typescript/TypescriptApi';
 import { TestLayer } from './dsl';
 
@@ -18,6 +19,11 @@ describe('twin graph extractor', () => {
       const tsUtils = yield* TypescriptUtils;
       const graph = yield* TwinGraph;
       const compiler = tsAPI.tsProject;
+      const runtime = yield* TwinRuntimeContext;
+
+      yield* runtime.listenTwinConfigPath(
+        Stream.make(path.join(__dirname, 'fixtures', 'react', 'tailwind.config.ts')),
+      );
 
       const outFile = compiler.createSourceFile(
         path.join('../src/out-file.tsx'),
@@ -79,6 +85,7 @@ describe('twin graph extractor', () => {
       // console.log('MEM: ', ts.ts.sys.getMemoryUsage?.());
       // yield* Effect.sync(() => ts.ts.sys.exit(0))
     }).pipe(
+      Effect.scoped,
       Effect.provide(TestLayer),
       Effect.catchAll((error) => Effect.log(error)),
       Effect.withConfigProvider(configProvider),

@@ -1,3 +1,4 @@
+import { Stream } from 'effect';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -5,6 +6,7 @@ import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import { TwinParserContext } from '../twin/TwinParser.service.js';
+import { TwinRuntimeContext } from '../twin/TwinRuntime.service.js';
 import { getClientCapabilities } from '../utils/connection.utils.js';
 import {
   DEFAULT_PLUGIN_CONFIG,
@@ -23,13 +25,15 @@ export interface VscodeLSPConfig {
 const make = Effect.gen(function* () {
   const Connection = yield* LSPConnectionService;
   const twin = yield* NativeTwinManagerService;
-  const parser = yield* TwinParserContext;
+  const parser = yield* TwinRuntimeContext;
   const ref = yield* SubscriptionRef.make<VscodeLSPConfig>({
     workspaceRoot: Option.none(),
     twinConfigFile: Option.none(),
     initialized: false,
     vscode: DEFAULT_PLUGIN_CONFIG,
   });
+
+  yield* parser.listenTwinConfigPath(ref.changes.pipe(Stream.filterMap((x) => x.twinConfigFile)));
 
   Connection.onDidChangeWatchedFiles(async (params) => {
     Connection.console.info(`WATCHER: ${JSON.stringify(params.changes)}`);
@@ -78,7 +82,7 @@ const make = Effect.gen(function* () {
             initialized: Option.isSome(twinConfigFile),
           });
           if (Option.isSome(twinConfigFile)) {
-            yield* parser.loadTwinConfig(twinConfigFile.value);
+            // yield* parser.loadTwinConfig(twinConfigFile.value);
             twin.loadUserFile(twinConfigFile.value);
           }
         }),
@@ -90,6 +94,7 @@ const make = Effect.gen(function* () {
 
   return {
     get: SubscriptionRef.get(ref),
+    ref,
     changes: ref.changes,
   };
 });
@@ -98,7 +103,7 @@ export class LSPConfigService extends Context.Tag('vscode/lsp/config')<
   LSPConfigService,
   Effect.Effect.Success<typeof make>
 >() {
-  static Live = Layer.effect(
+  static Live = Layer.scoped(
     LSPConfigService,
     make.pipe(Effect.tap(() => Effect.logDebug('[LAYERS] Initialized LSPConfig Layer'))),
   );

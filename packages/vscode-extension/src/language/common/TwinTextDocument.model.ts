@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import type * as t from '@babel/types';
-import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import type { NativeTwinPluginConfiguration } from '@native-twin/language-service/browser';
 import { extractLanguageRegions } from '@native-twin/language-service/browser';
 import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';

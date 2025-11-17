@@ -1,7 +1,7 @@
 [
   {
     "className": "bg-amber",
-    "declarationValue": "amber",
+    "declarationValue": "#fbbf24",
     "declarations": [
       "backgroundColor",
     ],
@@ -12,7 +12,7 @@
   },
   {
     "className": "bg-amber-100",
-    "declarationValue": "amber-100",
+    "declarationValue": "#fef3c7",
     "declarations": [
       "backgroundColor",
     ],
@@ -23,7 +23,7 @@
   },
   {
     "className": "bg-amber-200",
-    "declarationValue": "amber-200",
+    "declarationValue": "#fde68a",
     "declarations": [
       "backgroundColor",
     ],
@@ -34,7 +34,7 @@
   },
   {
     "className": "bg-amber-300",
-    "declarationValue": "amber-300",
+    "declarationValue": "#fcd34d",
     "declarations": [
       "backgroundColor",
     ],
@@ -45,7 +45,7 @@
   },
   {
     "className": "bg-amber-400",
-    "declarationValue": "amber-400",
+    "declarationValue": "#fbbf24",
     "declarations": [
       "backgroundColor",
     ],
@@ -56,7 +56,7 @@
   },
   {
     "className": "bg-amber-50",
-    "declarationValue": "amber-50",
+    "declarationValue": "#fffbeb",
     "declarations": [
       "backgroundColor",
     ],
@@ -67,7 +67,7 @@
   },
   {
     "className": "bg-amber-500",
-    "declarationValue": "amber-500",
+    "declarationValue": "#f59e0b",
     "declarations": [
       "backgroundColor",
     ],
@@ -78,7 +78,7 @@
   },
   {
     "className": "bg-amber-600",
-    "declarationValue": "amber-600",
+    "declarationValue": "#d97706",
     "declarations": [
       "backgroundColor",
     ],
@@ -89,7 +89,7 @@
   },
   {
     "className": "bg-amber-700",
-    "declarationValue": "amber-700",
+    "declarationValue": "#b45309",
     "declarations": [
       "backgroundColor",
     ],
@@ -100,7 +100,7 @@
   },
   {
     "className": "bg-amber-800",
-    "declarationValue": "amber-800",
+    "declarationValue": "#92400e",
     "declarations": [
       "backgroundColor",
     ],
@@ -111,7 +111,7 @@
   },
   {
     "className": "bg-amber-900",
-    "declarationValue": "amber-900",
+    "declarationValue": "#78350f",
     "declarations": [
       "backgroundColor",
     ],
@@ -122,7 +122,7 @@
   },
   {
     "className": "bg-amber-950",
-    "declarationValue": "amber-950",
+    "declarationValue": "#451a03",
     "declarations": [
       "backgroundColor",
     ],
@@ -132,19 +132,8 @@
     ],
   },
   {
-    "className": "bg-amber-DEFAULT",
-    "declarationValue": "amber-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "amber-DEFAULT",
-      "#fbbf24",
-    ],
-  },
-  {
     "className": "bg-black",
-    "declarationValue": "black",
+    "declarationValue": "#000",
     "declarations": [
       "backgroundColor",
     ],
@@ -155,7 +144,7 @@
   },
   {
     "className": "bg-blue",
-    "declarationValue": "blue",
+    "declarationValue": "#60a5fa",
     "declarations": [
       "backgroundColor",
     ],
@@ -166,7 +155,7 @@
   },
   {
     "className": "bg-blue-100",
-    "declarationValue": "blue-100",
+    "declarationValue": "#dbeafe",
     "declarations": [
       "backgroundColor",
     ],
@@ -177,7 +166,7 @@
   },
   {
     "className": "bg-blue-200",
-    "declarationValue": "blue-200",
+    "declarationValue": "#bfdbfe",
     "declarations": [
       "backgroundColor",
     ],
@@ -188,7 +177,7 @@
   },
   {
     "className": "bg-blue-300",
-    "declarationValue": "blue-300",
+    "declarationValue": "#93c5fd",
     "declarations": [
       "backgroundColor",
     ],
@@ -199,7 +188,7 @@
   },
   {
     "className": "bg-blue-400",
-    "declarationValue": "blue-400",
+    "declarationValue": "#60a5fa",
     "declarations": [
       "backgroundColor",
     ],
@@ -210,7 +199,7 @@
   },
   {
     "className": "bg-blue-50",
-    "declarationValue": "blue-50",
+    "declarationValue": "#eff6ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -221,7 +210,7 @@
   },
   {
     "className": "bg-blue-500",
-    "declarationValue": "blue-500",
+    "declarationValue": "#3b82f6",
     "declarations": [
       "backgroundColor",
     ],
@@ -232,7 +221,7 @@
   },
   {
     "className": "bg-blue-600",
-    "declarationValue": "blue-600",
+    "declarationValue": "#2563eb",
     "declarations": [
       "backgroundColor",
     ],
@@ -243,7 +232,7 @@
   },
   {
     "className": "bg-blue-700",
-    "declarationValue": "blue-700",
+    "declarationValue": "#1d4ed8",
     "declarations": [
       "backgroundColor",
     ],
@@ -254,7 +243,7 @@
   },
   {
     "className": "bg-blue-800",
-    "declarationValue": "blue-800",
+    "declarationValue": "#1e40af",
     "declarations": [
       "backgroundColor",
     ],
@@ -265,7 +254,7 @@
   },
   {
     "className": "bg-blue-900",
-    "declarationValue": "blue-900",
+    "declarationValue": "#1e3a8a",
     "declarations": [
       "backgroundColor",
     ],
@@ -276,7 +265,7 @@
   },
   {
     "className": "bg-blue-950",
-    "declarationValue": "blue-950",
+    "declarationValue": "#172554",
     "declarations": [
       "backgroundColor",
     ],
@@ -286,19 +275,8 @@
     ],
   },
   {
-    "className": "bg-blue-DEFAULT",
-    "declarationValue": "blue-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "blue-DEFAULT",
-      "#60a5fa",
-    ],
-  },
-  {
     "className": "bg-blueGray",
-    "declarationValue": "blueGray",
+    "declarationValue": "#94a3b8",
     "declarations": [
       "backgroundColor",
     ],
@@ -309,7 +287,7 @@
   },
   {
     "className": "bg-blueGray-100",
-    "declarationValue": "blueGray-100",
+    "declarationValue": "#f1f5f9",
     "declarations": [
       "backgroundColor",
     ],
@@ -320,7 +298,7 @@
   },
   {
     "className": "bg-blueGray-200",
-    "declarationValue": "blueGray-200",
+    "declarationValue": "#e2e8f0",
     "declarations": [
       "backgroundColor",
     ],
@@ -331,7 +309,7 @@
   },
   {
     "className": "bg-blueGray-300",
-    "declarationValue": "blueGray-300",
+    "declarationValue": "#cbd5e1",
     "declarations": [
       "backgroundColor",
     ],
@@ -342,7 +320,7 @@
   },
   {
     "className": "bg-blueGray-400",
-    "declarationValue": "blueGray-400",
+    "declarationValue": "#94a3b8",
     "declarations": [
       "backgroundColor",
     ],
@@ -353,7 +331,7 @@
   },
   {
     "className": "bg-blueGray-50",
-    "declarationValue": "blueGray-50",
+    "declarationValue": "#f8fafc",
     "declarations": [
       "backgroundColor",
     ],
@@ -364,7 +342,7 @@
   },
   {
     "className": "bg-blueGray-500",
-    "declarationValue": "blueGray-500",
+    "declarationValue": "#64748b",
     "declarations": [
       "backgroundColor",
     ],
@@ -375,7 +353,7 @@
   },
   {
     "className": "bg-blueGray-600",
-    "declarationValue": "blueGray-600",
+    "declarationValue": "#475569",
     "declarations": [
       "backgroundColor",
     ],
@@ -386,7 +364,7 @@
   },
   {
     "className": "bg-blueGray-700",
-    "declarationValue": "blueGray-700",
+    "declarationValue": "#334155",
     "declarations": [
       "backgroundColor",
     ],
@@ -397,7 +375,7 @@
   },
   {
     "className": "bg-blueGray-800",
-    "declarationValue": "blueGray-800",
+    "declarationValue": "#1e293b",
     "declarations": [
       "backgroundColor",
     ],
@@ -408,7 +386,7 @@
   },
   {
     "className": "bg-blueGray-900",
-    "declarationValue": "blueGray-900",
+    "declarationValue": "#0f172a",
     "declarations": [
       "backgroundColor",
     ],
@@ -419,7 +397,7 @@
   },
   {
     "className": "bg-blueGray-950",
-    "declarationValue": "blueGray-950",
+    "declarationValue": "#020617",
     "declarations": [
       "backgroundColor",
     ],
@@ -429,19 +407,8 @@
     ],
   },
   {
-    "className": "bg-blueGray-DEFAULT",
-    "declarationValue": "blueGray-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "blueGray-DEFAULT",
-      "#94a3b8",
-    ],
-  },
-  {
     "className": "bg-coolGray",
-    "declarationValue": "coolGray",
+    "declarationValue": "#9ca3af",
     "declarations": [
       "backgroundColor",
     ],
@@ -452,7 +419,7 @@
   },
   {
     "className": "bg-coolGray-100",
-    "declarationValue": "coolGray-100",
+    "declarationValue": "#f3f4f6",
     "declarations": [
       "backgroundColor",
     ],
@@ -463,7 +430,7 @@
   },
   {
     "className": "bg-coolGray-200",
-    "declarationValue": "coolGray-200",
+    "declarationValue": "#e5e7eb",
     "declarations": [
       "backgroundColor",
     ],
@@ -474,7 +441,7 @@
   },
   {
     "className": "bg-coolGray-300",
-    "declarationValue": "coolGray-300",
+    "declarationValue": "#d1d5db",
     "declarations": [
       "backgroundColor",
     ],
@@ -485,7 +452,7 @@
   },
   {
     "className": "bg-coolGray-400",
-    "declarationValue": "coolGray-400",
+    "declarationValue": "#9ca3af",
     "declarations": [
       "backgroundColor",
     ],
@@ -496,7 +463,7 @@
   },
   {
     "className": "bg-coolGray-50",
-    "declarationValue": "coolGray-50",
+    "declarationValue": "#f9fafb",
     "declarations": [
       "backgroundColor",
     ],
@@ -507,7 +474,7 @@
   },
   {
     "className": "bg-coolGray-500",
-    "declarationValue": "coolGray-500",
+    "declarationValue": "#6b7280",
     "declarations": [
       "backgroundColor",
     ],
@@ -518,7 +485,7 @@
   },
   {
     "className": "bg-coolGray-600",
-    "declarationValue": "coolGray-600",
+    "declarationValue": "#4b5563",
     "declarations": [
       "backgroundColor",
     ],
@@ -529,7 +496,7 @@
   },
   {
     "className": "bg-coolGray-700",
-    "declarationValue": "coolGray-700",
+    "declarationValue": "#374151",
     "declarations": [
       "backgroundColor",
     ],
@@ -540,7 +507,7 @@
   },
   {
     "className": "bg-coolGray-800",
-    "declarationValue": "coolGray-800",
+    "declarationValue": "#1f2937",
     "declarations": [
       "backgroundColor",
     ],
@@ -551,7 +518,7 @@
   },
   {
     "className": "bg-coolGray-900",
-    "declarationValue": "coolGray-900",
+    "declarationValue": "#111827",
     "declarations": [
       "backgroundColor",
     ],
@@ -562,7 +529,7 @@
   },
   {
     "className": "bg-coolGray-950",
-    "declarationValue": "coolGray-950",
+    "declarationValue": "#030712",
     "declarations": [
       "backgroundColor",
     ],
@@ -572,19 +539,8 @@
     ],
   },
   {
-    "className": "bg-coolGray-DEFAULT",
-    "declarationValue": "coolGray-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "coolGray-DEFAULT",
-      "#9ca3af",
-    ],
-  },
-  {
     "className": "bg-current",
-    "declarationValue": "current",
+    "declarationValue": "currentColor",
     "declarations": [
       "backgroundColor",
     ],
@@ -595,7 +551,7 @@
   },
   {
     "className": "bg-cyan",
-    "declarationValue": "cyan",
+    "declarationValue": "#22d3ee",
     "declarations": [
       "backgroundColor",
     ],
@@ -606,7 +562,7 @@
   },
   {
     "className": "bg-cyan-100",
-    "declarationValue": "cyan-100",
+    "declarationValue": "#cffafe",
     "declarations": [
       "backgroundColor",
     ],
@@ -617,7 +573,7 @@
   },
   {
     "className": "bg-cyan-200",
-    "declarationValue": "cyan-200",
+    "declarationValue": "#a5f3fc",
     "declarations": [
       "backgroundColor",
     ],
@@ -628,7 +584,7 @@
   },
   {
     "className": "bg-cyan-300",
-    "declarationValue": "cyan-300",
+    "declarationValue": "#67e8f9",
     "declarations": [
       "backgroundColor",
     ],
@@ -639,7 +595,7 @@
   },
   {
     "className": "bg-cyan-400",
-    "declarationValue": "cyan-400",
+    "declarationValue": "#22d3ee",
     "declarations": [
       "backgroundColor",
     ],
@@ -650,7 +606,7 @@
   },
   {
     "className": "bg-cyan-50",
-    "declarationValue": "cyan-50",
+    "declarationValue": "#ecfeff",
     "declarations": [
       "backgroundColor",
     ],
@@ -661,7 +617,7 @@
   },
   {
     "className": "bg-cyan-500",
-    "declarationValue": "cyan-500",
+    "declarationValue": "#06b6d4",
     "declarations": [
       "backgroundColor",
     ],
@@ -672,7 +628,7 @@
   },
   {
     "className": "bg-cyan-600",
-    "declarationValue": "cyan-600",
+    "declarationValue": "#0891b2",
     "declarations": [
       "backgroundColor",
     ],
@@ -683,7 +639,7 @@
   },
   {
     "className": "bg-cyan-700",
-    "declarationValue": "cyan-700",
+    "declarationValue": "#0e7490",
     "declarations": [
       "backgroundColor",
     ],
@@ -694,7 +650,7 @@
   },
   {
     "className": "bg-cyan-800",
-    "declarationValue": "cyan-800",
+    "declarationValue": "#155e75",
     "declarations": [
       "backgroundColor",
     ],
@@ -705,7 +661,7 @@
   },
   {
     "className": "bg-cyan-900",
-    "declarationValue": "cyan-900",
+    "declarationValue": "#164e63",
     "declarations": [
       "backgroundColor",
     ],
@@ -716,7 +672,7 @@
   },
   {
     "className": "bg-cyan-950",
-    "declarationValue": "cyan-950",
+    "declarationValue": "#083344",
     "declarations": [
       "backgroundColor",
     ],
@@ -726,19 +682,8 @@
     ],
   },
   {
-    "className": "bg-cyan-DEFAULT",
-    "declarationValue": "cyan-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "cyan-DEFAULT",
-      "#22d3ee",
-    ],
-  },
-  {
     "className": "bg-dark",
-    "declarationValue": "dark",
+    "declarationValue": "#222222",
     "declarations": [
       "backgroundColor",
     ],
@@ -749,7 +694,7 @@
   },
   {
     "className": "bg-dark-100",
-    "declarationValue": "dark-100",
+    "declarationValue": "#3c3c3c",
     "declarations": [
       "backgroundColor",
     ],
@@ -760,7 +705,7 @@
   },
   {
     "className": "bg-dark-200",
-    "declarationValue": "dark-200",
+    "declarationValue": "#323232",
     "declarations": [
       "backgroundColor",
     ],
@@ -771,7 +716,7 @@
   },
   {
     "className": "bg-dark-300",
-    "declarationValue": "dark-300",
+    "declarationValue": "#2d2d2d",
     "declarations": [
       "backgroundColor",
     ],
@@ -782,7 +727,7 @@
   },
   {
     "className": "bg-dark-400",
-    "declarationValue": "dark-400",
+    "declarationValue": "#222222",
     "declarations": [
       "backgroundColor",
     ],
@@ -793,7 +738,7 @@
   },
   {
     "className": "bg-dark-50",
-    "declarationValue": "dark-50",
+    "declarationValue": "#4a4a4a",
     "declarations": [
       "backgroundColor",
     ],
@@ -804,7 +749,7 @@
   },
   {
     "className": "bg-dark-500",
-    "declarationValue": "dark-500",
+    "declarationValue": "#1f1f1f",
     "declarations": [
       "backgroundColor",
     ],
@@ -815,7 +760,7 @@
   },
   {
     "className": "bg-dark-600",
-    "declarationValue": "dark-600",
+    "declarationValue": "#1c1c1e",
     "declarations": [
       "backgroundColor",
     ],
@@ -826,7 +771,7 @@
   },
   {
     "className": "bg-dark-700",
-    "declarationValue": "dark-700",
+    "declarationValue": "#1b1b1b",
     "declarations": [
       "backgroundColor",
     ],
@@ -837,7 +782,7 @@
   },
   {
     "className": "bg-dark-800",
-    "declarationValue": "dark-800",
+    "declarationValue": "#181818",
     "declarations": [
       "backgroundColor",
     ],
@@ -848,7 +793,7 @@
   },
   {
     "className": "bg-dark-900",
-    "declarationValue": "dark-900",
+    "declarationValue": "#0f0f0f",
     "declarations": [
       "backgroundColor",
     ],
@@ -859,7 +804,7 @@
   },
   {
     "className": "bg-dark-950",
-    "declarationValue": "dark-950",
+    "declarationValue": "#080808",
     "declarations": [
       "backgroundColor",
     ],
@@ -869,19 +814,8 @@
     ],
   },
   {
-    "className": "bg-dark-DEFAULT",
-    "declarationValue": "dark-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "dark-DEFAULT",
-      "#222222",
-    ],
-  },
-  {
     "className": "bg-emerald",
-    "declarationValue": "emerald",
+    "declarationValue": "#34d399",
     "declarations": [
       "backgroundColor",
     ],
@@ -892,7 +826,7 @@
   },
   {
     "className": "bg-emerald-100",
-    "declarationValue": "emerald-100",
+    "declarationValue": "#d1fae5",
     "declarations": [
       "backgroundColor",
     ],
@@ -903,7 +837,7 @@
   },
   {
     "className": "bg-emerald-200",
-    "declarationValue": "emerald-200",
+    "declarationValue": "#a7f3d0",
     "declarations": [
       "backgroundColor",
     ],
@@ -914,7 +848,7 @@
   },
   {
     "className": "bg-emerald-300",
-    "declarationValue": "emerald-300",
+    "declarationValue": "#6ee7b7",
     "declarations": [
       "backgroundColor",
     ],
@@ -925,7 +859,7 @@
   },
   {
     "className": "bg-emerald-400",
-    "declarationValue": "emerald-400",
+    "declarationValue": "#34d399",
     "declarations": [
       "backgroundColor",
     ],
@@ -936,7 +870,7 @@
   },
   {
     "className": "bg-emerald-50",
-    "declarationValue": "emerald-50",
+    "declarationValue": "#ecfdf5",
     "declarations": [
       "backgroundColor",
     ],
@@ -947,7 +881,7 @@
   },
   {
     "className": "bg-emerald-500",
-    "declarationValue": "emerald-500",
+    "declarationValue": "#10b981",
     "declarations": [
       "backgroundColor",
     ],
@@ -958,7 +892,7 @@
   },
   {
     "className": "bg-emerald-600",
-    "declarationValue": "emerald-600",
+    "declarationValue": "#059669",
     "declarations": [
       "backgroundColor",
     ],
@@ -969,7 +903,7 @@
   },
   {
     "className": "bg-emerald-700",
-    "declarationValue": "emerald-700",
+    "declarationValue": "#047857",
     "declarations": [
       "backgroundColor",
     ],
@@ -980,7 +914,7 @@
   },
   {
     "className": "bg-emerald-800",
-    "declarationValue": "emerald-800",
+    "declarationValue": "#065f46",
     "declarations": [
       "backgroundColor",
     ],
@@ -991,7 +925,7 @@
   },
   {
     "className": "bg-emerald-900",
-    "declarationValue": "emerald-900",
+    "declarationValue": "#064e3b",
     "declarations": [
       "backgroundColor",
     ],
@@ -1002,7 +936,7 @@
   },
   {
     "className": "bg-emerald-950",
-    "declarationValue": "emerald-950",
+    "declarationValue": "#022c22",
     "declarations": [
       "backgroundColor",
     ],
@@ -1012,19 +946,8 @@
     ],
   },
   {
-    "className": "bg-emerald-DEFAULT",
-    "declarationValue": "emerald-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "emerald-DEFAULT",
-      "#34d399",
-    ],
-  },
-  {
     "className": "bg-fuchsia",
-    "declarationValue": "fuchsia",
+    "declarationValue": "#e879f9",
     "declarations": [
       "backgroundColor",
     ],
@@ -1035,7 +958,7 @@
   },
   {
     "className": "bg-fuchsia-100",
-    "declarationValue": "fuchsia-100",
+    "declarationValue": "#fae8ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -1046,7 +969,7 @@
   },
   {
     "className": "bg-fuchsia-200",
-    "declarationValue": "fuchsia-200",
+    "declarationValue": "#f5d0fe",
     "declarations": [
       "backgroundColor",
     ],
@@ -1057,7 +980,7 @@
   },
   {
     "className": "bg-fuchsia-300",
-    "declarationValue": "fuchsia-300",
+    "declarationValue": "#f0abfc",
     "declarations": [
       "backgroundColor",
     ],
@@ -1068,7 +991,7 @@
   },
   {
     "className": "bg-fuchsia-400",
-    "declarationValue": "fuchsia-400",
+    "declarationValue": "#e879f9",
     "declarations": [
       "backgroundColor",
     ],
@@ -1079,7 +1002,7 @@
   },
   {
     "className": "bg-fuchsia-50",
-    "declarationValue": "fuchsia-50",
+    "declarationValue": "#fdf4ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -1090,7 +1013,7 @@
   },
   {
     "className": "bg-fuchsia-500",
-    "declarationValue": "fuchsia-500",
+    "declarationValue": "#d946ef",
     "declarations": [
       "backgroundColor",
     ],
@@ -1101,7 +1024,7 @@
   },
   {
     "className": "bg-fuchsia-600",
-    "declarationValue": "fuchsia-600",
+    "declarationValue": "#c026d3",
     "declarations": [
       "backgroundColor",
     ],
@@ -1112,7 +1035,7 @@
   },
   {
     "className": "bg-fuchsia-700",
-    "declarationValue": "fuchsia-700",
+    "declarationValue": "#a21caf",
     "declarations": [
       "backgroundColor",
     ],
@@ -1123,7 +1046,7 @@
   },
   {
     "className": "bg-fuchsia-800",
-    "declarationValue": "fuchsia-800",
+    "declarationValue": "#86198f",
     "declarations": [
       "backgroundColor",
     ],
@@ -1134,7 +1057,7 @@
   },
   {
     "className": "bg-fuchsia-900",
-    "declarationValue": "fuchsia-900",
+    "declarationValue": "#701a75",
     "declarations": [
       "backgroundColor",
     ],
@@ -1145,7 +1068,7 @@
   },
   {
     "className": "bg-fuchsia-950",
-    "declarationValue": "fuchsia-950",
+    "declarationValue": "#4a044e",
     "declarations": [
       "backgroundColor",
     ],
@@ -1155,19 +1078,8 @@
     ],
   },
   {
-    "className": "bg-fuchsia-DEFAULT",
-    "declarationValue": "fuchsia-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "fuchsia-DEFAULT",
-      "#e879f9",
-    ],
-  },
-  {
     "className": "bg-gray",
-    "declarationValue": "gray",
+    "declarationValue": "#9ca3af",
     "declarations": [
       "backgroundColor",
     ],
@@ -1178,7 +1090,7 @@
   },
   {
     "className": "bg-gray-100",
-    "declarationValue": "gray-100",
+    "declarationValue": "#f3f4f6",
     "declarations": [
       "backgroundColor",
     ],
@@ -1189,7 +1101,7 @@
   },
   {
     "className": "bg-gray-200",
-    "declarationValue": "gray-200",
+    "declarationValue": "#e5e7eb",
     "declarations": [
       "backgroundColor",
     ],
@@ -1200,7 +1112,7 @@
   },
   {
     "className": "bg-gray-300",
-    "declarationValue": "gray-300",
+    "declarationValue": "#d1d5db",
     "declarations": [
       "backgroundColor",
     ],
@@ -1211,7 +1123,7 @@
   },
   {
     "className": "bg-gray-400",
-    "declarationValue": "gray-400",
+    "declarationValue": "#9ca3af",
     "declarations": [
       "backgroundColor",
     ],
@@ -1222,7 +1134,7 @@
   },
   {
     "className": "bg-gray-50",
-    "declarationValue": "gray-50",
+    "declarationValue": "#f9fafb",
     "declarations": [
       "backgroundColor",
     ],
@@ -1233,7 +1145,7 @@
   },
   {
     "className": "bg-gray-500",
-    "declarationValue": "gray-500",
+    "declarationValue": "#6b7280",
     "declarations": [
       "backgroundColor",
     ],
@@ -1244,7 +1156,7 @@
   },
   {
     "className": "bg-gray-600",
-    "declarationValue": "gray-600",
+    "declarationValue": "#4b5563",
     "declarations": [
       "backgroundColor",
     ],
@@ -1255,7 +1167,7 @@
   },
   {
     "className": "bg-gray-700",
-    "declarationValue": "gray-700",
+    "declarationValue": "#374151",
     "declarations": [
       "backgroundColor",
     ],
@@ -1266,7 +1178,7 @@
   },
   {
     "className": "bg-gray-800",
-    "declarationValue": "gray-800",
+    "declarationValue": "#1f2937",
     "declarations": [
       "backgroundColor",
     ],
@@ -1277,7 +1189,7 @@
   },
   {
     "className": "bg-gray-900",
-    "declarationValue": "gray-900",
+    "declarationValue": "#111827",
     "declarations": [
       "backgroundColor",
     ],
@@ -1288,7 +1200,7 @@
   },
   {
     "className": "bg-gray-950",
-    "declarationValue": "gray-950",
+    "declarationValue": "#030712",
     "declarations": [
       "backgroundColor",
     ],
@@ -1298,19 +1210,8 @@
     ],
   },
   {
-    "className": "bg-gray-DEFAULT",
-    "declarationValue": "gray-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "gray-DEFAULT",
-      "#9ca3af",
-    ],
-  },
-  {
     "className": "bg-green",
-    "declarationValue": "green",
+    "declarationValue": "#4ade80",
     "declarations": [
       "backgroundColor",
     ],
@@ -1321,7 +1222,7 @@
   },
   {
     "className": "bg-green-100",
-    "declarationValue": "green-100",
+    "declarationValue": "#dcfce7",
     "declarations": [
       "backgroundColor",
     ],
@@ -1332,7 +1233,7 @@
   },
   {
     "className": "bg-green-200",
-    "declarationValue": "green-200",
+    "declarationValue": "#bbf7d0",
     "declarations": [
       "backgroundColor",
     ],
@@ -1343,7 +1244,7 @@
   },
   {
     "className": "bg-green-300",
-    "declarationValue": "green-300",
+    "declarationValue": "#86efac",
     "declarations": [
       "backgroundColor",
     ],
@@ -1354,7 +1255,7 @@
   },
   {
     "className": "bg-green-400",
-    "declarationValue": "green-400",
+    "declarationValue": "#4ade80",
     "declarations": [
       "backgroundColor",
     ],
@@ -1365,7 +1266,7 @@
   },
   {
     "className": "bg-green-50",
-    "declarationValue": "green-50",
+    "declarationValue": "#f0fdf4",
     "declarations": [
       "backgroundColor",
     ],
@@ -1376,7 +1277,7 @@
   },
   {
     "className": "bg-green-500",
-    "declarationValue": "green-500",
+    "declarationValue": "#22c55e",
     "declarations": [
       "backgroundColor",
     ],
@@ -1387,7 +1288,7 @@
   },
   {
     "className": "bg-green-600",
-    "declarationValue": "green-600",
+    "declarationValue": "#16a34a",
     "declarations": [
       "backgroundColor",
     ],
@@ -1398,7 +1299,7 @@
   },
   {
     "className": "bg-green-700",
-    "declarationValue": "green-700",
+    "declarationValue": "#15803d",
     "declarations": [
       "backgroundColor",
     ],
@@ -1409,7 +1310,7 @@
   },
   {
     "className": "bg-green-800",
-    "declarationValue": "green-800",
+    "declarationValue": "#166534",
     "declarations": [
       "backgroundColor",
     ],
@@ -1420,7 +1321,7 @@
   },
   {
     "className": "bg-green-900",
-    "declarationValue": "green-900",
+    "declarationValue": "#14532d",
     "declarations": [
       "backgroundColor",
     ],
@@ -1431,7 +1332,7 @@
   },
   {
     "className": "bg-green-950",
-    "declarationValue": "green-950",
+    "declarationValue": "#052e16",
     "declarations": [
       "backgroundColor",
     ],
@@ -1441,19 +1342,8 @@
     ],
   },
   {
-    "className": "bg-green-DEFAULT",
-    "declarationValue": "green-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "green-DEFAULT",
-      "#4ade80",
-    ],
-  },
-  {
     "className": "bg-indigo",
-    "declarationValue": "indigo",
+    "declarationValue": "#818cf8",
     "declarations": [
       "backgroundColor",
     ],
@@ -1464,7 +1354,7 @@
   },
   {
     "className": "bg-indigo-100",
-    "declarationValue": "indigo-100",
+    "declarationValue": "#e0e7ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -1475,7 +1365,7 @@
   },
   {
     "className": "bg-indigo-200",
-    "declarationValue": "indigo-200",
+    "declarationValue": "#c7d2fe",
     "declarations": [
       "backgroundColor",
     ],
@@ -1486,7 +1376,7 @@
   },
   {
     "className": "bg-indigo-300",
-    "declarationValue": "indigo-300",
+    "declarationValue": "#a5b4fc",
     "declarations": [
       "backgroundColor",
     ],
@@ -1497,7 +1387,7 @@
   },
   {
     "className": "bg-indigo-400",
-    "declarationValue": "indigo-400",
+    "declarationValue": "#818cf8",
     "declarations": [
       "backgroundColor",
     ],
@@ -1508,7 +1398,7 @@
   },
   {
     "className": "bg-indigo-50",
-    "declarationValue": "indigo-50",
+    "declarationValue": "#eef2ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -1519,7 +1409,7 @@
   },
   {
     "className": "bg-indigo-500",
-    "declarationValue": "indigo-500",
+    "declarationValue": "#6366f1",
     "declarations": [
       "backgroundColor",
     ],
@@ -1530,7 +1420,7 @@
   },
   {
     "className": "bg-indigo-600",
-    "declarationValue": "indigo-600",
+    "declarationValue": "#4f46e5",
     "declarations": [
       "backgroundColor",
     ],
@@ -1541,7 +1431,7 @@
   },
   {
     "className": "bg-indigo-700",
-    "declarationValue": "indigo-700",
+    "declarationValue": "#4338ca",
     "declarations": [
       "backgroundColor",
     ],
@@ -1552,7 +1442,7 @@
   },
   {
     "className": "bg-indigo-800",
-    "declarationValue": "indigo-800",
+    "declarationValue": "#3730a3",
     "declarations": [
       "backgroundColor",
     ],
@@ -1563,7 +1453,7 @@
   },
   {
     "className": "bg-indigo-900",
-    "declarationValue": "indigo-900",
+    "declarationValue": "#312e81",
     "declarations": [
       "backgroundColor",
     ],
@@ -1574,24 +1464,13 @@
   },
   {
     "className": "bg-indigo-950",
-    "declarationValue": "indigo-950",
+    "declarationValue": "#1e1b4b",
     "declarations": [
       "backgroundColor",
     ],
     "value": [
       "indigo-950",
       "#1e1b4b",
-    ],
-  },
-  {
-    "className": "bg-indigo-DEFAULT",
-    "declarationValue": "indigo-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "indigo-DEFAULT",
-      "#818cf8",
     ],
   },
   {
@@ -1607,7 +1486,7 @@
   },
   {
     "className": "bg-light",
-    "declarationValue": "light",
+    "declarationValue": "#f6f6f6",
     "declarations": [
       "backgroundColor",
     ],
@@ -1618,7 +1497,7 @@
   },
   {
     "className": "bg-light-100",
-    "declarationValue": "light-100",
+    "declarationValue": "#fcfcfc",
     "declarations": [
       "backgroundColor",
     ],
@@ -1629,7 +1508,7 @@
   },
   {
     "className": "bg-light-200",
-    "declarationValue": "light-200",
+    "declarationValue": "#fafafa",
     "declarations": [
       "backgroundColor",
     ],
@@ -1640,7 +1519,7 @@
   },
   {
     "className": "bg-light-300",
-    "declarationValue": "light-300",
+    "declarationValue": "#f8f9fa",
     "declarations": [
       "backgroundColor",
     ],
@@ -1651,7 +1530,7 @@
   },
   {
     "className": "bg-light-400",
-    "declarationValue": "light-400",
+    "declarationValue": "#f6f6f6",
     "declarations": [
       "backgroundColor",
     ],
@@ -1662,7 +1541,7 @@
   },
   {
     "className": "bg-light-50",
-    "declarationValue": "light-50",
+    "declarationValue": "#fdfdfd",
     "declarations": [
       "backgroundColor",
     ],
@@ -1673,7 +1552,7 @@
   },
   {
     "className": "bg-light-500",
-    "declarationValue": "light-500",
+    "declarationValue": "#f2f2f2",
     "declarations": [
       "backgroundColor",
     ],
@@ -1684,7 +1563,7 @@
   },
   {
     "className": "bg-light-600",
-    "declarationValue": "light-600",
+    "declarationValue": "#f1f3f5",
     "declarations": [
       "backgroundColor",
     ],
@@ -1695,7 +1574,7 @@
   },
   {
     "className": "bg-light-700",
-    "declarationValue": "light-700",
+    "declarationValue": "#e9ecef",
     "declarations": [
       "backgroundColor",
     ],
@@ -1706,7 +1585,7 @@
   },
   {
     "className": "bg-light-800",
-    "declarationValue": "light-800",
+    "declarationValue": "#dee2e6",
     "declarations": [
       "backgroundColor",
     ],
@@ -1717,7 +1596,7 @@
   },
   {
     "className": "bg-light-900",
-    "declarationValue": "light-900",
+    "declarationValue": "#dde1e3",
     "declarations": [
       "backgroundColor",
     ],
@@ -1728,7 +1607,7 @@
   },
   {
     "className": "bg-light-950",
-    "declarationValue": "light-950",
+    "declarationValue": "#d8dcdf",
     "declarations": [
       "backgroundColor",
     ],
@@ -1738,19 +1617,8 @@
     ],
   },
   {
-    "className": "bg-light-DEFAULT",
-    "declarationValue": "light-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "light-DEFAULT",
-      "#f6f6f6",
-    ],
-  },
-  {
     "className": "bg-lightBlue",
-    "declarationValue": "lightBlue",
+    "declarationValue": "#38bdf8",
     "declarations": [
       "backgroundColor",
     ],
@@ -1761,7 +1629,7 @@
   },
   {
     "className": "bg-lightBlue-100",
-    "declarationValue": "lightBlue-100",
+    "declarationValue": "#e0f2fe",
     "declarations": [
       "backgroundColor",
     ],
@@ -1772,7 +1640,7 @@
   },
   {
     "className": "bg-lightBlue-200",
-    "declarationValue": "lightBlue-200",
+    "declarationValue": "#bae6fd",
     "declarations": [
       "backgroundColor",
     ],
@@ -1783,7 +1651,7 @@
   },
   {
     "className": "bg-lightBlue-300",
-    "declarationValue": "lightBlue-300",
+    "declarationValue": "#7dd3fc",
     "declarations": [
       "backgroundColor",
     ],
@@ -1794,7 +1662,7 @@
   },
   {
     "className": "bg-lightBlue-400",
-    "declarationValue": "lightBlue-400",
+    "declarationValue": "#38bdf8",
     "declarations": [
       "backgroundColor",
     ],
@@ -1805,7 +1673,7 @@
   },
   {
     "className": "bg-lightBlue-50",
-    "declarationValue": "lightBlue-50",
+    "declarationValue": "#f0f9ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -1816,7 +1684,7 @@
   },
   {
     "className": "bg-lightBlue-500",
-    "declarationValue": "lightBlue-500",
+    "declarationValue": "#0ea5e9",
     "declarations": [
       "backgroundColor",
     ],
@@ -1827,7 +1695,7 @@
   },
   {
     "className": "bg-lightBlue-600",
-    "declarationValue": "lightBlue-600",
+    "declarationValue": "#0284c7",
     "declarations": [
       "backgroundColor",
     ],
@@ -1838,7 +1706,7 @@
   },
   {
     "className": "bg-lightBlue-700",
-    "declarationValue": "lightBlue-700",
+    "declarationValue": "#0369a1",
     "declarations": [
       "backgroundColor",
     ],
@@ -1849,7 +1717,7 @@
   },
   {
     "className": "bg-lightBlue-800",
-    "declarationValue": "lightBlue-800",
+    "declarationValue": "#075985",
     "declarations": [
       "backgroundColor",
     ],
@@ -1860,7 +1728,7 @@
   },
   {
     "className": "bg-lightBlue-900",
-    "declarationValue": "lightBlue-900",
+    "declarationValue": "#0c4a6e",
     "declarations": [
       "backgroundColor",
     ],
@@ -1871,7 +1739,7 @@
   },
   {
     "className": "bg-lightBlue-950",
-    "declarationValue": "lightBlue-950",
+    "declarationValue": "#082f49",
     "declarations": [
       "backgroundColor",
     ],
@@ -1881,19 +1749,8 @@
     ],
   },
   {
-    "className": "bg-lightBlue-DEFAULT",
-    "declarationValue": "lightBlue-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "lightBlue-DEFAULT",
-      "#38bdf8",
-    ],
-  },
-  {
     "className": "bg-lime",
-    "declarationValue": "lime",
+    "declarationValue": "#a3e635",
     "declarations": [
       "backgroundColor",
     ],
@@ -1904,7 +1761,7 @@
   },
   {
     "className": "bg-lime-100",
-    "declarationValue": "lime-100",
+    "declarationValue": "#ecfccb",
     "declarations": [
       "backgroundColor",
     ],
@@ -1915,7 +1772,7 @@
   },
   {
     "className": "bg-lime-200",
-    "declarationValue": "lime-200",
+    "declarationValue": "#d9f99d",
     "declarations": [
       "backgroundColor",
     ],
@@ -1926,7 +1783,7 @@
   },
   {
     "className": "bg-lime-300",
-    "declarationValue": "lime-300",
+    "declarationValue": "#bef264",
     "declarations": [
       "backgroundColor",
     ],
@@ -1937,7 +1794,7 @@
   },
   {
     "className": "bg-lime-400",
-    "declarationValue": "lime-400",
+    "declarationValue": "#a3e635",
     "declarations": [
       "backgroundColor",
     ],
@@ -1948,7 +1805,7 @@
   },
   {
     "className": "bg-lime-50",
-    "declarationValue": "lime-50",
+    "declarationValue": "#f7fee7",
     "declarations": [
       "backgroundColor",
     ],
@@ -1959,7 +1816,7 @@
   },
   {
     "className": "bg-lime-500",
-    "declarationValue": "lime-500",
+    "declarationValue": "#84cc16",
     "declarations": [
       "backgroundColor",
     ],
@@ -1970,7 +1827,7 @@
   },
   {
     "className": "bg-lime-600",
-    "declarationValue": "lime-600",
+    "declarationValue": "#65a30d",
     "declarations": [
       "backgroundColor",
     ],
@@ -1981,7 +1838,7 @@
   },
   {
     "className": "bg-lime-700",
-    "declarationValue": "lime-700",
+    "declarationValue": "#4d7c0f",
     "declarations": [
       "backgroundColor",
     ],
@@ -1992,7 +1849,7 @@
   },
   {
     "className": "bg-lime-800",
-    "declarationValue": "lime-800",
+    "declarationValue": "#3f6212",
     "declarations": [
       "backgroundColor",
     ],
@@ -2003,7 +1860,7 @@
   },
   {
     "className": "bg-lime-900",
-    "declarationValue": "lime-900",
+    "declarationValue": "#365314",
     "declarations": [
       "backgroundColor",
     ],
@@ -2014,7 +1871,7 @@
   },
   {
     "className": "bg-lime-950",
-    "declarationValue": "lime-950",
+    "declarationValue": "#1a2e05",
     "declarations": [
       "backgroundColor",
     ],
@@ -2024,19 +1881,8 @@
     ],
   },
   {
-    "className": "bg-lime-DEFAULT",
-    "declarationValue": "lime-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "lime-DEFAULT",
-      "#a3e635",
-    ],
-  },
-  {
     "className": "bg-neutral",
-    "declarationValue": "neutral",
+    "declarationValue": "#a3a3a3",
     "declarations": [
       "backgroundColor",
     ],
@@ -2047,7 +1893,7 @@
   },
   {
     "className": "bg-neutral-100",
-    "declarationValue": "neutral-100",
+    "declarationValue": "#f5f5f5",
     "declarations": [
       "backgroundColor",
     ],
@@ -2058,7 +1904,7 @@
   },
   {
     "className": "bg-neutral-200",
-    "declarationValue": "neutral-200",
+    "declarationValue": "#e5e5e5",
     "declarations": [
       "backgroundColor",
     ],
@@ -2069,7 +1915,7 @@
   },
   {
     "className": "bg-neutral-300",
-    "declarationValue": "neutral-300",
+    "declarationValue": "#d4d4d4",
     "declarations": [
       "backgroundColor",
     ],
@@ -2080,7 +1926,7 @@
   },
   {
     "className": "bg-neutral-400",
-    "declarationValue": "neutral-400",
+    "declarationValue": "#a3a3a3",
     "declarations": [
       "backgroundColor",
     ],
@@ -2091,7 +1937,7 @@
   },
   {
     "className": "bg-neutral-50",
-    "declarationValue": "neutral-50",
+    "declarationValue": "#fafafa",
     "declarations": [
       "backgroundColor",
     ],
@@ -2102,7 +1948,7 @@
   },
   {
     "className": "bg-neutral-500",
-    "declarationValue": "neutral-500",
+    "declarationValue": "#737373",
     "declarations": [
       "backgroundColor",
     ],
@@ -2113,7 +1959,7 @@
   },
   {
     "className": "bg-neutral-600",
-    "declarationValue": "neutral-600",
+    "declarationValue": "#525252",
     "declarations": [
       "backgroundColor",
     ],
@@ -2124,7 +1970,7 @@
   },
   {
     "className": "bg-neutral-700",
-    "declarationValue": "neutral-700",
+    "declarationValue": "#404040",
     "declarations": [
       "backgroundColor",
     ],
@@ -2135,7 +1981,7 @@
   },
   {
     "className": "bg-neutral-800",
-    "declarationValue": "neutral-800",
+    "declarationValue": "#262626",
     "declarations": [
       "backgroundColor",
     ],
@@ -2146,7 +1992,7 @@
   },
   {
     "className": "bg-neutral-900",
-    "declarationValue": "neutral-900",
+    "declarationValue": "#171717",
     "declarations": [
       "backgroundColor",
     ],
@@ -2157,7 +2003,7 @@
   },
   {
     "className": "bg-neutral-950",
-    "declarationValue": "neutral-950",
+    "declarationValue": "#0a0a0a",
     "declarations": [
       "backgroundColor",
     ],
@@ -2167,19 +2013,8 @@
     ],
   },
   {
-    "className": "bg-neutral-DEFAULT",
-    "declarationValue": "neutral-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "neutral-DEFAULT",
-      "#a3a3a3",
-    ],
-  },
-  {
     "className": "bg-orange",
-    "declarationValue": "orange",
+    "declarationValue": "#fb923c",
     "declarations": [
       "backgroundColor",
     ],
@@ -2190,7 +2025,7 @@
   },
   {
     "className": "bg-orange-100",
-    "declarationValue": "orange-100",
+    "declarationValue": "#ffedd5",
     "declarations": [
       "backgroundColor",
     ],
@@ -2201,7 +2036,7 @@
   },
   {
     "className": "bg-orange-200",
-    "declarationValue": "orange-200",
+    "declarationValue": "#fed7aa",
     "declarations": [
       "backgroundColor",
     ],
@@ -2212,7 +2047,7 @@
   },
   {
     "className": "bg-orange-300",
-    "declarationValue": "orange-300",
+    "declarationValue": "#fdba74",
     "declarations": [
       "backgroundColor",
     ],
@@ -2223,7 +2058,7 @@
   },
   {
     "className": "bg-orange-400",
-    "declarationValue": "orange-400",
+    "declarationValue": "#fb923c",
     "declarations": [
       "backgroundColor",
     ],
@@ -2234,7 +2069,7 @@
   },
   {
     "className": "bg-orange-50",
-    "declarationValue": "orange-50",
+    "declarationValue": "#fff7ed",
     "declarations": [
       "backgroundColor",
     ],
@@ -2245,7 +2080,7 @@
   },
   {
     "className": "bg-orange-500",
-    "declarationValue": "orange-500",
+    "declarationValue": "#f97316",
     "declarations": [
       "backgroundColor",
     ],
@@ -2256,7 +2091,7 @@
   },
   {
     "className": "bg-orange-600",
-    "declarationValue": "orange-600",
+    "declarationValue": "#ea580c",
     "declarations": [
       "backgroundColor",
     ],
@@ -2267,7 +2102,7 @@
   },
   {
     "className": "bg-orange-700",
-    "declarationValue": "orange-700",
+    "declarationValue": "#c2410c",
     "declarations": [
       "backgroundColor",
     ],
@@ -2278,7 +2113,7 @@
   },
   {
     "className": "bg-orange-800",
-    "declarationValue": "orange-800",
+    "declarationValue": "#9a3412",
     "declarations": [
       "backgroundColor",
     ],
@@ -2289,7 +2124,7 @@
   },
   {
     "className": "bg-orange-900",
-    "declarationValue": "orange-900",
+    "declarationValue": "#7c2d12",
     "declarations": [
       "backgroundColor",
     ],
@@ -2300,7 +2135,7 @@
   },
   {
     "className": "bg-orange-950",
-    "declarationValue": "orange-950",
+    "declarationValue": "#431407",
     "declarations": [
       "backgroundColor",
     ],
@@ -2310,19 +2145,8 @@
     ],
   },
   {
-    "className": "bg-orange-DEFAULT",
-    "declarationValue": "orange-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "orange-DEFAULT",
-      "#fb923c",
-    ],
-  },
-  {
     "className": "bg-pink",
-    "declarationValue": "pink",
+    "declarationValue": "#f472b6",
     "declarations": [
       "backgroundColor",
     ],
@@ -2333,7 +2157,7 @@
   },
   {
     "className": "bg-pink-100",
-    "declarationValue": "pink-100",
+    "declarationValue": "#fce7f3",
     "declarations": [
       "backgroundColor",
     ],
@@ -2344,7 +2168,7 @@
   },
   {
     "className": "bg-pink-200",
-    "declarationValue": "pink-200",
+    "declarationValue": "#fbcfe8",
     "declarations": [
       "backgroundColor",
     ],
@@ -2355,7 +2179,7 @@
   },
   {
     "className": "bg-pink-300",
-    "declarationValue": "pink-300",
+    "declarationValue": "#f9a8d4",
     "declarations": [
       "backgroundColor",
     ],
@@ -2366,7 +2190,7 @@
   },
   {
     "className": "bg-pink-400",
-    "declarationValue": "pink-400",
+    "declarationValue": "#f472b6",
     "declarations": [
       "backgroundColor",
     ],
@@ -2377,7 +2201,7 @@
   },
   {
     "className": "bg-pink-50",
-    "declarationValue": "pink-50",
+    "declarationValue": "#fdf2f8",
     "declarations": [
       "backgroundColor",
     ],
@@ -2388,7 +2212,7 @@
   },
   {
     "className": "bg-pink-500",
-    "declarationValue": "pink-500",
+    "declarationValue": "#ec4899",
     "declarations": [
       "backgroundColor",
     ],
@@ -2399,7 +2223,7 @@
   },
   {
     "className": "bg-pink-600",
-    "declarationValue": "pink-600",
+    "declarationValue": "#db2777",
     "declarations": [
       "backgroundColor",
     ],
@@ -2410,7 +2234,7 @@
   },
   {
     "className": "bg-pink-700",
-    "declarationValue": "pink-700",
+    "declarationValue": "#be185d",
     "declarations": [
       "backgroundColor",
     ],
@@ -2421,7 +2245,7 @@
   },
   {
     "className": "bg-pink-800",
-    "declarationValue": "pink-800",
+    "declarationValue": "#9d174d",
     "declarations": [
       "backgroundColor",
     ],
@@ -2432,7 +2256,7 @@
   },
   {
     "className": "bg-pink-900",
-    "declarationValue": "pink-900",
+    "declarationValue": "#831843",
     "declarations": [
       "backgroundColor",
     ],
@@ -2443,7 +2267,7 @@
   },
   {
     "className": "bg-pink-950",
-    "declarationValue": "pink-950",
+    "declarationValue": "#500724",
     "declarations": [
       "backgroundColor",
     ],
@@ -2453,19 +2277,8 @@
     ],
   },
   {
-    "className": "bg-pink-DEFAULT",
-    "declarationValue": "pink-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "pink-DEFAULT",
-      "#f472b6",
-    ],
-  },
-  {
     "className": "bg-primary",
-    "declarationValue": "primary",
+    "declarationValue": "blue",
     "declarations": [
       "backgroundColor",
     ],
@@ -2476,7 +2289,7 @@
   },
   {
     "className": "bg-purple",
-    "declarationValue": "purple",
+    "declarationValue": "#c084fc",
     "declarations": [
       "backgroundColor",
     ],
@@ -2487,7 +2300,7 @@
   },
   {
     "className": "bg-purple-100",
-    "declarationValue": "purple-100",
+    "declarationValue": "#f3e8ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -2498,7 +2311,7 @@
   },
   {
     "className": "bg-purple-200",
-    "declarationValue": "purple-200",
+    "declarationValue": "#e9d5ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -2509,7 +2322,7 @@
   },
   {
     "className": "bg-purple-300",
-    "declarationValue": "purple-300",
+    "declarationValue": "#d8b4fe",
     "declarations": [
       "backgroundColor",
     ],
@@ -2520,7 +2333,7 @@
   },
   {
     "className": "bg-purple-400",
-    "declarationValue": "purple-400",
+    "declarationValue": "#c084fc",
     "declarations": [
       "backgroundColor",
     ],
@@ -2531,7 +2344,7 @@
   },
   {
     "className": "bg-purple-50",
-    "declarationValue": "purple-50",
+    "declarationValue": "#faf5ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -2542,7 +2355,7 @@
   },
   {
     "className": "bg-purple-500",
-    "declarationValue": "purple-500",
+    "declarationValue": "#a855f7",
     "declarations": [
       "backgroundColor",
     ],
@@ -2553,7 +2366,7 @@
   },
   {
     "className": "bg-purple-600",
-    "declarationValue": "purple-600",
+    "declarationValue": "#9333ea",
     "declarations": [
       "backgroundColor",
     ],
@@ -2564,7 +2377,7 @@
   },
   {
     "className": "bg-purple-700",
-    "declarationValue": "purple-700",
+    "declarationValue": "#7e22ce",
     "declarations": [
       "backgroundColor",
     ],
@@ -2575,7 +2388,7 @@
   },
   {
     "className": "bg-purple-800",
-    "declarationValue": "purple-800",
+    "declarationValue": "#6b21a8",
     "declarations": [
       "backgroundColor",
     ],
@@ -2586,7 +2399,7 @@
   },
   {
     "className": "bg-purple-900",
-    "declarationValue": "purple-900",
+    "declarationValue": "#581c87",
     "declarations": [
       "backgroundColor",
     ],
@@ -2597,7 +2410,7 @@
   },
   {
     "className": "bg-purple-950",
-    "declarationValue": "purple-950",
+    "declarationValue": "#3b0764",
     "declarations": [
       "backgroundColor",
     ],
@@ -2607,19 +2420,8 @@
     ],
   },
   {
-    "className": "bg-purple-DEFAULT",
-    "declarationValue": "purple-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "purple-DEFAULT",
-      "#c084fc",
-    ],
-  },
-  {
     "className": "bg-red",
-    "declarationValue": "red",
+    "declarationValue": "#f87171",
     "declarations": [
       "backgroundColor",
     ],
@@ -2630,7 +2432,7 @@
   },
   {
     "className": "bg-red-100",
-    "declarationValue": "red-100",
+    "declarationValue": "#fee2e2",
     "declarations": [
       "backgroundColor",
     ],
@@ -2641,7 +2443,7 @@
   },
   {
     "className": "bg-red-200",
-    "declarationValue": "red-200",
+    "declarationValue": "#fecaca",
     "declarations": [
       "backgroundColor",
     ],
@@ -2652,7 +2454,7 @@
   },
   {
     "className": "bg-red-300",
-    "declarationValue": "red-300",
+    "declarationValue": "#fca5a5",
     "declarations": [
       "backgroundColor",
     ],
@@ -2663,7 +2465,7 @@
   },
   {
     "className": "bg-red-400",
-    "declarationValue": "red-400",
+    "declarationValue": "#f87171",
     "declarations": [
       "backgroundColor",
     ],
@@ -2674,7 +2476,7 @@
   },
   {
     "className": "bg-red-50",
-    "declarationValue": "red-50",
+    "declarationValue": "#fef2f2",
     "declarations": [
       "backgroundColor",
     ],
@@ -2685,7 +2487,7 @@
   },
   {
     "className": "bg-red-500",
-    "declarationValue": "red-500",
+    "declarationValue": "#ef4444",
     "declarations": [
       "backgroundColor",
     ],
@@ -2696,7 +2498,7 @@
   },
   {
     "className": "bg-red-600",
-    "declarationValue": "red-600",
+    "declarationValue": "#dc2626",
     "declarations": [
       "backgroundColor",
     ],
@@ -2707,7 +2509,7 @@
   },
   {
     "className": "bg-red-700",
-    "declarationValue": "red-700",
+    "declarationValue": "#b91c1c",
     "declarations": [
       "backgroundColor",
     ],
@@ -2718,7 +2520,7 @@
   },
   {
     "className": "bg-red-800",
-    "declarationValue": "red-800",
+    "declarationValue": "#991b1b",
     "declarations": [
       "backgroundColor",
     ],
@@ -2729,7 +2531,7 @@
   },
   {
     "className": "bg-red-900",
-    "declarationValue": "red-900",
+    "declarationValue": "#7f1d1d",
     "declarations": [
       "backgroundColor",
     ],
@@ -2740,7 +2542,7 @@
   },
   {
     "className": "bg-red-950",
-    "declarationValue": "red-950",
+    "declarationValue": "#450a0a",
     "declarations": [
       "backgroundColor",
     ],
@@ -2750,19 +2552,8 @@
     ],
   },
   {
-    "className": "bg-red-DEFAULT",
-    "declarationValue": "red-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "red-DEFAULT",
-      "#f87171",
-    ],
-  },
-  {
     "className": "bg-rose",
-    "declarationValue": "rose",
+    "declarationValue": "#fb7185",
     "declarations": [
       "backgroundColor",
     ],
@@ -2773,7 +2564,7 @@
   },
   {
     "className": "bg-rose-100",
-    "declarationValue": "rose-100",
+    "declarationValue": "#ffe4e6",
     "declarations": [
       "backgroundColor",
     ],
@@ -2784,7 +2575,7 @@
   },
   {
     "className": "bg-rose-200",
-    "declarationValue": "rose-200",
+    "declarationValue": "#fecdd3",
     "declarations": [
       "backgroundColor",
     ],
@@ -2795,7 +2586,7 @@
   },
   {
     "className": "bg-rose-300",
-    "declarationValue": "rose-300",
+    "declarationValue": "#fda4af",
     "declarations": [
       "backgroundColor",
     ],
@@ -2806,7 +2597,7 @@
   },
   {
     "className": "bg-rose-400",
-    "declarationValue": "rose-400",
+    "declarationValue": "#fb7185",
     "declarations": [
       "backgroundColor",
     ],
@@ -2817,7 +2608,7 @@
   },
   {
     "className": "bg-rose-50",
-    "declarationValue": "rose-50",
+    "declarationValue": "#fff1f2",
     "declarations": [
       "backgroundColor",
     ],
@@ -2828,7 +2619,7 @@
   },
   {
     "className": "bg-rose-500",
-    "declarationValue": "rose-500",
+    "declarationValue": "#f43f5e",
     "declarations": [
       "backgroundColor",
     ],
@@ -2839,7 +2630,7 @@
   },
   {
     "className": "bg-rose-600",
-    "declarationValue": "rose-600",
+    "declarationValue": "#e11d48",
     "declarations": [
       "backgroundColor",
     ],
@@ -2850,7 +2641,7 @@
   },
   {
     "className": "bg-rose-700",
-    "declarationValue": "rose-700",
+    "declarationValue": "#be123c",
     "declarations": [
       "backgroundColor",
     ],
@@ -2861,7 +2652,7 @@
   },
   {
     "className": "bg-rose-800",
-    "declarationValue": "rose-800",
+    "declarationValue": "#9f1239",
     "declarations": [
       "backgroundColor",
     ],
@@ -2872,7 +2663,7 @@
   },
   {
     "className": "bg-rose-900",
-    "declarationValue": "rose-900",
+    "declarationValue": "#881337",
     "declarations": [
       "backgroundColor",
     ],
@@ -2883,7 +2674,7 @@
   },
   {
     "className": "bg-rose-950",
-    "declarationValue": "rose-950",
+    "declarationValue": "#4c0519",
     "declarations": [
       "backgroundColor",
     ],
@@ -2893,19 +2684,8 @@
     ],
   },
   {
-    "className": "bg-rose-DEFAULT",
-    "declarationValue": "rose-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "rose-DEFAULT",
-      "#fb7185",
-    ],
-  },
-  {
     "className": "bg-sky",
-    "declarationValue": "sky",
+    "declarationValue": "#38bdf8",
     "declarations": [
       "backgroundColor",
     ],
@@ -2916,7 +2696,7 @@
   },
   {
     "className": "bg-sky-100",
-    "declarationValue": "sky-100",
+    "declarationValue": "#e0f2fe",
     "declarations": [
       "backgroundColor",
     ],
@@ -2927,7 +2707,7 @@
   },
   {
     "className": "bg-sky-200",
-    "declarationValue": "sky-200",
+    "declarationValue": "#bae6fd",
     "declarations": [
       "backgroundColor",
     ],
@@ -2938,7 +2718,7 @@
   },
   {
     "className": "bg-sky-300",
-    "declarationValue": "sky-300",
+    "declarationValue": "#7dd3fc",
     "declarations": [
       "backgroundColor",
     ],
@@ -2949,7 +2729,7 @@
   },
   {
     "className": "bg-sky-400",
-    "declarationValue": "sky-400",
+    "declarationValue": "#38bdf8",
     "declarations": [
       "backgroundColor",
     ],
@@ -2960,7 +2740,7 @@
   },
   {
     "className": "bg-sky-50",
-    "declarationValue": "sky-50",
+    "declarationValue": "#f0f9ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -2971,7 +2751,7 @@
   },
   {
     "className": "bg-sky-500",
-    "declarationValue": "sky-500",
+    "declarationValue": "#0ea5e9",
     "declarations": [
       "backgroundColor",
     ],
@@ -2982,7 +2762,7 @@
   },
   {
     "className": "bg-sky-600",
-    "declarationValue": "sky-600",
+    "declarationValue": "#0284c7",
     "declarations": [
       "backgroundColor",
     ],
@@ -2993,7 +2773,7 @@
   },
   {
     "className": "bg-sky-700",
-    "declarationValue": "sky-700",
+    "declarationValue": "#0369a1",
     "declarations": [
       "backgroundColor",
     ],
@@ -3004,7 +2784,7 @@
   },
   {
     "className": "bg-sky-800",
-    "declarationValue": "sky-800",
+    "declarationValue": "#075985",
     "declarations": [
       "backgroundColor",
     ],
@@ -3015,7 +2795,7 @@
   },
   {
     "className": "bg-sky-900",
-    "declarationValue": "sky-900",
+    "declarationValue": "#0c4a6e",
     "declarations": [
       "backgroundColor",
     ],
@@ -3026,7 +2806,7 @@
   },
   {
     "className": "bg-sky-950",
-    "declarationValue": "sky-950",
+    "declarationValue": "#082f49",
     "declarations": [
       "backgroundColor",
     ],
@@ -3036,19 +2816,8 @@
     ],
   },
   {
-    "className": "bg-sky-DEFAULT",
-    "declarationValue": "sky-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "sky-DEFAULT",
-      "#38bdf8",
-    ],
-  },
-  {
     "className": "bg-slate",
-    "declarationValue": "slate",
+    "declarationValue": "#94a3b8",
     "declarations": [
       "backgroundColor",
     ],
@@ -3059,7 +2828,7 @@
   },
   {
     "className": "bg-slate-100",
-    "declarationValue": "slate-100",
+    "declarationValue": "#f1f5f9",
     "declarations": [
       "backgroundColor",
     ],
@@ -3070,7 +2839,7 @@
   },
   {
     "className": "bg-slate-200",
-    "declarationValue": "slate-200",
+    "declarationValue": "#e2e8f0",
     "declarations": [
       "backgroundColor",
     ],
@@ -3081,7 +2850,7 @@
   },
   {
     "className": "bg-slate-300",
-    "declarationValue": "slate-300",
+    "declarationValue": "#cbd5e1",
     "declarations": [
       "backgroundColor",
     ],
@@ -3092,7 +2861,7 @@
   },
   {
     "className": "bg-slate-400",
-    "declarationValue": "slate-400",
+    "declarationValue": "#94a3b8",
     "declarations": [
       "backgroundColor",
     ],
@@ -3103,7 +2872,7 @@
   },
   {
     "className": "bg-slate-50",
-    "declarationValue": "slate-50",
+    "declarationValue": "#f8fafc",
     "declarations": [
       "backgroundColor",
     ],
@@ -3114,7 +2883,7 @@
   },
   {
     "className": "bg-slate-500",
-    "declarationValue": "slate-500",
+    "declarationValue": "#64748b",
     "declarations": [
       "backgroundColor",
     ],
@@ -3125,7 +2894,7 @@
   },
   {
     "className": "bg-slate-600",
-    "declarationValue": "slate-600",
+    "declarationValue": "#475569",
     "declarations": [
       "backgroundColor",
     ],
@@ -3136,7 +2905,7 @@
   },
   {
     "className": "bg-slate-700",
-    "declarationValue": "slate-700",
+    "declarationValue": "#334155",
     "declarations": [
       "backgroundColor",
     ],
@@ -3147,7 +2916,7 @@
   },
   {
     "className": "bg-slate-800",
-    "declarationValue": "slate-800",
+    "declarationValue": "#1e293b",
     "declarations": [
       "backgroundColor",
     ],
@@ -3158,7 +2927,7 @@
   },
   {
     "className": "bg-slate-900",
-    "declarationValue": "slate-900",
+    "declarationValue": "#0f172a",
     "declarations": [
       "backgroundColor",
     ],
@@ -3169,7 +2938,7 @@
   },
   {
     "className": "bg-slate-950",
-    "declarationValue": "slate-950",
+    "declarationValue": "#020617",
     "declarations": [
       "backgroundColor",
     ],
@@ -3179,19 +2948,8 @@
     ],
   },
   {
-    "className": "bg-slate-DEFAULT",
-    "declarationValue": "slate-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "slate-DEFAULT",
-      "#94a3b8",
-    ],
-  },
-  {
     "className": "bg-stone",
-    "declarationValue": "stone",
+    "declarationValue": "#a8a29e",
     "declarations": [
       "backgroundColor",
     ],
@@ -3202,7 +2960,7 @@
   },
   {
     "className": "bg-stone-100",
-    "declarationValue": "stone-100",
+    "declarationValue": "#f5f5f4",
     "declarations": [
       "backgroundColor",
     ],
@@ -3213,7 +2971,7 @@
   },
   {
     "className": "bg-stone-200",
-    "declarationValue": "stone-200",
+    "declarationValue": "#e7e5e4",
     "declarations": [
       "backgroundColor",
     ],
@@ -3224,7 +2982,7 @@
   },
   {
     "className": "bg-stone-300",
-    "declarationValue": "stone-300",
+    "declarationValue": "#d6d3d1",
     "declarations": [
       "backgroundColor",
     ],
@@ -3235,7 +2993,7 @@
   },
   {
     "className": "bg-stone-400",
-    "declarationValue": "stone-400",
+    "declarationValue": "#a8a29e",
     "declarations": [
       "backgroundColor",
     ],
@@ -3246,7 +3004,7 @@
   },
   {
     "className": "bg-stone-50",
-    "declarationValue": "stone-50",
+    "declarationValue": "#fafaf9",
     "declarations": [
       "backgroundColor",
     ],
@@ -3257,7 +3015,7 @@
   },
   {
     "className": "bg-stone-500",
-    "declarationValue": "stone-500",
+    "declarationValue": "#78716c",
     "declarations": [
       "backgroundColor",
     ],
@@ -3268,7 +3026,7 @@
   },
   {
     "className": "bg-stone-600",
-    "declarationValue": "stone-600",
+    "declarationValue": "#57534e",
     "declarations": [
       "backgroundColor",
     ],
@@ -3279,7 +3037,7 @@
   },
   {
     "className": "bg-stone-700",
-    "declarationValue": "stone-700",
+    "declarationValue": "#44403c",
     "declarations": [
       "backgroundColor",
     ],
@@ -3290,7 +3048,7 @@
   },
   {
     "className": "bg-stone-800",
-    "declarationValue": "stone-800",
+    "declarationValue": "#292524",
     "declarations": [
       "backgroundColor",
     ],
@@ -3301,7 +3059,7 @@
   },
   {
     "className": "bg-stone-900",
-    "declarationValue": "stone-900",
+    "declarationValue": "#1c1917",
     "declarations": [
       "backgroundColor",
     ],
@@ -3312,7 +3070,7 @@
   },
   {
     "className": "bg-stone-950",
-    "declarationValue": "stone-950",
+    "declarationValue": "#0c0a09",
     "declarations": [
       "backgroundColor",
     ],
@@ -3322,19 +3080,8 @@
     ],
   },
   {
-    "className": "bg-stone-DEFAULT",
-    "declarationValue": "stone-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "stone-DEFAULT",
-      "#a8a29e",
-    ],
-  },
-  {
     "className": "bg-teal",
-    "declarationValue": "teal",
+    "declarationValue": "#2dd4bf",
     "declarations": [
       "backgroundColor",
     ],
@@ -3345,7 +3092,7 @@
   },
   {
     "className": "bg-teal-100",
-    "declarationValue": "teal-100",
+    "declarationValue": "#ccfbf1",
     "declarations": [
       "backgroundColor",
     ],
@@ -3356,7 +3103,7 @@
   },
   {
     "className": "bg-teal-200",
-    "declarationValue": "teal-200",
+    "declarationValue": "#99f6e4",
     "declarations": [
       "backgroundColor",
     ],
@@ -3367,7 +3114,7 @@
   },
   {
     "className": "bg-teal-300",
-    "declarationValue": "teal-300",
+    "declarationValue": "#5eead4",
     "declarations": [
       "backgroundColor",
     ],
@@ -3378,7 +3125,7 @@
   },
   {
     "className": "bg-teal-400",
-    "declarationValue": "teal-400",
+    "declarationValue": "#2dd4bf",
     "declarations": [
       "backgroundColor",
     ],
@@ -3389,7 +3136,7 @@
   },
   {
     "className": "bg-teal-50",
-    "declarationValue": "teal-50",
+    "declarationValue": "#f0fdfa",
     "declarations": [
       "backgroundColor",
     ],
@@ -3400,7 +3147,7 @@
   },
   {
     "className": "bg-teal-500",
-    "declarationValue": "teal-500",
+    "declarationValue": "#14b8a6",
     "declarations": [
       "backgroundColor",
     ],
@@ -3411,7 +3158,7 @@
   },
   {
     "className": "bg-teal-600",
-    "declarationValue": "teal-600",
+    "declarationValue": "#0d9488",
     "declarations": [
       "backgroundColor",
     ],
@@ -3422,7 +3169,7 @@
   },
   {
     "className": "bg-teal-700",
-    "declarationValue": "teal-700",
+    "declarationValue": "#0f766e",
     "declarations": [
       "backgroundColor",
     ],
@@ -3433,7 +3180,7 @@
   },
   {
     "className": "bg-teal-800",
-    "declarationValue": "teal-800",
+    "declarationValue": "#115e59",
     "declarations": [
       "backgroundColor",
     ],
@@ -3444,7 +3191,7 @@
   },
   {
     "className": "bg-teal-900",
-    "declarationValue": "teal-900",
+    "declarationValue": "#134e4a",
     "declarations": [
       "backgroundColor",
     ],
@@ -3455,24 +3202,13 @@
   },
   {
     "className": "bg-teal-950",
-    "declarationValue": "teal-950",
+    "declarationValue": "#042f2e",
     "declarations": [
       "backgroundColor",
     ],
     "value": [
       "teal-950",
       "#042f2e",
-    ],
-  },
-  {
-    "className": "bg-teal-DEFAULT",
-    "declarationValue": "teal-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "teal-DEFAULT",
-      "#2dd4bf",
     ],
   },
   {
@@ -3488,7 +3224,7 @@
   },
   {
     "className": "bg-trueGray",
-    "declarationValue": "trueGray",
+    "declarationValue": "#a3a3a3",
     "declarations": [
       "backgroundColor",
     ],
@@ -3499,7 +3235,7 @@
   },
   {
     "className": "bg-trueGray-100",
-    "declarationValue": "trueGray-100",
+    "declarationValue": "#f5f5f5",
     "declarations": [
       "backgroundColor",
     ],
@@ -3510,7 +3246,7 @@
   },
   {
     "className": "bg-trueGray-200",
-    "declarationValue": "trueGray-200",
+    "declarationValue": "#e5e5e5",
     "declarations": [
       "backgroundColor",
     ],
@@ -3521,7 +3257,7 @@
   },
   {
     "className": "bg-trueGray-300",
-    "declarationValue": "trueGray-300",
+    "declarationValue": "#d4d4d4",
     "declarations": [
       "backgroundColor",
     ],
@@ -3532,7 +3268,7 @@
   },
   {
     "className": "bg-trueGray-400",
-    "declarationValue": "trueGray-400",
+    "declarationValue": "#a3a3a3",
     "declarations": [
       "backgroundColor",
     ],
@@ -3543,7 +3279,7 @@
   },
   {
     "className": "bg-trueGray-50",
-    "declarationValue": "trueGray-50",
+    "declarationValue": "#fafafa",
     "declarations": [
       "backgroundColor",
     ],
@@ -3554,7 +3290,7 @@
   },
   {
     "className": "bg-trueGray-500",
-    "declarationValue": "trueGray-500",
+    "declarationValue": "#737373",
     "declarations": [
       "backgroundColor",
     ],
@@ -3565,7 +3301,7 @@
   },
   {
     "className": "bg-trueGray-600",
-    "declarationValue": "trueGray-600",
+    "declarationValue": "#525252",
     "declarations": [
       "backgroundColor",
     ],
@@ -3576,7 +3312,7 @@
   },
   {
     "className": "bg-trueGray-700",
-    "declarationValue": "trueGray-700",
+    "declarationValue": "#404040",
     "declarations": [
       "backgroundColor",
     ],
@@ -3587,7 +3323,7 @@
   },
   {
     "className": "bg-trueGray-800",
-    "declarationValue": "trueGray-800",
+    "declarationValue": "#262626",
     "declarations": [
       "backgroundColor",
     ],
@@ -3598,7 +3334,7 @@
   },
   {
     "className": "bg-trueGray-900",
-    "declarationValue": "trueGray-900",
+    "declarationValue": "#171717",
     "declarations": [
       "backgroundColor",
     ],
@@ -3609,7 +3345,7 @@
   },
   {
     "className": "bg-trueGray-950",
-    "declarationValue": "trueGray-950",
+    "declarationValue": "#0a0a0a",
     "declarations": [
       "backgroundColor",
     ],
@@ -3619,19 +3355,8 @@
     ],
   },
   {
-    "className": "bg-trueGray-DEFAULT",
-    "declarationValue": "trueGray-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "trueGray-DEFAULT",
-      "#a3a3a3",
-    ],
-  },
-  {
     "className": "bg-violet",
-    "declarationValue": "violet",
+    "declarationValue": "#a78bfa",
     "declarations": [
       "backgroundColor",
     ],
@@ -3642,7 +3367,7 @@
   },
   {
     "className": "bg-violet-100",
-    "declarationValue": "violet-100",
+    "declarationValue": "#ede9fe",
     "declarations": [
       "backgroundColor",
     ],
@@ -3653,7 +3378,7 @@
   },
   {
     "className": "bg-violet-200",
-    "declarationValue": "violet-200",
+    "declarationValue": "#ddd6fe",
     "declarations": [
       "backgroundColor",
     ],
@@ -3664,7 +3389,7 @@
   },
   {
     "className": "bg-violet-300",
-    "declarationValue": "violet-300",
+    "declarationValue": "#c4b5fd",
     "declarations": [
       "backgroundColor",
     ],
@@ -3675,7 +3400,7 @@
   },
   {
     "className": "bg-violet-400",
-    "declarationValue": "violet-400",
+    "declarationValue": "#a78bfa",
     "declarations": [
       "backgroundColor",
     ],
@@ -3686,7 +3411,7 @@
   },
   {
     "className": "bg-violet-50",
-    "declarationValue": "violet-50",
+    "declarationValue": "#f5f3ff",
     "declarations": [
       "backgroundColor",
     ],
@@ -3697,7 +3422,7 @@
   },
   {
     "className": "bg-violet-500",
-    "declarationValue": "violet-500",
+    "declarationValue": "#8b5cf6",
     "declarations": [
       "backgroundColor",
     ],
@@ -3708,7 +3433,7 @@
   },
   {
     "className": "bg-violet-600",
-    "declarationValue": "violet-600",
+    "declarationValue": "#7c3aed",
     "declarations": [
       "backgroundColor",
     ],
@@ -3719,7 +3444,7 @@
   },
   {
     "className": "bg-violet-700",
-    "declarationValue": "violet-700",
+    "declarationValue": "#6d28d9",
     "declarations": [
       "backgroundColor",
     ],
@@ -3730,7 +3455,7 @@
   },
   {
     "className": "bg-violet-800",
-    "declarationValue": "violet-800",
+    "declarationValue": "#5b21b6",
     "declarations": [
       "backgroundColor",
     ],
@@ -3741,7 +3466,7 @@
   },
   {
     "className": "bg-violet-900",
-    "declarationValue": "violet-900",
+    "declarationValue": "#4c1d95",
     "declarations": [
       "backgroundColor",
     ],
@@ -3752,7 +3477,7 @@
   },
   {
     "className": "bg-violet-950",
-    "declarationValue": "violet-950",
+    "declarationValue": "#2e1065",
     "declarations": [
       "backgroundColor",
     ],
@@ -3762,19 +3487,8 @@
     ],
   },
   {
-    "className": "bg-violet-DEFAULT",
-    "declarationValue": "violet-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "violet-DEFAULT",
-      "#a78bfa",
-    ],
-  },
-  {
     "className": "bg-warmGray",
-    "declarationValue": "warmGray",
+    "declarationValue": "#a8a29e",
     "declarations": [
       "backgroundColor",
     ],
@@ -3785,7 +3499,7 @@
   },
   {
     "className": "bg-warmGray-100",
-    "declarationValue": "warmGray-100",
+    "declarationValue": "#f5f5f4",
     "declarations": [
       "backgroundColor",
     ],
@@ -3796,7 +3510,7 @@
   },
   {
     "className": "bg-warmGray-200",
-    "declarationValue": "warmGray-200",
+    "declarationValue": "#e7e5e4",
     "declarations": [
       "backgroundColor",
     ],
@@ -3807,7 +3521,7 @@
   },
   {
     "className": "bg-warmGray-300",
-    "declarationValue": "warmGray-300",
+    "declarationValue": "#d6d3d1",
     "declarations": [
       "backgroundColor",
     ],
@@ -3818,7 +3532,7 @@
   },
   {
     "className": "bg-warmGray-400",
-    "declarationValue": "warmGray-400",
+    "declarationValue": "#a8a29e",
     "declarations": [
       "backgroundColor",
     ],
@@ -3829,7 +3543,7 @@
   },
   {
     "className": "bg-warmGray-50",
-    "declarationValue": "warmGray-50",
+    "declarationValue": "#fafaf9",
     "declarations": [
       "backgroundColor",
     ],
@@ -3840,7 +3554,7 @@
   },
   {
     "className": "bg-warmGray-500",
-    "declarationValue": "warmGray-500",
+    "declarationValue": "#78716c",
     "declarations": [
       "backgroundColor",
     ],
@@ -3851,7 +3565,7 @@
   },
   {
     "className": "bg-warmGray-600",
-    "declarationValue": "warmGray-600",
+    "declarationValue": "#57534e",
     "declarations": [
       "backgroundColor",
     ],
@@ -3862,7 +3576,7 @@
   },
   {
     "className": "bg-warmGray-700",
-    "declarationValue": "warmGray-700",
+    "declarationValue": "#44403c",
     "declarations": [
       "backgroundColor",
     ],
@@ -3873,7 +3587,7 @@
   },
   {
     "className": "bg-warmGray-800",
-    "declarationValue": "warmGray-800",
+    "declarationValue": "#292524",
     "declarations": [
       "backgroundColor",
     ],
@@ -3884,7 +3598,7 @@
   },
   {
     "className": "bg-warmGray-900",
-    "declarationValue": "warmGray-900",
+    "declarationValue": "#1c1917",
     "declarations": [
       "backgroundColor",
     ],
@@ -3895,7 +3609,7 @@
   },
   {
     "className": "bg-warmGray-950",
-    "declarationValue": "warmGray-950",
+    "declarationValue": "#0c0a09",
     "declarations": [
       "backgroundColor",
     ],
@@ -3905,19 +3619,8 @@
     ],
   },
   {
-    "className": "bg-warmGray-DEFAULT",
-    "declarationValue": "warmGray-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "warmGray-DEFAULT",
-      "#a8a29e",
-    ],
-  },
-  {
     "className": "bg-white",
-    "declarationValue": "white",
+    "declarationValue": "#fff",
     "declarations": [
       "backgroundColor",
     ],
@@ -3928,7 +3631,7 @@
   },
   {
     "className": "bg-yellow",
-    "declarationValue": "yellow",
+    "declarationValue": "#facc15",
     "declarations": [
       "backgroundColor",
     ],
@@ -3939,7 +3642,7 @@
   },
   {
     "className": "bg-yellow-100",
-    "declarationValue": "yellow-100",
+    "declarationValue": "#fef9c3",
     "declarations": [
       "backgroundColor",
     ],
@@ -3950,7 +3653,7 @@
   },
   {
     "className": "bg-yellow-200",
-    "declarationValue": "yellow-200",
+    "declarationValue": "#fef08a",
     "declarations": [
       "backgroundColor",
     ],
@@ -3961,7 +3664,7 @@
   },
   {
     "className": "bg-yellow-300",
-    "declarationValue": "yellow-300",
+    "declarationValue": "#fde047",
     "declarations": [
       "backgroundColor",
     ],
@@ -3972,7 +3675,7 @@
   },
   {
     "className": "bg-yellow-400",
-    "declarationValue": "yellow-400",
+    "declarationValue": "#facc15",
     "declarations": [
       "backgroundColor",
     ],
@@ -3983,7 +3686,7 @@
   },
   {
     "className": "bg-yellow-50",
-    "declarationValue": "yellow-50",
+    "declarationValue": "#fefce8",
     "declarations": [
       "backgroundColor",
     ],
@@ -3994,7 +3697,7 @@
   },
   {
     "className": "bg-yellow-500",
-    "declarationValue": "yellow-500",
+    "declarationValue": "#eab308",
     "declarations": [
       "backgroundColor",
     ],
@@ -4005,7 +3708,7 @@
   },
   {
     "className": "bg-yellow-600",
-    "declarationValue": "yellow-600",
+    "declarationValue": "#ca8a04",
     "declarations": [
       "backgroundColor",
     ],
@@ -4016,7 +3719,7 @@
   },
   {
     "className": "bg-yellow-700",
-    "declarationValue": "yellow-700",
+    "declarationValue": "#a16207",
     "declarations": [
       "backgroundColor",
     ],
@@ -4027,7 +3730,7 @@
   },
   {
     "className": "bg-yellow-800",
-    "declarationValue": "yellow-800",
+    "declarationValue": "#854d0e",
     "declarations": [
       "backgroundColor",
     ],
@@ -4038,7 +3741,7 @@
   },
   {
     "className": "bg-yellow-900",
-    "declarationValue": "yellow-900",
+    "declarationValue": "#713f12",
     "declarations": [
       "backgroundColor",
     ],
@@ -4049,7 +3752,7 @@
   },
   {
     "className": "bg-yellow-950",
-    "declarationValue": "yellow-950",
+    "declarationValue": "#422006",
     "declarations": [
       "backgroundColor",
     ],
@@ -4059,19 +3762,8 @@
     ],
   },
   {
-    "className": "bg-yellow-DEFAULT",
-    "declarationValue": "yellow-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "yellow-DEFAULT",
-      "#facc15",
-    ],
-  },
-  {
     "className": "bg-zinc",
-    "declarationValue": "zinc",
+    "declarationValue": "#a1a1aa",
     "declarations": [
       "backgroundColor",
     ],
@@ -4082,7 +3774,7 @@
   },
   {
     "className": "bg-zinc-100",
-    "declarationValue": "zinc-100",
+    "declarationValue": "#f4f4f5",
     "declarations": [
       "backgroundColor",
     ],
@@ -4093,7 +3785,7 @@
   },
   {
     "className": "bg-zinc-200",
-    "declarationValue": "zinc-200",
+    "declarationValue": "#e4e4e7",
     "declarations": [
       "backgroundColor",
     ],
@@ -4104,7 +3796,7 @@
   },
   {
     "className": "bg-zinc-300",
-    "declarationValue": "zinc-300",
+    "declarationValue": "#d4d4d8",
     "declarations": [
       "backgroundColor",
     ],
@@ -4115,7 +3807,7 @@
   },
   {
     "className": "bg-zinc-400",
-    "declarationValue": "zinc-400",
+    "declarationValue": "#a1a1aa",
     "declarations": [
       "backgroundColor",
     ],
@@ -4126,7 +3818,7 @@
   },
   {
     "className": "bg-zinc-50",
-    "declarationValue": "zinc-50",
+    "declarationValue": "#fafafa",
     "declarations": [
       "backgroundColor",
     ],
@@ -4137,7 +3829,7 @@
   },
   {
     "className": "bg-zinc-500",
-    "declarationValue": "zinc-500",
+    "declarationValue": "#71717a",
     "declarations": [
       "backgroundColor",
     ],
@@ -4148,7 +3840,7 @@
   },
   {
     "className": "bg-zinc-600",
-    "declarationValue": "zinc-600",
+    "declarationValue": "#52525b",
     "declarations": [
       "backgroundColor",
     ],
@@ -4159,7 +3851,7 @@
   },
   {
     "className": "bg-zinc-700",
-    "declarationValue": "zinc-700",
+    "declarationValue": "#3f3f46",
     "declarations": [
       "backgroundColor",
     ],
@@ -4170,7 +3862,7 @@
   },
   {
     "className": "bg-zinc-800",
-    "declarationValue": "zinc-800",
+    "declarationValue": "#27272a",
     "declarations": [
       "backgroundColor",
     ],
@@ -4181,7 +3873,7 @@
   },
   {
     "className": "bg-zinc-900",
-    "declarationValue": "zinc-900",
+    "declarationValue": "#18181b",
     "declarations": [
       "backgroundColor",
     ],
@@ -4192,24 +3884,13 @@
   },
   {
     "className": "bg-zinc-950",
-    "declarationValue": "zinc-950",
+    "declarationValue": "#09090b",
     "declarations": [
       "backgroundColor",
     ],
     "value": [
       "zinc-950",
       "#09090b",
-    ],
-  },
-  {
-    "className": "bg-zinc-DEFAULT",
-    "declarationValue": "zinc-DEFAULT",
-    "declarations": [
-      "backgroundColor",
-    ],
-    "value": [
-      "zinc-DEFAULT",
-      "#a1a1aa",
     ],
   },
 ]

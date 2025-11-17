@@ -1,0 +1,11 @@
+import { Effect } from 'effect';
+import { TwinParserContext } from '../../src';
+
+export const runTwinParser = (className: string, startPosition: number) =>
+  Effect.gen(function* () {
+    const parser = yield* TwinParserContext;
+
+    // SubscriptionRef.set(runtime.twinConfigPathRef,)
+
+    return yield* Effect.sync(() => parser.runTwinParser(className, startPosition));
+  });

@@ -1,6 +1,6 @@
 import { hasOwnProperty } from '@native-twin/helpers';
 import * as ReactJSXRuntime from 'react/jsx-runtime';
-import { createTwinProps, mappedComponentsConfig, TwinElement } from './styled/native/createTwinCmp';
+import { createTwinProps, mappedComponentsConfig, TwinElement } from './styled';
 import type { NativeTwinProps } from './utils/constants';
 // export type { EmotionJSX as JSX } from './jsx-namespace';
 // import jsxWrapper from './jsx-wrapper';

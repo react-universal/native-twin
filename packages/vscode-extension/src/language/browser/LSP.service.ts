@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Constants } from '@native-twin/language-service';
+import { Constants } from '@native-twin/language-service/browser';
 import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -17,24 +17,11 @@ import {
   onProvideDocumentColors,
 } from '../common/language.utils';
 
-// import TwinWorker from './twin.worker.js';
-
 const make = Effect.gen(function* () {
   const extensionCtx = yield* VscodeContext;
   const workspace = vscode.workspace.workspaceFolders;
 
   const fileEvents = yield* createFileWatchers;
-
-  // const serverConfig: ServerOptions = {
-  //   run: {
-  //     module: path.resolve(__dirname, './native-twin.server'),
-  //     transport: TransportKind.ipc,
-  //   },
-  //   debug: {
-  //     module: path.resolve(__dirname, './native-twin.server'),
-  //     transport: TransportKind.ipc,
-  //   },
-  // };
 
   const configFiles = yield* getConfigFiles;
   const colorDecorationType = yield* getColorDecoration;

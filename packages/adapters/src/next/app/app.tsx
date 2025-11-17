@@ -27,6 +27,7 @@ export const NativeTwinSheet = (
     useServerInsertedHTML(() => {
       // @ts-expect-error asd
       const rnSheet = StyleSheet.getSheet();
+      console.log("SERVER_INSERT");
       return (
         <>
           <style

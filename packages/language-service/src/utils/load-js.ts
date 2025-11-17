@@ -9,6 +9,7 @@ function lazyJiti() {
     jiti ??
     (jiti = jitiFactory(__filename, {
       interopDefault: true,
+      // debug: true,
       transform: (opts) => {
         return transform(opts.source, {
           transforms: ['typescript', 'imports'],

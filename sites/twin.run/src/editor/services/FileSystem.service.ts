@@ -1,5 +1,4 @@
 import type * as vscode from 'vscode';
-import * as path from 'path';
 import {
   RegisteredFileSystemProvider,
   RegisteredMemoryFile,
@@ -9,6 +8,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as monaco from 'monaco-editor';
+import * as path from 'path';
 import { detectLanguageFromPath } from '../../utils/editor.utils';
 import { traceLayerLogs } from '../../utils/logger.utils';
 import { MonacoContext } from './MonacoContext.service';
@@ -69,11 +69,7 @@ const make = Effect.gen(function* () {
 
     return (
       monaco.editor.getModel(uri) ||
-      monaco.editor.createModel(
-        defaultValue,
-        detectLanguageFromPath(filePath) ?? 'typescript',
-        uri,
-      )
+      monaco.editor.createModel(defaultValue, detectLanguageFromPath(filePath) ?? 'typescript', uri)
     );
   };
 

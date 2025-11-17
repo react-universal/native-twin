@@ -11,6 +11,7 @@ import type * as lsp from 'vscode-languageserver';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import { LSPConfigService } from '../services/LSPConfig.service.js';
 import type { BaseTwinTextDocument } from './common/BaseTwinDocument.js';
+import type { BabelLanguageRegionData } from './common/Document.models.js';
 import { DocumentLanguageRegion } from './common/LanguageRegion.model.js';
 
 export interface DocumentsServiceShape {
@@ -128,94 +129,94 @@ const make = Effect.fn(function* (
 export const twinLSPDocumentLayer = (...args: Parameters<typeof make>) =>
   Layer.effect(TwinLSPDocumentContext, make(...args));
 
-// const traverseLanguageRegions = (
-//   code: string,
-//   config: {
-//     functions: string[];
-//     jsxAttributes: string[];
-//   },
-// ) =>
-//   Effect.try(() => {
-//     const ast = parse(code, {
-//       plugins: ['jsx', 'typescript'],
-//       sourceType: 'module',
-//       errorRecovery: true,
-//       startLine: 0,
-//       startColumn: 1,
-//       tokens: false,
-//       ranges: true,
-//     });
+export const traverseLanguageRegions = (
+  code: string,
+  config: {
+    functions: string[];
+    jsxAttributes: string[];
+  },
+) =>
+  Effect.try(() => {
+    const ast = parse(code, {
+      plugins: ['jsx', 'typescript'],
+      sourceType: 'module',
+      errorRecovery: true,
+      startLine: 0,
+      startColumn: 1,
+      tokens: false,
+      ranges: true,
+    });
 
-//     const babelRegions = Stream.async<BabelLanguageRegionData>((emit) => {
-//       traverse(ast, {
-//         Program: {
-//           exit() {
-//             emit.end();
-//           },
-//         },
-//         CallExpression: (path) => {
-//           const callee = path.get('callee');
+    const babelRegions = Stream.async<BabelLanguageRegionData>((emit) => {
+      traverse(ast, {
+        Program: {
+          exit() {
+            emit.end();
+          },
+        },
+        CallExpression: (path) => {
+          const callee = path.get('callee');
 
-//           if (callee.isIdentifier() && config.functions.includes(callee.node.name)) {
-//             emit.single({
-//               location: Option.fromNullable(path.node.loc),
-//               path,
-//             });
-//           }
-//         },
-//         TaggedTemplateExpression: (path) => {
-//           if (
-//             t.isIdentifier(path.node.tag) &&
-//             config.functions.includes(path.node.tag.name) &&
-//             path.node.quasi.quasis
-//           ) {
-//             emit.single({
-//               location: Option.fromNullable(path.node.loc),
-//               path,
-//             });
-//           }
-//         },
-//         JSXAttribute: (path) => {
-//           if (
-//             t.isJSXIdentifier(path.node.name) &&
-//             config.jsxAttributes.includes(path.node.name.name) &&
-//             path.node.value
-//           ) {
-//             if (t.isStringLiteral(path.node.value)) {
-//               emit.single({
-//                 location: Option.fromNullable(path.node.loc),
-//                 path,
-//               });
-//             }
-//             if (
-//               t.isJSXExpressionContainer(path.node.value) &&
-//               t.isTemplateLiteral(path.node.value.expression)
-//             ) {
-//               emit.single({
-//                 location: Option.fromNullable(path.node.loc),
-//                 path,
-//               });
-//             }
+          if (callee.isIdentifier() && config.functions.includes(callee.node.name)) {
+            emit.single({
+              location: Option.fromNullable(path.node.loc),
+              path,
+            });
+          }
+        },
+        TaggedTemplateExpression: (path) => {
+          if (
+            t.isIdentifier(path.node.tag) &&
+            config.functions.includes(path.node.tag.name) &&
+            path.node.quasi.quasis
+          ) {
+            emit.single({
+              location: Option.fromNullable(path.node.loc),
+              path,
+            });
+          }
+        },
+        JSXAttribute: (path) => {
+          if (
+            t.isJSXIdentifier(path.node.name) &&
+            config.jsxAttributes.includes(path.node.name.name) &&
+            path.node.value
+          ) {
+            if (t.isStringLiteral(path.node.value)) {
+              emit.single({
+                location: Option.fromNullable(path.node.loc),
+                path,
+              });
+            }
+            if (
+              t.isJSXExpressionContainer(path.node.value) &&
+              t.isTemplateLiteral(path.node.value.expression)
+            ) {
+              emit.single({
+                location: Option.fromNullable(path.node.loc),
+                path,
+              });
+            }
 
-//             if (
-//               t.isJSXExpressionContainer(path.node.value) &&
-//               t.isStringLiteral(path.node.value.expression)
-//             ) {
-//               emit.single({
-//                 location: Option.fromNullable(path.node.loc),
-//                 path,
-//               });
-//             }
-//           }
-//         },
-//       });
-//     });
+            if (
+              t.isJSXExpressionContainer(path.node.value) &&
+              t.isStringLiteral(path.node.value.expression)
+            ) {
+              emit.single({
+                location: Option.fromNullable(path.node.loc),
+                path,
+              });
+            }
+          }
+        },
+      });
+    });
 
-//     return {
-//       ast,
-//       babelRegions,
-//     };
-//   });
+    return {
+      ast,
+      babelRegions,
+    };
+  });
 
 export const extractLanguageRegions = (
   code: string,

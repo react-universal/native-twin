@@ -5,7 +5,7 @@ import {
   createTwinProps,
   mappedComponentsConfig,
   TwinElement,
-} from './styled/native/createTwinCmp';
+} from './styled';
 // import { stylizedComponents } from './styled';
 import type { JSXFunction } from './types/jsx.types';
 

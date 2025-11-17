@@ -23,9 +23,11 @@
   "author": "Cristhian Gutierrez",
   "publisher": "native-twin",
   "main": "./build/cjs/extension.js",
+  "browser": "./build/web/extension.js",
   "module": "./build/esm/extension.js",
   "scripts": {
     "build": "npx twin pack-dev",
+    "build:web": "node ./esbuild.web.cjs",
     "build:tsc": "npx tsc -b",
     "build:tsc:watch": "npx tsc -p tsconfig.cjs.json --watch",
     "build:watch": "tsc -p tsconfig.cjs.json --watch",

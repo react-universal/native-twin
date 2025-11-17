@@ -1,10 +1,14 @@
 import * as vscode from 'vscode';
-import * as t from '@babel/types';
+import type { NodePath } from '@babel/core';
 import { transformFromAstAsync } from '@babel/core';
+import * as t from '@babel/types';
+import { cx } from '@native-twin/core';
 import { sheetEntriesToCss } from '@native-twin/css';
+import { asArray } from '@native-twin/helpers';
 import {
   Constants,
   NativeTwinManagerService,
+  TwinLSPDocumentContext,
   TwinMonacoTextDocument,
   traverseLanguageRegions,
 } from '@native-twin/language-service/browser';
@@ -14,14 +18,12 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
-import type { NodePath } from '@babel/core';
-import { cx } from '@native-twin/core';
-import { asArray } from '@native-twin/helpers';
 import { getMonacoWrapperConfig } from '../../utils/wrapper.utils';
 
 const make = Effect.gen(function* () {
   const twin = yield* NativeTwinManagerService;
   const wrapper = new MonacoEditorLanguageClientWrapper();
+  const documents = yield* TwinLSPDocumentContext;
   const { workspace, config } = yield* getMonacoWrapperConfig;
   wrapper.getMonacoEditorApp();
 
@@ -36,21 +38,20 @@ const make = Effect.gen(function* () {
     getMonacoApp: () => Effect.fromNullable(wrapper.getMonacoEditorApp()),
   };
 
-  async function getDocumentPreview(document: vscode.TextDocument) {
-    const twinDocument = new TwinMonacoTextDocument(
-      document,
-      Constants.DEFAULT_PLUGIN_CONFIG,
-    );
-    const regions = twinDocument.getLanguageRegions();
-    const entries = RA.flatMap(regions, (x) => twin.tw(`${x.text}`));
-    const code = await Effect.runPromise(transformDocument(document.getText()));
+  function getDocumentPreview(document: vscode.TextDocument) {
+    return Effect.gen(function* () {
+      const twinDocument = new TwinMonacoTextDocument(document, Constants.DEFAULT_PLUGIN_CONFIG);
+      const regions = yield* documents.getLanguageRegions(twinDocument);
+      const entries = RA.flatMap(regions, (x) => twin.tw(`${x.text}`));
+      const code = yield* transformDocument(document.getText());
 
-    return {
-      code,
-      regions,
-      extracted: entries,
-      css: sheetEntriesToCss(twin.tw.target),
-    };
+      return {
+        code,
+        regions,
+        extracted: entries,
+        css: sheetEntriesToCss(twin.tw.target),
+      };
+    });
   }
 });
 
@@ -100,12 +101,10 @@ const transformDocument = (code: string): Effect.Effect<string> =>
   }).pipe(
     Effect.tapError((error) => Effect.log('ERROR: ', error)),
     Effect.catchAll(() => Effect.succeed(code)),
-    Effect.withLogSpan('transformCodeForPreview')
+    Effect.withLogSpan('transformCodeForPreview'),
   );
 
-const transformVariantObjects = (
-  properties: NodePath<t.ObjectExpression['properties']>[],
-) => {
+const transformVariantObjects = (properties: NodePath<t.ObjectExpression['properties']>[]) => {
   for (const prop of properties.filter((x) => x.isObjectProperty())) {
     const value = prop.get('value');
     if (Array.isArray(value)) continue;

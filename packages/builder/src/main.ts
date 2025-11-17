@@ -21,7 +21,6 @@ run(process.argv).pipe(
   Effect.scoped,
   NodeRuntime.runMain({
     teardown: (_exit, onExit) => {
-      // console.log('EXIT: ', exit);
       onExit(0);
       process.exit(0);
     },

@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "📦 @native-twin/cli",
+      "path": "../packages/builder"
+    },
+    {
       "name": "📦 native-twin-vscode",
       "path": "../packages/vscode-extension"
     },
@@ -71,10 +75,6 @@
     {
       "name": "📦 @native-twin/vite-plugin",
       "path": "../packages/vite-plugin"
-    },
-    {
-      "name": "📦 @native-twin/cli",
-      "path": "../packages/builder"
     },
     {
       "name": "📦 @native-twin/data-types",

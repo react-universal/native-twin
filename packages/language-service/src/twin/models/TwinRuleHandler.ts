@@ -1,7 +1,7 @@
 import type { RuleMeta } from '@native-twin/core';
 import { type CompleteStyle, cornerMap, directionMap } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import * as Array from 'effect/Array';
+import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
 import type {
   AnyInternalTwinRule,
@@ -75,18 +75,19 @@ export class TwinRuleComposer {
     const composition = this.compositions[compositionIndex];
     if (!composition) throw new Error('Must provide a valid composition index');
     return pipe(
-      Array.Do,
-      Array.bind('value', () => Object.entries(themeConfig)),
-      Array.let('className', ({ value: [key] }) =>
+      RA.Do,
+      RA.bind('value', () => Object.entries(themeConfig)),
+      RA.let('className', ({ value: [key] }) =>
         `${composition.composed}${key}`.replace('--', '-'),
       ),
-      Array.let('declarations', () =>
+      RA.let('declarations', () =>
         composition.declarationSuffixes.map(
           (x) => `${String(this.styleProperty ?? '')}${x}${this.suffix ?? ''}`,
         ),
       ),
-      Array.let('declarationValue', ({ value: [_, value] }) => value as string),
-      Array.flatMap((data): TwinRuleRegistry[] => {
+      RA.let('declarationValue', ({ value: [_, value] }) => value as string),
+      RA.flatMap((data): TwinRuleRegistry[] => {
+        if (data.className.endsWith('DEFAULT')) return [];
         if (!this.meta.canBeNegative) {
           return [data];
         }

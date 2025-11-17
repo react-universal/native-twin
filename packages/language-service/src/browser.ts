@@ -10,6 +10,7 @@ export {
   type DocumentsServiceShape,
   extractLanguageRegions,
   TwinLSPDocumentContext,
+  traverseLanguageRegions,
   twinLSPDocumentLayer,
 } from './documents/LSPDocuments.service.js';
 export type { TwinRuleCompletion } from './models/twin/native-twin.types.js';

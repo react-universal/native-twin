@@ -1,43 +1,41 @@
 import * as vscode from 'vscode';
-import type { InternalTwinConfig } from '@native-twin/language-service';
-import { SubscriptionRef } from 'effect';
+import { TwinParserContext } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
+import { VscodeContext } from '../extension/extension.service';
 import { extensionConfigValue, thenable } from '../extension/extension.utils';
-import { requireJS } from '../utils/load-js';
 
 export const LanguageServiceLive_ = Effect.gen(function* () {
-  const twinConfig = yield* createTwinHandler();
+  const parser = yield* TwinParserContext;
+  yield* VscodeContext;
+  const twinConfigStream = yield* createTwinHandler((uri) => parser.loadTwinConfig(uri.path));
+  yield* isMultiRootWorkspaces;
 
-  yield* twinConfig.changes.pipe(
-    Stream.tap((_) => Effect.log(_)),
-    // Stream.forever,
-    Stream.runDrain,
-    Effect.forkDaemon,
-  );
+  yield* twinConfigStream.pipe(Stream.runDrain, Effect.forkDaemon);
 }).pipe(
   Effect.withLogSpan('LanguageServiceClient'),
   Effect.onError((error) => Effect.logError('ERROR: ', Cause.prettyErrors(error))),
   Layer.scopedDiscard,
 );
 
-// const acquireTwinFileWatcher = Effect.acquireRelease(
-//   Effect.sync(() => vscode.workspace.createFileSystemWatcher('**/tailwind.config.*', false, false)),
-//   (watcher) => Effect.sync(() => watcher.dispose()),
-// );
+export const isMultiRootWorkspaces = Effect.gen(function* () {
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  yield* Effect.void;
 
-export const createTwinHandler = Effect.fn(function* () {
-  const twinConfig = yield* SubscriptionRef.make<Option.Option<InternalTwinConfig>>(Option.none());
+  yield* Effect.log('WORKSPACE_FOLDERS: ', workspaceFolders);
+});
 
+const createTwinHandler = Effect.fn(function* (
+  onUpdate: (configPath: vscode.Uri) => Effect.Effect<void>,
+) {
   const userConfigPath = yield* extensionConfigValue(
     'configPath',
     '**/{tailwind,twin,nativeTwin,native-twin}.config.{ts,js,mjs,cjs}',
   );
 
-  yield* userConfigPath.changes.pipe(
+  return userConfigPath.changes.pipe(
     // Stream.filterMap(({ value }) => Option.liftPredicate(value, (x) => x !== null)),
     Stream.map((x) => x.value),
     Stream.mapEffect((value) =>
@@ -52,13 +50,6 @@ export const createTwinHandler = Effect.fn(function* () {
       return Effect.succeed(true);
     }),
     Stream.map((uris) => uris[0]),
-    Stream.map((uri) => Option.getOrElse(requireJS(uri.path), () => null)),
-    Stream.filterMap((value) => Option.liftPredicate(value, (x) => x !== null)),
-    Stream.tap((x) => SubscriptionRef.set(twinConfig, Option.some(x))),
-    // Stream.forever,
-    Stream.runDrain,
-    Effect.forkDaemon,
+    Stream.tap(onUpdate),
   );
-
-  return twinConfig;
 });

@@ -1,16 +1,17 @@
+/** biome-ignore-all lint/suspicious/noTemplateCurlyInString: must match the format */
 import * as vscode from 'vscode';
-import { LogLevel } from 'vscode/services';
 import getConfigurationServiceOverride from '@codingame/monaco-vscode-configuration-service-override';
 import getSecretStorageServiceOverride from '@codingame/monaco-vscode-secret-storage-service-override';
 import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
-import type { LanguageClientConfig, WrapperConfig } from 'monaco-editor-wrapper';
-import * as Effect from 'effect/Effect';
-import type { VscodeApiConfig } from 'monaco-languageclient/vscode/services';
 import { Constants } from '@native-twin/language-service/browser';
-import twinWorkerUrl from '../editor/workers/twin.worker?worker&url';
+import * as Effect from 'effect/Effect';
+import type { LanguageClientConfig, WrapperConfig } from 'monaco-editor-wrapper';
+import type { VscodeApiConfig } from 'monaco-languageclient/vscode/services';
+import { LogLevel } from 'vscode/services';
 import { WorkspaceConfig } from '../editor/models/EditorFixture.model';
-import reactJSXRaw from '../fixtures/react/Basic.react?raw';
+import twinWorkerUrl from '../editor/workers/twin.worker?worker&url';
 import editorUserConfigJSON from '../fixtures/editor-config/configuration.json?raw';
+import reactJSXRaw from '../fixtures/react/Basic.react?raw';
 import twinConfigRaw from '../fixtures/tailwind-configs/tailwind-preset.config?raw';
 import {
   getColorDecoration,
@@ -56,12 +57,7 @@ export const getMonacoWrapperConfig: Effect.Effect<{
       },
       middleware: {
         provideDocumentColors: async (document, token, next) =>
-          onProvideDocumentColors(
-            document,
-            token,
-            next,
-            Effect.runSync(colorDecorations(0)),
-          ),
+          onProvideDocumentColors(document, token, next, Effect.runSync(colorDecorations(0))),
       },
       errorHandler: {
         error: onLanguageClientError,

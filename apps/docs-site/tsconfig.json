@@ -27,7 +27,9 @@
   "include": [
     "next-env.d.ts",
     "native-twin.d.ts",
+    "tailwind.config.ts",
     "**/*.ts",
+    "app/**/*",
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],

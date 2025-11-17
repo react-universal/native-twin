@@ -2,8 +2,6 @@ import * as vscode from 'vscode';
 import type { LanguageClientOptions } from 'vscode-languageclient';
 import { configurationSection, DOCUMENT_SELECTORS } from '../src/utils/constants.utils';
 
-export const createLanguageClient = () => {};
-
 export const getDefaultLanguageClientOptions = (data: {
   tsConfigFiles: vscode.Uri[];
   twinConfigFile: vscode.Uri | undefined;

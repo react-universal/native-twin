@@ -1,7 +1,7 @@
-//@ts-ignore
+//@ts-expect-error
 export function wrapNativeSuper(Class) {
   var _cache = typeof Map === 'function' ? new Map() : undefined;
-  //@ts-ignore
+  //@ts-expect-error
   wrapNativeSuper = function wrapNativeSuper(Class) {
     if (Class === null || !_isNativeFunction(Class)) return Class;
     if (typeof Class !== 'function') {
@@ -12,7 +12,6 @@ export function wrapNativeSuper(Class) {
       _cache.set(Class, Wrapper);
     }
     function Wrapper(this: any) {
-      //@ts-ignore
       return _construct(Class, arguments, _getPrototypeOf(this).constructor);
     }
     Wrapper.prototype = Object.create(Class.prototype, {
@@ -30,7 +29,7 @@ export function wrapNativeSuper(Class) {
 
 function isNativeReflectConstruct() {
   if (typeof Reflect === 'undefined' || !Reflect.construct) return false;
-  //@ts-ignore
+  //@ts-expect-error
   if (Reflect.construct.sham) return false;
   if (typeof Proxy === 'function') return true;
   try {
@@ -41,25 +40,25 @@ function isNativeReflectConstruct() {
   }
 }
 
-//@ts-ignore
+//@ts-expect-error
 function _construct(_Parent, _args, _Class) {
   if (isNativeReflectConstruct()) {
-    //@ts-ignore
+    //@ts-expect-error
     _construct = Reflect.construct;
   } else {
-    //@ts-ignore
+    //@ts-expect-error
     _construct = function _construct(Parent, args, Class) {
       var a = [null];
       a.push.apply(a, args);
-      //@ts-ignore
+      //@ts-expect-error
       var Constructor = Function.bind.apply(Parent, a);
-      //@ts-ignore
+      //@ts-expect-error
       var instance = new Constructor();
       if (Class) _setPrototypeOf(instance, Class.prototype);
       return instance;
     };
   }
-  //@ts-ignore
+  //@ts-expect-error
   return _construct.apply(null, arguments);
 }
 
@@ -67,12 +66,12 @@ function _isNativeFunction(fn: any) {
   return Function.toString.call(fn).indexOf('[native code]') !== -1;
 }
 
-//@ts-ignore
+//@ts-expect-error
 function _setPrototypeOf(o, p) {
-  //@ts-ignore
+  //@ts-expect-error
   _setPrototypeOf =
     Object.setPrototypeOf ||
-    //@ts-ignore
+    //@ts-expect-error
     function _setPrototypeOf(o, p) {
       o.__proto__ = p;
       return o;
@@ -80,13 +79,13 @@ function _setPrototypeOf(o, p) {
   return _setPrototypeOf(o, p);
 }
 
-//@ts-ignore
+//@ts-expect-error
 function _getPrototypeOf(o): any {
-  //@ts-ignore
+  //@ts-expect-error
   _getPrototypeOf = Object.setPrototypeOf
     ? Object.getPrototypeOf
     : function _getPrototypeOf(
-        //@ts-ignore
+        //@ts-expect-error
         o,
       ) {
         return o.__proto__ || Object.getPrototypeOf(o);

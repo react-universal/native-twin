@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import * as Context from 'effect/Context';
+import * as Data from 'effect/Data';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as Stream from 'effect/Stream';
-import * as Data from 'effect/Data';
-import type { CodeResources } from 'monaco-editor-wrapper';
 import * as PubSub from 'effect/PubSub';
+import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
+import type { CodeResources } from 'monaco-editor-wrapper';
 import type { WorkspaceConfig } from '../models/EditorFixture.model';
 import { MonacoContext, MonacoContextLive } from './MonacoContext.service';
 
@@ -122,8 +122,7 @@ const make = Effect.gen(function* () {
 });
 
 export interface TwinEditorStateCtx extends Effect.Effect.Success<typeof make> {}
-export const TwinEditorStateCtx =
-  Context.GenericTag<TwinEditorStateCtx>('TwinEditorStateCtx');
+export const TwinEditorStateCtx = Context.GenericTag<TwinEditorStateCtx>('TwinEditorStateCtx');
 export const TwinEditorStateCtxLive = Layer.scoped(TwinEditorStateCtx, make).pipe(
   Layer.provide(MonacoContextLive),
 );

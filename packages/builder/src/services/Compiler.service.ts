@@ -16,7 +16,7 @@ const make = Effect.gen(function* () {
   const path_ = yield* Path.Path;
   const babelRunner = yield* BabelContext;
 
-  const rootDir = yield* Config.string('PROJECT_DIR');
+  const rootDir = yield* Config.string('PROJECT_DIR').pipe(Config.withDefault(process.cwd()));
   const buildDir = path_.join(rootDir, 'build');
   const cjsDir = path_.join(buildDir, 'cjs');
   const esmDir = path_.join(buildDir, 'esm');

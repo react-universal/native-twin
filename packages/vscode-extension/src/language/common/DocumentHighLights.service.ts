@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Constants, parseTemplate } from '@native-twin/language-service';
+import { Constants, parseTemplate } from '@native-twin/language-service/browser';
 import * as RA from 'effect/Array';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';

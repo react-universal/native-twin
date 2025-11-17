@@ -6,10 +6,9 @@ const nextConfig = {
     'react-native',
     'react-native-svg',
     'react-native-web',
-    '@expo/html-elements',
-    '@native-twin/jsx',
-    "@native-twin/core"
+    '@expo/html-elements'
   ],
+  logging: true,
   /**
    * Transformation to apply for both preview and dev server
    * @param config {import('webpack').Configuration}
@@ -25,6 +24,8 @@ const nextConfig = {
 
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
+      // "react/jsx-dev-runtime": '@native-twin/jsx/jsx-dev-runtime',
+      // "react/jsx-runtime": '@native-twin/jsx/jsx-runtime',
       'react-native$': 'react-native-web',
       'react-native-web$': 'react-native-web',
       'react-native/Libraries/Components/AccessibilityInfo/AccessibilityInfo$':

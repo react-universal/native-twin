@@ -5,7 +5,7 @@ export default defineConfig({
   root: {
     rem: 14,
   },
-  mode: 'web',
+  content: ["./app/**/*.{ts,js,tsx,jsx}"],
   presets: [presetTailwind()],
   theme: {
     extend: {

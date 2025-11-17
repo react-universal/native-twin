@@ -1,47 +1,30 @@
 import * as P from '@native-twin/arc-parser';
-import { setup } from '@native-twin/core';
 import * as TwParser from '@native-twin/css/twin-parser';
-import { flattenObjectByPath } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Cause from 'effect/Cause';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as Option from 'effect/Option';
-import * as Ref from 'effect/Ref';
-import * as Stream from 'effect/Stream';
 import * as Trie from 'effect/Trie';
-import type { InternalTwFn, InternalTwinConfig } from '../models/twin/native-twin.types';
-import { requireJS } from '../utils/load-js';
-import { createStyledContext } from '../utils/sheet.utils';
 import * as TwinParserModel from './models/TwinParser.models';
-import { TwinRuleComposer } from './models/TwinRuleHandler';
-import * as TwinUtils from './TwinParser.utils';
+import { TwinRuntimeContext } from './TwinRuntime.service';
 
 const make = Effect.gen(function* () {
-  const twinRef = yield* Ref.make<Option.Option<InternalTwFn>>(Option.none());
-  const dictionaryRef = yield* Ref.make(Trie.empty<TwinParserModel.TwinRuleRegistry>());
-
-  const getTwin = <Y>(cb: (twin: InternalTwFn) => Y): Effect.Effect<Option.Option<Y>> => {
-    return twinRef.get.pipe(Effect.map((twin) => Option.map(twin, cb)));
-  };
-  const styledContext = getTwin((twin) => createStyledContext(twin.config.root.rem));
-  const themeVariants = getTwin((twin) => TwinUtils.getThemeVariants(twin.config));
-
-  const resolveThemeSection = yield* Effect.cachedFunction(
-    (section: keyof InternalTwinConfig['theme']) =>
-      getTwin((twin) => flattenObjectByPath(twin.theme(section))),
-  );
+  const { dictionaryRef, bootTwinRuntime, ruleComposers, twinRef, styledContext, themeVariants } =
+    yield* TwinRuntimeContext;
+  yield* bootTwinRuntime();
 
   const findRulesByKey = Effect.fn(function* (key: string) {
+    const dictionary = yield* dictionaryRef.get;
     if (key.length === 0) return [] as TwinParserModel.TwinRuleRegistry[];
-    return RA.fromIterable(Trie.valuesWithPrefix(yield* dictionaryRef.get, key));
+    const composers = yield* ruleComposers;
+    console.log(composers);
+    return RA.fromIterable(Trie.valuesWithPrefix(dictionary, key));
   });
 
   return {
     data: { themeVariants, styledContext, twinRef, dictionaryRef },
     findRulesByKey,
-    loadTwinConfig,
     runTwinParser: (rawText: string, startsAt: number) => {
       const { text, position } = adjustParserInput(rawText, startsAt);
       const parsed = P.many1(
@@ -53,45 +36,6 @@ const make = Effect.gen(function* () {
       return new TwinParserModel.TwinParseResultHandler(parsed, { text, position });
     },
   };
-
-  function loadTwinConfig(twinPath: string) {
-    const twinConfig = requireJS(twinPath).pipe(Option.getOrNull);
-    if (!twinConfig) return Effect.void;
-    return Ref.set(twinRef, Option.some(setup(twinConfig))).pipe(
-      Effect.andThen(() => createRuleCompositions()),
-      Effect.andThen((trie) => Ref.set(dictionaryRef, trie)),
-    );
-  }
-
-  function createRuleCompositions() {
-    return Stream.fromEffect(twinRef.get).pipe(
-      Stream.filterMap((x) => Option.map(x, (_) => _.config.rules)),
-      Stream.flattenIterables,
-      Stream.flatMap((raw) => composeTwinRule(new TwinRuleComposer(raw))),
-      Stream.runFold(Trie.empty<TwinParserModel.TwinRuleRegistry>(), (trie, current) =>
-        Trie.insert(trie, current.className, current),
-      ),
-    );
-  }
-
-  function composeTwinRule(
-    composer: TwinRuleComposer,
-  ): Stream.Stream<TwinParserModel.TwinRuleRegistry> {
-    return Stream.fromIterable(composer.compositions).pipe(
-      Stream.mapEffect((composition) =>
-        resolveThemeSection(composer.themeSection as any).pipe(
-          Effect.andThen(Option.getOrElse(() => ({}))),
-          Effect.andThen((themeConfig) =>
-            composer.createClassNamesCollection(
-              composer.compositions.indexOf(composition),
-              themeConfig,
-            ),
-          ),
-        ),
-      ),
-      Stream.flattenIterables,
-    );
-  }
 }).pipe(
   Effect.withSpan('TwinParserContext'),
   Effect.onError((error) => Effect.log('Error: ', Cause.prettyErrors(error))),

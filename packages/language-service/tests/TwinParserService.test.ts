@@ -1,27 +1,27 @@
 import { assert, describe, expect, it } from '@effect/vitest';
-import { Effect } from 'effect';
+import { Effect, Layer } from 'effect';
+import { TwinRuntimeContextLive } from '../src';
 import { TwinParserContext } from '../src/twin/TwinParser.service';
-import { TestLayer } from './dsl';
+import { runTwinParser, TestLayer } from './dsl';
 
-describe.each([
-  { fixture: 'bg-gray-200/10', expectedClasses: 1 },
-  { fixture: 'bg-gray-200/10 text(gray medium)', expectedClasses: 2 },
-])('Twin Parser Service %s', (matchers) => {
-  it.effect('classNames parser', () =>
+// { fixture: 'bg-gray-200/10', expectedClasses: 1 },
+// { fixture: 'bg-gray-200/10 text(gray medium)', expectedClasses: 2 },
+describe('Twin Parser Service %s', () => {
+  it.scoped('classNames parser', () =>
     Effect.gen(function* () {
-      const parser = yield* TwinParserContext;
-      const result = parser.runTwinParser(matchers.fixture, 0);
+      const result = yield* runTwinParser('bg-gray-200/10', 0);
 
-      expect(result.size).eq(matchers.expectedClasses);
-    }).pipe(Effect.provide(TestLayer)),
+      expect(result.size).eq(1);
+    }).pipe(Effect.provide(TestLayer), Effect.provide(TwinRuntimeContextLive)),
   );
 
   it.effect('Predict className', () =>
     Effect.gen(function* () {
-      const offset = 2;
       const parser = yield* TwinParserContext;
-      const result = parser.runTwinParser(matchers.fixture, offset);
-      expect(result.size).eq(matchers.expectedClasses);
+      const offset = 2;
+      const result = yield* runTwinParser('bg-gray-200/10 text(gray medium)', offset);
+
+      expect(result.size).eq(2);
       const foundNode = result.findNodeAt(offset);
       if (!foundNode) throw assert.isDefined(foundNode);
       const nextRulesGuess = yield* parser.findRulesByKey(foundNode.lookupText);
@@ -29,17 +29,18 @@ describe.each([
       yield* Effect.promise(() =>
         expect(Array.from(nextRulesGuess)).toMatchFileSnapshot('__snapshots__/next_rules.snap'),
       );
-    }).pipe(Effect.provide(TestLayer)),
+    }).pipe(Effect.provide(TestLayer), Effect.provide(Layer.fresh(TwinRuntimeContextLive))),
   );
 });
 
 describe('Twin Parser Service language', () => {
   it.effect('Predict className with feature', () =>
     Effect.gen(function* () {
-      const offset = 7;
-      const fixture = 'border-';
       const parser = yield* TwinParserContext;
-      const result = parser.runTwinParser(fixture, offset);
+      const result = yield* runTwinParser('border-', 0);
+
+      const offset = 7;
+
       const foundNode = result.findNodeAt(offset);
       if (!foundNode) throw assert.isDefined(foundNode);
       const nextRulesGuess = yield* parser.findRulesByKey(foundNode.lookupText);
@@ -49,6 +50,6 @@ describe('Twin Parser Service language', () => {
           '__snapshots__/rule_dictionary.snap',
         ),
       );
-    }).pipe(Effect.provide(TestLayer)),
+    }).pipe(Effect.provide(TestLayer), Effect.provide(Layer.fresh(TwinRuntimeContextLive))),
   );
 });

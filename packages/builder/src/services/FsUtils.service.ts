@@ -12,7 +12,7 @@ import * as Glob from 'glob';
 import { createChokidarWatcher } from '../utils/effect.utils';
 
 const make = Effect.gen(function* (_) {
-  const rootDir = yield* Config.string('PROJECT_DIR');
+  const rootDir = yield* Config.string('PROJECT_DIR').pipe(Config.withDefault(process.cwd()));
   const fs = yield* _(FileSystem.FileSystem);
   const path_ = yield* _(Path.Path);
 
@@ -22,10 +22,8 @@ const make = Effect.gen(function* (_) {
       catch: (e) => new Error(`glob failed: ${e}`),
     }).pipe(Effect.withSpan('FsUtils.glob'));
 
-  const globFiles = (
-    pattern: string | ReadonlyArray<string>,
-    options: Glob.GlobOptions = {},
-  ) => glob(pattern, { ...options, nodir: true });
+  const globFiles = (pattern: string | ReadonlyArray<string>, options: Glob.GlobOptions = {}) =>
+    glob(pattern, { ...options, nodir: true });
 
   const modifyFile = (path: string, f: (s: string, path: string) => string) =>
     fs.readFileString(path).pipe(
@@ -60,15 +58,16 @@ const make = Effect.gen(function* (_) {
           useFsEvents: true,
           followSymlinks: false,
           persistent: true,
-          
           ignoreInitial: true,
         }),
       ).pipe(
+        Stream.tap((fs) => Effect.log('PATH: ', fs.path)),
         Stream.filter(
           (x) =>
-            (!x.path.endsWith('.d.ts') && path_.extname(x.path) === '.ts') ||
-            path_.extname(x.path) === '.tsx',
+            !x.path.endsWith('.d.ts') &&
+            (path_.extname(x.path) === '.ts' || path_.extname(x.path) === '.tsx'),
         ),
+        Stream.tap((fs) => Effect.log('PATH_FT: ', fs.path)),
       ),
     );
 
@@ -76,14 +75,33 @@ const make = Effect.gen(function* (_) {
 
   const getCJSPath = (path: string) => path.replace('/esm/', '/cjs/');
 
-  const getOriginalSourceForESM = (path: string) =>
-    path.replace('/build/esm/', '/src/').replace(/.js$/, '.ts');
+  const getFinalFileExtension = (path: string) => {
+    if (!path.includes('.jsx')) return path;
+    if (path.endsWith('.jsx')) {
+      return path.replace(/.jsx$/, '.js');
+    }
+    if (path.endsWith('.jsx.map')) {
+      return path.replace(/.jsx.map$/, '.js.map');
+    }
+    return path;
+  };
+
+  const getOriginalSourceForESM = (path: string) => {
+    let replaceWith = '.ts';
+    let replaceOrigin = /.js$/;
+    if (path.endsWith('.jsx')) {
+      replaceWith = '.tsx';
+      replaceOrigin = /.jsx$/;
+    }
+    return path.replace('/build/esm/', '/src/').replace(replaceOrigin, replaceWith);
+  };
 
   return {
     glob,
     globFiles,
     modifyFile,
     mkdirCached,
+    getFinalFileExtension,
     createWatcher,
     getRelativePath,
     getCJSPath,
