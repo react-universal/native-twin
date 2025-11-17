@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@effect/vitest';
 import { setup } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
-import { Effect, Stream } from 'effect';
+import { Effect, Layer } from 'effect';
 import path from 'path';
 import ts from 'ts-morph';
 import { TwinDSLSvc, TypescriptApi } from '../src/TS';
-import { TwinRuntimeContext } from '../src/twin/TwinRuntime.service';
-import { TestLayer } from './dsl';
+import { TwinRuntimeContextLive } from '../src/twin/TwinRuntime.service';
+import { runTwinParser, TestLayer } from './dsl';
 import twinConfig from './fixtures/react/tailwind.config';
 
 setup(twinConfig, createVirtualSheet());
@@ -17,11 +17,7 @@ describe('Twin Typescript API', () => {
       const tsAPI = yield* TypescriptApi;
       const compiler = tsAPI.tsProject;
       const dsl = yield* TwinDSLSvc;
-      const runtime = yield* TwinRuntimeContext;
-
-      yield* runtime.listenTwinConfigPath(
-        Stream.make(path.join(__dirname, 'fixtures', 'react', 'tailwind.config.ts')),
-      );
+      yield* runTwinParser('', 0);
       const outFile = compiler.createSourceFile(
         path.join('../src/out-file.tsx'),
         `
@@ -57,6 +53,10 @@ describe('Twin Typescript API', () => {
         Effect.map((x) => new Map(x)),
       );
       expect(parsed.size).toBeGreaterThan(0);
-    }).pipe(Effect.scoped, Effect.provide(TestLayer)),
+    }).pipe(
+      Effect.scoped,
+      Effect.provide(TestLayer),
+      Effect.provide(Layer.fresh(TwinRuntimeContextLive)),
+    ),
   );
 });

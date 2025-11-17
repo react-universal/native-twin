@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@effect/vitest';
-import { ConfigProvider, Effect, Graph, Stream } from 'effect';
+import { ConfigProvider, Effect, Graph, Layer } from 'effect';
 import path from 'path';
 import ts from 'ts-morph';
 import { inspect } from 'util';
 import { TwinGraph, TypescriptUtils } from '../src/TS';
-import { TwinRuntimeContext } from '../src/twin/TwinRuntime.service';
+import { TwinRuntimeContextLive } from '../src/twin/TwinRuntime.service';
 import { TypescriptApi } from '../src/typescript/TypescriptApi';
-import { TestLayer } from './dsl';
+import { runTwinParser, TestLayer } from './dsl';
 
 const configProvider = ConfigProvider.fromJson({
   config: path.join(__dirname, 'fixtures/react', 'tsconfig.json'),
@@ -19,11 +19,7 @@ describe('twin graph extractor', () => {
       const tsUtils = yield* TypescriptUtils;
       const graph = yield* TwinGraph;
       const compiler = tsAPI.tsProject;
-      const runtime = yield* TwinRuntimeContext;
-
-      yield* runtime.listenTwinConfigPath(
-        Stream.make(path.join(__dirname, 'fixtures', 'react', 'tailwind.config.ts')),
-      );
+      yield* runTwinParser('', 0);
 
       const outFile = compiler.createSourceFile(
         path.join('../src/out-file.tsx'),
@@ -88,6 +84,7 @@ describe('twin graph extractor', () => {
       Effect.scoped,
       Effect.provide(TestLayer),
       Effect.catchAll((error) => Effect.log(error)),
+      Effect.provide(Layer.fresh(TwinRuntimeContextLive)),
       Effect.withConfigProvider(configProvider),
     ),
   );

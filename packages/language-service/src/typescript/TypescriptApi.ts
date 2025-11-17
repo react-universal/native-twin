@@ -1,18 +1,18 @@
-import * as Config from 'effect/Config';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import path_ from 'path';
 import ts from 'ts-morph';
+import { TwinRuntimeConfig } from '../config/twin.config';
 import { TSCompilerDefaultOptions } from '../utils/constants.utils';
 
 const make = Effect.gen(function* () {
-  const configPath = yield* Config.string('tsConfigPath').pipe(
-    Config.withDefault(path_.join(process.cwd(), 'tsconfig.json')),
-  );
+  const { tsConfigPath } = yield* TwinRuntimeConfig;
+  // Config.string('tsConfigPath').pipe(
+  //   Config.withDefault(path_.join(process.cwd(), 'tsconfig.json')),
+  // );
   const tsConfig = yield* Effect.sync(() => {
-    const userConfig = ts.getCompilerOptionsFromTsConfig(configPath);
+    const userConfig = ts.getCompilerOptionsFromTsConfig(tsConfigPath);
     return { ...userConfig.options, ...TSCompilerDefaultOptions };
   }).pipe(Effect.flatMap(SubscriptionRef.make));
 
