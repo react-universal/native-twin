@@ -39,11 +39,7 @@ export { parseTemplate } from './utils/twin/native-twin.parser.js';
 // export { NativeTwinManager } from './utils/twin/twin.manager.js';
 
 /** Vscode Client */
-export {
-  getDocumentLanguageLocations,
-  LanguageCompiler,
-  type LanguageInput,
-} from './extension/index.js';
+export { getDocumentLanguageLocations } from './extension/index.js';
 /** Connection Service */
 export { LSPConnectionService } from './services/LSPConnection.service.js';
 export type { NativeTwinPluginConfiguration } from './utils/constants.utils.js';

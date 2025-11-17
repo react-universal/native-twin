@@ -5,6 +5,7 @@ import {
   NativeTwinManagerService,
   TwinLSPDocument,
   TwinParserContextLive,
+  TwinRuntimeContextLive,
   twinLSPDocumentLayer,
 } from '@native-twin/language-service';
 import * as Layer from 'effect/Layer';
@@ -21,4 +22,5 @@ export const LspMainLive = LoggerLive.pipe(
   Layer.provideMerge(LSPConnectionService.make(connectionHandler)),
   Layer.provideMerge(Layer.succeed(NativeTwinManagerService, new NativeTwinManager())),
   Layer.provideMerge(TwinParserContextLive),
+  Layer.provideMerge(TwinRuntimeContextLive),
 );

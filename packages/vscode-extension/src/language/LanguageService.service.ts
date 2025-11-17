@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { TwinParserContext } from '@native-twin/language-service';
+import { TwinRuntimeContext } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -8,9 +8,11 @@ import { VscodeContext } from '../extension/extension.service';
 import { extensionConfigValue, thenable } from '../extension/extension.utils';
 
 export const LanguageServiceLive_ = Effect.gen(function* () {
-  const parser = yield* TwinParserContext;
+  const parser = yield* TwinRuntimeContext;
   yield* VscodeContext;
-  const twinConfigStream = yield* createTwinHandler((uri) => parser.loadTwinConfig(uri.path));
+  const twinConfigStream = yield* createTwinHandler((uri) =>
+    parser.bootTwinRuntime(uri.path).pipe(Effect.catchAll(() => Effect.succeed(''))),
+  );
   yield* isMultiRootWorkspaces;
 
   yield* twinConfigStream.pipe(Stream.runDrain, Effect.forkDaemon);
