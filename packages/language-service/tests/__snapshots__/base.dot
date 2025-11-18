@@ -1,9 +1,9 @@
 digraph SourceFile {
-  "0" [label="{ name: 'Text', kind: 286, kindName: 'JsxSelfClosingElement', index: 3, isRoot: false, props: [ { classProp: 'className', styleProp: 'style', value: 'bg-rose-700 bg-blue bg-black text-sm md:text-gray' } ] }"];
-  "1" [label="{ name: 'Text', kind: 286, kindName: 'JsxSelfClosingElement', index: 1, isRoot: false, props: [ { classProp: 'className', styleProp: 'style', value: 'bg-raw2222 raw-3333' } ] }"];
-  "2" [label="{ name: 'View', kind: 285, kindName: 'JsxElement', index: 3, isRoot: false, props: [ { classProp: 'className', styleProp: 'style', value: 'bg-raw' } ] }"];
-  "3" [label="{ name: 'Text', kind: 286, kindName: 'JsxSelfClosingElement', index: 1, isRoot: false, props: [ { classProp: 'className', styleProp: 'style', value: 'bg-rose-700 bg-blue bg-black text-sm md:text-gray' } ] }"];
-  "4" [label="{ name: 'View', kind: 285, kindName: 'JsxElement', index: 1, isRoot: true, props: [ { classProp: 'className', styleProp: 'style', value: 'bg-gray' } ] }"];
+  "0" [label="{ name: 'Text', kind: 286, kindName: 'JsxSelfClosingElement', index: 3, isRoot: false, props: [ { classProp: 'className', styleProp: 'style', originalText: 'bg-rose-700 bg-blue bg-black text(sm md:gray)', twinCX: 'bg-rose-700 bg-blue bg-black text-sm md:text-gray' } ] }"];
+  "1" [label="{ name: 'Text', kind: 286, kindName: 'JsxSelfClosingElement', index: 1, isRoot: false, props: [ { classProp: 'className', styleProp: 'style', originalText: 'bg-raw2222 raw-3333', twinCX: 'bg-raw2222 raw-3333' } ] }"];
+  "2" [label="{ name: 'View', kind: 285, kindName: 'JsxElement', index: 3, isRoot: false, props: [ { classProp: 'className', styleProp: 'style', originalText: 'bg-raw', twinCX: 'bg-raw' } ] }"];
+  "3" [label="{ name: 'Text', kind: 286, kindName: 'JsxSelfClosingElement', index: 1, isRoot: false, props: [ { classProp: 'className', styleProp: 'style', originalText: 'bg-rose-700 bg-blue bg-black text(sm md:gray)', twinCX: 'bg-rose-700 bg-blue bg-black text-sm md:text-gray' } ] }"];
+  "4" [label="{ name: 'View', kind: 285, kindName: 'JsxElement', index: 1, isRoot: true, props: [ { classProp: 'className', styleProp: 'style', originalText: 'bg-gray', twinCX: 'bg-gray' } ] }"];
   "5" [label="{ name: 'Unknown', kind: 80, kindName: 'Identifier', index: 0, isRoot: true, props: [] }"];
   "2" -> "1" [label="'jsx'"];
   "2" -> "0" [label="'jsx'"];

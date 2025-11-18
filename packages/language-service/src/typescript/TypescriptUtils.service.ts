@@ -1,15 +1,18 @@
 import { cx, mappedComponents } from '@native-twin/core';
-import * as Array from 'effect/Array';
+import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
+import * as Stream from 'effect/Stream';
 import ts from 'ts-morph';
-import type { TwinDslModels } from './TwinDsl.models';
+import { TwinParserContext } from '../twin/TwinParser.service';
+import { JSXNode, type TwinDslModels } from './TwinDsl.models';
 
 const make = Effect.gen(function* () {
+  const twinParser = yield* TwinParserContext;
   const isFunction = (node: ts.Node) =>
     Predicate.compose(ts.Node.isFunctionExpression, ts.Node.isArrowFunction)(node);
 
@@ -52,30 +55,19 @@ const make = Effect.gen(function* () {
   const getJSXElementChilds = (node: ts.Node) =>
     pipe(
       node.asKind(ts.SyntaxKind.JsxElement) ?? node.asKind(ts.SyntaxKind.JsxSelfClosingElement),
-      Array.liftPredicate(Predicate.isNotNullable),
-      Array.flatMap((el) => (ts.Node.isJsxElement(el) ? el.getJsxChildren() : el.getChildren())),
-      Array.filter((el) => ts.Node.isJsxElement(el) || ts.Node.isJsxSelfClosingElement(el)),
+      RA.liftPredicate(Predicate.isNotNullable),
+      RA.flatMap((el) => (ts.Node.isJsxElement(el) ? el.getJsxChildren() : el.getChildren())),
+      RA.filter((el) => ts.Node.isJsxElement(el) || ts.Node.isJsxSelfClosingElement(el)),
     );
 
   const getTwinJSXNode = (
     node: TwinDslModels.AnyJSXElement,
-    jsxParent: TwinDslModels.JSXNode | null = null,
-  ): Effect.Effect<TwinDslModels.JSXNode> =>
+    jsxParent: JSXNode | null = null,
+  ): Effect.Effect<JSXNode> =>
     Effect.gen(function* () {
       const tagName = getJSXNodeTagName(node).getText();
-      const id = getJSXNodeTagName(node)
-        .getText()
-        .concat(jsxParent?.id ?? '');
-      const result: TwinDslModels.JSXNode = {
-        _tag: 'JSXNode',
-        id,
-        childs: [],
-        index: node.getChildIndex(),
-        node,
-        styledProps: getJSXMappedProps(node),
-        tagName,
-        parent: jsxParent,
-      };
+      const styledProps = getJSXMappedProps(node);
+      const result = new JSXNode({ node, styledProps, tagName, parent: jsxParent });
       result.childs = yield* Effect.suspend(() =>
         Effect.all(getJSXElementChilds(node).map((_) => getTwinJSXNode(_, result))),
       );
@@ -152,33 +144,46 @@ const make = Effect.gen(function* () {
     const attributes = getJSXElementAttributes(node).filter((x) => ts.Node.isJsxAttribute(x));
     return props.flatMap(([classProp, styleProp]) =>
       attributes
-        .filter((node) => node.getNameNode().getText() === classProp)
+        .filter((attrNode) => attrNode.getNameNode().getText() === classProp)
         .map(
-          (node): TwinDslModels.NodeStyledProp => ({
+          (attrNode): TwinDslModels.NodeStyledProp => ({
             _tag: 'NodeStyledProp',
             classProp,
             styleProp,
-            node,
-            value: getJSXAttributeValue(node),
+            node: attrNode,
+            ...getJSXAttributeValue(attrNode),
           }),
         ),
     );
   };
 
-  const getJSXAttributeValue = (node: ts.JsxAttribute): TwinDslModels.NodeStyledProp['value'] => {
+  const getJSXAttributeValue = (
+    node: ts.JsxAttribute,
+  ): Pick<TwinDslModels.NodeStyledProp, 'expression' | 'originalText' | 'twinCX'> => {
+    const result: Pick<TwinDslModels.NodeStyledProp, 'expression' | 'originalText' | 'twinCX'> = {
+      originalText: '',
+      twinCX: '',
+      expression: null,
+    };
     const initializer = node.getInitializer();
-    if (!initializer) return null;
+    if (!initializer) return result;
     if (ts.Node.isStringLiteral(initializer)) {
-      return { literal: cx`${initializer.getLiteralValue()}`, expression: null };
+      result.originalText = initializer.getLiteralValue();
+      result.twinCX = cx`${result.originalText}`;
+      return result;
     }
     if (ts.Node.isJsxExpression(initializer)) {
       const expression = initializer.getExpression();
-      if (!expression) return null;
+      if (!expression) return result;
       if (ts.Node.isStringLiteral(expression)) {
-        return { literal: cx`${expression.getLiteralValue()}`, expression: null };
+        result.originalText = expression.getLiteralValue();
+        result.twinCX = cx`${result.originalText}`;
+        return result;
       }
       if (ts.Node.isNoSubstitutionTemplateLiteral(expression)) {
-        return { literal: cx`${expression.getLiteralText()}`, expression: null };
+        result.originalText = expression.getLiteralValue();
+        result.twinCX = cx`${result.originalText}`;
+        return result;
       }
       if (ts.Node.isTemplateExpression(expression)) {
         const literals = [expression.getHead().getLiteralText()];
@@ -193,13 +198,38 @@ const make = Effect.gen(function* () {
           const expression = span.getExpression();
           expressions.push(expression);
         }
-        return { literal: cx`${literals.map((x) => x.trim()).join(' ')}`, expression };
+        result.originalText = literals.map((x) => x.trim()).join(' ');
+        result.twinCX = cx`${result.originalText}`;
+        result.expression = expression;
+        return result;
       }
     }
-    return null;
+    return result;
   };
 
-  return yield* Effect.succeed({
+  const parseTwinJSXNodeProp = (prop: TwinDslModels.NodeStyledProp) => {
+    const parsedNodes = twinParser.runTwinParser(prop.twinCX, 0);
+    return Stream.fromIterable(parsedNodes.nodes).pipe(
+      Stream.mapEffect((composedClass) =>
+        Effect.all({
+          composedClass: Effect.succeed(composedClass),
+          evaluated: twinParser.getRuleByClassName(composedClass.classNameText),
+        }),
+      ),
+      Stream.filterMap((result) =>
+        Option.map(result.evaluated, (evaluated) => ({
+          evaluated,
+          composedClass: result.composedClass,
+        })),
+      ),
+      Stream.runCollect,
+      Effect.map(RA.fromIterable),
+      Effect.map((parsed) => ({ parsed, prop })),
+    );
+  };
+
+  return {
+    parseTwinJSXNodeProp,
     isFunction,
     getNodeDependencies,
     getNodeDebugDetails,
@@ -216,7 +246,7 @@ const make = Effect.gen(function* () {
     getJSXMappedProps,
     isJSXElementLike,
     getJSXNodeTagName,
-  });
+  };
 });
 
 export interface TypescriptUtils extends Effect.Effect.Success<typeof make> {}

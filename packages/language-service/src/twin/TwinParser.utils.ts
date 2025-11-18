@@ -101,12 +101,31 @@ export const createComposedClasses = (
 const composedClassInfo = (
   token: TwinParserModel.AnyTwinClassToken,
   fullClass: { text: string; start: number },
-) => {
+): TwinParserModel.ComposedClassInfo => {
   const tokenText = fullClass.text.slice(token.start, token.end);
   const loc: TwinParserModel.WithLocation = { start: token.start, end: token.end };
   const documentLoc: TwinParserModel.WithLocation = {
     start: token.start + fullClass.start,
     end: token.end + fullClass.start,
   };
-  return { text: tokenText, documentLoc, loc, parentStarts: fullClass.start };
+  const variants: string[] = [];
+  let classNameText = tokenText;
+  // if (token.type === 'VARIANT') {
+  //   variants.push(...token.value.map((x) => x.n));
+  // }
+  if (token.type === 'VARIANT_CLASS') {
+    classNameText = token.value[1].value.n;
+    variants.push(...token.value[0].value.map((x) => x.n));
+  }
+  for (const variantText of variants) {
+    classNameText = classNameText.replace(`${variantText}:`, '');
+  }
+  return {
+    text: tokenText,
+    documentLoc,
+    loc,
+    parentStarts: fullClass.start,
+    variants,
+    classNameText,
+  };
 };

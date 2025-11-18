@@ -1,5 +1,79 @@
+import * as Equal from 'effect/Equal';
 import type * as Graph from 'effect/Graph';
+import * as Hash from 'effect/Hash';
 import type ts from 'ts-morph';
+
+export class JSXNode implements Equal.Equal {
+  readonly _tag = 'JSXNode';
+  private _id: string | null = null;
+  tagName: string;
+  node: TwinDslModels.AnyJSXElement;
+  styledProps: TwinDslModels.NodeStyledProp[];
+  childs: JSXNode[] = [];
+  parent: JSXNode | null;
+
+  private get partialID() {
+    return `${this.filename}_${this.pos}_${this.tagName}_${this.childs.length}_${this.index}${this.styledProps.length}`;
+  }
+  get pos() {
+    return this.node.compilerNode.pos;
+  }
+  get filename() {
+    return this.node.getSourceFile().getFilePath();
+  }
+  get id(): string {
+    if (this._id) return this._id;
+
+    const mappedStyles = this.styledProps
+      .map((x) => `${x.twinCX ?? 'NO_LITERAL'}_${x.styleProp}_${x.classProp}`)
+      .join('');
+
+    return (this._id = Hash.string(`${this.partialID}_${mappedStyles}`).toString());
+  }
+  get index() {
+    return this.node.getChildIndex();
+  }
+
+  constructor(data: {
+    tagName: string;
+    node: TwinDslModels.AnyJSXElement;
+    styledProps: TwinDslModels.NodeStyledProp[];
+    parent: JSXNode | null;
+  }) {
+    this.tagName = data.tagName;
+    this.node = data.node;
+    this.styledProps = data.styledProps;
+    this.parent = data.parent;
+  }
+
+  [Hash.symbol]() {
+    return Hash.string(this.id);
+  }
+
+  [Equal.symbol](that: unknown) {
+    return that instanceof JSXNode && that.id === this.id;
+  }
+}
+
+export class TwinTypescriptFile implements Equal.Equal {
+  private sourceFile: ts.SourceFile;
+  jsxDeclarators: TwinDslModels.NodeJSXDeclarator[];
+  id: string;
+  constructor(sourceFile: ts.SourceFile, jsxDeclarators: TwinDslModels.NodeJSXDeclarator[]) {
+    this.sourceFile = sourceFile;
+    this.id = Hash.string(
+      `${this.sourceFile.getFilePath()}_${this.sourceFile.getText()}`,
+    ).toString();
+    this.jsxDeclarators = jsxDeclarators;
+  }
+  [Hash.symbol]() {
+    return Hash.string(this.id);
+  }
+
+  [Equal.symbol](that: unknown) {
+    return that instanceof TwinTypescriptFile && that.id === this.id;
+  }
+}
 
 export namespace TwinDslModels {
   export interface TwinSourceFile {
@@ -13,18 +87,9 @@ export namespace TwinDslModels {
     node: ts.JsxAttribute;
     classProp: string;
     styleProp: string;
-    value: { literal: string; expression: ts.Expression | null } | null;
-  }
-
-  export interface JSXNode {
-    readonly _tag: 'JSXNode';
-    id: string;
-    tagName: string;
-    node: AnyJSXElement;
-    index: number;
-    styledProps: NodeStyledProp[];
-    childs: JSXNode[];
-    parent: JSXNode | null;
+    originalText: string;
+    twinCX: string;
+    expression: ts.Expression | null;
   }
 
   export interface NodeJSXDeclarator {
@@ -69,7 +134,7 @@ export namespace TwinGraphModel {
     identifier: string;
     isRoot: boolean;
     index: number;
-    mappedProps: TwinDslModels.JSXNode['styledProps'];
+    mappedProps: TwinDslModels.NodeStyledProp[];
   }
 
   export type EdgeInfo =
@@ -136,5 +201,7 @@ export namespace TwinGraphModel {
 // trie.insert('a2', '2a');
 
 // trie.search('a1');
+
+// trie.get('a');
 
 // trie.get('a');

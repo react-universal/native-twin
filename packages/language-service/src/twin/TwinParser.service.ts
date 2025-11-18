@@ -5,36 +5,44 @@ import * as Cause from 'effect/Cause';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
 import * as Trie from 'effect/Trie';
 import * as TwinParserModel from './models/TwinParser.models';
 import { TwinRuntimeContext } from './TwinRuntime.service';
 
 const make = Effect.gen(function* () {
-  const { dictionaryRef, bootTwinRuntime, ruleComposers, twinRef, styledContext, themeVariants } =
+  const { dictionaryRef, bootTwinRuntime, twinRef, styledContext, themeVariants } =
     yield* TwinRuntimeContext;
   yield* bootTwinRuntime();
 
   const findRulesByKey = Effect.fn(function* (key: string) {
     const dictionary = yield* dictionaryRef.get;
     if (key.length === 0) return [] as TwinParserModel.TwinRuleRegistry[];
-    const composers = yield* ruleComposers;
-    console.log(composers);
     return RA.fromIterable(Trie.valuesWithPrefix(dictionary, key));
   });
+
+  const getRuleByClassName = Effect.fn(function* (key: string) {
+    const dictionary = yield* dictionaryRef.get;
+    if (key.length === 0) return Option.none<TwinParserModel.TwinRuleRegistry>();
+    return Trie.get(dictionary, key);
+  });
+
+  const runTwinParser = (rawText: string, startsAt: number) => {
+    const { text, position } = adjustParserInput(rawText, startsAt);
+    const parsed = P.many1(
+      P.whitespaceSurrounded(
+        P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
+      ),
+    ).run(text);
+
+    return new TwinParserModel.TwinParseResultHandler(parsed, { text, position });
+  };
 
   return {
     data: { themeVariants, styledContext, twinRef, dictionaryRef },
     findRulesByKey,
-    runTwinParser: (rawText: string, startsAt: number) => {
-      const { text, position } = adjustParserInput(rawText, startsAt);
-      const parsed = P.many1(
-        P.whitespaceSurrounded(
-          P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
-        ),
-      ).run(text);
-
-      return new TwinParserModel.TwinParseResultHandler(parsed, { text, position });
-    },
+    getRuleByClassName,
+    runTwinParser,
   };
 }).pipe(
   Effect.withSpan('TwinParserContext'),

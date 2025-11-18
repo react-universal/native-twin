@@ -1,12 +1,14 @@
 export {
-  createTSConfigLayer,
-  TwinDSLSvc,
-  TwinDSLSvcLive,
+  TwinLanguageConfig,
+  type TwinLanguageConfigOptions,
+  TwinRuntimeConfig,
+  withRuntimeConfig,
+} from './config/twin.config';
+export {
   TwinGraph,
   TwinGraphLive,
   TypescriptApi,
   TypescriptApiLive,
-  TypescriptLayer,
   TypescriptUtils,
   TypescriptUtilsLive,
 } from './typescript';

@@ -1,16 +1,12 @@
 import { describe, expect, it } from '@effect/vitest';
-import { ConfigProvider, Effect, Graph, Layer } from 'effect';
+import { Effect, Graph } from 'effect';
 import path from 'path';
 import ts from 'ts-morph';
 import { inspect } from 'util';
 import { TwinGraph, TypescriptUtils } from '../src/TS';
-import { TwinRuntimeContextLive } from '../src/twin/TwinRuntime.service';
 import { TypescriptApi } from '../src/typescript/TypescriptApi';
 import { runTwinParser, TestLayer } from './dsl';
 
-const configProvider = ConfigProvider.fromJson({
-  config: path.join(__dirname, 'fixtures/react', 'tsconfig.json'),
-});
 
 describe('twin graph extractor', () => {
   it.effect('test extractor ', () =>
@@ -60,10 +56,11 @@ describe('twin graph extractor', () => {
             {
               ...tsUtils.getNodeDebugDetails(x.node),
               isRoot: x.isRoot,
-              props: x.mappedProps.map(({ classProp, styleProp, value }) => ({
+              props: x.mappedProps.map(({ classProp, styleProp, originalText, twinCX }) => ({
                 classProp,
                 styleProp,
-                value: value?.literal,
+                originalText,
+                twinCX,
               })),
             },
             {
@@ -84,8 +81,6 @@ describe('twin graph extractor', () => {
       Effect.scoped,
       Effect.provide(TestLayer),
       Effect.catchAll((error) => Effect.log(error)),
-      Effect.provide(Layer.fresh(TwinRuntimeContextLive)),
-      Effect.withConfigProvider(configProvider),
     ),
   );
 });

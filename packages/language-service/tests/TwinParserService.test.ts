@@ -12,14 +12,14 @@ describe('Twin Parser Service %s', () => {
       const result = yield* runTwinParser('bg-gray-200/10', 0);
 
       expect(result.size).eq(1);
-    }).pipe(Effect.provide(TestLayer), Effect.provide(TwinRuntimeContextLive)),
+    }).pipe(Effect.provide(TestLayer)),
   );
 
   it.effect('Predict className', () =>
     Effect.gen(function* () {
-      const parser = yield* TwinParserContext;
       const offset = 2;
       const result = yield* runTwinParser('bg-gray-200/10 text(gray medium)', offset);
+      const parser = yield* TwinParserContext;
 
       expect(result.size).eq(2);
       const foundNode = result.findNodeAt(offset);
@@ -29,7 +29,7 @@ describe('Twin Parser Service %s', () => {
       yield* Effect.promise(() =>
         expect(Array.from(nextRulesGuess)).toMatchFileSnapshot('__snapshots__/next_rules.snap'),
       );
-    }).pipe(Effect.provide(TestLayer), Effect.provide(Layer.fresh(TwinRuntimeContextLive))),
+    }).pipe(Effect.provide(TestLayer)),
   );
 });
 
@@ -50,6 +50,6 @@ describe('Twin Parser Service language', () => {
           '__snapshots__/rule_dictionary.snap',
         ),
       );
-    }).pipe(Effect.provide(TestLayer), Effect.provide(Layer.fresh(TwinRuntimeContextLive))),
+    }).pipe(Effect.provide(TestLayer)),
   );
 });

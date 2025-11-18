@@ -1,11 +1,10 @@
 import { describe, expect, it } from '@effect/vitest';
 import { setup } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
-import { Effect, Layer } from 'effect';
+import { Effect } from 'effect';
 import path from 'path';
-import ts from 'ts-morph';
-import { TwinDSLSvc, TypescriptApi } from '../src/TS';
-import { TwinRuntimeContextLive } from '../src/twin/TwinRuntime.service';
+import { twinTSExtract } from '../src/programs/twinExtract.program';
+import { TypescriptApi } from '../src/TS';
 import { runTwinParser, TestLayer } from './dsl';
 import twinConfig from './fixtures/react/tailwind.config';
 
@@ -16,7 +15,6 @@ describe('Twin Typescript API', () => {
     Effect.gen(function* () {
       const tsAPI = yield* TypescriptApi;
       const compiler = tsAPI.tsProject;
-      const dsl = yield* TwinDSLSvc;
       yield* runTwinParser('', 0);
       const outFile = compiler.createSourceFile(
         path.join('../src/out-file.tsx'),
@@ -27,14 +25,14 @@ describe('Twin Typescript API', () => {
         { overwrite: true },
       );
       compiler.addSourceFileAtPath(outFile.getFilePath());
-      const source = compiler.createSourceFile(
+      const { source, jsxNodes } = yield* twinTSExtract(
         path.join('../src/ads.tsx'),
         `
                   import {View, Text} from './out-file.tsx';
                   const a = () => {
                   const [state,dispatch] = useState();
                   return (
-                    <View className="bg-gray">
+                    <View className="bg-gray shadow-md">
                       <Text className={'bg-rose-700 bg-blue bg-black text(sm md:gray)'} />
                       <View className={\`bg-raw\`}>
                       <Text className={\`bg-raw2222 \${state} raw-3333\`} />
@@ -43,12 +41,12 @@ describe('Twin Typescript API', () => {
                     </View>
                   )}
             `,
-        { overwrite: true, scriptKind: ts.ScriptKind.TSX },
       );
 
-      const parsed = yield* dsl.parseSourceFile(source).pipe(
+      expect(jsxNodes.length).toBeGreaterThan(0);
+      const parsed = yield* tsAPI.parseSourceFile(source).pipe(
         Effect.map(({ jsxDeclarators }) =>
-          jsxDeclarators.flatMap((_) => Array.from(dsl.flattenDeclarators(_).entries())),
+          jsxDeclarators.flatMap((_) => Array.from(tsAPI.flattenDeclarators(_).entries())),
         ),
         Effect.map((x) => new Map(x)),
       );
@@ -56,7 +54,6 @@ describe('Twin Typescript API', () => {
     }).pipe(
       Effect.scoped,
       Effect.provide(TestLayer),
-      Effect.provide(Layer.fresh(TwinRuntimeContextLive)),
     ),
   );
 });

@@ -45,6 +45,8 @@ export type AnyTwinClassToken =
 export interface TwinComposedClassName {
   type: 'ComposedClass';
   token: AnyTwinClassToken;
+  classNameText: string;
+  variants: string[];
   text: string;
   parentStarts: number;
   loc: WithLocation;
@@ -97,6 +99,8 @@ export type TwinVariantNode = Data.TaggedEnum<{
 
 export interface ComposedClassInfo {
   text: string;
+  classNameText: string;
+  variants: string[];
   documentLoc: WithLocation;
   loc: WithLocation;
   parentStarts: number;

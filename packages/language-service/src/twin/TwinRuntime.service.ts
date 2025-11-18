@@ -1,6 +1,5 @@
 import { setup } from '@native-twin/core';
 import { flattenObjectByPath } from '@native-twin/helpers';
-import * as Config from 'effect/Config';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as HashMap from 'effect/HashMap';
@@ -11,6 +10,7 @@ import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as Trie from 'effect/Trie';
+import { TwinRuntimeConfig } from '../config/twin.config';
 import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
 import { requireJS } from '../utils/load-js';
 import { createStyledContext } from '../utils/sheet.utils';
@@ -102,10 +102,11 @@ const make = Effect.gen(function* () {
 
   function bootTwinRuntime(twinPath: string | null = null) {
     return Effect.gen(function* () {
+      const { twinConfigPath } = yield* TwinRuntimeConfig;
       let result: InternalTwinConfig | null = null;
       const configPath = yield* twinPath
         ? Effect.succeed(twinPath)
-        : Config.string('twinConfigPath').pipe(Config.withDefault(null));
+        : Effect.succeed(twinConfigPath);
       if (configPath) result = loadTwin(configPath);
 
       if (!result) {
