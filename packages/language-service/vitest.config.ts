@@ -1,10 +1,11 @@
-import path from 'path';
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    workspace: path.join(__dirname, '../../vitest.workspace.ts'),
-    disableConsoleIntercept: false,
+    name: { label: "language-client", color: "green" },
+    printConsoleTrace: true,
+    includeTaskLocation: true,
+    logHeapUsage: true,
     isolate: true,
     // pool: 'vmThreads',
     root: __dirname,

@@ -5,10 +5,6 @@
       "path": ".."
     },
     {
-      "name": "📦 @native-twin/compiler",
-      "path": "../packages/compiler"
-    },
-    {
       "name": "📦 @native-twin/language-service",
       "path": "../packages/language-service"
     },
@@ -27,6 +23,10 @@
     {
       "name": "📦 @native-twin/cli",
       "path": "../packages/builder"
+    },
+    {
+      "name": "📦 @native-twin/compiler",
+      "path": "../packages/compiler"
     },
     {
       "name": "📦 @native-twin/css",

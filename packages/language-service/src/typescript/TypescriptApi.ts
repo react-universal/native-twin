@@ -9,7 +9,7 @@ import ts from 'ts-morph';
 import { TwinRuntimeConfig } from '../config/twin.config';
 import { TSCompilerDefaultOptions } from '../utils/constants.utils';
 import type { JSXNode, TwinDslModels } from './TwinDsl.models';
-import { TypescriptUtils, TypescriptUtilsLive } from './TypescriptUtils.service';
+import { TypescriptUtils } from './TypescriptUtils.service';
 
 const make = Effect.gen(function* () {
   const { tsConfigPath } = yield* TwinRuntimeConfig;
@@ -37,6 +37,16 @@ const make = Effect.gen(function* () {
     ).pipe(Effect.andThen((config) => tsProject.compilerOptions.set(config)));
   });
 
+  const subscribeToTsConfig = Effect.fn(function* (
+    cb: (config: ts.CompilerOptions) => Effect.Effect<void>,
+  ) {
+    return yield* Stream.changes(tsConfig.changes).pipe(
+      Stream.runForEach((config) => Effect.succeed(cb).pipe(Effect.ap(Effect.succeed(config)))),
+      Stream.runDrain,
+      Effect.forkDaemon,
+    );
+  });
+
   return {
     updateTsConfig,
     createSourceFile,
@@ -45,6 +55,7 @@ const make = Effect.gen(function* () {
     tsFS,
     parseSourceFile,
     flattenDeclarators,
+    subscribeToTsConfig,
   };
 
   function parseSourceFile(sourceFile: ts.SourceFile) {

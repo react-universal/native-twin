@@ -10,6 +10,22 @@
 //   variants = 0,
 // }
 
+/**
+ * @tailwind base
+ * .classColor {
+ *  color: red;
+ * }
+ *  .classColor1 {
+ *  color: green !important;
+ * }
+ * 
+ * .classColor1:hover {
+ *  color: green;
+ * }
+ * 
+ * <span class="classColor classColor1">sfsfsdf</span>
+ */
+
 // spell-checker: disable
 
 export const Layer = {

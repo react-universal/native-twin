@@ -3,6 +3,39 @@ import type * as Graph from 'effect/Graph';
 import * as Hash from 'effect/Hash';
 import type ts from 'ts-morph';
 
+export class TwinTypescriptFile implements Equal.Equal {
+  private sourceFile: ts.SourceFile;
+  jsxDeclarators: TwinDslModels.NodeJSXDeclarator[];
+  id: string;
+
+  get filePath() {
+    return this.sourceFile.getFilePath();
+  }
+  constructor(sourceFile: ts.SourceFile, jsxDeclarators: TwinDslModels.NodeJSXDeclarator[]) {
+    this.sourceFile = sourceFile;
+    this.id = Hash.string(
+      `${this.sourceFile.getFilePath()}_${this.sourceFile.getText()}`,
+    ).toString();
+    this.jsxDeclarators = jsxDeclarators;
+  }
+
+  isTsSourceEquals(that: ts.SourceFile) {
+    return (
+      this.sourceFile === that ||
+      this.filePath === that.getFilePath() ||
+      this.sourceFile.getText() === that.getText()
+    );
+  }
+
+  [Hash.symbol]() {
+    return Hash.string(this.id);
+  }
+
+  [Equal.symbol](that: unknown) {
+    return that instanceof TwinTypescriptFile && that.id === this.id;
+  }
+}
+
 export class JSXNode implements Equal.Equal {
   readonly _tag = 'JSXNode';
   private _id: string | null = null;
@@ -25,7 +58,10 @@ export class JSXNode implements Equal.Equal {
     if (this._id) return this._id;
 
     const mappedStyles = this.styledProps
-      .map((x) => `${x.twinCX ?? 'NO_LITERAL'}_${x.styleProp}_${x.classProp}`)
+      .map(
+        (x) =>
+          `${x.twinCX ?? 'NO_LITERAL'}_${x.expression?.getText(false) ?? ''}_${x.styleProp}_${x.classProp}`,
+      )
       .join('');
 
     return (this._id = Hash.string(`${this.partialID}_${mappedStyles}`).toString());
@@ -52,26 +88,6 @@ export class JSXNode implements Equal.Equal {
 
   [Equal.symbol](that: unknown) {
     return that instanceof JSXNode && that.id === this.id;
-  }
-}
-
-export class TwinTypescriptFile implements Equal.Equal {
-  private sourceFile: ts.SourceFile;
-  jsxDeclarators: TwinDslModels.NodeJSXDeclarator[];
-  id: string;
-  constructor(sourceFile: ts.SourceFile, jsxDeclarators: TwinDslModels.NodeJSXDeclarator[]) {
-    this.sourceFile = sourceFile;
-    this.id = Hash.string(
-      `${this.sourceFile.getFilePath()}_${this.sourceFile.getText()}`,
-    ).toString();
-    this.jsxDeclarators = jsxDeclarators;
-  }
-  [Hash.symbol]() {
-    return Hash.string(this.id);
-  }
-
-  [Equal.symbol](that: unknown) {
-    return that instanceof TwinTypescriptFile && that.id === this.id;
   }
 }
 

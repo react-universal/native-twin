@@ -1,9 +1,12 @@
+import * as NodeContext from '@effect/platform-node/NodeContext';
+import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
 import {
   LSPConnectionService,
   languagePrograms,
   TwinLSPDocumentContext,
 } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { LspMainLive } from './lsp.layer.js';
 
@@ -82,6 +85,8 @@ const program = Effect.gen(function* () {
     Connection.console.debug(`Closing reason: ${exit.toJSON()}`);
     return Effect.void;
   });
-});
+}).pipe(Effect.provide(NodeContext.layer));
 
 Runtime.runFork(program);
+
+NodeRuntime.runMain(Runtime.runtimeEffect);

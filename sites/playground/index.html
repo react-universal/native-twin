@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Native Twin Playground</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="monaco-editor-root"></div>
+    <!-- <div id="first-loading-status" class="loading-player">
+        <video src="./loading-status.webm" loop controls="none" autoplay></video>
+    </div>
+    <div class="twin-editor">
+        <div class="editor">
+            <div id="monaco-editor-root"></div>
+            <iframe id="editorPreview" frameborder="0"></iframe>
+        </div>
+    </div> -->
+    <script type="module">
+        import { runApp } from './src/App';
+        runApp();
+    </script>
+</body>
+
+</html>

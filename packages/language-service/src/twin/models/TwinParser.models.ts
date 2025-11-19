@@ -140,12 +140,12 @@ export class TwinParseResultHandler {
     for (const node of this.nodes) {
       if (!Predicates.isComposedNodeAtOffset(node, offset)) continue;
 
-      if (Predicates.isComposedNodeAtOffset(node, offset)) {
+      if (Predicates.isComposedNodeAtOffset(node, offset) && node.type === 'ComposedClass') {
         return {
           node,
           fullLoc: node.documentLoc,
           group: null,
-          lookupText: node.text.slice(node.loc.start, node.loc.start + offset),
+          lookupText: node.classNameText,
         };
       }
 
@@ -155,10 +155,18 @@ export class TwinParseResultHandler {
         );
         if (!targetComposition) return null;
 
-        const lookupText = targetComposition.text.slice(
-          targetComposition.loc.start,
-          targetComposition.loc.start + offset,
-        );
+        const base = node.token.base.classNameText;
+
+        let lookupText = '';
+        if (node.token.base.token.type === 'CLASS_NAME') {
+          lookupText += base;
+          if (!base.endsWith('-')) {
+            lookupText += '-';
+          }
+        }
+        if (targetComposition.type === 'ComposedClass') {
+          lookupText += targetComposition.text;
+        }
         return {
           fullLoc: node.documentLoc,
           group: node.token.base,
