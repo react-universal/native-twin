@@ -5,7 +5,7 @@ import type {
   VariantClassToken,
   VariantToken,
 } from '@native-twin/css';
-import * as TwParser from '@native-twin/css/tailwind-parser';
+import * as TwParser from '@native-twin/css/twin-parser';
 import type {
   LocatedGroupToken,
   LocatedParser,

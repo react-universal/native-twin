@@ -3,7 +3,6 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
 import type { TemplateTokenWithText } from '../../lsp/models/template-token.model';
-import type { NativeTwinPluginConfiguration } from '../../utils/constants.utils';
 
 interface TwinTokenLocation {
   _tag: 'TwinTokenLocation';
@@ -25,11 +24,7 @@ export interface TwinBaseDocument {
 }
 
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
-
-  constructor(
-    private readonly textDocument: VSCDocument.TextDocument,
-    readonly config: NativeTwinPluginConfiguration,
-  ) {
+  constructor(private readonly textDocument: VSCDocument.TextDocument) {
     this.isPositionAtOffset.bind(this);
   }
 

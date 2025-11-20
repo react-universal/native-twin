@@ -1,6 +1,7 @@
 {
     "typescript.tsdk": "../../../node_modules/typescript/lib",
-    "nativeTwin.trace.server": "messages",
+    "nativeTwin.trace.server": "off",
+    "typescript.tsserver.log": "normal",
     "nativeTwin.enable": true,
     "outline.icons": true,
     "workbench.editor.showIcons": true,
@@ -22,7 +23,6 @@
     ],
     "editor.suggest.showColors": true,
     "markdown.trace.server": "verbose",
-    "typescript.tsserver.log": "off",
     "workbench.colorTheme": "Default Dark+",
     "nativeTwin.debug": true,
     "editor.quickSuggestions": {

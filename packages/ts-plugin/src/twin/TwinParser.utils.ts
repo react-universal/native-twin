@@ -6,6 +6,7 @@ import type {
   AnyInternalTwinRule,
   InternalNativeTwinRule,
   InternalTwinConfig,
+  StyledContext,
 } from './models/native-twin.types';
 import * as TwinParserModel from './models/TwinParser.models';
 import type { TwinRuleComposer } from './models/TwinRuleHandler';
@@ -152,3 +153,30 @@ export const getRuleResolverInfo = (
   }
   return { themeSection: rawRule[1], styleProperty: rawRule[1], meta };
 };
+
+export function createStyledContext(rem: number): StyledContext {
+  return {
+    colorScheme: 'dark',
+    deviceAspectRatio: 1 / 3,
+    deviceHeight: 1000,
+    deviceWidth: 720,
+    orientation: 'portrait',
+    resolution: 720,
+    fontScale: 1,
+    platform: 'web',
+    units: {
+      rem,
+      em: rem,
+      cm: 37.8,
+      mm: 3.78,
+      in: 96,
+      pt: 1.33,
+      pc: 16,
+      px: 1,
+      vmin: 720,
+      vmax: 1000,
+      vw: 1000,
+      vh: 720,
+    },
+  };
+}

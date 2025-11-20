@@ -4,6 +4,8 @@ import {
   NativeTwinManagerService,
   TwinParserContextLive,
   TwinRuntimeContextLive,
+  TypescriptApiLive,
+  TypescriptUtilsLive,
 } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
@@ -19,6 +21,9 @@ import { ClientCustomLogger } from './utils/logger.service';
 
 const MainLive = Layer.mergeAll(LanguageClientLive, TwinTreeDataFilesProvider).pipe(
   Layer.provide(TwinParserContextLive),
+  Layer.provide(TypescriptUtilsLive),
+  Layer.provide(TypescriptUtilsLive),
+  Layer.provide(TypescriptApiLive),
   Layer.provide(TwinRuntimeContextLive),
   Layer.provide(TwinVscodeHightLightsProviderLive),
   Layer.provide(Layer.succeed(NativeTwinManagerService, new NativeTwinManager())),
@@ -28,6 +33,7 @@ const MainLive = Layer.mergeAll(LanguageClientLive, TwinTreeDataFilesProvider).p
 export function activate(context: vscode.ExtensionContext) {
   launchExtension(MainLive).pipe(
     Effect.provideService(VscodeContext, context),
+    Effect.scoped,
     Effect.onError((cause) => Effect.log('ERROR ', Cause.prettyErrors(cause))),
     Effect.withSpan('Launcher', { attributes: { executor: 'vscode' } }),
     Logger.withMinimumLogLevel(LogLevel.All),

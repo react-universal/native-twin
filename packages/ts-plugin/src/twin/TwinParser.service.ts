@@ -8,9 +8,9 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import * as Trie from 'effect/Trie';
-import type ts from 'ts-morph';
-import { TypescriptUtils } from '../typescript';
-import type { JSXNode, TwinDslModels } from '../typescript/TwinDsl.models';
+import type ts from 'typescript';
+import type { JSXNode, TwinDslModels } from '../plugin/TwinDsl.models';
+import { TypescriptUtils } from '../plugin/TypescriptUtils.service';
 import * as TwinParserModel from './models/TwinParser.models';
 import { TwinTypescriptFile } from './models/TwinSourceFile';
 import { TwinRuntimeContext } from './TwinRuntime.service';
@@ -60,7 +60,7 @@ const make = Effect.gen(function* () {
   };
 
   function parseTwinJSXNodeProp(prop: TwinDslModels.NodeStyledProp) {
-    const parsedNodes = runTwinParser(prop.twinCX, prop.valueTextNode?.getStart(true) ?? 0);
+    const parsedNodes = runTwinParser(prop.twinCX, prop.valueTextNode?.getStart() ?? 0);
     return Stream.fromIterable(parsedNodes.nodes).pipe(
       Stream.mapEffect((composedClass) =>
         Effect.all({
@@ -81,7 +81,7 @@ const make = Effect.gen(function* () {
   }
 
   function parseSourceFile(sourceFile: ts.SourceFile) {
-    return Stream.fromIterable(sourceFile.getStatements()).pipe(
+    return Stream.fromIterable(sourceFile.statements).pipe(
       Stream.filterMap((_) => Option.fromNullable(tsUtils.getJSXElementStatement(_))),
       Stream.mapEffect(({ jsxElement, declarator }) =>
         Effect.zip(Effect.succeed(declarator), tsUtils.getTwinJSXNode(jsxElement)),
@@ -104,7 +104,7 @@ const makeNodeJSXDeclarator = (
 ): TwinDslModels.NodeJSXDeclarator => ({
   _tag: 'NodeJSXDeclarator',
   binding: declarator,
-  filename: jsxElement.node.getSourceFile().getFilePath(),
+  filename: jsxElement.node.getSourceFile().fileName,
   identifier: declarator.getText(),
   jsxElement,
   node: declarator,

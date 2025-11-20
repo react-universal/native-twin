@@ -4,7 +4,7 @@ import * as React from 'react';
 export const Composssssnent = () => {
   return (
     <div>
-      <div className={'bg-rose-700 bg-blue bg-black text(sm md:gray)'} />
+      <div className={''} />
       {/* <div className={`bg-blue`} /> */}
     </div>
   );

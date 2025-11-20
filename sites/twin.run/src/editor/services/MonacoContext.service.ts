@@ -65,8 +65,8 @@ const transformDocument = (code: string): Effect.Effect<string> =>
       Stream.map((x) => {
         if (x.path.isCallExpression()) {
           for (const arg of x.path.get('arguments')) {
-            if (arg.isObjectProperty(arg)) {
-              transformVariantObjects(arg);
+            if (arg.isObjectExpression(arg)) {
+              transformVariantObjects(arg.get('properties'));
             }
           }
         }
@@ -92,6 +92,7 @@ const transformDocument = (code: string): Effect.Effect<string> =>
             }
           }
         }
+        return null;
       }),
       Stream.runDrain,
     );
@@ -104,7 +105,9 @@ const transformDocument = (code: string): Effect.Effect<string> =>
     Effect.withLogSpan('transformCodeForPreview'),
   );
 
-const transformVariantObjects = (properties: NodePath<t.ObjectExpression['properties']>[]) => {
+const transformVariantObjects = (
+  properties: NodePath<t.ObjectMethod | t.ObjectProperty | t.SpreadElement>[],
+) => {
   for (const prop of properties.filter((x) => x.isObjectProperty())) {
     const value = prop.get('value');
     if (Array.isArray(value)) continue;

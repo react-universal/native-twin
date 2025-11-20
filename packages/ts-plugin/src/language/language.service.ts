@@ -84,6 +84,7 @@ export const LanguageProviderServiceLive = Layer.effect(
 
       getQuickInfoAtPosition(filename, position) {
         return Effect.gen(function* ($) {
+          
           const resource = yield* $(
             acquireTemplateNode(filename, position, templateService),
           );

@@ -21,6 +21,7 @@ export { languagePrograms } from './programs/index.js';
 /** Twin Services */
 export { NativeTwinManagerService } from './services/NativeTwinManager.service.js';
 export type { TwinRuleCompletion } from './twin/models/native-twin.types.js';
+export { TwinRuntimeContext, TwinRuntimeContextLive } from './twin/TwinRuntime.service.js';
 export type { NativeTwinPluginConfiguration } from './utils/constants.utils.js';
 export { getCompletionsForTokens } from './utils/language/completion.pipes.js';
 /** Language Service */

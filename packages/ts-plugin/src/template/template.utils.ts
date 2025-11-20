@@ -1,6 +1,6 @@
 import * as Effect from 'effect/Effect';
 import type * as Option from 'effect/Option';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import type { TemplateSettings } from 'typescript-template-language-service-decorator';
 import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
 import type ScriptSourceHelper from 'typescript-template-language-service-decorator/lib/script-source-helper';

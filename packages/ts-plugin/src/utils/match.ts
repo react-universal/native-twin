@@ -1,21 +1,9 @@
+import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import type ts from 'typescript/lib/tsserverlibrary';
-import type { NativeTwinPluginConfiguration } from '../plugin.types';
 
 export type Predicate =
-  | ((
-      this: undefined,
-      value: any,
-      key: undefined,
-      object: any,
-      matcher: undefined,
-    ) => unknown)
-  | (<T extends Predicates>(
-      this: T,
-      value: any,
-      key: string,
-      object: any,
-      matcher: T,
-    ) => unknown);
+  | ((this: undefined, value: any, key: undefined, object: any, matcher: undefined) => unknown)
+  | (<T extends Predicates>(this: T, value: any, key: string, object: any, matcher: T) => unknown);
 
 export interface RegExpLike {
   /**
@@ -30,8 +18,7 @@ export type Matcher = Predicate | Predicates | RegExp | unknown;
 /**
  * Defines the predicate properties to be invoked with the corresponding property values of a given object.
  */
-export interface Predicates
-  extends Record<string | number | symbol, Matcher | Matcher[]> {
+export interface Predicates extends Record<string | number | symbol, Matcher | Matcher[]> {
   // Support cyclic references
 }
 
@@ -106,7 +93,7 @@ export const getSourceMatchers = (
     // TODO styled.button, styled()
     tag: {
       kind: SyntaxKind.Identifier,
-      text: configManager.tags,
+      text: configManager.functions,
     },
   },
   // tw(...)
@@ -116,7 +103,7 @@ export const getSourceMatchers = (
     // TODO styled.button, styled()
     expression: {
       kind: SyntaxKind.Identifier,
-      text: configManager.tags,
+      text: configManager.functions,
     },
   },
   // JsxAttribute -> className=""
@@ -124,7 +111,7 @@ export const getSourceMatchers = (
     kind: SyntaxKind.JsxAttribute,
     name: {
       kind: SyntaxKind.Identifier,
-      text: configManager.attributes,
+      text: configManager.jsxAttributes,
     },
   },
   // { '@apply': `...` }
@@ -156,7 +143,7 @@ export const getSourceMatchers = (
         kind: SyntaxKind.CallExpression,
         expression: {
           kind: SyntaxKind.Identifier,
-          text: configManager.styles,
+          text: configManager.functions,
         },
       },
     },
@@ -188,7 +175,7 @@ export const getSourceMatchers = (
               kind: SyntaxKind.CallExpression,
               expression: {
                 kind: SyntaxKind.Identifier,
-                text: configManager.styles,
+                text: configManager.functions,
               },
             },
           },
@@ -221,7 +208,7 @@ export const getSourceMatchers = (
                 kind: SyntaxKind.CallExpression,
                 expression: {
                   kind: SyntaxKind.Identifier,
-                  text: configManager.styles,
+                  text: configManager.functions,
                 },
               },
             },

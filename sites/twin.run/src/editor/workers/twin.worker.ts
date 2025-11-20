@@ -2,11 +2,12 @@
 import {
   LSPConfigService,
   LSPConnectionService,
-  LSPDocumentsService,
   languagePrograms,
   MonacoNativeTwinManager,
   NativeTwinManagerService,
   TwinMonacoTextDocument,
+  TwinRuntimeContextLive,
+  twinLSPDocumentLayer,
 } from '@native-twin/language-service/browser';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -24,10 +25,11 @@ const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScop
 const connectionHandler = createConnection(messageReader, messageWriter);
 export const documentsHandler = new TextDocuments(TextDocument);
 
-export const LspMainLive = LSPDocumentsService.make(documentsHandler, TwinMonacoTextDocument).pipe(
+export const LspMainLive = twinLSPDocumentLayer(documentsHandler, TwinMonacoTextDocument).pipe(
   Layer.provideMerge(LSPConfigService.Live),
   Layer.provideMerge(Layer.succeed(NativeTwinManagerService, new MonacoNativeTwinManager())),
   Layer.provideMerge(LSPConnectionService.make(connectionHandler)),
+  Layer.provide(TwinRuntimeContextLive),
 );
 
 const program = Effect.gen(function* () {

@@ -1,12 +1,13 @@
 import * as NodeContext from '@effect/platform-node/NodeContext';
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
 import {
+  getClientCapabilities,
+  LSPConfigService,
   LSPConnectionService,
   languagePrograms,
   TwinLSPDocumentContext,
 } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
 import { LspMainLive } from './lsp.layer.js';
 
@@ -15,6 +16,20 @@ const Runtime = ManagedRuntime.make(LspMainLive);
 const program = Effect.gen(function* () {
   const Connection = yield* LSPConnectionService;
   const documentService = yield* TwinLSPDocumentContext;
+  const config = yield* LSPConfigService;
+
+  Connection.onInitialize(async (params) => {
+    const capabilities = getClientCapabilities(params.capabilities);
+
+    const configOptions = params.initializationOptions;
+    await Runtime.runPromise(config.onUpdateConfig(configOptions));
+
+    return capabilities;
+  });
+
+  Connection.onDidChangeConfiguration(async (changes) => {
+    await Effect.runPromise(config.onConfigConnectionChange(changes.settings));
+  });
 
   Connection.onCompletion(async (...args) =>
     languagePrograms

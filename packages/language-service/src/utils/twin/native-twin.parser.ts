@@ -94,10 +94,10 @@ export const parseTemplate = (
   template: string,
   templateStarts: number,
 ): TemplateTokenWithText[] => {
-  if (template.startsWith("'")) {
+  if (template.startsWith("'") || template.startsWith("`")) {
     templateStarts = templateStarts + 1;
   }
-  template = template.replace("'", '');
+  template = template.replaceAll(/[',`]/g, '');
   const parsed = P.many1(
     P.whitespaceSurrounded(
       P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),

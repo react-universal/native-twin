@@ -1,31 +1,80 @@
+import * as path from 'node:path';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import type ts from 'typescript/lib/tsserverlibrary';
-import {
-  LanguageProviderService,
-  LanguageProviderServiceLive,
-} from './language/language.service';
+import { createCompletionHandler } from './completions/Completions.service';
+import { LanguageProviderService, LanguageProviderServiceLive } from './language/language.service';
 import { createTwin } from './native-twin/nativeTwin.config';
 import { NativeTwinServiceLive } from './native-twin/nativeTwin.service';
+import * as TsPlugin from './plugin/TSPlugin.service';
 import { buildTSPluginService } from './plugin/TSPlugin.service';
+import { type TypescriptUtils, TypescriptUtilsLive } from './plugin/TypescriptUtils.service';
 import { TemplateSourceHelperServiceLive } from './template/template.service';
+import { type TwinParserContext, TwinParserContextLive } from './twin/TwinParser.service';
+import { TwinRuntimeContext, TwinRuntimeContextLive } from './twin/TwinRuntime.service';
 
 function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
+  let pluginConfig = TsPlugin.parsePluginConfig({});
+  const mainLayer = Layer.empty.pipe(
+    Layer.provideMerge(TwinParserContextLive),
+    Layer.provideMerge(TypescriptUtilsLive),
+    Layer.provideMerge(TwinRuntimeContextLive),
+  );
+  let alreadyConfig = false;
+
+  function onConfigurationChanged(config: any) {
+    pluginConfig = TsPlugin.parsePluginConfig(config);
+    alreadyConfig = true;
+  }
   function create(info: ts.server.PluginCreateInfo) {
+    if (!alreadyConfig) {
+      const resolved = info.serverHost.resolvePath(pluginConfig.configPath);
+      const currentDir = info.project.getCurrentDirectory();
+      pluginConfig.configPath = path.join(currentDir, resolved);
+      pluginConfig = TsPlugin.parsePluginConfig({ ...info.config, ...pluginConfig });
+    }
     const proxy: ts.LanguageService = Object.create(null);
-    for (const k of Object.keys(info.languageService) as Array<
-      keyof ts.LanguageService
-    >) {
+
+    for (const k of Object.keys(info.languageService) as Array<keyof ts.LanguageService>) {
       const x = info.languageService[k]!;
       // @ts-expect-error - JS runtime trickery which is tricky to type tersely
       proxy[k] = (...args: Array<{}>) => x.apply(info.languageService, args);
     }
 
-    // const configManager = new ConfigurationManager();
-    // const logger = new LanguageServiceLogger(info);
-    // const intellisense = new NativeTailwindIntellisense(logger, configManager);
     const twin = createTwin(info);
+    info.project.projectService.logger.info(`configPath:${pluginConfig.configPath}`);
+
+    function runProgram(program: ts.Program) {
+      return <A, E>(
+        execution: Effect.Effect<
+          A,
+          E,
+          | TsPlugin.TypeScriptPluginConfig
+          | TsPlugin.TypeScriptApi
+          | TsPlugin.TypeScriptProgram
+          | TypescriptUtils
+          | TwinParserContext
+          | TwinRuntimeContext
+        >,
+      ) => {
+        const runLLayer = mainLayer.pipe(
+          Layer.provideMerge(Layer.succeed(TsPlugin.TypeScriptPluginConfig, pluginConfig)),
+          Layer.provideMerge(Layer.succeed(TsPlugin.TypeScriptApi, modules.typescript)),
+          Layer.provideMerge(Layer.succeed(TsPlugin.TypeScriptProgram, program)),
+        );
+        return execution.pipe(Effect.provide(runLLayer), Effect.runSync);
+      };
+    }
+    const program = info.languageService.getProgram();
+    if (program) {
+      runProgram(program)(
+        Effect.gen(function* () {
+          const parser = yield* TwinRuntimeContext;
+          yield* parser.bootTwinRuntime(pluginConfig.configPath);
+        }),
+      );
+    }
 
     const PluginServiceLive = buildTSPluginService({
       plugin: { ts: modules.typescript, info, config: twin.pluginConfig },
@@ -36,12 +85,20 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       },
     });
 
-    const layer = Layer.mergeAll(
-      NativeTwinServiceLive,
-      TemplateSourceHelperServiceLive,
-    ).pipe(Layer.provide(PluginServiceLive));
+    const layer = Layer.mergeAll(NativeTwinServiceLive, TemplateSourceHelperServiceLive).pipe(
+      Layer.provide(PluginServiceLive),
+    );
 
     proxy.getCompletionsAtPosition = (fileName, position, _options, _formatSettings) => {
+      const program = info.languageService.getProgram();
+      if (program) {
+        const sourceFile = program.getSourceFile(fileName);
+        if (sourceFile) {
+          const run = runProgram(program);
+          const r = run(createCompletionHandler(sourceFile, position));
+          console.log('FILE: ', r);
+        }
+      }
       return Effect.gen(function* ($) {
         const languageService = yield* $(LanguageProviderService);
         return yield* $(languageService.getCompletionsAtPosition(fileName, position));
@@ -68,9 +125,7 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       console.log('ARGS: ', args);
       return Effect.gen(function* ($) {
         const languageService = yield* $(LanguageProviderService);
-        return yield* $(
-          languageService.getCompletionEntryDetails(fileName, position, name),
-        );
+        return yield* $(languageService.getCompletionEntryDetails(fileName, position, name));
       }).pipe(
         Effect.provide(LanguageProviderServiceLive),
         Effect.provide(layer),
@@ -95,6 +150,9 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
   }
   return {
     create,
+    onConfigurationChanged(config: any) {
+      return onConfigurationChanged(config);
+    },
   };
 }
 

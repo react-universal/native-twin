@@ -46,11 +46,6 @@ const make = Effect.fn(function* (
 ) {
   const config = yield* LSPConfigService;
 
-  yield* config.changes.pipe(
-    Stream.runForEach((x) => Effect.log('STREAM_CHANGES: ', x)),
-    Effect.fork,
-  );
-
   const acquireDocument = (uri: string) =>
     Effect.gen(function* () {
       const currentConfig = yield* config.get;

@@ -1,20 +1,21 @@
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
-import { TypescriptApi, TypescriptUtils } from '../typescript';
+import { TwinParserContext } from '../twin/TwinParser.service';
+import { TypescriptApi } from '../typescript';
 
 export const twinTSExtract = Effect.fn(function* (filePath: string, code: string) {
   const tsAPI = yield* TypescriptApi;
+  const parser = yield* TwinParserContext;
   const source = tsAPI.createSourceFile(filePath, code);
-  const parsed = yield* tsAPI.parseSourceFile(source);
-  const tsUtils = yield* TypescriptUtils;
+  const parsed = yield* parser.parseSourceFile(source);
 
   return yield* Stream.fromIterable(
     parsed.jsxDeclarators.flatMap((_) => RA.fromIterable(tsAPI.flattenDeclarators(_).values())),
   ).pipe(
     Stream.flatMap((jsxNode) => {
       return Stream.fromIterable(jsxNode.styledProps).pipe(
-        Stream.mapEffect((prop) => tsUtils.parseTwinJSXNodeProp(prop)),
+        Stream.mapEffect((prop) => parser.parseTwinJSXNodeProp(prop)),
         Stream.map((evaluated) => Object.assign(evaluated, { jsxNode })),
       );
     }),

@@ -3,6 +3,7 @@ import { setup } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { Effect } from 'effect';
 import path from 'path';
+import { TwinParserContext } from '../src';
 import { twinTSExtract } from '../src/programs/twinExtract.program';
 import { TypescriptApi } from '../src/TS';
 import { runTwinParser, TestLayer } from './dsl';
@@ -15,6 +16,7 @@ describe('Twin Typescript API', () => {
     Effect.gen(function* () {
       const tsAPI = yield* TypescriptApi;
       const compiler = tsAPI.tsProject;
+      const parser = yield* TwinParserContext;
       yield* runTwinParser('', 0);
       const outFile = compiler.createSourceFile(
         path.join('../src/out-file.tsx'),
@@ -44,16 +46,13 @@ describe('Twin Typescript API', () => {
       );
 
       expect(jsxNodes.length).toBeGreaterThan(0);
-      const parsed = yield* tsAPI.parseSourceFile(source).pipe(
+      const parsed = yield* parser.parseSourceFile(source).pipe(
         Effect.map(({ jsxDeclarators }) =>
           jsxDeclarators.flatMap((_) => Array.from(tsAPI.flattenDeclarators(_).entries())),
         ),
         Effect.map((x) => new Map(x)),
       );
       expect(parsed.size).toBeGreaterThan(0);
-    }).pipe(
-      Effect.scoped,
-      Effect.provide(TestLayer),
-    ),
+    }).pipe(Effect.scoped, Effect.provide(TestLayer)),
   );
 });

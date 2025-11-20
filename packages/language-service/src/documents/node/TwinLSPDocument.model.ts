@@ -4,6 +4,6 @@ import { BaseTwinTextDocument } from '../common/BaseTwinDocument.js';
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
   constructor(textDocument: VSCDocument.TextDocument, config: NativeTwinPluginConfiguration) {
-    super(textDocument, config);
+    super(textDocument);
   }
 }

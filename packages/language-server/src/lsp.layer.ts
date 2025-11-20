@@ -6,7 +6,10 @@ import {
   TwinLSPDocument,
   TwinParserContextLive,
   TwinRuntimeContextLive,
+  TypescriptApiLive,
+  TypescriptUtilsLive,
   twinLSPDocumentLayer,
+  withRuntimeConfig,
 } from '@native-twin/language-service';
 import * as Layer from 'effect/Layer';
 import * as vscode from 'vscode-languageserver/node';
@@ -21,6 +24,10 @@ export const LspMainLive = LoggerLive.pipe(
   Layer.provideMerge(LSPConfigService.Live),
   Layer.provideMerge(LSPConnectionService.make(connectionHandler)),
   Layer.provideMerge(Layer.succeed(NativeTwinManagerService, new NativeTwinManager())),
+  Layer.provideMerge(TypescriptApiLive),
   Layer.provideMerge(TwinParserContextLive),
+  Layer.provideMerge(TwinParserContextLive),
+  Layer.provideMerge(TypescriptUtilsLive),
   Layer.provideMerge(TwinRuntimeContextLive),
+  Layer.provide(withRuntimeConfig({})),
 );

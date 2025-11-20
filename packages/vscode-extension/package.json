@@ -23,7 +23,6 @@
   "author": "Cristhian Gutierrez",
   "publisher": "native-twin",
   "main": "./build/cjs/extension.js",
-  "browser": "./build/web/extension.js",
   "module": "./build/esm/extension.js",
   "scripts": {
     "build": "npx twin pack-dev",
@@ -162,6 +161,12 @@
         "view": "nativeTwin-files",
         "contents": "Native Twin Dev Tools did not generate any file yet."
       }
+    ],
+    "typescriptServerPlugins": [
+      {
+        "name": "@native-twin/ts-plugin",
+        "enableForWorkspaceTypeScriptVersions": true
+      }
     ]
   },
   "activationEvents": [
@@ -172,6 +177,7 @@
     "@native-twin/helpers": "workspace:*",
     "@native-twin/language-server": "workspace:*",
     "@native-twin/language-service": "workspace:*",
+    "@native-twin/ts-plugin": "workspace:*",
     "effect": "^3.19.3",
     "vscode-languageclient": "^9.0.1"
   },

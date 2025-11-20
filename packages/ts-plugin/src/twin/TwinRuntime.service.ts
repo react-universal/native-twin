@@ -1,6 +1,6 @@
-import { setup } from '@native-twin/core';
+import { defineConfig, setup } from '@native-twin/core';
 import { flattenObjectByPath } from '@native-twin/helpers';
-import { Array } from 'effect';
+import * as Array from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Hash from 'effect/Hash';
@@ -13,10 +13,8 @@ import * as SortedSet from 'effect/SortedSet';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as Trie from 'effect/Trie';
-import { TwinRuntimeConfig } from '../config/twin.config';
-import { DEFAULT_TWIN_CONFIG } from '../utils/constants.utils';
-import { requireJS } from '../utils/load-js';
-import { createStyledContext } from '../utils/sheet.utils';
+import { TypeScriptPluginConfig } from '../plugin/TSPlugin.service';
+import { requireJS } from '../utils/load-config';
 import type {
   AnyInternalTwinRule,
   InternalTwFn,
@@ -28,7 +26,7 @@ import * as TwinUtils from './TwinParser.utils';
 
 const resolvedSections = new Map<string, Record<string, any>>();
 const make = Effect.gen(function* () {
-  const twinRef = yield* Ref.make<InternalTwFn>(setup(DEFAULT_TWIN_CONFIG));
+  const twinRef = yield* Ref.make<InternalTwFn>(setup(defineConfig({ content: [] })));
   const dictionaryRef = yield* SubscriptionRef.make(Trie.empty<TwinParserModel.TwinRuleRegistry>());
   const themeVariants = yield* SubscriptionRef.make<
     HashSet.HashSet<TwinParserModel.TwinVariantNode>
@@ -46,7 +44,7 @@ const make = Effect.gen(function* () {
   const config = applyToTwin((x) => x.config);
   const themeCtx = applyToTwin((x) => x.context);
   const getConfigRules = applyToTwin((twin) => twin.config.rules);
-  const styledContext = applyToTwin((twin) => createStyledContext(twin.config.root.rem));
+  const styledContext = applyToTwin((twin) => TwinUtils.createStyledContext(twin.config.root.rem));
 
   const onUpdateConfig = Effect.fn(function* (config: InternalTwinConfig) {
     resolvedSections.clear();
@@ -129,7 +127,7 @@ const make = Effect.gen(function* () {
 
   function bootTwinRuntime(twinPath: string | null = null) {
     return Effect.gen(function* () {
-      const { twinConfigPath } = yield* TwinRuntimeConfig;
+      const { configPath: twinConfigPath } = yield* TypeScriptPluginConfig;
       let result: InternalTwinConfig | null = null;
       const configPath = yield* twinPath
         ? Effect.succeed(twinPath)

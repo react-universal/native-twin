@@ -1,18 +1,15 @@
-import { asArray } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import { pipe } from 'effect/Function';
 import type * as Graph from 'effect/Graph';
 import * as Hash from 'effect/Hash';
-import type ts from 'ts-morph';
-import type * as VSCDocument from 'vscode-languageserver-textdocument';
-import { DocumentLanguageRegion } from '../browser';
+import type ts from 'typescript';
 
 export class JSXNode implements Equal.Equal {
   readonly _tag = 'JSXNode';
   private _id: string | null = null;
   private allNodes: JSXNode[] | null = null;
-  private _languageRegions: DocumentLanguageRegion[] | null = null;
+  // private _languageRegions: DocumentLanguageRegion[] | null = null;
   tagName: string;
   node: TwinDslModels.AnyJSXElement;
   styledProps: TwinDslModels.NodeStyledProp[];
@@ -24,10 +21,10 @@ export class JSXNode implements Equal.Equal {
   }
 
   get pos() {
-    return this.node.compilerNode.pos;
+    return this.node.pos;
   }
   get filename() {
-    return this.node.getSourceFile().getFilePath();
+    return this.node.getSourceFile().fileName;
   }
   get id(): string {
     if (this._id) return this._id;
@@ -35,14 +32,14 @@ export class JSXNode implements Equal.Equal {
     const mappedStyles = this.styledProps
       .map(
         (x) =>
-          `${x.twinCX ?? 'NO_LITERAL'}_${x.expression?.getText(false) ?? ''}_${x.styleProp}_${x.classProp}`,
+          `${x.twinCX ?? 'NO_LITERAL'}_${x.expression?.getText(this.node.getSourceFile()) ?? ''}_${x.styleProp}_${x.classProp}`,
       )
       .join('');
 
     return (this._id = Hash.string(`${this.partialID}_${mappedStyles}`).toString());
   }
   get index() {
-    return this.node.getChildIndex();
+    return this.node.parent.getChildren().indexOf(this.node);
   }
 
   constructor(data: {
@@ -57,32 +54,32 @@ export class JSXNode implements Equal.Equal {
     this.parent = data.parent;
   }
 
-  getLanguageRegions() {
-    if (this._languageRegions) return this._languageRegions;
-    return (this._languageRegions = this.styledProps.flatMap((prop): DocumentLanguageRegion[] => {
-      const propValue = prop.valueTextNode;
-      if (!propValue) return [];
-      const text = propValue.getText(true);
-      const plusOffset = text.startsWith('`') ? 1 : 0;
-      const startPosition: VSCDocument.Position = {
-        line: propValue.getStartLineNumber(),
-        character: propValue.getStart(true) + plusOffset,
-      };
-      const endPosition: VSCDocument.Position = {
-        line: propValue.getEndLineNumber(),
-        character: propValue.getEnd() + plusOffset,
-      };
-      const range: VSCDocument.Range = { start: startPosition, end: endPosition };
-      return asArray(
-        new DocumentLanguageRegion(
-          range,
-          startPosition.character,
-          endPosition.character,
-          propValue.getText(true),
-        ),
-      );
-    }));
-  }
+  // getLanguageRegions() {
+  //   if (this._languageRegions) return this._languageRegions;
+  //   return (this._languageRegions = this.styledProps.flatMap((prop): DocumentLanguageRegion[] => {
+  //     const propValue = prop.valueTextNode;
+  //     if (!propValue) return [];
+  //     const text = propValue.getText(true);
+  //     const plusOffset = text.startsWith('`') ? 1 : 0;
+  //     const startPosition: VSCDocument.Position = {
+  //       line: propValue.getStartLineNumber(),
+  //       character: propValue.getStart(true) + plusOffset,
+  //     };
+  //     const endPosition: VSCDocument.Position = {
+  //       line: propValue.getEndLineNumber(),
+  //       character: propValue.getEnd() + plusOffset,
+  //     };
+  //     const range: VSCDocument.Range = { start: startPosition, end: endPosition };
+  //     return asArray(
+  //       new DocumentLanguageRegion(
+  //         range,
+  //         startPosition.character,
+  //         endPosition.character,
+  //         propValue.getText(true),
+  //       ),
+  //     );
+  //   }));
+  // }
 
   getAllNodes(): JSXNode[] {
     if (this.allNodes) return this.allNodes;
@@ -152,10 +149,10 @@ export namespace TwinGraphModel {
     depthBudget: WeakMap<ts.Node, number>;
   }
 
-  export interface ImportInfo {
-    from: string;
-    node: ts.Structures;
-  }
+  // export interface ImportInfo {
+  //   from: string;
+  //   node: ts.Structures;
+  // }
 
   export interface NodeInfo {
     node: ts.Node;

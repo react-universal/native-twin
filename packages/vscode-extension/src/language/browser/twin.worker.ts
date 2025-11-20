@@ -1,6 +1,11 @@
 /// <reference lib="WebWorker" />
 
-import { TwinParserContextLive, TwinRuntimeContextLive } from '@native-twin/language-service';
+import {
+  TwinParserContextLive,
+  TwinRuntimeContextLive,
+  TypescriptApiLive,
+  TypescriptUtilsLive,
+} from '@native-twin/language-service';
 import {
   LSPConfigService,
   LSPConnectionService,
@@ -34,6 +39,8 @@ const MainLive = Layer.empty.pipe(
   Layer.provideMerge(DocumentsLayer),
   Layer.provideMerge(LSPConfigService.Live),
   Layer.provideMerge(TwinParserContextLive),
+  Layer.provideMerge(TypescriptApiLive),
+  Layer.provideMerge(TypescriptUtilsLive),
   Layer.provideMerge(TwinRuntimeContextLive),
   Layer.provideMerge(Layer.succeed(NativeTwinManagerService, new MonacoNativeTwinManager())),
   Layer.provideMerge(ConnectionLayer),

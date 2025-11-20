@@ -19,7 +19,7 @@ const loggerLayer = Logger.replace(
   }),
 );
 
-export const EditorMainLive = Layer.empty.pipe(
+export const EditorMainLive: any = Layer.empty.pipe(
   Layer.provideMerge(AppWorkersService.Live),
   Layer.provideMerge(FileSystemService.Live),
   Layer.provideMerge(MonacoContextLive),

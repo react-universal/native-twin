@@ -1,7 +1,7 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import ts from 'typescript';
+import * as ts from 'typescript';
 import type { TemplateContext } from 'typescript-template-language-service-decorator';
 import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
@@ -28,7 +28,7 @@ export const TemplateSourceHelperServiceLive = Layer.scoped(
       getTemplateSettings() {
         return {
           get tags() {
-            return main.plugin.config.tags;
+            return main.plugin.config.functions;
           },
           enableForStringWithSubstitutions: true,
           getSubstitution(_, start, end) {

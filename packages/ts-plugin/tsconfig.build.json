@@ -7,5 +7,5 @@
     "sourceMap": true,
     "noEmit": false
   },
-  "exclude": ["./test/"]
+  "exclude": ["./test"]
 }

@@ -13,7 +13,6 @@
     "packages/*",
     "packages/dev-tools/webui",
     "sites/twin.run",
-    "sites/playground",
     "apps/*"
   ],
   "resolutions": {

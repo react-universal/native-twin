@@ -5,12 +5,24 @@
       "path": ".."
     },
     {
-      "name": "@native-twin/playground",
-      "path": "../sites/playground"
+      "name": "twin-run",
+      "path": "../sites/twin.run"
     },
     {
       "name": "📦 native-twin-vscode",
       "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @native-twin/ts-plugin",
+      "path": "../packages/ts-plugin"
+    },
+    {
+      "name": "📦 @native-twin/language-service",
+      "path": "../packages/language-service"
+    },
+    {
+      "name": "📦 @native-twin/language-server",
+      "path": "../packages/language-server"
     },
     {
       "name": "📦 @native-twin/adapters",
@@ -29,24 +41,8 @@
       "path": "../packages/helpers"
     },
     {
-      "name": "📦 @native-twin/language-server",
-      "path": "../packages/language-server"
-    },
-    {
-      "name": "📦 @native-twin/language-service",
-      "path": "../packages/language-service"
-    },
-    {
-      "name": "📦 @native-twin/ts-plugin",
-      "path": "../packages/ts-plugin"
-    },
-    {
       "name": "📦 @native-twin/vite-plugin",
       "path": "../packages/vite-plugin"
-    },
-    {
-      "name": "twin-run",
-      "path": "../sites/twin.run"
     },
     {
       "name": "🚀 native-twin-docs",
@@ -57,7 +53,7 @@
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
-      "strings": false
+      "strings": true
     },
     "editor.snippetSuggestions": "bottom",
     "editor.suggest.snippetsPreventQuickSuggestions": false,
@@ -84,109 +80,7 @@
     "vitest.disableWorkspaceWarning": true,
     "vitest.workspaceConfig": "./vitest.workspace.ts",
     "cSpell.ignoreRandomStrings": true,
-    "cSpell.unknownWords": "report-common-typos",
-    "jestrunner.include": [
-      "packages/jsx/*",
-      "📦 @lib/jsx"
-    ],
-    "jestrunner.exclude": [
-      "root",
-      "📦 @lib/builder",
-      "📦 @lib/babel",
-      "📦 @lib/compiler",
-      "📦 @lib/helpers",
-      "📦 @lib/css",
-      "📦 @lib/arc-parser",
-      "📦 @lib/preset-tw",
-      "📦 @lib/dev-tools",
-      "📦 @lib/styled",
-      "📦 @lib/native-twin",
-      "📦 @lib/adapters",
-      "📦 @lib/vscode",
-      "📦 @lib/language-service",
-      "📦 @lib/language-server",
-      "📦 @lib/metro",
-      "📦 @lib/vite-plugin",
-      "expo-app",
-      "expo-router",
-      "next-pages-example",
-      "next-app-dir",
-      "twin.run",
-      "docs-site"
-    ],
-    "jestrunner.useNearestConfig": true,
-    "jestrunner.debugOptions": {
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/jest",
-      "runtimeArgs": [
-        "test",
-        "${fileBasename}",
-        "--runInBand",
-        "--no-cache",
-        "--watchAll=false",
-        "--color"
-      ]
-    },
-    "jest.enable": true,
-    "jest.runMode": "on-demand",
-    "jest.disabledWorkspaceFolders": [
-      "root",
-      "📦 @lib/builder",
-      "📦 @lib/jsx",
-      "📦 @lib/babel",
-      "📦 @lib/compiler",
-      "📦 @lib/helpers",
-      "📦 @lib/css",
-      "📦 @lib/arc-parser",
-      "📦 @lib/preset-tw",
-      "📦 @lib/dev-tools",
-      "📦 @lib/styled",
-      "📦 @lib/native-twin",
-      "📦 @lib/adapters",
-      "📦 @lib/vscode",
-      "📦 @lib/language-service",
-      "📦 @lib/language-server",
-      "📦 @lib/metro",
-      "📦 @lib/vite-plugin",
-      "expo-app",
-      "expo-router",
-      "next-pages-example",
-      "next-app-dir",
-      "twin.run",
-      "docs-site"
-    ],
-    "console-ninja.logCaptureOptions": {
-    "resolveGetters": true,
-    "defaultLimits": {
-      "props": 500,
-      "elements": 500,
-      "strLength": 51200,
-      "totalStrLength": 51200,
-      "autoExpandLimit": 5000,
-      "autoExpandMaxDepth": 100
-    },
-    "reducedLimits": {
-      "props": 5,
-      "elements": 5,
-      "strLength": 256,
-      "totalStrLength": 768,
-      "autoExpandLimit": 30,
-      "autoExpandMaxDepth": 2
-    },
-    "reducePolicy": {
-      "perLogpoint": {
-        "reduceOnCount": 50,
-        "reduceOnAccumulatedProcessingTimeMs": 100,
-        "resetWhenQuietMs": 500,
-        "resetOnProcessingTimeAverageMs": 100
-      },
-      "global": {
-        "reduceOnCount": 1000,
-        "reduceOnAccumulatedProcessingTimeMs": 300,
-        "resetWhenQuietMs": 50,
-        "resetOnProcessingTimeAverageMs": 100
-      }
-    }
-  },
+    "cSpell.unknownWords": "report-common-typos"
   },
   "launch": {
     "configurations": [
