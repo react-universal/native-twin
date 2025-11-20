@@ -5,24 +5,24 @@
       "path": ".."
     },
     {
-      "name": "twin-run",
-      "path": "../sites/twin.run"
-    },
-    {
       "name": "📦 native-twin-vscode",
       "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @native-twin/ts-plugin",
-      "path": "../packages/ts-plugin"
     },
     {
       "name": "📦 @native-twin/language-service",
       "path": "../packages/language-service"
     },
     {
+      "name": "📦 @native-twin/ts-plugin",
+      "path": "../packages/ts-plugin"
+    },
+    {
       "name": "📦 @native-twin/language-server",
       "path": "../packages/language-server"
+    },
+    {
+      "name": "twin-run",
+      "path": "../sites/twin.run"
     },
     {
       "name": "📦 @native-twin/adapters",

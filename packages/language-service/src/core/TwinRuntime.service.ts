@@ -14,14 +14,14 @@ import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as Trie from 'effect/Trie';
 import * as LspConfig from '../core/LanguageConfig.service';
-import { requireJS } from '../utils/load-config';
 import type {
   AnyInternalTwinRule,
   InternalTwFn,
   InternalTwinConfig,
-} from './models/native-twin.types';
-import type * as TwinParserModel from './models/TwinParser.models';
-import { TwinRuleComposer } from './models/TwinRuleHandler';
+} from '../internal/TwinTypes.internal';
+import type * as TwinParserModel from '../models/TwinParser.models';
+import { TwinRuleComposer } from '../models/TwinRuleHandler';
+import { requireJS } from '../utils/load-js';
 import * as TwinUtils from './TwinParser.utils';
 
 const resolvedSections = new Map<string, Record<string, any>>();

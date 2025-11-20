@@ -6,6 +6,6 @@
     "moduleResolution": "NodeNext",
     "jsx": "preserve"
   },
-  "include": ["src", "tests/*"],
+  "include": ["src", "tests/*", "ts-exposed"],
   "exclude": ["build/**/*", "tests/fixtures"]
 }

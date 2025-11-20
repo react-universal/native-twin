@@ -1,12 +1,12 @@
 {
     "typescript.tsdk": "../../../node_modules/typescript/lib",
     "nativeTwin.trace.server": "off",
-    "typescript.tsserver.log": "normal",
+    "typescript.tsserver.log": "verbose",
     "nativeTwin.enable": true,
     "outline.icons": true,
     "workbench.editor.showIcons": true,
     "workbench.productIconTheme": "Default",
-    "workbench.iconTheme": "vs-minimal",
+    "workbench.iconTheme": "vs-seti",
     "breadcrumbs.icons": true,
     "nativeTwin.functions": [
         "tw",

@@ -7,7 +7,7 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as ts from 'typescript';
-import { JSXNode, type TwinDslModels } from './TwinDsl.models';
+import { JSXNode, type TwinDslModels } from '../models/TwinDsl.models';
 
 const make = Effect.gen(function* () {
   const isFunction = (node: ts.Node) =>
@@ -16,8 +16,29 @@ const make = Effect.gen(function* () {
   const getNodeSourceFile = (node: ts.Node) => node.getSourceFile();
   const getNodeOffset = (node: ts.Node): number => node.pos;
 
-  const findNodeAtOffset = (node: ts.Node, offset: number): Option.Option<ts.Node> =>
-    Option.fromNullable(node.getChildAt(offset));
+  const findNodeAtOffset = (
+    node: ts.Node,
+    offset: number,
+    sourceFile?: ts.SourceFile,
+  ): Option.Option<ts.Node> => Option.fromNullable(node.getChildAt(offset, sourceFile));
+
+  /**
+   * Finds the deepest AST node at the specified position within the given SourceFile.
+   *
+   * This function traverses the AST to locate the node that contains the given position.
+   * If multiple nodes overlap the position, it returns the most specific (deepest) node.
+   */
+  function findNodeAtPosition(sourceFile: ts.SourceFile, position: number) {
+    function find(node: ts.Node): ts.Node | undefined {
+      if (position >= ts.getTokenPosOfNode(node, sourceFile) && position < node.end) {
+        // If the position is within this node, keep traversing its children
+        return ts.forEachChild(node, find) || node;
+      }
+      return undefined;
+    }
+
+    return find(sourceFile);
+  }
 
   const getFunctionReturn = (node: ts.Node) => {
     if (ts.isFunctionExpression(node) || ts.isArrowFunction(node)) {
@@ -29,46 +50,27 @@ const make = Effect.gen(function* () {
     }
   };
 
-  const getJSXElementStatement = (node: ts.Statement) => {
-    if (ts.isVariableStatement(node)) {
-      const declarations = node.declarationList.declarations;
-      for (const declaration of declarations) {
-        const initializer = declaration.initializer;
-        if (!initializer) continue;
-        const returnStat = getFunctionReturn(initializer);
-        if (!returnStat) continue;
-        const expression = returnStat.expression;
-        if (expression && ts.isParenthesizedExpression(expression)) {
-          const maybeJSX = expression.expression;
-          if (ts.isJsxElement(maybeJSX)) {
-            return { jsxElement: maybeJSX, declarator: declaration.name };
-          }
-        }
-      }
-    }
-    return null;
-  };
-
-  const getJSXElementChilds = (node: ts.Node) =>
+  const getJSXElementChilds = (node: ts.Node, sourceFile?: ts.SourceFile) =>
     pipe(
       ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node) ? node : null,
       RA.liftPredicate(Predicate.isNotNullable),
-      RA.flatMap((el) =>
-        ts.isJsxElement(el) ? el.children : el.getChildren(node.getSourceFile()),
-      ),
+      RA.flatMap((el) => (ts.isJsxElement(el) ? el.children : el.getChildren(sourceFile))),
       RA.filter((el) => ts.isJsxElement(el) || ts.isJsxSelfClosingElement(el)),
     );
 
   const getTwinJSXNode = (
     node: TwinDslModels.AnyJSXElement,
+    sourceFile?: ts.SourceFile,
     jsxParent: JSXNode | null = null,
   ): Effect.Effect<JSXNode> =>
     Effect.gen(function* () {
-      const tagName = getJSXNodeTagName(node).getText();
-      const styledProps = getJSXMappedProps(node);
+      const tagName = getJSXNodeTagName(node).getText(sourceFile);
+      const styledProps = getJSXMappedProps(node, sourceFile);
       const result = new JSXNode({ node, styledProps, tagName, parent: jsxParent });
       result.childs = yield* Effect.suspend(() =>
-        Effect.all(getJSXElementChilds(node).map((_) => getTwinJSXNode(_, result))),
+        Effect.all(
+          getJSXElementChilds(node, sourceFile).map((_) => getTwinJSXNode(_, sourceFile, result)),
+        ),
       );
 
       return result;
@@ -85,22 +87,22 @@ const make = Effect.gen(function* () {
     return { exports, declarations, functions, outsideNodes };
   };
 
-  const getNodeDebugDetails = (node: ts.Node) => {
+  const getNodeDebugDetails = (node: ts.Node, sourceFile?: ts.SourceFile) => {
     let name = 'Unknown';
     if (ts.isBindingName(node)) {
-      name = node.getText();
+      name = node.getText(sourceFile);
     }
     if (isJSXElementLike(node)) {
-      name = getJSXNodeTagName(node)?.getText() ?? node.getText();
+      name = getJSXNodeTagName(node)?.getText(sourceFile) ?? node.getText(sourceFile);
     }
     if (ts.isJsxSelfClosingElement(node)) {
-      name = node.tagName.getText();
+      name = node.tagName.getText(sourceFile);
     }
     return {
       name,
       kind: node.kind,
-      kindName: `${node.kind}`,
-      index: node.parent.getChildren().indexOf(node),
+      kindName: `${ts.SyntaxKind[node.kind]}`,
+      index: node.parent.getChildren(sourceFile).indexOf(node),
     };
   };
 
@@ -115,9 +117,9 @@ const make = Effect.gen(function* () {
         ? node
         : undefined;
 
-  const getJSXNodeTwinInfo = (node: TwinDslModels.AnyJSXElement) => {
+  const getJSXNodeTwinInfo = (node: TwinDslModels.AnyJSXElement, sourceFile?: ts.SourceFile) => {
     const tagName = getJSXNodeTagName(node);
-    const childs = getJSXElementChilds(node);
+    const childs = getJSXElementChilds(node, sourceFile);
     // const dependencies = getNodeDependencies(node);
 
     return { tagName, childs };
@@ -137,17 +139,20 @@ const make = Effect.gen(function* () {
     return ts.factory.createNodeArray();
   };
 
-  const getJSXMappedProps = (node: TwinDslModels.AnyJSXElement): TwinDslModels.NodeStyledProp[] => {
+  const getJSXMappedProps = (
+    node: TwinDslModels.AnyJSXElement,
+    sourceFile?: ts.SourceFile,
+  ): TwinDslModels.NodeStyledProp[] => {
     const tagName = getJSXNodeTagName(node);
     if (!tagName) return [];
-    const name = tagName.getText();
+    const name = tagName.getText(sourceFile);
     const jsxConfig =
       mappedComponents.find((x) => x.name === name) ?? createCommonMappedAttribute(name);
     const props = Object.entries(jsxConfig.config);
     const attributes = getJSXElementAttributes(node).filter((x) => ts.isJsxAttribute(x)) ?? [];
     return props.flatMap(([classProp, styleProp]) =>
       attributes
-        .filter((attrNode) => attrNode.name.getText() === classProp)
+        .filter((attrNode) => attrNode.name.getText(sourceFile) === classProp)
         .map(
           (attrNode): TwinDslModels.NodeStyledProp => ({
             _tag: 'NodeStyledProp',
@@ -221,9 +226,10 @@ const make = Effect.gen(function* () {
   };
 
   return {
+    findNodeAtPosition,
     isFunction,
     getNodeDebugDetails,
-    getJSXElementStatement,
+    getFunctionReturn,
     getTwinJSXNode,
     getVariableNameExpression,
     getJSXElementChilds,
@@ -235,20 +241,7 @@ const make = Effect.gen(function* () {
     getJSXMappedProps,
     isJSXElementLike,
     getJSXNodeTagName,
-    flattenDeclarators,
   };
-
-  function flattenDeclarators(declarator: TwinDslModels.NodeJSXDeclarator) {
-    const rootPath = `${declarator.filename}-${declarator.identifier}`;
-    const mapped = new Map(flattenNode(declarator.jsxElement, [rootPath]));
-    return mapped;
-
-    function flattenNode(node: JSXNode, currentPath: string[]): [string, JSXNode][] {
-      const nextPath = [...currentPath, `${node.index}`];
-      const childs = node.childs.flatMap((x) => flattenNode(x, nextPath));
-      return [[nextPath.join('-').concat(node.id), node], ...childs];
-    }
-  }
 });
 
 export interface TypescriptUtils extends Effect.Effect.Success<typeof make> {}

@@ -39,23 +39,6 @@ export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext>) 
     const twinFilePath = files[0]?.path;
     const rootDir = vscode.workspace.workspaceFolders?.[0]?.uri?.path ?? process.cwd();
 
-    const ext = vscode.extensions.getExtension('vscode.typescript-language-features');
-    if (ext) {
-      if (!ext.isActive) {
-        yield* Effect.promise(() => ext.activate());
-      }
-      const tsAPi = ext.exports.getAPI(0);
-      tsAPi.configurePlugin(Constants.pluginId, {
-        name: Constants.pluginId,
-        debug: currentConfig.debug,
-        enable: currentConfig.enable,
-        functions: currentConfig.functions,
-        jsxAttributes: currentConfig.jsxAttributes,
-        rootDir,
-        twinConfigPath: twinFilePath,
-        trace: currentConfig.trace.server,
-      });
-    }
     const mainLayer = layer.pipe(
       Layer.provide(
         withRuntimeConfig({

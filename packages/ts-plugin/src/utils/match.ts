@@ -1,5 +1,5 @@
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
-import type ts from 'typescript/lib/tsserverlibrary';
+import type ts from 'typescript';
 
 export type Predicate =
   | ((this: undefined, value: any, key: undefined, object: any, matcher: undefined) => unknown)

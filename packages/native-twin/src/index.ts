@@ -25,10 +25,10 @@ export type { ConfigVariants, VariantProps, VariantsConfig } from './runtime/var
 /** TYPES */
 export type { ExtractResult } from './runtime/web/ssr.js';
 export { CompiledSheetEntry, type CompiledSheetEntryInput } from './twin/compiler.models.js';
+export { __defaultRuleMeta } from './twin/constants.js';
 export type { TWScreenValueConfig } from './twin/parser/twin.tokens.js';
 export type * from './types/config.types.js';
 export type * from './types/theme.types.js';
-
 export {
   tw,
   tx,

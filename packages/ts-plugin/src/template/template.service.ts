@@ -1,7 +1,7 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import * as ts from 'typescript';
+import ts from 'typescript';
 import type { TemplateContext } from 'typescript-template-language-service-decorator';
 import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
@@ -15,6 +15,7 @@ export const TemplateSourceHelperServiceLive = Layer.scoped(
   Effect.gen(function* ($) {
     const main = yield* $(TSPluginService);
     const sourceMatchers = getSourceMatchers(main.plugin.ts, main.plugin.config);
+    // @ts-expect-error
     const helper = new StandardScriptSourceHelper(main.plugin.ts, main.plugin.info.project);
 
     return {
@@ -41,6 +42,7 @@ export const TemplateSourceHelperServiceLive = Layer.scoped(
         const node = helper.getNode(fileName, position);
         return Option.fromNullable(node).pipe(
           Option.flatMap((x) => {
+            // @ts-expect-error
             const validNode = getValidTemplateNode(x);
             if (!validNode) return Option.none();
             return Option.some(validNode);
@@ -88,6 +90,7 @@ export const TemplateSourceHelperServiceLive = Layer.scoped(
             const fileName = x.getSourceFile().fileName;
 
             return Option.some(
+              // @ts-expect-error
               new StandardTemplateContext(
                 ts,
                 fileName,

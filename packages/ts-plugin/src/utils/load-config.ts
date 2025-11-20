@@ -1,5 +1,5 @@
 import * as Option from 'effect/Option';
-import * as jitiFactory from 'jiti';
+import jitiFactory from 'jiti';
 import { transform } from 'sucrase';
 
 let jiti: ReturnType<typeof jitiFactory> | null = null;

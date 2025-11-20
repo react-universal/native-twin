@@ -7,7 +7,6 @@ import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import ts from 'ts-morph';
 import { TwinRuntimeConfig } from '../config/twin.config';
-import { TSCompilerDefaultOptions } from '../utils/constants.utils';
 import type { JSXNode, TwinDslModels } from './TwinDsl.models';
 
 const make = Effect.gen(function* () {
@@ -15,7 +14,7 @@ const make = Effect.gen(function* () {
 
   const tsConfig = yield* Effect.sync(() => {
     const userConfig = ts.getCompilerOptionsFromTsConfig(tsConfigPath);
-    return { ...userConfig.options, ...TSCompilerDefaultOptions };
+    return { ...userConfig.options, noEmit: true };
   }).pipe(Effect.flatMap(SubscriptionRef.make));
 
   const makeTSProject = () => Effect.map(tsConfig.get, createTSProject);

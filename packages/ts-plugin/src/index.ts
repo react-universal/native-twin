@@ -2,29 +2,25 @@ import * as path from 'node:path';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import type ts from 'typescript/lib/tsserverlibrary';
-import { createCompletionHandler } from './completions/Completions.service';
+import type ts from 'typescript';
+import { completions } from './completions';
+import * as LSPConfig from './core/LanguageConfig.service';
+import * as TsApi from './core/TypescriptAPI.service';
 import { LanguageProviderService, LanguageProviderServiceLive } from './language/language.service';
 import { createTwin } from './native-twin/nativeTwin.config';
 import { NativeTwinServiceLive } from './native-twin/nativeTwin.service';
-import * as TsPlugin from './plugin/TSPlugin.service';
 import { buildTSPluginService } from './plugin/TSPlugin.service';
-import { type TypescriptUtils, TypescriptUtilsLive } from './plugin/TypescriptUtils.service';
+import { LSPMainLayer, type TwinPluginLayerReq } from './RunnerLayer';
 import { TemplateSourceHelperServiceLive } from './template/template.service';
-import { type TwinParserContext, TwinParserContextLive } from './twin/TwinParser.service';
-import { TwinRuntimeContext, TwinRuntimeContextLive } from './twin/TwinRuntime.service';
+import { TwinRuntimeContext } from './twin/TwinRuntime.service';
 
-function init(modules: { typescript: typeof import('typescript/lib/tsserverlibrary') }) {
-  let pluginConfig = TsPlugin.parsePluginConfig({});
-  const mainLayer = Layer.empty.pipe(
-    Layer.provideMerge(TwinParserContextLive),
-    Layer.provideMerge(TypescriptUtilsLive),
-    Layer.provideMerge(TwinRuntimeContextLive),
-  );
+function init(modules: { typescript: typeof import('typescript') }) {
+  let pluginConfig = LSPConfig.parsePluginConfig({});
+
   let alreadyConfig = false;
 
   function onConfigurationChanged(config: any) {
-    pluginConfig = TsPlugin.parsePluginConfig(config);
+    pluginConfig = LSPConfig.parsePluginConfig(config);
     alreadyConfig = true;
   }
   function create(info: ts.server.PluginCreateInfo) {
@@ -32,7 +28,7 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       const resolved = info.serverHost.resolvePath(pluginConfig.configPath);
       const currentDir = info.project.getCurrentDirectory();
       pluginConfig.configPath = path.join(currentDir, resolved);
-      pluginConfig = TsPlugin.parsePluginConfig({ ...info.config, ...pluginConfig });
+      pluginConfig = LSPConfig.parsePluginConfig({ ...info.config, ...pluginConfig });
     }
     const proxy: ts.LanguageService = Object.create(null);
 
@@ -46,24 +42,13 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
     info.project.projectService.logger.info(`configPath:${pluginConfig.configPath}`);
 
     function runProgram(program: ts.Program) {
-      return <A, E>(
-        execution: Effect.Effect<
-          A,
-          E,
-          | TsPlugin.TypeScriptPluginConfig
-          | TsPlugin.TypeScriptApi
-          | TsPlugin.TypeScriptProgram
-          | TypescriptUtils
-          | TwinParserContext
-          | TwinRuntimeContext
-        >,
-      ) => {
-        const runLLayer = mainLayer.pipe(
-          Layer.provideMerge(Layer.succeed(TsPlugin.TypeScriptPluginConfig, pluginConfig)),
-          Layer.provideMerge(Layer.succeed(TsPlugin.TypeScriptApi, modules.typescript)),
-          Layer.provideMerge(Layer.succeed(TsPlugin.TypeScriptProgram, program)),
+      return <A, E>(execution: Effect.Effect<A, E, TwinPluginLayerReq>) => {
+        const runLayer = LSPMainLayer.pipe(
+          Layer.provideMerge(Layer.succeed(LSPConfig.TypeScriptPluginConfig, pluginConfig)),
+          Layer.provideMerge(Layer.succeed(TsApi.TypeScriptApi, modules.typescript)),
+          Layer.provideMerge(Layer.succeed(TsApi.TypeScriptProgram, program)),
         );
-        return execution.pipe(Effect.provide(runLLayer), Effect.runSync);
+        return execution.pipe(Effect.provide(runLayer), Effect.runSync);
       };
     }
     const program = info.languageService.getProgram();
@@ -89,32 +74,28 @@ function init(modules: { typescript: typeof import('typescript/lib/tsserverlibra
       Layer.provide(PluginServiceLive),
     );
 
-    proxy.getCompletionsAtPosition = (fileName, position, _options, _formatSettings) => {
+    const createEffectRunner = (filename: string) => {
       const program = info.languageService.getProgram();
-      if (program) {
-        const sourceFile = program.getSourceFile(fileName);
-        if (sourceFile) {
-          const run = runProgram(program);
-          const r = run(createCompletionHandler(sourceFile, position));
-          console.log('FILE: ', r);
-        }
-      }
-      return Effect.gen(function* ($) {
-        const languageService = yield* $(LanguageProviderService);
-        return yield* $(languageService.getCompletionsAtPosition(fileName, position));
-      }).pipe(
-        Effect.provide(LanguageProviderServiceLive),
-        Effect.provide(layer),
-        Effect.map(
-          (x): ts.WithMetadata<ts.CompletionInfo> => ({
-            entries: x,
-            isGlobalCompletion: false,
-            isMemberCompletion: false,
-            isNewIdentifierLocation: false,
-          }),
-        ),
-        Effect.runSync,
+      if (!program) return null;
+      const sourceFile = program?.getSourceFile(filename);
+      if (!sourceFile) return null;
+      return { run: runProgram(program), sourceFile };
+    };
+
+    proxy.getCompletionsAtPosition = (fileName, ...rest) => {
+      const runner = createEffectRunner(fileName);
+      if (!runner) return;
+
+      const entries = runner.run(
+        completions.classNameCompletions.apply(runner.sourceFile, ...rest),
       );
+      return {
+        entries,
+        // flags: ts.CompletionInfoFlags.MayIncludeMethodSnippets,
+        isGlobalCompletion: false,
+        isMemberCompletion: false,
+        isNewIdentifierLocation: false,
+      };
     };
 
     proxy.getCompletionEntrySymbol = (filename, position, bane, source) => {

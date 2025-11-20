@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'node:path';
 import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import { Constants } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
@@ -96,6 +97,59 @@ export const listenForkEvent = <A, R>(
   event: vscode.Event<A>,
   f: (data: A) => Effect.Effect<void, never, R>,
 ) => Effect.forkScoped(listenDisposableEvent(event, f));
+
+export const activateTwinTsPlugin = Effect.gen(function* () {
+  const tsExtension = yield* Effect.fromNullable(
+    vscode.extensions.getExtension('vscode.typescript-language-features'),
+  );
+  const tsExtensionActive = yield* Effect.if(
+    Effect.sync(() => !tsExtension.isActive),
+    {
+      onFalse: () =>
+        Effect.promise(() => tsExtension.activate()).pipe(
+          Effect.andThen(() => tsExtension.isActive),
+        ),
+      onTrue: () => Effect.succeed(tsExtension.isActive),
+    },
+  );
+  if (!tsExtensionActive) {
+    yield* Effect.logDebug('Cant activate tsserver extension');
+  }
+  const tsAPi = yield* Effect.sync(() => tsExtension.exports.getAPI(0));
+
+  const twinConfig = yield* extensionConfigState(Constants.DEFAULT_PLUGIN_CONFIG);
+  const currentConfig = yield* twinConfig.get.pipe(Effect.andThen(normalizeTwinConfig));
+
+  yield* twinConfig.changes.pipe(
+    Stream.mapEffect((config) => normalizeTwinConfig(config)),
+    Stream.runForEach((config) =>
+      Effect.sync(() => tsAPi.configurePlugin(Constants.pluginId, config)),
+    ),
+    Effect.fork,
+  );
+  tsAPi.configurePlugin(Constants.pluginId, currentConfig);
+}).pipe(Effect.scoped);
+
+const normalizeTwinConfig = (config: Effect.Effect.Success<ExtensionConfigRef['get']>) =>
+  Effect.gen(function* () {
+    let configPath = config.configPath;
+    if (!configPath || !path.isAbsolute(configPath)) {
+      const findFiles = yield* thenable(() =>
+        vscode.workspace.findFiles(
+          '**/{tailwind,twin,nativeTwin,native-twin}.config.{ts,js,mjs,cjs}',
+          '**/node_modules/**',
+          1,
+        ),
+      );
+      if (findFiles.length > 0) configPath = findFiles[0].path;
+    }
+    return {
+      ...config,
+      // @ts-expect-error
+      name: Constants.pluginId,
+      configPath,
+    } satisfies NativeTwinPluginConfiguration;
+  });
 
 /**
  *

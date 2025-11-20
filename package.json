@@ -13,6 +13,7 @@
     "packages/*",
     "packages/dev-tools/webui",
     "sites/twin.run",
+    "!packages/ts-plugin/typescript-internals",
     "apps/*"
   ],
   "resolutions": {

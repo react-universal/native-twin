@@ -2,9 +2,9 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as Stream from 'effect/Stream';
 import type ts from 'typescript';
-import type { TwinDslModels } from '../../plugin/TwinDsl.models';
+import type { TwinDslModels } from '../models/TwinDsl.models';
 
-export class TwinTypescriptFile implements Equal.Equal {
+export class TwinSourceFile implements Equal.Equal {
   private sourceFile: ts.SourceFile;
   jsxDeclarators: TwinDslModels.NodeJSXDeclarator[];
   id: string;
@@ -49,7 +49,7 @@ export class TwinTypescriptFile implements Equal.Equal {
   }
 
   [Equal.symbol](that: unknown) {
-    return that instanceof TwinTypescriptFile && that.id === this.id;
+    return that instanceof TwinSourceFile && that.id === this.id;
   }
 }
 

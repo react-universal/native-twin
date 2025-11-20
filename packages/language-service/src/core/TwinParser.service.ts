@@ -7,7 +7,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Trie from 'effect/Trie';
-import * as TwinParserModel from './models/TwinParser.models';
+import * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuntimeContext } from './TwinRuntime.service';
 
 const make = Effect.gen(function* () {

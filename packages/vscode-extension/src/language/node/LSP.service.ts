@@ -4,6 +4,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import { VscodeContext } from '../../extension/extension.service';
+import { activateTwinTsPlugin } from '../../extension/extension.utils';
 import { createFileWatchers, getColorDecoration, getConfigFiles } from '../common/language.utils';
 
 export const LanguageClientLive = Effect.gen(function* () {
@@ -11,6 +12,7 @@ export const LanguageClientLive = Effect.gen(function* () {
   const extensionCtx = yield* VscodeContext;
 
   yield* createFileWatchers;
+  yield* activateTwinTsPlugin;
 
   // const debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };
 
@@ -85,8 +87,6 @@ export const LanguageClientLive = Effect.gen(function* () {
   //     yield* Effect.log('Client restarted');
   //   }),
   // );
-
-  
 }).pipe(
   Effect.withLogSpan('LanguageServiceClient'),
   Effect.onError((error) => Effect.logError('ERROR: ', Cause.prettyErrors(error))),
