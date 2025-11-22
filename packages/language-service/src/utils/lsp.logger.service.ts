@@ -1,8 +1,8 @@
 import * as Ansi from '@effect/printer-ansi/Ansi';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
 import * as AnsiColor from '@effect/printer-ansi/Color';
-import { Effect } from 'effect';
 import * as RA from 'effect/Array';
+import * as Effect from 'effect/Effect';
 import * as FiberId from 'effect/FiberId';
 import { apply, pipe } from 'effect/Function';
 import * as Iterable from 'effect/Iterable';

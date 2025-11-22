@@ -2,7 +2,6 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
 import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
-import { NativeTwinManagerService } from '../services/NativeTwinManager.service.js';
 import { getDocumentTemplatesColors } from '../utils/language/colorInfo.utils.js';
 
 export const getDocumentColors = Effect.fn(function* (
@@ -12,11 +11,11 @@ export const getDocumentColors = Effect.fn(function* (
   _resultProgress: vscode.ResultProgressReporter<vscode.ColorInformation[]> | undefined,
 ) {
   const documentsHandler = yield* TwinLSPDocumentContext;
-  const twinService = yield* NativeTwinManagerService;
+  const twinService: any = {};
   const document = yield* documentsHandler.getDocument(params.textDocument.uri);
   if (document._tag === 'None') return [];
 
-  const languageRegions = yield* documentsHandler.getLanguageRegions(document.value);
+  const languageRegions = [] as any;
 
   return Option.map(document, (x) =>
     getDocumentTemplatesColors(twinService, x, languageRegions),

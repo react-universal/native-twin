@@ -32,6 +32,10 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return this.textDocument.uri;
   }
 
+  getDocument() {
+    return this.textDocument;
+  }
+
   get version() {
     return this.textDocument.version;
   }

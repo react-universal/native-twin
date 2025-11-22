@@ -1,6 +1,6 @@
 import { assert, describe, expect, it } from '@effect/vitest';
 import { Effect } from 'effect';
-import { TwinParserContext } from '../src/twin/TwinParser.service';
+import { TwinParserContext } from '../src/core/TwinParser.service';
 import { runTwinParser, TestLayer } from './dsl';
 
 describe('Twin Parser Service %s', () => {

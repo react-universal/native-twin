@@ -13,11 +13,23 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
+  "imports": {
+    "#internal/*": {
+      "types": "./build/dts/internal/*",
+      "default": "./build/esm/internal/*",
+      "require": "./build/cjs/internal/*"
+    }
+  },
   "exports": {
     ".": {
       "types": "./build/dts/index.d.ts",
       "import": "./build/esm/index.js",
       "default": "./build/cjs/index.js"
+    },
+    "./Services": {
+      "types": "./build/dts/Services.d.ts",
+      "import": "./build/esm/Services.js",
+      "default": "./build/cjs/Services.js"
     },
     "./browser": {
       "types": "./build/dts/browser.d.ts",
@@ -44,7 +56,7 @@
     "build:watch": "npx twin pack-dev -w",
     "clean": "rm -rf build",
     "lint": "biome lint",
-    "test": "NODE_OPTIONS='--no-experimental-detect-module' yarn vitest",
+    "test": "yarn vitest",
     "bench": "NODE_OPTIONS='--no-experimental-detect-module' VITE_CJS_IGNORE_WARNING=true npx vitest bench --no-isolate",
     "vscode:dev": "tsc -p tsconfig.build.json --watch"
   },

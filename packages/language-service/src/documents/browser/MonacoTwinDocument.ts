@@ -1,7 +1,6 @@
 import type * as vscode from 'vscode';
 import * as Data from 'effect/Data';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
-import type { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
 import { BaseTwinTextDocument } from '../common/BaseTwinDocument.js';
 
 interface TwinTokenLocation {
@@ -19,7 +18,7 @@ export const TwinTokenLocation = Data.tagged<TwinTokenLocation>('TwinTokenLocati
 export class TwinMonacoTextDocument extends BaseTwinTextDocument {
   constructor(
     document: VSCDocument.TextDocument | vscode.TextDocument,
-    config: NativeTwinPluginConfiguration,
+    // config: NativeTwinPluginConfiguration,
   ) {
     super(
       VSCDocument.TextDocument.create(
@@ -28,7 +27,7 @@ export class TwinMonacoTextDocument extends BaseTwinTextDocument {
         document.version,
         document.getText(),
       ),
-      config,
+      // config,
     );
   }
 

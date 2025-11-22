@@ -30,7 +30,6 @@
         "${workspaceFolder}/project-fixture"
       ],
       "env": {
-        "TSS_DEBUG": "5999",
         "NODE_NO_WARNINGS": "1"
       },
       "outFiles": [

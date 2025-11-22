@@ -4,9 +4,9 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
+import type { TwinRuleCompletion } from '../../internal/TwinTypes.internal.js';
 import { VscodeCompletionItem } from '../../lsp/models/completion.model.js';
 import type { TemplateTokenData } from '../../lsp/models/template-token.model.js';
-import type { TwinRuleCompletion, TwinStore } from '../../twin/models/native-twin.types.js';
 import { compareTwinRuleWithClassName } from './completion.ap.js';
 import { getDocumentationMarkdown } from './language.utils.js';
 
@@ -22,17 +22,17 @@ export const createCompletionEntryDetails = (
   },
 });
 
-export const getAllCompletionRules = (ruleCompletions: TwinStore, range: vscode.Range) => {
+export const getAllCompletionRules = (ruleCompletions: any, range: vscode.Range) => {
   const rules = pipe(
     ruleCompletions.twinRules,
     ReadonlyArray.fromIterable,
-    ReadonlyArray.filter((x) => !x.completion.className.startsWith('-')),
-    ReadonlyArray.map((y) => new VscodeCompletionItem(y, range, y.completion.className)),
+    ReadonlyArray.filter((x: any) => !x.completion.className.startsWith('-')),
+    ReadonlyArray.map((y: any) => new VscodeCompletionItem(y, range, y.completion.className)),
   );
   return pipe(
     ruleCompletions.twinVariants,
     ReadonlyArray.fromIterable,
-    ReadonlyArray.map((x) => new VscodeCompletionItem(x, range, x.name)),
+    ReadonlyArray.map((x: any) => new VscodeCompletionItem(x, range, x.name)),
     ReadonlyArray.appendAll(rules),
   );
 };

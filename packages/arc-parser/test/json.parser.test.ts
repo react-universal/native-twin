@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import pkgJson from '../package.json?raw';
+import pkgJson from '../package.json';
 import * as P from '../src/index.js';
 
 type AnyType = string | number | boolean | number | null | object | AnyType[];
@@ -55,14 +55,14 @@ const parser = betweenSquareBrackets(separatedByComma(value));
 
 describe('Parsers', () => {
   it('Parse package.json', () => {
-    const result = JSONValue.run(pkgJson); //?
+    const result = JSONValue.run(JSON.stringify(pkgJson)); //?
     let message = '';
     if (result.isError) {
       message = result.error ?? '';
     }
     expect(result.isError, message).toBeFalsy();
     if (!result.isError) {
-      expect(result.result).toStrictEqual(JSON.parse(pkgJson));
+      expect(result.result).toStrictEqual(JSON.parse(JSON.stringify(pkgJson)));
     }
     P.everyCharUntil;
   });

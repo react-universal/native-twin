@@ -6,12 +6,11 @@ import type * as vscode from 'vscode-languageserver';
 import { Color, Range } from 'vscode-languageserver-types';
 import type { DocumentLanguageRegion } from '../../browser.js';
 import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
+import type { TwinRuleCompletion } from '../../internal/TwinTypes.internal.js';
 import type { TemplateTokenData } from '../../lsp/models/template-token.model.js';
-import type { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
-import type { TwinRuleCompletion } from '../../twin/models/native-twin.types.js';
 
 export const getDocumentTemplatesColors = (
-  twinService: NativeTwinManagerService['Type'],
+  twinService: any,
   twinDocument: BaseTwinTextDocument,
   languageRegions: DocumentLanguageRegion[],
 ) =>
@@ -26,7 +25,7 @@ export const getDocumentTemplatesColors = (
 /** File private */
 export const templateTokenToColorInfo = (
   templateNode: TemplateTokenData,
-  twinService: NativeTwinManagerService['Type'],
+  twinService: any,
   twinDocument: BaseTwinTextDocument,
 ): vscode.ColorInformation[] => {
   const range = Range.create(
@@ -36,10 +35,10 @@ export const templateTokenToColorInfo = (
   const templateFilter = templateNode.adjustColorInfo(range);
   return twinService.completions.twinRules.pipe(
     ReadonlyArray.fromIterable,
-    ReadonlyArray.filterMap((y) =>
+    ReadonlyArray.filterMap((y: any) =>
       y.completion.className === templateFilter.className ? Option.some(y) : Option.none(),
     ),
-    ReadonlyArray.filter((x) => x.rule.themeSection === 'colors'),
+    ReadonlyArray.filter((x: any) => x.rule.themeSection === 'colors'),
     ReadonlyArray.map((x): vscode.ColorInformation => completionRuleToColorInfo(x, range)),
   );
 };

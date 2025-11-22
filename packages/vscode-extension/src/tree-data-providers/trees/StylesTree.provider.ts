@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { NativeTwinManagerService } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as ScopedRef from 'effect/ScopedRef';
@@ -19,7 +18,6 @@ type VscodeTreeNode = TreeInfoNode;
 export const StylesTreeProviderLive = makeTreeDataProvider<VscodeTreeNode>('nativeTwin-styles')(
   (refresh) => {
     return Effect.gen(function* () {
-      yield* NativeTwinManagerService;
       const currentClient = yield* ScopedRef.make<void>(() => void 0);
       let nodes: Array<TreeInfoNode> = [];
       Effect.gen(function* () {

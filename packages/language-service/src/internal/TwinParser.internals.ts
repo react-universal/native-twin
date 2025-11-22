@@ -1,15 +1,15 @@
 import { __defaultRuleMeta, type RuleMeta } from '@native-twin/core';
 import type { CompleteStyle } from '@native-twin/css';
+import { hasOwnProperty } from '@native-twin/helpers';
 import * as HashSet from 'effect/HashSet';
+import * as TwinParserModel from '../models/TwinParser.models';
+import type { TwinRuleComposer } from '../models/TwinRuleHandler';
 import type {
   AnyInternalTwinRule,
   BuildStyledContext,
   InternalNativeTwinRule,
   InternalTwinConfig,
-} from '../internal/TwinTypes.internal';
-import * as TwinParserModel from '../models/TwinParser.models';
-import type { TwinRuleComposer } from '../models/TwinRuleHandler';
-import * as Predicates from './TwinParser.predicates';
+} from './TwinTypes.internal';
 
 export const sanitizeClassName = (themeRule: TwinRuleComposer, key: string) => {
   const className = themeRule.pattern.endsWith('-')
@@ -71,20 +71,20 @@ export const createComposedClasses = (
   const nextToken = groupContent.shift();
   if (!nextToken) return results;
 
-  if (Predicates.isAnyTokenExceptGroup(nextToken)) {
+  if (isAnyTokenExceptGroup(nextToken)) {
     results.push(
       createComposedClass(nextToken, composedClassInfo(nextToken, { text, start: parentStarts })),
     );
     return createComposedClasses(groupContent, text, parentStarts, results);
   }
 
-  if (Predicates.isGroupToken(nextToken)) {
+  if (isGroupToken(nextToken)) {
     const newContent = createComposedClasses(
       nextToken.composes,
-      text.slice(nextToken.base.start, nextToken.base.end),
+      text.slice(nextToken.base.range.pos, nextToken.base.range.end),
       parentStarts,
     ).map((x) => {
-      x.text = text.slice(x.loc.start, x.loc.end);
+      x.text = text.slice(x.loc.range.pos, x.loc.range.end);
       return x;
     });
 
@@ -109,11 +109,14 @@ const composedClassInfo = (
   token: TwinParserModel.AnyTwinClassToken,
   fullClass: { text: string; start: number },
 ): TwinParserModel.ComposedClassInfo => {
-  const tokenText = fullClass.text.slice(token.start, token.end);
-  const loc: TwinParserModel.WithLocation = { start: token.start, end: token.end };
+  const tokenText = fullClass.text.slice(token.range.pos, token.range.end);
+  const loc: TwinParserModel.WithLocation = {
+    range: token.range,
+    originalRange: token.originalRange,
+  };
   const documentLoc: TwinParserModel.WithLocation = {
-    start: token.start + fullClass.start,
-    end: token.end + fullClass.start,
+    range: token.range,
+    originalRange: token.originalRange,
   };
   const variants: string[] = [];
   let classNameText = tokenText;
@@ -179,3 +182,28 @@ export function createStyledContext(rem: number): BuildStyledContext {
     },
   };
 }
+
+export const isTokenType =
+  <A extends string>(type: A) =>
+  (token: unknown): token is { type: A } => {
+    const isUndef = typeof token === 'undefined';
+    return !isUndef && hasOwnProperty.call(token, 'type') && (token as any)['type'] === type;
+  };
+
+export const isGroupToken = isTokenType('GROUP');
+export const isArbitraryToken = isTokenType('ARBITRARY');
+export const isClassNameToken = isTokenType('CLASS_NAME');
+export const isVariantClassToken = isTokenType('VARIANT_CLASS');
+export const isComposedClassName = isTokenType('ComposedClass');
+export const isComposedClassGroup = isTokenType('ComposedGroup');
+
+export const isAnyTokenExceptGroup = (x: unknown) =>
+  isClassNameToken(x) || isArbitraryToken(x) || isVariantClassToken(x);
+
+export const isComposedNodeAtOffset = (
+  node: TwinParserModel.AnyTwinComposedClass,
+  documentOffset: number,
+) => isOffsetAtLocation(documentOffset, node.documentLoc);
+
+export const isOffsetAtLocation = (offset: number, location: TwinParserModel.WithLocation) =>
+  offset >= location.originalRange.pos && offset <= location.originalRange.end;

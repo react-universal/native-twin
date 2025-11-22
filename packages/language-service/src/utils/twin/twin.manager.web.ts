@@ -1,11 +1,4 @@
-import {
-  createTailwind,
-  createThemeContext,
-  cx,
-  defineConfig,
-  setup,
-  tx,
-} from '@native-twin/core';
+import { createTailwind, createThemeContext, cx, defineConfig, setup, tx } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 import * as RA from 'effect/Array';
@@ -17,9 +10,8 @@ import type {
   InternalTwinConfig,
   InternalTwinThemeContext,
   TwinRuleCompletion,
-  TwinStore,
   TwinVariantCompletion,
-} from '../../twin/models/native-twin.types.js';
+} from '../../internal/TwinTypes.internal';
 import { DEFAULT_TWIN_CONFIG } from '../constants.utils.js';
 import { createStyledContext } from '../sheet.utils.js';
 import { createTwinStore } from './native-twin.utils.js';
@@ -28,7 +20,7 @@ export class MonacoNativeTwinManager {
   tw: InternalTwFn;
   context: InternalTwinThemeContext;
   userConfig: InternalTwinConfig = DEFAULT_TWIN_CONFIG;
-  completions: TwinStore = {
+  completions: any = {
     twinRules: HashSet.empty<TwinRuleCompletion>(),
     twinVariants: HashSet.empty<TwinVariantCompletion>(),
   };

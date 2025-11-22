@@ -6,7 +6,7 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { JSXNode, type TwinDslModels } from '../models/TwinDsl.models';
 
 const make = Effect.gen(function* () {
@@ -159,7 +159,7 @@ const make = Effect.gen(function* () {
             classProp,
             styleProp,
             node: attrNode,
-            ...getJSXAttributeValue(attrNode),
+            ...getJSXAttributeValue(attrNode, sourceFile),
           }),
         ),
     );
@@ -167,6 +167,7 @@ const make = Effect.gen(function* () {
 
   const getJSXAttributeValue = (
     node: ts.JsxAttribute,
+    sourceFile?: ts.SourceFile,
   ): Pick<
     TwinDslModels.NodeStyledProp,
     'expression' | 'originalText' | 'twinCX' | 'valueTextNode'
@@ -183,7 +184,7 @@ const make = Effect.gen(function* () {
     const initializer = node.initializer;
     if (!initializer) return result;
     if (ts.isStringLiteral(initializer)) {
-      result.originalText = initializer.text;
+      result.originalText = initializer.getText(sourceFile);
       result.twinCX = cx`${result.originalText}`;
       return result;
     }
@@ -197,7 +198,7 @@ const make = Effect.gen(function* () {
         return result;
       }
       if (ts.isNoSubstitutionTemplateLiteral(expression)) {
-        result.originalText = expression.text;
+        result.originalText = expression.getText(sourceFile);
         result.twinCX = cx`${result.originalText}`;
         result.valueTextNode = expression;
         return result;
@@ -237,6 +238,7 @@ const make = Effect.gen(function* () {
     getNodeSourceFile,
     findNodeAtOffset,
     getNodeOffset,
+    getJSXElementAttributes,
     getJSXNodeTwinInfo,
     getJSXMappedProps,
     isJSXElementLike,

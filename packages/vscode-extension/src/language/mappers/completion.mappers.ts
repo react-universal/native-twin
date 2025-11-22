@@ -3,14 +3,13 @@ import {
   filterTokensFromRules,
   getCompletionEntryDetailsDisplayParts,
   type TemplateTokenData,
-  type TwinRuleCompletion,
 } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import type { TwinTextDocument } from '../common/TwinTextDocument.model';
 
 export const completionRulesToVscodeCompletionItems = (
   flattenTemplateTokens: ReadonlyArray<TemplateTokenData>,
-  ruleCompletions: ReadonlyArray<TwinRuleCompletion>,
+  ruleCompletions: ReadonlyArray<any>,
   document: TwinTextDocument,
 ): vscode.CompletionItem[] => {
   const filtered = filterTokensFromRules(flattenTemplateTokens, ruleCompletions);

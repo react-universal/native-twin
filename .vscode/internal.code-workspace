@@ -76,30 +76,18 @@
     "[typescript]": {
       "editor.defaultFormatter": "biomejs.biome"
     },
-    "vitest.ignoreWorkspace": false,
-    "vitest.disableWorkspaceWarning": true,
-    "vitest.workspaceConfig": "./vitest.workspace.ts",
     "cSpell.ignoreRandomStrings": true,
-    "cSpell.unknownWords": "report-common-typos"
-  },
-  "launch": {
-    "configurations": [
-      {
-        "name": "Launch expo-app",
-        "type": "radon-ide",
-        "request": "launch",
-        "appRoot": "./apps/expo-app",
-        "metroConfigPath": "./apps/expo-app/metro.config.js",
-        "env": {},
-        "ios": {
-          "configuration": "Debug"
-        },
-        "isExpo": true,
-        "android": {
-          "buildType": "debug"
-        },
-        "usePrebuild": false
-      }
-    ]
+    "cSpell.unknownWords": "report-common-typos",
+    "terminal.integrated.suggest.enabled": true,
+    "terminal.integrated.suggest.quickSuggestions": {
+      "commands": "on",
+      "arguments": "on",
+      "unknown": "off"
+    },
+    "chat.disableAIFeatures": true,
+    "terminal.integrated.suggest.providers": {
+      "lsp": true,
+      "vscode.terminal-suggest": true
+    }
   }
 }

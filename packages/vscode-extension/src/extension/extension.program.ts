@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Constants, withRuntimeConfig } from '@native-twin/language-service';
+import { Constants, LSPConfig } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';
@@ -8,7 +8,9 @@ import * as Scope from 'effect/Scope';
 import { VscodeContext } from './extension.service';
 import { extensionConfigState, registerEditorCommand, thenable } from './extension.utils';
 
-export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext>) => {
+export const launchExtension = <E>(
+  layer: Layer.Layer<never, E, VscodeContext | LSPConfig.TypeScriptPluginConfig>,
+) => {
   return Effect.gen(function* () {
     const context = yield* VscodeContext;
     const scope = yield* Scope.make();
@@ -39,19 +41,22 @@ export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext>) 
     const twinFilePath = files[0]?.path;
     const rootDir = vscode.workspace.workspaceFolders?.[0]?.uri?.path ?? process.cwd();
 
-    const mainLayer = layer.pipe(
-      Layer.provide(
-        withRuntimeConfig({
+    const configLayer = Layer.succeed(
+      LSPConfig.TypeScriptPluginConfig,
+      LSPConfig.TypeScriptPluginConfig.of(
+        LSPConfig.parsePluginConfig({
+          rootDir,
           debug: currentConfig.debug,
           enable: currentConfig.enable,
           functions: currentConfig.functions,
           jsxAttributes: currentConfig.jsxAttributes,
-          rootDir,
-          twinConfigPath: twinFilePath,
-          trace: currentConfig.trace.server,
+          configPath: twinFilePath,
+          tsConfigPath: currentConfig.tsConfigPath,
+          trace: { server: currentConfig.trace.server },
         }),
       ),
     );
+    const mainLayer = layer.pipe(Layer.provideMerge(configLayer));
     yield* Layer.buildWithScope(mainLayer, scope);
   }).pipe(Effect.catchAllCause((cause) => Effect.logFatal('FATAL: ', Cause.prettyErrors(cause))));
 };

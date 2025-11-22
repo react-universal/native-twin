@@ -10,6 +10,7 @@ declare module './HKT' {
     Option: Option<A>;
     IO: IO<A>;
     Task: Task<A>;
+    OptionList: Option<List<A>>;
   }
 
   interface URItoKind2<E, A> {

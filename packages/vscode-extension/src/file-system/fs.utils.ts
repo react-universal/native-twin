@@ -1,17 +1,10 @@
 import * as vscode from 'vscode';
-import {
-  NativeTwinManagerService,
-  type NativeTwinPluginConfiguration,
-} from '@native-twin/language-service';
+import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
-import * as Chunk from 'effect/Chunk';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import * as Stream from 'effect/Stream';
-import path from 'path';
 import { VscodeContext } from '../extension/extension.service';
-import { thenable } from '../extension/extension.utils';
 import { TwinTextDocument } from '../language/common/TwinTextDocument.model';
 import * as fsPredicates from './fs.predicates';
 import {
@@ -79,27 +72,27 @@ export const getTwinTextDocumentByUri = (
   };
 };
 
-export const getTwinObservedFiles = Effect.gen(function* () {
-  const twin = yield* NativeTwinManagerService;
+// export const getTwinObservedFiles = Effect.gen(function* () {
+//   const twin = yield* NativeTwinManagerService;
 
-  return yield* Stream.fromIterable(twin.tw.config.content).pipe(
-    Stream.mapEffect((x) => thenable(() => vscode.workspace.findFiles(path.join(x)))),
-    Stream.flattenIterables,
-    Stream.filter((uri) => twin.isAllowedPath(uri.path)),
-    Stream.runCollect,
-    Effect.map(Chunk.toArray),
-  );
-});
+//   return yield* Stream.fromIterable(twin.tw.config.content).pipe(
+//     Stream.mapEffect((x) => thenable(() => vscode.workspace.findFiles(path.join(x)))),
+//     Stream.flattenIterables,
+//     Stream.filter((uri) => twin.isAllowedPath(uri.path)),
+//     Stream.runCollect,
+//     Effect.map(Chunk.toArray),
+//   );
+// });
 
 export const getVscodeFS = Effect.gen(function* () {
   const ctx = yield* VscodeContext;
-  const validTextFiles = yield* getTwinObservedFiles;
+  // const validTextFiles = yield* getTwinObservedFiles;
   const watcher = vscode.workspace.createFileSystemWatcher('**/*');
 
   ctx.subscriptions.push(watcher);
 
   return {
-    validTextFiles,
+    validTextFiles: [] as vscode.Uri[],
     watcher,
   };
 });

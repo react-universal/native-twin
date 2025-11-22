@@ -2,7 +2,6 @@ import type * as vscode from 'vscode';
 import {
   DEFAULT_PLUGIN_CONFIG,
   getCompletionsForTokens,
-  NativeTwinManagerService,
   parseTemplate,
   type TemplateTokenWithText,
 } from '@native-twin/language-service';
@@ -21,7 +20,6 @@ const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) =
 };
 
 const make = Effect.gen(function* () {
-  const twin = yield* NativeTwinManagerService;
 
   const config = yield* Effect.flatMap(extensionConfigState(DEFAULT_PLUGIN_CONFIG), (x) => x.get);
 
@@ -37,7 +35,7 @@ const make = Effect.gen(function* () {
         }),
         Option.flatMap((tokens) => getParsedNodeAtOffset(tokens, cursorOffset)),
         Option.map((parsedNode) => {
-          const tokens = getCompletionsForTokens(parsedNode.flattenToken, twin);
+          const tokens = getCompletionsForTokens(parsedNode.flattenToken, []);
           return completionRulesToVscodeCompletionItems(
             parsedNode.flattenToken,
             tokens,

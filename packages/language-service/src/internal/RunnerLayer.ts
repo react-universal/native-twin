@@ -1,23 +1,22 @@
 import * as Layer from 'effect/Layer';
 import { type JSXParser, JSXParserLive } from '../core/JSXParser.service';
-import type * as LSPConfig from '../core/LanguageConfig.service';
-import type * as TsApi from '../core/TypescriptAPI.service';
+import type { LSPConfig } from '../core/LanguageConfig.service';
+import { TwinGraphLive } from '../core/TwinGraph.service';
+import { type TwinParserContext, TwinParserContextLive } from '../core/TwinParser.service';
+import { type TwinRuntimeContext, TwinRuntimeContextLive } from '../core/TwinRuntime.service';
 import { type TypescriptUtils, TypescriptUtilsLive } from '../core/TypescriptUtils.service';
-import { type TwinParserContext, TwinParserContextLive } from '../twin/TwinParser.service';
-import { type TwinRuntimeContext, TwinRuntimeContextLive } from '../twin/TwinRuntime.service';
 
-export type TwinPluginLayerReq =
-  | LSPConfig.TypeScriptPluginConfig
-  | TsApi.TypeScriptApi
-  | TsApi.TypeScriptProgram
-  | TypescriptUtils
+export type TwinLSPAdapterLayerIn =
   | TwinParserContext
   | TwinRuntimeContext
-  | JSXParser;
+  | JSXParser
+  | TypescriptUtils
+  | LSPConfig;
 
-export const LSPMainLayer = Layer.empty.pipe(
+export const LSPBaseLayerLive = Layer.empty.pipe(
+  Layer.provideMerge(Layer.suspend(() => TwinGraphLive)),
   Layer.provideMerge(JSXParserLive),
-  Layer.provideMerge(TwinParserContextLive),
-  Layer.provideMerge(TwinRuntimeContextLive),
+  Layer.provideMerge(Layer.suspend(() => TwinParserContextLive)),
+  Layer.provideMerge(Layer.suspend(() => TwinRuntimeContextLive)),
   Layer.provideMerge(TypescriptUtilsLive),
 );

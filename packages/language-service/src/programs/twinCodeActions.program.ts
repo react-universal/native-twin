@@ -7,7 +7,7 @@ import * as vscodeLSP from 'vscode-languageserver-protocol';
 import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument.js';
 import type { DocumentLanguageRegion } from '../documents/common/LanguageRegion.model.js';
 import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
-import { TwinDiagnosticCodes, VscodeDiagnosticItem } from '../lsp/models/diagnostic.model.js';
+import { type TwinDiagnosticCodes, VscodeDiagnosticItem } from '../lsp/models/diagnostic.model.js';
 import { diagnosticProviderSource } from '../utils/constants.utils.js';
 
 export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.CodeActionParams) {
@@ -39,26 +39,27 @@ export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.Cod
       }),
     );
   });
+  console.log(diagnostics.length);
   // const startOffset = document.positionToOffset(params.range.start);
   // const endOffset = document.positionToOffset(params.range.start);
 
-  const region = yield* docHandler.findTokenAtPosition(document, params.range.start);
+  // const region = yield* docHandler.findTokenAtPosition(document, params.range.start);
 
-  const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
-    Option.map(region, (region) =>
-      getDuplicatedDeclarationCodeAction(
-        document,
-        region,
-        RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
-      ),
-    ),
-    Option.getOrElse(() => []),
-  );
+  // const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
+  //   Option.map(region, (region) =>
+  //     getDuplicatedDeclarationCodeAction(
+  //       document,
+  //       region,
+  //       RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
+  //     ),
+  //   ),
+  //   Option.getOrElse(() => []),
+  // );
 
-  return [...editsForDuplicatedDeclarations];
+  return [];
 });
 
-const getDuplicatedDeclarationCodeAction = (
+export const ___getDuplicatedDeclarationCodeAction = (
   twinDoc: BaseTwinTextDocument,
   region: DocumentLanguageRegion,
   diagnostics: VscodeDiagnosticItem[],

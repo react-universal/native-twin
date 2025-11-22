@@ -28,33 +28,33 @@ export interface Monoid<A> extends SemiGroup<A> {
 // alphabets += '0123456789';
 // alphabets += '!"·$%&/()=?¿*^¨Ç;:_,.-ºª ';
 // const caeserGroup: Group<number> = {
-//   concat: (x, y) => (x + y) % alphabets.length,
-//   empty: 0,
-//   inverse: (a) => (alphabets.length - a) % alphabets.length,
+  // concat: (x, y) => (x + y) % alphabets.length,
+  // empty: 0,
+  // inverse: (a) => (alphabets.length - a) % alphabets.length,
 // };
-
+// 
 // const encrypt: Encrypt = (plainText, key) =>
-//   plainText
-//     .split('')
-//     .map((x) => {
-//       const index = alphabets.indexOf(x);
-
-//       if (index === -1) return x;
-
-//       const newIndex = caeserGroup.concat(index, key);
-//       return alphabets[newIndex];
-//     })
-//     .join('');
-
+  // plainText
+    // .split('')
+    // .map((x) => {
+      // const index = alphabets.indexOf(x);
+// 
+      // if (index === -1) return x;
+// 
+      // const newIndex = caeserGroup.concat(index, key);
+      // return alphabets[newIndex];
+    // })
+    // .join('');
+// 
 // const decrypt: Decrypt = (cipherText, key) =>
-//   encrypt(cipherText, caeserGroup.inverse(key));
-
+  // encrypt(cipherText, caeserGroup.inverse(key));
+// 
 // const originalText = 'Hello world! 123';
-// const encrypted = encrypt(originalText, 7);
-
+// const encrypted = encrypt(originalText, 67);
+// 
 // type Encrypt = (plainText: string, key: number) => string;
 // type Decrypt = (cipherText: string, key: number) => string;
-
+// 
 // console.log(originalText);
 // console.log(encrypted);
-// console.log(decrypt(encrypted, 7));
+// console.log(decrypt(encrypted, 67));

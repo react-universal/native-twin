@@ -1,4 +1,4 @@
-import type { RuleMeta } from '@native-twin/core';
+import { __defaultRuleMeta, type RuleMeta } from '@native-twin/core';
 import { cornerMap, directionMap, type TWScreenValueConfig } from '@native-twin/css';
 import { asArray, type ColorsRecord } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
@@ -8,13 +8,12 @@ import type {
   InternalNativeTwinRule,
   TwinRuleCompletion,
   TwinRuleParts,
-} from '../../twin/models/native-twin.types.js';
-import { DEFAULT_RULE_META } from '../constants.utils.js';
+} from '../../internal/TwinTypes.internal';
 
 export function getRuleParts(rule: InternalNativeTwinRule): TwinRuleParts {
   const pattern = rule[0];
   const resolver = rule[2];
-  const meta = rule[3] ?? DEFAULT_RULE_META;
+  const meta = rule[3] ?? __defaultRuleMeta;
   let themeSection: TwinRuleParts['themeSection'];
   let property: TwinRuleParts['property'];
 

@@ -4,7 +4,7 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import { TwinRuntimeContext } from '../twin/TwinRuntime.service.js';
+import { TwinRuntimeContext } from '../core/TwinRuntime.service.js';
 import {
   DEFAULT_PLUGIN_CONFIG,
   type NativeTwinPluginConfiguration,

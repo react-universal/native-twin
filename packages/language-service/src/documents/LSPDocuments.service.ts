@@ -17,18 +17,18 @@ import { DocumentLanguageRegion } from './common/LanguageRegion.model.js';
 export interface DocumentsServiceShape {
   handler: lsp.TextDocuments<TextDocument>;
   getDocument: (uri: string) => Effect.Effect<Option.Option<BaseTwinTextDocument>>;
-  setupConnection(connection: lsp.Connection): void;
-  getRegionAt: (
-    twinDoc: BaseTwinTextDocument,
-    location: t.SourceLocation,
-  ) => DocumentLanguageRegion;
-  getLanguageRegions: <T extends BaseTwinTextDocument>(
-    document: T,
-  ) => Effect.Effect<DocumentLanguageRegion[], never, never>;
-  findTokenAtPosition: (
-    twinDocument: BaseTwinTextDocument,
-    position: lsp.Position,
-  ) => Effect.Effect<Option.Option<DocumentLanguageRegion>>;
+  setupConnection(connection?: lsp.Connection): void;
+  // getRegionAt: (
+  //   twinDoc: BaseTwinTextDocument,
+  //   location: t.SourceLocation,
+  // ) => DocumentLanguageRegion;
+  // getLanguageRegions: <T extends BaseTwinTextDocument>(
+  //   document: T,
+  // ) => Effect.Effect<DocumentLanguageRegion[], never, never>;
+  // findTokenAtPosition: (
+  //   twinDocument: BaseTwinTextDocument,
+  //   position: lsp.Position,
+  // ) => Effect.Effect<Option.Option<DocumentLanguageRegion>>;
 }
 
 export interface TwinLSPDocumentContext extends DocumentsServiceShape {}
@@ -47,13 +47,9 @@ const make = Effect.fn(function* (
   const config = yield* LSPConfigService;
 
   const acquireDocument = (uri: string) =>
-    Effect.gen(function* () {
-      const currentConfig = yield* config.get;
-      return Option.map(
-        Option.fromNullable(handler.get(uri)),
-        (x) => new DocumentConstructor(x, currentConfig.vscode),
-      );
-    });
+    Effect.sync(() =>
+      Option.map(Option.fromNullable(handler.get(uri)), (x) => new DocumentConstructor(x)),
+    );
 
   const getLanguageRegions = Effect.fn(function* (twinDoc: BaseTwinTextDocument) {
     const currentConfig = yield* config.get;

@@ -15,14 +15,16 @@ import type {
 } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
-import * as Predicates from '../core/TwinParser.predicates';
-import { createComposedClasses } from '../core/TwinParser.utils';
-import type { TwinRuleCompletion } from '../internal/TwinTypes.internal';
+import type ts from 'typescript';
+import type { TwinRuleCompletion } from '#internal/TwinTypes.internal.js';
+import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
+import type * as LSPTypes from '../internal/LSPAdapterSpec';
+import { VscodeCompletionItem } from '../lsp/models/completion.model';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
 export interface WithLocation {
-  start: number;
-  end: number;
+  range: ts.TextRange;
+  originalRange: ts.TextRange;
 }
 
 export interface TwinClassNameToken extends WithLocation, ClassNameToken {}
@@ -136,6 +138,10 @@ export class TwinRuleRegistry {
     this.pattern = composer.pattern;
   }
 
+  toVscode(_document: BaseTwinTextDocument, range: LSPTypes.LSPRange): VscodeCompletionItem {
+    return new VscodeCompletionItem(this.toRuleCompletion(), range, this.className);
+  }
+
   toRuleCompletion(): TwinRuleCompletion {
     return {
       completion: {
@@ -157,66 +163,65 @@ export class TwinRuleRegistry {
   }
 }
 
+// export class TwinParseResultHandler {
+//   nodes: AnyTwinComposedClass[];
+//   parserInput: { text: string; position: number };
+//   range: { start: number; end: number };
 
-export class TwinParseResultHandler {
-  nodes: AnyTwinComposedClass[];
-  parserInput: { text: string; position: number };
-  range: { start: number; end: number };
+//   constructor(
+//     parseResult: P.ResultType<AnyTwinParseResultToken[], any>,
+//     { position, text }: { text: string; position: number },
+//   ) {
+//     this.parserInput = { position, text };
+//     this.range = { start: position, end: position + text.length };
 
-  constructor(
-    parseResult: P.ResultType<AnyTwinParseResultToken[], any>,
-    { position, text }: { text: string; position: number },
-  ) {
-    this.parserInput = { position, text };
-    this.range = { start: position, end: position + text.length };
+//     if (parseResult.isError) this.nodes = [];
+//     else this.nodes = createComposedClasses(parseResult.result, text, position);
+//   }
 
-    if (parseResult.isError) this.nodes = [];
-    else this.nodes = createComposedClasses(parseResult.result, text, position);
-  }
+//   get size() {
+//     return this.nodes.length;
+//   }
 
-  get size() {
-    return this.nodes.length;
-  }
+//   findNodeAt(offset: number): LocatedTokenResult | null {
+//     for (const node of this.nodes) {
+//       if (!Predicates.isComposedNodeAtOffset(node, offset)) continue;
 
-  findNodeAt(offset: number): LocatedTokenResult | null {
-    for (const node of this.nodes) {
-      if (!Predicates.isComposedNodeAtOffset(node, offset)) continue;
+//       if (Predicates.isComposedNodeAtOffset(node, offset) && node.type === 'ComposedClass') {
+//         return {
+//           node,
+//           fullLoc: node.documentLoc,
+//           group: null,
+//           lookupText: node.classNameText,
+//         };
+//       }
 
-      if (Predicates.isComposedNodeAtOffset(node, offset) && node.type === 'ComposedClass') {
-        return {
-          node,
-          fullLoc: node.documentLoc,
-          group: null,
-          lookupText: node.classNameText,
-        };
-      }
+//       if (Predicates.isComposedClassGroup(node)) {
+//         const targetComposition = node.token.composes.find((_) =>
+//           Predicates.isComposedNodeAtOffset(_, offset),
+//         );
+//         if (!targetComposition) return null;
 
-      if (Predicates.isComposedClassGroup(node)) {
-        const targetComposition = node.token.composes.find((_) =>
-          Predicates.isComposedNodeAtOffset(_, offset),
-        );
-        if (!targetComposition) return null;
+//         const base = node.token.base.classNameText;
 
-        const base = node.token.base.classNameText;
-
-        let lookupText = '';
-        if (node.token.base.token.type === 'CLASS_NAME') {
-          lookupText += base;
-          if (!base.endsWith('-')) {
-            lookupText += '-';
-          }
-        }
-        if (targetComposition.type === 'ComposedClass') {
-          lookupText += targetComposition.text;
-        }
-        return {
-          fullLoc: node.documentLoc,
-          group: node.token.base,
-          node: targetComposition,
-          lookupText,
-        };
-      }
-    }
-    return null;
-  }
-}
+//         let lookupText = '';
+//         if (node.token.base.token.type === 'CLASS_NAME') {
+//           lookupText += base;
+//           if (!base.endsWith('-')) {
+//             lookupText += '-';
+//           }
+//         }
+//         if (targetComposition.type === 'ComposedClass') {
+//           lookupText += targetComposition.text;
+//         }
+//         return {
+//           fullLoc: node.documentLoc,
+//           group: node.token.base,
+//           node: targetComposition,
+//           lookupText,
+//         };
+//       }
+//     }
+//     return null;
+//   }
+// }

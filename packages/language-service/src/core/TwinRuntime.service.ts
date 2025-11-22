@@ -14,6 +14,7 @@ import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as Trie from 'effect/Trie';
 import * as LspConfig from '../core/LanguageConfig.service';
+import * as TwinUtils from '../internal/TwinParser.internals';
 import type {
   AnyInternalTwinRule,
   InternalTwFn,
@@ -22,7 +23,6 @@ import type {
 import type * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuleComposer } from '../models/TwinRuleHandler';
 import { requireJS } from '../utils/load-js';
-import * as TwinUtils from './TwinParser.utils';
 
 const resolvedSections = new Map<string, Record<string, any>>();
 const make = Effect.gen(function* () {
@@ -127,7 +127,7 @@ const make = Effect.gen(function* () {
 
   function bootTwinRuntime(twinPath: string | null = null) {
     return Effect.gen(function* () {
-      const { configPath: twinConfigPath } = yield* LspConfig.TypeScriptPluginConfig;
+      const { configPath: twinConfigPath } = yield* LspConfig.LSPConfig;
       let result: InternalTwinConfig | null = null;
       const configPath = yield* twinPath
         ? Effect.succeed(twinPath)

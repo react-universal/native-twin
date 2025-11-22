@@ -11,7 +11,6 @@ import {
 } from '../../lsp/models/diagnostic.model.js';
 import type { TwinSheetEntry } from '../../lsp/models/TwinSheetEntry.model.js';
 import type { TemplateTokenWithText } from '../../lsp/models/template-token.model.js';
-import type { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
 import { isSameRange } from '../vscode.utils.js';
 
 const createRegionEntriesExtractor =
@@ -39,7 +38,7 @@ const createRegionEntriesExtractor =
 
 export const diagnosticTokensToDiagnosticItems = (
   document: BaseTwinTextDocument,
-  twinService: NativeTwinManagerService['Type'],
+  twinService: any,
   languageRegions: DocumentLanguageRegion[],
 ): VscodeDiagnosticItem[] => {
   const getRange = bodyLocToRange(document);

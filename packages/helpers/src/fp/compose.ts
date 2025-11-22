@@ -23,7 +23,10 @@ export type Compose = <A extends any[], B, C>(
   // A => C
 ) => (...x: A) => C;
 
-export const compose: Compose = (f, g) => (...x) => f(g(...x));
+export const compose: Compose =
+  (f, g) =>
+  (...x) =>
+    f(g(...x));
 
 /**
  * @description same as @type {Compose} but composing from right to left
@@ -36,4 +39,7 @@ export type ComposeR = <A extends any[], B, C>(
   // A => C
 ) => (...x: A) => C;
 
-export const composeR: ComposeR = (f, g) => (...x) => g(f(...x));
+export const composeR: ComposeR =
+  (f, g) =>
+  (...x) =>
+    g(f(...x));

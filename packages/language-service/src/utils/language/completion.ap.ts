@@ -1,15 +1,9 @@
 import * as Equivalence from 'effect/Equivalence';
 import * as Order from 'effect/Order';
 import type * as vscode from 'vscode-languageserver';
-import type {
-  TwinRuleCompletion,
-  TwinVariantCompletion,
-} from '../../twin/models/native-twin.types.js';
+import type { TwinRuleCompletion, TwinVariantCompletion } from '../../internal/TwinTypes.internal';
 
-export const orderCompletions = Order.mapInput(
-  Order.number,
-  (x: TwinRuleCompletion) => x.order,
-);
+export const orderCompletions = Order.mapInput(Order.number, (x: TwinRuleCompletion) => x.order);
 
 export const diagnosticItemEquivalence = Equivalence.mapInput(
   Equivalence.string,
@@ -29,8 +23,7 @@ export const eqTwinVariantWithCompletion = Equivalence.mapInput(
   (x: TwinVariantCompletion) => x.position,
 )(Equivalence.number);
 
-export const compareTwinRuleWithClassName =
-  (twinRule: TwinRuleCompletion) => (data: string[]) => {
-    const { completion } = twinRule;
-    return data.some((x) => completion.className.startsWith(x));
-  };
+export const compareTwinRuleWithClassName = (twinRule: TwinRuleCompletion) => (data: string[]) => {
+  const { completion } = twinRule;
+  return data.some((x) => completion.className.startsWith(x));
+};

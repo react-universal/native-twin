@@ -1,5 +1,5 @@
 import type { DocumentSelector } from 'vscode-languageserver-protocol';
-import type { InternalTwinConfig } from '../twin/models/native-twin.types.js';
+import type { InternalTwinConfig } from '../internal/TwinTypes.internal';
 
 export const configurationSection = 'nativeTwin';
 
@@ -43,6 +43,7 @@ export const DEFAULT_PLUGIN_CONFIG = {
   jsxAttributes: ['tw', 'class', 'className', 'variants'],
   functions: ['tw', 'apply', 'css', 'variants', 'style', 'styled', 'createVariants'],
   debug: false,
+  rootDir: './',
   enable: true,
   tsConfigPath: './tsconfig.json',
   configPath: './tailwind.config.ts',

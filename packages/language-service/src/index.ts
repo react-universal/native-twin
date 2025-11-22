@@ -12,15 +12,6 @@ export { TwinLSPDocument } from './documents/node/TwinLSPDocument.model.js';
 export { LSPConfigService } from './lsp/LSPConfig.service.js';
 export { TemplateTokenData, TemplateTokenWithText } from './lsp/models/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
-/** Twin Services */
-export { NativeTwinManagerService } from './services/NativeTwinManager.service.js';
-export type {
-  AnyInternalTwinRule,
-  InternalTwFn,
-  InternalTwinConfig,
-  InternalTwinThemeContext,
-  TwinRuleCompletion,
-} from './twin/models/native-twin.types.js';
 /** Language Service */
 export {
   getDocumentTemplatesColors,
@@ -46,11 +37,8 @@ export type { NativeTwinPluginConfiguration } from './utils/constants.utils.js';
 export { DEFAULT_PLUGIN_CONFIG } from './utils/constants.utils.js';
 /** Logger */
 export { createLspLogger, loggerUtils } from './utils/lsp.logger.service.js';
-export { NativeTwinManager } from './utils/twin/twin.manager.js';
 
 export { Constants };
-export { ExtensionConfigSchema } from './schemas/index.js';
+export * as Completions from './programs/completions.program.js';
 export * from './TS.js';
-export { TwinParserContext, TwinParserContextLive } from './twin/TwinParser.service.js';
-export { TwinRuntimeContext, TwinRuntimeContextLive } from './twin/TwinRuntime.service.js';
 export { getClientCapabilities } from './utils/connection.utils.js';

@@ -1,7 +1,7 @@
 {
     "typescript.tsdk": "../../../node_modules/typescript/lib",
-    "nativeTwin.trace.server": "off",
-    "typescript.tsserver.log": "verbose",
+    "nativeTwin.trace.server": "verbose",
+    "typescript.tsserver.log": "normal",
     "nativeTwin.enable": true,
     "outline.icons": true,
     "workbench.editor.showIcons": true,

@@ -1,22 +1,18 @@
 import * as ReadonlyArray from 'effect/Array';
 import { pipe } from 'effect/Function';
+import type { TwinRuleCompletion } from '../../internal/TwinTypes.internal.js';
 import type {
   TemplateTokenData,
   TemplateTokenWithText,
 } from '../../lsp/models/template-token.model.js';
-import type { NativeTwinManagerService } from '../../services/NativeTwinManager.service.js';
-import type { TwinRuleCompletion } from '../../twin/models/native-twin.types.js';
 import { getFlattenTemplateToken } from './language.utils.js';
 
-export const getCompletionsForTokens = (
-  tokens: TemplateTokenData[],
-  twinService: NativeTwinManagerService['Type'],
-) => {
+export const getCompletionsForTokens = (tokens: TemplateTokenData[], completions: TwinRuleCompletion[]) => {
   const resolvers = tokens.map(createCompletionTokenResolver);
   return pipe(
-    twinService.completions.twinRules,
+    completions,
     ReadonlyArray.fromIterable,
-    ReadonlyArray.filter((x) => resolvers.some((y) => y(x))),
+    ReadonlyArray.filter((x: any) => resolvers.some((y) => y(x))),
   );
 };
 

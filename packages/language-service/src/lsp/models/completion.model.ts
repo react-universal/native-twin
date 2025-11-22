@@ -4,7 +4,7 @@ import * as vscode from 'vscode-languageserver-types';
 import type {
   TwinRuleCompletion,
   TwinVariantCompletion,
-} from '../../twin/models/native-twin.types.js';
+} from '../../internal/TwinTypes.internal';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,

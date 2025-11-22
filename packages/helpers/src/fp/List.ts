@@ -53,7 +53,7 @@ export const functor: Functor1<'List'> = {
 //   return reduceNumbersList(a.tail, newResult);
 // };
 
-// console.log(reduceNumbersList(a));
+// console.log(reduceNumbersList(a)); // ?
 
 // const increment = (x: number) => x * 5;
 // const numberToString = (x: number) => `number is: ${x}`;
