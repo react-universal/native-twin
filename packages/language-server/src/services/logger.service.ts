@@ -1,4 +1,4 @@
-import { LSPConnectionService } from '@native-twin/language-service';
+import { LSPContext } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
@@ -18,7 +18,7 @@ export const sendDebugLog = <T extends object>(message: string, payload: T) =>
 export const LoggerLive = Logger.replaceEffect(
   Logger.jsonLogger,
   Effect.gen(function* () {
-    const Connection = yield* LSPConnectionService;
+    const { connection: Connection } = yield* LSPContext;
     return Logger.make((options) => {
       const logService = Connection.console;
       const message = Logger.logfmtLogger.log(options);

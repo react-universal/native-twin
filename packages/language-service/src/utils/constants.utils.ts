@@ -54,7 +54,7 @@ export const DEFAULT_PLUGIN_CONFIG = {
 
 export const twinCommonFiles = ['tailwind.config.ts', 'twin.config.ts'];
 
-export type NativeTwinPluginConfiguration = typeof DEFAULT_PLUGIN_CONFIG;
+export type TwinConfigOptions = typeof DEFAULT_PLUGIN_CONFIG;
 
 export const typeScriptExtensionId = 'vscode.typescript-language-features';
 export const pluginId = '@native-twin/ts-plugin';

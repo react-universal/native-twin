@@ -26,7 +26,6 @@ export interface LSPTextDocument {
  * */
 export const createLSPAdapterExecutor = <E = never, R = never>(
   executor: LSPAdapterSpec<E, R>,
-  _getDocument: (filename: string) => Effect.Effect<BaseTwinTextDocument, AnyLSPError | E, R>,
 ): LSPAdapterSpec<E, R> => {
   return executor;
 };
@@ -34,17 +33,21 @@ export interface LSPAdapterSpec<AddError = never, AddLayer = never> {
   getLSPDocument: <R = never>(
     filename: string,
   ) => Effect.Effect<LSPTextDocument, AnyLSPError | AddError, AddLayer | R>;
-  getRegionAt: (
+  getRegionAt: <R = never>(
     filename: string,
     offset: LSPPosition,
   ) => Effect.Effect<
     Option.Option<AnyTwinNodeRegion>,
     AnyLSPError | AddError,
-    TwinLSPAdapterLayerIn | AddLayer
+    TwinLSPAdapterLayerIn | AddLayer | R
   >;
-  getRegions(
+  getRegions<R = never>(
     filename: string,
-  ): Effect.Effect<AnyTwinNodeRegion[], AnyLSPError | AddError, TwinLSPAdapterLayerIn | AddLayer>;
+  ): Effect.Effect<
+    AnyTwinNodeRegion[],
+    AnyLSPError | AddError,
+    TwinLSPAdapterLayerIn | AddLayer | R
+  >;
 }
 /**
  * ************* / LSP Parser Adapters *************

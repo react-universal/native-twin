@@ -24,7 +24,7 @@ import {
 export const LanguageClientLive = Effect.gen(function* () {
   // const twin = yield* NativeTwinManagerService;
   const extensionCtx = yield* VscodeContext;
-  const lspConfig = yield* LSPConfig.TypeScriptPluginConfig;
+  const lspConfig = yield* LSPConfig.LSPConfig;
 
   yield* createFileWatchers;
   // yield* activateTwinTsPlugin;
@@ -49,10 +49,11 @@ export const LanguageClientLive = Effect.gen(function* () {
   const colorDecorationType = yield* getColorDecoration;
   extensionCtx.subscriptions.push(colorDecorationType);
 
+  const currentConfig = yield* lspConfig.config.get;
   const clientConfig: LanguageClientOptions = {
     ...getDefaultLanguageClientOptions({
-      twinConfigFile: lspConfig.configPath,
-      workspaceRoot: lspConfig.rootDir,
+      twinConfigFile: currentConfig.configPath,
+      workspaceRoot: currentConfig.rootDir,
     }),
     synchronize: {
       fileEvents: fileEvents,

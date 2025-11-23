@@ -14,9 +14,9 @@ export type TwinLSPAdapterLayerIn =
   | LSPConfig;
 
 export const LSPBaseLayerLive = Layer.empty.pipe(
-  Layer.provideMerge(Layer.suspend(() => TwinGraphLive)),
+  Layer.provideMerge(TwinGraphLive),
   Layer.provideMerge(JSXParserLive),
-  Layer.provideMerge(Layer.suspend(() => TwinParserContextLive)),
-  Layer.provideMerge(Layer.suspend(() => TwinRuntimeContextLive)),
+  Layer.provideMerge(TwinParserContextLive),
+  Layer.provideMerge(TwinRuntimeContextLive),
   Layer.provideMerge(TypescriptUtilsLive),
 );

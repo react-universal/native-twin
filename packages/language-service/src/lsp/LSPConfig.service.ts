@@ -7,20 +7,20 @@ import * as SubscriptionRef from 'effect/SubscriptionRef';
 import { TwinRuntimeContext } from '../core/TwinRuntime.service.js';
 import {
   DEFAULT_PLUGIN_CONFIG,
-  type NativeTwinPluginConfiguration,
+  type TwinConfigOptions,
 } from '../utils/constants.utils.js';
 
 export interface VscodeLSPConfig {
   twinConfigFile: Option.Option<string>;
   workspaceRoot: Option.Option<string>;
-  vscode: NativeTwinPluginConfiguration;
+  vscode: TwinConfigOptions;
   initialized: boolean;
 }
 
 export interface VscodeLSPConfigInput {
   twinConfigFile?: string | undefined;
   workspaceRoot?: string | undefined;
-  vscode: NativeTwinPluginConfiguration;
+  vscode: TwinConfigOptions;
   initialized: boolean;
 }
 

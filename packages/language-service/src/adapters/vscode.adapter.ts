@@ -4,18 +4,16 @@ import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as JSXParser from '../core/JSXParser.service';
+import { LSPContext } from '../core/LSP';
 import { TypeScriptProgram } from '../core/TypescriptAPI.service';
-import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
-import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service';
 import * as LSPTypes from '../internal/LSPAdapterSpec';
 
 export interface VscodeLSPAdapter
-  extends LSPTypes.LSPAdapterSpec<never, TwinLSPDocumentContext | TypeScriptProgram> {}
+  extends LSPTypes.LSPAdapterSpec<never, LSPContext | TypeScriptProgram> {}
 
 const getLSPDocument: VscodeLSPAdapter['getLSPDocument'] = Effect.fn(function* (filename) {
-  const documentsService = yield* TwinLSPDocumentContext;
-  const document = yield* documentsService
-    .getDocument(filename)
+  const documentsService = yield* LSPContext;
+  const document = yield* Effect.succeed(documentsService.getDocument(filename))
     .pipe(Effect.flatMap(identity))
     .pipe(Effect.mapError((e) => LSPTypes.FileNotFound.create(e)));
 
@@ -58,12 +56,12 @@ const getRegions: VscodeLSPAdapter['getRegions'] = Effect.fn('vscodeAdapter: ext
 
 const getRegionAt: VscodeLSPAdapter['getRegionAt'] = Effect.fn('vscodeAdapter: getTokenAtPosition')(
   function* (filename, position) {
-    const document = yield* getVscodeFileHandler(filename);
+    const document = yield* getLSPDocument(filename);
     const parser = yield* JSXParser.JSXParser;
 
     const tsSource = yield* getProGramSourceFile(filename);
     const jsxNodes = parser.getJSXRootsFromSource(tsSource);
-    const offset = document.offsetAt(position);
+    const offset = document.document.offsetAt(position);
 
     for (const node of jsxNodes.filter((x) => x)) {
       if (offset <= node.pos || offset >= node.end) continue;
@@ -84,20 +82,17 @@ export const VscodeLSPAdapter = {
   getRegions,
 } satisfies VscodeLSPAdapter;
 
-const getVscodeFileHandler = Effect.fn('vscode: Get file handler')(function* (
-  filename: string,
-): Effect.fn.Return<BaseTwinTextDocument, LSPTypes.AnyLSPError, TwinLSPDocumentContext> {
-  const documents = yield* TwinLSPDocumentContext;
-  const document = yield* documents.getDocument(filename).pipe(Effect.map(Option.getOrNull));
+// const getVscodeFileHandler = Effect.fn('vscode: Get file handler')(function* (
+//   filename: string,
+// ): Effect.fn.Return<BaseTwinTextDocument, LSPTypes.AnyLSPError, TwinLSPDocumentContext> {
+//   const documents = yield* TwinLSPDocumentContext;
+//   const document = yield* documents.getDocument(filename).pipe(Effect.map(Option.getOrNull));
 
-  if (!document) {
-    return yield* Effect.fail(LSPTypes.FileNotFound.create(`cant find file: ${filename}`));
-  }
+//   if (!document) {
+//     return yield* Effect.fail(LSPTypes.FileNotFound.create(`cant find file: ${filename}`));
+//   }
 
-  return document;
-});
+//   return document;
+// });
 
-export const vscodeLSPAdapterExecutor = LSPTypes.createLSPAdapterExecutor(
-  VscodeLSPAdapter,
-  getVscodeFileHandler,
-);
+export const vscodeLSPAdapterExecutor = LSPTypes.createLSPAdapterExecutor(VscodeLSPAdapter);

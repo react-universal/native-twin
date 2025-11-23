@@ -13,18 +13,16 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "imports": {
-    "#internal/*": {
-      "types": "./build/dts/internal/*",
-      "default": "./build/esm/internal/*",
-      "require": "./build/cjs/internal/*"
-    }
-  },
   "exports": {
     ".": {
       "types": "./build/dts/index.d.ts",
       "import": "./build/esm/index.js",
       "default": "./build/cjs/index.js"
+    },
+    "./adapters/*": {
+      "types": "./build/dts/adapters/*",
+      "import": "./build/esm/adapters/*.js",
+      "default": "./build/cjs/adapters/*.js"
     },
     "./Services": {
       "types": "./build/dts/Services.d.ts",

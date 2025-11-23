@@ -7,9 +7,12 @@ export type ChildStylesContextFn = (
   lastOrd: number
 ) => Record<string, any>;
 
-export let GroupContext: any = null;
-export let ContainersContext: any = null;
-export let TwinRootContext: any = null;
+// @ts-expect-error
+export let GroupContext: React.Context<string | undefined> = {};
+// @ts-expect-error
+export let ContainersContext: React.Context<string | null> = {};
+// @ts-expect-error
+export let TwinRootContext: React.Context<boolean> ={};
 
 if (typeof window !== "undefined") {
   GroupContext = React.createContext<string | undefined>(undefined);
@@ -24,7 +27,6 @@ export const withParentContext = function withParentContext<
     const refProps = props as NativeTwinProps;
     const state = StyleSheet.getComponentState(refProps.__twinID).get();
     if (typeof window === "undefined" && typeof document === "undefined") {
-      console.log("asdasdad");
       return func(props);
     }
     if (state.meta.isGroupParent) {

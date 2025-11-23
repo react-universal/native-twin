@@ -16,9 +16,9 @@ import type {
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
 import type ts from 'typescript';
-import type { TwinRuleCompletion } from '#internal/TwinTypes.internal.js';
 import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
 import type * as LSPTypes from '../internal/LSPAdapterSpec';
+import type { TwinRuleCompletion } from '../internal/TwinTypes.internal';
 import { VscodeCompletionItem } from '../lsp/models/completion.model';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 

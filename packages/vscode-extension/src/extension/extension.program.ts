@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import { Constants, LSPConfig } from '@native-twin/language-service';
+import { parseLSPConfigInput } from '@native-twin/language-service/Services';
+import { SubscriptionRef } from 'effect';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';
@@ -9,7 +11,7 @@ import { VscodeContext } from './extension.service';
 import { extensionConfigState, registerEditorCommand, thenable } from './extension.utils';
 
 export const launchExtension = <E>(
-  layer: Layer.Layer<never, E, VscodeContext | LSPConfig.TypeScriptPluginConfig>,
+  layer: Layer.Layer<never, E, VscodeContext | LSPConfig.LSPConfig>,
 ) => {
   return Effect.gen(function* () {
     const context = yield* VscodeContext;
@@ -41,20 +43,22 @@ export const launchExtension = <E>(
     const twinFilePath = files[0]?.path;
     const rootDir = vscode.workspace.workspaceFolders?.[0]?.uri?.path ?? process.cwd();
 
+    const configRef = yield* SubscriptionRef.make(
+      parseLSPConfigInput({
+        rootDir,
+        debug: currentConfig.debug,
+        enable: currentConfig.enable,
+        functions: currentConfig.functions,
+        jsxAttributes: currentConfig.jsxAttributes,
+        configPath: twinFilePath,
+        tsConfigPath: currentConfig.tsConfigPath,
+        trace: { server: currentConfig.trace.server },
+      }),
+    );
+    const onChangeConfig = (_config: any) => Effect.void;
     const configLayer = Layer.succeed(
-      LSPConfig.TypeScriptPluginConfig,
-      LSPConfig.TypeScriptPluginConfig.of(
-        LSPConfig.parsePluginConfig({
-          rootDir,
-          debug: currentConfig.debug,
-          enable: currentConfig.enable,
-          functions: currentConfig.functions,
-          jsxAttributes: currentConfig.jsxAttributes,
-          configPath: twinFilePath,
-          tsConfigPath: currentConfig.tsConfigPath,
-          trace: { server: currentConfig.trace.server },
-        }),
-      ),
+      LSPConfig.LSPConfig,
+      LSPConfig.LSPConfig.of({ config: configRef, onChangeConfig }),
     );
     const mainLayer = layer.pipe(Layer.provideMerge(configLayer));
     yield* Layer.buildWithScope(mainLayer, scope);

@@ -4382,19 +4382,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@native-twin/data-types@workspace:packages/data-types":
-  version: 0.0.0-use.local
-  resolution: "@native-twin/data-types@workspace:packages/data-types"
-  dependencies:
-    "@native-twin/cli": "workspace:*"
-    "@native-twin/helpers": "workspace:*"
-    hkt-core: "npm:^1.3.1"
-  dependenciesMeta:
-    "@native-twin/cli":
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@native-twin/dev-tools-webui@workspace:packages/dev-tools/webui":
   version: 0.0.0-use.local
   resolution: "@native-twin/dev-tools-webui@workspace:packages/dev-tools/webui"
@@ -12025,13 +12012,6 @@ __metadata:
   dependencies:
     hermes-estree: "npm:0.32.0"
   checksum: 10/496210490cb45e97df14796d94aec6c817c4cefa20f1dbe3ba1df323cc58c930033cfec93f3ecfad6b90e09166fc9ffc4f665843d25b4862523aa70dacbae81f
-  languageName: node
-  linkType: hard
-
-"hkt-core@npm:^1.3.1":
-  version: 1.3.1
-  resolution: "hkt-core@npm:1.3.1"
-  checksum: 10/6545e9b0619496da728065abf4f70ec7e3882c6f5082afdcf08d64458e680dd38841d36f1a62aaeb8fb1769c10c7ff390b30476591c573919b85680b147fbd2a
   languageName: node
   linkType: hard
 

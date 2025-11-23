@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import type { TwinConfigOptions } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -54,7 +54,7 @@ export const findVirtualFile = (
 
 export const getTwinTextDocumentByUri = (
   uri: vscode.Uri,
-  config: NativeTwinPluginConfiguration,
+  config: TwinConfigOptions,
 ) => {
   const vsDocument = RA.findFirst(
     vscode.workspace.textDocuments,

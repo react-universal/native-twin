@@ -14,11 +14,9 @@ export {
   twinLSPDocumentLayer,
 } from './documents/LSPDocuments.service.js';
 export { LSPConfigService } from './lsp/LSPConfig.service.js';
-/** Connection Service */
-export { LSPConnectionService } from './lsp/LSPConnection.service.js';
 export { TemplateTokenData } from './lsp/models/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
-export type { NativeTwinPluginConfiguration } from './utils/constants.utils.js';
+export type { TwinConfigOptions as NativeTwinPluginConfiguration } from './utils/constants.utils.js';
 export { getCompletionsForTokens } from './utils/language/completion.pipes.js';
 /** Language Service */
 export { filterTokensFromRules } from './utils/language/completions.maps.js';

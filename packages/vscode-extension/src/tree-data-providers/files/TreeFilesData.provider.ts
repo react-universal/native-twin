@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Constants, type NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import { Constants, type TwinConfigOptions } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { identity, pipe } from 'effect/Function';
@@ -148,7 +148,7 @@ const treeItem = (node: AnyTreeDataNode) => {
 
 const children = (
   node: AnyTreeDataNode,
-  config: NativeTwinPluginConfiguration,
+  config: TwinConfigOptions,
 ): Option.Option<Array<AnyTreeDataNode>> => {
   switch (node._tag) {
     case 'FileTreeNode':

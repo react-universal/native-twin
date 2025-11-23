@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'node:path';
-import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import type { TwinConfigOptions } from '@native-twin/language-service';
 import { pipe } from 'effect';
 import * as RA from 'effect/Array';
 import { thenable } from '../../extension/extension.utils';
@@ -27,7 +27,7 @@ export class TwinFileTreeNode {
     return this.twinDocument.document;
   }
 
-  getChilds(config: NativeTwinPluginConfiguration): FileTwinRegionTreeNode[] {
+  getChilds(config: TwinConfigOptions): FileTwinRegionTreeNode[] {
     if (this._childs.length > 0) return this._childs;
     const regions = this.twinDocument.getLanguageRegions(config);
     return pipe(

@@ -31,9 +31,7 @@ export { parseTemplate } from './utils/twin/native-twin.parser.js';
 
 /** Vscode Client */
 export { getDocumentLanguageLocations } from './extension/index.js';
-/** Connection Service */
-export { LSPConnectionService } from './lsp/LSPConnection.service.js';
-export type { NativeTwinPluginConfiguration } from './utils/constants.utils.js';
+export type { TwinConfigOptions } from './utils/constants.utils.js';
 export { DEFAULT_PLUGIN_CONFIG } from './utils/constants.utils.js';
 /** Logger */
 export { createLspLogger, loggerUtils } from './utils/lsp.logger.service.js';

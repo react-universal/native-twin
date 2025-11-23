@@ -1,7 +1,7 @@
 import { type NodePath, traverse } from '@babel/core';
 import { parse } from '@babel/parser';
 import * as t from '@babel/types';
-import type { NativeTwinPluginConfiguration } from '../../utils/constants.utils.js';
+import type { TwinConfigOptions } from '../../utils/constants.utils.js';
 
 const matchVariantsObject = (
   properties: t.ObjectExpression['properties'],
@@ -52,7 +52,7 @@ const templateExpressionMatcher = (
 
 export const getDocumentLanguageLocations = (
   code: string,
-  config: NativeTwinPluginConfiguration,
+  config: TwinConfigOptions,
 ) => {
   const sourceLocations: t.SourceLocation[] = [];
   try {

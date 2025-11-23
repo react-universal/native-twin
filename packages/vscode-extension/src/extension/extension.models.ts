@@ -1,5 +1,5 @@
 import type * as vscode from 'vscode';
-import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import type { TwinConfigOptions } from '@native-twin/language-service';
 import type * as Effect from 'effect/Effect';
 import type * as Stream from 'effect/Stream';
 
@@ -18,6 +18,6 @@ export interface Emitter<A> {
 }
 
 export interface ExtensionConfigRef {
-  readonly get: Effect.Effect<NativeTwinPluginConfiguration>;
-  readonly changes: Stream.Stream<NativeTwinPluginConfiguration>;
+  readonly get: Effect.Effect<TwinConfigOptions>;
+  readonly changes: Stream.Stream<TwinConfigOptions>;
 }

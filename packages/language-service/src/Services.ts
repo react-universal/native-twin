@@ -1,56 +1,62 @@
-import { createLSPAdapterExecutor } from '#internal/LSPAdapterSpec.js';
-import { JSXParser } from './core/JSXParser.service';
+import { JSXParser, JSXParserLive } from './core/JSXParser.service';
 import { LSPConfig, parseLSPConfigInput } from './core/LanguageConfig.service';
 import {
   createTwinCompletions,
   LSPContext,
   type LSPTwinCompletionsResult,
   type TwinLSPCompletionDefinition,
+  twinCompletionsToVscode,
 } from './core/LSP';
-import { TwinGraph } from './core/TwinGraph.service';
-import {
-  type TwinParsedClasses,
-  TwinParserContext,
-  toTwinParserResult,
-} from './core/TwinParser.service';
-import { TwinRuntimeContext } from './core/TwinRuntime.service';
+import { TwinGraph, TwinGraphLive } from './core/TwinGraph.service';
+import { TwinParserContext, toTwinParserResult } from './core/TwinParser.service';
+import { TwinRuntimeContext, TwinRuntimeContextLive } from './core/TwinRuntime.service';
 import {
   createCustomProgram,
   TypeScriptApi,
   TypeScriptProgram,
 } from './core/TypescriptAPI.service';
-import { TypescriptUtils } from './core/TypescriptUtils.service';
-import { LSPBaseLayerLive } from './internal/RunnerLayer';
+import { TypescriptUtils, TypescriptUtilsLive } from './core/TypescriptUtils.service';
+import { BaseTwinTextDocument } from './documents/common/BaseTwinDocument';
+import {
+  type DocumentsServiceShape,
+  TwinLSPDocumentContext,
+  twinLSPDocumentLayer,
+} from './documents/LSPDocuments.service';
+import { createLSPAdapterExecutor } from './internal/LSPAdapterSpec';
+import { LSPBaseLayerLive, type TwinLSPAdapterLayerIn } from './internal/RunnerLayer';
 
-export const Typescript = {
-  TypeScriptApi,
-  TypeScriptProgram,
-  createCustomProgram,
-  TypescriptUtils,
-};
+export { TypeScriptApi, TypeScriptProgram, createCustomProgram, TypescriptUtils };
 
-export const LSP = {
+export { LSPBaseLayerLive };
+
+export { classNameCompletions } from './completions/jsxCompletions';
+export {
   LSPConfig,
+  TwinLSPDocumentContext,
+  twinCompletionsToVscode,
+  twinLSPDocumentLayer,
+  TypescriptUtilsLive,
   LSPContext,
-  LSPBaseLayerLive,
+  BaseTwinTextDocument,
   parseLSPConfigInput,
   createLSPAdapterExecutor,
   createTwinCompletions,
 };
 
-export const Parsers = {
+export {
   JSXParser,
   TwinRuntimeContext,
   TwinParserContext,
+  TwinRuntimeContextLive,
   toTwinParserResult,
+  JSXParserLive,
   TwinGraph,
+  TwinGraphLive,
 };
 
-export interface LSP {
-  LSPTwinCompletionsResult: LSPTwinCompletionsResult;
-  TwinLSPCompletionDefinition: TwinLSPCompletionDefinition;
-}
-
-export interface Parsers {
-  TwinParsedClasses: TwinParsedClasses;
-}
+export type {
+  TwinLSPCompletionDefinition,
+  LSPTwinCompletionsResult,
+  DocumentsServiceShape,
+  TwinLSPAdapterLayerIn,
+};

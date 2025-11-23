@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'node:path';
-import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import type { TwinConfigOptions } from '@native-twin/language-service';
 import { Constants } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
@@ -145,10 +145,10 @@ const normalizeTwinConfig = (config: Effect.Effect.Success<ExtensionConfigRef['g
     }
     return {
       ...config,
-      // @ts-expect-error
+      // @ts-expect-error asd
       name: Constants.pluginId,
       configPath,
-    } satisfies NativeTwinPluginConfiguration;
+    } satisfies TwinConfigOptions;
   });
 
 /**
@@ -226,13 +226,13 @@ export const extensionConfigValue = <Section extends string, A>(
  * The main difference with extensionConfig its you need to provide a default value
  */
 export const extensionConfigState = (
-  defaultValue: NativeTwinPluginConfiguration,
+  defaultValue: TwinConfigOptions,
 ): Effect.Effect<ExtensionConfigRef, never, Scope.Scope> =>
   Effect.gen(function* () {
     const get = () =>
       vscode.workspace.getConfiguration(
         Constants.configurationSection,
-      ) as unknown as NativeTwinPluginConfiguration;
+      ) as unknown as TwinConfigOptions;
     const ref = yield* SubscriptionRef.make(get() ?? defaultValue);
 
     yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {

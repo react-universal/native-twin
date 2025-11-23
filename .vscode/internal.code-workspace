@@ -13,12 +13,12 @@
       "path": "../packages/language-service"
     },
     {
-      "name": "📦 @native-twin/ts-plugin",
-      "path": "../packages/ts-plugin"
-    },
-    {
       "name": "📦 @native-twin/language-server",
       "path": "../packages/language-server"
+    },
+    {
+      "name": "📦 @native-twin/ts-plugin",
+      "path": "../packages/ts-plugin"
     },
     {
       "name": "twin-run",
