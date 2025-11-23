@@ -16,6 +16,7 @@ import type {
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
 import type ts from 'typescript';
+import { Range } from 'vscode-languageserver-types';
 import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
 import type * as LSPTypes from '../internal/LSPAdapterSpec';
 import type { TwinRuleCompletion } from '../internal/TwinTypes.internal';
@@ -138,8 +139,13 @@ export class TwinRuleRegistry {
     this.pattern = composer.pattern;
   }
 
-  toVscode(_document: BaseTwinTextDocument, range: LSPTypes.LSPRange): VscodeCompletionItem {
-    return new VscodeCompletionItem(this.toRuleCompletion(), range, this.className);
+  toVscode(document: BaseTwinTextDocument, range: LSPTypes.LSPRange): VscodeCompletionItem {
+    const ruleCompletion = this.toRuleCompletion();
+    const fixRange = Range.create(
+      document.positionAt(range.start.character),
+      document.positionAt(range.end.character),
+    );
+    return new VscodeCompletionItem(ruleCompletion, fixRange, this.className);
   }
 
   toRuleCompletion(): TwinRuleCompletion {

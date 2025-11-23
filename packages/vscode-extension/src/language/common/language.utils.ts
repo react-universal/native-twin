@@ -129,6 +129,7 @@ export const getDefaultLanguageClientOptions = (data: TwinConfigOptions): Langua
     initializationOptions: {
       ...data,
       ...vscode.workspace.getConfiguration(Constants.configurationSection),
+      workspaceRoot: data.rootDir,
       capabilities: {
         completion: {
           dynamicRegistration: false,
