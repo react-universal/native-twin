@@ -15,7 +15,6 @@ import type {
 } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
-import type ts from 'typescript';
 import { Range } from 'vscode-languageserver-types';
 import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
 import type * as LSPTypes from '../internal/LSPAdapterSpec';
@@ -24,8 +23,8 @@ import { VscodeCompletionItem } from './completion.model';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
 export interface WithLocation {
-  range: ts.TextRange;
-  originalRange: ts.TextRange;
+  range: LSPTypes.LSPRange;
+  originalRange: LSPTypes.LSPRange;
 }
 
 export interface TwinClassNameToken extends WithLocation, ClassNameToken {}

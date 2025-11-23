@@ -50,7 +50,7 @@ const getRegions: VscodeLSPAdapter['getRegions'] = Effect.fn('vscodeAdapter: ext
     const parser = yield* JSXParser.JSXParser;
     const tsSource = yield* getProGramSourceFile(filename);
 
-    const jsxNodes = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), tsSource);
+    const jsxNodes = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource));
 
     return jsxNodes;
   },
@@ -66,8 +66,8 @@ const getRegionAt: VscodeLSPAdapter['getRegionAt'] = Effect.fn('vscodeAdapter: g
     const offset = document.document.offsetAt(position);
 
     for (const node of jsxNodes.filter((x) => x)) {
-      if (offset <= node.pos || offset >= node.end) continue;
-      const childs = parser.jsxNodesToRegions([node], tsSource);
+      if (offset <= node.getPos() || offset >= node.getEnd()) continue;
+      const childs = parser.jsxNodesToRegions([node]);
       const child = childs.find((x) =>
         LSPTypes.isPositionInRange(x.range, LSPTypes.position(offset)),
       );
@@ -127,7 +127,9 @@ export const twinCompletionsToVscode = <Document extends BaseTwinTextDocument>(
       valueRegion.range.start.character,
     );
     const locatedToken = parserResult.composedClasses.find(
-      (x) => offset >= x.documentLoc.originalRange.pos && offset <= x.documentLoc.originalRange.end,
+      (x) =>
+        offset >= x.documentLoc.originalRange.start.character &&
+        offset <= x.documentLoc.originalRange.end.character,
     );
     if (!locatedToken) return [];
 
@@ -136,8 +138,8 @@ export const twinCompletionsToVscode = <Document extends BaseTwinTextDocument>(
       return rule.toVscode(
         document,
         LSPTypes.range(
-          LSPTypes.position(locatedToken.documentLoc.originalRange.pos),
-          LSPTypes.position(locatedToken.documentLoc.originalRange.end),
+          LSPTypes.position(locatedToken.documentLoc.originalRange.start.character),
+          LSPTypes.position(locatedToken.documentLoc.originalRange.end.character),
         ),
       );
     });

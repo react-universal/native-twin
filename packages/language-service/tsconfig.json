@@ -4,12 +4,9 @@
     "module": "NodeNext",
     "exactOptionalPropertyTypes": false,
     "moduleResolution": "NodeNext",
-    "rootDir": "src",
-    "declarationDir": "build/dts",
-    "outDir": "build/esm",
     "resolvePackageJsonImports": true,
     "jsx": "preserve"
   },
-  "include": ["src", "ts-exposed"],
+  "include": ["src", "ts-exposed", "tests"],
   "exclude": ["build/**/*", "tests/fixtures"]
 }

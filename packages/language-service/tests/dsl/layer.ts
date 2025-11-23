@@ -1,6 +1,7 @@
 import { Effect, Layer, SubscriptionRef } from 'effect';
+import fs from 'fs';
 import path from 'path';
-import ts from 'typescript';
+import ts from 'ts-morph';
 import type { TwinConfigOptions } from '../../src';
 import { JSXParserLive } from '../../src/core/JSXParser.service';
 import { LSPConfig, parseLSPConfigInput } from '../../src/core/LSPConfig.service';
@@ -11,19 +12,23 @@ import { TwinGraph, TypescriptApi } from '../../src/TS';
 import { createTwinLoggerLayerFor } from '../../src/utils/lsp.logger.service';
 
 const testFolder = path.join(__dirname, '..');
-const testTSProgram = TypescriptApi.createCustomProgram(
-  testFolder,
-  path.join(testFolder, 'fixtures/react/tsconfig.json'),
-);
 
 const TsProgramLive = Effect.gen(function* () {
   // const files: ts.MapLike<{ version: number }> = {};
-  const programRef = yield* SubscriptionRef.make(testTSProgram.program);
+  const { project, program } = createCustomProgram(
+    path.join(testFolder, 'fixtures/react/tsconfig.json'),
+  );
+  const programRef = yield* SubscriptionRef.make(program);
 
   return TypescriptApi.TypeScriptProgram.of({
     getSourceFile: Effect.fn(function* (filename) {
-      const program = yield* programRef.get;
-      return program.getSourceFile(filename)!;
+      yield* programRef.get;
+      const sourceFile = project.getSourceFile(filename);
+      if (!sourceFile) {
+        const newFile = project.createSourceFile(filename, fs.readFileSync(filename, 'utf-8'));
+        return newFile;
+      }
+      return sourceFile;
     }),
     // languageServiceRef,
     // programRef,
@@ -61,3 +66,34 @@ export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(Layer.effect(LSPConfig, lspConfig)),
   Layer.provide(TwinRuntimeContextLive),
 );
+
+export const createCustomProgram = (tsConfigPath: string) => {
+  // function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
+  //   return typescript.formatDiagnostics(
+  //     diagnostics.map((x) => x.compilerObject),
+  //     {
+  //       getCanonicalFileName: (f) => f,
+  //       getCurrentDirectory,
+  //       getNewLine: () => '\n',
+  //     },
+  //   );
+  // }
+  // const tsConfigRaw = fs.readFileSync(tsConfigPath).toString('utf-8');
+  const tsConfig = ts.getCompilerOptionsFromTsConfig(tsConfigPath, {
+    encoding: 'utf-8',
+  });
+  if (!tsConfig || tsConfig?.errors.length > 0) {
+    throw new Error('');
+  }
+  const compilerOptions = tsConfig.options;
+  const project = new ts.Project({
+    compilerOptions,
+    // tsConfigFilePath: path.join(testFolder, 'fixtures/react/tsconfig.json'),
+    // defaultCompilerOptions: typescript.getDefaultCompilerOptions(),
+    useInMemoryFileSystem: true,
+  });
+  const program = project.getProgram();
+  const host = project.getModuleResolutionHost();
+
+  return { host, program, project };
+};

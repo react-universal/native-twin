@@ -3,7 +3,7 @@ import * as Equal from 'effect/Equal';
 import { pipe } from 'effect/Function';
 import type * as Graph from 'effect/Graph';
 import * as Hash from 'effect/Hash';
-import type ts from 'typescript';
+import type ts from 'ts-morph';
 
 export class JSXNode implements Equal.Equal {
   readonly _tag = 'JSXNode';
@@ -21,10 +21,10 @@ export class JSXNode implements Equal.Equal {
   }
 
   get pos() {
-    return this.node.pos;
+    return this.node.getPos();
   }
   get filename() {
-    return this.node.getSourceFile().fileName;
+    return this.node.getSourceFile().getFilePath();
   }
   get id(): string {
     if (this._id) return this._id;
@@ -32,14 +32,14 @@ export class JSXNode implements Equal.Equal {
     const mappedStyles = this.styledProps
       .map(
         (x) =>
-          `${x.twinCX ?? 'NO_LITERAL'}_${x.expression?.getText(this.node.getSourceFile()) ?? ''}_${x.styleProp}_${x.classProp}`,
+          `${x.twinCX ?? 'NO_LITERAL'}_${x.expression?.getText() ?? ''}_${x.styleProp}_${x.classProp}`,
       )
       .join('');
 
     return (this._id = Hash.string(`${this.partialID}_${mappedStyles}`).toString());
   }
   get index() {
-    return this.node.parent.getChildren().indexOf(this.node);
+    return this.node.getParent().getChildren().indexOf(this.node);
   }
 
   constructor(data: {

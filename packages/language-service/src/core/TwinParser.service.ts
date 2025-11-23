@@ -7,7 +7,8 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Trie from 'effect/Trie';
-import type ts from 'typescript';
+import type ts from 'ts-morph';
+import { position, range } from '../internal/LSPAdapterSpec';
 import * as Predicates from '../internal/TwinParser.internals';
 import { createComposedClasses } from '../internal/TwinParser.internals';
 import type * as TwinParserModel from '../models/TwinParser.models';
@@ -137,6 +138,7 @@ export const toTwinParserResult = (
 ): TwinParsedClasses => {
   const { input, originalInput } = result.data;
   const inputRange: ts.TextRange = {
+    // @ts-expect-error
     pos: input.docPosition,
     end: input.docPosition + input.text.length,
   };
@@ -171,14 +173,11 @@ const mapParserToLocation = <A extends object>(
   initialIndex: number,
 ): TwinParserModel.WithLocation & A =>
   Object.assign(x.result, {
-    range: {
-      pos: initialIndex,
-      end: x.cursor,
-    },
-    originalRange: {
-      pos: x.data.input.docPosition + initialIndex,
-      end: x.data.input.docPosition + x.cursor,
-    },
+    range: range(position(initialIndex), position(x.cursor)),
+    originalRange: range(
+      position(x.data.input.docPosition + initialIndex),
+      position(x.data.input.docPosition + x.cursor),
+    ),
   });
 
 const parseVariant: ParserWithData<TwinParserModel.TwinClassVariantToken> =

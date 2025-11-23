@@ -10,7 +10,6 @@ import { TwinGraph, TwinGraphLive } from './core/TwinGraph.service';
 import { TwinParserContext, toTwinParserResult } from './core/TwinParser.service';
 import { TwinRuntimeContext, TwinRuntimeContextLive } from './core/TwinRuntime.service';
 import {
-  createCustomProgram,
   TypeScriptApi,
   TypeScriptProgram,
 } from './core/TypescriptAPI.service';
@@ -24,7 +23,7 @@ import {
 import { createLSPAdapterExecutor } from './internal/LSPAdapterSpec';
 import { LSPBaseLayerLive, type TwinLSPAdapterLayerIn } from './internal/RunnerLayer';
 
-export { TypeScriptApi, TypeScriptProgram, createCustomProgram, TypescriptUtils };
+export { TypeScriptApi, TypeScriptProgram, TypescriptUtils };
 
 export { LSPBaseLayerLive };
 

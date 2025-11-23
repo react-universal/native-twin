@@ -1,7 +1,7 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as Stream from 'effect/Stream';
-import type ts from 'typescript';
+import type ts from 'ts-morph';
 import type { TwinDslModels } from '../models/TwinDsl.models';
 
 export class TwinSourceFile implements Equal.Equal {
@@ -10,7 +10,7 @@ export class TwinSourceFile implements Equal.Equal {
   id: string;
 
   get filePath() {
-    return this.sourceFile.fileName;
+    return this.sourceFile.getFilePath();
   }
 
   // get languageRegions() {
@@ -39,7 +39,7 @@ export class TwinSourceFile implements Equal.Equal {
   isTsSourceEquals(that: ts.SourceFile) {
     return (
       this.sourceFile === that ||
-      this.filePath === that.fileName ||
+      this.filePath === that.getFilePath() ||
       this.sourceFile.getText() === that.getText()
     );
   }
@@ -54,4 +54,4 @@ export class TwinSourceFile implements Equal.Equal {
 }
 
 export const createTwinSourceFileID = (file: ts.SourceFile) =>
-  Hash.string(`${file.fileName}_${file.getText()}`);
+  Hash.string(`${file.getFilePath()}_${file.getText()}`);

@@ -81,10 +81,10 @@ export const createComposedClasses = (
   if (isGroupToken(nextToken)) {
     const newContent = createComposedClasses(
       nextToken.composes,
-      text.slice(nextToken.base.range.pos, nextToken.base.range.end),
+      text.slice(nextToken.base.range.start.character, nextToken.base.range.end.character),
       parentStarts,
     ).map((x) => {
-      x.text = text.slice(x.loc.range.pos, x.loc.range.end);
+      x.text = text.slice(x.loc.range.start.character, x.loc.range.end.character);
       return x;
     });
 
@@ -109,7 +109,7 @@ const composedClassInfo = (
   token: TwinParserModel.AnyTwinClassToken,
   fullClass: { text: string; start: number },
 ): TwinParserModel.ComposedClassInfo => {
-  const tokenText = fullClass.text.slice(token.range.pos, token.range.end);
+  const tokenText = fullClass.text.slice(token.range.start.character, token.range.end.character);
   const loc: TwinParserModel.WithLocation = {
     range: token.range,
     originalRange: token.originalRange,
@@ -206,4 +206,5 @@ export const isComposedNodeAtOffset = (
 ) => isOffsetAtLocation(documentOffset, node.documentLoc);
 
 export const isOffsetAtLocation = (offset: number, location: TwinParserModel.WithLocation) =>
-  offset >= location.originalRange.pos && offset <= location.originalRange.end;
+  offset >= location.originalRange.start.character &&
+  offset <= location.originalRange.end.character;

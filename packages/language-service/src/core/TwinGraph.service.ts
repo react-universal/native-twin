@@ -3,7 +3,7 @@ import * as Effect from 'effect/Effect';
 import * as Graph from 'effect/Graph';
 import * as Layer from 'effect/Layer';
 import * as Predicate from 'effect/Predicate';
-import ts from 'typescript';
+import ts from 'ts-morph';
 import type { TwinDslModels, TwinGraphModel } from '../models/TwinDsl.models';
 import { JSXParser } from './JSXParser.service';
 import { TypescriptUtils } from './TypescriptUtils.service';
@@ -46,7 +46,7 @@ const make = Effect.gen(function* () {
       const currentDepthBudget = context.getDepthBudgetFor(currentNode)!;
 
       // Handle identifier nodes that may reference JSX expressions
-      if (ts.isIdentifier(currentNode)) {
+      if (ts.Node.isIdentifier(currentNode)) {
         yield* context.processIdentifierNode(currentNode, currentDepthBudget, jsxExpressionStacks);
         continue;
       }
@@ -100,7 +100,7 @@ const createTraversalContext = Effect.fn(function* (
 
   // ==================== JSX Expression Discovery ====================
   // Extract all JSX expressions from source statements
-  const statements = source.statements;
+  const statements = source.getStatements();
   const jsxExpressions = statements
     .map((_) => jsxParser.getJSXElementStatement(_))
     .filter((x) => !!x);
@@ -142,7 +142,7 @@ const createTraversalContext = Effect.fn(function* (
    * Determines the display name based on parent context
    */
   const extractNodeInfo = (node: ts.Node): TwinGraphModel.NodeInfo => {
-    const parent = node.parent;
+    const parent = node.getParent();
     const isRoot = (parent && !tsUtils.isJSXElementLike(parent)) ?? false;
     const { name, index } = tsUtils.getNodeDebugDetails(node);
     let mappedProps: TwinDslModels.NodeStyledProp[] = [];
@@ -229,7 +229,7 @@ const createTraversalContext = Effect.fn(function* (
    * Gets the child nodes of a given node, handling both JSX elements and bindings
    */
   const getNodeChildren = (node: ts.Node): ts.Node[] => {
-    if (ts.isJsxElement(node)) {
+    if (ts.Node.isJsxElement(node)) {
       return tsUtils.getJSXElementChilds(node);
     }
     const binding = getJSXBinding(node);
@@ -266,7 +266,7 @@ const createTraversalContext = Effect.fn(function* (
       const childs = graphChildNodes.map((childIndex) =>
         addEdge(graphNode, childIndex, {
           relationship: 'jsx',
-          index: elementNode.parent.getChildren().indexOf(elementNode),
+          index: elementNode.getChildIndex(),
           isRoot: false,
         }),
       );

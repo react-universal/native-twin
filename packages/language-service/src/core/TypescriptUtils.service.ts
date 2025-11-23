@@ -6,21 +6,19 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
-import ts from 'typescript';
+import ts from 'ts-morph';
+import * as LSP from '../internal/LSPAdapterSpec';
 import { JSXNode, type TwinDslModels } from '../models/TwinDsl.models';
 
 const make = Effect.gen(function* () {
   const isFunction = (node: ts.Node) =>
-    Predicate.compose(ts.isFunctionExpression, ts.isArrowFunction)(node);
+    Predicate.compose(ts.Node.isFunctionExpression, ts.Node.isArrowFunction)(node);
 
   const getNodeSourceFile = (node: ts.Node) => node.getSourceFile();
-  const getNodeOffset = (node: ts.Node): number => node.pos;
+  const getNodeOffset = (node: ts.Node): number => node.getPos();
 
-  const findNodeAtOffset = (
-    node: ts.Node,
-    offset: number,
-    sourceFile?: ts.SourceFile,
-  ): Option.Option<ts.Node> => Option.fromNullable(node.getChildAt(offset, sourceFile));
+  const findNodeAtOffset = (node: ts.Node, offset: number): Option.Option<ts.Node> =>
+    Option.fromNullable(node.getChildAtPos(offset));
 
   /**
    * Finds the deepest AST node at the specified position within the given SourceFile.
@@ -30,9 +28,9 @@ const make = Effect.gen(function* () {
    */
   function findNodeAtPosition(sourceFile: ts.SourceFile, position: number) {
     function find(node: ts.Node): ts.Node | undefined {
-      if (position >= ts.getTokenPosOfNode(node, sourceFile) && position < node.end) {
+      if (position >= node.getPos() && position < node.getEnd()) {
         // If the position is within this node, keep traversing its children
-        return ts.forEachChild(node, find) || node;
+        return node.forEachChild(find) || node;
       }
       return undefined;
     }
@@ -41,68 +39,66 @@ const make = Effect.gen(function* () {
   }
 
   const getFunctionReturn = (node: ts.Node) => {
-    if (ts.isFunctionExpression(node) || ts.isArrowFunction(node)) {
-      if (ts.isBlock(node.body)) {
-        for (const child of node.body.statements) {
-          if (ts.isReturnStatement(child)) return child;
+    if (ts.Node.isFunctionExpression(node) || ts.Node.isArrowFunction(node)) {
+      const body = node.getBody();
+      if (ts.Node.isBlock(body)) {
+        for (const child of body.getStatements()) {
+          if (ts.Node.isReturnStatement(child)) return child;
         }
       }
     }
   };
 
-  const getJSXElementChilds = (node: ts.Node, sourceFile?: ts.SourceFile) =>
+  const getJSXElementChilds = (node: ts.Node) =>
     pipe(
-      ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node) ? node : null,
+      ts.Node.isJsxElement(node) || ts.Node.isJsxSelfClosingElement(node) ? node : null,
       RA.liftPredicate(Predicate.isNotNullable),
-      RA.flatMap((el) => (ts.isJsxElement(el) ? el.children : el.getChildren(sourceFile))),
-      RA.filter((el) => ts.isJsxElement(el) || ts.isJsxSelfClosingElement(el)),
+      RA.flatMap((el) => (ts.Node.isJsxElement(el) ? el.getChildren() : el.getChildren())),
+      RA.filter((el) => ts.Node.isJsxElement(el) || ts.Node.isJsxSelfClosingElement(el)),
     );
 
   const getTwinJSXNode = (
     node: TwinDslModels.AnyJSXElement,
-    sourceFile?: ts.SourceFile,
     jsxParent: JSXNode | null = null,
   ): Effect.Effect<JSXNode> =>
     Effect.gen(function* () {
-      const tagName = getJSXNodeTagName(node).getText(sourceFile);
-      const styledProps = getJSXMappedProps(node, sourceFile);
+      const tagName = getJSXNodeTagName(node).getText();
+      const styledProps = getJSXMappedProps(node);
       const result = new JSXNode({ node, styledProps, tagName, parent: jsxParent });
       result.childs = yield* Effect.suspend(() =>
-        Effect.all(
-          getJSXElementChilds(node, sourceFile).map((_) => getTwinJSXNode(_, sourceFile, result)),
-        ),
+        Effect.all(getJSXElementChilds(node).map((_) => getTwinJSXNode(_, result))),
       );
 
       return result;
     });
 
   const extractSourceInfo = (source: ts.SourceFile) => {
-    const exports = source.statements.filter((x) => ts.isExportDeclaration(x));
+    const exports = source.getStatements().filter((x) => ts.Node.isExportDeclaration(x));
     const declarations: ts.Node[] = [
-      ...source.statements.filter((x) => ts.isVariableDeclaration(x)),
-      ...source.statements.filter((x) => ts.isFunctionDeclaration(x)),
+      ...source.getStatements().filter((x) => ts.Node.isVariableDeclaration(x)),
+      ...source.getStatements().filter((x) => ts.Node.isFunctionDeclaration(x)),
     ];
-    const functions = source.statements.filter((x) => ts.isFunctionDeclaration(x));
-    const outsideNodes = source.referencedFiles;
+    const functions = source.getStatements().filter((x) => ts.Node.isFunctionDeclaration(x));
+    const outsideNodes = source.getReferencingSourceFiles();
     return { exports, declarations, functions, outsideNodes };
   };
 
-  const getNodeDebugDetails = (node: ts.Node, sourceFile?: ts.SourceFile) => {
+  const getNodeDebugDetails = (node: ts.Node) => {
     let name = 'Unknown';
-    if (ts.isBindingName(node)) {
-      name = node.getText(sourceFile);
+    if (ts.Node.isBindingNamed(node)) {
+      name = node.getText();
     }
     if (isJSXElementLike(node)) {
-      name = getJSXNodeTagName(node)?.getText(sourceFile) ?? node.getText(sourceFile);
+      name = getJSXNodeTagName(node)?.getText() ?? node.getText();
     }
-    if (ts.isJsxSelfClosingElement(node)) {
-      name = node.tagName.getText(sourceFile);
+    if (ts.Node.isJsxSelfClosingElement(node)) {
+      name = node.getTagNameNode().getText();
     }
     return {
       name,
-      kind: node.kind,
-      kindName: `${ts.SyntaxKind[node.kind]}`,
-      index: node.parent.getChildren(sourceFile).indexOf(node),
+      kind: node.getKind(),
+      kindName: node.getKindName(),
+      index: node.getChildIndex(),
     };
   };
 
@@ -111,55 +107,52 @@ const make = Effect.gen(function* () {
   // };
 
   const getVariableNameExpression = (node: ts.Node) =>
-    ts.isPropertyDeclaration(node) || ts.isVariableDeclaration(node)
-      ? node.initializer
-      : ts.isExpression(node)
+    ts.Node.isPropertyDeclaration(node) || ts.Node.isVariableDeclaration(node)
+      ? node.getInitializer()
+      : ts.Node.isExpression(node)
         ? node
         : undefined;
 
-  const getJSXNodeTwinInfo = (node: TwinDslModels.AnyJSXElement, sourceFile?: ts.SourceFile) => {
+  const getJSXNodeTwinInfo = (node: TwinDslModels.AnyJSXElement) => {
     const tagName = getJSXNodeTagName(node);
-    const childs = getJSXElementChilds(node, sourceFile);
+    const childs = getJSXElementChilds(node);
     // const dependencies = getNodeDependencies(node);
 
     return { tagName, childs };
   };
 
   const isJSXElementLike = (node: ts.Node) =>
-    Predicate.or(ts.isJsxElement, ts.isJsxSelfClosingElement)(node);
+    Predicate.or(ts.Node.isJsxElement, ts.Node.isJsxSelfClosingElement)(node);
 
   const getJSXNodeTagName = (node: TwinDslModels.AnyJSXElement) => {
-    if (ts.isJsxElement(node)) return node.openingElement.tagName;
-    return node.tagName;
+    if (ts.Node.isJsxElement(node)) return node.getOpeningElement().getTagNameNode();
+    return node.getTagNameNode();
   };
 
-  const getJSXElementAttributes = (node: ts.Node): ts.NodeArray<ts.JsxAttributeLike> => {
-    if (ts.isJsxElement(node)) return node.openingElement.attributes.properties;
-    if (ts.isJsxSelfClosingElement(node)) return node.attributes.properties;
-    return ts.factory.createNodeArray();
+  const getJSXElementAttributes = (node: ts.Node): ts.JsxAttributeLike[] => {
+    if (ts.Node.isJsxElement(node)) return node.getOpeningElement().getAttributes();
+    if (ts.Node.isJsxSelfClosingElement(node)) return node.getAttributes();
+    return [];
   };
 
-  const getJSXMappedProps = (
-    node: TwinDslModels.AnyJSXElement,
-    sourceFile?: ts.SourceFile,
-  ): TwinDslModels.NodeStyledProp[] => {
+  const getJSXMappedProps = (node: TwinDslModels.AnyJSXElement): TwinDslModels.NodeStyledProp[] => {
     const tagName = getJSXNodeTagName(node);
     if (!tagName) return [];
-    const name = tagName.getText(sourceFile);
+    const name = tagName.getText();
     const jsxConfig =
       mappedComponents.find((x) => x.name === name) ?? createCommonMappedAttribute(name);
     const props = Object.entries(jsxConfig.config);
-    const attributes = getJSXElementAttributes(node).filter((x) => ts.isJsxAttribute(x)) ?? [];
+    const attributes = getJSXElementAttributes(node).filter((x) => ts.Node.isJsxAttribute(x)) ?? [];
     return props.flatMap(([classProp, styleProp]) =>
       attributes
-        .filter((attrNode) => attrNode.name.getText(sourceFile) === classProp)
+        .filter((attrNode) => attrNode.getNameNode().getText() === classProp)
         .map(
           (attrNode): TwinDslModels.NodeStyledProp => ({
             _tag: 'NodeStyledProp',
             classProp,
             styleProp,
             node: attrNode,
-            ...getJSXAttributeValue(attrNode, sourceFile),
+            ...getJSXAttributeValue(attrNode),
           }),
         ),
     );
@@ -167,7 +160,6 @@ const make = Effect.gen(function* () {
 
   const getJSXAttributeValue = (
     node: ts.JsxAttribute,
-    sourceFile?: ts.SourceFile,
   ): Pick<
     TwinDslModels.NodeStyledProp,
     'expression' | 'originalText' | 'twinCX' | 'valueTextNode'
@@ -179,41 +171,41 @@ const make = Effect.gen(function* () {
       originalText: '',
       twinCX: '',
       expression: null,
-      valueTextNode: node.initializer ?? null,
+      valueTextNode: node.getInitializer() ?? null,
     };
-    const initializer = node.initializer;
+    const initializer = node.getInitializer();
     if (!initializer) return result;
-    if (ts.isStringLiteral(initializer)) {
-      result.originalText = initializer.getText(sourceFile);
+    if (ts.Node.isStringLiteral(initializer)) {
+      result.originalText = initializer.getText();
       result.twinCX = cx`${result.originalText}`;
       return result;
     }
-    if (ts.isJsxExpression(initializer)) {
-      const expression = initializer.expression;
+    if (ts.Node.isJsxExpression(initializer)) {
+      const expression = initializer.getExpression();
       if (!expression) return result;
-      if (ts.isStringLiteral(expression)) {
-        result.originalText = expression.text;
+      if (ts.Node.isStringLiteral(expression)) {
+        result.originalText = expression.getText();
         result.twinCX = cx`${result.originalText}`;
         result.valueTextNode = expression;
         return result;
       }
-      if (ts.isNoSubstitutionTemplateLiteral(expression)) {
-        result.originalText = expression.getText(sourceFile);
+      if (ts.Node.isNoSubstitutionTemplateLiteral(expression)) {
+        result.originalText = expression.getText();
         result.twinCX = cx`${result.originalText}`;
         result.valueTextNode = expression;
         return result;
       }
-      if (ts.isTemplateExpression(expression)) {
-        const literals = [expression.head.text];
+      if (ts.Node.isTemplateExpression(expression)) {
+        const literals = [expression.getHead().getText()];
         const expressions: ts.Expression[] = [];
-        for (const span of expression.templateSpans) {
-          const literal = span.literal;
-          if (ts.isTemplateMiddle(literal)) {
-            literals.push(literal.text);
+        for (const span of expression.getTemplateSpans()) {
+          const literal = span.getLiteral();
+          if (ts.Node.isTemplateMiddle(literal)) {
+            literals.push(literal.getText());
           } else {
-            literals.push(literal.text);
+            literals.push(literal.getText());
           }
-          const expression = span.expression;
+          const expression = span.getExpression();
           expressions.push(expression);
         }
         result.originalText = literals.map((x) => x.trim()).join(' ');
@@ -226,7 +218,15 @@ const make = Effect.gen(function* () {
     return result;
   };
 
+  const nodeToLSPRange = (node: ts.Node) =>
+    LSP.range(
+      LSP.position(node.getPos(), node.getStartLineNumber()),
+      LSP.position(node.getEnd(), node.getEndLineNumber()),
+    );
+
   return {
+    jsx: {},
+    nodeToLSPRange,
     findNodeAtPosition,
     isFunction,
     getNodeDebugDetails,
