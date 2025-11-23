@@ -46,7 +46,7 @@ export const DEFAULT_PLUGIN_CONFIG = {
   rootDir: './',
   enable: true,
   tsConfigPath: './tsconfig.json',
-  configPath: './tailwind.config.ts',
+  twinConfigPath: './tailwind.config.ts',
   trace: {
     server: 'off',
   } as const,
@@ -54,7 +54,8 @@ export const DEFAULT_PLUGIN_CONFIG = {
 
 export const twinCommonFiles = ['tailwind.config.ts', 'twin.config.ts'];
 
-export type TwinConfigOptions = typeof DEFAULT_PLUGIN_CONFIG;
+export type TwinServerOptionsShape = typeof DEFAULT_PLUGIN_CONFIG
+export interface TwinConfigOptions extends TwinServerOptionsShape {}
 
 export const typeScriptExtensionId = 'vscode.typescript-language-features';
 export const pluginId = '@native-twin/ts-plugin';

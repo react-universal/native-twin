@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
-import { Constants, LSPConfig } from '@native-twin/language-service';
+import { Constants, LSPConfig, type TwinConfigOptions } from '@native-twin/language-service';
 import { parseLSPConfigInput } from '@native-twin/language-service/Services';
-import { SubscriptionRef } from 'effect';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';
 import * as Layer from 'effect/Layer';
 import * as Scope from 'effect/Scope';
+import * as SubscriptionRef from 'effect/SubscriptionRef';
 import { VscodeContext } from './extension.service';
 import { extensionConfigState, registerEditorCommand, thenable } from './extension.utils';
 
@@ -39,9 +39,13 @@ export const launchExtension = <E>(
         1,
       ),
     );
+    const tsConfigs = yield* thenable(() =>
+      vscode.workspace.findFiles('**/tsconfig.json', '**/node_modules/**', 1),
+    );
 
-    const twinFilePath = files[0]?.path;
+    const twinConfigPath = files[0]?.path;
     const rootDir = vscode.workspace.workspaceFolders?.[0]?.uri?.path ?? process.cwd();
+    const tsConfigPath = tsConfigs[0]?.path;
 
     const configRef = yield* SubscriptionRef.make(
       parseLSPConfigInput({
@@ -50,15 +54,19 @@ export const launchExtension = <E>(
         enable: currentConfig.enable,
         functions: currentConfig.functions,
         jsxAttributes: currentConfig.jsxAttributes,
-        configPath: twinFilePath,
-        tsConfigPath: currentConfig.tsConfigPath,
+        twinConfigPath,
+        tsConfigPath,
         trace: { server: currentConfig.trace.server },
       }),
     );
+    const configSelector = <T>(selector: (config: TwinConfigOptions) => T) =>
+      configRef.get.pipe(Effect.map((x) => selector(x)));
+
     const onChangeConfig = (_config: any) => Effect.void;
+
     const configLayer = Layer.succeed(
       LSPConfig.LSPConfig,
-      LSPConfig.LSPConfig.of({ config: configRef, onChangeConfig }),
+      LSPConfig.LSPConfig.of({ config: configRef, onChangeConfig, configSelector }),
     );
     const mainLayer = layer.pipe(Layer.provideMerge(configLayer));
     yield* Layer.buildWithScope(mainLayer, scope);

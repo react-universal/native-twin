@@ -1,6 +1,5 @@
 import url from 'node:url';
 import { identity } from '@native-twin/helpers';
-import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as JSXParser from '../core/JSXParser.service';
@@ -29,18 +28,19 @@ const getProGramSourceFile = Effect.fn('ts: getSourceFile')(function* (filename:
   const program = yield* TypeScriptProgram;
 
   const filePath = url.fileURLToPath(filename);
-  return yield* Effect.try({
-    try: () => program.getSourceFile(filePath),
-    catch: (error) =>
-      LSPTypes.LSPParserError.create(error instanceof Error ? error : `Parser error: ${error}`),
-  }).pipe(
-    Effect.andThen(Effect.fromNullable),
-    Effect.mapError((error) =>
-      Cause.isNoSuchElementException(error)
-        ? LSPTypes.FileNotFound.create(`Cant fund file: ${filename}`)
-        : error,
-    ),
-  );
+  return yield* program.getSourceFile(filePath);
+  // return yield* Effect.try({
+  //   try: () => program.getSourceFile(filePath),
+  //   catch: (error) =>
+  //     LSPTypes.LSPParserError.create(error instanceof Error ? error : `Parser error: ${error}`),
+  // }).pipe(
+  //   Effect.andThen(Effect.fromNullable),
+  //   Effect.mapError((error) =>
+  //     Cause.isNoSuchElementException(error)
+  //       ? LSPTypes.FileNotFound.create(`Cant fund file: ${filename}`)
+  //       : error,
+  //   ),
+  // );
 });
 
 const getRegions: VscodeLSPAdapter['getRegions'] = Effect.fn('vscodeAdapter: extractRegions')(

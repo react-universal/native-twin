@@ -174,42 +174,50 @@ const make = Effect.gen(function* () {
 
     const regions: Spec.AnyTwinNodeRegion[] = [];
     const nodesToVisit: ts.Node[] = [...nodes];
+
     while (nodesToVisit.length > 0) {
       const nextNode = nodesToVisit.pop();
       if (!nextNode) break;
+
       if (tsUtils.isJSXElementLike(nextNode)) {
         const props = getJSXElementStyledProps(nextNode, sourceFile);
         const regionProps = props.map((prop): Spec.JsxAttributeRegion => {
-          const nameRange = ts.rangeOfNode(prop.name);
+          const nameRange = Spec.range(Spec.position(prop.name.pos), Spec.position(prop.name.end));
           const attributeBinding = Spec.TwinLSPNode.createAttributeBinding({
-            range: Spec.range(Spec.position(nameRange.pos), Spec.position(nameRange.end)),
+            range: nameRange,
             getText: () => prop.name.getText(sourceFile),
           });
-          const valueRange = ts.rangeOfNode(prop.value);
+          const valueRange = Spec.range(
+            Spec.position(prop.value.pos),
+            Spec.position(prop.value.end),
+          );
           const attributeValue = Spec.TwinLSPNode.createJsxAttributeValue({
-            range: Spec.range(Spec.position(valueRange.pos), Spec.position(valueRange.end)),
+            range: valueRange,
             getText: () => prop.value.getText(sourceFile),
           });
 
-          const fullRange = ts.rangeOfNode(prop.attribute);
+          const fullRange = Spec.range(
+            Spec.position(prop.attribute.pos),
+            Spec.position(prop.attribute.end),
+          );
           return Spec.TwinLSPNode.createAttributeRegion({
             getText: () => prop.name.getText(sourceFile),
             attributeBinding,
             attributeValue,
-            range: Spec.range(Spec.position(fullRange.pos), Spec.position(fullRange.end)),
+            range: fullRange,
           });
         });
-        const nodeRange = ts.rangeOfNode(nextNode);
+        const nodeRange = Spec.range(Spec.position(nextNode.pos), Spec.position(nextNode.end));
         const tagName = tsUtils.getJSXNodeTagName(nextNode);
-        const tagNameRange = ts.rangeOfNode(tagName);
+        const tagNameRange = Spec.range(Spec.position(tagName.pos), Spec.position(tagName.end));
         regions.push(
           Spec.TwinLSPNode.createJsxNode({
             getText: () => nextNode.getText(sourceFile),
-            range: Spec.range(Spec.position(nodeRange.pos), Spec.position(nodeRange.end)),
+            range: nodeRange,
             styledProps: regionProps,
             tagName: Spec.TwinLSPNode.createJsxTagName({
               getText: () => tagName.getText(sourceFile),
-              range: Spec.range(Spec.position(tagNameRange.pos), Spec.position(tagNameRange.end)),
+              range: tagNameRange,
             }),
           }),
         );

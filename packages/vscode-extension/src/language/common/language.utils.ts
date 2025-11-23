@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { CSS_COLORS } from '@native-twin/css';
+import type { TwinConfigOptions } from '@native-twin/language-service';
 import { Constants } from '@native-twin/language-service/browser';
 import * as Effect from 'effect/Effect';
 import {
@@ -26,7 +27,11 @@ export const createFileWatchers = Effect.gen(function* () {
 
 export const getConfigFiles = Effect.gen(function* () {
   const files = yield* thenable(() =>
-    vscode.workspace.findFiles('**/{tailwind,twin,nativeTwin,native-twin}.config.{ts,js,mjs,cjs}', '**/node_modules/**', 1),
+    vscode.workspace.findFiles(
+      '**/{tailwind,twin,nativeTwin,native-twin}.config.{ts,js,mjs,cjs}',
+      '**/node_modules/**',
+      1,
+    ),
   );
   if (files.length === 0) {
     yield* Effect.logWarning('Cant find a native-twin configuration file');
@@ -113,10 +118,7 @@ export const onProvideDocumentColors = async (
   return editableColors;
 };
 
-export const getDefaultLanguageClientOptions = (data: {
-  twinConfigFile: string | undefined;
-  workspaceRoot: string | undefined;
-}): LanguageClientOptions => {
+export const getDefaultLanguageClientOptions = (data: TwinConfigOptions): LanguageClientOptions => {
   return {
     documentSelector: Constants.DOCUMENT_SELECTORS,
 
@@ -125,8 +127,8 @@ export const getDefaultLanguageClientOptions = (data: {
       supportHtml: true,
     },
     initializationOptions: {
-      ...vscode.workspace.getConfiguration(Constants.configurationSection),
       ...data,
+      ...vscode.workspace.getConfiguration(Constants.configurationSection),
       capabilities: {
         completion: {
           dynamicRegistration: false,

@@ -21,8 +21,8 @@
     },
     "./adapters/*": {
       "types": "./build/dts/adapters/*",
-      "import": "./build/esm/adapters/*.js",
-      "default": "./build/cjs/adapters/*.js"
+      "import": "./build/esm/adapters/*",
+      "default": "./build/cjs/adapters/*"
     },
     "./Services": {
       "types": "./build/dts/Services.d.ts",

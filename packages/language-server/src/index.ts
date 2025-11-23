@@ -1,6 +1,6 @@
 import * as NodeContext from '@effect/platform-node/NodeContext';
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
-import { getClientCapabilities, languagePrograms } from '@native-twin/language-service';
+import { getClientCapabilities } from '@native-twin/language-service';
 import { vscodeLSPAdapterExecutor } from '@native-twin/language-service/adapters/vscode.adapter.js';
 import {
   classNameCompletions,
@@ -18,15 +18,13 @@ const Runtime = ManagedRuntime.make(Layer.suspend(() => LspMainLive));
 const program = Effect.gen(function* () {
   const { connection: Connection, documents } = yield* LSPContext;
   const config = yield* LSPConfig;
-  // const program = yield* TypescriptApi.TypeScriptProgram;
 
-  // const root = currentConfig.workspaceRoot.pipe(Option.getOrElse(() => process.cwd()));
-  // const languageService = createTsAPI([root], ts.getDefaultCompilerOptions());
+  const fetchDocument = (uri: string) => vscodeLSPAdapterExecutor.getLSPDocument(uri);
 
   Connection.onInitialize(async (params) => {
     const capabilities = getClientCapabilities(params.capabilities);
-
     const configOptions = params.initializationOptions;
+
     await Runtime.runPromise(config.onChangeConfig(configOptions));
 
     return capabilities;
@@ -37,24 +35,20 @@ const program = Effect.gen(function* () {
   });
 
   Connection.onCompletion(async (params) => {
-    const items = await classNameCompletions
+    const regions = await classNameCompletions
       .apply(params.textDocument.uri, params.position, vscodeLSPAdapterExecutor)
-      .pipe(
-        Effect.andThen((result) =>
-          vscodeLSPAdapterExecutor
-            .getLSPDocument(params.textDocument.uri)
-            .pipe(
-              Effect.andThen((document) =>
-                twinCompletionsToVscode(
-                  result.region,
-                  document.document,
-                  document.document.offsetAt(params.position),
-                ),
-              ),
-            ),
+      .pipe(Runtime.runPromise);
+
+    const items = await fetchDocument(params.textDocument.uri).pipe(
+      Effect.andThen((doc) =>
+        twinCompletionsToVscode(
+          regions.region,
+          doc.document,
+          doc.document.offsetAt(params.position),
         ),
-        Runtime.runPromise,
-      );
+      ),
+      Runtime.runPromise,
+    );
 
     return {
       isIncomplete: true,
@@ -87,11 +81,12 @@ const program = Effect.gen(function* () {
     // languagePrograms.getDocumentColors(...params).pipe(Runtime.runPromise),
   );
 
-  Connection.onDocumentHighlight(async (...args) => {
-    const data = await languagePrograms
-      .getDocumentHighLightsProgram(...args)
-      .pipe(Runtime.runPromise);
-    return data;
+  Connection.onDocumentHighlight(async (..._args) => {
+    // const data = await languagePrograms
+    //   .getDocumentHighLightsProgram(...args)
+    //   .pipe(Runtime.runPromise);
+    // return data;
+    return null;
   });
 
   Connection.onSelectionRanges(async (_params, _token, _, __) => {

@@ -195,6 +195,10 @@ export class LSPTokenNotFound extends Data.TaggedError('LSPTokenNotFound')<{
   }
 }
 
+export class LSPTypescriptFailure extends Data.TaggedError('LSPTypescriptFailure')<{
+  info: unknown;
+}> {}
+
 export type AnyLSPError = FileNotFound | LSPParserError | LSPTokenNotFound;
 
 /**

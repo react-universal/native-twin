@@ -1,6 +1,7 @@
+import { asArray } from '@native-twin/helpers';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
-import type * as Option from 'effect/Option';
+import * as Option from 'effect/Option';
 import type * as Stream from 'effect/Stream';
 import type * as server from 'vscode-languageserver';
 import type { DocumentUri, TextDocument } from 'vscode-languageserver-textdocument';
@@ -12,7 +13,7 @@ import { TwinParserContext } from './TwinParser.service';
 
 export interface LSPTwinCompletionsResult {
   twinTokens: TwinRuleRegistry[];
-  region: Spec.AnyTwinNodeRegion;
+  region: Option.Option<Spec.AnyTwinNodeRegion>;
   prevRegion: Option.Option<Spec.AnyTwinNodeRegion>;
   nextRegion: Option.Option<Spec.AnyTwinNodeRegion>;
 }
@@ -54,7 +55,9 @@ export const twinCompletionsToVscode = <Document extends BaseTwinTextDocument>(
   Effect.gen(function* () {
     const parser = yield* TwinParserContext;
 
-    const regionsToVisit: Spec.AnyTwinNodeRegion[] = [region];
+    const regionsToVisit: Spec.AnyTwinNodeRegion[] = Option.map(region, asArray).pipe(
+      Option.getOrElse(() => []),
+    );
     let valueRegion: Spec.JsxAttributeValueRegion | null = null;
     while (regionsToVisit.length > 0) {
       const nextRegion = regionsToVisit.pop();

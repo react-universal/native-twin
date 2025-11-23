@@ -132,7 +132,7 @@ export const activateTwinTsPlugin = Effect.gen(function* () {
 
 const normalizeTwinConfig = (config: Effect.Effect.Success<ExtensionConfigRef['get']>) =>
   Effect.gen(function* () {
-    let configPath = config.configPath;
+    let configPath = config.twinConfigPath;
     if (!configPath || !path.isAbsolute(configPath)) {
       const findFiles = yield* thenable(() =>
         vscode.workspace.findFiles(

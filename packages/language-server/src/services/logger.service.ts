@@ -4,9 +4,6 @@ import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import { inspect } from 'util';
 
-// export const loggerLayer = (connection: Connection) =>
-//   Logger.replace(Logger.defaultLogger, createConnectionLogger(connection));
-
 export const sendDebugLog = <T extends object>(message: string, payload: T) =>
   Effect.logDebug(`${message} \n payload: ${inspect(payload, false, null, true)}`);
 

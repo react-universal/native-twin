@@ -51,10 +51,7 @@ export const LanguageClientLive = Effect.gen(function* () {
 
   const currentConfig = yield* lspConfig.config.get;
   const clientConfig: LanguageClientOptions = {
-    ...getDefaultLanguageClientOptions({
-      twinConfigFile: currentConfig.configPath,
-      workspaceRoot: currentConfig.rootDir,
-    }),
+    ...getDefaultLanguageClientOptions(currentConfig),
     synchronize: {
       fileEvents: fileEvents,
       configurationSection: Constants.configurationSection,

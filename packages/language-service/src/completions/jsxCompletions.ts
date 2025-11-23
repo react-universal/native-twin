@@ -1,7 +1,6 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as LSP from '../core/LSP';
-import * as LSPTypes from '../internal/LSPAdapterSpec';
 
 export const classNameCompletions = LSP.createTwinCompletions({
   name: 'classNameCompletions',
@@ -12,15 +11,13 @@ export const classNameCompletions = LSP.createTwinCompletions({
       .pipe(Effect.map(Option.getOrNull));
 
     if (!token) {
-      return yield* Effect.fail(
-        LSPTypes.LSPParserError.create(`Couldn't find node at position: ${position}`),
-      );
+      yield* Effect.log(`Couldn't find node at position: ${position}`);
     }
 
     return {
       nextRegion: Option.none(),
       prevRegion: Option.none(),
-      region: token,
+      region: Option.fromNullable(token),
       twinTokens: [],
     } satisfies LSP.LSPTwinCompletionsResult;
 

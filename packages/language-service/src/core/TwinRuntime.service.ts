@@ -131,7 +131,7 @@ const make = Effect.gen(function* () {
       let result: InternalTwinConfig | null = null;
       const configPath = yield* twinPath
         ? Effect.succeed(twinPath)
-        : Effect.map(config.get, (x) => x.configPath);
+        : Effect.map(config.get, (x) => x.twinConfigPath);
       if (configPath) result = loadTwin(configPath);
 
       if (!result) {

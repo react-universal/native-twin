@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { Constants } from '@native-twin/language-service/browser';
+import { LSPConfig } from '@native-twin/language-service/Services';
 import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -20,6 +21,8 @@ import {
 const make = Effect.gen(function* () {
   const extensionCtx = yield* VscodeContext;
   const workspace = vscode.workspace.workspaceFolders;
+  const { config } = yield* LSPConfig;
+  const currentConfig = yield* config.get;
 
   const fileEvents = yield* createFileWatchers;
 
@@ -29,8 +32,9 @@ const make = Effect.gen(function* () {
 
   const clientConfig: LanguageClientOptions = {
     ...getDefaultLanguageClientOptions({
-      twinConfigFile: configFiles.at(0)?.path,
-      workspaceRoot: workspace?.at(0)?.uri.path,
+      ...currentConfig,
+      twinConfigPath: configFiles.at(0)?.path ?? currentConfig.twinConfigPath,
+      rootDir: workspace?.at(0)?.uri.path ?? currentConfig.rootDir,
     }),
     synchronize: {
       fileEvents: fileEvents,
@@ -104,4 +108,3 @@ export class LanguageClientContextBrowser extends Ctx.Tag('vscode/LanguageClient
 >() {
   static Live = Layer.scoped(LanguageClientContextBrowser, make);
 }
-
