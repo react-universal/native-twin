@@ -1,8 +1,8 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
-import { diagnosticProviderSource } from '../../utils/constants.utils.js';
-import { isSameRange } from '../../utils/vscode.utils.js';
+import { diagnosticProviderSource } from '../utils/constants.utils.js';
+import { isSameRange } from '../utils/vscode.utils.js';
 import type { TwinSheetEntry } from './TwinSheetEntry.model.js';
 
 export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {

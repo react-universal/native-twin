@@ -1,5 +1,5 @@
 import { createVariants } from '@native-twin/core';
-  
+
 export const Component = () => {
   return (
     <div className='bg-'>

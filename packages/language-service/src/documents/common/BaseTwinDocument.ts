@@ -2,7 +2,7 @@ import * as Data from 'effect/Data';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
-import type { TemplateTokenWithText } from '../../lsp/models/template-token.model';
+import type { TemplateTokenWithText } from '../../models/template-token.model';
 
 interface TwinTokenLocation {
   _tag: 'TwinTokenLocation';

@@ -1,6 +1,5 @@
 import * as Context from 'effect/Context';
 import type * as Effect from 'effect/Effect';
-import type * as Ref from 'effect/Ref';
 import ts from 'typescript';
 
 declare module 'typescript' {
@@ -15,10 +14,8 @@ type _TypescriptApi = typeof ts;
 export interface TypeScriptApi extends _TypescriptApi {}
 export const TypeScriptApi = Context.GenericTag<TypeScriptApi>('TypeScriptApi');
 
-type _TypeScriptProgram = ts.Program;
+// type _TypeScriptProgram = ts.Program;
 export interface TypeScriptProgram {
-  programRef: Ref.Ref<_TypeScriptProgram>;
-  languageServiceRef: Ref.Ref<ts.LanguageService>;
   getSourceFile: (filename: string) => Effect.Effect<ts.SourceFile>;
 }
 export const TypeScriptProgram = Context.GenericTag<TypeScriptProgram>('TypeScriptProgram');

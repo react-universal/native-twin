@@ -3,7 +3,7 @@ import * as ReadonlyArray from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type { Range } from 'vscode-languageserver-textdocument';
-import { getFlattenTemplateToken } from '../../utils/twin/native-twin.utils.js';
+import { getFlattenTemplateToken } from '../utils/twin/native-twin.utils.js';
 import type {
   LocatedGroupToken,
   LocatedGroupTokenWithText,

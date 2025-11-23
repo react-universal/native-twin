@@ -4,11 +4,11 @@ import * as vscode from 'vscode-languageserver-types';
 import type {
   TwinRuleCompletion,
   TwinVariantCompletion,
-} from '../../internal/TwinTypes.internal';
+} from '../internal/TwinTypes.internal';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
-} from '../../utils/language/language.utils.js';
+} from '../utils/language/language.utils';
 
 export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal {
   label: string;

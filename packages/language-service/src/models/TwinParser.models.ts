@@ -20,7 +20,7 @@ import { Range } from 'vscode-languageserver-types';
 import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
 import type * as LSPTypes from '../internal/LSPAdapterSpec';
 import type { TwinRuleCompletion } from '../internal/TwinTypes.internal';
-import { VscodeCompletionItem } from '../lsp/models/completion.model';
+import { VscodeCompletionItem } from './completion.model';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
 export interface WithLocation {

@@ -17,7 +17,9 @@ export const LSPConfigLive = Effect.gen(function* () {
     currentConfig.get.pipe(Effect.map((x) => selector(x)));
 
   const onChangeConfig = (newConfig: TwinConfigOptions) =>
-    SubscriptionRef.set(currentConfig, newConfig);
+    SubscriptionRef.setAndGet(currentConfig, newConfig).pipe(
+      Effect.tap(() => Effect.logDebug('LSPConfig changed.')),
+    );
 
   return LSPConfig.of({
     config: currentConfig,

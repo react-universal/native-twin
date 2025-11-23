@@ -52,13 +52,9 @@ export const TypescriptContextLive = Effect.gen(function* () {
     return sourceFile;
   });
 
-  const tsLayer = Layer.succeed(TypescriptApi.TypeScriptApi, ts);
-  const program = Layer.succeed(TypescriptApi.TypeScriptProgram, {
-    programRef,
-    languageServiceRef,
+  return TypescriptApi.TypeScriptProgram.of({
     getSourceFile,
   });
-  return Layer.merge(tsLayer, program);
 
   function createLanguageService() {
     return Effect.map(serviceHostRef.get, (host) =>
@@ -141,4 +137,4 @@ export const TypescriptContextLive = Effect.gen(function* () {
       });
     });
   }
-}).pipe(Layer.unwrapEffect);
+}).pipe(Layer.effect(TypescriptApi.TypeScriptProgram));

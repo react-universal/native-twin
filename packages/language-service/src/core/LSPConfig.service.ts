@@ -4,11 +4,8 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import { TwinRuntimeContext } from '../core/TwinRuntime.service.js';
-import {
-  DEFAULT_PLUGIN_CONFIG,
-  type TwinConfigOptions,
-} from '../utils/constants.utils.js';
+import { DEFAULT_PLUGIN_CONFIG, type TwinConfigOptions } from '../utils/constants.utils.js';
+import { TwinRuntimeContext } from './TwinRuntime.service.js';
 
 export interface VscodeLSPConfig {
   twinConfigFile: Option.Option<string>;
@@ -24,7 +21,7 @@ export interface VscodeLSPConfigInput {
   initialized: boolean;
 }
 
-const make = Effect.gen(function* () {;
+const make = Effect.gen(function* () {
   const twinRuntime = yield* TwinRuntimeContext;
 
   const ref = yield* SubscriptionRef.make<VscodeLSPConfig>({

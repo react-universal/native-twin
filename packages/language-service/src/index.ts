@@ -1,5 +1,6 @@
 import * as Constants from './utils/constants.utils.js';
 
+export { LSPConfigService } from './core/LSPConfig.service.js';
 export { DocumentLanguageRegion } from './documents/common/LanguageRegion.model.js';
 export {
   type DocumentsServiceShape,
@@ -9,8 +10,7 @@ export {
 } from './documents/LSPDocuments.service.js';
 /** Documents Service */
 export { TwinLSPDocument } from './documents/node/TwinLSPDocument.model.js';
-export { LSPConfigService } from './lsp/LSPConfig.service.js';
-export { TemplateTokenData, TemplateTokenWithText } from './lsp/models/template-token.model.js';
+export { TemplateTokenData, TemplateTokenWithText } from './models/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
 /** Language Service */
 export {

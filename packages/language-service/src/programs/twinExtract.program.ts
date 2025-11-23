@@ -7,9 +7,6 @@ import * as Typescript from '../core/TypescriptAPI.service';
 export const twinTSExtract = Effect.fn(function* (filePath: string) {
   const program = yield* Typescript.TypeScriptProgram;
   const source = yield* program.getSourceFile(filePath);
-  if (!source) {
-    return yield* Effect.fail('asdasd');
-  }
   const jsxParser = yield* JSXParser;
   const parsed = yield* jsxParser.parseSourceFile(source);
 

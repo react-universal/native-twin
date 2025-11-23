@@ -10,10 +10,6 @@ export const classNameCompletions = LSP.createTwinCompletions({
       .getRegionAt(filename, position)
       .pipe(Effect.map(Option.getOrNull));
 
-    if (!token) {
-      yield* Effect.log(`Couldn't find node at position: ${position}`);
-    }
-
     return {
       nextRegion: Option.none(),
       prevRegion: Option.none(),

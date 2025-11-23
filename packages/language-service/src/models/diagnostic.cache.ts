@@ -4,15 +4,15 @@ import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver';
 import type { DiagnosticRelatedInformation } from 'vscode-languageserver-types';
-import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
-import type { DocumentLanguageRegion } from '../../documents/common/LanguageRegion.model.js';
+import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument.js';
+import type { DocumentLanguageRegion } from '../documents/common/LanguageRegion.model.js';
 import {
   bodyLocToRange,
   isSameTwinSheetEntryDeclaration,
   twinEntryClassNameEquivalence,
   twinSheetEntryGroupByDuplicates,
-} from '../../utils/language/diagnostic.js';
-import { isSameRange } from '../../utils/vscode.utils.js';
+} from '../utils/language/diagnostic.js';
+import { isSameRange } from '../utils/vscode.utils.js';
 import { TwinDiagnosticCodes, VscodeDiagnosticItem } from './diagnostic.model.js';
 import type { TwinSheetEntry } from './TwinSheetEntry.model.js';
 

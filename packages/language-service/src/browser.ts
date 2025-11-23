@@ -1,5 +1,6 @@
 import * as Constants from './utils/constants.utils.js';
 
+export { LSPConfigService } from './core/LSPConfig.service.js';
 export {
   TwinMonacoTextDocument,
   TwinTokenLocation,
@@ -13,8 +14,7 @@ export {
   traverseLanguageRegions,
   twinLSPDocumentLayer,
 } from './documents/LSPDocuments.service.js';
-export { LSPConfigService } from './lsp/LSPConfig.service.js';
-export { TemplateTokenData } from './lsp/models/template-token.model.js';
+export { TemplateTokenData } from './models/template-token.model.js';
 export { languagePrograms } from './programs/index.js';
 export type { TwinConfigOptions as NativeTwinPluginConfiguration } from './utils/constants.utils.js';
 export { getCompletionsForTokens } from './utils/language/completion.pipes.js';

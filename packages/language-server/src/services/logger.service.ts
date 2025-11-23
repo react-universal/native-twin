@@ -1,3 +1,4 @@
+import { LSPConfig } from '@native-twin/language-service';
 import { LSPContext } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Logger from 'effect/Logger';
@@ -16,10 +17,14 @@ export const LoggerLive = Logger.replaceEffect(
   Logger.jsonLogger,
   Effect.gen(function* () {
     const { connection: Connection } = yield* LSPContext;
+    const { configSelector } = yield* LSPConfig.LSPConfig;
+    const getDebugFlag = () => Effect.runSync(configSelector((x) => x.debug));
     return Logger.make((options) => {
       const logService = Connection.console;
       const message = Logger.logfmtLogger.log(options);
-      switch (options.logLevel) {
+      const logLevel = getDebugFlag() ? LogLevel.All : options.logLevel;
+
+      switch (logLevel) {
         case LogLevel.Trace:
           Connection.tracer.log(message);
           return;

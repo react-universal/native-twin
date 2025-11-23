@@ -11,7 +11,9 @@ import {
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
+import { CompletionList } from 'vscode-languageserver-types';
 import { LspMainLive } from './services/LSP.service';
+import { LoggerLive } from './services/logger.service';
 
 const Runtime = ManagedRuntime.make(Layer.suspend(() => LspMainLive));
 
@@ -50,10 +52,7 @@ const program = Effect.gen(function* () {
       Runtime.runPromise,
     );
 
-    return {
-      isIncomplete: true,
-      items: items,
-    };
+    return CompletionList.create(items);
   });
 
   Connection.onCompletionResolve(
@@ -124,6 +123,7 @@ const program = Effect.gen(function* () {
     return Effect.void;
   });
 }).pipe(
+  Effect.provide(Layer.fresh(LoggerLive)),
   Effect.provide(NodeContext.layer),
   Effect.catchAll((error) => Effect.log(`Language server failed: ${error}`)),
 );

@@ -109,7 +109,7 @@
             "default": [
               "className",
               "class",
-              "tw"
+              "containerClassName"
             ]
           },
           "nativeTwin.debug": {
@@ -160,6 +160,12 @@
       {
         "view": "nativeTwin-files",
         "contents": "Native Twin Dev Tools did not generate any file yet."
+      }
+    ],
+    "typescriptServerPlugins": [
+      {
+        "enableForWorkspaceTypeScriptVersions": true,
+        "name": "@native-twin/ts-plugin"
       }
     ]
   },
