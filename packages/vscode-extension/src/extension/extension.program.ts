@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { Constants, LSPConfig, type TwinConfigOptions } from '@native-twin/language-service';
-import { parseLSPConfigInput } from '@native-twin/language-service/Services';
+import { LSPConstants, type TwinConfigOptions } from '@native-twin/language-service';
+import { LSPConfig, parseLSPConfigInput } from '@native-twin/language-service/Services';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';
@@ -11,7 +11,7 @@ import { VscodeContext } from './extension.service';
 import { extensionConfigState, registerEditorCommand, thenable } from './extension.utils';
 
 export const launchExtension = <E>(
-  layer: Layer.Layer<never, E, VscodeContext | LSPConfig.LSPConfig>,
+  layer: Layer.Layer<never, E, VscodeContext | LSPConfig>,
 ) => {
   return Effect.gen(function* () {
     const context = yield* VscodeContext;
@@ -30,7 +30,7 @@ export const launchExtension = <E>(
       dispose: () => Effect.runFork(Scope.close(scope, Exit.void)),
     });
 
-    const twinConfig = yield* extensionConfigState(Constants.DEFAULT_PLUGIN_CONFIG);
+    const twinConfig = yield* extensionConfigState(LSPConstants.lspRawConfig);
     const currentConfig = yield* twinConfig.get;
     const files = yield* thenable(() =>
       vscode.workspace.findFiles(
@@ -65,8 +65,8 @@ export const launchExtension = <E>(
     const onChangeConfig = (_config: any) => Effect.void;
 
     const configLayer = Layer.succeed(
-      LSPConfig.LSPConfig,
-      LSPConfig.LSPConfig.of({ config: configRef, onChangeConfig, configSelector }),
+      LSPConfig,
+      LSPConfig.of({ config: configRef, onChangeConfig, configSelector }),
     );
     const mainLayer = layer.pipe(Layer.provideMerge(configLayer));
     yield* Layer.buildWithScope(mainLayer, scope);

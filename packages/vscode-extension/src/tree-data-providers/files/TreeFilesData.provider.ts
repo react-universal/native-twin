@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Constants, type TwinConfigOptions } from '@native-twin/language-service';
+import { LSPConstants, type TwinConfigOptions } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { identity, pipe } from 'effect/Function';
@@ -67,7 +67,7 @@ class FileNodesManager {
 export const TwinTreeDataFilesProvider = makeTreeDataProvider<AnyTreeDataNode>('nativeTwin-files')(
   (refresh) => {
     return Effect.gen(function* () {
-      const settings = yield* extensionConfigState(Constants.DEFAULT_PLUGIN_CONFIG);
+      const settings = yield* extensionConfigState(LSPConstants.lspRawConfig);
 
       const workspaceRoot: vscode.WorkspaceFolder = pipe(
         RA.ensure(vscode.workspace.workspaceFolders),

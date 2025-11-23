@@ -1,11 +1,13 @@
 import url from 'node:url';
-import { identity } from '@native-twin/helpers';
+import { asArray, identity } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as JSXParser from '../core/JSXParser.service';
-import { LSPContext } from '../core/LSP';
+import { LSPContext, type LSPTwinCompletionsResult } from '../core/LSPContext.service';
 import { TypeScriptProgram } from '../core/TypescriptAPI.service';
 import * as LSPTypes from '../internal/LSPAdapterSpec';
+import type { VscodeCompletionItem } from '../models/completion.model';
+import { type BaseTwinTextDocument, TwinParserContext } from '../Services';
 
 export interface VscodeLSPAdapter
   extends LSPTypes.LSPAdapterSpec<never, LSPContext | TypeScriptProgram> {}
@@ -82,17 +84,61 @@ export const VscodeLSPAdapter = {
   getRegions,
 } satisfies VscodeLSPAdapter;
 
-// const getVscodeFileHandler = Effect.fn('vscode: Get file handler')(function* (
-//   filename: string,
-// ): Effect.fn.Return<BaseTwinTextDocument, LSPTypes.AnyLSPError, TwinLSPDocumentContext> {
-//   const documents = yield* TwinLSPDocumentContext;
-//   const document = yield* documents.getDocument(filename).pipe(Effect.map(Option.getOrNull));
-
-//   if (!document) {
-//     return yield* Effect.fail(LSPTypes.FileNotFound.create(`cant find file: ${filename}`));
-//   }
-
-//   return document;
-// });
-
 export const vscodeLSPAdapterExecutor = LSPTypes.createLSPAdapterExecutor(VscodeLSPAdapter);
+
+export const twinCompletionsToVscode = <Document extends BaseTwinTextDocument>(
+  region: LSPTwinCompletionsResult['region'],
+  document: Document,
+  offset: number,
+) =>
+  Effect.gen(function* () {
+    const parser = yield* TwinParserContext;
+
+    const regionsToVisit: LSPTypes.AnyTwinNodeRegion[] = Option.map(region, asArray).pipe(
+      Option.getOrElse(() => []),
+    );
+    let valueRegion: LSPTypes.JsxAttributeValueRegion | null = null;
+    while (regionsToVisit.length > 0) {
+      const nextRegion = regionsToVisit.pop();
+      if (!nextRegion) break;
+
+      if (offset <= nextRegion.range.start.character || offset >= nextRegion.range.end.character)
+        continue;
+      switch (nextRegion._tag) {
+        case 'JsxAttributeRegion':
+          regionsToVisit.push(nextRegion.attributeValue);
+          continue;
+        case 'JsxNodeRegion':
+          regionsToVisit.push(...nextRegion.styledProps);
+          continue;
+        case 'JsxAttributeBindingRegion':
+        case 'JsxTagName':
+          continue;
+        case 'JsxAttributeValueRegion':
+          valueRegion = nextRegion;
+          break;
+      }
+    }
+
+    if (!valueRegion) return [];
+
+    const parserResult = parser.runTwinParser(
+      valueRegion.getText() ?? '',
+      valueRegion.range.start.character,
+    );
+    const locatedToken = parserResult.composedClasses.find(
+      (x) => offset >= x.documentLoc.originalRange.pos && offset <= x.documentLoc.originalRange.end,
+    );
+    if (!locatedToken) return [];
+
+    const rules = yield* parser.findRulesByKey(locatedToken.classNameText);
+    return rules.map((rule): VscodeCompletionItem => {
+      return rule.toVscode(
+        document,
+        LSPTypes.range(
+          LSPTypes.position(locatedToken.documentLoc.originalRange.pos),
+          LSPTypes.position(locatedToken.documentLoc.originalRange.end),
+        ),
+      );
+    });
+  });

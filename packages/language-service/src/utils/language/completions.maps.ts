@@ -5,8 +5,8 @@ import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
 import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
 import type { TwinRuleCompletion } from '../../internal/TwinTypes.internal.js';
-import { VscodeCompletionItem } from '../../lsp/models/completion.model.js';
-import type { TemplateTokenData } from '../../lsp/models/template-token.model.js';
+import { VscodeCompletionItem } from '../../models/completion.model.js';
+import type { TemplateTokenData } from '../../models/template-token.model.js';
 import { compareTwinRuleWithClassName } from './completion.ap.js';
 import { getDocumentationMarkdown } from './language.utils.js';
 

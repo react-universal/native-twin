@@ -8,9 +8,9 @@ import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocume
 import {
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
-} from '../../lsp/models/diagnostic.model.js';
-import type { TwinSheetEntry } from '../../lsp/models/TwinSheetEntry.model.js';
-import type { TemplateTokenWithText } from '../../lsp/models/template-token.model.js';
+} from '../../models/diagnostic.model.js';
+import type { TwinSheetEntry } from '../../models/TwinSheetEntry.model.js';
+import type { TemplateTokenWithText } from '../../models/template-token.model.js';
 import { isSameRange } from '../vscode.utils.js';
 
 const createRegionEntriesExtractor =

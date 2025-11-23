@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { CSS_COLORS } from '@native-twin/css';
-import type { TwinConfigOptions } from '@native-twin/language-service';
-import { Constants } from '@native-twin/language-service/browser';
+import { LSPConstants, type TwinConfigOptions } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import {
   CloseAction,
@@ -120,7 +119,7 @@ export const onProvideDocumentColors = async (
 
 export const getDefaultLanguageClientOptions = (data: TwinConfigOptions): LanguageClientOptions => {
   return {
-    documentSelector: Constants.DOCUMENT_SELECTORS,
+    documentSelector: LSPConstants.documentSelectors,
 
     markdown: {
       isTrusted: true,
@@ -128,7 +127,7 @@ export const getDefaultLanguageClientOptions = (data: TwinConfigOptions): Langua
     },
     initializationOptions: {
       ...data,
-      ...vscode.workspace.getConfiguration(Constants.configurationSection),
+      ...vscode.workspace.getConfiguration(LSPConstants.vscodeConfigSection),
       workspaceRoot: data.rootDir,
       capabilities: {
         completion: {

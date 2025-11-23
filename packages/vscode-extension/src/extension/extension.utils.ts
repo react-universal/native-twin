@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'node:path';
 import type { TwinConfigOptions } from '@native-twin/language-service';
-import { Constants } from '@native-twin/language-service';
+import { LSPConstants } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
@@ -117,17 +117,17 @@ export const activateTwinTsPlugin = Effect.gen(function* () {
   }
   const tsAPi = yield* Effect.sync(() => tsExtension.exports.getAPI(0));
 
-  const twinConfig = yield* extensionConfigState(Constants.DEFAULT_PLUGIN_CONFIG);
+  const twinConfig = yield* extensionConfigState(LSPConstants.lspRawConfig);
   const currentConfig = yield* twinConfig.get.pipe(Effect.andThen(normalizeTwinConfig));
 
   yield* twinConfig.changes.pipe(
     Stream.mapEffect((config) => normalizeTwinConfig(config)),
     Stream.runForEach((config) =>
-      Effect.sync(() => tsAPi.configurePlugin(Constants.pluginId, config)),
+      Effect.sync(() => tsAPi.configurePlugin(LSPConstants.tsPluginName, config)),
     ),
     Effect.fork,
   );
-  tsAPi.configurePlugin(Constants.pluginId, currentConfig);
+  tsAPi.configurePlugin(LSPConstants.tsPluginName, currentConfig);
 }).pipe(Effect.scoped);
 
 const normalizeTwinConfig = (config: Effect.Effect.Success<ExtensionConfigRef['get']>) =>
@@ -146,7 +146,7 @@ const normalizeTwinConfig = (config: Effect.Effect.Success<ExtensionConfigRef['g
     return {
       ...config,
       // @ts-expect-error asd
-      name: Constants.pluginId,
+      name: LSPConstants.pluginId,
       configPath,
     } satisfies TwinConfigOptions;
   });
@@ -195,7 +195,7 @@ export const extensionConfigValue = <Section extends string, A>(
   defaultValue: A,
 ): Effect.Effect<ConfigRef<Section, A>, never, Scope.Scope> =>
   Effect.gen(function* () {
-    const get = () => vscode.workspace.getConfiguration(Constants.configurationSection).get<A>(key);
+    const get = () => vscode.workspace.getConfiguration(LSPConstants.vscodeConfigSection).get<A>(key);
     const ref = yield* SubscriptionRef.make(get() ?? defaultValue);
 
     yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {
@@ -231,7 +231,7 @@ export const extensionConfigState = (
   Effect.gen(function* () {
     const get = () =>
       vscode.workspace.getConfiguration(
-        Constants.configurationSection,
+        LSPConstants.vscodeConfigSection,
       ) as unknown as TwinConfigOptions;
     const ref = yield* SubscriptionRef.make(get() ?? defaultValue);
 

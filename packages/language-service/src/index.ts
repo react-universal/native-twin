@@ -1,17 +1,7 @@
-import * as Constants from './utils/constants.utils.js';
-
-export { LSPConfigService } from './core/LSPConfig.service.js';
 export { DocumentLanguageRegion } from './documents/common/LanguageRegion.model.js';
-export {
-  type DocumentsServiceShape,
-  extractLanguageRegions,
-  TwinLSPDocumentContext,
-  twinLSPDocumentLayer,
-} from './documents/LSPDocuments.service.js';
 /** Documents Service */
 export { TwinLSPDocument } from './documents/node/TwinLSPDocument.model.js';
 export { TemplateTokenData, TemplateTokenWithText } from './models/template-token.model.js';
-export { languagePrograms } from './programs/index.js';
 /** Language Service */
 export {
   getDocumentTemplatesColors,
@@ -29,14 +19,10 @@ export { parseTemplate } from './utils/twin/native-twin.parser.js';
 
 // export { NativeTwinManager } from './utils/twin/twin.manager.js';
 
+export { twinCompletionsToVscode } from './adapters/vscode.adapter.js';
 /** Vscode Client */
 export { getDocumentLanguageLocations } from './extension/index.js';
-export type { TwinConfigOptions } from './utils/constants.utils.js';
-export { DEFAULT_PLUGIN_CONFIG } from './utils/constants.utils.js';
+export * from './models/lsp.constants';
+export { getClientCapabilities } from './utils/connection.utils.js';
 /** Logger */
 export { createLspLogger, loggerUtils } from './utils/lsp.logger.service.js';
-
-export { Constants };
-export * as Completions from './programs/completions.program.js';
-export * from './TS.js';
-export { getClientCapabilities } from './utils/connection.utils.js';

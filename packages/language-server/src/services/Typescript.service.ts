@@ -1,5 +1,4 @@
-import { TypescriptApi } from '@native-twin/language-service';
-import { LSPConfig } from '@native-twin/language-service/Services';
+import { LSPConfig,TypeScriptProgram } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Fiber from 'effect/Fiber';
 import * as Layer from 'effect/Layer';
@@ -52,7 +51,7 @@ export const TypescriptContextLive = Effect.gen(function* () {
     return sourceFile;
   });
 
-  return TypescriptApi.TypeScriptProgram.of({
+  return TypeScriptProgram.of({
     getSourceFile,
   });
 
@@ -137,4 +136,4 @@ export const TypescriptContextLive = Effect.gen(function* () {
       });
     });
   }
-}).pipe(Layer.effect(TypescriptApi.TypeScriptProgram));
+}).pipe(Layer.effect(TypeScriptProgram));

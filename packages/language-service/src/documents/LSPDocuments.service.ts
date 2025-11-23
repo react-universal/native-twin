@@ -9,7 +9,7 @@ import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import type * as lsp from 'vscode-languageserver';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
-import { LSPConfigService } from '../core/LSPConfig.service.js';
+import { LSPConfig } from '../core/LSPConfig.service';
 import type { BaseTwinTextDocument } from './common/BaseTwinDocument.js';
 import type { BabelLanguageRegionData } from './common/Document.models.js';
 import { DocumentLanguageRegion } from './common/LanguageRegion.model.js';
@@ -18,17 +18,6 @@ export interface DocumentsServiceShape {
   handler: lsp.TextDocuments<TextDocument>;
   getDocument: (uri: string) => Effect.Effect<Option.Option<BaseTwinTextDocument>>;
   setupConnection(connection?: lsp.Connection): void;
-  // getRegionAt: (
-  //   twinDoc: BaseTwinTextDocument,
-  //   location: t.SourceLocation,
-  // ) => DocumentLanguageRegion;
-  // getLanguageRegions: <T extends BaseTwinTextDocument>(
-  //   document: T,
-  // ) => Effect.Effect<DocumentLanguageRegion[], never, never>;
-  // findTokenAtPosition: (
-  //   twinDocument: BaseTwinTextDocument,
-  //   position: lsp.Position,
-  // ) => Effect.Effect<Option.Option<DocumentLanguageRegion>>;
 }
 
 export interface TwinLSPDocumentContext extends DocumentsServiceShape {}
@@ -44,7 +33,7 @@ const make = Effect.fn(function* (
     ...params: ConstructorParameters<typeof BaseTwinTextDocument>
   ) => BaseTwinTextDocument,
 ) {
-  const config = yield* LSPConfigService;
+  const config = yield* LSPConfig;
 
   const acquireDocument = (uri: string) =>
     Effect.sync(() =>
@@ -52,8 +41,8 @@ const make = Effect.fn(function* (
     );
 
   const getLanguageRegions = Effect.fn(function* (twinDoc: BaseTwinTextDocument) {
-    const currentConfig = yield* config.get;
-    const regions = extractLanguageRegions(twinDoc.getText(), currentConfig.vscode);
+    const currentConfig = yield* config.config.get;
+    const regions = extractLanguageRegions(twinDoc.getText(), currentConfig);
     return RA.map(regions, (x) => getRegionAt(twinDoc, x));
   });
 

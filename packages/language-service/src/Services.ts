@@ -1,12 +1,11 @@
 import { JSXParser, JSXParserLive } from './core/JSXParser.service';
-import { LSPConfig, parseLSPConfigInput } from './core/LanguageConfig.service';
+import { LSPConfig, parseLSPConfigInput } from './core/LSPConfig.service';
 import {
   createTwinCompletions,
   LSPContext,
   type LSPTwinCompletionsResult,
   type TwinLSPCompletionDefinition,
-  twinCompletionsToVscode,
-} from './core/LSP';
+} from './core/LSPContext.service';
 import { TwinGraph, TwinGraphLive } from './core/TwinGraph.service';
 import { TwinParserContext, toTwinParserResult } from './core/TwinParser.service';
 import { TwinRuntimeContext, TwinRuntimeContextLive } from './core/TwinRuntime.service';
@@ -33,7 +32,6 @@ export { classNameCompletions } from './completions/jsxCompletions';
 export {
   LSPConfig,
   TwinLSPDocumentContext,
-  twinCompletionsToVscode,
   twinLSPDocumentLayer,
   TypescriptUtilsLive,
   LSPContext,

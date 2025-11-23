@@ -4,7 +4,7 @@ import type { TwinRuleCompletion } from '../../internal/TwinTypes.internal.js';
 import type {
   TemplateTokenData,
   TemplateTokenWithText,
-} from '../../lsp/models/template-token.model.js';
+} from '../../models/template-token.model.js';
 import { getFlattenTemplateToken } from './language.utils.js';
 
 export const getCompletionsForTokens = (tokens: TemplateTokenData[], completions: TwinRuleCompletion[]) => {

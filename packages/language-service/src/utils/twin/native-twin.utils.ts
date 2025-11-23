@@ -13,8 +13,8 @@ import type {
   TwinRuleCompletion,
   TwinVariantCompletion,
 } from '../../internal/TwinTypes.internal.js';
-import type { LocatedParser, TemplateToken } from '../../lsp/models/parser.types.js';
-import { TemplateTokenData, TemplateTokenWithText } from '../../lsp/models/template-token.model.js';
+import type { LocatedParser, TemplateToken } from '../../models/parser.types.js';
+import { TemplateTokenData, TemplateTokenWithText } from '../../models/template-token.model.js';
 import { createRuleClassNames, createRuleCompositions } from './native-twin.rules.js';
 
 export const createTwinStore = (nativeTwinHandler: {

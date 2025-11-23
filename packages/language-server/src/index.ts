@@ -1,12 +1,11 @@
 import * as NodeContext from '@effect/platform-node/NodeContext';
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
-import { getClientCapabilities } from '@native-twin/language-service';
+import { getClientCapabilities, twinCompletionsToVscode } from '@native-twin/language-service';
 import { vscodeLSPAdapterExecutor } from '@native-twin/language-service/adapters/vscode.adapter.js';
 import {
   classNameCompletions,
   LSPConfig,
   LSPContext,
-  twinCompletionsToVscode,
 } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';

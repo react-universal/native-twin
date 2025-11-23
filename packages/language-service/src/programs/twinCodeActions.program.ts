@@ -8,7 +8,7 @@ import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument.
 import type { DocumentLanguageRegion } from '../documents/common/LanguageRegion.model.js';
 import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
 import { type TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/diagnostic.model.js';
-import { diagnosticProviderSource } from '../utils/constants.utils.js';
+import { LSPConstants } from '../models/lsp.constants.js';
 
 export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.CodeActionParams) {
   const docHandler = yield* TwinLSPDocumentContext;
@@ -25,7 +25,7 @@ export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.Cod
       return Option.none();
     }
 
-    if (x.source !== diagnosticProviderSource) return Option.none();
+    if (x.source !== LSPConstants.diagnosticProviderSource) return Option.none();
 
     return Option.some(
       new VscodeDiagnosticItem({

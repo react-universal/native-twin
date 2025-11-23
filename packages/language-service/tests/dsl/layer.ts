@@ -1,10 +1,9 @@
 import { Effect, Layer, SubscriptionRef } from 'effect';
-import fs from 'fs';
 import path from 'path';
 import ts from 'typescript';
 import type { TwinConfigOptions } from '../../src';
 import { JSXParserLive } from '../../src/core/JSXParser.service';
-import { LSPConfig, parseLSPConfigInput } from '../../src/core/LanguageConfig.service';
+import { LSPConfig, parseLSPConfigInput } from '../../src/core/LSPConfig.service';
 import { TwinParserContextLive } from '../../src/core/TwinParser.service';
 import { TwinRuntimeContextLive } from '../../src/core/TwinRuntime.service';
 import { TypescriptUtilsLive } from '../../src/core/TypescriptUtils.service';
@@ -18,34 +17,16 @@ const testTSProgram = TypescriptApi.createCustomProgram(
 );
 
 const TsProgramLive = Effect.gen(function* () {
-  const files: ts.MapLike<{ version: number }> = {};
+  // const files: ts.MapLike<{ version: number }> = {};
   const programRef = yield* SubscriptionRef.make(testTSProgram.program);
-  const languageServiceRef = yield* SubscriptionRef.make(
-    ts.createLanguageService(
-      {
-        fileExists: testTSProgram.host.fileExists,
-        getCompilationSettings: () => testTSProgram.program.getCompilerOptions(),
-        getCurrentDirectory: () => testTSProgram.program.getCurrentDirectory(),
-        getDefaultLibFileName: (options) => ts.getDefaultLibFilePath(options),
-        getScriptFileNames: () => Object.keys(files),
-        readFile: ts.sys.readFile,
-        readDirectory: ts.sys.readDirectory,
-        directoryExists: ts.sys.directoryExists,
-        getDirectories: ts.sys.getDirectories,
-        getScriptVersion: (fileName) => files[fileName] && files[fileName].version.toString(),
-        getScriptSnapshot: (fileName) => {
-          if (!fs.existsSync(fileName)) return undefined;
-          return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString('utf-8'));
-        },
-      },
-      ts.createDocumentRegistry(),
-    ),
-  );
 
   return TypescriptApi.TypeScriptProgram.of({
-    getSourceFile: (filename) => Effect.succeed(testTSProgram.program.getSourceFile(filename)!),
-    languageServiceRef,
-    programRef,
+    getSourceFile: Effect.fn(function* (filename) {
+      const program = yield* programRef.get;
+      return program.getSourceFile(filename)!;
+    }),
+    // languageServiceRef,
+    // programRef,
   });
 }).pipe(Layer.effect(TypescriptApi.TypeScriptProgram));
 

@@ -1,6 +1,6 @@
 import * as Layer from 'effect/Layer';
 import { type JSXParser, JSXParserLive } from '../core/JSXParser.service';
-import type { LSPConfig } from '../core/LanguageConfig.service';
+import type { LSPConfig } from '../core/LSPConfig.service';
 import { TwinGraphLive } from '../core/TwinGraph.service';
 import { type TwinParserContext, TwinParserContextLive } from '../core/TwinParser.service';
 import { type TwinRuntimeContext, TwinRuntimeContextLive } from '../core/TwinRuntime.service';

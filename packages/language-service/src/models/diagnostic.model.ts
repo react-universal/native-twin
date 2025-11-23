@@ -1,8 +1,8 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
-import { diagnosticProviderSource } from '../utils/constants.utils.js';
 import { isSameRange } from '../utils/vscode.utils.js';
+import { LSPConstants } from './lsp.constants.js';
 import type { TwinSheetEntry } from './TwinSheetEntry.model.js';
 
 export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
@@ -30,7 +30,7 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
       : `${this.getDiagnosticMessage(data.code)} - '${data.text}'`;
     this.range = data.range;
     this.relatedInformation = data.relatedInfo;
-    this.source = diagnosticProviderSource;
+    this.source = LSPConstants.diagnosticProviderSource;
     this.severity = vscode.DiagnosticSeverity.Warning;
     this.tags = [];
   }

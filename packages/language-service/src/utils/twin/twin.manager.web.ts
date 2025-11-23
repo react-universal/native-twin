@@ -12,14 +12,14 @@ import type {
   TwinRuleCompletion,
   TwinVariantCompletion,
 } from '../../internal/TwinTypes.internal';
-import { DEFAULT_TWIN_CONFIG } from '../constants.utils.js';
+import { LSPConstants } from '../../models/lsp.constants.js';
 import { createStyledContext } from '../sheet.utils.js';
 import { createTwinStore } from './native-twin.utils.js';
 
 export class MonacoNativeTwinManager {
   tw: InternalTwFn;
   context: InternalTwinThemeContext;
-  userConfig: InternalTwinConfig = DEFAULT_TWIN_CONFIG;
+  userConfig: InternalTwinConfig = LSPConstants.twinConfigEmpty;
   completions: any = {
     twinRules: HashSet.empty<TwinRuleCompletion>(),
     twinVariants: HashSet.empty<TwinVariantCompletion>(),

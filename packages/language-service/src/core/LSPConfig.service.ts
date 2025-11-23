@@ -1,90 +1,34 @@
+import { hasOwnProperty } from '@native-twin/helpers';
 import * as Context from 'effect/Context';
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
-import * as Option from 'effect/Option';
-import * as Predicate from 'effect/Predicate';
-import * as SubscriptionRef from 'effect/SubscriptionRef';
-import { DEFAULT_PLUGIN_CONFIG, type TwinConfigOptions } from '../utils/constants.utils.js';
-import { TwinRuntimeContext } from './TwinRuntime.service.js';
+import type * as Effect from 'effect/Effect';
+import type * as SubscriptionRef from 'effect/SubscriptionRef';
+import { LSPConstants, type TwinConfigOptions } from '../models/lsp.constants';
 
-export interface VscodeLSPConfig {
-  twinConfigFile: Option.Option<string>;
-  workspaceRoot: Option.Option<string>;
-  vscode: TwinConfigOptions;
-  initialized: boolean;
+export interface LSPConfig {
+  config: SubscriptionRef.SubscriptionRef<TwinConfigOptions>;
+  onChangeConfig: (config: TwinConfigOptions) => Effect.Effect<void>;
+  configSelector: <T>(selector: (config: TwinConfigOptions) => T) => Effect.Effect<T>;
 }
+export const LSPConfig = Context.GenericTag<LSPConfig>('TypeScriptPluginConfig');
 
-export interface VscodeLSPConfigInput {
-  twinConfigFile?: string | undefined;
-  workspaceRoot?: string | undefined;
-  vscode: TwinConfigOptions;
-  initialized: boolean;
-}
+const configOptionOrDefault = <K extends keyof TwinConfigOptions>(
+  options: Partial<TwinConfigOptions>,
+  key: K,
+): TwinConfigOptions[K] => {
+  const value = hasOwnProperty.call(options, key) && options[key];
+  if (!value) return LSPConstants.lspRawConfig[key];
+  return value;
+};
 
-const make = Effect.gen(function* () {
-  const twinRuntime = yield* TwinRuntimeContext;
-
-  const ref = yield* SubscriptionRef.make<VscodeLSPConfig>({
-    workspaceRoot: Option.none(),
-    twinConfigFile: Option.none(),
-    initialized: false,
-    vscode: DEFAULT_PLUGIN_CONFIG,
-  });
-
-  // Effect.addFinalizer(() => Effect.sync(() => watcher.dispose()));
-
-  const onConfigConnectionChange = (changes: any) =>
-    Effect.gen(function* () {
-      if (!Predicate.isRecord(changes)) return;
-      const currentConfig = yield* SubscriptionRef.get(ref);
-      const pluginConfig = currentConfig.vscode;
-
-      if ('nativeTwin' in changes && changes['nativeTwin']) {
-        yield* Effect.logDebug('Configuration changes received: ');
-
-        yield* SubscriptionRef.set(ref, {
-          ...currentConfig,
-          vscode: {
-            ...pluginConfig,
-            ...changes['nativeTwin'],
-          },
-        });
-      }
-    });
-
-  const onUpdateConfig = (config: VscodeLSPConfigInput) =>
-    Effect.gen(function* () {
-      const twinConfigFile = Option.fromNullable(config.twinConfigFile);
-      const workspaceRoot = Option.fromNullable(config.workspaceRoot);
-      const currentConfig = yield* SubscriptionRef.get(ref);
-      yield* SubscriptionRef.set(ref, {
-        ...currentConfig,
-        twinConfigFile: twinConfigFile,
-        workspaceRoot: workspaceRoot,
-        initialized: Option.isSome(twinConfigFile),
-      });
-      if (Option.isSome(twinConfigFile)) {
-        // yield* parser.loadTwinConfig(twinConfigFile.value);
-        // twin.loadUserFile(twinConfigFile.value);
-        yield* twinRuntime.bootTwinRuntime(twinConfigFile.value);
-      }
-    });
-
+export const parseLSPConfigInput = (config: Partial<TwinConfigOptions>): TwinConfigOptions => {
   return {
-    get: SubscriptionRef.get(ref),
-    ref,
-    changes: ref.changes,
-    onUpdateConfig,
-    onConfigConnectionChange,
+    tsConfigPath: configOptionOrDefault(config, 'tsConfigPath'),
+    rootDir: configOptionOrDefault(config, 'rootDir'),
+    twinConfigPath: configOptionOrDefault(config, 'twinConfigPath'),
+    debug: configOptionOrDefault(config, 'debug'),
+    enable: configOptionOrDefault(config, 'enable'),
+    functions: configOptionOrDefault(config, 'functions'),
+    jsxAttributes: configOptionOrDefault(config, 'jsxAttributes'),
+    trace: configOptionOrDefault(config, 'trace'),
   };
-});
-
-export class LSPConfigService extends Context.Tag('vscode/lsp/config')<
-  LSPConfigService,
-  Effect.Effect.Success<typeof make>
->() {
-  static Live = Layer.scoped(
-    LSPConfigService,
-    make.pipe(Effect.tap(() => Effect.logDebug('[LAYERS] Initialized LSPConfig Layer'))),
-  );
-}
+};

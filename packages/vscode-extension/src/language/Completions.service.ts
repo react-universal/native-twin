@@ -1,7 +1,7 @@
 import type * as vscode from 'vscode';
 import {
-  DEFAULT_PLUGIN_CONFIG,
   getCompletionsForTokens,
+  LSPConstants,
   parseTemplate,
   type TemplateTokenWithText,
 } from '@native-twin/language-service';
@@ -20,8 +20,10 @@ const getParsedNodeAtOffset = (nodes: TemplateTokenWithText[], offset: number) =
 };
 
 const make = Effect.gen(function* () {
-
-  const config = yield* Effect.flatMap(extensionConfigState(DEFAULT_PLUGIN_CONFIG), (x) => x.get);
+  const config = yield* Effect.flatMap(
+    extensionConfigState(LSPConstants.lspRawConfig),
+    (x) => x.get,
+  );
 
   return {
     async provideCompletionItems(document, position, _token, _context) {

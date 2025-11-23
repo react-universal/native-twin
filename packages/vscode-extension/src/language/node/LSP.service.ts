@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'node:path';
-import { Constants, LSPConfig } from '@native-twin/language-service';
+import { LSPConstants } from '@native-twin/language-service';
+import { LSPConfig } from '@native-twin/language-service/Services';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -24,7 +25,7 @@ import {
 export const LanguageClientLive = Effect.gen(function* () {
   // const twin = yield* NativeTwinManagerService;
   const extensionCtx = yield* VscodeContext;
-  const lspConfig = yield* LSPConfig.LSPConfig;
+  const lspConfig = yield* LSPConfig;
 
   yield* createFileWatchers;
   // yield* activateTwinTsPlugin;
@@ -54,14 +55,14 @@ export const LanguageClientLive = Effect.gen(function* () {
     ...getDefaultLanguageClientOptions(currentConfig),
     synchronize: {
       fileEvents: fileEvents,
-      configurationSection: Constants.configurationSection,
+      configurationSection: LSPConstants.vscodeConfigSection,
     },
     errorHandler: {
       error: onLanguageClientError,
       closed: onLanguageClientClosed,
     },
-    diagnosticCollectionName: Constants.diagnosticProviderSource,
-    outputChannel: vscode.window.createOutputChannel(Constants.extensionServerChannelName, {
+    diagnosticCollectionName: LSPConstants.diagnosticProviderSource,
+    outputChannel: vscode.window.createOutputChannel(LSPConstants.extensionServerChannelName, {
       log: true,
     }),
     middleware: {
@@ -83,8 +84,8 @@ export const LanguageClientLive = Effect.gen(function* () {
     Effect.sync(
       () =>
         new LanguageClient(
-          Constants.configurationSection,
-          Constants.extensionServerChannelName,
+          LSPConstants.vscodeConfigSection,
+          LSPConstants.extensionServerChannelName,
           serverConfig,
           clientConfig,
         ),
@@ -99,7 +100,7 @@ export const LanguageClientLive = Effect.gen(function* () {
     Effect.andThen(Effect.log('Language client started!')),
   );
 
-  yield* registerCommand(`${Constants.configurationSection}.restart`, () =>
+  yield* registerCommand(`${LSPConstants.vscodeConfigSection}.restart`, () =>
     Effect.gen(function* () {
       yield* Effect.promise(() => languageClient.restart());
       yield* Effect.log('Client restarted');

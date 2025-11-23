@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Constants } from '@native-twin/language-service/browser';
+import { LSPConstants } from '@native-twin/language-service';
 import { LSPConfig } from '@native-twin/language-service/Services';
 import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -38,7 +38,7 @@ const make = Effect.gen(function* () {
     }),
     synchronize: {
       fileEvents: fileEvents,
-      configurationSection: Constants.configurationSection,
+      configurationSection: LSPConstants.vscodeConfigSection,
     },
     errorHandler: {
       error: onLanguageClientError,
@@ -55,7 +55,7 @@ const make = Effect.gen(function* () {
       () =>
         new LanguageClient(
           'native-twin-vscode',
-          Constants.extensionServerChannelName,
+          LSPConstants.extensionServerChannelName,
           clientConfig,
           new Worker(
             vscode.Uri.joinPath(extensionCtx.extensionUri, 'twin.worker.js').toString(true),
@@ -76,7 +76,7 @@ const make = Effect.gen(function* () {
     return { t: true };
   });
 
-  yield* registerCommand(`${Constants.configurationSection}.restart`, () =>
+  yield* registerCommand(`${LSPConstants.vscodeConfigSection}.restart`, () =>
     Effect.gen(function* () {
       yield* Effect.promise(() => client.stop());
       yield* Effect.promise(() => client.start());
@@ -86,9 +86,9 @@ const make = Effect.gen(function* () {
 
   const functionsConfig = yield* extensionConfigValue(
     'functions',
-    Constants.DEFAULT_PLUGIN_CONFIG.functions,
+    LSPConstants.lspRawConfig.functions,
   );
-  const debugConfig = yield* extensionConfigValue('debug', Constants.DEFAULT_PLUGIN_CONFIG.debug);
+  const debugConfig = yield* extensionConfigValue('debug', LSPConstants.lspRawConfig.debug);
 
   yield* functionsConfig.changes.pipe(
     Stream.runForEach((x) => Effect.log('FUNCTIONS: ', x)),

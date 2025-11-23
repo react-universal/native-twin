@@ -10,8 +10,8 @@ import type {
   LocatedGroupToken,
   LocatedParser,
   TemplateToken,
-} from '../../lsp/models/parser.types.js';
-import type { TemplateTokenWithText } from '../../lsp/models/template-token.model.js';
+} from '../../models/parser.types.js';
+import type { TemplateTokenWithText } from '../../models/template-token.model.js';
 import { addTextToParsedRules } from './native-twin.utils.js';
 
 const mapWithLocation = <A extends object>(

@@ -7,7 +7,7 @@ import { Color, Range } from 'vscode-languageserver-types';
 import type { DocumentLanguageRegion } from '../../browser.js';
 import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
 import type { TwinRuleCompletion } from '../../internal/TwinTypes.internal.js';
-import type { TemplateTokenData } from '../../lsp/models/template-token.model.js';
+import type { TemplateTokenData } from '../../models/template-token.model.js';
 
 export const getDocumentTemplatesColors = (
   twinService: any,

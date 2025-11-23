@@ -1,16 +1,16 @@
 import * as vscode from 'vscode';
-import { Constants } from '@native-twin/language-service';
+import { LSPConstants } from '@native-twin/language-service';
 import path from 'path';
 import type { LanguageClient } from 'vscode-languageclient/node';
 import { TestDocument } from './TestDocument.model';
 
 class ExtensionTestHandler {
-  readonly extensionName = Constants.extensionName;
+  readonly extensionName = LSPConstants.vscodeExtensionName;
   readonly extension: vscode.Extension<LanguageClient>;
   running = false;
 
   constructor() {
-    const ext = vscode.extensions.getExtension(Constants.extensionName);
+    const ext = vscode.extensions.getExtension(LSPConstants.vscodeExtensionName);
     if (!ext) {
       throw new Error(`Extension ${this.extensionName} not found`);
     }

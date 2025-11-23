@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { inspect } from 'node:util';
-import { Constants } from '@native-twin/language-service';
+import { LSPConstants } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
@@ -16,7 +16,7 @@ export const ClientCustomLogger = Logger.replaceScoped(
   Effect.gen(function* () {
     const channel = yield* Effect.acquireRelease(
       Effect.sync(() =>
-        vscode.window.createOutputChannel(Constants.extensionChannelName, { log: true }),
+        vscode.window.createOutputChannel(LSPConstants.extensionChannelName, { log: true }),
       ),
       (channel) => Effect.sync(() => channel.dispose()),
     );

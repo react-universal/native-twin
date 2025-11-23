@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { Constants, parseTemplate } from '@native-twin/language-service/browser';
+import { LSPConstants } from '@native-twin/language-service';
+import { parseTemplate } from '@native-twin/language-service/browser';
 import * as RA from 'effect/Array';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
@@ -12,7 +13,7 @@ import { TwinTextDocument } from './TwinTextDocument.model';
 
 export const TwinVscodeHightLightsProviderLive = Effect.gen(function* () {
   const extensionCtx = yield* VscodeContext;
-  const { get } = yield* extensionConfigState(Constants.DEFAULT_PLUGIN_CONFIG);
+  const { get } = yield* extensionConfigState(LSPConstants.lspRawConfig);
   const config = yield* get;
   const provideDocumentHighlights: vscode.DocumentHighlightProvider['provideDocumentHighlights'] = (
     document,
@@ -44,7 +45,7 @@ export const TwinVscodeHightLightsProviderLive = Effect.gen(function* () {
     return highlights;
   };
 
-  const highLightsProviders = Constants.DOCUMENT_SELECTORS.map((selector) =>
+  const highLightsProviders = LSPConstants.documentSelectors.map((selector) =>
     vscode.languages.registerDocumentHighlightProvider(selector, {
       provideDocumentHighlights,
     }),
@@ -55,4 +56,3 @@ export const TwinVscodeHightLightsProviderLive = Effect.gen(function* () {
   Effect.onError((error) => Effect.logError('ERROR: ', Cause.prettyErrors(error))),
   Layer.scopedDiscard,
 );
-
