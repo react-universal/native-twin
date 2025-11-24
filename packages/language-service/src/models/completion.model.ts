@@ -38,7 +38,7 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
         description: completion.declarations.join(','),
       };
       this.insertText = insertText;
-      this.insertTextFormat = 2;
+      this.insertTextFormat = vscode.InsertTextFormat.PlainText;
       this.textEditText = completion.className;
       this.textEdit = {
         newText: insertText,

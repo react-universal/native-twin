@@ -14,9 +14,6 @@ export interface LSPTextDocument {
   positionAt: (offset: number) => LSPPosition;
   isPositionInRange(position: LSPPosition, range: LSPRange): boolean;
   getRangeFor(startOffset: number, endOffset: number): LSPRange;
-  // getFileSource: (filename: string) => Effect.Effect<ts.SourceFile>;
-  // toPosition: <A extends object>(unknownPos: A) => LSPPosition;
-  // toRange: <A extends object>(unknownPos: A | LSPRange) => LSPRange;
 }
 /**
  * ************* LSP Parser adapters *************

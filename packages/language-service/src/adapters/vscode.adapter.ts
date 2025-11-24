@@ -36,9 +36,7 @@ const getRegions: VscodeLSPAdapter['getRegions'] = Effect.fn('vscodeAdapter: ext
     const tsSource = yield* getProGramSourceFile(filename);
     const document = yield* getLSPDocument(filename);
 
-    const jsxNodes = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
-
-    return jsxNodes;
+    return parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
   },
 );
 
@@ -46,28 +44,9 @@ const getRegionAt: VscodeLSPAdapter['getRegionAt'] = Effect.fn('vscodeAdapter: g
   function* (filename, position) {
     const document = yield* getLSPDocument(filename);
     const parser = yield* JSXParser.JSXParser;
-
-    // const tsSource = yield* getProGramSourceFile(filename);
-    // const jsxNodes = yield* Effect.all(
-    //   parser.getJSXRootsFromSource(tsSource).map((x) => parser.getTwinJSXNode(x)),
-    // );
-    // const allNodes = jsxNodes
-    //   .flatMap((x) => parser.flattenNode(x, [x.id, '----', x.node.getText()]))
-    //   .map((x) => x[1].node);
     const regions = yield* getRegions(filename);
 
-    const child = parser.filterNodeAtPosition(regions, position, document);
-    // for (const node of jsxNodes.filter((x) => x)) {
-    //   // if (offset <= node.getPos() || offset >= node.getEnd()) continue;
-    //   if (!document.isPositionInRange(position, tsUtils.nodeToLSPRange(node))) {
-    //     continue;
-    //   }
-
-    //   // const childs = parser.jsxNodesToRegions([node]);
-    //   return Option.fromNullable(child);
-    // }
-
-    return Option.fromNullable(child);
+    return Option.fromNullable(parser.filterNodeAtPosition(regions, position, document));
   },
 );
 
@@ -127,12 +106,6 @@ export const twinCompletionsToVscode = <Document extends BaseTwinTextDocument>(
 
     const rules = yield* parser.findRulesByKey(locatedToken.classNameText);
     return rules.map((rule): VscodeCompletionItem => {
-      return rule.toVscode(
-        document,
-        document.getRangeFor(
-          document.offsetAt(locatedToken.documentLoc.originalRange.start),
-          document.offsetAt(locatedToken.documentLoc.originalRange.end),
-        ),
-      );
+      return rule.toVscode(locatedToken.documentLoc.originalRange);
     });
   });
