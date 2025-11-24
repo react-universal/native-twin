@@ -1,32 +1,30 @@
 import { describe, expect, it } from '@effect/vitest';
 import { Effect, Graph } from 'effect';
 import path from 'path';
-import ts from 'ts-morph';
 import { inspect } from 'util';
+import { TypeScriptProgram } from '../src/core/TypescriptAPI.service';
 import { TwinGraph, TypescriptUtils } from '../src/TS';
-import { TypescriptApi } from '../src/typescript/TypescriptApi';
-import { runTwinParser, TestLayer } from './dsl';
-
+import { TestLayer } from './dsl';
 
 describe('twin graph extractor', () => {
   it.effect('test extractor ', () =>
     Effect.gen(function* () {
-      const tsAPI = yield* TypescriptApi;
-      const tsUtils = yield* TypescriptUtils;
-      const graph = yield* TwinGraph;
-      const compiler = tsAPI.tsProject;
-      yield* runTwinParser('', 0);
+      const compiler = yield* TypeScriptProgram;
+      const tsUtils = yield* TypescriptUtils.TypescriptUtils;
+      const graph = yield* TwinGraph.TwinGraph;
+      // const compiler = tsAPI.tsProject;
+      // yield* runTwinParser('', 0);
 
-      const outFile = compiler.createSourceFile(
+      yield* compiler.getSourceFile(
         path.join('../src/out-file.tsx'),
         `
       export View = (...props) => <div {...props} />
       export Text = (...props) => <div {...props} />
     `,
-        { overwrite: true, scriptKind: ts.ScriptKind.TSX },
+        // { overwrite: true, scriptKind: ts.ScriptKind.TSX },
       );
-      compiler.addSourceFileAtPath(outFile.getFilePath());
-      const source = compiler.createSourceFile(
+      // compiler.getSourceFile(outFile.getFilePath());
+      const source = yield* compiler.getSourceFile(
         path.join('../src/ads.tsx'),
         `
             import {View, Text} from './out-file.tsx';
@@ -42,9 +40,9 @@ describe('twin graph extractor', () => {
               </View>
             )};
       `,
-        { overwrite: true, scriptKind: ts.ScriptKind.TSX },
+        // { overwrite: true, scriptKind: ts.ScriptKind.TSX },
       );
-      compiler.addSourceFileAtPath(source.getFilePath());
+      // compiler.getSourceFile(source.getFilePath());
       const { sourceGraph } = yield* graph.extractSourceFileGraph(source, 0);
 
       const graphViz = Graph.toGraphViz(sourceGraph, {

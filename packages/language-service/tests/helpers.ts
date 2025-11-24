@@ -1,21 +1,21 @@
 import * as vscode from 'vscode';
 import type { LanguageClientOptions } from 'vscode-languageclient';
-import { configurationSection, DOCUMENT_SELECTORS } from '../src/utils/constants.utils';
+import { LSPConstants } from '../src/models/lsp.constants';
 
 export const getDefaultLanguageClientOptions = (data: {
   tsConfigFiles: vscode.Uri[];
   twinConfigFile: vscode.Uri | undefined;
-  workspaceRoot: vscode.WorkspaceFolder | undefined;
+  rootDir: vscode.WorkspaceFolder | undefined;
 }): LanguageClientOptions => {
   return {
-    documentSelector: DOCUMENT_SELECTORS,
+    documentSelector: LSPConstants.documentSelectors,
 
     markdown: {
       isTrusted: true,
       supportHtml: true,
     },
     initializationOptions: {
-      ...vscode.workspace.getConfiguration(configurationSection),
+      ...vscode.workspace.getConfiguration(LSPConstants.vscodeConfigSection),
       ...data,
       capabilities: {
         completion: {

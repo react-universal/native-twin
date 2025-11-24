@@ -8,7 +8,7 @@ describe('Twin Parser Service %s', () => {
     Effect.gen(function* () {
       const result = yield* runTwinParser('bg-gray-200/10', 0);
 
-      expect(result.size).eq(1);
+      expect(result.composedClasses.length).eq(1);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -18,8 +18,8 @@ describe('Twin Parser Service %s', () => {
       const result = yield* runTwinParser('bg-gray-200 text(gray medium)', offset);
       const parser = yield* TwinParserContext;
 
-      expect(result.size).eq(2);
-      const foundNode = result.findNodeAt(offset);
+      expect(result.composedClasses.length).eq(2);
+      const foundNode = parser.findComposedClassAtPosition(result.composedClasses, offset);
       if (!foundNode) throw assert.isDefined(foundNode);
       const nextRulesGuess = yield* parser.findRulesByKey(foundNode.lookupText);
       expect(Array.from(nextRulesGuess).length).toBeGreaterThan(0);
@@ -37,9 +37,9 @@ describe('Twin Parser Service language', () => {
 
       const parser = yield* TwinParserContext;
       const result = yield* runTwinParser('bg-gray text(s)', 0);
-      expect(result.size).toBeGreaterThan(0);
-
-      const foundNode = result.findNodeAt(offset);
+      expect(result.composedClasses.length).toBeGreaterThan(0);
+      const foundNode = parser.findComposedClassAtPosition(result.composedClasses, offset);
+      // const foundNode = result.findNodeAt(offset);
 
       if (!foundNode) throw assert.isDefined(foundNode);
 
@@ -54,7 +54,7 @@ describe('Twin Parser Service language', () => {
 
       const offset = 7;
 
-      const foundNode = result.findNodeAt(offset);
+      const foundNode = parser.findComposedClassAtPosition(result.composedClasses, offset);
       if (!foundNode) throw assert.isDefined(foundNode);
       const nextRulesGuess = yield* parser.findRulesByKey(foundNode.lookupText);
       expect(Array.from(nextRulesGuess).length).toBeGreaterThan(0);
