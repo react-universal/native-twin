@@ -67,7 +67,7 @@ const make = Effect.gen(function* (_) {
             !x.path.endsWith('.d.ts') &&
             (path_.extname(x.path) === '.ts' || path_.extname(x.path) === '.tsx'),
         ),
-        Stream.tap((fs) => Effect.log('PATH_FT: ', fs.path)),
+        // Stream.tap((fs) => Effect.log('PATH_FT: ', fs.path)),
       ),
     );
 

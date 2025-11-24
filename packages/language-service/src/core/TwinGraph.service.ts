@@ -147,7 +147,7 @@ const createTraversalContext = Effect.fn(function* (
     const { name, index } = tsUtils.getNodeDebugDetails(node);
     let mappedProps: TwinDslModels.NodeStyledProp[] = [];
     if (tsUtils.isJSXElementLike(node)) {
-      mappedProps = tsUtils.getJSXMappedProps(node);
+      mappedProps = jsxParser.getJSXMappedProps(node);
     }
     return { node, isRoot, identifier: name, mappedProps, index };
   };
@@ -230,7 +230,7 @@ const createTraversalContext = Effect.fn(function* (
    */
   const getNodeChildren = (node: ts.Node): ts.Node[] => {
     if (ts.Node.isJsxElement(node)) {
-      return tsUtils.getJSXElementChilds(node);
+      return jsxParser.getJSXElementChilds(node);
     }
     const binding = getJSXBinding(node);
     if (binding) return [binding.jsxElement];
@@ -288,7 +288,7 @@ const createTraversalContext = Effect.fn(function* (
     currentNode: ts.Node,
     currentDepthBudget: number,
   ) {
-    const jsxChilds = tsUtils.getJSXElementChilds(currentNode);
+    const jsxChilds = jsxParser.getJSXElementChilds(currentNode);
 
     // First visit: mark as visited and queue child elements
     if (!hasBeenVisited(currentNode)) {

@@ -10,8 +10,10 @@ import type { TwinLSPAdapterLayerIn } from './RunnerLayer';
 export interface LSPTextDocument {
   document: BaseTwinTextDocument;
   getText: (range?: LSPRange) => string;
-  getOffsetAt: (position: LSPPosition) => number;
-  getPositionAt: (offset: number) => LSPPosition;
+  offsetAt: (position: LSPPosition) => number;
+  positionAt: (offset: number) => LSPPosition;
+  isPositionInRange(position: LSPPosition, range: LSPRange): boolean;
+  getRangeFor(startOffset: number, endOffset: number): LSPRange;
   // getFileSource: (filename: string) => Effect.Effect<ts.SourceFile>;
   // toPosition: <A extends object>(unknownPos: A) => LSPPosition;
   // toRange: <A extends object>(unknownPos: A | LSPRange) => LSPRange;

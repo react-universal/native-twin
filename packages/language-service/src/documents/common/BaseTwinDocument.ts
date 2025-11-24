@@ -28,6 +28,10 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     this.isPositionAtOffset.bind(this);
   }
 
+  get document() {
+    return this;
+  }
+
   get uri() {
     return this.textDocument.uri;
   }
@@ -54,6 +58,17 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
 
   isPositionAtOffset(bounds: TwinTokenLocation['offset'], offset: number) {
     return offset >= bounds.start && offset <= bounds.end;
+  }
+
+  isPositionInRange(position: VSCDocument.Position, range: VSCDocument.Range) {
+    const rangeStart = this.offsetAt(range.start);
+    const rangeEnd = this.offsetAt(range.end);
+    const offset = this.offsetAt(position);
+    return offset >= rangeStart && offset <= rangeEnd;
+  }
+
+  getRangeFor(startOffset: number, endOffset: number): VSCDocument.Range {
+    return { start: this.positionAt(startOffset), end: this.positionAt(endOffset) };
   }
 
   getRangeAtPosition(

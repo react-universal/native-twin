@@ -4,19 +4,16 @@ import * as Fiber from 'effect/Fiber';
 import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
-import fs from 'fs';
 import ts from 'ts-morph';
 
 export const TypescriptContextLive = Effect.gen(function* () {
-  // const files: ts.MapLike<{ version: number }> = {};
   const lspConfig = yield* LSPConfig;
   const project = new ts.Project({
     compilerOptions: yield* getCompilerOptions(),
+    useInMemoryFileSystem: true,
   });
   const compilerOptionsRef = yield* Ref.make<ts.CompilerOptions>(yield* getCompilerOptions());
-  // const serviceHostRef = yield* Ref.make<ts.LanguageServiceHost>(yield* createServiceHost());
   const programRef = yield* Ref.make<ts.Program>(project.getProgram());
-  // const languageServiceRef = yield* Ref.make(yield* createLanguageService());
 
   const fiber = yield* lspConfig.config.changes.pipe(
     Stream.forever,
@@ -24,9 +21,7 @@ export const TypescriptContextLive = Effect.gen(function* () {
       Effect.fn(function* () {
         yield* Effect.log('updating ts layers');
         yield* getCompilerOptions().pipe(Effect.andThen((x) => Ref.set(compilerOptionsRef, x)));
-        // yield* createServiceHost().pipe(Effect.andThen((x) => Ref.set(serviceHostRef, x)));
         yield* Ref.set(programRef, project.getProgram());
-        // yield* createLanguageService().pipe(Effect.andThen((x) => Ref.set(languageServiceRef, x)));
       }),
     ),
     Effect.fork,
@@ -34,19 +29,14 @@ export const TypescriptContextLive = Effect.gen(function* () {
 
   Effect.addFinalizer(() => Fiber.interrupt(fiber));
 
-  const getSourceFile = Effect.fn(function* (filename: string) {
-    // const oldFile = files[filename];
-    // files[filename] = { version: oldFile?.version ?? 0 };
-
-    // const languageService = yield* languageServiceRef.get;
-    const sourceFile = yield* Effect.sync(() => project.getSourceFile(filename));
-    if (!sourceFile) {
-      yield* Effect.logDebug('ts: Cant load sourcefile: ', filename);
-      return project.createSourceFile(filename, fs.readFileSync(filename, 'utf-8'), {
+  project.enableLogging(true);
+  const getSourceFile = Effect.fn(function* (filename: string, content: string) {
+    return yield* Effect.succeed(
+      project.createSourceFile(filename, content, {
+        overwrite: true,
         scriptKind: ts.ScriptKind.TSX,
-      });
-    }
-    return sourceFile;
+      }),
+    );
   });
 
   return TypeScriptProgram.of({
@@ -64,11 +54,6 @@ export const TypescriptContextLive = Effect.gen(function* () {
           }
           return Effect.succeed<ts.CompilerOptions>(tsConfig.options);
         }),
-        // Effect.catchAll((e) =>
-        //   Effect.log(`Failure creating tsConfigOptions: `, e).pipe(
-        //     Effect.andThen(Effect.succeed(ts.getDefaultCompilerOptions())),
-        //   ),
-        // ),
       );
   }
 

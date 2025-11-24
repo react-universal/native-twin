@@ -7,8 +7,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Trie from 'effect/Trie';
-import type ts from 'ts-morph';
-import { position, range } from '../internal/LSPAdapterSpec';
+import * as LSP from '../internal/LSPAdapterSpec';
 import * as Predicates from '../internal/TwinParser.internals';
 import { createComposedClasses } from '../internal/TwinParser.internals';
 import type * as TwinParserModel from '../models/TwinParser.models';
@@ -16,10 +15,10 @@ import { TwinRuntimeContext } from './TwinRuntime.service';
 
 export interface TwinParserInput {
   text: string;
-  docPosition: number;
+  docPosition: LSP.LSPPosition;
 }
 export interface TwinParsedClasses {
-  inputRange: ts.TextRange;
+  inputRange: LSP.LSPRange;
   originalInput: TwinParserInput;
   composedClasses: TwinParserModel.AnyTwinComposedClass[];
 }
@@ -63,7 +62,7 @@ const make = Effect.gen(function* () {
     return Trie.get(dictionary, key);
   });
 
-  const runTwinParser = (rawText: string, startsAt: number): TwinParsedClasses => {
+  const runTwinParser = (rawText: string, startsAt: LSP.LSPPosition): TwinParsedClasses => {
     const { text, position } = adjustParserInput(rawText, startsAt);
     const parsed = parseTwinClasses({
       input: { text, docPosition: position },
@@ -137,10 +136,9 @@ export const toTwinParserResult = (
   >,
 ): TwinParsedClasses => {
   const { input, originalInput } = result.data;
-  const inputRange: ts.TextRange = {
-    // @ts-expect-error
-    pos: input.docPosition,
-    end: input.docPosition + input.text.length,
+  const inputRange: LSP.LSPRange = {
+    start: input.docPosition,
+    end: LSP.position(input.docPosition.character + input.text.length, input.docPosition.line),
   };
   const composedClasses: TwinParserModel.AnyTwinComposedClass[] = [];
   const evaluated: TwinParsedClasses = {
@@ -149,14 +147,18 @@ export const toTwinParserResult = (
     composedClasses,
   };
   if (result.isError) return evaluated;
-  evaluated.composedClasses = createComposedClasses(result.result, input.text, input.docPosition);
+  evaluated.composedClasses = createComposedClasses(
+    result.result,
+    input.text,
+    input.docPosition.character,
+  );
 
   return evaluated;
 };
 
 /** PARSER */
 
-const adjustParserInput = (rawText: string, startsAt: number) => {
+const adjustParserInput = (rawText: string, startsAt: LSP.LSPPosition) => {
   const replacementToken = ["'", '`', '{', '}', '"'].filter((_) => rawText.includes(_)) ?? '';
   let finalText = rawText;
   for (const replacement of replacementToken) {
@@ -164,7 +166,7 @@ const adjustParserInput = (rawText: string, startsAt: number) => {
   }
   return {
     text: finalText,
-    position: startsAt + replacementToken.length,
+    position: LSP.position(startsAt.character + replacementToken.length, startsAt.line),
   };
 };
 
@@ -173,10 +175,16 @@ const mapParserToLocation = <A extends object>(
   initialIndex: number,
 ): TwinParserModel.WithLocation & A =>
   Object.assign(x.result, {
-    range: range(position(initialIndex), position(x.cursor)),
-    originalRange: range(
-      position(x.data.input.docPosition + initialIndex),
-      position(x.data.input.docPosition + x.cursor),
+    range: LSP.range(
+      LSP.position(initialIndex, x.data.originalInput.docPosition.line),
+      LSP.position(x.cursor, x.data.originalInput.docPosition.line),
+    ),
+    originalRange: LSP.range(
+      LSP.position(
+        x.data.input.docPosition.character + initialIndex,
+        x.data.input.docPosition.line,
+      ),
+      LSP.position(x.data.input.docPosition.character + x.cursor, x.data.input.docPosition.line),
     ),
   });
 

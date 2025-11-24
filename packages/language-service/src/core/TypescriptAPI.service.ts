@@ -16,6 +16,6 @@ export const TypeScriptApi = Context.GenericTag<TypeScriptApi>('TypeScriptApi');
 
 // type _TypeScriptProgram = ts.Program;
 export interface TypeScriptProgram {
-  getSourceFile: (filename: string) => Effect.Effect<ts.SourceFile>;
+  getSourceFile: (filename: string, content: string) => Effect.Effect<ts.SourceFile>;
 }
 export const TypeScriptProgram = Context.GenericTag<TypeScriptProgram>('TypeScriptProgram');

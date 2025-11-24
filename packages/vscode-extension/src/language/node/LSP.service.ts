@@ -71,10 +71,10 @@ export const LanguageClientLive = Effect.gen(function* () {
           return next(token);
         },
       },
-      provideCompletionItem: async (document, position, context, token, next) => {
-        const completions = await next(document, position, context, token);
-        return completions;
-      },
+      // provideCompletionItem: async (document, position, context, token, next) => {
+      //   const completions = await next(document, position, context, token);
+      //   return completions;
+      // },
       provideDocumentColors: async (document, token, next) => {
         return onProvideDocumentColors(document, token, next, colorDecorationType);
       },

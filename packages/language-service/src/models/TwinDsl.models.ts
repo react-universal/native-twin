@@ -8,7 +8,7 @@ import type ts from 'ts-morph';
 export class JSXNode implements Equal.Equal {
   readonly _tag = 'JSXNode';
   private _id: string | null = null;
-  private allNodes: JSXNode[] | null = null;
+  // private allNodes: JSXNode[] | null = null;
   // private _languageRegions: DocumentLanguageRegion[] | null = null;
   tagName: string;
   node: TwinDslModels.AnyJSXElement;
@@ -32,7 +32,7 @@ export class JSXNode implements Equal.Equal {
     const mappedStyles = this.styledProps
       .map(
         (x) =>
-          `${x.twinCX ?? 'NO_LITERAL'}_${x.expression?.getText() ?? ''}_${x.styleProp}_${x.classProp}`,
+          `${x.twinCX ?? 'NO_LITERAL'}_${x.node.getPos()}_${x.node.getEnd()}_${x.expression?.getText() ?? ''}_${x.styleProp}_${x.classProp}`,
       )
       .join('');
 
@@ -82,12 +82,10 @@ export class JSXNode implements Equal.Equal {
   // }
 
   getAllNodes(): JSXNode[] {
-    if (this.allNodes) return this.allNodes;
-
-    return (this.allNodes = pipe(
+    return pipe(
       this.childs.flatMap((x) => x.getAllNodes()),
       RA.union([this]),
-    ));
+    );
   }
 
   [Hash.symbol]() {

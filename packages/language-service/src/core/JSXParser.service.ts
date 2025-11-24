@@ -1,14 +1,15 @@
-import { createCommonMappedAttribute, mappedComponents } from '@native-twin/core';
+import { createCommonMappedAttribute, cx, mappedComponents } from '@native-twin/core';
 import { asArray, hasOwnProperty } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import ts from 'ts-morph';
 import * as Spec from '../internal/LSPAdapterSpec';
-import type { JSXNode, TwinDslModels } from '../models/TwinDsl.models';
+import { JSXNode, type TwinDslModels } from '../models/TwinDsl.models';
 import { TwinSourceFile } from '../models/TwinSourceFile';
 import { TwinParserContext } from './TwinParser.service';
 import { TypescriptUtils } from './TypescriptUtils.service';
@@ -51,7 +52,7 @@ const make = Effect.gen(function* () {
   }
 
   function getJSXElementStyledProps(node: TwinDslModels.AnyJSXElement) {
-    const tagName = tsUtils.getJSXNodeTagName(node).getText();
+    const tagName = getJSXNodeTagName(node).getText();
     const mappedConfig =
       mappedComponents.find((x) => x.name === tagName) ?? createCommonMappedAttribute(tagName);
     const styledProps: {
@@ -61,7 +62,7 @@ const make = Effect.gen(function* () {
       target: string;
       attribute: ts.JsxAttribute;
     }[] = [];
-    for (const attribute of tsUtils.getJSXElementAttributes(node)) {
+    for (const attribute of getJSXElementAttributes(node)) {
       if (!ts.Node.isJsxAttribute(attribute)) continue;
       const propName = attribute.getNameNode().getText();
       if (!hasOwnProperty.call(mappedConfig.config, propName)) continue;
@@ -82,7 +83,7 @@ const make = Effect.gen(function* () {
     return Stream.fromIterable(sourceFile.getStatements()).pipe(
       Stream.filterMap((_) => Option.fromNullable(getJSXElementStatement(_))),
       Stream.mapEffect(({ jsxElement, declarator }) =>
-        Effect.zip(Effect.succeed(declarator), tsUtils.getTwinJSXNode(jsxElement)),
+        Effect.zip(Effect.succeed(declarator), getTwinJSXNode(jsxElement)),
       ),
       Stream.map(([...args]) => makeNodeJSXDeclarator(...args)),
       Stream.runCollect,
@@ -91,27 +92,35 @@ const make = Effect.gen(function* () {
   }
 
   function getJSXElementStatement(node: ts.Statement) {
-    if (ts.Node.isVariableStatement(node)) {
-      const declarations = node.getDeclarationList().getDeclarations();
-      for (const declaration of declarations) {
-        const initializer = declaration.getInitializer();
-        if (!initializer) continue;
-        const returnStat = tsUtils.getFunctionReturn(initializer);
-        if (!returnStat) continue;
-        const expression = returnStat.getExpression();
-        if (expression && ts.Node.isParenthesizedExpression(expression)) {
-          const maybeJSX = expression.getExpression();
-          if (ts.Node.isJsxElement(maybeJSX)) {
-            return { jsxElement: maybeJSX, declarator: declaration.getNameNode() };
-          }
+    if (!ts.Node.isVariableStatement(node)) return null;
+
+    const declarations = node.getDeclarationList().getDeclarations();
+
+    for (const declaration of declarations) {
+      const initializer = declaration.getInitializer();
+      if (!initializer) continue;
+
+      const returnStat = tsUtils.getFunctionReturn(initializer);
+      if (!returnStat) continue;
+
+      const expression = returnStat.getExpression();
+      if (expression && ts.Node.isParenthesizedExpression(expression)) {
+        const maybeJSX = expression.getExpression();
+        if (ts.Node.isJsxElement(maybeJSX)) {
+          return { jsxElement: maybeJSX, declarator: declaration.getNameNode() };
         }
       }
     }
-    return null;
   }
 
-  function parseTwinJSXNodeProp(prop: TwinDslModels.NodeStyledProp) {
-    const parsedNodes = twinParser.runTwinParser(prop.twinCX, prop.valueTextNode?.getStart() ?? 0);
+  function parseTwinJSXNodeProp(
+    prop: TwinDslModels.NodeStyledProp,
+    document: Spec.LSPTextDocument,
+  ) {
+    const parsedNodes = twinParser.runTwinParser(
+      prop.twinCX,
+      document.positionAt(prop.valueTextNode?.getPos() ?? prop.node.getPos()),
+    );
     return Stream.fromIterable(parsedNodes.composedClasses).pipe(
       Stream.mapEffect((composedClass) =>
         Effect.all({
@@ -135,41 +144,76 @@ const make = Effect.gen(function* () {
     const rootPath = `${declarator.filename}-${declarator.identifier}`;
     const mapped = new Map(flattenNode(declarator.jsxElement, [rootPath]));
     return mapped;
-
-    function flattenNode(node: JSXNode, currentPath: string[]): [string, JSXNode][] {
-      const nextPath = [...currentPath, `${node.index}`];
-      const childs = node.childs.flatMap((x) => flattenNode(x, nextPath));
-      return [[nextPath.join('-').concat(node.id), node], ...childs];
-    }
   }
 
-  function runTwinOnSourceFile(sourceFile: ts.SourceFile) {
-    return Effect.gen(function* () {
-      const parsed = yield* parseSourceFile(sourceFile);
+  function flattenNode(node: JSXNode, currentPath: string[]): [string, JSXNode][] {
+    const nextPath = [...currentPath, `${node.index}`];
+    const childs = node.childs.flatMap((x) => flattenNode(x, nextPath));
+    return [[nextPath.join('-').concat(node.id), node], ...childs];
+  }
 
-      const flattenNodes = parsed.jsxDeclarators.flatMap((x) =>
-        RA.fromIterable(flatJSXDeclarator(x).values()),
-      );
+  // function runTwinOnSourceFile(sourceFile: ts.SourceFile) {
+  //   return Effect.gen(function* () {
+  //     const parsed = yield* parseSourceFile(sourceFile);
 
-      return yield* Stream.fromIterable(flattenNodes).pipe(
-        Stream.flatMap((jsxNode) => {
-          return Stream.fromIterable(jsxNode.styledProps).pipe(
-            Stream.mapEffect((prop) => parseTwinJSXNodeProp(prop)),
-            Stream.map((evaluated) => Object.assign(evaluated, { jsxNode })),
-          );
-        }),
-        Stream.runCollect,
-        Effect.map((chunks) => {
-          return {
-            jsxNodes: RA.fromIterable(chunks),
-            sourceFile,
-          };
-        }),
-      );
+  //     const flattenNodes = parsed.jsxDeclarators.flatMap((x) =>
+  //       RA.fromIterable(flatJSXDeclarator(x).values()),
+  //     );
+
+  //     return yield* Stream.fromIterable(flattenNodes).pipe(
+  //       Stream.flatMap((jsxNode) => {
+  //         return Stream.fromIterable(jsxNode.styledProps).pipe(
+  //           Stream.mapEffect((prop) => parseTwinJSXNodeProp(prop)),
+  //           Stream.map((evaluated) => Object.assign(evaluated, { jsxNode })),
+  //         );
+  //       }),
+  //       Stream.runCollect,
+  //       Effect.map((chunks) => {
+  //         return {
+  //           jsxNodes: RA.fromIterable(chunks),
+  //           sourceFile,
+  //         };
+  //       }),
+  //     );
+  //   });
+  // }
+
+  function getJSXNodeRegion(
+    node: TwinDslModels.AnyJSXElement,
+    document: Spec.LSPTextDocument,
+  ): Spec.AnyTwinNodeRegion {
+    const styledProps = getJSXElementStyledProps(node).map((prop) => {
+      const attributeBinding = Spec.TwinLSPNode.createAttributeBinding({
+        range: document.getRangeFor(prop.name.getPos(), prop.name.getEnd()),
+        getText: () => prop.name.getText(),
+      });
+      const attributeValue = Spec.TwinLSPNode.createJsxAttributeValue({
+        range: document.getRangeFor(prop.value.getPos(), prop.value.getEnd()),
+        getText: () => prop.value.getText(),
+      });
+      return Spec.TwinLSPNode.createAttributeRegion({
+        getText: () => prop.attribute.getText(),
+        attributeBinding,
+        attributeValue,
+        range: document.getRangeFor(prop.attribute.getPos(), prop.attribute.getEnd()),
+      });
+    });
+
+    const nodeRange = document.getRangeFor(node.compilerNode.getStart(), node.compilerNode.getEnd());
+    const tagName = getJSXNodeTagName(node);
+    const tagNameRange = document.getRangeFor(tagName.compilerNode.getStart(), tagName.compilerNode.getEnd());
+    return Spec.TwinLSPNode.createJsxNode({
+      getText: () => node.getText(),
+      range: nodeRange,
+      styledProps,
+      tagName: Spec.TwinLSPNode.createJsxTagName({
+        getText: () => tagName.getText(),
+        range: tagNameRange,
+      }),
     });
   }
 
-  function jsxNodesToRegions(nodes: TwinDslModels.AnyJSXElement[]) {
+  function jsxNodesToRegions(nodes: TwinDslModels.AnyJSXElement[], document: Spec.LSPTextDocument) {
     if (nodes.length === 0) return [];
 
     const regions: Spec.AnyTwinNodeRegion[] = [];
@@ -180,53 +224,177 @@ const make = Effect.gen(function* () {
       if (!nextNode) break;
 
       if (tsUtils.isJSXElementLike(nextNode)) {
-        const props = getJSXElementStyledProps(nextNode);
-        const regionProps = props.map((prop): Spec.JsxAttributeRegion => {
-          const attributeBinding = Spec.TwinLSPNode.createAttributeBinding({
-            range: tsUtils.nodeToLSPRange(prop.name),
-            getText: () => prop.name.getText(),
-          });
-          const attributeValue = Spec.TwinLSPNode.createJsxAttributeValue({
-            range: tsUtils.nodeToLSPRange(prop.value),
-            getText: () => prop.value.getText(),
-          });
-          return Spec.TwinLSPNode.createAttributeRegion({
-            getText: () => prop.name.getText(),
-            attributeBinding,
-            attributeValue,
-            range: tsUtils.nodeToLSPRange(prop.attribute),
-          });
-        });
-        const nodeRange = tsUtils.nodeToLSPRange(nextNode);
-        const tagName = tsUtils.getJSXNodeTagName(nextNode);
-        const tagNameRange = tsUtils.nodeToLSPRange(tagName);
-        regions.push(
-          Spec.TwinLSPNode.createJsxNode({
-            getText: () => nextNode.getText(),
-            range: nodeRange,
-            styledProps: regionProps,
-            tagName: Spec.TwinLSPNode.createJsxTagName({
-              getText: () => tagName.getText(),
-              range: tagNameRange,
-            }),
-          }),
-        );
-        nodesToVisit.push(...tsUtils.getJSXElementChilds(nextNode));
+        regions.push(getJSXNodeRegion(nextNode, document));
+        nodesToVisit.push(...getJSXElementChilds(nextNode));
       }
     }
 
     return regions;
   }
 
+  function filterNodeAtPosition(
+    regions: Spec.AnyTwinNodeRegion[],
+    position: Spec.LSPPosition,
+    document: Spec.LSPTextDocument,
+  ): Spec.AnyTwinNodeRegion | null {
+    // const offset = document.getOffsetAt(position);
+
+    const current = regions.pop();
+    if (!current) return null;
+
+    if (current._tag === 'JsxNodeRegion') {
+      if (document.isPositionInRange(position, current.range)) {
+        regions.push(...current.styledProps);
+      }
+    }
+    // if (current._tag === 'JsxAttributeBindingRegion') {
+    //   return null;
+    // }
+    if (current._tag === 'JsxAttributeRegion') {
+      regions.push(...[current.attributeBinding, current.attributeValue]);
+    }
+
+    // if (current._tag === 'JsxTagName') return null;
+    if (current._tag === 'JsxAttributeValueRegion') {
+      if (document.isPositionInRange(position, current.range)) {
+        return current;
+      }
+    }
+
+    return filterNodeAtPosition(regions, position, document);
+  }
+
+  const getTwinJSXNode = (
+    node: TwinDslModels.AnyJSXElement,
+    jsxParent: JSXNode | null = null,
+  ): Effect.Effect<JSXNode> =>
+    Effect.gen(function* () {
+      const tagName = getJSXNodeTagName(node).getText();
+      const styledProps = getJSXMappedProps(node);
+      const result = new JSXNode({ node, styledProps, tagName, parent: jsxParent });
+      result.childs = yield* Effect.all(
+        getJSXElementChilds(node).map((_) => getTwinJSXNode(_, result)),
+      );
+
+      return result;
+    });
+
+  const getJSXElementChilds = (node: ts.Node) => {
+    return pipe(
+      // ts.Node.isJsxElement(node) || ts.Node.isJsxSelfClosingElement(node) ? node : null,
+      node,
+      RA.liftPredicate(tsUtils.isJSXElementLike),
+      RA.flatMap((el) => (ts.Node.isJsxElement(el) ? el.getJsxChildren() : [])),
+      RA.filter((el) => ts.Node.isJsxElement(el) || ts.Node.isJsxSelfClosingElement(el)),
+    );
+  };
+
+  const getJSXNodeTagName = (node: TwinDslModels.AnyJSXElement) => {
+    if (ts.Node.isJsxElement(node)) return node.getOpeningElement().getTagNameNode();
+    return node.getTagNameNode();
+  };
+
+  const getJSXElementAttributes = (node: ts.Node): ts.JsxAttributeLike[] => {
+    if (ts.Node.isJsxElement(node)) return node.getOpeningElement().getAttributes();
+    if (ts.Node.isJsxSelfClosingElement(node)) return node.getAttributes();
+    return [];
+  };
+
+  const getJSXMappedProps = (node: TwinDslModels.AnyJSXElement): TwinDslModels.NodeStyledProp[] => {
+    const tagName = getJSXNodeTagName(node);
+    if (!tagName) return [];
+    const name = tagName.getText();
+    const jsxConfig =
+      mappedComponents.find((x) => x.name === name) ?? createCommonMappedAttribute(name);
+    const props = Object.entries(jsxConfig.config);
+    const attributes = getJSXElementAttributes(node).filter((x) => ts.Node.isJsxAttribute(x)) ?? [];
+    return props.flatMap(([classProp, styleProp]) =>
+      attributes
+        .filter((attrNode) => attrNode.getNameNode().getText() === classProp)
+        .map(
+          (attrNode): TwinDslModels.NodeStyledProp => ({
+            _tag: 'NodeStyledProp',
+            classProp,
+            styleProp,
+            node: attrNode,
+            ...getJSXAttributeValue(attrNode),
+          }),
+        ),
+    );
+  };
+
+  const getJSXAttributeValue = (
+    node: ts.JsxAttribute,
+  ): Pick<
+    TwinDslModels.NodeStyledProp,
+    'expression' | 'originalText' | 'twinCX' | 'valueTextNode'
+  > => {
+    const result: Pick<
+      TwinDslModels.NodeStyledProp,
+      'expression' | 'originalText' | 'twinCX' | 'valueTextNode'
+    > = {
+      originalText: '',
+      twinCX: '',
+      expression: null,
+      valueTextNode: node.getInitializer() ?? null,
+    };
+    const initializer = node.getInitializer();
+    if (!initializer) return result;
+    if (ts.Node.isStringLiteral(initializer)) {
+      result.originalText = initializer.getText();
+      result.twinCX = cx`${result.originalText}`;
+      return result;
+    }
+    if (ts.Node.isJsxExpression(initializer)) {
+      const expression = initializer.getExpression();
+      if (!expression) return result;
+      if (ts.Node.isStringLiteral(expression)) {
+        result.originalText = expression.getText();
+        result.twinCX = cx`${result.originalText}`;
+        result.valueTextNode = expression;
+        return result;
+      }
+      if (ts.Node.isNoSubstitutionTemplateLiteral(expression)) {
+        result.originalText = expression.getText();
+        result.twinCX = cx`${result.originalText}`;
+        result.valueTextNode = expression;
+        return result;
+      }
+      if (ts.Node.isTemplateExpression(expression)) {
+        const literals = [expression.getHead().getText()];
+        const expressions: ts.Expression[] = [];
+        for (const span of expression.getTemplateSpans()) {
+          const literal = span.getLiteral();
+          if (ts.Node.isTemplateMiddle(literal)) {
+            literals.push(literal.getText());
+          } else {
+            literals.push(literal.getText());
+          }
+          const expression = span.getExpression();
+          expressions.push(expression);
+        }
+        result.originalText = literals.map((x) => x.trim()).join(' ');
+        result.twinCX = cx`${result.originalText}`;
+        result.expression = expression;
+        result.valueTextNode = expression;
+        return result;
+      }
+    }
+    return result;
+  };
+
   return {
     jsxNodesToRegions,
     getJSXRootsFromSource,
-    parseSourceFile,
-    getJSXElementStyledProps,
-    flatJSXDeclarator,
-    parseTwinJSXNodeProp,
-    runTwinOnSourceFile,
+    getTwinJSXNode,
     getJSXElementStatement,
+    parseTwinJSXNodeProp,
+    parseSourceFile,
+    getJSXMappedProps,
+    getJSXElementChilds,
+    flatJSXDeclarator,
+    flattenNode,
+    filterNodeAtPosition,
   };
 });
 

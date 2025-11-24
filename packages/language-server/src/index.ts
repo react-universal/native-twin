@@ -10,7 +10,6 @@ import {
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import { CompletionList } from 'vscode-languageserver-types';
 import { LspMainLive } from './services/LSP.service';
 import { LoggerLive } from './services/logger.service';
 
@@ -51,7 +50,10 @@ const program = Effect.gen(function* () {
       Runtime.runPromise,
     );
 
-    return CompletionList.create(items);
+    return {
+      items,
+      isIncomplete: true,
+    };
   });
 
   Connection.onCompletionResolve(
