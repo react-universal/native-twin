@@ -1,12 +1,12 @@
-import { TinyColor } from '@ctrl/tinycolor';
-// import * as RA from 'effect/Array';
-// import * as Option from 'effect/Option';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
 import * as t from 'vscode-languageserver-types';
 import { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
 import type * as LSP from '../internal/LSPAdapterSpec';
 import type { LocatedTokenResult, TwinRuleRegistry } from '../models/TwinParser.models';
-import { getCompletionTokenKind } from '../utils/language/language.utils';
+import {
+  getCompletionEntryDetailsDisplayParts,
+  getCompletionTokenKind,
+} from '../utils/language/language.utils';
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
   readonly regions: LSP.JsxNodeRegion[];
@@ -29,15 +29,20 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
 
   getCompletionItem(
     rule: TwinRuleRegistry,
-    _locatedToken: LocatedTokenResult,
+    locatedToken: LocatedTokenResult,
     cursorOffset: number,
   ) {
-    const replaceText = rule.className.replace(_locatedToken.lookupText, '');
+    const replaceText = rule.className.replace(locatedToken.lookupText, '');
     const insertReplacement = t.TextEdit.insert(this.positionAt(cursorOffset), replaceText);
     const completion = {
       label: rule.className,
       kind: getCompletionTokenKind(rule.info.themeSection),
-      detail: getCompletionEntryDetailsDisplayParts(rule)?.text ?? '',
+      detail:
+        getCompletionEntryDetailsDisplayParts({
+          declarationValue: rule.declarationValue,
+          feature: rule.info.meta.feature,
+          themeSection: rule.info.themeSection,
+        })?.text ?? '',
       labelDetails: {
         description: rule.declarations.join(','),
       },
@@ -61,26 +66,6 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
   sumRanges(r1: LSP.LSPRange, r2: LSP.LSPRange) {
     return t.Range.create(this.sumPositions(r1.start, r2.start), this.sumPositions(r1.end, r2.end));
   }
-}
-
-export const getKindModifiers = (item: TwinRuleRegistry): string =>
-  item.info.meta.feature === 'colors' || item.info.themeSection === 'colors' ? 'color' : '';
-
-export function getCompletionEntryDetailsDisplayParts(rule: TwinRuleRegistry) {
-  if (rule.info.meta.feature === 'colors' || rule.info.themeSection === 'colors') {
-    const hex = new TinyColor(rule.declarationValue);
-    if (hex.isValid) {
-      return {
-        kind: 'color',
-        text: hex.toHexString(),
-      };
-    }
-    return {
-      kind: 'color',
-      text: rule.declarationValue,
-    };
-  }
-  return undefined;
 }
 
 const fixRegionRanges = (
