@@ -29,7 +29,7 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   }
 
   get document() {
-    return this;
+    return this.textDocument;
   }
 
   get uri() {

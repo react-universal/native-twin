@@ -29,6 +29,7 @@ export const completionRulesToVscodeCompletionItems = (
       documentation: rule.completion.declarations.join(','),
       filterText: rule.completion.className,
       sortText: rule.order.toString().padStart(8, '0'),
+      // @ts-expect-error
       detail: getCompletionEntryDetailsDisplayParts(rule)?.text ?? 'No Details',
       kind: vscode.CompletionItemKind.Color,
       insertText: insertText,

@@ -29,10 +29,15 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
     if (data.kind === 'rule') {
       const { completion, order } = data;
       this.label = completion.className;
-      this.kind = getCompletionTokenKind(data);
+      this.kind = getCompletionTokenKind(data.rule.themeSection);
       this.filterText = completion.className;
       this.sortText = order.toString().padStart(8, '0');
-      this.detail = getCompletionEntryDetailsDisplayParts(data)?.text ?? '__';
+      this.detail =
+        getCompletionEntryDetailsDisplayParts({
+          declarationValue: data.completion.declarationValue,
+          feature: data.rule.meta.feature,
+          themeSection: data.rule.themeSection,
+        })?.text ?? '__';
       this.insertTextMode = vscode.InsertTextMode.asIs;
       this.labelDetails = {
         description: completion.declarations.join(','),

@@ -1,4 +1,5 @@
 import { TinyColor } from '@ctrl/tinycolor';
+import type { CssFeature } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import toCssFormat from 'cssbeautify';
 import * as ReadonlyArray from 'effect/Array';
@@ -6,21 +7,29 @@ import { pipe } from 'effect/Function';
 import * as vscode from 'vscode-languageserver-types';
 import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
 import type { DocumentLanguageRegion } from '../../documents/common/LanguageRegion.model.js';
-import type { TwinRuleCompletion, TwinRuleParts } from '../../internal/TwinTypes.internal.js';
+import type {
+  InternalNativeTwinRule,
+  TwinRuleCompletion,
+  TwinRuleParts,
+} from '../../internal/TwinTypes.internal.js';
 import { TemplateTokenData, TemplateTokenWithText } from '../../models/template-token.model.js';
 import { variantTokenToString } from '../twin/native-twin.utils.js';
 
-export const getCompletionTokenKind = ({ rule }: TwinRuleCompletion): vscode.CompletionItemKind =>
-  rule.themeSection === 'colors'
-    ? vscode.CompletionItemKind.Color
-    : vscode.CompletionItemKind.Constant;
+export const getCompletionTokenKind = (
+  section: InternalNativeTwinRule[1] | (string & {}),
+): vscode.CompletionItemKind =>
+  section === 'colors' ? vscode.CompletionItemKind.Color : vscode.CompletionItemKind.Constant;
 
 export const getKindModifiers = (item: TwinRuleParts): string =>
   item.meta.feature === 'colors' || item.themeSection === 'colors' ? 'color' : '';
 
-export function getCompletionEntryDetailsDisplayParts({ rule, completion }: TwinRuleCompletion) {
-  if (rule.meta.feature === 'colors' || rule.themeSection === 'colors') {
-    const hex = new TinyColor(completion.declarationValue);
+export function getCompletionEntryDetailsDisplayParts(rule: {
+  themeSection: InternalNativeTwinRule[1] | (string & {});
+  feature: CssFeature;
+  declarationValue: string;
+}) {
+  if (rule.feature === 'colors' || rule.themeSection === 'colors') {
+    const hex = new TinyColor(rule.declarationValue);
     if (hex.isValid) {
       return {
         kind: 'color',
@@ -29,7 +38,7 @@ export function getCompletionEntryDetailsDisplayParts({ rule, completion }: Twin
     }
     return {
       kind: 'color',
-      text: completion.declarationValue,
+      text: rule.declarationValue,
     };
   }
   return undefined;

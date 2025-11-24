@@ -79,7 +79,6 @@ export const twinCompletionsToVscode = <Document extends TwinLSPDocument>(
     }
 
     if (!valueRegion) return [];
-    document.diagnoseRegions();
 
     const parserResult = parser.runTwinParser(
       valueRegion.text,

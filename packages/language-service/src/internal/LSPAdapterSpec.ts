@@ -1,4 +1,4 @@
-import { Context } from 'effect';
+import * as Context from 'effect/Context';
 import * as Data from 'effect/Data';
 import type * as Effect from 'effect/Effect';
 import * as Equivalence from 'effect/Equivalence';

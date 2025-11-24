@@ -1,14 +1,14 @@
-import { asArray } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as LSP from '../core/LSPContext.service';
 import { TwinParserContext } from '../core/TwinParser.service';
+import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import {
-  type AnyTwinNodeRegion,
-  type JsxAttributeValueRegion,
-  LSPAdapterSpec,
-} from '../internal/LSPAdapterSpec';
-import type { TwinRuleRegistry } from '../models/TwinParser.models';
+  createCompositionsComposer,
+  type LocatedTokenResult,
+  type TwinParsedClasses,
+  type TwinRuleRegistry,
+} from '../models/TwinParser.models';
 
 export const classNameCompletions = LSP.createTwinCompletions({
   name: 'classNameCompletions',
@@ -18,51 +18,31 @@ export const classNameCompletions = LSP.createTwinCompletions({
     const region = yield* executor.getRegionAt(filename, position);
     const document = yield* executor.getLSPDocument(filename);
     const cursorOffset = document.offsetAt(position);
-
     const twinTokens: TwinRuleRegistry[] = [];
-    const regionsToVisit: AnyTwinNodeRegion[] = asArray(region);
-    let valueRegion: JsxAttributeValueRegion | null = null;
-    while (regionsToVisit.length > 0) {
-      const nextRegion = regionsToVisit.pop();
-      if (!nextRegion) break;
 
-      switch (nextRegion._tag) {
-        case 'JsxAttributeRegion':
-          regionsToVisit.push(nextRegion.attributeValue);
-          continue;
-        case 'JsxNodeRegion':
-          regionsToVisit.push(...nextRegion.styledProps);
-          continue;
-        case 'JsxAttributeBindingRegion':
-        case 'JsxTagName':
-          continue;
-        case 'JsxAttributeValueRegion':
-          valueRegion = nextRegion;
-          break;
-      }
-    }
-
+    const valueRegion = document.findRegionAt(position);
     const text = valueRegion?.text;
+    let parserResult: TwinParsedClasses | null = null;
+    let locatedToken: LocatedTokenResult | null | undefined = null;
     if (!!valueRegion && !!text) {
-      const parserResult = parser.runTwinParser(text, document.offsetAt(valueRegion.range.start));
+      parserResult = parser.runTwinParser(text, document.offsetAt(valueRegion.range.start));
+      const handler = createCompositionsComposer(parserResult, document);
 
-      const locatedToken = parserResult.composedClasses.find((x) =>
-        document.isPositionInRange(
-          document.positionAt(cursorOffset),
-          document.getRangeFor(x.startOffset + x.parentStarts, x.endOffset + x.parentStarts),
-        ),
-      );
+      locatedToken = handler.findComposedClassAtPosition(cursorOffset);
 
       if (locatedToken) {
-        const rules = yield* parser.findRulesByKey(locatedToken.classNameText);
+        const rules = yield* parser.findRulesByKey(locatedToken.lookupText);
         twinTokens.push(...rules);
       }
     }
 
     return {
-      nextRegion: Option.none(),
-      prevRegion: Option.none(),
+      composedClass: Option.fromNullable(locatedToken),
+      parserResult: Option.fromNullable(parserResult),
       region: region,
+      completions: locatedToken
+        ? twinTokens.map((rule) => document.getCompletionItem(rule, locatedToken, cursorOffset))
+        : [],
       twinTokens,
     } satisfies LSP.LSPTwinCompletionsResult;
   }),

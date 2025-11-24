@@ -30,29 +30,6 @@ export const getThemeVariants = (
     }),
   );
 
-// const getThemeSectionKeys = (config: InternalTwinConfig) => {
-//   const keys = [...keysOf(config.theme), ...keysOf(config.theme.extend ?? {})].filter(
-//     (x) => x !== 'extend',
-//   );
-//   return SortedSet.fromIterable(keys, Order.string);
-// };
-
-// const getThemeColorPalette = (config: InternalTwinConfig) =>
-//   HashMap.fromIterable(Object.entries(config.theme.colors ?? {})).pipe(
-//     HashMap.union(HashMap.fromIterable(Object.entries(config.theme.extend?.colors ?? {}))),
-//   );
-
-// const getThemeOpacities = (config: InternalTwinConfig) =>
-//   pipe(
-//     RA.fromIterable(Object.entries(config.theme.opacity ?? {})),
-//     RA.union(HashMap.fromIterable(Object.entries(config.theme.extend?.opacity ?? {}))),
-//   );
-
-// const getThemeScreenEntries = (config: InternalTwinConfig) =>
-//   HashMap.fromIterable(Object.entries(config.theme.screens ?? {})).pipe(
-//     HashMap.union(HashMap.fromIterable(Object.entries(config.theme.extend?.screens ?? {}))),
-//   );
-
 const createComposedClass = (
   token:
     | TwinParserModel.TwinClassNameToken
@@ -197,5 +174,9 @@ export const isComposedNodeAtOffset = (
   documentOffset: number,
 ) => isOffsetAtLocation(documentOffset, node);
 
-export const isOffsetAtLocation = (offset: number, location: TwinParserModel.WithLocation) =>
-  offset >= location.startOffset && offset <= location.endOffset;
+export const isOffsetAtLocation = (
+  offset: number,
+  location: TwinParserModel.AnyTwinComposedClass,
+) =>
+  offset >= location.startOffset + location.parentStarts &&
+  offset <= location.endOffset + location.parentStarts;

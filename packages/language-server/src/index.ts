@@ -1,9 +1,8 @@
 import * as NodeContext from '@effect/platform-node/NodeContext';
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
-import { getClientCapabilities, twinCompletionsToVscode } from '@native-twin/language-service';
+import { getClientCapabilities } from '@native-twin/language-service';
 import {
   classNameCompletions,
-  LSPAdapterSpec,
   LSPConfig,
   LSPContext,
 } from '@native-twin/language-service/Services';
@@ -18,9 +17,6 @@ const Runtime = ManagedRuntime.make(Layer.suspend(() => LspMainLive));
 const program = Effect.gen(function* () {
   const { connection: Connection, documents } = yield* LSPContext;
   const config = yield* LSPConfig;
-  const adapter = yield* LSPAdapterSpec;
-
-  const fetchDocument = (uri: string) => adapter.getLSPDocument(uri);
 
   Connection.onInitialize(async (params) => {
     const capabilities = getClientCapabilities(params.capabilities);
@@ -40,19 +36,8 @@ const program = Effect.gen(function* () {
       .apply(params.textDocument.uri, params.position)
       .pipe(Runtime.runPromise);
 
-    const items = await fetchDocument(params.textDocument.uri).pipe(
-      Effect.andThen((doc) =>
-        twinCompletionsToVscode(
-          regions.region,
-          doc.document,
-          doc.document.offsetAt(params.position),
-        ),
-      ),
-      Runtime.runPromise,
-    );
-
     return {
-      items,
+      items: regions.completions,
       isIncomplete: true,
     };
   });

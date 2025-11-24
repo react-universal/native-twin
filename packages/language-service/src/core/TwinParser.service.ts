@@ -7,28 +7,13 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Trie from 'effect/Trie';
-import * as Predicates from '../internal/TwinParser.internals';
 import { createComposedClasses } from '../internal/TwinParser.internals';
 import type * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuntimeContext } from './TwinRuntime.service';
 
-export interface TwinParserInput {
-  text: string;
-  startOffset: number;
-}
-export interface TwinParsedClasses {
-  startOffset: number;
-  endOffset: number;
-  originalInput: TwinParserInput;
-  composedClasses: TwinParserModel.AnyTwinComposedClass[];
-}
-interface TwinParserData {
-  input: TwinParserInput;
-  finalOffset: string;
-}
-type ParserWithData<A> = P.Parser<A, TwinParserData>;
+type ParserWithData<A> = P.Parser<A, TwinParserModel.TwinParserData>;
 
-const parseTwinClasses = (input: TwinParserInput) => {
+const parseTwinClasses = (input: TwinParserModel.TwinParserInput) => {
   const withData = P.withData(
     P.many1(
       P.whitespaceSurrounded(
@@ -56,7 +41,7 @@ const make = Effect.gen(function* () {
     return Trie.get(dictionary, key);
   });
 
-  const runTwinParser = (rawText: string, startsAt: number): TwinParsedClasses => {
+  const runTwinParser = (rawText: string, startsAt: number): TwinParserModel.TwinParsedClasses => {
     // const { text, position } = adjustParserInput(rawText, startsAt);
     const parsed = parseTwinClasses({
       startOffset: startsAt,
@@ -66,57 +51,10 @@ const make = Effect.gen(function* () {
     return toTwinParserResult(parsed);
   };
 
-  const findComposedClassAtPosition = (
-    nodes: TwinParserModel.AnyTwinComposedClass[],
-    offset: number,
-  ) => {
-    for (const node of nodes) {
-      if (!Predicates.isComposedNodeAtOffset(node, offset)) continue;
-
-      if (Predicates.isComposedNodeAtOffset(node, offset) && node.type === 'ComposedClass') {
-        return {
-          node,
-          startOffset: node.startOffset,
-          endOffset: node.endOffset,
-          group: null,
-          lookupText: node.classNameText,
-        };
-      }
-
-      if (Predicates.isComposedClassGroup(node)) {
-        const targetComposition = node.token.composes.find((_) =>
-          Predicates.isComposedNodeAtOffset(_, offset),
-        );
-        if (!targetComposition) return null;
-
-        const base = node.token.base.classNameText;
-
-        let lookupText = '';
-        if (node.token.base.token.type === 'CLASS_NAME') {
-          lookupText += base;
-          if (!base.endsWith('-')) {
-            lookupText += '-';
-          }
-        }
-        if (targetComposition.type === 'ComposedClass') {
-          lookupText += targetComposition.text;
-        }
-        return {
-          startOffset: node.startOffset,
-          endOffset: node.endOffset,
-          group: node.token.base,
-          node: targetComposition,
-          lookupText,
-        };
-      }
-    }
-  };
-
   return {
     data: { themeVariants, styledContext, twinRef, dictionaryRef },
     findRulesByKey,
     getRuleByClassName,
-    findComposedClassAtPosition,
     runTwinParser,
     findRulesByText,
   };
@@ -126,11 +64,11 @@ const make = Effect.gen(function* () {
 );
 
 export const toTwinParserResult = (
-  result: P.ResultType<TwinParserModel.AnyTwinParseResultToken[], TwinParserInput>,
-): TwinParsedClasses => {
+  result: P.ResultType<TwinParserModel.AnyTwinParseResultToken[], TwinParserModel.TwinParserInput>,
+): TwinParserModel.TwinParsedClasses => {
   const input = result.data;
   const composedClasses: TwinParserModel.AnyTwinComposedClass[] = [];
-  const evaluated: TwinParsedClasses = {
+  const evaluated: TwinParserModel.TwinParsedClasses = {
     startOffset: result.data.startOffset,
     endOffset: result.data.startOffset + result.cursor,
     composedClasses,
@@ -157,7 +95,7 @@ export const toTwinParserResult = (
 // };
 
 const mapParserToLocation = <A extends object>(
-  x: P.ParserState<A, TwinParserData>,
+  x: P.ParserState<A, TwinParserModel.TwinParserData>,
   initialIndex: number,
 ): TwinParserModel.WithLocation & A =>
   Object.assign(x.result, {
