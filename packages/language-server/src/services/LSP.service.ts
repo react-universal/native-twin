@@ -1,5 +1,4 @@
-import { TwinLSPDocument } from '@native-twin/language-service';
-import { vscodeLSPAdapterExecutor } from '@native-twin/language-service/adapters/vscode.adapter.js';
+import { VscodeLSPAdapterLive } from '@native-twin/language-service/adapters/vscode.adapter.js';
 import { LSPBaseLayerLive, LSPContext } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -24,25 +23,19 @@ const LSPContextLive = Effect.gen(function* () {
     return Effect.sync(() => subs.dispose());
   });
   const getDocument = (uri: string) => Option.fromNullable(documents.get(uri));
-  const documentToTwin = (doc: TextDocument) => Option.some(new TwinLSPDocument(doc));
+  // const documentToTwin = (doc: TextDocument) => Option.some(new TwinLSPDocument(doc));
 
   return LSPContext.of({
     documents,
     getAllDocuments: () => documents.all(),
-    getDocument: Option.composeK(getDocument, documentToTwin),
-    executor: {
-      getLSPDocument: vscodeLSPAdapterExecutor.getLSPDocument,
-      getRegionAt: vscodeLSPAdapterExecutor.getRegionAt,
-      getRegions: vscodeLSPAdapterExecutor.getRegions,
-    },
+    getDocument: getDocument,
     connection: connectionHandler,
     documentChanges,
   });
-}).pipe(
-  Layer.effect(LSPContext)
-);
+}).pipe(Layer.effect(LSPContext));
 
 export const LspMainLive = LoggerLive.pipe(
+  Layer.provideMerge(VscodeLSPAdapterLive),
   Layer.provideMerge(TypescriptContextLive),
   Layer.provideMerge(LSPContextLive),
   Layer.provideMerge(LSPBaseLayerLive),

@@ -1,9 +1,9 @@
 import * as NodeContext from '@effect/platform-node/NodeContext';
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
 import { getClientCapabilities, twinCompletionsToVscode } from '@native-twin/language-service';
-import { vscodeLSPAdapterExecutor } from '@native-twin/language-service/adapters/vscode.adapter.js';
 import {
   classNameCompletions,
+  LSPAdapterSpec,
   LSPConfig,
   LSPContext,
 } from '@native-twin/language-service/Services';
@@ -18,8 +18,9 @@ const Runtime = ManagedRuntime.make(Layer.suspend(() => LspMainLive));
 const program = Effect.gen(function* () {
   const { connection: Connection, documents } = yield* LSPContext;
   const config = yield* LSPConfig;
+  const adapter = yield* LSPAdapterSpec;
 
-  const fetchDocument = (uri: string) => vscodeLSPAdapterExecutor.getLSPDocument(uri);
+  const fetchDocument = (uri: string) => adapter.getLSPDocument(uri);
 
   Connection.onInitialize(async (params) => {
     const capabilities = getClientCapabilities(params.capabilities);
@@ -36,7 +37,7 @@ const program = Effect.gen(function* () {
 
   Connection.onCompletion(async (params) => {
     const regions = await classNameCompletions
-      .apply(params.textDocument.uri, params.position, vscodeLSPAdapterExecutor)
+      .apply(params.textDocument.uri, params.position)
       .pipe(Runtime.runPromise);
 
     const items = await fetchDocument(params.textDocument.uri).pipe(

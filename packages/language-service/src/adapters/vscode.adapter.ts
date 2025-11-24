@@ -1,64 +1,54 @@
 import url from 'node:url';
 import { asArray, identity } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
-import * as Option from 'effect/Option';
+import * as Layer from 'effect/Layer';
 import * as JSXParser from '../core/JSXParser.service';
 import { LSPContext, type LSPTwinCompletionsResult } from '../core/LSPContext.service';
+import { TwinLSPDocument } from '../core/TwinLSPDocument.model';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { TypeScriptProgram } from '../core/TypescriptAPI.service';
-import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
 import * as LSPTypes from '../internal/LSPAdapterSpec';
 import type { VscodeCompletionItem } from '../models/completion.model';
 
-export interface VscodeLSPAdapter
-  extends LSPTypes.LSPAdapterSpec<never, LSPContext | TypeScriptProgram> {}
-
-const getLSPDocument: VscodeLSPAdapter['getLSPDocument'] = Effect.fn(function* (filename) {
-  const documentsService = yield* LSPContext;
-  const document = yield* Effect.succeed(documentsService.getDocument(filename))
-    .pipe(Effect.flatMap(identity))
-    .pipe(Effect.mapError((e) => LSPTypes.FileNotFound.create(e)));
-
-  return document;
-});
-
-const getProGramSourceFile = Effect.fn('ts: getSourceFile')(function* (filename: string) {
+export const VscodeLSPAdapterLive = Effect.gen(function* () {
+  const { getDocument } = yield* LSPContext;
   const program = yield* TypeScriptProgram;
-  const document = yield* getLSPDocument(filename);
+  const parser = yield* JSXParser.JSXParser;
 
-  const filePath = url.fileURLToPath(filename);
-  return yield* program.getSourceFile(filePath, document.getText());
-});
+  const getLSPDocument = Effect.fn(function* (filename: string) {
+    const document = yield* Effect.succeed(getDocument(filename))
+      .pipe(Effect.flatMap(identity))
+      .pipe(Effect.mapError((e) => LSPTypes.FileNotFound.create(e)));
 
-const getRegions: VscodeLSPAdapter['getRegions'] = Effect.fn('vscodeAdapter: extractRegions')(
-  function* (filename: string) {
-    const parser = yield* JSXParser.JSXParser;
-    const tsSource = yield* getProGramSourceFile(filename);
+    const filePath = url.fileURLToPath(filename);
+    const tsSource = yield* program.getSourceFile(filePath, document.getText());
+    const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
+
+    return new TwinLSPDocument(document, regions);
+  });
+
+  const getRegions = Effect.fn('vscodeAdapter: extractRegions')(function* (filename: string) {
+    const document = yield* getLSPDocument(filename);
+    return document.regions;
+  });
+
+  const getRegionAt = Effect.fn('vscodeAdapter: getTokenAtPosition')(function* (
+    filename: string,
+    position: LSPTypes.LSPPosition,
+  ) {
     const document = yield* getLSPDocument(filename);
 
-    return parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
-  },
-);
+    return document.findRegionAt(position);
+  });
 
-const getRegionAt: VscodeLSPAdapter['getRegionAt'] = Effect.fn('vscodeAdapter: getTokenAtPosition')(
-  function* (filename, position) {
-    const document = yield* getLSPDocument(filename);
-    const parser = yield* JSXParser.JSXParser;
-    const regions = yield* getRegions(filename);
+  return LSPTypes.LSPAdapterSpec.of({
+    getLSPDocument,
+    getRegions,
+    getRegionAt,
+  });
+}).pipe(Layer.effect(LSPTypes.LSPAdapterSpec));
 
-    return Option.fromNullable(parser.filterNodeAtPosition(regions, position, document));
-  },
-);
-
-export const VscodeLSPAdapter = {
-  getLSPDocument,
-  getRegionAt,
-  getRegions,
-} satisfies VscodeLSPAdapter;
-
-export const vscodeLSPAdapterExecutor = LSPTypes.createLSPAdapterExecutor(VscodeLSPAdapter);
-
-export const twinCompletionsToVscode = <Document extends BaseTwinTextDocument>(
+export const twinCompletionsToVscode = <Document extends TwinLSPDocument>(
   region: LSPTwinCompletionsResult['region'],
   document: Document,
   offset: number,
@@ -66,16 +56,11 @@ export const twinCompletionsToVscode = <Document extends BaseTwinTextDocument>(
   Effect.gen(function* () {
     const parser = yield* TwinParserContext;
 
-    const regionsToVisit: LSPTypes.AnyTwinNodeRegion[] = Option.map(region, asArray).pipe(
-      Option.getOrElse(() => []),
-    );
+    const regionsToVisit: LSPTypes.AnyTwinNodeRegion[] = asArray(region);
     let valueRegion: LSPTypes.JsxAttributeValueRegion | null = null;
     while (regionsToVisit.length > 0) {
       const nextRegion = regionsToVisit.pop();
       if (!nextRegion) break;
-
-      // if (offset <= nextRegion.range.start.character || offset >= nextRegion.range.end.character)
-      //   continue;
 
       switch (nextRegion._tag) {
         case 'JsxAttributeRegion':
@@ -94,18 +79,29 @@ export const twinCompletionsToVscode = <Document extends BaseTwinTextDocument>(
     }
 
     if (!valueRegion) return [];
+    document.diagnoseRegions();
 
-    const parserResult = parser.runTwinParser(valueRegion.getText() ?? '', valueRegion.range.start);
+    const parserResult = parser.runTwinParser(
+      valueRegion.text,
+      document.offsetAt(valueRegion.range.start),
+    );
 
-    const locatedToken = parserResult.composedClasses.find(
-      (x) => document.isPositionInRange(document.positionAt(offset), x.documentLoc.originalRange),
-      // offset >= x.documentLoc.originalRange.start.character &&
-      // offset <= x.documentLoc.originalRange.end.character,
+    const locatedToken = parserResult.composedClasses.find((x) =>
+      document.isPositionInRange(
+        document.positionAt(offset),
+        document.getRangeFor(x.documentLoc.startOffset, x.documentLoc.endOffset),
+      ),
     );
     if (!locatedToken) return [];
 
     const rules = yield* parser.findRulesByKey(locatedToken.classNameText);
     return rules.map((rule): VscodeCompletionItem => {
-      return rule.toVscode(locatedToken.documentLoc.originalRange);
+      return rule.toVscode(
+        document.getRangeFor(
+          locatedToken.documentLoc.startOffset,
+          locatedToken.documentLoc.endOffset,
+        ),
+        locatedToken.text,
+      );
     });
   });

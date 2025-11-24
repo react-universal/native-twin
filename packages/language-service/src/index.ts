@@ -1,6 +1,6 @@
-export { DocumentLanguageRegion } from './documents/common/LanguageRegion.model.js';
 /** Documents Service */
-export { TwinLSPDocument } from './documents/node/TwinLSPDocument.model.js';
+export { TwinLSPDocument } from './core/TwinLSPDocument.model.js';
+export { DocumentLanguageRegion } from './documents/common/LanguageRegion.model.js';
 export { TemplateTokenData, TemplateTokenWithText } from './models/template-token.model.js';
 /** Language Service */
 export {

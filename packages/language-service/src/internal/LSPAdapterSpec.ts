@@ -1,19 +1,20 @@
+import { Context } from 'effect';
 import * as Data from 'effect/Data';
 import type * as Effect from 'effect/Effect';
 import * as Equivalence from 'effect/Equivalence';
-import type * as Option from 'effect/Option';
+import * as Layer from 'effect/Layer';
 import * as Order from 'effect/Order';
 import * as t from 'vscode-languageserver-types';
-import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
-import type { TwinLSPAdapterLayerIn } from './RunnerLayer';
+import type { TwinLSPDocument } from '../core/TwinLSPDocument.model';
 
-export interface LSPTextDocument {
-  document: BaseTwinTextDocument;
-  getText: (range?: LSPRange) => string;
-  offsetAt: (position: LSPPosition) => number;
-  positionAt: (offset: number) => LSPPosition;
-  isPositionInRange(position: LSPPosition, range: LSPRange): boolean;
-  getRangeFor(startOffset: number, endOffset: number): LSPRange;
+export interface LSPTextDocument extends TwinLSPDocument {
+  //   document: TwinLSPDocument;
+  //   getText: (range?: LSPRange) => string;
+  //   offsetAt: (position: LSPPosition) => number;
+  //   positionAt: (offset: number) => LSPPosition;
+  //   isPositionInRange(position: LSPPosition, range: LSPRange): boolean;
+  //   getRangeFor(startOffset: number, endOffset: number): LSPRange;
+  //   loadRegions(regions: ) extends
 }
 /**
  * ************* LSP Parser adapters *************
@@ -23,31 +24,23 @@ export interface LSPTextDocument {
  * @description Be careful using the Typescript Compiler api as this one is splitted in two implementations (with compiler host and without it)
  * @description The intention for the 2 implementations for TS compiler API its to support language server plugin in DevContainers (deno, vscode or web based editors)
  * */
-export const createLSPAdapterExecutor = <E = never, R = never>(
-  executor: LSPAdapterSpec<E, R>,
-): LSPAdapterSpec<E, R> => {
-  return executor;
+export const createLSPAdapterExecutor = (executor: LSPAdapterSpec): Layer.Layer<LSPAdapterSpec> => {
+  return Layer.succeed(LSPAdapterSpec, executor);
 };
-export interface LSPAdapterSpec<AddError = never, AddLayer = never> {
-  getLSPDocument: <R = never>(
-    filename: string,
-  ) => Effect.Effect<LSPTextDocument, AnyLSPError | AddError, AddLayer | R>;
-  getRegionAt: <R = never>(
+export interface LSPAdapterSpec {
+  getLSPDocument(filename: string): Effect.Effect<LSPTextDocument, AnyLSPError>;
+  getRegionAt(
     filename: string,
     offset: LSPPosition,
-  ) => Effect.Effect<
-    Option.Option<AnyTwinNodeRegion>,
-    AnyLSPError | AddError,
-    TwinLSPAdapterLayerIn | AddLayer | R
-  >;
-  getRegions<R = never>(
-    filename: string,
-  ): Effect.Effect<
-    AnyTwinNodeRegion[],
-    AnyLSPError | AddError,
-    TwinLSPAdapterLayerIn | AddLayer | R
-  >;
+  ): Effect.Effect<JsxAttributeValueRegion | null, AnyLSPError>;
+  getRegions(filename: string): Effect.Effect<AnyTwinNodeRegion[], AnyLSPError>;
+  // findRegionAt(
+  // regions: AnyTwinNodeRegion[],
+  // position: LSPPosition,
+  // ): AnyTwinNodeRegion | null
 }
+
+export const LSPAdapterSpec = Context.GenericTag<LSPAdapterSpec>('LSPAdapterSpec');
 /**
  * ************* / LSP Parser Adapters *************
  * */
@@ -81,11 +74,18 @@ const createAttributeBinding = (
 });
 
 const createJsxAttributeValue = (
-  attribute: Omit<JsxAttributeValueRegion, '_tag'>,
-): JsxAttributeValueRegion => ({
-  _tag: 'JsxAttributeValueRegion',
-  ...attribute,
-});
+  attribute: Omit<JsxAttributeValueRegion, '_tag' | '__parsable'>,
+): JsxAttributeValueRegion => {
+  const result = {
+    ...attribute,
+  };
+
+  return {
+    __parsable: 'LSPParsableRegion',
+    _tag: 'JsxAttributeValueRegion',
+    ...result,
+  };
+};
 
 const createAttributeRegion = (input: Omit<JsxAttributeRegion, '_tag'>): JsxAttributeRegion => ({
   _tag: 'JsxAttributeRegion',
@@ -116,13 +116,22 @@ export interface TwinLSPNode<Tag extends string> {
   getText: () => string | null;
 }
 
+export interface LSPParsableRegion {
+  __parsable: 'LSPParsableRegion';
+  /** @description this text may have the literal container AKA `|'|" even template literal vars xor expressions */
+  rawText: string;
+  text: string;
+  range: LSPRange;
+}
 export interface LSPRange {
   start: LSPPosition;
   end: LSPPosition;
 }
 
 export interface JsxAttributeBindingRegion extends TwinLSPNode<'JsxAttributeBindingRegion'> {}
-export interface JsxAttributeValueRegion extends TwinLSPNode<'JsxAttributeValueRegion'> {}
+export interface JsxAttributeValueRegion
+  extends LSPParsableRegion,
+    TwinLSPNode<'JsxAttributeValueRegion'> {}
 
 export interface JsxAttributeRegion extends TwinLSPNode<'JsxAttributeRegion'> {
   attributeBinding: JsxAttributeBindingRegion;

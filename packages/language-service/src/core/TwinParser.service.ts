@@ -7,7 +7,6 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Trie from 'effect/Trie';
-import * as LSP from '../internal/LSPAdapterSpec';
 import * as Predicates from '../internal/TwinParser.internals';
 import { createComposedClasses } from '../internal/TwinParser.internals';
 import type * as TwinParserModel from '../models/TwinParser.models';
@@ -15,26 +14,21 @@ import { TwinRuntimeContext } from './TwinRuntime.service';
 
 export interface TwinParserInput {
   text: string;
-  docPosition: LSP.LSPPosition;
+  startOffset: number;
 }
 export interface TwinParsedClasses {
-  inputRange: LSP.LSPRange;
+  startOffset: number;
+  endOffset: number;
   originalInput: TwinParserInput;
   composedClasses: TwinParserModel.AnyTwinComposedClass[];
 }
 interface TwinParserData {
   input: TwinParserInput;
-  originalInput: TwinParserInput;
+  finalOffset: string;
 }
 type ParserWithData<A> = P.Parser<A, TwinParserData>;
 
-const parseTwinClasses = ({
-  input,
-  originalInput,
-}: {
-  input: TwinParserInput;
-  originalInput: TwinParserInput;
-}) => {
+const parseTwinClasses = (input: TwinParserInput) => {
   const withData = P.withData(
     P.many1(
       P.whitespaceSurrounded(
@@ -42,7 +36,7 @@ const parseTwinClasses = ({
       ),
     ),
   );
-  return withData({ input, originalInput }).run(input.text);
+  return withData(input).run(input.text);
 };
 
 const make = Effect.gen(function* () {
@@ -62,11 +56,11 @@ const make = Effect.gen(function* () {
     return Trie.get(dictionary, key);
   });
 
-  const runTwinParser = (rawText: string, startsAt: LSP.LSPPosition): TwinParsedClasses => {
-    const { text, position } = adjustParserInput(rawText, startsAt);
+  const runTwinParser = (rawText: string, startsAt: number): TwinParsedClasses => {
+    // const { text, position } = adjustParserInput(rawText, startsAt);
     const parsed = parseTwinClasses({
-      input: { text, docPosition: position },
-      originalInput: { text: rawText, docPosition: startsAt },
+      startOffset: startsAt,
+      text: rawText,
     });
 
     return toTwinParserResult(parsed);
@@ -130,64 +124,48 @@ const make = Effect.gen(function* () {
 );
 
 export const toTwinParserResult = (
-  result: P.ResultType<
-    TwinParserModel.AnyTwinParseResultToken[],
-    { input: TwinParserInput; originalInput: TwinParserInput }
-  >,
+  result: P.ResultType<TwinParserModel.AnyTwinParseResultToken[], TwinParserInput>,
 ): TwinParsedClasses => {
-  const { input, originalInput } = result.data;
-  const inputRange: LSP.LSPRange = {
-    start: input.docPosition,
-    end: LSP.position(input.docPosition.character + input.text.length, input.docPosition.line),
-  };
+  const input = result.data;
   const composedClasses: TwinParserModel.AnyTwinComposedClass[] = [];
   const evaluated: TwinParsedClasses = {
-    inputRange,
-    originalInput,
+    startOffset: result.data.startOffset,
+    endOffset: result.data.startOffset + result.cursor,
     composedClasses,
+    originalInput: input,
   };
   if (result.isError) return evaluated;
-  evaluated.composedClasses = createComposedClasses(
-    result.result,
-    input.text,
-    input.docPosition.character,
-  );
+  evaluated.composedClasses = createComposedClasses(result.result, input.text, input.startOffset);
 
   return evaluated;
 };
 
 /** PARSER */
 
-const adjustParserInput = (rawText: string, startsAt: LSP.LSPPosition) => {
-  const replacementToken = ["'", '`', '{', '}', '"'].filter((_) => rawText.includes(_)) ?? '';
-  let finalText = rawText;
-  for (const replacement of replacementToken) {
-    finalText = finalText.replaceAll(new RegExp(replacement, 'g'), '');
-  }
-  return {
-    text: finalText,
-    position: LSP.position(startsAt.character + replacementToken.length, startsAt.line),
-  };
-};
+// const adjustParserInput = (rawText: string, startsAt: LSP.LSPPosition) => {
+//   // let finalText = rawText;
+//   const replacementToken = ["'", '`', '{', '}', '"'].filter((_) => rawText.includes(_)) ?? '';
+//   // for (const replacement of replacementToken) {
+//   //   finalText = finalText.replaceAll(new RegExp(replacement, 'g'), '');
+//   // }
+//   return {
+//     text: rawText,
+//     position: LSP.position(startsAt.character + replacementToken.length, startsAt.line),
+//   };
+// };
 
 const mapParserToLocation = <A extends object>(
   x: P.ParserState<A, TwinParserData>,
   initialIndex: number,
 ): TwinParserModel.WithLocation & A =>
   Object.assign(x.result, {
-    range: LSP.range(
-      LSP.position(initialIndex, x.data.originalInput.docPosition.line),
-      LSP.position(x.cursor, x.data.originalInput.docPosition.line),
-    ),
-    originalRange: LSP.range(
-      LSP.position(
-        x.data.input.docPosition.character + initialIndex,
-        x.data.input.docPosition.line,
-      ),
-      LSP.position(x.data.input.docPosition.character + x.cursor, x.data.input.docPosition.line),
-    ),
+    startOffset: initialIndex,
+    endOffset: x.cursor,
   });
 
+// const parseBetweenQuotes = P.between(P.maybe(P.choice([P.char('"'), P.char("'"), P.char("'")])))(
+//   P.maybe(P.choice([P.char('"'), P.char("'"), P.char("'")])),
+// );
 const parseVariant: ParserWithData<TwinParserModel.TwinClassVariantToken> =
   TwParser.parseVariant.mapFromState(mapParserToLocation);
 

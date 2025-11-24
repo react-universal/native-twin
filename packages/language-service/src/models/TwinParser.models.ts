@@ -15,14 +15,16 @@ import type {
 } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
-import type * as LSPTypes from '../internal/LSPAdapterSpec';
+import * as LSPTypes from '../internal/LSPAdapterSpec';
 import type { TwinRuleCompletion } from '../internal/TwinTypes.internal';
 import { VscodeCompletionItem } from './completion.model';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
 export interface WithLocation {
-  range: LSPTypes.LSPRange;
-  originalRange: LSPTypes.LSPRange;
+  // range: LSPTypes.LSPRange;
+  startOffset: number;
+  endOffset: number;
+  // originalRange: LSPTypes.LSPRange;
 }
 
 export interface TwinClassNameToken extends WithLocation, ClassNameToken {}
@@ -136,13 +138,20 @@ export class TwinRuleRegistry {
     this.pattern = composer.pattern;
   }
 
-  toVscode(range: LSPTypes.LSPRange): VscodeCompletionItem {
+  toVscode(range: LSPTypes.LSPRange, _lookUpText: string): VscodeCompletionItem {
     const ruleCompletion = this.toRuleCompletion();
-    // const fixRange = Range.create(
-    //   document.positionAt(range.start.character),
-    //   document.positionAt(range.end.character),
-    // );
-    return new VscodeCompletionItem(ruleCompletion, range, this.className);
+    // const completionWord = this.className.replace(lookUpText, '');
+    const fixRange = LSPTypes.range(
+      LSPTypes.position(range.end.character, range.start.line),
+      LSPTypes.position(range.end.character, range.end.line),
+    );
+    const result = new VscodeCompletionItem(
+      ruleCompletion,
+      fixRange,
+      this.className,
+      this.className,
+    );
+    return result;
   }
 
   toRuleCompletion(): TwinRuleCompletion {

@@ -9,7 +9,7 @@ export interface LSPConfig {
   onChangeConfig: (config: TwinConfigOptions) => Effect.Effect<void>;
   configSelector: <T>(selector: (config: TwinConfigOptions) => T) => Effect.Effect<T>;
 }
-export const LSPConfig = Context.GenericTag<LSPConfig>('TypeScriptPluginConfig');
+export const LSPConfig = Context.GenericTag<LSPConfig>('lsp/LSPConfig');
 
 const configOptionOrDefault = <K extends keyof TwinConfigOptions>(
   options: Partial<TwinConfigOptions>,

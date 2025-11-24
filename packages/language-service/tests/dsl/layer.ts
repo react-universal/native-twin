@@ -10,6 +10,7 @@ import { TwinRuntimeContextLive } from '../../src/core/TwinRuntime.service';
 import { TypescriptUtilsLive } from '../../src/core/TypescriptUtils.service';
 import { TwinGraph, TypescriptApi } from '../../src/TS';
 import { createTwinLoggerLayerFor } from '../../src/utils/lsp.logger.service';
+import { TestVscodeLSPAdapterLive } from './adapter.mock';
 
 const testFolder = path.join(__dirname, '..');
 
@@ -57,6 +58,7 @@ const lspConfig = Effect.gen(function* () {
 
 export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(Layer.succeed(TypescriptApi.TypeScriptApi, ts)),
+  Layer.provideMerge(TestVscodeLSPAdapterLive),
   Layer.provideMerge(TsProgramLive),
   Layer.provideMerge(TwinGraph.TwinGraphLive),
   Layer.provide(createTwinLoggerLayerFor('LSP')),
@@ -64,7 +66,7 @@ export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(TwinParserContextLive),
   Layer.provideMerge(TypescriptUtilsLive),
   Layer.provideMerge(Layer.effect(LSPConfig, lspConfig)),
-  Layer.provide(TwinRuntimeContextLive),
+  Layer.provideMerge(TwinRuntimeContextLive),
 );
 
 export const createCustomProgram = (tsConfigPath: string) => {

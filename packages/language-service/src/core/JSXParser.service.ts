@@ -8,6 +8,7 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import ts from 'ts-morph';
+import type { TextDocument } from 'vscode-languageserver-textdocument';
 import * as Spec from '../internal/LSPAdapterSpec';
 import { JSXNode, type TwinDslModels } from '../models/TwinDsl.models';
 import { TwinSourceFile } from '../models/TwinSourceFile';
@@ -113,13 +114,10 @@ const make = Effect.gen(function* () {
     }
   }
 
-  function parseTwinJSXNodeProp(
-    prop: TwinDslModels.NodeStyledProp,
-    document: Spec.LSPTextDocument,
-  ) {
+  function parseTwinJSXNodeProp(prop: TwinDslModels.NodeStyledProp, _document: TextDocument) {
     const parsedNodes = twinParser.runTwinParser(
       prop.twinCX,
-      document.positionAt(prop.valueTextNode?.getPos() ?? prop.node.getPos()),
+      prop.valueTextNode?.getPos() ?? prop.node.getPos(),
     );
     return Stream.fromIterable(parsedNodes.composedClasses).pipe(
       Stream.mapEffect((composedClass) =>
@@ -178,30 +176,67 @@ const make = Effect.gen(function* () {
   //   });
   // }
 
+  const getNodeRange = (document: TextDocument, node: ts.Node) =>
+    Spec.range(document.positionAt(node.getPos()), document.positionAt(node.getEnd()));
+
   function getJSXNodeRegion(
     node: TwinDslModels.AnyJSXElement,
-    document: Spec.LSPTextDocument,
-  ): Spec.AnyTwinNodeRegion {
+    document: TextDocument,
+  ): Spec.JsxNodeRegion {
     const styledProps = getJSXElementStyledProps(node).map((prop) => {
       const attributeBinding = Spec.TwinLSPNode.createAttributeBinding({
-        range: document.getRangeFor(prop.name.getPos(), prop.name.getEnd()),
+        range: getNodeRange(document, prop.name),
         getText: () => prop.name.getText(),
       });
+      const attrRange = getNodeRange(document, prop.value);
+      // const finalText = document.getText(attrRange);
+      // const initialTokens = ['"', "'", '`', '{', '}'];
+      // const searchInitial = initialTokens.flatMap((x): [string, number][] => {
+      //   const reg = new RegExp(x, 'g');
+      //   const match = reg.exec(finalText);
+      //   if (!match) return [];
+      //   const count = match.length;
+      //   return [[x, count] as const];
+      // });
+      // if (searchInitial.length > 0) {
+      //   for (const [needle, count] of searchInitial) {
+      //     finalText = finalText.replaceAll(new RegExp(needle, 'g'), '');
+      //     attrRange.start = { ...attrRange.start, character: attrRange.start.character + count };
+      //   }
+      //   attrRange.start.character = attrRange.start.character + 1;
+      // }
+
+      const attrValue = getJSXAttributeValue(prop.attribute);
+      // const nodeText = document.getText(attrRange);
+      // const valueText = attrValue.originalText;
+      // if (nodeText !== valueText) {
+      //   const index = nodeText.indexOf(valueText);
+      //   finalRange = {
+      //     ...attrRange,
+      //     start: { character: attrRange.start.character + index, line: attrRange.start.line },
+      //     end: {
+      //       character: attrRange.start.character + valueText.length,
+      //       line: attrRange.end.line,
+      //     },
+      //   };
+      // }
       const attributeValue = Spec.TwinLSPNode.createJsxAttributeValue({
-        range: document.getRangeFor(prop.value.getPos(), prop.value.getEnd()),
+        range: attrRange,
         getText: () => prop.value.getText(),
+        rawText: prop.value.getText(),
+        text: attrValue.originalText,
       });
       return Spec.TwinLSPNode.createAttributeRegion({
         getText: () => prop.attribute.getText(),
         attributeBinding,
         attributeValue,
-        range: document.getRangeFor(prop.attribute.getPos(), prop.attribute.getEnd()),
+        range: getNodeRange(document, prop.attribute),
       });
     });
 
-    const nodeRange = document.getRangeFor(node.compilerNode.getStart(), node.compilerNode.getEnd());
+    const nodeRange = getNodeRange(document, node);
     const tagName = getJSXNodeTagName(node);
-    const tagNameRange = document.getRangeFor(tagName.compilerNode.getStart(), tagName.compilerNode.getEnd());
+    const tagNameRange = getNodeRange(document, tagName);
     return Spec.TwinLSPNode.createJsxNode({
       getText: () => node.getText(),
       range: nodeRange,
@@ -213,10 +248,10 @@ const make = Effect.gen(function* () {
     });
   }
 
-  function jsxNodesToRegions(nodes: TwinDslModels.AnyJSXElement[], document: Spec.LSPTextDocument) {
+  function jsxNodesToRegions(nodes: TwinDslModels.AnyJSXElement[], document: TextDocument) {
     if (nodes.length === 0) return [];
 
-    const regions: Spec.AnyTwinNodeRegion[] = [];
+    const regions: Spec.JsxNodeRegion[] = [];
     const nodesToVisit: ts.Node[] = [...nodes];
 
     while (nodesToVisit.length > 0) {
@@ -247,14 +282,10 @@ const make = Effect.gen(function* () {
         regions.push(...current.styledProps);
       }
     }
-    // if (current._tag === 'JsxAttributeBindingRegion') {
-    //   return null;
-    // }
     if (current._tag === 'JsxAttributeRegion') {
       regions.push(...[current.attributeBinding, current.attributeValue]);
     }
 
-    // if (current._tag === 'JsxTagName') return null;
     if (current._tag === 'JsxAttributeValueRegion') {
       if (document.isPositionInRange(position, current.range)) {
         return current;
@@ -341,7 +372,7 @@ const make = Effect.gen(function* () {
     const initializer = node.getInitializer();
     if (!initializer) return result;
     if (ts.Node.isStringLiteral(initializer)) {
-      result.originalText = initializer.getText();
+      result.originalText = initializer.getLiteralValue();
       result.twinCX = cx`${result.originalText}`;
       return result;
     }
@@ -355,7 +386,7 @@ const make = Effect.gen(function* () {
         return result;
       }
       if (ts.Node.isNoSubstitutionTemplateLiteral(expression)) {
-        result.originalText = expression.getText();
+        result.originalText = expression.getLiteralValue();
         result.twinCX = cx`${result.originalText}`;
         result.valueTextNode = expression;
         return result;

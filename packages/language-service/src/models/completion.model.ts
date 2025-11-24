@@ -1,10 +1,7 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
-import type {
-  TwinRuleCompletion,
-  TwinVariantCompletion,
-} from '../internal/TwinTypes.internal';
+import type { TwinRuleCompletion, TwinVariantCompletion } from '../internal/TwinTypes.internal';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
@@ -13,12 +10,13 @@ import {
 export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal {
   label: string;
   readonly kind: vscode.CompletionItemKind;
-  readonly filterText: string;
+  readonly filterText?: string;
   readonly sortText: string;
   readonly detail: string;
   readonly labelDetails: vscode.CompletionItemLabelDetails;
-  insertText: string;
+  insertText?: string;
   readonly insertTextFormat: vscode.InsertTextFormat;
+  insertTextMode?: vscode.InsertTextMode;
   textEditText: string;
   readonly textEdit: vscode.TextEdit;
 
@@ -26,6 +24,7 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
     data: TwinRuleCompletion | TwinVariantCompletion,
     range: vscode.Range,
     insertText: string,
+    additional?: string,
   ) {
     if (data.kind === 'rule') {
       const { completion, order } = data;
@@ -34,14 +33,15 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
       this.filterText = completion.className;
       this.sortText = order.toString().padStart(8, '0');
       this.detail = getCompletionEntryDetailsDisplayParts(data)?.text ?? '__';
+      this.insertTextMode = vscode.InsertTextMode.asIs;
       this.labelDetails = {
         description: completion.declarations.join(','),
       };
       this.insertText = insertText;
-      this.insertTextFormat = vscode.InsertTextFormat.PlainText;
+      this.insertTextFormat = vscode.InsertTextFormat.Snippet;
       this.textEditText = completion.className;
       this.textEdit = {
-        newText: insertText,
+        newText: additional ?? insertText,
         range,
       };
     } else {
@@ -54,7 +54,7 @@ export class VscodeCompletionItem implements vscode.CompletionItem, Equal.Equal 
       this.labelDetails = {
         description: '',
       };
-      this.insertText = insertText;
+      // this.insertText = insertText;
       this.insertTextFormat = 2;
       this.textEditText = name;
       this.textEdit = {

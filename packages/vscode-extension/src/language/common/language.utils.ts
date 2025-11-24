@@ -120,7 +120,6 @@ export const onProvideDocumentColors = async (
 export const getDefaultLanguageClientOptions = (data: TwinConfigOptions): LanguageClientOptions => {
   return {
     documentSelector: LSPConstants.documentSelectors,
-
     markdown: {
       isTrusted: true,
       supportHtml: true,
@@ -132,6 +131,7 @@ export const getDefaultLanguageClientOptions = (data: TwinConfigOptions): Langua
       capabilities: {
         completion: {
           dynamicRegistration: false,
+          resolveProvider: true,
           completionItem: {
             snippetSupport: true,
           },
@@ -139,5 +139,5 @@ export const getDefaultLanguageClientOptions = (data: TwinConfigOptions): Langua
       },
     },
     progressOnInitialization: true,
-  };
+  } satisfies LanguageClientOptions;
 };

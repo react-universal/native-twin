@@ -1,10 +1,8 @@
 import * as Effect from 'effect/Effect';
 import type * as vscode from 'vscode-languageserver';
-import { vscodeLSPAdapterExecutor } from '../adapters/vscode.adapter';
-import { classNameCompletions } from '../completions/jsxCompletions';
 
-export const vscodeCompletionsProgram = (filename: string, position: vscode.Position) =>
-  classNameCompletions.apply(filename, position, vscodeLSPAdapterExecutor);
+// export const vscodeCompletionsProgram = (filename: string, position: vscode.Position) =>
+//   classNameCompletions.apply(filename, position, vscodeLSPAdapterExecutor);
 
 export const getCompletionsAtPosition = (
   _params: vscode.CompletionParams,
