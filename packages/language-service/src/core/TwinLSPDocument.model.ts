@@ -22,17 +22,17 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
   }
 
   diagnoseRegions() {
-    for (const [node, value] of this.parsableRegions) {
-      console.group('NODE: ', node.tagName.getText());
-      console.log('VALUE: ', {
-        originalText: value.rawText,
-        range: value.range,
-        offsets: [this.offsetAt(value.range.start), this.offsetAt(value.range.end)],
-        documentText: this.getText(value.range),
-        parsableText: value.text,
-      });
-      console.groupEnd();
-    }
+    // for (const [node, value] of this.parsableRegions) {
+    //   console.group('NODE: ', node.tagName.getText());
+    //   console.log('VALUE: ', {
+    //     originalText: value.rawText,
+    //     range: value.range,
+    //     offsets: [this.offsetAt(value.range.start), this.offsetAt(value.range.end)],
+    //     documentText: this.getText(value.range),
+    //     parsableText: value.text,
+    //   });
+    //   console.groupEnd();
+    // }
   }
 }
 

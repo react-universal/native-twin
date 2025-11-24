@@ -76,7 +76,8 @@ const make = Effect.gen(function* () {
       if (Predicates.isComposedNodeAtOffset(node, offset) && node.type === 'ComposedClass') {
         return {
           node,
-          fullLoc: node.documentLoc,
+          startOffset: node.startOffset,
+          endOffset: node.endOffset,
           group: null,
           lookupText: node.classNameText,
         };
@@ -101,7 +102,8 @@ const make = Effect.gen(function* () {
           lookupText += targetComposition.text;
         }
         return {
-          fullLoc: node.documentLoc,
+          startOffset: node.startOffset,
+          endOffset: node.endOffset,
           group: node.token.base,
           node: targetComposition,
           lookupText,

@@ -89,7 +89,7 @@ export const twinCompletionsToVscode = <Document extends TwinLSPDocument>(
     const locatedToken = parserResult.composedClasses.find((x) =>
       document.isPositionInRange(
         document.positionAt(offset),
-        document.getRangeFor(x.documentLoc.startOffset, x.documentLoc.endOffset),
+        document.getRangeFor(x.startOffset + x.parentStarts, x.endOffset + x.parentStarts),
       ),
     );
     if (!locatedToken) return [];
@@ -98,8 +98,8 @@ export const twinCompletionsToVscode = <Document extends TwinLSPDocument>(
     return rules.map((rule): VscodeCompletionItem => {
       return rule.toVscode(
         document.getRangeFor(
-          locatedToken.documentLoc.startOffset,
-          locatedToken.documentLoc.endOffset,
+          locatedToken.startOffset + locatedToken.parentStarts,
+          locatedToken.endOffset + locatedToken.parentStarts,
         ),
         locatedToken.text,
       );

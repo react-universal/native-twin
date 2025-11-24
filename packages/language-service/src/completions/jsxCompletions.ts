@@ -49,10 +49,7 @@ export const classNameCompletions = LSP.createTwinCompletions({
       const locatedToken = parserResult.composedClasses.find((x) =>
         document.isPositionInRange(
           document.positionAt(cursorOffset),
-          document.getRangeFor(
-            x.loc.startOffset + x.parentStarts,
-            x.loc.endOffset + x.parentStarts,
-          ),
+          document.getRangeFor(x.startOffset + x.parentStarts, x.endOffset + x.parentStarts),
         ),
       );
 

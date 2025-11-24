@@ -21,10 +21,8 @@ import { VscodeCompletionItem } from './completion.model';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
 export interface WithLocation {
-  // range: LSPTypes.LSPRange;
   startOffset: number;
   endOffset: number;
-  // originalRange: LSPTypes.LSPRange;
 }
 
 export interface TwinClassNameToken extends WithLocation, ClassNameToken {}
@@ -53,8 +51,8 @@ export interface TwinComposedClassName {
   variants: string[];
   text: string;
   parentStarts: number;
-  loc: WithLocation;
-  documentLoc: WithLocation;
+  startOffset: number;
+  endOffset: number;
 }
 export interface TwinComposedClassGroup extends Omit<TwinComposedClassName, 'token' | 'type'> {
   type: 'ComposedGroup';
@@ -99,8 +97,8 @@ export interface ComposedClassInfo {
   text: string;
   classNameText: string;
   variants: string[];
-  documentLoc: WithLocation;
-  loc: WithLocation;
+  startOffset: number;
+  endOffset: number;
   parentStarts: number;
 }
 
