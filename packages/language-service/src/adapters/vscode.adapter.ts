@@ -1,14 +1,12 @@
 import url from 'node:url';
-import { asArray, identity } from '@native-twin/helpers';
+import { identity } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as JSXParser from '../core/JSXParser.service';
-import { LSPContext, type LSPTwinCompletionsResult } from '../core/LSPContext.service';
+import { LSPContext } from '../core/LSPContext.service';
 import { TwinLSPDocument } from '../core/TwinLSPDocument.model';
-import { TwinParserContext } from '../core/TwinParser.service';
 import { TypeScriptProgram } from '../core/TypescriptAPI.service';
 import * as LSPTypes from '../internal/LSPAdapterSpec';
-import type { VscodeCompletionItem } from '../models/completion.model';
 
 export const VscodeLSPAdapterLive = Effect.gen(function* () {
   const { getDocument } = yield* LSPContext;
@@ -48,59 +46,59 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
   });
 }).pipe(Layer.effect(LSPTypes.LSPAdapterSpec));
 
-export const twinCompletionsToVscode = <Document extends TwinLSPDocument>(
-  region: LSPTwinCompletionsResult['region'],
-  document: Document,
-  offset: number,
-) =>
-  Effect.gen(function* () {
-    const parser = yield* TwinParserContext;
+// export const twinCompletionsToVscode = <Document extends TwinLSPDocument>(
+//   region: LSPTwinCompletionsResult['region'],
+//   document: Document,
+//   offset: number,
+// ) =>
+//   Effect.gen(function* () {
+//     const parser = yield* TwinParserContext;
 
-    const regionsToVisit: LSPTypes.AnyTwinNodeRegion[] = asArray(region);
-    let valueRegion: LSPTypes.JsxAttributeValueRegion | null = null;
-    while (regionsToVisit.length > 0) {
-      const nextRegion = regionsToVisit.pop();
-      if (!nextRegion) break;
+//     const regionsToVisit: LSPTypes.AnyTwinNodeRegion[] = asArray(region);
+//     let valueRegion: LSPTypes.JsxAttributeValueRegion | null = null;
+//     while (regionsToVisit.length > 0) {
+//       const nextRegion = regionsToVisit.pop();
+//       if (!nextRegion) break;
 
-      switch (nextRegion._tag) {
-        case 'JsxAttributeRegion':
-          regionsToVisit.push(nextRegion.attributeValue);
-          continue;
-        case 'JsxNodeRegion':
-          regionsToVisit.push(...nextRegion.styledProps);
-          continue;
-        case 'JsxAttributeBindingRegion':
-        case 'JsxTagName':
-          continue;
-        case 'JsxAttributeValueRegion':
-          valueRegion = nextRegion;
-          break;
-      }
-    }
+//       switch (nextRegion._tag) {
+//         case 'JsxAttributeRegion':
+//           regionsToVisit.push(nextRegion.attributeValue);
+//           continue;
+//         case 'JsxNodeRegion':
+//           regionsToVisit.push(...nextRegion.styledProps);
+//           continue;
+//         case 'JsxAttributeBindingRegion':
+//         case 'JsxTagName':
+//           continue;
+//         case 'JsxAttributeValueRegion':
+//           valueRegion = nextRegion;
+//           break;
+//       }
+//     }
 
-    if (!valueRegion) return [];
+//     if (!valueRegion) return [];
 
-    const parserResult = parser.runTwinParser(
-      valueRegion.text,
-      document.offsetAt(valueRegion.range.start),
-    );
+//     const parserResult = parser.runTwinParser({
+//       text: valueRegion.text,
+//       startOffset: document.offsetAt(valueRegion.range.start),
+//     });
 
-    const locatedToken = parserResult.composedClasses.find((x) =>
-      document.isPositionInRange(
-        document.positionAt(offset),
-        document.getRangeFor(x.startOffset + x.parentStarts, x.endOffset + x.parentStarts),
-      ),
-    );
-    if (!locatedToken) return [];
+//     const locatedToken = parserResult.composedClasses.find((x) =>
+//       document.isPositionInRange(
+//         document.positionAt(offset),
+//         document.getRangeFor(x.startOffset + x.parentStarts, x.endOffset + x.parentStarts),
+//       ),
+//     );
+//     if (!locatedToken) return [];
 
-    const rules = yield* parser.findRulesByKey(locatedToken.classNameText);
-    return rules.map((rule): VscodeCompletionItem => {
-      return rule.toVscode(
-        document.getRangeFor(
-          locatedToken.startOffset + locatedToken.parentStarts,
-          locatedToken.endOffset + locatedToken.parentStarts,
-        ),
-        locatedToken.text,
-      );
-    });
-  });
+//     const rules = yield* parser.findRulesByKey(locatedToken.classNameText);
+//     return rules.map((rule): VscodeCompletionItem => {
+//       return rule.toVscode(
+//         document.getRangeFor(
+//           locatedToken.startOffset + locatedToken.parentStarts,
+//           locatedToken.endOffset + locatedToken.parentStarts,
+//         ),
+//         locatedToken.text,
+//       );
+//     });
+//   });

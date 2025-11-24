@@ -25,22 +25,8 @@ export const TestVscodeLSPAdapterLive = Effect.gen(function* () {
     return new TwinLSPDocument(document, regions);
   });
 
-  // const getProGramSourceFile = Effect.fn('ts: getSourceFile')(function* (filename: string) {
-  // const document = getDocument(filename).pipe(Option.getOrNull);
-  //
-  // if (!document) {
-  // return yield* FileNotFound.create('Document not found');
-  // }
-  //
-  // const tsSource = yield* program.getSourceFile(filename, document.getText());
-  // const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
-  // document.loadRegions(regions);
-  //
-  // return { tsSource, regions, document };
-  // });
-
   const getRegions = Effect.fn('vscodeAdapter: extractRegions')(function* (filename: string) {
-    const { document } = yield* getLSPDocument(filename);
+    const document = yield* getLSPDocument(filename);
     return document.regions;
   });
 
@@ -49,7 +35,7 @@ export const TestVscodeLSPAdapterLive = Effect.gen(function* () {
       const document = yield* getLSPDocument(filename);
       // const regions = yield* getRegions(filename);
 
-      return document.findRegionAt(document.regions, position);
+      return document.findRegionAt(position);
     },
   );
 

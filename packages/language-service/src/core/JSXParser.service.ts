@@ -115,10 +115,10 @@ const make = Effect.gen(function* () {
   }
 
   function parseTwinJSXNodeProp(prop: TwinDslModels.NodeStyledProp, _document: TextDocument) {
-    const parsedNodes = twinParser.runTwinParser(
-      prop.twinCX,
-      prop.valueTextNode?.getPos() ?? prop.node.getPos(),
-    );
+    const parsedNodes = twinParser.runTwinParser({
+      text: prop.twinCX,
+      startOffset: prop.valueTextNode?.getPos() ?? prop.node.getPos(),
+    });
     return Stream.fromIterable(parsedNodes.composedClasses).pipe(
       Stream.mapEffect((composedClass) =>
         Effect.all({

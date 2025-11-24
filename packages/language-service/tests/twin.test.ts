@@ -32,20 +32,22 @@ describe('Twin Typescript API', () => {
       expect(regions.length).toBeGreaterThan(0);
 
       // const region = jsxParser.filterNodeAtPosition(regions, cursorPosition, document);
-      const region = document.findRegionAt(regions, cursorPosition);
+      const region = document.findRegionAt(cursorPosition);
       if (!region) throw expect(region).toBeDefined();
 
-      const parserResult = twinParser.runTwinParser(region.text, region.range.start);
+      // const parserResult = twinParser.runTwinParser({
+      //   text: region.text,
+      //   startOffset: cursorOffset,
+      // });
 
-      const locatedToken = parserResult.composedClasses.find((x) =>
-        document.isPositionInRange(document.positionAt(cursorOffset), x.documentLoc.originalRange),
-      );
+      const locatedToken = document.findRegionAt(cursorPosition);
+
       if (!locatedToken) throw expect(locatedToken).toBeDefined();
 
-      const rules = yield* twinParser.findRulesByKey(locatedToken.classNameText);
+      const rules = yield* twinParser.findRulesByKey(locatedToken.text);
       const completions = rules.map(
         (rule): VscodeCompletionItem =>
-          rule.toVscode(locatedToken.documentLoc.originalRange, locatedToken.text),
+          rule.toVscode(locatedToken.range, locatedToken.text),
       );
 
       TextEdit.replace(completions.at(0)!.textEdit.range, completions.at(0)!.textEdit.newText);

@@ -25,7 +25,10 @@ export const classNameCompletions = LSP.createTwinCompletions({
     let parserResult: TwinParsedClasses | null = null;
     let locatedToken: LocatedTokenResult | null | undefined = null;
     if (!!valueRegion && !!text) {
-      parserResult = parser.runTwinParser(text, document.offsetAt(valueRegion.range.start));
+      parserResult = parser.runTwinParser({
+        text,
+        startOffset: document.offsetAt(valueRegion.range.start),
+      });
       const handler = createCompositionsComposer(parserResult, document);
 
       locatedToken = handler.findComposedClassAtPosition(cursorOffset);

@@ -4,6 +4,7 @@ import * as RA from 'effect/Array';
 import * as Cause from 'effect/Cause';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import { compose } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Trie from 'effect/Trie';
@@ -41,15 +42,7 @@ const make = Effect.gen(function* () {
     return Trie.get(dictionary, key);
   });
 
-  const runTwinParser = (rawText: string, startsAt: number): TwinParserModel.TwinParsedClasses => {
-    // const { text, position } = adjustParserInput(rawText, startsAt);
-    const parsed = parseTwinClasses({
-      startOffset: startsAt,
-      text: rawText,
-    });
-
-    return toTwinParserResult(parsed);
-  };
+  const runTwinParser = compose(parseTwinClasses, toTwinParserResult);
 
   return {
     data: { themeVariants, styledContext, twinRef, dictionaryRef },
