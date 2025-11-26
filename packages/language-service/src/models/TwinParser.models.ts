@@ -36,7 +36,7 @@ export interface TwinParsedClasses {
 
 export interface TwinParserData {
   input: TwinParserInput;
-  finalOffset: string;
+  finalOffset: number;
   syntaxError: TwinSyntaxError[];
 }
 

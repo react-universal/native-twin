@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { testNewParser } from '../src/programs/twin-parser.program';
+import { testNewParser } from '../src/internal/parsers/TwinParser.runner';
 
 describe('new parser', () => {
   it('parse normal', () => {

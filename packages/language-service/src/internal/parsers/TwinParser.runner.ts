@@ -1,0 +1,97 @@
+import * as P from '@native-twin/arc-parser';
+import * as TwParser from '@native-twin/css/twin-parser';
+import * as RA from 'effect/Array';
+import { compose } from 'effect/Function';
+import type * as TwinParserModel from '../../models/TwinParser.models';
+import { ComposedClass, ParsedRule, type ParserWithData } from './parser.data';
+
+const parseTwinClasses = (
+  input: TwinParserModel.TwinParserInput,
+): P.ResultType<TwinParserModel.AnyTwinParseResultToken[], TwinParserModel.TwinParserData> => {
+  const withData = P.withData(
+    P.many1(
+      P.whitespaceSurrounded(
+        P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
+      ),
+    ),
+  );
+  return withData<TwinParserModel.TwinParserData>({
+    finalOffset: input.startOffset + input.text.length,
+    syntaxError: [],
+    input,
+  }).run(input.text);
+};
+
+export const runTwinParser = compose(parseTwinClasses, ComposedClass.createComposedClasses);
+
+/** PARSER */
+
+const parseVariant: ParserWithData<TwinParserModel.TwinClassVariantToken> =
+  TwParser.parseVariant.mapFromState(ParsedRule.mapParserToLocation);
+
+// P.either(parseVariant).map(x => x.)
+/** Match color modifiers like: `.../10` or `.../[...]` */
+const colorModifier = P.sequenceOf([
+  P.char('/'),
+  P.maybe(P.choice([P.digits, TwParser.parseArbitraryValue])),
+]).map((x) => TwParser.mapColorModifier(x[1] ?? 'NONE'));
+
+/** Match classnames with important prefix arbitrary and color modifiers */
+const parseClassName: ParserWithData<TwinParserModel.TwinClassNameToken> = P.sequenceOf([
+  TwParser.parseMaybeImportant,
+  P.regex(TwParser.classNameIdent),
+  P.maybe(TwParser.parseArbitraryValue),
+  P.maybe(colorModifier),
+])
+  .map((x) => TwParser.mapClassName({ i: x[0], n: x[1] + (x[2] ? x[2] : ''), m: x[3] }))
+  .mapFromState(ParsedRule.mapParserToLocation);
+
+const parseVariantClass: ParserWithData<TwinParserModel.TwinClassNameVariantToken> =
+  TwParser.parseVariantClass.mapFromState(ParsedRule.mapParserToLocation);
+
+const parseArbitraryValue: ParserWithData<TwinParserModel.TwinArbitraryToken> =
+  TwParser.parseArbitraryValue
+    .map(TwParser.mapArbitrary)
+    .mapFromState(ParsedRule.mapParserToLocation);
+
+const parseValidTokenRecursiveWeak: ParserWithData<
+  | TwinParserModel.TwinClassGroupToken
+  | TwinParserModel.TwinClassVariantToken
+  | TwinParserModel.TwinClassNameToken
+  | TwinParserModel.TwinClassNameVariantToken
+> = P.recursiveParser(() =>
+  P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
+);
+
+/** Match any valid TW ident or arbitrary separated by spaces */
+const parseGroupContentWeak: ParserWithData<TwinParserModel.AnyTwinClassToken[]> = P.sequenceOf([
+  P.char('('),
+  P.many1(P.choice([parseValidTokenRecursiveWeak, parseArbitraryValue, P.skip(P.whitespace)])),
+  P.maybe(P.char(')')).mapFromState(
+    (x: P.ParserState<string | null, TwinParserModel.TwinParserData>, initialIndex) => {
+      if (typeof x.result === 'string') return x;
+      x.data.syntaxError.push({
+        startOffset: initialIndex,
+        endOffset: x.cursor,
+        reason: 'expecting ) but it was not found',
+        type: 'SyntaxError',
+      });
+      return P.updateParserData(x, { ...x.data });
+    },
+  ),
+]).map((x) => {
+  const newValue = x[1].filter(
+    (y): y is TwinParserModel.AnyTwinClassToken => typeof y !== 'string' && y !== null,
+  );
+  return newValue;
+});
+
+const parseRuleGroupWeak: ParserWithData<TwinParserModel.TwinClassGroupToken> = P.sequenceOf([
+  P.choice([parseVariant, parseClassName]),
+  parseGroupContentWeak.map((tokens) => {
+    return RA.dedupe(tokens);
+  }),
+]).mapFromState((x, i): TwinParserModel.TwinClassGroupToken => {
+  const { type, value } = TwParser.mapGroup({ base: x.result[0], composes: x.result[1] });
+  return ParsedRule.mapParserToLocation({ ...x, result: { type, ...value } }, i);
+});
