@@ -1,8 +1,11 @@
 import type { SheetEntry } from '@native-twin/css';
 import * as Effect from 'effect/Effect';
 import * as vscode from 'vscode-languageserver';
-import { type TwinComposerHandler, TwinLanguageRegionHandler } from '../core/TwinLanguageRegion.model';
 import { TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/diagnostic.model';
+import {
+  type TwinComposerHandler,
+  TwinLanguageRegionHandler,
+} from '../models/TwinLanguageRegion.model';
 import type { AnyTwinComposedClass } from '../models/TwinParser.models';
 import { LSPAdapterSpec, TwinParserContext } from '../Services';
 

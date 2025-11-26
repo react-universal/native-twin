@@ -9,7 +9,6 @@ import { compose } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Trie from 'effect/Trie';
-import type { JsxAttributeValueRegion } from '../internal/LSPAdapterSpec';
 import { createComposedClasses } from '../internal/TwinParser.internals';
 import type * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuntimeContext } from './TwinRuntime.service';
@@ -28,7 +27,7 @@ const parseTwinClasses = (input: TwinParserModel.TwinParserInput) => {
 };
 
 const make = Effect.gen(function* () {
-  const { dictionaryRef, bootTwinRuntime, findRulesByText, twinRef, styledContext, themeVariants } =
+  const { dictionaryRef, bootTwinRuntime, twinRef, styledContext, themeVariants } =
     yield* TwinRuntimeContext;
   yield* bootTwinRuntime();
 
@@ -65,51 +64,16 @@ const make = Effect.gen(function* () {
     });
   });
 
-  const flattenCompositions = Effect.fn(function* (
-    valueRegion: JsxAttributeValueRegion,
-  ): Effect.fn.Return<
-    {
-      composition: TwinParserModel.TwinComposedClassName;
-      rule: TwinParserModel.TwinRuleRegistry;
-      parentStart: number;
-    }[]
-  > {
-    const parsed = runTwinParser({
-      startOffset: valueRegion.range.start.character,
-      text: valueRegion.text,
-    });
-    const flattenCompositions = yield* Effect.all(
-      parsed.composedClasses.flatMap((composition) =>
-        Effect.suspend(() => traverseComposition(composition)),
-      ),
-    ).pipe(Effect.map(RA.flatten));
-
-    const result = flattenCompositions.flatMap((composition) =>
-      Effect.suspend(() =>
-        getRuleByClassName(composition.text).pipe(
-          Effect.map(
-            Option.map((rule) => ({
-              composition,
-              rule,
-              parentStart: valueRegion.range.start.character,
-            })),
-          ),
-        ),
-      ),
-    );
-    return yield* Effect.all(result).pipe(Effect.map(RA.getSomes));
-  });
-
   const runTwinParser = compose(parseTwinClasses, toTwinParserResult);
+  const runTW = (classNames: string) => twinRef.get.pipe(Effect.andThen((fn) => fn(classNames)));
 
   return {
-    data: { themeVariants, styledContext, twinRef, dictionaryRef },
+    data: { themeVariants, twinRef, styledContext, dictionaryRef },
     findRulesByKey,
-    traverseComposition,
+    runTW,
     getRuleByClassName,
     runTwinParser,
-    findRulesByText,
-    flattenCompositions,
+    // findRulesByText,
   };
 }).pipe(
   Effect.withSpan('TwinParserContext'),

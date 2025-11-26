@@ -1,6 +1,5 @@
 import { defineConfig, setup } from '@native-twin/core';
 import { flattenObjectByPath } from '@native-twin/helpers';
-import * as Array from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Hash from 'effect/Hash';
@@ -67,7 +66,6 @@ const make = Effect.gen(function* () {
     resolveThemeSection,
     bootTwinRuntime,
     onUpdateConfig,
-    findRulesByText,
     config,
     twinRef,
     themeCtx,
@@ -77,15 +75,6 @@ const make = Effect.gen(function* () {
     getConfigRules,
     ruleComposers,
   };
-
-  function findRulesByText(text: string) {
-    return Stream.fromIterableEffect(composedRules).pipe(
-      Stream.map((composer) => composer.evaluateText(text)),
-      Stream.flattenIterables,
-      Stream.runCollect,
-      Effect.map(Array.fromIterable),
-    );
-  }
 
   function getOrSetComposer(rawRule: AnyInternalTwinRule) {
     return Effect.gen(function* () {

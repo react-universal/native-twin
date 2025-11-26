@@ -1,12 +1,12 @@
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
 import * as t from 'vscode-languageserver-types';
-import { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument';
 import type * as LSP from '../internal/LSPAdapterSpec';
-import type { LocatedTokenResult, TwinRuleRegistry } from '../models/TwinParser.models';
 import {
   getCompletionEntryDetailsDisplayParts,
   getCompletionTokenKind,
 } from '../utils/language/language.utils';
+import { BaseTwinTextDocument } from './BaseTwinDocument';
+import type { LocatedTokenResult, TwinRuleRegistry } from './TwinParser.models';
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
   readonly regions: LSP.JsxNodeRegion[];

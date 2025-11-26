@@ -126,7 +126,7 @@ const make = Effect.gen(function* () {
         range: getNodeRange(document, prop.attribute),
       });
     });
-
+ 
     const nodeRange = getNodeRange(document, node);
     const tagName = getJSXNodeTagName(node);
     const tagNameRange = getNodeRange(document, tagName);

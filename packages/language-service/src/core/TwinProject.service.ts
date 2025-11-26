@@ -4,7 +4,7 @@ import * as Graph from 'effect/Graph';
 import * as Predicate from 'effect/Predicate';
 import type t from 'vscode-languageserver-types';
 import type { JsxNodeRegion } from '../internal/LSPAdapterSpec';
-import type { TwinLSPDocument } from './TwinLSPDocument.model';
+import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
 export const make = Effect.gen(function* () {
   // const jsxParser = yield* JSXParser;

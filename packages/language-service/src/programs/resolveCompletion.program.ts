@@ -12,10 +12,9 @@ export const getCompletionEntryDetails = Effect.fn(function* (
 ) {
   const twinService = yield* TwinParserContext;
   const styledContext = yield* twinService.data.styledContext;
-  const tw = yield* twinService.data.twinRef.get;
   const rule = yield* twinService.getRuleByClassName(entry.label);
 
-  const sheet = tw(Option.map(rule, (x) => x.className).pipe(Option.getOrElse(() => '')));
+  const sheet =  yield* twinService.runTW(Option.map(rule, (x) => x.className).pipe(Option.getOrElse(() => '')));
   const finalSheet = getSheetEntryStyles(sheet, styledContext);
   const css = sheetEntriesToCss(sheet);
 

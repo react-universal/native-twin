@@ -4,9 +4,9 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as JSXParser from '../core/JSXParser.service';
 import { LSPContext } from '../core/LSPContext.service';
-import { TwinLSPDocument } from '../core/TwinLSPDocument.model';
 import { TypeScriptProgram } from '../core/TypescriptAPI.service';
 import * as LSPTypes from '../internal/LSPAdapterSpec';
+import { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
 export const VscodeLSPAdapterLive = Effect.gen(function* () {
   const { getDocument } = yield* LSPContext;

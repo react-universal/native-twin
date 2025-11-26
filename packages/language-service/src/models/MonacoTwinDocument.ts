@@ -1,7 +1,7 @@
 import type * as vscode from 'vscode';
 import * as Data from 'effect/Data';
 import * as VSCDocument from 'vscode-languageserver-textdocument';
-import { BaseTwinTextDocument } from '../common/BaseTwinDocument.js';
+import { BaseTwinTextDocument } from './BaseTwinDocument.js';
 
 interface TwinTokenLocation {
   _tag: 'TwinTokenLocation';

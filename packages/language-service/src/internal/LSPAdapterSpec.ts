@@ -5,7 +5,7 @@ import * as Equivalence from 'effect/Equivalence';
 import * as Layer from 'effect/Layer';
 import * as Order from 'effect/Order';
 import * as t from 'vscode-languageserver-types';
-import type { TwinLSPDocument } from '../core/TwinLSPDocument.model';
+import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
 export interface LSPTextDocument extends TwinLSPDocument {}
 /**

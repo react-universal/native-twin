@@ -4,7 +4,6 @@ import { pipe } from 'effect/Function';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver';
 import type { DiagnosticRelatedInformation } from 'vscode-languageserver-types';
-import type { BaseTwinTextDocument } from '../documents/common/BaseTwinDocument.js';
 import {
   bodyLocToRange,
   isSameTwinSheetEntryDeclaration,
@@ -12,6 +11,7 @@ import {
   twinSheetEntryGroupByDuplicates,
 } from '../utils/language/diagnostic.js';
 import { isSameRange } from '../utils/vscode.utils.js';
+import type { BaseTwinTextDocument } from './BaseTwinDocument.js';
 import {
   type DiagnosticHandlerInput,
   TwinDiagnosticCodes,

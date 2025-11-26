@@ -1,6 +1,6 @@
 import type { TWParsedRule } from '@native-twin/css';
-import type { TwinLSPDocument } from '../../core/TwinLSPDocument.model';
 import * as Predicates from '../../internal/TwinParser.internals';
+import type { TwinLSPDocument } from '../../models/TwinLSPDocument.model';
 import type {
   AnyTwinComposedClass,
   LocatedTokenResult,

@@ -1,9 +1,9 @@
+/** Documents Service */
+export type { TwinConfigOptions as NativeTwinPluginConfiguration } from './models/lsp.constants.js';
 export {
   TwinMonacoTextDocument,
   TwinTokenLocation,
-} from './documents/browser/MonacoTwinDocument.js';
-/** Documents Service */
-export type { TwinConfigOptions as NativeTwinPluginConfiguration } from './models/lsp.constants.js';
+} from './models/MonacoTwinDocument.js';
 export { languagePrograms } from './programs/index.js';
 /** Language Service */
 export {

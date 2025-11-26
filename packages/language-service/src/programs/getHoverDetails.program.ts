@@ -17,7 +17,7 @@ export const getHoverDetails = Effect.fn(function* (
   const region = document.findRegionAt(params.position);
   if (!region) return undefined;
 
-  const sheetEntries = yield* parser.data.twinRef.pipe(Effect.map((tw) => tw(region.text)));
+  const sheetEntries = yield* parser.runTW(region.text);
   return completionRulesToQuickInfo(sheetEntries, sheetEntriesToCss(sheetEntries), region.range);
 
   // const hoverEntry = Option.Do.pipe(
