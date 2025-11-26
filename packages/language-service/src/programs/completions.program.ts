@@ -3,12 +3,12 @@ import * as Option from 'effect/Option';
 import * as LSP from '../core/LSPContext.service';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
-import {
-  createCompositionsComposer,
-  type LocatedTokenResult,
-  type TwinParsedClasses,
-  type TwinRuleRegistry,
+import type {
+  LocatedTokenResult,
+  TwinParsedClasses,
+  TwinRuleRegistry,
 } from '../models/TwinParser.models';
+import { createCompositionsComposer } from '../utils/twin/twinRuleComposer';
 
 export const getCompletionsAtPosition = LSP.createTwinCompletions({
   name: 'classNameCompletions',

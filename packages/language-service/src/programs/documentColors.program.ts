@@ -1,9 +1,9 @@
 import { Array, Option } from 'effect';
 import * as Effect from 'effect/Effect';
 import type * as vscode from 'vscode-languageserver';
-import { createCompositionsComposer } from '../models/TwinParser.models.js';
 import { LSPAdapterSpec, TwinParserContext } from '../Services.js';
 import { declarationValueToColorInfo } from '../utils/language/colorInfo.utils.js';
+import { createCompositionsComposer } from '../utils/twin/twinRuleComposer.js';
 
 export const getDocumentColors = Effect.fn(function* (
   params: vscode.DocumentColorParams,
