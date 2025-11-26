@@ -1,7 +1,8 @@
+import { sheetEntriesToCss } from '@native-twin/css';
 import * as Effect from 'effect/Effect';
-import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
-import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
+import { LSPAdapterSpec, TwinParserContext } from '../Services.js';
+import { completionRulesToQuickInfo } from '../utils/language/quickInfo.utils.js';
 
 export const getHoverDetails = Effect.fn(function* (
   params: vscode.HoverParams,
@@ -9,19 +10,15 @@ export const getHoverDetails = Effect.fn(function* (
   _progress: vscode.WorkDoneProgressReporter,
   _resultProgress: vscode.ResultProgressReporter<vscode.CompletionItem[]> | undefined,
 ) {
-  // const twinService: any = {};
-  const documentsHandler = yield* TwinLSPDocumentContext;
-  // const context = twinService.getCompilerContext();
-  const extracted = yield* documentsHandler.getDocument(params.textDocument.uri);
-  const document = Option.getOrUndefined(extracted);
+  const { getLSPDocument } = yield* LSPAdapterSpec;
+  const parser = yield* TwinParserContext;
+  const document = yield* getLSPDocument(params.textDocument.uri);
 
-  if (!document) return undefined;
+  const region = document.findRegionAt(params.position);
+  if (!region) return undefined;
 
-  // const nodeAtPosition = yield* documentsHandler.findTokenAtPosition(document, params.position);
-  // const cursorOffset = document.offsetAt(params.position);
-  // const flattenCompletions = Option.flatMap(nodeAtPosition, (x) =>
-  //   x.getParsedNodeAtOffset(cursorOffset),
-  // );
+  const sheetEntries = yield* parser.data.twinRef.pipe(Effect.map((tw) => tw(region.text)));
+  return completionRulesToQuickInfo(sheetEntries, sheetEntriesToCss(sheetEntries), region.range);
 
   // const hoverEntry = Option.Do.pipe(
   //   Option.bind('flattenCompletions', () => flattenCompletions),
@@ -70,5 +67,5 @@ export const getHoverDetails = Effect.fn(function* (
   //   }),
   // );
 
-  return undefined;
+  // return undefined;
 });

@@ -7,7 +7,6 @@ import type { TwinRuleComposer } from '../models/TwinRuleHandler';
 import type {
   AnyInternalTwinRule,
   BuildStyledContext,
-  InternalNativeTwinRule,
   InternalTwinConfig,
 } from './TwinTypes.internal';
 
@@ -112,8 +111,8 @@ const composedClassInfo = (
 export const getRuleResolverInfo = (
   rawRule: AnyInternalTwinRule,
 ): {
-  styleProperty: InternalNativeTwinRule[1] | keyof CompleteStyle | (string & {});
-  themeSection: InternalNativeTwinRule[1] | (string & {});
+  styleProperty: AnyInternalTwinRule[1] | keyof CompleteStyle | (string & {});
+  themeSection: AnyInternalTwinRule[1] | (string & {});
   meta: RuleMeta;
 } => {
   const meta = rawRule[3] ?? __defaultRuleMeta;

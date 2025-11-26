@@ -21,7 +21,7 @@ export function useRuntimeFn<A, E, R, T>(
 ) {
   // TODO: find out why fast refresh breaks LightBulb (it only works once, then it stops working). Endpoint keeps working.
 
-  const emitter = useMemo(() => new EventEmitter<T, A>(), [fn]);
+  const emitter = useMemo(() => new EventEmitter<T, A>(), []);
 
   // TODO: consider if using a straem is a good idea, because we can also pass a reference of the effect to Effect.runPromise to run it. There might be no real benefit, except for usecases that involve delays inside the effect (since the stream would buffer the events).
 
@@ -37,7 +37,7 @@ export function useRuntimeFn<A, E, R, T>(
         }),
         Stream.runDrain,
       ),
-    [fn],
+    [emitter, fn],
   );
 
   useRuntime(context, stream);
@@ -120,7 +120,7 @@ class EventEmitter<T, A> {
   private notifyListeners(): void {
     while (this.eventQueue.length > 0 && this.listeners.length > 0) {
       const event = this.eventQueue.shift()!;
-      this.listeners.forEach((listener) => listener(event.data, event.eventId));
+      this.listeners.forEach((listener) => void listener(event.data, event.eventId));
     }
   }
 }

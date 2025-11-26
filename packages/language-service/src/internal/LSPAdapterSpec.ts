@@ -7,15 +7,7 @@ import * as Order from 'effect/Order';
 import * as t from 'vscode-languageserver-types';
 import type { TwinLSPDocument } from '../core/TwinLSPDocument.model';
 
-export interface LSPTextDocument extends TwinLSPDocument {
-  //   document: TwinLSPDocument;
-  //   getText: (range?: LSPRange) => string;
-  //   offsetAt: (position: LSPPosition) => number;
-  //   positionAt: (offset: number) => LSPPosition;
-  //   isPositionInRange(position: LSPPosition, range: LSPRange): boolean;
-  //   getRangeFor(startOffset: number, endOffset: number): LSPRange;
-  //   loadRegions(regions: ) extends
-}
+export interface LSPTextDocument extends TwinLSPDocument {}
 /**
  * ************* LSP Parser adapters *************
  *
@@ -145,6 +137,7 @@ export interface JsxAttributeRegion extends TwinLSPNode<'JsxAttributeRegion'> {
 export interface JsxNodeRegion extends TwinLSPNode<'JsxNodeRegion'> {
   styledProps: JsxAttributeRegion[];
   tagName: JSXNodeTagNameRegion;
+  parent: JsxNodeRegion | null;
 }
 
 export interface JSXNodeTagNameRegion extends TwinLSPNode<'JsxTagName'> {}

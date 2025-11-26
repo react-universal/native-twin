@@ -1,1 +1,1 @@
-export { getDocumentLanguageLocations } from './extractors/index.js';
+export { getDocumentLanguageLocations } from '../utils/extractors/index.js';

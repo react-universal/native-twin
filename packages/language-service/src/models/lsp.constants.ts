@@ -74,3 +74,9 @@ export interface TwinConfigOptions {
     server: 'off' | 'messages' | 'verbose';
   };
 }
+
+export enum TwinDiagnosticCodes {
+  None = '000',
+  DuplicatedDeclaration = '001',
+  DuplicatedClassName = '002',
+}

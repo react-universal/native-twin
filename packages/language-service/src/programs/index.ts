@@ -4,7 +4,6 @@ import { getDocumentColors } from './documentColors.program.js';
 import { getDocumentHighLightsProgram } from './documentHighlight.program.js';
 import { getHoverDetails } from './getHoverDetails.program.js';
 import { getCompletionEntryDetails } from './resolveCompletion.program.js';
-import { twinCodeActionsProgram } from './twinCodeActions.program.js';
 
 export const languagePrograms = {
   getCompletionsAtPosition,
@@ -13,5 +12,4 @@ export const languagePrograms = {
   getDocumentHighLightsProgram,
   getHoverDetails,
   getCompletionEntryDetails,
-  twinCodeActionsProgram,
 };

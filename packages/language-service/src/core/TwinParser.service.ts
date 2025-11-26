@@ -1,5 +1,6 @@
 import * as P from '@native-twin/arc-parser';
 import * as TwParser from '@native-twin/css/twin-parser';
+import { asArray } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Cause from 'effect/Cause';
 import * as Context from 'effect/Context';
@@ -8,6 +9,7 @@ import { compose } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Trie from 'effect/Trie';
+import type { JsxAttributeValueRegion } from '../internal/LSPAdapterSpec';
 import { createComposedClasses } from '../internal/TwinParser.internals';
 import type * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuntimeContext } from './TwinRuntime.service';
@@ -42,14 +44,72 @@ const make = Effect.gen(function* () {
     return Trie.get(dictionary, key);
   });
 
+  const traverseComposition = Effect.fn(function* (
+    composition: TwinParserModel.AnyTwinComposedClass,
+  ): Effect.fn.Return<TwinParserModel.TwinComposedClassName[]> {
+    if (composition.type === 'ComposedClass') return asArray(composition);
+
+    const leadingToken = composition.token.base;
+    const groups = (yield* Effect.all(
+      composition.token.composes.flatMap((item) => {
+        return traverseComposition(item);
+      }),
+    )).flat();
+
+    return groups.flatMap((group) => {
+      let newText = '';
+      if (leadingToken.token.type === 'CLASS_NAME') {
+        newText = newText.concat(leadingToken.text);
+      }
+      return Object.assign(group, { classNameText: newText.concat(group.text) });
+    });
+  });
+
+  const flattenCompositions = Effect.fn(function* (
+    valueRegion: JsxAttributeValueRegion,
+  ): Effect.fn.Return<
+    {
+      composition: TwinParserModel.TwinComposedClassName;
+      rule: TwinParserModel.TwinRuleRegistry;
+      parentStart: number;
+    }[]
+  > {
+    const parsed = runTwinParser({
+      startOffset: valueRegion.range.start.character,
+      text: valueRegion.text,
+    });
+    const flattenCompositions = yield* Effect.all(
+      parsed.composedClasses.flatMap((composition) =>
+        Effect.suspend(() => traverseComposition(composition)),
+      ),
+    ).pipe(Effect.map(RA.flatten));
+
+    const result = flattenCompositions.flatMap((composition) =>
+      Effect.suspend(() =>
+        getRuleByClassName(composition.text).pipe(
+          Effect.map(
+            Option.map((rule) => ({
+              composition,
+              rule,
+              parentStart: valueRegion.range.start.character,
+            })),
+          ),
+        ),
+      ),
+    );
+    return yield* Effect.all(result).pipe(Effect.map(RA.getSomes));
+  });
+
   const runTwinParser = compose(parseTwinClasses, toTwinParserResult);
 
   return {
     data: { themeVariants, styledContext, twinRef, dictionaryRef },
     findRulesByKey,
+    traverseComposition,
     getRuleByClassName,
     runTwinParser,
     findRulesByText,
+    flattenCompositions,
   };
 }).pipe(
   Effect.withSpan('TwinParserContext'),
@@ -74,27 +134,14 @@ export const toTwinParserResult = (
 };
 
 /** PARSER */
-
-// const adjustParserInput = (rawText: string, startsAt: LSP.LSPPosition) => {
-//   // let finalText = rawText;
-//   const replacementToken = ["'", '`', '{', '}', '"'].filter((_) => rawText.includes(_)) ?? '';
-//   // for (const replacement of replacementToken) {
-//   //   finalText = finalText.replaceAll(new RegExp(replacement, 'g'), '');
-//   // }
-//   return {
-//     text: rawText,
-//     position: LSP.position(startsAt.character + replacementToken.length, startsAt.line),
-//   };
-// };
-
 const mapParserToLocation = <A extends object>(
   x: P.ParserState<A, TwinParserModel.TwinParserData>,
   initialIndex: number,
-): TwinParserModel.WithLocation & A =>
-  Object.assign(x.result, {
-    startOffset: initialIndex,
-    endOffset: x.cursor,
-  });
+): TwinParserModel.WithLocation & A => ({
+  ...x.result,
+  startOffset: initialIndex,
+  endOffset: x.cursor,
+});
 
 // const parseBetweenQuotes = P.between(P.maybe(P.choice([P.char('"'), P.char("'"), P.char("'")])))(
 //   P.maybe(P.choice([P.char('"'), P.char("'"), P.char("'")])),
@@ -145,9 +192,11 @@ const parseGroupContentWeak: ParserWithData<TwinParserModel.AnyTwinClassToken[]>
   return newValue;
 });
 
-const parseRuleGroupWeak: ParserWithData<TwinParserModel.TwinClassGroupToken> = P.choice([
-  P.sequenceOf([parseVariant, parseGroupContentWeak]),
-  P.sequenceOf([parseClassName, parseGroupContentWeak]),
+const parseRuleGroupWeak: ParserWithData<TwinParserModel.TwinClassGroupToken> = P.sequenceOf([
+  P.choice([parseVariant, parseClassName]),
+  parseGroupContentWeak.map((tokens) => {
+    return RA.dedupe(tokens);
+  }),
 ]).mapFromState((x, i): TwinParserModel.TwinClassGroupToken => {
   const { type, value } = TwParser.mapGroup({ base: x.result[0], composes: x.result[1] });
   return mapParserToLocation({ ...x, result: { type, ...value } }, i);

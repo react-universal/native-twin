@@ -17,10 +17,7 @@ import type {
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
 import type { TwinLSPDocument } from '../core/TwinLSPDocument.model';
-import * as LSPTypes from '../internal/LSPAdapterSpec';
 import * as Predicates from '../internal/TwinParser.internals';
-import type { TwinRuleCompletion } from '../internal/TwinTypes.internal';
-import { VscodeCompletionItem } from './completion.model';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
 function parsedRuleToClassName(rule: TWParsedRule): string {
@@ -283,42 +280,6 @@ export class TwinRuleRegistry {
     this.composition = composition;
     this.info = composer.info;
     this.pattern = composer.pattern;
-  }
-
-  toVscode(range: LSPTypes.LSPRange, _lookUpText: string): VscodeCompletionItem {
-    const ruleCompletion = this.toRuleCompletion();
-    // const completionWord = this.className.replace(lookUpText, '');
-    const fixRange = LSPTypes.range(
-      LSPTypes.position(range.end.character, range.start.line),
-      LSPTypes.position(range.end.character, range.end.line),
-    );
-    const result = new VscodeCompletionItem(
-      ruleCompletion,
-      fixRange,
-      this.className,
-      this.className,
-    );
-    return result;
-  }
-
-  toRuleCompletion(): TwinRuleCompletion {
-    return {
-      completion: {
-        className: this.className,
-        declarations: this.declarations,
-        declarationValue: this.declarationValue,
-      },
-      composition: this.composition,
-      kind: 'rule',
-      order: 0,
-      rule: {
-        meta: this.info.meta,
-        pattern: this.pattern,
-        property: this.info.styleProperty,
-        resolver: (): any => null,
-        themeSection: this.info.themeSection,
-      },
-    };
   }
 }
 

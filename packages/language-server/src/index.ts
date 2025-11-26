@@ -1,16 +1,12 @@
 import * as NodeContext from '@effect/platform-node/NodeContext';
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
-import { getClientCapabilities } from '@native-twin/language-service';
-import {
-  classNameCompletions,
-  LSPConfig,
-  LSPContext,
-} from '@native-twin/language-service/Services';
+import { getClientCapabilities, languagePrograms } from '@native-twin/language-service';
+import { LSPConfig, LSPContext } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
+import type { CompletionList } from 'vscode-languageserver-types';
 import { LspMainLive } from './services/LSP.service';
-import { LoggerLive } from './services/logger.service';
 
 const Runtime = ManagedRuntime.make(Layer.suspend(() => LspMainLive));
 
@@ -31,40 +27,27 @@ const program = Effect.gen(function* () {
     await Effect.runPromise(config.onChangeConfig(changes.settings));
   });
 
-  Connection.onCompletion(async (params) => {
-    const regions = await classNameCompletions
-      .apply(params.textDocument.uri, params.position)
-      .pipe(Runtime.runPromise);
-
-    return {
-      items: regions.completions,
-      isIncomplete: true,
-    };
-  });
-
-  Connection.onCompletionResolve(
-    async (...args) =>
-      // languagePrograms.getCompletionEntryDetails(...args).pipe(Runtime.runPromise),
-      args[0],
+  Connection.onCompletion(async (params) =>
+    languagePrograms.getCompletionsAtPosition.apply(params.textDocument.uri, params.position).pipe(
+      Effect.map((comp): CompletionList => ({ items: comp.completions, isIncomplete: true })),
+      Runtime.runPromise,
+    ),
   );
 
-  Connection.onHover(
-    async (..._args) =>
-      // languagePrograms.getHoverDetails(...args).pipe(Runtime.runPromise),
-      undefined,
+  Connection.onCompletionResolve(async (...args) =>
+    languagePrograms.getCompletionEntryDetails(...args).pipe(Runtime.runPromise),
   );
 
-  Connection.languages.diagnostics.on(async (..._args) =>
-    // languagePrograms.getDocumentDiagnosticsProgram(...args).pipe(Runtime.runPromise),
-    ({
-      kind: 'full',
-      items: [],
-    }),
+  Connection.onHover(async (...args) =>
+    languagePrograms.getHoverDetails(...args).pipe(Runtime.runPromise),
   );
 
-  Connection.onDocumentColor(
-    async (..._params) => [],
-    // languagePrograms.getDocumentColors(...params).pipe(Runtime.runPromise),
+  Connection.languages.diagnostics.on(async (...args) =>
+    languagePrograms.getDocumentDiagnosticsProgram(...args).pipe(Runtime.runPromise),
+  );
+
+  Connection.onDocumentColor(async (...params) =>
+    languagePrograms.getDocumentColors(...params).pipe(Runtime.runPromise),
   );
 
   Connection.onDocumentHighlight(async (..._args) => {
@@ -110,7 +93,6 @@ const program = Effect.gen(function* () {
     return Effect.void;
   });
 }).pipe(
-  Effect.provide(Layer.fresh(LoggerLive)),
   Effect.provide(NodeContext.layer),
   Effect.catchAll((error) => Effect.log(`Language server failed: ${error}`)),
 );

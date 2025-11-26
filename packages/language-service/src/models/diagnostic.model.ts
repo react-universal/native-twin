@@ -3,7 +3,13 @@ import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
 import { isSameRange } from '../utils/vscode.utils.js';
 import { LSPConstants } from './lsp.constants.js';
-import type { TwinSheetEntry } from './TwinSheetEntry.model.js';
+import type { TwinComposedClassName, TwinRuleRegistry } from './TwinParser.models.js';
+
+export interface DiagnosticHandlerInput {
+  composition: TwinComposedClassName;
+  rule: TwinRuleRegistry;
+  parentStart: number;
+}
 
 export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
   readonly message: string;
@@ -18,7 +24,7 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
   constructor(data: {
     range: vscode.Range;
     code: TwinDiagnosticCodes;
-    entries: TwinSheetEntry[];
+    entries: TwinComposedClassName[];
     uri: string;
     text: string;
     relatedInfo: vscode.DiagnosticRelatedInformation[];

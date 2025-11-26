@@ -3,12 +3,12 @@ import { type CompleteStyle, cornerMap, directionMap } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import { pipe } from 'effect/Function';
-import type { AnyInternalTwinRule, InternalNativeTwinRule } from '../internal/TwinTypes.internal';
+import type { AnyInternalTwinRule } from '../internal/TwinTypes.internal';
 import { type TwinRuleComposition, TwinRuleRegistry } from './TwinParser.models';
 
 export interface TwinRuleComposerInfo {
-  readonly styleProperty: InternalNativeTwinRule[1] | keyof CompleteStyle | (string & {});
-  readonly themeSection: InternalNativeTwinRule[1] | (string & {});
+  readonly styleProperty: AnyInternalTwinRule[1] | keyof CompleteStyle | (string & {});
+  readonly themeSection: AnyInternalTwinRule[1] | (string & {});
   readonly meta: RuleMeta;
 }
 export class TwinRuleComposer {

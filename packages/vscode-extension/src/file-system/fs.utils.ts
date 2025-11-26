@@ -1,11 +1,9 @@
 import * as vscode from 'vscode';
-import type { TwinConfigOptions } from '@native-twin/language-service';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import { VscodeContext } from '../extension/extension.service';
-import { TwinTextDocument } from '../language/common/TwinTextDocument.model';
 import * as fsPredicates from './fs.predicates';
 import {
   createVirtualEntryID,
@@ -52,25 +50,25 @@ export const findVirtualFile = (
   return foundEntry;
 };
 
-export const getTwinTextDocumentByUri = (
-  uri: vscode.Uri,
-  config: TwinConfigOptions,
-) => {
-  const vsDocument = RA.findFirst(
-    vscode.workspace.textDocuments,
-    (x) => x.uri.toString() === uri.toString(),
-  ).pipe(Option.getOrThrow);
-  const twinDocument = new TwinTextDocument(vsDocument);
+// export const getTwinTextDocumentByUri = (
+//   uri: vscode.Uri,
+//   config: TwinConfigOptions,
+// ) => {
+//   const vsDocument = RA.findFirst(
+//     vscode.workspace.textDocuments,
+//     (x) => x.uri.toString() === uri.toString(),
+//   ).pipe(Option.getOrThrow);
+//   const twinDocument = new TwinLSPDocument(vsDocument, []);
 
-  const languageRanges = RA.map(twinDocument.getLanguageRegions(config), (region) => {
-    return twinDocument.babelLocationToVscode(region);
-  });
+//   const languageRanges = RA.map(twinDocument.getLanguageRegions(config), (region) => {
+//     return twinDocument.babelLocationToVscode(region);
+//   });
 
-  return {
-    languageRanges,
-    twinDocument,
-  };
-};
+//   return {
+//     languageRanges,
+//     twinDocument,
+//   };
+// };
 
 // export const getTwinObservedFiles = Effect.gen(function* () {
 //   const twin = yield* NativeTwinManagerService;

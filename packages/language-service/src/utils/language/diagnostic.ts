@@ -3,32 +3,32 @@ import * as Equivalence from 'effect/Equivalence';
 import { flip, pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver-types';
-import type { DocumentLanguageRegion } from '../../browser.js';
 import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
 import {
+  type DiagnosticHandlerInput,
   TwinDiagnosticCodes,
   VscodeDiagnosticItem,
 } from '../../models/diagnostic.model.js';
-import type { TwinSheetEntry } from '../../models/TwinSheetEntry.model.js';
-import type { TemplateTokenWithText } from '../../models/template-token.model.js';
+import type { TwinComposedClassName } from '../../models/TwinParser.models.js';
 import { isSameRange } from '../vscode.utils.js';
 
 const createRegionEntriesExtractor =
-  (entry: TwinSheetEntry, getRange: ReturnType<typeof bodyLocToRange>, uri: string) => () => {
-    return RA.filterMap((x: TwinSheetEntry): Option.Option<DiagnosticToken> => {
-      if (isSameEntryClassName(entry, x)) {
-        return Option.some({
+  (entry: DiagnosticHandlerInput, getRange: ReturnType<typeof bodyLocToRange>, uri: string) =>
+  () => {
+    return RA.filterMap((input: DiagnosticHandlerInput): Option.Option<DiagnosticToken> => {
+      if (isSameEntryClassName(entry, input)) {
+        return Option.some<DiagnosticToken>({
           kind: TwinDiagnosticCodes.DuplicatedClassName,
-          node: x,
-          range: getRange(x.token.bodyLoc),
+          node: input.composition,
+          range: getRange(input),
           uri: uri,
         });
       }
-      if (isSameDeclarationProp(entry, x)) {
+      if (isSameDeclarationProp(entry, input)) {
         return Option.some({
           kind: TwinDiagnosticCodes.DuplicatedDeclaration,
-          node: x,
-          range: getRange(x.token.bodyLoc),
+          node: input.composition,
+          range: getRange(input),
           uri: uri,
         });
       }
@@ -38,20 +38,19 @@ const createRegionEntriesExtractor =
 
 export const diagnosticTokensToDiagnosticItems = (
   document: BaseTwinTextDocument,
-  twinService: any,
-  languageRegions: DocumentLanguageRegion[],
+  languageRegions: DiagnosticHandlerInput[],
 ): VscodeDiagnosticItem[] => {
   const getRange = bodyLocToRange(document);
   return pipe(
     languageRegions,
-    RA.flatMap((region) => {
-      const regionEntries = region.getFullSheetEntries(twinService.tw);
+    RA.flatMap((_region) => {
+      // const regionEntries = region.getFullSheetEntries(twinService.tw);
       const generateExtractor = flip(createRegionEntriesExtractor)();
       return pipe(
-        regionEntries,
+        languageRegions,
         RA.map((regionNode) => {
-          const range = getRange(regionNode.token.bodyLoc);
-          const duplicates = generateExtractor(regionNode, getRange, document.uri)(regionEntries);
+          const range = getRange(regionNode);
+          const duplicates = generateExtractor(regionNode, getRange, document.uri)(languageRegions);
 
           if (duplicates.length < 1) return [];
           const relatedInfo = regionDescriptions(duplicates, document.uri);
@@ -65,7 +64,7 @@ export const diagnosticTokensToDiagnosticItems = (
                   code: kind,
                   entries: [node],
                   uri: document.uri,
-                  text: node.token.text,
+                  text: node.text,
                   relatedInfo: relatedInfo.filter((x) => x.kind === kind),
                 }),
             ),
@@ -81,7 +80,7 @@ export const diagnosticTokensToDiagnosticItems = (
 
 interface DiagnosticToken {
   kind: TwinDiagnosticCodes;
-  node: TwinSheetEntry;
+  node: TwinComposedClassName;
   range: vscode.Range;
   uri: string;
 }
@@ -95,7 +94,7 @@ export const diagnosticTokenToVscode = (
     code: kind,
     entries: [node],
     uri: uri,
-    text: node.token.text,
+    text: node.text,
     relatedInfo: relatedInfo,
   });
 };
@@ -107,17 +106,20 @@ export const regionDescriptions = (data: DiagnosticToken[], uri: string) => {
       return {
         kind: x.kind,
         location: vscode.Location.create(uri, x.range),
-        message: x.node.entry.className,
+        message: x.node.text,
       };
     }),
   );
 };
 
 export const bodyLocToRange =
-  (document: BaseTwinTextDocument) => (bodyLoc: TemplateTokenWithText['bodyLoc']) =>
-    vscode.Range.create(document.positionAt(bodyLoc.start), document.positionAt(bodyLoc.end));
+  (document: BaseTwinTextDocument) => (bodyLoc: DiagnosticHandlerInput) =>
+    vscode.Range.create(
+      document.positionAt(bodyLoc.composition.startOffset + bodyLoc.parentStart),
+      document.positionAt(bodyLoc.composition.endOffset + bodyLoc.parentStart),
+    );
 
-export const twinSheetEntryGroupByDuplicates = (entries: TwinSheetEntry[]) => {
+export const twinSheetEntryGroupByDuplicates = (entries: DiagnosticHandlerInput[]) => {
   if (!RA.isNonEmptyArray(entries)) return [];
   return pipe(
     RA.groupWith(entries, isSameTwinSheetEntryDeclaration),
@@ -126,16 +128,16 @@ export const twinSheetEntryGroupByDuplicates = (entries: TwinSheetEntry[]) => {
   );
 };
 
-const isSameDeclarationProp = Equivalence.make<TwinSheetEntry>(
-  (a, b) => a.declarationProp === b.declarationProp,
+const isSameDeclarationProp = Equivalence.make<DiagnosticHandlerInput>(
+  (a, b) => a.rule.declarations.join() === b.rule.declarations.join(),
 );
 
-const isSameEntryClassName = Equivalence.make<TwinSheetEntry>(
-  (a, b) => a.entry.className === b.entry.className,
+const isSameEntryClassName = Equivalence.make<DiagnosticHandlerInput>(
+  (a, b) => a.rule.className === b.rule.className,
 );
 
-const isSameEntrySelectors = Equivalence.make<TwinSheetEntry>(
-  (a, b) => a.entry.selectors.join('') === b.entry.selectors.join(''),
+const isSameEntrySelectors = Equivalence.make<DiagnosticHandlerInput>(
+  (a, b) => a.composition.text === b.composition.text,
 );
 
 export const twinEntryClassNameEquivalence = Equivalence.combine(

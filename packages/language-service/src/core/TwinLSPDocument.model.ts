@@ -10,20 +10,23 @@ import {
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
   readonly regions: LSP.JsxNodeRegion[];
-  get parsableRegions() {
-    return this.regions.flatMap((region) =>
-      region.styledProps.map((x) => x.attributeValue).map((attr) => [region, attr] as const),
-    );
-  }
+  readonly parsableRegions: { region: LSP.JsxNodeRegion; attr: LSP.JsxAttributeValueRegion }[];
 
   constructor(textDocument: VSCDocument.TextDocument, regions: LSP.JsxNodeRegion[]) {
     super(textDocument);
     this.regions = regions.map((x) => fixRegionRanges(x, textDocument));
+    this.parsableRegions = this.regions.flatMap((region) =>
+      region.styledProps.map((x) => x.attributeValue).map((attr) => ({ region, attr })),
+    );
+  }
+
+  getLocation(range: t.Range) {
+    return t.Location.create(this.uri, range);
   }
 
   findRegionAt(position: LSP.LSPPosition): LSP.JsxAttributeValueRegion | null {
     return (
-      this.parsableRegions.find((x) => this.isPositionInRange(position, x[1].range))?.[1] ?? null
+      this.parsableRegions.find((x) => this.isPositionInRange(position, x.attr.range))?.attr ?? null
     );
   }
 
@@ -98,6 +101,7 @@ const fixRegionRanges = (
     }
     const finalStart = doc.positionAt(starOffset + counterDif);
     const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif);
+
     styledProps.push({
       ...attribute,
       attributeValue: {

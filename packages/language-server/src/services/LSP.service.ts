@@ -34,10 +34,12 @@ const LSPContextLive = Effect.gen(function* () {
   });
 }).pipe(Layer.effect(LSPContext));
 
+// const TwinLogger = Logger.replace(Logger.defaultLogger, createLspLogger('LSP'));
+
 export const LspMainLive = LoggerLive.pipe(
   Layer.provideMerge(VscodeLSPAdapterLive),
   Layer.provideMerge(TypescriptContextLive),
-  Layer.provideMerge(LSPContextLive),
   Layer.provideMerge(LSPBaseLayerLive),
+  Layer.provideMerge(LSPContextLive),
   Layer.provideMerge(LSPConfigLive),
 );

@@ -8,34 +8,17 @@ import type { TwinDslModels, TwinGraphModel } from '../models/TwinDsl.models';
 import { JSXParser } from './JSXParser.service';
 import { TypescriptUtils } from './TypescriptUtils.service';
 
-const cache = new WeakMap<ts.SourceFile, TwinGraphModel.TwinFileGraph>();
-
 const make = Effect.gen(function* () {
   const tsUtils = yield* TypescriptUtils;
   const jsxParser = yield* JSXParser;
-
-  const convertToTwinGraph = (_graph: TwinGraphModel.TwinFileGraph) => {
-    // const dfs = Graph.dfs(graph, { startNodes: [graph.nodes.size - 1] });
-    // // console.log('EDGES: ', graph.edges);
-    // const ddd = dfs.visit((index, data) => {
-    //   // console.log('iter', data)
-    //   const outEdges = Graph.findEdges(graph, (_, source, target) => source === index);
-    //   // const outEdges = Graph.neighborsDirected(graph, edge?.source ?? index, 'outgoing');
-    //   console.log('OUT_EDGES____: ', outEdges, '___');
-    //   return { index, outEdges: outEdges };
-    // });
-    // console.log('components: ', Graph.stronglyConnectedComponents(graph));
-    // console.log('adjacency', graph.adjacency);
-    // console.log(Array.from(ddd));
-  };
 
   const extractSourceFileGraph = Effect.fn(function* (
     source: ts.SourceFile,
     followSymbolsDepth: number,
   ) {
     const context = yield* createTraversalContext(source, followSymbolsDepth, tsUtils, jsxParser);
-    const cached = cache.get(source);
-    if (cached) return { sourceGraph: cached };
+    // const cached = cache.get(source);
+    // if (cached) return { sourceGraph: cached };
 
     // Build lookup of JSX expressions with their children for quick reference
     const jsxExpressionStacks = context.createJSXExpressionStacks();
@@ -59,7 +42,6 @@ const make = Effect.gen(function* () {
 
     const sourceGraph = context.buildGraph();
     convertToTwinGraph(sourceGraph);
-    cache.set(source, sourceGraph);
     return { sourceGraph };
   });
 
@@ -401,17 +383,24 @@ const createTraversalContext = Effect.fn(function* (
     state: { nodeToVisit, jsxExpressions, mutableGraph },
     buildGraph,
     getNextNode,
-    // getNodeGraph,
     getDepthBudgetFor,
-    // addNodeInJSXRegistry,
-    // hasBeenVisited,
-    // markNodeAsVisited,
-    // extractNodeInfo,
-    // getJSXBinding,
-    // appendNodeToVisit,
-    // addNode,
     processJSXElementNode,
     createJSXExpressionStacks,
     processIdentifierNode,
   };
 });
+
+const convertToTwinGraph = (_graph: TwinGraphModel.TwinFileGraph) => {
+  // const dfs = Graph.dfs(graph, { startNodes: [graph.nodes.size - 1] });
+  // // console.log('EDGES: ', graph.edges);
+  // const ddd = dfs.visit((index, data) => {
+  //   // console.log('iter', data)
+  //   const outEdges = Graph.findEdges(graph, (_, source, target) => source === index);
+  //   // const outEdges = Graph.neighborsDirected(graph, edge?.source ?? index, 'outgoing');
+  //   console.log('OUT_EDGES____: ', outEdges, '___');
+  //   return { index, outEdges: outEdges };
+  // });
+  // console.log('components: ', Graph.stronglyConnectedComponents(graph));
+  // console.log('adjacency', graph.adjacency);
+  // console.log(Array.from(ddd));
+};

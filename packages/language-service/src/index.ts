@@ -1,24 +1,16 @@
 /** Documents Service */
 export { TwinLSPDocument } from './core/TwinLSPDocument.model.js';
-export { DocumentLanguageRegion } from './documents/common/LanguageRegion.model.js';
-export { TemplateTokenData, TemplateTokenWithText } from './models/template-token.model.js';
 /** Language Service */
-export {
-  getDocumentTemplatesColors,
-  templateTokenToColorInfo,
-} from './utils/language/colorInfo.utils.js';
-export { getCompletionsForTokens } from './utils/language/completion.pipes.js';
-export { filterTokensFromRules } from './utils/language/completions.maps.js';
 export {
   getCompletionEntryDetailsDisplayParts,
   getDocumentationMarkdown,
 } from './utils/language/language.utils.js';
 export { completionRuleToQuickInfo } from './utils/language/quickInfo.utils.js';
 export { getSheetEntryStyles } from './utils/sheet.utils.js';
-export { parseTemplate } from './utils/twin/native-twin.parser.js';
 
 // export { NativeTwinManager } from './utils/twin/twin.manager.js';
 
+export { languagePrograms } from './browser.js';
 /** Vscode Client */
 export { getDocumentLanguageLocations } from './extension/index.js';
 export * from './models/lsp.constants';

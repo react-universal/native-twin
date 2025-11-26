@@ -1,9 +1,11 @@
 import { createVariants } from '@native-twin/core';
 
 export const Component = () => {
-  return (
-    <div className='bg-blue- text-5xl basis-0.5 bg-blue-300'>
-      <div className={`bg-rose-800 bg-blue-100 text(sm red-100 red-200 md:gray)`} />
+  return ( 
+    <div className='bg-blue- text-5xl basis-0.5 bg-blue-300 bg-red-200'>
+      <div className={`bg-rose-800 bg-blue-100 text(sm red-100 red-200 md:gray)`}>
+        <div className={`sub-child`} />
+      </div>
       <div className='bg-blue' />
     </div>
   );

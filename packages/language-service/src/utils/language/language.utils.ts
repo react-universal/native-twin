@@ -1,30 +1,19 @@
 import { TinyColor } from '@ctrl/tinycolor';
 import type { CssFeature } from '@native-twin/css';
-import { asArray } from '@native-twin/helpers';
 import toCssFormat from 'cssbeautify';
-import * as ReadonlyArray from 'effect/Array';
-import { pipe } from 'effect/Function';
-import * as vscode from 'vscode-languageserver-types';
-import type { BaseTwinTextDocument } from '../../documents/common/BaseTwinDocument.js';
-import type { DocumentLanguageRegion } from '../../documents/common/LanguageRegion.model.js';
-import type {
-  InternalNativeTwinRule,
-  TwinRuleCompletion,
-  TwinRuleParts,
-} from '../../internal/TwinTypes.internal.js';
-import { TemplateTokenData, TemplateTokenWithText } from '../../models/template-token.model.js';
-import { variantTokenToString } from '../twin/native-twin.utils.js';
+import { CompletionItemKind } from 'vscode-languageserver-types';
+import type { AnyInternalTwinRule } from '../../internal/TwinTypes.internal';
 
 export const getCompletionTokenKind = (
-  section: InternalNativeTwinRule[1] | (string & {}),
-): vscode.CompletionItemKind =>
-  section === 'colors' ? vscode.CompletionItemKind.Color : vscode.CompletionItemKind.Constant;
+  section: AnyInternalTwinRule[1] | (string & {}),
+): CompletionItemKind =>
+  section === 'colors' ? CompletionItemKind.Color : CompletionItemKind.Constant;
 
-export const getKindModifiers = (item: TwinRuleParts): string =>
-  item.meta.feature === 'colors' || item.themeSection === 'colors' ? 'color' : '';
+// export const getKindModifiers = (item: TwinRuleParts): string =>
+//   item.meta.feature === 'colors' || item.themeSection === 'colors' ? 'color' : '';
 
 export function getCompletionEntryDetailsDisplayParts(rule: {
-  themeSection: InternalNativeTwinRule[1] | (string & {});
+  themeSection: AnyInternalTwinRule[1] | (string & {});
   feature: CssFeature;
   declarationValue: string;
 }) {
@@ -44,79 +33,79 @@ export function getCompletionEntryDetailsDisplayParts(rule: {
   return undefined;
 }
 
-export const getFlattenTemplateToken = (
-  item: TemplateTokenWithText,
-  base: TemplateTokenWithText | null = null,
-): TemplateTokenData[] => {
-  if (
-    item.token.type === 'CLASS_NAME' ||
-    item.token.type === 'ARBITRARY' ||
-    item.token.type === 'VARIANT_CLASS' ||
-    item.token.type === 'VARIANT'
-  ) {
-    if (!base) return asArray(new TemplateTokenData(item, base));
+// export const getFlattenTemplateToken = (
+//   item: TemplateTokenWithText,
+//   base: TemplateTokenWithText | null = null,
+// ): TemplateTokenData[] => {
+//   if (
+//     item.token.type === 'CLASS_NAME' ||
+//     item.token.type === 'ARBITRARY' ||
+//     item.token.type === 'VARIANT_CLASS' ||
+//     item.token.type === 'VARIANT'
+//   ) {
+//     if (!base) return asArray(new TemplateTokenData(item, base));
 
-    if (base.token.type === 'VARIANT') {
-      const className = `${base.token.value.map((x) => x.n).join(':')}:${item.text}`;
-      return asArray(
-        new TemplateTokenData(
-          new TemplateTokenWithText(item.token, className, item.templateStarts),
-          base,
-        ),
-      );
-    }
+//     if (base.token.type === 'VARIANT') {
+//       const className = `${base.token.value.map((x) => x.n).join(':')}:${item.text}`;
+//       return asArray(
+//         new TemplateTokenData(
+//           new TemplateTokenWithText(item.token, className, item.templateStarts),
+//           base,
+//         ),
+//       );
+//     }
 
-    if (base.token.type === 'CLASS_NAME') {
-      if (item.token.type === 'CLASS_NAME') {
-        return asArray(
-          new TemplateTokenData(
-            new TemplateTokenWithText(
-              item.token,
-              `${base.token.value.n}-${item.text}`,
-              item.templateStarts,
-            ),
-            base,
-          ),
-        );
-      }
+//     if (base.token.type === 'CLASS_NAME') {
+//       if (item.token.type === 'CLASS_NAME') {
+//         return asArray(
+//           new TemplateTokenData(
+//             new TemplateTokenWithText(
+//               item.token,
+//               `${base.token.value.n}-${item.text}`,
+//               item.templateStarts,
+//             ),
+//             base,
+//           ),
+//         );
+//       }
 
-      // if (item.token.type === 'VARIANT') {
-      //   console.log(base, item);
-      // }
+//       // if (item.token.type === 'VARIANT') {
+//       //   console.log(base, item);
+//       // }
 
-      if (item.token.type === 'VARIANT_CLASS') {
-        const className = `${variantTokenToString(item.token)}${base.token.value.n}-${item.token.value[1].value.n}`;
-        return asArray(
-          new TemplateTokenData(
-            new TemplateTokenWithText(item.token, className, item.templateStarts),
-            base,
-          ),
-        );
-      }
-    }
-  }
+//       if (item.token.type === 'VARIANT_CLASS') {
+//         const className = `${variantTokenToString(item.token)}${base.token.value.n}-${item.token.value[1].value.n}`;
+//         return asArray(
+//           new TemplateTokenData(
+//             new TemplateTokenWithText(item.token, className, item.templateStarts),
+//             base,
+//           ),
+//         );
+//       }
+//     }
+//   }
 
-  if (item.token.type === 'GROUP') {
-    const base = item.token.value.base;
-    const classNames = item.token.value.content.flatMap((x) => getFlattenTemplateToken(x, base));
-    return classNames;
-  }
+//   if (item.token.type === 'GROUP') {
+//     const base = item.token.value.base;
+//     const classNames = item.token.value.content.flatMap((x) => getFlattenTemplateToken(x, base));
+//     return classNames;
+//   }
 
-  return [];
-};
+//   return [];
+// };
 
-export const getRangeFromTokensAtPosition = (
-  document: BaseTwinTextDocument,
-  nodeAtPosition: DocumentLanguageRegion,
-  templateTokens: TemplateTokenWithText[],
-) => {
-  return pipe(
-    templateTokens,
-    ReadonlyArray.map((completion) =>
-      document.getRangeAtPosition(completion, nodeAtPosition.range),
-    ),
-  );
-};
+// export const getRangeFromTokensAtPosition = (
+//   document: BaseTwinTextDocument,
+//   nodeAtPosition: DocumentLanguageRegion,
+//   templateTokens: TemplateTokenWithText[],
+// ) => {
+//   return pipe(
+//     templateTokens,
+//     ReadonlyArray.map((completion) =>
+//       document.getRangeAtPosition(completion, nodeAtPosition.range),
+//     ),
+//   );
+// };
 
 export function getDocumentationMarkdown(sheetEntry: Record<string, any>, css: string) {
   const result: string[] = [];
@@ -139,22 +128,22 @@ export function getDocumentationMarkdown(sheetEntry: Record<string, any>, css: s
 const createJSONMarkdownString = <T extends object>(x: T) =>
   ['```json', JSON.stringify(x, null, 2), '```'].join('\n');
 
-export function createDebugHover(rule: TwinRuleCompletion) {
-  const result: string[] = [];
-  result.push('********************************************\n');
-  result.push('#### Debug Info');
+// export function createDebugHover(rule: TwinRuleCompletion) {
+//   const result: string[] = [];
+//   result.push('********************************************\n');
+//   result.push('#### Debug Info');
 
-  result.push('##### Completion:');
-  result.push(`${'```json\n'}${JSON.stringify(rule.completion, null, 2)}${'\n```'}`);
-  result.push('********************************************\n');
+//   result.push('##### Completion:');
+//   result.push(`${'```json\n'}${JSON.stringify(rule.completion, null, 2)}${'\n```'}`);
+//   result.push('********************************************\n');
 
-  result.push('##### Compositions:');
-  result.push(`${'```json\n'}${JSON.stringify(rule.composition, null, 2)}${'\n```'}`);
-  result.push('********************************************\n');
+//   result.push('##### Compositions:');
+//   result.push(`${'```json\n'}${JSON.stringify(rule.composition, null, 2)}${'\n```'}`);
+//   result.push('********************************************\n');
 
-  result.push('##### Rule:');
-  result.push(`${'```json\n'}${JSON.stringify(rule.rule, null, 2)}${'\n```'}`);
-  result.push('********************************************\n');
+//   result.push('##### Rule:');
+//   result.push(`${'```json\n'}${JSON.stringify(rule.rule, null, 2)}${'\n```'}`);
+//   result.push('********************************************\n');
 
-  return result.join('\n\n');
-}
+//   return result.join('\n\n');
+// }

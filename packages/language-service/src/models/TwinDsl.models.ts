@@ -1,101 +1,98 @@
-import * as RA from 'effect/Array';
-import * as Equal from 'effect/Equal';
-import { pipe } from 'effect/Function';
+import type * as Effect from 'effect/Effect';
 import type * as Graph from 'effect/Graph';
-import * as Hash from 'effect/Hash';
 import type ts from 'ts-morph';
 
-export class JSXNode implements Equal.Equal {
-  readonly _tag = 'JSXNode';
-  private _id: string | null = null;
-  // private allNodes: JSXNode[] | null = null;
-  // private _languageRegions: DocumentLanguageRegion[] | null = null;
-  tagName: string;
-  node: TwinDslModels.AnyJSXElement;
-  styledProps: TwinDslModels.NodeStyledProp[];
-  childs: JSXNode[] = [];
-  parent: JSXNode | null;
+// export class JSXNode implements Equal.Equal {
+//   readonly _tag = 'JSXNode';
+//   private _id: string | null = null;
+//   // private allNodes: JSXNode[] | null = null;
+//   // private _languageRegions: DocumentLanguageRegion[] | null = null;
+//   tagName: string;
+//   node: TwinDslModels.AnyJSXElement;
+//   styledProps: TwinDslModels.NodeStyledProp[];
+//   childs: JSXNode[] = [];
+//   parent: JSXNode | null;
 
-  private get partialID() {
-    return `${this.filename}_${this.pos}_${this.tagName}_${this.childs.length}_${this.index}${this.styledProps.length}`;
-  }
+//   private get partialID() {
+//     return `${this.filename}_${this.pos}_${this.tagName}_${this.childs.length}_${this.index}${this.styledProps.length}`;
+//   }
 
-  get pos() {
-    return this.node.getPos();
-  }
-  get filename() {
-    return this.node.getSourceFile().getFilePath();
-  }
-  get id(): string {
-    if (this._id) return this._id;
+//   get pos() {
+//     return this.node.getPos();
+//   }
+//   get filename() {
+//     return this.node.getSourceFile().getFilePath();
+//   }
+//   get id(): string {
+//     if (this._id) return this._id;
 
-    const mappedStyles = this.styledProps
-      .map(
-        (x) =>
-          `${x.twinCX ?? 'NO_LITERAL'}_${x.node.getPos()}_${x.node.getEnd()}_${x.expression?.getText() ?? ''}_${x.styleProp}_${x.classProp}`,
-      )
-      .join('');
+//     const mappedStyles = this.styledProps
+//       .map(
+//         (x) =>
+//           `${x.twinCX ?? 'NO_LITERAL'}_${x.node.getPos()}_${x.node.getEnd()}_${x.expression?.getText() ?? ''}_${x.styleProp}_${x.classProp}`,
+//       )
+//       .join('');
 
-    return (this._id = Hash.string(`${this.partialID}_${mappedStyles}`).toString());
-  }
-  get index() {
-    return this.node.getParent().getChildren().indexOf(this.node);
-  }
+//     return (this._id = Hash.string(`${this.partialID}_${mappedStyles}`).toString());
+//   }
+//   get index() {
+//     return this.node.getParent().getChildren().indexOf(this.node);
+//   }
 
-  constructor(data: {
-    tagName: string;
-    node: TwinDslModels.AnyJSXElement;
-    styledProps: TwinDslModels.NodeStyledProp[];
-    parent: JSXNode | null;
-  }) {
-    this.tagName = data.tagName;
-    this.node = data.node;
-    this.styledProps = data.styledProps;
-    this.parent = data.parent;
-  }
+//   constructor(data: {
+//     tagName: string;
+//     node: TwinDslModels.AnyJSXElement;
+//     styledProps: TwinDslModels.NodeStyledProp[];
+//     parent: JSXNode | null;
+//   }) {
+//     this.tagName = data.tagName;
+//     this.node = data.node;
+//     this.styledProps = data.styledProps;
+//     this.parent = data.parent;
+//   }
 
-  // getLanguageRegions() {
-  //   if (this._languageRegions) return this._languageRegions;
-  //   return (this._languageRegions = this.styledProps.flatMap((prop): DocumentLanguageRegion[] => {
-  //     const propValue = prop.valueTextNode;
-  //     if (!propValue) return [];
-  //     const text = propValue.getText(true);
-  //     const plusOffset = text.startsWith('`') ? 1 : 0;
-  //     const startPosition: VSCDocument.Position = {
-  //       line: propValue.getStartLineNumber(),
-  //       character: propValue.getStart(true) + plusOffset,
-  //     };
-  //     const endPosition: VSCDocument.Position = {
-  //       line: propValue.getEndLineNumber(),
-  //       character: propValue.getEnd() + plusOffset,
-  //     };
-  //     const range: VSCDocument.Range = { start: startPosition, end: endPosition };
-  //     return asArray(
-  //       new DocumentLanguageRegion(
-  //         range,
-  //         startPosition.character,
-  //         endPosition.character,
-  //         propValue.getText(true),
-  //       ),
-  //     );
-  //   }));
-  // }
+//   // getLanguageRegions() {
+//   //   if (this._languageRegions) return this._languageRegions;
+//   //   return (this._languageRegions = this.styledProps.flatMap((prop): DocumentLanguageRegion[] => {
+//   //     const propValue = prop.valueTextNode;
+//   //     if (!propValue) return [];
+//   //     const text = propValue.getText(true);
+//   //     const plusOffset = text.startsWith('`') ? 1 : 0;
+//   //     const startPosition: VSCDocument.Position = {
+//   //       line: propValue.getStartLineNumber(),
+//   //       character: propValue.getStart(true) + plusOffset,
+//   //     };
+//   //     const endPosition: VSCDocument.Position = {
+//   //       line: propValue.getEndLineNumber(),
+//   //       character: propValue.getEnd() + plusOffset,
+//   //     };
+//   //     const range: VSCDocument.Range = { start: startPosition, end: endPosition };
+//   //     return asArray(
+//   //       new DocumentLanguageRegion(
+//   //         range,
+//   //         startPosition.character,
+//   //         endPosition.character,
+//   //         propValue.getText(true),
+//   //       ),
+//   //     );
+//   //   }));
+//   // }
 
-  getAllNodes(): JSXNode[] {
-    return pipe(
-      this.childs.flatMap((x) => x.getAllNodes()),
-      RA.union([this]),
-    );
-  }
+//   getAllNodes(): JSXNode[] {
+//     return pipe(
+//       this.childs.flatMap((x) => x.getAllNodes()),
+//       RA.union([this]),
+//     );
+//   }
 
-  [Hash.symbol]() {
-    return Hash.string(this.id);
-  }
+//   [Hash.symbol]() {
+//     return Hash.string(this.id);
+//   }
 
-  [Equal.symbol](that: unknown) {
-    return that instanceof JSXNode && that.id === this.id;
-  }
-}
+//   [Equal.symbol](that: unknown) {
+//     return that instanceof JSXNode && that.id === this.id;
+//   }
+// }
 
 export namespace TwinDslModels {
   export interface TwinSourceFile {
@@ -121,10 +118,10 @@ export namespace TwinDslModels {
     identifier: string;
     binding: ts.BindingName;
     filename: string;
-    jsxElement: JSXNode;
+    // jsxElement: JSXNode;
   }
 
-  export type TwinNode = NodeStyledProp | JSXNode | NodeJSXDeclarator;
+  export type TwinNode = NodeStyledProp | NodeJSXDeclarator;
 
   export type AnyJSXElement = ts.JsxElement | ts.JsxSelfClosingElement;
 }
@@ -141,16 +138,28 @@ export namespace TwinGraphModel {
   }
 
   export interface TraversalContext {
-    visitedNodes: WeakSet<ts.Node>;
-    nodeNestedInJSXTree: WeakSet<ts.Node>;
-    nodeToGraph: WeakMap<ts.Node, Graph.NodeIndex>;
-    depthBudget: WeakMap<ts.Node, number>;
+    state: {
+      nodeToVisit: ts.Node[];
+      jsxExpressions: {
+        jsxElement: TwinDslModels.AnyJSXElement;
+        declarator: ts.BindingName;
+      }[];
+      mutableGraph: MutableGraph;
+    };
+    buildGraph: () => TwinFileGraph;
+    getNextNode: () => Effect.Effect<ts.Node, never, never>;
+    getDepthBudgetFor: (node: ts.Node) => number;
+    processJSXElementNode: (
+      currentNode: ts.Node,
+      currentDepthBudget: number,
+    ) => Effect.Effect<void, never, never>;
+    createJSXExpressionStacks: () => Map<ts.Node, JSXExpressionStack>;
+    processIdentifierNode: (
+      currentNode: ts.Node,
+      currentDepthBudget: number,
+      jsxStacks: Map<ts.Node, JSXExpressionStack>,
+    ) => Effect.Effect<void, never, never>;
   }
-
-  // export interface ImportInfo {
-  //   from: string;
-  //   node: ts.Structures;
-  // }
 
   export interface NodeInfo {
     node: ts.Node;

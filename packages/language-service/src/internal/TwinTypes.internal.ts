@@ -1,12 +1,5 @@
-import type {
-  __Theme__,
-  Rule,
-  RuleMeta,
-  RuntimeTW,
-  TailwindConfig,
-  ThemeContext,
-} from '@native-twin/core';
-import type { CompleteStyle, SheetEntry } from '@native-twin/css';
+import type { __Theme__, RuntimeTW, TailwindConfig, ThemeContext } from '@native-twin/core';
+import type { SheetEntry } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import type { PlatformOSType } from 'react-native';
 
@@ -15,41 +8,39 @@ export type InternalTwFn = RuntimeTW<InternalTwinConfig['theme'], SheetEntry[]>;
 export type InternalTwinThemeContext = ThemeContext<TailwindPresetTheme>;
 export type AnyInternalTwinRule = InternalTwFn['config']['rules'][number];
 
-export interface TwinRuleCompletion {
-  kind: 'rule';
-  readonly order: number;
-  readonly rule: TwinRuleParts;
-  readonly completion: {
-    className: string;
-    declarations: string[];
-    declarationValue: string;
-  };
-  readonly composition: {
-    composed: string;
-    classNameExpansion: string;
-    classNameSuffix: string;
-    declarationSuffixes: string[];
-  };
-}
-export interface TwinRuleParts {
-  readonly pattern: string;
-  readonly property: InternalNativeTwinRule[1] | keyof CompleteStyle | (string & {});
-  readonly themeSection: InternalNativeTwinRule[1] | (string & {});
-  readonly resolver: InternalNativeTwinRule[2];
-  readonly meta: RuleMeta;
-}
+// export interface TwinRuleCompletion {
+//   kind: 'rule';
+//   readonly order: number;
+//   readonly rule: TwinRuleParts;
+//   readonly completion: {
+//     className: string;
+//     declarations: string[];
+//     declarationValue: string;
+//   };
+//   readonly composition: {
+//     composed: string;
+//     classNameExpansion: string;
+//     classNameSuffix: string;
+//     declarationSuffixes: string[];
+//   };
+// }
+// export interface TwinRuleParts {
+//   readonly pattern: string;
+//   readonly property: InternalNativeTwinRule[1] | keyof CompleteStyle | (string & {});
+//   readonly themeSection: InternalNativeTwinRule[1] | (string & {});
+//   readonly resolver: InternalNativeTwinRule[2];
+//   readonly meta: RuleMeta;
+// }
 
-export type InternalNativeTwinRule = Rule<InternalTwinConfig['theme']>;
+// interface CommonCompletion {
+//   name: string;
+//   position: number;
+//   index: number;
+// }
 
-interface CommonCompletion {
-  name: string;
-  position: number;
-  index: number;
-}
-
-export interface TwinVariantCompletion extends CommonCompletion {
-  kind: 'variant';
-}
+// export interface TwinVariantCompletion extends CommonCompletion {
+//   kind: 'variant';
+// }
 
 export type Units = {
   '%'?: number;

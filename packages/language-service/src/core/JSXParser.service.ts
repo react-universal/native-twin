@@ -5,19 +5,14 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
-import * as Option from 'effect/Option';
-import * as Stream from 'effect/Stream';
 import ts from 'ts-morph';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import * as Spec from '../internal/LSPAdapterSpec';
-import { JSXNode, type TwinDslModels } from '../models/TwinDsl.models';
-import { TwinSourceFile } from '../models/TwinSourceFile';
-import { TwinParserContext } from './TwinParser.service';
+import type { TwinDslModels } from '../models/TwinDsl.models';
 import { TypescriptUtils } from './TypescriptUtils.service';
 
 const make = Effect.gen(function* () {
   const tsUtils = yield* TypescriptUtils;
-  const twinParser = yield* TwinParserContext;
 
   function extractJsxElements(declarations: ts.VariableDeclarationList) {
     return declarations.getDeclarations().flatMap((declaration) => {
@@ -80,18 +75,6 @@ const make = Effect.gen(function* () {
     return styledProps;
   }
 
-  function parseSourceFile(sourceFile: ts.SourceFile) {
-    return Stream.fromIterable(sourceFile.getStatements()).pipe(
-      Stream.filterMap((_) => Option.fromNullable(getJSXElementStatement(_))),
-      Stream.mapEffect(({ jsxElement, declarator }) =>
-        Effect.zip(Effect.succeed(declarator), getTwinJSXNode(jsxElement)),
-      ),
-      Stream.map(([...args]) => makeNodeJSXDeclarator(...args)),
-      Stream.runCollect,
-      Effect.map((declarations) => new TwinSourceFile(sourceFile, RA.fromIterable(declarations))),
-    );
-  }
-
   function getJSXElementStatement(node: ts.Statement) {
     if (!ts.Node.isVariableStatement(node)) return null;
 
@@ -107,80 +90,19 @@ const make = Effect.gen(function* () {
       const expression = returnStat.getExpression();
       if (expression && ts.Node.isParenthesizedExpression(expression)) {
         const maybeJSX = expression.getExpression();
-        if (ts.Node.isJsxElement(maybeJSX)) {
+        if (tsUtils.isJSXElementLike(maybeJSX)) {
           return { jsxElement: maybeJSX, declarator: declaration.getNameNode() };
         }
       }
     }
   }
 
-  function parseTwinJSXNodeProp(prop: TwinDslModels.NodeStyledProp, _document: TextDocument) {
-    const parsedNodes = twinParser.runTwinParser({
-      text: prop.twinCX,
-      startOffset: prop.valueTextNode?.getPos() ?? prop.node.getPos(),
-    });
-    return Stream.fromIterable(parsedNodes.composedClasses).pipe(
-      Stream.mapEffect((composedClass) =>
-        Effect.all({
-          composedClass: Effect.succeed(composedClass),
-          evaluated: twinParser.getRuleByClassName(composedClass.classNameText),
-        }),
-      ),
-      Stream.map((result) =>
-        Option.map(result.evaluated, (evaluated) => ({
-          evaluated,
-          composedClass: result.composedClass,
-        })).pipe(Option.getOrElse(() => ({ composedClass: result.composedClass }))),
-      ),
-      Stream.runCollect,
-      Effect.map(RA.fromIterable),
-      Effect.map((parsed) => ({ parsed, prop })),
-    );
-  }
-
-  function flatJSXDeclarator(declarator: TwinDslModels.NodeJSXDeclarator) {
-    const rootPath = `${declarator.filename}-${declarator.identifier}`;
-    const mapped = new Map(flattenNode(declarator.jsxElement, [rootPath]));
-    return mapped;
-  }
-
-  function flattenNode(node: JSXNode, currentPath: string[]): [string, JSXNode][] {
-    const nextPath = [...currentPath, `${node.index}`];
-    const childs = node.childs.flatMap((x) => flattenNode(x, nextPath));
-    return [[nextPath.join('-').concat(node.id), node], ...childs];
-  }
-
-  // function runTwinOnSourceFile(sourceFile: ts.SourceFile) {
-  //   return Effect.gen(function* () {
-  //     const parsed = yield* parseSourceFile(sourceFile);
-
-  //     const flattenNodes = parsed.jsxDeclarators.flatMap((x) =>
-  //       RA.fromIterable(flatJSXDeclarator(x).values()),
-  //     );
-
-  //     return yield* Stream.fromIterable(flattenNodes).pipe(
-  //       Stream.flatMap((jsxNode) => {
-  //         return Stream.fromIterable(jsxNode.styledProps).pipe(
-  //           Stream.mapEffect((prop) => parseTwinJSXNodeProp(prop)),
-  //           Stream.map((evaluated) => Object.assign(evaluated, { jsxNode })),
-  //         );
-  //       }),
-  //       Stream.runCollect,
-  //       Effect.map((chunks) => {
-  //         return {
-  //           jsxNodes: RA.fromIterable(chunks),
-  //           sourceFile,
-  //         };
-  //       }),
-  //     );
-  //   });
-  // }
-
   const getNodeRange = (document: TextDocument, node: ts.Node) =>
     Spec.range(document.positionAt(node.getPos()), document.positionAt(node.getEnd()));
 
   function getJSXNodeRegion(
     node: TwinDslModels.AnyJSXElement,
+    parent: Spec.JsxNodeRegion | undefined,
     document: TextDocument,
   ): Spec.JsxNodeRegion {
     const styledProps = getJSXElementStyledProps(node).map((prop) => {
@@ -189,37 +111,8 @@ const make = Effect.gen(function* () {
         getText: () => prop.name.getText(),
       });
       const attrRange = getNodeRange(document, prop.value);
-      // const finalText = document.getText(attrRange);
-      // const initialTokens = ['"', "'", '`', '{', '}'];
-      // const searchInitial = initialTokens.flatMap((x): [string, number][] => {
-      //   const reg = new RegExp(x, 'g');
-      //   const match = reg.exec(finalText);
-      //   if (!match) return [];
-      //   const count = match.length;
-      //   return [[x, count] as const];
-      // });
-      // if (searchInitial.length > 0) {
-      //   for (const [needle, count] of searchInitial) {
-      //     finalText = finalText.replaceAll(new RegExp(needle, 'g'), '');
-      //     attrRange.start = { ...attrRange.start, character: attrRange.start.character + count };
-      //   }
-      //   attrRange.start.character = attrRange.start.character + 1;
-      // }
 
       const attrValue = getJSXAttributeValue(prop.attribute);
-      // const nodeText = document.getText(attrRange);
-      // const valueText = attrValue.originalText;
-      // if (nodeText !== valueText) {
-      //   const index = nodeText.indexOf(valueText);
-      //   finalRange = {
-      //     ...attrRange,
-      //     start: { character: attrRange.start.character + index, line: attrRange.start.line },
-      //     end: {
-      //       character: attrRange.start.character + valueText.length,
-      //       line: attrRange.end.line,
-      //     },
-      //   };
-      // }
       const attributeValue = Spec.TwinLSPNode.createJsxAttributeValue({
         range: attrRange,
         getText: () => prop.value.getText(),
@@ -238,6 +131,7 @@ const make = Effect.gen(function* () {
     const tagName = getJSXNodeTagName(node);
     const tagNameRange = getNodeRange(document, tagName);
     return Spec.TwinLSPNode.createJsxNode({
+      parent: parent ?? null,
       getText: () => node.getText(),
       range: nodeRange,
       styledProps,
@@ -254,65 +148,26 @@ const make = Effect.gen(function* () {
     const regions: Spec.JsxNodeRegion[] = [];
     const nodesToVisit: ts.Node[] = [...nodes];
 
+    const parents = new Map<ts.Node, Spec.JsxNodeRegion>();
+
     while (nodesToVisit.length > 0) {
       const nextNode = nodesToVisit.pop();
       if (!nextNode) break;
 
       if (tsUtils.isJSXElementLike(nextNode)) {
-        regions.push(getJSXNodeRegion(nextNode, document));
+        const region = getJSXNodeRegion(nextNode, parents.get(nextNode.getParent()), document);
+        regions.push(region);
+        parents.set(nextNode, region);
         nodesToVisit.push(...getJSXElementChilds(nextNode));
       }
     }
+    parents.clear();
 
     return regions;
   }
 
-  function filterNodeAtPosition(
-    regions: Spec.AnyTwinNodeRegion[],
-    position: Spec.LSPPosition,
-    document: Spec.LSPTextDocument,
-  ): Spec.AnyTwinNodeRegion | null {
-    // const offset = document.getOffsetAt(position);
-
-    const current = regions.pop();
-    if (!current) return null;
-
-    if (current._tag === 'JsxNodeRegion') {
-      if (document.isPositionInRange(position, current.range)) {
-        regions.push(...current.styledProps);
-      }
-    }
-    if (current._tag === 'JsxAttributeRegion') {
-      regions.push(...[current.attributeBinding, current.attributeValue]);
-    }
-
-    if (current._tag === 'JsxAttributeValueRegion') {
-      if (document.isPositionInRange(position, current.range)) {
-        return current;
-      }
-    }
-
-    return filterNodeAtPosition(regions, position, document);
-  }
-
-  const getTwinJSXNode = (
-    node: TwinDslModels.AnyJSXElement,
-    jsxParent: JSXNode | null = null,
-  ): Effect.Effect<JSXNode> =>
-    Effect.gen(function* () {
-      const tagName = getJSXNodeTagName(node).getText();
-      const styledProps = getJSXMappedProps(node);
-      const result = new JSXNode({ node, styledProps, tagName, parent: jsxParent });
-      result.childs = yield* Effect.all(
-        getJSXElementChilds(node).map((_) => getTwinJSXNode(_, result)),
-      );
-
-      return result;
-    });
-
   const getJSXElementChilds = (node: ts.Node) => {
     return pipe(
-      // ts.Node.isJsxElement(node) || ts.Node.isJsxSelfClosingElement(node) ? node : null,
       node,
       RA.liftPredicate(tsUtils.isJSXElementLike),
       RA.flatMap((el) => (ts.Node.isJsxElement(el) ? el.getJsxChildren() : [])),
@@ -339,18 +194,23 @@ const make = Effect.gen(function* () {
       mappedComponents.find((x) => x.name === name) ?? createCommonMappedAttribute(name);
     const props = Object.entries(jsxConfig.config);
     const attributes = getJSXElementAttributes(node).filter((x) => ts.Node.isJsxAttribute(x)) ?? [];
-    return props.flatMap(([classProp, styleProp]) =>
-      attributes
-        .filter((attrNode) => attrNode.getNameNode().getText() === classProp)
-        .map(
-          (attrNode): TwinDslModels.NodeStyledProp => ({
-            _tag: 'NodeStyledProp',
-            classProp,
-            styleProp,
-            node: attrNode,
-            ...getJSXAttributeValue(attrNode),
-          }),
+    return pipe(
+      props,
+      RA.flatMap(([classProp, styleProp]) =>
+        pipe(
+          attributes,
+          RA.filter((attrNode) => attrNode.getNameNode().getText() === classProp),
+          RA.map(
+            (attrNode): TwinDslModels.NodeStyledProp => ({
+              _tag: 'NodeStyledProp',
+              classProp,
+              styleProp,
+              node: attrNode,
+              ...getJSXAttributeValue(attrNode),
+            }),
+          ),
         ),
+      ),
     );
   };
 
@@ -417,29 +277,107 @@ const make = Effect.gen(function* () {
   return {
     jsxNodesToRegions,
     getJSXRootsFromSource,
-    getTwinJSXNode,
     getJSXElementStatement,
-    parseTwinJSXNodeProp,
-    parseSourceFile,
     getJSXMappedProps,
     getJSXElementChilds,
-    flatJSXDeclarator,
-    flattenNode,
-    filterNodeAtPosition,
   };
+
+  // function parseTwinJSXNodeProp(prop: TwinDslModels.NodeStyledProp, _document: TextDocument) {
+  //   const parsedNodes = twinParser.runTwinParser({
+  //     text: prop.twinCX,
+  //     startOffset: prop.valueTextNode?.getPos() ?? prop.node.getPos(),
+  //   });
+  //   return Stream.fromIterable(parsedNodes.composedClasses).pipe(
+  //     Stream.mapEffect((composedClass) =>
+  //       Effect.all({
+  //         composedClass: Effect.succeed(composedClass),
+  //         evaluated: twinParser.getRuleByClassName(composedClass.classNameText),
+  //       }),
+  //     ),
+  //     Stream.map((result) =>
+  //       Option.map(result.evaluated, (evaluated) => ({
+  //         evaluated,
+  //         composedClass: result.composedClass,
+  //       })).pipe(Option.getOrElse(() => ({ composedClass: result.composedClass }))),
+  //     ),
+  //     Stream.runCollect,
+  //     Effect.map(RA.fromIterable),
+  //     Effect.map((parsed) => ({ parsed, prop })),
+  //   );
+  // }
+
+  // function flatJSXDeclarator(declarator: TwinDslModels.NodeJSXDeclarator) {
+  //   const rootPath = `${declarator.filename}-${declarator.identifier}`;
+  //   const mapped = new Map(flattenNode(declarator.jsxElement, [rootPath]));
+  //   return mapped;
+  // }
+
+  // function flattenNode(node: JSXNode, currentPath: string[]): [string, JSXNode][] {
+  //   const nextPath = [...currentPath, `${node.index}`];
+  //   const childs = node.childs.flatMap((x) => flattenNode(x, nextPath));
+  //   return [[nextPath.join('-').concat(node.id), node], ...childs];
+  // }
+
+  // function runTwinOnSourceFile(sourceFile: ts.SourceFile) {
+  //   return Effect.gen(function* () {
+  //     const parsed = yield* parseSourceFile(sourceFile);
+
+  //     const flattenNodes = parsed.jsxDeclarators.flatMap((x) =>
+  //       RA.fromIterable(flatJSXDeclarator(x).values()),
+  //     );
+
+  //     return yield* Stream.fromIterable(flattenNodes).pipe(
+  //       Stream.flatMap((jsxNode) => {
+  //         return Stream.fromIterable(jsxNode.styledProps).pipe(
+  //           Stream.mapEffect((prop) => parseTwinJSXNodeProp(prop)),
+  //           Stream.map((evaluated) => Object.assign(evaluated, { jsxNode })),
+  //         );
+  //       }),
+  //       Stream.runCollect,
+  //       Effect.map((chunks) => {
+  //         return {
+  //           jsxNodes: RA.fromIterable(chunks),
+  //           sourceFile,
+  //         };
+  //       }),
+  //     );
+  //   });
+  // }
+  // const getTwinJSXNode = (
+  //   node: TwinDslModels.AnyJSXElement,
+  //   jsxParent: JSXNode | null = null,
+  // ): JSXNode => {
+  //   const tagName = getJSXNodeTagName(node).getText();
+  //   const styledProps = getJSXMappedProps(node);
+  //   const result = new JSXNode({ node, styledProps, tagName, parent: jsxParent });
+  //   result.childs = getJSXElementChilds(node).map((_) => getTwinJSXNode(_, result));
+
+  //   return result;
+  // };
+  // function parseSourceFile(sourceFile: ts.SourceFile) {
+  //   return Stream.fromIterable(sourceFile.getStatements()).pipe(
+  //     Stream.filterMap((_) => Option.fromNullable(getJSXElementStatement(_))),
+  //     Stream.mapEffect(({ jsxElement, declarator }) =>
+  //       Effect.zip(Effect.succeed(declarator), Effect.succeed(getTwinJSXNode(jsxElement))),
+  //     ),
+  //     Stream.map(([...args]) => makeNodeJSXDeclarator(...args)),
+  //     Stream.runCollect,
+  //     Effect.map((declarations) => new TwinSourceFile(sourceFile, RA.fromIterable(declarations))),
+  //   );
+  // }
 });
 
-const makeNodeJSXDeclarator = (
-  declarator: ts.BindingName,
-  jsxElement: JSXNode,
-): TwinDslModels.NodeJSXDeclarator => ({
-  _tag: 'NodeJSXDeclarator',
-  binding: declarator,
-  filename: jsxElement.filename,
-  identifier: declarator.getText(),
-  jsxElement,
-  node: declarator,
-});
+// const makeNodeJSXDeclarator = (
+//   declarator: ts.BindingName,
+//   jsxElement: JSXNode,
+// ): TwinDslModels.NodeJSXDeclarator => ({
+//   _tag: 'NodeJSXDeclarator',
+//   binding: declarator,
+//   filename: jsxElement.filename,
+//   identifier: declarator.getText(),
+//   jsxElement,
+//   node: declarator,
+// });
 
 export interface JSXParser extends Effect.Effect.Success<typeof make> {}
 export const JSXParser = Context.GenericTag<JSXParser>('JSXParser');

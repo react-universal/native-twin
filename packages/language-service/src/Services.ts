@@ -12,11 +12,6 @@ import { TwinRuntimeContext, TwinRuntimeContextLive } from './core/TwinRuntime.s
 import { TypeScriptApi, TypeScriptProgram } from './core/TypescriptAPI.service';
 import { TypescriptUtils, TypescriptUtilsLive } from './core/TypescriptUtils.service';
 import { BaseTwinTextDocument } from './documents/common/BaseTwinDocument';
-import {
-  type DocumentsServiceShape,
-  TwinLSPDocumentContext,
-  twinLSPDocumentLayer,
-} from './documents/LSPDocuments.service';
 import { createLSPAdapterExecutor } from './internal/LSPAdapterSpec';
 import { LSPBaseLayerLive, type TwinLSPAdapterLayerIn } from './internal/RunnerLayer';
 
@@ -25,11 +20,8 @@ export { TypeScriptApi, TypeScriptProgram, TypescriptUtils };
 
 export { LSPBaseLayerLive };
 
-export { classNameCompletions } from './completions/jsxCompletions';
 export {
   LSPConfig,
-  TwinLSPDocumentContext,
-  twinLSPDocumentLayer,
   TypescriptUtilsLive,
   LSPContext,
   BaseTwinTextDocument,
@@ -52,6 +44,5 @@ export {
 export type {
   TwinLSPCompletionDefinition,
   LSPTwinCompletionsResult,
-  DocumentsServiceShape,
   TwinLSPAdapterLayerIn,
 };

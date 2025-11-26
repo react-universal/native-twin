@@ -2,7 +2,6 @@ import * as Data from 'effect/Data';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
-import type { TemplateTokenWithText } from '../../models/template-token.model';
 
 interface TwinTokenLocation {
   _tag: 'TwinTokenLocation';
@@ -71,20 +70,20 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return { start: this.positionAt(startOffset), end: this.positionAt(endOffset) };
   }
 
-  getRangeAtPosition(
-    part: Pick<TemplateTokenWithText, 'loc' | 'text'>,
-    templateRange: VSCDocument.Range,
-  ): VSCDocument.Range {
-    const realStart = this.positionAt(part.loc.start + templateRange.start.character);
-    const realEnd = {
-      ...realStart,
-      character: realStart.character + part.text.length,
-    };
-    return {
-      start: realStart,
-      end: realEnd,
-    };
-  }
+  // getRangeAtPosition(
+  //   part: Pick<TemplateTokenWithText, 'loc' | 'text'>,
+  //   templateRange: VSCDocument.Range,
+  // ): VSCDocument.Range {
+  //   const realStart = this.positionAt(part.loc.start + templateRange.start.character);
+  //   const realEnd = {
+  //     ...realStart,
+  //     character: realStart.character + part.text.length,
+  //   };
+  //   return {
+  //     start: realStart,
+  //     end: realEnd,
+  //   };
+  // }
 
   // MARK: Equality protocol
   [Equal.symbol](that: unknown) {
