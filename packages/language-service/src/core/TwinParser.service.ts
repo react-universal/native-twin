@@ -15,17 +15,6 @@ import { TwinRuntimeContext } from './TwinRuntime.service';
 
 type ParserWithData<A> = P.Parser<A, TwinParserModel.TwinParserData>;
 
-const parseTwinClasses = (input: TwinParserModel.TwinParserInput) => {
-  const withData = P.withData(
-    P.many1(
-      P.whitespaceSurrounded(
-        P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
-      ),
-    ),
-  );
-  return withData(input).run(input.text);
-};
-
 const make = Effect.gen(function* () {
   const { dictionaryRef, bootTwinRuntime, twinRef, styledContext, themeVariants } =
     yield* TwinRuntimeContext;
@@ -73,12 +62,22 @@ const make = Effect.gen(function* () {
     runTW,
     getRuleByClassName,
     runTwinParser,
-    // findRulesByText,
   };
 }).pipe(
   Effect.withSpan('TwinParserContext'),
   Effect.onError((error) => Effect.log('Error: ', Cause.prettyErrors(error))),
 );
+
+export const parseTwinClasses = (input: TwinParserModel.TwinParserInput) => {
+  const withData = P.withData(
+    P.many1(
+      P.whitespaceSurrounded(
+        P.choice([parseRuleGroupWeak, parseVariantClass, parseVariant, parseClassName]),
+      ),
+    ),
+  );
+  return withData(input).run(input.text);
+};
 
 export const toTwinParserResult = (
   result: P.ResultType<TwinParserModel.AnyTwinParseResultToken[], TwinParserModel.TwinParserInput>,

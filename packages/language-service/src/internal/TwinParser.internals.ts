@@ -68,6 +68,17 @@ export const createComposedClasses = (
       nextToken.base,
       composedClassInfo(nextToken.base, { text, start: parentStarts }),
     );
+    // const leadingText = base.text;
+    // results.push(
+    //   ...createComposedClasses(
+    //     nextToken.composes,
+    //     text,
+    //     parentStarts,
+    //     newContent.map((x): any => {
+    //       return composedClassInfo(x, { text, start: parentStarts });
+    //     }),
+    //   ),
+    // );
 
     results.push({
       type: 'ComposedGroup',

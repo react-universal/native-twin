@@ -9,6 +9,7 @@ export interface DiagnosticHandlerInput {
   composition: TwinComposedClassName;
   rule: TwinRuleRegistry;
   parentStart: number;
+  code: TwinDiagnosticCodes;
 }
 
 export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
@@ -38,7 +39,7 @@ export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
     this.relatedInformation = data.relatedInfo;
     this.source = LSPConstants.diagnosticProviderSource;
     this.severity = vscode.DiagnosticSeverity.Warning;
-    this.tags = [];
+    this.tags = [vscode.DiagnosticTag.Unnecessary];
   }
 
   //   return RA.join(RA.dedupe(RA.map(entries, (x) => x.declarationProp)), ', ');

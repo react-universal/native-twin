@@ -1,30 +1,16 @@
-import * as Data from 'effect/Data';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
-
-interface TwinTokenLocation {
-  _tag: 'TwinTokenLocation';
-  range: VSCDocument.Range;
-  offset: {
-    start: number;
-    end: number;
-  };
-  text: string;
-}
-
-export const TwinTokenLocation = Data.tagged<TwinTokenLocation>('TwinTokenLocation');
+import { Location, Position, Range } from 'vscode-languageserver-types';
 
 export interface TwinBaseDocument {
   getText: (range?: VSCDocument.Range) => string;
   offsetAt: (position: VSCDocument.Position) => number;
   positionAt: (offset: number) => VSCDocument.Position;
-  isPositionAtOffset: (bounds: TwinTokenLocation['offset'], offset: number) => boolean;
 }
 
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
   constructor(private readonly textDocument: VSCDocument.TextDocument) {
-    this.isPositionAtOffset.bind(this);
   }
 
   get document() {
@@ -35,12 +21,28 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return this.textDocument.uri;
   }
 
+  get version() {
+    return this.textDocument.version;
+  }
+
   getDocument() {
     return this.textDocument;
   }
 
-  get version() {
-    return this.textDocument.version;
+  sumPositions(p1: VSCDocument.Position, p2: VSCDocument.Position) {
+    if (p1.line !== p2.line) {
+      console.warn('Cant sum positions on different lines');
+      return p2;
+    }
+    return Position.create(p1.line, p1.character + p2.character);
+  }
+
+  sumRanges(r1: VSCDocument.Range, r2: VSCDocument.Range) {
+    return Range.create(this.sumPositions(r1.start, r2.start), this.sumPositions(r1.end, r2.end));
+  }
+
+  getLocation(range: VSCDocument.Range): Location {
+    return Location.create(this.uri, range);
   }
 
   getText(range?: VSCDocument.Range) {
@@ -55,10 +57,6 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return this.textDocument.positionAt(offset);
   }
 
-  isPositionAtOffset(bounds: TwinTokenLocation['offset'], offset: number) {
-    return offset >= bounds.start && offset <= bounds.end;
-  }
-
   isPositionInRange(position: VSCDocument.Position, range: VSCDocument.Range) {
     const rangeStart = this.offsetAt(range.start);
     const rangeEnd = this.offsetAt(range.end);
@@ -69,21 +67,6 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   getRangeFor(startOffset: number, endOffset: number): VSCDocument.Range {
     return { start: this.positionAt(startOffset), end: this.positionAt(endOffset) };
   }
-
-  // getRangeAtPosition(
-  //   part: Pick<TemplateTokenWithText, 'loc' | 'text'>,
-  //   templateRange: VSCDocument.Range,
-  // ): VSCDocument.Range {
-  //   const realStart = this.positionAt(part.loc.start + templateRange.start.character);
-  //   const realEnd = {
-  //     ...realStart,
-  //     character: realStart.character + part.text.length,
-  //   };
-  //   return {
-  //     start: realStart,
-  //     end: realEnd,
-  //   };
-  // }
 
   // MARK: Equality protocol
   [Equal.symbol](that: unknown) {

@@ -89,7 +89,7 @@ const createMappedComponents = () => {
 };
 
 export const mappedComponents = createMappedComponents();
-export const commonMappedAttribute = { className: 'style' };
+export const commonMappedAttribute = { className: 'style', className2: "style2" };
 
 const componentAttrs = Array.from(
   new Set([

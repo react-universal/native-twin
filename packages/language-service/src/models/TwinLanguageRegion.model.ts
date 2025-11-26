@@ -1,39 +1,94 @@
 import type { SheetEntry } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import { Location } from 'vscode-languageserver-types';
-import type { JsxAttributeValueRegion } from '../internal/LSPAdapterSpec';
-import type { InternalTwFn } from '../internal/TwinTypes.internal';
+import { compose } from 'effect/Function';
+import * as vscode from 'vscode-languageserver-types';
+import { parseTwinClasses, toTwinParserResult } from '../core/TwinParser.service';
+import type { JsxAttributeValueRegion, JsxNodeRegion } from '../internal/LSPAdapterSpec';
 import type {
   AnyTwinComposedClass,
   TwinComposedClassName,
   TwinParsedClasses,
 } from '../models/TwinParser.models';
-import type { TwinLSPDocument } from './TwinLSPDocument.model';
 
-export class TwinLanguageRegionHandler {
-  private _compositions: TwinComposerHandler[] | null = null;
-  readonly entries: SheetEntry[] = [];
-
+export class TwinJSXLanguageRegion {
+  private _compiled: TwinLanguageRegion[] | null = null;
   constructor(
-    readonly region: JsxAttributeValueRegion,
-    private readonly document: TwinLSPDocument,
-    private readonly parsed: TwinParsedClasses,
-    private readonly tw: InternalTwFn,
+    readonly region: JsxNodeRegion,
+    readonly parsed: TwinParsedClasses,
   ) {}
+
+  get twiNodes() {
+    return this._compiled;
+  }
+
+  compiledValue() {
+    // return new TwinJSXLanguageRegion();
+  }
+}
+
+const fullParsed = compose(parseTwinClasses, toTwinParserResult);
+const flattenTwinCompositions = (
+  parsed: TwinParsedClasses,
+  grouped = parsed.composedClasses,
+  results: TwinComposedClassName[] = [],
+): TwinComposedClassName[] => {
+  const current = grouped.pop();
+
+  if (!current) return results;
+
+  if (current.type === 'ComposedClass') {
+    results.push(current);
+    return flattenTwinCompositions(parsed, grouped, results);
+  }
+  const baseNode = current.token.base;
+  let leadingText = '';
+  if (baseNode.token.type === 'CLASS_NAME') {
+    leadingText += baseNode.text;
+    if (!baseNode.text.endsWith('-')) {
+      leadingText += '-';
+    }
+  }
+  for (const child of current.token.composes) {
+    if (child.type === 'ComposedClass') {
+      results.push({ ...child, classNameText: leadingText.concat(child.classNameText) });
+      continue;
+    }
+    const newChilds = flattenTwinCompositions(parsed, [child]);
+    results.push(...newChilds);
+  }
+
+  return flattenTwinCompositions(parsed, grouped, results);
+};
+
+export class TwinLanguageRegion {
+  private _compositions: TwinComposerHandler[] | null = null;
+  private _parsed: TwinParsedClasses | null = null;
+  constructor(
+    readonly jsxRegion: JsxNodeRegion,
+    readonly twinNode: JsxAttributeValueRegion,
+    readonly location: vscode.Location,
+    readonly entries: SheetEntry[],
+  ) {
+    const flatten = flattenTwinCompositions(this.parsed);
+    console.log(flatten);
+  }
+
+  get parsed() {
+    return (this._parsed ??= fullParsed({
+      startOffset: this.twinNode.range.start.line,
+      text: this.twinNode.text,
+    }));
+  }
+
+  get parentStarts() {
+    return this.location.range.start.character;
+  }
 
   get compositions() {
     return (this._compositions ||= this.parsed.composedClasses.flatMap((item) => {
-      const range = Location.create(
-        this.document.uri,
-        this.document.getRangeFor(
-          item.startOffset + item.parentStarts - 1,
-          item.endOffset + item.parentStarts - 1,
-        ),
-      );
       if (item.type === 'ComposedClass') {
-        const entries = this.tw(item.text);
-
-        return asArray(new TwinComposerHandler(item, range, entries));
+        const entries = this.entries.filter((x) => x.className === item.text);
+        return asArray(new TwinComposerHandler(item, this.getLocationOf(item), entries));
       }
       const baseNode = item.token.base;
       let leadingText = '';
@@ -43,37 +98,41 @@ export class TwinLanguageRegionHandler {
           leadingText += '-';
         }
       }
-      return item.token.composes.map((x) => {
-        const range = Location.create(
-          this.document.uri,
-          this.document.getRangeFor(
-            x.startOffset + x.parentStarts - 1,
-            x.endOffset + x.parentStarts - 1,
+      return item.token.composes.map(
+        (x) =>
+          new TwinComposerHandler(
+            x,
+            this.getLocationOf(x),
+            this.entries.filter((entry) => entry.className === leadingText.concat(x.text)),
+            item.token.base,
           ),
-        );
-        const className = leadingText.concat(x.text);
-        return new TwinComposerHandler(x, range, this.tw(className), item.token.base);
-      });
+      );
     }));
   }
 
-  // findCompositionAt(position: LSPPosition): TwinComposerHandler | null {
-  //   if (!this.document.isPositionInRange(position, this.range)) return null;
-  //   if (this.node.type === 'ComposedClass') return this;
-  //   return this.getCompositions().find((x) => x.findCompositionAt(position)) ?? null;
-  // }
+  private getLocationOf(node: AnyTwinComposedClass) {
+    const range = vscode.Range.create(
+      vscode.Position.create(
+        this.location.range.start.line,
+        node.startOffset + this.parentStarts - 1,
+      ),
+      vscode.Position.create(this.location.range.end.line, node.endOffset + this.parentStarts - 1),
+    );
+    return vscode.Location.create(this.location.uri, range);
+  }
 }
 
 export class TwinComposerHandler {
-  // private _storedChilds: TwinComposerHandler[] | null = null;
   get leadingText() {
     if (!this.baseGroup) return '';
-    return this.baseGroup.text.concat(
+    let text = '';
+    if (
       this.node.type === 'ComposedClass' &&
-        (this.node.token.type === 'CLASS_NAME' || this.node.token.type === 'VARIANT_CLASS')
-        ? '-'
-        : '',
-    );
+      (this.node.token.type === 'CLASS_NAME' || this.node.token.type === 'VARIANT_CLASS')
+    ) {
+      text = this.baseGroup.text.concat('-');
+    }
+    return text;
   }
   get compositions(): AnyTwinComposedClass[] {
     if (this.node.type === 'ComposedClass') return [this.node];
@@ -93,20 +152,38 @@ export class TwinComposerHandler {
     return this.location.range;
   }
 
+  get declarations() {
+    return this.sheetEntries.flatMap((x) => x.declarations);
+  }
+
   constructor(
     readonly node: AnyTwinComposedClass,
-    readonly location: Location,
+    readonly location: vscode.Location,
     readonly sheetEntries: SheetEntry[],
     private baseGroup?: TwinComposedClassName,
   ) {}
 
-  get declarationsID() {
-    return this.sheetEntries.map((x) => x.declarations.map((x) => x.prop).join('-')).join('_');
+  get ids() {
+    const selectors = this.sheetEntries.map((x) => ({
+      selectors: x.selectors.sort().join(''),
+      declarations: x.declarations
+        .map((x) => x.prop)
+        .sort()
+        .join('')
+        .concat(`${this.node.parentStarts}`),
+      className: x.className,
+    }));
+    return {
+      ruleID: selectors.map((x) => x.selectors.concat(x.declarations)).join('_'),
+      classNameID: selectors.map((x) => x.selectors.concat(x.className)).join('_'),
+    };
   }
 
-  get classesID() {
-    return this.sheetEntries.flatMap((x) => x.selectors.join(':').concat(x.className)).join('');
-  }
+  // get classesID() {
+  //   return this.sheetEntries
+  //     .flatMap((x) => x.selectors.sort().join(':').concat(x.className))
+  //     .join('');
+  // }
 
   // private getClassnameCompositions(composition: TwinComposedClassName) {}
 }

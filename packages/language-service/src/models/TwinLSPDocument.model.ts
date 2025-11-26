@@ -20,10 +20,6 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
     );
   }
 
-  getLocation(range: t.Range) {
-    return t.Location.create(this.uri, range);
-  }
-
   findRegionAt(position: LSP.LSPPosition): LSP.JsxAttributeValueRegion | null {
     return (
       this.parsableRegions.find((x) => this.isPositionInRange(position, x.attr.range))?.attr ?? null
@@ -56,18 +52,6 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
       textEditText: insertReplacement.newText,
     } satisfies t.CompletionItem;
     return completion;
-  }
-
-  sumPositions(p1: LSP.LSPPosition, p2: LSP.LSPPosition) {
-    if (p1.line !== p2.line) {
-      console.debug('Cant sum positions on different lines');
-      return p2;
-    }
-    return t.Position.create(p1.line, p1.character + p2.character);
-  }
-
-  sumRanges(r1: LSP.LSPRange, r2: LSP.LSPRange) {
-    return t.Range.create(this.sumPositions(r1.start, r2.start), this.sumPositions(r1.end, r2.end));
   }
 }
 

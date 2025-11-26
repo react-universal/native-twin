@@ -17,6 +17,11 @@ import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
+export interface TwinSyntaxError extends WithLocation {
+  type: 'SyntaxError';
+  reason: string;
+}
+
 export interface TwinParserInput {
   text: string;
   startOffset: number;
@@ -32,6 +37,7 @@ export interface TwinParsedClasses {
 export interface TwinParserData {
   input: TwinParserInput;
   finalOffset: string;
+  syntaxError: TwinSyntaxError[];
 }
 
 export interface WithLocation {
@@ -45,6 +51,7 @@ export interface TwinClassVariantToken extends VariantToken, WithLocation {}
 export interface TwinClassGroupToken extends WithLocation, Omit<GroupToken, 'value'> {
   base: TwinClassNameToken | TwinClassVariantToken;
   composes: AnyTwinClassToken[];
+  // composes: Exclude<AnyTwinClassToken, TwinClassVariantToken>[];
 }
 
 export interface TwinArbitraryToken extends WithLocation, ArbitraryToken {}
