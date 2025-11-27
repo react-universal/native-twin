@@ -25,7 +25,7 @@ export const getDocumentColors = Effect.fn(function* (
       return composer;
     })
     .flatMap((composer) =>
-      composer.parserResult.composedClasses.map((x) => ({
+      composer.parserResult.result.map((x) => ({
         className: composer.getCompositionText(x),
         composition: x,
       })),
@@ -52,10 +52,7 @@ export const getDocumentColors = Effect.fn(function* (
   return Array.getSomes(classNames).map((comp) =>
     declarationValueToColorInfo(
       comp.rule.declarationValue,
-      document.getRangeFor(
-        comp.composition.startOffset + comp.composition.parentStarts - 1,
-        comp.composition.endOffset + comp.composition.parentStarts - 1,
-      ),
+      document.getRangeFor(comp.composition.startOffset - 1, comp.composition.endOffset),
     ),
   );
   // return Option.map(document, (x) =>

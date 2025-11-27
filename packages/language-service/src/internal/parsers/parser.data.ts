@@ -7,9 +7,9 @@ import * as Order from 'effect/Order';
 import type * as TwinParserModel from '../../models/TwinParser.models';
 
 const createComposedClass = (
-  raw: AnyRawClassToken,
+  raw: TwinParserModel.AnyRawClassToken,
   parsed: TWParsedRule,
-): ParsedRuleWithLocation => ({
+): TwinParserModel.ParsedRuleWithLocation => ({
   type: 'ParsedRuleWithLocation',
   fullText: parsedRuleToClassName(parsed),
   raw,
@@ -39,12 +39,12 @@ export const Predicates = {
 };
 
 export const ComposedClass = {
-  of: (...args: [raw: AnyRawClassToken, parsed: TWParsedRule]): ParsedRuleWithLocation =>
+  of: (...args: [raw: TwinParserModel.AnyRawClassToken, parsed: TWParsedRule]): TwinParserModel.ParsedRuleWithLocation =>
     createComposedClass(...args),
 
   createComposedClasses: (
     output: P.ResultType<TwinParserModel.AnyTwinParseResultToken[], TwinParserModel.TwinParserData>,
-  ): TwinParserOutput => ({
+  ): TwinParserModel.TwinParserOutput => ({
     type: 'TwinParserOutput',
     endOffset: output.cursor,
     startOffset: output.data.input.startOffset,
@@ -61,7 +61,7 @@ export const ParsedRule = {
   mergeParsedRule: (partial: Partial<TWParsedRule>): TWParsedRule =>
     Object.assign({ n: '', v: [], i: false, m: null, p: 0 }, partial),
 
-  order: Order.mapInput(Order.number, (x: ParsedRuleWithLocation) => x.startOffset),
+  order: Order.mapInput(Order.number, (x: TwinParserModel.ParsedRuleWithLocation) => x.startOffset),
   mapParserToLocation: <A extends object>(
     ...args: [x: P.ParserState<A, TwinParserModel.TwinParserData>, initialIndex: number]
   ): TwinParserModel.WithLocation & A => mapParserToLocation(...args),
@@ -80,8 +80,8 @@ const createComposedClasses = (
   groupContent: TwinParserModel.AnyTwinClassToken[],
   text: string,
   parentStarts: number,
-  results: ParsedRuleWithLocation[] = [],
-): ParsedRuleWithLocation[] => {
+  results: TwinParserModel.ParsedRuleWithLocation[] = [],
+): TwinParserModel.ParsedRuleWithLocation[] => {
   const nextToken = groupContent.shift();
   if (!nextToken) return pipe(results, RA.sortBy(ParsedRule.order));
 
@@ -97,7 +97,7 @@ const createComposedClasses = (
 
   const baseValue = nextToken.base;
   const parts = createComposedClasses(nextToken.composes, text, parentStarts).map(
-    (x): ParsedRuleWithLocation => {
+    (x): TwinParserModel.ParsedRuleWithLocation => {
       if (baseValue.type === 'CLASS_NAME') {
         const merged = ParsedRule.mergeParsedRule({
           ...x.parsed,
@@ -140,21 +140,3 @@ const createParsedRule = (token: TwinParserModel.AnyTwinClassToken): TWParsedRul
   return ParsedRule.mergeParsedRule({});
 };
 
-export interface TwinParserOutput extends TwinParserModel.WithLocation {
-  type: 'TwinParserOutput';
-  result: ParsedRuleWithLocation[];
-}
-export type AnyRawClassToken =
-  | TwinParserModel.TwinClassNameToken
-  | TwinParserModel.TwinClassNameVariantToken
-  | TwinParserModel.TwinClassVariantToken
-  | TwinParserModel.AnyTwinClassToken;
-
-export interface ParsedRuleWithLocation extends TwinParserModel.WithLocation {
-  type: 'ParsedRuleWithLocation';
-  parsed: TWParsedRule;
-  fullText: string;
-  raw: AnyRawClassToken;
-}
-
-export type ParserWithData<A> = P.Parser<A, TwinParserModel.TwinParserData>;

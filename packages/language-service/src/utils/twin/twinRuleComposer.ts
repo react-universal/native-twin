@@ -2,12 +2,11 @@ import type { TWParsedRule } from '@native-twin/css';
 import * as Predicates from '../../internal/TwinParser.internals';
 import type { TwinLSPDocument } from '../../models/TwinLSPDocument.model';
 import type {
-  AnyTwinComposedClass,
-  LocatedTokenResult,
+  ParsedRuleWithLocation,
   TwinClassNameToken,
   TwinClassNameVariantToken,
   TwinClassVariantToken,
-  TwinParsedClasses,
+  TwinParserOutput,
 } from '../../models/TwinParser.models';
 
 function parsedRuleToClassName(rule: TWParsedRule): string {
@@ -23,14 +22,11 @@ function parsedRuleSetToClassNames(rules: TWParsedRule[]): string {
 }
 
 export const createCompositionsComposer = (
-  parserResult: TwinParsedClasses,
+  parserResult: TwinParserOutput,
   document: TwinLSPDocument,
 ) => {
-  const getCompositionRange = (composition: AnyTwinComposedClass) =>
-    document.getRangeFor(
-      composition.startOffset + composition.parentStarts,
-      composition.endOffset + composition.parentStarts,
-    );
+  const getCompositionRange = (composition: ParsedRuleWithLocation) =>
+    document.getRangeFor(composition.startOffset, composition.endOffset);
 
   const getClassCompositionText = (composition: TwinClassNameToken) => {
     return parsedRuleToClassName({ ...composition.value, p: 0, v: [] });
@@ -52,78 +48,38 @@ export const createCompositionsComposer = (
     });
   };
 
-  const getGroupCompositionText = (composition: AnyTwinComposedClass) => {
-    return composition.text;
+  const getGroupCompositionText = (composition: ParsedRuleWithLocation) => {
+    return composition.fullText;
   };
 
-  const getCompositionText = (composition: AnyTwinComposedClass) => {
-    if (composition.type === 'ComposedClass') {
-      if (composition.token.type === 'CLASS_NAME') {
-        return getClassCompositionText(composition.token);
-      }
-      if (composition.token.type === 'VARIANT') {
-        return getVariantCompositionText(composition.token);
-      }
-      if (composition.token.type === 'VARIANT_CLASS') {
-        return getClassNameVariantCompositionText(composition.token);
-      }
-      if (composition.token.type === 'ARBITRARY') {
-        return composition.text;
-      }
-      if (composition.token.type === 'GROUP') {
-        return getGroupCompositionText(composition);
-      }
+  const getCompositionText = (composition: ParsedRuleWithLocation) => {
+    if (composition.raw.type === 'CLASS_NAME') {
+      return getClassCompositionText(composition.raw);
     }
-    return composition.text;
+    if (composition.raw.type === 'VARIANT') {
+      return getVariantCompositionText(composition.raw);
+    }
+    if (composition.raw.type === 'VARIANT_CLASS') {
+      return getClassNameVariantCompositionText(composition.raw);
+    }
+    if (composition.raw.type === 'ARBITRARY') {
+      return composition.fullText;
+    }
+    if (composition.raw.type === 'GROUP') {
+      return getGroupCompositionText(composition);
+    }
+    return composition.fullText;
   };
 
-  const findComposedClassAtPosition = (offset: number): LocatedTokenResult | null => {
-    for (const node of parserResult.composedClasses) {
+  const findComposedClassAtPosition = (offset: number): ParsedRuleWithLocation | null => {
+    for (const node of parserResult.result) {
       if (!Predicates.isComposedNodeAtOffset(node, offset)) continue;
 
-      if (Predicates.isComposedNodeAtOffset(node, offset) && node.type === 'ComposedClass') {
-        return {
-          endOffset: node.endOffset,
-          startOffset: node.startOffset,
-          fullLoc: {
-            startOffset: node.startOffset + node.parentStarts,
-            endOffset: node.parentStarts + node.endOffset,
-          },
-          group: null,
-          lookupText: node.classNameText,
-          node: node,
-        };
-      }
-
-      if (Predicates.isComposedClassGroup(node)) {
-        const targetComposition = node.token.composes.find((_) =>
-          Predicates.isComposedNodeAtOffset(_, offset),
-        );
-        if (!targetComposition) return null;
-
-        const base = node.token.base.classNameText;
-
-        let lookupText = '';
-        if (node.token.base.token.type === 'CLASS_NAME') {
-          lookupText += base;
-          if (!base.endsWith('-')) {
-            lookupText += '-';
-          }
-        }
-        if (targetComposition.type === 'ComposedClass') {
-          lookupText += targetComposition.text;
-        }
-        return {
-          startOffset: node.startOffset,
-          endOffset: node.endOffset,
-          group: null,
-          fullLoc: {
-            startOffset: node.startOffset + node.parentStarts,
-            endOffset: node.endOffset + node.parentStarts,
-          },
-          lookupText,
-          node: node,
-        };
+      if (
+        Predicates.isComposedNodeAtOffset(node, offset) &&
+        node.type === 'ParsedRuleWithLocation'
+      ) {
+        return node;
       }
     }
     return null;

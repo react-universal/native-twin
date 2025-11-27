@@ -1,12 +1,7 @@
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
-import * as t from 'vscode-languageserver-types';
 import type * as LSP from '../internal/LSPAdapterSpec';
-import {
-  getCompletionEntryDetailsDisplayParts,
-  getCompletionTokenKind,
-} from '../utils/language/language.utils';
 import { BaseTwinTextDocument } from './BaseTwinDocument';
-import type { LocatedTokenResult, TwinRuleRegistry } from './TwinParser.models';
+
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
   readonly regions: LSP.JsxNodeRegion[];
@@ -24,34 +19,6 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
     return (
       this.parsableRegions.find((x) => this.isPositionInRange(position, x.attr.range))?.attr ?? null
     );
-  }
-
-  getCompletionItem(
-    rule: TwinRuleRegistry,
-    locatedToken: LocatedTokenResult,
-    cursorOffset: number,
-  ) {
-    const replaceText = rule.className.replace(locatedToken.lookupText, '');
-    const insertReplacement = t.TextEdit.insert(this.positionAt(cursorOffset), replaceText);
-    const completion = {
-      label: rule.className,
-      kind: getCompletionTokenKind(rule.info.themeSection),
-      detail:
-        getCompletionEntryDetailsDisplayParts({
-          declarationValue: rule.declarationValue,
-          feature: rule.info.meta.feature,
-          themeSection: rule.info.themeSection,
-        })?.text ?? '',
-      labelDetails: {
-        description: rule.declarations.join(','),
-      },
-      insertText: insertReplacement.newText,
-      insertTextFormat: t.InsertTextFormat.PlainText,
-      insertTextMode: t.InsertTextMode.adjustIndentation,
-      textEdit: insertReplacement,
-      textEditText: insertReplacement.newText,
-    } satisfies t.CompletionItem;
-    return completion;
   }
 }
 

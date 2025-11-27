@@ -29,96 +29,6 @@ export const getThemeVariants = (
     }),
   );
 
-const createComposedClass = (
-  token:
-    | TwinParserModel.TwinClassNameToken
-    | TwinParserModel.TwinClassNameVariantToken
-    | TwinParserModel.TwinClassVariantToken
-    | TwinParserModel.AnyTwinClassToken,
-  info: TwinParserModel.ComposedClassInfo,
-): TwinParserModel.TwinComposedClassName => ({ type: 'ComposedClass', token, ...info });
-
-export const createComposedClasses = (
-  groupContent: TwinParserModel.AnyTwinClassToken[],
-  text: string,
-  parentStarts: number,
-  results: TwinParserModel.AnyTwinComposedClass[] = [],
-): TwinParserModel.AnyTwinComposedClass[] => {
-  const nextToken = groupContent.shift();
-  if (!nextToken) return results;
-
-  if (isAnyTokenExceptGroup(nextToken)) {
-    results.push(
-      createComposedClass(nextToken, composedClassInfo(nextToken, { text, start: parentStarts })),
-    );
-    return createComposedClasses(groupContent, text, parentStarts, results);
-  }
-
-  if (isGroupToken(nextToken)) {
-    const newContent = createComposedClasses(
-      nextToken.composes,
-      text.slice(nextToken.base.startOffset, nextToken.base.endOffset),
-      parentStarts,
-    ).map((x) => {
-      x.text = text.slice(x.startOffset, x.endOffset);
-      return x;
-    });
-
-    const base = createComposedClass(
-      nextToken.base,
-      composedClassInfo(nextToken.base, { text, start: parentStarts }),
-    );
-    // const leadingText = base.text;
-    // results.push(
-    //   ...createComposedClasses(
-    //     nextToken.composes,
-    //     text,
-    //     parentStarts,
-    //     newContent.map((x): any => {
-    //       return composedClassInfo(x, { text, start: parentStarts });
-    //     }),
-    //   ),
-    // );
-
-    results.push({
-      type: 'ComposedGroup',
-      ...composedClassInfo(nextToken, { start: parentStarts, text }),
-      token: {
-        base,
-        composes: newContent,
-      },
-    });
-  }
-  return createComposedClasses(groupContent, text, parentStarts, results);
-};
-
-const composedClassInfo = (
-  token: TwinParserModel.AnyTwinClassToken,
-  fullClass: { text: string; start: number },
-): TwinParserModel.ComposedClassInfo => {
-  const tokenText = fullClass.text.slice(token.startOffset, token.endOffset);
-  const variants: string[] = [];
-  let classNameText = tokenText;
-  // if (token.type === 'VARIANT') {
-  //   variants.push(...token.value.map((x) => x.n));
-  // }
-  if (token.type === 'VARIANT_CLASS') {
-    classNameText = token.value[1].value.n;
-    variants.push(...token.value[0].value.map((x) => x.n));
-  }
-  for (const variantText of variants) {
-    classNameText = classNameText.replace(`${variantText}:`, '');
-  }
-  return {
-    text: tokenText,
-    endOffset: token.endOffset,
-    startOffset: token.startOffset,
-    parentStarts: fullClass.start,
-    variants,
-    classNameText,
-  };
-};
-
 export const getRuleResolverInfo = (
   rawRule: AnyInternalTwinRule,
 ): {
@@ -174,19 +84,16 @@ export const isArbitraryToken = isTokenType('ARBITRARY');
 export const isClassNameToken = isTokenType('CLASS_NAME');
 export const isVariantClassToken = isTokenType('VARIANT_CLASS');
 export const isComposedClassName = isTokenType('ComposedClass');
-export const isComposedClassGroup = isTokenType('ComposedGroup');
 
 export const isAnyTokenExceptGroup = (x: unknown) =>
   isClassNameToken(x) || isArbitraryToken(x) || isVariantClassToken(x);
 
 export const isComposedNodeAtOffset = (
-  node: TwinParserModel.AnyTwinComposedClass,
+  node: TwinParserModel.ParsedRuleWithLocation,
   documentOffset: number,
 ) => isOffsetAtLocation(documentOffset, node);
 
 export const isOffsetAtLocation = (
   offset: number,
-  location: TwinParserModel.AnyTwinComposedClass,
-) =>
-  offset >= location.startOffset + location.parentStarts &&
-  offset <= location.endOffset + location.parentStarts;
+  location: TwinParserModel.ParsedRuleWithLocation,
+) => offset >= location.startOffset && offset <= location.endOffset;

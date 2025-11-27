@@ -26,7 +26,7 @@ import * as LspConfig from './LSPConfig.service';
 const resolvedSections = new Map<string, Record<string, any>>();
 const make = Effect.gen(function* () {
   const twinRef = yield* Ref.make<InternalTwFn>(setup(defineConfig({ content: [] })));
-  const dictionaryRef = yield* SubscriptionRef.make(Trie.empty<TwinParserModel.TwinRuleRegistry>());
+  const twinTrie = yield* SubscriptionRef.make(Trie.empty<TwinParserModel.TwinRuleRegistry>());
   const themeVariants = yield* SubscriptionRef.make<
     HashSet.HashSet<TwinParserModel.TwinVariantNode>
   >(HashSet.empty());
@@ -51,7 +51,7 @@ const make = Effect.gen(function* () {
     const twin = yield* Ref.setAndGet(twinRef, setup(config));
     const registry = yield* createRuleCompositions();
     yield* Ref.set(themeVariants, TwinUtils.getThemeVariants(twin.config));
-    yield* SubscriptionRef.set(dictionaryRef, registry);
+    yield* SubscriptionRef.set(twinTrie, registry);
   });
 
   const resolveThemeSection = (section: keyof InternalTwinConfig['theme']) =>
@@ -70,7 +70,7 @@ const make = Effect.gen(function* () {
     twinRef,
     themeCtx,
     styledContext,
-    dictionaryRef,
+    twinTrie,
     themeVariants,
     getConfigRules,
     ruleComposers,

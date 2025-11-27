@@ -3,9 +3,10 @@ import * as Option from 'effect/Option';
 import * as LSP from '../core/LSPContext.service';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
+import { getCompletionItem } from '../models/Completion.model';
 import type {
-  LocatedTokenResult,
-  TwinParsedClasses,
+  ParsedRuleWithLocation,
+  TwinParserOutput,
   TwinRuleRegistry,
 } from '../models/TwinParser.models';
 import { createCompositionsComposer } from '../utils/twin/twinRuleComposer';
@@ -22,19 +23,19 @@ export const getCompletionsAtPosition = LSP.createTwinCompletions({
 
     const valueRegion = document.findRegionAt(position);
     const text = valueRegion?.text;
-    let parserResult: TwinParsedClasses | null = null;
-    let locatedToken: LocatedTokenResult | null | undefined = null;
+    let parserResult: TwinParserOutput | null = null;
+    let locatedToken: ParsedRuleWithLocation | null | undefined = null;
     if (!!valueRegion && !!text) {
       parserResult = parser.runTwinParser({
-        text,
         startOffset: document.offsetAt(valueRegion.range.start),
+        text,
       });
       const handler = createCompositionsComposer(parserResult, document);
 
       locatedToken = handler.findComposedClassAtPosition(cursorOffset);
 
       if (locatedToken) {
-        const rules = yield* parser.findRulesByKey(locatedToken.lookupText);
+        const rules = yield* parser.findRulesByKey(locatedToken.parsed.n);
         twinTokens.push(...rules);
       }
     }
@@ -44,7 +45,7 @@ export const getCompletionsAtPosition = LSP.createTwinCompletions({
       parserResult: Option.fromNullable(parserResult),
       region: region,
       completions: locatedToken
-        ? twinTokens.map((rule) => document.getCompletionItem(rule, locatedToken, cursorOffset))
+        ? twinTokens.map((rule) => getCompletionItem(rule, locatedToken, cursorOffset, document))
         : [],
       twinTokens,
     } satisfies LSP.LSPTwinCompletionsResult;

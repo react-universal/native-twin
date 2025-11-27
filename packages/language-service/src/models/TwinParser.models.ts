@@ -10,12 +10,18 @@ import type {
   ArbitraryToken,
   ClassNameToken,
   GroupToken,
+  TWParsedRule,
   VariantClassToken,
   VariantToken,
 } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
 import type { TwinRuleComposer } from './TwinRuleHandler';
+
+export interface ResolvedTwinResult {
+  entry: TwinRuleRegistry | null;
+  parsedRegion: ParsedRuleWithLocation;
+}
 
 export interface TwinSyntaxError extends WithLocation {
   type: 'SyntaxError';
@@ -27,11 +33,24 @@ export interface TwinParserInput {
   startOffset: number;
 }
 
-export interface TwinParsedClasses {
-  startOffset: number;
-  endOffset: number;
-  originalInput: TwinParserInput;
-  composedClasses: AnyTwinComposedClass[];
+export type AnyRawClassToken =
+  | TwinClassNameToken
+  | TwinClassNameVariantToken
+  | TwinClassVariantToken
+  | AnyTwinClassToken;
+
+export interface ParsedRuleWithLocation extends WithLocation {
+  type: 'ParsedRuleWithLocation';
+  parsed: TWParsedRule;
+  fullText: string;
+  raw: AnyRawClassToken;
+}
+
+export type ParserWithData<A> = P.Parser<A, TwinParserData>;
+
+export interface TwinParserOutput extends WithLocation {
+  type: 'TwinParserOutput';
+  result: ParsedRuleWithLocation[];
 }
 
 export interface TwinParserData {
@@ -65,34 +84,26 @@ export type AnyTwinClassToken =
   | TwinArbitraryToken
   | TwinClassNameVariantToken;
 
-export interface TwinComposedClassName {
-  type: 'ComposedClass';
-  token: AnyTwinClassToken;
-  classNameText: string;
-  variants: string[];
-  text: string;
-  parentStarts: number;
-  startOffset: number;
-  endOffset: number;
-}
-export interface TwinComposedClassGroup extends Omit<TwinComposedClassName, 'token' | 'type'> {
-  type: 'ComposedGroup';
-  token: {
-    base: TwinComposedClassName;
-    composes: AnyTwinComposedClass[];
-  };
-}
+// export interface TwinComposedClassName {
+//   type: 'ComposedClass';
+//   token: AnyTwinClassToken;
+//   classNameText: string;
+//   variants: string[];
+//   text: string;
+//   parentStarts: number;
+//   startOffset: number;
+//   endOffset: number;
+// }
+// export type AnyTwinComposedClass = TwinComposedClassName;
 
-export type AnyTwinComposedClass = TwinComposedClassName | TwinComposedClassGroup;
-
-export interface LocatedTokenResult {
-  fullLoc: WithLocation;
-  group: TwinComposedClassName | null;
-  node: AnyTwinComposedClass;
-  lookupText: string;
-  startOffset: number;
-  endOffset: number;
-}
+// export interface LocatedTokenResult {
+//   fullLoc: WithLocation;
+//   group: TwinComposedClassName | null;
+//   node: AnyTwinComposedClass;
+//   lookupText: string;
+//   startOffset: number;
+//   endOffset: number;
+// }
 
 export type AnyTwinParseResultToken =
   | TwinClassVariantToken

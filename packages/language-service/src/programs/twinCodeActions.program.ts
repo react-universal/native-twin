@@ -3,7 +3,7 @@
 // import * as Option from 'effect/Option';
 // import type * as vscodeLSP from 'vscode-languageserver-protocol';
 // import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
-// import { type TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/diagnostic.model.js';
+// import { type TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/Diagnostic.model.js';
 // import { LSPConstants } from '../models/lsp.constants.js';
 
 // export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.CodeActionParams) {

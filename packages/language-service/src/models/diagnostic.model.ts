@@ -1,61 +1,57 @@
+import * as RA from 'effect/Array';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
-import { isSameRange } from '../utils/vscode.utils.js';
-import { LSPConstants } from './lsp.constants.js';
-import type { TwinComposedClassName, TwinRuleRegistry } from './TwinParser.models.js';
+import { isSameRange } from '../utils/vscode.utils';
+import { LSPConstants } from './lsp.constants';
+import type { TwinComposerHandler } from './TwinLanguageRegion.model';
 
-export interface DiagnosticHandlerInput {
-  composition: TwinComposedClassName;
-  rule: TwinRuleRegistry;
-  parentStart: number;
+export interface DiagnosticReportInput {
   code: TwinDiagnosticCodes;
+  location: vscode.Location;
+  rules?: TwinComposerHandler[];
+  customReason?: string;
 }
 
-export class VscodeDiagnosticItem implements vscode.Diagnostic, Equal.Equal {
-  readonly message: string;
-  readonly code: string;
-  readonly range: vscode.Range;
-  readonly relatedInformation: vscode.DiagnosticRelatedInformation[];
-  readonly source: string;
-  readonly severity: vscode.DiagnosticSeverity;
-  readonly tags: vscode.DiagnosticTag[];
-  readonly codeDescription?: vscode.CodeDescription;
+export class DiagnosticReport implements Equal.Equal {
+  private readonly relatedInfo: vscode.DiagnosticRelatedInformation[];
+  private _diagnostic: vscode.Diagnostic | null = null;
 
-  constructor(data: {
-    range: vscode.Range;
-    code: TwinDiagnosticCodes;
-    entries: TwinComposedClassName[];
-    uri: string;
-    text: string;
-    relatedInfo: vscode.DiagnosticRelatedInformation[];
-    message?: string;
-  }) {
-    this.code = data.code;
-    this.message = data.message
-      ? data.message
-      : `${this.getDiagnosticMessage(data.code)} - '${data.text}'`;
-    this.range = data.range;
-    this.relatedInformation = data.relatedInfo;
-    this.source = LSPConstants.diagnosticProviderSource;
-    this.severity = vscode.DiagnosticSeverity.Warning;
-    this.tags = [vscode.DiagnosticTag.Unnecessary];
+  get code() {
+    return this.input.code;
   }
 
-  //   return RA.join(RA.dedupe(RA.map(entries, (x) => x.declarationProp)), ', ');
-  // }
+  constructor(private readonly input: DiagnosticReportInput) {
+    this.relatedInfo = RA.dedupeWith(
+      this.input.rules ?? [],
+      (a, b) => a.location === b.location,
+    ).map(createRelatedInfo);
+  }
+
+  getDiagnostic(): vscode.Diagnostic {
+    const input = this.input;
+    return (this._diagnostic ??= {
+      code: input.code,
+      message: input.customReason ? input.customReason : `${this.getDiagnosticMessage(input.code)}`,
+      range: input.location.range,
+      relatedInformation: this.relatedInfo,
+      source: LSPConstants.diagnosticProviderSource,
+      severity: vscode.DiagnosticSeverity.Warning,
+      tags: [vscode.DiagnosticTag.Unnecessary],
+    });
+  }
 
   [Equal.symbol](that: unknown): boolean {
     return (
-      that instanceof VscodeDiagnosticItem &&
-      this.message === that.message &&
-      this.code === that.code &&
-      isSameRange(this.range, that.range)
+      that instanceof DiagnosticReport &&
+      this.input.location.uri === that.input.location.uri &&
+      this.input.code === that.input.code &&
+      isSameRange(this.input.location.range, that.input.location.range)
     );
   }
 
   [Hash.symbol](): number {
-    return Hash.array([this.message, this.code]);
+    return Hash.array([this.input.location, this.input.code]);
   }
 
   private getDiagnosticMessage(code: TwinDiagnosticCodes) {
@@ -75,3 +71,6 @@ export enum TwinDiagnosticCodes {
   DuplicatedDeclaration = '001',
   DuplicatedClassName = '002',
 }
+
+const createRelatedInfo = (composition: TwinComposerHandler) =>
+  vscode.DiagnosticRelatedInformation.create(composition.location, composition.className);

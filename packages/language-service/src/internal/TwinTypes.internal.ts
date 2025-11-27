@@ -7,6 +7,7 @@ export type InternalTwinConfig = TailwindConfig<__Theme__ & TailwindPresetTheme>
 export type InternalTwFn = RuntimeTW<InternalTwinConfig['theme'], SheetEntry[]>;
 export type InternalTwinThemeContext = ThemeContext<TailwindPresetTheme>;
 export type AnyInternalTwinRule = InternalTwFn['config']['rules'][number];
+export type AnyInternalTwinThemeKey = AnyInternalTwinRule[1] | (string & {});
 
 // export interface TwinRuleCompletion {
 //   kind: 'rule';

@@ -1,16 +1,16 @@
 import type { SheetEntry } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
-import * as vscode from 'vscode-languageserver';
-import { TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/diagnostic.model';
+import type * as vscode from 'vscode-languageserver';
+import { DiagnosticReport, TwinDiagnosticCodes } from '../models/Diagnostic.model';
 import { type TwinComposerHandler, TwinLanguageRegion } from '../models/TwinLanguageRegion.model';
-import type { AnyTwinComposedClass } from '../models/TwinParser.models';
+import type { ParsedRuleWithLocation } from '../models/TwinParser.models';
 import { LSPAdapterSpec, TwinParserContext } from '../Services';
 
 export interface BaseDiagnosticItem {
   entries: SheetEntry[];
   range: vscode.Range;
-  composition: AnyTwinComposedClass;
+  composition: ParsedRuleWithLocation;
 }
 
 export const getDocumentDiagnosticsProgram = Effect.fn(function* (
@@ -32,6 +32,10 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
     { code: TwinDiagnosticCodes; compositions: TwinComposerHandler[] }
   >();
   for (const { attr: region, region: jsxNode } of regions) {
+    // const parsed = yield* parser.runFullParserEffect(
+    //   region.text,
+    //   document.offsetAt(region.range.start),
+    // );
     const entries = tw(region.text);
     const handler = new TwinLanguageRegion(
       jsxNode,
@@ -57,12 +61,14 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
   const finalDiag = RA.flatMap(
     RA.fromIterable(diagnosticReports.values()),
     ({ compositions, code }) =>
-      compositions.map((comp) => createDiagnostic(comp, code, compositions.map(createRelatedInfo))),
+      compositions.map(
+        (comp) => new DiagnosticReport({ code, location: comp.location, rules: compositions }),
+      ),
   );
 
   return {
     kind: 'full',
-    items: finalDiag.filter((x) => x.code !== TwinDiagnosticCodes.None),
+    items: finalDiag.flatMap((x) => (x.code !== TwinDiagnosticCodes.None ? [] : x.getDiagnostic())),
   } satisfies vscode.DocumentDiagnosticReport;
 });
 
@@ -93,23 +99,3 @@ function getDiagnostics(
     }
   }
 }
-
-const createRelatedInfo = (composition: TwinComposerHandler) =>
-  vscode.DiagnosticRelatedInformation.create(composition.location, composition.className);
-
-const createDiagnostic = (
-  composition: TwinComposerHandler,
-  code: TwinDiagnosticCodes,
-  relatedInfo: vscode.DiagnosticRelatedInformation[],
-) => {
-  return new VscodeDiagnosticItem({
-    range: composition.range,
-    code,
-    entries: composition.classNameTokens,
-    relatedInfo: RA.dedupeWith(relatedInfo, (a, b) => a.location === b.location),
-    text:
-      code === TwinDiagnosticCodes.DuplicatedClassName ? 'Duplicated classname' : 'Rule conflict',
-    uri: composition.location.uri,
-    // message: getDiagnosticMessage(code),
-  });
-};
