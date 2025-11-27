@@ -2,7 +2,6 @@ import type * as VSCDocument from 'vscode-languageserver-textdocument';
 import type * as LSP from '../internal/LSPAdapterSpec';
 import { BaseTwinTextDocument } from './BaseTwinDocument';
 
-
 export class TwinLSPDocument extends BaseTwinTextDocument {
   readonly regions: LSP.JsxNodeRegion[];
   readonly parsableRegions: { region: LSP.JsxNodeRegion; attr: LSP.JsxAttributeValueRegion }[];
@@ -19,6 +18,10 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
     return (
       this.parsableRegions.find((x) => this.isPositionInRange(position, x.attr.range))?.attr ?? null
     );
+  }
+
+  locationAtOffsets(start: number, end: number) {
+    return this.getLocation(this.getRangeFor(start, end));
   }
 }
 
@@ -45,13 +48,13 @@ const fixRegionRanges = (
       const parsableChar = parsableText[cursor];
       const char = originalText[cursor + counterDif];
       if (char !== parsableChar) {
-        counterDif += 1;
+        ++counterDif;
       }
-      cursor++;
+      ++cursor;
       if (!char) break;
     }
-    const finalStart = doc.positionAt(starOffset + counterDif);
-    const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif);
+    const finalStart = doc.positionAt(starOffset + counterDif - 1);
+    const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif - 1);
 
     styledProps.push({
       ...attribute,

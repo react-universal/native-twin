@@ -1,19 +1,19 @@
 /** Documents Service */
-export { TwinLSPDocument } from './models/TwinLSPDocument.model.js';
+export { TwinLSPDocument } from './models/TwinLSPDocument.model';
 /** Language Service */
 export {
   getCompletionEntryDetailsDisplayParts,
   getDocumentationMarkdown,
-} from './utils/language/language.utils.js';
-export { completionRuleToQuickInfo } from './utils/language/quickInfo.utils.js';
-export { getSheetEntryStyles } from './utils/sheet.utils.js';
+} from './utils/language/language.utils';
+export { completionRuleToQuickInfo } from './utils/language/quickInfo.utils';
+export { getSheetEntryStyles } from './utils/sheet.utils';
 
-// export { NativeTwinManager } from './utils/twin/twin.manager.js';
+// export { NativeTwinManager } from './utils/twin/twin.manager';
 
-export { languagePrograms } from './browser.js';
+export { languagePrograms } from './browser';
 export * from './models/lsp.constants';
-export { getClientCapabilities } from './utils/connection.utils.js';
+export { getClientCapabilities } from './utils/connection.utils';
 /** Vscode Client */
-export { getDocumentLanguageLocations } from './utils/extractors/classNames.extractor.js';
+export { getDocumentLanguageLocations } from './utils/extractors/classNames.extractor';
 /** Logger */
-export { createLspLogger, loggerUtils } from './utils/lsp.logger.service.js';
+export { createLspLogger, loggerUtils } from './utils/lsp.logger.service';

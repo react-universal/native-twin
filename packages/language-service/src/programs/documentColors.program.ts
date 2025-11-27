@@ -1,9 +1,10 @@
-import { Array, Option } from 'effect';
+import * as Array from 'effect/Array';
 import * as Effect from 'effect/Effect';
+import * as Stream from 'effect/Stream';
 import type * as vscode from 'vscode-languageserver';
-import { LSPAdapterSpec, TwinParserContext } from '../Services.js';
-import { declarationValueToColorInfo } from '../utils/language/colorInfo.utils.js';
-import { createCompositionsComposer } from '../utils/twin/twinRuleComposer.js';
+import { TwinParserContext } from '../core/TwinParser.service';
+import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
+import { declarationValueToColorInfo } from '../utils/language/colorInfo.utils';
 
 export const getDocumentColors = Effect.fn(function* (
   params: vscode.DocumentColorParams,
@@ -15,52 +16,26 @@ export const getDocumentColors = Effect.fn(function* (
   const twinService = yield* TwinParserContext;
   const document = yield* getLSPDocument(params.textDocument.uri);
 
-  const composers = document.parsableRegions
-    .map((data) => {
-      const parserResult = twinService.runTwinParser({
-        text: data.attr.text,
-        startOffset: document.offsetAt(data.attr.range.start),
-      });
-      const composer = createCompositionsComposer(parserResult, document);
-      return composer;
-    })
-    .flatMap((composer) =>
-      composer.parserResult.result.map((x) => ({
-        className: composer.getCompositionText(x),
-        composition: x,
-      })),
-    );
-
-  const classNames = yield* Effect.all(
-    composers.map((_) =>
-      twinService.getRuleByClassName(_.className).pipe(
-        Effect.map((registry) =>
-          Option.map(registry, (x) => ({
-            className: _,
-            rule: x,
-            composition: _.composition,
-          })).pipe(
-            Option.filter(
-              (x) => x.rule.info.meta.feature === 'colors' || x.rule.info.themeSection === 'colors',
-            ),
-          ),
-        ),
-      ),
+  return yield* Stream.fromIterable(document.parsableRegions).pipe(
+    Stream.mapEffect((region) =>
+      twinService.runFullParserEffect(region.attr.text, document.offsetAt(region.attr.range.start)),
     ),
+    Stream.flattenIterables,
+    Stream.map((result) => {
+      if (!result.entry) return null;
+      if (
+        result.entry.info.styleProperty === 'color' ||
+        result.entry.info.themeSection === 'colors'
+      ) {
+        return declarationValueToColorInfo(
+          result.entry.declarationValue,
+          document.getRangeFor(result.parsedRegion.startOffset, result.parsedRegion.endOffset),
+        );
+      }
+      return null;
+    }),
+    Stream.filter((x) => x !== null),
+    Stream.runCollect,
+    Effect.map(Array.fromIterable),
   );
-
-  return Array.getSomes(classNames).map((comp) =>
-    declarationValueToColorInfo(
-      comp.rule.declarationValue,
-      document.getRangeFor(comp.composition.startOffset - 1, comp.composition.endOffset),
-    ),
-  );
-  // return Option.map(document, (x) =>
-  //   ,
-  // ).pipe(
-  //   Option.match({
-  //     onSome: (result): vscode.ColorInformation[] => result,
-  //     onNone: () => [],
-  //   }),
-  // );
 });

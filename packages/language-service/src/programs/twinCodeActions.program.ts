@@ -1,116 +1,112 @@
-// import * as RA from 'effect/Array';
-// import * as Effect from 'effect/Effect';
-// import * as Option from 'effect/Option';
-// import type * as vscodeLSP from 'vscode-languageserver-protocol';
-// import { TwinLSPDocumentContext } from '../documents/LSPDocuments.service.js';
-// import { type TwinDiagnosticCodes, VscodeDiagnosticItem } from '../models/Diagnostic.model.js';
-// import { LSPConstants } from '../models/lsp.constants.js';
+import { asArray } from '@native-twin/helpers';
+import * as RA from 'effect/Array';
+import * as Effect from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import * as Option from 'effect/Option';
+import * as vscodeLSP from 'vscode-languageserver-protocol';
+import type { JsxAttributeValueRegion } from '../internal/LSPAdapterSpec';
+import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
+import { TwinDiagnosticCodes } from '../models/Diagnostic.model';
+import { LSPConstants } from '../models/lsp.constants';
+import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
-// export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.CodeActionParams) {
-//   const docHandler = yield* TwinLSPDocumentContext;
-//   if (params.context.diagnostics.length === 0) return undefined;
+export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.CodeActionParams) {
+  if (params.context.diagnostics.length === 0) return undefined;
 
-//   const document = yield* docHandler
-//     .getDocument(params.textDocument.uri)
-//     .pipe(Effect.map(Option.getOrUndefined));
+  const { getLSPDocument } = yield* LSPAdapterSpec;
+  // const parser = yield* TwinParserContext;
+  const document = yield* getLSPDocument(params.textDocument.uri);
 
-//   if (!document) return undefined;
+  const diagnostics = RA.filterMap(params.context.diagnostics, (x) => {
+    if (!x.code || !x.relatedInformation || !x.source || !x.severity) {
+      return Option.none();
+    }
 
-//   const diagnostics = RA.filterMap(params.context.diagnostics, (x) => {
-//     if (!x.code || !x.relatedInformation || !x.source || !x.severity) {
-//       return Option.none();
-//     }
+    if (x.source !== LSPConstants.diagnosticProviderSource) return Option.none();
 
-//     if (x.source !== LSPConstants.diagnosticProviderSource) return Option.none();
+    return Option.some(x);
+  });
+  console.log(diagnostics.length);
+  // const startOffset = document.positionToOffset(params.range.start);
+  // const endOffset = document.positionToOffset(params.range.start);
 
-//     return Option.some(
-//       new VscodeDiagnosticItem({
-//         code: x.code as TwinDiagnosticCodes,
-//         relatedInfo: x.relatedInformation,
-//         text: x.message,
-//         message: x.message,
-//         entries: [],
-//         uri: document.uri,
-//         range: x.range,
-//       }),
-//     );
-//   });
-//   console.log(diagnostics.length);
-//   // const startOffset = document.positionToOffset(params.range.start);
-//   // const endOffset = document.positionToOffset(params.range.start);
+  const region = document.findRegionAt(params.range.start);
+  if (!region) return undefined;
 
-//   // const region = yield* docHandler.findTokenAtPosition(document, params.range.start);
+  // const parsed = yield* parser.runFullParserEffect(
+  //   region.text,
+  //   document.offsetAt(region.range.start),
+  // );
+  const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
+    RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
+    RA.map((x) => getActionsForDuplicatedDecl(x, document.uri)),
+    // RA.filterMap((parsedRule) =>
+    // getActionsForDuplicatedDecl(
+    // document,
+    // region,
+    // RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
+    // ),
+    // ),
+  );
 
-//   // const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
-//   //   Option.map(region, (region) =>
-//   //     getDuplicatedDeclarationCodeAction(
-//   //       document,
-//   //       region,
-//   //       RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
-//   //     ),
-//   //   ),
-//   //   Option.getOrElse(() => []),
-//   // );
+  return editsForDuplicatedDeclarations;
+});
 
-//   return [];
-// });
+export const getDuplicatedDeclarationCodeAction = (
+  twinDoc: TwinLSPDocument,
+  region: JsxAttributeValueRegion,
+  diagnostics: vscodeLSP.Diagnostic[],
+) => {
+  const textsToRemove = pipe(
+    RA.flatMap(diagnostics, (x) =>
+      RA.map(asArray(x.relatedInformation), diagnosticRelatedInfoToEdit),
+    ),
+    RA.map((info) => twinDoc.getText(info.textEdit.range)),
+  );
 
-// // export const ___getDuplicatedDeclarationCodeAction = (
-// //   twinDoc: BaseTwinTextDocument,
-// //   region: DocumentLanguageRegion,
-// //   diagnostics: VscodeDiagnosticItem[],
-// // ) => {
-// //   const textsToRemove = pipe(
-// //     RA.flatMap(diagnostics, (x) => RA.map(x.relatedInformation, diagnosticRelatedInfoToEdit)),
-// //     RA.map((info) => twinDoc.getText(info.textEdit.range)),
-// //   );
+  let newText = region.text;
+  for (const edit of textsToRemove) {
+    newText = newText.replace(edit, '');
+  }
+  newText = newText.replaceAll(/\s+/g, ' ');
+  const fix = vscodeLSP.CodeAction.create(
+    'Remove duplicated utilities',
+    vscodeLSP.CodeActionKind.QuickFix,
+  );
 
-// //   let newText = region.text;
-// //   for (const edit of textsToRemove) {
-// //     newText = newText.replace(edit, '');
-// //   }
-// //   newText = newText.replaceAll(/\s+/g, ' ');
-// //   const fix = vscodeLSP.CodeAction.create(
-// //     'Remove duplicated utilities',
-// //     vscodeLSP.CodeActionKind.QuickFix,
-// //   );
+  fix.edit = {
+    changes: {
+      [twinDoc.uri]: asArray(vscodeLSP.TextEdit.replace(region.range, newText)),
+    },
+  };
+  fix.isPreferred = true;
+  fix.diagnostics = diagnostics;
+  return asArray(fix);
+};
 
-// //   fix.edit = {
-// //     changes: {
-// //       [twinDoc.uri]: asArray(vscodeLSP.TextEdit.replace(region.range, newText)),
-// //     },
-// //   };
-// //   fix.isPreferred = true;
-// //   fix.diagnostics = diagnostics;
-// //   return asArray(fix);
-// // };
+const diagnosticRelatedInfoToEdit = (item: vscodeLSP.DiagnosticRelatedInformation) => {
+  return {
+    textEdit: vscodeLSP.TextEdit.replace(item.location.range, ''),
+    message: item.message,
+  };
+};
 
-// // const diagnosticRelatedInfoToEdit = (item: vscodeLSP.DiagnosticRelatedInformation) => {
-// //   return {
-// //     textEdit: vscodeLSP.TextEdit.replace(item.location.range, ''),
-// //     message: item.message,
-// //   };
-// // };
+const getActionsForDuplicatedDecl = (
+  diagnosticItem: vscodeLSP.Diagnostic,
+  uri: string,
+  // region: DocumentLanguageRegion,
+): vscodeLSP.CodeAction => {
+  const textEdits = RA.map(asArray(diagnosticItem.relatedInformation), diagnosticRelatedInfoToEdit);
 
-// // const getActionsForDuplicatedDecl = (
-// //   diagnosticItem: VscodeDiagnosticItem,
-// //   uri: string,
-// //   // region: DocumentLanguageRegion,
-// // ): vscodeLSP.CodeAction => {
-// //   const textEdits = RA.map(
-// //     diagnosticItem.relatedInformation,
-// //     diagnosticRelatedInfoToEdit,
-// //   );
-
-// //   const fix = vscodeLSP.CodeAction.create(
-// //     `Remove duplicated utilities`,
-// //     {
-// //       changes: {
-// //         [uri]: RA.map(textEdits, (x) => x.textEdit),
-// //       },
-// //     },
-// //     vscodeLSP.CodeActionKind.QuickFix,
-// //   );
-// //   fix.isPreferred = true;
-// //   return fix;
-// // };
+  const fix = vscodeLSP.CodeAction.create(
+    `Remove duplicated utilities`,
+    {
+      changes: {
+        [uri]: RA.map(textEdits, (x) => x.textEdit),
+      },
+    },
+    vscodeLSP.CodeActionKind.QuickFix,
+  );
+  fix.isPreferred = true;
+  return fix;
+};

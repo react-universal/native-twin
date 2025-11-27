@@ -1,38 +1,33 @@
+import { asArray } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
-import type * as vscode from 'vscode-languageserver';
+import * as vscode from 'vscode-languageserver';
+import { TwinParserContext } from '../core/TwinParser.service';
+import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 
 export const getDocumentHighLightsProgram = Effect.fn(function* (
-  _params: vscode.DocumentHighlightParams,
+  params: vscode.DocumentHighlightParams,
   _token: vscode.CancellationToken,
   _workDone: vscode.WorkDoneProgressReporter,
   _resultProgress: vscode.ResultProgressReporter<vscode.DocumentHighlight[]> | undefined,
 ) {
-  // const documentsHandler = yield* TwinLSPDocumentContext;
-  // const document = yield* documentsHandler
-  //   .getDocument(params.textDocument.uri)
-  //   .pipe(Effect.map(Option.getOrNull));
+  const { getLSPDocument } = yield* LSPAdapterSpec;
+  const parser = yield* TwinParserContext;
+  const document = yield* getLSPDocument(params.textDocument.uri);
+  const region = document.findRegionAt(params.position);
 
-  // if (!document) return [];
+  if (!region) return [];
+  const parsed = yield* parser.runFullParserEffect(
+    region.text,
+    document.offsetAt(region.range.start),
+  );
 
-  // const cursorOffset = document.offsetAt(params.position);
-  // const region = yield* documentsHandler.findTokenAtPosition(document, params.position);
-  // const highlights: vscode.DocumentHighlight[] = region.pipe(
-  //   Option.flatMap((x) => x.getParsedNodeAtOffset(cursorOffset)),
-  //   Option.map((node) => {
-  //     const highLights: vscode.DocumentHighlight[] = [];
-  //     if (node.token.type === 'CLASS_NAME') {
-  //       highLights.push({
-  //         range: vscode.Range.create(
-  //           document.positionAt(node.bodyLoc.start),
-  //           document.positionAt(node.bodyLoc.end),
-  //         ),
-  //         kind: vscode.DocumentHighlightKind.Text,
-  //       });
-  //     }
-  //     return highLights;
-  //   }),
-  //   Option.getOrElse(() => []),
-  // );
-
-  return yield* Effect.succeed([]);
+  return parsed.flatMap(({ parsedRegion }) => {
+    if (parsedRegion.raw.type !== 'CLASS_NAME') return [];
+    return asArray(
+      vscode.DocumentHighlight.create(
+        document.getRangeFor(parsedRegion.startOffset, parsedRegion.endOffset),
+        vscode.DocumentHighlightKind.Write,
+      ),
+    );
+  });
 });

@@ -1,7 +1,7 @@
 import { type NodePath, traverse } from '@babel/core';
 import { parse } from '@babel/parser';
 import * as t from '@babel/types';
-import type { TwinConfigOptions } from '../../models/lsp.constants.js';
+import type { TwinConfigOptions } from '../../models/lsp.constants';
 
 const matchVariantsObject = (
   properties: t.ObjectExpression['properties'],

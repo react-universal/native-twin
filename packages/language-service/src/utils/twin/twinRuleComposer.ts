@@ -26,7 +26,10 @@ export const createCompositionsComposer = (
   document: TwinLSPDocument,
 ) => {
   const getCompositionRange = (composition: ParsedRuleWithLocation) =>
-    document.getRangeFor(composition.startOffset, composition.endOffset);
+    document.getRangeFor(
+      composition.startOffset + parserResult.startOffset,
+      composition.endOffset + parserResult.endOffset,
+    );
 
   const getClassCompositionText = (composition: TwinClassNameToken) => {
     return parsedRuleToClassName({ ...composition.value, p: 0, v: [] });

@@ -1,9 +1,10 @@
-import type { SheetEntry } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import * as vscode from 'vscode-languageserver-types';
 import type { JsxAttributeValueRegion, JsxNodeRegion } from '../internal/LSPAdapterSpec';
-import { runTwinParser } from '../internal/parsers/TwinParser.runner';
-import type { ParsedRuleWithLocation, TwinParserOutput } from './TwinParser.models';
+import type {
+  ParsedRuleWithLocation,
+  ResolvedTwinResult,
+} from './TwinParser.models';
 
 export class TwinJSXLanguageRegion {
   private _compiled: TwinLanguageRegion[] | null = null;
@@ -21,72 +22,20 @@ export class TwinJSXLanguageRegion {
   }
 }
 
-const fullParsed = runTwinParser;
-// const flattenTwinCompositions = (
-//   parsed: TwinParserOutput,
-//   grouped = parsed.result,
-//   results: ParsedRuleWithLocation[] = [],
-// ): ParsedRuleWithLocation[] => {
-//   const current = grouped.pop();
-
-//   if (!current) return results;
-
-//   if (current.type === 'ComposedClass') {
-//     results.push(current);
-//     return flattenTwinCompositions(parsed, grouped, results);
-//   }
-//   const baseNode = current.token.base;
-//   let leadingText = '';
-//   if (baseNode.token.type === 'CLASS_NAME') {
-//     leadingText += baseNode.text;
-//     if (!baseNode.text.endsWith('-')) {
-//       leadingText += '-';
-//     }
-//   }
-//   for (const child of current.token.composes) {
-//     if (child.type === 'ComposedClass') {
-//       results.push({ ...child, classNameText: leadingText.concat(child.classNameText) });
-//       continue;
-//     }
-//     const newChilds = flattenTwinCompositions(parsed, [child]);
-//     results.push(...newChilds);
-//   }
-
-//   return flattenTwinCompositions(parsed, grouped, results);
-// };
-
 export class TwinLanguageRegion {
-  private _parsed: TwinParserOutput | null = null;
   constructor(
     readonly jsxRegion: JsxNodeRegion,
     readonly twinNode: JsxAttributeValueRegion,
     readonly location: vscode.Location,
-    readonly entries: SheetEntry[],
-  ) {
-    // const flatten = flattenTwinCompositions(this.parsed);
-    // console.log(flatten);
-  }
-
-  get parsed() {
-    return (this._parsed ??= fullParsed({
-      startOffset: this.twinNode.range.start.line,
-      text: this.twinNode.text,
-    }));
-  }
+    readonly parserOutput: ResolvedTwinResult[],
+  ) {}
 
   get parentStarts() {
     return this.location.range.start.character;
   }
 
   get compositions() {
-    return this.parsed.result.map(
-      (x) =>
-        new TwinComposerHandler(
-          x,
-          this.getLocationOf(x),
-          this.entries.filter((entry) => entry.className === x.parsed.n),
-        ),
-    );
+    return this.parserOutput.map((x) => new TwinComposerHandler(x, this.getLocationOf(x.parsedRegion)));
     // return (this._compositions ||= this.parsed.result.flatMap((item) => {
     //   if (item.type === 'ComposedClass') {
     //     const entries = this.entries.filter((x) => x.className === item.text);
@@ -112,27 +61,21 @@ export class TwinLanguageRegion {
     // }));
   }
 
-  getLocationOf(node: ParsedRuleWithLocation) {
+  getLocationOf(node: ParsedRuleWithLocation): vscode.Location {
     const range = vscode.Range.create(
       vscode.Position.create(
         this.location.range.start.line,
-        node.startOffset + this.parentStarts - 1,
+        node.startOffset,
       ),
-      vscode.Position.create(this.location.range.end.line, node.endOffset + this.parentStarts - 1),
+      vscode.Position.create(this.location.range.end.line, node.endOffset - 1),
     );
     return vscode.Location.create(this.location.uri, range);
   }
 }
 
 export class TwinComposerHandler {
-  get compositions(): ParsedRuleWithLocation[] {
-    return [this.node];
-  }
-  get className() {
-    return this.node.parsed.n;
-  }
   get classNameTokens() {
-    return asArray(this.node);
+    return asArray(this.parsedRule);
   }
 
   get range() {
@@ -140,28 +83,25 @@ export class TwinComposerHandler {
   }
 
   get declarations() {
-    return this.sheetEntries.flatMap((x) => x.declarations);
+    if (!this.parsedRule.entry) return [];
+    return this.parsedRule.entry.declarations;
   }
 
   constructor(
-    readonly node: ParsedRuleWithLocation,
+    readonly parsedRule: ResolvedTwinResult,
     readonly location: vscode.Location,
-    readonly sheetEntries: SheetEntry[],
   ) {}
 
   get ids() {
-    const selectors = this.sheetEntries.map((x) => ({
-      selectors: x.selectors.sort().join(''),
-      declarations: x.declarations
-        .map((x) => x.prop)
-        .sort()
-        .join('')
-        .concat(`${this.node.startOffset}`),
-      className: x.className,
-    }));
+    const selectors = this.parsedRule.parsedRegion.parsed.v.sort().join('');
+    const declarations = this.declarations
+      .sort()
+      .join('')
+      .concat(`${this.parsedRule.parsedRegion.startOffset}`);
+    const className = this.parsedRule.parsedRegion.parsed.n;
     return {
-      ruleID: selectors.map((x) => x.selectors.concat(x.declarations)).join('_'),
-      classNameID: selectors.map((x) => x.selectors.concat(x.className)).join('_'),
+      ruleID: selectors.concat(declarations),
+      classNameID: selectors.concat(className),
     };
   }
 

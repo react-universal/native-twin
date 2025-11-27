@@ -1,12 +1,14 @@
-import { getCompletionsAtPosition } from './completions.program.js';
-import { getDocumentDiagnosticsProgram } from './diagnostics.program.js';
-import { getDocumentColors } from './documentColors.program.js';
-import { getDocumentHighLightsProgram } from './documentHighlight.program.js';
-import { getHoverDetails } from './getHoverDetails.program.js';
-import { getCompletionEntryDetails } from './resolveCompletion.program.js';
+import { getCompletionsAtPosition } from './completions.program';
+import { getDocumentDiagnosticsProgram } from './diagnostics.program';
+import { getDocumentColors } from './documentColors.program';
+import { getDocumentHighLightsProgram } from './documentHighlight.program';
+import { getHoverDetails } from './getHoverDetails.program';
+import { getCompletionEntryDetails } from './resolveCompletion.program';
+import { twinCodeActionsProgram } from './twinCodeActions.program';
 
 export const languagePrograms = {
   getCompletionsAtPosition,
+  twinCodeActionsProgram,
   getDocumentDiagnosticsProgram,
   getDocumentColors,
   getDocumentHighLightsProgram,

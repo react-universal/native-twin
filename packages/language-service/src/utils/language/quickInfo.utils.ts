@@ -1,6 +1,6 @@
 import type { SheetEntry } from '@native-twin/css';
 import * as vscode from 'vscode-languageserver-types';
-import { getDocumentationMarkdown } from './language.utils.js';
+import { getDocumentationMarkdown } from './language.utils';
 
 export const completionRulesToQuickInfo = (
   sheetEntry: SheetEntry[],

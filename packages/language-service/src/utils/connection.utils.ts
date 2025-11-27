@@ -45,7 +45,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
       textDocumentSync: vscode.TextDocumentSyncKind.Full,
       colorProvider: true,
       hoverProvider: true,
-      documentHighlightProvider: false,
+      documentHighlightProvider: true,
       codeActionProvider: true,
       workspaceSymbolProvider: {
         resolveProvider: true,

@@ -1,11 +1,12 @@
 import type { SheetEntry } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
+import * as Stream from 'effect/Stream';
 import type * as vscode from 'vscode-languageserver';
+import { TwinParserContext } from '../core/TwinParser.service';
+import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import { DiagnosticReport, TwinDiagnosticCodes } from '../models/Diagnostic.model';
-import { type TwinComposerHandler, TwinLanguageRegion } from '../models/TwinLanguageRegion.model';
-import type { ParsedRuleWithLocation } from '../models/TwinParser.models';
-import { LSPAdapterSpec, TwinParserContext } from '../Services';
+import type { ParsedRuleWithLocation, ResolvedTwinResult } from '../models/TwinParser.models';
 
 export interface BaseDiagnosticItem {
   entries: SheetEntry[];
@@ -24,78 +25,85 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
   const { getLSPDocument } = yield* LSPAdapterSpec;
   const parser = yield* TwinParserContext;
   const document = yield* getLSPDocument(params.textDocument.uri);
-  const tw = yield* parser.data.twinRef.get;
 
   const regions = document.parsableRegions;
-  const diagnosticReports = new Map<
-    string,
-    { code: TwinDiagnosticCodes; compositions: TwinComposerHandler[] }
-  >();
-  for (const { attr: region, region: jsxNode } of regions) {
-    // const parsed = yield* parser.runFullParserEffect(
-    //   region.text,
-    //   document.offsetAt(region.range.start),
-    // );
-    const entries = tw(region.text);
-    const handler = new TwinLanguageRegion(
-      jsxNode,
-      region,
-      document.getLocation(region.range),
-      entries,
-    );
-    getDiagnostics(handler.compositions, (code, ...compositions) => {
-      const { classNameID, ruleID } = compositions[0].ids;
-      const id = (code === TwinDiagnosticCodes.DuplicatedClassName ? classNameID : ruleID).concat(
-        `${code}`,
-      );
-      if (!diagnosticReports.has(ruleID)) {
-        diagnosticReports.set(id, { code, compositions });
-        return;
-      }
-      const ruleDup = diagnosticReports.get(ruleID)!;
-      ruleDup.compositions.push(...compositions);
-      diagnosticReports.set(ruleID, ruleDup);
-    });
-  }
+  return yield* Stream.fromIterable(regions).pipe(
+    Stream.mapEffect(({ attr }) =>
+      parser.runFullParserEffect(attr.text, document.offsetAt(attr.range.start)),
+    ),
+    Stream.map((results) => {
+      const diagnosticReports = new Map<
+        string,
+        { code: TwinDiagnosticCodes; rules: ResolvedTwinResult[] }
+      >();
+      evaluateParsedRegion(results, (code, reportID, ...info) => {
+        const id = reportID.concat(`${code}`);
+        diagnosticReports.set(id, { code, rules: info });
+      });
 
-  const finalDiag = RA.flatMap(
-    RA.fromIterable(diagnosticReports.values()),
-    ({ compositions, code }) =>
-      compositions.map(
-        (comp) => new DiagnosticReport({ code, location: comp.location, rules: compositions }),
-      ),
+      return RA.flatMap(RA.fromIterable(diagnosticReports.values()), ({ code, rules }) => {
+        return rules.map((rule) => {
+          const info = rules.map((x) => ({
+            location: document.locationAtOffsets(
+              x.parsedRegion.startOffset,
+              x.parsedRegion.endOffset,
+            ),
+            text: x.entry?.className ?? '',
+          }));
+          return new DiagnosticReport({
+            code,
+            location: document.locationAtOffsets(
+              rule.parsedRegion.startOffset,
+              rule.parsedRegion.endOffset,
+            ),
+            rules: info,
+          });
+        });
+      });
+    }),
+    Stream.flattenIterables,
+    Stream.runCollect,
+    Effect.map(
+      (reports) =>
+        ({
+          kind: 'full',
+          items: RA.fromIterable(reports).flatMap((x) =>
+            x.code === TwinDiagnosticCodes.None ? [] : x.getDiagnostic(),
+          ),
+        }) satisfies vscode.DocumentDiagnosticReport,
+    ),
   );
 
-  return {
-    kind: 'full',
-    items: finalDiag.flatMap((x) => (x.code !== TwinDiagnosticCodes.None ? [] : x.getDiagnostic())),
-  } satisfies vscode.DocumentDiagnosticReport;
-});
+  function evaluateParsedRegion(
+    regions: ResolvedTwinResult[],
+    report: (
+      code: TwinDiagnosticCodes,
+      id: string,
+      target: ResolvedTwinResult,
+      source: ResolvedTwinResult,
+    ) => void,
+  ) {
+    const seen = new Map<string, ResolvedTwinResult>();
 
-function getDiagnostics(
-  compositions: TwinComposerHandler[],
-  report: (
-    code: TwinDiagnosticCodes,
-    target: TwinComposerHandler,
-    source: TwinComposerHandler,
-  ) => void,
-) {
-  const seen = new Map<string, TwinComposerHandler>();
-  for (const composition of compositions) {
-    const entries = composition.sheetEntries;
-    const { classNameID, ruleID } = composition.ids;
-    const ruleComposition = seen.get(ruleID);
-    const classComposition = seen.get(classNameID);
-    if (classComposition && composition !== classComposition) {
-      report(TwinDiagnosticCodes.DuplicatedClassName, seen.get(classNameID)!, composition);
-      continue;
-    } else {
-      seen.set(classNameID, composition);
-    }
-    if (ruleComposition && composition !== ruleComposition && entries.length > 0) {
-      report(TwinDiagnosticCodes.DuplicatedDeclaration, seen.get(ruleID)!, composition);
-    } else {
-      seen.set(ruleID, composition);
+    for (const node of regions) {
+      if (!node.entry) continue;
+      const selectors = node.parsedRegion.parsed.v.sort().join('');
+      const ruleID = selectors.concat(node.entry.declarations.sort().join(''));
+      const classNameID = selectors.concat(node.parsedRegion.fullText);
+      const ruleComposition = seen.get(ruleID);
+      const classComposition = seen.get(classNameID);
+
+      if (classComposition && node !== classComposition) {
+        report(TwinDiagnosticCodes.DuplicatedClassName, classNameID, classComposition, node);
+      } else {
+        seen.set(classNameID, node);
+      }
+
+      if (ruleComposition && node !== ruleComposition) {
+        report(TwinDiagnosticCodes.DuplicatedDeclaration, ruleID, ruleComposition, node);
+      } else {
+        seen.set(ruleID, node);
+      }
     }
   }
-}
+});

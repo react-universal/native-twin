@@ -2,9 +2,9 @@ import { sheetEntriesToCss } from '@native-twin/css';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import type * as vscode from 'vscode-languageserver';
-import { TwinParserContext } from '../core/TwinParser.service.js';
-import * as Completions from '../utils/language/completions.maps.js';
-import { getSheetEntryStyles } from '../utils/sheet.utils.js';
+import { TwinParserContext } from '../core/TwinParser.service';
+import * as Completions from '../utils/language/completions.maps';
+import { getSheetEntryStyles } from '../utils/sheet.utils';
 
 export const getCompletionEntryDetails = Effect.fn(function* (
   entry: vscode.CompletionItem,

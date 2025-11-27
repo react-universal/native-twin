@@ -39,14 +39,15 @@ export const Predicates = {
 };
 
 export const ComposedClass = {
-  of: (...args: [raw: TwinParserModel.AnyRawClassToken, parsed: TWParsedRule]): TwinParserModel.ParsedRuleWithLocation =>
-    createComposedClass(...args),
+  of: (
+    ...args: [raw: TwinParserModel.AnyRawClassToken, parsed: TWParsedRule]
+  ): TwinParserModel.ParsedRuleWithLocation => createComposedClass(...args),
 
   createComposedClasses: (
     output: P.ResultType<TwinParserModel.AnyTwinParseResultToken[], TwinParserModel.TwinParserData>,
   ): TwinParserModel.TwinParserOutput => ({
     type: 'TwinParserOutput',
-    endOffset: output.cursor,
+    endOffset: output.cursor + output.data.input.startOffset,
     startOffset: output.data.input.startOffset,
     result: output.isError
       ? []
@@ -72,8 +73,8 @@ const mapParserToLocation = <A extends object>(
   initialIndex: number,
 ): TwinParserModel.WithLocation & A => ({
   ...x.result,
-  startOffset: initialIndex,
-  endOffset: x.cursor,
+  startOffset: initialIndex + x.data.input.startOffset,
+  endOffset: x.cursor + x.data.input.startOffset,
 });
 
 const createComposedClasses = (
@@ -139,4 +140,3 @@ const createParsedRule = (token: TwinParserModel.AnyTwinClassToken): TWParsedRul
   absurd(token as never);
   return ParsedRule.mergeParsedRule({});
 };
-

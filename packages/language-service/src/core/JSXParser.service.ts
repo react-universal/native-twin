@@ -126,7 +126,7 @@ const make = Effect.gen(function* () {
         range: getNodeRange(document, prop.attribute),
       });
     });
- 
+
     const nodeRange = getNodeRange(document, node);
     const tagName = getJSXNodeTagName(node);
     const tagNameRange = getNodeRange(document, tagName);
@@ -281,103 +281,7 @@ const make = Effect.gen(function* () {
     getJSXMappedProps,
     getJSXElementChilds,
   };
-
-  // function parseTwinJSXNodeProp(prop: TwinDslModels.NodeStyledProp, _document: TextDocument) {
-  //   const parsedNodes = twinParser.runTwinParser({
-  //     text: prop.twinCX,
-  //     startOffset: prop.valueTextNode?.getPos() ?? prop.node.getPos(),
-  //   });
-  //   return Stream.fromIterable(parsedNodes.composedClasses).pipe(
-  //     Stream.mapEffect((composedClass) =>
-  //       Effect.all({
-  //         composedClass: Effect.succeed(composedClass),
-  //         evaluated: twinParser.getRuleByClassName(composedClass.classNameText),
-  //       }),
-  //     ),
-  //     Stream.map((result) =>
-  //       Option.map(result.evaluated, (evaluated) => ({
-  //         evaluated,
-  //         composedClass: result.composedClass,
-  //       })).pipe(Option.getOrElse(() => ({ composedClass: result.composedClass }))),
-  //     ),
-  //     Stream.runCollect,
-  //     Effect.map(RA.fromIterable),
-  //     Effect.map((parsed) => ({ parsed, prop })),
-  //   );
-  // }
-
-  // function flatJSXDeclarator(declarator: TwinDslModels.NodeJSXDeclarator) {
-  //   const rootPath = `${declarator.filename}-${declarator.identifier}`;
-  //   const mapped = new Map(flattenNode(declarator.jsxElement, [rootPath]));
-  //   return mapped;
-  // }
-
-  // function flattenNode(node: JSXNode, currentPath: string[]): [string, JSXNode][] {
-  //   const nextPath = [...currentPath, `${node.index}`];
-  //   const childs = node.childs.flatMap((x) => flattenNode(x, nextPath));
-  //   return [[nextPath.join('-').concat(node.id), node], ...childs];
-  // }
-
-  // function runTwinOnSourceFile(sourceFile: ts.SourceFile) {
-  //   return Effect.gen(function* () {
-  //     const parsed = yield* parseSourceFile(sourceFile);
-
-  //     const flattenNodes = parsed.jsxDeclarators.flatMap((x) =>
-  //       RA.fromIterable(flatJSXDeclarator(x).values()),
-  //     );
-
-  //     return yield* Stream.fromIterable(flattenNodes).pipe(
-  //       Stream.flatMap((jsxNode) => {
-  //         return Stream.fromIterable(jsxNode.styledProps).pipe(
-  //           Stream.mapEffect((prop) => parseTwinJSXNodeProp(prop)),
-  //           Stream.map((evaluated) => Object.assign(evaluated, { jsxNode })),
-  //         );
-  //       }),
-  //       Stream.runCollect,
-  //       Effect.map((chunks) => {
-  //         return {
-  //           jsxNodes: RA.fromIterable(chunks),
-  //           sourceFile,
-  //         };
-  //       }),
-  //     );
-  //   });
-  // }
-  // const getTwinJSXNode = (
-  //   node: TwinDslModels.AnyJSXElement,
-  //   jsxParent: JSXNode | null = null,
-  // ): JSXNode => {
-  //   const tagName = getJSXNodeTagName(node).getText();
-  //   const styledProps = getJSXMappedProps(node);
-  //   const result = new JSXNode({ node, styledProps, tagName, parent: jsxParent });
-  //   result.childs = getJSXElementChilds(node).map((_) => getTwinJSXNode(_, result));
-
-  //   return result;
-  // };
-  // function parseSourceFile(sourceFile: ts.SourceFile) {
-  //   return Stream.fromIterable(sourceFile.getStatements()).pipe(
-  //     Stream.filterMap((_) => Option.fromNullable(getJSXElementStatement(_))),
-  //     Stream.mapEffect(({ jsxElement, declarator }) =>
-  //       Effect.zip(Effect.succeed(declarator), Effect.succeed(getTwinJSXNode(jsxElement))),
-  //     ),
-  //     Stream.map(([...args]) => makeNodeJSXDeclarator(...args)),
-  //     Stream.runCollect,
-  //     Effect.map((declarations) => new TwinSourceFile(sourceFile, RA.fromIterable(declarations))),
-  //   );
-  // }
 });
-
-// const makeNodeJSXDeclarator = (
-//   declarator: ts.BindingName,
-//   jsxElement: JSXNode,
-// ): TwinDslModels.NodeJSXDeclarator => ({
-//   _tag: 'NodeJSXDeclarator',
-//   binding: declarator,
-//   filename: jsxElement.filename,
-//   identifier: declarator.getText(),
-//   jsxElement,
-//   node: declarator,
-// });
 
 export interface JSXParser extends Effect.Effect.Success<typeof make> {}
 export const JSXParser = Context.GenericTag<JSXParser>('JSXParser');

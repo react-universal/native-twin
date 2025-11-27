@@ -50,24 +50,20 @@ const program = Effect.gen(function* () {
     languagePrograms.getDocumentColors(...params).pipe(Runtime.runPromise),
   );
 
-  Connection.onDocumentHighlight(async (..._args) => {
-    // const data = await languagePrograms
-    //   .getDocumentHighLightsProgram(...args)
-    //   .pipe(Runtime.runPromise);
-    // return data;
-    return null;
+  Connection.onDocumentHighlight(async (...args) => {
+    const data = await languagePrograms
+      .getDocumentHighLightsProgram(...args)
+      .pipe(Runtime.runPromise);
+    return data;
   });
 
   Connection.onSelectionRanges(async (_params, _token, _, __) => {
     return [];
   });
 
-  Connection.onCodeAction(async (_params, _token, _workDone) => {
-    // const data = await languagePrograms.twinCodeActionsProgram(params).pipe(Runtime.runPromise);
-
-    // return data;
-    return [];
-  });
+  Connection.onCodeAction(async (params, _token, _workDone) =>
+    languagePrograms.twinCodeActionsProgram(params).pipe(Runtime.runPromise),
+  );
 
   Connection.onCodeActionResolve(async (params) => {
     // console.log('PARAMS: ', params);
@@ -76,13 +72,14 @@ const program = Effect.gen(function* () {
     };
   });
 
+  Connection.listen();
+  const listener = documents.listen(Connection);
+
   Connection.onShutdown(() => {
     Connection.console.log('shootDown');
     Connection.dispose();
+    listener.dispose();
   });
-
-  Connection.listen();
-  const listener = documents.listen(Connection);
 
   Effect.addFinalizer((exit) => {
     Connection.console.debug('Disposing Connection');
