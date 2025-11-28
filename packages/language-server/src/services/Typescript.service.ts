@@ -41,6 +41,7 @@ export const TypescriptContextLive = Effect.gen(function* () {
 
   return TypeScriptProgram.of({
     getSourceFile,
+    project,
   });
 
   function getCompilerOptions() {

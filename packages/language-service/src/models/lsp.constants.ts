@@ -32,7 +32,8 @@ const DEFAULT_PLUGIN_CONFIG = {
   tsConfigPath: './tsconfig.json',
   twinConfigPath: './tailwind.config.ts',
   completions: true,
-  diagnostics: true,
+  diagnostics: false,
+  format: false,
   trace: {
     server: 'off',
   },
@@ -74,6 +75,7 @@ export interface TwinConfigOptions {
   twinConfigPath: string;
   completions: boolean;
   diagnostics: boolean;
+  format: boolean;
   trace: {
     server: 'off' | 'messages' | 'verbose';
   };

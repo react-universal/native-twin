@@ -1,118 +1,69 @@
-import { asArray } from '@native-twin/helpers';
-import * as vscode from 'vscode-languageserver-types';
-import type { JsxAttributeValueRegion, JsxNodeRegion } from '../internal/LSPAdapterSpec';
-import type {
-  ParsedRuleWithLocation,
-  ResolvedTwinResult,
-} from './TwinParser.models';
+// import * as vscode from 'vscode-languageserver-types';
+// import type { JsxAttributeValueRegion, JsxNodeRegion } from '../internal/LSPAdapterSpec';
+// import type { ParsedRuleWithLocation, ResolvedTwinResult } from './TwinParser.models';
 
-export class TwinJSXLanguageRegion {
-  private _compiled: TwinLanguageRegion[] | null = null;
-  constructor(
-    readonly region: JsxNodeRegion,
-    readonly parsed: ParsedRuleWithLocation,
-  ) {}
+// export class TwinLanguageRegion {
+//   constructor(
+//     readonly jsxRegion: JsxNodeRegion,
+//     readonly twinNode: JsxAttributeValueRegion,
+//     readonly location: vscode.Location,
+//     readonly parserOutput: ResolvedTwinResult[],
+//   ) {}
 
-  get twiNodes() {
-    return this._compiled;
-  }
+//   get parentStarts() {
+//     return this.location.range.start.character;
+//   }
 
-  compiledValue() {
-    // return new TwinJSXLanguageRegion();
-  }
-}
+//   get compositions() {
+//     return this.parserOutput.map(
+//       (x) => new TwinComposerHandler(x, this.getLocationOf(x.parsedRegion)),
+//     );
+//   }
 
-export class TwinLanguageRegion {
-  constructor(
-    readonly jsxRegion: JsxNodeRegion,
-    readonly twinNode: JsxAttributeValueRegion,
-    readonly location: vscode.Location,
-    readonly parserOutput: ResolvedTwinResult[],
-  ) {}
+//   getLocationOf(node: ParsedRuleWithLocation): vscode.Location {
+//     const range = vscode.Range.create(
+//       vscode.Position.create(this.location.range.start.line, node.startOffset),
+//       vscode.Position.create(this.location.range.end.line, node.endOffset - 1),
+//     );
+//     return vscode.Location.create(this.location.uri, range);
+//   }
+// }
 
-  get parentStarts() {
-    return this.location.range.start.character;
-  }
+// export class TwinComposerHandler {
+//   get range() {
+//     return this.location.range;
+//   }
 
-  get compositions() {
-    return this.parserOutput.map((x) => new TwinComposerHandler(x, this.getLocationOf(x.parsedRegion)));
-    // return (this._compositions ||= this.parsed.result.flatMap((item) => {
-    //   if (item.type === 'ComposedClass') {
-    //     const entries = this.entries.filter((x) => x.className === item.text);
-    //     return asArray(new TwinComposerHandler(item, this.getLocationOf(item), entries));
-    //   }
-    //   const baseNode = item.token.base;
-    //   let leadingText = '';
-    //   if (baseNode.token.type === 'CLASS_NAME') {
-    //     leadingText += baseNode.text;
-    //     if (!baseNode.text.endsWith('-')) {
-    //       leadingText += '-';
-    //     }
-    //   }
-    //   return item.token.composes.map(
-    //     (x) =>
-    //       new TwinComposerHandler(
-    //         x,
-    //         this.getLocationOf(x),
-    //         this.entries.filter((entry) => entry.className === leadingText.concat(x.text)),
-    //         item.token.base,
-    //       ),
-    //   );
-    // }));
-  }
+//   get declarations() {
+//     return !this.parsedRule.entry ? [] : this.parsedRule.entry.declarations;
+//   }
 
-  getLocationOf(node: ParsedRuleWithLocation): vscode.Location {
-    const range = vscode.Range.create(
-      vscode.Position.create(
-        this.location.range.start.line,
-        node.startOffset,
-      ),
-      vscode.Position.create(this.location.range.end.line, node.endOffset - 1),
-    );
-    return vscode.Location.create(this.location.uri, range);
-  }
-}
+//   constructor(
+//     readonly parsedRule: ResolvedTwinResult,
+//     readonly location: vscode.Location,
+//   ) {}
 
-export class TwinComposerHandler {
-  get classNameTokens() {
-    return asArray(this.parsedRule);
-  }
+//   get ids() {
+//     const selectors = this.parsedRule.parsedRegion.parsed.v.sort().join('');
+//     const declarations = this.declarations
+//       .sort()
+//       .join('')
+//       .concat(`${this.parsedRule.parsedRegion.startOffset}`);
+//     const className = this.parsedRule.parsedRegion.parsed.n;
+//     return {
+//       ruleID: selectors.concat(declarations),
+//       classNameID: selectors.concat(className),
+//     };
+//   }
 
-  get range() {
-    return this.location.range;
-  }
+//   // get classesID() {
+//   //   return this.sheetEntries
+//   //     .flatMap((x) => x.selectors.sort().join(':').concat(x.className))
+//   //     .join('');
+//   // }
 
-  get declarations() {
-    if (!this.parsedRule.entry) return [];
-    return this.parsedRule.entry.declarations;
-  }
-
-  constructor(
-    readonly parsedRule: ResolvedTwinResult,
-    readonly location: vscode.Location,
-  ) {}
-
-  get ids() {
-    const selectors = this.parsedRule.parsedRegion.parsed.v.sort().join('');
-    const declarations = this.declarations
-      .sort()
-      .join('')
-      .concat(`${this.parsedRule.parsedRegion.startOffset}`);
-    const className = this.parsedRule.parsedRegion.parsed.n;
-    return {
-      ruleID: selectors.concat(declarations),
-      classNameID: selectors.concat(className),
-    };
-  }
-
-  // get classesID() {
-  //   return this.sheetEntries
-  //     .flatMap((x) => x.selectors.sort().join(':').concat(x.className))
-  //     .join('');
-  // }
-
-  // private getClassnameCompositions(composition: TwinComposedClassName) {}
-}
+//   // private getClassnameCompositions(composition: TwinComposedClassName) {}
+// }
 
 // const getUniqueClassName = (entry: SheetEntry) => entry.selectors.join(':').concat(entry.className);
 

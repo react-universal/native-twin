@@ -124,6 +124,12 @@
             "default": true,
             "markdownDescription": "Controls whether Native Twin intellisense is enabled or not."
           },
+          "nativeTwin.format": {
+            "scope": "window",
+            "type": "boolean",
+            "default": true,
+            "description": "Enable/Disable Native twin format (based on precedence)"
+          },
           "nativeTwin.trace.server": {
             "scope": "window",
             "type": "string",

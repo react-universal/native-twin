@@ -101,9 +101,7 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
 
       if (classComposition && node !== classComposition) {
         report(TwinDiagnosticCodes.DuplicatedClassName, classNameID, classComposition, node);
-      } else {
-        seen.set(classNameID, node);
-      }
+      } else seen.set(classNameID, node);
 
       if (ruleComposition && node !== ruleComposition) {
         report(TwinDiagnosticCodes.DuplicatedDeclaration, ruleID, node, ruleComposition);

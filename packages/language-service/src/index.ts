@@ -7,7 +7,7 @@ export {
   addServerRequestHandler,
   getClientCapabilities,
 } from './utils/connection.utils';
-export { getDocumentLanguageLocations } from './utils/extractors/classNames.extractor';
+export { getDocumentLanguageLocations } from './utils/language/babelParser';
 export {
   getCompletionEntryDetailsDisplayParts,
   getDocumentationMarkdown,

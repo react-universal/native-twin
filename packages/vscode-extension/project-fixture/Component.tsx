@@ -10,7 +10,7 @@ export const Component = () => {
     </div>
   );
 };
-   
+
 createVariants({
   base: 'bg-blue-200 bg-red-500 bg-black translate-x-2',
   variants: {
