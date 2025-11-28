@@ -113,6 +113,14 @@ const make = Effect.gen(function* () {
       const attrRange = getNodeRange(document, prop.value);
 
       const attrValue = getJSXAttributeValue(prop.attribute);
+      if (
+        attrValue.expression &&
+        ts.Node.isTemplateExpression(attrValue.expression) &&
+        attrValue.expression.getText().startsWith('`') &&
+        attrValue.expression.getText().endsWith('`')
+      ) {
+        attrRange.start.character += 1;
+      }
       const attributeValue = Spec.TwinLSPNode.createJsxAttributeValue({
         range: attrRange,
         getText: () => prop.value.getText(),
@@ -252,20 +260,23 @@ const make = Effect.gen(function* () {
         return result;
       }
       if (ts.Node.isTemplateExpression(expression)) {
-        const literals = [expression.getHead().getText()];
-        const expressions: ts.Expression[] = [];
-        for (const span of expression.getTemplateSpans()) {
-          const literal = span.getLiteral();
-          if (ts.Node.isTemplateMiddle(literal)) {
-            literals.push(literal.getText());
-          } else {
-            literals.push(literal.getText());
-          }
-          const expression = span.getExpression();
-          expressions.push(expression);
-        }
-        result.originalText = literals.map((x) => x.trim()).join(' ');
-        result.twinCX = cx`${result.originalText}`;
+        // result.originalText = expression.getText();
+        // const literals = [expression.getHead().getText()];
+        // for (const span of expression.getTemplateSpans()) {
+        //   const literal = span.getLiteral();
+        //   if (ts.Node.isTemplateMiddle(literal)) {
+        //     literals.unshift(literal.getText());
+        //   } else {
+        //     span.getExpression().ge
+        //     literals.push(literal.getFullText());
+        //   }
+        // }
+        result.originalText = expression.getText();
+        // literals
+        //   .map((x) => x.trim())
+        //   .join(' ')
+        //   .replaceAll(/[`,{,},$]/g, '');
+        result.twinCX = cx`${result.originalText.replaceAll(/[`,{,},$]/g, '')}`;
         result.expression = expression;
         result.valueTextNode = expression;
         return result;

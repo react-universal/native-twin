@@ -38,7 +38,13 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
       >();
       evaluateParsedRegion(results, (code, reportID, ...info) => {
         const id = reportID.concat(`${code}`);
-        diagnosticReports.set(id, { code, rules: info });
+        const report = diagnosticReports.get(id);
+        if (!report) {
+          diagnosticReports.set(id, { code, rules: info });
+          return;
+        }
+        report.rules.push(...info);
+        diagnosticReports.set(id, report);
       });
 
       return RA.flatMap(RA.fromIterable(diagnosticReports.values()), ({ code, rules }) => {
@@ -100,7 +106,7 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
       }
 
       if (ruleComposition && node !== ruleComposition) {
-        report(TwinDiagnosticCodes.DuplicatedDeclaration, ruleID, ruleComposition, node);
+        report(TwinDiagnosticCodes.DuplicatedDeclaration, ruleID, node, ruleComposition);
       } else {
         seen.set(ruleID, node);
       }

@@ -30,5 +30,7 @@ export const parseLSPConfigInput = (config: Partial<TwinConfigOptions>): TwinCon
     functions: configOptionOrDefault(config, 'functions'),
     jsxAttributes: configOptionOrDefault(config, 'jsxAttributes'),
     trace: configOptionOrDefault(config, 'trace'),
+    completions: configOptionOrDefault(config, 'completions'),
+    diagnostics: configOptionOrDefault(config, 'diagnostics'),
   };
 };

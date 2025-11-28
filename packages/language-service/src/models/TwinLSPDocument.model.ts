@@ -38,6 +38,16 @@ const fixRegionRanges = (
 
     const subset = new Set([originalText, parsableText, documentText]);
     if (subset.size === 3) {
+      if (attributeValue.text.startsWith('`')) {
+        attributeValue.text = attributeValue.text.slice(1);
+        attributeValue.range.start.character += 1;
+        // attributeValue.range.end.character += 1;
+      }
+      if (attributeValue.text.endsWith('`')) {
+        attributeValue.text = attributeValue.text.slice(0, attributeValue.text.lastIndexOf('`'));
+        // attributeValue.range.start.character += 1;
+        // attributeValue.range.end.character += 1;
+      }
       styledProps.push(attribute);
       continue;
     }
@@ -47,14 +57,15 @@ const fixRegionRanges = (
     while (cursor < originalText.length) {
       const parsableChar = parsableText[cursor];
       const char = originalText[cursor + counterDif];
+      if (!char) break;
       if (char !== parsableChar) {
         ++counterDif;
       }
       ++cursor;
-      if (!char) break;
     }
-    const finalStart = doc.positionAt(starOffset + counterDif - 1);
-    const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif - 1);
+    const cursorDiff = cursor - parsableText.length;
+    const finalStart = doc.positionAt(starOffset + counterDif - cursorDiff);
+    const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif - cursorDiff);
 
     styledProps.push({
       ...attribute,

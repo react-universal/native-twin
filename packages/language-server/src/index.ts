@@ -1,11 +1,15 @@
 import * as NodeContext from '@effect/platform-node/NodeContext';
 import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
-import { getClientCapabilities, languagePrograms } from '@native-twin/language-service';
+import {
+  addServerRequestHandler,
+  getClientCapabilities,
+  languagePrograms,
+} from '@native-twin/language-service';
 import { LSPConfig, LSPContext } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import type { CompletionList } from 'vscode-languageserver-types';
+// import type { CompletionList } from 'vscode-languageserver-types';
 import { LspMainLive } from './services/LSP.service';
 
 const Runtime = ManagedRuntime.make(Layer.suspend(() => LspMainLive));
@@ -27,12 +31,12 @@ const program = Effect.gen(function* () {
     await Effect.runPromise(config.onChangeConfig(changes.settings));
   });
 
-  Connection.onCompletion(async (params) =>
-    languagePrograms.getCompletionsAtPosition.apply(params.textDocument.uri, params.position).pipe(
-      Effect.map((comp): CompletionList => ({ items: comp.completions, isIncomplete: true })),
-      Runtime.runPromise,
-    ),
-  );
+  // Connection.onCompletion(async (params) =>
+  //   languagePrograms.getCompletionsAtPosition.apply(params.textDocument.uri, params.position).pipe(
+  //     Effect.map((comp): CompletionList => ({ items: comp.completions, isIncomplete: true })),
+  //     Runtime.runPromise,
+  //   ),
+  // );
 
   Connection.onCompletionResolve(async (...args) =>
     languagePrograms.getCompletionEntryDetails(...args).pipe(Runtime.runPromise),
@@ -55,6 +59,15 @@ const program = Effect.gen(function* () {
       .getDocumentHighLightsProgram(...args)
       .pipe(Runtime.runPromise);
     return data;
+  });
+
+  yield* addServerRequestHandler(Connection.onCompletion, (params) => {
+    return languagePrograms.getCompletionsAtPosition
+      .apply(params.textDocument.uri, params.position)
+      .pipe(
+        Effect.map((comp) => comp.completions),
+        Effect.provide(LspMainLive),
+      );
   });
 
   Connection.onSelectionRanges(async (_params, _token, _, __) => {

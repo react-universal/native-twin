@@ -56,6 +56,8 @@ export const launchExtension = <E>(
         jsxAttributes: currentConfig.jsxAttributes,
         twinConfigPath,
         tsConfigPath,
+        completions: currentConfig.completions,
+        diagnostics: currentConfig.diagnostics,
         trace: { server: currentConfig.trace.server },
       }),
     );

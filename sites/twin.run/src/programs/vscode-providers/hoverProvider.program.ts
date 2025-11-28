@@ -2,10 +2,10 @@ import * as vscode from 'vscode';
 import { sheetEntriesToCss } from '@native-twin/css';
 import {
   Constants,
-  DocumentLanguageRegion,
-  NativeTwinManagerService,
   completionRuleToQuickInfo,
+  DocumentLanguageRegion,
   getSheetEntryStyles,
+  NativeTwinManagerService,
 } from '@native-twin/language-service/browser';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
@@ -29,15 +29,11 @@ export const InstallHoverProvider = Effect.gen(function* () {
         tokenAtPosition,
         (x) => new DocumentLanguageRegion(x.range, x.offset.start, x.offset.end, x.text),
       ).pipe(
-        Option.flatMap((nodeAdPosition) =>
-          nodeAdPosition.getParsedNodeAtOffset(cursorOffset),
-        ),
+        Option.flatMap((nodeAdPosition) => nodeAdPosition.getParsedNodeAtOffset(cursorOffset)),
         Option.flatMap((flattenCompletions) => {
           return RA.findFirst(
             flattenCompletions.flattenToken,
-            (x) =>
-              cursorOffset >= x.token.bodyLoc.start &&
-              cursorOffset <= x.token.bodyLoc.end,
+            (x) => cursorOffset >= x.token.bodyLoc.start && cursorOffset <= x.token.bodyLoc.end,
           ).pipe(
             Option.map((x): { range: vscode.Range; text: string } => ({
               range: new vscode.Range(
@@ -84,7 +80,7 @@ export const InstallHoverProvider = Effect.gen(function* () {
 
       if (!hoverInfo) return undefined;
 
-      let contents: vscode.MarkdownString | undefined = undefined;
+      let contents: vscode.MarkdownString | undefined;
       if (isRecord(hoverInfo.contents)) {
         contents = new vscode.MarkdownString(hoverInfo.contents.value);
         contents.isTrusted = true;

@@ -16,12 +16,12 @@ export const getDocumentHighLightsProgram = Effect.fn(function* (
   const region = document.findRegionAt(params.position);
 
   if (!region) return [];
-  const parsed = yield* parser.runFullParserEffect(
-    region.text,
-    document.offsetAt(region.range.start),
-  );
+  const parsed = parser.runTwinParser({
+    text: region.text,
+    startOffset: document.offsetAt(region.range.start),
+  });
 
-  return parsed.flatMap(({ parsedRegion }) => {
+  return parsed.result.flatMap((parsedRegion) => {
     if (parsedRegion.raw.type !== 'CLASS_NAME') return [];
     return asArray(
       vscode.DocumentHighlight.create(

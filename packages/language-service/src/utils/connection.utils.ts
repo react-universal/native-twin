@@ -1,15 +1,13 @@
+import { Runtime } from 'effect';
 import * as Effect from 'effect/Effect';
-import * as Option from 'effect/Option';
 import * as vscode from 'vscode-languageserver';
-
-// import { NativeTwinManagerService } from '../native-twin/native-twin.service.js';
+import type * as lsp from 'vscode-languageserver-protocol';
 
 export const initializeConnection = (
   params: vscode.InitializeParams,
   _token: vscode.CancellationToken,
   _workDoneProgress: vscode.WorkDoneProgressReporter,
   _resultProgress: vscode.ResultProgressReporter<never> | undefined,
-  // manager: NativeTwinManagerService['Type'],
 ) => {
   const configOptions = params.initializationOptions;
 
@@ -73,19 +71,18 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
   return result;
 };
 
-export const addServerRequestHandler = <Params, Result, Error>(
-  event: (
-    handler: vscode.ServerRequestHandler<Params, Result, never, Error>,
-  ) => vscode.Disposable,
-  handler: vscode.ServerRequestHandler<Params, Result, never, Error>,
+export const addServerRequestHandler = <_Params, Result, Error, E, R>(
+  event: (handler: lsp.GenericRequestHandler<Result, Error>) => vscode.Disposable,
+  handler: (
+    ...x: Parameters<lsp.GenericRequestHandler<Result, Error>>
+  ) => Effect.Effect<ReturnType<lsp.GenericRequestHandler<Result, Error>>, E, R>,
 ) => {
-  return Effect.sync(() => {
-    let result: Option.Option<vscode.HandlerResult<Result, Error>> = Option.none();
-    return event((...args) => {
-      result = Option.fromNullable(handler(...args));
-      return result.pipe(Option.getOrThrow);
-    });
-  });
+  return Effect.flatMap(Effect.runtime<R>(), (runtime) =>
+    Effect.async((_resume) => {
+      const run = Runtime.runPromise(runtime);
+      event(async (...args) => run(handler(...args)));
+    }),
+  ).pipe(Effect.fork);
 };
 
 export const addConnectionRequestHandler = <Params, Result, Error>(
@@ -93,8 +90,6 @@ export const addConnectionRequestHandler = <Params, Result, Error>(
   handler: vscode.RequestHandler<Params, Result, Error>,
 ) => {
   return Effect.sync(() => {
-    return event((...args) => {
-      return handler(...args);
-    });
+    return event((...args) => handler(...args));
   });
 };

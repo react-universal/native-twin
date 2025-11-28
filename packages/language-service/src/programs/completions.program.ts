@@ -9,7 +9,6 @@ import type {
   TwinParserOutput,
   TwinRuleRegistry,
 } from '../models/TwinParser.models';
-import { createCompositionsComposer } from '../utils/twin/twinRuleComposer';
 
 export const getCompletionsAtPosition = LSP.createTwinCompletions({
   name: 'classNameCompletions',
@@ -30,9 +29,10 @@ export const getCompletionsAtPosition = LSP.createTwinCompletions({
         startOffset: document.offsetAt(valueRegion.range.start),
         text,
       });
-      const handler = createCompositionsComposer(parserResult, document);
 
-      locatedToken = handler.findComposedClassAtPosition(cursorOffset);
+      locatedToken = parserResult.result.find(
+        (token) => cursorOffset >= token.startOffset && cursorOffset <= token.endOffset,
+      );
 
       if (locatedToken) {
         const rules = yield* parser.findRulesByKey(locatedToken.parsed.n);

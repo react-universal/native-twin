@@ -36,12 +36,10 @@ const make = Effect.gen(function* () {
     text: string,
     documentOffset: number,
   ): Effect.fn.Return<TwinParserModel.ResolvedTwinResult[]> {
-    const parserResult = yield* Effect.sync(() =>
-      compose(
-        parseTwinRules,
-        ComposedClass.createComposedClasses,
-      )({ startOffset: documentOffset, text }),
-    );
+    const parserResult = compose(
+      parseTwinRules,
+      ComposedClass.createComposedClasses,
+    )({ startOffset: documentOffset, text });
 
     return yield* Stream.fromIterable(parserResult.result).pipe(
       Stream.mapEffect((parsedRegion) =>

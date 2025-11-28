@@ -199,7 +199,7 @@ export function mergeParsedRuleGroupTokens(
 export function parseTWTokens(rules: string) {
   const data = tailwindClassNamesParser.run(rules);
   if (data.isError) {
-    console.warn('Failed parsing rules: ', rules, data);
+    // console.warn('Failed parsing rules: ', rules, data);
     return [];
   }
   return mergeParsedRuleGroupTokens(data.result);

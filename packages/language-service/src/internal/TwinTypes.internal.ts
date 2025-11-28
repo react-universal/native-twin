@@ -9,40 +9,6 @@ export type InternalTwinThemeContext = ThemeContext<TailwindPresetTheme>;
 export type AnyInternalTwinRule = InternalTwFn['config']['rules'][number];
 export type AnyInternalTwinThemeKey = AnyInternalTwinRule[1] | (string & {});
 
-// export interface TwinRuleCompletion {
-//   kind: 'rule';
-//   readonly order: number;
-//   readonly rule: TwinRuleParts;
-//   readonly completion: {
-//     className: string;
-//     declarations: string[];
-//     declarationValue: string;
-//   };
-//   readonly composition: {
-//     composed: string;
-//     classNameExpansion: string;
-//     classNameSuffix: string;
-//     declarationSuffixes: string[];
-//   };
-// }
-// export interface TwinRuleParts {
-//   readonly pattern: string;
-//   readonly property: InternalNativeTwinRule[1] | keyof CompleteStyle | (string & {});
-//   readonly themeSection: InternalNativeTwinRule[1] | (string & {});
-//   readonly resolver: InternalNativeTwinRule[2];
-//   readonly meta: RuleMeta;
-// }
-
-// interface CommonCompletion {
-//   name: string;
-//   position: number;
-//   index: number;
-// }
-
-// export interface TwinVariantCompletion extends CommonCompletion {
-//   kind: 'variant';
-// }
-
 export type Units = {
   '%'?: number;
   vw?: number;

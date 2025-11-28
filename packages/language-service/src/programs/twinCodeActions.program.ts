@@ -14,39 +14,27 @@ export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.Cod
   if (params.context.diagnostics.length === 0) return undefined;
 
   const { getLSPDocument } = yield* LSPAdapterSpec;
-  // const parser = yield* TwinParserContext;
   const document = yield* getLSPDocument(params.textDocument.uri);
 
   const diagnostics = RA.filterMap(params.context.diagnostics, (x) => {
-    if (!x.code || !x.relatedInformation || !x.source || !x.severity) {
+    if (
+      !x.code ||
+      !x.relatedInformation ||
+      !x.source ||
+      !x.severity ||
+      x.source !== LSPConstants.diagnosticProviderSource
+    ) {
       return Option.none();
     }
 
-    if (x.source !== LSPConstants.diagnosticProviderSource) return Option.none();
-
     return Option.some(x);
   });
-  console.log(diagnostics.length);
-  // const startOffset = document.positionToOffset(params.range.start);
-  // const endOffset = document.positionToOffset(params.range.start);
 
   const region = document.findRegionAt(params.range.start);
   if (!region) return undefined;
-
-  // const parsed = yield* parser.runFullParserEffect(
-  //   region.text,
-  //   document.offsetAt(region.range.start),
-  // );
   const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
     RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
     RA.map((x) => getActionsForDuplicatedDecl(x, document.uri)),
-    // RA.filterMap((parsedRule) =>
-    // getActionsForDuplicatedDecl(
-    // document,
-    // region,
-    // RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
-    // ),
-    // ),
   );
 
   return editsForDuplicatedDeclarations;
@@ -94,7 +82,6 @@ const diagnosticRelatedInfoToEdit = (item: vscodeLSP.DiagnosticRelatedInformatio
 const getActionsForDuplicatedDecl = (
   diagnosticItem: vscodeLSP.Diagnostic,
   uri: string,
-  // region: DocumentLanguageRegion,
 ): vscodeLSP.CodeAction => {
   const textEdits = RA.map(asArray(diagnosticItem.relatedInformation), diagnosticRelatedInfoToEdit);
 

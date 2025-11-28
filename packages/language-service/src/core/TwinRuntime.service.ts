@@ -20,7 +20,7 @@ import type {
 } from '../internal/TwinTypes.internal';
 import type * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuleComposer } from '../models/TwinRuleHandler';
-import { requireJS } from '../utils/load-js';
+import { requireJS } from '../utils/load-esm';
 import * as LspConfig from './LSPConfig.service';
 
 const resolvedSections = new Map<string, Record<string, any>>();
@@ -110,8 +110,10 @@ const make = Effect.gen(function* () {
     return Stream.fromIterable(composer.toFullRules());
   }
 
-  function loadTwin(atPath: string): InternalTwinConfig | null {
-    return requireJS(atPath).pipe(Option.getOrElse(() => null));
+  function loadTwin(atPath: string): Effect.Effect<InternalTwinConfig | null> {
+    return Effect.promise(() =>
+      requireJS(atPath).pipe(Option.getOrElse(() => Promise.resolve(null))),
+    );
   }
 
   function bootTwinRuntime(twinPath: string | null = null) {
@@ -121,11 +123,10 @@ const make = Effect.gen(function* () {
       const configPath = yield* twinPath
         ? Effect.succeed(twinPath)
         : Effect.map(config.get, (x) => x.twinConfigPath);
-      if (configPath) result = loadTwin(configPath);
+      if (configPath) result = yield* loadTwin(configPath);
 
-      if (!result) {
-        return yield* Effect.log('Cant detect native twin config path');
-      }
+      if (!result) return yield* Effect.log('Cant detect native twin config path');
+
       yield* onUpdateConfig(result);
     });
   }
