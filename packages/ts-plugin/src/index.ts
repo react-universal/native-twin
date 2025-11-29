@@ -1,4 +1,5 @@
 import * as path from 'node:path';
+import { parseLSPConfigInput } from '@native-twin/language-service/build/dts/Services';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
@@ -15,20 +16,20 @@ import { TemplateSourceHelperServiceLive } from './template/template.service';
 import { TwinRuntimeContext } from './twin/TwinRuntime.service';
 
 function init(modules: { typescript: typeof import('typescript') }) {
-  let pluginConfig = LSPConfig.parsePluginConfig({});
+  let pluginConfig = parseLSPConfigInput({});
 
   let alreadyConfig = false;
 
   function onConfigurationChanged(config: any) {
-    pluginConfig = LSPConfig.parsePluginConfig(config);
+    pluginConfig = parseLSPConfigInput(config);
     alreadyConfig = true;
   }
   function create(info: ts.server.PluginCreateInfo) {
     if (!alreadyConfig) {
-      const resolved = info.serverHost.resolvePath(pluginConfig.configPath);
+      const resolved = info.serverHost.resolvePath(pluginConfig.twinConfigPath);
       const currentDir = info.project.getCurrentDirectory();
-      pluginConfig.configPath = path.join(currentDir, resolved);
-      pluginConfig = LSPConfig.parsePluginConfig({ ...info.config, ...pluginConfig });
+      pluginConfig.twinConfigPath = path.join(currentDir, resolved);
+      pluginConfig = parseLSPConfigInput({ ...info.config, ...pluginConfig });
     }
     const proxy: ts.LanguageService = Object.create(null);
 
@@ -39,7 +40,7 @@ function init(modules: { typescript: typeof import('typescript') }) {
     }
 
     const twin = createTwin(info);
-    info.project.projectService.logger.info(`configPath:${pluginConfig.configPath}`);
+    info.project.projectService.logger.info(`configPath:${pluginConfig.twinConfigPath}`);
 
     function runProgram(program: ts.Program) {
       return <A, E>(execution: Effect.Effect<A, E, TwinPluginLayerReq>) => {
@@ -56,7 +57,7 @@ function init(modules: { typescript: typeof import('typescript') }) {
       runProgram(program)(
         Effect.gen(function* () {
           const parser = yield* TwinRuntimeContext;
-          yield* parser.bootTwinRuntime(pluginConfig.configPath);
+          yield* parser.bootTwinRuntime(pluginConfig.twinConfigPath);
         }),
       );
     }

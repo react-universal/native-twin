@@ -127,7 +127,7 @@ const make = Effect.gen(function* () {
 
   function bootTwinRuntime(twinPath: string | null = null) {
     return Effect.gen(function* () {
-      const { configPath: twinConfigPath } = yield* LspConfig.TypeScriptPluginConfig;
+      const { twinConfigPath } = yield* LspConfig.TypeScriptPluginConfig;
       let result: InternalTwinConfig | null = null;
       const configPath = yield* twinPath
         ? Effect.succeed(twinPath)

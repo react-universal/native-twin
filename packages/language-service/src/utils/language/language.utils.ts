@@ -12,9 +12,6 @@ export const getCompletionTokenKind = (
 ): CompletionItemKind =>
   section === 'colors' ? CompletionItemKind.Color : CompletionItemKind.Constant;
 
-// export const getKindModifiers = (item: TwinRuleParts): string =>
-//   item.meta.feature === 'colors' || item.themeSection === 'colors' ? 'color' : '';
-
 export function getCompletionEntryDetailsDisplayParts(rule: {
   themeSection: AnyInternalTwinRule[1] | (string & {});
   feature: CssFeature;
@@ -73,7 +70,6 @@ export function getDocumentationMarkdown(sheetEntry: Record<string, any>, css: s
   result.push('#### React Native StyleSheet\n');
   const rnSheet = Object.entries(sheetEntry).filter((x) => Object.keys(x[1]).length > 0);
   result.push(createJSONMarkdownString(Object.fromEntries(rnSheet)));
-  // result.push(createDebugHover(completionRule));
   return result.join('\n');
 }
 

@@ -17,7 +17,8 @@ import {
 } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
-import { getCompletionEntryDetailsDisplayParts, getCompletionTokenKind } from '../utils/language/language.utils';
+import { CompletionItemKind } from 'vscode-languageserver-types';
+import { getCompletionEntryDetailsDisplayParts } from '../utils/language/language.utils';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
 export const TwinVariantNode = Data.taggedEnum<TwinVariantNode>();
@@ -59,7 +60,9 @@ export class TwinRuleRegistry {
   }
 
   get completionKind() {
-    return getCompletionTokenKind(this.info.themeSection);
+    return this.info.themeSection === 'colors'
+      ? CompletionItemKind.Color
+      : CompletionItemKind.Constant;
   }
 
   toCSS(parsedRule: TWParsedRule) {

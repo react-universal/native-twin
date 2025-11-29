@@ -19,8 +19,10 @@ export const LoggerLive = Logger.replaceEffect(
     const { configSelector } = yield* LSPConfig;
     const getDebugFlag = () => Effect.runSync(configSelector((x) => x.debug));
     return Logger.make((options) => {
+      // const fiberId = FiberId.threadName(options.fiberId);
       const logService = Connection.console;
       const message = Logger.logfmtLogger.log(options);
+      // const transport = `LSP - Fiber: ${fiberId} \n ${options.message}`;
       const logLevel = getDebugFlag() ? LogLevel.All : options.logLevel;
 
       switch (logLevel) {

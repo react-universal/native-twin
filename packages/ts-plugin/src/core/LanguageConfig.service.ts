@@ -1,31 +1,10 @@
-import { hasOwnProperty } from '@native-twin/helpers';
-import {
-  DEFAULT_PLUGIN_CONFIG,
-  type NativeTwinPluginConfiguration,
-} from '@native-twin/language-service';
+import type { TwinConfigOptions } from '@native-twin/language-service';
 import * as Context from 'effect/Context';
 import type ts from 'typescript';
 
-export interface LSPConfig extends NativeTwinPluginConfiguration {}
+export interface LSPConfig extends TwinConfigOptions {}
 
-export const parsePluginConfig = (config: any): NativeTwinPluginConfiguration => {
-  return {
-    configPath: hasOwnProperty.call(config, 'configPath')
-      ? config.configPath
-      : DEFAULT_PLUGIN_CONFIG.configPath,
-    debug: hasOwnProperty.call(config, 'debug') ? config.debug : DEFAULT_PLUGIN_CONFIG.debug,
-    enable: hasOwnProperty.call(config, 'enable') ? config.enable : DEFAULT_PLUGIN_CONFIG.enable,
-    functions: hasOwnProperty.call(config, 'functions')
-      ? config.functions
-      : DEFAULT_PLUGIN_CONFIG.functions,
-    jsxAttributes: hasOwnProperty.call(config, 'jsxAttributes')
-      ? config.jsxAttributes
-      : DEFAULT_PLUGIN_CONFIG.jsxAttributes,
-    trace: hasOwnProperty.call(config, 'trace') ? config.trace : DEFAULT_PLUGIN_CONFIG.trace,
-  };
-};
-
-export interface TypeScriptPluginConfig extends NativeTwinPluginConfiguration {}
+export interface TypeScriptPluginConfig extends TwinConfigOptions {}
 export const TypeScriptPluginConfig =
   Context.GenericTag<TypeScriptPluginConfig>('TypeScriptPluginConfig');
 

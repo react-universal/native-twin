@@ -1,4 +1,4 @@
-import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import type { TwinConfigOptions } from '@native-twin/language-service';
 import type ts from 'typescript';
 
 export type Predicate =
@@ -84,7 +84,7 @@ function isRegExpLike(value: unknown): value is RegExpLike {
 
 export const getSourceMatchers = (
   { SyntaxKind }: typeof ts,
-  configManager: NativeTwinPluginConfiguration,
+  configManager: TwinConfigOptions,
 ): Matcher[] => [
   // tw`...`
   {

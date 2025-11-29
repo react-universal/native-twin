@@ -10,7 +10,8 @@ import {
 import type ts from 'typescript';
 import '@native-twin/core';
 import { createVirtualSheet, type SheetEntry } from '@native-twin/css';
-import type { NativeTwinPluginConfiguration } from '@native-twin/language-service';
+import type { TwinConfigOptions } from '@native-twin/language-service';
+import { parseLSPConfigInput } from '@native-twin/language-service/build/dts/Services';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Option from 'effect/Option';
 import { requireJS } from '../utils/load-config';
@@ -20,14 +21,7 @@ export type InternalTwFn = RuntimeTW<__Theme__ & TailwindPresetTheme, SheetEntry
 export type InternalTwinThemeContext = ThemeContext<__Theme__ & TailwindPresetTheme>;
 
 export const createTwin = (info: ts.server.PluginCreateInfo) => {
-  const pluginConfig: NativeTwinPluginConfiguration = {
-    jsxAttributes: ['tw', 'apply', 'css', 'styled', 'variants'],
-    functions: ['tw', 'class', 'className', 'variants'],
-    configPath: '',
-    trace: { server: 'off' },
-    debug: false,
-    enable: true,
-  };
+  const pluginConfig: TwinConfigOptions = parseLSPConfigInput({});
 
   const twinConfig = loadUserTwinConfigFile(info);
   const twin = createTwinHandlers(twinConfig);

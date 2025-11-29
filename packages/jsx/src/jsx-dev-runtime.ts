@@ -27,11 +27,11 @@ export const jsxDEV: typeof ReactJSXRuntimeDev.jsxDEV = (
 ) => {
   // console.log('WRAP: ', mappedComponentsConfig.has(type));
   const hasTwinID = hasOwnProperty.call(props, '__twinID');
-  console.log('HAS_ID: ', {
-    isMapped: mappedComponentsConfig.has(type),
-    id: hasTwinID,
-    type,
-  });
+  // console.log('HAS_ID: ', {
+  //   isMapped: mappedComponentsConfig.has(type),
+  //   id: hasTwinID,
+  //   type,
+  // });
 
   
   if (!hasTwinID) {
