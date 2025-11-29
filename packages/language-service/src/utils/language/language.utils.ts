@@ -1,8 +1,11 @@
+import { inspect } from 'node:util';
 import { TinyColor } from '@ctrl/tinycolor';
-import type { CssFeature } from '@native-twin/css';
+import type { CssFeature, SheetEntry } from '@native-twin/css';
 import toCssFormat from 'cssbeautify';
+import { css_beautify, js_beautify } from 'js-beautify';
 import { CompletionItemKind } from 'vscode-languageserver-types';
 import type { AnyInternalTwinRule } from '../../internal/TwinTypes.internal';
+import { composeDeclarations, type StyledContext } from '../sheet.utils';
 
 export const getCompletionTokenKind = (
   section: AnyInternalTwinRule[1] | (string & {}),
@@ -33,6 +36,28 @@ export function getCompletionEntryDetailsDisplayParts(rule: {
   return undefined;
 }
 
+export const getCSSMarkDownParts = (css: string) => {
+  const result: string[] = [];
+  result.push('***Css Rules*** \n\n');
+  result.push(
+    `${'```css\n'}${css_beautify(css, {
+      indent_size: 2,
+      indent_level: 0,
+      indent_with_tabs: false,
+      newline_between_rules: false,
+      space_around_combinator: true,
+    })}${'\n```'}`,
+  );
+  result.push('\n\n');
+  return result;
+};
+
+export const getRNMarkDownParts = (nativeStyles: string) => {
+  const result: string[] = [];
+  result.push('#### React Native StyleSheet\n\n');
+  result.push(['```typescript\n', nativeStyles, '\n```'].join('\n'));
+  return result;
+};
 
 export function getDocumentationMarkdown(sheetEntry: Record<string, any>, css: string) {
   const result: string[] = [];
@@ -54,6 +79,36 @@ export function getDocumentationMarkdown(sheetEntry: Record<string, any>, css: s
 
 const createJSONMarkdownString = <T extends object>(x: T) =>
   ['```json', JSON.stringify(x, null, 2), '```'].join('\n');
+
+export const sheetEntriesToMD = (entries: SheetEntry[], context: StyledContext) => {
+  const template: string[] = [];
+  template.push('StyleSheet.create(');
+  template.push('{');
+
+  for (const current of entries) {
+    const nextDecl = composeDeclarations(current.declarations, context);
+    template.push(`"${current.className}": `);
+    template.push(
+      inspect(nextDecl, {
+        depth: null,
+        compact: false,
+        colors: false,
+        numericSeparator: true,
+        showHidden: false,
+      }),
+    );
+  }
+  template.push('});');
+  const result = js_beautify(template.join('\n'), {
+    brace_style: 'preserve-inline',
+    indent_level: 0,
+    indent_size: 1,
+    indent_with_tabs: false,
+    space_in_paren: false,
+    comma_first: false,
+  });
+  return ['#### React Native StyleSheet', '```typescript', result, '\n```'].join('\n');
+};
 
 // export function createDebugHover(rule: TwinRuleCompletion) {
 //   const result: string[] = [];

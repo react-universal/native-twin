@@ -1,5 +1,6 @@
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
 import type * as LSP from '../internal/LSPAdapterSpec';
+import { fixRegionRanges } from '../internal/TwinParser.internals';
 import { BaseTwinTextDocument } from './BaseTwinDocument';
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
@@ -24,60 +25,3 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
     return this.getLocation(this.getRangeFor(start, end));
   }
 }
-
-const fixRegionRanges = (
-  node: LSP.JsxNodeRegion,
-  doc: VSCDocument.TextDocument,
-): LSP.JsxNodeRegion => {
-  const styledProps: LSP.JsxAttributeRegion[] = [];
-  for (const attribute of node.styledProps) {
-    const { attributeValue } = attribute;
-    const originalText = attributeValue.rawText;
-    const parsableText = attributeValue.text;
-    const documentText = doc.getText(attributeValue.range);
-
-    const subset = new Set([originalText, parsableText, documentText]);
-    if (subset.size === 3) {
-      if (attributeValue.text.startsWith('`')) {
-        attributeValue.text = attributeValue.text.slice(1);
-        attributeValue.range.start.character += 1;
-        // attributeValue.range.end.character += 1;
-      }
-      if (attributeValue.text.endsWith('`')) {
-        attributeValue.text = attributeValue.text.slice(0, attributeValue.text.lastIndexOf('`'));
-        // attributeValue.range.start.character += 1;
-        // attributeValue.range.end.character += 1;
-      }
-      styledProps.push(attribute);
-      continue;
-    }
-    const starOffset = doc.offsetAt(attributeValue.range.start);
-    let counterDif = 0;
-    let cursor = 0;
-    while (cursor < originalText.length) {
-      const parsableChar = parsableText[cursor];
-      const char = originalText[cursor + counterDif];
-      if (!char) break;
-      if (char !== parsableChar) {
-        ++counterDif;
-      }
-      ++cursor;
-    }
-    const cursorDiff = cursor - parsableText.length;
-    const finalStart = doc.positionAt(starOffset + counterDif - cursorDiff);
-    const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif - cursorDiff);
-
-    styledProps.push({
-      ...attribute,
-      attributeValue: {
-        ...attributeValue,
-        range: { start: finalStart, end: finalEnd },
-      },
-    });
-  }
-
-  return {
-    ...node,
-    styledProps,
-  };
-};

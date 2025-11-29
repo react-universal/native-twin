@@ -10,5 +10,5 @@ export {
   getCompletionEntryDetailsDisplayParts,
   getDocumentationMarkdown,
 } from './utils/language/language.utils';
-export { completionRuleToQuickInfo } from './utils/language/quickInfo.utils';
+export { completionRulesToQuickInfo } from './utils/language/quickInfo.utils';
 export { getSheetEntryStyles } from './utils/sheet.utils';

@@ -9,7 +9,7 @@ import { LSPConfig, LSPContext } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-// import type { CompletionList } from 'vscode-languageserver-types';
+import type * as t from 'vscode-languageserver';
 import { LspMainLive } from './services/LSP.service';
 
 const Runtime = ManagedRuntime.make(Layer.suspend(() => LspMainLive));
@@ -28,15 +28,21 @@ const program = Effect.gen(function* () {
   });
 
   Connection.onDidChangeConfiguration(async (changes) => {
-    await Effect.runPromise(config.onChangeConfig(changes.settings));
+    await config.config.pipe(
+      Effect.andThen((currentConfig) =>
+        config
+          .onChangeConfig((changes.settings?.['nativeTwin'] as any) ?? currentConfig)
+          .pipe(
+            Effect.andThen(() =>
+              currentConfig.diagnostics === 'off'
+                ? Connection.languages.diagnostics.refresh()
+                : Effect.void,
+            ),
+          ),
+      ),
+      Effect.runPromise,
+    );
   });
-
-  // Connection.onCompletion(async (params) =>
-  //   languagePrograms.getCompletionsAtPosition.apply(params.textDocument.uri, params.position).pipe(
-  //     Effect.map((comp): CompletionList => ({ items: comp.completions, isIncomplete: true })),
-  //     Runtime.runPromise,
-  //   ),
-  // );
 
   Connection.onCompletionResolve(async (...args) =>
     languagePrograms.getCompletionEntryDetails(...args).pipe(Runtime.runPromise),
@@ -46,9 +52,15 @@ const program = Effect.gen(function* () {
     languagePrograms.getHoverDetails(...args).pipe(Runtime.runPromise),
   );
 
-  Connection.languages.diagnostics.on(async (...args) =>
-    languagePrograms.getDocumentDiagnosticsProgram(...args).pipe(Runtime.runPromise),
-  );
+  Connection.languages.diagnostics.on(async (...args) => {
+    return Effect.andThen(
+      config.configSelector((x) => x),
+      (x) =>
+        x.diagnostics === 'off'
+          ? Effect.succeed<t.DocumentDiagnosticReport>({ kind: 'full', items: [] })
+          : languagePrograms.getDocumentDiagnosticsProgram(...args),
+    ).pipe(Runtime.runPromise);
+  });
 
   Connection.onDocumentColor(async (...params) =>
     languagePrograms.getDocumentColors(...params).pipe(Runtime.runPromise),
@@ -107,6 +119,9 @@ const program = Effect.gen(function* () {
   Effect.catchAll((error) => Effect.log(`Language server failed: ${error}`)),
 );
 
+Runtime.runFork(program);
+
+NodeRuntime.runMain(Runtime.runtimeEffect);
 Runtime.runFork(program);
 
 NodeRuntime.runMain(Runtime.runtimeEffect);

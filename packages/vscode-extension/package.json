@@ -150,7 +150,11 @@
           "nativeTwin.diagnostics": {
             "scope": "window",
             "type": "string",
-            "enum": ["off", "info", "watning"],
+            "enum": [
+              "off",
+              "info",
+              "warn"
+            ],
             "default": "off",
             "description": "Enable/Disable native-twin diagnostics and how they are reported"
           }

@@ -108,7 +108,7 @@ const make = Effect.gen(function* () {
     const styledProps = getJSXElementStyledProps(node).map((prop) => {
       const attributeBinding = Spec.TwinLSPNode.createAttributeBinding({
         range: getNodeRange(document, prop.name),
-        getText: () => prop.name.getText(),
+        rawText: prop.name.getText(),
       });
       const attrRange = getNodeRange(document, prop.value);
 
@@ -123,12 +123,11 @@ const make = Effect.gen(function* () {
       }
       const attributeValue = Spec.TwinLSPNode.createJsxAttributeValue({
         range: attrRange,
-        getText: () => prop.value.getText(),
         rawText: prop.value.getText(),
         text: attrValue.originalText,
       });
       return Spec.TwinLSPNode.createAttributeRegion({
-        getText: () => prop.attribute.getText(),
+        rawText: prop.attribute.getText(),
         attributeBinding,
         attributeValue,
         range: getNodeRange(document, prop.attribute),
@@ -140,11 +139,11 @@ const make = Effect.gen(function* () {
     const tagNameRange = getNodeRange(document, tagName);
     return Spec.TwinLSPNode.createJsxNode({
       parent: parent ?? null,
-      getText: () => node.getText(),
+      rawText: node.getText(),
       range: nodeRange,
       styledProps,
       tagName: Spec.TwinLSPNode.createJsxTagName({
-        getText: () => tagName.getText(),
+        rawText: tagName.getText(),
         range: tagNameRange,
       }),
     });

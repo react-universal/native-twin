@@ -26,10 +26,6 @@ export interface LSPAdapterSpec {
     offset: LSPPosition,
   ): Effect.Effect<JsxAttributeValueRegion | null, AnyLSPError>;
   getRegions(filename: string): Effect.Effect<AnyTwinNodeRegion[], AnyLSPError>;
-  // findRegionAt(
-  // regions: AnyTwinNodeRegion[],
-  // position: LSPPosition,
-  // ): AnyTwinNodeRegion | null
 }
 
 export const LSPAdapterSpec = Context.GenericTag<LSPAdapterSpec>('LSPAdapterSpec');
@@ -105,7 +101,7 @@ export const TwinLSPNode = {
 export interface TwinLSPNode<Tag extends string> {
   readonly _tag: Tag;
   range: LSPRange;
-  getText: () => string | null;
+  rawText: string;
 }
 
 export interface LSPParsableRegion {

@@ -42,11 +42,15 @@ export const LSPConfigLive = Effect.gen(function* () {
       (e) => new Error(`Glob async failed searching for twinConfigPath: ${e}`),
     ).pipe(
       Stream.runHead,
-      Effect.map(Option.map((twinConfigPath) => Object.assign(initialConfig, { twinConfigPath }))),
-      Effect.map(Option.getOrElse(() => initialConfig)),
+      Effect.map(
+        Option.map((twinConfigPath) =>
+          parseLSPConfigInput(Object.assign(initialConfig, { twinConfigPath })),
+        ),
+      ),
+      Effect.map(Option.getOrElse(() => parseLSPConfigInput(initialConfig))),
       Effect.catchAll((error) =>
         Effect.logDebug(`Search for twinFile fails with: ${error}`).pipe(
-          Effect.andThen(() => initialConfig),
+          Effect.andThen(() => parseLSPConfigInput(initialConfig)),
         ),
       ),
     );

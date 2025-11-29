@@ -6,17 +6,79 @@ import type {
   Variant,
   VariantResolver,
 } from '@native-twin/core';
-import type {
-  ArbitraryToken,
-  ClassNameToken,
-  GroupToken,
-  TWParsedRule,
-  VariantClassToken,
-  VariantToken,
+import {
+  type ArbitraryToken,
+  type ClassNameToken,
+  type GroupToken,
+  sheetEntriesToCss,
+  type TWParsedRule,
+  type VariantClassToken,
+  type VariantToken,
 } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
+import { getCompletionEntryDetailsDisplayParts, getCompletionTokenKind } from '../utils/language/language.utils';
 import type { TwinRuleComposer } from './TwinRuleHandler';
+
+export const TwinVariantNode = Data.taggedEnum<TwinVariantNode>();
+
+export class TwinRuleRegistry {
+  readonly styleObject: Record<string, string>;
+  readonly className: string;
+  readonly declarations: string[];
+  readonly declarationValue: string;
+  readonly composition: TwinRuleComposition;
+  readonly info: TwinRuleComposer['info'];
+  readonly pattern: string;
+  constructor(
+    data: {
+      readonly className: string;
+      readonly declarations: string[];
+      readonly declarationValue: string;
+    },
+    composition: TwinRuleComposition,
+    composer: TwinRuleComposer,
+  ) {
+    this.className = data.className;
+    this.declarationValue = data.declarationValue;
+    this.declarations = data.declarations;
+    this.composition = composition;
+    this.info = composer.info;
+    this.pattern = composer.pattern;
+    this.styleObject = Object.fromEntries(
+      data.declarations.map((decl) => [decl, data.declarationValue] as const),
+    );
+  }
+
+  get displayParts() {
+    return getCompletionEntryDetailsDisplayParts({
+      declarationValue: this.declarationValue,
+      feature: this.info.meta.feature,
+      themeSection: this.info.themeSection,
+    });
+  }
+
+  get completionKind() {
+    return getCompletionTokenKind(this.info.themeSection);
+  }
+
+  toCSS(parsedRule: TWParsedRule) {
+    return sheetEntriesToCss([
+      {
+        animations: [],
+        className: parsedRule.n,
+        important: parsedRule.i,
+        precedence: parsedRule.p,
+        preflight: false,
+        selectors: parsedRule.v,
+        declarations: this.declarations.map((decl) => ({
+          prop: decl,
+          value: this.declarationValue,
+        })),
+      },
+    ]);
+  }
+}
 
 export interface ResolvedTwinResult {
   entry: TwinRuleRegistry | null;
@@ -70,7 +132,6 @@ export interface TwinClassVariantToken extends VariantToken, WithLocation {}
 export interface TwinClassGroupToken extends WithLocation, Omit<GroupToken, 'value'> {
   base: TwinClassNameToken | TwinClassVariantToken;
   composes: AnyTwinClassToken[];
-  // composes: Exclude<AnyTwinClassToken, TwinClassVariantToken>[];
 }
 
 export interface TwinArbitraryToken extends WithLocation, ArbitraryToken {}
@@ -83,27 +144,6 @@ export type AnyTwinClassToken =
   | TwinClassGroupToken
   | TwinArbitraryToken
   | TwinClassNameVariantToken;
-
-// export interface TwinComposedClassName {
-//   type: 'ComposedClass';
-//   token: AnyTwinClassToken;
-//   classNameText: string;
-//   variants: string[];
-//   text: string;
-//   parentStarts: number;
-//   startOffset: number;
-//   endOffset: number;
-// }
-// export type AnyTwinComposedClass = TwinComposedClassName;
-
-// export interface LocatedTokenResult {
-//   fullLoc: WithLocation;
-//   group: TwinComposedClassName | null;
-//   node: AnyTwinComposedClass;
-//   lookupText: string;
-//   startOffset: number;
-//   endOffset: number;
-// }
 
 export type AnyTwinParseResultToken =
   | TwinClassVariantToken
@@ -142,33 +182,6 @@ export interface TwinRuleComposition {
   classNameExpansion: string;
   classNameSuffix: string;
   declarationSuffixes: string[];
-}
-
-export const TwinVariantNode = Data.taggedEnum<TwinVariantNode>();
-
-export class TwinRuleRegistry {
-  readonly className: string;
-  readonly declarations: string[];
-  readonly declarationValue: string;
-  readonly composition: TwinRuleComposition;
-  readonly info: TwinRuleComposer['info'];
-  readonly pattern: string;
-  constructor(
-    data: {
-      readonly className: string;
-      readonly declarations: string[];
-      readonly declarationValue: string;
-    },
-    composition: TwinRuleComposition,
-    composer: TwinRuleComposer,
-  ) {
-    this.className = data.className;
-    this.declarationValue = data.declarationValue;
-    this.declarations = data.declarations;
-    this.composition = composition;
-    this.info = composer.info;
-    this.pattern = composer.pattern;
-  }
 }
 
 // export class TwinParseResultHandler {
@@ -232,4 +245,5 @@ export class TwinRuleRegistry {
 //     }
 //     return null;
 //   }
+// }
 // }

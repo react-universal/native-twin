@@ -10,9 +10,7 @@ import * as SubscriptionRef from 'effect/SubscriptionRef';
 import { VscodeContext } from './extension.service';
 import { extensionConfigState, registerEditorCommand, thenable } from './extension.utils';
 
-export const launchExtension = <E>(
-  layer: Layer.Layer<never, E, VscodeContext | LSPConfig>,
-) => {
+export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext | LSPConfig>) => {
   return Effect.gen(function* () {
     const context = yield* VscodeContext;
     const scope = yield* Scope.make();
@@ -64,7 +62,7 @@ export const launchExtension = <E>(
     const configSelector = <T>(selector: (config: TwinConfigOptions) => T) =>
       configRef.get.pipe(Effect.map((x) => selector(x)));
 
-    const onChangeConfig = (_config: any) => Effect.void;
+    const onChangeConfig = (config: any) => SubscriptionRef.set(configRef, config);
 
     const configLayer = Layer.succeed(
       LSPConfig,

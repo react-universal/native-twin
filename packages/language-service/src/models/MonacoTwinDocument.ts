@@ -16,10 +16,7 @@ interface TwinTokenLocation {
 export const TwinTokenLocation = Data.tagged<TwinTokenLocation>('TwinTokenLocation');
 
 export class TwinMonacoTextDocument extends BaseTwinTextDocument {
-  constructor(
-    document: VSCDocument.TextDocument | vscode.TextDocument,
-    // config: NativeTwinPluginConfiguration,
-  ) {
+  constructor(document: VSCDocument.TextDocument | vscode.TextDocument) {
     super(
       VSCDocument.TextDocument.create(
         document.uri.toString(),
@@ -27,20 +24,6 @@ export class TwinMonacoTextDocument extends BaseTwinTextDocument {
         document.version,
         document.getText(),
       ),
-      // config,
     );
   }
-
-  // getTemplateAtPosition(position: VSCDocument.Position) {
-  //   const positionOffset = this.offsetAt(position);
-  //   return Option.fromNullable(
-  //     this.getLanguageRegions().find(
-  //       (x) => positionOffset >= x.startOffset && positionOffset <= x.endOffset,
-  //     ),
-  //   );
-  // }
-
-  
-
-  
 }

@@ -26,7 +26,6 @@ export namespace TwinDslModels {
     identifier: string;
     binding: ts.BindingName;
     filename: string;
-    // jsxElement: JSXNode;
   }
 
   export type TwinNode = NodeStyledProp | NodeJSXDeclarator;
@@ -84,64 +83,3 @@ export namespace TwinGraphModel {
   export type TwinFileGraph = Graph.Graph<NodeInfo, EdgeInfo, 'directed'>;
   export type MutableGraph = Graph.MutableGraph<NodeInfo, EdgeInfo, 'directed'>;
 }
-
-// class TrieNode<SomeShit> {
-//   children = new Map<string, TrieNode<SomeShit>>();
-//   isEndWord: boolean;
-//   value: SomeShit | null;
-//   constructor(value: SomeShit | null = null) {
-//     this.isEndWord = false;
-//     this.value = value;
-//   }
-// }
-
-// export class Trie<SomeShit> {
-//   root: TrieNode<SomeShit>;
-//   constructor() {
-//     this.root = new TrieNode<SomeShit>();
-//   }
-
-//   insert(word: string, data: SomeShit) {
-//     let currentNode = this.root;
-//     for (const char of word) {
-//       if (!currentNode.children.has(char)) {
-//         currentNode.children.set(char, new TrieNode<SomeShit>(data));
-//       }
-//       currentNode = currentNode.children.get(char)!;
-//     }
-//     currentNode.isEndWord = true;
-//   }
-
-//   get(word: string) {
-//     let currentNode = this.root;
-//     for (const char of word) {
-//       if (!currentNode.children.has(char)) return null;
-//       currentNode = currentNode.children.get(char)!;
-//     }
-//     return currentNode.value;
-//   }
-
-//   search(word: string, isPrefix = false): boolean {
-//     let currentNode = this.root;
-//     for (const char of word) {
-//       if (!currentNode.children.has(char)) return false;
-//       currentNode = currentNode.children.get(char)!;
-//     }
-//     return isPrefix || currentNode.isEndWord;
-//   }
-
-//   startsWith(prefix: string) {
-//     return this.search(prefix, true);
-//   }
-// }
-
-// const trie = new Trie<string>();
-
-// trie.insert('a1', '1a');
-// trie.insert('a2', '2a');
-
-// trie.search('a1');
-
-// trie.get('a');
-
-// trie.get('a');

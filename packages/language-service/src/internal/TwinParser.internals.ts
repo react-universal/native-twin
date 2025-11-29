@@ -1,9 +1,10 @@
 import { __defaultRuleMeta, type RuleMeta } from '@native-twin/core';
 import type { CompleteStyle } from '@native-twin/css';
-import { hasOwnProperty } from '@native-twin/helpers';
 import * as HashSet from 'effect/HashSet';
+import type { TextDocument } from 'vscode-languageserver-textdocument';
 import * as TwinParserModel from '../models/TwinParser.models';
 import type { TwinRuleComposer } from '../models/TwinRuleHandler';
+import type * as LSP from './LSPAdapterSpec';
 import type {
   AnyInternalTwinRule,
   BuildStyledContext,
@@ -72,28 +73,53 @@ export function createStyledContext(rem: number): BuildStyledContext {
   };
 }
 
-export const isTokenType =
-  <A extends string>(type: A) =>
-  (token: unknown): token is { type: A } => {
-    const isUndef = typeof token === 'undefined';
-    return !isUndef && hasOwnProperty.call(token, 'type') && (token as any)['type'] === type;
+export const fixRegionRanges = (node: LSP.JsxNodeRegion, doc: TextDocument): LSP.JsxNodeRegion => {
+  const styledProps: LSP.JsxAttributeRegion[] = [];
+  for (const attribute of node.styledProps) {
+    const { attributeValue } = attribute;
+    const originalText = attributeValue.rawText;
+    const parsableText = attributeValue.text;
+    const documentText = doc.getText(attributeValue.range);
+
+    const subset = new Set([originalText, parsableText, documentText]);
+    if (subset.size === 3) {
+      if (attributeValue.text.startsWith('`')) {
+        attributeValue.text = attributeValue.text.slice(1);
+        attributeValue.range.start.character += 1;
+      }
+      if (attributeValue.text.endsWith('`')) {
+        attributeValue.text = attributeValue.text.slice(0, attributeValue.text.lastIndexOf('`'));
+      }
+      styledProps.push(attribute);
+      continue;
+    }
+    const starOffset = doc.offsetAt(attributeValue.range.start);
+    let counterDif = 0;
+    let cursor = 0;
+    while (cursor < originalText.length) {
+      const parsableChar = parsableText[cursor];
+      const char = originalText[cursor + counterDif];
+      if (!char) break;
+      if (char !== parsableChar) {
+        ++counterDif;
+      }
+      ++cursor;
+    }
+    const cursorDiff = cursor - parsableText.length;
+    const finalStart = doc.positionAt(starOffset + counterDif - cursorDiff);
+    const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif - cursorDiff);
+
+    styledProps.push({
+      ...attribute,
+      attributeValue: {
+        ...attributeValue,
+        range: { start: finalStart, end: finalEnd },
+      },
+    });
+  }
+
+  return {
+    ...node,
+    styledProps,
   };
-
-export const isGroupToken = isTokenType('GROUP');
-export const isArbitraryToken = isTokenType('ARBITRARY');
-export const isClassNameToken = isTokenType('CLASS_NAME');
-export const isVariantClassToken = isTokenType('VARIANT_CLASS');
-export const isComposedClassName = isTokenType('ComposedClass');
-
-export const isAnyTokenExceptGroup = (x: unknown) =>
-  isClassNameToken(x) || isArbitraryToken(x) || isVariantClassToken(x);
-
-export const isComposedNodeAtOffset = (
-  node: TwinParserModel.ParsedRuleWithLocation,
-  documentOffset: number,
-) => isOffsetAtLocation(documentOffset, node);
-
-export const isOffsetAtLocation = (
-  offset: number,
-  location: TwinParserModel.ParsedRuleWithLocation,
-) => offset >= location.startOffset && offset <= location.endOffset;
+};

@@ -48,7 +48,7 @@
     "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "chokidar": "^3.5.3",
-    "code-block-writer": "^13.0.1",
+    "code-block-writer": "^13.0.3",
     "effect": "^3.19.3",
     "fast-check": "^3.21.0",
     "jiti": "^2.4.0",

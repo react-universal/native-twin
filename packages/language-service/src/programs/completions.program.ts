@@ -3,7 +3,7 @@ import * as Option from 'effect/Option';
 import * as LSP from '../core/LSPContext.service';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
-import { getCompletionItem } from '../models/Completion.model';
+import { TwinCompletionItem } from '../models/Completion.model';
 import type {
   ParsedRuleWithLocation,
   TwinParserOutput,
@@ -45,7 +45,9 @@ export const getCompletionsAtPosition = LSP.createTwinCompletions({
       parserResult: Option.fromNullable(parserResult),
       region: region,
       completions: locatedToken
-        ? twinTokens.map((rule) => getCompletionItem(rule, locatedToken, cursorOffset, document))
+        ? twinTokens.map((rule) =>
+            new TwinCompletionItem(rule, locatedToken, cursorOffset, document).toCompletion(),
+          )
         : [],
       twinTokens,
     } satisfies LSP.LSPTwinCompletionsResult;

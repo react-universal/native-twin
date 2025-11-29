@@ -7,9 +7,6 @@ import type { JsxNodeRegion } from '../internal/LSPAdapterSpec';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
 export const make = Effect.gen(function* () {
-  // const jsxParser = yield* JSXParser;
-  // const store = yield* Ref.make(new Map<string, TwinLSPDocument>());
-
   const createSourceGraph = (document: TwinLSPDocument, element: JsxNodeRegion) =>
     Effect.gen(function* () {
       const context = yield* createTraversalContext(element, document);

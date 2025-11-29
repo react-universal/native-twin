@@ -11,7 +11,7 @@ import { LSPConstants } from '../models/lsp.constants';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
 export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.CodeActionParams) {
-  if (params.context.diagnostics.length === 0) return undefined;
+  if (params.context.diagnostics.length === 0) return null;
 
   const { getLSPDocument } = yield* LSPAdapterSpec;
   const document = yield* getLSPDocument(params.textDocument.uri);
@@ -31,7 +31,7 @@ export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.Cod
   });
 
   const region = document.findRegionAt(params.range.start);
-  if (!region) return undefined;
+  if (!region) return null;
   const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
     RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
     RA.map((x) => getActionsForDuplicatedDecl(x, document.uri)),

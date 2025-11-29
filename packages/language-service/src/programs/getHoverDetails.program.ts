@@ -3,6 +3,7 @@ import * as Effect from 'effect/Effect';
 import type * as vscode from 'vscode-languageserver';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
+import { getCSSMarkDownParts, sheetEntriesToMD } from '../utils/language/language.utils';
 import { completionRulesToQuickInfo } from '../utils/language/quickInfo.utils';
 
 export const getHoverDetails = Effect.fn(function* (
@@ -19,5 +20,11 @@ export const getHoverDetails = Effect.fn(function* (
   if (!region) return undefined;
 
   const sheetEntries = yield* parser.runTW(region.text);
-  return completionRulesToQuickInfo(sheetEntries, sheetEntriesToCss(sheetEntries), region.range);
+  const entries = sheetEntries;
+
+  return completionRulesToQuickInfo(
+    sheetEntriesToMD(entries, yield* parser.data.styledContext),
+    getCSSMarkDownParts(sheetEntriesToCss(entries)).join('\n'),
+    region.range,
+  );
 });

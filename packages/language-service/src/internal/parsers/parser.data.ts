@@ -140,3 +140,4 @@ const createParsedRule = (token: TwinParserModel.AnyTwinClassToken): TWParsedRul
   absurd(token as never);
   return ParsedRule.mergeParsedRule({});
 };
+

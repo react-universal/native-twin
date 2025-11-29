@@ -10,8 +10,7 @@ export interface TwinBaseDocument {
 }
 
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
-  constructor(private readonly textDocument: VSCDocument.TextDocument) {
-  }
+  constructor(private readonly textDocument: VSCDocument.TextDocument) {}
 
   get document() {
     return this.textDocument;
@@ -68,7 +67,6 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return { start: this.positionAt(startOffset), end: this.positionAt(endOffset) };
   }
 
-  // MARK: Equality protocol
   [Equal.symbol](that: unknown) {
     return (
       that instanceof BaseTwinTextDocument &&

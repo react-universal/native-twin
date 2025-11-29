@@ -1,3 +1,5 @@
+import { parsedRuleToEntry } from '@native-twin/core';
+import type { TWParsedRule } from '@native-twin/css';
 import * as RA from 'effect/Array';
 import * as Cause from 'effect/Cause';
 import * as Context from 'effect/Context';
@@ -21,6 +23,15 @@ const make = Effect.gen(function* () {
     const dictionary = yield* twinTrie.get;
     if (key.length === 0) return [] as TwinParserModel.TwinRuleRegistry[];
     return RA.fromIterable(Trie.valuesWithPrefix(dictionary, key));
+  });
+
+  const findByParsed = Effect.fn(function* (rule: TWParsedRule) {
+    const dictionary = yield* twinTrie.get;
+    const tw = yield* twinRef.get;
+    return RA.fromIterable(Trie.valuesWithPrefix(dictionary, rule.n)).map((result) => ({
+      result,
+      sheetEntry: parsedRuleToEntry(rule, tw.context),
+    }));
   });
 
   const getRuleByClassName = Effect.fn(function* (key: string) {
@@ -60,6 +71,7 @@ const make = Effect.gen(function* () {
     getRuleByClassName,
     runTwinParser,
     runFullParserEffect,
+    findByParsed,
   };
 }).pipe(
   Effect.withSpan('TwinParserContext'),
