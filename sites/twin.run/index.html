@@ -12,22 +12,23 @@
 </head>
 
 <body>
-    <div id="monaco-editor-root"></div>
+    <!-- <div id="monaco-editor-root" style="height: 100vh;"></div> -->
     <!-- <div id="first-loading-status" class="loading-player">
         <video src="./loading-status.webm" loop controls="none" autoplay></video>
-    </div>
+    </div>-->
     <div class="twin-editor">
         <div class="editor">
-            <div id="monaco-editor-root"></div>
+            <div id="monaco-editor-root" style="height: 100vh;"></div>
             <iframe id="editorPreview" frameborder="0"></iframe>
         </div>
-    </div> -->
-    <script type="module">
+    </div>
+    <script type="module" src="./src/main.ts"></script>
+    <!-- <script type="module">
         import { setup } from './src';
         import { runApp } from './src/App';
         setup();
         runApp();
-    </script>
+    </script> -->
 </body>
 
 </html>

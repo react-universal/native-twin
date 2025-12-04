@@ -15,9 +15,9 @@ import type * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuntimeContext } from './TwinRuntime.service';
 
 const make = Effect.gen(function* () {
-  const { twinTrie, bootTwinRuntime, twinRef, styledContext, themeVariants } =
+  const { twinTrie, twinRef, styledContext, themeVariants } =
     yield* TwinRuntimeContext;
-  yield* bootTwinRuntime();
+  // yield* bootTwinRuntime();
 
   const findRulesByKey = Effect.fn(function* (key: string) {
     const dictionary = yield* twinTrie.get;

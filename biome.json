@@ -9,6 +9,7 @@
   "files": {
     "ignoreUnknown": true,
     "includes": [
+      "**/*/apps/**/*.ts",
       "**/*/src/**/*.ts",
       "**/*/src/**/*.tsx",
       "**/*/test/**/*",

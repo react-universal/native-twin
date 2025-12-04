@@ -1,13 +1,16 @@
 import { hasOwnProperty } from '@native-twin/helpers';
 import * as Context from 'effect/Context';
 import type * as Effect from 'effect/Effect';
+import type * as Option from 'effect/Option';
 import type * as SubscriptionRef from 'effect/SubscriptionRef';
+import type { InternalTwinConfig } from '../internal/TwinTypes.internal';
 import { LSPConstants, type TwinConfigOptions } from '../models/lsp.constants';
 
 export interface LSPConfig {
   config: SubscriptionRef.SubscriptionRef<TwinConfigOptions>;
   onChangeConfig: (config: TwinConfigOptions) => Effect.Effect<void>;
   configSelector: <T>(selector: (config: TwinConfigOptions) => T) => Effect.Effect<T>;
+  loadTwinConfig: (filename: string) => Effect.Effect<Option.Option<InternalTwinConfig>>;
 }
 export const LSPConfig = Context.GenericTag<LSPConfig>('lsp/LSPConfig');
 

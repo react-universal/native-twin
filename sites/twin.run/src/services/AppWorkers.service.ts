@@ -7,9 +7,11 @@ import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
 import compilerWorker from '../../editor/workers/compiler.worker?worker&url';
 import typingsWorker from '../../editor/workers/typings.worker?worker&url';
-import { setTypescriptDefaults } from '../../utils/editor.utils';
-import { traceLayerLogs } from '../../utils/logger.utils';
-import type { GetPackageTypings } from '../../utils/twin.schemas';
+import { setTypescriptDefaults } from '../utils/editor.utils';
+import { traceLayerLogs } from '../utils/logger.utils';
+// import { setTypescriptDefaults } from '../../utils/editor.utils';
+// import { traceLayerLogs } from '../../utils/logger.utils';
+import type { GetPackageTypings } from '../utils/twin.schemas';
 import type { CompileCodeRequestSchema } from '../workers/shared.schemas';
 
 const typingsInstallerWorkerLayer = BrowserWorker.layer(
@@ -57,9 +59,6 @@ const make = Effect.gen(function* () {
   }
 });
 
-export class AppWorkersService extends Context.Tag('app/workers')<
-  AppWorkersService,
-  Effect.Effect.Success<typeof make>
->() {
-  static Live = Layer.scoped(AppWorkersService, make).pipe(traceLayerLogs('workers_svc'));
-}
+export interface AppWorkers extends Effect.Effect.Success<typeof make> {}
+export const AppWorkers = Context.GenericTag<AppWorkers>('app/workers');
+export const AppWorkersLive = Layer.scoped(AppWorkers, make).pipe(traceLayerLogs('workers_svc'));

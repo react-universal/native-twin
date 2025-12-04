@@ -1,5 +1,5 @@
-import { Runtime } from 'effect';
 import * as Effect from 'effect/Effect';
+import * as Runtime from 'effect/Runtime';
 import * as vscode from 'vscode-languageserver';
 import type * as lsp from 'vscode-languageserver-protocol';
 

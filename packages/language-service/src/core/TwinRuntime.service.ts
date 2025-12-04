@@ -20,11 +20,11 @@ import type {
 } from '../internal/TwinTypes.internal';
 import type * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuleComposer } from '../models/TwinRuleHandler';
-import { requireJS } from '../utils/load-esm';
 import * as LspConfig from './LSPConfig.service';
 
 const resolvedSections = new Map<string, Record<string, any>>();
 const make = Effect.gen(function* () {
+  const lspConfig = yield* LspConfig.LSPConfig;
   const twinRef = yield* Ref.make<InternalTwFn>(setup(defineConfig({ content: [] })));
   const twinTrie = yield* SubscriptionRef.make(Trie.empty<TwinParserModel.TwinRuleRegistry>());
   const themeVariants = yield* SubscriptionRef.make<
@@ -111,14 +111,13 @@ const make = Effect.gen(function* () {
   }
 
   function loadTwin(atPath: string): Effect.Effect<InternalTwinConfig | null> {
-    return Effect.promise(() =>
-      requireJS(atPath).pipe(Option.getOrElse(() => Promise.resolve(null))),
-    );
+    return lspConfig.loadTwinConfig(atPath).pipe(Effect.andThen(Option.getOrElse(() => null)));
   }
 
   function bootTwinRuntime(twinPath: string | null = null) {
     return Effect.gen(function* () {
       const { config } = yield* LspConfig.LSPConfig;
+      console.log('CONFG: ', yield* config.get);
       let result: InternalTwinConfig | null = null;
       const configPath = yield* twinPath
         ? Effect.succeed(twinPath)

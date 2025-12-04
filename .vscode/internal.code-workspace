@@ -5,6 +5,10 @@
       "path": ".."
     },
     {
+      "name": "twin-run",
+      "path": "../sites/twin.run"
+    },
+    {
       "name": "📦 native-twin-vscode",
       "path": "../packages/vscode-extension"
     },
@@ -19,10 +23,6 @@
     {
       "name": "📦 @native-twin/ts-plugin",
       "path": "../packages/ts-plugin"
-    },
-    {
-      "name": "twin-run",
-      "path": "../sites/twin.run"
     },
     {
       "name": "📦 @native-twin/adapters",
@@ -86,8 +86,7 @@
     },
     "chat.disableAIFeatures": true,
     "terminal.integrated.suggest.providers": {
-      "lsp": true,
-      "vscode.terminal-suggest": true
+      "lsp": true
     }
   }
 }

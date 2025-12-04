@@ -1,4 +1,3 @@
-import { inspect } from 'node:util';
 import { TinyColor } from '@ctrl/tinycolor';
 import type { CssFeature, SheetEntry } from '@native-twin/css';
 import toCssFormat from 'cssbeautify';
@@ -84,15 +83,7 @@ export const sheetEntriesToMD = (entries: SheetEntry[], context: StyledContext) 
   for (const current of entries) {
     const nextDecl = composeDeclarations(current.declarations, context);
     template.push(`"${current.className}": `);
-    template.push(
-      inspect(nextDecl, {
-        depth: null,
-        compact: false,
-        colors: false,
-        numericSeparator: true,
-        showHidden: false,
-      }),
-    );
+    template.push(JSON.stringify(nextDecl, null, 2));
   }
   template.push('});');
   const result = js_beautify(template.join('\n'), {

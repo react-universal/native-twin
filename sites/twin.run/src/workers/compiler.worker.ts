@@ -1,14 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /// <reference lib="WebWorker" />
 
-/**
- * Worker to fetch typescript definitions for dependencies.
- * Credits to @CompuIves
- * https://github.com/CompuIves/codesandbox-client/blob/dcdb4169bcbe3e5aeaebae19ff1d45940c1af834/packages/app/src/app/components/CodeEditor/Monaco/workers/fetch-dependency-typings.js
- *
- */
-import * as BrowserRunner from '@effect/platform-browser/BrowserWorkerRunner';
 import * as Runner from '@effect/platform/WorkerRunner';
+import * as BrowserRunner from '@effect/platform-browser/BrowserWorkerRunner';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
@@ -33,12 +26,7 @@ const WorkerLive = Runner.layerSerialized(CompileCodeRequestSchema, {
     const compiled = trimCode(wrapped);
 
     return Stream.make(compiled).pipe(
-      Stream.map((x) =>
-        CompiledCodeResponse.make({
-          css: '',
-          js: x,
-        }),
-      ),
+      Stream.map((x) => CompiledCodeResponse.make({ css: '', js: x })),
     );
   },
 }).pipe(Layer.provide(BrowserRunner.layer));

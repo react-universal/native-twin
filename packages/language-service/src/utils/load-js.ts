@@ -19,7 +19,7 @@ function lazyJiti() {
   );
 }
 
-function requireJSThrowable(path: string): any {
+async function requireJSThrowable(path: string): Promise<any> {
   // biome-ignore lint/complexity/useArrowFunction: needs to be bindable
   const config = (function () {
     try {

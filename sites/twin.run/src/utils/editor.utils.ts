@@ -1,10 +1,10 @@
+import {
+  JsxEmit,
+  typescriptDefaults,
+} from '@codingame/monaco-vscode-standalone-typescript-language-features';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as monaco from 'monaco-editor';
-import { useWorkerFactory } from 'monaco-editor-wrapper/workerFactory';
-import type { Logger } from 'monaco-languageclient/tools';
-import { JsxEmit } from 'typescript';
-import { MONACO_BASE_FILE_URI } from './constants.utils';
 
 export const detectLanguageFromPath = (path: string) => {
   const ext = path.replace(/^.+\.([^.]+)$/, '$1');
@@ -19,14 +19,9 @@ export const getEditorFileByURI = (uri: monaco.Uri) =>
   pipe(monaco.editor.getModel(uri), Option.fromNullable);
 
 export const createEditorFileModel = (uri: monaco.Uri, contents: string) =>
-  monaco.editor.createModel(
-    contents,
-    detectLanguageFromPath(uri.path) ?? 'typescript',
-    uri,
-  );
+  monaco.editor.createModel(contents, detectLanguageFromPath(uri.path) ?? 'typescript', uri);
 
-export const pathToMonacoURI = (path: string) =>
-  monaco.Uri.parse(new URL(path, MONACO_BASE_FILE_URI).href);
+export const pathToMonacoURI = (path: string) => monaco.Uri.parse(new URL(path, 'file:///').href);
 
 export const getAllEditorModelFiles = () => monaco.editor.getModels();
 
@@ -65,35 +60,10 @@ export const registerEditorLanguages = () => {
 };
 
 export const setTypescriptDefaults = () => {
-  monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
-  monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+  typescriptDefaults.setEagerModelSync(true);
+  typescriptDefaults.setCompilerOptions({
     esModuleInterop: true,
-    jsx: JsxEmit.ReactJSX,
-    lib: ['Dom'],
-  });
-};
-
-export const configureMonacoWorkers = (logger?: Logger) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useWorkerFactory({
-    workerOverrides: {
-      ignoreMapping: true,
-      workerLoaders: {
-        TextEditorWorker: () =>
-          new Worker(
-            new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url),
-            { type: 'module' },
-          ),
-        TextMateWorker: () =>
-          new Worker(
-            new URL(
-              '@codingame/monaco-vscode-textmate-service-override/worker',
-              import.meta.url,
-            ),
-            { type: 'module' },
-          ),
-      },
-    },
-    logger,
+    jsx: JsxEmit.Preserve,
+    lib: ['Dom', 'Dom.Iterable'],
   });
 };

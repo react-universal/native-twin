@@ -1,4 +1,3 @@
-import { inspect } from 'node:util';
 import * as Effect from 'effect/Effect';
 import * as Graph from 'effect/Graph';
 import * as Predicate from 'effect/Predicate';
@@ -63,13 +62,7 @@ const createTraversalContext = Effect.fn(function* (
   const debugStep = (stepName: string, node: JsxNodeRegion | undefined, data?: any) =>
     Effect.logDebug(
       stepName,
-      inspect(node ? getNodeDetails(node) : { step: stepName, data }, {
-        colors: true,
-        depth: null,
-        showHidden: false,
-        getters: true,
-        sorted: true,
-      }),
+      JSON.stringify(node ? getNodeDetails(node) : { step: stepName, data }),
     );
 
   // const getNodeInfo = (node: JsxNodeRegion): SourceNodeInfo => {

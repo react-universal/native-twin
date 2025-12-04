@@ -4,12 +4,11 @@ import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
 import { isSameRange } from '../utils/vscode.utils';
 import { LSPConstants } from './lsp.constants';
-import type { TwinComposerHandler } from './TwinLanguageRegion.model';
 
 export interface DiagnosticReportInput {
   code: TwinDiagnosticCodes;
   location: vscode.Location;
-  rules?: TwinComposerHandler[];
+  rules: { text: string; location: vscode.Location }[];
   customReason?: string;
 }
 
@@ -22,10 +21,13 @@ export class DiagnosticReport implements Equal.Equal {
   }
 
   constructor(private readonly input: DiagnosticReportInput) {
-    this.relatedInfo = RA.dedupeWith(
-      this.input.rules ?? [],
-      (a, b) => a.location === b.location,
-    ).map(createRelatedInfo);
+    this.relatedInfo = RA.dedupeWith(this.input.rules, (a, b) =>
+      isSameRange(a.location.range, b.location.range),
+    ).map((rule) => vscode.DiagnosticRelatedInformation.create(rule.location, rule.text));
+  }
+
+  get diagnostic() {
+    return (this._diagnostic ??= this.getDiagnostic());
   }
 
   getDiagnostic(): vscode.Diagnostic {
@@ -59,9 +61,9 @@ export class DiagnosticReport implements Equal.Equal {
       case TwinDiagnosticCodes.None:
         return '';
       case TwinDiagnosticCodes.DuplicatedDeclaration:
-        return 'Duplicated NativeTwin Utility';
+        return 'Duplicated Class Utility';
       case TwinDiagnosticCodes.DuplicatedClassName:
-        return 'Duplicated NativeTwin ClassName';
+        return 'Duplicated ClassName';
     }
   }
 }
@@ -71,6 +73,3 @@ export enum TwinDiagnosticCodes {
   DuplicatedDeclaration = '001',
   DuplicatedClassName = '002',
 }
-
-const createRelatedInfo = (composition: TwinComposerHandler) =>
-  vscode.DiagnosticRelatedInformation.create(composition.location, composition.className);

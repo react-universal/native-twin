@@ -1,0 +1,13 @@
+{
+  "configurations": [
+    {
+      "name": "Chrome Preview",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "preLaunchTask": "npm: dev",
+      "webRoot": "${workspaceFolder}",
+      "userDataDir": "${workspaceFolder}/.chrome/profile"
+    },
+  ]
+}

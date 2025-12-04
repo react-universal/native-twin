@@ -17,7 +17,8 @@
     "apps/*"
   ],
   "resolutions": {
-    "react-native-worklets": "0.6.1"
+    "react-native-worklets": "0.6.1",
+    "monaco-editor": "npm:@codingame/monaco-vscode-editor-api@^23.2.2"
   },
   "scripts": {
     "build": "yarn && npx turbo run build",

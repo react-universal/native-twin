@@ -47,3 +47,5 @@ out
 *.vsix
 # Turborepo
 .turbo
+old/
+.chrome/
