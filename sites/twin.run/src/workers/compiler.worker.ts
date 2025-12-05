@@ -19,14 +19,17 @@ const WorkerLive = Runner.layerSerialized(CompileCodeRequestSchema, {
     console.log('REQ: ', req);
     const code = addJsxConst(req.jsx);
     const transformed = sucrase.transform(code, { transforms: ['imports'] });
+    console.log('IMPORTS: ', transformed.code);
     const spliced = spliceJsxConst(transformed.code);
     const trimmed = trimCode(spliced);
     const tsTransform = sucrase.transform(trimmed, { transforms: ['jsx', 'typescript'] });
+    console.log('ts_transform: ', tsTransform.code);
     const wrapped = wrapReturn(tsTransform.code);
     const compiled = trimCode(wrapped);
 
     return Stream.make(compiled).pipe(
       Stream.map((x) => CompiledCodeResponse.make({ css: '', js: x })),
+      Stream.tapError((error) => Effect.log('Error on worker: ', error)),
     );
   },
 }).pipe(Layer.provide(BrowserRunner.layer));

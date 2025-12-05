@@ -1,4 +1,3 @@
-import url from 'node:url';
 import { identity } from '@native-twin/helpers';
 import {
   FileNotFound,
@@ -11,6 +10,7 @@ import {
 } from '@native-twin/language-service/browser';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import * as uri from 'vscode-uri';
 
 export const VscodeLSPAdapterLive = Effect.gen(function* () {
   const { getDocument } = yield* LSPContext;
@@ -18,13 +18,17 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
   const parser = yield* JSXParser;
 
   const getLSPDocument = Effect.fn(function* (filename: string) {
-    const document = yield* Effect.succeed(getDocument(filename))
-      .pipe(Effect.flatMap(identity))
-      .pipe(Effect.mapError((e) => FileNotFound.create(e)));
+    const document = yield* Effect.succeed(getDocument(filename)).pipe(
+      Effect.flatMap(identity),
+      Effect.mapError((e) => FileNotFound.create(e)),
+    );
 
-    const filePath = url.fileURLToPath(filename);
+    const filePath = uri.URI.parse(filename).path;
     const tsSource = yield* program.getSourceFile(filePath, document.getText());
-    const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
+    let regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
+    if (regions.length === 0) {
+      regions = parser.jsxNodesToRegions(parser.getRawJSXFromSource(tsSource), document);
+    }
 
     return new TwinLSPDocument(document, regions);
   });

@@ -7,6 +7,7 @@ import * as Exit from 'effect/Exit';
 import * as Layer from 'effect/Layer';
 import * as Scope from 'effect/Scope';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
+import { requireJS } from '../utils/load-js';
 import { VscodeContext } from './extension.service';
 import { extensionConfigState, registerEditorCommand, thenable } from './extension.utils';
 
@@ -66,7 +67,12 @@ export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext | 
 
     const configLayer = Layer.succeed(
       LSPConfig,
-      LSPConfig.of({ config: configRef, onChangeConfig, configSelector }),
+      LSPConfig.of({
+        config: configRef,
+        onChangeConfig,
+        configSelector,
+        loadTwinConfig: (filename) => Effect.succeed(requireJS(filename)),
+      }),
     );
     const mainLayer = layer.pipe(Layer.provideMerge(configLayer));
     yield* Layer.buildWithScope(mainLayer, scope);

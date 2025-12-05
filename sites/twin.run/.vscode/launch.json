@@ -5,9 +5,14 @@
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:5173",
-      "preLaunchTask": "npm: dev",
       "webRoot": "${workspaceFolder}",
-      "userDataDir": "${workspaceFolder}/.chrome/profile"
+      "userDataDir": "${workspaceFolder}/.chrome/profile",
+      "enableContentValidation": false,
+      "pathMapping": {
+        "url": "/src/",
+        "path": "${webRoot}/"
+      },
+      "sourceMaps": true
     },
   ]
 }

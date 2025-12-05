@@ -62,6 +62,20 @@ const make = Effect.gen(function* () {
       return resolvedSections.get(section)!;
     });
 
+  let lastConfigPath = yield* lspConfig.configSelector((x) => x.twinConfigPath);
+  yield* lspConfig.config.changes.pipe(
+    Stream.runForEach((twin) => {
+      if (lastConfigPath !== twin.twinConfigPath) {
+        lastConfigPath = twin.tsConfigPath;
+        return bootTwinRuntime();
+      }
+      return Effect.void;
+    }),
+    Effect.fork,
+  );
+
+  yield* bootTwinRuntime();
+
   return {
     resolveThemeSection,
     bootTwinRuntime,
@@ -122,6 +136,7 @@ const make = Effect.gen(function* () {
       const configPath = yield* twinPath
         ? Effect.succeed(twinPath)
         : Effect.map(config.get, (x) => x.twinConfigPath);
+      console.log('LOADED; ', configPath);
       if (configPath) result = yield* loadTwin(configPath);
 
       if (!result) return yield* Effect.log('Cant detect native twin config path');

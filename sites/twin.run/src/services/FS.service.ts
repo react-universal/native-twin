@@ -23,9 +23,13 @@ const options: IFileWriteOptions = {
   create: true,
   overwrite: true,
 };
+
+const encoder = new TextEncoder();
 const make = Effect.gen(function* () {
   const workspaceUri = vscode.Uri.file('/workspace');
   const workspaceFileUri = vscode.Uri.file('/workspace.code-workspace');
+  // const indexDB = yield* Effect.promise(() => IndexedDB.create('twin', 1, []));
+
   const fileSystemProvider = new InMemoryFileSystemProvider();
   const subscriptions = yield* Ref.make<IDisposable[]>([]);
   const getPathUri = (filename: string) => vscode.Uri.file(`/workspace/${filename}`);
@@ -49,7 +53,7 @@ const make = Effect.gen(function* () {
 
   const createFile = Effect.fn(function* (uri: URI, content: string) {
     yield* Effect.promise(() =>
-      fileSystemProvider.writeFile(uri, Buffer.from(content, 'utf-8'), options),
+      fileSystemProvider.writeFile(uri, encoder.encode(content), options),
     );
     // yield* addSubscription(disposable);
   });
@@ -59,11 +63,11 @@ const make = Effect.gen(function* () {
       Effect.map((bytes) => Buffer.from(bytes).toString('utf-8')),
     );
 
-  yield* createBaseFiles();
-
   yield* Effect.sync(() => registerFileSystemOverlay(1, fileSystemProvider)).pipe(
     Effect.tap(addSubscription),
   );
+
+  yield* createBaseFiles();
 
   return {
     createFile,
@@ -91,7 +95,9 @@ const make = Effect.gen(function* () {
 
 export interface MonacoFs extends Effect.Effect.Success<typeof make> {}
 export const MonacoFs = Context.GenericTag<MonacoFs>('monaco/FS');
-export const MonacoFsLive = Layer.effect(MonacoFs, make);
+export const MonacoFsLive = Layer.effect(MonacoFs, make).pipe(
+  Layer.tapError((error) => Effect.log('CAP_ERROR_FS: ', error)),
+);
 
 export const createDefaultWorkspaceContent = (workspacePath: string) => {
   return JSON.stringify(

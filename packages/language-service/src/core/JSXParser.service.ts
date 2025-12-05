@@ -36,6 +36,18 @@ const make = Effect.gen(function* () {
     });
   }
 
+  function getRawJSXFromSource(sourceFile: ts.SourceFile) {
+    const jsxElements: TwinDslModels.AnyJSXElement[] = [];
+    for (const statement of sourceFile.getStatements()) {
+      if (!ts.Node.isExpressionStatement(statement)) continue;
+      const expression = statement.getExpression();
+      if (tsUtils.isJSXElementLike(expression)) {
+        jsxElements.push(expression);
+      }
+    }
+    return jsxElements;
+  }
+
   function getJSXRootsFromSource(sourceFile: ts.SourceFile) {
     let jsxElements: TwinDslModels.AnyJSXElement[] = [];
     for (const statement of sourceFile.getStatements()) {
@@ -113,13 +125,23 @@ const make = Effect.gen(function* () {
       const attrRange = getNodeRange(document, prop.value);
 
       const attrValue = getJSXAttributeValue(prop.attribute);
-      if (
-        attrValue.expression &&
-        ts.Node.isTemplateExpression(attrValue.expression) &&
-        attrValue.expression.getText().startsWith('`') &&
-        attrValue.expression.getText().endsWith('`')
-      ) {
-        attrRange.start.character += 1;
+      if (attrValue.expression) {
+        if (
+          ts.Node.isTemplateExpression(attrValue.expression) &&
+          attrValue.expression.getText().startsWith('`') &&
+          attrValue.expression.getText().endsWith('`')
+        ) {
+          attrRange.start.character += 1;
+        }
+        if (
+          ts.Node.isStringLiteral(attrValue.expression) &&
+          (attrValue.expression.getText().startsWith('{"') ||
+            attrValue.expression.getText().startsWith("{'")) &&
+          (attrValue.expression.getText().endsWith('"}') ||
+            attrValue.expression.getText().endsWith("'}"))
+        ) {
+          attrRange.start.character += 2;
+        }
       }
       const attributeValue = Spec.TwinLSPNode.createJsxAttributeValue({
         range: attrRange,
@@ -247,7 +269,7 @@ const make = Effect.gen(function* () {
       const expression = initializer.getExpression();
       if (!expression) return result;
       if (ts.Node.isStringLiteral(expression)) {
-        result.originalText = expression.getText();
+        result.originalText = expression.getLiteralValue();
         result.twinCX = cx`${result.originalText}`;
         result.valueTextNode = expression;
         return result;
@@ -290,6 +312,7 @@ const make = Effect.gen(function* () {
     getJSXElementStatement,
     getJSXMappedProps,
     getJSXElementChilds,
+    getRawJSXFromSource,
   };
 });
 

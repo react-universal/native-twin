@@ -1,4 +1,4 @@
-import type { TwinConfigOptions } from '@native-twin/language-service';
+import { requireESM, type TwinConfigOptions } from '@native-twin/language-service';
 import { LSPConfig, parseLSPConfigInput } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -25,6 +25,7 @@ export const LSPConfigLive = Effect.gen(function* () {
     config: currentConfig,
     onChangeConfig,
     configSelector,
+    loadTwinConfig: (filename) => Effect.promise(() => requireESM(filename)),
   });
 
   function getInitialConfig(): Effect.Effect<Partial<TwinConfigOptions>> {

@@ -42,12 +42,17 @@ export const LSPConfigLive = Effect.gen(function* () {
           .then(Option.fromNullable)
           .catch(() => Option.none()),
       ).pipe(
-        Effect.catchAll((error) => {
-          console.log('ERROR: ', error);
-          return Effect.succeed(
-            defineConfig({ content: ['App.tsx'], presets: [presetTailwind()] }) as unknown as any,
-          );
-        }),
+        Effect.andThen(Option.getOrNull),
+        Effect.map((x) =>
+          x === null
+            ? Option.some(
+                defineConfig({
+                  content: ['App.tsx'],
+                  presets: [presetTailwind()],
+                }) as unknown as any,
+              )
+            : Option.some(x),
+        ),
       ),
   });
 

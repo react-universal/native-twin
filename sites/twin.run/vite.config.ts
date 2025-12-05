@@ -1,3 +1,4 @@
+import react from '@vitejs/plugin-react';
 import { defineConfig, createLogger, UserConfig } from "vite";
 import assetsJSON from "@entur/vite-plugin-assets-json";
 import vsixPlugin from "@codingame/monaco-vscode-rollup-vsix-plugin";
@@ -49,9 +50,12 @@ export default defineConfig((): UserConfig => {
         "vscode-textmate",
         "vscode-oniguruma",
         "vscode/localExtensionHost",
+        'vscode-uri',
+        'prop-types',
         '@vscode/vscode-languagedetection',
         "@codingame/monaco-vscode-standalone-typescript-language-features",
-        // "prop-types",
+        '@native-twin/language-service',
+        '@native-twin/language-service/browser',
         "@effect/platform-browser/BrowserWorkerRunner",
         "@effect/platform/WorkerRunner",
         "vscode-languageserver-textdocument",
@@ -69,6 +73,9 @@ export default defineConfig((): UserConfig => {
     },
     worker: {
       format: "es",
+      rollupOptions: {
+        external: ['@native-twin/language-service/*']
+      }
     },
     base: "http://localhost:5173/",
     preview: {
@@ -94,6 +101,7 @@ export default defineConfig((): UserConfig => {
     plugins: [
       vsixPlugin(),
       assetsJSON(),
+      react(),
       {
         // For the *-language-features extensions which use SharedArrayBuffer
         name: "configure-response-headers",

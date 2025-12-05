@@ -1,12 +1,17 @@
 /// <reference lib="WebWorker" />
 
+import { sheetEntriesToCss } from '@native-twin/css';
 import {
   getClientCapabilities,
+  LSPAdapterSpec,
   LSPBaseLayerLive,
   LSPConfig,
   LSPContext,
   languagePrograms,
+  TwinParserContext,
+  TwinRuntimeContext,
 } from '@native-twin/language-service/browser';
+import * as Array from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
@@ -56,24 +61,24 @@ export const LspMainLive = Layer.empty.pipe(
   Layer.provideMerge(LSPConfigLive),
 );
 
-const program = Effect.gen(function* () {
-  console.log('START_PROGRAM');
-  const { connection: Connection } = yield* LSPContext;
-  const config = yield* LSPConfig;
-  const Runtime = ManagedRuntime.make(LspMainLive);
+const Runtime = ManagedRuntime.make(LspMainLive);
 
-  Connection.onCompletion(async (params) => {
+const program = Effect.gen(function* () {
+  const lsp = yield* LSPContext;
+  const config = yield* LSPConfig;
+
+  lsp.connection.onCompletion(async (params) => {
     const completions = await Runtime.runPromise(
       languagePrograms.getCompletionsAtPosition
         .apply(params.textDocument.uri, params.position)
-        .pipe(Effect.catchAll((error) => Effect.log('ERRORRR: ', error))),
+        .pipe(Effect.catchAll((error) => Effect.log('CompletionsError: ', error))),
     );
     if (!completions) return undefined;
 
     return completions.completions;
   });
 
-  Connection.onInitialize(async (params) => {
+  lsp.connection.onInitialize(async (params) => {
     const capabilities = getClientCapabilities(params.capabilities);
     const configOptions = params.initializationOptions;
 
@@ -82,7 +87,7 @@ const program = Effect.gen(function* () {
     return capabilities;
   });
 
-  Connection.onDidChangeConfiguration(async (changes) => {
+  lsp.connection.onDidChangeConfiguration(async (changes) => {
     await config.config.pipe(
       Effect.andThen((currentConfig) =>
         config
@@ -90,7 +95,7 @@ const program = Effect.gen(function* () {
           .pipe(
             Effect.andThen(() =>
               currentConfig.diagnostics === 'off'
-                ? Connection.languages.diagnostics.refresh()
+                ? lsp.connection.languages.diagnostics.refresh()
                 : Effect.void,
             ),
           ),
@@ -99,23 +104,62 @@ const program = Effect.gen(function* () {
     );
   });
 
-  Connection.onCodeAction(() => undefined);
+  lsp.connection.onRequest('get.css', async (documentUri: string) => {
+    console.log('GET_CSS', documentUri);
+    return Effect.gen(function* () {
+      const twin = yield* TwinRuntimeContext;
 
-  Connection.onCompletionResolve(async (...args) =>
+      const { getLSPDocument } = yield* LSPAdapterSpec;
+      const parser = yield* TwinParserContext;
+      const document = yield* getLSPDocument(documentUri);
+      const twinTarget = yield* twin.twinRef.get;
+
+      const docRegions = document.regions
+        .flatMap((x) => x.styledProps)
+        .map((x) => x.attributeValue);
+
+      const sheetEntries = yield* Effect.all(docRegions.map((x) => parser.runTW(x.text))).pipe(
+        Effect.map(Array.flatten),
+      );
+      const css = sheetEntriesToCss(
+        Array.dedupeWith(
+          [...twinTarget.target, ...sheetEntries],
+          (self, that) => self.className === that.className,
+        ),
+      );
+      console.log('ENTRIES; ', sheetEntries);
+      return { css, regions: docRegions };
+    }).pipe(
+      Effect.catchAll((error) =>
+        Effect.log('get.css error: ', error).pipe(Effect.andThen(() => '.a {}')),
+      ),
+      Runtime.runPromise,
+    );
+  });
+  lsp.connection.onDocumentHighlight(async (...args) => {
+    const data = await languagePrograms
+      .getDocumentHighLightsProgram(...args)
+      .pipe(Runtime.runPromise);
+    return data;
+  });
+
+  lsp.connection.onCodeAction(() => undefined);
+
+  lsp.connection.onCompletionResolve(async (...args) =>
     Runtime.runPromise(languagePrograms.getCompletionEntryDetails(...args)),
   );
 
-  Connection.onHover(async (...args) =>
+  lsp.connection.onHover(async (...args) =>
     Runtime.runPromise(languagePrograms.getHoverDetails(...args)),
   );
 
-  Connection.onDocumentColor(async (...params) =>
+  lsp.connection.onDocumentColor(async (...params) =>
     Runtime.runPromise(languagePrograms.getDocumentColors(...params)),
   );
 
-  // Connection.languages.diagnostics.on(async (...args) =>
-  //   Runtime.runPromise(languagePrograms.getDocumentDiagnosticsProgram(...args)),
-  // );
+  lsp.connection.languages.diagnostics.on(async (...args) =>
+    Runtime.runPromise(languagePrograms.getDocumentDiagnosticsProgram(...args)),
+  );
 
   documentsHandler.listen(connectionHandler);
   connectionHandler.listen();

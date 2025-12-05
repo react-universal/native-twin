@@ -54,7 +54,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
         completionItem: {
           labelDetailsSupport: true,
         },
-        triggerCharacters: ['`'],
+        triggerCharacters: ['`', '"', "'"],
       },
       workspace: {
         workspaceFolders: {
@@ -62,6 +62,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
           changeNotifications: setup.hasConfigurationCapability,
         },
       },
+
       diagnosticProvider: {
         interFileDependencies: false,
         workspaceDiagnostics: false,

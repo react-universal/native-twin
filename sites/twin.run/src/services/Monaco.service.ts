@@ -1,13 +1,18 @@
-// import * as vscode from 'vscode';
+import type { Uri } from 'vscode';
 import { LogLevel } from '@codingame/monaco-vscode-api';
 import editorWorker from '@codingame/monaco-vscode-api/workers/editor.worker?worker&url';
 import tsWorker from '@codingame/monaco-vscode-standalone-typescript-language-features/worker?worker&url';
 import textMateWorker from '@codingame/monaco-vscode-textmate-service-override/worker?worker&url';
-import { LSPConstants } from '@native-twin/language-service/browser';
+import {
+  type JsxAttributeValueRegion,
+  LSPConstants,
+  parseLSPConfigInput,
+} from '@native-twin/language-service/browser';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Ref from 'effect/Ref';
+import * as monaco from 'monaco-editor';
 import type { Logger } from 'monaco-languageclient/common';
 import { EditorApp, type EditorAppConfig } from 'monaco-languageclient/editorApp';
 import { type LanguageClientConfig, LanguageClientWrapper } from 'monaco-languageclient/lcwrapper';
@@ -21,7 +26,7 @@ import twinWorkerUrl from '../workers/twin.worker?worker&url';
 import { MonacoFs } from './FS.service';
 
 const make = Effect.gen(function* () {
-  const htmlElementTarget = document.getElementById('monaco-editor-root')!;
+  // const htmlElementTarget = document.getElementById('monaco-editor-root')!;
   const vsCodeConfig = yield* createVscodeConfig();
   const languageClientConfig = yield* createLanguageClientConfig();
   const editorConfig = yield* createEditorAppConfig();
@@ -30,35 +35,60 @@ const make = Effect.gen(function* () {
   const lcWrapper = yield* Ref.make(new LanguageClientWrapper(languageClientConfig));
   const editorApp = yield* Ref.make(new EditorApp(editorConfig));
 
-  const startEditorApp = Effect.gen(function* () {
-    yield* apiWrapper.get.pipe(
-      Effect.andThen((x) =>
-        Effect.promise(() =>
-          x.start({ caller: 'MonacoContext', performServiceConsistencyChecks: true }),
+  const startEditorApp = (htmlElement: HTMLElement) =>
+    Effect.gen(function* () {
+      yield* apiWrapper.get.pipe(
+        Effect.andThen((x) =>
+          Effect.promise(() =>
+            x.start({ caller: 'MonacoContext', performServiceConsistencyChecks: true }),
+          ),
         ),
-      ),
-      Effect.tap(() => Effect.logDebug('Monaco: Monaco api Started')),
-    );
-    yield* editorApp.get.pipe(
-      Effect.andThen((x) => Effect.promise(() => x.start(htmlElementTarget))),
-      Effect.tap(() => Effect.logDebug('App: Editor App Started')),
-    );
-    yield* lcWrapper.get.pipe(
-      Effect.andThen((lcWrapper) => Effect.promise(() => lcWrapper.start())),
-      Effect.tap(() => Effect.logDebug(`LC: Language client started`)),
-    );
-    yield* apiWrapper.get.pipe(Effect.andThen((app) => Effect.promise(() => app.initExtensions())));
+        Effect.tap(() => Effect.logDebug('Monaco: Monaco api Started')),
+      );
+      yield* editorApp.get.pipe(
+        Effect.andThen((x) => Effect.promise(() => x.start(htmlElement))),
+        Effect.tap(() => Effect.logDebug('App: Editor App Started')),
+      );
+      yield* lcWrapper.get.pipe(
+        Effect.andThen((lcWrapper) => Effect.promise(() => lcWrapper.start())),
+        Effect.tap(() => Effect.logDebug(`LC: Language client started`)),
+      );
+      yield* apiWrapper.get.pipe(
+        Effect.andThen((app) => Effect.promise(() => app.initExtensions())),
+      );
 
-    registerEditorLanguages();
-    setTypescriptDefaults();
-  });
+      registerEditorLanguages();
+      setTypescriptDefaults();
+    });
 
   return {
     apiWrapper,
     lcWrapper,
     editorApp,
     startEditorApp,
+    getModel,
+    getCompilerResultFromLSP,
+    getCurrentEditor: () =>
+      editorApp.get.pipe(Effect.andThen((app) => Effect.fromNullable(app.getEditor()))),
   };
+
+  function getModel(uri: Uri) {
+    return Effect.fromNullable(monaco.editor.getModel(uri));
+  }
+
+  function getCompilerResultFromLSP(uri: Uri) {
+    return lcWrapper.get.pipe(
+      Effect.andThen((x) => Effect.fromNullable(x.getLanguageClient())),
+      Effect.andThen((lc) =>
+        Effect.promise(() =>
+          lc.sendRequest<{ css: string; regions: JsxAttributeValueRegion[] }>(
+            'get.css',
+            uri.toString(),
+          ),
+        ),
+      ),
+    );
+  }
 });
 
 export interface MonacoContext extends Effect.Effect.Success<typeof make> {}
@@ -72,7 +102,7 @@ const createEditorAppConfig = () =>
     const editorAppConfig: EditorAppConfig = {
       id: 'native.twin',
       logLevel: LogLevel.Debug,
-      overrideAutomaticLayout: true,
+      overrideAutomaticLayout: false,
       codeResources: {
         original: {
           text: openFirstFile,
@@ -114,8 +144,17 @@ const createLanguageClientConfig = () =>
         initializationOptions: {
           // ...data,
           // ...vscode.workspace.getConfiguration(LSPConstants.vscodeConfigSection),
-          twinConfig: fs.paths.twinConfig.path,
           workspaceRoot: fs.paths.workspaceUri.path,
+          ...parseLSPConfigInput({
+            rootDir: fs.paths.workspaceUri.fsPath,
+            debug: true,
+            enable: true,
+            twinConfigPath: fs.paths.twinConfig.fsPath,
+            tsConfigPath: fs.paths.tsConfig.fsPath,
+            completions: true,
+            diagnostics: 'warn',
+            trace: { server: 'verbose' },
+          }),
           capabilities: {
             completion: {
               dynamicRegistration: false,
@@ -131,6 +170,7 @@ const createLanguageClientConfig = () =>
         documentSelector: LSPConstants.documentSelectors,
         diagnosticCollectionName: LSPConstants.diagnosticProviderSource,
         markdown: { isTrusted: true, supportHtml: true },
+
         initializationFailedHandler: (error) => {
           console.log('INIT_FAIL: ', error);
           return true;
@@ -152,7 +192,10 @@ const createVscodeConfig = () =>
       $type: 'extended',
       viewsConfig: {
         $type: 'EditorService',
-        htmlContainer: document.getElementById('monaco-editor-root')!,
+        // htmlContainer: document.getElementById('monaco-editor-root')!,
+        htmlAugmentationInstructions(htmlContainer) {
+          htmlContainer?.COMMENT_NODE;
+        },
       },
       advanced: {
         enableExtHostWorker: true,

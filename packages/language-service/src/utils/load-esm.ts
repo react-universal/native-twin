@@ -40,4 +40,7 @@ const requireJSThrowable = async (path: string): Promise<any> => {
   return module;
 };
 
-export const requireJS = Option.liftThrowable(requireJSThrowable);
+export const requireESM = <A>(path: string): Promise<Option.Option<A>> =>
+  requireJSThrowable(path)
+    .then((x) => Option.some(x))
+    .catch(() => Option.none());

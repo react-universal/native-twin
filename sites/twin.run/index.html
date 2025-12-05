@@ -11,17 +11,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="flex">
     <!-- <div id="monaco-editor-root" style="height: 100vh;"></div> -->
     <!-- <div id="first-loading-status" class="loading-player">
         <video src="./loading-status.webm" loop controls="none" autoplay></video>
     </div>-->
-    <div class="twin-editor">
-        <div class="editor">
-            <div id="monaco-editor-root" style="height: 100vh;"></div>
-            <iframe id="editorPreview" frameborder="0"></iframe>
-        </div>
-    </div>
+
+    <div id="twin-editor" class="flex flex-1 w-screen" style="height: 100vh"></div>
+    <iframe id="editorPreview" frameborder="0"></iframe>
     <script type="module" src="./src/main.ts"></script>
     <!-- <script type="module">
         import { setup } from './src';
