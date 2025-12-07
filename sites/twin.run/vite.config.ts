@@ -1,4 +1,5 @@
-import react from '@vitejs/plugin-react';
+import react from "@vitejs/plugin-react";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 import { defineConfig, createLogger, UserConfig } from "vite";
 import assetsJSON from "@entur/vite-plugin-assets-json";
 import vsixPlugin from "@codingame/monaco-vscode-rollup-vsix-plugin";
@@ -43,19 +44,22 @@ export default defineConfig((): UserConfig => {
       sourcemap: true,
       commonjsOptions: { transformMixedEsModules: true },
     },
+    esbuild: {
+      minifySyntax: false,
+    },
     optimizeDeps: {
       include: [
         // prevent vite from reloading the whole page when starting a worker (so 2 times in a row after cleaning the vite cache - for the editor then the textmate workers)
         // it's mainly empirical and probably not the best way, fix me if you find a better way
         "vscode-textmate",
         "vscode-oniguruma",
-        "vscode/localExtensionHost",
-        'vscode-uri',
-        'prop-types',
-        '@vscode/vscode-languagedetection',
-        "@codingame/monaco-vscode-standalone-typescript-language-features",
-        '@native-twin/language-service',
-        '@native-twin/language-service/browser',
+        // "vscode/localExtensionHost",
+        // "vscode-uri",
+        "prop-types",
+        // "@vscode/vscode-languagedetection",
+        // "@codingame/monaco-vscode-standalone-typescript-language-features",
+        "@native-twin/language-service",
+        "@native-twin/language-service/browser",
         "@effect/platform-browser/BrowserWorkerRunner",
         "@effect/platform/WorkerRunner",
         "vscode-languageserver-textdocument",
@@ -74,8 +78,8 @@ export default defineConfig((): UserConfig => {
     worker: {
       format: "es",
       rollupOptions: {
-        external: ['@native-twin/language-service/*']
-      }
+        external: ["@native-twin/language-service/*"],
+      },
     },
     base: "http://localhost:5173/",
     preview: {
@@ -102,6 +106,9 @@ export default defineConfig((): UserConfig => {
       vsixPlugin(),
       assetsJSON(),
       react(),
+      nodePolyfills({
+        include: ["process", "path"],
+      }),
       {
         // For the *-language-features extensions which use SharedArrayBuffer
         name: "configure-response-headers",

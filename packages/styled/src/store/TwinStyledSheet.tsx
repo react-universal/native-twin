@@ -86,7 +86,6 @@ export class TwinStyledSheetManager {
       }
       if (withGroup) {
         Object.assign(final, current.styles.group);
-        // console.log("asdasdasd", withPointer, current);
       }
       return Object.assign(
         { ...prev },

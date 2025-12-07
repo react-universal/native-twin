@@ -2,30 +2,24 @@
 <html>
 
 <head>
-    <title>Native Twin Playground</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="src/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+  <title>Native Twin Playground</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
 </head>
 
-<body class="flex">
-    <!-- <div id="monaco-editor-root" style="height: 100vh;"></div> -->
-    <!-- <div id="first-loading-status" class="loading-player">
+<body>
+  <div id="monaco-editor-root" style="height: 100vh;"></div>
+  <!-- <div id="first-loading-status" class="loading-player">
         <video src="./loading-status.webm" loop controls="none" autoplay></video>
     </div>-->
 
-    <div id="twin-editor" class="flex flex-1 w-screen" style="height: 100vh"></div>
-    <iframe id="editorPreview" frameborder="0"></iframe>
-    <script type="module" src="./src/main.ts"></script>
-    <!-- <script type="module">
-        import { setup } from './src';
-        import { runApp } from './src/App';
-        setup();
-        runApp();
-    </script> -->
+  <!-- <div id="twin-editor" class="flex flex-1 w-screen" style="height: 100vh"></div> -->
+  <!-- <iframe id="editorPreview" frameborder="0"></iframe> -->
+  <script type="module" src="./src/App.tsx"></script>
 </body>
 
 </html>

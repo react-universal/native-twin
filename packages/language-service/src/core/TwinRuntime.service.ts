@@ -131,12 +131,10 @@ const make = Effect.gen(function* () {
   function bootTwinRuntime(twinPath: string | null = null) {
     return Effect.gen(function* () {
       const { config } = yield* LspConfig.LSPConfig;
-      console.log('CONFG: ', yield* config.get);
       let result: InternalTwinConfig | null = null;
       const configPath = yield* twinPath
         ? Effect.succeed(twinPath)
         : Effect.map(config.get, (x) => x.twinConfigPath);
-      console.log('LOADED; ', configPath);
       if (configPath) result = yield* loadTwin(configPath);
 
       if (!result) return yield* Effect.log('Cant detect native twin config path');

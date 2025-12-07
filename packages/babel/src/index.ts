@@ -135,7 +135,6 @@ function nativeTwinBabelPlugin(
 ): PluginObj {
   // console.log('OPTIONS: ', options);
   return program.pipe(
-    // Effect.onError((x) => Effect.log('asdasdasd', x)),
     Effect.provide(NodeMainLayerSync),
     Effect.provide(
       Layer.succeed(

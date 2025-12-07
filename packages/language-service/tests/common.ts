@@ -265,7 +265,6 @@ export function init(fixture: string | string[]): FixtureContext {
           text,
         },
       } as DidOpenTextDocumentParams);
-      // console.log('asdasdasdasd');
 
       // If opening a document stalls then it's probably because this promise is not being resolved
       // This can happen if a document is not covered by one of the selectors because of it's URI
