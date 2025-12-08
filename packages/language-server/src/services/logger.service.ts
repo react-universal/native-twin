@@ -1,4 +1,4 @@
-import { LSPConfig, LSPContext } from '@native-twin/language-service/Services';
+import { LSPConfig, LSPContext } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';

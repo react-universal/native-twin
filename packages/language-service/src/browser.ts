@@ -2,12 +2,10 @@
 
 export * from './core/JSXParser.service';
 export * from './core/LSPConfig.service';
-export * from './core/LSPContext.service';
-export * from './core/TwinParser.service';
 export * from './core/TwinRuntime.service';
 export * from './core/TypescriptAPI.service';
 export * from './core/TypescriptUtils.service';
-export * from './internal/LSPAdapterSpec';
+export * from './internal/LSPAdapterSpec'
 export * from './internal/RunnerLayer';
 export type { TwinConfigOptions } from './models/lsp.constants';
 export * from './models/lsp.constants';

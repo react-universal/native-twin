@@ -1,5 +1,9 @@
-import { requireESM, type TwinConfigOptions } from '@native-twin/language-service';
-import { LSPConfig, parseLSPConfigInput } from '@native-twin/language-service/Services';
+import {
+  LSPConfig,
+  parseLSPConfigInput,
+  requireESM,
+  type TwinConfigOptions,
+} from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';

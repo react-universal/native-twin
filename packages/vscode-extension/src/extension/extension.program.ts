@@ -1,6 +1,10 @@
 import * as vscode from 'vscode';
-import { LSPConstants, type TwinConfigOptions } from '@native-twin/language-service';
-import { LSPConfig, parseLSPConfigInput } from '@native-twin/language-service/Services';
+import {
+  LSPConfig,
+  LSPConstants,
+  parseLSPConfigInput,
+  type TwinConfigOptions,
+} from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';

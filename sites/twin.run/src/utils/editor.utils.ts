@@ -1,36 +1,20 @@
+import { LogLevel } from 'vscode';
 import {
   JsxEmit,
   typescriptDefaults,
 } from '@codingame/monaco-vscode-standalone-typescript-language-features';
-import { pipe } from 'effect/Function';
-import * as Option from 'effect/Option';
 import * as monaco from 'monaco-editor';
+import { ConsoleLogger } from 'monaco-languageclient/common';
 
-export const detectLanguageFromPath = (path: string) => {
-  const ext = path.replace(/^.+\.([^.]+)$/, '$1');
-  if (/^[cm]?[jt]sx?$/.test(ext)) {
-    return 'typescript';
-  }
+const uiLogger = new ConsoleLogger(LogLevel.Off);
 
-  return ext;
-};
-
-export const getEditorFileByURI = (uri: monaco.Uri) =>
-  pipe(monaco.editor.getModel(uri), Option.fromNullable);
-
-export const createEditorFileModel = (uri: monaco.Uri, contents: string) =>
-  monaco.editor.createModel(contents, detectLanguageFromPath(uri.path) ?? 'typescript', uri);
-
-export const pathToMonacoURI = (path: string) => monaco.Uri.parse(new URL(path, 'file:///').href);
-
-export const getAllEditorModelFiles = () => monaco.editor.getModels();
-
-export const getOrCreateEditorFile = (filePath: string, contents = '') => {
-  const uri = pathToMonacoURI(filePath);
-  return pipe(
-    getEditorFileByURI(uri),
-    Option.getOrElse(() => createEditorFileModel(uri, contents)),
-  );
+export const debugLogging = (id: string) => {
+  const now = new Date(Date.now());
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+  const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
+  uiLogger.debug(`[${hours}:${minutes}:${seconds}.${milliseconds}]: ${id}`);
 };
 
 export const registerEditorLanguages = () => {

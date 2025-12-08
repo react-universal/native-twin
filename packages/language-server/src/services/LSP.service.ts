@@ -1,5 +1,5 @@
+import { LSPBaseLayerLive, LSPContext } from '@native-twin/language-service';
 import { VscodeLSPAdapterLive } from '@native-twin/language-service/adapters/vscode.adapter.js';
-import { LSPBaseLayerLive, LSPContext } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';

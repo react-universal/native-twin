@@ -4,15 +4,24 @@ import * as vscode from 'vscode';
 import { LogLevel } from '@codingame/monaco-vscode-api';
 import getConfigurationServiceOverride from '@codingame/monaco-vscode-configuration-service-override';
 import getEditorServiceOverride from '@codingame/monaco-vscode-editor-service-override';
+import getExplorerServiceOverride from '@codingame/monaco-vscode-explorer-service-override';
 import {
   RegisteredFileSystemProvider,
   RegisteredMemoryFile,
   registerFileSystemOverlay,
 } from '@codingame/monaco-vscode-files-service-override';
 import getLanguageServiceOverride from '@codingame/monaco-vscode-languages-service-override';
+import getLayoutServiceOverride from '@codingame/monaco-vscode-layout-service-override';
+import getLifecycleServiceOverride from '@codingame/monaco-vscode-lifecycle-service-override';
 import getModelServiceOverride from '@codingame/monaco-vscode-model-service-override';
+import getOutlineServiceOverride from '@codingame/monaco-vscode-outline-service-override';
 import getStorageServiceOverride from '@codingame/monaco-vscode-storage-service-override';
 import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
+import getViewBannerServiceOverride from '@codingame/monaco-vscode-view-banner-service-override';
+import getViewCommonOverride from '@codingame/monaco-vscode-view-common-service-override';
+import getActBarServiceOverride from '@codingame/monaco-vscode-view-status-bar-service-override';
+import getViewServiceOverride from '@codingame/monaco-vscode-views-service-override';
+import getWorkbenchServiceOverride from '@codingame/monaco-vscode-workbench-service-override';
 import getWorkspaceServiceOverride from '@codingame/monaco-vscode-workspace-trust-service-override';
 
 // this is required syntax highlighting
@@ -22,6 +31,7 @@ import '@codingame/monaco-vscode-json-language-features-default-extension';
 import '@codingame/monaco-vscode-html-default-extension';
 import '@codingame/monaco-vscode-html-language-features-default-extension';
 import '@codingame/monaco-vscode-standalone-html-language-features';
+
 import '@codingame/monaco-vscode-css-default-extension';
 import '@codingame/monaco-vscode-css-language-features-default-extension';
 import '@codingame/monaco-vscode-standalone-css-language-features';
@@ -38,6 +48,8 @@ import type { Logger } from 'monaco-languageclient/common';
 import type { EditorAppConfig } from 'monaco-languageclient/editorApp';
 import type { LanguageClientConfig } from 'monaco-languageclient/lcwrapper';
 import {
+  defaultHtmlAugmentationInstructions,
+  defaultViewsInit,
   type MonacoVscodeApiConfig,
   useOpenEditorStub,
 } from 'monaco-languageclient/vscodeApiWrapper';
@@ -64,13 +76,25 @@ export const configureProject = async () => {
         ...getModelServiceOverride(),
         ...getStorageServiceOverride(),
         ...getWorkspaceServiceOverride(),
+        ...getActBarServiceOverride(),
+        ...getViewServiceOverride(),
+        ...getLayoutServiceOverride(),
+        ...getLifecycleServiceOverride(),
+        ...getViewBannerServiceOverride(),
+        ...getOutlineServiceOverride(),
+        ...getWorkbenchServiceOverride(),
+        ...getViewCommonOverride(),
+        ...getExplorerServiceOverride(),
       },
     },
     viewsConfig: {
-      $type: 'EditorService',
-      htmlContainer: document.getElementById('monaco-editor-root')!,
+      $type: 'ViewsService',
+      htmlContainer: document.body,
+      // viewsInitFunc: defaultViewsInit,
+      htmlAugmentationInstructions: defaultHtmlAugmentationInstructions,
     },
     workspaceConfig: {
+      webviewEndpoint: 'twin-wv',
       enableWorkspaceTrust: true,
       developmentOptions: { logLevel: LogLevel.Debug },
       workspaceProvider: {
@@ -106,6 +130,18 @@ export const configureProject = async () => {
     extensions: [
       {
         config: {
+          // extensionKind: ['web', 'ui', 'workspace'],
+          preview: true,
+          activationEvents: ['onWebviewPanel:twinPreview'],
+          contributes: {
+            commands: [
+              {
+                command: 'nativeTwin.preview',
+                title: 'Start twin preview',
+                category: 'Twin Preview',
+              },
+            ],
+          },
           name: LSPConstants.vscodeExtensionName,
           publisher: LSPConstants.vscodePublisher,
           version: '1.0.0',
@@ -147,8 +183,6 @@ export const configureProject = async () => {
   );
 
   registerFileSystemOverlay(1, fileSystemProvider);
-
-  
 
   const editorAppConfig: EditorAppConfig = {
     id: 'native.twin',

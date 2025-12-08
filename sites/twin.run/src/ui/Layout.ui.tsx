@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
 interface PlaygroundLayoutProps {
   children: ReactNode;
@@ -6,8 +6,8 @@ interface PlaygroundLayoutProps {
 
 export const PlaygroundLayout = ({ children }: PlaygroundLayoutProps) => {
   return (
-    <div className='flex flex-1 h-screen flex-col'>
-      <div className='w-full h-full'>{children}</div>
+    <div className="flex flex-1 h-screen w-screen bg-[#1f1f1f]">
+      <div className="w-full h-full flex flex-1">{children}</div>
     </div>
   );
 };

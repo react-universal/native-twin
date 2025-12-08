@@ -3,9 +3,10 @@ import * as NodeRuntime from '@effect/platform-node/NodeRuntime';
 import {
   addServerRequestHandler,
   getClientCapabilities,
+  LSPConfig,
+  LSPContext,
   languagePrograms,
 } from '@native-twin/language-service';
-import { LSPConfig, LSPContext } from '@native-twin/language-service/Services';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
