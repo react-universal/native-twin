@@ -1,5 +1,6 @@
 /** Documents Service */
 export { languagePrograms } from './browser';
+export * from './core/JSXParser.service';
 export * from './core/LSPConfig.service';
 export * from './core/LSPContext.service';
 export * from './core/TwinGraph.service';

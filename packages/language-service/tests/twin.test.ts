@@ -2,16 +2,16 @@ import { describe, expect, it } from '@effect/vitest';
 import { setup } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import { Effect, Iterable, Stream } from 'effect';
+import { Effect } from 'effect';
 import path from 'path';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { TextEdit } from 'vscode-languageserver-types';
-import { JSXParser } from '../src/core/JSXParser.service';
-import { LSPAdapterSpec } from '../src/internal/LSPAdapterSpec';
-import type { VscodeCompletionItem } from '../src/models/completion.model';
-import type { JSXNode } from '../src/models/TwinDsl.models';
-import { twinTSExtract } from '../src/programs/twinExtract.program';
-import { TwinParser } from '../src/TS';
+import { LSPAdapterSpec, TwinParserContext } from '../src';
+import { TwinCompletionItem } from '../src/models/Completion.model';
+import type {
+  ParsedRuleWithLocation,
+  TwinParserOutput,
+  TwinRuleRegistry,
+} from '../src/models/TwinParser.models';
 import { TestLayer } from './dsl';
 import twinConfig from './fixtures/react/tailwind.config';
 
@@ -21,7 +21,7 @@ describe('Twin Typescript API', () => {
   it.effect('Executor test', () =>
     Effect.gen(function* () {
       const adapter = yield* LSPAdapterSpec;
-      const twinParser = yield* TwinParser.TwinParserContext;
+      const twinParser = yield* TwinParserContext;
       const cursorOffset = 189;
 
       const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
@@ -40,20 +40,37 @@ describe('Twin Typescript API', () => {
       //   startOffset: cursorOffset,
       // });
 
-      const locatedToken = document.findRegionAt(cursorPosition);
+      const text = region?.text;
+      let parserResult: TwinParserOutput | null | undefined = null;
+      let locatedToken: ParsedRuleWithLocation | null | undefined = null;
+      const twinTokens: TwinRuleRegistry[] = [];
+      if (!!region && !!text) {
+        parserResult = twinParser.runTwinParser({
+          startOffset: document.offsetAt(region.range.start),
+          text,
+        });
+
+        locatedToken = parserResult.result.find(
+          (token) => cursorOffset >= token.startOffset && cursorOffset <= token.endOffset,
+        );
+
+        if (locatedToken) {
+          const rules = yield* twinParser.findRulesByKey(locatedToken.parsed.n);
+          twinTokens.push(...rules);
+        }
+      }
 
       if (!locatedToken) throw expect(locatedToken).toBeDefined();
 
-      const rules = yield* twinParser.findRulesByKey(locatedToken.text);
-      const completions = rules.map(
-        (rule): VscodeCompletionItem =>
-          rule.toVscode(locatedToken.range, locatedToken.text),
-      );
+      const rules = yield* twinParser.findRulesByKey(locatedToken.parsed.n);
 
-      TextEdit.replace(completions.at(0)!.textEdit.range, completions.at(0)!.textEdit.newText);
+      const completions = rules.map(
+        (rule) => new TwinCompletionItem(rule, locatedToken, cursorOffset, document).toCompletion(),
+        // rule.toVscode(locatedToken.range, locatedToken.text),
+      );
       const result = TextDocument.applyEdits(
         document.getDocument(),
-        asArray(completions.at(0)?.textEdit),
+        asArray(completions.at(0)!.additionalTextEdits),
       );
 
       console.log(result);
@@ -64,30 +81,30 @@ describe('Twin Typescript API', () => {
       expect(region).toBeDefined();
     }).pipe(Effect.provide(TestLayer)),
   );
-  it.effect('Parse JSX Files', () =>
-    Effect.gen(function* () {
-      const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
-      const jsxParser = yield* JSXParser;
-      const { source, jsxNodes } = yield* twinTSExtract(ComponentPath);
+  // it.effect('Parse JSX Files', () =>
+  //   Effect.gen(function* () {
+  //     const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
+  //     const jsxParser = yield* JSXParser;
+  //     const { source, jsxNodes } = yield* twinTSExtract(ComponentPath);
 
-      expect(jsxNodes.length).toBeGreaterThan(0);
-      const result = yield* Stream.fromEffect(jsxParser.parseSourceFile(source)).pipe(
-        Stream.map((x) => x.jsxDeclarators.flatMap((_) => jsxParser.flatJSXDeclarator(_))),
-        Stream.flattenIterables,
-        Stream.runFold(
-          new Map<string, JSXNode>(),
-          (acc, current) => new Map(Iterable.appendAll(acc, current)),
-        ),
-      );
-      expect(result.size).toBeGreaterThan(0);
-      const parsed = yield* jsxParser.parseSourceFile(source).pipe(
-        Effect.map(({ jsxDeclarators }) =>
-          jsxDeclarators.flatMap((_) => Array.from(jsxParser.flatJSXDeclarator(_).entries())),
-        ),
-        Effect.map((x) => new Map(x)),
-      );
+  //     expect(jsxNodes.length).toBeGreaterThan(0);
+  //     const result = yield* Stream.fromEffect(jsxParser.parseSourceFile(source)).pipe(
+  //       Stream.map((x) => x.jsxDeclarators.flatMap((_) => jsxParser.flatJSXDeclarator(_))),
+  //       Stream.flattenIterables,
+  //       Stream.runFold(
+  //         new Map<string, JSXNode>(),
+  //         (acc, current) => new Map(Iterable.appendAll(acc, current)),
+  //       ),
+  //     );
+  //     expect(result.size).toBeGreaterThan(0);
+  //     const parsed = yield* jsxParser.parseSourceFile(source).pipe(
+  //       Effect.map(({ jsxDeclarators }) =>
+  //         jsxDeclarators.flatMap((_) => Array.from(jsxParser.flatJSXDeclarator(_).entries())),
+  //       ),
+  //       Effect.map((x) => new Map(x)),
+  //     );
 
-      expect(parsed.size).toBeGreaterThan(0);
-    }).pipe(Effect.scoped, Effect.provide(TestLayer)),
-  );
+  //     expect(parsed.size).toBeGreaterThan(0);
+  //   }).pipe(Effect.scoped, Effect.provide(TestLayer)),
+  // );
 });

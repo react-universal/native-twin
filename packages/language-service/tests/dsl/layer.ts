@@ -2,13 +2,18 @@ import { Effect, Layer, SubscriptionRef } from 'effect';
 import fs from 'fs';
 import path from 'path';
 import ts from 'ts-morph';
-import type { TwinConfigOptions } from '../../src';
+import {
+  requireESM,
+  type TwinConfigOptions,
+  TwinGraphLive,
+  TypeScriptApi,
+  TypeScriptProgram,
+} from '../../src';
 import { JSXParserLive } from '../../src/core/JSXParser.service';
 import { LSPConfig, parseLSPConfigInput } from '../../src/core/LSPConfig.service';
 import { TwinParserContextLive } from '../../src/core/TwinParser.service';
 import { TwinRuntimeContextLive } from '../../src/core/TwinRuntime.service';
 import { TypescriptUtilsLive } from '../../src/core/TypescriptUtils.service';
-import { TwinGraph, TypescriptApi } from '../../src/TS';
 import { createTwinLoggerLayerFor } from '../../src/utils/lsp.logger.service';
 import { TestVscodeLSPAdapterLive } from './adapter.mock';
 
@@ -21,7 +26,8 @@ const TsProgramLive = Effect.gen(function* () {
   );
   const programRef = yield* SubscriptionRef.make(program);
 
-  return TypescriptApi.TypeScriptProgram.of({
+  return TypeScriptProgram.of({
+    project,
     getSourceFile: Effect.fn(function* (filename) {
       yield* programRef.get;
       const sourceFile = project.getSourceFile(filename);
@@ -34,7 +40,7 @@ const TsProgramLive = Effect.gen(function* () {
     // languageServiceRef,
     // programRef,
   });
-}).pipe(Layer.effect(TypescriptApi.TypeScriptProgram));
+}).pipe(Layer.effect(TypeScriptProgram));
 
 const lspConfig = Effect.gen(function* () {
   const config = yield* SubscriptionRef.make(
@@ -50,6 +56,7 @@ const lspConfig = Effect.gen(function* () {
   const onChangeConfig = (newConfig: TwinConfigOptions) => SubscriptionRef.set(config, newConfig);
 
   return LSPConfig.of({
+    loadTwinConfig: (twinConfig) => Effect.promise(() => requireESM(twinConfig)),
     config,
     onChangeConfig,
     configSelector: (selector) => config.get.pipe(Effect.map(selector)),
@@ -57,16 +64,16 @@ const lspConfig = Effect.gen(function* () {
 });
 
 export const TestLayer = Layer.empty.pipe(
-  Layer.provideMerge(Layer.succeed(TypescriptApi.TypeScriptApi, ts)),
+  Layer.provideMerge(Layer.succeed(TypeScriptApi, ts)),
   Layer.provideMerge(TestVscodeLSPAdapterLive),
   Layer.provideMerge(TsProgramLive),
-  Layer.provideMerge(TwinGraph.TwinGraphLive),
+  Layer.provideMerge(TwinGraphLive),
   Layer.provide(createTwinLoggerLayerFor('LSP')),
   Layer.provideMerge(JSXParserLive),
   Layer.provideMerge(TwinParserContextLive),
   Layer.provideMerge(TypescriptUtilsLive),
-  Layer.provideMerge(Layer.effect(LSPConfig, lspConfig)),
   Layer.provideMerge(TwinRuntimeContextLive),
+  Layer.provideMerge(Layer.effect(LSPConfig, lspConfig)),
 );
 
 export const createCustomProgram = (tsConfigPath: string) => {

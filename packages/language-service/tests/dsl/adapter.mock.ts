@@ -4,9 +4,8 @@ import { Layer } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { TwinLSPDocument } from '../../src';
+import { JSXParser, TwinLSPDocument, TypeScriptProgram } from '../../src';
 import { FileNotFound, LSPAdapterSpec } from '../../src/internal/LSPAdapterSpec';
-import { JSXParser, TypeScriptProgram } from '../../src/Services';
 
 export const TestVscodeLSPAdapterLive = Effect.gen(function* () {
   const program = yield* TypeScriptProgram;
