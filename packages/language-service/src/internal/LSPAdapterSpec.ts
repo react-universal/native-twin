@@ -6,6 +6,7 @@ import * as Layer from 'effect/Layer';
 import * as Order from 'effect/Order';
 import * as t from 'vscode-languageserver-types';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
+import { annotatedLayer } from '../utils/effect.utils';
 
 export interface LSPTextDocument extends TwinLSPDocument {}
 /**
@@ -17,7 +18,7 @@ export interface LSPTextDocument extends TwinLSPDocument {}
  * @description The intention for the 2 implementations for TS compiler API its to support language server plugin in DevContainers (deno, vscode or web based editors)
  * */
 export const createLSPAdapterExecutor = (executor: LSPAdapterSpec): Layer.Layer<LSPAdapterSpec> => {
-  return Layer.succeed(LSPAdapterSpec, executor);
+  return Layer.succeed(LSPAdapterSpec, executor).pipe(annotatedLayer('LSPAdapterSpec'));
 };
 export interface LSPAdapterSpec {
   getLSPDocument(filename: string): Effect.Effect<LSPTextDocument, AnyLSPError>;

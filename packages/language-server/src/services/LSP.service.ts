@@ -7,7 +7,6 @@ import * as Stream from 'effect/Stream';
 import * as vscode from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { LSPConfigLive } from './Config.service';
-import { LoggerLive } from './logger.service';
 import { TypescriptContextLive } from './Typescript.service';
 
 const documentsHandler = new vscode.TextDocuments(TextDocument);
@@ -36,7 +35,7 @@ const LSPContextLive = Effect.gen(function* () {
 
 // const TwinLogger = Logger.replace(Logger.defaultLogger, createLspLogger('LSP'));
 
-export const LspMainLive = LoggerLive.pipe(
+export const LspMainLive = Layer.empty.pipe(
   Layer.provideMerge(VscodeLSPAdapterLive),
   Layer.provideMerge(TypescriptContextLive),
   Layer.provideMerge(LSPBaseLayerLive),

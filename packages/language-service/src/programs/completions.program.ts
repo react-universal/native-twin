@@ -1,55 +1,37 @@
 import * as Effect from 'effect/Effect';
-import * as Option from 'effect/Option';
 import * as LSP from '../core/LSPContext.service';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import { TwinCompletionItem } from '../models/Completion.model';
-import type {
-  ParsedRuleWithLocation,
-  TwinParserOutput,
-  TwinRuleRegistry,
-} from '../models/TwinParser.models';
+import { maybeParsedRuleAtPosition } from './common.program';
 
 export const getCompletionsAtPosition = LSP.createTwinCompletions({
   name: 'classNameCompletions',
-  apply: Effect.fn('classNameCompletions')(function* (filename, position) {
-    const parser = yield* TwinParserContext;
-    const executor = yield* LSPAdapterSpec;
-    const region = yield* executor.getRegionAt(filename, position);
-    const document = yield* executor.getLSPDocument(filename);
-    const cursorOffset = document.offsetAt(position);
-    const twinTokens: TwinRuleRegistry[] = [];
+  apply: Effect.fn('classNameCompletions')(
+    function* (filename, position) {
+      const parser = yield* TwinParserContext;
+      const executor = yield* LSPAdapterSpec;
+      const document = yield* executor.getLSPDocument(filename);
+      const result = yield* maybeParsedRuleAtPosition(document, position);
 
-    const valueRegion = document.findRegionAt(position);
-    const text = valueRegion?.text;
-    let parserResult: TwinParserOutput | null = null;
-    let locatedToken: ParsedRuleWithLocation | null | undefined = null;
-    if (!!valueRegion && !!text) {
-      parserResult = parser.runTwinParser({
-        startOffset: document.offsetAt(valueRegion.range.start),
-        text,
-      });
-
-      locatedToken = parserResult.result.find(
-        (token) => cursorOffset >= token.startOffset && cursorOffset <= token.endOffset,
+      const twinTokens = yield* parser.findRulesByKey(result.locatedToken.parsed.n);
+      return twinTokens.map((rule) =>
+        new TwinCompletionItem(
+          rule,
+          result.locatedToken,
+          result.cursorOffset,
+          document,
+        ).toCompletion(),
       );
-
-      if (locatedToken) {
-        const rules = yield* parser.findRulesByKey(locatedToken.parsed.n);
-        twinTokens.push(...rules);
-      }
-    }
-
-    return {
-      composedClass: Option.fromNullable(locatedToken),
-      parserResult: Option.fromNullable(parserResult),
-      region: region,
-      completions: locatedToken
-        ? twinTokens.map((rule) =>
-            new TwinCompletionItem(rule, locatedToken, cursorOffset, document).toCompletion(),
-          )
-        : [],
-      twinTokens,
-    } satisfies LSP.LSPTwinCompletionsResult;
-  }),
+    },
+    (effect, filename, position) => {
+      return effect.pipe(
+        Effect.catchAll((error) =>
+          Effect.log('Completion: Error in ', filename, position, error.message).pipe(
+            Effect.andThen(() => Effect.succeed([])),
+          ),
+        ),
+      );
+    },
+  ),
 });

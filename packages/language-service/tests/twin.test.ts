@@ -2,7 +2,7 @@ import { describe, expect, it } from '@effect/vitest';
 import { setup } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import { Effect } from 'effect';
+import * as Effect from 'effect/Effect';
 import path from 'path';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { LSPAdapterSpec, TwinParserContext } from '../src';
@@ -31,14 +31,8 @@ describe('Twin Typescript API', () => {
 
       expect(regions.length).toBeGreaterThan(0);
 
-      // const region = jsxParser.filterNodeAtPosition(regions, cursorPosition, document);
       const region = document.findRegionAt(cursorPosition);
       if (!region) throw expect(region).toBeDefined();
-
-      // const parserResult = twinParser.runTwinParser({
-      //   text: region.text,
-      //   startOffset: cursorOffset,
-      // });
 
       const text = region?.text;
       let parserResult: TwinParserOutput | null | undefined = null;
@@ -66,7 +60,6 @@ describe('Twin Typescript API', () => {
 
       const completions = rules.map(
         (rule) => new TwinCompletionItem(rule, locatedToken, cursorOffset, document).toCompletion(),
-        // rule.toVscode(locatedToken.range, locatedToken.text),
       );
       const result = TextDocument.applyEdits(
         document.getDocument(),
@@ -81,30 +74,4 @@ describe('Twin Typescript API', () => {
       expect(region).toBeDefined();
     }).pipe(Effect.provide(TestLayer)),
   );
-  // it.effect('Parse JSX Files', () =>
-  //   Effect.gen(function* () {
-  //     const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
-  //     const jsxParser = yield* JSXParser;
-  //     const { source, jsxNodes } = yield* twinTSExtract(ComponentPath);
-
-  //     expect(jsxNodes.length).toBeGreaterThan(0);
-  //     const result = yield* Stream.fromEffect(jsxParser.parseSourceFile(source)).pipe(
-  //       Stream.map((x) => x.jsxDeclarators.flatMap((_) => jsxParser.flatJSXDeclarator(_))),
-  //       Stream.flattenIterables,
-  //       Stream.runFold(
-  //         new Map<string, JSXNode>(),
-  //         (acc, current) => new Map(Iterable.appendAll(acc, current)),
-  //       ),
-  //     );
-  //     expect(result.size).toBeGreaterThan(0);
-  //     const parsed = yield* jsxParser.parseSourceFile(source).pipe(
-  //       Effect.map(({ jsxDeclarators }) =>
-  //         jsxDeclarators.flatMap((_) => Array.from(jsxParser.flatJSXDeclarator(_).entries())),
-  //       ),
-  //       Effect.map((x) => new Map(x)),
-  //     );
-
-  //     expect(parsed.size).toBeGreaterThan(0);
-  //   }).pipe(Effect.scoped, Effect.provide(TestLayer)),
-  // );
 });

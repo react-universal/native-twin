@@ -20,6 +20,7 @@ import type {
 } from '../internal/TwinTypes.internal';
 import type * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuleComposer } from '../models/TwinRuleHandler';
+import { annotatedLayer } from '../utils/effect.utils';
 import * as LspConfig from './LSPConfig.service';
 
 const resolvedSections = new Map<string, Record<string, any>>();
@@ -62,19 +63,13 @@ const make = Effect.gen(function* () {
       return resolvedSections.get(section)!;
     });
 
-  let lastConfigPath = yield* lspConfig.configSelector((x) => x.twinConfigPath);
   yield* lspConfig.config.changes.pipe(
-    Stream.runForEach((twin) => {
-      if (lastConfigPath !== twin.twinConfigPath) {
-        lastConfigPath = twin.tsConfigPath;
-        return bootTwinRuntime();
-      }
-      return Effect.void;
-    }),
-    Effect.fork,
+    Stream.map((nextConfig) => nextConfig.twinConfigPath),
+    Stream.tap(() => Effect.logInfo('TwinConfig refreshed.')),
+    Stream.forever,
+    Stream.runForEach((twinPath) => bootTwinRuntime(twinPath)),
+    Effect.forkDaemon,
   );
-
-  yield* bootTwinRuntime();
 
   return {
     resolveThemeSection,
@@ -128,16 +123,14 @@ const make = Effect.gen(function* () {
     return lspConfig.loadTwinConfig(atPath).pipe(Effect.andThen(Option.getOrElse(() => null)));
   }
 
-  function bootTwinRuntime(twinPath: string | null = null) {
+  function bootTwinRuntime(twinPath: string) {
     return Effect.gen(function* () {
-      const { config } = yield* LspConfig.LSPConfig;
-      let result: InternalTwinConfig | null = null;
-      const configPath = yield* twinPath
-        ? Effect.succeed(twinPath)
-        : Effect.map(config.get, (x) => x.twinConfigPath);
-      if (configPath) result = yield* loadTwin(configPath);
-
-      if (!result) return yield* Effect.log('Cant detect native twin config path');
+      const result = yield* loadTwin(twinPath);
+      const currentConfig = yield* applyToTwin((x) => x.config);
+      if (!result) {
+        if (currentConfig.content.length > 0) return Effect.void;
+        return yield* Effect.log('Cant detect native twin config path');
+      }
 
       yield* onUpdateConfig(result);
     });
@@ -146,7 +139,9 @@ const make = Effect.gen(function* () {
 
 export interface TwinRuntimeContext extends Effect.Effect.Success<typeof make> {}
 export const TwinRuntimeContext = Context.GenericTag<TwinRuntimeContext>('TwinRuntimeContext');
-export const TwinRuntimeContextLive = Layer.effect(TwinRuntimeContext, make);
+export const TwinRuntimeContextLive = Layer.effect(TwinRuntimeContext, make).pipe(
+  annotatedLayer('TwinRuntime'),
+);
 
 const getRawRuleText = (rawRule: AnyInternalTwinRule) =>
   Hash.string(

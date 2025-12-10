@@ -31,7 +31,7 @@
         "group": "",
         "order": 2
       },
-      "preLaunchTask": "vscode tsc watch",
+      "preLaunchTask": "webpack watch",
       "autoAttachChildProcesses": true,
       "sourceMaps": true,
       "resolveSourceMapLocations": [

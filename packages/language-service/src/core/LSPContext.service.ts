@@ -6,15 +6,6 @@ import type * as server from 'vscode-languageserver';
 import type * as serverDocs from 'vscode-languageserver-textdocument';
 import type * as Spec from '../internal/LSPAdapterSpec';
 import type { TwinLSPAdapterLayerIn } from '../internal/RunnerLayer';
-import type * as Models from '../models/TwinParser.models';
-
-export interface LSPTwinCompletionsResult {
-  twinTokens: Models.TwinRuleRegistry[];
-  completions: server.HandlerResult<server.CompletionItem[], void>;
-  region: Spec.AnyTwinNodeRegion | null;
-  parserResult: Option.Option<Models.TwinParserOutput>;
-  composedClass: Option.Option<Models.ParsedRuleWithLocation>;
-}
 
 export interface TwinLSPCompletionDefinition {
   name: string;
@@ -22,7 +13,7 @@ export interface TwinLSPCompletionDefinition {
     filename: string,
     position: Spec.LSPPosition,
   ) => Effect.Effect<
-    LSPTwinCompletionsResult,
+    server.HandlerResult<server.CompletionItem[], void>,
     Spec.AnyLSPError | E,
     TwinLSPAdapterLayerIn | Spec.LSPAdapterSpec | R
   >;

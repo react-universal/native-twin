@@ -3,6 +3,7 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
 import type * as vscode from 'vscode-languageserver';
+import { LSPConfig } from '../browser';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import { DiagnosticReport, TwinDiagnosticCodes } from '../models/Diagnostic.model';
@@ -24,8 +25,9 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
 ) {
   const { getLSPDocument } = yield* LSPAdapterSpec;
   const parser = yield* TwinParserContext;
+  const { configSelector } = yield* LSPConfig;
   const document = yield* getLSPDocument(params.textDocument.uri);
-
+  const severity = yield* configSelector((x) => x.diagnostics);
   const regions = document.parsableRegions;
   return yield* Stream.fromIterable(regions).pipe(
     Stream.mapEffect(({ attr }) =>
@@ -46,7 +48,6 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
         report.rules.push(...info);
         diagnosticReports.set(id, report);
       });
-
       return RA.flatMap(RA.fromIterable(diagnosticReports.values()), ({ code, rules }) => {
         return rules.map((rule) => {
           const info = rules.map((x) => ({
@@ -62,6 +63,7 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
               rule.parsedRegion.startOffset,
               rule.parsedRegion.endOffset,
             ),
+            severity,
             rules: info,
           });
         });

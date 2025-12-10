@@ -11,7 +11,7 @@ import type ts from 'typescript';
 import '@native-twin/core';
 import { createVirtualSheet, type SheetEntry } from '@native-twin/css';
 import type { TwinConfigOptions } from '@native-twin/language-service';
-import { parseLSPConfigInput } from '@native-twin/language-service/build/dts/Services';
+import { parseLSPConfigInput } from '@native-twin/language-service';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Option from 'effect/Option';
 import { requireJS } from '../utils/load-config';

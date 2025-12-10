@@ -21,7 +21,7 @@ export {
   getDocumentationMarkdown,
 } from './utils/language/language.utils';
 export { completionRulesToQuickInfo } from './utils/language/quickInfo.utils';
-export { requireESM } from './utils/load-esm';
+// export { requireESM } from './utils/load-esm';
 /** Logger */
 export { createLspLogger, loggerUtils } from './utils/lsp.logger.service';
 export { getSheetEntryStyles } from './utils/sheet.utils';

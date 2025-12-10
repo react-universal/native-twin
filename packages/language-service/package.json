@@ -24,11 +24,6 @@
       "import": "./build/esm/adapters/*",
       "default": "./build/cjs/adapters/*"
     },
-    "./Services": {
-      "types": "./build/dts/Services.d.ts",
-      "import": "./build/esm/Services.js",
-      "default": "./build/cjs/Services.js"
-    },
     "./browser": {
       "types": "./build/dts/browser.d.ts",
       "import": "./build/esm/browser.js",

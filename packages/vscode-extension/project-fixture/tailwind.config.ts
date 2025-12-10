@@ -15,7 +15,7 @@ export default defineConfig({
     extend: {
       screens: {
         md: '640px',
-        sm: '740px',
+        sm: '740px', 
       },
       colors: {
         primary: 'blue',

@@ -4,18 +4,21 @@ import {
   LSPConstants,
   parseLSPConfigInput,
   type TwinConfigOptions,
-} from '@native-twin/language-service';
+} from '@native-twin/language-service/browser';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Exit from 'effect/Exit';
 import * as Layer from 'effect/Layer';
+import * as Option from 'effect/Option';
 import * as Scope from 'effect/Scope';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import { requireJS } from '../utils/load-js';
+import defaultTwin from '../twinConfig.default';
 import { VscodeContext } from './extension.service';
 import { extensionConfigState, registerEditorCommand, thenable } from './extension.utils';
 
-export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext | LSPConfig>) => {
+export const launchExtension = <E>(
+  layer: Layer.Layer<never, E, VscodeContext | LSPConfig | Scope.Scope>,
+) => {
   return Effect.gen(function* () {
     const context = yield* VscodeContext;
     const scope = yield* Scope.make();
@@ -47,7 +50,9 @@ export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext | 
     );
 
     const twinConfigPath = files[0]?.path;
-    const rootDir = vscode.workspace.workspaceFolders?.[0]?.uri?.path ?? process.cwd();
+    const rootDir =
+      vscode.workspace.workspaceFolders?.[0]?.uri?.path ??
+      vscode.Uri.joinPath(context.extensionUri).path;
     const tsConfigPath = tsConfigs[0]?.path;
 
     const configRef = yield* SubscriptionRef.make(
@@ -75,7 +80,7 @@ export const launchExtension = <E>(layer: Layer.Layer<never, E, VscodeContext | 
         config: configRef,
         onChangeConfig,
         configSelector,
-        loadTwinConfig: (filename) => Effect.succeed(requireJS(filename)),
+        loadTwinConfig: (_filename) => Effect.succeed(Option.some(defaultTwin)),
       }),
     );
     const mainLayer = layer.pipe(Layer.provideMerge(configLayer));

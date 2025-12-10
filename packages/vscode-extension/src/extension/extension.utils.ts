@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
-import * as path from 'node:path';
 import type { TwinConfigOptions } from '@native-twin/language-service';
-import { LSPConstants } from '@native-twin/language-service';
+import { LSPConstants } from '@native-twin/language-service/browser';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
@@ -9,6 +8,7 @@ import * as Runtime from 'effect/Runtime';
 import type * as Scope from 'effect/Scope';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
+import * as path from 'path';
 import type { ConfigRef, ConfigValue, Emitter, ExtensionConfigRef } from './extension.models';
 import { VscodeContext } from './extension.service';
 
@@ -195,7 +195,8 @@ export const extensionConfigValue = <Section extends string, A>(
   defaultValue: A,
 ): Effect.Effect<ConfigRef<Section, A>, never, Scope.Scope> =>
   Effect.gen(function* () {
-    const get = () => vscode.workspace.getConfiguration(LSPConstants.vscodeConfigSection).get<A>(key);
+    const get = () =>
+      vscode.workspace.getConfiguration(LSPConstants.vscodeConfigSection).get<A>(key);
     const ref = yield* SubscriptionRef.make(get() ?? defaultValue);
 
     yield* listenForkEvent(vscode.workspace.onDidChangeConfiguration, (_) => {

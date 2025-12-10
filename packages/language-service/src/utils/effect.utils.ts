@@ -1,4 +1,5 @@
 import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 import * as Runtime from 'effect/Runtime';
 import * as Stream from 'effect/Stream';
 import * as Tracer from 'effect/Tracer';
@@ -15,6 +16,16 @@ export const effectWithTracer = Effect.functionWithSpan({
     context: Tracer.DisablePropagation.context(true),
   }),
 });
+
+export const annotatedLayer =
+  (name: string) =>
+  <In, Out, R>(layer: Layer.Layer<In, Out, R>) => {
+    return layer.pipe(
+      Layer.withSpan(`[layer] ${name}`),
+      Layer.annotateLogs(`layer`, name),
+      Layer.tap(() => Effect.log(`[layer] ${name} - created`).pipe(Effect.withLogSpan(name))),
+    );
+  };
 
 const listenStreamChanges = <A, E, R>(
   stream: Stream.Stream<A, E>,

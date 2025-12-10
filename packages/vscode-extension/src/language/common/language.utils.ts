@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { CSS_COLORS } from '@native-twin/css';
-import { LSPConstants, type TwinConfigOptions } from '@native-twin/language-service';
+import { LSPConstants, type TwinConfigOptions } from '@native-twin/language-service/browser';
 import * as Effect from 'effect/Effect';
 import {
   CloseAction,
@@ -63,11 +63,12 @@ export const getColorDecoration = Effect.sync(() =>
 
 const colorNames = Object.keys(CSS_COLORS);
 
-export const onLanguageClientError: ErrorHandler['error'] = async (_error, message, count) => {
+export const onLanguageClientError: ErrorHandler['error'] = async (_error, message, count = 0) => {
+  console.log('onLanguageClientError: ', _error.cause, _error.message, _error.stack, _error);
   return {
-    action: ErrorAction.Shutdown,
+    action: count > 3 ? ErrorAction.Shutdown : ErrorAction.Continue,
     handled: true,
-    message: `${message ?? 'Language client error'} Count: ${count}`,
+    message: `${_error.cause} - ${_error.message} - ${_error.stack} - ${_error} -  ${message ?? 'Language client error'} Count: ${count}`,
   };
 };
 
@@ -138,6 +139,6 @@ export const getDefaultLanguageClientOptions = (data: TwinConfigOptions): Langua
         },
       },
     },
-    progressOnInitialization: true,
+    // progressOnInitialization: true,
   } satisfies LanguageClientOptions;
 };

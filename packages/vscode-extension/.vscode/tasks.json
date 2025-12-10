@@ -15,6 +15,30 @@
     },
     {
       "type": "npm",
+      "label": "webpack watch",
+      "group": "build",
+      "script": "webpack:watch",
+      "isBackground": true,
+      "problemMatcher": ["$tsc-watch", "$ts-webpack-watch"],
+      // "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
+      "type": "npm",
+      "label": "vscode web watch",
+      "group": "build",
+      "script": "web:watch",
+      "isBackground": true,
+      "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
+      // "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
+      "type": "npm",
       "label": "vscode tsc watch",
       "group": "build",
       "script": "build:tsc:watch",

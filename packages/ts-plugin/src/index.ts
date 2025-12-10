@@ -1,5 +1,5 @@
 import * as path from 'node:path';
-import { parseLSPConfigInput } from '@native-twin/language-service/build/dts/Services';
+import { parseLSPConfigInput } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';

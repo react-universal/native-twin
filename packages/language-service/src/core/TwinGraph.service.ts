@@ -5,6 +5,7 @@ import * as Layer from 'effect/Layer';
 import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
 import type { TwinDslModels, TwinGraphModel } from '../models/TwinDsl.models';
+import { annotatedLayer } from '../utils/effect.utils';
 import { JSXParser } from './JSXParser.service';
 import { TypescriptUtils } from './TypescriptUtils.service';
 
@@ -51,7 +52,7 @@ const make = Effect.gen(function* () {
 export interface TwinGraph extends Effect.Effect.Success<typeof make> {}
 export const TwinGraph = Context.GenericTag<TwinGraph>('TwinGraph');
 
-export const TwinGraphLive = Layer.effect(TwinGraph, make);
+export const TwinGraphLive = Layer.effect(TwinGraph, make).pipe(annotatedLayer('TwinGraph'));
 
 /**
  * Creates a traversal context that maintains state during graph visitation

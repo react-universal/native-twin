@@ -9,6 +9,7 @@ import ts from 'ts-morph';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import * as Spec from '../internal/LSPAdapterSpec';
 import type { TwinDslModels } from '../models/TwinDsl.models';
+import { annotatedLayer } from '../utils/effect.utils';
 import { TypescriptUtils } from './TypescriptUtils.service';
 
 const make = Effect.gen(function* () {
@@ -318,4 +319,4 @@ const make = Effect.gen(function* () {
 
 export interface JSXParser extends Effect.Effect.Success<typeof make> {}
 export const JSXParser = Context.GenericTag<JSXParser>('JSXParser');
-export const JSXParserLive = Layer.effect(JSXParser, make);
+export const JSXParserLive = Layer.effect(JSXParser, make).pipe(annotatedLayer('JSXParser'));

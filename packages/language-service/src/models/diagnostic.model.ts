@@ -3,13 +3,14 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import * as vscode from 'vscode-languageserver-types';
 import { isSameRange } from '../utils/vscode.utils';
-import { LSPConstants } from './lsp.constants';
+import { LSPConstants, type TwinConfigOptions } from './lsp.constants';
 
 export interface DiagnosticReportInput {
   code: TwinDiagnosticCodes;
   location: vscode.Location;
   rules: { text: string; location: vscode.Location }[];
   customReason?: string;
+  severity: TwinConfigOptions['diagnostics'];
 }
 
 export class DiagnosticReport implements Equal.Equal {
@@ -38,7 +39,10 @@ export class DiagnosticReport implements Equal.Equal {
       range: input.location.range,
       relatedInformation: this.relatedInfo,
       source: LSPConstants.diagnosticProviderSource,
-      severity: vscode.DiagnosticSeverity.Warning,
+      severity:
+        this.input.severity === 'warn'
+          ? vscode.DiagnosticSeverity.Warning
+          : vscode.DiagnosticSeverity.Information,
       tags: [vscode.DiagnosticTag.Unnecessary],
     });
   }

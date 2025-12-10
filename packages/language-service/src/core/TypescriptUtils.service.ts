@@ -4,6 +4,7 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
+import { annotatedLayer } from '../utils/effect.utils';
 
 const make = Effect.gen(function* () {
   const isFunction = (node: ts.Node) =>
@@ -110,4 +111,4 @@ const make = Effect.gen(function* () {
 export interface TypescriptUtils extends Effect.Effect.Success<typeof make> {}
 export const TypescriptUtils = Context.GenericTag<TypescriptUtils>('TypescriptUtils');
 
-export const TypescriptUtilsLive = Layer.effect(TypescriptUtils, make);
+export const TypescriptUtilsLive = Layer.effect(TypescriptUtils, make).pipe(annotatedLayer('TypescriptUtils'));

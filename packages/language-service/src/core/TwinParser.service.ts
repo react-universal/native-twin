@@ -1,7 +1,6 @@
 import { parsedRuleToEntry } from '@native-twin/core';
 import type { TWParsedRule } from '@native-twin/css';
 import * as RA from 'effect/Array';
-import * as Cause from 'effect/Cause';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { compose } from 'effect/Function';
@@ -12,11 +11,11 @@ import * as Trie from 'effect/Trie';
 import { ComposedClass } from '../internal/parsers/parser.data';
 import { parseTwinRules } from '../internal/parsers/TwinParser.runner';
 import type * as TwinParserModel from '../models/TwinParser.models';
+import { annotatedLayer } from '../utils/effect.utils';
 import { TwinRuntimeContext } from './TwinRuntime.service';
 
 const make = Effect.gen(function* () {
-  const { twinTrie, twinRef, styledContext, themeVariants } =
-    yield* TwinRuntimeContext;
+  const { twinTrie, twinRef, styledContext, themeVariants } = yield* TwinRuntimeContext;
   // yield* bootTwinRuntime();
 
   const findRulesByKey = Effect.fn(function* (key: string) {
@@ -75,9 +74,11 @@ const make = Effect.gen(function* () {
   };
 }).pipe(
   Effect.withSpan('TwinParserContext'),
-  Effect.onError((error) => Effect.log('Error: ', Cause.prettyErrors(error))),
+  Effect.onError((error) => Effect.log('Error: ', error)),
 );
 
 export interface TwinParserContext extends Effect.Effect.Success<typeof make> {}
 export const TwinParserContext = Context.GenericTag<TwinParserContext>('parsers/TwinParserContext');
-export const TwinParserContextLive = Layer.effect(TwinParserContext, make);
+export const TwinParserContextLive = Layer.effect(TwinParserContext, make).pipe(
+  annotatedLayer('TwinParser'),
+);
