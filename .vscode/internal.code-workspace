@@ -5,16 +5,20 @@
       "path": ".."
     },
     {
-      "name": "📦 native-twin-vscode",
-      "path": "../packages/vscode-extension"
-    },
-    {
       "name": "📦 @lsp/language-service",
       "path": "../packages/language-service"
     },
     {
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
       "name": "📦 @lsp/language-server",
       "path": "../packages/language-server"
+    },
+    {
+      "name": "📦 @native-twin/compiler",
+      "path": "../packages/compiler"
     },
     {
       "name": "twin-run",
@@ -31,10 +35,6 @@
     {
       "name": "📦 @native-twin/babel",
       "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @native-twin/compiler",
-      "path": "../packages/compiler"
     },
     {
       "name": "📦 @native-twin/helpers",

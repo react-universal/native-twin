@@ -45,8 +45,6 @@ const make = Effect.gen(function* () {
     }
   };
 
-  
-
   const extractSourceInfo = (source: ts.SourceFile) => {
     const exports = source.getStatements().filter((x) => ts.Node.isExportDeclaration(x));
     const declarations: ts.Node[] = [
@@ -84,31 +82,37 @@ const make = Effect.gen(function* () {
     };
   };
 
-  const getVariableNameExpression = (node: ts.Node) =>
-    ts.Node.isPropertyDeclaration(node) || ts.Node.isVariableDeclaration(node)
-      ? node.getInitializer()
-      : ts.Node.isExpression(node)
-        ? node
-        : undefined;
-
+  const getVariableNameExpression = (node: ts.Node) => {
+    if (ts.Node.isPropertyDeclaration(node) || ts.Node.isVariableDeclaration(node)) {
+      return node.getInitializer();
+    }
+    if (ts.Node.isExpression(node)) return node;
+    return undefined;
+  };
 
   return {
-    jsx: {},
-    findNodeAtPosition,
-    isFunction,
-    getNodeDebugDetails,
-    getFunctionReturn,
-    getVariableNameExpression,
-
+    find: {
+      nodeAtPosition: findNodeAtPosition,
+      nodeAtOffset: findNodeAtOffset,
+    },
+    is: {
+      function: isFunction,
+      jSXElementLike: isJSXElementLike,
+    },
+    get: {
+      nodeDebugDetails: getNodeDebugDetails,
+      functionReturn: getFunctionReturn,
+      variableNameExpression: getVariableNameExpression,
+      nodeSourceFile: getNodeSourceFile,
+      nodeOffset: getNodeOffset,
+    },
     extractSourceInfo,
-    getNodeSourceFile,
-    findNodeAtOffset,
-    getNodeOffset,
-    isJSXElementLike,
   };
 });
 
 export interface TypescriptUtils extends Effect.Effect.Success<typeof make> {}
 export const TypescriptUtils = Context.GenericTag<TypescriptUtils>('TypescriptUtils');
 
-export const TypescriptUtilsLive = Layer.effect(TypescriptUtils, make).pipe(annotatedLayer('TypescriptUtils'));
+export const TypescriptUtilsLive = Layer.effect(TypescriptUtils, make).pipe(
+  annotatedLayer('TypescriptUtils'),
+);

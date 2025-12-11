@@ -1,10 +1,10 @@
 import * as Layer from 'effect/Layer';
-import { type JSXParser, JSXParserLive } from '../core/JSXParser.service';
 import type { LSPConfig } from '../core/LSPConfig.service';
 import { TwinGraphLive } from '../core/TwinGraph.service';
 import { type TwinParserContext, TwinParserContextLive } from '../core/TwinParser.service';
 import { type TwinRuntimeContext, TwinRuntimeContextLive } from '../core/TwinRuntime.service';
-import { type TypescriptUtils, TypescriptUtilsLive } from '../core/TypescriptUtils.service';
+import { type JSXParser, JSXParserLive } from '../Typescript/JSXParser.service';
+import { type TypescriptUtils, TypescriptUtilsLive } from '../Typescript/TypescriptUtils.service';
 
 export type TwinLSPAdapterLayerIn =
   | TwinParserContext

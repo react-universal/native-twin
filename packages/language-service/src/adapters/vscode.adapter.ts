@@ -2,11 +2,11 @@ import url from 'node:url';
 import { identity } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import * as JSXParser from '../core/JSXParser.service';
 import { LSPContext } from '../core/LSPContext.service';
-import { TypeScriptProgram } from '../core/TypescriptAPI.service';
 import * as LSPTypes from '../internal/LSPAdapterSpec';
 import { TwinLSPDocument } from '../models/TwinLSPDocument.model';
+import * as JSXParser from '../Typescript/JSXParser.service';
+import { TypeScriptProgram } from '../Typescript/TypescriptAPI.service';
 
 export const VscodeLSPAdapterLive = Effect.gen(function* () {
   const { getDocument } = yield* LSPContext;

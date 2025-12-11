@@ -1,5 +1,0 @@
-{
-  "types": "../build/dts/Services.d.ts",
-  "module": "../build/esm/Services.js",
-  "main": "../build/cjs/Services.js"
-}

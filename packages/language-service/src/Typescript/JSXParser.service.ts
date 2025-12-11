@@ -19,16 +19,16 @@ const make = Effect.gen(function* () {
     return declarations.getDeclarations().flatMap((declaration) => {
       const initializer = declaration.getInitializer();
       if (!initializer) return [];
-      const returnStatement = tsUtils.getFunctionReturn(initializer);
+      const returnStatement = tsUtils.get.functionReturn(initializer);
       if (!returnStatement) return [];
       const expression = returnStatement.getExpression();
       if (!returnStatement || !expression) return [];
 
-      if (tsUtils.isJSXElementLike(expression)) return asArray(expression);
+      if (tsUtils.is.jSXElementLike(expression)) return asArray(expression);
 
       if (ts.Node.isParenthesizedExpression(expression)) {
         const nextExpression = expression.getExpression();
-        if (tsUtils.isJSXElementLike(nextExpression)) {
+        if (tsUtils.is.jSXElementLike(nextExpression)) {
           return asArray(nextExpression);
         }
       }
@@ -42,7 +42,7 @@ const make = Effect.gen(function* () {
     for (const statement of sourceFile.getStatements()) {
       if (!ts.Node.isExpressionStatement(statement)) continue;
       const expression = statement.getExpression();
-      if (tsUtils.isJSXElementLike(expression)) {
+      if (tsUtils.is.jSXElementLike(expression)) {
         jsxElements.push(expression);
       }
     }
@@ -97,13 +97,13 @@ const make = Effect.gen(function* () {
       const initializer = declaration.getInitializer();
       if (!initializer) continue;
 
-      const returnStat = tsUtils.getFunctionReturn(initializer);
+      const returnStat = tsUtils.get.functionReturn(initializer);
       if (!returnStat) continue;
 
       const expression = returnStat.getExpression();
       if (expression && ts.Node.isParenthesizedExpression(expression)) {
         const maybeJSX = expression.getExpression();
-        if (tsUtils.isJSXElementLike(maybeJSX)) {
+        if (tsUtils.is.jSXElementLike(maybeJSX)) {
           return { jsxElement: maybeJSX, declarator: declaration.getNameNode() };
         }
       }
@@ -184,7 +184,7 @@ const make = Effect.gen(function* () {
       const nextNode = nodesToVisit.pop();
       if (!nextNode) break;
 
-      if (tsUtils.isJSXElementLike(nextNode)) {
+      if (tsUtils.is.jSXElementLike(nextNode)) {
         const region = getJSXNodeRegion(nextNode, parents.get(nextNode.getParent()), document);
         regions.push(region);
         parents.set(nextNode, region);
@@ -199,7 +199,7 @@ const make = Effect.gen(function* () {
   const getJSXElementChilds = (node: ts.Node) => {
     return pipe(
       node,
-      RA.liftPredicate(tsUtils.isJSXElementLike),
+      RA.liftPredicate(tsUtils.is.jSXElementLike),
       RA.flatMap((el) => (ts.Node.isJsxElement(el) ? el.getJsxChildren() : [])),
       RA.filter((el) => ts.Node.isJsxElement(el) || ts.Node.isJsxSelfClosingElement(el)),
     );

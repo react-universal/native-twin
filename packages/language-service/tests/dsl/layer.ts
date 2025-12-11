@@ -13,7 +13,7 @@ import { JSXParserLive } from '../../src/core/JSXParser.service';
 import { LSPConfig, parseLSPConfigInput } from '../../src/core/LSPConfig.service';
 import { TwinParserContextLive } from '../../src/core/TwinParser.service';
 import { TwinRuntimeContextLive } from '../../src/core/TwinRuntime.service';
-import { TypescriptUtilsLive } from '../../src/core/TypescriptUtils.service';
+import { TypescriptUtilsLive } from '../../src/Typescript/TypescriptUtils.service';
 import { createTwinLoggerLayerFor } from '../../src/utils/lsp.logger.service';
 import { TestVscodeLSPAdapterLive } from './adapter.mock';
 

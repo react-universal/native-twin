@@ -1,15 +1,15 @@
 /** Documents Service */
 export { languagePrograms } from './browser';
-export * from './core/JSXParser.service';
 export * from './core/LSPConfig.service';
 export * from './core/LSPContext.service';
 export * from './core/TwinGraph.service';
 export * from './core/TwinParser.service';
-export * from './core/TypescriptAPI.service';
 export * from './internal/LSPAdapterSpec';
 export * from './internal/RunnerLayer';
 export * from './models/lsp.constants';
 export { TwinLSPDocument } from './models/TwinLSPDocument.model';
+export * from './Typescript/JSXParser.service';
+export * from './Typescript/TypescriptAPI.service';
 export {
   addConnectionRequestHandler,
   addServerRequestHandler,

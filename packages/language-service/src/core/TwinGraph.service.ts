@@ -5,9 +5,9 @@ import * as Layer from 'effect/Layer';
 import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
 import type { TwinDslModels, TwinGraphModel } from '../models/TwinDsl.models';
+import { JSXParser } from '../Typescript/JSXParser.service';
+import { TypescriptUtils } from '../Typescript/TypescriptUtils.service';
 import { annotatedLayer } from '../utils/effect.utils';
-import { JSXParser } from './JSXParser.service';
-import { TypescriptUtils } from './TypescriptUtils.service';
 
 const make = Effect.gen(function* () {
   const tsUtils = yield* TypescriptUtils;
@@ -36,7 +36,7 @@ const make = Effect.gen(function* () {
       }
 
       // Handle JSX element and self-closing element nodes
-      if (tsUtils.isJSXElementLike(currentNode)) {
+      if (tsUtils.is.jSXElementLike(currentNode)) {
         yield* context.processJSXElementNode(currentNode, currentDepthBudget);
       }
     }
@@ -90,7 +90,7 @@ const createTraversalContext = Effect.fn(function* (
 
   // ==================== Debug & Introspection ====================
   const getNodeDetails = (node: ts.Node) => ({
-    ...tsUtils.getNodeDebugDetails(node),
+    ...tsUtils.get.nodeDebugDetails(node),
     nodeInJSXTree: nodeInJSXTree.get(node),
     nodeToGraph: nodeToGraph.get(node),
     visited: visitedNodes.has(node),
@@ -126,10 +126,10 @@ const createTraversalContext = Effect.fn(function* (
    */
   const extractNodeInfo = (node: ts.Node): TwinGraphModel.NodeInfo => {
     const parent = node.getParent();
-    const isRoot = (parent && !tsUtils.isJSXElementLike(parent)) ?? false;
-    const { name, index } = tsUtils.getNodeDebugDetails(node);
+    const isRoot = (parent && !tsUtils.is.jSXElementLike(parent)) ?? false;
+    const { name, index } = tsUtils.get.nodeDebugDetails(node);
     let mappedProps: TwinDslModels.NodeStyledProp[] = [];
-    if (tsUtils.isJSXElementLike(node)) {
+    if (tsUtils.is.jSXElementLike(node)) {
       mappedProps = jsxParser.getJSXMappedProps(node);
     }
     return { node, isRoot, identifier: name, mappedProps, index };
@@ -295,7 +295,7 @@ const createTraversalContext = Effect.fn(function* (
 
     for (const expression of jsxExpressions) {
       const binding = expression.declarator!;
-      const declarator = binding && tsUtils.getVariableNameExpression(binding);
+      const declarator = binding && tsUtils.get.variableNameExpression(binding);
       const childNodes = getNodeChildren(expression.jsxElement);
 
       const stack: TwinGraphModel.JSXExpressionStack = {
