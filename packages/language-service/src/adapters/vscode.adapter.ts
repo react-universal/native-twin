@@ -4,6 +4,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import { LSPContext } from '../core/LSPContext.service';
 import * as LSPTypes from '../internal/LSPAdapterSpec';
+import { FileNotFound, type LSPPosition } from '../models/LSP.models';
 import { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 import * as JSXParser from '../Typescript/JSXParser.service';
 import { TypeScriptProgram } from '../Typescript/TypescriptAPI.service';
@@ -16,11 +17,11 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
   const getLSPDocument = Effect.fn(function* (filename: string) {
     const document = yield* Effect.succeed(getDocument(filename))
       .pipe(Effect.flatMap(identity))
-      .pipe(Effect.mapError((e) => LSPTypes.FileNotFound.create(e)));
+      .pipe(Effect.mapError((e) => FileNotFound.create(e)));
 
     const filePath = url.fileURLToPath(filename);
     const tsSource = yield* program.getSourceFile(filePath, document.getText());
-    const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
+    const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource));
 
     return new TwinLSPDocument(document, regions);
   });
@@ -32,7 +33,7 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
 
   const getRegionAt = Effect.fn('vscodeAdapter: getTokenAtPosition')(function* (
     filename: string,
-    position: LSPTypes.LSPPosition,
+    position: LSPPosition,
   ) {
     const document = yield* getLSPDocument(filename);
 

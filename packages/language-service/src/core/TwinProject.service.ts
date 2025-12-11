@@ -1,20 +1,21 @@
 import * as Effect from 'effect/Effect';
+import * as Equal from 'effect/Equal';
 import * as Graph from 'effect/Graph';
 import * as Predicate from 'effect/Predicate';
+import { inspect } from 'util';
 import type t from 'vscode-languageserver-types';
-import type { JsxNodeRegion } from '../internal/LSPAdapterSpec';
+import type { JsxNodeRegion } from '../models/LSP.models';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
-export const make = Effect.gen(function* () {
-  const createSourceGraph = (document: TwinLSPDocument, element: JsxNodeRegion) =>
+export const makeTwinGraph = Effect.gen(function* () {
+  const createSourceGraph = (document: TwinLSPDocument, elements: JsxNodeRegion[]) =>
     Effect.gen(function* () {
-      const context = yield* createTraversalContext(element, document);
-      yield* Effect.void;
+      const context = yield* createTraversalContext(elements, document);
 
       while (context.state.nodeToVisit.length > 0) {
         const currentNode = yield* context.getNextNode();
         const currentDepthBudget = context.getDepthBudgetFor(currentNode)!;
-        context.processJSXElementNode(currentNode, currentDepthBudget);
+        yield* context.processJSXElementNode(currentNode, currentDepthBudget);
       }
 
       const sourceGraph = context.buildGraph();
@@ -26,22 +27,17 @@ export const make = Effect.gen(function* () {
   };
 });
 
-interface SourceNodeInfo {
-  id: string;
-  location: t.Location;
-}
-interface SourceEdgeInfo {
-  relationship: 'jsx-child';
-  index: number;
-  isRoot: boolean;
-}
-
 const createTraversalContext = Effect.fn(function* (
-  source: JsxNodeRegion,
+  source: JsxNodeRegion[],
   document: TwinLSPDocument,
 ) {
-  yield* Effect.void;
   const mutableGraph = Graph.beginMutation(Graph.directed<SourceNodeInfo, SourceEdgeInfo>());
+
+  const getNodeChilds = (node: JsxNodeRegion) =>
+    source.filter((x) => {
+      const equals = Equal.equals(x.parent, node) || x.parent?.rawText === node.rawText;
+      return equals;
+    });
 
   // ==================== State Tracking ====================
   // Track which nodes have been visited to avoid reprocessing
@@ -53,21 +49,7 @@ const createTraversalContext = Effect.fn(function* (
   // Track remaining depth budget for symbol following
   const depthBudget = new WeakMap<JsxNodeRegion, number>();
   // Queue of nodes pending visitation
-  const nodeToVisit: JsxNodeRegion[] = [source];
-
-  const getNodeDetails = (node: JsxNodeRegion) => {
-    return { id: node._tag };
-  };
-
-  const debugStep = (stepName: string, node: JsxNodeRegion | undefined, data?: any) =>
-    Effect.logDebug(
-      stepName,
-      JSON.stringify(node ? getNodeDetails(node) : { step: stepName, data }),
-    );
-
-  // const getNodeInfo = (node: JsxNodeRegion): SourceNodeInfo => {
-  //   return { id: node.id };
-  // };
+  const nodeToVisit: JsxNodeRegion[] = [];
 
   // ==================== Node Enqueueing ====================
   /**
@@ -79,23 +61,25 @@ const createTraversalContext = Effect.fn(function* (
     return undefined;
   };
 
+  // ==================== Initialization ====================
+  // Initialize the visitation queue with all JSX expression declarators
+  const cached = yield* Effect.cached(
+    Effect.sync(() =>
+      source.filter((x) => x.parent === null).forEach((_) => void appendNodeToVisit(_, 0)),
+    ),
+  );
+  yield* cached;
+
   // ==================== Node Information Extraction ====================
   /**
    * Extracts metadata from a node for graph representation
    * Determines the display name based on parent context
    */
   const extractNodeInfo = (node: JsxNodeRegion): SourceNodeInfo => {
-    // const parent = node.getParent();
-    // const isRoot = (parent && !tsUtils.isJSXElementLike(parent)) ?? false;
-    // const { name, index } = tsUtils.getNodeDebugDetails(node);
-    // let mappedProps: TwinDslModels.NodeStyledProp[] = [];
-    // if (tsUtils.isJSXElementLike(node)) {
-    //   mappedProps = jsxParser.getJSXMappedProps(node);
-    // }
-    // return { node, isRoot, identifier: name, mappedProps, index };
     return {
-      id: node.tagName._tag,
+      id: document.getLocationID(node.range),
       location: document.getLocation(node.range),
+      tagName: node.tagName.rawText,
     };
   };
 
@@ -121,6 +105,7 @@ const createTraversalContext = Effect.fn(function* (
    */
   const markNodeAsVisited = Effect.fn(function* (node: JsxNodeRegion) {
     yield* Effect.sync(() => visitedNodes.add(node));
+    yield* debugStep('MARK_VISITED: ', node);
   });
 
   const hasBeenVisited = (node: JsxNodeRegion) => visitedNodes.has(node);
@@ -209,7 +194,7 @@ const createTraversalContext = Effect.fn(function* (
     currentNode: JsxNodeRegion,
     currentDepthBudget: number,
   ) {
-    const jsxChilds = [] as any;
+    const jsxChilds = getNodeChilds(currentNode);
 
     // First visit: mark as visited and queue child elements
     if (!hasBeenVisited(currentNode)) {
@@ -227,29 +212,6 @@ const createTraversalContext = Effect.fn(function* (
     // Second visit: connect the element to its children in the graph
     yield* connectJSXElementToChildren(currentNode, jsxChilds);
   });
-
-  // const createJSXExpressionStacks = (): Map<JsxNodeRegion, TwinGraphModel.JSXExpressionStack> => {
-  //   const stackMap = new Map<JsxNodeRegion, TwinGraphModel.JSXExpressionStack>();
-
-  //   for (const expression of jsxExpressions) {
-  //     const binding = expression.declarator!;
-  //     const declarator = binding && tsUtils.getVariableNameExpression(binding);
-  //     const childNodes = getNodeChildren(expression.jsxElement);
-
-  //     const stack: TwinGraphModel.JSXExpressionStack = {
-  //       binding,
-  //       declarator,
-  //       root: expression.jsxElement,
-  //       childs: childNodes,
-  //     };
-
-  //     if (binding) {
-  //       stackMap.set(binding, stack);
-  //     }
-  //   }
-
-  //   return stackMap;
-  // };
 
   /**
    * Processes an identifier node that may reference a JSX expression
@@ -322,6 +284,20 @@ const createTraversalContext = Effect.fn(function* (
     }
   });
 
+  const getNodeDetails = (node: JsxNodeRegion) => {
+    return {
+      id: document.getLocationID(node.range),
+      tagName: node.tagName.rawText,
+      props: node.styledProps.map((x) => x.rawText),
+    };
+  };
+
+  const debugStep = (stepName: string, node: JsxNodeRegion | undefined, data?: any) =>
+    Effect.logDebug(
+      stepName,
+      inspect(node ? getNodeDetails(node) : { step: stepName, data }, false, null, true),
+    );
+
   const buildGraph = () => Graph.endMutation(mutableGraph);
 
   // ==================== Context Export ====================
@@ -330,16 +306,19 @@ const createTraversalContext = Effect.fn(function* (
     state: { nodeToVisit, mutableGraph },
     buildGraph,
     getNextNode,
-    // getNodeGraph,
     getDepthBudgetFor,
-    // addNodeInJSXRegistry,
-    // hasBeenVisited,
-    // markNodeAsVisited,
-    // extractNodeInfo,
-    // getJSXBinding,
-    // appendNodeToVisit,
-    // addNode,
     processJSXElementNode,
     processIdentifierNode,
   };
 });
+
+interface SourceNodeInfo {
+  id: string;
+  location: t.Location;
+  tagName: string;
+}
+interface SourceEdgeInfo {
+  relationship: 'jsx-child';
+  index: number;
+  isRoot: boolean;
+}

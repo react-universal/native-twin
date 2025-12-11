@@ -2,7 +2,7 @@ import type * as Effect from 'effect/Effect';
 import type * as Graph from 'effect/Graph';
 import type ts from 'ts-morph';
 
-export namespace TwinDslModels {
+export namespace TypescriptModels {
   export interface TwinSourceFile {
     readonly _tag: 'TwinSourceFile';
     jsxDeclarators: NodeJSXDeclarator[];
@@ -48,7 +48,7 @@ export namespace TwinGraphModel {
     state: {
       nodeToVisit: ts.Node[];
       jsxExpressions: {
-        jsxElement: TwinDslModels.AnyJSXElement;
+        jsxElement: TypescriptModels.AnyJSXElement;
         declarator: ts.BindingName;
       }[];
       mutableGraph: MutableGraph;
@@ -73,7 +73,7 @@ export namespace TwinGraphModel {
     identifier: string;
     isRoot: boolean;
     index: number;
-    mappedProps: TwinDslModels.NodeStyledProp[];
+    mappedProps: TypescriptModels.NodeStyledProp[];
   }
 
   export type EdgeInfo =

@@ -1,10 +1,12 @@
 import { __defaultRuleMeta, type RuleMeta } from '@native-twin/core';
 import type { CompleteStyle } from '@native-twin/css';
+import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
+import type { JsxAttributeRegion, JsxNodeRegion } from '../models/LSP.models';
 import * as TwinParserModel from '../models/TwinParser.models';
 import type { TwinRuleComposer } from '../models/TwinRuleHandler';
-import type * as LSP from './LSPAdapterSpec';
+import * as LSP from './LSPAdapterSpec';
 import type {
   AnyInternalTwinRule,
   BuildStyledContext,
@@ -73,8 +75,8 @@ export function createStyledContext(rem: number): BuildStyledContext {
   };
 }
 
-export const fixRegionRanges = (node: LSP.JsxNodeRegion, doc: TextDocument): LSP.JsxNodeRegion => {
-  const styledProps: LSP.JsxAttributeRegion[] = [];
+export const fixRegionRanges = (node: JsxNodeRegion, doc: TextDocument): JsxNodeRegion => {
+  const styledProps: JsxAttributeRegion[] = [];
   for (const attribute of node.styledProps) {
     const { attributeValue } = attribute;
     const originalText = attributeValue.rawText;
@@ -109,17 +111,24 @@ export const fixRegionRanges = (node: LSP.JsxNodeRegion, doc: TextDocument): LSP
     const finalStart = doc.positionAt(starOffset + counterDif - cursorDiff);
     const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif - cursorDiff);
 
-    styledProps.push({
-      ...attribute,
-      attributeValue: {
-        ...attributeValue,
-        range: { start: finalStart, end: finalEnd },
-      },
-    });
+    const newProp = LSP.LSPAdapterUtils.pipe(
+      Effect.map((s) => {
+        return s.createAttributeRegion({
+          ...attribute,
+          attributeBinding: s.createAttributeBinding(attribute.attributeBinding),
+          attributeValue: s.createJsxAttributeValue({
+            ...attributeValue,
+            range: { start: finalStart, end: finalEnd },
+          }),
+        });
+      }),
+    ).pipe(Effect.provide(LSP.LSPAdapterUtils.Default), Effect.runSync);
+
+    styledProps.push(newProp);
   }
 
-  return {
+  return LSP.LSPAdapterUtils.createJsxNode({
     ...node,
     styledProps,
-  };
+  }).pipe(Effect.provide(LSP.LSPAdapterUtils.Default), Effect.runSync);
 };

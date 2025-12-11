@@ -1,7 +1,8 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import { TwinParserContext } from '../core/TwinParser.service';
-import type { LSPPosition, LSPTextDocument } from '../internal/LSPAdapterSpec';
+import type { LSPTextDocument } from '../internal/LSPAdapterSpec';
+import type { LSPPosition } from '../models/LSP.models';
 
 export const maybeParsedRuleAtPosition = Effect.fn(function* (
   document: LSPTextDocument,

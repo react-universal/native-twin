@@ -1,44 +1,23 @@
 import { createCommonMappedAttribute, cx, mappedComponents } from '@native-twin/core';
-import { asArray, hasOwnProperty } from '@native-twin/helpers';
+import { hasOwnProperty } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import ts from 'ts-morph';
-import type { TextDocument } from 'vscode-languageserver-textdocument';
 import * as Spec from '../internal/LSPAdapterSpec';
-import type { TwinDslModels } from '../models/TwinDsl.models';
+import type { JsxNodeRegion } from '../models/LSP.models';
 import { annotatedLayer } from '../utils/effect.utils';
+import type { TypescriptModels } from './TwinDsl.models';
 import { TypescriptUtils } from './TypescriptUtils.service';
 
 const make = Effect.gen(function* () {
   const tsUtils = yield* TypescriptUtils;
-
-  function extractJsxElements(declarations: ts.VariableDeclarationList) {
-    return declarations.getDeclarations().flatMap((declaration) => {
-      const initializer = declaration.getInitializer();
-      if (!initializer) return [];
-      const returnStatement = tsUtils.get.functionReturn(initializer);
-      if (!returnStatement) return [];
-      const expression = returnStatement.getExpression();
-      if (!returnStatement || !expression) return [];
-
-      if (tsUtils.is.jSXElementLike(expression)) return asArray(expression);
-
-      if (ts.Node.isParenthesizedExpression(expression)) {
-        const nextExpression = expression.getExpression();
-        if (tsUtils.is.jSXElementLike(nextExpression)) {
-          return asArray(nextExpression);
-        }
-      }
-
-      return [];
-    });
-  }
+  const lspUtils = yield* Spec.LSPAdapterUtils;
 
   function getRawJSXFromSource(sourceFile: ts.SourceFile) {
-    const jsxElements: TwinDslModels.AnyJSXElement[] = [];
+    const jsxElements: TypescriptModels.AnyJSXElement[] = [];
     for (const statement of sourceFile.getStatements()) {
       if (!ts.Node.isExpressionStatement(statement)) continue;
       const expression = statement.getExpression();
@@ -50,17 +29,19 @@ const make = Effect.gen(function* () {
   }
 
   function getJSXRootsFromSource(sourceFile: ts.SourceFile) {
-    let jsxElements: TwinDslModels.AnyJSXElement[] = [];
+    let jsxElements: TypescriptModels.AnyJSXElement[] = [];
     for (const statement of sourceFile.getStatements()) {
       if (ts.Node.isSpreadAssignment(statement)) {
       }
       if (!ts.Node.isVariableStatement(statement)) continue;
-      jsxElements = jsxElements.concat(extractJsxElements(statement.getDeclarationList()));
+      jsxElements = jsxElements.concat(
+        tsUtils.get.jsxElementsFromVar(statement.getDeclarationList()),
+      );
     }
     return jsxElements;
   }
 
-  function getJSXElementStyledProps(node: TwinDslModels.AnyJSXElement) {
+  function getJSXElementStyledProps(node: TypescriptModels.AnyJSXElement) {
     const tagName = getJSXNodeTagName(node).getText();
     const mappedConfig =
       mappedComponents.find((x) => x.name === tagName) ?? createCommonMappedAttribute(tagName);
@@ -110,20 +91,22 @@ const make = Effect.gen(function* () {
     }
   }
 
-  const getNodeRange = (document: TextDocument, node: ts.Node) =>
-    Spec.range(document.positionAt(node.getPos()), document.positionAt(node.getEnd()));
+  const getNodeRange = (node: ts.Node) =>
+    lspUtils.range(
+      lspUtils.position(node.getPos(), node.getStartLineNumber()),
+      lspUtils.position(node.getEnd(), node.getEndLineNumber()),
+    );
 
   function getJSXNodeRegion(
-    node: TwinDslModels.AnyJSXElement,
-    parent: Spec.JsxNodeRegion | undefined,
-    document: TextDocument,
-  ): Spec.JsxNodeRegion {
+    node: TypescriptModels.AnyJSXElement,
+    parent: JsxNodeRegion | undefined,
+  ): JsxNodeRegion {
     const styledProps = getJSXElementStyledProps(node).map((prop) => {
-      const attributeBinding = Spec.TwinLSPNode.createAttributeBinding({
-        range: getNodeRange(document, prop.name),
+      const attributeBinding = lspUtils.createAttributeBinding({
+        range: getNodeRange(prop.name),
         rawText: prop.name.getText(),
       });
-      const attrRange = getNodeRange(document, prop.value);
+      const attrRange = getNodeRange(prop.value);
 
       const attrValue = getJSXAttributeValue(prop.attribute);
       if (attrValue.expression) {
@@ -144,48 +127,48 @@ const make = Effect.gen(function* () {
           attrRange.start.character += 2;
         }
       }
-      const attributeValue = Spec.TwinLSPNode.createJsxAttributeValue({
+      const attributeValue = lspUtils.createJsxAttributeValue({
         range: attrRange,
         rawText: prop.value.getText(),
         text: attrValue.originalText,
       });
-      return Spec.TwinLSPNode.createAttributeRegion({
+      return lspUtils.createAttributeRegion({
         rawText: prop.attribute.getText(),
         attributeBinding,
         attributeValue,
-        range: getNodeRange(document, prop.attribute),
+        range: getNodeRange(prop.attribute),
       });
     });
 
-    const nodeRange = getNodeRange(document, node);
+    const nodeRange = getNodeRange(node);
     const tagName = getJSXNodeTagName(node);
-    const tagNameRange = getNodeRange(document, tagName);
-    return Spec.TwinLSPNode.createJsxNode({
+    const tagNameRange = getNodeRange(tagName);
+    return lspUtils.createJsxNode({
       parent: parent ?? null,
       rawText: node.getText(),
       range: nodeRange,
       styledProps,
-      tagName: Spec.TwinLSPNode.createJsxTagName({
+      tagName: lspUtils.createJsxTagName({
         rawText: tagName.getText(),
         range: tagNameRange,
       }),
     });
   }
 
-  function jsxNodesToRegions(nodes: TwinDslModels.AnyJSXElement[], document: TextDocument) {
+  function jsxNodesToRegions(nodes: TypescriptModels.AnyJSXElement[]) {
     if (nodes.length === 0) return [];
 
-    const regions: Spec.JsxNodeRegion[] = [];
+    const regions: JsxNodeRegion[] = [];
     const nodesToVisit: ts.Node[] = [...nodes];
 
-    const parents = new Map<ts.Node, Spec.JsxNodeRegion>();
+    const parents = new Map<ts.Node, JsxNodeRegion>();
 
     while (nodesToVisit.length > 0) {
       const nextNode = nodesToVisit.pop();
       if (!nextNode) break;
 
       if (tsUtils.is.jSXElementLike(nextNode)) {
-        const region = getJSXNodeRegion(nextNode, parents.get(nextNode.getParent()), document);
+        const region = getJSXNodeRegion(nextNode, parents.get(nextNode.getParent()));
         regions.push(region);
         parents.set(nextNode, region);
         nodesToVisit.push(...getJSXElementChilds(nextNode));
@@ -205,7 +188,7 @@ const make = Effect.gen(function* () {
     );
   };
 
-  const getJSXNodeTagName = (node: TwinDslModels.AnyJSXElement) => {
+  const getJSXNodeTagName = (node: TypescriptModels.AnyJSXElement) => {
     if (ts.Node.isJsxElement(node)) return node.getOpeningElement().getTagNameNode();
     return node.getTagNameNode();
   };
@@ -216,7 +199,9 @@ const make = Effect.gen(function* () {
     return [];
   };
 
-  const getJSXMappedProps = (node: TwinDslModels.AnyJSXElement): TwinDslModels.NodeStyledProp[] => {
+  const getJSXMappedProps = (
+    node: TypescriptModels.AnyJSXElement,
+  ): TypescriptModels.NodeStyledProp[] => {
     const tagName = getJSXNodeTagName(node);
     if (!tagName) return [];
     const name = tagName.getText();
@@ -231,7 +216,7 @@ const make = Effect.gen(function* () {
           attributes,
           RA.filter((attrNode) => attrNode.getNameNode().getText() === classProp),
           RA.map(
-            (attrNode): TwinDslModels.NodeStyledProp => ({
+            (attrNode): TypescriptModels.NodeStyledProp => ({
               _tag: 'NodeStyledProp',
               classProp,
               styleProp,
@@ -247,11 +232,11 @@ const make = Effect.gen(function* () {
   const getJSXAttributeValue = (
     node: ts.JsxAttribute,
   ): Pick<
-    TwinDslModels.NodeStyledProp,
+    TypescriptModels.NodeStyledProp,
     'expression' | 'originalText' | 'twinCX' | 'valueTextNode'
   > => {
     const result: Pick<
-      TwinDslModels.NodeStyledProp,
+      TypescriptModels.NodeStyledProp,
       'expression' | 'originalText' | 'twinCX' | 'valueTextNode'
     > = {
       originalText: '',
@@ -319,4 +304,7 @@ const make = Effect.gen(function* () {
 
 export interface JSXParser extends Effect.Effect.Success<typeof make> {}
 export const JSXParser = Context.GenericTag<JSXParser>('JSXParser');
-export const JSXParserLive = Layer.effect(JSXParser, make).pipe(annotatedLayer('JSXParser'));
+export const JSXParserLive = Layer.effect(JSXParser, make).pipe(
+  Layer.provide(Spec.LSPAdapterUtils.Default),
+  annotatedLayer('JSXParser'),
+);

@@ -1,3 +1,4 @@
+import { asArray } from '@native-twin/helpers';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -90,6 +91,28 @@ const make = Effect.gen(function* () {
     return undefined;
   };
 
+  function getJsxElementsFromVar(declarations: ts.VariableDeclarationList) {
+    return declarations.getDeclarations().flatMap((declaration) => {
+      const initializer = declaration.getInitializer();
+      if (!initializer) return [];
+      const returnStatement = getFunctionReturn(initializer);
+      if (!returnStatement) return [];
+      const expression = returnStatement.getExpression();
+      if (!returnStatement || !expression) return [];
+
+      if (isJSXElementLike(expression)) return asArray(expression);
+
+      if (ts.Node.isParenthesizedExpression(expression)) {
+        const nextExpression = expression.getExpression();
+        if (isJSXElementLike(nextExpression)) {
+          return asArray(nextExpression);
+        }
+      }
+
+      return [];
+    });
+  }
+
   return {
     find: {
       nodeAtPosition: findNodeAtPosition,
@@ -105,6 +128,7 @@ const make = Effect.gen(function* () {
       variableNameExpression: getVariableNameExpression,
       nodeSourceFile: getNodeSourceFile,
       nodeOffset: getNodeOffset,
+      jsxElementsFromVar: getJsxElementsFromVar,
     },
     extractSourceInfo,
   };

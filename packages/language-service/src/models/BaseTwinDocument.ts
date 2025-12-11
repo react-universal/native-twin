@@ -1,7 +1,9 @@
+import { hash } from '@native-twin/helpers';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
 import { Location, Position, Range } from 'vscode-languageserver-types';
+import type { LSPPosition, LSPRange } from './LSP.models';
 
 export interface TwinBaseDocument {
   getText: (range?: VSCDocument.Range) => string;
@@ -24,8 +26,15 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return this.textDocument.version;
   }
 
-  getDocument() {
-    return this.textDocument;
+  getPositionID(position: LSPPosition) {
+    return hash(`${[position.character, position.line].join('/')}`);
+  }
+
+  getLocationID(range: LSPRange) {
+    const location = this.getLocation(range);
+    return hash(
+      `${location.uri}-${[this.getPositionID(range.start), this.getPositionID(range.end)].join('-')}`,
+    );
   }
 
   sumPositions(p1: VSCDocument.Position, p2: VSCDocument.Position) {
@@ -67,6 +76,10 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return { start: this.positionAt(startOffset), end: this.positionAt(endOffset) };
   }
 
+  locationAtOffsets(start: number, end: number) {
+    return this.getLocation(this.getRangeFor(start, end));
+  }
+
   [Equal.symbol](that: unknown) {
     return (
       that instanceof BaseTwinTextDocument &&
@@ -77,5 +90,11 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
 
   [Hash.symbol](): number {
     return Hash.combine(Hash.hash(this.textDocument.uri))(this.textDocument.version);
+  }
+}
+
+export class LSPBasicDocument extends BaseTwinTextDocument {
+  constructor(document: VSCDocument.TextDocument) {
+    super(document);
   }
 }

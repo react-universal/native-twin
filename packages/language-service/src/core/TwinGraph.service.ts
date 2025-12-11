@@ -4,8 +4,8 @@ import * as Graph from 'effect/Graph';
 import * as Layer from 'effect/Layer';
 import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
-import type { TwinDslModels, TwinGraphModel } from '../models/TwinDsl.models';
 import { JSXParser } from '../Typescript/JSXParser.service';
+import type { TwinGraphModel, TypescriptModels } from '../Typescript/TwinDsl.models';
 import { TypescriptUtils } from '../Typescript/TypescriptUtils.service';
 import { annotatedLayer } from '../utils/effect.utils';
 
@@ -18,8 +18,6 @@ const make = Effect.gen(function* () {
     followSymbolsDepth: number,
   ) {
     const context = yield* createTraversalContext(source, followSymbolsDepth, tsUtils, jsxParser);
-    // const cached = cache.get(source);
-    // if (cached) return { sourceGraph: cached };
 
     // Build lookup of JSX expressions with their children for quick reference
     const jsxExpressionStacks = context.createJSXExpressionStacks();
@@ -128,7 +126,7 @@ const createTraversalContext = Effect.fn(function* (
     const parent = node.getParent();
     const isRoot = (parent && !tsUtils.is.jSXElementLike(parent)) ?? false;
     const { name, index } = tsUtils.get.nodeDebugDetails(node);
-    let mappedProps: TwinDslModels.NodeStyledProp[] = [];
+    let mappedProps: TypescriptModels.NodeStyledProp[] = [];
     if (tsUtils.is.jSXElementLike(node)) {
       mappedProps = jsxParser.getJSXMappedProps(node);
     }

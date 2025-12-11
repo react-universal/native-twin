@@ -1,10 +1,24 @@
 import * as Context from 'effect/Context';
 import * as Data from 'effect/Data';
-import type * as Effect from 'effect/Effect';
+import * as Effect from 'effect/Effect';
 import * as Equivalence from 'effect/Equivalence';
 import * as Layer from 'effect/Layer';
 import * as Order from 'effect/Order';
 import * as t from 'vscode-languageserver-types';
+import {
+  type AnyLSPError,
+  type AnyTwinNodeRegion,
+  FileNotFound,
+  type JSXNodeTagNameRegion,
+  type JsxAttributeBindingRegion,
+  type JsxAttributeRegion,
+  type JsxAttributeValueRegion,
+  type JsxNodeRegion,
+  LSPParserError,
+  type LSPPosition,
+  type LSPRange,
+  LSPTokenNotFound,
+} from '../models/LSP.models';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 import { annotatedLayer } from '../utils/effect.utils';
 
@@ -37,164 +51,96 @@ export const LSPAdapterSpec = Context.GenericTag<LSPAdapterSpec>('LSPAdapterSpec
 /**
  * ************* LSP identities *************
  * */
-const positionOrd = Order.mapInput(Order.number, (a: t.Position) => a.character);
-export const position = (offset: number, line = 0) => t.Position.create(line ?? 0, offset);
 
-export const isPositionInRange = (range: t.Range, position: t.Position) =>
-  Order.between(positionOrd)({ maximum: range.end, minimum: range.start })(position);
+const makeLSPUtils = Effect.gen(function* () {
+  const positionOrd = Order.mapInput(Order.number, (a: t.Position) => a.character);
+  const position = (offset: number, line = 0) => t.Position.create(line ?? 0, offset);
 
-export const positionEq: Equivalence.Equivalence<LSPPosition> = Equivalence.mapInput(
-  Equivalence.product(Equivalence.number, Equivalence.number),
-  (position: LSPPosition) => [position.character, position.line] as const,
-);
+  const isPositionInRange = (range: t.Range, position: t.Position) =>
+    Order.between(positionOrd)({ maximum: range.end, minimum: range.start })(position);
 
-export const rangeOrder: Order.Order<t.Range> = Order.mapInput(
-  Order.tuple(positionOrd, positionOrd),
-  (range: t.Range) => [range.start, range.end] as const,
-);
+  const positionEq: Equivalence.Equivalence<LSPPosition> = Equivalence.mapInput(
+    Equivalence.product(Equivalence.number, Equivalence.number),
+    (position: LSPPosition) => [position.character, position.line] as const,
+  );
 
-export const range = (start: LSPPosition, end: LSPPosition): LSPRange => t.Range.create(start, end);
+  const rangeOrder: Order.Order<t.Range> = Order.mapInput(
+    Order.tuple(positionOrd, positionOrd),
+    (range: t.Range) => [range.start, range.end] as const,
+  );
 
-const createAttributeBinding = (
-  input: Omit<JsxAttributeBindingRegion, '_tag'>,
-): JsxAttributeBindingRegion => ({
-  _tag: 'JsxAttributeBindingRegion',
-  ...input,
-});
+  const range = (start: LSPPosition, end: LSPPosition): LSPRange => t.Range.create(start, end);
 
-const createJsxAttributeValue = (
-  attribute: Omit<JsxAttributeValueRegion, '_tag' | '__parsable'>,
-): JsxAttributeValueRegion => {
-  const result = {
-    ...attribute,
+  const createAttributeBinding = (
+    input: Omit<JsxAttributeBindingRegion, '_tag'>,
+  ): JsxAttributeBindingRegion =>
+    Data.struct({
+      _tag: 'JsxAttributeBindingRegion',
+      ...input,
+    });
+
+  const createJsxAttributeValue = (
+    attribute: Omit<JsxAttributeValueRegion, '_tag' | '__parsable'>,
+  ): JsxAttributeValueRegion => {
+    return Data.struct({
+      __parsable: 'LSPParsableRegion',
+      _tag: 'JsxAttributeValueRegion',
+      ...attribute,
+    });
+  };
+
+  const createAttributeRegion = (input: Omit<JsxAttributeRegion, '_tag'>): JsxAttributeRegion =>
+    Data.struct({
+      _tag: 'JsxAttributeRegion',
+      ...input,
+    });
+
+  const createJsxNode = (input: Omit<JsxNodeRegion, '_tag'>): JsxNodeRegion =>
+    Data.struct({
+      _tag: 'JsxNodeRegion',
+      ...input,
+    });
+
+  const createJsxTagName = (input: Omit<JSXNodeTagNameRegion, '_tag'>): JSXNodeTagNameRegion =>
+    Data.struct({
+      _tag: 'JsxTagName',
+      ...input,
+    });
+
+  const handleError = (error: AnyLSPError['_tag'], cause: unknown) => {
+    const errorCause =
+      cause instanceof Error
+        ? cause
+        : typeof cause === 'string'
+          ? new Error(cause)
+          : new Error(JSON.stringify(cause));
+
+    switch (error) {
+      case 'FileNotFound':
+        return FileNotFound.create(errorCause);
+      case 'LSPParserError':
+        return LSPParserError.create(errorCause);
+      case 'LSPTokenNotFound':
+        return LSPTokenNotFound.create(errorCause);
+    }
   };
 
   return {
-    __parsable: 'LSPParsableRegion',
-    _tag: 'JsxAttributeValueRegion',
-    ...result,
+    createAttributeBinding,
+    createAttributeRegion,
+    createJsxAttributeValue,
+    createJsxNode,
+    createJsxTagName,
+    position,
+    isPositionInRange,
+    positionEq,
+    rangeOrder,
+    range,
+    handleError,
   };
-};
-
-const createAttributeRegion = (input: Omit<JsxAttributeRegion, '_tag'>): JsxAttributeRegion => ({
-  _tag: 'JsxAttributeRegion',
-  ...input,
 });
 
-const createJsxNode = (input: Omit<JsxNodeRegion, '_tag'>): JsxNodeRegion => ({
-  _tag: 'JsxNodeRegion',
-  ...input,
-});
-
-const createJsxTagName = (input: Omit<JSXNodeTagNameRegion, '_tag'>): JSXNodeTagNameRegion => ({
-  _tag: 'JsxTagName',
-  ...input,
-});
-
-export const TwinLSPNode = {
-  createAttributeBinding,
-  createJsxAttributeValue,
-  createJsxNode,
-  createJsxTagName,
-  createAttributeRegion,
-};
-
-export interface TwinLSPNode<Tag extends string> {
-  readonly _tag: Tag;
-  range: LSPRange;
-  rawText: string;
-}
-
-export interface LSPParsableRegion {
-  __parsable: 'LSPParsableRegion';
-  /** @description this text may have the literal container AKA `|'|" even template literal vars xor expressions */
-  rawText: string;
-  text: string;
-  range: LSPRange;
-}
-export interface LSPRange {
-  start: LSPPosition;
-  end: LSPPosition;
-}
-
-export interface JsxAttributeBindingRegion extends TwinLSPNode<'JsxAttributeBindingRegion'> {}
-export interface JsxAttributeValueRegion
-  extends LSPParsableRegion,
-    TwinLSPNode<'JsxAttributeValueRegion'> {}
-
-export interface JsxAttributeRegion extends TwinLSPNode<'JsxAttributeRegion'> {
-  attributeBinding: JsxAttributeBindingRegion;
-  attributeValue: JsxAttributeValueRegion;
-}
-/**
- * @name JsxNodeRegion
- * @description refers to jsx nodes like <div... /> | <div>...</div>
- * @see This just collect root nodes once wants to work with those needs yo traverse its childs
- * */
-export interface JsxNodeRegion extends TwinLSPNode<'JsxNodeRegion'> {
-  styledProps: JsxAttributeRegion[];
-  tagName: JSXNodeTagNameRegion;
-  parent: JsxNodeRegion | null;
-}
-
-export interface JSXNodeTagNameRegion extends TwinLSPNode<'JsxTagName'> {}
-
-export type AnyTwinNodeRegion =
-  | JsxAttributeRegion
-  | JsxNodeRegion
-  | JsxAttributeBindingRegion
-  | JsxAttributeValueRegion
-  | JSXNodeTagNameRegion;
-
-/**
- * ************* / LSP identities *************
- * */
-
-/**
- * ************* LSP Error Models *************
- * */
-
-export interface LSPPosition extends t.Position {}
-export interface LSPRange extends t.Range {}
-
-export class FileNotFound extends Data.TaggedError('FileNotFound')<{
-  cause: Error;
-}> {
-  get stackTrace() {
-    return this.cause.stack ?? Error.captureStackTrace(this.cause);
-  }
-  static create(e: unknown) {
-    if (e instanceof Error) return new FileNotFound({ cause: e });
-    return new FileNotFound({ cause: new Error(e as string) });
-  }
-}
-
-export class LSPParserError extends Data.TaggedError('LSPParserError')<{
-  cause: Error;
-}> {
-  get stackTrace() {
-    return this.cause.stack ?? Error.captureStackTrace(this.cause);
-  }
-  static create(e: unknown) {
-    if (e instanceof Error) return new LSPParserError({ cause: e });
-    return new LSPParserError({ cause: new Error(e as string) });
-  }
-}
-
-export class LSPTokenNotFound extends Data.TaggedError('LSPTokenNotFound')<{
-  cause: Error;
-}> {
-  get stackTrace() {
-    return this.cause.stack ?? Error.captureStackTrace(this.cause);
-  }
-  static create(e: unknown) {
-    if (e instanceof Error) return new LSPTokenNotFound({ cause: e });
-    return new LSPTokenNotFound({ cause: new Error(e as string) });
-  }
-}
-
-export type AnyLSPError = FileNotFound | LSPParserError | LSPTokenNotFound;
-
-/**
- * ************* / LSP Error Models *************
- * */
+export class LSPAdapterUtils extends Effect.Service<LSPAdapterUtils>()('lsp/LSPAdapterUtils', {
+  accessors: true,
+  effect: makeLSPUtils,
+}) {}

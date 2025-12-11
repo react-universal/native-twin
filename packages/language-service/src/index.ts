@@ -6,6 +6,7 @@ export * from './core/TwinGraph.service';
 export * from './core/TwinParser.service';
 export * from './internal/LSPAdapterSpec';
 export * from './internal/RunnerLayer';
+export * from './models/LSP.models';
 export * from './models/lsp.constants';
 export { TwinLSPDocument } from './models/TwinLSPDocument.model';
 export * from './Typescript/JSXParser.service';

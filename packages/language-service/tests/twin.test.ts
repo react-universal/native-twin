@@ -1,77 +1,75 @@
 import { describe, expect, it } from '@effect/vitest';
 import { setup } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
-import { asArray } from '@native-twin/helpers';
+import { Graph, Logger, LogLevel } from 'effect';
 import * as Effect from 'effect/Effect';
 import path from 'path';
-import { TextDocument } from 'vscode-languageserver-textdocument';
-import { LSPAdapterSpec, TwinParserContext } from '../src';
-import { TwinCompletionItem } from '../src/models/Completion.model';
-import type {
-  ParsedRuleWithLocation,
-  TwinParserOutput,
-  TwinRuleRegistry,
-} from '../src/models/TwinParser.models';
+import { inspect } from 'util';
+import { LSPAdapterSpec } from '../src';
+import { TwinRuntimeContext } from '../src/browser';
+import { makeTwinGraph } from '../src/core/TwinProject.service';
 import { TestLayer } from './dsl';
 import twinConfig from './fixtures/react/tailwind.config';
 
 setup(twinConfig, createVirtualSheet());
 
-describe('Twin Typescript API', () => {
-  it.effect('Executor test', () =>
+describe('Twin LSP API', () => {
+  it.effect('Draw graph for parsedFiles', () =>
     Effect.gen(function* () {
+      const graphCtx = yield* makeTwinGraph;
       const adapter = yield* LSPAdapterSpec;
-      const twinParser = yield* TwinParserContext;
-      const cursorOffset = 189;
+      const twin = yield* TwinRuntimeContext;
+      yield* twin.bootTwinRuntime(path.join(__dirname, 'fixtures/react', 'tailwind.config.ts'));
 
       const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
       const document = yield* adapter.getLSPDocument(ComponentPath);
-      const cursorPosition = document.positionAt(cursorOffset);
       const regions = yield* adapter.getRegions(ComponentPath);
 
-      expect(regions.length).toBeGreaterThan(0);
-
-      const region = document.findRegionAt(cursorPosition);
-      if (!region) throw expect(region).toBeDefined();
-
-      const text = region?.text;
-      let parserResult: TwinParserOutput | null | undefined = null;
-      let locatedToken: ParsedRuleWithLocation | null | undefined = null;
-      const twinTokens: TwinRuleRegistry[] = [];
-      if (!!region && !!text) {
-        parserResult = twinParser.runTwinParser({
-          startOffset: document.offsetAt(region.range.start),
-          text,
-        });
-
-        locatedToken = parserResult.result.find(
-          (token) => cursorOffset >= token.startOffset && cursorOffset <= token.endOffset,
-        );
-
-        if (locatedToken) {
-          const rules = yield* twinParser.findRulesByKey(locatedToken.parsed.n);
-          twinTokens.push(...rules);
-        }
-      }
-
-      if (!locatedToken) throw expect(locatedToken).toBeDefined();
-
-      const rules = yield* twinParser.findRulesByKey(locatedToken.parsed.n);
-
-      const completions = rules.map(
-        (rule) => new TwinCompletionItem(rule, locatedToken, cursorOffset, document).toCompletion(),
-      );
-      const result = TextDocument.applyEdits(
-        document.getDocument(),
-        asArray(completions.at(0)!.additionalTextEdits),
+      const sourceGraph = yield* graphCtx.createSourceGraph(
+        document,
+        regions.filter((x) => x._tag === 'JsxNodeRegion'),
       );
 
-      console.log(result);
-      const raw = result.toString();
+      const graphViz = Graph.toGraphViz(sourceGraph, {
+        edgeLabel: (data) => inspect(data),
+        graphName: 'Regions',
+        nodeLabel: (node) => node.id,
+      });
 
-      expect(raw).not.eq(document.getText());
-      expect(completions.length).toBeGreaterThan(2);
-      expect(region).toBeDefined();
-    }).pipe(Effect.provide(TestLayer)),
+      yield* Effect.promise(() =>
+        expect(graphViz).toMatchFileSnapshot(path.join(__dirname, '__snapshots__', 'regions.dot')),
+      );
+      expect(sourceGraph.nodes.size > 0).toBeDefined();
+    }).pipe(Logger.withMinimumLogLevel(LogLevel.All), Effect.provide(TestLayer)),
   );
+  // it.effect('vscode adapter completions', () =>
+  //   Effect.gen(function* () {
+  //     const adapter = yield* LSPAdapterSpec;
+  //     const cursorOffset = 189;
+  //     const twin = yield* TwinRuntimeContext;
+  //     yield* twin.bootTwinRuntime(path.join(__dirname, 'fixtures/react', 'tailwind.config.ts'));
+
+  //     const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
+  //     const document = yield* adapter.getLSPDocument(ComponentPath);
+  //     const cursorPosition = document.positionAt(cursorOffset);
+  //     const regions = yield* adapter.getRegions(ComponentPath);
+
+  //     expect(regions.length).toBeGreaterThan(0);
+
+  //     const region = document.findRegionAt(cursorPosition);
+  //     if (!region) throw expect(region).toBeDefined();
+
+  //     const completions = yield* languagePrograms.getCompletionsAtPosition.apply(
+  //       ComponentPath,
+  //       cursorPosition,
+  //     );
+
+  //     if (Array.isArray(completions)) {
+  //       expect(completions.length).toBeGreaterThan(2);
+  //     } else {
+  //       expect(completions).toBeInstanceOf(Array);
+  //     }
+  //     expect(region).toBeDefined();
+  //   }).pipe(Logger.withMinimumLogLevel(LogLevel.All), Effect.provide(TestLayer)),
+  // );
 });

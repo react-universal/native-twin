@@ -20,7 +20,7 @@ export const TestVscodeLSPAdapterLive = Effect.gen(function* () {
 
     const tsSource = yield* program.getSourceFile(filename, document.getText());
     const roots = parser.getJSXRootsFromSource(tsSource);
-    const regions = parser.jsxNodesToRegions(roots, document);
+    const regions = parser.jsxNodesToRegions(roots);
     // document.loadRegions(regions);
     return new TwinLSPDocument(document, regions);
   });

@@ -4,9 +4,9 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
-import type { JsxAttributeValueRegion } from '../internal/LSPAdapterSpec';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import { TwinDiagnosticCodes } from '../models/Diagnostic.model';
+import type { JsxAttributeValueRegion } from '../models/LSP.models';
 import { LSPConstants } from '../models/lsp.constants';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 

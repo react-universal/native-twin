@@ -2,20 +2,15 @@ import { Effect, Layer, SubscriptionRef } from 'effect';
 import fs from 'fs';
 import path from 'path';
 import ts from 'ts-morph';
-import {
-  requireESM,
-  type TwinConfigOptions,
-  TwinGraphLive,
-  TypeScriptApi,
-  TypeScriptProgram,
-} from '../../src';
-import { JSXParserLive } from '../../src/core/JSXParser.service';
+import { type TwinConfigOptions, TwinGraphLive, TypeScriptApi, TypeScriptProgram } from '../../src';
 import { LSPConfig, parseLSPConfigInput } from '../../src/core/LSPConfig.service';
 import { TwinParserContextLive } from '../../src/core/TwinParser.service';
 import { TwinRuntimeContextLive } from '../../src/core/TwinRuntime.service';
+import { JSXParserLive } from '../../src/Typescript/JSXParser.service';
 import { TypescriptUtilsLive } from '../../src/Typescript/TypescriptUtils.service';
 import { createTwinLoggerLayerFor } from '../../src/utils/lsp.logger.service';
 import { TestVscodeLSPAdapterLive } from './adapter.mock';
+import { requireESM } from './load-esm';
 
 const testFolder = path.join(__dirname, '..');
 
@@ -68,12 +63,12 @@ export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(TestVscodeLSPAdapterLive),
   Layer.provideMerge(TsProgramLive),
   Layer.provideMerge(TwinGraphLive),
-  Layer.provide(createTwinLoggerLayerFor('LSP')),
   Layer.provideMerge(JSXParserLive),
   Layer.provideMerge(TwinParserContextLive),
   Layer.provideMerge(TypescriptUtilsLive),
   Layer.provideMerge(TwinRuntimeContextLive),
   Layer.provideMerge(Layer.effect(LSPConfig, lspConfig)),
+  Layer.provide(createTwinLoggerLayerFor('LSP')),
 );
 
 export const createCustomProgram = (tsConfigPath: string) => {

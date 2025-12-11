@@ -14,4 +14,3 @@ export interface Contravariant2<F extends URIS2> {
   URI: F;
   contramap: <E, A, B>(f: (b: B) => A) => (fa: Kind2<F, E, A>) => Kind2<F, E, B>;
 }
-
