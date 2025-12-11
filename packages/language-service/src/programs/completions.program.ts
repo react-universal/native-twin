@@ -14,8 +14,7 @@ export const getCompletionsAtPosition = LSP.createTwinCompletions({
       const document = yield* executor.getLSPDocument(filename);
       const result = yield* maybeParsedRuleAtPosition(document, position);
 
-      const twinTokens = yield* parser.findRulesByKey(result.locatedToken.parsed.n);
-      return twinTokens.map((rule) =>
+      return (yield* parser.findRulesByKey(result.locatedToken.parsed.n)).map((rule) =>
         new TwinCompletionItem(
           rule,
           result.locatedToken,
@@ -24,14 +23,12 @@ export const getCompletionsAtPosition = LSP.createTwinCompletions({
         ).toCompletion(),
       );
     },
-    (effect, filename, position) => {
-      return effect.pipe(
-        Effect.catchAll((error) =>
-          Effect.log('Completion: Error in ', filename, position, error.message).pipe(
-            Effect.andThen(() => Effect.succeed([])),
-          ),
+    (effect, filename, position) =>
+      Effect.catchAll(effect, (error) =>
+        Effect.zipRight(
+          Effect.logDebug('Completion: Error in ', filename, position, error.message),
+          Effect.succeed([]),
         ),
-      );
-    },
+      ),
   ),
 });

@@ -2,14 +2,13 @@
 .vscode-test/**
 .gitignore
 test/
-ts-extention/
-project-fixture/
 src/**
 **/*.map
 .github/**
 .nvmrc
 .editorConfig
 build.js
+!**/build/**
 **/*.map
 .gitignore
 **/tsconfig.json

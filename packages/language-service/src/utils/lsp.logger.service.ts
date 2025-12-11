@@ -9,7 +9,6 @@ import * as Iterable from 'effect/Iterable';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import * as Str from 'effect/String';
-import { inspect } from 'util';
 
 const scopeTextConfig = pipe(
   Ansi.combine(Ansi.bgBlue),
@@ -77,11 +76,7 @@ export const createLspLogger = (scope: string) =>
 
 const logFormat = (x: any) =>
   pipe(
-    inspect(x, {
-      depth: null,
-      sorted: true,
-      compact: true,
-    }),
+    JSON.stringify(x),
     Str.linesIterator,
     Iterable.map(Str.padStart(5)),
     RA.fromIterable,

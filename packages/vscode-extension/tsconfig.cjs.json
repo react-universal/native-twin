@@ -7,7 +7,7 @@
     "declarationMap": true,
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "target": "ES2020",
+    "target": "es2024",
     "moduleDetection": "force",
     "lib": ["ES2022"],
     "noEmit": false,

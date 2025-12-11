@@ -1,6 +1,5 @@
 /// <reference lib="WebWorker" />
 
-import * as BrowserRuntime from '@effect/platform-browser/BrowserRuntime';
 import {
   FileNotFound,
   getClientCapabilities,
@@ -25,7 +24,6 @@ import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import path from 'path';
 import ts from 'ts-morph';
 import type * as t from 'vscode-languageserver';
 import {
@@ -37,18 +35,18 @@ import {
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import defaultConfig from '../../twinConfig.default';
 
-console.log('HEEEEEEYYYYYYY');
 const messageReader = new BrowserMessageReader(self as DedicatedWorkerGlobalScope);
 const messageWriter = new BrowserMessageWriter(self as DedicatedWorkerGlobalScope);
 const connection = createConnection(messageReader, messageWriter);
 const documentsHandler = new TextDocuments(TextDocument);
 
-messageReader.listen((data) => {
-  console.log('DATA: ', data);
+documentsHandler.listen(connection);
+connection.listen();
+connection.onExit(() => {
+  self.console.log('0asdasdasdad');
 });
-messageWriter.onError(([error, number1]) => {
-  console.log('DATA: ', error, number1);
-});
+
+messageReader.listen((x) => console.log('MESSAGE: ', x));
 const LSPContextLive = Effect.gen(function* () {
   const documentChanges = Stream.async<TextDocument>((emit) => {
     documentsHandler.onDidChangeContent((changes) => {
@@ -134,7 +132,7 @@ const AdapterLive = Effect.gen(function* () {
       .pipe(Effect.flatMap(identity))
       .pipe(Effect.mapError((e) => FileNotFound.create(e)));
 
-    const filePath = path.join(path.parse(filename).root, path.parse(filename).base);
+    const filePath = filename;
     const tsSource = yield* program.getSourceFile(filePath, document.getText());
     const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
 
@@ -170,7 +168,7 @@ const MainLayer = Layer.empty.pipe(
   Layer.provideMerge(LSPConfigLive),
 );
 
-const runtime = ManagedRuntime.make(Layer.suspend(() => MainLayer));
+const runtime = ManagedRuntime.make(MainLayer);
 
 const program = Effect.gen(function* () {
   yield* Effect.log('START_SERVER');
@@ -269,8 +267,8 @@ const program = Effect.gen(function* () {
   });
 });
 
-// runtime.runFork(program);
-BrowserRuntime.runMain(program.pipe(Effect.provide(MainLayer)));
+runtime.runFork(program);
+// BrowserRuntime.runMain(program.pipe(Effect.provide(MainLayer)));
 
 documentsHandler.listen(connection);
 connection.listen();

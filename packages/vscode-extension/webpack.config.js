@@ -19,12 +19,11 @@ const polyfill = new NodePolyfillPlugin({
     "punycode",
     "fs",
     "console",
-    "util",
     "assert",
-    "Buffer",
+    // "Buffer",
     "url",
     "path",
-    "buffer",
+    // "buffer",
     "vm",
   ],
 });
@@ -40,17 +39,17 @@ const browserClientConfig = {
     filename: "[name].js",
     path: path.join(__dirname, "build", "cjs"),
     libraryTarget: "commonjs",
-    devtoolModuleFilenameTemplate: "../[resource-path]",
+    devtoolModuleFilenameTemplate: "../../[resource-path]",
   },
   resolve: {
     mainFields: ["browser", "module", "main"],
     extensions: [".ts", ".js"], // support ts-files and js-files
     alias: {},
-    aliasFields: ["browser"],
+    // aliasFields: ["browser"],
     fallback: {
-      path: require.resolve('path-browserify'),
-      'node:path': require.resolve('path-browserify'),
-      fs: false
+      "util": false,
+      buffer: require.resolve('buffer'),
+      module: false
     },
   },
   module: {
@@ -74,15 +73,8 @@ const browserClientConfig = {
       ]
   },
   externals: {
-    vscode: "commonjs vscode", // ignored because it doesn't exist
-    // jiti: 'commonjs jiti',
-    "node:path": "commonjs path",
-    "node:util": "commonjs util",
-    "util": "commonjs util",
-    "node:fs": "commonjs fs",
-    'code-block-writer': "commonjs code-block-writer",
-    "fs": "commonjs fs",
-    "node:process": "commonjs process"
+    vscode: "commonjs vscode", // ignored because it doesn't exist,
+    buffer: 'commonjs buffer'
   },
   performance: {
     hints: false,
@@ -90,73 +82,69 @@ const browserClientConfig = {
   plugins: [polyfill],
   externalsPresets: { node: true },
   devtool: "nosources-source-map",
+  node: {
+    __dirname: true,
+    __filename: true,
+    global: true
+  },
 };
 
-/** @type WebpackConfig */
-const browserServerConfig = {
-  context: path.join(__dirname, "src/language/browser"),
-  mode: "none",
-  target: "webworker", // web extensions run in a webworker context
-  entry: {
-    "twin.worker": "/twin.worker.ts",
-  },
-  plugins: [
-   polyfill
-  ],
-  externalsPresets: { node: true },
-  output: {
-    filename: "[name].js",
-    path: path.join(__dirname, "build", "cjs"),
-    libraryTarget: "var",
-    library: "serverExportVar",
-    devtoolModuleFilenameTemplate: "../[resource-path]",
-  },
-  resolve: {
-    mainFields: ["browser", "module", "main"],
-    extensions: [".ts", ".js"], // support ts-files and js-files
-    alias: {},
-    aliasFields: ["browser"],
-    fallback: {
-    	path: require.resolve("path-browserify"),
-      'node:path': require.resolve("path-browserify"),
-      util: require.resolve('util'),
-      fs: false
-    },
-  },
-  module: {
-    rules: [
-      {
-        test: /node_modules[\\|/]code-block-writer[\\|/]umd[\\|/]/,
-        use: { loader: "umd-compat-loader" },
-      },
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: "ts-loader",
-          },
-        ],
-      },
-    ],
-    noParse: [
-      require.resolve("@ts-morph/common/dist/typescript.js")
-    ]
-  },
-  externals: {
-    vscode: "commonjs vscode", // ignored because it doesn't exist
-    // // jiti: 'commonjs jiti',
-    "node:path": "commonjs path",
-    // 'code-block-writer': "commonjs code-block-writer",
-    "node:util": "commonjs util",
-    "util": "commonjs util",
-    "node:fs": "commonjs fs",
-    "fs": "commonjs fs",
-    "node:process": "commonjs process"
-  },
-  performance: {
-    hints: false,
-  },
-  devtool: "nosources-source-map",
-};
-module.exports = [browserClientConfig, browserServerConfig];
+// /** @type WebpackConfig */
+// const browserServerConfig = {
+//   context: path.join(__dirname, "src/language/browser"),
+//   mode: "none",
+//   target: "webworker", // web extensions run in a webworker context
+//   entry: {
+//     "twin.worker": "/twin.worker.ts",
+//   },
+//   plugins: [
+//    polyfill
+//   ],
+//   externalsPresets: { node: true },
+//   output: {
+//     filename: "[name].js",
+//     path: path.join(__dirname, "build", "cjs"),
+//     libraryTarget: "var",
+//     library: "serverExportVar",
+//     devtoolModuleFilenameTemplate: "../[resource-path]",
+//   },
+//   resolve: {
+//     mainFields: ["browser", "module", "main"],
+//     extensions: [".ts", ".js"], // support ts-files and js-files
+//     alias: {},
+//     aliasFields: ["browser"],
+//     fallback: {
+//       "util": false
+//     },
+//   },
+//   module: {
+//     rules: [
+//       {
+//         test: /node_modules[\\|/]code-block-writer[\\|/]umd[\\|/]/,
+//         use: { loader: "umd-compat-loader" },
+//       },
+//       {
+//         test: /\.ts$/,
+//         exclude: /node_modules/,
+//         use: [
+//           {
+//             loader: "ts-loader",
+//           },
+//         ],
+//       },
+//     ],
+//     noParse: [
+//       require.resolve("@ts-morph/common/dist/typescript.js")
+//     ]
+//   },
+//   externals: {
+//     vscode: "commonjs vscode", // ignored because it doesn't exist
+//     // "util": "commonjs util"
+//   },
+//   performance: {
+//     hints: false,
+//   },
+//   devtool: "nosources-source-map",
+// };
+module.exports = [browserClientConfig, 
+];

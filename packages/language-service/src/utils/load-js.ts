@@ -24,7 +24,7 @@
 //   );
 // }
 
-// async function requireJSThrowable(path: string): Promise<any> {
+// function requireJSThrowable(path: string): any {
 //   // biome-ignore lint/complexity/useArrowFunction: needs to be bindable
 //   const config = (function () {
 //     try {

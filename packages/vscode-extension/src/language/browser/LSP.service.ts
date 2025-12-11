@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { LSPConfig, LSPConstants } from '@native-twin/language-service/browser';
-import * as Ctx from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
@@ -13,7 +12,7 @@ import {
   onLanguageClientError,
 } from '../common/language.utils';
 
-const make = Effect.gen(function* () {
+export const BrowserLSPClient = Effect.gen(function* () {
   const extensionCtx = yield* VscodeContext;
   const { config } = yield* LSPConfig;
   const currentConfig = yield* config.get;
@@ -21,16 +20,13 @@ const make = Effect.gen(function* () {
   const createWorker = () => {
     const workerPath = vscode.Uri.joinPath(
       extensionCtx.extensionUri,
-      'build/cjs/twin.worker.js',
+      '/build/cjs/twin.worker.js',
     ).toString(true);
-    const worker = new Worker(workerPath, {
-      credentials: 'omit',
-      name: 'twin.worker',
-      type: 'classic',
-    });
+    const worker = new Worker(workerPath);
     worker.addEventListener('message', (event) => {
       console.log('WORKER_TALKING: ', event);
     });
+    worker.postMessage('asdadad');
     return worker;
   };
 
@@ -58,13 +54,15 @@ const make = Effect.gen(function* () {
     //     onProvideDocumentColors(document, token, next, colorDecorationType),
     // },
   };
+  const worker = createWorker();
+  console.log('WORKERRRRR: ', worker);
   const client = yield* Effect.sync(
     () =>
       new LanguageClient(
         LSPConstants.extensionChannelName,
         LSPConstants.vscodeExtensionName,
         clientConfig,
-        createWorker(),
+        worker,
       ),
   );
   console.log(
@@ -107,11 +105,4 @@ const make = Effect.gen(function* () {
   );
 
   return client;
-});
-
-export class LanguageClientContextBrowser extends Ctx.Tag('vscode/LanguageClientContext')<
-  LanguageClientContextBrowser,
-  LanguageClient
->() {
-  static Live = Layer.effect(LanguageClientContextBrowser, make);
-}
+}).pipe(Layer.scopedDiscard);

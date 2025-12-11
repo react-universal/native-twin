@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    
+    "lib": ["ES2024", "WebWorker"],
     "outDir": "build/esm",
     "declarationDir": "build/dts",
     "stripInternal": true

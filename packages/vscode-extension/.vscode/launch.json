@@ -16,7 +16,9 @@
       "type": "extensionHost",
       "request": "launch",
       "name": "Launch web extension",
+      "debugWebviews": true,
       "debugWebWorkerHost": true,
+      "enableContentValidation": true,
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--disable-extensions",
@@ -31,8 +33,8 @@
         "group": "",
         "order": 2
       },
-      "preLaunchTask": "webpack watch",
-      "autoAttachChildProcesses": true,
+      // "preLaunchTask": "webpack watch",
+      // "autoAttachChildProcesses": true,
       "sourceMaps": true,
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",

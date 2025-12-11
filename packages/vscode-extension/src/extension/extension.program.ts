@@ -12,7 +12,6 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Scope from 'effect/Scope';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import defaultTwin from '../twinConfig.default';
 import { VscodeContext } from './extension.service';
 import { extensionConfigState, registerEditorCommand, thenable } from './extension.utils';
 
@@ -39,17 +38,27 @@ export const launchExtension = <E>(
     const twinConfig = yield* extensionConfigState(LSPConstants.lspRawConfig);
     const currentConfig = yield* twinConfig.get;
     const files = yield* thenable(() =>
-      vscode.workspace.findFiles(
-        '**/{tailwind,twin,nativeTwin,native-twin}.config.{ts,js,mjs,cjs}',
-        '**/node_modules/**',
-        1,
-      ),
+      vscode.workspace.findFiles('**/tailwind.config.{ts,js,mjs,cjs}', '**/node_modules/**', 1),
     );
     const tsConfigs = yield* thenable(() =>
       vscode.workspace.findFiles('**/tsconfig.json', '**/node_modules/**', 1),
     );
 
     const twinConfigPath = files[0]?.path;
+    // console.log('BBB/TWIN_CONFIG_PATH', twinConfigPath);
+    // const folders = asArray([...(vscode.workspace.workspaceFolders ?? [])]);
+    // if (folders.length > 0) {
+    //   const rootDir = folders[0];
+    //   console.log('ROOT_DIR', rootDir);
+    //   const files = yield* thenable(() => vscode.workspace.fs.readDirectory(rootDir.uri));
+    //   twinConfigPath = vscode.Uri.joinPath(
+    //     rootDir.uri,
+    //     files.find((x) => x[0] === 'tailwind.config.js')?.[0] ?? twinConfigPath,
+    //   ).toString(true);
+    //   console.log('WORKSPACE_FILES', files);
+    // }
+    // console.log('TWIN_CONFIG_PATH', twinConfigPath);
+    // console.log('STATE: ', context.workspaceState.keys());
     const rootDir =
       vscode.workspace.workspaceFolders?.[0]?.uri?.path ??
       vscode.Uri.joinPath(context.extensionUri).path;
@@ -80,7 +89,14 @@ export const launchExtension = <E>(
         config: configRef,
         onChangeConfig,
         configSelector,
-        loadTwinConfig: (_filename) => Effect.succeed(Option.some(defaultTwin)),
+        loadTwinConfig: (_filename) => {
+          return Effect.promise(() =>
+            import(_filename).then(Option.some).catch((error) => {
+              console.log('ERROR: ', error);
+              return Option.none();
+            }),
+          );
+        },
       }),
     );
     const mainLayer = layer.pipe(Layer.provideMerge(configLayer));

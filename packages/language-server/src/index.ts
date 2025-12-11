@@ -26,7 +26,6 @@ const runEffect = <A, E>(
 const program = Effect.gen(function* () {
   const { connection: Connection, documents } = yield* LSPContext;
   const config = yield* LSPConfig;
-  // const internalRuntime = yield* Runtime;
 
   Connection.onInitialize(async (params) => {
     const capabilities = getClientCapabilities(params.capabilities);
@@ -85,14 +84,6 @@ const program = Effect.gen(function* () {
       runEffect,
     ),
   );
-  // yield* addServerRequestHandler(Connection.onCompletion, (params) => {
-  //   return languagePrograms.getCompletionsAtPosition
-  //     .apply(params.textDocument.uri, params.position)
-  //     .pipe(
-  //       Effect.map((comp) => comp.completions),
-  //       Effect.provide(LspMainLive),
-  //     );
-  // });
 
   Connection.onSelectionRanges(async (_params, _token, _, __) => {
     return [];
@@ -103,7 +94,6 @@ const program = Effect.gen(function* () {
   );
 
   Connection.onCodeActionResolve(async (params) => {
-    // console.log('PARAMS: ', params);
     return {
       ...params,
     };
@@ -132,8 +122,6 @@ const program = Effect.gen(function* () {
   Effect.catchAll((error) => Effect.log(`Language server failed: ${error}`)),
 );
 
-// const runner = Runtime.pipe(Effect.map((x) => EffectRuntime.runFork(x, Effect.scoped(program))));
-
 const addPrettyLogger = (refs: FiberRefs.FiberRefs, fiberId: FiberId.Runtime) => {
   const loggers = FiberRefs.getOrDefault(refs, FiberRef.currentLoggers);
   if (!HashSet.has(loggers, Logger.defaultLogger)) {
@@ -156,11 +144,3 @@ LSPRuntime.runFork(
   }),
   { updateRefs: addPrettyLogger },
 );
-
-// const running = EffectRuntime.runFork(EffectRuntime.make({
-//   context: Runtime.memoMap.
-// }), program);
-// NodeRuntime.runMain(program.pipe(Effect.provide()), {
-// disableErrorReporting: false,
-// disablePrettyLogger: false,
-// });

@@ -1,8 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "module": "commonjs",
+    "target": "ES2024",
+    "moduleResolution": "node",
     "rootDir": "src",
     "outDir": "build/cjs"
   },

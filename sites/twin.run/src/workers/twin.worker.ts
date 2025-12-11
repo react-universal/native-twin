@@ -75,7 +75,7 @@ const program = Effect.gen(function* () {
     );
     if (!completions) return undefined;
 
-    return completions.completions;
+    return completions;
   });
 
   lsp.connection.onInitialize(async (params) => {

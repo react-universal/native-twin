@@ -41,3 +41,5 @@ export function presetTailwind({
     rules: themeRules,
   };
 }
+
+export default presetTailwind;
