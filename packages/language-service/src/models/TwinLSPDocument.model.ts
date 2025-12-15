@@ -1,9 +1,9 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
-import { Location, Position, Range } from 'vscode-languageserver-types';
+import { Location } from 'vscode-languageserver-types';
 import { fixRegionRanges } from '../internal/LSPAdapterSpec';
-import type * as LSP from './LSP.models';
+import * as LSP from './LSP.models';
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
   constructor(private readonly textDocument: VSCDocument.TextDocument) {}
 
@@ -22,13 +22,16 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   sumPositions(p1: VSCDocument.Position, p2: VSCDocument.Position) {
     if (p1.line !== p2.line) {
       console.warn('Cant sum positions on different lines');
-      return p2;
+      return LSP.LSPPosition.fromObject(p2);
     }
-    return Position.create(p1.line, p1.character + p2.character);
+    return LSP.LSPPosition.create(p1.line, p1.character + p2.character);
   }
 
   sumRanges(r1: VSCDocument.Range, r2: VSCDocument.Range) {
-    return Range.create(this.sumPositions(r1.start, r2.start), this.sumPositions(r1.end, r2.end));
+    return LSP.LSPRange.create(
+      this.sumPositions(r1.start, r2.start),
+      this.sumPositions(r1.end, r2.end),
+    );
   }
 
   getLocation(range: VSCDocument.Range): Location {
@@ -44,7 +47,7 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   }
 
   positionAt(offset: number) {
-    return this.textDocument.positionAt(offset);
+    return LSP.LSPPosition.fromObject(this.textDocument.positionAt(offset));
   }
 
   isPositionInRange(position: VSCDocument.Position, range: VSCDocument.Range) {
@@ -55,7 +58,10 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   }
 
   getRangeFor(startOffset: number, endOffset: number): VSCDocument.Range {
-    return { start: this.positionAt(startOffset), end: this.positionAt(endOffset) };
+    return LSP.LSPRange.fromObject({
+      start: this.positionAt(startOffset),
+      end: this.positionAt(endOffset),
+    });
   }
 
   locationAtOffsets(start: number, end: number) {

@@ -7,7 +7,7 @@ import { absurd } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Order from 'effect/Order';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
-import * as t from 'vscode-languageserver-types';
+import type * as t from 'vscode-languageserver-types';
 import {
   type AnyLSPError,
   type AnyTwinNodeRegion,
@@ -18,8 +18,8 @@ import {
   type JsxAttributeValueRegion,
   type JsxNodeRegion,
   LSPParserError,
-  type LSPPosition,
-  type LSPRange,
+  LSPPosition,
+  LSPRange,
   LSPTokenNotFound,
 } from '../models/LSP.models';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
@@ -57,7 +57,7 @@ export const LSPAdapterSpec = Context.GenericTag<LSPAdapterSpec>('LSPAdapterSpec
 
 const makeLSPUtils = () => {
   const positionOrd = Order.mapInput(Order.number, (a: t.Position) => a.character);
-  const position = (offset: number, line = 0) => t.Position.create(line ?? 0, offset);
+  const position = (offset: number, line = 0) => LSPPosition.create(line ?? 0, offset);
 
   const isPositionInRange = (range: t.Range, position: t.Position) =>
     Order.between(positionOrd)({ maximum: range.end, minimum: range.start })(position);
@@ -72,7 +72,7 @@ const makeLSPUtils = () => {
     (range: t.Range) => [range.start, range.end] as const,
   );
 
-  const range = (start: LSPPosition, end: LSPPosition): LSPRange => t.Range.create(start, end);
+  const range = (start: LSPPosition, end: LSPPosition): LSPRange => LSPRange.create(start, end);
 
   const createAttributeBinding = (
     input: Omit<JsxAttributeBindingRegion, '_tag'>,
@@ -177,8 +177,14 @@ export const fixRegionRanges = (node: JsxNodeRegion, doc: TextDocument): JsxNode
     const subset = new Set([originalText, parsableText, documentText]);
     if (subset.size === 3) {
       if (attributeValue.text.startsWith('`')) {
+        attributeValue.range = LSPRange.create(
+          LSPPosition.create(
+            attributeValue.range.start.line,
+            attributeValue.range.start.character + 1,
+          ),
+          attributeValue.range.end,
+        );
         attributeValue.text = attributeValue.text.slice(1);
-        attributeValue.range.start.character += 1;
       }
       if (attributeValue.text.endsWith('`')) {
         attributeValue.text = attributeValue.text.slice(0, attributeValue.text.lastIndexOf('`'));
@@ -199,8 +205,10 @@ export const fixRegionRanges = (node: JsxNodeRegion, doc: TextDocument): JsxNode
       ++cursor;
     }
     const cursorDiff = cursor - parsableText.length;
-    const finalStart = doc.positionAt(starOffset + counterDif - cursorDiff);
-    const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif - cursorDiff);
+    const finalStart = LSPPosition.fromObject(doc.positionAt(starOffset + counterDif - cursorDiff));
+    const finalEnd = LSPPosition.fromObject(
+      doc.positionAt(starOffset + parsableText.length + counterDif - cursorDiff),
+    );
 
     const newProp = LSPAdapterUtils.pipe(
       Effect.map((s) => {
@@ -211,7 +219,7 @@ export const fixRegionRanges = (node: JsxNodeRegion, doc: TextDocument): JsxNode
           attributeValue: s.createJsxAttributeValue({
             rawText: attributeValue.rawText,
             text: attributeValue.text,
-            range: { start: finalStart, end: finalEnd },
+            range: LSPRange.fromObject({ start: finalStart, end: finalEnd }),
           }),
         });
       }),

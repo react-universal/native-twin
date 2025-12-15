@@ -16,10 +16,6 @@ export interface LSPParsableRegion {
   text: string;
   range: LSPRange;
 }
-export interface LSPRange {
-  start: LSPPosition;
-  end: LSPPosition;
-}
 
 export interface JsxAttributeBindingRegion extends TwinLSPNode<'JsxAttributeBindingRegion'> {}
 export interface JsxAttributeValueRegion
@@ -59,8 +55,29 @@ export type AnyTwinNodeRegion =
  * ************* LSP Error Models *************
  * */
 
-export interface LSPPosition extends t.Position {}
-export interface LSPRange extends t.Range {}
+export class LSPPosition extends Data.TaggedClass('LSPPosition')<t.Position> {
+  static create(line: number, character: number) {
+    return new LSPPosition({ line, character });
+  }
+  static fromObject(pos: { line: number; character: number }) {
+    return this.create(pos.line, pos.character);
+  }
+}
+
+export class LSPRange extends Data.TaggedClass('LSPRange')<{
+  start: LSPPosition;
+  end: LSPPosition;
+}> {
+  static create(start: LSPPosition, end: LSPPosition) {
+    return new LSPRange({ start, end });
+  }
+  static fromObject({ start, end }: { start: t.Position; end: t.Position }) {
+    return this.create(
+      LSPPosition.create(start.line, start.character),
+      LSPPosition.create(end.line, end.character),
+    );
+  }
+}
 
 export class FileNotFound extends Data.TaggedError('FileNotFound')<{
   cause: Error;

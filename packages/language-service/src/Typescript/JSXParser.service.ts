@@ -7,7 +7,7 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import ts from 'ts-morph';
 import * as Spec from '../internal/LSPAdapterSpec';
-import type { JsxNodeRegion } from '../models/LSP.models';
+import { type JsxNodeRegion, LSPPosition, LSPRange } from '../models/LSP.models';
 import { annotatedLayer } from '../utils/effect.utils';
 import type { TypescriptModels } from './TwinDsl.models';
 import { TypescriptUtils } from './TypescriptUtils.service';
@@ -106,7 +106,7 @@ const make = Effect.gen(function* () {
         range: getNodeRange(prop.name),
         rawText: prop.name.getText(),
       });
-      const attrRange = getNodeRange(prop.value);
+      let attrRange = getNodeRange(prop.value);
 
       const attrValue = getJSXAttributeValue(prop.attribute);
       if (attrValue.expression) {
@@ -115,7 +115,10 @@ const make = Effect.gen(function* () {
           attrValue.expression.getText().startsWith('`') &&
           attrValue.expression.getText().endsWith('`')
         ) {
-          attrRange.start.character += 1;
+          attrRange = LSPRange.fromObject({
+            start: LSPPosition.create(attrRange.start.line, attrRange.start.character + 1),
+            end: attrRange.end,
+          });
         }
         if (
           ts.Node.isStringLiteral(attrValue.expression) &&
@@ -124,7 +127,10 @@ const make = Effect.gen(function* () {
           (attrValue.expression.getText().endsWith('"}') ||
             attrValue.expression.getText().endsWith("'}"))
         ) {
-          attrRange.start.character += 2;
+          attrRange = LSPRange.fromObject({
+            start: LSPPosition.create(attrRange.start.line, attrRange.start.character + 2),
+            end: attrRange.end,
+          });
         }
       }
       const attributeValue = lspUtils.createJsxAttributeValue({

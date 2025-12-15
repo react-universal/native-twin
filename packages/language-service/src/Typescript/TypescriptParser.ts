@@ -2,7 +2,12 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import { LSPParser } from '../core/LSPParser.service';
-import type { JsxAttributeRegion, JsxNodeRegion } from '../models/LSP.models';
+import {
+  type JsxAttributeRegion,
+  type JsxNodeRegion,
+  LSPPosition,
+  LSPRange,
+} from '../models/LSP.models';
 import { JSXParser } from './JSXParser.service';
 import { TypeScriptProgram } from './TypescriptAPI.service';
 
@@ -35,7 +40,13 @@ const fixRegionRanges = (node: JsxNodeRegion, doc: TextDocument): JsxNodeRegion 
     if (subset.size === 3) {
       if (attributeValue.text.startsWith('`')) {
         attributeValue.text = attributeValue.text.slice(1);
-        attributeValue.range.start.character += 1;
+        attributeValue.range = LSPRange.fromObject({
+          start: LSPPosition.create(
+            attributeValue.range.start.line,
+            attributeValue.range.start.character + 1,
+          ),
+          end: attributeValue.range.end,
+        });
       }
       if (attributeValue.text.endsWith('`')) {
         attributeValue.text = attributeValue.text.slice(0, attributeValue.text.lastIndexOf('`'));
@@ -63,7 +74,7 @@ const fixRegionRanges = (node: JsxNodeRegion, doc: TextDocument): JsxNodeRegion 
       ...attribute,
       attributeValue: {
         ...attributeValue,
-        range: { start: finalStart, end: finalEnd },
+        range: LSPRange.fromObject({ start: finalStart, end: finalEnd }),
       },
     });
   }
