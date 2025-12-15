@@ -1,6 +1,4 @@
 /** Documents Service */
-
-export * from './core/LSPConfig.service';
 export * from './core/LSPContext.service';
 export * from './core/TwinParser.service';
 export * from './core/TwinRuntime.service';

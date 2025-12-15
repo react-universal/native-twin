@@ -75,7 +75,8 @@
     "test": "npx vitest"
   },
   "devDependencies": {
-    "@types/react": "~19.1.10"
+    "@types/react": "~19.1.10",
+    "nx": "^22.2.3"
   },
   "peerDependencies": {
     "react": "18.3.1"
@@ -96,5 +97,6 @@
       ]
     }
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "nx": {}
 }

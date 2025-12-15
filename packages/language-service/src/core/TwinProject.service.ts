@@ -1,55 +1,92 @@
+import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
-import * as Equal from 'effect/Equal';
 import * as Graph from 'effect/Graph';
+import * as Iterable from 'effect/Iterable';
+import * as Option from 'effect/Option';
+import * as Order from 'effect/Order';
 import * as Predicate from 'effect/Predicate';
 import { inspect } from 'util';
-import type t from 'vscode-languageserver-types';
-import type { JsxNodeRegion } from '../models/LSP.models';
-import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
+import { LSPAdapterUtils } from '../internal/LSPAdapterSpec';
+import {
+  GraphState,
+  type JsxNodeRegion,
+  SourceEdgeInfo,
+  SourceNodeInfo,
+} from '../models/LSP.models';
+
+const JSXRegionOrd = Order.mapInput(Order.number, (_: JsxNodeRegion) => _.range.start.character);
 
 export const makeTwinGraph = Effect.gen(function* () {
-  const createSourceGraph = (document: TwinLSPDocument, elements: JsxNodeRegion[]) =>
-    Effect.gen(function* () {
-      const context = yield* createTraversalContext(elements, document);
+  const traverseGraph = (graph: Graph.Graph<SourceNodeInfo, SourceEdgeInfo>) => {
+    const handler = new GraphState(graph);
 
-      while (context.state.nodeToVisit.length > 0) {
-        const currentNode = yield* context.getNextNode();
-        const currentDepthBudget = context.getDepthBudgetFor(currentNode)!;
-        yield* context.processJSXElementNode(currentNode, currentDepthBudget);
+    const data = handler.dfs.visit((nodeIndex, _sourceInfo) => handler.visitNodeIndex(nodeIndex));
+    const final = Iterable.reduce(data, '', (acc, current) => {
+      let body = '';
+      if (current.endText.length > 0) {
+        body = body
+          .concat(current.padStart)
+          .concat(current.startText)
+          .concat('\n')
+          .concat(current.padStart)
+          .concat(acc)
+          .concat('\n')
+          .concat(current.padStart)
+          .concat(current.endText);
+      } else {
+        body = body.concat(current.startText).concat(acc);
       }
-
-      const sourceGraph = context.buildGraph();
-      return sourceGraph;
+      return body;
     });
-
-  return {
-    createSourceGraph,
+    return final;
   };
-});
 
-const createTraversalContext = Effect.fn(function* (
-  source: JsxNodeRegion[],
-  document: TwinLSPDocument,
-) {
+  const createSourceGraph = Effect.fn(function* (elements: JsxNodeRegion[]) {
+    const context = yield* createTraversalContext(elements);
+
+    while (context.state.nodeToVisit.length > 0) {
+      const currentNode = yield* context.getNextNode();
+      const currentDepthBudget = yield* context.getDepthBudgetFor(currentNode)!;
+      yield* context.processJSXElementNode(currentNode, currentDepthBudget);
+    }
+
+    yield* Effect.sync(() => Graph.reverse(context.state.mutableGraph));
+    return Graph.endMutation(context.state.mutableGraph);
+  });
+
+  return { createSourceGraph, traverseGraph };
+}).pipe(Effect.provide(LSPAdapterUtils.Default));
+
+const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
+  // const lspUtils = yield* LSPAdapterUtils;
   const mutableGraph = Graph.beginMutation(Graph.directed<SourceNodeInfo, SourceEdgeInfo>());
-
-  const getNodeChilds = (node: JsxNodeRegion) =>
-    source.filter((x) => {
-      const equals = Equal.equals(x.parent, node) || x.parent?.rawText === node.rawText;
-      return equals;
-    });
 
   // ==================== State Tracking ====================
   // Track which nodes have been visited to avoid reprocessing
   const visitedNodes = new WeakSet<JsxNodeRegion>();
-  // Map nodes to their position in the JSX tree hierarchy
+  // // Map nodes to their position in the JSX tree hierarchy
   const nodeInJSXTree = new WeakMap<JsxNodeRegion, Graph.NodeIndex>();
   // Map nodes to their corresponding graph indices
-  const nodeToGraph = new WeakMap<JsxNodeRegion, Graph.NodeIndex>();
+  const nodeGraphIndex = new WeakMap<JsxNodeRegion, Graph.NodeIndex>();
   // Track remaining depth budget for symbol following
   const depthBudget = new WeakMap<JsxNodeRegion, number>();
   // Queue of nodes pending visitation
   const nodeToVisit: JsxNodeRegion[] = [];
+
+  const createStacked = (source: JsxNodeRegion[]) => {
+    const lookup = new Map<string, { id: string; childs: JsxNodeRegion[]; isRoot: boolean }>();
+    for (const nextRegion of source.filter((x) => x.parent === null)) {
+      const childs = RA.sort(
+        source.filter((x) => x.parent?.id === nextRegion.id),
+        JSXRegionOrd,
+      );
+
+      lookup.set(nextRegion.id, { id: nextRegion.id, childs, isRoot: nextRegion.parent === null });
+    }
+    return lookup;
+  };
+
+  const regionsLookup = createStacked(source);
 
   // ==================== Node Enqueueing ====================
   /**
@@ -65,23 +102,12 @@ const createTraversalContext = Effect.fn(function* (
   // Initialize the visitation queue with all JSX expression declarators
   const cached = yield* Effect.cached(
     Effect.sync(() =>
-      source.filter((x) => x.parent === null).forEach((_) => void appendNodeToVisit(_, 0)),
+      source.forEach((_) => {
+        if (_.parent === null) appendNodeToVisit(_, 0);
+      }),
     ),
   );
   yield* cached;
-
-  // ==================== Node Information Extraction ====================
-  /**
-   * Extracts metadata from a node for graph representation
-   * Determines the display name based on parent context
-   */
-  const extractNodeInfo = (node: JsxNodeRegion): SourceNodeInfo => {
-    return {
-      id: document.getLocationID(node.range),
-      location: document.getLocation(node.range),
-      tagName: node.tagName.rawText,
-    };
-  };
 
   // ==================== Graph Operations ====================
   /**
@@ -93,23 +119,31 @@ const createTraversalContext = Effect.fn(function* (
   ) {
     const graphNode = Graph.addNode(
       mutableGraph,
-      nodeInfo ? nodeInfo : yield* Effect.succeed(extractNodeInfo(node)),
+      nodeInfo ? nodeInfo : yield* Effect.succeed(createSourceInfo(node)),
     );
-    nodeToGraph.set(node, graphNode);
-    yield* debugStep('ADDING_NODE: ', node);
+    nodeGraphIndex.set(node, graphNode);
+    yield* Effect.void.pipe(debugStepTapped('ADDED_NODE: ', node));
     return graphNode;
   });
 
   /**
    * Marks a node as visited to prevent reprocessing
    */
-  const markNodeAsVisited = Effect.fn(function* (node: JsxNodeRegion) {
-    yield* Effect.sync(() => visitedNodes.add(node));
-    yield* debugStep('MARK_VISITED: ', node);
-  });
+  const markNodeAsVisited = (node: JsxNodeRegion) =>
+    Effect.succeed(visitedNodes.add(node)).pipe(debugStepTapped('MARK_VISITED: ', node));
 
   const hasBeenVisited = (node: JsxNodeRegion) => visitedNodes.has(node);
 
+  const getNodeChilds = (node: JsxNodeRegion) => {
+    const region = regionsLookup.get(node.id);
+    if (!region) {
+      return RA.sort(
+        source.filter((region) => region.parent?.id === node.id),
+        JSXRegionOrd,
+      );
+    }
+    return region.childs;
+  };
   /**
    * Registers a node in the JSX hierarchy with its depth position
    */
@@ -120,12 +154,12 @@ const createTraversalContext = Effect.fn(function* (
   /**
    * Retrieves the depth budget allocated for a given node
    */
-  const getDepthBudgetFor = (node: JsxNodeRegion) => depthBudget.get(node)!;
+  const getDepthBudgetFor = (node: JsxNodeRegion) => Effect.sync(() => depthBudget.get(node)!);
 
   /**
    * Retrieves the graph index for a given node, if it exists
    */
-  const getNodeGraph = (node: JsxNodeRegion) => nodeToGraph.get(node);
+  const getNodeGraph = (node: JsxNodeRegion) => nodeGraphIndex.get(node);
 
   /**
    * Dequeues and returns the next node to process
@@ -135,21 +169,14 @@ const createTraversalContext = Effect.fn(function* (
     const nextNode = nodeToVisit.pop()!;
 
     if (visitedNodes.has(nextNode)) {
-      yield* debugStep('LEAVING_VISITOR: ', nextNode);
-      yield* debugStep('QUEUE', undefined, { size: nodeToVisit.length });
+      yield* Effect.void.pipe(
+        debugStepTapped('LEAVING_VISITOR: ', nextNode),
+        debugStepTapped('QUEUE', undefined, { size: nodeToVisit.length }),
+      );
     } else {
-      yield* debugStep('ENTER_VISITING:', nextNode);
+      yield* Effect.void.pipe(debugStepTapped('ENTER_VISITING:', nextNode));
     }
     return nextNode;
-  });
-
-  // ==================== Edge Creation ====================
-  /**
-   * Adds an edge between two graph nodes with relationship metadata
-   */
-  const addEdge = Effect.fn(function* (from: number, to: number, data: SourceEdgeInfo) {
-    yield* debugStep('Adding Edge:', undefined, { from, to, data });
-    return Graph.addEdge(mutableGraph, from, to, data);
   });
 
   /**
@@ -160,31 +187,43 @@ const createTraversalContext = Effect.fn(function* (
     elementNode: JsxNodeRegion,
     jsxChilds: JsxNodeRegion[],
   ) {
-    // Get all JSX children that have been added to the graph
-    const graphChildNodes = jsxChilds
+    const graphNodes = jsxChilds
       .map((_) => getNodeGraph(_))
       .filter(Predicate.isNumber)
       .filter((_) => Graph.hasNode(mutableGraph, _));
 
-    // If all children are in the graph, create edges from element to children
-    if (graphChildNodes.length === jsxChilds.length) {
-      const graphNode = yield* addNode(elementNode);
-      const childs = graphChildNodes.map((childIndex) =>
-        addEdge(graphNode, childIndex, {
-          relationship: 'jsx-child',
-          index: graphNode,
-          isRoot: false,
-        }),
-      );
-      yield* Effect.all(childs);
-    } else {
-      // Not all children were added - clean up partial graph and create isolated node
-      graphChildNodes.forEach((_) => void Graph.removeNode(mutableGraph, _));
-      // yield* Effect.log('DELETING_GRAPH_NODES: ', graphChildNodes);
+    if (jsxChilds.length === graphNodes.length) {
+      const parentIndex = yield* addNode(elementNode);
 
-      const nodeInfo = extractNodeInfo(elementNode);
-      yield* addNode(elementNode, nodeInfo);
+      for (const childGraph of graphNodes) {
+        const childNode = Graph.getNode(mutableGraph, childGraph).pipe(Option.getOrNull);
+        if (!childNode) {
+          yield* Effect.void.pipe(
+            debugStepTapped(
+              'ABSURD: childs must be defined at this point (concurrency issue ?)',
+              undefined,
+              childNode,
+            ),
+          );
+          return;
+        }
+        Graph.addEdge(
+          mutableGraph,
+          parentIndex,
+          childGraph,
+          new SourceEdgeInfo({
+            relationship: 'jsx-child',
+            index: graphNodes.indexOf(childGraph),
+            isRoot: childNode.nodeRegion.parent === null,
+            nodeText: `${parentIndex}:${elementNode.tagName.rawText} -> ${childGraph}:${childNode.tagName}`,
+          }),
+        );
+      }
+      return;
     }
+
+    graphNodes.forEach((child) => void Graph.removeNode(mutableGraph, child));
+    yield* addNode(elementNode, createSourceInfo(elementNode));
   });
 
   /**
@@ -194,131 +233,66 @@ const createTraversalContext = Effect.fn(function* (
     currentNode: JsxNodeRegion,
     currentDepthBudget: number,
   ) {
-    const jsxChilds = getNodeChilds(currentNode);
+    const stack = regionsLookup.get(currentNode.id);
 
-    // First visit: mark as visited and queue child elements
+    const jsxChilds = stack?.childs ?? getNodeChilds(currentNode);
+
     if (!hasBeenVisited(currentNode)) {
       appendNodeToVisit(currentNode, currentDepthBudget);
-      jsxChilds.forEach(
-        (child: JsxNodeRegion) => void appendNodeToVisit(child, currentDepthBudget),
-      );
-      jsxChilds.forEach(
-        (child: JsxNodeRegion) => void addNodeInJSXRegistry(child, currentDepthBudget),
-      );
-      yield* markNodeAsVisited(currentNode);
-      return;
-    }
-
-    // Second visit: connect the element to its children in the graph
-    yield* connectJSXElementToChildren(currentNode, jsxChilds);
-  });
-
-  /**
-   * Processes an identifier node that may reference a JSX expression
-   * Handles both initial discovery and connection of graph nodes
-   */
-  const processIdentifierNode = Effect.fn(function* (
-    currentNode: JsxNodeRegion,
-    currentDepthBudget: number,
-    jsxStacks: Map<JsxNodeRegion, any>,
-  ) {
-    const stack = jsxStacks.get(currentNode);
-    if (!stack) return;
-
-    // First visit: mark as visited and queue the root element
-    if (!hasBeenVisited(currentNode)) {
-      appendNodeToVisit(currentNode, currentDepthBudget);
-      appendNodeToVisit(stack.root, currentDepthBudget);
-      addNodeInJSXRegistry(stack.root, currentDepthBudget + 1);
-      yield* markNodeAsVisited(currentNode);
-      return;
-    }
-
-    // Second visit: connect the identifier to its JSX element in the graph
-    yield* connectIdentifierToJSXElement(currentNode, stack);
-  });
-
-  /**
-   * Connects an identifier node to its JSX element children in the graph
-   * Validates that all expected children are present before creating connections
-   */
-  const connectIdentifierToJSXElement = Effect.fn(function* (
-    identifierNode: JsxNodeRegion,
-    stack: any,
-  ) {
-    const registeredIdent = getNodeGraph(identifierNode);
-
-    // Get all JSX children that have been added to the graph
-    const graphChildNodes = [stack.root]
-      .map((_) => getNodeGraph(_))
-      .filter(Predicate.isNumber)
-      .filter((_) => Graph.hasNode(mutableGraph, _));
-
-    // If all children are in the graph, create edges from identifier to children
-    if (graphChildNodes.length + 1 === stack.childs.length) {
-      const graphNode = yield* addNode(identifierNode);
-      yield* Effect.all(
-        graphChildNodes.map((childIndex) =>
-          addEdge(graphNode, childIndex, {
-            relationship: 'jsx-child',
-            index: graphNode,
-            isRoot: false,
-          }),
-        ),
-        { concurrency: 'inherit', mode: 'default', batching: 'inherit' },
-      );
-    } else {
-      // Not all children were added - clean up partial graph and create isolated node
-      graphChildNodes.forEach((_) => void Graph.removeNode(mutableGraph, _));
-      yield* Effect.log('DELETING_GRAPH_NODES: ', graphChildNodes);
-
-      const nodeInfo = extractNodeInfo(identifierNode);
-      const nodeGraph = yield* addNode(identifierNode, nodeInfo);
-      if (registeredIdent) {
-        yield* addEdge(nodeGraph, registeredIdent, {
-          relationship: 'jsx-child',
-          index: nodeGraph,
-          isRoot: false,
-        });
+      // addNodeInJSXRegistry(currentNode, currentDepthBudget);
+      if (jsxChilds.length > 0) {
+        jsxChilds.forEach((child) => void appendNodeToVisit(child, currentDepthBudget + 1));
+        jsxChilds.forEach((child) => void addNodeInJSXRegistry(child, currentDepthBudget + 1));
+        yield* Effect.void.pipe(
+          debugStepTapped('ADDED_CHILDS FOR: ', currentNode),
+          debugStepTapped(
+            'CHILDS: ',
+            undefined,
+            jsxChilds.map((x) => getNodeDetails(x)),
+          ),
+        );
       }
+      yield* markNodeAsVisited(currentNode);
+      return;
+    } else {
+      yield* connectJSXElementToChildren(currentNode, jsxChilds);
     }
   });
 
-  const getNodeDetails = (node: JsxNodeRegion) => {
-    return {
-      id: document.getLocationID(node.range),
-      tagName: node.tagName.rawText,
-      props: node.styledProps.map((x) => x.rawText),
-    };
-  };
+  const getNodeDetails = (node: JsxNodeRegion) => ({
+    id: node.id,
+    tagName: node.tagName.rawText,
+    props: node.styledProps.map((x) => x.rawText),
+    nodeInJSXTree: nodeInJSXTree.get(node),
+    nodeToGraph: nodeGraphIndex.get(node),
+    visited: visitedNodes.has(node),
+    depthBudget: depthBudget.get(node),
+  });
 
-  const debugStep = (stepName: string, node: JsxNodeRegion | undefined, data?: any) =>
-    Effect.logDebug(
-      stepName,
-      inspect(node ? getNodeDetails(node) : { step: stepName, data }, false, null, true),
-    );
+  const debugStepTapped =
+    (stepName: string, node: JsxNodeRegion | undefined, data?: any) =>
+    <A, E = never>(effect: Effect.Effect<A, E>) =>
+      Effect.tap(effect, () =>
+        Effect.logDebug(
+          stepName,
+          inspect(node ? getNodeDetails(node) : { step: stepName, data }, false, null, true),
+        ),
+      );
 
-  const buildGraph = () => Graph.endMutation(mutableGraph);
+  const createSourceInfo = (nodeRegion: JsxNodeRegion) =>
+    new SourceNodeInfo({
+      id: nodeRegion.id,
+      tagName: nodeRegion.tagName.rawText,
+      nodeRegion,
+    });
 
   // ==================== Context Export ====================
   // Return public API for node processing operations
   return {
     state: { nodeToVisit, mutableGraph },
-    buildGraph,
     getNextNode,
     getDepthBudgetFor,
     processJSXElementNode,
-    processIdentifierNode,
   };
 });
-
-interface SourceNodeInfo {
-  id: string;
-  location: t.Location;
-  tagName: string;
-}
-interface SourceEdgeInfo {
-  relationship: 'jsx-child';
-  index: number;
-  isRoot: boolean;
-}
+ 

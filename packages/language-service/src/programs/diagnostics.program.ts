@@ -3,7 +3,7 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
 import type * as vscode from 'vscode-languageserver';
-import { LSPConfig } from '../browser';
+import { LSPConfig } from '../core/LSPContext.service';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import { DiagnosticReport, TwinDiagnosticCodes } from '../models/Diagnostic.model';

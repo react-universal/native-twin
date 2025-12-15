@@ -3,10 +3,10 @@ import { setup } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { Graph, Logger, LogLevel } from 'effect';
 import * as Effect from 'effect/Effect';
+import { readFileSync } from 'fs';
 import path from 'path';
 import { inspect } from 'util';
-import { LSPAdapterSpec } from '../src';
-import { TwinRuntimeContext } from '../src/browser';
+import { JSXParser, TwinGraphosContext, TwinRuntimeContext, TypeScriptProgram } from '../src';
 import { makeTwinGraph } from '../src/core/TwinProject.service';
 import { TestLayer } from './dsl';
 import twinConfig from './fixtures/react/tailwind.config';
@@ -16,31 +16,61 @@ setup(twinConfig, createVirtualSheet());
 describe('Twin LSP API', () => {
   it.effect('Draw graph for parsedFiles', () =>
     Effect.gen(function* () {
+      const graphos = yield* TwinGraphosContext;
       const graphCtx = yield* makeTwinGraph;
-      const adapter = yield* LSPAdapterSpec;
+      const tsParser = yield* JSXParser;
+      const program = yield* TypeScriptProgram;
       const twin = yield* TwinRuntimeContext;
       yield* twin.bootTwinRuntime(path.join(__dirname, 'fixtures/react', 'tailwind.config.ts'));
 
       const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
-      const document = yield* adapter.getLSPDocument(ComponentPath);
-      const regions = yield* adapter.getRegions(ComponentPath);
-
-      const sourceGraph = yield* graphCtx.createSourceGraph(
-        document,
-        regions.filter((x) => x._tag === 'JsxNodeRegion'),
+      const tsSource = yield* program.getSourceFile(
+        ComponentPath,
+        readFileSync(ComponentPath, 'utf-8'),
       );
+      const jsxRoots = tsParser.getJSXRootsFromSource(tsSource);
+      const regions = tsParser.jsxNodesToRegions(jsxRoots);
+      // const document = yield* adapter.getLSPDocument(ComponentPath);
+      // const regions = yield* adapter.getRegions(ComponentPath);
+      const lspTree = graphos.lspRegionsToTree(regions);
+      const grapho = graphos.lspTreeToGraph(lspTree);
 
-      const graphViz = Graph.toGraphViz(sourceGraph, {
+      const traversedGr = graphCtx.traverseGraph(grapho);
+      expect(traversedGr.length).toBeGreaterThan(0);
+      expect(lspTree.root.childrenCount).toBeGreaterThan(0);
+
+      const graphViz1 = Graph.toGraphViz(grapho, {
         edgeLabel: (data) => inspect(data),
         graphName: 'Regions',
-        nodeLabel: (node) => node.id,
+        nodeLabel: (node) => `${node.tagName} - ${inspect(node.nodeRegion.range, false, null)}`,
+      });
+
+      yield* Effect.promise(() =>
+        expect(graphViz1).toMatchFileSnapshot(
+          path.join(__dirname, '__snapshots__', 'twin-tree.map.dot'),
+        ),
+      );
+
+      const sourceGraph = yield* graphCtx.createSourceGraph(regions);
+
+      const traversed = graphCtx.traverseGraph(sourceGraph);
+
+      console.log(traversed);
+
+      expect(traversed.length).toBeGreaterThan(0);
+
+      const graphViz = Graph.toGraphViz(sourceGraph, {
+        edgeLabel: (data) => inspect(data, { colors: false, depth: null, breakLength: Infinity }),
+        graphName: 'Regions',
+        nodeLabel: (node) =>
+          `${node.tagName} - ${inspect({ name: node.tagName, id: node.id, info: node.nodeRegion.styledProps.map((x) => x.attributeValue.text), range: node.nodeRegion.range }, { colors: false, depth: null, breakLength: Infinity })}`,
       });
 
       yield* Effect.promise(() =>
         expect(graphViz).toMatchFileSnapshot(path.join(__dirname, '__snapshots__', 'regions.dot')),
       );
       expect(sourceGraph.nodes.size > 0).toBeDefined();
-    }).pipe(Logger.withMinimumLogLevel(LogLevel.All), Effect.provide(TestLayer)),
+    }).pipe(Logger.withMinimumLogLevel(LogLevel.Info), Effect.provide(TestLayer)),
   );
   // it.effect('vscode adapter completions', () =>
   //   Effect.gen(function* () {

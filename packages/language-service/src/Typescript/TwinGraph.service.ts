@@ -4,10 +4,10 @@ import * as Graph from 'effect/Graph';
 import * as Layer from 'effect/Layer';
 import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
-import { JSXParser } from '../Typescript/JSXParser.service';
-import type { TwinGraphModel, TypescriptModels } from '../Typescript/TwinDsl.models';
-import { TypescriptUtils } from '../Typescript/TypescriptUtils.service';
 import { annotatedLayer } from '../utils/effect.utils';
+import { JSXParser } from './JSXParser.service';
+import type { TwinGraphModel, TypescriptModels } from './TwinDsl.models';
+import { TypescriptUtils } from './TypescriptUtils.service';
 
 const make = Effect.gen(function* () {
   const tsUtils = yield* TypescriptUtils;

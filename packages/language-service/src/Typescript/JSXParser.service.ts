@@ -144,7 +144,8 @@ const make = Effect.gen(function* () {
     const tagName = getJSXNodeTagName(node);
     const tagNameRange = getNodeRange(tagName);
     return lspUtils.createJsxNode({
-      parent: parent ?? null,
+      id: lspUtils.getRangeID(nodeRange),
+      parent: parent ? lspUtils.createJsxNode(parent) : null,
       rawText: node.getText(),
       range: nodeRange,
       styledProps,
@@ -168,7 +169,8 @@ const make = Effect.gen(function* () {
       if (!nextNode) break;
 
       if (tsUtils.is.jSXElementLike(nextNode)) {
-        const region = getJSXNodeRegion(nextNode, parents.get(nextNode.getParent()));
+        const jsxParent = parents.get(nextNode.getParent());
+        const region = getJSXNodeRegion(nextNode, jsxParent);
         regions.push(region);
         parents.set(nextNode, region);
         nodesToVisit.push(...getJSXElementChilds(nextNode));

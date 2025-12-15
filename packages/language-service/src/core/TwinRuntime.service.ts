@@ -1,4 +1,5 @@
-import { defineConfig, setup } from '@native-twin/core';
+import { __defaultRuleMeta, defineConfig, type RuleMeta, setup } from '@native-twin/core';
+import type { CompleteStyle } from '@native-twin/css';
 import { flattenObjectByPath } from '@native-twin/helpers';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
@@ -12,16 +13,16 @@ import * as SortedSet from 'effect/SortedSet';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
 import * as Trie from 'effect/Trie';
-import * as TwinUtils from '../internal/TwinParser.internals';
 import type {
   AnyInternalTwinRule,
   InternalTwFn,
   InternalTwinConfig,
 } from '../internal/TwinTypes.internal';
-import type * as TwinParserModel from '../models/TwinParser.models';
+import * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuleComposer } from '../models/TwinRuleHandler';
 import { annotatedLayer } from '../utils/effect.utils';
-import * as LspConfig from './LSPConfig.service';
+import { createStyledContext } from '../utils/sheet.utils';
+import * as LspConfig from './LSPContext.service';
 
 const resolvedSections = new Map<string, Record<string, any>>();
 const make = Effect.gen(function* () {
@@ -44,14 +45,14 @@ const make = Effect.gen(function* () {
   const config = applyToTwin((x) => x.config);
   const themeCtx = applyToTwin((x) => x.context);
   const getConfigRules = applyToTwin((twin) => twin.config.rules);
-  const styledContext = applyToTwin((twin) => TwinUtils.createStyledContext(twin.config.root.rem));
+  const styledContext = applyToTwin((twin) => createStyledContext(twin.config.root.rem));
 
   const onUpdateConfig = Effect.fn(function* (config: InternalTwinConfig) {
     resolvedSections.clear();
     yield* Ref.set(ruleComposers, new Map());
     const twin = yield* Ref.setAndGet(twinRef, setup(config));
     const registry = yield* createRuleCompositions();
-    yield* Ref.set(themeVariants, TwinUtils.getThemeVariants(twin.config));
+    yield* Ref.set(themeVariants, getThemeVariants(twin.config));
     yield* SubscriptionRef.set(twinTrie, registry);
   });
 
@@ -92,7 +93,7 @@ const make = Effect.gen(function* () {
       const cached = registry.get(key);
       if (cached) return cached;
 
-      const ruleInfo = TwinUtils.getRuleResolverInfo(rawRule);
+      const ruleInfo = getRuleResolverInfo(rawRule);
       const themeSection = yield* resolveThemeSection(ruleInfo.themeSection as any);
       const composer = new TwinRuleComposer({ rawRule, info: ruleInfo }, themeSection);
       yield* Ref.update(ruleComposers, (x) => x.set(key, composer));
@@ -142,6 +143,41 @@ export const TwinRuntimeContext = Context.GenericTag<TwinRuntimeContext>('TwinRu
 export const TwinRuntimeContextLive = Layer.effect(TwinRuntimeContext, make).pipe(
   annotatedLayer('TwinRuntime'),
 );
+
+// const sanitizeClassName = (themeRule: TwinRuleComposer, key: string) => {
+//   const className = themeRule.pattern.endsWith('-')
+//     ? themeRule.pattern.concat(key)
+//     : themeRule.pattern.concat('-').concat(key);
+//   return className.replace(/.*[-]?DEFAULT[-]?/, '');
+// };
+
+const getThemeVariants = (
+  config: InternalTwinConfig,
+): HashSet.HashSet<TwinParserModel.TwinVariantNode> =>
+  HashSet.fromIterable(config.variants).pipe(
+    HashSet.map((variant): TwinParserModel.TwinVariantNode => {
+      if (typeof variant[1] === 'function') {
+        return TwinParserModel.TwinVariantNode.Resolver({ pattern: variant[0], value: variant[1] });
+      }
+      return TwinParserModel.TwinVariantNode.Literal({ pattern: variant[0], value: variant[1] });
+    }),
+  );
+
+const getRuleResolverInfo = (
+  rawRule: AnyInternalTwinRule,
+): {
+  styleProperty: AnyInternalTwinRule[1] | keyof CompleteStyle | (string & {});
+  themeSection: AnyInternalTwinRule[1] | (string & {});
+  meta: RuleMeta;
+} => {
+  const meta = rawRule[3] ?? __defaultRuleMeta;
+  if (meta.styleProperty) {
+    return { themeSection: rawRule[1], styleProperty: meta.styleProperty, meta };
+  } else if (meta.prefix && meta.prefix !== '') {
+    return { themeSection: rawRule[1], styleProperty: meta.prefix, meta };
+  }
+  return { themeSection: rawRule[1], styleProperty: rawRule[1], meta };
+};
 
 const getRawRuleText = (rawRule: AnyInternalTwinRule) =>
   Hash.string(

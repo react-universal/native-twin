@@ -55,6 +55,7 @@
       "comments": true,
       "strings": true
     },
+    "biome.suggestInstallingGlobally": true,
     "editor.snippetSuggestions": "bottom",
     "editor.suggest.snippetsPreventQuickSuggestions": false,
     "search.exclude": {

@@ -8,7 +8,7 @@ export const App = () => {
       <Text className={'bg-rose-700 bg-blue bg-black text(sm md:gray)'} />
       <View className={`bg-raw`}>
         <Text className={`bg-raw2222 ${state} raw-3333`} />
-        <Text className={'bg-rose-700 bg-blue bg-black text(sm md:gray)'} />
+        <Text className={'bg-red-500 asdasdasd'} />
       </View>
     </View>
   );

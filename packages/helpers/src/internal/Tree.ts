@@ -280,3 +280,35 @@ export const mapTree = <A, B>(
     return newNode;
   }
 };
+
+interface MakeTreeInput<Input, Out> {
+  input: Input;
+  getChilds: (item: Input) => Input[];
+  transform: (item: Input) => Out | null;
+  shouldAdd?: (item: Out) => boolean;
+}
+
+export const makeTreeFrom = <Data, R>({
+  getChilds,
+  input,
+  shouldAdd,
+  transform,
+}: MakeTreeInput<Data, R>): Tree<R> => {
+  const root = transform(input)!;
+  const tree = new Tree<R>(root);
+  addChilds(input, tree.root);
+
+  return tree;
+
+  function addChilds(item: Data, parent: TreeNode<R>) {
+    const childs = getChilds(item);
+    for (const child of childs) {
+      const next = transform(child);
+      if (!next) continue;
+      if (shouldAdd && !shouldAdd(next)) continue;
+
+      const node = parent.addChild(next);
+      addChilds(child, node);
+    }
+  }
+};

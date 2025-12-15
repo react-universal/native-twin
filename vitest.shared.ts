@@ -21,6 +21,15 @@ const config: ViteUserConfig = {
     fakeTimers: {
       toFake: undefined,
     },
+    coverage: {
+      provider: 'v8',
+    },
+    browser: {
+      trace: {
+        mode: 'on',
+        tracesDir: './traces'
+      }
+    },
     logHeapUsage: true,
     // printConsoleTrace: true,
     // sequence: {

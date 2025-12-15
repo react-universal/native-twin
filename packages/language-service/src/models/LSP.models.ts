@@ -1,4 +1,6 @@
 import * as Data from 'effect/Data';
+import * as Graph from 'effect/Graph';
+import * as Option from 'effect/Option';
 import type * as t from 'vscode-languageserver-types';
 
 export interface TwinLSPNode<Tag extends string> {
@@ -34,6 +36,7 @@ export interface JsxAttributeRegion extends TwinLSPNode<'JsxAttributeRegion'> {
  * @see This just collect root nodes once wants to work with those needs yo traverse its childs
  * */
 export interface JsxNodeRegion extends TwinLSPNode<'JsxNodeRegion'> {
+  id: string;
   styledProps: JsxAttributeRegion[];
   tagName: JSXNodeTagNameRegion;
   parent: JsxNodeRegion | null;
@@ -100,3 +103,107 @@ export type AnyLSPError = FileNotFound | LSPParserError | LSPTokenNotFound;
 /**
  * ************* / LSP Error Models *************
  * */
+
+const traverseNode = (index: number, handler: GraphState): TraversalResult => {
+  if (handler.visited.has(index)) return handler.visited.get(index)!;
+  const { node, childs, padStart, startText, endText } = handler.visitNodeIndex(index);
+  const childNodes = childs.map((x) => traverseNode(x, handler));
+  const childsText = childNodes.map((x) => `${padStart}${x.bodyText}`);
+  const bodyText = [startText, childsText, endText].flat().join('\n');
+  const result = {
+    sourceInfo: node,
+    childs: childNodes,
+    bodyText,
+    index,
+  };
+
+  handler.visited.set(index, result);
+  return handler.visited.get(index)!;
+};
+
+export class GraphState {
+  readonly lastNodeIndex: number;
+  readonly currentIdent = '';
+  visited = new Map<number, TraversalResult>();
+  // private sourceNodes = new Map<string, SourceNodeInfo>();
+  dfs: Graph.NodeWalker<SourceNodeInfo>;
+
+  constructor(private readonly graph: Graph.Graph<SourceNodeInfo, SourceEdgeInfo>) {
+    this.lastNodeIndex = graph.nextNodeIndex - 1;
+    this.dfs = Graph.dfsPostOrder(this.graph, {
+      direction: 'incoming',
+      start: [this.lastNodeIndex],
+    });
+  }
+
+  getChildEdges(graphIndex: number) {
+    return Graph.findEdges(this.graph, (_data, sourceIndex, _target) => graphIndex === sourceIndex);
+  }
+
+  getNodeString(node: SourceNodeInfo) {
+    const props = node.nodeRegion.styledProps.map((_) => _.rawText).join(' ');
+    return `${node.tagName} ${props}`;
+  }
+
+  findNode(index: number) {
+    return Graph.getNode(this.graph, index);
+  }
+
+  fromPostOrder(index: number, node: SourceNodeInfo) {
+    const childs = this.getChildEdges(index);
+    let startText = '';
+    let endText = '';
+    const padStart = ''.padStart(this.lastNodeIndex - index, ' ');
+    if (childs.length > 0) {
+      startText = `${padStart}<${this.getNodeString(node)}>`;
+      endText = `${padStart}</${node.tagName}>`;
+    } else {
+      startText = `${padStart}<${this.getNodeString(node)} />`;
+    }
+    return { node, childs, index, startText, endText, padStart };
+  }
+
+  visitNodeIndex(index: number) {
+    const node = this.findNode(index).pipe(Option.getOrThrow);
+
+    // const childs = this.getChildEdges(index).filter((x) => x > index);
+    const childs = Graph.neighborsDirected(this.graph, index, 'incoming');
+    // const childsIncoming = Graph.neighborsDirected(this.graph, index, 'incoming');
+    let startText = '';
+    let endText = '';
+    const padStart = ''.padStart(this.lastNodeIndex - index, ' ');
+    if (childs.length > 0) {
+      startText = `${padStart}<${this.getNodeString(node)}>`;
+      endText = `${padStart}</${node.tagName}>`;
+    } else {
+      startText = `${padStart}<${this.getNodeString(node)} />`;
+    }
+    return { node, childs: childs, index, startText, endText, padStart };
+  }
+
+  nodeToCode(index: number) {
+    return traverseNode(index, this);
+  }
+
+  traverseNode = traverseNode;
+}
+
+export class SourceNodeInfo extends Data.TaggedClass('SourceNodeInfo')<{
+  id: string;
+  tagName: string;
+  nodeRegion: JsxNodeRegion;
+}> {}
+
+export class SourceEdgeInfo extends Data.TaggedClass('SourceEdgeInfo')<{
+  relationship: 'jsx-child';
+  index: number;
+  isRoot: boolean;
+  nodeText: string;
+}> {}
+
+export interface TraversalResult {
+  sourceInfo: SourceNodeInfo;
+  childs: TraversalResult[];
+  index: number;
+  bodyText: string;
+}

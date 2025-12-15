@@ -23,7 +23,7 @@ export const annotatedLayer =
     return layer.pipe(
       Layer.withSpan(`[layer] ${name}`),
       Layer.annotateLogs(`layer`, name),
-      Layer.tap(() => Effect.log(`[layer] ${name} - created`).pipe(Effect.withLogSpan(name))),
+      Layer.tap(() => Effect.logDebug(`[layer] ${name} - created`).pipe(Effect.withLogSpan(name))),
     );
   };
 
@@ -36,7 +36,7 @@ const listenStreamChanges = <A, E, R>(
     return stream.pipe(
       Stream.mapEffect(f),
       Stream.runDrain,
-      Effect.catchAllCause((_) => Effect.log('unhandled defect in event listener', _)),
+      Effect.catchAllCause((_) => Effect.logError('unhandled defect in event listener', _)),
       run,
     );
   });

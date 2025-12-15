@@ -1,12 +1,16 @@
+import { hasOwnProperty } from '@native-twin/helpers';
 import * as Context from 'effect/Context';
 import type * as Effect from 'effect/Effect';
 import type * as Option from 'effect/Option';
 import type * as Stream from 'effect/Stream';
+import type * as SubscriptionRef from 'effect/SubscriptionRef';
 import type * as server from 'vscode-languageserver';
 import type * as serverDocs from 'vscode-languageserver-textdocument';
 import type * as Spec from '../internal/LSPAdapterSpec';
 import type { TwinLSPAdapterLayerIn } from '../internal/RunnerLayer';
+import type { InternalTwinConfig } from '../internal/TwinTypes.internal';
 import type { AnyLSPError, LSPPosition } from '../models/LSP.models';
+import { LSPConstants, type TwinConfigOptions } from '../models/lsp.constants';
 
 export interface TwinLSPCompletionDefinition {
   name: string;
@@ -26,6 +30,15 @@ export function createTwinCompletions(
   return definition;
 }
 
+const configOptionOrDefault = <K extends keyof TwinConfigOptions>(
+  options: Partial<TwinConfigOptions>,
+  key: K,
+): TwinConfigOptions[K] => {
+  const value = hasOwnProperty.call(options, key) && options[key];
+  if (!value) return LSPConstants.lspRawConfig[key];
+  return value;
+};
+
 /***** */
 
 export interface LSPContext {
@@ -36,4 +49,28 @@ export interface LSPContext {
   documentChanges: Stream.Stream<serverDocs.TextDocument>;
 }
 
+export interface LSPConfig {
+  config: SubscriptionRef.SubscriptionRef<TwinConfigOptions>;
+  onChangeConfig: (config: TwinConfigOptions) => Effect.Effect<void>;
+  configSelector: <T>(selector: (config: TwinConfigOptions) => T) => Effect.Effect<T>;
+  loadTwinConfig: (filename: string) => Effect.Effect<Option.Option<InternalTwinConfig>>;
+}
+
 export const LSPContext = Context.GenericTag<LSPContext>('lsp/MainContext');
+export const LSPConfig = Context.GenericTag<LSPConfig>('lsp/LSPConfig');
+
+export const parseLSPConfigInput = (config: Partial<TwinConfigOptions>): TwinConfigOptions => {
+  return {
+    tsConfigPath: configOptionOrDefault(config, 'tsConfigPath'),
+    rootDir: configOptionOrDefault(config, 'rootDir'),
+    twinConfigPath: configOptionOrDefault(config, 'twinConfigPath'),
+    debug: configOptionOrDefault(config, 'debug'),
+    enable: configOptionOrDefault(config, 'enable'),
+    functions: configOptionOrDefault(config, 'functions'),
+    format: configOptionOrDefault(config, 'format'),
+    jsxAttributes: configOptionOrDefault(config, 'jsxAttributes'),
+    trace: configOptionOrDefault(config, 'trace'),
+    completions: configOptionOrDefault(config, 'completions'),
+    diagnostics: configOptionOrDefault(config, 'diagnostics'),
+  };
+};

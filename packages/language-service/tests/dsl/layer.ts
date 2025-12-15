@@ -2,20 +2,27 @@ import { Effect, Layer, SubscriptionRef } from 'effect';
 import fs from 'fs';
 import path from 'path';
 import ts from 'ts-morph';
-import { type TwinConfigOptions, TwinGraphLive, TypeScriptApi, TypeScriptProgram } from '../../src';
-import { LSPConfig, parseLSPConfigInput } from '../../src/core/LSPConfig.service';
-import { TwinParserContextLive } from '../../src/core/TwinParser.service';
-import { TwinRuntimeContextLive } from '../../src/core/TwinRuntime.service';
-import { JSXParserLive } from '../../src/Typescript/JSXParser.service';
-import { TypescriptUtilsLive } from '../../src/Typescript/TypescriptUtils.service';
-import { createTwinLoggerLayerFor } from '../../src/utils/lsp.logger.service';
+import {
+  createTwinLoggerLayerFor,
+  JSXParserLive,
+  LSPAdapterUtils,
+  LSPConfig,
+  parseLSPConfigInput,
+  type TwinConfigOptions,
+  TwinGraphLive,
+  TwinGraphosContextLive,
+  TwinParserContextLive,
+  TwinRuntimeContextLive,
+  TypeScriptApi,
+  TypeScriptProgram,
+  TypescriptUtilsLive,
+} from '../../src';
 import { TestVscodeLSPAdapterLive } from './adapter.mock';
 import { requireESM } from './load-esm';
 
 const testFolder = path.join(__dirname, '..');
 
 const TsProgramLive = Effect.gen(function* () {
-  // const files: ts.MapLike<{ version: number }> = {};
   const { project, program } = createCustomProgram(
     path.join(testFolder, 'fixtures/react/tsconfig.json'),
   );
@@ -32,8 +39,6 @@ const TsProgramLive = Effect.gen(function* () {
       }
       return sourceFile;
     }),
-    // languageServiceRef,
-    // programRef,
   });
 }).pipe(Layer.effect(TypeScriptProgram));
 
@@ -63,26 +68,17 @@ export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(TestVscodeLSPAdapterLive),
   Layer.provideMerge(TsProgramLive),
   Layer.provideMerge(TwinGraphLive),
+  Layer.provideMerge(LSPAdapterUtils.Default),
   Layer.provideMerge(JSXParserLive),
   Layer.provideMerge(TwinParserContextLive),
   Layer.provideMerge(TypescriptUtilsLive),
   Layer.provideMerge(TwinRuntimeContextLive),
   Layer.provideMerge(Layer.effect(LSPConfig, lspConfig)),
+  Layer.provideMerge(TwinGraphosContextLive),
   Layer.provide(createTwinLoggerLayerFor('LSP')),
 );
 
 export const createCustomProgram = (tsConfigPath: string) => {
-  // function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
-  //   return typescript.formatDiagnostics(
-  //     diagnostics.map((x) => x.compilerObject),
-  //     {
-  //       getCanonicalFileName: (f) => f,
-  //       getCurrentDirectory,
-  //       getNewLine: () => '\n',
-  //     },
-  //   );
-  // }
-  // const tsConfigRaw = fs.readFileSync(tsConfigPath).toString('utf-8');
   const tsConfig = ts.getCompilerOptionsFromTsConfig(tsConfigPath, {
     encoding: 'utf-8',
   });
@@ -92,8 +88,6 @@ export const createCustomProgram = (tsConfigPath: string) => {
   const compilerOptions = tsConfig.options;
   const project = new ts.Project({
     compilerOptions,
-    // tsConfigFilePath: path.join(testFolder, 'fixtures/react/tsconfig.json'),
-    // defaultCompilerOptions: typescript.getDefaultCompilerOptions(),
     useInMemoryFileSystem: true,
   });
   const program = project.getProgram();
