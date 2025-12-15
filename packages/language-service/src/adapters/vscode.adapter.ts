@@ -4,7 +4,7 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import { LSPContext } from '../core/LSPContext.service';
 import * as LSPTypes from '../internal/LSPAdapterSpec';
-import { FileNotFound, type LSPPosition } from '../models/LSP.models';
+import { FileNotFound, type Position } from '../models/LSP.models';
 import { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 import * as JSXParser from '../Typescript/JSXParser.service';
 import { TypeScriptProgram } from '../Typescript/TypescriptAPI.service';
@@ -22,6 +22,34 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
     const filePath = url.fileURLToPath(filename);
     const tsSource = yield* program.getSourceFile(filePath, document.getText());
     const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource));
+    // .map((jsxNode) => {
+    //   return JSXNode.make({
+    //     ...jsxNode,
+    //     attributes: jsxNode.attributes.map((x) =>
+    //       JSXAttribute.make({
+    //         ...x,
+    //         value: JSXAttributeValue.make({
+    //           ...x.value,
+    //           range: Range.from(
+    //             document.positionAt(x.value.range.start.character),
+    //             document.positionAt(x.value.range.end.character),
+    //           ),
+    //         }),
+    //         name: JSXAttributeName.make({
+    //           ...x.name,
+    //           range: Range.from(
+    //             document.positionAt(x.name.range.start.character),
+    //             document.positionAt(x.name.range.end.character),
+    //           ),
+    //         }),
+    //         range: Range.from(
+    //           document.positionAt(x.range.start.character),
+    //           document.positionAt(x.range.end.character),
+    //         ),
+    //       }),
+    //     ),
+    //   });
+    // });
 
     return new TwinLSPDocument(document, regions);
   });
@@ -33,7 +61,7 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
 
   const getRegionAt = Effect.fn('vscodeAdapter: getTokenAtPosition')(function* (
     filename: string,
-    position: LSPPosition,
+    position: Position,
   ) {
     const document = yield* getLSPDocument(filename);
 

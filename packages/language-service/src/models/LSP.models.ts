@@ -1,51 +1,78 @@
 import * as Data from 'effect/Data';
 import * as Graph from 'effect/Graph';
 import * as Option from 'effect/Option';
+import * as Schema from 'effect/Schema';
 import type * as t from 'vscode-languageserver-types';
 
-export interface TwinLSPNode<Tag extends string> {
-  readonly _tag: Tag;
-  range: LSPRange;
-  rawText: string;
+export class Position extends Schema.Class<Position>('Position')({
+  line: Schema.Number,
+  character: Schema.Number,
+}) {
+  static sum = (self: t.Position, that: t.Position) =>
+    new Position({
+      line: Math.max(self.line, that.line),
+      character: self.character + that.character,
+    });
+  static from = (line: number, character: number) => new Position({ line, character });
 }
 
-export interface LSPParsableRegion {
-  __parsable: 'LSPParsableRegion';
+export class Range extends Schema.Class<Range>('Range')({ start: Position, end: Position }, {}) {
+  static sum = (self: t.Range, that: t.Range) =>
+    new Range({
+      start: Position.sum(self.start, that.start),
+      end: Position.sum(self.end, that.end),
+    });
+  static from = (start: Position, end: Position) => new Range({ start: Position.make(start), end: Position.make(end) });
+}
+
+export class Node extends Schema.Class<Node>('Node')({
+  startLine: Schema.NullOr(Schema.Number),
+  endLine: Schema.NullOr(Schema.Number),
+  startOffset: Schema.Number,
+  endOffset: Schema.Number,
+  // range: Range,
   /** @description this text may have the literal container AKA `|'|" even template literal vars xor expressions */
-  rawText: string;
-  text: string;
-  range: LSPRange;
-}
+  rawText: Schema.String,
+}) {}
+Schema.annotations(Node, {});
 
-export interface JsxAttributeBindingRegion extends TwinLSPNode<'JsxAttributeBindingRegion'> {}
-export interface JsxAttributeValueRegion
-  extends LSPParsableRegion,
-    TwinLSPNode<'JsxAttributeValueRegion'> {}
+export class JSXAttributeName extends Node.extend<JSXAttributeName>('JSXAttributeName')({
+  text: Schema.String,
+}) {}
 
-export interface JsxAttributeRegion extends TwinLSPNode<'JsxAttributeRegion'> {
-  attributeBinding: JsxAttributeBindingRegion;
-  attributeValue: JsxAttributeValueRegion;
-}
+export class JSXAttributeValue extends Node.extend<JSXAttributeValue>('JSXAttributeValue')({
+  text: Schema.String,
+}) {}
+
+export class JSXTagName extends Node.extend<JSXTagName>('JSXTagName')({}) {}
+export class JSXAttribute extends Node.extend<JSXAttribute>('JSXAttribute')({
+  name: JSXAttributeName,
+  value: JSXAttributeValue,
+}) {}
 /**
- * @name JsxNodeRegion
- * @description refers to jsx nodes like <div... /> | <div>...</div>
+ * @name JSXNodeRegion
+ * @description refers to JSX nodes like <div... /> | <div>...</div>
  * @see This just collect root nodes once wants to work with those needs yo traverse its childs
  * */
-export interface JsxNodeRegion extends TwinLSPNode<'JsxNodeRegion'> {
-  id: string;
-  styledProps: JsxAttributeRegion[];
-  tagName: JSXNodeTagNameRegion;
-  parent: JsxNodeRegion | null;
-}
+export class JSXNode extends Node.extend<JSXNode>('JSXNode')({
+  id: Schema.String,
+  text: Schema.String,
+  attributes: Schema.Array(JSXAttribute),
+  tag: JSXTagName,
+  parent: Schema.NullOr(Schema.suspend((): Schema.Schema<JSXNode> => JSXNode)),
+}) {}
 
-export interface JSXNodeTagNameRegion extends TwinLSPNode<'JsxTagName'> {}
+export type JSXNodeType = typeof JSXNode.Type;
 
-export type AnyTwinNodeRegion =
-  | JsxAttributeRegion
-  | JsxNodeRegion
-  | JsxAttributeBindingRegion
-  | JsxAttributeValueRegion
-  | JSXNodeTagNameRegion;
+export const AnyParsedNode = Schema.Union(
+  JSXAttribute,
+  JSXAttributeName,
+  JSXAttributeValue,
+  JSXNode,
+  JSXTagName,
+);
+
+export type AnyParsedNode = typeof AnyParsedNode;
 
 /**
  * ************* / LSP identities *************
@@ -55,36 +82,13 @@ export type AnyTwinNodeRegion =
  * ************* LSP Error Models *************
  * */
 
-export class LSPPosition extends Data.TaggedClass('LSPPosition')<t.Position> {
-  static create(line: number, character: number) {
-    return new LSPPosition({ line, character });
-  }
-  static fromObject(pos: { line: number; character: number }) {
-    return this.create(pos.line, pos.character);
-  }
-}
-
-export class LSPRange extends Data.TaggedClass('LSPRange')<{
-  start: LSPPosition;
-  end: LSPPosition;
-}> {
-  static create(start: LSPPosition, end: LSPPosition) {
-    return new LSPRange({ start, end });
-  }
-  static fromObject({ start, end }: { start: t.Position; end: t.Position }) {
-    return this.create(
-      LSPPosition.create(start.line, start.character),
-      LSPPosition.create(end.line, end.character),
-    );
-  }
-}
-
 export class FileNotFound extends Data.TaggedError('FileNotFound')<{
   cause: Error;
 }> {
   get stackTrace() {
     return this.cause.stack ?? Error.captureStackTrace(this.cause);
   }
+
   static create(e: unknown) {
     if (e instanceof Error) return new FileNotFound({ cause: e });
     return new FileNotFound({ cause: new Error(e as string) });
@@ -97,6 +101,7 @@ export class LSPParserError extends Data.TaggedError('LSPParserError')<{
   get stackTrace() {
     return this.cause.stack ?? Error.captureStackTrace(this.cause);
   }
+
   static create(e: unknown) {
     if (e instanceof Error) return new LSPParserError({ cause: e });
     return new LSPParserError({ cause: new Error(e as string) });
@@ -109,6 +114,7 @@ export class LSPTokenNotFound extends Data.TaggedError('LSPTokenNotFound')<{
   get stackTrace() {
     return this.cause.stack ?? Error.captureStackTrace(this.cause);
   }
+
   static create(e: unknown) {
     if (e instanceof Error) return new LSPTokenNotFound({ cause: e });
     return new LSPTokenNotFound({ cause: new Error(e as string) });
@@ -158,7 +164,7 @@ export class GraphState {
   }
 
   getNodeString(node: SourceNodeInfo) {
-    const props = node.nodeRegion.styledProps.map((_) => _.rawText).join(' ');
+    const props = node.nodeRegion.attributes.map((_) => _.rawText).join(' ');
     return `${node.tagName} ${props}`;
   }
 
@@ -208,7 +214,7 @@ export class GraphState {
 export class SourceNodeInfo extends Data.TaggedClass('SourceNodeInfo')<{
   id: string;
   tagName: string;
-  nodeRegion: JsxNodeRegion;
+  nodeRegion: JSXNode;
 }> {}
 
 export class SourceEdgeInfo extends Data.TaggedClass('SourceEdgeInfo')<{

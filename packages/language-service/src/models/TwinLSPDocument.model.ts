@@ -19,49 +19,43 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return this.textDocument.version;
   }
 
-  sumPositions(p1: VSCDocument.Position, p2: VSCDocument.Position) {
+  sumPositions(p1: LSP.Position, p2: LSP.Position) {
     if (p1.line !== p2.line) {
       console.warn('Cant sum positions on different lines');
-      return LSP.LSPPosition.fromObject(p2);
+      return LSP.Position.make(p2);
     }
-    return LSP.LSPPosition.create(p1.line, p1.character + p2.character);
+    return LSP.Position.sum(p1, p2);
   }
 
-  sumRanges(r1: VSCDocument.Range, r2: VSCDocument.Range) {
-    return LSP.LSPRange.create(
-      this.sumPositions(r1.start, r2.start),
-      this.sumPositions(r1.end, r2.end),
-    );
+  sumRanges(r1: LSP.Range, r2: LSP.Range) {
+    return LSP.Range.sum(r1, r2);
   }
 
-  getLocation(range: VSCDocument.Range): Location {
+  getLocation(range: LSP.Range): Location {
     return Location.create(this.uri, range);
   }
 
-  getText(range?: VSCDocument.Range) {
+  getText(range?: LSP.Range) {
     return this.textDocument.getText(range);
   }
 
-  offsetAt(position: VSCDocument.Position) {
+  offsetAt(position: LSP.Position) {
     return this.textDocument.offsetAt(position);
   }
 
   positionAt(offset: number) {
-    return LSP.LSPPosition.fromObject(this.textDocument.positionAt(offset));
+    return LSP.Position.make(this.textDocument.positionAt(offset));
   }
 
-  isPositionInRange(position: VSCDocument.Position, range: VSCDocument.Range) {
+  isPositionInRange(position: LSP.Position, range: LSP.Range) {
     const rangeStart = this.offsetAt(range.start);
     const rangeEnd = this.offsetAt(range.end);
     const offset = this.offsetAt(position);
     return offset >= rangeStart && offset <= rangeEnd;
   }
 
-  getRangeFor(startOffset: number, endOffset: number): VSCDocument.Range {
-    return LSP.LSPRange.fromObject({
-      start: this.positionAt(startOffset),
-      end: this.positionAt(endOffset),
-    });
+  getRangeFor(startOffset: number, endOffset: number): LSP.Range {
+    return LSP.Range.from(this.positionAt(startOffset), this.positionAt(endOffset));
   }
 
   locationAtOffsets(start: number, end: number) {
@@ -88,26 +82,34 @@ export class LSPBasicDocument extends BaseTwinTextDocument {
 }
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
-  readonly regions: LSP.JsxNodeRegion[];
-  readonly parsableRegions: { region: LSP.JsxNodeRegion; attr: LSP.JsxAttributeValueRegion }[];
+  readonly regions: (typeof LSP.JSXNode.Type)[];
+  readonly parsableRegions: {
+    region: typeof LSP.JSXNode.Type;
+    attr: typeof LSP.JSXAttributeValue.Type;
+  }[];
 
-  constructor(textDocument: VSCDocument.TextDocument, regions: LSP.JsxNodeRegion[]) {
+  constructor(textDocument: VSCDocument.TextDocument, regions: (typeof LSP.JSXNode.Type)[]) {
     super(textDocument);
     this.regions = regions.map((x) => fixRegionRanges(x, textDocument));
     this.parsableRegions = this.regions.flatMap((region) =>
-      region.styledProps.map((x) => x.attributeValue).map((attr) => ({ region, attr })),
+      region.attributes.map((x) => x.value).map((attr) => ({ region, attr })),
     );
   }
 
-  findRegionAt(position: LSP.LSPPosition): LSP.JsxAttributeValueRegion | null {
+  getNodeRange(node: typeof LSP.AnyParsedNode.Type) {
+    return LSP.Range.from(this.positionAt(node.startOffset), this.positionAt(node.endOffset));
+  }
+
+  findRegionAt(position: LSP.Position): LSP.JSXAttributeValue | null {
     return (
-      this.parsableRegions.find((x) => this.isPositionInRange(position, x.attr.range))?.attr ?? null
+      this.parsableRegions.find((x) => this.isPositionInRange(position, this.getNodeRange(x.attr)))
+        ?.attr ?? null
     );
   }
 }
 
 export interface TwinBaseDocument {
-  getText: (range?: VSCDocument.Range) => string;
-  offsetAt: (position: VSCDocument.Position) => number;
-  positionAt: (offset: number) => VSCDocument.Position;
+  getText: (range?: LSP.Range) => string;
+  offsetAt: (position: LSP.Position) => number;
+  positionAt: (offset: number) => LSP.Position;
 }

@@ -1,27 +1,12 @@
 import { hash } from '@native-twin/helpers';
 import * as Context from 'effect/Context';
-import * as Data from 'effect/Data';
 import * as Effect from 'effect/Effect';
 import * as Equivalence from 'effect/Equivalence';
 import { absurd } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Order from 'effect/Order';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
-import type * as t from 'vscode-languageserver-types';
-import {
-  type AnyLSPError,
-  type AnyTwinNodeRegion,
-  FileNotFound,
-  type JSXNodeTagNameRegion,
-  type JsxAttributeBindingRegion,
-  type JsxAttributeRegion,
-  type JsxAttributeValueRegion,
-  type JsxNodeRegion,
-  LSPParserError,
-  LSPPosition,
-  LSPRange,
-  LSPTokenNotFound,
-} from '../models/LSP.models';
+import * as Models from '../models/LSP.models';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 import { annotatedLayer } from '../utils/effect.utils';
 
@@ -38,12 +23,14 @@ export const createLSPAdapterExecutor = (executor: LSPAdapterSpec): Layer.Layer<
   return Layer.succeed(LSPAdapterSpec, executor).pipe(annotatedLayer('LSPAdapterSpec'));
 };
 export interface LSPAdapterSpec {
-  getLSPDocument(filename: string): Effect.Effect<LSPTextDocument, AnyLSPError>;
+  getLSPDocument(filename: string): Effect.Effect<LSPTextDocument, Models.AnyLSPError>;
   getRegionAt(
     filename: string,
-    offset: LSPPosition,
-  ): Effect.Effect<JsxAttributeValueRegion | null, AnyLSPError>;
-  getRegions(filename: string): Effect.Effect<AnyTwinNodeRegion[], AnyLSPError>;
+    position: typeof Models.Position.Type,
+  ): Effect.Effect<typeof Models.JSXAttributeValue.Type | null, Models.AnyLSPError>;
+  getRegions(
+    filename: string,
+  ): Effect.Effect<(typeof Models.AnyParsedNode.Type)[], Models.AnyLSPError>;
 }
 
 export const LSPAdapterSpec = Context.GenericTag<LSPAdapterSpec>('LSPAdapterSpec');
@@ -56,68 +43,26 @@ export const LSPAdapterSpec = Context.GenericTag<LSPAdapterSpec>('LSPAdapterSpec
  * */
 
 const makeLSPUtils = () => {
-  const positionOrd = Order.mapInput(Order.number, (a: t.Position) => a.character);
-  const position = (offset: number, line = 0) => LSPPosition.create(line ?? 0, offset);
+  const positionOrd = Order.mapInput(Order.number, (a: Models.Position) => a.character);
+  const position = (offset: number, line = 0) => Models.Position.from(line ?? 0, offset);
 
-  const isPositionInRange = (range: t.Range, position: t.Position) =>
+  const isPositionInRange = (range: Models.Range, position: Models.Position) =>
     Order.between(positionOrd)({ maximum: range.end, minimum: range.start })(position);
 
-  const positionEq: Equivalence.Equivalence<LSPPosition> = Equivalence.mapInput(
+  const positionEq: Equivalence.Equivalence<Models.Position> = Equivalence.mapInput(
     Equivalence.product(Equivalence.number, Equivalence.number),
-    (position: LSPPosition) => [position.character, position.line] as const,
+    (position: Models.Position) => [position.character, position.line] as const,
   );
 
-  const rangeOrder: Order.Order<t.Range> = Order.mapInput(
+  const rangeOrder: Order.Order<Models.Range> = Order.mapInput(
     Order.tuple(positionOrd, positionOrd),
-    (range: t.Range) => [range.start, range.end] as const,
+    (range: Models.Range) => [range.start, range.end] as const,
   );
 
-  const range = (start: LSPPosition, end: LSPPosition): LSPRange => LSPRange.create(start, end);
+  const range = (start: Models.Position, end: Models.Position): Models.Range =>
+    Models.Range.from(start, end);
 
-  const createAttributeBinding = (
-    input: Omit<JsxAttributeBindingRegion, '_tag'>,
-  ): JsxAttributeBindingRegion =>
-    Data.struct({
-      _tag: 'JsxAttributeBindingRegion',
-      ...input,
-    });
-
-  const createJsxAttributeValue = (
-    attribute: Omit<JsxAttributeValueRegion, '_tag' | '__parsable'>,
-  ): JsxAttributeValueRegion => {
-    return Data.struct({
-      __parsable: 'LSPParsableRegion',
-      _tag: 'JsxAttributeValueRegion',
-      ...attribute,
-    });
-  };
-
-  const createAttributeRegion = (input: Omit<JsxAttributeRegion, '_tag'>): JsxAttributeRegion =>
-    Data.struct({
-      _tag: 'JsxAttributeRegion',
-      ...input,
-      attributeBinding: createAttributeBinding(input.attributeBinding),
-      attributeValue: createJsxAttributeValue(input.attributeValue),
-    });
-
-  const createJsxNode = (input: Omit<JsxNodeRegion, '_tag'>): JsxNodeRegion =>
-    Data.struct({
-      _tag: 'JsxNodeRegion',
-      ...input,
-      id: getRangeID(input.range),
-      parent: input.parent
-        ? createJsxNode({ ...input.parent, id: getRangeID(input.parent.range) })
-        : null,
-      styledProps: input.styledProps.map((x) => createAttributeRegion(x)),
-    });
-
-  const createJsxTagName = (input: Omit<JSXNodeTagNameRegion, '_tag'>): JSXNodeTagNameRegion =>
-    Data.struct({
-      _tag: 'JsxTagName',
-      ...input,
-    });
-
-  const handleError = (error: AnyLSPError['_tag'], cause: unknown) => {
+  const handleError = (error: Models.AnyLSPError['_tag'], cause: unknown) => {
     const errorCause =
       cause instanceof Error
         ? cause
@@ -127,31 +72,26 @@ const makeLSPUtils = () => {
 
     switch (error) {
       case 'FileNotFound':
-        return FileNotFound.create(errorCause);
+        return Models.FileNotFound.create(errorCause);
       case 'LSPParserError':
-        return LSPParserError.create(errorCause);
+        return Models.LSPParserError.create(errorCause);
       case 'LSPTokenNotFound':
-        return LSPTokenNotFound.create(errorCause);
+        return Models.LSPTokenNotFound.create(errorCause);
       default:
         return absurd(error);
     }
   };
 
-  const getPositionID = (position: LSPPosition) =>
+  const getPositionID = (position: Models.Position) =>
     hash(`${[position.character, position.line].join('/')}`);
 
-  const getRangeID = (range: LSPRange) => {
+  const getRangeID = (range: Models.Range) => {
     return hash(`${[getPositionID(range.start), getPositionID(range.end)].join('-')}`);
   };
 
   return {
     getPositionID,
     getRangeID,
-    createAttributeBinding,
-    createAttributeRegion,
-    createJsxAttributeValue,
-    createJsxNode,
-    createJsxTagName,
     position,
     isPositionInRange,
     positionEq,
@@ -166,74 +106,77 @@ export class LSPAdapterUtils extends Effect.Service<LSPAdapterUtils>()('lsp/LSPA
   sync: makeLSPUtils,
 }) {}
 
-export const fixRegionRanges = (node: JsxNodeRegion, doc: TextDocument): JsxNodeRegion => {
-  const styledProps: JsxAttributeRegion[] = [];
-  for (const attribute of node.styledProps) {
-    const { attributeValue } = attribute;
-    const originalText = attributeValue.rawText;
-    const parsableText = attributeValue.text;
-    const documentText = doc.getText(attributeValue.range);
+const transformJSXAttributes = (attribute: Models.JSXAttribute, doc: TextDocument) => {
+  const { value } = attribute;
+  const originalText = value.rawText;
+  const parsableText = value.text;
+  const documentText = doc.getText(
+    Models.Range.from(doc.positionAt(value.startOffset), doc.positionAt(value.endOffset)),
+  );
+  let newStartOffset = value.startOffset;
+  // const newEndPosition = { ...value.range.end };
+  let newText = value.text;
 
-    const subset = new Set([originalText, parsableText, documentText]);
-    if (subset.size === 3) {
-      if (attributeValue.text.startsWith('`')) {
-        attributeValue.range = LSPRange.create(
-          LSPPosition.create(
-            attributeValue.range.start.line,
-            attributeValue.range.start.character + 1,
-          ),
-          attributeValue.range.end,
-        );
-        attributeValue.text = attributeValue.text.slice(1);
-      }
-      if (attributeValue.text.endsWith('`')) {
-        attributeValue.text = attributeValue.text.slice(0, attributeValue.text.lastIndexOf('`'));
-      }
-      styledProps.push(attribute);
-      continue;
+  const subset = new Set([originalText, parsableText, documentText]);
+  if (subset.size === 3) {
+    if (value.text.startsWith('`')) {
+      newStartOffset += 1;
+      newText = newText.slice(1);
     }
-    const starOffset = doc.offsetAt(attributeValue.range.start);
-    let counterDif = 0;
-    let cursor = 0;
-    while (cursor < originalText.length) {
-      const parsableChar = parsableText[cursor];
-      const char = originalText[cursor + counterDif];
-      if (!char) break;
-      if (char !== parsableChar) {
-        ++counterDif;
-      }
-      ++cursor;
+    if (value.text.endsWith('`')) {
+      newText = newText.slice(0, newText.lastIndexOf('`'));
     }
-    const cursorDiff = cursor - parsableText.length;
-    const finalStart = LSPPosition.fromObject(doc.positionAt(starOffset + counterDif - cursorDiff));
-    const finalEnd = LSPPosition.fromObject(
-      doc.positionAt(starOffset + parsableText.length + counterDif - cursorDiff),
-    );
-
-    const newProp = LSPAdapterUtils.pipe(
-      Effect.map((s) => {
-        return s.createAttributeRegion({
-          range: attribute.range,
-          rawText: attribute.rawText,
-          attributeBinding: s.createAttributeBinding(attribute.attributeBinding),
-          attributeValue: s.createJsxAttributeValue({
-            rawText: attributeValue.rawText,
-            text: attributeValue.text,
-            range: LSPRange.fromObject({ start: finalStart, end: finalEnd }),
-          }),
-        });
+    return Models.JSXAttribute.make({
+      ...attribute,
+      name: Models.JSXAttributeName.make(attribute.name),
+      rawText: attribute.rawText,
+      value: Models.JSXAttributeValue.make({
+        ...value,
+        startOffset: newStartOffset,
+        rawText: value.rawText,
+        text: newText,
       }),
-    ).pipe(Effect.provide(LSPAdapterUtils.Default), Effect.runSync);
-
-    styledProps.push(newProp);
+    });
   }
+  const starOffset = value.startOffset;
+  let counterDif = 0;
+  let cursor = 0;
+  while (cursor < originalText.length) {
+    const parsableChar = parsableText[cursor];
+    const char = originalText[cursor + counterDif];
+    if (!char) break;
+    if (char !== parsableChar) {
+      ++counterDif;
+    }
+    ++cursor;
+  }
+  const cursorDiff = cursor - parsableText.length;
+  const finalStartOffset =  starOffset + counterDif - cursorDiff;
+  const finalEndOffset = starOffset + parsableText.length + counterDif - cursorDiff;
 
-  return LSPAdapterUtils.createJsxNode({
+  return Models.JSXAttribute.make({
+    // range: Models.Range.from(attribute.range.start, attribute.range.end),
+    ...attribute,
+    rawText: attribute.rawText,
+    name: Models.JSXAttributeName.make(attribute.name),
+    value: Models.JSXAttributeValue.make({
+      ...value,
+      rawText: value.rawText,
+      text: value.text,
+      startOffset: finalStartOffset,
+      endOffset: finalEndOffset,
+    }),
+  });
+};
+
+export const fixRegionRanges = (node: Models.JSXNode, doc: TextDocument): Models.JSXNode => {
+  return Models.JSXNode.make({
+    ...node,
     id: node.id,
+    text: node.rawText,
     parent: node.parent,
-    range: node.range,
     rawText: node.rawText,
-    tagName: node.tagName,
-    styledProps,
-  }).pipe(Effect.provide(LSPAdapterUtils.Default), Effect.runSync);
+    tag: Models.JSXTagName.make(node.tag),
+    attributes: node.attributes.map((x) => transformJSXAttributes(x, doc)),
+  });
 };

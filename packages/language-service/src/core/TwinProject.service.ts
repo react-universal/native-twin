@@ -7,14 +7,9 @@ import * as Order from 'effect/Order';
 import * as Predicate from 'effect/Predicate';
 import { inspect } from 'util';
 import { LSPAdapterUtils } from '../internal/LSPAdapterSpec';
-import {
-  GraphState,
-  type JsxNodeRegion,
-  SourceEdgeInfo,
-  SourceNodeInfo,
-} from '../models/LSP.models';
+import { GraphState, type JSXNode, SourceEdgeInfo, SourceNodeInfo } from '../models/LSP.models';
 
-const JSXRegionOrd = Order.mapInput(Order.number, (_: JsxNodeRegion) => _.range.start.character);
+const JSXRegionOrd = Order.mapInput(Order.number, (_: JSXNode) => _.startOffset);
 
 export const makeTwinGraph = Effect.gen(function* () {
   const traverseGraph = (graph: Graph.Graph<SourceNodeInfo, SourceEdgeInfo>) => {
@@ -41,7 +36,7 @@ export const makeTwinGraph = Effect.gen(function* () {
     return final;
   };
 
-  const createSourceGraph = Effect.fn(function* (elements: JsxNodeRegion[]) {
+  const createSourceGraph = Effect.fn(function* (elements: JSXNode[]) {
     const context = yield* createTraversalContext(elements);
 
     while (context.state.nodeToVisit.length > 0) {
@@ -57,24 +52,24 @@ export const makeTwinGraph = Effect.gen(function* () {
   return { createSourceGraph, traverseGraph };
 }).pipe(Effect.provide(LSPAdapterUtils.Default));
 
-const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
+const createTraversalContext = Effect.fn(function* (source: JSXNode[]) {
   // const lspUtils = yield* LSPAdapterUtils;
   const mutableGraph = Graph.beginMutation(Graph.directed<SourceNodeInfo, SourceEdgeInfo>());
 
   // ==================== State Tracking ====================
   // Track which nodes have been visited to avoid reprocessing
-  const visitedNodes = new WeakSet<JsxNodeRegion>();
+  const visitedNodes = new WeakSet<JSXNode>();
   // // Map nodes to their position in the JSX tree hierarchy
-  const nodeInJSXTree = new WeakMap<JsxNodeRegion, Graph.NodeIndex>();
+  const nodeInJSXTree = new WeakMap<JSXNode, Graph.NodeIndex>();
   // Map nodes to their corresponding graph indices
-  const nodeGraphIndex = new WeakMap<JsxNodeRegion, Graph.NodeIndex>();
+  const nodeGraphIndex = new WeakMap<JSXNode, Graph.NodeIndex>();
   // Track remaining depth budget for symbol following
-  const depthBudget = new WeakMap<JsxNodeRegion, number>();
+  const depthBudget = new WeakMap<JSXNode, number>();
   // Queue of nodes pending visitation
-  const nodeToVisit: JsxNodeRegion[] = [];
+  const nodeToVisit: JSXNode[] = [];
 
-  const createStacked = (source: JsxNodeRegion[]) => {
-    const lookup = new Map<string, { id: string; childs: JsxNodeRegion[]; isRoot: boolean }>();
+  const createStacked = (source: JSXNode[]) => {
+    const lookup = new Map<string, { id: string; childs: JSXNode[]; isRoot: boolean }>();
     for (const nextRegion of source.filter((x) => x.parent === null)) {
       const childs = RA.sort(
         source.filter((x) => x.parent?.id === nextRegion.id),
@@ -92,7 +87,7 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
   /**
    * Adds a node to the visitation queue with the given depth budget
    */
-  const appendNodeToVisit = (node: JsxNodeRegion, nodeDepthBudget: number) => {
+  const appendNodeToVisit = (node: JSXNode, nodeDepthBudget: number) => {
     depthBudget.set(node, nodeDepthBudget);
     nodeToVisit.push(node);
     return undefined;
@@ -113,10 +108,7 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
   /**
    * Adds a node to the graph and tracks its mapping
    */
-  const addNode = Effect.fn(function* (
-    node: JsxNodeRegion,
-    nodeInfo: SourceNodeInfo | null = null,
-  ) {
+  const addNode = Effect.fn(function* (node: JSXNode, nodeInfo: SourceNodeInfo | null = null) {
     const graphNode = Graph.addNode(
       mutableGraph,
       nodeInfo ? nodeInfo : yield* Effect.succeed(createSourceInfo(node)),
@@ -129,12 +121,12 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
   /**
    * Marks a node as visited to prevent reprocessing
    */
-  const markNodeAsVisited = (node: JsxNodeRegion) =>
+  const markNodeAsVisited = (node: JSXNode) =>
     Effect.succeed(visitedNodes.add(node)).pipe(debugStepTapped('MARK_VISITED: ', node));
 
-  const hasBeenVisited = (node: JsxNodeRegion) => visitedNodes.has(node);
+  const hasBeenVisited = (node: JSXNode) => visitedNodes.has(node);
 
-  const getNodeChilds = (node: JsxNodeRegion) => {
+  const getNodeChilds = (node: JSXNode) => {
     const region = regionsLookup.get(node.id);
     if (!region) {
       return RA.sort(
@@ -147,19 +139,19 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
   /**
    * Registers a node in the JSX hierarchy with its depth position
    */
-  const addNodeInJSXRegistry = (node: JsxNodeRegion, currentDepthBudget: number) =>
+  const addNodeInJSXRegistry = (node: JSXNode, currentDepthBudget: number) =>
     nodeInJSXTree.set(node, currentDepthBudget);
 
   // ==================== Queue Management ====================
   /**
    * Retrieves the depth budget allocated for a given node
    */
-  const getDepthBudgetFor = (node: JsxNodeRegion) => Effect.sync(() => depthBudget.get(node)!);
+  const getDepthBudgetFor = (node: JSXNode) => Effect.sync(() => depthBudget.get(node)!);
 
   /**
    * Retrieves the graph index for a given node, if it exists
    */
-  const getNodeGraph = (node: JsxNodeRegion) => nodeGraphIndex.get(node);
+  const getNodeGraph = (node: JSXNode) => nodeGraphIndex.get(node);
 
   /**
    * Dequeues and returns the next node to process
@@ -184,8 +176,8 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
    * Validates that all expected children are present before creating connections
    */
   const connectJSXElementToChildren = Effect.fn(function* (
-    elementNode: JsxNodeRegion,
-    jsxChilds: JsxNodeRegion[],
+    elementNode: JSXNode,
+    jsxChilds: JSXNode[],
   ) {
     const graphNodes = jsxChilds
       .map((_) => getNodeGraph(_))
@@ -215,7 +207,7 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
             relationship: 'jsx-child',
             index: graphNodes.indexOf(childGraph),
             isRoot: childNode.nodeRegion.parent === null,
-            nodeText: `${parentIndex}:${elementNode.tagName.rawText} -> ${childGraph}:${childNode.tagName}`,
+            nodeText: `${parentIndex}:${elementNode.tag.rawText} -> ${childGraph}:${childNode.tagName}`,
           }),
         );
       }
@@ -230,7 +222,7 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
    * Processes a JSX element node, handling both initial discovery and connection
    */
   const processJSXElementNode = Effect.fn(function* (
-    currentNode: JsxNodeRegion,
+    currentNode: JSXNode,
     currentDepthBudget: number,
   ) {
     const stack = regionsLookup.get(currentNode.id);
@@ -259,10 +251,10 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
     }
   });
 
-  const getNodeDetails = (node: JsxNodeRegion) => ({
+  const getNodeDetails = (node: JSXNode) => ({
     id: node.id,
-    tagName: node.tagName.rawText,
-    props: node.styledProps.map((x) => x.rawText),
+    tag: node.tag.rawText,
+    props: node.attributes.map((x) => x.rawText),
     nodeInJSXTree: nodeInJSXTree.get(node),
     nodeToGraph: nodeGraphIndex.get(node),
     visited: visitedNodes.has(node),
@@ -270,7 +262,7 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
   });
 
   const debugStepTapped =
-    (stepName: string, node: JsxNodeRegion | undefined, data?: any) =>
+    (stepName: string, node: JSXNode | undefined, data?: any) =>
     <A, E = never>(effect: Effect.Effect<A, E>) =>
       Effect.tap(effect, () =>
         Effect.logDebug(
@@ -279,10 +271,10 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
         ),
       );
 
-  const createSourceInfo = (nodeRegion: JsxNodeRegion) =>
+  const createSourceInfo = (nodeRegion: JSXNode) =>
     new SourceNodeInfo({
       id: nodeRegion.id,
-      tagName: nodeRegion.tagName.rawText,
+      tagName: nodeRegion.tag.rawText,
       nodeRegion,
     });
 
@@ -295,4 +287,3 @@ const createTraversalContext = Effect.fn(function* (source: JsxNodeRegion[]) {
     processJSXElementNode,
   };
 });
- 

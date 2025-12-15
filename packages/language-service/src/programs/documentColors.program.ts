@@ -18,7 +18,7 @@ export const getDocumentColors = Effect.fn(function* (
 
   return yield* Stream.fromIterable(document.parsableRegions).pipe(
     Stream.mapEffect((region) =>
-      twinService.runFullParserEffect(region.attr.text, document.offsetAt(region.attr.range.start)),
+      twinService.runFullParserEffect(region.attr.text, region.attr.startOffset),
     ),
     Stream.flattenIterables,
     Stream.map((result) => {

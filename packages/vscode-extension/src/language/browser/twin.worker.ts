@@ -8,8 +8,8 @@ import {
   LSPBaseLayerLive,
   LSPConfig,
   LSPContext,
-  type LSPPosition,
   languagePrograms,
+  type Position,
   parseLSPConfigInput,
   type TwinConfigOptions,
   TwinLSPDocument,
@@ -134,7 +134,7 @@ const AdapterLive = Effect.gen(function* () {
 
     const filePath = filename;
     const tsSource = yield* program.getSourceFile(filePath, document.getText());
-    const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource), document);
+    const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource));
 
     return new TwinLSPDocument(document, regions);
   });
@@ -146,7 +146,7 @@ const AdapterLive = Effect.gen(function* () {
 
   const getRegionAt = Effect.fn('vscodeAdapter: getTokenAtPosition')(function* (
     filename: string,
-    position: LSPPosition,
+    position: Position,
   ) {
     const document = yield* getLSPDocument(filename);
 

@@ -3,7 +3,7 @@ import * as Effect from 'effect/Effect';
 import * as vscode from 'vscode-languageserver';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
-import { LSPPosition } from '../models/LSP.models';
+import { Position } from '../models/LSP.models';
 
 export const getDocumentHighLightsProgram = Effect.fn(function* (
   params: vscode.DocumentHighlightParams,
@@ -14,12 +14,12 @@ export const getDocumentHighLightsProgram = Effect.fn(function* (
   const { getLSPDocument } = yield* LSPAdapterSpec;
   const parser = yield* TwinParserContext;
   const document = yield* getLSPDocument(params.textDocument.uri);
-  const region = document.findRegionAt(LSPPosition.fromObject(params.position));
+  const region = document.findRegionAt(Position.make(params.position));
 
   if (!region) return [];
   const parsed = parser.runTwinParser({
     text: region.text,
-    startOffset: document.offsetAt(region.range.start),
+    startOffset: region.startOffset,
   });
 
   return parsed.result.flatMap((parsedRegion) => {

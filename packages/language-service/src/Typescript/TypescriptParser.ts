@@ -2,13 +2,8 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import { LSPParser } from '../core/LSPParser.service';
-import {
-  type JsxAttributeRegion,
-  type JsxNodeRegion,
-  LSPPosition,
-  LSPRange,
-} from '../models/LSP.models';
-import { JSXParser } from './JSXParser.service';
+import { JSXAttribute, JSXAttributeValue, JSXNode, Range } from '../models/LSP.models';
+import { JSXParser, JSXParserLive } from './JSXParser.service';
 import { TypeScriptProgram } from './TypescriptAPI.service';
 
 export const TypescriptParser = Effect.gen(function* () {
@@ -24,63 +19,71 @@ export const TypescriptParser = Effect.gen(function* () {
 
   return {
     parseFile,
-    fixRegionRanges,
   };
-}).pipe(Layer.effect(LSPParser));
+}).pipe(Effect.provide(JSXParserLive), Layer.effect(LSPParser));
 
-const fixRegionRanges = (node: JsxNodeRegion, doc: TextDocument): JsxNodeRegion => {
-  const styledProps: JsxAttributeRegion[] = [];
-  for (const attribute of node.styledProps) {
-    const { attributeValue } = attribute;
-    const originalText = attributeValue.rawText;
-    const parsableText = attributeValue.text;
-    const documentText = doc.getText(attributeValue.range);
+export const fixRegionRanges = (node: JSXNode, doc: TextDocument): JSXNode => {
+  const attributes: JSXAttribute[] = [];
+  for (const attribute of node.attributes) {
+    const { value } = attribute;
+    const originalText = value.rawText;
+    const parsableText = value.text;
+    const documentText = doc.getText(
+      Range.from(doc.positionAt(value.startOffset), doc.positionAt(value.endOffset)),
+    );
+    let newText = value.text;
+    let finalStartOffset = value.startOffset;
 
     const subset = new Set([originalText, parsableText, documentText]);
     if (subset.size === 3) {
-      if (attributeValue.text.startsWith('`')) {
-        attributeValue.text = attributeValue.text.slice(1);
-        attributeValue.range = LSPRange.fromObject({
-          start: LSPPosition.create(
-            attributeValue.range.start.line,
-            attributeValue.range.start.character + 1,
-          ),
-          end: attributeValue.range.end,
-        });
+      if (newText.startsWith('`')) {
+        newText = newText.slice(1);
+        finalStartOffset += 1;
+        if (newText.endsWith('`')) {
+          newText = newText.slice(0, newText.lastIndexOf('`'));
+        }
+        attributes.push(
+          JSXAttribute.make({
+            ...attribute,
+            value: JSXAttributeValue.make({
+              ...value,
+              startOffset: finalStartOffset,
+              text: newText,
+            }),
+          }),
+        );
+        continue;
       }
-      if (attributeValue.text.endsWith('`')) {
-        attributeValue.text = attributeValue.text.slice(0, attributeValue.text.lastIndexOf('`'));
+      let counterDif = 0;
+      let cursor = 0;
+      while (cursor < originalText.length) {
+        const parsableChar = parsableText[cursor];
+        const char = originalText[cursor + counterDif];
+        if (!char) break;
+        if (char !== parsableChar) {
+          ++counterDif;
+        }
+        ++cursor;
       }
-      styledProps.push(attribute);
-      continue;
-    }
-    const starOffset = doc.offsetAt(attributeValue.range.start);
-    let counterDif = 0;
-    let cursor = 0;
-    while (cursor < originalText.length) {
-      const parsableChar = parsableText[cursor];
-      const char = originalText[cursor + counterDif];
-      if (!char) break;
-      if (char !== parsableChar) {
-        ++counterDif;
-      }
-      ++cursor;
-    }
-    const cursorDiff = cursor - parsableText.length;
-    const finalStart = doc.positionAt(starOffset + counterDif - cursorDiff);
-    const finalEnd = doc.positionAt(starOffset + parsableText.length + counterDif - cursorDiff);
+      const cursorDiff = cursor - parsableText.length;
+      const finalStart = finalStartOffset + counterDif - cursorDiff;
+      const finalEnd = finalStartOffset + parsableText.length + counterDif - cursorDiff;
 
-    styledProps.push({
-      ...attribute,
-      attributeValue: {
-        ...attributeValue,
-        range: LSPRange.fromObject({ start: finalStart, end: finalEnd }),
-      },
-    });
+      attributes.push(
+        JSXAttribute.make({
+          ...attribute,
+          value: JSXAttributeValue.make({
+            ...value,
+            startOffset: finalStart,
+            endOffset: finalEnd,
+            text: newText,
+          }),
+        }),
+      );
+    }
   }
-
-  return {
+  return JSXNode.make({
     ...node,
-    styledProps,
-  };
+    attributes,
+  });
 };

@@ -29,7 +29,7 @@ export const CompletionsService = Effect.gen(function* () {
           document.version,
           document.getText(),
         );
-        const regions = jsxPArser.jsxNodesToRegions(roots, vsDocument);
+        const regions = jsxPArser.jsxNodesToRegions(roots);
         const lspDocument = new TwinLSPDocument(vsDocument, regions);
 
         const cursorOffset = document.offsetAt(position);
@@ -39,7 +39,7 @@ export const CompletionsService = Effect.gen(function* () {
         const parserResult = Option.map(valueRegion, (value) =>
           parser.runTwinParser({
             text: value.text,
-            startOffset: lspDocument.offsetAt(value.range.start),
+            startOffset: value.startOffset,
           }),
         );
         const locatedToken = yield* Option.flatMap(parserResult, ({ result }) =>

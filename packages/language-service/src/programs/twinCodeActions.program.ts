@@ -6,7 +6,7 @@ import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import { TwinDiagnosticCodes } from '../models/Diagnostic.model';
-import { type JsxAttributeValueRegion, LSPPosition } from '../models/LSP.models';
+import { type JSXAttributeValue, Position } from '../models/LSP.models';
 import { LSPConstants } from '../models/lsp.constants';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
@@ -30,7 +30,7 @@ export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.Cod
     return Option.some(x);
   });
 
-  const region = document.findRegionAt(LSPPosition.fromObject(params.range.start));
+  const region = document.findRegionAt(Position.make(params.range.start));
   if (!region) return null;
   const editsForDuplicatedDeclarations: vscodeLSP.CodeAction[] = pipe(
     RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
@@ -42,7 +42,7 @@ export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.Cod
 
 export const getDuplicatedDeclarationCodeAction = (
   twinDoc: TwinLSPDocument,
-  region: JsxAttributeValueRegion,
+  region: JSXAttributeValue,
   diagnostics: vscodeLSP.Diagnostic[],
 ) => {
   const textsToRemove = pipe(
@@ -64,7 +64,7 @@ export const getDuplicatedDeclarationCodeAction = (
 
   fix.edit = {
     changes: {
-      [twinDoc.uri]: asArray(vscodeLSP.TextEdit.replace(region.range, newText)),
+      [twinDoc.uri]: asArray(vscodeLSP.TextEdit.replace(twinDoc.getNodeRange(region), newText)),
     },
   };
   fix.isPreferred = true;

@@ -4,7 +4,8 @@
     "module": "NodeNext",
     "exactOptionalPropertyTypes": false,
     "moduleResolution": "NodeNext",
-    "resolvePackageJsonImports": true,
+    "disableSolutionSearching": true,
+    "disableReferencedProjectLoad": true,
     "jsx": "preserve"
   },
   "include": ["src", "ts-exposed", "tests"],

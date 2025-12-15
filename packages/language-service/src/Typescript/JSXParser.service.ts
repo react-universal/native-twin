@@ -7,14 +7,19 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import ts from 'ts-morph';
 import * as Spec from '../internal/LSPAdapterSpec';
-import { type JsxNodeRegion, LSPPosition, LSPRange } from '../models/LSP.models';
+import {
+  JSXAttribute,
+  JSXAttributeName,
+  JSXAttributeValue,
+  JSXNode,
+  JSXTagName,
+} from '../models/LSP.models';
 import { annotatedLayer } from '../utils/effect.utils';
 import type { TypescriptModels } from './TwinDsl.models';
 import { TypescriptUtils } from './TypescriptUtils.service';
 
 const make = Effect.gen(function* () {
   const tsUtils = yield* TypescriptUtils;
-  const lspUtils = yield* Spec.LSPAdapterUtils;
 
   function getRawJSXFromSource(sourceFile: ts.SourceFile) {
     const jsxElements: TypescriptModels.AnyJSXElement[] = [];
@@ -41,11 +46,11 @@ const make = Effect.gen(function* () {
     return jsxElements;
   }
 
-  function getJSXElementStyledProps(node: TypescriptModels.AnyJSXElement) {
+  function getJSXElementattributes(node: TypescriptModels.AnyJSXElement) {
     const tagName = getJSXNodeTagName(node).getText();
     const mappedConfig =
       mappedComponents.find((x) => x.name === tagName) ?? createCommonMappedAttribute(tagName);
-    const styledProps: {
+    const attributes: {
       name: ts.JsxAttributeName;
       value: NonNullable<ReturnType<ts.JsxAttribute['getInitializer']>>;
       source: string;
@@ -58,7 +63,7 @@ const make = Effect.gen(function* () {
       if (!hasOwnProperty.call(mappedConfig.config, propName)) continue;
       if (!attribute.getInitializer()) continue;
 
-      styledProps.push({
+      attributes.push({
         name: attribute.getNameNode(),
         value: attribute.getInitializer()!,
         source: propName,
@@ -66,7 +71,7 @@ const make = Effect.gen(function* () {
         attribute,
       });
     }
-    return styledProps;
+    return attributes;
   }
 
   function getJSXElementStatement(node: ts.Statement) {
@@ -91,22 +96,28 @@ const make = Effect.gen(function* () {
     }
   }
 
-  const getNodeRange = (node: ts.Node) =>
-    lspUtils.range(
-      lspUtils.position(node.getPos(), node.getStartLineNumber()),
-      lspUtils.position(node.getEnd(), node.getEndLineNumber()),
-    );
+  // const getNodeRange = (node: ts.Node) =>
+  //   lspUtils.range(
+  //     lspUtils.position(node.getStart(), node.getStartLineNumber()),
+  //     lspUtils.position(node.getEnd(), node.getEndLineNumber()),
+  //   );
 
-  function getJSXNodeRegion(
-    node: TypescriptModels.AnyJSXElement,
-    parent: JsxNodeRegion | undefined,
-  ): JsxNodeRegion {
-    const styledProps = getJSXElementStyledProps(node).map((prop) => {
-      const attributeBinding = lspUtils.createAttributeBinding({
-        range: getNodeRange(prop.name),
+  function getJSXNode(node: TypescriptModels.AnyJSXElement, parent: JSXNode | undefined): JSXNode {
+    const attributes = getJSXElementattributes(node).map((prop) => {
+      const name = JSXAttributeName.make({
+        endLine: node.getEndLineNumber(),
+        startLine: node.getStartLineNumber(),
+        endOffset: node.getEnd(),
+        startOffset: node.getStart(),
         rawText: prop.name.getText(),
+        text: prop.name.getText(),
       });
-      let attrRange = getNodeRange(prop.value);
+      const attrRange = {
+        startOffset: prop.value.getStart(),
+        endOffset: prop.value.getEnd(),
+        startLine: prop.value.getStartLineNumber(),
+        endLine: prop.value.getEndLineNumber(),
+      };
 
       const attrValue = getJSXAttributeValue(prop.attribute);
       if (attrValue.expression) {
@@ -115,10 +126,7 @@ const make = Effect.gen(function* () {
           attrValue.expression.getText().startsWith('`') &&
           attrValue.expression.getText().endsWith('`')
         ) {
-          attrRange = LSPRange.fromObject({
-            start: LSPPosition.create(attrRange.start.line, attrRange.start.character + 1),
-            end: attrRange.end,
-          });
+          attrRange.startOffset += 1;
         }
         if (
           ts.Node.isStringLiteral(attrValue.expression) &&
@@ -127,37 +135,48 @@ const make = Effect.gen(function* () {
           (attrValue.expression.getText().endsWith('"}') ||
             attrValue.expression.getText().endsWith("'}"))
         ) {
-          attrRange = LSPRange.fromObject({
-            start: LSPPosition.create(attrRange.start.line, attrRange.start.character + 2),
-            end: attrRange.end,
-          });
+          attrRange.startOffset += 2;
         }
       }
-      const attributeValue = lspUtils.createJsxAttributeValue({
-        range: attrRange,
+      const value = JSXAttributeValue.make({
+        ...attrRange,
         rawText: prop.value.getText(),
         text: attrValue.originalText,
       });
-      return lspUtils.createAttributeRegion({
+      return JSXAttribute.make({
         rawText: prop.attribute.getText(),
-        attributeBinding,
-        attributeValue,
-        range: getNodeRange(prop.attribute),
+        name,
+        value,
+        endLine: prop.attribute.getEndLineNumber(),
+        startLine: prop.attribute.getStartLineNumber(),
+        endOffset: prop.attribute.getEnd(),
+        startOffset: prop.attribute.getStart(),
       });
     });
 
-    const nodeRange = getNodeRange(node);
+    const nodeRange = {
+      endLine: node.getEndLineNumber(),
+      startLine: node.getStartLineNumber(),
+      endOffset: node.getEnd(),
+      startOffset: node.getStart(),
+    };
     const tagName = getJSXNodeTagName(node);
-    const tagNameRange = getNodeRange(tagName);
-    return lspUtils.createJsxNode({
-      id: lspUtils.getRangeID(nodeRange),
-      parent: parent ? lspUtils.createJsxNode(parent) : null,
+    const tagNameRange = {
+      endLine: tagName.getEndLineNumber(),
+      startLine: tagName.getStartLineNumber(),
+      endOffset: tagName.getEnd(),
+      startOffset: tagName.getStart(),
+    };
+    return JSXNode.make({
+      ...nodeRange,
+      id: JSON.stringify(nodeRange),
+      parent: parent ? JSXNode.make(parent) : null,
       rawText: node.getText(),
-      range: nodeRange,
-      styledProps,
-      tagName: lspUtils.createJsxTagName({
+      text: node.getText(),
+      attributes,
+      tag: JSXTagName.make({
         rawText: tagName.getText(),
-        range: tagNameRange,
+        ...tagNameRange,
       }),
     });
   }
@@ -165,10 +184,10 @@ const make = Effect.gen(function* () {
   function jsxNodesToRegions(nodes: TypescriptModels.AnyJSXElement[]) {
     if (nodes.length === 0) return [];
 
-    const regions: JsxNodeRegion[] = [];
+    const regions: JSXNode[] = [];
     const nodesToVisit: ts.Node[] = [...nodes];
 
-    const parents = new Map<ts.Node, JsxNodeRegion>();
+    const parents = new Map<ts.Node, JSXNode>();
 
     while (nodesToVisit.length > 0) {
       const nextNode = nodesToVisit.pop();
@@ -176,7 +195,7 @@ const make = Effect.gen(function* () {
 
       if (tsUtils.is.jSXElementLike(nextNode)) {
         const jsxParent = parents.get(nextNode.getParent());
-        const region = getJSXNodeRegion(nextNode, jsxParent);
+        const region = getJSXNode(nextNode, jsxParent);
         regions.push(region);
         parents.set(nextNode, region);
         nodesToVisit.push(...getJSXElementChilds(nextNode));

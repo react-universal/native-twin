@@ -9,14 +9,14 @@ import type * as serverDocs from 'vscode-languageserver-textdocument';
 import type * as Spec from '../internal/LSPAdapterSpec';
 import type { TwinLSPAdapterLayerIn } from '../internal/RunnerLayer';
 import type { InternalTwinConfig } from '../internal/TwinTypes.internal';
-import type { AnyLSPError, LSPPosition } from '../models/LSP.models';
+import type { AnyLSPError, Position } from '../models/LSP.models';
 import { LSPConstants, type TwinConfigOptions } from '../models/lsp.constants';
 
 export interface TwinLSPCompletionDefinition {
   name: string;
   apply: <E = never, R = never>(
     filename: string,
-    position: LSPPosition,
+    position: Position,
   ) => Effect.Effect<
     server.HandlerResult<server.CompletionItem[], void>,
     AnyLSPError | E,

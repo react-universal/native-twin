@@ -5,7 +5,7 @@ import * as Graph from 'effect/Graph';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
-import { type JsxNodeRegion, SourceEdgeInfo, SourceNodeInfo } from '../models/LSP.models';
+import { type JSXNode, SourceEdgeInfo, SourceNodeInfo } from '../models/LSP.models';
 import { annotatedLayer } from '../utils/effect.utils';
 
 const make = Effect.gen(function* () {
@@ -14,15 +14,15 @@ const make = Effect.gen(function* () {
     lspTreeToGraph,
   };
 
-  function lspTreeToGraph(tree: Tree.Tree<JsxNodeRegion>) {
+  function lspTreeToGraph(tree: Tree.Tree<JSXNode>) {
     const mutableGraph = Graph.beginMutation(Graph.directed<SourceNodeInfo, SourceEdgeInfo>());
-    const registeredNodes = new WeakMap<JsxNodeRegion, number>();
+    const registeredNodes = new WeakMap<JSXNode, number>();
     tree.traverse((node) => {
       const { parent, value } = node;
       const info = new SourceNodeInfo({
         id: value.id,
         nodeRegion: value,
-        tagName: value.tagName.rawText,
+        tagName: value.tag.rawText,
       });
 
       if (!parent) {
@@ -42,7 +42,7 @@ const make = Effect.gen(function* () {
               relationship: 'jsx-child',
               index: registeredChilds.indexOf(childGraph),
               isRoot: childNode.nodeRegion.parent === null,
-              nodeText: `${graphNode}:${value.tagName.rawText} -> ${childGraph}:${childNode.tagName}`,
+              nodeText: `${graphNode}:${value.tag.rawText} -> ${childGraph}:${childNode.tagName}`,
             }),
           );
         }
@@ -67,7 +67,7 @@ const make = Effect.gen(function* () {
             relationship: 'jsx-child',
             index: registeredChilds.indexOf(childGraph),
             isRoot: childNode.nodeRegion.parent === null,
-            nodeText: `${graphNode}:${value.tagName.rawText} -> ${childGraph}:${childNode.tagName}`,
+            nodeText: `${graphNode}:${value.tag.rawText} -> ${childGraph}:${childNode.tagName}`,
           }),
         );
       }
@@ -76,7 +76,7 @@ const make = Effect.gen(function* () {
     return Graph.endMutation(mutableGraph);
   }
 
-  function lspRegionsToTree(regions: JsxNodeRegion[]) {
+  function lspRegionsToTree(regions: JSXNode[]) {
     return Tree.makeTreeFrom({
       input: regions.find((x) => x.parent === null)!,
       getChilds: (item) => regions.filter((region) => region.parent?.id === item.id),

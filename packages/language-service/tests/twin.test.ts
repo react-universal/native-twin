@@ -63,7 +63,7 @@ describe('Twin LSP API', () => {
         edgeLabel: (data) => inspect(data, { colors: false, depth: null, breakLength: Infinity }),
         graphName: 'Regions',
         nodeLabel: (node) =>
-          `${node.tagName} - ${inspect({ name: node.tagName, id: node.id, info: node.nodeRegion.styledProps.map((x) => x.attributeValue.text), range: node.nodeRegion.range }, { colors: false, depth: null, breakLength: Infinity })}`,
+          `${node.tagName} - ${inspect({ name: node.tagName, id: node.id, info: node.nodeRegion.attributes.map((x) => x.value.text), range: node.nodeRegion.range }, { colors: false, depth: null, breakLength: Infinity })}`,
       });
 
       yield* Effect.promise(() =>

@@ -31,7 +31,7 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
   const regions = document.parsableRegions;
   return yield* Stream.fromIterable(regions).pipe(
     Stream.mapEffect(({ attr }) =>
-      parser.runFullParserEffect(attr.text, document.offsetAt(attr.range.start)),
+      parser.runFullParserEffect(attr.text, attr.startOffset),
     ),
     Stream.map((results) => {
       const diagnosticReports = new Map<

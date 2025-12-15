@@ -4,6 +4,7 @@ export * from './core/TwinParser.service';
 export * from './core/TwinRuntime.service';
 export * from './internal/LSPAdapterSpec';
 export * from './internal/RunnerLayer';
+export * from './models/LSP.models';
 export type { TwinConfigOptions } from './models/lsp.constants';
 export * from './models/lsp.constants';
 export {

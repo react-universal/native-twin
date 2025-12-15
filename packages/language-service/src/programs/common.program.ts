@@ -2,11 +2,11 @@ import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import { TwinParserContext } from '../core/TwinParser.service';
 import type { LSPTextDocument } from '../internal/LSPAdapterSpec';
-import type { LSPPosition } from '../models/LSP.models';
+import type { Position } from '../models/LSP.models';
 
 export const maybeParsedRuleAtPosition = Effect.fn(function* (
   document: LSPTextDocument,
-  position: LSPPosition,
+  position: Position,
 ) {
   const parser = yield* TwinParserContext;
   const cursorOffset = document.offsetAt(position);
@@ -16,7 +16,7 @@ export const maybeParsedRuleAtPosition = Effect.fn(function* (
   const parserResult = Option.map(valueRegion, (value) =>
     parser.runTwinParser({
       text: value.text,
-      startOffset: document.offsetAt(value.range.start),
+      startOffset: value.startOffset,
     }),
   );
   const locatedToken = Option.flatMap(parserResult, ({ result }) =>
