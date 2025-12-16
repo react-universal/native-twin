@@ -131,11 +131,6 @@ export class CompletionEntryDetails {
   }
 }
 
-export const getCompletionTokenKind = (
-  section: AnyInternalTwinRule[1] | (string & {}),
-): t.CompletionItemKind =>
-  section === 'colors' ? t.CompletionItemKind.Color : t.CompletionItemKind.Constant;
-
 export function getCompletionEntryDetailsDisplayParts(rule: {
   themeSection: AnyInternalTwinRule[1] | (string & {});
   feature: CssFeature;

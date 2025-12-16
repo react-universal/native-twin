@@ -6,6 +6,7 @@ import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import { getCSSMarkDownParts, sheetEntriesToMD } from '../models/Editor.models';
 import { Position } from '../models/LSP.models';
 
+
 export const getHoverDetails = Effect.fn(function* (
   params: vscode.HoverParams,
   _cancelToken: vscode.CancellationToken,

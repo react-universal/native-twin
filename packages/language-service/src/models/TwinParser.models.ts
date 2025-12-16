@@ -1,3 +1,4 @@
+import { TinyColor } from '@ctrl/tinycolor';
 import type * as P from '@native-twin/arc-parser';
 import type {
   __Theme__,
@@ -18,7 +19,6 @@ import {
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
 import { CompletionItemKind } from 'vscode-languageserver-types';
-import { getCompletionEntryDetailsDisplayParts } from './Editor.models';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
 export const TwinVariantNode = Data.taggedEnum<TwinVariantNode>();
@@ -52,11 +52,20 @@ export class TwinRuleRegistry {
   }
 
   get displayParts() {
-    return getCompletionEntryDetailsDisplayParts({
-      declarationValue: this.declarationValue,
-      feature: this.info.meta.feature,
-      themeSection: this.info.themeSection,
-    });
+    if (this.info.meta.feature === 'colors' || this.info.themeSection === 'colors') {
+      const hex = new TinyColor(this.declarationValue);
+      if (hex.isValid) {
+        return {
+          kind: 'color',
+          text: hex.toHexString(),
+        };
+      }
+      return {
+        kind: 'color',
+        text: this.declarationValue,
+      };
+    }
+    return undefined;
   }
 
   get completionKind() {
