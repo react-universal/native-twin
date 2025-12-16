@@ -6,7 +6,6 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import ts from 'ts-morph';
-import * as Spec from '../internal/LSPAdapterSpec';
 import {
   JSXAttribute,
   JSXAttributeName,
@@ -46,7 +45,7 @@ const make = Effect.gen(function* () {
     return jsxElements;
   }
 
-  function getJSXElementattributes(node: TypescriptModels.AnyJSXElement) {
+  function getJSXElementRegionProps(node: TypescriptModels.AnyJSXElement) {
     const tagName = getJSXNodeTagName(node).getText();
     const mappedConfig =
       mappedComponents.find((x) => x.name === tagName) ?? createCommonMappedAttribute(tagName);
@@ -96,14 +95,8 @@ const make = Effect.gen(function* () {
     }
   }
 
-  // const getNodeRange = (node: ts.Node) =>
-  //   lspUtils.range(
-  //     lspUtils.position(node.getStart(), node.getStartLineNumber()),
-  //     lspUtils.position(node.getEnd(), node.getEndLineNumber()),
-  //   );
-
   function getJSXNode(node: TypescriptModels.AnyJSXElement, parent: JSXNode | undefined): JSXNode {
-    const attributes = getJSXElementattributes(node).map((prop) => {
+    const attributes = getJSXElementRegionProps(node).map((prop) => {
       const name = JSXAttributeName.make({
         endLine: node.getEndLineNumber(),
         startLine: node.getStartLineNumber(),
@@ -331,7 +324,4 @@ const make = Effect.gen(function* () {
 
 export interface JSXParser extends Effect.Effect.Success<typeof make> {}
 export const JSXParser = Context.GenericTag<JSXParser>('JSXParser');
-export const JSXParserLive = Layer.effect(JSXParser, make).pipe(
-  Layer.provide(Spec.LSPAdapterUtils.Default),
-  annotatedLayer('JSXParser'),
-);
+export const JSXParserLive = Layer.effect(JSXParser, make).pipe(annotatedLayer('JSXParser'));

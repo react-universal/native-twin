@@ -1,8 +1,6 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
-import { Location } from 'vscode-languageserver-types';
-import { fixRegionRanges } from '../internal/LSPAdapterSpec';
 import * as LSP from './LSP.models';
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
   constructor(private readonly textDocument: VSCDocument.TextDocument) {}
@@ -31,8 +29,8 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return LSP.Range.sum(r1, r2);
   }
 
-  getLocation(range: LSP.Range): Location {
-    return Location.create(this.uri, range);
+  getLocation(range: LSP.Range): LSP.Location {
+    return LSP.Location.from(this.uri, range);
   }
 
   getText(range?: LSP.Range) {
@@ -113,3 +111,78 @@ export interface TwinBaseDocument {
   offsetAt: (position: LSP.Position) => number;
   positionAt: (offset: number) => LSP.Position;
 }
+
+const transformJSXAttributes = (attribute: LSP.JSXAttribute, doc: VSCDocument.TextDocument) => {
+  const { value } = attribute;
+  const originalText = value.rawText;
+  const parsableText = value.text;
+  const documentText = doc.getText(
+    LSP.Range.from(doc.positionAt(value.startOffset), doc.positionAt(value.endOffset)),
+  );
+  let newStartOffset = value.startOffset;
+  // const newEndPosition = { ...value.range.end };
+  let newText = value.text;
+
+  const subset = new Set([originalText, parsableText, documentText]);
+  if (subset.size === 3) {
+    if (value.text.startsWith('`')) {
+      newStartOffset += 1;
+      newText = newText.slice(1);
+    }
+    if (value.text.endsWith('`')) {
+      newText = newText.slice(0, newText.lastIndexOf('`'));
+    }
+    return LSP.JSXAttribute.make({
+      ...attribute,
+      name: LSP.JSXAttributeName.make(attribute.name),
+      rawText: attribute.rawText,
+      value: LSP.JSXAttributeValue.make({
+        ...value,
+        startOffset: newStartOffset,
+        rawText: value.rawText,
+        text: newText,
+      }),
+    });
+  }
+  const starOffset = value.startOffset;
+  let counterDif = 0;
+  let cursor = 0;
+  while (cursor < originalText.length) {
+    const parsableChar = parsableText[cursor];
+    const char = originalText[cursor + counterDif];
+    if (!char) break;
+    if (char !== parsableChar) {
+      ++counterDif;
+    }
+    ++cursor;
+  }
+  const cursorDiff = cursor - parsableText.length;
+  const finalStartOffset = starOffset + counterDif - cursorDiff;
+  const finalEndOffset = starOffset + parsableText.length + counterDif - cursorDiff;
+
+  return LSP.JSXAttribute.make({
+    // range: LSP.Range.from(attribute.range.start, attribute.range.end),
+    ...attribute,
+    rawText: attribute.rawText,
+    name: LSP.JSXAttributeName.make(attribute.name),
+    value: LSP.JSXAttributeValue.make({
+      ...value,
+      rawText: value.rawText,
+      text: value.text,
+      startOffset: finalStartOffset,
+      endOffset: finalEndOffset,
+    }),
+  });
+};
+
+const fixRegionRanges = (node: LSP.JSXNode, doc: VSCDocument.TextDocument): LSP.JSXNode => {
+  return LSP.JSXNode.make({
+    ...node,
+    id: node.id,
+    text: node.rawText,
+    parent: node.parent,
+    rawText: node.rawText,
+    tag: LSP.JSXTagName.make(node.tag),
+    attributes: node.attributes.map((x) => transformJSXAttributes(x, doc)),
+  });
+};

@@ -3,8 +3,8 @@ import * as Effect from 'effect/Effect';
 import type * as vscode from 'vscode-languageserver';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
+import { getCSSMarkDownParts, sheetEntriesToMD } from '../models/Editor.models';
 import { Position } from '../models/LSP.models';
-import { getCSSMarkDownParts, sheetEntriesToMD } from '../utils/language/language.utils';
 import { completionRulesToQuickInfo } from '../utils/language/quickInfo.utils';
 
 export const getHoverDetails = Effect.fn(function* (

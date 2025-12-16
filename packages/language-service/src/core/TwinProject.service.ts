@@ -6,7 +6,6 @@ import * as Option from 'effect/Option';
 import * as Order from 'effect/Order';
 import * as Predicate from 'effect/Predicate';
 import { inspect } from 'util';
-import { LSPAdapterUtils } from '../internal/LSPAdapterSpec';
 import { GraphState, type JSXNode, SourceEdgeInfo, SourceNodeInfo } from '../models/LSP.models';
 
 const JSXRegionOrd = Order.mapInput(Order.number, (_: JSXNode) => _.startOffset);
@@ -50,7 +49,7 @@ export const makeTwinGraph = Effect.gen(function* () {
   });
 
   return { createSourceGraph, traverseGraph };
-}).pipe(Effect.provide(LSPAdapterUtils.Default));
+});
 
 const createTraversalContext = Effect.fn(function* (source: JSXNode[]) {
   // const lspUtils = yield* LSPAdapterUtils;

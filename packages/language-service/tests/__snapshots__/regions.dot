@@ -1,9 +1,49 @@
 digraph Regions {
-  "0" [label="Text - { name: 'Text', id: '#1m8rpdp', info: [ 'bg-red-500 asdasdasd' ], range: Range { start: Position { line: 11, character: 379 }, end: Position { line: 11, character: 422 } } }"];
-  "1" [label="Text - { name: 'Text', id: '#1rhbs5s', info: [ '`bg-raw2222 ${state} raw-3333`' ], range: Range { start: Position { line: 10, character: 319 }, end: Position { line: 10, character: 370 } } }"];
-  "2" [label="View - { name: 'View', id: '#70zhc2', info: [ 'bg-raw' ], range: Range { start: Position { line: 9, character: 283 }, end: Position { line: 12, character: 436 } } }"];
-  "3" [label="Text - { name: 'Text', id: '#evszmr', info: [ 'bg-rose-700 bg-blue bg-black text(sm md:gray)' ], range: Range { start: Position { line: 8, character: 208 }, end: Position { line: 8, character: 276 } } }"];
-  "4" [label="View - { name: 'View', id: '#11mfu6w', info: [ 'bg-gray shadow-md' ], range: Range { start: Position { line: 7, character: 160 }, end: Position { line: 13, character: 448 } } }"];
+  "0" [label="Text - {
+  name: 'Text',
+  id: '{\"endLine\":11,\"startLine\":11,\"endOffset\":422,\"startOffset\":379}',
+  info: [ 'bg-red-500 asdasdasd' ],
+  range: Range {
+    start: Position { line: 10, character: 8 },
+    end: Position { line: 10, character: 51 }
+  }
+}"];
+  "1" [label="Text - {
+  name: 'Text',
+  id: '{\"endLine\":10,\"startLine\":10,\"endOffset\":370,\"startOffset\":319}',
+  info: [ '`bg-raw2222 ${state} raw-3333`' ],
+  range: Range {
+    start: Position { line: 9, character: 8 },
+    end: Position { line: 9, character: 59 }
+  }
+}"];
+  "2" [label="View - {
+  name: 'View',
+  id: '{\"endLine\":12,\"startLine\":9,\"endOffset\":436,\"startOffset\":283}',
+  info: [ 'bg-raw' ],
+  range: Range {
+    start: Position { line: 8, character: 6 },
+    end: Position { line: 11, character: 13 }
+  }
+}"];
+  "3" [label="Text - {
+  name: 'Text',
+  id: '{\"endLine\":8,\"startLine\":8,\"endOffset\":276,\"startOffset\":208}',
+  info: [ 'bg-rose-700 bg-blue bg-black text(sm md:gray)' ],
+  range: Range {
+    start: Position { line: 7, character: 6 },
+    end: Position { line: 7, character: 74 }
+  }
+}"];
+  "4" [label="View - {
+  name: 'View',
+  id: '{\"endLine\":13,\"startLine\":7,\"endOffset\":448,\"startOffset\":165}',
+  info: [ 'bg-gray shadow-md' ],
+  range: Range {
+    start: Position { line: 6, character: 4 },
+    end: Position { line: 12, character: 11 }
+  }
+}"];
   "1" -> "2" [label="SourceEdgeInfo { relationship: 'jsx-child', index: 0, isRoot: false, nodeText: '2:View -> 1:Text', _tag: 'SourceEdgeInfo' }"];
   "0" -> "2" [label="SourceEdgeInfo { relationship: 'jsx-child', index: 1, isRoot: false, nodeText: '2:View -> 0:Text', _tag: 'SourceEdgeInfo' }"];
   "3" -> "4" [label="SourceEdgeInfo { relationship: 'jsx-child', index: 0, isRoot: false, nodeText: '4:View -> 3:Text', _tag: 'SourceEdgeInfo' }"];

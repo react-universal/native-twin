@@ -2,7 +2,7 @@ import * as Effect from 'effect/Effect';
 import * as LSP from '../core/LSPContext.service';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
-import { TwinCompletionItem } from '../models/Completion.model';
+import { TwinCompletionItem } from '../models/Editor.models';
 import { maybeParsedRuleAtPosition } from './common.program';
 
 export const getCompletionsAtPosition = LSP.createTwinCompletions({

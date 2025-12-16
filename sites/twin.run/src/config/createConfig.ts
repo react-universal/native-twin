@@ -1,28 +1,6 @@
 // sort-imports-ignore
 /** biome-ignore-all lint/suspicious/noTemplateCurlyInString: necessary */
 import * as vscode from 'vscode';
-import { LogLevel } from '@codingame/monaco-vscode-api';
-import getConfigurationServiceOverride from '@codingame/monaco-vscode-configuration-service-override';
-import getEditorServiceOverride from '@codingame/monaco-vscode-editor-service-override';
-import getExplorerServiceOverride from '@codingame/monaco-vscode-explorer-service-override';
-import {
-  RegisteredFileSystemProvider,
-  RegisteredMemoryFile,
-  registerFileSystemOverlay,
-} from '@codingame/monaco-vscode-files-service-override';
-import getLanguageServiceOverride from '@codingame/monaco-vscode-languages-service-override';
-import getLayoutServiceOverride from '@codingame/monaco-vscode-layout-service-override';
-import getLifecycleServiceOverride from '@codingame/monaco-vscode-lifecycle-service-override';
-import getModelServiceOverride from '@codingame/monaco-vscode-model-service-override';
-import getOutlineServiceOverride from '@codingame/monaco-vscode-outline-service-override';
-import getStorageServiceOverride from '@codingame/monaco-vscode-storage-service-override';
-import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
-import getViewBannerServiceOverride from '@codingame/monaco-vscode-view-banner-service-override';
-import getViewCommonOverride from '@codingame/monaco-vscode-view-common-service-override';
-import getActBarServiceOverride from '@codingame/monaco-vscode-view-status-bar-service-override';
-import getViewServiceOverride from '@codingame/monaco-vscode-views-service-override';
-import getWorkbenchServiceOverride from '@codingame/monaco-vscode-workbench-service-override';
-import getWorkspaceServiceOverride from '@codingame/monaco-vscode-workspace-trust-service-override';
 
 // this is required syntax highlighting
 import '@codingame/monaco-vscode-javascript-default-extension';
@@ -40,16 +18,38 @@ import '@codingame/monaco-vscode-markdown-language-features-default-extension';
 import '@codingame/monaco-vscode-typescript-basics-default-extension';
 import '@codingame/monaco-vscode-typescript-language-features-default-extension';
 import '@codingame/monaco-vscode-standalone-typescript-language-features';
+
+import { LogLevel } from '@codingame/monaco-vscode-api';
+import getConfigurationServiceOverride from '@codingame/monaco-vscode-configuration-service-override';
 import editorWorker from '@codingame/monaco-vscode-editor-api/esm/vs/editor/editor.worker?worker&url';
+import getEditorServiceOverride from '@codingame/monaco-vscode-editor-service-override';
+import getExplorerServiceOverride from '@codingame/monaco-vscode-explorer-service-override';
+import {
+  RegisteredFileSystemProvider,
+  RegisteredMemoryFile,
+  registerFileSystemOverlay,
+} from '@codingame/monaco-vscode-files-service-override';
+import getLanguageServiceOverride from '@codingame/monaco-vscode-languages-service-override';
+import getLayoutServiceOverride from '@codingame/monaco-vscode-layout-service-override';
+import getLifecycleServiceOverride from '@codingame/monaco-vscode-lifecycle-service-override';
+import getModelServiceOverride from '@codingame/monaco-vscode-model-service-override';
+import getOutlineServiceOverride from '@codingame/monaco-vscode-outline-service-override';
 import tsWorker from '@codingame/monaco-vscode-standalone-typescript-language-features/worker?worker?url';
+import getStorageServiceOverride from '@codingame/monaco-vscode-storage-service-override';
 import textMateWorker from '@codingame/monaco-vscode-textmate-service-override/worker?worker&url';
+import getThemeServiceOverride from '@codingame/monaco-vscode-theme-service-override';
+import getViewBannerServiceOverride from '@codingame/monaco-vscode-view-banner-service-override';
+import getViewCommonOverride from '@codingame/monaco-vscode-view-common-service-override';
+import getActBarServiceOverride from '@codingame/monaco-vscode-view-status-bar-service-override';
+import getViewServiceOverride from '@codingame/monaco-vscode-views-service-override';
+import getWorkbenchServiceOverride from '@codingame/monaco-vscode-workbench-service-override';
+import getWorkspaceServiceOverride from '@codingame/monaco-vscode-workspace-trust-service-override';
 import { LSPConstants, parseLSPConfigInput } from '@native-twin/language-service/browser';
 import type { Logger } from 'monaco-languageclient/common';
 import type { EditorAppConfig } from 'monaco-languageclient/editorApp';
 import type { LanguageClientConfig } from 'monaco-languageclient/lcwrapper';
 import {
   defaultHtmlAugmentationInstructions,
-  defaultViewsInit,
   type MonacoVscodeApiConfig,
   useOpenEditorStub,
 } from 'monaco-languageclient/vscodeApiWrapper';

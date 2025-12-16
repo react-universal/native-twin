@@ -6,7 +6,13 @@ import * as Effect from 'effect/Effect';
 import { readFileSync } from 'fs';
 import path from 'path';
 import { inspect } from 'util';
-import { JSXParser, TwinGraphosContext, TwinRuntimeContext, TypeScriptProgram } from '../src';
+import {
+  JSXParser,
+  LSPAdapterSpec,
+  TwinGraphosContext,
+  TwinRuntimeContext,
+  TypeScriptProgram,
+} from '../src';
 import { makeTwinGraph } from '../src/core/TwinProject.service';
 import { TestLayer } from './dsl';
 import twinConfig from './fixtures/react/tailwind.config';
@@ -21,6 +27,7 @@ describe('Twin LSP API', () => {
       const tsParser = yield* JSXParser;
       const program = yield* TypeScriptProgram;
       const twin = yield* TwinRuntimeContext;
+      const adapter = yield* LSPAdapterSpec;
       yield* twin.bootTwinRuntime(path.join(__dirname, 'fixtures/react', 'tailwind.config.ts'));
 
       const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
@@ -30,7 +37,7 @@ describe('Twin LSP API', () => {
       );
       const jsxRoots = tsParser.getJSXRootsFromSource(tsSource);
       const regions = tsParser.jsxNodesToRegions(jsxRoots);
-      // const document = yield* adapter.getLSPDocument(ComponentPath);
+      const document = yield* adapter.getLSPDocument(ComponentPath);
       // const regions = yield* adapter.getRegions(ComponentPath);
       const lspTree = graphos.lspRegionsToTree(regions);
       const grapho = graphos.lspTreeToGraph(lspTree);
@@ -42,7 +49,8 @@ describe('Twin LSP API', () => {
       const graphViz1 = Graph.toGraphViz(grapho, {
         edgeLabel: (data) => inspect(data),
         graphName: 'Regions',
-        nodeLabel: (node) => `${node.tagName} - ${inspect(node.nodeRegion.range, false, null)}`,
+        nodeLabel: (node) =>
+          `${node.tagName} - ${inspect(document.getNodeRange(node.nodeRegion), false, null)}`,
       });
 
       yield* Effect.promise(() =>
@@ -63,7 +71,7 @@ describe('Twin LSP API', () => {
         edgeLabel: (data) => inspect(data, { colors: false, depth: null, breakLength: Infinity }),
         graphName: 'Regions',
         nodeLabel: (node) =>
-          `${node.tagName} - ${inspect({ name: node.tagName, id: node.id, info: node.nodeRegion.attributes.map((x) => x.value.text), range: node.nodeRegion.range }, { colors: false, depth: null, breakLength: Infinity })}`,
+          `${node.tagName} - ${inspect({ name: node.tagName, id: node.id, info: node.nodeRegion.attributes.map((x) => x.value.text), range: document.getNodeRange(node.nodeRegion) }, { colors: false, depth: null, breakLength: 80 })}`,
       });
 
       yield* Effect.promise(() =>

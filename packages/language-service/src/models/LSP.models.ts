@@ -1,7 +1,11 @@
+import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
+import * as Equivalence from 'effect/Equivalence';
 import * as Graph from 'effect/Graph';
 import * as Option from 'effect/Option';
+import * as Order from 'effect/Order';
 import * as Schema from 'effect/Schema';
+import * as Tuple from 'effect/Tuple';
 import type * as t from 'vscode-languageserver-types';
 
 export class Position extends Schema.Class<Position>('Position')({
@@ -13,7 +17,20 @@ export class Position extends Schema.Class<Position>('Position')({
       line: Math.max(self.line, that.line),
       character: self.character + that.character,
     });
+
   static from = (line: number, character: number) => new Position({ line, character });
+
+  static equals: Equivalence.Equivalence<Position> = Equivalence.mapInput(
+    Equivalence.product(Equivalence.number, Equivalence.number),
+    (position: Position) => Tuple.make(position.line, position.character),
+  );
+
+  static order: Order.Order<Position> = Order.mapInput(
+    Order.tuple(Order.number, Order.number),
+    (position: Position) => Tuple.make(position.line, position.character),
+  );
+
+  static sort = RA.sortBy<Position[]>(Position.order);
 }
 
 export class Range extends Schema.Class<Range>('Range')({ start: Position, end: Position }, {}) {
@@ -22,7 +39,34 @@ export class Range extends Schema.Class<Range>('Range')({ start: Position, end: 
       start: Position.sum(self.start, that.start),
       end: Position.sum(self.end, that.end),
     });
-  static from = (start: Position, end: Position) => new Range({ start: Position.make(start), end: Position.make(end) });
+  static from = (start: Position, end: Position) =>
+    new Range({ start: Position.make(start), end: Position.make(end) });
+
+  static equals: Equivalence.Equivalence<Range> = Equivalence.mapInput(
+    Equivalence.product(Position.equals, Position.equals),
+    (range: Range) => Tuple.make(range.start, range.end),
+  );
+
+  static order: Order.Order<Range> = Order.mapInput(
+    Order.tuple(Position.order, Position.order),
+    (range: Range) => Tuple.make(range.start, range.end),
+  );
+
+  static sort = RA.sortBy<Range[]>(Range.order);
+}
+
+export class Location extends Schema.Class<Location>('Location')({
+  uri: Schema.String,
+  range: Range,
+}) {
+  static from(uri: string, range: Range) {
+    return new Location({ uri, range });
+  }
+
+  static equals: Equivalence.Equivalence<Location> = Equivalence.mapInput(
+    Equivalence.product(Equivalence.string, Range.equals),
+    (location: Location) => Tuple.make(location.uri, location.range),
+  );
 }
 
 export class Node extends Schema.Class<Node>('Node')({
@@ -30,10 +74,17 @@ export class Node extends Schema.Class<Node>('Node')({
   endLine: Schema.NullOr(Schema.Number),
   startOffset: Schema.Number,
   endOffset: Schema.Number,
-  // range: Range,
   /** @description this text may have the literal container AKA `|'|" even template literal vars xor expressions */
   rawText: Schema.String,
-}) {}
+}) {
+  static equals = (self: Node, that: Node) => Range.equals(Node.range(self), Node.range(that));
+
+  static range = (self: Node) =>
+    Range.from(
+      Position.from(self.startLine ?? 1, self.startOffset),
+      Position.from(self.endLine ?? 1, self.endOffset),
+    );
+}
 Schema.annotations(Node, {});
 
 export class JSXAttributeName extends Node.extend<JSXAttributeName>('JSXAttributeName')({

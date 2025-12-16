@@ -6,7 +6,8 @@ import type * as vscode from 'vscode-languageserver';
 import { LSPConfig } from '../core/LSPContext.service';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
-import { DiagnosticReport, TwinDiagnosticCodes } from '../models/Diagnostic.model';
+import { DiagnosticReport } from '../models/Editor.models';
+import { TwinDiagnosticCodes } from '../models/lsp.constants';
 import type { ParsedRuleWithLocation, ResolvedTwinResult } from '../models/TwinParser.models';
 
 export interface BaseDiagnosticItem {
@@ -30,9 +31,7 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
   const severity = yield* configSelector((x) => x.diagnostics);
   const regions = document.parsableRegions;
   return yield* Stream.fromIterable(regions).pipe(
-    Stream.mapEffect(({ attr }) =>
-      parser.runFullParserEffect(attr.text, attr.startOffset),
-    ),
+    Stream.mapEffect(({ attr }) => parser.runFullParserEffect(attr.text, attr.startOffset)),
     Stream.map((results) => {
       const diagnosticReports = new Map<
         string,

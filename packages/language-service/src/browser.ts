@@ -7,10 +7,6 @@ export * from './internal/RunnerLayer';
 export * from './models/LSP.models';
 export type { TwinConfigOptions } from './models/lsp.constants';
 export * from './models/lsp.constants';
-export {
-  TwinMonacoTextDocument,
-  TwinTokenLocation,
-} from './models/MonacoTwinDocument';
 export * from './models/TwinLSPDocument.model';
 export { languagePrograms } from './programs/index';
 export * from './Typescript/JSXParser.service';

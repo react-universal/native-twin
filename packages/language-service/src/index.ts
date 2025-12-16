@@ -19,10 +19,6 @@ export {
   getClientCapabilities,
 } from './utils/connection.utils';
 export { getDocumentLanguageLocations } from './utils/language/babelParser';
-export {
-  getCompletionEntryDetailsDisplayParts,
-  getDocumentationMarkdown,
-} from './utils/language/language.utils';
 export { completionRulesToQuickInfo } from './utils/language/quickInfo.utils';
 // export { requireESM } from './utils/load-esm';
 /** Logger */

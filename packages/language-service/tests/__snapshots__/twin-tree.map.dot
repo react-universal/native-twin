@@ -1,23 +1,23 @@
 digraph Regions {
   "0" [label="Text - Range {
-  start: Position { line: 11, character: 379 },
-  end: Position { line: 11, character: 422 }
+  start: Position { line: 10, character: 8 },
+  end: Position { line: 10, character: 51 }
 }"];
   "1" [label="Text - Range {
-  start: Position { line: 10, character: 319 },
-  end: Position { line: 10, character: 370 }
+  start: Position { line: 9, character: 8 },
+  end: Position { line: 9, character: 59 }
 }"];
   "2" [label="View - Range {
-  start: Position { line: 9, character: 283 },
-  end: Position { line: 12, character: 436 }
+  start: Position { line: 8, character: 6 },
+  end: Position { line: 11, character: 13 }
 }"];
   "3" [label="Text - Range {
-  start: Position { line: 8, character: 208 },
-  end: Position { line: 8, character: 276 }
+  start: Position { line: 7, character: 6 },
+  end: Position { line: 7, character: 74 }
 }"];
   "4" [label="View - Range {
-  start: Position { line: 7, character: 160 },
-  end: Position { line: 13, character: 448 }
+  start: Position { line: 6, character: 4 },
+  end: Position { line: 12, character: 11 }
 }"];
   "2" -> "0" [label="SourceEdgeInfo {
   relationship: 'jsx-child',

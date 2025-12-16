@@ -5,7 +5,6 @@ import ts from 'ts-morph';
 import {
   createTwinLoggerLayerFor,
   JSXParserLive,
-  LSPAdapterUtils,
   LSPConfig,
   parseLSPConfigInput,
   type TwinConfigOptions,
@@ -68,7 +67,6 @@ export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(TestVscodeLSPAdapterLive),
   Layer.provideMerge(TsProgramLive),
   Layer.provideMerge(TwinGraphLive),
-  Layer.provideMerge(LSPAdapterUtils.Default),
   Layer.provideMerge(JSXParserLive),
   Layer.provideMerge(TwinParserContextLive),
   Layer.provideMerge(TypescriptUtilsLive),
