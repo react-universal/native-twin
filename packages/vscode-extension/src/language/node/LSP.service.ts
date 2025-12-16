@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import * as path from 'node:path';
 import { LSPConfig, LSPConstants } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import * as path from 'path';
 import {
   LanguageClient,
   type LanguageClientOptions,

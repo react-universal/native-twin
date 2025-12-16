@@ -1,8 +1,8 @@
-import * as path from 'node:path';
 import { parseLSPConfigInput } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
+import * as path from 'path';
 import type ts from 'typescript';
 import { completions } from './completions';
 import * as LSPConfig from './core/LanguageConfig.service';

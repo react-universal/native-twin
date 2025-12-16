@@ -7,6 +7,10 @@ export interface LSPParser {
     filename: string,
     code: string,
   ): Effect.Effect<(typeof AnyParsedNode.Type)[], AnyLSPError>;
+//   parseConfigFile: (
+//     filename: string,
+//     content: string,
+//   ) => Effect.Effect<ParsedTwinConfigFile, AnyLSPError>;
 }
 
 export const LSPParser = Context.GenericTag<LSPParser>('lsp/Parser');

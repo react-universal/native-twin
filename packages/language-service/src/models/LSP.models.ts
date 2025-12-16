@@ -7,6 +7,7 @@ import * as Order from 'effect/Order';
 import * as Schema from 'effect/Schema';
 import * as Tuple from 'effect/Tuple';
 import type * as t from 'vscode-languageserver-types';
+import type { InternalTwinConfig } from '../internal/TwinTypes.internal';
 
 export class Position extends Schema.Class<Position>('Position')({
   line: Schema.Number,
@@ -122,6 +123,21 @@ export const AnyParsedNode = Schema.Union(
   JSXNode,
   JSXTagName,
 );
+
+export interface ParsedTwinConfigFile {
+  userTheme: InternalTwinConfig['theme'];
+  presets: {
+    caller: string;
+    source: string;
+    importBinding: string;
+  }[];
+  rules: Array<object>;
+  content: InternalTwinConfig['content'];
+  preflight: InternalTwinConfig['preflight'];
+  darkMode: InternalTwinConfig['darkMode'];
+  variants: InternalTwinConfig['variants'];
+  root: InternalTwinConfig['root'];
+}
 
 export type AnyParsedNode = typeof AnyParsedNode;
 

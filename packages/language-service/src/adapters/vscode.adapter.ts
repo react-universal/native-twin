@@ -1,4 +1,3 @@
-import url from 'node:url';
 import { identity } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -20,7 +19,7 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
       .pipe(Effect.flatMap(identity))
       .pipe(Effect.mapError((e) => FileNotFound.create(e)));
 
-    const filePath = url.fileURLToPath(filename);
+    const filePath = filename.replaceAll(/file:\/*/g, '');
     const tsSource = yield* program.getSourceFile(filePath, document.getText());
     const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource));
 

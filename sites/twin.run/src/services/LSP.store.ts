@@ -1,9 +1,9 @@
 import type * as vscode from 'vscode';
-import path from 'node:path';
 import { URI } from '@codingame/monaco-vscode-api/vscode/vs/base/common/uri';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import path from 'path';
 import * as FileStoreDB from '../models/FileStore.models';
 import { traceLayerLogs } from '../utils/logger.utils';
 

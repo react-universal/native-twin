@@ -12,7 +12,6 @@ import {
   InitializeRequest,
   RegistrationRequest,
 } from 'vscode-languageserver-protocol';
-import { CacheMap } from '../src/utils/cache-map';
 import { connect } from './connection';
 
 type Settings = any;
@@ -185,7 +184,7 @@ export function init(fixture: string | string[]): FixtureContext {
     reject: (reason?: any) => void;
   }
 
-  const openingDocuments = new CacheMap<string, PromiseWithResolvers<void>>();
+  const openingDocuments = new Map<string, PromiseWithResolvers<void>>();
   let projectDetails: any = null;
 
   client.onNotification('@/tailwindCSS/projectDetails', (params) => {
@@ -239,20 +238,20 @@ export function init(fixture: string | string[]): FixtureContext {
       const uri = resolveUri(dir, `file-${counter++}`);
       docSettings.set(uri, settings);
 
-      const openPromise = openingDocuments.remember(uri, () => {
-        let resolve = () => {};
-        let reject = () => {};
+      // const openPromise = openingDocuments.remember(uri, () => {
+      //   let resolve = () => {};
+      //   let reject = () => {};
 
-        const p = new Promise<void>((_resolve, _reject) => {
-          resolve = _resolve;
-          reject = _reject;
-        });
+      //   const p = new Promise<void>((_resolve, _reject) => {
+      //     resolve = _resolve;
+      //     reject = _reject;
+      //   });
 
-        return Object.assign(p, {
-          resolve,
-          reject,
-        });
-      });
+      //   return Object.assign(p, {
+      //     resolve,
+      //     reject,
+      //   });
+      // });
 
       client.onNotification(DidChangeConfigurationNotification.type, () => {
         console.log('DID_OPEN');

@@ -16,6 +16,7 @@ import {
   TypeScriptProgram,
   TypescriptUtilsLive,
 } from '../../src';
+import { TypescriptParser } from '../../src/Typescript/TypescriptParser';
 import { TestVscodeLSPAdapterLive } from './adapter.mock';
 import { requireESM } from './load-esm';
 
@@ -65,6 +66,7 @@ const lspConfig = Effect.gen(function* () {
 export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(Layer.succeed(TypeScriptApi, ts)),
   Layer.provideMerge(TestVscodeLSPAdapterLive),
+  Layer.provideMerge(TypescriptParser),
   Layer.provideMerge(TsProgramLive),
   Layer.provideMerge(TwinGraphLive),
   Layer.provideMerge(JSXParserLive),

@@ -1,4 +1,3 @@
-import { inspect } from 'node:util';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
 import * as Effect from 'effect/Effect';
 import * as FiberId from 'effect/FiberId';
@@ -11,6 +10,7 @@ import * as LogLevel from 'effect/LogLevel';
 import * as LogSpan from 'effect/LogSpan';
 import * as Option from 'effect/Option';
 import * as Str from 'effect/String';
+import { inspect } from 'util';
 import * as Utils from '../utils/ansi.utils.js';
 
 export const TwinCompilerLogger = Logger.make((options) => {

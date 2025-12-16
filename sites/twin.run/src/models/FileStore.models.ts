@@ -1,9 +1,9 @@
 import type { Uri } from 'vscode';
-import path from 'node:path';
 import Dexie, { type Table } from 'dexie';
 import logger, { LogType } from 'dexie-logger';
 import * as Brand from 'effect/Brand';
 import * as Data from 'effect/Data';
+import path from 'path';
 
 export interface FileItem {
   id: string;

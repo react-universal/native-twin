@@ -28,7 +28,8 @@ describe('Twin LSP API', () => {
       const program = yield* TypeScriptProgram;
       const twin = yield* TwinRuntimeContext;
       const adapter = yield* LSPAdapterSpec;
-      yield* twin.bootTwinRuntime(path.join(__dirname, 'fixtures/react', 'tailwind.config.ts'));
+      const twinPath = path.join(__dirname, 'fixtures/react', 'tailwind.config.ts');
+      yield* twin.bootTwinRuntime(twinPath);
 
       const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
       const tsSource = yield* program.getSourceFile(

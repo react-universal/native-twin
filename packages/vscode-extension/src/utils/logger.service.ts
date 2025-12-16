@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
-import { inspect } from 'node:util';
 import { LSPConstants } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import * as Predicate from 'effect/Predicate';
+import { inspect } from 'util';
 
 /**
  * @domain `Client`
