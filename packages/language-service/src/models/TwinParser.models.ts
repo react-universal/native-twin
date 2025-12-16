@@ -18,7 +18,7 @@ import {
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
 import { CompletionItemKind } from 'vscode-languageserver-types';
-import { getCompletionEntryDetailsDisplayParts } from '../utils/language/language.utils';
+import { getCompletionEntryDetailsDisplayParts } from './Editor.models';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
 export const TwinVariantNode = Data.taggedEnum<TwinVariantNode>();
