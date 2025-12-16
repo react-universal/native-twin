@@ -25,6 +25,7 @@ import { createStyledContext } from '../utils/sheet.utils';
 import * as LspConfig from './LSPContext.service';
 
 const resolvedSections = new Map<string, Record<string, any>>();
+
 const make = Effect.gen(function* () {
   const lspConfig = yield* LspConfig.LSPConfig;
   const twinRef = yield* Ref.make<InternalTwFn>(setup(defineConfig({ content: [] })));

@@ -2,6 +2,7 @@ import url from 'node:url';
 import { identity } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
+import { TypescriptUtilsLive } from '../browser';
 import { LSPContext } from '../core/LSPContext.service';
 import * as LSPTypes from '../internal/LSPAdapterSpec';
 import { FileNotFound, type Position } from '../models/LSP.models';
@@ -22,34 +23,6 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
     const filePath = url.fileURLToPath(filename);
     const tsSource = yield* program.getSourceFile(filePath, document.getText());
     const regions = parser.jsxNodesToRegions(parser.getJSXRootsFromSource(tsSource));
-    // .map((jsxNode) => {
-    //   return JSXNode.make({
-    //     ...jsxNode,
-    //     attributes: jsxNode.attributes.map((x) =>
-    //       JSXAttribute.make({
-    //         ...x,
-    //         value: JSXAttributeValue.make({
-    //           ...x.value,
-    //           range: Range.from(
-    //             document.positionAt(x.value.range.start.character),
-    //             document.positionAt(x.value.range.end.character),
-    //           ),
-    //         }),
-    //         name: JSXAttributeName.make({
-    //           ...x.name,
-    //           range: Range.from(
-    //             document.positionAt(x.name.range.start.character),
-    //             document.positionAt(x.name.range.end.character),
-    //           ),
-    //         }),
-    //         range: Range.from(
-    //           document.positionAt(x.range.start.character),
-    //           document.positionAt(x.range.end.character),
-    //         ),
-    //       }),
-    //     ),
-    //   });
-    // });
 
     return new TwinLSPDocument(document, regions);
   });
@@ -73,61 +46,8 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
     getRegions,
     getRegionAt,
   });
-}).pipe(Layer.effect(LSPTypes.LSPAdapterSpec));
-
-// export const twinCompletionsToVscode = <Document extends TwinLSPDocument>(
-//   region: LSPTwinCompletionsResult['region'],
-//   document: Document,
-//   offset: number,
-// ) =>
-//   Effect.gen(function* () {
-//     const parser = yield* TwinParserContext;
-
-//     const regionsToVisit: LSPTypes.AnyTwinNodeRegion[] = asArray(region);
-//     let valueRegion: LSPTypes.JsxAttributeValueRegion | null = null;
-//     while (regionsToVisit.length > 0) {
-//       const nextRegion = regionsToVisit.pop();
-//       if (!nextRegion) break;
-
-//       switch (nextRegion._tag) {
-//         case 'JsxAttributeRegion':
-//           regionsToVisit.push(nextRegion.attributeValue);
-//           continue;
-//         case 'JsxNodeRegion':
-//           regionsToVisit.push(...nextRegion.styledProps);
-//           continue;
-//         case 'JsxAttributeBindingRegion':
-//         case 'JsxTagName':
-//           continue;
-//         case 'JsxAttributeValueRegion':
-//           valueRegion = nextRegion;
-//           break;
-//       }
-//     }
-
-//     if (!valueRegion) return [];
-
-//     const parserResult = parser.runTwinParser({
-//       text: valueRegion.text,
-//       startOffset: document.offsetAt(valueRegion.range.start),
-//     });
-
-//     const locatedToken = parserResult.composedClasses.find((x) =>
-//       document.isPositionInRange(
-//         document.positionAt(offset),
-//         document.getRangeFor(x.startOffset + x.parentStarts, x.endOffset + x.parentStarts),
-//       ),
-//     );
-//     if (!locatedToken) return [];
-
-//     const rules = yield* parser.findRulesByKey(locatedToken.classNameText);
-//     return rules.map((rule): VscodeCompletionItem => {
-//       return rule.toVscode(
-//         document.getRangeFor(
-//           locatedToken.startOffset + locatedToken.parentStarts,
-//           locatedToken.endOffset + locatedToken.parentStarts,
-//         ),
-//         locatedToken.text,
-//       );
-//     });
-//   });
+}).pipe(
+  Layer.effect(LSPTypes.LSPAdapterSpec),
+  Layer.provide(JSXParser.JSXParserLive),
+  Layer.provide(TypescriptUtilsLive),
+);

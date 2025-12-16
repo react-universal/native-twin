@@ -12,11 +12,10 @@ import { ComposedClass } from '../internal/parsers/parser.data';
 import { parseTwinRules } from '../internal/parsers/TwinParser.runner';
 import type * as TwinParserModel from '../models/TwinParser.models';
 import { annotatedLayer } from '../utils/effect.utils';
-import { TwinRuntimeContext } from './TwinRuntime.service';
+import { TwinRuntimeContext, TwinRuntimeContextLive } from './TwinRuntime.service';
 
 const make = Effect.gen(function* () {
   const { twinTrie, twinRef, styledContext, themeVariants } = yield* TwinRuntimeContext;
-  // yield* bootTwinRuntime();
 
   const findRulesByKey = Effect.fn(function* (key: string) {
     const dictionary = yield* twinTrie.get;
@@ -80,5 +79,6 @@ const make = Effect.gen(function* () {
 export interface TwinParserContext extends Effect.Effect.Success<typeof make> {}
 export const TwinParserContext = Context.GenericTag<TwinParserContext>('parsers/TwinParserContext');
 export const TwinParserContextLive = Layer.effect(TwinParserContext, make).pipe(
+  Layer.provide(TwinRuntimeContextLive),
   annotatedLayer('TwinParser'),
 );
