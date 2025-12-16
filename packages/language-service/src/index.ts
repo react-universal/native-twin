@@ -19,7 +19,6 @@ export {
   getClientCapabilities,
 } from './utils/connection.utils';
 export { getDocumentLanguageLocations } from './utils/language/babelParser';
-export { completionRulesToQuickInfo } from './utils/language/quickInfo.utils';
 // export { requireESM } from './utils/load-esm';
 /** Logger */
 export { createLspLogger, createTwinLoggerLayerFor, loggerUtils } from './utils/lsp.logger.service';

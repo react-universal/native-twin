@@ -3,13 +3,14 @@ import type { CssFeature, SheetEntry } from '@native-twin/css';
 import toCssFormat from 'cssbeautify';
 import * as RA from 'effect/Array';
 import * as Equal from 'effect/Equal';
+import * as Equivalence from 'effect/Equivalence';
 import * as Hash from 'effect/Hash';
 import { css_beautify, js_beautify } from 'js-beautify';
 import * as t from 'vscode-languageserver-types';
 import * as vscode from 'vscode-languageserver-types';
 import type { AnyInternalTwinRule } from '../internal/TwinTypes.internal';
 import { composeDeclarations, type StyledContext } from '../utils/sheet.utils';
-import { isSameRange } from '../utils/vscode.utils';
+import { Range } from './LSP.models';
 import { LSPConstants, type TwinConfigOptions, TwinDiagnosticCodes } from './lsp.constants';
 import type { TwinLSPDocument } from './TwinLSPDocument.model';
 import type { ParsedRuleWithLocation, TwinRuleRegistry } from './TwinParser.models';
@@ -62,8 +63,12 @@ export class DiagnosticReport implements Equal.Equal {
   }
 
   constructor(private readonly input: DiagnosticReportInput) {
-    this.relatedInfo = RA.dedupeWith(this.input.rules, (a, b) =>
-      isSameRange(a.location.range, b.location.range),
+    this.relatedInfo = RA.dedupeWith(
+      this.input.rules,
+      Equivalence.mapInput(
+        Range.equals,
+        (rule: (typeof this.input.rules)[number]) => rule.location.range,
+      ),
     ).map((rule) => vscode.DiagnosticRelatedInformation.create(rule.location, rule.text));
   }
 
@@ -92,7 +97,7 @@ export class DiagnosticReport implements Equal.Equal {
       that instanceof DiagnosticReport &&
       this.input.location.uri === that.input.location.uri &&
       this.input.code === that.input.code &&
-      isSameRange(this.input.location.range, that.input.location.range)
+      Range.equals(this.input.location.range, that.input.location.range)
     );
   }
 

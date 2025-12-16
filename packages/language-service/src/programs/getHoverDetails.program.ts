@@ -1,11 +1,10 @@
 import { sheetEntriesToCss } from '@native-twin/css';
 import * as Effect from 'effect/Effect';
-import type * as vscode from 'vscode-languageserver';
+import * as vscode from 'vscode-languageserver';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import { getCSSMarkDownParts, sheetEntriesToMD } from '../models/Editor.models';
 import { Position } from '../models/LSP.models';
-import { completionRulesToQuickInfo } from '../utils/language/quickInfo.utils';
 
 export const getHoverDetails = Effect.fn(function* (
   params: vscode.HoverParams,
@@ -29,3 +28,18 @@ export const getHoverDetails = Effect.fn(function* (
     document.getNodeRange(region),
   );
 });
+
+
+const completionRulesToQuickInfo = (
+  js: string,
+  css: string,
+  range: vscode.Range,
+): vscode.Hover => {
+  return {
+    range,
+    contents: {
+      kind: vscode.MarkupKind.Markdown,
+      value: [js, css].join('\n'),
+    },
+  };
+};

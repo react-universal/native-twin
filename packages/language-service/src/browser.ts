@@ -18,5 +18,4 @@ export {
   getClientCapabilities,
 } from './utils/connection.utils';
 /** Language Service */
-export { completionRulesToQuickInfo } from './utils/language/quickInfo.utils';
 export { getSheetEntryStyles } from './utils/sheet.utils';

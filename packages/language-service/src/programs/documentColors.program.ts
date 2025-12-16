@@ -1,10 +1,11 @@
+import { type Numberify, type RGBA, TinyColor } from '@ctrl/tinycolor';
 import * as Array from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
 import type * as vscode from 'vscode-languageserver';
+import { Color } from 'vscode-languageserver-types';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
-import { declarationValueToColorInfo } from '../utils/language/colorInfo.utils';
 
 export const getDocumentColors = Effect.fn(function* (
   params: vscode.DocumentColorParams,
@@ -39,3 +40,16 @@ export const getDocumentColors = Effect.fn(function* (
     Effect.map(Array.fromIterable),
   );
 });
+
+/** File private */
+const declarationValueToColorInfo = (
+  declarationValue: string,
+  range: vscode.Range,
+): vscode.ColorInformation => ({
+  range: range,
+  color: toVsCodeColor(new TinyColor(declarationValue).toRgb()),
+});
+
+// /** File private */
+const toVsCodeColor = (color: Numberify<RGBA>): vscode.Color =>
+  Color.create(color.r / 255, color.g / 255, color.b / 255, color.a);
