@@ -2,6 +2,7 @@ import {
   getClientCapabilities,
   LSPConfig,
   LSPContext,
+  LSPModels,
   languagePrograms,
 } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
@@ -27,6 +28,28 @@ const program = Effect.gen(function* () {
   const { connection: Connection, documents } = yield* LSPContext;
   const config = yield* LSPConfig;
 
+  const reportDiagnosticsToClient = Effect.fn(function* (
+    diagnostics: t.DocumentDiagnosticReport,
+    uri: t.URI,
+  ) {
+    if (yield* config.configSelector((x) => x.diagnostics === 'off')) return yield* Effect.void;
+
+    const diagnosticList = diagnostics.kind === 'full' ? diagnostics.items : [];
+    const report: t.PublishDiagnosticsParams = { diagnostics: diagnosticList, uri };
+    const doc = yield* Effect.sync(() => documents.get(uri));
+    if (doc) report['version'] = doc.version;
+
+    yield* Effect.promise(() => Connection.sendDiagnostics(report));
+  });
+
+  const refreshDiagnostics = Effect.if(
+    config.configSelector((_) => _.diagnostics === 'off'),
+    {
+      onFalse: () => Effect.void,
+      onTrue: () => Effect.sync(() => Connection.languages.diagnostics.refresh()),
+    },
+  );
+
   Connection.onInitialize(async (params) => {
     const capabilities = getClientCapabilities(params.capabilities);
     const configOptions = params.initializationOptions;
@@ -37,19 +60,11 @@ const program = Effect.gen(function* () {
   });
 
   Connection.onDidChangeConfiguration(async (changes) => {
-    await config.config.pipe(
-      Effect.andThen((currentConfig) =>
-        config
-          .onChangeConfig((changes.settings?.['nativeTwin'] as any) ?? currentConfig)
-          .pipe(
-            Effect.andThen(() =>
-              currentConfig.diagnostics === 'off'
-                ? Connection.languages.diagnostics.refresh()
-                : Effect.void,
-            ),
-          ),
-      ),
-      Effect.runPromise,
+    await Effect.andThen(config.config, (currentConfig) =>
+      config.onChangeConfig((changes.settings?.['nativeTwin'] as any) ?? currentConfig),
+    ).pipe(
+      Effect.andThen(() => refreshDiagnostics),
+      runEffect,
     );
   });
 
@@ -66,23 +81,27 @@ const program = Effect.gen(function* () {
         x.diagnostics === 'off'
           ? Effect.succeed<t.DocumentDiagnosticReport>({ kind: 'full', items: [] })
           : languagePrograms.getDocumentDiagnosticsProgram(...args),
-    ).pipe(runEffect);
+    ).pipe(
+      Effect.tap((_) => reportDiagnosticsToClient(_, args[0].textDocument.uri)),
+      runEffect,
+    );
   });
 
   Connection.onDocumentColor(async (...params) =>
     languagePrograms.getDocumentColors(...params).pipe(runEffect),
   );
 
-  Connection.onDocumentHighlight(async (...args) => {
-    const data = await languagePrograms.getDocumentHighLightsProgram(...args).pipe(runEffect);
-    return data;
-  });
+  Connection.onDocumentHighlight(async (...args) =>
+    languagePrograms.getDocumentHighLightsProgram(...args).pipe(runEffect),
+  );
 
   Connection.onCompletion(async (params) =>
-    languagePrograms.getCompletionsAtPosition.apply(params.textDocument.uri, params.position).pipe(
-      Effect.map((completions) => completions),
-      runEffect,
-    ),
+    languagePrograms.getCompletionsAtPosition
+      .apply(params.textDocument.uri, LSPModels.Position.make(params.position))
+      .pipe(
+        Effect.map((completions) => completions),
+        runEffect,
+      ),
   );
 
   Connection.onSelectionRanges(async (_params, _token, _, __) => {
@@ -92,12 +111,6 @@ const program = Effect.gen(function* () {
   Connection.onCodeAction(async (params, _token, _workDone) =>
     languagePrograms.twinCodeActionsProgram(params).pipe(runEffect),
   );
-
-  Connection.onCodeActionResolve(async (params) => {
-    return {
-      ...params,
-    };
-  });
 
   const listener = documents.listen(Connection);
   Connection.listen();
@@ -124,9 +137,8 @@ const program = Effect.gen(function* () {
 
 const addPrettyLogger = (refs: FiberRefs.FiberRefs, fiberId: FiberId.Runtime) => {
   const loggers = FiberRefs.getOrDefault(refs, FiberRef.currentLoggers);
-  if (!HashSet.has(loggers, Logger.defaultLogger)) {
-    return refs;
-  }
+  if (!HashSet.has(loggers, Logger.defaultLogger)) return refs;
+
   return FiberRefs.updateAs(refs, {
     fiberId,
     fiberRef: FiberRef.currentLoggers,
@@ -142,5 +154,5 @@ LSPRuntime.runFork(
     if (Cause.isInterruptedOnly(cause)) return Effect.void;
     return Effect.logError(cause);
   }),
-  { updateRefs: addPrettyLogger },
+  { updateRefs: addPrettyLogger, immediate: true },
 );

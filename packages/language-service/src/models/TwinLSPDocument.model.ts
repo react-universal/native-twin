@@ -80,13 +80,13 @@ export class LSPBasicDocument extends BaseTwinTextDocument {
 }
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
-  readonly regions: (typeof LSP.JSXNode.Type)[];
+  readonly regions: LSP.JSXNode[];
   readonly parsableRegions: {
-    region: typeof LSP.JSXNode.Type;
-    attr: typeof LSP.JSXAttributeValue.Type;
+    region: LSP.JSXNode;
+    attr: LSP.JSXAttributeValue;
   }[];
 
-  constructor(textDocument: VSCDocument.TextDocument, regions: (typeof LSP.JSXNode.Type)[]) {
+  constructor(textDocument: VSCDocument.TextDocument, regions: LSP.JSXNode[]) {
     super(textDocument);
     this.regions = regions.map((x) => fixRegionRanges(x, textDocument));
     this.parsableRegions = this.regions.flatMap((region) =>
@@ -94,7 +94,7 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
     );
   }
 
-  getNodeRange(node: typeof LSP.AnyParsedNode.Type) {
+  getNodeRange(node: LSP.AnyParsedNode['Type']) {
     return LSP.Range.from(this.positionAt(node.startOffset), this.positionAt(node.endOffset));
   }
 
@@ -117,7 +117,10 @@ const transformJSXAttributes = (attribute: LSP.JSXAttribute, doc: VSCDocument.Te
   const originalText = value.rawText;
   const parsableText = value.text;
   const documentText = doc.getText(
-    LSP.Range.from(doc.positionAt(value.startOffset), doc.positionAt(value.endOffset)),
+    LSP.Range.from(
+      LSP.Position.make(doc.positionAt(value.startOffset)),
+      LSP.Position.make(doc.positionAt(value.endOffset)),
+    ),
   );
   let newStartOffset = value.startOffset;
   // const newEndPosition = { ...value.range.end };

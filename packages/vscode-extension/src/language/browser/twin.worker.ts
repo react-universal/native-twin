@@ -1,15 +1,14 @@
 /// <reference lib="WebWorker" />
 
 import {
-  FileNotFound,
   getClientCapabilities,
   JSXParser,
   LSPAdapterSpec,
   LSPBaseLayerLive,
   LSPConfig,
   LSPContext,
+  LSPModels,
   languagePrograms,
-  type Position,
   parseLSPConfigInput,
   type TwinConfigOptions,
   TwinLSPDocument,
@@ -130,7 +129,7 @@ const AdapterLive = Effect.gen(function* () {
   const getLSPDocument = Effect.fn(function* (filename: string) {
     const document = yield* Effect.succeed(getDocument(filename))
       .pipe(Effect.flatMap(identity))
-      .pipe(Effect.mapError((e) => FileNotFound.create(e)));
+      .pipe(Effect.mapError((e) => LSPModels.FileNotFound.create(e)));
 
     const filePath = filename;
     const tsSource = yield* program.getSourceFile(filePath, document.getText());
@@ -146,7 +145,7 @@ const AdapterLive = Effect.gen(function* () {
 
   const getRegionAt = Effect.fn('vscodeAdapter: getTokenAtPosition')(function* (
     filename: string,
-    position: Position,
+    position: LSPModels.Position,
   ) {
     const document = yield* getLSPDocument(filename);
 
@@ -235,7 +234,7 @@ const program = Effect.gen(function* () {
 
   connection.onCompletion(async (params) => {
     const result = await languagePrograms.getCompletionsAtPosition
-      .apply(params.textDocument.uri, params.position)
+      .apply(params.textDocument.uri, LSPModels.Position.make(params.position))
       .pipe(
         Effect.map((completions) => completions),
         Effect.provide(MainLayer),

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import {
   JSXParser,
   LSPConstants,
+  LSPModels,
   TwinLSPDocument,
   TwinParserContext,
   TypeScriptProgram,
@@ -34,7 +35,9 @@ export const CompletionsService = Effect.gen(function* () {
 
         const cursorOffset = document.offsetAt(position);
 
-        const valueRegion = Option.fromNullable(lspDocument.findRegionAt(position));
+        const valueRegion = Option.fromNullable(
+          lspDocument.findRegionAt(LSPModels.Position.make(position)),
+        );
 
         const parserResult = Option.map(valueRegion, (value) =>
           parser.runTwinParser({

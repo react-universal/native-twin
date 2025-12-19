@@ -2,6 +2,7 @@ import * as Effect from 'effect/Effect';
 import * as Runtime from 'effect/Runtime';
 import * as vscode from 'vscode-languageserver';
 import type * as lsp from 'vscode-languageserver-protocol';
+import { LSPConstants } from '../models/lsp.constants';
 
 export const initializeConnection = (
   params: vscode.InitializeParams,
@@ -40,7 +41,7 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
   };
   const result: vscode.InitializeResult = {
     capabilities: {
-      textDocumentSync: vscode.TextDocumentSyncKind.Full,
+      textDocumentSync: vscode.TextDocumentSyncKind.Incremental,
       colorProvider: true,
       hoverProvider: true,
       documentHighlightProvider: true,
@@ -64,8 +65,10 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
       },
 
       diagnosticProvider: {
-        interFileDependencies: false,
+        interFileDependencies: setup.hasDiagnosticRelatedInformationCapability,
+        documentSelector: LSPConstants.documentSelectors,
         workspaceDiagnostics: false,
+        // identifier: LSPConstants.diagnosticProviderSource,
       },
     },
   };

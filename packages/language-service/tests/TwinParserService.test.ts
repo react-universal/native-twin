@@ -1,6 +1,6 @@
 import { assert, describe, expect, it } from '@effect/vitest';
 import { Effect } from 'effect';
-import { TwinParserContext } from '../src/core/TwinParser.service';
+import { TwinParserContext, TwinParserContextLive } from '../src/core/TwinParser.service';
 import { runTwinParser, TestLayer } from './dsl';
 
 describe('Twin Parser Service %s', () => {
@@ -28,7 +28,7 @@ describe('Twin Parser Service %s', () => {
       yield* Effect.promise(() =>
         expect(Array.from(nextRulesGuess)).toMatchFileSnapshot('__snapshots__/next_rules.snap'),
       );
-    }).pipe(Effect.provide(TestLayer)),
+    }).pipe(Effect.provide(TwinParserContextLive), Effect.provide(TestLayer)),
   );
 });
 
@@ -66,5 +66,5 @@ describe('Twin Parser Service %s', () => {
 //         ),
 //       );
 //     }).pipe(Effect.provide(TestLayer)),
-  // );
+// );
 // });

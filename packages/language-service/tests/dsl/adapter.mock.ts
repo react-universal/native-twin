@@ -7,6 +7,7 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   FileNotFound,
   JSXParser,
+  JSXParserLive,
   LSPAdapterSpec,
   TwinLSPDocument,
   TypeScriptProgram,
@@ -49,4 +50,4 @@ export const TestVscodeLSPAdapterLive = Effect.gen(function* () {
     getRegions,
     getRegionAt,
   });
-}).pipe(Layer.effect(LSPAdapterSpec));
+}).pipe(Layer.effect(LSPAdapterSpec), Layer.provide(JSXParserLive));

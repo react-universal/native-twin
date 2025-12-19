@@ -4,17 +4,19 @@ digraph Regions {
   id: '{\"endLine\":11,\"startLine\":11,\"endOffset\":422,\"startOffset\":379}',
   info: [ 'bg-red-500 asdasdasd' ],
   range: Range {
-    start: Position { line: 10, character: 8 },
-    end: Position { line: 10, character: 51 }
+    start: Position { line: 10, character: 8, _tag: 'Position' },
+    end: Position { line: 10, character: 51, _tag: 'Position' },
+    _tag: 'Range'
   }
 }"];
   "1" [label="Text - {
   name: 'Text',
   id: '{\"endLine\":10,\"startLine\":10,\"endOffset\":370,\"startOffset\":319}',
-  info: [ '`bg-raw2222 ${state} raw-3333`' ],
+  info: [ 'bg-raw2222 ${state} raw-3333' ],
   range: Range {
-    start: Position { line: 9, character: 8 },
-    end: Position { line: 9, character: 59 }
+    start: Position { line: 9, character: 8, _tag: 'Position' },
+    end: Position { line: 9, character: 59, _tag: 'Position' },
+    _tag: 'Range'
   }
 }"];
   "2" [label="View - {
@@ -22,8 +24,9 @@ digraph Regions {
   id: '{\"endLine\":12,\"startLine\":9,\"endOffset\":436,\"startOffset\":283}',
   info: [ 'bg-raw' ],
   range: Range {
-    start: Position { line: 8, character: 6 },
-    end: Position { line: 11, character: 13 }
+    start: Position { line: 8, character: 6, _tag: 'Position' },
+    end: Position { line: 11, character: 13, _tag: 'Position' },
+    _tag: 'Range'
   }
 }"];
   "3" [label="Text - {
@@ -31,8 +34,9 @@ digraph Regions {
   id: '{\"endLine\":8,\"startLine\":8,\"endOffset\":276,\"startOffset\":208}',
   info: [ 'bg-rose-700 bg-blue bg-black text(sm md:gray)' ],
   range: Range {
-    start: Position { line: 7, character: 6 },
-    end: Position { line: 7, character: 74 }
+    start: Position { line: 7, character: 6, _tag: 'Position' },
+    end: Position { line: 7, character: 74, _tag: 'Position' },
+    _tag: 'Range'
   }
 }"];
   "4" [label="View - {
@@ -40,8 +44,9 @@ digraph Regions {
   id: '{\"endLine\":13,\"startLine\":7,\"endOffset\":448,\"startOffset\":165}',
   info: [ 'bg-gray shadow-md' ],
   range: Range {
-    start: Position { line: 6, character: 4 },
-    end: Position { line: 12, character: 11 }
+    start: Position { line: 6, character: 4, _tag: 'Position' },
+    end: Position { line: 12, character: 11, _tag: 'Position' },
+    _tag: 'Range'
   }
 }"];
   "1" -> "2" [label="SourceEdgeInfo { relationship: 'jsx-child', index: 0, isRoot: false, nodeText: '2:View -> 1:Text', _tag: 'SourceEdgeInfo' }"];

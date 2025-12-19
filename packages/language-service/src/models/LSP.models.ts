@@ -9,7 +9,7 @@ import * as Tuple from 'effect/Tuple';
 import type * as t from 'vscode-languageserver-types';
 import type { InternalTwinConfig } from '../internal/TwinTypes.internal';
 
-export class Position extends Schema.Class<Position>('Position')({
+export class Position extends Schema.TaggedClass<Position>('Position')('Position', {
   line: Schema.Number,
   character: Schema.Number,
 }) {
@@ -34,13 +34,21 @@ export class Position extends Schema.Class<Position>('Position')({
   static sort = RA.sortBy<Position[]>(Position.order);
 }
 
-export class Range extends Schema.Class<Range>('Range')({ start: Position, end: Position }, {}) {
+export class Range extends Schema.TaggedClass<Range>('Range')(
+  'Range',
+  { start: Position, end: Position },
+  {},
+) {
   static sum = (self: t.Range, that: t.Range) =>
     new Range({
       start: Position.sum(self.start, that.start),
       end: Position.sum(self.end, that.end),
     });
-  static from = (start: Position, end: Position) =>
+
+  static encode = (vsRange: t.Range) =>
+    new Range({ start: Position.make(vsRange.start), end: Position.make(vsRange.end) });
+
+  static from = (start: Position | t.Position, end: Position | t.Position) =>
     new Range({ start: Position.make(start), end: Position.make(end) });
 
   static equals: Equivalence.Equivalence<Range> = Equivalence.mapInput(
@@ -56,7 +64,7 @@ export class Range extends Schema.Class<Range>('Range')({ start: Position, end: 
   static sort = RA.sortBy<Range[]>(Range.order);
 }
 
-export class Location extends Schema.Class<Location>('Location')({
+export class Location extends Schema.TaggedClass<Location>('Location')('Location', {
   uri: Schema.String,
   range: Range,
 }) {
@@ -86,18 +94,34 @@ export class Node extends Schema.Class<Node>('Node')({
       Position.from(self.endLine ?? 1, self.endOffset),
     );
 }
-Schema.annotations(Node, {});
 
 export class JSXAttributeName extends Node.extend<JSXAttributeName>('JSXAttributeName')({
+  _tag: Schema.Literal('JSXAttributeName').pipe(
+    Schema.propertySignature,
+    Schema.withConstructorDefault(() => 'JSXAttributeName'),
+  ),
   text: Schema.String,
 }) {}
 
 export class JSXAttributeValue extends Node.extend<JSXAttributeValue>('JSXAttributeValue')({
+  _tag: Schema.Literal('JSXAttributeValue').pipe(
+    Schema.propertySignature,
+    Schema.withConstructorDefault(() => 'JSXAttributeValue'),
+  ),
   text: Schema.String,
 }) {}
 
-export class JSXTagName extends Node.extend<JSXTagName>('JSXTagName')({}) {}
+export class JSXTagName extends Node.extend<JSXTagName>('JSXTagName')({
+  _tag: Schema.Literal('JSXTagName').pipe(
+    Schema.propertySignature,
+    Schema.withConstructorDefault(() => 'JSXTagName'),
+  ),
+}) {}
 export class JSXAttribute extends Node.extend<JSXAttribute>('JSXAttribute')({
+  _tag: Schema.Literal('JSXAttribute').pipe(
+    Schema.propertySignature,
+    Schema.withConstructorDefault(() => 'JSXAttribute'),
+  ),
   name: JSXAttributeName,
   value: JSXAttributeValue,
 }) {}
@@ -107,14 +131,16 @@ export class JSXAttribute extends Node.extend<JSXAttribute>('JSXAttribute')({
  * @see This just collect root nodes once wants to work with those needs yo traverse its childs
  * */
 export class JSXNode extends Node.extend<JSXNode>('JSXNode')({
+  _tag: Schema.Literal('JSXNode').pipe(
+    Schema.propertySignature,
+    Schema.withConstructorDefault(() => 'JSXNode'),
+  ),
   id: Schema.String,
   text: Schema.String,
   attributes: Schema.Array(JSXAttribute),
   tag: JSXTagName,
   parent: Schema.NullOr(Schema.suspend((): Schema.Schema<JSXNode> => JSXNode)),
 }) {}
-
-export type JSXNodeType = typeof JSXNode.Type;
 
 export const AnyParsedNode = Schema.Union(
   JSXAttribute,

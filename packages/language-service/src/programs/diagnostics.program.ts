@@ -1,4 +1,5 @@
 import type { SheetEntry } from '@native-twin/css';
+import { hash } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
@@ -74,6 +75,7 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
       (reports) =>
         ({
           kind: 'full',
+          resultId: hash(document.uri),
           items: RA.fromIterable(reports).flatMap((x) =>
             x.code === TwinDiagnosticCodes.None ? [] : x.getDiagnostic(),
           ),

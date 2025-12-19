@@ -30,17 +30,18 @@ export const LanguageClientLive = Effect.gen(function* () {
   // yield* activateTwinTsPlugin;
 
   const debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };
+  const diagnostic = vscode.languages.createDiagnosticCollection(
+    LSPConstants.diagnosticProviderSource,
+  );
 
+  extensionCtx.subscriptions.push(diagnostic);
+
+  const serverModule = extensionCtx.asAbsolutePath(
+    path.join('build', 'cjs', 'servers', 'lsp.node.js'),
+  );
   const serverConfig: ServerOptions = {
-    run: {
-      module: extensionCtx.asAbsolutePath(path.join('build', 'cjs', 'servers', 'lsp.node.js')),
-      transport: TransportKind.ipc,
-    },
-    debug: {
-      module: extensionCtx.asAbsolutePath(path.join('build', 'cjs', 'servers', 'lsp.node.js')),
-      transport: TransportKind.ipc,
-      options: debugOptions,
-    },
+    run: { module: serverModule, transport: TransportKind.ipc },
+    debug: { module: serverModule, transport: TransportKind.ipc, options: debugOptions },
   };
 
   const fileEvents = yield* createFileWatchers;
@@ -48,6 +49,9 @@ export const LanguageClientLive = Effect.gen(function* () {
   // const configFiles = yield* getConfigFiles;
   const colorDecorationType = yield* getColorDecoration;
   extensionCtx.subscriptions.push(colorDecorationType);
+  const serverLogger = vscode.window.createOutputChannel(LSPConstants.extensionServerChannelName, {
+    log: true,
+  });
 
   const currentConfig = yield* lspConfig.config.get;
   const clientConfig: LanguageClientOptions = {
@@ -60,20 +64,18 @@ export const LanguageClientLive = Effect.gen(function* () {
       error: onLanguageClientError,
       closed: onLanguageClientClosed,
     },
-    diagnosticCollectionName: LSPConstants.diagnosticProviderSource,
-    outputChannel: vscode.window.createOutputChannel(LSPConstants.extensionServerChannelName, {
-      log: true,
-    }),
+    diagnosticCollectionName: diagnostic.name,
+    outputChannel: serverLogger,
     middleware: {
       workspace: {
         workspaceFolders: (token, next) => {
           return next(token);
         },
       },
-      // provideCompletionItem: async (document, position, context, token, next) => {
-      //   const completions = await next(document, position, context, token);
-      //   return completions;
-      // },
+      handleDiagnostics(uri, diagnostics, next) {
+        diagnostic.set(uri, diagnostics);
+        return next(uri, diagnostics);
+      },
       provideDocumentColors: async (document, token, next) => {
         return onProvideDocumentColors(document, token, next, colorDecorationType);
       },

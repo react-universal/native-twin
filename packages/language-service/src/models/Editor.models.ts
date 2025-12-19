@@ -55,6 +55,7 @@ export interface DiagnosticReportInput {
 }
 
 export class DiagnosticReport implements Equal.Equal {
+  readonly _tag = 'DiagnosticReport';
   private readonly relatedInfo: vscode.DiagnosticRelatedInformation[];
   private _diagnostic: vscode.Diagnostic | null = null;
 
@@ -65,9 +66,8 @@ export class DiagnosticReport implements Equal.Equal {
   constructor(private readonly input: DiagnosticReportInput) {
     this.relatedInfo = RA.dedupeWith(
       this.input.rules,
-      Equivalence.mapInput(
-        Range.equals,
-        (rule: (typeof this.input.rules)[number]) => rule.location.range,
+      Equivalence.mapInput(Range.equals, (rule: (typeof this.input.rules)[number]) =>
+        Range.encode(rule.location.range),
       ),
     ).map((rule) => vscode.DiagnosticRelatedInformation.create(rule.location, rule.text));
   }
@@ -97,7 +97,7 @@ export class DiagnosticReport implements Equal.Equal {
       that instanceof DiagnosticReport &&
       this.input.location.uri === that.input.location.uri &&
       this.input.code === that.input.code &&
-      Range.equals(this.input.location.range, that.input.location.range)
+      Range.equals(Range.encode(this.input.location.range), Range.encode(this.input.location.range))
     );
   }
 
@@ -216,23 +216,3 @@ export const sheetEntriesToMD = (entries: SheetEntry[], context: StyledContext) 
   });
   return ['#### React Native StyleSheet', '```typescript', result, '\n```'].join('\n');
 };
-
-// export function createDebugHover(rule: TwinRuleCompletion) {
-//   const result: string[] = [];
-//   result.push('********************************************\n');
-//   result.push('#### Debug Info');
-
-//   result.push('##### Completion:');
-//   result.push(`${'```json\n'}${JSON.stringify(rule.completion, null, 2)}${'\n```'}`);
-//   result.push('********************************************\n');
-
-//   result.push('##### Compositions:');
-//   result.push(`${'```json\n'}${JSON.stringify(rule.composition, null, 2)}${'\n```'}`);
-//   result.push('********************************************\n');
-
-//   result.push('##### Rule:');
-//   result.push(`${'```json\n'}${JSON.stringify(rule.rule, null, 2)}${'\n```'}`);
-//   result.push('********************************************\n');
-
-//   return result.join('\n\n');
-// }

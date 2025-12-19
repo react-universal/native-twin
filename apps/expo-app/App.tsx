@@ -14,7 +14,7 @@ const ForeignComponent = () => {
 export default function App() {
   const [active, setActive] = useState(false);
   return (
-    <View className="hover:bg-red bg-gray-900 group flex-1 items-center justify-center first:bg-green even:text-white">
+    <View className=" bgU(gray-900 hover:red) group flex-1 items-center justify-center first:bg-green even:text-white">
       <ForeignComponent />
       <Pressable
         onPressIn={() => {

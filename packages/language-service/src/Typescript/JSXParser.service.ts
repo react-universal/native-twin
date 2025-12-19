@@ -15,7 +15,7 @@ import {
 } from '../models/LSP.models';
 import { annotatedLayer } from '../utils/effect.utils';
 import type { TypescriptModels } from './TwinDsl.models';
-import { TypescriptUtils } from './TypescriptUtils.service';
+import { TypescriptUtils, TypescriptUtilsLive } from './TypescriptUtils.service';
 
 const make = Effect.gen(function* () {
   const tsUtils = yield* TypescriptUtils;
@@ -160,7 +160,7 @@ const make = Effect.gen(function* () {
       endOffset: tagName.getEnd(),
       startOffset: tagName.getStart(),
     };
-    return JSXNode.make({
+    const result = JSXNode.make({
       ...nodeRange,
       id: JSON.stringify(nodeRange),
       parent: parent ? JSXNode.make(parent) : null,
@@ -172,6 +172,8 @@ const make = Effect.gen(function* () {
         ...tagNameRange,
       }),
     });
+
+    return result;
   }
 
   function jsxNodesToRegions(nodes: TypescriptModels.AnyJSXElement[]) {
@@ -324,4 +326,7 @@ const make = Effect.gen(function* () {
 
 export interface JSXParser extends Effect.Effect.Success<typeof make> {}
 export const JSXParser = Context.GenericTag<JSXParser>('JSXParser');
-export const JSXParserLive = Layer.effect(JSXParser, make).pipe(annotatedLayer('JSXParser'));
+export const JSXParserLive = Layer.effect(JSXParser, make).pipe(
+  Layer.provide(TypescriptUtilsLive),
+  annotatedLayer('JSXParser'),
+);

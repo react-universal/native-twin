@@ -3,16 +3,9 @@ import { setup } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import { Graph, Logger, LogLevel } from 'effect';
 import * as Effect from 'effect/Effect';
-import { readFileSync } from 'fs';
 import path from 'path';
 import { inspect } from 'util';
-import {
-  JSXParser,
-  LSPAdapterSpec,
-  TwinGraphosContext,
-  TwinRuntimeContext,
-  TypeScriptProgram,
-} from '../src';
+import { LSPAdapterSpec, TwinGraphosContext, TwinRuntimeContext } from '../src';
 import { makeTwinGraph } from '../src/core/TwinProject.service';
 import { TestLayer } from './dsl';
 import twinConfig from './fixtures/react/tailwind.config';
@@ -24,23 +17,24 @@ describe('Twin LSP API', () => {
     Effect.gen(function* () {
       const graphos = yield* TwinGraphosContext;
       const graphCtx = yield* makeTwinGraph;
-      const tsParser = yield* JSXParser;
-      const program = yield* TypeScriptProgram;
+      // const tsParser = yield* JSXParser;
+      // const program = yield* TypeScriptProgram;
       const twin = yield* TwinRuntimeContext;
       const adapter = yield* LSPAdapterSpec;
       const twinPath = path.join(__dirname, 'fixtures/react', 'tailwind.config.ts');
       yield* twin.bootTwinRuntime(twinPath);
 
       const ComponentPath = path.join(__dirname, 'fixtures/react', 'Component.tsx');
-      const tsSource = yield* program.getSourceFile(
-        ComponentPath,
-        readFileSync(ComponentPath, 'utf-8'),
-      );
-      const jsxRoots = tsParser.getJSXRootsFromSource(tsSource);
-      const regions = tsParser.jsxNodesToRegions(jsxRoots);
+      // const tsSource = yield* program.getSourceFile(
+      //   ComponentPath,
+      //   readFileSync(ComponentPath, 'utf-8'),
+      // );
+      const regions = yield* adapter.getRegions(ComponentPath);
+      // const jsxRoots = tsParser.getJSXRootsFromSource(tsSource);
+      // const regions = tsParser.jsxNodesToRegions(jsxRoots);
       const document = yield* adapter.getLSPDocument(ComponentPath);
       // const regions = yield* adapter.getRegions(ComponentPath);
-      const lspTree = graphos.lspRegionsToTree(regions);
+      const lspTree = graphos.lspRegionsToTree(regions.filter((x) => x._tag === 'JSXNode'));
       const grapho = graphos.lspTreeToGraph(lspTree);
 
       const traversedGr = graphCtx.traverseGraph(grapho);
@@ -60,7 +54,9 @@ describe('Twin LSP API', () => {
         ),
       );
 
-      const sourceGraph = yield* graphCtx.createSourceGraph(regions);
+      const sourceGraph = yield* graphCtx.createSourceGraph(
+        regions.filter((x) => x._tag === 'JSXNode'),
+      );
 
       const traversed = graphCtx.traverseGraph(sourceGraph);
 

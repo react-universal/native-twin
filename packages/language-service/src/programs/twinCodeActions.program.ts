@@ -5,7 +5,7 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
-import { type JSXAttributeValue, Position } from '../models/LSP.models';
+import { type JSXAttributeValue, Position, Range } from '../models/LSP.models';
 import { LSPConstants, TwinDiagnosticCodes } from '../models/lsp.constants';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
@@ -48,7 +48,9 @@ export const getDuplicatedDeclarationCodeAction = (
     RA.flatMap(diagnostics, (x) =>
       RA.map(asArray(x.relatedInformation), diagnosticRelatedInfoToEdit),
     ),
-    RA.map((info) => twinDoc.getText(info.textEdit.range)),
+    RA.map((info) =>
+      twinDoc.getText(Range.from(info.textEdit.range.start, info.textEdit.range.end)),
+    ),
   );
 
   let newText = region.text;

@@ -4,17 +4,14 @@ import path from 'path';
 import ts from 'ts-morph';
 import {
   createTwinLoggerLayerFor,
-  JSXParserLive,
   LSPConfig,
   parseLSPConfigInput,
   type TwinConfigOptions,
   TwinGraphLive,
   TwinGraphosContextLive,
-  TwinParserContextLive,
   TwinRuntimeContextLive,
   TypeScriptApi,
   TypeScriptProgram,
-  TypescriptUtilsLive,
 } from '../../src';
 import { TypescriptParser } from '../../src/Typescript/TypescriptParser';
 import { TestVscodeLSPAdapterLive } from './adapter.mock';
@@ -69,9 +66,6 @@ export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(TypescriptParser),
   Layer.provideMerge(TsProgramLive),
   Layer.provideMerge(TwinGraphLive),
-  Layer.provideMerge(JSXParserLive),
-  Layer.provideMerge(TwinParserContextLive),
-  Layer.provideMerge(TypescriptUtilsLive),
   Layer.provideMerge(TwinRuntimeContextLive),
   Layer.provideMerge(Layer.effect(LSPConfig, lspConfig)),
   Layer.provideMerge(TwinGraphosContextLive),
