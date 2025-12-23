@@ -1,21 +1,20 @@
 import * as Ansi from '@effect/printer-ansi/Ansi';
 import * as Doc from '@effect/printer-ansi/AnsiDoc';
 import * as AnsiColor from '@effect/printer-ansi/Color';
+import { isObject } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as FiberId from 'effect/FiberId';
 import { apply, pipe } from 'effect/Function';
 import * as Iterable from 'effect/Iterable';
+import * as Layer from 'effect/Layer';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import * as Str from 'effect/String';
 import { inspect } from 'util';
 
-const scopeTextConfig = pipe(
-  Ansi.combine(Ansi.bgBlue),
-  apply(Ansi.blackBright),
-  Ansi.combine(Ansi.bold),
-);
+const scopeTextConfig = (_logLevel: LogLevel.LogLevel) =>
+  pipe(Ansi.combine(Ansi.bgBlue), apply(Ansi.whiteBright), Ansi.combine(Ansi.bold));
 const fiberText = Ansi.combine(Ansi.black)(Ansi.bgWhiteBright);
 const messageConfig = Ansi.color(AnsiColor.white);
 
@@ -44,10 +43,15 @@ export const createLspLogger = (scope: string) =>
     if (RA.isArray(options.message)) {
       msgFactory.push(Doc.text(options.message.join(' ')).pipe(Doc.annotate(messageConfig)));
     }
+    if (isObject(options.message)) {
+      msgFactory.push(
+        Doc.text(logFormat(options.message).join(' ')).pipe(Doc.annotate(messageConfig)),
+      );
+    }
 
     const doc = Doc.hsep([
       Doc.text(scope).pipe(
-        Doc.annotate(scopeTextConfig),
+        Doc.annotate(scopeTextConfig(options.logLevel)),
         Doc.annotate(getMessageColor(options.logLevel)),
       ),
       Doc.text(`{${fiberId}}`).pipe(Doc.annotate(fiberText)),
@@ -67,7 +71,7 @@ export const createLspLogger = (scope: string) =>
         return;
       case LogLevel.Error:
       case LogLevel.Fatal:
-        console.error(message);
+        console.error(message, options);
         return;
       default:
         console.info(message);
@@ -95,5 +99,7 @@ export const loggerUtils = {
   scopeTextConfig,
 };
 
-export const createTwinLoggerLayerFor = (scope: string) =>
-  Logger.replaceScoped(Logger.defaultLogger, Effect.succeed(createLspLogger(scope)));
+export const createTwinLoggerLayerFor = (scope: string, loglevel = LogLevel.Info) =>
+  Logger.replaceScoped(Logger.defaultLogger, Effect.succeed(createLspLogger(scope))).pipe(
+    Layer.provide(Logger.minimumLogLevel(loglevel)),
+  );

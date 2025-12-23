@@ -2,10 +2,8 @@ import { hasOwnProperty } from '@native-twin/helpers';
 import * as Context from 'effect/Context';
 import type * as Effect from 'effect/Effect';
 import type * as Option from 'effect/Option';
-import type * as Stream from 'effect/Stream';
 import type * as SubscriptionRef from 'effect/SubscriptionRef';
 import type * as server from 'vscode-languageserver';
-import type * as serverDocs from 'vscode-languageserver-textdocument';
 import type * as Spec from '../internal/LSPAdapterSpec';
 import type { TwinLSPAdapterLayerIn } from '../internal/RunnerLayer';
 import type { InternalTwinConfig } from '../internal/TwinTypes.internal';
@@ -41,13 +39,14 @@ const configOptionOrDefault = <K extends keyof TwinConfigOptions>(
 
 /***** */
 
-export interface LSPContext {
-  connection: server.Connection;
-  documents: server.TextDocuments<serverDocs.TextDocument>;
-  getDocument: (uri: serverDocs.DocumentUri) => Option.Option<serverDocs.TextDocument>;
-  getAllDocuments: () => Array<serverDocs.TextDocument>;
-  documentChanges: Stream.Stream<serverDocs.TextDocument>;
-}
+// export interface LSPContext {
+//   connection: server.Connection;
+//   documents: server.TextDocuments<serverDocs.TextDocument>;
+//   getDocument: (uri: serverDocs.DocumentUri) => Option.Option<serverDocs.TextDocument>;
+//   getAllDocuments: () => Array<serverDocs.TextDocument>;
+//   documentChanges: Stream.Stream<serverDocs.TextDocument>;
+// }
+// export const LSPContext = Context.GenericTag<LSPContext>('lsp/MainContext');
 
 export interface LSPConfig {
   config: SubscriptionRef.SubscriptionRef<TwinConfigOptions>;
@@ -56,7 +55,6 @@ export interface LSPConfig {
   loadTwinConfig: (filename: string) => Effect.Effect<Option.Option<InternalTwinConfig>>;
 }
 
-export const LSPContext = Context.GenericTag<LSPContext>('lsp/MainContext');
 export const LSPConfig = Context.GenericTag<LSPConfig>('lsp/LSPConfig');
 
 export const parseLSPConfigInput = (config: Partial<TwinConfigOptions>): TwinConfigOptions => {

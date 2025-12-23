@@ -1,14 +1,15 @@
 /// <reference lib="WebWorker" />
 
+import { LSPDocumentsCtx, makeConnectionHandlerCtx } from '@native-twin/language-service';
 import {
+  FileNotFound,
   getClientCapabilities,
   JSXParser,
   LSPAdapterSpec,
   LSPBaseLayerLive,
   LSPConfig,
-  LSPContext,
-  LSPModels,
   languagePrograms,
+  Position,
   parseLSPConfigInput,
   type TwinConfigOptions,
   TwinLSPDocument,
@@ -46,22 +47,22 @@ connection.onExit(() => {
 });
 
 messageReader.listen((x) => console.log('MESSAGE: ', x));
-const LSPContextLive = Effect.gen(function* () {
-  const documentChanges = Stream.async<TextDocument>((emit) => {
-    documentsHandler.onDidChangeContent((changes) => {
-      emit.single(changes.document);
-    });
-    return Effect.void;
-  });
+// const LSPContextLive = Effect.gen(function* () {
+//   const documentChanges = Stream.async<TextDocument>((emit) => {
+//     documentsHandler.onDidChangeContent((changes) => {
+//       emit.single(changes.document);
+//     });
+//     return Effect.void;
+//   });
 
-  return LSPContext.of({
-    connection,
-    documentChanges,
-    documents: documentsHandler,
-    getAllDocuments: () => documentsHandler.all(),
-    getDocument: (uri) => Option.fromNullable(documentsHandler.get(uri)),
-  });
-}).pipe(Layer.effect(LSPContext));
+//   return LSPContext.of({
+//     connection,
+//     documentChanges,
+//     documents: documentsHandler,
+//     getAllDocuments: () => documentsHandler.all(),
+//     getDocument: (uri) => Option.fromNullable(documentsHandler.get(uri)),
+//   });
+// }).pipe(Layer.effect(LSPContext));
 
 const LSPConfigLive = Effect.gen(function* () {
   const configRef = yield* SubscriptionRef.make(parseLSPConfigInput({}));
@@ -122,14 +123,14 @@ export const TypescriptContextLive = Effect.gen(function* () {
 }).pipe(Layer.effect(TypeScriptProgram));
 
 const AdapterLive = Effect.gen(function* () {
-  const { getDocument } = yield* LSPContext;
+  const { getDocument } = yield* LSPDocumentsCtx;
   const program = yield* TypeScriptProgram;
   const parser = yield* JSXParser;
 
   const getLSPDocument = Effect.fn(function* (filename: string) {
     const document = yield* Effect.succeed(getDocument(filename))
       .pipe(Effect.flatMap(identity))
-      .pipe(Effect.mapError((e) => LSPModels.FileNotFound.create(e)));
+      .pipe(Effect.mapError((e) => FileNotFound.create(e)));
 
     const filePath = filename;
     const tsSource = yield* program.getSourceFile(filePath, document.getText());
@@ -145,7 +146,7 @@ const AdapterLive = Effect.gen(function* () {
 
   const getRegionAt = Effect.fn('vscodeAdapter: getTokenAtPosition')(function* (
     filename: string,
-    position: LSPModels.Position,
+    position: Position,
   ) {
     const document = yield* getLSPDocument(filename);
 
@@ -162,7 +163,7 @@ const AdapterLive = Effect.gen(function* () {
 const MainLayer = Layer.empty.pipe(
   Layer.provideMerge(AdapterLive),
   Layer.provideMerge(TypescriptContextLive),
-  Layer.provideMerge(LSPContextLive),
+  makeConnectionHandlerCtx(connection),
   Layer.provideMerge(LSPBaseLayerLive),
   Layer.provideMerge(LSPConfigLive),
 );
@@ -234,7 +235,7 @@ const program = Effect.gen(function* () {
 
   connection.onCompletion(async (params) => {
     const result = await languagePrograms.getCompletionsAtPosition
-      .apply(params.textDocument.uri, LSPModels.Position.make(params.position))
+      .apply(params.textDocument.uri, Position.make(params.position))
       .pipe(
         Effect.map((completions) => completions),
         Effect.provide(MainLayer),

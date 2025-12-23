@@ -2,6 +2,7 @@ import type { DocumentSelector } from 'vscode-languageserver-protocol';
 import type { InternalTwinConfig } from '../internal/TwinTypes.internal';
 
 const DOCUMENT_SELECTORS = [
+  { scheme: 'file', language: 'nativeTwin' },
   { scheme: 'file', language: 'typescript' },
   { scheme: 'file', language: 'typescriptreact' },
   { scheme: 'file', language: 'javascript' },

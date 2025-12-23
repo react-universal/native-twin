@@ -1,17 +1,33 @@
 import { readFileSync } from 'node:fs';
+import fsPromises from 'node:fs/promises';
 import { identity } from '@native-twin/helpers';
 import { Layer } from 'effect';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
+import { TextDocuments } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   FileNotFound,
   JSXParser,
   JSXParserLive,
   LSPAdapterSpec,
+  LSPDocumentsCtx,
   TwinLSPDocument,
   TypeScriptProgram,
 } from '../../src';
+
+export const LSPDocumentsCtxMock = Effect.gen(function* () {
+  yield* Effect.void;
+
+  return LSPDocumentsCtx.of({
+    getDocument: (uri) =>
+      Effect.promise(() => fsPromises.readFile(uri, 'utf-8')).pipe(
+        Effect.map((contents) => TextDocument.create(uri, 'ts', 1, contents)),
+      ),
+    handler: new TextDocuments(TextDocument),
+    setup: (_connection) => Effect.succeed({ dispose: () => {} }),
+  });
+});
 
 export const TestVscodeLSPAdapterLive = Effect.gen(function* () {
   const program = yield* TypeScriptProgram;

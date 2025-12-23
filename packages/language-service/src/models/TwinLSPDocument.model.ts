@@ -1,7 +1,8 @@
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
-import * as LSP from './LSP.models';
+import { Location, Position, Range, Regions } from './LSP.models';
+
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
   constructor(private readonly textDocument: VSCDocument.TextDocument) {}
 
@@ -17,46 +18,46 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return this.textDocument.version;
   }
 
-  sumPositions(p1: LSP.Position, p2: LSP.Position) {
+  sumPositions(p1: Position, p2: Position) {
     if (p1.line !== p2.line) {
       console.warn('Cant sum positions on different lines');
-      return LSP.Position.make(p2);
+      return Position.make(p2);
     }
-    return LSP.Position.sum(p1, p2);
+    return Position.sum(p1, p2);
   }
 
-  sumRanges(r1: LSP.Range, r2: LSP.Range) {
-    return LSP.Range.sum(r1, r2);
+  sumRanges(r1: Range, r2: Range) {
+    return Range.sum(r1, r2);
   }
 
-  getLocation(range: LSP.Range): LSP.Location {
-    return LSP.Location.from(this.uri, range);
+  getLocation(range: Range): Location {
+    return Location.from(this.uri, range);
   }
 
-  getText(range?: LSP.Range) {
+  getText(range?: Range) {
     return this.textDocument.getText(range);
   }
 
-  offsetAt(position: LSP.Position) {
+  offsetAt(position: Position) {
     return this.textDocument.offsetAt(position);
   }
 
   positionAt(offset: number) {
-    return LSP.Position.make(this.textDocument.positionAt(offset));
+    return this.textDocument.positionAt(offset);
   }
 
-  isPositionInRange(position: LSP.Position, range: LSP.Range) {
+  isPositionInRange(position: Position, range: Range) {
     const rangeStart = this.offsetAt(range.start);
     const rangeEnd = this.offsetAt(range.end);
     const offset = this.offsetAt(position);
     return offset >= rangeStart && offset <= rangeEnd;
   }
 
-  getRangeFor(startOffset: number, endOffset: number): LSP.Range {
-    return LSP.Range.from(this.positionAt(startOffset), this.positionAt(endOffset));
+  getRangeFor(startOffset: number, endOffset: number): Range {
+    return Range.from(this.positionAt(startOffset), this.positionAt(endOffset));
   }
 
-  locationAtOffsets(start: number, end: number) {
+  locationAtOffsets(start: number, end: number): Location {
     return this.getLocation(this.getRangeFor(start, end));
   }
 
@@ -80,13 +81,13 @@ export class LSPBasicDocument extends BaseTwinTextDocument {
 }
 
 export class TwinLSPDocument extends BaseTwinTextDocument {
-  readonly regions: LSP.JSXNode[];
+  readonly regions: Regions.JSXNode[];
   readonly parsableRegions: {
-    region: LSP.JSXNode;
-    attr: LSP.JSXAttributeValue;
+    region: Regions.JSXNode;
+    attr: Regions.JSXAttributeValue;
   }[];
 
-  constructor(textDocument: VSCDocument.TextDocument, regions: LSP.JSXNode[]) {
+  constructor(textDocument: VSCDocument.TextDocument, regions: Regions.JSXNode[]) {
     super(textDocument);
     this.regions = regions.map((x) => fixRegionRanges(x, textDocument));
     this.parsableRegions = this.regions.flatMap((region) =>
@@ -94,11 +95,11 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
     );
   }
 
-  getNodeRange(node: LSP.AnyParsedNode['Type']) {
-    return LSP.Range.from(this.positionAt(node.startOffset), this.positionAt(node.endOffset));
+  getNodeRange(node: Regions.AnyParsedNode) {
+    return Range.from(this.positionAt(node.startOffset), this.positionAt(node.endOffset));
   }
 
-  findRegionAt(position: LSP.Position): LSP.JSXAttributeValue | null {
+  findRegionAt(position: Position): Regions.JSXAttributeValue | null {
     return (
       this.parsableRegions.find((x) => this.isPositionInRange(position, this.getNodeRange(x.attr)))
         ?.attr ?? null
@@ -107,20 +108,17 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
 }
 
 export interface TwinBaseDocument {
-  getText: (range?: LSP.Range) => string;
-  offsetAt: (position: LSP.Position) => number;
-  positionAt: (offset: number) => LSP.Position;
+  getText: (range?: Range) => string;
+  offsetAt: (position: Position) => number;
+  positionAt: (offset: number) => Position;
 }
 
-const transformJSXAttributes = (attribute: LSP.JSXAttribute, doc: VSCDocument.TextDocument) => {
+const transformJSXAttributes = (attribute: Regions.JSXAttribute, doc: VSCDocument.TextDocument) => {
   const { value } = attribute;
   const originalText = value.rawText;
   const parsableText = value.text;
   const documentText = doc.getText(
-    LSP.Range.from(
-      LSP.Position.make(doc.positionAt(value.startOffset)),
-      LSP.Position.make(doc.positionAt(value.endOffset)),
-    ),
+    Range.from(doc.positionAt(value.startOffset), doc.positionAt(value.endOffset)),
   );
   let newStartOffset = value.startOffset;
   // const newEndPosition = { ...value.range.end };
@@ -135,11 +133,11 @@ const transformJSXAttributes = (attribute: LSP.JSXAttribute, doc: VSCDocument.Te
     if (value.text.endsWith('`')) {
       newText = newText.slice(0, newText.lastIndexOf('`'));
     }
-    return LSP.JSXAttribute.make({
+    return Regions.JSXAttribute.make({
       ...attribute,
-      name: LSP.JSXAttributeName.make(attribute.name),
+      name: Regions.JSXAttributeName.make(attribute.name),
       rawText: attribute.rawText,
-      value: LSP.JSXAttributeValue.make({
+      value: Regions.JSXAttributeValue.make({
         ...value,
         startOffset: newStartOffset,
         rawText: value.rawText,
@@ -163,12 +161,12 @@ const transformJSXAttributes = (attribute: LSP.JSXAttribute, doc: VSCDocument.Te
   const finalStartOffset = starOffset + counterDif - cursorDiff;
   const finalEndOffset = starOffset + parsableText.length + counterDif - cursorDiff;
 
-  return LSP.JSXAttribute.make({
-    // range: LSP.Range.from(attribute.range.start, attribute.range.end),
+  return Regions.JSXAttribute.make({
+    // range: Range.from(attribute.range.start, attribute.range.end),
     ...attribute,
     rawText: attribute.rawText,
-    name: LSP.JSXAttributeName.make(attribute.name),
-    value: LSP.JSXAttributeValue.make({
+    name: Regions.JSXAttributeName.make(attribute.name),
+    value: Regions.JSXAttributeValue.make({
       ...value,
       rawText: value.rawText,
       text: value.text,
@@ -178,14 +176,14 @@ const transformJSXAttributes = (attribute: LSP.JSXAttribute, doc: VSCDocument.Te
   });
 };
 
-const fixRegionRanges = (node: LSP.JSXNode, doc: VSCDocument.TextDocument): LSP.JSXNode => {
-  return LSP.JSXNode.make({
+const fixRegionRanges = (node: Regions.JSXNode, doc: VSCDocument.TextDocument): Regions.JSXNode => {
+  return Regions.JSXNode.make({
     ...node,
     id: node.id,
     text: node.rawText,
     parent: node.parent,
     rawText: node.rawText,
-    tag: LSP.JSXTagName.make(node.tag),
+    tag: Regions.JSXTagName.make(node.tag),
     attributes: node.attributes.map((x) => transformJSXAttributes(x, doc)),
   });
 };

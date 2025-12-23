@@ -1,7 +1,7 @@
 import * as Context from 'effect/Context';
 import type * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import type * as Models from '../models/LSP.models';
+import type { AnyLSPError, Position, Regions } from '../models/LSP.models';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 import { annotatedLayer } from '../utils/effect.utils';
 
@@ -18,14 +18,12 @@ export const createLSPAdapterExecutor = (executor: LSPAdapterSpec): Layer.Layer<
   return Layer.succeed(LSPAdapterSpec, executor).pipe(annotatedLayer('LSPAdapterSpec'));
 };
 export interface LSPAdapterSpec {
-  getLSPDocument(filename: string): Effect.Effect<LSPTextDocument, Models.AnyLSPError>;
+  getLSPDocument(filename: string): Effect.Effect<LSPTextDocument, AnyLSPError>;
   getRegionAt(
     filename: string,
-    position: typeof Models.Position.Type,
-  ): Effect.Effect<typeof Models.JSXAttributeValue.Type | null, Models.AnyLSPError>;
-  getRegions(
-    filename: string,
-  ): Effect.Effect<(typeof Models.AnyParsedNode.Type)[], Models.AnyLSPError>;
+    position: typeof Position.Type,
+  ): Effect.Effect<typeof Regions.JSXAttributeValue.Type | null, AnyLSPError>;
+  getRegions(filename: string): Effect.Effect<(typeof Regions.AnyParsedNode.Type)[], AnyLSPError>;
 }
 
 export const LSPAdapterSpec = Context.GenericTag<LSPAdapterSpec>('LSPAdapterSpec');

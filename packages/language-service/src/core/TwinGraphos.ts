@@ -5,21 +5,41 @@ import * as Graph from 'effect/Graph';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
-import { type JSXNode, SourceEdgeInfo, SourceNodeInfo } from '../models/LSP.models';
+import { LSPGraph, type Regions } from '../models/LSP.models';
 import { annotatedLayer } from '../utils/effect.utils';
 
 const make = Effect.gen(function* () {
   return {
     lspRegionsToTree,
     lspTreeToGraph,
+    traverseNode,
   };
 
-  function lspTreeToGraph(tree: Tree.Tree<JSXNode>) {
-    const mutableGraph = Graph.beginMutation(Graph.directed<SourceNodeInfo, SourceEdgeInfo>());
-    const registeredNodes = new WeakMap<JSXNode, number>();
+  function traverseNode(index: number, handler: LSPGraph.GraphState): LSPGraph.TraversalResult {
+    if (handler.visited.has(index)) return handler.visited.get(index)!;
+    const { node, childs, padStart, startText, endText } = handler.visitNodeIndex(index);
+    const childNodes = childs.map((x) => traverseNode(x, handler));
+    const childsText = childNodes.map((x) => `${padStart}${x.bodyText}`);
+    const bodyText = [startText, childsText, endText].flat().join('\n');
+    const result = {
+      sourceInfo: node,
+      childs: childNodes,
+      bodyText,
+      index,
+    };
+
+    handler.visited.set(index, result);
+    return handler.visited.get(index)!;
+  }
+
+  function lspTreeToGraph(tree: Tree.Tree<Regions.JSXNode>) {
+    const mutableGraph = Graph.beginMutation(
+      Graph.directed<LSPGraph.SourceNodeInfo, LSPGraph.SourceEdgeInfo>(),
+    );
+    const registeredNodes = new WeakMap<Regions.JSXNode, number>();
     tree.traverse((node) => {
       const { parent, value } = node;
-      const info = new SourceNodeInfo({
+      const info = new LSPGraph.SourceNodeInfo({
         id: value.id,
         nodeRegion: value,
         tagName: value.tag.rawText,
@@ -38,7 +58,7 @@ const make = Effect.gen(function* () {
             mutableGraph,
             graphNode,
             childGraph,
-            new SourceEdgeInfo({
+            new LSPGraph.SourceEdgeInfo({
               relationship: 'jsx-child',
               index: registeredChilds.indexOf(childGraph),
               isRoot: childNode.nodeRegion.parent === null,
@@ -63,7 +83,7 @@ const make = Effect.gen(function* () {
           mutableGraph,
           graphNode,
           childGraph,
-          new SourceEdgeInfo({
+          new LSPGraph.SourceEdgeInfo({
             relationship: 'jsx-child',
             index: registeredChilds.indexOf(childGraph),
             isRoot: childNode.nodeRegion.parent === null,
@@ -76,7 +96,7 @@ const make = Effect.gen(function* () {
     return Graph.endMutation(mutableGraph);
   }
 
-  function lspRegionsToTree(regions: JSXNode[]) {
+  function lspRegionsToTree(regions: Regions.JSXNode[]) {
     return Tree.makeTreeFrom({
       input: regions.find((x) => x.parent === null)!,
       getChilds: (item) => regions.filter((region) => region.parent?.id === item.id),

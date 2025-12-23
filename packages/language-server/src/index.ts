@@ -1,9 +1,12 @@
 import {
+  ConnectionHandlerCtx,
   getClientCapabilities,
+  LSPAdapterSpec,
   LSPConfig,
-  LSPContext,
-  LSPModels,
+  LSPConstants,
   languagePrograms,
+  Position,
+  TwinParserContext,
 } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
@@ -15,7 +18,9 @@ import type * as Layer from 'effect/Layer';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import type * as t from 'vscode-languageserver';
+import { inspect } from 'util';
+import * as t from 'vscode-languageserver';
+import * as types from 'vscode-languageserver-types';
 import { LspMainLive } from './services/LSP.service';
 
 const LSPRuntime = ManagedRuntime.make(LspMainLive);
@@ -25,32 +30,117 @@ const runEffect = <A, E>(
 ): Promise<A> => LSPRuntime.runPromise(effect);
 
 const program = Effect.gen(function* () {
-  const { connection: Connection, documents } = yield* LSPContext;
+  const { sendDiagnostics, connection } = yield* ConnectionHandlerCtx;
   const config = yield* LSPConfig;
 
-  const reportDiagnosticsToClient = Effect.fn(function* (
-    diagnostics: t.DocumentDiagnosticReport,
-    uri: t.URI,
-  ) {
-    if (yield* config.configSelector((x) => x.diagnostics === 'off')) return yield* Effect.void;
+  // const reportDiagnosticsToClient = Effect.fn(function* (
+  //   diagnostics: t.DocumentDiagnosticReport,
+  //   uri: t.URI,
+  // ) {
+  //   if (yield* config.configSelector((x) => x.diagnostics === 'off')) return yield* Effect.void;
 
-    const diagnosticList = diagnostics.kind === 'full' ? diagnostics.items : [];
-    const report: t.PublishDiagnosticsParams = { diagnostics: diagnosticList, uri };
-    const doc = yield* Effect.sync(() => documents.get(uri));
-    if (doc) report['version'] = doc.version;
+  //   const diagnosticList = diagnostics.kind === 'full' ? diagnostics.items : [];
+  //   const report: t.PublishDiagnosticsParams = { diagnostics: diagnosticList, uri };
+  //   const doc = yield* getDocument(uri);
+  //   if (doc) report['version'] = doc.version;
 
-    yield* Effect.promise(() => Connection.sendDiagnostics(report));
-  });
+  //   yield* Effect.promise(() => connection.sendDiagnostics(report));
+  // });
 
-  const refreshDiagnostics = Effect.if(
-    config.configSelector((_) => _.diagnostics === 'off'),
-    {
-      onFalse: () => Effect.void,
-      onTrue: () => Effect.sync(() => Connection.languages.diagnostics.refresh()),
-    },
+  // const refreshDiagnostics = Effect.if(
+  //   config.configSelector((_) => _.diagnostics === 'off'),
+  //   {
+  //     onFalse: () => Effect.void,
+  //     onTrue: () => Effect.sync(() => connection.languages.diagnostics.refresh()),
+  //   },
+  // );
+
+  connection.languages.foldingRange.on(async (params, ..._rest) =>
+    Effect.gen(function* () {
+      t.FoldingRange.create(1, 2, 1, 3, t.FoldingRangeKind.Region, '...');
+      const { getLSPDocument } = yield* LSPAdapterSpec;
+
+      const document = yield* getLSPDocument(params.textDocument.uri);
+      return document.parsableRegions.map(({ attr }) => {
+        const start = document.positionAt(attr.startOffset);
+        const end = document.positionAt(attr.endOffset);
+        return t.FoldingRange.create(
+          start.line,
+          end.line,
+          start.character,
+          end.character - 1,
+          t.FoldingRangeKind.Region,
+        );
+      });
+    }).pipe(runEffect),
   );
 
-  Connection.onInitialize(async (params) => {
+  connection.languages.semanticTokens.onRange(async (params, ..._rest) => {
+    const data = await Effect.gen(function* () {
+      const { getLSPDocument } = yield* LSPAdapterSpec;
+      const parser = yield* TwinParserContext;
+      const document = yield* getLSPDocument(params.textDocument.uri);
+      const builder = new t.SemanticTokensBuilder();
+
+      const regions = document.parsableRegions.flatMap((x) => {
+        const parsedRegion = parser.runTwinParser({
+          text: x.attr.text,
+          startOffset: x.attr.startOffset,
+        });
+        return parsedRegion.result;
+      });
+
+      for (const parsedRegion of regions) {
+        if (parsedRegion.raw.type !== 'CLASS_NAME') continue;
+
+        const range = document.getRangeFor(parsedRegion.startOffset, parsedRegion.endOffset);
+        builder.push(
+          range.start.line,
+          range.start.character,
+          parsedRegion.startOffset - parsedRegion.endOffset,
+          types.CompletionItemKind.Color,
+          types.CompletionItemKind.Value,
+        );
+      }
+      return builder.build();
+    }).pipe(runEffect);
+    return data;
+  });
+
+  connection.languages.semanticTokens.on(async (params, _t, _a, _b) => {
+    const data = await Effect.gen(function* () {
+      const { getLSPDocument } = yield* LSPAdapterSpec;
+      const parser = yield* TwinParserContext;
+      const document = yield* getLSPDocument(params.textDocument.uri);
+      const builder = new t.SemanticTokensBuilder();
+
+      const regions = document.parsableRegions.flatMap((x) => {
+        const parsedRegion = parser.runTwinParser({
+          text: x.attr.text,
+          startOffset: x.attr.startOffset,
+        });
+        return parsedRegion.result;
+      });
+
+      for (const parsedRegion of regions) {
+        if (parsedRegion.raw.type !== 'CLASS_NAME') continue;
+
+        const range = document.getRangeFor(parsedRegion.startOffset, parsedRegion.endOffset);
+        builder.push(
+          range.start.line,
+          range.start.character,
+          parsedRegion.startOffset - parsedRegion.endOffset,
+          types.CompletionItemKind.Color,
+          types.CompletionItemKind.Value,
+        );
+      }
+      return builder.build();
+    }).pipe(runEffect);
+
+    return data;
+  });
+
+  connection.onInitialize(async (params) => {
     const capabilities = getClientCapabilities(params.capabilities);
     const configOptions = params.initializationOptions;
 
@@ -59,22 +149,22 @@ const program = Effect.gen(function* () {
     return capabilities;
   });
 
-  Connection.onDidChangeConfiguration(async (changes) => {
+  connection.onDidChangeConfiguration(async (changes) => {
     await Effect.andThen(config.config, (currentConfig) =>
       config.onChangeConfig((changes.settings?.['nativeTwin'] as any) ?? currentConfig),
     ).pipe(
-      Effect.andThen(() => refreshDiagnostics),
+      // Effect.andThen(() => refreshDiagnostics),
       runEffect,
     );
   });
 
-  Connection.onCompletionResolve(async (...args) =>
+  connection.onCompletionResolve(async (...args) =>
     languagePrograms.getCompletionEntryDetails(...args).pipe(runEffect),
   );
 
-  Connection.onHover(async (...args) => languagePrograms.getHoverDetails(...args).pipe(runEffect));
+  connection.onHover(async (...args) => languagePrograms.getHoverDetails(...args).pipe(runEffect));
 
-  Connection.languages.diagnostics.on(async (...args) => {
+  connection.languages.diagnostics.on(async (...args) => {
     return Effect.andThen(
       config.configSelector((x) => x),
       (x) =>
@@ -82,54 +172,50 @@ const program = Effect.gen(function* () {
           ? Effect.succeed<t.DocumentDiagnosticReport>({ kind: 'full', items: [] })
           : languagePrograms.getDocumentDiagnosticsProgram(...args),
     ).pipe(
-      Effect.tap((_) => reportDiagnosticsToClient(_, args[0].textDocument.uri)),
+      Effect.tap((_) => sendDiagnostics(_, args[0].textDocument.uri)),
+      Effect.andThen((): t.DocumentDiagnosticReport => ({ kind: 'full', items: [] })),
       runEffect,
     );
   });
 
-  Connection.onDocumentColor(async (...params) =>
+  connection.onDocumentColor(async (...params) =>
     languagePrograms.getDocumentColors(...params).pipe(runEffect),
   );
 
-  Connection.onDocumentHighlight(async (...args) =>
+  connection.onDocumentHighlight(async (...args) =>
     languagePrograms.getDocumentHighLightsProgram(...args).pipe(runEffect),
   );
 
-  Connection.onCompletion(async (params) =>
+  connection.onCompletion(async (params) =>
     languagePrograms.getCompletionsAtPosition
-      .apply(params.textDocument.uri, LSPModels.Position.make(params.position))
+      .apply(params.textDocument.uri, Position.make(params.position))
       .pipe(
-        Effect.map((completions) => completions),
+        Effect.tap(() =>
+          Effect.promise(() =>
+            connection.workspace.getConfiguration({
+              scopeUri: params.textDocument.uri,
+              section: LSPConstants.vscodeConfigSection,
+            }),
+          ).pipe(
+            Effect.andThen((settings) =>
+              Effect.log('settings: ', inspect(settings, false, null, false)),
+            ),
+          ),
+        ),
+        // Effect.map((completions) => completions),
         runEffect,
       ),
   );
 
-  Connection.onSelectionRanges(async (_params, _token, _, __) => {
+  connection.onSelectionRanges(async (_params, _token, _, __) => {
     return [];
   });
 
-  Connection.onCodeAction(async (params, _token, _workDone) =>
+  connection.onCodeAction(async (params, _token, _workDone) =>
     languagePrograms.twinCodeActionsProgram(params).pipe(runEffect),
   );
-
-  const listener = documents.listen(Connection);
-  Connection.listen();
-
-  Connection.onShutdown(() => {
-    Connection.console.log('shootDown');
-    Connection.dispose();
-    listener.dispose();
-  });
-
-  Effect.addFinalizer((exit) => {
-    Connection.console.debug('Disposing Connection...');
-    Connection.dispose();
-    Connection.console.debug('Disposing Documents Handler...');
-    listener.dispose();
-    Connection.console.debug(`Closing reason: ${exit.toJSON()}`);
-    return Effect.void;
-  });
 }).pipe(
+  Effect.scoped,
   Effect.uninterruptible,
   Logger.withMinimumLogLevel(LogLevel.All),
   Effect.catchAll((error) => Effect.log(`Language server failed: ${error}`)),

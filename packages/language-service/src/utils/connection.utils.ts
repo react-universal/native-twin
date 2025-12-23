@@ -41,13 +41,20 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
   };
   const result: vscode.InitializeResult = {
     capabilities: {
-      textDocumentSync: vscode.TextDocumentSyncKind.Incremental,
+      textDocumentSync: vscode.TextDocumentSyncKind.Full,
       colorProvider: true,
       hoverProvider: true,
       documentHighlightProvider: true,
       codeActionProvider: true,
       workspaceSymbolProvider: {
         resolveProvider: true,
+      },
+      foldingRangeProvider: {
+        documentSelector: LSPConstants.documentSelectors,
+      },
+      semanticTokensProvider: {
+        range: true,
+        legend: { tokenModifiers: [], tokenTypes: ['twinCLassName'] },
       },
       // Tell the client that this server supports code completion.
       completionProvider: {
@@ -73,6 +80,19 @@ export const getClientCapabilities = (capabilities: vscode.ClientCapabilities) =
     },
   };
   return result;
+};
+
+export const addServerNotificationHandler = <Params, E, R>(
+  notification: (handler: lsp.NotificationHandler<Params>) => vscode.Disposable,
+  handler: (...x: Parameters<lsp.NotificationHandler<Params>>) => Effect.Effect<void, E, R>,
+) => {
+  return Effect.flatMap(Effect.runtime<R>(), (runtime) =>
+    Effect.async((resume) => {
+      const run = Runtime.runPromise(runtime);
+      notification(async (...args) => run(handler(...args)));
+      run(Effect.addFinalizer(() => Effect.sync(() => resume(Effect.void))).pipe(Effect.scoped));
+    }),
+  ).pipe(Effect.fork);
 };
 
 export const addServerRequestHandler = <_Params, Result, Error, E, R>(

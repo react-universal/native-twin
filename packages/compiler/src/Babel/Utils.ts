@@ -15,7 +15,6 @@ import {
   isVariableDeclaratorPath,
 } from './Predicates';
 
-t.react.isCompatTag;
 export type TwinDependenciesLookup = (
   modules: TwinModuleAst[],
 ) => (key: TwinJSXElementNode) => Option.Option<TwinJSXElement>;

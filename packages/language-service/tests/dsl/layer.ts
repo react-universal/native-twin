@@ -39,7 +39,7 @@ const TsProgramLive = Effect.gen(function* () {
   });
 }).pipe(Layer.effect(TypeScriptProgram));
 
-const lspConfig = Effect.gen(function* () {
+export const lspConfigMock = Effect.gen(function* () {
   const config = yield* SubscriptionRef.make(
     parseLSPConfigInput({
       tsConfigPath: path.join(testFolder, 'fixtures/react/tsconfig.json'),
@@ -67,7 +67,7 @@ export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(TsProgramLive),
   Layer.provideMerge(TwinGraphLive),
   Layer.provideMerge(TwinRuntimeContextLive),
-  Layer.provideMerge(Layer.effect(LSPConfig, lspConfig)),
+  Layer.provideMerge(Layer.effect(LSPConfig, lspConfigMock)),
   Layer.provideMerge(TwinGraphosContextLive),
   Layer.provide(createTwinLoggerLayerFor('LSP')),
 );

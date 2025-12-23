@@ -5,7 +5,7 @@ import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
 import * as vscodeLSP from 'vscode-languageserver-protocol';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
-import { type JSXAttributeValue, Position, Range } from '../models/LSP.models';
+import { Position, Range, type Regions } from '../models/LSP.models';
 import { LSPConstants, TwinDiagnosticCodes } from '../models/lsp.constants';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 
@@ -41,7 +41,7 @@ export const twinCodeActionsProgram = Effect.fn(function* (params: vscodeLSP.Cod
 
 export const getDuplicatedDeclarationCodeAction = (
   twinDoc: TwinLSPDocument,
-  region: JSXAttributeValue,
+  region: Regions.JSXAttributeValue,
   diagnostics: vscodeLSP.Diagnostic[],
 ) => {
   const textsToRemove = pipe(

@@ -12,6 +12,7 @@ import {
 } from 'vscode-languageclient/node';
 import { VscodeContext } from '../../extension/extension.service';
 import { registerCommand } from '../../extension/extension.utils';
+import { TwinDocumentsProviderLive } from '../../file-system/TextDocuments.service';
 import {
   createFileWatchers,
   getColorDecoration,
@@ -23,6 +24,7 @@ import {
 
 export const LanguageClientLive = Effect.gen(function* () {
   // const twin = yield* NativeTwinManagerService;
+  // const twinDocs = yield* TwinDocumentsProvider;
   const extensionCtx = yield* VscodeContext;
   const lspConfig = yield* LSPConfig;
 
@@ -34,7 +36,18 @@ export const LanguageClientLive = Effect.gen(function* () {
     LSPConstants.diagnosticProviderSource,
   );
 
-  extensionCtx.subscriptions.push(diagnostic);
+  const virtualDocumentContents = new Map<string, string>();
+
+  const documentsProvider = vscode.workspace.registerTextDocumentContentProvider(
+    'embedded-content',
+    {
+      provideTextDocumentContent: (uri) => {
+        const extension = path.extname(uri.path);
+        const originalUri = uri.fsPath.replace(`.${extension}`, '');
+        return virtualDocumentContents.get(decodeURIComponent(originalUri));
+      },
+    },
+  );
 
   const serverModule = extensionCtx.asAbsolutePath(
     path.join('build', 'cjs', 'servers', 'lsp.node.js'),
@@ -46,9 +59,8 @@ export const LanguageClientLive = Effect.gen(function* () {
 
   const fileEvents = yield* createFileWatchers;
 
-  // const configFiles = yield* getConfigFiles;
   const colorDecorationType = yield* getColorDecoration;
-  extensionCtx.subscriptions.push(colorDecorationType);
+
   const serverLogger = vscode.window.createOutputChannel(LSPConstants.extensionServerChannelName, {
     log: true,
   });
@@ -60,6 +72,7 @@ export const LanguageClientLive = Effect.gen(function* () {
       fileEvents: fileEvents,
       configurationSection: LSPConstants.vscodeConfigSection,
     },
+    documentSelector: LSPConstants.documentSelectors,
     errorHandler: {
       error: onLanguageClientError,
       closed: onLanguageClientClosed,
@@ -67,15 +80,6 @@ export const LanguageClientLive = Effect.gen(function* () {
     diagnosticCollectionName: diagnostic.name,
     outputChannel: serverLogger,
     middleware: {
-      workspace: {
-        workspaceFolders: (token, next) => {
-          return next(token);
-        },
-      },
-      handleDiagnostics(uri, diagnostics, next) {
-        diagnostic.set(uri, diagnostics);
-        return next(uri, diagnostics);
-      },
       provideDocumentColors: async (document, token, next) => {
         return onProvideDocumentColors(document, token, next, colorDecorationType);
       },
@@ -107,8 +111,17 @@ export const LanguageClientLive = Effect.gen(function* () {
       yield* Effect.log('Client restarted');
     }),
   );
+
+  extensionCtx.subscriptions.push(
+    languageClient,
+    diagnostic,
+    fileEvents,
+    colorDecorationType,
+    documentsProvider,
+  );
 }).pipe(
   Effect.withLogSpan('LanguageServiceClient'),
   Effect.onError((error) => Effect.logError('ERROR: ', Cause.prettyErrors(error))),
   Layer.scopedDiscard,
+  Layer.provide(TwinDocumentsProviderLive),
 );

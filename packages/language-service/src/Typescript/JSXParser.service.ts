@@ -7,11 +7,7 @@ import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import ts from 'ts-morph';
 import {
-  JSXAttribute,
-  JSXAttributeName,
-  JSXAttributeValue,
-  JSXNode,
-  JSXTagName,
+  Regions
 } from '../models/LSP.models';
 import { annotatedLayer } from '../utils/effect.utils';
 import type { TypescriptModels } from './TwinDsl.models';
@@ -95,9 +91,9 @@ const make = Effect.gen(function* () {
     }
   }
 
-  function getJSXNode(node: TypescriptModels.AnyJSXElement, parent: JSXNode | undefined): JSXNode {
+  function getJSXNode(node: TypescriptModels.AnyJSXElement, parent: Regions.JSXNode | undefined): Regions.JSXNode {
     const attributes = getJSXElementRegionProps(node).map((prop) => {
-      const name = JSXAttributeName.make({
+      const name = Regions.JSXAttributeName.make({
         endLine: node.getEndLineNumber(),
         startLine: node.getStartLineNumber(),
         endOffset: node.getEnd(),
@@ -131,12 +127,12 @@ const make = Effect.gen(function* () {
           attrRange.startOffset += 2;
         }
       }
-      const value = JSXAttributeValue.make({
+      const value = Regions.JSXAttributeValue.make({
         ...attrRange,
         rawText: prop.value.getText(),
         text: attrValue.originalText,
       });
-      return JSXAttribute.make({
+      return Regions.JSXAttribute.make({
         rawText: prop.attribute.getText(),
         name,
         value,
@@ -160,14 +156,14 @@ const make = Effect.gen(function* () {
       endOffset: tagName.getEnd(),
       startOffset: tagName.getStart(),
     };
-    const result = JSXNode.make({
+    const result = Regions.JSXNode.make({
       ...nodeRange,
       id: JSON.stringify(nodeRange),
-      parent: parent ? JSXNode.make(parent) : null,
+      parent: parent ? Regions.JSXNode.make(parent) : null,
       rawText: node.getText(),
       text: node.getText(),
       attributes,
-      tag: JSXTagName.make({
+      tag: Regions.JSXTagName.make({
         rawText: tagName.getText(),
         ...tagNameRange,
       }),
@@ -179,10 +175,10 @@ const make = Effect.gen(function* () {
   function jsxNodesToRegions(nodes: TypescriptModels.AnyJSXElement[]) {
     if (nodes.length === 0) return [];
 
-    const regions: JSXNode[] = [];
+    const regions: Regions.JSXNode[] = [];
     const nodesToVisit: ts.Node[] = [...nodes];
 
-    const parents = new Map<ts.Node, JSXNode>();
+    const parents = new Map<ts.Node, Regions.JSXNode>();
 
     while (nodesToVisit.length > 0) {
       const nextNode = nodesToVisit.pop();
