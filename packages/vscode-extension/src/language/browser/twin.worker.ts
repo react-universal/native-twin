@@ -3,11 +3,12 @@
 import {
   FileNotFound,
   getClientCapabilities,
+  LanguageServerHandlers,
+  LanguageServerHandlersLive,
   LSPAdapterSpec,
   LSPBaseLayerLive,
   LSPConfig,
   LSPDocumentsCtx,
-  languagePrograms,
   makeConnectionHandlerCtx,
   type Position,
   parseLSPConfigInput,
@@ -165,6 +166,7 @@ const AdapterLive = Effect.gen(function* () {
 }).pipe(Layer.effect(LSPAdapterSpec), Layer.provide(JSXParserLive));
 
 const MainLayer = Layer.empty.pipe(
+  Layer.provideMerge(LanguageServerHandlersLive),
   Layer.provideMerge(AdapterLive),
   Layer.provideMerge(TypescriptContextLive),
   makeConnectionHandlerCtx(connection),
@@ -178,6 +180,7 @@ const program = Effect.gen(function* () {
   yield* Effect.log('START_SERVER');
   // const { connection } = yield* LSPContext;
   const { config, onChangeConfig, configSelector } = yield* LSPConfig;
+  const handlers = yield* LanguageServerHandlers;
 
   connection.onInitialize(async (params) => {
     console.log('connection.onInitialize', params);
@@ -209,12 +212,10 @@ const program = Effect.gen(function* () {
   });
 
   connection.onCompletionResolve(async (...args) =>
-    languagePrograms.getCompletionEntryDetails(...args).pipe(runtime.runPromise),
+    handlers.getCompletionEntryDetails(...args).pipe(runtime.runPromise),
   );
 
-  connection.onHover(async (...args) =>
-    languagePrograms.getHoverDetails(...args).pipe(runtime.runPromise),
-  );
+  connection.onHover(async (...args) => handlers.getHoverDetails(...args).pipe(runtime.runPromise));
 
   connection.languages.diagnostics.on(async (...args) => {
     return Effect.andThen(
@@ -222,23 +223,21 @@ const program = Effect.gen(function* () {
       (x) =>
         x.diagnostics === 'off'
           ? Effect.succeed<t.DocumentDiagnosticReport>({ kind: 'full', items: [] })
-          : languagePrograms.getDocumentDiagnosticsProgram(...args),
+          : handlers.getDocumentDiagnosticsProgram(...args),
     ).pipe(runtime.runPromise);
   });
 
   connection.onDocumentColor(async (...params) =>
-    languagePrograms.getDocumentColors(...params).pipe(runtime.runPromise),
+    handlers.getDocumentHighLights(...params).pipe(runtime.runPromise),
   );
 
   connection.onDocumentHighlight(async (...args) => {
-    const data = await languagePrograms
-      .getDocumentHighLightsProgram(...args)
-      .pipe(runtime.runPromise);
+    const data = await handlers.getDocumentHighLights(...args).pipe(runtime.runPromise);
     return data;
   });
 
   connection.onCompletion(async (params) => {
-    const result = await languagePrograms
+    const result = await handlers
       .getCompletionsAtPosition(params.textDocument.uri, params.position)
       .pipe(
         Effect.map((completions) => completions),
@@ -254,7 +253,7 @@ const program = Effect.gen(function* () {
   });
 
   connection.onCodeAction(async (params, _token, _workDone) =>
-    languagePrograms.twinCodeActionsProgram(params).pipe(runtime.runPromise),
+    handlers.twinCodeActionsProgram(params).pipe(runtime.runPromise),
   );
 
   connection.onCodeActionResolve(async (params) => {

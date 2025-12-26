@@ -18,6 +18,7 @@ import {
 } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
+import type * as Option from 'effect/Option';
 import { CompletionItemKind } from 'vscode-languageserver-types';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
@@ -93,7 +94,7 @@ export class TwinRuleRegistry {
 }
 
 export interface ResolvedTwinResult {
-  entry: TwinRuleRegistry | null;
+  entry: Option.Option<TwinRuleRegistry>;
   parsedRegion: ParsedRuleWithLocation;
 }
 

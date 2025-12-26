@@ -1,10 +1,10 @@
 import {
   ConnectionHandlerCtx,
   getClientCapabilities,
+  LanguageServerHandlers,
   LSPAdapterSpec,
   LSPConfig,
   LSPConstants,
-  languagePrograms,
   TwinParserContext,
 } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
@@ -31,6 +31,7 @@ const runEffect = <A, E>(
 const program = Effect.gen(function* () {
   const { sendDiagnostics, connection } = yield* ConnectionHandlerCtx;
   const config = yield* LSPConfig;
+  const handlers = yield* LanguageServerHandlers;
 
   connection.languages.foldingRange.on(async (params, ..._rest) =>
     Effect.gen(function* () {
@@ -135,10 +136,10 @@ const program = Effect.gen(function* () {
   });
 
   connection.onCompletionResolve(async (...args) =>
-    languagePrograms.getCompletionEntryDetails(...args).pipe(runEffect),
+    handlers.getCompletionEntryDetails(...args).pipe(runEffect),
   );
 
-  connection.onHover(async (...args) => languagePrograms.getHoverDetails(...args).pipe(runEffect));
+  connection.onHover(async (...args) => handlers.getHoverDetails(...args).pipe(runEffect));
 
   connection.languages.diagnostics.on(async (...args) => {
     return Effect.andThen(
@@ -146,7 +147,7 @@ const program = Effect.gen(function* () {
       (x) =>
         x.diagnostics === 'off'
           ? Effect.succeed<t.DocumentDiagnosticReport>({ kind: 'full', items: [] })
-          : languagePrograms.getDocumentDiagnosticsProgram(...args),
+          : handlers.getDocumentDiagnosticsProgram(...args),
     ).pipe(
       Effect.tap((_) => sendDiagnostics(_, args[0].textDocument.uri)),
       Effect.andThen((): t.DocumentDiagnosticReport => ({ kind: 'full', items: [] })),
@@ -155,15 +156,15 @@ const program = Effect.gen(function* () {
   });
 
   connection.onDocumentColor(async (...params) =>
-    languagePrograms.getDocumentColors(...params).pipe(runEffect),
+    handlers.getDocumentHighLights(...params).pipe(runEffect),
   );
 
   connection.onDocumentHighlight(async (...args) =>
-    languagePrograms.getDocumentHighLightsProgram(...args).pipe(runEffect),
+    handlers.getDocumentHighLights(...args).pipe(runEffect),
   );
 
   connection.onCompletion(async (params) =>
-    languagePrograms.getCompletionsAtPosition(params.textDocument.uri, params.position).pipe(
+    handlers.getCompletionsAtPosition(params.textDocument.uri, params.position).pipe(
       Effect.tap(() =>
         Effect.promise(() =>
           connection.workspace.getConfiguration({
@@ -186,7 +187,7 @@ const program = Effect.gen(function* () {
   });
 
   connection.onCodeAction(async (params, _token, _workDone) =>
-    languagePrograms.twinCodeActionsProgram(params).pipe(runEffect),
+    handlers.twinCodeActionsProgram(params).pipe(runEffect),
   );
 }).pipe(
   Effect.scoped,

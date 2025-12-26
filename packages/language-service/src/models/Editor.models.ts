@@ -49,7 +49,7 @@ export class TwinCompletionItem {
 export interface DiagnosticReportInput {
   code: TwinDiagnosticCodes;
   location: vscode.Location;
-  rules: { text: string; location: vscode.Location }[];
+  rulesInfo: { text: string; location: vscode.Location }[];
   customReason?: string;
   severity: TwinConfigOptions['diagnostics'];
 }
@@ -65,8 +65,8 @@ export class DiagnosticReport implements Equal.Equal {
 
   constructor(private readonly input: DiagnosticReportInput) {
     this.relatedInfo = RA.dedupeWith(
-      this.input.rules,
-      Equivalence.mapInput(Range.equals, (rule: (typeof this.input.rules)[number]) =>
+      this.input.rulesInfo,
+      Equivalence.mapInput(Range.equals, (rule: (typeof this.input.rulesInfo)[number]) =>
         Range.encode(rule.location.range),
       ),
     ).map((rule) => vscode.DiagnosticRelatedInformation.create(rule.location, rule.text));

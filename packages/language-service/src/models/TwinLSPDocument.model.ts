@@ -2,6 +2,7 @@ import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
 import type * as VSCDocument from 'vscode-languageserver-textdocument';
 import { Location, Position, Range, Regions } from './LSP.models';
+import type { ParsedRuleWithLocation } from './TwinParser.models';
 
 export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocument {
   constructor(private readonly textDocument: VSCDocument.TextDocument) {}
@@ -18,18 +19,6 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
     return this.textDocument.version;
   }
 
-  sumPositions(p1: Position, p2: Position) {
-    if (p1.line !== p2.line) {
-      console.warn('Cant sum positions on different lines');
-      return Position.make(p2);
-    }
-    return Position.sum(p1, p2);
-  }
-
-  sumRanges(r1: Range, r2: Range) {
-    return Range.sum(r1, r2);
-  }
-
   getLocation(range: Range): Location {
     return Location.from(this.uri, range);
   }
@@ -43,7 +32,7 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
   }
 
   positionAt(offset: number) {
-    return this.textDocument.positionAt(offset);
+    return Position.make(this.textDocument.positionAt(offset));
   }
 
   isPositionInRange(position: Position, range: Range) {
@@ -59,6 +48,10 @@ export abstract class BaseTwinTextDocument implements Equal.Equal, TwinBaseDocum
 
   locationAtOffsets(start: number, end: number): Location {
     return this.getLocation(this.getRangeFor(start, end));
+  }
+
+  getParsedRegionRange(region: ParsedRuleWithLocation) {
+    return this.locationAtOffsets(region.startOffset, region.endOffset);
   }
 
   [Equal.symbol](that: unknown) {

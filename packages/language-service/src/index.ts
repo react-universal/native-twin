@@ -1,4 +1,6 @@
 // TODO: Fix critical exposition
+
+export * from './core/LSP.service';
 export * from './core/LSPConfig.service';
 export * from './core/TwinGraphos';
 export * from './core/TwinParser.service';
@@ -9,7 +11,6 @@ export * from './internal/RunnerLayer';
 export * from './models/LSP.models';
 export * from './models/lsp.constants';
 export { TwinLSPDocument } from './models/TwinLSPDocument.model';
-export { languagePrograms } from './programs';
 export {
   addConnectionRequestHandler,
   addServerRequestHandler,

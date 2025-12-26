@@ -10,6 +10,7 @@ import * as Stream from 'effect/Stream';
 import * as Trie from 'effect/Trie';
 import { ComposedClass } from '../internal/parsers/parser.data';
 import { parseTwinRules } from '../internal/parsers/TwinParser.runner';
+import type { Regions } from '../models/LSP.models';
 import type * as TwinParserModel from '../models/TwinParser.models';
 import { annotatedLayer } from '../utils/effect.utils';
 import { TwinRuntimeContext, TwinRuntimeContextLive } from './TwinRuntime.service';
@@ -52,24 +53,40 @@ const make = Effect.gen(function* () {
 
     return yield* Stream.fromIterable(parserResult.result).pipe(
       Stream.mapEffect((parsedRegion) =>
-        Effect.andThen(getRuleByClassName(parsedRegion.parsed.n), (entry) => ({
-          entry: Option.getOrNull(entry),
-          parsedRegion,
-        })),
+        getRuleByClassName(parsedRegion.parsed.n).pipe(
+          Effect.map((entry) => ({ entry, parsedRegion })),
+        ),
       ),
       Stream.runCollect,
       Effect.map(RA.fromIterable),
     );
   });
 
+  const parseDocumentRegion = (region: Regions.ParsableRegion) =>
+    runFullParserEffect(region.value.text, region.value.startOffset);
+
+  const parseRegionAtOffset = (region: Regions.ParsableRegion, offset: number) =>
+    parseDocumentRegion(region).pipe(
+      Effect.map((result) =>
+        Option.fromNullable(
+          result.find(
+            ({ parsedRegion }) =>
+              offset >= parsedRegion.startOffset && offset <= parsedRegion.endOffset,
+          ),
+        ),
+      ),
+    );
+
   return {
     data: { themeVariants, twinRef, styledContext, twinTrie },
     findRulesByKey,
+    parseDocumentRegion,
     runTW,
     getRuleByClassName,
     runTwinParser,
     runFullParserEffect,
     findByParsed,
+    parseRegionAtOffset,
   };
 }).pipe(
   Effect.withSpan('TwinParserContext'),
