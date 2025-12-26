@@ -83,15 +83,17 @@ export class LSPBasicDocument extends BaseTwinTextDocument {
 export class TwinLSPDocument extends BaseTwinTextDocument {
   readonly regions: Regions.JSXNode[];
   readonly parsableRegions: {
-    region: Regions.JSXNode;
-    attr: Regions.JSXAttributeValue;
+    region: Regions.AnyParsedNode;
+    data: Regions.ParsableRegion;
   }[];
 
   constructor(textDocument: VSCDocument.TextDocument, regions: Regions.JSXNode[]) {
     super(textDocument);
     this.regions = regions.map((x) => fixRegionRanges(x, textDocument));
     this.parsableRegions = this.regions.flatMap((region) =>
-      region.attributes.map((x) => x.value).map((attr) => ({ region, attr })),
+      region.attributes
+        .map((x) => x.value)
+        .map((attr) => ({ region, data: Regions.ParsableRegion.JSXAttribute({ value: attr }) })),
     );
   }
 
@@ -99,10 +101,11 @@ export class TwinLSPDocument extends BaseTwinTextDocument {
     return Range.from(this.positionAt(node.startOffset), this.positionAt(node.endOffset));
   }
 
-  findRegionAt(position: Position): Regions.JSXAttributeValue | null {
+  findRegionAt(position: Position): Regions.ParsableRegion | null {
     return (
-      this.parsableRegions.find((x) => this.isPositionInRange(position, this.getNodeRange(x.attr)))
-        ?.attr ?? null
+      this.parsableRegions.find((x) =>
+        this.isPositionInRange(position, this.getNodeRange(x.data.value)),
+      )?.data ?? null
     );
   }
 }

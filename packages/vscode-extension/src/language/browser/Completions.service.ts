@@ -1,12 +1,11 @@
 import * as vscode from 'vscode';
 import {
-  JSXParser,
   LSPConstants,
   Position,
   TwinLSPDocument,
   TwinParserContext,
-  TypeScriptProgram,
-} from '@native-twin/language-service/browser';
+} from '@native-twin/language-service';
+import { JSXParser, TypeScriptProgram } from '@native-twin/language-service/ts-adapter';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
@@ -35,11 +34,9 @@ export const CompletionsService = Effect.gen(function* () {
 
         const cursorOffset = document.offsetAt(position);
 
-        const valueRegion = Option.fromNullable(
-          lspDocument.findRegionAt(Position.make(position)),
-        );
+        const valueRegion = Option.fromNullable(lspDocument.findRegionAt(Position.make(position)));
 
-        const parserResult = Option.map(valueRegion, (value) =>
+        const parserResult = Option.map(valueRegion, ({ value }) =>
           parser.runTwinParser({
             text: value.text,
             startOffset: value.startOffset,

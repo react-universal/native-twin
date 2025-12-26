@@ -1,6 +1,6 @@
 // import * as vscode from 'vscode';
 // import { LSPConstants } from '@native-twin/language-service';
-// import { parseTemplate } from '@native-twin/language-service/browser';
+// import { parseTemplate } from '@native-twin/language-service';
 // import * as RA from 'effect/Array';
 // import * as Cause from 'effect/Cause';
 // import * as Effect from 'effect/Effect';

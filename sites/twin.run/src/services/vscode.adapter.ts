@@ -7,7 +7,7 @@ import {
   type LSPPosition,
   TwinLSPDocument,
   TypeScriptProgram,
-} from '@native-twin/language-service/browser';
+} from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as uri from 'vscode-uri';

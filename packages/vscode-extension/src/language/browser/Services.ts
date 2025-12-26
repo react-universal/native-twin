@@ -1,4 +1,5 @@
-import { LSPConfig, TypeScriptProgram } from '@native-twin/language-service/browser';
+import { LSPConfig } from '@native-twin/language-service';
+import { TypeScriptProgram } from '@native-twin/language-service/ts-adapter';
 import * as Effect from 'effect/Effect';
 import * as Fiber from 'effect/Fiber';
 import * as Layer from 'effect/Layer';

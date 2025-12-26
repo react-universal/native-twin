@@ -123,6 +123,12 @@ export namespace Regions {
     text: Schema.String,
   }) {}
 
+  export type ParsableRegion = Data.TaggedEnum<{
+    JSXAttribute: { readonly value: JSXAttributeValue };
+  }>;
+
+  export const ParsableRegion = Data.taggedEnum<ParsableRegion>();
+
   export class JSXTagName extends Node.extend<JSXTagName>('JSXTagName')({
     _tag: Schema.Literal('JSXTagName').pipe(
       Schema.propertySignature,

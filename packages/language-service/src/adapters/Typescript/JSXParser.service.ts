@@ -6,10 +6,8 @@ import * as Effect from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import ts from 'ts-morph';
-import {
-  Regions
-} from '../models/LSP.models';
-import { annotatedLayer } from '../utils/effect.utils';
+import { Regions } from '../../models/LSP.models';
+import { annotatedLayer } from '../../utils/effect.utils';
 import type { TypescriptModels } from './TwinDsl.models';
 import { TypescriptUtils, TypescriptUtilsLive } from './TypescriptUtils.service';
 
@@ -91,7 +89,10 @@ const make = Effect.gen(function* () {
     }
   }
 
-  function getJSXNode(node: TypescriptModels.AnyJSXElement, parent: Regions.JSXNode | undefined): Regions.JSXNode {
+  function getJSXNode(
+    node: TypescriptModels.AnyJSXElement,
+    parent: Regions.JSXNode | undefined,
+  ): Regions.JSXNode {
     const attributes = getJSXElementRegionProps(node).map((prop) => {
       const name = Regions.JSXAttributeName.make({
         endLine: node.getEndLineNumber(),

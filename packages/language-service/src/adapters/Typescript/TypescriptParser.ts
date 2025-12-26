@@ -1,12 +1,10 @@
 import * as Array from 'effect/Array';
 import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
 import ts from 'ts-morph';
 import { ScriptElementKind } from 'typescript';
-import { LSPParser } from '../core/LSPParser.service';
-import { LSPParserError } from '../models/LSP.models';
+import { LSPParserError } from '../../models/LSP.models';
 import { JSXParser, JSXParserLive } from './JSXParser.service';
 import { TypeScriptProgram } from './TypescriptAPI.service';
 
@@ -63,7 +61,7 @@ export const TypescriptParser = Effect.gen(function* () {
     parseFile,
     parseConfigFile,
   };
-}).pipe(Effect.provide(JSXParserLive), Layer.effect(LSPParser));
+}).pipe(Effect.provide(JSXParserLive));
 
 export function reducePropertyToPrimitive(input: any, project: ts.Project): any {
   switch (input.getKind()) {

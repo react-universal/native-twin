@@ -11,7 +11,7 @@ import {
   TwinRuntimeContext,
   TwinRuntimeContextLive,
 } from '../src';
-import { BabelLSPAdapterLive } from '../src/adapters/Babel.adapter';
+import { BabelLSPAdapterLive } from '../src/adapters/Babel/Babel.adapter';
 import { makeTwinGraph } from '../src/core/TwinProject.service';
 import { lspConfigMock } from './dsl';
 import { LSPDocumentsCtxMock } from './dsl/adapter.mock';

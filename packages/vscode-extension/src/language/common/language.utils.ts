@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { CSS_COLORS } from '@native-twin/css';
-import { LSPConstants, type TwinConfigOptions } from '@native-twin/language-service/browser';
+import { LSPConstants, type TwinConfigOptions } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import {
   CloseAction,

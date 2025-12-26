@@ -1,10 +1,6 @@
 import type * as vscode from 'vscode';
-import {
-  JSXParserLive,
-  TwinParserContextLive,
-  TwinRuntimeContextLive,
-  TypescriptUtilsLive,
-} from '@native-twin/language-service/browser';
+import { TwinParserContextLive, TwinRuntimeContextLive } from '@native-twin/language-service';
+import { JSXParserLive, TypescriptUtilsLive } from '@native-twin/language-service/ts-adapter';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';

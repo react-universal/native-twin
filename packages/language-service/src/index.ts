@@ -1,6 +1,5 @@
 // TODO: Fix critical exposition
-export { BabelLSPAdapterLive } from './adapters/Babel.adapter';
-export * from './core/LSPContext.service';
+export * from './core/LSPConfig.service';
 export * from './core/TwinGraphos';
 export * from './core/TwinParser.service';
 export * from './core/TwinRuntime.service';
@@ -11,10 +10,6 @@ export * from './models/LSP.models';
 export * from './models/lsp.constants';
 export { TwinLSPDocument } from './models/TwinLSPDocument.model';
 export { languagePrograms } from './programs';
-export * from './Typescript/JSXParser.service';
-export * from './Typescript/TwinGraph.service';
-export * from './Typescript/TypescriptAPI.service';
-export * from './Typescript/TypescriptUtils.service';
 export {
   addConnectionRequestHandler,
   addServerRequestHandler,

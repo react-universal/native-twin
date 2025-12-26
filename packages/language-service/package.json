@@ -19,15 +19,15 @@
       "import": "./build/esm/index.js",
       "default": "./build/cjs/index.js"
     },
-    "./browser": {
-      "types": "./build/dts/browser.d.ts",
-      "import": "./build/esm/browser.js",
-      "default": "./build/cjs/browser.js"
+    "./ts-adapter": {
+      "types": "./build/dts/ts-adapter.d.ts",
+      "import": "./build/esm/ts-adapter.js",
+      "default": "./build/cjs/ts-adapter.js"
     },
-    "./vscode-server": {
-      "types": "./build/dts/adapters/vscode.adapter.d.ts",
-      "import": "./build/esm/adapters/vscode.adapter.js",
-      "default": "./build/cjs/adapters/vscode.adapter.js"
+    "./babel-adapter": {
+      "types": "./build/dts/babel-adapter.d.ts",
+      "import": "./build/esm/babel-adapter.js",
+      "default": "./build/cjs/babel-adapter.js"
     }
   },
   "main": "./build/cjs/index.js",

@@ -22,7 +22,7 @@ import * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuleComposer } from '../models/TwinRuleHandler';
 import { annotatedLayer } from '../utils/effect.utils';
 import { createStyledContext } from '../utils/sheet.utils';
-import * as LspConfig from './LSPContext.service';
+import * as LspConfig from './LSPConfig.service';
 
 const resolvedSections = new Map<string, Record<string, any>>();
 

@@ -4,7 +4,7 @@ import * as Graph from 'effect/Graph';
 import * as Layer from 'effect/Layer';
 import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
-import { annotatedLayer } from '../utils/effect.utils';
+import { annotatedLayer } from '../../utils/effect.utils';
 import { JSXParser, JSXParserLive } from './JSXParser.service';
 import type { TwinGraphModel, TypescriptModels } from './TwinDsl.models';
 import { TypescriptUtils, TypescriptUtilsLive } from './TypescriptUtils.service';
@@ -13,36 +13,42 @@ const make = Effect.gen(function* () {
   const tsUtils = yield* TypescriptUtils;
   const jsxParser = yield* JSXParser;
 
-  const extractSourceFileGraph = Effect.fn(function* (
-    source: ts.SourceFile,
-    followSymbolsDepth: number,
-  ) {
-    const context = yield* createTraversalContext(source, followSymbolsDepth, tsUtils, jsxParser);
+  const extractSourceFileGraph = Effect.fn(
+    function* (source: ts.SourceFile, followSymbolsDepth: number) {
+      const context = yield* createTraversalContext(source, followSymbolsDepth, tsUtils, jsxParser);
 
-    // Build lookup of JSX expressions with their children for quick reference
-    const jsxExpressionStacks = context.createJSXExpressionStacks();
+      // Build lookup of JSX expressions with their children for quick reference
+      const jsxExpressionStacks = context.createJSXExpressionStacks();
 
-    // Process all nodes in the visitation queue
-    while (context.state.nodeToVisit.length > 0) {
-      const currentNode = yield* context.getNextNode();
-      const currentDepthBudget = context.getDepthBudgetFor(currentNode)!;
+      // Process all nodes in the visitation queue
+      while (context.state.nodeToVisit.length > 0) {
+        const currentNode = yield* context.getNextNode();
+        const currentDepthBudget = context.getDepthBudgetFor(currentNode)!;
 
-      // Handle identifier nodes that may reference JSX expressions
-      if (ts.Node.isIdentifier(currentNode)) {
-        yield* context.processIdentifierNode(currentNode, currentDepthBudget, jsxExpressionStacks);
-        continue;
+        // Handle identifier nodes that may reference JSX expressions
+        if (ts.Node.isIdentifier(currentNode)) {
+          yield* context.processIdentifierNode(
+            currentNode,
+            currentDepthBudget,
+            jsxExpressionStacks,
+          );
+          continue;
+        }
+
+        // Handle JSX element and self-closing element nodes
+        if (tsUtils.is.jSXElementLike(currentNode)) {
+          yield* context.processJSXElementNode(currentNode, currentDepthBudget);
+        }
       }
 
-      // Handle JSX element and self-closing element nodes
-      if (tsUtils.is.jSXElementLike(currentNode)) {
-        yield* context.processJSXElementNode(currentNode, currentDepthBudget);
-      }
-    }
-
-    const sourceGraph = context.buildGraph();
-    convertToTwinGraph(sourceGraph);
-    return { sourceGraph };
-  });
+      const a = [];
+      const sourceGraph = context.buildGraph();
+      convertToTwinGraph(sourceGraph);
+      yield* Effect.addFinalizer(() => Effect.sync(() => (a.length = 0)));
+      return { sourceGraph };
+    },
+    (effect) => effect.pipe(Effect.scoped),
+  );
 
   return { extractSourceFileGraph };
 });

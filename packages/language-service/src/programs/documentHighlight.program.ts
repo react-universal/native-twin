@@ -18,8 +18,8 @@ export const getDocumentHighLightsProgram = Effect.fn(function* (
 
   if (!region) return [];
   const parsed = parser.runTwinParser({
-    text: region.text,
-    startOffset: region.startOffset,
+    text: region.value.text,
+    startOffset: region.value.startOffset,
   });
 
   return parsed.result.flatMap((parsedRegion) => {

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import type { TwinConfigOptions } from '@native-twin/language-service';
-import { LSPConstants } from '@native-twin/language-service/browser';
+import { LSPConstants } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';

@@ -10,7 +10,7 @@ import {
   languagePrograms,
   TwinParserContext,
   TwinRuntimeContext,
-} from '@native-twin/language-service/browser';
+} from '@native-twin/language-service';
 import * as Array from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';

@@ -22,11 +22,12 @@ export interface LSPAdapterSpec {
   getRegionAt(
     filename: string,
     position: typeof Position.Type,
-  ): Effect.Effect<typeof Regions.JSXAttributeValue.Type | null, AnyLSPError>;
+  ): Effect.Effect<Regions.ParsableRegion | null, AnyLSPError>;
   getRegions(filename: string): Effect.Effect<(typeof Regions.AnyParsedNode.Type)[], AnyLSPError>;
 }
 
 export const LSPAdapterSpec = Context.GenericTag<LSPAdapterSpec>('LSPAdapterSpec');
+
 /**
  * ************* / LSP Parser Adapters *************
  * */

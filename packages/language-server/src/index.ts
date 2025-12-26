@@ -5,7 +5,6 @@ import {
   LSPConfig,
   LSPConstants,
   languagePrograms,
-  Position,
   TwinParserContext,
 } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
@@ -33,37 +32,14 @@ const program = Effect.gen(function* () {
   const { sendDiagnostics, connection } = yield* ConnectionHandlerCtx;
   const config = yield* LSPConfig;
 
-  // const reportDiagnosticsToClient = Effect.fn(function* (
-  //   diagnostics: t.DocumentDiagnosticReport,
-  //   uri: t.URI,
-  // ) {
-  //   if (yield* config.configSelector((x) => x.diagnostics === 'off')) return yield* Effect.void;
-
-  //   const diagnosticList = diagnostics.kind === 'full' ? diagnostics.items : [];
-  //   const report: t.PublishDiagnosticsParams = { diagnostics: diagnosticList, uri };
-  //   const doc = yield* getDocument(uri);
-  //   if (doc) report['version'] = doc.version;
-
-  //   yield* Effect.promise(() => connection.sendDiagnostics(report));
-  // });
-
-  // const refreshDiagnostics = Effect.if(
-  //   config.configSelector((_) => _.diagnostics === 'off'),
-  //   {
-  //     onFalse: () => Effect.void,
-  //     onTrue: () => Effect.sync(() => connection.languages.diagnostics.refresh()),
-  //   },
-  // );
-
   connection.languages.foldingRange.on(async (params, ..._rest) =>
     Effect.gen(function* () {
-      t.FoldingRange.create(1, 2, 1, 3, t.FoldingRangeKind.Region, '...');
       const { getLSPDocument } = yield* LSPAdapterSpec;
 
       const document = yield* getLSPDocument(params.textDocument.uri);
-      return document.parsableRegions.map(({ attr }) => {
-        const start = document.positionAt(attr.startOffset);
-        const end = document.positionAt(attr.endOffset);
+      return document.parsableRegions.map(({ data }) => {
+        const start = document.positionAt(data.value.startOffset);
+        const end = document.positionAt(data.value.endOffset);
         return t.FoldingRange.create(
           start.line,
           end.line,
@@ -82,10 +58,10 @@ const program = Effect.gen(function* () {
       const document = yield* getLSPDocument(params.textDocument.uri);
       const builder = new t.SemanticTokensBuilder();
 
-      const regions = document.parsableRegions.flatMap((x) => {
+      const regions = document.parsableRegions.flatMap(({ data }) => {
         const parsedRegion = parser.runTwinParser({
-          text: x.attr.text,
-          startOffset: x.attr.startOffset,
+          text: data.value.text,
+          startOffset: data.value.startOffset,
         });
         return parsedRegion.result;
       });
@@ -114,10 +90,10 @@ const program = Effect.gen(function* () {
       const document = yield* getLSPDocument(params.textDocument.uri);
       const builder = new t.SemanticTokensBuilder();
 
-      const regions = document.parsableRegions.flatMap((x) => {
+      const regions = document.parsableRegions.flatMap(({ data }) => {
         const parsedRegion = parser.runTwinParser({
-          text: x.attr.text,
-          startOffset: x.attr.startOffset,
+          text: data.value.text,
+          startOffset: data.value.startOffset,
         });
         return parsedRegion.result;
       });
@@ -187,24 +163,22 @@ const program = Effect.gen(function* () {
   );
 
   connection.onCompletion(async (params) =>
-    languagePrograms.getCompletionsAtPosition
-      .apply(params.textDocument.uri, Position.make(params.position))
-      .pipe(
-        Effect.tap(() =>
-          Effect.promise(() =>
-            connection.workspace.getConfiguration({
-              scopeUri: params.textDocument.uri,
-              section: LSPConstants.vscodeConfigSection,
-            }),
-          ).pipe(
-            Effect.andThen((settings) =>
-              Effect.log('settings: ', inspect(settings, false, null, false)),
-            ),
+    languagePrograms.getCompletionsAtPosition(params.textDocument.uri, params.position).pipe(
+      Effect.tap(() =>
+        Effect.promise(() =>
+          connection.workspace.getConfiguration({
+            scopeUri: params.textDocument.uri,
+            section: LSPConstants.vscodeConfigSection,
+          }),
+        ).pipe(
+          Effect.andThen((settings) =>
+            Effect.log('settings: ', inspect(settings, false, null, false)),
           ),
         ),
-        // Effect.map((completions) => completions),
-        runEffect,
       ),
+      // Effect.map((completions) => completions),
+      runEffect,
+    ),
   );
 
   connection.onSelectionRanges(async (_params, _token, _, __) => {

@@ -1,5 +1,0 @@
-{
-  "main": "../build/cjs/adapters/vscode.adapter.js",
-  "module": "../build/esm/adapters/vscode.adapter.js",
-  "types": "../build/dts/adapters/vscode.adapter.d.ts"
-}

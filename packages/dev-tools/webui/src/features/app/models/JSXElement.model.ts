@@ -27,3 +27,5 @@ export class JSXElementNode implements Equal.Equal {
     return that instanceof JSXElementNode && this.id === that.id;
   }
 }
+
+Object.is(false, false) // => === 

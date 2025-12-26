@@ -44,7 +44,7 @@ import getActBarServiceOverride from '@codingame/monaco-vscode-view-status-bar-s
 import getViewServiceOverride from '@codingame/monaco-vscode-views-service-override';
 import getWorkbenchServiceOverride from '@codingame/monaco-vscode-workbench-service-override';
 import getWorkspaceServiceOverride from '@codingame/monaco-vscode-workspace-trust-service-override';
-import { LSPConstants, parseLSPConfigInput } from '@native-twin/language-service/browser';
+import { LSPConstants, parseLSPConfigInput } from '@native-twin/language-service';
 import type { Logger } from 'monaco-languageclient/common';
 import type { EditorAppConfig } from 'monaco-languageclient/editorApp';
 import type { LanguageClientConfig } from 'monaco-languageclient/lcwrapper';

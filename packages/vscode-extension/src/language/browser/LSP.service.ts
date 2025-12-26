@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { LSPConfig, LSPConstants } from '@native-twin/language-service/browser';
+import { LSPConfig, LSPConstants } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';

@@ -11,12 +11,12 @@ export const maybeParsedRuleAtPosition = Effect.fn(function* (
   const parser = yield* TwinParserContext;
   const cursorOffset = document.offsetAt(position);
 
-  const valueRegion = Option.fromNullable(document.findRegionAt(position));
+  const parsableRegion = Option.fromNullable(document.findRegionAt(position));
 
-  const parserResult = Option.map(valueRegion, (value) =>
+  const parserResult = Option.map(parsableRegion, (region) =>
     parser.runTwinParser({
-      text: value.text,
-      startOffset: value.startOffset,
+      text: region.value.text,
+      startOffset: region.value.startOffset,
     }),
   );
   const locatedToken = Option.flatMap(parserResult, ({ result }) =>
@@ -32,7 +32,7 @@ export const maybeParsedRuleAtPosition = Effect.fn(function* (
   return yield* Option.all({
     locatedToken,
     parserResult,
-    valueRegion,
+    valueRegion: parsableRegion,
     location,
     cursorOffset: Option.some(cursorOffset),
   });

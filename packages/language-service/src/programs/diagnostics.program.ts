@@ -4,7 +4,7 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
 import type * as vscode from 'vscode-languageserver';
-import { LSPConfig } from '../core/LSPContext.service';
+import { LSPConfig } from '../core/LSPConfig.service';
 import { TwinParserContext } from '../core/TwinParser.service';
 import { LSPAdapterSpec } from '../internal/LSPAdapterSpec';
 import { DiagnosticReport } from '../models/Editor.models';
@@ -32,7 +32,9 @@ export const getDocumentDiagnosticsProgram = Effect.fn(function* (
   const severity = yield* configSelector((x) => x.diagnostics);
   const regions = document.parsableRegions;
   return yield* Stream.fromIterable(regions).pipe(
-    Stream.mapEffect(({ attr }) => parser.runFullParserEffect(attr.text, attr.startOffset)),
+    Stream.mapEffect(({ data }) =>
+      parser.runFullParserEffect(data.value.text, data.value.startOffset),
+    ),
     Stream.map((results) => {
       const diagnosticReports = new Map<
         string,

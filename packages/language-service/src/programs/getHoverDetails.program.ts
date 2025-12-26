@@ -20,13 +20,13 @@ export const getHoverDetails = Effect.fn(function* (
   const region = document.findRegionAt(Position.make(params.position));
   if (!region) return undefined;
 
-  const sheetEntries = yield* parser.runTW(region.text);
+  const sheetEntries = yield* parser.runTW(region.value.text);
   const entries = sheetEntries;
 
   return completionRulesToQuickInfo(
     sheetEntriesToMD(entries, yield* parser.data.styledContext),
     getCSSMarkDownParts(sheetEntriesToCss(entries)).join('\n'),
-    document.getNodeRange(region),
+    document.getNodeRange(region.value),
   );
 });
 

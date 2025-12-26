@@ -18,8 +18,8 @@ export const getDocumentColors = Effect.fn(function* (
   const document = yield* getLSPDocument(params.textDocument.uri);
 
   return yield* Stream.fromIterable(document.parsableRegions).pipe(
-    Stream.mapEffect((region) =>
-      twinService.runFullParserEffect(region.attr.text, region.attr.startOffset),
+    Stream.mapEffect(({ data }) =>
+      twinService.runFullParserEffect(data.value.text, data.value.startOffset),
     ),
     Stream.flattenIterables,
     Stream.map((result) => {

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import type { RegisterLocalProcessExtensionResult } from '@codingame/monaco-vscode-api/extensions';
-import { type JsxAttributeValueRegion, LSPConstants } from '@native-twin/language-service/browser';
+import { type JsxAttributeValueRegion, LSPConstants } from '@native-twin/language-service';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';

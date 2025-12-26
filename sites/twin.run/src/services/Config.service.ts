@@ -1,6 +1,6 @@
 import { defineConfig } from '@native-twin/core';
 import type { TwinConfigOptions } from '@native-twin/language-service';
-import { LSPConfig, parseLSPConfigInput } from '@native-twin/language-service/browser';
+import { LSPConfig, parseLSPConfigInput } from '@native-twin/language-service';
 import { presetTailwind } from '@native-twin/preset-tailwind';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';

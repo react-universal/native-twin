@@ -1,12 +1,12 @@
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import { TypescriptUtilsLive } from '../browser';
-import { LSPDocumentsCtx } from '../internal/ConnectionHandler.api';
-import * as LSPTypes from '../internal/LSPAdapterSpec';
-import { FileNotFound, type Position } from '../models/LSP.models';
-import { TwinLSPDocument } from '../models/TwinLSPDocument.model';
-import * as JSXParser from '../Typescript/JSXParser.service';
-import { TypeScriptProgram } from '../Typescript/TypescriptAPI.service';
+import { LSPDocumentsCtx, LSPDocumentsCtxLive } from '../../internal/ConnectionHandler.api';
+import * as LSPTypes from '../../internal/LSPAdapterSpec';
+import { FileNotFound, type Position } from '../../models/LSP.models';
+import { TwinLSPDocument } from '../../models/TwinLSPDocument.model';
+import * as JSXParser from './JSXParser.service';
+import { TypeScriptProgram, TypescriptProgramLive } from './TypescriptAPI.service';
+import { TypescriptUtilsLive } from './TypescriptUtils.service';
 
 export const VscodeLSPAdapterLive = Effect.gen(function* () {
   const { getDocument } = yield* LSPDocumentsCtx;
@@ -48,4 +48,6 @@ export const VscodeLSPAdapterLive = Effect.gen(function* () {
   Layer.effect(LSPTypes.LSPAdapterSpec),
   Layer.provide(JSXParser.JSXParserLive),
   Layer.provide(TypescriptUtilsLive),
+  Layer.provide(TypescriptProgramLive),
+  Layer.provide(LSPDocumentsCtxLive),
 );

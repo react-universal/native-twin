@@ -3,30 +3,8 @@ import * as Context from 'effect/Context';
 import type * as Effect from 'effect/Effect';
 import type * as Option from 'effect/Option';
 import type * as SubscriptionRef from 'effect/SubscriptionRef';
-import type * as server from 'vscode-languageserver';
-import type * as Spec from '../internal/LSPAdapterSpec';
-import type { TwinLSPAdapterLayerIn } from '../internal/RunnerLayer';
 import type { InternalTwinConfig } from '../internal/TwinTypes.internal';
-import type { AnyLSPError, Position } from '../models/LSP.models';
 import { LSPConstants, type TwinConfigOptions } from '../models/lsp.constants';
-
-export interface TwinLSPCompletionDefinition {
-  name: string;
-  apply: <E = never, R = never>(
-    filename: string,
-    position: Position,
-  ) => Effect.Effect<
-    server.HandlerResult<server.CompletionItem[], void>,
-    AnyLSPError | E,
-    TwinLSPAdapterLayerIn | Spec.LSPAdapterSpec | R
-  >;
-}
-
-export function createTwinCompletions(
-  definition: TwinLSPCompletionDefinition,
-): TwinLSPCompletionDefinition {
-  return definition;
-}
 
 const configOptionOrDefault = <K extends keyof TwinConfigOptions>(
   options: Partial<TwinConfigOptions>,
@@ -38,15 +16,6 @@ const configOptionOrDefault = <K extends keyof TwinConfigOptions>(
 };
 
 /***** */
-
-// export interface LSPContext {
-//   connection: server.Connection;
-//   documents: server.TextDocuments<serverDocs.TextDocument>;
-//   getDocument: (uri: serverDocs.DocumentUri) => Option.Option<serverDocs.TextDocument>;
-//   getAllDocuments: () => Array<serverDocs.TextDocument>;
-//   documentChanges: Stream.Stream<serverDocs.TextDocument>;
-// }
-// export const LSPContext = Context.GenericTag<LSPContext>('lsp/MainContext');
 
 export interface LSPConfig {
   config: SubscriptionRef.SubscriptionRef<TwinConfigOptions>;

@@ -10,7 +10,7 @@ import * as Stream from 'effect/Stream';
 import type { Connection } from 'vscode-languageserver';
 import * as t from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { LSPConfig } from '../core/LSPContext.service';
+import { LSPConfig } from '../core/LSPConfig.service';
 import { FileNotFound, Range } from '../models/LSP.models';
 import { LSPConstants, type TwinConfigOptions } from '../models/lsp.constants';
 

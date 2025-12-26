@@ -1,20 +1,24 @@
 /// <reference lib="WebWorker" />
 
-import { LSPDocumentsCtx, makeConnectionHandlerCtx } from '@native-twin/language-service';
 import {
   FileNotFound,
   getClientCapabilities,
-  JSXParser,
   LSPAdapterSpec,
   LSPBaseLayerLive,
   LSPConfig,
+  LSPDocumentsCtx,
   languagePrograms,
-  Position,
+  makeConnectionHandlerCtx,
+  type Position,
   parseLSPConfigInput,
   type TwinConfigOptions,
   TwinLSPDocument,
+} from '@native-twin/language-service';
+import {
+  JSXParser,
+  JSXParserLive,
   TypeScriptProgram,
-} from '@native-twin/language-service/browser';
+} from '@native-twin/language-service/ts-adapter';
 import * as Effect from 'effect/Effect';
 import * as Fiber from 'effect/Fiber';
 import { identity } from 'effect/Function';
@@ -158,7 +162,7 @@ const AdapterLive = Effect.gen(function* () {
     getRegionAt,
     getRegions,
   });
-}).pipe(Layer.effect(LSPAdapterSpec));
+}).pipe(Layer.effect(LSPAdapterSpec), Layer.provide(JSXParserLive));
 
 const MainLayer = Layer.empty.pipe(
   Layer.provideMerge(AdapterLive),
@@ -234,8 +238,8 @@ const program = Effect.gen(function* () {
   });
 
   connection.onCompletion(async (params) => {
-    const result = await languagePrograms.getCompletionsAtPosition
-      .apply(params.textDocument.uri, Position.make(params.position))
+    const result = await languagePrograms
+      .getCompletionsAtPosition(params.textDocument.uri, params.position)
       .pipe(
         Effect.map((completions) => completions),
         Effect.provide(MainLayer),

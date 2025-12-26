@@ -5,7 +5,7 @@ import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Predicate from 'effect/Predicate';
 import ts from 'ts-morph';
-import { annotatedLayer } from '../utils/effect.utils';
+import { annotatedLayer } from '../../utils/effect.utils';
 
 const make = Effect.gen(function* () {
   const isFunction = (node: ts.Node) =>
