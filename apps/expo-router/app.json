@@ -36,7 +36,8 @@
       [
         "expo-build-properties"
       ],
-      "expo-font"
+      "expo-font",
+      "expo-image"
     ],
     "experiments": {
       "tsconfigPaths": true,

@@ -3,7 +3,6 @@ import "./global.css";
 import { View, Text, FlatList, Pressable } from "react-native";
 
 const ForeignComponent = () => {
-  // console.log("Render_Count_ForeignComponent: ", ++useRef(0).current);
   return (
     <View className="h-[20vh] hover:bg-gray">
       <Text className="text(lg white)">asdsad2</Text>
@@ -14,7 +13,7 @@ const ForeignComponent = () => {
 export default function App() {
   const [active, setActive] = useState(false);
   return (
-    <View className=" bgU(gray-900 hover:red) group flex-1 items-center justify-center first:bg-green even:text-white">
+    <View className=" bg(gray-900 hover:red) group flex-1 items-center justify-center first:bg-green even:text-white">
       <ForeignComponent />
       <Pressable
         onPressIn={() => {

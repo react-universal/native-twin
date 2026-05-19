@@ -20,39 +20,6 @@ import {
 } from './theme/theme.match.js';
 
 export type { PropsFrom } from '@native-twin/helpers';
-export type { TxFunction } from './runtime/tx.js';
-export type { ConfigVariants, VariantProps, VariantsConfig } from './runtime/variants.js';
-/** TYPES */
-export type { ExtractResult } from './runtime/web/ssr.js';
-export { CompiledSheetEntry, type CompiledSheetEntryInput } from './twin/compiler.models.js';
-export { __defaultRuleMeta } from './twin/constants.js';
-export type { TWScreenValueConfig } from './twin/parser/twin.tokens.js';
-export type * from './types/config.types.js';
-export type * from './types/theme.types.js';
-export {
-  tw,
-  tx,
-  cx,
-  parseCssValue,
-  createThemeContext,
-  createThemeFunction,
-  matchCssObject,
-  matchThemeColor,
-  matchThemeValue,
-  matchAnimation,
-  createVariants,
-  createTailwind,
-  install,
-  setup,
-  observe,
-  consume,
-  extract,
-  mutationObserver,
-  parsedRuleToEntry,
-  convert,
-  defineConfig,
-};
-
 export type { TwinRuntimeContext, Units } from './runtime/runtime.context.js';
 export {
   composeDeclarations,
@@ -67,6 +34,13 @@ export type {
   TwinComponentStyleProp,
 } from './runtime/sheet/Models.js';
 export { StyleSheetAdapter } from './runtime/TwinStyleSheet.js';
+export type { TxFunction } from './runtime/tx.js';
+export type { ConfigVariants, VariantProps, VariantsConfig } from './runtime/variants.js';
+/** TYPES */
+export type { ExtractResult } from './runtime/web/ssr.js';
+export { CompiledSheetEntry, type CompiledSheetEntryInput } from './twin/compiler.models.js';
+export { __defaultRuleMeta } from './twin/constants.js';
+export type { TWScreenValueConfig } from './twin/parser/twin.tokens.js';
 export {
   BABEL_JSX_PLUGIN_IMPORT_RUNTIME,
   commonMappedAttribute,
@@ -77,3 +51,28 @@ export {
   TWIN_DEFAULT_FILES,
   TWIN_DEFAULT_PLUGIN_CONFIG,
 } from './twin/reactNative.constants.js';
+export type * from './types/config.types.js';
+export type * from './types/theme.types.js';
+export {
+  consume,
+  convert,
+  createTailwind,
+  createThemeContext,
+  createThemeFunction,
+  createVariants,
+  cx,
+  defineConfig,
+  extract,
+  install,
+  matchAnimation,
+  matchCssObject,
+  matchThemeColor,
+  matchThemeValue,
+  mutationObserver,
+  observe,
+  parseCssValue,
+  parsedRuleToEntry,
+  setup,
+  tw,
+  tx,
+};

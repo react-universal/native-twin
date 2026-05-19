@@ -52,9 +52,6 @@
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
-  "volta": {
-    "node": "20.18.2"
-  },
   "publishConfig": {
     "access": "public",
     "directory": "dist"

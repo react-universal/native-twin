@@ -71,7 +71,6 @@
       "**/*.code-search": true,
       "**/build": true
     },
-    "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [
       "sastan",
       "TRBL",
@@ -79,7 +78,7 @@
     ],
     "testing.openTesting": "neverOpen",
     "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "biomejs.biome"
     },
     "editor.fontSize": 16,
     "jest.disabledWorkspaceFolders": [
@@ -103,6 +102,8 @@
       "next-pages-example",
       "next-app-dir",
       "docs-site"
-    ]
+    ],
+    "testing.automaticallyOpenTestResults": "neverOpen",
+    "js/ts.tsdk.path": "✨ native-twin/node_modules/typescript/lib"
   }
 }

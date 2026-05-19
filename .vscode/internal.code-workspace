@@ -96,11 +96,8 @@
       "**/*.code-search": true,
       "**/build": true
     },
-    "files.exclude": {
-      ".turbo": true
-    },
-    "typescript.tsdk": "../node_modules/typescript/lib",
-    "typescript.tsserver.log": "off",
+    "js/ts.tsdk.path": "node_modules/typescript/lib",
+    "js/ts.tsdk.log": "off",
     "editor.defaultFormatter": "biomejs.biome",
     "editor.codeActionsOnSave": {
       "source.fixAll.biome": "explicit",

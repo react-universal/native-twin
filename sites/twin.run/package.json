@@ -65,7 +65,7 @@
     "@entur/vite-plugin-assets-json": "^0.0.9",
     "@native-twin/vite-plugin": "workspace:*",
     "@types/prop-types": "^15",
-    "@types/react": "~19.1.10",
+    "@types/react": "~19.2.10",
     "@types/vscode": "^1.106.1",
     "@types/vscode-webview": "^1.57.5",
     "@types/ws": "^8",
