@@ -17,7 +17,6 @@ import type * as Layer from 'effect/Layer';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import * as ManagedRuntime from 'effect/ManagedRuntime';
-import { inspect } from 'util';
 import * as t from 'vscode-languageserver';
 import * as types from 'vscode-languageserver-types';
 import { LspMainLive } from './services/LSP.service';
@@ -171,10 +170,6 @@ const program = Effect.gen(function* () {
             scopeUri: params.textDocument.uri,
             section: LSPConstants.vscodeConfigSection,
           }),
-        ).pipe(
-          Effect.andThen((settings) =>
-            Effect.logDebug('settings: ', inspect(settings, false, null, false)),
-          ),
         ),
       ),
       // Effect.map((completions) => completions),
@@ -193,7 +188,7 @@ const program = Effect.gen(function* () {
   Effect.scoped,
   Effect.uninterruptible,
   Logger.withMinimumLogLevel(LogLevel.All),
-  Effect.catchAll((error) => Effect.log(`Language server failed: ${error}`)),
+  Effect.onError((error) => Effect.log(`Language server failed: ${error}`)),
 );
 
 const addPrettyLogger = (refs: FiberRefs.FiberRefs, fiberId: FiberId.Runtime) => {
