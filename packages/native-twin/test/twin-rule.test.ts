@@ -1,26 +1,20 @@
 import { describe, expect, it } from 'vitest';
-import {
-  createThemeContext,
-  defineConfig,
-  matchThemeColor,
-  matchThemeValue,
-  setup,
-} from '../src/index.js';
-import { Processor } from '../src/twin/processor.twin.js';
-import { TwinRule } from '../src/twin/rule.model.js';
+import { defineConfig, matchThemeColor, matchThemeValue, setup } from '../src';
+import { Processor } from '../src/twin/processor.twin';
+import { TwinRule } from '../src/twin/rule.model';
 
 const tw = setup(
   defineConfig({
     content: [],
     rules: [
       matchThemeColor('bg-', 'backgroundColor'),
-      // @ts-ignore
+      // @ts-expect-error
       matchThemeValue('p', 'spacing', 'padding', {
         canBeNegative: true,
         feature: 'edges',
         prefix: 'padding',
       }),
-      // @ts-ignore
+      // @ts-expect-error
       matchThemeValue('shadow-', 'boxShadow', 'shadowRadius'),
     ],
     theme: {
@@ -42,7 +36,7 @@ const tw = setup(
 
 describe('test twin rule model', () => {
   const twinRules = tw.config.rules.map((x) => new TwinRule(x));
-  const context = createThemeContext(tw.config);
+  // const context = createThemeContext(tw.config);
   it('test classname', () => {
     const result = twinRules.flatMap((rule) => {
       const parsed = rule.parse('bg-primary');

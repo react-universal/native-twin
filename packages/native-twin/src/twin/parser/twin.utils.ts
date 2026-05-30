@@ -1,5 +1,5 @@
 import type { SelectorGroup } from '@native-twin/css';
-import { type MaybeArray, asArray } from '@native-twin/helpers';
+import { asArray, type MaybeArray } from '@native-twin/helpers';
 import type { TWScreenValueConfig } from './twin.tokens';
 
 const matchGroup = (variants: string[], group: SelectorGroup) => {

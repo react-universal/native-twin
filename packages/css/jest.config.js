@@ -1,5 +1,5 @@
 /** @type {import('jest').Config} */
 module.exports = {
   preset: 'jest-expo',
-  watchPathIgnorePatterns: ['./build/*'],
+  watchPathIgnorePatterns: ['./build/*', '**/node_modules/**'],
 };

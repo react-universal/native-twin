@@ -13,9 +13,9 @@ import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
 import type { TransformResponse } from 'metro-transform-worker';
-import type { TwinMetroTransformFn } from '../models/Metro.models.js';
-import { MetroLayerWithTwinFS } from '../services/Metro.layers.js';
-import { transformCSSExpo } from '../utils/css.utils.js';
+import type { TwinMetroTransformFn } from '../models/Metro.models';
+import { MetroLayerWithTwinFS } from '../services/Metro.layers';
+import { transformCSSExpo } from '../utils/css.utils';
 
 const worker = require(unstable_transformerPath) as typeof import('metro-transform-worker');
 type MetroTransformFn = typeof worker.transform;

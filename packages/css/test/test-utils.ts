@@ -1,6 +1,6 @@
 import util from 'util';
-import { CssResolver } from '../src/css/parser/css.parser.js';
-import { createCssParserContext } from '../src/utils.parser.js';
+import { CssResolver } from '../src/css/parser/css.parser';
+import { createCssParserContext } from '../src/utils.parser';
 
 export const inspectTestElement = (msg: string, target: string[], result: any) => {
   console.log(

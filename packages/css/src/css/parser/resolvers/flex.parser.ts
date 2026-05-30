@@ -1,6 +1,6 @@
 import * as P from '@native-twin/arc-parser';
 import type { FlexStyle } from 'react-native';
-import { ParseCssDimensions } from '../dimensions.parser.js';
+import { ParseCssDimensions } from '../dimensions.parser';
 
 /* flex-grow | flex-shrink | flex-basis */
 export const ParseFlexValue = P.sequenceOf([

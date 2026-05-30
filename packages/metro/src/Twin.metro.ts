@@ -13,9 +13,9 @@ import * as ManagedRuntime from 'effect/ManagedRuntime';
 import * as Ref from 'effect/Ref';
 import type { GetTransformOptions } from 'metro-config';
 import type { CustomResolver } from 'metro-resolver';
-import type { TwinMetroConfig } from './models/Metro.models.js';
-import { getMetroSettings } from './programs/getMetroSettings.js';
-import { createMetroInnerLayer, MetroLayerWithTwinWatcher } from './services/Metro.layers.js';
+import type { TwinMetroConfig } from './models/Metro.models';
+import { getMetroSettings } from './programs/getMetroSettings';
+import { createMetroInnerLayer, MetroLayerWithTwinWatcher } from './services/Metro.layers';
 
 export function withNativeTwin(
   metroConfig: TwinMetroConfig,

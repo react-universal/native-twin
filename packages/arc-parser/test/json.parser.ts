@@ -1,4 +1,4 @@
-// import * as P from '../src/index.js';
+// import * as P from '../src;
 
 // type AnyType = string | number | boolean | number | null | object | AnyType[];
 

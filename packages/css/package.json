@@ -41,7 +41,6 @@
   },
   "main": "./build/index.cjs",
   "module": "./build/index.mjs",
-  "react-native": "./build/esm/index.js",
   "types": "./build/index.d.cts",
   "files": [
     "build",

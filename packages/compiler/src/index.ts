@@ -27,5 +27,5 @@ export { twinTransformProgram } from './Programs/twinTransform.program';
 export { TwinProjectContext, TwinProjectContextLive } from './Project';
 export { MainLayer } from './Runtime/Main.layer';
 export { TwinStyleSheetContext, TwinStyleSheetContextLive } from './StyleSheet';
-export { extractLanguageRegions } from './utils/babel/babel.extractors.js';
-export { listenForkedStreamChanges } from './utils/effect.utils.js';
+export { extractLanguageRegions } from './utils/babel/babel.extractors';
+export { listenForkedStreamChanges } from './utils/effect.utils';

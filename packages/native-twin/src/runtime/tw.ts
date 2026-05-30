@@ -1,10 +1,10 @@
 import { getSheet, type Sheet } from '@native-twin/css';
 import { noop } from '@native-twin/helpers';
-import { createTailwind } from '../native-twin.js';
-import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types.js';
-import type { __Theme__, ExtractThemes, RuntimeTW } from '../types/theme.types.js';
-import { isDevEnvironment } from './runtime.utils.js';
-import { mutationObserver } from './web/mutation-observer.js';
+import { createTailwind } from '../native-twin';
+import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
+import type { __Theme__, ExtractThemes, RuntimeTW } from '../types/theme.types';
+import { isDevEnvironment } from './runtime.utils';
+import { mutationObserver } from './web/mutation-observer';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
 // const subscriptions = new Set<(cb: TailwindConfig<any>) => void>();

@@ -1,11 +1,11 @@
-import renderer from 'react-test-renderer';
-import { defineConfig, setup } from '@native-twin/core';
-import { presetTailwind } from '@native-twin/preset-tailwind';
-import { View as RNView, Text as RNText } from 'react-native';
-import { createStyledComponent } from '../src';
+import { defineConfig, setup } from "@native-twin/core";
+import { presetTailwind } from "@native-twin/preset-tailwind";
+import { Text as RNText, View as RNView } from "react-native";
+import renderer from "react-test-renderer";
+import { createStyled } from "../src";
 
-const Text = createStyledComponent(RNText, 'style');
-const StyledView = createStyledComponent(RNView, 'style');
+const Text = createStyled(RNText, { className: "style" });
+const StyledView = createStyled(RNView, { className: "style" });
 
 beforeAll(() => {
   setup(defineConfig({ content: [], presets: [presetTailwind()] }));
@@ -18,20 +18,20 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-describe('@native-twin/styled', () => {
-  it('StyledView render', () => {
-    const component = renderer.create(<StyledView className='flex-1' />);
+describe("@native-twin/styled", () => {
+  it("StyledView render", () => {
+    const component = renderer.create(<StyledView className="flex-1" />);
     const tree = toJson(component);
     expect(tree).toMatchSnapshot();
   });
 });
 
-describe('@native-twin/styled', () => {
-  it('CustomView render', () => {
+describe("@native-twin/styled", () => {
+  it("CustomView render", () => {
     const component = renderer.create(
-      <StyledView className='shadow-sm web:p-10 sm:p-10 flex-1 outline-none'>
-        <Text className='leading-6'>asd</Text>
-      </StyledView>,
+      <StyledView className="shadow-sm web:p-10 sm:p-10 flex-1 outline-none">
+        <Text className="leading-6">asd</Text>
+      </StyledView>
     );
     const tree = toJson(component);
     expect(tree).toMatchSnapshot();

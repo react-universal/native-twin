@@ -13,8 +13,8 @@ import type {
   BabelTranspilerResult,
   BuildSourceWithMaps,
   CompilerOutput,
-} from '../models/Compiler.models.js';
-import { FsUtils, FsUtilsLive } from './FsUtils.service.js';
+} from '../models/Compiler.models';
+import { FsUtils, FsUtilsLive } from './FsUtils.service';
 
 const make = Effect.gen(function* () {
   const path_ = yield* Path.Path;

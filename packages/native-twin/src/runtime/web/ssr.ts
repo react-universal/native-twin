@@ -1,17 +1,13 @@
-import {
-  parseHTML,
-  parseTWTokens,
-  parsedRuleToClassName,
-  sheetEntriesToCss,
-} from '@native-twin/css';
 import type { SheetEntry } from '@native-twin/css';
 import {
-  type StringLike,
-  compareClassNames,
-  fixHTMLTagClassNamesList,
-} from '@native-twin/helpers';
-import type { RuntimeTW } from '../../types/theme.types.js';
-import { tw as tw$ } from '../tw.js';
+  parsedRuleToClassName,
+  parseHTML,
+  parseTWTokens,
+  sheetEntriesToCss,
+} from '@native-twin/css';
+import { compareClassNames, fixHTMLTagClassNamesList, type StringLike } from '@native-twin/helpers';
+import type { RuntimeTW } from '../../types/theme.types';
+import { tw as tw$ } from '../tw';
 
 export interface ExtractResult {
   /** The possibly modified HTML */
@@ -32,10 +28,7 @@ export function extract(html: string, tw: RuntimeTW<any> = tw$): ExtractResult {
   return result;
 }
 
-export function consume(
-  markup: string,
-  tw: (className: StringLike) => SheetEntry[] = tw$,
-): string {
+export function consume(markup: string, tw: (className: StringLike) => SheetEntry[] = tw$): string {
   let result = '';
   let lastChunkStart = 0;
 

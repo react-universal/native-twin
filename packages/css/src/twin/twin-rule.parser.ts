@@ -6,7 +6,7 @@ import type {
   TWParsedRule,
   VariantClassToken,
   VariantToken,
-} from './twin.types.js';
+} from './twin.types';
 
 export const classNameIdent = /^[a-z0-9A-Z-._]+/;
 
@@ -34,10 +34,9 @@ export const parseValidTokenRecursive = P.recursiveParser(
 );
 
 /** Match apply classname */
-export const parseApplyClassName = P.sequenceOf([
-  P.char('@'),
-  parseValidTokenRecursive,
-]).map((x) => mapAlias({ symbol: x[0], token: x[1] }));
+export const parseApplyClassName = P.sequenceOf([P.char('@'), parseValidTokenRecursive]).map((x) =>
+  mapAlias({ symbol: x[0], token: x[1] }),
+);
 
 // CLASSNAMES
 
@@ -170,24 +169,22 @@ export function mergeParsedRuleGroupTokens(
   }
   if (nextToken.type === 'GROUP') {
     const baseValue = nextToken.value.base;
-    const parts = mergeParsedRuleGroupTokens(nextToken.value.content).map(
-      (x): TWParsedRule => {
-        if (baseValue.type === 'CLASS_NAME') {
-          return {
-            ...x,
-            i: baseValue.value.i,
-            m: baseValue.value.m ?? x.m,
-            n: `${baseValue.value.n}-${x.n}`,
-          };
-        }
+    const parts = mergeParsedRuleGroupTokens(nextToken.value.content).map((x): TWParsedRule => {
+      if (baseValue.type === 'CLASS_NAME') {
         return {
           ...x,
-          m: x.m,
-          v: [...x.v, ...baseValue.value.map((y) => y.n)],
-          i: x.i || baseValue.value.some((y) => y.i),
+          i: baseValue.value.i,
+          m: baseValue.value.m ?? x.m,
+          n: `${baseValue.value.n}-${x.n}`,
         };
-      },
-    );
+      }
+      return {
+        ...x,
+        m: x.m,
+        v: [...x.v, ...baseValue.value.map((y) => y.n)],
+        i: x.i || baseValue.value.some((y) => y.i),
+      };
+    });
     results.push(...parts);
   }
   return mergeParsedRuleGroupTokens(groupContent, results);

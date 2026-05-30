@@ -1,6 +1,6 @@
 import { asRegExp } from '@native-twin/helpers';
-import type { ReMatchResult, ThemeContext, Variant } from '../types/config.types.js';
-import type { __Theme__ } from '../types/theme.types.js';
+import type { ReMatchResult, ThemeContext, Variant } from '../types/config.types';
+import type { __Theme__ } from '../types/theme.types';
 
 export const createVariantResolver = <Theme extends __Theme__ = __Theme__>(
   variant: Variant<Theme>,

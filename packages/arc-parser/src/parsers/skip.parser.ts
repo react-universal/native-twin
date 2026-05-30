@@ -1,4 +1,4 @@
-import { Parser, updateParserResult } from './Parser.js';
+import { Parser, updateParserResult } from './Parser';
 
 export const skip = (parser: Parser<any>): Parser<null> => {
   return new Parser((state) => {

@@ -5,6 +5,12 @@
     "jsx": "react-native",
     "moduleResolution": "nodenext"
   },
-  "include": ["src", "test"],
-  "exclude": ["build"]
+  "include": [
+    "src",
+    "test",
+    "types.d.ts"
+  ],
+  "exclude": [
+    "build"
+  ]
 }

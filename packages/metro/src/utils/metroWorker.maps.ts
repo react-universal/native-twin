@@ -1,5 +1,5 @@
 import { toBufferThenString } from '@native-twin/helpers/server';
-import type { MetroWorkerInput } from '../models/Metro.models.js';
+import type { MetroWorkerInput } from '../models/Metro.models';
 
 export const metroWorkerInputToCompilerCtx = ({
   config,
@@ -12,8 +12,7 @@ export const metroWorkerInputToCompilerCtx = ({
   const baseUrl: string = (options.customTransformOptions?.['baseUrl'] as string) ?? '';
   const environment: string =
     (options.customTransformOptions?.['environment'] as string) ?? 'client';
-  const routerRoot: string =
-    (options.customTransformOptions?.['routerRoot'] as string) ?? '.';
+  const routerRoot: string = (options.customTransformOptions?.['routerRoot'] as string) ?? '.';
   return {
     options: {
       filename,

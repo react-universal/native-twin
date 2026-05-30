@@ -1,5 +1,5 @@
-import { Layer } from '../css/precedence.js';
-import type { SheetEntry } from '../sheets/sheet.types.js';
+import { Layer } from '../css/precedence';
+import type { SheetEntry } from '../sheets/sheet.types';
 
 const collator = new Intl.Collator('en', { numeric: true });
 
@@ -8,10 +8,7 @@ const collator = new Intl.Collator('en', { numeric: true });
  *
  * @returns The insertion index
  */
-export function sortedInsertionIndex(
-  array: readonly SheetEntry[],
-  element: SheetEntry,
-): number {
+export function sortedInsertionIndex(array: readonly SheetEntry[], element: SheetEntry): number {
   // Find position using binary search
   for (var low = 0, high = array.length; low < high; ) {
     const pivot = (high + low) >> 1;

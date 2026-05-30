@@ -22,8 +22,7 @@
   },
   "main": "./build/index.cjs",
   "module": "./build/index.mjs",
-  "react-native": "./build/esm/types.js",
-  "types": "./build/index.d.mts",
+  "types": "./build/index.d.cts",
   "files": [
     "LICENSE",
     "README.md",

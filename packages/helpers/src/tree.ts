@@ -1,1 +1,1 @@
-export { makeTreeFrom, mapTree, Tree, TreeNode } from './internal/Tree.js';
+export { makeTreeFrom, mapTree, Tree, TreeNode } from './internal/Tree';

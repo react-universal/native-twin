@@ -1,16 +1,16 @@
 import { parsedRuleToClassName, type SheetEntry, type TWParsedRule } from '@native-twin/css';
 import { flattenColorPalette, type MaybeArray } from '@native-twin/helpers';
-import { createRuleResolver } from '../parsers/rule-handler.js';
-import { createVariantResolver } from '../parsers/variant-handler.js';
+import { createRuleResolver } from '../parsers/rule-handler';
+import { createVariantResolver } from '../parsers/variant-handler';
 import type {
   RuleResult,
   TailwindConfig,
   ThemeContext,
   Variant,
   VariantResult,
-} from '../types/config.types.js';
-import type { __Theme__ } from '../types/theme.types.js';
-import { createThemeFunction } from './theme.function.js';
+} from '../types/config.types';
+import type { __Theme__ } from '../types/theme.types';
+import { createThemeFunction } from './theme.function';
 
 type RuleHandlerFn<Theme extends __Theme__ = __Theme__> = (
   token: TWParsedRule,

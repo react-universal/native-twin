@@ -1,5 +1,5 @@
 import { asArray, escapeSelector, toColorValue, toHyphenCase } from '@native-twin/helpers';
-import type { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types.js';
+import type { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types';
 
 export function sheetEntriesToCss(
   entries: SheetEntry[] | SheetEntry = [],

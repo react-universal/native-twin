@@ -1,4 +1,4 @@
-import { generateStylesFor } from './test-utils.js';
+import { generateStylesFor } from './test-utils';
 
 describe.skip('@native-twin/css - GROUP', () => {
   it('Complex', () => {

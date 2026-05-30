@@ -1,6 +1,6 @@
 import * as P from '@native-twin/arc-parser';
-import type { AnyStyle } from '../../react-native/rn.types.js';
-import type { CssParserData } from './css-parser.types.js';
+import type { AnyStyle } from '../../react-native/rn.types';
+import type { CssParserData } from './css-parser.types';
 
 export const CreateCssResolver = () => {
   const cache = new Map<string, AnyStyle>();

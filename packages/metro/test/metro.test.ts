@@ -7,7 +7,7 @@ import { describe, it } from 'vitest';
 const exampleProjectFixture = {
   cwd: path.join(__dirname, '../../../apps/expo-app'),
   configPath: require.resolve(path.join(__dirname, '../../../apps/expo-app', 'metro.config.js')),
-  rootEntry: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'src/screens/index.js')),
+  rootEntry: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'src/screens)),
   screenComponentPath: path.resolve(path.join(__dirname, '../../../apps/expo-app', 'App.tsx')),
   bundleOut: path.join(__dirname, '../../../apps/expo-app', 'metro-test/bundled.js'),
   babelConfig: require.resolve(path.join(__dirname, '../../../apps/expo-app', 'babel.config.js')),

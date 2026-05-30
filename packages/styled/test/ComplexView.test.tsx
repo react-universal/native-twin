@@ -1,12 +1,18 @@
-import { defineConfig, setup } from '@native-twin/core';
-import { presetTailwind } from '@native-twin/preset-tailwind';
-import { ScrollView as RNScrollView, Text as RNText, View as RNView } from 'react-native';
-import renderer from 'react-test-renderer';
-import { createStyledComponent } from '../src';
-import { createVariants } from '../src/styled/variants';
+import { defineConfig, setup } from "@native-twin/core";
+import { presetTailwind } from "@native-twin/preset-tailwind";
+import {
+  ScrollView as RNScrollView,
+  Text as RNText,
+  View as RNView,
+} from "react-native";
+import renderer from "react-test-renderer";
+import { createStyled } from "../src";
+import { createVariants } from "../src/styled/variants";
 
-const ScrollView = createStyledComponent(RNScrollView, 'contentContainerStyle');
-const View = createStyledComponent(RNView, 'style');
+const ScrollView = createStyled(RNScrollView, {
+  className: "contentContainerStyle",
+});
+const View = createStyled(RNView, { className: "style" });
 
 beforeAll(() => {
   setup(defineConfig({ content: [], presets: [presetTailwind()] }));
@@ -19,12 +25,12 @@ function toJson(component: renderer.ReactTestRenderer) {
   return result as renderer.ReactTestRendererJSON;
 }
 
-describe('@native-twin/styled', () => {
-  it('ScrollView render', () => {
+describe("@native-twin/styled", () => {
+  it("ScrollView render", () => {
     const component = renderer.create(
-      <ScrollView className='flex-1'>
+      <ScrollView className="flex-1">
         <View />
-      </ScrollView>,
+      </ScrollView>
     );
     const tree = toJson(component);
     expect(tree).toMatchSnapshot();
@@ -40,28 +46,30 @@ const viewVariants = createVariants({
   `,
   variants: {
     intent: {
-      primary: '',
-      secondary: 'm-2',
-      third: '',
+      primary: "",
+      secondary: "m-2",
+      third: "",
     },
     active: {
-      true: '',
-      false: '',
+      true: "",
+      false: "",
     },
   },
   defaultVariants: {
     active: true,
   },
 });
-const H1 = createStyledComponent(RNText, 'style');
+const H1 = createStyled(RNText, { className: "style" });
 
-describe('@native-twin/styled', () => {
-  it('Complex View', () => {
-    const className = viewVariants({ intent: 'secondary' });
+describe("@native-twin/styled", () => {
+  it("Complex View", () => {
+    const className = viewVariants({ intent: "secondary" });
     const component = renderer.create(
       <View className={className}>
-        <H1 className='text(center 2xl indigo-600) hover:text-gray-700'>H1 - 1</H1>
-      </View>,
+        <H1 className="text(center 2xl indigo-600) hover:text-gray-700">
+          H1 - 1
+        </H1>
+      </View>
     );
     const tree = toJson(component);
     expect(tree).toMatchSnapshot();

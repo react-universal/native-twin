@@ -1,4 +1,4 @@
-import { Parser, updateParserError, updateParserState } from './Parser.js';
+import { Parser, updateParserError, updateParserState } from './Parser';
 
 export const peek: Parser<string> = new Parser((state) => {
   if (state.isError) return state;
@@ -8,8 +8,5 @@ export const peek: Parser<string> = new Parser((state) => {
   if (cursor < target.byteLength) {
     return updateParserState(state, target.getUint8(cursor), cursor);
   }
-  return updateParserError(
-    state,
-    `ParseError (position ${cursor}): Unexpected end of input.`,
-  );
+  return updateParserError(state, `ParseError (position ${cursor}): Unexpected end of input.`);
 });

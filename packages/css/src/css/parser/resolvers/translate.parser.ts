@@ -1,7 +1,7 @@
 import * as P from '@native-twin/arc-parser';
 import { removeReadonly } from '@native-twin/helpers';
-import type { AnyStyle } from '../../../react-native/rn.types.js';
-import { ParseCssDimensions } from '../dimensions.parser.js';
+import type { AnyStyle } from '../../../react-native/rn.types';
+import { ParseCssDimensions } from '../dimensions.parser';
 
 export const ParseTranslateValue = P.sequenceOf([
   P.literal('translate'),

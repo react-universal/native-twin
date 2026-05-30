@@ -7,8 +7,8 @@ import {
   type ParserSuccess,
   type ResultType,
   type StateTransformerFunction,
-} from '../types.js';
-import { encoder } from '../utils/unicode.utils.js';
+} from '../types';
+import { encoder } from '../utils/unicode.utils';
 
 export class Parser<Target, Data = any> {
   transform: StateTransformerFunction<Target, Data>;

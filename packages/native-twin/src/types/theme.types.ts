@@ -6,7 +6,7 @@ import type {
   StringLike,
   UnionToIntersection,
 } from '@native-twin/helpers';
-import type { Preset, TailwindConfig, ThemeContext, ThemeFunction } from './config.types.js';
+import type { Preset, TailwindConfig, ThemeContext, ThemeFunction } from './config.types';
 
 export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown> {
   (tokens: StringLike): SheetEntry[];
@@ -24,9 +24,7 @@ export interface RuntimeTW<Theme extends __Theme__ = __Theme__, Target = unknown
 }
 
 /* THEME CONFIG */
-export type ThemeValue<T> = T extends Record<string, infer V>
-  ? Exclude<V, Record<string, V>>
-  : T;
+export type ThemeValue<T> = T extends Record<string, infer V> ? Exclude<V, Record<string, V>> : T;
 
 export type PartialTheme<Theme extends object = object> = {
   [Section in keyof Theme]?: Theme[Section];

@@ -1,4 +1,4 @@
-import { Parser, updateParserError, updateParserState } from './Parser.js';
+import { Parser, updateParserError, updateParserState } from './Parser';
 
 export const anythingExcept = (parser: Parser<any>): Parser<number> =>
   new Parser((state) => {

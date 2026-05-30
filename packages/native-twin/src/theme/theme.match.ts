@@ -1,8 +1,8 @@
 import { TinyColor } from '@ctrl/tinycolor';
 import { parsedRuleToClassName, type SheetEntryDeclaration } from '@native-twin/css';
 import { asArray, toColorValue } from '@native-twin/helpers';
-import type { CompleteStyleKeys, Rule, RuleMeta, RuleResolver } from '../types/config.types.js';
-import type { __Theme__ } from '../types/theme.types.js';
+import type { CompleteStyleKeys, Rule, RuleMeta, RuleResolver } from '../types/config.types';
+import type { __Theme__ } from '../types/theme.types';
 
 export function matchCssObject(
   pattern: string,
@@ -224,6 +224,7 @@ function getPropertiesForGap(property: { prefix: string; suffix: string }, edges
   return edges.map((x) => {
     return `${property.prefix}${x}${property.suffix.replace(
       /^[a-z]/,
+      // biome-ignore lint/suspicious/noNonNullAssertedOptionalChain: necessary
       (k) => k[0]?.toUpperCase()! ?? '',
     )}`;
   });

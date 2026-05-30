@@ -4,9 +4,9 @@ import type {
   TailwindConfig,
   TailwindPresetConfig,
   TailwindUserConfig,
-} from '../types/config.types.js';
-import type { __Theme__, ExtractThemes } from '../types/theme.types.js';
-import { defaultVariants } from './defaults/variants.js';
+} from '../types/config.types';
+import type { __Theme__, ExtractThemes } from '../types/theme.types';
+import { defaultVariants } from './defaults/variants';
 
 export function defineConfig<
   Theme extends __Theme__ = __Theme__,

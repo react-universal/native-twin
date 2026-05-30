@@ -1,5 +1,5 @@
 import * as P from '@native-twin/arc-parser';
-import type { ArbitrarySegmentNode, TwinClassSegmentNode } from './twin.tokens.js';
+import type { ArbitrarySegmentNode, TwinClassSegmentNode } from './twin.tokens';
 
 /**
  * @description Parse the `-` symbol at starts of any rule that can be negative

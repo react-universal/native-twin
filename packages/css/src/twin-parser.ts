@@ -1,1 +1,1 @@
-export * from './twin/twin-rule.parser.js';
+export * from './twin/twin-rule.parser';

@@ -1,7 +1,7 @@
 import * as P from '@native-twin/arc-parser';
 import { getTWFeatureParser, type RuleHandlerToken, type TWParsedRule } from '@native-twin/css';
-import type { Rule, ThemeContext } from '../types/config.types.js';
-import type { __Theme__ } from '../types/theme.types.js';
+import type { Rule, ThemeContext } from '../types/config.types';
+import type { __Theme__ } from '../types/theme.types';
 
 export const createRuleResolver = <Theme extends __Theme__ = __Theme__>(rule: Rule<Theme>) => {
   const [_, __, resolver] = rule;

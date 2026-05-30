@@ -3,7 +3,7 @@ import { createTailwind, defineConfig } from '@native-twin/core';
 import { createVirtualSheet } from '@native-twin/css';
 import * as Option from 'effect/Option';
 import type { ImportedTwinConfig, InternalTwFn, TwinRunnerPlatform } from '../Config';
-import { maybeLoadJS } from './modules.utils.js';
+import { maybeLoadJS } from './modules.utils';
 
 // TODO: Remove once implements state
 export const extractTwinConfig = (configPath: Option.Option<string>): ImportedTwinConfig => {

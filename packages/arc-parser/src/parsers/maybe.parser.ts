@@ -1,4 +1,4 @@
-import { Parser, updateParserResult } from './Parser.js';
+import { Parser, updateParserResult } from './Parser';
 
 export function maybe<T>(parser: Parser<T>): Parser<T | null> {
   return new Parser((state) => {

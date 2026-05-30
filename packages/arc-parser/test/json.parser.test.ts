@@ -1,19 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import pkgJson from '../package.json';
-import * as P from '../src/index.js';
+import * as P from '../src';
 
 type AnyType = string | number | boolean | number | null | object | AnyType[];
 
 const JSONValue: P.Parser<AnyType> = P.recursiveParser(() =>
   P.whitespaceSurrounded(
-    P.choice([
-      stringParser,
-      numberValue,
-      booleanValue,
-      nullValue,
-      arrayParser,
-      JSONParser,
-    ]),
+    P.choice([stringParser, numberValue, booleanValue, nullValue, arrayParser, JSONParser]),
   ),
 );
 

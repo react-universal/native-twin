@@ -1,5 +1,5 @@
-import { defineConfig, install, tw, extract } from '@native-twin/core';
-import { presetTailwind } from '../src/index.js';
+import { defineConfig, extract, install, tw } from '@native-twin/core';
+import { presetTailwind } from '../src';
 
 install(
   defineConfig({

@@ -5,8 +5,8 @@ import {
   type SheetEntry,
   type TWParsedRule,
 } from '@native-twin/css';
-import type { ThemeContext } from '../types/config.types.js';
-import { convert } from './convertRule.js';
+import type { ThemeContext } from '../types/config.types';
+import { convert } from './convertRule';
 
 /**
  * Converts a parsed rule to a sheet entry based on the given context.

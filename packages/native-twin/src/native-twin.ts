@@ -13,12 +13,12 @@ import {
   sortedInsertionIndex,
 } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
-import { defineConfig } from './config/define-config.js';
-import { parsedRuleToEntry } from './convert/ruleToEntry.js';
-import { isDevEnvironment } from './runtime/runtime.utils.js';
-import { createThemeContext } from './theme/theme.context.js';
-import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types.js';
-import type { __Theme__, ExtractThemes, RuntimeTW } from './types/theme.types.js';
+import { defineConfig } from './config/define-config';
+import { parsedRuleToEntry } from './convert/ruleToEntry';
+import { isDevEnvironment } from './runtime/runtime.utils';
+import { createThemeContext } from './theme/theme.context';
+import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
+import type { __Theme__, ExtractThemes, RuntimeTW } from './types/theme.types';
 
 const isWeb = typeof window !== 'undefined';
 let version = 0;

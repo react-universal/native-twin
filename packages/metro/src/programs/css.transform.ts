@@ -5,7 +5,7 @@ import { countLines, pathToHtmlSafeName } from '@native-twin/helpers/server';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import { type TransformResponse, transform } from 'metro-transform-worker';
-import { MetroWorkerService } from '../services/MetroWorker.service.js';
+import { MetroWorkerService } from '../services/MetroWorker.service';
 
 export const transformCSS: Effect.Effect<
   Option.Option<Readonly<TransformResponse>>,

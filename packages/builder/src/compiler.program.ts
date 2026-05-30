@@ -5,10 +5,10 @@ import * as Queue from 'effect/Queue';
 import * as Stream from 'effect/Stream';
 import * as Tuple from 'effect/Tuple';
 import path from 'path';
-import { CompilerContext } from './services/Compiler.service.js';
-import { FsUtils } from './services/FsUtils.service.js';
-import { TypescriptContext } from './services/Typescript.service.js';
-import { listenForkedStreamChanges } from './utils/effect.utils.js';
+import { CompilerContext } from './services/Compiler.service';
+import { FsUtils } from './services/FsUtils.service';
+import { TypescriptContext } from './services/Typescript.service';
+import { listenForkedStreamChanges } from './utils/effect.utils';
 
 export const CompilerRun = (config: { watch: boolean; verbose: boolean }) =>
   Effect.gen(function* () {

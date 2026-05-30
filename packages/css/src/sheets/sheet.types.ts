@@ -1,7 +1,7 @@
 // TODO: restore Keyframe types
 // import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type { MaybeArray } from '@native-twin/helpers';
-import type { AnyStyle } from '../react-native/rn.types.js';
+import type { AnyStyle } from '../react-native/rn.types';
 
 export type Preflight = false | MaybeArray<Record<string, any>>;
 
@@ -12,10 +12,7 @@ export interface Sheet<Target = unknown> {
   /** Clears all CSS rules from the sheet. */
   clear(): void;
   destroy(): void;
-  resume(
-    addClassName: (className: string) => void,
-    insert: (cssText: string) => void,
-  ): void;
+  resume(addClassName: (className: string) => void, insert: (cssText: string) => void): void;
   insertPreflight(data: Preflight): string[];
   registry: Map<string, SheetEntryRegistry>;
 }

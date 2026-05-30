@@ -1,11 +1,9 @@
-import type { ParserState } from '../types.js';
-import { Parser } from './Parser.js';
+import type { ParserState } from '../types';
+import { Parser } from './Parser';
 
 export function choice<A>([p1]: [Parser<A>]): Parser<A>;
 export function choice<A, B>([p1, p2]: [Parser<A>, Parser<B>]): Parser<A | B>;
-export function choice<A, B, C>([p1, p2, p3]: [Parser<A>, Parser<B>, Parser<C>]): Parser<
-  A | B | C
->;
+export function choice<A, B, C>([p1, p2, p3]: [Parser<A>, Parser<B>, Parser<C>]): Parser<A | B | C>;
 export function choice<A, B, C, D>([p1, p2, p3, p4]: [
   Parser<A>,
   Parser<B>,
@@ -57,18 +55,7 @@ export function choice<A, B, C, D, E, F, G, H, I>([p1, p2, p3, p4, p5, p6, p7, p
   Parser<H>,
   Parser<I>,
 ]): Parser<A | B | C | D | E | F | G | H | I>;
-export function choice<A, B, C, D, E, F, G, H, I, J>([
-  p1,
-  p2,
-  p3,
-  p4,
-  p5,
-  p6,
-  p7,
-  p8,
-  p9,
-  p10,
-]: [
+export function choice<A, B, C, D, E, F, G, H, I, J>([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10]: [
   Parser<A>,
   Parser<B>,
   Parser<C>,

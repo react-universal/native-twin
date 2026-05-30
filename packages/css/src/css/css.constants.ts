@@ -223,19 +223,19 @@ const OwnSheetSelectors = ['base', 'pointer', 'group', 'dark'] as const;
 
 export {
   /** @category — CSS Constants */
-  InteractionPseudoSelectors,
-  /** @category — CSS Constants */
   AppearancePseudoSelectors,
-  /** @category — CSS Constants */
-  PlatformPseudoSelectors,
   /** @category — CSS Constants */
   ChildPseudoSelectors,
   /** @category — CSS Constants */
+  CssChildPseudoSelectors,
+  /** @category — CSS Constants */
   GroupInteractionPseudoSelectors,
+  /** @category — CSS Constants */
+  InteractionPseudoSelectors,
   /** @category — CSS Constants */
   OwnSheetSelectors,
   /** @category — CSS Constants */
-  CssChildPseudoSelectors,
+  PlatformPseudoSelectors,
 };
 
 /** @category — CSS Constants */

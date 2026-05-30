@@ -1,6 +1,6 @@
 import { flattenObjectByPath } from '@native-twin/helpers';
-import type { ThemeFunction } from '../types/config.types.js';
-import type { __Theme__, ThemeConfig } from '../types/theme.types.js';
+import type { ThemeFunction } from '../types/config.types';
+import type { __Theme__, ThemeConfig } from '../types/theme.types';
 
 export function createThemeFunction<Theme extends __Theme__ = __Theme__>({
   extend = {},

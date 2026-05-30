@@ -11,22 +11,18 @@ import * as Stream from 'effect/Stream';
 import * as t from 'vscode-languageserver';
 import { LSPDocumentsCtxLive } from '../internal/ConnectionHandler.api';
 import { LSPAdapterSpec, type LSPTextDocument } from '../internal/LSPAdapterSpec';
-import {
-  CompletionEntryDetails,
-  getCSSMarkDownParts,
-  sheetEntriesToMD,
-  TwinCompletionItem,
-} from '../models/Editor.models';
+import { TwinCompletionItem } from '../models/Editor.models';
 import { Position, Range, type Regions } from '../models/LSP.models';
 import { TwinDiagnosticCodes } from '../models/lsp.constants';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 import type { ParsedRuleWithLocation } from '../models/TwinParser.models';
 import { annotatedLayer } from '../utils/effect.utils';
 import { getSheetEntryStyles } from '../utils/sheet.utils';
+import { EditorUtils, EditorUtilsLive } from './EditorUtils.service';
 import { createDiagnosticsHandler, isValidTwinDiagnostic } from './handlers/diagnostics.handler';
 import { LSPConfig } from './LSPConfig.service';
 import { TwinGraphosContextLive } from './TwinGraphos';
-import { TwinParserContext } from './TwinParser.service';
+import { TwinParserContext, TwinParserContextLive } from './TwinParser.service';
 
 export interface BaseDiagnosticItem {
   entries: SheetEntry[];
@@ -35,6 +31,7 @@ export interface BaseDiagnosticItem {
 }
 
 const make = Effect.gen(function* () {
+  const editorUtils = yield* EditorUtils;
   const parser = yield* TwinParserContext;
   const executor = yield* LSPAdapterSpec;
   const { configSelector } = yield* LSPConfig;
@@ -102,8 +99,8 @@ const make = Effect.gen(function* () {
     const entries = sheetEntries;
 
     return completionRulesToQuickInfo(
-      sheetEntriesToMD(entries, yield* parser.data.styledContext),
-      getCSSMarkDownParts(sheetEntriesToCss(entries)).join('\n'),
+      editorUtils.sheetEntriesToMD(entries, yield* parser.data.styledContext),
+      editorUtils.getCSSMarkDownParts(sheetEntriesToCss(entries)).join('\n'),
       document.getNodeRange(region.value),
     );
   });
@@ -141,7 +138,7 @@ const make = Effect.gen(function* () {
       const finalSheet = getSheetEntryStyles(sheet, styledContext);
       const css = sheetEntriesToCss(sheet);
 
-      return new CompletionEntryDetails(entry).toCompletionEntryDetails(css, finalSheet);
+      return editorUtils.getCompletionEntryDetails(entry, css, finalSheet);
     });
 
   const twinCodeActionsProgram = (params: t.CodeActionParams) => {
@@ -272,5 +269,7 @@ export const LanguageServerHandlers = Context.GenericTag<LanguageServerHandlers>
 export const LanguageServerHandlersLive = Layer.effect(LanguageServerHandlers, make).pipe(
   Layer.provide(TwinGraphosContextLive),
   Layer.provide(LSPDocumentsCtxLive),
+  Layer.provide(EditorUtilsLive),
+  Layer.provide(TwinParserContextLive),
   annotatedLayer('LanguageServerHandlers'),
 );

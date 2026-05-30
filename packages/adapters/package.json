@@ -13,21 +13,19 @@
     "nextjs"
   ],
   "exports": {
-    "./next/_app.js": {
-      "types": "./build/dts/next/_app.d.ts",
-      "import": "./build/esm/next/_app.js",
-      "require": "./build/cjs/next/_app.js"
+    "./_app": {
+      "import": "./build/_app.mjs",
+      "require": "./build/_app.cjs"
     },
-    "./next/_document.js": {
-      "types": "./build/dts/next/_document.d.ts",
-      "import": "./build/esm/next/_document.js",
-      "require": "./build/cjs/next/_document.js"
+    "./_document": {
+      "import": "./build/_document.mjs",
+      "require": "./build/_document.cjs"
     },
-    "./next/app": {
-      "types": "./build/dts/next/app/index.d.ts",
-      "import": "./build/esm/next/app/index.js",
-      "require": "./build/cjs/next/app/index.js"
-    }
+    "./app/app": {
+      "import": "./build/app/app.mjs",
+      "require": "./build/app/app.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {

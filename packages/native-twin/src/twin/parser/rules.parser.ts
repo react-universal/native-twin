@@ -6,7 +6,7 @@ import type {
   TwinParsedRule,
   VariantClassNode,
   VariantNode,
-} from './twin.tokens.js';
+} from './twin.tokens';
 
 export const classNameIdent = /^[a-z0-9A-Z-._]+/;
 

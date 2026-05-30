@@ -1,6 +1,6 @@
 import { sheetEntriesToCss } from '@native-twin/css';
 import { describe, expect, it } from 'vitest';
-import { defineConfig, matchThemeColor, matchThemeValue, setup, tx } from '../src/index.js';
+import { defineConfig, matchThemeColor, matchThemeValue, setup, tx } from '../src';
 
 setup(
   defineConfig({
@@ -8,13 +8,13 @@ setup(
     mode: 'web',
     rules: [
       matchThemeColor('bg-', 'backgroundColor'),
-      // @ts-ignore
+      // @ts-expect-error
       matchThemeValue('p', 'spacing', 'padding', {
         canBeNegative: true,
         feature: 'edges',
         prefix: 'padding',
       }),
-      // @ts-ignore
+      // @ts-expect-error
       matchThemeValue('shadow-', 'boxShadow', 'shadowRadius'),
     ],
     theme: {

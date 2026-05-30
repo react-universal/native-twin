@@ -1,7 +1,7 @@
 import * as P from '@native-twin/arc-parser';
 import type { ShadowStyleIOS } from 'react-native';
-import { ParseCssDimensions } from '../dimensions.parser.js';
-import { ParseCssColor } from './color.parser.js';
+import { ParseCssDimensions } from '../dimensions.parser';
+import { ParseCssColor } from './color.parser';
 
 // <width> <height> <radius> <spread-radius> <color>
 const ShadowValues = P.sequenceOf([

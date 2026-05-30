@@ -22,16 +22,24 @@ export const createTestRuntimeComponent = (
     hasPointerEvents: runtimeEntries.some((x) => x.groups.some(Predicates.isPointerSelector)),
     isGroupParent: runtimeEntries.some((x) => x.className === 'group'),
   };
-  const component = {
+  const component: TwinRuntimeComponent = {
     id,
     index: 0,
     childStyles: runtimeEntries.filter((x) => x.groups.some(Predicates.isChildSelector)),
     metadata,
     parentID: null,
     parentSize: 0,
+    childIds: [],
     props: [
       {
-        entries: runtimeEntries,
+        entries: {
+          base: runtimeEntries.filter((x) => x.group === 'base'),
+          child: runtimeEntries.filter((x) => Predicates.isChildSelector(x.group)),
+          group: runtimeEntries.filter((x) => Predicates.isGroupSelector(x.group)),
+          pointer: runtimeEntries.filter((x) => Predicates.isPointerSelector(x.group)),
+        },
+        classNames: classNames,
+        templateEntries: classNames,
         metadata,
         prop: 'className',
         target: 'styles',

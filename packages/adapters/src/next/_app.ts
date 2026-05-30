@@ -1,6 +1,6 @@
 import type { TailwindConfig, TailwindUserConfig } from '@native-twin/core';
 import { install as install$ } from '@native-twin/core';
-import type { AppProps } from 'next/app.js';
+import type { AppProps } from 'next/app';
 import type { ComponentType } from 'react';
 import React from 'react';
 

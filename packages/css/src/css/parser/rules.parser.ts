@@ -1,20 +1,11 @@
 import * as P from '@native-twin/arc-parser';
-import type { CssParserData } from './css-parser.types.js';
-import {
-  ParseCssDeclarationLine,
-  parseDeclarationProperty,
-} from './declarations.parser.js';
-import { ParseCssDimensions } from './dimensions.parser.js';
-import { ParseSelectorStrict } from './selector.parser.js';
+import type { CssParserData } from './css-parser.types';
+import { ParseCssDeclarationLine, parseDeclarationProperty } from './declarations.parser';
+import { ParseCssDimensions } from './dimensions.parser';
+import { ParseSelectorStrict } from './selector.parser';
 
-export const GetAtRuleConditionToken = P.sequenceOf([
-  parseDeclarationProperty,
-  ParseCssDimensions,
-]);
-export const SkipRules = P.sequenceOf([
-  P.skip(P.everyCharUntil(P.char('}'))),
-  P.char('}'),
-]);
+export const GetAtRuleConditionToken = P.sequenceOf([parseDeclarationProperty, ParseCssDimensions]);
+export const SkipRules = P.sequenceOf([P.skip(P.everyCharUntil(P.char('}'))), P.char('}')]);
 
 export const ParseCssRuleBlock = P.coroutine((run) => {
   const selector = run(ParseSelectorStrict);

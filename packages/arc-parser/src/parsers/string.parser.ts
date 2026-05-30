@@ -1,4 +1,4 @@
-import { createErrorMsg, endOfInputErrorMsg } from '../utils/parser.utils.js';
+import { createErrorMsg, endOfInputErrorMsg } from '../utils/parser.utils';
 import {
   decoder,
   encoder,
@@ -6,10 +6,10 @@ import {
   getNextCharWidth,
   getString,
   getUtf8Char,
-} from '../utils/unicode.utils.js';
-import { everythingUntil } from './everything.parser.js';
-import { maybe } from './maybe.parser.js';
-import { Parser, updateParserError, updateParserState } from './Parser.js';
+} from '../utils/unicode.utils';
+import { everythingUntil } from './everything.parser';
+import { maybe } from './maybe.parser';
+import { Parser, updateParserError, updateParserState } from './Parser';
 
 export const char = (cs: string): Parser<string> => {
   if (!cs || getCharacterLength(cs) !== 1) {

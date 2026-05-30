@@ -10,7 +10,7 @@ import type {
 // import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type { Falsey, MaybeArray } from '@native-twin/helpers';
 import type { PlatformOSType } from 'react-native';
-import type { __Theme__, ExtractThemes, ThemeConfig } from './theme.types.js';
+import type { __Theme__, ExtractThemes, ThemeConfig } from './theme.types';
 
 // CONFIGURATION TYPES
 

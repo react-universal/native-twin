@@ -1,15 +1,15 @@
 import * as P from '@native-twin/arc-parser';
-import type { AnyStyle } from '../../react-native/rn.types.js';
-import { getPropertyValueType } from '../../utils.parser.js';
-import { ident } from '../css-common.parser.js';
-import { ParseCssDimensions } from './dimensions.parser.js';
-import { ParseAspectRatio } from './resolvers/aspect-ratio.parser.js';
-import { ParseShadowValue } from './resolvers/box-shadow.parser.js';
-import { ParseCssColor } from './resolvers/color.parser.js';
-import { ParseFlexValue } from './resolvers/flex.parser.js';
-import { ParseRotateValue } from './resolvers/rotate.parser.js';
-import { ParseSkewValue } from './resolvers/skew.parser.js';
-import { ParseTranslateValue } from './resolvers/translate.parser.js';
+import type { AnyStyle } from '../../react-native/rn.types';
+import { getPropertyValueType } from '../../utils.parser';
+import { ident } from '../css-common.parser';
+import { ParseCssDimensions } from './dimensions.parser';
+import { ParseAspectRatio } from './resolvers/aspect-ratio.parser';
+import { ParseShadowValue } from './resolvers/box-shadow.parser';
+import { ParseCssColor } from './resolvers/color.parser';
+import { ParseFlexValue } from './resolvers/flex.parser';
+import { ParseRotateValue } from './resolvers/rotate.parser';
+import { ParseSkewValue } from './resolvers/skew.parser';
+import { ParseTranslateValue } from './resolvers/translate.parser';
 
 export const ParseCssDeclarationLine = P.coroutine((run) => {
   const getValue = () => {
@@ -46,11 +46,11 @@ export const ParseCssDeclarationLine = P.coroutine((run) => {
     }
 
     if (meta === 'unknown') {
-      const value = P.separatedByComma(
-        P.many(P.choice([ident, P.whitespace, P.char('"')])),
-      ).map((x) => {
-        return x;
-      });
+      const value = P.separatedByComma(P.many(P.choice([ident, P.whitespace, P.char('"')]))).map(
+        (x) => {
+          return x;
+        },
+      );
       return {
         [kebab2camel(property)]: run(value)[0]![0],
       };
@@ -82,6 +82,4 @@ function kebab2camel(input: string) {
   return input.replace(/-./g, (x) => x.toUpperCase().charAt(1));
 }
 
-export const parseDeclarationProperty = P.sequenceOf([ident, P.char(':')]).map(
-  (x) => x[0],
-);
+export const parseDeclarationProperty = P.sequenceOf([ident, P.char(':')]).map((x) => x[0]);

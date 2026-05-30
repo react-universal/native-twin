@@ -1,5 +1,5 @@
-import type { ParserState } from '../types.js';
-import { Parser } from './Parser.js';
+import type { ParserState } from '../types';
+import { Parser } from './Parser';
 
 export const tapParser = <Result, Data>(
   fn: (state: ParserState<Result, Data>) => void,

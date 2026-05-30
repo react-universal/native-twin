@@ -1,6 +1,6 @@
-import { createVirtualSheet } from '@native-twin/css';
 import { createTailwind } from '@native-twin/core';
-import { presetTailwind } from '../src/index.js';
+import { createVirtualSheet } from '@native-twin/css';
+import { presetTailwind } from '../src';
 
 const tailwind = createTailwind(
   {

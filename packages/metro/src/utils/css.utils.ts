@@ -1,11 +1,11 @@
-import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput.js';
-import { transformPostCssModule } from '@expo/metro-config/build/transform-worker/postcss.js';
+import type { ExpoJsOutput } from '@expo/metro-config/build/serializer/jsOutput';
+import { transformPostCssModule } from '@expo/metro-config/build/transform-worker/postcss';
 import { escapeBackticksAndOctals } from '@native-twin/helpers';
 import { pathToHtmlSafeName } from '@native-twin/helpers/server';
 import * as CodeBlockWriter from 'code-block-writer';
 import type { TransformResultDependency } from 'metro';
 import { type JsTransformOptions, transform as workerTransform } from 'metro-transform-worker';
-import type { NativeTwinTransformerOpts } from '../models/Metro.models.js';
+import type { NativeTwinTransformerOpts } from '../models/Metro.models';
 
 const newline = /\r\n?|\n|\u2028|\u2029/g;
 const countLines = (x: string) => (x.match(newline) || []).length + 1;

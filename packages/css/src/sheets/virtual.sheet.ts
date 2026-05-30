@@ -1,11 +1,6 @@
 import { noop } from '@native-twin/helpers';
-import { Layer } from '../css/precedence.js';
-import type {
-  Sheet,
-  SheetEntry,
-  SheetEntryDeclaration,
-  SheetEntryRegistry,
-} from './sheet.types.js';
+import { Layer } from '../css/precedence';
+import type { Sheet, SheetEntry, SheetEntryDeclaration, SheetEntryRegistry } from './sheet.types';
 
 export function createVirtualSheet(): Sheet<SheetEntry[]> {
   const target: SheetEntry[] = [];

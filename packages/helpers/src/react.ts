@@ -5,4 +5,4 @@ export {
   atomStateMap,
   useAtom,
   useAtomValue,
-} from './atom.store.js';
+} from './atom.store';

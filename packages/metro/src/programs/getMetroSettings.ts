@@ -1,7 +1,7 @@
 import { CompilerConfigContext, TwinNodeContext } from '@native-twin/compiler';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import type { BaseTwinTransformerOptions } from '../models/Metro.models.js';
+import type { BaseTwinTransformerOptions } from '../models/Metro.models';
 
 export const getMetroSettings = Effect.gen(function* () {
   const env = yield* CompilerConfigContext;

@@ -7,7 +7,6 @@ export default defineConfig({
     skipNodeModulesBundle: true,
   },
   outDir: "build",
-  dts: { cjsReexport: true },
   sourcemap: true,
   exports: true,
 });

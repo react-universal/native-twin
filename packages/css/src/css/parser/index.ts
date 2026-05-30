@@ -3,56 +3,56 @@ export {
   CreateCssResolver,
   /** @category — CSS Parsers */
   CssResolver,
-} from './css.parser.js';
+} from './css.parser';
 export type {
   /** @category — CSS Parsers */
   CssParserData,
   /** @category — CSS Parsers */
   SelectorPayload,
-} from './css-parser.types.js';
+} from './css-parser.types';
 export {
   /** @category — CSS Parsers */
   ParseCssDeclarationLine,
   /** @category — CSS Parsers */
   parseDeclarationProperty,
-} from './declarations.parser.js';
+} from './declarations.parser';
 export {
   /** @category — CSS Parsers */
   ParseCssDimensions,
   /** @category — CSS Parsers */
   ParseCssMath,
-} from './dimensions.parser.js';
+} from './dimensions.parser';
 export {
   /** @category — CSS Parsers */
   ParseAspectRatio,
-} from './resolvers/aspect-ratio.parser.js';
+} from './resolvers/aspect-ratio.parser';
 export {
   /** @category — CSS Parsers */
   ParseShadowValue,
-} from './resolvers/box-shadow.parser.js';
+} from './resolvers/box-shadow.parser';
 export {
   /** @category — CSS Parsers */
   ParseCssColor,
-} from './resolvers/color.parser.js';
+} from './resolvers/color.parser';
 export {
   /** @category — CSS Parsers */
   ParseFlexValue,
-} from './resolvers/flex.parser.js';
+} from './resolvers/flex.parser';
 export {
   /** @category — CSS Parsers */
   ParseRotateValue,
-} from './resolvers/rotate.parser.js';
+} from './resolvers/rotate.parser';
 export {
   /** @category — CSS Parsers */
   ParseSkewValue,
-} from './resolvers/skew.parser.js';
+} from './resolvers/skew.parser';
 export {
   /** @category — CSS Parsers */
   ParseTranslateValue,
-} from './resolvers/translate.parser.js';
+} from './resolvers/translate.parser';
 export {
   /** @category — CSS Parsers */
   ParseCssSelectorWeak,
   /** @category — CSS Parsers */
   ParseSelectorStrict,
-} from './selector.parser.js';
+} from './selector.parser';

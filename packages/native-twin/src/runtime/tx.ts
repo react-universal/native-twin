@@ -1,6 +1,6 @@
 import type { CSSValue, SheetEntry } from '@native-twin/css';
 import { interpolate } from '@native-twin/css';
-import { tw as tw$ } from './tw.js';
+import { tw as tw$ } from './tw';
 
 export interface TxFunction {
   (...classes: CSSValue[]): SheetEntry[];
@@ -21,9 +21,7 @@ export interface TxFunction {
 
   apply(
     thisArg: ((tokens: string) => SheetEntry[]) | undefined | void,
-    classes:
-      | CSSValue[]
-      | [strings: TemplateStringsArray, ...interpolations: readonly CSSValue[]],
+    classes: CSSValue[] | [strings: TemplateStringsArray, ...interpolations: readonly CSSValue[]],
   ): SheetEntry[];
 }
 

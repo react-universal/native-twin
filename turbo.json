@@ -3,7 +3,9 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^build:compiler", "^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "cache": true,
       "inputs": [
         "$TURBO_DEFAULT$",
@@ -18,7 +20,7 @@
       ]
     },
     "build:watch": {
-      "dependsOn": ["build:compiler"],
+      "dependsOn": [],
       "persistent": true,
       "cache": false
     },
@@ -33,10 +35,6 @@
         "build/**",
         "dist/**"
       ]
-    },
-    "build:tsc:watch": {
-      "persistent": true,
-      "cache": false
     },
     "dev-tools:dev": {
       "cache": false,
@@ -88,9 +86,7 @@
       ]
     },
     "test": {
-      "dependsOn": [
-        "^build"
-      ]
+      "cache": true
     },
     "gen:jsdocs": {
       "inputs": [

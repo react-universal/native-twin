@@ -1,5 +1,5 @@
 import type { Platform } from 'react-native';
-import type { AnyStyle } from '../../react-native/rn.types.js';
+import type { AnyStyle } from '../../react-native/rn.types';
 import type {
   SelectorGroup,
   ValidAppearancePseudoSelector,
@@ -7,7 +7,7 @@ import type {
   ValidGroupPseudoSelector,
   ValidInteractionPseudoSelector,
   ValidPlatformPseudoSelector,
-} from '../css.types.js';
+} from '../css.types';
 
 export interface CssParserData {
   context: {

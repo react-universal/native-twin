@@ -1,13 +1,9 @@
 import * as P from '@native-twin/arc-parser';
 import type { CssFeature } from '@native-twin/css';
 import { asArray, keysOf } from '@native-twin/helpers';
-import { cornerMap, directionMap } from '../constants.js';
-import {
-  maybeNegativeParser,
-  twArbitraryParser,
-  twSegmentParser,
-} from './common.parser.js';
-import type { RuleHandlerToken } from './twin.tokens.js';
+import { cornerMap, directionMap } from '../constants';
+import { maybeNegativeParser, twArbitraryParser, twSegmentParser } from './common.parser';
+import type { RuleHandlerToken } from './twin.tokens';
 
 export const edgesParser = P.sequenceOf([
   P.choice([

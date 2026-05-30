@@ -1,6 +1,6 @@
 import * as P from '@native-twin/arc-parser';
-import type { CSSUnit, ParserToken } from './css.types.js';
-import { cssUnitToken, floatToken, numericToken } from './tokens.js';
+import type { CSSUnit, ParserToken } from './css.types';
+import { cssUnitToken, floatToken, numericToken } from './tokens';
 
 export const parseIntegerToken = P.digits.map(numericToken);
 export const parseFloatToken = P.float.map(floatToken);
@@ -39,10 +39,7 @@ export const cssValueUnitParser = P.choice([
 
 export const dimensionUnitParser = P.sequenceOf([parseFloatToken]);
 
-export const declarationValueWithUnitParser = P.sequenceOf([
-  P.float,
-  P.maybe(cssValueUnitParser),
-]);
+export const declarationValueWithUnitParser = P.sequenceOf([P.float, P.maybe(cssValueUnitParser)]);
 
 const regexIdent = /^[_a-z0-9A-Z-]+/;
 export const ident: P.Parser<string> = P.regex(regexIdent);

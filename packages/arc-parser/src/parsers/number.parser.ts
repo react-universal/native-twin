@@ -1,9 +1,9 @@
-import { createErrorMsg, endOfInputErrorMsg } from '../utils/parser.utils.js';
-import { getNextCharWidth, getUtf8Char } from '../utils/unicode.utils.js';
-import { choice } from './choice.parser.js';
-import { many1 } from './many.parser.js';
-import { Parser, updateParserError, updateParserState } from './Parser.js';
-import { char, letters, regex, whitespace } from './string.parser.js';
+import { createErrorMsg, endOfInputErrorMsg } from '../utils/parser.utils';
+import { getNextCharWidth, getUtf8Char } from '../utils/unicode.utils';
+import { choice } from './choice.parser';
+import { many1 } from './many.parser';
+import { Parser, updateParserError, updateParserState } from './Parser';
+import { char, letters, regex, whitespace } from './string.parser';
 
 const regexDigits = /^[0-9]+/;
 

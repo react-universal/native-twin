@@ -18,11 +18,11 @@
  *  .classColor1 {
  *  color: green !important;
  * }
- * 
+ *
  * .classColor1:hover {
  *  color: green;
  * }
- * 
+ *
  * <span class="classColor classColor1">sfsfsdf</span>
  */
 
@@ -122,7 +122,7 @@ Ensures predictable order of pseudo classes.
 
 - https://bitsofco.de/when-do-the-hover-focus-and-active-pseudo-classes-apply/#orderofstyleshoverthenfocusthenactive
 - https://developer.mozilla.org/docs/Web/CSS/:active#Active_links
-- https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js#L718
+- https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub#L718
 
 **Number of declarations (descending): 4 bits**
 
@@ -224,7 +224,7 @@ export function atRulePrecedence(css: string): number {
 // Sources:
 // - https://bitsofco.de/when-do-the-hover-focus-and-active-pseudo-classes-apply/#orderofstyleshoverthenfocusthenactive
 // - https://developer.mozilla.org/docs/Web/CSS/:active#Active_links
-// - https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js#L931
+// - https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub#L931
 
 const PRECEDENCES_BY_PSEUDO_CLASS = [
   /* fi */ 'rst-c' /* hild: 0 */,
@@ -302,9 +302,7 @@ export function declarationPropertyPrecedence(property: string): number {
   return property[0] === '-'
     ? 0
     : separatorPrecedence(property) +
-        (/^(?:(border-(?!w|c|sty)|[tlbr].{2,4}m?$|c.{7,8}$)|([fl].{5}l|g.{8}$|pl))/.test(
-          property,
-        )
+        (/^(?:(border-(?!w|c|sty)|[tlbr].{2,4}m?$|c.{7,8}$)|([fl].{5}l|g.{8}$|pl))/.test(property)
           ? +!!RegExp.$1 /* +1 */ || -!!RegExp.$2 /* -1 */
           : 0) +
         1;

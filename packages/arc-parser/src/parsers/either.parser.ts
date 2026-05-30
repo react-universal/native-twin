@@ -1,4 +1,4 @@
-import { Parser, updateParserResult } from './Parser.js';
+import { Parser, updateParserResult } from './Parser';
 
 // either :: Parser e a s -> Parser e (Either e a) s
 export const either = <A>(parser: Parser<A>): Parser<{ isError: boolean; value: A }> => {

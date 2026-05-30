@@ -9,7 +9,7 @@
 //   TwinFileSystem,
 //   CompilerConfigContext,
 // } from '@native-twin/compiler';
-// import type { BabelTransformerFn } from '../models/Metro.models.js';
+// import type { BabelTransformerFn } from '../models/Metro.models';
 
 // const NodeMainLayerSync = TwinFileSystem.Live.pipe(
 //   Layer.provideMerge(TwinNodeContext.Live),

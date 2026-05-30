@@ -4,10 +4,10 @@ import { NodePath } from '@effect/platform-node';
 import * as Config from 'effect/Config';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import { CompilerRun } from './compiler.program.js';
-import { CompilerContextLive } from './services/Compiler.service.js';
-import { FsUtilsLive } from './services/FsUtils.service.js';
-import { TypescriptContextLive } from './services/Typescript.service.js';
+import { CompilerRun } from './compiler.program';
+import { CompilerContextLive } from './services/Compiler.service';
+import { FsUtilsLive } from './services/FsUtils.service';
+import { TypescriptContextLive } from './services/Typescript.service';
 
 const MainLive = Layer.empty.pipe(
   Layer.provideMerge(CompilerContextLive),

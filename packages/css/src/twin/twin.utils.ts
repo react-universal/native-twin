@@ -1,6 +1,6 @@
 import { asArray, type MaybeArray } from '@native-twin/helpers';
-import type { SelectorGroup } from '../css/css.types.js';
-import type { TWScreenValueConfig } from './twin.types.js';
+import type { SelectorGroup } from '../css/css.types';
+import type { TWScreenValueConfig } from './twin.types';
 
 const matchGroup = (variants: string[], group: SelectorGroup | (string & {})) => {
   return variants.some((x) => x === group || new RegExp(`(&)?(:?)?(${group})`).test(x));

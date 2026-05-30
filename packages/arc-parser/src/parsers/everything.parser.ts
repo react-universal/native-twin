@@ -1,9 +1,4 @@
-import {
-  Parser,
-  updateParserError,
-  updateParserResult,
-  updateParserState,
-} from './Parser.js';
+import { Parser, updateParserError, updateParserResult, updateParserState } from './Parser';
 
 // everythingUntil :: Parser e a s -> Parser e String s
 export const everythingUntil = (parser: Parser<any>): Parser<number[]> =>
