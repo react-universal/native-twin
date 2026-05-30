@@ -15,46 +15,34 @@
   "author": "Cristhian Gutierrez",
   "exports": {
     ".": {
-      "types": "./build/dts/index.d.ts",
-      "react-native": "./build/esm/index.js",
-      "import": "./build/esm/index.js",
-      "default": "./build/cjs/index.js"
-    },
-    "./tree": {
-      "types": "./build/dts/tree.d.ts",
-      "react-native": "./build/esm/tree.js",
-      "import": "./build/esm/tree.js",
-      "default": "./build/cjs/tree.js"
-    },
-    "./server": {
-      "types": "./build/dts/server.d.ts",
-      "react-native": "./build/esm/server.js",
-      "import": "./build/esm/server.js",
-      "default": "./build/cjs/server.js"
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
     },
     "./fp": {
-      "types": "./build/dts/fp/index.d.ts",
-      "react-native": "./build/esm/fp/index.js",
-      "import": "./build/esm/fp/index.js",
-      "default": "./build/cjs/fp/index.js"
+      "import": "./build/fp/index.mjs",
+      "require": "./build/fp/index.cjs"
     },
     "./KeyMap": {
-      "types": "./build/dts/KeyMap/index.d.ts",
-      "react-native": "./build/esm/KeyMap/index.js",
-      "import": "./build/esm/KeyMap/index.js",
-      "default": "./build/cjs/KeyMap/index.js"
+      "import": "./build/KeyMap.mjs",
+      "require": "./build/KeyMap.cjs"
     },
     "./react": {
-      "types": "./build/dts/react.d.ts",
-      "react-native": "./build/esm/react.js",
-      "import": "./build/esm/react.js",
-      "default": "./build/cjs/react.js"
-    }
+      "import": "./build/react.mjs",
+      "require": "./build/react.cjs"
+    },
+    "./server": {
+      "import": "./build/server.mjs",
+      "require": "./build/server.cjs"
+    },
+    "./tree": {
+      "import": "./build/tree.mjs",
+      "require": "./build/tree.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/dts/index.d.ts",
-  "react-native": "./build/esm/index.js",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "files": [
     "build",
     "src",
@@ -67,8 +55,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
-    "build:watch": "npx twin pack-dev -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",

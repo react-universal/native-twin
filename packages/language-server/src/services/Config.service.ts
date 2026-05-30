@@ -29,3 +29,18 @@ export const LSPConfigLive = Effect.gen(function* () {
       ),
   });
 }).pipe(Layer.effect(LSPConfig));
+
+// const quickSort = (target: number[]) => {
+//   if (target.length <= 1) return target;
+//   const pivot = target[target.length -1];
+//   const leftRes: number[] = [];
+//   const rightRes: number[] = [];
+//   for (let i=0;i<target.length-1;i++) {
+//     if (target[i] < pivot) {
+//       leftRes.push(target[1]);
+//     } else {
+//       rightRes.push(target[1]);
+//     }
+// }
+// return [...quickSort(leftRes), pivot, ...quickSort(rightRes)]
+// }

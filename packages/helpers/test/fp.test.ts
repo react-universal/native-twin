@@ -1,6 +1,6 @@
+import { Predicate } from '@native-twin/helpers/fp';
 import { describe, expect, it } from 'vitest';
 import * as E from '../src/fp/Either';
-import * as Predicate from '../src/fp/Predicate';
 
 type NumberToString = (x: number) => string;
 const numberToString: NumberToString = (x) => `number ${x}`;

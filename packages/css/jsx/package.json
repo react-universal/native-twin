@@ -1,6 +1,5 @@
 {
-  "main": "../build/cjs/jsx/index.js",
-  "module": "../build/esm/jsx/index.js",
-  "react-native": "../build/esm/jsx/index.js",
-  "types": "../build/dts/jsx/index.d.ts"
+  "main": "../build/jsx/index.cjs",
+  "module": "../build/jsx/index.mjs",
+  "types": "../build/jsx/index.d.cts"
 }

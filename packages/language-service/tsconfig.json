@@ -1,13 +1,22 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "preserve",
     "exactOptionalPropertyTypes": false,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
     "disableSolutionSearching": true,
     "disableReferencedProjectLoad": true,
     "jsx": "preserve"
   },
-  "include": ["src", "ts-exposed", "tests"],
-  "exclude": ["build/**/*", "tests/fixtures"]
+  "include": [
+    "src",
+    "ts-exposed",
+    "tests"
+  ],
+  "exclude": [
+    "build/**/*",
+    "tests/fixtures"
+  ]
 }

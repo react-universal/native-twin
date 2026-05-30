@@ -131,8 +131,16 @@ export class CompiledStyledProp extends Data.Class<{
   prop: string;
   compiledEntries: CompiledSheetEntry[];
 }> {
-  toRuntime(inherited: boolean): RuntimeTwinMappedProp {
-    const entries: RuntimeTwinMappedProp['entries'] = this.compiledEntries.reduce(
+  toRuntime(inherited: boolean, parentStyles: CompiledSheetEntry[] = []): RuntimeTwinMappedProp {
+    if (parentStyles.length > 0) {
+      console.log('PARENT: ', parentStyles);
+    } else {
+      console.log('asdasd_none');
+    }
+    const entries: RuntimeTwinMappedProp['entries'] = RA.union(
+      this.compiledEntries,
+      parentStyles,
+    ).reduce(
       (prev, current) => {
         if (current.isChildEntry) {
           prev.child.push(current.toRuntime(inherited));

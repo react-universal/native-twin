@@ -51,9 +51,8 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
     "clean": "rm -rf build",
-    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "build": "npx tsdown",
     "lint": "biome lint"
   },
   "devDependencies": {

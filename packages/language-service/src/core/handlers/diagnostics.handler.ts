@@ -2,10 +2,10 @@ import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import type t from 'vscode-languageserver';
+import * as t from 'vscode-languageserver';
 import { LSPAdapterSpec, type LSPTextDocument } from '../../internal/LSPAdapterSpec';
 import { DiagnosticReport, type DiagnosticReportInput } from '../../models/Editor.models';
-import { TwinDiagnosticCodes } from '../../models/lsp.constants';
+import { LSPConstants, TwinDiagnosticCodes } from '../../models/lsp.constants';
 import type { ResolvedTwinResult } from '../../models/TwinParser.models';
 import { TwinParserContext } from '../TwinParser.service';
 
@@ -51,6 +51,17 @@ export const createDiagnosticsHandler = Effect.gen(function* () {
 
   return { evaluateDocument };
 });
+
+export const isValidTwinDiagnostic = (x: unknown): x is t.Diagnostic => {
+  return (
+    t.Diagnostic.is(x) &&
+    !!x.code &&
+    !!x.relatedInformation &&
+    !!x.source &&
+    !!x.severity &&
+    x.source === LSPConstants.diagnosticProviderSource
+  );
+};
 
 const createDiagnosticReport = (
   rules: ResolvedTwinResult[],

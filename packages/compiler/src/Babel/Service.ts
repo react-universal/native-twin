@@ -1,10 +1,9 @@
 import { CodeGenerator } from '@babel/generator';
 import traverse, { type NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { cx,type MappedComponent, mappedComponents } from '@native-twin/core';
+import { cx, type MappedComponent, mappedComponents } from '@native-twin/core';
 import { parseTWTokens } from '@native-twin/css';
 import * as RA from 'effect/Array';
-import * as Chunk from 'effect/Chunk';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
@@ -142,18 +141,20 @@ const getRootJSXElements = (ast: BabelFileAst) =>
       {
         Program: {
           exit() {
-            emit.chunk(Chunk.fromIterable(this.elements)).then(() => emit.end());
+            emit.end();
+            // emit.chunk(Chunk.fromIterable(this.elements)).then(() => emit.end());
           },
         },
         JSXElement(path) {
-          this.elements.push(path);
+          // this.elements.push(path);
+          emit.single(path);
           path.skip();
         },
       },
       undefined,
-      {
-        elements: [] as JSXElementPath[],
-      },
+      // {
+      //   elements: [] as JSXElementPath[],
+      // },
     );
   });
 

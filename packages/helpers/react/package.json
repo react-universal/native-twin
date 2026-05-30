@@ -1,6 +1,5 @@
 {
-  "main": "../build/cjs/react.js",
-  "module": "../build/esm/react.js",
-  "react-native": "../build/esm/react.js",
-  "types": "../build/dts/react.d.ts"
+  "main": "../build/react.cjs",
+  "module": "../build/react.mjs",
+  "types": "../build/react.d.cts"
 }

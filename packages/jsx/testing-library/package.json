@@ -1,5 +1,5 @@
 {
   "main": "../build/testing-library",
   "module": "../build/testing-library",
-  "types": "../../build/testing-library/index.d.ts"
+  "types": "../../build/testing-library/index.d.cts"
 }

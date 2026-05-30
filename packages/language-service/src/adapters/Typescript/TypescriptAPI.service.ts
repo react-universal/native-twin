@@ -1,3 +1,4 @@
+import { Exit } from 'effect';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Fiber from 'effect/Fiber';
@@ -48,7 +49,13 @@ export const TypescriptProgramLive = Effect.gen(function* () {
     Effect.fork,
   );
 
-  Effect.addFinalizer(() => Fiber.interrupt(fiber));
+  yield* Effect.addFinalizer(() =>
+    Fiber.interrupt(fiber).pipe(
+      Effect.andThen((x) =>
+        Effect.log(`TS Program finished: ${Exit.getOrElse(x, (x) => x.toString())}`),
+      ),
+    ),
+  );
 
   const getSourceFile = Effect.fn(function* (filename: string, content: string) {
     return yield* Effect.succeed(

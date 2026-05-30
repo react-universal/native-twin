@@ -27,7 +27,7 @@ export const TypescriptContextLive = Effect.gen(function* () {
     Effect.fork,
   );
 
-  Effect.addFinalizer(() => Fiber.interrupt(fiber));
+  yield* Effect.addFinalizer(() => Fiber.interrupt(fiber));
 
   project.enableLogging(true);
   const getSourceFile = Effect.fn(function* (filename: string, content: string) {

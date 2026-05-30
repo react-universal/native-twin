@@ -15,63 +15,50 @@
   "author": "Cristhian Gutierrez",
   "exports": {
     ".": {
-      "types": "./build/dts/index.d.ts",
-      "react-native": "./build/cjs/index.js",
-      "import": "./build/esm/index.js",
-      "default": "./build/cjs/index.js"
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
     },
     "./components": {
-      "types": "./build/dts/components.d.ts",
-      "react-native": "./build/cjs/components.js",
-      "import": "./build/esm/components.js",
-      "default": "./build/cjs/components.js"
+      "import": "./build/components.mjs",
+      "require": "./build/components.cjs"
     },
     "./components.web": {
-      "types": "./build/dts/components.web.d.ts",
-      "import": "./build/esm/components.web.js",
-      "default": "./build/cjs/components.web.js"
+      "import": "./build/components.web.mjs",
+      "require": "./build/components.web.cjs"
     },
     "./index.web": {
-      "types": "./build/dts/index.web.d.ts",
-      "import": "./build/esm/index.web.js",
-      "default": "./build/cjs/index.web.js"
+      "import": "./build/index.web.mjs",
+      "require": "./build/index.web.cjs"
     },
     "./jsx-dev-runtime": {
-      "types": "./build/dts/jsx-dev-runtime.d.ts",
-      "react-native": "./build/cjs/jsx-dev-runtime.js",
-      "import": "./build/esm/jsx-dev-runtime.js",
-      "default": "./build/cjs/jsx-dev-runtime.js"
+      "import": "./build/jsx-dev-runtime.mjs",
+      "require": "./build/jsx-dev-runtime.cjs"
     },
     "./jsx-runtime": {
-      "types": "./build/dts/jsx-runtime.d.ts",
-      "react-native": "./build/cjs/jsx-runtime.js",
-      "import": "./build/esm/jsx-runtime.js",
-      "default": "./build/cjs/jsx-runtime.js"
+      "import": "./build/jsx-runtime.mjs",
+      "require": "./build/jsx-runtime.cjs"
     },
-    "./jsx-wrapper": {
-      "types": "./build/dts/jsx-wrapper.d.ts",
-      "react-native": "./build/cjs/jsx-wrapper.js",
-      "import": "./build/esm/jsx-wrapper.js",
-      "default": "./build/cjs/jsx-wrapper.js"
+    "./sheet": {
+      "import": "./build/sheet/index.mjs",
+      "require": "./build/sheet/index.cjs"
     },
-    "./jsx-wrapper.web": {
-      "types": "./build/dts/jsx-wrapper.web.d.ts",
-      "import": "./build/esm/jsx-wrapper.web.js",
-      "default": "./build/cjs/jsx-wrapper.web.js"
+    "./testing-library": {
+      "import": "./build/testing-library/index.mjs",
+      "require": "./build/testing-library/index.cjs"
     },
-    "./third-party-declarations.d": {
-      "types": "./build/dts/third-party-declarations.d.d.ts",
-      "import": "./build/esm/third-party-declarations.d.js",
-      "default": "./build/cjs/third-party-declarations.d.js"
+    "./testing-library/setup": {
+      "import": "./build/testing-library/setup.mjs",
+      "require": "./build/testing-library/setup.cjs"
     },
-    "./types": {
-      "types": "./types.d.ts"
-    }
+    "./testing-library/setupAfterEnv": {
+      "import": "./build/testing-library/setupAfterEnv.mjs",
+      "require": "./build/testing-library/setupAfterEnv.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "react-native": "./build/cjs/index.js",
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/dts/index.d.ts",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "files": [
     "build",
     "jsx-dev-runtime",
@@ -87,8 +74,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
-    "build:watch": "npx twin pack-dev -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",

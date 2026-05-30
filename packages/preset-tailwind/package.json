@@ -22,26 +22,23 @@
   },
   "license": "MIT",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "types": "./build/dts/index.d.ts",
-      "import": "./build/esm/index.js",
-      "default": "./build/cjs/index.js"
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
     },
     "./colors": {
-      "types": "./build/dts/tailwind-theme/colors.d.ts",
-      "import": "./build/esm/tailwind-theme/colors.js",
-      "default": "./build/cjs/tailwind-theme/colors.js"
+      "import": "./build/colors.mjs",
+      "require": "./build/colors.cjs"
     },
     "./default-config": {
-      "types": "./build/dts/defaultConfig.d.ts",
-      "import": "./build/esm/defaultConfig.js",
-      "default": "./build/cjs/defaultConfig.js"
-    }
+      "import": "./build/default-config.mjs",
+      "require": "./build/default-config.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/dts/index.d.ts",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "files": [
     "build",
     "colors",
@@ -51,8 +48,8 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
-    "build:watch": "npx twin pack-dev -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",

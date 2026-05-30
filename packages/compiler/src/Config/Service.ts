@@ -131,7 +131,7 @@ const make = Effect.gen(function* () {
 
   function isAllowedPath(filePath: string) {
     return Effect.map(Ref.get(projectFilesRef), (projectFiles) =>
-      HashSet.has(projectFiles, TwinPath.absolutePathFromString(filePath)),
+      HashSet.has(projectFiles, TwinPath.absolutePathFromString(filePath, env.projectRoot)),
     );
   }
 

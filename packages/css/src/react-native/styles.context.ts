@@ -24,7 +24,7 @@ export type RuntimeContext = {
   deviceHeight: number;
   deviceAspectRatio: number;
   platform: PlatformOSType;
-  colorScheme: 'dark' | 'light';
+  colorScheme: ColorSchemeName;
   units: CssUnitsContext;
 };
 

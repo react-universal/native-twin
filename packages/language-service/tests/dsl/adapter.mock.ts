@@ -8,13 +8,13 @@ import { TextDocuments } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   FileNotFound,
-  JSXParser,
-  JSXParserLive,
   LSPAdapterSpec,
   LSPDocumentsCtx,
+  type Position,
   TwinLSPDocument,
-  TypeScriptProgram,
 } from '../../src';
+import { JSXParser, JSXParserLive } from '../../src/adapters/Typescript/JSXParser.service';
+import { TypeScriptProgram } from '../../src/adapters/Typescript/TypescriptAPI.service';
 
 export const LSPDocumentsCtxMock = Effect.gen(function* () {
   yield* Effect.void;
@@ -33,12 +33,13 @@ export const TestVscodeLSPAdapterLive = Effect.gen(function* () {
   const program = yield* TypeScriptProgram;
   const parser = yield* JSXParser;
 
-  const getLSPDocument = Effect.fn(function* (filename) {
+  const getLSPDocument = Effect.fn(function* (filename: string) {
     const document = yield* Effect.succeed(
       Option.some(TextDocument.create(filename, 'ts', 1, readFileSync(filename, 'utf-8'))),
-    )
-      .pipe(Effect.flatMap(identity))
-      .pipe(Effect.mapError((e) => FileNotFound.create(e)));
+    ).pipe(
+      Effect.flatMap(identity),
+      Effect.mapError((e) => FileNotFound.create(e)),
+    );
 
     const tsSource = yield* program.getSourceFile(filename, document.getText());
     const roots = parser.getJSXRootsFromSource(tsSource);
@@ -52,14 +53,15 @@ export const TestVscodeLSPAdapterLive = Effect.gen(function* () {
     return document.regions;
   });
 
-  const getRegionAt = Effect.fn('vscodeAdapter: getTokenAtPosition')(
-    function* (filename, position) {
-      const document = yield* getLSPDocument(filename);
-      // const regions = yield* getRegions(filename);
+  const getRegionAt = Effect.fn('vscodeAdapter: getTokenAtPosition')(function* (
+    filename: string,
+    position: Position,
+  ) {
+    const document = yield* getLSPDocument(filename);
+    // const regions = yield* getRegions(filename);
 
-      return document.findRegionAt(position);
-    },
-  );
+    return document.findRegionAt(position);
+  });
 
   return LSPAdapterSpec.of({
     getLSPDocument,

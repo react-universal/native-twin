@@ -130,7 +130,7 @@ const make = Effect.gen(function* () {
       const result = yield* loadTwin(twinPath);
       const currentConfig = yield* applyToTwin((x) => x.config);
       if (!result) {
-        if (currentConfig.content.length > 0) return Effect.void;
+        if (currentConfig.content.length > 0) return yield* Effect.void;
         return yield* Effect.log('Cant detect native twin config path');
       }
 

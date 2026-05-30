@@ -20,41 +20,19 @@
   },
   "exports": {
     ".": {
-      "types": "./build/dts/index.d.ts",
-      "react-native": "./src/index.ts",
-      "module": "./build/esm/index.js",
-      "default": "./build/cjs/index.js"
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
     },
     "./components": {
-      "source": "./src/components/index.ts",
-      "react-native": "./src/components/index.tsx",
-      "import": {
-        "default": "./build/cjs/components/index.js",
-        "types": "./build/dts/components/index.d.ts"
-      },
-      "require": {
-        "default": "./build/cjs/components/index.js",
-        "types": "./build/dts/components/index.d.ts"
-      }
+      "import": "./build/components/index.mjs",
+      "require": "./build/components/index.cjs"
     },
-    "./components/*": {
-      "source": "./src/components/*.tsx",
-      "react-native": "./src/components/*.tsx",
-      "import": {
-        "types": "./build/dts/components/*.d.ts",
-        "default": "./build/cjs/components/*.js"
-      },
-      "require": {
-        "types": "./build/dts/components/*.d.ts",
-        "default": "./build/cjs/components/*.js"
-      }
-    }
+    "./package.json": "./package.json"
   },
   "license": "MIT",
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
-  "react-native": "./src/index.ts",
-  "types": "./build/dts/index.d.ts",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "author": "Cristhian Gutierrez",
   "files": [
     "build",
@@ -65,8 +43,8 @@
     "styled"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
-    "build:watch": "npx twin pack-dev -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "bundle": "yarn clean && yarn twin-build",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
@@ -91,7 +69,7 @@
     "@types/react-is": "^17.0.3"
   },
   "peerDependencies": {
-    "@types/react": "~18.3.12",
+    "@types/react": "~19.2.10",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.74.5",

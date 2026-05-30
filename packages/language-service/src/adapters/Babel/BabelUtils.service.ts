@@ -90,12 +90,7 @@ const make = Effect.gen(function* () {
           parent: treeNode.parent,
           styledProps,
           id: treeNode.value.scope.generateUidIdentifier().name,
-          position: {
-            startOffset: treeNode.value.node.loc.start.index,
-            startLine: treeNode.value.node.loc.start.line,
-            endOffset: treeNode.value.node.loc.end.index,
-            endLine: treeNode.value.node.loc.end.line,
-          },
+          position: getNodePosition(treeNode.value.node),
         });
       }),
       Stream.runCollect,
@@ -213,9 +208,11 @@ const make = Effect.gen(function* () {
           text: tagName,
           rawText: tagName,
           parent,
-          tag: Regions.JSXTagName.make(Object.assign({ rawText: tagName }, jsxElement.position)),
+          tag: Regions.JSXTagName.make(
+            Object.assign({ rawText: tagName }, Option.getOrThrow(jsxElement.position)),
+          ),
         },
-        jsxElement.position,
+        Option.getOrThrow(jsxElement.position),
       ),
     );
   }

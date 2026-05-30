@@ -52,6 +52,10 @@ export class TwinRuleRegistry {
     );
   }
 
+  get isColor() {
+    return this.info.styleProperty === 'color' || this.info.themeSection === 'colors';
+  }
+
   get displayParts() {
     if (this.info.meta.feature === 'colors' || this.info.themeSection === 'colors') {
       const hex = new TinyColor(this.declarationValue);

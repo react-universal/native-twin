@@ -1,5 +1,5 @@
 {
-  "main": "../build/cjs/ts-adapter.js",
-  "module": "../build/esm/ts-adapter.js",
-  "types": "../build/dts/ts-adapter.d.ts"
+  "main": "../build/ts-adapter.cjs",
+  "module": "../build/ts-adapter.mjs",
+  "types": "../build/ts-adapter.d.cts"
 }

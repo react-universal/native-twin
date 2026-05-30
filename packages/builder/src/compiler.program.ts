@@ -41,9 +41,9 @@ export const CompilerRun = (config: { watch: boolean; verbose: boolean }) =>
       Effect.flatMap(({ cjs, emitted, esm }) => {
         return Effect.all(
           [
-            ts.writeFile(fsUtils.getFinalFileExtension(cjs.path), cjs.content),
+            ts.writeFile(fsUtils.getFinalFileExtension(cjs.path, '.js'), cjs.content),
             ts.writeFile(
-              fsUtils.getFinalFileExtension(cjs.sourcemapPath),
+              fsUtils.getFinalFileExtension(cjs.sourcemapPath, '.js'),
               cjs.sourcemap.pipe(Option.getOrThrow),
             ),
             ts.writeFile(fsUtils.getFinalFileExtension(esm.path), esm.content),

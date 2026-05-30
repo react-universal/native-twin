@@ -13,9 +13,9 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/dts/index.d.ts",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "files": [
     "LICENSE",
     "README.md",
@@ -26,13 +26,11 @@
     "plugin-parser"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
-    "build:tsc:watch": "tsc -p tsconfig.cjs.json --watch",
-    "build:watch": "npx twin pack-dev -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "lint": "biome lint",
-    "test": "echo \"No tests\"",
-    "vscode:dev": "tsc -p tsconfig.build.json --watch"
+    "test": "echo \"No tests\""
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.1.0",
@@ -67,5 +65,12 @@
   "publishConfig": {
     "access": "public",
     "directory": "dist"
+  },
+  "exports": {
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./package.json": "./package.json"
   }
 }

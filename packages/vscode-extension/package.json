@@ -22,16 +22,13 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "native-twin",
-  "main": "./build/cjs/extension.js",
-  "browser": "./build/cjs/extension-web.js",
-  "module": "./build/esm/extension.js",
+  "main": "./build/extension.cjs",
+  "browser": "./build/extension-web.cjs",
+  "module": "./build/extension.mjs",
   "scripts": {
-    "build": "npx twin pack-dev",
+    "build": "npx tsdown",
     "build:web": "node ./esbuild.web.cjs",
-    "build:tsc": "npx tsc -b",
-    "build:tsc:watch": "npx tsc -p tsconfig.cjs.json --watch",
     "build:watch": "tsc -p tsconfig.cjs.json --watch",
-    "esbuild:watch": "node ./esbuild.cjs --watch",
     "web:watch": "node ./esbuild.web.cjs --watch",
     "clean": "rm -rf build",
     "lint": "biome lint",
@@ -39,7 +36,6 @@
     "vsc-test": "vscode-test --watch",
     "chrome": "vscode-test-web --quality stable --coi --open-devtools --browserType=chromium --extensionDevelopmentPath=. ./project-fixture",
     "vsc:test": "sh ./scripts/e2e.sh",
-    "vscode:dev": "tsc -b -w",
     "vscode:prepublish": "node ./esbuild.js"
   },
   "contributes": {
@@ -233,5 +229,29 @@
   "extensionKind": [
     "ui",
     "workspace"
-  ]
+  ],
+  "types": "./build/extension.d.cts",
+  "exports": {
+    "./extension": {
+      "import": "./build/extension.mjs",
+      "require": "./build/extension.cjs"
+    },
+    "./extension-web": {
+      "import": "./build/extension-web.mjs",
+      "require": "./build/extension-web.cjs"
+    },
+    "./language/browser/twin.worker": {
+      "import": "./build/language/browser/twin.worker.mjs",
+      "require": "./build/language/browser/twin.worker.cjs"
+    },
+    "./servers/lsp.browser": {
+      "import": "./build/servers/lsp.browser.mjs",
+      "require": "./build/servers/lsp.browser.cjs"
+    },
+    "./servers/lsp.node": {
+      "import": "./build/servers/lsp.node.mjs",
+      "require": "./build/servers/lsp.node.cjs"
+    },
+    "./package.json": "./package.json"
+  }
 }

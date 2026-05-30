@@ -1,5 +1,5 @@
 {
-  "main": "../build/cjs/tailwind-theme/colors.js",
-  "module": "../build/esm/tailwind-theme/colors.js",
-  "types": "../build/tailwind-theme/colors.d.ts"
+  "main": "../build/colors.cjs",
+  "module": "../build/colors.mjs",
+  "types": "../build/colors.d.cts"
 }

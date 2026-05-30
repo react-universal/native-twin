@@ -1,6 +1,5 @@
 {
-  "main": "../build/cjs/tree.js",
-  "module": "../build/esm/tree.js",
-  "react-native": "../build/esm/tree.js",
-  "types": "../build/dts/tree.d.ts"
+  "main": "../build/tree.cjs",
+  "module": "../build/tree.mjs",
+  "types": "../build/tree.d.cts"
 }

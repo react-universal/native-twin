@@ -63,8 +63,8 @@
         "NODE_NO_WARNINGS": "1"
       },
       "outFiles": [
-        "${workspaceRoot}/build/**/*.js",
-        "${workspaceRoot:}/build/**/*.js"
+        "${workspaceRoot}/build/**/*.cjs",
+        "${workspaceRoot:}/build/**/*.cjs"
       ],
       "sourceMaps": true,
       "resolveSourceMapLocations": [
@@ -81,14 +81,14 @@
       "args": [
         "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/build/cjs/test/index.js"
+        "--extensionTestsPath=${workspaceFolder}/build/test/index.cjs"
       ],
       "preLaunchTask": {
         "type": "npm",
-        "script": "build:tsc:watch"
+        "script": "build:watch"
       },
       "outFiles": [
-        "${workspaceFolder}/build/cjs/test/**/*.js"
+        "${workspaceFolder}/build/test/**/*.cjs"
       ]
     }
   ],

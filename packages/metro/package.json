@@ -14,14 +14,15 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "types": "./build/dts/index.d.ts",
-      "import": "./build/cjs/index.js",
-      "default": "./build/cjs/index.js"
-    }
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "main": "./build/cjs/index.js",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "files": [
     "build",
     "LICENSE",
@@ -31,13 +32,13 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
-    "build:watch": "npx twin pack-dev -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",
-    "test": "jest --detectOpenHandles=true",
+    "test": "vitest",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand=true --detectOpenHandles=true",
     "test:watch": "jest --watch"
   },
@@ -49,7 +50,8 @@
     "portfinder": "^1.0.32"
   },
   "peerDependencies": {
-    "@babel/cli": "*"
+    "@babel/cli": "*",
+    "jest": "*"
   },
   "peerDependenciesMeta": {
     "@babel/cli": {

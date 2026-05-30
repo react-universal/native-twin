@@ -21,36 +21,28 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "types": "./build/dts/index.d.ts",
-      "react-native": "./build/esm/index.js",
-      "import": "./build/esm/index.js",
-      "default": "./build/cjs/index.js"
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
     },
     "./jsx": {
-      "types": "./build/dts/jsx/index.d.ts",
-      "react-native": "./build/esm/jsx/index.js",
-      "import": "./build/esm/jsx/index.js",
-      "default": "./build/cjs/jsx/index.js"
+      "import": "./build/jsx/index.mjs",
+      "require": "./build/jsx/index.cjs"
     },
     "./react-native": {
-      "types": "./build/dts/react-native/index.d.ts",
-      "react-native": "./build/esm/react-native/index.js",
-      "import": "./build/esm/react-native/index.js",
-      "default": "./build/cjs/react-native/index.js"
+      "import": "./build/react-native/index.mjs",
+      "require": "./build/react-native/index.cjs"
     },
     "./twin-parser": {
-      "types": "./build/dts/twin-parser.d.ts",
-      "react-native": "./build/esm/twin-parser.js",
-      "import": "./build/esm/twin-parser.js",
-      "default": "./build/cjs/twin-parser.js"
-    }
+      "import": "./build/twin-parser.mjs",
+      "require": "./build/twin-parser.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
   "react-native": "./build/esm/index.js",
-  "types": "./build/dts/index.d.ts",
+  "types": "./build/index.d.cts",
   "files": [
     "build",
     "LICENSE",
@@ -62,8 +54,8 @@
     "tailwind-parser"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
-    "build:watch": "npx twin pack-dev -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "docgen": "docgen",

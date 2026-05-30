@@ -7,19 +7,21 @@ import {
   LSPConfig,
   parseLSPConfigInput,
   type TwinConfigOptions,
-  TwinGraphLive,
   TwinGraphosContextLive,
   TwinRuntimeContextLive,
+} from '../../src';
+import { TwinGraphLive } from '../../src/adapters/Typescript/TwinGraph.service';
+import {
   TypeScriptApi,
   TypeScriptProgram,
-} from '../../src';
-import { TypescriptParser } from '../../src/Typescript/TypescriptParser';
+} from '../../src/adapters/Typescript/TypescriptAPI.service';
+import { TypescriptParser } from '../../src/adapters/Typescript/TypescriptParser';
 import { TestVscodeLSPAdapterLive } from './adapter.mock';
 import { requireESM } from './load-esm';
 
 const testFolder = path.join(__dirname, '..');
 
-const TsProgramLive = Effect.gen(function* () {
+export const TsProgramLive = Effect.gen(function* () {
   const { project, program } = createCustomProgram(
     path.join(testFolder, 'fixtures/react/tsconfig.json'),
   );
@@ -63,7 +65,6 @@ export const lspConfigMock = Effect.gen(function* () {
 export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(Layer.succeed(TypeScriptApi, ts)),
   Layer.provideMerge(TestVscodeLSPAdapterLive),
-  Layer.provideMerge(TypescriptParser),
   Layer.provideMerge(TsProgramLive),
   Layer.provideMerge(TwinGraphLive),
   Layer.provideMerge(TwinRuntimeContextLive),

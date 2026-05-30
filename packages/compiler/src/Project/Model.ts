@@ -24,8 +24,7 @@ export class TransformedJSXNode extends Data.Class<{
   parentID: string | null;
 }> {
   toRuntimeJSX(): TwinRuntimeComponent {
-    // this.parentStyles.map((x) => x.toRuntime(true));
-    const runtimeProps = this.styledProps.map((x) => x.toRuntime(false));
+    const runtimeProps = this.styledProps.map((x) => x.toRuntime(false, this.parentStyles));
     const childStyles = runtimeProps.flatMap((x) => x.entries.child);
 
     const metadata = {
@@ -37,7 +36,7 @@ export class TransformedJSXNode extends Data.Class<{
       id: this.node.value.id,
       index: this.index,
       metadata,
-      childIds: this.node.children.map(x => x.value.id),
+      childIds: this.node.children.map((x) => x.value.id),
       parentID: this.parentID,
       parentSize: this.parentSize,
       props: runtimeProps,

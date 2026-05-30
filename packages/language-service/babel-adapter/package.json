@@ -1,5 +1,5 @@
 {
-  "main": "../build/cjs/babel-adapter.js",
-  "module": "../build/esm/babel-adapter.js",
-  "types": "../build/dts/babel-adapter.d.ts"
+  "main": "../build/babel-adapter.cjs",
+  "module": "../build/babel-adapter.mjs",
+  "types": "../build/babel-adapter.d.cts"
 }

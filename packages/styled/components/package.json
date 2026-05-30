@@ -1,6 +1,5 @@
 {
-  "react-native": "../src/components",
-  "main": "../build/cjs/components/index.js",
-  "module": "../build/esm/components/index.js",
-  "types": "../build/cjs/components/index.js"
+  "main": "../build/components/index.cjs",
+  "module": "../build/components/index.mjs",
+  "types": "../build/components/index.cts"
 }

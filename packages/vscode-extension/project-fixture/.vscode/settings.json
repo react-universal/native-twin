@@ -1,8 +1,8 @@
 {
-    "typescript.tsdk": "../../../node_modules/typescript/lib",
-    "typescript.tsserver.log": "off",
+    "js/ts.tsdk.path": "../../../node_modules/typescript/lib",
+    "js/ts.tsserver.log": "off",
     "nativeTwin.trace.server": "messages",
-    "nativeTwin.enable": true, 
+    "nativeTwin.enable": true,
     "nativeTwin.debug": true,
     "nativeTwin.diagnostics": "info",
     "outline.icons": true,
@@ -25,7 +25,7 @@
     ],
     "editor.suggest.showColors": true,
     "markdown.trace.server": "verbose",
-    "workbench.colorTheme": "Default Dark+",
+    "workbench.colorTheme": "Dark+",
     "editor.quickSuggestions": {
         "other": "on",
         "comments": "off",

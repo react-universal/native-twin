@@ -14,6 +14,7 @@ const MainLive = Layer.mergeAll(LanguageClientLive).pipe(
   // Layer.provide(TwinRuntimeContextLive),
   // Layer.provide(TwinVscodeHightLightsProviderLive),
   Layer.provide(ClientCustomLogger),
+  // Layer.provide(DevTools.layer()),
 );
 
 export function activate(context: vscode.ExtensionContext) {

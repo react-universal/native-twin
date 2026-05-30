@@ -1,3 +1,4 @@
+/** @effect-diagnostics multipleEffectProvide:skip-file */
 import path from 'node:path';
 import { inspect } from 'node:util';
 import { describe, expect, it } from '@effect/vitest';
@@ -40,6 +41,13 @@ describe('Twin LSP adapters', () => {
       const traversedGr = graphCtx.traverseGraph(grapho);
       expect(traversedGr.length).toBeGreaterThan(0);
       expect(lspTree.root.childrenCount).toBeGreaterThan(0);
+      const grr = yield* graphCtx.createSourceGraph(document.regions);
+      const pst = Graph.dfs(grr, { start: [0], direction: 'outgoing' });
+      const rs = pst.visit((i, data) => {
+        return '-'.padStart(i, ' ').concat(data.tagName);
+      });
+
+      console.log(Array.from(rs).reverse().join('\n'));
 
       const graphViz1 = Graph.toGraphViz(grapho, {
         edgeLabel: (data) => inspect(data),

@@ -47,9 +47,6 @@ const documentsHandler = new TextDocuments(TextDocument);
 
 documentsHandler.listen(connection);
 connection.listen();
-connection.onExit(() => {
-  self.console.log('0asdasdasdad');
-});
 
 messageReader.listen((x) => console.log('MESSAGE: ', x));
 // const LSPContextLive = Effect.gen(function* () {
@@ -109,7 +106,7 @@ export const TypescriptContextLive = Effect.gen(function* () {
     Effect.fork,
   );
 
-  Effect.addFinalizer(() => Fiber.interrupt(fiber));
+  yield* Effect.addFinalizer(() => Fiber.interrupt(fiber));
 
   project.enableLogging(true);
   const getSourceFile = Effect.fn(function* (filename: string, content: string) {
@@ -125,7 +122,7 @@ export const TypescriptContextLive = Effect.gen(function* () {
     getSourceFile,
     project,
   });
-}).pipe(Layer.effect(TypeScriptProgram));
+}).pipe(Effect.scoped, Layer.effect(TypeScriptProgram));
 
 const AdapterLive = Effect.gen(function* () {
   const { getDocument } = yield* LSPDocumentsCtx;

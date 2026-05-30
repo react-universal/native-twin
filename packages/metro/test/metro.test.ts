@@ -1,6 +1,8 @@
 import * as fs from 'fs/promises';
 import * as Metro from 'metro';
+import { SourcePathsMode } from 'metro/private/shared/types';
 import path from 'path';
+import { describe, it } from 'vitest';
 
 const exampleProjectFixture = {
   cwd: path.join(__dirname, '../../../apps/expo-app'),
@@ -24,16 +26,19 @@ describe('Metro bundler test', () => {
         cwd: exampleProjectFixture.cwd,
         config: exampleProjectFixture.configPath,
       },
-      // {
-      //   // transformerPath: require.resolve('../src/transformer/metro.transformer'),
-      //   projectRoot: exampleProjectFixture.cwd,
-      //   resetCache: true,
-      // },
+      {
+        // transformerPath: require.resolve('../src/transformer/metro.transformer'),
+        transformerPath: require.resolve(
+          path.join(__dirname, '../src/programs/metro.transformer.ts'),
+        ),
+        projectRoot: exampleProjectFixture.cwd,
+        resetCache: true,
+      },
     );
     await Metro.runBuild(config, {
       entry: exampleProjectFixture.screenComponentPath,
       out: exampleProjectFixture.bundleOut,
-      dev: false,
+      dev: true,
       minify: false,
       sourceMap: false,
       platform: 'ios',
@@ -56,6 +61,9 @@ describe('Metro bundler test', () => {
             inlineSourceMap: false,
             lazy: false,
             minify: false,
+            sourceMapUrl: null,
+            sourcePaths: SourcePathsMode.Absolute,
+            sourceUrl: null,
             modulesOnly: true,
             runModule: true,
             shallow: true,

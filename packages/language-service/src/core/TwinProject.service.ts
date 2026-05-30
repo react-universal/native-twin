@@ -10,31 +10,31 @@ import { LSPGraph, type Regions } from '../models/LSP.models';
 
 const JSXRegionOrd = Order.mapInput(Order.number, (_: Regions.JSXNode) => _.startOffset);
 
+const traverseGraph = (graph: Graph.Graph<LSPGraph.SourceNodeInfo, LSPGraph.SourceEdgeInfo>) => {
+  const handler = new LSPGraph.GraphState(graph);
+
+  const data = handler.dfs.visit((nodeIndex, _sourceInfo) => handler.visitNodeIndex(nodeIndex));
+  const final = Iterable.reduce(data, '', (acc, current) => {
+    let body = '';
+    if (current.endText.length > 0) {
+      body = body
+        .concat(current.padStart)
+        .concat(current.startText)
+        .concat('\n')
+        .concat(current.padStart)
+        .concat(acc)
+        .concat('\n')
+        .concat(current.padStart)
+        .concat(current.endText);
+    } else {
+      body = body.concat(current.startText).concat(acc);
+    }
+    return body;
+  });
+  return final;
+};
+
 export const makeTwinGraph = Effect.gen(function* () {
-  const traverseGraph = (graph: Graph.Graph<LSPGraph.SourceNodeInfo, LSPGraph.SourceEdgeInfo>) => {
-    const handler = new LSPGraph.GraphState(graph);
-
-    const data = handler.dfs.visit((nodeIndex, _sourceInfo) => handler.visitNodeIndex(nodeIndex));
-    const final = Iterable.reduce(data, '', (acc, current) => {
-      let body = '';
-      if (current.endText.length > 0) {
-        body = body
-          .concat(current.padStart)
-          .concat(current.startText)
-          .concat('\n')
-          .concat(current.padStart)
-          .concat(acc)
-          .concat('\n')
-          .concat(current.padStart)
-          .concat(current.endText);
-      } else {
-        body = body.concat(current.startText).concat(acc);
-      }
-      return body;
-    });
-    return final;
-  };
-
   const createSourceGraph = Effect.fn(function* (elements: Regions.JSXNode[]) {
     const context = yield* createTraversalContext(elements);
 

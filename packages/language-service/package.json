@@ -15,24 +15,22 @@
   "author": "Cristhian Gutierrez",
   "exports": {
     ".": {
-      "types": "./build/dts/index.d.ts",
-      "import": "./build/esm/index.js",
-      "default": "./build/cjs/index.js"
-    },
-    "./ts-adapter": {
-      "types": "./build/dts/ts-adapter.d.ts",
-      "import": "./build/esm/ts-adapter.js",
-      "default": "./build/cjs/ts-adapter.js"
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
     },
     "./babel-adapter": {
-      "types": "./build/dts/babel-adapter.d.ts",
-      "import": "./build/esm/babel-adapter.js",
-      "default": "./build/cjs/babel-adapter.js"
-    }
+      "import": "./build/babel-adapter.mjs",
+      "require": "./build/babel-adapter.cjs"
+    },
+    "./ts-adapter": {
+      "import": "./build/ts-adapter.mjs",
+      "require": "./build/ts-adapter.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
-  "types": "./build/dts/index.d.ts",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "files": [
     "LICENSE",
     "README.md",
@@ -43,15 +41,12 @@
     "browser"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
-    "build:tsc": "tsc -p tsconfig.build.json",
-    "build:tsc:watch": "npx twin pack-dev -w",
-    "build:watch": "npx twin pack-dev -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "lint": "biome lint",
     "test": "yarn vitest --no-file-parallelism --test-timeout=0",
-    "bench": "NODE_OPTIONS='--no-experimental-detect-module' VITE_CJS_IGNORE_WARNING=true npx vitest bench --no-isolate",
-    "vscode:dev": "tsc -p tsconfig.build.json --watch"
+    "bench": "NODE_OPTIONS='--no-experimental-detect-module' VITE_CJS_IGNORE_WARNING=true npx vitest bench --no-isolate"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.1.0",

@@ -20,7 +20,7 @@ export const BrowserLSPClient = Effect.gen(function* () {
   const createWorker = () => {
     const workerPath = vscode.Uri.joinPath(
       extensionCtx.extensionUri,
-      '/build/cjs/twin.worker.js',
+      '/build/language/browser/twin.worker.cjs',
     ).toString(true);
     const worker = new Worker(workerPath);
     worker.addEventListener('message', (event) => {

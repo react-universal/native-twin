@@ -14,24 +14,16 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "types": "./build/dts/index.d.ts",
-      "react-native": "./build/esm/index.js",
-      "import": "./build/esm/index.js",
-      "default": "./build/cjs/index.js"
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
     },
-    "./types": {
-      "types": "./build/dts/types.d.ts",
-      "react-native": "./build/esm/types.js",
-      "import": "./build/esm/types.js",
-      "default": "./build/cjs/types.js"
-    }
+    "./package.json": "./package.json"
   },
-  "main": "./build/cjs/index.js",
-  "module": "./build/esm/index.js",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
   "react-native": "./build/esm/types.js",
-  "types": "./build/dts/index.d.ts",
+  "types": "./build/index.d.mts",
   "files": [
     "LICENSE",
     "README.md",
@@ -40,8 +32,8 @@
     "src"
   ],
   "scripts": {
-    "build": "npx twin pack-dev",
-    "build:watch": "npx twin pack-dev -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown -w",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",

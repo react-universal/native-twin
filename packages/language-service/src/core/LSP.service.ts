@@ -18,12 +18,12 @@ import {
   TwinCompletionItem,
 } from '../models/Editor.models';
 import { Position, Range, type Regions } from '../models/LSP.models';
-import { LSPConstants, TwinDiagnosticCodes } from '../models/lsp.constants';
+import { TwinDiagnosticCodes } from '../models/lsp.constants';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 import type { ParsedRuleWithLocation } from '../models/TwinParser.models';
 import { annotatedLayer } from '../utils/effect.utils';
 import { getSheetEntryStyles } from '../utils/sheet.utils';
-import { createDiagnosticsHandler } from './handlers/diagnostics.handler';
+import { createDiagnosticsHandler, isValidTwinDiagnostic } from './handlers/diagnostics.handler';
 import { LSPConfig } from './LSPConfig.service';
 import { TwinGraphosContextLive } from './TwinGraphos';
 import { TwinParserContext } from './TwinParser.service';
@@ -74,15 +74,13 @@ const make = Effect.gen(function* () {
       Stream.filterMap((result) =>
         result.entry.pipe(Option.map((entry) => ({ ...result, entry }))),
       ),
-      Stream.filter(
-        (x) => x.entry.info.styleProperty === 'color' || x.entry.info.themeSection === 'colors',
-      ),
-      Stream.map(({ entry, parsedRegion }) => {
-        return declarationValueToColorInfo(
+      Stream.filter((x) => x.entry.isColor),
+      Stream.map(({ entry, parsedRegion }) =>
+        declarationValueToColorInfo(
           entry.declarationValue,
           document.getRangeFor(parsedRegion.startOffset, parsedRegion.endOffset),
-        );
-      }),
+        ),
+      ),
       Stream.filter((x) => x !== null),
       Stream.runCollect,
       Effect.map(RA.fromIterable),
@@ -132,38 +130,27 @@ const make = Effect.gen(function* () {
     );
   };
 
-  const getCompletionEntryDetails = Effect.fn(function* (
-    entry: t.CompletionItem,
-    _cancelToken: t.CancellationToken,
-  ) {
-    const styledContext = yield* parser.data.styledContext;
-    const rule = yield* parser.getRuleByClassName(entry.label);
+  const getCompletionEntryDetails = (entry: t.CompletionItem, _cancelToken: t.CancellationToken) =>
+    Effect.gen(function* () {
+      const styledContext = yield* parser.data.styledContext;
+      const rule = yield* parser.getRuleByClassName(entry.label);
 
-    const sheet = yield* parser.runTW(
-      Option.map(rule, (x) => x.className).pipe(Option.getOrElse(() => '')),
-    );
-    const finalSheet = getSheetEntryStyles(sheet, styledContext);
-    const css = sheetEntriesToCss(sheet);
+      const sheet = yield* parser.runTW(
+        Option.map(rule, (x) => x.className).pipe(Option.getOrElse(() => '')),
+      );
+      const finalSheet = getSheetEntryStyles(sheet, styledContext);
+      const css = sheetEntriesToCss(sheet);
 
-    return new CompletionEntryDetails(entry).toCompletionEntryDetails(css, finalSheet);
-  });
+      return new CompletionEntryDetails(entry).toCompletionEntryDetails(css, finalSheet);
+    });
 
   const twinCodeActionsProgram = Effect.fn(function* (params: t.CodeActionParams) {
     if (params.context.diagnostics.length === 0) return null;
     const document = yield* executor.getLSPDocument(params.textDocument.uri);
-    const diagnostics = RA.filterMap(params.context.diagnostics, (x) => {
-      if (
-        !x.code ||
-        !x.relatedInformation ||
-        !x.source ||
-        !x.severity ||
-        x.source !== LSPConstants.diagnosticProviderSource
-      ) {
-        return Option.none();
-      }
-
-      return Option.some(x);
-    });
+    const diagnostics = RA.filterMap(
+      params.context.diagnostics,
+      Option.liftPredicate(isValidTwinDiagnostic),
+    );
 
     const region = document.findRegionAt(Position.make(params.range.start));
     if (!region) return null;
@@ -200,20 +187,25 @@ export const getDuplicatedDeclarationCodeAction = (
   region: Regions.JSXAttributeValue,
   diagnostics: t.Diagnostic[],
 ) => {
+  // Every duplicated diagnostic carries the FULL set of involved utilities in
+  // its `relatedInformation` (kept one included). Collect them across all
+  // diagnostics, dedupe by range and order by position: the first declared
+  // utility is kept, only the later duplicates are removed.
   const textsToRemove = pipe(
     RA.flatMap(diagnostics, (x) =>
-      RA.map(asArray(x.relatedInformation), diagnosticRelatedInfoToEdit),
+      RA.map(asArray(x.relatedInformation), (info) => Range.encode(info.location.range)),
     ),
-    RA.map((info) =>
-      twinDoc.getText(Range.from(info.textEdit.range.start, info.textEdit.range.end)),
-    ),
+    RA.dedupeWith(Range.equals),
+    RA.sort(Range.order),
+    RA.drop(1),
+    RA.map((range) => twinDoc.getText(range)),
   );
 
   let newText = region.text;
   for (const edit of textsToRemove) {
     newText = newText.replace(edit, '');
   }
-  newText = newText.replaceAll(/\s+/g, ' ');
+  newText = newText.replaceAll(/\s+/g, ' ').trim();
   const fix = t.CodeAction.create('Remove duplicated utilities', t.CodeActionKind.QuickFix);
 
   fix.edit = {
