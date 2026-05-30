@@ -8,6 +8,7 @@ import {
   parseLSPConfigInput,
   type TwinConfigOptions,
   TwinGraphosContextLive,
+  TwinParserContextLive,
   TwinRuntimeContextLive,
 } from '../../src';
 import { TwinGraphLive } from '../../src/adapters/Typescript/TwinGraph.service';
@@ -15,7 +16,6 @@ import {
   TypeScriptApi,
   TypeScriptProgram,
 } from '../../src/adapters/Typescript/TypescriptAPI.service';
-import { TypescriptParser } from '../../src/adapters/Typescript/TypescriptParser';
 import { TestVscodeLSPAdapterLive } from './adapter.mock';
 import { requireESM } from './load-esm';
 
@@ -68,6 +68,7 @@ export const TestLayer = Layer.empty.pipe(
   Layer.provideMerge(TsProgramLive),
   Layer.provideMerge(TwinGraphLive),
   Layer.provideMerge(TwinRuntimeContextLive),
+  Layer.provideMerge(TwinParserContextLive),
   Layer.provideMerge(Layer.effect(LSPConfig, lspConfigMock)),
   Layer.provideMerge(TwinGraphosContextLive),
   Layer.provide(createTwinLoggerLayerFor('LSP')),

@@ -84,4 +84,4 @@ export const TypescriptProgramLive = Effect.gen(function* () {
         }),
       );
   }
-}).pipe(Layer.effect(TypeScriptProgram));
+}).pipe(Effect.scoped, Layer.effect(TypeScriptProgram));

@@ -1,12 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "preserve",
+    "module": "esnext",
     "exactOptionalPropertyTypes": false,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "rewriteRelativeImportExtensions": true,
-    "disableSolutionSearching": true,
     "disableReferencedProjectLoad": true,
     "jsx": "preserve"
   },

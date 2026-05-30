@@ -1,7 +1,11 @@
 import { assert, describe, expect, it } from '@effect/vitest';
 import { Effect } from 'effect';
-import { TwinParserContext, TwinParserContextLive } from '../src/core/TwinParser.service';
+import path from 'path';
+import { TwinRuntimeContext } from '../src';
+import { TwinParserContext } from '../src/core/TwinParser.service';
 import { runTwinParser, TestLayer } from './dsl';
+
+const FixturesDir = path.join(__dirname, 'fixtures/react');
 
 describe('Twin Parser Service %s', () => {
   it.scoped('classNames parser', () =>
@@ -14,21 +18,26 @@ describe('Twin Parser Service %s', () => {
 
   it.effect('Predict className', () =>
     Effect.gen(function* () {
+      const runtime = yield* TwinRuntimeContext;
+      // Boot the (shared) twin runtime so the parser trie is populated.
+      yield* runtime.bootTwinRuntime(path.join(FixturesDir, 'tailwind.config.ts'));
       const offset = 2;
       const result = yield* runTwinParser('bg-gray-200 text(gray medium)', offset);
       const parser = yield* TwinParserContext;
 
-      expect(result.result.length).eq(2);
-      const foundNode = yield* parser.findByParsed(
-        result.result.find((x) => offset >= x.startOffset && offset <= x.endOffset)!.parsed,
+      expect(result.result.length).eq(3);
+      const nodeAtOffset = result.result.find(
+        (x) => offset >= x.startOffset && offset <= x.endOffset,
       );
+      if (!nodeAtOffset) throw assert.isDefined(nodeAtOffset);
+      const foundNode = yield* parser.findByParsed(nodeAtOffset.parsed);
       if (!foundNode) throw assert.isDefined(foundNode);
       const nextRulesGuess = yield* parser.findRulesByKey(foundNode[0].sheetEntry.className);
       expect(Array.from(nextRulesGuess).length).toBeGreaterThan(0);
       yield* Effect.promise(() =>
         expect(Array.from(nextRulesGuess)).toMatchFileSnapshot('__snapshots__/next_rules.snap'),
       );
-    }).pipe(Effect.provide(TwinParserContextLive), Effect.provide(TestLayer)),
+    }).pipe(Effect.provide(TestLayer)),
   );
 });
 

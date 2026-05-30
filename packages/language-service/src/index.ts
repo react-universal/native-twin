@@ -8,6 +8,7 @@ export * from './core/TwinRuntime.service';
 export * from './internal/ConnectionHandler.api';
 export * from './internal/LSPAdapterSpec';
 export * from './internal/RunnerLayer';
+export type { InternalTwinConfig } from './internal/TwinTypes.internal';
 export * from './models/LSP.models';
 export * from './models/lsp.constants';
 export { TwinLSPDocument } from './models/TwinLSPDocument.model';

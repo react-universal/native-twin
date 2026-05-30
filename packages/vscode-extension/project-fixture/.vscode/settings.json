@@ -3,7 +3,7 @@
     "js/ts.tsserver.log": "off",
     "nativeTwin.trace.server": "messages",
     "nativeTwin.enable": true,
-    "nativeTwin.debug": true,
+    "nativeTwin.debug": false,
     "nativeTwin.diagnostics": "info",
     "outline.icons": true,
     "workbench.editor.showIcons": true,

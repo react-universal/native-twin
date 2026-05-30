@@ -2,14 +2,15 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "build/cjs",
     "emitDeclarationOnly": false,
     "declarationMap": true,
     "module": "CommonJS",
     "moduleResolution": "Node",
     "target": "es2024",
     "moduleDetection": "force",
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022"
+    ],
     "noEmit": false,
     "noEmitOnError": false
   }

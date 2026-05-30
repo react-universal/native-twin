@@ -49,7 +49,7 @@ export const LanguageClientLive = Effect.gen(function* () {
     },
   );
 
-  const serverModule = extensionCtx.asAbsolutePath(path.join('build', 'servers', 'lsp.node.cjs'));
+  const serverModule = extensionCtx.asAbsolutePath(path.join('build', 'lsp.node.js'));
   const serverConfig: ServerOptions = {
     run: { module: serverModule, transport: TransportKind.ipc },
     debug: { module: serverModule, transport: TransportKind.ipc, options: debugOptions },

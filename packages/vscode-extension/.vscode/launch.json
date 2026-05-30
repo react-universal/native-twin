@@ -26,7 +26,11 @@
       ],
       "outFiles": [
         "${workspaceRoot}/build/**/*.js",
-        "${workspaceRoot:}/build/**/*.js"
+        "${workspaceRoot:}/build/**/*.js",
+        "${workspaceRoot}/build/**/*.cjs",
+        "${workspaceRoot:}/build/**/*.cjs",
+        "${workspaceRoot}/build/**/*.mjs",
+        "${workspaceRoot:}/build/**/*.mjs"
       ],
       "presentation": {
         "hidden": false,
@@ -53,7 +57,6 @@
         "group": "",
         "order": 1
       },
-      "preLaunchTask": "vscode tsc watch",
       "args": [
         "--extensionDevelopmentPath=${workspaceRoot}",
         "--disable-extensions",
@@ -63,8 +66,12 @@
         "NODE_NO_WARNINGS": "1"
       },
       "outFiles": [
+        "${workspaceRoot}/build/**/*.js",
+        "${workspaceRoot:}/build/**/*.js",
         "${workspaceRoot}/build/**/*.cjs",
-        "${workspaceRoot:}/build/**/*.cjs"
+        "${workspaceRoot:}/build/**/*.cjs",
+        "${workspaceRoot}/build/**/*.mjs",
+        "${workspaceRoot:}/build/**/*.mjs"
       ],
       "sourceMaps": true,
       "resolveSourceMapLocations": [
@@ -83,10 +90,6 @@
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/build/test/index.cjs"
       ],
-      "preLaunchTask": {
-        "type": "npm",
-        "script": "build:watch"
-      },
       "outFiles": [
         "${workspaceFolder}/build/test/**/*.cjs"
       ]

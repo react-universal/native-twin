@@ -144,23 +144,25 @@ const make = Effect.gen(function* () {
       return new CompletionEntryDetails(entry).toCompletionEntryDetails(css, finalSheet);
     });
 
-  const twinCodeActionsProgram = Effect.fn(function* (params: t.CodeActionParams) {
-    if (params.context.diagnostics.length === 0) return null;
-    const document = yield* executor.getLSPDocument(params.textDocument.uri);
-    const diagnostics = RA.filterMap(
-      params.context.diagnostics,
-      Option.liftPredicate(isValidTwinDiagnostic),
-    );
+  const twinCodeActionsProgram = (params: t.CodeActionParams) => {
+    return Effect.gen(function* () {
+      if (params.context.diagnostics.length === 0) return null;
+      const document = yield* executor.getLSPDocument(params.textDocument.uri);
+      const diagnostics = RA.filterMap(
+        params.context.diagnostics,
+        Option.liftPredicate(isValidTwinDiagnostic),
+      );
 
-    const region = document.findRegionAt(Position.make(params.range.start));
-    if (!region) return null;
-    const editsForDuplicatedDeclarations: t.CodeAction[] = pipe(
-      RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
-      RA.map((x) => getActionsForDuplicatedDecl(x, document.uri)),
-    );
+      const region = document.findRegionAt(Position.make(params.range.start));
+      if (!region) return null;
+      const editsForDuplicatedDeclarations: t.CodeAction[] = pipe(
+        RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
+        RA.map((x) => getActionsForDuplicatedDecl(x, document.uri)),
+      );
 
-    return editsForDuplicatedDeclarations;
-  });
+      return editsForDuplicatedDeclarations;
+    });
+  };
 
   return {
     getCompletionsAtPosition,

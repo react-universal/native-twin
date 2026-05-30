@@ -1,4 +1,5 @@
 import {
+  type InternalTwinConfig,
   LSPConfig,
   parseLSPConfigInput,
   type TwinConfigOptions,
@@ -7,7 +8,6 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import type * as Option from 'effect/Option';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import type { InternalTwinConfig } from '../../../language-service/build/dts/internal/TwinTypes.internal';
 import { requireESM } from '../utils/load-esm';
 
 export const LSPConfigLive = Effect.gen(function* () {

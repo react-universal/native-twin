@@ -26,5 +26,8 @@
       "themeSection": "colors",
     },
     "pattern": "bg-",
+    "styleObject": {
+      "backgroundColor": "#e5e7eb",
+    },
   },
 ]

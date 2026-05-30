@@ -173,7 +173,7 @@ const program = Effect.gen(function* () {
           }),
         ).pipe(
           Effect.andThen((settings) =>
-            Effect.log('settings: ', inspect(settings, false, null, false)),
+            Effect.logDebug('settings: ', inspect(settings, false, null, false)),
           ),
         ),
       ),

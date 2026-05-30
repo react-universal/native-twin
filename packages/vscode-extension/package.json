@@ -22,13 +22,13 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "publisher": "native-twin",
-  "main": "./build/extension.cjs",
-  "browser": "./build/extension-web.cjs",
-  "module": "./build/extension.mjs",
+  "main": "./build/extension.js",
+  "browser": "./build/extension-web.js",
+  "module": "./build/extension.js",
   "scripts": {
     "build": "npx tsdown",
     "build:web": "node ./esbuild.web.cjs",
-    "build:watch": "tsc -p tsconfig.cjs.json --watch",
+    "build:watch": "npx tsdown --watch",
     "web:watch": "node ./esbuild.web.cjs --watch",
     "clean": "rm -rf build",
     "lint": "biome lint",
@@ -189,6 +189,9 @@
   "activationEvents": [
     "onStartupFinished"
   ],
+  "inlineDependencies": {
+    "util": "^0.12.5"
+  },
   "dependencies": {
     "@native-twin/compiler": "workspace:*",
     "@native-twin/helpers": "workspace:*",
@@ -230,28 +233,5 @@
     "ui",
     "workspace"
   ],
-  "types": "./build/extension.d.cts",
-  "exports": {
-    "./extension": {
-      "import": "./build/extension.mjs",
-      "require": "./build/extension.cjs"
-    },
-    "./extension-web": {
-      "import": "./build/extension-web.mjs",
-      "require": "./build/extension-web.cjs"
-    },
-    "./language/browser/twin.worker": {
-      "import": "./build/language/browser/twin.worker.mjs",
-      "require": "./build/language/browser/twin.worker.cjs"
-    },
-    "./servers/lsp.browser": {
-      "import": "./build/servers/lsp.browser.mjs",
-      "require": "./build/servers/lsp.browser.cjs"
-    },
-    "./servers/lsp.node": {
-      "import": "./build/servers/lsp.node.mjs",
-      "require": "./build/servers/lsp.node.cjs"
-    },
-    "./package.json": "./package.json"
-  }
+  "types": "./build/extension.d.ts"
 }
