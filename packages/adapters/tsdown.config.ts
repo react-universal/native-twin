@@ -10,6 +10,7 @@ export default defineConfig({
   deps: {
     skipNodeModulesBundle: true,
   },
+  sourcemap: true,
   outDir: "build",
   exports: true,
 });

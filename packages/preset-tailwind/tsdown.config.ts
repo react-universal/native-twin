@@ -11,5 +11,6 @@ export default defineConfig({
   },
   format: ["esm", "cjs"],
   outDir: "build",
+  sourcemap: true,
   exports: true,
 });

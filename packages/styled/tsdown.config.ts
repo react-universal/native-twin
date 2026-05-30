@@ -10,5 +10,6 @@ deps: {
     skipNodeModulesBundle: true
   },
   outDir: "build",
+  sourcemap: true,
   exports: true,
 });

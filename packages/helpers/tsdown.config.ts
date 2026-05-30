@@ -10,9 +10,10 @@ export default defineConfig({
     "./src/KeyMap.ts",
   ],
   format: ["esm", "cjs"],
-deps: {
-    skipNodeModulesBundle: true
+  deps: {
+    skipNodeModulesBundle: true,
   },
+  sourcemap: true,
   outDir: "build",
   exports: true,
 });

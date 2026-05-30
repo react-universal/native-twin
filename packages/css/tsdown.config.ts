@@ -8,9 +8,10 @@ export default defineConfig({
     "./src/twin-parser.ts",
   ],
   deps: {
-    skipNodeModulesBundle: true
+    skipNodeModulesBundle: true,
   },
   format: ["esm", "cjs"],
+  sourcemap: true,
   outDir: "build",
   exports: true,
 });

@@ -8,7 +8,6 @@ import * as Layer from 'effect/Layer';
 import * as vscode from 'vscode-languageserver/node';
 import { LSPConfigLive } from './Config.service';
 
-// const documentsHandler = new vscode.TextDocuments(TextDocument);
 const connectionHandler = vscode.createConnection();
 
 export const LspMainLive = Layer.empty.pipe(

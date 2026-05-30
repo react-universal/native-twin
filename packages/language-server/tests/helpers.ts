@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { LanguageClientOptions } from 'vscode-languageclient';
-import { DOCUMENT_SELECTORS,configurationSection } from '../../language-service/src/utils/constants.utils';
+import { LSPConstants } from '@native-twin/language-service';
+import type { LanguageClientOptions } from 'vscode-languageclient';
 
 export const createLanguageClient = () => {};
 
@@ -10,14 +10,14 @@ export const getDefaultLanguageCLientOptions = (data: {
   workspaceRoot: vscode.WorkspaceFolder | undefined;
 }): LanguageClientOptions => {
   return {
-    documentSelector: DOCUMENT_SELECTORS,
+    documentSelector: LSPConstants.documentSelectors,
 
     markdown: {
       isTrusted: true,
       supportHtml: true,
     },
     initializationOptions: {
-      ...vscode.workspace.getConfiguration(configurationSection),
+      ...vscode.workspace.getConfiguration(LSPConstants.vscodeConfigSection),
       ...data,
       capabilities: {
         completion: {

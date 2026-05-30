@@ -8,5 +8,6 @@ export default defineConfig({
   },
   outDir: "build",
   dts: { cjsReexport: true },
+  sourcemap: true,
   exports: true,
 });

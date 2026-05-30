@@ -11,4 +11,5 @@ deps: {
   },
   outDir: "build",
   exports: true,
+  sourcemap: true,
 });
