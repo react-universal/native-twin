@@ -4,6 +4,19 @@ exports[`Render component Render single styled 1`] = `
 <View
   __twinID="1"
   className="flex-1"
+  interactions={
+    {
+      "isGroupActive": false,
+      "isLocalActive": false,
+    }
+  }
+  meta={
+    {
+      "hasGroupEvents": false,
+      "hasPointerEvents": false,
+      "isGroupParent": false,
+    }
+  }
   styles={
     {
       "flexBasis": "0%",

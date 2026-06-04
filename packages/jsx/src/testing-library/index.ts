@@ -1,35 +1,31 @@
-import { defineConfig, setup } from "@native-twin/core";
-import type { CompleteStyle } from "@native-twin/css";
-import { presetTailwind } from "@native-twin/preset-tailwind";
-import { render as tlRender } from "@testing-library/react-native";
-import { forwardRef } from "react";
-import * as JSXDevRuntime from "../jsx-dev-runtime";
-import "../components.web";
-// import wrapJSX from '../jsx-wrapper';
-import { StyleSheet } from "../sheet/index.web";
-import { stylizedComponents } from "../styled/index.web";
-import type {
-  ReactComponent,
-  StylableComponentConfigOptions,
-} from "../types/styled.types";
-import { INTERNAL_RESET } from "../utils/constants";
+import { defineConfig, setup } from '@native-twin/core';
+import type { CompleteStyle } from '@native-twin/css';
+import { presetTailwind } from '@native-twin/preset-tailwind';
+import { render as tlRender } from '@testing-library/react-native';
+import { forwardRef } from 'react';
+import * as JSXDevRuntime from '../jsx-dev-runtime';
+import '../components';
+import { StyleSheet } from '../sheet';
+import { stylizedComponents } from '../styled';
+import type { ReactComponent, StylableComponentConfigOptions } from '../types/styled.types';
+import { INTERNAL_RESET } from '../utils/constants';
 
 const testingConfig = defineConfig({
-  content: ["./App.tsx", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
   root: {
     rem: 16,
   },
   theme: {
     extend: {
       colors: {
-        primary: "blue",
+        primary: 'blue',
       },
       fontFamily: {
-        DEFAULT: "Inter-Regular",
-        inter: "Inter-Regular",
-        "inter-bold": "Inter-Bold",
-        "inter-medium": "Inter-Medium",
-        sans: "Inter-Regular",
+        DEFAULT: 'Inter-Regular',
+        inter: 'Inter-Regular',
+        'inter-bold': 'Inter-Bold',
+        'inter-medium': 'Inter-Medium',
+        sans: 'Inter-Regular',
       },
     },
   },
@@ -49,10 +45,7 @@ declare global {
 
 export const renderJSX = JSXDevRuntime.jsxDEV;
 export const render: typeof tlRender = (component: any, options?: any) => {
-  return tlRender(
-    renderJSX(component.type, component.props, component.key, false),
-    options
-  );
+  return tlRender(component, options);
 };
 
 /*
@@ -62,18 +55,46 @@ export const render: typeof tlRender = (component: any, options?: any) => {
 export const createMockComponent = <
   const T extends ReactComponent<any>,
   const M extends StylableComponentConfigOptions<any> = {
-    className: "style";
-  }
+    className: 'style';
+  },
 >(
   Component: T,
-  mapping: M = {
-    className: "style",
-  } as unknown as M
+  _mapping: M = {
+    className: 'style',
+  } as unknown as M,
 ) => {
   // return createStylableComponent(Component, mapping);
 
   const Mock = jest.fn(({ ...props }, ref) => {
-    props["ref"] = ref;
+    props['ref'] = ref;
+    const mappings = props.mappings;
+
+    return renderJSX(Component, props, undefined, false, undefined, undefined);
+  });
+
+  return forwardRef(Mock);
+  // return Object.assign(createStylableComponent(forwardRef(mock), mapping), {
+  //   mock,
+  // }) as unknown as ComponentType<ComponentProps<T> & NativeTwinGeneratedProps<M>> & {
+  //   mock: typeof mock;
+  // };
+};
+
+export const createMockComponentX = <
+  const T extends ReactComponent<any>,
+  const M extends StylableComponentConfigOptions<any> = {
+    className: 'style';
+  },
+>(
+  Component: T,
+  _mapping: M = {
+    className: 'style',
+  } as unknown as M,
+) => {
+  // return createStylableComponent(Component, mapping);
+
+  const Mock = jest.fn(({ ...props }, ref) => {
+    props['ref'] = ref;
     return renderJSX(Component, props, undefined, false, undefined, undefined);
   });
 
@@ -118,15 +139,15 @@ export const resetComponents = () => {
 
 export function revealStyles(obj: any): any {
   switch (typeof obj) {
-    case "string":
-    case "number":
-    case "bigint":
-    case "boolean":
-    case "symbol":
-    case "undefined":
-    case "function":
+    case 'string':
+    case 'number':
+    case 'bigint':
+    case 'boolean':
+    case 'symbol':
+    case 'undefined':
+    case 'function':
       return obj;
-    case "object":
+    case 'object':
     default: {
       const style = null;
       if (style) return style;
@@ -134,15 +155,15 @@ export function revealStyles(obj: any): any {
       return Object.fromEntries(
         Object.entries(obj).map(([key, value]): any => {
           switch (typeof value) {
-            case "string":
-            case "number":
-            case "bigint":
-            case "boolean":
-            case "symbol":
-            case "undefined":
-            case "function":
+            case 'string':
+            case 'number':
+            case 'bigint':
+            case 'boolean':
+            case 'symbol':
+            case 'undefined':
+            case 'function':
               return [key, value];
-            case "object":
+            case 'object':
             default: {
               if (Array.isArray(value)) {
                 return [key, value.map(revealStyles)];
@@ -154,7 +175,7 @@ export function revealStyles(obj: any): any {
               }
             }
           }
-        })
+        }),
       );
     }
   }

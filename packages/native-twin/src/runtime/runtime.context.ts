@@ -1,4 +1,4 @@
-import type { PlatformOSType } from 'react-native';
+import type { ColorSchemeName, PlatformOSType } from 'react-native';
 
 export type Units = {
   '%'?: number;
@@ -24,6 +24,6 @@ export type TwinRuntimeContext = {
   deviceHeight: number;
   deviceAspectRatio: number;
   platform: PlatformOSType;
-  colorScheme: 'dark' | 'light';
+  colorScheme: ColorSchemeName;
   units: Units;
 };

@@ -1,5 +1,5 @@
 {
-  "main": "../../build/next/_app.cjs",
-  "module": "../../build/next/_app.mjs",
-  "types": "../../build/next/_app.d.cts"
+  "main": "../../build/_app.cjs",
+  "module": "../../build/_app.mjs",
+  "types": "../../build/_app.d.cts"
 }

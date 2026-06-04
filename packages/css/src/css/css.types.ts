@@ -21,14 +21,7 @@ export type ValidPlatformInteractionPseudoSelector = `${
   | ValidInteractionPseudoSelector
   | ValidGroupPseudoSelector}:${ValidPlatformPseudoSelector}`;
 
-export type CSSValue =
-  | string
-  | number
-  | bigint
-  | Falsey
-  | StringLike
-  | StyleProp<any>
-  | CSSValue[];
+export type CSSValue = string | number | bigint | Falsey | StringLike | StyleProp<any> | CSSValue[];
 
 export type CssFeature =
   | 'edges'
@@ -82,6 +75,4 @@ export interface ParserToken<T, U> {
   type: T;
   value: U;
 }
-export type ParserTokenIdentity = <T extends string>(
-  type: T,
-) => <U>(value: U) => ParserToken<T, U>;
+export type ParserTokenIdentity = <T extends string>(type: T) => <U>(value: U) => ParserToken<T, U>;

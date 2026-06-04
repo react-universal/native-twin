@@ -26,7 +26,6 @@
   ],
   "scripts": {
     "build": "npx tsdown",
-    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",

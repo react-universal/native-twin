@@ -103,6 +103,14 @@ export function composeDeclarations(
 }
 
 const platformVariants = ['web', 'native', 'ios', 'android'];
+
+const isWebVariant = (variant: string) => variant === 'web';
+const isNativeVariant = (variant: string) => variant === 'native';
+const isiOSVariant = (variant: string) => variant === 'ios';
+const isAndroidVariant = (variant: string) => variant === 'android';
+const isWebContext = (context: TwinRuntimeContext) => context.platform === 'web';
+const isNativeContext = (context: TwinRuntimeContext) => context.platform !== 'web';
+
 export function isApplicativeRule(variants: string[], context: TwinRuntimeContext) {
   if (variants.length === 0) return true;
   const screens = tw.theme('screens');

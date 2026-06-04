@@ -1,21 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JSX render dark mode 1`] = `
-<View
-  className="bg-black hover:bg-white dark:bg-red"
-  testID="native-twin-element"
->
-  <Text
-    className="text(white lg)"
-  >
-    Sample Text
-  </Text>
-</View>
-`;
-
 exports[`JSX render normal component 1`] = `
 <View
-  className="bg-black hover:bg-white"
+  className="bg-black"
   mappings={
     {
       "className": "style",
@@ -25,6 +12,11 @@ exports[`JSX render normal component 1`] = `
 >
   <Text
     className="text(white lg)"
+    mappings={
+      {
+        "className": "style",
+      }
+    }
   >
     Sample Text
   </Text>

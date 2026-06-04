@@ -52,7 +52,7 @@ export const makeTreeFromEffect = <Data, R>({
   Effect.gen(function* () {
     const root = yield* transform(input);
     const tree = new Tree.Tree<R>(root!);
-    addChilds(input, tree.root);
+    yield* addChilds(input, tree.root);
 
     return tree;
 
@@ -77,7 +77,6 @@ export const makeTreeFromEffect = <Data, R>({
     }
   });
 
-
 export const mapTreeEffect = <A, B>(
   tree: Tree.Tree<A>,
   cb: (a: Tree.TreeNode<A>, parent?: Tree.TreeNode<NoInfer<B>>) => Effect.Effect<B>,
@@ -94,7 +93,8 @@ export const mapTreeEffect = <A, B>(
     ): Effect.Effect<Tree.TreeNode<B>> {
       return Effect.gen(function* () {
         const newValue = yield* cb(node, parent);
-        const newNode = parent?.addChild(newValue, parent) ?? new Tree.TreeNode<B>(newValue, parent);
+        const newNode =
+          parent?.addChild(newValue, parent) ?? new Tree.TreeNode<B>(newValue, parent);
 
         for (const child of node.children) {
           yield* mapTreeNodeEffect(child, newNode);

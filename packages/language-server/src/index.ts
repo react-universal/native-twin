@@ -4,7 +4,6 @@ import {
   LanguageServerHandlers,
   LSPAdapterSpec,
   LSPConfig,
-  LSPConstants,
   TwinParserContext,
 } from '@native-twin/language-service';
 import * as Cause from 'effect/Cause';
@@ -163,18 +162,7 @@ const program = Effect.gen(function* () {
   );
 
   connection.onCompletion(async (params) =>
-    handlers.getCompletionsAtPosition(params.textDocument.uri, params.position).pipe(
-      Effect.tap(() =>
-        Effect.promise(() =>
-          connection.workspace.getConfiguration({
-            scopeUri: params.textDocument.uri,
-            section: LSPConstants.vscodeConfigSection,
-          }),
-        ),
-      ),
-      // Effect.map((completions) => completions),
-      runEffect,
-    ),
+    handlers.getCompletionsAtPosition(params.textDocument.uri, params.position).pipe(runEffect),
   );
 
   connection.onSelectionRanges(async (_params, _token, _, __) => {

@@ -15,7 +15,6 @@ interface AppComponentProps {
 export const NativeTwinSheet = (
   twinConfig: TailwindUserConfig | TailwindConfig
 ) => {
-  // biome-ignore lint/correctness/noNestedComponentDefinitions: NextJS requires document as a nested component
   const AppComponent = ({ children }: AppComponentProps) => {
     const [twin] = useState(() => {
       const config = Object.assign(

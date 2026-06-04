@@ -7,10 +7,12 @@ import * as Layer from 'effect/Layer';
 import { css_beautify, js_beautify } from 'js-beautify';
 import * as vscode from 'vscode-languageserver-types';
 import type { AnyInternalTwinRule } from '../internal/TwinTypes.internal';
+import type { StyledContext } from '../models/TwinParser.models';
 import { annotatedLayer } from '../utils/effect.utils';
-import { composeDeclarations, type StyledContext } from '../utils/sheet.utils';
+import { SheetUtils, SheetUtilsLive } from './SheetUtils.service';
 
 export const make = Effect.gen(function* () {
+  const sheetUtils = yield* SheetUtils;
   const getRNMarkDownParts = (nativeStyles: string) => {
     const result: string[] = [];
     result.push('#### React Native StyleSheet\n\n');
@@ -78,7 +80,7 @@ export const make = Effect.gen(function* () {
     template.push('{');
 
     for (const current of entries) {
-      const nextDecl = composeDeclarations(current.declarations, context);
+      const nextDecl = sheetUtils.composeDeclarations(current.declarations, context);
       template.push(`"${current.className}": `);
       template.push(JSON.stringify(nextDecl, null, 2));
     }
@@ -121,4 +123,7 @@ const createJSONMarkdownString = <T extends object>(x: T) =>
 
 export interface EditorUtils extends Effect.Effect.Success<typeof make> {}
 export const EditorUtils = Context.GenericTag<EditorUtils>('lsp/EditorUtils');
-export const EditorUtilsLive = Layer.effect(EditorUtils, make).pipe(annotatedLayer('EditorUtils'));
+export const EditorUtilsLive = Layer.effect(EditorUtils, make).pipe(
+  Layer.provide(SheetUtilsLive),
+  annotatedLayer('EditorUtils'),
+);

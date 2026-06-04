@@ -1,8 +1,7 @@
 import type { PluginObj } from '@babel/core';
 import {
   type BabelAPI,
-  BabelContext,
-  BabelContextLive,
+  BabelUtils,
   CompilerConfigContext,
   createCompilerConfig,
   type TwinBabelPluginOptions,
@@ -19,7 +18,7 @@ import * as Layer from 'effect/Layer';
 import path from 'path';
 
 const NodeMainLayerSync = Layer.empty.pipe(
-  Layer.provideMerge(BabelContextLive),
+  Layer.provideMerge(BabelUtils.Default),
   Layer.provideMerge(TwinFSContextLive),
   Layer.provideMerge(TwinNodeContextLive),
 );
@@ -29,7 +28,7 @@ const visited = new Set<string>();
 const program = Effect.scoped(
   Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
-    const babel = yield* BabelContext;
+    const babel = yield* BabelUtils;
     const config = yield* CompilerConfigContext;
     return {
       name: '@native-twin/babel-plugin',
@@ -67,6 +66,7 @@ const program = Effect.scoped(
         // });
         babel
           .getTwinFileAst({
+            id: babel.getAstFileID(file.ast),
             basename: path.dirname(file.ast.loc?.filename ?? this.cwd),
             code: file.code,
             dirname: path.dirname(file.ast.loc?.filename ?? this.cwd),

@@ -27,11 +27,13 @@ import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import type { JSXAttributePath } from '../Babel';
-import type { JSXClassPropExpression } from '../Babel/Models';
+import type {
+  JSXAttributePath,
+  JSXClassPropExpression,
+  TwinJSXClassnameProp,
+  TwinJSXElementNode,
+} from '../Babel';
 import type { InternalTwFn, InternalTwinConfig } from '../Config';
-import type { TwinJSXClassnameProp } from '../Domain/JSXStyledProp';
-import type { TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 
 export interface TwinPlatformExtractors {
   native: CompilerStyleSheet;
@@ -132,11 +134,6 @@ export class CompiledStyledProp extends Data.Class<{
   compiledEntries: CompiledSheetEntry[];
 }> {
   toRuntime(inherited: boolean, parentStyles: CompiledSheetEntry[] = []): RuntimeTwinMappedProp {
-    if (parentStyles.length > 0) {
-      console.log('PARENT: ', parentStyles);
-    } else {
-      console.log('asdasd_none');
-    }
     const entries: RuntimeTwinMappedProp['entries'] = RA.union(
       this.compiledEntries,
       parentStyles,

@@ -19,6 +19,7 @@ import {
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as Data from 'effect/Data';
 import type * as Option from 'effect/Option';
+import type { PlatformOSType } from 'react-native';
 import { CompletionItemKind } from 'vscode-languageserver-types';
 import type { TwinRuleComposer } from './TwinRuleHandler';
 
@@ -200,3 +201,31 @@ export interface TwinRuleComposition {
   classNameSuffix: string;
   declarationSuffixes: string[];
 }
+
+export type Units = {
+  '%'?: number;
+  vw?: number;
+  vh?: number;
+  vmin?: number;
+  vmax?: number;
+  em: number;
+  rem: number;
+  px: number;
+  pt: number;
+  pc: number;
+  in: number;
+  cm: number;
+  mm: number;
+};
+
+export type StyledContext = {
+  orientation: 'portrait' | 'landscape';
+  resolution: number;
+  fontScale: number;
+  deviceWidth: number;
+  deviceHeight: number;
+  deviceAspectRatio: number;
+  platform: PlatformOSType;
+  colorScheme: 'dark' | 'light';
+  units: Units;
+};

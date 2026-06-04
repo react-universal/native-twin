@@ -5,7 +5,6 @@
     "allowJs": true,
     "esModuleInterop": true,
     "module": "ESNext",
-    "jsxImportSource": "@native-twin/jsx",
     "allowSyntheticDefaultImports": true,
     "strict": false,
     "sourceMap": true,
@@ -16,10 +15,22 @@
     "isolatedModules": true,
     "incremental": true,
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "resolveJsonModule": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", "app-env.d.ts"],
-  "exclude": ["node_modules", "jest.config.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    "app-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "jest.config.ts"
+  ],
   "references": []
 }

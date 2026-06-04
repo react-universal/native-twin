@@ -1,23 +1,16 @@
+import type { PlatformError } from '@effect/platform/Error';
 import * as FileSystem from '@effect/platform/FileSystem';
 import * as NodeFileSystem from '@effect/platform-node/NodeFileSystem';
 import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
+import * as Hash from 'effect/Hash';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import { CompilerConfigContext, TwinNodeContext } from '../Config';
-import { TwinFile } from './Models';
-import {
-  type AbsolutePath,
-  absolutePathFromString,
-  type FilePath,
-  filePathFromString,
-  NodePath,
-} from './Path.model';
+import type { TwinFile } from './Models';
+import { type AbsolutePath, type FilePath, filePathFromString, NodePath } from './Path.model';
 
 const make = Effect.gen(function* () {
-  const ctx = yield* TwinNodeContext;
-  const env = yield* CompilerConfigContext;
   const fs = yield* FileSystem.FileSystem;
 
   const mkdirCached_ = yield* Effect.cachedFunction((path: string) =>
@@ -56,13 +49,11 @@ const make = Effect.gen(function* () {
     writeFileCached_(data);
 
   return {
-    readPlatformCSSFile,
     writeFile,
+    writeFileCached,
     readFile,
-    openFile: fs.open,
     mkdirCached,
     getFile,
-    createTwinFiles,
     createTempFile: fs.makeTempFile,
     exists,
     getFullFilePathFromStr,
@@ -73,7 +64,7 @@ const make = Effect.gen(function* () {
       }),
   };
 
-  function getFile(filepath: string, text?: string) {
+  function getFile(filepath: string, text?: string): Effect.Effect<TwinFile, PlatformError> {
     return Effect.gen(function* () {
       const realPath =
         NodePath.extname(filepath) !== ''
@@ -82,7 +73,13 @@ const make = Effect.gen(function* () {
       let contents = text;
       if (!contents) contents = yield* readFile(realPath);
 
-      return new TwinFile({ code: contents, path: realPath });
+      return {
+        basename: NodePath.basename(filepath),
+        dirname: NodePath.dirname(filepath),
+        code: contents,
+        id: `$${Hash.string(filepath)}`,
+        path: realPath,
+      };
     });
   }
 
@@ -90,9 +87,7 @@ const make = Effect.gen(function* () {
     const dirname = NodePath.dirname(filename);
     return Effect.gen(function* () {
       const dirFiles = yield* fs
-        .readDirectory(dirname, {
-          recursive: false,
-        })
+        .readDirectory(dirname, { recursive: false })
         .pipe(Effect.map(RA.map((x) => NodePath.join(dirname, x))));
 
       return RA.findFirst(dirFiles, (x) => x.startsWith(filename)).pipe(
@@ -102,29 +97,25 @@ const make = Effect.gen(function* () {
     });
   }
 
-  function readPlatformCSSFile(platform: string) {
-    return fs.readFile(filePathFromString(ctx.getOutputCSSPath(platform)));
-  }
+  // function createTwinFiles() {
+  //   return Effect.gen(function* () {
+  //     yield* Effect.tapError(mkdirCached(absolutePathFromString(env.outputDir)), () =>
+  //       Effect.logError('cant create twin output'),
+  //     );
 
-  function createTwinFiles() {
-    return Effect.gen(function* () {
-      yield* Effect.tapError(mkdirCached(absolutePathFromString(env.outputDir)), () =>
-        Effect.logError('cant create twin output'),
-      );
-
-      yield* writeFileCached({ path: env.platformPaths.ios, override: false });
-      yield* writeFileCached({
-        path: env.platformPaths.android,
-        override: false,
-      });
-      yield* writeFileCached({
-        path: env.platformPaths.defaultFile,
-        override: false,
-      });
-      yield* writeFileCached({ path: env.platformPaths.native, override: false });
-      yield* writeFileCached({ path: env.platformPaths.web, override: false });
-    });
-  }
+  //     yield* writeFileCached({ path: env.platformPaths.ios, override: false });
+  //     yield* writeFileCached({
+  //       path: env.platformPaths.android,
+  //       override: false,
+  //     });
+  //     yield* writeFileCached({
+  //       path: env.platformPaths.defaultFile,
+  //       override: false,
+  //     });
+  //     yield* writeFileCached({ path: env.platformPaths.native, override: false });
+  //     yield* writeFileCached({ path: env.platformPaths.web, override: false });
+  //   });
+  // }
 });
 
 export interface TwinFSContext extends Effect.Effect.Success<typeof make> {}

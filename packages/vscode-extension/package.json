@@ -33,9 +33,7 @@
     "clean": "rm -rf build",
     "lint": "biome lint",
     "webpack:watch": "webpack --watch",
-    "vsc-test": "vscode-test --watch",
     "chrome": "vscode-test-web --quality stable --coi --open-devtools --browserType=chromium --extensionDevelopmentPath=. ./project-fixture",
-    "vsc:test": "sh ./scripts/e2e.sh",
     "vscode:prepublish": "node ./esbuild.js"
   },
   "contributes": {

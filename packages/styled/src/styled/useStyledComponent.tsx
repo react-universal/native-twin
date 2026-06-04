@@ -12,7 +12,6 @@ export const useStyledComponent = <C extends ReactComponent<any>>(
 ) => {
   const rID = useId();
   const twinID = props?.__twinID ?? rID;
-  console.log("ID: ", twinID);
 
   const registry = styledJSXStore.getComponent(twinID);
 

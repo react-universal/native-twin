@@ -1,16 +1,13 @@
-// import { Platform } from 'react-native';
 import type { JSXInternalProps } from '../types/jsx.types';
 
-export function jsxStyles(props: JSXInternalProps | null | undefined, type: any) {
+export function jsxStyles(props: JSXInternalProps | null | undefined, _type: any) {
   const componentSheet = props?.['_twinInjected'] as any[] | undefined;
   // console.log('RUNTIME: ', componentSheet, componentID);
   if (componentSheet) {
-    console.log("SHEET: ", componentSheet);
+    console.log('SHEET: ', componentSheet);
     let finalEntries = componentSheet;
     if (
-      finalEntries.some(
-        (x) => Array.isArray(x.templateEntries) && x.templateEntries.length > 0,
-      )
+      finalEntries.some((x) => Array.isArray(x.templateEntries) && x.templateEntries.length > 0)
     ) {
       finalEntries = componentSheet.map((componentEntry) => {
         // if (componentEntry.templateEntries) {

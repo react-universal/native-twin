@@ -1,9 +1,8 @@
 export {
   type BabelAPI,
-  BabelContext,
-  BabelContextLive,
-  babelParse,
+  BabelUtils,
   JSXImportPluginContext,
+  TwinModuleAst,
 } from './Babel';
 export type { TwinBabelPluginOptions } from './Babel/Models';
 export type {
@@ -21,8 +20,8 @@ export {
   withCompilerLogger,
   withCompilerLoggerLayer,
 } from './Config';
-export { TwinModuleAst } from './Domain/TwinAst';
-export { TwinFile, TwinFSContext, TwinFSContextLive, TwinPath } from './FileSystem';
+export { type TwinFile, TwinFSContext, TwinFSContextLive, TwinPath } from './FileSystem';
+export { TwinGlobsError } from './FileSystem/Path.model';
 export { twinTransformProgram } from './Programs/twinTransform.program';
 export { TwinProjectContext, TwinProjectContextLive } from './Project';
 export { MainLayer } from './Runtime/Main.layer';

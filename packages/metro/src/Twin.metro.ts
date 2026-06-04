@@ -83,7 +83,7 @@ export function withNativeTwin(
       const fs = yield* TwinFSContext;
       const ctx = yield* TwinNodeContext;
       yield* Ref.update(ctx.state.runningPlatforms.ref, (x) => HashSet.add(x, platform));
-      yield* fs.createTwinFiles();
+      // yield* fs.createTwinFiles();
 
       const platformOutput = ctx.getOutputCSSPath(platform);
       if (!(yield* fs.exists(platformOutput))) {

@@ -21,7 +21,6 @@ import { useRenderCounter } from "../hooks/useRenderCounter";
 import { useStyledProps } from "../hooks/useStyledProps";
 import { getLabelFromStackTrace } from "./get-label-from-stack-trace";
 
-
 export const stylizedComponents = new Map<
   object | string,
   Parameters<JSXFunction>[0]
@@ -148,28 +147,24 @@ export function NativeTwinHOC<
           return (component as any).render(newProps, ref);
         }
         case "function":
-          // console.log("FUNCTION: ", props?.["__twinID"]);
-          // if (typeof ref === 'function') {
-          //   return (ref as any)(newProps);
-          // }
+          const ref = newProps["ref"];
+          if (typeof ref === "function") {
+            return (ref as any)(newProps);
+          }
           return (component as any)(newProps);
         case "string":
         case "object":
         case "class":
         case "unknown":
-          console.log("UNKNOWN: ", props["__twinID"]);
           return <Component {...newProps} />;
       }
     } else {
-      console.log("NOT_THE_SAME: ", props["__twinID"]);
       return <Component {...newProps} />;
     }
   };
 
-  if (!stylizedComponents.has(Component)) {
-    stylizedComponents.set(Component, TwinElementType);
-    mappedComponentsConfig.set(Component, mapping);
-  }
+  stylizedComponents.set(Component, TwinElementType);
+  mappedComponentsConfig.set(Component, mapping);
 
   if (__DEV__) {
     TwinElement.displayName =

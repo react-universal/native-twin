@@ -9,4 +9,7 @@ export default defineConfig({
   outDir: "build",
   sourcemap: true,
   exports: true,
+  dts: {
+    resolver: 'tsc'
+  }
 });

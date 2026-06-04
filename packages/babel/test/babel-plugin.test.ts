@@ -16,7 +16,6 @@ describe('TESTS', () => {
     tests: {
       'createElement by namespace require': {
         skip: true,
-        only: true,
         codeFixture: path.join('./fixtures/namespace-require/code.js'),
         outputFixture: path.join('./fixtures/namespace-require/output.js'),
         babelOptions: {

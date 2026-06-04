@@ -1,6 +1,7 @@
 {
   "$schema": "https://v2-9-6.turborepo.dev/schema.json",
   "ui": "tui",
+  "concurrency": "12",
   "tasks": {
     "build": {
       "dependsOn": [
@@ -20,36 +21,8 @@
       ]
     },
     "build:watch": {
-      "dependsOn": [],
       "persistent": true,
       "cache": false
-    },
-    "build:compiler": {
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "!**/test",
-        "!**/tests",
-        "!**/tsconfig.*"
-      ],
-      "outputs": [
-        "build/**",
-        "dist/**"
-      ]
-    },
-    "dev-tools:dev": {
-      "cache": false,
-      "persistent": true,
-      "interactive": true,
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "!**/test",
-        "!**/tests",
-        "**/webui/**/*"
-      ],
-      "outputs": [
-        "build/**",
-        "dist/**"
-      ]
     },
     "lint": {
       "cache": true

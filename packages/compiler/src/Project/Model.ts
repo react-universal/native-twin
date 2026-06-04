@@ -2,8 +2,8 @@ import type { CompiledSheetEntry } from '@native-twin/core';
 import type { TwinRuntimeComponent } from '@native-twin/css/jsx';
 import type { TreeNode } from '@native-twin/helpers/tree';
 import * as Data from 'effect/Data';
+import type { TwinJSXElement, TwinJSXElementNode } from '../Babel';
 import type { TwinRunnerPlatform } from '../Config';
-import type { TwinJSXElement, TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 import type { CompiledStyledProp } from '../StyleSheet';
 
 export interface TwinTransformOptions {

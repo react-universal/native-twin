@@ -21,13 +21,14 @@ import type {
 import * as TwinParserModel from '../models/TwinParser.models';
 import { TwinRuleComposer } from '../models/TwinRuleHandler';
 import { annotatedLayer } from '../utils/effect.utils';
-import { createStyledContext } from '../utils/sheet.utils';
 import * as LspConfig from './LSPConfig.service';
+import { SheetUtils, SheetUtilsLive } from './SheetUtils.service';
 
 const resolvedSections = new Map<string, Record<string, any>>();
 
 const make = Effect.gen(function* () {
   const lspConfig = yield* LspConfig.LSPConfig;
+  const sheetUtils = yield* SheetUtils;
   const twinRef = yield* Ref.make<InternalTwFn>(setup(defineConfig({ content: [] })));
   const twinTrie = yield* SubscriptionRef.make(Trie.empty<TwinParserModel.TwinRuleRegistry>());
   const themeVariants = yield* SubscriptionRef.make<
@@ -46,7 +47,7 @@ const make = Effect.gen(function* () {
   const config = applyToTwin((x) => x.config);
   const themeCtx = applyToTwin((x) => x.context);
   const getConfigRules = applyToTwin((twin) => twin.config.rules);
-  const styledContext = applyToTwin((twin) => createStyledContext(twin.config.root.rem));
+  const styledContext = applyToTwin((twin) => sheetUtils.createStyledContext(twin.config.root.rem));
 
   const onUpdateConfig = Effect.fn(function* (config: InternalTwinConfig) {
     resolvedSections.clear();
@@ -142,6 +143,7 @@ const make = Effect.gen(function* () {
 export interface TwinRuntimeContext extends Effect.Effect.Success<typeof make> {}
 export const TwinRuntimeContext = Context.GenericTag<TwinRuntimeContext>('TwinRuntimeContext');
 export const TwinRuntimeContextLive = Layer.effect(TwinRuntimeContext, make).pipe(
+  Layer.provide(SheetUtilsLive),
   annotatedLayer('TwinRuntime'),
 );
 

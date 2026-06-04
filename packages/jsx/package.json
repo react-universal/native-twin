@@ -14,51 +14,16 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "exports": {
-    ".": {
-      "import": "./build/index.mjs",
-      "require": "./build/index.cjs"
-    },
-    "./components": {
-      "import": "./build/components.mjs",
-      "require": "./build/components.cjs"
-    },
-    "./components.web": {
-      "import": "./build/components.web.mjs",
-      "require": "./build/components.web.cjs"
-    },
-    "./index.web": {
-      "import": "./build/index.web.mjs",
-      "require": "./build/index.web.cjs"
-    },
-    "./jsx-dev-runtime": {
-      "import": "./build/jsx-dev-runtime.mjs",
-      "require": "./build/jsx-dev-runtime.cjs"
-    },
-    "./jsx-runtime": {
-      "import": "./build/jsx-runtime.mjs",
-      "require": "./build/jsx-runtime.cjs"
-    },
-    "./sheet": {
-      "import": "./build/sheet/index.mjs",
-      "require": "./build/sheet/index.cjs"
-    },
-    "./testing-library": {
-      "import": "./build/testing-library/index.mjs",
-      "require": "./build/testing-library/index.cjs"
-    },
-    "./testing-library/setup": {
-      "import": "./build/testing-library/setup.mjs",
-      "require": "./build/testing-library/setup.cjs"
-    },
-    "./testing-library/setupAfterEnv": {
-      "import": "./build/testing-library/setupAfterEnv.mjs",
-      "require": "./build/testing-library/setupAfterEnv.cjs"
-    },
+    ".": "./build/index.js",
+    "./components": "./build/components.js",
+    "./components.web": "./build/components.web.js",
+    "./index.web": "./build/index.web.js",
+    "./jsx-dev-runtime": "./build/jsx-dev-runtime.js",
+    "./jsx-runtime": "./build/jsx-runtime.js",
+    "./sheet": "./build/sheet/index.js",
     "./package.json": "./package.json"
   },
-  "main": "./build/index.cjs",
-  "module": "./build/index.mjs",
-  "types": "./build/index.d.cts",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "jsx-dev-runtime",

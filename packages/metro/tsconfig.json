@@ -8,6 +8,10 @@
     "noImplicitOverride": false,
     "esModuleInterop": true
   },
-  "include": ["src"],
-  "exclude": ["build"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "build"
+  ]
 }

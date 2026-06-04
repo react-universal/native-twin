@@ -1,12 +1,9 @@
-import * as _babelParser from '@babel/parser';
 import template from '@babel/template';
 import type { Binding } from '@babel/traverse';
 import * as t from '@babel/types';
 import * as RA from 'effect/Array';
 import * as Option from 'effect/Option';
-import type { TwinModuleAst } from '../Domain/TwinAst';
-import type { TwinJSXElement, TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
-import type { BabelFileAst, ImportSource } from './Models';
+import type { ImportSource, TwinJSXElement, TwinJSXElementNode, TwinModuleAst } from './Models';
 import {
   isCallExpression,
   isImportDeclaration,
@@ -15,6 +12,11 @@ import {
   isVariableDeclaratorPath,
 } from './Predicates';
 
+export const getSourceLocation = (node: t.Node) =>
+  Option.fromNullable(node.loc).pipe(
+    Option.getOrThrowWith(() => new Error('The node does not provide SourceLocation')),
+  );
+
 export type TwinDependenciesLookup = (
   modules: TwinModuleAst[],
 ) => (key: TwinJSXElementNode) => Option.Option<TwinJSXElement>;
@@ -22,8 +24,6 @@ export type TwinDependenciesLookup = (
 export const makeDependenciesLookup: TwinDependenciesLookup =
   (modules: TwinModuleAst[]) => (key: TwinJSXElementNode) =>
     RA.head(RA.filterMap(modules, (external) => external.getJSXElementFromNode(key)));
-
-export const isLocalImport = (path: string) => path.startsWith('.') || path.startsWith('/');
 
 /**
  * @domain Babel
@@ -66,40 +66,6 @@ const getBindingRequireDeclaration = (binding: Binding) =>
       };
     }),
   );
-
-const plugins: _babelParser.ParserPlugin[] = [
-  'asyncGenerators',
-  'classProperties',
-  'dynamicImport',
-  'functionBind',
-  'jsx',
-  'numericSeparator',
-  'objectRestSpread',
-  'optionalCatchBinding',
-  'decorators-legacy',
-  'typescript',
-  'optionalChaining',
-  'nullishCoalescingOperator',
-];
-
-export const babelParserOptions: _babelParser.ParserOptions = {
-  plugins,
-  sourceType: 'module',
-  errorRecovery: true,
-};
-
-const parser = _babelParser.parse.bind(_babelParser);
-
-export function babelParse(code: string | Buffer, fileName?: string): BabelFileAst {
-  const codeString = code.toString();
-  try {
-    return parser(codeString, babelParserOptions);
-  } catch (err) {
-    throw new Error(
-      `Error parsing babel: ${err} in ${fileName}, code:\n${codeString}\n ${(err as any).stack}`,
-    );
-  }
-}
 
 const importNativeView = template(`
 const __ReactNativeView = require('react-native').View;

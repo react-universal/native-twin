@@ -6,10 +6,9 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import { BabelContext } from '../Babel';
+import type { TwinJSXElement, TwinJSXElementNode, TwinModuleAst } from '../Babel';
+import { BabelUtils } from '../Babel';
 import { TwinNodeContext, type TwinRunnerPlatform } from '../Config';
-import type { TwinModuleAst } from '../Domain/TwinAst';
-import type { TwinJSXElement, TwinJSXElementNode } from '../Domain/TwinJSXElementNode';
 import { TwinFSContext, TwinPath } from '../FileSystem';
 import { type CompilerStyleSheet, TwinStyleSheetContext } from '../StyleSheet';
 import { mapTreeEffect } from '../utils/tree.utils';
@@ -18,11 +17,10 @@ import { TransformedJSXNode } from './Model';
 const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const fs = yield* TwinFSContext;
-  const { getTwinModuleAstFromPath: getTwinFileAstFromPath, getTwinFileAst } = yield* BabelContext;
   const sheet = yield* TwinStyleSheetContext;
 
   const getProjectModules = Stream.fromIterableEffect(ctx.state.projectFiles.get).pipe(
-    Stream.mapEffect((x) => getTwinFileAstFromPath(TwinPath.filePathFromString(x))),
+    Stream.mapEffect((x) => BabelUtils.getTwinModuleAstFromPath(TwinPath.filePathFromString(x))),
   );
 
   const compileAst = Effect.fn(function* (twinAst: TwinModuleAst, platform: TwinRunnerPlatform) {
@@ -73,7 +71,7 @@ const make = Effect.gen(function* () {
   });
 
   const getAst = (filename: string, code: string) =>
-    Effect.andThen(fs.getFile(filename, code), getTwinFileAst);
+    Effect.andThen(fs.getFile(filename, code), BabelUtils.getTwinFileAst);
 
   const getFiles = ctx.state.projectFiles.get;
 
@@ -82,7 +80,6 @@ const make = Effect.gen(function* () {
     sheet,
     getFiles,
     compileAst,
-    getTwinFileAstFromPath,
     getAst,
     getTreeNodeDep,
   };
@@ -93,7 +90,7 @@ const make = Effect.gen(function* () {
     if (Option.isNone(dependency)) return Effect.succeed(Option.none<TwinJSXElement>());
 
     return Effect.andThen(fs.getFullFilePathFromStr(dependency.value.filepath), (dependencyPath) =>
-      getTwinFileAstFromPath(dependencyPath),
+      BabelUtils.getTwinModuleAstFromPath(dependencyPath),
     ).pipe(
       Effect.map((module) => dependency.pipe(Option.flatMap((dep) => module.findDependency(dep)))),
       Effect.catchAll((error) =>

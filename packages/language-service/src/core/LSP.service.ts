@@ -17,10 +17,10 @@ import { TwinDiagnosticCodes } from '../models/lsp.constants';
 import type { TwinLSPDocument } from '../models/TwinLSPDocument.model';
 import type { ParsedRuleWithLocation } from '../models/TwinParser.models';
 import { annotatedLayer } from '../utils/effect.utils';
-import { getSheetEntryStyles } from '../utils/sheet.utils';
 import { EditorUtils, EditorUtilsLive } from './EditorUtils.service';
 import { createDiagnosticsHandler, isValidTwinDiagnostic } from './handlers/diagnostics.handler';
 import { LSPConfig } from './LSPConfig.service';
+import { SheetUtils, SheetUtilsLive } from './SheetUtils.service';
 import { TwinGraphosContextLive } from './TwinGraphos';
 import { TwinParserContext, TwinParserContextLive } from './TwinParser.service';
 
@@ -34,6 +34,7 @@ const make = Effect.gen(function* () {
   const editorUtils = yield* EditorUtils;
   const parser = yield* TwinParserContext;
   const executor = yield* LSPAdapterSpec;
+  const sheetUtils = yield* SheetUtils;
   const { configSelector } = yield* LSPConfig;
   const diagnostics = yield* createDiagnosticsHandler;
 
@@ -135,7 +136,7 @@ const make = Effect.gen(function* () {
       const sheet = yield* parser.runTW(
         Option.map(rule, (x) => x.className).pipe(Option.getOrElse(() => '')),
       );
-      const finalSheet = getSheetEntryStyles(sheet, styledContext);
+      const finalSheet = sheetUtils.getSheetEntryStyles(sheet, styledContext);
       const css = sheetEntriesToCss(sheet);
 
       return editorUtils.getCompletionEntryDetails(entry, css, finalSheet);
@@ -271,5 +272,6 @@ export const LanguageServerHandlersLive = Layer.effect(LanguageServerHandlers, m
   Layer.provide(LSPDocumentsCtxLive),
   Layer.provide(EditorUtilsLive),
   Layer.provide(TwinParserContextLive),
+  Layer.provide(SheetUtilsLive),
   annotatedLayer('LanguageServerHandlers'),
 );

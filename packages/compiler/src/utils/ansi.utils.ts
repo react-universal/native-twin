@@ -45,4 +45,4 @@ export const Constants = {
   },
 };
 
-export { renderDoc, getLogLevelColor, getPlatformColor };
+export { getLogLevelColor, getPlatformColor, renderDoc };

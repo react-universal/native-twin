@@ -1,11 +1,11 @@
 import { defineConfig, setup } from "@native-twin/core";
 import { presetTailwind } from "@native-twin/preset-tailwind";
+import { render } from "@testing-library/react-native";
 import {
   ScrollView as RNScrollView,
   Text as RNText,
   View as RNView,
 } from "react-native";
-import renderer from "react-test-renderer";
 import { createStyled } from "../src";
 import { createVariants } from "../src/styled/variants";
 
@@ -18,21 +18,21 @@ beforeAll(() => {
   setup(defineConfig({ content: [], presets: [presetTailwind()] }));
 });
 
-function toJson(component: renderer.ReactTestRenderer) {
-  const result = component.toJSON();
-  expect(result).toBeDefined();
-  expect(result).not.toBeInstanceOf(Array);
-  return result as renderer.ReactTestRendererJSON;
-}
+// function toJson(component: renderer.ReactTestRenderer) {
+//   const result = component.toJSON();
+//   expect(result).toBeDefined();
+//   expect(result).not.toBeInstanceOf(Array);
+//   return result as renderer.ReactTestRendererJSON;
+// }
 
 describe("@native-twin/styled", () => {
   it("ScrollView render", () => {
-    const component = renderer.create(
+    const component = render(
       <ScrollView className="flex-1">
         <View />
       </ScrollView>
     );
-    const tree = toJson(component);
+    const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 });
@@ -64,14 +64,14 @@ const H1 = createStyled(RNText, { className: "style" });
 describe("@native-twin/styled", () => {
   it("Complex View", () => {
     const className = viewVariants({ intent: "secondary" });
-    const component = renderer.create(
+    const component = render(
       <View className={className}>
         <H1 className="text(center 2xl indigo-600) hover:text-gray-700">
           H1 - 1
         </H1>
       </View>
     );
-    const tree = toJson(component);
+    const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

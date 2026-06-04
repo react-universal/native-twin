@@ -1,32 +1,31 @@
 // @ts-noCheck
 const __ReactNativeStyleSheet = require('@native-twin/jsx/sheet').StyleSheet;
-// @ts-noCheck
 import { FlatList, View } from "react-native";
 import { Button } from "./code-i";
 export default function App() {
-  return <View className={`${x ? 'asd' : 'x'}`} __twinID={"617922210"} __parentID={null} __twinExpressions={[{
+  return <View className={`${x ? 'asd' : 'x'}`} __twinID={"166697976"} __parentID={null} __twinExpressions={[{
     prop: "className",
     target: "style",
     expression: `${x ? 'asd' : 'x'}`
   }]}>
-      <Button size="small" __twinID={"103451141"} __parentID={"617922210"} />
+      <Button size="small" __twinID={"282281486"} __parentID={"166697976"} />
       <FlatList data={[1, 2]} renderItem={({
       item
-    }) => <View __twinID={"519118255"} __parentID={"101357255"}>
-            <Text __twinID={"101711716"} __parentID={"519118255"}>Count {item}</Text>
-          </View>} __twinID={"101357255"} __parentID={"617922210"} />
-      <Text __twinID={"411454715"} __parentID={"617922210"}>Hello World</Text>
+    }) => <View __twinID={"975647733"} __parentID={"213941789"}>
+            <Text __twinID={"1022602302"} __parentID={"975647733"}>Count {item}</Text>
+          </View>} __twinID={"213941789"} __parentID={"166697976"} />
+      <Text __twinID={"574722849"} __parentID={"166697976"}>Hello World</Text>
     </View>;
 }
 __ReactNativeStyleSheet.registerComponent([{
-  "id": "617922210",
+  "id": "166697976",
   "index": 0,
   "metadata": {
     "hasGroupEvents": false,
     "hasPointerEvents": true,
     "isGroupParent": false
   },
-  "childIds": ["103451141", "101357255", "411454715"],
+  "childIds": ["282281486", "213941789", "574722849"],
   "parentID": null,
   "parentSize": -1,
   "props": [{
@@ -209,7 +208,7 @@ __ReactNativeStyleSheet.registerComponent([{
     }]
   }]
 }, {
-  "id": "103451141",
+  "id": "282281486",
   "index": 0,
   "metadata": {
     "hasGroupEvents": false,
@@ -217,33 +216,33 @@ __ReactNativeStyleSheet.registerComponent([{
     "isGroupParent": false
   },
   "childIds": [],
-  "parentID": "617922210",
+  "parentID": "166697976",
   "parentSize": 3,
   "props": [],
   "childStyles": []
 }, {
-  "id": "101357255",
+  "id": "213941789",
   "index": 1,
   "metadata": {
     "hasGroupEvents": false,
     "hasPointerEvents": false,
     "isGroupParent": false
   },
-  "childIds": ["519118255"],
-  "parentID": "617922210",
+  "childIds": ["975647733"],
+  "parentID": "166697976",
   "parentSize": 3,
   "props": [],
   "childStyles": []
 }, {
-  "id": "519118255",
+  "id": "975647733",
   "index": 0,
   "metadata": {
     "hasGroupEvents": false,
     "hasPointerEvents": false,
     "isGroupParent": false
   },
-  "childIds": ["101711716"],
-  "parentID": "101357255",
+  "childIds": ["1022602302"],
+  "parentID": "213941789",
   "parentSize": 1,
   "props": [{
     "entries": {
@@ -277,7 +276,7 @@ __ReactNativeStyleSheet.registerComponent([{
   }],
   "childStyles": []
 }, {
-  "id": "101711716",
+  "id": "1022602302",
   "index": 0,
   "metadata": {
     "hasGroupEvents": false,
@@ -285,7 +284,7 @@ __ReactNativeStyleSheet.registerComponent([{
     "isGroupParent": false
   },
   "childIds": [],
-  "parentID": "519118255",
+  "parentID": "975647733",
   "parentSize": 1,
   "props": [{
     "entries": {
@@ -327,7 +326,7 @@ __ReactNativeStyleSheet.registerComponent([{
   }],
   "childStyles": []
 }, {
-  "id": "411454715",
+  "id": "574722849",
   "index": 2,
   "metadata": {
     "hasGroupEvents": true,
@@ -335,7 +334,7 @@ __ReactNativeStyleSheet.registerComponent([{
     "isGroupParent": false
   },
   "childIds": [],
-  "parentID": "617922210",
+  "parentID": "166697976",
   "parentSize": 3,
   "props": [{
     "entries": {
@@ -358,7 +357,20 @@ __ReactNativeStyleSheet.registerComponent([{
           "isUnitLess": false
         }]
       }],
-      "child": [],
+      "child": [{
+        "className": "last:bg-blue-200",
+        "important": false,
+        "inherited": false,
+        "precedence": 805437440,
+        "group": "last",
+        "groups": ["last"],
+        "declarations": [{
+          "_tag": "COMPILED",
+          "prop": "backgroundColor",
+          "value": "rgba(191,219,254,1)",
+          "isUnitLess": false
+        }]
+      }],
       "pointer": [],
       "group": [{
         "className": "group-hover:bg-green",
@@ -385,5 +397,18 @@ __ReactNativeStyleSheet.registerComponent([{
       "isGroupParent": false
     }
   }],
-  "childStyles": []
+  "childStyles": [{
+    "className": "last:bg-blue-200",
+    "important": false,
+    "inherited": false,
+    "precedence": 805437440,
+    "group": "last",
+    "groups": ["last"],
+    "declarations": [{
+      "_tag": "COMPILED",
+      "prop": "backgroundColor",
+      "value": "rgba(191,219,254,1)",
+      "isUnitLess": false
+    }]
+  }]
 }]);

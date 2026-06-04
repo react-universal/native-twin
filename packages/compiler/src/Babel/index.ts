@@ -1,15 +1,21 @@
-export type {
-  APICallerOptions,
-  BabelAPI,
-  BabelFileAst,
-  JSXAttributePath,
-  JSXElementFunction,
-  JSXElementPath,
+export {
+  type APICallerOptions,
+  type BabelAPI,
+  type BabelFileAst,
+  type JSXAttributePath,
+  type JSXClassPropExpression,
+  type JSXElementFunction,
+  type JSXElementNode,
+  type JSXElementPath,
+  type ModuleDependency,
+  TwinJSXClassnameProp,
+  TwinJSXElement,
+  TwinJSXElementNode,
+  TwinModuleAst,
 } from './Models';
-export { BabelContext, BabelContextLive } from './Service';
+export { BabelUtils } from './Service';
 export { JSXImportPluginContext } from './TwinBabelPlugin.service';
 export {
-  babelParse,
   babelTemplates,
   makeDependenciesLookup,
   type TwinDependenciesLookup,

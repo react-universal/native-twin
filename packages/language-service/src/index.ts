@@ -2,6 +2,7 @@
 
 export * from './core/LSP.service';
 export * from './core/LSPConfig.service';
+export * from './core/SheetUtils.service';
 export * from './core/TwinGraphos';
 export * from './core/TwinParser.service';
 export * from './core/TwinRuntime.service';
@@ -19,4 +20,3 @@ export {
 } from './utils/connection.utils';
 export { getDocumentLanguageLocations } from './utils/language/babelParser';
 export { createLspLogger, createTwinLoggerLayerFor, loggerUtils } from './utils/lsp.logger.service';
-export { getSheetEntryStyles } from './utils/sheet.utils';

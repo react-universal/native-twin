@@ -1,11 +1,6 @@
 import { hasOwnProperty } from '@native-twin/helpers';
 import * as ReactJSXRuntimeDev from 'react/jsx-dev-runtime';
-import {
-  createTwinProps,
-  mappedComponentsConfig,
-  stylizedComponents,
-  TwinElement,
-} from './styled';
+import { createTwinProps, mappedComponentsConfig, stylizedComponents, TwinElement } from './styled';
 import { getComponentDisplayName } from './utils/react.utils';
 
 /**
@@ -25,15 +20,7 @@ export const jsxDEV: typeof ReactJSXRuntimeDev.jsxDEV = (
   source,
   self,
 ) => {
-  // console.log('WRAP: ', mappedComponentsConfig.has(type));
   const hasTwinID = hasOwnProperty.call(props, '__twinID');
-  // console.log('HAS_ID: ', {
-  //   isMapped: mappedComponentsConfig.has(type),
-  //   id: hasTwinID,
-  //   type,
-  // });
-
-  
   if (!hasTwinID) {
     return ReactJSXRuntimeDev.jsxDEV(type, props, key, isStaticChildren, source, self);
   }

@@ -1,7 +1,12 @@
 import { atom } from '@native-twin/helpers/react';
-import { Appearance, AppState, type NativeEventSubscription } from 'react-native';
+import {
+  Appearance,
+  AppState,
+  type ColorSchemeName,
+  type NativeEventSubscription,
+} from 'react-native';
 
-export const colorScheme = atom(Appearance.getColorScheme() ?? 'light');
+export const colorScheme = atom<ColorSchemeName>(Appearance.getColorScheme() ?? 'light');
 
 /**
  * Appearance

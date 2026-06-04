@@ -6,7 +6,7 @@ if (typeof TextEncoder !== 'undefined') {
   try {
     const util = require('util');
     text = { Encoder: util.TextEncoder, Decoder: util.TextDecoder };
-  } catch (ex) {
+  } catch (_ex) {
     throw new Error('requires TextEncoder and TextDecoder to be polyfilled.');
   }
 }

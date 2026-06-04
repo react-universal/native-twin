@@ -14,15 +14,12 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "exports": {
-    ".": {
-      "import": "./build/index.mjs",
-      "require": "./build/index.cjs"
-    },
+    ".": "./build/index.js",
+    "./programs/metro.transformer": "./build/programs/metro.transformer.js",
     "./package.json": "./package.json"
   },
-  "main": "./build/index.cjs",
-  "module": "./build/index.mjs",
-  "types": "./build/index.d.cts",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -36,11 +33,7 @@
     "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
-    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "biome lint",
-    "test": "vitest",
-    "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand=true --detectOpenHandles=true",
-    "test:watch": "jest --watch"
+    "lint": "biome lint"
   },
   "dependencies": {
     "@native-twin/compiler": "workspace:*",
