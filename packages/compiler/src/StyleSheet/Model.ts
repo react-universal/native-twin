@@ -27,7 +27,7 @@ import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import type { InternalTwFn, InternalTwinConfig } from '../Config';
+import type { InternalTwFn, InternalTwinConfig } from '../Config/Models';
 import type {
   JSXAttributePath,
   JSXClassPropExpression,

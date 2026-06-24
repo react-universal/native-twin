@@ -2,20 +2,18 @@ import type { PropsFrom } from "@native-twin/helpers";
 import type { ComponentType } from "react";
 import type {
   ReactComponent,
-  StylableComponentConfigOptions,
+  StyledConfiguration,
 } from "../types/styled.types";
 import { getNormalizeConfig } from "../utils/component.config";
 import { useStyledComponent } from "./useStyledComponent";
 
-const defaultMapping: StylableComponentConfigOptions<
-  ComponentType<{ style: unknown }>
-> = {
+const defaultMapping: StyledConfiguration<ComponentType<{ style: unknown }>> = {
   className: "style",
 };
 
 export const createStyled = <
   const C extends ReactComponent<any>,
-  const M extends StylableComponentConfigOptions<C>
+  const M extends StyledConfiguration<C>
 >(
   targetComponent: C,
   mapping: M = defaultMapping as unknown as M

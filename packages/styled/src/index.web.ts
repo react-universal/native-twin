@@ -4,5 +4,6 @@ export { createStyled } from './styled/createStyledComponent';
 // export { createStyledComponent, styled } from './styled';
 export type {
   PropsFrom,
-  StylableComponentConfigOptions,
+  StyledConfiguration,
+  StyledProps,
 } from './types/styled.types';

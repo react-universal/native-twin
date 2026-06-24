@@ -1,15 +1,15 @@
+export {
+  TwinCompilerLogger,
+  withCompilerLogger,
+  withCompilerLoggerLayer,
+} from './Config/Logger.service';
 export type {
   ExtractedTwinConfig,
   InternalTwFn,
   InternalTwinConfig,
   NodeWithNativeTwinOptions,
-} from './Config';
-export {
-  TwinCompilerLogger,
-  TwinNodeContext,
-  withCompilerLogger,
-  withCompilerLoggerLayer,
-} from './Config';
+} from './Config/Models';
+export { TwinNodeContext } from './Config/Service';
 export { TwinGlobsError } from './internal/path';
 export { twinTransformProgram } from './Programs/twinTransform.program';
 export { TwinProjectContext, TwinProjectContextLive } from './Project';

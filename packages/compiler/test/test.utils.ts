@@ -1,30 +1,23 @@
-import { Effect } from 'effect';
-import * as Layer from 'effect/Layer';
+import { Effect, Layer } from 'effect';
 import fs from 'fs';
 import path from 'path';
-import {
-  CompilerConfigContext,
-  createCompilerConfig,
-  MainLayer,
-  TwinFSContext,
-  TwinPath,
-  withCompilerLoggerLayer,
-} from '../src';
+import { TwinNodeContext, TwinProjectContextLive, withCompilerLoggerLayer } from '../src';
+import { BabelUtils } from '../src/Babel';
+import { TwinFSContext, TwinFSContextLive } from '../src/internal/fs';
+import * as TwinPath from '../src/internal/path';
 
 const outputDir = path.join(__dirname, '.cache');
-export const TestCompilerContextLive = Layer.succeed(
-  CompilerConfigContext,
-  createCompilerConfig({
-    outDir: outputDir,
-    rootDir: __dirname,
-    twinConfigPath: path.join(__dirname, 'tailwind.config.ts'),
-  }),
-);
+export const TwinNodeContextLive = TwinNodeContext.Default({
+  outDir: outputDir,
+  rootDir: __dirname,
+  twinConfigPath: path.join(__dirname, 'tailwind.config.ts'),
+});
 
-export const TwinTestContextLive = MainLayer.pipe(
-  Layer.provideMerge(TestCompilerContextLive),
-  withCompilerLoggerLayer,
-);
+export const TwinTestContextLive = TwinProjectContextLive.pipe(
+  Layer.provideMerge(TwinFSContextLive),
+  Layer.provideMerge(BabelUtils.Default),
+  Layer.provideMerge(TwinNodeContextLive),
+).pipe(withCompilerLoggerLayer);
 
 export const writeFixtureOutput = (
   code: string,

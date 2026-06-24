@@ -4,5 +4,6 @@ export { styledJSXStore } from './store/twinStore';
 export { createStyled } from './styled/createStyledComponent';
 export type {
   PropsFrom,
-  StylableComponentConfigOptions,
+  StyledConfiguration,
+  StyledProps,
 } from './types/styled.types';

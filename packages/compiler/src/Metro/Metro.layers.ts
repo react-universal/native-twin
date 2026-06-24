@@ -2,8 +2,9 @@ import { Path } from '@effect/platform';
 import { NodePath } from '@effect/platform-node';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
-import { type NodeWithNativeTwinOptions, TwinNodeContext } from '../Config';
-import { TwinProjectContextLive } from '../Project';
+import type { NodeWithNativeTwinOptions } from '../Config/Models';
+import { TwinNodeContext } from '../Config/Service';
+import { TwinProjectContextLive } from '../Project/Service';
 
 export const createMetroInnerLayer = (nativeTwinConfig: NodeWithNativeTwinOptions) =>
   Effect.gen(function* () {

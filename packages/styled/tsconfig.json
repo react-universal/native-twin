@@ -3,6 +3,9 @@
   "compilerOptions": {
     "module": "NodeNext",
     "jsx": "react-native",
+    "types": [
+      "jest"
+    ],
     "moduleResolution": "nodenext"
   },
   "include": [

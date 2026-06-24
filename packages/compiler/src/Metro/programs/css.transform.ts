@@ -4,7 +4,7 @@ import { countLines, pathToHtmlSafeName } from '@native-twin/helpers/server';
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
 import { type TransformResponse, transform } from 'metro-transform-worker';
-import { TwinNodeContext } from '../../Config';
+import { TwinNodeContext } from '../../Config/Service';
 import { MetroWorkerService } from '../MetroWorker.service';
 
 export const transformCSS: Effect.Effect<

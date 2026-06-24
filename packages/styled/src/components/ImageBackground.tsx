@@ -1,13 +1,16 @@
-import { type ImageBackgroundProps, ImageBackground as RNImageBackground } from 'react-native';
-import { useStyledComponent } from '../styled/useStyledComponent';
-import type { StylableComponentConfigOptions } from '../types/styled.types';
-import { getNormalizeConfig } from '../utils/component.config';
-import { copyComponentProperties } from './utils/_hoistComponentProps';
+import {
+  type ImageBackgroundProps,
+  ImageBackground as RNImageBackground,
+} from "react-native";
+import { useStyledComponent } from "../styled/useStyledComponent";
+import type { StyledConfiguration, StyledProps } from "../types/styled.types";
+import { getNormalizeConfig } from "../utils/component.config";
+import { copyComponentProperties } from "./utils/_hoistComponentProps";
 
-const mapping: StylableComponentConfigOptions<typeof RNImageBackground> = {
+const mapping: StyledConfiguration<typeof RNImageBackground> = {
   className: {
-    target: 'style',
-    nativeStyleToProp: {
+    target: "style",
+    nativeStyleMapping: {
       backgroundColor: true,
     },
   },
@@ -15,10 +18,10 @@ const mapping: StylableComponentConfigOptions<typeof RNImageBackground> = {
 
 export const ImageBackground = copyComponentProperties(
   RNImageBackground,
-  (props: ImageBackgroundProps) => {
+  (props: StyledProps<ImageBackgroundProps, typeof mapping>) => {
     const config = getNormalizeConfig(mapping);
     return useStyledComponent(RNImageBackground, props, config);
-  },
+  }
 );
 
 export default ImageBackground;

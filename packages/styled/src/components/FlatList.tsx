@@ -1,15 +1,15 @@
-import type { ReactNode } from 'react';
-import { type FlatListProps, FlatList as RNFlatList } from 'react-native';
-import { useStyledComponent } from '../styled/useStyledComponent';
-import type { StylableComponentConfigOptions } from '../types/styled.types';
-import { getNormalizeConfig } from '../utils/component.config';
-import { copyComponentProperties } from './utils/_hoistComponentProps';
+import type { ReactNode } from "react";
+import { type FlatListProps, FlatList as RNFlatList } from "react-native";
+import { useStyledComponent } from "../styled/useStyledComponent";
+import type { StyledConfiguration } from "../types/styled.types";
+import { getNormalizeConfig } from "../utils/component.config";
+import { copyComponentProperties } from "./utils/_hoistComponentProps";
 
-const mapping: StylableComponentConfigOptions<typeof RNFlatList> = {
-  ListFooterComponentClassName: 'ListFooterComponentStyle',
-  ListHeaderComponentClassName: 'ListHeaderComponentStyle',
-  columnWrapperClassName: 'columnWrapperStyle',
-  contentContainerClassName: 'contentContainerStyle',
+const mapping: StyledConfiguration<typeof RNFlatList> = {
+  ListFooterComponentClassName: "ListFooterComponentStyle",
+  ListHeaderComponentClassName: "ListHeaderComponentStyle",
+  columnWrapperClassName: "columnWrapperStyle",
+  contentContainerClassName: "contentContainerStyle",
 };
 
 export const FlatList = copyComponentProperties(
@@ -18,7 +18,8 @@ export const FlatList = copyComponentProperties(
     const config = getNormalizeConfig(mapping);
     // FIXME: accurate extractor for lambda types
     return useStyledComponent(RNFlatList, props as any, config);
-  },
-) as unknown as typeof RNFlatList & (<ItemT>(props: FlatListProps<ItemT>) => ReactNode);
+  }
+) as unknown as typeof RNFlatList &
+  (<ItemT>(props: FlatListProps<ItemT>) => ReactNode);
 
 export default FlatList;

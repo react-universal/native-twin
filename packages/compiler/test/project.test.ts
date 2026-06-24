@@ -1,7 +1,9 @@
 import { CodeGenerator } from '@babel/generator';
 import { assert, describe, expect, it } from '@effect/vitest';
 import { Array, Effect, HashSet } from 'effect';
-import { BabelUtils, TwinNodeContext, TwinProjectContext, withCompilerLogger } from '../src';
+import { TwinNodeContext, withCompilerLogger } from '../src';
+import { BabelUtils } from '../src/Babel';
+import { TwinFSContext } from '../src/internal/fs';
 import { twinTransformProgram } from '../src/Programs/twinTransform.program';
 import { getFixture, TwinTestContextLive } from './test.utils';
 
@@ -17,9 +19,11 @@ describe('Project runner', () => {
 
   it.effect('run native project runner', () =>
     Effect.gen(function* () {
-      const { getTwinModuleAstFromPath } = yield* BabelUtils;
+      const fs = yield* TwinFSContext;
+      const babelUtils = yield* BabelUtils;
       const modulePath = yield* getFixture('jsx');
-      const module = yield* getTwinModuleAstFromPath(modulePath.inputFile);
+      const babelFile = yield* fs.getFile(modulePath.inputFile);
+      const module = yield* babelUtils.astFromTwinFile(babelFile);
 
       expect(module.id).toBe('code.tsx:-1045751821');
 

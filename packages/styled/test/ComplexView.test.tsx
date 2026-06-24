@@ -10,7 +10,9 @@ import { createStyled } from "../src";
 import { createVariants } from "../src/styled/variants";
 
 const ScrollView = createStyled(RNScrollView, {
-  className: "contentContainerStyle",
+  className: {
+    target: "contentContainerStyle",
+  },
 });
 const View = createStyled(RNView, { className: "style" });
 

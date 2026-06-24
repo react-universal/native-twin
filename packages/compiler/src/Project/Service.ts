@@ -6,7 +6,8 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import { TwinNodeContext, type TwinRunnerPlatform } from '../Config';
+import type { TwinRunnerPlatform } from '../Config/Models';
+import { TwinNodeContext } from '../Config/Service';
 import { BabelUtils } from '../internal/babel';
 import type {
   TwinJSXElement,

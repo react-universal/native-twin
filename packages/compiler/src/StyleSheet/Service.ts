@@ -6,7 +6,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
-import { TwinNodeContext } from '../Config';
+import { TwinNodeContext } from '../Config/Service';
 import type { TwinJSXElement, TwinJSXElementNode } from '../internal/babel/babel.models';
 
 const make = Effect.gen(function* () {

@@ -1,16 +1,14 @@
 import type {
   ComponentConfig,
   NativeStyleToProp,
-  StylableComponentConfigOptions,
+  StyledConfiguration,
 } from '../types/styled.types';
 
-export function getNormalizeConfig(
-  mapping: StylableComponentConfigOptions<any>,
-): ComponentConfig[] {
+export function getNormalizeConfig(mapping: StyledConfiguration<any>): ComponentConfig[] {
   const config = new Map<string, ComponentConfig>();
 
   for (const [source, options] of Object.entries(mapping) as Array<
-    [string, StylableComponentConfigOptions<any>[string]]
+    [string, StyledConfiguration<any>[string]]
   >) {
     let target: string;
     let nativeStyleToProp: NativeStyleToProp<any> | undefined;
@@ -23,7 +21,7 @@ export function getNormalizeConfig(
       target = options;
     } else {
       target = typeof options.target === 'boolean' ? source : options.target;
-      nativeStyleToProp = options.nativeStyleToProp;
+      nativeStyleToProp = options.nativeStyleMapping;
     }
 
     config.set(target, { target, source, nativeStyleToProp });
