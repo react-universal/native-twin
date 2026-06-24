@@ -4,9 +4,16 @@
     "moduleResolution": "nodenext",
     "module": "nodenext",
     "resolvePackageJsonExports": false,
+    "stripInternal": true,
     "noImplicitOverride": false,
     "esModuleInterop": true
   },
-  "include": ["src/**/*", "test"],
-  "exclude": ["build", "test/fixtures"]
+  "include": [
+    "src/**/*",
+    "test"
+  ],
+  "exclude": [
+    "build",
+    "test/fixtures"
+  ]
 }

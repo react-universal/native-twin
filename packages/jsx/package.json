@@ -21,6 +21,7 @@
     "./jsx-dev-runtime": "./build/jsx-dev-runtime.js",
     "./jsx-runtime": "./build/jsx-runtime.js",
     "./sheet": "./build/sheet/index.js",
+    "./types": "./build/types.js",
     "./package.json": "./package.json"
   },
   "types": "./build/index.d.ts",
@@ -56,6 +57,7 @@
     "its-fine": "^1.2.5"
   },
   "devDependencies": {
+    "@types/jest": "29.5.14",
     "@types/react": "~19.2.10"
   },
   "peerDependencies": {
@@ -70,12 +72,5 @@
   "publishConfig": {
     "access": "public",
     "directory": "dist"
-  },
-  "effect": {
-    "generateExports": {
-      "include": [
-        "*.ts"
-      ]
-    }
   }
 }

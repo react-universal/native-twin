@@ -4,7 +4,6 @@ import * as RA from 'effect/Array';
 import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
-import * as Layer from 'effect/Layer';
 import * as LogLevel from 'effect/LogLevel';
 import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
@@ -101,7 +100,9 @@ const make = Effect.gen(function* () {
           cwd: env.projectRoot,
         }),
       ),
-      Effect.map(RA.map((x) => TwinPath.absolutePathFromString(x, env.projectRoot))),
+      Effect.map((globs) =>
+        RA.map(globs, (x) => TwinPath.absolutePathFromString(x, env.projectRoot)),
+      ),
     );
   }
 
@@ -154,12 +155,13 @@ export const createCompilerConfig = (params: {
   outDir: string;
   twinConfigPath?: string | undefined;
   inputCSS?: string | undefined;
+  logLevel?: LogLevel.Literal | undefined;
 }): CompilerConfigContext => {
   return CompilerConfigContext.of({
     inputCSS: Option.fromNullable(params.inputCSS).pipe(
       Option.getOrElse(() => path.join(params.outDir, 'twin.in.css')),
     ),
-    logLevel: LogLevel.Debug,
+    logLevel: LogLevel.fromLiteral(params.logLevel ?? 'Info'),
     outputDir: params.outDir,
     projectRoot: params.rootDir,
     twinConfigPath: Option.fromNullable(params.twinConfigPath),
@@ -186,7 +188,8 @@ export const CompilerConfigContext = Context.GenericTag<CompilerConfigContext>(
   'compiler/CompilerConfigContext',
 );
 
-export interface TwinNodeContext extends Effect.Effect.Success<typeof make> {}
-export const TwinNodeContext = Context.GenericTag<TwinNodeContext>('TwinNodeContext');
+export class TwinNodeContext extends Effect.Service<TwinNodeContext>()('TwinNodeContext', {
+  effect: make,
+}) {}
 
-export const TwinNodeContextLive = Layer.effect(TwinNodeContext, make);
+export const TwinNodeContextLive = TwinNodeContext.Default;

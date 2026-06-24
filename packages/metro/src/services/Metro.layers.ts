@@ -11,10 +11,7 @@ import {
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 
-export const MetroMainLayer = Layer.empty.pipe(
-  Layer.provideMerge(TwinNodeContextLive),
-  // Layer.provideMerge(BabelCompilerContextLive),
-);
+export const MetroMainLayer = Layer.empty.pipe(Layer.provideMerge(TwinNodeContextLive));
 export const MetroLayerWithTwinFS = MainLayer.pipe(
   Layer.provideMerge(MetroMainLayer),
   // Layer.provideMerge(TwinPath.),

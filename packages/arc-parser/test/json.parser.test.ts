@@ -48,7 +48,7 @@ const parser = betweenSquareBrackets(separatedByComma(value));
 
 describe('Parsers', () => {
   it('Parse package.json', () => {
-    const result = JSONValue.run(JSON.stringify(pkgJson)); //?
+    const result = JSONValue.run(JSON.stringify(pkgJson)); // ?
     let message = '';
     if (result.isError) {
       message = result.error ?? '';
@@ -65,7 +65,7 @@ describe('Parsers', () => {
       [r,[2,d,
       [2,a,4]
       ],f]
-      `); //?
+      `); // ?
     let message = '';
     if (result.isError) {
       message = result.error ?? '';

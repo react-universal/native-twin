@@ -10,6 +10,7 @@ export default defineConfig({
   sourcemap: true,
   exports: true,
   dts: {
-    resolver: 'tsc'
+    resolver: 'tsc',
+    build: true
   }
 });

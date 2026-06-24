@@ -9,6 +9,7 @@
     "strict": false,
     "sourceMap": true,
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "noUnusedLocals": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,

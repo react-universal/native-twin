@@ -105,7 +105,7 @@ export function matchAnimation<Theme extends __Theme__ = __Theme__>(pattern: str
 
 export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
-  themeSection: keyof Theme,
+  themeSection: keyof Theme & string,
   property: CompleteStyleKeys,
   meta: RuleMeta = {
     canBeNegative: false,

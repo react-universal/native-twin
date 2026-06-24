@@ -12,6 +12,7 @@ export default defineConfig({
     "./src/components.ts",
     "./src/components.web.ts",
     // "./src/testing-library/setupAfterEnv.ts",
+    "./src/types.ts"
   ],
   format: "esm",
   deps: {
@@ -25,6 +26,9 @@ export default defineConfig({
   outputOptions: {
     polyfillRequire: false,
     dynamicImportInCjs: false,
+  },
+  dts: {
+    resolver: 'tsc'
   },
   sourcemap: true,
   outDir: "build",

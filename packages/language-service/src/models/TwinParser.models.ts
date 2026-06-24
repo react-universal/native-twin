@@ -10,6 +10,7 @@ import type {
 import {
   type ArbitraryToken,
   type ClassNameToken,
+  type CSSUnitWithDefaultValue,
   type GroupToken,
   sheetEntriesToCss,
   type TWParsedRule,
@@ -202,20 +203,8 @@ export interface TwinRuleComposition {
   declarationSuffixes: string[];
 }
 
-export type Units = {
-  '%'?: number;
-  vw?: number;
-  vh?: number;
-  vmin?: number;
-  vmax?: number;
-  em: number;
-  rem: number;
-  px: number;
-  pt: number;
-  pc: number;
-  in: number;
-  cm: number;
-  mm: number;
+type Units = {
+  [K in CSSUnitWithDefaultValue]: number;
 };
 
 export type StyledContext = {

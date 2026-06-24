@@ -1,15 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["node", "react-native"],
+    "types": [
+      "node",
+      "react-native"
+    ],
     "exactOptionalPropertyTypes": false,
     "module": "nodenext",
     "noImplicitAny": false,
-    "alwaysStrict": false,
     "moduleResolution": "nodenext",
     "strict": true,
     "rootDir": "src"
   },
-  "include": ["src"],
-  "exclude": ["build"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "build"
+  ]
 }

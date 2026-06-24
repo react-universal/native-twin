@@ -7,15 +7,17 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noEmitOnError": false,
-    "downlevelIteration": true,
     "removeComments": false,
     // Modules Config
     "module": "NodeNext",
     "target": "ES2022",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "moduleDetection": "force",
-    "esModuleInterop": false,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "allowSyntheticDefaultImports": true,
@@ -67,5 +69,7 @@
       }
     ]
   },
-  "exclude": ["build/**/*"]
+  "exclude": [
+    "build/**/*"
+  ]
 }

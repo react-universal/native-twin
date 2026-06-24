@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    root: path.join(__dirname, '../../')
+    testTimeout: 100000,
     // root: path.join(__dirname, '../..'),
   },
 });

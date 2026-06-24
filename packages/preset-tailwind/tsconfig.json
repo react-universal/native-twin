@@ -1,8 +1,16 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src"
+    "types": [
+      "node",
+      "jest"
+    ]
   },
-  "include": ["src"],
-  "exclude": ["build"]
+  "include": [
+    "src",
+    "test"
+  ],
+  "exclude": [
+    "build"
+  ]
 }

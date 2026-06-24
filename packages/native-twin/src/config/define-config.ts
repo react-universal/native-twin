@@ -10,7 +10,7 @@ import { defaultVariants } from './defaults/variants';
 
 export function defineConfig<
   Theme extends __Theme__ = __Theme__,
-  Presets extends Preset<any>[] = Preset[],
+  Presets extends Preset<Theme>[] = Preset<Theme>[],
 >({
   presets = [] as unknown as Presets,
   ...userConfig
@@ -41,7 +41,9 @@ export function defineConfig<
     },
   ])) {
     const { ignorelist, preflight, rules, theme, variants, darkMode, animations } =
-      typeof preset === 'function' ? preset(config) : (preset as TailwindPresetConfig<Theme>);
+      typeof preset === 'function'
+        ? preset(config as TailwindConfig<__Theme__ & Theme>)
+        : (preset as TailwindPresetConfig<Theme>);
     config = {
       animations: [...asArray(config.animations), ...asArray(animations)],
       content: userConfig.content,

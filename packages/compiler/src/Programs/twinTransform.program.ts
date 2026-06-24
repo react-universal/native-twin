@@ -19,8 +19,6 @@ export const twinTransformProgram = Effect.fn(function* (
   ).pipe(
     Stream.map((treeNode) => {
       const runtimeNode = treeNode.value.toRuntimeJSX();
-      // treeNode.parent?.value.
-      // const babelJsxElementStyles = literalValueToAst(runtimeNode);
 
       addJsxAttribute(
         treeNode.value.node.value.babelPath.node,

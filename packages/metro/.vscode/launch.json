@@ -4,13 +4,13 @@
       "type": "node",
       "request": "launch",
       "name": "Test Metro plugin",
-      "program": "../../node_modules/jest/bin/jest",
-      "args": [
-        "--runInBand",
-        "--silent=false",
-        "--watchAll=false",
-        "--detectOpenHandles=true"
-      ],
+      "program": "../../node_modules/.bin/vitest",
+      // "args": [
+      //   "--runInBand",
+      //   "--silent=false",
+      //   "--watchAll=false",
+      //   "--detectOpenHandles=true"
+      // ],
       "autoAttachChildProcesses": true,
       "console": "integratedTerminal",
       "outFiles": [

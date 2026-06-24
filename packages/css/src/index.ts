@@ -8,6 +8,7 @@ export {
 export type {
   /** @category — CSS parsers */
   CSSUnit,
+  CSSUnitWithDefaultValue,
   /** @category — CSS parsers */
   CSSValue,
   /** @category — CSS parsers */

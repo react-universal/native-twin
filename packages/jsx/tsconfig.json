@@ -5,8 +5,18 @@
     "allowArbitraryExtensions": false,
     "moduleResolution": "nodenext",
     "module": "nodenext",
+    "types": [
+      "jest",
+      "node"
+    ],
     "jsx": "preserve"
   },
-  "include": ["src", "types.d.ts"],
-  "exclude": ["build"]
+  "include": [
+    "src",
+    "__tests__",
+    "types.d.ts"
+  ],
+  "exclude": [
+    "build"
+  ]
 }

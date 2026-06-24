@@ -46,9 +46,23 @@ export type CSSLengthUnit = {
   [U in CSSUnit]: number;
 }[CSSUnit];
 
-export type CssUnits = {
+export type CSSUnits = {
   [U in CSSUnit]: number;
 }[CSSUnit];
+
+export type CSSUnitWithDefaultValue =
+  | 'rem'
+  | 'em'
+  | 'cm'
+  | 'mm'
+  | 'in'
+  | 'pt'
+  | 'pc'
+  | 'px'
+  | 'vmin'
+  | 'vmax'
+  | 'vw'
+  | 'vh';
 
 export type CSSUnit =
   | 'px'

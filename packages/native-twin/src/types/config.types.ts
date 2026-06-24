@@ -8,9 +8,9 @@ import type {
 } from '@native-twin/css';
 // TODO: Restore
 // import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
-import type { Falsey, MaybeArray } from '@native-twin/helpers';
+import type { Falsey, KebabCase, MaybeArray } from '@native-twin/helpers';
 import type { PlatformOSType } from 'react-native';
-import type { __Theme__, ExtractThemes, ThemeConfig } from './theme.types';
+import type { __Theme__, ExtractThemes, ThemeConfig, ThemeValue } from './theme.types';
 
 // CONFIGURATION TYPES
 
@@ -143,6 +143,10 @@ export interface ThemeContext<Theme extends __Theme__ = __Theme__> {
 
 export interface ThemeFunction<Theme extends __Theme__ = __Theme__> {
   <Section extends keyof Theme>(section: Section): ThemeConfig<Theme>[Section] | undefined;
+  <Section extends keyof Theme & string, Key extends keyof Theme[Section]>(
+    section: Section | KebabCase<Section>,
+    key: Key,
+  ): ThemeValue<Theme[Section]> | undefined;
   (section: keyof Theme | (string & {}), segment: string): string | undefined;
 }
 

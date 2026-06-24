@@ -2,13 +2,12 @@ import { sheetEntriesToCss } from '@native-twin/css';
 import { describe, expect, it } from 'vitest';
 import { defineConfig, matchThemeColor, matchThemeValue, setup, tx } from '../src';
 
-setup(
+const rr = setup(
   defineConfig({
     content: [],
     mode: 'web',
     rules: [
       matchThemeColor('bg-', 'backgroundColor'),
-      // @ts-expect-error
       matchThemeValue('p', 'spacing', 'padding', {
         canBeNegative: true,
         feature: 'edges',
@@ -42,6 +41,7 @@ setup(
   }),
 );
 
+rr.theme('colors', '', '');
 describe('@native-twin/core - Raw rules parser', () => {
   it('Sheet entries to CSS', () => {
     const entries = tx`bg-primary !px-1 first-letter:px-2 asd md:sm:px-2`;

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://v2-9-6.turborepo.dev/schema.json",
+  "$schema": "node_modules/turbo/schema.json",
   "ui": "tui",
   "concurrency": "12",
   "tasks": {
@@ -10,8 +10,8 @@
       "cache": true,
       "inputs": [
         "$TURBO_DEFAULT$",
-        "!**/test",
-        "!**/tests",
+        "!**/test/**",
+        "!**/tests/**",
         "!**/tsconfig.*",
         "src/**"
       ],

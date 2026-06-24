@@ -30,7 +30,7 @@ export function createTailwind<Theme extends __Theme__ = __Theme__, Target = unk
 
 export function createTailwind<
   Theme = __Theme__,
-  Presets extends Preset<any>[] = Preset[],
+  Presets extends Preset<Theme>[] = Preset<Theme>[],
   Target = unknown,
 >(
   config: TailwindUserConfig<Theme, Presets>,

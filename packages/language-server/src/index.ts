@@ -22,7 +22,7 @@ import { LspMainLive } from './services/LSP.service';
 
 const LSPRuntime = ManagedRuntime.make(LspMainLive);
 
-const runEffect = <A, E>(
+const runEffect = <A = never, E = never>(
   effect: Effect.Effect<A, E, Layer.Layer.Success<typeof LspMainLive>>,
 ): Promise<A> => LSPRuntime.runPromise(effect);
 

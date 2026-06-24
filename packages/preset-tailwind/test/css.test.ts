@@ -2,8 +2,8 @@ import { defineConfig, setup, tx } from '@native-twin/core';
 import { sheetEntriesToCss } from '@native-twin/css';
 import { presetTailwind } from '../src';
 
-setup(defineConfig({ content: [], presets: [presetTailwind()], mode: 'web' }));
-
+const tw = setup(defineConfig({ content: [], presets: [presetTailwind()], mode: 'web' }));
+const a = tw.theme('spacing');
 describe('@native-twin/preset-tailwind - Raw rules parser', () => {
   it('Sheet entries to CSS', () => {
     const entries = tx`bg-blue-200 text-center`;

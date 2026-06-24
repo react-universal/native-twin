@@ -4,7 +4,7 @@ import { parsedRuleToClassName } from '@native-twin/css';
 import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const flexRules: Rule<TailwindPresetTheme>[] = [
-  matchCssObject('flex', (match, ctx, rule) => ({
+  matchCssObject('flex', (_match, _ctx, rule) => ({
     className: parsedRuleToClassName(rule),
     declarations: [
       {

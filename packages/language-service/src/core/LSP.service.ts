@@ -128,39 +128,39 @@ const make = Effect.gen(function* () {
     );
   };
 
-  const getCompletionEntryDetails = (entry: t.CompletionItem, _cancelToken: t.CancellationToken) =>
-    Effect.gen(function* () {
-      const styledContext = yield* parser.data.styledContext;
-      const rule = yield* parser.getRuleByClassName(entry.label);
+  const getCompletionEntryDetails = Effect.fn(function* (
+    entry: t.CompletionItem,
+    _cancelToken: t.CancellationToken,
+  ) {
+    const styledContext = yield* parser.data.styledContext;
+    const rule = yield* parser.getRuleByClassName(entry.label);
 
-      const sheet = yield* parser.runTW(
-        Option.map(rule, (x) => x.className).pipe(Option.getOrElse(() => '')),
-      );
-      const finalSheet = sheetUtils.getSheetEntryStyles(sheet, styledContext);
-      const css = sheetEntriesToCss(sheet);
+    const sheet = yield* parser.runTW(
+      Option.map(rule, (x) => x.className).pipe(Option.getOrElse(() => '')),
+    );
+    const finalSheet = sheetUtils.getSheetEntryStyles(sheet, styledContext);
+    const css = sheetEntriesToCss(sheet);
 
-      return editorUtils.getCompletionEntryDetails(entry, css, finalSheet);
-    });
+    return editorUtils.getCompletionEntryDetails(entry, css, finalSheet);
+  });
 
-  const twinCodeActionsProgram = (params: t.CodeActionParams) => {
-    return Effect.gen(function* () {
-      if (params.context.diagnostics.length === 0) return null;
-      const document = yield* executor.getLSPDocument(params.textDocument.uri);
-      const diagnostics = RA.filterMap(
-        params.context.diagnostics,
-        Option.liftPredicate(isValidTwinDiagnostic),
-      );
+  const twinCodeActionsProgram = Effect.fn(function* (params: t.CodeActionParams) {
+    if (params.context.diagnostics.length === 0) return null;
+    const document = yield* executor.getLSPDocument(params.textDocument.uri);
+    const diagnostics = RA.filterMap(
+      params.context.diagnostics,
+      Option.liftPredicate(isValidTwinDiagnostic),
+    );
 
-      const region = document.findRegionAt(Position.make(params.range.start));
-      if (!region) return null;
-      const editsForDuplicatedDeclarations: t.CodeAction[] = pipe(
-        RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
-        RA.map((x) => getActionsForDuplicatedDecl(x, document.uri)),
-      );
+    const region = document.findRegionAt(Position.make(params.range.start));
+    if (!region) return null;
+    const editsForDuplicatedDeclarations: t.CodeAction[] = pipe(
+      RA.filter(diagnostics, (x) => x.code === TwinDiagnosticCodes.DuplicatedDeclaration),
+      RA.map((x) => getActionsForDuplicatedDecl(x, document.uri)),
+    );
 
-      return editsForDuplicatedDeclarations;
-    });
-  };
+    return editsForDuplicatedDeclarations;
+  });
 
   return {
     getCompletionsAtPosition,

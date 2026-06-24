@@ -1,3 +1,4 @@
+import path from 'node:path';
 import {
   type NodeWithNativeTwinOptions,
   TwinFSContext,
@@ -35,7 +36,7 @@ export function withNativeTwin(
 
   return {
     ...metroConfig,
-    transformerPath: require.resolve('./programs/metro.transformer'),
+    transformerPath: require.resolve(path.join(__dirname, './programs/metro.transformer.js')),
     resolver: {
       ...metroConfig.resolver,
       resolveRequest: resolveMetroRequest,
@@ -50,19 +51,15 @@ export function withNativeTwin(
 
   function resolveMetroRequest(...[context, moduleName, platform]: Parameters<CustomResolver>) {
     return Effect.gen(function* () {
-      const metroSettings = yield* getMetroSettings;
       const resolver = originalResolver ?? context.resolveRequest;
       const resolved = resolver(context, moduleName, platform);
-      if (!platform) return resolved;
 
-      const platformOutput = metroSettings.ctx.getOutputCSSPath(platform);
+      const metroSettings = yield* getMetroSettings;
       const platformInput = metroSettings.env.inputCSS;
 
+      const platformOutput = metroSettings.ctx.getOutputCSSPath(platform ?? 'native');
       if ('filePath' in resolved && resolved.filePath === platformInput) {
-        return {
-          ...resolved,
-          filePath: TwinPath.NodePath.resolve(platformOutput),
-        };
+        return { ...resolved, filePath: TwinPath.NodePath.resolve(platformOutput) };
       }
 
       return resolved;
@@ -83,14 +80,13 @@ export function withNativeTwin(
       const fs = yield* TwinFSContext;
       const ctx = yield* TwinNodeContext;
       yield* Ref.update(ctx.state.runningPlatforms.ref, (x) => HashSet.add(x, platform));
-      // yield* fs.createTwinFiles();
 
       const platformOutput = ctx.getOutputCSSPath(platform);
       if (!(yield* fs.exists(platformOutput))) {
         yield* fs
           .mkdirCached(TwinPath.absolutePathFromString(TwinPath.NodePath.dirname(platformOutput)))
-          .pipe(Effect.tapError(() => Effect.logError('cant create twin output')));
-        // yield* fs.writeFileCached({ path: platformOutput });
+          .pipe(Effect.tapError((x) => Effect.logError('cant create twin output for: ', x)));
+        yield* fs.writeFileCached({ path: platformOutput });
       }
 
       yield* Effect.logTrace(`Watcher started for [${options.platform}]`);

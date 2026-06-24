@@ -1,12 +1,13 @@
-import { type TailwindUserConfig, install } from '@native-twin/core';
-import { type SheetEntry, sheetEntriesToCss } from '@native-twin/css';
-import { ScrollViewStyleReset } from 'expo-router/html';
-import type { PropsWithChildren } from 'react';
-import twinConfig from '../../tailwind.config';
+import { install, type TailwindUserConfig } from "@native-twin/core";
+import { type SheetEntry, sheetEntriesToCss } from "@native-twin/css";
+import { ScrollViewStyleReset } from "expo-router/html";
+import type { PropsWithChildren } from "react";
+import twinConfig from "../../tailwind.config";
 
 let config = twinConfig as TailwindUserConfig;
-if (twinConfig.mode !== 'web') {
-  config = Object.assign({ mode: 'web' }, twinConfig) as TailwindUserConfig;
+// @ts-expect-error
+if (twinConfig.mode !== "web") {
+  config = Object.assign({ mode: "web" }, twinConfig) as TailwindUserConfig;
 }
 const twin = install(config, !__DEV__);
 
@@ -28,19 +29,19 @@ export default function Root({ children }: PropsWithChildren) {
   //   console.log('TWIN_LAYOUT: ', twin.target);
   // }, []);
   return (
-    <html lang='en'>
+    <html lang="en">
       <head>
-        <meta charSet='utf-8' />
-        <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
+        <meta charSet="utf-8" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta
-          name='viewport'
-          content='width=device-width, initial-scale=1, shrink-to-fit=no'
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
         <style
           dangerouslySetInnerHTML={{
             __html: sheetEntriesToCss(twin.target as SheetEntry[], true),
           }}
-          data-native-twin=''
+          data-native-twin=""
         />
 
         {/*

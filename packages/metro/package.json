@@ -33,7 +33,8 @@
     "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "cloc": "yarn run build && npx cloc --by-file --exclude-ext=d.ts ./build/runtime/native ./build/runtime/api.native.js ./build/runtime/observable.js ./build/runtime/jsx-runtime.js ./build/runtime/wrap-jsx.js ./build/runtime/config.js",
-    "lint": "biome lint"
+    "lint": "biome lint",
+    "test": "npx vitest"
   },
   "dependencies": {
     "@native-twin/compiler": "workspace:*",
@@ -44,7 +45,8 @@
   },
   "peerDependencies": {
     "@babel/cli": "*",
-    "jest": "*"
+    "jest": "*",
+    "vitest": "*"
   },
   "peerDependenciesMeta": {
     "@babel/cli": {
