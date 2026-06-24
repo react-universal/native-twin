@@ -16,11 +16,8 @@ import type {
 } from '../internal/babel/babel.models';
 import { TwinFSContext, TwinFSContextLive } from '../internal/fs';
 import * as TwinPath from '../internal/path';
-import {
-  type CompilerStyleSheet,
-  TwinStyleSheetContext,
-  TwinStyleSheetContextLive,
-} from '../StyleSheet';
+import type { CompilerStyleSheet } from '../StyleSheet/Model';
+import { TwinStyleSheetContext, TwinStyleSheetContextLive } from '../StyleSheet/Service';
 import { mapTreeEffect } from '../utils/tree.utils';
 import { TransformedJSXNode } from './Model';
 

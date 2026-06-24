@@ -4,7 +4,7 @@ import type { TreeNode } from '@native-twin/helpers/tree';
 import * as Data from 'effect/Data';
 import type { TwinRunnerPlatform } from '../Config/Models';
 import type { TwinJSXElement, TwinJSXElementNode } from '../internal/babel/babel.models';
-import type { CompiledStyledProp } from '../StyleSheet';
+import type { CompiledStyledProp } from '../StyleSheet/Model';
 
 export interface TwinTransformOptions {
   platform: TwinRunnerPlatform;

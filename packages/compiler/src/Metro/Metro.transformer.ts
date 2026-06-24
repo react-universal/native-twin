@@ -8,7 +8,7 @@ import * as LogLevel from 'effect/LogLevel';
 import type { TransformResponse } from 'metro-transform-worker';
 import { TwinNodeContext } from '../Config/Service';
 import { twinTransformProgram } from '../Programs/twinTransform.program';
-import { TwinProjectContext, TwinProjectContextLive } from '../Project';
+import { TwinProjectContext, TwinProjectContextLive } from '../Project/Service';
 import { transformCSSExpo } from './css.transform';
 import type { TwinMetroTransformFn } from './Metro.models';
 

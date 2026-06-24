@@ -10,7 +10,7 @@ import type {
   TwinModuleAst,
 } from './internal/babel/babel.models';
 import { TransformedJSXNode } from './Project/Model';
-import type { CompilerStyleSheet } from './StyleSheet';
+import type { CompilerStyleSheet } from './StyleSheet/Model';
 import { mapTreeEffect } from './utils/tree.utils';
 
 export const compileAst = Effect.fn(function* (
