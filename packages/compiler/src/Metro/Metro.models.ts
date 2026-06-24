@@ -6,7 +6,7 @@ import type {
   JsTransformOptions,
   TransformResponse,
 } from 'metro-transform-worker';
-import type { CompilerConfig } from '../Config/Service';
+import type { CompilerConfig } from '../internal/twinNode';
 
 // MARK: Metro config types
 /** @domain Metro transformer config */

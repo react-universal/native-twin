@@ -1,6 +1,6 @@
 import * as Effect from 'effect/Effect';
 import * as Option from 'effect/Option';
-import { TwinNodeContext } from '../Config/Service';
+import { TwinNodeContext } from '../internal/twinNode';
 import type { BaseTwinTransformerOptions } from './Metro.models';
 
 export const getMetroSettings = Effect.gen(function* () {

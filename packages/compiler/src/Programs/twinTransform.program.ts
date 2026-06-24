@@ -3,8 +3,8 @@ import * as t from '@babel/types';
 import { asArray } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
-import type { TwinRunnerPlatform } from '../Config/Models';
 import type { TwinModuleAst } from '../internal/babel/babel.models';
+import type { TwinRunnerPlatform } from '../internal/twinNode';
 import { TwinProjectContext } from '../Project/Service';
 import { addJsxAttribute, templateLiteralsToInject } from '../utils/babel/babel.utils';
 

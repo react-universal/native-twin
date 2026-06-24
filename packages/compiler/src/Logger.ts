@@ -11,7 +11,7 @@ import * as LogSpan from 'effect/LogSpan';
 import * as Option from 'effect/Option';
 import * as Str from 'effect/String';
 import { inspect } from 'util';
-import * as Utils from '../utils/ansi.utils';
+import * as Utils from './utils/ansi.utils';
 
 export const TwinCompilerLogger = Logger.make((options) => {
   const platform: string = pipe(

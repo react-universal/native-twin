@@ -2,13 +2,13 @@ import type { CompiledSheetEntry } from '@native-twin/core';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
-import type { TwinRunnerPlatform } from './Config/Models';
-import { TwinNodeContext } from './Config/Service';
 import type {
   TwinJSXElement,
   TwinJSXElementNode,
   TwinModuleAst,
 } from './internal/babel/babel.models';
+import type { TwinRunnerPlatform } from './internal/twinNode';
+import { TwinNodeContext } from './internal/twinNode';
 import { TransformedJSXNode } from './Project/Model';
 import type { CompilerStyleSheet } from './StyleSheet/Model';
 import { mapTreeEffect } from './utils/tree.utils';

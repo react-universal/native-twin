@@ -6,8 +6,6 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import type { TwinRunnerPlatform } from '../Config/Models';
-import { TwinNodeContext } from '../Config/Service';
 import { BabelUtils } from '../internal/babel';
 import type {
   TwinJSXElement,
@@ -16,6 +14,7 @@ import type {
 } from '../internal/babel/babel.models';
 import { TwinFSContext, TwinFSContextLive } from '../internal/fs';
 import * as TwinPath from '../internal/path';
+import { TwinNodeContext, type TwinRunnerPlatform } from '../internal/twinNode';
 import type { CompilerStyleSheet } from '../StyleSheet/Model';
 import { TwinStyleSheetContext, TwinStyleSheetContextLive } from '../StyleSheet/Service';
 import { mapTreeEffect } from '../utils/tree.utils';

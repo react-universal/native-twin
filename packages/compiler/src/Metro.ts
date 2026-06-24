@@ -1,1 +1,1 @@
-export * from './Metro/withTwinMetro';
+export { withNativeTwin } from './Metro/withTwinMetro';

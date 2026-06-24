@@ -1,16 +1,16 @@
-export {
-  TwinCompilerLogger,
-  withCompilerLogger,
-  withCompilerLoggerLayer,
-} from './Config/Logger.service';
+export { TwinGlobsError } from './internal/path';
 export type {
   ExtractedTwinConfig,
   InternalTwFn,
   InternalTwinConfig,
   NodeWithNativeTwinOptions,
-} from './Config/Models';
-export { TwinNodeContext } from './Config/Service';
-export { TwinGlobsError } from './internal/path';
+} from './internal/twinNode';
+export { TwinNodeContext } from './internal/twinNode';
+export {
+  TwinCompilerLogger,
+  withCompilerLogger,
+  withCompilerLoggerLayer,
+} from './Logger';
 export { twinTransformProgram } from './Programs/twinTransform.program';
 export { TwinProjectContext, TwinProjectContextLive } from './Project/Service';
 export { TwinStyleSheetContext, TwinStyleSheetContextLive } from './StyleSheet/Service';

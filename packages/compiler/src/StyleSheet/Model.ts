@@ -27,13 +27,13 @@ import * as RA from 'effect/Array';
 import * as Data from 'effect/Data';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import type { InternalTwFn, InternalTwinConfig } from '../Config/Models';
 import type {
   JSXAttributePath,
   JSXClassPropExpression,
   TwinJSXClassnameProp,
   TwinJSXElementNode,
 } from '../internal/babel/babel.models';
+import type { InternalTwFn, InternalTwinConfig } from '../internal/twinNode';
 
 export interface TwinPlatformExtractors {
   native: CompilerStyleSheet;

@@ -1,5 +1,8 @@
 import * as path from 'node:path';
+import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import { createThemeContext } from '@native-twin/core';
+import type { SheetEntry } from '@native-twin/css';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
@@ -8,10 +11,50 @@ import * as Option from 'effect/Option';
 import * as Ref from 'effect/Ref';
 import * as Stream from 'effect/Stream';
 import * as SubscriptionRef from 'effect/SubscriptionRef';
-import * as TwinPath from '../internal/path';
 import { CompilerStyleSheet } from '../StyleSheet/Model';
 import { createTwinProcessor, extractTwinConfig } from '../utils/twin.utils';
-import type { ImportedTwinConfig } from './Models';
+import * as TwinPath from './path';
+
+export type TwinRunnerPlatform = 'web' | 'native';
+
+export type InternalTwinConfig = __Theme__ & TailwindPresetTheme;
+export type InternalTwFn = RuntimeTW<InternalTwinConfig, SheetEntry[]>;
+export interface ExtractedTwinConfig extends TailwindConfig<InternalTwinConfig> {
+  content: TwinPath.FilePath[];
+}
+export type ImportedTwinConfig = TailwindConfig<InternalTwinConfig>;
+
+/**
+ * @domain `TwinNodeContext` Common Input config options
+ */
+export interface NodeWithNativeTwinOptions {
+  /**
+   * Must be absolute
+   * @example ```js
+   * __dirname
+   * ```
+   * */
+  projectRoot?: string | undefined;
+  /**
+   * Must be absolute
+   * @example ```js
+   * path.join(__dirname, 'public/out.css')
+   * ```
+   * */
+  outputDir?: string | undefined;
+  twinConfigPath: string;
+  /**
+   * Must be absolute
+   * @example ```js
+   * path.join(__dirname, 'globals.css')
+   * ```
+   * */
+  inputCSS?: string | undefined;
+  /**
+   * @default `INFO`
+   * */
+  logLevel: LogLevel.Literal;
+}
 
 export interface CompilerConfig {
   inputCSS: string;
@@ -187,22 +230,3 @@ const getPlatformOutputs = (baseDir: string) => ({
   native: path.posix.join(baseDir, 'twin.out.native.css.js'),
   setupFile: path.join(baseDir, 'twin.setup.js'),
 });
-
-// export const createCompilerConfig = (params: {
-//   rootDir: string;
-//   outDir: string;
-//   twinConfigPath?: string | undefined;
-//   inputCSS?: string | undefined;
-//   logLevel?: LogLevel.Literal | undefined;
-// }): CompilerConfigContext => {
-//   return CompilerConfigContext.of({
-//     inputCSS: Option.fromNullable(params.inputCSS).pipe(
-//       Option.getOrElse(() => path.join(params.outDir, 'twin.in.css')),
-//     ),
-//     logLevel: LogLevel.fromLiteral(params.logLevel ?? 'Info'),
-//     outputDir: params.outDir,
-//     projectRoot: params.rootDir,
-//     twinConfigPath: Option.fromNullable(params.twinConfigPath),
-//     platformPaths: getPlatformOutputs(params.outDir),
-//   });
-// };

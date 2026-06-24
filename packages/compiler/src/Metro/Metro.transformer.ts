@@ -6,7 +6,7 @@ import * as Effect from 'effect/Effect';
 import * as Logger from 'effect/Logger';
 import * as LogLevel from 'effect/LogLevel';
 import type { TransformResponse } from 'metro-transform-worker';
-import { TwinNodeContext } from '../Config/Service';
+import { TwinNodeContext } from '../internal/twinNode';
 import { twinTransformProgram } from '../Programs/twinTransform.program';
 import { TwinProjectContext, TwinProjectContextLive } from '../Project/Service';
 import { transformCSSExpo } from './css.transform';

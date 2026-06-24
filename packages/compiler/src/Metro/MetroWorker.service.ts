@@ -3,7 +3,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as worker from 'metro-transform-worker';
-import { TwinNodeContext } from '../Config/Service';
+import { TwinNodeContext } from '../internal/twinNode';
 import type { MetroWorkerInput, NativeTwinTransformerOpts } from './Metro.models';
 
 export class MetroWorkerService extends Context.Tag('metro/worker/context')<
