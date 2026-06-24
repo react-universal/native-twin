@@ -7,8 +7,15 @@ import * as Effect from 'effect/Effect';
 import * as Hash from 'effect/Hash';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import type { TwinFile } from './Models';
-import { type AbsolutePath, type FilePath, filePathFromString, NodePath } from './Path.model';
+import * as TwinPath from './path';
+
+export interface TwinFile {
+  id: string;
+  path: TwinPath.FilePath;
+  code: string;
+  dirname: string;
+  basename: string;
+}
 
 const make = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
@@ -20,14 +27,14 @@ const make = Effect.gen(function* () {
     ),
   );
 
-  const mkdirCached = (path: AbsolutePath) => mkdirCached_(path);
+  const mkdirCached = (path: TwinPath.AbsolutePath) => mkdirCached_(path);
 
-  const readFile = (path: FilePath) =>
+  const readFile = (path: TwinPath.FilePath) =>
     fs
       .readFileString(path)
       .pipe(Effect.tapError(() => Effect.logError(`Cannot read file at: ${path}`)));
 
-  const writeFile = (path: FilePath, content: string) =>
+  const writeFile = (path: TwinPath.FilePath, content: string) =>
     fs.writeFile(path, Buffer.from(content, 'utf-8'));
 
   const writeFileCached_ = yield* Effect.cachedFunction(
@@ -59,23 +66,23 @@ const make = Effect.gen(function* () {
     getFullFilePathFromStr,
     makeTempFile: (file: string, platform: string) =>
       fs.makeTempFile({
-        directory: NodePath.dirname(file),
-        prefix: `${NodePath.basename(file)}_${platform}_`,
+        directory: TwinPath.NodePath.dirname(file),
+        prefix: `${TwinPath.NodePath.basename(file)}_${platform}_`,
       }),
   };
 
   function getFile(filepath: string, text?: string): Effect.Effect<TwinFile, PlatformError> {
     return Effect.gen(function* () {
       const realPath =
-        NodePath.extname(filepath) !== ''
-          ? filePathFromString(filepath)
+        TwinPath.NodePath.extname(filepath) !== ''
+          ? TwinPath.filePathFromString(filepath)
           : yield* getFullFilePathFromStr(filepath);
       let contents = text;
       if (!contents) contents = yield* readFile(realPath);
 
       return {
-        basename: NodePath.basename(filepath),
-        dirname: NodePath.dirname(filepath),
+        basename: TwinPath.NodePath.basename(filepath),
+        dirname: TwinPath.NodePath.dirname(filepath),
         code: contents,
         id: `$${Hash.string(filepath)}`,
         path: realPath,
@@ -84,14 +91,14 @@ const make = Effect.gen(function* () {
   }
 
   function getFullFilePathFromStr(filename: string) {
-    const dirname = NodePath.dirname(filename);
+    const dirname = TwinPath.NodePath.dirname(filename);
     return Effect.gen(function* () {
       const dirFiles = yield* fs
         .readDirectory(dirname, { recursive: false })
-        .pipe(Effect.map(RA.map((x) => NodePath.join(dirname, x))));
+        .pipe(Effect.map(RA.map((x) => TwinPath.NodePath.join(dirname, x))));
 
       return RA.findFirst(dirFiles, (x) => x.startsWith(filename)).pipe(
-        Option.map((path) => filePathFromString(path)),
+        Option.map((path) => TwinPath.filePathFromString(path)),
         Option.getOrThrow,
       );
     });

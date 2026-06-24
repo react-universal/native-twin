@@ -2,9 +2,10 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
+    "allowSyntheticDefaultImports": true,
     "module": "nodenext",
-    "resolvePackageJsonExports": false,
-    "stripInternal": true,
+    "moduleDetection": "force",
     "noImplicitOverride": false,
     "esModuleInterop": true
   },

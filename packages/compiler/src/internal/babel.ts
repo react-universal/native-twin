@@ -9,61 +9,37 @@ import * as Effect from 'effect/Effect';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import { TwinNodeContextLive } from '../Config';
-import { type TwinFile, TwinFSContext, TwinFSContextLive, TwinPath } from '../FileSystem';
 import { makeTreeFrom } from '../utils/tree.utils';
-import {
-  type AnyNodePath,
-  type BabelFileAst,
-  type JSXAttributePath,
-  type JSXClassPropExpression,
-  type JSXElementFunction,
-  type JSXElementPath,
-  type JSXOpeningElementPath,
-  type ModuleDependency,
-  TwinJSXClassnameProp,
-  TwinJSXElement,
-  TwinJSXElementNode,
-  TwinModuleAst,
-} from './Models';
-import { isFunction, isLocalImport } from './Predicates';
-import { getBabelBindingImportSource, getSourceLocation } from './Utils';
-
-const make = Effect.gen(function* () {
-  const fs = yield* TwinFSContext;
-
-  const getTwinModuleAstFromPath = Effect.fn((path_: TwinPath.FilePath) =>
-    fs.getFile(path_).pipe(
-      Effect.andThen((file) => astFromTwinFile(file)),
-      Effect.tapError((error) => Effect.logDebug('ERROR_GETTING_MODULE: ', error._tag)),
-    ),
-  );
-
-  const getAstFileID = (node: BabelFileAst | t.File) => {
-    const loc = getSourceLocation(node);
-    return `${TwinPath.NodePath.dirname(loc.filename)}:${Hash.string(TwinPath.filePathFromString(loc.filename))}`;
-  };
-
-  const getAstFileDeps = (file: BabelFileAst) =>
-    getModuleDependencies(file, TwinPath.filePathFromString(getSourceLocation(file).filename));
-
-  return {
-    getTwinFileAst: (file: TwinFile) => astFromTwinFile(file),
-    getTwinModuleAstFromPath,
-    getAstFileID,
-    getAstFileDeps,
-    getRootJSXElements,
-    babelParse,
-    getJSXElementChilds,
-    jSXElementToTwinNode,
-    getModuleDependencies,
-  };
-});
+import * as _babelModels from './babel/babel.models';
+import * as _babelUtils from './babel/babel.utils';
+import type { TwinFile } from './fs';
+import * as TwinPath from './path';
 
 export class BabelUtils extends Effect.Service<BabelUtils>()('BabelUtils', {
-  effect: make,
   accessors: true,
-  dependencies: [TwinFSContextLive, TwinNodeContextLive],
+  effect: Effect.gen(function* () {
+    const getAstFileID = (node: _babelModels.BabelFileAst | t.File) => {
+      const loc = _babelUtils.getSourceLocation(node);
+      return `${TwinPath.NodePath.dirname(loc.filename)}:${Hash.string(TwinPath.filePathFromString(loc.filename))}`;
+    };
+
+    const getAstFileDeps = (file: _babelModels.BabelFileAst) =>
+      getModuleDependencies(
+        file,
+        TwinPath.filePathFromString(_babelUtils.getSourceLocation(file).filename),
+      );
+
+    return {
+      astFromTwinFile,
+      getAstFileID,
+      getAstFileDeps,
+      getRootJSXElements,
+      babelParse,
+      getJSXElementChilds,
+      jSXElementToTwinNode,
+      getModuleDependencies,
+    };
+  }),
 }) {}
 
 const plugins: _babelParser.ParserPlugin[] = ['typescript', 'jsx'];
@@ -79,7 +55,7 @@ const babelParserOptions: _babelParser.ParserOptions = {
 
 const parser = _babelParser.parse.bind(_babelParser);
 
-function babelParse(code: string | Buffer, fileName?: string): BabelFileAst {
+function babelParse(code: string | Buffer, fileName?: string): _babelModels.BabelFileAst {
   const codeString = code.toString();
   try {
     return parser(codeString, {
@@ -94,7 +70,7 @@ function babelParse(code: string | Buffer, fileName?: string): BabelFileAst {
   }
 }
 
-const astFromTwinFile = (file: TwinFile): Effect.Effect<TwinModuleAst> => {
+const astFromTwinFile = (file: TwinFile): Effect.Effect<_babelModels.TwinModuleAst> => {
   const ast = babelParse(file.code, file.path);
   const dependencies = getModuleDependencies(ast, file.path);
   return getRootJSXElements(ast).pipe(
@@ -109,26 +85,28 @@ const astFromTwinFile = (file: TwinFile): Effect.Effect<TwinModuleAst> => {
         getChilds: (item) => getJSXElementChilds(item),
         transform: (jsxElement) => jSXElementToTwinNode(jsxElement, { dependencies, file }),
       });
-      return new TwinJSXElement(file, jsxFunction, meta, tree);
+      return new _babelModels.TwinJSXElement(file, jsxFunction, meta, tree);
     }),
     Stream.runCollect,
     Effect.map(RA.fromIterable),
-    Effect.map((jsxElements) => new TwinModuleAst({ ast, file, jsxElements, dependencies })),
+    Effect.map(
+      (jsxElements) => new _babelModels.TwinModuleAst({ ast, file, jsxElements, dependencies }),
+    ),
   );
 };
 
 const findJsxElementDependency = (
-  jsxElement: JSXElementPath,
-  dependencies: ModuleDependency[],
-): Option.Option<ModuleDependency> => {
+  jsxElement: _babelModels.JSXElementPath,
+  dependencies: _babelModels.ModuleDependency[],
+): Option.Option<_babelModels.ModuleDependency> => {
   const ident = jsxElement.node.openingElement.name;
   if (!t.isJSXIdentifier(ident)) return Option.none();
 
   return Option.fromNullable(jsxElement.scope.getBinding(ident.name)).pipe(
-    Option.andThen(getBabelBindingImportSource),
+    Option.andThen(_babelUtils.getBabelBindingImportSource),
     Option.map((importSource) =>
       TwinPath.NodePath.resolve(
-        TwinPath.NodePath.dirname(getSourceLocation(jsxElement.node).filename),
+        TwinPath.NodePath.dirname(_babelUtils.getSourceLocation(jsxElement.node).filename),
         importSource.source,
       ),
     ),
@@ -139,8 +117,8 @@ const findJsxElementDependency = (
 };
 
 const jSXElementToTwinNode = (
-  path: JSXElementPath,
-  options: { dependencies: ModuleDependency[]; file: TwinFile },
+  path: _babelModels.JSXElementPath,
+  options: { dependencies: _babelModels.ModuleDependency[]; file: TwinFile },
 ) => {
   const ident = path.node.openingElement.name;
   if (!t.isJSXIdentifier(ident)) return null;
@@ -158,7 +136,7 @@ const jSXElementToTwinNode = (
     ),
   );
   const classNameProps = getClassNamePropsFromJSX(path, mappedProps);
-  return new TwinJSXElementNode({
+  return new _babelModels.TwinJSXElementNode({
     file: options.file,
     dependency,
     babelPath: path,
@@ -168,7 +146,9 @@ const jSXElementToTwinNode = (
   });
 };
 
-const getJSXElementChilds = (jsxElement: JSXElementPath): JSXElementPath[] => {
+const getJSXElementChilds = (
+  jsxElement: _babelModels.JSXElementPath,
+): _babelModels.JSXElementPath[] => {
   const childAttrs = pathJSXAttributeChilds(jsxElement.get('openingElement'));
   return jsxElement
     .get('children')
@@ -176,8 +156,8 @@ const getJSXElementChilds = (jsxElement: JSXElementPath): JSXElementPath[] => {
     .concat(childAttrs);
 };
 
-const pathJSXAttributeChilds = (openingElement: JSXOpeningElementPath) => {
-  const jsxAttrs: JSXElementPath[] = [];
+const pathJSXAttributeChilds = (openingElement: _babelModels.JSXOpeningElementPath) => {
+  const jsxAttrs: _babelModels.JSXElementPath[] = [];
   for (const attr of openingElement.get('attributes')) {
     attr.traverse({
       JSXElement: (path) => {
@@ -189,8 +169,8 @@ const pathJSXAttributeChilds = (openingElement: JSXOpeningElementPath) => {
   return jsxAttrs;
 };
 
-const getRootJSXElements = (ast: BabelFileAst) =>
-  Stream.async<JSXElementPath>((emit) => {
+const getRootJSXElements = (ast: _babelModels.BabelFileAst) =>
+  Stream.async<_babelModels.JSXElementPath>((emit) => {
     traverse(
       ast,
       {
@@ -208,12 +188,12 @@ const getRootJSXElements = (ast: BabelFileAst) =>
     );
   });
 
-const getModuleDependencies = (ast: BabelFileAst, filename: TwinPath.FilePath) => {
-  const dependencies: ModuleDependency[] = [];
+const getModuleDependencies = (ast: _babelModels.BabelFileAst, filename: TwinPath.FilePath) => {
+  const dependencies: _babelModels.ModuleDependency[] = [];
   for (const statement of ast.program.body) {
     if (!t.isImportDeclaration(statement)) continue;
     const importPath = statement.source.value;
-    const isLocal = isLocalImport(importPath);
+    const isLocal = _babelUtils.isLocalImport(importPath);
 
     const fullPath = isLocal
       ? TwinPath.AbsolutePath.make(
@@ -239,10 +219,12 @@ const getModuleDependencies = (ast: BabelFileAst, filename: TwinPath.FilePath) =
   return dependencies;
 };
 
-const getJSXElementFunction = (jsxPath: JSXElementPath): Option.Option<JSXElementFunction> => {
-  let compFn: AnyNodePath | null = jsxPath.findParent(isFunction);
+const getJSXElementFunction = (
+  jsxPath: _babelModels.JSXElementPath,
+): Option.Option<_babelModels.JSXElementFunction> => {
+  let compFn: _babelModels.AnyNodePath | null = jsxPath.findParent(_babelUtils.isFunction);
   while (compFn) {
-    const parent = compFn.findParent(isFunction);
+    const parent = compFn.findParent(_babelUtils.isFunction);
     if (parent) compFn = parent;
     else break;
   }
@@ -250,11 +232,13 @@ const getJSXElementFunction = (jsxPath: JSXElementPath): Option.Option<JSXElemen
     console.error('Cant find the component top most function');
     return Option.none();
   }
-  return Option.liftPredicate(compFn, (x) => isFunction(x));
+  return Option.liftPredicate(compFn, (x) => _babelUtils.isFunction(x));
 };
 
-const getDeclaratorData = (node: JSXElementFunction): TwinJSXElement['meta'] => {
-  let name: TwinJSXElement['meta']['name'] = '__Unknown';
+const getDeclaratorData = (
+  node: _babelModels.JSXElementFunction,
+): _babelModels.TwinJSXElement['meta'] => {
+  let name: _babelModels.TwinJSXElement['meta']['name'] = '__Unknown';
   let isExported = false;
 
   if (node.isArrowFunctionExpression()) {
@@ -284,8 +268,11 @@ const getDeclaratorData = (node: JSXElementFunction): TwinJSXElement['meta'] => 
   return { name, isExported };
 };
 
-const getClassNamePropsFromJSX = (jsxElement: JSXElementPath, mappedConfig: MappedComponent) => {
-  const classNameProps: TwinJSXClassnameProp[] = [];
+const getClassNamePropsFromJSX = (
+  jsxElement: _babelModels.JSXElementPath,
+  mappedConfig: MappedComponent,
+) => {
+  const classNameProps: _babelModels.TwinJSXClassnameProp[] = [];
   const jsxAttributes = jsxElement
     .get('openingElement')
     .get('attributes')
@@ -305,7 +292,7 @@ const getClassNamePropsFromJSX = (jsxElement: JSXElementPath, mappedConfig: Mapp
 
     const value = getPropValueString(ast);
     classNameProps.push(
-      new TwinJSXClassnameProp({
+      new _babelModels.TwinJSXClassnameProp({
         prop,
         target,
         ast: attribute,
@@ -323,7 +310,7 @@ const getClassNamePropsFromJSX = (jsxElement: JSXElementPath, mappedConfig: Mapp
  * @domain Babel
  * @description Extract the {@link TwinJSXClassnameProp} from any {@link t.JSXAttribute}
  * */
-const getJSXAttributeValue = (attribute: JSXAttributePath) => {
+const getJSXAttributeValue = (attribute: _babelModels.JSXAttributePath) => {
   if (!t.isJSXIdentifier(attribute.node.name)) return null;
 
   let ast: NodePath<t.TemplateLiteral | t.StringLiteral> | undefined;
@@ -359,7 +346,7 @@ const getPropValueString = (path: NodePath<t.StringLiteral | t.TemplateLiteral>)
     return {
       text,
       twinRules: parseTWTokens(text),
-      templateExpression: Option.none<JSXClassPropExpression>(),
+      templateExpression: Option.none<_babelModels.JSXClassPropExpression>(),
     };
   }
   const cooked = templateLiteralToStringLike(path.node);
@@ -370,7 +357,7 @@ const getPropValueString = (path: NodePath<t.StringLiteral | t.TemplateLiteral>)
     twinRules: parseTWTokens(text),
     templateExpression: Option.liftPredicate(path, (x) => x.isTemplateLiteral()).pipe(
       Option.map(
-        (_): JSXClassPropExpression => ({
+        (_): _babelModels.JSXClassPropExpression => ({
           expression: _,
           cookedExp: cooked.expressions,
           text: new CodeGenerator(cooked.expressions).generate().code,

@@ -1,7 +1,7 @@
 import type { __Theme__, RuntimeTW, TailwindConfig } from '@native-twin/core';
 import type { SheetEntry } from '@native-twin/css';
 import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import type { TwinPath } from '../FileSystem';
+import type * as TwinPath from '../internal/path';
 
 export type TwinRunnerPlatform = 'web' | 'native';
 

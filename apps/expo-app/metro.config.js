@@ -1,5 +1,5 @@
 const { getDefaultConfig } = require('expo/metro-config');
-const { withNativeTwin } = require('@native-twin/metro');
+const { withNativeTwin } = require('@native-twin/compiler/Metro');
 const path = require('path');
 
 const projectRoot = __dirname;

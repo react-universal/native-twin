@@ -3,16 +3,30 @@
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "node",
-    "lib": ["DOM", "ESNext", "DOM.Iterable"],
+    "lib": [
+      "DOM",
+      "ESNext",
+      "DOM.Iterable"
+    ],
     "strict": true,
     "jsx": "react-native",
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "rootDir": ".",
     "declarationMap": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["src", ".expo/types/**/*.ts", "native-twin.d.ts", "expo-env.d.ts"],
-  "exclude": [".expo"]
+  "include": [
+    "src",
+    ".expo/types/**/*.ts",
+    "native-twin.d.ts",
+    "expo-env.d.ts"
+  ],
+  "exclude": [
+    ".expo"
+  ]
 }

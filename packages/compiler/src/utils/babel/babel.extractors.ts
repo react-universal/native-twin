@@ -1,6 +1,6 @@
 import { traverse } from '@babel/core';
 import * as t from '@babel/types';
-import * as babelPredicates from './babel.predicates';
+import * as babelPredicates from '../../internal/babel/babel.utils';
 import { getBabelAST } from './babel.utils';
 
 export const extractLanguageRegions = (
@@ -17,10 +17,7 @@ export const extractLanguageRegions = (
     traverse(parsed, {
       CallExpression: (path) => {
         const sources: t.SourceLocation[] = [];
-        if (
-          t.isIdentifier(path.node.callee) &&
-          config.functions.includes(path.node.callee.name)
-        ) {
+        if (t.isIdentifier(path.node.callee) && config.functions.includes(path.node.callee.name)) {
           for (const arg of path.node.arguments) {
             if (t.isObjectExpression(arg)) {
               sources.push(...matchVariantsObject(arg.properties));
@@ -30,10 +27,7 @@ export const extractLanguageRegions = (
         sourceLocations.push(...sources);
       },
       TaggedTemplateExpression: (path) => {
-        if (
-          t.isIdentifier(path.node.tag) &&
-          config.functions.includes(path.node.tag.name)
-        ) {
+        if (t.isIdentifier(path.node.tag) && config.functions.includes(path.node.tag.name)) {
           sourceLocations.push(...templateExpressionMatcher(path.node.quasi.quasis));
         }
       },
@@ -50,9 +44,7 @@ export const extractLanguageRegions = (
             t.isJSXExpressionContainer(path.node.value) &&
             t.isTemplateLiteral(path.node.value.expression)
           ) {
-            sourceLocations.push(
-              ...templateExpressionMatcher(path.node.value.expression.quasis),
-            );
+            sourceLocations.push(...templateExpressionMatcher(path.node.value.expression.quasis));
           }
         }
       },

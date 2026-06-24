@@ -1,16 +1,15 @@
 import { defineConfig } from "tsdown";
 
 export default defineConfig({
-  entry: ["./src/index.ts"],
-  format: ["esm", "cjs"],
+  entry: {
+    index: "./src/index.ts",
+    Metro: './src/Metro.ts',
+    'Metro.transformer': './src/Metro.transformer.ts'
+  },
+  format: ["esm", 'cjs'],
   deps: {
     skipNodeModulesBundle: true,
   },
   outDir: "build",
-  sourcemap: true,
-  exports: true,
-  dts: {
-    resolver: 'tsc',
-    build: true
-  }
+  sourcemap: true
 });

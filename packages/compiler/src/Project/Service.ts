@@ -6,11 +6,20 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
-import type { TwinJSXElement, TwinJSXElementNode, TwinModuleAst } from '../Babel';
-import { BabelUtils } from '../Babel';
 import { TwinNodeContext, type TwinRunnerPlatform } from '../Config';
-import { TwinFSContext, TwinPath } from '../FileSystem';
-import { type CompilerStyleSheet, TwinStyleSheetContext } from '../StyleSheet';
+import { BabelUtils } from '../internal/babel';
+import type {
+  TwinJSXElement,
+  TwinJSXElementNode,
+  TwinModuleAst,
+} from '../internal/babel/babel.models';
+import { TwinFSContext, TwinFSContextLive } from '../internal/fs';
+import * as TwinPath from '../internal/path';
+import {
+  type CompilerStyleSheet,
+  TwinStyleSheetContext,
+  TwinStyleSheetContextLive,
+} from '../StyleSheet';
 import { mapTreeEffect } from '../utils/tree.utils';
 import { TransformedJSXNode } from './Model';
 
@@ -18,9 +27,12 @@ const make = Effect.gen(function* () {
   const ctx = yield* TwinNodeContext;
   const fs = yield* TwinFSContext;
   const sheet = yield* TwinStyleSheetContext;
+  const babelUtils = yield* BabelUtils;
 
   const getProjectModules = Stream.fromIterableEffect(ctx.state.projectFiles.get).pipe(
-    Stream.mapEffect((x) => BabelUtils.getTwinModuleAstFromPath(TwinPath.filePathFromString(x))),
+    Stream.mapEffect((x) =>
+      fs.getFile(TwinPath.filePathFromString(x)).pipe(Effect.andThen(babelUtils.astFromTwinFile)),
+    ),
   );
 
   const compileAst = Effect.fn(function* (twinAst: TwinModuleAst, platform: TwinRunnerPlatform) {
@@ -71,7 +83,7 @@ const make = Effect.gen(function* () {
   });
 
   const getAst = (filename: string, code: string) =>
-    Effect.andThen(fs.getFile(filename, code), BabelUtils.getTwinFileAst);
+    Effect.andThen(fs.getFile(filename, code), babelUtils.astFromTwinFile);
 
   const getFiles = ctx.state.projectFiles.get;
 
@@ -90,7 +102,7 @@ const make = Effect.gen(function* () {
     if (Option.isNone(dependency)) return Effect.succeed(Option.none<TwinJSXElement>());
 
     return Effect.andThen(fs.getFullFilePathFromStr(dependency.value.filepath), (dependencyPath) =>
-      BabelUtils.getTwinModuleAstFromPath(dependencyPath),
+      fs.getFile(dependencyPath).pipe(Effect.andThen(babelUtils.astFromTwinFile)),
     ).pipe(
       Effect.map((module) => dependency.pipe(Option.flatMap((dep) => module.findDependency(dep)))),
       Effect.catchAll((error) =>
@@ -105,4 +117,8 @@ const make = Effect.gen(function* () {
 export interface TwinProjectContext extends Effect.Effect.Success<typeof make> {}
 export const TwinProjectContext = Context.GenericTag<TwinProjectContext>('TwinProjectContext');
 
-export const TwinProjectContextLive = Layer.effect(TwinProjectContext, make);
+export const TwinProjectContextLive = Layer.effect(TwinProjectContext, make).pipe(
+  Layer.provide(TwinStyleSheetContextLive),
+  Layer.provide(BabelUtils.Default),
+  Layer.provideMerge(TwinFSContextLive),
+);

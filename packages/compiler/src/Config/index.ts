@@ -11,9 +11,4 @@ export type {
   NodeWithNativeTwinOptions,
   TwinRunnerPlatform,
 } from './Models';
-export {
-  CompilerConfigContext,
-  createCompilerConfig,
-  TwinNodeContext,
-  TwinNodeContextLive,
-} from './Service';
+export { type CompilerConfig, TwinNodeContext } from './Service';
