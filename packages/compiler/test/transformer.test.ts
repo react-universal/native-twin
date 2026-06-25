@@ -16,7 +16,7 @@ describe('Twin JSX transformer', () => {
       const babelFile = yield* fs.getFile(modulePath.inputFile);
       const module = yield* babelUtils.astFromTwinFile(babelFile);
 
-      expect(module.id).toBe('code.tsx:-1045751821');
+      expect(babelUtils.getModuleId(module)).toBe('code.tsx:-1045751821');
 
       const gen = new CodeGenerator(module.ast);
       const code = gen.generate().code;

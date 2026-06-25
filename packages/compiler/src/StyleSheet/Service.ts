@@ -6,6 +6,7 @@ import * as Context from 'effect/Context';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
+import { getJSXElementId, getJSXElementNodeId } from '../internal/babel';
 import type { TwinJSXElement, TwinJSXElementNode } from '../internal/babel/babel.models';
 import { TwinNodeContext } from '../internal/twinNode';
 
@@ -55,9 +56,9 @@ const make = Effect.gen(function* () {
         props,
         declarator: {
           ...jsxDeclarator.meta,
-          id: jsxDeclarator.id,
+          id: getJSXElementId(jsxDeclarator),
         },
-        id: node.id,
+        id: getJSXElementNodeId(node),
         babelPath: node.babelPath,
         dependency: node.dependency,
         jsxElementName: node.name,

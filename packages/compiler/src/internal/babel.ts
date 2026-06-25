@@ -4,11 +4,14 @@ import traverse, { type NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { cx, type MappedComponent, mappedComponents } from '@native-twin/core';
 import { parseTWTokens } from '@native-twin/css';
+import type { TwinRuntimeComponent } from '@native-twin/css/jsx';
+import { asArray } from '@native-twin/helpers';
 import * as RA from 'effect/Array';
 import * as Effect from 'effect/Effect';
 import * as Hash from 'effect/Hash';
 import * as Option from 'effect/Option';
 import * as Stream from 'effect/Stream';
+import { literalValueToAst } from '../utils/babel/babel.utils';
 import { makeTreeFrom } from '../utils/tree.utils';
 import * as _babelModels from './babel/babel.models';
 import * as _babelUtils from './babel/babel.utils';
@@ -29,7 +32,10 @@ export class BabelUtils extends Effect.Service<BabelUtils>()('BabelUtils', {
         TwinPath.filePathFromString(_babelUtils.getSourceLocation(file).filename),
       );
 
+    const parseFile = (filepath: string, code: string) => babelParse(code, filepath);
+
     return {
+      parseFile,
       astFromTwinFile,
       getAstFileID,
       getAstFileDeps,
@@ -38,6 +44,13 @@ export class BabelUtils extends Effect.Service<BabelUtils>()('BabelUtils', {
       getJSXElementChilds,
       jSXElementToTwinNode,
       getModuleDependencies,
+      getJSXElementId,
+      getJSXElementNodeId,
+      getModuleId,
+      findModuleDependency,
+      registerModuleComponent,
+      compileClassNameAttribute,
+      injectModuleStyleSheet,
     };
   }),
 }) {}
@@ -61,7 +74,6 @@ function babelParse(code: string | Buffer, fileName?: string): _babelModels.Babe
     return parser(codeString, {
       ...babelParserOptions,
       sourceFilename: fileName ?? '',
-      ranges: true,
     });
   } catch (err) {
     throw new Error(
@@ -85,12 +97,99 @@ const astFromTwinFile = (file: TwinFile): Effect.Effect<_babelModels.TwinModuleA
         getChilds: (item) => getJSXElementChilds(item),
         transform: (jsxElement) => jSXElementToTwinNode(jsxElement, { dependencies, file }),
       });
-      return new _babelModels.TwinJSXElement(file, jsxFunction, meta, tree);
+      return new _babelModels.TwinJSXElement({ file, jsxFunction, meta, tree });
     }),
     Stream.runCollect,
     Effect.map(RA.fromIterable),
-    Effect.map(
-      (jsxElements) => new _babelModels.TwinModuleAst({ ast, file, jsxElements, dependencies }),
+    Effect.map((jsxElements) => {
+      const module = new _babelModels.TwinModuleAst({
+        ast,
+        file,
+        jsxElements,
+        dependencies,
+        registerComponents: t.arrayExpression(),
+      });
+      injectModuleStyleSheet(module);
+      return module;
+    }),
+  );
+};
+
+/** @domain Babel — stable id derived from the JSXElement declarator function */
+export const getJSXElementId = (element: _babelModels.TwinJSXElement): string =>
+  element.jsxFunction.pipe(
+    Option.map((x) => [x.node.start, x.node.end].join('/')),
+    Option.getOrElse(() => ''),
+    (_) =>
+      `_JSXElement:${Hash.string(`${_}${element.file.path}${element.meta.isExported}${element.meta.name}`)}`,
+  );
+
+/** @domain Babel — stable id derived from a JSXElement node, its deps and classNames */
+export const getJSXElementNodeId = (node: _babelModels.TwinJSXElementNode): string => {
+  const data = node.classNameProps.map((x) => x.text).join(',');
+  return node.dependency.pipe(
+    Option.map((dep) => `${dep.filepath}_${dep.localName}_${dep.originalSource}_${dep.exportName}`),
+    Option.getOrElse(() => 'NoDep'),
+    (dep) =>
+      `__JSXElementNode:${Hash.string(node.file.path)}:${dep}:${node.name}:${Hash.string(data)}`,
+    Hash.string,
+    (id) => Math.abs(id).toString(),
+  );
+};
+
+/** @domain Babel — stable id for a module derived from its file basename + path */
+export const getModuleId = (module: _babelModels.TwinModuleAst): string =>
+  `${module.file.basename}:${Hash.string(module.file.path)}`;
+
+/** @domain Babel — find the exported JSXElement in `module` matching `dep` */
+export const findModuleDependency = (
+  module: _babelModels.TwinModuleAst,
+  dep: _babelModels.ModuleDependency,
+): Option.Option<_babelModels.TwinJSXElement> => {
+  if (!module.file.path.startsWith(dep.filepath)) return Option.none();
+  return RA.findFirst(module.jsxElements, (x) => dep.exportName === x.meta.name);
+};
+
+/** @domain Babel — push a runtime component into the module register array node */
+export const registerModuleComponent = (
+  module: _babelModels.TwinModuleAst,
+  jsx: TwinRuntimeComponent,
+): void => {
+  module.registerComponents.elements.push(literalValueToAst(jsx));
+};
+
+/** @domain Babel — strip/replace the className attribute AST in place */
+export const compileClassNameAttribute = (prop: _babelModels.TwinJSXClassnameProp): void => {
+  const value = prop.ast.get('value');
+  if (value.isStringLiteral()) {
+    prop.ast.remove();
+  }
+  if (value.isJSXExpressionContainer()) {
+    const expression = value.get('expression');
+    if (expression.isStringLiteral()) return void prop.ast.remove();
+
+    if (expression.isTemplateLiteral()) {
+      Option.tap(prop.expression, (x) => {
+        expression.replaceWith(x.cookedExp);
+        return Option.void;
+      });
+    }
+  }
+  value.scope.crawl();
+};
+
+/** @domain Babel — inject the StyleSheet import + register call into the module program */
+export const injectModuleStyleSheet = (module: _babelModels.TwinModuleAst): void => {
+  if (module.jsxElements.length === 0) return;
+  module.ast.program = t.removeComments(module.ast.program);
+  t.addComment(module.ast.program, 'inner', ' @ts-noCheck', true);
+  module.ast.program.body.unshift(_babelUtils.babelTemplates.importRNStyleSheet() as t.Statement);
+  module.ast.program.body.push(
+    ...asArray(
+      _babelUtils.babelTemplates.twinStoreRegisterJSX({
+        STYLESHEET_VAR_NAME: _babelModels.TWIN_STYLESHEET_IMPORT,
+        RUNTIME_COMPONENTS: module.registerComponents,
+      }),
     ),
   );
 };

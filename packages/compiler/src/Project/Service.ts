@@ -65,7 +65,7 @@ const make = Effect.gen(function* () {
           }
           const transform = new TransformedJSXNode({
             jsxDeclarator: jsxElement,
-            parentID: treeNode.parent?.value.id ?? null,
+            parentID: treeNode.parent ? babelUtils.getJSXElementNodeId(treeNode.parent.value) : null,
             node: treeNode,
             styledProps,
             parentStyles,
@@ -101,7 +101,9 @@ const make = Effect.gen(function* () {
     return Effect.andThen(fs.getFullFilePathFromStr(dependency.value.filepath), (dependencyPath) =>
       fs.getFile(dependencyPath).pipe(Effect.andThen(babelUtils.astFromTwinFile)),
     ).pipe(
-      Effect.map((module) => dependency.pipe(Option.flatMap((dep) => module.findDependency(dep)))),
+      Effect.map((module) =>
+        dependency.pipe(Option.flatMap((dep) => babelUtils.findModuleDependency(module, dep))),
+      ),
       Effect.catchAll((error) =>
         Effect.log(`getTreeNodeDep Error: ${error.message}`).pipe(
           Effect.map(() => Option.none<TwinJSXElement>()),

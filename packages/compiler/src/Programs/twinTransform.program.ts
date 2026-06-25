@@ -3,6 +3,11 @@ import * as t from '@babel/types';
 import { asArray } from '@native-twin/helpers';
 import * as Effect from 'effect/Effect';
 import * as Stream from 'effect/Stream';
+import {
+  compileClassNameAttribute,
+  getJSXElementNodeId,
+  registerModuleComponent,
+} from '../internal/babel';
 import type { TwinModuleAst } from '../internal/babel/babel.models';
 import type { TwinRunnerPlatform } from '../internal/twinNode';
 import { TwinProjectContext } from '../Project/Service';
@@ -23,7 +28,7 @@ export const twinTransformProgram = Effect.fn(function* (
       addJsxAttribute(
         treeNode.value.node.value.babelPath.node,
         '__twinID',
-        treeNode.value.node.value.id,
+        getJSXElementNodeId(treeNode.value.node.value),
       );
       addJsxAttribute(
         treeNode.value.node.value.babelPath.node,
@@ -39,7 +44,7 @@ export const twinTransformProgram = Effect.fn(function* (
       });
 
       for (const prop of treeNode.value.node.value.classNameProps) {
-        prop.compileAttribute();
+        compileClassNameAttribute(prop);
       }
 
       if (templateProps.length > 0) {
@@ -65,7 +70,7 @@ export const twinTransformProgram = Effect.fn(function* (
       //   JSX_NODE_SHEET: babelJsxElementStyles,
       // }) as t.Statement;
       // twinModule.addStyleRegistryExp(registerNodeStore);
-      twinModule.registerComponent(runtimeNode);
+      registerModuleComponent(twinModule, runtimeNode);
       return runtimeNode;
     }),
     Stream.runCollect,

@@ -2,6 +2,7 @@ import type { CompiledSheetEntry } from '@native-twin/core';
 import type { TwinRuntimeComponent } from '@native-twin/css/jsx';
 import type { TreeNode } from '@native-twin/helpers/tree';
 import * as Data from 'effect/Data';
+import { getJSXElementNodeId } from '../internal/babel';
 import type { TwinJSXElement, TwinJSXElementNode } from '../internal/babel/babel.models';
 import type { TwinRunnerPlatform } from '../internal/twinNode';
 import type { CompiledStyledProp } from '../StyleSheet/Model';
@@ -33,10 +34,10 @@ export class TransformedJSXNode extends Data.Class<{
       isGroupParent: runtimeProps.some((x) => x.metadata.isGroupParent),
     };
     return {
-      id: this.node.value.id,
+      id: getJSXElementNodeId(this.node.value),
       index: this.index,
       metadata,
-      childIds: this.node.children.map((x) => x.value.id),
+      childIds: this.node.children.map((x) => getJSXElementNodeId(x.value)),
       parentID: this.parentID,
       parentSize: this.parentSize,
       props: runtimeProps,
