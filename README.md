@@ -37,10 +37,9 @@
 Install the package with yarn or npm:
 
 ```sh
-npm install @native-twin/core @native-twin/babel @native-twin/jsx @native-twin/metro
+npm install @native-twin/core @native-twin/babel @native-twin/jsx
 # or
-yarn add @native-twin/core @native-twin/babel @native-twin/jsx @native-twin/metro
-```
+yarn add @native-twin/core @native-twin/babel @native-twin/jsx
 Edit your babel config file
 
 ```js

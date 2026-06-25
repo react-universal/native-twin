@@ -14,12 +14,21 @@
   "license": "MIT",
   "author": "Cristhian Gutierrez",
   "exports": {
-    ".": "./build/index.js",
-    "./Metro": "./build/Metro.js",
-    "./Metro.transformer": "./build/Metro.transformer.js",
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./Metro": {
+      "import": "./build/Metro.mjs",
+      "require": "./build/Metro.cjs"
+    },
+    "./Metro.transformer": {
+      "import": "./build/Metro.transformer.mjs",
+      "require": "./build/Metro.transformer.cjs"
+    },
     "./package.json": "./package.json"
   },
-  "types": "./build/index.d.ts",
+  "types": "./build/index.d.cts",
   "files": [
     "build",
     "LICENSE",
@@ -78,5 +87,7 @@
         "programs/*.ts"
       ]
     }
-  }
+  },
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs"
 }

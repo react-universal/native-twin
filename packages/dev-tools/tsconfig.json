@@ -2,9 +2,14 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "ESNext",
+    "ignoreDeprecations": "6.0",
     "moduleResolution": "node",
     "rootDir": "src"
   },
-  "include": ["src"],
-  "exclude": ["build"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "build"
+  ]
 }

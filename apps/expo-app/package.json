@@ -16,7 +16,6 @@
     "@native-twin/dev-tools": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/jsx": "workspace:*",
-    "@native-twin/metro": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
     "@native-twin/styled": "workspace:*",
     "expo": "~55.0.24",

@@ -42,7 +42,6 @@
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
     "@native-twin/jsx": "workspace:*",
-    "@native-twin/metro": "workspace:*",
     "effect": "^3.19.3",
     "eventemitter3": "^5.0.1"
   },

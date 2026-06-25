@@ -2,7 +2,6 @@ import { isObject } from 'effect/Predicate';
 import * as fs from 'fs/promises';
 import * as Metro from 'metro';
 import type { TransformResultWithSource } from 'metro/private/DeltaBundler';
-import { SourcePathsMode } from 'metro/private/shared/types';
 import path from 'path';
 import { describe, expect, it } from 'vitest';
 
@@ -29,9 +28,7 @@ describe('Metro bundler test', () => {
       },
       {
         // transformerPath: require.resolve('../src/transformer/metro.transformer'),
-        transformerPath: require.resolve(
-          path.join(__dirname, '../src/programs/metro.transformer.ts'),
-        ),
+        transformerPath: require.resolve(path.join(__dirname, '../src/Metro/Metro.transformer.ts')),
         projectRoot: exampleProjectFixture.cwd,
         resetCache: true,
       },

@@ -5,6 +5,7 @@ import * as ManagedRuntime from 'effect/ManagedRuntime';
 import * as Ref from 'effect/Ref';
 import type { GetTransformOptions } from 'metro-config';
 import type { CustomResolver } from 'metro-resolver';
+import path from 'path';
 import { TwinFSContext } from '../internal/fs';
 import * as TwinPath from '../internal/path';
 import { type NodeWithNativeTwinOptions, TwinNodeContext } from '../internal/twinNode';
@@ -31,7 +32,9 @@ export function withNativeTwin(
 
   return {
     ...metroConfig,
-    transformerPath: require.resolve('./Metro.transformer.js'),
+    transformerPath: require.resolve(path.join(__dirname, './Metro.transformer.cjs'), {
+      paths: [__dirname, require.main?.path ?? ''],
+    }),
     resolver: {
       ...metroConfig.resolver,
       resolveRequest: resolveMetroRequest,

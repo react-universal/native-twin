@@ -37,10 +37,6 @@
       "path": "../packages/jsx"
     },
     {
-      "name": "📦 @native-twin/metro",
-      "path": "../packages/metro"
-    },
-    {
       "name": "📦 @native-twin/core",
       "path": "../packages/native-twin"
     }
@@ -67,7 +63,6 @@
       "**/.expo": true
     },
     "editor.fontSize": 16,
-    "typescript.tsdk": "✨ native-twin/node_modules/typescript/lib",
     "[javascript]": {
       "editor.defaultFormatter": "biomejs.biome"
     },

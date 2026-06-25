@@ -61,10 +61,6 @@
       "path": "../packages/vite-plugin"
     },
     {
-      "name": "📦 @native-twin/metro",
-      "path": "../packages/metro"
-    },
-    {
       "name": "twin-run",
       "path": "../sites/twin.run"
     },

@@ -45,10 +45,6 @@
       "path": "../packages/ts-plugin"
     },
     {
-      "name": "📦 @native-twin/metro",
-      "path": "../packages/metro"
-    },
-    {
       "name": "📦 @native-twin/core",
       "path": "../packages/native-twin"
     },
@@ -103,12 +99,6 @@
       "**/dist": true
     },
     "editor.fontSize": 16,
-    "typescript.tsdk": "../node_modules/typescript/lib",
-    "typescript.workspaceSymbols.scope": "allOpenProjects",
-    "typescript.check.npmIsInstalled": true,
-    "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.suggest.includeAutomaticOptionalChainCompletions": true,
-    "typescript.suggest.classMemberSnippets.enabled": true,
     "cSpell.words": [
       "sastan",
       "TRBL",

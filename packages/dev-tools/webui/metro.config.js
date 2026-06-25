@@ -1,7 +1,7 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config');
 const path = require('path');
-const { withNativeTwin } = require('@native-twin/metro');
+const { withNativeTwin } = require('@native-twin/compiler/Metro');
 
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(projectRoot, '../../..');
