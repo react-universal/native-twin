@@ -40,6 +40,8 @@ declare module "react-native" {
   interface ViewProps {
     className?: string;
     cssInterop?: boolean;
+    __twinID?: string;
+    __parentID?: string;
   }
   interface TextInputProps {
     placeholderClassName?: string;

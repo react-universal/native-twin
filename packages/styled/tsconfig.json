@@ -1,15 +1,25 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "esnext",
     "jsx": "react-native",
+    "noStrictGenericChecks": false,
+    "noImplicitUseStrict": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
     "types": [
+      "node",
       "jest"
     ],
-    "moduleResolution": "nodenext"
+    "moduleResolution": "bundler"
   },
   "include": [
-    "src",
+    "bck",
     "test",
     "types.d.ts"
   ],

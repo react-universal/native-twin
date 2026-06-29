@@ -155,7 +155,8 @@ export const registerModuleComponent = (
   module: _babelModels.TwinModuleAst,
   jsx: TwinRuntimeComponent,
 ): void => {
-  module.registerComponents.elements.push(literalValueToAst(jsx));
+  const ast = literalValueToAst(jsx);
+  module.registerComponents.elements.push(ast);
 };
 
 /** @domain Babel — strip/replace the className attribute AST in place */

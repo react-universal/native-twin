@@ -3,6 +3,8 @@ import babelTemplate from '@babel/template';
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { type AnyPrimitive, asArray } from '@native-twin/helpers';
+import * as Func from 'effect/Function';
+import * as Match from 'effect/Match';
 
 export const templateLiteralsToInject = (value: string) => {
   if (value.startsWith('`') && value.endsWith('`')) {
@@ -32,35 +34,23 @@ export const templateLiteralsToInject = (value: string) => {
 };
 
 export const literalValueToAst = (value: any): t.Expression => {
-  if (value === null) return t.nullLiteral();
-
-  switch (typeof value) {
-    case 'function':
-      throw new Error('Unsupported value to ast');
-    case 'string':
-      // if (value.includes('$')) {
-      //   const r = convertStringLiteral(value);
-      //   if (r) return r;
-      // }
-      return t.stringLiteral(value);
-    case 'number':
-      return t.numericLiteral(value);
-    case 'bigint':
-      return t.bigIntLiteral(value.toString());
-    case 'boolean':
-      return t.booleanLiteral(value);
-    case 'undefined':
-      return t.unaryExpression('void', t.numericLiteral(0), true);
-    default:
-      if (Array.isArray(value)) {
-        return t.arrayExpression(value.map(literalValueToAst));
-      }
-      return t.objectExpression(
-        Object.keys(value)
-          .filter((key) => typeof value[key] !== 'undefined')
+  return Match.value(value).pipe(
+    Match.when(Match.string, (x) => t.stringLiteral(x)),
+    Match.when(Match.number, (x) => t.numericLiteral(x)),
+    Match.when(Match.bigint, (x) => t.bigIntLiteral(x)),
+    Match.when(Match.boolean, (x) => t.booleanLiteral(x)),
+    Match.when(Match.null, () => t.nullLiteral()),
+    Match.when(Match.undefined, () => t.unaryExpression('void', t.numericLiteral(0), true)),
+    Match.when(Array.isArray, (x) => t.arrayExpression(x.map(literalValueToAst))),
+    Match.when(Match.record, (x) =>
+      t.objectExpression(
+        Object.keys(x)
+          .filter((key) => typeof x[key] !== 'undefined')
           .map((key) => t.objectProperty(t.stringLiteral(key), literalValueToAst(value[key]))),
-      );
-  }
+      ),
+    ),
+    Match.orElse(() => t.nullLiteral()),
+  );
 };
 
 const valueTypes = ['BooleanLiteral', 'StringLiteral', 'NumericLiteral'];

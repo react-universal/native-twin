@@ -7,7 +7,6 @@ export interface Atom<T> {
 }
 export type AtomGetter<AtomValue> = (get: <T>(a: Atom<T>) => T) => AtomValue;
 
-
 export const atom = <T>(initialValue: T | AtomGetter<T>): Atom<T> => {
   let currentValue = typeof initialValue === 'function' ? (null as T) : initialValue;
 

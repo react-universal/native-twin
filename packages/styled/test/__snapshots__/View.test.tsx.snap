@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@native-twin/styled CustomView render 1`] = `null`;
+exports[`@native-twin/styled StyledView render 1`] = `
+<View
+  className="asdad"
+/>
+`;
 
-exports[`@native-twin/styled StyledView render 1`] = `null`;
+exports[`@native-twin/styled StyledView render 2`] = `
+<View
+  __parentID="NONE"
+  __twinID="_Parent:0"
+  classNames="flex-1 first:(border-2)"
+  styles={
+    {
+      "flexBasis": "0%",
+      "flexGrow": 1,
+      "flexShrink": 1,
+    }
+  }
+>
+  <View
+    __parentID="NONE"
+    __twinID="_Child:0:1"
+    classNames="bg-red"
+    styles={
+      {
+        "backgroundColor": "rgba(248,113,113,1)",
+      }
+    }
+  />
+</View>
+`;

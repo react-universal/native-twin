@@ -1,27 +1,21 @@
 import type { PluginObj } from '@babel/core';
 import {
-  type BabelAPI,
-  BabelUtils,
-  CompilerConfigContext,
-  createCompilerConfig,
-  type TwinBabelPluginOptions,
-  TwinFSContextLive,
   TwinNodeContext,
-  TwinNodeContextLive,
-  TwinPath,
   TwinProjectContextLive,
   TwinStyleSheetContextLive,
   twinTransformProgram,
 } from '@native-twin/compiler';
+import {
+  type BabelAPI,
+  BabelUtils,
+  type TwinBabelPluginOptions,
+  TwinPath,
+} from '@native-twin/compiler/Babel';
 import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import path from 'path';
 
-const NodeMainLayerSync = Layer.empty.pipe(
-  Layer.provideMerge(BabelUtils.Default),
-  Layer.provideMerge(TwinFSContextLive),
-  Layer.provideMerge(TwinNodeContextLive),
-);
+const NodeMainLayerSync = Layer.empty.pipe(Layer.merge(BabelUtils.Default));
 
 const allowed = new Set<string>();
 const visited = new Set<string>();
@@ -29,7 +23,6 @@ const program = Effect.scoped(
   Effect.gen(function* () {
     const ctx = yield* TwinNodeContext;
     const babel = yield* BabelUtils;
-    const config = yield* CompilerConfigContext;
     return {
       name: '@native-twin/babel-plugin',
       manipulateOptions(opts, parserOpts) {
@@ -65,7 +58,7 @@ const program = Effect.scoped(
         //   },
         // });
         babel
-          .getTwinFileAst({
+          .astFromTwinFile({
             id: babel.getAstFileID(file.ast),
             basename: path.dirname(file.ast.loc?.filename ?? this.cwd),
             code: file.code,
@@ -85,8 +78,8 @@ const program = Effect.scoped(
             }),
             Effect.provide(TwinProjectContextLive),
             Effect.provide(TwinStyleSheetContextLive),
+            Effect.provideService(TwinNodeContext, ctx),
             Effect.provide(NodeMainLayerSync),
-            Effect.provideService(CompilerConfigContext, config),
             Effect.runCallback,
           );
       },
@@ -135,11 +128,10 @@ function nativeTwinBabelPlugin(
 ): PluginObj {
   // console.log('OPTIONS: ', options);
   return program.pipe(
-    Effect.provide(NodeMainLayerSync),
     Effect.provide(
-      Layer.succeed(
-        CompilerConfigContext,
-        createCompilerConfig({
+      Layer.provideMerge(
+        NodeMainLayerSync,
+        TwinNodeContext.Default({
           outDir: options.outputDir ?? '.',
           rootDir: cwd,
           inputCSS: options.inputCSS,
