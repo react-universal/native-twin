@@ -10,4 +10,11 @@ export default defineConfig((c) => ({
   clean: !!c.watch,
   sourcemap: true,
   exports: true,
+  dts: {
+    build: true,
+    oxc: false,
+    incremental: true,
+    resolver: 'tsc',
+    tsconfig: "tsconfig.build.json"
+  }
 }));

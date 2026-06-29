@@ -3,7 +3,8 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "nodenext",
-    "rootDir": "src"
+    "rootDir": "src",
+    "composite": true
   },
   "include": ["src"],
   "exclude": ["build"]

@@ -8,6 +8,7 @@ const debug = !!process.argv[1];
 const filesToDelete = dirs.flatMap((pkg) => {
   const files = [
     '.tsbuildinfo',
+    'tsconfig.tsbuildinfo',
     'docs',
     'build',
     'dist',

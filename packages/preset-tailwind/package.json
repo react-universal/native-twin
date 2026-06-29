@@ -21,24 +21,6 @@
     "directory": "packages/preset-tailwind"
   },
   "license": "MIT",
-  "exports": {
-    ".": {
-      "import": "./build/index.mjs",
-      "require": "./build/index.cjs"
-    },
-    "./colors": {
-      "import": "./build/colors.mjs",
-      "require": "./build/colors.cjs"
-    },
-    "./default-config": {
-      "import": "./build/default-config.mjs",
-      "require": "./build/default-config.cjs"
-    },
-    "./package.json": "./package.json"
-  },
-  "main": "./build/index.cjs",
-  "module": "./build/index.mjs",
-  "types": "./build/index.d.cts",
   "files": [
     "build",
     "colors",
@@ -83,5 +65,23 @@
       "test:debug",
       "test:watch"
     ]
+  },
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
+  "exports": {
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./colors": {
+      "import": "./build/colors.mjs",
+      "require": "./build/colors.cjs"
+    },
+    "./default-config": {
+      "import": "./build/default-config.mjs",
+      "require": "./build/default-config.cjs"
+    },
+    "./package.json": "./package.json"
   }
 }

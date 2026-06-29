@@ -10,7 +10,8 @@
     "target": "ES2020",
     "lib": ["ES2022"],
     "noEmit": false,
-    "noEmitOnError": false
+    "noEmitOnError": false,
+    "composite": true
   },
   "exclude": ["./tests/", "build"]
 }

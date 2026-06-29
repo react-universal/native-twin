@@ -1,29 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "esnext",
-    "jsx": "react-native",
-    "noStrictGenericChecks": false,
-    "noImplicitUseStrict": false,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "types": [
-      "node",
-      "jest"
-    ],
-    "moduleResolution": "bundler"
-  },
-  "include": [
-    "bck",
-    "test",
-    "types.d.ts"
-  ],
-  "exclude": [
-    "build"
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
   ]
 }

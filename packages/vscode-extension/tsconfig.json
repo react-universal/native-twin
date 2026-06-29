@@ -1,17 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "ES2024",
-    "ignoreDeprecations": "6.0",
-    "moduleResolution": "node10",
-    "rootDir": "src"
-  },
-  "include": [
-    "src",
-    "test"
-  ],
-  "exclude": [
-    "build"
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" }
   ]
 }

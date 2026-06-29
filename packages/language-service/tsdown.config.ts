@@ -7,8 +7,11 @@ export default defineConfig({
     skipNodeModulesBundle: true,
   },
   dts: {
-    resolver: "tsc",
-    tsconfig: "tsconfig.build.json",
+    build: true,
+    oxc: false,
+    incremental: true,
+    resolver: 'tsc',
+    tsconfig: "tsconfig.build.json"
   },
   sourcemap: true,
   outDir: "build",

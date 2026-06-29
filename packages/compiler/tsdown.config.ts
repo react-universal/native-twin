@@ -12,7 +12,15 @@ export default defineConfig({
   deps: {
     skipNodeModulesBundle: true,
   },
-  exports: true,
+  dts: {
+    resolver: 'tsc',
+    oxc: false,
+    incremental: true,
+    build: true,
+    tsconfig: 'tsconfig.build.json'
+  },
+  nodeProtocol: 'strip',
+  platform: 'neutral',
   outDir: "build",
   sourcemap: true
 });

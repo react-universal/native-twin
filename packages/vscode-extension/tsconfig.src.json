@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2024",
+    "ignoreDeprecations": "6.0",
+    "moduleResolution": "node10",
+    "types": ["node"],
+    "outDir": "build/src",
+    "tsBuildInfoFile": ".tsbuildinfo/src.tsbuildinfo",
+    "rootDir": "src"
+  }
+}

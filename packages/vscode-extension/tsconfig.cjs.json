@@ -8,9 +8,7 @@
     "moduleResolution": "Node",
     "target": "es2024",
     "moduleDetection": "force",
-    "lib": [
-      "ES2022"
-    ],
+    "lib": ["ES2022"],
     "noEmit": false,
     "noEmitOnError": false
   }

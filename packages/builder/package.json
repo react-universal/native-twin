@@ -26,7 +26,6 @@
     "src"
   ],
   "scripts": {
-    "build": "node esbuild.mjs",
     "build:compiler": "node esbuild.mjs",
     "clean": "rm -rf build",
     "test": "npx vitest",

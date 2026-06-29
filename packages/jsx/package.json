@@ -6,6 +6,7 @@
   "bugs": {
     "url": "https://github.com/react-universal/native-twin/issues"
   },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/react-universal/native-twin",
@@ -40,8 +41,6 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npx tsdown",
-    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "biome lint",

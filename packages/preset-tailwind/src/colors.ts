@@ -1,1 +1,1 @@
-export * from './tailwind-theme/colors';
+export { colors } from "./tailwind-theme/colors";

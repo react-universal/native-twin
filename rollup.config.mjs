@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';

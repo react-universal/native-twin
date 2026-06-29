@@ -1,48 +1,37 @@
 {
   "compilerOptions": {
-    // Emit config
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "moduleDetection": "force",
+    "composite": true,
+    "resolveJsonModule": true,
     "declaration": true,
-    "sourceMap": true,
-    "declarationMap": true,
+    "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noEmitOnError": false,
-    "removeComments": false,
-    // Modules Config
-    "module": "NodeNext",
-    "target": "ES2022",
     "moduleResolution": "NodeNext",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "moduleDetection": "force",
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": [],
+    "isolatedModules": true,
+    "sourceMap": true,
+    "declarationMap": true,
+    "noImplicitReturns": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noEmitOnError": false,
+    "noErrorTruncation": false,
     "allowJs": false,
     "checkJs": false,
-    // Lint
-    "strict": true,
-    "strictFunctionTypes": true,
-    "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "strictNullChecks": true,
-    "noUncheckedIndexedAccess": false,
-    "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
-    "allowUnreachableCode": false,
-    "noImplicitReturns": false,
-    "exactOptionalPropertyTypes": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "noImplicitOverride": true,
-    "noErrorTruncation": false,
-    "noUnusedParameters": false,
-    "noUnusedLocals": true,
-    "isolatedModules": true,
+    "noUncheckedIndexedAccess": false,
+    "strictNullChecks": true,
+    "target": "ES2022",
+    "module": "NodeNext",
+    "incremental": true,
+    "removeComments": false,
     "plugins": [
       {
         "name": "@effect/language-service",
@@ -63,12 +52,9 @@
           "@native-twin/styled",
           "@native-twin/ts-plugin",
           "@native-twin/vite-plugin",
-          "@native-twin/vscode-extension",
+          "@native-twin/vscode-extension"
         ]
       }
     ]
-  },
-  "exclude": [
-    "build/**/*"
-  ]
+  }
 }

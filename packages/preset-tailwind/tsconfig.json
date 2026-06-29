@@ -1,16 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "types": [
-      "node",
-      "jest"
-    ]
-  },
-  "include": [
-    "src",
-    "test"
-  ],
-  "exclude": [
-    "build"
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
   ]
 }

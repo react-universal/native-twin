@@ -116,7 +116,6 @@
     "attributePosition": "multiline",
     "bracketSpacing": true,
     "includes": [
-      "**",
       "!**/*.json",
       "!.nx/cache",
       "!.nx/workspace-data"
@@ -139,6 +138,10 @@
   "json": {
     "linter": {
       "enabled": false
+    },
+    "formatter": {
+      "expand": "never",
+      "lineWidth": 80
     }
   }
 }

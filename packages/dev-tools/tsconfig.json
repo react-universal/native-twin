@@ -4,12 +4,27 @@
     "module": "ESNext",
     "ignoreDeprecations": "6.0",
     "moduleResolution": "node",
-    "rootDir": "src"
+    "rootDir": "src",
+    "composite": true
   },
   "include": [
     "src"
   ],
   "exclude": [
     "build"
+  ],
+  "references": [
+    {
+      "path": "../css"
+    },
+    {
+      "path": "../helpers"
+    },
+    {
+      "path": "../jsx"
+    },
+    {
+      "path": "../native-twin"
+    }
   ]
 }

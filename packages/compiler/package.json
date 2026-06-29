@@ -16,27 +16,27 @@
   "exports": {
     ".": {
       "import": "./build/index.mjs",
-      "require": "./build/index.cjs"
+      "require": "./build/index.js"
     },
     "./Babel": {
       "import": "./build/Babel.mjs",
-      "require": "./build/Babel.cjs"
+      "require": "./build/Babel.js"
     },
     "./Metro": {
       "import": "./build/Metro.mjs",
-      "require": "./build/Metro.cjs"
+      "require": "./build/Metro.js"
     },
     "./Metro.transformer": {
       "import": "./build/Metro.transformer.mjs",
-      "require": "./build/Metro.transformer.cjs"
+      "require": "./build/Metro.transformer.js"
     },
     "./Programs": {
       "import": "./build/Programs.mjs",
-      "require": "./build/Programs.cjs"
+      "require": "./build/Programs.js"
     },
     "./package.json": "./package.json"
   },
-  "types": "./build/index.d.cts",
+  "types": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
@@ -96,6 +96,12 @@
       ]
     }
   },
-  "main": "./build/index.cjs",
-  "module": "./build/index.mjs"
+  "main": "./build/index.js",
+  "module": "./build/index.mjs",
+  "inlinedDependencies": {
+    "@babel/parser": "7.28.4",
+    "@babel/types": "7.28.4",
+    "@types/babel__generator": "7.27.0",
+    "@types/babel__traverse": "7.28.0"
+  }
 }

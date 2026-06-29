@@ -1,10 +1,9 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.src.json",
   "compilerOptions": {
-    "lib": [
-      "ES2024",
-      "WebWorker"
-    ],
-    "stripInternal": true
+    "tsBuildInfoFile": ".tsbuildinfo/build.tsbuildinfo",
+    "lib": ["ES2024", "WebWorker"],
+    "stripInternal": true,
+    "outDir": "build"
   }
 }

@@ -1,13 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src", "tests"],
-  "compilerOptions": {
-    "exactOptionalPropertyTypes": false,
-    "moduleResolution": "bundler",
-    "resolvePackageJsonExports": false,
-    "module": "es2022",
-    
-    "declarationDir": "build/dts",
-    "outDir": "build/esm"
-  },
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
+  ]
 }

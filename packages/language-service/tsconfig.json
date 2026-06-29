@@ -1,19 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "esnext",
-    "exactOptionalPropertyTypes": false,
-    "moduleResolution": "bundler",
-    "disableReferencedProjectLoad": true,
-    "jsx": "preserve"
-  },
-  "include": [
-    "src",
-    "ts-exposed",
-    "tests"
-  ],
-  "exclude": [
-    "build/**/*",
-    "tests/fixtures"
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
   ]
 }

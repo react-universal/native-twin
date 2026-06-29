@@ -9,4 +9,11 @@ export default defineConfig({
   outDir: "build",
   sourcemap: true,
   exports: true,
+  dts: {
+    build: true,
+    oxc: false,
+    incremental: true,
+    resolver: 'tsc',
+    tsconfig: "tsconfig.build.json"
+  }
 });

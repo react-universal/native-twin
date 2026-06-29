@@ -3,6 +3,10 @@ import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfil
 
 const getConfig = (entryFile: string, browser = false): UserConfig => ({
   entry: entryFile,
+  dts: {
+    build: true,
+    tsconfig: "tsconfig.build.json",
+  },
   deps: {
     neverBundle: ["vscode"],
     alwaysBundle: [
@@ -46,11 +50,15 @@ export default defineConfig([
   getConfig("./src/extension.ts"),
   getConfig("./src/extension-web.ts", true),
   {
+    dts: {
+      build: true,
+      tsconfig: "tsconfig.build.json",
+    },
     entry: "./src/servers/lsp.node.ts",
     exports: false,
     outDir: "build",
     sourcemap: true,
     format: "cjs",
-    fixedExtension: false
+    fixedExtension: false,
   },
 ]);

@@ -1,9 +1,23 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    
     "outDir": "build/esm",
     "declarationDir": "build/dts",
-    "stripInternal": true
-  }
+    "stripInternal": true,
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../css"
+    },
+    {
+      "path": "../helpers"
+    },
+    {
+      "path": "../jsx"
+    },
+    {
+      "path": "../native-twin"
+    }
+  ]
 }

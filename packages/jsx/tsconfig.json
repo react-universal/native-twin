@@ -1,22 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "rootDir": "src",
-    "allowArbitraryExtensions": false,
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
-    "types": [
-      "jest",
-      "node"
-    ],
-    "jsx": "preserve"
-  },
-  "include": [
-    "src",
-    "__tests__",
-    "types.d.ts"
-  ],
-  "exclude": [
-    "build"
+  "include": [],
+  "references": [
+    { "path": "tsconfig.src.json" },
+    { "path": "tsconfig.test.json" }
   ]
 }

@@ -6,12 +6,9 @@ export default defineConfig({
     "./src/index.web.ts",
     "./src/jsx-runtime.ts",
     "./src/jsx-dev-runtime.ts",
-    // "./src/testing-library/index.ts",
-    // "./src/testing-library/setup.ts",
     "./src/sheet/index.ts",
     "./src/components.ts",
     "./src/components.web.ts",
-    // "./src/testing-library/setupAfterEnv.ts",
     "./src/types.ts"
   ],
   format: "esm",
@@ -28,8 +25,13 @@ export default defineConfig({
     dynamicImportInCjs: false,
   },
   dts: {
-    resolver: 'tsc'
+    resolver: 'tsc',
+    oxc: false,
+    incremental: true,
+    build: true,
   },
+  platform: 'neutral',
+  
   sourcemap: true,
   outDir: "build",
   exports: true,
