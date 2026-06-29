@@ -3,7 +3,6 @@ import babelTemplate from '@babel/template';
 import type { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { type AnyPrimitive, asArray } from '@native-twin/helpers';
-import * as Func from 'effect/Function';
 import * as Match from 'effect/Match';
 
 export const templateLiteralsToInject = (value: string) => {
