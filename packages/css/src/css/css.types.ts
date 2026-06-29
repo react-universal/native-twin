@@ -1,5 +1,5 @@
-import type { StyleProp } from 'react-native';
 import type { Falsey, StringLike } from '@native-twin/helpers';
+import type { StyleProp } from 'react-native';
 import type {
   AppearancePseudoSelectors,
   ChildPseudoSelectors,
@@ -21,14 +21,7 @@ export type ValidPlatformInteractionPseudoSelector = `${
   | ValidInteractionPseudoSelector
   | ValidGroupPseudoSelector}:${ValidPlatformPseudoSelector}`;
 
-export type CSSValue =
-  | string
-  | number
-  | bigint
-  | Falsey
-  | StringLike
-  | StyleProp<any>
-  | CSSValue[];
+export type CSSValue = string | number | bigint | Falsey | StringLike | StyleProp<any> | CSSValue[];
 
 export type CssFeature =
   | 'edges'
@@ -53,9 +46,23 @@ export type CSSLengthUnit = {
   [U in CSSUnit]: number;
 }[CSSUnit];
 
-export type CssUnits = {
+export type CSSUnits = {
   [U in CSSUnit]: number;
 }[CSSUnit];
+
+export type CSSUnitWithDefaultValue =
+  | 'rem'
+  | 'em'
+  | 'cm'
+  | 'mm'
+  | 'in'
+  | 'pt'
+  | 'pc'
+  | 'px'
+  | 'vmin'
+  | 'vmax'
+  | 'vw'
+  | 'vh';
 
 export type CSSUnit =
   | 'px'
@@ -82,6 +89,4 @@ export interface ParserToken<T, U> {
   type: T;
   value: U;
 }
-export type ParserTokenIdentity = <T extends string>(
-  type: T,
-) => <U>(value: U) => ParserToken<T, U>;
+export type ParserTokenIdentity = <T extends string>(type: T) => <U>(value: U) => ParserToken<T, U>;

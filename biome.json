@@ -1,0 +1,147 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.7/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**/*/apps/**/*.ts",
+      "**/*/src/**/*.ts",
+      "**/*/src/**/*.tsx",
+      "**/*/test/**/*",
+      "**/*/tests/**/*",
+      "!**/packages/**/*/build/**/*",
+      "!**/*/test/fixtures/**/*",
+      "!**/*/test/project-fixture/**/*",
+      "!**/*/test/server-fixture/**/*"
+    ]
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              {
+                "source": "vscode",
+                "type": null
+              }
+            ],
+            "identifierOrder": "natural"
+          }
+        }
+      }
+    }
+  },
+  "linter": {
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "useExhaustiveDependencies": {
+          "level": "error",
+          "options": {
+            "hooks": [
+              {
+                "name": "useNearestChild",
+                "stableResult": true
+              }
+            ]
+          }
+        },
+        "noSwitchDeclarations": "off",
+        "noEmptyCharacterClassInRegex": "off",
+        "noChildrenProp": "off",
+        "noInnerDeclarations": "off"
+      },
+      "a11y": {
+        "useValidAnchor": "off",
+        "useMediaCaption": "off"
+      },
+      "style": {
+        "useShorthandFunctionType": "off",
+        "useSelfClosingElements": "off",
+        "noUselessElse": "off",
+        "useNodejsImportProtocol": "off",
+        "noParameterAssign": "off",
+        "useDefaultParameterLast": "off",
+        "noNonNullAssertion": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "suspicious": {
+        "noEmptyInterface": "off",
+        "noExplicitAny": "off",
+        "noImplicitAnyLet": "off",
+        "noAssignInExpressions": "off",
+        "noArrayIndexKey": "off",
+        "noConfusingVoidType": "off",
+        "noFocusedTests": "off",
+        "noControlCharactersInRegex": "off",
+        "noShadowRestrictedNames": "off",
+        "noFunctionAssign": "off",
+        "noVar": "off"
+      },
+      "performance": {
+        "noDelete": "off",
+        "noAccumulatingSpread": "off"
+      },
+      "complexity": {
+        "useOptionalChain": "off",
+        "useRegexLiterals": "off",
+        "noThisInStatic": "off",
+        "noBannedTypes": "off",
+        "noStaticOnlyClass": "off",
+        "noUselessConstructor": "off",
+        "noForEach": "off",
+        "noUselessSwitchCase": "off",
+        "useLiteralKeys": "off",
+        "noArguments": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": false,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 100,
+    "attributePosition": "multiline",
+    "bracketSpacing": true,
+    "includes": [
+      "!**/*.json",
+      "!.nx/cache",
+      "!.nx/workspace-data"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto",
+      "bracketSpacing": true,
+      "enabled": true
+    }
+  },
+  "json": {
+    "linter": {
+      "enabled": false
+    },
+    "formatter": {
+      "expand": "never",
+      "lineWidth": 80
+    }
+  }
+}

@@ -2,13 +2,29 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-native",
-    "lib": ["DOM", "ESNext"],
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
     "exactOptionalPropertyTypes": false,
     "allowJs": true,
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "target": "ESNext",
     "noEmit": true
   },
-  "exclude": ["node_modules", ".expo"],
-  "include": ["index.js", "**/*.ts", "**/*.tsx", "**/*.json", "wdyr.js"]
+  "exclude": [
+    "node_modules",
+    ".expo",
+    "@native-twin/player",
+    "../src"
+  ],
+  "include": [
+    "index.js",
+    "native-twin.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.json",
+    "wdyr.js"
+  ]
 }

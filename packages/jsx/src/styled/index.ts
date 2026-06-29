@@ -1,6 +1,11 @@
 export {
+  createAnimatedComponent,
   createStylableComponent,
-  withMappedProps,
-  twinComponent,
+  createTwinProps,
+  mappedComponentsConfig,
+  NativeTwinHOC,
   stylizedComponents,
+  TwinElement,
+  twinComponent,
+  withMappedProps,
 } from './native';

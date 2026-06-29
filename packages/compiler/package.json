@@ -1,0 +1,107 @@
+{
+  "name": "@native-twin/compiler",
+  "version": "7.0.0-next.3",
+  "description": "Common compilers for native twin",
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/compiler"
+  },
+  "license": "MIT",
+  "author": "Cristhian Gutierrez",
+  "exports": {
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.js"
+    },
+    "./Babel": {
+      "import": "./build/Babel.mjs",
+      "require": "./build/Babel.js"
+    },
+    "./Metro": {
+      "import": "./build/Metro.mjs",
+      "require": "./build/Metro.js"
+    },
+    "./Metro.transformer": {
+      "import": "./build/Metro.transformer.mjs",
+      "require": "./build/Metro.transformer.js"
+    },
+    "./Programs": {
+      "import": "./build/Programs.mjs",
+      "require": "./build/Programs.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "./build/index.d.ts",
+  "files": [
+    "build",
+    "LICENSE",
+    "src",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
+    "clean": "rm -rf build",
+    "gen:jsdocs": "jsdoc -c jsdoc.json",
+    "lint": "biome lint",
+    "test": "VITE_CJS_IGNORE_WARNING=true npx vitest"
+  },
+  "dependencies": {
+    "@effect/platform": "^0.93.2",
+    "@effect/platform-node": "^0.100.0",
+    "@effect/platform-node-shared": "^0.53.0",
+    "@effect/printer-ansi": "^0.47.0",
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
+    "@native-twin/preset-tailwind": "workspace:*",
+    "chokidar": "^3.5.3",
+    "code-block-writer": "^13.0.3",
+    "effect": "^3.19.3",
+    "fast-check": "^3.21.0",
+    "jiti": "^2.4.0",
+    "js-beautify": "^1.15.1",
+    "micromatch": "4.0.5",
+    "sucrase": "^3.35.0",
+    "vscode-languageserver-textdocument": "^1.0.12"
+  },
+  "devDependencies": {
+    "@babel/plugin-syntax-jsx": "^7.23.3",
+    "@babel/preset-typescript": "7.23.3",
+    "@effect/typeclass": "^0.38.0",
+    "@types/connect": "3.4.38",
+    "@types/js-beautify": "^1",
+    "@types/madge": "^5.0.3",
+    "@types/micromatch": "^4.0.4",
+    "babel-plugin-tester": "^11.0.4"
+  },
+  "optionalDependencies": {
+    "@native-twin/cli": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "effect": {
+    "generateExports": {
+      "include": [
+        "*.ts",
+        "programs/*.ts"
+      ]
+    }
+  },
+  "main": "./build/index.js",
+  "module": "./build/index.mjs",
+  "inlinedDependencies": {
+    "@babel/parser": "7.28.4",
+    "@babel/types": "7.28.4",
+    "@types/babel__generator": "7.27.0",
+    "@types/babel__traverse": "7.28.0"
+  }
+}

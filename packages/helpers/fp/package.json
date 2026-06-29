@@ -1,0 +1,5 @@
+{
+  "main": "../build/fp/index.cjs",
+  "module": "../build/fp/index.mjs",
+  "types": "../build/fp/index.d.cts"
+}

@@ -1,10 +1,5 @@
-import {
-  escapeSelector,
-  asArray,
-  toColorValue,
-  toHyphenCase,
-} from '@native-twin/helpers';
-import { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types';
+import { asArray, escapeSelector, toColorValue, toHyphenCase } from '@native-twin/helpers';
+import type { SheetEntry, SheetEntryDeclaration } from '../sheets/sheet.types';
 
 export function sheetEntriesToCss(
   entries: SheetEntry[] | SheetEntry = [],
@@ -12,34 +7,27 @@ export function sheetEntriesToCss(
 ): string {
   return asArray(entries)
     .filter(Boolean)
-    .map((x) => {
-      return getEntryRuleBlock(x, forMetro);
-    })
+    .map((x) => getEntryRuleBlock(x, forMetro))
     .join('\n');
 }
 
 function getEntryRuleBlock(entry: SheetEntry, forMetro = false) {
-  let className = `.${forMetro ? entry.className : escapeSelector(entry.className)}`;
-  if (
-    entry.className.startsWith('*') ||
-    entry.className.startsWith(':') ||
-    entry.className.startsWith('[')
-  ) {
-    className = entry.className.replace(/^[.|,]/, '');
+  let className = '';
+  if (!entry.preflight) {
+    className = '.';
   }
-  // if (forMetro) {
-  //   className = className.replaceAll(/\\,/g, ',');
-  //   className = className.replaceAll(/\\\[/g, '[');
-  //   className = className.replaceAll(/\\]/g, ']');
-  //   className = className.replaceAll(/\\\(/g, '(');
-  //   className = className.replaceAll(/\\\)/g, ')');
-  //   className = className.replaceAll(/\\=/g, '=');
-  //   className = className.replaceAll(/=\\/g, '=');
-  //   className = className.replaceAll(/\\:where/g, ':where');
-  //   className = className.replaceAll(/'\\/g, '"');
-  //   className = className.replaceAll(/\\'/g, '"');
-  //   className = className.replaceAll(/'/g, '"');
-  //   className = className.replaceAll(/\\"/g, '"');
+  if (!forMetro || entry.selectors.filter((x) => x.startsWith('&')).length > 0) {
+    className += escapeSelector(entry.className);
+  } else {
+    className += entry.className;
+  }
+
+  // if (
+  //   entry.className.startsWith('*') ||
+  //   entry.className.startsWith(':') ||
+  //   entry.className.startsWith('[')
+  // ) {
+  //   className = entry.className.replace(/^[.|,]/, '');
   // }
 
   const atRules: string[] = [];
@@ -47,7 +35,7 @@ function getEntryRuleBlock(entry: SheetEntry, forMetro = false) {
 
   for (const condition of entry.selectors) {
     // Media query
-    if (condition.startsWith('@') && condition[1] == 'm') {
+    if (condition.startsWith('@') && condition[1] === 'm') {
       atRules.push(condition);
       continue;
     }
@@ -70,7 +58,7 @@ function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[], important =
   if (!decls) return '';
   const body: [string, string][] = [];
   for (const d of decls) {
-    if (typeof d.value == 'object' && !Array.isArray(d.value)) {
+    if (typeof d.value === 'object' && !Array.isArray(d.value)) {
       if (d.prop === 'shadowRadius') {
         body.push([
           'boxShadow',
@@ -91,7 +79,7 @@ function sheetEntryDeclarationsToCss(decls: SheetEntryDeclaration[], important =
         body.push(['transform', 'var(--tw-transform)']);
       }
     }
-    if (typeof d.value == 'string') {
+    if (typeof d.value === 'string') {
       body.push([d.prop, d.value]);
     }
   }

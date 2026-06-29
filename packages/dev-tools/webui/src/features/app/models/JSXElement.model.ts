@@ -1,6 +1,6 @@
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
 import * as Equal from 'effect/Equal';
 import * as Hash from 'effect/Hash';
-import { type JSXElementSheet, type RawJSXElementTreeNode } from '@native-twin/css/jsx';
 
 export class JSXElementNode implements Equal.Equal {
   readonly node: string;
@@ -27,3 +27,5 @@ export class JSXElementNode implements Equal.Equal {
     return that instanceof JSXElementNode && this.id === that.id;
   }
 }
+
+Object.is(false, false) // => === 

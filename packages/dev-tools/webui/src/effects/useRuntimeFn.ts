@@ -1,13 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useMemo } from 'react';
 import * as Effect from 'effect/Effect';
 import * as Fiber from 'effect/Fiber';
 import * as FiberId from 'effect/FiberId';
 import { pipe } from 'effect/Function';
 import * as Layer from 'effect/Layer';
 import * as Stream from 'effect/Stream';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useContext, useEffect, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { RuntimeContext } from '../effects/context/runtime.context';
+import type { RuntimeContext } from '../effects/context/runtime.context';
 
 /*
 This hook returns a function that can be called to trigger an effect.
@@ -21,7 +21,7 @@ export function useRuntimeFn<A, E, R, T>(
 ) {
   // TODO: find out why fast refresh breaks LightBulb (it only works once, then it stops working). Endpoint keeps working.
 
-  const emitter = useMemo(() => new EventEmitter<T, A>(), [fn]);
+  const emitter = useMemo(() => new EventEmitter<T, A>(), []);
 
   // TODO: consider if using a straem is a good idea, because we can also pass a reference of the effect to Effect.runPromise to run it. There might be no real benefit, except for usecases that involve delays inside the effect (since the stream would buffer the events).
 
@@ -37,7 +37,7 @@ export function useRuntimeFn<A, E, R, T>(
         }),
         Stream.runDrain,
       ),
-    [fn],
+    [emitter, fn],
   );
 
   useRuntime(context, stream);
@@ -120,7 +120,7 @@ class EventEmitter<T, A> {
   private notifyListeners(): void {
     while (this.eventQueue.length > 0 && this.listeners.length > 0) {
       const event = this.eventQueue.shift()!;
-      this.listeners.forEach((listener) => listener(event.data, event.eventId));
+      this.listeners.forEach((listener) => void listener(event.data, event.eventId));
     }
   }
 }

@@ -1,21 +1,9 @@
-import type ts from 'typescript/lib/tsserverlibrary';
-import { NativeTwinPluginConfiguration } from '../plugin.types';
+import type { TwinConfigOptions } from '@native-twin/language-service';
+import type ts from 'typescript';
 
 export type Predicate =
-  | ((
-      this: undefined,
-      value: any,
-      key: undefined,
-      object: any,
-      matcher: undefined,
-    ) => unknown)
-  | (<T extends Predicates>(
-      this: T,
-      value: any,
-      key: string,
-      object: any,
-      matcher: T,
-    ) => unknown);
+  | ((this: undefined, value: any, key: undefined, object: any, matcher: undefined) => unknown)
+  | (<T extends Predicates>(this: T, value: any, key: string, object: any, matcher: T) => unknown);
 
 export interface RegExpLike {
   /**
@@ -30,8 +18,7 @@ export type Matcher = Predicate | Predicates | RegExp | unknown;
 /**
  * Defines the predicate properties to be invoked with the corresponding property values of a given object.
  */
-export interface Predicates
-  extends Record<string | number | symbol, Matcher | Matcher[]> {
+export interface Predicates extends Record<string | number | symbol, Matcher | Matcher[]> {
   // Support cyclic references
 }
 
@@ -50,11 +37,11 @@ export function match(
     return predicate.some((item) => match(value, item, key, object, matcher));
   }
 
-  if (typeof predicate == 'function') {
+  if (typeof predicate === 'function') {
     return Boolean(predicate.call(matcher, value, key, object, matcher));
   }
 
-  if (typeof value == 'string' && isRegExpLike(predicate)) {
+  if (typeof value === 'string' && isRegExpLike(predicate)) {
     return predicate.test(value);
   }
 
@@ -88,16 +75,16 @@ function isEqual(value: unknown, other: unknown): boolean {
  * @param value to check
  */
 function isObjectLike(value: unknown): value is object {
-  return value != null && typeof value == 'object';
+  return value != null && typeof value === 'object';
 }
 
 function isRegExpLike(value: unknown): value is RegExpLike {
-  return isObjectLike(value) && typeof (value as RegExp).test == 'function';
+  return isObjectLike(value) && typeof (value as RegExp).test === 'function';
 }
 
 export const getSourceMatchers = (
   { SyntaxKind }: typeof ts,
-  configManager: NativeTwinPluginConfiguration,
+  configManager: TwinConfigOptions,
 ): Matcher[] => [
   // tw`...`
   {
@@ -106,7 +93,7 @@ export const getSourceMatchers = (
     // TODO styled.button, styled()
     tag: {
       kind: SyntaxKind.Identifier,
-      text: configManager.tags,
+      text: configManager.functions,
     },
   },
   // tw(...)
@@ -116,7 +103,7 @@ export const getSourceMatchers = (
     // TODO styled.button, styled()
     expression: {
       kind: SyntaxKind.Identifier,
-      text: configManager.tags,
+      text: configManager.functions,
     },
   },
   // JsxAttribute -> className=""
@@ -124,7 +111,7 @@ export const getSourceMatchers = (
     kind: SyntaxKind.JsxAttribute,
     name: {
       kind: SyntaxKind.Identifier,
-      text: configManager.attributes,
+      text: configManager.jsxAttributes,
     },
   },
   // { '@apply': `...` }
@@ -147,7 +134,7 @@ export const getSourceMatchers = (
       text: 'base',
     },
     // Do not match CSS objects: `base: { color: 'blue' }`
-    initializer: (node: ts.Node) => node.kind != SyntaxKind.ObjectLiteralExpression,
+    initializer: (node: ts.Node) => node.kind !== SyntaxKind.ObjectLiteralExpression,
     // https://github.com/microsoft/typescript-template-language-service-decorator/blob/main/src/nodes.ts#L62
     // TODO styled.button, styled()
     parent: {
@@ -156,7 +143,7 @@ export const getSourceMatchers = (
         kind: SyntaxKind.CallExpression,
         expression: {
           kind: SyntaxKind.Identifier,
-          text: configManager.styles,
+          text: configManager.functions,
         },
       },
     },
@@ -188,7 +175,7 @@ export const getSourceMatchers = (
               kind: SyntaxKind.CallExpression,
               expression: {
                 kind: SyntaxKind.Identifier,
-                text: configManager.styles,
+                text: configManager.functions,
               },
             },
           },
@@ -200,7 +187,7 @@ export const getSourceMatchers = (
   {
     kind: SyntaxKind.PropertyAssignment,
     // Do not match CSS objects
-    initializer: (node: ts.Node) => node.kind != SyntaxKind.ObjectLiteralExpression,
+    initializer: (node: ts.Node) => node.kind !== SyntaxKind.ObjectLiteralExpression,
     parent: {
       kind: SyntaxKind.ObjectLiteralExpression,
       parent: {
@@ -221,7 +208,7 @@ export const getSourceMatchers = (
                 kind: SyntaxKind.CallExpression,
                 expression: {
                   kind: SyntaxKind.Identifier,
-                  text: configManager.styles,
+                  text: configManager.functions,
                 },
               },
             },

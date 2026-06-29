@@ -1,10 +1,10 @@
-import { matchCssObject, matchThemeValue } from '@native-twin/core';
 import type { Rule } from '@native-twin/core';
+import { matchCssObject, matchThemeValue } from '@native-twin/core';
 import { parsedRuleToClassName } from '@native-twin/css';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const flexRules: Rule<TailwindPresetTheme>[] = [
-  matchCssObject('flex', (match, ctx, rule) => ({
+  matchCssObject('flex', (_match, _ctx, rule) => ({
     className: parsedRuleToClassName(rule),
     declarations: [
       {
@@ -17,6 +17,7 @@ export const flexRules: Rule<TailwindPresetTheme>[] = [
     precedence: rule.p,
     selectors: [],
     animations: [],
+    preflight: false,
   })),
   matchThemeValue('flex-', 'flex', 'flex'),
   matchThemeValue('flex-', 'flexDirection', 'flexDirection'),

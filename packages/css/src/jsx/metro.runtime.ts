@@ -1,4 +1,4 @@
-import type { SheetEntry } from './SheetEntry';
+import type { SheetEntry } from '../sheets';
 
 export interface StyledPropEntries {
   entries: SheetEntry[];

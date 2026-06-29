@@ -28,12 +28,10 @@ export const atom = <T>(initialValue: T | AtomGetter<T>): Atom<T> => {
 
   function computeValue() {
     const newValue =
-      typeof initialValue === 'function'
-        ? (initialValue as AtomGetter<T>)(get)
-        : currentValue;
+      typeof initialValue === 'function' ? (initialValue as AtomGetter<T>)(get) : currentValue;
     currentValue = null as T;
     currentValue = newValue;
-    subscribers.forEach((x) => x(currentValue));
+    subscribers.forEach((x) => void x(currentValue));
   }
 
   computeValue();

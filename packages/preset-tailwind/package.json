@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/preset-tailwind",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
     "tailwind",
@@ -20,42 +20,40 @@
     "url": "https://github.com/react-universal/native-twin",
     "directory": "packages/preset-tailwind"
   },
-  "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "license": "MIT",
   "files": [
     "build",
-    "index.d.ts",
-    "tailwind",
-    "tailwind.d.ts",
-    "types.d.ts",
+    "colors",
+    "src",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
+    "lint": "biome lint",
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@native-twin/core": "workspace:*"
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=18.0",
-    "react-native": ">=0.71.0"
+    "react": "18.3.1"
   },
   "optionalDependencies": {
-    "jest": "*"
+    "@native-twin/cli": "workspace:*",
+    "jest": "~29.7.0"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   },
   "nx": {
     "includedScripts": [
@@ -67,5 +65,23 @@
       "test:debug",
       "test:watch"
     ]
+  },
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
+  "exports": {
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./colors": {
+      "import": "./build/colors.mjs",
+      "require": "./build/colors.cjs"
+    },
+    "./default-config": {
+      "import": "./build/default-config.mjs",
+      "require": "./build/default-config.cjs"
+    },
+    "./package.json": "./package.json"
   }
 }

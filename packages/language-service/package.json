@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/language-service",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Native Twin language server provider",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -13,47 +13,81 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "main": "build/index.js",
+  "exports": {
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./babel-adapter": {
+      "import": "./build/babel-adapter.mjs",
+      "require": "./build/babel-adapter.cjs"
+    },
+    "./ts-adapter": {
+      "import": "./build/ts-adapter.mjs",
+      "require": "./build/ts-adapter.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "extension",
+    "build",
+    "src",
+    "browser"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:esbuild:watch": "node esbuild.mjs --watch",
-    "build:tsc": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json --watch",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
-    "lint": "eslint . --ext .ts,.tsx",
-    "test": "jest --passWithNoTests --testTimeout 100000",
-    "vscode:dev": "tsc -p tsconfig.build.json --watch"
+    "lint": "biome lint",
+    "test": "yarn vitest --no-file-parallelism --test-timeout=0",
+    "bench": "NODE_OPTIONS='--no-experimental-detect-module' VITE_CJS_IGNORE_WARNING=true npx vitest bench --no-isolate"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.1.0",
+    "@hediet/debug-visualizer-data-extraction": "^0.14.0",
+    "@native-twin/arc-parser": "workspace:*",
     "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
     "@native-twin/preset-tailwind": "workspace:*",
-    "@vscode/emmet-helper": "^2.9.3",
+    "code-block-writer": "^13.0.3",
     "cssbeautify": "0.3.1",
-    "effect": "^3.7.2",
-    "match-sorter": "6.3.4",
-    "showdown": "2.1.0",
-    "ts-morph": "^23.0.0",
-    "vscode-css-languageservice": "^6.2.14",
+    "debug": "^4.4.3",
+    "effect": "^3.19.3",
+    "js-beautify": "^1.15.4",
+    "ts-morph": "^27.0.2",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-protocol": "^3.17.5",
-    "vscode-languageserver-textdocument": "^1.0.11",
+    "vscode-languageserver-textdocument": "^1.0.12",
     "vscode-languageserver-types": "^3.17.5"
   },
   "devDependencies": {
-    "@types/cssbeautify": "^0.3.5",
-    "@types/showdown": "^2.0.6",
-    "madge": "7.0.0"
+    "@babel/plugin-syntax-jsx": "^7.23.3",
+    "@babel/preset-typescript": "7.23.3",
+    "@effect/language-service": "^0.54.0",
+    "@types/debug": "^4.1.12",
+    "@types/js-beautify": "^1",
+    "esbuild-plugin-d.ts": "^1.3.0",
+    "madge": "^8.0.0"
+  },
+  "peerDependenciesMeta": {
+    "vitest": {
+      "optional": true
+    }
   },
   "optionalDependencies": {
-    "jest": "*"
-  },
-  "engines": {
-    "vscode": "^1.89.0"
+    "@native-twin/cli": "workspace:*",
+    "vitest": "^4.0.15"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   },
   "nx": {
     "includedScripts": [

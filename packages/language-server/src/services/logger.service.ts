@@ -1,11 +1,8 @@
+import { ConnectionHandlerCtx, LSPConfig } from '@native-twin/language-service';
 import * as Effect from 'effect/Effect';
-import * as LogLevel from 'effect/LogLevel';
 import * as Logger from 'effect/Logger';
-import { ConnectionService } from '../connection/connection.service';
+import * as LogLevel from 'effect/LogLevel';
 import { inspect } from 'util';
-
-// export const loggerLayer = (connection: Connection) =>
-//   Logger.replace(Logger.defaultLogger, createConnectionLogger(connection));
 
 export const sendDebugLog = <T extends object>(message: string, payload: T) =>
   Effect.logDebug(`${message} \n payload: ${inspect(payload, false, null, true)}`);
@@ -17,17 +14,23 @@ export const sendDebugLog = <T extends object>(message: string, payload: T) =>
  */
 export const LoggerLive = Logger.replaceEffect(
   Logger.jsonLogger,
-  Effect.gen(function* ($) {
-    const Connection = yield* $(ConnectionService);
+  Effect.gen(function* () {
+    const { connection: Connection } = yield* ConnectionHandlerCtx;
+    const { configSelector } = yield* LSPConfig;
+    const getDebugFlag = () => Effect.runSync(configSelector((x) => x.debug));
     return Logger.make((options) => {
+      // const fiberId = FiberId.threadName(options.fiberId);
       const logService = Connection.console;
       const message = Logger.logfmtLogger.log(options);
-      switch (options.logLevel) {
+      // const transport = `LSP - Fiber: ${fiberId} \n ${options.message}`;
+      const logLevel = getDebugFlag() ? LogLevel.All : options.logLevel;
+
+      switch (logLevel) {
         case LogLevel.Trace:
           Connection.tracer.log(message);
           return;
         case LogLevel.Debug:
-          logService.debug(message + ' DEBUG WORK');
+          logService.debug(`${message}`);
           return;
         case LogLevel.Warning:
           logService.warn(message);
@@ -37,7 +40,7 @@ export const LoggerLive = Logger.replaceEffect(
           logService.error(message);
           return;
         default:
-          logService.info(message + ' INFO WORK');
+          logService.info(`${message}`);
           return;
       }
     });

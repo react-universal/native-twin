@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "LSP: Test twin graph",
+      "type": "node",
+      "request": "launch",
+      "program": "../../node_modules/.bin/vitest",
+      "args": [
+        "twin.test",
+        "--watch"
+      ],
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "sourceMaps": true,
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**/*.js",
+        "node_modules",
+      ]
+    }
+  ]
+}

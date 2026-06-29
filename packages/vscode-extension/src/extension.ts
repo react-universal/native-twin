@@ -1,30 +1,29 @@
+import type * as vscode from 'vscode';
+import * as Cause from 'effect/Cause';
 import * as Effect from 'effect/Effect';
-import * as Exit from 'effect/Exit';
-import * as Fiber from 'effect/Fiber';
 import * as Layer from 'effect/Layer';
-import * as vscode from 'vscode';
-import { activateExtension, ExtensionContext } from './extension/extension.service';
-import { LanguageClientContext } from './language/language.service';
+import * as Logger from 'effect/Logger';
+import * as LogLevel from 'effect/LogLevel';
+import { launchExtension } from './extension/extension.program';
+import { VscodeContext } from './extension/extension.service';
+import { LanguageClientLive } from './language/node/LSP.service';
 import { ClientCustomLogger } from './utils/logger.service';
 
-const MainLive = Layer.mergeAll(LanguageClientContext.Live).pipe(
+const MainLive = Layer.mergeAll(LanguageClientLive).pipe(
+  // Layer.provide(JSXParser.JSXParserLive),
+  // Layer.provide(TwinRuntimeContextLive),
+  // Layer.provide(TwinVscodeHightLightsProviderLive),
   Layer.provide(ClientCustomLogger),
+  // Layer.provide(DevTools.layer()),
 );
 
 export function activate(context: vscode.ExtensionContext) {
-  const data = activateExtension(MainLive).pipe(
-    Effect.provideService(ExtensionContext, context),
+  launchExtension(MainLive).pipe(
+    Effect.provideService(VscodeContext, context),
+    Effect.scoped,
+    Effect.onError((cause) => Effect.log('ERROR ', Cause.prettyErrors(cause))),
+    Effect.withSpan('Launcher', { attributes: { executor: 'vscode' } }),
+    Logger.withMinimumLogLevel(LogLevel.All),
     Effect.runFork,
-  );
-
-  return data.pipe(Fiber.await, Effect.runPromise).then((x) =>
-    Exit.match({
-      onFailure() {
-        return {};
-      },
-      onSuccess(x) {
-        return x;
-      },
-    })(x),
   );
 }

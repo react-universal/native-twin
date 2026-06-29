@@ -1,28 +1,31 @@
 import {
   ActivityIndicator,
+  FlatList,
+  Image,
+  ImageBackground,
+  KeyboardAvoidingView,
   Pressable,
+  // SafeAreaView,
   ScrollView,
   StatusBar,
   Switch,
   Text,
   TextInput,
-  SafeAreaView,
-  TouchableOpacity,
-  View,
-  Image,
   TouchableHighlight,
+  TouchableOpacity,
   TouchableWithoutFeedback,
-  FlatList,
-  ImageBackground,
-  KeyboardAvoidingView,
+  View,
   VirtualizedList,
 } from 'react-native';
-import { withMappedProps, createStylableComponent } from './styled';
+import { createStylableComponent, withMappedProps } from './styled';
 
 createStylableComponent(Image, { className: 'style' });
 createStylableComponent(Pressable, { className: 'style' });
-createStylableComponent(SafeAreaView, { className: 'style' });
+// createStylableComponent(SafeAreaView, { className: 'style' });
 createStylableComponent(Switch, { className: 'style' });
+createStylableComponent(TextInput, {
+  className: 'style',
+});
 createStylableComponent(Text, { className: 'style' });
 createStylableComponent(TouchableHighlight, { className: 'style' });
 createStylableComponent(TouchableOpacity, { className: 'style' });
@@ -38,9 +41,6 @@ createStylableComponent(ScrollView, {
   className: 'style',
   contentContainerClassName: 'contentContainerStyle',
   indicatorClassName: 'indicatorStyle',
-});
-createStylableComponent(TextInput, {
-  className: 'style',
 });
 
 withMappedProps(FlatList, {

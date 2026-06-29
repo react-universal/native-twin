@@ -1,4 +1,4 @@
-import type { PlatformOSType, ColorSchemeName } from 'react-native';
+import type { ColorSchemeName, PlatformOSType } from 'react-native';
 
 export type CssUnitsContext = {
   '%'?: number;
@@ -24,7 +24,7 @@ export type RuntimeContext = {
   deviceHeight: number;
   deviceAspectRatio: number;
   platform: PlatformOSType;
-  colorScheme: 'dark' | 'light';
+  colorScheme: ColorSchemeName;
   units: CssUnitsContext;
 };
 

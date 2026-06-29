@@ -1,6 +1,6 @@
 import { createElement, forwardRef } from 'react';
-import { globalStyles, opaqueStyles } from '../../store/styles.store';
-import { ReactComponent, StylableComponentConfigOptions } from '../../types/styled.types';
+// import { globalStyles, opaqueStyles } from '../../store/styles.store';
+import type { ReactComponent, StylableComponentConfigOptions } from '../../types/styled.types';
 import { getNormalizeConfig } from '../../utils/config.utils';
 import { stylizedComponents } from './createTwinCmp.web';
 
@@ -8,9 +8,15 @@ export const withMappedProps = <
   const T extends ReactComponent<any>,
   const M extends StylableComponentConfigOptions<any>,
 >(
-  component: any,
-  mapping: StylableComponentConfigOptions<T> & M,
-): any => {
+  component: T,
+  mapping: M,
+) => {
+  if (!mapping) {
+    mapping = {
+      source: 'className',
+      target: 'style',
+    } as unknown as M;
+  }
   const configs = getNormalizeConfig(mapping);
 
   const twinComponent = forwardRef(function RemapPropsComponent(
@@ -25,18 +31,18 @@ export const withMappedProps = <
       // If the source is not a string or is empty, skip this config
       if (typeof source !== 'string' || !source) continue;
 
-      delete props[config.source];
+      Reflect.deleteProperty(props, config.source);
+      // delete props[config.source];
 
-      for (const className of source.split(/\s+/)) {
-        const signal = globalStyles.get(className);
-
-        if (signal !== undefined) {
-          const style = {};
-          const styleRuleSet = signal.get();
-          opaqueStyles.set(style, styleRuleSet);
-          rawStyles.push(style);
-        }
-      }
+      // for (const className of source.split(/\s+/)) {
+      // const signal = globalStyles.get(className);
+      // if (signal !== undefined) {
+      //   const style = {};
+      //   const styleRuleSet = signal.get();
+      //   opaqueStyles.set(style, styleRuleSet);
+      //   rawStyles.push(style);
+      // }
+      // }
 
       if (rawStyles.length !== 0) {
         const existingStyle = props[config.target];

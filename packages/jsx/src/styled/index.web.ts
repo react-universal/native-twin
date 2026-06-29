@@ -1,6 +1,9 @@
 export {
   createStylableComponent,
-  withMappedProps,
-  twinComponent,
+  createTwinProps,
+  mappedComponentsConfig,
   stylizedComponents,
+  TwinElement,
+  twinComponent,
+  withMappedProps,
 } from './web';

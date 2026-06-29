@@ -1,0 +1,5 @@
+{
+  "main": "../build/react-native/index.cjs",
+  "module": "../build/react-native/index.mjs",
+  "types": "../build/react-native/index.d.cts"
+}

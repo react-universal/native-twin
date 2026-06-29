@@ -1,7 +1,7 @@
 {
   "name": "@native-twin/styled",
-  "version": "6.4.0",
-  "description": "Styled components for css in react native",
+  "version": "7.0.0-next.3",
+  "description": "[DEPRECATED] Styled components for css in react native",
   "keywords": [
     "react-native",
     "tailwindcss",
@@ -18,26 +18,37 @@
     "url": "https://github.com/react-universal/native-twin",
     "directory": "packages/styled"
   },
+  "exports": {
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./components": {
+      "import": "./build/components/index.mjs",
+      "require": "./build/components/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
   "license": "MIT",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "main": "./build/index",
-  "browser": "./build/index",
-  "types": "./build/index.d.ts",
   "files": [
     "build",
     "LICENSE",
     "CHANGELOG.md",
-    "README.md"
+    "README.md",
+    "src",
+    "styled"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "npx tsdown",
     "bundle": "yarn clean && yarn twin-build",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "jest",
+    "lint": "biome lint",
+    "test": "NODE_OPTIONS=\"${NODE_OPTIONS:-} --experimental-vm-modules\" jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },
@@ -45,26 +56,32 @@
     "@native-twin/core": "workspace:*",
     "@native-twin/css": "workspace:*",
     "@native-twin/helpers": "workspace:*",
+    "d3-hierarchy": "^3.1.2",
+    "d3-selection": "^3.0.0",
+    "d3-shape": "^3.2.0",
+    "d3-zoom": "^3.0.0",
     "react-is": "^18.2.0",
     "stable-hash": "0.0.3"
   },
   "devDependencies": {
-    "@native-twin/builder": "workspace:*",
-    "@types/react-is": "^17.0.3"
+    "@types/d3": "^7.4.3",
+    "@types/react-is": "^17.0.3",
+    "react-native-worklets": "0.7.0"
   },
   "peerDependencies": {
-    "@types/react": "*",
-    "@types/react-dom": "*",
-    "react": "*",
-    "react-native": "*",
-    "react-native-web": "*"
+    "@types/react": "~19.2.10",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-native": "0.74.5",
+    "react-native-web": "~0.19.10"
   },
   "optionalDependencies": {
-    "jest": "*"
+    "jest": "~29.7.0"
   },
+  "packageManager": "pnpm@9.14.2",
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
 }

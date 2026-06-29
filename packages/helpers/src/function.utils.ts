@@ -46,3 +46,21 @@ export function isObject(item: any): item is Record<string, any> {
  * hasOwnProperty.call(object, key);
  */
 export const hasOwnProperty = {}.hasOwnProperty;
+
+export const memoizedThunk = <A>(f: () => A): (() => A) => {
+  let done = false;
+  let a: A;
+  return () => {
+    if (done) {
+      return a;
+    }
+    a = f();
+    done = true;
+    return a;
+  };
+};
+
+export const satisfies =
+  <A>() =>
+  <B extends A>(b: B) =>
+    b;

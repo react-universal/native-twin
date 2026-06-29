@@ -4,15 +4,24 @@
  * Repo: https://github.com/tw-in-js/twind    *
  * ********************************************
  */
-import { Layer, type Sheet, type SheetEntry } from '@native-twin/css';
-import { parseTWTokens, sortedInsertionIndex, interpolate } from '@native-twin/css';
+import {
+  interpolate,
+  Layer,
+  parseTWTokens,
+  type Sheet,
+  type SheetEntry,
+  sortedInsertionIndex,
+} from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
 import { defineConfig } from './config/define-config';
 import { parsedRuleToEntry } from './convert/ruleToEntry';
 import { isDevEnvironment } from './runtime/runtime.utils';
 import { createThemeContext } from './theme/theme.context';
 import type { Preset, TailwindConfig, TailwindUserConfig } from './types/config.types';
-import type { ExtractThemes, RuntimeTW, __Theme__ } from './types/theme.types';
+import type { __Theme__, ExtractThemes, RuntimeTW } from './types/theme.types';
+
+const isWeb = typeof window !== 'undefined';
+let version = 0;
 
 export function createTailwind<Theme extends __Theme__ = __Theme__, Target = unknown>(
   config: TailwindConfig<Theme>,
@@ -21,7 +30,7 @@ export function createTailwind<Theme extends __Theme__ = __Theme__, Target = unk
 
 export function createTailwind<
   Theme = __Theme__,
-  Presets extends Preset<any>[] = Preset[],
+  Presets extends Preset<Theme>[] = Preset<Theme>[],
   Target = unknown,
 >(
   config: TailwindUserConfig<Theme, Presets>,
@@ -66,6 +75,9 @@ export function createTailwind(
       get config() {
         return config;
       },
+      get version() {
+        return version;
+      },
       snapshot() {
         const restoreSheet = sheet.snapshot();
         const cache$ = new Map(cache);
@@ -92,6 +104,10 @@ export function createTailwind(
         }
         this.clear();
         sheet.destroy();
+        version++;
+      },
+      get context() {
+        return context;
       },
       observeConfig(cb) {
         if (!isDevEnvironment()) {
@@ -110,7 +126,7 @@ export function createTailwind(
 
   function insert(entry: SheetEntry) {
     insertedRules.add(entry.className);
-    if (entry.declarations.length == 0) {
+    if (entry.declarations.length === 0) {
       return;
     }
     const index = sortedInsertionIndex(sortedPrecedences, entry);
@@ -118,11 +134,13 @@ export function createTailwind(
     sortedPrecedences.splice(index, 0, entry);
   }
 
-  function insertPreflight() {
-    if (!cache.size && config.mode === 'web' && config.preflight) {
-      sheet.clear();
+  function insertPreflight(manual?: boolean) {
+    if (manual || (!cache.size && isWeb && config.preflight)) {
+      if (!cache.size) {
+        sheet.clear();
+      }
       for (let preflight of asArray(config.preflight)) {
-        if (typeof preflight == 'function') {
+        if (typeof preflight === 'function') {
           preflight = preflight(context);
         }
 
@@ -136,8 +154,9 @@ export function createTailwind(
               important: false,
               precedence: Layer.b,
               animations: [],
+              preflight: true,
             };
-            sortedPrecedences.push(entry);
+            sortedPrecedences.unshift(entry);
             cache.set(entry.className, [entry]);
           }
         }

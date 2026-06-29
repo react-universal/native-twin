@@ -1,5 +1,5 @@
 const { getDefaultConfig } = require('expo/metro-config');
-const { withNativeTwin } = require('@native-twin/metro');
+const { withNativeTwin } = require('@native-twin/compiler/Metro');
 const path = require('path');
 
 const projectRoot = __dirname;
@@ -9,8 +9,8 @@ const config = getDefaultConfig(projectRoot);
 config.watchFolders = [workspaceRoot];
 
 config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, 'node_modules'),
   path.resolve(workspaceRoot, 'node_modules'),
+  path.resolve(projectRoot, 'node_modules'),
 ];
 
 // Learn more https://docs.expo.io/guides/customizing-metro
@@ -18,6 +18,11 @@ config.resolver.nodeModulesPaths = [
  * @type {import('expo/metro-config')}
  */
 
+config.resolver.unstable_enablePackageExports = true;
+
 module.exports = withNativeTwin(config, {
-  configPath: path.join(__dirname, 'tailwind.config.ts')
+  projectRoot,
+  twinConfigPath: path.join(__dirname, 'tailwind.config.ts'),
+  inputCSS: path.join(projectRoot, 'global.css'),
+  logLevel: 'Debug',
 });

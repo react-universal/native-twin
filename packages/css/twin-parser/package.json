@@ -1,0 +1,5 @@
+{
+  "main": "../build/twin-parser.cjs",
+  "module": "../build/twin-parser.mjs",
+  "types": "../build/twin-parser.d.cts"
+}

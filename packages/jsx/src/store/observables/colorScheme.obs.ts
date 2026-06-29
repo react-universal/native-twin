@@ -1,7 +1,12 @@
-import { AppState, Appearance, NativeEventSubscription } from 'react-native';
-import { atom } from '@native-twin/helpers';
+import { atom } from '@native-twin/helpers/react';
+import {
+  Appearance,
+  AppState,
+  type ColorSchemeName,
+  type NativeEventSubscription,
+} from 'react-native';
 
-export const colorScheme = atom(Appearance.getColorScheme() ?? 'light');
+export const colorScheme = atom<ColorSchemeName>(Appearance.getColorScheme() ?? 'light');
 
 /**
  * Appearance
@@ -10,10 +15,7 @@ let appearance = Appearance;
 let appearanceListener: NativeEventSubscription | undefined;
 let appStateListener: NativeEventSubscription | undefined;
 
-function resetAppearanceListeners(
-  $appearance: typeof Appearance,
-  appState: typeof AppState,
-) {
+function resetAppearanceListeners($appearance: typeof Appearance, appState: typeof AppState) {
   appearance = $appearance;
   appearanceListener?.remove();
   appStateListener?.remove();

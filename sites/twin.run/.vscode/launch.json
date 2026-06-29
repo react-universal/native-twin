@@ -1,0 +1,18 @@
+{
+  "configurations": [
+    {
+      "name": "Chrome Preview",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}",
+      "userDataDir": "${workspaceFolder}/.chrome/profile",
+      "enableContentValidation": false,
+      "pathMapping": {
+        "url": "/src/",
+        "path": "${webRoot}/"
+      },
+      "sourceMaps": true
+    },
+  ]
+}

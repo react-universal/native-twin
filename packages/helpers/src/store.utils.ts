@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 export function createStore<StoreShape>(initialState: StoreShape) {
   let currentState = initialState;
 
@@ -18,7 +17,7 @@ export function createStore<StoreShape>(initialState: StoreShape) {
 
   function setState(fn: (state: StoreShape) => StoreShape) {
     currentState = fn(currentState);
-    listeners.forEach((listener) => listener(currentState));
+    listeners.forEach((listener) => void listener(currentState));
   }
 
   function getState() {
@@ -26,7 +25,7 @@ export function createStore<StoreShape>(initialState: StoreShape) {
   }
 
   function forceEmit() {
-    listeners.forEach((listeners) => listeners(currentState));
+    listeners.forEach((listeners) => void listeners(currentState));
   }
 }
 

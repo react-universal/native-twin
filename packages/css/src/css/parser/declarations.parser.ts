@@ -1,6 +1,7 @@
 import * as P from '@native-twin/arc-parser';
-import { AnyStyle } from '../../react-native/rn.types';
+import type { AnyStyle } from '../../react-native/rn.types';
 import { getPropertyValueType } from '../../utils.parser';
+import { ident } from '../css-common.parser';
 import { ParseCssDimensions } from './dimensions.parser';
 import { ParseAspectRatio } from './resolvers/aspect-ratio.parser';
 import { ParseShadowValue } from './resolvers/box-shadow.parser';
@@ -9,50 +10,47 @@ import { ParseFlexValue } from './resolvers/flex.parser';
 import { ParseRotateValue } from './resolvers/rotate.parser';
 import { ParseSkewValue } from './resolvers/skew.parser';
 import { ParseTranslateValue } from './resolvers/translate.parser';
-import { ident } from '../css-common.parser';
 
 export const ParseCssDeclarationLine = P.coroutine((run) => {
   const getValue = () => {
     const property = run(parseDeclarationProperty);
     const meta = getPropertyValueType(property);
-    if (meta == 'DIMENSION') {
+    if (meta === 'dimension') {
       return {
         [kebab2camel(property)]: run(ParseCssDimensions),
       };
     }
-    if (meta == 'FLEX') {
+    if (meta === 'flex') {
       return run(ParseFlexValue);
     }
 
-    if (meta == 'SHADOW') {
+    if (meta === 'shadow') {
       return run(ParseShadowValue);
     }
 
-    if (meta == 'MATH') {
+    if (meta === 'unitless') {
       return run(ParseAspectRatio);
     }
 
-    if (meta == 'TRANSFORM') {
+    if (meta === 'transform') {
       return {
         transform: run(P.choice([ParseTranslateValue, ParseRotateValue, ParseSkewValue])),
       };
     }
 
-    if (meta == 'COLOR') {
+    if (meta === 'color') {
       const value = run(ParseCssColor);
       return {
         [kebab2camel(property)]: value,
       };
     }
 
-    //CSS:  .font-sans{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"}
-
-    if (meta == 'FIRST-COMMA-IDENT') {
-      const value = P.separatedByComma(
-        P.many(P.choice([ident, P.whitespace, P.char('"')])),
-      ).map((x) => {
-        return x;
-      });
+    if (meta === 'unknown') {
+      const value = P.separatedByComma(P.many(P.choice([ident, P.whitespace, P.char('"')]))).map(
+        (x) => {
+          return x;
+        },
+      );
       return {
         [kebab2camel(property)]: run(value)[0]![0],
       };
@@ -64,13 +62,13 @@ export const ParseCssDeclarationLine = P.coroutine((run) => {
 
   const composeValue = (result: AnyStyle = {}): AnyStyle => {
     run(P.maybe(P.char(';')));
-    const isValid = run(P.peek) !== '}' || run(P.peek) == '"';
+    const isValid = run(P.peek) !== '}' || run(P.peek) === '"';
     if (!isValid) return result;
     const value = {
       ...result,
       ...getValue(),
     };
-    if (run(P.peek) == ';') {
+    if (run(P.peek) === ';') {
       return composeValue(value);
     }
     return value;

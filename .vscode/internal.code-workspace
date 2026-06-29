@@ -1,95 +1,79 @@
 {
   "folders": [
     {
-      "name": "root",
+      "name": "✨ native-twin",
       "path": ".."
     },
     {
-      "name": "📦 @lib/builder",
-      "path": "../packages/builder"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/styled",
+      "name": "📦 @native-twin/styled",
       "path": "../packages/styled"
     },
     {
-      "name": "📦 @lib/helpers",
-      "path": "../packages/helpers"
+      "name": "📦 @native-twin/compiler",
+      "path": "../packages/compiler"
     },
     {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/preset-tw",
-      "path": "../packages/preset-tailwind"
-    },
-    {
-      "name": "📦 @lib/with-nextjs",
-      "path": "../packages/native-twin-nextjs"
-    },
-    {
-      "name": "📦 @lib/arc-parser",
-      "path": "../packages/arc-parser"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @lib/language-service",
+      "name": "📦 @lsp/service",
       "path": "../packages/language-service"
     },
     {
-      "name": "📦 @lib/language-server",
+      "name": "📦 @lsp/server",
       "path": "../packages/language-server"
+    },
+    {
+      "name": "📦 @native-twin/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @native-twin/adapters",
+      "path": "../packages/adapters"
+    },
+    {
+      "name": "📦 @native-twin/arc-parser",
+      "path": "../packages/arc-parser"
+    },
+    {
+      "name": "📦 @native-twin/babel",
+      "path": "../packages/babel"
+    },
+    {
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @native-twin/helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "📦 @native-twin/core",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @native-twin/preset-tailwind",
+      "path": "../packages/preset-tailwind"
+    },
+    {
+      "name": "📦 @native-twin/vite-plugin",
+      "path": "../packages/vite-plugin"
+    },
+    {
+      "name": "twin-run",
+      "path": "../sites/twin.run"
+    },
+    {
+      "name": "🚀 native-twin-docs",
+      "path": "../apps/docs-site"
     },
     {
       "name": "expo-app",
       "path": "../apps/expo-app"
-    },
-    {
-      "name": "next-pages-example",
-      "path": "../apps/next-app"
-    },
-    {
-      "name": "next-app-dir",
-      "path": "../apps/next-app-dir"
-    },
-    {
-      "name": "docs-site",
-      "path": "../apps/docs-site"
     }
   ],
   "settings": {
-    "cSpell.ignorePaths": [
-      "yarn.lock",
-      "node_modules",
-      "vscode-extension",
-      ".git/objects",
-      "css.colors.ts",
-      ".vscode",
-      ".vscode-insiders",
-      "**/colors.ts",
-      "**/*.snap",
-      "**/*.json"
-    ],
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
@@ -99,47 +83,47 @@
       "**/.git": true,
       "**/.svn": true,
       "**/.hg": true,
-      "**/CVS": true,
+      "**/.turbo": true,
+      "**/.fallow": true,
+      "**/.nx": true,
       "**/.DS_Store": true,
-      "**/Thumbs.db": true,
-      ".turbo": true,
-      ".nx": true,
-      "**/CHANGELOG.md": true,
-      "**/jest.config.js": false,
-      "**/LICENSE": true,
-      "**/babel.config.js": false,
-      "**/build": false,
-      "**/turbo.json": false,
-      "**/.eslintrc.json": false,
-      "**/.eslintignore": true,
-      "**/README.md": true
+      "**/Thumbs.db": true
     },
+    "biome.suggestInstallingGlobally": true,
+    "editor.snippetSuggestions": "bottom",
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
     "search.exclude": {
-      "**/node_modules": true,
-      "**/bower_components": true,
+      "**/node_modules/**": true,
       "**/*.code-search": true,
-      "**/build": true
+      "**/build/**": true
     },
-    "typescript.tsdk": "root/node_modules/typescript/lib",
-    "typescript.tsserver.log": "verbose",
-    "cSpell.words": [
-      "sastan",
-      "TRBL",
-      "xytrbl"
-    ],
-    "jest.enable": true,
-    "jest.disabledWorkspaceFolders": [
-      "root",
-      "📦 @lib/builder",
-      "📦 @lib/metro",
-      "📦 @lib/with-nextjs",
-      "📦 @lib/vscode",
-      "📦 @lib/language-service",
-      "📦 @lib/language-server",
-      "expo-app",
-      "next-pages-example",
-      "next-app-dir",
-      "docs-site"
-    ]
+    "js/ts.tsdk.path": "✨ native-twin/node_modules/typescript/lib",
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.biome": "explicit",
+      "source.organizeImports.biome": "explicit"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    },
+    "cSpell.ignoreRandomStrings": true,
+    "cSpell.unknownWords": "report-common-typos",
+    "terminal.integrated.suggest.enabled": true,
+    "terminal.integrated.suggest.quickSuggestions": {
+      "commands": "on",
+      "arguments": "on",
+      "unknown": "off"
+    },
+    "chat.disableAIFeatures": true,
+    "terminal.integrated.suggest.providers": {
+      "lsp": true
+    },
+    "fallow.configPath": "./.fallowrc.json",
+    "[jsonc]": {
+      "editor.defaultFormatter": "biomejs.biome"
+    }
   }
 }

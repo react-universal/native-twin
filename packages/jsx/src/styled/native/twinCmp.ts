@@ -1,5 +1,5 @@
-import { ComponentType, createElement, forwardRef, useId } from 'react';
-import { groupContext } from '../../context';
+import { type ComponentType, createElement, forwardRef, useId } from 'react';
+import { GroupContext } from '../../context';
 import type { ComponentConfig } from '../../types/styled.types';
 import { getComponentType } from '../../utils/react.utils';
 import { useStyledProps } from '../hooks/useStyledProps';
@@ -12,9 +12,17 @@ export function twinComponent(
 ) {
   let component = baseComponent;
   const reactID = useId();
-  const componentID = props?.['_twinComponentID'];
+  const componentID = props?.['_twinInjected']?.id;
   const id = componentID ?? reactID;
-  const { componentStyles } = useStyledProps(id, props ?? {}, configs);
+  // TODO: USE COMPONENT STYLES
+  const { registry, state, handlers, compiledProps } = useStyledProps(
+    props ?? ({} as unknown as any),
+  );
+
+  // const newProps: any = {
+  //   ...props,
+  //   ...handlers,
+  // };
 
   props = Object.assign({ ref }, props);
 
@@ -24,10 +32,38 @@ export function twinComponent(
     }
   }
 
+  // if (compiledProps.length > 0) {
+  //   for (const style of compiledProps) {
+  //     const oldProps = props[style.target] ? { ...props[style.target] } : {};
+  //     props[style.target] = Object.assign(style.styles, oldProps);
+  //   }
+  // }
+  for (const propKey in compiledProps) {
+    // console.log('llll',propKey)
+    const oldProps = props[propKey] ? { ...props[propKey] } : {};
+    props[propKey] = Object.assign(compiledProps[propKey] ?? {}, oldProps);
+  }
+  console.log('REF: ', ref, props);
+
+  if (state.meta.isGroupParent) {
+    return createElement(
+      GroupContext.Provider,
+      {
+        value: registry.id,
+      },
+      createElement(component, { ...props, ref }),
+    );
+  }
+
+  props = {
+    ...props,
+    ...handlers,
+  };
+
   // if (
-  //   componentStyles.metadata.hasPointerEvents ||
-  //   componentStyles.metadata.hasGroupEvents ||
-  //   componentStyles.metadata.isGroupParent
+  //   componentHandler?.metadata.hasPointerEvents ||
+  //   componentHandler?.metadata.hasGroupEvents ||
+  //   componentHandler?.metadata.isGroupParent
   // ) {
   //   if (!props['onTouchStart']) {
   //     props['onTouchStart'] = (event: unknown) => {
@@ -43,16 +79,16 @@ export function twinComponent(
   //   }
   // }
 
-  if (componentStyles.metadata.hasAnimations && 1 === Number(2)) {
-    component = createAnimatedComponent(component);
-  }
+  // if (componentStyles.metadata.hasAnimations && 1 === Number(2)) {
+  //   component = createAnimatedComponent(component);
+  // }
 
-  if (componentStyles.metadata.isGroupParent) {
+  if (state.meta.isGroupParent) {
     props = {
       value: componentID ?? id,
       children: createElement(component, props),
     };
-    component = groupContext.Provider;
+    component = GroupContext.Provider;
   }
 
   if (component === baseComponent) {
@@ -77,7 +113,7 @@ export function twinComponent(
 
 const animatedCache = new Map<ComponentType<any> | string, ComponentType<any>>();
 
-function createAnimatedComponent(Component: ComponentType<any>): any {
+export function createAnimatedComponent(Component: ComponentType<any>): any {
   if (animatedCache.has(Component)) {
     return animatedCache.get(Component)!;
   } else if (Component.displayName?.startsWith('AnimatedComponent')) {
@@ -98,9 +134,7 @@ function createAnimatedComponent(Component: ComponentType<any>): any {
   const { default: Animated, useAnimatedStyle } =
     require('react-native-reanimated') as typeof import('react-native-reanimated');
 
-  let AnimatedComponent = Animated.createAnimatedComponent(
-    Component as React.ComponentClass,
-  );
+  const AnimatedComponent = Animated.createAnimatedComponent(Component as React.ComponentClass);
 
   /**
    * TODO: This wrapper shouldn't be needed, as we should just run the hook in the

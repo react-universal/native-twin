@@ -1,0 +1,5 @@
+{
+  "main": "../build/components/index.cjs",
+  "module": "../build/components/index.mjs",
+  "types": "../build/components/index.cts"
+}

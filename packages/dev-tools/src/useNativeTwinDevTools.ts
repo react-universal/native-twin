@@ -1,5 +1,5 @@
-import * as Option from 'effect/Option';
 import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import * as Option from 'effect/Option';
 import { PLUGIN_EVENTS } from './constants/event.constants';
 import { useDevToolsClient } from './hooks/useDevToolsClient';
 import { useEventEmitter } from './hooks/useEventEmitter';

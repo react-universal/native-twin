@@ -3,65 +3,82 @@
   "version": "0.2.0",
   "compounds": [
     {
-      "name": "Lanuch extension + TS Plugin",
+      "name": "Launch vs-code extension + TS plugin",
       "configurations": [
         "Launch Extension",
-        "Launch Extension Server"
+        "Attach to VS Code TS Server"
       ],
-      "presentation": {
-        "hidden": false,
-        "group": "tools",
-        "order": 2
-      },
-      "preLaunchTask": "npm: build:tsc:watch"
-    },
-    {
-      "name": "Lanuch extension Client + Server",
-      "configurations": [
-        "Launch Extension",
-        "Launch Extension Server"
-      ],
-      "presentation": {
-        "hidden": false,
-        "group": "tools",
-        "order": 1
-      },
-      "preLaunchTask": "npm: build:tsc:watch"
+      "stopAll": true
     }
   ],
   "configurations": [
     {
       "type": "extensionHost",
       "request": "launch",
+      "name": "Launch web extension",
+      "debugWebviews": true,
+      "debugWebWorkerHost": true,
+      "enableContentValidation": true,
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--disable-extensions",
+        "--extensionDevelopmentKind=web"
+      ],
+      "outFiles": [
+        "${workspaceRoot}/build/**/*.js",
+        "${workspaceRoot:}/build/**/*.js",
+        "${workspaceRoot}/build/**/*.cjs",
+        "${workspaceRoot:}/build/**/*.cjs",
+        "${workspaceRoot}/build/**/*.mjs",
+        "${workspaceRoot:}/build/**/*.mjs"
+      ],
+      "presentation": {
+        "hidden": false,
+        "group": "",
+        "order": 2
+      },
+      // "preLaunchTask": "webpack watch",
+      // "autoAttachChildProcesses": true,
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/../**",
+        "!**/node_modules/**"
+      ]
+    },
+    {
+      "type": "extensionHost",
+      "request": "launch",
       "name": "Launch Extension",
       "runtimeExecutable": "${execPath}",
       "autoAttachChildProcesses": true,
-      "preLaunchTask": {
-        "type": "npm",
-        "script": "build:tsc:watch"
-      },
       "presentation": {
-        "hidden": true,
+        "hidden": false,
         "group": "",
         "order": 1
       },
       "args": [
         "--extensionDevelopmentPath=${workspaceRoot}",
-        "--disable-extensions"
+        "--disable-extensions",
+        "${workspaceFolder}/project-fixture"
       ],
+      "env": {
+        "NODE_NO_WARNINGS": "1"
+      },
       "outFiles": [
         "${workspaceRoot}/build/**/*.js",
-        "${workspaceRoot:}/build/**/*.js"
+        "${workspaceRoot:}/build/**/*.js",
+        "${workspaceRoot}/build/**/*.cjs",
+        "${workspaceRoot:}/build/**/*.cjs",
+        "${workspaceRoot}/build/**/*.mjs",
+        "${workspaceRoot:}/build/**/*.mjs"
       ],
       "sourceMaps": true,
       "resolveSourceMapLocations": [
         "${workspaceFolder}/**",
         "${workspaceFolder}/../**",
         "!**/node_modules/**"
-      ],
-      // "sourceMapPathOverrides": {
-      //   "📦 @lib/ts-plugin": "${workspaceFolder}../ts-plugin/*"
-      // }
+      ]
     },
     {
       "name": "Extension Tests",
@@ -71,13 +88,11 @@
       "args": [
         "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/build/test/run"
+        "--extensionTestsPath=${workspaceFolder}/build/test/index.cjs"
       ],
-      "preLaunchTask": {
-        "type": "npm",
-        "script": "build:tsc:watch"
-      },
-      "outFiles": ["${workspaceFolder}/build/test/**/*.js"]
+      "outFiles": [
+        "${workspaceFolder}/build/test/**/*.cjs"
+      ]
     }
   ],
 }

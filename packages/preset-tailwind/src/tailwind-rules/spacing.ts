@@ -1,7 +1,7 @@
-import { matchThemeValue } from '@native-twin/core';
 import type { Rule } from '@native-twin/core';
-import { TailwindPresetTheme } from '../types/theme.types';
+import { matchThemeValue } from '@native-twin/core';
 import { DEFAULT_META } from '../constants';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const spacingRules: Rule<TailwindPresetTheme>[] = [
   matchThemeValue('p', 'spacing', 'padding', {

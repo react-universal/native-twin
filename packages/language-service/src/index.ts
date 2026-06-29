@@ -1,11 +1,22 @@
-export * from './documents/documents.service';
-export * from './documents/utils/document.ast';
-export * from './native-twin/native-twin.service';
-export * from './utils/constants.utils';
-export * from './utils/load-js';
-export * from './native-twin/models/TwinSheetEntry.model';
-export * from './native-twin/models/template-token.model';
-export * from './native-twin/utils/native-twin.utils';
-export * from './native-twin/parser.types';
-export * from './native-twin/native-twin.types';
-export * from './native-twin/native-twin.parser';
+// TODO: Fix critical exposition
+
+export * from './core/LSP.service';
+export * from './core/LSPConfig.service';
+export * from './core/SheetUtils.service';
+export * from './core/TwinGraphos';
+export * from './core/TwinParser.service';
+export * from './core/TwinRuntime.service';
+export * from './internal/ConnectionHandler.api';
+export * from './internal/LSPAdapterSpec';
+export * from './internal/RunnerLayer';
+export type { InternalTwinConfig } from './internal/TwinTypes.internal';
+export * from './models/LSP.models';
+export * from './models/lsp.constants';
+export { TwinLSPDocument } from './models/TwinLSPDocument.model';
+export {
+  addConnectionRequestHandler,
+  addServerRequestHandler,
+  getClientCapabilities,
+} from './utils/connection.utils';
+export { getDocumentLanguageLocations } from './utils/language/babelParser';
+export { createLspLogger, createTwinLoggerLayerFor, loggerUtils } from './utils/lsp.logger.service';

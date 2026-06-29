@@ -4,7 +4,7 @@ import * as Effect from 'effect/Effect';
 import * as HashSet from 'effect/HashSet';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
-import ts from 'typescript/lib/tsserverlibrary';
+import type ts from 'typescript';
 import { NativeTwinService } from '../native-twin/nativeTwin.service';
 import { acquireTemplateNode } from '../template/TemplateNode.service';
 import { TemplateSourceHelperService } from '../template/template.context';
@@ -69,21 +69,22 @@ export const LanguageProviderServiceLive = Layer.effect(
         });
       },
 
-      getCompletionEntryDetails(fileName, position, name) {
-        return Effect.sync(function () {
-          return twinService.store.twinRules.pipe(
+      getCompletionEntryDetails(_fileName, _position, name) {
+        return Effect.sync(() =>
+          twinService.store.twinRules.pipe(
             HashSet.filter((x) => x.completion.className === name),
             HashSet.map((x) => createCompletionEntryDetails(x)),
             HashSet.values,
             (x) => Array.from(x),
             ReadonlyArray.fromIterable,
             ReadonlyArray.head,
-          );
-        });
+          ),
+        );
       },
 
       getQuickInfoAtPosition(filename, position) {
         return Effect.gen(function* ($) {
+          
           const resource = yield* $(
             acquireTemplateNode(filename, position, templateService),
           );

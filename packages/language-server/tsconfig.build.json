@@ -1,10 +1,10 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.src.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "build",
-    "noEmit": false,
-    "noEmitOnError": false
-  },
-  "exclude": ["./test/", "./src/bck"]
+    "types": ["node"],
+    "tsBuildInfoFile": ".tsbuildinfo/build.tsbuildinfo",
+    "outDir": "build/esm",
+    "declarationDir": "build/dts",
+    "stripInternal": true
+  }
 }

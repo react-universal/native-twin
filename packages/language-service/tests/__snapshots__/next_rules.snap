@@ -1,0 +1,33 @@
+[
+  TwinRuleRegistry {
+    "className": "bg-gray-200",
+    "composition": {
+      "classNameExpansion": "",
+      "classNameSuffix": "",
+      "composed": "bg-",
+      "declarationSuffixes": [
+        "",
+      ],
+    },
+    "declarationValue": "#e5e7eb",
+    "declarations": [
+      "backgroundColor",
+    ],
+    "info": {
+      "meta": {
+        "canBeNegative": false,
+        "feature": "default",
+        "prefix": "",
+        "styleProperty": "backgroundColor",
+        "suffix": "",
+        "support": [],
+      },
+      "styleProperty": "backgroundColor",
+      "themeSection": "colors",
+    },
+    "pattern": "bg-",
+    "styleObject": {
+      "backgroundColor": "#e5e7eb",
+    },
+  },
+]

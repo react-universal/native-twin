@@ -1,6 +1,6 @@
 import { createCssomSheet } from './cssom.sheet';
 import { createDomSheet } from './dom.sheet';
-import { Sheet, SheetEntry } from './sheet.types';
+import type { Sheet, SheetEntry } from './sheet.types';
 import { createVirtualSheet } from './virtual.sheet';
 
 /**

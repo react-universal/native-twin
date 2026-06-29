@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/helpers",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Helpers for common utilities",
   "homepage": "https://github.com/react-universal/native-twin#readme",
   "bugs": {
@@ -13,33 +13,78 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./fp": {
+      "import": "./build/fp/index.mjs",
+      "require": "./build/fp/index.cjs"
+    },
+    "./KeyMap": {
+      "import": "./build/KeyMap.mjs",
+      "require": "./build/KeyMap.cjs"
+    },
+    "./react": {
+      "import": "./build/react.mjs",
+      "require": "./build/react.cjs"
+    },
+    "./server": {
+      "import": "./build/server.mjs",
+      "require": "./build/server.cjs"
+    },
+    "./tree": {
+      "import": "./build/tree.mjs",
+      "require": "./build/tree.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "files": [
     "build",
+    "src",
+    "KeyMap",
+    "react",
+    "server",
+    "tree",
     "LICENSE",
     "CHANGELOG.md",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:twin": "twin-build",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "jest"
+    "lint": "biome lint",
+    "test": "npx vitest"
   },
-  "dependencies": {
-    "effect": "^3.7.2"
+  "devDependencies": {
+    "@types/react": "~19.2.10",
+    "nx": "^22.2.3"
+  },
+  "peerDependencies": {
+    "react": "18.3.1"
   },
   "optionalDependencies": {
-    "jest": "*"
+    "@native-twin/cli": "workspace:*",
+    "jest": "~29.7.0"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist",
+    "provenance": true
   },
-  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
+  "effect": {
+    "generateExports": {
+      "include": [
+        "*.ts"
+      ]
+    }
+  },
+  "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d",
+  "nx": {}
 }

@@ -1,0 +1,72 @@
+{
+  "name": "@native-twin/adapters",
+  "version": "7.0.0-next.3",
+  "description": "React Native Web Tailwindcss for nextjs",
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "tailwind-native",
+    "react-native-web",
+    "universal-labs",
+    "react-native",
+    "react",
+    "nextjs"
+  ],
+  "exports": {
+    "./_app": {
+      "import": "./build/_app.mjs",
+      "require": "./build/_app.cjs"
+    },
+    "./_document": {
+      "import": "./build/_document.mjs",
+      "require": "./build/_document.cjs"
+    },
+    "./app/app": {
+      "import": "./build/app/app.mjs",
+      "require": "./build/app/app.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "homepage": "https://github.com/react-universal/native-twin#readme",
+  "bugs": {
+    "url": "https://github.com/react-universal/native-twin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-universal/native-twin",
+    "directory": "packages/adapters"
+  },
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "build",
+    "src",
+    "app",
+    "_app",
+    "_document",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "clean": "rm -rf build",
+    "build": "npx tsdown",
+    "lint": "biome lint"
+  },
+  "devDependencies": {
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*"
+  },
+  "peerDependencies": {
+    "@native-twin/core": "workspace:*",
+    "@native-twin/css": "workspace:*",
+    "@native-twin/helpers": "workspace:*",
+    "next": ">=14.2.3",
+    "react": "18.3.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  }
+}

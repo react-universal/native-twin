@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JSX render normal component 1`] = `
+<View
+  className="bg-black"
+  mappings={
+    {
+      "className": "style",
+    }
+  }
+  testID="native-twin-element"
+>
+  <Text
+    className="text(white lg)"
+    mappings={
+      {
+        "className": "style",
+      }
+    }
+  >
+    Sample Text
+  </Text>
+</View>
+`;

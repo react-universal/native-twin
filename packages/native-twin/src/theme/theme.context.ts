@@ -1,8 +1,4 @@
-import {
-  type TWParsedRule,
-  type SheetEntry,
-  parsedRuleToClassName,
-} from '@native-twin/css';
+import { parsedRuleToClassName, type SheetEntry, type TWParsedRule } from '@native-twin/css';
 import { flattenColorPalette, type MaybeArray } from '@native-twin/helpers';
 import { createRuleResolver } from '../parsers/rule-handler';
 import { createVariantResolver } from '../parsers/variant-handler';
@@ -16,38 +12,40 @@ import type {
 import type { __Theme__ } from '../types/theme.types';
 import { createThemeFunction } from './theme.function';
 
-interface RuleHandlerFn<Theme extends __Theme__ = __Theme__> {
-  (token: TWParsedRule, ctx: ThemeContext<Theme>): RuleResult;
-}
+type RuleHandlerFn<Theme extends __Theme__ = __Theme__> = (
+  token: TWParsedRule,
+  ctx: ThemeContext<Theme>,
+) => RuleResult;
 
-interface VariantHandlerFn<Theme extends __Theme__ = __Theme__> {
-  (token: string, ctx: ThemeContext<Theme>): VariantResult;
-}
+type VariantHandlerFn<Theme extends __Theme__ = __Theme__> = (
+  token: string,
+  ctx: ThemeContext<Theme>,
+) => VariantResult;
 
 export function createThemeContext<Theme extends __Theme__ = __Theme__>({
   theme: themeConfig,
   rules,
-  mode,
+  // mode,
   variants = [],
-  animations
+  animations,
 }: TailwindConfig<Theme>): ThemeContext<Theme> {
   const variantCache = new Map<string, MaybeArray<string>>();
   const variantsHandlers = new Map<Variant<Theme>, VariantHandlerFn<Theme>>();
   const ruleHandlers = new Map<string, RuleHandlerFn<Theme>>();
   const rulesCache = new Map<string, SheetEntry>();
+  let colorsCache: Record<string, string> | null;
   // const ignoredRules = new Set<string>();
   // const isIgnoredRule = (rule: ParsedRule) => {
   //   if (ignoredRules.has(rule.n)) return true;
   //   return ignorelist.some((x) => x.startsWith(rule.n));
   // };
-  const ctx: ThemeContext = {
+  const ctx: ThemeContext<Theme> = {
     get colors() {
-      return flattenColorPalette(
-        Object.assign(
-          themeConfig['colors'] ?? {},
-          themeConfig['extend']?.['colors'] ?? {},
-        ) ?? {},
+      if (colorsCache) return colorsCache;
+      colorsCache = flattenColorPalette(
+        Object.assign(themeConfig['colors'] ?? {}, themeConfig['extend']?.['colors'] ?? {}) ?? {},
       );
+      return colorsCache;
     },
     animations,
 
@@ -57,9 +55,9 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
       return Object.assign(themeConfig.screens ?? {}, themeConfig.extend?.screens);
     },
 
-    get mode() {
-      return mode;
-    },
+    // get mode() {
+    //   return mode;
+    // },
 
     v(value) {
       if (variantCache.has(value)) {
@@ -78,7 +76,7 @@ export function createThemeContext<Theme extends __Theme__ = __Theme__>({
           return nextToken;
         }
       }
-      variantCache.set(value, '&:' + value);
+      variantCache.set(value, `&:${value}`);
       return variantCache.get(value);
     },
 

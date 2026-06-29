@@ -1,15 +1,16 @@
-import type { PlatformOSType } from 'react-native';
-import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
 import type {
   CompleteStyle,
   CssFeature,
-  TWParsedRule,
-  RuleHandlerToken,
   Preflight,
+  RuleHandlerToken,
   SheetEntry,
+  TWParsedRule,
 } from '@native-twin/css';
-import type { Falsey, MaybeArray } from '@native-twin/helpers';
-import type { ExtractThemes, ThemeConfig, __Theme__ } from './theme.types';
+// TODO: Restore
+// import type { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/reanimated2/layoutReanimation/animationBuilder/Keyframe';
+import type { Falsey, KebabCase, MaybeArray } from '@native-twin/helpers';
+import type { PlatformOSType } from 'react-native';
+import type { __Theme__, ExtractThemes, ThemeConfig, ThemeValue } from './theme.types';
 
 // CONFIGURATION TYPES
 
@@ -17,57 +18,54 @@ export interface TailwindConfig<Theme extends __Theme__ = __Theme__> {
   content: string[];
   darkMode: DarkModeConfig;
   theme: ThemeConfig<Theme>;
-  mode: 'web' | 'native';
+  // mode: 'web' | 'native';
   rules: Rule<Theme>[];
   variants: Variant<Theme>[];
-  preflight: Preflight;
+  preflight: Preflight | undefined;
   ignorelist: string[];
   root: {
     rem: number;
   };
-  animations: [className: string, keyframe: ReanimatedKeyframe][];
+  animations: [className: string, keyframe: any][];
 }
 
-export interface TailwindUserConfig<
-  Theme = __Theme__,
-  Presets extends Preset<any>[] = Preset[],
-> {
+export interface TailwindUserConfig<Theme = __Theme__, Presets extends Preset<any>[] = Preset[]> {
   content: string[];
   darkMode?: DarkModeConfig;
   theme?: Theme | ThemeConfig<__Theme__ & ExtractThemes<Theme, Presets>>;
   rules?: Rule<__Theme__ & ExtractThemes<Theme, Presets>>[];
   mode?: 'web' | 'native';
   variants?: Variant<__Theme__ & ExtractThemes<Theme, Presets>>[];
-  preflight?: Preflight;
+  preflight?: Preflight | undefined;
   ignorelist?: string[];
   root?: {
     rem: number;
   };
   presets?: Presets;
-  animations?: [className: string, keyframe: ReanimatedKeyframe][];
+  animations?: [className: string, keyframe: any][];
 }
 
 /** PRESETS CONFIG */
 
-export interface PresetThunk<Theme = __Theme__> {
-  (config: TailwindConfig<Theme & __Theme__>): TailwindPresetConfig<Theme>;
-}
+export type PresetThunk<Theme = __Theme__> = (
+  config: TailwindConfig<Theme & __Theme__>,
+) => TailwindPresetConfig<Theme>;
 
 export type Preset<Theme = __Theme__> = TailwindPresetConfig<Theme> | PresetThunk<Theme>;
 
 export interface TailwindPresetConfig<Theme = __Theme__> {
   /** Allows to change how the `dark` variant is used (default: `"media"`) */
-  darkMode?: DarkModeConfig;
+  darkMode?: DarkModeConfig | undefined;
 
-  theme?: ThemeConfig<Theme & __Theme__>;
+  theme?: ThemeConfig<Theme & __Theme__> | undefined;
   mode?: 'web' | 'native';
 
-  preflight?: Preflight;
+  preflight?: Preflight | undefined;
   rules?: Rule<Theme & __Theme__>[];
 
   variants?: Variant<Theme & __Theme__>[];
   ignorelist?: MaybeArray<string | RegExp>;
-  animations?: [className: string, keyframe: ReanimatedKeyframe][];
+  animations?: [className: string, keyframe: any][];
 
   // darkColor?: DarkColor<Theme & __Theme__>;
   // hash?: boolean | undefined | HashFunction;
@@ -84,13 +82,11 @@ export type RuleResult = SheetEntry | Falsey;
 
 export type PlatformSupport = 'native' | 'web';
 
-export interface RuleResolver<Theme extends __Theme__ = {}> {
-  (
-    match: RuleHandlerToken,
-    context: ThemeContext<Theme>,
-    parsed: TWParsedRule,
-  ): RuleResult | Falsey;
-}
+export type RuleResolver<Theme extends __Theme__ = {}> = (
+  match: RuleHandlerToken,
+  context: ThemeContext<Theme>,
+  parsed: TWParsedRule,
+) => RuleResult | Falsey;
 
 export type Rule<Theme extends __Theme__ = __Theme__> = [
   pattern: string,
@@ -99,12 +95,15 @@ export type Rule<Theme extends __Theme__ = __Theme__> = [
   meta?: RuleMeta,
 ];
 
+export type HTMLCssKeys = 'transition' | 'transitionDuration';
+export type CompleteStyleKeys = HTMLCssKeys | keyof CompleteStyle;
+
 export interface RuleMeta {
   canBeNegative: boolean;
   feature: CssFeature;
   prefix: string | undefined;
   suffix: string | undefined;
-  styleProperty: keyof CompleteStyle | undefined;
+  styleProperty: CompleteStyleKeys | undefined;
   support: PlatformOSType[];
 }
 
@@ -116,9 +115,10 @@ export interface ReMatchResult extends RegExpExecArray {
 
 export type VariantResult = MaybeArray<string> | Falsey;
 
-export interface VariantResolver<Theme extends __Theme__ = __Theme__> {
-  (match: ReMatchResult, context: ThemeContext<Theme>): VariantResult;
-}
+export type VariantResolver<Theme extends __Theme__ = __Theme__> = (
+  match: ReMatchResult,
+  context: ThemeContext<Theme>,
+) => VariantResult;
 
 export type Variant<Theme extends __Theme__ = __Theme__> = [
   condition: string | RegExp,
@@ -131,7 +131,7 @@ export interface ThemeContext<Theme extends __Theme__ = __Theme__> {
   /** Allows to resolve theme values */
   colors: Record<string, string>;
   breakpoints: Exclude<__Theme__['screens'], undefined>;
-  mode: TailwindConfig['mode'];
+  // mode: TailwindConfig['mode'];
   animations: TailwindConfig['animations'];
   /** resolves a rule */
   r: (value: TWParsedRule) => RuleResult;
@@ -142,9 +142,11 @@ export interface ThemeContext<Theme extends __Theme__ = __Theme__> {
 }
 
 export interface ThemeFunction<Theme extends __Theme__ = __Theme__> {
-  <Section extends keyof Theme>(
-    section: Section,
-  ): ThemeConfig<Theme>[Section] | undefined;
+  <Section extends keyof Theme>(section: Section): ThemeConfig<Theme>[Section] | undefined;
+  <Section extends keyof Theme & string, Key extends keyof Theme[Section]>(
+    section: Section | KebabCase<Section>,
+    key: Key,
+  ): ThemeValue<Theme[Section]> | undefined;
   (section: keyof Theme | (string & {}), segment: string): string | undefined;
 }
 

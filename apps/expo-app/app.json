@@ -3,7 +3,6 @@
     "name": "universal-expo",
     "slug": "universal-expo",
     "version": "1.0.0",
-    "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -27,14 +26,12 @@
         "backgroundColor": "#FFFFFF"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "plugins": [
       [
         "expo-build-properties"
       ],
-      "expo-font"
+      "expo-font",
+      "expo-image"
     ]
   }
 }

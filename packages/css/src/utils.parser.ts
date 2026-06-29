@@ -7,12 +7,13 @@ export const mapAsType =
     };
   };
 
+export type DeclarationPropertyValueType = ReturnType<typeof getPropertyValueType>;
 export const getPropertyValueType = (property: string) => {
   switch (property) {
     case 'color':
     case 'background-color':
     case 'border-color':
-      return 'COLOR';
+      return 'color';
 
     case 'width':
     case 'height':
@@ -65,28 +66,29 @@ export const getPropertyValueType = (property: string) => {
     case 'scaleX':
     case 'scaleY':
     case 'spacing':
-      return 'DIMENSION';
+      return 'dimension';
     case 'aspect-ratio':
-      return 'MATH';
+      return 'unitless';
     case 'flex':
-      return 'FLEX';
+      return 'flex';
 
     case 'box-shadow':
-      return 'SHADOW';
+    case 'shadow-radius':
+      return 'shadow';
 
     case 'transform':
-      return 'TRANSFORM';
+      return 'transform';
 
-    case 'font-family': // IDENT
-      return 'FIRST-COMMA-IDENT';
+    // case 'font-family': // IDENT
+    //   return 'fontFamily';
 
     default:
-      return 'RAW';
+      return 'unknown';
   }
 };
 
 export const unsupportedStyles = (property: string) => {
-  if (property == 'display') {
+  if (property === 'display') {
     return {
       fallback: 'flex',
     };

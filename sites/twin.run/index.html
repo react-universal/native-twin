@@ -2,23 +2,25 @@
 <html>
 
 <head>
-    <title>Language Client Pure Browser Example</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="src/styles.css">
+  <title>Native Twin Playground</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.svg" type="image/x-icon" />
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <!-- <div id="root"></div> -->
-    <!-- <script type="module" src="./src/App.tsx"></script> -->
-	<div style="width:100%;height:100%">
-        <div id="monaco-editor-root" style="width:100%;height:100%"></div>
-    </div>
-    <script type="module">
-        import { configureMonacoWorkers, runBrowserEditor } from "./src/index.ts";
+  <div id="monaco-editor-root" style="height: 100vh;"></div>
+  <!-- <div id="first-loading-status" class="loading-player">
+        <video src="./loading-status.webm" loop controls="none" autoplay></video>
+    </div>-->
 
-        configureMonacoWorkers();
-        runBrowserEditor();
-    </script>
+  <!-- <div id="twin-editor" class="flex flex-1 w-screen" style="height: 100vh"></div> -->
+  <!-- <iframe id="editorPreview" frameborder="0"></iframe> -->
+  <script type="module" src="./src/App.tsx"></script>
 </body>
+
 </html>

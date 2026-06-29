@@ -1,2 +1,13 @@
+import { createVariants } from "@native-twin/core"
+
 css`md:bg-red-100 bg(md:black rose-50/50 hover:pink-100) text-xs text-[10px]`
 custom`bg`
+
+createVariants({
+  variants: {
+    variant: {
+      primary: `bg-pink-200`,
+      sec: 'bg-red-200'
+    }
+  }
+ })

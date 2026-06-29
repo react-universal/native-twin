@@ -1,5 +1,7 @@
 import type { ParserState } from '../types';
+import { choice } from './choice.parser';
 import { Parser, updateParserResult } from './Parser';
+import { char } from './string.parser';
 
 type ParserFn<T> = (_yield: <K>(parser: Parser<K>) => K) => T;
 export function coroutine<T>(parserFn: ParserFn<T>): Parser<T> {
@@ -33,3 +35,9 @@ export function coroutine<T>(parserFn: ParserFn<T>): Parser<T> {
     }
   });
 }
+
+coroutine((run) => {
+  const a = run(choice([char('1'), char('2'), char('[')]));
+  if (a === '[') {
+  }
+});

@@ -1,14 +1,30 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {},
+  "compilerOptions": {
+    "module": "ESNext",
+    "ignoreDeprecations": "6.0",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "composite": true
+  },
   "include": [
-    "./src"
+    "src"
   ],
   "exclude": [
-    "**/__mocks__/*",
-    "**/__tests__/*",
-    "**/webui/**",
-    "build",
-    "dist"
+    "build"
+  ],
+  "references": [
+    {
+      "path": "../css"
+    },
+    {
+      "path": "../helpers"
+    },
+    {
+      "path": "../jsx"
+    },
+    {
+      "path": "../native-twin"
+    }
   ]
 }

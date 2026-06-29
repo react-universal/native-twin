@@ -1,10 +1,10 @@
-import { SheetEntry } from '@native-twin/css';
-import type { StyledContext } from '../store/observables/styles.obs';
+import type { TwinRuntimeContext } from '@native-twin/core';
+import type { SheetEntry } from '@native-twin/css';
 import { INTERNAL_FLAGS, INTERNAL_RESET } from '../utils/constants';
-import type { TwinStyleSheet } from './StyleSheet';
+import type { TwinStyleSheet } from './StyleSheet.types';
 
 // TODO: Check this on every react web fmw
-const internalSheet: TwinStyleSheet = {
+const internalSheet = {
   [INTERNAL_FLAGS]: {},
   [INTERNAL_RESET]() {
     // vw[INTERNAL_RESET](dimensions);
@@ -14,23 +14,19 @@ const internalSheet: TwinStyleSheet = {
   getFlag(name: string) {
     return this[INTERNAL_FLAGS][name];
   },
-  getGlobalStyle(name) {
+  getGlobalStyle(_name: string) {
     return undefined;
   },
-  // @ts-expect-error
   get runtimeContext() {
     return {};
   },
   create(a: any) {
     return a;
   },
-};
+} as any as TwinStyleSheet;
 
-export const StyleSheet = Object.assign({}, internalSheet);
+export const StyleSheet = Object.assign({}, internalSheet) as any as TwinStyleSheet;
 
-export function createComponentSheet(
-  entries: SheetEntry[] = [],
-  context: StyledContext,
-) {}
+export function createComponentSheet(_entries: SheetEntry[] = [], _context: TwinRuntimeContext) {}
 
 export type ComponentSheet = ReturnType<typeof createComponentSheet>;

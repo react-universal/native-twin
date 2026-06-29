@@ -1,19 +1,18 @@
+import type { TwinConfigOptions } from '@native-twin/language-service';
 import * as Context from 'effect/Context';
 import * as Layer from 'effect/Layer';
-// import * as Effect from 'effect/Effect';
-import ts from 'typescript/lib/tsserverlibrary';
-import {
+import type ts from 'typescript';
+import type {
   InternalTwFn,
   InternalTwinConfig,
   InternalTwinThemeContext,
 } from '../native-twin/nativeTwin.config';
-import { NativeTwinPluginConfiguration } from '../plugin.types';
 
 interface TSPluginContext {
   readonly plugin: {
     readonly ts: typeof ts;
     readonly info: ts.server.PluginCreateInfo;
-    readonly config: NativeTwinPluginConfiguration;
+    readonly config: TwinConfigOptions;
   };
   readonly tailwind: {
     readonly config: InternalTwinConfig;

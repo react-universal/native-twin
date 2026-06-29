@@ -6,17 +6,16 @@ describe('TESTS', () => {
   pluginTester({
     plugin,
     pluginOptions: {
-      twinConfigPath: './tailwind.config.ts',
+      twinConfigPath: path.join(__dirname, './tailwind.config.ts'),
+      cssInput: 'globals.css',
     },
     title: 'Native Twin babel plugin',
     babelOptions: {
       plugins: ['@babel/plugin-syntax-jsx'],
-      cwd: path.join(__dirname),
     },
     tests: {
       'createElement by namespace require': {
-        // skip: true,
-        // only: true,
+        skip: true,
         codeFixture: path.join('./fixtures/namespace-require/code.js'),
         outputFixture: path.join('./fixtures/namespace-require/output.js'),
         babelOptions: {
@@ -24,13 +23,13 @@ describe('TESTS', () => {
         },
       },
       'createElement with interopRequire': {
-        // skip: true,
+        skip: true,
         codeFixture: path.join('./fixtures/interop-require/code.js'),
         outputFixture: path.join('./fixtures/interop-require/output.js'),
         babelOptions: { filename: path.join('./fixtures/interop-require/someFile.jsx') },
       },
       'createElement identifier by default import': {
-        // skip: true,
+        skip: true,
         // only: true,
         codeFixture: path.join('./fixtures/default-import/code.js'),
         outputFixture: path.join('./fixtures/default-import/output.js'),
@@ -38,7 +37,7 @@ describe('TESTS', () => {
       },
 
       'createElement identifier by import': {
-        // skip: true,
+        skip: true,
         // only: true,
         codeFixture: path.join('./fixtures/named-import/code.js'),
         outputFixture: path.join('./fixtures/named-import/output.js'),
@@ -46,7 +45,7 @@ describe('TESTS', () => {
       },
 
       'createElement identifier by require': {
-        // skip: true,
+        skip: true,
         // only: true,
         codeFixture: path.join('./fixtures/named-require/code.js'),
         outputFixture: path.join('./fixtures/named-require/output.js'),
@@ -54,7 +53,7 @@ describe('TESTS', () => {
       },
 
       'createElement by namespace import': {
-        // skip: true,
+        skip: true,
         codeFixture: path.join('./fixtures/namespace-require/code.js'),
         outputFixture: path.join('./fixtures/namespace-require/output.js'),
         babelOptions: {
@@ -63,7 +62,7 @@ describe('TESTS', () => {
       },
 
       'createElement by namespace require (lowercase)': {
-        // skip: true,
+        skip: true,
         codeFixture: path.join('./fixtures/namespace-require-lowercase/code.js'),
         outputFixture: path.join('./fixtures/namespace-require-lowercase/output.js'),
         babelOptions: {
@@ -72,7 +71,7 @@ describe('TESTS', () => {
       },
 
       'createELement from 3rd party': {
-        // skip: true,
+        skip: true,
         codeFixture: path.join('./fixtures/create-third-party/code.js'),
         outputFixture: path.join('./fixtures/create-third-party/output.js'),
         babelOptions: {
@@ -81,14 +80,14 @@ describe('TESTS', () => {
       },
 
       'compiled babel expo': {
-        // skip: true,
+        skip: true,
         codeFixture: path.join('./fixtures/compiled/code.js'),
         outputFixture: path.join('./fixtures/compiled/out.js'),
         babelOptions: { filename: path.join('./fixtures/compiled/someFile.jsx') },
       },
 
       'createElement from denied modules': {
-        // skip: true,
+        skip: true,
         codeFixture: path.join('./fixtures/denied-modules/code.js'),
         outputFixture: path.join('./fixtures/denied-modules/output.js'),
         babelOptions: {

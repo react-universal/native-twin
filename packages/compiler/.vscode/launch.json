@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Test @lib/compiler",
+      "program": "../../node_modules/.bin/vitest",
+      "args": [
+        "test",
+        "--inspect-brk",
+        "--no-file-parallelism",
+        "--watch"
+      ],
+      "env": {
+        "VITE_CJS_IGNORE_WARNING": "true"
+      },
+      "console": "integratedTerminal",
+      // "preLaunchTask": "npm: test",
+      // "resolveSourceMapLocations": [
+      //   "${workspaceFolder}/**",
+      //   "!**/node_modules/**"
+      // ],
+      "sourceMaps": true,
+      "smartStep": true,
+      // "skipFiles": [
+      //   "<node_internals>/**/*.js",
+      //   "node_modules",
+      // ]
+    }
+  ]
+}

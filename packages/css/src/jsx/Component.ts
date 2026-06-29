@@ -1,48 +1,68 @@
-import type { AnyStyle, FinalSheet, GetChildStylesArgs } from '../react-native/rn.types';
-import type { SheetInteractionState } from '../sheets/sheet.types';
-import { RuntimeGroupSheet } from './Sheet';
-import type { RuntimeSheetEntry } from './SheetEntry';
+import type { SelectorGroup } from '../css';
+import type { RuntimeSheetDeclaration } from './SheetEntryDeclaration';
 
-/** @category jsxComponent */
-export interface RegisteredComponent {
-  id: string;
-  sheets: ComponentSheet[];
-  metadata: {
-    isGroupParent: boolean;
-    hasGroupEvents: boolean;
-    hasPointerEvents: boolean;
-    hasAnimations: boolean;
-  };
+/**
+ * @version 7.0.0
+ */
+export interface RuntimeJSXStyle {
+  group: SelectorGroup;
+  groups: SelectorGroup[];
+  className: string;
+  important: boolean;
+  inherited: boolean;
+  precedence: number;
+  declarations: RuntimeSheetDeclaration[];
 }
-
-/** @category jsxComponent */
-export interface ComponentSheet {
-  prop: string;
+/**
+ * @version 7.0.0
+ */
+export interface RuntimeTwinMappedProp {
   target: string;
-  sheet: FinalSheet;
-  getChildStyles(input: Partial<GetChildStylesArgs>): AnyStyle;
-  getStyles: (
-    input: Partial<SheetInteractionState>,
-    templateEntries?: RuntimeSheetEntry[],
-  ) => AnyStyle;
-  compiledSheet: RuntimeComponentEntry;
-  metadata: {
-    isGroupParent: boolean;
-    hasGroupEvents: boolean;
-    hasPointerEvents: boolean;
-    hasAnimations: boolean;
-  };
-  recompute(compiledSheet: RuntimeComponentEntry): ComponentSheet;
-}
-
-/** @category jsxComponent */
-export interface RuntimeComponentEntry {
+  prop: string;
+  templateEntries: string | null;
   classNames: string;
-  prop: string;
-  target: string;
-  templateLiteral: string | null;
-  rawSheet: RuntimeGroupSheet;
-  // childEntries: RuntimeSheetEntry[];
-  entries: RuntimeSheetEntry[];
-  // precompiled: FinalSheet;
+  entries: {
+    base: RuntimeJSXStyle[];
+    pointer: RuntimeJSXStyle[];
+    child: RuntimeJSXStyle[];
+    group: RuntimeJSXStyle[];
+  };
+  metadata: {
+    isGroupParent: boolean;
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
+  };
+}
+
+// /**
+//  * @version 7.0.0
+//  * @deprecated please use @type {TwinRuntimeComponent}
+//  */
+// export interface TwinInjectedObject {
+//   id: string;
+//   index: number;
+//   parentSize: number;
+//   parentID: string;
+//   metadata: {
+//     isGroupParent: boolean;
+//     hasGroupEvents: boolean;
+//     hasPointerEvents: boolean;
+//   };
+//   props: RuntimeTwinMappedProp[];
+//   childStyles: RuntimeJSXStyle[];
+// }
+
+export interface TwinRuntimeComponent {
+  id: string;
+  index: number;
+  parentSize: number;
+  parentID: string | null;
+  childIds: string[];
+  metadata: {
+    isGroupParent: boolean;
+    hasGroupEvents: boolean;
+    hasPointerEvents: boolean;
+  };
+  props: RuntimeTwinMappedProp[];
+  childStyles: RuntimeJSXStyle[];
 }

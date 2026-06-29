@@ -1,21 +1,38 @@
-import { ComponentProps, ComponentType, forwardRef } from 'react';
-import { render as tlRender } from '@testing-library/react-native';
-import * as JSX from 'react/jsx-runtime';
-import { setup } from '@native-twin/core';
+import { defineConfig, setup } from '@native-twin/core';
 import type { CompleteStyle } from '@native-twin/css';
+import { presetTailwind } from '@native-twin/preset-tailwind';
+import { render as tlRender } from '@testing-library/react-native';
+import { forwardRef } from 'react';
+import * as JSXDevRuntime from '../jsx-dev-runtime';
 import '../components';
-import wrapJSX from '../jsx-wrapper';
-import { StyleSheet } from '../sheet/StyleSheet';
-import { createStylableComponent, stylizedComponents } from '../styled';
-import type {
-  StylableComponentConfigOptions,
-  ReactComponent,
-  NativeTwinGeneratedProps,
-} from '../types/styled.types';
+import { StyleSheet } from '../sheet';
+import { stylizedComponents } from '../styled';
+import type { ReactComponent, StylableComponentConfigOptions } from '../types/styled.types';
 import { INTERNAL_RESET } from '../utils/constants';
-import tailwindConfig from './tailwind.config';
 
-setup(tailwindConfig);
+const testingConfig = defineConfig({
+  content: ['./App.tsx', './src/**/*.{js,jsx,ts,tsx}'],
+  root: {
+    rem: 16,
+  },
+  theme: {
+    extend: {
+      colors: {
+        primary: 'blue',
+      },
+      fontFamily: {
+        DEFAULT: 'Inter-Regular',
+        inter: 'Inter-Regular',
+        'inter-bold': 'Inter-Bold',
+        'inter-medium': 'Inter-Medium',
+        sans: 'Inter-Regular',
+      },
+    },
+  },
+  presets: [presetTailwind()],
+});
+
+setup(testingConfig);
 
 declare global {
   namespace jest {
@@ -26,9 +43,10 @@ declare global {
   }
 }
 
-export const renderJSX = wrapJSX((JSX as any).jsx);
-export const render: typeof tlRender = (component: any, options?: any) =>
-  tlRender(renderJSX(component.type, component.props, component.key) as any, options);
+export const renderJSX = JSXDevRuntime.jsxDEV;
+export const render: typeof tlRender = (component: any, options?: any) => {
+  return tlRender(component, options);
+};
 
 /*
  * Creates a mocked component that renders with the defaultCSSInterop WITHOUT needing
@@ -41,22 +59,51 @@ export const createMockComponent = <
   },
 >(
   Component: T,
-  mapping: M = {
+  _mapping: M = {
     className: 'style',
   } as unknown as M,
 ) => {
   // return createStylableComponent(Component, mapping);
 
-  const mock: any = jest.fn(({ ...props }, ref) => {
-    props.ref = ref;
-    return renderJSX(Component, props, '', false, undefined, undefined);
+  const Mock = jest.fn(({ ...props }, ref) => {
+    props['ref'] = ref;
+    const mappings = props.mappings;
+
+    return renderJSX(Component, props, undefined, false, undefined, undefined);
   });
 
-  return Object.assign(createStylableComponent(forwardRef(mock), mapping), {
-    mock,
-  }) as unknown as ComponentType<ComponentProps<T> & NativeTwinGeneratedProps<M>> & {
-    mock: typeof mock;
-  };
+  return forwardRef(Mock);
+  // return Object.assign(createStylableComponent(forwardRef(mock), mapping), {
+  //   mock,
+  // }) as unknown as ComponentType<ComponentProps<T> & NativeTwinGeneratedProps<M>> & {
+  //   mock: typeof mock;
+  // };
+};
+
+export const createMockComponentX = <
+  const T extends ReactComponent<any>,
+  const M extends StylableComponentConfigOptions<any> = {
+    className: 'style';
+  },
+>(
+  Component: T,
+  _mapping: M = {
+    className: 'style',
+  } as unknown as M,
+) => {
+  // return createStylableComponent(Component, mapping);
+
+  const Mock = jest.fn(({ ...props }, ref) => {
+    props['ref'] = ref;
+    return renderJSX(Component, props, undefined, false, undefined, undefined);
+  });
+
+  return forwardRef(Mock);
+  // return Object.assign(createStylableComponent(forwardRef(mock), mapping), {
+  //   mock,
+  // }) as unknown as ComponentType<ComponentProps<T> & NativeTwinGeneratedProps<M>> & {
+  //   mock: typeof mock;
+  // };
 };
 
 // export const createRemappedComponent = <

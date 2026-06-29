@@ -1,0 +1,103 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build:compiler",
+        "^build"
+      ],
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{projectRoot}/!**/test",
+        "{projectRoot}/!**/tests",
+        "{projectRoot}/!**/tsconfig.*",
+        "{projectRoot}/src/**"
+      ],
+      "outputs": [
+        "{projectRoot}/build/**",
+        "{projectRoot}/dist/**"
+      ],
+      "cache": true
+    },
+    "build:watch": {
+      "dependsOn": [
+        "build:compiler"
+      ],
+      "cache": false
+    },
+    "build:compiler": {
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{projectRoot}/!**/test",
+        "{projectRoot}/!**/tests",
+        "{projectRoot}/!**/tsconfig.*"
+      ],
+      "outputs": [
+        "{projectRoot}/build/**",
+        "{projectRoot}/dist/**"
+      ],
+      "cache": true
+    },
+    "build:tsc:watch": {
+      "cache": false
+    },
+    "dev-tools:dev": {
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{projectRoot}/!**/test",
+        "{projectRoot}/!**/tests",
+        "{projectRoot}/**/webui/**/*"
+      ],
+      "outputs": [
+        "{projectRoot}/build/**",
+        "{projectRoot}/dist/**"
+      ],
+      "cache": false
+    },
+    "lint": {
+      "cache": true
+    },
+    "clean": {
+      "cache": false
+    },
+    "next:app:dev": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "{projectRoot}/.next/**",
+        "!{projectRoot}/.next/cache/**",
+        "{projectRoot}/build/**"
+      ],
+      "cache": false
+    },
+    "docs:dev": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "{projectRoot}/.next/**",
+        "!{projectRoot}/.next/cache/**",
+        "{projectRoot}/build/**"
+      ],
+      "cache": false
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": true
+    },
+    "gen:jsdocs": {
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{projectRoot}/!**/test",
+        "{projectRoot}/!**/tests",
+        "{projectRoot}/**/webui/**/*",
+        "{projectRoot}/**/src",
+        "{projectRoot}/jsdoc.json"
+      ],
+      "cache": true
+    }
+  }
+}

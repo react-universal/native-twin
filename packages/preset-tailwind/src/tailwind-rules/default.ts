@@ -1,5 +1,5 @@
 import type { Rule } from '@native-twin/core';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { TailwindPresetTheme } from '../types/theme.types';
 import { textAlignsRules, verticalAlignsRules } from './align';
 import { backgroundRules } from './background';
 import { appearanceRules, outlineRules } from './behaviors';
@@ -12,11 +12,13 @@ import { boxShadowRules } from './shadows';
 import { sizeRules } from './size';
 import { spacingRules } from './spacing';
 import { translateRules } from './transform';
+import { durationRules, transitionRules } from './transition';
 import { fontThemeRules } from './typography';
 
 export const themeRules: Rule<TailwindPresetTheme>[] = [
   backgroundRules,
   flexRules,
+
   spacingRules,
   sizeRules,
   fontThemeRules,
@@ -29,5 +31,7 @@ export const themeRules: Rule<TailwindPresetTheme>[] = [
   verticalAlignsRules,
   appearanceRules,
   boxShadowRules,
+  transitionRules,
+  durationRules,
   translateRules,
 ].flat(1) as Rule[];

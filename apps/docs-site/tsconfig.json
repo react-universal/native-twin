@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "ignoreDeprecations": "6.0",
     "lib": [
       "dom",
       "dom.iterable",
@@ -8,7 +9,6 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "jsxImportSource": "@native-twin/jsx",
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -26,7 +26,10 @@
   },
   "include": [
     "next-env.d.ts",
+    "native-twin.d.ts",
+    "tailwind.config.ts",
     "**/*.ts",
+    "app/**/*",
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],

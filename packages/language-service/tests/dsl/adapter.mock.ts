@@ -1,0 +1,71 @@
+import { readFileSync } from 'node:fs';
+import fsPromises from 'node:fs/promises';
+import { identity } from '@native-twin/helpers';
+import { Layer } from 'effect';
+import * as Effect from 'effect/Effect';
+import * as Option from 'effect/Option';
+import { TextDocuments } from 'vscode-languageserver';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import {
+  FileNotFound,
+  LSPAdapterSpec,
+  LSPDocumentsCtx,
+  type Position,
+  TwinLSPDocument,
+} from '../../src';
+import { JSXParser, JSXParserLive } from '../../src/adapters/Typescript/JSXParser.service';
+import { TypeScriptProgram } from '../../src/adapters/Typescript/TypescriptAPI.service';
+
+export const LSPDocumentsCtxMock = Effect.gen(function* () {
+  yield* Effect.void;
+
+  return LSPDocumentsCtx.of({
+    getDocument: (uri) =>
+      Effect.promise(() => fsPromises.readFile(uri, 'utf-8')).pipe(
+        Effect.map((contents) => TextDocument.create(uri, 'ts', 1, contents)),
+      ),
+    handler: new TextDocuments(TextDocument),
+    setup: (_connection) => Effect.succeed({ dispose: () => {} }),
+  });
+});
+
+export const TestVscodeLSPAdapterLive = Effect.gen(function* () {
+  const program = yield* TypeScriptProgram;
+  const parser = yield* JSXParser;
+
+  const getLSPDocument = Effect.fn(function* (filename: string) {
+    const document = yield* Effect.succeed(
+      Option.some(TextDocument.create(filename, 'ts', 1, readFileSync(filename, 'utf-8'))),
+    ).pipe(
+      Effect.flatMap(identity),
+      Effect.mapError((e) => FileNotFound.create(e)),
+    );
+
+    const tsSource = yield* program.getSourceFile(filename, document.getText());
+    const roots = parser.getJSXRootsFromSource(tsSource);
+    const regions = parser.jsxNodesToRegions(roots);
+    // document.loadRegions(regions);
+    return new TwinLSPDocument(document, regions);
+  });
+
+  const getRegions = Effect.fn('vscodeAdapter: extractRegions')(function* (filename: string) {
+    const document = yield* getLSPDocument(filename);
+    return document.regions;
+  });
+
+  const getRegionAt = Effect.fn('vscodeAdapter: getTokenAtPosition')(function* (
+    filename: string,
+    position: Position,
+  ) {
+    const document = yield* getLSPDocument(filename);
+    // const regions = yield* getRegions(filename);
+
+    return document.findRegionAt(position);
+  });
+
+  return LSPAdapterSpec.of({
+    getLSPDocument,
+    getRegions,
+    getRegionAt,
+  });
+}).pipe(Layer.effect(LSPAdapterSpec), Layer.provide(JSXParserLive));

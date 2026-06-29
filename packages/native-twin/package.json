@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/core",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Tailwindcss StyleSheet generator for react native/web",
   "keywords": [
     "tailwind",
@@ -18,29 +18,35 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/react-universal/native-twin",
-    "directory": "packages/native-tailwind"
+    "directory": "packages/native-twin"
   },
-  "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "react-native": "./build/cjs/index.js",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "files": [
     "build",
-    "index.d.ts",
-    "tailwind",
-    "tailwind.d.ts",
     "types.d.ts",
+    "src",
+    "expo-snack.js",
     "LICENSE",
     "README.md",
-    "CHANGELOG.md",
-    "expo-snack.js"
+    "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
-    "clean": "rm -rf build",
-    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "jest",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
+    "clean": "rm -rf build .cache",
+    "lint": "biome lint",
+    "test": "vitest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },
@@ -50,14 +56,14 @@
     "@native-twin/helpers": "workspace:*"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": "18.3.1"
   },
   "optionalDependencies": {
-    "jest": "*"
+    "@native-twin/cli": "workspace:*",
+    "jest": "~29.7.0"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   }
 }

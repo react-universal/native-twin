@@ -1,0 +1,13 @@
+{
+  "include": ["src"],
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": false,
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "resolvePackageJsonExports": false,
+    "declaration": true,
+    "module": "es2022",
+    "declarationDir": "build/dts",
+    "outDir": "build/esm"
+  },
+}

@@ -53,18 +53,14 @@ export function sequenceOf(parsers: Parser<any>[]) {
     const results = new Array(length);
     let nextState = state;
 
-    for (let i = 0; i < length; i++) {
-      const current = parsers[i];
-      if (!current) break;
+    for (const parser of parsers) {
+      const index = parsers.indexOf(parser);
+      const out = parser.transform(nextState);
 
-      const out = current.transform(nextState);
+      if (out.isError) return out;
 
-      if (out.isError) {
-        return out;
-      } else {
-        nextState = out;
-        results[i] = out.result;
-      }
+      nextState = out;
+      results[index] = out.result;
     }
 
     return updateParserResult(nextState, results);

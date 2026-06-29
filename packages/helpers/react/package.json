@@ -1,0 +1,5 @@
+{
+  "main": "../build/react.cjs",
+  "module": "../build/react.mjs",
+  "types": "../build/react.d.cts"
+}

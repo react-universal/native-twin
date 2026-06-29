@@ -1,13 +1,13 @@
-import { ThemeContext, convert } from '@native-twin/core';
+import { convert, type ThemeContext } from '@native-twin/core';
 import {
-  ArbitraryToken,
-  ClassNameToken,
-  VariantClassToken,
+  type ArbitraryToken,
+  type ClassNameToken,
   Layer as CssLayer,
   moveToLayer,
   parsedRuleToClassName,
+  type VariantClassToken,
 } from '@native-twin/css';
-import {
+import type {
   LocatedGroupTokenWithText,
   LocatedParsedRule,
   LocatedParser,
@@ -15,9 +15,7 @@ import {
   TemplateTokenWithText,
 } from '../template/template.types';
 
-export const classNameTokenToRule = (
-  token: LocatedParser<ClassNameToken>,
-): LocatedParsedRule => ({
+export const classNameTokenToRule = (token: LocatedParser<ClassNameToken>): LocatedParsedRule => ({
   n: token.value.n,
   v: [],
   i: token.value.i,
@@ -27,9 +25,7 @@ export const classNameTokenToRule = (
   type: token.type,
 });
 
-export const arbitraryTokenToRule = (
-  token: LocatedParser<ArbitraryToken>,
-): LocatedParsedRule => ({
+export const arbitraryTokenToRule = (token: LocatedParser<ArbitraryToken>): LocatedParsedRule => ({
   n: token.value,
   v: [],
   i: false,
@@ -62,12 +58,12 @@ const groupToRules = (nextToken: LocatedGroupTokenWithText) => {
     }
   }
   const parts = anyTokenToRule(nextToken.value.content).map((x): LocatedParsedRule => {
-    if (baseValue.type == 'CLASS_NAME') {
+    if (baseValue.type === 'CLASS_NAME') {
       return {
         ...x,
         i: baseValue.value.i,
         m: baseValue.value.m,
-        n: baseValue.value.n + '-' + x.n,
+        n: `${baseValue.value.n}-${x.n}`,
         type: baseValue.type,
         loc: {
           end: baseValue.end,
@@ -101,19 +97,19 @@ export const variantClassTokenToRule = (
   type: token.type,
 });
 export const tokenToRule = (token: TemplateTokenWithText) => {
-  if (token.type == 'ARBITRARY') {
+  if (token.type === 'ARBITRARY') {
     return arbitraryTokenToRule(token);
   }
 
-  if (token.type == 'CLASS_NAME') {
+  if (token.type === 'CLASS_NAME') {
     return classNameTokenToRule(token);
   }
 
-  if (token.type == 'VARIANT_CLASS') {
+  if (token.type === 'VARIANT_CLASS') {
     return variantClassTokenToRule(token);
   }
 
-  if (token.type == 'GROUP') {
+  if (token.type === 'GROUP') {
     return groupToRules(token);
   }
 
@@ -126,16 +122,16 @@ export function anyTokenToRule(
 ): LocatedParsedRule[] {
   const nextToken = groupContent.shift();
   if (!nextToken) return results;
-  if (nextToken.type == 'ARBITRARY') {
+  if (nextToken.type === 'ARBITRARY') {
     results.push(arbitraryTokenToRule(nextToken));
   }
-  if (nextToken.type == 'CLASS_NAME') {
+  if (nextToken.type === 'CLASS_NAME') {
     results.push(classNameTokenToRule(nextToken));
   }
-  if (nextToken.type == 'VARIANT_CLASS') {
+  if (nextToken.type === 'VARIANT_CLASS') {
     results.push(variantClassTokenToRule(nextToken));
   }
-  if (nextToken.type == 'GROUP') {
+  if (nextToken.type === 'GROUP') {
     const group = groupToRules(nextToken);
     results.push(...group);
   }
@@ -157,28 +153,28 @@ export function locatedParsedRuleLocatedSheetEntry(
   rule: LocatedParsedRule,
   context: ThemeContext,
 ): LocatedSheetEntry {
-  if (rule.n == 'group') {
+  if (rule.n === 'group') {
     return {
       className: 'group',
       declarations: [],
       selectors: [],
+      preflight: false,
       precedence: CssLayer.u,
       important: rule.i,
       loc: rule.loc,
       animations: [],
     };
   }
-  if (context.mode === 'web') {
+  if (rule.v.includes('web')) {
     if (
-      (rule.v.includes('ios') ||
-        rule.v.includes('android') ||
-        rule.v.includes('native')) &&
+      (rule.v.includes('ios') || rule.v.includes('android') || rule.v.includes('native')) &&
       !rule.v.includes('web')
     ) {
       return {
         className: parsedRuleToClassName(rule),
         declarations: [],
         selectors: [],
+        preflight: false,
         precedence: CssLayer.u,
         important: rule.i,
         loc: rule.loc,
@@ -192,6 +188,7 @@ export function locatedParsedRuleLocatedSheetEntry(
     return {
       className: parsedRuleToClassName(rule),
       declarations: [],
+      preflight: false,
       selectors: [],
       precedence: CssLayer.u,
       important: rule.i,
@@ -199,7 +196,7 @@ export function locatedParsedRuleLocatedSheetEntry(
       animations: [],
     };
   }
-  const newRule = context.mode === 'web' ? convert(rule, context, CssLayer.u) : rule;
+  const newRule = rule.v.includes('web') ? convert(rule, context, CssLayer.u) : rule;
   result.selectors = newRule.v;
   result.precedence = moveToLayer(CssLayer.u, newRule.p);
   return { ...result, loc: rule.loc };

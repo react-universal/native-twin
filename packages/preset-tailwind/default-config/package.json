@@ -1,0 +1,5 @@
+{
+  "main": "../build/defaultConfig.cjs",
+  "module": "../build/defaultConfig.mts",
+  "types": "../build/defaultConfig.d.cts"
+}

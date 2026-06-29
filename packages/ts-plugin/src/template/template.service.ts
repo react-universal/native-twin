@@ -2,11 +2,11 @@ import * as Effect from 'effect/Effect';
 import * as Layer from 'effect/Layer';
 import * as Option from 'effect/Option';
 import ts from 'typescript';
-import { TemplateContext } from 'typescript-template-language-service-decorator';
+import type { TemplateContext } from 'typescript-template-language-service-decorator';
 import { relative } from 'typescript-template-language-service-decorator/lib/nodes';
 import StandardScriptSourceHelper from 'typescript-template-language-service-decorator/lib/standard-script-source-helper';
 import { TSPluginService } from '../plugin/TSPlugin.service';
-import { match, getSourceMatchers } from '../utils/match';
+import { getSourceMatchers, match } from '../utils/match';
 import { TemplateSourceHelperService } from './template.context';
 import { getValidTemplateNode, StandardTemplateContext } from './template.utils';
 
@@ -15,26 +15,21 @@ export const TemplateSourceHelperServiceLive = Layer.scoped(
   Effect.gen(function* ($) {
     const main = yield* $(TSPluginService);
     const sourceMatchers = getSourceMatchers(main.plugin.ts, main.plugin.config);
-    const helper = new StandardScriptSourceHelper(
-      main.plugin.ts,
-      main.plugin.info.project,
-    );
+    // @ts-expect-error
+    const helper = new StandardScriptSourceHelper(main.plugin.ts, main.plugin.info.project);
 
     return {
       helper,
       sourceMatchers,
       getRelativePosition(context, offset) {
-        const baseLC = helper.getLineAndChar(
-          context.fileName,
-          context.node.getStart() + 1,
-        );
+        const baseLC = helper.getLineAndChar(context.fileName, context.node.getStart() + 1);
         const cursorLC = helper.getLineAndChar(context.fileName, offset);
         return relative(baseLC, cursorLC);
       },
       getTemplateSettings() {
         return {
           get tags() {
-            return main.plugin.config.tags;
+            return main.plugin.config.functions;
           },
           enableForStringWithSubstitutions: true,
           getSubstitution(_, start, end) {
@@ -47,6 +42,7 @@ export const TemplateSourceHelperServiceLive = Layer.scoped(
         const node = helper.getNode(fileName, position);
         return Option.fromNullable(node).pipe(
           Option.flatMap((x) => {
+            // @ts-expect-error
             const validNode = getValidTemplateNode(x);
             if (!validNode) return Option.none();
             return Option.some(validNode);
@@ -94,6 +90,7 @@ export const TemplateSourceHelperServiceLive = Layer.scoped(
             const fileName = x.getSourceFile().fileName;
 
             return Option.some(
+              // @ts-expect-error
               new StandardTemplateContext(
                 ts,
                 fileName,

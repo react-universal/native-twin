@@ -1,59 +1,67 @@
 {
   "folders": [
     {
-      "name": "root",
+      "name": "✨ native-twin",
       "path": ".."
     },
     {
-      "name": "📦 @lib/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @lib/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @lib/dev-tools-web",
-      "path": "../packages/dev-tools/webui"
-    },
-    {
-      "name": "📦 @lib/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @lib/dev-tools",
-      "path": "../packages/dev-tools"
-    },
-    {
-      "name": "📦 @lib/native-twin",
-      "path": "../packages/native-twin"
-    },
-    {
-      "name": "📦 @lib/css",
-      "path": "../packages/css"
-    },
-    {
-      "name": "📦 @lib/vscode",
-      "path": "../packages/vscode-extension"
-    },
-    {
-      "name": "📦 @lib/language-service",
+      "name": "📦 @native-twin/language-service",
       "path": "../packages/language-service"
     },
     {
-      "name": "📦 @lib/language-server",
+      "name": "📦 @native-twin/language-server",
       "path": "../packages/language-server"
     },
     {
-      "name": "📦 @lib/builder",
+      "name": "📦 native-twin-vscode",
+      "path": "../packages/vscode-extension"
+    },
+    {
+      "name": "📦 @native-twin/adapters",
+      "path": "../packages/adapters"
+    },
+    {
+      "name": "📦 @native-twin/cli",
       "path": "../packages/builder"
     },
     {
-      "name": "📦 @lib/helpers",
+      "name": "📦 @native-twin/compiler",
+      "path": "../packages/compiler"
+    },
+    {
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
+    },
+    {
+      "name": "📦 @native-twin/data-types",
+      "path": "../packages/data-types"
+    },
+    {
+      "name": "📦 @native-twin/helpers",
       "path": "../packages/helpers"
     },
     {
-      "name": "@apps/expo",
+      "name": "ts-plugin",
+      "path": "../packages/ts-plugin"
+    },
+    {
+      "name": "📦 @native-twin/core",
+      "path": "../packages/native-twin"
+    },
+    {
+      "name": "📦 @native-twin/preset-tailwind",
+      "path": "../packages/preset-tailwind"
+    },
+    {
+      "name": "📦 @native-twin/vite-plugin",
+      "path": "../packages/vite-plugin"
+    },
+    {
+      "name": "twin-run",
+      "path": "../sites/twin.run"
+    },
+    {
+      "name": "🚀 expo-app",
       "path": "../apps/expo-app"
     }
   ],
@@ -63,6 +71,9 @@
       "comments": true,
       "strings": true
     },
+    "export-typescript.excludes": [
+      "**/*.{ts,tsx,spec.ts,spec.tsx}"
+    ],
     "files.exclude": {
       "**/.git": true,
       "**/.svn": true,
@@ -70,7 +81,7 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
-      ".turbo": false,
+      ".turbo": true,
       "**/CHANGELOG.md": true,
       "**/jest.config.js": false,
       "**/LICENSE": true,
@@ -84,29 +95,32 @@
     "search.exclude": {
       "**/node_modules": true,
       "**/*.code-search": true,
-      "**/build": true
+      "**/build": true,
+      "**/dist": true
     },
     "editor.fontSize": 16,
-    "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [
       "sastan",
       "TRBL",
       "xytrbl"
     ],
-    "jest.enable": true,
+    "jest.enable": false,
     "jest.runMode": "on-demand",
-    "jest.debugMode": true,
+    "jest.debugMode": false,
     "jest.disabledWorkspaceFolders": [
       "root",
       "📦 @lib/builder",
       "📦 @lib/with-nextjs",
       "📦 @lib/vscode",
+      "📦 @lib/vite-plugin",
       "📦 @lib/language-service",
       "📦 @lib/language-server",
       "expo-app",
       "next-pages-example",
       "next-app-dir",
-      "docs-site"
-    ]
+      "docs-site",
+      "twin.run"
+    ],
+    "findUnusedExports.detectCircularImports": true
   }
 }

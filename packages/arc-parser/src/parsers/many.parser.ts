@@ -1,4 +1,4 @@
-import { Parser, updateParserResult, updateParserError } from './Parser';
+import { Parser, updateParserError, updateParserResult } from './Parser';
 
 export const many = <A>(parser: Parser<A>): Parser<A[]> => {
   return new Parser((state) => {
@@ -6,7 +6,6 @@ export const many = <A>(parser: Parser<A>): Parser<A[]> => {
 
     const results = [];
     let nextState = state;
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       const out = parser.transform(nextState);
 
@@ -15,7 +14,7 @@ export const many = <A>(parser: Parser<A>): Parser<A[]> => {
       } else {
         nextState = out;
         results.push(nextState.result);
-        if (nextState.cursor >= state.target.length) {
+        if (nextState.cursor >= nextState.target.byteLength) {
           break;
         }
       }
@@ -34,10 +33,7 @@ export const many1 = <A>(parser: Parser<A>): Parser<A[]> => {
     }
     return updateParserError(
       state,
-      `Many: does not have any result at position ${state.cursor} ${state.target.slice(
-        state.cursor,
-        5,
-      )}`,
+      `Many1: Expecting to match at least one value at: ${state.cursor}`,
     );
   });
 };

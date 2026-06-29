@@ -1,8 +1,8 @@
 import {
   atRulePrecedence,
+  mql,
   parsedRuleToClassName,
   pseudoPrecedence,
-  mql,
   type TWParsedRule,
 } from '@native-twin/css';
 import { asArray } from '@native-twin/helpers';
@@ -40,30 +40,37 @@ export function convert<Theme extends __Theme__ = __Theme__>(
   conditions?: string[],
 ): TWParsedRule {
   if (name) {
-    name = parsedRuleToClassName({ n: name, i: important, v: variants, m: modifier, p: 0 });
+    name = parsedRuleToClassName({
+      n: name,
+      i: important,
+      v: variants,
+      m: modifier,
+      p: 0,
+    });
   }
 
   conditions = [...asArray(conditions)];
 
   for (const variant of variants) {
     const screen = context.theme('screens', variant);
-    if (context.mode === 'native') {
-      if (screen) {
-        conditions.push(screen);
-      } else {
-        conditions.push(variant);
-      }
-      // continue;
-    }
+    // TODO: Add native conditions with no mode resolved
+    // if (context.mode === 'native') {
+    //   if (screen) {
+    //     conditions.push(screen);
+    //   } else {
+    //     conditions.push(variant);
+    //   }
+    //   // continue;
+    // }
     for (const condition of asArray((screen && mql(screen)) || context.v(variant))) {
       if (!condition) continue;
       conditions.push(condition);
 
       precedence |= screen
         ? (1 << 26) /* Shifts.screens */ | atRulePrecedence(condition)
-        : variant == 'dark'
+        : variant === 'dark'
           ? 1 << 30 /* Shifts.darkMode */
-          : condition[0] == '@'
+          : condition[0] === '@'
             ? atRulePrecedence(condition)
             : pseudoPrecedence(condition);
     }

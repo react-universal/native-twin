@@ -2,25 +2,22 @@ import { asArray } from '@native-twin/helpers';
 import type {
   Preset,
   TailwindConfig,
-  TailwindUserConfig,
   TailwindPresetConfig,
+  TailwindUserConfig,
 } from '../types/config.types';
-import type { ExtractThemes, __Theme__ } from '../types/theme.types';
+import type { __Theme__, ExtractThemes } from '../types/theme.types';
 import { defaultVariants } from './defaults/variants';
 
 export function defineConfig<
   Theme extends __Theme__ = __Theme__,
-  Presets extends Preset<any>[] = Preset[],
+  Presets extends Preset<Theme>[] = Preset<Theme>[],
 >({
   presets = [] as unknown as Presets,
   ...userConfig
-}: TailwindUserConfig<Theme, Presets>): TailwindConfig<
-  __Theme__ & ExtractThemes<Theme, Presets>
-> {
+}: TailwindUserConfig<Theme, Presets>): TailwindConfig<__Theme__ & ExtractThemes<Theme, Presets>> {
   let config: TailwindConfig<__Theme__ & ExtractThemes<Theme, Presets>> = {
     content: userConfig.content,
     darkMode: undefined,
-    mode: userConfig.mode ?? 'native',
     preflight: userConfig.preflight !== false && [],
     ignorelist: asArray(userConfig.ignorelist),
     rules: asArray(userConfig.rules),
@@ -44,8 +41,8 @@ export function defineConfig<
     },
   ])) {
     const { ignorelist, preflight, rules, theme, variants, darkMode, animations } =
-      typeof preset == 'function'
-        ? preset(config)
+      typeof preset === 'function'
+        ? preset(config as TailwindConfig<__Theme__ & Theme>)
         : (preset as TailwindPresetConfig<Theme>);
     config = {
       animations: [...asArray(config.animations), ...asArray(animations)],
@@ -53,7 +50,7 @@ export function defineConfig<
       preflight: config.preflight !== false &&
         preflight !== false && [...asArray(config.preflight), ...asArray(preflight)],
       root: config.root,
-      mode: config.mode,
+      // mode: config.mode,
       darkMode,
       theme: {
         ...config.theme,

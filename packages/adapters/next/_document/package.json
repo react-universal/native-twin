@@ -1,0 +1,5 @@
+{
+  "main": "../../build/_document.cjs",
+  "module": "../../build/_document.mjs",
+  "types": "../../build/_document.d.cts"
+}

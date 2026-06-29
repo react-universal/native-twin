@@ -5,28 +5,20 @@
       "path": ".."
     },
     {
-      "name": "📦 @native-twin/jsx",
-      "path": "../packages/jsx"
-    },
-    {
-      "name": "📦 @native-twin/babel",
-      "path": "../packages/babel"
-    },
-    {
-      "name": "📦 @native-twin/metro",
-      "path": "../packages/metro"
-    },
-    {
-      "name": "📦 @native-twin/css",
-      "path": "../packages/css"
-    },
-    {
       "name": "📦 @native-twin/core",
       "path": "../packages/native-twin"
     },
     {
-      "name": "📦 @native-twin/styled",
-      "path": "../packages/styled"
+      "name": "📦 @lib/preset-tailwind",
+      "path": "../packages/preset-tailwind"
+    },
+    {
+      "name": "📦 @native-twin/jsx",
+      "path": "../packages/jsx"
+    },
+    {
+      "name": "📦 @native-twin/css",
+      "path": "../packages/css"
     },
     {
       "name": "📦 @native-twin/helpers",
@@ -79,7 +71,6 @@
       "**/*.code-search": true,
       "**/build": true
     },
-    "typescript.tsdk": "root/node_modules/typescript/lib",
     "cSpell.words": [
       "sastan",
       "TRBL",
@@ -87,13 +78,32 @@
     ],
     "testing.openTesting": "neverOpen",
     "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "biomejs.biome"
     },
-    "editor.fontSize": 16
-  },
-  "launch": {
-    "version": "0.2.0",
-    "configurations": [],
-    "compounds": []
+    "editor.fontSize": 16,
+    "jest.disabledWorkspaceFolders": [
+      "root",
+      "📦 @lib/builder",
+      "📦 @lib/jsx",
+      "📦 @lib/babel",
+      "📦 @lib/compiler",
+      "📦 @lib/helpers",
+      "📦 @lib/css",
+      "📦 @lib/arc-parser",
+      "📦 @lib/preset-tw",
+      "📦 @lib/dev-tools",
+      "📦 @lib/styled",
+      "📦 @lib/native-twin",
+      "📦 @lib/with-nextjs",
+      "📦 @lib/vscode",
+      "📦 @lib/language-service",
+      "📦 @lib/language-server",
+      "expo-app",
+      "next-pages-example",
+      "next-app-dir",
+      "docs-site"
+    ],
+    "testing.automaticallyOpenTestResults": "neverOpen",
+    "js/ts.tsdk.path": "✨ native-twin/node_modules/typescript/lib"
   }
 }

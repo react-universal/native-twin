@@ -1,15 +1,15 @@
 export {
   /** @category — CSS Parsers */
-  CssParserData,
-  /** @category — CSS Parsers */
-  SelectorPayload,
-} from './css-parser.types';
-export {
-  /** @category — CSS Parsers */
   CreateCssResolver,
   /** @category — CSS Parsers */
   CssResolver,
 } from './css.parser';
+export type {
+  /** @category — CSS Parsers */
+  CssParserData,
+  /** @category — CSS Parsers */
+  SelectorPayload,
+} from './css-parser.types';
 export {
   /** @category — CSS Parsers */
   ParseCssDeclarationLine,
@@ -22,16 +22,6 @@ export {
   /** @category — CSS Parsers */
   ParseCssMath,
 } from './dimensions.parser';
-export {
-  /** @category — CSS Parsers */
-  ParseCssRules,
-} from './rules.parser';
-export {
-  /** @category — CSS Parsers */
-  ParseSelectorStrict,
-  /** @category — CSS Parsers */
-  ParseCssSelectorWeak,
-} from './selector.parser';
 export {
   /** @category — CSS Parsers */
   ParseAspectRatio,
@@ -60,3 +50,9 @@ export {
   /** @category — CSS Parsers */
   ParseTranslateValue,
 } from './resolvers/translate.parser';
+export {
+  /** @category — CSS Parsers */
+  ParseCssSelectorWeak,
+  /** @category — CSS Parsers */
+  ParseSelectorStrict,
+} from './selector.parser';

@@ -1,32 +1,24 @@
 {
-  "$schema": "https://turbo.build/schema.json",
+  "$schema": "node_modules/turbo/schema.json",
   "ui": "tui",
+  "concurrency": "12",
   "tasks": {
     "build": {
       "dependsOn": [
         "^build"
       ],
-      "inputs": ["$TURBO_DEFAULT$","!**/test","!**/tests"],
+      "cache": true,
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test/**",
+        "!**/tests/**",
+        "!**/tsconfig.*",
+        "src/**"
+      ],
       "outputs": [
         "build/**",
         "dist/**"
       ]
-    },
-    "dev-tools:dev": {
-      "cache": false,
-      "persistent": true,
-      "interactive": true,
-      "inputs": ["$TURBO_DEFAULT$","!**/test", "!**/tests", "**/webui/**/*"],
-      "outputs": [
-        "build/**",
-        "dist/**"
-      ]
-    },
-    "mobile:dev": {
-      "cache": false,
-      "dependsOn": ["^build"],
-      "persistent": true,
-      "interactive": true
     },
     "build:watch": {
       "persistent": true,
@@ -67,9 +59,18 @@
       ]
     },
     "test": {
-      "dependsOn": [
-        "^build"
-      ]
+      "cache": true
+    },
+    "gen:jsdocs": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/test",
+        "!**/tests",
+        "**/webui/**/*",
+        "**/src",
+        "jsdoc.json"
+      ],
+      "cache": true
     }
   }
 }

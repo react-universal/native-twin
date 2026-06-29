@@ -1,10 +1,7 @@
-import {
-  parsedRuleToClassName,
-  type CompleteStyle,
-  type SheetEntryDeclaration,
-} from '@native-twin/css';
+import { TinyColor } from '@ctrl/tinycolor';
+import { parsedRuleToClassName, type SheetEntryDeclaration } from '@native-twin/css';
 import { asArray, toColorValue } from '@native-twin/helpers';
-import type { Rule, RuleMeta, RuleResolver } from '../types/config.types';
+import type { CompleteStyleKeys, Rule, RuleMeta, RuleResolver } from '../types/config.types';
 import type { __Theme__ } from '../types/theme.types';
 
 export function matchCssObject(
@@ -24,7 +21,7 @@ export function matchCssObject(
 
 export function matchThemeColor(
   pattern: string,
-  property: keyof CompleteStyle,
+  property: CompleteStyleKeys,
   meta: RuleMeta = {
     feature: 'default',
     styleProperty: property,
@@ -41,20 +38,21 @@ export function matchThemeColor(
       let color: string | null | undefined;
       const className = parsedRuleToClassName(rule);
       const declarations: SheetEntryDeclaration[] = [];
-      if (match.segment.type == 'arbitrary') {
+      if (match.segment.type === 'arbitrary') {
         color = match.segment.value;
+        if (!new TinyColor(color).isValid) {
+          return undefined;
+        }
       }
       if (!color) {
-        color =
-          context.colors[match.segment.value] ??
-          context.theme('colors', match.segment.value);
+        color = context.colors[match.segment.value] ?? context.theme('colors', match.segment.value);
       }
       if (color) {
         const opacity = context.theme('opacity', rule.m?.value ?? '100');
         color = toColorValue(color!, {
           opacityValue: opacity ?? '1',
         });
-        if (meta.feature == 'edges') {
+        if (meta.feature === 'edges') {
           for (const key of getPropertiesForEdges(
             {
               prefix: meta.prefix ?? property,
@@ -77,16 +75,16 @@ export function matchThemeColor(
           precedence: 0,
           important: rule.i,
           animations: [],
+          preflight: false,
         };
       }
+      return undefined;
     },
     meta,
   ];
 }
 
-export function matchAnimation<Theme extends __Theme__ = __Theme__>(
-  pattern: string,
-): Rule<Theme> {
+export function matchAnimation<Theme extends __Theme__ = __Theme__>(pattern: string): Rule<Theme> {
   return [
     pattern,
     null,
@@ -96,9 +94,10 @@ export function matchAnimation<Theme extends __Theme__ = __Theme__>(
         className: animation?.[0] ?? 'NONCE',
         declarations: [] as any,
         animations: asArray(animation?.[1]),
-        important: false,
-        precedence: 0,
-        selectors: [],
+        important: parsed.i,
+        precedence: parsed.p,
+        selectors: parsed.v,
+        preflight: false,
       };
     },
   ];
@@ -106,8 +105,8 @@ export function matchAnimation<Theme extends __Theme__ = __Theme__>(
 
 export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   pattern: string,
-  themeSection: keyof Theme,
-  property: keyof CompleteStyle,
+  themeSection: keyof Theme & string,
+  property: CompleteStyleKeys,
   meta: RuleMeta = {
     canBeNegative: false,
     feature: 'default',
@@ -127,7 +126,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
       if (parsedRule.m) {
         segmentValue += `/${parsedRule.m.value}`;
       }
-      if (match.segment.type == 'arbitrary') {
+      if (match.segment.type === 'arbitrary') {
         value = segmentValue;
       } else {
         value = context.theme(themeSection, segmentValue) ?? null;
@@ -147,7 +146,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
           value: maybeNegative(match.negative, value),
         });
       }
-      if (property == 'transform') {
+      if (property === 'transform') {
         const entries = [...declarations];
         declarations.length = 0;
         declarations.push({
@@ -162,10 +161,11 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
         precedence: 0,
         important: parsedRule.i,
         animations: [],
+        preflight: false,
       };
 
       function getProperties() {
-        if (meta.feature == 'edges') {
+        if (meta.feature === 'edges') {
           return getPropertiesForEdges(
             {
               prefix: meta.prefix ?? property,
@@ -175,11 +175,11 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
           );
         }
 
-        if (meta.feature == 'transform-2d') {
+        if (meta.feature === 'transform-2d') {
           return getPropertiesForTransform2d(meta.prefix ?? property, match.suffixes);
         }
 
-        if (meta.feature == 'corners') {
+        if (meta.feature === 'corners') {
           return getPropertiesForCorners(
             {
               prefix: meta.prefix ?? property,
@@ -189,7 +189,7 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
           );
         }
 
-        if (meta.feature == 'gap') {
+        if (meta.feature === 'gap') {
           return getPropertiesForGap(
             {
               prefix: meta.suffix ?? '',
@@ -205,41 +205,33 @@ export function matchThemeValue<Theme extends __Theme__ = __Theme__>(
   ];
 }
 
-function getPropertiesForEdges(
-  property: { prefix: string; suffix: string },
-  edges: string[],
-) {
-  if (edges.length == 0) return [`${property.prefix}${property.suffix}`];
+function getPropertiesForEdges(property: { prefix: string; suffix: string }, edges: string[]) {
+  if (edges.length === 0) return [`${property.prefix}${property.suffix}`];
   return edges.map((x) => {
     return `${property.prefix}${x}${property.suffix}`;
   });
 }
 
 function getPropertiesForTransform2d(property: string, sides: string[]) {
-  if (sides.length == 0) return [`${property}`];
+  if (sides.length === 0) return [`${property}`];
   return sides.map((x) => {
     return `${property}${x}`;
   });
 }
 
-function getPropertiesForGap(
-  property: { prefix: string; suffix: string },
-  edges: string[],
-) {
-  if (edges.length == 0) return [`${property.prefix}${property.suffix}`];
+function getPropertiesForGap(property: { prefix: string; suffix: string }, edges: string[]) {
+  if (edges.length === 0) return [`${property.prefix}${property.suffix}`];
   return edges.map((x) => {
     return `${property.prefix}${x}${property.suffix.replace(
       /^[a-z]/,
+      // biome-ignore lint/suspicious/noNonNullAssertedOptionalChain: necessary
       (k) => k[0]?.toUpperCase()! ?? '',
     )}`;
   });
 }
 
-function getPropertiesForCorners(
-  property: { prefix: string; suffix: string },
-  corners: string[],
-) {
-  if (corners.length == 0) return [`${property.prefix}${property.suffix}`];
+function getPropertiesForCorners(property: { prefix: string; suffix: string }, corners: string[]) {
+  if (corners.length === 0) return [`${property.prefix}${property.suffix}`];
   return corners.map((x) => {
     return `${property.prefix}${x}${property.suffix}`;
   });

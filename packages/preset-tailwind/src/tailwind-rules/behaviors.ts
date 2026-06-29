@@ -1,7 +1,7 @@
-import { matchCssObject } from '@native-twin/core';
 import type { Rule } from '@native-twin/core';
+import { matchCssObject } from '@native-twin/core';
 import { parsedRuleToClassName } from '@native-twin/css';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const outlineRules: Rule<TailwindPresetTheme>[] = [
   // matchThemeValue('outline-width-', 'lineWidth', 'outlineWidth'),
@@ -10,10 +10,10 @@ export const outlineRules: Rule<TailwindPresetTheme>[] = [
   // matchThemeValue('outline-', '', 'outlineStyle', {
   //   customValues: Object.fromEntries(outlineStyles),
   // }),
-  matchCssObject('outline-none', (match, ctx, rule) => {
-    if (ctx.mode == 'native') {
-      return null;
-    }
+  matchCssObject('outline-none', (_match, _ctx, rule) => {
+    // if (ctx.mode === 'native') {
+    //   return null;
+    // }
     return {
       className: parsedRuleToClassName(rule),
       declarations: [
@@ -31,12 +31,13 @@ export const outlineRules: Rule<TailwindPresetTheme>[] = [
       conditions: rule.v,
       important: rule.i,
       precedence: rule.p,
+      preflight: false,
     };
   }),
 ];
 
 export const appearanceRules: Rule[] = [
-  matchCssObject('appearance-none', (match, ctx, rule) => ({
+  matchCssObject('appearance-none', (_match, _ctx, rule) => ({
     className: parsedRuleToClassName(rule),
     declarations: [
       {
@@ -49,5 +50,6 @@ export const appearanceRules: Rule[] = [
     important: rule.i,
     precedence: rule.p,
     animations: [],
+    preflight: false,
   })),
 ];

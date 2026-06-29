@@ -3,27 +3,63 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "build",
+      "label": "vscode esbuild watch",
       "group": "build",
+      "script": "esbuild:watch",
+      "isBackground": true,
+      "problemMatcher": [
+        "$tsc-watch",
+        "$ts-esbuild-watch"
+      ],
+      // "isBackground": true,
       "presentation": {
-        "panel": "dedicated",
         "reveal": "never"
-      },
-      "problemMatcher": ["$tsc"]
+      }
     },
     {
       "type": "npm",
-      "script": "build:tsc:watch",
+      "label": "webpack watch",
+      "group": "build",
+      "script": "webpack:watch",
       "isBackground": true,
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "problemMatcher": [
+        "$tsc-watch",
+        "$ts-webpack-watch"
+      ],
+      // "isBackground": true,
       "presentation": {
-        "panel": "dedicated",
         "reveal": "never"
-      },
-      "problemMatcher": ["$tsc-watch"]
+      }
+    },
+    {
+      "type": "npm",
+      "label": "vscode web watch",
+      "group": "build",
+      "script": "web:watch",
+      "isBackground": true,
+      "problemMatcher": [
+        "$tsc-watch",
+        "$ts-esbuild-watch"
+      ],
+      // "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
+      "type": "npm",
+      "label": "vscode tsc watch",
+      "group": "build",
+      "script": "build:watch",
+      "isBackground": true,
+      "problemMatcher": [
+        "$tsc-watch",
+        "$ts-esbuild-watch"
+      ],
+      // "isBackground": true,
+      "presentation": {
+        "reveal": "never"
+      }
     }
   ]
 }

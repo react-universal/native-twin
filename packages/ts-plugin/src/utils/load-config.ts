@@ -1,3 +1,4 @@
+import * as Option from 'effect/Option';
 import jitiFactory from 'jiti';
 import { transform } from 'sucrase';
 
@@ -8,6 +9,7 @@ function lazyJiti() {
     jiti ??
     (jiti = jitiFactory(__filename, {
       interopDefault: true,
+      debug: true,
       transform: (opts) => {
         return transform(opts.source, {
           transforms: ['typescript', 'imports'],
@@ -17,7 +19,8 @@ function lazyJiti() {
   );
 }
 
-export function requireJS(path: string): any {
+function requireJSThrowable(path: string): any {
+  // biome-ignore lint/complexity/useArrowFunction: needs to be bindable
   const config = (function () {
     try {
       return path ? require(path) : {};
@@ -28,3 +31,5 @@ export function requireJS(path: string): any {
 
   return config.default ?? config;
 }
+
+export const requireJS = Option.liftThrowable(requireJSThrowable);

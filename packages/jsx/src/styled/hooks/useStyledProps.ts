@@ -1,86 +1,93 @@
-import { useEffect, useMemo } from 'react';
-import {
-  getGroupedEntries,
-  RegisteredComponent,
-  RuntimeComponentEntry,
-  RuntimeSheetDeclaration,
-  RuntimeSheetEntry,
-} from '@native-twin/css/jsx';
-import { useAtomValue } from '@native-twin/helpers';
-import { StyleSheet } from '../../sheet/StyleSheet';
-import { tw } from '../../sheet/native-tw';
-import { styledContext, twinConfigObservable } from '../../store/observables';
-import { ComponentTemplateEntryProp } from '../../types/jsx.types';
-import { ComponentConfig } from '../../types/styled.types';
-import { INTERNAL_RESET } from '../../utils/constants';
-import { composeDeclarations } from '../../utils/sheet.utils';
-import { templatePropsToSheetEntriesObject } from '../native/utils/native.maps';
+import { hasOwnProperty } from '@native-twin/helpers';
+import { atom, useAtom, useAtomValue } from '@native-twin/helpers/react';
+import { useCallback, useContext, useDebugValue, useId, useMemo, useRef } from 'react';
+import type { PressableProps, Touchable } from 'react-native';
+import { ContainersContext, GroupContext } from '../../context';
+import { StyleSheet } from '../../sheet';
+import type { TwinComponentInteractionProps } from '../../types/jsx.types';
+import { DEFAULT_STATE, type NativeTwinProps } from '../../utils/constants';
 
 export const useStyledProps = (
-  id: string,
-  props: Record<string, any>,
-  configs: ComponentConfig[],
+  props: Pick<NativeTwinProps, '__twinID' | '__twinExpressions'> & Record<string, any>,
 ) => {
-  const compiledSheet: RegisteredComponent | null =
-    props?.['_twinComponentSheet'] ?? null;
+  // const configs = getNormalizeConfig(
+  //   props["mappings"] as NativeTwinProps["mappings"]
+  // );
+  const reactID = useId();
+  const interactionsRef = useRef<TwinComponentInteractionProps>(props as any);
+  // console.log('EXP: ', props.__twinExpressions);
 
-  const templateEntries: ComponentTemplateEntryProp[] = props?.[
-    '_twinComponentTemplateEntries'
-  ] as ComponentTemplateEntryProp[];
-  // const _debug: boolean = props?.['debug'] ?? false;
+  const twinID = props['__twinID'] ?? reactID;
 
-  const templateEntriesObj = templatePropsToSheetEntriesObject(templateEntries ?? []);
+  const container = useContext(ContainersContext);
+  const handlers: Touchable & PressableProps = {};
+  const context = useContext(GroupContext);
+  const registry = StyleSheet.getTwinStyle(twinID);
 
-  const styledCtx = useAtomValue(styledContext);
+  const [state, setState] = useAtom(StyleSheet.getComponentState(twinID));
 
-  const componentStyles = useMemo(() => {
-    if (compiledSheet) {
-      return StyleSheet.registerComponent(
-        id,
-        compiledSheet.sheets.map((x) => x.compiledSheet),
-        styledCtx,
-      );
-    }
-    const entries = configs.map((config): RuntimeComponentEntry => {
-      const source = props[config.source];
-      const entries = tw(source ?? '').map(
-        (entry): RuntimeSheetEntry => ({
-          animations: [],
-          className: entry.className,
-          declarations: entry.declarations.map(
-            (decl): RuntimeSheetDeclaration => ({
-              _tag: 'NOT_COMPILED',
-              prop: config.target,
-              value: composeDeclarations([decl], styledCtx),
-            }),
-          ),
-          important: entry.important,
-          precedence: entry.precedence,
-          selectors: entry.selectors,
-        }),
-      );
-      return {
-        classNames: props?.[source] ?? '',
-        entries,
-        prop: config.target,
-        rawSheet: getGroupedEntries(entries),
-        target: config.target,
-        templateLiteral: null,
-      };
-    });
-    return StyleSheet.registerComponent(id, entries, styledCtx);
-  }, [compiledSheet, styledCtx, id, configs, props]);
-
-  useEffect(() => {
-    if (StyleSheet.getFlag('STARTED') === 'NO') {
-      StyleSheet[INTERNAL_RESET](tw.config);
-    }
-    const obs = tw.observeConfig((c) => {
-      if (twinConfigObservable.get() !== c) {
-        StyleSheet[INTERNAL_RESET](c);
+  const parentState = useAtomValue(
+    atom((get) => {
+      let parentState = DEFAULT_STATE;
+      if (context && state.meta.hasGroupEvents) {
+        parentState = get(StyleSheet.getComponentState(context))?.interactions;
       }
-    });
-    return () => obs();
-  }, []);
-  return { componentStyles, styledCtx, templateEntriesObj };
+      return parentState;
+    }),
+  );
+
+  const compiledProps = useMemo(
+    () =>
+      StyleSheet.getComponentStyledProps(twinID, {
+        withGroup: parentState.isGroupActive,
+        withPointer: state.interactions.isLocalActive,
+        getProp: (key: string) => getComponentProp(key, props),
+      }),
+    [parentState.isGroupActive, state.interactions.isLocalActive, twinID, props],
+  );
+
+  if (container) {
+    console.log('CONTAINER: ', container);
+  }
+
+  const onChange = useCallback(
+    (active: boolean) => {
+      if (state.meta.hasPointerEvents || state.meta.isGroupParent) {
+        setState({
+          interactions: {
+            isLocalActive: active,
+            isGroupActive: state.meta.isGroupParent && active,
+          },
+          meta: state.meta,
+        });
+      }
+    },
+    [state.meta, setState],
+  );
+
+  if (state.meta.hasPointerEvents || state.meta.isGroupParent) {
+    handlers.onTouchStart ??= (event) => {
+      if (interactionsRef.current.onTouchStart) {
+        interactionsRef.current.onTouchStart(event);
+      }
+      onChange(true);
+    };
+    handlers.onTouchEnd ??= (event) => {
+      if (interactionsRef.current.onTouchEnd) {
+        interactionsRef.current.onTouchEnd(event);
+      }
+      onChange(false);
+    };
+  }
+
+  useDebugValue(compiledProps);
+  useDebugValue(parentState);
+
+  return { compiledProps, state, handlers, registry, parentState };
+};
+
+const getComponentProp = (key: string, props: Record<string, any>) => {
+  if (!hasOwnProperty.call(props, key)) return null;
+  const value = props[key];
+  return typeof value === 'string' ? value : null;
 };

@@ -1,13 +1,19 @@
 import { defineConfig } from '@vscode/test-cli';
 import os from 'os';
+import path from 'path';
 
-export default defineConfig({
-  files: 'build/test/**/*.test.js',
-  workspaceFolder: 'project-fixture',
-  desktopPlatform: 'darwin-arm64',
-  launchArgs: ['--user-data-dir', `${os.tmpdir()}`],
+const config = defineConfig({
+  files: 'build/cjs/test/**/*.test.js',
+  workspaceFolder: './project-fixture',
+  skipExtensionDependencies: true,
+  launchArgs: ['--user-data-dir', path.join('.','.vscode-user-data')],
   mocha: {
     ui: 'tdd',
+    fullTrace: true,
     timeout: 20000,
   },
 });
+
+console.log("CONF: ", config);
+
+export default config;

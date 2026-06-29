@@ -1,0 +1,3 @@
+digraph SourceFile {
+  "0" [label="{ kind: 'Identifier', node: 'a' }"];
+}

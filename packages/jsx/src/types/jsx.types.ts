@@ -1,11 +1,18 @@
 import type React from 'react';
-import type { RegisteredComponent, RuntimeSheetEntry } from '@native-twin/css/jsx';
+import type {
+  NativeSyntheticEvent,
+  PressableProps,
+  TextInputFocusEventData,
+  Touchable,
+} from 'react-native';
 
 export interface JSXInternalProps extends Record<string, any> {
   twEnabled?: boolean;
-  _twinComponentID?: string;
-  _twinComponentSheet: RegisteredComponent;
-  _twinComponentTemplateEntries: ComponentTemplateEntryProp[];
+  __twinID: string;
+  __parentID: string;
+  // _twinComponentID?: string;
+  // _twinComponentSheet: RuntimeComponentEntry[];
+  // _twinComponentTemplateEntries: ComponentTemplateEntryProp[];
 }
 
 export type JSXFunction = (
@@ -17,9 +24,15 @@ export type JSXFunction = (
   __self?: unknown,
 ) => React.ElementType;
 
-export interface ComponentTemplateEntryProp {
-  id: string;
-  prop: string;
-  target: string;
-  entries: RuntimeSheetEntry[];
-}
+// export interface ComponentTemplateEntryProp {
+//   id: string;
+//   prop: string;
+//   target: string;
+//   entries: RuntimeSheetEntry[];
+// }
+
+export type TwinComponentInteractionProps = Touchable &
+  PressableProps & {
+    onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+    onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  };

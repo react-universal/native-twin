@@ -1,11 +1,10 @@
-/* eslint-disable prefer-spread */
 import { getSheet, type Sheet } from '@native-twin/css';
 import { noop } from '@native-twin/helpers';
 import { createTailwind } from '../native-twin';
 import type { Preset, TailwindConfig, TailwindUserConfig } from '../types/config.types';
-import type { ExtractThemes, RuntimeTW, __Theme__ } from '../types/theme.types';
-import { mutationObserver } from './mutation-observer';
+import type { __Theme__, ExtractThemes, RuntimeTW } from '../types/theme.types';
 import { isDevEnvironment } from './runtime.utils';
+import { mutationObserver } from './web/mutation-observer';
 
 let active: RuntimeTW = noop as any as RuntimeTW;
 // const subscriptions = new Set<(cb: TailwindConfig<any>) => void>();
@@ -13,7 +12,7 @@ let active: RuntimeTW = noop as any as RuntimeTW;
 function assertActive() {
   if (isDevEnvironment() && !tw) {
     throw new Error(
-      `No active instance found. Make sure to call setup or install before accessing tw.`,
+      'No active instance found. Make sure to call setup or install before accessing tw.',
     );
   }
 }
@@ -24,9 +23,9 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
   // -> using a delegation proxy here
   noop as unknown as RuntimeTW<any>,
   {
-    apply(_target, _thisArg, args) {
+    apply(_target, _thisArg, args = ['']) {
       if (isDevEnvironment()) assertActive();
-      return active.apply(_thisArg, args);
+      return active.apply(_thisArg, [['', ...args].join('')]);
     },
 
     get(target, property) {
@@ -39,35 +38,27 @@ export const tw: RuntimeTW<__Theme__> = /* #__PURE__ */ new Proxy(
         assertActive();
       }
 
-      // if (property === 'observeConfig') {
-      //   // @ts-expect-error
-      //   subscriptions.add.apply(subscriptions, arguments);
-      //   return function () {
-      //     return () => {
-      //       // @ts-expect-error
-      //       subscriptions.delete.apply(subscriptions, arguments);
-      //     };
-      //   };
-      // }
-
       // const value = active[property as keyof RuntimeTW];
       if (property === 'theme') {
         const value = active[property];
-        return function () {
+        // console.log('VALUE: ', value, active, property);
+        if (!value) return () => null;
+
+        return () => {
           if (isDevEnvironment()) assertActive();
           return value.apply(active, arguments as unknown as [string, string]);
         };
       }
       if (property === 'observeConfig') {
         const value = active[property];
-        return function () {
+        return () => {
           if (isDevEnvironment()) assertActive();
           return value.apply(active, arguments as unknown as any);
         };
       }
       const value = active[property as Exclude<keyof RuntimeTW, 'theme'>];
-      if (typeof value == 'function') {
-        return function () {
+      if (typeof value === 'function') {
+        return () => {
           if (isDevEnvironment()) assertActive();
           return value.apply(active);
         };
@@ -107,7 +98,7 @@ export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
   // active = tw$ as RuntimeTW;
   const instance = createTailwind(
     config as TailwindUserConfig,
-    typeof sheet == 'function' ? sheet() : sheet,
+    typeof sheet === 'function' ? sheet() : sheet,
   );
   active = observe(instance, target);
 
@@ -116,7 +107,7 @@ export function setup<Theme extends __Theme__ = __Theme__, Target = unknown>(
 
 export function observe<Theme extends __Theme__ = __Theme__>(
   tw$: RuntimeTW<Theme> = tw as unknown as RuntimeTW<Theme>,
-  target: false | Node = typeof document != 'undefined' && document.documentElement,
+  target: false | Node = typeof document !== 'undefined' && document.documentElement,
 ): RuntimeTW<Theme> {
   if (target) {
     const observer = mutationObserver(tw$);

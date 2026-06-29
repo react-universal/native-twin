@@ -1,5 +1,5 @@
-import { Rule, matchThemeValue } from '@native-twin/core';
-import { TailwindPresetTheme } from '../types/theme.types';
+import { matchThemeValue, type Rule } from '@native-twin/core';
+import type { TailwindPresetTheme } from '../types/theme.types';
 
 export const sizeRules: Rule<TailwindPresetTheme>[] = [
   matchThemeValue('aspect-', 'aspectRatio', 'aspectRatio'),

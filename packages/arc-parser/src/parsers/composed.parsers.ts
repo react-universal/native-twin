@@ -1,5 +1,5 @@
-import type { Parser } from './Parser';
 import { between } from './between.parser';
+import type { Parser } from './Parser';
 import { separatedBy } from './separated-by.parser';
 import { char, optionalWhitespace, whitespace } from './string.parser';
 

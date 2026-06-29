@@ -2,7 +2,7 @@ import type { Preset } from '@native-twin/core';
 import { themeRules } from './tailwind-rules';
 import * as tailwindTheme from './tailwind-theme';
 import { preflight } from './tailwind-theme/preflight';
-import { TailwindPresetTheme } from './types/theme.types';
+import type { TailwindPresetTheme } from './types/theme.types';
 
 export type { TailwindPresetTheme };
 export interface TailwindPresetBaseOptions {
@@ -41,3 +41,5 @@ export function presetTailwind({
     rules: themeRules,
   };
 }
+
+export default presetTailwind;

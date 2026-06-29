@@ -1,26 +1,38 @@
-import * as RA from 'effect/Array';
-import * as Data from 'effect/Data';
-import { pipe } from 'effect/Function';
-import * as Match from 'effect/Match';
-import * as Predicate from 'effect/Predicate';
 import * as P from '@native-twin/arc-parser';
 import { hasOwnProperty } from '@native-twin/helpers';
-import { declarationValueWithUnitParser } from '../css/css-common.parser';
-import { unitlessCssProps } from '../css/css.constants';
-import { CSSUnit } from '../css/css.types';
-import { AnyStyle } from '../react-native/rn.types';
-import { SheetEntryDeclaration } from '../sheets/sheet.types';
-import { getPropertyValueType } from '../utils.parser';
-import { CompilerContext } from './metro.runtime';
+import { type CSSUnit, declarationValueWithUnitParser, unitlessCssProps } from '../css';
+import type { AnyStyle } from '../react-native';
+import type { SheetEntryDeclaration } from '../sheets';
+import { type DeclarationPropertyValueType, getPropertyValueType } from '../utils.parser';
+import type { CompilerContext } from './metro.runtime';
+
+export type CompilationError = 'Unknown' | 'PARSER' | (string & {});
+
+export interface CompiledDeclaration extends SheetEntryDeclaration {
+  readonly _tag: 'COMPILED';
+  isUnitLess: boolean;
+}
+export interface NotCompiledDeclaration extends SheetEntryDeclaration {
+  readonly _tag: 'NOT_COMPILED';
+  reason: CompilationError;
+  isUnitLess: boolean;
+  valueType: DeclarationPropertyValueType;
+}
+/** @category Tagged Types */
+export type RuntimeSheetDeclaration = CompiledDeclaration | NotCompiledDeclaration;
 
 /** @category Tagged Types */
-export type RuntimeSheetDeclaration = Data.TaggedEnum<{
-  NOT_COMPILED: SheetEntryDeclaration;
-  COMPILED: SheetEntryDeclaration;
-}>;
-
-/** @category Tagged Types */
-export const RuntimeSheetDeclaration = Data.taggedEnum<RuntimeSheetDeclaration>();
+export const RuntimeSheetDeclaration = {
+  $is: (tag: RuntimeSheetDeclaration['_tag']) => (x: RuntimeSheetDeclaration) => x._tag === tag,
+  COMPILED: (declaration: Omit<CompiledDeclaration, '_tag'>): CompiledDeclaration => ({
+    _tag: 'COMPILED',
+    ...declaration,
+  }),
+  NOT_COMPILED: (declaration: Omit<NotCompiledDeclaration, '_tag'>): NotCompiledDeclaration => ({
+    _tag: 'NOT_COMPILED',
+    ...declaration,
+  }),
+};
 
 /** @category Parsers */
 export const compileEntryDeclaration = (
@@ -30,25 +42,40 @@ export const compileEntryDeclaration = (
   const isUnitLess =
     !decl.prop.includes('flex') && hasOwnProperty.call(unitlessCssProps, decl.prop);
 
-  if (RA.isArray(decl.value)) {
-    const compiled = pipe(
-      decl.value,
-      RA.map((x) => compileEntryDeclaration(x, ctx)),
-    );
-    if (RA.every(compiled, RuntimeSheetDeclaration.$is('COMPILED'))) {
+  if (Array.isArray(decl.value)) {
+    const compiled = decl.value.map((x) => compileEntryDeclaration(x, ctx));
+    if (compiled.every(RuntimeSheetDeclaration.$is('COMPILED'))) {
       return RuntimeSheetDeclaration.COMPILED({
         ...decl,
         value: compiled,
+        isUnitLess,
       });
     }
-    return RuntimeSheetDeclaration.NOT_COMPILED(decl);
+    return RuntimeSheetDeclaration.NOT_COMPILED({
+      ...decl,
+      isUnitLess,
+      valueType: 'transform',
+      reason: 'Unknown',
+    });
   }
 
-  if (Predicate.isObject(decl.value)) {
-    return RuntimeSheetDeclaration.NOT_COMPILED(decl);
+  if (typeof decl.value === 'object') {
+    const type = getPropertyValueType(decl.prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
+    if (type === 'shadow') {
+      return RuntimeSheetDeclaration.COMPILED({
+        ...decl,
+        isUnitLess,
+      });
+    }
+    return RuntimeSheetDeclaration.NOT_COMPILED({
+      ...decl,
+      isUnitLess,
+      valueType: 'unknown',
+      reason: 'Unknown',
+    });
   }
-  if (Predicate.isNumber(decl.value)) {
-    return RuntimeSheetDeclaration.COMPILED(decl);
+  if (typeof decl.value === 'number') {
+    return RuntimeSheetDeclaration.COMPILED({ ...decl, isUnitLess });
   }
 
   if (isUnitLess) {
@@ -57,38 +84,58 @@ export const compileEntryDeclaration = (
       return RuntimeSheetDeclaration.COMPILED({
         ...decl,
         value: data.result,
+        isUnitLess,
       });
     }
-    return RuntimeSheetDeclaration.NOT_COMPILED(decl);
+    return RuntimeSheetDeclaration.NOT_COMPILED({
+      ...decl,
+      isUnitLess,
+      valueType: 'unknown',
+      reason: data.error ?? 'PARSER',
+    });
   }
 
-  const type = getPropertyValueType(
-    decl.prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase(),
-  );
+  const type = getPropertyValueType(decl.prop.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase());
 
-  if (type === 'DIMENSION') {
+  if (type === 'dimension') {
     const data = declarationValueConvertParser(ctx).run(decl.value);
     if (!data.isError && data.result) {
       return RuntimeSheetDeclaration.COMPILED({
         ...decl,
         value: data.result,
+        isUnitLess,
       });
     }
-    return RuntimeSheetDeclaration.NOT_COMPILED(decl);
+    if (data.isError || !data.result) {
+      return RuntimeSheetDeclaration.NOT_COMPILED({
+        ...decl,
+        isUnitLess,
+        valueType: 'dimension',
+        reason: data.isError && data.error ? data.error : 'PARSER',
+      });
+    }
   }
 
-  if (type == 'FLEX') {
+  if (type === 'flex') {
     const data = ParseFlexValue(ctx).run(decl.value);
     if (!data.isError && data.result) {
       return RuntimeSheetDeclaration.COMPILED({
         ...decl,
         value: data.result,
+        isUnitLess,
       });
     }
-    return RuntimeSheetDeclaration.NOT_COMPILED(decl);
+    if (data.isError) {
+      return RuntimeSheetDeclaration.NOT_COMPILED({
+        ...decl,
+        isUnitLess,
+        valueType: 'flex',
+        reason: data.error ?? 'PARSER',
+      });
+    }
   }
 
-  return RuntimeSheetDeclaration.COMPILED(decl);
+  return RuntimeSheetDeclaration.COMPILED({ ...decl, isUnitLess });
 };
 
 /** @category Parsers */
@@ -115,8 +162,8 @@ const ParseFlexValue = (ctx: CompilerContext) =>
       ]).map(([flexGrow, flexShrink, flexBasis]) => {
         if (!flexGrow) return null;
         return {
-          flexGrow: parseFloat(String(flexGrow)),
-          flexShrink: parseFloat(String(flexShrink ?? flexGrow)),
+          flexGrow: Number.parseFloat(String(flexGrow)),
+          flexShrink: Number.parseFloat(String(flexShrink ?? flexGrow)),
           flexBasis: (flexBasis as AnyStyle['flexBasis']) ?? '0%',
         };
       }),
@@ -127,54 +174,89 @@ const ParseFlexValue = (ctx: CompilerContext) =>
   )(ctx);
 
 /** @category Match */
-export const matchUnitConvert = Match.type<CSSUnit>().pipe(
-  Match.when(
-    (x) => x === 'px',
-    (_) => (value: string) => parseFloat(value),
-  ),
-  Match.when(
-    (x) => x === 'rem' || x === 'em',
-    (_) => (value: string, rem: number) => parseFloat(value) * rem,
-  ),
-  Match.when(
-    (x) => x === '%',
-    (_) => (value: string) => `${value}%`,
-  ),
-  Match.when(
-    (x) => x === 'vh' || x === 'vw' || x === 'vmax' || x === 'vmin',
-    (_) => (_v: string) => null,
-  ),
-  Match.when(
-    (x) => x === 'turn',
-    (_) => (value: string) => `${360 * parseFloat(value)}deg`,
-  ),
-  Match.when(
-    (x) => x === 'deg' || x === 'rad',
-    (u) => (value: string) => `${value}${u}`,
-  ),
-  Match.when(
-    (x) => x === 'in',
-    (_) => (value: string) => parseFloat(value) * 96,
-  ),
-  Match.when(
-    (x) => x === 'pc',
-    (_) => (value: string) => parseFloat(value) * (96 / 6),
-  ),
-  Match.when(
-    (x) => x === 'pt',
-    (_) => (value: string) => parseFloat(value) * (96 / 72),
-  ),
-  Match.when(
-    (x) => x === 'cm',
-    (_) => (value: string) => parseFloat(value) * 97.8,
-  ),
-  Match.when(
-    (x) => x === 'mm',
-    (_) => (value: string) => parseFloat(value) * (97.8 / 10),
-  ),
-  Match.when(
-    (x) => x === 'Q',
-    (_) => (value: string) => parseFloat(value) * (97.8 / 40),
-  ),
-  Match.orElse((_) => (_value: string) => null),
-);
+export const matchUnitConvert = (unit: CSSUnit) => {
+  switch (unit) {
+    case 'px':
+      return (value: string) => Number.parseFloat(value);
+    case 'em':
+    case 'rem':
+      return (value: string, rem: number) => Number.parseFloat(value) * rem;
+    case '%':
+      return (value: string) => `${value}%`;
+    case 'vh':
+    case 'vw':
+    case 'vmin':
+    case 'vmax':
+      return (_v: string) => null;
+    case 'deg':
+      return (value: string) => `${value}${unit}`;
+    case 'rad':
+    case 'turn':
+      return (value: string) => `${360 * Number.parseFloat(value)}deg`;
+    case 'pc':
+      return (value: string) => Number.parseFloat(value) * (96 / 6);
+    case 'in':
+      return (value: string) => Number.parseFloat(value) * 96;
+    case 'pt':
+      return (value: string) => Number.parseFloat(value) * (96 / 72);
+    case 'cm':
+      return (value: string) => Number.parseFloat(value) * 97.8;
+    case 'mm':
+      return (value: string) => Number.parseFloat(value) * (97.8 / 10);
+    case 'Q':
+      return (value: string) => Number.parseFloat(value) * (97.8 / 40);
+    default:
+      return () => null;
+  }
+};
+// Match.type<CSSUnit>().pipe(
+//   Match.when(
+//     (x) => x === 'px',
+//     (_) => (value: string) => Number.parseFloat(value),
+//   ),
+//   Match.when(
+//     (x) => x === 'rem' || x === 'em',
+//     (_) => (value: string, rem: number) => Number.parseFloat(value) * rem,
+//   ),
+//   Match.when(
+//     (x) => x === '%',
+//     (_) => (value: string) => `${value}%`,
+//   ),
+//   Match.when(
+//     (x) => x === 'vh' || x === 'vw' || x === 'vmax' || x === 'vmin',
+//     (_) => (_v: string) => null,
+//   ),
+//   Match.when(
+//     (x) => x === 'turn',
+//     (_) => (value: string) => `${360 * Number.parseFloat(value)}deg`,
+//   ),
+//   Match.when(
+//     (x) => x === 'deg' || x === 'rad',
+//     (u) => (value: string) => `${value}${u}`,
+//   ),
+//   Match.when(
+//     (x) => x === 'in',
+//     (_) => (value: string) => Number.parseFloat(value) * 96,
+//   ),
+//   Match.when(
+//     (x) => x === 'pc',
+//     (_) => (value: string) => Number.parseFloat(value) * (96 / 6),
+//   ),
+//   Match.when(
+//     (x) => x === 'pt',
+//     (_) => (value: string) => Number.parseFloat(value) * (96 / 72),
+//   ),
+//   Match.when(
+//     (x) => x === 'cm',
+//     (_) => (value: string) => Number.parseFloat(value) * 97.8,
+//   ),
+//   Match.when(
+//     (x) => x === 'mm',
+//     (_) => (value: string) => Number.parseFloat(value) * (97.8 / 10),
+//   ),
+//   Match.when(
+//     (x) => x === 'Q',
+//     (_) => (value: string) => Number.parseFloat(value) * (97.8 / 40),
+//   ),
+//   Match.orElse((_) => (_value: string) => null),
+// );

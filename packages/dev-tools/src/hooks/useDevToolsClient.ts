@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
 import { pipe } from 'effect/Function';
 import * as Option from 'effect/Option';
-import { useDevToolsPluginClient, type EventSubscription } from 'expo/devtools';
+import { type EventSubscription, useDevToolsPluginClient } from 'expo/devtools';
+import { useEffect, useMemo } from 'react';
 import { TwinEventEmitter } from '../models/TwinEventEmitter.model';
 
 type EventSubscriptionFn<T> = (data: T) => void;
@@ -25,10 +25,7 @@ export const useDevToolsClientEvents = () => {
   );
 };
 
-export const useClientSubscription = <Shape>(
-  event: string,
-  cb: EventSubscriptionFn<Shape>,
-) => {
+export const useClientSubscription = <Shape>(event: string, cb: EventSubscriptionFn<Shape>) => {
   const client = useDevToolsClient();
 
   useEffect(() => {

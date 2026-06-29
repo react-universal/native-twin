@@ -3,7 +3,7 @@ import {
   createLinearUnits,
   createPercentRatios,
 } from '@native-twin/helpers';
-import { TailwindPresetTheme } from '../types/theme.types';
+import type { TailwindPresetTheme } from '../types/theme.types';
 import { spacing } from './mixed';
 
 export const translate = {

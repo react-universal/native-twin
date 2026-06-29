@@ -16,7 +16,7 @@ import { convert } from './convertRule';
  * @return {SheetEntry} The converted sheet entry.
  */
 export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): SheetEntry {
-  if (rule.n == 'group') {
+  if (rule.n === 'group') {
     return {
       className: 'group',
       declarations: [],
@@ -24,25 +24,28 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
       precedence: Layer.u,
       important: rule.i,
       animations: [],
+      preflight: false,
     };
   }
-  if (context.mode === 'web') {
-    if (
-      (rule.v.includes('ios') ||
-        rule.v.includes('android') ||
-        rule.v.includes('native')) &&
-      !rule.v.includes('web')
-    ) {
-      return {
-        className: parsedRuleToClassName(rule),
-        declarations: [],
-        selectors: [],
-        precedence: Layer.u,
-        important: rule.i,
-        animations: [],
-      };
-    }
-  }
+  // TODO: Resolve with no mode
+  // if (context.mode === 'web') {
+  //   if (
+  //     (rule.v.includes('ios') ||
+  //       rule.v.includes('android') ||
+  //       rule.v.includes('native')) &&
+  //     !rule.v.includes('web')
+  //   ) {
+  //     return {
+  //       className: parsedRuleToClassName(rule),
+  //       declarations: [],
+  //       selectors: [],
+  //       precedence: Layer.u,
+  //       important: rule.i,
+  //       animations: [],
+  //       preflight: false,
+  //     };
+  //   }
+  // }
   const result = context.r(rule);
   if (!result) {
     // propagate className as is
@@ -53,6 +56,7 @@ export function parsedRuleToEntry(rule: TWParsedRule, context: ThemeContext): Sh
       precedence: Layer.u,
       important: rule.i,
       animations: [],
+      preflight: false,
     };
   }
   // const newRule = context.mode === 'web' ? convert(rule, context, Layer.u) : rule;

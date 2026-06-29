@@ -1,6 +1,7 @@
-import { createElement as originalCreateElement } from 'react';
-import ReactJSXRuntime from 'react/jsx-dev-runtime';
-import jsxWrapper from './jsx-wrapper';
+import { hasOwnProperty } from '@native-twin/helpers';
+import * as ReactJSXRuntimeDev from 'react/jsx-dev-runtime';
+import { createTwinProps, mappedComponentsConfig, stylizedComponents, TwinElement } from './styled';
+import { getComponentDisplayName } from './utils/react.utils';
 
 /**
  * This the entry point for the @native-twin/jsx runtime.
@@ -9,9 +10,60 @@ import jsxWrapper from './jsx-wrapper';
  * @see https://babeljs.io/docs/babel-plugin-transform-react-jsx
  * @see https://github.com/reactjs/rfcs/blob/createlement-rfc/text/0000-create-element-changes.md#summary
  */
-export { Fragment } from 'react';
-export const jsxs = jsxWrapper((ReactJSXRuntime as any).jsxs);
-export const jsx = jsxWrapper((ReactJSXRuntime as any).jsx);
-export const jsxDEV = jsxWrapper((ReactJSXRuntime as any).jsxDEV);
-export const createTwinElement = jsxWrapper(originalCreateElement as any);
-export const createElement = originalCreateElement;
+export const Fragment = ReactJSXRuntimeDev.Fragment;
+
+export const jsxDEV: typeof ReactJSXRuntimeDev.jsxDEV = (
+  type,
+  props,
+  key,
+  isStaticChildren,
+  source,
+  self,
+) => {
+  const hasTwinID = hasOwnProperty.call(props, '__twinID');
+  if (!hasTwinID) {
+    return ReactJSXRuntimeDev.jsxDEV(type, props, key, isStaticChildren, source, self);
+  }
+  if ((type as any) === 'react-native-twin-jsx-pragma-check') {
+    // This is invalid react code. Its used by the doctor to check if the JSX pragma is set correctly
+    return true as any;
+  }
+
+  // Load the core React Native components and create the interop versions
+  // We avoid this in the test environment as we want more fine-grained control
+  // This call also need to be inside the JSX transform to avoid circular dependencies
+  if (process.env['NODE_ENV'] !== 'test') require('./components');
+
+  // Swap the component type with styled if it exists
+  if (props && hasOwnProperty.call(props, 'twEnabled') === false && stylizedComponents.has(type)) {
+    // Reflect.deleteProperty(props, 'twEnabled');
+    // console.log('TW_ENABLED: ', type);
+    // type = stylizedComponents.get(type)!;
+  }
+  // if (stylizedComponents.has(type)) {
+  //   type = stylizedComponents.get(type)!;
+  // }
+
+  // Call the original jsx function with the new type
+  if (typeof type === 'string') {
+    Object.assign(type, { displayName: type });
+  } else {
+    const name = getComponentDisplayName(type);
+    // console.log('NAME: ', name);
+    type['displayName'] = name;
+  }
+  return ReactJSXRuntimeDev.jsxDEV(
+    TwinElement as any,
+    createTwinProps(
+      type,
+      props as any,
+      mappedComponentsConfig.get(type) ?? { className: 'style' },
+    ) as any,
+    key,
+    isStaticChildren,
+    source,
+    self,
+  );
+};
+// export const createTwinElement = jsxWrapper(originalCreateElement as any);
+// export const createElement = originalCreateElement;

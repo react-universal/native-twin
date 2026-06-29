@@ -1,6 +1,6 @@
 {
   "name": "@native-twin/css",
-  "version": "6.4.0",
+  "version": "7.0.0-next.3",
   "description": "Css parser for react native",
   "keywords": [
     "react-native",
@@ -20,39 +20,63 @@
   },
   "license": "MIT",
   "author": "Cristhian Gutierrez",
-  "sideEffects": false,
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/index.mjs",
+      "require": "./build/index.cjs"
+    },
+    "./jsx": {
+      "import": "./build/jsx/index.mjs",
+      "require": "./build/jsx/index.cjs"
+    },
+    "./react-native": {
+      "import": "./build/react-native/index.mjs",
+      "require": "./build/react-native/index.cjs"
+    },
+    "./twin-parser": {
+      "import": "./build/twin-parser.mjs",
+      "require": "./build/twin-parser.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
+  "types": "./build/index.d.cts",
   "files": [
     "build",
     "LICENSE",
     "CHANGELOG.md",
+    "parser",
+    "src",
+    "jsx",
     "README.md",
     "tailwind-parser"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w",
+    "build": "npx tsdown",
+    "build:watch": "npx tsdown --watch",
     "clean": "rm -rf build",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "docgen": "docgen",
-    "lint": "eslint \"./**/*.{ts,tsx}\"",
-    "test": "jest",
+    "lint": "biome lint",
+    "test": "vitest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@effect/typeclass": "^0.26.2",
     "@native-twin/arc-parser": "workspace:*",
-    "@native-twin/helpers": "workspace:*",
-    "effect": "^3.7.2"
+    "@native-twin/helpers": "workspace:*"
+  },
+  "devDependencies": {
+    "fp-ts": "^2.16.9"
   },
   "optionalDependencies": {
-    "jest": "*"
+    "@native-twin/cli": "workspace:*",
+    "jest": "~29.7.0"
   },
   "publishConfig": {
     "access": "public",
-    "directory": "_release/package"
+    "directory": "dist"
   },
   "gitHead": "4c26121d296e38153faa7dd196229db1a71e075d"
 }

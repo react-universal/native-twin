@@ -1,11 +1,11 @@
-import { tree as d3Tree, hierarchy, HierarchyPointNode } from 'd3-hierarchy';
-import { DefaultLinkObject, linkHorizontal, linkVertical } from 'd3-shape';
+import type { RawJSXElementTreeNode } from '@native-twin/css/jsx';
+import { tree as d3Tree, type HierarchyPointNode, hierarchy } from 'd3-hierarchy';
+import { type DefaultLinkObject, linkHorizontal, linkVertical } from 'd3-shape';
 import * as RA from 'effect/Array';
 import { apply, flip, identity, pipe } from 'effect/Function';
 import * as Record from 'effect/Record';
 import * as Tuple from 'effect/Tuple';
-import { RawJSXElementTreeNode } from '@native-twin/css/jsx';
-import { SvgPoint } from './json.types';
+import type { SvgPoint } from './json.types';
 
 interface TreeLayoutParams {
   width: number;
@@ -13,19 +13,10 @@ interface TreeLayoutParams {
   nodeSize: number;
 }
 const verticalConfig = (layout: TreeLayoutParams) => {
-  const treeSize = Tuple.make<[width: number, height: number]>(
-    layout.width / 2,
-    layout.height / 2,
-  );
-  const nodeSize = Tuple.make<[width: number, height: number]>(
-    layout.nodeSize,
-    layout.nodeSize,
-  );
+  const treeSize = Tuple.make<[width: number, height: number]>(layout.width / 2, layout.height / 2);
+  const nodeSize = Tuple.make<[width: number, height: number]>(layout.nodeSize, layout.nodeSize);
 
-  const svgCenter = Tuple.make<[x: number, y: number]>(
-    layout.width / 2,
-    layout.height / 2,
-  );
+  const svgCenter = Tuple.make<[x: number, y: number]>(layout.width / 2, layout.height / 2);
 
   return {
     treeSize,
@@ -73,10 +64,7 @@ export const createComponentsTree = (
 
   const calcNodeOrigin = (from: SvgPoint): SvgPoint => {
     const xy = pipe(
-      Tuple.make<[x: number, y: number]>(
-        svgCenter.x + from.x * 3,
-        nodeSize.height + from.y * 3,
-      ),
+      Tuple.make<[x: number, y: number]>(svgCenter.x + from.x * 3, nodeSize.height + from.y * 3),
       swapTupleIf(orientation === 'row'),
     );
 
@@ -98,14 +86,8 @@ export const createComponentsTree = (
         const line = pipe(
           (x: DefaultLinkObject) => fn(x),
           apply({
-            source: pipe(
-              Tuple.make(sourceX, sourceY),
-              swapTupleIf(orientation === 'row'),
-            ),
-            target: pipe(
-              Tuple.make(targetX, targetY),
-              swapTupleIf(orientation === 'row'),
-            ),
+            source: pipe(Tuple.make(sourceX, sourceY), swapTupleIf(orientation === 'row')),
+            target: pipe(Tuple.make(targetX, targetY), swapTupleIf(orientation === 'row')),
           }),
         );
         if (!line) return [];

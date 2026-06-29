@@ -39,10 +39,7 @@ export const cssValueUnitParser = P.choice([
 
 export const dimensionUnitParser = P.sequenceOf([parseFloatToken]);
 
-export const declarationValueWithUnitParser = P.sequenceOf([
-  P.float,
-  P.maybe(cssValueUnitParser),
-]);
+export const declarationValueWithUnitParser = P.sequenceOf([P.float, P.maybe(cssValueUnitParser)]);
 
 const regexIdent = /^[_a-z0-9A-Z-]+/;
 export const ident: P.Parser<string> = P.regex(regexIdent);

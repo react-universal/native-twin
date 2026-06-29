@@ -1,25 +1,12 @@
-import type {
-  ImageStyle,
-  TextStyle,
-  ViewStyle,
-} from 'react-native';
-import type { SelectorGroup } from '../css/css.types';
+import type { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
+// TODO: rm
+export type NamedStyles<T> = StyleSheet.NamedStyles<T>;
+// TODO: rm
 export type AnyStyle = ImageStyle | TextStyle | ViewStyle;
-
+// TODO: rm
 export interface CompleteStyle extends ViewStyle, TextStyle, Omit<ImageStyle, 'overflow'> {}
-
-export interface ParserRuntimeContext {
-  rem: number;
-  deviceHeight: number;
-  deviceWidth: number;
-}
-
-export type FinalSheet = Record<SelectorGroup, CompleteStyle>;
-
-export interface GetChildStylesArgs {
-  isFirstChild: boolean;
-  isLastChild: boolean;
-  isEven: boolean;
-  isOdd: boolean;
-}
+// TODO: rm
+export type AnyStyleValue = {
+  [U in keyof AnyStyle]: AnyStyle[U];
+}[keyof AnyStyle];

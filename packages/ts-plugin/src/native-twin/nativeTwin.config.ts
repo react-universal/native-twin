@@ -1,18 +1,19 @@
-import ts from 'typescript';
 import {
-  __Theme__,
+  type __Theme__,
   createTailwind,
   createThemeContext,
   defineConfig,
-  RuntimeTW,
-  TailwindConfig,
-  ThemeContext,
+  type RuntimeTW,
+  type TailwindConfig,
+  type ThemeContext,
 } from '@native-twin/core';
+import type ts from 'typescript';
 import '@native-twin/core';
-import { createVirtualSheet, SheetEntry } from '@native-twin/css';
-import { presetTailwind } from '@native-twin/preset-tailwind';
-import { TailwindPresetTheme } from '@native-twin/preset-tailwind';
-import { NativeTwinPluginConfiguration } from '../plugin.types';
+import { createVirtualSheet, type SheetEntry } from '@native-twin/css';
+import type { TwinConfigOptions } from '@native-twin/language-service';
+import { parseLSPConfigInput } from '@native-twin/language-service';
+import type { TailwindPresetTheme } from '@native-twin/preset-tailwind';
+import * as Option from 'effect/Option';
 import { requireJS } from '../utils/load-config';
 
 export type InternalTwinConfig = TailwindConfig<__Theme__ & TailwindPresetTheme>;
@@ -20,13 +21,7 @@ export type InternalTwFn = RuntimeTW<__Theme__ & TailwindPresetTheme, SheetEntry
 export type InternalTwinThemeContext = ThemeContext<__Theme__ & TailwindPresetTheme>;
 
 export const createTwin = (info: ts.server.PluginCreateInfo) => {
-  const pluginConfig: NativeTwinPluginConfiguration = {
-    tags: ['tw', 'apply', 'css', 'styled', 'variants'],
-    attributes: ['tw', 'class', 'className', 'variants'],
-    styles: ['style', 'styled'],
-    debug: false,
-    enable: true,
-  };
+  const pluginConfig: TwinConfigOptions = parseLSPConfigInput({});
 
   const twinConfig = loadUserTwinConfigFile(info);
   const twin = createTwinHandlers(twinConfig);
@@ -55,11 +50,13 @@ const loadUserTwinConfigFile = (info: ts.server.PluginCreateInfo): InternalTwinC
   const file = `${rootDir}/tailwind.config.ts`;
   const fileExists = info.project.projectService.host.fileExists(file);
   if (fileExists) {
-    const config = requireJS(file);
-    return defineConfig(config);
+    const config = requireJS(file).pipe(Option.getOrNull);
+    if (config) {
+      return defineConfig(config);
+    }
   }
   return defineConfig({
     content: [],
-    presets: [presetTailwind()],
+    presets: [],
   });
 };

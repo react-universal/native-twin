@@ -1,11 +1,13 @@
-const { getDefaultConfig } = require('expo/metro-config');
-const { withNativeTwin } = require('@native-twin/metro');
+const { getDefaultConfig } = require('@expo/metro-config');
+const { withNativeTwin } = require('@native-twin/compiler/Metro');
 const path = require('path');
 
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(__dirname, '../..');
 
-const config = getDefaultConfig(projectRoot);
+const config = getDefaultConfig(projectRoot, {
+  isCSSEnabled: true,
+});
 config.watchFolders = [workspaceRoot];
 
 config.resolver.nodeModulesPaths = [
@@ -20,4 +22,5 @@ config.resolver.nodeModulesPaths = [
 
 module.exports = withNativeTwin(config, {
   configPath: path.join(__dirname, 'tailwind.config.ts'),
+  inputCSS: 'globals.css',
 });
